@@ -1,0 +1,142 @@
+﻿<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AVEREO CONNECT - Rendu V1</title>
+    <style>
+      :root {
+        --bg: #f3f4f6;
+        --card: #ffffff;
+        --text: #0f172a;
+        --muted: #475569;
+        --line: #e2e8f0;
+        --primary: #4f46e5;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        background: radial-gradient(circle at 20% 10%, #e0e7ff, transparent 40%), var(--bg);
+        color: var(--text);
+      }
+      .wrap {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px 16px 40px;
+      }
+      .hero {
+        background: linear-gradient(120deg, #1e1b4b, #3730a3);
+        color: white;
+        border-radius: 16px;
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+      .hero h1 {
+        margin: 0 0 8px;
+        font-size: 24px;
+      }
+      .hero p {
+        margin: 0;
+        opacity: 0.9;
+      }
+      .links {
+        margin-top: 12px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .links a {
+        color: white;
+        text-decoration: none;
+        border: 1px solid rgba(255,255,255,0.4);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .panel header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+      .panel h2 {
+        margin: 0;
+        font-size: 15px;
+      }
+      .panel span {
+        color: var(--muted);
+        font-size: 12px;
+      }
+      iframe {
+        width: 100%;
+        height: 720px;
+        border: 0;
+        background: white;
+      }
+      .note {
+        margin-top: 14px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      code {
+        background: #e2e8f0;
+        border-radius: 4px;
+        padding: 2px 6px;
+      }
+      @media (min-width: 1024px) {
+        .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <section class="hero">
+        <h1>AVEREO CONNECT - Premier rendu V1</h1>
+        <p>Mode preview active (connexion auto) pour voir rapidement le Dashboard et le Dossier bien.</p>
+        <div class="links">
+          <a href="./index.html?preview=1" target="_blank" rel="noopener">Ouvrir Dashboard</a>
+          <a href="./index.html?preview=1&view=bien&bienId=1" target="_blank" rel="noopener">Ouvrir Dossier Bien #1</a>
+          <a href="./index.html" target="_blank" rel="noopener">Mode normal (login)</a>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <header>
+            <h2>Preview Dashboard</h2>
+            <span>/index.html?preview=1</span>
+          </header>
+          <iframe src="./index.html?preview=1" title="Dashboard preview"></iframe>
+        </article>
+
+        <article class="panel">
+          <header>
+            <h2>Preview Dossier Bien</h2>
+            <span>/index.html?preview=1&view=bien&bienId=1</span>
+          </header>
+          <iframe src="./index.html?preview=1&view=bien&bienId=1" title="Bien preview"></iframe>
+        </article>
+      </section>
+
+      <p class="note">
+        Conseil: lance un serveur local dans le repo (<code>npm run dev</code>) puis ouvre ce fichier via
+        <code>http://localhost:5173/rendu-v1.html</code>.
+      </p>
+    </div>
+  </body>
+</html>
