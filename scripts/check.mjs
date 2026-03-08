@@ -9,7 +9,23 @@ const requiredFiles = [
   "prototype-v1/styles.css",
   "prototype-v1/app.js",
   "prototype-v1/README.md",
-  "AVEREO_CONNECT_V1_Maquette_Fonctionnelle.md"
+  "prototype-v1/v1/index.html",
+  "prototype-v1/v1/app.jsx",
+  "prototype-v1/v1/rendu-v1.html",
+  "prototype-v1/v1/standalone-v1.html",
+  "prototype-v1/v1/rendu-v1-static.html",
+  "prototype-v1/v1/README.md",
+  "avereo-v1-base/index.html",
+  "avereo-v1-base/app.jsx",
+  "avereo-v1-base/README.md",
+  "avereo-v1-base/rendu-v1.html",
+  "avereo-v1-base/standalone-v1.html",
+  "avereo-v1-base/rendu-v1-static.html",
+  "AVEREO_CONNECT_V1_Maquette_Fonctionnelle.md",
+  "V2_Preparation_AVEREO.md",
+  "NEXTCLOUD_INTEGRATION_V1.md",
+  "scripts/prepare-pages.mjs",
+  "scripts/create-v1-online-pr.ps1"
 ];
 
 const missing = requiredFiles.filter((file) => !fs.existsSync(path.join(root, file)));
@@ -21,14 +37,36 @@ if (missing.length) {
   process.exit(1);
 }
 
-const html = fs.readFileSync(path.join(root, "prototype-v1/index.html"), "utf8");
-const checks = [
-  { ok: html.includes("styles.css"), msg: "index.html must reference styles.css" },
-  { ok: html.includes("app.js"), msg: "index.html must reference app.js" },
-  { ok: html.includes("AVEREO"), msg: "index.html should contain AVEREO branding" }
+const prototypeHtml = fs.readFileSync(path.join(root, "prototype-v1/index.html"), "utf8");
+const prototypeChecks = [
+  { ok: prototypeHtml.includes("styles.css"), msg: "prototype-v1/index.html must reference styles.css" },
+  { ok: prototypeHtml.includes("app.js"), msg: "prototype-v1/index.html must reference app.js" },
+  { ok: prototypeHtml.includes("AVEREO"), msg: "prototype-v1/index.html should contain AVEREO branding" }
 ];
 
-const failed = checks.filter((c) => !c.ok);
+const pocHtml = fs.readFileSync(path.join(root, "avereo-v1-base/index.html"), "utf8");
+const pocApp = fs.readFileSync(path.join(root, "avereo-v1-base/app.jsx"), "utf8");
+const pocChecks = [
+  { ok: pocHtml.includes("react.development.js"), msg: "avereo-v1-base/index.html must load React" },
+  { ok: pocHtml.includes("zustand"), msg: "avereo-v1-base/index.html must load Zustand" },
+  { ok: pocHtml.includes("app.jsx"), msg: "avereo-v1-base/index.html must reference app.jsx" },
+  { ok: pocApp.includes("const { create } = window.zustand;"), msg: "avereo-v1-base/app.jsx must bind Zustand create" },
+  { ok: pocApp.includes("ReactDOM.createRoot"), msg: "avereo-v1-base/app.jsx must bootstrap ReactDOM" },
+  { ok: !pocApp.includes("export default"), msg: "avereo-v1-base/app.jsx must not contain export default" },
+  { ok: pocApp.includes("const CLOUD_CONFIG_STORAGE_KEY"), msg: "avereo-v1-base/app.jsx should include cloud configuration storage" },
+  { ok: pocApp.includes("const uploadToNextcloud"), msg: "avereo-v1-base/app.jsx should include Nextcloud upload support" },
+  { ok: pocApp.includes("const Dashboard = () =>"), msg: "avereo-v1-base/app.jsx should include Dashboard component" },
+  { ok: pocApp.includes("params.get('preview') === '1'"), msg: "avereo-v1-base/app.jsx should support preview mode" }
+];
+
+const pagesScript = fs.readFileSync(path.join(root, "scripts/prepare-pages.mjs"), "utf8");
+const pagesChecks = [
+  { ok: pagesScript.includes(".pages-dist"), msg: "scripts/prepare-pages.mjs should generate .pages-dist output" },
+  { ok: pagesScript.includes("copyDir(path.join(root, \"avereo-v1-base\")"), msg: "scripts/prepare-pages.mjs should include V1 bundle" },
+  { ok: pagesScript.includes("copyDir(path.join(root, \"prototype-v1\")"), msg: "scripts/prepare-pages.mjs should include prototype bundle" }
+];
+
+const failed = [...prototypeChecks, ...pocChecks, ...pagesChecks].filter((c) => !c.ok);
 if (failed.length) {
   for (const c of failed) console.error(c.msg);
   process.exit(1);
