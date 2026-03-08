@@ -51,8 +51,9 @@ jobs:
           )
 
           for check in "${required_checks[@]}"; do
-            if ! grep -Fqi "$check" <<< "$body"; then
+            if ! grep -Fqi -- "$check" <<< "$body"; then
               echo "::error::Checklist item not marked as done: $check"
               exit 1
             fi
           done
+
