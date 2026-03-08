@@ -9,6 +9,9 @@
   },
   "scripts": {
     "check": "node ./scripts/check.mjs",
-    "dev": "node ./scripts/serve.mjs prototype-v1 5173"
+    "dev": "node ./scripts/serve.mjs avereo-v1-base 5173",
+    "dev:v1": "node ./scripts/serve.mjs avereo-v1-base 5173",
+    "dev:prototype": "node ./scripts/serve.mjs prototype-v1 5174",
+    "pages:build": "node ./scripts/prepare-pages.mjs"
   }
 }
