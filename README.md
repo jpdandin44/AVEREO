@@ -52,3 +52,6 @@ Regles a activer dans GitHub (`Settings > Branches > Branch protection`):
 - Ajouter API dediee (auth, biens, dossiers, devis, catalogue)
 - Migrer le moteur de chiffrage cote serveur
 - Brancher Stripe webhooks et RBAC serveur
+
+## Validation PR - Exemple
+- Cette section a ete ajoutee depuis la branche codex/pr-validation-example pour valider le workflow PR.
