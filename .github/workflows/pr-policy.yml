@@ -1,0 +1,58 @@
+﻿name: PR Policy
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+jobs:
+  policy:
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR title format
+        shell: bash
+        run: |
+          title="${{ github.event.pull_request.title }}"
+          regex='^(feat|fix|chore|docs|refactor|test|ci|build)(\([a-z0-9._-]+\))?: .{8,}$'
+          if [[ ! "$title" =~ $regex ]]; then
+            echo "::error::PR title must follow Conventional Commits (example: feat(api): add quote endpoint)."
+            exit 1
+          fi
+
+      - name: Check PR body sections
+        shell: bash
+        run: |
+          body=$(cat <<'EOF'
+          ${{ github.event.pull_request.body }}
+          EOF
+          )
+
+          required_sections=("## Summary" "## Changes" "## Validation" "## Risks" "## Checklist")
+          for section in "${required_sections[@]}"; do
+            if ! grep -Fq "$section" <<< "$body"; then
+              echo "::error::Missing section in PR description: $section"
+              exit 1
+            fi
+          done
+
+      - name: Check checklist completion
+        shell: bash
+        run: |
+          body=$(cat <<'EOF'
+          ${{ github.event.pull_request.body }}
+          EOF
+          )
+
+          required_checks=(
+            "- [x] I tested the changes locally."
+            "- [x] I reviewed security and data impact."
+            "- [x] I updated docs (or no docs update is needed)."
+            "- [x] I verified this PR is scoped and reviewable."
+          )
+
+          for check in "${required_checks[@]}"; do
+            if ! grep -Fqi "$check" <<< "$body"; then
+              echo "::error::Checklist item not marked as done: $check"
+              exit 1
+            fi
+          done
