@@ -1,0 +1,14 @@
+﻿{
+  "name": "avereo-connect",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AVEREO CONNECT - prototype and delivery environment",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "check": "node ./scripts/check.mjs",
+    "dev": "node ./scripts/serve.mjs prototype-v1 5173"
+  }
+}

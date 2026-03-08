@@ -1,0 +1,232 @@
+﻿<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AVEREO CONNECT - Prototype V1</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-glow bg-glow--one"></div>
+    <div class="bg-glow bg-glow--two"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <p class="brand__kicker">AVEREO</p>
+        <h1>CONNECT</h1>
+      </div>
+      <div class="topbar__meta">
+        <p id="catalogVersionBadge" class="pill">catalog v1</p>
+        <p id="sessionBadge" class="pill pill--ghost">non connecte</p>
+      </div>
+    </header>
+
+    <nav class="tabs" aria-label="Navigation principale">
+      <button class="tab is-active" data-view="login">Connexion</button>
+      <button class="tab" data-view="dashboard">Biens</button>
+      <button class="tab" data-view="dossier">Dossier</button>
+      <button class="tab" data-view="chiffrage">Chiffrage</button>
+      <button class="tab" data-view="synthese">Synthese</button>
+      <button class="tab" data-view="admin">Admin</button>
+    </nav>
+
+    <main class="layout">
+      <section class="view is-visible" id="view-login">
+        <article class="panel panel--hero">
+          <h2>Demarrer une session</h2>
+          <p>
+            Ce prototype lance le dev de la V1 avec le tunnel metier complet: compte,
+            dossier, chiffrage, synthese et admin catalogue.
+          </p>
+          <form id="loginForm" class="form-grid">
+            <label>
+              Nom
+              <input type="text" name="name" placeholder="Ex: Emma Durand" required />
+            </label>
+            <label>
+              Email
+              <input type="email" name="email" placeholder="emma@avereo.fr" required />
+            </label>
+            <label>
+              Role
+              <select name="role" required>
+                <option value="Owner">Owner</option>
+                <option value="Editor">Editor</option>
+                <option value="Viewer">Viewer</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </label>
+            <button class="btn btn--primary" type="submit">Ouvrir la session</button>
+          </form>
+        </article>
+      </section>
+
+      <section class="view" id="view-dashboard">
+        <article class="panel">
+          <div class="panel__head">
+            <h2>Biens</h2>
+            <p id="propertyCount" class="hint">0 bien</p>
+          </div>
+          <form id="propertyForm" class="form-grid form-grid--two">
+            <label>
+              Adresse
+              <input type="text" name="address" required placeholder="12 Rue de Lyon, Paris" />
+            </label>
+            <label>
+              Type
+              <select name="kind" required>
+                <option value="Appartement">Appartement</option>
+                <option value="Maison">Maison</option>
+                <option value="Immeuble">Immeuble</option>
+              </select>
+            </label>
+            <label>
+              Surface (m2)
+              <input type="number" min="1" name="surface" required />
+            </label>
+            <label>
+              Statut
+              <select name="status" required>
+                <option value="A renover">A renover</option>
+                <option value="A vendre">A vendre</option>
+                <option value="En estimation">En estimation</option>
+              </select>
+            </label>
+            <button class="btn btn--primary" type="submit">Ajouter le bien</button>
+          </form>
+          <div id="propertyList" class="card-list"></div>
+        </article>
+      </section>
+
+      <section class="view" id="view-dossier">
+        <article class="panel">
+          <div class="panel__head">
+            <h2>Dossier travaux</h2>
+            <p class="hint">Bien actif: <span id="activePropertyName">aucun</span></p>
+          </div>
+          <form id="projectForm" class="form-grid">
+            <label>
+              Nom du dossier
+              <input type="text" name="projectName" required placeholder="Reno cuisine + salon" />
+            </label>
+            <button class="btn btn--primary" type="submit">Creer / mettre a jour</button>
+          </form>
+
+          <h3>Pieces</h3>
+          <form id="roomForm" class="form-grid form-grid--three">
+            <label>
+              Nom de la piece
+              <input type="text" name="roomName" required placeholder="Cuisine" />
+            </label>
+            <label>
+              Surface (m2)
+              <input type="number" step="0.1" min="0" name="roomSurface" required />
+            </label>
+            <label>
+              Hauteur (m)
+              <input type="number" step="0.1" min="2" name="roomHeight" required />
+            </label>
+            <button class="btn" type="submit">Ajouter une piece</button>
+          </form>
+          <div id="roomList" class="card-list"></div>
+        </article>
+      </section>
+
+      <section class="view" id="view-chiffrage">
+        <article class="panel">
+          <div class="panel__head">
+            <h2>Chiffrage live</h2>
+            <p class="hint">Recalcul automatique HT / TVA / TTC</p>
+          </div>
+
+          <div class="grid-two">
+            <section>
+              <h3>Taches catalogue</h3>
+              <div id="taskPicker" class="task-picker"></div>
+            </section>
+
+            <section>
+              <h3>Lignes du devis</h3>
+              <div id="quoteLines" class="quote-lines"></div>
+
+              <label class="range-wrap">
+                Encadrement (%)
+                <input id="encadrementInput" type="range" min="0" max="20" value="8" />
+                <span id="encadrementValue">8%</span>
+              </label>
+
+              <div class="totals" id="quickTotals"></div>
+            </section>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="view-synthese">
+        <article class="panel" id="printZone">
+          <div class="panel__head">
+            <h2>Synthese devis</h2>
+            <p id="quoteMeta" class="hint">catalog version</p>
+          </div>
+
+          <div id="summaryTable" class="summary-table"></div>
+          <div id="summaryTotals" class="totals totals--large"></div>
+
+          <div class="actions">
+            <button id="exportJsonBtn" class="btn">Exporter JSON</button>
+            <button id="printPdfBtn" class="btn btn--primary">Exporter PDF (impression)</button>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="view-admin">
+        <article class="panel">
+          <div class="panel__head">
+            <h2>Admin catalogue</h2>
+            <p class="hint">Modifier prix/regles et publier une version</p>
+          </div>
+
+          <form id="taskForm" class="form-grid form-grid--four">
+            <label>
+              Metier
+              <input type="text" name="trade" required placeholder="Peinture" />
+            </label>
+            <label>
+              Tache
+              <input type="text" name="label" required placeholder="Peinture murs" />
+            </label>
+            <label>
+              Unite
+              <select name="unit" required>
+                <option value="m2">m2</option>
+                <option value="u">u</option>
+                <option value="forfait">forfait</option>
+              </select>
+            </label>
+            <label>
+              Prix HT
+              <input type="number" min="0" step="0.01" name="priceHt" required />
+            </label>
+            <label>
+              TVA %
+              <select name="tva" required>
+                <option value="10">10</option>
+                <option value="20">20</option>
+              </select>
+            </label>
+            <button class="btn" type="submit">Ajouter tache</button>
+          </form>
+
+          <div id="adminTable" class="admin-table"></div>
+
+          <div class="actions">
+            <button id="publishCatalogBtn" class="btn btn--primary">Publier nouvelle version</button>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <aside id="toast" class="toast" aria-live="polite"></aside>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>
