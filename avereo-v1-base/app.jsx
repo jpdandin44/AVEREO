@@ -1,0 +1,1584 @@
+﻿const { useEffect, useState, useMemo, useRef } = React;
+const { create } = window.zustand;
+
+// --- SCRIPT LOADER ---
+// Helper function to load external scripts like jsPDF and PapaParse
+const loadScript = (src, onLoad) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+        if (onLoad) onLoad();
+        return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => {
+        if (onLoad) onLoad();
+    };
+    document.head.appendChild(script);
+};
+
+const CLOUD_CONFIG_STORAGE_KEY = 'avereo-cloud-config';
+
+const defaultCloudConfig = {
+    enabled: false,
+    baseUrl: 'https://cloud.avereo.fr',
+    username: '',
+    appPassword: '',
+    rootFolder: 'AVEREO_CONNECT'
+};
+
+const loadCloudConfig = () => {
+    try {
+        const raw = localStorage.getItem(CLOUD_CONFIG_STORAGE_KEY);
+        if (!raw) return defaultCloudConfig;
+        return { ...defaultCloudConfig, ...JSON.parse(raw) };
+    } catch (error) {
+        console.error('Erreur lors du chargement de la configuration cloud:', error);
+        return defaultCloudConfig;
+    }
+};
+
+const saveCloudConfig = (config) => {
+    localStorage.setItem(CLOUD_CONFIG_STORAGE_KEY, JSON.stringify(config));
+};
+
+const safeSegment = (value) => {
+    return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-zA-Z0-9._-]+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
+        .toLowerCase();
+};
+
+const fileToDataUrl = (file) => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+};
+
+const toBasicAuthHeader = (username, appPassword) => {
+    const value = `${username}:${appPassword}`;
+    const bytes = new TextEncoder().encode(value);
+    let binary = '';
+    bytes.forEach((byte) => {
+        binary += String.fromCharCode(byte);
+    });
+    return btoa(binary);
+};
+
+const splitFolderSegments = (rawValue, fallback) => {
+    const source = String(rawValue || fallback || '');
+    const normalized = source.replace(/\\/g, '/');
+    return normalized
+        .split('/')
+        .map((segment) => safeSegment(segment))
+        .filter(Boolean);
+};
+
+const ensureNextcloudCollections = async ({ davBaseUrl, auth, segments }) => {
+    const accepted = [201, 301, 302, 405];
+    let currentUrl = davBaseUrl;
+
+    for (const segment of segments) {
+        currentUrl = `${currentUrl}/${encodeURIComponent(segment)}`;
+        const response = await fetch(`${currentUrl}/`, {
+            method: 'MKCOL',
+            headers: { Authorization: `Basic ${auth}` }
+        });
+
+        if (!accepted.includes(response.status)) {
+            throw new Error(`Création dossier Nextcloud échouée (${response.status}).`);
+        }
+    }
+};
+
+const uploadToNextcloud = async ({ file, bien, cloudConfig }) => {
+    const normalizedBaseUrl = (cloudConfig.baseUrl || '').replace(/\/$/, '');
+    if (!normalizedBaseUrl || !cloudConfig.username || !cloudConfig.appPassword) {
+        throw new Error('Configuration Nextcloud incomplète.');
+    }
+
+    const addressSegment = safeSegment(bien.address || `bien-${bien.id}`) || `bien-${bien.id}`;
+    const rootSegments = splitFolderSegments(cloudConfig.rootFolder, 'AVEREO_CONNECT');
+    const folderSegments = [...rootSegments, addressSegment];
+    const filenameSegment = `${Date.now()}-${safeSegment(file.name) || 'document'}`;
+    const encodedFolderPath = folderSegments.map(encodeURIComponent).join('/');
+    const encodedFilename = encodeURIComponent(filenameSegment);
+    const davBaseUrl = `${normalizedBaseUrl}/remote.php/dav/files/${encodeURIComponent(cloudConfig.username)}`;
+    const davUrl = `${davBaseUrl}/${encodedFolderPath}/${encodedFilename}`;
+    const auth = toBasicAuthHeader(cloudConfig.username, cloudConfig.appPassword);
+
+    await ensureNextcloudCollections({
+        davBaseUrl,
+        auth,
+        segments: folderSegments
+    });
+
+    const response = await fetch(davUrl, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Basic ${auth}`,
+            'Content-Type': file.type || 'application/octet-stream'
+        },
+        body: file
+    });
+
+    if (!response.ok && response.status !== 201 && response.status !== 204) {
+        throw new Error(`Upload Nextcloud échoué (${response.status}).`);
+    }
+
+    return {
+        provider: 'nextcloud',
+        webdavUrl: davUrl
+    };
+};
+
+// --- MOCK DATA & CONFIGURATION ---
+const MOCK_BIENS = [
+    { 
+        id: 1, 
+        address: '123 Rue de la République, 75001 Paris', 
+        type: 'Maison', 
+        size: 120, 
+        composition: { chambres: 3, sdb: 2, sejour: 1, cuisine: 1, garage: 1 },
+        dossier: { 
+            pieces: [
+                { id: 1, nom: 'Salon', surface: 35, interventions: [{ tarifId: 'peintre_peinture_murs_plafonds', quantite: 1 }] }, 
+                { id: 2, nom: 'Chambre 1', surface: 15, interventions: [{ tarifId: 'peintre_peinture_murs_plafonds', quantite: 1 }] }
+            ],
+            attachments: []
+        } 
+    },
+    { 
+        id: 2, 
+        address: '45 Avenue des Champs-Élysées, 75008 Paris', 
+        type: 'Appartement', 
+        size: 85, 
+        composition: { chambres: 2, sdb: 1, sejour: 1, cuisine: 1, garage: 0 },
+        dossier: { 
+            pieces: [
+                { id: 3, nom: 'Séjour / Cuisine', surface: 40, interventions: [{ tarifId: 'electricien_remplacement_tableau', quantite: 1 }] }
+            ],
+            attachments: []
+        } 
+    },
+];
+
+const LATEST_INITIAL_TARIFS = {
+    macon_demolition_cloisons: { id: "macon_demolition_cloisons", nom: "Maçon - Démolition de cloisons et murs (brique parpaing)", unite: "m²", prix_eco: 24, prix_std: 36, prix_premium: 48 },
+    macon_ouverture_mur: { id: "macon_ouverture_mur", nom: "Maçon - Ouverture d'un mur porteur (avec pose d'IPN)", unite: "forfait", prix_eco: 3055, prix_std: 4528, prix_premium: 6000 },
+    macon_dalle_beton: { id: "macon_dalle_beton", nom: "Maçon - Réalisation de dalle béton (10-12 cm ferraillée)", unite: "m²", prix_eco: 120, prix_std: 162, prix_premium: 204 },
+    macon_chape_finition: { id: "macon_chape_finition", nom: "Maçon - Coulage d'une chape de finition (avant revêtement)", unite: "m²", prix_eco: 36, prix_std: 48, prix_premium: 60 },
+    macon_ragreage_sol: { id: "macon_ragreage_sol", nom: "Maçon - Ragréage de sol (pour aplanir)", unite: "m²", prix_eco: 18, prix_std: 24, prix_premium: 30 },
+    macon_montage_murs_parpaings: { id: "macon_montage_murs_parpaings", nom: "Maçon - Montage de murs en parpaings (20cm)", unite: "m²", prix_eco: 60, prix_std: 90, prix_premium: 120 },
+    macon_enduit_facade: { id: "macon_enduit_facade", nom: "Maçon - Réalisation d'enduit de façade", unite: "m²", prix_eco: 48, prix_std: 66, prix_premium: 84 },
+    couvreur_refection_couverture_tuiles: { id: "couvreur_refection_couverture_tuiles", nom: "Couvreur / Charpentier - Réfection complète de la couverture en tuiles", unite: "m²", prix_eco: 156, prix_std: 216, prix_premium: 276 },
+    couvreur_remplacement_ardoise: { id: "couvreur_remplacement_ardoise", nom: "Couvreur / Charpentier - Remplacement de la couverture en Ardoise Naturelle", unite: "m²", prix_eco: 180, prix_std: 270, prix_premium: 360 },
+    couvreur_nettoyage_toiture: { id: "couvreur_nettoyage_toiture", nom: "Couvreur / Charpentier - Nettoyage et traitement anti-mousse de la toiture", unite: "m²", prix_eco: 18, prix_std: 30, prix_premium: 42 },
+    couvreur_traitement_charpente: { id: "couvreur_traitement_charpente", nom: "Couvreur / Charpentier - Traitement de la charpente contre les insectes (injection)", unite: "m²", prix_eco: 48, prix_std: 72, prix_premium: 96 },
+    couvreur_pose_velux: { id: "couvreur_pose_velux", nom: "Couvreur / Charpentier - Pose de fenêtre de toit type Velux (78x98 cm)", unite: "unité", prix_eco: 960, prix_std: 1320, prix_premium: 1680 },
+    couvreur_pose_gouttieres: { id: "couvreur_pose_gouttieres", nom: "Couvreur / Charpentier - Pose de gouttières en Zinc", unite: "unité", prix_eco: 60, prix_std: 78, prix_premium: 96 },
+    plaquiste_creation_cloisons: { id: "plaquiste_creation_cloisons", nom: "Plaquiste / Plâtrier - Création de cloisons (ossature isolant BA13)", unite: "m²", prix_eco: 48, prix_std: 66, prix_premium: 84 },
+    plaquiste_cloisons_hydrofuges: { id: "plaquiste_cloisons_hydrofuges", nom: "Plaquiste / Plâtrier - Création de cloisons hydrofuges (pour SDB)", unite: "m²", prix_eco: 60, prix_std: 78, prix_premium: 96 },
+    plaquiste_cloisons_phoniques: { id: "plaquiste_cloisons_phoniques", nom: "Plaquiste / Plâtrier - Création de cloisons phoniques (anti-bruit)", unite: "m²", prix_eco: 66, prix_std: 84, prix_premium: 102 },
+    plaquiste_doublage_murs: { id: "plaquiste_doublage_murs", nom: "Plaquiste / Plâtrier - Doublage des murs sur ossature métallique", unite: "m²", prix_eco: 46, prix_std: 64, prix_premium: 82 },
+    plaquiste_faux_plafond: { id: "plaquiste_faux_plafond", nom: "Plaquiste / Plâtrier - Création de faux-plafond en plaques de plâtre", unite: "m²", prix_eco: 54, prix_std: 69, prix_premium: 84 },
+    plaquiste_isolation_murs_interieur: { id: "plaquiste_isolation_murs_interieur", nom: "Plaquiste / Plâtrier - Isolation des murs par l'intérieur (ITI)", unite: "m²", prix_eco: 84, prix_std: 114, prix_premium: 144 },
+    plaquiste_isolation_combles: { id: "plaquiste_isolation_combles", nom: "Plaquiste / Plâtrier - Isolation des combles perdus par soufflage", unite: "m²", prix_eco: 36, prix_std: 54, prix_premium: 72 },
+    menuisier_pose_fenetre_pvc: { id: "menuisier_pose_fenetre_pvc", nom: "Menuisier - Pose de fenêtre en PVC (fourniture incluse)", unite: "unité", prix_eco: 1068, prix_std: 1344, prix_premium: 1620 },
+    menuisier_pose_fenetre_alu: { id: "menuisier_pose_fenetre_alu", nom: "Menuisier - Pose de fenêtre en Aluminium (fourniture incluse)", unite: "unité", prix_eco: 1200, prix_std: 1560, prix_premium: 1980 },
+    menuisier_pose_porte_entree: { id: "menuisier_pose_porte_entree", nom: "Menuisier - Pose de porte d'entrée (PVC/Alu sécurité standard)", unite: "unité", prix_eco: 1800, prix_std: 2700, prix_premium: 3600 },
+    menuisier_pose_bloc_porte: { id: "menuisier_pose_bloc_porte", nom: "Menuisier - Pose de bloc-porte intérieur (standard)", unite: "unité", prix_eco: 300, prix_std: 420, prix_premium: 540 },
+    menuisier_pose_volets_roulants: { id: "menuisier_pose_volets_roulants", nom: "Menuisier - Pose de volets roulants électriques (filaires)", unite: "unité", prix_eco: 600, prix_std: 840, prix_premium: 1080 },
+    electricien_renovation_complete: { id: "electricien_renovation_complete", nom: "Électricien - Rénovation électrique complète (logement)", unite: "m²", prix_eco: 132, prix_std: 168, prix_premium: 216 },
+    electricien_remplacement_tableau: { id: "electricien_remplacement_tableau", nom: "Électricien - Remplacement du tableau électrique", unite: "forfait", prix_eco: 1320, prix_std: 1980, prix_premium: 2640 },
+    electricien_point_lumineux: { id: "electricien_point_lumineux", nom: "Électricien - Création d'un point lumineux (interrupteur + sortie DCL)", unite: "unité", prix_eco: 96, prix_std: 120, prix_premium: 144 },
+    electricien_prise_16a: { id: "electricien_prise_16a", nom: "Électricien - Création d'une prise de courant 16A", unite: "unité", prix_eco: 84, prix_std: 102, prix_premium: 120 },
+    electricien_prise_32a: { id: "electricien_prise_32a", nom: "Électricien - Création d'une prise spécialisée 32A (four plaques)", unite: "unité", prix_eco: 180, prix_std: 240, prix_premium: 300 },
+    electricien_installation_vmc: { id: "electricien_installation_vmc", nom: "Électricien - Installation d'une VMC simple flux", unite: "forfait", prix_eco: 600, prix_std: 900, prix_premium: 1200 },
+    plombier_reseau_per: { id: "plombier_reseau_per", nom: "Plombier / Chauffagiste - Création du réseau (alimentation + évacuation) en PER", unite: "unité", prix_eco: 180, prix_std: 270, prix_premium: 360 },
+    plombier_reseau_cuivre: { id: "plombier_reseau_cuivre", nom: "Plombier / Chauffagiste - Création du réseau en Cuivre (plus cher plus durable)", unite: "unité", prix_eco: 300, prix_std: 420, prix_premium: 540 },
+    plombier_wc_poser: { id: "plombier_wc_poser", nom: "Plombier / Chauffagiste - Installation d'un WC à poser standard", unite: "forfait", prix_eco: 360, prix_std: 480, prix_premium: 600 },
+    plombier_wc_suspendu: { id: "plombier_wc_suspendu", nom: "Plombier / Chauffagiste - Installation d'un WC suspendu (bâti-support inclus)", unite: "forfait", prix_eco: 840, prix_std: 1380, prix_premium: 1920 },
+    plombier_chauffe_eau: { id: "plombier_chauffe_eau", nom: "Plombier / Chauffagiste - Installation d'un chauffe-eau électrique (200L)", unite: "forfait", prix_eco: 840, prix_std: 1200, prix_premium: 1560 },
+    plombier_pompe_chaleur: { id: "plombier_pompe_chaleur", nom: "Plombier / Chauffagiste - Installation d'une Pompe à Chaleur air-eau", unite: "forfait", prix_eco: 12000, prix_std: 15600, prix_premium: 20400 },
+    carreleur_pose_sol: { id: "carreleur_pose_sol", nom: "Carreleur - Pose de carrelage au sol (hors fourniture)", unite: "m²", prix_eco: 36, prix_std: 54, prix_premium: 72 },
+    carreleur_pose_faience: { id: "carreleur_pose_faience", nom: "Carreleur - Pose de faïence murale (hors fourniture)", unite: "m²", prix_eco: 48, prix_std: 66, prix_premium: 84 },
+    carreleur_douche_italienne: { id: "carreleur_douche_italienne", nom: "Carreleur - Réalisation d'une douche à l'italienne (receveur + faïence)", unite: "forfait", prix_eco: 1800, prix_std: 3300, prix_premium: 4800 },
+    carreleur_pose_terrasse: { id: "carreleur_pose_terrasse", nom: "Carreleur - Pose de carrelage sur une terrasse (sur dalle béton)", unite: "m²", prix_eco: 48, prix_std: 66, prix_premium: 84 },
+    peintre_preparation_murs: { id: "peintre_preparation_murs", nom: "Peintre - Préparation des murs (enduit de lissage ponçage)", unite: "m²", prix_eco: 24, prix_std: 36, prix_premium: 48 },
+    peintre_peinture_murs_plafonds: { id: "peintre_peinture_murs_plafonds", nom: "Peintre - Peinture des murs et plafonds (2 couches blanc)", unite: "m²", prix_eco: 36, prix_std: 48, prix_premium: 60 },
+    peintre_peinture_couleur: { id: "peintre_peinture_couleur", nom: "Peintre - Peinture des murs en couleur (finition velours/satin)", unite: "m²", prix_eco: 42, prix_std: 54, prix_premium: 66 },
+    peintre_peinture_boiseries: { id: "peintre_peinture_boiseries", nom: "Peintre - Mise en peinture des boiseries (portes plinthes)", unite: "unité", prix_eco: 36, prix_std: 54, prix_premium: 72 }
+};
+
+
+// --- ZUSTAND STORE ---
+const useAppStore = create((set) => ({
+    isAuthenticated: false,
+    isLoading: true,
+    user: null,
+    currentView: 'dashboard',
+    selectedBienId: null,
+    biens: [],
+    tarifs: {},
+    priceTier: 'std', // 'eco', 'std', 'premium'
+    setPriceTier: (tier) => set({ priceTier: tier }),
+    hydrate: () => {
+        try {
+            const savedBiens = localStorage.getItem('avero-biens');
+            const savedTarifs = localStorage.getItem('avero-tarifs');
+            const biensToLoad = savedBiens ? JSON.parse(savedBiens) : MOCK_BIENS;
+            const tarifsToLoad = savedTarifs ? JSON.parse(savedTarifs) : LATEST_INITIAL_TARIFS;
+            set({ biens: biensToLoad, tarifs: tarifsToLoad, isLoading: false });
+        } catch (error) {
+            console.error("Erreur lors du chargement des données:", error);
+            set({ biens: MOCK_BIENS, tarifs: LATEST_INITIAL_TARIFS, isLoading: false });
+        }
+    },
+    signIn: () => { set({ isAuthenticated: true, user: { name: 'Admin Démo', plan: 'pro', role: 'admin' } }); },
+    signOut: () => {
+        set({ isAuthenticated: false, user: null, currentView: 'dashboard', selectedBienId: null });
+    },
+    subscribeToPro: () => { set(state => ({ user: { ...state.user, plan: 'pro' }, currentView: 'dashboard' })); },
+    selectBien: (bienId) => set({ selectedBienId: bienId, currentView: 'bien' }),
+    goToDashboard: () => set({ selectedBienId: null, currentView: 'dashboard' }),
+    goToSubscribe: () => set({ currentView: 'subscribe' }),
+    goToAdmin: () => set({ currentView: 'admin' }),
+    addPiece: (bienId, nouvellePiece) => {
+        set(state => {
+            const newBiens = state.biens.map(b => 
+                b.id === bienId 
+                ? { ...b, dossier: { ...b.dossier, pieces: [...b.dossier.pieces, { ...nouvellePiece, id: Date.now(), interventions: [] }] } }
+                : b
+            );
+            localStorage.setItem('avero-biens', JSON.stringify(newBiens));
+            return { biens: newBiens };
+        });
+    },
+    updateTarifs: (newTarifs) => {
+        localStorage.setItem('avero-tarifs', JSON.stringify(newTarifs));
+        set({ tarifs: newTarifs });
+    },
+    setInterventionsForPiece: (bienId, pieceId, interventions) => {
+        set(state => {
+            const newBiens = state.biens.map(b => {
+                if (b.id !== bienId) return b;
+                const newPieces = b.dossier.pieces.map(p => p.id === pieceId ? { ...p, interventions } : p);
+                return { ...b, dossier: { ...b.dossier, pieces: newPieces } };
+            });
+            localStorage.setItem('avero-biens', JSON.stringify(newBiens));
+            return { biens: newBiens };
+        });
+    },
+    addBien: (newBienData) => {
+        set(state => {
+            const newBiens = [...state.biens, {
+                ...newBienData, 
+                id: Date.now(), 
+                dossier: { pieces: [], attachments: [] },
+                composition: newBienData.composition || { chambres: 0, sdb: 0, sejour: 0, cuisine: 0, garage: 0 }
+            }];
+            localStorage.setItem('avero-biens', JSON.stringify(newBiens));
+            return { biens: newBiens };
+        });
+    },
+    updateBien: (updatedBien) => {
+        set(state => {
+            const newBiens = state.biens.map(b => b.id === updatedBien.id ? { ...b, ...updatedBien } : b);
+            localStorage.setItem('avero-biens', JSON.stringify(newBiens));
+            return { biens: newBiens };
+        });
+    },
+    deleteBien: (bienId) => {
+        set(state => {
+            const newBiens = state.biens.filter(b => b.id !== bienId);
+            localStorage.setItem('avero-biens', JSON.stringify(newBiens));
+            return { biens: newBiens };
+        });
+    },
+    addAttachment: (bienId, attachment) => {
+        set(state => {
+            const newBiens = state.biens.map(b => {
+                if (b.id !== bienId) return b;
+                const newAttachments = [...(b.dossier.attachments || []), attachment];
+                return { ...b, dossier: { ...b.dossier, attachments: newAttachments } };
+            });
+            localStorage.setItem('avero-biens', JSON.stringify(newBiens));
+            return { biens: newBiens };
+        });
+    },
+    deleteAttachment: (bienId, attachmentId) => {
+        set(state => {
+            const newBiens = state.biens.map(b => {
+                if (b.id !== bienId) return b;
+                const newAttachments = b.dossier.attachments.filter(a => a.id !== attachmentId);
+                return { ...b, dossier: { ...b.dossier, attachments: newAttachments } };
+            });
+            localStorage.setItem('avero-biens', JSON.stringify(newBiens));
+            return { biens: newBiens };
+        });
+    },
+}));
+
+
+// --- ICONS ---
+const LockIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>;
+const Spinner = () => <div className="flex justify-center items-center h-full"><div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-500"></div><p className="ml-4 text-gray-600">Chargement...</p></div>;
+const PlusIcon = ({className}) => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>;
+const ArrowLeftIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>;
+const DownloadIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>;
+const ShareIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>;
+const StarIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="currentColor" className="text-yellow-400 mr-2"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path></svg>;
+const AdminIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>;
+const TrashIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>;
+const EditIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>;
+const CloseIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>;
+const BedIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h20v11H2zM2 14v5h20v-5M7 14v-4M17 14v-4"/></svg>;
+const BathIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6l-4 4h14l-4-4M9 10v10h6V10M5 10H3v10h2M19 10h2v10h-2"/></svg>;
+const KitchenIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 7h20M7 7V2h10v5M7 12h4M7 16h4M15 12h2v8h-2z"/></svg>;
+const GarageIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 9v11H4V9M2 9l10-4 10 4M19 13H5v-1h14v1z"/></svg>;
+const UploadIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>;
+const FileIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>;
+
+
+// --- COMPONENTS ---
+
+const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message }) => {
+    if (!isOpen) return null;
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
+            <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
+                <h2 className="text-xl font-bold">{title}</h2>
+                <p className="mt-2 text-gray-600">{message}</p>
+                <div className="mt-6 flex justify-end space-x-3">
+                    <button onClick={onClose} className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Annuler</button>
+                    <button onClick={onConfirm} className="px-5 py-2 font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700">Confirmer</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const LoginPage = () => {
+ const signIn = useAppStore((state) => state.signIn);
+ return (
+    <div className="w-full max-w-sm p-8 space-y-6 bg-white rounded-xl shadow-lg transition-transform transform hover:scale-105">
+      <div className="text-center">
+          <h1 className="text-3xl font-bold text-gray-800">Bienvenue</h1>
+          <p className="mt-2 text-gray-600">Veuillez vous connecter pour continuer.</p>
+      </div>
+      <button onClick={signIn} className="w-full flex justify-center items-center px-4 py-3 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300">
+          <LockIcon />Se connecter
+      </button>
+    </div>
+ );
+};
+
+const AppHeader = () => {
+    const { user, signOut, goToAdmin, goToDashboard } = useAppStore();
+    return (
+        <header className="bg-white shadow-sm">
+            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+                <div className="flex h-16 items-center justify-between">
+                    <p onClick={goToDashboard} className="text-xl font-bold text-gray-900 cursor-pointer">AVEREO</p>
+                    <div className="flex items-center space-x-4">
+                       {user && <span className="text-sm text-gray-600">Bonjour, {user.name}</span>}
+                        {user && user.role === 'admin' && <button onClick={goToAdmin} className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800"><AdminIcon/>Admin</button>}
+                        {user && user.plan === 'pro' && <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">PRO</span>}
+                        <button type="button" onClick={signOut} className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 transition-colors duration-200 hover:bg-gray-50">Déconnexion</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+    );
+};
+
+const SubscribePage = () => {
+    const { subscribeToPro, goToDashboard } = useAppStore();
+    return (
+        <div className="p-8">
+            <button onClick={goToDashboard} className="inline-flex items-center mb-8 text-sm font-medium text-indigo-600 hover:text-indigo-800"><ArrowLeftIcon/>Retour</button>
+            <div className="mx-auto max-w-md p-8 bg-white rounded-xl shadow-lg text-center">
+                <StarIcon/>
+                <h2 className="text-2xl font-bold text-gray-800">Passez au Plan Pro</h2>
+                <p className="mt-2 text-gray-600">Débloquez toutes les fonctionnalités pour seulement 9,99€/mois.</p>
+                <button onClick={subscribeToPro} className="mt-6 w-full px-4 py-3 font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700">S'abonner maintenant</button>
+            </div>
+        </div>
+    );
+};
+
+const AdminPage = () => {
+    const { tarifs, updateTarifs, goToDashboard } = useAppStore();
+    const [localTarifs, setLocalTarifs] = useState(tarifs);
+    const fileInputRef = useRef(null);
+
+    const handleUpdate = (id, field, value) => {
+        setLocalTarifs(prev => ({ ...prev, [id]: { ...prev[id], [field]: value } }));
+    };
+
+    const handleAdd = () => {
+        const newId = `new_${Date.now()}`;
+        setLocalTarifs(prev => ({ ...prev, [newId]: { id: newId, nom: 'Nouvelle intervention', unite: 'm²', prix_eco: 0, prix_std: 0, prix_premium: 0 } }));
+    };
+
+    const handleDelete = (id) => {
+        const { [id]: _, ...rest } = localTarifs;
+        setLocalTarifs(rest);
+    };
+
+    const handleSave = () => {
+        updateTarifs(localTarifs);
+        alert('Tarifs sauvegardés !');
+        goToDashboard();
+    };
+
+    const handleFileImport = (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        if (!window.Papa) {
+            alert("La bibliothèque de lecture de fichier n'est pas encore chargée. Veuillez patienter et réessayer.");
+            return;
+        }
+
+        window.Papa.parse(file, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+                processImportedData(results);
+            },
+            error: (error) => {
+                console.error("Erreur de parsing CSV:", error);
+                alert("Une erreur est survenue lors de la lecture du fichier.");
+            }
+        });
+    };
+
+    const processImportedData = (results) => {
+        const data = results.data;
+        const headers = results.meta.fields;
+
+        const findHeader = (possibleNames) => {
+            for (const name of possibleNames) {
+                const found = headers.find(h => h.trim().toLowerCase() === name.toLowerCase());
+                if (found) return found;
+            }
+            return null;
+        };
+
+        const nomHeader = findHeader(['Prestation']);
+        const ecoPriceHeader = findHeader(['Fourchette basse (€ TTC)']);
+        const stdPriceHeader = findHeader(['Prix Moyen (€ TTC)']);
+        const premiumPriceHeader = findHeader(['Fourchette haute (€ TTC)']);
+        const uniteHeader = findHeader(['Unité']);
+        const corpsMetierHeader = findHeader(['Corps de métier']);
+
+        if (!nomHeader || !ecoPriceHeader || !stdPriceHeader || !premiumPriceHeader || !uniteHeader || !corpsMetierHeader) {
+            alert("Le fichier CSV est invalide. Colonnes attendues : 'Corps de métier', 'Prestation', 'Fourchette basse (€ TTC)', 'Prix Moyen (€ TTC)', 'Fourchette haute (€ TTC)', 'Unité'.");
+            return;
+        }
+
+        const newTarifs = {};
+        let importedCount = 0;
+        let skippedCount = 0;
+
+        data.forEach((row, index) => {
+            const nom = row[nomHeader];
+            const ecoPrice = parseFloat(String(row[ecoPriceHeader] || '').replace(',', '.'));
+            const stdPrice = parseFloat(String(row[stdPriceHeader] || '').replace(',', '.'));
+            const premiumPrice = parseFloat(String(row[premiumPriceHeader] || '').replace(',', '.'));
+            const uniteRaw = row[uniteHeader];
+            const corpsMetier = row[corpsMetierHeader] || '';
+
+            if (!nom || isNaN(ecoPrice) || isNaN(stdPrice) || isNaN(premiumPrice) || !uniteRaw) {
+                skippedCount++;
+                return;
+            }
+
+            let unite;
+            const uniteLower = uniteRaw.toLowerCase();
+            if (uniteLower.includes('m²')) unite = 'm²';
+            else if (uniteLower.includes('forfait')) unite = 'forfait';
+            else if (uniteLower.includes('pièce') || uniteLower.includes('unité') || uniteLower.includes('/h') || uniteLower.includes('point') || uniteLower.includes('prise') || uniteLower.includes('linéaire')) unite = 'unité';
+            else {
+                skippedCount++;
+                return;
+            }
+
+            const finalName = corpsMetier ? `${corpsMetier} - ${nom}` : nom;
+            const id = finalName.toLowerCase().replace(/[^a-z0-9]/g, '_').replace(/_+/g, '_') + `_${index}`;
+
+            newTarifs[id] = { id, nom: finalName, unite, prix_eco: ecoPrice, prix_std: stdPrice, prix_premium: premiumPrice };
+            importedCount++;
+        });
+
+        if (importedCount > 0) {
+            setLocalTarifs(newTarifs);
+            alert(`${importedCount} interventions importées. ${skippedCount > 0 ? `${skippedCount} ignorées.` : ''}`);
+        } else {
+            alert("Aucune intervention valide n'a été trouvée.");
+        }
+    };
+
+
+    return (
+        <>
+            <header className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900">Admin: Moteur de Calcul</h1>
+                <button onClick={handleSave} className="px-4 py-2 font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700">Sauvegarder & Quitter</button>
+            </header>
+            <div className="bg-white p-6 rounded-xl shadow-sm border">
+                <div className="grid grid-cols-6 gap-4 font-semibold text-gray-600 border-b pb-2 mb-2">
+                    <span className="col-span-2">Nom de l'intervention</span><span>Unité</span><span>Prix Éco (€)</span><span>Prix Std (€)</span><span>Prix Premium (€)</span>
+                </div>
+                {Object.values(localTarifs).map(tarif => (
+                    <div key={tarif.id} className="grid grid-cols-6 gap-4 items-center py-2">
+                        <input type="text" value={tarif.nom} onChange={e => handleUpdate(tarif.id, 'nom', e.target.value)} className="rounded-md border-gray-300 shadow-sm col-span-2"/>
+                        <select value={tarif.unite} onChange={e => handleUpdate(tarif.id, 'unite', e.target.value)} className="rounded-md border-gray-300 shadow-sm">
+                            <option value="m²">m²</option>
+                            <option value="unité">unité</option>
+                            <option value="forfait">forfait</option>
+                        </select>
+                        <input type="number" value={tarif.prix_eco} onChange={e => handleUpdate(tarif.id, 'prix_eco', parseFloat(e.target.value))} className="rounded-md border-gray-300 shadow-sm"/>
+                        <input type="number" value={tarif.prix_std} onChange={e => handleUpdate(tarif.id, 'prix_std', parseFloat(e.target.value))} className="rounded-md border-gray-300 shadow-sm"/>
+                        <input type="number" value={tarif.prix_premium} onChange={e => handleUpdate(tarif.id, 'prix_premium', parseFloat(e.target.value))} className="rounded-md border-gray-300 shadow-sm"/>
+                        <button onClick={() => handleDelete(tarif.id)} className="text-red-500 hover:text-red-700 justify-self-start"><TrashIcon/></button>
+                    </div>
+                ))}
+                <div className="mt-4 border-t pt-4 flex justify-between items-start">
+                    <button onClick={handleAdd} className="inline-flex items-center px-3 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200"><PlusIcon className="mr-2 h-4 w-4"/>Ajouter une ligne</button>
+                    <div>
+                         <input type="file" accept=".csv" ref={fileInputRef} className="hidden" onChange={handleFileImport} />
+                        <button onClick={() => fileInputRef.current && fileInputRef.current.click()} className="mt-2 inline-flex items-center px-4 py-2 font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 float-right"><UploadIcon/>Importer une grille</button>
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+const InterventionModal = ({ piece, bienId, onClose }) => {
+    const { tarifs, setInterventionsForPiece } = useAppStore();
+    const [selections, setSelections] = useState(piece.interventions || []);
+
+    // State for filtering and search
+    const [selectedMetier, setSelectedMetier] = useState('Tous');
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // Memoize the list of métiers to avoid recalculating
+    const metiers = useMemo(() => {
+        const allMetiers = Object.values(tarifs).map(t => t.nom.split(' - ')[0]);
+        const uniqueMetiers = [...new Set(allMetiers.map(m => m.trim()))];
+        return ['Tous', ...uniqueMetiers];
+    }, [tarifs]);
+
+    // Memoize the filtered list of interventions
+    const filteredTarifs = useMemo(() => {
+        return Object.values(tarifs).filter(tarif => {
+            const metierName = tarif.nom.split(' - ')[0].trim();
+            const metierMatch = selectedMetier === 'Tous' || metierName === selectedMetier;
+            const searchMatch = !searchTerm || tarif.nom.toLowerCase().includes(searchTerm.toLowerCase());
+            return metierMatch && searchMatch;
+        });
+    }, [tarifs, selectedMetier, searchTerm]);
+
+    const handleToggle = (tarifId) => {
+        const exists = selections.find(s => s.tarifId === tarifId);
+        if (exists) {
+            setSelections(selections.filter(s => s.tarifId !== tarifId));
+        } else {
+            setSelections([...selections, { tarifId, quantite: 1 }]);
+        }
+    };
+
+    const handleQuantityChange = (tarifId, quantite) => {
+        const q = parseInt(quantite, 10);
+        if (q > 0) {
+            setSelections(selections.map(s => s.tarifId === tarifId ? { ...s, quantite: q } : s));
+        }
+    };
+
+    const handleSave = () => {
+        setInterventionsForPiece(bienId, piece.id, selections);
+        onClose();
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
+            <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-2xl">
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold">Interventions pour: {piece.nom}</h2>
+                    <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-200"><CloseIcon/></button>
+                </div>
+
+                <div className="mb-4 p-4 bg-gray-50 rounded-lg">
+                    <input 
+                        type="text"
+                       placeholder="Rechercher une intervention..."
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+                        className="w-full rounded-md border-gray-300 shadow-sm mb-3 px-3 py-2"
+                    />
+                    <div className="flex flex-wrap gap-2">
+                        {metiers.map(metier => (
+                            <button 
+                                key={metier} 
+                                onClick={() => setSelectedMetier(metier)}
+                               className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${selectedMetier === metier ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
+                            >
+                                {metier}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="space-y-3 max-h-64 overflow-y-auto pr-2">
+                    {filteredTarifs.length > 0 ? filteredTarifs.map(tarif => {
+                        const selection = selections.find(s => s.tarifId === tarif.id);
+                        const isSelected = !!selection;
+                        return (
+                            <div key={tarif.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border">
+                                <div className="flex items-center">
+                                    <input type="checkbox" checked={isSelected} onChange={() => handleToggle(tarif.id)} className="h-5 w-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"/>
+                                    <div className="ml-3">
+                                        <p className="font-semibold">{tarif.nom}</p>
+                                        <p className="text-sm text-gray-500">{tarif.prix_std}€ / {tarif.unite} (Std)</p>
+                                   </div>
+                                </div>
+                                {isSelected && tarif.unite === 'unité' && (
+                                    <div className="flex items-center space-x-2">
+                                       <label className="text-sm">Qté:</label>
+                                       <input type="number" min="1" value={selection.quantite} onChange={e => handleQuantityChange(tarif.id, e.target.value)} className="w-20 rounded-md border-gray-300 shadow-sm text-center px-2 py-1"/>
+                                   </div>
+                                )}
+                            </div>
+                        );
+                    }) : <p className="text-center text-gray-500">Aucune intervention ne correspond à votre recherche.</p>}
+                </div>
+                <div className="mt-6 flex justify-end">
+                    <button onClick={handleSave} className="px-5 py-2 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Valider</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// This is a new component specifically for the PDF layout.
+// It's rendered off-screen and used by html2canvas.
+const PdfLayout = React.forwardRef(({ bien, devis }, ref) => {
+    if (!bien || !devis) return null;
+
+    const CompositionDisplay = ({ composition }) => {
+        if (!composition) return null;
+        const items = [
+            { icon: '🛏️', count: composition.chambres, label: 'Chambres' },
+            { icon: '🛁', count: composition.sdb, label: 'Salles de bain' },
+            { icon: '🍳', count: composition.cuisine, label: 'Cuisines' },
+            { icon: '🚗', count: composition.garage, label: 'Garages' },
+        ];
+
+        return (
+             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600">
+                {items.filter(item => item.count > 0).map(item => (
+                    <div key={item.label} className="flex items-center space-x-1.5">
+                       <span>{item.icon}</span>
+                        <span className="font-medium">{item.count}</span>
+                        <span className="text-gray-500">{item.label}</span>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
+    return (
+        <div ref={ref} className="bg-white p-8" style={{ width: '210mm', minHeight: '297mm', fontFamily: 'sans-serif' }}>
+            <div className="mb-8">
+                <h1 className="text-2xl font-bold text-gray-900">AVEREO</h1>
+                <p className="text-gray-500">Estimation de travaux</p>
+            </div>
+
+            <div className="p-4 bg-gray-50 rounded-lg border mb-8">
+                <h2 className="text-xl font-semibold mb-2 text-gray-800">Récapitulatif du bien</h2>
+                <p className="text-lg font-medium text-gray-700">{bien.address}</p>
+                <div className="mt-2 flex items-center space-x-4 text-sm text-gray-500 border-b pb-2 mb-2">
+                   <span>{bien.type}</span>
+                    <span className="text-gray-300">|</span>
+                    <span>{bien.size} m²</span>
+                </div>
+                <CompositionDisplay composition={bien.composition} />
+            </div>
+
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">Détail de l'estimation (Base Standard)</h2>
+            <div className="space-y-4">
+                {devis.lignes.map(lignePiece => (
+                    <div key={lignePiece.pieceId}>
+                        <h3 className="font-semibold text-gray-800 border-b pb-1">{lignePiece.nomPiece}</h3>
+                        <div className="space-y-1 mt-2">
+                           {(lignePiece.interventions || []).map(interv => (
+                                <div key={interv.id} className="flex justify-between items-baseline p-1 text-sm">
+                                    <p className="text-gray-600">{interv.nom} {interv.unite === 'unité' && `(x${interv.quantite})`}</p>
+                                    <p className="font-mono text-gray-700">{interv.cout} €</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="mt-8 pt-4 border-t-2">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">Synthèse des options budgétaires</h2>
+                <div className="grid grid-cols-3 gap-4 text-center">
+                    <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                        <h3 className="font-semibold text-green-800">Économique</h3>
+                        <p className="text-2xl font-bold font-mono text-green-900 mt-2">{devis.total_eco} €</p>
+                    </div>
+                    <div className="p-4 bg-blue-50 rounded-lg border border-blue-200 ring-2 ring-blue-500">
+                        <h3 className="font-semibold text-blue-800">Standard</h3>
+                        <p className="text-2xl font-bold font-mono text-blue-900 mt-2">{devis.total_std} €</p>
+                    </div>
+                    <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+                        <h3 className="font-semibold text-purple-800">Premium</h3>
+                        <p className="text-2xl font-bold font-mono text-purple-900 mt-2">{devis.total_premium} €</p>
+                    </div>
+                </div>
+            </div>
+
+            {(bien.dossier.attachments || []).length > 0 && (
+                <div className="mt-8 pt-4 border-t">
+                    <h2 className="text-xl font-semibold mb-4 text-gray-800">Pièces Jointes</h2>
+                    <div className="space-y-6">
+                       {(bien.dossier.attachments || []).map(att => (
+                            <div key={att.id} className="text-center break-inside-avoid">
+                                <p className="text-sm text-gray-700 mb-2 font-semibold">{att.name}</p>
+                               {att.type.startsWith('image/') ? (
+                                    <img src={att.url} alt={att.name} style={{ width: '100%', border: '1px solid #eee', borderRadius: '4px' }} />
+                                ) : (
+                                    <div className="p-4 bg-gray-100 rounded-md">
+                                        <p className="text-sm text-gray-600">Aperçu non disponible pour ce type de fichier.</p>
+                                   </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            <footer className="text-center text-xs text-gray-400 mt-12">
+                Document généré le {new Date().toLocaleDateString('fr-FR')} avec AVEREO.
+            </footer>
+        </div>
+    );
+});
+
+
+const BienPage = () => {
+    const { selectedBienId, biens, goToDashboard, addPiece, user, tarifs, addAttachment, deleteAttachment, priceTier, setPriceTier } = useAppStore();
+    const bien = biens.find(b => b.id === selectedBienId);
+
+    const [nomPiece, setNomPiece] = useState('');
+    const [surfacePiece, setSurfacePiece] = useState('');
+    const [pieceEnEdition, setPieceEnEdition] = useState(null);
+    const [isExporting, setIsExporting] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+    const [cloudMessage, setCloudMessage] = useState('');
+    const [cloudConfig, setCloudConfig] = useState(loadCloudConfig());
+    const [showCloudConfig, setShowCloudConfig] = useState(false);
+    const pdfRef = useRef(null);
+    const fileInputRef = useRef(null);
+
+    const handleCloudConfigChange = (field, value) => {
+        setCloudConfig(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleSaveCloudConfig = () => {
+        saveCloudConfig(cloudConfig);
+        setCloudMessage(cloudConfig.enabled ? 'Stockage Nextcloud activé.' : 'Stockage cloud désactivé.');
+    };
+
+    const handleAddPiece = (e) => {
+        e.preventDefault();
+        if (nomPiece && surfacePiece > 0) {
+            addPiece(selectedBienId, { nom: nomPiece, surface: parseFloat(surfacePiece) });
+            setNomPiece('');
+            setSurfacePiece('');
+        }
+    };
+
+    const handleFileSelect = async (e) => {
+        const file = e.target.files[0];
+        if (!file || !bien) return;
+
+        setIsUploading(true);
+        setCloudMessage('');
+
+        try {
+            const previewUrl = await fileToDataUrl(file);
+            const newAttachment = {
+                id: Date.now(),
+                name: file.name,
+                type: file.type,
+                url: previewUrl,
+                storage: 'local'
+            };
+
+            if (cloudConfig.enabled) {
+                const cloudInfo = await uploadToNextcloud({ file, bien, cloudConfig });
+                newAttachment.storage = cloudInfo.provider;
+                newAttachment.cloudUrl = cloudInfo.webdavUrl;
+                setCloudMessage('Fichier chargé sur Nextcloud et ajouté au dossier.');
+            } else {
+                setCloudMessage('Fichier ajouté localement (cloud non activé).');
+            }
+
+            addAttachment(selectedBienId, newAttachment);
+        } catch (error) {
+            console.error(error);
+            const reason = error && error.message ? ' (' + error.message + ')' : '';
+            setCloudMessage('Upload cloud indisponible, fichier conservé localement.' + reason + ' Vérifie CORS et identifiants Nextcloud.');
+            try {
+                const previewUrl = await fileToDataUrl(file);
+                addAttachment(selectedBienId, {
+                    id: Date.now(),
+                    name: file.name,
+                    type: file.type,
+                    url: previewUrl,
+                    storage: 'local'
+                });
+            } catch (fallbackError) {
+                console.error(fallbackError);
+            }
+        } finally {
+            setIsUploading(false);
+            e.target.value = '';
+        }
+    };
+
+    const devis = useMemo(() => {
+        if (!bien) return { lignes: [], total: 0, tierLabel: '' };
+
+        let totalGlobal = 0;
+        const tierLabel = priceTier === 'eco' ? 'Éco' : priceTier === 'premium' ? 'Premium' : 'Standard';
+
+        const lignesParPiece = bien.dossier.pieces.map(piece => {
+            let totalPiece = 0;
+            const interventionsDetail = (piece.interventions || []).map(intervention => {
+                const tarif = tarifs[intervention.tarifId];
+                if (!tarif) return null;
+
+                let prix;
+                switch(priceTier) {
+                    case 'eco': prix = tarif.prix_eco; break;
+                    case 'premium': prix = tarif.prix_premium; break;
+                    default: prix = tarif.prix_std;
+                }
+
+                let cout = 0;
+                switch (tarif.unite) {
+                    case 'm²': cout = prix * piece.surface; break;
+                    case 'unité': cout = prix * intervention.quantite; break;
+                    case 'forfait': cout = prix; break;
+                    default: cout = 0;
+                }
+                totalPiece += cout;
+                return { id: `${piece.id}-${tarif.id}`, nom: tarif.nom, quantite: intervention.quantite, unite: tarif.unite, surface: piece.surface, cout: cout.toFixed(2) };
+            }).filter(Boolean);
+
+            totalGlobal += totalPiece;
+            return { pieceId: piece.id, nomPiece: piece.nom, interventions: interventionsDetail, totalPiece: totalPiece.toFixed(2) };
+        });
+
+        return { lignes: lignesParPiece, total: totalGlobal.toFixed(2), tierLabel };
+    }, [bien, tarifs, priceTier]);
+
+    const devisForPdf = useMemo(() => {
+        if (!bien) return null;
+
+        let totalEco = 0;
+        let totalStd = 0;
+        let totalPremium = 0;
+
+        const lignes = bien.dossier.pieces.flatMap(piece => {
+            return (piece.interventions || []).map(intervention => {
+                const tarif = tarifs[intervention.tarifId];
+                if (!tarif) return null;
+
+                const calculateCost = (prix) => {
+                    switch (tarif.unite) {
+                        case 'm²': return prix * piece.surface;
+                        case 'unité': return prix * intervention.quantite;
+                        case 'forfait': return prix;
+                        default: return 0;
+                    }
+                };
+
+                totalEco += calculateCost(tarif.prix_eco);
+                totalStd += calculateCost(tarif.prix_std);
+                totalPremium += calculateCost(tarif.prix_premium);
+
+                return {
+                    id: `${piece.id}-${tarif.id}`,
+                    nom: tarif.nom,
+                    pieceNom: piece.nom,
+                    quantite: intervention.quantite,
+                    unite: tarif.unite,
+                    cout: calculateCost(tarif.prix_std).toFixed(2)
+                };
+            }).filter(Boolean);
+        });
+
+        const lignesParPiece = bien.dossier.pieces.map(p => ({
+            pieceId: p.id,
+            nomPiece: p.nom,
+            interventions: lignes.filter(l => l.pieceNom === p.nom)
+        })).filter(p => p.interventions.length > 0);
+
+
+        return {
+            lignes: lignesParPiece,
+            total_eco: totalEco.toFixed(2),
+            total_std: totalStd.toFixed(2),
+            total_premium: totalPremium.toFixed(2)
+        };
+    }, [bien, tarifs]);
+
+    const handleExportPDF = () => {
+        if (!window.jspdf || !window.html2canvas) {
+            alert("Les bibliothèques d'exportation ne sont pas encore chargées. Veuillez patienter un instant et réessayer.");
+            return;
+        }
+
+        const pdfElement = pdfRef.current;
+        if (!pdfElement) return;
+
+        setIsExporting(true);
+
+        window.html2canvas(pdfElement, { 
+            scale: 2,
+            useCORS: true, 
+            allowTaint: true 
+        }).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const ratio = canvasWidth / canvasHeight;
+
+            const imgWidth = pdfWidth;
+            let imgHeight = imgWidth / ratio;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pdfHeight;
+
+            while (heightLeft > 0) {
+                position = - (imgHeight - heightLeft);
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pdfHeight;
+            }
+
+            pdf.save(`devis-${bien.address.split(',')[0].replace(/\s/g, '_')}.pdf`);
+        }).finally(() => {
+            setIsExporting(false);
+        });
+    };
+
+    const handleShare = async () => {
+        const shareUrl = `${window.location.href}`;
+        const shareData = {
+            title: `Devis pour le bien: ${bien.address}`,
+            text: `Consultez le devis détaillé pour le bien situé au ${bien.address}.`,
+            url: shareUrl,
+        };
+
+        if (navigator.share) {
+            try { await navigator.share(shareData); } catch (err) { console.error('Erreur de partage:', err); }
+        } else {
+            try {
+                const textArea = document.createElement("textarea");
+                textArea.value = shareUrl;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Lien de partage copié dans le presse-papiers !');
+            } catch (err) {
+                alert('Impossible de copier le lien.');
+            }
+        }
+    };
+
+    if (!bien) return null;
+
+    return (
+        <>
+            <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+                <PdfLayout ref={pdfRef} bien={bien} devis={devisForPdf} />
+            </div>
+
+            {pieceEnEdition && <InterventionModal piece={pieceEnEdition} bienId={bien.id} onClose={() => setPieceEnEdition(null)} />}
+            
+            <header className="mb-8">
+                <button onClick={goToDashboard} className="inline-flex items-center mb-4 text-sm font-medium text-indigo-600 hover:text-indigo-800"><ArrowLeftIcon/>Retour à mes biens</button>
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900">{bien.address}</h1>
+            </header>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="space-y-8">
+                    <div className="bg-white p-6 rounded-xl shadow-sm border">
+                        <h2 className="text-xl font-semibold mb-4">Dossier du bien</h2>
+                        <div className="space-y-2 mb-6">
+                           {(bien.dossier.pieces || []).map(p => (
+                                <div key={p.id} className="flex justify-between items-center p-2 bg-gray-50 rounded-md">
+                                   <div><span>{p.nom}</span><span className="text-gray-600 ml-2">({p.surface} m²)</span></div>
+                                    <button onClick={() => setPieceEnEdition(p)} className="p-2 rounded-md hover:bg-gray-200 text-gray-600"><EditIcon/></button>
+                                </div>
+                            ))}
+                        </div>
+                        <form onSubmit={handleAddPiece} className="p-4 border-t">
+                            <h3 className="font-semibold mb-2">Ajouter une pièce</h3>
+                            <div className="flex space-x-2">
+                                <input type="text" placeholder="Nom (ex: Cuisine)" value={nomPiece} onChange={e => setNomPiece(e.target.value)} className="flex-grow rounded-md border-gray-300 shadow-sm px-3 py-2"/>
+                                <input type="number" placeholder="Surface (m²)" value={surfacePiece} onChange={e => setSurfacePiece(e.target.value)} className="w-28 rounded-md border-gray-300 shadow-sm px-3 py-2"/>
+                                <button type="submit" className="p-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"><PlusIcon className="w-4 h-4"/></button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-xl shadow-sm border">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl font-semibold">Pièces Jointes</h2>
+                            <button onClick={() => setShowCloudConfig(prev => !prev)} className="text-sm text-indigo-600 hover:text-indigo-800 font-semibold">
+                                {showCloudConfig ? 'Masquer cloud' : 'Configurer cloud'}
+                            </button>
+                        </div>
+
+                        {showCloudConfig && (
+                            <div className="mb-4 p-4 bg-indigo-50 border border-indigo-200 rounded-lg space-y-3">
+                                <label className="flex items-center space-x-2 text-sm text-gray-700">
+                                    <input
+                                        type="checkbox"
+                                        checked={cloudConfig.enabled}
+                                        onChange={(e) => handleCloudConfigChange('enabled', e.target.checked)}
+                                    />
+                                    <span>Activer Nextcloud pour les nouveaux fichiers</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    value={cloudConfig.baseUrl}
+                                    onChange={(e) => handleCloudConfigChange('baseUrl', e.target.value)}
+                                    placeholder="https://cloud.avereo.fr"
+                                    className="w-full rounded-md border-gray-300 px-3 py-2 text-sm"
+                                />
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                    <input
+                                        type="text"
+                                        value={cloudConfig.username}
+                                        onChange={(e) => handleCloudConfigChange('username', e.target.value)}
+                                        placeholder="Utilisateur Nextcloud"
+                                        className="w-full rounded-md border-gray-300 px-3 py-2 text-sm"
+                                    />
+                                    <input
+                                        type="password"
+                                        value={cloudConfig.appPassword}
+                                        onChange={(e) => handleCloudConfigChange('appPassword', e.target.value)}
+                                        placeholder="App password"
+                                        className="w-full rounded-md border-gray-300 px-3 py-2 text-sm"
+                                    />
+                                </div>
+                                <input
+                                    type="text"
+                                    value={cloudConfig.rootFolder}
+                                    onChange={(e) => handleCloudConfigChange('rootFolder', e.target.value)}
+                                    placeholder="Dossier racine (ex: AVEREO_CONNECT)"
+                                    className="w-full rounded-md border-gray-300 px-3 py-2 text-sm"
+                                />
+                                <button onClick={handleSaveCloudConfig} className="px-3 py-2 text-sm font-semibold bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
+                                    Sauvegarder configuration cloud
+                                </button>
+                                <p className="text-xs text-gray-600">
+                                    Recommandé: utiliser un app password Nextcloud dédié à AVEREO CONNECT.
+                                </p>
+                            </div>
+                        )}
+
+                        {cloudMessage && (
+                            <p className="mb-3 text-sm text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-md px-3 py-2">{cloudMessage}</p>
+                        )}
+
+                        <div className="space-y-3 mb-6">
+                           {(bien.dossier.attachments || []).map(att => (
+                                <div key={att.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
+                                   <div className="flex items-center space-x-3 overflow-hidden min-w-0">
+                                       {att.type.startsWith('image/') ?
+                                           <img src={att.url} alt={att.name} className="w-10 h-10 object-cover rounded-md flex-shrink-0" /> :
+                                           <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-md flex-shrink-0"><FileIcon/></div>
+                                        }
+                                        <div className="min-w-0">
+                                            <span className="text-sm text-gray-800 truncate block" title={att.name}>{att.name}</span>
+                                            <span className={`text-xs font-semibold ${att.storage === 'nextcloud' ? 'text-green-700' : 'text-gray-500'}`}>
+                                                {att.storage === 'nextcloud' ? 'Cloud' : 'Local'}
+                                            </span>
+                                        </div>
+                                   </div>
+                                    <button onClick={() => deleteAttachment(selectedBienId, att.id)} className="p-2 rounded-full hover:bg-red-100 text-red-500 hover:text-red-700"><TrashIcon/></button>
+                                </div>
+                            ))}
+                        </div>
+                        <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileSelect} />
+                        <button
+                            onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                            disabled={isUploading}
+                            className="w-full flex justify-center items-center py-2 px-4 border border-dashed border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-60"
+                        >
+                            <UploadIcon />
+                            {isUploading ? 'Upload en cours...' : 'Ajouter un fichier'}
+                        </button>
+                    </div>
+
+                </div>
+                <div>
+                    <div className="bg-white p-6 rounded-xl shadow-sm border">
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className="text-xl font-semibold">Estimation & Devis</h2>
+                            <div className="flex items-center space-x-1 bg-gray-100 p-1 rounded-lg">
+                                <button onClick={() => setPriceTier('eco')} className={`px-3 py-1 text-sm font-semibold rounded-md ${priceTier === 'eco' ? 'bg-white shadow-sm text-green-600' : 'text-gray-600 hover:bg-gray-200'}`}>Éco</button>
+                                <button onClick={() => setPriceTier('std')} className={`px-3 py-1 text-sm font-semibold rounded-md ${priceTier === 'std' ? 'bg-white shadow-sm text-blue-600' : 'text-gray-600 hover:bg-gray-200'}`}>Standard</button>
+                                <button onClick={() => setPriceTier('premium')} className={`px-3 py-1 text-sm font-semibold rounded-md ${priceTier === 'premium' ? 'bg-white shadow-sm text-purple-600' : 'text-gray-600 hover:bg-gray-200'}`}>Premium</button>
+                            </div>
+                        </div>
+                        <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+                           {devis.lignes.map(lignePiece => (
+                                <div key={lignePiece.pieceId}>
+                                    <h3 className="font-semibold text-gray-800 border-b pb-1">{lignePiece.nomPiece}</h3>
+                                    <div className="space-y-1 mt-2">
+                                       {(lignePiece.interventions || []).map(interv => (
+                                           <div key={interv.id} className="flex justify-between items-baseline p-1 text-sm">
+                                               <p className="text-gray-600">{interv.nom} {interv.unite === 'unité' && `(x${interv.quantite})`}</p>
+                                               <p className="font-mono text-gray-700">{interv.cout} €</p>
+                                           </div>
+                                        ))}
+                                   </div>
+                                </div>
+                            ))}
+                        </div>
+                        <div className="flex justify-between items-center mt-4 pt-4 border-t-2 border-dashed">
+                            <p className="text-lg font-bold">Total Estimé</p>
+                            <p className="text-xl font-bold font-mono">{devis.total} €</p>
+                        </div>
+                    </div>
+                     <div className="mt-4 pt-4">
+                        {user && user.plan === 'pro' ? (
+                            <div className="flex space-x-2">
+                                <button onClick={handleExportPDF} disabled={isExporting} className="flex-1 inline-flex items-center justify-center px-4 py-2 font-semibold text-white bg-green-600 rounded-lg hover:bg-green-700 disabled:bg-gray-400">
+                                    <DownloadIcon/>{isExporting ? 'Génération...' : 'Exporter en PDF'}
+                                </button>
+                                <button onClick={handleShare} className="flex-1 inline-flex items-center justify-center px-4 py-2 font-semibold text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
+                                    <ShareIcon/>Partager
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="text-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                <p className="text-sm text-yellow-800">
+                                    Passez au <a href="#" onClick={(e) => { e.preventDefault(); useAppStore.getState().goToSubscribe(); }} className="font-bold underline">Plan Pro</a> pour exporter et partager vos devis.
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </>
+    );
+};
+
+const BienModal = ({ isOpen, onClose, onSave, bienToEdit }) => {
+    if (!isOpen) return null;
+
+    const [address, setAddress] = useState('');
+    const [type, setType] = useState('Maison');
+    const [size, setSize] = useState('');
+    const [composition, setComposition] = useState({ chambres: 0, sdb: 0, sejour: 0, cuisine: 0, garage: 0 });
+
+    useEffect(() => {
+        if (bienToEdit) {
+            setAddress(bienToEdit.address || '');
+            setType(bienToEdit.type || 'Maison');
+            setSize(bienToEdit.size || '');
+            setComposition(bienToEdit.composition || { chambres: 0, sdb: 0, sejour: 0, cuisine: 0, garage: 0 });
+        } else {
+            setAddress('');
+            setType('Maison');
+            setSize('');
+            setComposition({ chambres: 0, sdb: 0, sejour: 0, cuisine: 0, garage: 0 });
+        }
+    }, [bienToEdit, isOpen]);
+
+    const handleCompositionChange = (field, value) => {
+        const numValue = parseInt(value, 10);
+        if (numValue >= 0) {
+            setComposition(prev => ({ ...prev, [field]: numValue }));
+        }
+    };
+
+    const handleSubmit = () => {
+        if (!address || !size || size <= 0) {
+            alert("Veuillez remplir l'adresse et la surface.");
+            return;
+        }
+        onSave({
+            ...(bienToEdit || {}),
+            address,
+            type,
+            size: parseFloat(size),
+            composition
+        });
+        onClose();
+    };
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
+            <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-2xl">
+                <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-xl font-bold">{bienToEdit ? 'Modifier le bien' : 'Créer un nouveau bien'}</h2>
+                    <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-200"><CloseIcon /></button>
+                </div>
+                <div className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Adresse</label>
+                        <input type="text" value={address} onChange={e => setAddress(e.target.value)} placeholder="123 Rue de l'Exemple, 75001 Paris" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 border"/>
+                    </div>
+                     <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Type de bien</label>
+                            <select value={type} onChange={e => setType(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 border">
+                               <option>Maison</option>
+                               <option>Appartement</option>
+                            </select>
+                        </div>
+                        <div>
+                           <label className="block text-sm font-medium text-gray-700">Surface (m²)</label>
+                           <input type="number" min="1" value={size} onChange={e => setSize(e.target.value)} placeholder="120" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 border"/>
+                        </div>
+                    </div>
+                    <div className="border-t pt-4">
+                        <h3 className="text-lg font-medium text-gray-800 mb-2">Composition</h3>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                           <div>
+                                <label className="block text-sm font-medium text-gray-700">Chambres</label>
+                                <input type="number" min="0" value={composition.chambres} onChange={e => handleCompositionChange('chambres', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                            </div>
+                           <div>
+                                <label className="block text-sm font-medium text-gray-700">Sdb</label>
+                                <input type="number" min="0" value={composition.sdb} onChange={e => handleCompositionChange('sdb', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                            </div>
+                           <div>
+                                <label className="block text-sm font-medium text-gray-700">Séjour</label>
+                                <input type="number" min="0" value={composition.sejour} onChange={e => handleCompositionChange('sejour', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                            </div>
+                           <div>
+                                <label className="block text-sm font-medium text-gray-700">Cuisine</label>
+                                <input type="number" min="0" value={composition.cuisine} onChange={e => handleCompositionChange('cuisine', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                            </div>
+                           <div>
+                                <label className="block text-sm font-medium text-gray-700">Garage</label>
+                                <input type="number" min="0" value={composition.garage} onChange={e => handleCompositionChange('garage', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="mt-8 flex justify-end space-x-3">
+                    <button onClick={onClose} className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Annuler</button>
+                    <button onClick={handleSubmit} className="px-5 py-2 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Sauvegarder</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const Dashboard = () => {
+    const { biens, selectBien, user, goToSubscribe, addBien, updateBien, deleteBien } = useAppStore();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [bienEnEdition, setBienEnEdition] = useState(null);
+    const [bienToDelete, setBienToDelete] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [typeFilter, setTypeFilter] = useState('Tous');
+
+    const handleOpenCreateModal = () => { setBienEnEdition(null); setIsModalOpen(true); };
+    const handleOpenEditModal = (bien) => { setBienEnEdition(bien); setIsModalOpen(true); };
+    const handleCloseModal = () => { setIsModalOpen(false); setBienEnEdition(null); };
+
+    const handleSaveBien = (bienData) => {
+        if (bienData.id) { updateBien(bienData); }
+        else { addBien(bienData); }
+        handleCloseModal();
+    };
+
+    const handleDeleteClick = (bienId) => { setBienToDelete(bienId); };
+    const handleConfirmDelete = () => {
+        if (bienToDelete) {
+            deleteBien(bienToDelete);
+        }
+        setBienToDelete(null);
+    };
+
+    const dashboardStats = useMemo(() => {
+        const totalBiens = biens.length;
+        const totalSurface = biens.reduce((sum, b) => sum + Number(b.size || 0), 0);
+        const totalPieces = biens.reduce((sum, b) => sum + ((b.dossier?.pieces || []).length), 0);
+        const totalFichiers = biens.reduce((sum, b) => sum + ((b.dossier?.attachments || []).length), 0);
+        const totalCloud = biens.reduce((sum, b) => {
+            return sum + (b.dossier?.attachments || []).filter((att) => att.storage === 'nextcloud').length;
+        }, 0);
+
+        return {
+            totalBiens,
+            totalSurface,
+            totalPieces,
+            totalFichiers,
+            totalCloud
+        };
+    }, [biens]);
+
+    const filteredBiens = useMemo(() => {
+        const term = searchTerm.trim().toLowerCase();
+        return biens.filter((bien) => {
+            const matchesType = typeFilter === 'Tous' || bien.type === typeFilter;
+            const matchesTerm = !term
+                || String(bien.address || '').toLowerCase().includes(term)
+                || String(bien.type || '').toLowerCase().includes(term);
+            return matchesType && matchesTerm;
+        });
+    }, [biens, searchTerm, typeFilter]);
+
+    const CompositionDisplay = ({ composition }) => {
+        if (!composition) return null;
+        const items = [
+            { icon: <BedIcon/>, count: composition.chambres, label: 'Chambres' },
+            { icon: <BathIcon/>, count: composition.sdb, label: 'Salles de bain' },
+            { icon: <KitchenIcon/>, count: composition.cuisine, label: 'Cuisines' },
+            { icon: <GarageIcon/>, count: composition.garage, label: 'Garages' },
+        ];
+
+        return (
+             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600">
+                {items.filter(item => item.count > 0).map(item => (
+                    <div key={item.label} className="flex items-center space-x-1.5" title={`${item.count} ${item.label}`}>
+                        {item.icon}
+                        <span className="font-medium">{item.count}</span>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
+    return (
+        <>
+            <ConfirmationModal
+                isOpen={!!bienToDelete}
+                onClose={() => setBienToDelete(null)}
+                onConfirm={handleConfirmDelete}
+                title="Confirmer la suppression"
+                message="Êtes-vous sûr de vouloir supprimer ce bien ? Cette action est irréversible."
+            />
+            <BienModal isOpen={isModalOpen} onClose={handleCloseModal} onSave={handleSaveBien} bienToEdit={bienEnEdition} />
+
+            <header className="flex justify-between items-center mb-8">
+                <h1 className="text-3xl font-bold tracking-tight text-gray-900">Mes Biens</h1>
+                <div className="flex items-center space-x-4">
+                    {user && user.plan === 'free' && (<button onClick={goToSubscribe} className="inline-flex items-center font-semibold text-white bg-orange-500 rounded-lg hover:bg-orange-600 px-4 py-2 text-sm"><StarIcon/>Passer Pro</button>)}
+                    <button onClick={handleOpenCreateModal} className="inline-flex items-center font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 px-4 py-2 text-sm"><PlusIcon className="mr-2 h-4 w-4"/>Créer un bien</button>
+                </div>
+            </header>
+
+            <div className="mb-6 grid grid-cols-2 lg:grid-cols-5 gap-3">
+                <div className="rounded-xl border bg-white p-4">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">Biens</p>
+                    <p className="text-2xl font-bold text-gray-900">{dashboardStats.totalBiens}</p>
+                </div>
+                <div className="rounded-xl border bg-white p-4">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">Surface</p>
+                    <p className="text-2xl font-bold text-gray-900">{dashboardStats.totalSurface} m²</p>
+                </div>
+                <div className="rounded-xl border bg-white p-4">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">Pièces</p>
+                    <p className="text-2xl font-bold text-gray-900">{dashboardStats.totalPieces}</p>
+                </div>
+                <div className="rounded-xl border bg-white p-4">
+                    <p className="text-xs text-gray-500 uppercase tracking-wide">Fichiers</p>
+                    <p className="text-2xl font-bold text-gray-900">{dashboardStats.totalFichiers}</p>
+                </div>
+                <div className="rounded-xl border bg-white p-4 border-indigo-200 bg-indigo-50">
+                    <p className="text-xs text-indigo-600 uppercase tracking-wide">Stockés cloud</p>
+                    <p className="text-2xl font-bold text-indigo-700">{dashboardStats.totalCloud}</p>
+                </div>
+            </div>
+
+            <div className="mb-6 rounded-xl border bg-white p-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Rechercher par adresse ou type"
+                        className="md:col-span-2 rounded-md border-gray-300 shadow-sm px-3 py-2"
+                    />
+                    <select
+                        value={typeFilter}
+                        onChange={(e) => setTypeFilter(e.target.value)}
+                        className="rounded-md border-gray-300 shadow-sm px-3 py-2"
+                    >
+                        <option value="Tous">Tous les types</option>
+                        <option value="Maison">Maison</option>
+                        <option value="Appartement">Appartement</option>
+                    </select>
+                </div>
+                <p className="mt-3 text-sm text-gray-500">{filteredBiens.length} bien(s) affiché(s).</p>
+            </div>
+
+            <div className="space-y-4">
+                {filteredBiens.length === 0 && (
+                    <div className="rounded-xl border bg-white p-8 text-center text-gray-500">
+                        Aucun bien ne correspond à ta recherche.
+                    </div>
+                )}
+
+                {filteredBiens.map((bien) => {
+                    const pieceCount = (bien.dossier?.pieces || []).length;
+                    const attachmentCount = (bien.dossier?.attachments || []).length;
+                    const cloudCount = (bien.dossier?.attachments || []).filter((att) => att.storage === 'nextcloud').length;
+
+                    return (
+                        <div key={bien.id} className="block rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md">
+                            <div className="p-6">
+                                <div className="flex justify-between items-start">
+                                    <div onClick={() => selectBien(bien.id)} className="cursor-pointer flex-grow pr-4">
+                                        <h2 className="text-lg font-semibold text-gray-800">{bien.address}</h2>
+                                        <div className="mt-2 flex items-center space-x-4 text-sm text-gray-500">
+                                           <span>{bien.type}</span><span className="text-gray-300">|</span><span>{bien.size} m²</span>
+                                       </div>
+                                        <div className="mt-3"><CompositionDisplay composition={bien.composition}/></div>
+                                        <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                                            <span className="px-2 py-1 rounded-full bg-gray-100 text-gray-600">{pieceCount} pièce(s)</span>
+                                            <span className="px-2 py-1 rounded-full bg-gray-100 text-gray-600">{attachmentCount} fichier(s)</span>
+                                            <span className={`px-2 py-1 rounded-full ${cloudCount > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
+                                                {cloudCount > 0 ? `${cloudCount} cloud` : 'Local uniquement'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex-shrink-0 flex items-center space-x-1">
+                                        <button onClick={(e) => { e.stopPropagation(); handleOpenEditModal(bien); }} className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-100 rounded-full transition-colors"><EditIcon /></button>
+                                        <button onClick={(e) => { e.stopPropagation(); handleDeleteClick(bien.id); }} className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-100 rounded-full transition-colors"><TrashIcon /></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+        </>
+    );
+};
+
+const AppContainer = () => {
+    const { currentView } = useAppStore();
+    const renderContent = () => {
+        switch(currentView) {
+            case 'admin': return <AdminPage />;
+            case 'bien': return <BienPage />;
+            case 'subscribe': return <SubscribePage />;
+            case 'dashboard': default: return <Dashboard />;
+        }
+    };
+    return (
+        <div className="min-h-screen bg-gray-50 pb-20">
+            <AppHeader />
+            <main className="py-10">
+                <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+                    {renderContent()}
+                </div>
+            </main>
+        </div>
+    );
+};
+
+function App() {
+ const { isLoading, isAuthenticated, hydrate } = useAppStore();
+
+ useEffect(() => {
+   loadScript('https://cdnjs.cloudflare.com/ajax/libs/papaparse/5.3.2/papaparse.min.js');
+   loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', () => {
+       loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+    });
+    hydrate();
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('preview') === '1') {
+        const requestedView = params.get('view');
+        const requestedBienId = Number(params.get('bienId'));
+        useAppStore.getState().signIn();
+
+        setTimeout(() => {
+            const store = useAppStore.getState();
+            if (requestedView === 'bien' && Number.isFinite(requestedBienId) && requestedBienId > 0) {
+                store.selectBien(requestedBienId);
+                return;
+            }
+            if (requestedView === 'admin') {
+                store.goToAdmin();
+                return;
+            }
+            if (requestedView === 'subscribe') {
+                store.goToSubscribe();
+                return;
+            }
+            store.goToDashboard();
+        }, 0);
+    }
+ }, [hydrate]);
+
+ return (
+    <div className="bg-gray-100 font-sans min-h-screen">
+      {isLoading ? (
+          <div className="min-h-screen flex justify-center items-center"><Spinner /></div>
+      ) : isAuthenticated ? (
+          <AppContainer />
+      ) : (
+          <div className="min-h-screen flex flex-col justify-center items-center p-4">
+              <LoginPage />
+              <footer className="mt-8 text-center text-gray-500 text-sm">Application Web de démonstration.</footer>
+          </div>
+      )}
+    </div>
+ );
+}
+
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error('Root element #root is missing');
+}
+
+const root = ReactDOM.createRoot(rootElement);
+root.render(<App />);
+
+
+
+
+
+
+
+
+
+
+
+

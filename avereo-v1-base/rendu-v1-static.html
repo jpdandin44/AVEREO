@@ -1,0 +1,293 @@
+﻿<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AVEREO CONNECT - Rendu V1 Statique</title>
+    <style>
+      :root {
+        --bg: #eef2ff;
+        --ink: #0f172a;
+        --muted: #475569;
+        --line: #dbe2f0;
+        --card: #ffffff;
+        --primary: #3730a3;
+        --accent: #0ea5e9;
+        --ok: #15803d;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(1200px 600px at 10% -10%, #c7d2fe 0%, transparent 70%),
+          radial-gradient(900px 500px at 100% 0%, #bfdbfe 0%, transparent 60%),
+          var(--bg);
+      }
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 24px 16px 40px;
+      }
+      .hero {
+        border-radius: 18px;
+        background: linear-gradient(125deg, #1e1b4b, #312e81 55%, #0f766e);
+        color: #fff;
+        padding: 20px;
+        box-shadow: 0 20px 40px rgba(30, 41, 59, 0.2);
+      }
+      .hero h1 { margin: 0 0 8px; font-size: 26px; }
+      .hero p { margin: 0; opacity: 0.9; }
+      .cta-row {
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        border-radius: 10px;
+        padding: 9px 12px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      .btn-main { background: #fff; color: #111827; }
+      .btn-alt { border: 1px solid rgba(255,255,255,0.45); color: #fff; }
+      .section-title {
+        margin: 20px 0 10px;
+        font-size: 16px;
+        color: #334155;
+        letter-spacing: 0.02em;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .stat {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+      }
+      .stat .label {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .stat .value {
+        margin-top: 4px;
+        font-size: 24px;
+        font-weight: 700;
+      }
+      .layout {
+        margin-top: 14px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .card header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        background: #f8fafc;
+      }
+      .card h3 { margin: 0; font-size: 15px; }
+      .card .body { padding: 14px; }
+      .pill {
+        display: inline-block;
+        font-size: 12px;
+        padding: 5px 8px;
+        border-radius: 999px;
+        background: #e2e8f0;
+        color: #334155;
+      }
+      .pill.ok { background: #dcfce7; color: var(--ok); }
+      .search {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      input, select {
+        width: 100%;
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 10px 11px;
+        font-size: 14px;
+      }
+      .property {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+      }
+      .property + .property { margin-top: 10px; }
+      .property h4 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 10px;
+        color: #475569;
+        font-size: 13px;
+      }
+      .chips {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .devis-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px dashed #e2e8f0;
+        font-size: 14px;
+      }
+      .devis-line:last-child { border-bottom: 0; }
+      .total {
+        margin-top: 10px;
+        border-top: 2px solid #e2e8f0;
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+      }
+      .files {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .file {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 9px 10px;
+        font-size: 13px;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .foot {
+        margin-top: 14px;
+        color: #64748b;
+        font-size: 12px;
+      }
+      @media (min-width: 760px) {
+        .stats { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+        .search { grid-template-columns: 2fr 1fr; }
+      }
+      @media (min-width: 1100px) {
+        .layout { grid-template-columns: 1.05fr 0.95fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <section class="hero">
+        <h1>AVEREO CONNECT - Rendu V1 (Statique)</h1>
+        <p>Version sans dépendances externes. Ouvrable en double-clic, même hors localhost.</p>
+        <div class="cta-row">
+          <a class="btn btn-main" href="./standalone-v1.html">Version React (si CDN OK)</a>
+          <a class="btn btn-alt" href="./rendu-v1.html">Comparatif dashboard/bien</a>
+        </div>
+      </section>
+
+      <h2 class="section-title">Pilotage instantané</h2>
+      <section class="stats">
+        <article class="stat"><div class="label">Biens</div><div class="value">2</div></article>
+        <article class="stat"><div class="label">Surface</div><div class="value">205 m²</div></article>
+        <article class="stat"><div class="label">Pièces</div><div class="value">3</div></article>
+        <article class="stat"><div class="label">Fichiers</div><div class="value">4</div></article>
+        <article class="stat"><div class="label">Stockés cloud</div><div class="value">2</div></article>
+      </section>
+
+      <section class="layout">
+        <article class="card">
+          <header>
+            <h3>Dashboard Biens</h3>
+            <span class="pill">V1</span>
+          </header>
+          <div class="body">
+            <div class="search">
+              <input value="Paris" aria-label="Recherche" />
+              <select aria-label="Type">
+                <option>Tous les types</option>
+                <option>Maison</option>
+                <option>Appartement</option>
+              </select>
+            </div>
+
+            <div class="property" style="margin-top:12px;">
+              <h4>123 Rue de la République, 75001 Paris</h4>
+              <div class="meta">
+                <span>Maison</span>
+                <span>120 m²</span>
+                <span>3 chambres</span>
+                <span>2 sdb</span>
+              </div>
+              <div class="chips">
+                <span class="pill">2 pièces dossier</span>
+                <span class="pill">2 fichiers</span>
+                <span class="pill ok">1 cloud</span>
+              </div>
+            </div>
+
+            <div class="property">
+              <h4>45 Avenue des Champs-Élysées, 75008 Paris</h4>
+              <div class="meta">
+                <span>Appartement</span>
+                <span>85 m²</span>
+                <span>2 chambres</span>
+                <span>1 sdb</span>
+              </div>
+              <div class="chips">
+                <span class="pill">1 pièce dossier</span>
+                <span class="pill">2 fichiers</span>
+                <span class="pill ok">1 cloud</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <header>
+            <h3>Dossier bien + Devis</h3>
+            <span class="pill ok">Bien #1</span>
+          </header>
+          <div class="body">
+            <div class="meta" style="margin-bottom:8px;">
+              <strong>123 Rue de la République, Paris</strong>
+            </div>
+            <div class="devis-line"><span>Peinture murs/plafonds - Salon (35 m²)</span><strong>1 680 €</strong></div>
+            <div class="devis-line"><span>Peinture murs/plafonds - Chambre 1 (15 m²)</span><strong>720 €</strong></div>
+            <div class="total"><span>Total estimé (Std)</span><span>2 400 €</span></div>
+
+            <h4 style="margin:14px 0 8px; font-size:14px;">Pièces jointes</h4>
+            <div class="files">
+              <div class="file"><span>photo-salon.jpg</span><span class="pill ok">Cloud</span></div>
+              <div class="file"><span>plan-rez-de-chaussee.pdf</span><span class="pill">Local</span></div>
+              <div class="file"><span>devis-client.docx</span><span class="pill ok">Cloud</span></div>
+            </div>
+            <p class="foot">Ce rendu statique simule la V1 pour validation visuelle rapide.</p>
+          </div>
+        </article>
+      </section>
+    </div>
+  </body>
+</html>
