@@ -1,0 +1,1093 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVEREO - Pilotage Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; overflow: hidden; }
+        
+        /* Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Planning View Specifics */
+        .planning-row { height: 48px; border-bottom: 1px solid #e2e8f0; box-sizing: border-box; }
+        .planning-row:hover { background-color: #f8fafc; }
+        .lot-header { height: 40px; background-color: #f1f5f9; border-bottom: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0; box-sizing: border-box; }
+        
+        /* Gantt Grid */
+        .gantt-bg-grid {
+            background-size: 40px 100%;
+            background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px);
+        }
+        .gantt-weekend { background-color: #f8fafc; }
+        
+        /* Gantt Bars */
+        .gantt-bar {
+            position: absolute; top: 8px; height: 32px; border-radius: 6px;
+            display: flex; align-items: center; font-size: 0.75rem; font-weight: 600; color: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(0,0,0,0.05);
+            transition: filter 0.2s ease, box-shadow 0.2s ease; cursor: grab; overflow: hidden;
+            user-select: none;
+        }
+        .gantt-bar:active { cursor: grabbing; }
+        .gantt-bar:hover { filter: brightness(1.1); box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 20; }
+        .gantt-progress { position: absolute; left: 0; top: 0; height: 100%; background: rgba(0,0,0,0.2); pointer-events: none; }
+        .gantt-label { position: relative; z-index: 1; padding: 0 8px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; pointer-events: none; }
+        
+        /* Drag and Drop & UI Handles */
+        .resize-handle {
+            position: absolute; right: 0; top: 0; width: 12px; height: 100%;
+            cursor: ew-resize; z-index: 10;
+        }
+        .resize-handle:hover { background-color: rgba(255, 255, 255, 0.4); }
+        .planning-row, .lot-header { flex-shrink: 0; box-sizing: border-box; }
+        body.is-dragging { cursor: grabbing !important; user-select: none; }
+        body.is-resizing { cursor: ew-resize !important; user-select: none; }
+
+        /* Milestones */
+        .milestone {
+            position: absolute; top: 12px; width: 24px; height: 24px;
+            background-color: #1e293b; transform: rotate(45deg);
+            border-radius: 4px; border: 2px solid white; cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: all 0.2s ease; z-index: 10;
+        }
+        .milestone:hover { transform: rotate(45deg) scale(1.1); background-color: #0f172a; }
+
+        /* Status Colors */
+        .status-todo { background-color: #cbd5e1; color: #334155; }
+        .status-progress { background-color: #3b82f6; }
+        .status-waiting { background-color: #f59e0b; }
+        .status-blocked { background-color: #ef4444; }
+        .status-done { background-color: #10b981; }
+
+        /* Slide Panel Animation */
+        .slide-panel { transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .slide-panel.open { transform: translateX(0); }
+        .backdrop { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .backdrop.open { opacity: 1; pointer-events: auto; }
+
+        /* Toast */
+        @keyframes slideUpFade { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .toast-show { animation: slideUpFade 0.3s forwards; }
+    </style>
+</head>
+<body class="flex h-screen text-slate-800">
+
+    <!-- Sidebar -->
+    <aside class="w-20 lg:w-64 bg-[#0f172a] text-slate-300 flex flex-col transition-all duration-300 shrink-0 z-30">
+        <div class="h-16 flex items-center justify-center lg:justify-start lg:px-6 border-b border-slate-800">
+            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20">A</div>
+            <span class="hidden lg:block ml-3 font-bold text-white tracking-wide">AVEREO <span class="text-[10px] text-blue-300 font-normal align-top ml-1">v1.0</span></span>
+        </div>
+        <nav class="flex-1 py-6 space-y-2 px-3">
+            <button onclick="switchView('dashboard')" id="nav-dashboard" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all bg-blue-600 text-white shadow-md">
+                <i data-lucide="layout-dashboard" class="w-5 h-5 lg:mr-3"></i>
+                <span class="hidden lg:block">Tableau de bord</span>
+            </button>
+            <button onclick="switchView('planning')" id="nav-planning" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all">
+                <i data-lucide="gantt-chart" class="w-5 h-5 lg:mr-3"></i>
+                <span class="hidden lg:block">Planning & Gantt</span>
+            </button>
+            <button onclick="switchView('risks')" id="nav-risks" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all">
+                <i data-lucide="shield-alert" class="w-5 h-5 lg:mr-3"></i>
+                <span class="hidden lg:block">Risques & Décisions</span>
+            </button>
+        </nav>
+        <div class="p-4 border-t border-slate-800 flex items-center justify-center lg:justify-start bg-slate-900/50">
+            <div class="w-10 h-10 rounded-full bg-indigo-500 border-2 border-indigo-300 flex items-center justify-center text-sm font-bold text-white shadow-lg">MOI</div>
+            <div class="hidden lg:block ml-3">
+                <p class="text-sm font-semibold text-white">Moi</p>
+                <p class="text-[10px] text-indigo-300 uppercase tracking-wider font-medium">Chef de Projet</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col min-w-0 bg-white relative">
+        <!-- Header -->
+        <header class="h-16 border-b border-slate-200 flex items-center justify-between px-6 shrink-0 bg-white z-20 shadow-sm">
+            <div>
+                <h1 class="text-xl font-semibold text-slate-800 flex items-center">Pilotage de Chantier <span class="text-xs font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded ml-3 border border-emerald-200">Mode Local (V1.0)</span></h1>
+                <p class="text-xs text-slate-500 font-medium mt-0.5">Glissez-déposez un fichier Excel (.xlsx, .csv) pour initialiser</p>
+            </div>
+            <div class="flex items-center space-x-3">
+                <input type="file" id="data-upload" accept=".csv, .xlsx, .xls" class="hidden" onchange="handleFileImport(event)">
+                <button onclick="document.getElementById('data-upload').click()" class="flex items-center px-3 py-2 text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 rounded-lg transition-all text-sm font-medium bg-white">
+                    <i data-lucide="upload" class="w-4 h-4 mr-2"></i>
+                    Importer Excel
+                </button>
+                <button onclick="simulateSync()" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg transition-all bg-white" title="Recalculer le planning">
+                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                </button>
+                <button onclick="openTaskModal()" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm shadow-blue-600/20">
+                    <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
+                    Nouvelle tâche
+                </button>
+            </div>
+        </header>
+
+        <!-- View: Dashboard -->
+        <div id="view-dashboard" class="flex-1 overflow-y-auto p-6 bg-slate-50">
+            <!-- KPIs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm relative overflow-hidden">
+                    <div class="flex justify-between items-start">
+                        <p class="text-sm font-medium text-slate-500">Avancement Global</p>
+                        <span class="p-2 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="trending-up" class="w-4 h-4"></i></span>
+                    </div>
+                    <div class="mt-2 flex items-baseline"><p class="text-3xl font-bold text-slate-800" id="kpi-progress">0%</p></div>
+                    <div class="w-full bg-slate-100 h-1.5 mt-3 rounded-full overflow-hidden"><div class="bg-blue-600 h-full transition-all duration-1000" id="kpi-progress-bar" style="width: 0%"></div></div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:border-red-300 transition-colors group" onclick="switchView('risks')">
+                    <div class="flex justify-between items-start">
+                        <p class="text-sm font-medium text-slate-500 group-hover:text-red-600 transition-colors">Tâches en Retard</p>
+                        <span class="p-2 bg-red-50 text-red-600 rounded-lg"><i data-lucide="clock" class="w-4 h-4"></i></span>
+                    </div>
+                    <div class="mt-2 flex items-baseline">
+                        <p class="text-3xl font-bold text-red-600" id="kpi-late">0</p>
+                        <p class="ml-2 text-sm text-slate-500 font-medium">alertes</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:border-orange-300 transition-colors group" onclick="switchView('risks')">
+                    <div class="flex justify-between items-start">
+                        <p class="text-sm font-medium text-slate-500 group-hover:text-orange-600 transition-colors">Blocages Actifs</p>
+                        <span class="p-2 bg-orange-50 text-orange-600 rounded-lg"><i data-lucide="alert-octagon" class="w-4 h-4"></i></span>
+                    </div>
+                    <div class="mt-2 flex items-baseline">
+                        <p class="text-3xl font-bold text-orange-600" id="kpi-blocked">0</p>
+                        <p class="ml-2 text-sm text-slate-500 font-medium">tâches</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-start">
+                        <p class="text-sm font-medium text-slate-500">Santé du projet</p>
+                        <span class="p-2 bg-emerald-50 text-emerald-600 rounded-lg" id="kpi-health-icon"><i data-lucide="activity" class="w-4 h-4"></i></span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-lg font-bold text-emerald-600" id="kpi-health">Bonne</p>
+                        <p class="text-xs text-slate-500 mt-1" id="kpi-health-detail">Respect des délais global</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Mini-Tables -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Upcoming Milestones -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col">
+                    <div class="px-5 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50/50 rounded-t-xl">
+                        <h3 class="font-semibold text-slate-800 flex items-center"><i data-lucide="flag" class="w-4 h-4 mr-2 text-blue-600"></i>Prochains Jalons</h3>
+                    </div>
+                    <div class="p-0 flex-1">
+                        <ul class="divide-y divide-slate-100" id="dash-milestones">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Critical Tasks -->
+                <div class="bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col">
+                    <div class="px-5 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50/50 rounded-t-xl">
+                        <h3 class="font-semibold text-slate-800 flex items-center"><i data-lucide="zap" class="w-4 h-4 mr-2 text-orange-500"></i>Chemin Critique</h3>
+                        <button onclick="switchView('risks')" class="text-xs font-medium text-blue-600 hover:text-blue-800">Voir tout</button>
+                    </div>
+                    <div class="p-0 flex-1">
+                        <ul class="divide-y divide-slate-100" id="dash-critical">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Planning & Gantt -->
+        <div id="view-planning" class="hidden flex-1 flex flex-col overflow-hidden relative bg-white">
+            
+            <!-- Toolbar -->
+            <div class="h-12 border-b border-slate-200 bg-white flex items-center justify-between px-4 shrink-0 z-20 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+                <div class="flex items-center space-x-2 text-sm">
+                    <span class="font-medium text-slate-700">Vue:</span>
+                    <button class="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-200 text-xs transition-colors" onclick="setZoom('days')" id="btn-zoom-days">Jours</button>
+                    <button class="px-3 py-1.5 rounded-md bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 text-xs transition-colors font-medium" onclick="setZoom('weeks')" id="btn-zoom-weeks">Semaines</button>
+                </div>
+                <div class="flex items-center space-x-4 text-xs font-medium">
+                    <div class="flex items-center"><div class="w-3 h-3 rounded bg-blue-500 mr-1.5"></div>En cours</div>
+                    <div class="flex items-center"><div class="w-3 h-3 rounded bg-emerald-500 mr-1.5"></div>Terminé</div>
+                    <div class="flex items-center"><div class="w-3 h-3 rounded bg-red-500 mr-1.5"></div>Retard / Bloqué</div>
+                    <div class="flex items-center"><div class="w-3 h-3 rounded bg-slate-300 mr-1.5"></div>À faire</div>
+                </div>
+            </div>
+
+            <!-- Split Container -->
+            <div class="flex-1 overflow-y-auto overflow-x-hidden flex flex-col bg-white">
+                <div class="flex flex-row min-w-max relative" id="gantt-master-container">
+                    
+                    <!-- Left Pane: Data Table (Sticky) -->
+                    <div class="w-[480px] shrink-0 sticky left-0 z-30 bg-white border-r border-slate-200 shadow-[2px_0_8px_rgba(0,0,0,0.05)] flex flex-col">
+                        <!-- Header Row -->
+                        <div class="h-12 flex items-center bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider shrink-0">
+                            <div class="w-10 flex-shrink-0 text-center">ID</div>
+                            <div class="flex-1 px-3">Tâche</div>
+                            <div class="w-16 px-2 text-center">Durée</div>
+                            <div class="w-24 px-2 text-center">Début</div>
+                            <div class="w-24 px-2 text-center">Statut</div>
+                        </div>
+                        <!-- Data Rows Container -->
+                        <div id="planning-table-body" class="flex flex-col flex-1 pb-10">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right Pane: Gantt Chart -->
+                    <div class="flex-1 flex flex-col relative overflow-x-auto" id="gantt-scroll-pane">
+                        <!-- Timeline Header -->
+                        <div id="gantt-timeline-header" class="h-12 border-b border-slate-200 bg-slate-50 flex sticky top-0 z-20 shrink-0">
+                            <!-- Populated by JS -->
+                        </div>
+                        <!-- Gantt Grid Background (Absolute to fill space behind bars) -->
+                        <div id="gantt-bg-grid" class="absolute top-12 bottom-0 left-0 right-0 z-0 flex pointer-events-none">
+                            <!-- Columns populated by JS -->
+                        </div>
+                        <!-- SVG Layer for Dependencies -->
+                        <svg id="gantt-svg-layer" class="absolute top-12 left-0 w-full h-full pointer-events-none" style="z-index: 5;">
+                            <defs>
+                                <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                                </marker>
+                            </defs>
+                            <!-- Paths populated by JS -->
+                        </svg>
+                        <!-- Gantt Bars Container -->
+                        <div id="planning-gantt-body" class="flex flex-col relative z-10 pb-10 min-h-full">
+                            <!-- Populated by JS (Height of rows matches Left Pane) -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- View: Risks -->
+        <div id="view-risks" class="hidden flex-1 overflow-y-auto p-6 bg-slate-50">
+            <div class="flex justify-between items-end mb-4">
+                <div>
+                    <h2 class="text-xl font-semibold text-slate-800">Registre des Risques & Points d'Attention</h2>
+                    <p class="text-sm text-slate-500 mt-1">Suivi des points de blocage et alertes de pilotage.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
+                            <th class="px-6 py-4 font-medium">Tâche impactée</th>
+                            <th class="px-6 py-4 font-medium">Motif d'alerte</th>
+                            <th class="px-6 py-4 font-medium">Pondération</th>
+                            <th class="px-6 py-4 font-medium">Statut du Risque</th>
+                            <th class="px-6 py-4 font-medium">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="risks-table-body" class="divide-y divide-slate-100 text-sm">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Backdrop -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm backdrop z-40" onclick="closeTaskModal()"></div>
+
+    <!-- Task Edit Slide Panel -->
+    <div id="task-modal" class="fixed top-0 right-0 h-full w-full md:w-[480px] bg-white shadow-2xl z-50 slide-panel flex flex-col border-l border-slate-200">
+        <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+            <h2 class="text-lg font-semibold text-slate-800 flex items-center" id="modal-title">
+                <i data-lucide="edit-3" class="w-5 h-5 mr-2 text-blue-600"></i> Nouvelle Tâche
+            </h2>
+            <button onclick="closeTaskModal()" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-6">
+            <form id="task-form" class="space-y-5">
+                <input type="hidden" id="task-id">
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Nom de la tâche <span class="text-red-500">*</span></label>
+                    <input type="text" id="task-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Lot / Phase <span class="text-red-500">*</span></label>
+                        <input type="text" id="task-lot" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Responsable</label>
+                        <input type="text" id="task-owner" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <div class="col-span-2 flex items-center mb-2">
+                        <input type="checkbox" id="task-is-milestone" class="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500" onchange="toggleDurationField()">
+                        <label for="task-is-milestone" class="ml-2 block text-sm font-semibold text-slate-800">Cette tâche est un Jalon (Durée 0)</label>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Durée (Jours ouvrés)</label>
+                        <input type="number" id="task-duration" min="1" value="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Dépend de (Prédécesseurs)</label>
+                        <select id="task-dependencies" multiple class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-24 text-sm bg-white">
+                            <!-- Populated by JS -->
+                        </select>
+                        <p class="text-[10px] text-slate-500 mt-1">Maintenez Ctrl/Cmd pour sélection multiple</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Statut</label>
+                        <select id="task-status" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            <option value="À faire">À faire</option>
+                            <option value="En cours">En cours</option>
+                            <option value="En attente">En attente</option>
+                            <option value="Bloqué">Bloqué</option>
+                            <option value="Terminé">Terminé</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Avancement (%)</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="range" id="task-progress-range" min="0" max="100" value="0" class="w-full" oninput="document.getElementById('task-progress').value = this.value">
+                            <input type="number" id="task-progress" min="0" max="100" value="0" class="w-16 px-2 py-1 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm" oninput="document.getElementById('task-progress-range').value = this.value">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 border border-orange-200 rounded-lg bg-orange-50/50 space-y-4">
+                    <h3 class="text-sm font-semibold text-orange-800 border-b border-orange-200 pb-2 flex items-center">
+                        <i data-lucide="alert-triangle" class="w-4 h-4 mr-2"></i> Qualification des Risques
+                    </h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Pondération</label>
+                            <select id="task-risk-weight" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-sm">
+                                <option value="Mineur">Mineur (Impact faible)</option>
+                                <option value="Majeur">Majeur (Impact projet)</option>
+                                <option value="Critique">Critique (Bloquant)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Statut du Risque</label>
+                            <select id="task-risk-status" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white text-sm">
+                                <option value="Aucun">Aucun problème</option>
+                                <option value="Sous surveillance">Sous surveillance</option>
+                                <option value="Actif">Problème Actif</option>
+                                <option value="Résolu">Résolu / Clôturé</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+        <div class="p-6 border-t border-slate-200 bg-white flex justify-between items-center shrink-0">
+            <button id="btn-delete-task" onclick="deleteCurrentTask()" class="text-red-600 hover:text-red-800 text-sm font-medium px-3 py-2 rounded hover:bg-red-50 transition-colors hidden border border-transparent hover:border-red-200">
+                Supprimer
+            </button>
+            <div class="flex space-x-3 ml-auto">
+                <button onclick="closeTaskModal()" class="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">Annuler</button>
+                <button onclick="saveTask()" class="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm shadow-blue-600/20">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-slate-800 text-white px-5 py-3 rounded-lg shadow-xl text-sm font-medium flex items-center transform translate-y-20 opacity-0 pointer-events-none transition-all z-50">
+        <i data-lucide="check-circle" class="w-5 h-5 mr-2 text-emerald-400"></i>
+        <span id="toast-message">Action réussie</span>
+    </div>
+
+    <script>
+        // --- 1. INITIAL DATA & STATE ---
+        const PROJECT_START_DATE = new Date(2024, 4, 6); // 6 Mai 2024
+        const MS_PER_DAY = 1000 * 60 * 60 * 24;
+        let zoomLevel = 'days';
+        let ganttScale = 40;
+        let isDraggingAction = false; 
+
+        // Mock Database
+        let tasks = [
+            { id: "T1", name: "Démarrage du projet", lot: "1. Cadrage", duration: 0, isMilestone: true, dependencies: [], progress: 100, status: "Terminé", owner: "MOA", riskWeight: "Mineur", riskStatus: "Aucun" },
+            { id: "T2", name: "Audit Énergétique existant", lot: "1. Cadrage", duration: 10, isMilestone: false, dependencies: ["T1"], progress: 100, status: "Terminé", owner: "Bureau d'Etude", riskWeight: "Mineur", riskStatus: "Aucun" },
+            { id: "T3", name: "Validation Scénario Rénovation", lot: "2. Conception", duration: 5, isMilestone: false, dependencies: ["T2"], progress: 100, status: "Terminé", owner: "MOA", riskWeight: "Majeur", riskStatus: "Résolu" },
+            { id: "T4", name: "Dépôt Déclaration Préalable", lot: "2. Conception", duration: 2, isMilestone: false, dependencies: ["T3"], progress: 100, status: "Terminé", owner: "MOE", riskWeight: "Critique", riskStatus: "Résolu" },
+            { id: "T5", name: "Délai instruction DP (Mairie)", lot: "2. Conception", duration: 20, isMilestone: false, dependencies: ["T4"], progress: 50, status: "En cours", owner: "MOA", riskWeight: "Critique", riskStatus: "Sous surveillance" },
+            { id: "T6", name: "DCE et Consultation Entreprises", lot: "3. Consultation", duration: 15, isMilestone: false, dependencies: ["T3"], progress: 90, status: "En cours", owner: "MOE", riskWeight: "Majeur", riskStatus: "Aucun" },
+            { id: "T7", name: "Analyse des offres", lot: "3. Consultation", duration: 5, isMilestone: false, dependencies: ["T6"], progress: 0, status: "À faire", owner: "AMO", riskWeight: "Majeur", riskStatus: "Sous surveillance" },
+            { id: "T8", name: "Signature Marchés de Travaux", lot: "3. Consultation", duration: 0, isMilestone: true, dependencies: ["T5", "T7"], progress: 0, status: "Bloqué", owner: "MOA", riskWeight: "Critique", riskStatus: "Actif" },
+            { id: "T9", name: "Préparation & Installation Chantier", lot: "4. Travaux", duration: 3, isMilestone: false, dependencies: ["T8"], progress: 0, status: "À faire", owner: "Entreprise", riskWeight: "Mineur", riskStatus: "Aucun" },
+            { id: "T10", name: "Dépose menuiseries et ITE", lot: "4. Travaux", duration: 5, isMilestone: false, dependencies: ["T9"], progress: 0, status: "À faire", owner: "Entreprise", riskWeight: "Majeur", riskStatus: "Aucun" },
+            { id: "T11", name: "Pose Menuiseries Extérieures", lot: "4. Travaux", duration: 8, isMilestone: false, dependencies: ["T10"], progress: 0, status: "À faire", owner: "Entreprise", riskWeight: "Critique", riskStatus: "Aucun" }
+        ];
+
+        let state = {
+            currentDate: new Date(2024, 5, 5), // Simulated "Today"
+            projectStart: PROJECT_START_DATE,
+            projectEnd: PROJECT_START_DATE,
+            totalDays: 0,
+            tasksDict: {},
+            groupedTasks: {},
+            editingTaskId: null,
+            renderStateGlobal: { renderStartDate: null } 
+        };
+
+        // --- 2. CORE SCHEDULING ENGINE ---
+        
+        function addWorkingDays(startDate, daysToAdd) {
+            let date = new Date(startDate);
+            let added = 0;
+            if (daysToAdd <= 0) return date;
+            
+            let daysToLoop = daysToAdd - 1; 
+            while (added < daysToLoop) {
+                date.setDate(date.getDate() + 1);
+                if (date.getDay() !== 0 && date.getDay() !== 6) added++;
+            }
+            return date;
+        }
+
+        function getNextWorkingDay(date) {
+            let nextDay = new Date(date);
+            do { nextDay.setDate(nextDay.getDate() + 1); } 
+            while (nextDay.getDay() === 0 || nextDay.getDay() === 6);
+            return nextDay;
+        }
+
+        function recalculateSchedule() {
+            state.tasksDict = {};
+            tasks.forEach(t => state.tasksDict[t.id] = t);
+
+            let changed = true;
+            let iterations = 0;
+            let maxDate = new Date(state.projectStart);
+            let globalStart = null;
+
+            tasks.forEach(t => { 
+                t.calcStart = null; t.calcEnd = null; t.isLate = false;
+                if(t.manualStart && (!globalStart || t.manualStart < globalStart)) globalStart = new Date(t.manualStart);
+            });
+            
+            if(!globalStart) globalStart = new Date(state.projectStart);
+            state.projectStart = globalStart;
+
+            while (changed && iterations < 100) {
+                changed = false;
+                iterations++;
+
+                tasks.forEach(t => {
+                    if (t.calcStart) return;
+
+                    if (t.manualStart) {
+                        t.calcStart = new Date(t.manualStart);
+                    } else if (!t.dependencies || t.dependencies.length === 0) {
+                        t.calcStart = new Date(state.projectStart);
+                    } else {
+                        let predsReady = true;
+                        let maxPredEnd = new Date(0);
+                        
+                        for (let depId of t.dependencies) {
+                            let pred = state.tasksDict[depId];
+                            if (!pred) continue;
+                            if (!pred.calcEnd) { predsReady = false; break; }
+                            if (pred.calcEnd > maxPredEnd) maxPredEnd = new Date(pred.calcEnd);
+                        }
+                        if (predsReady) t.calcStart = getNextWorkingDay(maxPredEnd);
+                    }
+
+                    if (t.calcStart && !t.calcEnd) {
+                        t.calcEnd = addWorkingDays(t.calcStart, t.duration);
+                        changed = true;
+                        if (t.calcEnd > maxDate) maxDate = new Date(t.calcEnd);
+                    }
+                });
+            }
+
+            state.projectEnd = maxDate;
+            state.totalDays = Math.ceil((state.projectEnd - state.projectStart) / MS_PER_DAY) + 20; // 20 days padding
+            
+            state.groupedTasks = {};
+            tasks.forEach(t => {
+                if (t.calcEnd < state.currentDate && t.status !== "Terminé" && t.status !== "Validé") t.isLate = true;
+                if (!state.groupedTasks[t.lot]) state.groupedTasks[t.lot] = [];
+                state.groupedTasks[t.lot].push(t);
+            });
+
+            Object.keys(state.groupedTasks).forEach(lot => {
+                state.groupedTasks[lot].sort((a, b) => a.calcStart - b.calcStart);
+            });
+        }
+
+        // --- 3. UI RENDERING ---
+
+        function formatDateShort(date) {
+            if(!date) return '-';
+            return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+        }
+
+        function renderDashboard() {
+            let totalProgress = 0, totalDuration = 0, lateCount = 0, blockedCount = 0;
+            let milestonesHtml = '', criticalHtml = '';
+
+            tasks.sort((a,b) => a.calcStart - b.calcStart).forEach(t => {
+                let d = t.duration === 0 ? 1 : t.duration;
+                totalProgress += (t.progress * d);
+                totalDuration += d;
+                
+                if (t.isLate) lateCount++;
+                if (t.status === 'Bloqué' || t.riskStatus === 'Actif') blockedCount++;
+
+                if (t.isMilestone && t.status !== 'Terminé') {
+                    milestonesHtml += `
+                        <li class="px-5 py-3 flex items-center justify-between hover:bg-slate-50 transition-colors">
+                            <div class="flex items-center"><div class="w-2 h-2 bg-slate-800 rotate-45 mr-3"></div><span class="text-sm font-medium text-slate-700">${t.name}</span></div>
+                            <span class="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-600 rounded">${formatDateShort(t.calcStart)}</span>
+                        </li>
+                    `;
+                }
+
+                if (t.status === 'Bloqué' || t.isLate || t.riskStatus === 'Actif' || t.riskStatus === 'Sous surveillance') {
+                    let badgeColor = (t.status === 'Bloqué' || t.riskStatus === 'Actif') ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700';
+                    let reason = (t.status === 'Bloqué' || t.riskStatus === 'Actif') ? 'Alerte' : (t.isLate ? 'Retard' : 'Surveillance');
+                    criticalHtml += `
+                        <li class="px-5 py-3 hover:bg-slate-50 transition-colors cursor-pointer" onclick="handleTaskClick('${t.id}')">
+                            <div class="flex justify-between items-start mb-1">
+                                <span class="text-sm font-medium text-slate-800">${t.name}</span>
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${badgeColor}">${reason}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs text-slate-500">
+                                <span>Resp: ${t.owner || '-'}</span><span>Fin: ${formatDateShort(t.calcEnd)}</span>
+                            </div>
+                        </li>
+                    `;
+                }
+            });
+
+            let globalProgress = totalDuration > 0 ? Math.round(totalProgress / totalDuration) : 0;
+            document.getElementById('kpi-progress').textContent = `${globalProgress}%`;
+            document.getElementById('kpi-progress-bar').style.width = `${globalProgress}%`;
+            document.getElementById('kpi-late').textContent = lateCount;
+            document.getElementById('kpi-blocked').textContent = blockedCount;
+
+            const healthEl = document.getElementById('kpi-health');
+            const healthDetailEl = document.getElementById('kpi-health-detail');
+            const healthIcon = document.getElementById('kpi-health-icon');
+            
+            if (blockedCount > 0) {
+                healthEl.textContent = 'Critique'; healthEl.className = 'text-lg font-bold text-red-600';
+                healthDetailEl.textContent = 'Tâches bloquantes actives';
+                healthIcon.className = "p-2 bg-red-50 text-red-600 rounded-lg";
+            } else if (lateCount > 2) {
+                healthEl.textContent = 'À surveiller'; healthEl.className = 'text-lg font-bold text-orange-500';
+                healthDetailEl.textContent = 'Glissement calendaire';
+                healthIcon.className = "p-2 bg-orange-50 text-orange-600 rounded-lg";
+            } else {
+                healthEl.textContent = 'Bonne'; healthEl.className = 'text-lg font-bold text-emerald-600';
+                healthDetailEl.textContent = 'Délais respectés';
+                healthIcon.className = "p-2 bg-emerald-50 text-emerald-600 rounded-lg";
+            }
+
+            document.getElementById('dash-milestones').innerHTML = milestonesHtml || '<li class="p-5 text-sm text-slate-500 italic">Aucun jalon à venir.</li>';
+            document.getElementById('dash-critical').innerHTML = criticalHtml || '<li class="p-5 text-sm text-slate-500 italic">Aucune tâche critique détectée.</li>';
+        }
+
+        function getStatusColorClass(status, isLate) {
+            if (status === 'Terminé' || status === 'Validé') return 'status-done';
+            if (status === 'Bloqué') return 'status-blocked';
+            if (isLate) return 'status-blocked';
+            if (status === 'En cours') return 'status-progress';
+            if (status === 'En attente') return 'status-waiting';
+            return 'status-todo';
+        }
+
+        function getStatusBadge(status) {
+            let colors = { 'Terminé': 'bg-emerald-100 text-emerald-700', 'Bloqué': 'bg-red-100 text-red-700', 'En cours': 'bg-blue-100 text-blue-700', 'En attente': 'bg-amber-100 text-amber-700', 'À faire': 'bg-slate-100 text-slate-600' };
+            let c = colors[status] || colors['À faire'];
+            return `<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${c}">${status}</span>`;
+        }
+
+        function renderPlanningView() {
+            const tableBody = document.getElementById('planning-table-body');
+            const ganttHeader = document.getElementById('gantt-timeline-header');
+            const ganttBgGrid = document.getElementById('gantt-bg-grid');
+            const ganttBody = document.getElementById('planning-gantt-body');
+            const svgLayer = document.getElementById('gantt-svg-layer');
+
+            ganttScale = zoomLevel === 'days' ? 40 : 10;
+            let headerHtml = '', gridHtml = '';
+            
+            let currentDateWalker = new Date(state.projectStart);
+            currentDateWalker.setDate(currentDateWalker.getDate() - 2); 
+            const renderStartDate = new Date(currentDateWalker); 
+            state.renderStateGlobal.renderStartDate = renderStartDate;
+
+            for (let i = 0; i < state.totalDays; i++) {
+                let isWeekend = currentDateWalker.getDay() === 0 || currentDateWalker.getDay() === 6;
+                let dayNum = currentDateWalker.getDate();
+                if (zoomLevel === 'days') {
+                    headerHtml += `<div class="flex-shrink-0 flex flex-col items-center justify-center border-r border-slate-200 ${isWeekend ? 'bg-slate-100 text-slate-400' : 'text-slate-600'}" style="width: ${ganttScale}px; height: 100%; box-sizing: border-box;"><span class="text-[9px] uppercase">${currentDateWalker.toLocaleDateString('fr-FR', {weekday:'narrow'})}</span><span class="text-xs font-semibold">${dayNum}</span></div>`;
+                } else {
+                    if (currentDateWalker.getDay() === 1) { // Monday
+                         headerHtml += `<div class="flex-shrink-0 flex items-center justify-center border-r border-slate-200 text-slate-600" style="width: ${ganttScale * 7}px; height: 100%; box-sizing: border-box;"><span class="text-[10px] font-semibold">S${Math.ceil(dayNum/7)} ${currentDateWalker.toLocaleDateString('fr-FR', {month:'short'})}</span></div>`;
+                    }
+                }
+                gridHtml += `<div class="flex-shrink-0 border-r border-slate-100 ${isWeekend ? 'gantt-weekend' : ''}" style="width: ${ganttScale}px; height: 100%; box-sizing: border-box;"></div>`;
+                currentDateWalker.setDate(currentDateWalker.getDate() + 1);
+            }
+
+            ganttHeader.innerHTML = headerHtml;
+            ganttBgGrid.innerHTML = gridHtml;
+
+            let tableHtml = '', barsHtml = '';
+            let sortedLots = Object.keys(state.groupedTasks).sort();
+            
+            // To store coordinates for drawing SVG arrows
+            let renderState = {};
+            let currentY = 0; // Tracks vertical pixel position from top of container
+
+            sortedLots.forEach(lot => {
+                tableHtml += `<div class="lot-header flex items-center px-3 font-semibold text-xs text-slate-700 uppercase tracking-wider w-full"><i data-lucide="folder" class="w-4 h-4 mr-2 text-slate-400"></i> <span class="truncate">${lot}</span></div>`;
+                barsHtml += `<div class="lot-header w-full border-b border-transparent"></div>`;
+                currentY += 40; // lot-header height
+
+                state.groupedTasks[lot].forEach(t => {
+                    let warnIcon = t.isLate ? `<i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mr-2 shrink-0" title="En retard"></i>` : '';
+                    let manualPin = t.manualStart ? `<i data-lucide="pin" class="w-3 h-3 text-blue-500 mr-1 shrink-0" title="Date figée manuellement"></i>` : '';
+                    
+                    tableHtml += `
+                        <div class="planning-row flex items-center cursor-pointer group w-full" onclick="handleTaskClick('${t.id}')">
+                            <div class="w-10 flex-shrink-0 text-center text-[10px] text-slate-400 font-mono">${t.id.replace('T','')}</div>
+                            <div class="flex-1 px-3 flex items-center overflow-hidden">
+                                ${warnIcon}${manualPin}
+                                <span class="text-sm font-medium text-slate-800 truncate group-hover:text-blue-600 transition-colors">${t.name}</span>
+                            </div>
+                            <div class="w-16 px-2 text-center text-xs text-slate-600">${t.duration}j</div>
+                            <div class="w-24 px-2 text-center text-xs text-slate-600">${formatDateShort(t.calcStart)}</div>
+                            <div class="w-24 px-2 text-center flex justify-center">${getStatusBadge(t.status)}</div>
+                        </div>
+                    `;
+
+                    let barHtml = '';
+                    let leftPx = 0;
+                    let widthPx = 0;
+
+                    if (t.calcStart && t.calcEnd) {
+                        let startDiffMs = t.calcStart - renderStartDate;
+                        leftPx = (startDiffMs / MS_PER_DAY) * ganttScale;
+                        let durationMs = t.calcEnd - t.calcStart;
+                        widthPx = (durationMs / MS_PER_DAY) * ganttScale;
+                        
+                        // Save coordinates for arrows (y is center of the row)
+                        renderState[t.id] = { y: currentY + 24, left: leftPx, right: leftPx + widthPx };
+
+                        if (t.isMilestone) {
+                            widthPx = 0;
+                            barHtml = `<div class="milestone" data-id="${t.id}" style="left: ${leftPx - 12}px;" title="${t.name}"></div>`;
+                        } else {
+                            if (widthPx < ganttScale) widthPx = ganttScale; 
+                            let colorClass = getStatusColorClass(t.status, t.isLate);
+                            barHtml = `
+                                <div class="gantt-bar ${colorClass}" data-id="${t.id}" style="left: ${leftPx}px; width: ${widthPx}px;" title="${t.name}">
+                                    <div class="gantt-progress" style="width: ${t.progress}%"></div>
+                                    <span class="gantt-label">${t.progress}%</span>
+                                    <div class="resize-handle" data-id="${t.id}" title="Étirer pour modifier la durée"></div>
+                                </div>
+                            `;
+                        }
+                    }
+
+                    barsHtml += `<div class="planning-row relative w-full border-b border-slate-100 hover:bg-slate-50/50 box-border">${barHtml}</div>`;
+                    currentY += 48; // planning-row height
+                });
+            });
+
+            // Draw SVG arrows
+            let svgPaths = '';
+            tasks.forEach(t => {
+                t.dependencies.forEach(depId => {
+                    let p = renderState[depId]; // predecessor
+                    let s = renderState[t.id];  // successor
+                    if (p && s) {
+                        let path = `M ${p.right} ${p.y} `;
+                        if (s.left > p.right + 15) {
+                            // Forward dependency
+                            path += `L ${p.right + 10} ${p.y} L ${p.right + 10} ${s.y} L ${s.left - 4} ${s.y}`;
+                        } else {
+                            // Backwards/Vertical routing
+                            path += `L ${p.right + 10} ${p.y} L ${p.right + 10} ${p.y + 20} L ${s.left - 15} ${p.y + 20} L ${s.left - 15} ${s.y} L ${s.left - 4} ${s.y}`;
+                        }
+                        svgPaths += `<path d="${path}" stroke="#94a3b8" stroke-width="1.5" fill="none" marker-end="url(#arrowhead)"/>`;
+                    }
+                });
+            });
+
+            svgLayer.innerHTML = `
+                <defs>
+                    <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+                    </marker>
+                </defs>
+                ${svgPaths}
+            `;
+
+            tableBody.innerHTML = tableHtml;
+            ganttBody.innerHTML = barsHtml;
+            lucide.createIcons();
+        }
+
+        function renderRisksView() {
+            const tbody = document.getElementById('risks-table-body');
+            let html = '';
+            
+            tasks.forEach(t => {
+                if (t.status === 'Bloqué' || t.isLate || t.riskStatus === 'Sous surveillance' || t.riskStatus === 'Actif') {
+                    let issue = t.status === 'Bloqué' ? 'Tâche bloquée' : (t.isLate ? 'Délai dépassé' : 'Alerte manuelle');
+                    let weightBadge = t.riskWeight === 'Critique' ? '<span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold uppercase border border-red-200">Critique</span>' : (t.riskWeight === 'Majeur' ? '<span class="px-2 py-1 bg-orange-100 text-orange-700 rounded text-xs font-bold uppercase border border-orange-200">Majeur</span>' : '<span class="px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs font-bold uppercase border border-slate-200">Mineur</span>');
+                    let statusBadge = t.riskStatus === 'Actif' ? '<span class="text-red-600 font-semibold flex items-center"><i data-lucide="alert-circle" class="w-4 h-4 mr-1"></i> Actif</span>' : (t.riskStatus === 'Sous surveillance' ? '<span class="text-amber-500 font-semibold flex items-center"><i data-lucide="eye" class="w-4 h-4 mr-1"></i> Sous surveillance</span>' : '<span class="text-emerald-600 font-semibold flex items-center"><i data-lucide="check" class="w-4 h-4 mr-1"></i> Résolu</span>');
+                    
+                    html += `
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4">
+                                <p class="text-sm font-semibold text-slate-800">${t.name}</p>
+                                <p class="text-xs text-slate-500 mt-0.5"><span class="font-mono bg-slate-100 px-1 rounded">${t.id}</span> - ${t.lot}</p>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-slate-700 font-medium">${issue}</td>
+                            <td class="px-6 py-4 text-sm">${weightBadge}</td>
+                            <td class="px-6 py-4 text-sm">${statusBadge}</td>
+                            <td class="px-6 py-4">
+                                <button class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded transition-colors shadow-sm" onclick="openTaskModal('${t.id}')">Gérer</button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
+            tbody.innerHTML = html || '<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500 italic flex flex-col items-center justify-center"><i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-400 mb-2"></i> Aucun risque majeur ou point d\'attention identifié.</td></tr>';
+        }
+
+        // --- 4. INTERACTIONS & DRAG AND DROP ---
+
+        function handleTaskClick(taskId) {
+            if(isDraggingAction) return; 
+            openTaskModal(taskId);
+        }
+
+        let dnd = { active: false, type: null, taskId: null, startX: 0, element: null, origVal: 0 };
+
+        document.getElementById('planning-gantt-body')?.addEventListener('mousedown', e => {
+            if (e.target.classList.contains('resize-handle')) {
+                dnd.active = true; dnd.type = 'resize';
+                dnd.taskId = e.target.dataset.id; dnd.startX = e.clientX;
+                dnd.element = e.target.parentElement;
+                dnd.origVal = parseFloat(dnd.element.style.width) || 0;
+                document.body.classList.add('is-resizing');
+                e.preventDefault(); 
+            } else if (e.target.closest('.gantt-bar') || e.target.closest('.milestone')) {
+                dnd.active = true; dnd.type = 'move';
+                dnd.element = e.target.closest('.gantt-bar') || e.target.closest('.milestone');
+                dnd.taskId = dnd.element.dataset.id; dnd.startX = e.clientX;
+                dnd.origVal = parseFloat(dnd.element.style.left) || 0;
+                document.body.classList.add('is-dragging');
+                e.preventDefault();
+            }
+        });
+
+        document.addEventListener('mousemove', e => {
+            if (!dnd.active) return;
+            let dx = e.clientX - dnd.startX;
+            if (dnd.type === 'resize') {
+                dnd.element.style.width = Math.max(ganttScale, dnd.origVal + dx) + 'px';
+            } else if (dnd.type === 'move') {
+                dnd.element.style.left = Math.max(0, dnd.origVal + dx) + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', e => {
+            if (!dnd.active) return;
+            let dx = e.clientX - dnd.startX;
+            
+            if (Math.abs(dx) > 3) {
+                isDraggingAction = true;
+                setTimeout(() => isDraggingAction = false, 200); 
+            }
+
+            let task = state.tasksDict[dnd.taskId];
+            
+            if (dnd.type === 'resize' && Math.abs(dx) > 3) {
+                let daysDelta = Math.round(dx / ganttScale);
+                if (daysDelta !== 0) {
+                    task.duration = Math.max(1, task.duration + daysDelta);
+                    showToast("Durée mise à jour");
+                }
+            } else if (dnd.type === 'move' && Math.abs(dx) > 3) {
+                let newLeft = parseFloat(dnd.element.style.left);
+                let msOffset = (newLeft / ganttScale) * MS_PER_DAY;
+                let newDate = new Date(state.renderStateGlobal.renderStartDate.getTime() + msOffset);
+                newDate.setHours(0,0,0,0);
+                
+                if (newDate.getDay() === 0) newDate.setDate(newDate.getDate() + 1);
+                if (newDate.getDay() === 6) newDate.setDate(newDate.getDate() + 2);
+                
+                task.manualStart = newDate;
+                showToast("Date épinglée manuellement", "blue");
+            }
+
+            dnd.active = false;
+            document.body.classList.remove('is-dragging', 'is-resizing');
+            if (Math.abs(dx) > 3) refreshAll(); 
+        });
+
+        function switchView(viewId) {
+            ['dashboard', 'planning', 'risks'].forEach(v => {
+                document.getElementById(`view-${v}`).classList.add('hidden');
+                document.getElementById(`nav-${v}`).classList.remove('bg-blue-600', 'text-white', 'shadow-md');
+                document.getElementById(`nav-${v}`).classList.add('hover:bg-slate-800', 'hover:text-white');
+            });
+            document.getElementById(`view-${viewId}`).classList.remove('hidden');
+            document.getElementById(`nav-${viewId}`).classList.add('bg-blue-600', 'text-white', 'shadow-md');
+            if (viewId === 'planning') window.dispatchEvent(new Event('resize'));
+        }
+
+        function setZoom(level) { 
+            zoomLevel = level;
+            document.getElementById('btn-zoom-days').className = level === 'days' ? 'px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-200 text-xs transition-colors' : 'px-3 py-1.5 rounded-md bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 text-xs transition-colors font-medium';
+            document.getElementById('btn-zoom-weeks').className = level === 'weeks' ? 'px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-200 text-xs transition-colors' : 'px-3 py-1.5 rounded-md bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 text-xs transition-colors font-medium';
+            renderPlanningView(); 
+        }
+
+        function populateDependencySelect(excludeId) {
+            const select = document.getElementById('task-dependencies');
+            select.innerHTML = '';
+            tasks.forEach(t => {
+                if (t.id !== excludeId) {
+                    let option = document.createElement('option');
+                    option.value = t.id; option.text = `${t.id} - ${t.name}`;
+                    select.appendChild(option);
+                }
+            });
+        }
+
+        function toggleDurationField() {
+            const isMilestone = document.getElementById('task-is-milestone').checked;
+            const durationInput = document.getElementById('task-duration');
+            if (isMilestone) {
+                durationInput.value = 0; durationInput.disabled = true;
+                durationInput.classList.add('bg-slate-100', 'text-slate-500');
+            } else {
+                if (durationInput.value == 0) durationInput.value = 1;
+                durationInput.disabled = false; durationInput.classList.remove('bg-slate-100', 'text-slate-500');
+            }
+        }
+
+        function openTaskModal(taskId = null) {
+            populateDependencySelect(taskId);
+            const modalTitle = document.getElementById('modal-title');
+            const btnDelete = document.getElementById('btn-delete-task');
+            
+            if (taskId) {
+                state.editingTaskId = taskId;
+                let t = state.tasksDict[taskId];
+                modalTitle.innerHTML = `<i data-lucide="edit-3" class="w-5 h-5 mr-2 text-blue-600"></i> Modifier la tâche`;
+                btnDelete.classList.remove('hidden');
+                
+                document.getElementById('task-id').value = t.id;
+                document.getElementById('task-name').value = t.name;
+                document.getElementById('task-lot').value = t.lot;
+                document.getElementById('task-owner').value = t.owner || "";
+                document.getElementById('task-duration').value = t.duration;
+                document.getElementById('task-status').value = t.status;
+                document.getElementById('task-progress').value = t.progress;
+                document.getElementById('task-progress-range').value = t.progress;
+                document.getElementById('task-is-milestone').checked = t.isMilestone;
+                document.getElementById('task-risk-weight').value = t.riskWeight || "Mineur";
+                document.getElementById('task-risk-status').value = t.riskStatus || "Aucun";
+                
+                const depSelect = document.getElementById('task-dependencies');
+                Array.from(depSelect.options).forEach(opt => { opt.selected = t.dependencies.includes(opt.value); });
+            } else {
+                state.editingTaskId = null;
+                modalTitle.innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 mr-2 text-emerald-600"></i> Nouvelle Tâche`;
+                btnDelete.classList.add('hidden');
+                document.getElementById('task-form').reset();
+                document.getElementById('task-progress-range').value = 0;
+                document.getElementById('task-id').value = 'T' + (tasks.length + 1);
+                document.getElementById('task-duration').value = 1;
+                document.getElementById('task-risk-weight').value = "Mineur";
+                document.getElementById('task-risk-status').value = "Aucun";
+            }
+            
+            toggleDurationField();
+            lucide.createIcons();
+            document.getElementById('modal-backdrop').classList.add('open');
+            document.getElementById('task-modal').classList.add('open');
+        }
+
+        function closeTaskModal() {
+            document.getElementById('modal-backdrop').classList.remove('open');
+            document.getElementById('task-modal').classList.remove('open');
+            state.editingTaskId = null;
+        }
+
+        function saveTask() {
+            const name = document.getElementById('task-name').value;
+            const lot = document.getElementById('task-lot').value;
+            if (!name || !lot) { alert("Le nom et le lot sont obligatoires."); return; }
+
+            const depSelect = document.getElementById('task-dependencies');
+            const selectedDeps = Array.from(depSelect.selectedOptions).map(opt => opt.value);
+
+            let taskData = {
+                id: document.getElementById('task-id').value,
+                name: name, lot: lot,
+                owner: document.getElementById('task-owner').value,
+                duration: parseInt(document.getElementById('task-duration').value) || 0,
+                status: document.getElementById('task-status').value,
+                progress: parseInt(document.getElementById('task-progress').value) || 0,
+                isMilestone: document.getElementById('task-is-milestone').checked,
+                dependencies: selectedDeps,
+                riskWeight: document.getElementById('task-risk-weight').value,
+                riskStatus: document.getElementById('task-risk-status').value
+            };
+
+            if (state.editingTaskId) {
+                let index = tasks.findIndex(t => t.id === state.editingTaskId);
+                taskData.manualStart = tasks[index].manualStart; // preserve pin
+                tasks[index] = { ...tasks[index], ...taskData };
+            } else {
+                tasks.push(taskData);
+            }
+
+            closeTaskModal(); refreshAll(); showToast("Tâche enregistrée avec succès");
+        }
+
+        function deleteCurrentTask() {
+            if(state.editingTaskId) {
+                tasks.forEach(t => { t.dependencies = t.dependencies.filter(depId => depId !== state.editingTaskId); });
+                tasks = tasks.filter(t => t.id !== state.editingTaskId);
+                closeTaskModal(); refreshAll(); showToast("Tâche supprimée", "red");
+            }
+        }
+
+        function showToast(message, color = "emerald") {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = message;
+            toast.querySelector('i').className = `w-5 h-5 mr-2 text-${color}-400 lucide lucide-check-circle`;
+            lucide.createIcons();
+            toast.classList.add('toast-show');
+            setTimeout(() => { toast.classList.remove('toast-show'); toast.style.opacity = '0'; }, 3000);
+            setTimeout(() => { toast.style.opacity = ''; }, 3300);
+        }
+
+        function simulateSync() {
+            refreshAll(); 
+            showToast("Planning recalculé avec succès");
+        }
+
+        // --- 5. EXCEL/CSV IMPORT ---
+        function handleFileImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, {type: 'array'});
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: ""});
+                    
+                    if(jsonData.length === 0) throw new Error("Le fichier semble vide");
+
+                    // Intelligent fuzzy mapping
+                    const mappedTasks = [];
+                    jsonData.forEach((row, index) => {
+                        let obj = { id: `T${index+1}`, dependencies: [], isMilestone: false, riskWeight: "Mineur", riskStatus: "Aucun" };
+                        
+                        Object.keys(row).forEach(key => {
+                            let k = key.toLowerCase();
+                            let val = row[key];
+                            
+                            if(k.includes('id') && !k.includes('val')) obj.id = val.toString().trim();
+                            else if(k.includes('nom') || k.includes('tâche') || k.includes('task')) obj.name = val.toString().trim();
+                            else if(k.includes('lot') || k.includes('phase')) obj.lot = val.toString().trim();
+                            else if(k.includes('durée') || k.includes('duree') || k.includes('jour')) obj.duration = parseInt(val) || 0;
+                            else if(k.includes('dépend') || k.includes('depend') || k.includes('prédécesseur')) {
+                                if(val) obj.dependencies = val.toString().split(',').map(s => s.trim()).filter(s => s);
+                            }
+                            else if(k.includes('resp') || k.includes('assign')) obj.owner = val.toString().trim();
+                            else if(k.includes('statut') || k.includes('état')) obj.status = val.toString().trim();
+                            else if(k.includes('%') || k.includes('avancement')) {
+                                let p = parseFloat(val);
+                                obj.progress = (p > 1 && p <= 100) ? p : (p <= 1 ? p * 100 : 0);
+                            }
+                            else if(k.includes('criti') || k.includes('pond')) obj.riskWeight = val.toString().trim();
+                        });
+
+                        // Fallbacks
+                        if(!obj.name) obj.name = "Tâche importée " + (index+1);
+                        if(!obj.lot) obj.lot = "Général";
+                        if(obj.duration === 0) obj.isMilestone = true;
+                        if(obj.duration === undefined) obj.duration = 1;
+                        if(!obj.status) obj.status = "À faire";
+                        if(!obj.progress) obj.progress = 0;
+
+                        mappedTasks.push(obj);
+                    });
+
+                    // Update global state
+                    tasks = mappedTasks;
+                    refreshAll();
+                    showToast(`Import réussi : ${tasks.length} tâches chargées`);
+                    
+                } catch(err) {
+                    console.error("Erreur d'import", err);
+                    alert("Erreur lors de l'import du fichier. Assurez-vous qu'il s'agit d'un Excel ou CSV valide.");
+                }
+                
+                // Reset file input
+                event.target.value = '';
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+
+        function refreshAll() {
+            recalculateSchedule();
+            renderDashboard();
+            renderPlanningView();
+            renderRisksView();
+            lucide.createIcons();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            refreshAll();
+        });
+
+    </script>
+</body>
+</html>
