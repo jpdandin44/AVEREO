@@ -1,0 +1,27 @@
+﻿name: Platform CI
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate-platform:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate required files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d templates/app-template
+          test -f scripts/create-avereo-app.sh
+          test -f scripts/create-avereo-app.ps1
+          test -f docs/architecture.md
+          test -f docs/applications.md
+          test -f docs/deployment-o2switch.md
