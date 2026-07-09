@@ -17,6 +17,7 @@ Thumbs.db
 # Build/coverage
 coverage/
 dist/
+architecture-v1/avereo-app-coupe/*.zip
 
 # Env
 .env
