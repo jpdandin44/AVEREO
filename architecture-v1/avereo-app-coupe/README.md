@@ -20,7 +20,17 @@ npm run build
 
 ## Deploiement O2Switch
 
-Le workflow .github/workflows/deploy-o2switch.yml construit frontend/dist/ puis publie uniquement son contenu vers le dossier public du sous-domaine.
+Le workflow `.github/workflows/deploy-coupe-o2switch.yml` construit `frontend/dist/` puis publie uniquement son contenu vers le dossier public du sous-domaine `coupe.avereo.fr`.
+
+Chemin cible recommande cote O2Switch :
+
+- `/home/CPANEL_USERNAME/public_html/coupe`
+
+Deploiement manuel possible :
+
+1. Construire le frontend depuis `frontend/` avec `npm install` puis `npm run build`.
+2. Televerser le contenu de `frontend/dist/` dans le dossier public du sous-domaine.
+3. Verifier que `.htaccess`, `index.html`, `legacy-app.html` et `assets/` sont bien presents a la racine du dossier public.
 
 Secrets GitHub requis :
 
