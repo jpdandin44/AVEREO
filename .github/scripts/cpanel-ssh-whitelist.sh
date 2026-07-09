@@ -54,17 +54,23 @@ command_name, runner_ip, path = sys.argv[1], sys.argv[2], sys.argv[3]
 with open(path, "r", encoding="utf-8-sig") as handle:
     payload = json.load(handle)
 
-metadata = payload.get("metadata") or {}
-status = metadata.get("status")
-errors = metadata.get("errors") or []
-warnings = metadata.get("warnings") or []
+result = payload.get("result") if isinstance(payload.get("result"), dict) else payload
+metadata = result.get("metadata") or {}
+status = result.get("status")
+errors = result.get("errors") or []
+warnings = result.get("warnings") or []
+messages = result.get("messages") or []
 
 def fail(message):
     print(f"::error::{message}", file=sys.stderr)
     sys.exit(1)
 
 if status not in (1, "1", True):
-    details = "; ".join(str(item) for item in errors) or json.dumps(metadata, ensure_ascii=False)
+    details = (
+        "; ".join(str(item) for item in errors)
+        or "; ".join(str(item) for item in messages)
+        or json.dumps(result, ensure_ascii=False)
+    )
     fail(f"cPanel SshWhitelist/{command_name} failed: {details}")
 
 if warnings:
