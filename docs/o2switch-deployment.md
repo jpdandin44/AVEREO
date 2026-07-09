@@ -1,4 +1,4 @@
-﻿# Deploiement O2Switch
+# Deploiement O2Switch
 
 Ce repo utilise des workflows GitHub Actions a la racine pour deployer les applications stockees dans `architecture-v1/`.
 
@@ -13,7 +13,9 @@ Creer un environnement GitHub par application :
 - `thermo`
 - `drone`
 
-Dans chaque environnement, definir les secrets suivants :
+## Secrets GitHub
+
+Les secrets O2Switch suivants peuvent etre definis par environnement, car `O2SWITCH_TARGET_PATH` change selon l'application :
 
 - `O2SWITCH_SSH_KEY`
 - `O2SWITCH_USER`
@@ -21,17 +23,35 @@ Dans chaque environnement, definir les secrets suivants :
 - `O2SWITCH_PORT`
 - `O2SWITCH_TARGET_PATH`
 
-Le secret `O2SWITCH_TARGET_PATH` doit pointer vers le dossier public du sous-domaine.
+Les secrets cPanel suivants peuvent etre definis au niveau du depot si les memes identifiants servent pour toutes les apps, ou au niveau de chaque environnement :
+
+- `CPANEL_USERNAME`
+- `CPANEL_API_TOKEN`
+- `CPANEL_SERVER`
+
+`CPANEL_SERVER` doit contenir le serveur cPanel/O2Switch sans `https://` et sans `:2083`.
+
+## Whitelist SSH dynamique
+
+Avant `rsync`, le workflow :
+
+1. Recupere l'IP publique du runner GitHub.
+2. Appelle l'API cPanel `SshWhitelist/add` pour autoriser cette IP sur le port SSH.
+3. Verifie que l'IP est bien presente via `SshWhitelist/list`.
+
+Le workflow n'appelle pas `SshWhitelist/remove_all` afin de ne pas supprimer des acces SSH existants.
 
 ## Dossiers cibles recommandes
 
-- `connect` : `~/public_html/connect`
-- `coupe` : `~/public_html/coupe`
-- `rapport` : `~/public_html/rapport`
-- `projet` : `~/public_html/projet`
-- `thermo` : `~/public_html/thermo`
-- `drone` : `~/public_html/drone`
+- `connect` : `/home/CPANEL_USERNAME/public_html/connect`
+- `coupe` : `/home/CPANEL_USERNAME/public_html/coupe`
+- `rapport` : `/home/CPANEL_USERNAME/public_html/rapport`
+- `projet` : `/home/CPANEL_USERNAME/public_html/projet`
+- `thermo` : `/home/CPANEL_USERNAME/public_html/thermo`
+- `drone` : `/home/CPANEL_USERNAME/public_html/drone`
 
 ## Lancement
 
 Chaque workflow peut etre lance manuellement depuis GitHub Actions. Apres merge dans `main`, il se declenche aussi quand le frontend correspondant change.
+
+Commencer par `Deploy Connect to O2Switch`, puis dupliquer la configuration de secrets et de dossiers cibles aux autres environnements.

@@ -38,6 +38,28 @@ jobs:
       - name: Build frontend
         run: npm run build
 
+      - name: Get runner public IP
+        id: runner-ip
+        run: |
+          set -euo pipefail
+          echo "ipv4=$(curl -fsS https://api.ipify.org)" >> "$GITHUB_OUTPUT"
+
+      - name: Whitelist runner IP in cPanel
+        run: |
+          set -euo pipefail
+          PORT="${{ secrets.O2SWITCH_PORT }}"
+          if [ -z "$PORT" ]; then PORT=22; fi
+          curl -fsS -m 45 \
+            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.runner-ip.outputs.ipv4 }}&port=${PORT}"
+
+      - name: Confirm runner IP is whitelisted
+        run: |
+          set -euo pipefail
+          curl -fsS -m 45 \
+            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
+            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list" | grep "${{ steps.runner-ip.outputs.ipv4 }}"
+
       - name: Configure SSH agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
