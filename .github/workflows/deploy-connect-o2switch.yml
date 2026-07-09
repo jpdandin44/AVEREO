@@ -99,6 +99,24 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
 
+      - name: Diagnose SSH agent
+        run: |
+          set -euo pipefail
+          echo "Loaded SSH public key fingerprints:"
+          ssh-add -l
+
+      - name: Test SSH login
+        run: |
+          set -euo pipefail
+          PORT="${{ secrets.O2SWITCH_PORT }}"
+          if [ -z "$PORT" ]; then PORT=22; fi
+          ssh -o BatchMode=yes \
+            -o PasswordAuthentication=no \
+            -o StrictHostKeyChecking=no \
+            -p "${PORT}" \
+            "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}" \
+            "pwd"
+
       - name: Deploy with rsync
         run: |
           set -euo pipefail
