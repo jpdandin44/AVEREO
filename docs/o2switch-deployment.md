@@ -13,25 +13,23 @@ Creer un environnement GitHub par application :
 - `thermo`
 - `drone`
 
-## Secrets GitHub
+Chaque environnement doit contenir uniquement le chemin cible propre a l'application :
 
-Les secrets O2Switch suivants peuvent etre definis par environnement, car `O2SWITCH_TARGET_PATH` change selon l'application :
+- `O2SWITCH_TARGET_PATH`
+
+## Repository secrets GitHub
+
+Les secrets communs suivants doivent etre definis au niveau du depot GitHub dans `Settings > Secrets and variables > Actions > Repository secrets` :
 
 - `O2SWITCH_SSH_KEY`
 - `O2SWITCH_USER`
 - `O2SWITCH_HOST`
 - `O2SWITCH_PORT`
-- `O2SWITCH_TARGET_PATH`
-
-Les secrets cPanel suivants peuvent etre definis au niveau du depot si les memes identifiants servent pour toutes les apps, ou au niveau de chaque environnement :
-
 - `CPANEL_USERNAME`
 - `CPANEL_SERVER`
+- `CPANEL_PASSWORD`
 
-Ajouter ensuite l'une des deux methodes d'authentification :
-
-- `CPANEL_API_TOKEN`, si un token API cPanel est disponible.
-- `CPANEL_PASSWORD`, si le token API cPanel n'est pas disponible.
+`CPANEL_API_TOKEN` est optionnel. Si `CPANEL_PASSWORD` est renseigne, il est utilise en priorite par les workflows.
 
 `CPANEL_SERVER` doit contenir le serveur cPanel/O2Switch sans `https://` et sans `:2083`.
 
@@ -42,8 +40,11 @@ Avant `rsync`, le workflow :
 1. Recupere l'IP publique du runner GitHub.
 2. Appelle l'API cPanel `SshWhitelist/add` pour autoriser cette IP sur le port SSH.
 3. Verifie que l'IP est bien presente via `SshWhitelist/list`.
+4. Supprime l'IP du runner en fin de job via `SshWhitelist/remove` quand l'API le permet.
 
 Le workflow n'appelle pas `SshWhitelist/remove_all` afin de ne pas supprimer des acces SSH existants.
+
+Si cPanel indique que la limite d'exceptions SSH est atteinte, supprimer manuellement les anciennes IP GitHub Actions dans cPanel puis relancer le workflow.
 
 ## Dossiers cibles recommandes
 
@@ -54,8 +55,34 @@ Le workflow n'appelle pas `SshWhitelist/remove_all` afin de ne pas supprimer des
 - `thermo` : `/home/CPANEL_USERNAME/public_html/thermo`
 - `drone` : `/home/CPANEL_USERNAME/public_html/drone`
 
+## Sous-domaines O2Switch
+
+Chaque sous-domaine doit pointer vers le meme document root que le secret `O2SWITCH_TARGET_PATH` de son environnement GitHub.
+
+Exemples :
+
+- `connect.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/connect`
+- `coupe.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/coupe`
+- `rapport.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/rapport`
+- `projet.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/projet`
+- `thermo.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/thermo`
+- `drone.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/drone`
+
+Si le workflow est en succes mais que le sous-domaine affiche `My Blog` ou WordPress, le deploiement `rsync` est probablement correct mais le sous-domaine ne route pas vers le bon document root. Verifier alors la configuration du domaine/sous-domaine dans cPanel et, si le domaine est gere par O2Switch via Mon Univers Web, verifier aussi que le sous-domaine y est bien actif et rattache a l'hebergement.
+
+## Verification post-deploiement
+
+Chaque workflow verifie maintenant l'URL publique apres `rsync`.
+
+La verification echoue si :
+
+- le DNS du sous-domaine ne resout pas ;
+- l'URL publique sert WordPress ou une page par defaut ;
+- la page ne contient pas le conteneur React `#root` ;
+- la page ne reference pas les assets Vite generes.
+
 ## Lancement
 
 Chaque workflow peut etre lance manuellement depuis GitHub Actions. Apres merge dans `main`, il se declenche aussi quand le frontend correspondant change.
 
-Commencer par `Deploy Connect to O2Switch`, puis dupliquer la configuration de secrets et de dossiers cibles aux autres environnements.
+Commencer par `Deploy Connect to O2Switch`, puis lancer les autres applications une par une afin d'eviter de saturer la whitelist SSH cPanel.
