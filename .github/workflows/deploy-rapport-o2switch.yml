@@ -45,20 +45,54 @@ jobs:
           echo "ipv4=$(curl -fsS https://api.ipify.org)" >> "$GITHUB_OUTPUT"
 
       - name: Whitelist runner IP in cPanel
+        env:
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
         run: |
           set -euo pipefail
           PORT="${{ secrets.O2SWITCH_PORT }}"
           if [ -z "$PORT" ]; then PORT=22; fi
+          if [ -z "$CPANEL_USERNAME" ] || [ -z "$CPANEL_SERVER" ]; then
+            echo "CPANEL_USERNAME and CPANEL_SERVER secrets are required." >&2
+            exit 1
+          fi
+          if [ -n "$CPANEL_API_TOKEN" ]; then
+            auth_args=(-H "Authorization: cpanel ${CPANEL_USERNAME}:${CPANEL_API_TOKEN}")
+          elif [ -n "$CPANEL_PASSWORD" ]; then
+            auth_args=(-u "${CPANEL_USERNAME}:${CPANEL_PASSWORD}")
+          else
+            echo "Either CPANEL_API_TOKEN or CPANEL_PASSWORD secret is required." >&2
+            exit 1
+          fi
           curl -fsS -m 45 \
-            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
-            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/add?address=${{ steps.runner-ip.outputs.ipv4 }}&port=${PORT}"
+            "${auth_args[@]}" \
+            "https://${CPANEL_SERVER}:2083/execute/SshWhitelist/add?address=${{ steps.runner-ip.outputs.ipv4 }}&port=${PORT}"
 
       - name: Confirm runner IP is whitelisted
+        env:
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
         run: |
           set -euo pipefail
+          if [ -z "$CPANEL_USERNAME" ] || [ -z "$CPANEL_SERVER" ]; then
+            echo "CPANEL_USERNAME and CPANEL_SERVER secrets are required." >&2
+            exit 1
+          fi
+          if [ -n "$CPANEL_API_TOKEN" ]; then
+            auth_args=(-H "Authorization: cpanel ${CPANEL_USERNAME}:${CPANEL_API_TOKEN}")
+          elif [ -n "$CPANEL_PASSWORD" ]; then
+            auth_args=(-u "${CPANEL_USERNAME}:${CPANEL_PASSWORD}")
+          else
+            echo "Either CPANEL_API_TOKEN or CPANEL_PASSWORD secret is required." >&2
+            exit 1
+          fi
           curl -fsS -m 45 \
-            -H "Authorization: cpanel ${{ secrets.CPANEL_USERNAME }}:${{ secrets.CPANEL_API_TOKEN }}" \
-            "https://${{ secrets.CPANEL_SERVER }}:2083/execute/SshWhitelist/list" | grep "${{ steps.runner-ip.outputs.ipv4 }}"
+            "${auth_args[@]}" \
+            "https://${CPANEL_SERVER}:2083/execute/SshWhitelist/list" | grep "${{ steps.runner-ip.outputs.ipv4 }}"
 
       - name: Configure SSH agent
         uses: webfactory/ssh-agent@v0.9.0

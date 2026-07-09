@@ -26,8 +26,12 @@ Les secrets O2Switch suivants peuvent etre definis par environnement, car `O2SWI
 Les secrets cPanel suivants peuvent etre definis au niveau du depot si les memes identifiants servent pour toutes les apps, ou au niveau de chaque environnement :
 
 - `CPANEL_USERNAME`
-- `CPANEL_API_TOKEN`
 - `CPANEL_SERVER`
+
+Ajouter ensuite l'une des deux methodes d'authentification :
+
+- `CPANEL_API_TOKEN`, si un token API cPanel est disponible.
+- `CPANEL_PASSWORD`, si le token API cPanel n'est pas disponible.
 
 `CPANEL_SERVER` doit contenir le serveur cPanel/O2Switch sans `https://` et sans `:2083`.
 
