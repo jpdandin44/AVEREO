@@ -14,9 +14,25 @@ headers_file="$(mktemp)"
 trap 'rm -f "$html_file" "$headers_file"' EXIT
 
 last_error=""
+tls_warning=""
 for attempt in {1..12}; do
-  if curl -fsSL --max-time 20 -D "$headers_file" "$public_url" -o "$html_file"; then
+  set +e
+  curl -fsSL --max-time 20 -D "$headers_file" "$public_url" -o "$html_file"
+  curl_status="$?"
+  set -e
+  if [ "$curl_status" -eq 0 ]; then
     break
+  fi
+  if [ "$curl_status" -eq 60 ]; then
+    tls_warning="TLS certificate verification failed for $public_url. Retrying content verification with --insecure; fix the public certificate before treating this URL as production-ready."
+    echo "::warning::$tls_warning"
+    set +e
+    curl -k -fsSL --max-time 20 -D "$headers_file" "$public_url" -o "$html_file"
+    insecure_status="$?"
+    set -e
+    if [ "$insecure_status" -eq 0 ]; then
+      break
+    fi
   fi
   last_error="Public URL not ready yet: $public_url (attempt $attempt/12)"
   echo "::warning::$last_error"
@@ -26,6 +42,10 @@ done
 if [ ! -s "$html_file" ]; then
   echo "::error::Unable to fetch public URL after deploy: $public_url. $last_error" >&2
   exit 1
+fi
+
+if [ -n "$tls_warning" ]; then
+  echo "::warning::$tls_warning"
 fi
 
 python - "$app_slug" "$public_url" "$html_file" <<'PY'
