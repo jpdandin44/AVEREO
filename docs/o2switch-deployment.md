@@ -17,6 +17,10 @@ Chaque environnement doit contenir uniquement le chemin cible propre a l'applica
 
 - `O2SWITCH_TARGET_PATH`
 
+Variable optionnelle par environnement :
+
+- `O2SWITCH_PUBLIC_URL` : URL publique a verifier apres deploiement. Utile quand le domaine final ne resout pas encore et qu'il faut verifier l'URL temporaire O2Switch.
+
 ## Repository secrets GitHub
 
 Les secrets communs suivants doivent etre definis au niveau du depot GitHub dans `Settings > Secrets and variables > Actions > Repository secrets` :
@@ -73,6 +77,8 @@ Si le workflow est en succes mais que le sous-domaine affiche `My Blog` ou WordP
 ## Verification post-deploiement
 
 Chaque workflow verifie maintenant l'URL publique apres `rsync`.
+
+Pour Coupe, la verification utilise provisoirement `https://coupe.avereo.fr.daje3540.odns.fr/` si `O2SWITCH_PUBLIC_URL` n'est pas definie. Quand le DNS final est pret, definir `O2SWITCH_PUBLIC_URL=https://coupe.avereo.fr` dans l'environnement GitHub `coupe`.
 
 La verification echoue si :
 
