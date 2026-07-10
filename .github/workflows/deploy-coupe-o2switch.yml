@@ -70,23 +70,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
 
-      - name: Validate remote target path
-        run: |
-          set -euo pipefail
-          PORT="${{ secrets.O2SWITCH_PORT }}"
-          if [ -z "$PORT" ]; then PORT=8888; fi
-          TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
-          if [ -z "$TARGET" ]; then
-            echo "O2SWITCH_TARGET_PATH secret is required for environment 'coupe'." >&2
-            exit 1
-          fi
-          ssh -o BatchMode=yes \
-            -o PasswordAuthentication=no \
-            -o StrictHostKeyChecking=no \
-            -p "${PORT}" \
-            "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}" \
-            "mkdir -p \"$TARGET\" && test -w \"$TARGET\" && pwd"
-
       - name: Deploy with rsync
         run: |
           set -euo pipefail
