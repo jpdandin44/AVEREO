@@ -36,9 +36,12 @@ Secrets GitHub requis :
 
 - O2SWITCH_SSH_KEY
 - O2SWITCH_USER
-- O2SWITCH_HOST
-- O2SWITCH_PORT
 - O2SWITCH_TARGET_PATH
+- CPANEL_USERNAME
+- CPANEL_SERVER
+- CPANEL_PASSWORD
+
+`CPANEL_API_TOKEN` peut remplacer `CPANEL_PASSWORD`. La variable GitHub optionnelle `O2SWITCH_PORT` permet de surcharger le port SSH ; par defaut, Coupe utilise `8888`.
 
 ## Statuts V1
 

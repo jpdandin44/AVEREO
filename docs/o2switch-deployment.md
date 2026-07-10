@@ -39,6 +39,8 @@ Si `O2SWITCH_PORT` n'est pas renseigne, les workflows utilisent le port `8888` p
 
 `CPANEL_SERVER` doit contenir le serveur cPanel/O2Switch sans `https://` et sans `:2083`.
 
+Pour Coupe, le workflow utilise `CPANEL_SERVER` comme hote SSH afin d'eviter un ecart entre l'API cPanel et le deploiement `rsync`.
+
 ## Whitelist SSH dynamique
 
 Avant `rsync`, le workflow :
