@@ -51,7 +51,7 @@ jobs:
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          O2SWITCH_PORT: ${{ vars.O2SWITCH_PORT || '8888' }}
           RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
         run: bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" add
 
@@ -61,7 +61,7 @@ jobs:
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          O2SWITCH_PORT: ${{ vars.O2SWITCH_PORT || '8888' }}
           RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
         run: bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" list
 
@@ -71,19 +71,33 @@ jobs:
           ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
 
       - name: Deploy with rsync
+        env:
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          O2SWITCH_PORT: ${{ vars.O2SWITCH_PORT || '8888' }}
+          O2SWITCH_TARGET_PATH: ${{ secrets.O2SWITCH_TARGET_PATH }}
+          O2SWITCH_USER: ${{ secrets.O2SWITCH_USER }}
         run: |
           set -euo pipefail
-          PORT="${{ secrets.O2SWITCH_PORT }}"
-          if [ -z "$PORT" ]; then PORT=8888; fi
-          TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
+          HOST="${CPANEL_SERVER:-}"
+          PORT="${O2SWITCH_PORT:-8888}"
+          TARGET="${O2SWITCH_TARGET_PATH:-}"
+          USER="${O2SWITCH_USER:-}"
+          if [ -z "$HOST" ]; then
+            echo "CPANEL_SERVER secret is required for SSH deployment." >&2
+            exit 1
+          fi
+          if [ -z "$USER" ]; then
+            echo "O2SWITCH_USER secret is required for SSH deployment." >&2
+            exit 1
+          fi
           if [ -z "$TARGET" ]; then
             echo "O2SWITCH_TARGET_PATH secret is required for environment 'coupe'." >&2
             exit 1
           fi
           rsync -az --delete \
-            -e "ssh -p ${PORT} -o StrictHostKeyChecking=no" \
+            -e "ssh -p ${PORT} -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=20 -o ServerAliveInterval=15 -o ServerAliveCountMax=2" \
             ./dist/ \
-            "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}:${TARGET}/"
+            "${USER}@${HOST}:${TARGET}/"
 
       - name: Verify public deployment
         env:
@@ -99,7 +113,7 @@ jobs:
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          O2SWITCH_PORT: ${{ vars.O2SWITCH_PORT || '8888' }}
           RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
         run: |
           set -euo pipefail
