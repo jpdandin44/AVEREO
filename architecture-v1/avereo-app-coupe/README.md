@@ -34,14 +34,23 @@ Deploiement manuel possible :
 
 Secrets GitHub requis :
 
-- O2SWITCH_SSH_KEY
-- O2SWITCH_USER
 - O2SWITCH_TARGET_PATH
-- CPANEL_USERNAME
 - CPANEL_SERVER
+- CPANEL_USERNAME
 - CPANEL_PASSWORD
 
-`CPANEL_API_TOKEN` peut remplacer `CPANEL_PASSWORD`. La variable GitHub optionnelle `O2SWITCH_PORT` permet de surcharger le port SSH ; par defaut, Coupe utilise `8888`.
+Secrets optionnels :
+
+- O2SWITCH_FTP_SERVER
+- O2SWITCH_FTP_USER
+- O2SWITCH_FTP_PASSWORD
+
+Variables GitHub optionnelles :
+
+- O2SWITCH_FTP_PORT
+- O2SWITCH_FTP_SERVER_DIR
+
+Par defaut, le workflow Coupe publie `frontend/dist/` en FTPS sur `CPANEL_SERVER`, avec `CPANEL_USERNAME` et `CPANEL_PASSWORD`. `O2SWITCH_FTP_*` permet d'utiliser un compte FTP dedie.
 
 ## Statuts V1
 
