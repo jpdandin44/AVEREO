@@ -35,6 +35,8 @@ Les secrets communs suivants doivent etre definis au niveau du depot GitHub dans
 
 `CPANEL_API_TOKEN` est optionnel. Si `CPANEL_PASSWORD` est renseigne, il est utilise en priorite par les workflows.
 
+Si `O2SWITCH_PORT` n'est pas renseigne, les workflows utilisent le port `8888` par defaut.
+
 `CPANEL_SERVER` doit contenir le serveur cPanel/O2Switch sans `https://` et sans `:2083`.
 
 ## Whitelist SSH dynamique

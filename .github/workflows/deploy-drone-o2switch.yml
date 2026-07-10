@@ -74,7 +74,7 @@ jobs:
         run: |
           set -euo pipefail
           PORT="${{ secrets.O2SWITCH_PORT }}"
-          if [ -z "$PORT" ]; then PORT=22; fi
+          if [ -z "$PORT" ]; then PORT=8888; fi
           TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
           if [ -z "$TARGET" ]; then
             echo "O2SWITCH_TARGET_PATH secret is required for environment 'drone'." >&2
@@ -91,7 +91,7 @@ jobs:
         run: |
           set -euo pipefail
           PORT="${{ secrets.O2SWITCH_PORT }}"
-          if [ -z "$PORT" ]; then PORT=22; fi
+          if [ -z "$PORT" ]; then PORT=8888; fi
           TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
           if [ -z "$TARGET" ]; then
             echo "O2SWITCH_TARGET_PATH secret is required for environment 'drone'." >&2
