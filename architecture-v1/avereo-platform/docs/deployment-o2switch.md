@@ -23,6 +23,8 @@ Chaque depot applicatif doit definir uniquement :
 - `O2SWITCH_PORT`
 - `O2SWITCH_TARGET_PATH`
 
+Si `O2SWITCH_PORT` n'est pas renseigne, le port `8888` est utilise par defaut.
+
 ## Deploiement manuel
 
 Lancer le workflow `Deploy frontend to O2Switch` depuis GitHub Actions. Le workflow build le frontend Vite puis publie uniquement `frontend/dist/`.

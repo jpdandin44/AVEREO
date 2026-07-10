@@ -8,7 +8,7 @@ if [ -z "$command_name" ]; then
 fi
 
 port="${O2SWITCH_PORT:-}"
-if [ -z "$port" ]; then port=22; fi
+if [ -z "$port" ]; then port=8888; fi
 
 if [ -z "${CPANEL_USERNAME:-}" ] || [ -z "${CPANEL_SERVER:-}" ]; then
   echo "CPANEL_USERNAME and CPANEL_SERVER secrets are required." >&2
