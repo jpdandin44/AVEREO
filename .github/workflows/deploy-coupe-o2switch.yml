@@ -103,7 +103,11 @@ jobs:
             "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}:${TARGET}/"
 
       - name: Verify public deployment
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "coupe" "https://coupe.avereo.fr"
+        env:
+          O2SWITCH_PUBLIC_URL: ${{ vars.O2SWITCH_PUBLIC_URL }}
+        run: |
+          PUBLIC_URL="${O2SWITCH_PUBLIC_URL:-https://coupe.avereo.fr.daje3540.odns.fr/}"
+          bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "coupe" "$PUBLIC_URL"
 
       - name: Remove runner IP from cPanel whitelist
         if: always()
