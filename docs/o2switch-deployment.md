@@ -84,6 +84,8 @@ Chaque workflow verifie maintenant l'URL publique apres publication.
 
 Pour Coupe, la verification utilise `https://coupe.avereo.fr/` si `O2SWITCH_PUBLIC_URL` n'est pas definie. Definir `O2SWITCH_PUBLIC_URL` dans l'environnement GitHub `coupe` uniquement si une autre URL publique doit etre verifiee.
 
+Si le certificat HTTPS public est encore auto-signe, la verification retente le chargement avec `curl --insecure` pour confirmer le contenu publie, puis emet un warning. Corriger ensuite le certificat dans cPanel/AutoSSL avant de considerer l'URL comme prete pour la production.
+
 La verification echoue si :
 
 - le DNS du sous-domaine ne resout pas ;
