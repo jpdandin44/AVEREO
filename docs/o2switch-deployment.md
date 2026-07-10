@@ -39,11 +39,11 @@ Si `O2SWITCH_PORT` n'est pas renseigne, les workflows utilisent le port `8888` p
 
 `CPANEL_SERVER` doit contenir le serveur cPanel/O2Switch sans `https://` et sans `:2083`.
 
-Pour Coupe, le workflow utilise `CPANEL_SERVER` comme hote SSH afin d'eviter un ecart entre l'API cPanel et le deploiement `rsync`.
+Pour Coupe, le workflow publie en FTPS afin d'eviter les timeouts SSH constates depuis les runners GitHub. Il utilise `CPANEL_SERVER`, `CPANEL_USERNAME` et `CPANEL_PASSWORD` par defaut. Les secrets optionnels `O2SWITCH_FTP_SERVER`, `O2SWITCH_FTP_USER` et `O2SWITCH_FTP_PASSWORD` permettent d'utiliser un compte FTP dedie. Les variables optionnelles `O2SWITCH_FTP_PORT` et `O2SWITCH_FTP_SERVER_DIR` permettent de surcharger le port ou le dossier FTP.
 
 ## Whitelist SSH dynamique
 
-Avant `rsync`, le workflow :
+Pour les workflows qui utilisent encore SSH, avant `rsync`, le workflow :
 
 1. Recupere l'IP publique du runner GitHub.
 2. Appelle l'API cPanel `SshWhitelist/add` pour autoriser cette IP sur le port SSH.
@@ -76,11 +76,11 @@ Exemples :
 - `thermo.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/thermo`
 - `drone.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/drone`
 
-Si le workflow est en succes mais que le sous-domaine affiche `My Blog` ou WordPress, le deploiement `rsync` est probablement correct mais le sous-domaine ne route pas vers le bon document root. Verifier alors la configuration du domaine/sous-domaine dans cPanel et, si le domaine est gere par O2Switch via Mon Univers Web, verifier aussi que le sous-domaine y est bien actif et rattache a l'hebergement.
+Si le workflow est en succes mais que le sous-domaine affiche `My Blog` ou WordPress, le deploiement est probablement correct mais le sous-domaine ne route pas vers le bon document root. Verifier alors la configuration du domaine/sous-domaine dans cPanel et, si le domaine est gere par O2Switch via Mon Univers Web, verifier aussi que le sous-domaine y est bien actif et rattache a l'hebergement.
 
 ## Verification post-deploiement
 
-Chaque workflow verifie maintenant l'URL publique apres `rsync`.
+Chaque workflow verifie maintenant l'URL publique apres publication.
 
 Pour Coupe, la verification utilise `https://coupe.avereo.fr/` si `O2SWITCH_PUBLIC_URL` n'est pas definie. Definir `O2SWITCH_PUBLIC_URL` dans l'environnement GitHub `coupe` uniquement si une autre URL publique doit etre verifiee.
 
