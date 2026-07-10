@@ -42,27 +42,13 @@ jobs:
       - name: Resolve FTPS target directory
         id: ftp-target
         env:
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
           CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-          O2SWITCH_FTP_SERVER_DIR: ${{ vars.O2SWITCH_FTP_SERVER_DIR }}
-          O2SWITCH_TARGET_PATH: ${{ secrets.O2SWITCH_TARGET_PATH }}
         run: |
           set -euo pipefail
-          if [ -n "${O2SWITCH_FTP_SERVER_DIR:-}" ]; then
-            server_dir="$O2SWITCH_FTP_SERVER_DIR"
-          else
-            target="${O2SWITCH_TARGET_PATH:-}"
-            if [ -z "$target" ]; then
-              echo "O2SWITCH_TARGET_PATH secret is required for environment 'coupe'." >&2
-              exit 1
-            fi
-            target="${target%/}"
-            home_prefix="/home/${CPANEL_USERNAME:-}/"
-            if [ -n "${CPANEL_USERNAME:-}" ] && [[ "$target" == "$home_prefix"* ]]; then
-              server_dir="${target#$home_prefix}"
-            else
-              server_dir="${target#/}"
-            fi
-          fi
+          server_dir="$(python3 "$GITHUB_WORKSPACE/.github/scripts/cpanel-domain-docroot.py" "coupe.avereo.fr")"
           server_dir="${server_dir#/}"
           server_dir="${server_dir%/}/"
           if [ "$server_dir" = "/" ]; then
@@ -84,8 +70,4 @@ jobs:
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
 
       - name: Verify public deployment
-        env:
-          O2SWITCH_PUBLIC_URL: ${{ vars.O2SWITCH_PUBLIC_URL }}
-        run: |
-          PUBLIC_URL="${O2SWITCH_PUBLIC_URL:-https://coupe.avereo.fr/}"
-          bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "coupe" "$PUBLIC_URL"
+        run: bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "coupe" "https://coupe.avereo.fr/"

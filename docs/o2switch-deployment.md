@@ -13,13 +13,11 @@ Creer un environnement GitHub par application :
 - `thermo`
 - `drone`
 
-Chaque environnement doit contenir uniquement le chemin cible propre a l'application :
+Les environnements qui utilisent encore SSH/rsync doivent contenir le chemin cible propre a l'application :
 
 - `O2SWITCH_TARGET_PATH`
 
-Variable optionnelle par environnement :
-
-- `O2SWITCH_PUBLIC_URL` : URL publique a verifier apres deploiement. Par defaut, le workflow Coupe verifie `https://coupe.avereo.fr/`.
+Coupe ne lit plus `O2SWITCH_TARGET_PATH`, `O2SWITCH_FTP_SERVER_DIR` ni `O2SWITCH_PUBLIC_URL` : son workflow demande a cPanel le document root reel de `coupe.avereo.fr`, publie dans ce dossier, puis verifie toujours `https://coupe.avereo.fr/`.
 
 ## Repository secrets GitHub
 
@@ -39,7 +37,7 @@ Si `O2SWITCH_PORT` n'est pas renseigne, les workflows utilisent le port `8888` p
 
 `CPANEL_SERVER` doit contenir le serveur cPanel/O2Switch sans `https://` et sans `:2083`.
 
-Pour Coupe, le workflow publie en FTPS afin d'eviter les timeouts SSH constates depuis les runners GitHub. Il utilise `CPANEL_SERVER`, `CPANEL_USERNAME` et `CPANEL_PASSWORD` par defaut. Les secrets optionnels `O2SWITCH_FTP_SERVER`, `O2SWITCH_FTP_USER` et `O2SWITCH_FTP_PASSWORD` permettent d'utiliser un compte FTP dedie. Les variables optionnelles `O2SWITCH_FTP_PORT` et `O2SWITCH_FTP_SERVER_DIR` permettent de surcharger le port ou le dossier FTP.
+Pour Coupe, le workflow publie en FTPS afin d'eviter les timeouts SSH constates depuis les runners GitHub. Il utilise cPanel `DomainInfo/single_domain_data` pour lire le document root reel de `coupe.avereo.fr`, publie dans ce dossier, puis verifie toujours `https://coupe.avereo.fr/`. Les secrets optionnels `O2SWITCH_FTP_SERVER`, `O2SWITCH_FTP_USER` et `O2SWITCH_FTP_PASSWORD` permettent d'utiliser un compte FTP dedie. La variable optionnelle `O2SWITCH_FTP_PORT` permet de surcharger le port FTP.
 
 ## Whitelist SSH dynamique
 
@@ -65,12 +63,12 @@ Si cPanel indique que la limite d'exceptions SSH est atteinte, supprimer manuell
 
 ## Sous-domaines O2Switch
 
-Chaque sous-domaine doit pointer vers le meme document root que le secret `O2SWITCH_TARGET_PATH` de son environnement GitHub.
+Chaque sous-domaine doit pointer vers le meme document root que le dossier cible de son workflow. Pour les workflows SSH, cela correspond a `O2SWITCH_TARGET_PATH`. Pour Coupe, le dossier cible est lu directement depuis cPanel.
 
 Exemples :
 
 - `connect.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/connect`
-- `coupe.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/coupe`
+- `coupe.avereo.fr` -> document root declare dans cPanel pour ce sous-domaine
 - `rapport.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/rapport`
 - `projet.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/projet`
 - `thermo.avereo.fr` -> `/home/CPANEL_USERNAME/public_html/thermo`
@@ -82,7 +80,7 @@ Si le workflow est en succes mais que le sous-domaine affiche `My Blog` ou WordP
 
 Chaque workflow verifie maintenant l'URL publique apres publication.
 
-Pour Coupe, la verification utilise `https://coupe.avereo.fr/` si `O2SWITCH_PUBLIC_URL` n'est pas definie. Definir `O2SWITCH_PUBLIC_URL` dans l'environnement GitHub `coupe` uniquement si une autre URL publique doit etre verifiee.
+Pour Coupe, la verification utilise toujours `https://coupe.avereo.fr/` afin d'eviter qu'une ancienne variable `O2SWITCH_PUBLIC_URL` pointe encore vers l'URL temporaire O2Switch.
 
 Si le certificat HTTPS public est encore auto-signe, la verification retente le chargement avec `curl --insecure` pour confirmer le contenu publie, puis emet un warning. Corriger ensuite le certificat dans cPanel/AutoSSL avant de considerer l'URL comme prete pour la production.
 

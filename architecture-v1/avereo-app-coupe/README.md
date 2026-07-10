@@ -34,7 +34,6 @@ Deploiement manuel possible :
 
 Secrets GitHub requis :
 
-- O2SWITCH_TARGET_PATH
 - CPANEL_SERVER
 - CPANEL_USERNAME
 - CPANEL_PASSWORD
@@ -48,9 +47,8 @@ Secrets optionnels :
 Variables GitHub optionnelles :
 
 - O2SWITCH_FTP_PORT
-- O2SWITCH_FTP_SERVER_DIR
 
-Par defaut, le workflow Coupe publie `frontend/dist/` en FTPS sur `CPANEL_SERVER`, avec `CPANEL_USERNAME` et `CPANEL_PASSWORD`. `O2SWITCH_FTP_*` permet d'utiliser un compte FTP dedie.
+Par defaut, le workflow Coupe demande a cPanel le document root reel de `coupe.avereo.fr`, puis publie `frontend/dist/` en FTPS dans ce dossier sur `CPANEL_SERVER`, avec `CPANEL_USERNAME` et `CPANEL_PASSWORD`. `O2SWITCH_FTP_*` permet d'utiliser un compte FTP dedie.
 
 ## Statuts V1
 
