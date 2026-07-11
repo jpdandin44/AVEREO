@@ -6,7 +6,8 @@ require __DIR__ . '/bootstrap.php';
 api_no_options_response();
 
 $config = api_config();
-api_require_token($config);
+$identity = api_require_auth($config);
+$canManageAll = api_identity_can_manage_all($identity, $config);
 
 $pdo = api_pdo($config);
 api_ensure_schema($pdo);
@@ -17,12 +18,17 @@ if ($method === 'GET') {
     $id = api_trim_text($_GET['id'] ?? '', 32);
 
     if ($id !== '') {
-        $statement = $pdo->prepare(
-            'SELECT public_id, name, address, sources, payload_json, payload_bytes, created_at, updated_at
+        $sql = 'SELECT public_id, name, address, sources, payload_json, payload_bytes, owner_drupal_uid, owner_email, created_at, updated_at
              FROM coupe_projects
-             WHERE public_id = :id'
-        );
-        $statement->execute(['id' => $id]);
+             WHERE public_id = :id';
+        $params = ['id' => $id];
+        if (!$canManageAll) {
+            $sql .= ' AND owner_drupal_uid = :owner_drupal_uid';
+            $params['owner_drupal_uid'] = $identity['id'];
+        }
+
+        $statement = $pdo->prepare($sql);
+        $statement->execute($params);
         $row = $statement->fetch();
 
         if (!$row) {
@@ -42,12 +48,14 @@ if ($method === 'GET') {
     }
 
     $limit = max(1, min(100, (int)($_GET['limit'] ?? 50)));
-    $statement = $pdo->prepare(
-        'SELECT public_id, name, address, sources, payload_bytes, created_at, updated_at
+    $sql = 'SELECT public_id, name, address, sources, payload_bytes, owner_drupal_uid, owner_email, created_at, updated_at
          FROM coupe_projects
+         WHERE (:can_manage_all = 1 OR owner_drupal_uid = :owner_drupal_uid)
          ORDER BY updated_at DESC
-         LIMIT :limit'
-    );
+         LIMIT :limit';
+    $statement = $pdo->prepare($sql);
+    $statement->bindValue('can_manage_all', $canManageAll ? 1 : 0, PDO::PARAM_INT);
+    $statement->bindValue('owner_drupal_uid', (string)$identity['id']);
     $statement->bindValue('limit', $limit, PDO::PARAM_INT);
     $statement->execute();
 
@@ -82,6 +90,24 @@ if ($method === 'POST') {
         ]);
     }
 
+    $ownerDrupalUid = ($identity['provider'] ?? '') === 'drupal' ? (string)$identity['id'] : null;
+    $ownerEmail = ($identity['provider'] ?? '') === 'drupal' ? (string)$identity['email'] : '';
+    $updatedByDrupalUid = ($identity['provider'] ?? '') === 'drupal' ? (string)$identity['id'] : null;
+
+    $existingStatement = $pdo->prepare('SELECT owner_drupal_uid FROM coupe_projects WHERE public_id = :id');
+    $existingStatement->execute(['id' => $id]);
+    $existing = $existingStatement->fetch();
+    if ($existing && !$canManageAll) {
+        $existingOwner = trim((string)($existing['owner_drupal_uid'] ?? ''));
+        if ($existingOwner !== '' && $existingOwner !== $ownerDrupalUid) {
+            api_json(403, [
+                'ok' => false,
+                'error' => 'project_forbidden',
+                'message' => 'Vous ne pouvez pas modifier ce projet.',
+            ]);
+        }
+    }
+
     $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     if (!is_string($json)) {
         api_json(400, [
@@ -104,14 +130,17 @@ if ($method === 'POST') {
     }
 
     $statement = $pdo->prepare(
-        'INSERT INTO coupe_projects (public_id, name, address, sources, payload_json, payload_bytes)
-         VALUES (:public_id, :name, :address, :sources, :payload_json, :payload_bytes)
+        'INSERT INTO coupe_projects (public_id, name, address, sources, payload_json, payload_bytes, owner_drupal_uid, owner_email, created_by_drupal_uid, updated_by_drupal_uid)
+         VALUES (:public_id, :name, :address, :sources, :payload_json, :payload_bytes, :owner_drupal_uid, :owner_email, :created_by_drupal_uid, :updated_by_drupal_uid)
          ON DUPLICATE KEY UPDATE
             name = VALUES(name),
             address = VALUES(address),
             sources = VALUES(sources),
             payload_json = VALUES(payload_json),
             payload_bytes = VALUES(payload_bytes),
+            owner_drupal_uid = COALESCE(owner_drupal_uid, VALUES(owner_drupal_uid)),
+            owner_email = IF(owner_email = "", VALUES(owner_email), owner_email),
+            updated_by_drupal_uid = VALUES(updated_by_drupal_uid),
             updated_at = CURRENT_TIMESTAMP'
     );
     $statement->execute([
@@ -121,6 +150,10 @@ if ($method === 'POST') {
         'sources' => api_trim_text($projectInfo['sources'] ?? '', 255),
         'payload_json' => $json,
         'payload_bytes' => $payloadBytes,
+        'owner_drupal_uid' => $ownerDrupalUid,
+        'owner_email' => api_trim_text($ownerEmail, 190),
+        'created_by_drupal_uid' => $updatedByDrupalUid,
+        'updated_by_drupal_uid' => $updatedByDrupalUid,
     ]);
 
     api_json(200, [
@@ -142,8 +175,15 @@ if ($method === 'DELETE') {
         ]);
     }
 
-    $statement = $pdo->prepare('DELETE FROM coupe_projects WHERE public_id = :id');
-    $statement->execute(['id' => $id]);
+    $sql = 'DELETE FROM coupe_projects WHERE public_id = :id';
+    $params = ['id' => $id];
+    if (!$canManageAll) {
+        $sql .= ' AND owner_drupal_uid = :owner_drupal_uid';
+        $params['owner_drupal_uid'] = $identity['id'];
+    }
+
+    $statement = $pdo->prepare($sql);
+    $statement->execute($params);
 
     api_json(200, [
         'ok' => true,

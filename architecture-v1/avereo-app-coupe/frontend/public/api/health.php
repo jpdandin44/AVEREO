@@ -6,17 +6,19 @@ require __DIR__ . '/bootstrap.php';
 api_no_options_response();
 
 $config = api_config();
-$hasConfig = trim((string)($config['db_host'] ?? '')) !== ''
+$hasDatabaseConfig = trim((string)($config['db_host'] ?? '')) !== ''
     && trim((string)($config['db_name'] ?? '')) !== ''
     && trim((string)($config['db_user'] ?? '')) !== ''
-    && trim((string)($config['db_password'] ?? '')) !== ''
-    && trim((string)($config['api_token'] ?? '')) !== '';
+    && trim((string)($config['db_password'] ?? '')) !== '';
+$hasAuthConfig = api_auth_configured($config);
 
-if (!$hasConfig) {
+if (!$hasDatabaseConfig || !$hasAuthConfig) {
     api_json(200, [
         'ok' => true,
-        'databaseConfigured' => false,
-        'message' => 'API disponible, base non configuree.',
+        'databaseConfigured' => $hasDatabaseConfig,
+        'authConfigured' => $hasAuthConfig,
+        'authMode' => api_auth_mode($config),
+        'message' => 'API disponible, configuration incomplete.',
     ]);
 }
 
@@ -27,5 +29,7 @@ $pdo->query('SELECT 1');
 api_json(200, [
     'ok' => true,
     'databaseConfigured' => true,
+    'authConfigured' => true,
+    'authMode' => api_auth_mode($config),
     'message' => 'API et base disponibles.',
 ]);

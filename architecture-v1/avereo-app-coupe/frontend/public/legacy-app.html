@@ -192,6 +192,7 @@
             <button onclick="document.getElementById('load-project-input').click()"><i class="fas fa-folder-open"></i> Charger</button>
             <button onclick="app.saveProjectOnline()"><i class="fas fa-cloud-upload-alt"></i> Sauver en ligne</button>
             <button onclick="app.openProjectOnline()"><i class="fas fa-cloud-download-alt"></i> Ouvrir en ligne</button>
+            <button id="online-auth-btn" onclick="app.handleOnlineAuthClick()" title="Connexion utilisateur AVEREO"><i class="fas fa-user-circle"></i> Connexion AVEREO</button>
             <button onclick="app.resetProject()"><i class="fas fa-trash-alt"></i> Nouveau</button>
             <button onclick="app.openSectionEditorStandalone()" title="Ouvrir l'éditeur CAO sans ligne de coupe pour charger ou modifier une coupe existante"><i class="fas fa-drafting-compass"></i> Éditeur CAO</button>
             <button class="btn-primary" onclick="app.generateSection()"><i class="fas fa-building"></i> Générer la Coupe</button>
@@ -801,6 +802,11 @@
             isUndoing: false,
             apiBaseUrl: '/api',
             apiTokenStorageKey: 'avereoCoupeApiToken',
+            drupalTokenStorageKey: 'avereoCoupeDrupalToken',
+            oauthStateStorageKey: 'avereoCoupeOauthState',
+            oauthVerifierStorageKey: 'avereoCoupeOauthVerifier',
+            authConfig: { mode: 'api_token', configured: false },
+            currentUser: null,
 
             modalCallback: null,
             _shiftDown: false,
@@ -827,6 +833,7 @@
                     return;
                 }
                 this.canvas = new fabric.Canvas('plan-canvas', { selection: true, preserveObjectStacking: true });
+                this.initializeOnlineAuth();
                 this.resizeCanvas();
                 window.addEventListener('resize', () => this.resizeCanvas());
 
@@ -1438,6 +1445,224 @@
                 this.notify("Projet sauvegardé ✓", "success");
             },
 
+            async initializeOnlineAuth() {
+                await this.loadAuthConfig();
+                await this.completeOAuthCallback();
+                await this.refreshCurrentUser(false);
+                this.updateAuthButton();
+            },
+
+            async loadAuthConfig() {
+                try {
+                    const response = await fetch(`${this.apiBaseUrl}/auth.php?action=config`, {
+                        headers: { 'Accept': 'application/json' },
+                    });
+                    const data = await response.json();
+                    if (response.ok && data.ok && data.auth) {
+                        this.authConfig = data.auth;
+                    }
+                } catch (err) {
+                    this.authConfig = { mode: 'api_token', configured: false };
+                }
+            },
+
+            updateAuthButton() {
+                const btn = document.getElementById('online-auth-btn');
+                if (!btn) return;
+
+                if (this.authConfig?.mode === 'drupal_oauth') {
+                    if (this.currentUser) {
+                        const label = this.currentUser.name || this.currentUser.email || 'Connecté';
+                        btn.innerHTML = `<i class="fas fa-user-check"></i> ${this.escapeHTML(label)}`;
+                        btn.title = 'Déconnecter le compte AVEREO';
+                    } else {
+                        btn.innerHTML = '<i class="fas fa-user-circle"></i> Connexion AVEREO';
+                        btn.title = 'Se connecter avec le compte AVEREO';
+                    }
+                    return;
+                }
+
+                btn.innerHTML = '<i class="fas fa-key"></i> Jeton API';
+                btn.title = 'Configurer ou remplacer le jeton API Coupe';
+            },
+
+            async handleOnlineAuthClick() {
+                if (this.authConfig?.mode === 'drupal_oauth') {
+                    if (this.currentUser || this.getStoredDrupalToken()) {
+                        this.logoutDrupal();
+                    } else {
+                        await this.startDrupalLogin();
+                    }
+                    return;
+                }
+
+                localStorage.removeItem(this.apiTokenStorageKey);
+                const token = this.getApiToken();
+                if (token) this.notify("Jeton API enregistré.", "success");
+            },
+
+            getOAuthRedirectUri() {
+                return this.authConfig?.redirectUri || `${window.location.origin}/auth/callback/`;
+            },
+
+            async startDrupalLogin() {
+                if (!this.authConfig?.configured) {
+                    this.notify("OAuth Drupal n'est pas encore configuré côté serveur.", "warning", 6000);
+                    return;
+                }
+                if (!window.crypto?.subtle) {
+                    this.notify("Connexion sécurisée requise pour OAuth PKCE.", "error", 6000);
+                    return;
+                }
+
+                const state = this.randomBase64Url(32);
+                const verifier = this.randomBase64Url(64);
+                const challenge = await this.pkceChallenge(verifier);
+                sessionStorage.setItem(this.oauthStateStorageKey, state);
+                sessionStorage.setItem(this.oauthVerifierStorageKey, verifier);
+
+                const url = new URL(this.authConfig.authorizeUrl);
+                url.searchParams.set('response_type', 'code');
+                url.searchParams.set('client_id', this.authConfig.clientId);
+                url.searchParams.set('redirect_uri', this.getOAuthRedirectUri());
+                url.searchParams.set('scope', this.authConfig.scope || 'openid profile email');
+                url.searchParams.set('state', state);
+                url.searchParams.set('code_challenge', challenge);
+                url.searchParams.set('code_challenge_method', 'S256');
+                try {
+                    window.top.location.href = url.toString();
+                } catch (err) {
+                    window.location.href = url.toString();
+                }
+            },
+
+            async completeOAuthCallback() {
+                if (this.authConfig?.mode !== 'drupal_oauth') return;
+
+                const params = new URLSearchParams(window.location.search);
+                const code = params.get('code');
+                const state = params.get('state');
+                if (!code) return;
+
+                const expectedState = sessionStorage.getItem(this.oauthStateStorageKey);
+                const verifier = sessionStorage.getItem(this.oauthVerifierStorageKey);
+                sessionStorage.removeItem(this.oauthStateStorageKey);
+                sessionStorage.removeItem(this.oauthVerifierStorageKey);
+
+                if (!expectedState || state !== expectedState || !verifier) {
+                    this.notify("Callback OAuth invalide.", "error", 7000);
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${this.apiBaseUrl}/auth.php?action=token`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            code,
+                            codeVerifier: verifier,
+                            redirectUri: this.getOAuthRedirectUri(),
+                        }),
+                    });
+                    const data = await response.json().catch(() => ({}));
+                    if (!response.ok || !data.ok || !data.token?.accessToken) {
+                        throw new Error(data.message || "Connexion AVEREO impossible.");
+                    }
+
+                    this.storeDrupalToken(data.token);
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    this.notify("Connexion AVEREO réussie.", "success", 4500);
+                } catch (err) {
+                    this.notify("Connexion AVEREO impossible : " + err.message, "error", 7000);
+                }
+            },
+
+            async refreshCurrentUser(showErrors = true) {
+                this.currentUser = null;
+                if (this.authConfig?.mode !== 'drupal_oauth') return;
+
+                const token = this.getStoredDrupalToken();
+                if (!token) return;
+
+                try {
+                    const response = await fetch(`${this.apiBaseUrl}/auth.php?action=me`, {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${token}`,
+                        },
+                    });
+                    const data = await response.json().catch(() => ({}));
+                    if (!response.ok || !data.ok) {
+                        throw new Error(data.message || "Session expirée.");
+                    }
+                    this.currentUser = data.user;
+                } catch (err) {
+                    localStorage.removeItem(this.drupalTokenStorageKey);
+                    if (showErrors) this.notify("Session AVEREO expirée : " + err.message, "warning", 6000);
+                }
+            },
+
+            logoutDrupal() {
+                localStorage.removeItem(this.drupalTokenStorageKey);
+                this.currentUser = null;
+                this.updateAuthButton();
+                this.notify("Compte AVEREO déconnecté.", "info");
+            },
+
+            storeDrupalToken(token) {
+                const expiresIn = Number(token.expiresIn || 0);
+                const expiresAt = expiresIn > 0 ? Date.now() + Math.max(1, expiresIn - 60) * 1000 : null;
+                localStorage.setItem(this.drupalTokenStorageKey, JSON.stringify({
+                    accessToken: token.accessToken,
+                    expiresAt,
+                }));
+            },
+
+            getStoredDrupalToken() {
+                try {
+                    const raw = localStorage.getItem(this.drupalTokenStorageKey);
+                    if (!raw) return '';
+                    const token = JSON.parse(raw);
+                    if (!token.accessToken) return '';
+                    if (token.expiresAt && Date.now() > token.expiresAt) {
+                        localStorage.removeItem(this.drupalTokenStorageKey);
+                        return '';
+                    }
+                    return token.accessToken;
+                } catch (err) {
+                    localStorage.removeItem(this.drupalTokenStorageKey);
+                    return '';
+                }
+            },
+
+            async getOnlineAuthToken() {
+                if (this.authConfig?.mode === 'drupal_oauth') {
+                    const token = this.getStoredDrupalToken();
+                    if (token) return token;
+                    await this.startDrupalLogin();
+                    throw new Error("Connexion AVEREO requise.");
+                }
+                return this.getApiToken();
+            },
+
+            randomBase64Url(length) {
+                const bytes = new Uint8Array(length);
+                window.crypto.getRandomValues(bytes);
+                return this.base64UrlEncode(bytes);
+            },
+
+            async pkceChallenge(verifier) {
+                const encoded = new TextEncoder().encode(verifier);
+                const digest = await window.crypto.subtle.digest('SHA-256', encoded);
+                return this.base64UrlEncode(new Uint8Array(digest));
+            },
+
+            base64UrlEncode(bytes) {
+                let binary = '';
+                bytes.forEach(byte => { binary += String.fromCharCode(byte); });
+                return window.btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            },
+
             getApiToken() {
                 let token = localStorage.getItem(this.apiTokenStorageKey) || '';
                 if (!token) {
@@ -1448,8 +1673,8 @@
             },
 
             async apiRequest(path, options = {}) {
-                const token = this.getApiToken();
-                if (!token) throw new Error("Jeton API manquant.");
+                const token = await this.getOnlineAuthToken();
+                if (!token) throw new Error("Authentification manquante.");
 
                 const response = await fetch(`${this.apiBaseUrl}${path}`, {
                     ...options,
@@ -1462,7 +1687,12 @@
 
                 const data = await response.json().catch(() => ({}));
                 if (!response.ok || data.ok === false) {
-                    if (response.status === 401) localStorage.removeItem(this.apiTokenStorageKey);
+                    if (response.status === 401) {
+                        localStorage.removeItem(this.apiTokenStorageKey);
+                        localStorage.removeItem(this.drupalTokenStorageKey);
+                        this.currentUser = null;
+                        this.updateAuthButton();
+                    }
                     throw new Error(data.message || `Erreur API (${response.status})`);
                 }
                 return data;
