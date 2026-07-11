@@ -72,6 +72,14 @@ Les colonnes sont nullable pour permettre une migration douce des anciens projet
 
 Le fichier hors document root pourra evoluer ainsi :
 
+Chemin recommande sur O2Switch :
+
+```text
+/home/CPANEL_USERNAME/.avereo/coupe/config.php
+```
+
+L'API detecte ce fichier automatiquement depuis le home cPanel du document root. En cas d'arborescence particuliere, definir `AVEREO_CONFIG_FILE` cote serveur pour pointer vers ce fichier.
+
 ```php
 <?php
 return [
@@ -103,4 +111,5 @@ Le nom exact de l'endpoint userinfo doit etre confirme apres activation du modul
 2. Creer le client OAuth `avereo_coupe`.
 3. Renseigner les URLs Drupal OAuth dans `/home/CPANEL_USERNAME/.avereo/coupe/config.php`.
 4. Basculer `auth_mode` de `api_token` vers `drupal_oauth`.
-5. Deployer, puis verifier `https://coupe.avereo.fr/api/health.php` et une sauvegarde en ligne avec un compte Drupal.
+5. Deployer, puis verifier `https://coupe.avereo.fr/api/auth.php?action=config`.
+6. Verifier `https://coupe.avereo.fr/api/health.php` et une sauvegarde en ligne avec un compte Drupal.

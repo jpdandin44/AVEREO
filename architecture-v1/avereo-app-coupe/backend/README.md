@@ -26,6 +26,8 @@ Creer ce fichier cote O2Switch :
 /home/CPANEL_USERNAME/.avereo/coupe/config.php
 ```
 
+L'API cherche automatiquement ce fichier depuis le home cPanel deduit du document root O2Switch. Si le serveur a une arborescence atypique, forcer explicitement le chemin avec `AVEREO_CONFIG_FILE`.
+
 Contenu type :
 
 ```php
@@ -45,3 +47,11 @@ return [
 L'application demandera le jeton API lors de la premiere sauvegarde en ligne, puis le stockera dans le navigateur.
 
 Pour le mode cible Drupal, copier `backend/config.example.php`, renseigner les valeurs `drupal_*`, puis passer `auth_mode` a `drupal_oauth`.
+
+Verification apres deploiement :
+
+```text
+https://coupe.avereo.fr/api/health.php
+```
+
+La reponse doit indiquer `databaseConfigured: true`. En mode Drupal, elle doit aussi indiquer `authConfigured: true` et `authMode: drupal_oauth`.
