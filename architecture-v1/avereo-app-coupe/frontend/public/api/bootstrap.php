@@ -12,13 +12,76 @@ function api_json(int $status, array $payload): void
     exit;
 }
 
+function api_home_dir_from_path(string $path): string
+{
+    $path = str_replace('\\', '/', trim($path));
+    if ($path === '') {
+        return '';
+    }
+
+    if (preg_match('#^(/home/[^/]+)(?:/|$)#', $path, $matches)) {
+        return $matches[1];
+    }
+
+    return '';
+}
+
+function api_config_candidates(): array
+{
+    $roots = [];
+
+    foreach ([
+        getenv('HOME') ?: '',
+        $_SERVER['HOME'] ?? '',
+        $_SERVER['DOCUMENT_ROOT'] ?? '',
+        $_SERVER['CONTEXT_DOCUMENT_ROOT'] ?? '',
+        __DIR__,
+    ] as $path) {
+        $homeDir = api_home_dir_from_path((string)$path);
+        if ($homeDir !== '') {
+            $roots[] = $homeDir;
+        }
+    }
+
+    // On O2Switch subdomains, API files live in /home/USER/domain.tld/api.
+    $roots[] = dirname(__DIR__, 2);
+    // Keep the previous app-root lookup as a fallback for local/dev layouts.
+    $roots[] = dirname(__DIR__, 3);
+
+    $candidates = [];
+    foreach (array_unique($roots) as $root) {
+        $root = rtrim((string)$root, '/\\');
+        if ($root !== '') {
+            $candidates[] = $root . '/.avereo/coupe/config.php';
+        }
+    }
+
+    return array_values(array_unique($candidates));
+}
+
+function api_config_file(): string
+{
+    $configured = trim((string)(getenv('AVEREO_CONFIG_FILE') ?: ($_SERVER['AVEREO_CONFIG_FILE'] ?? '')));
+    if ($configured !== '') {
+        return $configured;
+    }
+
+    $candidates = api_config_candidates();
+    foreach ($candidates as $candidate) {
+        if (is_file($candidate)) {
+            return $candidate;
+        }
+    }
+
+    return $candidates[0] ?? '';
+}
+
 function api_config(): array
 {
-    $homeConfig = dirname(__DIR__, 3) . '/.avereo/coupe/config.php';
-    $configFile = getenv('AVEREO_CONFIG_FILE') ?: ($_SERVER['AVEREO_CONFIG_FILE'] ?? $homeConfig);
+    $configFile = api_config_file();
     $fileConfig = [];
 
-    if (is_file($configFile)) {
+    if ($configFile !== '' && is_file($configFile)) {
         $loaded = require $configFile;
         if (is_array($loaded)) {
             $fileConfig = $loaded;
