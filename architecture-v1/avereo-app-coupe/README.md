@@ -50,8 +50,18 @@ Variables GitHub optionnelles :
 
 Par defaut, le workflow Coupe demande a cPanel le document root reel de `coupe.avereo.fr`, puis publie `frontend/dist/` en FTPS dans ce dossier sur `CPANEL_SERVER`, avec `CPANEL_USERNAME` et `CPANEL_PASSWORD`. `O2SWITCH_FTP_*` permet d'utiliser un compte FTP dedie.
 
+## Sauvegarde en ligne
+
+Les projets peuvent etre sauvegardes dans MySQL via l'API PHP publiee dans `/api`.
+
+Configuration serveur attendue hors document root :
+
+- `/home/CPANEL_USERNAME/.avereo/coupe/config.php`
+
+Voir `backend/config.example.php` et `docs/deployment.md`.
+
 ## Statuts V1
 
-- Backend : desactive en V1.
-- MySQL : desactive en V1.
-- APIs : reportees en V2 uniquement si un besoin metier reel le justifie.
+- Backend : API PHP minimale pour la sauvegarde projet.
+- MySQL : table `coupe_projects`.
+- APIs : endpoints `/api/health.php` et `/api/projects.php`.

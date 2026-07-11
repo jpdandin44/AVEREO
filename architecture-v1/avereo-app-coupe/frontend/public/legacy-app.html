@@ -190,6 +190,8 @@
             <button onclick="app.saveProject()"><i class="fas fa-save"></i> Sauvegarder</button>
             <input type="file" id="load-project-input" accept=".json" style="display:none" onchange="app.loadProject(event)">
             <button onclick="document.getElementById('load-project-input').click()"><i class="fas fa-folder-open"></i> Charger</button>
+            <button onclick="app.saveProjectOnline()"><i class="fas fa-cloud-upload-alt"></i> Sauver en ligne</button>
+            <button onclick="app.openProjectOnline()"><i class="fas fa-cloud-download-alt"></i> Ouvrir en ligne</button>
             <button onclick="app.resetProject()"><i class="fas fa-trash-alt"></i> Nouveau</button>
             <button onclick="app.openSectionEditorStandalone()" title="Ouvrir l'éditeur CAO sans ligne de coupe pour charger ou modifier une coupe existante"><i class="fas fa-drafting-compass"></i> Éditeur CAO</button>
             <button class="btn-primary" onclick="app.generateSection()"><i class="fas fa-building"></i> Générer la Coupe</button>
@@ -783,7 +785,8 @@
             counters: { level: 0, cuts: 0 },
             pixelsPerMeter: null,
             tempCalibLenPx: 0,
-            savedSectionCanvas: null
+            savedSectionCanvas: null,
+            onlineProjectId: null
         };
 
         const app = {
@@ -796,6 +799,8 @@
             history: [],
             historyIndex: -1,
             isUndoing: false,
+            apiBaseUrl: '/api',
+            apiTokenStorageKey: 'avereoCoupeApiToken',
 
             modalCallback: null,
             _shiftDown: false,
@@ -1416,17 +1421,100 @@
                 };
             },
 
-            saveProject() {
+            getProjectPayload() {
                 const metaState = this.getSerializableState();
                 const fabricState = this.canvas.toJSON(['id', 'objType', 'levelId', 'cutId', 'isScanFeedback', 'elementIndex', 'elementId', 'lvlId', 'excludeFromExport']);
                 const sectionState = this.getSectionCanvasPayload ? this.getSectionCanvasPayload() : (appState.savedSectionCanvas || null);
-                const fullSave = { meta: metaState, fabric: fabricState, section: sectionState };
+                return { meta: metaState, fabric: fabricState, section: sectionState };
+            },
+
+            saveProject() {
+                const fullSave = this.getProjectPayload();
                 const blob = new Blob([JSON.stringify(fullSave, null, 2)], { type: "application/json" });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
                 link.download = `coupe-projet-${Date.now()}.json`;
                 link.click();
                 this.notify("Projet sauvegardé ✓", "success");
+            },
+
+            getApiToken() {
+                let token = localStorage.getItem(this.apiTokenStorageKey) || '';
+                if (!token) {
+                    token = window.prompt("Jeton API Coupe AVEREO");
+                    if (token) localStorage.setItem(this.apiTokenStorageKey, token.trim());
+                }
+                return token.trim();
+            },
+
+            async apiRequest(path, options = {}) {
+                const token = this.getApiToken();
+                if (!token) throw new Error("Jeton API manquant.");
+
+                const response = await fetch(`${this.apiBaseUrl}${path}`, {
+                    ...options,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        ...(options.headers || {}),
+                    },
+                });
+
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok || data.ok === false) {
+                    if (response.status === 401) localStorage.removeItem(this.apiTokenStorageKey);
+                    throw new Error(data.message || `Erreur API (${response.status})`);
+                }
+                return data;
+            },
+
+            async saveProjectOnline() {
+                try {
+                    this.notify("Sauvegarde en ligne...", "info");
+                    const data = await this.apiRequest('/projects.php', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            id: appState.onlineProjectId,
+                            project: this.getProjectPayload(),
+                        }),
+                    });
+                    appState.onlineProjectId = data.project?.id || appState.onlineProjectId;
+                    this.notify("Projet sauvegardé en ligne ✓", "success", 4500);
+                } catch (err) {
+                    this.notify("Sauvegarde en ligne impossible : " + err.message, "error", 7000);
+                }
+            },
+
+            async openProjectOnline() {
+                try {
+                    const data = await this.apiRequest('/projects.php?limit=50', { method: 'GET' });
+                    const projects = data.projects || [];
+                    if (!projects.length) {
+                        this.notify("Aucun projet en ligne.", "info");
+                        return;
+                    }
+
+                    const list = projects.map((project, index) => {
+                        const name = project.name || "Projet sans nom";
+                        const date = project.updatedAt || "";
+                        return `${index + 1}. ${name} — ${date}`;
+                    }).join('\n');
+
+                    const answer = window.prompt(`Projet à charger :\n\n${list}\n\nSaisissez un numéro ou un identifiant projet.`);
+                    if (!answer) return;
+
+                    const index = Number(answer) - 1;
+                    const selected = Number.isInteger(index) && projects[index] ? projects[index] : projects.find(project => project.id === answer.trim());
+                    if (!selected) {
+                        this.notify("Projet en ligne introuvable.", "error");
+                        return;
+                    }
+
+                    const projectData = await this.apiRequest(`/projects.php?id=${encodeURIComponent(selected.id)}`, { method: 'GET' });
+                    this.applyProjectData(projectData.project.payload, "Projet en ligne chargé ✓", selected.id);
+                } catch (err) {
+                    this.notify("Chargement en ligne impossible : " + err.message, "error", 7000);
+                }
             },
 
             loadProject(event) {
@@ -1436,73 +1524,78 @@
                 reader.onload = (e) => {
                     try {
                         const data = JSON.parse(e.target.result);
-                        if (!data.meta || !data.meta.version) {
-                            this.notify("Format de fichier non reconnu", "error");
-                            return;
-                        }
-                        
-                        appState.projectInfo = data.meta.projectInfo || { name: "", address: "", sources: "" };
-                        document.getElementById('proj-name').value = appState.projectInfo.name;
-                        document.getElementById('proj-address').value = appState.projectInfo.address;
-                        document.getElementById('proj-sources').value = appState.projectInfo.sources;
-                        
-                        appState.bwMode = data.meta.bwMode !== undefined ? data.meta.bwMode : true;
-                        if(document.getElementById('btn-bw-mode')) {
-                            document.getElementById('btn-bw-mode').innerHTML = appState.bwMode ? `<i class="fas fa-adjust"></i> Mode Technique N&B` : `<i class="fas fa-palette"></i> Mode Couleur`;
-                            if(appState.bwMode) document.getElementById('btn-bw-mode').classList.add('active');
-                            else document.getElementById('btn-bw-mode').classList.remove('active');
-                        }
-
-                        appState.levels = data.meta.levels.map(lvl => ({
-                            ...lvl,
-                            fabricObj: null,
-                            sourceFileName: lvl.sourceFileName || '',
-                            levelType: lvl.levelType || (/comble/i.test(lvl.name || '') ? 'comble' : 'standard')
-                        }));
-                        
-                        appState.counters = {
-                            level: data.meta.counters?.level ?? data.meta.counters?.levels ?? appState.levels.length,
-                            cuts: data.meta.counters?.cuts ?? (data.meta.cuts ? data.meta.cuts.length : 0),
-                        };
-
-                        appState.cuts = data.meta.cuts || [];
-                        appState.cuts.forEach(cut => {
-                            cut.elementsByLevel = cut.elementsByLevel || {};
-                            Object.keys(cut.elementsByLevel).forEach(lvlId => {
-                                cut.elementsByLevel[lvlId] = cut.elementsByLevel[lvlId]
-                                    .map(el => this.normalizeElement(el))
-                                    .sort((a, b) => a.offset - b.offset);
-                            });
-                        });
-
-                        appState.views3D = data.meta.views3D || [];
-                        appState.activeLevelId = data.meta.activeLevelId || null;
-                        appState.pixelsPerMeter = data.meta.pixelsPerMeter || null;
-                        appState.savedSectionCanvas = data.section || data.meta.savedSectionCanvas || null;
-
-                        this.canvas.loadFromJSON(data.fabric, () => {
-                            appState.levels.forEach(lvl => {
-                                const obj = this.canvas.getObjects().find(o => o.objType === 'plan' && o.levelId === lvl.id);
-                                lvl.fabricObj = obj || null;
-                            });
-                            this.updateLevelsDisplay();
-                            this.updateLists();
-                            this.update3DLists();
-                            this.updateEmptyState();
-                            this._updateMarkersScale();
-                            if (appState.activeLevelId) this.fillLevelProperties();
-                            this.updateWorkflowStatus();
-                            this.canvas.renderAll();
-                            
-                            this.history = []; this.historyIndex = -1; this.saveState(); 
-                            this.notify(`Projet chargé ✓`, "success");
-                        });
+                        this.applyProjectData(data, "Projet chargé ✓", null);
                     } catch(err) {
                         this.notify("Erreur de chargement : " + err.message, "error");
                     }
                 };
                 reader.readAsText(file);
                 document.getElementById('load-project-input').value = '';
+            },
+
+            applyProjectData(data, successMessage = "Projet chargé ✓", onlineProjectId = null) {
+                if (!data.meta || !data.meta.version) {
+                    this.notify("Format de fichier non reconnu", "error");
+                    return;
+                }
+
+                appState.onlineProjectId = onlineProjectId;
+                appState.projectInfo = data.meta.projectInfo || { name: "", address: "", sources: "" };
+                document.getElementById('proj-name').value = appState.projectInfo.name;
+                document.getElementById('proj-address').value = appState.projectInfo.address;
+                document.getElementById('proj-sources').value = appState.projectInfo.sources;
+
+                appState.bwMode = data.meta.bwMode !== undefined ? data.meta.bwMode : true;
+                if(document.getElementById('btn-bw-mode')) {
+                    document.getElementById('btn-bw-mode').innerHTML = appState.bwMode ? `<i class="fas fa-adjust"></i> Mode Technique N&B` : `<i class="fas fa-palette"></i> Mode Couleur`;
+                    if(appState.bwMode) document.getElementById('btn-bw-mode').classList.add('active');
+                    else document.getElementById('btn-bw-mode').classList.remove('active');
+                }
+
+                appState.levels = data.meta.levels.map(lvl => ({
+                    ...lvl,
+                    fabricObj: null,
+                    sourceFileName: lvl.sourceFileName || '',
+                    levelType: lvl.levelType || (/comble/i.test(lvl.name || '') ? 'comble' : 'standard')
+                }));
+
+                appState.counters = {
+                    level: data.meta.counters?.level ?? data.meta.counters?.levels ?? appState.levels.length,
+                    cuts: data.meta.counters?.cuts ?? (data.meta.cuts ? data.meta.cuts.length : 0),
+                };
+
+                appState.cuts = data.meta.cuts || [];
+                appState.cuts.forEach(cut => {
+                    cut.elementsByLevel = cut.elementsByLevel || {};
+                    Object.keys(cut.elementsByLevel).forEach(lvlId => {
+                        cut.elementsByLevel[lvlId] = cut.elementsByLevel[lvlId]
+                            .map(el => this.normalizeElement(el))
+                            .sort((a, b) => a.offset - b.offset);
+                    });
+                });
+
+                appState.views3D = data.meta.views3D || [];
+                appState.activeLevelId = data.meta.activeLevelId || null;
+                appState.pixelsPerMeter = data.meta.pixelsPerMeter || null;
+                appState.savedSectionCanvas = data.section || data.meta.savedSectionCanvas || null;
+
+                this.canvas.loadFromJSON(data.fabric, () => {
+                    appState.levels.forEach(lvl => {
+                        const obj = this.canvas.getObjects().find(o => o.objType === 'plan' && o.levelId === lvl.id);
+                        lvl.fabricObj = obj || null;
+                    });
+                    this.updateLevelsDisplay();
+                    this.updateLists();
+                    this.update3DLists();
+                    this.updateEmptyState();
+                    this._updateMarkersScale();
+                    if (appState.activeLevelId) this.fillLevelProperties();
+                    this.updateWorkflowStatus();
+                    this.canvas.renderAll();
+
+                    this.history = []; this.historyIndex = -1; this.saveState();
+                    this.notify(successMessage, "success");
+                });
             },
 
             saveState() {
