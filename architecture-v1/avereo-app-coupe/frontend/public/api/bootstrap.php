@@ -62,6 +62,59 @@ function api_bearer_token(): string
     return '';
 }
 
+function api_current_host(): string
+{
+    $host = strtolower(trim((string)($_SERVER['HTTP_HOST'] ?? '')));
+    return preg_replace('/:\d+$/', '', $host) ?? $host;
+}
+
+function api_current_origin(): string
+{
+    $host = trim((string)($_SERVER['HTTP_HOST'] ?? ''));
+    if ($host === '') {
+        $host = 'localhost';
+    }
+
+    $forwardedProto = strtolower(trim((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')));
+    $isHttps = (!empty($_SERVER['HTTPS']) && strtolower((string)$_SERVER['HTTPS']) !== 'off')
+        || $forwardedProto === 'https';
+
+    return ($isHttps ? 'https' : 'http') . '://' . $host;
+}
+
+function api_oauth_redirect_uri(array $config): string
+{
+    $configured = trim((string)($config['drupal_redirect_uri'] ?? ''));
+    return $configured !== '' ? $configured : api_current_origin() . '/auth/callback/';
+}
+
+function api_redirect_uri_allowed(string $redirectUri): bool
+{
+    $parts = parse_url($redirectUri);
+    $host = strtolower((string)($parts['host'] ?? ''));
+    $scheme = strtolower((string)($parts['scheme'] ?? ''));
+    $currentHost = api_current_host();
+
+    if ($host === '' || !in_array($scheme, ['https', 'http'], true)) {
+        return false;
+    }
+
+    if ($currentHost !== '' && $host !== $currentHost) {
+        return false;
+    }
+
+    // Drupal may identify users from avereo.fr, but app callbacks must stay on app subdomains.
+    if ($host === 'avereo.fr' || $host === 'www.avereo.fr') {
+        return false;
+    }
+
+    if (str_ends_with($host, '.avereo.fr')) {
+        return true;
+    }
+
+    return in_array($host, ['localhost', '127.0.0.1'], true);
+}
+
 function api_public_auth_config(array $config): array
 {
     $mode = api_auth_mode($config);
@@ -78,6 +131,8 @@ function api_public_auth_config(array $config): array
     $tokenUrl = trim((string)($config['drupal_token_url'] ?? ''));
     $userinfoUrl = trim((string)($config['drupal_userinfo_url'] ?? ''));
     $clientId = trim((string)($config['drupal_client_id'] ?? ''));
+    $redirectUri = api_oauth_redirect_uri($config);
+    $redirectUriAllowed = api_redirect_uri_allowed($redirectUri);
 
     if ($authorizeUrl === '' && $issuer !== '') {
         $authorizeUrl = $issuer . '/oauth/authorize';
@@ -91,12 +146,12 @@ function api_public_auth_config(array $config): array
 
     return [
         'mode' => 'drupal_oauth',
-        'configured' => $issuer !== '' && $authorizeUrl !== '' && $tokenUrl !== '' && $userinfoUrl !== '' && $clientId !== '',
+        'configured' => $issuer !== '' && $authorizeUrl !== '' && $tokenUrl !== '' && $userinfoUrl !== '' && $clientId !== '' && $redirectUriAllowed,
         'issuer' => $issuer,
         'authorizeUrl' => $authorizeUrl,
         'clientId' => $clientId,
         'scope' => trim((string)($config['drupal_scope'] ?? 'openid profile email')),
-        'redirectUri' => trim((string)($config['drupal_redirect_uri'] ?? '')),
+        'redirectUri' => $redirectUri,
     ];
 }
 

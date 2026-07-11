@@ -24,6 +24,8 @@ Conclusion : Drupal est bien la bonne brique d'identite, mais OAuth/OpenID Conne
 3. L'API PHP Coupe verifie le jeton Drupal avant toute lecture/ecriture projet.
 4. MySQL Coupe stocke les projets et rattache chaque projet a l'identite Drupal.
 
+Le domaine racine `https://avereo.fr` doit rester public. Il ne faut pas activer de regle Drupal globale de type "site prive" ou "connexion obligatoire pour tout le site". Les callbacks OAuth doivent pointer uniquement vers les sous-domaines applicatifs, par exemple `https://coupe.avereo.fr/auth/callback/`.
+
 ## Module Drupal requis
 
 Installer et activer Simple OAuth / OpenID Connect sur le Drupal `avereo.fr`.
@@ -58,7 +60,7 @@ Migration integree par l'API :
 ALTER TABLE coupe_projects
     ADD COLUMN owner_drupal_uid VARCHAR(64) NULL AFTER payload_bytes,
     ADD COLUMN owner_email VARCHAR(190) NOT NULL DEFAULT '' AFTER owner_drupal_uid,
-    ADD COLUMN created_by_drupal_uid VARCHAR(64) NULL AFTER payload_bytes,
+    ADD COLUMN created_by_drupal_uid VARCHAR(64) NULL AFTER owner_email,
     ADD COLUMN updated_by_drupal_uid VARCHAR(64) NULL AFTER created_by_drupal_uid,
     ADD KEY idx_coupe_projects_owner (owner_drupal_uid),
     ADD KEY idx_coupe_projects_owner_updated (owner_drupal_uid, updated_at);

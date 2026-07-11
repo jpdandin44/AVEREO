@@ -60,6 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'token') {
         ]);
     }
 
+    if (!api_redirect_uri_allowed($redirectUri)) {
+        api_json(400, [
+            'ok' => false,
+            'error' => 'oauth_redirect_uri_forbidden',
+            'message' => 'La callback OAuth doit rester sur le sous-domaine applicatif courant.',
+        ]);
+    }
+
     $fields = [
         'grant_type' => 'authorization_code',
         'client_id' => $clientId,
