@@ -6,10 +6,16 @@ CREATE TABLE IF NOT EXISTS coupe_projects (
     sources VARCHAR(255) NOT NULL DEFAULT '',
     payload_json LONGTEXT NOT NULL,
     payload_bytes INT UNSIGNED NOT NULL DEFAULT 0,
+    owner_drupal_uid VARCHAR(64) NULL,
+    owner_email VARCHAR(190) NOT NULL DEFAULT '',
+    created_by_drupal_uid VARCHAR(64) NULL,
+    updated_by_drupal_uid VARCHAR(64) NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE KEY uq_coupe_projects_public_id (public_id),
     KEY idx_coupe_projects_updated_at (updated_at),
-    KEY idx_coupe_projects_name (name)
+    KEY idx_coupe_projects_name (name),
+    KEY idx_coupe_projects_owner (owner_drupal_uid),
+    KEY idx_coupe_projects_owner_updated (owner_drupal_uid, updated_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

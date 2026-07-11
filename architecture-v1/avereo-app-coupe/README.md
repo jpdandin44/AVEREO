@@ -60,6 +60,12 @@ Configuration serveur attendue hors document root :
 
 Voir `backend/config.example.php` et `docs/deployment.md`.
 
+## Authentification Drupal
+
+La cible de production est d'utiliser le Drupal `avereo.fr` comme fournisseur d'identite pour les apps AVEREO. Coupe gardera sa base MySQL applicative, mais les utilisateurs et roles viendront de Drupal.
+
+Voir `docs/auth-drupal.md`.
+
 ## Statuts V1
 
 - Backend : API PHP minimale pour la sauvegarde projet.

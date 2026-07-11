@@ -12,7 +12,9 @@ Les fichiers PHP deployes sont dans `frontend/public/api/`, puis copies dans `fr
 - `POST /api/projects.php` : cree ou met a jour un projet.
 - `DELETE /api/projects.php?id=...` : supprime un projet.
 
-Les endpoints projets exigent `Authorization: Bearer <AVEREO_API_TOKEN>`.
+Les endpoints projets exigent actuellement `Authorization: Bearer <AVEREO_API_TOKEN>`.
+
+La cible est de remplacer ce jeton technique par un jeton utilisateur Drupal valide. Voir `../docs/auth-drupal.md`.
 
 ## Configuration O2Switch
 
@@ -34,9 +36,12 @@ return [
     'db_name' => 'CPANELUSER_coupe',
     'db_user' => 'CPANELUSER_coupe_user',
     'db_password' => 'CHANGE_ME',
+    'auth_mode' => 'api_token',
     'api_token' => 'CHANGE_ME_LONG_RANDOM_TOKEN',
     'max_payload_bytes' => 50 * 1024 * 1024,
 ];
 ```
 
 L'application demandera le jeton API lors de la premiere sauvegarde en ligne, puis le stockera dans le navigateur.
+
+Pour le mode cible Drupal, copier `backend/config.example.php`, renseigner les valeurs `drupal_*`, puis passer `auth_mode` a `drupal_oauth`.
