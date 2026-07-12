@@ -250,7 +250,7 @@
                     <div class="tool-btn" id="btn-mode-pan" onclick="app.setMode('pan')">
                         <i class="fas fa-hand-paper"></i> Naviguer
                     </div>
-                    <div class="tool-btn" id="btn-mode-align" onclick="app.setMode('align')" style="display:none;">
+                    <div class="tool-btn" id="btn-mode-align" onclick="app.setMode('align')" title="Déplacer, pivoter ou redimensionner le plan actif pour le superposer aux autres niveaux">
                         <i class="fas fa-arrows-alt"></i> Aligner Plans
                     </div>
                     <div class="tool-btn" id="btn-mode-alignwall" onclick="app.setMode('alignwall')" title="Fonction neutralisée en V1.2 officielle" style="display:none;">
@@ -2463,7 +2463,19 @@
                             const isActive = (lvl.id === appState.activeLevelId);
                             lvl.fabricObj.set({ opacity: isActive ? (lvl.opacity / 100) : 0.3 });
                             if (appState.mode === 'align' && isActive && !this.pointingData.active) {
-                                lvl.fabricObj.set({ selectable: true, evented: true });
+                                lvl.fabricObj.set({
+                                    selectable: true,
+                                    evented: true,
+                                    hasControls: true,
+                                    hasBorders: true,
+                                    lockMovementX: false,
+                                    lockMovementY: false,
+                                    lockScalingX: false,
+                                    lockScalingY: false,
+                                    lockRotation: false,
+                                    hoverCursor: 'move',
+                                    moveCursor: 'move'
+                                });
                                 this.canvas.setActiveObject(lvl.fabricObj);
                             } else {
                                 lvl.fabricObj.set({ selectable: false, evented: false });
@@ -2674,9 +2686,18 @@
 
             setMode(mode) {
                 if (this.pointingData.active) return;
-                if (mode === 'alignwall' || mode === 'align') {
+                if (mode === 'alignwall') {
                     this.notify('Alignement automatique neutralisé dans cette version. Déplacez/ajustez le plan manuellement si nécessaire.', 'warning', 5000);
                     mode = 'select';
+                }
+                if (mode === 'align') {
+                    const lvl = appState.levels.find(l => l.id === appState.activeLevelId);
+                    if (!lvl || !lvl.fabricObj) {
+                        this.notify("Importez un plan sur le niveau actif avant de l'aligner.", 'warning', 4500);
+                        mode = 'select';
+                    } else {
+                        this.notify(`Mode alignement : ajustez le plan "${this.escapeHTML(lvl.name)}", puis revenez sur Sélectionner.`, 'info', 4500);
+                    }
                 }
 
                 appState.mode = mode;
@@ -3188,6 +3209,11 @@
             handleSelection(e) {
                 const obj = e.selected[0];
                 if (!obj || obj.objType === 'plan' || this.pointingData.active) {
+                    if (obj && obj.objType === 'plan') {
+                        appState.activeObjectId = null;
+                        appState.activeObjectType = null;
+                        appState.activeFeedbackData = null;
+                    }
                     setTimeout(() => {
                         const active = this.canvas.getActiveObject();
                         if (!active || (!active.isScanFeedback && active.objType !== 'cut')) {
