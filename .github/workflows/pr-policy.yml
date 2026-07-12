@@ -3,6 +3,12 @@
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened, ready_for_review]
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions:
+  contents: read
+  pull-requests: read
 
 jobs:
   policy:
@@ -34,6 +40,59 @@ jobs:
               exit 1
             fi
           done
+
+      - name: Check human approval
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${REPO}/pulls/${PR_NUMBER}/reviews" \
+            > reviews.json
+
+          python3 <<'PY'
+          import json
+          import os
+          import sys
+
+          author = os.environ["PR_AUTHOR"].lower()
+          with open("reviews.json", encoding="utf-8") as fh:
+              reviews = json.load(fh)
+
+          latest_by_reviewer = {}
+          for review in reviews:
+              user = review.get("user") or {}
+              login = (user.get("login") or "").lower()
+              if not login:
+                  continue
+              latest_by_reviewer[login] = review
+
+          approved_reviewers = []
+          for login, review in latest_by_reviewer.items():
+              user = review.get("user") or {}
+              user_type = user.get("type")
+              state = review.get("state")
+              if login == author:
+                  continue
+              if user_type != "User":
+                  continue
+              if login.endswith("[bot]"):
+                  continue
+              if state == "APPROVED":
+                  approved_reviewers.append(user.get("login") or login)
+
+          if not approved_reviewers:
+              print("::error::A human approval from someone other than the PR author is required before merging.")
+              sys.exit(1)
+
+          print("Human approval found from: " + ", ".join(sorted(approved_reviewers)))
+          PY
 
       - name: Check checklist completion
         shell: bash
