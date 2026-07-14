@@ -120,6 +120,7 @@ Ne pas réaliser sans autorisation explicite :
 ## 10. Checklist des pull requests
 
 - conserver la structure de `.github/pull_request_template.md` sauf demande explicite du responsable du projet ;
+- remplacer les emplacements du modèle par les liens directs vers l'application locale, le diff de la pull request, la validation sécurité/données et la documentation ;
 - laisser toutes les cases décochées lors de la création ou de la mise à jour d'une pull request ;
 - fournir les contrôles exécutés et leurs résultats dans la section `Validation`, sans les transformer en attestation humaine ;
 - réserver la validation et le cochage de la checklist au responsable humain du projet.

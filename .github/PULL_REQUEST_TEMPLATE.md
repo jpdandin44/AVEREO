@@ -14,7 +14,8 @@
 ## Liste de contrôle
 
 <!-- Seul le responsable humain du projet valide et coche cette checklist. -->
-- [ ] J'ai testé les changements en local.
-- [ ] J'ai vérifié les impacts sur la sécurité et les données.
-- [ ] J'ai mis à jour la documentation, ou confirmé qu'aucune mise à jour n'est nécessaire.
-- [ ] J'ai vérifié que cette PR est limitée à son objectif et peut être relue.
+<!-- Remplacer les emplacements ci-dessous par les liens directs de l'application et de la pull request concernées. -->
+- [ ] J'ai testé [l'application en local](URL_LOCALE_APPLICATION).
+- [ ] J'ai contrôlé [les fichiers modifiés](URL_DIFF_PULL_REQUEST) et [les impacts sécurité/données documentés](URL_VALIDATION_SECURITE_DONNEES).
+- [ ] J'ai consulté et validé [la documentation](URL_DOCUMENTATION).
+- [ ] J'autorise le merge de cette PR.

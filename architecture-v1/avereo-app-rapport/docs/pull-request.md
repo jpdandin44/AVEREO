@@ -89,8 +89,8 @@ Le vrai contrat Drupal reste a valider. La liste de reouverture des rapports ser
 ## Liste de contrôle
 
 - [ ] Le ZIP Gemini a été audité avant toute exécution.
-- [ ] Aucun secret n'est présent dans le diff.
-- [ ] L'application utilise son sous-domaine local dédié.
+- [ ] J'ai vérifié l'absence de secret dans [les fichiers modifiés](https://github.com/jpdandin44/AVEREO/pull/31/files) et consulté [la validation sécurité/données](validation.md).
+- [ ] J'ai testé [Rapport en local](http://rapport.avereo.localhost/).
 - [ ] L'application utilise son sous-domaine de production dédié.
 - [ ] L'application dispose d'un schéma MySQL isolé.
 - [ ] La future API PHP est isolée sous `/api` et exclue du déploiement de la préversion.
@@ -101,8 +101,8 @@ Le vrai contrat Drupal reste a valider. La liste de reouverture des rapports ser
 - [ ] L'endpoint de santé a été testé.
 - [ ] Les parcours fonctionnels critiques ont été testés.
 - [ ] Le workflow FTPS est limité à cette application.
-- [ ] La documentation a été mise à jour.
+- [ ] J'ai consulté et validé [la documentation de Rapport](../README.md).
 - [ ] Les changements sont limités au périmètre et peuvent être relus.
 - [ ] L'auto-merge est désactivé.
 - [ ] Aucun déploiement en production n'a été déclenché.
-- [ ] Une revue humaine est requise avant le merge.
+- [ ] J'autorise le merge de cette PR.
