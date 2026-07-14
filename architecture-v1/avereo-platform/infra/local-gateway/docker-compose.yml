@@ -1,0 +1,29 @@
+name: avereo-local-gateway
+
+services:
+  gateway:
+    image: traefik:v3.7.1
+    container_name: avereo-local-gateway
+    command:
+      - --api.dashboard=false
+      - --providers.file.directory=/etc/traefik/dynamic
+      - --providers.file.watch=true
+      - --entrypoints.web.address=:80
+      - --ping=true
+      - --log.level=INFO
+    ports:
+      - "127.0.0.1:80:80"
+    volumes:
+      - ./routes:/etc/traefik/dynamic:ro
+    networks:
+      - gateway
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+networks:
+  gateway:
+    name: avereo-local-gateway

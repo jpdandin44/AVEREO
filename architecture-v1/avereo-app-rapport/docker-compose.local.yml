@@ -1,0 +1,66 @@
+name: avereo-rapport
+
+services:
+  rapport-db:
+    image: mysql:8.4
+    container_name: avereo-rapport-db
+    environment:
+      MYSQL_DATABASE: ${RAPPORT_DB_NAME}
+      MYSQL_USER: ${RAPPORT_DB_USER}
+      MYSQL_PASSWORD: ${RAPPORT_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${RAPPORT_DB_ROOT_PASSWORD}
+    ports:
+      - "127.0.0.1:3310:3306"
+    volumes:
+      - rapport-db-data:/var/lib/mysql
+      - ./database/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  rapport-web:
+    build:
+      context: .
+      dockerfile: local/Dockerfile.php-apache
+    container_name: avereo-rapport-web
+    depends_on:
+      rapport-db:
+        condition: service_healthy
+    environment:
+      AVEREO_CONFIG_FILE: /var/www/.avereo/rapport/config.php
+    ports:
+      - "127.0.0.1:8100:80"
+    volumes:
+      - ./frontend/dist:/var/www/html:ro
+      - ./local/config.php:/var/www/.avereo/rapport/config.php:ro
+    networks:
+      - default
+      - gateway
+
+  rapport-oauth-mock:
+    profiles: ["oauth"]
+    build:
+      context: .
+      dockerfile: local/Dockerfile.oauth-mock
+    container_name: avereo-rapport-oauth-mock
+    ports:
+      - "127.0.0.1:8102:80"
+
+  rapport-adminer:
+    image: adminer:4
+    container_name: avereo-rapport-adminer
+    depends_on:
+      rapport-db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8101:8080"
+
+volumes:
+  rapport-db-data:
+
+networks:
+  gateway:
+    external: true
+    name: avereo-local-gateway

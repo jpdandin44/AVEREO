@@ -1,8 +1,15 @@
-﻿# Backend - Rapport AVEREO Pro
+# API PHP Rapport
 
-Backend volontairement desactive en V1.
+Les sources PHP publiees sont dans `frontend/public/api/`. Vite les copie vers `frontend/dist/api/`; il n'existe pas de seconde implementation divergente.
 
-- APIs prevues pour V2 seulement si besoin metier reel.
-- Aucun endpoint metier en V1.
-- Aucun serveur Node ou Express actif ne doit etre ajoute en V1.
-- Aucun secret ne doit etre stocke dans ce dossier.
+Endpoints :
+
+- `GET /api/health.php`
+- `GET /api/auth.php?action=config`
+- `GET /api/auth.php?action=me`
+- `POST /api/auth.php?action=token`
+- `GET|POST|DELETE /api/reports.php`
+
+La configuration de production doit etre creee hors document root dans `/home/CPANEL_USERNAME/.avereo/rapport/config.php` a partir de `config.example.php`. Le fichier reel ne doit jamais entrer dans Git ou dans `frontend/dist`.
+
+L'API utilise PDO, les requetes preparees, des reponses JSON, une limite de payload et des controles de roles/propriete. Les erreurs internes ne sont pas renvoyees au navigateur.

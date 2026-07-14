@@ -1,0 +1,13 @@
+http:
+  routers:
+    avereo-rapport:
+      rule: Host(`rapport.avereo.localhost`)
+      entryPoints:
+        - web
+      service: avereo-rapport
+
+  services:
+    avereo-rapport:
+      loadBalancer:
+        servers:
+          - url: http://avereo-rapport-web:80

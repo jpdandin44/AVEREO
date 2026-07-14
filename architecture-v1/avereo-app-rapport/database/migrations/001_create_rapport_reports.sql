@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS rapport_reports (
+    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    public_id CHAR(32) NOT NULL,
+    title VARCHAR(190) NOT NULL DEFAULT '',
+    reference_code VARCHAR(190) NOT NULL DEFAULT '',
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    payload_json LONGTEXT NOT NULL,
+    payload_bytes INT UNSIGNED NOT NULL DEFAULT 0,
+    owner_provider VARCHAR(32) NOT NULL,
+    owner_id VARCHAR(190) NOT NULL,
+    owner_email VARCHAR(190) NOT NULL DEFAULT '',
+    created_by_id VARCHAR(190) NOT NULL,
+    updated_by_id VARCHAR(190) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    UNIQUE KEY uq_rapport_reports_public_id (public_id),
+    KEY idx_rapport_reports_updated_at (updated_at),
+    KEY idx_rapport_reports_title (title),
+    KEY idx_rapport_reports_reference (reference_code),
+    KEY idx_rapport_reports_owner (owner_provider, owner_id),
+    KEY idx_rapport_reports_owner_updated (owner_provider, owner_id, updated_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

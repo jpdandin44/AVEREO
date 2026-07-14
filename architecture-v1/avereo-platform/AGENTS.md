@@ -2,14 +2,15 @@
 
 ## Role du depot
 
-Ce depot fait partie de l'architecture hybride AVEREO V1.
+Ce dossier porte le socle partage du monorepo AVEREO.
 
 ## Regles absolues
 
 - Ne jamais commiter de secrets.
 - Ne jamais commiter `.env`, `node_modules/` ou `frontend/dist/`.
-- Garder la V1 statique.
-- Ne pas activer de backend ou de MySQL avant la V2.
+- Garder les composants partages generiques et sans code metier applicatif.
+- Ne jamais demarrer ou arreter une application depuis un composant partage.
+- Le gateway HTTP local ne fournit que le routage; chaque application declare et teste son fichier dans `infra/local-gateway/routes/`.
 - Preserver le comportement de l'application source.
 - Documenter tout ecart dans `docs/source-audit.md`.
 

@@ -1,4 +1,4 @@
-﻿# Node
+# Node
 node_modules/
 .npm/
 
@@ -18,6 +18,9 @@ Thumbs.db
 coverage/
 dist/
 architecture-v1/avereo-app-coupe/*.zip
+/architecture-v1/avereo-app-rapport.zip
+/.codex-imports/
+/.codex-worktrees/
 
 # Env
 .env

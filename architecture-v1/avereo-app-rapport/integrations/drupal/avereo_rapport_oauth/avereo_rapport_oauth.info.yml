@@ -1,0 +1,7 @@
+name: AVEREO Rapport OAuth
+type: module
+description: 'Ajoute les claims OAuth strictement necessaires a l application AVEREO Rapport.'
+package: AVEREO
+core_version_requirement: ^10.3 || ^11
+dependencies:
+  - simple_oauth:simple_oauth

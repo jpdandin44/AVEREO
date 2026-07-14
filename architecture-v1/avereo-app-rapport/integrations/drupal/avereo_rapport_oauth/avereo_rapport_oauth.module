@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+use Drupal\Core\Session\AccountInterface;
+use Drupal\simple_oauth\Authentication\TokenAuthUserInterface;
+
+/**
+ * Implements hook_simple_oauth_oidc_claims_alter().
+ */
+function avereo_rapport_oauth_simple_oauth_oidc_claims_alter(array &$claim_values, array &$context): void {
+  $account = $context['account'] ?? NULL;
+  if (!$account instanceof AccountInterface) {
+    return;
+  }
+
+  $subject = $account;
+  $client_id = '';
+  if ($account instanceof TokenAuthUserInterface) {
+    $subject = $account->getSubject();
+    $consumer = $account->getConsumer();
+    if ($consumer->hasField('client_id') && !$consumer->get('client_id')->isEmpty()) {
+      $client_id = (string) $consumer->get('client_id')->value;
+    }
+  }
+
+  $rapport_roles = ['utilisateur_rapport', 'administrateur_rapport'];
+  $claim_values['roles'] = array_values(array_intersect(
+    $rapport_roles,
+    $subject->getRoles(TRUE),
+  ));
+  $claim_values['client_id'] = $client_id;
+}

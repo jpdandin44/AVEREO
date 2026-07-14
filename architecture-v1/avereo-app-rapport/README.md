@@ -1,37 +1,53 @@
-﻿# Rapport AVEREO Pro
+# Rapport AVEREO Pro
 
-- Depot : avereo-app-rapport
-- Slug : rapport
-- Sous-domaine : rapport.avereo.fr
-- API eventuelle V2 : api-rapport.avereo.fr
-- Type : React SPA
-- Source attendue : Rapport_AVEREO_Pro.txt
+Application autonome de creation de rapports d'expertise terrain dans le monorepo AVEREO.
 
-## Architecture
+- Slug : `rapport`
+- URL locale : `http://rapport.avereo.localhost`
+- Port HTTP technique direct : `8100`
+- URL de production : `https://rapport.avereo.fr`
+- Frontend : React 18 et Vite 7
+- API : PHP sous `/api`
+- Donnees : MySQL dediee
+- Authentification cible : Drupal OAuth/OpenID Connect avec PKCE
 
-Ce depot est un vrai depot Git applicatif separe. Il contient un frontend Vite, des dossiers backend/ et database/ documentaires, la documentation de deploiement et les workflows GitHub Actions.
+## Decision de depot
 
-## Commandes locales
+Rapport reste dans le monorepo. Son dossier, ses ports, sa base, son workflow, son sous-domaine, ses roles et sa configuration sont isoles. Voir `docs/architecture.md` pour les criteres qui pourraient justifier un depot separe plus tard.
 
+## Source importee
+
+La source historique `Rapport_AVEREO_Pro.txt` est conservee dans le ZIP d'audit local, exclu de Git. Le frontend integre preserve et etend ses fonctions. Voir `docs/source-audit.md` et `docs/migration-matrix.md`.
+
+## Installation et build
+
+```powershell
 cd frontend
-npm install
-npm run dev
+npm ci
 npm run build
+```
 
-## Deploiement O2Switch
+Le build produit `frontend/dist/`, y compris l'API PHP venant de `frontend/public/api/`.
 
-Le workflow .github/workflows/deploy-o2switch.yml construit frontend/dist/ puis publie uniquement son contenu vers le dossier public du sous-domaine.
+## Environnement local
 
-Secrets GitHub requis :
+```powershell
+powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 token-up
+powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 oauth-up
+powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 health
+powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 down
+```
 
-- O2SWITCH_SSH_KEY
-- O2SWITCH_USER
-- O2SWITCH_HOST
-- O2SWITCH_PORT
-- O2SWITCH_TARGET_PATH
+Les secrets locaux sont generes dans des fichiers ignores. Aucun identifiant de production n'est requis pour developper.
 
-## Statuts V1
+Ports locaux : application `8100`, MySQL `3310`, Adminer `8101`, mock OAuth `8102`.
 
-- Backend : desactive en V1.
-- MySQL : desactive en V1.
-- APIs : reportees en V2 uniquement si un besoin metier reel le justifie.
+## Production
+
+Le workflow racine `.github/workflows/deploy-rapport-o2switch.yml` construit et publie uniquement `frontend/dist/` en FTPS. La configuration reelle reste hors document root dans `/home/CPANEL_USERNAME/.avereo/rapport/config.php`.
+
+Une preversion peut etre publiee avant Drupal OAuth : le frontend, les brouillons locaux, l'import et les exports restent utilisables, mais la sauvegarde MySQL demeure verrouillee. Le mode `api_token` est refuse hors des hotes locaux et ne doit pas servir de raccourci en production.
+
+Le workflow de production construit actuellement cette preversion avec `VITE_ENABLE_ONLINE_SYNC=false`. Dans ce mode, le navigateur n'appelle pas l'API d'authentification, aucun bouton de connexion ou de sauvegarde serveur n'est affiche et les donnees restent uniquement dans IndexedDB/localStorage. L'utilisateur doit conserver des copies JSON regulieres. Le branchement serveur sera reactive plus tard avec `VITE_ENABLE_ONLINE_SYNC=true`, apres validation de Drupal OAuth.
+
+Le merge, la creation des ressources cPanel/Drupal et le deploiement restent des actions humaines.
