@@ -88,21 +88,21 @@ Le vrai contrat Drupal reste a valider. La liste de reouverture des rapports ser
 
 ## Checklist
 
-- [x] The Gemini ZIP was audited before execution.
-- [x] No secret is present in the diff.
-- [x] The application uses its dedicated local subdomain.
-- [x] The application uses its dedicated production subdomain.
-- [x] The application has an isolated MySQL schema.
-- [x] The future PHP API is isolated under `/api` and excluded from the preview deployment.
-- [x] Drupal OAuth is prepared.
-- [x] `api_token` is restricted to temporary local use.
-- [x] The production build succeeds.
-- [x] The local prod-like environment was tested.
-- [x] The health endpoint was tested.
-- [x] The critical functional flows were tested.
-- [x] The FTPS workflow is limited to this application.
-- [x] The documentation was updated.
-- [x] The changes are scoped and reviewable.
-- [x] Auto-merge is disabled.
-- [x] No production deployment was triggered.
-- [x] Human review is required before merge.
+- [ ] The Gemini ZIP was audited before execution.
+- [ ] No secret is present in the diff.
+- [ ] The application uses its dedicated local subdomain.
+- [ ] The application uses its dedicated production subdomain.
+- [ ] The application has an isolated MySQL schema.
+- [ ] The future PHP API is isolated under `/api` and excluded from the preview deployment.
+- [ ] Drupal OAuth is prepared.
+- [ ] `api_token` is restricted to temporary local use.
+- [ ] The production build succeeds.
+- [ ] The local prod-like environment was tested.
+- [ ] The health endpoint was tested.
+- [ ] The critical functional flows were tested.
+- [ ] The FTPS workflow is limited to this application.
+- [ ] The documentation was updated.
+- [ ] The changes are scoped and reviewable.
+- [ ] Auto-merge is disabled.
+- [ ] No production deployment was triggered.
+- [ ] Human review is required before merge.

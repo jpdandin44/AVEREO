@@ -12,6 +12,8 @@
 - List known risks, regressions, or follow-up tasks.
 
 ## Checklist
+
+<!-- Seul le responsable humain du projet valide et coche cette checklist. -->
 - [ ] I tested the changes locally.
 - [ ] I reviewed security and data impact.
 - [ ] I updated docs (or no docs update is needed).
