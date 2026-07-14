@@ -86,23 +86,23 @@ Le vrai contrat Drupal reste a valider. La liste de reouverture des rapports ser
 - Effectuer la review humaine; ne pas merger ou deployer automatiquement.
 - Apres le merge, laisser le proprietaire lancer manuellement le workflow `Deploy Rapport to O2Switch` depuis `main`.
 
-## Checklist
+## Liste de contrôle
 
-- [ ] The Gemini ZIP was audited before execution.
-- [ ] No secret is present in the diff.
-- [ ] The application uses its dedicated local subdomain.
-- [ ] The application uses its dedicated production subdomain.
-- [ ] The application has an isolated MySQL schema.
-- [ ] The future PHP API is isolated under `/api` and excluded from the preview deployment.
-- [ ] Drupal OAuth is prepared.
-- [ ] `api_token` is restricted to temporary local use.
-- [ ] The production build succeeds.
-- [ ] The local prod-like environment was tested.
-- [ ] The health endpoint was tested.
-- [ ] The critical functional flows were tested.
-- [ ] The FTPS workflow is limited to this application.
-- [ ] The documentation was updated.
-- [ ] The changes are scoped and reviewable.
-- [ ] Auto-merge is disabled.
-- [ ] No production deployment was triggered.
-- [ ] Human review is required before merge.
+- [ ] Le ZIP Gemini a été audité avant toute exécution.
+- [ ] Aucun secret n'est présent dans le diff.
+- [ ] L'application utilise son sous-domaine local dédié.
+- [ ] L'application utilise son sous-domaine de production dédié.
+- [ ] L'application dispose d'un schéma MySQL isolé.
+- [ ] La future API PHP est isolée sous `/api` et exclue du déploiement de la préversion.
+- [ ] Drupal OAuth est préparé.
+- [ ] `api_token` est limité à un usage local temporaire.
+- [ ] Le build de production réussit.
+- [ ] L'environnement local proche de la production a été testé.
+- [ ] L'endpoint de santé a été testé.
+- [ ] Les parcours fonctionnels critiques ont été testés.
+- [ ] Le workflow FTPS est limité à cette application.
+- [ ] La documentation a été mise à jour.
+- [ ] Les changements sont limités au périmètre et peuvent être relus.
+- [ ] L'auto-merge est désactivé.
+- [ ] Aucun déploiement en production n'a été déclenché.
+- [ ] Une revue humaine est requise avant le merge.

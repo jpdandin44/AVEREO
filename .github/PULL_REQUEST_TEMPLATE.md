@@ -11,10 +11,10 @@
 ## Risks
 - List known risks, regressions, or follow-up tasks.
 
-## Checklist
+## Liste de contrôle
 
 <!-- Seul le responsable humain du projet valide et coche cette checklist. -->
-- [ ] I tested the changes locally.
-- [ ] I reviewed security and data impact.
-- [ ] I updated docs (or no docs update is needed).
-- [ ] I verified this PR is scoped and reviewable.
+- [ ] J'ai testé les changements en local.
+- [ ] J'ai vérifié les impacts sur la sécurité et les données.
+- [ ] J'ai mis à jour la documentation, ou confirmé qu'aucune mise à jour n'est nécessaire.
+- [ ] J'ai vérifié que cette PR est limitée à son objectif et peut être relue.
