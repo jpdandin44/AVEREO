@@ -1,4 +1,4 @@
-﻿# Notes packages - Rapport AVEREO Pro
+# Notes packages - Rapport AVEREO Pro
 
 ## Dependances runtime prevues
 

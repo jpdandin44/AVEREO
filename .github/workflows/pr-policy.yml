@@ -44,10 +44,10 @@ jobs:
           )
 
           required_checks=(
-            "- [x] I tested the changes locally."
-            "- [x] I reviewed security and data impact."
-            "- [x] I updated docs (or no docs update is needed)."
-            "- [x] I verified this PR is scoped and reviewable."
+            "- [x] J'ai testé "
+            "- [x] J'ai contrôlé "
+            "- [x] J'ai consulté et validé "
+            "- [x] J'autorise le merge de cette PR."
           )
 
           for check in "${required_checks[@]}"; do

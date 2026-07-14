@@ -1,4 +1,4 @@
-﻿node_modules/
+node_modules/
 frontend/dist/
 dist/
 build/
@@ -12,6 +12,8 @@ frontend/.env.*
 backend/.env
 backend/.env.*
 !backend/.env.example
+local/.env
+local/config.php
 
 *.log
 npm-debug.log*
@@ -27,3 +29,4 @@ Thumbs.db
 *.local
 .cache/
 coverage/
+integrations/drupal/*.zip

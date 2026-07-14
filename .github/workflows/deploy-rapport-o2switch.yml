@@ -2,12 +2,6 @@ name: Deploy Rapport to O2Switch
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - "architecture-v1/avereo-app-rapport/frontend/**"
-      - ".github/workflows/deploy-rapport-o2switch.yml"
-      - ".github/scripts/**"
 
 permissions:
   contents: read
@@ -19,6 +13,7 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment: rapport
     defaults:
       run:
@@ -30,95 +25,70 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20.19.0
+          cache: npm
+          cache-dependency-path: architecture-v1/avereo-app-rapport/frontend/package-lock.json
 
       - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+        run: npm ci
 
       - name: Build frontend
+        env:
+          VITE_ENABLE_ONLINE_SYNC: "false"
         run: npm run build
 
-      - name: Get runner public IP
-        id: runner-ip
+      - name: Prepare static preview artifact
         run: |
           set -euo pipefail
-          echo "ipv4=$(curl -fsS https://api.ipify.org)" >> "$GITHUB_OUTPUT"
+          mkdir -p deploy-preview
+          cp -R dist/assets deploy-preview/assets
+          cp dist/index.html deploy-preview/index.html
+          cp preview/.htaccess deploy-preview/.htaccess
 
-      - name: Whitelist runner IP in cPanel
+      - name: Verify deployment artifact
+        run: |
+          set -euo pipefail
+          test -s deploy-preview/index.html
+          test -s deploy-preview/.htaccess
+          test -d deploy-preview/assets
+          test ! -e deploy-preview/api
+          test ! -e deploy-preview/auth
+
+      - name: Resolve FTPS target directory
+        id: ftp-target
         env:
-          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
-          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" add
-
-      - name: Confirm runner IP is whitelisted
-        env:
           CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
-          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
-          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
-          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" list
-
-      - name: Configure SSH agent
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
-
-      - name: Validate remote target path
         run: |
           set -euo pipefail
-          PORT="${{ secrets.O2SWITCH_PORT }}"
-          if [ -z "$PORT" ]; then PORT=8888; fi
-          TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
-          if [ -z "$TARGET" ]; then
-            echo "O2SWITCH_TARGET_PATH secret is required for environment 'rapport'." >&2
+          server_dir="$(python3 "$GITHUB_WORKSPACE/.github/scripts/cpanel-domain-docroot.py" "rapport.avereo.fr")"
+          server_dir="${server_dir#/}"
+          server_dir="${server_dir%/}/"
+          if [ "$server_dir" = "/" ]; then
+            echo "Resolved FTPS target directory is empty." >&2
             exit 1
           fi
-          ssh -o BatchMode=yes \
-            -o PasswordAuthentication=no \
-            -o StrictHostKeyChecking=no \
-            -p "${PORT}" \
-            "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}" \
-            "mkdir -p \"$TARGET\" && test -w \"$TARGET\" && pwd"
+          echo "server_dir=$server_dir" >> "$GITHUB_OUTPUT"
+          echo "Resolved FTPS target directory: $server_dir"
 
-      - name: Deploy with rsync
-        run: |
-          set -euo pipefail
-          PORT="${{ secrets.O2SWITCH_PORT }}"
-          if [ -z "$PORT" ]; then PORT=8888; fi
-          TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
-          if [ -z "$TARGET" ]; then
-            echo "O2SWITCH_TARGET_PATH secret is required for environment 'rapport'." >&2
-            exit 1
-          fi
-          rsync -az --delete \
-            -e "ssh -p ${PORT} -o StrictHostKeyChecking=no" \
-            ./dist/ \
-            "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}:${TARGET}/"
+      - name: Deploy with FTPS
+        env:
+          FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-rapport/frontend/deploy-preview
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.server_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
 
       - name: Verify public deployment
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "rapport" "https://rapport.avereo.fr"
+        run: bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "rapport" "https://rapport.avereo.fr/"
 
-      - name: Remove runner IP from cPanel whitelist
-        if: always()
-        env:
-          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
-          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
-          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
-          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
+      - name: Verify preview blocks private endpoints
         run: |
           set -euo pipefail
-          if [ -z "${RUNNER_IPV4:-}" ]; then
-            echo "No runner IP available; skipping cPanel whitelist cleanup."
-            exit 0
-          fi
-          bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" remove || \
-            echo "::warning::Unable to remove runner IP from cPanel whitelist automatically. Please clean stale GitHub runner IPs manually if the whitelist limit is reached."
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'https://rapport.avereo.fr/api/health.php')" = "404"
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'https://rapport.avereo.fr/auth/callback/')" = "404"

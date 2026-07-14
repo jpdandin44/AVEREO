@@ -12,7 +12,10 @@
 - List known risks, regressions, or follow-up tasks.
 
 ## Checklist
-- [ ] I tested the changes locally.
-- [ ] I reviewed security and data impact.
-- [ ] I updated docs (or no docs update is needed).
-- [ ] I verified this PR is scoped and reviewable.
+
+<!-- Seul le responsable humain du projet valide et coche cette checklist. -->
+<!-- Remplacer les emplacements ci-dessous par les liens directs de l'application et de la pull request concernées. -->
+- [ ] J'ai testé [l'application en local](URL_LOCALE_APPLICATION).
+- [ ] J'ai contrôlé [les fichiers modifiés](URL_DIFF_PULL_REQUEST) et [les impacts sécurité/données documentés](URL_VALIDATION_SECURITE_DONNEES).
+- [ ] J'ai consulté et validé [la documentation](URL_DOCUMENTATION).
+- [ ] J'autorise le merge de cette PR.
