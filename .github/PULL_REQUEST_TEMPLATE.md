@@ -11,7 +11,7 @@
 ## Risks
 - List known risks, regressions, or follow-up tasks.
 
-## Liste de contrôle
+## Checklist
 
 <!-- Seul le responsable humain du projet valide et coche cette checklist. -->
 <!-- Remplacer les emplacements ci-dessous par les liens directs de l'application et de la pull request concernées. -->

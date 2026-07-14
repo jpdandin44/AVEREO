@@ -86,7 +86,7 @@ Le vrai contrat Drupal reste a valider. La liste de reouverture des rapports ser
 - Effectuer la review humaine; ne pas merger ou deployer automatiquement.
 - Apres le merge, laisser le proprietaire lancer manuellement le workflow `Deploy Rapport to O2Switch` depuis `main`.
 
-## Liste de contrôle
+## Checklist
 
 - [ ] Le ZIP Gemini a été audité avant toute exécution.
 - [ ] J'ai vérifié l'absence de secret dans [les fichiers modifiés](https://github.com/jpdandin44/AVEREO/pull/31/files) et consulté [la validation sécurité/données](validation.md).
