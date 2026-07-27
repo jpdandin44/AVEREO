@@ -25,6 +25,13 @@ Le rattachement automatique du `subject` Drupal à une ligne `users`, à une
 organisation et à ses habilitations reste une étape distincte avant d'appliquer
 des droits fins par utilisateur ou organisation.
 
+Le catalogue CONNECT ne remplace pas l'authentification propre à chaque
+application. CONNECT, Rapport et Coupe utilisent chacun un client OAuth
+confidentiel distinct, avec un identifiant, un secret serveur et une URI de
+redirection dédiés. Rapport et Coupe vérifient en plus le claim `client_id` sur
+chaque accès à leur API : un jeton émis pour une autre application est refusé.
+Les secrets ne sont jamais placés dans le catalogue ni dans le navigateur.
+
 Avec Simple OAuth 6.1.1, `OAUTH_ISSUER` doit correspondre exactement à l'URL racine
 émise par Drupal, slash final compris (par exemple `https://idp.example/`). Cette
 version ne recopie pas le paramètre `nonce` dans l'ID token du flux Authorization
