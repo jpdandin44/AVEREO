@@ -1,0 +1,463 @@
+openapi: 3.1.0
+info:
+  title: AVEREO CONNECT API
+  version: 0.1.0-c7
+  license:
+    name: Propriétaire — usage interne AVEREO
+    identifier: LicenseRef-AVEREO-Proprietary
+  description: >-
+    Contrat C7/V2. Le fournisseur d'identité Drupal est activé lorsque les
+    variables OAuth sont complètes ; les routes protégées refusent toute
+    requête sans session serveur valide.
+servers:
+  - url: /api/v1
+tags:
+  - name: System
+    description: Santé et diagnostic non sensible du service.
+  - name: Session
+    description: Session serveur et frontière d'identité Drupal.
+  - name: Organizations
+    description: Espaces Pro, adhésions et contrôles d'accès.
+  - name: Catalog
+    description: Applications AVEREO et habilitations organisationnelles.
+security:
+  - sessionCookie: []
+paths:
+  /health:
+    get:
+      tags: [System]
+      operationId: getHealth
+      summary: Santé de l'API sans donnée sensible
+      security: []
+      responses:
+        "200":
+          description: État du service et de la connexion à la base
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+  /session:
+    get:
+      tags: [Session]
+      operationId: getSession
+      summary: État de la session et jeton CSRF de même origine
+      security: []
+      responses:
+        "200":
+          description: État anonyme ou authentifié
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionResponse"
+  /auth/login:
+    post:
+      tags: [Session]
+      operationId: startLogin
+      summary: Démarrer Authorization Code avec PKCE
+      description: Disponible lorsque la configuration OAuth est complète.
+      security: []
+      responses:
+        "303":
+          description: Redirection vers Drupal
+        "503":
+          $ref: "#/components/responses/IdentityNotConfigured"
+  /auth/callback:
+    get:
+      tags: [Session]
+      operationId: finishLogin
+      summary: Callback serveur OAuth2/OIDC
+      description: Valide la transaction OAuth et ouvre la session CONNECT.
+      security: []
+      parameters:
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+            maxLength: 2048
+        - name: state
+          in: query
+          required: true
+          schema:
+            type: string
+            maxLength: 256
+      responses:
+        "303":
+          description: Redirection vers CONNECT après ouverture de session
+        "503":
+          $ref: "#/components/responses/IdentityNotConfigured"
+  /auth/logout:
+    post:
+      tags: [Session]
+      operationId: logout
+      summary: Détruire la session CONNECT
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      responses:
+        "200":
+          description: Session détruite
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionResponse"
+        "403":
+          $ref: "#/components/responses/CsrfRejected"
+  /me:
+    get:
+      tags: [Session]
+      operationId: getMe
+      summary: Profil CONNECT minimal de l'utilisateur courant
+      responses:
+        "200":
+          description: Profil sans jeton OAuth ni mot de passe
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "401":
+          $ref: "#/components/responses/AuthenticationRequired"
+  /organizations:
+    get:
+      tags: [Organizations]
+      operationId: listOrganizations
+      summary: Espaces Pro actifs de l'utilisateur courant
+      responses:
+        "200":
+          description: Organisations visibles par adhésion active
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Organization"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "401":
+          $ref: "#/components/responses/AuthenticationRequired"
+  /apps:
+    get:
+      tags: [Catalog]
+      operationId: listApplications
+      summary: Applications actives et habilitées pour un Espace Pro
+      parameters:
+        - name: organization_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: Catalogue filtré côté serveur
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Application"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "401":
+          $ref: "#/components/responses/AuthenticationRequired"
+        "403":
+          $ref: "#/components/responses/OrganizationAccessDenied"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+  /organizations/{organizationId}/entitlements:
+    get:
+      tags: [Organizations, Catalog]
+      operationId: listEntitlements
+      summary: Habilitations applicatives d'un Espace Pro
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Habilitations visibles par un membre actif
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Entitlement"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "401":
+          $ref: "#/components/responses/AuthenticationRequired"
+        "403":
+          $ref: "#/components/responses/OrganizationAccessDenied"
+  /organizations/{organizationId}/entitlements/{applicationCode}:
+    put:
+      tags: [Organizations, Catalog]
+      operationId: putEntitlement
+      summary: Créer ou modifier une habilitation
+      description: >-
+        Réservé aux rôles owner et admin. La mutation et son événement d'audit
+        de succès sont écrits dans la même transaction.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - name: applicationCode
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "^[a-z0-9][a-z0-9_-]{1,63}$"
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EntitlementInput"
+      responses:
+        "200":
+          description: Habilitation enregistrée et auditée
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Entitlement"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "401":
+          $ref: "#/components/responses/AuthenticationRequired"
+        "403":
+          description: Rôle insuffisant, Espace Pro inaccessible ou CSRF rejeté
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Application inconnue
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "422":
+          $ref: "#/components/responses/ValidationError"
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: AVEREO_CONNECT_SESSION
+  parameters:
+    OrganizationId:
+      name: organizationId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    CsrfToken:
+      name: X-CSRF-Token
+      in: header
+      required: true
+      schema:
+        type: string
+        minLength: 32
+        maxLength: 128
+  responses:
+    AuthenticationRequired:
+      description: Session absente ou expirée
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    OrganizationAccessDenied:
+      description: Refus par défaut, adhésion ou ressource indisponible
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    CsrfRejected:
+      description: Jeton CSRF absent ou invalide
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ValidationError:
+      description: Entrée invalide
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    IdentityNotConfigured:
+      description: Fournisseur Drupal non configuré
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    Meta:
+      type: object
+      required: [requestId]
+      properties:
+        requestId:
+          type: string
+          minLength: 8
+          maxLength: 64
+    HealthResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          required: [status, service, database, time]
+          properties:
+            status:
+              type: string
+              enum: [ok, degraded]
+            service:
+              const: avereo-connect-api
+            database:
+              type: string
+              enum: [ok, not_configured, unavailable]
+            time:
+              type: string
+              format: date-time
+        meta:
+          $ref: "#/components/schemas/Meta"
+    SessionResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          required: [authenticated]
+          properties:
+            authenticated:
+              type: boolean
+            csrfToken:
+              type: string
+        meta:
+          $ref: "#/components/schemas/Meta"
+    UserResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          $ref: "#/components/schemas/User"
+        meta:
+          $ref: "#/components/schemas/Meta"
+    User:
+      type: object
+      required: [id, drupalSubject, email, displayName, status]
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        drupalSubject:
+          type: string
+        email:
+          type: string
+          format: email
+        displayName:
+          type: string
+        status:
+          type: string
+          enum: [active]
+    Organization:
+      type: object
+      required: [id, name, slug, status, role]
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+        slug:
+          type: string
+        status:
+          type: string
+          enum: [active]
+        role:
+          type: string
+          enum: [owner, admin, member, viewer]
+    Application:
+      type: object
+      required: [code, name, launchUrl, entitlementStatus]
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        launchUrl:
+          type: string
+          format: uri
+        requiredScope:
+          type: [string, "null"]
+        entitlementStatus:
+          type: string
+          enum: [active]
+        validFrom:
+          type: [string, "null"]
+          format: date-time
+        validTo:
+          type: [string, "null"]
+          format: date-time
+    Entitlement:
+      type: object
+      required: [applicationCode, status]
+      properties:
+        applicationCode:
+          type: string
+        applicationName:
+          type: string
+        status:
+          type: string
+          enum: [active, suspended, revoked]
+        validFrom:
+          type: [string, "null"]
+          format: date-time
+        validTo:
+          type: [string, "null"]
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    EntitlementInput:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [active, suspended, revoked]
+        validFrom:
+          type: [string, "null"]
+          format: date-time
+        validTo:
+          type: [string, "null"]
+          format: date-time
+    ErrorResponse:
+      type: object
+      required: [error, meta]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+              additionalProperties: true
+        meta:
+          $ref: "#/components/schemas/Meta"

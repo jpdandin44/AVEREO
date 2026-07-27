@@ -1,0 +1,35 @@
+name: avereo-connect-c7
+
+services:
+  database:
+    image: mariadb:11.4
+    environment:
+      MARIADB_ROOT_PASSWORD: local_root_only
+      MARIADB_DATABASE: avereo_connect_test
+      MARIADB_USER: connect_test
+      MARIADB_PASSWORD: local_connect_only
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+
+  php:
+    build:
+      context: .
+      dockerfile: backend/docker/php-cli.Dockerfile
+    working_dir: /workspace/backend
+    volumes:
+      - ./:/workspace:ro
+    environment:
+      APP_ENV: test
+      APP_DEBUG: "false"
+      DB_DSN: mysql:host=database;port=3306;dbname=avereo_connect_test;charset=utf8mb4
+      DB_USER: connect_test
+      DB_PASSWORD: local_connect_only
+      SESSION_COOKIE_NAME: AVEREO_CONNECT_TEST
+    depends_on:
+      database:
+        condition: service_healthy

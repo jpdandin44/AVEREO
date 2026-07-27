@@ -1,0 +1,8 @@
+extends:
+  - recommended
+
+rules:
+  # Les endpoints publics santé/session n'ont pas de 4xx nominal et les flux
+  # OAuth répondent par redirection 303 ; ces règles génériques sont inadaptées.
+  operation-4xx-response: off
+  operation-2xx-response: off

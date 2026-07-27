@@ -1,29 +1,33 @@
-﻿# AGENTS.md - AVEREO
+# AGENTS.md - AVEREO
 
-## Role du depot
+## Rôle du dépôt
 
-Ce depot fait partie de l'architecture hybride AVEREO V1.
+Ce dépôt contient le frontend historique AVEREO CONNECT et le candidat backend
+C7/V2 chargé de déléguer l'identification à Drupal.
 
-## Regles absolues
+## Règles absolues
 
 - Ne jamais commiter de secrets.
 - Ne jamais commiter `.env`, `node_modules/` ou `frontend/dist/`.
-- Garder la V1 statique.
-- Ne pas activer de backend ou de MySQL avant la V2.
-- Preserver le comportement de l'application source.
-- Documenter tout ecart dans `docs/source-audit.md`.
+- Garder le frontend V1 stable tant qu'une modification dédiée ne l'autorise pas.
+- Limiter le backend et MySQL au périmètre C7/V2, avec tests et documentation.
+- Ne jamais déclencher automatiquement un déploiement backend ou une migration
+  hébergée depuis une PR de préparation.
+- Préserver le comportement de l'application source.
+- Documenter tout écart dans `docs/source-audit.md`.
 
 ## Workflow Codex
 
 Avant modification :
-1. Inspecter le depot.
-2. Lire `README.md`.
-3. Lire les documents dans `docs/`.
-4. Proposer un plan.
-5. Modifier les fichiers.
-6. Executer les validations possibles.
-7. Resumer les changements.
+
+1. inspecter le dépôt ;
+2. lire `README.md` ;
+3. lire les documents dans `docs/` ;
+4. proposer un plan ;
+5. modifier les fichiers ;
+6. exécuter les validations possibles ;
+7. résumer les changements.
 
 ## Documentation longue
 
-Les details d'architecture, de deploiement et de CI/CD sont dans `docs/`.
+Les détails d'architecture, de déploiement et de CI/CD sont dans `docs/`.
