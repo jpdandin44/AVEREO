@@ -34,7 +34,7 @@
     h1 { margin: 1.25rem 0 .5rem; font-size: clamp(2rem, 5vw, 3.25rem); }
     h2 { margin: 0; font-size: 1.5rem; }
     p { line-height: 1.55; }
-    button, .launch {
+    button, #login, .launch {
       border: 0;
       border-radius: 10px;
       padding: .85rem 1.1rem;
@@ -43,7 +43,7 @@
       cursor: pointer;
     }
     button:disabled { opacity: .55; cursor: wait; }
-    #login, .launch { background: #155eef; color: white; }
+    #login, .launch { display: inline-block; background: #155eef; color: white; text-decoration: none; }
     #logout { background: #eef3f9; color: #142033; }
     #status {
       margin-top: 1rem;
@@ -91,7 +91,7 @@
     </div>
     <h1>AVEREO CONNECT</h1>
     <p id="lead">Identifiez-vous avec votre compte AVEREO pour accéder à vos applications.</p>
-    <button id="login" type="button">Se connecter à AVEREO Connect</button>
+    <a id="login" href="/api/v1/auth/login">Se connecter à AVEREO Connect</a>
     <div id="status" role="status" aria-live="polite">Contrôle de la session…</div>
 
     <section id="applications" aria-labelledby="applications-title" hidden>
@@ -194,12 +194,6 @@
         statusNode.textContent = 'CONNECT ne peut pas charger votre session ou le catalogue.';
       }
     }
-
-    loginButton.addEventListener('click', async () => {
-      loginButton.disabled = true;
-      statusNode.textContent = 'Préparation de la connexion sécurisée…';
-      window.location.assign('/api/v1/auth/login');
-    });
 
     logoutButton.addEventListener('click', async () => {
       logoutButton.disabled = true;
