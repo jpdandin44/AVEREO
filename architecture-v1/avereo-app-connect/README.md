@@ -1,37 +1,50 @@
-﻿# AVEREO CONNECT
+# AVEREO CONNECT
 
-- Depot : avereo-app-connect
-- Slug : connect
-- Sous-domaine : connect.avereo.fr
-- API eventuelle V2 : api-connect.avereo.fr
-- Type : React SPA
-- Source attendue : AVEREO CONNECT.txt
+- Slug : `connect`
+- Domaine cible : `connect.avereo.fr`
+- Fournisseur d'identité : Drupal avec Simple OAuth
+- Frontend historique : React/Vite
+- Candidat C7/V2 : backend PHP 8.3 et schéma MariaDB/MySQL
 
 ## Architecture
 
-Ce depot est un vrai depot Git applicatif separe. Il contient un frontend Vite, des dossiers backend/ et database/ documentaires, la documentation de deploiement et les workflows GitHub Actions.
+Le frontend V1 reste présent sans modification fonctionnelle. Le candidat C7/V2
+ajoute un backend API séparé dans `backend/`, les migrations dans `database/` et
+un environnement Docker local éphémère dans `compose.c7.yaml`.
+
+Le backend délègue l'authentification à Drupal par Authorization Code avec PKCE
+S256. CONNECT conserve la session applicative, applique les autorisations côté
+serveur et ne stocke aucun mot de passe Drupal.
 
 ## Commandes locales
 
+Frontend :
+
+```powershell
 cd frontend
 npm install
 npm run dev
 npm run build
+```
 
-## Deploiement O2Switch
+Backend et base éphémère :
 
-Le workflow .github/workflows/deploy-o2switch.yml construit frontend/dist/ puis publie uniquement son contenu vers le dossier public du sous-domaine.
+```powershell
+docker compose -f compose.c7.yaml build php
+docker compose -f compose.c7.yaml up -d database
+docker compose -f compose.c7.yaml run --rm php php tests/run.php
+docker compose -f compose.c7.yaml run --rm php php bin/migrate.php --direction=up
+docker compose -f compose.c7.yaml run --rm php php tests/integration.php
+docker compose -f compose.c7.yaml down
+```
 
-Secrets GitHub requis :
+## Déploiement
 
-- O2SWITCH_SSH_KEY
-- O2SWITCH_USER
-- O2SWITCH_HOST
-- O2SWITCH_PORT
-- O2SWITCH_TARGET_PATH
+Le workflow existant `deploy-connect-o2switch.yml` reste limité au frontend.
+Cette PR n'active aucun déploiement automatique du backend, ne crée aucune base
+hébergée et ne modifie pas la production.
 
-## Statuts V1
-
-- Backend : desactive en V1.
-- MySQL : desactive en V1.
-- APIs : reportees en V2 uniquement si un besoin metier reel le justifie.
+La mise en production du candidat C7/V2 relève d'une gate C11 distincte après
+validation des paramètres OAuth de production, du document root, de la base,
+des sauvegardes et du plan de retour arrière. Voir
+`docs/production-readiness-c7.md`.
