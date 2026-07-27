@@ -6,6 +6,7 @@ use Avereo\Connect\Application;
 use Avereo\Connect\Config;
 use Avereo\Connect\Http\ApiException;
 use Avereo\Connect\Http\Request;
+use Avereo\Connect\Http\Response;
 use Avereo\Connect\Repository\ConnectRepository;
 use Avereo\Connect\Security\AuthContext;
 use Avereo\Connect\Security\OAuthTransactionStore;
@@ -126,9 +127,24 @@ $tests['identified catalog'] = static function () use ($application, $identified
 };
 
 $tests['identity disabled'] = static function () use ($application, $anonymous, $logout): void {
-    $response = $application->handle(request('POST', '/api/v1/auth/login'), $anonymous, 'csrf-test', $logout);
+    $response = $application->handle(request('GET', '/api/v1/auth/login'), $anonymous, 'csrf-test', $logout);
     assertSameValue(503, $response->status, 'identity status');
     assertSameValue('IDENTITY_PROVIDER_NOT_CONFIGURED', $response->payload['error']['code'], 'identity code');
+};
+
+$tests['identity navigation'] = static function () use ($application, $anonymous, $logout): void {
+    $response = $application->handle(
+        request('GET', '/api/v1/auth/login'),
+        $anonymous,
+        'csrf-test',
+        $logout,
+        static fn (Request $request): Response => Response::redirect(
+            'https://avereo.fr/oauth/authorize',
+            $request->requestId,
+        ),
+    );
+    assertSameValue(303, $response->status, 'identity redirect status');
+    assertSameValue('https://avereo.fr/oauth/authorize', $response->headers['Location'] ?? null, 'identity redirect');
 };
 
 $tests['organizations'] = static function () use ($application, $authenticated, $logout): void {

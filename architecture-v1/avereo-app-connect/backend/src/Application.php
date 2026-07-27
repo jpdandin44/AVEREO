@@ -86,11 +86,16 @@ final class Application
             return Response::success($session, $request->requestId);
         }
 
-        if ($request->method === 'POST' && $request->path === '/api/v1/auth/login') {
+        if (
+            in_array($request->method, ['GET', 'POST'], true)
+            && $request->path === '/api/v1/auth/login'
+        ) {
             if ($beginIdentity === null) {
                 throw new ApiException(503, 'IDENTITY_PROVIDER_NOT_CONFIGURED', 'Le fournisseur d’identité Drupal n’est pas encore configuré.');
             }
-            CsrfGuard::assertValid($request, $csrfToken);
+            if ($request->method === 'POST') {
+                CsrfGuard::assertValid($request, $csrfToken);
+            }
             return $beginIdentity($request);
         }
 
