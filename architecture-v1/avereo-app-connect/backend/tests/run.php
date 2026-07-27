@@ -83,6 +83,7 @@ $config = new Config('test', true, null, '', '', 'AVEREO_TEST', 1800, 43200);
 $repository = new FakeRepository();
 $application = new Application($config, $repository);
 $anonymous = AuthContext::anonymous();
+$identified = new AuthContext(null, time(), 'drupal-identified');
 $authenticated = new AuthContext(42, time(), 'drupal-test');
 $logoutCalled = false;
 $logout = static function () use (&$logoutCalled): void {
@@ -107,6 +108,21 @@ $tests['protected route denied'] = static function () use ($application, $anonym
     $response = $application->handle(request('GET', '/api/v1/organizations'), $anonymous, 'csrf-test', $logout);
     assertSameValue(401, $response->status, 'protected status');
     assertSameValue('AUTHENTICATION_REQUIRED', $response->payload['error']['code'], 'protected code');
+};
+
+$tests['anonymous catalog denied'] = static function () use ($application, $anonymous, $logout): void {
+    $response = $application->handle(request('GET', '/api/v1/catalog'), $anonymous, 'csrf-test', $logout);
+    assertSameValue(401, $response->status, 'anonymous catalog status');
+    assertSameValue('AUTHENTICATION_REQUIRED', $response->payload['error']['code'], 'anonymous catalog code');
+};
+
+$tests['identified catalog'] = static function () use ($application, $identified, $logout): void {
+    $response = $application->handle(request('GET', '/api/v1/catalog'), $identified, 'csrf-test', $logout);
+    assertSameValue(200, $response->status, 'catalog status');
+    assertSameValue(5, count($response->payload['data']), 'catalog size');
+    assertSameValue('rapport', $response->payload['data'][0]['code'], 'first catalog app');
+    assertSameValue(true, $response->payload['data'][0]['available'], 'rapport available');
+    assertSameValue(false, $response->payload['data'][2]['available'], 'projet unavailable');
 };
 
 $tests['identity disabled'] = static function () use ($application, $anonymous, $logout): void {

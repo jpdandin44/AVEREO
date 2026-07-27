@@ -46,5 +46,5 @@ slash final compris.
 - aucune migration sur une base hébergée ;
 - aucun déploiement automatique du backend ;
 - aucun provisioning automatique entre l'identité Drupal et l'utilisateur CONNECT ;
-- aucune ouverture des applications après authentification ;
+- aucune habilitation différenciée par utilisateur dans le catalogue de démarrage ;
 - aucune modification fonctionnelle du frontend V1.

@@ -108,6 +108,10 @@ final class Application
         }
 
         $this->requireAuthenticated($auth);
+        if ($request->method === 'GET' && $request->path === '/api/v1/catalog') {
+            return Response::success($this->applicationCatalog(), $request->requestId);
+        }
+
         if ($auth->userId === null) {
             throw new ApiException(503, 'CONNECT_ACCOUNT_NOT_PROVISIONED', 'Le compte CONNECT n’est pas encore provisionné.');
         }
@@ -160,6 +164,53 @@ final class Application
         }
 
         throw new ApiException(404, 'NOT_FOUND', 'La route demandée est introuvable.');
+    }
+
+    /** @return list<array{code: string, name: string, description: string, launchUrl: string, available: bool, status: string}> */
+    private function applicationCatalog(): array
+    {
+        return [
+            [
+                'code' => 'rapport',
+                'name' => 'Rapport AVEREO Pro',
+                'description' => 'Créer et gérer les rapports professionnels AVEREO.',
+                'launchUrl' => 'https://rapport.avereo.fr/',
+                'available' => true,
+                'status' => 'available',
+            ],
+            [
+                'code' => 'coupe',
+                'name' => 'Coupe AVEREO Reno Pro',
+                'description' => 'Préparer les métrés et les dossiers de coupe.',
+                'launchUrl' => 'https://coupe.avereo.fr/',
+                'available' => true,
+                'status' => 'available',
+            ],
+            [
+                'code' => 'projet',
+                'name' => 'Projet AVEREO Pro',
+                'description' => 'Piloter les projets et leurs données métier.',
+                'launchUrl' => 'https://projet.avereo.fr/',
+                'available' => false,
+                'status' => 'coming_soon',
+            ],
+            [
+                'code' => 'thermo',
+                'name' => 'Thermo AVEREO Pro',
+                'description' => 'Réaliser les études et simulations thermiques.',
+                'launchUrl' => 'https://thermo.avereo.fr/',
+                'available' => false,
+                'status' => 'coming_soon',
+            ],
+            [
+                'code' => 'drone',
+                'name' => 'Drone AVEREO Pro',
+                'description' => 'Organiser les missions et relevés par drone.',
+                'launchUrl' => 'https://drone.avereo.fr/',
+                'available' => false,
+                'status' => 'coming_soon',
+            ],
+        ];
     }
 
     private function requireAuthenticated(AuthContext $auth): void
