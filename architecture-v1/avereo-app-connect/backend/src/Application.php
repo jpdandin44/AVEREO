@@ -79,9 +79,13 @@ final class Application
         }
 
         if ($request->method === 'GET' && $request->path === '/api/v1/session') {
+            $registrationUrl = $this->config->oauthIssuer === ''
+                ? null
+                : rtrim($this->config->oauthIssuer, '/') . '/user/register';
             $session = [
                 'authenticated' => $auth->isAuthenticated(),
                 'csrfToken' => $csrfToken,
+                'registrationUrl' => $registrationUrl,
             ];
             return Response::success($session, $request->requestId);
         }
@@ -174,12 +178,17 @@ final class Application
     /** @return list<array{code: string, name: string, description: string, launchUrl: string, available: bool, status: string}> */
     private function applicationCatalog(): array
     {
+        $preproduction = $this->config->environment === 'preprod';
+        $rapportLaunchUrl = $preproduction
+            ? 'https://rapport-preprod.avereo.fr/'
+            : 'https://rapport.avereo.fr/';
+
         return [
             [
                 'code' => 'rapport',
                 'name' => 'Rapport AVEREO Pro',
                 'description' => 'Créer et gérer les rapports professionnels AVEREO.',
-                'launchUrl' => 'https://rapport.avereo.fr/',
+                'launchUrl' => $rapportLaunchUrl,
                 'available' => true,
                 'status' => 'available',
             ],
@@ -188,8 +197,8 @@ final class Application
                 'name' => 'Coupe AVEREO Reno Pro',
                 'description' => 'Préparer les métrés et les dossiers de coupe.',
                 'launchUrl' => 'https://coupe.avereo.fr/',
-                'available' => true,
-                'status' => 'available',
+                'available' => !$preproduction,
+                'status' => $preproduction ? 'coming_soon' : 'available',
             ],
             [
                 'code' => 'projet',

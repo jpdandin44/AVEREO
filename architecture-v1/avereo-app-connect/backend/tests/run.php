@@ -122,8 +122,47 @@ $tests['identified catalog'] = static function () use ($application, $identified
     assertSameValue(200, $response->status, 'catalog status');
     assertSameValue(5, count($response->payload['data']), 'catalog size');
     assertSameValue('rapport', $response->payload['data'][0]['code'], 'first catalog app');
+    assertSameValue('https://rapport.avereo.fr/', $response->payload['data'][0]['launchUrl'], 'production catalog url');
     assertSameValue(true, $response->payload['data'][0]['available'], 'rapport available');
     assertSameValue(false, $response->payload['data'][2]['available'], 'projet unavailable');
+};
+
+$tests['preproduction catalog'] = static function () use ($repository, $identified, $logout): void {
+    $preproductionConfig = new Config(
+        'preprod',
+        false,
+        null,
+        '',
+        '',
+        'AVEREO_PREPROD_TEST',
+        1800,
+        43200,
+        'https://auth-preprod.avereo.fr/',
+    );
+    $preproductionApplication = new Application($preproductionConfig, $repository);
+    $response = $preproductionApplication->handle(
+        request('GET', '/api/v1/catalog'),
+        $identified,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(
+        'https://rapport-preprod.avereo.fr/',
+        $response->payload['data'][0]['launchUrl'],
+        'preproduction catalog url',
+    );
+    assertSameValue(false, $response->payload['data'][1]['available'], 'preproduction coupe unavailable');
+    $sessionResponse = $preproductionApplication->handle(
+        request('GET', '/api/v1/session'),
+        $identified,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(
+        'https://auth-preprod.avereo.fr/user/register',
+        $sessionResponse->payload['data']['registrationUrl'],
+        'preproduction registration url',
+    );
 };
 
 $tests['identity disabled'] = static function () use ($application, $anonymous, $logout): void {
