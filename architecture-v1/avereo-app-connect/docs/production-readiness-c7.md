@@ -10,8 +10,9 @@ Statut global : candidat validé en préproduction, production non autorisée
 | Secrets absents du dépôt | Prêt | Seul `.env.example` est versionné avec des valeurs factices |
 | Parcours OAuth de préproduction | Validé | Login 200, callback 303, retour 200, session Drupal authentifiée |
 | Tests du candidat | Validé | 13/13 sur copie de validation et 11/11 sur instance active |
-| Liaison identité Drupal vers utilisateur CONNECT | Bloqué | Définir le provisioning et tester le rattachement du `subject` |
-| Accès aux applications et habilitations | Hors périmètre | Nécessite la liaison utilisateur, le catalogue et des données validées |
+| Catalogue après identification | Prêt en préproduction | Route protégée et liens vers Rapport et Coupe |
+| Liaison identité Drupal vers utilisateur CONNECT | À poursuivre | Requise pour les droits fins et le provisioning du `subject` |
+| Habilitations par utilisateur ou organisation | À poursuivre | Le catalogue initial est commun à toute identité Drupal validée |
 | Client OAuth Drupal de production | À faire | Créer ou confirmer le client, le secret et le callback exact |
 | Émetteur Drupal de production | À faire | Reporter la valeur exacte, slash final compris |
 | Clé publique de production | À faire | Déposer hors document root avec droits minimaux |

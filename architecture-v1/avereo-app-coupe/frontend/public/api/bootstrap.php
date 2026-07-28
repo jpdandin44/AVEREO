@@ -303,6 +303,16 @@ function api_require_drupal_user(array $config): array
     }
 
     $user = is_array($result['data']) ? $result['data'] : [];
+    $expectedClientId = trim((string)($config['drupal_client_id'] ?? ''));
+    $tokenClientId = api_first_string($user, ['client_id']);
+    if ($expectedClientId === '' || $tokenClientId === '' || !hash_equals($expectedClientId, $tokenClientId)) {
+        api_json(401, [
+            'ok' => false,
+            'error' => 'drupal_token_wrong_client',
+            'message' => 'Le jeton AVEREO n appartient pas a l application Coupe.',
+        ]);
+    }
+
     $roles = api_normalize_roles($user);
     $requiredRoles = api_config_array($config['drupal_required_roles'] ?? []);
     if ($requiredRoles && !array_intersect($requiredRoles, $roles)) {

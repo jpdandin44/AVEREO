@@ -49,6 +49,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SessionResponse"
+  /catalog:
+    get:
+      tags: [Catalog]
+      operationId: getApplicationCatalog
+      summary: Applications AVEREO proposées à une identité Drupal validée
+      description: >-
+        Retourne le catalogue de démarrage après authentification, même si le
+        compte CONNECT n'a pas encore été provisionné dans la base.
+      responses:
+        "200":
+          description: Applications disponibles et applications à venir
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/CatalogApplication"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "401":
+          $ref: "#/components/responses/AuthenticationRequired"
   /auth/login:
     post:
       tags: [Session]
@@ -410,6 +435,25 @@ components:
         validTo:
           type: [string, "null"]
           format: date-time
+    CatalogApplication:
+      type: object
+      required: [code, name, description, launchUrl, available, status]
+      properties:
+        code:
+          type: string
+          pattern: "^[a-z0-9][a-z0-9_-]{1,63}$"
+        name:
+          type: string
+        description:
+          type: string
+        launchUrl:
+          type: string
+          format: uri
+        available:
+          type: boolean
+        status:
+          type: string
+          enum: [available, coming_soon]
     Entitlement:
       type: object
       required: [applicationCode, status]

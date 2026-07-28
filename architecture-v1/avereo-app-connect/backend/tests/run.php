@@ -6,6 +6,7 @@ use Avereo\Connect\Application;
 use Avereo\Connect\Config;
 use Avereo\Connect\Http\ApiException;
 use Avereo\Connect\Http\Request;
+use Avereo\Connect\Http\Response;
 use Avereo\Connect\Repository\ConnectRepository;
 use Avereo\Connect\Security\AuthContext;
 use Avereo\Connect\Security\OAuthTransactionStore;
@@ -83,6 +84,7 @@ $config = new Config('test', true, null, '', '', 'AVEREO_TEST', 1800, 43200);
 $repository = new FakeRepository();
 $application = new Application($config, $repository);
 $anonymous = AuthContext::anonymous();
+$identified = new AuthContext(null, time(), 'drupal-identified');
 $authenticated = new AuthContext(42, time(), 'drupal-test');
 $logoutCalled = false;
 $logout = static function () use (&$logoutCalled): void {
@@ -109,10 +111,79 @@ $tests['protected route denied'] = static function () use ($application, $anonym
     assertSameValue('AUTHENTICATION_REQUIRED', $response->payload['error']['code'], 'protected code');
 };
 
+$tests['anonymous catalog denied'] = static function () use ($application, $anonymous, $logout): void {
+    $response = $application->handle(request('GET', '/api/v1/catalog'), $anonymous, 'csrf-test', $logout);
+    assertSameValue(401, $response->status, 'anonymous catalog status');
+    assertSameValue('AUTHENTICATION_REQUIRED', $response->payload['error']['code'], 'anonymous catalog code');
+};
+
+$tests['identified catalog'] = static function () use ($application, $identified, $logout): void {
+    $response = $application->handle(request('GET', '/api/v1/catalog'), $identified, 'csrf-test', $logout);
+    assertSameValue(200, $response->status, 'catalog status');
+    assertSameValue(5, count($response->payload['data']), 'catalog size');
+    assertSameValue('rapport', $response->payload['data'][0]['code'], 'first catalog app');
+    assertSameValue('https://rapport.avereo.fr/', $response->payload['data'][0]['launchUrl'], 'production catalog url');
+    assertSameValue(true, $response->payload['data'][0]['available'], 'rapport available');
+    assertSameValue(false, $response->payload['data'][2]['available'], 'projet unavailable');
+};
+
+$tests['preproduction catalog'] = static function () use ($repository, $identified, $logout): void {
+    $preproductionConfig = new Config(
+        'preprod',
+        false,
+        null,
+        '',
+        '',
+        'AVEREO_PREPROD_TEST',
+        1800,
+        43200,
+        'https://auth-preprod.avereo.fr/',
+    );
+    $preproductionApplication = new Application($preproductionConfig, $repository);
+    $response = $preproductionApplication->handle(
+        request('GET', '/api/v1/catalog'),
+        $identified,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(
+        'https://rapport-preprod.avereo.fr/',
+        $response->payload['data'][0]['launchUrl'],
+        'preproduction catalog url',
+    );
+    assertSameValue(false, $response->payload['data'][1]['available'], 'preproduction coupe unavailable');
+    $sessionResponse = $preproductionApplication->handle(
+        request('GET', '/api/v1/session'),
+        $identified,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(
+        'https://auth-preprod.avereo.fr/user/register',
+        $sessionResponse->payload['data']['registrationUrl'],
+        'preproduction registration url',
+    );
+};
+
 $tests['identity disabled'] = static function () use ($application, $anonymous, $logout): void {
-    $response = $application->handle(request('POST', '/api/v1/auth/login'), $anonymous, 'csrf-test', $logout);
+    $response = $application->handle(request('GET', '/api/v1/auth/login'), $anonymous, 'csrf-test', $logout);
     assertSameValue(503, $response->status, 'identity status');
     assertSameValue('IDENTITY_PROVIDER_NOT_CONFIGURED', $response->payload['error']['code'], 'identity code');
+};
+
+$tests['identity navigation'] = static function () use ($application, $anonymous, $logout): void {
+    $response = $application->handle(
+        request('GET', '/api/v1/auth/login'),
+        $anonymous,
+        'csrf-test',
+        $logout,
+        static fn (Request $request): Response => Response::redirect(
+            'https://avereo.fr/oauth/authorize',
+            $request->requestId,
+        ),
+    );
+    assertSameValue(303, $response->status, 'identity redirect status');
+    assertSameValue('https://avereo.fr/oauth/authorize', $response->headers['Location'] ?? null, 'identity redirect');
 };
 
 $tests['organizations'] = static function () use ($application, $authenticated, $logout): void {

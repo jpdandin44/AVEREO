@@ -24,9 +24,14 @@ function avereo_rapport_oauth_simple_oauth_oidc_claims_alter(array &$claim_value
     }
   }
 
-  $rapport_roles = ['utilisateur_rapport', 'administrateur_rapport'];
+  $application_roles = [
+    'utilisateur_rapport',
+    'administrateur_rapport',
+    'coupe_user',
+    'coupe_admin',
+  ];
   $claim_values['roles'] = array_values(array_intersect(
-    $rapport_roles,
+    $application_roles,
     $subject->getRoles(TRUE),
   ));
   $claim_values['client_id'] = $client_id;
