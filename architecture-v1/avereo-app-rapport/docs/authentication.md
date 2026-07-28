@@ -27,6 +27,19 @@ Rapport exige ce contrat `userinfo` :
 
 L'API filtre les lectures, modifications et suppressions avec `owner_provider` et `owner_id`. Le role `administrateur_rapport` peut administrer tous les rapports.
 
+## Barriere d'acces applicative
+
+Lorsque le frontend est construit avec `VITE_ENABLE_ONLINE_SYNC=true`, aucun
+ecran metier Rapport n'est affiche avant la validation complete du jeton OAuth
+et du role Drupal. La page d'entree propose uniquement :
+
+- la connexion a AVEREO Rapport via Drupal ;
+- la creation d'un compte sur l'instance Drupal configuree.
+
+Un compte nouvellement cree reste soumis aux regles Drupal de verification
+d'adresse e-mail et d'approbation administrateur. L'API `reports.php` refuse
+les requetes anonymes avec une reponse HTTP `401`.
+
 ## Mode local api_token
 
 `api_token` est un secours local temporaire. Le script genere le jeton dans `local/.env`, construit `local/config.php` et ne l'affiche pas. L'API le refuse techniquement si `environment` n'est pas `local` ou si l'hote ne se termine pas par `.localhost`.
