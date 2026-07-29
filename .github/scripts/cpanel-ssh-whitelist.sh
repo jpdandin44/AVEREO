@@ -25,12 +25,19 @@ else
 fi
 
 case "$command_name" in
-  add|remove)
+  add)
     if [ -z "${RUNNER_IPV4:-}" ]; then
       echo "RUNNER_IPV4 is required for '$command_name'." >&2
       exit 1
     fi
     endpoint="https://${CPANEL_SERVER}:2083/execute/SshWhitelist/${command_name}?address=${RUNNER_IPV4}&port=${port}"
+    ;;
+  remove)
+    if [ -z "${RUNNER_IPV4:-}" ]; then
+      echo "RUNNER_IPV4 is required for '$command_name'." >&2
+      exit 1
+    fi
+    endpoint="https://${CPANEL_SERVER}:2083/execute/SshWhitelist/${command_name}?address=${RUNNER_IPV4}&port=${port}&direction=out"
     ;;
   list)
     endpoint="https://${CPANEL_SERVER}:2083/execute/SshWhitelist/list"

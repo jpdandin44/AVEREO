@@ -53,7 +53,9 @@ jobs:
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
           O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
           RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" add
+        run: |
+          bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" add
+          echo "RUNNER_WHITELISTED=1" >> "$GITHUB_ENV"
 
       - name: Confirm runner IP is whitelisted
         env:
@@ -116,9 +118,8 @@ jobs:
           RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
         run: |
           set -euo pipefail
-          if [ -z "${RUNNER_IPV4:-}" ]; then
-            echo "No runner IP available; skipping cPanel whitelist cleanup."
+          if [ "${RUNNER_WHITELISTED:-0}" != "1" ] || [ -z "${RUNNER_IPV4:-}" ]; then
+            echo "Runner IP was not added; skipping cPanel whitelist cleanup."
             exit 0
           fi
-          bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" remove || \
-            echo "::warning::Unable to remove runner IP from cPanel whitelist automatically. Please clean stale GitHub runner IPs manually if the whitelist limit is reached."
+          bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" remove
