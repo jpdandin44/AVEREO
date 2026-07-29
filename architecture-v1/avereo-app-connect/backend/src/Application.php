@@ -182,6 +182,9 @@ final class Application
         $rapportLaunchUrl = $preproduction
             ? 'https://rapport-preprod.avereo.fr/'
             : 'https://rapport.avereo.fr/';
+        $coupeLaunchUrl = $preproduction
+            ? 'https://coupe-preprod.avereo.fr/'
+            : 'https://coupe.avereo.fr/';
 
         return [
             [
@@ -196,9 +199,9 @@ final class Application
                 'code' => 'coupe',
                 'name' => 'Coupe AVEREO Reno Pro',
                 'description' => 'Préparer les métrés et les dossiers de coupe.',
-                'launchUrl' => 'https://coupe.avereo.fr/',
-                'available' => !$preproduction,
-                'status' => $preproduction ? 'coming_soon' : 'available',
+                'launchUrl' => $coupeLaunchUrl,
+                'available' => true,
+                'status' => 'available',
             ],
             [
                 'code' => 'projet',

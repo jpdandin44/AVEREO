@@ -124,6 +124,8 @@ $tests['identified catalog'] = static function () use ($application, $identified
     assertSameValue('rapport', $response->payload['data'][0]['code'], 'first catalog app');
     assertSameValue('https://rapport.avereo.fr/', $response->payload['data'][0]['launchUrl'], 'production catalog url');
     assertSameValue(true, $response->payload['data'][0]['available'], 'rapport available');
+    assertSameValue('https://coupe.avereo.fr/', $response->payload['data'][1]['launchUrl'], 'production coupe url');
+    assertSameValue(true, $response->payload['data'][1]['available'], 'production coupe available');
     assertSameValue(false, $response->payload['data'][2]['available'], 'projet unavailable');
 };
 
@@ -151,7 +153,12 @@ $tests['preproduction catalog'] = static function () use ($repository, $identifi
         $response->payload['data'][0]['launchUrl'],
         'preproduction catalog url',
     );
-    assertSameValue(false, $response->payload['data'][1]['available'], 'preproduction coupe unavailable');
+    assertSameValue(
+        'https://coupe-preprod.avereo.fr/',
+        $response->payload['data'][1]['launchUrl'],
+        'preproduction coupe url',
+    );
+    assertSameValue(true, $response->payload['data'][1]['available'], 'preproduction coupe available');
     $sessionResponse = $preproductionApplication->handle(
         request('GET', '/api/v1/session'),
         $identified,
