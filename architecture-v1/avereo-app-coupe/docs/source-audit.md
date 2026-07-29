@@ -35,6 +35,15 @@ Notes V1.1 : fabric et pdfjs-dist devront etre integres proprement via npm.
 
 ## Validation
 
-- npm install : tente, echec car npm n'est pas reconnu comme commande PowerShell.
-- npm run build : non executable tant que npm est absent du PATH.
-- Correction minimale : installer Node.js 20 LTS ou ajouter Node/npm au PATH, puis relancer cd frontend, npm install, npm run build.
+- `npm ci` et `npm run build` sont reproductibles avec Node.js 20.19 ou plus.
+- Le lot du 29 juillet 2026 ajoute un sas serveur CONNECT devant `index.html` et
+  `legacy-app.html`.
+- Un ticket HMAC court, lié à Coupe et à usage unique, établit un cookie
+  `Secure`, `HttpOnly` et `SameSite=Lax`.
+- Les accès directs sont redirigés vers CONNECT ; les endpoints OAuth et métier
+  refusent aussi les requêtes sans cookie de sas. Seul le healthcheck reste
+  public.
+- L'API Coupe conserve ensuite son client OAuth Drupal confidentiel, son secret
+  distinct et ses contrôles de rôles.
+- Le sas reste à qualifier intégralement en préproduction avant tout
+  déclenchement manuel du workflow de production.

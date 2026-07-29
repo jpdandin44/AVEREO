@@ -6,6 +6,7 @@ require __DIR__ . '/bootstrap.php';
 api_no_options_response();
 
 $config = api_config();
+api_require_connect_gate($config);
 $action = api_trim_text($_GET['action'] ?? 'config', 32);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'config') {

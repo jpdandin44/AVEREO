@@ -125,8 +125,9 @@ def main():
         fail("FTP_SERVER_DIR resolved to an empty directory.")
 
     local_files, local_dirs = local_tree(local_dir)
-    if "index.html" not in local_files:
-        fail(f"index.html was not found in FTP_LOCAL_DIR: {local_dir}")
+    required_file = os.environ.get("FTP_REQUIRED_FILE", "index.html").strip()
+    if required_file and required_file not in local_files:
+        fail(f"{required_file} was not found in FTP_LOCAL_DIR: {local_dir}")
 
     ftp = connect()
     try:

@@ -72,6 +72,7 @@ function api_validate_report_payload(array $payload): void
 }
 
 $config = api_config();
+api_require_connect_gate($config);
 $identity = api_require_auth($config);
 $canManageAll = api_identity_can_manage_all($identity, $config);
 

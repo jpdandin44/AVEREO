@@ -2,16 +2,23 @@ name: Deploy Rapport to O2Switch
 
 on:
   workflow_dispatch:
+    inputs:
+      confirm_production:
+        description: Confirmer le deploiement de production apres validation preproduction
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
-  group: deploy-rapport-o2switch-${{ github.ref }}
-  cancel-in-progress: true
+  group: deploy-rapport-o2switch-production
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    if: ${{ inputs.confirm_production == true }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment: rapport
@@ -21,6 +28,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Enforce main branch
+        run: test "$GITHUB_REF" = "refs/heads/main"
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -32,27 +42,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build frontend
+      - name: Build authenticated application
         env:
-          VITE_ENABLE_ONLINE_SYNC: "false"
+          VITE_ENABLE_ONLINE_SYNC: "true"
         run: npm run build
 
-      - name: Prepare static preview artifact
+      - name: Validate deployment artifact
         run: |
           set -euo pipefail
-          mkdir -p deploy-preview
-          cp -R dist/assets deploy-preview/assets
-          cp dist/index.html deploy-preview/index.html
-          cp preview/.htaccess deploy-preview/.htaccess
-
-      - name: Verify deployment artifact
-        run: |
-          set -euo pipefail
-          test -s deploy-preview/index.html
-          test -s deploy-preview/.htaccess
-          test -d deploy-preview/assets
-          test ! -e deploy-preview/api
-          test ! -e deploy-preview/auth
+          test -s dist/index.html
+          test -s dist/index.php
+          test -s dist/.htaccess
+          test -s dist/connect/entry.php
+          test -s dist/connect/gate.php
+          test -s dist/api/health.php
+          test -s dist/auth/callback/index.html
+          find public/connect -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          php ../tests/connect-gate.php
 
       - name: Resolve FTPS target directory
         id: ftp-target
@@ -73,9 +79,28 @@ jobs:
           echo "server_dir=$server_dir" >> "$GITHUB_OUTPUT"
           echo "Resolved FTPS target directory: $server_dir"
 
+      - name: Backup current production
+        env:
+          FTP_BACKUP_DIR: ${{ runner.temp }}/rapport-production-backup
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.server_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
+
+      - name: Store rollback artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rapport-production-before-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/rapport-production-backup
+          include-hidden-files: true
+          retention-days: 30
+
       - name: Deploy with FTPS
         env:
-          FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-rapport/frontend/deploy-preview
+          FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-rapport/frontend/dist
           FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
           FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
           FTP_PROTOCOL: ftps
@@ -84,11 +109,12 @@ jobs:
           FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
 
-      - name: Verify public deployment
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "rapport" "https://rapport.avereo.fr/"
-
-      - name: Verify preview blocks private endpoints
+      - name: Verify CONNECT is mandatory
         run: |
           set -euo pipefail
-          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'https://rapport.avereo.fr/api/health.php')" = "404"
-          test "$(curl --silent --output /dev/null --write-out '%{http_code}' 'https://rapport.avereo.fr/auth/callback/')" = "404"
+          headers="$(mktemp)"
+          trap 'rm -f "$headers"' EXIT
+          status="$(curl -sS --max-time 20 -D "$headers" -o /dev/null -w '%{http_code}' 'https://rapport.avereo.fr/')"
+          test "$status" = "303"
+          grep -Eqi '^location:[[:space:]]*https://connect\.avereo\.fr/' "$headers"
+          test "$(curl -sS --max-time 20 -o /dev/null -w '%{http_code}' 'https://rapport.avereo.fr/connect/entry.php')" = "403"

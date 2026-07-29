@@ -38,6 +38,12 @@ function api_home_dir_from_path(string $path): string
 function api_config_candidates(): array
 {
     $roots = [];
+    $documentRoot = strtolower(str_replace('\\', '/', (string) (
+        $_SERVER['CONTEXT_DOCUMENT_ROOT'] ?? $_SERVER['DOCUMENT_ROOT'] ?? ''
+    )));
+    $configNames = str_contains($documentRoot, 'preprod')
+        ? ['rapport-preprod', 'rapport']
+        : ['rapport'];
 
     foreach ([
         getenv('HOME') ?: '',
@@ -61,7 +67,9 @@ function api_config_candidates(): array
     foreach (array_unique($roots) as $root) {
         $root = rtrim((string)$root, '/\\');
         if ($root !== '') {
-            $candidates[] = $root . '/.avereo/rapport/config.php';
+            foreach ($configNames as $configName) {
+                $candidates[] = $root . '/.avereo/' . $configName . '/config.php';
+            }
         }
     }
 
@@ -119,6 +127,18 @@ function api_config(): array
         'drupal_admin_roles' => ['administrateur_rapport'],
         'max_payload_bytes' => 50 * 1024 * 1024,
     ], $fileConfig);
+}
+
+function api_require_connect_gate(array $config): void
+{
+    require_once dirname(__DIR__) . '/connect/gate.php';
+    if (!avereo_gate_cookie_is_valid($config)) {
+        api_json(403, [
+            'ok' => false,
+            'error' => 'connect_gateway_required',
+            'message' => 'Ouvrez Rapport depuis AVEREO CONNECT.',
+        ]);
+    }
 }
 
 function api_auth_mode(array $config): string
@@ -299,6 +319,7 @@ function api_public_auth_config(array $config): array
     $tokenUrl = trim((string)($config['drupal_token_url'] ?? ''));
     $userinfoUrl = trim((string)($config['drupal_userinfo_url'] ?? ''));
     $clientId = trim((string)($config['drupal_client_id'] ?? ''));
+    $clientSecret = trim((string)($config['drupal_client_secret'] ?? ''));
     $redirectUri = api_oauth_redirect_uri($config);
     $scope = trim((string)($config['drupal_scope'] ?? 'openid profile email'));
 
@@ -323,6 +344,7 @@ function api_public_auth_config(array $config): array
         'configured' => api_oauth_issuer_allowed($issuer, $config)
             && $endpointsAllowed
             && preg_match('/^[A-Za-z0-9._~-]{3,128}$/', $clientId) === 1
+            && (api_environment_is_local($config) || strlen($clientSecret) >= 32)
             && $redirectUriAllowed
             && in_array('openid', $scopes, true),
         'issuer' => $issuer,

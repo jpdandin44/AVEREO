@@ -3,13 +3,17 @@
 ## Cible Drupal
 
 - Issuer : `https://avereo.fr`
-- Client public : `avereo_rapport`
+- Client confidentiel : `avereo_rapport`
 - Callback local : `http://rapport.avereo.localhost/auth/callback/`
 - Callback de production : `https://rapport.avereo.fr/auth/callback/`
 - Scopes : `openid profile email`
 - Roles Drupal : `utilisateur_rapport`, `administrateur_rapport`
 
-Le client doit utiliser Authorization Code avec PKCE S256. Il est public, non confidentiel et ne possede aucun secret. L'API echange le code et valide le bearer token avec l'endpoint `userinfo` configure cote serveur.
+Le client utilise Authorization Code avec PKCE S256. En preproduction et en
+production, il est confidentiel et possede un secret aleatoire distinct,
+conserve uniquement dans la configuration privee Rapport. L'API echange le code
+et valide le bearer token avec l'endpoint `userinfo` configure cote serveur.
+Une configuration non locale sans secret d'au moins 32 caracteres est refusee.
 
 Rapport exige ce contrat `userinfo` :
 
@@ -57,7 +61,7 @@ Prealable obligatoire : appliquer la procedure de securisation de `deployment.md
 3. Generer les cles privee/publique depuis `/admin/config/people/simple_oauth` et conserver la cle privee hors du document root lorsque l'hebergeur le permet.
 4. Laisser OpenID Connect actif dans `/admin/config/people/simple_oauth/openid-connect`.
 5. Verifier les roles Drupal existants `utilisateur_rapport` et `administrateur_rapport`.
-6. Creer un Consumer dans `/admin/config/services/consumer/add` : client ID `avereo_rapport`, non confidentiel, Authorization Code actif, PKCE actif, callback exacte `https://rapport.avereo.fr/auth/callback/`.
+6. Creer un Consumer dans `/admin/config/services/consumer/add` : client ID `avereo_rapport`, confidentiel, secret distinct, Authorization Code actif, PKCE actif, callback exacte `https://rapport.avereo.fr/auth/callback/`.
 7. Verifier `/oauth/authorize`, `/oauth/token`, `/oauth/userinfo` et `/oauth/jwks`.
 8. Tester successivement un compte sans role, un `utilisateur_rapport` puis un `administrateur_rapport`.
 
@@ -76,7 +80,7 @@ Le fichier `/home/CPANEL_USERNAME/.avereo/rapport/config.php` doit contenir au m
 'drupal_userinfo_url' => 'https://avereo.fr/oauth/userinfo',
 'drupal_allowed_hosts' => ['avereo.fr'],
 'drupal_client_id' => 'avereo_rapport',
-'drupal_client_secret' => '',
+'drupal_client_secret' => 'SECRET_ALEATOIRE_DISTINCT_AU_MOINS_32_CARACTERES',
 'drupal_scope' => 'openid profile email',
 'drupal_redirect_uri' => 'https://rapport.avereo.fr/auth/callback/',
 'drupal_required_roles' => ['utilisateur_rapport', 'administrateur_rapport'],

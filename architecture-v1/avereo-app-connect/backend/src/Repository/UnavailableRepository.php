@@ -17,6 +17,23 @@ final class UnavailableRepository implements ConnectRepository
         return $this->status;
     }
 
+    public function findUserIdByDrupalSubject(string $drupalSubject): ?int
+    {
+        return null;
+    }
+
+    public function registerPendingIdentity(
+        string $drupalSubject,
+        ?string $email,
+        ?string $displayName,
+    ): void {
+    }
+
+    public function canLaunchApplication(int $userId, string $applicationCode): bool
+    {
+        return false;
+    }
+
     public function findUserProfile(int $userId): array
     {
         $this->fail();

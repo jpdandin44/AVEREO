@@ -11,6 +11,7 @@ use Avereo\Connect\Http\Response;
 use Avereo\Connect\Identity\OAuthFlow;
 use Avereo\Connect\Repository\PdoConnectRepository;
 use Avereo\Connect\Repository\UnavailableRepository;
+use Avereo\Connect\Security\AppLaunchTicketIssuer;
 use Avereo\Connect\Security\OAuthTransactionStore;
 use Avereo\Connect\Security\SessionManager;
 
@@ -22,7 +23,18 @@ try {
     $documentRoot = rtrim((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''), '/\\');
     $privateConfigPath = getenv('AVEREO_PRIVATE_CONFIG');
     if ($privateConfigPath === false || $privateConfigPath === '') {
-        $privateConfigPath = dirname($documentRoot, 2) . '/private/connect/config.php';
+        $deploymentName = str_contains(strtolower(dirname($documentRoot)), 'preprod')
+            ? 'connect-preprod'
+            : 'connect-production';
+        $privateConfigPath = dirname($documentRoot, 2) . '/private/' . $deploymentName . '/config.php';
+        $legacyPreproductionPath = dirname($documentRoot, 2) . '/private/connect/config.php';
+        if (
+            $deploymentName === 'connect-preprod'
+            && !is_readable($privateConfigPath)
+            && is_readable($legacyPreproductionPath)
+        ) {
+            $privateConfigPath = $legacyPreproductionPath;
+        }
     }
     if (is_readable($privateConfigPath)) {
         $privateValues = require $privateConfigPath;
@@ -32,6 +44,8 @@ try {
             'OAUTH_ISSUER', 'OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL',
             'OAUTH_CLIENT_ID', 'OAUTH_CLIENT_SECRET', 'OAUTH_REDIRECT_URI', 'OAUTH_SUCCESS_URL',
             'OAUTH_SCOPES', 'OAUTH_PUBLIC_KEY_PATH', 'OAUTH_TRANSACTION_DIRECTORY',
+            'APP_LAUNCH_RAPPORT_URL', 'APP_LAUNCH_RAPPORT_SECRET',
+            'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET', 'APP_LAUNCH_TTL_SECONDS',
         ];
         if (!is_array($privateValues)) {
             throw new RuntimeException('Configuration privée invalide.');
@@ -59,7 +73,7 @@ try {
         $repository = new UnavailableRepository('unavailable');
     }
 
-    $application = new Application($config, $repository);
+    $application = new Application($config, $repository, new AppLaunchTicketIssuer($config));
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {
         $transactionDirectory = getenv('OAUTH_TRANSACTION_DIRECTORY');
@@ -70,6 +84,33 @@ try {
             $config,
             $session,
             new OAuthTransactionStore($transactionDirectory, $config->oauthClientSecret),
+            static function (string $subject, array $profile) use ($repository): ?int {
+                $userId = $repository->findUserIdByDrupalSubject($subject);
+                if ($userId !== null) {
+                    return $userId;
+                }
+                $email = isset($profile['email']) && is_string($profile['email'])
+                    ? strtolower(trim($profile['email']))
+                    : null;
+                if (
+                    $email !== null
+                    && (strlen($email) > 254 || filter_var($email, FILTER_VALIDATE_EMAIL) === false)
+                ) {
+                    $email = null;
+                }
+                $displayName = null;
+                foreach (['name', 'preferred_username'] as $field) {
+                    $candidate = isset($profile[$field]) && is_string($profile[$field])
+                        ? trim($profile[$field])
+                        : '';
+                    if ($candidate !== '' && strlen($candidate) <= 191) {
+                        $displayName = $candidate;
+                        break;
+                    }
+                }
+                $repository->registerPendingIdentity($subject, $email, $displayName);
+                return null;
+            },
         );
     }
     $application->handle(

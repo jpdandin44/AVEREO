@@ -74,7 +74,38 @@ paths:
                     $ref: "#/components/schemas/Meta"
         "401":
           $ref: "#/components/responses/AuthenticationRequired"
+  /apps/{applicationCode}/launch:
+    get:
+      tags: [Catalog]
+      operationId: launchApplication
+      summary: Ouvrir une application au moyen d'un ticket CONNECT signe
+      parameters:
+        - name: applicationCode
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [rapport, coupe]
+      responses:
+        "303":
+          description: Redirection vers le point d'entree prive de l'application
+        "401":
+          $ref: "#/components/responses/AuthenticationRequired"
+        "403":
+          description: Compte CONNECT non approuve ou application non habilitee
+        "503":
+          description: Credential ou point d'entree applicatif non configure
   /auth/login:
+    get:
+      tags: [Session]
+      operationId: navigateToLogin
+      summary: Démarrer Authorization Code avec PKCE par navigation
+      security: []
+      responses:
+        "303":
+          description: Redirection vers Drupal
+        "503":
+          $ref: "#/components/responses/IdentityNotConfigured"
     post:
       tags: [Session]
       operationId: startLogin
@@ -363,12 +394,17 @@ components:
       properties:
         data:
           type: object
-          required: [authenticated]
+          required: [authenticated, approved, csrfToken]
           properties:
             authenticated:
               type: boolean
+            approved:
+              type: boolean
             csrfToken:
               type: string
+            registrationUrl:
+              type: [string, "null"]
+              format: uri
         meta:
           $ref: "#/components/schemas/Meta"
     UserResponse:
@@ -423,7 +459,7 @@ components:
           type: string
         launchUrl:
           type: string
-          format: uri
+          format: uri-reference
         requiredScope:
           type: [string, "null"]
         entitlementStatus:
@@ -448,12 +484,12 @@ components:
           type: string
         launchUrl:
           type: string
-          format: uri
+          format: uri-reference
         available:
           type: boolean
         status:
           type: string
-          enum: [available, coming_soon]
+          enum: [available, access_denied, configuration_required, coming_soon]
     Entitlement:
       type: object
       required: [applicationCode, status]

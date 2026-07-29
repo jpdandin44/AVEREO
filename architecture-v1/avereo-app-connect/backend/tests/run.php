@@ -8,6 +8,7 @@ use Avereo\Connect\Http\ApiException;
 use Avereo\Connect\Http\Request;
 use Avereo\Connect\Http\Response;
 use Avereo\Connect\Repository\ConnectRepository;
+use Avereo\Connect\Security\AppLaunchTicketIssuer;
 use Avereo\Connect\Security\AuthContext;
 use Avereo\Connect\Security\OAuthTransactionStore;
 
@@ -17,10 +18,29 @@ final class FakeRepository implements ConnectRepository
 {
     public bool $allowMutation = true;
     public int $auditCount = 0;
+    /** @var list<string> */
+    public array $allowedApps = ['rapport', 'coupe'];
 
     public function databaseStatus(): string
     {
         return 'ok';
+    }
+
+    public function findUserIdByDrupalSubject(string $drupalSubject): ?int
+    {
+        return $drupalSubject === 'drupal-test' ? 42 : null;
+    }
+
+    public function registerPendingIdentity(
+        string $drupalSubject,
+        ?string $email,
+        ?string $displayName,
+    ): void {
+    }
+
+    public function canLaunchApplication(int $userId, string $applicationCode): bool
+    {
+        return $userId === 42 && in_array($applicationCode, $this->allowedApps, true);
     }
 
     public function findUserProfile(int $userId): array
@@ -102,6 +122,7 @@ $tests['health'] = static function () use ($application, $anonymous, $logout): v
 $tests['anonymous session'] = static function () use ($application, $anonymous, $logout): void {
     $response = $application->handle(request('GET', '/api/v1/session'), $anonymous, 'csrf-test', $logout);
     assertSameValue(false, $response->payload['data']['authenticated'], 'anonymous');
+    assertSameValue(false, $response->payload['data']['approved'], 'anonymous approval');
     assertSameValue('csrf-test', $response->payload['data']['csrfToken'], 'csrf token');
 };
 
@@ -122,10 +143,10 @@ $tests['identified catalog'] = static function () use ($application, $identified
     assertSameValue(200, $response->status, 'catalog status');
     assertSameValue(5, count($response->payload['data']), 'catalog size');
     assertSameValue('rapport', $response->payload['data'][0]['code'], 'first catalog app');
-    assertSameValue('https://rapport.avereo.fr/', $response->payload['data'][0]['launchUrl'], 'production catalog url');
-    assertSameValue(true, $response->payload['data'][0]['available'], 'rapport available');
-    assertSameValue('https://coupe.avereo.fr/', $response->payload['data'][1]['launchUrl'], 'production coupe url');
-    assertSameValue(true, $response->payload['data'][1]['available'], 'production coupe available');
+    assertSameValue('/api/v1/apps/rapport/launch', $response->payload['data'][0]['launchUrl'], 'production catalog url');
+    assertSameValue(false, $response->payload['data'][0]['available'], 'rapport fail closed');
+    assertSameValue('/api/v1/apps/coupe/launch', $response->payload['data'][1]['launchUrl'], 'production coupe url');
+    assertSameValue(false, $response->payload['data'][1]['available'], 'production coupe fail closed');
     assertSameValue(false, $response->payload['data'][2]['available'], 'projet unavailable');
 };
 
@@ -149,16 +170,16 @@ $tests['preproduction catalog'] = static function () use ($repository, $identifi
         $logout,
     );
     assertSameValue(
-        'https://rapport-preprod.avereo.fr/',
+        '/api/v1/apps/rapport/launch',
         $response->payload['data'][0]['launchUrl'],
         'preproduction catalog url',
     );
     assertSameValue(
-        'https://coupe-preprod.avereo.fr/',
+        '/api/v1/apps/coupe/launch',
         $response->payload['data'][1]['launchUrl'],
         'preproduction coupe url',
     );
-    assertSameValue(true, $response->payload['data'][1]['available'], 'preproduction coupe available');
+    assertSameValue(false, $response->payload['data'][1]['available'], 'preproduction coupe fail closed');
     $sessionResponse = $preproductionApplication->handle(
         request('GET', '/api/v1/session'),
         $identified,
@@ -170,6 +191,110 @@ $tests['preproduction catalog'] = static function () use ($repository, $identifi
         $sessionResponse->payload['data']['registrationUrl'],
         'preproduction registration url',
     );
+};
+
+$tests['launch requires approved CONNECT account'] = static function () use (
+    $application,
+    $identified,
+    $logout,
+): void {
+    $response = $application->handle(
+        request('GET', '/api/v1/apps/rapport/launch'),
+        $identified,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(403, $response->status, 'unprovisioned launch status');
+    assertSameValue(
+        'CONNECT_ACCOUNT_NOT_PROVISIONED',
+        $response->payload['error']['code'],
+        'unprovisioned launch code',
+    );
+};
+
+$tests['launch ticket is signed and application bound'] = static function () use (
+    $repository,
+    $authenticated,
+    $logout,
+): void {
+    $secret = str_repeat('launch-secret-', 4);
+    $launchConfig = new Config(
+        environment: 'preprod',
+        debug: false,
+        databaseDsn: null,
+        databaseUser: '',
+        databasePassword: '',
+        sessionCookieName: 'AVEREO_LAUNCH_TEST',
+        sessionIdleSeconds: 1800,
+        sessionAbsoluteSeconds: 43200,
+        appLaunchEntryUrls: [
+            'rapport' => 'https://rapport-preprod.avereo.fr/connect/entry.php',
+            'coupe' => 'https://coupe-preprod.avereo.fr/connect/entry.php',
+        ],
+        appLaunchSecrets: [
+            'rapport' => $secret,
+            'coupe' => str_repeat('coupe-secret-', 4),
+        ],
+        appLaunchTtlSeconds: 90,
+    );
+    $launchApplication = new Application(
+        $launchConfig,
+        $repository,
+        new AppLaunchTicketIssuer($launchConfig),
+    );
+    $catalogResponse = $launchApplication->handle(
+        request('GET', '/api/v1/catalog'),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(true, $catalogResponse->payload['data'][0]['available'], 'rapport gate available');
+    assertSameValue(true, $catalogResponse->payload['data'][1]['available'], 'coupe gate available');
+
+    $response = $launchApplication->handle(
+        request('GET', '/api/v1/apps/rapport/launch'),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(303, $response->status, 'launch redirect status');
+
+    $location = (string) ($response->headers['Location'] ?? '');
+    $parts = parse_url($location);
+    parse_str((string) ($parts['query'] ?? ''), $query);
+    $ticket = (string) ($query['ticket'] ?? '');
+    [$encodedPayload, $encodedSignature] = explode('.', $ticket, 2);
+    $expectedSignature = rtrim(
+        strtr(base64_encode(hash_hmac('sha256', $encodedPayload, $secret, true)), '+/', '-_'),
+        '=',
+    );
+    assertSameValue($expectedSignature, $encodedSignature, 'launch signature');
+
+    $padding = (4 - strlen($encodedPayload) % 4) % 4;
+    $payload = json_decode(
+        base64_decode(strtr($encodedPayload . str_repeat('=', $padding), '-_', '+/'), true),
+        true,
+        16,
+        JSON_THROW_ON_ERROR,
+    );
+    assertSameValue('rapport', $payload['app'] ?? null, 'launch application binding');
+    assertSameValue(1, $payload['v'] ?? null, 'launch ticket version');
+    assertSameValue(true, ($payload['exp'] ?? 0) > ($payload['iat'] ?? 0), 'launch expiry');
+
+    $repository->allowedApps = ['rapport'];
+    $denied = $launchApplication->handle(
+        request('GET', '/api/v1/apps/coupe/launch'),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(403, $denied->status, 'application entitlement status');
+    assertSameValue(
+        'APPLICATION_ACCESS_DENIED',
+        $denied->payload['error']['code'],
+        'application entitlement code',
+    );
+    $repository->allowedApps = ['rapport', 'coupe'];
 };
 
 $tests['identity disabled'] = static function () use ($application, $anonymous, $logout): void {

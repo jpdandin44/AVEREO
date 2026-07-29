@@ -15,13 +15,24 @@
 5. Creer `/home/CPANEL_USERNAME/.avereo/coupe/config.php` avec les identifiants MySQL et, pour la V1 technique, un `api_token` long.
 6. Configurer les secrets GitHub du depot.
 7. Verifier que `coupe.avereo.fr` resout publiquement et que le certificat HTTPS est actif.
-8. Lancer le workflow Deploy Coupe to O2Switch.
-9. Ouvrir `https://coupe.avereo.fr/api/health.php` pour verifier l'API.
-10. Dans l'application, utiliser `Sauver en ligne`, saisir le jeton API, puis verifier que le projet apparait dans `Ouvrir en ligne`.
+8. Depuis `main`, lancer manuellement le workflow Deploy Coupe to O2Switch,
+   confirmer la production et conserver l'artefact de sauvegarde créé avant le
+   transfert.
+9. Configurer hors document root `connect_portal_url`,
+   `connect_launch_secret` et `connect_launch_nonce_directory`.
+10. Verifier que l'acces direct retourne `303` vers CONNECT, qu'un ticket signe
+    ouvre Coupe et qu'un ticket rejoue retourne `403`.
+11. Ouvrir `https://coupe.avereo.fr/api/health.php` pour verifier l'API.
+12. Verifier que `/api/auth.php?action=config` et `/api/projects.php` retournent
+    `403` sans cookie de sas.
 
 ## Authentification cible
 
-La cible fonctionnelle est de remplacer le jeton API partage par une authentification centralisee Drupal via OAuth/OpenID Connect.
+La cible fonctionnelle utilise deux niveaux complementaires :
+
+- CONNECT est le seul point d'entree et emet un ticket serveur signe pour Coupe ;
+- Coupe conserve un client Drupal OAuth distinct pour proteger son API et ses
+  donnees metier.
 
 Voir `auth-drupal.md` pour le chemin de demarrage et les prerequis cote Drupal/O2Switch.
 
