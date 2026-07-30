@@ -7,7 +7,7 @@ use Avereo\Connect\Database;
 
 require dirname(__DIR__) . '/src/autoload.php';
 
-$options = getopt('', ['direction:', 'all', 'dry-run']);
+$options = getopt('', ['direction:', 'all', 'dry-run', 'config:']);
 $direction = $options['direction'] ?? 'up';
 $all = array_key_exists('all', $options);
 $dryRun = array_key_exists('dry-run', $options);
@@ -59,6 +59,7 @@ if ($dryRun) {
 }
 
 try {
+    loadPrivateConfiguration($options['config'] ?? null);
     $config = Config::fromEnvironment();
     $pdo = Database::connect($config);
     if (!$pdo instanceof PDO) {
@@ -118,6 +119,27 @@ try {
 } catch (Throwable $exception) {
     fwrite(STDERR, 'Migration échouée : ' . $exception->getMessage() . "\n");
     exit(1);
+}
+
+function loadPrivateConfiguration(mixed $configuredPath): void
+{
+    $path = trim((string) ($configuredPath ?? getenv('AVEREO_PRIVATE_CONFIG') ?: ''));
+    if ($path === '') {
+        return;
+    }
+    if (!is_readable($path)) {
+        throw new RuntimeException('Configuration privee illisible : ' . $path);
+    }
+    $values = require $path;
+    if (!is_array($values)) {
+        throw new RuntimeException('Configuration privee invalide : ' . $path);
+    }
+    foreach (['DB_DSN', 'DB_USER', 'DB_PASSWORD'] as $key) {
+        $value = $values[$key] ?? null;
+        if (is_string($value)) {
+            putenv($key . '=' . $value);
+        }
+    }
 }
 
 function migrationVersion(string $file, string $direction): string
