@@ -20,6 +20,20 @@ jobs:
       - name: Run baseline checks
         run: npm run check
 
+      - name: Reject UTF-8 BOM in Apache configuration
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          offenders = [
+              str(path)
+              for path in Path("architecture-v1").rglob(".htaccess")
+              if "dist" not in path.parts and path.read_bytes().startswith(b"\xef\xbb\xbf")
+          ]
+          if offenders:
+              raise SystemExit("UTF-8 BOM interdit dans .htaccess: " + ", ".join(offenders))
+          PY
+
       - name: Validate PHP syntax
         run: |
           set -euo pipefail
@@ -72,6 +86,8 @@ jobs:
         working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
         run: |
           set -euo pipefail
+          test -s dist/.htaccess
+          test "$(xxd -p -l 3 dist/.htaccess)" != "efbbbf"
           test -s dist/index.php
           test -s dist/connect/entry.php
           test -s dist/connect/gate.php
