@@ -20,4 +20,12 @@ if (!is_file($index)) {
 header('Content-Type: text/html; charset=utf-8');
 header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
-readfile($index);
+$html = file_get_contents($index);
+if ($html === false) {
+    http_response_code(500);
+    exit;
+}
+$logout = '<a href="/connect/logout.php" style="position:fixed;right:16px;bottom:16px;z-index:2147483647;'
+    . 'padding:10px 14px;border-radius:9px;background:#142033;color:#fff;text-decoration:none;'
+    . 'font:600 14px system-ui,sans-serif">Se déconnecter</a>';
+echo str_replace('</body>', $logout . '</body>', $html);

@@ -106,6 +106,7 @@ function avereo_gate_assert_payload(array $payload, int $maxLifetimeSeconds): vo
     $issuedAt = filter_var($payload['iat'] ?? null, FILTER_VALIDATE_INT);
     $expiresAt = filter_var($payload['exp'] ?? null, FILTER_VALIDATE_INT);
     $nonce = (string) ($payload['nonce'] ?? '');
+    $remembered = $payload['remembered'] ?? false;
     $now = time();
     if (
         ($payload['v'] ?? null) !== 1
@@ -116,6 +117,7 @@ function avereo_gate_assert_payload(array $payload, int $maxLifetimeSeconds): vo
         || $issuedAt < $now - $maxLifetimeSeconds
         || $expiresAt <= $now
         || $expiresAt - $issuedAt > $maxLifetimeSeconds
+        || !is_bool($remembered)
         || !preg_match('/^[A-Za-z0-9_-]{24,128}$/', $nonce)
     ) {
         throw new RuntimeException('Ticket expire ou non conforme.');
@@ -156,7 +158,7 @@ function avereo_gate_consume_nonce(array $config, string $nonce, int $expiresAt)
 }
 
 /** @param array<string, mixed> $config */
-function avereo_gate_issue_cookie(array $config): void
+function avereo_gate_issue_cookie(array $config, bool $remembered): void
 {
     $secret = trim((string) ($config['connect_launch_secret'] ?? ''));
     $lifetime = max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800)));
@@ -170,7 +172,19 @@ function avereo_gate_issue_cookie(array $config): void
     ], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
     $value = $payload . '.' . avereo_gate_base64url_encode(hash_hmac('sha256', $payload, $secret, true));
     setcookie((string) $config['connect_gate_cookie'], $value, [
-        'expires' => $issuedAt + $lifetime,
+        'expires' => $remembered ? $issuedAt + $lifetime : 0,
+        'path' => '/',
+        'secure' => true,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
+}
+
+/** @param array<string, mixed> $config */
+function avereo_gate_clear_cookie(array $config): void
+{
+    setcookie((string) $config['connect_gate_cookie'], '', [
+        'expires' => time() - 42000,
         'path' => '/',
         'secure' => true,
         'httponly' => true,
@@ -229,5 +243,5 @@ function avereo_gate_exchange_ticket(array $config, string $ticket): void
     $payload = avereo_gate_decode_signed($ticket, $secret);
     avereo_gate_assert_payload($payload, $maxLifetime);
     avereo_gate_consume_nonce($config, (string) $payload['nonce'], (int) $payload['exp']);
-    avereo_gate_issue_cookie($config);
+    avereo_gate_issue_cookie($config, ($payload['remembered'] ?? false) === true);
 }

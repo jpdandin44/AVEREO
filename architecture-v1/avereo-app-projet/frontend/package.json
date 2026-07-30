@@ -4,8 +4,8 @@
     "private":  true,
     "type":  "module",
     "scripts":  {
-                    "dev":  "vite",
-                    "build":  "vite build",
+                    "dev":  "node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite",
+                    "build":  "node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite build",
                     "preview":  "vite preview"
                 },
     "dependencies":  {

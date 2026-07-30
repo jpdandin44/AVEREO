@@ -2,7 +2,7 @@
 
 ## Objectif
 
-Rapport et Coupe ne doivent pas être ouverts depuis leur URL publique sans un
+Rapport, Coupe, Projet, Thermo et Drone ne doivent pas être ouverts depuis leur URL publique sans un
 passage préalable par AVEREO CONNECT. Une simple redirection ou un paramètre
 `from=connect` serait falsifiable ; le passage est donc prouvé par un ticket
 signé côté serveur.
@@ -12,7 +12,7 @@ signé côté serveur.
 1. Drupal identifie l'utilisateur et CONNECT établit sa session.
 2. Le catalogue appelle `/api/v1/apps/{code}/launch`.
 3. CONNECT vérifie la session et l'approbation du compte.
-4. CONNECT émet un ticket HMAC de 90 secondes, lié à `rapport` ou `coupe`.
+4. CONNECT émet un ticket HMAC de 90 secondes, lié à une seule application.
 5. `/connect/entry.php` vérifie la signature, l'expiration et le code
    d'application, puis consomme le nonce à usage unique.
 6. L'application crée un cookie de sas sécurisé et redirige vers `/`.
@@ -23,13 +23,15 @@ signé côté serveur.
 
 ## Credentials
 
-Les deux secrets doivent être aléatoires, faire au moins 32 caractères et rester
+Les cinq secrets doivent être aléatoires, faire au moins 32 caractères et rester
 hors document root :
 
 - `APP_LAUNCH_RAPPORT_SECRET` dans la configuration privée CONNECT correspond à
   `connect_launch_secret` dans la configuration privée Rapport ;
 - `APP_LAUNCH_COUPE_SECRET` dans la configuration privée CONNECT correspond à
   `connect_launch_secret` dans la configuration privée Coupe.
+- le même contrat s'applique à `APP_LAUNCH_PROJET_SECRET`,
+  `APP_LAUNCH_THERMO_SECRET` et `APP_LAUNCH_DRONE_SECRET`.
 
 Les secrets sont différents. Ils ne sont ni partagés avec le navigateur, ni
 commités, ni affichés dans le catalogue.
@@ -41,7 +43,7 @@ commités, ni affichés dans le catalogue.
 - compte Drupal non approuvé dans CONNECT : `403` ;
 - ticket modifié, expiré, rejoué ou destiné à une autre application : `403` ;
 - appel direct d'une API métier ou OAuth sans cookie de sas : `403` ;
-- accès direct à Rapport ou Coupe : redirection `303` vers
+- accès direct à une application : redirection `303` vers
   `https://connect.avereo.fr/`.
 
 ## Déploiement
@@ -51,8 +53,8 @@ doivent être qualifiées ensemble en préproduction. En
 production, configurer les secrets et répertoires anti-rejeu avant le code, puis
 déployer dans cet ordre :
 
-1. Rapport ;
-2. Coupe ;
+1. Rapport, Coupe, Projet, Thermo et Drone ;
+2. migration et publication du catalogue ;
 3. CONNECT.
 
 Ainsi, les applications savent déjà consommer les tickets lorsque CONNECT

@@ -87,6 +87,7 @@ final class Application
             $session = [
                 'authenticated' => $auth->isAuthenticated(),
                 'approved' => $auth->userId !== null,
+                'remembered' => $auth->remembered,
                 'csrfToken' => $csrfToken,
                 'registrationUrl' => $registrationUrl,
             ];
@@ -126,7 +127,7 @@ final class Application
 
         if (
             $request->method === 'GET'
-            && preg_match('#^/api/v1/apps/(rapport|coupe)/launch$#', $request->path, $matches)
+            && preg_match('#^/api/v1/apps/([a-z0-9][a-z0-9_-]{1,63})/launch$#', $request->path, $matches)
         ) {
             if ($auth->userId === null) {
                 throw new ApiException(
@@ -151,7 +152,7 @@ final class Application
             }
 
             return Response::redirect(
-                $this->appLaunchTickets->issueLocation($matches[1]),
+                $this->appLaunchTickets->issueLocation($matches[1], $auth->remembered),
                 $request->requestId,
             );
         }
@@ -213,64 +214,28 @@ final class Application
     /** @return list<array{code: string, name: string, description: string, launchUrl: string, available: bool, status: string}> */
     private function applicationCatalog(AuthContext $auth): array
     {
-        $rapportLaunchUrl = '/api/v1/apps/rapport/launch';
-        $coupeLaunchUrl = '/api/v1/apps/coupe/launch';
-        $approvedUserId = $auth->userId;
-        $rapportConfigured = $this->appLaunchTickets?->isConfigured('rapport') ?? false;
-        $coupeConfigured = $this->appLaunchTickets?->isConfigured('coupe') ?? false;
-        $rapportEntitled = $approvedUserId !== null
-            && $this->repository->canLaunchApplication($approvedUserId, 'rapport');
-        $coupeEntitled = $approvedUserId !== null
-            && $this->repository->canLaunchApplication($approvedUserId, 'coupe');
-        $rapportAvailable = $rapportConfigured && $rapportEntitled;
-        $coupeAvailable = $coupeConfigured && $coupeEntitled;
+        if ($auth->userId === null) {
+            return [];
+        }
 
-        return [
-            [
-                'code' => 'rapport',
-                'name' => 'Rapport AVEREO Pro',
-                'description' => 'Créer et gérer les rapports professionnels AVEREO.',
-                'launchUrl' => $rapportLaunchUrl,
-                'available' => $rapportAvailable,
-                'status' => $rapportAvailable
-                    ? 'available'
-                    : ($rapportConfigured ? 'access_denied' : 'configuration_required'),
-            ],
-            [
-                'code' => 'coupe',
-                'name' => 'Coupe AVEREO Reno Pro',
-                'description' => 'Préparer les métrés et les dossiers de coupe.',
-                'launchUrl' => $coupeLaunchUrl,
-                'available' => $coupeAvailable,
-                'status' => $coupeAvailable
-                    ? 'available'
-                    : ($coupeConfigured ? 'access_denied' : 'configuration_required'),
-            ],
-            [
-                'code' => 'projet',
-                'name' => 'Projet AVEREO Pro',
-                'description' => 'Piloter les projets et leurs données métier.',
-                'launchUrl' => 'https://projet.avereo.fr/',
-                'available' => false,
-                'status' => 'coming_soon',
-            ],
-            [
-                'code' => 'thermo',
-                'name' => 'Thermo AVEREO Pro',
-                'description' => 'Réaliser les études et simulations thermiques.',
-                'launchUrl' => 'https://thermo.avereo.fr/',
-                'available' => false,
-                'status' => 'coming_soon',
-            ],
-            [
-                'code' => 'drone',
-                'name' => 'Drone AVEREO Pro',
-                'description' => 'Organiser les missions et relevés par drone.',
-                'launchUrl' => 'https://drone.avereo.fr/',
-                'available' => false,
-                'status' => 'coming_soon',
-            ],
-        ];
+        $catalog = [];
+        foreach ($this->repository->listCatalog($auth->userId) as $application) {
+            $code = (string) ($application['code'] ?? '');
+            if (!preg_match('/^[a-z0-9][a-z0-9_-]{1,63}$/', $code)) {
+                continue;
+            }
+            $configured = $this->appLaunchTickets?->isConfigured($code) ?? false;
+            $catalog[] = [
+                'code' => $code,
+                'name' => (string) ($application['name'] ?? $code),
+                'description' => (string) ($application['description'] ?? ''),
+                'launchUrl' => '/api/v1/apps/' . rawurlencode($code) . '/launch',
+                'available' => $configured,
+                'status' => $configured ? 'available' : 'configuration_required',
+            ];
+        }
+
+        return $catalog;
     }
 
     private function requireAuthenticated(AuthContext $auth): void

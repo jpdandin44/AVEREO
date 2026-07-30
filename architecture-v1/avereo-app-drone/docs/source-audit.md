@@ -8,11 +8,15 @@
 ## Integration V1
 
 La syntaxe TypeScript est conservee dans frontend/src/App.tsx; Vite React TypeScript utilise frontend/src/main.tsx.
+Les classes utilitaires presentes dans la source sont compilees localement avec
+Tailwind CSS et PostCSS. Le build reste autonome et ne charge aucune feuille de
+styles depuis un CDN.
 
 ## Dependances detectees ou prevues
 
 - Runtime : lucide-react, react, react-dom
-- Dev : @types/react, @types/react-dom, @vitejs/plugin-react, typescript, vite
+- Dev : @types/react, @types/react-dom, @vitejs/plugin-react, autoprefixer,
+  postcss, tailwindcss, typescript, vite
 
 ## APIs navigateur visibles
 

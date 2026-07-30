@@ -65,10 +65,16 @@ final class Config
             [
                 'rapport' => self::env('APP_LAUNCH_RAPPORT_URL'),
                 'coupe' => self::env('APP_LAUNCH_COUPE_URL'),
+                'projet' => self::env('APP_LAUNCH_PROJET_URL'),
+                'thermo' => self::env('APP_LAUNCH_THERMO_URL'),
+                'drone' => self::env('APP_LAUNCH_DRONE_URL'),
             ],
             [
                 'rapport' => self::env('APP_LAUNCH_RAPPORT_SECRET'),
                 'coupe' => self::env('APP_LAUNCH_COUPE_SECRET'),
+                'projet' => self::env('APP_LAUNCH_PROJET_SECRET'),
+                'thermo' => self::env('APP_LAUNCH_THERMO_SECRET'),
+                'drone' => self::env('APP_LAUNCH_DRONE_SECRET'),
             ],
             self::envInt('APP_LAUNCH_TTL_SECONDS', 90),
         );

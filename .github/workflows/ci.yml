@@ -20,6 +20,20 @@ jobs:
       - name: Run baseline checks
         run: npm run check
 
+      - name: Reject UTF-8 BOM in Apache configuration
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          offenders = [
+              str(path)
+              for path in Path("architecture-v1").rglob(".htaccess")
+              if "dist" not in path.parts and path.read_bytes().startswith(b"\xef\xbb\xbf")
+          ]
+          if offenders:
+              raise SystemExit("UTF-8 BOM interdit dans .htaccess: " + ", ".join(offenders))
+          PY
+
       - name: Validate PHP syntax
         run: |
           set -euo pipefail
@@ -29,6 +43,11 @@ jobs:
             architecture-v1/avereo-app-rapport/tests \
             architecture-v1/avereo-app-coupe/frontend/public \
             architecture-v1/avereo-app-coupe/tests \
+            architecture-v1/avereo-app-projet/frontend/public \
+            architecture-v1/avereo-app-thermo/frontend/public \
+            architecture-v1/avereo-app-drone/frontend/public \
+            architecture-v1/avereo-platform/shared \
+            architecture-v1/avereo-platform/tests \
             -type f -name '*.php' -print0 \
             | xargs -0 -n1 php -l
 
@@ -38,6 +57,46 @@ jobs:
           php architecture-v1/avereo-app-connect/backend/tests/run.php
           php architecture-v1/avereo-app-rapport/tests/connect-gate.php
           php architecture-v1/avereo-app-coupe/tests/connect-gate.php
+          php architecture-v1/avereo-platform/tests/connect-gate.php
+
+  frontend-gates:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        application: [rapport, coupe, projet, thermo, drone]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
+        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Build protected frontend
+        working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
+        run: npm run build
+
+      - name: Validate CONNECT gate artifact
+        working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
+        run: |
+          set -euo pipefail
+          test -s dist/.htaccess
+          test "$(xxd -p -l 3 dist/.htaccess)" != "efbbbf"
+          test -s dist/index.php
+          test -s dist/connect/entry.php
+          test -s dist/connect/gate.php
+          test -s dist/connect/logout.php
+          case "${{ matrix.application }}" in
+            thermo|drone)
+              find dist/assets -type f -name '*.css' -size +0c | grep -q .
+              ;;
+          esac
 
   connect-integration:
     runs-on: ubuntu-latest

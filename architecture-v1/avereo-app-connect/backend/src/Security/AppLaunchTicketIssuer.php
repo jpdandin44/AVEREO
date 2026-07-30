@@ -19,7 +19,7 @@ final class AppLaunchTicketIssuer
             && $this->isAllowedEntryUrl($this->config->appLaunchEntryUrl($applicationCode));
     }
 
-    public function issueLocation(string $applicationCode): string
+    public function issueLocation(string $applicationCode, bool $remembered = false): string
     {
         if (!$this->isConfigured($applicationCode)) {
             throw new ApiException(
@@ -36,6 +36,7 @@ final class AppLaunchTicketIssuer
             'iat' => $issuedAt,
             'exp' => $issuedAt + $this->config->appLaunchTtlSeconds,
             'nonce' => self::base64UrlEncode(random_bytes(24)),
+            'remembered' => $remembered,
         ], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
         $encodedPayload = self::base64UrlEncode($payload);
         $signature = hash_hmac(

@@ -55,11 +55,11 @@ paths:
       operationId: getApplicationCatalog
       summary: Applications AVEREO proposées à une identité Drupal validée
       description: >-
-        Retourne le catalogue de démarrage après authentification, même si le
-        compte CONNECT n'a pas encore été provisionné dans la base.
+        Retourne uniquement les applications actives du catalogue pour lesquelles
+        le compte CONNECT possède une habilitation organisationnelle valide.
       responses:
         "200":
-          description: Applications disponibles et applications à venir
+          description: Applications publiées et habilitées
           content:
             application/json:
               schema:
@@ -85,7 +85,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [rapport, coupe]
+            pattern: "^[a-z0-9][a-z0-9_-]{1,63}$"
       responses:
         "303":
           description: Redirection vers le point d'entree prive de l'application
@@ -112,6 +112,18 @@ paths:
       summary: Démarrer Authorization Code avec PKCE
       description: Disponible lorsque la configuration OAuth est complète.
       security: []
+      parameters:
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                remember:
+                  type: boolean
       responses:
         "303":
           description: Redirection vers Drupal
@@ -394,11 +406,13 @@ components:
       properties:
         data:
           type: object
-          required: [authenticated, approved, csrfToken]
+          required: [authenticated, approved, remembered, csrfToken]
           properties:
             authenticated:
               type: boolean
             approved:
+              type: boolean
+            remembered:
               type: boolean
             csrfToken:
               type: string
@@ -489,7 +503,7 @@ components:
           type: boolean
         status:
           type: string
-          enum: [available, access_denied, configuration_required, coming_soon]
+          enum: [available, configuration_required]
     Entitlement:
       type: object
       required: [applicationCode, status]

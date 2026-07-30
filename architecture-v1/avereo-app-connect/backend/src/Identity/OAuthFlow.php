@@ -23,14 +23,16 @@ final class OAuthFlow
 
     public function begin(Request $request): Response
     {
+        $remembered = ($request->body['remember'] ?? $request->query['remember'] ?? false) === true
+            || ($request->body['remember'] ?? $request->query['remember'] ?? '') === '1';
         $state = self::randomToken(32);
         $nonce = self::randomToken(32);
         $verifier = self::randomToken(64);
         $challenge = self::base64Url(hash('sha256', $verifier, true));
-        $this->session->beginOauth($state, $nonce, $verifier);
+        $this->session->beginOauth($state, $nonce, $verifier, $remembered);
         if ($this->transactions !== null) {
             $binding = $this->session->ensureOauthBinding();
-            $this->transactions->save($state, $nonce, $verifier, $binding);
+            $this->transactions->save($state, $nonce, $verifier, $binding, $remembered);
         }
 
         $query = http_build_query([
@@ -42,6 +44,7 @@ final class OAuthFlow
             'nonce' => $nonce,
             'code_challenge' => $challenge,
             'code_challenge_method' => 'S256',
+            'prompt' => $remembered ? null : 'login',
         ], '', '&', PHP_QUERY_RFC3986);
 
         $authorizeUrl = $this->config->oauthAuthorizeUrl . '?' . $query;
@@ -103,7 +106,7 @@ final class OAuthFlow
         if ($userId !== null && (!is_int($userId) || $userId < 1)) {
             throw new \RuntimeException('Identifiant CONNECT resolu invalide.');
         }
-        $this->session->establishIdentity($subject, $userId);
+        $this->session->establishIdentity($subject, $userId, $transaction['remembered']);
         $this->session->clearOauthBinding();
         return Response::redirect($this->config->oauthSuccessUrl, $request->requestId);
     }

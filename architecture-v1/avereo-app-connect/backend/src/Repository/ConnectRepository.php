@@ -18,6 +18,9 @@ interface ConnectRepository
 
     public function canLaunchApplication(int $userId, string $applicationCode): bool;
 
+    /** @return list<array<string, mixed>> */
+    public function listCatalog(int $userId): array;
+
     /** @return array<string, mixed> */
     public function findUserProfile(int $userId): array;
 

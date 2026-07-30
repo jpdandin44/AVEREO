@@ -34,6 +34,11 @@ final class UnavailableRepository implements ConnectRepository
         return false;
     }
 
+    public function listCatalog(int $userId): array
+    {
+        $this->fail();
+    }
+
     public function findUserProfile(int $userId): array
     {
         $this->fail();

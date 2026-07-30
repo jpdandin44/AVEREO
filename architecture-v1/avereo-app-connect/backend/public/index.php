@@ -45,7 +45,11 @@ try {
             'OAUTH_CLIENT_ID', 'OAUTH_CLIENT_SECRET', 'OAUTH_REDIRECT_URI', 'OAUTH_SUCCESS_URL',
             'OAUTH_SCOPES', 'OAUTH_PUBLIC_KEY_PATH', 'OAUTH_TRANSACTION_DIRECTORY',
             'APP_LAUNCH_RAPPORT_URL', 'APP_LAUNCH_RAPPORT_SECRET',
-            'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET', 'APP_LAUNCH_TTL_SECONDS',
+            'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET',
+            'APP_LAUNCH_PROJET_URL', 'APP_LAUNCH_PROJET_SECRET',
+            'APP_LAUNCH_THERMO_URL', 'APP_LAUNCH_THERMO_SECRET',
+            'APP_LAUNCH_DRONE_URL', 'APP_LAUNCH_DRONE_SECRET',
+            'APP_LAUNCH_TTL_SECONDS',
         ];
         if (!is_array($privateValues)) {
             throw new RuntimeException('Configuration privée invalide.');

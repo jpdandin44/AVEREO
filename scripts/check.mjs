@@ -22,10 +22,19 @@ if (missing.length) {
 }
 
 const html = fs.readFileSync(path.join(root, "prototype-v1/index.html"), "utf8");
+const connectPortal = fs.readFileSync(
+  path.join(root, "architecture-v1/avereo-app-connect/backend/public/index.html"),
+  "utf8"
+);
 const checks = [
   { ok: html.includes("styles.css"), msg: "index.html must reference styles.css" },
   { ok: html.includes("app.js"), msg: "index.html must reference app.js" },
-  { ok: html.includes("AVEREO"), msg: "index.html should contain AVEREO branding" }
+  { ok: html.includes("AVEREO"), msg: "index.html should contain AVEREO branding" },
+  {
+    ok: connectPortal.includes("drupalAccountSwitchUrl")
+      && connectPortal.includes("'/user/logout'"),
+    msg: "CONNECT logout must terminate the Drupal session before account selection"
+  }
 ];
 
 const failed = checks.filter((c) => !c.ok);
