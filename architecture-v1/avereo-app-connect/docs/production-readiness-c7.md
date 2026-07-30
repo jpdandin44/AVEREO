@@ -1,28 +1,28 @@
 # Tableau de préparation production — CONNECT C7/V2
 
-Date de référence : 29 juillet 2026
+Date de référence : 30 juillet 2026
 
-Statut global : préproduction partiellement validée, production bloquée
+Statut global : préproduction validée, production bloquée par sa configuration dédiée
 
 | Contrôle | État | Preuve ou action restante |
 |---|---|---|
 | Sources backend versionnées | Prêt | PHP 8.3, OpenAPI, migrations et tests présents |
 | Secrets absents du dépôt | Prêt | Exemples factices uniquement |
 | OAuth CONNECT préproduction | Validé | Login Drupal, callback et session CONNECT réussis |
-| Rapport préproduction | Validé après correction | Le routage Apache ne réécrit plus les assets vers `index.html`; OAuth Rapport réussi |
-| Coupe préproduction | Validé | Application et OAuth Coupe accessibles |
-| Sas CONNECT vers applications | À qualifier | Ticket HMAC, secret distinct, expiration, anti-rejeu et cookie sécurisé préparés dans la branche |
-| Refus des accès directs | À qualifier | Rapport et Coupe doivent rediriger vers CONNECT sans cookie de sas |
-| Compte CONNECT approuvé | Prêt dans le code | L'identité inconnue est mise en attente ; la CLI d'approbation crée explicitement utilisateur, organisation, adhésion et habilitations |
-| Habilitations fines | Prêtes dans le code | Le lancement exige utilisateur, organisation, adhésion et habilitation actifs ; données de production à créer |
-| Client OAuth Drupal de production | À faire | Créer ou confirmer client, secret et callback exacts |
-| Émetteur Drupal de production | À faire | Reporter la valeur exacte, slash final compris |
+| Rapport préproduction | Validé | Ticket CONNECT accepté, OAuth Rapport réussi et application métier affichée |
+| Coupe préproduction | Validé | Ticket CONNECT accepté et application métier affichée |
+| Sas CONNECT vers applications | Validé en préproduction | Secrets distincts, ticket signé, cookie sécurisé et stockage anti-rejeu opérationnels ; les tests CI couvrent rejeu, altération et mauvais code d'application |
+| Refus des accès directs | Validé en préproduction | Les racines Rapport et Coupe renvoient `303` vers CONNECT ; leurs entrées sans ticket renvoient `403` |
+| Compte CONNECT approuvé | Validé en préproduction | L'identité Drupal a été mise en attente puis approuvée explicitement par la CLI |
+| Habilitations fines | Validées en préproduction | Le profil AVEREO approuvé affiche et ouvre uniquement Rapport et Coupe |
+| Client OAuth Drupal de production | Configuré, à requalifier | `connect-production` redirige vers le callback exact de CONNECT production ; le parcours complet reste à rejouer après activation de la base |
+| Émetteur Drupal de production | Configuré, à requalifier | CONNECT production redirige actuellement vers `https://avereo.fr/oauth/authorize` |
 | Clé publique de production | À faire | Déposer hors document root avec droits minimaux |
 | Document root CONNECT production | Bloquant | cPanel pointe actuellement vers `/Connect.avereo.fr`; la cible backend attend `/Connect.avereo.fr/public` |
-| Base CONNECT de production | À confirmer | Base distincte, sauvegarde et migration réversible |
-| Configuration privée CONNECT | À faire | OAuth, base et deux credentials applicatifs hors document root |
+| Base CONNECT de production | Bloquant | Le healthcheck public indique actuellement `database: not_configured` |
+| Configuration privée CONNECT | Partielle | OAuth est présent ; base et deux credentials applicatifs restent à préparer hors document root |
 | Configuration privée Rapport/Coupe | À faire | Secret correspondant et répertoire anti-rejeu distinct pour chaque application |
-| Sauvegarde restaurable | Partiellement prête | Les workflows archivent les document roots avant transfert ; les configurations privées et bases doivent être sauvegardées séparément dans cPanel/JetBackup |
+| Sauvegarde restaurable | Préproduction vérifiée | Archive horodatée des trois applications et configurations privées créée ; la sauvegarde de production doit encore inclure bases et configurations privées |
 | Retour arrière | À approuver | Restaurer contenus, document root CONNECT et configurations précédentes |
 | Workflows de production | Prêts à relire | Manuels, `main` uniquement, confirmation explicite et sauvegarde FTPS avant transfert |
 
