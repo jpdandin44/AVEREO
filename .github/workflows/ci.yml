@@ -92,6 +92,11 @@ jobs:
           test -s dist/connect/entry.php
           test -s dist/connect/gate.php
           test -s dist/connect/logout.php
+          case "${{ matrix.application }}" in
+            thermo|drone)
+              find dist/assets -type f -name '*.css' -size +0c | grep -q .
+              ;;
+          esac
 
   connect-integration:
     runs-on: ubuntu-latest

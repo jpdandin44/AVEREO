@@ -184,6 +184,51 @@
       };
     }
 
+    async function requestAuthorizeUrl(remembered) {
+      const payload = await getJson('/api/v1/auth/login', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-AVEREO-Navigation': 'json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ remember: remembered })
+      });
+      return payload.data.authorizeUrl;
+    }
+
+    function drupalAccountSwitchUrl(authorizeUrl) {
+      const authorization = new URL(authorizeUrl);
+      const trustedHost = authorization.hostname === 'avereo.fr'
+        || authorization.hostname.endsWith('.avereo.fr');
+      if (authorization.protocol !== 'https:' || !trustedHost) {
+        throw new Error('IDENTITY_PROVIDER_URL_INVALID');
+      }
+      const logoutUrl = new URL('/user/logout', authorization.origin);
+      logoutUrl.searchParams.set('destination', `${authorization.pathname}${authorization.search}`);
+      return logoutUrl.toString();
+    }
+
+    async function logoutAndSwitchAccount() {
+      await getJson('/api/v1/auth/logout', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: '{}'
+      });
+      sessionStorage.removeItem(requestedAppKey);
+      history.replaceState({}, '', '/');
+
+      const anonymousSession = await session();
+      csrfToken = anonymousSession.data.csrfToken;
+      const authorizeUrl = await requestAuthorizeUrl(false);
+      window.location.assign(drupalAccountSwitchUrl(authorizeUrl));
+    }
+
     function renderProfile(profilePayload, applications) {
       const organizations = profilePayload.organizations || [];
       const authorized = applications.filter((application) => application.available);
@@ -253,17 +298,9 @@
           sessionStorage.setItem(requestedAppKey, requestedApp);
         }
         if (query.get('logout') === '1' && authenticated) {
-          await getJson('/api/v1/auth/logout', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'X-CSRF-Token': csrfToken
-            },
-            body: '{}'
-          });
-          history.replaceState({}, '', '/');
-          return refresh();
+          statusNode.textContent = 'Fermeture des sessions CONNECT et Drupal…';
+          await logoutAndSwitchAccount();
+          return;
         }
 
         if (!authenticated) {
@@ -303,20 +340,9 @@
 
     logoutButton.addEventListener('click', async () => {
       logoutButton.disabled = true;
-      statusNode.textContent = 'Fermeture de la session…';
+      statusNode.textContent = 'Fermeture des sessions CONNECT et Drupal…';
       try {
-        await getJson('/api/v1/auth/logout', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': csrfToken
-          },
-          body: '{}'
-        });
-        sessionStorage.removeItem(requestedAppKey);
-        history.replaceState({}, '', '/');
-        await refresh();
+        await logoutAndSwitchAccount();
       } catch {
         statusNode.textContent = 'La déconnexion n’a pas abouti.';
       } finally {
@@ -329,17 +355,7 @@
       loginButton.setAttribute('aria-disabled', 'true');
       statusNode.textContent = 'Ouverture de la page d’identification…';
       try {
-        const payload = await getJson('/api/v1/auth/login', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'X-AVEREO-Navigation': 'json',
-            'X-CSRF-Token': csrfToken
-          },
-          body: JSON.stringify({ remember: rememberInput.checked })
-        });
-        window.location.assign(payload.data.authorizeUrl);
+        window.location.assign(await requestAuthorizeUrl(rememberInput.checked));
       } catch {
         statusNode.textContent = 'La page d’identification ne peut pas être ouverte.';
         loginButton.removeAttribute('aria-disabled');

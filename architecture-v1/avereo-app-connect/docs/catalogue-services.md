@@ -86,7 +86,7 @@ représenter l'écran Drupal lors de la prochaine authentification.
 Avec la case cochée, CONNECT peut conserver la session jusqu'à la limite absolue
 configurée et transmet ce choix au sas. Une déconnexion explicite reste
 prioritaire : le cookie applicatif et la session CONNECT sont supprimés, puis
-l'utilisateur revient sur la page de connexion. La persistance sert à survivre
-à la fermeture du navigateur ; elle n'annule jamais un clic explicite sur
-« Se déconnecter ».
-
+le navigateur passe par la route de déconnexion Drupal avant de reprendre le
+flux OAuth. L'écran Drupal demande alors les identifiants et permet de choisir
+un autre compte. La persistance sert à survivre à la fermeture du navigateur ;
+elle n'annule jamais un clic explicite sur « Se déconnecter ».

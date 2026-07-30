@@ -8,11 +8,14 @@
 ## Integration V1
 
 Le contenu source est copie dans frontend/src/App.jsx pour conserver le comportement au plus proche.
+Les classes utilitaires presentes dans la source sont compilees localement avec
+Tailwind CSS et PostCSS. Le build reste autonome et ne charge aucune feuille de
+styles depuis un CDN.
 
 ## Dependances detectees ou prevues
 
 - Runtime : chart.js, file-saver, idb-keyval, lucide-react, react, react-dom
-- Dev : @vitejs/plugin-react, vite
+- Dev : @vitejs/plugin-react, autoprefixer, postcss, tailwindcss, vite
 
 ## APIs navigateur visibles
 
