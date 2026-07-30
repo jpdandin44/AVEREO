@@ -35,8 +35,10 @@ $updateOwner = $pdo->prepare('UPDATE organizations SET owner_membership_id = :me
 $updateOwner->execute(['membership_id' => $ownerMembershipId, 'organization_id' => $organizationId]);
 
 $application = $pdo->prepare(
-    'INSERT INTO applications (code, name, launch_url, required_scope, status) '
-    . 'VALUES (\'rapport\', \'Rapport\', \'https://rapport.invalid/\', \'rapport:use\', \'active\')',
+    'INSERT INTO applications '
+    . '(code, name, description, launch_url, required_scope, display_order, status) '
+    . 'VALUES (\'rapport\', \'Rapport\', \'Rapport de test\', '
+    . '\'https://rapport.invalid/\', \'rapport:use\', 10, \'active\')',
 );
 $application->execute();
 
@@ -69,6 +71,14 @@ if (($result['status'] ?? null) !== 'active') {
 }
 if (count($repository->listApplications($ownerId, $organizationId)) !== 1) {
     throw new RuntimeException('Catalogue habilité introuvable.');
+}
+$catalog = $repository->listCatalog($ownerId);
+if (
+    count($catalog) !== 1
+    || ($catalog[0]['code'] ?? null) !== 'rapport'
+    || ($catalog[0]['description'] ?? null) !== 'Rapport de test'
+) {
+    throw new RuntimeException('Catalogue CONNECT publié introuvable.');
 }
 if (!$repository->canLaunchApplication($ownerId, 'rapport')) {
     throw new RuntimeException('Le lancement Rapport devrait etre autorise.');

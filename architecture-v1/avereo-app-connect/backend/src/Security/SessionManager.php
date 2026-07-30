@@ -29,6 +29,7 @@ final class SessionManager
         ]);
         ini_set('session.use_strict_mode', '1');
         ini_set('session.use_only_cookies', '1');
+        ini_set('session.gc_maxlifetime', (string) $this->config->sessionAbsoluteSeconds);
         session_start();
 
         $now = time();
@@ -60,6 +61,7 @@ final class SessionManager
             $userId === false || $userId === null ? null : (int) $userId,
             (int) ($_SESSION['authenticated_at'] ?? 0),
             $subject,
+            ($_SESSION['remembered'] ?? false) === true,
         );
     }
 
@@ -73,7 +75,11 @@ final class SessionManager
         $this->establishIdentity((string) $userId, $userId);
     }
 
-    public function establishIdentity(string $drupalSubject, ?int $userId = null): void
+    public function establishIdentity(
+        string $drupalSubject,
+        ?int $userId = null,
+        bool $remembered = false,
+    ): void
     {
         if ($drupalSubject === '' || strlen($drupalSubject) > 191) {
             throw new \InvalidArgumentException('Subject Drupal invalide.');
@@ -87,19 +93,35 @@ final class SessionManager
             'created_at' => $now,
             'last_seen_at' => $now,
             'csrf_token' => bin2hex(random_bytes(32)),
+            'remembered' => $remembered,
         ];
         if ($userId !== null) {
             $_SESSION['user_id'] = $userId;
         }
+        if ($remembered) {
+            setcookie(session_name(), session_id(), [
+                'expires' => $now + $this->config->sessionAbsoluteSeconds,
+                'path' => '/',
+                'secure' => $this->config->isSecureCookieRequired(),
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+        }
     }
 
-    public function beginOauth(string $state, string $nonce, string $verifier): void
+    public function beginOauth(
+        string $state,
+        string $nonce,
+        string $verifier,
+        bool $remembered = false,
+    ): void
     {
         $_SESSION['oauth_transaction'] = [
             'state' => $state,
             'nonce' => $nonce,
             'verifier' => $verifier,
             'started_at' => time(),
+            'remembered' => $remembered,
         ];
     }
 
@@ -144,7 +166,7 @@ final class SessionManager
         unset($_COOKIE[$name]);
     }
 
-    /** @return array{nonce: string, verifier: string} */
+    /** @return array{nonce: string, verifier: string, remembered: bool} */
     public function consumeOauth(string $state, int $maximumAgeSeconds = 300): array
     {
         $transaction = $_SESSION['oauth_transaction'] ?? null;
@@ -158,18 +180,20 @@ final class SessionManager
         $nonce = $transaction['nonce'] ?? null;
         $verifier = $transaction['verifier'] ?? null;
         $startedAt = $transaction['started_at'] ?? null;
+        $remembered = $transaction['remembered'] ?? false;
         if (
             !is_string($expectedState)
             || !is_string($nonce)
             || !is_string($verifier)
             || !is_int($startedAt)
+            || !is_bool($remembered)
             || !hash_equals($expectedState, $state)
             || time() - $startedAt > $maximumAgeSeconds
         ) {
             throw new ApiException(401, 'OAUTH_TRANSACTION_INVALID', 'La transaction OAuth est invalide ou expirée.');
         }
 
-        return ['nonce' => $nonce, 'verifier' => $verifier];
+        return ['nonce' => $nonce, 'verifier' => $verifier, 'remembered' => $remembered];
     }
 
     public function destroy(): void

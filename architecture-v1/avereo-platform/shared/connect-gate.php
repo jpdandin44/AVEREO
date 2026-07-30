@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-const AVEREO_GATE_APP = 'coupe';
-
 function avereo_gate_base64url_encode(string $value): string
 {
     return rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
@@ -25,10 +23,9 @@ function avereo_gate_base64url_decode(string $value): string
 function avereo_gate_home_from_path(string $path): string
 {
     $normalized = str_replace('\\', '/', trim($path));
-    if (preg_match('#^(/home/[A-Za-z0-9._-]+)(?:/|$)#', $normalized, $matches)) {
-        return $matches[1];
-    }
-    return '';
+    return preg_match('#^(/home/[A-Za-z0-9._-]+)(?:/|$)#', $normalized, $matches)
+        ? $matches[1]
+        : '';
 }
 
 /** @return array<string, mixed> */
@@ -37,20 +34,13 @@ function avereo_gate_config(): array
     $configured = trim((string) (getenv('AVEREO_CONFIG_FILE') ?: ($_SERVER['AVEREO_CONFIG_FILE'] ?? '')));
     $candidates = $configured === '' ? [] : [$configured];
     $documentRoot = strtolower(str_replace('\\', '/', (string) ($_SERVER['DOCUMENT_ROOT'] ?? '')));
-    $configNames = str_contains($documentRoot, 'preprod')
-        ? ['coupe-preprod', AVEREO_GATE_APP]
+    $names = str_contains($documentRoot, 'preprod')
+        ? [AVEREO_GATE_APP . '-preprod', AVEREO_GATE_APP]
         : [AVEREO_GATE_APP];
-    foreach ([
-        getenv('HOME') ?: '',
-        $_SERVER['HOME'] ?? '',
-        $_SERVER['DOCUMENT_ROOT'] ?? '',
-        __DIR__,
-    ] as $path) {
+    foreach ([getenv('HOME') ?: '', $_SERVER['HOME'] ?? '', $_SERVER['DOCUMENT_ROOT'] ?? '', __DIR__] as $path) {
         $home = avereo_gate_home_from_path((string) $path);
-        if ($home !== '') {
-            foreach ($configNames as $configName) {
-                $candidates[] = $home . '/.avereo/' . $configName . '/config.php';
-            }
+        foreach ($home === '' ? [] : $names as $name) {
+            $candidates[] = $home . '/.avereo/' . $name . '/config.php';
         }
     }
 
@@ -64,14 +54,13 @@ function avereo_gate_config(): array
             }
         }
     }
-
     return array_merge([
         'environment' => 'production',
         'connect_portal_url' => '',
         'connect_launch_secret' => '',
         'connect_launch_nonce_directory' => '',
         'connect_launch_max_seconds' => 300,
-        'connect_gate_cookie' => 'AVEREO_COUPE_GATE',
+        'connect_gate_cookie' => 'AVEREO_' . strtoupper(AVEREO_GATE_APP) . '_GATE',
         'connect_gate_session_seconds' => 1800,
     ], $fileConfig);
 }
@@ -83,9 +72,10 @@ function avereo_gate_decode_signed(string $value, string $secret): array
         throw new RuntimeException('Ticket invalide.');
     }
     [$encodedPayload, $encodedSignature] = explode('.', $value, 2);
-    $providedSignature = avereo_gate_base64url_decode($encodedSignature);
-    $expectedSignature = hash_hmac('sha256', $encodedPayload, $secret, true);
-    if (!hash_equals($expectedSignature, $providedSignature)) {
+    if (!hash_equals(
+        hash_hmac('sha256', $encodedPayload, $secret, true),
+        avereo_gate_base64url_decode($encodedSignature),
+    )) {
         throw new RuntimeException('Signature de ticket invalide.');
     }
     $payload = json_decode(
@@ -101,23 +91,22 @@ function avereo_gate_decode_signed(string $value, string $secret): array
 }
 
 /** @param array<string, mixed> $payload */
-function avereo_gate_assert_payload(array $payload, int $maxLifetimeSeconds): void
+function avereo_gate_assert_payload(array $payload, int $maximumLifetime): void
 {
     $issuedAt = filter_var($payload['iat'] ?? null, FILTER_VALIDATE_INT);
     $expiresAt = filter_var($payload['exp'] ?? null, FILTER_VALIDATE_INT);
     $nonce = (string) ($payload['nonce'] ?? '');
-    $remembered = $payload['remembered'] ?? false;
     $now = time();
     if (
         ($payload['v'] ?? null) !== 1
         || ($payload['app'] ?? null) !== AVEREO_GATE_APP
         || $issuedAt === false
         || $expiresAt === false
+        || !is_bool($payload['remembered'] ?? false)
         || $issuedAt > $now + 30
-        || $issuedAt < $now - $maxLifetimeSeconds
+        || $issuedAt < $now - $maximumLifetime
         || $expiresAt <= $now
-        || $expiresAt - $issuedAt > $maxLifetimeSeconds
-        || !is_bool($remembered)
+        || $expiresAt - $issuedAt > $maximumLifetime
         || !preg_match('/^[A-Za-z0-9_-]{24,128}$/', $nonce)
     ) {
         throw new RuntimeException('Ticket expire ou non conforme.');
@@ -125,29 +114,27 @@ function avereo_gate_assert_payload(array $payload, int $maxLifetimeSeconds): vo
 }
 
 /** @param array<string, mixed> $config */
-function avereo_gate_consume_nonce(array $config, string $nonce, int $expiresAt): void
+function avereo_gate_consume_nonce(array $config, string $nonce): void
 {
     $directory = rtrim((string) ($config['connect_launch_nonce_directory'] ?? ''), '/\\');
-    $environment = strtolower((string) ($config['environment'] ?? 'production'));
-    if ($directory === '') {
-        throw new RuntimeException('Stockage anti-rejeu non configure.');
-    }
-    if ($environment !== 'local' && !preg_match('#^/home/[A-Za-z0-9._-]+/#', $directory . '/')) {
+    if (
+        $directory === ''
+        || (($config['environment'] ?? 'production') !== 'local'
+            && !preg_match('#^/home/[A-Za-z0-9._-]+/#', $directory . '/'))
+    ) {
         throw new RuntimeException('Stockage anti-rejeu invalide.');
     }
     if (!is_dir($directory) && !mkdir($directory, 0700, true) && !is_dir($directory)) {
         throw new RuntimeException('Stockage anti-rejeu indisponible.');
     }
-
     $path = $directory . DIRECTORY_SEPARATOR . hash('sha256', $nonce) . '.used';
     $handle = @fopen($path, 'x');
     if ($handle === false) {
         throw new RuntimeException('Ticket deja utilise.');
     }
-    fwrite($handle, (string) $expiresAt);
+    fwrite($handle, (string) time());
     fclose($handle);
     @chmod($path, 0600);
-
     if (random_int(1, 20) === 1) {
         foreach (glob($directory . DIRECTORY_SEPARATOR . '*.used') ?: [] as $candidate) {
             if (is_file($candidate) && filemtime($candidate) < time() - 600) {
@@ -181,6 +168,24 @@ function avereo_gate_issue_cookie(array $config, bool $remembered): void
 }
 
 /** @param array<string, mixed> $config */
+function avereo_gate_cookie_is_valid(array $config): bool
+{
+    try {
+        $payload = avereo_gate_decode_signed(
+            (string) ($_COOKIE[(string) ($config['connect_gate_cookie'] ?? '')] ?? ''),
+            trim((string) ($config['connect_launch_secret'] ?? '')),
+        );
+        avereo_gate_assert_payload(
+            $payload,
+            max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800))),
+        );
+        return true;
+    } catch (Throwable) {
+        return false;
+    }
+}
+
+/** @param array<string, mixed> $config */
 function avereo_gate_clear_cookie(array $config): void
 {
     setcookie((string) $config['connect_gate_cookie'], '', [
@@ -193,55 +198,48 @@ function avereo_gate_clear_cookie(array $config): void
 }
 
 /** @param array<string, mixed> $config */
-function avereo_gate_cookie_is_valid(array $config): bool
+function avereo_gate_portal(array $config): string
 {
-    try {
-        $cookieName = (string) ($config['connect_gate_cookie'] ?? '');
-        $value = (string) ($_COOKIE[$cookieName] ?? '');
-        $payload = avereo_gate_decode_signed($value, trim((string) ($config['connect_launch_secret'] ?? '')));
-        avereo_gate_assert_payload(
-            $payload,
-            max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800))),
-        );
-        return true;
-    } catch (Throwable) {
-        return false;
+    $url = trim((string) ($config['connect_portal_url'] ?? ''));
+    $parts = parse_url($url);
+    $host = is_array($parts) ? strtolower((string) ($parts['host'] ?? '')) : '';
+    if (
+        !is_array($parts)
+        || strtolower((string) ($parts['scheme'] ?? '')) !== 'https'
+        || ($host !== 'avereo.fr' && !str_ends_with($host, '.avereo.fr'))
+        || isset($parts['user'])
+        || isset($parts['pass'])
+    ) {
+        throw new RuntimeException('Le portail AVEREO CONNECT n est pas configure.');
     }
+    return rtrim($url, '/');
 }
 
 /** @param array<string, mixed> $config */
 function avereo_gate_redirect_to_connect(array $config): never
 {
-    $url = trim((string) ($config['connect_portal_url'] ?? ''));
-    $parts = parse_url($url);
-    if (!is_array($parts)) {
-        $parts = [];
-    }
-    $host = strtolower((string) ($parts['host'] ?? ''));
-    if (
-        strtolower((string) ($parts['scheme'] ?? '')) !== 'https'
-        || ($host !== 'avereo.fr' && !str_ends_with($host, '.avereo.fr'))
-        || isset($parts['user'])
-        || isset($parts['pass'])
-    ) {
+    try {
+        $url = avereo_gate_portal($config);
+    } catch (Throwable $exception) {
         http_response_code(503);
         header('Content-Type: text/plain; charset=utf-8');
-        echo 'Le portail AVEREO CONNECT n est pas configure.';
+        echo $exception->getMessage();
         exit;
     }
-    $separator = str_contains($url, '?') ? '&' : '?';
     header('Cache-Control: no-store');
-    header('Location: ' . $url . $separator . 'app=' . rawurlencode(AVEREO_GATE_APP), true, 303);
+    header('Location: ' . $url . '/?app=' . rawurlencode(AVEREO_GATE_APP), true, 303);
     exit;
 }
 
 /** @param array<string, mixed> $config */
 function avereo_gate_exchange_ticket(array $config, string $ticket): void
 {
-    $secret = trim((string) ($config['connect_launch_secret'] ?? ''));
-    $maxLifetime = max(30, min(300, (int) ($config['connect_launch_max_seconds'] ?? 300)));
-    $payload = avereo_gate_decode_signed($ticket, $secret);
-    avereo_gate_assert_payload($payload, $maxLifetime);
-    avereo_gate_consume_nonce($config, (string) $payload['nonce'], (int) $payload['exp']);
+    $maximumLifetime = max(30, min(300, (int) ($config['connect_launch_max_seconds'] ?? 300)));
+    $payload = avereo_gate_decode_signed(
+        $ticket,
+        trim((string) ($config['connect_launch_secret'] ?? '')),
+    );
+    avereo_gate_assert_payload($payload, $maximumLifetime);
+    avereo_gate_consume_nonce($config, (string) $payload['nonce']);
     avereo_gate_issue_cookie($config, ($payload['remembered'] ?? false) === true);
 }

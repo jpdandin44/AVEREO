@@ -44,8 +44,11 @@ try {
     if (!in_array($role, ['owner', 'admin', 'member', 'viewer'], true)) {
         throw new InvalidArgumentException('--role est invalide.');
     }
-    if ($applicationCodes === [] || array_diff($applicationCodes, ['rapport', 'coupe']) !== []) {
-        throw new InvalidArgumentException('--applications doit lister rapport et/ou coupe.');
+    if ($applicationCodes === [] || array_diff(
+        $applicationCodes,
+        ['rapport', 'coupe', 'projet', 'thermo', 'drone'],
+    ) !== []) {
+        throw new InvalidArgumentException('--applications contient un code inconnu.');
     }
     if ($bootstrap && $role !== 'owner') {
         throw new InvalidArgumentException('Le premier compte doit avoir le role owner.');
@@ -141,7 +144,7 @@ try {
         }
 
         foreach ($applicationCodes as $applicationCode) {
-            $applicationId = upsertApplication($pdo, $config, $applicationCode);
+            $applicationId = findPublishedApplication($pdo, $applicationCode);
             $entitlement = $pdo->prepare(
                 'INSERT INTO entitlements '
                 . '(organization_id, application_id, status, granted_by_user_id) '
@@ -224,8 +227,6 @@ function loadPrivateConfiguration(mixed $option): void
     }
     foreach ([
         'APP_ENV', 'DB_DSN', 'DB_USER', 'DB_PASSWORD',
-        'APP_LAUNCH_RAPPORT_URL', 'APP_LAUNCH_RAPPORT_SECRET',
-        'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET',
     ] as $key) {
         if (isset($values[$key]) && is_string($values[$key])) {
             putenv($key . '=' . $values[$key]);
@@ -309,36 +310,17 @@ function upsertApprovedUser(PDO $pdo, array $pending): array
     return ['id' => $userId];
 }
 
-function upsertApplication(PDO $pdo, Config $config, string $applicationCode): int
+function findPublishedApplication(PDO $pdo, string $applicationCode): int
 {
-    $definitions = [
-        'rapport' => ['name' => 'Rapport AVEREO Pro', 'scope' => 'rapport:use'],
-        'coupe' => ['name' => 'Coupe AVEREO Reno Pro', 'scope' => 'coupe:use'],
-    ];
-    $entryUrl = $config->appLaunchEntryUrl($applicationCode);
-    $parts = parse_url($entryUrl);
-    if (!is_array($parts) || !isset($parts['scheme'], $parts['host'])) {
-        throw new RuntimeException("URL de lancement {$applicationCode} non configuree.");
-    }
-    $launchUrl = strtolower((string) $parts['scheme']) . '://' . strtolower((string) $parts['host']) . '/';
-    $definition = $definitions[$applicationCode];
-    $statement = $pdo->prepare(
-        'INSERT INTO applications (code, name, launch_url, required_scope, status) '
-        . 'VALUES (:code, :name, :launch_url, :scope, \'active\') '
-        . 'ON DUPLICATE KEY UPDATE name = VALUES(name), launch_url = VALUES(launch_url), '
-        . 'required_scope = VALUES(required_scope), status = \'active\', updated_at = UTC_TIMESTAMP(6)',
+    $lookup = $pdo->prepare(
+        'SELECT id FROM applications WHERE code = :code AND status = \'active\'',
     );
-    $statement->execute([
-        'code' => $applicationCode,
-        'name' => $definition['name'],
-        'launch_url' => $launchUrl,
-        'scope' => $definition['scope'],
-    ]);
-    $lookup = $pdo->prepare('SELECT id FROM applications WHERE code = :code');
     $lookup->execute(['code' => $applicationCode]);
     $applicationId = $lookup->fetchColumn();
     if ($applicationId === false) {
-        throw new RuntimeException("Application {$applicationCode} introuvable.");
+        throw new RuntimeException(
+            "Application {$applicationCode} absente du catalogue actif; la publier avant attribution.",
+        );
     }
     return (int) $applicationId;
 }

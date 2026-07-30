@@ -43,6 +43,22 @@ final class FakeRepository implements ConnectRepository
         return $userId === 42 && in_array($applicationCode, $this->allowedApps, true);
     }
 
+    public function listCatalog(int $userId): array
+    {
+        if ($userId !== 42) {
+            return [];
+        }
+        return array_map(
+            static fn (string $code): array => [
+                'code' => $code,
+                'name' => ucfirst($code),
+                'description' => 'Application de test ' . $code,
+                'displayOrder' => 10,
+            ],
+            $this->allowedApps,
+        );
+    }
+
     public function findUserProfile(int $userId): array
     {
         return ['id' => $userId, 'displayName' => 'Test AVEREO', 'status' => 'active'];
@@ -105,7 +121,7 @@ $repository = new FakeRepository();
 $application = new Application($config, $repository);
 $anonymous = AuthContext::anonymous();
 $identified = new AuthContext(null, time(), 'drupal-identified');
-$authenticated = new AuthContext(42, time(), 'drupal-test');
+$authenticated = new AuthContext(42, time(), 'drupal-test', true);
 $logoutCalled = false;
 $logout = static function () use (&$logoutCalled): void {
     $logoutCalled = true;
@@ -141,13 +157,7 @@ $tests['anonymous catalog denied'] = static function () use ($application, $anon
 $tests['identified catalog'] = static function () use ($application, $identified, $logout): void {
     $response = $application->handle(request('GET', '/api/v1/catalog'), $identified, 'csrf-test', $logout);
     assertSameValue(200, $response->status, 'catalog status');
-    assertSameValue(5, count($response->payload['data']), 'catalog size');
-    assertSameValue('rapport', $response->payload['data'][0]['code'], 'first catalog app');
-    assertSameValue('/api/v1/apps/rapport/launch', $response->payload['data'][0]['launchUrl'], 'production catalog url');
-    assertSameValue(false, $response->payload['data'][0]['available'], 'rapport fail closed');
-    assertSameValue('/api/v1/apps/coupe/launch', $response->payload['data'][1]['launchUrl'], 'production coupe url');
-    assertSameValue(false, $response->payload['data'][1]['available'], 'production coupe fail closed');
-    assertSameValue(false, $response->payload['data'][2]['available'], 'projet unavailable');
+    assertSameValue(0, count($response->payload['data']), 'unapproved catalog is empty');
 };
 
 $tests['preproduction catalog'] = static function () use ($repository, $identified, $logout): void {
@@ -165,7 +175,7 @@ $tests['preproduction catalog'] = static function () use ($repository, $identifi
     $preproductionApplication = new Application($preproductionConfig, $repository);
     $response = $preproductionApplication->handle(
         request('GET', '/api/v1/catalog'),
-        $identified,
+        new AuthContext(42, time(), 'drupal-test'),
         'csrf-test',
         $logout,
     );
@@ -279,6 +289,7 @@ $tests['launch ticket is signed and application bound'] = static function () use
     );
     assertSameValue('rapport', $payload['app'] ?? null, 'launch application binding');
     assertSameValue(1, $payload['v'] ?? null, 'launch ticket version');
+    assertSameValue(true, $payload['remembered'] ?? null, 'launch remember binding');
     assertSameValue(true, ($payload['exp'] ?? 0) > ($payload['iat'] ?? 0), 'launch expiry');
 
     $repository->allowedApps = ['rapport'];

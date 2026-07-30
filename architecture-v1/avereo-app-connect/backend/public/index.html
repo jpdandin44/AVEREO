@@ -44,6 +44,8 @@
     }
     button:disabled { opacity: .55; cursor: wait; }
     #login, .launch { display: inline-block; background: #155eef; color: white; text-decoration: none; }
+    .remember { display: flex; align-items: center; gap: .55rem; margin: .9rem 0; }
+    .remember input { width: 1.1rem; height: 1.1rem; }
     #register { margin: 1rem 0 0; }
     #register a { color: #155eef; font-weight: 700; }
     #logout { background: #eef3f9; color: #142033; }
@@ -102,7 +104,13 @@
     </div>
     <h1>AVEREO CONNECT</h1>
     <p id="lead">Identifiez-vous avec votre compte AVEREO pour accéder à vos applications.</p>
-    <a id="login" href="/api/v1/auth/login">Se connecter à AVEREO Connect</a>
+    <div id="login-panel">
+      <label class="remember" for="remember">
+        <input id="remember" type="checkbox">
+        Rester connecté avec mon compte
+      </label>
+      <a id="login" href="/api/v1/auth/login">Se connecter à AVEREO Connect</a>
+    </div>
     <p id="register" hidden>
       Vous n’êtes pas encore client ?
       <a id="register-link" href="#">Créer mon profil AVEREO</a>
@@ -131,6 +139,8 @@
     const statusNode = document.getElementById('status');
     const leadNode = document.getElementById('lead');
     const loginButton = document.getElementById('login');
+    const loginPanel = document.getElementById('login-panel');
+    const rememberInput = document.getElementById('remember');
     const registerNode = document.getElementById('register');
     const registerLink = document.getElementById('register-link');
     const logoutButton = document.getElementById('logout');
@@ -142,6 +152,7 @@
     const applicationsSection = document.getElementById('applications');
     const applicationGrid = document.getElementById('app-grid');
     let csrfToken = '';
+    const requestedAppKey = 'avereo-connect-requested-app';
 
     async function getJson(url, options = {}) {
       const response = await fetch(url, {
@@ -229,16 +240,37 @@
         csrfToken = sessionPayload.data.csrfToken;
         const authenticated = sessionPayload.data.authenticated === true;
         const registrationUrl = sessionPayload.data.registrationUrl;
-        loginButton.hidden = authenticated;
+        loginPanel.hidden = authenticated;
         registerNode.hidden = authenticated || !registrationUrl;
         if (registrationUrl) registerLink.href = registrationUrl;
         logoutButton.hidden = !authenticated;
         profileSection.hidden = true;
         applicationsSection.hidden = true;
 
+        const query = new URLSearchParams(window.location.search);
+        const requestedApp = query.get('app');
+        if (requestedApp && /^[a-z0-9][a-z0-9_-]{1,63}$/.test(requestedApp)) {
+          sessionStorage.setItem(requestedAppKey, requestedApp);
+        }
+        if (query.get('logout') === '1' && authenticated) {
+          await getJson('/api/v1/auth/logout', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': csrfToken
+            },
+            body: '{}'
+          });
+          history.replaceState({}, '', '/');
+          return refresh();
+        }
+
         if (!authenticated) {
           leadNode.textContent = 'Identifiez-vous avec votre compte AVEREO pour accéder à vos applications.';
-          statusNode.textContent = 'Session anonyme.';
+          statusNode.textContent = query.get('logout') === '1'
+            ? 'Vous êtes déconnecté. Identifiez-vous pour continuer.'
+            : 'Session anonyme.';
           return;
         }
 
@@ -252,6 +284,15 @@
         const catalogPayload = await catalog();
         renderApplications(catalogPayload.data);
         applicationsSection.hidden = false;
+        const returnApp = sessionStorage.getItem(requestedAppKey);
+        const target = catalogPayload.data.find(
+          (application) => application.code === returnApp && application.available
+        );
+        if (target) {
+          sessionStorage.removeItem(requestedAppKey);
+          window.location.assign(target.launchUrl);
+          return;
+        }
         if (approved) {
           renderProfile(await profile(), catalogPayload.data);
         }
@@ -268,14 +309,40 @@
           method: 'POST',
           headers: {
             'Accept': 'application/json',
+            'Content-Type': 'application/json',
             'X-CSRF-Token': csrfToken
-          }
+          },
+          body: '{}'
         });
+        sessionStorage.removeItem(requestedAppKey);
+        history.replaceState({}, '', '/');
         await refresh();
       } catch {
         statusNode.textContent = 'La déconnexion n’a pas abouti.';
       } finally {
         logoutButton.disabled = false;
+      }
+    });
+
+    loginButton.addEventListener('click', async (event) => {
+      event.preventDefault();
+      loginButton.setAttribute('aria-disabled', 'true');
+      statusNode.textContent = 'Ouverture de la page d’identification…';
+      try {
+        const payload = await getJson('/api/v1/auth/login', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-AVEREO-Navigation': 'json',
+            'X-CSRF-Token': csrfToken
+          },
+          body: JSON.stringify({ remember: rememberInput.checked })
+        });
+        window.location.assign(payload.data.authorizeUrl);
+      } catch {
+        statusNode.textContent = 'La page d’identification ne peut pas être ouverte.';
+        loginButton.removeAttribute('aria-disabled');
       }
     });
 

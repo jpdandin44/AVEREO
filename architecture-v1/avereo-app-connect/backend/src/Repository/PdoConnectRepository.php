@@ -80,6 +80,24 @@ final class PdoConnectRepository implements ConnectRepository
         return $statement->fetchColumn() !== false;
     }
 
+    public function listCatalog(int $userId): array
+    {
+        $statement = $this->pdo->prepare(
+            'SELECT DISTINCT a.code, a.name, a.description, a.display_order AS displayOrder '
+            . 'FROM users u '
+            . 'INNER JOIN memberships m ON m.user_id = u.id AND m.status = \'active\' '
+            . 'INNER JOIN organizations o ON o.id = m.organization_id AND o.status = \'active\' '
+            . 'INNER JOIN entitlements e ON e.organization_id = o.id AND e.status = \'active\' '
+            . 'INNER JOIN applications a ON a.id = e.application_id AND a.status = \'active\' '
+            . 'WHERE u.id = :user_id AND u.status = \'active\' '
+            . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
+            . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
+            . 'ORDER BY a.display_order, a.name, a.code',
+        );
+        $statement->execute(['user_id' => $userId]);
+        return $statement->fetchAll();
+    }
+
     public function findUserProfile(int $userId): array
     {
         $statement = $this->pdo->prepare(

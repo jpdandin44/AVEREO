@@ -30,6 +30,7 @@ final class OAuthTransactionStore
         string $nonce,
         string $verifier,
         string $binding,
+        bool $remembered = false,
         ?int $startedAt = null,
     ): void {
         $this->assertToken($state, 256);
@@ -42,6 +43,7 @@ final class OAuthTransactionStore
             'nonce' => $nonce,
             'verifier' => $verifier,
             'binding' => hash_hmac('sha256', $binding, $this->integrityKey),
+            'remembered' => $remembered,
             'started_at' => $startedAt ?? time(),
         ];
         $encodedPayload = json_encode(
@@ -67,7 +69,7 @@ final class OAuthTransactionStore
         $this->cleanupExpired();
     }
 
-    /** @return array{nonce: string, verifier: string} */
+    /** @return array{nonce: string, verifier: string, remembered: bool} */
     public function consume(string $state, string $binding, int $maximumAgeSeconds = 300): array
     {
         $this->assertToken($state, 256);
@@ -111,12 +113,14 @@ final class OAuthTransactionStore
             $nonce = $payload['nonce'] ?? null;
             $verifier = $payload['verifier'] ?? null;
             $startedAt = $payload['started_at'] ?? null;
+            $remembered = $payload['remembered'] ?? false;
             if (
                 !is_string($storedState)
                 || !is_string($storedBinding)
                 || !is_string($nonce)
                 || !is_string($verifier)
                 || !is_int($startedAt)
+                || !is_bool($remembered)
                 || !hash_equals($storedState, $state)
                 || !hash_equals(
                     $storedBinding,
@@ -128,7 +132,7 @@ final class OAuthTransactionStore
                 throw $this->invalid();
             }
 
-            return ['nonce' => $nonce, 'verifier' => $verifier];
+            return ['nonce' => $nonce, 'verifier' => $verifier, 'remembered' => $remembered];
         } catch (\JsonException) {
             throw $this->invalid();
         } finally {

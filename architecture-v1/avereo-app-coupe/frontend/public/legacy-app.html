@@ -1606,7 +1606,7 @@
                 localStorage.removeItem(this.drupalTokenStorageKey);
                 this.currentUser = null;
                 this.updateAuthButton();
-                this.notify("Compte AVEREO déconnecté.", "info");
+                window.location.assign('/connect/logout.php');
             },
 
             storeDrupalToken(token) {

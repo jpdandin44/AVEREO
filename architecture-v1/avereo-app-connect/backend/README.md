@@ -20,7 +20,7 @@ entre le départ vers Drupal et le retour vers CONNECT.
 Le callback établit l'identité Drupal dans la session CONNECT. Le catalogue de
 démarrage `/api/v1/catalog` expose alors des routes de lancement CONNECT, jamais
 les URL applicatives directes. Les routes
-`/api/v1/apps/{rapport|coupe}/launch` sont refusées aux sessions anonymes et aux
+`/api/v1/apps/{code}/launch` sont refusées aux sessions anonymes et aux
 comptes non approuvés.
 
 Après le callback, CONNECT rattache le `subject` Drupal à une ligne `users`
@@ -43,7 +43,7 @@ php bin/approve-pending-user.php \
   --organization-slug=avereo \
   --organization-name=AVEREO \
   --role=owner \
-  --applications=rapport,coupe \
+  --applications=rapport,coupe,projet,thermo,drone \
   --bootstrap \
   --confirm
 ```
@@ -53,14 +53,14 @@ d'administration explicites : une authentification Drupal seule n'accorde
 aucun accès applicatif.
 
 Chaque lancement produit un ticket HMAC signé, limité à 90 secondes, lié à une
-seule application et muni d'un nonce. Rapport et Coupe disposent chacun d'un
+seule application et muni d'un nonce. Chaque application dispose de son
 secret de lancement distinct, uniquement côté serveur. L'application consomme le
 nonce une seule fois, établit un cookie `Secure`, `HttpOnly` et `SameSite=Lax`
 de 30 minutes,
 puis retire le ticket de l'URL. Un accès direct à la page d'entrée renvoie vers
 CONNECT.
 
-Le sas protège aussi les endpoints OAuth et métier de Rapport/Coupe ; seul
+Le sas protège aussi les points d'entrée de toutes les applications ; seul
 l'endpoint de santé reste public. Il ne remplace pas l'authentification propre
 aux API applicatives. CONNECT,
 Rapport et Coupe utilisent chacun un client OAuth confidentiel distinct, avec un

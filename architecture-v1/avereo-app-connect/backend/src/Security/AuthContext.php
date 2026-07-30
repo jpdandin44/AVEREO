@@ -10,6 +10,7 @@ final class AuthContext
         public readonly ?int $userId,
         public readonly ?int $authenticatedAt = null,
         public readonly ?string $drupalSubject = null,
+        public readonly bool $remembered = false,
     ) {
     }
 
