@@ -2,12 +2,12 @@ name: Deploy Coupe to O2Switch
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - "architecture-v1/avereo-app-coupe/frontend/**"
-      - ".github/workflows/deploy-coupe-o2switch.yml"
-      - ".github/scripts/**"
+    inputs:
+      confirm_production:
+        description: Confirmer le deploiement de production apres validation preproduction
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ inputs.confirm_production == true }}
     runs-on: ubuntu-latest
     environment: coupe
     defaults:
@@ -27,10 +28,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Enforce main branch
+        run: test "$GITHUB_REF" = "refs/heads/main"
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 20.19.0
 
       - name: Install dependencies
         run: |
@@ -38,6 +42,12 @@ jobs:
 
       - name: Build frontend
         run: npm run build
+
+      - name: Validate CONNECT gate
+        run: |
+          set -euo pipefail
+          find public/connect -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          php ../tests/connect-gate.php
 
       - name: Resolve FTPS target directory
         id: ftp-target
@@ -58,6 +68,25 @@ jobs:
           echo "server_dir=$server_dir" >> "$GITHUB_OUTPUT"
           echo "Resolved FTPS target directory: $server_dir"
 
+      - name: Backup current production
+        env:
+          FTP_BACKUP_DIR: ${{ runner.temp }}/coupe-production-backup
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.server_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
+
+      - name: Store rollback artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coupe-production-before-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/coupe-production-backup
+          include-hidden-files: true
+          retention-days: 30
+
       - name: Deploy with FTPS
         env:
           FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-coupe/frontend/dist
@@ -69,5 +98,12 @@ jobs:
           FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
 
-      - name: Verify public deployment
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "coupe" "https://coupe.avereo.fr/"
+      - name: Verify CONNECT is mandatory
+        run: |
+          set -euo pipefail
+          headers="$(mktemp)"
+          trap 'rm -f "$headers"' EXIT
+          status="$(curl -sS --max-time 20 -D "$headers" -o /dev/null -w '%{http_code}' 'https://coupe.avereo.fr/')"
+          test "$status" = "303"
+          grep -Eqi '^location:[[:space:]]*https://connect\.avereo\.fr/' "$headers"
+          test "$(curl -sS --max-time 20 -o /dev/null -w '%{http_code}' 'https://coupe.avereo.fr/connect/entry.php')" = "403"

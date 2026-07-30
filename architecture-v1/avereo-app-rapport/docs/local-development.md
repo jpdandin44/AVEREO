@@ -23,7 +23,11 @@ powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 down
 
 Au premier lancement, le script genere des secrets aleatoires dans `local/.env` et une configuration dans `local/config.php`. Ces deux fichiers sont ignores et leurs valeurs ne sont pas affichees.
 
-Les commandes `up`, `token-up` et `oauth-up` construisent explicitement le frontend avec `VITE_ENABLE_ONLINE_SYNC=true` pour les tests locaux de l'API. La commande `build` produit la preversion sans synchronisation (`false`), comme le workflow de production actuel.
+Les commandes `up`, `token-up` et `oauth-up` construisent explicitement le
+frontend avec `VITE_ENABLE_ONLINE_SYNC=true` pour les tests locaux de l'API. La
+commande `build` conserve un mode hors ligne local, tandis que le workflow de
+production construit explicitement l'application authentifiee avec
+`VITE_ENABLE_ONLINE_SYNC=true`.
 
 ## URLs et ports
 

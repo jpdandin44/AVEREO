@@ -11,7 +11,7 @@
 
 ## Workflow
 
-Le workflow `.github/workflows/deploy-rapport-o2switch.yml` s'execute uniquement a la demande avec `workflow_dispatch`. Un merge sur `main` ne declenche aucun deploiement. Il utilise Node.js 20, `npm ci`, le build Vite, la resolution cPanel du document root, le deploiement FTPS et une verification HTTP.
+Le workflow `.github/workflows/deploy-rapport-o2switch.yml` s'execute uniquement a la demande avec `workflow_dispatch`, exige la branche `main` et une confirmation de production explicite. Un merge sur `main` ne declenche aucun deploiement. Il utilise Node.js 20.19, `npm ci`, le build Vite avec `VITE_ENABLE_ONLINE_SYNC=true`, la resolution cPanel du document root, une sauvegarde FTPS conservee 30 jours comme artefact, le deploiement FTPS et une verification du sas CONNECT.
 
 Secrets existants attendus :
 
@@ -39,11 +39,14 @@ Ne pas exposer les routes OAuth tant que le rapport d'etat Drupal contient une a
 
 Audit du 13 juillet 2026 : Drupal core 11.2.8 et Paragraphs 8.x-1.19 sont signales comme vulnerables par l'interface d'administration. Les versions de securite affichees sont respectivement Drupal 11.4.2 et Paragraphs 8.x-1.21. Ces numeros doivent etre reverifies au moment de l'intervention Composer.
 
-### Etape 1 - preversion sans donnees partagees
+### Etape 1 - ancienne preversion sans donnees partagees
 
-Le frontend peut etre publie avant Drupal OAuth pour faire avancer les validations fonctionnelles. Le build doit definir `VITE_ENABLE_ONLINE_SYNC=false`; le workflow Rapport applique cette valeur explicitement. Dans ce mode, ne configurez pas `api_token` en production et n'utilisez pas la sauvegarde serveur. Les brouillons restent dans le navigateur de l'utilisateur et doivent etre exportes regulierement en JSON.
+Cette etape est conservee uniquement comme historique et solution de retour
+arriere. Le workflow de production courant ne construit plus la preversion
+statique : il publie l'application authentifiee et son sas CONNECT.
 
-Le workflow assemble `frontend/deploy-preview/` avec uniquement `index.html`, les assets et un `.htaccess` dedie. Les dossiers PHP `api/` et `auth/` sont exclus du deploiement et leurs routes retournent `404`. Le deploiement FTPS synchronise la cible et supprime les anciens fichiers absents de cet artefact.
+L'ancien artefact `frontend/deploy-preview/` excluait `api/` et `auth/`. Il ne
+doit plus etre utilise pour la cible securisee.
 
 Verifier avant publication que l'accueil affiche `Preversion sans compte`, que le parcours ne propose aucune connexion AVEREO et qu'aucune requete vers `/api/auth.php` ou `/api/reports.php` n'est emise pendant la creation et l'export d'un brouillon.
 
@@ -58,13 +61,19 @@ Verifier avant publication que l'accueil affiche `Preversion sans compte`, que l
 7. Faire relire et merger la PR humainement.
 8. Apres le merge et les derniers controles, lancer humainement `Deploy Rapport to O2Switch` depuis GitHub Actions sur la branche `main`.
 
-9. Passer `VITE_ENABLE_ONLINE_SYNC=true` uniquement apres validation de l'authentification, des roles, de l'isolation des donnees et du retour arriere.
+9. Configurer `connect_portal_url`, `connect_launch_secret` et
+   `connect_launch_nonce_directory` hors document root.
+10. Verifier que l'acces direct retourne `303` vers CONNECT, qu'un ticket signe
+    ouvre Rapport et qu'un ticket rejoue retourne `403`.
 
 ## Verification
 
-- `https://rapport.avereo.fr/` charge l'application.
+- `https://rapport.avereo.fr/` redirige vers CONNECT sans cookie de sas.
+- Un lancement depuis CONNECT charge l'application.
 - `https://rapport.avereo.fr/api/health.php` retourne `app: rapport`.
-- `/api/auth.php?action=config` expose uniquement la configuration publique.
+- `/api/auth.php?action=config` retourne `403` sans cookie de sas et expose
+  uniquement la configuration publique après un lancement CONNECT.
+- `/api/reports.php` retourne `403` sans cookie de sas.
 - `/oauth/userinfo` retourne `sub`, `client_id` et les roles Rapport pour un bearer valide.
 - Un jeton d'un autre client OAuth est refuse par Rapport.
 - Un utilisateur standard ne voit que ses rapports.

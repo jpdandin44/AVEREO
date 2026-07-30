@@ -6,6 +6,7 @@ require __DIR__ . '/bootstrap.php';
 api_no_options_response();
 
 $config = api_config();
+api_require_connect_gate($config);
 $identity = api_require_auth($config);
 $canManageAll = api_identity_can_manage_all($identity, $config);
 

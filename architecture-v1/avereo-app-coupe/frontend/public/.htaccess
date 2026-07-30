@@ -1,4 +1,5 @@
 Options -Indexes
+DirectoryIndex index.php
 
 <IfModule mod_headers.c>
   <FilesMatch "\.html$">
@@ -10,8 +11,13 @@ Options -Indexes
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteRule ^connect/ - [L]
   RewriteRule ^api/ - [L]
+  RewriteRule ^auth/ - [L]
+  RewriteRule ^legacy-app\.html$ connect/content.php [L,QSA]
+  RewriteRule ^index\.html$ index.php [L,QSA]
+  RewriteRule ^$ index.php [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^ index.html [L]
+  RewriteRule ^ index.php [L]
 </IfModule>

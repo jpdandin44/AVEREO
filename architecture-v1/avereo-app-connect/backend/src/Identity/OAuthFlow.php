@@ -17,6 +17,7 @@ final class OAuthFlow
         private readonly Config $config,
         private readonly SessionManager $session,
         private readonly ?OAuthTransactionStore $transactions = null,
+        private readonly ?\Closure $resolveUserId = null,
     ) {
     }
 
@@ -96,7 +97,13 @@ final class OAuthFlow
             throw new ApiException(502, 'OAUTH_SUBJECT_MISMATCH', 'Les profils OAuth ne désignent pas le même compte.');
         }
 
-        $this->session->establishIdentity($subject);
+        $userId = $this->resolveUserId === null
+            ? null
+            : ($this->resolveUserId)($subject, $profile);
+        if ($userId !== null && (!is_int($userId) || $userId < 1)) {
+            throw new \RuntimeException('Identifiant CONNECT resolu invalide.');
+        }
+        $this->session->establishIdentity($subject, $userId);
         $this->session->clearOauthBinding();
         return Response::redirect($this->config->oauthSuccessUrl, $request->requestId);
     }

@@ -8,6 +8,16 @@ interface ConnectRepository
 {
     public function databaseStatus(): string;
 
+    public function findUserIdByDrupalSubject(string $drupalSubject): ?int;
+
+    public function registerPendingIdentity(
+        string $drupalSubject,
+        ?string $email,
+        ?string $displayName,
+    ): void;
+
+    public function canLaunchApplication(int $userId, string $applicationCode): bool;
+
     /** @return array<string, mixed> */
     public function findUserProfile(int $userId): array;
 

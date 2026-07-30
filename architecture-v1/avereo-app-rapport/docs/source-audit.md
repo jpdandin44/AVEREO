@@ -35,6 +35,8 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 | IMPORTANT | `frontend/public/api/`, mode local | Une faute de mode aurait pu activer le jeton administrateur hors local. | Modes stricts; `api_token` exige `environment=local` et un hote `.localhost`. | corrige |
 | IMPORTANT | `frontend/public/api/`, schema | Le schema ne doit pas etre cree par le compte runtime. | DDL retire de l'API; migration versionnee appliquee separement. | corrige |
 | IMPORTANT | `frontend/src/App.jsx`, export | Une source image importee pouvait etre interpolee dans le document HTML. | Seules les images `data:` bitmap conformes sont integrees; les autres valeurs sont echappees ou ignorees. | corrige |
+| IMPORTANT | Entree publique Rapport | L'OAuth Rapport seul permettait de contourner le portail CONNECT. | `index.php`, l'OAuth applicatif et l'API metier exigent un cookie issu d'un ticket CONNECT HMAC court et a usage unique; seul le healthcheck reste public. | a qualifier en preproduction |
+| IMPORTANT | Routage Apache des assets | O2Switch reecrivait les fichiers JS/CSS vers `index.html`, produisant une page blanche avec `nosniff`. | Exclusion explicite de `assets`, `api`, `auth` et `connect` avant le fallback SPA. | valide en preproduction |
 
 ## Controle des secrets
 

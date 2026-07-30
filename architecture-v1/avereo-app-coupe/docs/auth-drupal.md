@@ -33,12 +33,15 @@ Installer et activer Simple OAuth / OpenID Connect sur le Drupal `avereo.fr`.
 Configuration attendue pour Coupe :
 
 - issuer : `https://avereo.fr`
-- client id public : `avereo_coupe`
+- client id confidentiel : `avereo_coupe`
 - redirect URI : `https://coupe.avereo.fr/auth/callback/`
 - scopes minimum : `openid profile email`
 - roles suggeres : `coupe_user`, `coupe_admin`
 
-Le client OAuth de Coupe doit etre configure comme client public avec PKCE si l'interface Drupal le permet. Aucun secret OAuth ne doit etre expose dans le JavaScript.
+Le client OAuth de Coupe doit etre configure comme client confidentiel avec
+PKCE. Son secret distinct reste dans la configuration PHP privee et n'est jamais
+expose dans le JavaScript. Une configuration non locale sans secret d'au moins
+32 caracteres est refusee.
 
 ## Evolution API Coupe
 
@@ -94,7 +97,7 @@ return [
     'drupal_token_url' => 'https://avereo.fr/oauth/token',
     'drupal_userinfo_url' => 'https://avereo.fr/oauth/userinfo',
     'drupal_client_id' => 'avereo_coupe',
-    'drupal_client_secret' => '',
+    'drupal_client_secret' => 'SECRET_ALEATOIRE_DISTINCT_AU_MOINS_32_CARACTERES',
     'drupal_scope' => 'openid profile email',
     'drupal_redirect_uri' => 'https://coupe.avereo.fr/auth/callback/',
     'drupal_required_roles' => ['coupe_user', 'coupe_admin'],

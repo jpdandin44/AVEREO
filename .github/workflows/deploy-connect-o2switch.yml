@@ -2,124 +2,172 @@ name: Deploy Connect to O2Switch
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - "architecture-v1/avereo-app-connect/frontend/**"
-      - ".github/workflows/deploy-connect-o2switch.yml"
-      - ".github/scripts/**"
+    inputs:
+      confirm_production:
+        description: Confirmer le deploiement de production apres validation preproduction
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
 
 concurrency:
-  group: deploy-connect-o2switch-${{ github.ref }}
-  cancel-in-progress: true
+  group: deploy-connect-o2switch-production
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    if: ${{ inputs.confirm_production == true }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     environment: connect
-    defaults:
-      run:
-        working-directory: architecture-v1/avereo-app-connect/frontend
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+      - name: Enforce main branch
+        run: test "$GITHUB_REF" = "refs/heads/main"
 
-      - name: Install dependencies
-        run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
-
-      - name: Build frontend
-        run: npm run build
-
-      - name: Get runner public IP
-        id: runner-ip
+      - name: Validate CONNECT backend
         run: |
           set -euo pipefail
-          echo "ipv4=$(curl -fsS https://api.ipify.org)" >> "$GITHUB_OUTPUT"
+          find architecture-v1/avereo-app-connect/backend -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          php architecture-v1/avereo-app-connect/backend/tests/run.php
 
-      - name: Whitelist runner IP in cPanel
+      - name: Resolve production directories
+        id: ftp-target
         env:
-          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
-          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
-        run: |
-          bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" add
-          echo "RUNNER_WHITELISTED=1" >> "$GITHUB_ENV"
-
-      - name: Confirm runner IP is whitelisted
-        env:
           CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
-          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
-          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
-          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" list
-
-      - name: Configure SSH agent
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
-
-      - name: Validate remote target path
         run: |
           set -euo pipefail
-          PORT="${{ secrets.O2SWITCH_PORT }}"
-          if [ -z "$PORT" ]; then PORT=8888; fi
-          TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
-          if [ -z "$TARGET" ]; then
-            echo "O2SWITCH_TARGET_PATH secret is required for environment 'connect'." >&2
+          public_dir="$(python3 "$GITHUB_WORKSPACE/.github/scripts/cpanel-domain-docroot.py" "connect.avereo.fr")"
+          public_dir="${public_dir#/}"
+          public_dir="${public_dir%/}"
+          if [ "$(basename "$public_dir")" != "public" ]; then
+            echo "connect.avereo.fr must target a dedicated /public document root before backend deployment." >&2
             exit 1
           fi
-          ssh -o BatchMode=yes \
-            -o PasswordAuthentication=no \
-            -o StrictHostKeyChecking=no \
-            -p "${PORT}" \
-            "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}" \
-            "mkdir -p \"$TARGET\" && test -w \"$TARGET\" && pwd"
+          source_dir="$(dirname "$public_dir")/src"
+          echo "public_dir=$public_dir/" >> "$GITHUB_OUTPUT"
+          echo "source_dir=$source_dir/" >> "$GITHUB_OUTPUT"
+          echo "bin_dir=$(dirname "$public_dir")/bin/" >> "$GITHUB_OUTPUT"
+          echo "database_dir=$(dirname "$public_dir")/database/" >> "$GITHUB_OUTPUT"
+          echo "Resolved CONNECT public directory: $public_dir/"
+          echo "Resolved CONNECT source directory: $source_dir/"
 
-      - name: Deploy with rsync
-        run: |
-          set -euo pipefail
-          PORT="${{ secrets.O2SWITCH_PORT }}"
-          if [ -z "$PORT" ]; then PORT=8888; fi
-          TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
-          if [ -z "$TARGET" ]; then
-            echo "O2SWITCH_TARGET_PATH secret is required for environment 'connect'." >&2
-            exit 1
-          fi
-          rsync -az --delete \
-            -e "ssh -p ${PORT} -o StrictHostKeyChecking=no" \
-            ./dist/ \
-            "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}:${TARGET}/"
-
-      - name: Verify public deployment
-        run: bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "connect" "https://connect.avereo.fr"
-
-      - name: Remove runner IP from cPanel whitelist
-        if: always()
+      - name: Backup current CONNECT production
         env:
-          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
-          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
-          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
-          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
+          FTP_ALLOW_MISSING: "true"
+          FTP_BACKUP_DIR: ${{ runner.temp }}/connect-production-backup/public
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.public_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
+
+      - name: Backup current CONNECT sources
+        env:
+          FTP_ALLOW_MISSING: "true"
+          FTP_BACKUP_DIR: ${{ runner.temp }}/connect-production-backup/src
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.source_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
+
+      - name: Backup current CONNECT operator commands
+        env:
+          FTP_ALLOW_MISSING: "true"
+          FTP_BACKUP_DIR: ${{ runner.temp }}/connect-production-backup/bin
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.bin_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
+
+      - name: Backup current CONNECT migrations
+        env:
+          FTP_ALLOW_MISSING: "true"
+          FTP_BACKUP_DIR: ${{ runner.temp }}/connect-production-backup/database
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.database_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
+
+      - name: Store CONNECT rollback artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: connect-production-before-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/connect-production-backup
+          include-hidden-files: true
+          retention-days: 30
+
+      - name: Deploy CONNECT public files with FTPS
+        env:
+          FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-connect/backend/public
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_REQUIRED_FILE: index.php
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.public_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
+
+      - name: Deploy CONNECT PHP sources with FTPS
+        env:
+          FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-connect/backend/src
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_REQUIRED_FILE: autoload.php
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.source_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
+
+      - name: Deploy CONNECT operator commands with FTPS
+        env:
+          FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-connect/backend/bin
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_REQUIRED_FILE: migrate.php
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.bin_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
+
+      - name: Deploy CONNECT migrations with FTPS
+        env:
+          FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-connect/database
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_REQUIRED_FILE: README.md
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.database_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
+
+      - name: Verify CONNECT production
         run: |
           set -euo pipefail
-          if [ "${RUNNER_WHITELISTED:-0}" != "1" ] || [ -z "${RUNNER_IPV4:-}" ]; then
-            echo "Runner IP was not added; skipping cPanel whitelist cleanup."
-            exit 0
-          fi
-          bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" remove
+          root="$(curl -fsS --max-time 20 'https://connect.avereo.fr/')"
+          health="$(curl -fsS --max-time 20 'https://connect.avereo.fr/api/v1/health')"
+          grep -q 'AVEREO CONNECT' <<<"$root"
+          grep -q '"service":"avereo-connect-api"' <<<"$health"
+          grep -Eq '"status":"(ok|degraded)"' <<<"$health"

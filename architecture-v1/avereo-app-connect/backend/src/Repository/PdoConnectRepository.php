@@ -15,11 +15,69 @@ final class PdoConnectRepository implements ConnectRepository
     public function databaseStatus(): string
     {
         try {
-            $this->pdo->query('SELECT 1');
+            $this->pdo->query(
+                'SELECT '
+                . '(SELECT COUNT(*) FROM users) AS users_count, '
+                . '(SELECT COUNT(*) FROM pending_identities) AS pending_count, '
+                . '(SELECT COUNT(*) FROM organizations) AS organizations_count, '
+                . '(SELECT COUNT(*) FROM applications) AS applications_count',
+            );
             return 'ok';
         } catch (\PDOException) {
             return 'unavailable';
         }
+    }
+
+    public function findUserIdByDrupalSubject(string $drupalSubject): ?int
+    {
+        $statement = $this->pdo->prepare(
+            'SELECT id FROM users WHERE drupal_subject = :drupal_subject AND status = \'active\'',
+        );
+        $statement->execute(['drupal_subject' => $drupalSubject]);
+        $userId = $statement->fetchColumn();
+        return $userId === false ? null : (int) $userId;
+    }
+
+    public function registerPendingIdentity(
+        string $drupalSubject,
+        ?string $email,
+        ?string $displayName,
+    ): void {
+        $statement = $this->pdo->prepare(
+            'INSERT INTO pending_identities '
+            . '(drupal_subject, email_normalized, display_name, status) '
+            . 'VALUES (:drupal_subject, :email, :display_name, \'pending\') '
+            . 'ON DUPLICATE KEY UPDATE '
+            . 'email_normalized = VALUES(email_normalized), '
+            . 'display_name = VALUES(display_name), '
+            . 'last_seen_at = UTC_TIMESTAMP(6)',
+        );
+        $statement->execute([
+            'drupal_subject' => $drupalSubject,
+            'email' => $email,
+            'display_name' => $displayName,
+        ]);
+    }
+
+    public function canLaunchApplication(int $userId, string $applicationCode): bool
+    {
+        $statement = $this->pdo->prepare(
+            'SELECT 1 '
+            . 'FROM users u '
+            . 'INNER JOIN memberships m ON m.user_id = u.id AND m.status = \'active\' '
+            . 'INNER JOIN organizations o ON o.id = m.organization_id AND o.status = \'active\' '
+            . 'INNER JOIN entitlements e ON e.organization_id = o.id AND e.status = \'active\' '
+            . 'INNER JOIN applications a ON a.id = e.application_id AND a.status = \'active\' '
+            . 'WHERE u.id = :user_id AND u.status = \'active\' AND a.code = :application_code '
+            . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
+            . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
+            . 'LIMIT 1',
+        );
+        $statement->execute([
+            'user_id' => $userId,
+            'application_code' => $applicationCode,
+        ]);
+        return $statement->fetchColumn() !== false;
     }
 
     public function findUserProfile(int $userId): array

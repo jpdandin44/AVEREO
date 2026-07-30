@@ -1830,6 +1830,50 @@ function ReportWizard({
   );
 }
 
+function AccessGate({ authConfig, authError, onOAuthLogin }) {
+  const issuer = String(authConfig?.issuer || '').replace(/\/$/, '');
+  const oauthReady = authConfig?.mode === 'drupal_oauth' && authConfig?.configured;
+
+  return (
+    <div className="screen">
+      <Header />
+      <main className="auth-gate">
+        <section className="panel auth-panel">
+          <span className="eyebrow">Acces securise</span>
+          <h2>Connexion a AVEREO Rapport</h2>
+          <p>
+            Identifiez-vous avec votre compte AVEREO. L'application reste inaccessible tant que Drupal n'a pas
+            valide votre identite et votre role Rapport.
+          </p>
+          <div className="auth-actions">
+            <button className="button primary" type="button" onClick={onOAuthLogin} disabled={!oauthReady}>
+              <ShieldCheck size={18} />
+              Se connecter a AVEREO Rapport
+            </button>
+            {issuer && (
+              <a className="button ghost" href={`${issuer}/user/register`}>
+                Creer un compte
+              </a>
+            )}
+          </div>
+          <div className="auth-status" role="status">
+            {!authConfig && !authError && (
+              <>
+                <Loader2 className="spin" size={18} />
+                Verification de la configuration OAuth...
+              </>
+            )}
+            {authConfig && !oauthReady && !authError && (
+              <span className="error-text">OAuth Drupal n'est pas encore configure cote serveur.</span>
+            )}
+            {authError && <span className="error-text">{authError}</span>}
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}
+
 export default function App() {
   const [appState, setAppState] = useState('loading');
   const [draft, setDraft] = useState(null);
@@ -1940,6 +1984,10 @@ export default function App() {
         Chargement...
       </div>
     );
+  }
+
+  if (ONLINE_SYNC_ENABLED && !accessToken) {
+    return <AccessGate authConfig={authConfig} authError={authError} onOAuthLogin={beginOAuthLogin} />;
   }
 
   return (

@@ -18,19 +18,56 @@ second stockage sécurise le callback lorsque l'hébergeur renouvelle la session
 entre le départ vers Drupal et le retour vers CONNECT.
 
 Le callback établit l'identité Drupal dans la session CONNECT. Le catalogue de
-démarrage `/api/v1/catalog` permet alors d'ouvrir les applications AVEREO
-effectivement déployées. Ce catalogue est refusé aux sessions anonymes.
+démarrage `/api/v1/catalog` expose alors des routes de lancement CONNECT, jamais
+les URL applicatives directes. Les routes
+`/api/v1/apps/{rapport|coupe}/launch` sont refusées aux sessions anonymes et aux
+comptes non approuvés.
 
-Le rattachement automatique du `subject` Drupal à une ligne `users`, à une
-organisation et à ses habilitations reste une étape distincte avant d'appliquer
-des droits fins par utilisateur ou organisation.
+Après le callback, CONNECT rattache le `subject` Drupal à une ligne `users`
+active. Si ce rattachement n'existe pas, l'identité et les attributs publics
+retournés par Drupal sont enregistrés dans `pending_identities`, sans créer de
+compte actif ni attribuer de droit. Le lancement reste refusé tant que le compte
+n'est pas approuvé, rattaché à une organisation active et couvert par une
+habilitation applicative valide.
 
-Le catalogue CONNECT ne remplace pas l'authentification propre à chaque
-application. CONNECT, Rapport et Coupe utilisent chacun un client OAuth
-confidentiel distinct, avec un identifiant, un secret serveur et une URI de
-redirection dédiés. Rapport et Coupe vérifient en plus le claim `client_id` sur
-chaque accès à leur API : un jeton émis pour une autre application est refusé.
-Les secrets ne sont jamais placés dans le catalogue ni dans le navigateur.
+Après contrôle humain du compte Drupal, l'opérateur approuve l'identité avec la
+commande idempotente `bin/approve-pending-user.php`. Sans `--confirm`, la
+commande ne modifie rien. Le premier compte exige `--bootstrap` et le rôle
+`owner`; les approbations suivantes exigent le `subject` d'un owner/admin actif.
+Exemple de première approbation en préproduction :
+
+```bash
+AVEREO_PRIVATE_CONFIG=/home/CPANEL_USERNAME/private/connect-preprod/config.php \
+php bin/approve-pending-user.php \
+  --email=admin@example.invalid \
+  --organization-slug=avereo \
+  --organization-name=AVEREO \
+  --role=owner \
+  --applications=rapport,coupe \
+  --bootstrap \
+  --confirm
+```
+
+La création et l'approbation des utilisateurs restent donc des opérations
+d'administration explicites : une authentification Drupal seule n'accorde
+aucun accès applicatif.
+
+Chaque lancement produit un ticket HMAC signé, limité à 90 secondes, lié à une
+seule application et muni d'un nonce. Rapport et Coupe disposent chacun d'un
+secret de lancement distinct, uniquement côté serveur. L'application consomme le
+nonce une seule fois, établit un cookie `Secure`, `HttpOnly` et `SameSite=Lax`
+de 30 minutes,
+puis retire le ticket de l'URL. Un accès direct à la page d'entrée renvoie vers
+CONNECT.
+
+Le sas protège aussi les endpoints OAuth et métier de Rapport/Coupe ; seul
+l'endpoint de santé reste public. Il ne remplace pas l'authentification propre
+aux API applicatives. CONNECT,
+Rapport et Coupe utilisent chacun un client OAuth confidentiel distinct, avec un
+identifiant, un secret serveur et une URI de redirection dédiés. Rapport et Coupe
+vérifient en plus le claim `client_id` sur chaque accès à leur API : un jeton émis
+pour une autre application est refusé. Aucun secret n'est placé dans le
+catalogue, l'URL ou le JavaScript.
 
 Avec Simple OAuth 6.1.1, `OAUTH_ISSUER` doit correspondre exactement à l'URL racine
 émise par Drupal, slash final compris (par exemple `https://idp.example/`). Cette

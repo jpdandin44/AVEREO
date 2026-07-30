@@ -21,11 +21,19 @@ return [
     'drupal_userinfo_url' => 'https://avereo.fr/oauth/userinfo',
     'drupal_allowed_hosts' => ['avereo.fr'],
     'drupal_client_id' => 'avereo_rapport',
-    'drupal_client_secret' => '',
+    'drupal_client_secret' => 'CHANGE_ME_WITH_AT_LEAST_32_RANDOM_CHARACTERS',
     'drupal_scope' => 'openid profile email',
     'drupal_redirect_uri' => 'https://rapport.avereo.fr/auth/callback/',
     'drupal_required_roles' => ['utilisateur_rapport', 'administrateur_rapport'],
     'drupal_admin_roles' => ['administrateur_rapport'],
+
+    // Credential serveur distinct partage uniquement avec AVEREO CONNECT.
+    'connect_portal_url' => 'https://connect.avereo.fr/',
+    'connect_launch_secret' => 'CHANGE_ME_WITH_AT_LEAST_32_RANDOM_CHARACTERS',
+    'connect_launch_nonce_directory' => '/home/CPANELUSER/private/rapport/launch-nonces',
+    'connect_launch_max_seconds' => 300,
+    'connect_gate_cookie' => 'AVEREO_RAPPORT_GATE',
+    'connect_gate_session_seconds' => 1800,
 
     'max_payload_bytes' => 50 * 1024 * 1024,
 ];

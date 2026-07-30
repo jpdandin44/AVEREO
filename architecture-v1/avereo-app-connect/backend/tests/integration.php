@@ -44,6 +44,13 @@ $repository = new PdoConnectRepository($pdo);
 if ($repository->databaseStatus() !== 'ok') {
     throw new RuntimeException('Santé base invalide.');
 }
+$repository->registerPendingIdentity('drupal-pending', 'pending@example.invalid', 'Pending Test');
+$pendingIdentityCount = (int) $pdo->query(
+    "SELECT COUNT(*) FROM pending_identities WHERE drupal_subject = 'drupal-pending' AND status = 'pending'",
+)->fetchColumn();
+if ($pendingIdentityCount !== 1) {
+    throw new RuntimeException('Identité Drupal en attente introuvable.');
+}
 if (count($repository->listOrganizations($ownerId)) !== 1) {
     throw new RuntimeException('Organisation du propriétaire introuvable.');
 }
@@ -62,6 +69,12 @@ if (($result['status'] ?? null) !== 'active') {
 }
 if (count($repository->listApplications($ownerId, $organizationId)) !== 1) {
     throw new RuntimeException('Catalogue habilité introuvable.');
+}
+if (!$repository->canLaunchApplication($ownerId, 'rapport')) {
+    throw new RuntimeException('Le lancement Rapport devrait etre autorise.');
+}
+if ($repository->canLaunchApplication($ownerId, 'coupe')) {
+    throw new RuntimeException('Le lancement Coupe ne devrait pas etre autorise.');
 }
 $auditCount = (int) $pdo->query("SELECT COUNT(*) FROM audit_events WHERE request_id = 'integration-request-0001'")->fetchColumn();
 if ($auditCount !== 1) {

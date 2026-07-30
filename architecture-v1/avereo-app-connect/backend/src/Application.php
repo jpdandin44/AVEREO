@@ -8,6 +8,7 @@ use Avereo\Connect\Http\ApiException;
 use Avereo\Connect\Http\Request;
 use Avereo\Connect\Http\Response;
 use Avereo\Connect\Repository\ConnectRepository;
+use Avereo\Connect\Security\AppLaunchTicketIssuer;
 use Avereo\Connect\Security\AuthContext;
 use Avereo\Connect\Security\CsrfGuard;
 
@@ -16,6 +17,7 @@ final class Application
     public function __construct(
         private readonly Config $config,
         private readonly ConnectRepository $repository,
+        private readonly ?AppLaunchTicketIssuer $appLaunchTickets = null,
     ) {
     }
 
@@ -84,6 +86,7 @@ final class Application
                 : rtrim($this->config->oauthIssuer, '/') . '/user/register';
             $session = [
                 'authenticated' => $auth->isAuthenticated(),
+                'approved' => $auth->userId !== null,
                 'csrfToken' => $csrfToken,
                 'registrationUrl' => $registrationUrl,
             ];
@@ -118,7 +121,39 @@ final class Application
 
         $this->requireAuthenticated($auth);
         if ($request->method === 'GET' && $request->path === '/api/v1/catalog') {
-            return Response::success($this->applicationCatalog(), $request->requestId);
+            return Response::success($this->applicationCatalog($auth), $request->requestId);
+        }
+
+        if (
+            $request->method === 'GET'
+            && preg_match('#^/api/v1/apps/(rapport|coupe)/launch$#', $request->path, $matches)
+        ) {
+            if ($auth->userId === null) {
+                throw new ApiException(
+                    403,
+                    'CONNECT_ACCOUNT_NOT_PROVISIONED',
+                    'Le compte CONNECT doit etre approuve avant d ouvrir une application.',
+                );
+            }
+            if (!$this->repository->canLaunchApplication($auth->userId, $matches[1])) {
+                throw new ApiException(
+                    403,
+                    'APPLICATION_ACCESS_DENIED',
+                    'Le compte CONNECT n est pas habilite pour cette application.',
+                );
+            }
+            if ($this->appLaunchTickets === null) {
+                throw new ApiException(
+                    503,
+                    'APPLICATION_GATE_NOT_CONFIGURED',
+                    'Le sas de lancement des applications n est pas configure.',
+                );
+            }
+
+            return Response::redirect(
+                $this->appLaunchTickets->issueLocation($matches[1]),
+                $request->requestId,
+            );
         }
 
         if ($auth->userId === null) {
@@ -176,15 +211,19 @@ final class Application
     }
 
     /** @return list<array{code: string, name: string, description: string, launchUrl: string, available: bool, status: string}> */
-    private function applicationCatalog(): array
+    private function applicationCatalog(AuthContext $auth): array
     {
-        $preproduction = $this->config->environment === 'preprod';
-        $rapportLaunchUrl = $preproduction
-            ? 'https://rapport-preprod.avereo.fr/'
-            : 'https://rapport.avereo.fr/';
-        $coupeLaunchUrl = $preproduction
-            ? 'https://coupe-preprod.avereo.fr/'
-            : 'https://coupe.avereo.fr/';
+        $rapportLaunchUrl = '/api/v1/apps/rapport/launch';
+        $coupeLaunchUrl = '/api/v1/apps/coupe/launch';
+        $approvedUserId = $auth->userId;
+        $rapportConfigured = $this->appLaunchTickets?->isConfigured('rapport') ?? false;
+        $coupeConfigured = $this->appLaunchTickets?->isConfigured('coupe') ?? false;
+        $rapportEntitled = $approvedUserId !== null
+            && $this->repository->canLaunchApplication($approvedUserId, 'rapport');
+        $coupeEntitled = $approvedUserId !== null
+            && $this->repository->canLaunchApplication($approvedUserId, 'coupe');
+        $rapportAvailable = $rapportConfigured && $rapportEntitled;
+        $coupeAvailable = $coupeConfigured && $coupeEntitled;
 
         return [
             [
@@ -192,16 +231,20 @@ final class Application
                 'name' => 'Rapport AVEREO Pro',
                 'description' => 'Créer et gérer les rapports professionnels AVEREO.',
                 'launchUrl' => $rapportLaunchUrl,
-                'available' => true,
-                'status' => 'available',
+                'available' => $rapportAvailable,
+                'status' => $rapportAvailable
+                    ? 'available'
+                    : ($rapportConfigured ? 'access_denied' : 'configuration_required'),
             ],
             [
                 'code' => 'coupe',
                 'name' => 'Coupe AVEREO Reno Pro',
                 'description' => 'Préparer les métrés et les dossiers de coupe.',
                 'launchUrl' => $coupeLaunchUrl,
-                'available' => true,
-                'status' => 'available',
+                'available' => $coupeAvailable,
+                'status' => $coupeAvailable
+                    ? 'available'
+                    : ($coupeConfigured ? 'access_denied' : 'configuration_required'),
             ],
             [
                 'code' => 'projet',

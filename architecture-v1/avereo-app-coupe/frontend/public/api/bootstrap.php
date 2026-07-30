@@ -29,6 +29,12 @@ function api_home_dir_from_path(string $path): string
 function api_config_candidates(): array
 {
     $roots = [];
+    $documentRoot = strtolower(str_replace('\\', '/', (string) (
+        $_SERVER['CONTEXT_DOCUMENT_ROOT'] ?? $_SERVER['DOCUMENT_ROOT'] ?? ''
+    )));
+    $configNames = str_contains($documentRoot, 'preprod')
+        ? ['coupe-preprod', 'coupe']
+        : ['coupe'];
 
     foreach ([
         getenv('HOME') ?: '',
@@ -52,7 +58,9 @@ function api_config_candidates(): array
     foreach (array_unique($roots) as $root) {
         $root = rtrim((string)$root, '/\\');
         if ($root !== '') {
-            $candidates[] = $root . '/.avereo/coupe/config.php';
+            foreach ($configNames as $configName) {
+                $candidates[] = $root . '/.avereo/' . $configName . '/config.php';
+            }
         }
     }
 
@@ -89,12 +97,13 @@ function api_config(): array
     }
 
     return array_merge([
+        'environment' => getenv('AVEREO_ENVIRONMENT') ?: ($_SERVER['AVEREO_ENVIRONMENT'] ?? 'production'),
         'db_host' => getenv('AVEREO_DB_HOST') ?: ($_SERVER['AVEREO_DB_HOST'] ?? ''),
         'db_port' => getenv('AVEREO_DB_PORT') ?: ($_SERVER['AVEREO_DB_PORT'] ?? '3306'),
         'db_name' => getenv('AVEREO_DB_NAME') ?: ($_SERVER['AVEREO_DB_NAME'] ?? ''),
         'db_user' => getenv('AVEREO_DB_USER') ?: ($_SERVER['AVEREO_DB_USER'] ?? ''),
         'db_password' => getenv('AVEREO_DB_PASSWORD') ?: ($_SERVER['AVEREO_DB_PASSWORD'] ?? ''),
-        'auth_mode' => getenv('AVEREO_AUTH_MODE') ?: ($_SERVER['AVEREO_AUTH_MODE'] ?? 'api_token'),
+        'auth_mode' => getenv('AVEREO_AUTH_MODE') ?: ($_SERVER['AVEREO_AUTH_MODE'] ?? 'drupal_oauth'),
         'api_token' => getenv('AVEREO_API_TOKEN') ?: ($_SERVER['AVEREO_API_TOKEN'] ?? ''),
         'drupal_issuer' => getenv('AVEREO_DRUPAL_ISSUER') ?: ($_SERVER['AVEREO_DRUPAL_ISSUER'] ?? ''),
         'drupal_authorize_url' => getenv('AVEREO_DRUPAL_AUTHORIZE_URL') ?: ($_SERVER['AVEREO_DRUPAL_AUTHORIZE_URL'] ?? ''),
@@ -110,10 +119,45 @@ function api_config(): array
     ], $fileConfig);
 }
 
+function api_require_connect_gate(array $config): void
+{
+    require_once dirname(__DIR__) . '/connect/gate.php';
+    if (!avereo_gate_cookie_is_valid($config)) {
+        api_json(403, [
+            'ok' => false,
+            'error' => 'connect_gateway_required',
+            'message' => 'Ouvrez Coupe depuis AVEREO CONNECT.',
+        ]);
+    }
+}
+
 function api_auth_mode(array $config): string
 {
-    $mode = strtolower(trim((string)($config['auth_mode'] ?? 'api_token')));
-    return $mode === 'drupal_oauth' ? 'drupal_oauth' : 'api_token';
+    $mode = strtolower(trim((string)($config['auth_mode'] ?? 'drupal_oauth')));
+    if (!in_array($mode, ['drupal_oauth', 'api_token'], true)) {
+        api_json(503, [
+            'ok' => false,
+            'error' => 'auth_mode_invalid',
+            'message' => 'Mode d authentification serveur invalide.',
+        ]);
+    }
+
+    if ($mode === 'api_token') {
+        $environment = strtolower(trim((string)($config['environment'] ?? 'production')));
+        $host = api_current_host();
+        $localHost = $host === 'localhost'
+            || $host === '127.0.0.1'
+            || str_ends_with($host, '.localhost');
+        if ($environment !== 'local' || !$localHost) {
+            api_json(503, [
+                'ok' => false,
+                'error' => 'api_token_local_only',
+                'message' => 'Le mode api_token est interdit hors environnement local.',
+            ]);
+        }
+    }
+
+    return $mode;
 }
 
 function api_bearer_token(): string
@@ -194,6 +238,7 @@ function api_public_auth_config(array $config): array
     $tokenUrl = trim((string)($config['drupal_token_url'] ?? ''));
     $userinfoUrl = trim((string)($config['drupal_userinfo_url'] ?? ''));
     $clientId = trim((string)($config['drupal_client_id'] ?? ''));
+    $clientSecret = trim((string)($config['drupal_client_secret'] ?? ''));
     $redirectUri = api_oauth_redirect_uri($config);
     $redirectUriAllowed = api_redirect_uri_allowed($redirectUri);
 
@@ -209,7 +254,13 @@ function api_public_auth_config(array $config): array
 
     return [
         'mode' => 'drupal_oauth',
-        'configured' => $issuer !== '' && $authorizeUrl !== '' && $tokenUrl !== '' && $userinfoUrl !== '' && $clientId !== '' && $redirectUriAllowed,
+        'configured' => $issuer !== ''
+            && $authorizeUrl !== ''
+            && $tokenUrl !== ''
+            && $userinfoUrl !== ''
+            && preg_match('/^[A-Za-z0-9._~-]{3,128}$/', $clientId) === 1
+            && strlen($clientSecret) >= 32
+            && $redirectUriAllowed,
         'issuer' => $issuer,
         'authorizeUrl' => $authorizeUrl,
         'clientId' => $clientId,

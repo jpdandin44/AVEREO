@@ -78,6 +78,15 @@
     .app-actions { margin-top: auto; }
     .launch { display: inline-block; text-decoration: none; }
     .coming-soon { display: inline-block; padding: .7rem .9rem; border-radius: 10px; background: #e8edf4; font-weight: 700; }
+    .profile {
+      margin-top: 1.25rem;
+      padding: 1.25rem;
+      border: 1px solid #dce4ef;
+      border-radius: 14px;
+      background: #f8fafc;
+    }
+    .profile h2 { margin-bottom: .75rem; }
+    .profile p { margin: .35rem 0; }
     [hidden] { display: none !important; }
     @media (max-width: 560px) {
       .topbar, .section-heading { align-items: stretch; flex-direction: column; }
@@ -100,6 +109,14 @@
     </p>
     <div id="status" role="status" aria-live="polite">Contrôle de la session…</div>
 
+    <section id="profile" class="profile" aria-labelledby="profile-title" hidden>
+      <h2 id="profile-title">Mon profil</h2>
+      <p>Connecté en tant que <strong id="profile-name"></strong></p>
+      <p id="profile-status"></p>
+      <p id="profile-organization"></p>
+      <p id="profile-applications"></p>
+    </section>
+
     <section id="applications" aria-labelledby="applications-title" hidden>
       <div class="section-heading">
         <div>
@@ -117,6 +134,11 @@
     const registerNode = document.getElementById('register');
     const registerLink = document.getElementById('register-link');
     const logoutButton = document.getElementById('logout');
+    const profileSection = document.getElementById('profile');
+    const profileName = document.getElementById('profile-name');
+    const profileStatus = document.getElementById('profile-status');
+    const profileOrganization = document.getElementById('profile-organization');
+    const profileApplications = document.getElementById('profile-applications');
     const applicationsSection = document.getElementById('applications');
     const applicationGrid = document.getElementById('app-grid');
     let csrfToken = '';
@@ -138,6 +160,27 @@
 
     async function catalog() {
       return getJson('/api/v1/catalog');
+    }
+
+    async function profile() {
+      const [userPayload, organizationsPayload] = await Promise.all([
+        getJson('/api/v1/me'),
+        getJson('/api/v1/organizations')
+      ]);
+      return {
+        user: userPayload.data,
+        organizations: organizationsPayload.data
+      };
+    }
+
+    function renderProfile(profilePayload, applications) {
+      const organizations = profilePayload.organizations || [];
+      const authorized = applications.filter((application) => application.available);
+      profileName.textContent = profilePayload.user.displayName || profilePayload.user.email || 'Compte AVEREO';
+      profileStatus.textContent = 'Compte actif · Profil Client';
+      profileOrganization.textContent = `Organisation : ${organizations.map((item) => item.name).join(', ') || 'Non rattachée'}`;
+      profileApplications.textContent = `Applications autorisées : ${authorized.map((item) => item.name).join(', ') || 'Aucune'}`;
+      profileSection.hidden = false;
     }
 
     function renderApplications(applications) {
@@ -169,7 +212,9 @@
         } else {
           const unavailable = document.createElement('span');
           unavailable.className = 'coming-soon';
-          unavailable.textContent = 'Bientôt disponible';
+          unavailable.textContent = application.status === 'access_denied'
+            ? 'Accès non autorisé'
+            : (application.status === 'configuration_required' ? 'Configuration requise' : 'Bientôt disponible');
           actions.append(unavailable);
         }
 
@@ -188,6 +233,7 @@
         registerNode.hidden = authenticated || !registrationUrl;
         if (registrationUrl) registerLink.href = registrationUrl;
         logoutButton.hidden = !authenticated;
+        profileSection.hidden = true;
         applicationsSection.hidden = true;
 
         if (!authenticated) {
@@ -196,11 +242,19 @@
           return;
         }
 
-        leadNode.textContent = 'Votre identité Drupal est validée. Vous pouvez accéder aux applications disponibles.';
-        statusNode.textContent = 'Session Drupal authentifiée.';
+        const approved = sessionPayload.data.approved === true;
+        leadNode.textContent = approved
+          ? 'Votre identité Drupal est validée. Vous pouvez accéder aux applications autorisées.'
+          : 'Votre identité Drupal est validée. Votre compte CONNECT attend encore une approbation.';
+        statusNode.textContent = approved
+          ? 'Session Drupal authentifiée et compte CONNECT actif.'
+          : 'Session Drupal authentifiée · compte CONNECT non approuvé.';
         const catalogPayload = await catalog();
         renderApplications(catalogPayload.data);
         applicationsSection.hidden = false;
+        if (approved) {
+          renderProfile(await profile(), catalogPayload.data);
+        }
       } catch {
         statusNode.textContent = 'CONNECT ne peut pas charger votre session ou le catalogue.';
       }

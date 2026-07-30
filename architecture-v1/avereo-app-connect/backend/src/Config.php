@@ -25,9 +25,17 @@ final class Config
         public readonly string $oauthSuccessUrl = '/',
         public readonly string $oauthScopes = 'openid profile email',
         public readonly string $oauthPublicKeyPath = '',
+        /** @var array<string, string> */
+        public readonly array $appLaunchEntryUrls = [],
+        /** @var array<string, string> */
+        public readonly array $appLaunchSecrets = [],
+        public readonly int $appLaunchTtlSeconds = 90,
     ) {
         if ($sessionIdleSeconds < 60 || $sessionAbsoluteSeconds < $sessionIdleSeconds) {
             throw new \InvalidArgumentException('Durées de session invalides.');
+        }
+        if ($appLaunchTtlSeconds < 30 || $appLaunchTtlSeconds > 300) {
+            throw new \InvalidArgumentException('Duree de ticket applicatif invalide.');
         }
     }
 
@@ -54,7 +62,26 @@ final class Config
             self::env('OAUTH_SUCCESS_URL', '/'),
             self::env('OAUTH_SCOPES', 'openid profile email'),
             self::env('OAUTH_PUBLIC_KEY_PATH'),
+            [
+                'rapport' => self::env('APP_LAUNCH_RAPPORT_URL'),
+                'coupe' => self::env('APP_LAUNCH_COUPE_URL'),
+            ],
+            [
+                'rapport' => self::env('APP_LAUNCH_RAPPORT_SECRET'),
+                'coupe' => self::env('APP_LAUNCH_COUPE_SECRET'),
+            ],
+            self::envInt('APP_LAUNCH_TTL_SECONDS', 90),
         );
+    }
+
+    public function appLaunchEntryUrl(string $applicationCode): string
+    {
+        return trim((string) ($this->appLaunchEntryUrls[$applicationCode] ?? ''));
+    }
+
+    public function appLaunchSecret(string $applicationCode): string
+    {
+        return trim((string) ($this->appLaunchSecrets[$applicationCode] ?? ''));
     }
 
     public function isIdentityProviderConfigured(): bool
