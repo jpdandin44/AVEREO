@@ -17,7 +17,28 @@ if (!in_array($direction, ['up', 'down'], true)) {
     exit(2);
 }
 
-$migrationDirectory = dirname(__DIR__, 2) . '/database/migrations';
+$migrationDirectories = [
+    // O2Switch layout: public/, src/, bin/ and database/ share the application root.
+    dirname(__DIR__) . '/database/migrations',
+    // Repository layout: backend/bin sits beside the application-level database/.
+    dirname(__DIR__, 2) . '/database/migrations',
+];
+$migrationDirectory = '';
+foreach ($migrationDirectories as $candidate) {
+    if (is_dir($candidate)) {
+        $migrationDirectory = $candidate;
+        break;
+    }
+}
+if ($migrationDirectory === '') {
+    fwrite(
+        STDERR,
+        "Dossier de migrations introuvable. Emplacements controles : "
+        . implode(', ', $migrationDirectories)
+        . "\n",
+    );
+    exit(2);
+}
 $pattern = $migrationDirectory . '/*.' . $direction . '.sql';
 $files = glob($pattern) ?: [];
 sort($files, SORT_STRING);
