@@ -56,7 +56,8 @@ Verifier avant publication que l'accueil affiche `Preversion sans compte`, que l
 2. Appliquer `database/migrations/001_create_rapport_reports.sql`.
 3. Creer le fichier prive depuis `backend/config.example.php`, remplacer tous les placeholders et lui donner des permissions restrictives (`600` recommande lorsque possible).
 4. Activer le sous-domaine et HTTPS.
-5. Installer Simple OAuth 6.1 et le module `integrations/drupal/avereo_rapport_oauth/`, puis configurer Drupal selon `authentication.md`.
+5. Configurer `auth_mode=connect_gateway`, le secret de lancement Rapport et
+   le repertoire anti-rejeu selon `authentication.md`.
 6. Configurer les secrets/variables GitHub sans remplacer ceux d'une autre application.
 7. Faire relire et merger la PR humainement.
 8. Apres le merge et les derniers controles, lancer humainement `Deploy Rapport to O2Switch` depuis GitHub Actions sur la branche `main`.
@@ -72,11 +73,15 @@ Verifier avant publication que l'accueil affiche `Preversion sans compte`, que l
 - Un lancement depuis CONNECT charge l'application.
 - `https://rapport.avereo.fr/api/health.php` retourne `app: rapport`.
 - `/api/auth.php?action=config` retourne `403` sans cookie de sas et expose
-  uniquement la configuration publique après un lancement CONNECT.
+  `mode=connect_gateway` apres un lancement CONNECT.
 - `/api/reports.php` retourne `403` sans cookie de sas.
-- `/oauth/userinfo` retourne `sub`, `client_id` et les roles Rapport pour un bearer valide.
-- Un jeton d'un autre client OAuth est refuse par Rapport.
+- L'ancien chemin `/auth/callback/` retourne `303` vers la racine protegee.
+- `/api/auth.php?action=me` retourne `provider=avereo_connect` sans bearer
+  OAuth supplementaire.
+- Une session de sas historique sans identite demande un nouveau lancement
+  depuis CONNECT.
 - Un utilisateur standard ne voit que ses rapports.
-- Un `administrateur_rapport` peut administrer tous les rapports.
+- Seuls les IDs presents dans `connect_admin_user_ids` peuvent administrer tous
+  les rapports.
 
 Voir `rollback.md` avant toute mise en production.

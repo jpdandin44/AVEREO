@@ -9,7 +9,8 @@ return [
     'db_user' => 'CPANELUSER_rapport_user',
     'db_password' => 'CHANGE_ME',
 
-    'auth_mode' => 'drupal_oauth',
+    // CONNECT est l unique point d authentification en environnement heberge.
+    'auth_mode' => 'connect_gateway',
 
     // Secours temporaire strictement local; ne pas activer en production.
     'api_token' => 'CHANGE_ME_LOCAL_ONLY',
@@ -34,6 +35,8 @@ return [
     'connect_launch_max_seconds' => 300,
     'connect_gate_cookie' => 'AVEREO_RAPPORT_GATE',
     'connect_gate_session_seconds' => 1800,
+    // IDs CONNECT autorises a administrer tous les rapports. Vide = aucun admin.
+    'connect_admin_user_ids' => [],
 
     'max_payload_bytes' => 50 * 1024 * 1024,
 ];

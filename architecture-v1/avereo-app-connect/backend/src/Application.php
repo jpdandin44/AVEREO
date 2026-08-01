@@ -152,7 +152,11 @@ final class Application
             }
 
             return Response::redirect(
-                $this->appLaunchTickets->issueLocation($matches[1], $auth->remembered),
+                $this->appLaunchTickets->issueLocation(
+                    $matches[1],
+                    $auth->userId,
+                    $auth->remembered,
+                ),
                 $request->requestId,
             );
         }

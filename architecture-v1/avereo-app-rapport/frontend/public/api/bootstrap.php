@@ -112,7 +112,7 @@ function api_config(): array
         'db_name' => getenv('AVEREO_DB_NAME') ?: ($_SERVER['AVEREO_DB_NAME'] ?? ''),
         'db_user' => getenv('AVEREO_DB_USER') ?: ($_SERVER['AVEREO_DB_USER'] ?? ''),
         'db_password' => getenv('AVEREO_DB_PASSWORD') ?: ($_SERVER['AVEREO_DB_PASSWORD'] ?? ''),
-        'auth_mode' => getenv('AVEREO_AUTH_MODE') ?: ($_SERVER['AVEREO_AUTH_MODE'] ?? 'drupal_oauth'),
+        'auth_mode' => getenv('AVEREO_AUTH_MODE') ?: ($_SERVER['AVEREO_AUTH_MODE'] ?? 'connect_gateway'),
         'api_token' => getenv('AVEREO_API_TOKEN') ?: ($_SERVER['AVEREO_API_TOKEN'] ?? ''),
         'drupal_issuer' => getenv('AVEREO_DRUPAL_ISSUER') ?: ($_SERVER['AVEREO_DRUPAL_ISSUER'] ?? ''),
         'drupal_authorize_url' => getenv('AVEREO_DRUPAL_AUTHORIZE_URL') ?: ($_SERVER['AVEREO_DRUPAL_AUTHORIZE_URL'] ?? ''),
@@ -125,6 +125,7 @@ function api_config(): array
         'drupal_redirect_uri' => getenv('AVEREO_DRUPAL_REDIRECT_URI') ?: ($_SERVER['AVEREO_DRUPAL_REDIRECT_URI'] ?? ''),
         'drupal_required_roles' => ['utilisateur_rapport', 'administrateur_rapport'],
         'drupal_admin_roles' => ['administrateur_rapport'],
+        'connect_admin_user_ids' => [],
         'max_payload_bytes' => 50 * 1024 * 1024,
     ], $fileConfig);
 }
@@ -144,7 +145,7 @@ function api_require_connect_gate(array $config): void
 function api_auth_mode(array $config): string
 {
     $mode = strtolower(trim((string)($config['auth_mode'] ?? 'drupal_oauth')));
-    if (!in_array($mode, ['drupal_oauth', 'api_token'], true)) {
+    if (!in_array($mode, ['connect_gateway', 'drupal_oauth', 'api_token'], true)) {
         api_json(503, [
             'ok' => false,
             'error' => 'auth_mode_invalid',
@@ -308,6 +309,13 @@ function api_public_auth_config(array $config): array
     $mode = api_auth_mode($config);
     $issuer = rtrim((string)($config['drupal_issuer'] ?? ''), '/');
 
+    if ($mode === 'connect_gateway') {
+        return [
+            'mode' => 'connect_gateway',
+            'configured' => strlen(trim((string)($config['connect_launch_secret'] ?? ''))) >= 32,
+        ];
+    }
+
     if ($mode !== 'drupal_oauth') {
         return [
             'mode' => 'api_token',
@@ -362,11 +370,49 @@ function api_auth_configured(array $config): bool
 
 function api_require_auth(array $config): array
 {
-    if (api_auth_mode($config) === 'drupal_oauth') {
+    $mode = api_auth_mode($config);
+    if ($mode === 'connect_gateway') {
+        return api_require_connect_user($config);
+    }
+    if ($mode === 'drupal_oauth') {
         return api_require_drupal_user($config);
     }
 
     return api_require_token($config);
+}
+
+function api_require_connect_user(array $config): array
+{
+    require_once dirname(__DIR__) . '/connect/gate.php';
+    try {
+        $identity = avereo_gate_identity($config);
+    } catch (Throwable $exception) {
+        error_log('Rapport CONNECT identity rejected: ' . $exception->getMessage());
+        api_json(401, [
+            'ok' => false,
+            'error' => 'connect_identity_missing',
+            'message' => 'La session AVEREO CONNECT doit etre renouvelee.',
+        ]);
+    }
+
+    $id = (string) ($identity['id'] ?? '');
+    $adminUserIds = array_map(
+        static fn (mixed $value): string => trim((string) $value),
+        is_array($config['connect_admin_user_ids'] ?? null)
+            ? $config['connect_admin_user_ids']
+            : (preg_split('/[\s,]+/', (string) ($config['connect_admin_user_ids'] ?? '')) ?: []),
+    );
+    $isAdministrator = in_array($id, array_filter($adminUserIds), true);
+
+    return [
+        'provider' => 'avereo_connect',
+        'id' => api_trim_text($id, 190),
+        'email' => '',
+        'name' => 'Compte AVEREO Connect #' . api_trim_text($id, 32),
+        'roles' => [
+            $isAdministrator ? 'administrateur_rapport' : 'utilisateur_rapport',
+        ],
+    ];
 }
 
 function api_require_token(array $config): array

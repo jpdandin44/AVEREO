@@ -290,6 +290,8 @@ $tests['launch ticket is signed and application bound'] = static function () use
     assertSameValue('rapport', $payload['app'] ?? null, 'launch application binding');
     assertSameValue(1, $payload['v'] ?? null, 'launch ticket version');
     assertSameValue(true, $payload['remembered'] ?? null, 'launch remember binding');
+    assertSameValue('avereo_connect', $payload['identity']['provider'] ?? null, 'launch identity provider');
+    assertSameValue('42', $payload['identity']['id'] ?? null, 'launch identity id');
     assertSameValue(true, ($payload['exp'] ?? 0) > ($payload['iat'] ?? 0), 'launch expiry');
 
     $repository->allowedApps = ['rapport'];

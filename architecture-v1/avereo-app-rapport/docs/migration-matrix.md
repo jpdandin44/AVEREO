@@ -15,7 +15,7 @@
 | Export document | `App.jsx` | Blob HTML/Word | Frontend; controle du fichier produit | conservee |
 | Sauvegarde en ligne | absente | PHP, PDO, MySQL | `/api/reports.php`, propriete utilisateur, CRUD | adaptee |
 | Reouverture depuis la liste serveur | absente | PHP, MySQL | API disponible; interface differee au lot de consolidation OAuth | non integree |
-| Authentification | absente | Drupal OAuth/OIDC | `/api/auth.php`, PKCE, roles `utilisateur_rapport`/`administrateur_rapport` | adaptee |
+| Authentification | absente | AVEREO CONNECT adosse a Drupal | ticket signe, cookie de sas, roles `utilisateur_rapport`/`administrateur_rapport` | adaptee |
 | Mode technique local | absente | Jeton genere localement | `api_token`, ignore de Git, admin local temporaire | adaptee |
 | Backend Node.js | absent | aucun | Aucun runtime Node.js en production | non integree |
 

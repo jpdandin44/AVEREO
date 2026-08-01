@@ -1570,6 +1570,7 @@ function ReportPreview({ report, onClose }) {
 
 function OnlineSyncPanel({
   accessToken,
+  authenticated,
   authConfig,
   authError,
   authUser,
@@ -1623,7 +1624,7 @@ function OnlineSyncPanel({
       </div>
       <div className="online-controls">
         {!authConfig && <span className="muted">Verification de l'API...</span>}
-        {authConfig?.mode === 'api_token' && !accessToken && (
+        {authConfig?.mode === 'api_token' && !authenticated && (
           <>
             <input
               type="password"
@@ -1639,7 +1640,7 @@ function OnlineSyncPanel({
             </button>
           </>
         )}
-        {authConfig?.mode === 'drupal_oauth' && !accessToken && (
+        {authConfig?.mode === 'drupal_oauth' && !authenticated && (
           <button
             className="button secondary"
             type="button"
@@ -1650,7 +1651,7 @@ function OnlineSyncPanel({
             Connexion AVEREO
           </button>
         )}
-        {accessToken && (
+        {authenticated && (
           <button className="button primary" type="button" onClick={onSave} disabled={saving}>
             <Save size={18} />
             {saving ? 'Sauvegarde...' : 'Sauver en ligne'}
@@ -1671,6 +1672,7 @@ function OnlineSyncPanel({
 
 function ReportWizard({
   accessToken,
+  authenticated,
   authConfig,
   authError,
   authUser,
@@ -1709,7 +1711,7 @@ function ReportWizard({
   };
 
   const handleOnlineSave = async () => {
-    if (!accessToken) {
+    if (!authenticated) {
       setOnlineStatus('Connexion requise pour la sauvegarde en ligne.');
       return;
     }
@@ -1794,6 +1796,7 @@ function ReportWizard({
         </div>
         <OnlineSyncPanel
           accessToken={accessToken}
+          authenticated={authenticated}
           authConfig={authConfig}
           authError={authError}
           authUser={authUser}
@@ -1833,6 +1836,7 @@ function ReportWizard({
 function AccessGate({ authConfig, authError, onOAuthLogin }) {
   const issuer = String(authConfig?.issuer || '').replace(/\/$/, '');
   const oauthReady = authConfig?.mode === 'drupal_oauth' && authConfig?.configured;
+  const connectMode = authConfig?.mode === 'connect_gateway';
 
   return (
     <div className="screen">
@@ -1841,19 +1845,32 @@ function AccessGate({ authConfig, authError, onOAuthLogin }) {
         <section className="panel auth-panel">
           <span className="eyebrow">Acces securise</span>
           <h2>Connexion a AVEREO Rapport</h2>
-          <p>
-            Identifiez-vous avec votre compte AVEREO. L'application reste inaccessible tant que Drupal n'a pas
-            valide votre identite et votre role Rapport.
-          </p>
+          {connectMode ? (
+            <p>Votre session applicative doit etre renouvelee depuis AVEREO CONNECT.</p>
+          ) : (
+            <p>
+              Identifiez-vous avec votre compte AVEREO. L'application reste inaccessible tant que Drupal n'a pas
+              valide votre identite et votre role Rapport.
+            </p>
+          )}
           <div className="auth-actions">
-            <button className="button primary" type="button" onClick={onOAuthLogin} disabled={!oauthReady}>
-              <ShieldCheck size={18} />
-              Se connecter a AVEREO Rapport
-            </button>
-            {issuer && (
-              <a className="button ghost" href={`${issuer}/user/register`}>
-                Creer un compte
+            {connectMode ? (
+              <a className="button primary" href="/connect/logout.php">
+                <ShieldCheck size={18} />
+                Revenir a AVEREO CONNECT
               </a>
+            ) : (
+              <>
+                <button className="button primary" type="button" onClick={onOAuthLogin} disabled={!oauthReady}>
+                  <ShieldCheck size={18} />
+                  Se connecter a AVEREO Rapport
+                </button>
+                {issuer && (
+                  <a className="button ghost" href={`${issuer}/user/register`}>
+                    Creer un compte
+                  </a>
+                )}
+              </>
             )}
           </div>
           <div className="auth-status" role="status">
@@ -1863,7 +1880,7 @@ function AccessGate({ authConfig, authError, onOAuthLogin }) {
                 Verification de la configuration OAuth...
               </>
             )}
-            {authConfig && !oauthReady && !authError && (
+            {authConfig && !oauthReady && !connectMode && !authError && (
               <span className="error-text">OAuth Drupal n'est pas encore configure cote serveur.</span>
             )}
             {authError && <span className="error-text">{authError}</span>}
@@ -1906,6 +1923,14 @@ export default function App() {
         const config = await getAuthConfig();
         if (!active) return;
         setAuthConfig(config);
+
+        if (config.mode === 'connect_gateway') {
+          const user = await getCurrentUser('');
+          if (!active) return;
+          setAuthUser(user);
+          setAuthError('');
+          return;
+        }
 
         const oauthToken = await completeOAuthLogin();
         if (!oauthToken || !active) return;
@@ -1986,7 +2011,10 @@ export default function App() {
     );
   }
 
-  if (ONLINE_SYNC_ENABLED && !accessToken) {
+  const authenticated = Boolean(authUser)
+    && (authConfig?.mode === 'connect_gateway' || Boolean(accessToken));
+
+  if (ONLINE_SYNC_ENABLED && !authenticated) {
     return <AccessGate authConfig={authConfig} authError={authError} onOAuthLogin={beginOAuthLogin} />;
   }
 
@@ -2003,6 +2031,7 @@ export default function App() {
       {appState === 'wizard' && (
         <ReportWizard
           accessToken={accessToken}
+          authenticated={authenticated}
           authConfig={authConfig}
           authError={authError}
           authUser={authUser}

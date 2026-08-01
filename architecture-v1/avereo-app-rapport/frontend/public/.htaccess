@@ -4,7 +4,8 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^(?:assets|api|auth|connect)(?:/|$) - [L]
+  RewriteRule ^auth(?:/|$) / [R=303,L]
+  RewriteRule ^(?:assets|api|connect)(?:/|$) - [L]
   RewriteRule ^$ index.php [L]
   RewriteRule ^index\.html$ index.php [L]
   RewriteCond %{REQUEST_FILENAME} !-f

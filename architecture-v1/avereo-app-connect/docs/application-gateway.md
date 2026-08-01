@@ -12,14 +12,16 @@ signé côté serveur.
 1. Drupal identifie l'utilisateur et CONNECT établit sa session.
 2. Le catalogue appelle `/api/v1/apps/{code}/launch`.
 3. CONNECT vérifie la session et l'approbation du compte.
-4. CONNECT émet un ticket HMAC de 90 secondes, lié à une seule application.
+4. CONNECT émet un ticket HMAC de 90 secondes, lié à une seule application et
+   à l'identifiant interne minimal du compte approuvé.
 5. `/connect/entry.php` vérifie la signature, l'expiration et le code
    d'application, puis consomme le nonce à usage unique.
 6. L'application crée un cookie de sas sécurisé et redirige vers `/`.
-7. La page, les endpoints OAuth et les API métier exigent ce cookie ; seul
+7. La page et les API métier exigent ce cookie ; seul
    l'endpoint de santé reste public.
-8. L'API applicative conserve son propre client Drupal OAuth et ses contrôles de
-   rôles et de propriété.
+8. Rapport dérive son identité métier du cookie signé et ne redemande pas une
+   authentification Drupal. La propriété des données reste isolée par
+   `provider` et `id`.
 
 ## Credentials
 
@@ -36,12 +38,20 @@ hors document root :
 Les secrets sont différents. Ils ne sont ni partagés avec le navigateur, ni
 commités, ni affichés dans le catalogue.
 
+Le ticket transporte uniquement `provider=avereo_connect` et l'identifiant
+interne numérique du compte. Les attributs Drupal et les secrets ne quittent
+jamais CONNECT. Les administrateurs Rapport sont désignés explicitement dans la
+configuration privée Rapport ; une habilitation simple ne donne jamais
+automatiquement les droits d'administration.
+
 ## Refus par défaut
 
 - secret ou URL d'entrée absent : application indisponible dans le catalogue ;
 - session CONNECT absente : `401` ;
 - compte Drupal non approuvé dans CONNECT : `403` ;
 - ticket modifié, expiré, rejoué ou destiné à une autre application : `403` ;
+- identité CONNECT absente ou mal formée : renouvellement obligatoire depuis
+  CONNECT ;
 - appel direct d'une API métier ou OAuth sans cookie de sas : `403` ;
 - accès direct à une application : redirection `303` vers
   `https://connect.avereo.fr/`.
@@ -53,9 +63,11 @@ doivent être qualifiées ensemble en préproduction. En
 production, configurer les secrets et répertoires anti-rejeu avant le code, puis
 déployer dans cet ordre :
 
-1. Rapport, Coupe, Projet, Thermo et Drone ;
-2. migration et publication du catalogue ;
-3. CONNECT.
+1. Rapport avec lecture compatible des anciens tickets ;
+2. CONNECT avec l'identité minimale signée ;
+3. bascule de la configuration Rapport sur `auth_mode=connect_gateway` ;
+4. qualification fonctionnelle, puis migration progressive des autres
+   applications.
 
 Ainsi, les applications savent déjà consommer les tickets lorsque CONNECT
 commence à les émettre. Les workflows de production sont exclusivement manuels,
