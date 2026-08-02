@@ -91,6 +91,93 @@ if ($auditCount !== 1) {
     throw new RuntimeException("Nombre d’événements d’audit inattendu : {$auditCount}");
 }
 
+$administration = $repository->getAccountAdministration($ownerId, $organizationId);
+if (
+    ($administration['actorRole'] ?? null) !== 'owner'
+    || count($administration['pendingIdentities'] ?? []) !== 1
+) {
+    throw new RuntimeException('Tableau d administration des comptes invalide.');
+}
+$pendingId = (int) ($administration['pendingIdentities'][0]['id'] ?? 0);
+$memberAdministrationDenied = false;
+try {
+    $repository->getAccountAdministration($memberId, $organizationId);
+} catch (ApiException $exception) {
+    $memberAdministrationDenied = $exception->status === 403;
+}
+if (!$memberAdministrationDenied) {
+    throw new RuntimeException('Un membre ne doit pas pouvoir consulter l administration des comptes.');
+}
+$memberApprovalDenied = false;
+try {
+    $repository->approvePendingIdentity(
+        $memberId,
+        $organizationId,
+        $pendingId,
+        'member',
+        'integration-request-account-member-denied',
+    );
+} catch (ApiException $exception) {
+    $memberApprovalDenied = $exception->status === 403;
+}
+if (!$memberApprovalDenied) {
+    throw new RuntimeException('Un membre ne doit pas pouvoir approuver un compte.');
+}
+$approved = $repository->approvePendingIdentity(
+    $ownerId,
+    $organizationId,
+    $pendingId,
+    'member',
+    'integration-request-account-approve',
+);
+if (($approved['status'] ?? null) !== 'active' || ($approved['role'] ?? null) !== 'member') {
+    throw new RuntimeException('Approbation du compte invalide.');
+}
+$approvedUserId = (int) ($approved['id'] ?? 0);
+if (!$repository->canLaunchApplication($approvedUserId, 'rapport')) {
+    throw new RuntimeException('Le compte approuve devrait heriter de Rapport.');
+}
+
+$suspended = $repository->updateUserStatus(
+    $ownerId,
+    $organizationId,
+    $approvedUserId,
+    'suspended',
+    'integration-request-account-suspend',
+);
+if (($suspended['status'] ?? null) !== 'suspended' || $repository->canLaunchApplication($approvedUserId, 'rapport')) {
+    throw new RuntimeException('La suspension du compte est inoperante.');
+}
+$repository->updateUserStatus(
+    $ownerId,
+    $organizationId,
+    $approvedUserId,
+    'active',
+    'integration-request-account-reactivate',
+);
+if (!$repository->canLaunchApplication($approvedUserId, 'rapport')) {
+    throw new RuntimeException('La reactivation du compte est inoperante.');
+}
+
+$repository->registerPendingIdentity('drupal-rejected', 'rejected@example.invalid', 'Rejected Test');
+$rejectionSnapshot = $repository->getAccountAdministration($ownerId, $organizationId);
+$rejectedPending = array_values(array_filter(
+    $rejectionSnapshot['pendingIdentities'] ?? [],
+    static fn (array $identity): bool => ($identity['email'] ?? null) === 'rejected@example.invalid',
+));
+if (count($rejectedPending) !== 1) {
+    throw new RuntimeException('Demande a refuser introuvable.');
+}
+$rejected = $repository->rejectPendingIdentity(
+    $ownerId,
+    $organizationId,
+    (int) $rejectedPending[0]['id'],
+    'integration-request-account-reject',
+);
+if (($rejected['status'] ?? null) !== 'rejected') {
+    throw new RuntimeException('Refus du compte invalide.');
+}
+
 $denied = false;
 try {
     $repository->upsertEntitlement(

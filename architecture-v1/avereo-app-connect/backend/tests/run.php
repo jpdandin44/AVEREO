@@ -18,6 +18,7 @@ final class FakeRepository implements ConnectRepository
 {
     public bool $allowMutation = true;
     public int $auditCount = 0;
+    public int $accountAuditCount = 0;
     /** @var list<string> */
     public array $allowedApps = ['rapport', 'coupe'];
 
@@ -28,7 +29,23 @@ final class FakeRepository implements ConnectRepository
 
     public function findUserIdByDrupalSubject(string $drupalSubject): ?int
     {
-        return $drupalSubject === 'drupal-test' ? 42 : null;
+        return match ($drupalSubject) {
+            'drupal-test' => 42,
+            'drupal-member' => 43,
+            'drupal-suspended' => 52,
+            default => null,
+        };
+    }
+
+    public function findIdentityStatusByDrupalSubject(string $drupalSubject): ?string
+    {
+        return match ($drupalSubject) {
+            'drupal-test' => 'active',
+            'drupal-member' => 'active',
+            'drupal-suspended' => 'suspended',
+            'drupal-rejected' => 'rejected',
+            default => null,
+        };
     }
 
     public function registerPendingIdentity(
@@ -100,6 +117,88 @@ final class FakeRepository implements ConnectRepository
             'validTo' => $validTo,
         ];
     }
+
+    public function getAccountAdministration(int $actorUserId, int $organizationId): array
+    {
+        if ($actorUserId !== 42 || $organizationId !== 7) {
+            throw new ApiException(403, 'ACCOUNT_ADMINISTRATION_DENIED', 'Administration refusee.');
+        }
+        return [
+            'organization' => ['id' => 7, 'name' => 'Espace test', 'slug' => 'espace-test'],
+            'actorRole' => 'owner',
+            'assignableRoles' => ['owner', 'admin', 'member', 'viewer'],
+            'applications' => [['code' => 'rapport', 'name' => 'Rapport']],
+            'pendingIdentities' => [[
+                'id' => 9,
+                'email' => 'pending@example.invalid',
+                'displayName' => 'Pending Test',
+            ]],
+            'users' => [[
+                'id' => 42,
+                'email' => 'owner@example.invalid',
+                'displayName' => 'Owner Test',
+                'status' => 'active',
+                'role' => 'owner',
+                'canChangeStatus' => false,
+            ]],
+        ];
+    }
+
+    public function approvePendingIdentity(
+        int $actorUserId,
+        int $organizationId,
+        int $pendingIdentityId,
+        string $role,
+        string $requestId,
+    ): array {
+        if ($actorUserId !== 42 || $organizationId !== 7) {
+            throw new ApiException(403, 'ACCOUNT_ADMINISTRATION_DENIED', 'Administration refusee.');
+        }
+        $this->accountAuditCount++;
+        return [
+            'id' => 51,
+            'email' => 'pending@example.invalid',
+            'displayName' => 'Pending Test',
+            'status' => 'active',
+            'role' => $role,
+        ];
+    }
+
+    public function rejectPendingIdentity(
+        int $actorUserId,
+        int $organizationId,
+        int $pendingIdentityId,
+        string $requestId,
+    ): array {
+        if ($actorUserId !== 42 || $organizationId !== 7) {
+            throw new ApiException(403, 'ACCOUNT_ADMINISTRATION_DENIED', 'Administration refusee.');
+        }
+        $this->accountAuditCount++;
+        return ['id' => $pendingIdentityId, 'status' => 'rejected', 'displayName' => 'Pending Test'];
+    }
+
+    public function updateUserStatus(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $status,
+        string $requestId,
+    ): array {
+        if ($actorUserId !== 42 || $organizationId !== 7) {
+            throw new ApiException(403, 'ACCOUNT_ADMINISTRATION_DENIED', 'Administration refusee.');
+        }
+        if ($targetUserId === $actorUserId) {
+            throw new ApiException(409, 'SELF_STATUS_CHANGE_DENIED', 'Statut propre protege.');
+        }
+        $this->accountAuditCount++;
+        return [
+            'id' => $targetUserId,
+            'email' => 'member@example.invalid',
+            'displayName' => 'Member Test',
+            'status' => $status,
+            'role' => 'member',
+        ];
+    }
 }
 
 function request(string $method, string $path, array $body = [], array $headers = [], array $query = []): Request
@@ -139,7 +238,31 @@ $tests['anonymous session'] = static function () use ($application, $anonymous, 
     $response = $application->handle(request('GET', '/api/v1/session'), $anonymous, 'csrf-test', $logout);
     assertSameValue(false, $response->payload['data']['authenticated'], 'anonymous');
     assertSameValue(false, $response->payload['data']['approved'], 'anonymous approval');
+    assertSameValue(null, $response->payload['data']['accountStatus'], 'anonymous account status');
     assertSameValue('csrf-test', $response->payload['data']['csrfToken'], 'csrf token');
+};
+
+$tests['suspended account is refreshed from repository'] = static function () use ($application, $logout): void {
+    $response = $application->handle(
+        request('GET', '/api/v1/session'),
+        new AuthContext(52, time(), 'drupal-suspended'),
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(true, $response->payload['data']['authenticated'], 'suspended authenticated');
+    assertSameValue(false, $response->payload['data']['approved'], 'suspended approval');
+    assertSameValue('suspended', $response->payload['data']['accountStatus'], 'suspended account status');
+};
+
+$tests['approved account is refreshed without reconnecting'] = static function () use ($application, $logout): void {
+    $response = $application->handle(
+        request('GET', '/api/v1/session'),
+        new AuthContext(null, time(), 'drupal-test'),
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(true, $response->payload['data']['approved'], 'refreshed approval');
+    assertSameValue('active', $response->payload['data']['accountStatus'], 'refreshed account status');
 };
 
 $tests['protected route denied'] = static function () use ($application, $anonymous, $logout): void {
@@ -400,6 +523,158 @@ $tests['entitlement audited once'] = static function () use ($application, $auth
     );
     assertSameValue(200, $response->status, 'entitlement status');
     assertSameValue(2, $repository->auditCount, 'one event per attempted mutation');
+};
+
+$tests['account administration owner snapshot'] = static function () use (
+    $application,
+    $authenticated,
+    $logout,
+): void {
+    $response = $application->handle(
+        request('GET', '/api/v1/admin/organizations/7/accounts'),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(200, $response->status, 'account administration status');
+    assertSameValue('owner', $response->payload['data']['actorRole'], 'account administration role');
+    assertSameValue(1, count($response->payload['data']['pendingIdentities']), 'pending identity count');
+};
+
+$tests['account administration denied to member'] = static function () use ($application, $logout): void {
+    $response = $application->handle(
+        request('GET', '/api/v1/admin/organizations/7/accounts'),
+        new AuthContext(43, time(), 'drupal-member'),
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(403, $response->status, 'member account administration status');
+    assertSameValue(
+        'ACCOUNT_ADMINISTRATION_DENIED',
+        $response->payload['error']['code'],
+        'member account administration code',
+    );
+};
+
+$tests['account approval denied to member'] = static function () use ($application, $logout): void {
+    $response = $application->handle(
+        request(
+            'POST',
+            '/api/v1/admin/organizations/7/pending-identities/9/approve',
+            ['role' => 'member'],
+            ['x-csrf-token' => 'csrf-test'],
+        ),
+        new AuthContext(43, time(), 'drupal-member'),
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(403, $response->status, 'member account approval status');
+    assertSameValue(
+        'ACCOUNT_ADMINISTRATION_DENIED',
+        $response->payload['error']['code'],
+        'member account approval code',
+    );
+};
+
+$tests['account approval requires csrf'] = static function () use (
+    $application,
+    $authenticated,
+    $logout,
+    $repository,
+): void {
+    $response = $application->handle(
+        request(
+            'POST',
+            '/api/v1/admin/organizations/7/pending-identities/9/approve',
+            ['role' => 'member'],
+        ),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(403, $response->status, 'approval csrf status');
+    assertSameValue(0, $repository->accountAuditCount, 'approval csrf audit count');
+};
+
+$tests['account approval is audited'] = static function () use (
+    $application,
+    $authenticated,
+    $logout,
+    $repository,
+): void {
+    $response = $application->handle(
+        request(
+            'POST',
+            '/api/v1/admin/organizations/7/pending-identities/9/approve',
+            ['role' => 'member'],
+            ['x-csrf-token' => 'csrf-test'],
+        ),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(200, $response->status, 'approval status');
+    assertSameValue('member', $response->payload['data']['role'], 'approval role');
+    assertSameValue(1, $repository->accountAuditCount, 'approval audit count');
+};
+
+$tests['account rejection is audited'] = static function () use (
+    $application,
+    $authenticated,
+    $logout,
+    $repository,
+): void {
+    $response = $application->handle(
+        request(
+            'POST',
+            '/api/v1/admin/organizations/7/pending-identities/9/reject',
+            [],
+            ['x-csrf-token' => 'csrf-test'],
+        ),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(200, $response->status, 'rejection status');
+    assertSameValue('rejected', $response->payload['data']['status'], 'rejection result');
+    assertSameValue(2, $repository->accountAuditCount, 'rejection audit count');
+};
+
+$tests['account status validation'] = static function () use ($application, $authenticated, $logout): void {
+    $response = $application->handle(
+        request(
+            'PATCH',
+            '/api/v1/admin/organizations/7/users/51/status',
+            ['status' => 'deleted'],
+            ['x-csrf-token' => 'csrf-test'],
+        ),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(422, $response->status, 'account status validation');
+};
+
+$tests['account suspension is audited'] = static function () use (
+    $application,
+    $authenticated,
+    $logout,
+    $repository,
+): void {
+    $response = $application->handle(
+        request(
+            'PATCH',
+            '/api/v1/admin/organizations/7/users/51/status',
+            ['status' => 'suspended'],
+            ['x-csrf-token' => 'csrf-test'],
+        ),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(200, $response->status, 'account suspension status');
+    assertSameValue('suspended', $response->payload['data']['status'], 'account suspension result');
+    assertSameValue(3, $repository->accountAuditCount, 'account suspension audit count');
 };
 
 $tests['logout csrf'] = static function () use ($application, $authenticated, $logout, &$logoutCalled): void {

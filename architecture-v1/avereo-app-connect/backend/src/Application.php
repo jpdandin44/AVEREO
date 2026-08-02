@@ -80,13 +80,15 @@ final class Application
             ], $request->requestId);
         }
 
+        [$auth, $accountStatus] = $this->refreshAccountContext($auth);
         if ($request->method === 'GET' && $request->path === '/api/v1/session') {
             $registrationUrl = $this->config->oauthIssuer === ''
                 ? null
                 : rtrim($this->config->oauthIssuer, '/') . '/user/register';
             $session = [
                 'authenticated' => $auth->isAuthenticated(),
-                'approved' => $auth->userId !== null,
+                'approved' => $accountStatus === 'active' && $auth->userId !== null,
+                'accountStatus' => $accountStatus,
                 'remembered' => $auth->remembered,
                 'csrfToken' => $csrfToken,
                 'registrationUrl' => $registrationUrl,
@@ -165,6 +167,79 @@ final class Application
             throw new ApiException(503, 'CONNECT_ACCOUNT_NOT_PROVISIONED', 'Le compte CONNECT n’est pas encore provisionné.');
         }
         $userId = (int) $auth->userId;
+
+        if (
+            $request->method === 'GET'
+            && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/accounts$#', $request->path, $matches)
+        ) {
+            return Response::success(
+                $this->repository->getAccountAdministration($userId, (int) $matches[1]),
+                $request->requestId,
+            );
+        }
+
+        if (
+            $request->method === 'POST'
+            && preg_match(
+                '#^/api/v1/admin/organizations/([1-9]\d*)/pending-identities/([1-9]\d*)/approve$#',
+                $request->path,
+                $matches,
+            )
+        ) {
+            CsrfGuard::assertValid($request, $csrfToken);
+            return Response::success(
+                $this->repository->approvePendingIdentity(
+                    $userId,
+                    (int) $matches[1],
+                    (int) $matches[2],
+                    $this->validateApprovalRole($request->body),
+                    $request->requestId,
+                ),
+                $request->requestId,
+            );
+        }
+
+        if (
+            $request->method === 'POST'
+            && preg_match(
+                '#^/api/v1/admin/organizations/([1-9]\d*)/pending-identities/([1-9]\d*)/reject$#',
+                $request->path,
+                $matches,
+            )
+        ) {
+            CsrfGuard::assertValid($request, $csrfToken);
+            $this->assertKnownFields($request->body, []);
+            return Response::success(
+                $this->repository->rejectPendingIdentity(
+                    $userId,
+                    (int) $matches[1],
+                    (int) $matches[2],
+                    $request->requestId,
+                ),
+                $request->requestId,
+            );
+        }
+
+        if (
+            $request->method === 'PATCH'
+            && preg_match(
+                '#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/status$#',
+                $request->path,
+                $matches,
+            )
+        ) {
+            CsrfGuard::assertValid($request, $csrfToken);
+            return Response::success(
+                $this->repository->updateUserStatus(
+                    $userId,
+                    (int) $matches[1],
+                    (int) $matches[2],
+                    $this->validateUserStatus($request->body),
+                    $request->requestId,
+                ),
+                $request->requestId,
+            );
+        }
 
         if ($request->method === 'GET' && $request->path === '/api/v1/me') {
             return Response::success($this->repository->findUserProfile($userId), $request->requestId);
@@ -249,6 +324,24 @@ final class Application
         }
     }
 
+    /** @return array{AuthContext, ?string} */
+    private function refreshAccountContext(AuthContext $auth): array
+    {
+        if (!$auth->isAuthenticated() || $auth->drupalSubject === null) {
+            return [$auth, null];
+        }
+
+        $status = $this->repository->findIdentityStatusByDrupalSubject($auth->drupalSubject) ?? 'pending';
+        $userId = $status === 'active'
+            ? $this->repository->findUserIdByDrupalSubject($auth->drupalSubject)
+            : null;
+
+        return [
+            new AuthContext($userId, $auth->authenticatedAt, $auth->drupalSubject, $auth->remembered),
+            $status,
+        ];
+    }
+
     private function positiveInt(mixed $value, string $field): int
     {
         $validated = filter_var($value, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
@@ -256,6 +349,55 @@ final class Application
             throw new ApiException(422, 'VALIDATION_ERROR', 'Un paramètre est invalide.', ['field' => $field]);
         }
         return (int) $validated;
+    }
+
+    /** @param array<string, mixed> $body */
+    private function validateApprovalRole(array $body): string
+    {
+        $this->assertKnownFields($body, ['role']);
+        $role = $body['role'] ?? null;
+        if (!is_string($role) || !in_array($role, ['owner', 'admin', 'member', 'viewer'], true)) {
+            throw new ApiException(
+                422,
+                'VALIDATION_ERROR',
+                'Le role d approbation est invalide.',
+                ['field' => 'role'],
+            );
+        }
+        return $role;
+    }
+
+    /** @param array<string, mixed> $body */
+    private function validateUserStatus(array $body): string
+    {
+        $this->assertKnownFields($body, ['status']);
+        $status = $body['status'] ?? null;
+        if (!is_string($status) || !in_array($status, ['active', 'suspended', 'disabled'], true)) {
+            throw new ApiException(
+                422,
+                'VALIDATION_ERROR',
+                'Le statut du compte est invalide.',
+                ['field' => 'status'],
+            );
+        }
+        return $status;
+    }
+
+    /**
+     * @param array<string, mixed> $body
+     * @param list<string> $knownFields
+     */
+    private function assertKnownFields(array $body, array $knownFields): void
+    {
+        $unknownFields = array_values(array_diff(array_keys($body), $knownFields));
+        if ($unknownFields !== []) {
+            throw new ApiException(
+                422,
+                'VALIDATION_ERROR',
+                'Le corps contient un champ inconnu.',
+                ['field' => (string) $unknownFields[0]],
+            );
+        }
     }
 
     /**

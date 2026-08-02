@@ -23,6 +23,7 @@
       box-shadow: 0 18px 60px #1e3a5f1f;
     }
     .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .topbar-actions { display: flex; align-items: center; gap: .65rem; }
     .badge {
       display: inline-block;
       padding: .35rem .65rem;
@@ -48,7 +49,7 @@
     .remember input { width: 1.1rem; height: 1.1rem; }
     #register { margin: 1rem 0 0; }
     #register a { color: #155eef; font-weight: 700; }
-    #logout { background: #eef3f9; color: #142033; }
+    #logout, #admin-open, #admin-back { background: #eef3f9; color: #142033; }
     #status {
       margin-top: 1rem;
       padding: .8rem;
@@ -89,10 +90,69 @@
     }
     .profile h2 { margin-bottom: .75rem; }
     .profile p { margin: .35rem 0; }
+    .admin-panel { margin-top: 1.5rem; border-top: 1px solid #dce4ef; padding-top: 1.5rem; }
+    .admin-heading {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .admin-heading p { margin: .35rem 0 0; color: #53627a; }
+    .admin-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: .75rem;
+      margin: 1rem 0;
+    }
+    .admin-summary article, .admin-card {
+      border: 1px solid #dce4ef;
+      border-radius: 12px;
+      padding: 1rem;
+      background: #f8fafc;
+    }
+    .admin-summary strong { display: block; font-size: 1.5rem; }
+    .admin-block { margin-top: 1.5rem; }
+    .admin-block h3 { margin-bottom: .35rem; }
+    .admin-help { margin-top: 0; color: #53627a; }
+    .admin-list { display: grid; gap: .75rem; }
+    .admin-card {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) minmax(150px, auto);
+      align-items: center;
+      gap: 1rem;
+      background: white;
+    }
+    .admin-card p { margin: .2rem 0; }
+    .admin-card small { color: #53627a; }
+    .admin-actions { display: flex; align-items: center; justify-content: end; flex-wrap: wrap; gap: .5rem; }
+    .admin-actions select {
+      min-width: 145px;
+      border: 1px solid #b9c5d5;
+      border-radius: 9px;
+      padding: .7rem;
+      background: white;
+      color: #142033;
+      font: inherit;
+    }
+    .approve { background: #157347; color: white; }
+    .reject, .danger { background: #b42318; color: white; }
+    .save-status { background: #155eef; color: white; }
+    .empty-state {
+      border: 1px dashed #b9c5d5;
+      border-radius: 12px;
+      padding: 1rem;
+      color: #53627a;
+      background: #f8fafc;
+    }
+    #admin-status { margin: 1rem 0; padding: .8rem; border-radius: 10px; background: #eef3f9; }
     [hidden] { display: none !important; }
     @media (max-width: 560px) {
-      .topbar, .section-heading { align-items: stretch; flex-direction: column; }
-      #logout { width: 100%; }
+      .topbar, .section-heading, .admin-heading { align-items: stretch; flex-direction: column; }
+      .topbar-actions { align-items: stretch; flex-direction: column; }
+      #logout, #admin-open { width: 100%; }
+      .admin-card { grid-template-columns: 1fr; }
+      .admin-actions { justify-content: start; }
     }
   </style>
 </head>
@@ -100,7 +160,10 @@
   <main>
     <div class="topbar">
       <span class="badge">Accès sécurisé</span>
-      <button id="logout" type="button" hidden>Se déconnecter</button>
+      <div class="topbar-actions">
+        <button id="admin-open" type="button" hidden>Gérer les comptes</button>
+        <button id="logout" type="button" hidden>Se déconnecter</button>
+      </div>
     </div>
     <h1>AVEREO CONNECT</h1>
     <p id="lead">Identifiez-vous avec votre compte AVEREO pour accéder à vos applications.</p>
@@ -134,6 +197,34 @@
       </div>
       <div id="app-grid" class="app-grid"></div>
     </section>
+
+    <section id="admin-panel" class="admin-panel" aria-labelledby="admin-title" hidden>
+      <div class="admin-heading">
+        <div>
+          <h2 id="admin-title">Administration des comptes</h2>
+          <p id="admin-organization"></p>
+        </div>
+        <button id="admin-back" type="button">Retour aux applications</button>
+      </div>
+      <div id="admin-status" role="status" aria-live="polite">Chargement de l’administration…</div>
+      <div class="admin-summary">
+        <article><strong id="admin-pending-count">0</strong> demandes en attente</article>
+        <article><strong id="admin-users-count">0</strong> comptes rattachés</article>
+        <article><strong id="admin-apps-count">0</strong> applications héritées</article>
+      </div>
+
+      <div class="admin-block">
+        <h3>Demandes en attente</h3>
+        <p class="admin-help">Approuvez l’identité Drupal et choisissez son rôle CONNECT, ou refusez la demande.</p>
+        <div id="admin-pending-list" class="admin-list"></div>
+      </div>
+
+      <div class="admin-block">
+        <h3>Comptes de l’organisation</h3>
+        <p class="admin-help">La suspension est temporaire. La désactivation bloque le compte sans supprimer son historique.</p>
+        <div id="admin-users-list" class="admin-list"></div>
+      </div>
+    </section>
   </main>
   <script>
     const statusNode = document.getElementById('status');
@@ -144,6 +235,8 @@
     const registerNode = document.getElementById('register');
     const registerLink = document.getElementById('register-link');
     const logoutButton = document.getElementById('logout');
+    const adminOpenButton = document.getElementById('admin-open');
+    const adminBackButton = document.getElementById('admin-back');
     const profileSection = document.getElementById('profile');
     const profileName = document.getElementById('profile-name');
     const profileStatus = document.getElementById('profile-status');
@@ -151,7 +244,16 @@
     const profileApplications = document.getElementById('profile-applications');
     const applicationsSection = document.getElementById('applications');
     const applicationGrid = document.getElementById('app-grid');
+    const adminPanel = document.getElementById('admin-panel');
+    const adminOrganization = document.getElementById('admin-organization');
+    const adminStatus = document.getElementById('admin-status');
+    const adminPendingCount = document.getElementById('admin-pending-count');
+    const adminUsersCount = document.getElementById('admin-users-count');
+    const adminAppsCount = document.getElementById('admin-apps-count');
+    const adminPendingList = document.getElementById('admin-pending-list');
+    const adminUsersList = document.getElementById('admin-users-list');
     let csrfToken = '';
+    let adminOrganizationId = null;
     const requestedAppKey = 'avereo-connect-requested-app';
 
     async function getJson(url, options = {}) {
@@ -232,11 +334,255 @@
     function renderProfile(profilePayload, applications) {
       const organizations = profilePayload.organizations || [];
       const authorized = applications.filter((application) => application.available);
+      const administeredOrganizations = organizations.filter(
+        (organization) => organization.role === 'owner' || organization.role === 'admin'
+      );
       profileName.textContent = profilePayload.user.displayName || profilePayload.user.email || 'Compte AVEREO';
       profileStatus.textContent = 'Compte actif · Profil Client';
       profileOrganization.textContent = `Organisation : ${organizations.map((item) => item.name).join(', ') || 'Non rattachée'}`;
       profileApplications.textContent = `Applications autorisées : ${authorized.map((item) => item.name).join(', ') || 'Aucune'}`;
       profileSection.hidden = false;
+      adminOrganizationId = administeredOrganizations[0]?.id || null;
+      adminOpenButton.hidden = adminOrganizationId === null;
+    }
+
+    function mutation(url, method, body = {}) {
+      return getJson(url, {
+        method,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify(body)
+      });
+    }
+
+    function formatAdminDate(value) {
+      if (!value) return 'Date indisponible';
+      const date = new Date(value.replace(' ', 'T') + (value.includes('Z') ? '' : 'Z'));
+      return Number.isNaN(date.getTime())
+        ? 'Date indisponible'
+        : new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+    }
+
+    function emptyAdminList(message) {
+      const empty = document.createElement('p');
+      empty.className = 'empty-state';
+      empty.textContent = message;
+      return empty;
+    }
+
+    function adminRoleLabel(role) {
+      return {
+        owner: 'Propriétaire',
+        admin: 'Administrateur',
+        member: 'Client',
+        viewer: 'Lecteur'
+      }[role] || role;
+    }
+
+    function adminStatusLabel(status) {
+      return {
+        active: 'actif',
+        suspended: 'suspendu',
+        disabled: 'désactivé',
+        revoked: 'révoqué'
+      }[status] || status;
+    }
+
+    function adminIdentityCard(identity, assignableRoles) {
+      const card = document.createElement('article');
+      card.className = 'admin-card';
+
+      const information = document.createElement('div');
+      const name = document.createElement('p');
+      const nameStrong = document.createElement('strong');
+      nameStrong.textContent = identity.displayName || identity.email || 'Identité Drupal';
+      name.append(nameStrong);
+      const email = document.createElement('p');
+      email.textContent = identity.email || 'Adresse e-mail non transmise';
+      const date = document.createElement('small');
+      date.textContent = `Première demande : ${formatAdminDate(identity.firstSeenAt)}`;
+      information.append(name, email, date);
+
+      const actions = document.createElement('div');
+      actions.className = 'admin-actions';
+      const roleSelect = document.createElement('select');
+      roleSelect.setAttribute('aria-label', `Rôle de ${nameStrong.textContent}`);
+      for (const role of assignableRoles) {
+        const option = document.createElement('option');
+        option.value = role;
+        option.textContent = adminRoleLabel(role);
+        if (role === 'member') option.selected = true;
+        roleSelect.append(option);
+      }
+
+      const approve = document.createElement('button');
+      approve.type = 'button';
+      approve.className = 'approve';
+      approve.textContent = 'Approuver';
+      approve.addEventListener('click', async () => {
+        const label = nameStrong.textContent;
+        if (!window.confirm(`Approuver ${label} avec le rôle ${roleSelect.selectedOptions[0].textContent} ?`)) return;
+        approve.disabled = true;
+        adminStatus.textContent = `Approbation de ${label}…`;
+        try {
+          await mutation(
+            `/api/v1/admin/organizations/${adminOrganizationId}/pending-identities/${identity.id}/approve`,
+            'POST',
+            { role: roleSelect.value }
+          );
+          await loadAdministration(`Le compte ${label} est maintenant actif.`);
+        } catch (error) {
+          adminStatus.textContent = `L’approbation a échoué (${error.message}).`;
+          approve.disabled = false;
+        }
+      });
+
+      const reject = document.createElement('button');
+      reject.type = 'button';
+      reject.className = 'reject';
+      reject.textContent = 'Refuser';
+      reject.addEventListener('click', async () => {
+        const label = nameStrong.textContent;
+        if (!window.confirm(`Refuser définitivement la demande de ${label} ?`)) return;
+        reject.disabled = true;
+        adminStatus.textContent = `Refus de la demande de ${label}…`;
+        try {
+          await mutation(
+            `/api/v1/admin/organizations/${adminOrganizationId}/pending-identities/${identity.id}/reject`,
+            'POST'
+          );
+          await loadAdministration(`La demande de ${label} a été refusée.`);
+        } catch (error) {
+          adminStatus.textContent = `Le refus a échoué (${error.message}).`;
+          reject.disabled = false;
+        }
+      });
+
+      actions.append(roleSelect, approve, reject);
+      card.append(information, actions);
+      return card;
+    }
+
+    function adminUserCard(user) {
+      const card = document.createElement('article');
+      card.className = 'admin-card';
+
+      const information = document.createElement('div');
+      const name = document.createElement('p');
+      const nameStrong = document.createElement('strong');
+      nameStrong.textContent = user.displayName || user.email || `Compte ${user.id}`;
+      name.append(nameStrong);
+      const details = document.createElement('p');
+      details.textContent = `${user.email || 'E-mail indisponible'} · rôle ${adminRoleLabel(user.role)}`;
+      const membership = document.createElement('small');
+      membership.textContent = `Adhésion ${adminStatusLabel(user.membershipStatus)} · compte ${adminStatusLabel(user.status)}`;
+      information.append(name, details, membership);
+
+      const actions = document.createElement('div');
+      actions.className = 'admin-actions';
+      if (user.canChangeStatus) {
+        const statusSelect = document.createElement('select');
+        statusSelect.setAttribute('aria-label', `Statut de ${nameStrong.textContent}`);
+        const statusLabels = { active: 'Actif', suspended: 'Suspendu', disabled: 'Désactivé' };
+        for (const status of ['active', 'suspended', 'disabled']) {
+          const option = document.createElement('option');
+          option.value = status;
+          option.textContent = statusLabels[status];
+          option.selected = user.status === status;
+          statusSelect.append(option);
+        }
+        const save = document.createElement('button');
+        save.type = 'button';
+        save.className = statusSelect.value === 'disabled' ? 'danger' : 'save-status';
+        save.textContent = 'Appliquer';
+        statusSelect.addEventListener('change', () => {
+          save.className = statusSelect.value === 'disabled' ? 'danger' : 'save-status';
+        });
+        save.addEventListener('click', async () => {
+          if (statusSelect.value === user.status) {
+            adminStatus.textContent = 'Le statut sélectionné est déjà appliqué.';
+            return;
+          }
+          const label = nameStrong.textContent;
+          const action = statusSelect.value === 'active'
+            ? 'réactiver'
+            : (statusSelect.value === 'suspended' ? 'suspendre' : 'désactiver');
+          if (!window.confirm(`Voulez-vous ${action} le compte de ${label} ?`)) return;
+          save.disabled = true;
+          adminStatus.textContent = `Mise à jour du compte de ${label}…`;
+          try {
+            await mutation(
+              `/api/v1/admin/organizations/${adminOrganizationId}/users/${user.id}/status`,
+              'PATCH',
+              { status: statusSelect.value }
+            );
+            await loadAdministration(`Le statut de ${label} a été mis à jour.`);
+          } catch (error) {
+            adminStatus.textContent = `La mise à jour a échoué (${error.message}).`;
+            save.disabled = false;
+          }
+        });
+        actions.append(statusSelect, save);
+      } else {
+        const protectedLabel = document.createElement('small');
+        protectedLabel.textContent = user.role === 'owner'
+          ? 'Compte propriétaire protégé'
+          : 'Modification réservée au propriétaire';
+        actions.append(protectedLabel);
+      }
+
+      card.append(information, actions);
+      return card;
+    }
+
+    function renderAdministration(snapshot, message = '') {
+      const pending = snapshot.pendingIdentities || [];
+      const users = snapshot.users || [];
+      const applications = snapshot.applications || [];
+      adminOrganization.textContent = `${snapshot.organization.name} · votre rôle : ${adminRoleLabel(snapshot.actorRole)}`;
+      adminPendingCount.textContent = String(pending.length);
+      adminUsersCount.textContent = String(users.length);
+      adminAppsCount.textContent = String(applications.length);
+      adminStatus.textContent = message || (
+        applications.length > 0
+          ? `Applications héritées par les comptes actifs : ${applications.map((application) => application.name).join(', ')}.`
+          : 'Aucune application active n’est actuellement héritée par cette organisation.'
+      );
+
+      adminPendingList.replaceChildren();
+      if (pending.length === 0) {
+        adminPendingList.append(emptyAdminList('Aucune demande ne nécessite une décision.'));
+      } else {
+        for (const identity of pending) {
+          adminPendingList.append(adminIdentityCard(identity, snapshot.assignableRoles || ['member', 'viewer']));
+        }
+      }
+
+      adminUsersList.replaceChildren();
+      if (users.length === 0) {
+        adminUsersList.append(emptyAdminList('Aucun compte n’est rattaché à cette organisation.'));
+      } else {
+        for (const user of users) adminUsersList.append(adminUserCard(user));
+      }
+    }
+
+    async function loadAdministration(message = '') {
+      if (!adminOrganizationId) return;
+      profileSection.hidden = true;
+      applicationsSection.hidden = true;
+      adminPanel.hidden = false;
+      adminStatus.textContent = 'Chargement de l’administration…';
+      const payload = await getJson(`/api/v1/admin/organizations/${adminOrganizationId}/accounts`);
+      renderAdministration(payload.data, message);
+    }
+
+    function showPortal() {
+      adminPanel.hidden = true;
+      profileSection.hidden = false;
+      applicationsSection.hidden = false;
     }
 
     function renderApplications(applications) {
@@ -291,6 +637,9 @@
         logoutButton.hidden = !authenticated;
         profileSection.hidden = true;
         applicationsSection.hidden = true;
+        adminPanel.hidden = true;
+        adminOpenButton.hidden = true;
+        adminOrganizationId = null;
 
         const query = new URLSearchParams(window.location.search);
         const requestedApp = query.get('app');
@@ -312,12 +661,33 @@
         }
 
         const approved = sessionPayload.data.approved === true;
-        leadNode.textContent = approved
-          ? 'Votre identité Drupal est validée. Vous pouvez accéder aux applications autorisées.'
-          : 'Votre identité Drupal est validée. Votre compte CONNECT attend encore une approbation.';
-        statusNode.textContent = approved
-          ? 'Session Drupal authentifiée et compte CONNECT actif.'
-          : 'Session Drupal authentifiée · compte CONNECT non approuvé.';
+        const accountStatus = sessionPayload.data.accountStatus || 'pending';
+        const accountMessages = {
+          pending: [
+            'Votre identité Drupal est validée. Votre compte CONNECT attend encore une approbation.',
+            'Session Drupal authentifiée · compte CONNECT non approuvé.'
+          ],
+          rejected: [
+            'Votre demande d’accès CONNECT a été refusée. Contactez un administrateur AVEREO.',
+            'Session Drupal authentifiée · demande CONNECT refusée.'
+          ],
+          suspended: [
+            'Votre compte CONNECT est temporairement suspendu. Contactez un administrateur AVEREO.',
+            'Session Drupal authentifiée · compte CONNECT suspendu.'
+          ],
+          disabled: [
+            'Votre compte CONNECT est désactivé. Contactez un administrateur AVEREO.',
+            'Session Drupal authentifiée · compte CONNECT désactivé.'
+          ]
+        };
+        if (!approved) {
+          const messages = accountMessages[accountStatus] || accountMessages.pending;
+          leadNode.textContent = messages[0];
+          statusNode.textContent = messages[1];
+          return;
+        }
+        leadNode.textContent = 'Votre identité Drupal est validée. Vous pouvez accéder aux applications autorisées.';
+        statusNode.textContent = 'Session Drupal authentifiée et compte CONNECT actif.';
         const catalogPayload = await catalog();
         renderApplications(catalogPayload.data);
         applicationsSection.hidden = false;
@@ -337,6 +707,20 @@
         statusNode.textContent = 'CONNECT ne peut pas charger votre session ou le catalogue.';
       }
     }
+
+    adminOpenButton.addEventListener('click', async () => {
+      adminOpenButton.disabled = true;
+      try {
+        await loadAdministration();
+      } catch (error) {
+        showPortal();
+        statusNode.textContent = `L’administration des comptes ne peut pas être chargée (${error.message}).`;
+      } finally {
+        adminOpenButton.disabled = false;
+      }
+    });
+
+    adminBackButton.addEventListener('click', showPortal);
 
     logoutButton.addEventListener('click', async () => {
       logoutButton.disabled = true;

@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: AVEREO CONNECT API
-  version: 0.1.0-c7
+  version: 0.2.0-c7
   license:
     name: Propriétaire — usage interne AVEREO
     identifier: LicenseRef-AVEREO-Proprietary
@@ -20,6 +20,8 @@ tags:
     description: Espaces Pro, adhésions et contrôles d'accès.
   - name: Catalog
     description: Applications AVEREO et habilitations organisationnelles.
+  - name: Administration
+    description: Approbation et cycle de vie des comptes CONNECT.
 security:
   - sessionCookie: []
 paths:
@@ -317,6 +319,127 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         "422":
           $ref: "#/components/responses/ValidationError"
+  /admin/organizations/{organizationId}/accounts:
+    get:
+      tags: [Administration]
+      operationId: getAccountAdministration
+      summary: Tableau d'administration des comptes
+      description: Réservé aux rôles owner et admin de l'organisation.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+      responses:
+        "200":
+          description: Demandes, comptes et applications héritées
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/AccountAdministration"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "401":
+          $ref: "#/components/responses/AuthenticationRequired"
+        "403":
+          $ref: "#/components/responses/OrganizationAccessDenied"
+  /admin/organizations/{organizationId}/pending-identities/{pendingIdentityId}/approve:
+    post:
+      tags: [Administration]
+      operationId: approvePendingIdentity
+      summary: Approuver une identité Drupal en attente
+      description: >-
+        Crée ou réactive le compte CONNECT, son adhésion active et une trace
+        d'audit atomique. Un admin ne peut attribuer que member ou viewer.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/PendingIdentityId"
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ApprovalInput"
+      responses:
+        "200":
+          description: Compte approuvé
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ManagedUser"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "403":
+          description: Rôle insuffisant ou CSRF rejeté
+        "404":
+          description: Demande introuvable
+        "409":
+          description: Demande déjà traitée ou conflit d'identité
+        "422":
+          $ref: "#/components/responses/ValidationError"
+  /admin/organizations/{organizationId}/pending-identities/{pendingIdentityId}/reject:
+    post:
+      tags: [Administration]
+      operationId: rejectPendingIdentity
+      summary: Refuser une identité Drupal en attente
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/PendingIdentityId"
+        - $ref: "#/components/parameters/CsrfToken"
+      responses:
+        "200":
+          description: Demande refusée et auditée
+        "403":
+          description: Rôle insuffisant ou CSRF rejeté
+        "404":
+          description: Demande introuvable
+        "409":
+          description: Demande déjà traitée
+  /admin/organizations/{organizationId}/users/{userId}/status:
+    patch:
+      tags: [Administration]
+      operationId: updateManagedUserStatus
+      summary: Activer, suspendre ou désactiver un compte CONNECT
+      description: >-
+        Réservé au rôle owner. La modification de son propre statut et la
+        désactivation du dernier owner actif sont refusées.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/UserId"
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserStatusInput"
+      responses:
+        "200":
+          description: Statut enregistré et audité
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ManagedUser"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "403":
+          description: Rôle insuffisant ou CSRF rejeté
+        "404":
+          description: Compte introuvable
+        "409":
+          description: Protection du compte courant ou du dernier owner
+        "422":
+          $ref: "#/components/responses/ValidationError"
 components:
   securitySchemes:
     sessionCookie:
@@ -326,6 +449,20 @@ components:
   parameters:
     OrganizationId:
       name: organizationId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    PendingIdentityId:
+      name: pendingIdentityId
+      in: path
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    UserId:
+      name: userId
       in: path
       required: true
       schema:
@@ -406,12 +543,15 @@ components:
       properties:
         data:
           type: object
-          required: [authenticated, approved, remembered, csrfToken]
+          required: [authenticated, approved, accountStatus, remembered, csrfToken]
           properties:
             authenticated:
               type: boolean
             approved:
               type: boolean
+            accountStatus:
+              type: [string, "null"]
+              enum: [active, pending, rejected, suspended, disabled, null]
             remembered:
               type: boolean
             csrfToken:
@@ -446,6 +586,99 @@ components:
         status:
           type: string
           enum: [active]
+    AccountAdministration:
+      type: object
+      required:
+        [organization, actorRole, assignableRoles, applications, pendingIdentities, users]
+      properties:
+        organization:
+          $ref: "#/components/schemas/Organization"
+        actorRole:
+          type: string
+          enum: [owner, admin]
+        assignableRoles:
+          type: array
+          items:
+            type: string
+            enum: [owner, admin, member, viewer]
+        applications:
+          type: array
+          items:
+            type: object
+            required: [code, name]
+            properties:
+              code:
+                type: string
+              name:
+                type: string
+        pendingIdentities:
+          type: array
+          items:
+            $ref: "#/components/schemas/PendingIdentity"
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/ManagedUser"
+    PendingIdentity:
+      type: object
+      required: [id, firstSeenAt, lastSeenAt]
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        email:
+          type: [string, "null"]
+          format: email
+        displayName:
+          type: [string, "null"]
+        firstSeenAt:
+          type: string
+          format: date-time
+        lastSeenAt:
+          type: string
+          format: date-time
+    ManagedUser:
+      type: object
+      required: [id, email, displayName, status, role]
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        email:
+          type: string
+          format: email
+        displayName:
+          type: string
+        status:
+          type: string
+          enum: [active, suspended, disabled]
+        role:
+          type: string
+          enum: [owner, admin, member, viewer]
+        membershipStatus:
+          type: string
+          enum: [active, suspended, revoked]
+        canChangeStatus:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+    ApprovalInput:
+      type: object
+      additionalProperties: false
+      required: [role]
+      properties:
+        role:
+          type: string
+          enum: [owner, admin, member, viewer]
+    UserStatusInput:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [active, suspended, disabled]
     Organization:
       type: object
       required: [id, name, slug, status, role]
