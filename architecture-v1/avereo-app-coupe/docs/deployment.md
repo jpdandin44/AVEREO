@@ -12,7 +12,8 @@
 2. Associer le sous-domaine au dossier public voulu.
 3. Creer une base MySQL et un utilisateur MySQL dans cPanel.
 4. Donner tous les droits de cet utilisateur sur la base Coupe.
-5. Creer `/home/CPANEL_USERNAME/.avereo/coupe/config.php` avec les identifiants MySQL et, pour la V1 technique, un `api_token` long.
+5. Creer `/home/CPANEL_USERNAME/.avereo/coupe/config.php` avec les identifiants
+   MySQL et `auth_mode=connect_gateway`.
 6. Configurer les secrets GitHub du depot.
 7. Verifier que `coupe.avereo.fr` resout publiquement et que le certificat HTTPS est actif.
 8. Depuis `main`, lancer manuellement le workflow Deploy Coupe to O2Switch,
@@ -28,13 +29,13 @@
 
 ## Authentification cible
 
-La cible fonctionnelle utilise deux niveaux complementaires :
+La cible fonctionnelle utilise un seul point d'authentification :
 
-- CONNECT est le seul point d'entree et emet un ticket serveur signe pour Coupe ;
-- Coupe conserve un client Drupal OAuth distinct pour proteger son API et ses
-  donnees metier.
+- CONNECT identifie, approuve et habilite le compte ;
+- CONNECT emet un ticket serveur signe pour Coupe ;
+- Coupe relit l'identite depuis son cookie local et ne relance pas OAuth Drupal.
 
-Voir `auth-drupal.md` pour le chemin de demarrage et les prerequis cote Drupal/O2Switch.
+Voir `preproduction-connect-cutover.md` pour l'ordre de bascule et les controles.
 
 ## Base en ligne
 

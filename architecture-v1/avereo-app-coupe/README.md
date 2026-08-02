@@ -60,11 +60,14 @@ Configuration serveur attendue hors document root :
 
 Voir `backend/config.example.php` et `docs/deployment.md`.
 
-## Authentification Drupal
+## Authentification AVEREO CONNECT
 
-La cible de production est d'utiliser le Drupal `avereo.fr` comme fournisseur d'identite pour les apps AVEREO. Coupe gardera sa base MySQL applicative, mais les utilisateurs et roles viendront de Drupal.
+En environnement heberge, CONNECT est l'unique point d'authentification. Drupal
+reste le fournisseur d'identite en amont de CONNECT. Le ticket signe ouvre Coupe
+et etablit une identite applicative locale sans second parcours OAuth.
 
-Voir `docs/auth-drupal.md`.
+Voir `docs/auth-drupal.md` pour le retour arriere historique et
+`docs/preproduction-connect-cutover.md` pour la bascule cible.
 
 ## Statuts V1
 

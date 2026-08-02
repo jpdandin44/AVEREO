@@ -1,5 +1,10 @@
 # Authentification Drupal - Coupe AVEREO
 
+> Ce document conserve le parcours OAuth Coupe historique pour retour arriere.
+> La cible hebergee actuelle utilise `auth_mode=connect_gateway` : Drupal
+> identifie l'utilisateur une seule fois dans CONNECT, puis Coupe consomme
+> l'identite minimale signee par CONNECT.
+
 ## Objectif
 
 Utiliser `avereo.fr` comme source centrale des comptes, mots de passe et roles, tout en gardant les donnees metier Coupe dans la base MySQL de l'application Coupe.

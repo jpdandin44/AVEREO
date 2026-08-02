@@ -40,10 +40,10 @@ Notes V1.1 : fabric et pdfjs-dist devront etre integres proprement via npm.
   `legacy-app.html`.
 - Un ticket HMAC court, lié à Coupe et à usage unique, établit un cookie
   `Secure`, `HttpOnly` et `SameSite=Lax`.
-- Les accès directs sont redirigés vers CONNECT ; les endpoints OAuth et métier
-  refusent aussi les requêtes sans cookie de sas. Seul le healthcheck reste
-  public.
-- L'API Coupe conserve ensuite son client OAuth Drupal confidentiel, son secret
-  distinct et ses contrôles de rôles.
+- Les accès directs sont redirigés vers CONNECT ; les endpoints métier refusent
+  aussi les requêtes sans cookie de sas. Seul le healthcheck reste public.
+- Le lot « point d'accès unique » ajoute l'identifiant CONNECT au ticket signé,
+  neutralise l'ancien callback OAuth Coupe et supprime le second bearer OAuth
+  des appels API. Les administrateurs restent explicitement listés côté serveur.
 - Le sas reste à qualifier intégralement en préproduction avant tout
   déclenchement manuel du workflow de production.

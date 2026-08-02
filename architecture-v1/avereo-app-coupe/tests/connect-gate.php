@@ -20,6 +20,10 @@ function gate_test_ticket(string $app, string $secret, string $nonce): string
         'iat' => $issuedAt,
         'exp' => $issuedAt + 90,
         'nonce' => $nonce,
+        'identity' => [
+            'provider' => 'avereo_connect',
+            'id' => '42',
+        ],
     ], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
     return $payload . '.' . avereo_gate_base64url_encode(hash_hmac('sha256', $payload, $secret, true));
 }
@@ -39,6 +43,52 @@ $nonce = avereo_gate_base64url_encode(random_bytes(24));
 $ticket = gate_test_ticket('coupe', $secret, $nonce);
 avereo_gate_exchange_ticket($config, $ticket);
 gate_test_assert(is_dir($directory), 'Le stockage anti-rejeu doit etre cree.');
+gate_test_assert(
+    avereo_gate_normalize_identity(['provider' => 'avereo_connect', 'id' => '42'])['id'] === '42',
+    'L identite CONNECT doit etre conservee.',
+);
+
+$issuedAt = time();
+$cookiePayload = avereo_gate_base64url_encode(json_encode([
+    'v' => 2,
+    'app' => 'coupe',
+    'iat' => $issuedAt,
+    'exp' => $issuedAt + 300,
+    'nonce' => avereo_gate_base64url_encode(random_bytes(24)),
+    'identity' => [
+        'provider' => 'avereo_connect',
+        'id' => '42',
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
+$_COOKIE[$config['connect_gate_cookie']] = $cookiePayload . '.' . avereo_gate_base64url_encode(
+    hash_hmac('sha256', $cookiePayload, $secret, true),
+);
+$cookieIdentity = avereo_gate_identity($config);
+gate_test_assert($cookieIdentity['provider'] === 'avereo_connect', 'Le fournisseur CONNECT doit etre signe.');
+gate_test_assert($cookieIdentity['id'] === '42', 'L identifiant CONNECT doit etre signe.');
+
+require dirname(__DIR__) . '/frontend/public/api/bootstrap.php';
+$standardUser = api_require_connect_user($config + ['connect_admin_user_ids' => []]);
+gate_test_assert($standardUser['provider'] === 'avereo_connect', 'L API doit utiliser CONNECT.');
+gate_test_assert(
+    $standardUser['roles'] === ['coupe_user'],
+    'Une habilitation simple doit donner le role utilisateur.',
+);
+$adminUser = api_require_connect_user($config + ['connect_admin_user_ids' => ['42']]);
+gate_test_assert(
+    $adminUser['roles'] === ['coupe_admin'],
+    'Le role administrateur doit rester explicite.',
+);
+
+try {
+    avereo_gate_normalize_identity(['provider' => 'avereo_connect', 'id' => '../42']);
+    throw new RuntimeException('Une identite CONNECT invalide aurait du etre refusee.');
+} catch (RuntimeException $exception) {
+    gate_test_assert(
+        $exception->getMessage() === 'Identite CONNECT invalide.',
+        'Le format de l identite doit etre controle.',
+    );
+}
 
 try {
     avereo_gate_exchange_ticket($config, $ticket);

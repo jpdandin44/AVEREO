@@ -19,9 +19,9 @@ signé côté serveur.
 6. L'application crée un cookie de sas sécurisé et redirige vers `/`.
 7. La page et les API métier exigent ce cookie ; seul
    l'endpoint de santé reste public.
-8. Rapport dérive son identité métier du cookie signé et ne redemande pas une
-   authentification Drupal. La propriété des données reste isolée par
-   `provider` et `id`.
+8. Rapport et Coupe dérivent leur identité métier du cookie signé et ne
+   redemandent pas une authentification Drupal. La propriété des données reste
+   isolée par l'identifiant CONNECT.
 
 ## Credentials
 
@@ -40,9 +40,9 @@ commités, ni affichés dans le catalogue.
 
 Le ticket transporte uniquement `provider=avereo_connect` et l'identifiant
 interne numérique du compte. Les attributs Drupal et les secrets ne quittent
-jamais CONNECT. Les administrateurs Rapport sont désignés explicitement dans la
-configuration privée Rapport ; une habilitation simple ne donne jamais
-automatiquement les droits d'administration.
+jamais CONNECT. Les administrateurs Rapport et Coupe sont désignés explicitement
+dans la configuration privée de chaque application ; une habilitation simple ne
+donne jamais automatiquement les droits d'administration.
 
 ## Refus par défaut
 
@@ -63,11 +63,11 @@ doivent être qualifiées ensemble en préproduction. En
 production, configurer les secrets et répertoires anti-rejeu avant le code, puis
 déployer dans cet ordre :
 
-1. Rapport avec lecture compatible des anciens tickets ;
+1. Rapport et Coupe avec lecture compatible des anciens tickets ;
 2. CONNECT avec l'identité minimale signée ;
-3. bascule de la configuration Rapport sur `auth_mode=connect_gateway` ;
-4. qualification fonctionnelle, puis migration progressive des autres
-   applications.
+3. bascule des configurations Rapport et Coupe sur
+   `auth_mode=connect_gateway` ;
+4. qualification fonctionnelle des cinq applications.
 
 Ainsi, les applications savent déjà consommer les tickets lorsque CONNECT
 commence à les émettre. Les workflows de production sont exclusivement manuels,

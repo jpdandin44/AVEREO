@@ -64,9 +64,10 @@ CONNECT.
 
 Le sas protège aussi les points d'entrée de toutes les applications ; seul
 l'endpoint de santé reste public. Rapport consomme désormais l'identité signée
-par CONNECT et ne lance plus un second parcours OAuth Drupal. Son cookie local
-signé porte l'identifiant CONNECT et protège aussi ses API métier. Les autres
-applications peuvent migrer progressivement vers ce contrat sans rupture : les
+par CONNECT et ne lance plus un second parcours OAuth Drupal. Coupe applique le
+même contrat à son API projets. Leurs cookies locaux signés portent
+l'identifiant CONNECT et protègent aussi les API métier. Les autres
+applications, déjà protégées par leur sas, restent compatibles : les
 champs historiques du ticket restent inchangés. Aucun secret n'est placé dans
 le catalogue, l'URL ou le JavaScript.
 

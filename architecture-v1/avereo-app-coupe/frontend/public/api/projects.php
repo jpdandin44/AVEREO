@@ -91,9 +91,10 @@ if ($method === 'POST') {
         ]);
     }
 
-    $ownerDrupalUid = ($identity['provider'] ?? '') === 'drupal' ? (string)$identity['id'] : null;
-    $ownerEmail = ($identity['provider'] ?? '') === 'drupal' ? (string)$identity['email'] : '';
-    $updatedByDrupalUid = ($identity['provider'] ?? '') === 'drupal' ? (string)$identity['id'] : null;
+    $isUserIdentity = ($identity['provider'] ?? '') !== 'api_token';
+    $ownerDrupalUid = $isUserIdentity ? (string)$identity['id'] : null;
+    $ownerEmail = $isUserIdentity ? (string)$identity['email'] : '';
+    $updatedByDrupalUid = $isUserIdentity ? (string)$identity['id'] : null;
 
     $existingStatement = $pdo->prepare('SELECT owner_drupal_uid FROM coupe_projects WHERE public_id = :id');
     $existingStatement->execute(['id' => $id]);
