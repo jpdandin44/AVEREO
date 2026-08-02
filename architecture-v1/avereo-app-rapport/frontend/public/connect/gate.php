@@ -107,9 +107,10 @@ function avereo_gate_assert_payload(array $payload, int $maxLifetimeSeconds): vo
     $expiresAt = filter_var($payload['exp'] ?? null, FILTER_VALIDATE_INT);
     $nonce = (string) ($payload['nonce'] ?? '');
     $remembered = $payload['remembered'] ?? false;
+    $version = $payload['v'] ?? null;
     $now = time();
     if (
-        ($payload['v'] ?? null) !== 1
+        !in_array($version, [1, 2], true)
         || ($payload['app'] ?? null) !== AVEREO_GATE_APP
         || $issuedAt === false
         || $expiresAt === false
@@ -122,6 +123,31 @@ function avereo_gate_assert_payload(array $payload, int $maxLifetimeSeconds): vo
     ) {
         throw new RuntimeException('Ticket expire ou non conforme.');
     }
+    if ($version === 2) {
+        avereo_gate_normalize_identity($payload['identity'] ?? null);
+    }
+}
+
+/** @return array{provider: string, id: string} */
+function avereo_gate_normalize_identity(mixed $identity): array
+{
+    if (!is_array($identity)) {
+        throw new RuntimeException('Identite CONNECT absente.');
+    }
+    $provider = (string) ($identity['provider'] ?? '');
+    $id = (string) ($identity['id'] ?? '');
+    if (
+        $provider !== 'avereo_connect'
+        || !preg_match('/^[1-9][0-9]{0,18}$/', $id)
+        || array_diff(array_keys($identity), ['provider', 'id']) !== []
+    ) {
+        throw new RuntimeException('Identite CONNECT invalide.');
+    }
+
+    return [
+        'provider' => $provider,
+        'id' => $id,
+    ];
 }
 
 /** @param array<string, mixed> $config */
@@ -158,18 +184,25 @@ function avereo_gate_consume_nonce(array $config, string $nonce, int $expiresAt)
 }
 
 /** @param array<string, mixed> $config */
-function avereo_gate_issue_cookie(array $config, bool $remembered): void
+function avereo_gate_issue_cookie(array $config, bool $remembered, ?array $identity = null): void
 {
     $secret = trim((string) ($config['connect_launch_secret'] ?? ''));
     $lifetime = max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800)));
     $issuedAt = time();
-    $payload = avereo_gate_base64url_encode(json_encode([
-        'v' => 1,
+    $cookiePayload = [
+        'v' => $identity === null ? 1 : 2,
         'app' => AVEREO_GATE_APP,
         'iat' => $issuedAt,
         'exp' => $issuedAt + $lifetime,
         'nonce' => avereo_gate_base64url_encode(random_bytes(24)),
-    ], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
+    ];
+    if ($identity !== null) {
+        $cookiePayload['identity'] = avereo_gate_normalize_identity($identity);
+    }
+    $payload = avereo_gate_base64url_encode(json_encode(
+        $cookiePayload,
+        JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR,
+    ));
     $value = $payload . '.' . avereo_gate_base64url_encode(hash_hmac('sha256', $payload, $secret, true));
     setcookie((string) $config['connect_gate_cookie'], $value, [
         'expires' => $remembered ? $issuedAt + $lifetime : 0,
@@ -193,20 +226,39 @@ function avereo_gate_clear_cookie(array $config): void
 }
 
 /** @param array<string, mixed> $config */
+function avereo_gate_cookie_payload(array $config): array
+{
+    $cookieName = (string) ($config['connect_gate_cookie'] ?? '');
+    $value = (string) ($_COOKIE[$cookieName] ?? '');
+    $payload = avereo_gate_decode_signed($value, trim((string) ($config['connect_launch_secret'] ?? '')));
+    avereo_gate_assert_payload(
+        $payload,
+        max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800))),
+    );
+    return $payload;
+}
+
+/** @param array<string, mixed> $config */
 function avereo_gate_cookie_is_valid(array $config): bool
 {
     try {
-        $cookieName = (string) ($config['connect_gate_cookie'] ?? '');
-        $value = (string) ($_COOKIE[$cookieName] ?? '');
-        $payload = avereo_gate_decode_signed($value, trim((string) ($config['connect_launch_secret'] ?? '')));
-        avereo_gate_assert_payload(
-            $payload,
-            max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800))),
-        );
+        avereo_gate_cookie_payload($config);
         return true;
     } catch (Throwable) {
         return false;
     }
+}
+
+/** @param array<string, mixed> $config
+ *  @return array{provider: string, id: string}
+ */
+function avereo_gate_identity(array $config): array
+{
+    $payload = avereo_gate_cookie_payload($config);
+    if (($payload['v'] ?? null) !== 2) {
+        throw new RuntimeException('La session CONNECT ne porte pas d identite.');
+    }
+    return avereo_gate_normalize_identity($payload['identity'] ?? null);
 }
 
 /** @param array<string, mixed> $config */
@@ -243,5 +295,12 @@ function avereo_gate_exchange_ticket(array $config, string $ticket): void
     $payload = avereo_gate_decode_signed($ticket, $secret);
     avereo_gate_assert_payload($payload, $maxLifetime);
     avereo_gate_consume_nonce($config, (string) $payload['nonce'], (int) $payload['exp']);
-    avereo_gate_issue_cookie($config, ($payload['remembered'] ?? false) === true);
+    $identity = array_key_exists('identity', $payload)
+        ? avereo_gate_normalize_identity($payload['identity'])
+        : null;
+    avereo_gate_issue_cookie(
+        $config,
+        ($payload['remembered'] ?? false) === true,
+        $identity,
+    );
 }

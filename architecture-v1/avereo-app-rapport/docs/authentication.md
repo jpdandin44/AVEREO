@@ -1,71 +1,60 @@
 # Authentification Rapport
 
-## Cible Drupal
+## Cible AVEREO CONNECT
 
-- Issuer : `https://avereo.fr`
-- Client confidentiel : `avereo_rapport`
-- Callback local : `http://rapport.avereo.localhost/auth/callback/`
-- Callback de production : `https://rapport.avereo.fr/auth/callback/`
-- Scopes : `openid profile email`
+- Portail de preproduction : `https://connect-preprod.avereo.fr/`
+- Point d'entree Rapport : `https://rapport-preprod.avereo.fr/connect/entry.php`
+- Fournisseur amont : Drupal, utilise uniquement par CONNECT
+- Identite applicative : `provider=avereo_connect` et ID CONNECT signe
 - Roles Drupal : `utilisateur_rapport`, `administrateur_rapport`
 
-Le client utilise Authorization Code avec PKCE S256. En preproduction et en
-production, il est confidentiel et possede un secret aleatoire distinct,
-conserve uniquement dans la configuration privee Rapport. L'API echange le code
-et valide le bearer token avec l'endpoint `userinfo` configure cote serveur.
-Une configuration non locale sans secret d'au moins 32 caracteres est refusee.
+CONNECT utilise Authorization Code avec PKCE S256 pour identifier l'utilisateur
+aupres de Drupal. Rapport ne possede plus de parcours OAuth navigateur
+independant : il consomme le ticket HMAC applicatif emis par CONNECT apres les
+controles d'approbation et d'habilitation.
 
-Rapport exige ce contrat `userinfo` :
+Le ticket Rapport exige ce contrat minimal :
 
 ```json
 {
-  "sub": "123",
-  "client_id": "avereo_rapport",
-  "email": "utilisateur@example.fr",
-  "name": "Nom affiche",
-  "roles": ["utilisateur_rapport"]
+  "identity": {
+    "provider": "avereo_connect",
+    "id": "123"
+  }
 }
 ```
 
-`sub` est obligatoire et doit rester stable. L'adresse e-mail n'est jamais utilisee comme identifiant de propriete. `client_id` doit correspondre exactement au client configure pour Rapport. Le module fourni dans `integrations/drupal/avereo_rapport_oauth/` ajoute `client_id` et filtre le claim `roles` aux deux roles Rapport.
+L'ID CONNECT est obligatoire, numerique, signe et stable. Le ticket ne contient
+ni adresse e-mail, ni nom, ni secret, ni jeton Drupal. L'application transforme
+ce ticket a usage unique en cookie local `Secure`, `HttpOnly` et `SameSite=Lax`.
 
 L'API filtre les lectures, modifications et suppressions avec `owner_provider` et `owner_id`. Le role `administrateur_rapport` peut administrer tous les rapports.
+Un utilisateur habilite recoit le role `utilisateur_rapport`. Les IDs CONNECT
+autorisant `administrateur_rapport` sont listes explicitement dans
+`connect_admin_user_ids` dans la configuration privee Rapport.
 
 ## Barriere d'acces applicative
 
 Lorsque le frontend est construit avec `VITE_ENABLE_ONLINE_SYNC=true`, aucun
-ecran metier Rapport n'est affiche avant la validation complete du jeton OAuth
-et du role Drupal. La page d'entree propose uniquement :
-
-- la connexion a AVEREO Rapport via Drupal ;
-- la creation d'un compte sur l'instance Drupal configuree.
-
-Un compte nouvellement cree reste soumis aux regles Drupal de verification
-d'adresse e-mail et d'approbation administrateur. L'API `reports.php` refuse
-les requetes anonymes avec une reponse HTTP `401`.
+ecran metier Rapport n'est affiche avant la validation du cookie CONNECT et de
+son identite signee. L'inscription, l'approbation du compte et la connexion
+restent centralisees dans CONNECT et Drupal. L'API `reports.php` refuse les
+requetes sans sas avec `403` et les cookies sans identite avec `401`.
 
 ## Mode local api_token
 
 `api_token` est un secours local temporaire. Le script genere le jeton dans `local/.env`, construit `local/config.php` et ne l'affiche pas. L'API le refuse techniquement si `environment` n'est pas `local` ou si l'hote ne se termine pas par `.localhost`.
 
-Une preversion peut etre publiee avant la configuration Drupal : l'interface et les brouillons navigateur restent disponibles, tandis que la sauvegarde serveur reste desactivee. Les donnees reelles et la persistance partagee ne doivent etre ouvertes qu'apres validation OAuth et roles.
-
-La preversion est verrouillee au build avec `VITE_ENABLE_ONLINE_SYNC=false`. La remettre a `true` ne suffit pas a ouvrir la production : la configuration privee, le fournisseur Drupal, le client OAuth, les roles et les tests d'isolation doivent tous etre valides au prealable.
+Le mode heberge utilise `connect_gateway`. Le mode `drupal_oauth` reste
+temporairement disponible pour retour arriere technique, mais ne constitue plus
+le parcours cible.
 
 ## Actions Drupal manuelles
 
-Prealable obligatoire : appliquer la procedure de securisation de `deployment.md` et obtenir un rapport d'etat sans alerte de securite critique.
-
-1. Installer Simple OAuth `^6.1` avec Composer, puis activer `simple_oauth`.
-2. Copier et activer `integrations/drupal/avereo_rapport_oauth/` selon son README.
-3. Generer les cles privee/publique depuis `/admin/config/people/simple_oauth` et conserver la cle privee hors du document root lorsque l'hebergeur le permet.
-4. Laisser OpenID Connect actif dans `/admin/config/people/simple_oauth/openid-connect`.
-5. Verifier les roles Drupal existants `utilisateur_rapport` et `administrateur_rapport`.
-6. Creer un Consumer dans `/admin/config/services/consumer/add` : client ID `avereo_rapport`, confidentiel, secret distinct, Authorization Code actif, PKCE actif, callback exacte `https://rapport.avereo.fr/auth/callback/`.
-7. Verifier `/oauth/authorize`, `/oauth/token`, `/oauth/userinfo` et `/oauth/jwks`.
-8. Tester successivement un compte sans role, un `utilisateur_rapport` puis un `administrateur_rapport`.
-
-Le client local doit rester distinct : `avereo_rapport_local` avec la callback `http://rapport.avereo.localhost/auth/callback/`. Ne jamais ajouter la callback HTTP locale au client de production.
+Drupal reste le fournisseur d'identite de CONNECT. Aucun Consumer OAuth Rapport
+supplementaire n'est requis pour le parcours cible. Il faut maintenir le client
+CONNECT, Simple OAuth, PKCE, les callbacks CONNECT et les controles
+d'approbation deja documentes dans l'application CONNECT.
 
 ## Configuration privee Rapport
 
@@ -73,20 +62,16 @@ Le fichier `/home/CPANEL_USERNAME/.avereo/rapport/config.php` doit contenir au m
 
 ```php
 'environment' => 'production',
-'auth_mode' => 'drupal_oauth',
-'drupal_issuer' => 'https://avereo.fr',
-'drupal_authorize_url' => 'https://avereo.fr/oauth/authorize',
-'drupal_token_url' => 'https://avereo.fr/oauth/token',
-'drupal_userinfo_url' => 'https://avereo.fr/oauth/userinfo',
-'drupal_allowed_hosts' => ['avereo.fr'],
-'drupal_client_id' => 'avereo_rapport',
-'drupal_client_secret' => 'SECRET_ALEATOIRE_DISTINCT_AU_MOINS_32_CARACTERES',
-'drupal_scope' => 'openid profile email',
-'drupal_redirect_uri' => 'https://rapport.avereo.fr/auth/callback/',
-'drupal_required_roles' => ['utilisateur_rapport', 'administrateur_rapport'],
-'drupal_admin_roles' => ['administrateur_rapport'],
+'auth_mode' => 'connect_gateway',
+'connect_portal_url' => 'https://connect.avereo.fr/',
+'connect_launch_secret' => 'SECRET_DISTINCT_PARTAGE_AVEC_CONNECT',
+'connect_launch_nonce_directory' => '/home/CPANEL_USERNAME/private/rapport/launch-nonces',
+'connect_launch_max_seconds' => 300,
+'connect_gate_cookie' => 'AVEREO_RAPPORT_GATE',
+'connect_gate_session_seconds' => 1800,
+'connect_admin_user_ids' => [],
 ```
 
-En production, Rapport refuse les endpoints non HTTPS, les endpoints hors de l'hote autorise, une callback differente meme d'un caractere, un `sub` manquant et un jeton emis pour un autre client OAuth.
-
-L'installation et la configuration sur le Drupal de production restent des operations d'administration controlees ; aucun secret n'est stocke dans ce depot.
+En production, Rapport refuse un secret de moins de 32 caracteres, un ticket
+expire, modifie, rejoue, destine a une autre application ou portant une identite
+non conforme. Aucun secret n'est stocke dans ce depot.

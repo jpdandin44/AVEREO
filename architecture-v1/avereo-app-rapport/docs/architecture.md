@@ -13,12 +13,11 @@ Un depot separe ne deviendrait pertinent que si Rapport avait une equipe et des 
 1. Le navigateur passe par CONNECT, qui controle le compte et l'habilitation.
 2. CONNECT emet un ticket serveur signe, consomme une seule fois par Rapport.
 3. Rapport etablit son cookie de sas puis charge le build Vite.
-4. Il utilise `/api/auth.php` pour connaitre le mode d'authentification public.
-5. Drupal fournit l'identite et les roles via le client OAuth propre a Rapport.
-6. Le navigateur appelle `/api/reports.php` avec le bearer token Rapport.
-7. L'API exige le cookie de sas, puis valide le jeton, les roles, la propriete
-   et le payload.
-8. PDO accede uniquement a la base MySQL Rapport.
+4. Il utilise `/api/auth.php` pour relire l'identite signee du cookie local.
+5. Le navigateur appelle `/api/reports.php` sans second bearer OAuth.
+6. L'API exige le cookie de sas, valide l'identite CONNECT, les droits, la
+   propriete et le payload.
+7. PDO accede uniquement a la base MySQL Rapport.
 
 La configuration sensible est chargee depuis `/home/CPANEL_USERNAME/.avereo/rapport/config.php`, hors de `frontend/dist`.
 

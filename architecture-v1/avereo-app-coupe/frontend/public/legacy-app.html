@@ -1447,7 +1447,9 @@
 
             async initializeOnlineAuth() {
                 await this.loadAuthConfig();
-                await this.completeOAuthCallback();
+                if (this.authConfig?.mode === 'drupal_oauth') {
+                    await this.completeOAuthCallback();
+                }
                 await this.refreshCurrentUser(false);
                 this.updateAuthButton();
             },
@@ -1470,6 +1472,13 @@
                 const btn = document.getElementById('online-auth-btn');
                 if (!btn) return;
 
+                if (this.authConfig?.mode === 'connect_gateway') {
+                    const label = this.currentUser?.name || this.currentUser?.id || 'Compte CONNECT';
+                    btn.innerHTML = `<i class="fas fa-user-check"></i> ${this.escapeHTML(label)}`;
+                    btn.title = 'Se deconnecter et revenir a AVEREO CONNECT';
+                    return;
+                }
+
                 if (this.authConfig?.mode === 'drupal_oauth') {
                     if (this.currentUser) {
                         const label = this.currentUser.name || this.currentUser.email || 'Connecté';
@@ -1487,6 +1496,11 @@
             },
 
             async handleOnlineAuthClick() {
+                if (this.authConfig?.mode === 'connect_gateway') {
+                    window.location.assign('/connect/logout.php');
+                    return;
+                }
+
                 if (this.authConfig?.mode === 'drupal_oauth') {
                     if (this.currentUser || this.getStoredDrupalToken()) {
                         this.logoutDrupal();
@@ -1579,17 +1593,17 @@
 
             async refreshCurrentUser(showErrors = true) {
                 this.currentUser = null;
-                if (this.authConfig?.mode !== 'drupal_oauth') return;
+                const connectMode = this.authConfig?.mode === 'connect_gateway';
+                if (!connectMode && this.authConfig?.mode !== 'drupal_oauth') return;
 
-                const token = this.getStoredDrupalToken();
-                if (!token) return;
+                const token = connectMode ? '' : this.getStoredDrupalToken();
+                if (!connectMode && !token) return;
 
                 try {
+                    const headers = { 'Accept': 'application/json' };
+                    if (token) headers.Authorization = `Bearer ${token}`;
                     const response = await fetch(`${this.apiBaseUrl}/auth.php?action=me`, {
-                        headers: {
-                            'Accept': 'application/json',
-                            'Authorization': `Bearer ${token}`,
-                        },
+                        headers,
                     });
                     const data = await response.json().catch(() => ({}));
                     if (!response.ok || !data.ok) {
@@ -1597,7 +1611,7 @@
                     }
                     this.currentUser = data.user;
                 } catch (err) {
-                    localStorage.removeItem(this.drupalTokenStorageKey);
+                    if (!connectMode) localStorage.removeItem(this.drupalTokenStorageKey);
                     if (showErrors) this.notify("Session AVEREO expirée : " + err.message, "warning", 6000);
                 }
             },
@@ -1636,6 +1650,13 @@
             },
 
             async getOnlineAuthToken() {
+                if (this.authConfig?.mode === 'connect_gateway') {
+                    if (!this.currentUser) await this.refreshCurrentUser(true);
+                    if (!this.currentUser) {
+                        throw new Error("Session AVEREO CONNECT requise.");
+                    }
+                    return '';
+                }
                 if (this.authConfig?.mode === 'drupal_oauth') {
                     const token = this.getStoredDrupalToken();
                     if (token) return token;
@@ -1674,15 +1695,17 @@
 
             async apiRequest(path, options = {}) {
                 const token = await this.getOnlineAuthToken();
-                if (!token) throw new Error("Authentification manquante.");
+                const connectMode = this.authConfig?.mode === 'connect_gateway';
+                if (!connectMode && !token) throw new Error("Authentification manquante.");
 
+                const headers = {
+                    'Content-Type': 'application/json',
+                    ...(options.headers || {}),
+                };
+                if (token) headers.Authorization = `Bearer ${token}`;
                 const response = await fetch(`${this.apiBaseUrl}${path}`, {
                     ...options,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                        ...(options.headers || {}),
-                    },
+                    headers,
                 });
 
                 const data = await response.json().catch(() => ({}));
@@ -1692,6 +1715,9 @@
                         localStorage.removeItem(this.drupalTokenStorageKey);
                         this.currentUser = null;
                         this.updateAuthButton();
+                        if (connectMode) {
+                            window.location.assign('/connect/logout.php');
+                        }
                     }
                     throw new Error(data.message || `Erreur API (${response.status})`);
                 }

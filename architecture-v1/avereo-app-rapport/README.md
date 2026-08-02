@@ -9,7 +9,7 @@ Application autonome de creation de rapports d'expertise terrain dans le monorep
 - Frontend : React 18 et Vite 7
 - API : PHP sous `/api`
 - Donnees : MySQL dediee
-- Authentification cible : Drupal OAuth/OpenID Connect avec PKCE
+- Authentification cible : AVEREO CONNECT, adosse a Drupal OAuth/OpenID Connect
 
 ## Decision de depot
 
@@ -46,8 +46,16 @@ Ports locaux : application `8100`, MySQL `3310`, Adminer `8101`, mock OAuth `810
 
 Le workflow racine `.github/workflows/deploy-rapport-o2switch.yml` construit et publie uniquement `frontend/dist/` en FTPS. La configuration reelle reste hors document root dans `/home/CPANEL_USERNAME/.avereo/rapport/config.php`.
 
-Une preversion peut etre publiee avant Drupal OAuth : le frontend, les brouillons locaux, l'import et les exports restent utilisables, mais la sauvegarde MySQL demeure verrouillee. Le mode `api_token` est refuse hors des hotes locaux et ne doit pas servir de raccourci en production.
+En environnement heberge, CONNECT est l'unique point d'authentification. Son
+ticket signe ouvre le sas Rapport et etablit une identite applicative locale ;
+Rapport ne redemande pas un second OAuth Drupal. Le mode `api_token` reste
+strictement local et ne doit pas servir de raccourci en preproduction ou en
+production.
 
-Le workflow de production construit actuellement cette preversion avec `VITE_ENABLE_ONLINE_SYNC=false`. Dans ce mode, le navigateur n'appelle pas l'API d'authentification, aucun bouton de connexion ou de sauvegarde serveur n'est affiche et les donnees restent uniquement dans IndexedDB/localStorage. L'utilisateur doit conserver des copies JSON regulieres. Le branchement serveur sera reactive plus tard avec `VITE_ENABLE_ONLINE_SYNC=true`, apres validation de Drupal OAuth.
+Le workflow de production construit l'application avec
+`VITE_ENABLE_ONLINE_SYNC=true`. La configuration privee Rapport doit utiliser
+`auth_mode=connect_gateway` pour activer la persistance MySQL avec l'identite
+signee par CONNECT. La procedure de bascule preproduction est detaillee dans
+`docs/preproduction-connect-cutover.md`.
 
 Le merge, la creation des ressources cPanel/Drupal et le deploiement restent des actions humaines.

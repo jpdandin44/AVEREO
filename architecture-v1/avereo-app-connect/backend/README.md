@@ -53,7 +53,9 @@ d'administration explicites : une authentification Drupal seule n'accorde
 aucun accès applicatif.
 
 Chaque lancement produit un ticket HMAC signé, limité à 90 secondes, lié à une
-seule application et muni d'un nonce. Chaque application dispose de son
+seule application et muni d'un nonce. Le ticket contient aussi l'identifiant
+interne minimal du compte CONNECT approuvé. Il ne contient ni mot de passe, ni
+jeton Drupal, ni nom, ni adresse e-mail. Chaque application dispose de son
 secret de lancement distinct, uniquement côté serveur. L'application consomme le
 nonce une seule fois, établit un cookie `Secure`, `HttpOnly` et `SameSite=Lax`
 de 30 minutes,
@@ -61,13 +63,13 @@ puis retire le ticket de l'URL. Un accès direct à la page d'entrée renvoie ve
 CONNECT.
 
 Le sas protège aussi les points d'entrée de toutes les applications ; seul
-l'endpoint de santé reste public. Il ne remplace pas l'authentification propre
-aux API applicatives. CONNECT,
-Rapport et Coupe utilisent chacun un client OAuth confidentiel distinct, avec un
-identifiant, un secret serveur et une URI de redirection dédiés. Rapport et Coupe
-vérifient en plus le claim `client_id` sur chaque accès à leur API : un jeton émis
-pour une autre application est refusé. Aucun secret n'est placé dans le
-catalogue, l'URL ou le JavaScript.
+l'endpoint de santé reste public. Rapport consomme désormais l'identité signée
+par CONNECT et ne lance plus un second parcours OAuth Drupal. Coupe applique le
+même contrat à son API projets. Leurs cookies locaux signés portent
+l'identifiant CONNECT et protègent aussi les API métier. Les autres
+applications, déjà protégées par leur sas, restent compatibles : les
+champs historiques du ticket restent inchangés. Aucun secret n'est placé dans
+le catalogue, l'URL ou le JavaScript.
 
 Avec Simple OAuth 6.1.1, `OAUTH_ISSUER` doit correspondre exactement à l'URL racine
 émise par Drupal, slash final compris (par exemple `https://idp.example/`). Cette

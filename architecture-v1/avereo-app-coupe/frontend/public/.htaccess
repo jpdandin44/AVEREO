@@ -11,9 +11,9 @@ DirectoryIndex index.php
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteRule ^auth(?:/|$) / [R=303,L]
   RewriteRule ^connect/ - [L]
   RewriteRule ^api/ - [L]
-  RewriteRule ^auth/ - [L]
   RewriteRule ^legacy-app\.html$ connect/content.php [L,QSA]
   RewriteRule ^index\.html$ index.php [L,QSA]
   RewriteRule ^$ index.php [L]

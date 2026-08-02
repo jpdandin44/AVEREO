@@ -12,9 +12,9 @@ Les fichiers PHP deployes sont dans `frontend/public/api/`, puis copies dans `fr
 - `POST /api/projects.php` : cree ou met a jour un projet.
 - `DELETE /api/projects.php?id=...` : supprime un projet.
 
-Les endpoints projets exigent actuellement `Authorization: Bearer <AVEREO_API_TOKEN>`.
-
-La cible est de remplacer ce jeton technique par un jeton utilisateur Drupal valide. Voir `../docs/auth-drupal.md`.
+En environnement heberge, les endpoints projets exigent le cookie local signe
+issu du ticket AVEREO CONNECT. Aucun bearer OAuth ou jeton technique n'est
+demande au navigateur. `api_token` reste disponible uniquement en local.
 
 ## Configuration O2Switch
 
@@ -38,15 +38,15 @@ return [
     'db_name' => 'CPANELUSER_coupe',
     'db_user' => 'CPANELUSER_coupe_user',
     'db_password' => 'CHANGE_ME',
-    'auth_mode' => 'api_token',
-    'api_token' => 'CHANGE_ME_LONG_RANDOM_TOKEN',
+    'auth_mode' => 'connect_gateway',
+    'connect_admin_user_ids' => [],
     'max_payload_bytes' => 50 * 1024 * 1024,
 ];
 ```
 
-L'application demandera le jeton API lors de la premiere sauvegarde en ligne, puis le stockera dans le navigateur.
-
-Pour le mode cible Drupal, copier `backend/config.example.php`, renseigner les valeurs `drupal_*`, puis passer `auth_mode` a `drupal_oauth`.
+Copier `backend/config.example.php` puis conserver le secret de sas hors document
+root. Les IDs administrateurs Coupe sont ajoutes explicitement dans
+`connect_admin_user_ids`.
 
 Verification apres deploiement :
 
@@ -54,4 +54,5 @@ Verification apres deploiement :
 https://coupe.avereo.fr/api/health.php
 ```
 
-La reponse doit indiquer `databaseConfigured: true`. En mode Drupal, elle doit aussi indiquer `authConfigured: true` et `authMode: drupal_oauth`.
+La reponse doit indiquer `databaseConfigured: true`, `authConfigured: true` et
+`authMode: connect_gateway`.

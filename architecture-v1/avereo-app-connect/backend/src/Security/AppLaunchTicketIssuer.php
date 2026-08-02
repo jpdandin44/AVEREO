@@ -19,13 +19,20 @@ final class AppLaunchTicketIssuer
             && $this->isAllowedEntryUrl($this->config->appLaunchEntryUrl($applicationCode));
     }
 
-    public function issueLocation(string $applicationCode, bool $remembered = false): string
+    public function issueLocation(string $applicationCode, int $userId, bool $remembered = false): string
     {
         if (!$this->isConfigured($applicationCode)) {
             throw new ApiException(
                 503,
                 'APPLICATION_GATE_NOT_CONFIGURED',
                 'Le sas de lancement de l application n est pas configure.',
+            );
+        }
+        if ($userId < 1) {
+            throw new ApiException(
+                403,
+                'CONNECT_ACCOUNT_NOT_PROVISIONED',
+                'Le compte CONNECT doit etre approuve avant d ouvrir une application.',
             );
         }
 
@@ -37,6 +44,10 @@ final class AppLaunchTicketIssuer
             'exp' => $issuedAt + $this->config->appLaunchTtlSeconds,
             'nonce' => self::base64UrlEncode(random_bytes(24)),
             'remembered' => $remembered,
+            'identity' => [
+                'provider' => 'avereo_connect',
+                'id' => (string) $userId,
+            ],
         ], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
         $encodedPayload = self::base64UrlEncode($payload);
         $signature = hash_hmac(
