@@ -13,7 +13,7 @@ Statut global : préproduction validée, production bloquée par sa configuratio
 | Coupe préproduction | Validé | Ticket CONNECT accepté et application métier affichée |
 | Sas CONNECT vers applications | Validé en préproduction | Secrets distincts, ticket signé, cookie sécurisé et stockage anti-rejeu opérationnels ; les tests CI couvrent rejeu, altération et mauvais code d'application |
 | Refus des accès directs | Validé en préproduction | Les racines Rapport et Coupe renvoient `303` vers CONNECT ; leurs entrées sans ticket renvoient `403` |
-| Compte CONNECT approuvé | Validé en préproduction | L'identité Drupal a été mise en attente puis approuvée explicitement par la CLI |
+| Compte CONNECT approuvé | Validé en préproduction | L'identité Drupal a été mise en attente puis approuvée explicitement ; l'interface d'administration CONNECT remplace la CLI pour l'exploitation courante |
 | Habilitations fines | Validées en préproduction | Le profil AVEREO approuvé affiche et ouvre uniquement Rapport et Coupe |
 | Client OAuth Drupal de production | Configuré, à requalifier | `connect-production` redirige vers le callback exact de CONNECT production ; le parcours complet reste à rejouer après activation de la base |
 | Émetteur Drupal de production | Configuré, à requalifier | CONNECT production redirige actuellement vers `https://avereo.fr/oauth/authorize` |

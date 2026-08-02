@@ -1,4 +1,4 @@
-﻿# Backend - AVEREO CONNECT
+# Backend - AVEREO CONNECT
 
 Backend PHP 8.3 sans dépendance applicative externe, préparé pendant la gate C7.
 
@@ -30,8 +30,14 @@ compte actif ni attribuer de droit. Le lancement reste refusé tant que le compt
 n'est pas approuvé, rattaché à une organisation active et couvert par une
 habilitation applicative valide.
 
-Après contrôle humain du compte Drupal, l'opérateur approuve l'identité avec la
-commande idempotente `bin/approve-pending-user.php`. Sans `--confirm`, la
+Après contrôle humain du compte Drupal, un owner/admin utilise l'interface
+« Gérer les comptes » de CONNECT pour approuver ou refuser l'identité. L'écran
+permet aussi à un owner d'activer, suspendre ou désactiver un compte, sans
+suppression de données. Les routes d'administration réappliquent les rôles côté
+serveur, exigent le CSRF et auditent chaque mutation.
+
+La commande idempotente `bin/approve-pending-user.php` reste disponible pour le
+premier compte, la reprise et les interventions d'urgence. Sans `--confirm`, la
 commande ne modifie rien. Le premier compte exige `--bootstrap` et le rôle
 `owner`; les approbations suivantes exigent le `subject` d'un owner/admin actif.
 Exemple de première approbation en préproduction :
@@ -50,7 +56,7 @@ php bin/approve-pending-user.php \
 
 La création et l'approbation des utilisateurs restent donc des opérations
 d'administration explicites : une authentification Drupal seule n'accorde
-aucun accès applicatif.
+aucun accès applicatif. Voir `../docs/administration-comptes.md`.
 
 Chaque lancement produit un ticket HMAC signé, limité à 90 secondes, lié à une
 seule application et muni d'un nonce. Le ticket contient aussi l'identifiant

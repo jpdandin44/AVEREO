@@ -22,6 +22,11 @@ final class UnavailableRepository implements ConnectRepository
         return null;
     }
 
+    public function findIdentityStatusByDrupalSubject(string $drupalSubject): ?string
+    {
+        return null;
+    }
+
     public function registerPendingIdentity(
         string $drupalSubject,
         ?string $email,
@@ -66,6 +71,40 @@ final class UnavailableRepository implements ConnectRepository
         string $status,
         ?string $validFrom,
         ?string $validTo,
+        string $requestId,
+    ): array {
+        $this->fail();
+    }
+
+    public function getAccountAdministration(int $actorUserId, int $organizationId): array
+    {
+        $this->fail();
+    }
+
+    public function approvePendingIdentity(
+        int $actorUserId,
+        int $organizationId,
+        int $pendingIdentityId,
+        string $role,
+        string $requestId,
+    ): array {
+        $this->fail();
+    }
+
+    public function rejectPendingIdentity(
+        int $actorUserId,
+        int $organizationId,
+        int $pendingIdentityId,
+        string $requestId,
+    ): array {
+        $this->fail();
+    }
+
+    public function updateUserStatus(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $status,
         string $requestId,
     ): array {
         $this->fail();

@@ -25,8 +25,14 @@ Le lot de sécurisation du 29 juillet 2026 ajoute un sas serveur entre CONNECT,
 Rapport et Coupe : ticket HMAC court, secret distinct par application, nonce à
 usage unique et refus des accès directs. Les URL applicatives ne sont plus
 publiées directement dans le catalogue. Une identité Drupal inconnue est
-enregistrée sans droit dans `pending_identities`; seule la commande opérateur
-confirmée peut créer son compte actif, son adhésion et ses habilitations.
+enregistrée sans droit dans `pending_identities`; seule une approbation
+administrative explicite peut créer son compte actif et son adhésion.
+
+Le lot d'administration des comptes remplace ensuite la commande courante par
+un écran CONNECT protégé pour approuver ou refuser une demande, puis activer,
+suspendre ou désactiver un compte. La CLI reste le mécanisme de bootstrap et de
+reprise. Le schéma existant suffit : aucune migration supplémentaire ni
+suppression de données n'est introduite.
 
 ## Compatibilité Simple OAuth
 

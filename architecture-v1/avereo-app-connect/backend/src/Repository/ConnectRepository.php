@@ -10,6 +10,8 @@ interface ConnectRepository
 
     public function findUserIdByDrupalSubject(string $drupalSubject): ?int;
 
+    public function findIdentityStatusByDrupalSubject(string $drupalSubject): ?string;
+
     public function registerPendingIdentity(
         string $drupalSubject,
         ?string $email,
@@ -41,6 +43,35 @@ interface ConnectRepository
         string $status,
         ?string $validFrom,
         ?string $validTo,
+        string $requestId,
+    ): array;
+
+    /** @return array<string, mixed> */
+    public function getAccountAdministration(int $actorUserId, int $organizationId): array;
+
+    /** @return array<string, mixed> */
+    public function approvePendingIdentity(
+        int $actorUserId,
+        int $organizationId,
+        int $pendingIdentityId,
+        string $role,
+        string $requestId,
+    ): array;
+
+    /** @return array<string, mixed> */
+    public function rejectPendingIdentity(
+        int $actorUserId,
+        int $organizationId,
+        int $pendingIdentityId,
+        string $requestId,
+    ): array;
+
+    /** @return array<string, mixed> */
+    public function updateUserStatus(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $status,
         string $requestId,
     ): array;
 }
