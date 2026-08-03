@@ -26,14 +26,29 @@ const connectPortal = fs.readFileSync(
   path.join(root, "architecture-v1/avereo-app-connect/backend/public/index.html"),
   "utf8"
 );
+const connectApplication = fs.readFileSync(
+  path.join(root, "architecture-v1/avereo-app-connect/backend/src/Application.php"),
+  "utf8"
+);
+const identityLogoutController = fs.readFileSync(
+  path.join(
+    root,
+    "architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/src/Controller/LogoutController.php"
+  ),
+  "utf8"
+);
 const checks = [
   { ok: html.includes("styles.css"), msg: "index.html must reference styles.css" },
   { ok: html.includes("app.js"), msg: "index.html must reference app.js" },
   { ok: html.includes("AVEREO"), msg: "index.html should contain AVEREO branding" },
   {
-    ok: connectPortal.includes("drupalAccountSwitchUrl")
-      && connectPortal.includes("'/user/logout'"),
-    msg: "CONNECT logout must terminate the Drupal session before account selection"
+    ok: connectPortal.includes('id="logout-dialog"')
+      && connectPortal.includes("/api/v1/auth/logout")
+      && !connectPortal.includes("'/user/logout'")
+      && connectApplication.includes("$this->identityLogout?->issue()")
+      && identityLogoutController.includes("user_logout();")
+      && identityLogoutController.includes("new TrustedRedirectResponse("),
+    msg: "CONNECT logout must use the signed identity bridge before account selection"
   }
 ];
 

@@ -44,9 +44,14 @@ un `config.php` privé hors document root.
 2. déployer dans un nouveau répertoire versionné ;
 3. créer la configuration privée à partir de la liste `.env.example` ;
 4. exécuter la migration `up` après contrôle de la cible ;
-5. basculer le document root ou le lien de version ;
-6. tester santé, session anonyme, login, callback et autorisations ;
-7. surveiller les erreurs sans afficher de détails au navigateur.
+5. installer et activer `integrations/drupal/avereo_identity_bridge` sur
+   l'instance d'identité, puis placer son secret dans la configuration privée ;
+6. configurer le même secret côté CONNECT avec `IDENTITY_LOGOUT_URL` et
+   `IDENTITY_LOGOUT_SECRET` ;
+7. basculer le document root ou le lien de version ;
+8. tester santé, session anonyme, login, callback, révocation applicative et
+   déconnexion complète ;
+9. surveiller les erreurs sans afficher de détails au navigateur.
 
 ## Retour arrière
 

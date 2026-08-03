@@ -1,0 +1,8 @@
+/* L'identification reste techniquement deleguee, mais l'interface publique porte uniquement la marque AVEREO. */
+#block-olivero-powered,
+#block-claro-powered,
+.site-branding__logo,
+.site-branding__text,
+a[href*="drupal.org"] {
+  display: none !important;
+}

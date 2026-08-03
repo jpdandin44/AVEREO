@@ -12,6 +12,7 @@ use Avereo\Connect\Identity\OAuthFlow;
 use Avereo\Connect\Repository\PdoConnectRepository;
 use Avereo\Connect\Repository\UnavailableRepository;
 use Avereo\Connect\Security\AppLaunchTicketIssuer;
+use Avereo\Connect\Security\IdentityLogoutUrlSigner;
 use Avereo\Connect\Security\OAuthTransactionStore;
 use Avereo\Connect\Security\SessionManager;
 
@@ -44,6 +45,7 @@ try {
             'OAUTH_ISSUER', 'OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL',
             'OAUTH_CLIENT_ID', 'OAUTH_CLIENT_SECRET', 'OAUTH_REDIRECT_URI', 'OAUTH_SUCCESS_URL',
             'OAUTH_SCOPES', 'OAUTH_PUBLIC_KEY_PATH', 'OAUTH_TRANSACTION_DIRECTORY',
+            'OAUTH_TRANSACTION_TTL_SECONDS', 'IDENTITY_LOGOUT_URL', 'IDENTITY_LOGOUT_SECRET',
             'APP_LAUNCH_RAPPORT_URL', 'APP_LAUNCH_RAPPORT_SECRET',
             'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET',
             'APP_LAUNCH_PROJET_URL', 'APP_LAUNCH_PROJET_SECRET',
@@ -77,7 +79,19 @@ try {
         $repository = new UnavailableRepository('unavailable');
     }
 
-    $application = new Application($config, $repository, new AppLaunchTicketIssuer($config));
+    $identityLogout = $config->isIdentityLogoutConfigured()
+        ? new IdentityLogoutUrlSigner(
+            $config->identityLogoutUrl,
+            $config->identityLogoutSecret,
+            $config->oauthRedirectUri,
+        )
+        : null;
+    $application = new Application(
+        $config,
+        $repository,
+        new AppLaunchTicketIssuer($config),
+        $identityLogout,
+    );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {
         $transactionDirectory = getenv('OAUTH_TRANSACTION_DIRECTORY');

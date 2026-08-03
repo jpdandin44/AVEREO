@@ -30,12 +30,25 @@ final class Config
         /** @var array<string, string> */
         public readonly array $appLaunchSecrets = [],
         public readonly int $appLaunchTtlSeconds = 90,
+        public readonly int $oauthTransactionTtlSeconds = 900,
+        public readonly string $identityLogoutUrl = '',
+        public readonly string $identityLogoutSecret = '',
     ) {
         if ($sessionIdleSeconds < 60 || $sessionAbsoluteSeconds < $sessionIdleSeconds) {
             throw new \InvalidArgumentException('Durées de session invalides.');
         }
         if ($appLaunchTtlSeconds < 30 || $appLaunchTtlSeconds > 300) {
             throw new \InvalidArgumentException('Duree de ticket applicatif invalide.');
+        }
+        if ($oauthTransactionTtlSeconds < 120 || $oauthTransactionTtlSeconds > 1800) {
+            throw new \InvalidArgumentException('Durée de transaction AVEREO invalide.');
+        }
+        if (
+            ($identityLogoutUrl === '') !== ($identityLogoutSecret === '')
+            || ($identityLogoutUrl !== '' && !str_starts_with($identityLogoutUrl, 'https://'))
+            || ($identityLogoutSecret !== '' && strlen($identityLogoutSecret) < 32)
+        ) {
+            throw new \InvalidArgumentException('Configuration de déconnexion AVEREO invalide.');
         }
     }
 
@@ -77,6 +90,9 @@ final class Config
                 'drone' => self::env('APP_LAUNCH_DRONE_SECRET'),
             ],
             self::envInt('APP_LAUNCH_TTL_SECONDS', 90),
+            self::envInt('OAUTH_TRANSACTION_TTL_SECONDS', 900),
+            self::env('IDENTITY_LOGOUT_URL'),
+            self::env('IDENTITY_LOGOUT_SECRET'),
         );
     }
 
@@ -125,6 +141,11 @@ final class Config
     public function isSecureCookieRequired(): bool
     {
         return !in_array($this->environment, ['local', 'test'], true);
+    }
+
+    public function isIdentityLogoutConfigured(): bool
+    {
+        return $this->identityLogoutUrl !== '' && $this->identityLogoutSecret !== '';
     }
 
     private static function env(string $name, string $default = ''): string

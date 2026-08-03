@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Habillage AVEREO des ecrans publics d'identification.
+ */
+
+/**
+ * Implements hook_page_attachments().
+ */
+function avereo_identity_bridge_page_attachments(array &$attachments): void
+{
+    $routeName = \Drupal::routeMatch()->getRouteName();
+    if (in_array($routeName, ['user.login', 'user.register', 'user.pass'], true)) {
+        $attachments['#attached']['library'][] = 'avereo_identity_bridge/identity';
+    }
+}

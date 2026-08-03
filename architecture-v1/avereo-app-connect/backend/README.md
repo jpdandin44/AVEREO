@@ -12,7 +12,7 @@ Backend PHP 8.3 sans dépendance applicative externe, préparé pendant la gate 
 - migrations via `bin/migrate.php`.
 
 Le SSO Drupal est activé lorsque les variables `OAUTH_*` sont complètes. La transaction
-OAuth est conservée à la fois dans la session PHP et, pendant cinq minutes maximum,
+OAuth est conservée à la fois dans la session PHP et, par défaut pendant quinze minutes,
 dans un stockage privé à usage unique lié à un cookie de navigateur distinct. Ce
 second stockage sécurise le callback lorsque l'hébergeur renouvelle la session PHP
 entre le départ vers Drupal et le retour vers CONNECT.
@@ -33,8 +33,16 @@ habilitation applicative valide.
 Après contrôle humain du compte Drupal, un owner/admin utilise l'interface
 « Gérer les comptes » de CONNECT pour approuver ou refuser l'identité. L'écran
 permet aussi à un owner d'activer, suspendre ou désactiver un compte, sans
-suppression de données. Les routes d'administration réappliquent les rôles côté
-serveur, exigent le CSRF et auditent chaque mutation.
+suppression de données, et à un owner/admin autorisé d'accorder ou révoquer les
+applications par compte. Les routes d'administration réappliquent les rôles
+côté serveur, exigent le CSRF et auditent chaque mutation. Une révocation filtre
+le catalogue et bloque aussi le lancement direct.
+
+La déconnexion est confirmée dans l'interface CONNECT. Après confirmation,
+CONNECT ferme sa session et émet une URL HMAC à usage unique vers le module
+`integrations/drupal/avereo_identity_bridge`. Ce pont ferme la session
+d'identité puis revient immédiatement à CONNECT ; aucune interface technique
+intermédiaire n'est présentée à l'utilisateur.
 
 La commande idempotente `bin/approve-pending-user.php` reste disponible pour le
 premier compte, la reprise et les interventions d'urgence. Sans `--confirm`, la

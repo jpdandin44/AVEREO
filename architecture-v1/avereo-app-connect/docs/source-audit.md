@@ -34,6 +34,20 @@ suspendre ou désactiver un compte. La CLI reste le mécanisme de bootstrap et d
 reprise. Le schéma existant suffit : aucune migration supplémentaire ni
 suppression de données n'est introduite.
 
+Le lot du 3 août 2026 ajoute l'écart fonctionnel validé en préproduction :
+
+- confirmation de déconnexion dans CONNECT et fermeture de la session
+  d'identité par une URL HMAC courte, sans interface technique intermédiaire ;
+- migration réversible `user_application_access` pour les droits par compte ;
+- gestion des applications dans l'administration des comptes ;
+- application de la révocation au catalogue et au sas de lancement ;
+- retour des erreurs de callback vers une page CONNECT compréhensible.
+
+L'absence de ligne dans `user_application_access` conserve l'héritage
+historique de l'organisation. Une ligne `revoked` constitue un refus explicite.
+Ce choix maintient la compatibilité des comptes existants tout en permettant une
+révocation immédiate et auditée.
+
 ## Compatibilité Simple OAuth
 
 Simple OAuth 6.1.1 ne renvoie pas le `nonce` dans l'ID token du flux testé.

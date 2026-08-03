@@ -7,7 +7,8 @@ pour les opérations quotidiennes. Elle reste distincte de Drupal :
 
 - Drupal authentifie l'identité ;
 - CONNECT approuve son accès métier, son organisation et son rôle ;
-- les applications visibles sont celles déjà habilitées pour l'organisation.
+- le catalogue de l'organisation définit les applications disponibles ;
+- CONNECT autorise ou révoque ensuite chaque application pour chaque compte.
 
 Le compte d'identité reste visible dans **Drupal > People**. L'état
 d'approbation CONNECT, le rôle, l'organisation et les applications ne sont pas
@@ -39,9 +40,24 @@ L'administrateur peut :
 Un owner peut aussi attribuer `admin` ou `owner`. Un admin ne peut pas élever
 un compte vers un rôle d'administration.
 
-L'approbation crée ou réactive le compte CONNECT et son adhésion active. Les
-applications ne sont pas attribuées individuellement : le compte hérite des
-habilitations actives de son organisation.
+L'approbation crée ou réactive le compte CONNECT et son adhésion active. Le
+compte hérite initialement des habilitations actives de son organisation.
+
+## Droits aux applications
+
+Chaque fiche de compte affiche les applications du catalogue de l'organisation.
+Une case cochée autorise l'application ; une case décochée crée une révocation
+explicite dans `user_application_access`.
+
+La révocation est contrôlée à deux niveaux :
+
+- l'application disparaît immédiatement du catalogue du compte ;
+- sa route `/api/v1/apps/{code}/launch` renvoie aussi un refus, même si
+  l'utilisateur conserve une ancienne URL.
+
+Un owner gère les droits de tous les comptes. Un admin peut gérer uniquement les
+comptes `member` et `viewer`. Chaque mutation est enregistrée sous l'action
+`user.application_access.update`.
 
 ## Cycle de vie des comptes
 
@@ -60,15 +76,14 @@ Aucune action de l'interface ne supprime un utilisateur.
 - l'écran ouvre la première organisation administrable du compte courant ;
 - les demandes en attente ne portent pas encore d'organisation demandée et
   sont donc visibles par les owner/admin CONNECT autorisés ;
-- les habilitations applicatives restent gérées au niveau de l'organisation ;
 - le changement de rôle d'un compte déjà approuvé reste hors périmètre ;
 - le blocage d'un compte dans Drupal empêche ses authentifications suivantes,
   mais ne révoque pas à lui seul une session CONNECT déjà ouverte ; la
   suspension CONNECT, elle, est réévaluée à chaque requête.
 
-Ces limites évitent d'introduire une nouvelle migration ou un modèle
-d'autorisation spéculatif avant la validation du parcours simple en
-préproduction.
+Les droits applicatifs CONNECT restent distincts des rôles du fournisseur
+d'identité. Modifier uniquement un rôle externe ne remplace donc pas une
+révocation explicite dans l'administration CONNECT.
 
 ## Qualification en préproduction
 
@@ -76,8 +91,11 @@ préproduction.
 2. se connecter à CONNECT avec ce compte et constater l'état en attente ;
 3. ouvrir CONNECT avec un owner et sélectionner « Gérer les comptes » ;
 4. approuver le compte comme Client ;
-5. se reconnecter avec le nouveau compte et vérifier le catalogue hérité ;
-6. suspendre le compte et vérifier que le lancement est refusé ;
-7. réactiver le compte et vérifier que l'accès revient ;
-8. vérifier les événements `identity.approve`, `identity.reject` et
-   `user.status.update` dans `audit_events`.
+5. décocher Coupe et vérifier sa disparition ainsi que le refus de son URL de
+   lancement ;
+6. recocher Coupe et vérifier que l'accès revient ;
+7. suspendre le compte et vérifier que le lancement est refusé ;
+8. réactiver le compte et vérifier que l'accès revient ;
+9. vérifier les événements `identity.approve`, `identity.reject`,
+   `user.status.update` et `user.application_access.update` dans
+   `audit_events`.

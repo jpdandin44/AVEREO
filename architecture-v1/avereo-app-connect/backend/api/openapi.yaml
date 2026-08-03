@@ -160,7 +160,11 @@ paths:
     post:
       tags: [Session]
       operationId: logout
-      summary: Détruire la session CONNECT
+      summary: Détruire les sessions AVEREO
+      description: >-
+        Ferme la session CONNECT et retourne une URL de déconnexion signée,
+        de courte durée, qui ferme le fournisseur d'identité sans exposer son
+        interface à l'utilisateur.
       parameters:
         - $ref: "#/components/parameters/CsrfToken"
       responses:
@@ -169,7 +173,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SessionResponse"
+                $ref: "#/components/schemas/LogoutResponse"
         "403":
           $ref: "#/components/responses/CsrfRejected"
   /me:
@@ -440,6 +444,51 @@ paths:
           description: Protection du compte courant ou du dernier owner
         "422":
           $ref: "#/components/responses/ValidationError"
+  /admin/organizations/{organizationId}/users/{userId}/applications/{applicationCode}:
+    put:
+      tags: [Administration]
+      operationId: updateManagedUserApplicationAccess
+      summary: Autoriser ou révoquer une application pour un compte
+      description: >-
+        Le droit individuel complète le catalogue de l'organisation. Une
+        révocation retire immédiatement l'application du catalogue du compte et
+        bloque également son lancement direct. Les owners peuvent gérer tous les
+        comptes ; les admins uniquement les membres et lecteurs.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/UserId"
+        - name: applicationCode
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: "^[a-z0-9][a-z0-9_-]{1,63}$"
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserApplicationAccessInput"
+      responses:
+        "200":
+          description: Droit individuel enregistré et audité
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/UserApplicationAccess"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "403":
+          description: Rôle insuffisant ou CSRF rejeté
+        "404":
+          description: Compte ou application indisponible
+        "422":
+          $ref: "#/components/responses/ValidationError"
 components:
   securitySchemes:
     sessionCookie:
@@ -561,6 +610,22 @@ components:
               format: uri
         meta:
           $ref: "#/components/schemas/Meta"
+    LogoutResponse:
+      type: object
+      required: [data, meta]
+      properties:
+        data:
+          type: object
+          required: [authenticated, redirectUrl]
+          properties:
+            authenticated:
+              type: boolean
+              const: false
+            redirectUrl:
+              type: string
+              format: uri-reference
+        meta:
+          $ref: "#/components/schemas/Meta"
     UserResponse:
       type: object
       required: [data, meta]
@@ -639,7 +704,8 @@ components:
           format: date-time
     ManagedUser:
       type: object
-      required: [id, email, displayName, status, role]
+      required:
+        [id, email, displayName, status, role, canManageApplications, applications]
       properties:
         id:
           type: integer
@@ -660,6 +726,12 @@ components:
           enum: [active, suspended, revoked]
         canChangeStatus:
           type: boolean
+        canManageApplications:
+          type: boolean
+        applications:
+          type: array
+          items:
+            $ref: "#/components/schemas/AccountApplicationAccess"
         createdAt:
           type: string
           format: date-time
@@ -679,6 +751,43 @@ components:
         status:
           type: string
           enum: [active, suspended, disabled]
+    UserApplicationAccessInput:
+      type: object
+      additionalProperties: false
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [active, revoked]
+    UserApplicationAccess:
+      type: object
+      required: [userId, applicationCode, status, inherited]
+      properties:
+        userId:
+          type: integer
+          minimum: 1
+        applicationCode:
+          type: string
+        applicationName:
+          type: string
+        status:
+          type: string
+          enum: [active, revoked]
+        inherited:
+          type: boolean
+    AccountApplicationAccess:
+      type: object
+      required: [code, name, status, inherited]
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [active, revoked]
+        inherited:
+          type: boolean
     Organization:
       type: object
       required: [id, name, slug, status, role]

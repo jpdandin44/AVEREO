@@ -1,0 +1,4 @@
+identity:
+  css:
+    theme:
+      css/identity.css: {}

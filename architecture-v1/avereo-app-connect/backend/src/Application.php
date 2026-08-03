@@ -11,6 +11,7 @@ use Avereo\Connect\Repository\ConnectRepository;
 use Avereo\Connect\Security\AppLaunchTicketIssuer;
 use Avereo\Connect\Security\AuthContext;
 use Avereo\Connect\Security\CsrfGuard;
+use Avereo\Connect\Security\IdentityLogoutUrlSigner;
 
 final class Application
 {
@@ -18,6 +19,7 @@ final class Application
         private readonly Config $config,
         private readonly ConnectRepository $repository,
         private readonly ?AppLaunchTicketIssuer $appLaunchTickets = null,
+        private readonly ?IdentityLogoutUrlSigner $identityLogout = null,
     ) {
     }
 
@@ -33,6 +35,12 @@ final class Application
         try {
             return $this->route($request, $auth, $csrfToken, $logout, $beginIdentity, $completeIdentity);
         } catch (ApiException $exception) {
+            if ($request->path === '/api/v1/auth/callback') {
+                return Response::redirect(
+                    '/?auth_error=' . rawurlencode($exception->errorCode),
+                    $request->requestId,
+                );
+            }
             if (str_starts_with($request->path, '/api/v1/auth/')) {
                 error_log(json_encode([
                     'event' => 'api.identity_error',
@@ -101,7 +109,7 @@ final class Application
             && $request->path === '/api/v1/auth/login'
         ) {
             if ($beginIdentity === null) {
-                throw new ApiException(503, 'IDENTITY_PROVIDER_NOT_CONFIGURED', 'Le fournisseur d’identité Drupal n’est pas encore configuré.');
+                throw new ApiException(503, 'IDENTITY_PROVIDER_NOT_CONFIGURED', 'Le service d’identité AVEREO n’est pas encore configuré.');
             }
             if ($request->method === 'POST') {
                 CsrfGuard::assertValid($request, $csrfToken);
@@ -111,15 +119,26 @@ final class Application
 
         if ($request->method === 'GET' && $request->path === '/api/v1/auth/callback') {
             if ($completeIdentity === null) {
-                throw new ApiException(503, 'IDENTITY_PROVIDER_NOT_CONFIGURED', 'Le fournisseur d’identité Drupal n’est pas encore configuré.');
+                throw new ApiException(503, 'IDENTITY_PROVIDER_NOT_CONFIGURED', 'Le service d’identité AVEREO n’est pas encore configuré.');
             }
             return $completeIdentity($request);
         }
 
         if ($request->method === 'POST' && $request->path === '/api/v1/auth/logout') {
             CsrfGuard::assertValid($request, $csrfToken);
+            if ($this->config->isIdentityProviderConfigured() && $this->identityLogout === null) {
+                throw new ApiException(
+                    503,
+                    'IDENTITY_LOGOUT_NOT_CONFIGURED',
+                    'La déconnexion AVEREO n’est pas encore configurée.',
+                );
+            }
+            $redirectUrl = $this->identityLogout?->issue() ?? '/?logout=1';
             $logout();
-            return Response::success(['authenticated' => false], $request->requestId);
+            return Response::success([
+                'authenticated' => false,
+                'redirectUrl' => $redirectUrl,
+            ], $request->requestId);
         }
 
         $this->requireAuthenticated($auth);
@@ -235,6 +254,28 @@ final class Application
                     (int) $matches[1],
                     (int) $matches[2],
                     $this->validateUserStatus($request->body),
+                    $request->requestId,
+                ),
+                $request->requestId,
+            );
+        }
+
+        if (
+            $request->method === 'PUT'
+            && preg_match(
+                '#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/applications/([a-z0-9][a-z0-9_-]{1,63})$#',
+                $request->path,
+                $matches,
+            )
+        ) {
+            CsrfGuard::assertValid($request, $csrfToken);
+            return Response::success(
+                $this->repository->updateUserApplicationAccess(
+                    $userId,
+                    (int) $matches[1],
+                    (int) $matches[2],
+                    $matches[3],
+                    $this->validateUserApplicationAccess($request->body),
                     $request->requestId,
                 ),
                 $request->requestId,
@@ -377,6 +418,22 @@ final class Application
                 422,
                 'VALIDATION_ERROR',
                 'Le statut du compte est invalide.',
+                ['field' => 'status'],
+            );
+        }
+        return $status;
+    }
+
+    /** @param array<string, mixed> $body */
+    private function validateUserApplicationAccess(array $body): string
+    {
+        $this->assertKnownFields($body, ['status']);
+        $status = $body['status'] ?? null;
+        if (!is_string($status) || !in_array($status, ['active', 'revoked'], true)) {
+            throw new ApiException(
+                422,
+                'VALIDATION_ERROR',
+                'Le droit applicatif est invalide.',
                 ['field' => 'status'],
             );
         }

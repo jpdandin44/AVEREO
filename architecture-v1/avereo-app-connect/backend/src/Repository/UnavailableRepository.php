@@ -110,6 +110,17 @@ final class UnavailableRepository implements ConnectRepository
         $this->fail();
     }
 
+    public function updateUserApplicationAccess(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $applicationCode,
+        string $status,
+        string $requestId,
+    ): array {
+        $this->fail();
+    }
+
     private function fail(): never
     {
         throw new ApiException(503, 'DATABASE_UNAVAILABLE', 'La base CONNECT n’est pas disponible.');
