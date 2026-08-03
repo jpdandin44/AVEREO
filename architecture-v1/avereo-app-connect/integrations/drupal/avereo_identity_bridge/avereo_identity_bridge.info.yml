@@ -1,0 +1,5 @@
+name: AVEREO Identity Bridge
+type: module
+description: Fournit la fermeture de session AVEREO signee et le branding des ecrans d'identification.
+package: AVEREO
+core_version_requirement: ^10 || ^11

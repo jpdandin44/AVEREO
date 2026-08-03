@@ -31,7 +31,7 @@ final class OAuthFlow
         $challenge = self::base64Url(hash('sha256', $verifier, true));
         $this->session->beginOauth($state, $nonce, $verifier, $remembered);
         if ($this->transactions !== null) {
-            $binding = $this->session->ensureOauthBinding();
+            $binding = $this->session->ensureOauthBinding($this->config->oauthTransactionTtlSeconds);
             $this->transactions->save($state, $nonce, $verifier, $binding, $remembered);
         }
 
@@ -57,13 +57,13 @@ final class OAuthFlow
     public function complete(Request $request): Response
     {
         if (isset($request->query['error'])) {
-            throw new ApiException(401, 'OAUTH_AUTHORIZATION_REFUSED', 'L’autorisation Drupal a été refusée.');
+            throw new ApiException(401, 'OAUTH_AUTHORIZATION_REFUSED', 'L’autorisation AVEREO a été refusée.');
         }
 
         $code = $this->boundedQueryString($request, 'code', 2048);
         $state = $this->boundedQueryString($request, 'state', 256);
         try {
-            $transaction = $this->session->consumeOauth($state);
+            $transaction = $this->session->consumeOauth($state, $this->config->oauthTransactionTtlSeconds);
             $this->transactions?->discard($state);
         } catch (ApiException $exception) {
             if (
@@ -73,7 +73,11 @@ final class OAuthFlow
             ) {
                 throw $exception;
             }
-            $transaction = $this->transactions->consume($state, $binding);
+            $transaction = $this->transactions->consume(
+                $state,
+                $binding,
+                $this->config->oauthTransactionTtlSeconds,
+            );
         }
         $token = $this->postForm($this->config->oauthTokenUrl, [
             'grant_type' => 'authorization_code',
@@ -87,17 +91,17 @@ final class OAuthFlow
         $accessToken = $token['access_token'] ?? null;
         $idToken = $token['id_token'] ?? null;
         if (!is_string($accessToken) || $accessToken === '' || !is_string($idToken) || $idToken === '') {
-            throw new ApiException(502, 'OAUTH_TOKEN_INVALID', 'La réponse de jeton Drupal est incomplète.');
+            throw new ApiException(502, 'OAUTH_TOKEN_INVALID', 'La réponse d’identité AVEREO est incomplète.');
         }
 
         $claims = $this->verifyIdToken($idToken, $transaction['nonce']);
         $profile = $this->getJson($this->config->oauthUserinfoUrl, $accessToken);
         $subject = $claims['sub'] ?? null;
         if (!is_string($subject) || $subject === '' || strlen($subject) > 191) {
-            throw new ApiException(502, 'OAUTH_SUBJECT_INVALID', 'Le subject Drupal est absent ou invalide.');
+            throw new ApiException(502, 'OAUTH_SUBJECT_INVALID', 'L’identifiant AVEREO est absent ou invalide.');
         }
         if (isset($profile['sub']) && (!is_string($profile['sub']) || !hash_equals($subject, $profile['sub']))) {
-            throw new ApiException(502, 'OAUTH_SUBJECT_MISMATCH', 'Les profils OAuth ne désignent pas le même compte.');
+            throw new ApiException(502, 'OAUTH_SUBJECT_MISMATCH', 'Les profils AVEREO ne désignent pas le même compte.');
         }
 
         $userId = $this->resolveUserId === null
@@ -116,7 +120,7 @@ final class OAuthFlow
     {
         $parts = explode('.', $jwt);
         if (count($parts) !== 3) {
-            throw new ApiException(502, 'OAUTH_ID_TOKEN_INVALID', 'Le jeton d’identité Drupal est invalide.');
+            throw new ApiException(502, 'OAUTH_ID_TOKEN_INVALID', 'Le jeton d’identité AVEREO est invalide.');
         }
 
         [$encodedHeader, $encodedPayload, $encodedSignature] = $parts;

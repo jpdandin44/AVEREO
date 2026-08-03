@@ -126,6 +126,23 @@
     .admin-card p { margin: .2rem 0; }
     .admin-card small { color: #53627a; }
     .admin-actions { display: flex; align-items: center; justify-content: end; flex-wrap: wrap; gap: .5rem; }
+    .admin-app-access {
+      grid-column: 1 / -1;
+      border-top: 1px solid #dce4ef;
+      padding-top: .85rem;
+    }
+    .admin-app-access strong { display: block; margin-bottom: .55rem; }
+    .app-access-list { display: flex; flex-wrap: wrap; gap: .6rem; }
+    .app-access-option {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      border: 1px solid #dce4ef;
+      border-radius: 999px;
+      padding: .5rem .75rem;
+      background: #f8fafc;
+    }
+    .app-access-option input { width: 1rem; height: 1rem; }
     .admin-actions select {
       min-width: 145px;
       border: 1px solid #b9c5d5;
@@ -146,6 +163,20 @@
       background: #f8fafc;
     }
     #admin-status { margin: 1rem 0; padding: .8rem; border-radius: 10px; background: #eef3f9; }
+    dialog {
+      width: min(calc(100% - 2rem), 480px);
+      border: 0;
+      border-radius: 16px;
+      padding: 0;
+      color: #142033;
+      box-shadow: 0 24px 80px #1420334d;
+    }
+    dialog::backdrop { background: #14203399; }
+    .dialog-content { padding: 1.5rem; }
+    .dialog-content h2 { margin-bottom: .65rem; }
+    .dialog-actions { display: flex; justify-content: end; gap: .65rem; margin-top: 1.25rem; }
+    #logout-cancel { background: #eef3f9; color: #142033; }
+    #logout-confirm { background: #b42318; color: white; }
     [hidden] { display: none !important; }
     @media (max-width: 560px) {
       .topbar, .section-heading, .admin-heading { align-items: stretch; flex-direction: column; }
@@ -210,22 +241,32 @@
       <div class="admin-summary">
         <article><strong id="admin-pending-count">0</strong> demandes en attente</article>
         <article><strong id="admin-users-count">0</strong> comptes rattachés</article>
-        <article><strong id="admin-apps-count">0</strong> applications héritées</article>
+        <article><strong id="admin-apps-count">0</strong> applications du catalogue</article>
       </div>
 
       <div class="admin-block">
         <h3>Demandes en attente</h3>
-        <p class="admin-help">Approuvez l’identité Drupal et choisissez son rôle CONNECT, ou refusez la demande.</p>
+        <p class="admin-help">Approuvez le profil AVEREO et choisissez son rôle CONNECT, ou refusez la demande.</p>
         <div id="admin-pending-list" class="admin-list"></div>
       </div>
 
       <div class="admin-block">
         <h3>Comptes de l’organisation</h3>
-        <p class="admin-help">La suspension est temporaire. La désactivation bloque le compte sans supprimer son historique.</p>
+        <p class="admin-help">Gérez le statut du compte et ses applications. Une application décochée est immédiatement masquée et bloquée.</p>
         <div id="admin-users-list" class="admin-list"></div>
       </div>
     </section>
   </main>
+  <dialog id="logout-dialog" aria-labelledby="logout-title">
+    <div class="dialog-content">
+      <h2 id="logout-title">Confirmer la déconnexion</h2>
+      <p>Vous allez fermer votre session AVEREO sur CONNECT et sur les applications ouvertes.</p>
+      <div class="dialog-actions">
+        <button id="logout-cancel" type="button">Annuler</button>
+        <button id="logout-confirm" type="button">Se déconnecter</button>
+      </div>
+    </div>
+  </dialog>
   <script>
     const statusNode = document.getElementById('status');
     const leadNode = document.getElementById('lead');
@@ -235,6 +276,9 @@
     const registerNode = document.getElementById('register');
     const registerLink = document.getElementById('register-link');
     const logoutButton = document.getElementById('logout');
+    const logoutDialog = document.getElementById('logout-dialog');
+    const logoutCancelButton = document.getElementById('logout-cancel');
+    const logoutConfirmButton = document.getElementById('logout-confirm');
     const adminOpenButton = document.getElementById('admin-open');
     const adminBackButton = document.getElementById('admin-back');
     const profileSection = document.getElementById('profile');
@@ -300,20 +344,8 @@
       return payload.data.authorizeUrl;
     }
 
-    function drupalLogoutConfirmationUrl(authorizeUrl) {
-      const authorization = new URL(authorizeUrl);
-      const trustedHost = authorization.hostname === 'avereo.fr'
-        || authorization.hostname.endsWith('.avereo.fr');
-      if (authorization.protocol !== 'https:' || !trustedHost) {
-        throw new Error('IDENTITY_PROVIDER_URL_INVALID');
-      }
-      const logoutUrl = new URL('/user/logout/confirm', authorization.origin);
-      logoutUrl.searchParams.set('destination', `${authorization.pathname}${authorization.search}`);
-      return logoutUrl.toString();
-    }
-
     async function logoutAndSwitchAccount() {
-      await getJson('/api/v1/auth/logout', {
+      const payload = await getJson('/api/v1/auth/logout', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -324,11 +356,7 @@
       });
       sessionStorage.removeItem(requestedAppKey);
       history.replaceState({}, '', '/');
-
-      const anonymousSession = await session();
-      csrfToken = anonymousSession.data.csrfToken;
-      const authorizeUrl = await requestAuthorizeUrl(false);
-      window.location.assign(drupalLogoutConfirmationUrl(authorizeUrl));
+      window.location.assign(payload.data.redirectUrl || '/?logout=1');
     }
 
     function renderProfile(profilePayload, applications) {
@@ -398,7 +426,7 @@
       const information = document.createElement('div');
       const name = document.createElement('p');
       const nameStrong = document.createElement('strong');
-      nameStrong.textContent = identity.displayName || identity.email || 'Identité Drupal';
+      nameStrong.textContent = identity.displayName || identity.email || 'Profil AVEREO';
       name.append(nameStrong);
       const email = document.createElement('p');
       email.textContent = identity.email || 'Adresse e-mail non transmise';
@@ -534,7 +562,69 @@
         actions.append(protectedLabel);
       }
 
-      card.append(information, actions);
+      const applicationAccess = document.createElement('div');
+      applicationAccess.className = 'admin-app-access';
+      const applicationTitle = document.createElement('strong');
+      applicationTitle.textContent = 'Applications autorisées';
+      const applicationList = document.createElement('div');
+      applicationList.className = 'app-access-list';
+      const applications = user.applications || [];
+      if (applications.length === 0) {
+        applicationList.append(emptyAdminList('Aucune application disponible pour cette organisation.'));
+      } else {
+        for (const application of applications) {
+          const option = document.createElement('label');
+          option.className = 'app-access-option';
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.checked = application.status === 'active';
+          checkbox.disabled = !user.canManageApplications;
+          checkbox.setAttribute(
+            'aria-label',
+            `${application.name} pour ${nameStrong.textContent}`
+          );
+          checkbox.addEventListener('change', async () => {
+            const requestedStatus = checkbox.checked ? 'active' : 'revoked';
+            if (
+              requestedStatus === 'revoked'
+              && !window.confirm(`Retirer l’accès à ${application.name} pour ${nameStrong.textContent} ?`)
+            ) {
+              checkbox.checked = true;
+              return;
+            }
+            checkbox.disabled = true;
+            adminStatus.textContent = `Mise à jour de ${application.name} pour ${nameStrong.textContent}…`;
+            try {
+              await mutation(
+                `/api/v1/admin/organizations/${adminOrganizationId}/users/${user.id}/applications/${application.code}`,
+                'PUT',
+                { status: requestedStatus }
+              );
+              const result = requestedStatus === 'active' ? 'autorisé' : 'retiré';
+              await loadAdministration(
+                `L’accès à ${application.name} est ${result} pour ${nameStrong.textContent}.`
+              );
+            } catch (error) {
+              checkbox.checked = !checkbox.checked;
+              checkbox.disabled = false;
+              adminStatus.textContent = `La mise à jour de l’application a échoué (${error.message}).`;
+            }
+          });
+          const label = document.createElement('span');
+          label.textContent = application.name;
+          option.append(checkbox, label);
+          applicationList.append(option);
+        }
+      }
+      if (!user.canManageApplications) {
+        const notice = document.createElement('small');
+        notice.textContent = 'Droits applicatifs visibles, mais non modifiables avec votre rôle.';
+        applicationAccess.append(applicationTitle, applicationList, notice);
+      } else {
+        applicationAccess.append(applicationTitle, applicationList);
+      }
+
+      card.append(information, actions, applicationAccess);
       return card;
     }
 
@@ -548,8 +638,8 @@
       adminAppsCount.textContent = String(applications.length);
       adminStatus.textContent = message || (
         applications.length > 0
-          ? `Applications héritées par les comptes actifs : ${applications.map((application) => application.name).join(', ')}.`
-          : 'Aucune application active n’est actuellement héritée par cette organisation.'
+          ? `Catalogue de l’organisation : ${applications.map((application) => application.name).join(', ')}. Les cases ci-dessous définissent les accès effectifs par compte.`
+          : 'Aucune application active n’est disponible pour cette organisation.'
       );
 
       adminPendingList.replaceChildren();
@@ -646,17 +736,17 @@
         if (requestedApp && /^[a-z0-9][a-z0-9_-]{1,63}$/.test(requestedApp)) {
           sessionStorage.setItem(requestedAppKey, requestedApp);
         }
-        if (query.get('logout') === '1' && authenticated) {
-          statusNode.textContent = 'Fermeture de CONNECT · confirmation Drupal requise…';
-          await logoutAndSwitchAccount();
-          return;
-        }
-
         if (!authenticated) {
           leadNode.textContent = 'Identifiez-vous avec votre compte AVEREO pour accéder à vos applications.';
+          const authenticationErrors = {
+            OAUTH_TRANSACTION_MISSING: 'La demande de connexion a expiré. Recommencez l’identification.',
+            OAUTH_TRANSACTION_INVALID: 'La demande de connexion n’est plus valide. Recommencez l’identification.',
+            OAUTH_STATE_INVALID: 'La connexion n’a pas pu être vérifiée. Recommencez l’identification.',
+            OAUTH_ID_TOKEN_INVALID: 'L’identité AVEREO n’a pas pu être validée. Recommencez la connexion.'
+          };
           statusNode.textContent = query.get('logout') === '1'
-            ? 'Vous êtes déconnecté. Identifiez-vous pour continuer.'
-            : 'Session anonyme.';
+            ? 'Vous êtes déconnecté. Vous pouvez maintenant utiliser un autre compte.'
+            : (authenticationErrors[query.get('auth_error')] || 'Session anonyme.');
           return;
         }
 
@@ -664,20 +754,20 @@
         const accountStatus = sessionPayload.data.accountStatus || 'pending';
         const accountMessages = {
           pending: [
-            'Votre identité Drupal est validée. Votre compte CONNECT attend encore une approbation.',
-            'Session Drupal authentifiée · compte CONNECT non approuvé.'
+            'Votre identité AVEREO est validée. Votre compte CONNECT attend encore une approbation.',
+            'Identité AVEREO authentifiée · compte CONNECT non approuvé.'
           ],
           rejected: [
             'Votre demande d’accès CONNECT a été refusée. Contactez un administrateur AVEREO.',
-            'Session Drupal authentifiée · demande CONNECT refusée.'
+            'Identité AVEREO authentifiée · demande CONNECT refusée.'
           ],
           suspended: [
             'Votre compte CONNECT est temporairement suspendu. Contactez un administrateur AVEREO.',
-            'Session Drupal authentifiée · compte CONNECT suspendu.'
+            'Identité AVEREO authentifiée · compte CONNECT suspendu.'
           ],
           disabled: [
             'Votre compte CONNECT est désactivé. Contactez un administrateur AVEREO.',
-            'Session Drupal authentifiée · compte CONNECT désactivé.'
+            'Identité AVEREO authentifiée · compte CONNECT désactivé.'
           ]
         };
         if (!approved) {
@@ -686,8 +776,8 @@
           statusNode.textContent = messages[1];
           return;
         }
-        leadNode.textContent = 'Votre identité Drupal est validée. Vous pouvez accéder aux applications autorisées.';
-        statusNode.textContent = 'Session Drupal authentifiée et compte CONNECT actif.';
+        leadNode.textContent = 'Votre identité AVEREO est validée. Vous pouvez accéder aux applications autorisées.';
+        statusNode.textContent = 'Session AVEREO sécurisée et compte CONNECT actif.';
         const catalogPayload = await catalog();
         renderApplications(catalogPayload.data);
         applicationsSection.hidden = false;
@@ -720,17 +810,28 @@
       }
     });
 
-    adminBackButton.addEventListener('click', showPortal);
+    adminBackButton.addEventListener('click', refresh);
 
-    logoutButton.addEventListener('click', async () => {
-      logoutButton.disabled = true;
-      statusNode.textContent = 'Fermeture de CONNECT · confirmation Drupal requise…';
+    logoutButton.addEventListener('click', () => {
+      logoutDialog.showModal();
+    });
+
+    logoutCancelButton.addEventListener('click', () => {
+      logoutDialog.close();
+    });
+
+    logoutConfirmButton.addEventListener('click', async () => {
+      logoutConfirmButton.disabled = true;
+      logoutCancelButton.disabled = true;
+      statusNode.textContent = 'Fermeture sécurisée de votre session AVEREO…';
       try {
         await logoutAndSwitchAccount();
       } catch {
+        logoutDialog.close();
         statusNode.textContent = 'La déconnexion n’a pas abouti.';
       } finally {
-        logoutButton.disabled = false;
+        logoutConfirmButton.disabled = false;
+        logoutCancelButton.disabled = false;
       }
     });
 

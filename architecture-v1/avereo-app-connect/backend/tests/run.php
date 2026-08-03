@@ -10,6 +10,7 @@ use Avereo\Connect\Http\Response;
 use Avereo\Connect\Repository\ConnectRepository;
 use Avereo\Connect\Security\AppLaunchTicketIssuer;
 use Avereo\Connect\Security\AuthContext;
+use Avereo\Connect\Security\IdentityLogoutUrlSigner;
 use Avereo\Connect\Security\OAuthTransactionStore;
 
 require dirname(__DIR__) . '/src/autoload.php';
@@ -127,7 +128,10 @@ final class FakeRepository implements ConnectRepository
             'organization' => ['id' => 7, 'name' => 'Espace test', 'slug' => 'espace-test'],
             'actorRole' => 'owner',
             'assignableRoles' => ['owner', 'admin', 'member', 'viewer'],
-            'applications' => [['code' => 'rapport', 'name' => 'Rapport']],
+            'applications' => [
+                ['code' => 'rapport', 'name' => 'Rapport'],
+                ['code' => 'coupe', 'name' => 'Coupe'],
+            ],
             'pendingIdentities' => [[
                 'id' => 9,
                 'email' => 'pending@example.invalid',
@@ -140,6 +144,11 @@ final class FakeRepository implements ConnectRepository
                 'status' => 'active',
                 'role' => 'owner',
                 'canChangeStatus' => false,
+                'canManageApplications' => true,
+                'applications' => [
+                    ['code' => 'rapport', 'name' => 'Rapport', 'status' => 'active', 'inherited' => true],
+                    ['code' => 'coupe', 'name' => 'Coupe', 'status' => 'active', 'inherited' => true],
+                ],
             ]],
         ];
     }
@@ -197,6 +206,33 @@ final class FakeRepository implements ConnectRepository
             'displayName' => 'Member Test',
             'status' => $status,
             'role' => 'member',
+        ];
+    }
+
+    public function updateUserApplicationAccess(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $applicationCode,
+        string $status,
+        string $requestId,
+    ): array {
+        if ($actorUserId !== 42 || $organizationId !== 7) {
+            throw new ApiException(403, 'ACCOUNT_ADMINISTRATION_DENIED', 'Administration refusee.');
+        }
+        $this->accountAuditCount++;
+        if ($targetUserId === 42) {
+            if ($status === 'revoked') {
+                $this->allowedApps = array_values(array_diff($this->allowedApps, [$applicationCode]));
+            } elseif (!in_array($applicationCode, $this->allowedApps, true)) {
+                $this->allowedApps[] = $applicationCode;
+            }
+        }
+        return [
+            'userId' => $targetUserId,
+            'applicationCode' => $applicationCode,
+            'status' => $status,
+            'inherited' => false,
         ];
     }
 }
@@ -677,6 +713,52 @@ $tests['account suspension is audited'] = static function () use (
     assertSameValue(3, $repository->accountAuditCount, 'account suspension audit count');
 };
 
+$tests['application access revocation hides and blocks the application'] = static function () use (
+    $application,
+    $authenticated,
+    $logout,
+    $repository,
+): void {
+    $response = $application->handle(
+        request(
+            'PUT',
+            '/api/v1/admin/organizations/7/users/42/applications/coupe',
+            ['status' => 'revoked'],
+            ['x-csrf-token' => 'csrf-test'],
+        ),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(200, $response->status, 'application access update status');
+    assertSameValue('revoked', $response->payload['data']['status'], 'application access update result');
+    assertSameValue(4, $repository->accountAuditCount, 'application access audit count');
+
+    $catalogResponse = $application->handle(
+        request('GET', '/api/v1/catalog'),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(
+        false,
+        in_array('coupe', array_column($catalogResponse->payload['data'], 'code'), true),
+        'revoked application hidden from catalog',
+    );
+    $launchResponse = $application->handle(
+        request('GET', '/api/v1/apps/coupe/launch'),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(403, $launchResponse->status, 'revoked application launch blocked');
+    assertSameValue(
+        'APPLICATION_ACCESS_DENIED',
+        $launchResponse->payload['error']['code'],
+        'revoked application launch code',
+    );
+};
+
 $tests['logout csrf'] = static function () use ($application, $authenticated, $logout, &$logoutCalled): void {
     $response = $application->handle(
         request('POST', '/api/v1/auth/logout', [], ['x-csrf-token' => 'csrf-test']),
@@ -688,7 +770,7 @@ $tests['logout csrf'] = static function () use ($application, $authenticated, $l
     assertSameValue(true, $logoutCalled, 'logout callback');
 };
 
-$tests['portal logout uses Drupal confirmation route'] = static function (): void {
+$tests['portal logout is branded and uses the signed bridge'] = static function (): void {
     $portal = file_get_contents(dirname(__DIR__) . '/public/index.html');
     if ($portal === false) {
         throw new RuntimeException('Le portail CONNECT ne peut pas être lu.');
@@ -696,14 +778,29 @@ $tests['portal logout uses Drupal confirmation route'] = static function (): voi
 
     assertSameValue(
         true,
-        str_contains($portal, "new URL('/user/logout/confirm', authorization.origin)"),
-        'Drupal logout confirmation route',
+        str_contains($portal, 'id="logout-dialog"'),
+        'AVEREO logout confirmation dialog',
     );
     assertSameValue(
         false,
-        str_contains($portal, "new URL('/user/logout', authorization.origin)"),
-        'unprotected Drupal logout route absent',
+        stripos($portal, 'Drupal') !== false,
+        'identity engine name absent from the portal',
     );
+};
+
+$tests['signed identity logout URL'] = static function (): void {
+    $secret = str_repeat('s', 32);
+    $signer = new IdentityLogoutUrlSigner(
+        'https://identity.example/avereo/session/logout',
+        $secret,
+        'https://connect.example/api/v1/auth/callback',
+    );
+    $url = $signer->issue(1_780_000_000, str_repeat('a', 32));
+    $query = [];
+    parse_str((string) parse_url($url, PHP_URL_QUERY), $query);
+    assertSameValue('https://connect.example/?logout=1', $query['return'] ?? null, 'logout return');
+    $payload = "1780000000\n" . str_repeat('a', 32) . "\nhttps://connect.example/?logout=1";
+    assertSameValue(hash_hmac('sha256', $payload, $secret), $query['signature'] ?? null, 'logout signature');
 };
 
 $tests['oauth transaction fallback is one-time and bound'] = static function (): void {

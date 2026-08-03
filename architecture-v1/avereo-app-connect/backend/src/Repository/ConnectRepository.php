@@ -74,4 +74,14 @@ interface ConnectRepository
         string $status,
         string $requestId,
     ): array;
+
+    /** @return array<string, mixed> */
+    public function updateUserApplicationAccess(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $applicationCode,
+        string $status,
+        string $requestId,
+    ): array;
 }

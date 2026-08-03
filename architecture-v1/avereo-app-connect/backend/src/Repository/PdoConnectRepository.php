@@ -87,7 +87,10 @@ final class PdoConnectRepository implements ConnectRepository
             . 'INNER JOIN organizations o ON o.id = m.organization_id AND o.status = \'active\' '
             . 'INNER JOIN entitlements e ON e.organization_id = o.id AND e.status = \'active\' '
             . 'INNER JOIN applications a ON a.id = e.application_id AND a.status = \'active\' '
+            . 'LEFT JOIN user_application_access ua ON ua.organization_id = o.id '
+            . 'AND ua.user_id = u.id AND ua.application_id = a.id '
             . 'WHERE u.id = :user_id AND u.status = \'active\' AND a.code = :application_code '
+            . 'AND (ua.status IS NULL OR ua.status = \'active\') '
             . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
             . 'LIMIT 1',
@@ -108,7 +111,10 @@ final class PdoConnectRepository implements ConnectRepository
             . 'INNER JOIN organizations o ON o.id = m.organization_id AND o.status = \'active\' '
             . 'INNER JOIN entitlements e ON e.organization_id = o.id AND e.status = \'active\' '
             . 'INNER JOIN applications a ON a.id = e.application_id AND a.status = \'active\' '
+            . 'LEFT JOIN user_application_access ua ON ua.organization_id = o.id '
+            . 'AND ua.user_id = u.id AND ua.application_id = a.id '
             . 'WHERE u.id = :user_id AND u.status = \'active\' '
+            . 'AND (ua.status IS NULL OR ua.status = \'active\') '
             . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
             . 'ORDER BY a.display_order, a.name, a.code',
@@ -153,13 +159,16 @@ final class PdoConnectRepository implements ConnectRepository
             . 'e.status AS entitlementStatus, e.valid_from AS validFrom, e.valid_to AS validTo '
             . 'FROM entitlements e '
             . 'INNER JOIN applications a ON a.id = e.application_id '
+            . 'LEFT JOIN user_application_access ua ON ua.organization_id = e.organization_id '
+            . 'AND ua.user_id = :user_id AND ua.application_id = a.id '
             . 'WHERE e.organization_id = :organization_id '
             . 'AND e.status = \'active\' AND a.status = \'active\' '
+            . 'AND (ua.status IS NULL OR ua.status = \'active\') '
             . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
             . 'ORDER BY a.name, a.id',
         );
-        $statement->execute(['organization_id' => $organizationId]);
+        $statement->execute(['organization_id' => $organizationId, 'user_id' => $userId]);
         return $statement->fetchAll();
     }
 
@@ -299,15 +308,6 @@ final class PdoConnectRepository implements ConnectRepository
         );
         $activeOwnerStatement->execute(['organization_id' => $organizationId]);
         $activeOwnerCount = (int) $activeOwnerStatement->fetchColumn();
-        foreach ($users as &$user) {
-            $targetRole = (string) ($user['role'] ?? '');
-            $targetUserId = (int) ($user['id'] ?? 0);
-            $user['canChangeStatus'] = $actorRole === 'owner'
-                && $targetUserId !== $actorUserId
-                && ($targetRole !== 'owner' || $activeOwnerCount > 1);
-        }
-        unset($user);
-
         $applicationsStatement = $this->pdo->prepare(
             'SELECT a.code, a.name FROM entitlements e '
             . 'INNER JOIN applications a ON a.id = e.application_id '
@@ -318,6 +318,43 @@ final class PdoConnectRepository implements ConnectRepository
             . 'ORDER BY a.display_order, a.name, a.code',
         );
         $applicationsStatement->execute(['organization_id' => $organizationId]);
+        $applications = $applicationsStatement->fetchAll();
+
+        $accessStatement = $this->pdo->prepare(
+            'SELECT ua.user_id AS userId, a.code, ua.status '
+            . 'FROM user_application_access ua '
+            . 'INNER JOIN applications a ON a.id = ua.application_id '
+            . 'WHERE ua.organization_id = :organization_id',
+        );
+        $accessStatement->execute(['organization_id' => $organizationId]);
+        $accessByUser = [];
+        foreach ($accessStatement->fetchAll() as $access) {
+            $accessByUser[(int) $access['userId']][(string) $access['code']] = (string) $access['status'];
+        }
+
+        foreach ($users as &$user) {
+            $targetRole = (string) ($user['role'] ?? '');
+            $targetUserId = (int) ($user['id'] ?? 0);
+            $user['canChangeStatus'] = $actorRole === 'owner'
+                && $targetUserId !== $actorUserId
+                && ($targetRole !== 'owner' || $activeOwnerCount > 1);
+            $user['canManageApplications'] = $actorRole === 'owner'
+                || ($actorRole === 'admin' && in_array($targetRole, ['member', 'viewer'], true));
+            $user['applications'] = array_map(
+                static function (array $application) use ($accessByUser, $targetUserId): array {
+                    $code = (string) ($application['code'] ?? '');
+                    $explicitStatus = $accessByUser[$targetUserId][$code] ?? null;
+                    return [
+                        'code' => $code,
+                        'name' => (string) ($application['name'] ?? $code),
+                        'status' => $explicitStatus ?? 'active',
+                        'inherited' => $explicitStatus === null,
+                    ];
+                },
+                $applications,
+            );
+        }
+        unset($user);
 
         return [
             'organization' => $organization,
@@ -325,7 +362,7 @@ final class PdoConnectRepository implements ConnectRepository
             'assignableRoles' => $actorRole === 'owner'
                 ? ['owner', 'admin', 'member', 'viewer']
                 : ['member', 'viewer'],
-            'applications' => $applicationsStatement->fetchAll(),
+            'applications' => $applications,
             'pendingIdentities' => $pending,
             'users' => $users,
         ];
@@ -632,6 +669,113 @@ final class PdoConnectRepository implements ConnectRepository
             'displayName' => (string) ($target['displayName'] ?? ''),
             'role' => (string) ($target['role'] ?? ''),
             'status' => $status,
+        ];
+    }
+
+    public function updateUserApplicationAccess(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $applicationCode,
+        string $status,
+        string $requestId,
+    ): array {
+        $actorRole = $this->administrationRole($actorUserId, $organizationId);
+        $targetStatement = $this->pdo->prepare(
+            'SELECT u.id, u.display_name AS displayName, u.status, m.role, m.status AS membershipStatus '
+            . 'FROM memberships m INNER JOIN users u ON u.id = m.user_id '
+            . 'WHERE m.organization_id = :organization_id AND u.id = :user_id',
+        );
+        $targetStatement->execute([
+            'organization_id' => $organizationId,
+            'user_id' => $targetUserId,
+        ]);
+        $target = $targetStatement->fetch();
+        if (!is_array($target)) {
+            throw new ApiException(404, 'USER_NOT_FOUND', 'Le compte est introuvable dans cette organisation.');
+        }
+        if (
+            $actorRole !== 'owner'
+            && !in_array((string) ($target['role'] ?? ''), ['member', 'viewer'], true)
+        ) {
+            $this->recordAudit(
+                $actorUserId,
+                $organizationId,
+                'user.application_access.update',
+                'user',
+                (string) $targetUserId,
+                'denied',
+                $requestId,
+                ['reason' => 'role_insufficient', 'applicationCode' => $applicationCode],
+            );
+            throw new ApiException(
+                403,
+                'FORBIDDEN',
+                'Un administrateur ne peut pas modifier les applications d un autre administrateur.',
+            );
+        }
+
+        $applicationStatement = $this->pdo->prepare(
+            'SELECT a.id, a.name FROM entitlements e '
+            . 'INNER JOIN applications a ON a.id = e.application_id '
+            . 'WHERE e.organization_id = :organization_id AND a.code = :application_code '
+            . 'AND e.status = \'active\' AND a.status = \'active\' '
+            . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
+            . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6))',
+        );
+        $applicationStatement->execute([
+            'organization_id' => $organizationId,
+            'application_code' => $applicationCode,
+        ]);
+        $application = $applicationStatement->fetch();
+        if (!is_array($application)) {
+            throw new ApiException(
+                404,
+                'APPLICATION_NOT_ENTITLED',
+                'L application n est pas disponible pour cette organisation.',
+            );
+        }
+
+        try {
+            $this->pdo->beginTransaction();
+            $update = $this->pdo->prepare(
+                'INSERT INTO user_application_access '
+                . '(organization_id, user_id, application_id, status, granted_by_user_id) '
+                . 'VALUES (:organization_id, :user_id, :application_id, :status, :actor_id) '
+                . 'ON DUPLICATE KEY UPDATE status = VALUES(status), '
+                . 'granted_by_user_id = VALUES(granted_by_user_id), updated_at = UTC_TIMESTAMP(6)',
+            );
+            $update->execute([
+                'organization_id' => $organizationId,
+                'user_id' => $targetUserId,
+                'application_id' => (int) $application['id'],
+                'status' => $status,
+                'actor_id' => $actorUserId,
+            ]);
+            $this->recordAudit(
+                $actorUserId,
+                $organizationId,
+                'user.application_access.update',
+                'user',
+                (string) $targetUserId,
+                'success',
+                $requestId,
+                ['applicationCode' => $applicationCode, 'status' => $status],
+            );
+            $this->pdo->commit();
+        } catch (\Throwable $exception) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $exception;
+        }
+
+        return [
+            'userId' => $targetUserId,
+            'applicationCode' => $applicationCode,
+            'applicationName' => (string) ($application['name'] ?? $applicationCode),
+            'status' => $status,
+            'inherited' => false,
         ];
     }
 

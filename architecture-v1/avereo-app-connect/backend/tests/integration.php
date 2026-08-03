@@ -138,6 +138,41 @@ if (!$repository->canLaunchApplication($approvedUserId, 'rapport')) {
     throw new RuntimeException('Le compte approuve devrait heriter de Rapport.');
 }
 
+$revokedAccess = $repository->updateUserApplicationAccess(
+    $ownerId,
+    $organizationId,
+    $approvedUserId,
+    'rapport',
+    'revoked',
+    'integration-request-account-app-revoke',
+);
+if (
+    ($revokedAccess['status'] ?? null) !== 'revoked'
+    || $repository->canLaunchApplication($approvedUserId, 'rapport')
+    || count($repository->listCatalog($approvedUserId)) !== 0
+) {
+    throw new RuntimeException('La revocation applicative du compte est inoperante.');
+}
+$applicationAccessAudit = (int) $pdo->query(
+    "SELECT COUNT(*) FROM audit_events "
+    . "WHERE request_id = 'integration-request-account-app-revoke' "
+    . "AND action = 'user.application_access.update' AND outcome = 'success'",
+)->fetchColumn();
+if ($applicationAccessAudit !== 1) {
+    throw new RuntimeException('La revocation applicative doit produire un audit unique.');
+}
+$repository->updateUserApplicationAccess(
+    $ownerId,
+    $organizationId,
+    $approvedUserId,
+    'rapport',
+    'active',
+    'integration-request-account-app-restore',
+);
+if (!$repository->canLaunchApplication($approvedUserId, 'rapport')) {
+    throw new RuntimeException('La restauration du droit applicatif est inoperante.');
+}
+
 $suspended = $repository->updateUserStatus(
     $ownerId,
     $organizationId,
