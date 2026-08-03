@@ -25,7 +25,7 @@ final class LogoutController extends ControllerBase
 
     public function logout(Request $request): Response
     {
-        $configuration = Settings::get('avereo_identity_bridge', []);
+        $configuration = $this->configuration();
         $secret = is_array($configuration) ? trim((string) ($configuration['logout_secret'] ?? '')) : '';
         $allowedReturns = is_array($configuration) ? ($configuration['allowed_return_urls'] ?? []) : [];
         $ttl = is_array($configuration) ? (int) ($configuration['logout_ttl_seconds'] ?? 120) : 120;
@@ -63,6 +63,24 @@ final class LogoutController extends ControllerBase
             'Cache-Control' => 'no-store, private',
             'Pragma' => 'no-cache',
         ]);
+    }
+
+    /** @return array<string, mixed> */
+    private function configuration(): array
+    {
+        $configuration = Settings::get('avereo_identity_bridge', []);
+        $path = Settings::get(
+            'avereo_identity_bridge_config_path',
+            dirname(DRUPAL_ROOT) . '/private/avereo-identity-bridge.php',
+        );
+        if (is_string($path) && is_readable($path)) {
+            $fileConfiguration = require $path;
+            if (is_array($fileConfiguration)) {
+                return $fileConfiguration;
+            }
+        }
+
+        return is_array($configuration) ? $configuration : [];
     }
 
     private function invalidRequest(): Response
