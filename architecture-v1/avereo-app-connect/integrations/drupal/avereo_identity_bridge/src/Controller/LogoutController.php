@@ -6,9 +6,9 @@ namespace Drupal\avereo_identity_bridge\Controller;
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Drupal\Core\Site\Settings;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -59,7 +59,7 @@ final class LogoutController extends ControllerBase
         $this->cache->set($cacheId, true, time() + $ttl);
 
         user_logout();
-        return new RedirectResponse($returnUrl, 303, [
+        return new TrustedRedirectResponse($returnUrl, 303, [
             'Cache-Control' => 'no-store, private',
             'Pragma' => 'no-cache',
         ]);
