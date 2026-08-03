@@ -688,6 +688,24 @@ $tests['logout csrf'] = static function () use ($application, $authenticated, $l
     assertSameValue(true, $logoutCalled, 'logout callback');
 };
 
+$tests['portal logout uses Drupal confirmation route'] = static function (): void {
+    $portal = file_get_contents(dirname(__DIR__) . '/public/index.html');
+    if ($portal === false) {
+        throw new RuntimeException('Le portail CONNECT ne peut pas être lu.');
+    }
+
+    assertSameValue(
+        true,
+        str_contains($portal, "new URL('/user/logout/confirm', authorization.origin)"),
+        'Drupal logout confirmation route',
+    );
+    assertSameValue(
+        false,
+        str_contains($portal, "new URL('/user/logout', authorization.origin)"),
+        'unprotected Drupal logout route absent',
+    );
+};
+
 $tests['oauth transaction fallback is one-time and bound'] = static function (): void {
     $directory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'avereo-oauth-' . bin2hex(random_bytes(8));
     $store = new OAuthTransactionStore($directory, 'test-integrity-key');
