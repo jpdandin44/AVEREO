@@ -48,6 +48,16 @@ historique de l'organisation. Une ligne `revoked` constitue un refus explicite.
 Ce choix maintient la compatibilité des comptes existants tout en permettant une
 révocation immédiate et auditée.
 
+Le lot du 4 août 2026 ajoute l’initialisation sécurisée des comptes approuvés :
+
+- appel serveur signé de CONNECT vers le pont d’identité ;
+- invalidation du mot de passe précédent dans Drupal ;
+- e-mail AVEREO avec lien unique de définition du mot de passe valable
+  24 heures ;
+- renvoi administrateur, anti-rejeu, limitation des envois et audit du résultat ;
+- contact `contact@avereo.fr` sur le portail et dans les messages ;
+- aucun mot de passe traité ou stocké par CONNECT.
+
 ## Compatibilité Simple OAuth
 
 Simple OAuth 6.1.1 ne renvoie pas le `nonce` dans l'ID token du flux testé.

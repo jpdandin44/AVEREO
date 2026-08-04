@@ -33,6 +33,9 @@ final class Config
         public readonly int $oauthTransactionTtlSeconds = 900,
         public readonly string $identityLogoutUrl = '',
         public readonly string $identityLogoutSecret = '',
+        public readonly string $identityAccountActivationUrl = '',
+        public readonly string $identityAccountActivationSecret = '',
+        public readonly string $supportEmail = 'contact@avereo.fr',
     ) {
         if ($sessionIdleSeconds < 60 || $sessionAbsoluteSeconds < $sessionIdleSeconds) {
             throw new \InvalidArgumentException('Durées de session invalides.');
@@ -49,6 +52,22 @@ final class Config
             || ($identityLogoutSecret !== '' && strlen($identityLogoutSecret) < 32)
         ) {
             throw new \InvalidArgumentException('Configuration de déconnexion AVEREO invalide.');
+        }
+        if (
+            ($identityAccountActivationUrl === '') !== ($identityAccountActivationSecret === '')
+            || (
+                $identityAccountActivationUrl !== ''
+                && !str_starts_with($identityAccountActivationUrl, 'https://')
+            )
+            || (
+                $identityAccountActivationSecret !== ''
+                && strlen($identityAccountActivationSecret) < 32
+            )
+        ) {
+            throw new \InvalidArgumentException('Configuration d’activation AVEREO invalide.');
+        }
+        if (filter_var($supportEmail, FILTER_VALIDATE_EMAIL) === false) {
+            throw new \InvalidArgumentException('Adresse de contact AVEREO invalide.');
         }
     }
 
@@ -93,6 +112,9 @@ final class Config
             self::envInt('OAUTH_TRANSACTION_TTL_SECONDS', 900),
             self::env('IDENTITY_LOGOUT_URL'),
             self::env('IDENTITY_LOGOUT_SECRET'),
+            self::env('IDENTITY_ACCOUNT_ACTIVATION_URL'),
+            self::env('IDENTITY_ACCOUNT_ACTIVATION_SECRET'),
+            self::env('SUPPORT_EMAIL', 'contact@avereo.fr'),
         );
     }
 
@@ -146,6 +168,12 @@ final class Config
     public function isIdentityLogoutConfigured(): bool
     {
         return $this->identityLogoutUrl !== '' && $this->identityLogoutSecret !== '';
+    }
+
+    public function isIdentityAccountActivationConfigured(): bool
+    {
+        return $this->identityAccountActivationUrl !== ''
+            && $this->identityAccountActivationSecret !== '';
     }
 
     private static function env(string $name, string $default = ''): string

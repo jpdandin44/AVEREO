@@ -7,11 +7,13 @@ namespace Avereo\Connect;
 use Avereo\Connect\Http\ApiException;
 use Avereo\Connect\Http\Request;
 use Avereo\Connect\Http\Response;
+use Avereo\Connect\Identity\AccountActivationNotifier;
 use Avereo\Connect\Repository\ConnectRepository;
 use Avereo\Connect\Security\AppLaunchTicketIssuer;
 use Avereo\Connect\Security\AuthContext;
 use Avereo\Connect\Security\CsrfGuard;
 use Avereo\Connect\Security\IdentityLogoutUrlSigner;
+use Avereo\Connect\Security\IdentityAccountActivationCompletionVerifier;
 
 final class Application
 {
@@ -20,6 +22,8 @@ final class Application
         private readonly ConnectRepository $repository,
         private readonly ?AppLaunchTicketIssuer $appLaunchTickets = null,
         private readonly ?IdentityLogoutUrlSigner $identityLogout = null,
+        private readonly ?AccountActivationNotifier $accountActivation = null,
+        private readonly ?IdentityAccountActivationCompletionVerifier $activationCompletion = null,
     ) {
     }
 
@@ -141,6 +145,22 @@ final class Application
             ], $request->requestId);
         }
 
+        if (
+            $request->method === 'GET'
+            && $request->path === '/api/v1/identity/account-activation-complete'
+        ) {
+            if ($this->activationCompletion === null) {
+                throw new ApiException(
+                    503,
+                    'ACCOUNT_ACTIVATION_NOT_CONFIGURED',
+                    'La confirmation d’activation AVEREO n’est pas configurée.',
+                );
+            }
+            $targetUserId = $this->activationCompletion->verify($request->query);
+            $this->repository->completeAccountActivation($targetUserId, $request->requestId);
+            return Response::redirect('/?activation=completed', $request->requestId);
+        }
+
         $this->requireAuthenticated($auth);
         if ($request->method === 'GET' && $request->path === '/api/v1/catalog') {
             return Response::success($this->applicationCatalog($auth), $request->requestId);
@@ -206,14 +226,22 @@ final class Application
             )
         ) {
             CsrfGuard::assertValid($request, $csrfToken);
+            $approved = $this->repository->approvePendingIdentity(
+                $userId,
+                (int) $matches[1],
+                (int) $matches[2],
+                $this->validateApprovalRole($request->body),
+                $request->requestId,
+            );
+            $approved['activationEmail'] = $this->deliverAccountActivation(
+                $userId,
+                (int) $matches[1],
+                $approved,
+                $request->requestId,
+            );
+            unset($approved['drupalSubject']);
             return Response::success(
-                $this->repository->approvePendingIdentity(
-                    $userId,
-                    (int) $matches[1],
-                    (int) $matches[2],
-                    $this->validateApprovalRole($request->body),
-                    $request->requestId,
-                ),
+                $approved,
                 $request->requestId,
             );
         }
@@ -233,6 +261,33 @@ final class Application
                     $userId,
                     (int) $matches[1],
                     (int) $matches[2],
+                    $request->requestId,
+                ),
+                $request->requestId,
+            );
+        }
+
+        if (
+            $request->method === 'POST'
+            && preg_match(
+                '#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/activation-email$#',
+                $request->path,
+                $matches,
+            )
+        ) {
+            CsrfGuard::assertValid($request, $csrfToken);
+            $this->assertKnownFields($request->body, []);
+            $organizationId = (int) $matches[1];
+            $target = $this->repository->accountActivationTarget(
+                $userId,
+                $organizationId,
+                (int) $matches[2],
+            );
+            return Response::success(
+                $this->deliverAccountActivation(
+                    $userId,
+                    $organizationId,
+                    $target,
                     $request->requestId,
                 ),
                 $request->requestId,
@@ -362,6 +417,74 @@ final class Application
     {
         if (!$auth->isAuthenticated()) {
             throw new ApiException(401, 'AUTHENTICATION_REQUIRED', 'Une session CONNECT valide est requise.');
+        }
+    }
+
+    /**
+     * @param array<string, mixed> $target
+     * @return array{status: string, expiresInSeconds: int, supportEmail: string}
+     */
+    private function deliverAccountActivation(
+        int $actorUserId,
+        int $organizationId,
+        array $target,
+        string $requestId,
+    ): array {
+        $targetUserId = (int) ($target['id'] ?? 0);
+        if ($this->accountActivation === null) {
+            $this->repository->recordAccountActivationDelivery(
+                $actorUserId,
+                $organizationId,
+                $targetUserId,
+                'failure',
+                $requestId,
+            );
+            return [
+                'status' => 'not_configured',
+                'expiresInSeconds' => 86400,
+                'supportEmail' => $this->config->supportEmail,
+            ];
+        }
+
+        try {
+            $delivery = $this->accountActivation->send(
+                $targetUserId,
+                (string) ($target['drupalSubject'] ?? ''),
+                (string) ($target['email'] ?? ''),
+                (string) ($target['displayName'] ?? ''),
+                $requestId,
+            );
+            $this->repository->recordAccountActivationDelivery(
+                $actorUserId,
+                $organizationId,
+                $targetUserId,
+                'success',
+                $requestId,
+            );
+            return [
+                'status' => (string) ($delivery['status'] ?? 'sent'),
+                'expiresInSeconds' => (int) ($delivery['expiresInSeconds'] ?? 86400),
+                'supportEmail' => $this->config->supportEmail,
+            ];
+        } catch (\Throwable $exception) {
+            error_log(json_encode([
+                'event' => 'identity.activation_email_failed',
+                'requestId' => $requestId,
+                'targetUserId' => $targetUserId,
+                'type' => $exception::class,
+            ], JSON_UNESCAPED_SLASHES));
+            $this->repository->recordAccountActivationDelivery(
+                $actorUserId,
+                $organizationId,
+                $targetUserId,
+                'failure',
+                $requestId,
+            );
+            return [
+                'status' => 'failed',
+                'expiresInSeconds' => 86400,
+                'supportEmail' => $this->config->supportEmail,
+            ];
         }
     }
 

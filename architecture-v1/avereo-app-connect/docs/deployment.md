@@ -48,10 +48,13 @@ un `config.php` privé hors document root.
    l'instance d'identité, puis placer son secret dans la configuration privée ;
 6. configurer le même secret côté CONNECT avec `IDENTITY_LOGOUT_URL` et
    `IDENTITY_LOGOUT_SECRET` ;
-7. basculer le document root ou le lien de version ;
-8. tester santé, session anonyme, login, callback, révocation applicative et
+7. configurer un secret distinct pour `IDENTITY_ACCOUNT_ACTIVATION_URL` et
+   `IDENTITY_ACCOUNT_ACTIVATION_SECRET`, puis `SUPPORT_EMAIL=contact@avereo.fr` ;
+8. basculer le document root ou le lien de version ;
+9. tester santé, session anonyme, login, callback, activation par e-mail,
+   expiration et renvoi du lien, révocation applicative et
    déconnexion complète ;
-9. surveiller les erreurs sans afficher de détails au navigateur.
+10. surveiller les erreurs sans afficher de détails au navigateur.
 
 ## Retour arrière
 

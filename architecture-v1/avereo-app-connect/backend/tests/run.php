@@ -7,10 +7,13 @@ use Avereo\Connect\Config;
 use Avereo\Connect\Http\ApiException;
 use Avereo\Connect\Http\Request;
 use Avereo\Connect\Http\Response;
+use Avereo\Connect\Identity\AccountActivationNotifier;
+use Avereo\Connect\Identity\IdentityAccountActivationClient;
 use Avereo\Connect\Repository\ConnectRepository;
 use Avereo\Connect\Security\AppLaunchTicketIssuer;
 use Avereo\Connect\Security\AuthContext;
 use Avereo\Connect\Security\IdentityLogoutUrlSigner;
+use Avereo\Connect\Security\IdentityAccountActivationCompletionVerifier;
 use Avereo\Connect\Security\OAuthTransactionStore;
 
 require dirname(__DIR__) . '/src/autoload.php';
@@ -20,6 +23,8 @@ final class FakeRepository implements ConnectRepository
     public bool $allowMutation = true;
     public int $auditCount = 0;
     public int $accountAuditCount = 0;
+    public int $activationAuditCount = 0;
+    public ?int $completedActivationUserId = null;
     /** @var list<string> */
     public array $allowedApps = ['rapport', 'coupe'];
 
@@ -166,10 +171,12 @@ final class FakeRepository implements ConnectRepository
         $this->accountAuditCount++;
         return [
             'id' => 51,
+            'drupalSubject' => 'drupal-pending',
             'email' => 'pending@example.invalid',
             'displayName' => 'Pending Test',
             'status' => 'active',
             'role' => $role,
+            'onboardingStatus' => 'required',
         ];
     }
 
@@ -184,6 +191,40 @@ final class FakeRepository implements ConnectRepository
         }
         $this->accountAuditCount++;
         return ['id' => $pendingIdentityId, 'status' => 'rejected', 'displayName' => 'Pending Test'];
+    }
+
+    public function accountActivationTarget(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+    ): array {
+        if ($actorUserId !== 42 || $organizationId !== 7) {
+            throw new ApiException(403, 'ACCOUNT_ADMINISTRATION_DENIED', 'Administration refusee.');
+        }
+        return [
+            'id' => $targetUserId,
+            'drupalSubject' => 'drupal-pending',
+            'email' => 'pending@example.invalid',
+            'displayName' => 'Pending Test',
+            'onboardingStatus' => 'sent',
+            'role' => 'member',
+        ];
+    }
+
+    public function recordAccountActivationDelivery(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $outcome,
+        string $requestId,
+    ): void {
+        $this->activationAuditCount++;
+    }
+
+    public function completeAccountActivation(int $targetUserId, string $requestId): void
+    {
+        $this->completedActivationUserId = $targetUserId;
+        $this->activationAuditCount++;
     }
 
     public function updateUserStatus(
@@ -234,6 +275,22 @@ final class FakeRepository implements ConnectRepository
             'status' => $status,
             'inherited' => false,
         ];
+    }
+}
+
+final class FakeAccountActivationNotifier implements AccountActivationNotifier
+{
+    public int $sentCount = 0;
+
+    public function send(
+        int $connectUserId,
+        string $drupalSubject,
+        string $email,
+        string $displayName,
+        string $requestId,
+    ): array {
+        $this->sentCount++;
+        return ['status' => 'sent', 'expiresInSeconds' => 86400];
     }
 }
 
@@ -652,6 +709,124 @@ $tests['account approval is audited'] = static function () use (
     assertSameValue(200, $response->status, 'approval status');
     assertSameValue('member', $response->payload['data']['role'], 'approval role');
     assertSameValue(1, $repository->accountAuditCount, 'approval audit count');
+    assertSameValue(
+        'not_configured',
+        $response->payload['data']['activationEmail']['status'] ?? null,
+        'approval activation configuration',
+    );
+};
+
+$tests['account approval sends a one-time activation email'] = static function () use (
+    $config,
+    $authenticated,
+    $logout,
+): void {
+    $notifier = new FakeAccountActivationNotifier();
+    $activationRepository = new FakeRepository();
+    $activationApplication = new Application($config, $activationRepository, null, null, $notifier);
+    $response = $activationApplication->handle(
+        request(
+            'POST',
+            '/api/v1/admin/organizations/7/pending-identities/9/approve',
+            ['role' => 'member'],
+            ['x-csrf-token' => 'csrf-test'],
+        ),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(200, $response->status, 'activation approval status');
+    assertSameValue('sent', $response->payload['data']['activationEmail']['status'] ?? null, 'activation sent');
+    assertSameValue(1, $notifier->sentCount, 'activation send count');
+};
+
+$tests['account activation email can be resent by an administrator'] = static function () use (
+    $config,
+    $authenticated,
+    $logout,
+): void {
+    $notifier = new FakeAccountActivationNotifier();
+    $activationRepository = new FakeRepository();
+    $activationApplication = new Application($config, $activationRepository, null, null, $notifier);
+    $response = $activationApplication->handle(
+        request(
+            'POST',
+            '/api/v1/admin/organizations/7/users/51/activation-email',
+            [],
+            ['x-csrf-token' => 'csrf-test'],
+        ),
+        $authenticated,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(200, $response->status, 'activation resend status');
+    assertSameValue('sent', $response->payload['data']['status'] ?? null, 'activation resend result');
+    assertSameValue(1, $notifier->sentCount, 'activation resend count');
+};
+
+$tests['signed activation request never contains a password'] = static function (): void {
+    $captured = [];
+    $client = new IdentityAccountActivationClient(
+        'https://identity.example/avereo/account/activation',
+        str_repeat('a', 32),
+        'contact@avereo.fr',
+        static function (string $url, array $headers, string $body) use (&$captured): array {
+            $captured = compact('url', 'headers', 'body');
+            return [
+                'status' => 200,
+                'body' => '{"status":"sent","expiresInSeconds":86400}',
+            ];
+        },
+    );
+    $result = $client->send(51, 'drupal-pending', 'pending@example.invalid', 'Pending Test', 'request-1');
+    assertSameValue('sent', $result['status'], 'signed activation result');
+    assertSameValue(false, str_contains(strtolower($captured['body']), 'password'), 'password absent');
+    $issuedAt = $captured['headers']['X-AVEREO-Issued-At'];
+    $nonce = $captured['headers']['X-AVEREO-Nonce'];
+    $expected = hash_hmac(
+        'sha256',
+        $issuedAt . "\n" . $nonce . "\n" . hash('sha256', $captured['body']),
+        str_repeat('a', 32),
+    );
+    assertSameValue($expected, $captured['headers']['X-AVEREO-Signature'], 'activation signature');
+};
+
+$tests['signed activation completion unlocks the CONNECT account'] = static function () use (
+    $config,
+    $anonymous,
+    $logout,
+): void {
+    $repository = new FakeRepository();
+    $secret = str_repeat('c', 32);
+    $verifier = new IdentityAccountActivationCompletionVerifier($secret);
+    $completionApplication = new Application($config, $repository, null, null, null, $verifier);
+    $issuedAt = time();
+    $nonce = str_repeat('n', 32);
+    $userId = 51;
+    $signature = hash_hmac(
+        'sha256',
+        $issuedAt . "\n" . $nonce . "\n" . $userId,
+        $secret,
+    );
+    $response = $completionApplication->handle(
+        request(
+            'GET',
+            '/api/v1/identity/account-activation-complete',
+            [],
+            [],
+            [
+                'iat' => (string) $issuedAt,
+                'nonce' => $nonce,
+                'user_id' => (string) $userId,
+                'signature' => $signature,
+            ],
+        ),
+        $anonymous,
+        'csrf-test',
+        $logout,
+    );
+    assertSameValue(303, $response->status, 'activation completion redirect');
+    assertSameValue(51, $repository->completedActivationUserId, 'activation completed user');
 };
 
 $tests['account rejection is audited'] = static function () use (
@@ -785,6 +960,11 @@ $tests['portal logout is branded and uses the signed bridge'] = static function 
         false,
         stripos($portal, 'Drupal') !== false,
         'identity engine name absent from the portal',
+    );
+    assertSameValue(
+        true,
+        str_contains($portal, 'mailto:contact@avereo.fr'),
+        'support contact on the CONNECT portal',
     );
 };
 

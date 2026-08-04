@@ -13,7 +13,68 @@ declare(strict_types=1);
 function avereo_identity_bridge_page_attachments(array &$attachments): void
 {
     $routeName = \Drupal::routeMatch()->getRouteName();
-    if (in_array($routeName, ['user.login', 'user.register', 'user.pass'], true)) {
+    if (in_array($routeName, [
+        'user.login',
+        'user.register',
+        'user.pass',
+        'user.reset',
+        'user.reset.login',
+        'avereo_identity_bridge.account_password',
+        'avereo_identity_bridge.account_ready',
+    ], true)) {
         $attachments['#attached']['library'][] = 'avereo_identity_bridge/identity';
     }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function avereo_identity_bridge_mail(string $key, array &$message, array $params): void
+{
+    if ($key !== 'account_activation') {
+        return;
+    }
+
+    $displayName = trim((string) ($params['display_name'] ?? ''));
+    $activationLink = (string) ($params['activation_link'] ?? '');
+    $supportEmail = (string) ($params['support_email'] ?? 'contact@avereo.fr');
+    $message['subject'] = 'Votre accès AVEREO Connect est activé';
+    $message['headers']['Reply-To'] = $supportEmail;
+    $message['body'][] = ($displayName === '' ? 'Bonjour,' : 'Bonjour ' . $displayName . ',')
+        . "\n\nVotre compte AVEREO Connect a été approuvé."
+        . "\n\nPour définir votre mot de passe, utilisez ce lien personnel à usage unique :"
+        . "\n" . $activationLink
+        . "\n\nCe lien expire après 24 heures. Aucun mot de passe n’est transmis par e-mail."
+        . "\n\nSi vous n’êtes pas à l’origine de cette demande ou si vous avez besoin d’aide,"
+        . "\ncontactez l’administrateur : " . $supportEmail
+        . "\n\nL’équipe AVEREO";
+}
+
+/**
+ * Implements hook_mail_alter().
+ */
+function avereo_identity_bridge_mail_alter(array &$message): void
+{
+    if (($message['module'] ?? null) !== 'user') {
+        return;
+    }
+    $configuration = \Drupal\Core\Site\Settings::get('avereo_identity_bridge', []);
+    $path = \Drupal\Core\Site\Settings::get(
+        'avereo_identity_bridge_config_path',
+        dirname(DRUPAL_ROOT) . '/private/avereo-identity-bridge.php',
+    );
+    if (is_string($path) && is_readable($path)) {
+        $fileConfiguration = require $path;
+        if (is_array($fileConfiguration)) {
+            $configuration = $fileConfiguration;
+        }
+    }
+    $supportEmail = is_array($configuration)
+        ? trim((string) ($configuration['support_email'] ?? 'contact@avereo.fr'))
+        : 'contact@avereo.fr';
+    if (filter_var($supportEmail, FILTER_VALIDATE_EMAIL) === false) {
+        $supportEmail = 'contact@avereo.fr';
+    }
+    $message['headers']['Reply-To'] = $supportEmail;
+    $message['body'][] = "\nBesoin d’aide ? Contactez l’administrateur AVEREO : " . $supportEmail;
 }

@@ -6,3 +6,45 @@ avereo_identity_bridge.logout:
     _access: 'TRUE'
   options:
     no_cache: TRUE
+
+avereo_identity_bridge.account_activation:
+  path: '/avereo/account/activation'
+  defaults:
+    _controller: '\Drupal\avereo_identity_bridge\Controller\AccountActivationController::issue'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
+avereo_identity_bridge.account_activate:
+  path: '/avereo/account/activate/{token}'
+  defaults:
+    _controller: '\Drupal\avereo_identity_bridge\Controller\AccountActivationController::activate'
+  requirements:
+    _access: 'TRUE'
+    token: '[A-Za-z0-9_-]{43}'
+  methods: [GET]
+  options:
+    no_cache: TRUE
+
+avereo_identity_bridge.account_password:
+  path: '/avereo/account/password'
+  defaults:
+    _form: '\Drupal\avereo_identity_bridge\Form\ActivationPasswordForm'
+    _title: 'Définir votre mot de passe AVEREO'
+  requirements:
+    _access: 'TRUE'
+  methods: [GET, POST]
+  options:
+    no_cache: TRUE
+
+avereo_identity_bridge.account_ready:
+  path: '/avereo/account/ready'
+  defaults:
+    _controller: '\Drupal\avereo_identity_bridge\Controller\AccountActivationController::ready'
+  requirements:
+    _access: 'TRUE'
+  methods: [GET]
+  options:
+    no_cache: TRUE

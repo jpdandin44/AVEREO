@@ -14,10 +14,17 @@ $connect = require '/home/CPANEL_USERNAME/private/connect-preprod/config.php';
 
 return [
   'logout_secret' => (string) ($connect['IDENTITY_LOGOUT_SECRET'] ?? ''),
+  'account_activation_secret' =>
+    (string) ($connect['IDENTITY_ACCOUNT_ACTIVATION_SECRET'] ?? ''),
   'allowed_return_urls' => [
     'https://connect-preprod.avereo.fr/?logout=1',
   ],
   'logout_ttl_seconds' => 120,
+  'request_ttl_seconds' => 120,
+  'mail_rate_limit_seconds' => 60,
+  'support_email' => 'contact@avereo.fr',
+  'connect_activation_complete_url' =>
+    'https://connect-preprod.avereo.fr/api/v1/identity/account-activation-complete',
 ];
 ```
 
@@ -33,3 +40,19 @@ Le même secret doit être fourni à CONNECT via `IDENTITY_LOGOUT_SECRET`, avec 
 ```text
 IDENTITY_LOGOUT_URL=https://auth-next-preprod.avereo.fr/avereo/session/logout
 ```
+
+L’activation utilise un secret différent du secret de déconnexion :
+
+```text
+IDENTITY_ACCOUNT_ACTIVATION_URL=https://auth-next-preprod.avereo.fr/avereo/account/activation
+IDENTITY_ACCOUNT_ACTIVATION_SECRET=SECRET_DISTINCT_D_AU_MOINS_32_CARACTERES
+SUPPORT_EMAIL=contact@avereo.fr
+```
+
+Après l’approbation CONNECT, le pont active le compte d’identité, invalide son
+ancien mot de passe et envoie un lien personnel à usage unique valable
+24 heures. Le mot de passe est défini dans Drupal et n’est jamais transmis à
+CONNECT ni placé dans l’e-mail. Un renvoi invalide le lien précédent et les
+demandes sont limitées côté Drupal. Les autres e-mails de gestion des comptes
+Drupal reçoivent également `contact@avereo.fr` comme adresse de réponse et
+contact d’assistance.

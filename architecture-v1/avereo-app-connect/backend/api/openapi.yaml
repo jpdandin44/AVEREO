@@ -323,6 +323,43 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         "422":
           $ref: "#/components/responses/ValidationError"
+  /identity/account-activation-complete:
+    get:
+      tags: [Identity]
+      operationId: completeAccountActivation
+      summary: Confirmer la définition du mot de passe
+      description: >-
+        Callback HMAC court émis par le pont d'identité après la définition
+        effective du mot de passe. Aucun accès applicatif n'est ouvert avant
+        cette confirmation.
+      parameters:
+        - name: iat
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: nonce
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: query
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+        - name: signature
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: "^[a-f0-9]{64}$"
+      responses:
+        "303":
+          description: Activation confirmée et retour vers CONNECT
+        "403":
+          description: Signature invalide ou expirée
   /admin/organizations/{organizationId}/accounts:
     get:
       tags: [Administration]
@@ -355,7 +392,9 @@ paths:
       summary: Approuver une identité Drupal en attente
       description: >-
         Crée ou réactive le compte CONNECT, son adhésion active et une trace
-        d'audit atomique. Un admin ne peut attribuer que member ou viewer.
+        d'audit atomique, puis demande à l'identité AVEREO d'envoyer un lien
+        unique de définition du mot de passe valable 24 heures. Un admin ne
+        peut attribuer que member ou viewer.
       parameters:
         - $ref: "#/components/parameters/OrganizationId"
         - $ref: "#/components/parameters/PendingIdentityId"
@@ -387,6 +426,37 @@ paths:
           description: Demande déjà traitée ou conflit d'identité
         "422":
           $ref: "#/components/responses/ValidationError"
+  /admin/organizations/{organizationId}/users/{userId}/activation-email:
+    post:
+      tags: [Administration]
+      operationId: resendAccountActivationEmail
+      summary: Renvoyer le lien d'initialisation du mot de passe
+      description: >-
+        Réservé aux owner/admin autorisés. Le mot de passe reste exclusivement
+        géré par le fournisseur d'identité et n'est jamais retourné par CONNECT.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/UserId"
+        - $ref: "#/components/parameters/CsrfToken"
+      responses:
+        "200":
+          description: Résultat de l'envoi, audité côté CONNECT
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/ActivationEmail"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "403":
+          description: Rôle insuffisant ou CSRF rejeté
+        "404":
+          description: Compte introuvable
+        "409":
+          description: Initialisation déjà terminée
   /admin/organizations/{organizationId}/pending-identities/{pendingIdentityId}/reject:
     post:
       tags: [Administration]
@@ -600,7 +670,7 @@ components:
               type: boolean
             accountStatus:
               type: [string, "null"]
-              enum: [active, pending, rejected, suspended, disabled, null]
+              enum: [active, pending, activation_required, rejected, suspended, disabled, null]
             remembered:
               type: boolean
             csrfToken:
@@ -728,6 +798,16 @@ components:
           type: boolean
         canManageApplications:
           type: boolean
+        canSendActivationEmail:
+          type: boolean
+        onboardingStatus:
+          type: string
+          enum: [required, sent, completed]
+        activationEmailSentAt:
+          type: [string, "null"]
+          format: date-time
+        activationEmail:
+          $ref: "#/components/schemas/ActivationEmail"
         applications:
           type: array
           items:
@@ -743,6 +823,19 @@ components:
         role:
           type: string
           enum: [owner, admin, member, viewer]
+    ActivationEmail:
+      type: object
+      required: [status, expiresInSeconds, supportEmail]
+      properties:
+        status:
+          type: string
+          enum: [sent, failed, not_configured]
+        expiresInSeconds:
+          type: integer
+          const: 86400
+        supportEmail:
+          type: string
+          format: email
     UserStatusInput:
       type: object
       additionalProperties: false
