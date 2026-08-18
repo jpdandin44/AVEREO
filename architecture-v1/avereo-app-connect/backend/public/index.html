@@ -336,18 +336,8 @@
       };
     }
 
-    async function requestAuthorizeUrl(remembered) {
-      const payload = await getJson('/api/v1/auth/login', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'X-AVEREO-Navigation': 'json',
-          'X-CSRF-Token': csrfToken
-        },
-        body: JSON.stringify({ remember: remembered })
-      });
-      return payload.data.authorizeUrl;
+    function loginUrl(remembered) {
+      return `/api/v1/auth/login?remember=${remembered ? '1' : '0'}`;
     }
 
     async function logoutAndSwitchAccount() {
@@ -885,16 +875,11 @@
       }
     });
 
-    loginButton.addEventListener('click', async (event) => {
+    loginButton.addEventListener('click', (event) => {
       event.preventDefault();
       loginButton.setAttribute('aria-disabled', 'true');
       statusNode.textContent = 'Ouverture de la page d’identification…';
-      try {
-        window.location.assign(await requestAuthorizeUrl(rememberInput.checked));
-      } catch {
-        statusNode.textContent = 'La page d’identification ne peut pas être ouverte.';
-        loginButton.removeAttribute('aria-disabled');
-      }
+      window.location.assign(loginUrl(rememberInput.checked));
     });
 
     refresh();

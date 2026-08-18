@@ -966,6 +966,21 @@ $tests['portal logout is branded and uses the signed bridge'] = static function 
         str_contains($portal, 'mailto:contact@avereo.fr'),
         'support contact on the CONNECT portal',
     );
+    assertSameValue(
+        true,
+        str_contains($portal, 'function loginUrl(remembered)'),
+        'native login navigation helper',
+    );
+    assertSameValue(
+        true,
+        str_contains($portal, 'window.location.assign(loginUrl(rememberInput.checked));'),
+        'native login navigation',
+    );
+    assertSameValue(
+        false,
+        str_contains($portal, 'requestAuthorizeUrl'),
+        'login does not depend on a preliminary JSON request',
+    );
 };
 
 $tests['signed identity logout URL'] = static function (): void {
