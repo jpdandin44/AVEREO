@@ -43,6 +43,21 @@ un compte vers un rôle d'administration.
 L'approbation crée ou réactive le compte CONNECT et son adhésion active. Le
 compte hérite initialement des habilitations actives de son organisation.
 
+Elle demande ensuite au fournisseur d’identité d’envoyer un lien personnel de
+définition du mot de passe. Ce lien :
+
+- est utilisable une seule fois ;
+- expire après 24 heures ;
+- remplace le mot de passe précédent sans jamais l’exposer à CONNECT ;
+- mentionne `contact@avereo.fr` comme adresse d’assistance.
+
+L’écran distingue l’e-mail à envoyer de l’e-mail envoyé et propose un renvoi.
+Un renvoi invalide le lien précédent. L’échec d’envoi ne retire pas
+l’approbation métier : il reste visible et récupérable depuis l’administration.
+Le catalogue et les routes de lancement restent refusés tant que le formulaire
+de définition du mot de passe n’a pas produit sa confirmation HMAC vers
+CONNECT.
+
 ## Droits aux applications
 
 Chaque fiche de compte affiche les applications du catalogue de l'organisation.
@@ -97,5 +112,9 @@ révocation explicite dans l'administration CONNECT.
 7. suspendre le compte et vérifier que le lancement est refusé ;
 8. réactiver le compte et vérifier que l'accès revient ;
 9. vérifier les événements `identity.approve`, `identity.reject`,
-   `user.status.update` et `user.application_access.update` dans
+   `identity.activation_email`, `user.status.update` et
+   `user.application_access.update` dans
    `audit_events`.
+10. approuver un nouveau compte, vérifier la réception de l’e-mail, l’expiration
+    à 24 heures, l’invalidation du lien précédent après renvoi et l’obligation
+    de définir le mot de passe avant la connexion.

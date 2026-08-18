@@ -67,6 +67,23 @@ interface ConnectRepository
     ): array;
 
     /** @return array<string, mixed> */
+    public function accountActivationTarget(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+    ): array;
+
+    public function recordAccountActivationDelivery(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $outcome,
+        string $requestId,
+    ): void;
+
+    public function completeAccountActivation(int $targetUserId, string $requestId): void;
+
+    /** @return array<string, mixed> */
     public function updateUserStatus(
         int $actorUserId,
         int $organizationId,

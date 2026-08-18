@@ -38,6 +38,15 @@ applications par compte. Les routes d'administration réappliquent les rôles
 côté serveur, exigent le CSRF et auditent chaque mutation. Une révocation filtre
 le catalogue et bloque aussi le lancement direct.
 
+L’approbation déclenche également un appel HTTPS signé vers le pont d’identité.
+Drupal invalide alors l’ancien mot de passe et envoie un e-mail AVEREO contenant
+un lien personnel à usage unique valable 24 heures. L’utilisateur doit définir
+son mot de passe avant sa première connexion. CONNECT ne crée, ne reçoit et ne
+stocke aucun mot de passe. L’interface permet de renvoyer le lien tant que
+l’initialisation reste en cours ; chaque résultat d’envoi est audité. Le
+catalogue et le sas restent bloqués jusqu’au callback HMAC émis après
+l’enregistrement effectif du nouveau mot de passe.
+
 La déconnexion est confirmée dans l'interface CONNECT. Après confirmation,
 CONNECT ferme sa session et émet une URL HMAC à usage unique vers le module
 `integrations/drupal/avereo_identity_bridge`. Ce pont ferme la session

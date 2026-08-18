@@ -134,8 +134,28 @@ if (($approved['status'] ?? null) !== 'active' || ($approved['role'] ?? null) !=
     throw new RuntimeException('Approbation du compte invalide.');
 }
 $approvedUserId = (int) ($approved['id'] ?? 0);
-if (!$repository->canLaunchApplication($approvedUserId, 'rapport')) {
-    throw new RuntimeException('Le compte approuve devrait heriter de Rapport.');
+if (
+    $repository->findIdentityStatusByDrupalSubject('drupal-pending') !== 'activation_required'
+    || $repository->canLaunchApplication($approvedUserId, 'rapport')
+) {
+    throw new RuntimeException('Le compte doit rester bloque avant la definition du mot de passe.');
+}
+$repository->recordAccountActivationDelivery(
+    $ownerId,
+    $organizationId,
+    $approvedUserId,
+    'success',
+    'integration-request-account-activation-email',
+);
+$repository->completeAccountActivation(
+    $approvedUserId,
+    'integration-request-account-activation-complete',
+);
+if (
+    $repository->findIdentityStatusByDrupalSubject('drupal-pending') !== 'active'
+    || !$repository->canLaunchApplication($approvedUserId, 'rapport')
+) {
+    throw new RuntimeException('Le compte devrait etre actif apres la definition du mot de passe.');
 }
 
 $revokedAccess = $repository->updateUserApplicationAccess(

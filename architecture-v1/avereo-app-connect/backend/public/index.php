@@ -8,10 +8,12 @@ use Avereo\Connect\Database;
 use Avereo\Connect\Http\ApiException;
 use Avereo\Connect\Http\Request;
 use Avereo\Connect\Http\Response;
+use Avereo\Connect\Identity\IdentityAccountActivationClient;
 use Avereo\Connect\Identity\OAuthFlow;
 use Avereo\Connect\Repository\PdoConnectRepository;
 use Avereo\Connect\Repository\UnavailableRepository;
 use Avereo\Connect\Security\AppLaunchTicketIssuer;
+use Avereo\Connect\Security\IdentityAccountActivationCompletionVerifier;
 use Avereo\Connect\Security\IdentityLogoutUrlSigner;
 use Avereo\Connect\Security\OAuthTransactionStore;
 use Avereo\Connect\Security\SessionManager;
@@ -46,6 +48,8 @@ try {
             'OAUTH_CLIENT_ID', 'OAUTH_CLIENT_SECRET', 'OAUTH_REDIRECT_URI', 'OAUTH_SUCCESS_URL',
             'OAUTH_SCOPES', 'OAUTH_PUBLIC_KEY_PATH', 'OAUTH_TRANSACTION_DIRECTORY',
             'OAUTH_TRANSACTION_TTL_SECONDS', 'IDENTITY_LOGOUT_URL', 'IDENTITY_LOGOUT_SECRET',
+            'IDENTITY_ACCOUNT_ACTIVATION_URL', 'IDENTITY_ACCOUNT_ACTIVATION_SECRET',
+            'SUPPORT_EMAIL',
             'APP_LAUNCH_RAPPORT_URL', 'APP_LAUNCH_RAPPORT_SECRET',
             'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET',
             'APP_LAUNCH_PROJET_URL', 'APP_LAUNCH_PROJET_SECRET',
@@ -86,11 +90,25 @@ try {
             $config->oauthRedirectUri,
         )
         : null;
+    $accountActivation = $config->isIdentityAccountActivationConfigured()
+        ? new IdentityAccountActivationClient(
+            $config->identityAccountActivationUrl,
+            $config->identityAccountActivationSecret,
+            $config->supportEmail,
+        )
+        : null;
+    $activationCompletion = $config->isIdentityAccountActivationConfigured()
+        ? new IdentityAccountActivationCompletionVerifier(
+            $config->identityAccountActivationSecret,
+        )
+        : null;
     $application = new Application(
         $config,
         $repository,
         new AppLaunchTicketIssuer($config),
         $identityLogout,
+        $accountActivation,
+        $activationCompletion,
     );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {

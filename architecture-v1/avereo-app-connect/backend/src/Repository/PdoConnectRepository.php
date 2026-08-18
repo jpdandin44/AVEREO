@@ -41,12 +41,17 @@ final class PdoConnectRepository implements ConnectRepository
     public function findIdentityStatusByDrupalSubject(string $drupalSubject): ?string
     {
         $userStatement = $this->pdo->prepare(
-            'SELECT status FROM users WHERE drupal_subject = :drupal_subject',
+            'SELECT status, onboarding_status AS onboardingStatus '
+            . 'FROM users WHERE drupal_subject = :drupal_subject',
         );
         $userStatement->execute(['drupal_subject' => $drupalSubject]);
-        $userStatus = $userStatement->fetchColumn();
-        if (is_string($userStatus)) {
-            return $userStatus;
+        $user = $userStatement->fetch();
+        if (is_array($user)) {
+            $status = (string) ($user['status'] ?? '');
+            if ($status === 'active' && ($user['onboardingStatus'] ?? null) !== 'completed') {
+                return 'activation_required';
+            }
+            return $status;
         }
 
         $pendingStatement = $this->pdo->prepare(
@@ -89,7 +94,8 @@ final class PdoConnectRepository implements ConnectRepository
             . 'INNER JOIN applications a ON a.id = e.application_id AND a.status = \'active\' '
             . 'LEFT JOIN user_application_access ua ON ua.organization_id = o.id '
             . 'AND ua.user_id = u.id AND ua.application_id = a.id '
-            . 'WHERE u.id = :user_id AND u.status = \'active\' AND a.code = :application_code '
+            . 'WHERE u.id = :user_id AND u.status = \'active\' '
+            . 'AND u.onboarding_status = \'completed\' AND a.code = :application_code '
             . 'AND (ua.status IS NULL OR ua.status = \'active\') '
             . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
@@ -114,6 +120,7 @@ final class PdoConnectRepository implements ConnectRepository
             . 'LEFT JOIN user_application_access ua ON ua.organization_id = o.id '
             . 'AND ua.user_id = u.id AND ua.application_id = a.id '
             . 'WHERE u.id = :user_id AND u.status = \'active\' '
+            . 'AND u.onboarding_status = \'completed\' '
             . 'AND (ua.status IS NULL OR ua.status = \'active\') '
             . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
@@ -127,7 +134,8 @@ final class PdoConnectRepository implements ConnectRepository
     {
         $statement = $this->pdo->prepare(
             'SELECT id, drupal_subject AS drupalSubject, email_normalized AS email, '
-            . 'display_name AS displayName, status FROM users WHERE id = :user_id AND status = \'active\'',
+            . 'display_name AS displayName, status FROM users '
+            . 'WHERE id = :user_id AND status = \'active\' AND onboarding_status = \'completed\'',
         );
         $statement->execute(['user_id' => $userId]);
         $user = $statement->fetch();
@@ -293,7 +301,9 @@ final class PdoConnectRepository implements ConnectRepository
 
         $usersStatement = $this->pdo->prepare(
             'SELECT u.id, u.email_normalized AS email, u.display_name AS displayName, '
-            . 'u.status, m.role, m.status AS membershipStatus, u.created_at AS createdAt '
+            . 'u.status, u.onboarding_status AS onboardingStatus, '
+            . 'u.activation_email_sent_at AS activationEmailSentAt, '
+            . 'm.role, m.status AS membershipStatus, u.created_at AS createdAt '
             . 'FROM memberships m INNER JOIN users u ON u.id = m.user_id '
             . 'WHERE m.organization_id = :organization_id '
             . 'ORDER BY u.display_name, u.email_normalized, u.id',
@@ -340,6 +350,11 @@ final class PdoConnectRepository implements ConnectRepository
                 && ($targetRole !== 'owner' || $activeOwnerCount > 1);
             $user['canManageApplications'] = $actorRole === 'owner'
                 || ($actorRole === 'admin' && in_array($targetRole, ['member', 'viewer'], true));
+            $user['canSendActivationEmail'] = ($user['onboardingStatus'] ?? null) !== 'completed'
+                && (
+                    $actorRole === 'owner'
+                    || ($actorRole === 'admin' && in_array($targetRole, ['member', 'viewer'], true))
+                );
             $user['applications'] = array_map(
                 static function (array $application) use ($accessByUser, $targetUserId): array {
                     $code = (string) ($application['code'] ?? '');
@@ -435,10 +450,12 @@ final class PdoConnectRepository implements ConnectRepository
             }
 
             $userStatement = $this->pdo->prepare(
-                'INSERT INTO users (drupal_subject, email_normalized, display_name, status) '
-                . 'VALUES (:subject, :email, :display_name, \'active\') '
+                'INSERT INTO users '
+                . '(drupal_subject, email_normalized, display_name, status, onboarding_status) '
+                . 'VALUES (:subject, :email, :display_name, \'active\', \'required\') '
                 . 'ON DUPLICATE KEY UPDATE email_normalized = VALUES(email_normalized), '
                 . 'display_name = VALUES(display_name), status = \'active\', '
+                . 'onboarding_status = \'required\', activation_email_sent_at = NULL, '
                 . 'updated_at = UTC_TIMESTAMP(6)',
             );
             $userStatement->execute([
@@ -521,10 +538,12 @@ final class PdoConnectRepository implements ConnectRepository
 
         return [
             'id' => (int) $userId,
+            'drupalSubject' => $subject,
             'email' => $email,
             'displayName' => substr($displayName, 0, 191),
             'status' => 'active',
             'role' => $role,
+            'onboardingStatus' => 'required',
         ];
     }
 
@@ -582,6 +601,119 @@ final class PdoConnectRepository implements ConnectRepository
             'status' => 'rejected',
             'displayName' => (string) ($pending['display_name'] ?? ''),
         ];
+    }
+
+    public function accountActivationTarget(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+    ): array {
+        $actorRole = $this->administrationRole($actorUserId, $organizationId);
+        $statement = $this->pdo->prepare(
+            'SELECT u.id, u.drupal_subject AS drupalSubject, '
+            . 'u.email_normalized AS email, u.display_name AS displayName, '
+            . 'u.onboarding_status AS onboardingStatus, m.role '
+            . 'FROM memberships m INNER JOIN users u ON u.id = m.user_id '
+            . 'WHERE m.organization_id = :organization_id AND u.id = :user_id '
+            . 'AND m.status = \'active\' AND u.status = \'active\'',
+        );
+        $statement->execute([
+            'organization_id' => $organizationId,
+            'user_id' => $targetUserId,
+        ]);
+        $target = $statement->fetch();
+        if (!is_array($target)) {
+            throw new ApiException(404, 'USER_NOT_FOUND', 'Le compte est introuvable dans cette organisation.');
+        }
+        if (
+            $actorRole === 'admin'
+            && !in_array((string) ($target['role'] ?? ''), ['member', 'viewer'], true)
+        ) {
+            throw new ApiException(
+                403,
+                'FORBIDDEN',
+                'Un administrateur ne peut pas renvoyer l’activation d’un autre administrateur.',
+            );
+        }
+        if (($target['onboardingStatus'] ?? null) === 'completed') {
+            throw new ApiException(
+                409,
+                'ACCOUNT_ACTIVATION_ALREADY_COMPLETED',
+                'Le mot de passe de ce compte a déjà été initialisé.',
+            );
+        }
+        return $target;
+    }
+
+    public function recordAccountActivationDelivery(
+        int $actorUserId,
+        int $organizationId,
+        int $targetUserId,
+        string $outcome,
+        string $requestId,
+    ): void {
+        if (!in_array($outcome, ['success', 'failure'], true)) {
+            throw new \InvalidArgumentException('Résultat d’activation invalide.');
+        }
+        if ($outcome === 'success') {
+            $statement = $this->pdo->prepare(
+                'UPDATE users SET onboarding_status = \'sent\', '
+                . 'activation_email_sent_at = UTC_TIMESTAMP(6), updated_at = UTC_TIMESTAMP(6) '
+                . 'WHERE id = :user_id AND onboarding_status IN (\'required\', \'sent\')',
+            );
+            $statement->execute(['user_id' => $targetUserId]);
+        }
+        $this->recordAudit(
+            $actorUserId,
+            $organizationId,
+            'identity.activation_email',
+            'user',
+            (string) $targetUserId,
+            $outcome,
+            $requestId,
+            ['expiresInSeconds' => 86400],
+        );
+    }
+
+    public function completeAccountActivation(int $targetUserId, string $requestId): void
+    {
+        try {
+            $this->pdo->beginTransaction();
+            $target = $this->pdo->prepare(
+                'SELECT u.id, u.onboarding_status AS onboardingStatus, '
+                . '(SELECT m.organization_id FROM memberships m '
+                . 'WHERE m.user_id = u.id AND m.status = \'active\' ORDER BY m.id LIMIT 1) AS organizationId '
+                . 'FROM users u WHERE u.id = :user_id FOR UPDATE',
+            );
+            $target->execute(['user_id' => $targetUserId]);
+            $user = $target->fetch();
+            if (!is_array($user)) {
+                throw new ApiException(404, 'USER_NOT_FOUND', 'Le compte CONNECT est introuvable.');
+            }
+            if (($user['onboardingStatus'] ?? null) !== 'completed') {
+                $update = $this->pdo->prepare(
+                    'UPDATE users SET onboarding_status = \'completed\', updated_at = UTC_TIMESTAMP(6) '
+                    . 'WHERE id = :user_id',
+                );
+                $update->execute(['user_id' => $targetUserId]);
+                $this->recordAudit(
+                    null,
+                    isset($user['organizationId']) ? (int) $user['organizationId'] : null,
+                    'identity.activation_complete',
+                    'user',
+                    (string) $targetUserId,
+                    'success',
+                    $requestId,
+                    [],
+                );
+            }
+            $this->pdo->commit();
+        } catch (\Throwable $exception) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $exception;
+        }
     }
 
     public function updateUserStatus(
@@ -807,8 +939,8 @@ final class PdoConnectRepository implements ConnectRepository
 
     /** @param array<string, mixed> $metadata */
     private function recordAudit(
-        int $actorUserId,
-        int $organizationId,
+        ?int $actorUserId,
+        ?int $organizationId,
         string $action,
         string $targetType,
         string $targetId,
