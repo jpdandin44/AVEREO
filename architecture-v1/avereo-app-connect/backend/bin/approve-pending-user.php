@@ -44,7 +44,7 @@ try {
     if (!in_array($role, ['owner', 'admin', 'member', 'viewer'], true)) {
         throw new InvalidArgumentException('--role est invalide.');
     }
-    if ($applicationCodes === [] || array_diff(
+    if ((!$bootstrap && $applicationCodes === []) || array_diff(
         $applicationCodes,
         ['rapport', 'coupe', 'projet', 'thermo', 'drone'],
     ) !== []) {

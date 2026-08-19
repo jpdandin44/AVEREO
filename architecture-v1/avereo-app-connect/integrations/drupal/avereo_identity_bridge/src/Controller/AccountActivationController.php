@@ -21,7 +21,7 @@ final class AccountActivationController extends ControllerBase
 {
     public function __construct(
         private readonly CacheBackendInterface $cache,
-        private readonly EntityTypeManagerInterface $entityTypeManager,
+        private readonly EntityTypeManagerInterface $entityTypeManagerService,
         private readonly MailManagerInterface $mailManager,
     ) {
     }
@@ -88,7 +88,7 @@ final class AccountActivationController extends ControllerBase
             return $this->jsonError(422, 'ACTIVATION_PAYLOAD_INVALID');
         }
 
-        $accounts = $this->entityTypeManager
+        $accounts = $this->entityTypeManagerService
             ->getStorage('user')
             ->loadByProperties(['mail' => $email]);
         $account = $accounts === [] ? null : reset($accounts);
@@ -191,7 +191,7 @@ final class AccountActivationController extends ControllerBase
         $this->cache->delete($tokenKey);
         $this->cache->delete($accountKey);
 
-        $account = $this->entityTypeManager->getStorage('user')->load($uid);
+        $account = $this->entityTypeManagerService->getStorage('user')->load($uid);
         if (!$account instanceof UserInterface || $account->isBlocked()) {
             return $this->invalidLink();
         }
