@@ -357,14 +357,13 @@
 
     function renderProfile(profilePayload, applications) {
       const organizations = profilePayload.organizations || [];
-      const authorized = applications.filter((application) => application.available);
       const administeredOrganizations = organizations.filter(
         (organization) => organization.role === 'owner' || organization.role === 'admin'
       );
       profileName.textContent = profilePayload.user.displayName || profilePayload.user.email || 'Compte AVEREO';
       profileStatus.textContent = 'Compte actif · Profil Client';
       profileOrganization.textContent = `Organisation : ${organizations.map((item) => item.name).join(', ') || 'Non rattachée'}`;
-      profileApplications.textContent = `Applications autorisées : ${authorized.map((item) => item.name).join(', ') || 'Aucune'}`;
+      profileApplications.textContent = `Applications autorisées : ${applications.map((item) => item.name).join(', ') || 'Aucune'}`;
       profileSection.hidden = false;
       adminOrganizationId = administeredOrganizations[0]?.id || null;
       adminOpenButton.hidden = adminOrganizationId === null;
