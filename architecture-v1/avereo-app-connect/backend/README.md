@@ -57,6 +57,10 @@ La commande idempotente `bin/approve-pending-user.php` reste disponible pour le
 premier compte, la reprise et les interventions d'urgence. Sans `--confirm`, la
 commande ne modifie rien. Le premier compte exige `--bootstrap` et le rôle
 `owner`; les approbations suivantes exigent le `subject` d'un owner/admin actif.
+Sur une base neuve dont le catalogue est vide, le bootstrap peut omettre
+`--applications`. Le propriétaire doit ensuite publier le catalogue avec
+`bin/manage-catalog.php`, qui attribue les applications et journalise chaque
+opération. Hors bootstrap, au moins une application reste obligatoire.
 Exemple de première approbation en préproduction :
 
 ```bash

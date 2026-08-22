@@ -1,8 +1,8 @@
 # Tableau de préparation production — CONNECT C7/V2
 
-Date de référence : 30 juillet 2026
+Date de référence : 19 août 2026
 
-Statut global : préproduction validée, production bloquée par sa configuration dédiée
+Statut global : CONNECT actif en production, sas applicatifs non qualifiés
 
 | Contrôle | État | Preuve ou action restante |
 |---|---|---|
@@ -17,12 +17,14 @@ Statut global : préproduction validée, production bloquée par sa configuratio
 | Habilitations fines | Validées en préproduction | Le profil AVEREO approuvé affiche et ouvre uniquement Rapport et Coupe |
 | Client OAuth Drupal de production | Configuré, à requalifier | `connect-production` redirige vers le callback exact de CONNECT production ; le parcours complet reste à rejouer après activation de la base |
 | Émetteur Drupal de production | Configuré, à requalifier | CONNECT production redirige actuellement vers `https://avereo.fr/oauth/authorize` |
-| Clé publique de production | À faire | Déposer hors document root avec droits minimaux |
-| Document root CONNECT production | Bloquant | cPanel pointe actuellement vers `/Connect.avereo.fr`; la cible backend attend `/Connect.avereo.fr/public` |
-| Base CONNECT de production | Bloquant | Le healthcheck public indique actuellement `database: not_configured` |
-| Configuration privée CONNECT | Partielle | OAuth est présent ; base et deux credentials applicatifs restent à préparer hors document root |
-| Configuration privée Rapport/Coupe | À faire | Secret correspondant et répertoire anti-rejeu distinct pour chaque application |
-| Sauvegarde restaurable | Préproduction vérifiée | Archive horodatée des trois applications et configurations privées créée ; la sauvegarde de production doit encore inclure bases et configurations privées |
+| Clé publique de production | Configurée | Conservée hors document root avec la configuration privée |
+| Document root CONNECT production | Validé | `connect.avereo.fr` cible le répertoire public dédié du backend |
+| Base CONNECT de production | Validée | Le healthcheck public retourne `database: ok` |
+| Configuration privée CONNECT | Partielle | OAuth et base sont opérationnels ; les cinq paires URL/secret de lancement restent absentes ou invalides |
+| Rapport production | Non conforme au sas CONNECT | `/connect/entry.php` renvoie actuellement le frontend en `200` au lieu d'un refus `403` sans ticket |
+| Configuration privée Rapport/Coupe | À faire | Installer un secret commun avec CONNECT et un répertoire anti-rejeu distinct pour chaque application |
+| Protection GitHub production | À configurer | Créer l'environnement `connect-production`, imposer un approbateur, empêcher l'auto-approbation et déplacer les secrets dédiés |
+| Sauvegarde restaurable | Vérifiée pour CONNECT | Sauvegarde horodatée des fichiers et de la configuration avant intervention ; conserver aussi les sauvegardes des applications raccordées |
 | Retour arrière | À approuver | Restaurer contenus, document root CONNECT et configurations précédentes |
 | Workflows de production | Prêts à relire | Manuels, `main` uniquement, confirmation explicite et sauvegarde FTPS avant transfert |
 

@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class ActivationPasswordForm extends FormBase
 {
     public function __construct(
-        private readonly EntityTypeManagerInterface $entityTypeManager,
-        private readonly RequestStack $requestStack,
+        private readonly EntityTypeManagerInterface $entityTypeManagerService,
+        private readonly RequestStack $requestStackService,
     ) {
     }
 
@@ -85,7 +85,7 @@ final class ActivationPasswordForm extends FormBase
                 'Le lien d’activation est invalide ou expiré.',
             );
         }
-        $account = $this->entityTypeManager->getStorage('user')->load($activation['uid']);
+        $account = $this->entityTypeManagerService->getStorage('user')->load($activation['uid']);
         if (!$account instanceof UserInterface || $account->isBlocked()) {
             throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException(
                 'Le compte AVEREO est indisponible.',
@@ -95,7 +95,7 @@ final class ActivationPasswordForm extends FormBase
         $account->activate();
         $account->save();
 
-        $session = $this->requestStack->getCurrentRequest()?->getSession();
+        $session = $this->requestStackService->getCurrentRequest()?->getSession();
         $session?->remove('avereo_identity_bridge_activation');
         $session?->set('avereo_identity_bridge_activation_complete', [
             'connectUserId' => $activation['connectUserId'],
@@ -106,7 +106,7 @@ final class ActivationPasswordForm extends FormBase
     /** @return null|array{uid: int, connectUserId: int, expiresAt: int} */
     private function activation(): ?array
     {
-        $value = $this->requestStack
+        $value = $this->requestStackService
             ->getCurrentRequest()
             ?->getSession()
             ->get('avereo_identity_bridge_activation');

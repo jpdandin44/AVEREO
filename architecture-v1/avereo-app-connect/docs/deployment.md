@@ -4,13 +4,15 @@
 
 - Domaine cible : `connect.avereo.fr`
 - Hébergeur : O2Switch / cPanel
-- Workflow automatique : frontend React/Vite uniquement
-- Backend C7/V2 : candidat préparé, non déployé automatiquement
-- Base de production : non créée et non migrée par cette PR
+- Workflow de production : déclenchement manuel uniquement depuis `main`
+- Backend C7/V2 : déployé sur un document root dédié se terminant par `/public`
+- Base de production : distincte, migrée et contrôlée par le healthcheck CONNECT
+- Écart à résorber : les correctifs d'exploitation doivent être fusionnés avant
+  tout nouveau déploiement
 
-Le chemin public O2Switch du backend n'est pas présumé dans le dépôt. Il doit
-être confirmé dans cPanel avant toute copie afin que le document root pointe
-vers `backend/public/` et que les fichiers privés restent hors accès web.
+Le chemin public O2Switch du backend n'est jamais présumé dans le dépôt. Le
+workflow le résout par l'API cPanel et refuse le déploiement si le document root
+de `connect.avereo.fr` ne se termine pas par `/public`.
 
 ## Gate C11 préalable
 
@@ -55,6 +57,55 @@ un `config.php` privé hors document root.
    expiration et renvoi du lien, révocation applicative et
    déconnexion complète ;
 10. surveiller les erreurs sans afficher de détails au navigateur.
+
+## Verrouillage du workflow de production
+
+Le job utilise exclusivement l'environnement GitHub `connect-production` et
+des secrets dont le nom commence par `CONNECT_PRODUCTION_`. Il ne doit jamais
+réutiliser les secrets génériques du dépôt ou de la préproduction.
+
+Le responsable du dépôt doit configurer dans **Settings → Environments →
+connect-production** :
+
+1. au moins un approbateur obligatoire ;
+2. l'interdiction pour l'auteur du déclenchement d'approuver son propre job ;
+3. l'interdiction de contourner les règles de protection, y compris pour les
+   administrateurs lorsque GitHub propose cette option ;
+4. les secrets `CONNECT_PRODUCTION_CPANEL_USERNAME`,
+   `CONNECT_PRODUCTION_CPANEL_API_TOKEN`, `CONNECT_PRODUCTION_CPANEL_PASSWORD`,
+   `CONNECT_PRODUCTION_CPANEL_SERVER` et, si utilisés, les trois secrets FTPS ;
+5. la variable `CONNECT_PRODUCTION_O2SWITCH_FTP_PORT`.
+
+Après vérification, les anciennes copies des credentials de production doivent
+être supprimées des secrets génériques du dépôt et de l'ancien environnement
+`connect`. Ainsi, un déclenchement par l'interface, la CLI ou l'API crée au plus
+un déploiement en attente : il ne peut pas lire les credentials ni atteindre
+O2Switch avant l'approbation humaine.
+
+Le déclenchement autorisé impose la branche `main` et la phrase exacte
+`DEPLOYER CONNECT EN PRODUCTION`. La saisie de cette phrase n'est pas une
+approbation : la validation de l'environnement reste obligatoire.
+
+Les accès directs cPanel sont réservés au retour arrière ou à une intervention
+d'urgence documentée. Ils ne remplacent jamais le workflow normal.
+
+## Configuration des sas applicatifs
+
+Une application n'est disponible dans CONNECT que lorsque les deux conditions
+suivantes sont vraies :
+
+- CONNECT possède une URL HTTPS `APP_LAUNCH_<CODE>_URL` vers le point d'entrée
+  sécurisé de l'application et un secret `APP_LAUNCH_<CODE>_SECRET` d'au moins
+  32 caractères ;
+- l'application cible possède le même secret dans sa configuration privée et
+  son point d'entrée refuse une requête sans ticket.
+
+Pour Rapport, l'URL attendue est
+`https://rapport.avereo.fr/connect/entry.php`. Sans ticket, elle doit répondre
+`403`. Une réponse `200` contenant l'application React indique qu'une ancienne
+version, sans sas CONNECT, est encore déployée. Les deux secrets doivent être
+générés et installés hors Git ; leur modification exige une validation humaine
+distincte.
 
 ## Retour arrière
 

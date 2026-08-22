@@ -58,6 +58,34 @@ Le lot du 4 août 2026 ajoute l’initialisation sécurisée des comptes approuv
 - contact `contact@avereo.fr` sur le portail et dans les messages ;
 - aucun mot de passe traité ou stocké par CONNECT.
 
+## Convergence production du 19 août 2026
+
+La première activation de CONNECT production a révélé trois écarts entre le
+commit déployé et l'instance corrigée :
+
+- deux propriétés `readonly` du pont Drupal entraient en collision avec les
+  propriétés héritées des classes de base ;
+- l'amorçage du premier propriétaire exigeait un catalogue déjà publié alors
+  que la publication exigeait elle-même un propriétaire actif ;
+- le workflow pouvait être déclenché par la CLI avec les credentials génériques
+  de l'environnement `connect`, sans seconde approbation indépendante.
+
+Le présent correctif versionne les renommages Drupal et autorise uniquement le
+premier propriétaire `--bootstrap` à être créé sans application. Le catalogue
+est ensuite publié et attribué par la commande d'administration auditée.
+
+Le workflow cible désormais l'environnement `connect-production`, utilise des
+noms de secrets exclusivement dédiés à CONNECT production et exige la phrase
+de confirmation sur `main`. La protection complète dépend encore du réglage
+GitHub de cet environnement : approbateur obligatoire, auto-approbation
+interdite, contournement administrateur désactivé et suppression des anciennes
+copies génériques des credentials.
+
+Le contrôle public de Rapport a aussi établi que son point d'entrée
+`/connect/entry.php` sert encore le frontend en `200`. La version de production
+ne contient donc pas encore le sas CONNECT qualifié en préproduction. Aucun
+secret et aucun déploiement Rapport ne sont inclus dans ce correctif.
+
 ## Compatibilité Simple OAuth
 
 Simple OAuth 6.1.1 ne renvoie pas le `nonce` dans l'ID token du flux testé.
