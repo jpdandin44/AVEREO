@@ -60,27 +60,27 @@ un `config.php` privé hors document root.
 
 ## Verrouillage du workflow de production
 
-Le job utilise exclusivement l'environnement GitHub `connect-production` et
-des secrets dont le nom commence par `CONNECT_PRODUCTION_`. Il ne doit jamais
-réutiliser les secrets génériques du dépôt ou de la préproduction.
+Le job réutilise l'environnement GitHub historique `connect`, qui contient déjà
+les credentials O2Switch de CONNECT production. Il reste impossible à lancer
+automatiquement : le workflow impose `main` et une confirmation textuelle
+exacte avant d'accéder à cet environnement.
 
 Le responsable du dépôt doit configurer dans **Settings → Environments →
-connect-production** :
+connect** :
 
 1. au moins un approbateur obligatoire ;
 2. l'interdiction pour l'auteur du déclenchement d'approuver son propre job ;
 3. l'interdiction de contourner les règles de protection, y compris pour les
    administrateurs lorsque GitHub propose cette option ;
-4. les secrets `CONNECT_PRODUCTION_CPANEL_USERNAME`,
-   `CONNECT_PRODUCTION_CPANEL_API_TOKEN`, `CONNECT_PRODUCTION_CPANEL_PASSWORD`,
-   `CONNECT_PRODUCTION_CPANEL_SERVER` et, si utilisés, les trois secrets FTPS ;
-5. la variable `CONNECT_PRODUCTION_O2SWITCH_FTP_PORT`.
+4. les secrets existants `CPANEL_USERNAME`, `CPANEL_API_TOKEN`,
+   `CPANEL_PASSWORD` et `CPANEL_SERVER`.
 
-Après vérification, les anciennes copies des credentials de production doivent
-être supprimées des secrets génériques du dépôt et de l'ancien environnement
-`connect`. Ainsi, un déclenchement par l'interface, la CLI ou l'API crée au plus
-un déploiement en attente : il ne peut pas lire les credentials ni atteindre
-O2Switch avant l'approbation humaine.
+Le transfert FTPS utilise ces mêmes credentials et le port explicite `21` ; le
+secret `O2SWITCH_PORT` reste réservé aux workflows SSH. Aucun second
+environnement ni aucune duplication des secrets ne sont nécessaires. Un
+déclenchement par l'interface, la CLI ou l'API crée au plus un déploiement en
+attente : il ne peut pas atteindre O2Switch avant les contrôles du workflow et,
+si elle est configurée, l'approbation de l'environnement.
 
 Le déclenchement autorisé impose la branche `main` et la phrase exacte
 `DEPLOYER CONNECT EN PRODUCTION`. La saisie de cette phrase n'est pas une

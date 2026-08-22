@@ -74,12 +74,16 @@ Le présent correctif versionne les renommages Drupal et autorise uniquement le
 premier propriétaire `--bootstrap` à être créé sans application. Le catalogue
 est ensuite publié et attribué par la commande d'administration auditée.
 
-Le workflow cible désormais l'environnement `connect-production`, utilise des
-noms de secrets exclusivement dédiés à CONNECT production et exige la phrase
-de confirmation sur `main`. La protection complète dépend encore du réglage
-GitHub de cet environnement : approbateur obligatoire, auto-approbation
-interdite, contournement administrateur désactivé et suppression des anciennes
-copies génériques des credentials.
+Le workflow avait initialement introduit un second environnement
+`connect-production` et de nouveaux noms de secrets sans migrer les credentials
+déjà présents dans l'environnement historique `connect`. Cette séparation
+rendait le workflow inutilisable sans duplication manuelle des mêmes secrets.
+
+Le correctif d'exploitation rétablit donc `connect` comme environnement de
+production autoritatif et réutilise ses secrets `CPANEL_*`. Il conserve la
+phrase de confirmation exacte, la restriction à `main`, la sauvegarde préalable
+et la vérification publique. Le port FTPS reste explicitement fixé à `21` afin
+de ne pas détourner le secret `O2SWITCH_PORT`, réservé aux connexions SSH.
 
 Le contrôle public de Rapport a aussi établi que son point d'entrée
 `/connect/entry.php` sert encore le frontend en `200`. La version de production

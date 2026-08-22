@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     environment:
-      name: connect-production
+      name: connect
       url: https://connect.avereo.fr
     steps:
       - name: Checkout
@@ -44,10 +44,10 @@ jobs:
       - name: Resolve production directories
         id: ftp-target
         env:
-          CPANEL_API_TOKEN: ${{ secrets.CONNECT_PRODUCTION_CPANEL_API_TOKEN }}
-          CPANEL_PASSWORD: ${{ secrets.CONNECT_PRODUCTION_CPANEL_PASSWORD }}
-          CPANEL_SERVER: ${{ secrets.CONNECT_PRODUCTION_CPANEL_SERVER }}
-          CPANEL_USERNAME: ${{ secrets.CONNECT_PRODUCTION_CPANEL_USERNAME }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: |
           set -euo pipefail
           public_dir="$(python3 "$GITHUB_WORKSPACE/.github/scripts/cpanel-domain-docroot.py" "connect.avereo.fr")"
@@ -69,48 +69,48 @@ jobs:
         env:
           FTP_ALLOW_MISSING: "true"
           FTP_BACKUP_DIR: ${{ runner.temp }}/connect-production-backup/public
-          FTP_PASSWORD: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_PASSWORD || secrets.CONNECT_PRODUCTION_CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.CONNECT_PRODUCTION_O2SWITCH_FTP_PORT || '21' }}
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
           FTP_PROTOCOL: ftps
-          FTP_SERVER: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_SERVER || secrets.CONNECT_PRODUCTION_CPANEL_SERVER }}
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
           FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.public_dir }}
-          FTP_USERNAME: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_USER || secrets.CONNECT_PRODUCTION_CPANEL_USERNAME }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
 
       - name: Backup current CONNECT sources
         env:
           FTP_ALLOW_MISSING: "true"
           FTP_BACKUP_DIR: ${{ runner.temp }}/connect-production-backup/src
-          FTP_PASSWORD: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_PASSWORD || secrets.CONNECT_PRODUCTION_CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.CONNECT_PRODUCTION_O2SWITCH_FTP_PORT || '21' }}
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
           FTP_PROTOCOL: ftps
-          FTP_SERVER: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_SERVER || secrets.CONNECT_PRODUCTION_CPANEL_SERVER }}
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
           FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.source_dir }}
-          FTP_USERNAME: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_USER || secrets.CONNECT_PRODUCTION_CPANEL_USERNAME }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
 
       - name: Backup current CONNECT operator commands
         env:
           FTP_ALLOW_MISSING: "true"
           FTP_BACKUP_DIR: ${{ runner.temp }}/connect-production-backup/bin
-          FTP_PASSWORD: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_PASSWORD || secrets.CONNECT_PRODUCTION_CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.CONNECT_PRODUCTION_O2SWITCH_FTP_PORT || '21' }}
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
           FTP_PROTOCOL: ftps
-          FTP_SERVER: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_SERVER || secrets.CONNECT_PRODUCTION_CPANEL_SERVER }}
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
           FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.bin_dir }}
-          FTP_USERNAME: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_USER || secrets.CONNECT_PRODUCTION_CPANEL_USERNAME }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
 
       - name: Backup current CONNECT migrations
         env:
           FTP_ALLOW_MISSING: "true"
           FTP_BACKUP_DIR: ${{ runner.temp }}/connect-production-backup/database
-          FTP_PASSWORD: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_PASSWORD || secrets.CONNECT_PRODUCTION_CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.CONNECT_PRODUCTION_O2SWITCH_FTP_PORT || '21' }}
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
           FTP_PROTOCOL: ftps
-          FTP_SERVER: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_SERVER || secrets.CONNECT_PRODUCTION_CPANEL_SERVER }}
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
           FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.database_dir }}
-          FTP_USERNAME: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_USER || secrets.CONNECT_PRODUCTION_CPANEL_USERNAME }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
 
       - name: Store CONNECT rollback artifact
@@ -124,49 +124,49 @@ jobs:
       - name: Deploy CONNECT public files with FTPS
         env:
           FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-connect/backend/public
-          FTP_PASSWORD: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_PASSWORD || secrets.CONNECT_PRODUCTION_CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.CONNECT_PRODUCTION_O2SWITCH_FTP_PORT || '21' }}
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
           FTP_PROTOCOL: ftps
           FTP_REQUIRED_FILE: index.php
-          FTP_SERVER: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_SERVER || secrets.CONNECT_PRODUCTION_CPANEL_SERVER }}
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
           FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.public_dir }}
-          FTP_USERNAME: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_USER || secrets.CONNECT_PRODUCTION_CPANEL_USERNAME }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
 
       - name: Deploy CONNECT PHP sources with FTPS
         env:
           FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-connect/backend/src
-          FTP_PASSWORD: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_PASSWORD || secrets.CONNECT_PRODUCTION_CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.CONNECT_PRODUCTION_O2SWITCH_FTP_PORT || '21' }}
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
           FTP_PROTOCOL: ftps
           FTP_REQUIRED_FILE: autoload.php
-          FTP_SERVER: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_SERVER || secrets.CONNECT_PRODUCTION_CPANEL_SERVER }}
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
           FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.source_dir }}
-          FTP_USERNAME: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_USER || secrets.CONNECT_PRODUCTION_CPANEL_USERNAME }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
 
       - name: Deploy CONNECT operator commands with FTPS
         env:
           FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-connect/backend/bin
-          FTP_PASSWORD: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_PASSWORD || secrets.CONNECT_PRODUCTION_CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.CONNECT_PRODUCTION_O2SWITCH_FTP_PORT || '21' }}
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
           FTP_PROTOCOL: ftps
           FTP_REQUIRED_FILE: migrate.php
-          FTP_SERVER: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_SERVER || secrets.CONNECT_PRODUCTION_CPANEL_SERVER }}
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
           FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.bin_dir }}
-          FTP_USERNAME: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_USER || secrets.CONNECT_PRODUCTION_CPANEL_USERNAME }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
 
       - name: Deploy CONNECT migrations with FTPS
         env:
           FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-connect/database
-          FTP_PASSWORD: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_PASSWORD || secrets.CONNECT_PRODUCTION_CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.CONNECT_PRODUCTION_O2SWITCH_FTP_PORT || '21' }}
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
           FTP_PROTOCOL: ftps
           FTP_REQUIRED_FILE: README.md
-          FTP_SERVER: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_SERVER || secrets.CONNECT_PRODUCTION_CPANEL_SERVER }}
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
           FTP_SERVER_DIR: ${{ steps.ftp-target.outputs.database_dir }}
-          FTP_USERNAME: ${{ secrets.CONNECT_PRODUCTION_O2SWITCH_FTP_USER || secrets.CONNECT_PRODUCTION_CPANEL_USERNAME }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
 
       - name: Verify CONNECT production
