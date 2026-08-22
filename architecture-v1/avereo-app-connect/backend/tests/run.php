@@ -981,6 +981,11 @@ $tests['portal logout is branded and uses the signed bridge'] = static function 
         str_contains($portal, 'requestAuthorizeUrl'),
         'login does not depend on a preliminary JSON request',
     );
+    assertSameValue(
+        true,
+        str_contains($portal, 'Applications autorisées : ${applications.map((item) => item.name)'),
+        'profile lists authorized applications independently of gateway readiness',
+    );
 };
 
 $tests['signed identity logout URL'] = static function (): void {

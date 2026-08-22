@@ -90,6 +90,11 @@ Le contrôle public de Rapport a aussi établi que son point d'entrée
 ne contient donc pas encore le sas CONNECT qualifié en préproduction. Aucun
 secret et aucun déploiement Rapport ne sont inclus dans ce correctif.
 
+Le profil CONNECT distingue désormais l'habilitation enregistrée de l'état
+technique du sas : une application autorisée reste listée dans le profil lorsque
+sa carte indique `Configuration requise`. Le bouton d'ouverture demeure refusé
+par défaut tant que l'URL et le secret du sas ne sont pas valides.
+
 ## Compatibilité Simple OAuth
 
 Simple OAuth 6.1.1 ne renvoie pas le `nonce` dans l'ID token du flux testé.
