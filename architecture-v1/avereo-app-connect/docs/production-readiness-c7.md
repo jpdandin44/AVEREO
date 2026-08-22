@@ -23,7 +23,7 @@ Statut global : CONNECT actif en production, sas applicatifs non qualifiés
 | Configuration privée CONNECT | Partielle | OAuth et base sont opérationnels ; les cinq paires URL/secret de lancement restent absentes ou invalides |
 | Rapport production | Non conforme au sas CONNECT | `/connect/entry.php` renvoie actuellement le frontend en `200` au lieu d'un refus `403` sans ticket |
 | Configuration privée Rapport/Coupe | À faire | Installer un secret commun avec CONNECT et un répertoire anti-rejeu distinct pour chaque application |
-| Protection GitHub production | À configurer | Créer l'environnement `connect-production`, imposer un approbateur, empêcher l'auto-approbation et déplacer les secrets dédiés |
+| Protection GitHub production | Opérationnelle, à renforcer | Le workflow réutilise l'environnement `connect` et ses secrets existants ; imposer un approbateur et empêcher le contournement administrateur lorsque le plan GitHub le permet |
 | Sauvegarde restaurable | Vérifiée pour CONNECT | Sauvegarde horodatée des fichiers et de la configuration avant intervention ; conserver aussi les sauvegardes des applications raccordées |
 | Retour arrière | À approuver | Restaurer contenus, document root CONNECT et configurations précédentes |
 | Workflows de production | Prêts à relire | Manuels, `main` uniquement, confirmation explicite et sauvegarde FTPS avant transfert |
