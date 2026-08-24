@@ -53,10 +53,13 @@ un `config.php` privé hors document root.
 7. configurer un secret distinct pour `IDENTITY_ACCOUNT_ACTIVATION_URL` et
    `IDENTITY_ACCOUNT_ACTIVATION_SECRET`, puis `SUPPORT_EMAIL=contact@avereo.fr` ;
 8. basculer le document root ou le lien de version ;
-9. tester santé, session anonyme, login, callback, activation par e-mail,
-   expiration et renvoi du lien, révocation applicative et
+9. reconstruire les caches Drupal avec `php vendor/bin/drush cr` après toute
+   mise à jour du pont d’identité ;
+10. tester santé, session anonyme, login, callback, conservation du mot de passe
+   d’inscription, activation par e-mail, expiration et renvoi du lien,
+   révocation applicative et
    déconnexion complète ;
-10. surveiller les erreurs sans afficher de détails au navigateur.
+11. surveiller les erreurs sans afficher de détails au navigateur.
 
 ## Verrouillage du workflow de production
 

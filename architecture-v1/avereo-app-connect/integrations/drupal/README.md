@@ -49,10 +49,22 @@ IDENTITY_ACCOUNT_ACTIVATION_SECRET=SECRET_DISTINCT_D_AU_MOINS_32_CARACTERES
 SUPPORT_EMAIL=contact@avereo.fr
 ```
 
-Après l’approbation CONNECT, le pont active le compte d’identité, invalide son
-ancien mot de passe et envoie un lien personnel à usage unique valable
-24 heures. Le mot de passe est défini dans Drupal et n’est jamais transmis à
-CONNECT ni placé dans l’e-mail. Un renvoi invalide le lien précédent et les
-demandes sont limitées côté Drupal. Les autres e-mails de gestion des comptes
-Drupal reçoivent également `contact@avereo.fr` comme adresse de réponse et
-contact d’assistance.
+Après l’approbation CONNECT, le pont active le compte d’identité et envoie un
+lien personnel à usage unique valable 24 heures. Le mot de passe choisi lors de
+l’inscription est conservé. Le formulaire de définition du mot de passe est
+réservé aux comptes qui n’en possèdent pas encore ; aucun mot de passe n’est
+transmis à CONNECT ni placé dans l’e-mail. Un renvoi invalide le lien précédent
+et les demandes sont limitées côté Drupal. Les autres e-mails de gestion des
+comptes Drupal reçoivent également `contact@avereo.fr` comme adresse de réponse
+et contact d’assistance.
+
+Après chaque remplacement des fichiers du module, reconstruire obligatoirement
+le cache de routes et le conteneur Drupal depuis la racine du site :
+
+```bash
+php vendor/bin/drush cr
+```
+
+Cette étape évite qu’une ancienne déclaration `_controller` continue d’appeler
+`ActivationPasswordForm::buildForm` comme un contrôleur. Vérifier ensuite que
+la route déployée utilise bien `_form` avant d’émettre un nouveau lien.

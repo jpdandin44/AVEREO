@@ -39,6 +39,7 @@ jobs:
           set -euo pipefail
           find \
             architecture-v1/avereo-app-connect/backend \
+            architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge \
             architecture-v1/avereo-app-rapport/frontend/public \
             architecture-v1/avereo-app-rapport/tests \
             architecture-v1/avereo-app-coupe/frontend/public \
@@ -55,6 +56,7 @@ jobs:
         run: |
           set -euo pipefail
           php architecture-v1/avereo-app-connect/backend/tests/run.php
+          php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/activation-flow.php
           php architecture-v1/avereo-app-rapport/tests/connect-gate.php
           php architecture-v1/avereo-app-coupe/tests/connect-gate.php
           php architecture-v1/avereo-platform/tests/connect-gate.php
