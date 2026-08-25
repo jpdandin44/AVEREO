@@ -15,10 +15,10 @@ if [ -z "${CPANEL_USERNAME:-}" ] || [ -z "${CPANEL_SERVER:-}" ]; then
   exit 1
 fi
 
-if [ -n "${CPANEL_PASSWORD:-}" ]; then
-  auth_args=(-u "${CPANEL_USERNAME}:${CPANEL_PASSWORD}")
-elif [ -n "${CPANEL_API_TOKEN:-}" ]; then
+if [ -n "${CPANEL_API_TOKEN:-}" ]; then
   auth_args=(-H "Authorization: cpanel ${CPANEL_USERNAME}:${CPANEL_API_TOKEN}")
+elif [ -n "${CPANEL_PASSWORD:-}" ]; then
+  auth_args=(-u "${CPANEL_USERNAME}:${CPANEL_PASSWORD}")
 else
   echo "Either CPANEL_PASSWORD or CPANEL_API_TOKEN secret is required." >&2
   exit 1

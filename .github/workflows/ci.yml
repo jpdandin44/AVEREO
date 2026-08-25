@@ -40,6 +40,24 @@ jobs:
           bash -n .github/scripts/cpanel-ssh-whitelist.sh
           grep -Fq 'direction=in' .github/scripts/cpanel-ssh-whitelist.sh
           grep -Fq 'direction=out' .github/scripts/cpanel-ssh-whitelist.sh
+          python3 -m py_compile .github/scripts/cpanel-domain-docroot.py
+          python3 - <<'PY'
+          import importlib.util
+          from pathlib import Path
+
+          script_path = Path(".github/scripts/cpanel-domain-docroot.py")
+          spec = importlib.util.spec_from_file_location("cpanel_domain_docroot", script_path)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+
+          name, value = module.build_authorization_header("user", "password", "api-token")
+          assert (name, value) == ("Authorization", "cpanel user:api-token")
+
+          whitelist_source = Path(".github/scripts/cpanel-ssh-whitelist.sh").read_text(encoding="utf-8")
+          token_branch = 'if [ -n "${CPANEL_API_TOKEN:-}" ]; then'
+          password_branch = 'elif [ -n "${CPANEL_PASSWORD:-}" ]; then'
+          assert whitelist_source.index(token_branch) < whitelist_source.index(password_branch)
+          PY
 
       - name: Validate PHP syntax
         run: |

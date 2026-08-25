@@ -39,6 +39,15 @@ def normalize_cpanel_host(value):
     return parsed.hostname or candidate.replace("https://", "").replace("http://", "").split("/", 1)[0].split(":", 1)[0]
 
 
+def build_authorization_header(username, password, api_token):
+    if api_token:
+        return "Authorization", f"cpanel {username}:{api_token}"
+    if password:
+        token = base64.b64encode(f"{username}:{password}".encode("utf-8")).decode("ascii")
+        return "Authorization", f"Basic {token}"
+    fail("Either CPANEL_PASSWORD or CPANEL_API_TOKEN is required.")
+
+
 def main():
     if len(sys.argv) != 2:
         fail("Usage: cpanel-domain-docroot.py <domain>")
@@ -49,20 +58,14 @@ def main():
     password = os.environ.get("CPANEL_PASSWORD", "")
     api_token = os.environ.get("CPANEL_API_TOKEN", "")
 
-    if not password and not api_token:
-        fail("Either CPANEL_PASSWORD or CPANEL_API_TOKEN is required.")
-
     endpoint = (
         f"https://{server}:2083/execute/DomainInfo/single_domain_data?"
         + urllib.parse.urlencode({"domain": domain})
     )
 
     request = urllib.request.Request(endpoint)
-    if password:
-        token = base64.b64encode(f"{username}:{password}".encode("utf-8")).decode("ascii")
-        request.add_header("Authorization", f"Basic {token}")
-    else:
-        request.add_header("Authorization", f"cpanel {username}:{api_token}")
+    header_name, header_value = build_authorization_header(username, password, api_token)
+    request.add_header(header_name, header_value)
 
     with urllib.request.urlopen(request, timeout=45) as response:
         payload = json.loads(response.read().decode("utf-8-sig"))
