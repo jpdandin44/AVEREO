@@ -30,17 +30,20 @@ case "$command_name" in
       echo "RUNNER_IPV4 is required for '$command_name'." >&2
       exit 1
     fi
-    endpoint="https://${CPANEL_SERVER}:2083/execute/SshWhitelist/${command_name}?address=${RUNNER_IPV4}&port=${port}"
+    endpoints=("https://${CPANEL_SERVER}:2083/execute/SshWhitelist/${command_name}?address=${RUNNER_IPV4}&port=${port}")
     ;;
   remove)
     if [ -z "${RUNNER_IPV4:-}" ]; then
       echo "RUNNER_IPV4 is required for '$command_name'." >&2
       exit 1
     fi
-    endpoint="https://${CPANEL_SERVER}:2083/execute/SshWhitelist/${command_name}?address=${RUNNER_IPV4}&port=${port}&direction=out"
+    endpoints=(
+      "https://${CPANEL_SERVER}:2083/execute/SshWhitelist/${command_name}?address=${RUNNER_IPV4}&port=${port}&direction=in"
+      "https://${CPANEL_SERVER}:2083/execute/SshWhitelist/${command_name}?address=${RUNNER_IPV4}&port=${port}&direction=out"
+    )
     ;;
   list)
-    endpoint="https://${CPANEL_SERVER}:2083/execute/SshWhitelist/list"
+    endpoints=("https://${CPANEL_SERVER}:2083/execute/SshWhitelist/list")
     ;;
   *)
     echo "Unknown command: $command_name" >&2
@@ -51,9 +54,10 @@ esac
 response_file="$(mktemp)"
 trap 'rm -f "$response_file"' EXIT
 
-curl -fsS -m 45 "${auth_args[@]}" "$endpoint" > "$response_file"
+for endpoint in "${endpoints[@]}"; do
+  curl -fsS -m 45 "${auth_args[@]}" "$endpoint" > "$response_file"
 
-python - "$command_name" "${RUNNER_IPV4:-}" "$response_file" <<'PY'
+  python - "$command_name" "${RUNNER_IPV4:-}" "$response_file" <<'PY'
 import json
 import sys
 
@@ -78,6 +82,15 @@ if status not in (1, "1", True):
         or "; ".join(str(item) for item in messages)
         or json.dumps(result, ensure_ascii=False)
     )
+    normalized_details = details.lower()
+    missing_exception = command_name == "remove" and (
+        "n'existe pas" in normalized_details
+        or "does not exist" in normalized_details
+        or "not exist" in normalized_details
+    )
+    if missing_exception:
+        print(f"::warning::cPanel SshWhitelist/remove already absent: {details}")
+        sys.exit(0)
     fail(f"cPanel SshWhitelist/{command_name} failed: {details}")
 
 if warnings:
@@ -90,3 +103,4 @@ if command_name == "list" and runner_ip:
 
 print(f"cPanel SshWhitelist/{command_name} OK")
 PY
+done

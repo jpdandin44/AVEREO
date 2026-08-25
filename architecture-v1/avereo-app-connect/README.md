@@ -40,11 +40,15 @@ docker compose -f compose.c7.yaml down
 
 ## Déploiement
 
-Le workflow existant `deploy-connect-o2switch.yml` reste limité au frontend.
-Cette PR n'active aucun déploiement automatique du backend, ne crée aucune base
-hébergée et ne modifie pas la production.
+Deux workflows manuels et protégés réutilisent l'environnement GitHub
+`connect` :
 
-La mise en production du candidat C7/V2 relève d'une gate C11 distincte après
-validation des paramètres OAuth de production, du document root, de la base,
-des sauvegardes et du plan de retour arrière. Voir
+- `deploy-connect-o2switch.yml` déploie le backend CONNECT ;
+- `deploy-drupal-identity-bridge-o2switch.yml` déploie uniquement le module
+  Drupal `avereo_identity_bridge`, sauvegarde sa version précédente et
+  reconstruit le cache Drupal.
+
+Aucun de ces workflows ne se déclenche automatiquement. La branche `main`, une
+confirmation textuelle exacte et l'approbation humaine de l'environnement
+restent obligatoires. Voir `docs/deployment.md` et
 `docs/production-readiness-c7.md`.

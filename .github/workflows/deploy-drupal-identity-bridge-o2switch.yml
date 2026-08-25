@@ -1,0 +1,266 @@
+name: Deploy Drupal Identity Bridge to O2Switch
+
+run-name: Production Drupal Identity Bridge - ${{ github.ref_name }} - ${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_production:
+        description: Saisir exactement DEPLOYER LE MODULE DRUPAL EN PRODUCTION
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-drupal-identity-bridge-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: ${{ github.ref == 'refs/heads/main' && inputs.confirm_production == 'DEPLOYER LE MODULE DRUPAL EN PRODUCTION' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: connect
+      url: https://avereo.fr
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enforce main branch
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "${{ inputs.confirm_production }}" = "DEPLOYER LE MODULE DRUPAL EN PRODUCTION"
+
+      - name: Validate Drupal identity bridge
+        run: |
+          set -euo pipefail
+          module_dir="architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge"
+          find "$module_dir" -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          php "$module_dir/tests/activation-flow.php"
+          test -s "$module_dir/avereo_identity_bridge.info.yml"
+          test -s "$module_dir/avereo_identity_bridge.routing.yml"
+
+      - name: Prepare production module artifact
+        id: module_source
+        run: |
+          set -euo pipefail
+          source_dir="$GITHUB_WORKSPACE/architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge"
+          stage_dir="$RUNNER_TEMP/avereo_identity_bridge"
+          mkdir -p "$stage_dir"
+          while IFS= read -r -d '' file; do
+            relative_path="${file#"$source_dir"/}"
+            mkdir -p "$stage_dir/$(dirname "$relative_path")"
+            cp "$file" "$stage_dir/$relative_path"
+          done < <(find "$source_dir" -type f ! -path "$source_dir/tests/*" -print0)
+          test -s "$stage_dir/avereo_identity_bridge.info.yml"
+          if [ -d "$stage_dir/tests" ]; then
+            echo "The production artifact must not contain tests." >&2
+            exit 1
+          fi
+          echo "directory=$stage_dir" >> "$GITHUB_OUTPUT"
+
+      - name: Validate required production secrets
+        env:
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          O2SWITCH_HOST: ${{ secrets.O2SWITCH_HOST }}
+          O2SWITCH_SSH_KEY: ${{ secrets.O2SWITCH_SSH_KEY }}
+          O2SWITCH_USER: ${{ secrets.O2SWITCH_USER }}
+        run: |
+          set -euo pipefail
+          required=(
+            CPANEL_PASSWORD
+            CPANEL_SERVER
+            CPANEL_USERNAME
+            O2SWITCH_HOST
+            O2SWITCH_SSH_KEY
+            O2SWITCH_USER
+          )
+          for name in "${required[@]}"; do
+            if [ -z "${!name:-}" ]; then
+              echo "Required secret is missing from environment 'connect': $name" >&2
+              exit 1
+            fi
+          done
+
+      - name: Resolve Drupal production directory
+        id: ftp_target
+        env:
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+        run: |
+          set -euo pipefail
+          drupal_root="$(python3 "$GITHUB_WORKSPACE/.github/scripts/cpanel-domain-docroot.py" "avereo.fr")"
+          drupal_root="${drupal_root#/}"
+          drupal_root="${drupal_root%/}"
+          if [ "$drupal_root" != "public_html" ]; then
+            echo "avereo.fr must resolve to the expected public_html Drupal document root." >&2
+            exit 1
+          fi
+          module_dir="$drupal_root/modules/custom/avereo_identity_bridge"
+          echo "drupal_root=$drupal_root" >> "$GITHUB_OUTPUT"
+          echo "module_dir=$module_dir/" >> "$GITHUB_OUTPUT"
+          echo "Resolved Drupal root: $drupal_root/"
+          echo "Resolved identity bridge directory: $module_dir/"
+
+      - name: Get runner public IP
+        id: runner_ip
+        run: |
+          set -euo pipefail
+          echo "ipv4=$(curl -fsS https://api.ipify.org)" >> "$GITHUB_OUTPUT"
+
+      - name: Whitelist runner IP in cPanel
+        env:
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          RUNNER_IPV4: ${{ steps.runner_ip.outputs.ipv4 }}
+        run: bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" add
+
+      - name: Confirm runner IP is whitelisted
+        env:
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          RUNNER_IPV4: ${{ steps.runner_ip.outputs.ipv4 }}
+        run: bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" list
+
+      - name: Configure SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
+
+      - name: Validate remote Drupal prerequisites
+        env:
+          DRUPAL_ROOT: ${{ steps.ftp_target.outputs.drupal_root }}
+          O2SWITCH_HOST: ${{ secrets.O2SWITCH_HOST }}
+          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          O2SWITCH_USER: ${{ secrets.O2SWITCH_USER }}
+        run: |
+          set -euo pipefail
+          port="${O2SWITCH_PORT:-8888}"
+          ssh -o BatchMode=yes \
+            -o PasswordAuthentication=no \
+            -o StrictHostKeyChecking=no \
+            -p "$port" \
+            "$O2SWITCH_USER@$O2SWITCH_HOST" \
+            "set -euo pipefail; cd \"\$HOME/$DRUPAL_ROOT\"; test -f vendor/bin/drush; test -d modules/custom/avereo_identity_bridge; php vendor/bin/drush status --field=bootstrap | grep -Fq Successful; php vendor/bin/drush pm:list --status=enabled --type=module --field=name | grep -Fxq avereo_identity_bridge"
+
+      - name: Backup current Drupal identity bridge
+        id: backup_module
+        env:
+          FTP_BACKUP_DIR: ${{ runner.temp }}/drupal-identity-bridge-backup
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp_target.outputs.module_dir }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-backup-dir.py"
+
+      - name: Store Drupal identity bridge rollback artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: drupal-identity-bridge-production-before-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/drupal-identity-bridge-backup
+          include-hidden-files: true
+          retention-days: 30
+
+      - name: Deploy Drupal identity bridge with FTPS
+        id: deploy_module
+        env:
+          FTP_LOCAL_DIR: ${{ steps.module_source.outputs.directory }}
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
+          FTP_PROTOCOL: ftps
+          FTP_REQUIRED_FILE: avereo_identity_bridge.info.yml
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp_target.outputs.module_dir }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
+
+      - name: Rebuild Drupal cache and verify module
+        env:
+          DRUPAL_ROOT: ${{ steps.ftp_target.outputs.drupal_root }}
+          O2SWITCH_HOST: ${{ secrets.O2SWITCH_HOST }}
+          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          O2SWITCH_USER: ${{ secrets.O2SWITCH_USER }}
+        run: |
+          set -euo pipefail
+          port="${O2SWITCH_PORT:-8888}"
+          ssh -o BatchMode=yes \
+            -o PasswordAuthentication=no \
+            -o StrictHostKeyChecking=no \
+            -p "$port" \
+            "$O2SWITCH_USER@$O2SWITCH_HOST" \
+            "set -euo pipefail; cd \"\$HOME/$DRUPAL_ROOT\"; php -l modules/custom/avereo_identity_bridge/src/Controller/AccountActivationController.php; php vendor/bin/drush cr; php vendor/bin/drush pm:list --status=enabled --type=module --field=name | grep -Fxq avereo_identity_bridge"
+
+      - name: Verify Drupal production response
+        run: |
+          set -euo pipefail
+          status="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 'https://avereo.fr/')"
+          case "$status" in
+            2*|3*) ;;
+            *)
+              echo "Unexpected Drupal production HTTP status: $status" >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Roll back Drupal identity bridge after deployment failure
+        if: ${{ failure() && steps.backup_module.outcome == 'success' && steps.deploy_module.outcome != 'skipped' }}
+        env:
+          FTP_LOCAL_DIR: ${{ runner.temp }}/drupal-identity-bridge-backup
+          FTP_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          FTP_PORT: "21"
+          FTP_PROTOCOL: ftps
+          FTP_REQUIRED_FILE: avereo_identity_bridge.info.yml
+          FTP_SERVER: ${{ secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.ftp_target.outputs.module_dir }}
+          FTP_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+        run: python3 "$GITHUB_WORKSPACE/.github/scripts/ftps-deploy-dir.py"
+
+      - name: Rebuild Drupal cache after rollback
+        if: ${{ failure() && steps.backup_module.outcome == 'success' && steps.deploy_module.outcome != 'skipped' }}
+        env:
+          DRUPAL_ROOT: ${{ steps.ftp_target.outputs.drupal_root }}
+          O2SWITCH_HOST: ${{ secrets.O2SWITCH_HOST }}
+          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          O2SWITCH_USER: ${{ secrets.O2SWITCH_USER }}
+        run: |
+          port="${O2SWITCH_PORT:-8888}"
+          ssh -o BatchMode=yes \
+            -o PasswordAuthentication=no \
+            -o StrictHostKeyChecking=no \
+            -p "$port" \
+            "$O2SWITCH_USER@$O2SWITCH_HOST" \
+            "cd \"\$HOME/$DRUPAL_ROOT\" && php vendor/bin/drush cr"
+
+      - name: Remove runner IP from cPanel whitelist
+        if: always()
+        env:
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          RUNNER_IPV4: ${{ steps.runner_ip.outputs.ipv4 }}
+        run: |
+          set -euo pipefail
+          if [ -z "${RUNNER_IPV4:-}" ]; then
+            echo "No runner IP available; skipping cPanel whitelist cleanup."
+            exit 0
+          fi
+          bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" remove || \
+            echo "::warning::Unable to remove runner IP from cPanel whitelist automatically. Please clean stale GitHub runner IPs manually if the whitelist limit is reached."
