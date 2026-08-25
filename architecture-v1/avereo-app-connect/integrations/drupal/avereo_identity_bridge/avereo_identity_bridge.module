@@ -37,12 +37,17 @@ function avereo_identity_bridge_mail(string $key, array &$message, array $params
 
     $displayName = trim((string) ($params['display_name'] ?? ''));
     $activationLink = (string) ($params['activation_link'] ?? '');
+    $requiresPasswordInitialization = ($params['requires_password_initialization'] ?? false) === true;
     $supportEmail = (string) ($params['support_email'] ?? 'contact@avereo.fr');
     $message['subject'] = 'Votre accès AVEREO Connect est activé';
     $message['headers']['Reply-To'] = $supportEmail;
+    $action = $requiresPasswordInitialization
+        ? "Pour définir votre premier mot de passe, utilisez ce lien personnel à usage unique :"
+        : "Votre mot de passe choisi lors de l’inscription reste inchangé. "
+            . "Pour confirmer votre accès, utilisez ce lien personnel à usage unique :";
     $message['body'][] = ($displayName === '' ? 'Bonjour,' : 'Bonjour ' . $displayName . ',')
         . "\n\nVotre compte AVEREO Connect a été approuvé."
-        . "\n\nPour définir votre mot de passe, utilisez ce lien personnel à usage unique :"
+        . "\n\n" . $action
         . "\n" . $activationLink
         . "\n\nCe lien expire après 24 heures. Aucun mot de passe n’est transmis par e-mail."
         . "\n\nSi vous n’êtes pas à l’origine de cette demande ou si vous avez besoin d’aide,"

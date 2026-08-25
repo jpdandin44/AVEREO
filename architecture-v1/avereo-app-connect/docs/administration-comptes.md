@@ -44,19 +44,21 @@ L'approbation crée ou réactive le compte CONNECT et son adhésion active. Le
 compte hérite initialement des habilitations actives de son organisation.
 
 Elle demande ensuite au fournisseur d’identité d’envoyer un lien personnel de
-définition du mot de passe. Ce lien :
+confirmation. Ce lien :
 
 - est utilisable une seule fois ;
 - expire après 24 heures ;
-- remplace le mot de passe précédent sans jamais l’exposer à CONNECT ;
+- conserve le mot de passe choisi lors de l’inscription ;
+- ouvre le formulaire de définition du mot de passe uniquement si le compte a
+  été créé sans mot de passe initial ;
 - mentionne `contact@avereo.fr` comme adresse d’assistance.
 
 L’écran distingue l’e-mail à envoyer de l’e-mail envoyé et propose un renvoi.
 Un renvoi invalide le lien précédent. L’échec d’envoi ne retire pas
 l’approbation métier : il reste visible et récupérable depuis l’administration.
-Le catalogue et les routes de lancement restent refusés tant que le formulaire
-de définition du mot de passe n’a pas produit sa confirmation HMAC vers
-CONNECT.
+Le catalogue et les routes de lancement restent refusés tant que le lien n’a
+pas produit sa confirmation HMAC vers CONNECT. Pour un compte sans mot de passe,
+cette confirmation intervient seulement après sa définition.
 
 ## Droits aux applications
 
@@ -115,6 +117,8 @@ révocation explicite dans l'administration CONNECT.
    `identity.activation_email`, `user.status.update` et
    `user.application_access.update` dans
    `audit_events`.
-10. approuver un nouveau compte, vérifier la réception de l’e-mail, l’expiration
-    à 24 heures, l’invalidation du lien précédent après renvoi et l’obligation
-    de définir le mot de passe avant la connexion.
+10. approuver un compte inscrit avec un mot de passe, vérifier sa conservation,
+    la réception de l’e-mail, l’expiration à 24 heures et l’invalidation du lien
+    précédent après renvoi ;
+11. vérifier séparément qu’un compte créé sans mot de passe doit en définir un
+    avant la confirmation CONNECT.

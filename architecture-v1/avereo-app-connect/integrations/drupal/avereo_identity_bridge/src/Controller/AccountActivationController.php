@@ -110,6 +110,7 @@ final class AccountActivationController extends ControllerBase
         $tokenHash = hash('sha256', $token);
         $tokenKey = 'avereo_identity_bridge:activation_token:' . $tokenHash;
         $accountKey = 'avereo_identity_bridge:activation_account:' . $account->id();
+        $requiresPasswordInitialization = $this->requiresPasswordInitialization($account);
         $previous = $this->cache->get($accountKey);
         if ($previous !== false && is_string($previous->data)) {
             $this->cache->delete('avereo_identity_bridge:activation_token:' . $previous->data);
@@ -121,16 +122,13 @@ final class AccountActivationController extends ControllerBase
                 'uid' => (int) $account->id(),
                 'connectUserId' => (int) $connectUserId,
                 'expiresAt' => $expiresAt,
+                'requiresPasswordInitialization' => $requiresPasswordInitialization,
             ],
             $expiresAt,
         );
         $this->cache->set($accountKey, $tokenHash, $expiresAt);
 
-        // Le mot de passe précédent devient inutilisable. Le lien à usage unique
-        // est désormais le seul chemin d'initialisation du nouveau mot de passe.
-        $account->setPassword($this->base64Url(random_bytes(48)));
-        $account->activate();
-        $account->save();
+        $this->prepareAccountForActivation($account, $requiresPasswordInitialization);
 
         $activationLink = Url::fromRoute(
             'avereo_identity_bridge.account_activate',
@@ -145,6 +143,7 @@ final class AccountActivationController extends ControllerBase
             [
                 'display_name' => trim((string) ($payload['displayName'] ?? $account->getDisplayName())),
                 'activation_link' => $activationLink,
+                'requires_password_initialization' => $requiresPasswordInitialization,
                 'support_email' => $supportEmail,
             ],
             null,
@@ -176,6 +175,9 @@ final class AccountActivationController extends ControllerBase
         $uid = is_array($recordData) ? (int) ($recordData['uid'] ?? 0) : 0;
         $connectUserId = is_array($recordData) ? (int) ($recordData['connectUserId'] ?? 0) : 0;
         $expiresAt = is_array($recordData) ? (int) ($recordData['expiresAt'] ?? 0) : 0;
+        $requiresPasswordInitialization = $this->recordRequiresPasswordInitialization(
+            is_array($recordData) ? $recordData : null,
+        );
         $accountKey = 'avereo_identity_bridge:activation_account:' . $uid;
         $current = $this->cache->get($accountKey);
         $currentHash = $current === false ? null : $current->data;
@@ -195,12 +197,20 @@ final class AccountActivationController extends ControllerBase
         if (!$account instanceof UserInterface || $account->isBlocked()) {
             return $this->invalidLink();
         }
-        $request->getSession()->set('avereo_identity_bridge_activation', [
-            'uid' => $uid,
-            'connectUserId' => $connectUserId,
-            'expiresAt' => $expiresAt,
-        ]);
-        $url = Url::fromRoute('avereo_identity_bridge.account_password')->toString();
+        if ($requiresPasswordInitialization) {
+            $request->getSession()->set('avereo_identity_bridge_activation', [
+                'uid' => $uid,
+                'connectUserId' => $connectUserId,
+                'expiresAt' => $expiresAt,
+            ]);
+        } else {
+            $request->getSession()->set('avereo_identity_bridge_activation_complete', [
+                'connectUserId' => $connectUserId,
+            ]);
+        }
+        $url = Url::fromRoute(
+            $this->activationDestinationRoute($requiresPasswordInitialization),
+        )->toString();
         return new TrustedRedirectResponse($url, 303, [
             'Cache-Control' => 'no-store, private',
             'Pragma' => 'no-cache',
@@ -327,5 +337,40 @@ final class AccountActivationController extends ControllerBase
     private function base64Url(string $value): string
     {
         return rtrim(strtr(base64_encode($value), '+/', '-_'), '=');
+    }
+
+    private function requiresPasswordInitialization(UserInterface $account): bool
+    {
+        return trim((string) $account->getPassword()) === '';
+    }
+
+    private function prepareAccountForActivation(
+        UserInterface $account,
+        bool $requiresPasswordInitialization,
+    ): void {
+        // Un compte créé sans mot de passe doit rester inutilisable jusqu'à ce
+        // que son lien à usage unique initialise son premier secret. Le mot de
+        // passe choisi lors d'une inscription autonome n'est jamais remplacé.
+        if ($requiresPasswordInitialization) {
+            $account->setPassword($this->base64Url(random_bytes(48)));
+        }
+        $account->activate();
+        $account->save();
+    }
+
+    /** @param null|array<string, mixed> $recordData */
+    private function recordRequiresPasswordInitialization(?array $recordData): bool
+    {
+        // Les jetons émis avant cette correction ont invalidé l'ancien mot de
+        // passe. Ils doivent donc conserver le parcours d'initialisation.
+        return !array_key_exists('requiresPasswordInitialization', $recordData ?? [])
+            || ($recordData['requiresPasswordInitialization'] ?? null) === true;
+    }
+
+    private function activationDestinationRoute(bool $requiresPasswordInitialization): string
+    {
+        return $requiresPasswordInitialization
+            ? 'avereo_identity_bridge.account_password'
+            : 'avereo_identity_bridge.account_ready';
     }
 }
