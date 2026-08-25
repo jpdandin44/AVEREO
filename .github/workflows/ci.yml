@@ -58,6 +58,11 @@ jobs:
           password_branch = 'elif [ -n "${CPANEL_PASSWORD:-}" ]; then'
           assert whitelist_source.index(token_branch) < whitelist_source.index(password_branch)
           PY
+          grep -Fq 'drupal_root="public_html"' .github/workflows/deploy-drupal-identity-bridge-o2switch.yml
+          if grep -Fq 'cpanel-domain-docroot.py" "avereo.fr"' .github/workflows/deploy-drupal-identity-bridge-o2switch.yml; then
+            echo "The Drupal workflow must validate its known public_html root over SSH, not through DomainInfo." >&2
+            exit 1
+          fi
 
       - name: Validate PHP syntax
         run: |

@@ -106,9 +106,10 @@ workflow :
 1. valide la syntaxe PHP et le test du parcours d'activation ;
 2. exclut les tests du paquet de production ;
 3. contrôle les secrets O2Switch existants dans l'environnement `connect` ;
-4. résout le document root de `avereo.fr` par l'API cPanel et exige
-   `public_html` ;
-5. vérifie par SSH que Drupal, Drush et le module actif sont disponibles ;
+4. fixe la racine Drupal de production à `public_html`, sans dépendre de
+   l'API cPanel `DomainInfo` ;
+5. valide cette racine par SSH en vérifiant que Drupal, Drush et le module actif
+   sont disponibles ;
 6. sauvegarde le module distant et conserve l'archive de retour arrière pendant
    30 jours.
 

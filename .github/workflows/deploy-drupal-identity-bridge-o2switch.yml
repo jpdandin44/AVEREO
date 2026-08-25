@@ -90,27 +90,16 @@ jobs:
             fi
           done
 
-      - name: Resolve Drupal production directory
+      - name: Set Drupal production directory
         id: ftp_target
-        env:
-          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
-          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
-          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
-          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
         run: |
           set -euo pipefail
-          drupal_root="$(python3 "$GITHUB_WORKSPACE/.github/scripts/cpanel-domain-docroot.py" "avereo.fr")"
-          drupal_root="${drupal_root#/}"
-          drupal_root="${drupal_root%/}"
-          if [ "$drupal_root" != "public_html" ]; then
-            echo "avereo.fr must resolve to the expected public_html Drupal document root." >&2
-            exit 1
-          fi
+          drupal_root="public_html"
           module_dir="$drupal_root/modules/custom/avereo_identity_bridge"
           echo "drupal_root=$drupal_root" >> "$GITHUB_OUTPUT"
           echo "module_dir=$module_dir/" >> "$GITHUB_OUTPUT"
-          echo "Resolved Drupal root: $drupal_root/"
-          echo "Resolved identity bridge directory: $module_dir/"
+          echo "Configured Drupal root: $drupal_root/"
+          echo "Configured identity bridge directory: $module_dir/"
 
       - name: Get runner public IP
         id: runner_ip
