@@ -34,6 +34,13 @@ jobs:
               raise SystemExit("UTF-8 BOM interdit dans .htaccess: " + ", ".join(offenders))
           PY
 
+      - name: Validate deployment shell scripts
+        run: |
+          set -euo pipefail
+          bash -n .github/scripts/cpanel-ssh-whitelist.sh
+          grep -Fq 'direction=in' .github/scripts/cpanel-ssh-whitelist.sh
+          grep -Fq 'direction=out' .github/scripts/cpanel-ssh-whitelist.sh
+
       - name: Validate PHP syntax
         run: |
           set -euo pipefail

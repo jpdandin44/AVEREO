@@ -92,6 +92,37 @@ approbation : la validation de l'environnement reste obligatoire.
 Les accès directs cPanel sont réservés au retour arrière ou à une intervention
 d'urgence documentée. Ils ne remplacent jamais le workflow normal.
 
+## Workflow du module Drupal
+
+Le workflow `deploy-drupal-identity-bridge-o2switch.yml` est le seul workflow
+autorisé à mettre à jour le module `avereo_identity_bridge` en production. Il
+réutilise l'environnement GitHub `connect` et ne déploie ni le backend CONNECT
+ni les applications Rapport, Coupe, Projet, Thermo ou Drone.
+
+Son déclenchement est exclusivement manuel depuis la branche `main`, avec la
+phrase exacte `DEPLOYER LE MODULE DRUPAL EN PRODUCTION`. Avant le transfert, le
+workflow :
+
+1. valide la syntaxe PHP et le test du parcours d'activation ;
+2. exclut les tests du paquet de production ;
+3. contrôle les secrets O2Switch existants dans l'environnement `connect` ;
+4. résout le document root de `avereo.fr` par l'API cPanel et exige
+   `public_html` ;
+5. vérifie par SSH que Drupal, Drush et le module actif sont disponibles ;
+6. sauvegarde le module distant et conserve l'archive de retour arrière pendant
+   30 jours.
+
+Le transfert FTPS cible uniquement
+`public_html/modules/custom/avereo_identity_bridge`. Après le transfert, le
+workflow contrôle le fichier principal du correctif, exécute
+`php vendor/bin/drush cr`, vérifie que le module reste activé et contrôle la
+réponse HTTP de `https://avereo.fr/`.
+
+Si le transfert ou une validation postérieure échoue après la sauvegarde, le
+workflow restaure automatiquement la version sauvegardée puis reconstruit le
+cache Drupal. Le job reste en échec pour rendre l'incident visible. L'adresse
+du runner GitHub est retirée de la liste blanche SSH dans tous les cas.
+
 ## Configuration des sas applicatifs
 
 Une application n'est disponible dans CONNECT que lorsque les deux conditions
