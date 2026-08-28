@@ -16,27 +16,35 @@ Le backend délègue l'authentification à Drupal par Authorization Code avec PK
 S256. CONNECT conserve la session applicative, applique les autorisations côté
 serveur et ne stocke aucun mot de passe Drupal.
 
-## Commandes locales
+## Environnement local Docker
 
-Frontend :
+Le portail CONNECT actuel est servi par le backend PHP. Le répertoire
+`frontend/` reste la source historique V1 et ne constitue pas l'IHM locale de
+validation de CONNECT.
+
+Depuis la racine de l'application :
 
 ```powershell
-cd frontend
-npm install
-npm run dev
-npm run build
+docker compose -f compose.c7.yaml up -d database
+docker compose -f compose.c7.yaml run --rm php php bin/migrate.php --direction=up
+docker compose -f compose.c7.yaml up -d --build web
 ```
 
-Backend et base éphémère :
+Ouvrir ensuite <http://127.0.0.1:8080/>. Le port est lié exclusivement à
+`127.0.0.1` et n'est pas exposé sur le réseau local.
+
+Les contrôles backend restent disponibles séparément :
 
 ```powershell
-docker compose -f compose.c7.yaml build php
-docker compose -f compose.c7.yaml up -d database
 docker compose -f compose.c7.yaml run --rm php php tests/run.php
-docker compose -f compose.c7.yaml run --rm php php bin/migrate.php --direction=up
 docker compose -f compose.c7.yaml run --rm php php tests/integration.php
+docker compose -f compose.c7.yaml run --rm php php tests/local-web.php
 docker compose -f compose.c7.yaml down
 ```
+
+L'identité AVEREO externe et les applications hébergées ne sont pas configurées
+dans cet environnement. La page, la session anonyme, la santé de l'API et la
+base locale peuvent néanmoins être validées sans secret.
 
 ## Déploiement
 

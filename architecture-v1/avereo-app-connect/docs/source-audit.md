@@ -21,6 +21,19 @@ Le périmètre ajouté comprend :
 - schéma MariaDB/MySQL versionné et migrations réversibles ;
 - tests unitaires et d'intégration.
 
+## Environnement web local
+
+Le frontend React/Vite V1 reste conservé comme source historique, mais il ne
+représente pas l'IHM du portail CONNECT actuellement déployé. La validation
+locale du candidat C7/V2 passe par le service Docker `web`, qui sert
+`backend/public/index.html` et route les appels API vers
+`backend/public/index.php` sur `127.0.0.1:8080`.
+
+Ce service utilise uniquement la base MariaDB éphémère et les identifiants de
+test déclarés dans `compose.c7.yaml`. Il n'embarque aucun secret OAuth et ne
+contacte pas l'identité AVEREO hébergée tant que les variables correspondantes
+ne sont pas explicitement fournies.
+
 Le lot de sécurisation du 29 juillet 2026 ajoute un sas serveur entre CONNECT,
 Rapport et Coupe : ticket HMAC court, secret distinct par application, nonce à
 usage unique et refus des accès directs. Les URL applicatives ne sont plus

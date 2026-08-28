@@ -33,3 +33,30 @@ services:
     depends_on:
       database:
         condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: backend/docker/php-cli.Dockerfile
+    working_dir: /workspace/backend
+    command:
+      - php
+      - -S
+      - 0.0.0.0:8080
+      - -t
+      - public
+      - docker/local-router.php
+    volumes:
+      - ./:/workspace:ro
+    environment:
+      APP_ENV: local
+      APP_DEBUG: "false"
+      DB_DSN: mysql:host=database;port=3306;dbname=avereo_connect_test;charset=utf8mb4
+      DB_USER: connect_test
+      DB_PASSWORD: local_connect_only
+      SESSION_COOKIE_NAME: AVEREO_CONNECT_LOCAL
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
