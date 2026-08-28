@@ -20,6 +20,9 @@ jobs:
       - name: Run baseline checks
         run: npm run check
 
+      - name: Validate CONNECT Docker Compose
+        run: docker compose -f architecture-v1/avereo-app-connect/compose.c7.yaml config --quiet
+
       - name: Reject UTF-8 BOM in Apache configuration
         run: |
           python3 - <<'PY'
@@ -170,10 +173,27 @@ jobs:
           php-version: "8.3"
           extensions: curl, openssl, pdo_mysql
 
-      - name: Run CONNECT database integration
+      - name: Run CONNECT database and local web integration
         working-directory: architecture-v1/avereo-app-connect/backend
         run: |
           set -euo pipefail
           php bin/migrate.php --direction=up
           php tests/integration.php
+          php -S 127.0.0.1:8080 -t public docker/local-router.php >/tmp/avereo-connect-local.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:8080/api/v1/health >/dev/null; then
+              break
+            fi
+            if [ "$attempt" -eq 20 ]; then
+              cat /tmp/avereo-connect-local.log >&2
+              exit 1
+            fi
+            sleep 1
+          done
+          CONNECT_LOCAL_BASE_URL=http://127.0.0.1:8080 php tests/local-web.php
+          kill "$server_pid"
+          wait "$server_pid" 2>/dev/null || true
+          trap - EXIT
           php bin/migrate.php --direction=down --all

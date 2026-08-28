@@ -110,13 +110,26 @@ obligatoirement vérifiée.
 Depuis la racine de l'application :
 
 ```powershell
-docker compose -f compose.c7.yaml build php
 docker compose -f compose.c7.yaml up -d database
-docker compose -f compose.c7.yaml run --rm php php tests/run.php
 docker compose -f compose.c7.yaml run --rm php php bin/migrate.php --direction=up
+docker compose -f compose.c7.yaml up -d --build web
+```
+
+L'IHM et l'API sont alors disponibles sur <http://127.0.0.1:8080/>. Le routeur
+de développement `docker/local-router.php` reproduit le comportement de
+`public/.htaccess` : il sert l'IHM et les fichiers statiques, puis transmet les
+routes applicatives au front controller `public/index.php`.
+
+Exécuter les contrôles puis arrêter l'environnement avec :
+
+```powershell
+docker compose -f compose.c7.yaml run --rm php php tests/run.php
 docker compose -f compose.c7.yaml run --rm php php tests/integration.php
+docker compose -f compose.c7.yaml run --rm php php tests/local-web.php
 docker compose -f compose.c7.yaml run --rm php php bin/migrate.php --direction=down --all
 docker compose -f compose.c7.yaml down
 ```
 
-Le service MariaDB utilise un stockage `tmpfs` et des identifiants uniquement locaux. Aucun secret ou accès hébergé ne doit être ajouté au dépôt.
+Le service MariaDB utilise un stockage `tmpfs` et des identifiants uniquement
+locaux. Le service `web` n'écoute que sur la boucle locale. Aucun secret ou accès
+hébergé ne doit être ajouté au dépôt.
