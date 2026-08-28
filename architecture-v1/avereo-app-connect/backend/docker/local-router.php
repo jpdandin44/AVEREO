@@ -13,6 +13,10 @@ $requestUri = (string) ($_SERVER['REQUEST_URI'] ?? '/');
 $requestPath = rawurldecode((string) (parse_url($requestUri, PHP_URL_PATH) ?: '/'));
 $localDemoEnabled = getenv('APP_ENV') === 'local'
     && filter_var(getenv('LOCAL_DEMO_ENABLED') ?: 'false', FILTER_VALIDATE_BOOL) === true;
+if ($localDemoEnabled) {
+    require_once __DIR__ . '/local-app-gateway.php';
+    localAppGatewayConfigureEnvironment();
+}
 
 if (str_contains($requestPath, "\0")) {
     http_response_code(400);
@@ -63,6 +67,17 @@ if (
     $session->start();
     $session->establishIdentity($subjects[$account], (int) $userId);
     header('Location: /', true, 303);
+    return true;
+}
+
+if (
+    $localDemoEnabled
+    && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET'
+    && preg_match('#^/local-app/(rapport|coupe|projet|thermo|drone)$#', $requestPath, $matches)
+) {
+    parse_str((string) (parse_url($requestUri, PHP_URL_QUERY) ?: ''), $query);
+    $ticket = is_string($query['ticket'] ?? null) ? $query['ticket'] : '';
+    localAppGatewayHandle($matches[1], $ticket);
     return true;
 }
 

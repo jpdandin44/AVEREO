@@ -66,6 +66,45 @@ function localCookie(array $response): string
     exit(1);
 }
 
+/** @param array{status: int, body: string, headers: list<string>} $response */
+function localLocation(array $response): string
+{
+    foreach ($response['headers'] as $header) {
+        if (preg_match('/^Location:\s*(\S+)/i', $header, $matches)) {
+            return $matches[1];
+        }
+    }
+
+    fwrite(STDERR, "FAIL local redirect location\n");
+    exit(1);
+}
+
+function localContainerUrl(string $publicUrl, string $baseUrl): string
+{
+    $parts = parse_url($publicUrl);
+    if (!is_array($parts) || !isset($parts['path'])) {
+        fwrite(STDERR, "FAIL local redirect URL\n");
+        exit(1);
+    }
+    $query = isset($parts['query']) ? '?' . $parts['query'] : '';
+
+    return $baseUrl . $parts['path'] . $query;
+}
+
+function localAlterTicketUrl(string $url): string
+{
+    $marker = 'ticket=';
+    $position = strpos($url, $marker);
+    if ($position === false || !isset($url[$position + strlen($marker)])) {
+        fwrite(STDERR, "FAIL local ticket alteration\n");
+        exit(1);
+    }
+    $index = $position + strlen($marker);
+    $url[$index] = $url[$index] === 'A' ? 'B' : 'A';
+
+    return $url;
+}
+
 assertLocal(
     'local portal',
     $baseUrl . '/',
@@ -136,17 +175,98 @@ if (filter_var(getenv('CONNECT_LOCAL_DEMO_EXPECTED') ?: 'false', FILTER_VALIDATE
         },
         ['Cookie: ' . $cookie],
     );
-    assertLocal(
+    $catalog = assertLocal(
         'local owner catalog',
         $baseUrl . '/api/v1/catalog',
         static function (array $response): bool {
             $payload = json_decode($response['body'], true);
             return $response['status'] === 200
                 && is_array($payload)
-                && count($payload['data'] ?? []) === 5;
+                && count($payload['data'] ?? []) === 5
+                && count(array_filter(
+                    $payload['data'] ?? [],
+                    static fn (array $application): bool => ($application['available'] ?? null) === true,
+                )) === 5;
         },
         ['Cookie: ' . $cookie],
     );
+    $catalogPayload = json_decode($catalog['body'], true);
+    $rapport = array_values(array_filter(
+        $catalogPayload['data'] ?? [],
+        static fn (array $application): bool => ($application['code'] ?? null) === 'rapport',
+    ))[0] ?? [];
+    assertLocal(
+        'local application direct access denied',
+        $baseUrl . '/local-app/rapport',
+        static fn (array $response): bool => $response['status'] === 403,
+    );
+    $launch = assertLocal(
+        'local application launch ticket',
+        $baseUrl . (string) ($rapport['launchUrl'] ?? ''),
+        static fn (array $response): bool => $response['status'] === 303,
+        ['Cookie: ' . $cookie],
+    );
+    $entryUrl = localContainerUrl(localLocation($launch), $baseUrl);
+    $entry = assertLocal(
+        'local application ticket exchange',
+        $entryUrl,
+        static fn (array $response): bool => $response['status'] === 303,
+    );
+    $applicationCookie = localCookie($entry);
+    assertLocal(
+        'local application signed session',
+        $baseUrl . localLocation($entry),
+        static fn (array $response): bool => $response['status'] === 200
+            && str_contains($response['body'], 'Rapport AVEREO Pro')
+            && str_contains($response['body'], 'Sas AVEREO CONNECT validé'),
+        ['Cookie: ' . $applicationCookie],
+    );
+    assertLocal(
+        'local application ticket replay denied',
+        $entryUrl,
+        static fn (array $response): bool => $response['status'] === 403,
+    );
+    $secondLaunch = assertLocal(
+        'local application second ticket',
+        $baseUrl . (string) ($rapport['launchUrl'] ?? ''),
+        static fn (array $response): bool => $response['status'] === 303,
+        ['Cookie: ' . $cookie],
+    );
+    $secondEntryUrl = localContainerUrl(localLocation($secondLaunch), $baseUrl);
+    assertLocal(
+        'local application altered ticket denied',
+        localAlterTicketUrl($secondEntryUrl),
+        static fn (array $response): bool => $response['status'] === 403,
+    );
+    assertLocal(
+        'local application wrong target denied',
+        str_replace('/local-app/rapport', '/local-app/coupe', $secondEntryUrl),
+        static fn (array $response): bool => $response['status'] === 403,
+    );
+    foreach (['coupe', 'projet', 'thermo', 'drone'] as $applicationCode) {
+        $application = array_values(array_filter(
+            $catalogPayload['data'] ?? [],
+            static fn (array $candidate): bool => ($candidate['code'] ?? null) === $applicationCode,
+        ))[0] ?? [];
+        $applicationLaunch = assertLocal(
+            "local {$applicationCode} launch ticket",
+            $baseUrl . (string) ($application['launchUrl'] ?? ''),
+            static fn (array $response): bool => $response['status'] === 303,
+            ['Cookie: ' . $cookie],
+        );
+        $applicationEntry = assertLocal(
+            "local {$applicationCode} ticket exchange",
+            localContainerUrl(localLocation($applicationLaunch), $baseUrl),
+            static fn (array $response): bool => $response['status'] === 303,
+        );
+        assertLocal(
+            "local {$applicationCode} signed session",
+            $baseUrl . localLocation($applicationEntry),
+            static fn (array $response): bool => $response['status'] === 200
+                && str_contains($response['body'], 'Sas AVEREO CONNECT validé'),
+            ['Cookie: ' . localCookie($applicationEntry)],
+        );
+    }
     $clientLogin = assertLocal(
         'local client login',
         $baseUrl . '/api/v1/local/login?account=client',
