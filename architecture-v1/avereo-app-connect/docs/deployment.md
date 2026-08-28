@@ -113,6 +113,10 @@ workflow :
 6. sauvegarde le module distant et conserve l'archive de retour arrière pendant
    30 jours.
 
+La liste blanche SSH utilise `CPANEL_USERNAME` et `CPANEL_PASSWORD` avec
+l'endpoint historique O2Switch `o2switch-ssh-whitelist/index.live.php`. Le
+workflow Drupal ne dépend pas de l'option expérimentale de jeton API cPanel.
+
 Le transfert FTPS cible uniquement
 `public_html/modules/custom/avereo_identity_bridge`. Après le transfert, le
 workflow contrôle le fichier principal du correctif, exécute

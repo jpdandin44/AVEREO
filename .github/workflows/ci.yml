@@ -38,6 +38,8 @@ jobs:
         run: |
           set -euo pipefail
           bash -n .github/scripts/cpanel-ssh-whitelist.sh
+          bash -n .github/scripts/tests/cpanel-ssh-whitelist-password.sh
+          bash .github/scripts/tests/cpanel-ssh-whitelist-password.sh
           grep -Fq 'direction=in' .github/scripts/cpanel-ssh-whitelist.sh
           grep -Fq 'direction=out' .github/scripts/cpanel-ssh-whitelist.sh
           python3 -m py_compile .github/scripts/cpanel-domain-docroot.py
@@ -54,11 +56,17 @@ jobs:
           assert (name, value) == ("Authorization", "cpanel user:api-token")
 
           whitelist_source = Path(".github/scripts/cpanel-ssh-whitelist.sh").read_text(encoding="utf-8")
-          token_branch = 'if [ -n "${CPANEL_API_TOKEN:-}" ]; then'
-          password_branch = 'elif [ -n "${CPANEL_PASSWORD:-}" ]; then'
-          assert whitelist_source.index(token_branch) < whitelist_source.index(password_branch)
+          password_branch = 'if [ -n "${CPANEL_PASSWORD:-}" ]; then'
+          token_branch = 'elif [ -n "${CPANEL_API_TOKEN:-}" ]; then'
+          assert whitelist_source.index(password_branch) < whitelist_source.index(token_branch)
+          assert "frontend/o2switch/o2switch-ssh-whitelist/index.live.php" in whitelist_source
+          assert '--data-urlencode "whitelist[address]=${RUNNER_IPV4}"' in whitelist_source
           PY
           grep -Fq 'drupal_root="public_html"' .github/workflows/deploy-drupal-identity-bridge-o2switch.yml
+          if grep -Fq 'CPANEL_API_TOKEN' .github/workflows/deploy-drupal-identity-bridge-o2switch.yml; then
+            echo "The Drupal workflow must use the supported cPanel password whitelist fallback." >&2
+            exit 1
+          fi
           if grep -Fq 'cpanel-domain-docroot.py" "avereo.fr"' .github/workflows/deploy-drupal-identity-bridge-o2switch.yml; then
             echo "The Drupal workflow must validate its known public_html root over SSH, not through DomainInfo." >&2
             exit 1
