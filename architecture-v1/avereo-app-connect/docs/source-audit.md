@@ -34,6 +34,12 @@ test déclarés dans `compose.c7.yaml`. Il n'embarque aucun secret OAuth et ne
 contacte pas l'identité AVEREO hébergée tant que les variables correspondantes
 ne sont pas explicitement fournies.
 
+Le mode de démonstration ajoute deux identités fictives, une organisation et le
+catalogue AVEREO dans cette base éphémère. L'initialisation et la connexion sont
+implémentées exclusivement sous `backend/docker/`, hors document root. Elles
+exigent `APP_ENV=local` et `LOCAL_DEMO_ENABLED=true`; le bootstrap public
+`backend/public/index.php` ne connaît ni la route locale ni ces profils.
+
 Le lot de sécurisation du 29 juillet 2026 ajoute un sas serveur entre CONNECT,
 Rapport et Coupe : ticket HMAC court, secret distinct par application, nonce à
 usage unique et refus des accès directs. Les URL applicatives ne sont plus
