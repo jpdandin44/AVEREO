@@ -120,16 +120,23 @@ de développement `docker/local-router.php` reproduit le comportement de
 `public/.htaccess` : il sert l'IHM et les fichiers statiques, puis transmet les
 routes applicatives au front controller `public/index.php`.
 
+Le service initialise aussi deux profils strictement locaux avec
+`docker/local-fixtures.php`. Le bandeau `Mode local Docker` permet de basculer
+entre un propriétaire et un client fictifs afin de vérifier les rôles, le
+catalogue et l'administration des droits. Le script refuse de s'exécuter si
+`APP_ENV` n'est pas égal à `local` ou si `LOCAL_DEMO_ENABLED` n'est pas activé.
+
 Exécuter les contrôles puis arrêter l'environnement avec :
 
 ```powershell
 docker compose -f compose.c7.yaml run --rm php php tests/run.php
 docker compose -f compose.c7.yaml run --rm php php tests/integration.php
-docker compose -f compose.c7.yaml run --rm php php tests/local-web.php
+docker compose -f compose.c7.yaml run --rm -e CONNECT_LOCAL_DEMO_EXPECTED=true php php tests/local-web.php
 docker compose -f compose.c7.yaml run --rm php php bin/migrate.php --direction=down --all
 docker compose -f compose.c7.yaml down
 ```
 
 Le service MariaDB utilise un stockage `tmpfs` et des identifiants uniquement
-locaux. Le service `web` n'écoute que sur la boucle locale. Aucun secret ou accès
-hébergé ne doit être ajouté au dépôt.
+locaux. Le service `web` n'écoute que sur la boucle locale. Les profils fictifs
+restent hors du point d'entrée public et utilisent des adresses
+`example.invalid`. Aucun secret ou accès hébergé ne doit être ajouté au dépôt.

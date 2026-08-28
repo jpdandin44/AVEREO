@@ -33,18 +33,30 @@ docker compose -f compose.c7.yaml up -d --build web
 Ouvrir ensuite <http://127.0.0.1:8080/>. Le port est lié exclusivement à
 `127.0.0.1` et n'est pas exposé sur le réseau local.
 
+Le bandeau `Mode local Docker` permet d'ouvrir deux sessions fictives :
+
+- `Administrateur local`, propriétaire de l'organisation `AVEREO local` ;
+- `Client local`, membre de cette organisation.
+
+Ces profils sont recréés de manière idempotente au démarrage du service `web`.
+Ils permettent de contrôler le catalogue, les rôles et l'administration des
+droits sans solliciter Drupal. Les adresses utilisent le domaine réservé
+`example.invalid` et ne correspondent à aucun compte réel.
+
 Les contrôles backend restent disponibles séparément :
 
 ```powershell
 docker compose -f compose.c7.yaml run --rm php php tests/run.php
 docker compose -f compose.c7.yaml run --rm php php tests/integration.php
-docker compose -f compose.c7.yaml run --rm php php tests/local-web.php
+docker compose -f compose.c7.yaml run --rm -e CONNECT_LOCAL_DEMO_EXPECTED=true php php tests/local-web.php
 docker compose -f compose.c7.yaml down
 ```
 
 L'identité AVEREO externe et les applications hébergées ne sont pas configurées
-dans cet environnement. La page, la session anonyme, la santé de l'API et la
-base locale peuvent néanmoins être validées sans secret.
+dans cet environnement. Le mécanisme de session fictive appartient uniquement
+au routeur Docker, exige simultanément `APP_ENV=local` et
+`LOCAL_DEMO_ENABLED=true`, et n'est pas chargé par le point d'entrée de
+production.
 
 ## Déploiement
 

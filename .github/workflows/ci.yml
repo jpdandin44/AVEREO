@@ -179,7 +179,12 @@ jobs:
           set -euo pipefail
           php bin/migrate.php --direction=up
           php tests/integration.php
-          php -S 127.0.0.1:8080 -t public docker/local-router.php >/tmp/avereo-connect-local.log 2>&1 &
+          if APP_ENV=test LOCAL_DEMO_ENABLED=true php docker/local-fixtures.php; then
+            echo "Local fixtures must be rejected outside APP_ENV=local" >&2
+            exit 1
+          fi
+          APP_ENV=local LOCAL_DEMO_ENABLED=true php docker/local-fixtures.php
+          APP_ENV=local LOCAL_DEMO_ENABLED=true php -S 127.0.0.1:8080 -t public docker/local-router.php >/tmp/avereo-connect-local.log 2>&1 &
           server_pid=$!
           trap 'kill "$server_pid" 2>/dev/null || true' EXIT
           for attempt in {1..20}; do
@@ -192,7 +197,7 @@ jobs:
             fi
             sleep 1
           done
-          CONNECT_LOCAL_BASE_URL=http://127.0.0.1:8080 php tests/local-web.php
+          CONNECT_LOCAL_BASE_URL=http://127.0.0.1:8080 CONNECT_LOCAL_DEMO_EXPECTED=true php tests/local-web.php
           kill "$server_pid"
           wait "$server_pid" 2>/dev/null || true
           trap - EXIT
