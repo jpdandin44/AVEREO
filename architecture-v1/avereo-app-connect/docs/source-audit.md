@@ -40,6 +40,13 @@ implémentées exclusivement sous `backend/docker/`, hors document root. Elles
 exigent `APP_ENV=local` et `LOCAL_DEMO_ENABLED=true`; le bootstrap public
 `backend/public/index.php` ne connaît ni la route locale ni ces profils.
 
+Le récepteur applicatif de démonstration reste dans ce même périmètre Docker.
+Il valide les cinq tickets HMAC avec des clés factices distinctes, vérifie
+l'application et l'identité minimales, consomme le nonce à usage unique puis
+retire le ticket de l'URL au profit d'un cookie local signé. Les routes restent
+inaccessibles lorsque le mode de démonstration est désactivé et ne redirigent
+vers aucun domaine hébergé.
+
 Le lot de sécurisation du 29 juillet 2026 ajoute un sas serveur entre CONNECT,
 Rapport et Coupe : ticket HMAC court, secret distinct par application, nonce à
 usage unique et refus des accès directs. Les URL applicatives ne sont plus
