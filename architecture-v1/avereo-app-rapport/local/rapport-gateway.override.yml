@@ -1,0 +1,8 @@
+services:
+  rapport-db:
+    volumes:
+      - rapport-gateway-db-data:/var/lib/mysql
+
+volumes:
+  rapport-gateway-db-data:
+    name: avereo-rapport-gateway-${RAPPORT_LOCAL_INSTANCE_ID:?RAPPORT_LOCAL_INSTANCE_ID is required}

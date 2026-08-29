@@ -1,0 +1,5 @@
+services:
+  web:
+    environment:
+      APP_LAUNCH_RAPPORT_URL: http://127.0.0.1:8100/connect/entry.php
+      APP_LAUNCH_RAPPORT_SECRET: ${RAPPORT_CONNECT_GATEWAY_SECRET:?RAPPORT_CONNECT_GATEWAY_SECRET is required}

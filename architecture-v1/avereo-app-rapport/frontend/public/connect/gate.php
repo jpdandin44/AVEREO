@@ -31,6 +31,37 @@ function avereo_gate_home_from_path(string $path): string
     return '';
 }
 
+/** @param array<string, mixed> $config */
+function avereo_gate_environment_is_local(array $config): bool
+{
+    return strtolower(trim((string) ($config['environment'] ?? 'production'))) === 'local';
+}
+
+/** @param array<string, mixed> $config */
+function avereo_gate_portal_url_is_allowed(array $config, string $url): bool
+{
+    $parts = parse_url($url);
+    if (!is_array($parts) || isset($parts['user']) || isset($parts['pass'])) {
+        return false;
+    }
+
+    $scheme = strtolower((string) ($parts['scheme'] ?? ''));
+    $host = strtolower((string) ($parts['host'] ?? ''));
+    if (avereo_gate_environment_is_local($config)) {
+        return in_array($scheme, ['http', 'https'], true)
+            && ($host === '127.0.0.1' || $host === 'localhost' || str_ends_with($host, '.localhost'));
+    }
+
+    return $scheme === 'https'
+        && ($host === 'avereo.fr' || str_ends_with($host, '.avereo.fr'));
+}
+
+/** @param array<string, mixed> $config */
+function avereo_gate_cookie_is_secure(array $config): bool
+{
+    return !avereo_gate_environment_is_local($config);
+}
+
 /** @return array<string, mixed> */
 function avereo_gate_config(): array
 {
@@ -207,7 +238,7 @@ function avereo_gate_issue_cookie(array $config, bool $remembered, ?array $ident
     setcookie((string) $config['connect_gate_cookie'], $value, [
         'expires' => $remembered ? $issuedAt + $lifetime : 0,
         'path' => '/',
-        'secure' => true,
+        'secure' => avereo_gate_cookie_is_secure($config),
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -219,7 +250,7 @@ function avereo_gate_clear_cookie(array $config): void
     setcookie((string) $config['connect_gate_cookie'], '', [
         'expires' => time() - 42000,
         'path' => '/',
-        'secure' => true,
+        'secure' => avereo_gate_cookie_is_secure($config),
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
@@ -265,17 +296,7 @@ function avereo_gate_identity(array $config): array
 function avereo_gate_redirect_to_connect(array $config): never
 {
     $url = trim((string) ($config['connect_portal_url'] ?? ''));
-    $parts = parse_url($url);
-    if (!is_array($parts)) {
-        $parts = [];
-    }
-    $host = strtolower((string) ($parts['host'] ?? ''));
-    if (
-        strtolower((string) ($parts['scheme'] ?? '')) !== 'https'
-        || ($host !== 'avereo.fr' && !str_ends_with($host, '.avereo.fr'))
-        || isset($parts['user'])
-        || isset($parts['pass'])
-    ) {
+    if (!avereo_gate_portal_url_is_allowed($config, $url)) {
         http_response_code(503);
         header('Content-Type: text/plain; charset=utf-8');
         echo 'Le portail AVEREO CONNECT n est pas configure.';

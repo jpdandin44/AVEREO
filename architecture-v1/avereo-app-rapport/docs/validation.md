@@ -24,6 +24,21 @@ Validation realisee le 13 juillet 2026 dans la branche isolee `feat/rapport-gemi
 - `api_token` retourne HTTP 503 avec l'hote de production, meme lorsque la configuration locale contient un jeton.
 - Les payloads mal formes retournent HTTP 422; un autre utilisateur ne peut ni lire ni ecraser le rapport du proprietaire.
 
+## Qualification locale CONNECT ajoutee
+
+Le parcours Docker complet doit etre valide avec :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 gateway-up
+docker run --rm --entrypoint php -v "${PWD}:/workspace" -w /workspace avereo-rapport-rapport-web:latest tests/connect-gate.php
+powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 gateway-down
+```
+
+Les criteres sont : lancement depuis un profil local CONNECT, consommation
+unique du ticket, ouverture de la vraie interface Rapport, identite
+`avereo_connect` lisible par l'API, refus de l'acces direct et maintien des
+exigences HTTPS/cookie `Secure` hors environnement local.
+
 ## Commandes de reference
 
 ```powershell

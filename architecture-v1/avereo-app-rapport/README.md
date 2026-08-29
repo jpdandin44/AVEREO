@@ -34,11 +34,18 @@ Le build produit `frontend/dist/`, y compris l'API PHP venant de `frontend/publi
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 token-up
 powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 oauth-up
+powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 gateway-up
 powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 health
-powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 down
+powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 gateway-down
 ```
 
 Les secrets locaux sont generes dans des fichiers ignores. Aucun identifiant de production n'est requis pour developper.
+
+`gateway-up` construit Rapport avec sa synchronisation en ligne, demarre sa
+base isolee puis surcharge uniquement l'URL et le secret Rapport du CONNECT
+Docker local. Les quatre autres applications conservent leurs pages de
+demonstration. `gateway-down` arrete Rapport et restaure le catalogue CONNECT
+local par defaut.
 
 Ports locaux : application `8100`, MySQL `3310`, Adminer `8101`, mock OAuth `8102`.
 

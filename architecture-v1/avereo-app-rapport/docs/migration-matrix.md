@@ -17,6 +17,7 @@
 | Reouverture depuis la liste serveur | absente | PHP, MySQL | API disponible; interface differee au lot de consolidation OAuth | non integree |
 | Authentification | absente | AVEREO CONNECT adosse a Drupal | ticket signe, cookie de sas, roles `utilisateur_rapport`/`administrateur_rapport` | adaptee |
 | Mode technique local | absente | Jeton genere localement | `api_token`, ignore de Git, admin local temporaire | adaptee |
+| Parcours CONNECT local reel | absent | CONNECT Docker, ticket HMAC, cookie de sas, MySQL Rapport | `gateway-up`, secret local ignore, vraie interface Rapport sur `127.0.0.1:8100` | adaptee |
 | Backend Node.js | absent | aucun | Aucun runtime Node.js en production | non integree |
 
 Aucune fonctionnalite source n'est volontairement supprimee. La persistance serveur et l'authentification sont ajoutees sans retirer le brouillon hors ligne. La preversion reste utilisable sans OAuth avec les brouillons navigateur; la reouverture d'une copie serveur sera finalisee avec le parcours d'authentification de production.
