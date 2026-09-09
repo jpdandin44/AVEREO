@@ -37,6 +37,8 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 | IMPORTANT | `frontend/src/App.jsx`, export | Une source image importee pouvait etre interpolee dans le document HTML. | Seules les images `data:` bitmap conformes sont integrees; les autres valeurs sont echappees ou ignorees. | corrige |
 | IMPORTANT | Entree publique Rapport | L'OAuth Rapport seul permettait de contourner le portail CONNECT. | `index.php`, l'OAuth applicatif et l'API metier exigent un cookie issu d'un ticket CONNECT HMAC court et a usage unique; seul le healthcheck reste public. | a qualifier en preproduction |
 | IMPORTANT | Routage Apache des assets | O2Switch reecrivait les fichiers JS/CSS vers `index.html`, produisant une page blanche avec `nosniff`. | Exclusion explicite de `assets`, `api`, `auth` et `connect` avant le fallback SPA. | valide en preproduction |
+| IMPORTANT | Qualification locale CONNECT | Le catalogue Docker ouvrait une page Rapport simulee et ne qualifiait donc ni le vrai sas, ni le frontend, ni l'API Rapport. | Mode `gateway-up` propre a Rapport, secret local ignore, surcharge Compose limitee a Rapport et restauration explicite du placeholder. | corrige |
+| IMPORTANT | Cookie du sas local | Le cookie et la redirection imposaient HTTPS meme sur `127.0.0.1`, rendant la vraie application inaccessible depuis CONNECT Docker. | HTTP local et cookie non-`Secure` autorises uniquement avec `environment=local`; HTTPS et `Secure` restent obligatoires hors local. | corrige |
 
 ## Controle des secrets
 

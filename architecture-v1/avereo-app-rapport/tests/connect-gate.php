@@ -39,6 +39,32 @@ $config = [
     'connect_gate_session_seconds' => 3600,
 ];
 
+gate_test_assert(
+    avereo_gate_portal_url_is_allowed($config, 'http://127.0.0.1:8080/'),
+    'Le portail CONNECT Docker doit etre autorise uniquement en environnement local.',
+);
+gate_test_assert(
+    !avereo_gate_cookie_is_secure($config),
+    'Le cookie local doit fonctionner sans HTTPS sur la boucle locale.',
+);
+$productionConfig = ['environment' => 'production'];
+gate_test_assert(
+    avereo_gate_portal_url_is_allowed($productionConfig, 'https://connect.avereo.fr/'),
+    'Le portail CONNECT de production doit rester autorise en HTTPS.',
+);
+gate_test_assert(
+    !avereo_gate_portal_url_is_allowed($productionConfig, 'http://connect.avereo.fr/'),
+    'Le portail CONNECT de production ne doit jamais accepter HTTP.',
+);
+gate_test_assert(
+    !avereo_gate_portal_url_is_allowed($config, 'http://example.test/'),
+    'Le mode local ne doit pas autoriser un hote distant.',
+);
+gate_test_assert(
+    avereo_gate_cookie_is_secure($productionConfig),
+    'Le cookie de production doit rester Secure.',
+);
+
 $nonce = avereo_gate_base64url_encode(random_bytes(24));
 $ticket = gate_test_ticket('rapport', $secret, $nonce);
 avereo_gate_exchange_ticket($config, $ticket);
