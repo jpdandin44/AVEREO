@@ -20,5 +20,7 @@ tags: [coupe, changelog]
 - Déconnexion Coupe vers la confirmation CONNECT dans la fenêtre principale.
 - Tests du sas et du parcours HTTP multi-applications.
 - Socle documentaire de l'application et procédure locale avec limites de stockage.
+- Procédure de mise en production complétée avec GO / NO-GO, sauvegarde,
+  recette post-déploiement et retour arrière ciblé.
 
 L'historique antérieur reste dans Git et dans [l'audit source](docs/source-audit.md).

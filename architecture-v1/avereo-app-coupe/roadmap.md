@@ -29,8 +29,12 @@ La validation humaine de l'interface et le merge restent distincts des tests.
 
 1. Recette humaine du parcours et des fonctions métier utilisées dans Coupe.
 2. Validation de la PR avec la checklist existante, puis merge humain.
-3. Décider séparément d'une éventuelle étape hébergée ; aucun déploiement
-   automatique n'est prévu par ce lot.
+3. Appliquer le GO / NO-GO décrit dans
+   [la procédure de production](docs/deployment.md), notamment la décision sur
+   le stockage en ligne actuellement non configuré.
+4. Après merge, déclencher manuellement le seul workflow Coupe depuis `main`,
+   puis exécuter la recette et consigner l'artefact de sauvegarde. Aucun
+   déploiement automatique n'est prévu par ce lot.
 
 Le stockage Coupe local en base et l'intégration réelle des autres applications
 ne sont pas engagés. Les alertes de dépendances de développement détectées
