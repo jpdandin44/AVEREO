@@ -27,3 +27,6 @@ Thumbs.db
 *.local
 .cache/
 coverage/
+
+# Generated local gateway configuration (contains the per-app secret).
+local/config.php
