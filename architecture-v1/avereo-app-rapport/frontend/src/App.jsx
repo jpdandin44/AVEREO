@@ -15,6 +15,7 @@ import {
   normalizeReportClassification,
   recommendedProtocols,
 } from './reportClassification.js';
+import { buildGeorisquesReportUrl } from './georisquesReport.js';
 import {
   AlertTriangle,
   ArrowLeft,
@@ -1093,7 +1094,8 @@ function SiteStep({ report, setReport }) {
     }
   };
 
-  const hasCoordinates = report.cadastre.lon && report.cadastre.lat;
+  const georisquesReportUrl = buildGeorisquesReportUrl(report.cadastre.lon, report.cadastre.lat);
+  const hasCoordinates = georisquesReportUrl !== null;
 
   return (
     <section className="panel">
@@ -1169,19 +1171,31 @@ function SiteStep({ report, setReport }) {
             Rechercher
           </button>
           {hasCoordinates && (
-            <button
-              className="button ghost"
-              type="button"
-              onClick={() =>
-                window.open(
-                  `https://www.geoportail-urbanisme.gouv.fr/map/#tile=1&lon=${report.cadastre.lon}&lat=${report.cadastre.lat}&zoom=19`,
-                  '_blank',
-                )
-              }
-            >
-              <MapPin size={18} />
-              Carte PLU
-            </button>
+            <>
+              <button
+                className="button ghost"
+                type="button"
+                onClick={() =>
+                  window.open(
+                    `https://www.geoportail-urbanisme.gouv.fr/map/#tile=1&lon=${report.cadastre.lon}&lat=${report.cadastre.lat}&zoom=19`,
+                    '_blank',
+                    'noopener,noreferrer',
+                  )
+                }
+              >
+                <MapPin size={18} />
+                Carte PLU
+              </button>
+              <button
+                className="button ghost"
+                type="button"
+                title="Ouvrir le rapport officiel Georisques"
+                onClick={() => window.open(georisquesReportUrl, '_blank', 'noopener,noreferrer')}
+              >
+                <ShieldCheck size={18} />
+                Rapport des risques
+              </button>
+            </>
           )}
           {report.urbanisme.pdfUrl && (
             <button className="button ghost" type="button" onClick={() => window.open(report.urbanisme.pdfUrl, '_blank')}>

@@ -74,6 +74,11 @@ Correspondance du besoin metier avec l'assistant :
 - niveau, source, date de consultation et avertissement sur les limites ;
 - possibilite de confirmer, completer ou commenter les donnees officielles.
 
+Le socle commun retablit d'abord l'ouverture du rapport PDF officiel Georisques
+a partir des coordonnees du bien. Cette consultation ne remplace pas le lot 3 :
+celui-ci devra integrer des donnees structurees, leur date et une confirmation
+manuelle dans le dossier Habitologue.
+
 ### 4. Analyse et visite
 
 - observations par zone ou composant ;
