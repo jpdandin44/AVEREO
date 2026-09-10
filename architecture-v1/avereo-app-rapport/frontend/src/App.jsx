@@ -8,6 +8,14 @@ import {
   startOAuthLogin,
 } from './services/reportApi.js';
 import {
+  HABITOLOGIE_STEPS,
+  REPORT_TYPES,
+  applyReportMetadata,
+  createHabitologieReport,
+  normalizeHabitologieReport,
+  resolveReportType,
+} from './reportModes.js';
+import {
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
@@ -124,7 +132,7 @@ const emptyObservation = () => ({
   photos: [],
 });
 
-const initialReport = {
+const initialReport = applyReportMetadata({
   categorie: 'Expertise & visite technique',
   sous_categorie: 'Constat general',
   titre: "Rapport d'expertise technique",
@@ -170,7 +178,7 @@ const initialReport = {
   nom_signataire: '',
   signature: '',
   updatedAt: '',
-};
+}, REPORT_TYPES.TECHNICAL);
 
 function createId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -198,7 +206,24 @@ function deepMergeReport(base, incoming) {
 
   const observations = Array.isArray(incoming?.observations) ? incoming.observations : base.observations;
   merged.observations = observations.length > 0 ? observations.map(normalizeObservation) : [emptyObservation()];
-  return merged;
+  return applyReportMetadata(merged, REPORT_TYPES.TECHNICAL);
+}
+
+function normalizeStoredDraft(incoming) {
+  return resolveReportType(incoming) === REPORT_TYPES.HABITOLOGIE
+    ? normalizeHabitologieReport(incoming)
+    : deepMergeReport(initialReport, incoming);
+}
+
+function createNewReport(reportType) {
+  if (reportType === REPORT_TYPES.HABITOLOGIE) {
+    return createHabitologieReport();
+  }
+
+  return applyReportMetadata(
+    { ...initialReport, observations: [emptyObservation()] },
+    REPORT_TYPES.TECHNICAL,
+  );
 }
 
 function normalizeObservation(obs) {
@@ -236,11 +261,11 @@ async function saveDraft(report) {
 
 async function loadDraft() {
   const localDraft = localStorage.getItem(DRAFT_KEY) || localStorage.getItem(LEGACY_DRAFT_KEY);
-  if (localDraft) return deepMergeReport(initialReport, JSON.parse(localDraft));
+  if (localDraft) return normalizeStoredDraft(JSON.parse(localDraft));
 
   try {
     const draft = (await withTimeout(idbGet(DRAFT_KEY), 800)) || (await withTimeout(idbGet(LEGACY_DRAFT_KEY), 800));
-    if (draft) return deepMergeReport(initialReport, draft);
+    if (draft) return normalizeStoredDraft(draft);
   } catch {
     return null;
   }
@@ -800,7 +825,11 @@ function TextAreaWithMic({ label, value, onChange, onAppend, placeholder, rows =
 
 function StepNav({ steps, currentStep, setStep }) {
   return (
-    <nav className="step-nav" aria-label="Progression du rapport">
+    <nav
+      className="step-nav"
+      aria-label="Progression du rapport"
+      style={{ '--step-count': steps.length }}
+    >
       {steps.map((step, index) => (
         <button
           key={step}
@@ -874,18 +903,19 @@ function CompletionPanel({ report, validation }) {
   );
 }
 
-function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
+function HomePage({ draft, onNewHabitologie, onNewTechnical, onResume, onlineSyncEnabled }) {
   const hasDraft = Boolean(draft);
+  const draftType = resolveReportType(draft);
   return (
     <div className="screen">
       <Header />
       <main className="home-grid">
         <section className="panel home-panel">
           <span className="eyebrow">Rapport AVEREO Pro</span>
-          <h2>Generer un rapport d'expertise terrain</h2>
+          <h2>Choisir le rapport adapte a la visite</h2>
           <p>
-            Nouveau dossier, reprise de brouillon, photos, releves, analyse, signature et export Word sont regroupes
-            dans le meme parcours.
+            Le rapport technique conserve le parcours complet actuel. Le Rapport d'habitologie propose un parcours
+            plus court, centre sur le client, le bien et les informations utiles a la decision.
           </p>
           {!onlineSyncEnabled && (
             <div className="preview-notice" role="status">
@@ -896,19 +926,29 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
               </span>
             </div>
           )}
-          <div className="home-actions">
-            <button className="button primary" type="button" onClick={onNew}>
-              <Plus size={18} />
-              Nouveau rapport
-            </button>
+          <h3>Creer un nouveau rapport</h3>
+          <div className="choice-grid two">
+            <ButtonCard
+              title="Rapport technique"
+              description="Parcours actuel complet : protocoles, observations, signature et export."
+              onClick={onNewTechnical}
+            />
+            <ButtonCard
+              title="Rapport d'habitologie"
+              description="Parcours leger en six etapes, sans remplacer le moteur technique existant."
+              onClick={onNewHabitologie}
+            />
+          </div>
+          <div className="home-actions compact">
             <button className="button secondary" type="button" onClick={onResume} disabled={!hasDraft}>
               <RotateCcw size={18} />
-              Reprendre
+              Reprendre le brouillon
             </button>
           </div>
           {hasDraft && (
             <p className="draft-line">
-              Dernier brouillon : {draft.reference_dossier || draft.titre} - {formatDateTime(draft.updatedAt)}
+              Dernier brouillon ({draftType === REPORT_TYPES.HABITOLOGIE ? 'habitologie' : 'technique'}) :{' '}
+              {draft.reference_dossier || draft.titre} - {formatDateTime(draft.updatedAt)}
             </p>
           )}
         </section>
@@ -918,19 +958,19 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
           <ul>
             <li>
               <ClipboardList size={18} />
-              Donnees dossier et client
+              Donnees client et dossier
             </li>
             <li>
               <MapPin size={18} />
-              Cadastre, PLU et contexte de visite
+              Bien, cadastre et risques connus
             </li>
             <li>
               <Camera size={18} />
-              Observations photo et camera terrain
+              Observations, photos et mesures
             </li>
             <li>
               <PenLine size={18} />
-              Signature et document Word
+              Analyse, aides et synthese
             </li>
           </ul>
         </section>
@@ -1833,6 +1873,139 @@ function ReportWizard({
   );
 }
 
+const habitologieStepDetails = [
+  {
+    description: 'Identifier le client, ses coordonnees, le motif de la visite et les consentements necessaires.',
+    capabilities: ['Identite et coordonnees', 'Objet de la visite', 'Consentements utiles'],
+  },
+  {
+    description: 'Decrire le logement et sa localisation avant de consulter les donnees cadastrales.',
+    capabilities: ['Adresse et localisation', 'References cadastrales', 'Caracteristiques essentielles'],
+  },
+  {
+    description: 'Rassembler les risques connus, leur source et leur date de consultation.',
+    capabilities: ['Risques officiels', 'Niveau et source', 'Confirmation manuelle'],
+  },
+  {
+    description: 'Consigner les observations utiles realisees pendant la visite.',
+    capabilities: ['Photos et mesures', 'Commentaires et dictee texte', 'Priorites et recommandations'],
+  },
+  {
+    description: 'Presenter les aides envisageables sans garantir automatiquement leur eligibilite.',
+    capabilities: ['CEE', 'Aides nationales', 'Aides regionales et locales'],
+  },
+  {
+    description: 'Produire une lecture simple et sourcee de la situation du bien.',
+    capabilities: ['Principaux constats', "Pistes d'amelioration", 'Apercu et export'],
+  },
+];
+
+function HabitologieWizard({ initialData, onHome }) {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [report, setReport] = useState(() => normalizeHabitologieReport(initialData));
+  const [toast, setToast] = useState('');
+  const step = habitologieStepDetails[currentStep];
+  const progress = Math.round(((currentStep + 1) / HABITOLOGIE_STEPS.length) * 100);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      saveDraft(report).catch(() => undefined);
+    }, 700);
+    return () => window.clearTimeout(timeout);
+  }, [report]);
+
+  const handleSave = async () => {
+    const saved = await saveDraft(report);
+    setReport(saved);
+    setToast('Brouillon habitologie enregistre.');
+    window.setTimeout(() => setToast(''), 2400);
+  };
+
+  const goNext = () => setCurrentStep((value) => Math.min(value + 1, HABITOLOGIE_STEPS.length - 1));
+  const goPrev = () => setCurrentStep((value) => Math.max(value - 1, 0));
+
+  return (
+    <div className="screen">
+      <Header onHome={onHome} />
+      <main className="wizard-layout">
+        <StepNav steps={HABITOLOGIE_STEPS} currentStep={currentStep} setStep={setCurrentStep} />
+        <div className="wizard-grid">
+          <div className="wizard-main">
+            <section className="panel habitologie-step">
+              <span className="eyebrow">Rapport d'habitologie</span>
+              <div className="section-title">
+                <ClipboardList size={22} />
+                <div>
+                  <h2>{HABITOLOGIE_STEPS[currentStep]}</h2>
+                  <p>{step.description}</p>
+                </div>
+              </div>
+              <div className="preview-notice" role="status">
+                <CheckCircle2 size={18} />
+                <span>
+                  Le squelette de cette etape est pret. Les champs metier et les sources externes seront ajoutes dans
+                  les lots fonctionnels suivants.
+                </span>
+              </div>
+              <ul className="habitologie-capabilities">
+                {step.capabilities.map((capability) => (
+                  <li key={capability}>{capability}</li>
+                ))}
+              </ul>
+            </section>
+          </div>
+          <aside className="summary-panel">
+            <div>
+              <span className="eyebrow">Parcours</span>
+              <strong>{progress} %</strong>
+              <div className="progress">
+                <span style={{ width: `${progress}%` }} />
+              </div>
+            </div>
+            <dl>
+              <div>
+                <dt>Type</dt>
+                <dd>Habitologie</dd>
+              </div>
+              <div>
+                <dt>Schema</dt>
+                <dd>Version {report.schema_version}</dd>
+              </div>
+              <div>
+                <dt>Dossier</dt>
+                <dd>{report.reference_dossier || 'A renseigner'}</dd>
+              </div>
+            </dl>
+          </aside>
+        </div>
+      </main>
+
+      <footer className="action-bar">
+        <button className="button ghost" type="button" onClick={handleSave}>
+          <Save size={18} />
+          Enregistrer
+        </button>
+        <div>
+          <button className="button ghost" type="button" onClick={goPrev} disabled={currentStep === 0}>
+            <ArrowLeft size={18} />
+            Precedent
+          </button>
+          <button
+            className="button primary"
+            type="button"
+            onClick={goNext}
+            disabled={currentStep === HABITOLOGIE_STEPS.length - 1}
+          >
+            Suivant
+            <ArrowRight size={18} />
+          </button>
+        </div>
+      </footer>
+      {toast && <div className="toast">{toast}</div>}
+    </div>
+  );
+}
+
 function AccessGate({ authConfig, authError, onOAuthLogin }) {
   const issuer = String(authConfig?.issuer || '').replace(/\/$/, '');
   const oauthReady = authConfig?.mode === 'drupal_oauth' && authConfig?.configured;
@@ -1896,6 +2069,7 @@ export default function App() {
   const [draft, setDraft] = useState(null);
   const [initialWizardData, setInitialWizardData] = useState(initialReport);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [pendingReportType, setPendingReportType] = useState(REPORT_TYPES.TECHNICAL);
   const [authConfig, setAuthConfig] = useState(null);
   const [accessToken, setAccessToken] = useState('');
   const [authUser, setAuthUser] = useState(null);
@@ -1972,18 +2146,19 @@ export default function App() {
     }
   };
 
-  const startNew = async () => {
+  const startNew = async (reportType) => {
     if (draft) {
+      setPendingReportType(reportType);
       setConfirmReset(true);
       return;
     }
-    setInitialWizardData({ ...initialReport, observations: [emptyObservation()] });
+    setInitialWizardData(createNewReport(reportType));
     setAppState('wizard');
   };
 
   const confirmNew = async () => {
     await removeDraft();
-    const fresh = { ...initialReport, observations: [emptyObservation()] };
+    const fresh = createNewReport(pendingReportType);
     setDraft(null);
     setInitialWizardData(fresh);
     setConfirmReset(false);
@@ -2023,12 +2198,13 @@ export default function App() {
       {appState === 'home' && (
         <HomePage
           draft={draft}
-          onNew={startNew}
+          onNewHabitologie={() => startNew(REPORT_TYPES.HABITOLOGIE)}
+          onNewTechnical={() => startNew(REPORT_TYPES.TECHNICAL)}
           onResume={resume}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
         />
       )}
-      {appState === 'wizard' && (
+      {appState === 'wizard' && resolveReportType(initialWizardData) === REPORT_TYPES.TECHNICAL && (
         <ReportWizard
           accessToken={accessToken}
           authenticated={authenticated}
@@ -2042,9 +2218,14 @@ export default function App() {
           onTokenSubmit={activateLocalToken}
         />
       )}
+      {appState === 'wizard' && resolveReportType(initialWizardData) === REPORT_TYPES.HABITOLOGIE && (
+        <HabitologieWizard initialData={initialWizardData} onHome={goHome} />
+      )}
       {confirmReset && (
         <Modal
-          title="Creer un nouveau rapport ?"
+          title={`Creer un nouveau rapport ${
+            pendingReportType === REPORT_TYPES.HABITOLOGIE ? "d'habitologie" : 'technique'
+          } ?`}
           onClose={() => setConfirmReset(false)}
           actions={
             <>
@@ -2052,7 +2233,7 @@ export default function App() {
                 Annuler
               </button>
               <button className="button primary" type="button" onClick={confirmNew}>
-                Nouveau rapport
+                Demarrer
               </button>
             </>
           }

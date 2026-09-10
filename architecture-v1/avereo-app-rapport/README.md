@@ -39,10 +39,19 @@ La source historique `Rapport_AVEREO_Pro.txt` est conservee dans le ZIP d'audit 
 ```powershell
 cd frontend
 npm ci
+npm test
 npm run build
 ```
 
 Le build produit `frontend/dist/`, y compris l'API PHP venant de `frontend/public/api/`.
+
+## Parcours disponibles
+
+- `Rapport technique` conserve l'assistant historique complet.
+- `Rapport d'habitologie` est une evolution legere en six etapes. Son premier
+  lot fournit le choix du parcours, la navigation, un schema versionne et la
+  reprise du brouillon local. Les champs metier, les sources externes, la
+  sauvegarde serveur et l'export seront livres dans les lots suivants.
 
 ## Environnement local
 
@@ -84,6 +93,10 @@ Le merge, la creation des ressources cPanel/Drupal et le deploiement restent des
 
 ## Documentation structurante
 
+- `architecture.md` : index de l'architecture et sources techniques de reference.
+- `requirements.md` : exigences durables et limites du parcours Habitologie.
+- `decisions.md` : decisions structurantes et consequences.
+- `changelog.md` : evolutions significatives, sans recopier l'historique Git.
 - `roadmap.md` : priorites fonctionnelles et dette technique non bloquante.
 - `docs/habitologie-light-plan.md` : parcours leger, sources, TDD, lots et estimation.
 - `docs/architecture.md` : architecture et frontieres de l'application.

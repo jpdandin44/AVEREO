@@ -2,7 +2,7 @@
 project: avereo-app-rapport
 document_type: implementation-plan
 title: Plan de mise en oeuvre du Rapport d'habitologie
-status: proposed
+status: in-progress
 version: git
 created: 2026-09-10
 updated: 2026-09-10
@@ -153,6 +153,22 @@ des services tiers.
 | 5 | Aides nationales, CEE et aides locales avec sources et liens | 4 a 7 jours |
 | 6 | Synthese, illustrations AVEREO ou autorisees, apercu et export | 4 a 6 jours |
 | 7 | Sauvegarde/rechargement, non-regression du moteur actuel, preproduction et corrections | 3 a 5 jours |
+
+### Etat du lot 1 au 10 septembre 2026
+
+Le lot 1 est implemente sur la branche `feat/rapport-habitologie-entry` et reste
+soumis a la revue humaine :
+
+- choix explicite entre le rapport technique et le Rapport d'habitologie ;
+- compatibilite des brouillons historiques, interpretes comme techniques ;
+- metadonnees `report_type` et `schema_version` ;
+- parcours Habitologie navigable en six etapes ;
+- sauvegarde et reprise du squelette dans le brouillon navigateur ;
+- tests unitaires de la logique de type, de version et de normalisation.
+
+Les champs metier, les appels externes, la sauvegarde serveur et l'export du
+Rapport d'habitologie ne font pas partie de ce lot. Le parcours technique reste
+fonctionnellement inchange.
 
 ### Delai global
 
