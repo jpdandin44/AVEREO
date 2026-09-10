@@ -120,7 +120,11 @@ Ne pas réaliser sans autorisation explicite :
 ## 10. Checklist des pull requests
 
 - conserver la structure de `.github/pull_request_template.md` sauf demande explicite du responsable du projet ;
+- utiliser le fichier `.github/PULL_REQUEST_TEMPLATE.md` comme source unique des libelles et conserver son encodage UTF-8 ; ne jamais ressaisir ou simplifier les textes de la checklist ;
 - remplacer les emplacements du modèle par les liens directs vers l'application locale, le diff de la pull request, la validation sécurité/données et la documentation ;
 - laisser toutes les cases décochées lors de la création ou de la mise à jour d'une pull request ;
 - fournir les contrôles exécutés et leurs résultats dans la section `Validation`, sans les transformer en attestation humaine ;
-- réserver la validation et le cochage de la checklist au responsable humain du projet.
+- réserver la validation et le cochage de la checklist au responsable humain du projet ;
+- avant de créer ou modifier une pull request, valider le fichier de description avec `python .github/scripts/check-pr-policy.py --allow-unchecked --title "TYPE(SCOPE): DESCRIPTION" --body-file CHEMIN_DESCRIPTION` ;
+- après une validation humaine, relire puis contrôler la description réellement enregistrée avec `python .github/scripts/check-pr-policy.py --pr-number NUMERO --repo PROPRIETAIRE/DEPOT` avant d'annoncer que la policy doit passer ;
+- ne jamais contourner un échec du vérificateur en modifiant les libelles attendus, en cochant une case ou en assouplissant la policy.

@@ -31,8 +31,32 @@ Puis ouvrir `http://localhost:5173`.
 Regles appliquees automatiquement sur chaque PR:
 - Titre PR au format Conventional Commits (`feat: ...`, `fix: ...`, etc.)
 - Sections obligatoires dans la description PR
-- Checklist obligatoire cochee
+- Checklist conforme au modele UTF-8 officiel et obligatoirement cochee par le responsable humain
+- Liens temporaires `URL_*` obligatoirement remplaces
 - Reviewer par defaut via `CODEOWNERS`
+
+Le modele `.github/PULL_REQUEST_TEMPLATE.md` est la source unique des
+libelles. Le meme verificateur est utilise localement et dans GitHub Actions :
+
+```powershell
+# Avant publication : les cases peuvent encore etre decochees.
+python .github/scripts/check-pr-policy.py --allow-unchecked `
+  --title "TYPE(SCOPE): DESCRIPTION" `
+  --body-file CHEMIN_DESCRIPTION
+
+# Apres validation humaine : controle strict de la PR reellement enregistree.
+python .github/scripts/check-pr-policy.py `
+  --pr-number NUMERO `
+  --repo PROPRIETAIRE/DEPOT
+
+# Non-regression du verificateur.
+python -m unittest discover `
+  -s .github/scripts/tests `
+  -p "test_check_pr_policy.py"
+```
+
+Le mode de prepublication ne coche aucune case. Le controle strict conserve la
+validation et l'autorisation de merge sous responsabilite humaine.
 
 Regles a activer dans GitHub (`Settings > Branches > Branch protection`):
 1. Require a pull request before merging
