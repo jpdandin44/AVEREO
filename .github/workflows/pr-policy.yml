@@ -9,51 +9,15 @@ jobs:
     if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check PR title format
-        shell: bash
-        run: |
-          title="${{ github.event.pull_request.title }}"
-          regex='^(feat|fix|chore|docs|refactor|test|ci|build)(\([a-z0-9._-]+\))?: .{8,}$'
-          if [[ ! "$title" =~ $regex ]]; then
-            echo "::error::PR title must follow Conventional Commits (example: feat(api): add quote endpoint)."
-            exit 1
-          fi
+      - name: Checkout policy source
+        uses: actions/checkout@v4
 
-      - name: Check PR body sections
-        shell: bash
-        run: |
-          body=$(cat <<'EOF'
-          ${{ github.event.pull_request.body }}
-          EOF
-          )
+      - name: Test PR policy checker
+        run: python3 -m unittest discover -s .github/scripts/tests -p 'test_check_pr_policy.py'
 
-          required_sections=("## Summary" "## Changes" "## Validation" "## Risks" "## Checklist")
-          for section in "${required_sections[@]}"; do
-            if ! grep -Fq "$section" <<< "$body"; then
-              echo "::error::Missing section in PR description: $section"
-              exit 1
-            fi
-          done
-
-      - name: Check checklist completion
-        shell: bash
-        run: |
-          body=$(cat <<'EOF'
-          ${{ github.event.pull_request.body }}
-          EOF
-          )
-
-          required_checks=(
-            "- [x] J'ai testé "
-            "- [x] J'ai contrôlé "
-            "- [x] J'ai consulté et validé "
-            "- [x] J'autorise le merge de cette PR."
-          )
-
-          for check in "${required_checks[@]}"; do
-            if ! grep -Fqi -- "$check" <<< "$body"; then
-              echo "::error::Checklist item not marked as done: $check"
-              exit 1
-            fi
-          done
+      - name: Check PR policy
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: python3 .github/scripts/check-pr-policy.py
 
