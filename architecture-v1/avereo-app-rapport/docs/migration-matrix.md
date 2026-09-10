@@ -23,6 +23,7 @@ tags:
 | Dictee vocale | `App.jsx` | Web Speech API | Frontend avec degradation gracieuse | conservee |
 | Adresse et cadastre | `App.jsx` | BAN, API Carto IGN | Appels publics conserves; erreurs reseau gerees | conservee |
 | Urbanisme et Geoportail | `App.jsx` | API Carto, Geoportail | Frontend; verification des liens | conservee |
+| Rapport officiel des risques | `App.jsx` historique | Georisques, longitude et latitude | Bouton dans `Site`; URL validee par tests; ouverture du PDF officiel sans autre donnee du dossier | restauree |
 | Observations et protocoles | `App.jsx` | Donnees metier | Payload JSON du rapport; tests CRUD API | adaptee |
 | Signature | `App.jsx` | Canvas/data URL | Frontend puis payload prive authentifie | adaptee |
 | Apercu | `App.jsx` | HTML `srcDoc` | Iframe sandboxee sans permission et sans referrer | conservee |
@@ -37,3 +38,7 @@ tags:
 | Backend Node.js | absent | aucun | Aucun runtime Node.js en production | non integree |
 
 Aucune fonctionnalite source n'est volontairement supprimee. La persistance serveur et l'authentification sont ajoutees sans retirer le brouillon hors ligne. La preversion reste utilisable sans OAuth avec les brouillons navigateur; la reouverture d'une copie serveur sera finalisee avec le parcours d'authentification de production.
+
+Le lien vers le PDF Georisques retablit la fonction historique de consultation.
+Il ne remplace pas le futur lot Habitologie d'import, d'horodatage et de
+confirmation des risques dans les donnees du rapport.

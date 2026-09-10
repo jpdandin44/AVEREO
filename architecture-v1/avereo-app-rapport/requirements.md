@@ -29,6 +29,10 @@ tags:
   plus selectionnable pour un nouveau dossier.
 - Un ancien brouillon du prototype Habitologie est converti vers le type
   `Rapport Habitologue` sans ouvrir un second moteur.
+- Apres une recherche d'adresse ayant fourni des coordonnees valides, l'etape
+  `Site` propose l'ouverture du rapport officiel Georisques correspondant.
+- Le lien Georisques reste disponible pour tous les types de rapport : il fait
+  partie du socle commun de localisation et ne modifie pas le dossier.
 
 ## Exigences techniques et securite
 
@@ -40,6 +44,9 @@ tags:
 - Les sources externes futures doivent afficher leur origine et leur date, et
   disposer d'une saisie manuelle de secours lorsque le parcours l'exige.
 - Les evolutions sont developpees par tranches testables selon le cycle TDD.
+- Les coordonnees transmises au service Georisques sont validees et aucun nom,
+  email, commentaire, photo ou autre contenu du dossier n'est inclus dans le
+  lien externe.
 
 ## Limites du lot 1
 
