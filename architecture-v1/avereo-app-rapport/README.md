@@ -1,3 +1,18 @@
+---
+project: avereo-app-rapport
+document_type: readme
+title: Rapport AVEREO Pro
+status: active
+version: git
+created: 2026-07-08
+updated: 2026-09-10
+owner: jpdandin
+tags:
+  - rapport
+  - application
+  - connect
+---
+
 # Rapport AVEREO Pro
 
 Application autonome de creation de rapports d'expertise terrain dans le monorepo AVEREO.
@@ -66,3 +81,12 @@ signee par CONNECT. La procedure de bascule preproduction est detaillee dans
 `docs/preproduction-connect-cutover.md`.
 
 Le merge, la creation des ressources cPanel/Drupal et le deploiement restent des actions humaines.
+
+## Documentation structurante
+
+- `roadmap.md` : priorites fonctionnelles et dette technique non bloquante.
+- `docs/habitologie-light-plan.md` : parcours leger, sources, TDD, lots et estimation.
+- `docs/architecture.md` : architecture et frontieres de l'application.
+- `docs/authentication.md` : authentification et sas CONNECT.
+- `docs/deployment.md` : procedure de deploiement O2Switch.
+- `database/README.md` : persistance MySQL et migrations.
