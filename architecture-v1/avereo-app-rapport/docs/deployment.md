@@ -1,3 +1,19 @@
+---
+project: avereo-app-rapport
+document_type: deployment-guide
+title: Deploiement Rapport sur O2Switch
+status: active
+version: git
+created: 2026-07-08
+updated: 2026-09-09
+owner: jpdandin
+tags:
+  - rapport
+  - deploiement
+  - o2switch
+  - mysql
+---
+
 # Deploiement Rapport sur O2Switch
 
 ## Cible
@@ -7,7 +23,7 @@
 - Transport : FTPS
 - Configuration privee : `/home/CPANEL_USERNAME/.avereo/rapport/config.php`
 - Base : `CPANEL_USERNAME_rapport`
-- Utilisateur : `CPANEL_USERNAME_rapport_user`
+- Utilisateur de production : `CPANEL_USERNAME_rptprod`
 
 ## Workflow
 
@@ -52,7 +68,7 @@ Verifier avant publication que l'accueil affiche `Preversion sans compte`, que l
 
 ### Etape 2 - ouverture de la persistance
 
-1. Creer la base et l'utilisateur MySQL Rapport dans cPanel, puis limiter ses droits a cette base.
+1. Creer la base et l'utilisateur MySQL Rapport dans cPanel, puis limiter ses droits a cette base. En production, utiliser le suffixe utilisateur `rptprod` documente dans `../database/README.md`.
 2. Appliquer `database/migrations/001_create_rapport_reports.sql`.
 3. Creer le fichier prive depuis `backend/config.example.php`, remplacer tous les placeholders et lui donner des permissions restrictives (`600` recommande lorsque possible).
 4. Activer le sous-domaine et HTTPS.
