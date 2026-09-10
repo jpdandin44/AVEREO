@@ -2,7 +2,7 @@
 project: avereo-app-rapport
 document_type: implementation-plan
 title: Plan de mise en oeuvre du Rapport d'habitologie
-status: proposed
+status: in-progress
 version: git
 created: 2026-09-10
 updated: 2026-09-10
@@ -23,25 +23,34 @@ Proposer un parcours client court et exploitable sur le terrain :
 `Client -> Bien immobilier -> Risques -> Analyse -> Aides -> Synthese`
 
 Le resultat doit privilegier la comprehension du client, la rapidite de saisie
-pendant la visite et une synthese sourcee. Il ne remplace pas le moteur Rapport
-actuel, gele sous le tag `rapport-demo-v1.0.0`.
+pendant la visite et une synthese sourcee. Cette chaine est un ordre metier ;
+elle est integree dans l'assistant Rapport existant, gele sous le tag
+`rapport-demo-v1.0.0`, sans creer un second moteur.
 
 ## Architecture recommandee
 
-Conserver une seule application Rapport, son acces CONNECT, son API et sa base
-MySQL. Ajouter un choix au demarrage :
+Conserver une seule application Rapport, son acces CONNECT, son API, sa base
+MySQL et son assistant `Dossier -> Site -> Protocoles -> Observations ->
+Export`. Remplacer la tuile `Reception de travaux` par le type de dossier
+`Rapport Habitologue` dans l'etape `Dossier`.
 
-1. `Rapport technique` ouvre le parcours actuel sans modification fonctionnelle ;
-2. `Rapport d'habitologie` ouvre le nouveau parcours leger.
+La classification reutilise principalement `categorie`, deja presente dans la
+charge JSON et utilisable pour definir les adaptations de workflow. Aucun
+`report_type`, nouveau schema, nouvel endpoint ou nouvelle colonne MySQL n'est
+necessaire. Le brouillon, les photos, la camera, la dictee, l'identite CONNECT,
+la sauvegarde et l'export restent ceux du moteur actuel. Les anciens dossiers
+`Reception de travaux` restent lisibles mais ce type n'est plus propose lors
+d'une nouvelle creation.
 
-Chaque dossier porte un `report_type` et un `schema_version`. Le premier lot
-peut conserver ces deux valeurs dans la charge JSON existante. Une colonne et
-un index MySQL ne seront ajoutes que si la liste des rapports doit filtrer ou
-trier ces valeurs cote serveur.
+Correspondance du besoin metier avec l'assistant :
 
-Le nouveau parcours est isole sous un module fonctionnel dedie. Les services
-existants sont reutilises sans refactorisation generale : sauvegarde, brouillon,
-photos, camera, dictee, identite CONNECT et export.
+| Besoin Habitologie | Etape Rapport reutilisee |
+| --- | --- |
+| Client et mission | Dossier |
+| Bien immobilier, localisation, cadastre et risques | Site |
+| Methode et perimetre de visite | Protocoles |
+| Notes, photos, mesures, analyse et aides | Observations |
+| Synthese, sources et document partageable | Export |
 
 ## Parcours fonctionnel cible
 
@@ -146,13 +155,29 @@ des services tiers.
 | Lot | Contenu | Estimation |
 | --- | --- | ---: |
 | 0 | Gel officiel, archive et manifeste du demonstrateur existant | 0,5 jour, realise |
-| 1 | Scenarios d'acceptation, choix du type de rapport, squelette du parcours et schema versionne | 3 a 4 jours |
-| 2 | Client, bien, geocodage, cadastre et saisie manuelle de secours | 4 a 6 jours |
+| 1 | Scenarios d'acceptation, type Habitologue, preservation de Reception, normalisation et non-regression | 1 a 2 jours |
+| 2 | Adaptation de Dossier et Site : client, bien, geocodage, cadastre et saisie manuelle de secours | 4 a 6 jours |
 | 3 | Risques Georisques, horodatage, sources, erreurs et confirmation manuelle | 3 a 5 jours |
 | 4 | Visite : observations, photos, mesures, commentaires et dictee texte | 4 a 6 jours |
 | 5 | Aides nationales, CEE et aides locales avec sources et liens | 4 a 7 jours |
 | 6 | Synthese, illustrations AVEREO ou autorisees, apercu et export | 4 a 6 jours |
 | 7 | Sauvegarde/rechargement, non-regression du moteur actuel, preproduction et corrections | 3 a 5 jours |
+
+### Etat du lot 1 au 10 septembre 2026
+
+Le lot 1 est implemente sur la branche `feat/rapport-habitologie-entry` et reste
+soumis a la revue humaine :
+
+- tuile `Reception de travaux` remplacee par `Rapport Habitologue` dans l'etape `Dossier` ;
+- assistant historique unique conserve pour tous les rapports ;
+- brouillon, sauvegarde, photos, dictee et export existants reutilises ;
+- anciens dossiers `Reception de travaux` preserves en lecture ;
+- migration defensive des deux prototypes de brouillon Habitologie ;
+- tests unitaires de la classification, de la normalisation et de la migration.
+
+Les champs metier et les appels externes specifiques ne font pas partie de ce
+lot. La sauvegarde serveur et l'export sont deja ceux de Rapport ; leur contenu
+sera enrichi au fil des adaptations metier.
 
 ### Delai global
 
@@ -167,9 +192,9 @@ des services tiers.
 
 ## Ordre de livraison recommande
 
-1. valider le parcours et les donnees indispensables sur un exemple reel ;
-2. livrer le bouton et un parcours vide navigable ;
-3. rendre client, bien et visite utilisables sans aucune API externe ;
+1. valider les donnees indispensables sur un exemple reel ;
+2. livrer le type `Rapport Habitologue` dans le parcours actuel ;
+3. adapter Dossier, Site et Observations sans aucune API externe ;
 4. brancher geocodage, cadastre puis risques avec des modes de secours ;
 5. ajouter les aides sans promettre automatiquement l'eligibilite ;
 6. finaliser la synthese et l'export ;
@@ -177,9 +202,9 @@ des services tiers.
 
 ## Criteres de succes du MVP
 
-- le moteur actuel reste accessible et ses dossiers restent compatibles ;
+- le moteur actuel et ses dossiers restent compatibles ;
 - un utilisateur CONNECT peut creer, reprendre et exporter un Rapport
-  d'habitologie en six etapes maximum ;
+  d'habitologie avec le meme assistant que les autres rapports ;
 - le parcours reste utilisable si une source externe est indisponible ;
 - chaque donnee externe affiche sa source et sa date ;
 - aucune illustration tierce n'est copiee sans droit verifie ;

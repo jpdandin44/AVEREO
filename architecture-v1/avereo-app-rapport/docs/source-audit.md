@@ -1,3 +1,18 @@
+---
+project: avereo-app-rapport
+document_type: source-audit
+title: Audit de la source Rapport
+status: active
+version: git
+created: 2026-07-13
+updated: 2026-09-10
+owner: jpdandin
+tags:
+  - rapport
+  - audit
+  - securite
+---
+
 # Audit de la source Rapport
 
 ## Source et integrite
@@ -29,7 +44,7 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 | IMPORTANT | `frontend/src/App.jsx`, import JSON | La source ne fixe pas une limite serveur et accepte des donnees utilisateur. | Limites cote frontend et API, controle de taille du corps et validation JSON. | corrige |
 | IMPORTANT | `frontend/src/App.jsx`, apercu `srcDoc` | Des URLs d'images importees sont reinserees dans l'apercu; le cadre n'est pas sandboxe. | `iframe` sandboxee sans permission et politique `no-referrer`. | corrige |
 | IMPORTANT | `frontend/src/App.jsx`, appels BAN/IGN | Dependances externes appelees directement par le navigateur, avec disponibilite et CORS hors controle. | Conservees pour le fonctionnement; documentees; proxy PHP a envisager si les conditions d'usage l'exigent. | accepte |
-| AMELIORATION | `frontend/package.json` | Aucun lint, test unitaire ou controle TypeScript n'est defini. | Build reproductible conserve; ajouter une suite de tests frontend dans un lot suivant. | ouvert |
+| AMELIORATION | `frontend/package.json` | La source ne definissait aucun test unitaire frontend. | Une premiere suite `node:test` couvre le type Habitologue, la preservation de Reception, la normalisation et les migrations des prototypes; le lint et les tests de composants restent a definir dans la strategie globale. | mitige |
 | INFORMATION | `Rapport_AVEREO_Pro.txt` | La source historique presente un encodage mojibake. | La refonte JSX corrige l'affichage et reste la cible. | corrige |
 | INFORMATION | `frontend/package.json` | Vite 5 exposait des alertes de dependances de developpement. | Passage a Vite 7 et plugin React 5; `npm audit` ne remonte plus de vulnerabilite. | corrige |
 | IMPORTANT | `frontend/public/api/`, mode local | Une faute de mode aurait pu activer le jeton administrateur hors local. | Modes stricts; `api_token` exige `environment=local` et un hote `.localhost`. | corrige |

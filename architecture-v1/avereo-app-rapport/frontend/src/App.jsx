@@ -8,6 +8,14 @@ import {
   startOAuthLogin,
 } from './services/reportApi.js';
 import {
+  REPORT_CATEGORIES,
+  getSelectableReportCategories,
+  isHabitologieReport,
+  nextReportTitle,
+  normalizeReportClassification,
+  recommendedProtocols,
+} from './reportClassification.js';
+import {
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
@@ -36,25 +44,6 @@ import {
 const DRAFT_KEY = 'avereo-rapport-draft-v2';
 const LEGACY_DRAFT_KEY = 'draftReport';
 const ONLINE_SYNC_ENABLED = import.meta.env.VITE_ENABLE_ONLINE_SYNC === 'true';
-
-const reportTypes = {
-  'Expertise & visite technique': {
-    description: 'Constat terrain, recherche de pathologies et synthese technique.',
-    subcategories: ['Constat general', 'Fissures', 'Humidite', 'Toiture'],
-  },
-  'Assistance avant-projet': {
-    description: 'Aide a la decision, cadrage travaux et consultation.',
-    subcategories: ['Avant-projet', "Consultation d'entreprise"],
-  },
-  'Reception de travaux': {
-    description: 'Releve des reserves, conformite apparente et recommandations.',
-    subcategories: ['Reception de travaux', 'Levee de reserves'],
-  },
-  'Diagnostic specifique': {
-    description: 'Analyse ciblee sur un desordre ou une zone identifiee.',
-    subcategories: ['Diagnostic fissures', 'Diagnostic humidite', 'Diagnostic toiture'],
-  },
-};
 
 const piecesOptions = [
   'Salon',
@@ -124,7 +113,7 @@ const emptyObservation = () => ({
   photos: [],
 });
 
-const initialReport = {
+const initialReport = normalizeReportClassification({
   categorie: 'Expertise & visite technique',
   sous_categorie: 'Constat general',
   titre: "Rapport d'expertise technique",
@@ -170,7 +159,7 @@ const initialReport = {
   nom_signataire: '',
   signature: '',
   updatedAt: '',
-};
+});
 
 function createId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -180,25 +169,44 @@ function createId() {
 }
 
 function deepMergeReport(base, incoming) {
+  const classifiedIncoming = normalizeReportClassification(incoming);
   const merged = {
     ...base,
-    ...incoming,
-    meteo: { ...base.meteo, ...(incoming?.meteo || {}) },
-    cadastre: { ...base.cadastre, ...(incoming?.cadastre || {}) },
-    urbanisme: { ...base.urbanisme, ...(incoming?.urbanisme || {}) },
+    ...classifiedIncoming,
+    meteo: { ...base.meteo, ...(classifiedIncoming.meteo || {}) },
+    cadastre: { ...base.cadastre, ...(classifiedIncoming.cadastre || {}) },
+    urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
     protocoles: {
       ...base.protocoles,
-      ...(incoming?.protocoles || {}),
-      standard: incoming?.protocoles?.standard ?? incoming?.protocoles?.is_standard ?? base.protocoles.standard,
-      fissures: incoming?.protocoles?.fissures ?? incoming?.protocoles?.is_fissures_n1 ?? base.protocoles.fissures,
+      ...(classifiedIncoming.protocoles || {}),
+      standard:
+        classifiedIncoming.protocoles?.standard
+        ?? classifiedIncoming.protocoles?.is_standard
+        ?? base.protocoles.standard,
+      fissures:
+        classifiedIncoming.protocoles?.fissures
+        ?? classifiedIncoming.protocoles?.is_fissures_n1
+        ?? base.protocoles.fissures,
       humidite:
-        incoming?.protocoles?.humidite ?? incoming?.protocoles?.is_humidite_infiltration ?? base.protocoles.humidite,
+        classifiedIncoming.protocoles?.humidite
+        ?? classifiedIncoming.protocoles?.is_humidite_infiltration
+        ?? base.protocoles.humidite,
     },
   };
 
-  const observations = Array.isArray(incoming?.observations) ? incoming.observations : base.observations;
+  const observations = Array.isArray(classifiedIncoming.observations)
+    ? classifiedIncoming.observations
+    : base.observations;
   merged.observations = observations.length > 0 ? observations.map(normalizeObservation) : [emptyObservation()];
-  return merged;
+  return normalizeReportClassification(merged);
+}
+
+function normalizeStoredDraft(incoming) {
+  return deepMergeReport(initialReport, incoming);
+}
+
+function createNewReport() {
+  return normalizeReportClassification({ ...initialReport, observations: [emptyObservation()] });
 }
 
 function normalizeObservation(obs) {
@@ -208,17 +216,6 @@ function normalizeObservation(obs) {
     id: obs?.id || createId(),
     titre: obs?.titre || '',
     photos: Array.isArray(obs?.photos) ? obs.photos : [],
-  };
-}
-
-function recommendedProtocols(subcategory) {
-  const label = (subcategory || '').toLowerCase();
-  return {
-    standard: true,
-    fissures: label.includes('fissure'),
-    humidite: label.includes('humid'),
-    toiture: label.includes('toiture'),
-    reception: label.includes('reception') || label.includes('reserve'),
   };
 }
 
@@ -236,11 +233,11 @@ async function saveDraft(report) {
 
 async function loadDraft() {
   const localDraft = localStorage.getItem(DRAFT_KEY) || localStorage.getItem(LEGACY_DRAFT_KEY);
-  if (localDraft) return deepMergeReport(initialReport, JSON.parse(localDraft));
+  if (localDraft) return normalizeStoredDraft(JSON.parse(localDraft));
 
   try {
     const draft = (await withTimeout(idbGet(DRAFT_KEY), 800)) || (await withTimeout(idbGet(LEGACY_DRAFT_KEY), 800));
-    if (draft) return deepMergeReport(initialReport, draft);
+    if (draft) return normalizeStoredDraft(draft);
   } catch {
     return null;
   }
@@ -882,10 +879,10 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
       <main className="home-grid">
         <section className="panel home-panel">
           <span className="eyebrow">Rapport AVEREO Pro</span>
-          <h2>Generer un rapport d'expertise terrain</h2>
+          <h2>Creer ou reprendre un rapport</h2>
           <p>
-            Nouveau dossier, reprise de brouillon, photos, releves, analyse, signature et export Word sont regroupes
-            dans le meme parcours.
+            Un seul parcours conserve les fonctions existantes. Le type de dossier, dont Rapport Habitologue,
+            se choisit dans l'etape Dossier et pourra adapter le workflow a la mission.
           </p>
           {!onlineSyncEnabled && (
             <div className="preview-notice" role="status">
@@ -908,7 +905,8 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
           </div>
           {hasDraft && (
             <p className="draft-line">
-              Dernier brouillon : {draft.reference_dossier || draft.titre} - {formatDateTime(draft.updatedAt)}
+              Dernier brouillon{isHabitologieReport(draft) ? " d'habitologie" : ''} :{' '}
+              {draft.reference_dossier || draft.titre} - {formatDateTime(draft.updatedAt)}
             </p>
           )}
         </section>
@@ -918,19 +916,19 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
           <ul>
             <li>
               <ClipboardList size={18} />
-              Donnees dossier et client
+              Donnees client et dossier
             </li>
             <li>
               <MapPin size={18} />
-              Cadastre, PLU et contexte de visite
+              Bien, cadastre et risques connus
             </li>
             <li>
               <Camera size={18} />
-              Observations photo et camera terrain
+              Observations, photos et mesures
             </li>
             <li>
               <PenLine size={18} />
-              Signature et document Word
+              Analyse, aides et synthese
             </li>
           </ul>
         </section>
@@ -940,26 +938,27 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
 }
 
 function DossierStep({ report, setReport }) {
-  const subcategories = reportTypes[report.categorie]?.subcategories || [];
+  const subcategories = REPORT_CATEGORIES[report.categorie]?.subcategories || [];
 
   const updateField = (field, value) => setReport((prev) => ({ ...prev, [field]: value }));
 
-  const selectCategory = (categorie) => {
-    const sousCategorie = reportTypes[categorie].subcategories[0];
-    setReport((prev) => ({
-      ...prev,
+  const updateClassification = (previous, categorie, sousCategorie) => {
+    return {
+      ...previous,
       categorie,
       sous_categorie: sousCategorie,
-      protocoles: { ...prev.protocoles, ...recommendedProtocols(sousCategorie) },
-    }));
+      titre: nextReportTitle(previous.titre, previous.categorie, categorie),
+      protocoles: { ...previous.protocoles, ...recommendedProtocols(categorie, sousCategorie) },
+    };
+  };
+
+  const selectCategory = (categorie) => {
+    const sousCategorie = REPORT_CATEGORIES[categorie].subcategories[0];
+    setReport((prev) => updateClassification(prev, categorie, sousCategorie));
   };
 
   const selectSubcategory = (sousCategorie) => {
-    setReport((prev) => ({
-      ...prev,
-      sous_categorie: sousCategorie,
-      protocoles: { ...prev.protocoles, ...recommendedProtocols(sousCategorie) },
-    }));
+    setReport((prev) => updateClassification(prev, prev.categorie, sousCategorie));
   };
 
   return (
@@ -973,7 +972,7 @@ function DossierStep({ report, setReport }) {
       </div>
 
       <div className="choice-grid two">
-        {Object.entries(reportTypes).map(([name, item]) => (
+        {getSelectableReportCategories().map(([name, item]) => (
           <ButtonCard
             key={name}
             active={report.categorie === name}
@@ -1977,13 +1976,13 @@ export default function App() {
       setConfirmReset(true);
       return;
     }
-    setInitialWizardData({ ...initialReport, observations: [emptyObservation()] });
+    setInitialWizardData(createNewReport());
     setAppState('wizard');
   };
 
   const confirmNew = async () => {
     await removeDraft();
-    const fresh = { ...initialReport, observations: [emptyObservation()] };
+    const fresh = createNewReport();
     setDraft(null);
     setInitialWizardData(fresh);
     setConfirmReset(false);
@@ -2052,7 +2051,7 @@ export default function App() {
                 Annuler
               </button>
               <button className="button primary" type="button" onClick={confirmNew}>
-                Nouveau rapport
+                Demarrer
               </button>
             </>
           }

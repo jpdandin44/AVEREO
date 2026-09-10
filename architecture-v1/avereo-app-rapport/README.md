@@ -39,10 +39,20 @@ La source historique `Rapport_AVEREO_Pro.txt` est conservee dans le ZIP d'audit 
 ```powershell
 cd frontend
 npm ci
+npm test
 npm run build
 ```
 
 Le build produit `frontend/dist/`, y compris l'API PHP venant de `frontend/public/api/`.
+
+## Types de rapport
+
+Rapport conserve un seul assistant : `Dossier`, `Site`, `Protocoles`,
+`Observations` et `Export`. Le type de dossier `Rapport Habitologue` remplace
+`Reception de travaux` pour les nouvelles creations dans l'etape `Dossier`.
+Il permet de faire evoluer le workflow selon le type tout en reutilisant le
+brouillon, les photos, la dictee, la sauvegarde serveur et l'export existants.
+Les anciens dossiers `Reception de travaux` restent lisibles.
 
 ## Environnement local
 
@@ -84,6 +94,10 @@ Le merge, la creation des ressources cPanel/Drupal et le deploiement restent des
 
 ## Documentation structurante
 
+- `architecture.md` : index de l'architecture et sources techniques de reference.
+- `requirements.md` : exigences durables et limites du parcours Habitologie.
+- `decisions.md` : decisions structurantes et consequences.
+- `changelog.md` : evolutions significatives, sans recopier l'historique Git.
 - `roadmap.md` : priorites fonctionnelles et dette technique non bloquante.
 - `docs/habitologie-light-plan.md` : parcours leger, sources, TDD, lots et estimation.
 - `docs/architecture.md` : architecture et frontieres de l'application.
