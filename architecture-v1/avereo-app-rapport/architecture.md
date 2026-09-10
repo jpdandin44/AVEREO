@@ -22,7 +22,9 @@ La description technique detaillee et les flux restent maintenus dans
 dans [`docs/authentication.md`](docs/authentication.md) et les donnees dans
 [`database/README.md`](database/README.md).
 
-Le Rapport d'habitologie reutilise sans branche fonctionnelle le meme assistant,
-la meme API et le meme stockage. Il est identifie par la valeur existante
-`sous_categorie = Rapport d'habitologie`. Aucune nouvelle base, API, table ou
-application n'est introduite.
+Le `Rapport Habitologue` reutilise le meme assistant, la meme API et le meme
+stockage. Il est identifie par la valeur existante
+`categorie = Rapport Habitologue`, utilisable ensuite pour conditionner le
+workflow. Aucune nouvelle base, API, table ou application n'est introduite.
+L'ancien type `Reception de travaux` est conserve en lecture pour les dossiers
+existants mais n'est plus propose pour une nouvelle creation.

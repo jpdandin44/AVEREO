@@ -1,47 +1,58 @@
 export const DEFAULT_CATEGORY = 'Expertise & visite technique';
 export const DEFAULT_SUBCATEGORY = 'Constat general';
+export const HABITOLOGIE_CATEGORY = 'Rapport Habitologue';
 export const HABITOLOGIE_SUBCATEGORY = "Rapport d'habitologie";
+export const LEGACY_RECEPTION_CATEGORY = 'Reception de travaux';
 
 export const REPORT_CATEGORIES = Object.freeze({
   [DEFAULT_CATEGORY]: {
     description: 'Constat terrain, recherche de pathologies et synthese technique.',
-    subcategories: [DEFAULT_SUBCATEGORY, 'Fissures', 'Humidite', 'Toiture', HABITOLOGIE_SUBCATEGORY],
+    subcategories: [DEFAULT_SUBCATEGORY, 'Fissures', 'Humidite', 'Toiture'],
   },
   'Assistance avant-projet': {
     description: 'Aide a la decision, cadrage travaux et consultation.',
     subcategories: ['Avant-projet', "Consultation d'entreprise"],
   },
-  'Reception de travaux': {
-    description: 'Releve des reserves, conformite apparente et recommandations.',
-    subcategories: ['Reception de travaux', 'Levee de reserves'],
+  [HABITOLOGIE_CATEGORY]: {
+    description: 'Lecture globale du bien, risques, usages, priorites et aides mobilisables.',
+    subcategories: [HABITOLOGIE_SUBCATEGORY],
   },
   'Diagnostic specifique': {
     description: 'Analyse ciblee sur un desordre ou une zone identifiee.',
     subcategories: ['Diagnostic fissures', 'Diagnostic humidite', 'Diagnostic toiture'],
+  },
+  [LEGACY_RECEPTION_CATEGORY]: {
+    description: 'Ancien type conserve uniquement pour relire les dossiers existants.',
+    subcategories: ['Reception de travaux', 'Levee de reserves'],
+    selectable: false,
   },
 });
 
 const isRecord = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 
 export function isHabitologieReport(report) {
-  return report?.sous_categorie === HABITOLOGIE_SUBCATEGORY;
+  return report?.categorie === HABITOLOGIE_CATEGORY;
 }
 
-export function defaultReportTitle(subcategory) {
-  return subcategory === HABITOLOGIE_SUBCATEGORY
+export function getSelectableReportCategories() {
+  return Object.entries(REPORT_CATEGORIES).filter(([, category]) => category.selectable !== false);
+}
+
+export function defaultReportTitle(category) {
+  return category === HABITOLOGIE_CATEGORY
     ? "Rapport d'habitologie"
     : "Rapport d'expertise technique";
 }
 
-export function nextReportTitle(currentTitle, currentSubcategory, nextSubcategory) {
-  const currentDefaultTitle = defaultReportTitle(currentSubcategory);
+export function nextReportTitle(currentTitle, currentCategory, nextCategory) {
+  const currentDefaultTitle = defaultReportTitle(currentCategory);
   return !currentTitle || currentTitle === currentDefaultTitle
-    ? defaultReportTitle(nextSubcategory)
+    ? defaultReportTitle(nextCategory)
     : currentTitle;
 }
 
-export function recommendedProtocols(subcategory) {
-  const label = (subcategory || '').toLowerCase();
+export function recommendedProtocols(category, subcategory) {
+  const label = `${category || ''} ${subcategory || ''}`.toLowerCase();
   return {
     standard: true,
     fissures: label.includes('fissure'),
@@ -59,12 +70,18 @@ export function normalizeReportClassification(incoming = {}) {
   const legacyProperty = isRecord(legacySections.bien) ? legacySections.bien : {};
   const { report_type: _reportType, schema_version: _schemaVersion, habitologie: _habitologie, ...report } = source;
 
-  const requestedCategory = legacyHabitologie ? DEFAULT_CATEGORY : report.categorie;
+  const intermediateHabitologie = report.categorie === DEFAULT_CATEGORY
+    && report.sous_categorie === HABITOLOGIE_SUBCATEGORY;
+  const requestedCategory = legacyHabitologie || intermediateHabitologie
+    ? HABITOLOGIE_CATEGORY
+    : report.categorie;
   const categorie = Object.hasOwn(REPORT_CATEGORIES, requestedCategory)
     ? requestedCategory
     : DEFAULT_CATEGORY;
   const availableSubcategories = REPORT_CATEGORIES[categorie].subcategories;
-  const requestedSubcategory = legacyHabitologie ? HABITOLOGIE_SUBCATEGORY : report.sous_categorie;
+  const requestedSubcategory = legacyHabitologie || intermediateHabitologie
+    ? HABITOLOGIE_SUBCATEGORY
+    : report.sous_categorie;
   const sousCategorie = availableSubcategories.includes(requestedSubcategory)
     ? requestedSubcategory
     : REPORT_CATEGORIES[categorie].subcategories[0];
@@ -73,7 +90,7 @@ export function normalizeReportClassification(incoming = {}) {
     ...report,
     categorie,
     sous_categorie: sousCategorie,
-    titre: report.titre || defaultReportTitle(sousCategorie),
+    titre: report.titre || defaultReportTitle(categorie),
     proprietaire: report.proprietaire || legacyClient.nom || '',
     email: report.email || legacyClient.email || '',
     adresse_logement: report.adresse_logement || legacyProperty.adresse || '',

@@ -19,13 +19,16 @@ tags:
 
 - Le moteur de rapport technique, ses brouillons, photos, dictee, signature et
   exports restent disponibles sans regression volontaire.
-- Le Rapport d'habitologie est une sous-categorie choisie dans l'etape
-  `Dossier`, et non un second parcours applicatif.
+- `Rapport Habitologue` remplace `Reception de travaux` parmi les types de
+  dossier proposes pour une nouvelle creation.
 - Tous les rapports utilisent le meme assistant : `Dossier`, `Site`,
-  `Protocoles`, `Observations` et `Export`.
+  `Protocoles`, `Observations` et `Export`, avec des adaptations futures
+  conditionnees par la categorie principale.
 - Les brouillons historiques conservent leur categorie et leur sous-categorie.
-- Un ancien brouillon du prototype Habitologie separe est converti vers la
-  sous-categorie sans ouvrir un second moteur.
+- Un ancien dossier `Reception de travaux` reste lisible mais ce type n'est
+  plus selectionnable pour un nouveau dossier.
+- Un ancien brouillon du prototype Habitologie est converti vers le type
+  `Rapport Habitologue` sans ouvrir un second moteur.
 
 ## Exigences techniques et securite
 
@@ -40,7 +43,7 @@ tags:
 
 ## Limites du lot 1
 
-Le lot 1 ajoute la sous-categorie et sa normalisation. Les champs et sources
-metier specifiques restent planifies dans
+Le lot 1 remplace la tuile de type de dossier et ajoute sa normalisation. Les
+champs et sources metier specifiques restent planifies dans
 [`docs/habitologie-light-plan.md`](docs/habitologie-light-plan.md). La
 sauvegarde et l'export existants sont deja reutilises.

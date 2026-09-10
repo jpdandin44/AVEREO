@@ -16,11 +16,12 @@ tags:
 
 ## A venir
 
-- Ajout de `Rapport d'habitologie` comme sous-categorie du rapport existant.
+- Remplacement du type de dossier `Reception de travaux` par
+  `Rapport Habitologue` pour les nouvelles creations.
 - Reutilisation du meme assistant, du brouillon, des photos, de la dictee, de
   la sauvegarde et de l'export.
-- Normalisation de la classification et conversion du prototype de brouillon
-  separe vers la sous-categorie.
-- Ajout d'une premiere suite de sept tests unitaires executables avec `npm test`.
+- Conservation des anciens dossiers Reception et conversion des prototypes de
+  brouillon Habitologie vers le nouveau type.
+- Ajout d'une premiere suite de neuf tests unitaires executables avec `npm test`.
 
 Ces changements restent en attente de revue et de merge humains.

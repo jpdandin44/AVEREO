@@ -48,10 +48,11 @@ Le build produit `frontend/dist/`, y compris l'API PHP venant de `frontend/publi
 ## Types de rapport
 
 Rapport conserve un seul assistant : `Dossier`, `Site`, `Protocoles`,
-`Observations` et `Export`. Le `Rapport d'habitologie` est propose comme
-sous-categorie de `Expertise & visite technique` dans l'etape `Dossier`. Il
-reutilise ainsi directement le brouillon, les photos, la dictee, la sauvegarde
-serveur et l'export existants. Les adaptations metier seront livrees par lots.
+`Observations` et `Export`. Le type de dossier `Rapport Habitologue` remplace
+`Reception de travaux` pour les nouvelles creations dans l'etape `Dossier`.
+Il permet de faire evoluer le workflow selon le type tout en reutilisant le
+brouillon, les photos, la dictee, la sauvegarde serveur et l'export existants.
+Les anciens dossiers `Reception de travaux` restent lisibles.
 
 ## Environnement local
 

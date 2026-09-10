@@ -9,6 +9,7 @@ import {
 } from './services/reportApi.js';
 import {
   REPORT_CATEGORIES,
+  getSelectableReportCategories,
   isHabitologieReport,
   nextReportTitle,
   normalizeReportClassification,
@@ -880,8 +881,8 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
           <span className="eyebrow">Rapport AVEREO Pro</span>
           <h2>Creer ou reprendre un rapport</h2>
           <p>
-            Un seul parcours conserve les fonctions existantes. Le type de mission, dont le Rapport d'habitologie,
-            se choisit ensuite comme sous-categorie dans le dossier.
+            Un seul parcours conserve les fonctions existantes. Le type de dossier, dont Rapport Habitologue,
+            se choisit dans l'etape Dossier et pourra adapter le workflow a la mission.
           </p>
           {!onlineSyncEnabled && (
             <div className="preview-notice" role="status">
@@ -946,8 +947,8 @@ function DossierStep({ report, setReport }) {
       ...previous,
       categorie,
       sous_categorie: sousCategorie,
-      titre: nextReportTitle(previous.titre, previous.sous_categorie, sousCategorie),
-      protocoles: { ...previous.protocoles, ...recommendedProtocols(sousCategorie) },
+      titre: nextReportTitle(previous.titre, previous.categorie, categorie),
+      protocoles: { ...previous.protocoles, ...recommendedProtocols(categorie, sousCategorie) },
     };
   };
 
@@ -971,7 +972,7 @@ function DossierStep({ report, setReport }) {
       </div>
 
       <div className="choice-grid two">
-        {Object.entries(REPORT_CATEGORIES).map(([name, item]) => (
+        {getSelectableReportCategories().map(([name, item]) => (
           <ButtonCard
             key={name}
             active={report.categorie === name}

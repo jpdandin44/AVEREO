@@ -23,7 +23,7 @@ tags:
 - Le sas `connect_gateway`, la base MySQL dediee et le healthcheck public sont operationnels.
 - L'interface reconnait l'identite CONNECT et propose la sauvegarde en ligne.
 - La derniere validation de production n'a cree aucune donnee metier ; le parcours complet creation, sauvegarde, rechargement et isolation multi-utilisateur reste a qualifier dans un environnement de test.
-- Le lot 1 du `Rapport d'habitologie` est implemente sur une branche dediee : sous-categorie dans l'assistant existant, normalisation et migration du prototype separe. Il reste soumis a la revue et au merge humains.
+- Le lot 1 du `Rapport Habitologue` est implemente sur une branche dediee : remplacement de la tuile `Reception de travaux`, preservation des anciens dossiers, normalisation et migration des prototypes Habitologie. Il reste soumis a la revue et au merge humains.
 
 ## Dette technique non bloquante
 
@@ -61,12 +61,13 @@ a remplacer.
 
 ## Travail actuel et prochaine evolution
 
-Le premier lot du `Rapport d'habitologie` est pret pour la revue comme
-sous-categorie de l'assistant existant. Il ne cree plus de parcours parallele
+Le premier lot du `Rapport Habitologue` est pret pour la revue comme type de
+dossier principal dans l'assistant existant. Il remplace `Reception de travaux`
+pour les nouvelles creations, sans supprimer la lecture des anciens dossiers,
 et n'active encore aucune source externe. La prochaine tranche fonctionnelle
-est le lot 2 : adapter `Dossier` et `Site` aux informations client et bien avec
-saisie manuelle, validations et tests avant de brancher le geocodage et le
-cadastre.
+est le lot 2 : conditionner les adaptations de `Dossier` et `Site` sur cette
+categorie avec saisie manuelle, validations et tests avant de brancher le
+geocodage et le cadastre.
 
 Le cadrage, les hypotheses, les lots et le chiffrage sont decrits dans
 `docs/habitologie-light-plan.md`.

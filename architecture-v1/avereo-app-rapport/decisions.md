@@ -15,7 +15,7 @@ tags:
 
 # Decisions structurantes de Rapport AVEREO
 
-## 2026-09-10 - Ajouter Habitologie comme sous-categorie
+## 2026-09-10 - Ajouter Rapport Habitologue comme type de dossier
 
 ### Contexte
 
@@ -24,10 +24,10 @@ plus simple est developpe progressivement.
 
 ### Decision
 
-Conserver une seule application et un seul assistant. Ajouter
-`Rapport d'habitologie` dans les sous-categories existantes de
-`Expertise & visite technique`. Identifier ces dossiers avec le champ
-`sous_categorie` deja sauvegarde dans la charge JSON.
+Conserver une seule application et un seul assistant. Remplacer la tuile
+`Reception de travaux` par `Rapport Habitologue` pour les nouvelles creations.
+Identifier ces dossiers avec le champ `categorie` deja sauvegarde dans la
+charge JSON afin de pouvoir conditionner progressivement le workflow.
 
 ### Raisons principales
 
@@ -39,7 +39,8 @@ Conserver une seule application et un seul assistant. Ajouter
 
 ### Consequences
 
-Les brouillons historiques restent compatibles. Le prototype de parcours
-separe, non fusionne, est abandonne ; sa forme de brouillon peut toutefois etre
-normalisee vers la sous-categorie. Les adaptations Habitologie sont ajoutees
-progressivement dans les etapes existantes.
+Les brouillons historiques restent compatibles. `Reception de travaux` reste
+reconnu en lecture mais disparait des choix de creation. Les prototypes
+Habitologie precedents sont normalises vers `Rapport Habitologue`. Les
+adaptations Habitologie sont ajoutees progressivement dans les etapes
+existantes en fonction de la categorie.

@@ -31,14 +31,16 @@ elle est integree dans l'assistant Rapport existant, gele sous le tag
 
 Conserver une seule application Rapport, son acces CONNECT, son API, sa base
 MySQL et son assistant `Dossier -> Site -> Protocoles -> Observations ->
-Export`. Ajouter `Rapport d'habitologie` comme sous-categorie de
-`Expertise & visite technique` dans l'etape `Dossier`.
+Export`. Remplacer la tuile `Reception de travaux` par le type de dossier
+`Rapport Habitologue` dans l'etape `Dossier`.
 
-La classification reutilise `categorie` et `sous_categorie`, deja presents
-dans la charge JSON. Aucun `report_type`, nouveau schema, nouvel endpoint ou
-nouvelle colonne MySQL n'est necessaire. Le brouillon, les photos, la camera,
-la dictee, l'identite CONNECT, la sauvegarde et l'export restent ceux du moteur
-actuel.
+La classification reutilise principalement `categorie`, deja presente dans la
+charge JSON et utilisable pour definir les adaptations de workflow. Aucun
+`report_type`, nouveau schema, nouvel endpoint ou nouvelle colonne MySQL n'est
+necessaire. Le brouillon, les photos, la camera, la dictee, l'identite CONNECT,
+la sauvegarde et l'export restent ceux du moteur actuel. Les anciens dossiers
+`Reception de travaux` restent lisibles mais ce type n'est plus propose lors
+d'une nouvelle creation.
 
 Correspondance du besoin metier avec l'assistant :
 
@@ -153,7 +155,7 @@ des services tiers.
 | Lot | Contenu | Estimation |
 | --- | --- | ---: |
 | 0 | Gel officiel, archive et manifeste du demonstrateur existant | 0,5 jour, realise |
-| 1 | Scenarios d'acceptation, sous-categorie, normalisation et non-regression du parcours unique | 1 a 2 jours |
+| 1 | Scenarios d'acceptation, type Habitologue, preservation de Reception, normalisation et non-regression | 1 a 2 jours |
 | 2 | Adaptation de Dossier et Site : client, bien, geocodage, cadastre et saisie manuelle de secours | 4 a 6 jours |
 | 3 | Risques Georisques, horodatage, sources, erreurs et confirmation manuelle | 3 a 5 jours |
 | 4 | Visite : observations, photos, mesures, commentaires et dictee texte | 4 a 6 jours |
@@ -166,11 +168,11 @@ des services tiers.
 Le lot 1 est implemente sur la branche `feat/rapport-habitologie-entry` et reste
 soumis a la revue humaine :
 
-- `Rapport d'habitologie` ajoute aux sous-categories de l'etape `Dossier` ;
+- tuile `Reception de travaux` remplacee par `Rapport Habitologue` dans l'etape `Dossier` ;
 - assistant historique unique conserve pour tous les rapports ;
 - brouillon, sauvegarde, photos, dictee et export existants reutilises ;
-- compatibilite des brouillons historiques ;
-- migration defensive du prototype de brouillon Habitologie separe ;
+- anciens dossiers `Reception de travaux` preserves en lecture ;
+- migration defensive des deux prototypes de brouillon Habitologie ;
 - tests unitaires de la classification, de la normalisation et de la migration.
 
 Les champs metier et les appels externes specifiques ne font pas partie de ce
@@ -191,7 +193,7 @@ sera enrichi au fil des adaptations metier.
 ## Ordre de livraison recommande
 
 1. valider les donnees indispensables sur un exemple reel ;
-2. livrer la sous-categorie dans le parcours actuel ;
+2. livrer le type `Rapport Habitologue` dans le parcours actuel ;
 3. adapter Dossier, Site et Observations sans aucune API externe ;
 4. brancher geocodage, cadastre puis risques avec des modes de secours ;
 5. ajouter les aides sans promettre automatiquement l'eligibilite ;
