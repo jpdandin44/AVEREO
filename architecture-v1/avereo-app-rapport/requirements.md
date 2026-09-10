@@ -19,17 +19,18 @@ tags:
 
 - Le moteur de rapport technique, ses brouillons, photos, dictee, signature et
   exports restent disponibles sans regression volontaire.
-- L'accueil permet de choisir explicitement le parcours technique ou le
-  Rapport d'habitologie.
-- Le parcours Habitologie suit au maximum six etapes : client, bien immobilier,
-  risques, analyse, aides et synthese.
-- Les brouillons historiques sans type explicite restent des rapports
-  techniques.
-- Un brouillon Habitologie doit etre repris dans le parcours Habitologie.
+- Le Rapport d'habitologie est une sous-categorie choisie dans l'etape
+  `Dossier`, et non un second parcours applicatif.
+- Tous les rapports utilisent le meme assistant : `Dossier`, `Site`,
+  `Protocoles`, `Observations` et `Export`.
+- Les brouillons historiques conservent leur categorie et leur sous-categorie.
+- Un ancien brouillon du prototype Habitologie separe est converti vers la
+  sous-categorie sans ouvrir un second moteur.
 
 ## Exigences techniques et securite
 
-- Chaque nouveau rapport porte `report_type` et `schema_version`.
+- La classification repose sur les champs existants `categorie` et
+  `sous_categorie`.
 - Les secrets et donnees d'authentification restent hors du navigateur et du
   depot.
 - En environnement heberge, AVEREO CONNECT reste le point d'acces unique.
@@ -39,6 +40,7 @@ tags:
 
 ## Limites du lot 1
 
-Le lot 1 ne fournit ni champs metier Habitologie, ni appel externe, ni
-sauvegarde serveur, ni export Habitologie. Ces fonctions restent planifiees
-dans [`docs/habitologie-light-plan.md`](docs/habitologie-light-plan.md).
+Le lot 1 ajoute la sous-categorie et sa normalisation. Les champs et sources
+metier specifiques restent planifies dans
+[`docs/habitologie-light-plan.md`](docs/habitologie-light-plan.md). La
+sauvegarde et l'export existants sont deja reutilises.

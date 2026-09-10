@@ -45,13 +45,13 @@ npm run build
 
 Le build produit `frontend/dist/`, y compris l'API PHP venant de `frontend/public/api/`.
 
-## Parcours disponibles
+## Types de rapport
 
-- `Rapport technique` conserve l'assistant historique complet.
-- `Rapport d'habitologie` est une evolution legere en six etapes. Son premier
-  lot fournit le choix du parcours, la navigation, un schema versionne et la
-  reprise du brouillon local. Les champs metier, les sources externes, la
-  sauvegarde serveur et l'export seront livres dans les lots suivants.
+Rapport conserve un seul assistant : `Dossier`, `Site`, `Protocoles`,
+`Observations` et `Export`. Le `Rapport d'habitologie` est propose comme
+sous-categorie de `Expertise & visite technique` dans l'etape `Dossier`. Il
+reutilise ainsi directement le brouillon, les photos, la dictee, la sauvegarde
+serveur et l'export existants. Les adaptations metier seront livrees par lots.
 
 ## Environnement local
 

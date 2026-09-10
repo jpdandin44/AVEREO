@@ -176,19 +176,11 @@ img {
   line-height: 1.6;
 }
 
-.home-panel h3 {
-  margin: 24px 0 12px;
-}
-
 .home-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   margin: 28px 0 0;
-}
-
-.home-actions.compact {
-  margin-top: 0;
 }
 
 .draft-line {
@@ -333,41 +325,9 @@ img {
 
 .step-nav {
   display: grid;
-  grid-template-columns: repeat(var(--step-count, 5), minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   margin-bottom: 16px;
-}
-
-.habitologie-step > .eyebrow {
-  display: inline-block;
-  margin-bottom: 18px;
-}
-
-.habitologie-capabilities {
-  display: grid;
-  gap: 10px;
-  margin: 22px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.habitologie-capabilities li {
-  position: relative;
-  padding: 12px 14px 12px 38px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: #f8fafc;
-}
-
-.habitologie-capabilities li::before {
-  content: '';
-  position: absolute;
-  top: 17px;
-  left: 16px;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: #1d4ed8;
 }
 
 .step-nav button {
@@ -1158,7 +1118,7 @@ img {
   }
 
   .step-nav {
-    grid-template-columns: repeat(var(--step-count, 5), minmax(150px, 1fr));
+    grid-template-columns: repeat(5, minmax(150px, 1fr));
     overflow-x: auto;
     padding-bottom: 4px;
   }

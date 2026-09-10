@@ -22,6 +22,7 @@ La description technique detaillee et les flux restent maintenus dans
 dans [`docs/authentication.md`](docs/authentication.md) et les donnees dans
 [`database/README.md`](database/README.md).
 
-Le Rapport d'habitologie reutilise la meme application et le meme stockage. Il
-se distingue dans la charge JSON par `report_type` et `schema_version`; aucune
-nouvelle base, API ou application n'est introduite dans le premier lot.
+Le Rapport d'habitologie reutilise sans branche fonctionnelle le meme assistant,
+la meme API et le meme stockage. Il est identifie par la valeur existante
+`sous_categorie = Rapport d'habitologie`. Aucune nouvelle base, API, table ou
+application n'est introduite.

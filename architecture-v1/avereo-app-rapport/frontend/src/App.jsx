@@ -8,13 +8,12 @@ import {
   startOAuthLogin,
 } from './services/reportApi.js';
 import {
-  HABITOLOGIE_STEPS,
-  REPORT_TYPES,
-  applyReportMetadata,
-  createHabitologieReport,
-  normalizeHabitologieReport,
-  resolveReportType,
-} from './reportModes.js';
+  REPORT_CATEGORIES,
+  isHabitologieReport,
+  nextReportTitle,
+  normalizeReportClassification,
+  recommendedProtocols,
+} from './reportClassification.js';
 import {
   AlertTriangle,
   ArrowLeft,
@@ -44,25 +43,6 @@ import {
 const DRAFT_KEY = 'avereo-rapport-draft-v2';
 const LEGACY_DRAFT_KEY = 'draftReport';
 const ONLINE_SYNC_ENABLED = import.meta.env.VITE_ENABLE_ONLINE_SYNC === 'true';
-
-const reportTypes = {
-  'Expertise & visite technique': {
-    description: 'Constat terrain, recherche de pathologies et synthese technique.',
-    subcategories: ['Constat general', 'Fissures', 'Humidite', 'Toiture'],
-  },
-  'Assistance avant-projet': {
-    description: 'Aide a la decision, cadrage travaux et consultation.',
-    subcategories: ['Avant-projet', "Consultation d'entreprise"],
-  },
-  'Reception de travaux': {
-    description: 'Releve des reserves, conformite apparente et recommandations.',
-    subcategories: ['Reception de travaux', 'Levee de reserves'],
-  },
-  'Diagnostic specifique': {
-    description: 'Analyse ciblee sur un desordre ou une zone identifiee.',
-    subcategories: ['Diagnostic fissures', 'Diagnostic humidite', 'Diagnostic toiture'],
-  },
-};
 
 const piecesOptions = [
   'Salon',
@@ -132,7 +112,7 @@ const emptyObservation = () => ({
   photos: [],
 });
 
-const initialReport = applyReportMetadata({
+const initialReport = normalizeReportClassification({
   categorie: 'Expertise & visite technique',
   sous_categorie: 'Constat general',
   titre: "Rapport d'expertise technique",
@@ -178,7 +158,7 @@ const initialReport = applyReportMetadata({
   nom_signataire: '',
   signature: '',
   updatedAt: '',
-}, REPORT_TYPES.TECHNICAL);
+});
 
 function createId() {
   if (typeof crypto !== 'undefined' && crypto.randomUUID) {
@@ -188,42 +168,44 @@ function createId() {
 }
 
 function deepMergeReport(base, incoming) {
+  const classifiedIncoming = normalizeReportClassification(incoming);
   const merged = {
     ...base,
-    ...incoming,
-    meteo: { ...base.meteo, ...(incoming?.meteo || {}) },
-    cadastre: { ...base.cadastre, ...(incoming?.cadastre || {}) },
-    urbanisme: { ...base.urbanisme, ...(incoming?.urbanisme || {}) },
+    ...classifiedIncoming,
+    meteo: { ...base.meteo, ...(classifiedIncoming.meteo || {}) },
+    cadastre: { ...base.cadastre, ...(classifiedIncoming.cadastre || {}) },
+    urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
     protocoles: {
       ...base.protocoles,
-      ...(incoming?.protocoles || {}),
-      standard: incoming?.protocoles?.standard ?? incoming?.protocoles?.is_standard ?? base.protocoles.standard,
-      fissures: incoming?.protocoles?.fissures ?? incoming?.protocoles?.is_fissures_n1 ?? base.protocoles.fissures,
+      ...(classifiedIncoming.protocoles || {}),
+      standard:
+        classifiedIncoming.protocoles?.standard
+        ?? classifiedIncoming.protocoles?.is_standard
+        ?? base.protocoles.standard,
+      fissures:
+        classifiedIncoming.protocoles?.fissures
+        ?? classifiedIncoming.protocoles?.is_fissures_n1
+        ?? base.protocoles.fissures,
       humidite:
-        incoming?.protocoles?.humidite ?? incoming?.protocoles?.is_humidite_infiltration ?? base.protocoles.humidite,
+        classifiedIncoming.protocoles?.humidite
+        ?? classifiedIncoming.protocoles?.is_humidite_infiltration
+        ?? base.protocoles.humidite,
     },
   };
 
-  const observations = Array.isArray(incoming?.observations) ? incoming.observations : base.observations;
+  const observations = Array.isArray(classifiedIncoming.observations)
+    ? classifiedIncoming.observations
+    : base.observations;
   merged.observations = observations.length > 0 ? observations.map(normalizeObservation) : [emptyObservation()];
-  return applyReportMetadata(merged, REPORT_TYPES.TECHNICAL);
+  return normalizeReportClassification(merged);
 }
 
 function normalizeStoredDraft(incoming) {
-  return resolveReportType(incoming) === REPORT_TYPES.HABITOLOGIE
-    ? normalizeHabitologieReport(incoming)
-    : deepMergeReport(initialReport, incoming);
+  return deepMergeReport(initialReport, incoming);
 }
 
-function createNewReport(reportType) {
-  if (reportType === REPORT_TYPES.HABITOLOGIE) {
-    return createHabitologieReport();
-  }
-
-  return applyReportMetadata(
-    { ...initialReport, observations: [emptyObservation()] },
-    REPORT_TYPES.TECHNICAL,
-  );
+function createNewReport() {
+  return normalizeReportClassification({ ...initialReport, observations: [emptyObservation()] });
 }
 
 function normalizeObservation(obs) {
@@ -233,17 +215,6 @@ function normalizeObservation(obs) {
     id: obs?.id || createId(),
     titre: obs?.titre || '',
     photos: Array.isArray(obs?.photos) ? obs.photos : [],
-  };
-}
-
-function recommendedProtocols(subcategory) {
-  const label = (subcategory || '').toLowerCase();
-  return {
-    standard: true,
-    fissures: label.includes('fissure'),
-    humidite: label.includes('humid'),
-    toiture: label.includes('toiture'),
-    reception: label.includes('reception') || label.includes('reserve'),
   };
 }
 
@@ -825,11 +796,7 @@ function TextAreaWithMic({ label, value, onChange, onAppend, placeholder, rows =
 
 function StepNav({ steps, currentStep, setStep }) {
   return (
-    <nav
-      className="step-nav"
-      aria-label="Progression du rapport"
-      style={{ '--step-count': steps.length }}
-    >
+    <nav className="step-nav" aria-label="Progression du rapport">
       {steps.map((step, index) => (
         <button
           key={step}
@@ -903,19 +870,18 @@ function CompletionPanel({ report, validation }) {
   );
 }
 
-function HomePage({ draft, onNewHabitologie, onNewTechnical, onResume, onlineSyncEnabled }) {
+function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
   const hasDraft = Boolean(draft);
-  const draftType = resolveReportType(draft);
   return (
     <div className="screen">
       <Header />
       <main className="home-grid">
         <section className="panel home-panel">
           <span className="eyebrow">Rapport AVEREO Pro</span>
-          <h2>Choisir le rapport adapte a la visite</h2>
+          <h2>Creer ou reprendre un rapport</h2>
           <p>
-            Le rapport technique conserve le parcours complet actuel. Le Rapport d'habitologie propose un parcours
-            plus court, centre sur le client, le bien et les informations utiles a la decision.
+            Un seul parcours conserve les fonctions existantes. Le type de mission, dont le Rapport d'habitologie,
+            se choisit ensuite comme sous-categorie dans le dossier.
           </p>
           {!onlineSyncEnabled && (
             <div className="preview-notice" role="status">
@@ -926,28 +892,19 @@ function HomePage({ draft, onNewHabitologie, onNewTechnical, onResume, onlineSyn
               </span>
             </div>
           )}
-          <h3>Creer un nouveau rapport</h3>
-          <div className="choice-grid two">
-            <ButtonCard
-              title="Rapport technique"
-              description="Parcours actuel complet : protocoles, observations, signature et export."
-              onClick={onNewTechnical}
-            />
-            <ButtonCard
-              title="Rapport d'habitologie"
-              description="Parcours leger en six etapes, sans remplacer le moteur technique existant."
-              onClick={onNewHabitologie}
-            />
-          </div>
-          <div className="home-actions compact">
+          <div className="home-actions">
+            <button className="button primary" type="button" onClick={onNew}>
+              <Plus size={18} />
+              Nouveau rapport
+            </button>
             <button className="button secondary" type="button" onClick={onResume} disabled={!hasDraft}>
               <RotateCcw size={18} />
-              Reprendre le brouillon
+              Reprendre
             </button>
           </div>
           {hasDraft && (
             <p className="draft-line">
-              Dernier brouillon ({draftType === REPORT_TYPES.HABITOLOGIE ? 'habitologie' : 'technique'}) :{' '}
+              Dernier brouillon{isHabitologieReport(draft) ? " d'habitologie" : ''} :{' '}
               {draft.reference_dossier || draft.titre} - {formatDateTime(draft.updatedAt)}
             </p>
           )}
@@ -980,26 +937,27 @@ function HomePage({ draft, onNewHabitologie, onNewTechnical, onResume, onlineSyn
 }
 
 function DossierStep({ report, setReport }) {
-  const subcategories = reportTypes[report.categorie]?.subcategories || [];
+  const subcategories = REPORT_CATEGORIES[report.categorie]?.subcategories || [];
 
   const updateField = (field, value) => setReport((prev) => ({ ...prev, [field]: value }));
 
-  const selectCategory = (categorie) => {
-    const sousCategorie = reportTypes[categorie].subcategories[0];
-    setReport((prev) => ({
-      ...prev,
+  const updateClassification = (previous, categorie, sousCategorie) => {
+    return {
+      ...previous,
       categorie,
       sous_categorie: sousCategorie,
-      protocoles: { ...prev.protocoles, ...recommendedProtocols(sousCategorie) },
-    }));
+      titre: nextReportTitle(previous.titre, previous.sous_categorie, sousCategorie),
+      protocoles: { ...previous.protocoles, ...recommendedProtocols(sousCategorie) },
+    };
+  };
+
+  const selectCategory = (categorie) => {
+    const sousCategorie = REPORT_CATEGORIES[categorie].subcategories[0];
+    setReport((prev) => updateClassification(prev, categorie, sousCategorie));
   };
 
   const selectSubcategory = (sousCategorie) => {
-    setReport((prev) => ({
-      ...prev,
-      sous_categorie: sousCategorie,
-      protocoles: { ...prev.protocoles, ...recommendedProtocols(sousCategorie) },
-    }));
+    setReport((prev) => updateClassification(prev, prev.categorie, sousCategorie));
   };
 
   return (
@@ -1013,7 +971,7 @@ function DossierStep({ report, setReport }) {
       </div>
 
       <div className="choice-grid two">
-        {Object.entries(reportTypes).map(([name, item]) => (
+        {Object.entries(REPORT_CATEGORIES).map(([name, item]) => (
           <ButtonCard
             key={name}
             active={report.categorie === name}
@@ -1873,139 +1831,6 @@ function ReportWizard({
   );
 }
 
-const habitologieStepDetails = [
-  {
-    description: 'Identifier le client, ses coordonnees, le motif de la visite et les consentements necessaires.',
-    capabilities: ['Identite et coordonnees', 'Objet de la visite', 'Consentements utiles'],
-  },
-  {
-    description: 'Decrire le logement et sa localisation avant de consulter les donnees cadastrales.',
-    capabilities: ['Adresse et localisation', 'References cadastrales', 'Caracteristiques essentielles'],
-  },
-  {
-    description: 'Rassembler les risques connus, leur source et leur date de consultation.',
-    capabilities: ['Risques officiels', 'Niveau et source', 'Confirmation manuelle'],
-  },
-  {
-    description: 'Consigner les observations utiles realisees pendant la visite.',
-    capabilities: ['Photos et mesures', 'Commentaires et dictee texte', 'Priorites et recommandations'],
-  },
-  {
-    description: 'Presenter les aides envisageables sans garantir automatiquement leur eligibilite.',
-    capabilities: ['CEE', 'Aides nationales', 'Aides regionales et locales'],
-  },
-  {
-    description: 'Produire une lecture simple et sourcee de la situation du bien.',
-    capabilities: ['Principaux constats', "Pistes d'amelioration", 'Apercu et export'],
-  },
-];
-
-function HabitologieWizard({ initialData, onHome }) {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [report, setReport] = useState(() => normalizeHabitologieReport(initialData));
-  const [toast, setToast] = useState('');
-  const step = habitologieStepDetails[currentStep];
-  const progress = Math.round(((currentStep + 1) / HABITOLOGIE_STEPS.length) * 100);
-
-  useEffect(() => {
-    const timeout = window.setTimeout(() => {
-      saveDraft(report).catch(() => undefined);
-    }, 700);
-    return () => window.clearTimeout(timeout);
-  }, [report]);
-
-  const handleSave = async () => {
-    const saved = await saveDraft(report);
-    setReport(saved);
-    setToast('Brouillon habitologie enregistre.');
-    window.setTimeout(() => setToast(''), 2400);
-  };
-
-  const goNext = () => setCurrentStep((value) => Math.min(value + 1, HABITOLOGIE_STEPS.length - 1));
-  const goPrev = () => setCurrentStep((value) => Math.max(value - 1, 0));
-
-  return (
-    <div className="screen">
-      <Header onHome={onHome} />
-      <main className="wizard-layout">
-        <StepNav steps={HABITOLOGIE_STEPS} currentStep={currentStep} setStep={setCurrentStep} />
-        <div className="wizard-grid">
-          <div className="wizard-main">
-            <section className="panel habitologie-step">
-              <span className="eyebrow">Rapport d'habitologie</span>
-              <div className="section-title">
-                <ClipboardList size={22} />
-                <div>
-                  <h2>{HABITOLOGIE_STEPS[currentStep]}</h2>
-                  <p>{step.description}</p>
-                </div>
-              </div>
-              <div className="preview-notice" role="status">
-                <CheckCircle2 size={18} />
-                <span>
-                  Le squelette de cette etape est pret. Les champs metier et les sources externes seront ajoutes dans
-                  les lots fonctionnels suivants.
-                </span>
-              </div>
-              <ul className="habitologie-capabilities">
-                {step.capabilities.map((capability) => (
-                  <li key={capability}>{capability}</li>
-                ))}
-              </ul>
-            </section>
-          </div>
-          <aside className="summary-panel">
-            <div>
-              <span className="eyebrow">Parcours</span>
-              <strong>{progress} %</strong>
-              <div className="progress">
-                <span style={{ width: `${progress}%` }} />
-              </div>
-            </div>
-            <dl>
-              <div>
-                <dt>Type</dt>
-                <dd>Habitologie</dd>
-              </div>
-              <div>
-                <dt>Schema</dt>
-                <dd>Version {report.schema_version}</dd>
-              </div>
-              <div>
-                <dt>Dossier</dt>
-                <dd>{report.reference_dossier || 'A renseigner'}</dd>
-              </div>
-            </dl>
-          </aside>
-        </div>
-      </main>
-
-      <footer className="action-bar">
-        <button className="button ghost" type="button" onClick={handleSave}>
-          <Save size={18} />
-          Enregistrer
-        </button>
-        <div>
-          <button className="button ghost" type="button" onClick={goPrev} disabled={currentStep === 0}>
-            <ArrowLeft size={18} />
-            Precedent
-          </button>
-          <button
-            className="button primary"
-            type="button"
-            onClick={goNext}
-            disabled={currentStep === HABITOLOGIE_STEPS.length - 1}
-          >
-            Suivant
-            <ArrowRight size={18} />
-          </button>
-        </div>
-      </footer>
-      {toast && <div className="toast">{toast}</div>}
-    </div>
-  );
-}
-
 function AccessGate({ authConfig, authError, onOAuthLogin }) {
   const issuer = String(authConfig?.issuer || '').replace(/\/$/, '');
   const oauthReady = authConfig?.mode === 'drupal_oauth' && authConfig?.configured;
@@ -2069,7 +1894,6 @@ export default function App() {
   const [draft, setDraft] = useState(null);
   const [initialWizardData, setInitialWizardData] = useState(initialReport);
   const [confirmReset, setConfirmReset] = useState(false);
-  const [pendingReportType, setPendingReportType] = useState(REPORT_TYPES.TECHNICAL);
   const [authConfig, setAuthConfig] = useState(null);
   const [accessToken, setAccessToken] = useState('');
   const [authUser, setAuthUser] = useState(null);
@@ -2146,19 +1970,18 @@ export default function App() {
     }
   };
 
-  const startNew = async (reportType) => {
+  const startNew = async () => {
     if (draft) {
-      setPendingReportType(reportType);
       setConfirmReset(true);
       return;
     }
-    setInitialWizardData(createNewReport(reportType));
+    setInitialWizardData(createNewReport());
     setAppState('wizard');
   };
 
   const confirmNew = async () => {
     await removeDraft();
-    const fresh = createNewReport(pendingReportType);
+    const fresh = createNewReport();
     setDraft(null);
     setInitialWizardData(fresh);
     setConfirmReset(false);
@@ -2198,13 +2021,12 @@ export default function App() {
       {appState === 'home' && (
         <HomePage
           draft={draft}
-          onNewHabitologie={() => startNew(REPORT_TYPES.HABITOLOGIE)}
-          onNewTechnical={() => startNew(REPORT_TYPES.TECHNICAL)}
+          onNew={startNew}
           onResume={resume}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
         />
       )}
-      {appState === 'wizard' && resolveReportType(initialWizardData) === REPORT_TYPES.TECHNICAL && (
+      {appState === 'wizard' && (
         <ReportWizard
           accessToken={accessToken}
           authenticated={authenticated}
@@ -2218,14 +2040,9 @@ export default function App() {
           onTokenSubmit={activateLocalToken}
         />
       )}
-      {appState === 'wizard' && resolveReportType(initialWizardData) === REPORT_TYPES.HABITOLOGIE && (
-        <HabitologieWizard initialData={initialWizardData} onHome={goHome} />
-      )}
       {confirmReset && (
         <Modal
-          title={`Creer un nouveau rapport ${
-            pendingReportType === REPORT_TYPES.HABITOLOGIE ? "d'habitologie" : 'technique'
-          } ?`}
+          title="Creer un nouveau rapport ?"
           onClose={() => setConfirmReset(false)}
           actions={
             <>

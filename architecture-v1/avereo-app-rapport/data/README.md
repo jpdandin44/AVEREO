@@ -18,5 +18,6 @@ tags:
 Le schema MySQL et ses migrations restent dans `database/`, qui constitue la
 source de verite executable. Voir [`../database/README.md`](../database/README.md).
 
-Le premier lot Habitologie conserve `report_type` et `schema_version` dans la
-charge JSON existante et n'introduit aucune migration de base.
+Le premier lot Habitologie reutilise les champs `categorie` et
+`sous_categorie` de la charge JSON existante et n'introduit aucune migration de
+base.

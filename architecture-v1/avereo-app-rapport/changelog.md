@@ -16,10 +16,11 @@ tags:
 
 ## A venir
 
-- Ajout du choix entre Rapport technique et Rapport d'habitologie.
-- Ajout du squelette Habitologie en six etapes et de son brouillon local.
-- Ajout des metadonnees de type et de version avec compatibilite des anciens
-  brouillons.
+- Ajout de `Rapport d'habitologie` comme sous-categorie du rapport existant.
+- Reutilisation du meme assistant, du brouillon, des photos, de la dictee, de
+  la sauvegarde et de l'export.
+- Normalisation de la classification et conversion du prototype de brouillon
+  separe vers la sous-categorie.
 - Ajout d'une premiere suite de sept tests unitaires executables avec `npm test`.
 
 Ces changements restent en attente de revue et de merge humains.

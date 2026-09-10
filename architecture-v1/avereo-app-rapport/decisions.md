@@ -15,7 +15,7 @@ tags:
 
 # Decisions structurantes de Rapport AVEREO
 
-## 2026-09-10 - Ajouter Habitologie dans l'application existante
+## 2026-09-10 - Ajouter Habitologie comme sous-categorie
 
 ### Contexte
 
@@ -24,19 +24,22 @@ plus simple est developpe progressivement.
 
 ### Decision
 
-Conserver une seule application Rapport et proposer deux parcours au demarrage.
-Identifier les dossiers par `report_type` et `schema_version` dans la charge
-JSON existante. Ne pas ajouter de colonne MySQL tant qu'aucun filtrage serveur
-par type n'est requis.
+Conserver une seule application et un seul assistant. Ajouter
+`Rapport d'habitologie` dans les sous-categories existantes de
+`Expertise & visite technique`. Identifier ces dossiers avec le champ
+`sous_categorie` deja sauvegarde dans la charge JSON.
 
 ### Raisons principales
 
 - eviter une nouvelle application, une nouvelle authentification et une nouvelle base ;
-- preserver le moteur technique gele comme demonstrateur ;
+- reutiliser directement la navigation, le brouillon, les photos, la dictee,
+  la sauvegarde et l'export existants ;
+- eviter la duplication d'un second moteur de formulaire ;
 - permettre des lots fonctionnels courts et reversibles.
 
 ### Consequences
 
-Les brouillons historiques sont interpretes comme techniques. Les composants
-Habitologie peuvent evoluer separement, mais reutiliseront progressivement les
-services existants de brouillon, photo, dictee, sauvegarde et export.
+Les brouillons historiques restent compatibles. Le prototype de parcours
+separe, non fusionne, est abandonne ; sa forme de brouillon peut toutefois etre
+normalisee vers la sous-categorie. Les adaptations Habitologie sont ajoutees
+progressivement dans les etapes existantes.
