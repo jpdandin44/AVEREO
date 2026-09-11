@@ -1,11 +1,11 @@
 ---
 project: avereo-app-rapport
 document_type: implementation-plan
-title: Plan de mise en oeuvre du Rapport d'habitologie
+title: Plan de mise en oeuvre de Visite Globale en habitologie
 status: in-progress
 version: git
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-11
 owner: jpdandin
 tags:
   - rapport
@@ -31,8 +31,8 @@ elle est integree dans l'assistant Rapport existant, gele sous le tag
 
 Conserver une seule application Rapport, son acces CONNECT, son API, sa base
 MySQL et son assistant `Dossier -> Site -> Protocoles -> Observations ->
-Export`. Remplacer la tuile `Reception de travaux` par le type de dossier
-`Rapport Habitologue` dans l'etape `Dossier`.
+Export`. L'etape `Dossier` affiche seulement `Expertise & Visite technique`
+et `Visite Globale`. La seconde categorie porte le parcours Habitologie.
 
 La classification reutilise principalement `categorie`, deja presente dans la
 charge JSON et utilisable pour definir les adaptations de workflow. Aucun
@@ -40,7 +40,17 @@ charge JSON et utilisable pour definir les adaptations de workflow. Aucun
 necessaire. Le brouillon, les photos, la camera, la dictee, l'identite CONNECT,
 la sauvegarde et l'export restent ceux du moteur actuel. Les anciens dossiers
 `Reception de travaux` restent lisibles mais ce type n'est plus propose lors
-d'une nouvelle creation.
+d'une nouvelle creation. `Assistance avant-projet` et `Diagnostic specifique`
+sont egalement conserves dans le code comme modules complementaires masques.
+
+Les nouvelles sous-categories sont :
+
+- `Evaluation Energétique`, `Mesures`, `cartographie` et `pathologies` pour
+  `Expertise & Visite technique` ;
+- `Eau`, `Air`, `Terre` et `Feu` pour `Visite Globale`.
+
+Le workflow operationnel futur est maintenu comme proposition en etude dans
+[`../workflows/workflow-habitologie.md`](../workflows/workflow-habitologie.md).
 
 Correspondance du besoin metier avec l'assistant :
 
@@ -168,12 +178,13 @@ des services tiers.
 | 6 | Synthese, illustrations AVEREO ou autorisees, apercu et export | 4 a 6 jours |
 | 7 | Sauvegarde/rechargement, non-regression du moteur actuel, preproduction et corrections | 3 a 5 jours |
 
-### Etat du lot 1 au 10 septembre 2026
+### Etat du lot 1 au 11 septembre 2026
 
-Le lot 1 est implemente sur la branche `feat/rapport-habitologie-entry` et reste
-soumis a la revue humaine :
+Le lot 1 a ete integre par la PR #57. L'alignement de classification demande le
+11 septembre reste soumis a revue humaine :
 
-- tuile `Reception de travaux` remplacee par `Rapport Habitologue` dans l'etape `Dossier` ;
+- seulement deux categories proposees dans l'etape `Dossier` ;
+- `Rapport Habitologue` renomme et normalise vers `Visite Globale` ;
 - assistant historique unique conserve pour tous les rapports ;
 - brouillon, sauvegarde, photos, dictee et export existants reutilises ;
 - anciens dossiers `Reception de travaux` preserves en lecture ;
@@ -198,7 +209,7 @@ sera enrichi au fil des adaptations metier.
 ## Ordre de livraison recommande
 
 1. valider les donnees indispensables sur un exemple reel ;
-2. livrer le type `Rapport Habitologue` dans le parcours actuel ;
+2. stabiliser la categorie `Visite Globale` dans le parcours actuel ;
 3. adapter Dossier, Site et Observations sans aucune API externe ;
 4. brancher geocodage, cadastre puis risques avec des modes de secours ;
 5. ajouter les aides sans promettre automatiquement l'eligibilite ;

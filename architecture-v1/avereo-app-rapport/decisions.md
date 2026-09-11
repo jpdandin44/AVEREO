@@ -5,7 +5,7 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-11
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,40 @@ tags:
 ---
 
 # Decisions structurantes de Rapport AVEREO
+
+## 2026-09-11 - Limiter le catalogue visible a deux parcours
+
+### Contexte
+
+La coexistence de plusieurs categories rend le demarrage du rapport moins
+lisible alors que les travaux portent maintenant sur l'expertise technique et
+la visite globale d'habitologie.
+
+### Decision
+
+Afficher uniquement `Expertise & Visite technique` et `Visite Globale` pour
+une nouvelle creation. Conserver les autres definitions dans le catalogue du
+code avec `selectable: false`, afin qu'elles restent compatibles avec les
+anciens dossiers et reactivables comme modules complementaires.
+
+La denomination `Visite Globale` remplace la denomination visible
+`Rapport Habitologue`. Son futur workflow est documente comme proposition en
+etude ; il n'est pas presente comme implemente.
+
+### Raisons principales
+
+- reduire les choix au perimetre fonctionnel actuellement prioritaire ;
+- conserver un seul moteur de rapport et une seule structure de donnees ;
+- ne pas supprimer les modules ni casser les brouillons historiques ;
+- separer clairement l'interface actuelle du workflow encore a valider.
+
+### Consequences
+
+Les nouveaux rapports techniques utilisent quatre sous-categories et les
+visites globales les quatre elements. Les anciennes classifications sont
+normalisees de maniere defensive, sans reclassement arbitraire. La decision du
+10 septembre ci-dessous est conservee comme historique et remplacee uniquement
+sur la denomination et le catalogue visible.
 
 ## 2026-09-10 - Ajouter Rapport Habitologue comme type de dossier
 

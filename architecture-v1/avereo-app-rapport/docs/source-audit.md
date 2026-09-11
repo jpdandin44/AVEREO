@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-09-10
+updated: 2026-09-11
 owner: jpdandin
 tags:
   - rapport
@@ -45,9 +45,10 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 | IMPORTANT | `frontend/src/App.jsx`, apercu `srcDoc` | Des URLs d'images importees sont reinserees dans l'apercu; le cadre n'est pas sandboxe. | `iframe` sandboxee sans permission et politique `no-referrer`. | corrige |
 | IMPORTANT | `frontend/src/App.jsx`, appels BAN/IGN | Dependances externes appelees directement par le navigateur, avec disponibilite et CORS hors controle. | Conservees pour le fonctionnement; documentees; proxy PHP a envisager si les conditions d'usage l'exigent. | accepte |
 | IMPORTANT | `frontend/src/App.jsx`, rapport Georisques | Le bouton de rapport des risques de la source historique avait ete omis pendant la migration statique de juillet 2026. | Lien officiel retabli apres validation des coordonnees; seuls longitude et latitude sont transmis; tests unitaires ajoutes. | corrige |
-| AMELIORATION | `frontend/package.json` | La source ne definissait aucun test unitaire frontend. | Une premiere suite `node:test` couvre le type Habitologue, la preservation de Reception, la normalisation et les migrations des prototypes; le lint et les tests de composants restent a definir dans la strategie globale. | mitige |
+| AMELIORATION | `frontend/src/reportClassification.js`, catalogue | Les categories historiques surchargeaient le choix de creation par rapport aux deux parcours devenus prioritaires. | Deux categories restent selectionnables; les autres sont masquees par configuration, sans suppression ni perte de compatibilite des brouillons. | a valider |
+| AMELIORATION | `frontend/package.json` | La source ne definissait aucun test unitaire frontend. | La suite `node:test` couvre notamment le catalogue visible, les modules masques, la preservation de Reception, la normalisation et les migrations des prototypes; le lint et les tests de composants restent a definir dans la strategie globale. | mitige |
 | INFORMATION | `Rapport_AVEREO_Pro.txt` | La source historique presente un encodage mojibake. | La refonte JSX corrige l'affichage et reste la cible. | corrige |
-| INFORMATION | `frontend/package.json` | Vite 5 exposait des alertes de dependances de developpement. | Passage a Vite 7 et plugin React 5; `npm audit` ne remonte plus de vulnerabilite. | corrige |
+| INFORMATION | `frontend/package.json` | Vite 5 exposait des alertes de dependances de developpement. | Passage a Vite 7 et plugin React 5. Au 11 septembre 2026, `npm audit --omit=dev` est sans alerte; l'audit complet signale `browserslist` et `baseline-browser-mapping`, a traiter en dette non bloquante. | mitige |
 | IMPORTANT | `frontend/public/api/`, mode local | Une faute de mode aurait pu activer le jeton administrateur hors local. | Modes stricts; `api_token` exige `environment=local` et un hote `.localhost`. | corrige |
 | IMPORTANT | `frontend/public/api/`, schema | Le schema ne doit pas etre cree par le compte runtime. | DDL retire de l'API; migration versionnee appliquee separement. | corrige |
 | IMPORTANT | `frontend/src/App.jsx`, export | Une source image importee pouvait etre interpolee dans le document HTML. | Seules les images `data:` bitmap conformes sont integrees; les autres valeurs sont echappees ou ignorees. | corrige |

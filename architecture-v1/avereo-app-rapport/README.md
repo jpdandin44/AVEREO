@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-09-10
+updated: 2026-09-11
 owner: jpdandin
 tags:
   - rapport
@@ -48,11 +48,14 @@ Le build produit `frontend/dist/`, y compris l'API PHP venant de `frontend/publi
 ## Types de rapport
 
 Rapport conserve un seul assistant : `Dossier`, `Site`, `Protocoles`,
-`Observations` et `Export`. Le type de dossier `Rapport Habitologue` remplace
-`Reception de travaux` pour les nouvelles creations dans l'etape `Dossier`.
-Il permet de faire evoluer le workflow selon le type tout en reutilisant le
-brouillon, les photos, la dictee, la sauvegarde serveur et l'export existants.
-Les anciens dossiers `Reception de travaux` restent lisibles.
+`Observations` et `Export`. Pour une nouvelle creation, l'etape `Dossier`
+affiche uniquement `Expertise & Visite technique` et `Visite Globale`.
+Les autres categories restent dans le catalogue du code comme modules
+complementaires masques. Elles peuvent donc etre relues dans les anciens
+dossiers et reactivees ulterieurement sans recreer un second moteur.
+
+Le workflow cible de `Visite Globale` est une proposition en etude documentee
+dans [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
 
 ## Environnement local
 
