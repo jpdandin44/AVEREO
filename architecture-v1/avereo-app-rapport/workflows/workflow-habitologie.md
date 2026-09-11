@@ -102,7 +102,7 @@ les controles de donnees. Aucun de ces boutons n'est livre par le present lot.
 - Aucun rapport client n'est publie sans validation humaine tracee.
 - Les sorties distinguent faits, observations, hypotheses et recommandations.
 
-## Scenarios d'acceptation a ecrire avant implementation
+## Scenarios de validation du prototype
 
 1. Un dossier `Visite Globale` peut etre cree pour chacun des quatre elements.
 2. Une visite incomplete ne peut pas etre cloturee sans afficher les donnees
@@ -131,5 +131,7 @@ les controles de donnees. Aucun de ces boutons n'est livre par le present lot.
 ## Prochaine decision attendue
 
 Valider d'abord les quatre phases visibles et les donnees minimales de la phase
-`Ecoute`. L'implementation pourra ensuite commencer par un scenario TDD court,
-sans figer prematurement l'orchestration complete.
+`Ecoute`. L'implementation pourra ensuite commencer par une tranche
+fonctionnelle courte et demonstrable, sans figer prematurement l'orchestration
+complete. La traduction systematique de ces scenarios en tests automatises
+sera etudiee pendant l'industrialisation.

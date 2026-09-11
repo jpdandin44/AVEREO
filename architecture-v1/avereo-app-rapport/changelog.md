@@ -14,8 +14,10 @@ tags:
 
 # Evolutions significatives de Rapport AVEREO
 
-## A venir
+## 2026-09-11
 
+- Priorisation du prototype fonctionnel ; etude du TDD reportee a la phase
+  d'industrialisation en vue de la commercialisation.
 - Limitation des nouvelles creations aux categories
   `Expertise & Visite technique` et `Visite Globale`.
 - Ajout des sous-categories techniques `Evaluation Energétique`, `Mesures`,

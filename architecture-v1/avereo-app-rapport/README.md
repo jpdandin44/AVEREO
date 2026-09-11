@@ -102,7 +102,7 @@ Le merge, la creation des ressources cPanel/Drupal et le deploiement restent des
 - `decisions.md` : decisions structurantes et consequences.
 - `changelog.md` : evolutions significatives, sans recopier l'historique Git.
 - `roadmap.md` : priorites fonctionnelles et dette technique non bloquante.
-- `docs/habitologie-light-plan.md` : parcours leger, sources, TDD, lots et estimation.
+- `docs/habitologie-light-plan.md` : parcours leger, sources, validation du prototype, lots et estimation.
 - `docs/architecture.md` : architecture et frontieres de l'application.
 - `docs/authentication.md` : authentification et sas CONNECT.
 - `docs/deployment.md` : procedure de deploiement O2Switch.

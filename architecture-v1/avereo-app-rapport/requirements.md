@@ -52,7 +52,11 @@ tags:
 - En environnement heberge, AVEREO CONNECT reste le point d'acces unique.
 - Les sources externes futures doivent afficher leur origine et leur date, et
   disposer d'une saisie manuelle de secours lorsque le parcours l'exige.
-- Les evolutions sont developpees par tranches testables selon le cycle TDD.
+- Pendant la phase de prototype fonctionnel, les evolutions privilegient la
+  validation du besoin et du parcours utilisateur. Le TDD et la strategie de
+  tests automatisee complete sont reportes a la phase d'industrialisation en
+  vue de la commercialisation ; les controles existants et les validations
+  proportionnees au risque restent executes.
 - Les coordonnees transmises au service Georisques sont validees et aucun nom,
   email, commentaire, photo ou autre contenu du dossier n'est inclus dans le
   lien externe.

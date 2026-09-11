@@ -25,6 +25,19 @@ powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 health
 powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 down
 ```
 
+## Phase de developpement active
+
+Rapport est actuellement en phase de prototype fonctionnel. Jusqu'a une
+decision explicite d'entree en industrialisation :
+
+- privilegier les parcours metier demonstrables et les iterations courtes ;
+- ne pas imposer le TDD ni la creation d'une nouvelle infrastructure de tests
+  comme prealable a une evolution fonctionnelle ;
+- continuer a executer les controles existants et les validations manuelles
+  proportionnees au risque ;
+- conserver les besoins de strategie TDD, d'automatisation et de couverture
+  pour la phase d'industrialisation en vue de la commercialisation.
+
 ## Regles absolues
 
 - Ne jamais commiter de secret, `.env`, `local/config.php`, ZIP, `node_modules` ou `frontend/dist`.

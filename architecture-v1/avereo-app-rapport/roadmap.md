@@ -44,24 +44,22 @@ tags:
 
 Ces elements ne bloquent pas la reprise des evolutions fonctionnelles. Les sujets de securite de priorite haute doivent cependant rester visibles et etre traites avant d'etendre le perimetre de production.
 
-## Logique de developpement des ameliorations fonctionnelles
+## Logique de developpement du prototype fonctionnel
 
 Pour chaque evolution :
 
-1. definir le besoin, les resultats attendus et les cas invalides ;
-2. traduire ces resultats en tests ou scenarios d'acceptation avant le code ;
-3. appliquer le cycle TDD `rouge -> vert -> refactorisation` sur chaque tranche fonctionnelle ;
-4. creer une branche et un worktree dedies a Rapport depuis `main` a jour ;
-5. modifier uniquement Rapport et les fichiers partages explicitement autorises par son `AGENTS.md` ;
-6. executer les tests cibles, le lint PHP, le build Vite et les controles de securite/donnees pertinents ;
-7. mettre a jour la documentation impactee et relire le diff complet ;
-8. preparer une pull request en conservant la checklist officielle entierement decochee ;
-9. laisser le merge, la validation preproduction et le deploiement de production sous controle humain.
+1. confirmer le besoin fonctionnel et le resultat visible attendu ;
+2. realiser une tranche courte et demonstrable sans architecture speculative ;
+3. creer une branche et un worktree dedies a Rapport depuis `main` a jour ;
+4. modifier uniquement Rapport et les fichiers partages explicitement autorises par son `AGENTS.md` ;
+5. verifier manuellement le parcours et executer les controles automatises deja disponibles qui restent pertinents ;
+6. mettre a jour la documentation impactee et relire le diff complet ;
+7. preparer une pull request en conservant la checklist officielle entierement decochee ;
+8. laisser le merge, la validation preproduction et le deploiement de production sous controle humain.
 
-La strategie de tests automatisee detaillee est elaboree en parallele. Tant
-qu'elle n'est pas validee, les evolutions doivent au minimum definir leurs
-scenarios d'acceptation et ne doivent pas figer un choix d'outillage difficile
-a remplacer.
+Le TDD n'est pas un prealable pendant cette phase. Sa strategie, l'outillage,
+la couverture cible et l'automatisation seront etudies lors de
+l'industrialisation en vue de la commercialisation.
 
 ## Propositions en etude
 
