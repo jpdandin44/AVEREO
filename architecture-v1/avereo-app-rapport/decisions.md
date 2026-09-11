@@ -15,6 +15,36 @@ tags:
 
 # Decisions structurantes de Rapport AVEREO
 
+## 2026-09-11 - Privilegier le prototype fonctionnel avant le TDD
+
+### Contexte
+
+Le produit doit d'abord permettre de valider rapidement les parcours metier et
+l'utilite des fonctions Rapport. La strategie de tests destinee a un produit
+commercialisable n'est pas encore definie.
+
+### Decision
+
+Pendant la phase de prototype, prioriser les evolutions fonctionnelles courtes
+et demonstrables. Ne pas imposer le TDD comme condition de demarrage. Continuer
+les controles existants et les validations manuelles proportionnees au risque.
+
+Etudier le TDD, la couverture automatisee et les controles d'industrialisation
+au moment de preparer la commercialisation.
+
+### Raisons principales
+
+- valider l'usage et le besoin avant d'investir dans un dispositif complet ;
+- eviter de ralentir les iterations fonctionnelles du prototype ;
+- ne pas figer trop tot une strategie ou un outillage de test ;
+- conserver un niveau de verification coherent avec les risques actuels.
+
+### Consequences
+
+Les prochaines tranches sont pilotees par un resultat fonctionnel observable.
+Les tests deja presents ne sont ni supprimes ni contournes. La strategie TDD
+reste un sujet explicite de la future phase d'industrialisation.
+
 ## 2026-09-11 - Limiter le catalogue visible a deux parcours
 
 ### Contexte

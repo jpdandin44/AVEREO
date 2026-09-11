@@ -11,7 +11,7 @@ tags:
   - rapport
   - habitologie
   - light
-  - tdd
+  - prototype
 ---
 
 # Rapport d'habitologie : version legere
@@ -141,16 +141,21 @@ References consultees le 10 septembre 2026 :
 - <https://responsible-retrofit.org/greenwheel/>
 - <https://www.ubakus.de/u-wert-rechner/>
 
-## Strategie TDD
+## Strategie de validation du prototype
 
-La strategie de tests automatisee detaillee est definie en parallele. Le
-developpement fonctionnel adopte des maintenant les invariants suivants :
+La phase actuelle privilegie un prototype fonctionnel permettant de valider
+les parcours metier. Le TDD n'est pas impose pendant cette phase. Il sera
+etudie avec la strategie de tests automatisee lors de l'industrialisation en
+vue de la commercialisation.
 
-1. un exemple metier et ses cas de refus sont rediges avant chaque tranche ;
-2. un test echoue pour la bonne raison (`rouge`) ;
-3. le minimum de code le fait reussir (`vert`) ;
-4. la structure est simplifiee sans changer le comportement (`refactorisation`) ;
-5. la tranche est verifiee via CONNECT local avant la pull request.
+Pour le prototype :
+
+1. chaque tranche produit un resultat fonctionnel observable ;
+2. le parcours nominal et les principaux blocages sont verifies manuellement ;
+3. les tests existants pertinents et le build continuent a etre executes ;
+4. aucune nouvelle infrastructure de test n'est exigee sans besoin specifique ;
+5. la tranche est verifiee via CONNECT local avant la pull request lorsque le
+   changement concerne le parcours authentifie.
 
 Niveaux a couvrir par la future strategie :
 
@@ -163,7 +168,8 @@ Niveaux a couvrir par la future strategie :
 ## Lots et estimation
 
 L'estimation est exprimee en jours de developpement pour une personne et inclut
-les tests TDD, la documentation, la revue et la validation locale. Elle exclut
+la validation fonctionnelle du prototype, la documentation, la revue et la
+validation locale. Elle exclut l'industrialisation de la strategie de tests,
 les delais d'obtention d'autorisations de reproduction et les indisponibilites
 des services tiers.
 
@@ -225,7 +231,7 @@ sera enrichi au fil des adaptations metier.
 - chaque donnee externe affiche sa source et sa date ;
 - aucune illustration tierce n'est copiee sans droit verifie ;
 - aucune donnee client n'est envoyee a un tiers sans necessite documentee ;
-- les tests d'acceptation du lot sont ecrits avant son implementation.
+- le parcours fonctionnel du lot est valide sur un exemple representatif.
 
 ## Hors perimetre initial
 
