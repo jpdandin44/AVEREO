@@ -28,8 +28,16 @@ cadrage archivee, pas une seconde source maintenue.
 
 Le parcours reutilise l'application Rapport, son acces CONNECT, son stockage,
 ses photos, sa dictee, ses observations et ses exports. Un dossier
-`Visite Globale` est rattache a l'un des quatre elements : `Eau`, `Air`,
-`Terre` ou `Feu`.
+`Visite Globale` qualifie le type d'habitation : `Maison`, `Appartement`,
+`Immeuble collectif` ou `Autre habitation`.
+
+Chaque dossier suit ensuite le meme fil conducteur d'analyse, dans un ordre
+fixe :
+
+`Eau -> Air -> Terre -> Feu`
+
+Ces quatre dimensions sont complementaires et successives. Elles ne
+constituent pas des sous-categories entre lesquelles choisir.
 
 Le parcours visible cible comprend quatre phases :
 
@@ -50,13 +58,14 @@ attentes, preoccupations, usages, contexte d'occupation et accords photo/dictee.
 Ces donnees sont sauvegardees et exportees avec le payload Rapport existant.
 Les commandes photo et dictee sont desactivees sans leur accord respectif.
 L'absence de motif ou d'attentes produit une alerte non bloquante pendant la
-phase de prototype.
+phase de prototype. Le type d'habitation est demande dans le meme dossier et
+le parcours complet `Eau -> Air -> Terre -> Feu` y est annonce.
 
 ## Etats operationnels proposes
 
 | Etat propose | Entree attendue | Sortie ou action principale |
 | --- | --- | --- |
-| `BROUILLON` | Dossier cree | Completer le client, le bien, l'element et la mission. |
+| `BROUILLON` | Dossier cree | Completer le client, le bien, le type d'habitation et la mission. |
 | `PRET_POUR_VISITE` | Donnees minimales valides | Autoriser le demarrage de la collecte terrain. |
 | `VISITE_EN_COURS` | Visite demarree | Saisir l'ecoute, les observations, photos, mesures et notes. |
 | `COLLECTE_TERMINEE` | Collecte cloturee par l'utilisateur | Verrouiller le perimetre transmis a l'analyse ou rouvrir explicitement la visite. |
@@ -78,7 +87,8 @@ Le document de cadrage fourni conduit a la chaine suivante :
 
 - `INGERER` controle le schema, les pieces et les metadonnees du dossier.
 - `ENRICHIR` appelle uniquement les sources autorisees et conserve leur date.
-- `ANALYSER` relie les constats aux quatre phases sans fabriquer de fait.
+- `ANALYSER` relie les constats successivement a Eau, Air, Terre et Feu sans
+  fabriquer de fait.
 - `GENERER RAPPORT` produit un contenu detaille et tracable.
 - `AUDIT` recherche les champs manquants, contradictions, sources absentes et
   formulations excessives.
@@ -115,7 +125,8 @@ les controles de donnees. Aucun de ces boutons n'est livre par la tranche
 
 ## Scenarios de validation du prototype
 
-1. Un dossier `Visite Globale` peut etre cree pour chacun des quatre elements.
+1. Un dossier `Visite Globale` peut etre cree avec un type d'habitation et
+   presente les dimensions `Eau`, `Air`, `Terre`, `Feu` dans cet ordre.
 2. Une visite incomplete ne peut pas etre cloturee sans afficher les donnees
    manquantes.
 3. Une source externe indisponible permet une saisie manuelle identifiee.
@@ -124,7 +135,7 @@ les controles de donnees. Aucun de ces boutons n'est livre par la tranche
 5. Un rapport non valide ne permet pas de produire une synthese publiable.
 6. Un utilisateur non autorise ne peut ni valider ni publier le dossier.
 7. Un ancien brouillon Habitologie reste chargeable sans attribution
-   arbitraire d'un element.
+   arbitraire d'un type d'habitation.
 
 ## Points restant a arbitrer
 

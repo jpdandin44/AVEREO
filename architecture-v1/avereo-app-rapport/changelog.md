@@ -16,6 +16,13 @@ tags:
 
 ## 2026-09-11
 
+- Correction de la semantique de `Visite Globale` : le choix complementaire
+  devient le type d'habitation (`Maison`, `Appartement`, `Immeuble collectif`
+  ou `Autre habitation`).
+- Positionnement de `Eau -> Air -> Terre -> Feu` comme ordre obligatoire des
+  dimensions de l'analyse, commun a toutes les visites globales.
+- Migration defensive des anciennes valeurs d'element vers `A preciser`, sans
+  leur attribuer artificiellement un type de logement.
 - Ajout conditionnel de la section `Ecoute client` pour `Visite Globale` :
   motif, attentes, preoccupations, usages et contexte d'occupation.
 - Ajout des accords photo et dictee au payload existant ; commandes photo et
@@ -27,12 +34,11 @@ tags:
 - Limitation des nouvelles creations aux categories
   `Expertise & Visite technique` et `Visite Globale`.
 - Ajout des sous-categories techniques `Evaluation Energétique`, `Mesures`,
-  `cartographie`, `pathologies` et des elements `Eau`, `Air`, `Terre`, `Feu`.
+  `cartographie` et `pathologies`.
 - Masquage reversible des modules `Assistance avant-projet`,
   `Diagnostic specifique` et `Reception de travaux`, sans suppression de leur
   definition ni de la compatibilite des anciens brouillons.
-- Migration defensive des anciennes classifications techniques et Habitologie,
-  sans attribution arbitraire d'un element aux dossiers historiques.
+- Migration defensive des anciennes classifications techniques et Habitologie.
 - Formalisation du workflow Habitologie dans une proposition en etude separee
   de l'etat implemente.
 

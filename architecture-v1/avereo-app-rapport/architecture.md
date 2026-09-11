@@ -35,5 +35,7 @@ dans l'etape `Dossier`. Ses champs et consentements sont conserves dans l'objet
 JSON `ecoute`, au sein du payload existant. Aucune nouvelle base, API, table ou
 application n'est introduite.
 Les anciennes classifications `Expertise & visite technique` et
-`Rapport Habitologue` sont normalisees sans inventer un nouvel element Eau,
-Air, Terre ou Feu.
+`Rapport Habitologue` sont normalisees sans inventer un type d'habitation. Pour
+`Visite Globale`, le champ technique historique `sous_categorie` conserve la
+valeur du type d'habitation afin de preserver le schema existant. Les constantes
+de workflow portent separement l'ordre d'analyse `Eau -> Air -> Terre -> Feu`.

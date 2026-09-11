@@ -83,7 +83,8 @@ La tranche actuelle ajoute `Ecoute client` a `Visite Globale` sans modifier le
 parcours des rapports techniques. Les donnees sont sauvegardees et exportees
 dans le payload existant ; les accords conditionnent l'usage des photos et de
 la dictee. Le motif et les attentes manquants restent des alertes non
-bloquantes pendant le prototype.
+bloquantes pendant le prototype. Le dossier distingue maintenant le type
+d'habitation du parcours d'analyse commun `Eau -> Air -> Terre -> Feu`.
 
 Apres revue et validation de cette tranche, la prochaine evolution
 fonctionnelle est l'adaptation de `Observation/Analyse` aux quatre elements,

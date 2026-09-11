@@ -10,6 +10,8 @@ import {
 import {
   DEFAULT_CATEGORY,
   DEFAULT_SUBCATEGORY,
+  HABITOLOGIE_ANALYSIS_STAGES,
+  HABITOLOGIE_DEFAULT_HOUSING_TYPE,
   REPORT_CATEGORIES,
   getReportSubcategories,
   getSelectableReportCategories,
@@ -449,7 +451,8 @@ function buildWordDocumentHtml(report) {
   <div class="cover">
     <h1>${escapeHtml(report.titre || "Rapport d'expertise")}</h1>
     <p><strong>Reference dossier :</strong> ${escapeHtml(report.reference_dossier || 'Non renseignee')}</p>
-    <p><strong>Type :</strong> ${escapeHtml(report.categorie)} - ${escapeHtml(report.sous_categorie)}</p>
+    <p><strong>Type de dossier :</strong> ${escapeHtml(report.categorie)}</p>
+    <p><strong>${habitologie ? "Type d'habitation" : 'Sous-categorie'} :</strong> ${escapeHtml(report.sous_categorie)}</p>
     <p><strong>Date de visite :</strong> ${formatDate(report.date_visite)}</p>
     <p><strong>Intervenant :</strong> ${escapeHtml(report.intervenant)}</p>
   </div>
@@ -877,7 +880,13 @@ function CompletionPanel({ report, validation }) {
     report.signature,
   ];
   if (isHabitologieReport(report)) {
-    required.splice(4, 0, report.ecoute?.motif_visite, report.ecoute?.attentes_client);
+    required.splice(
+      4,
+      0,
+      report.sous_categorie !== HABITOLOGIE_DEFAULT_HOUSING_TYPE,
+      report.ecoute?.motif_visite,
+      report.ecoute?.attentes_client,
+    );
   }
   const score = Math.round((required.filter(Boolean).length / required.length) * 100);
 
@@ -993,6 +1002,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
 function DossierStep({ report, setReport }) {
   const subcategories = getReportSubcategories(report.categorie, report.sous_categorie);
   const habitologie = isHabitologieReport(report);
+  const housingTypeSelected = report.sous_categorie !== HABITOLOGIE_DEFAULT_HOUSING_TYPE;
 
   const updateField = (field, value) => setReport((prev) => ({ ...prev, [field]: value }));
   const updateEcoute = (field, value) => {
@@ -1047,7 +1057,7 @@ function DossierStep({ report, setReport }) {
       </div>
 
       <div className="form-grid two">
-        <Field label="Sous-categorie">
+        <Field label={habitologie ? "Type d'habitation" : 'Sous-categorie'}>
           <select value={report.sous_categorie} onChange={(event) => selectSubcategory(event.target.value)}>
             {subcategories.map((option) => (
               <option key={option}>{option}</option>
@@ -1084,11 +1094,27 @@ function DossierStep({ report, setReport }) {
       {habitologie && (
         <section className="habitologie-block" aria-labelledby="ecoute-title">
           <div className="habitologie-heading">
-            <span>VISITE GLOBALE · {report.sous_categorie}</span>
+            <span>VISITE GLOBALE{housingTypeSelected ? ` · ${report.sous_categorie}` : ''}</span>
             <h3 id="ecoute-title">Ecoute client</h3>
             <p>
               Recueillez le besoin, le contexte et les attentes avant de commencer les observations du bien.
             </p>
+          </div>
+
+          <div className="analysis-sequence" aria-label="Ordre de l'analyse globale">
+            <div>
+              <strong>Fil conducteur de l'analyse</strong>
+              <small>Chaque visite globale étudie les quatre dimensions dans cet ordre.</small>
+            </div>
+            <ol>
+              {HABITOLOGIE_ANALYSIS_STAGES.map((stage, index) => (
+                <li key={stage}>
+                  <span>{index + 1}</span>
+                  <strong>{stage}</strong>
+                  {index < HABITOLOGIE_ANALYSIS_STAGES.length - 1 && <ArrowRight size={16} aria-hidden="true" />}
+                </li>
+              ))}
+            </ol>
           </div>
 
           <div className="form-grid two">
@@ -1747,6 +1773,9 @@ function validateReport(report) {
   }
   if (isHabitologieReport(report) && !report.ecoute?.attentes_client?.trim()) {
     warnings.push("Les attentes du client ne sont pas encore renseignees dans la phase Ecoute.");
+  }
+  if (isHabitologieReport(report) && report.sous_categorie === HABITOLOGIE_DEFAULT_HOUSING_TYPE) {
+    warnings.push("Le type d'habitation reste a preciser dans l'etape Dossier.");
   }
   if (report.observations.some((obs) => ['Severe', 'Critique'].includes(obs.gravite)) && !report.recommandations.trim()) {
     warnings.push('Une observation severe ou critique necessite une recommandation explicite.');

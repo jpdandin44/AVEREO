@@ -43,11 +43,16 @@ la sauvegarde et l'export restent ceux du moteur actuel. Les anciens dossiers
 d'une nouvelle creation. `Assistance avant-projet` et `Diagnostic specifique`
 sont egalement conserves dans le code comme modules complementaires masques.
 
-Les nouvelles sous-categories sont :
+Les classifications visibles sont :
 
 - `Evaluation Energétique`, `Mesures`, `cartographie` et `pathologies` pour
   `Expertise & Visite technique` ;
-- `Eau`, `Air`, `Terre` et `Feu` pour `Visite Globale`.
+- un type d'habitation `Maison`, `Appartement`, `Immeuble collectif` ou
+  `Autre habitation` pour `Visite Globale`.
+
+Les quatre dimensions `Eau`, `Air`, `Terre` et `Feu` constituent le parcours
+d'analyse de chaque visite globale, dans cet ordre. Elles ne sont pas des
+sous-categories exclusives.
 
 Le workflow operationnel futur est maintenu comme proposition en etude dans
 [`../workflows/workflow-habitologie.md`](../workflows/workflow-habitologie.md).

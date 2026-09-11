@@ -61,6 +61,11 @@ meme brouillon, la meme sauvegarde JSON et les memes exports que le reste du
 rapport. Les photos et la dictee sont desactivees tant que l'accord
 correspondant n'est pas enregistre.
 
+Le choix complementaire de `Visite Globale` correspond au type d'habitation :
+`Maison`, `Appartement`, `Immeuble collectif` ou `Autre habitation`. `Eau`,
+`Air`, `Terre` et `Feu` ne sont pas des sous-categories : ils forment le fil
+conducteur obligatoire de l'analyse, dans cet ordre, pour chaque visite.
+
 La suite du workflow cible reste une proposition en etude documentee dans
 [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
 

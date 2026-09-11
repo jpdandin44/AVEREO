@@ -39,8 +39,10 @@ dossier `Visite Globale`, l'objet `ecoute` ajoute le motif, les attentes, les
 preoccupations, les usages, le contexte d'occupation et les deux accords
 photo/dictee. Ce meme objet traverse le brouillon local, l'import/export JSON,
 la sauvegarde API et l'export Word. La categorie conditionne uniquement
-l'interface et la restitution ; aucun endpoint ni schema MySQL supplementaire
-n'est requis.
+l'interface et la restitution. Le champ existant `sous_categorie` contient le
+type d'habitation pour ce parcours, tandis que l'ordre d'analyse
+`Eau -> Air -> Terre -> Feu` est defini dans le catalogue frontend. Aucun
+endpoint ni schema MySQL supplementaire n'est requis.
 
 La configuration sensible est chargee depuis `/home/CPANEL_USERNAME/.avereo/rapport/config.php`, hors de `frontend/dist`.
 

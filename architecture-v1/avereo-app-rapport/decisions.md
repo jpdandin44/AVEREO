@@ -15,6 +15,42 @@ tags:
 
 # Decisions structurantes de Rapport AVEREO
 
+## 2026-09-11 - Distinguer le type d'habitation du parcours d'analyse
+
+### Contexte
+
+La premiere modelisation de `Visite Globale` presentait `Eau`, `Air`, `Terre`
+et `Feu` comme quatre sous-categories au choix. Cette representation contredit
+le sens metier : ces quatre dimensions forment les etapes successives d'une
+analyse globale coherente.
+
+### Decision
+
+Pour `Visite Globale`, utiliser le choix complementaire comme type
+d'habitation : `Maison`, `Appartement`, `Immeuble collectif` ou
+`Autre habitation`. Conserver `A preciser` tant que ce choix n'est pas fait.
+
+Faire de `Eau -> Air -> Terre -> Feu` un parcours ordonne commun a chaque
+visite globale. Conserver techniquement le champ `sous_categorie` pour le type
+d'habitation pendant le prototype afin de ne pas modifier le schema de
+sauvegarde.
+
+### Raisons principales
+
+- representer correctement le raisonnement Habitologie ;
+- eviter qu'un dossier soit artificiellement limite a un seul element ;
+- qualifier le bien avec une information utile au contexte de visite ;
+- preserver la compatibilite du payload et de la base existants.
+
+### Consequences
+
+Les anciennes valeurs `Eau`, `Air`, `Terre` ou `Feu` utilisees comme
+sous-categories sont normalisees vers `A preciser`, sans inventer un type
+d'habitation. L'interface affiche le fil conducteur complet et l'export nomme
+explicitement le type d'habitation. La decision de catalogue ci-dessous reste
+historique mais sa consequence attribuant un seul element a une visite est
+remplacee par la presente decision.
+
 ## 2026-09-11 - Integrer Ecoute dans l'etape Dossier existante
 
 ### Contexte
@@ -79,6 +115,9 @@ reste un sujet explicite de la future phase d'industrialisation.
 
 ## 2026-09-11 - Limiter le catalogue visible a deux parcours
 
+> Statut : partiellement remplacee par la decision ci-dessus concernant le
+> sens de la classification de `Visite Globale`.
+
 ### Contexte
 
 La coexistence de plusieurs categories rend le demarrage du rapport moins
@@ -105,11 +144,12 @@ etude ; il n'est pas presente comme implemente.
 
 ### Consequences
 
-Les nouveaux rapports techniques utilisent quatre sous-categories et les
-visites globales les quatre elements. Les anciennes classifications sont
-normalisees de maniere defensive, sans reclassement arbitraire. La decision du
-10 septembre ci-dessous est conservee comme historique et remplacee uniquement
-sur la denomination et le catalogue visible.
+Les nouveaux rapports techniques utilisent quatre sous-categories. La
+classification initiale des visites globales par element a ensuite ete
+remplacee par un type d'habitation et un parcours ordonne couvrant les quatre
+elements. Les anciennes classifications sont normalisees de maniere defensive.
+La decision du 10 septembre ci-dessous est conservee comme historique et
+remplacee uniquement sur la denomination et le catalogue visible.
 
 ## 2026-09-10 - Ajouter Rapport Habitologue comme type de dossier
 

@@ -4,8 +4,10 @@ import assert from 'node:assert/strict';
 import {
   DEFAULT_CATEGORY,
   DEFAULT_SUBCATEGORY,
+  HABITOLOGIE_ANALYSIS_STAGES,
   HABITOLOGIE_CATEGORY,
-  HABITOLOGIE_SUBCATEGORY,
+  HABITOLOGIE_DEFAULT_HOUSING_TYPE,
+  HABITOLOGIE_HOUSING_TYPES,
   LEGACY_DEFAULT_CATEGORY,
   LEGACY_HABITOLOGIE_CATEGORY,
   LEGACY_HABITOLOGIE_SUBCATEGORY,
@@ -29,19 +31,15 @@ test('seules les deux categories prioritaires sont visibles pour une nouvelle cr
   assert.equal(REPORT_CATEGORIES[LEGACY_RECEPTION_CATEGORY].selectable, false);
 });
 
-test('les categories visibles proposent uniquement les sous-categories retenues', () => {
+test('les categories visibles proposent les classifications retenues', () => {
   assert.deepEqual(REPORT_CATEGORIES[DEFAULT_CATEGORY].subcategories, [
     'Evaluation Energétique',
     'Mesures',
     'cartographie',
     'pathologies',
   ]);
-  assert.deepEqual(REPORT_CATEGORIES[HABITOLOGIE_CATEGORY].subcategories, [
-    'Eau',
-    'Air',
-    'Terre',
-    'Feu',
-  ]);
+  assert.deepEqual(REPORT_CATEGORIES[HABITOLOGIE_CATEGORY].subcategories, HABITOLOGIE_HOUSING_TYPES);
+  assert.deepEqual(HABITOLOGIE_ANALYSIS_STAGES, ['Eau', 'Air', 'Terre', 'Feu']);
 });
 
 test("la categorie principale determine le futur workflow d'habitologie", () => {
@@ -63,7 +61,7 @@ test('un ancien brouillon technique conserve sa classification', () => {
   assert.equal(result.titre, 'Visite fissures');
 });
 
-test("un brouillon du prototype separe est migre vers Visite Globale sans inventer un element", () => {
+test("un brouillon du prototype separe est migre sans inventer un type d'habitation", () => {
   const result = normalizeReportClassification({
     report_type: 'habitologie',
     schema_version: 1,
@@ -75,7 +73,7 @@ test("un brouillon du prototype separe est migre vers Visite Globale sans invent
   });
 
   assert.equal(result.categorie, HABITOLOGIE_CATEGORY);
-  assert.equal(result.sous_categorie, LEGACY_HABITOLOGIE_SUBCATEGORY);
+  assert.equal(result.sous_categorie, HABITOLOGIE_DEFAULT_HOUSING_TYPE);
   assert.equal(result.proprietaire, 'Famille Exemple');
   assert.equal(result.email, 'famille@example.test');
   assert.equal(result.adresse_logement, '1 rue Exemple');
@@ -91,7 +89,7 @@ test("un brouillon de l'etape intermediaire est migre vers Visite Globale", () =
   });
 
   assert.equal(result.categorie, HABITOLOGIE_CATEGORY);
-  assert.equal(result.sous_categorie, LEGACY_HABITOLOGIE_SUBCATEGORY);
+  assert.equal(result.sous_categorie, HABITOLOGIE_DEFAULT_HOUSING_TYPE);
 });
 
 test("un brouillon Rapport Habitologue est migre vers Visite Globale", () => {
@@ -101,14 +99,17 @@ test("un brouillon Rapport Habitologue est migre vers Visite Globale", () => {
   });
 
   assert.equal(result.categorie, HABITOLOGIE_CATEGORY);
-  assert.equal(result.sous_categorie, LEGACY_HABITOLOGIE_SUBCATEGORY);
-  assert.deepEqual(getReportSubcategories(result.categorie, result.sous_categorie), [
-    'Eau',
-    'Air',
-    'Terre',
-    'Feu',
-    LEGACY_HABITOLOGIE_SUBCATEGORY,
-  ]);
+  assert.equal(result.sous_categorie, HABITOLOGIE_DEFAULT_HOUSING_TYPE);
+  assert.deepEqual(getReportSubcategories(result.categorie, result.sous_categorie), HABITOLOGIE_HOUSING_TYPES);
+});
+
+test("une ancienne selection d'element devient un type d'habitation a preciser", () => {
+  const result = normalizeReportClassification({
+    categorie: HABITOLOGIE_CATEGORY,
+    sous_categorie: 'Feu',
+  });
+
+  assert.equal(result.sous_categorie, HABITOLOGIE_DEFAULT_HOUSING_TYPE);
 });
 
 test('un ancien dossier Reception de travaux conserve sa classification', () => {
@@ -132,7 +133,7 @@ test('la normalisation remplace une classification inconnue par les valeurs par 
 
 test("le titre et les protocoles par defaut d'habitologie reutilisent le rapport technique", () => {
   assert.equal(defaultReportTitle(HABITOLOGIE_CATEGORY), "Rapport d'habitologie");
-  assert.deepEqual(recommendedProtocols(HABITOLOGIE_CATEGORY, HABITOLOGIE_SUBCATEGORY), {
+  assert.deepEqual(recommendedProtocols(HABITOLOGIE_CATEGORY, HABITOLOGIE_DEFAULT_HOUSING_TYPE), {
     standard: true,
     fissures: false,
     humidite: false,

@@ -23,7 +23,12 @@ tags:
   `Expertise & Visite technique` et `Visite Globale`.
 - `Expertise & Visite technique` propose uniquement `Evaluation Energétique`,
   `Mesures`, `cartographie` et `pathologies`.
-- `Visite Globale` propose uniquement `Eau`, `Air`, `Terre` et `Feu`.
+- `Visite Globale` demande un type d'habitation parmi `Maison`, `Appartement`,
+  `Immeuble collectif` et `Autre habitation`, avec `A preciser` comme valeur
+  transitoire non validante.
+- Toute `Visite Globale` suit un seul parcours d'analyse dans l'ordre
+  `Eau -> Air -> Terre -> Feu`. Ces dimensions ne sont ni des types
+  d'habitation ni des sous-categories exclusives.
 - Un dossier `Visite Globale` affiche dans l'etape `Dossier` une section
   `Ecoute client` pour le motif de visite, les attentes, les preoccupations,
   les usages du logement et le contexte d'occupation.
@@ -42,12 +47,13 @@ tags:
   conditionnees par la categorie principale.
 - Les brouillons historiques restent lisibles. Les anciennes denominations
   sont normalisees vers les categories actives et les sous-categories
-  historiques sont conservees sans reclassement metier arbitraire.
+  techniques historiques sont conservees sans reclassement metier arbitraire.
 - Un ancien dossier `Reception de travaux` reste lisible mais ce type n'est
   plus selectionnable pour un nouveau dossier.
 - Un ancien brouillon du prototype Habitologie ou du type
   `Rapport Habitologue` est converti vers `Visite Globale` sans ouvrir un
-  second moteur ni lui attribuer artificiellement un element.
+  second moteur ni lui attribuer artificiellement un type d'habitation. Une
+  ancienne valeur `Eau`, `Air`, `Terre` ou `Feu` devient `A preciser`.
 - Apres une recherche d'adresse ayant fourni des coordonnees valides, l'etape
   `Site` propose l'ouverture du rapport officiel Georisques correspondant.
 - Le lien Georisques reste disponible pour tous les types de rapport : il fait
@@ -56,7 +62,8 @@ tags:
 ## Exigences techniques et securite
 
 - La classification repose sur les champs existants `categorie` et
-  `sous_categorie`.
+  `sous_categorie`. Pour `Visite Globale`, le second champ transporte le type
+  d'habitation afin d'eviter une rupture de schema pendant le prototype.
 - Les secrets et donnees d'authentification restent hors du navigateur et du
   depot.
 - En environnement heberge, AVEREO CONNECT reste le point d'acces unique.
