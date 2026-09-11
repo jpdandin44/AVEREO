@@ -5,7 +5,7 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-11
 owner: jpdandin
 tags:
   - rapport
@@ -22,9 +22,16 @@ La description technique detaillee et les flux restent maintenus dans
 dans [`docs/authentication.md`](docs/authentication.md) et les donnees dans
 [`database/README.md`](database/README.md).
 
-Le `Rapport Habitologue` reutilise le meme assistant, la meme API et le meme
-stockage. Il est identifie par la valeur existante
-`categorie = Rapport Habitologue`, utilisable ensuite pour conditionner le
+La classification des nouveaux dossiers expose uniquement
+`Expertise & Visite technique` et `Visite Globale`. Les categories
+`Assistance avant-projet`, `Diagnostic specifique` et
+`Reception de travaux` restent dans le catalogue du frontend avec le statut
+masque. Elles demeurent chargeables pour assurer la compatibilite des dossiers
+existants et pourront etre reactivees comme modules complementaires.
+
+`Visite Globale` reutilise le meme assistant, la meme API et le meme stockage.
+La valeur existante `categorie` permettra de conditionner progressivement son
 workflow. Aucune nouvelle base, API, table ou application n'est introduite.
-L'ancien type `Reception de travaux` est conserve en lecture pour les dossiers
-existants mais n'est plus propose pour une nouvelle creation.
+Les anciennes classifications `Expertise & visite technique` et
+`Rapport Habitologue` sont normalisees sans inventer un nouvel element Eau,
+Air, Terre ou Feu.

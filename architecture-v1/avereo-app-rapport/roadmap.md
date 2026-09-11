@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-11
 owner: jpdandin
 tags:
   - rapport
@@ -23,7 +23,10 @@ tags:
 - Le sas `connect_gateway`, la base MySQL dediee et le healthcheck public sont operationnels.
 - L'interface reconnait l'identite CONNECT et propose la sauvegarde en ligne.
 - La derniere validation de production n'a cree aucune donnee metier ; le parcours complet creation, sauvegarde, rechargement et isolation multi-utilisateur reste a qualifier dans un environnement de test.
-- Le lot 1 du `Rapport Habitologue` est implemente sur une branche dediee : remplacement de la tuile `Reception de travaux`, preservation des anciens dossiers, normalisation et migration des prototypes Habitologie. Il reste soumis a la revue et au merge humains.
+- Le premier lot Habitologie et le retablissement du rapport officiel
+  Georisques ont ete integres par les PR #57 et #58.
+- La simplification du catalogue est en cours sur une branche dediee : deux
+  categories visibles et modules historiques conserves mais masques.
 
 ## Dette technique non bloquante
 
@@ -37,6 +40,7 @@ tags:
 | DT-RAP-06 | Moyenne | Remplacer le message OAuth technique en anglais par une presentation francaise neutre, sans exposer Drupal comme moteur d'identite. | Aucun libelle technique Drupal/OAuth visible dans le parcours de connexion CONNECT. |
 | DT-RAP-07 | Moyenne | Durcir les sauvegardes de configuration : repertoire prive lorsque compatible, fichiers `0600`, retention definie et suppression soumise a validation humaine. | Regles de permissions et de retention documentees puis verifiees sur cPanel. |
 | DT-RAP-08 | Basse | Formaliser une procedure de rotation coordonnee des secrets CONNECT-Rapport avec sauvegarde, fenetre de synchronisation, controles et restauration. | Procedure Markdown reproductible ne contenant aucune valeur sensible. |
+| DT-RAP-09 | Basse | Mettre a jour les dependances de build `browserslist` et `baseline-browser-mapping` signalees par `npm audit`, sans changement fonctionnel. L'audit limite aux dependances de production est actuellement sans alerte. | `npm audit` et `npm audit --omit=dev` ne signalent plus de vulnerabilite, avec tests et build toujours verts. |
 
 Ces elements ne bloquent pas la reprise des evolutions fonctionnelles. Les sujets de securite de priorite haute doivent cependant rester visibles et etre traites avant d'etendre le perimetre de production.
 
@@ -59,15 +63,26 @@ qu'elle n'est pas validee, les evolutions doivent au minimum definir leurs
 scenarios d'acceptation et ne doivent pas figer un choix d'outillage difficile
 a remplacer.
 
+## Propositions en etude
+
+Le workflow operationnel cible de `Visite Globale` est maintenu dans
+[`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
+Il organise le parcours autour de `Ecoute`, `Observation/Analyse`,
+`Explication` et `Pistes d'accompagnement`, avec validation humaine avant
+publication. Cette proposition ne decrit pas une fonctionnalite deja livree.
+
+Les points encore a arbitrer sont notamment l'architecture d'execution des
+traitements, les regles de passage entre statuts, le fournisseur IA eventuel,
+la conservation des donnees vocales et le role habilite a valider.
+
 ## Travail actuel et prochaine evolution
 
-Le premier lot du `Rapport Habitologue` est pret pour la revue comme type de
-dossier principal dans l'assistant existant. Il remplace `Reception de travaux`
-pour les nouvelles creations, sans supprimer la lecture des anciens dossiers,
-et n'active encore aucune source externe. La prochaine tranche fonctionnelle
-est le lot 2 : conditionner les adaptations de `Dossier` et `Site` sur cette
-categorie avec saisie manuelle, validations et tests avant de brancher le
-geocodage et le cadastre.
+Le travail actuel limite la creation a `Expertise & Visite technique` et
+`Visite Globale`, avec leurs quatre sous-categories respectives. Les autres
+categories sont masquees, mais pas supprimees. Apres validation de cette
+simplification, la prochaine tranche pourra implementer progressivement le
+workflow de visite globale, en commencant par les donnees et controles de la
+phase `Ecoute`.
 
 Le cadrage, les hypotheses, les lots et le chiffrage sont decrits dans
 `docs/habitologie-light-plan.md`.

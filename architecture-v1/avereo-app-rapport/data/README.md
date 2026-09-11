@@ -5,7 +5,7 @@ title: Donnees de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-11
 owner: jpdandin
 tags:
   - rapport
@@ -18,6 +18,9 @@ tags:
 Le schema MySQL et ses migrations restent dans `database/`, qui constitue la
 source de verite executable. Voir [`../database/README.md`](../database/README.md).
 
-Le premier lot Habitologie reutilise le champ `categorie` de la charge JSON
-existante avec la valeur `Rapport Habitologue` et n'introduit aucune migration
-de base. La valeur historique `Reception de travaux` reste acceptee en lecture.
+La classification reutilise les champs `categorie` et `sous_categorie` de la
+charge JSON, sans migration de base. Les nouvelles creations utilisent
+`Expertise & Visite technique` ou `Visite Globale`. Les anciennes valeurs
+`Expertise & visite technique`, `Rapport Habitologue` et
+`Reception de travaux` restent acceptees et sont relues sans reclassement
+metier arbitraire.

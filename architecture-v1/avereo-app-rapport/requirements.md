@@ -5,7 +5,7 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-10
+updated: 2026-09-11
 owner: jpdandin
 tags:
   - rapport
@@ -19,16 +19,25 @@ tags:
 
 - Le moteur de rapport technique, ses brouillons, photos, dictee, signature et
   exports restent disponibles sans regression volontaire.
-- `Rapport Habitologue` remplace `Reception de travaux` parmi les types de
-  dossier proposes pour une nouvelle creation.
+- Une nouvelle creation propose uniquement les categories
+  `Expertise & Visite technique` et `Visite Globale`.
+- `Expertise & Visite technique` propose uniquement `Evaluation Energétique`,
+  `Mesures`, `cartographie` et `pathologies`.
+- `Visite Globale` propose uniquement `Eau`, `Air`, `Terre` et `Feu`.
+- `Assistance avant-projet`, `Diagnostic specifique` et
+  `Reception de travaux` restent disponibles dans le code comme modules
+  complementaires masques dans l'interface de creation.
 - Tous les rapports utilisent le meme assistant : `Dossier`, `Site`,
   `Protocoles`, `Observations` et `Export`, avec des adaptations futures
   conditionnees par la categorie principale.
-- Les brouillons historiques conservent leur categorie et leur sous-categorie.
+- Les brouillons historiques restent lisibles. Les anciennes denominations
+  sont normalisees vers les categories actives et les sous-categories
+  historiques sont conservees sans reclassement metier arbitraire.
 - Un ancien dossier `Reception de travaux` reste lisible mais ce type n'est
   plus selectionnable pour un nouveau dossier.
-- Un ancien brouillon du prototype Habitologie est converti vers le type
-  `Rapport Habitologue` sans ouvrir un second moteur.
+- Un ancien brouillon du prototype Habitologie ou du type
+  `Rapport Habitologue` est converti vers `Visite Globale` sans ouvrir un
+  second moteur ni lui attribuer artificiellement un element.
 - Apres une recherche d'adresse ayant fourni des coordonnees valides, l'etape
   `Site` propose l'ouverture du rapport officiel Georisques correspondant.
 - Le lien Georisques reste disponible pour tous les types de rapport : il fait
@@ -48,9 +57,10 @@ tags:
   email, commentaire, photo ou autre contenu du dossier n'est inclus dans le
   lien externe.
 
-## Limites du lot 1
+## Limites du lot courant
 
-Le lot 1 remplace la tuile de type de dossier et ajoute sa normalisation. Les
-champs et sources metier specifiques restent planifies dans
-[`docs/habitologie-light-plan.md`](docs/habitologie-light-plan.md). La
-sauvegarde et l'export existants sont deja reutilises.
+Le lot courant simplifie le catalogue visible et sa normalisation. Les phases
+`Ecoute`, `Observation/Analyse`, `Explication` et
+`Pistes d'accompagnement` sont encore une proposition en etude, decrite dans
+[`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
+La sauvegarde et l'export existants sont deja reutilises.

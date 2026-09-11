@@ -8,7 +8,10 @@ import {
   startOAuthLogin,
 } from './services/reportApi.js';
 import {
+  DEFAULT_CATEGORY,
+  DEFAULT_SUBCATEGORY,
   REPORT_CATEGORIES,
+  getReportSubcategories,
   getSelectableReportCategories,
   isHabitologieReport,
   nextReportTitle,
@@ -115,8 +118,8 @@ const emptyObservation = () => ({
 });
 
 const initialReport = normalizeReportClassification({
-  categorie: 'Expertise & visite technique',
-  sous_categorie: 'Constat general',
+  categorie: DEFAULT_CATEGORY,
+  sous_categorie: DEFAULT_SUBCATEGORY,
   titre: "Rapport d'expertise technique",
   reference_dossier: '',
   proprietaire: '',
@@ -882,7 +885,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
           <span className="eyebrow">Rapport AVEREO Pro</span>
           <h2>Creer ou reprendre un rapport</h2>
           <p>
-            Un seul parcours conserve les fonctions existantes. Le type de dossier, dont Rapport Habitologue,
+            Un seul parcours conserve les fonctions existantes. Le type de dossier, dont Visite Globale,
             se choisit dans l'etape Dossier et pourra adapter le workflow a la mission.
           </p>
           {!onlineSyncEnabled && (
@@ -939,7 +942,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
 }
 
 function DossierStep({ report, setReport }) {
-  const subcategories = REPORT_CATEGORIES[report.categorie]?.subcategories || [];
+  const subcategories = getReportSubcategories(report.categorie, report.sous_categorie);
 
   const updateField = (field, value) => setReport((prev) => ({ ...prev, [field]: value }));
 
@@ -977,7 +980,7 @@ function DossierStep({ report, setReport }) {
           <ButtonCard
             key={name}
             active={report.categorie === name}
-            title={name}
+            title={item.label || name}
             description={item.description}
             onClick={() => selectCategory(name)}
           />

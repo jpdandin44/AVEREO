@@ -6,9 +6,13 @@ import {
   DEFAULT_SUBCATEGORY,
   HABITOLOGIE_CATEGORY,
   HABITOLOGIE_SUBCATEGORY,
+  LEGACY_DEFAULT_CATEGORY,
+  LEGACY_HABITOLOGIE_CATEGORY,
+  LEGACY_HABITOLOGIE_SUBCATEGORY,
   LEGACY_RECEPTION_CATEGORY,
   REPORT_CATEGORIES,
   defaultReportTitle,
+  getReportSubcategories,
   getSelectableReportCategories,
   isHabitologieReport,
   nextReportTitle,
@@ -16,23 +20,40 @@ import {
   recommendedProtocols,
 } from './reportClassification.js';
 
-test('Rapport Habitologue remplace Reception de travaux dans les categories selectionnables', () => {
-  const selectableNames = getSelectableReportCategories().map(([name]) => name);
+test('seules les deux categories prioritaires sont visibles pour une nouvelle creation', () => {
+  const selectable = getSelectableReportCategories();
 
-  assert.ok(selectableNames.includes(HABITOLOGIE_CATEGORY));
-  assert.equal(selectableNames.includes(LEGACY_RECEPTION_CATEGORY), false);
-  assert.deepEqual(REPORT_CATEGORIES[HABITOLOGIE_CATEGORY].subcategories, [HABITOLOGIE_SUBCATEGORY]);
+  assert.deepEqual(selectable.map(([name]) => name), [DEFAULT_CATEGORY, HABITOLOGIE_CATEGORY]);
+  assert.equal(REPORT_CATEGORIES['Assistance avant-projet'].selectable, false);
+  assert.equal(REPORT_CATEGORIES['Diagnostic specifique'].selectable, false);
+  assert.equal(REPORT_CATEGORIES[LEGACY_RECEPTION_CATEGORY].selectable, false);
+});
+
+test('les categories visibles proposent uniquement les sous-categories retenues', () => {
+  assert.deepEqual(REPORT_CATEGORIES[DEFAULT_CATEGORY].subcategories, [
+    'Evaluation Energétique',
+    'Mesures',
+    'cartographie',
+    'pathologies',
+  ]);
+  assert.deepEqual(REPORT_CATEGORIES[HABITOLOGIE_CATEGORY].subcategories, [
+    'Eau',
+    'Air',
+    'Terre',
+    'Feu',
+  ]);
 });
 
 test("la categorie principale determine le futur workflow d'habitologie", () => {
   assert.equal(isHabitologieReport({ categorie: HABITOLOGIE_CATEGORY }), true);
-  assert.equal(isHabitologieReport({ categorie: DEFAULT_CATEGORY, sous_categorie: HABITOLOGIE_SUBCATEGORY }), false);
+  assert.equal(isHabitologieReport({ categorie: LEGACY_HABITOLOGIE_CATEGORY }), true);
+  assert.equal(isHabitologieReport({ categorie: DEFAULT_CATEGORY, sous_categorie: LEGACY_HABITOLOGIE_SUBCATEGORY }), false);
   assert.equal(isHabitologieReport({ report_type: 'habitologie' }), false);
 });
 
 test('un ancien brouillon technique conserve sa classification', () => {
   const result = normalizeReportClassification({
-    categorie: DEFAULT_CATEGORY,
+    categorie: LEGACY_DEFAULT_CATEGORY,
     sous_categorie: 'Fissures',
     titre: 'Visite fissures',
   });
@@ -42,7 +63,7 @@ test('un ancien brouillon technique conserve sa classification', () => {
   assert.equal(result.titre, 'Visite fissures');
 });
 
-test("un brouillon du prototype separe est migre vers le type Rapport Habitologue", () => {
+test("un brouillon du prototype separe est migre vers Visite Globale sans inventer un element", () => {
   const result = normalizeReportClassification({
     report_type: 'habitologie',
     schema_version: 1,
@@ -54,7 +75,7 @@ test("un brouillon du prototype separe est migre vers le type Rapport Habitologu
   });
 
   assert.equal(result.categorie, HABITOLOGIE_CATEGORY);
-  assert.equal(result.sous_categorie, HABITOLOGIE_SUBCATEGORY);
+  assert.equal(result.sous_categorie, LEGACY_HABITOLOGIE_SUBCATEGORY);
   assert.equal(result.proprietaire, 'Famille Exemple');
   assert.equal(result.email, 'famille@example.test');
   assert.equal(result.adresse_logement, '1 rue Exemple');
@@ -62,15 +83,32 @@ test("un brouillon du prototype separe est migre vers le type Rapport Habitologu
   assert.equal(Object.hasOwn(result, 'habitologie'), false);
 });
 
-test("un brouillon de l'etape intermediaire sous-categorie est migre vers Rapport Habitologue", () => {
+test("un brouillon de l'etape intermediaire est migre vers Visite Globale", () => {
   const result = normalizeReportClassification({
-    categorie: DEFAULT_CATEGORY,
-    sous_categorie: HABITOLOGIE_SUBCATEGORY,
+    categorie: LEGACY_DEFAULT_CATEGORY,
+    sous_categorie: LEGACY_HABITOLOGIE_SUBCATEGORY,
     titre: "Rapport d'habitologie",
   });
 
   assert.equal(result.categorie, HABITOLOGIE_CATEGORY);
-  assert.equal(result.sous_categorie, HABITOLOGIE_SUBCATEGORY);
+  assert.equal(result.sous_categorie, LEGACY_HABITOLOGIE_SUBCATEGORY);
+});
+
+test("un brouillon Rapport Habitologue est migre vers Visite Globale", () => {
+  const result = normalizeReportClassification({
+    categorie: LEGACY_HABITOLOGIE_CATEGORY,
+    sous_categorie: LEGACY_HABITOLOGIE_SUBCATEGORY,
+  });
+
+  assert.equal(result.categorie, HABITOLOGIE_CATEGORY);
+  assert.equal(result.sous_categorie, LEGACY_HABITOLOGIE_SUBCATEGORY);
+  assert.deepEqual(getReportSubcategories(result.categorie, result.sous_categorie), [
+    'Eau',
+    'Air',
+    'Terre',
+    'Feu',
+    LEGACY_HABITOLOGIE_SUBCATEGORY,
+  ]);
 });
 
 test('un ancien dossier Reception de travaux conserve sa classification', () => {
