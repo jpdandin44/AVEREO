@@ -35,6 +35,7 @@ tags:
 | Mode technique local | absente | Jeton genere localement | `api_token`, ignore de Git, admin local temporaire | adaptee |
 | Parcours CONNECT local reel | absent | CONNECT Docker, ticket HMAC, cookie de sas, MySQL Rapport | `gateway-up`, secret local ignore, vraie interface Rapport sur `127.0.0.1:8100` | adaptee |
 | Catalogue de rapports simplifie | plusieurs categories visibles | `categorie`, `sous_categorie`, charge JSON existante | Deux categories visibles; modules complementaires masques; anciennes classifications normalisees sans perte metier | adapte, a valider |
+| Ecoute client de Visite Globale | proposition de workflow | Objet `ecoute` dans le payload JSON existant | Section conditionnelle dans `Dossier`; saisie et dictee texte; accords photo/dictee; apercu et export Word | adaptee, validee localement |
 | Backend Node.js | absent | aucun | Aucun runtime Node.js en production | non integree |
 
 Aucune fonctionnalite source n'est volontairement supprimee. La persistance serveur et l'authentification sont ajoutees sans retirer le brouillon hors ligne. La preversion reste utilisable sans OAuth avec les brouillons navigateur; la reouverture d'une copie serveur sera finalisee avec le parcours d'authentification de production.

@@ -30,8 +30,10 @@ masque. Elles demeurent chargeables pour assurer la compatibilite des dossiers
 existants et pourront etre reactivees comme modules complementaires.
 
 `Visite Globale` reutilise le meme assistant, la meme API et le meme stockage.
-La valeur existante `categorie` permettra de conditionner progressivement son
-workflow. Aucune nouvelle base, API, table ou application n'est introduite.
+La valeur existante `categorie` conditionne l'affichage de la phase `Ecoute`
+dans l'etape `Dossier`. Ses champs et consentements sont conserves dans l'objet
+JSON `ecoute`, au sein du payload existant. Aucune nouvelle base, API, table ou
+application n'est introduite.
 Les anciennes classifications `Expertise & visite technique` et
 `Rapport Habitologue` sont normalisees sans inventer un nouvel element Eau,
 Air, Terre ou Feu.

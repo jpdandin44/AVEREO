@@ -201,6 +201,27 @@ Les champs metier et les appels externes specifiques ne font pas partie de ce
 lot. La sauvegarde serveur et l'export sont deja ceux de Rapport ; leur contenu
 sera enrichi au fil des adaptations metier.
 
+### Premiere tranche du lot 2 au 11 septembre 2026
+
+Une premiere tranche `Ecoute client` est implementee dans l'etape `Dossier`,
+uniquement lorsque la categorie `Visite Globale` est selectionnee :
+
+- motif de la visite ;
+- attentes et priorites du client ;
+- preoccupations exprimees ;
+- usages du logement et habitudes ;
+- occupants et contexte d'occupation ;
+- accords distincts pour les photos et la dictee vocale.
+
+Les champs acceptent la saisie manuelle et, apres accord, la dictee texte. Les
+accords desactivent effectivement les commandes photo et micro lorsqu'ils ne
+sont pas enregistres. Aucun audio brut n'est conserve. Les donnees sont
+reprises par le brouillon, le payload JSON, la sauvegarde serveur et le document
+Word sans evolution de schema MySQL.
+
+Cette tranche ne livre pas encore la machine d'etats, la cloture de collecte,
+les traitements d'analyse ni la synthese client.
+
 ### Delai global
 
 - MVP vraiment leger : **15 a 20 jours**, soit environ **3 a 4 semaines**,
@@ -215,8 +236,9 @@ sera enrichi au fil des adaptations metier.
 ## Ordre de livraison recommande
 
 1. valider les donnees indispensables sur un exemple reel ;
-2. stabiliser la categorie `Visite Globale` dans le parcours actuel ;
-3. adapter Dossier, Site et Observations sans aucune API externe ;
+2. stabiliser la categorie `Visite Globale` et sa phase `Ecoute` dans le
+   parcours actuel ;
+3. adapter `Observation/Analyse` sans nouvelle API externe ;
 4. brancher geocodage, cadastre puis risques avec des modes de secours ;
 5. ajouter les aides sans promettre automatiquement l'eligibilite ;
 6. finaliser la synthese et l'export ;

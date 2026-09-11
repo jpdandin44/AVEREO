@@ -16,6 +16,12 @@ tags:
 
 ## 2026-09-11
 
+- Ajout conditionnel de la section `Ecoute client` pour `Visite Globale` :
+  motif, attentes, preoccupations, usages et contexte d'occupation.
+- Ajout des accords photo et dictee au payload existant ; commandes photo et
+  micro desactivees tant que l'accord correspondant n'est pas enregistre.
+- Reprise des donnees d'ecoute dans le brouillon, la sauvegarde JSON, l'apercu
+  et l'export Word, sans schema MySQL supplementaire.
 - Priorisation du prototype fonctionnel ; etude du TDD reportee a la phase
   d'industrialisation en vue de la commercialisation.
 - Limitation des nouvelles creations aux categories

@@ -25,8 +25,12 @@ tags:
 - La derniere validation de production n'a cree aucune donnee metier ; le parcours complet creation, sauvegarde, rechargement et isolation multi-utilisateur reste a qualifier dans un environnement de test.
 - Le premier lot Habitologie et le retablissement du rapport officiel
   Georisques ont ete integres par les PR #57 et #58.
-- La simplification du catalogue est en cours sur une branche dediee : deux
+- La simplification du catalogue a ete integree par la PR #59 : deux
   categories visibles et modules historiques conserves mais masques.
+- La PR #60 a confirme la priorite donnee au prototype fonctionnel et reporte
+  le chantier TDD a la phase d'industrialisation.
+- Une premiere tranche `Ecoute client` pour `Visite Globale` est implementee
+  sur une branche dediee et reste soumise a revue humaine.
 
 ## Dette technique non bloquante
 
@@ -75,12 +79,15 @@ la conservation des donnees vocales et le role habilite a valider.
 
 ## Travail actuel et prochaine evolution
 
-Le travail actuel limite la creation a `Expertise & Visite technique` et
-`Visite Globale`, avec leurs quatre sous-categories respectives. Les autres
-categories sont masquees, mais pas supprimees. Apres validation de cette
-simplification, la prochaine tranche pourra implementer progressivement le
-workflow de visite globale, en commencant par les donnees et controles de la
-phase `Ecoute`.
+La tranche actuelle ajoute `Ecoute client` a `Visite Globale` sans modifier le
+parcours des rapports techniques. Les donnees sont sauvegardees et exportees
+dans le payload existant ; les accords conditionnent l'usage des photos et de
+la dictee. Le motif et les attentes manquants restent des alertes non
+bloquantes pendant le prototype.
+
+Apres revue et validation de cette tranche, la prochaine evolution
+fonctionnelle est l'adaptation de `Observation/Analyse` aux quatre elements,
+en reutilisant les observations, photos, mesures et commentaires existants.
 
 Le cadrage, les hypotheses, les lots et le chiffrage sont decrits dans
 `docs/habitologie-light-plan.md`.

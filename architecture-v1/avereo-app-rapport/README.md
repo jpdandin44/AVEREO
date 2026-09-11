@@ -54,8 +54,15 @@ Les autres categories restent dans le catalogue du code comme modules
 complementaires masques. Elles peuvent donc etre relues dans les anciens
 dossiers et reactivees ulterieurement sans recreer un second moteur.
 
-Le workflow cible de `Visite Globale` est une proposition en etude documentee
-dans [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
+Pour `Visite Globale`, l'etape `Dossier` contient maintenant une premiere
+tranche `Ecoute client` : motif, attentes, preoccupations, usages, contexte
+d'occupation et accords pour les photos et la dictee. Ces donnees suivent le
+meme brouillon, la meme sauvegarde JSON et les memes exports que le reste du
+rapport. Les photos et la dictee sont desactivees tant que l'accord
+correspondant n'est pas enregistre.
+
+La suite du workflow cible reste une proposition en etude documentee dans
+[`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
 
 ## Environnement local
 

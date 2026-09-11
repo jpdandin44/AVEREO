@@ -563,6 +563,83 @@ img {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
+.habitologie-block {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.habitologie-heading span {
+  color: #2563eb;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.habitologie-heading h3 {
+  margin: 5px 0 4px;
+  color: #172033;
+  font-size: 1.25rem;
+}
+
+.habitologie-heading p {
+  margin: 0;
+  color: #657085;
+  line-height: 1.5;
+}
+
+.consent-list {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.consent-list legend {
+  margin-bottom: 10px;
+  color: #334155;
+  font-weight: 800;
+}
+
+.consent-list label {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 14px;
+  border: 1px solid #d9dee7;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.consent-list label.selected {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.consent-list input {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+}
+
+.consent-list strong,
+.consent-list small {
+  display: block;
+}
+
+.consent-list small {
+  margin-top: 4px;
+  color: #657085;
+  line-height: 1.45;
+}
+
 .input-with-action {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 40px;
@@ -784,6 +861,20 @@ img {
   inset: 0;
   opacity: 0;
   cursor: pointer;
+}
+
+.photo-action.disabled,
+.photo-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.photo-action.disabled input {
+  cursor: not-allowed;
+}
+
+.consent-warning {
+  margin: 0 0 16px;
 }
 
 .validation-grid {

@@ -1,3 +1,18 @@
+---
+project: avereo-app-rapport
+document_type: architecture
+title: Architecture technique de Rapport AVEREO
+status: active
+version: git
+created: 2026-07-14
+updated: 2026-09-11
+owner: jpdandin
+tags:
+  - rapport
+  - architecture
+  - connect
+---
+
 # Architecture Rapport
 
 ## Decision monorepo
@@ -18,6 +33,14 @@ Un depot separe ne deviendrait pertinent que si Rapport avait une equipe et des 
 6. L'API exige le cookie de sas, valide l'identite CONNECT, les droits, la
    propriete et le payload.
 7. PDO accede uniquement a la base MySQL Rapport.
+
+Le frontend conserve le rapport complet sous forme d'un payload JSON. Pour un
+dossier `Visite Globale`, l'objet `ecoute` ajoute le motif, les attentes, les
+preoccupations, les usages, le contexte d'occupation et les deux accords
+photo/dictee. Ce meme objet traverse le brouillon local, l'import/export JSON,
+la sauvegarde API et l'export Word. La categorie conditionne uniquement
+l'interface et la restitution ; aucun endpoint ni schema MySQL supplementaire
+n'est requis.
 
 La configuration sensible est chargee depuis `/home/CPANEL_USERNAME/.avereo/rapport/config.php`, hors de `frontend/dist`.
 

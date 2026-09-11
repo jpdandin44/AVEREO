@@ -15,6 +15,38 @@ tags:
 
 # Decisions structurantes de Rapport AVEREO
 
+## 2026-09-11 - Integrer Ecoute dans l'etape Dossier existante
+
+### Contexte
+
+Le prototype doit rendre le workflow `Visite Globale` progressivement
+utilisable sans dupliquer l'assistant Rapport ni figer des transitions encore
+a arbitrer.
+
+### Decision
+
+Ajouter la premiere tranche `Ecoute client` dans l'etape `Dossier`, uniquement
+pour la categorie `Visite Globale`. Conserver ses champs et accords dans un
+objet JSON `ecoute` du payload existant. Reutiliser la dictee texte, le
+brouillon, la sauvegarde serveur, l'import/export JSON et l'export Word.
+
+Conditionner les commandes photo et dictee par leurs accords respectifs. Ne
+pas conserver d'audio brut et ne pas ajouter de nouvelle table ou API.
+
+### Raisons principales
+
+- livrer rapidement un parcours observable et testable sur le terrain ;
+- conserver un seul moteur et la compatibilite des anciens brouillons ;
+- rendre les accords operationnels, et pas seulement informatifs ;
+- eviter une migration MySQL pour des champs encore en phase de prototype.
+
+### Consequences
+
+Le rapport technique reste inchangé. Un dossier `Visite Globale` peut saisir
+et exporter l'ecoute client ; l'absence de motif ou d'attentes produit une
+alerte non bloquante. Les phases suivantes seront ajoutees progressivement
+dans l'assistant existant.
+
 ## 2026-09-11 - Privilegier le prototype fonctionnel avant le TDD
 
 ### Contexte

@@ -24,6 +24,16 @@ tags:
 - `Expertise & Visite technique` propose uniquement `Evaluation Energétique`,
   `Mesures`, `cartographie` et `pathologies`.
 - `Visite Globale` propose uniquement `Eau`, `Air`, `Terre` et `Feu`.
+- Un dossier `Visite Globale` affiche dans l'etape `Dossier` une section
+  `Ecoute client` pour le motif de visite, les attentes, les preoccupations,
+  les usages du logement et le contexte d'occupation.
+- Les accords pour les photos et la dictee sont conserves dans le dossier. Les
+  commandes correspondantes restent desactivees tant que l'accord n'est pas
+  enregistre. La dictee produit uniquement du texte et aucun fichier audio
+  n'est conserve.
+- Les donnees d'ecoute utilisent le brouillon, l'import/export JSON, la
+  sauvegarde serveur et l'export Word existants. Elles ne sont pas affichees
+  dans un rapport technique.
 - `Assistance avant-projet`, `Diagnostic specifique` et
   `Reception de travaux` restent disponibles dans le code comme modules
   complementaires masques dans l'interface de creation.
@@ -63,8 +73,11 @@ tags:
 
 ## Limites du lot courant
 
-Le lot courant simplifie le catalogue visible et sa normalisation. Les phases
-`Ecoute`, `Observation/Analyse`, `Explication` et
-`Pistes d'accompagnement` sont encore une proposition en etude, decrite dans
+Le lot courant livre la premiere tranche de la phase `Ecoute` dans l'etape
+`Dossier`. Les controles restent non bloquants : un motif ou des attentes
+absents produisent une alerte metier, sans empecher le brouillon.
+
+Les phases `Observation/Analyse`, `Explication` et
+`Pistes d'accompagnement`, ainsi que la machine d'etats proposee, restent en
+etude dans
 [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
-La sauvegarde et l'export existants sont deja reutilises.

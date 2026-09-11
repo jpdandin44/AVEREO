@@ -149,6 +149,15 @@ const initialReport = normalizeReportClassification({
     description: '',
     pdfUrl: '',
   },
+  ecoute: {
+    motif_visite: '',
+    attentes_client: '',
+    preoccupations: '',
+    usages_logement: '',
+    contexte_occupation: '',
+    consentement_photos: false,
+    consentement_dictee: false,
+  },
   protocoles: {
     standard: true,
     fissures: false,
@@ -180,6 +189,7 @@ function deepMergeReport(base, incoming) {
     meteo: { ...base.meteo, ...(classifiedIncoming.meteo || {}) },
     cadastre: { ...base.cadastre, ...(classifiedIncoming.cadastre || {}) },
     urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
+    ecoute: { ...base.ecoute, ...(classifiedIncoming.ecoute || {}) },
     protocoles: {
       ...base.protocoles,
       ...(classifiedIncoming.protocoles || {}),
@@ -331,6 +341,10 @@ function buildProtocolHtml(report) {
 }
 
 function buildWordDocumentHtml(report) {
+  const habitologie = isHabitologieReport(report);
+  const sectionNumbers = habitologie
+    ? { ecoute: 2, protocoles: 3, observations: 4, analyse: 5, signature: 6 }
+    : { protocoles: 2, observations: 3, analyse: 4, signature: 5 };
   const meteoLine = [
     report.meteo?.ciel && `Ciel : ${report.meteo.ciel}`,
     report.meteo?.temperatureC && `Temperature : ${report.meteo.temperatureC} C`,
@@ -392,6 +406,21 @@ function buildWordDocumentHtml(report) {
     ? `<img class="signature" src="${signatureSource}" alt="Signature" />`
     : `<p>${escapeHtml(report.signature)}</p>`;
 
+  const ecouteHtml = habitologie
+    ? `
+  <h2>${sectionNumbers.ecoute}. Ecoute client</h2>
+  <table>
+    <tr><td>Motif de la visite</td><td>${textToHtml(report.ecoute?.motif_visite || 'Non renseigne')}</td></tr>
+    <tr><td>Attentes et priorites</td><td>${textToHtml(report.ecoute?.attentes_client || 'Non renseignees')}</td></tr>
+    <tr><td>Preoccupations exprimees</td><td>${textToHtml(report.ecoute?.preoccupations || 'Non renseignees')}</td></tr>
+    <tr><td>Usages du logement</td><td>${textToHtml(report.ecoute?.usages_logement || 'Non renseignes')}</td></tr>
+    <tr><td>Occupants et contexte</td><td>${textToHtml(report.ecoute?.contexte_occupation || 'Non renseignes')}</td></tr>
+    <tr><td>Consentement photos</td><td>${report.ecoute?.consentement_photos ? 'Accorde' : 'Non accorde'}</td></tr>
+    <tr><td>Consentement dictee vocale</td><td>${report.ecoute?.consentement_dictee ? 'Accorde' : 'Non accorde'}</td></tr>
+  </table>
+  `
+    : '';
+
   return `<!doctype html>
 <html lang="fr" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
 <head>
@@ -441,13 +470,15 @@ function buildWordDocumentHtml(report) {
     }</td></tr>
   </table>
 
-  <h2>2. Protocole de recherche</h2>
+  ${ecouteHtml}
+
+  <h2>${sectionNumbers.protocoles}. Protocole de recherche</h2>
   ${buildProtocolHtml(report)}
 
-  <h2>3. Observations</h2>
+  <h2>${sectionNumbers.observations}. Observations</h2>
   ${observationsHtml || '<p>Aucune observation n a ete enregistree.</p>'}
 
-  <h2>4. Analyse et recommandations</h2>
+  <h2>${sectionNumbers.analyse}. Analyse et recommandations</h2>
   <h3>Analyse de l expert</h3>
   <p>${textToHtml(report.analyse_expert)}</p>
   <h3>Recommandations</h3>
@@ -455,7 +486,7 @@ function buildWordDocumentHtml(report) {
   <h3>Reserves</h3>
   <p>${textToHtml(report.reserves)}</p>
 
-  <h2>5. Signature</h2>
+  <h2>${sectionNumbers.signature}. Signature</h2>
   <p>Fait le ${formatDate(new Date().toISOString())}</p>
   <p><strong>Signataire :</strong> ${escapeHtml(report.nom_signataire)}</p>
   ${signatureHtml}
@@ -552,19 +583,20 @@ function useSpeechRecognition(lang = 'fr-FR', onFinalText) {
   return { isListening, isSupported, speechError, toggle };
 }
 
-function MicButton({ onFinalText, title = 'Dicter' }) {
+function MicButton({ disabled = false, disabledReason = '', onFinalText, title = 'Dicter' }) {
   const { isListening, isSupported, speechError, toggle } = useSpeechRecognition('fr-FR', onFinalText);
   const unavailableMessage = 'Dictee non disponible dans ce navigateur. Utilisez Chrome, Edge ou Windows + H.';
+  const buttonTitle = disabled ? disabledReason : isSupported ? title : unavailableMessage;
   return (
     <>
       <button
         className={`icon-button ${isListening ? 'danger active' : ''}`}
         type="button"
-        title={isSupported ? title : unavailableMessage}
+        title={buttonTitle}
         aria-label={isListening ? 'Arreter la dictee' : title}
         aria-pressed={isListening}
         onClick={toggle}
-        disabled={!isSupported}
+        disabled={disabled || !isSupported}
       >
         <Mic size={18} />
       </button>
@@ -788,12 +820,26 @@ function Field({ label, children, hint }) {
   );
 }
 
-function TextAreaWithMic({ label, value, onChange, onAppend, placeholder, rows = 5 }) {
+function TextAreaWithMic({
+  label,
+  value,
+  onChange,
+  onAppend,
+  placeholder,
+  rows = 5,
+  micDisabled = false,
+  micDisabledReason = '',
+}) {
   return (
     <Field label={label}>
       <div className="input-with-action">
         <textarea value={value} onChange={(event) => onChange(event.target.value)} placeholder={placeholder} rows={rows} />
-        <MicButton onFinalText={onAppend} title={`Dicter ${label}`} />
+        <MicButton
+          disabled={micDisabled}
+          disabledReason={micDisabledReason}
+          onFinalText={onAppend}
+          title={`Dicter ${label}`}
+        />
       </div>
     </Field>
   );
@@ -830,6 +876,9 @@ function CompletionPanel({ report, validation }) {
     report.nom_signataire,
     report.signature,
   ];
+  if (isHabitologieReport(report)) {
+    required.splice(4, 0, report.ecoute?.motif_visite, report.ecoute?.attentes_client);
+  }
   const score = Math.round((required.filter(Boolean).length / required.length) * 100);
 
   return (
@@ -943,8 +992,18 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
 
 function DossierStep({ report, setReport }) {
   const subcategories = getReportSubcategories(report.categorie, report.sous_categorie);
+  const habitologie = isHabitologieReport(report);
 
   const updateField = (field, value) => setReport((prev) => ({ ...prev, [field]: value }));
+  const updateEcoute = (field, value) => {
+    setReport((prev) => ({ ...prev, ecoute: { ...prev.ecoute, [field]: value } }));
+  };
+  const appendEcoute = (field, text) => {
+    setReport((prev) => ({
+      ...prev,
+      ecoute: { ...prev.ecoute, [field]: `${prev.ecoute?.[field] || ''}${text}` },
+    }));
+  };
 
   const updateClassification = (previous, categorie, sousCategorie) => {
     return {
@@ -1021,6 +1080,97 @@ function DossierStep({ report, setReport }) {
           <input value={report.intervenant} onChange={(event) => updateField('intervenant', event.target.value)} />
         </Field>
       </div>
+
+      {habitologie && (
+        <section className="habitologie-block" aria-labelledby="ecoute-title">
+          <div className="habitologie-heading">
+            <span>VISITE GLOBALE · {report.sous_categorie}</span>
+            <h3 id="ecoute-title">Ecoute client</h3>
+            <p>
+              Recueillez le besoin, le contexte et les attentes avant de commencer les observations du bien.
+            </p>
+          </div>
+
+          <div className="form-grid two">
+            <TextAreaWithMic
+              label="Motif de la visite"
+              value={report.ecoute.motif_visite}
+              onChange={(value) => updateEcoute('motif_visite', value)}
+              onAppend={(text) => appendEcoute('motif_visite', text)}
+              placeholder="Pourquoi le client demande-t-il cette visite ?"
+              rows={4}
+              micDisabled={!report.ecoute.consentement_dictee}
+              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
+            />
+            <TextAreaWithMic
+              label="Attentes et priorites du client"
+              value={report.ecoute.attentes_client}
+              onChange={(value) => updateEcoute('attentes_client', value)}
+              onAppend={(text) => appendEcoute('attentes_client', text)}
+              placeholder="Resultats attendus, priorites et decisions a eclairer..."
+              rows={4}
+              micDisabled={!report.ecoute.consentement_dictee}
+              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
+            />
+            <TextAreaWithMic
+              label="Preoccupations exprimees"
+              value={report.ecoute.preoccupations}
+              onChange={(value) => updateEcoute('preoccupations', value)}
+              onAppend={(text) => appendEcoute('preoccupations', text)}
+              placeholder="Inconfort, humidite, qualite de l'air, bruit, securite..."
+              rows={4}
+              micDisabled={!report.ecoute.consentement_dictee}
+              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
+            />
+            <TextAreaWithMic
+              label="Usages du logement et habitudes"
+              value={report.ecoute.usages_logement}
+              onChange={(value) => updateEcoute('usages_logement', value)}
+              onAppend={(text) => appendEcoute('usages_logement', text)}
+              placeholder="Occupation des pieces, ventilation, chauffage, travaux recents..."
+              rows={4}
+              micDisabled={!report.ecoute.consentement_dictee}
+              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
+            />
+            <TextAreaWithMic
+              label="Occupants et contexte d'occupation"
+              value={report.ecoute.contexte_occupation}
+              onChange={(value) => updateEcoute('contexte_occupation', value)}
+              onAppend={(text) => appendEcoute('contexte_occupation', text)}
+              placeholder="Nombre d'occupants et informations utiles communiquees par le client..."
+              rows={4}
+              micDisabled={!report.ecoute.consentement_dictee}
+              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
+            />
+          </div>
+
+          <fieldset className="consent-list">
+            <legend>Accords recueillis</legend>
+            <label className={report.ecoute.consentement_photos ? 'selected' : ''}>
+              <input
+                type="checkbox"
+                checked={Boolean(report.ecoute.consentement_photos)}
+                onChange={(event) => updateEcoute('consentement_photos', event.target.checked)}
+              />
+              <span>
+                <strong>Photos dans le dossier</strong>
+                <small>Le client autorise l'utilisation des photos prises pendant la visite dans ce dossier.</small>
+              </span>
+            </label>
+            <label className={report.ecoute.consentement_dictee ? 'selected' : ''}>
+              <input
+                type="checkbox"
+                checked={Boolean(report.ecoute.consentement_dictee)}
+                onChange={(event) => updateEcoute('consentement_dictee', event.target.checked)}
+              />
+              <span>
+                <strong>Dictee vocale pendant la visite</strong>
+                <small>Le client accepte la transcription vocale en texte. Aucun fichier audio n'est conserve.</small>
+              </span>
+            </label>
+          </fieldset>
+        </section>
+      )}
     </section>
   );
 }
@@ -1288,6 +1438,10 @@ function ProtocolStep({ report, setReport }) {
 
 function ObservationStep({ report, setReport }) {
   const [cameraFor, setCameraFor] = useState(null);
+  const habitologie = isHabitologieReport(report);
+  const photoAllowed = !habitologie || Boolean(report.ecoute?.consentement_photos);
+  const dictationAllowed = !habitologie || Boolean(report.ecoute?.consentement_dictee);
+  const consentReason = "Enregistrer d'abord l'accord du client dans l'etape Dossier.";
 
   const addObservation = () => setReport((prev) => ({ ...prev, observations: [...prev.observations, emptyObservation()] }));
 
@@ -1306,6 +1460,7 @@ function ObservationStep({ report, setReport }) {
   };
 
   const addPhotos = (obsId, files) => {
+    if (!photoAllowed) return;
     Array.from(files).forEach((file) => {
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -1327,7 +1482,7 @@ function ObservationStep({ report, setReport }) {
   };
 
   const addCameraPhoto = (photo) => {
-    if (!cameraFor) return;
+    if (!cameraFor || !photoAllowed) return;
     setReport((prev) => ({
       ...prev,
       observations: prev.observations.map((obs) =>
@@ -1355,6 +1510,14 @@ function ObservationStep({ report, setReport }) {
           <p>Constats localises, niveau de gravite, photos et suites proposees.</p>
         </div>
       </div>
+
+      {habitologie && (!photoAllowed || !dictationAllowed) && (
+        <div className="notice warning consent-warning" role="status">
+          <AlertTriangle size={18} />
+          Les photos et la dictee restent desactivees tant que les accords correspondants ne sont pas enregistres dans
+          l'etape Dossier.
+        </div>
+      )}
 
       <div className="observation-list">
         {report.observations.map((obs, index) => (
@@ -1406,6 +1569,8 @@ function ObservationStep({ report, setReport }) {
               onChange={(value) => updateObservation(obs.id, { observations: value })}
               onAppend={(text) => updateObservation(obs.id, { observations: `${obs.observations || ''}${text}` })}
               placeholder="Decrire les desordres observes..."
+              micDisabled={!dictationAllowed}
+              micDisabledReason={consentReason}
             />
             <TextAreaWithMic
               label="Suites proposees"
@@ -1414,6 +1579,8 @@ function ObservationStep({ report, setReport }) {
               onAppend={(text) => updateObservation(obs.id, { actions: `${obs.actions || ''}${text}` })}
               placeholder="Mesures conservatoires, controle complementaire, travaux recommandes..."
               rows={3}
+              micDisabled={!dictationAllowed}
+              micDisabledReason={consentReason}
             />
 
             <div className="photo-grid">
@@ -1431,12 +1598,27 @@ function ObservationStep({ report, setReport }) {
                   </button>
                 </figure>
               ))}
-              <label className="photo-action">
+              <label
+                className={`photo-action ${photoAllowed ? '' : 'disabled'}`}
+                title={photoAllowed ? 'Importer des photos' : consentReason}
+              >
                 <Upload size={22} />
                 Importer
-                <input type="file" multiple accept="image/*" onChange={(event) => addPhotos(obs.id, event.target.files)} />
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  disabled={!photoAllowed}
+                  onChange={(event) => addPhotos(obs.id, event.target.files)}
+                />
               </label>
-              <button className="photo-action" type="button" onClick={() => setCameraFor(obs.id)}>
+              <button
+                className="photo-action"
+                type="button"
+                disabled={!photoAllowed}
+                title={photoAllowed ? 'Prendre une photo' : consentReason}
+                onClick={() => setCameraFor(obs.id)}
+              >
                 <Camera size={22} />
                 Camera
               </button>
@@ -1560,6 +1742,12 @@ function validateReport(report) {
   if (filledObservations.length === 0) errors.push('Au moins une observation doit etre renseignee.');
   if (!report.analyse_expert.trim()) warnings.push("L'analyse de l'expert est vide.");
   if (!report.recommandations.trim()) warnings.push('Les recommandations sont vides.');
+  if (isHabitologieReport(report) && !report.ecoute?.motif_visite?.trim()) {
+    warnings.push("Le motif de la visite n'est pas encore renseigne dans la phase Ecoute.");
+  }
+  if (isHabitologieReport(report) && !report.ecoute?.attentes_client?.trim()) {
+    warnings.push("Les attentes du client ne sont pas encore renseignees dans la phase Ecoute.");
+  }
   if (report.observations.some((obs) => ['Severe', 'Critique'].includes(obs.gravite)) && !report.recommandations.trim()) {
     warnings.push('Une observation severe ou critique necessite une recommandation explicite.');
   }

@@ -18,10 +18,11 @@ tags:
 
 ## Propositions en etude
 
-Ce document est la source Markdown de reference de la proposition de workflow
-Habitologie. Il formalise une cible a arbitrer et ne decrit pas un moteur deja
-implemente. Le document Word initial reste une source de cadrage archivee, pas
-une seconde source maintenue.
+Ce document est la source Markdown de reference du workflow Habitologie. Il
+formalise une cible encore largement a arbitrer. Sa premiere tranche `Ecoute`
+est implementee dans l'etape `Dossier` ; la machine d'etats et les phases
+suivantes ne sont pas livrees. Le document Word initial reste une source de
+cadrage archivee, pas une seconde source maintenue.
 
 ## Perimetre fonctionnel
 
@@ -41,6 +42,15 @@ Le parcours visible cible comprend quatre phases :
 4. `Pistes d'accompagnement` : proposer des priorites, actions, aides et
    ressources, sans presenter une hypothese comme un diagnostic ou une
    eligibilite garantie.
+
+### Etat implemente de la phase Ecoute
+
+L'etape `Dossier` affiche pour `Visite Globale` les donnees suivantes : motif,
+attentes, preoccupations, usages, contexte d'occupation et accords photo/dictee.
+Ces donnees sont sauvegardees et exportees avec le payload Rapport existant.
+Les commandes photo et dictee sont desactivees sans leur accord respectif.
+L'absence de motif ou d'attentes produit une alerte non bloquante pendant la
+phase de prototype.
 
 ## Etats operationnels proposes
 
@@ -89,7 +99,8 @@ l'etape `Export` au fur et a mesure des lots :
 - `Generer la synthese client`.
 
 Chaque bouton doit etre conditionne par l'etat courant, les droits CONNECT et
-les controles de donnees. Aucun de ces boutons n'est livre par le present lot.
+les controles de donnees. Aucun de ces boutons n'est livre par la tranche
+`Ecoute` actuelle.
 
 ## Invariants de securite et de qualite
 
@@ -130,8 +141,7 @@ les controles de donnees. Aucun de ces boutons n'est livre par le present lot.
 
 ## Prochaine decision attendue
 
-Valider d'abord les quatre phases visibles et les donnees minimales de la phase
-`Ecoute`. L'implementation pourra ensuite commencer par une tranche
-fonctionnelle courte et demonstrable, sans figer prematurement l'orchestration
-complete. La traduction systematique de ces scenarios en tests automatises
-sera etudiee pendant l'industrialisation.
+Valider la tranche `Ecoute` sur un exemple de visite, puis definir les donnees
+minimales de `Observation/Analyse` pour Eau, Air, Terre et Feu sans figer
+prematurement l'orchestration complete. La traduction systematique de ces
+scenarios en tests automatises sera etudiee pendant l'industrialisation.
