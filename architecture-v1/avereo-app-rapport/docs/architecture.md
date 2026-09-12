@@ -5,7 +5,7 @@ title: Architecture technique de Rapport AVEREO
 status: active
 version: git
 created: 2026-07-14
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -43,6 +43,21 @@ l'interface et la restitution. Le champ existant `sous_categorie` contient le
 type d'habitation pour ce parcours, tandis que l'ordre d'analyse
 `Eau -> Air -> Terre -> Feu` est defini dans le catalogue frontend. Aucun
 endpoint ni schema MySQL supplementaire n'est requis.
+
+Pour `Visite Globale`, `habitologie_protocoles` conserve les points retenus
+pour chacune des quatre phases. Les observations reutilisent leur structure
+existante et ajoutent les references facultatives `phase_habitologie` et
+`controle_habitologie`. Une observation ancienne sans ces references reste
+visible dans `A classer`.
+
+Apres le geocodage BAN, le frontend appelle directement les services publics
+API Carto et Georisques. Le cadastre, l'urbanisme et les risques sont traites
+comme des enrichissements independants : l'absence de parcelle ne bloque pas
+la synthese des risques. L'endpoint Georisques V1 public recoit uniquement
+`longitude,latitude` et renvoie les statuts a l'adresse et sur la commune. La
+synthese normalisee, sa source, sa date de consultation et le lien officiel
+sont stockes dans l'objet `risques` du payload. Aucun jeton Georisques n'est
+requis pour ce lot.
 
 La configuration sensible est chargee depuis `/home/CPANEL_USERNAME/.avereo/rapport/config.php`, hors de `frontend/dist`.
 

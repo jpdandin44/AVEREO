@@ -5,7 +5,7 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -29,6 +29,13 @@ tags:
 - Toute `Visite Globale` suit un seul parcours d'analyse dans l'ordre
   `Eau -> Air -> Terre -> Feu`. Ces dimensions ne sont ni des types
   d'habitation ni des sous-categories exclusives.
+- L'etape `Protocoles` de `Visite Globale` propose des controles propres a
+  chaque phase ; l'utilisateur peut retirer un point non applicable sans
+  modifier l'ordre des phases.
+- L'etape `Observations` de `Visite Globale` regroupe les constats par phase et
+  permet de les rattacher a un point du protocole. Une observation historique
+  sans phase reste visible dans `A classer` et n'est jamais reclassee
+  automatiquement.
 - Un dossier `Visite Globale` affiche dans l'etape `Dossier` une section
   `Ecoute client` pour le motif de visite, les attentes, les preoccupations,
   les usages du logement et le contexte d'occupation.
@@ -56,6 +63,12 @@ tags:
   ancienne valeur `Eau`, `Air`, `Terre` ou `Feu` devient `A preciser`.
 - Apres une recherche d'adresse ayant fourni des coordonnees valides, l'etape
   `Site` propose l'ouverture du rapport officiel Georisques correspondant.
+- La meme recherche affiche une synthese des risques naturels et
+  technologiques presents selon Georisques, avec le statut a l'adresse et sur
+  la commune, la source et la date de consultation.
+- L'absence de parcelle cadastrale ne bloque ni la localisation du bien ni la
+  synthese Georisques. Une indisponibilite de Georisques est signalee sans
+  produire de resultat artificiel.
 - Le lien Georisques reste disponible pour tous les types de rapport : il fait
   partie du socle commun de localisation et ne modifie pas le dossier.
 
@@ -77,14 +90,18 @@ tags:
 - Les coordonnees transmises au service Georisques sont validees et aucun nom,
   email, commentaire, photo ou autre contenu du dossier n'est inclus dans le
   lien externe.
+- L'integration Georisques utilise l'endpoint public V1 sans jeton et envoie
+  uniquement les coordonnees longitude/latitude issues du geocodage. Les
+  libelles et statuts affiches proviennent de la reponse officielle.
 
 ## Limites du lot courant
 
-Le lot courant livre la premiere tranche de la phase `Ecoute` dans l'etape
-`Dossier`. Les controles restent non bloquants : un motif ou des attentes
-absents produisent une alerte metier, sans empecher le brouillon.
+Le lot courant livre la phase `Ecoute` dans l'etape `Dossier`, le protocole
+ordonne `Eau -> Air -> Terre -> Feu`, le classement des observations par phase
+et la synthese Georisques dans `Site`. Les controles d'ecoute restent non
+bloquants : un motif ou des attentes absents produisent une alerte metier,
+sans empecher le brouillon.
 
-Les phases `Observation/Analyse`, `Explication` et
-`Pistes d'accompagnement`, ainsi que la machine d'etats proposee, restent en
-etude dans
+L'enrichissement de `Observation/Analyse`, puis les phases `Explication` et
+`Pistes d'accompagnement`, ainsi que la machine d'etats proposee, restent en etude dans
 [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).

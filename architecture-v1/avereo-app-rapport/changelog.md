@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,21 @@ tags:
 ---
 
 # Evolutions significatives de Rapport AVEREO
+
+## 2026-09-12
+
+- Transformation du fil `Eau -> Air -> Terre -> Feu` en protocole operationnel
+  propre a `Visite Globale`, avec controles terrain activables par phase.
+- Regroupement des observations d'habitologie dans le meme ordre, ajout d'un
+  rattachement au point de protocole et conservation des anciennes
+  observations dans une zone `A classer`.
+- Affichage dans `Site` de la synthese JSON Georisques : risques naturels et
+  technologiques presents, statuts a l'adresse et sur la commune, source,
+  horodatage et acces au rapport officiel.
+- Decouplage de la recherche cadastrale et de la synthese des risques : une
+  parcelle non identifiee n'empeche plus la restitution Georisques.
+- Ajout de controles unitaires pour l'ordre et la fusion du protocole ainsi
+  que pour l'URL, la normalisation et les statuts Georisques.
 
 ## 2026-09-11
 

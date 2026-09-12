@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -45,8 +45,10 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 | IMPORTANT | `frontend/src/App.jsx`, apercu `srcDoc` | Des URLs d'images importees sont reinserees dans l'apercu; le cadre n'est pas sandboxe. | `iframe` sandboxee sans permission et politique `no-referrer`. | corrige |
 | IMPORTANT | `frontend/src/App.jsx`, appels BAN/IGN | Dependances externes appelees directement par le navigateur, avec disponibilite et CORS hors controle. | Conservees pour le fonctionnement; documentees; proxy PHP a envisager si les conditions d'usage l'exigent. | accepte |
 | IMPORTANT | `frontend/src/App.jsx`, rapport Georisques | Le bouton de rapport des risques de la source historique avait ete omis pendant la migration statique de juillet 2026. | Lien officiel retabli apres validation des coordonnees; seuls longitude et latitude sont transmis; tests unitaires ajoutes. | corrige |
+| IMPORTANT | `frontend/src/App.jsx`, synthese Georisques | La consultation externe ne presentait pas les risques dans l'assistant et la recherche echouait entierement lorsqu'aucune parcelle n'etait retournee. | Endpoint JSON V1 public appele avec les seules coordonnees; synthese sourcee et horodatee; cadastre rendu non bloquant; indisponibilite explicite. | valide localement, a qualifier en environnement heberge |
 | AMELIORATION | `frontend/src/reportClassification.js`, catalogue | Les categories historiques surchargeaient le choix de creation et Eau, Air, Terre, Feu avaient ete modelises a tort comme sous-categories exclusives. | Deux categories restent selectionnables; Visite Globale utilise le type d'habitation et affiche les quatre dimensions comme parcours ordonne commun; les modules historiques restent masques sans suppression. | a valider |
 | AMELIORATION | `frontend/src/App.jsx`, `Visite Globale` | La phase `Ecoute` et ses accords etaient documentes mais absents du parcours fonctionnel. | Section conditionnelle ajoutee dans `Dossier`; donnees incluses dans le payload et le Word; photos et dictee bloquees sans leur accord. | valide localement, a qualifier via CONNECT |
+| AMELIORATION | `frontend/src/App.jsx`, protocole Habitologie | Le fil Eau, Air, Terre, Feu etait informatif mais ne guidait ni les controles ni le classement des observations. | Points de controle par phase, observations rattachees et anciennes observations preservees dans `A classer`; export Word aligne. | valide localement, a qualifier via CONNECT |
 | AMELIORATION | `frontend/package.json` | La source ne definissait aucun test unitaire frontend. | La suite `node:test` couvre notamment le catalogue visible, les modules masques, la preservation de Reception, la normalisation et les migrations des prototypes; le lint et les tests de composants restent a definir dans la strategie globale. | mitige |
 | INFORMATION | `Rapport_AVEREO_Pro.txt` | La source historique presente un encodage mojibake. | La refonte JSX corrige l'affichage et reste la cible. | corrige |
 | INFORMATION | `frontend/package.json` | Vite 5 exposait des alertes de dependances de developpement. | Passage a Vite 7 et plugin React 5. Au 11 septembre 2026, `npm audit --omit=dev` est sans alerte; l'audit complet signale `browserslist` et `baseline-browser-mapping`, a traiter en dette non bloquante. | mitige |

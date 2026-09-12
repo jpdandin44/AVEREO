@@ -5,7 +5,7 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -39,3 +39,8 @@ Les anciennes classifications `Expertise & visite technique` et
 `Visite Globale`, le champ technique historique `sous_categorie` conserve la
 valeur du type d'habitation afin de preserver le schema existant. Les constantes
 de workflow portent separement l'ordre d'analyse `Eau -> Air -> Terre -> Feu`.
+Le payload conserve egalement `habitologie_protocoles` pour les points retenus,
+`phase_habitologie` et `controle_habitologie` sur chaque observation, ainsi
+qu'une synthese `risques` sourcee et horodatee issue de Georisques V1. Ces
+ajouts restent compatibles avec les brouillons plus anciens grace a la fusion
+des valeurs par defaut.

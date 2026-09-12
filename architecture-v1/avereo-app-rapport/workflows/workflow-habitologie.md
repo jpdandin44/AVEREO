@@ -5,7 +5,7 @@ title: Proposition de workflow operationnel pour Visite Globale
 status: proposed
 version: git
 created: 2026-09-11
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -19,10 +19,11 @@ tags:
 ## Propositions en etude
 
 Ce document est la source Markdown de reference du workflow Habitologie. Il
-formalise une cible encore largement a arbitrer. Sa premiere tranche `Ecoute`
-est implementee dans l'etape `Dossier` ; la machine d'etats et les phases
-suivantes ne sont pas livrees. Le document Word initial reste une source de
-cadrage archivee, pas une seconde source maintenue.
+formalise une cible encore largement a arbitrer. Les tranches `Ecoute`,
+protocole `Eau -> Air -> Terre -> Feu`, classement des observations et
+synthese Georisques sont implementees ; la machine d'etats, l'explication et
+l'accompagnement ne sont pas livres. Le document Word initial reste une
+source de cadrage archivee, pas une seconde source maintenue.
 
 ## Perimetre fonctionnel
 
@@ -60,6 +61,35 @@ Les commandes photo et dictee sont desactivees sans leur accord respectif.
 L'absence de motif ou d'attentes produit une alerte non bloquante pendant la
 phase de prototype. Le type d'habitation est demande dans le meme dossier et
 le parcours complet `Eau -> Air -> Terre -> Feu` y est annonce.
+
+### Etat implemente du protocole et des observations
+
+L'etape `Protocoles` suit obligatoirement les quatre phases suivantes :
+
+1. `Eau` : infiltrations, apports et evacuations, toiture et eaux pluviales,
+   humidite, condensation et moisissures ;
+2. `Air` : presence d'une ventilation, type et fonctionnement, qualite de
+   l'installation et entretien, entrees, transferts et sorties d'air ;
+3. `Terre` : interfaces de l'enveloppe, etancheite a l'air, vapeur d'eau,
+   continuite de l'isolation et ponts thermiques visibles ;
+4. `Feu` : production de chauffage, emetteurs, regulation, etat apparent,
+   entretien et confort ressenti.
+
+Tous les points sont proposes par defaut et peuvent etre retires lorsqu'ils
+ne s'appliquent pas a la visite. Dans `Observations`, l'utilisateur ajoute un
+constat directement dans une phase et peut le rattacher a l'un de ces points.
+Les photos, la dictee et les autres champs existants restent disponibles selon
+les accords recueillis. Un constat historique sans phase est conserve dans
+`A classer`.
+
+### Etat implemente de la synthese des risques
+
+Apres geocodage, `Site` appelle l'endpoint public Georisques V1 avec les seules
+coordonnees. L'interface presente les risques naturels et technologiques
+marques presents, avec les statuts a l'adresse et sur la commune. Le payload
+conserve la source, la date de consultation et le lien vers le rapport
+officiel. L'indisponibilite de Georisques ou du cadastre est signalee sans
+inventer de resultat et sans effacer les autres donnees saisies.
 
 ## Etats operationnels proposes
 
@@ -125,8 +155,9 @@ les controles de donnees. Aucun de ces boutons n'est livre par la tranche
 
 ## Scenarios de validation du prototype
 
-1. Un dossier `Visite Globale` peut etre cree avec un type d'habitation et
-   presente les dimensions `Eau`, `Air`, `Terre`, `Feu` dans cet ordre.
+1. Un dossier `Visite Globale` peut etre cree avec un type d'habitation,
+   presente les dimensions `Eau`, `Air`, `Terre`, `Feu` dans cet ordre et
+   permet d'ajouter une observation dans chaque phase.
 2. Une visite incomplete ne peut pas etre cloturee sans afficher les donnees
    manquantes.
 3. Une source externe indisponible permet une saisie manuelle identifiee.
@@ -152,7 +183,8 @@ les controles de donnees. Aucun de ces boutons n'est livre par la tranche
 
 ## Prochaine decision attendue
 
-Valider la tranche `Ecoute` sur un exemple de visite, puis definir les donnees
-minimales de `Observation/Analyse` pour Eau, Air, Terre et Feu sans figer
-prematurement l'orchestration complete. La traduction systematique de ces
-scenarios en tests automatises sera etudiee pendant l'industrialisation.
+Valider les tranches `Ecoute`, protocole, observations et synthese des risques
+sur un exemple de visite, puis definir les donnees metier complementaires de
+chaque phase sans figer prematurement l'orchestration complete. La traduction
+systematique de ces scenarios en tests automatises sera etudiee pendant
+l'industrialisation.

@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -66,7 +66,19 @@ Le choix complementaire de `Visite Globale` correspond au type d'habitation :
 `Air`, `Terre` et `Feu` ne sont pas des sous-categories : ils forment le fil
 conducteur obligatoire de l'analyse, dans cet ordre, pour chaque visite.
 
-La suite du workflow cible reste une proposition en etude documentee dans
+Dans l'etape `Protocoles`, ces quatre phases portent maintenant les controles
+terrain adaptes : eau et humidite, renouvellement d'air, interfaces de
+l'enveloppe, puis chauffage et confort. L'etape `Observations` reprend le meme
+ordre et permet de rattacher chaque constat a une phase et a un point de
+controle, sans perdre les anciennes observations non classees.
+
+L'etape `Site` interroge l'endpoint JSON public Georisques V1 apres le
+geocodage et affiche directement les risques naturels et technologiques
+identifies, avec les statuts a l'adresse et sur la commune. La source, la date
+de consultation et le lien vers le rapport officiel sont conserves dans le
+brouillon et l'export. L'echec du cadastre ne bloque plus cette synthese.
+
+La suite du workflow cible reste en partie une proposition en etude documentee dans
 [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
 
 ## Environnement local

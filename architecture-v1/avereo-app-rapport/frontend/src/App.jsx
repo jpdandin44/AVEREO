@@ -22,6 +22,20 @@ import {
 } from './reportClassification.js';
 import { buildGeorisquesReportUrl } from './georisquesReport.js';
 import {
+  buildGeorisquesRiskSummaryUrl,
+  emptyGeorisquesRiskSummary,
+  normalizeGeorisquesRiskSummary,
+  riskStatusTone,
+  safeGeorisquesReportUrl,
+} from './georisquesRiskSummary.js';
+import {
+  HABITOLOGIE_PROTOCOL_STAGES,
+  createHabitologieProtocolState,
+  findHabitologieControl,
+  findHabitologieStage,
+  mergeHabitologieProtocolState,
+} from './habitologieProtocol.js';
+import {
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
@@ -110,6 +124,8 @@ const protocolOptions = [
 
 const emptyObservation = () => ({
   id: createId(),
+  phase_habitologie: '',
+  controle_habitologie: '',
   piece: '',
   surface: '',
   gravite: 'Mineure',
@@ -151,6 +167,7 @@ const initialReport = normalizeReportClassification({
     description: '',
     pdfUrl: '',
   },
+  risques: emptyGeorisquesRiskSummary(),
   ecoute: {
     motif_visite: '',
     attentes_client: '',
@@ -167,6 +184,7 @@ const initialReport = normalizeReportClassification({
     toiture: false,
     reception: false,
   },
+  habitologie_protocoles: createHabitologieProtocolState(),
   observations: [emptyObservation()],
   analyse_expert: '',
   recommandations: '',
@@ -191,7 +209,9 @@ function deepMergeReport(base, incoming) {
     meteo: { ...base.meteo, ...(classifiedIncoming.meteo || {}) },
     cadastre: { ...base.cadastre, ...(classifiedIncoming.cadastre || {}) },
     urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
+    risques: { ...base.risques, ...(classifiedIncoming.risques || {}) },
     ecoute: { ...base.ecoute, ...(classifiedIncoming.ecoute || {}) },
+    habitologie_protocoles: mergeHabitologieProtocolState(classifiedIncoming.habitologie_protocoles),
     protocoles: {
       ...base.protocoles,
       ...(classifiedIncoming.protocoles || {}),
@@ -328,6 +348,25 @@ function toFileName(value) {
 }
 
 function buildProtocolHtml(report) {
+  if (isHabitologieReport(report)) {
+    return HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => {
+      const selectedControls = stage.controls.filter(
+        (control) => report.habitologie_protocoles?.[stage.key]?.controls?.[control.key],
+      );
+      return `
+        <section class="protocol-phase-export">
+          <h3>Phase ${index + 1} - ${escapeHtml(stage.label)}</h3>
+          <p>${escapeHtml(stage.summary)}</p>
+          ${
+            selectedControls.length > 0
+              ? `<ul>${selectedControls.map((control) => `<li>${escapeHtml(control.label)}</li>`).join('')}</ul>`
+              : '<p><span class="muted">Aucun point retenu pour cette phase.</span></p>'
+          }
+        </section>
+      `;
+    }).join('');
+  }
+
   const selected = protocolOptions.filter((protocol) => report.protocoles?.[protocol.key]);
   if (selected.length === 0) {
     return '<p>Aucun protocole specifique n a ete selectionne.</p>';
@@ -340,6 +379,44 @@ function buildProtocolHtml(report) {
       `,
     )
     .join('');
+}
+
+function buildRiskSummaryHtml(summary) {
+  if (!summary?.fetchedAt) return '';
+  const groups = [
+    ['Risques naturels identifies', summary.naturels || []],
+    ['Risques technologiques identifies', summary.technologiques || []],
+  ];
+  return `
+    <h3>Synthese Georisques</h3>
+    <p>${escapeHtml(summary.addressLabel || summary.communeLabel || '')}</p>
+    ${groups
+      .map(
+        ([label, risks]) => `
+          <h4>${risks.length} ${escapeHtml(label)}</h4>
+          ${
+            risks.length > 0
+              ? `<table>
+                  <tr><td>Risque</td><td>A l'adresse</td><td>Sur la commune</td></tr>
+                  ${risks
+                    .map(
+                      (risk) => `<tr>
+                        <td>${escapeHtml(risk.label)}</td>
+                        <td>${escapeHtml(risk.addressStatus)}</td>
+                        <td>${escapeHtml(risk.communeStatus)}</td>
+                      </tr>`,
+                    )
+                    .join('')}
+                </table>`
+              : '<p><span class="muted">Aucun risque present dans cette categorie selon la reponse recue.</span></p>'
+          }
+        `,
+      )
+      .join('')}
+    <p class="muted">Source : ${escapeHtml(summary.source)} - consultation du ${escapeHtml(
+      formatDateTime(summary.fetchedAt),
+    )}. Synthese informative ; consulter le rapport officiel pour le detail.</p>
+  `;
 }
 
 function buildWordDocumentHtml(report) {
@@ -384,6 +461,17 @@ function buildWordDocumentHtml(report) {
         <section class="observation">
           <h3>${index + 1}. ${escapeHtml(obs.titre || `${obs.piece || 'Zone'} - ${obs.surface || 'Surface'}`)}</h3>
           <table>
+            ${
+              habitologie
+                ? `<tr><td>Phase d'analyse</td><td>${escapeHtml(
+                    findHabitologieStage(obs.phase_habitologie)?.label || 'A classer',
+                  )}</td></tr>
+                   <tr><td>Point du protocole</td><td>${escapeHtml(
+                     findHabitologieControl(obs.phase_habitologie, obs.controle_habitologie)?.label ||
+                       'Constat transversal ou non classe',
+                   )}</td></tr>`
+                : ''
+            }
             <tr><td>Piece / zone</td><td>${escapeHtml(obs.piece)}</td></tr>
             <tr><td>Element observe</td><td>${escapeHtml(obs.surface)}</td></tr>
             <tr><td>Gravite</td><td>${escapeHtml(obs.gravite)}</td></tr>
@@ -472,6 +560,8 @@ function buildWordDocumentHtml(report) {
       report.urbanisme?.pdfUrl ? `<br /><a href="${escapeHtml(report.urbanisme.pdfUrl)}">Document PLU</a>` : ''
     }</td></tr>
   </table>
+
+  ${buildRiskSummaryHtml(report.risques)}
 
   ${ecouteHtml}
 
@@ -1004,7 +1094,18 @@ function DossierStep({ report, setReport }) {
   const habitologie = isHabitologieReport(report);
   const housingTypeSelected = report.sous_categorie !== HABITOLOGIE_DEFAULT_HOUSING_TYPE;
 
-  const updateField = (field, value) => setReport((prev) => ({ ...prev, [field]: value }));
+  const updateField = (field, value) => {
+    setReport((prev) => {
+      if (field !== 'adresse_logement') return { ...prev, [field]: value };
+      return {
+        ...prev,
+        [field]: value,
+        cadastre: { ...initialReport.cadastre },
+        urbanisme: { ...initialReport.urbanisme },
+        risques: emptyGeorisquesRiskSummary(),
+      };
+    });
+  };
   const updateEcoute = (field, value) => {
     setReport((prev) => ({ ...prev, ecoute: { ...prev.ecoute, [field]: value } }));
   };
@@ -1201,6 +1302,67 @@ function DossierStep({ report, setReport }) {
   );
 }
 
+function RiskSummary({ summary, fallbackReportUrl, hasCoordinates }) {
+  if (!summary?.fetchedAt) return null;
+  const groups = [
+    { key: 'naturels', label: 'Risques naturels identifies', items: summary.naturels || [] },
+    { key: 'technologiques', label: 'Risques technologiques identifies', items: summary.technologiques || [] },
+  ];
+  const reportUrl = safeGeorisquesReportUrl(summary.reportUrl) || fallbackReportUrl;
+
+  return (
+    <section className="risk-summary" aria-labelledby="risk-summary-title">
+      <div className="risk-summary-header">
+        <div>
+          <span>SYNTHESE GEORISQUES</span>
+          <h3 id="risk-summary-title">Risques connus pour le bien</h3>
+          <p>
+            Donnees informatives recuperees pour {summary.addressLabel || summary.communeLabel || 'les coordonnees du bien'}.
+          </p>
+        </div>
+        {hasCoordinates && reportUrl && (
+          <button className="button ghost" type="button" onClick={() => window.open(reportUrl, '_blank', 'noopener,noreferrer')}>
+            <ShieldCheck size={18} />
+            Voir le rapport complet
+          </button>
+        )}
+      </div>
+
+      {groups.map((group) => (
+        <div className="risk-group" key={group.key}>
+          <h4>
+            {group.items.length} {group.label}
+          </h4>
+          {group.items.length === 0 ? (
+            <p className="muted">Aucun risque present dans cette categorie selon la reponse recue.</p>
+          ) : (
+            <div className="risk-table" role="table" aria-label={group.label}>
+              {group.items.map((risk) => (
+                <div className="risk-row" role="row" key={risk.key}>
+                  <strong role="cell">{risk.label}</strong>
+                  <span role="cell">
+                    <small>A l'adresse</small>
+                    <em className={`risk-status ${riskStatusTone(risk.addressStatus)}`}>{risk.addressStatus}</em>
+                  </span>
+                  <span role="cell">
+                    <small>Sur la commune</small>
+                    <em className={`risk-status ${riskStatusTone(risk.communeStatus)}`}>{risk.communeStatus}</em>
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ))}
+
+      <p className="risk-source">
+        Source : {summary.source} · consultation du {formatDateTime(summary.fetchedAt)}. Cette synthese est informative et ne
+        remplace pas le rapport officiel.
+      </p>
+    </section>
+  );
+}
+
 function SiteStep({ report, setReport }) {
   const [lookupStatus, setLookupStatus] = useState({ state: 'idle', message: '' });
 
@@ -1228,8 +1390,7 @@ function SiteStep({ report, setReport }) {
 
       const cadastreResponse = await fetch(`https://apicarto.ign.fr/api/cadastre/parcelle?geom=${pointGeom}`);
       const cadastreData = await cadastreResponse.json();
-      const parcelle = cadastreData.features?.[0]?.properties;
-      if (!parcelle) throw new Error('Parcelle introuvable');
+      const parcelle = cadastreData.features?.[0]?.properties || null;
 
       let urbanisme = { zone: '', description: '', pdfUrl: '' };
       try {
@@ -1254,20 +1415,45 @@ function SiteStep({ report, setReport }) {
         urbanisme = { zone: '', description: '', pdfUrl: '' };
       }
 
+      let risques = emptyGeorisquesRiskSummary();
+      let risquesDisponibles = false;
+      try {
+        setLookupStatus({ state: 'loading', message: 'Recuperation de la synthese des risques...' });
+        const risksUrl = buildGeorisquesRiskSummaryUrl(lon, lat);
+        if (!risksUrl) throw new Error('Coordonnees invalides');
+        const risksResponse = await fetch(risksUrl);
+        if (!risksResponse.ok) throw new Error(`Georisques ${risksResponse.status}`);
+        risques = normalizeGeorisquesRiskSummary(await risksResponse.json());
+        risquesDisponibles = true;
+      } catch {
+        risques = emptyGeorisquesRiskSummary();
+      }
+
       setReport((prev) => ({
         ...prev,
         cadastre: {
-          section: parcelle.section || '',
-          numero: parcelle.numero || '',
-          contenance: parcelle.contenance || '',
+          section: parcelle?.section || '',
+          numero: parcelle?.numero || '',
+          contenance: parcelle?.contenance || '',
           commune: feature.properties.citycode || '',
           nom_commune: feature.properties.city || '',
           lon,
           lat,
         },
         urbanisme,
+        risques,
       }));
-      setLookupStatus({ state: 'success', message: 'Parcelle et contexte recuperes.' });
+      setLookupStatus({
+        state: risquesDisponibles && parcelle ? 'success' : 'warning',
+        message:
+          risquesDisponibles && parcelle
+            ? 'Parcelle, contexte et synthese des risques recuperes.'
+            : risquesDisponibles
+              ? "Adresse et synthese des risques recuperees. La parcelle cadastrale n'a pas ete identifiee automatiquement."
+              : parcelle
+                ? 'Parcelle et contexte recuperes. La synthese Georisques est temporairement indisponible.'
+                : "Adresse localisee. La parcelle et la synthese Georisques n'ont pas pu etre recuperees.",
+      });
     } catch {
       setLookupStatus({ state: 'error', message: 'Recherche indisponible ou adresse non trouvee.' });
     }
@@ -1387,6 +1573,8 @@ function SiteStep({ report, setReport }) {
 
       {lookupStatus.message && <p className={`status-line ${lookupStatus.state}`}>{lookupStatus.message}</p>}
 
+      <RiskSummary summary={report.risques} fallbackReportUrl={georisquesReportUrl} hasCoordinates={hasCoordinates} />
+
       <div className="form-grid four">
         <Field label="Section">
           <input value={report.cadastre.section} onChange={(event) => updateNested('cadastre', 'section', event.target.value)} />
@@ -1421,35 +1609,90 @@ function SiteStep({ report, setReport }) {
 }
 
 function ProtocolStep({ report, setReport }) {
+  const habitologie = isHabitologieReport(report);
+  const dictationAllowed = !habitologie || Boolean(report.ecoute?.consentement_dictee);
+  const updateHabitologieControl = (stageKey, controlKey, checked) => {
+    setReport((prev) => ({
+      ...prev,
+      habitologie_protocoles: {
+        ...prev.habitologie_protocoles,
+        [stageKey]: {
+          ...prev.habitologie_protocoles[stageKey],
+          controls: {
+            ...prev.habitologie_protocoles[stageKey].controls,
+            [controlKey]: checked,
+          },
+        },
+      },
+    }));
+  };
+
   return (
     <section className="panel">
       <div className="section-title">
         <ShieldCheck size={22} />
         <div>
           <h2>Protocoles</h2>
-          <p>Selectionner les controles qui seront repris dans le rapport.</p>
+          <p>
+            {habitologie
+              ? "Suivre les quatre phases dans l'ordre et retenir les points a observer."
+              : 'Selectionner les controles qui seront repris dans le rapport.'}
+          </p>
         </div>
       </div>
-      <div className="protocol-list">
-        {protocolOptions.map((protocol) => (
-          <label key={protocol.key} className={report.protocoles[protocol.key] ? 'selected' : ''}>
-            <input
-              type="checkbox"
-              checked={Boolean(report.protocoles[protocol.key])}
-              onChange={(event) =>
-                setReport((prev) => ({
-                  ...prev,
-                  protocoles: { ...prev.protocoles, [protocol.key]: event.target.checked },
-                }))
-              }
-            />
-            <span>
-              <strong>{protocol.label}</strong>
-              <small>{protocol.detail}</small>
-            </span>
-          </label>
-        ))}
-      </div>
+      {habitologie ? (
+        <div className="habitologie-protocol" aria-label="Protocole de visite globale">
+          {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
+            <article className={`protocol-phase phase-${stage.key}`} key={stage.key}>
+              <div className="protocol-phase-heading">
+                <span>Phase {index + 1}</span>
+                <div>
+                  <h3>{stage.label}</h3>
+                  <p>{stage.summary}</p>
+                </div>
+              </div>
+              <div className="protocol-list compact">
+                {stage.controls.map((control) => {
+                  const selected = Boolean(report.habitologie_protocoles?.[stage.key]?.controls?.[control.key]);
+                  return (
+                    <label key={control.key} className={selected ? 'selected' : ''}>
+                      <input
+                        type="checkbox"
+                        checked={selected}
+                        onChange={(event) => updateHabitologieControl(stage.key, control.key, event.target.checked)}
+                      />
+                      <span>
+                        <strong>{control.label}</strong>
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div className="protocol-list">
+          {protocolOptions.map((protocol) => (
+            <label key={protocol.key} className={report.protocoles[protocol.key] ? 'selected' : ''}>
+              <input
+                type="checkbox"
+                checked={Boolean(report.protocoles[protocol.key])}
+                onChange={(event) =>
+                  setReport((prev) => ({
+                    ...prev,
+                    protocoles: { ...prev.protocoles, [protocol.key]: event.target.checked },
+                  }))
+                }
+              />
+              <span>
+                <strong>{protocol.label}</strong>
+                <small>{protocol.detail}</small>
+              </span>
+            </label>
+          ))}
+        </div>
+      )}
       <TextAreaWithMic
         label="Reserves de methode"
         value={report.reserves}
@@ -1457,6 +1700,8 @@ function ProtocolStep({ report, setReport }) {
         onAppend={(text) => setReport((prev) => ({ ...prev, reserves: `${prev.reserves || ''}${text}` }))}
         placeholder="Limites d'acces, conditions meteo, zones non inspectees..."
         rows={4}
+        micDisabled={!dictationAllowed}
+        micDisabledReason="Enregistrer d'abord l'accord du client dans l'etape Dossier."
       />
     </section>
   );
@@ -1469,7 +1714,12 @@ function ObservationStep({ report, setReport }) {
   const dictationAllowed = !habitologie || Boolean(report.ecoute?.consentement_dictee);
   const consentReason = "Enregistrer d'abord l'accord du client dans l'etape Dossier.";
 
-  const addObservation = () => setReport((prev) => ({ ...prev, observations: [...prev.observations, emptyObservation()] }));
+  const addObservation = (phaseKey = '') => {
+    setReport((prev) => ({
+      ...prev,
+      observations: [...prev.observations, { ...emptyObservation(), phase_habitologie: phaseKey }],
+    }));
+  };
 
   const updateObservation = (id, patch) => {
     setReport((prev) => ({
@@ -1527,6 +1777,149 @@ function ObservationStep({ report, setReport }) {
     }));
   };
 
+  const renderObservationCard = (obs) => {
+    const observationIndex = report.observations.findIndex((item) => item.id === obs.id);
+    const selectedStage = findHabitologieStage(obs.phase_habitologie);
+    const controls = selectedStage?.controls || [];
+
+    return (
+      <article className="observation-card" key={obs.id}>
+        <div className="observation-header">
+          <h3>Observation {observationIndex + 1}</h3>
+          <button
+            className="icon-button danger"
+            type="button"
+            aria-label="Supprimer cette observation"
+            onClick={() => removeObservation(obs.id)}
+          >
+            <Trash2 size={17} />
+          </button>
+        </div>
+
+        {habitologie && (
+          <div className="form-grid two protocol-link-fields">
+            <Field label="Phase d'analyse">
+              <select
+                value={obs.phase_habitologie}
+                onChange={(event) =>
+                  updateObservation(obs.id, { phase_habitologie: event.target.value, controle_habitologie: '' })
+                }
+              >
+                <option value="">A classer</option>
+                {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
+                  <option key={stage.key} value={stage.key}>
+                    Phase {index + 1} · {stage.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Point du protocole">
+              <select
+                value={obs.controle_habitologie}
+                disabled={!selectedStage}
+                onChange={(event) => updateObservation(obs.id, { controle_habitologie: event.target.value })}
+              >
+                <option value="">{selectedStage ? 'Autre point ou constat transversal' : "Choisir d'abord une phase"}</option>
+                {controls.map((control) => (
+                  <option key={control.key} value={control.key}>
+                    {control.label}
+                  </option>
+                ))}
+              </select>
+            </Field>
+          </div>
+        )}
+
+        <div className="form-grid four">
+          <Field label="Titre">
+            <input value={obs.titre} onChange={(event) => updateObservation(obs.id, { titre: event.target.value })} />
+          </Field>
+          <Field label="Piece / zone">
+            <select value={obs.piece} onChange={(event) => updateObservation(obs.id, { piece: event.target.value })}>
+              <option value="">Selectionner</option>
+              {piecesOptions.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="Element">
+            <select value={obs.surface} onChange={(event) => updateObservation(obs.id, { surface: event.target.value })}>
+              <option value="">Selectionner</option>
+              {surfacesOptions.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          </Field>
+          <Field label="Gravite">
+            <select value={obs.gravite} onChange={(event) => updateObservation(obs.id, { gravite: event.target.value })}>
+              {gravities.map((option) => (
+                <option key={option}>{option}</option>
+              ))}
+            </select>
+          </Field>
+        </div>
+
+        <TextAreaWithMic
+          label="Constat"
+          value={obs.observations}
+          onChange={(value) => updateObservation(obs.id, { observations: value })}
+          onAppend={(text) => updateObservation(obs.id, { observations: `${obs.observations || ''}${text}` })}
+          placeholder="Decrire les desordres observes..."
+          micDisabled={!dictationAllowed}
+          micDisabledReason={consentReason}
+        />
+        <TextAreaWithMic
+          label="Suites proposees"
+          value={obs.actions}
+          onChange={(value) => updateObservation(obs.id, { actions: value })}
+          onAppend={(text) => updateObservation(obs.id, { actions: `${obs.actions || ''}${text}` })}
+          placeholder="Mesures conservatoires, controle complementaire, travaux recommandes..."
+          rows={3}
+          micDisabled={!dictationAllowed}
+          micDisabledReason={consentReason}
+        />
+
+        <div className="photo-grid">
+          {obs.photos.map((photo) => (
+            <figure key={photo.id}>
+              <img src={photo.src} alt={photo.name} loading="lazy" />
+              <figcaption>{formatDateTime(photo.horodatageISO)}</figcaption>
+              <button
+                className="icon-button danger"
+                type="button"
+                aria-label="Supprimer la photo"
+                onClick={() => removePhoto(obs.id, photo.id)}
+              >
+                <Trash2 size={15} />
+              </button>
+            </figure>
+          ))}
+          <label className={`photo-action ${photoAllowed ? '' : 'disabled'}`} title={photoAllowed ? 'Importer des photos' : consentReason}>
+            <Upload size={22} />
+            Importer
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              disabled={!photoAllowed}
+              onChange={(event) => addPhotos(obs.id, event.target.files)}
+            />
+          </label>
+          <button
+            className="photo-action"
+            type="button"
+            disabled={!photoAllowed}
+            title={photoAllowed ? 'Prendre une photo' : consentReason}
+            onClick={() => setCameraFor(obs.id)}
+          >
+            <Camera size={22} />
+            Camera
+          </button>
+        </div>
+      </article>
+    );
+  };
+
   return (
     <section className="panel">
       <div className="section-title">
@@ -1545,118 +1938,56 @@ function ObservationStep({ report, setReport }) {
         </div>
       )}
 
-      <div className="observation-list">
-        {report.observations.map((obs, index) => (
-          <article className="observation-card" key={obs.id}>
-            <div className="observation-header">
-              <h3>Observation {index + 1}</h3>
-              <button
-                className="icon-button danger"
-                type="button"
-                aria-label="Supprimer cette observation"
-                onClick={() => removeObservation(obs.id)}
-              >
-                <Trash2 size={17} />
-              </button>
-            </div>
-
-            <div className="form-grid four">
-              <Field label="Titre">
-                <input value={obs.titre} onChange={(event) => updateObservation(obs.id, { titre: event.target.value })} />
-              </Field>
-              <Field label="Piece / zone">
-                <select value={obs.piece} onChange={(event) => updateObservation(obs.id, { piece: event.target.value })}>
-                  <option value="">Selectionner</option>
-                  {piecesOptions.map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </select>
-              </Field>
-              <Field label="Element">
-                <select value={obs.surface} onChange={(event) => updateObservation(obs.id, { surface: event.target.value })}>
-                  <option value="">Selectionner</option>
-                  {surfacesOptions.map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </select>
-              </Field>
-              <Field label="Gravite">
-                <select value={obs.gravite} onChange={(event) => updateObservation(obs.id, { gravite: event.target.value })}>
-                  {gravities.map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </select>
-              </Field>
-            </div>
-
-            <TextAreaWithMic
-              label="Constat"
-              value={obs.observations}
-              onChange={(value) => updateObservation(obs.id, { observations: value })}
-              onAppend={(text) => updateObservation(obs.id, { observations: `${obs.observations || ''}${text}` })}
-              placeholder="Decrire les desordres observes..."
-              micDisabled={!dictationAllowed}
-              micDisabledReason={consentReason}
-            />
-            <TextAreaWithMic
-              label="Suites proposees"
-              value={obs.actions}
-              onChange={(value) => updateObservation(obs.id, { actions: value })}
-              onAppend={(text) => updateObservation(obs.id, { actions: `${obs.actions || ''}${text}` })}
-              placeholder="Mesures conservatoires, controle complementaire, travaux recommandes..."
-              rows={3}
-              micDisabled={!dictationAllowed}
-              micDisabledReason={consentReason}
-            />
-
-            <div className="photo-grid">
-              {obs.photos.map((photo) => (
-                <figure key={photo.id}>
-                  <img src={photo.src} alt={photo.name} loading="lazy" />
-                  <figcaption>{formatDateTime(photo.horodatageISO)}</figcaption>
-                  <button
-                    className="icon-button danger"
-                    type="button"
-                    aria-label="Supprimer la photo"
-                    onClick={() => removePhoto(obs.id, photo.id)}
-                  >
-                    <Trash2 size={15} />
+      {habitologie ? (
+        <div className="observation-phases">
+          {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => {
+            const stageObservations = report.observations.filter((obs) => obs.phase_habitologie === stage.key);
+            return (
+              <section className={`observation-phase phase-${stage.key}`} key={stage.key}>
+                <div className="observation-phase-heading">
+                  <div>
+                    <span>Phase {index + 1}</span>
+                    <h3>{stage.label}</h3>
+                    <p>{stage.summary}</p>
+                  </div>
+                  <button className="button secondary" type="button" onClick={() => addObservation(stage.key)}>
+                    <Plus size={18} />
+                    Ajouter
                   </button>
-                </figure>
-              ))}
-              <label
-                className={`photo-action ${photoAllowed ? '' : 'disabled'}`}
-                title={photoAllowed ? 'Importer des photos' : consentReason}
-              >
-                <Upload size={22} />
-                Importer
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  disabled={!photoAllowed}
-                  onChange={(event) => addPhotos(obs.id, event.target.files)}
-                />
-              </label>
-              <button
-                className="photo-action"
-                type="button"
-                disabled={!photoAllowed}
-                title={photoAllowed ? 'Prendre une photo' : consentReason}
-                onClick={() => setCameraFor(obs.id)}
-              >
-                <Camera size={22} />
-                Camera
-              </button>
-            </div>
-          </article>
-        ))}
-      </div>
+                </div>
+                {stageObservations.length > 0 ? (
+                  <div className="observation-list">{stageObservations.map(renderObservationCard)}</div>
+                ) : (
+                  <p className="empty-phase">Aucune observation enregistree pour cette phase.</p>
+                )}
+              </section>
+            );
+          })}
 
-      <button className="button secondary" type="button" onClick={addObservation}>
-        <Plus size={18} />
-        Ajouter une observation
-      </button>
+          {report.observations.some((obs) => !findHabitologieStage(obs.phase_habitologie)) && (
+            <section className="observation-phase unassigned">
+              <div className="observation-phase-heading">
+                <div>
+                  <span>A CLASSER</span>
+                  <h3>Observations non rattachees</h3>
+                  <p>Choisir une phase pour integrer ces constats au fil Eau, Air, Terre ou Feu.</p>
+                </div>
+              </div>
+              <div className="observation-list">
+                {report.observations.filter((obs) => !findHabitologieStage(obs.phase_habitologie)).map(renderObservationCard)}
+              </div>
+            </section>
+          )}
+        </div>
+      ) : (
+        <>
+          <div className="observation-list">{report.observations.map(renderObservationCard)}</div>
+          <button className="button secondary" type="button" onClick={() => addObservation()}>
+            <Plus size={18} />
+            Ajouter une observation
+          </button>
+        </>
+      )}
 
       <CameraModal open={Boolean(cameraFor)} onClose={() => setCameraFor(null)} onShot={addCameraPhoto} />
     </section>

@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -31,6 +31,9 @@ tags:
   le chantier TDD a la phase d'industrialisation.
 - Une premiere tranche `Ecoute client` pour `Visite Globale` est implementee
   sur une branche dediee et reste soumise a revue humaine.
+- La meme branche structure le protocole et les observations selon
+  `Eau -> Air -> Terre -> Feu`, et affiche dans `Site` une synthese Georisques
+  sourcee et horodatee. Elle reste soumise a revue humaine.
 
 ## Dette technique non bloquante
 
@@ -83,12 +86,15 @@ La tranche actuelle ajoute `Ecoute client` a `Visite Globale` sans modifier le
 parcours des rapports techniques. Les donnees sont sauvegardees et exportees
 dans le payload existant ; les accords conditionnent l'usage des photos et de
 la dictee. Le motif et les attentes manquants restent des alertes non
-bloquantes pendant le prototype. Le dossier distingue maintenant le type
-d'habitation du parcours d'analyse commun `Eau -> Air -> Terre -> Feu`.
+bloquantes pendant le prototype. Le dossier distingue le type d'habitation du
+parcours d'analyse commun `Eau -> Air -> Terre -> Feu`.
 
-Apres revue et validation de cette tranche, la prochaine evolution
-fonctionnelle est l'adaptation de `Observation/Analyse` aux quatre elements,
-en reutilisant les observations, photos, mesures et commentaires existants.
+Le protocole detaille et les observations sont maintenant alignes sur ces
+quatre phases. La synthese Georisques est integree a `Site` sans jeton et
+reste consultable dans le rapport officiel. Apres revue et validation de cette
+tranche, la prochaine evolution fonctionnelle consiste a enrichir les champs
+metier de chaque phase, puis a cadrer `Explication` et
+`Pistes d'accompagnement`.
 
 Le cadrage, les hypotheses, les lots et le chiffrage sont decrits dans
 `docs/habitologie-light-plan.md`.

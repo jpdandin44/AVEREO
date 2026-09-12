@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -24,7 +24,9 @@ tags:
 | Adresse et cadastre | `App.jsx` | BAN, API Carto IGN | Appels publics conserves; erreurs reseau gerees | conservee |
 | Urbanisme et Geoportail | `App.jsx` | API Carto, Geoportail | Frontend; verification des liens | conservee |
 | Rapport officiel des risques | `App.jsx` historique | Georisques, longitude et latitude | Bouton dans `Site`; URL validee par tests; ouverture du PDF officiel sans autre donnee du dossier | restauree |
+| Synthese des risques | besoin Habitologie | Georisques V1 `resultats_rapport_risque`, longitude et latitude | Affichage dans `Site`; risques presents et statuts officiels; source, date et lien conserves dans le payload | integree, validee localement |
 | Observations et protocoles | `App.jsx` | Donnees metier | Payload JSON du rapport; tests CRUD API | adaptee |
+| Protocole Habitologie | besoin metier | Eau, Air, Terre, Feu et points de controle | Quatre phases dans `Protocoles`; observations groupees et rattachees; anciennes observations conservees dans `A classer` | integree, validee localement |
 | Signature | `App.jsx` | Canvas/data URL | Frontend puis payload prive authentifie | adaptee |
 | Apercu | `App.jsx` | HTML `srcDoc` | Iframe sandboxee sans permission et sans referrer | conservee |
 | Export JSON | `App.jsx` | Blob | Frontend; import/export manuel | conservee |
@@ -40,6 +42,7 @@ tags:
 
 Aucune fonctionnalite source n'est volontairement supprimee. La persistance serveur et l'authentification sont ajoutees sans retirer le brouillon hors ligne. La preversion reste utilisable sans OAuth avec les brouillons navigateur; la reouverture d'une copie serveur sera finalisee avec le parcours d'authentification de production.
 
-Le lien vers le PDF Georisques retablit la fonction historique de consultation.
-Il ne remplace pas le futur lot Habitologie d'import, d'horodatage et de
-confirmation des risques dans les donnees du rapport.
+Le lien vers le rapport officiel Georisques conserve la fonction historique de
+consultation. La synthese structuree, son horodatage et sa source sont
+maintenant integres au dossier ; la confirmation ou le commentaire manuel des
+risques reste a definir.

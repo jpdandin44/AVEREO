@@ -791,8 +791,125 @@ img {
   color: #b91c1c;
 }
 
+.status-line.warning {
+  color: #a16207;
+}
+
 .status-line.loading {
   color: #1d4ed8;
+}
+
+.risk-summary {
+  display: grid;
+  gap: 18px;
+  margin: 18px 0;
+  padding: 18px;
+  border: 1px solid #c7d7ee;
+  border-radius: 8px;
+  background: #f8fbff;
+}
+
+.risk-summary-header,
+.observation-phase-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.risk-summary-header span,
+.observation-phase-heading span,
+.protocol-phase-heading > span {
+  color: #2563eb;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.risk-summary-header h3,
+.risk-summary-header p,
+.risk-group h4,
+.risk-source,
+.observation-phase-heading h3,
+.observation-phase-heading p,
+.protocol-phase-heading h3,
+.protocol-phase-heading p {
+  margin: 0;
+}
+
+.risk-summary-header h3 {
+  margin-top: 5px;
+}
+
+.risk-summary-header p,
+.observation-phase-heading p,
+.protocol-phase-heading p {
+  margin-top: 4px;
+  color: #657085;
+  line-height: 1.45;
+}
+
+.risk-group {
+  display: grid;
+  gap: 8px;
+}
+
+.risk-table {
+  display: grid;
+  gap: 7px;
+}
+
+.risk-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.4fr) minmax(150px, 1fr) minmax(150px, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #d9dee7;
+  border-radius: 6px;
+  background: #ffffff;
+}
+
+.risk-row > span {
+  display: grid;
+  gap: 4px;
+}
+
+.risk-row small {
+  color: #657085;
+  font-weight: 700;
+}
+
+.risk-status {
+  width: fit-content;
+  border-radius: 5px;
+  padding: 3px 6px;
+  color: #334155;
+  background: #e2e8f0;
+  font-size: 0.76rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.risk-status.low {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.risk-status.medium {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.risk-status.high {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.risk-source {
+  color: #657085;
+  font-size: 0.82rem;
 }
 
 .protocol-list {
@@ -922,6 +1039,81 @@ img {
   inset: 0;
   opacity: 0;
   cursor: pointer;
+}
+
+.habitologie-protocol,
+.observation-phases {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.protocol-phase,
+.observation-phase {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid #d9dee7;
+  border-left: 5px solid #2563eb;
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+
+.protocol-phase.phase-eau,
+.observation-phase.phase-eau {
+  border-left-color: #0284c7;
+}
+
+.protocol-phase.phase-air,
+.observation-phase.phase-air {
+  border-left-color: #64748b;
+}
+
+.protocol-phase.phase-terre,
+.observation-phase.phase-terre {
+  border-left-color: #a16207;
+}
+
+.protocol-phase.phase-feu,
+.observation-phase.phase-feu {
+  border-left-color: #dc2626;
+}
+
+.observation-phase.unassigned {
+  border-left-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.protocol-phase-heading {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.protocol-list.compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+}
+
+.protocol-list.compact label {
+  padding: 11px 12px;
+}
+
+.observation-phase .observation-list {
+  margin: 0;
+}
+
+.empty-phase {
+  margin: 0;
+  color: #657085;
+  font-size: 0.9rem;
+}
+
+.protocol-link-fields {
+  padding: 12px;
+  border-radius: 7px;
+  background: #eff6ff;
 }
 
 .photo-action.disabled,
@@ -1269,6 +1461,10 @@ img {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .risk-row {
+    grid-template-columns: minmax(160px, 1fr) repeat(2, minmax(130px, 1fr));
+  }
+
   .step-nav {
     grid-template-columns: repeat(5, minmax(150px, 1fr));
     overflow-x: auto;
@@ -1299,12 +1495,16 @@ img {
   .choice-grid.two,
   .form-grid.two,
   .form-grid.five,
-  .form-grid.four {
+  .form-grid.four,
+  .protocol-list.compact,
+  .risk-row {
     grid-template-columns: 1fr;
   }
 
   .cadastre-box,
   .online-panel,
+  .risk-summary-header,
+  .observation-phase-heading,
   .action-bar {
     align-items: stretch;
     flex-direction: column;

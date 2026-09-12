@@ -5,7 +5,7 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-12
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,45 @@ tags:
 ---
 
 # Decisions structurantes de Rapport AVEREO
+
+## 2026-09-12 - Porter le fil Habitologie dans le protocole et les observations
+
+### Contexte
+
+Le fil `Eau -> Air -> Terre -> Feu` etait annonce dans le dossier mais ne
+guidait pas encore les controles de l'etape `Protocoles` ni la saisie des
+observations. La consultation des risques restait limitee a l'ouverture d'un
+rapport externe.
+
+### Decision
+
+Conserver les cinq etapes de l'assistant et adapter uniquement `Visite Globale` :
+
+- detailler dans `Protocoles` les controles successifs Eau, Air, Terre et Feu ;
+- regrouper `Observations` dans le meme ordre et rattacher chaque constat a une
+  phase et, facultativement, a un point de controle ;
+- conserver toute observation historique non rattachee dans une zone
+  `A classer` ;
+- appeler directement l'endpoint public Georisques V1
+  `resultats_rapport_risque` avec les seules coordonnees et afficher une
+  synthese sourcee dans `Site` ;
+- ne pas bloquer la synthese des risques lorsque la parcelle cadastrale n'est
+  pas retournee par l'API Carto.
+
+### Raisons principales
+
+- faire du fil metier le guide concret de la visite ;
+- reutiliser les fonctions de photos, dictee, brouillon et export deja en
+  place ;
+- eviter un jeton Georisques pendant le prototype ;
+- ne pas inventer de classement lors de la lecture d'anciens dossiers.
+
+### Consequences
+
+Le payload JSON est enrichi sans rupture : nouveaux protocoles par phase,
+phase et point de controle des observations, puis synthese Georisques
+horodatee. L'indisponibilite d'une source externe reste explicite. Les
+rapports techniques conservent leur protocole et leurs observations actuels.
 
 ## 2026-09-11 - Distinguer le type d'habitation du parcours d'analyse
 
