@@ -55,8 +55,9 @@ complementaires masques. Elles peuvent donc etre relues dans les anciens
 dossiers et reactivees ulterieurement sans recreer un second moteur.
 
 Pour `Visite Globale`, l'etape `Dossier` contient maintenant une premiere
-tranche `Ecoute client` : motif, attentes, preoccupations, usages, contexte
-d'occupation et accords pour les photos et la dictee. Ces donnees suivent le
+tranche `Ecoute client` : histoire du bien, travaux passes, vecu quotidien,
+attentes, besoin reformule, criteres de reussite, contraintes et accords pour
+les photos et la dictee. Ces donnees suivent le
 meme brouillon, la meme sauvegarde JSON et les memes exports que le reste du
 rapport. Les photos et la dictee sont desactivees tant que l'accord
 correspondant n'est pas enregistre.
@@ -72,11 +73,21 @@ l'enveloppe, puis chauffage et confort. L'etape `Observations` reprend le meme
 ordre et permet de rattacher chaque constat a une phase et a un point de
 controle, sans perdre les anciennes observations non classees.
 
+Le fil conducteur est en en-tete de `Protocoles`. Les nouveaux dossiers
+Habitologie n'ont aucun controle coche par defaut ; les sujets explicitement
+identifies a l'ecoute suggerent des controles que le professionnel ajuste.
+Ses choix manuels et les selections des anciens brouillons sont preserves.
+
 L'etape `Site` interroge l'endpoint JSON public Georisques V1 apres le
 geocodage et affiche directement les risques naturels et technologiques
 identifies, avec les statuts a l'adresse et sur la commune. La source, la date
 de consultation et le lien vers le rapport officiel sont conserves dans le
 brouillon et l'export. L'echec du cadastre ne bloque plus cette synthese.
+
+Un plan cartes.gouv.fr et une confirmation du lieu sont integres dans `Site`.
+Le fond de l'iframe est encore en qualification : cadre noir constate dans le
+navigateur integre. Ne pas considerer ce volet valide avant controle du rendu
+et du repere dans Chrome ; details dans [`api/cartographie.md`](api/cartographie.md).
 
 La suite du workflow cible reste en partie une proposition en etude documentee dans
 [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).

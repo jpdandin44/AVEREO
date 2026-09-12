@@ -16,6 +16,16 @@ tags:
 
 ## 2026-09-12
 
+- Deplacement du fil conducteur de `Dossier` vers l'en-tete de `Protocoles`.
+- Entretien enrichi : histoire du bien, travaux passes, vecu, besoin reformule,
+  criteres de reussite, contraintes et confirmation de la reformulation.
+- Controles Habitologie non selectionnes par defaut, suggestions basees sur
+  les sujets coches a l'ecoute, priorite aux choix manuels et preservation des
+  anciens dossiers ; libelles d'entretien et d'export mutualises.
+- Integration experimentale du plan IGN dans `Site` avec confirmation du lieu
+  liee a l'adresse ; rendu du fond non encore valide dans le navigateur integre.
+- Affichage du lieu des le geocodage, delais de requetes et protection contre
+  les reponses tardives apres sortie de l'etape Site.
 - Transformation du fil `Eau -> Air -> Terre -> Feu` en protocole operationnel
   propre a `Visite Globale`, avec controles terrain activables par phase.
 - Regroupement des observations d'habitologie dans le meme ordre, ajout d'un

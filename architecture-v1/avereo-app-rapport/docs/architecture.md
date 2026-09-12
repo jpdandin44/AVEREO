@@ -50,6 +50,21 @@ existante et ajoutent les references facultatives `phase_habitologie` et
 `controle_habitologie`. Une observation ancienne sans ces references reste
 visible dans `A classer`.
 
+Les nouveaux dossiers ne stockent pas de choix manuel de controle par defaut.
+`ecoute.sujets_identifies` contient uniquement les sujets explicitement coches ;
+la selection effective est calculee par `isHabitologieControlSelected`, utilise
+par l'interface et l'export. Un booleen manuel conserve dans
+`habitologie_protocoles` prime sur la suggestion. Les booleens des anciens
+dossiers sont preserves. Les libelles d'entretien et d'export partagent la
+definition `clientListening.js`.
+
+`LocationMap.jsx` encapsule l'iframe officielle IGN. `localisation` conserve
+l'adresse geocodee et la confirmation liee aux coordonnees, a l'adresse saisie
+et a une date. L'iframe ne communique pas ses deplacements a Rapport.
+Le geocodage expose immediatement la localisation ; les enrichissements sont
+bordes par des delais et un compteur ignore les retours apres sortie de Site.
+Le fond IGN reste non valide visuellement a ce stade, voir `../api/cartographie.md`.
+
 Apres le geocodage BAN, le frontend appelle directement les services publics
 API Carto et Georisques. Le cadastre, l'urbanisme et les risques sont traites
 comme des enrichissements independants : l'absence de parcelle ne bloque pas

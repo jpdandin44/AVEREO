@@ -44,3 +44,10 @@ Le payload conserve egalement `habitologie_protocoles` pour les points retenus,
 qu'une synthese `risques` sourcee et horodatee issue de Georisques V1. Ces
 ajouts restent compatibles avec les brouillons plus anciens grace a la fusion
 des valeurs par defaut.
+
+La selection Habitologie est resolue depuis les sujets explicites de `ecoute`
+et les choix manuels de `habitologie_protocoles` (prioritaires). Le payload
+`localisation` conserve l'adresse geocodee et la confirmation datee du lieu.
+Le plan IGN externe est une iframe isolee, sans nouvelle dependance JavaScript
+ni API interne. Son rendu reste en qualification ; voir
+[`api/cartographie.md`](api/cartographie.md).

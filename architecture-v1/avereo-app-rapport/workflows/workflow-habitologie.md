@@ -54,13 +54,24 @@ Le parcours visible cible comprend quatre phases :
 
 ### Etat implemente de la phase Ecoute
 
-L'etape `Dossier` affiche pour `Visite Globale` les donnees suivantes : motif,
-attentes, preoccupations, usages, contexte d'occupation et accords photo/dictee.
+L'etape `Dossier` affiche pour `Visite Globale` un entretien en trois temps :
+histoire du logement et travaux deja realises ; vecu quotidien, usages et
+preoccupations ; puis attentes, besoin reformule, criteres de reussite et
+contraintes du projet. Les questions ouvertes sont des relances, pas une liste
+a reciter ni des champs tous obligatoires. Les accords photo/dictee restent
+explicites.
 Ces donnees sont sauvegardees et exportees avec le payload Rapport existant.
 Les commandes photo et dictee sont desactivees sans leur accord respectif.
 L'absence de motif ou d'attentes produit une alerte non bloquante pendant la
-phase de prototype. Le type d'habitation est demande dans le meme dossier et
-le parcours complet `Eau -> Air -> Terre -> Feu` y est annonce.
+phase de prototype. Le type d'habitation est demande dans le meme dossier.
+Le fil conducteur `Eau -> Air -> Terre -> Feu` est affiche uniquement en
+en-tete de l'etape 3 `Protocoles`, pas dans l'encadre d'ecoute.
+
+La reformulation du besoin peut etre confirmee avec le client. Toute
+modification de ce texte annule sa confirmation. Le besoin reel n'est jamais
+deduit automatiquement : distinguer le symptome, la solution demandee et
+l'amelioration attendue. Exemple : « remplacer les fenetres » peut viser le
+confort, le calme ou les economies ; la visite doit clarifier cette finalite.
 
 ### Etat implemente du protocole et des observations
 
@@ -75,8 +86,20 @@ L'etape `Protocoles` suit obligatoirement les quatre phases suivantes :
 4. `Feu` : production de chauffage, emetteurs, regulation, etat apparent,
    entretien et confort ressenti.
 
-Tous les points sont proposes par defaut et peuvent etre retires lorsqu'ils
-ne s'appliquent pas a la visite. Dans `Observations`, l'utilisateur ajoute un
+Les nouveaux dossiers ne selectionnent aucun point par defaut. Six sujets
+peuvent etre coches explicitement pendant l'ecoute pour suggerer des controles
+correspondants ; les notes libres ne declenchent aucune selection. La relation
+sujet-controles est definie dans `frontend/src/habitologieProtocol.js`, source
+executable unique. La provenance des suggestions est affichee dans le protocole.
+Un choix manuel explicite (oui ou non) reste prioritaire, meme si l'ecoute
+evolue. Les selections deja sauvegardees des anciens brouillons sont conservees.
+Les protocoles des rapports techniques restent inchanges.
+
+Le professionnel fait le point avec le client avant la visite ; les quatre
+phases restent visibles et il peut ajouter des controles au-dela des sujets
+exprimes. Un point non retenu n'est ni verifie ni declare sans risque. Il n'y
+a pas de verrou de passage a l'etape suivante dans ce prototype.
+Dans `Observations`, l'utilisateur ajoute un
 constat directement dans une phase et peut le rattacher a l'un de ces points.
 Les photos, la dictee et les autres champs existants restent disponibles selon
 les accords recueillis. Un constat historique sans phase est conserve dans
@@ -90,6 +113,28 @@ marques presents, avec les statuts a l'adresse et sur la commune. Le payload
 conserve la source, la date de consultation et le lien vers le rapport
 officiel. L'indisponibilite de Georisques ou du cadastre est signalee sans
 inventer de resultat et sans effacer les autres donnees saisies.
+
+### Localisation avec le client — integration en qualification
+
+`Site` integre le visualiseur officiel cartes.gouv.fr, centre sur les
+coordonnees geocodees, avec un lien externe de secours. L'adresse saisie et
+l'adresse trouvee sont affichees separement. Une confirmation manuelle du lieu
+est conservee avec l'adresse, les coordonnees et la date ; elle est annulee
+lors d'un changement d'adresse ou d'une nouvelle recherche. Naviguer dans
+l'iframe ne deplace pas le lieu enregistre dans Rapport.
+
+Le geocodage affiche le lieu avant les enrichissements cadastre/PLU/risques ;
+les requetes ont un delai maximal et les retours d'une ancienne recherche ne
+peuvent plus modifier le dossier apres sortie de l'etape.
+
+**Limite constatee le 12 septembre :** la route officielle de l'iframe charge
+ses commandes, mais le fond est reste noir lors du controle dans le navigateur
+integre. Le rendu et le repere ne sont donc pas declares valides. Revoir le
+resultat dans Chrome et verifier le service IGN avant validation de ce volet
+et deploiement. Voir [`../api/cartographie.md`](../api/cartographie.md).
+
+Ce reperage ne vaut ni identification juridique de parcelle ni preuve de
+propriete. Aucun nom, email ni contenu de l'entretien n'est transmis a IGN.
 
 ## Etats operationnels proposes
 
@@ -170,6 +215,10 @@ les controles de donnees. Aucun de ces boutons n'est livre par la tranche
 
 ## Points restant a arbitrer
 
+- `TBD` — enrichissement metier de l'entretien a partir des supports Solive
+  et de formation Habitologue que le proprietaire envisage de fournir ;
+- `TBD` — valider le rendu IGN et les cas d'adresse ambigue avant de considerer
+  le reperage cartographique comme operationnel ;
 - `TBD` — architecture d'execution : API Rapport, automatisation externe ou
   combinaison des deux ;
 - `TBD` — fournisseur et modele IA eventuels, ainsi que leurs regles de

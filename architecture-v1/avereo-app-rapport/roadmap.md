@@ -82,6 +82,13 @@ la conservation des donnees vocales et le role habilite a valider.
 
 ## Travail actuel et prochaine evolution
 
+La branche de prototype enrichit l'ecoute et relie ses sujets explicites aux
+suggestions du protocole, sans preselection globale. La confirmation du besoin
+reste manuelle. L'integration de la carte IGN et la confirmation du lieu sont
+codees ; le rendu du fond IGN reste a verifier (cadre noir constate dans le
+navigateur integre). La validation de ce volet est requise avant deploiement.
+Les supports Solive/Habitologue annonces ne sont pas encore fournis.
+
 La tranche actuelle ajoute `Ecoute client` a `Visite Globale` sans modifier le
 parcours des rapports techniques. Les donnees sont sauvegardees et exportees
 dans le payload existant ; les accords conditionnent l'usage des photos et de

@@ -1389,6 +1389,21 @@ img {
   border-bottom: 1px solid #d9dee7;
 }
 
+.listening-section h4 { margin: 0 0 8px; font-size: 1rem; }
+.listening-section > p, .listening-topics > p { color: #52637b; margin: 0 0 14px; line-height: 1.5; }
+.listening-section { border-top: 1px solid #dbe3ef; padding-top: 18px; }
+.listening-topics { border: 0; padding: 0; margin: 0; min-width: 0; }
+.listening-topics legend { font-weight: 800; margin-bottom: 8px; }
+.inline-confirmation { display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; font-weight: 600; }
+.inline-confirmation input { flex-shrink: 0; margin-top: 4px; }
+.listening-review { background: #f3f7fc; border-radius: 8px; padding: 16px; line-height: 1.5; overflow-wrap: anywhere; }
+.listening-review p { margin: 8px 0; }
+.location-map { border: 1px solid #ccd9ee; border-radius: 10px; padding: 18px; margin: 18px 0; background: #f8fafc; }
+.location-map h3 { margin: 0 0 12px; }
+.location-map p { overflow-wrap: anywhere; }
+.location-map iframe { display: block; width: 100%; height: 420px; border: 1px solid #ccd9ee; border-radius: 8px; background: #fff; margin: 14px 0; }
+.location-help { font-size: .85rem; line-height: 1.5; color: #52637b; }
+
 .preview-bar h2 {
   margin: 0;
   font-size: 1.05rem;

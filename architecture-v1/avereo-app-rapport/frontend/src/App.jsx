@@ -30,11 +30,17 @@ import {
 } from './georisquesRiskSummary.js';
 import {
   HABITOLOGIE_PROTOCOL_STAGES,
+  LISTENING_TOPICS,
   createHabitologieProtocolState,
+  isHabitologieControlSelected,
+  listeningSuggestions,
   findHabitologieControl,
   findHabitologieStage,
   mergeHabitologieProtocolState,
 } from './habitologieProtocol.js';
+import { LISTENING_SECTIONS, emptyClientListening } from './clientListening.js';
+import LocationMap from './LocationMap.jsx';
+import { emptyLocation, locationConfirmed, validLocation } from './locationMap.js';
 import {
   AlertTriangle,
   ArrowLeft,
@@ -168,15 +174,8 @@ const initialReport = normalizeReportClassification({
     pdfUrl: '',
   },
   risques: emptyGeorisquesRiskSummary(),
-  ecoute: {
-    motif_visite: '',
-    attentes_client: '',
-    preoccupations: '',
-    usages_logement: '',
-    contexte_occupation: '',
-    consentement_photos: false,
-    consentement_dictee: false,
-  },
+  localisation: emptyLocation(),
+  ecoute: emptyClientListening(),
   protocoles: {
     standard: true,
     fissures: false,
@@ -210,6 +209,7 @@ function deepMergeReport(base, incoming) {
     cadastre: { ...base.cadastre, ...(classifiedIncoming.cadastre || {}) },
     urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
     risques: { ...base.risques, ...(classifiedIncoming.risques || {}) },
+    localisation: { ...base.localisation, ...(classifiedIncoming.localisation || {}) },
     ecoute: { ...base.ecoute, ...(classifiedIncoming.ecoute || {}) },
     habitologie_protocoles: mergeHabitologieProtocolState(classifiedIncoming.habitologie_protocoles),
     protocoles: {
@@ -351,7 +351,7 @@ function buildProtocolHtml(report) {
   if (isHabitologieReport(report)) {
     return HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => {
       const selectedControls = stage.controls.filter(
-        (control) => report.habitologie_protocoles?.[stage.key]?.controls?.[control.key],
+        (control) => isHabitologieControlSelected(report, stage.key, control.key),
       );
       return `
         <section class="protocol-phase-export">
@@ -500,11 +500,9 @@ function buildWordDocumentHtml(report) {
     ? `
   <h2>${sectionNumbers.ecoute}. Ecoute client</h2>
   <table>
-    <tr><td>Motif de la visite</td><td>${textToHtml(report.ecoute?.motif_visite || 'Non renseigne')}</td></tr>
-    <tr><td>Attentes et priorites</td><td>${textToHtml(report.ecoute?.attentes_client || 'Non renseignees')}</td></tr>
-    <tr><td>Preoccupations exprimees</td><td>${textToHtml(report.ecoute?.preoccupations || 'Non renseignees')}</td></tr>
-    <tr><td>Usages du logement</td><td>${textToHtml(report.ecoute?.usages_logement || 'Non renseignes')}</td></tr>
-    <tr><td>Occupants et contexte</td><td>${textToHtml(report.ecoute?.contexte_occupation || 'Non renseignes')}</td></tr>
+    ${LISTENING_SECTIONS.flatMap((section) => section.fields).map((field) => `<tr><td>${escapeHtml(field.label)}</td><td>${textToHtml(report.ecoute?.[field.key] || 'Non renseigné')}</td></tr>`).join('')}
+    <tr><td>Reformulation confirmée avec le client</td><td>${report.ecoute?.besoin_confirme ? 'Oui' : 'À confirmer'}</td></tr>
+    <tr><td>Sujets identifiés à l'écoute</td><td>${escapeHtml(LISTENING_TOPICS.filter((topic) => report.ecoute?.sujets_identifies?.includes(topic.key)).map((topic) => topic.label).join(', ') || 'Aucun sujet coché')}</td></tr>
     <tr><td>Consentement photos</td><td>${report.ecoute?.consentement_photos ? 'Accorde' : 'Non accorde'}</td></tr>
     <tr><td>Consentement dictee vocale</td><td>${report.ecoute?.consentement_dictee ? 'Accorde' : 'Non accorde'}</td></tr>
   </table>
@@ -554,6 +552,7 @@ function buildWordDocumentHtml(report) {
     <tr><td>Environnement analyse</td><td>${escapeHtml(report.environnement)}</td></tr>
     <tr><td>Conditions meteo</td><td>${escapeHtml(meteoLine)}</td></tr>
     <tr><td>References cadastrales</td><td>${escapeHtml(cadastreLine)}</td></tr>
+    <tr><td>Lieu confirmé avec le client</td><td>${locationConfirmed(report) ? `Oui — ${escapeHtml(formatDate(report.localisation.confirmation.date))}` : 'À confirmer'}</td></tr>
     <tr><td>Zonage urbanisme</td><td>${escapeHtml(report.urbanisme?.zone || '')} ${escapeHtml(
       report.urbanisme?.description || '',
     )}${mapLink ? `<br /><a href="${mapLink}">Voir la parcelle</a>` : ''}${
@@ -1103,16 +1102,24 @@ function DossierStep({ report, setReport }) {
         cadastre: { ...initialReport.cadastre },
         urbanisme: { ...initialReport.urbanisme },
         risques: emptyGeorisquesRiskSummary(),
+        localisation: emptyLocation(),
       };
     });
   };
   const updateEcoute = (field, value) => {
-    setReport((prev) => ({ ...prev, ecoute: { ...prev.ecoute, [field]: value } }));
+    setReport((prev) => ({ ...prev, ecoute: {
+      ...prev.ecoute,
+      [field]: value,
+      ...(field === 'besoin_reformule' ? { besoin_confirme: false } : {}),
+    } }));
   };
   const appendEcoute = (field, text) => {
     setReport((prev) => ({
       ...prev,
-      ecoute: { ...prev.ecoute, [field]: `${prev.ecoute?.[field] || ''}${text}` },
+      ecoute: {
+        ...prev.ecoute, [field]: `${prev.ecoute?.[field] || ''}${text}`,
+        ...(field === 'besoin_reformule' ? { besoin_confirme: false } : {}),
+      },
     }));
   };
 
@@ -1202,74 +1209,51 @@ function DossierStep({ report, setReport }) {
             </p>
           </div>
 
-          <div className="analysis-sequence" aria-label="Ordre de l'analyse globale">
-            <div>
-              <strong>Fil conducteur de l'analyse</strong>
-              <small>Chaque visite globale étudie les quatre dimensions dans cet ordre.</small>
+          {LISTENING_SECTIONS.map((section) => (
+            <section className="listening-section" key={section.title}>
+              <h4>{section.title}</h4>
+              <p>{section.help}</p>
+              <div className="form-grid two">
+                {section.fields.map((field) => (
+                  <TextAreaWithMic
+                    key={field.key}
+                    label={field.label}
+                    value={report.ecoute[field.key] || ''}
+                    onChange={(value) => updateEcoute(field.key, value)}
+                    onAppend={(text) => appendEcoute(field.key, text)}
+                    placeholder={field.prompt}
+                    rows={3}
+                    micDisabled={!report.ecoute.consentement_dictee}
+                    micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
+                  />
+                ))}
+              </div>
+            </section>
+          ))}
+          <label className="inline-confirmation">
+            <input type="checkbox" checked={Boolean(report.ecoute.besoin_confirme)}
+              disabled={!report.ecoute.besoin_reformule?.trim()}
+              onChange={(event) => updateEcoute('besoin_confirme', event.target.checked)} />
+            J'ai reformulé le besoin et le client confirme que cela correspond à ses attentes.
+          </label>
+          <fieldset className="listening-topics">
+            <legend>Sujets identifiés ensemble pendant l'écoute</legend>
+            <p>Cochez uniquement les sujets évoqués. Ils suggèrent des contrôles à discuter à l'étape 3, sans établir de diagnostic. Les notes libres ne cochent rien automatiquement.</p>
+            <div className="protocol-list compact">
+              {LISTENING_TOPICS.map((topic) => {
+                const selected = Array.isArray(report.ecoute.sujets_identifies) && report.ecoute.sujets_identifies.includes(topic.key);
+                return (
+                  <label key={topic.key} className={selected ? 'selected' : ''}>
+                    <input type="checkbox" checked={selected} onChange={(event) => {
+                      const topics = Array.isArray(report.ecoute.sujets_identifies) ? report.ecoute.sujets_identifies : [];
+                      updateEcoute('sujets_identifies', event.target.checked ? [...topics, topic.key] : topics.filter((key) => key !== topic.key));
+                    }} />
+                    <span>{topic.label}</span>
+                  </label>
+                );
+              })}
             </div>
-            <ol>
-              {HABITOLOGIE_ANALYSIS_STAGES.map((stage, index) => (
-                <li key={stage}>
-                  <span>{index + 1}</span>
-                  <strong>{stage}</strong>
-                  {index < HABITOLOGIE_ANALYSIS_STAGES.length - 1 && <ArrowRight size={16} aria-hidden="true" />}
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          <div className="form-grid two">
-            <TextAreaWithMic
-              label="Motif de la visite"
-              value={report.ecoute.motif_visite}
-              onChange={(value) => updateEcoute('motif_visite', value)}
-              onAppend={(text) => appendEcoute('motif_visite', text)}
-              placeholder="Pourquoi le client demande-t-il cette visite ?"
-              rows={4}
-              micDisabled={!report.ecoute.consentement_dictee}
-              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
-            />
-            <TextAreaWithMic
-              label="Attentes et priorites du client"
-              value={report.ecoute.attentes_client}
-              onChange={(value) => updateEcoute('attentes_client', value)}
-              onAppend={(text) => appendEcoute('attentes_client', text)}
-              placeholder="Resultats attendus, priorites et decisions a eclairer..."
-              rows={4}
-              micDisabled={!report.ecoute.consentement_dictee}
-              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
-            />
-            <TextAreaWithMic
-              label="Preoccupations exprimees"
-              value={report.ecoute.preoccupations}
-              onChange={(value) => updateEcoute('preoccupations', value)}
-              onAppend={(text) => appendEcoute('preoccupations', text)}
-              placeholder="Inconfort, humidite, qualite de l'air, bruit, securite..."
-              rows={4}
-              micDisabled={!report.ecoute.consentement_dictee}
-              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
-            />
-            <TextAreaWithMic
-              label="Usages du logement et habitudes"
-              value={report.ecoute.usages_logement}
-              onChange={(value) => updateEcoute('usages_logement', value)}
-              onAppend={(text) => appendEcoute('usages_logement', text)}
-              placeholder="Occupation des pieces, ventilation, chauffage, travaux recents..."
-              rows={4}
-              micDisabled={!report.ecoute.consentement_dictee}
-              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
-            />
-            <TextAreaWithMic
-              label="Occupants et contexte d'occupation"
-              value={report.ecoute.contexte_occupation}
-              onChange={(value) => updateEcoute('contexte_occupation', value)}
-              onAppend={(text) => appendEcoute('contexte_occupation', text)}
-              placeholder="Nombre d'occupants et informations utiles communiquees par le client..."
-              rows={4}
-              micDisabled={!report.ecoute.consentement_dictee}
-              micDisabledReason="Enregistrer d'abord l'accord du client pour utiliser la dictee vocale."
-            />
-          </div>
+          </fieldset>
 
           <fieldset className="consent-list">
             <legend>Accords recueillis</legend>
@@ -1365,6 +1349,8 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates }) {
 
 function SiteStep({ report, setReport }) {
   const [lookupStatus, setLookupStatus] = useState({ state: 'idle', message: '' });
+  const lookupSequence = useRef(0);
+  useEffect(() => () => { lookupSequence.current += 1; }, [report.adresse_logement]);
 
   const updateNested = (group, field, value) => {
     setReport((prev) => ({ ...prev, [group]: { ...prev[group], [field]: value } }));
@@ -1376,25 +1362,41 @@ function SiteStep({ report, setReport }) {
       return;
     }
 
+    const sequence = ++lookupSequence.current;
+    const isCurrent = () => lookupSequence.current === sequence;
+    setReport((prev) => ({ ...prev, localisation: { ...prev.localisation, confirmation: null } }));
     setLookupStatus({ state: 'loading', message: "Recherche de l'adresse..." });
     try {
       const banUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(report.adresse_logement)}&limit=1`;
-      const banResponse = await fetch(banUrl);
+      const banResponse = await fetch(banUrl, { signal: AbortSignal.timeout(15000) });
+      if (!banResponse.ok) throw new Error('Recherche indisponible');
       const banData = await banResponse.json();
       const feature = banData.features?.[0];
       if (!feature) throw new Error('Adresse introuvable');
 
       const [lon, lat] = feature.geometry.coordinates;
-      const pointGeom = JSON.stringify({ type: 'Point', coordinates: [lon, lat] });
+      if (!validLocation(lon, lat)) throw new Error('Coordonnees invalides');
+      if (!isCurrent()) return;
+      // Display the location immediately: cadastral enrichment must not block client review.
+      setReport((prev) => ({ ...prev,
+        cadastre: { ...initialReport.cadastre, lon, lat },
+        urbanisme: { ...initialReport.urbanisme },
+        risques: emptyGeorisquesRiskSummary(),
+        localisation: { adresse_trouvee: feature.properties.label || '', confirmation: null },
+      }));
+      const pointGeom = encodeURIComponent(JSON.stringify({ type: 'Point', coordinates: [lon, lat] }));
       setLookupStatus({ state: 'loading', message: 'Recherche de la parcelle cadastrale...' });
 
-      const cadastreResponse = await fetch(`https://apicarto.ign.fr/api/cadastre/parcelle?geom=${pointGeom}`);
-      const cadastreData = await cadastreResponse.json();
-      const parcelle = cadastreData.features?.[0]?.properties || null;
+      let parcelle = null;
+      try {
+        const cadastreResponse = await fetch(`https://apicarto.ign.fr/api/cadastre/parcelle?geom=${pointGeom}`, { signal: AbortSignal.timeout(12000) });
+        if (cadastreResponse.ok) parcelle = (await cadastreResponse.json()).features?.[0]?.properties || null;
+      } catch { /* The map and risk lookup remain available without a parcel. */ }
+      if (!isCurrent()) return;
 
       let urbanisme = { zone: '', description: '', pdfUrl: '' };
       try {
-        const zoneResponse = await fetch(`https://apicarto.ign.fr/api/gpu/zone-urba?geom=${pointGeom}`);
+        const zoneResponse = await fetch(`https://apicarto.ign.fr/api/gpu/zone-urba?geom=${pointGeom}`, { signal: AbortSignal.timeout(12000) });
         if (zoneResponse.ok) {
           const zoneData = await zoneResponse.json();
           const zone = zoneData.features?.[0]?.properties;
@@ -1405,7 +1407,7 @@ function SiteStep({ report, setReport }) {
           };
         }
         if (!urbanisme.pdfUrl) {
-          const docResponse = await fetch(`https://apicarto.ign.fr/api/gpu/document?geom=${pointGeom}`);
+          const docResponse = await fetch(`https://apicarto.ign.fr/api/gpu/document?geom=${pointGeom}`, { signal: AbortSignal.timeout(12000) });
           if (docResponse.ok) {
             const docData = await docResponse.json();
             urbanisme.pdfUrl = docData.features?.[0]?.properties?.urldoc || '';
@@ -1417,11 +1419,12 @@ function SiteStep({ report, setReport }) {
 
       let risques = emptyGeorisquesRiskSummary();
       let risquesDisponibles = false;
+      if (!isCurrent()) return;
       try {
         setLookupStatus({ state: 'loading', message: 'Recuperation de la synthese des risques...' });
         const risksUrl = buildGeorisquesRiskSummaryUrl(lon, lat);
         if (!risksUrl) throw new Error('Coordonnees invalides');
-        const risksResponse = await fetch(risksUrl);
+        const risksResponse = await fetch(risksUrl, { signal: AbortSignal.timeout(15000) });
         if (!risksResponse.ok) throw new Error(`Georisques ${risksResponse.status}`);
         risques = normalizeGeorisquesRiskSummary(await risksResponse.json());
         risquesDisponibles = true;
@@ -1429,6 +1432,7 @@ function SiteStep({ report, setReport }) {
         risques = emptyGeorisquesRiskSummary();
       }
 
+      if (!isCurrent()) return;
       setReport((prev) => ({
         ...prev,
         cadastre: {
@@ -1455,7 +1459,7 @@ function SiteStep({ report, setReport }) {
                 : "Adresse localisee. La parcelle et la synthese Georisques n'ont pas pu etre recuperees.",
       });
     } catch {
-      setLookupStatus({ state: 'error', message: 'Recherche indisponible ou adresse non trouvee.' });
+      if (isCurrent()) setLookupStatus({ state: 'error', message: 'Recherche indisponible ou adresse non trouvee.' });
     }
   };
 
@@ -1573,6 +1577,8 @@ function SiteStep({ report, setReport }) {
 
       {lookupStatus.message && <p className={`status-line ${lookupStatus.state}`}>{lookupStatus.message}</p>}
 
+      <LocationMap report={report} setReport={setReport} />
+
       <RiskSummary summary={report.risques} fallbackReportUrl={georisquesReportUrl} hasCoordinates={hasCoordinates} />
 
       <div className="form-grid four">
@@ -1642,6 +1648,25 @@ function ProtocolStep({ report, setReport }) {
       </div>
       {habitologie ? (
         <div className="habitologie-protocol" aria-label="Protocole de visite globale">
+          <div className="analysis-sequence" aria-label="Ordre de l'analyse globale">
+            <div>
+              <strong>Fil conducteur de l'analyse</strong>
+              <small>Faire le point avec le client avant de lancer les observations.</small>
+            </div>
+            <ol>
+              {HABITOLOGIE_ANALYSIS_STAGES.map((stage, index) => (
+                <li key={stage}><span>{index + 1}</span><strong>{stage}</strong>
+                  {index < HABITOLOGIE_ANALYSIS_STAGES.length - 1 && <ArrowRight size={16} aria-hidden="true" />}
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="listening-review">
+            <strong>Besoin reformulé : {report.ecoute.besoin_reformule || 'À préciser avec le client'}</strong>
+            <p>{report.ecoute.besoin_confirme ? 'Reformulation confirmée avec le client.' : 'Reformulation à confirmer avec le client.'}</p>
+            <p>Les nouveaux dossiers commencent sans contrôle coché. Seuls les sujets identifiés à l'écoute proposent une sélection, ajustable ici. Vos choix précédents sont conservés.</p>
+            <small>Un point non retenu n'est ni vérifié ni déclaré sans risque. Complétez le périmètre selon votre expertise et les conditions de visite.</small>
+          </div>
           {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
             <article className={`protocol-phase phase-${stage.key}`} key={stage.key}>
               <div className="protocol-phase-heading">
@@ -1653,7 +1678,8 @@ function ProtocolStep({ report, setReport }) {
               </div>
               <div className="protocol-list compact">
                 {stage.controls.map((control) => {
-                  const selected = Boolean(report.habitologie_protocoles?.[stage.key]?.controls?.[control.key]);
+                  const selected = isHabitologieControlSelected(report, stage.key, control.key);
+                  const suggestions = listeningSuggestions(report.ecoute, stage.key, control.key);
                   return (
                     <label key={control.key} className={selected ? 'selected' : ''}>
                       <input
@@ -1663,6 +1689,7 @@ function ProtocolStep({ report, setReport }) {
                       />
                       <span>
                         <strong>{control.label}</strong>
+                        {suggestions.length > 0 && <small>Écoute : {suggestions.map((topic) => topic.label).join(' ; ')}</small>}
                       </span>
                     </label>
                   );
@@ -2104,6 +2131,9 @@ function validateReport(report) {
   }
   if (isHabitologieReport(report) && !report.ecoute?.attentes_client?.trim()) {
     warnings.push("Les attentes du client ne sont pas encore renseignees dans la phase Ecoute.");
+  }
+  if (isHabitologieReport(report) && !report.ecoute?.besoin_confirme) {
+    warnings.push('La reformulation du besoin reste à confirmer avec le client.');
   }
   if (isHabitologieReport(report) && report.sous_categorie === HABITOLOGIE_DEFAULT_HOUSING_TYPE) {
     warnings.push("Le type d'habitation reste a preciser dans l'etape Dossier.");

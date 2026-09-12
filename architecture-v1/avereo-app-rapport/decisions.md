@@ -15,6 +15,26 @@ tags:
 
 # Decisions structurantes de Rapport AVEREO
 
+## 2026-09-12 - Faire partir le protocole de l'ecoute explicite
+
+Contexte : tous les controles etaient selectionnes avant de connaitre le
+besoin, et le fil d'analyse encombrait le dossier.
+
+Decision : deplacer le fil en en-tete de `Protocoles`, enrichir l'entretien
+par des questions ouvertes, une reformulation et des criteres de reussite.
+Les sujets coches suggerent des controles ; aucun texte libre n'est interprete
+automatiquement. Les choix manuels restent prioritaires et les anciens choix
+sont preserves. Le protocole technique n'est pas modifie.
+
+Raison : rendre visible le lien entre besoin exprime et perimetre de visite
+sans confondre besoin, symptome, solution demandee et diagnostic.
+
+Consequence : nouveaux champs dans le payload JSON existant, sans migration
+MySQL. La grille reste un support de conversation non bloquant ; les supports
+de formation a venir permettront de l'affiner. La carte IGN est integree comme
+service externe, avec une confirmation distincte du lieu ; son rendu reste
+a qualifier avant deploiement.
+
 ## 2026-09-12 - Porter le fil Habitologie dans le protocole et les observations
 
 ### Contexte

@@ -51,7 +51,8 @@ export function createHabitologieProtocolState() {
     HABITOLOGIE_PROTOCOL_STAGES.map((stage) => [
       stage.key,
       {
-        controls: Object.fromEntries(stage.controls.map((control) => [control.key, true])),
+        // An absent choice follows the listening suggestions; an explicit boolean wins.
+        controls: {},
       },
     ]),
   );
@@ -80,4 +81,23 @@ export function findHabitologieStage(stageKey) {
 
 export function findHabitologieControl(stageKey, controlKey) {
   return findHabitologieStage(stageKey)?.controls.find((control) => control.key === controlKey) || null;
+}
+
+export const LISTENING_TOPICS = Object.freeze([
+  { key: 'infiltrations', label: "Entrées d'eau, fuite ou toiture", controls: ['eau.infiltrations', 'eau.apports_evacuations', 'eau.toiture_eaux_pluviales'] },
+  { key: 'humidite', label: 'Humidité, condensation ou moisissures', controls: ['eau.humidite', 'air.presence_ventilation', 'terre.vapeur_eau'] },
+  { key: 'air', label: "Air intérieur, odeurs ou ventilation", controls: ['air.presence_ventilation', 'air.fonctionnement_ventilation', 'air.installation_entretien', 'air.circulation_air'] },
+  { key: 'enveloppe', label: "Courants d'air, parois froides ou isolation", controls: ['terre.interfaces', 'terre.etancheite_air', 'terre.isolation_ponts'] },
+  { key: 'chauffage', label: 'Chauffage, radiateurs ou réglages', controls: ['feu.systeme_chauffage', 'feu.emetteurs', 'feu.regulation', 'feu.etat_entretien', 'feu.ressenti'] },
+  { key: 'confort', label: 'Confort thermique ou consommations', controls: ['feu.ressenti', 'feu.regulation', 'terre.isolation_ponts'] },
+]);
+
+export function listeningSuggestions(ecoute, stageKey, controlKey) {
+  const topics = Array.isArray(ecoute?.sujets_identifies) ? ecoute.sujets_identifies : [];
+  return LISTENING_TOPICS.filter((topic) => topics.includes(topic.key) && topic.controls.includes(`${stageKey}.${controlKey}`));
+}
+
+export function isHabitologieControlSelected(report, stageKey, controlKey) {
+  const choice = report.habitologie_protocoles?.[stageKey]?.controls?.[controlKey];
+  return typeof choice === 'boolean' ? choice : listeningSuggestions(report.ecoute, stageKey, controlKey).length > 0;
 }

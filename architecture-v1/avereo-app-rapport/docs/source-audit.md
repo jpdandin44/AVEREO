@@ -62,6 +62,24 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 
 ## Controle des secrets
 
+### Qualification du lot ecoute et localisation du 12 septembre
+
+- Les nouveaux choix de protocole sont vides ; les sujets explicites de
+  l'ecoute suggerent des controles, les choix manuels restant prioritaires.
+  Les anciens booleens sont preserves. Aucun texte client n'est transmis a
+  un modele IA ni utilise pour une inference automatique.
+- Le plan IGN ne recoit que des coordonnees et des parametres cartographiques.
+  Iframe externe avec sandbox et `no-referrer` ; ni nom, ni email, ni notes.
+  Le service externe recoit cependant la requete reseau du navigateur.
+- Les confirmations besoin/lieu sont des mentions de travail, pas des
+  signatures electroniques. Leur modification invalide la confirmation liee.
+- Limite restante : les commandes de l'iframe IGN chargent, mais son fond
+  reste noir dans le navigateur integre ; aucun controle visuel positif du
+  fond et du repere n'est revendique. Verifier dans Chrome et corriger la
+  dependance si necessaire avant deploiement.
+- Aucun changement d'authentification, de secret, de base ou de workflow de
+  deploiement dans ce lot.
+
 Aucune cle Gemini/Google, cle Firebase/Supabase, cle privee, valeur de mot de passe ou jeton reel n'a ete detecte dans les fichiers applicatifs audites. Les references `secrets.*` des workflows sont des noms de secrets GitHub, pas leurs valeurs.
 
 ## Ecart d'instructions resolu

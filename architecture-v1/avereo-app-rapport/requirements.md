@@ -29,16 +29,21 @@ tags:
 - Toute `Visite Globale` suit un seul parcours d'analyse dans l'ordre
   `Eau -> Air -> Terre -> Feu`. Ces dimensions ne sont ni des types
   d'habitation ni des sous-categories exclusives.
-- L'etape `Protocoles` de `Visite Globale` propose des controles propres a
-  chaque phase ; l'utilisateur peut retirer un point non applicable sans
-  modifier l'ordre des phases.
+- L'etape `Protocoles` de `Visite Globale` accueille le fil conducteur en
+  en-tete. Les nouveaux dossiers commencent sans controle selectionne ; seuls
+  les sujets explicitement identifies a l'ecoute suggerent des selections.
+  Les choix manuels priment et les anciens brouillons conservent leurs choix.
+  Un controle non retenu n'est jamais presente comme verifie.
 - L'etape `Observations` de `Visite Globale` regroupe les constats par phase et
   permet de les rattacher a un point du protocole. Une observation historique
   sans phase reste visible dans `A classer` et n'est jamais reclassee
   automatiquement.
 - Un dossier `Visite Globale` affiche dans l'etape `Dossier` une section
   `Ecoute client` pour le motif de visite, les attentes, les preoccupations,
-  les usages du logement et le contexte d'occupation.
+  les usages du logement et le contexte d'occupation, ainsi que le choix du
+  bien, les travaux passes, le besoin reformule, les criteres de reussite et
+  les contraintes. La reformulation peut etre confirmee avec le client ; sa
+  modification annule cette confirmation. Aucun besoin n'est deduit par IA.
 - Les accords pour les photos et la dictee sont conserves dans le dossier. Les
   commandes correspondantes restent desactivees tant que l'accord n'est pas
   enregistre. La dictee produit uniquement du texte et aucun fichier audio
@@ -71,6 +76,13 @@ tags:
   produire de resultat artificiel.
 - Le lien Georisques reste disponible pour tous les types de rapport : il fait
   partie du socle commun de localisation et ne modifie pas le dossier.
+- Le plan IGN doit permettre de confirmer le lieu dans `Site`, avec adresse
+  saisie et resultat geocode distincts, sans assimiler ce reperage a une preuve
+  cadastrale. L'iframe et la confirmation sont implementees, mais le rendu du
+  fond IGN reste a qualifier (cadre noir constate dans le navigateur integre).
+- Une confirmation de lieu est liee a l'adresse et aux coordonnees. Elle
+  devient caduque apres modification ou nouvelle recherche. Un deplacement
+  dans la carte externe ne modifie pas implicitement le dossier.
 
 ## Exigences techniques et securite
 
