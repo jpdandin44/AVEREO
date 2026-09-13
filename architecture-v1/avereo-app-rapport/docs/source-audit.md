@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -62,21 +62,25 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 
 ## Controle des secrets
 
-### Qualification du lot ecoute et localisation du 12 septembre
+### Qualification du lot ecoute et localisation des 12 et 13 septembre
 
 - Les nouveaux choix de protocole sont vides ; les sujets explicites de
   l'ecoute suggerent des controles, les choix manuels restant prioritaires.
   Les anciens booleens sont preserves. Aucun texte client n'est transmis a
   un modele IA ni utilise pour une inference automatique.
-- Le plan IGN ne recoit que des coordonnees et des parametres cartographiques.
-  Iframe externe avec sandbox et `no-referrer` ; ni nom, ni email, ni notes.
-  Le service externe recoit cependant la requete reseau du navigateur.
+- La carte IGN charge uniquement les tuiles du secteur consulte, avec
+  `referrerPolicy: no-referrer` : ni nom, ni email, ni notes. Le service
+  externe recoit la requete reseau du navigateur et peut en deduire le secteur.
+  Leaflet est livre localement, sans script tiers charge depuis un CDN.
 - Les confirmations besoin/lieu sont des mentions de travail, pas des
   signatures electroniques. Leur modification invalide la confirmation liee.
-- Limite restante : les commandes de l'iframe IGN chargent, mais son fond
-  reste noir dans le navigateur integre ; aucun controle visuel positif du
-  fond et du repere n'est revendique. Verifier dans Chrome et corriger la
-  dependance si necessaire avant deploiement.
+- L'ancien fond noir est resolu dans l'integration directe : plan, parcelles
+  et photographies aeriennes observes dans le navigateur integre sur un lieu
+  public nantais. La parcelle peut rester absente du resultat API Carto meme
+  lorsque les tuiles cadastrales sont visibles : aucune reference n'est inventee.
+  Restent a qualifier : hebergement et coupure reseau pendant une visite.
+- Audit npm : aucune vulnerabilite de production ; les deux alertes de
+  developpement deja referencees dans DT-RAP-09 restent hors perimetre.
 - Aucun changement d'authentification, de secret, de base ou de workflow de
   deploiement dans ce lot.
 

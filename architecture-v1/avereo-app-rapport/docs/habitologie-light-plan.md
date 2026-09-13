@@ -5,7 +5,7 @@ title: Plan de mise en oeuvre de Visite Globale en habitologie
 status: in-progress
 version: git
 created: 2026-09-10
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -62,8 +62,8 @@ observations sans rattachement restent visibles dans `A classer`.
 Le fil conducteur est affiche en tete de `Protocoles`, pas dans `Dossier`.
 L'ecoute est enrichie et les sujets explicitement coches suggerent les points
 du protocole, initialement non selectionnes. Les choix manuels priment. Le
-plan IGN et sa confirmation sont integres mais le rendu reste a qualifier,
-comme precise dans le workflow de reference.
+cadastre IGN direct et sa confirmation sont integres et verifies localement ;
+la qualification hebergee reste a faire, comme precise dans le workflow de reference.
 
 Le workflow operationnel futur est maintenu comme proposition en etude dans
 [`../workflows/workflow-habitologie.md`](../workflows/workflow-habitologie.md).

@@ -1192,7 +1192,7 @@ function DossierStep({ report, setReport }) {
           <input type="email" value={report.email} onChange={(event) => updateField('email', event.target.value)} />
         </Field>
         <Field label="Adresse du logement">
-          <input value={report.adresse_logement} onChange={(event) => updateField('adresse_logement', event.target.value)} />
+          <input id="adresse-logement" value={report.adresse_logement} onChange={(event) => updateField('adresse_logement', event.target.value)} />
         </Field>
         <Field label="Intervenant AVEREO">
           <input value={report.intervenant} onChange={(event) => updateField('intervenant', event.target.value)} />
@@ -1347,7 +1347,7 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates }) {
   );
 }
 
-function SiteStep({ report, setReport }) {
+function SiteStep({ report, setReport, onCorrectAddress }) {
   const [lookupStatus, setLookupStatus] = useState({ state: 'idle', message: '' });
   const lookupSequence = useRef(0);
   useEffect(() => () => { lookupSequence.current += 1; }, [report.adresse_logement]);
@@ -1577,7 +1577,7 @@ function SiteStep({ report, setReport }) {
 
       {lookupStatus.message && <p className={`status-line ${lookupStatus.state}`}>{lookupStatus.message}</p>}
 
-      <LocationMap report={report} setReport={setReport} />
+      <LocationMap report={report} setReport={setReport} onCorrectAddress={onCorrectAddress} />
 
       <RiskSummary summary={report.risques} fallbackReportUrl={georisquesReportUrl} hasCoordinates={hasCoordinates} />
 
@@ -2371,7 +2371,10 @@ function ReportWizard({
         <div className="wizard-grid">
           <div className="wizard-main">
             {currentStep === 0 && <DossierStep report={report} setReport={setReport} />}
-            {currentStep === 1 && <SiteStep report={report} setReport={setReport} />}
+            {currentStep === 1 && <SiteStep report={report} setReport={setReport} onCorrectAddress={() => {
+              setCurrentStep(0);
+              requestAnimationFrame(() => document.getElementById('adresse-logement')?.focus());
+            }} />}
             {currentStep === 2 && <ProtocolStep report={report} setReport={setReport} />}
             {currentStep === 3 && <ObservationStep report={report} setReport={setReport} />}
             {currentStep === 4 && (

@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -84,9 +84,10 @@ la conservation des donnees vocales et le role habilite a valider.
 
 La branche de prototype enrichit l'ecoute et relie ses sujets explicites aux
 suggestions du protocole, sans preselection globale. La confirmation du besoin
-reste manuelle. L'integration de la carte IGN et la confirmation du lieu sont
-codees ; le rendu du fond IGN reste a verifier (cadre noir constate dans le
-navigateur integre). La validation de ce volet est requise avant deploiement.
+reste manuelle. La carte cadastrale directe IGN remplace l'iframe dont le fond
+restait noir. Plan, vue aerienne et parcelles ont ete verifies localement ;
+la confirmation et le retour au champ adresse sont fonctionnels. Il reste a
+qualifier ce volet en preproduction avant tout deploiement de production.
 Les supports Solive/Habitologue annonces ne sont pas encore fournis.
 
 La tranche actuelle ajoute `Ecoute client` a `Visite Globale` sans modifier le

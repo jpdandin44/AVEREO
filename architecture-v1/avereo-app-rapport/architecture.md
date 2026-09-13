@@ -5,7 +5,7 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -48,6 +48,7 @@ des valeurs par defaut.
 La selection Habitologie est resolue depuis les sujets explicites de `ecoute`
 et les choix manuels de `habitologie_protocoles` (prioritaires). Le payload
 `localisation` conserve l'adresse geocodee et la confirmation datee du lieu.
-Le plan IGN externe est une iframe isolee, sans nouvelle dependance JavaScript
-ni API interne. Son rendu reste en qualification ; voir
+Leaflet 1.9.4 affiche les images WMTS publiques IGN dans le frontend, sans
+iframe ni API interne supplementaire. Les donnees cadastre/PLU et le stockage
+restent inchanges. Voir
 [`api/cartographie.md`](api/cartographie.md).

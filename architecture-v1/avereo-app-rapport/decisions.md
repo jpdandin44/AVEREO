@@ -5,7 +5,7 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,23 @@ tags:
 ---
 
 # Decisions structurantes de Rapport AVEREO
+
+## 2026-09-13 - Afficher le cadastre directement sans compte cartographique
+
+Contexte : l'iframe IGN presentait un fond noir. L'utilisateur ne dispose pas
+de projet Google Maps et privilegie le cadastre deja consulte pour le bien.
+
+Decision : utiliser Leaflet 1.9.4 et les images WMTS publiques IGN pour
+superposer les parcelles au plan ou aux photographies aeriennes. Ne pas
+introduire de compte Google, de cle, de nouveau serveur ou de migration.
+
+Raisons : identifier visuellement le lieu avec le client, conserver les sources
+cadastre/PLU existantes et eviter de dependre de l'application externe embed.
+
+Consequences : une dependance frontend supplementaire ; attribution IGN/DGFiP
+visible ; requetes de tuiles depuis le navigateur. Les deplacements ne
+modifient pas le point du dossier. La confirmation reste humaine, revocable et
+distincte d'un bornage. La qualification locale ne vaut pas validation hebergee.
 
 ## 2026-09-12 - Faire partir le protocole de l'ecoute explicite
 
@@ -31,9 +48,8 @@ sans confondre besoin, symptome, solution demandee et diagnostic.
 
 Consequence : nouveaux champs dans le payload JSON existant, sans migration
 MySQL. La grille reste un support de conversation non bloquant ; les supports
-de formation a venir permettront de l'affiner. La carte IGN est integree comme
-service externe, avec une confirmation distincte du lieu ; son rendu reste
-a qualifier avant deploiement.
+de formation a venir permettront de l'affiner. Le choix initial de l'iframe
+IGN et sa limite de rendu sont remplaces par la decision du 13 septembre.
 
 ## 2026-09-12 - Porter le fil Habitologie dans le protocole et les observations
 

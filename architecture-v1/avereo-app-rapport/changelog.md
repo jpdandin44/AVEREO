@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,19 @@ tags:
 ---
 
 # Evolutions significatives de Rapport AVEREO
+
+## 2026-09-13
+
+- Remplacement de l'iframe cartographique par une carte cadastrale IGN directe
+  (Leaflet 1.9.4), avec plan, photographies aeriennes et limites des parcelles.
+- Bloc visuel simplifie : repere, adresse, statut, recentrage, confirmation
+  du bien et retour au champ adresse ; annulation de confirmation disponible.
+- Aucun compte Google, cle API, changement MySQL ou workflow de deploiement.
+- Controle local du rendu et des transitions ; 31 tests et build reussis.
+  La qualification en environnement heberge reste a effectuer.
+- Retour utilisateur favorable sur l'apercu local : cette version de prototype
+  est retenue pour revue dans la [PR #61](https://github.com/jpdandin44/AVEREO/pull/61).
+  Ce jalon ne constitue ni une release de production ni une autorisation de merge.
 
 ## 2026-09-12
 

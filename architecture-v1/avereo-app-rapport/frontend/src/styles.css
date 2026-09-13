@@ -1398,11 +1398,49 @@ img {
 .inline-confirmation input { flex-shrink: 0; margin-top: 4px; }
 .listening-review { background: #f3f7fc; border-radius: 8px; padding: 16px; line-height: 1.5; overflow-wrap: anywhere; }
 .listening-review p { margin: 8px 0; }
-.location-map { border: 1px solid #ccd9ee; border-radius: 10px; padding: 18px; margin: 18px 0; background: #f8fafc; }
-.location-map h3 { margin: 0 0 12px; }
+.location-map { border: 1px solid #ccd9ee; border-radius: 14px; margin: 18px 0; background: #fff; overflow: hidden; }
+.location-map h3 { margin: 0; font-size: 1.2rem; }
 .location-map p { overflow-wrap: anywhere; }
-.location-map iframe { display: block; width: 100%; height: 420px; border: 1px solid #ccd9ee; border-radius: 8px; background: #fff; margin: 14px 0; }
-.location-help { font-size: .85rem; line-height: 1.5; color: #52637b; }
+.property-map-heading { display: flex; align-items: center; gap: 12px; padding: 20px 20px 12px; }
+.property-map-icon { display: grid; place-items: center; width: 46px; height: 46px; flex-shrink: 0; border-radius: 12px; background: #edf3ff; color: #2452c4; }
+.property-map-eyebrow { margin: 0 0 5px; font-size: .7rem; font-weight: 800; letter-spacing: .08em; color: #52637b; }
+.property-map-badge { display: inline-flex; align-items: center; gap: 5px; margin-left: auto; padding: 6px 10px; border-radius: 20px; background: #fff3d4; color: #77500b; font-size: .78rem; font-weight: 700; white-space: nowrap; }
+.property-map-badge.confirmed { background: #e6f5ec; color: #16643b; }
+.location-map.is-confirmed { border-color: #8cc6a2; }
+.property-map-address { padding: 0 20px 18px; }
+.property-map-address > strong { display: block; font-size: 1.05rem; overflow-wrap: anywhere; }
+.property-map-address p { margin: 6px 0 0; font-size: .84rem; color: #52637b; }
+.property-map-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; border-top: 1px solid #e1e7f0; background: #f7f9fc; flex-wrap: wrap; }
+.property-map-switch { display: flex; gap: 4px; padding: 3px; border-radius: 9px; border: 1px solid #d7e0ee; background: #fff; }
+.property-map-switch button, .property-map-recenter { display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 6px; background: transparent; padding: 9px 12px; font: inherit; font-size: .85rem; font-weight: 700; color: #42536b; cursor: pointer; }
+.property-map-switch button[aria-pressed="true"] { background: #e8f0ff; color: #1849bf; }
+.location-map button:focus-visible, .location-map a:focus-visible { outline: 3px solid #2452c4; outline-offset: 3px; }
+.property-map-canvas { height: 400px; width: 100%; background: #f2f4ef; isolation: isolate; z-index: 0; }
+.property-map-canvas .leaflet-control-attribution { max-width: 100%; font-size: 10px; }
+.property-map-marker span { display: block; position: absolute; width: 28px; height: 28px; background: #2155d7; border: 3px solid white; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 2px 7px #17243870; }
+.property-map-marker span::after { content: ''; position: absolute; inset: 7px; border-radius: 50%; background: white; }
+.property-map-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 10px 16px; font-size: .75rem; color: #52637b; border-bottom: 1px solid #e1e7f0; }
+.property-map-legend span, .property-map-legend a { display: inline-flex; align-items: center; gap: 6px; }
+.property-map-legend a { margin-left: auto; color: #2452c4; }
+.property-legend-point { width: 9px; height: 9px; background: #2155d7; border-radius: 50%; }
+.property-legend-parcel { width: 14px; height: 10px; border: 2px solid #be8500; background: #fff3bf; }
+.property-map-confirmation { padding: 16px 20px; }
+.property-map-confirmation p { margin: 0 0 12px; font-size: .9rem; }
+.property-map-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.property-map-actions .button:disabled { opacity: 1; background: #e6f5ec; color: #16643b; border-color: #8cc6a2; cursor: default; }
+.property-map-undo { border: 0; padding: 8px; background: transparent; color: #52637b; font: inherit; font-size: .8rem; text-decoration: underline; cursor: pointer; }
+.property-map-status { display: flex; align-items: center; gap: 8px; margin: 0; padding: 10px 16px; background: #edf3ff; color: #244c95; font-size: .85rem; }
+.property-map-status.warning { background: #fff3d4; color: #77500b; }
+.location-help { font-size: .78rem; line-height: 1.5; color: #52637b; margin: 0; padding: 0 20px 16px; }
+@media (max-width: 560px) {
+  .property-map-heading { flex-wrap: wrap; padding: 14px; }
+  .property-map-badge { margin-left: 58px; }
+  .property-map-canvas { height: 320px; }
+  .property-map-switch button { padding: 10px 8px; }
+  .property-map-recenter { padding: 10px 4px; }
+  .property-map-actions .button { flex: 1 1 100%; }
+  .property-map-legend a { margin-left: 0; }
+}
 
 .preview-bar h2 {
   margin: 0;

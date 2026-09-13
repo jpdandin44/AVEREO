@@ -5,7 +5,7 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -76,13 +76,15 @@ tags:
   produire de resultat artificiel.
 - Le lien Georisques reste disponible pour tous les types de rapport : il fait
   partie du socle commun de localisation et ne modifie pas le dossier.
-- Le plan IGN doit permettre de confirmer le lieu dans `Site`, avec adresse
-  saisie et resultat geocode distincts, sans assimiler ce reperage a une preuve
-  cadastrale. L'iframe et la confirmation sont implementees, mais le rendu du
-  fond IGN reste a qualifier (cadre noir constate dans le navigateur integre).
+- La carte IGN doit afficher les parcelles cadastrales dans `Site`, sur plan
+  ou photographies aeriennes, sans compte Google ni cle API. L'adresse saisie
+  et le resultat geocode restent distincts. Les boutons permettent de confirmer
+  le bien ou de revenir directement au champ adresse, sans valeur de bornage.
+- Une erreur ou un delai de chargement des tuiles doit etre signale sans
+  empecher la saisie. Le recentrage et un lien externe restent disponibles.
 - Une confirmation de lieu est liee a l'adresse et aux coordonnees. Elle
   devient caduque apres modification ou nouvelle recherche. Un deplacement
-  dans la carte externe ne modifie pas implicitement le dossier.
+  dans la carte integree ne modifie pas implicitement le dossier.
 
 ## Exigences techniques et securite
 

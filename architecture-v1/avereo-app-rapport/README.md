@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -84,10 +84,11 @@ identifies, avec les statuts a l'adresse et sur la commune. La source, la date
 de consultation et le lien vers le rapport officiel sont conserves dans le
 brouillon et l'export. L'echec du cadastre ne bloque plus cette synthese.
 
-Un plan cartes.gouv.fr et une confirmation du lieu sont integres dans `Site`.
-Le fond de l'iframe est encore en qualification : cadre noir constate dans le
-navigateur integre. Ne pas considerer ce volet valide avant controle du rendu
-et du repere dans Chrome ; details dans [`api/cartographie.md`](api/cartographie.md).
+Une carte cadastrale IGN est integree directement dans `Site` : parcelles
+sur plan ou vue aerienne, repere du bien, recentrage et confirmation avec le
+client. Aucun compte Google ni cle API n'est necessaire. Le rendu local a ete
+verifie sur un lieu public ; la qualification hebergee reste a effectuer.
+Voir [`api/cartographie.md`](api/cartographie.md) pour les sources et limites.
 
 La suite du workflow cible reste en partie une proposition en etude documentee dans
 [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).

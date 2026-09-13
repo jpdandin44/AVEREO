@@ -5,7 +5,7 @@ title: Architecture technique de Rapport AVEREO
 status: active
 version: git
 created: 2026-07-14
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -58,12 +58,14 @@ par l'interface et l'export. Un booleen manuel conserve dans
 dossiers sont preserves. Les libelles d'entretien et d'export partagent la
 definition `clientListening.js`.
 
-`LocationMap.jsx` encapsule l'iframe officielle IGN. `localisation` conserve
-l'adresse geocodee et la confirmation liee aux coordonnees, a l'adresse saisie
-et a une date. L'iframe ne communique pas ses deplacements a Rapport.
+`LocationMap.jsx` affiche les tuiles WMTS IGN via Leaflet 1.9.4 embarque dans
+le build, sans iframe, CDN de code ou cle. `localisation` conserve l'adresse
+geocodee et la confirmation liee aux coordonnees, a l'adresse saisie et a une
+date. Le deplacement de la carte ne change pas le point du dossier.
 Le geocodage expose immediatement la localisation ; les enrichissements sont
 bordes par des delais et un compteur ignore les retours apres sortie de Site.
-Le fond IGN reste non valide visuellement a ce stade, voir `../api/cartographie.md`.
+Les couches et limites de qualification sont centralisees dans
+[`../api/cartographie.md`](../api/cartographie.md).
 
 Apres le geocodage BAN, le frontend appelle directement les services publics
 API Carto et Georisques. Le cadastre, l'urbanisme et les risques sont traites

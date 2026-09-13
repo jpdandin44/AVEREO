@@ -5,7 +5,7 @@ title: Proposition de workflow operationnel pour Visite Globale
 status: proposed
 version: git
 created: 2026-09-11
-updated: 2026-09-12
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -114,24 +114,28 @@ conserve la source, la date de consultation et le lien vers le rapport
 officiel. L'indisponibilite de Georisques ou du cadastre est signalee sans
 inventer de resultat et sans effacer les autres donnees saisies.
 
-### Localisation avec le client — integration en qualification
+### Localisation avec le client — prototype implemente
 
-`Site` integre le visualiseur officiel cartes.gouv.fr, centre sur les
-coordonnees geocodees, avec un lien externe de secours. L'adresse saisie et
-l'adresse trouvee sont affichees separement. Une confirmation manuelle du lieu
-est conservee avec l'adresse, les coordonnees et la date ; elle est annulee
-lors d'un changement d'adresse ou d'une nouvelle recherche. Naviguer dans
-l'iframe ne deplace pas le lieu enregistre dans Rapport.
+`Site` affiche les parcelles IGN sur un plan ou des photographies aeriennes,
+centrees sur le point geocode. Les boutons `Cadastre`, `Vue aerienne` et
+`Recentrer` facilitent la lecture avec le client. Aucun compte ni cle requis.
+L'adresse saisie et l'adresse trouvee restent distinctes.
+
+`Confirmer ce bien` conserve une confirmation manuelle avec l'adresse, les
+coordonnees et la date. `Corriger l'adresse` annule la confirmation et replace
+le curseur dans le champ du dossier. Une annulation sans correction reste
+possible. Un changement d'adresse ou une nouvelle recherche invalide la
+confirmation. Deplacer la carte ne change pas le point enregistre.
 
 Le geocodage affiche le lieu avant les enrichissements cadastre/PLU/risques ;
 les requetes ont un delai maximal et les retours d'une ancienne recherche ne
 peuvent plus modifier le dossier apres sortie de l'etape.
 
-**Limite constatee le 12 septembre :** la route officielle de l'iframe charge
-ses commandes, mais le fond est reste noir lors du controle dans le navigateur
-integre. Le rendu et le repere ne sont donc pas declares valides. Revoir le
-resultat dans Chrome et verifier le service IGN avant validation de ce volet
-et deploiement. Voir [`../api/cartographie.md`](../api/cartographie.md).
+L'iframe presentant un fond noir le 12 septembre a ete remplacee le 13 par
+des tuiles raster directes. Le plan, les parcelles et la vue aerienne sont
+verifies localement. La qualification en preproduction reste requise ; les
+erreurs de tuiles sont signalees et un lien IGN externe reste disponible.
+Voir [`../api/cartographie.md`](../api/cartographie.md).
 
 Ce reperage ne vaut ni identification juridique de parcelle ni preuve de
 propriete. Aucun nom, email ni contenu de l'entretien n'est transmis a IGN.
@@ -217,8 +221,8 @@ les controles de donnees. Aucun de ces boutons n'est livre par la tranche
 
 - `TBD` — enrichissement metier de l'entretien a partir des supports Solive
   et de formation Habitologue que le proprietaire envisage de fournir ;
-- `TBD` — valider le rendu IGN et les cas d'adresse ambigue avant de considerer
-  le reperage cartographique comme operationnel ;
+- `TBD` — qualifier la carte en preproduction, les coupures reseau et les cas
+  d'adresse ambigue ; ne pas confondre le repere d'adresse avec la parcelle ;
 - `TBD` — architecture d'execution : API Rapport, automatisation externe ou
   combinaison des deux ;
 - `TBD` — fournisseur et modele IA eventuels, ainsi que leurs regles de
