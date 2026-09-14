@@ -5,7 +5,7 @@ title: Proposition de workflow operationnel pour Visite Globale
 status: proposed
 version: git
 created: 2026-09-11
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -60,6 +60,8 @@ preoccupations ; puis attentes, besoin reformule, criteres de reussite et
 contraintes du projet. Les questions ouvertes sont des relances, pas une liste
 a reciter ni des champs tous obligatoires. Les accords photo/dictee restent
 explicites.
+Ils sont places sous « Informations de base, client et mission » pour
+autoriser la dictee avant la premiere question, et non en fin d'entretien.
 Ces donnees sont sauvegardees et exportees avec le payload Rapport existant.
 Les commandes photo et dictee sont desactivees sans leur accord respectif.
 L'absence de motif ou d'attentes produit une alerte non bloquante pendant la
@@ -115,6 +117,11 @@ officiel. L'indisponibilite de Georisques ou du cadastre est signalee sans
 inventer de resultat et sans effacer les autres donnees saisies.
 
 ### Localisation avec le client — prototype implemente
+
+Site separe maintenant la validation cadastrale, la synthese des risques
+avec relance, l'urbanisme et le relief/orientation. Les donnees publiques sont
+distinguees des interpretations et saisies manuelles. Voir les limites et la
+recette dans [`../api/contexte-du-bien.md`](../api/contexte-du-bien.md).
 
 `Site` affiche les parcelles IGN sur un plan ou des photographies aeriennes,
 centrees sur le point geocode. Les boutons `Cadastre`, `Vue aerienne` et

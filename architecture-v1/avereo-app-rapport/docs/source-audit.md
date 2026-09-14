@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -36,6 +36,16 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 - Aucun hook `preinstall`, `install`, `postinstall` ou `prepare` dans `package.json`.
 
 ## Constats
+
+Lot du 14 septembre : correction du bouton de risques qui ouvrait uniquement
+le rapport externe et de la disparition silencieuse du bloc sans resultat.
+Ajout des vues urbanisme et relief/orientation, erreurs explicites, reprise
+JSON defensive et liens documentaires limites a HTTPS sans identifiants.
+39 tests et build final passent ; vues, reprise du brouillon et apercu
+verifies localement. Le controle a aussi corrige deux commandes de dictee
+de l'etape Export non verrouillees sans accord pour Visite Globale.
+Ni interpretation juridique automatique ni simulation des eaux pluviales.
+Limites de qualification : voir [le bilan du lot](../api/contexte-du-bien.md).
 
 | Niveau | Fichier/zone | Constat et impact | Correction | Statut |
 | --- | --- | --- | --- | --- |

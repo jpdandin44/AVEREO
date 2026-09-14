@@ -5,7 +5,7 @@ title: API de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -25,6 +25,9 @@ risques. Le frontend utilise l'API publique Georisques V1, documentee dans
 
 La carte cadastrale directe IGN (WMTS/Leaflet) et ses limites sont decrites dans
 [`cartographie.md`](cartographie.md). Aucun secret ni endpoint interne ajoute.
+
+Les vues d'urbanisme, de relief et d'orientation sont decrites dans
+[`contexte-du-bien.md`](contexte-du-bien.md).
 
 Un contrat machine-readable propre a Rapport sera ajoute ici lorsqu'une
 evolution d'API interne structurante le necessitera.

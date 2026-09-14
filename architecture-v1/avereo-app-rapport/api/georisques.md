@@ -5,7 +5,7 @@ title: Integration de la synthese Georisques
 status: active
 version: git
 created: 2026-09-12
-updated: 2026-09-12
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -21,6 +21,12 @@ tags:
 Afficher dans l'etape `Site` une synthese informative des risques connus pour
 les coordonnees du bien, sans obliger l'utilisateur a quitter l'assistant.
 Le rapport officiel reste accessible pour le detail.
+
+La vue `Rapport des risques` affiche cette synthese dans Site, sans nouvel
+onglet ; `Voir le rapport complet` conserve le lien externe. La recherche
+generale precharge les donnees. Si elles manquent, ouvrir la vue relance la
+consultation sans refaire le cadastre ni annuler la confirmation du logement.
+`Actualiser la synthese` permet une nouvelle tentative.
 
 ## Source et contrat utilises
 
@@ -65,6 +71,12 @@ pas Georisques.
 Si Georisques est indisponible, l'interface le signale et ne fabrique aucun
 risque. Le bouton de rapport officiel reste propose lorsque les coordonnees
 sont valides.
+
+Une reponse sans les deux objets de risques attendus est rejetee et ne devient
+pas une synthese artificielle de zero risque. Chargement, erreur et absence de
+resultat sont visibles. Une actualisation echouee conserve la derniere
+consultation datee. Les requetes de cette vue sont annulees a sa fermeture ;
+aucune reponse tardive ne doit changer un autre lieu.
 
 ## Limites
 

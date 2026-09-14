@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -81,6 +81,13 @@ traitements, les regles de passage entre statuts, le fournisseur IA eventuel,
 la conservation des donnees vocales et le role habilite a valider.
 
 ## Travail actuel et prochaine evolution
+
+Le lot du 14 septembre remonte les accords en debut de Dossier, rend la
+synthese des risques accessible dans une vue explicite et ajoute des panneaux
+urbanisme et relief/orientation. 39 tests et le build passent ; le parcours
+local, la reprise et l'apercu ont ete controles. Revue humaine et qualification
+hebergee restent requises avant mise en production.
+Voir la [recette du contexte du bien](api/contexte-du-bien.md).
 
 La branche de prototype enrichit l'ecoute et relie ses sujets explicites aux
 suggestions du protocole, sans preselection globale. La confirmation du besoin

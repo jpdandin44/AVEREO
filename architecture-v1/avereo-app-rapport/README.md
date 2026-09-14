@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -62,6 +62,12 @@ meme brouillon, la meme sauvegarde JSON et les memes exports que le reste du
 rapport. Les photos et la dictee sont desactivees tant que l'accord
 correspondant n'est pas enregistre.
 
+Les accords de Visite Globale sont places juste sous « Informations de base,
+client et mission », avant l'entretien, pour autoriser la dictee des le debut.
+Dans Site, quatre vues separent validation cadastrale, synthese des risques,
+urbanisme et relief/orientation. Voir le
+[parcours et les limites du contexte du bien](api/contexte-du-bien.md).
+
 Le choix complementaire de `Visite Globale` correspond au type d'habitation :
 `Maison`, `Appartement`, `Immeuble collectif` ou `Autre habitation`. `Eau`,
 `Air`, `Terre` et `Feu` ne sont pas des sous-categories : ils forment le fil
@@ -94,6 +100,10 @@ La suite du workflow cible reste en partie une proposition en etude documentee d
 [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
 
 ## Environnement local
+
+Pour l'apercu fonctionnel React sans Docker et le depannage d'une connexion
+locale refusee, suivre [`docs/local-development.md`](docs/local-development.md).
+Les commandes ci-dessous concernent le parcours integre avec API et base.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 token-up

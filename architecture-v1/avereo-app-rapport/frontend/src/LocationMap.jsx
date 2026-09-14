@@ -4,7 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { MapPin, Map, Image, Check, Pencil, LocateFixed, ExternalLink, Loader2 } from 'lucide-react';
 import { buildIgnMapUrl, buildIgnTileUrl, locationConfirmed, validLocation } from './locationMap.js';
 
-function CadastralMap({ lon, lat, mode, revision }) {
+export function CadastralMap({ lon, lat, mode, revision }) {
   const container = useRef(null);
   const [tiles, setTiles] = useState({ base: 'loading', cadastre: 'loading' });
 
@@ -50,7 +50,10 @@ function CadastralMap({ lon, lat, mode, revision }) {
   const loading = Object.values(tiles).includes('loading');
   return (
     <>
-      <div ref={container} className="property-map-canvas" role="region" aria-label="Carte cadastrale du bien" />
+      <div className="property-map-frame">
+        <div ref={container} className="property-map-canvas" role="region" aria-label="Carte cadastrale du bien" />
+        <span className="map-north" title="Nord géographique en haut">N<br />↑</span>
+      </div>
       {failed ? <p className="property-map-status warning" role="status">Une partie de la carte est indisponible. Réessayez ou ouvrez le plan IGN.</p>
         : loading ? <p className="property-map-status" role="status"><Loader2 size={16} className="spin" /> Chargement du fond et des parcelles…</p> : null}
     </>

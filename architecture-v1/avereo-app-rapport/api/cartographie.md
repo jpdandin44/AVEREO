@@ -5,7 +5,7 @@ title: Carte cadastrale IGN et confirmation du lieu
 status: active
 version: git
 created: 2026-09-12
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -59,8 +59,10 @@ Les attributions Leaflet, IGN et DGFiP restent visibles.
 ## Cadastre, PLU et secours
 
 Les parcelles sont un fond de reperage, sans valeur de bornage ou preuve de
-propriete. Le PLU reste consulte par le bouton existant `Carte PLU` ;
-son zonage et son reglement ne sont pas superposes dans ce lot.
+propriete. La vue `Carte PLU / regles` presente les informations sourcees
+dans l'interface, avec acces externe a la carte reglementaire GPU.
+Le zonage PLU n'est pas superpose au fond cadastral. Voir les nouveaux
+panneaux dans [`contexte-du-bien.md`](contexte-du-bien.md).
 
 Une carte cadastrale visible ne garantit pas une reference dans le resultat
 API Carto : les deux services sont independants. En cas de reference absente,

@@ -1,4 +1,5 @@
 const GEORISQUES_RISK_ENDPOINT = 'https://www.georisques.gouv.fr/api/v1/resultats_rapport_risque';
+import { validLocation } from './locationMap.js';
 
 export function safeGeorisquesReportUrl(value) {
   try {
@@ -11,6 +12,7 @@ export function safeGeorisquesReportUrl(value) {
 }
 
 export function buildGeorisquesRiskSummaryUrl(longitude, latitude) {
+  if (!validLocation(longitude, latitude)) return null;
   if (longitude === null || latitude === null || String(longitude).trim() === '' || String(latitude).trim() === '') {
     return null;
   }
@@ -36,6 +38,10 @@ function normalizeRiskGroup(group = {}) {
 }
 
 export function normalizeGeorisquesRiskSummary(payload = {}, fetchedAt = new Date().toISOString()) {
+  const isGroup = (value) => value && typeof value === 'object' && !Array.isArray(value);
+  if (fetchedAt && (!isGroup(payload?.risquesNaturels) || !isGroup(payload?.risquesTechnologiques))) {
+    throw new Error('Synthèse Géorisques invalide ou incomplète');
+  }
   return {
     source: 'Géorisques API V1',
     fetchedAt,

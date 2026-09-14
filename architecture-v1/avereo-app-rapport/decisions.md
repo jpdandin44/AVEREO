@@ -5,7 +5,7 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,23 @@ tags:
 ---
 
 # Decisions structurantes de Rapport AVEREO
+
+## 2026-09-14 - Distinguer donnees publiques et interpretation du bien
+
+Contexte : demande de restitution integree des risques, contraintes connues,
+relief et orientation.
+
+Decision : vues separees dans Site, attributs GPU restitues avec leurs sources,
+reperage MNT de neuf points a la demande et orientation de facade manuelle.
+Conserver notes, sources et limites dans le payload et l'export.
+Aucun moteur juridique ou hydrologique automatique.
+
+Raisons : exploiter les donnees publiques sans fabriquer de regle ou de sens
+d'ecoulement a partir d'une information insuffisante.
+
+Consequences : pas d'infrastructure supplementaire ; couverture ponctuelle
+non exhaustive, validation terrain/reglementaire necessaire. Voir
+[`api/contexte-du-bien.md`](api/contexte-du-bien.md).
 
 ## 2026-09-13 - Afficher le cadastre directement sans compte cartographique
 

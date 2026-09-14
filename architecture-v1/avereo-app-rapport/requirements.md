@@ -5,7 +5,7 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -87,6 +87,17 @@ tags:
   dans la carte integree ne modifie pas implicitement le dossier.
 
 ## Exigences techniques et securite
+
+- Les accords de Visite Globale precedent l'entretien dans Dossier, sans
+  accord photo ou dictee coche implicitement.
+- Rapport des risques ouvre la synthese dans Site ; les erreurs sont
+  explicites et une relance independante du cadastre est disponible.
+- Carte PLU / regles restitue les informations sourcees au point d'adresse,
+  sans deduire une interdiction du seul code de zone.
+- Le relief est un reperage MNT indicatif, source et date visibles, sans
+  confondre une erreur de couverture et un resultat plat.
+- L'orientation de facade reste une saisie humaine, distincte du nord du plan.
+- Notes et contexte enrichi suivent le dossier et les exports existants.
 
 - La classification repose sur les champs existants `categorie` et
   `sous_categorie`. Pour `Visite Globale`, le second champ transporte le type

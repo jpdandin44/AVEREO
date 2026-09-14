@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -17,6 +17,7 @@ tags:
 
 | Fonctionnalite | Source | Donnees/services | Cible AVEREO et test | Statut |
 | --- | --- | --- | --- | --- |
+| Vues du contexte du bien | retour utilisateur du 14 septembre | Georisques, attributs GPU, neuf altitudes IGN, orientation manuelle | Synthese dans Site, relance, notes et exports ; 39 tests et build ; vues, reprise et apercu verifies | valide localement, qualification hebergee restante |
 | Assistant multi-etapes | `Rapport_AVEREO_Pro.txt`, `frontend/src/App.jsx` | Donnees du rapport | Frontend Vite; navigation et reprise manuelles | conservee |
 | Brouillon hors ligne | `App.jsx` | IndexedDB, `localStorage` | Mode local conserve; test de rechargement | conservee |
 | Photos et camera | `App.jsx` | Fichiers, MediaDevices, data URLs | Frontend; taille bornee avant sauvegarde serveur | adaptee |

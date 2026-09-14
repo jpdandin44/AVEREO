@@ -5,7 +5,7 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -49,6 +49,7 @@ La selection Habitologie est resolue depuis les sujets explicites de `ecoute`
 et les choix manuels de `habitologie_protocoles` (prioritaires). Le payload
 `localisation` conserve l'adresse geocodee et la confirmation datee du lieu.
 Leaflet 1.9.4 affiche les images WMTS publiques IGN dans le frontend, sans
-iframe ni API interne supplementaire. Les donnees cadastre/PLU et le stockage
-restent inchanges. Voir
+iframe ni API interne supplementaire. Le stockage reste le payload JSON :
+`urbanisme.context` conserve les attributs GPU et `terrain` les mesures
+altimetriques, l'orientation et les notes. Voir
 [`api/cartographie.md`](api/cartographie.md).

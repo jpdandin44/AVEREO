@@ -5,7 +5,7 @@ title: Architecture technique de Rapport AVEREO
 status: active
 version: git
 created: 2026-07-14
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -75,6 +75,13 @@ la synthese des risques. L'endpoint Georisques V1 public recoit uniquement
 synthese normalisee, sa source, sa date de consultation et le lien officiel
 sont stockes dans l'objet `risques` du payload. Aucun jeton Georisques n'est
 requis pour ce lot.
+
+Dans Site, les vues risques, urbanisme et terrain sont montees a la demande.
+`SiteInsights.jsx` utilise `urbanismContext.js` et `terrainContext.js`
+pour des lectures publiques avec delai maximal et annulation au demontage.
+Le payload ajoute `urbanisme.context`, `urbanisme.notes` et `terrain`,
+sans table ni migration supplementaire. Les formats et limites sont
+centralises dans [`../api/contexte-du-bien.md`](../api/contexte-du-bien.md).
 
 La configuration sensible est chargee depuis `/home/CPANEL_USERNAME/.avereo/rapport/config.php`, hors de `frontend/dist`.
 

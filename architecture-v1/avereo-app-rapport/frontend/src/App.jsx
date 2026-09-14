@@ -41,6 +41,9 @@ import {
 import { LISTENING_SECTIONS, emptyClientListening } from './clientListening.js';
 import LocationMap from './LocationMap.jsx';
 import { emptyLocation, locationConfirmed, validLocation } from './locationMap.js';
+import { TerrainPanel, UrbanismPanel } from './SiteInsights.jsx';
+import { DIRECTIONS, emptyTerrain, normalizeStoredTerrain } from './terrainContext.js';
+import { safeDocumentUrl, normalizeStoredUrbanism, URBAN_LAYERS } from './urbanismContext.js';
 import {
   AlertTriangle,
   ArrowLeft,
@@ -175,6 +178,7 @@ const initialReport = normalizeReportClassification({
   },
   risques: emptyGeorisquesRiskSummary(),
   localisation: emptyLocation(),
+  terrain: emptyTerrain(),
   ecoute: emptyClientListening(),
   protocoles: {
     standard: true,
@@ -210,6 +214,7 @@ function deepMergeReport(base, incoming) {
     urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
     risques: { ...base.risques, ...(classifiedIncoming.risques || {}) },
     localisation: { ...base.localisation, ...(classifiedIncoming.localisation || {}) },
+    terrain: { ...base.terrain, ...(classifiedIncoming.terrain || {}) },
     ecoute: { ...base.ecoute, ...(classifiedIncoming.ecoute || {}) },
     habitologie_protocoles: mergeHabitologieProtocolState(classifiedIncoming.habitologie_protocoles),
     protocoles: {
@@ -234,6 +239,8 @@ function deepMergeReport(base, incoming) {
     ? classifiedIncoming.observations
     : base.observations;
   merged.observations = observations.length > 0 ? observations.map(normalizeObservation) : [emptyObservation()];
+  merged.terrain = normalizeStoredTerrain(merged.terrain, merged.cadastre.lon, merged.cadastre.lat);
+  merged.urbanisme.context = normalizeStoredUrbanism(merged.urbanisme.context, merged.cadastre.lon, merged.cadastre.lat);
   return normalizeReportClassification(merged);
 }
 
@@ -556,11 +563,32 @@ function buildWordDocumentHtml(report) {
     <tr><td>Zonage urbanisme</td><td>${escapeHtml(report.urbanisme?.zone || '')} ${escapeHtml(
       report.urbanisme?.description || '',
     )}${mapLink ? `<br /><a href="${mapLink}">Voir la parcelle</a>` : ''}${
-      report.urbanisme?.pdfUrl ? `<br /><a href="${escapeHtml(report.urbanisme.pdfUrl)}">Document PLU</a>` : ''
+      safeDocumentUrl(report.urbanisme?.pdfUrl) ? `<br /><a href="${escapeHtml(safeDocumentUrl(report.urbanisme.pdfUrl))}">Document PLU</a>` : ''
     }</td></tr>
   </table>
 
   ${buildRiskSummaryHtml(report.risques)}
+
+  ${report.urbanisme.context ? `
+    <h3>Urbanisme : elements retournes au point d'adresse</h3>
+    <p>Source : ${escapeHtml(report.urbanisme.context.source)} — ${escapeHtml(formatDateTime(report.urbanisme.context.fetchedAt))}.</p>
+    ${report.urbanisme.context.results.map((group) => `
+      <h4>${escapeHtml(URBAN_LAYERS.find(([key]) => key === group.layer)?.[1] || group.layer)}</h4>
+      ${group.error ? '<p>Source indisponible, aucune conclusion possible.</p>' : group.items.length ? `
+        <ul>${group.items.map((item) => `<li><strong>${escapeHtml(item.title)}</strong> ${escapeHtml(item.detail)}
+          — ${escapeHtml(item.document)} ${escapeHtml(item.sourceDate)}
+          ${safeDocumentUrl(item.url) ? `<a href="${escapeHtml(safeDocumentUrl(item.url))}">Texte source</a>` : ''}</li>`).join('')}</ul>`
+        : '<p>Aucun element retourne au point interroge ; cela ne prouve pas l absence de contrainte.</p>'}
+      ${group.partial ? '<p>Resultat partiel : consulter le GPU.</p>' : ''}`).join('')}
+    <p>Reperage non exhaustif au point d'adresse, pas sur toute la parcelle. Les libelles ne remplacent pas la lecture du reglement ni la confirmation par le service urbanisme. Les servitudes lineaires et ponctuelles ne sont pas couvertes.</p>` : ''}
+  ${report.urbanisme.notes ? `<h4>Regles / interdictions : notes de verification du professionnel</h4><p>${textToHtml(report.urbanisme.notes)}</p>` : ''}
+  ${report.terrain?.orientation || report.terrain?.facade ? `<h3>Orientation renseignee par le professionnel</h3><p>Facade : ${escapeHtml(report.terrain.facade || 'Non precisee')} — direction : ${escapeHtml(DIRECTIONS.find(([key]) => key === report.terrain.orientation)?.[1] || 'A relever')}. Ni orientation mesuree automatiquement, ni direction du vent.</p>` : ''}
+  ${report.terrain?.analysis ? `<h3>Reperage altimetrique indicatif</h3>
+    <p>${escapeHtml(report.terrain.analysis.source)} — ${escapeHtml(formatDateTime(report.terrain.analysis.fetchedAt))} — emprise : ${report.terrain.analysis.width} m x ${report.terrain.analysis.width} m.</p>
+    <p>Minimum ${report.terrain.analysis.min.toFixed(2)} m ; maximum ${report.terrain.analysis.max.toFixed(2)} m ; ecart ${report.terrain.analysis.range.toFixed(2)} m.</p>
+    <table><tr><th>Point</th><th>Altitude (m)</th></tr>${report.terrain.analysis.samples.map((p) => `<tr><td>${escapeHtml(p.label)}</td><td>${p.z.toFixed(2)}</td></tr>`).join('')}</table>
+    <p>Neuf points autour de l'adresse, pouvant depasser la propriete. Precision variable. Ce n'est ni une etude hydrologique ni un releve de geometre ; aucun ecoulement reel ou absence de risque n'en est deduit.</p>` : ''}
+  ${report.terrain?.notes ? `<h4>Verifications terrain / eaux pluviales</h4><p>${textToHtml(report.terrain.notes)}</p>` : ''}
 
   ${ecouteHtml}
 
@@ -1103,6 +1131,7 @@ function DossierStep({ report, setReport }) {
         urbanisme: { ...initialReport.urbanisme },
         risques: emptyGeorisquesRiskSummary(),
         localisation: emptyLocation(),
+        terrain: emptyTerrain(),
       };
     });
   };
@@ -1151,6 +1180,24 @@ function DossierStep({ report, setReport }) {
           <p>Informations de base, client et mission.</p>
         </div>
       </div>
+
+      {habitologie && (
+        <fieldset className="consent-list consent-first">
+          <legend>Accords recueillis</legend>
+          <label className={report.ecoute.consentement_photos ? 'selected' : ''}>
+            <input type="checkbox" checked={Boolean(report.ecoute.consentement_photos)}
+              onChange={(event) => updateEcoute('consentement_photos', event.target.checked)} />
+            <span><strong>Photos dans le dossier</strong>
+              <small>Le client autorise l'utilisation des photos prises pendant la visite dans ce dossier.</small></span>
+          </label>
+          <label className={report.ecoute.consentement_dictee ? 'selected' : ''}>
+            <input type="checkbox" checked={Boolean(report.ecoute.consentement_dictee)}
+              onChange={(event) => updateEcoute('consentement_dictee', event.target.checked)} />
+            <span><strong>Dictee vocale pendant la visite</strong>
+              <small>Le client accepte la transcription vocale en texte. Aucun fichier audio n'est conserve.</small></span>
+          </label>
+        </fieldset>
+      )}
 
       <div className="choice-grid two">
         {getSelectableReportCategories().map(([name, item]) => (
@@ -1255,39 +1302,33 @@ function DossierStep({ report, setReport }) {
             </div>
           </fieldset>
 
-          <fieldset className="consent-list">
-            <legend>Accords recueillis</legend>
-            <label className={report.ecoute.consentement_photos ? 'selected' : ''}>
-              <input
-                type="checkbox"
-                checked={Boolean(report.ecoute.consentement_photos)}
-                onChange={(event) => updateEcoute('consentement_photos', event.target.checked)}
-              />
-              <span>
-                <strong>Photos dans le dossier</strong>
-                <small>Le client autorise l'utilisation des photos prises pendant la visite dans ce dossier.</small>
-              </span>
-            </label>
-            <label className={report.ecoute.consentement_dictee ? 'selected' : ''}>
-              <input
-                type="checkbox"
-                checked={Boolean(report.ecoute.consentement_dictee)}
-                onChange={(event) => updateEcoute('consentement_dictee', event.target.checked)}
-              />
-              <span>
-                <strong>Dictee vocale pendant la visite</strong>
-                <small>Le client accepte la transcription vocale en texte. Aucun fichier audio n'est conserve.</small>
-              </span>
-            </label>
-          </fieldset>
         </section>
       )}
     </section>
   );
 }
 
-function RiskSummary({ summary, fallbackReportUrl, hasCoordinates }) {
-  if (!summary?.fetchedAt) return null;
+function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setReport, busy }) {
+  const [refresh, setRefresh] = useState(0);
+  const [status, setStatus] = useState('');
+  const { lon, lat } = report.cadastre;
+  useEffect(() => {
+    if (!hasCoordinates || busy || (summary?.fetchedAt && refresh === 0)) return;
+    let active = true;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000);
+    setStatus('loading');
+    fetch(buildGeorisquesRiskSummaryUrl(lon, lat), { signal: controller.signal, referrerPolicy: 'no-referrer' })
+      .then((response) => { if (!response.ok) throw new Error('Géorisques indisponible'); return response.json(); })
+      .then((payload) => {
+        const risques = normalizeGeorisquesRiskSummary(payload);
+        if (!active) return;
+        setReport((prev) => Number(prev.cadastre.lon) === Number(lon) && Number(prev.cadastre.lat) === Number(lat)
+          ? { ...prev, risques } : prev);
+        setStatus('');
+      }).catch(() => { if (active) setStatus('error'); }).finally(() => clearTimeout(timeout));
+    return () => { active = false; controller.abort(); clearTimeout(timeout); };
+  }, [lon, lat, hasCoordinates, busy, refresh, setReport]);
   const groups = [
     { key: 'naturels', label: 'Risques naturels identifies', items: summary.naturels || [] },
     { key: 'technologiques', label: 'Risques technologiques identifies', items: summary.technologiques || [] },
@@ -1312,7 +1353,14 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates }) {
         )}
       </div>
 
-      {groups.map((group) => (
+      <button className="button secondary" type="button" disabled={busy || status === 'loading'}
+        onClick={() => setRefresh((n) => n + 1)}>Actualiser la synthèse</button>
+      {(busy || status === 'loading') && <p role="status">Récupération de la synthèse des risques…</p>}
+      {status === 'error' && <p className="status-line warning" role="alert">La synthèse n’a pas pu être récupérée. Réessayez ou ouvrez le rapport officiel.
+        {summary?.fetchedAt && ' La dernière consultation est conservée ci-dessous.'}</p>}
+      {!summary?.fetchedAt && status !== 'loading' && !busy && <p>Aucune synthèse disponible dans ce dossier. Cela ne signifie pas absence de risque.</p>}
+
+      {summary?.fetchedAt && groups.map((group) => (
         <div className="risk-group" key={group.key}>
           <h4>
             {group.items.length} {group.label}
@@ -1339,16 +1387,17 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates }) {
         </div>
       ))}
 
-      <p className="risk-source">
+      {summary?.fetchedAt && <p className="risk-source">
         Source : {summary.source} · consultation du {formatDateTime(summary.fetchedAt)}. Cette synthese est informative et ne
         remplace pas le rapport officiel.
-      </p>
+      </p>}
     </section>
   );
 }
 
 function SiteStep({ report, setReport, onCorrectAddress }) {
   const [lookupStatus, setLookupStatus] = useState({ state: 'idle', message: '' });
+  const [view, setView] = useState('cadastre');
   const lookupSequence = useRef(0);
   useEffect(() => () => { lookupSequence.current += 1; }, [report.adresse_logement]);
 
@@ -1364,6 +1413,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
 
     const sequence = ++lookupSequence.current;
     const isCurrent = () => lookupSequence.current === sequence;
+    setView('cadastre');
     setReport((prev) => ({ ...prev, localisation: { ...prev.localisation, confirmation: null } }));
     setLookupStatus({ state: 'loading', message: "Recherche de l'adresse..." });
     try {
@@ -1383,6 +1433,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
         urbanisme: { ...initialReport.urbanisme },
         risques: emptyGeorisquesRiskSummary(),
         localisation: { adresse_trouvee: feature.properties.label || '', confirmation: null },
+        terrain: emptyTerrain(),
       }));
       const pointGeom = encodeURIComponent(JSON.stringify({ type: 'Point', coordinates: [lon, lat] }));
       setLookupStatus({ state: 'loading', message: 'Recherche de la parcelle cadastrale...' });
@@ -1403,14 +1454,14 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
           urbanisme = {
             zone: zone?.libelle || '',
             description: zone?.libelong || '',
-            pdfUrl: zone?.urlfic?.startsWith('http') ? zone.urlfic : '',
+            pdfUrl: safeDocumentUrl(zone?.urlfic),
           };
         }
         if (!urbanisme.pdfUrl) {
           const docResponse = await fetch(`https://apicarto.ign.fr/api/gpu/document?geom=${pointGeom}`, { signal: AbortSignal.timeout(12000) });
           if (docResponse.ok) {
             const docData = await docResponse.json();
-            urbanisme.pdfUrl = docData.features?.[0]?.properties?.urldoc || '';
+            urbanisme.pdfUrl = safeDocumentUrl(docData.features?.[0]?.properties?.urldoc);
           }
         }
       } catch {
@@ -1539,49 +1590,28 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
             {lookupStatus.state === 'loading' ? <Loader2 className="spin" size={18} /> : <MapPin size={18} />}
             Rechercher
           </button>
-          {hasCoordinates && (
-            <>
-              <button
-                className="button ghost"
-                type="button"
-                onClick={() =>
-                  window.open(
-                    `https://www.geoportail-urbanisme.gouv.fr/map/#tile=1&lon=${report.cadastre.lon}&lat=${report.cadastre.lat}&zoom=19`,
-                    '_blank',
-                    'noopener,noreferrer',
-                  )
-                }
-              >
-                <MapPin size={18} />
-                Carte PLU
-              </button>
-              <button
-                className="button ghost"
-                type="button"
-                title="Ouvrir le rapport officiel Georisques"
-                onClick={() => window.open(georisquesReportUrl, '_blank', 'noopener,noreferrer')}
-              >
-                <ShieldCheck size={18} />
-                Rapport des risques
-              </button>
-            </>
-          )}
-          {report.urbanisme.pdfUrl && (
-            <button className="button ghost" type="button" onClick={() => window.open(report.urbanisme.pdfUrl, '_blank')}>
-              <FileText size={18} />
-              Reglement
-            </button>
-          )}
         </div>
       </div>
 
       {lookupStatus.message && <p className={`status-line ${lookupStatus.state}`}>{lookupStatus.message}</p>}
 
-      <LocationMap report={report} setReport={setReport} onCorrectAddress={onCorrectAddress} />
+      {hasCoordinates && <>
+        <nav className="site-views" aria-label="Informations sur le bien">
+          {[['cadastre', 'Cadastre / valider le bien'], ['risques', 'Rapport des risques'],
+            ['urbanisme', 'Carte PLU / règles'], ['terrain', 'Relief / orientation']].map(([key, label]) =>
+            <button type="button" key={key} aria-pressed={view === key} onClick={() => setView(key)}>{label}</button>)}
+        </nav>
+        {view !== 'cadastre' && <p className="site-location-status">{locationConfirmed(report) ? 'Lieu confirmé avec le client' : 'Lieu à confirmer dans Cadastre'} · {report.localisation.adresse_trouvee || report.adresse_logement}</p>}
+        {view === 'cadastre' && <LocationMap report={report} setReport={setReport} onCorrectAddress={onCorrectAddress} />}
+        {view === 'risques' && <RiskSummary summary={report.risques} fallbackReportUrl={georisquesReportUrl}
+          hasCoordinates={hasCoordinates} report={report} setReport={setReport} busy={lookupStatus.state === 'loading'} />}
+        {view === 'urbanisme' && (lookupStatus.state === 'loading' ? <p role="status">Localisation en cours…</p>
+          : <UrbanismPanel report={report} setReport={setReport} />)}
+        {view === 'terrain' && (lookupStatus.state === 'loading' ? <p role="status">Localisation en cours…</p>
+          : <TerrainPanel report={report} setReport={setReport} />)}
+      </>}
 
-      <RiskSummary summary={report.risques} fallbackReportUrl={georisquesReportUrl} hasCoordinates={hasCoordinates} />
-
-      <div className="form-grid four">
+      {view === 'cadastre' && <div className="form-grid four">
         <Field label="Section">
           <input value={report.cadastre.section} onChange={(event) => updateNested('cadastre', 'section', event.target.value)} />
         </Field>
@@ -1609,7 +1639,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
             onChange={(event) => updateNested('urbanisme', 'description', event.target.value)}
           />
         </Field>
-      </div>
+      </div>}
     </section>
   );
 }
@@ -2022,6 +2052,7 @@ function ObservationStep({ report, setReport }) {
 }
 
 function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onImportJson }) {
+  const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
   return (
     <section className="panel">
       <div className="section-title">
@@ -2076,6 +2107,8 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
 
       <TextAreaWithMic
         label="Analyse de l'expert"
+        micDisabled={!dictationAllowed}
+        micDisabledReason="Enregistrer d'abord l'accord du client dans l'etape Dossier."
         value={report.analyse_expert}
         onChange={(value) => setReport((prev) => ({ ...prev, analyse_expert: value }))}
         onAppend={(text) => setReport((prev) => ({ ...prev, analyse_expert: `${prev.analyse_expert || ''}${text}` }))}
@@ -2083,6 +2116,8 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
       />
       <TextAreaWithMic
         label="Recommandations"
+        micDisabled={!dictationAllowed}
+        micDisabledReason="Enregistrer d'abord l'accord du client dans l'etape Dossier."
         value={report.recommandations}
         onChange={(value) => setReport((prev) => ({ ...prev, recommandations: value }))}
         onAppend={(text) => setReport((prev) => ({ ...prev, recommandations: `${prev.recommandations || ''}${text}` }))}

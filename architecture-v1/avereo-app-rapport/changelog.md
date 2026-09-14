@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-13
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,20 @@ tags:
 ---
 
 # Evolutions significatives de Rapport AVEREO
+
+## 2026-09-14
+
+- Accords de Visite Globale places sous le titre de Dossier, avant l'ecoute.
+- Vues Cadastre, Rapport des risques, Carte PLU / regles, Relief / orientation ;
+  synthese interne et relance independante des risques.
+- Attributs GPU sources, notes de verification, rose des vents et orientation
+  manuelle, reperage altimetrique IGN de neuf points avec limites explicites.
+- Payload, reprise JSON defensive et export alignes.
+- Verrouillage de la dictee de Visite Globale egalement applique a Export.
+- 39 tests et compilation finale reussis ; vues locales, reprise et apercu
+  verifies selon le bilan de [contexte du bien](api/contexte-du-bien.md).
+- Mise a jour de la PR #61 demandee ; checklist officielle conservee,
+  sans cochage, migration, merge ni deploiement.
 
 ## 2026-09-13
 
