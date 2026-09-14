@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-09-11
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -54,10 +54,56 @@ Les autres categories restent dans le catalogue du code comme modules
 complementaires masques. Elles peuvent donc etre relues dans les anciens
 dossiers et reactivees ulterieurement sans recreer un second moteur.
 
-Le workflow cible de `Visite Globale` est une proposition en etude documentee
-dans [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
+Pour `Visite Globale`, l'etape `Dossier` contient maintenant une premiere
+tranche `Ecoute client` : histoire du bien, travaux passes, vecu quotidien,
+attentes, besoin reformule, criteres de reussite, contraintes et accords pour
+les photos et la dictee. Ces donnees suivent le
+meme brouillon, la meme sauvegarde JSON et les memes exports que le reste du
+rapport. Les photos et la dictee sont desactivees tant que l'accord
+correspondant n'est pas enregistre.
+
+Les accords de Visite Globale sont places juste sous « Informations de base,
+client et mission », avant l'entretien, pour autoriser la dictee des le debut.
+Dans Site, quatre vues separent validation cadastrale, synthese des risques,
+urbanisme et relief/orientation. Voir le
+[parcours et les limites du contexte du bien](api/contexte-du-bien.md).
+
+Le choix complementaire de `Visite Globale` correspond au type d'habitation :
+`Maison`, `Appartement`, `Immeuble collectif` ou `Autre habitation`. `Eau`,
+`Air`, `Terre` et `Feu` ne sont pas des sous-categories : ils forment le fil
+conducteur obligatoire de l'analyse, dans cet ordre, pour chaque visite.
+
+Dans l'etape `Protocoles`, ces quatre phases portent maintenant les controles
+terrain adaptes : eau et humidite, renouvellement d'air, interfaces de
+l'enveloppe, puis chauffage et confort. L'etape `Observations` reprend le meme
+ordre et permet de rattacher chaque constat a une phase et a un point de
+controle, sans perdre les anciennes observations non classees.
+
+Le fil conducteur est en en-tete de `Protocoles`. Les nouveaux dossiers
+Habitologie n'ont aucun controle coche par defaut ; les sujets explicitement
+identifies a l'ecoute suggerent des controles que le professionnel ajuste.
+Ses choix manuels et les selections des anciens brouillons sont preserves.
+
+L'etape `Site` interroge l'endpoint JSON public Georisques V1 apres le
+geocodage et affiche directement les risques naturels et technologiques
+identifies, avec les statuts a l'adresse et sur la commune. La source, la date
+de consultation et le lien vers le rapport officiel sont conserves dans le
+brouillon et l'export. L'echec du cadastre ne bloque plus cette synthese.
+
+Une carte cadastrale IGN est integree directement dans `Site` : parcelles
+sur plan ou vue aerienne, repere du bien, recentrage et confirmation avec le
+client. Aucun compte Google ni cle API n'est necessaire. Le rendu local a ete
+verifie sur un lieu public ; la qualification hebergee reste a effectuer.
+Voir [`api/cartographie.md`](api/cartographie.md) pour les sources et limites.
+
+La suite du workflow cible reste en partie une proposition en etude documentee dans
+[`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
 
 ## Environnement local
+
+Pour l'apercu fonctionnel React sans Docker et le depannage d'une connexion
+locale refusee, suivre [`docs/local-development.md`](docs/local-development.md).
+Les commandes ci-dessous concernent le parcours integre avec API et base.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\local\rapport-local.ps1 token-up

@@ -5,7 +5,7 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,166 @@ tags:
 ---
 
 # Decisions structurantes de Rapport AVEREO
+
+## 2026-09-14 - Distinguer donnees publiques et interpretation du bien
+
+Contexte : demande de restitution integree des risques, contraintes connues,
+relief et orientation.
+
+Decision : vues separees dans Site, attributs GPU restitues avec leurs sources,
+reperage MNT de neuf points a la demande et orientation de facade manuelle.
+Conserver notes, sources et limites dans le payload et l'export.
+Aucun moteur juridique ou hydrologique automatique.
+
+Raisons : exploiter les donnees publiques sans fabriquer de regle ou de sens
+d'ecoulement a partir d'une information insuffisante.
+
+Consequences : pas d'infrastructure supplementaire ; couverture ponctuelle
+non exhaustive, validation terrain/reglementaire necessaire. Voir
+[`api/contexte-du-bien.md`](api/contexte-du-bien.md).
+
+## 2026-09-13 - Afficher le cadastre directement sans compte cartographique
+
+Contexte : l'iframe IGN presentait un fond noir. L'utilisateur ne dispose pas
+de projet Google Maps et privilegie le cadastre deja consulte pour le bien.
+
+Decision : utiliser Leaflet 1.9.4 et les images WMTS publiques IGN pour
+superposer les parcelles au plan ou aux photographies aeriennes. Ne pas
+introduire de compte Google, de cle, de nouveau serveur ou de migration.
+
+Raisons : identifier visuellement le lieu avec le client, conserver les sources
+cadastre/PLU existantes et eviter de dependre de l'application externe embed.
+
+Consequences : une dependance frontend supplementaire ; attribution IGN/DGFiP
+visible ; requetes de tuiles depuis le navigateur. Les deplacements ne
+modifient pas le point du dossier. La confirmation reste humaine, revocable et
+distincte d'un bornage. La qualification locale ne vaut pas validation hebergee.
+
+## 2026-09-12 - Faire partir le protocole de l'ecoute explicite
+
+Contexte : tous les controles etaient selectionnes avant de connaitre le
+besoin, et le fil d'analyse encombrait le dossier.
+
+Decision : deplacer le fil en en-tete de `Protocoles`, enrichir l'entretien
+par des questions ouvertes, une reformulation et des criteres de reussite.
+Les sujets coches suggerent des controles ; aucun texte libre n'est interprete
+automatiquement. Les choix manuels restent prioritaires et les anciens choix
+sont preserves. Le protocole technique n'est pas modifie.
+
+Raison : rendre visible le lien entre besoin exprime et perimetre de visite
+sans confondre besoin, symptome, solution demandee et diagnostic.
+
+Consequence : nouveaux champs dans le payload JSON existant, sans migration
+MySQL. La grille reste un support de conversation non bloquant ; les supports
+de formation a venir permettront de l'affiner. Le choix initial de l'iframe
+IGN et sa limite de rendu sont remplaces par la decision du 13 septembre.
+
+## 2026-09-12 - Porter le fil Habitologie dans le protocole et les observations
+
+### Contexte
+
+Le fil `Eau -> Air -> Terre -> Feu` etait annonce dans le dossier mais ne
+guidait pas encore les controles de l'etape `Protocoles` ni la saisie des
+observations. La consultation des risques restait limitee a l'ouverture d'un
+rapport externe.
+
+### Decision
+
+Conserver les cinq etapes de l'assistant et adapter uniquement `Visite Globale` :
+
+- detailler dans `Protocoles` les controles successifs Eau, Air, Terre et Feu ;
+- regrouper `Observations` dans le meme ordre et rattacher chaque constat a une
+  phase et, facultativement, a un point de controle ;
+- conserver toute observation historique non rattachee dans une zone
+  `A classer` ;
+- appeler directement l'endpoint public Georisques V1
+  `resultats_rapport_risque` avec les seules coordonnees et afficher une
+  synthese sourcee dans `Site` ;
+- ne pas bloquer la synthese des risques lorsque la parcelle cadastrale n'est
+  pas retournee par l'API Carto.
+
+### Raisons principales
+
+- faire du fil metier le guide concret de la visite ;
+- reutiliser les fonctions de photos, dictee, brouillon et export deja en
+  place ;
+- eviter un jeton Georisques pendant le prototype ;
+- ne pas inventer de classement lors de la lecture d'anciens dossiers.
+
+### Consequences
+
+Le payload JSON est enrichi sans rupture : nouveaux protocoles par phase,
+phase et point de controle des observations, puis synthese Georisques
+horodatee. L'indisponibilite d'une source externe reste explicite. Les
+rapports techniques conservent leur protocole et leurs observations actuels.
+
+## 2026-09-11 - Distinguer le type d'habitation du parcours d'analyse
+
+### Contexte
+
+La premiere modelisation de `Visite Globale` presentait `Eau`, `Air`, `Terre`
+et `Feu` comme quatre sous-categories au choix. Cette representation contredit
+le sens metier : ces quatre dimensions forment les etapes successives d'une
+analyse globale coherente.
+
+### Decision
+
+Pour `Visite Globale`, utiliser le choix complementaire comme type
+d'habitation : `Maison`, `Appartement`, `Immeuble collectif` ou
+`Autre habitation`. Conserver `A preciser` tant que ce choix n'est pas fait.
+
+Faire de `Eau -> Air -> Terre -> Feu` un parcours ordonne commun a chaque
+visite globale. Conserver techniquement le champ `sous_categorie` pour le type
+d'habitation pendant le prototype afin de ne pas modifier le schema de
+sauvegarde.
+
+### Raisons principales
+
+- representer correctement le raisonnement Habitologie ;
+- eviter qu'un dossier soit artificiellement limite a un seul element ;
+- qualifier le bien avec une information utile au contexte de visite ;
+- preserver la compatibilite du payload et de la base existants.
+
+### Consequences
+
+Les anciennes valeurs `Eau`, `Air`, `Terre` ou `Feu` utilisees comme
+sous-categories sont normalisees vers `A preciser`, sans inventer un type
+d'habitation. L'interface affiche le fil conducteur complet et l'export nomme
+explicitement le type d'habitation. La decision de catalogue ci-dessous reste
+historique mais sa consequence attribuant un seul element a une visite est
+remplacee par la presente decision.
+
+## 2026-09-11 - Integrer Ecoute dans l'etape Dossier existante
+
+### Contexte
+
+Le prototype doit rendre le workflow `Visite Globale` progressivement
+utilisable sans dupliquer l'assistant Rapport ni figer des transitions encore
+a arbitrer.
+
+### Decision
+
+Ajouter la premiere tranche `Ecoute client` dans l'etape `Dossier`, uniquement
+pour la categorie `Visite Globale`. Conserver ses champs et accords dans un
+objet JSON `ecoute` du payload existant. Reutiliser la dictee texte, le
+brouillon, la sauvegarde serveur, l'import/export JSON et l'export Word.
+
+Conditionner les commandes photo et dictee par leurs accords respectifs. Ne
+pas conserver d'audio brut et ne pas ajouter de nouvelle table ou API.
+
+### Raisons principales
+
+- livrer rapidement un parcours observable et testable sur le terrain ;
+- conserver un seul moteur et la compatibilite des anciens brouillons ;
+- rendre les accords operationnels, et pas seulement informatifs ;
+- eviter une migration MySQL pour des champs encore en phase de prototype.
+
+### Consequences
+
+Le rapport technique reste inchangé. Un dossier `Visite Globale` peut saisir
+et exporter l'ecoute client ; l'absence de motif ou d'attentes produit une
+alerte non bloquante. Les phases suivantes seront ajoutees progressivement
+dans l'assistant existant.
 
 ## 2026-09-11 - Privilegier le prototype fonctionnel avant le TDD
 
@@ -47,6 +207,9 @@ reste un sujet explicite de la future phase d'industrialisation.
 
 ## 2026-09-11 - Limiter le catalogue visible a deux parcours
 
+> Statut : partiellement remplacee par la decision ci-dessus concernant le
+> sens de la classification de `Visite Globale`.
+
 ### Contexte
 
 La coexistence de plusieurs categories rend le demarrage du rapport moins
@@ -73,11 +236,12 @@ etude ; il n'est pas presente comme implemente.
 
 ### Consequences
 
-Les nouveaux rapports techniques utilisent quatre sous-categories et les
-visites globales les quatre elements. Les anciennes classifications sont
-normalisees de maniere defensive, sans reclassement arbitraire. La decision du
-10 septembre ci-dessous est conservee comme historique et remplacee uniquement
-sur la denomination et le catalogue visible.
+Les nouveaux rapports techniques utilisent quatre sous-categories. La
+classification initiale des visites globales par element a ensuite ete
+remplacee par un type d'habitation et un parcours ordonne couvrant les quatre
+elements. Les anciennes classifications sont normalisees de maniere defensive.
+La decision du 10 septembre ci-dessous est conservee comme historique et
+remplacee uniquement sur la denomination et le catalogue visible.
 
 ## 2026-09-10 - Ajouter Rapport Habitologue comme type de dossier
 

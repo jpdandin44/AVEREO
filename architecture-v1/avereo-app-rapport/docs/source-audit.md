@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-09-11
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -37,6 +37,16 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 
 ## Constats
 
+Lot du 14 septembre : correction du bouton de risques qui ouvrait uniquement
+le rapport externe et de la disparition silencieuse du bloc sans resultat.
+Ajout des vues urbanisme et relief/orientation, erreurs explicites, reprise
+JSON defensive et liens documentaires limites a HTTPS sans identifiants.
+39 tests et build final passent ; vues, reprise du brouillon et apercu
+verifies localement. Le controle a aussi corrige deux commandes de dictee
+de l'etape Export non verrouillees sans accord pour Visite Globale.
+Ni interpretation juridique automatique ni simulation des eaux pluviales.
+Limites de qualification : voir [le bilan du lot](../api/contexte-du-bien.md).
+
 | Niveau | Fichier/zone | Constat et impact | Correction | Statut |
 | --- | --- | --- | --- | --- |
 | IMPORTANT | ZIP, `frontend/node_modules/` et `frontend/dist/` | Dependances et build fournis dans la source, non reproductibles et trop volumineux pour Git. | Exclusion; installation par `npm ci`; build par Vite. | corrige |
@@ -45,7 +55,10 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 | IMPORTANT | `frontend/src/App.jsx`, apercu `srcDoc` | Des URLs d'images importees sont reinserees dans l'apercu; le cadre n'est pas sandboxe. | `iframe` sandboxee sans permission et politique `no-referrer`. | corrige |
 | IMPORTANT | `frontend/src/App.jsx`, appels BAN/IGN | Dependances externes appelees directement par le navigateur, avec disponibilite et CORS hors controle. | Conservees pour le fonctionnement; documentees; proxy PHP a envisager si les conditions d'usage l'exigent. | accepte |
 | IMPORTANT | `frontend/src/App.jsx`, rapport Georisques | Le bouton de rapport des risques de la source historique avait ete omis pendant la migration statique de juillet 2026. | Lien officiel retabli apres validation des coordonnees; seuls longitude et latitude sont transmis; tests unitaires ajoutes. | corrige |
-| AMELIORATION | `frontend/src/reportClassification.js`, catalogue | Les categories historiques surchargeaient le choix de creation par rapport aux deux parcours devenus prioritaires. | Deux categories restent selectionnables; les autres sont masquees par configuration, sans suppression ni perte de compatibilite des brouillons. | a valider |
+| IMPORTANT | `frontend/src/App.jsx`, synthese Georisques | La consultation externe ne presentait pas les risques dans l'assistant et la recherche echouait entierement lorsqu'aucune parcelle n'etait retournee. | Endpoint JSON V1 public appele avec les seules coordonnees; synthese sourcee et horodatee; cadastre rendu non bloquant; indisponibilite explicite. | valide localement, a qualifier en environnement heberge |
+| AMELIORATION | `frontend/src/reportClassification.js`, catalogue | Les categories historiques surchargeaient le choix de creation et Eau, Air, Terre, Feu avaient ete modelises a tort comme sous-categories exclusives. | Deux categories restent selectionnables; Visite Globale utilise le type d'habitation et affiche les quatre dimensions comme parcours ordonne commun; les modules historiques restent masques sans suppression. | a valider |
+| AMELIORATION | `frontend/src/App.jsx`, `Visite Globale` | La phase `Ecoute` et ses accords etaient documentes mais absents du parcours fonctionnel. | Section conditionnelle ajoutee dans `Dossier`; donnees incluses dans le payload et le Word; photos et dictee bloquees sans leur accord. | valide localement, a qualifier via CONNECT |
+| AMELIORATION | `frontend/src/App.jsx`, protocole Habitologie | Le fil Eau, Air, Terre, Feu etait informatif mais ne guidait ni les controles ni le classement des observations. | Points de controle par phase, observations rattachees et anciennes observations preservees dans `A classer`; export Word aligne. | valide localement, a qualifier via CONNECT |
 | AMELIORATION | `frontend/package.json` | La source ne definissait aucun test unitaire frontend. | La suite `node:test` couvre notamment le catalogue visible, les modules masques, la preservation de Reception, la normalisation et les migrations des prototypes; le lint et les tests de composants restent a definir dans la strategie globale. | mitige |
 | INFORMATION | `Rapport_AVEREO_Pro.txt` | La source historique presente un encodage mojibake. | La refonte JSX corrige l'affichage et reste la cible. | corrige |
 | INFORMATION | `frontend/package.json` | Vite 5 exposait des alertes de dependances de developpement. | Passage a Vite 7 et plugin React 5. Au 11 septembre 2026, `npm audit --omit=dev` est sans alerte; l'audit complet signale `browserslist` et `baseline-browser-mapping`, a traiter en dette non bloquante. | mitige |
@@ -58,6 +71,28 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 | IMPORTANT | Cookie du sas local | Le cookie et la redirection imposaient HTTPS meme sur `127.0.0.1`, rendant la vraie application inaccessible depuis CONNECT Docker. | HTTP local et cookie non-`Secure` autorises uniquement avec `environment=local`; HTTPS et `Secure` restent obligatoires hors local. | corrige |
 
 ## Controle des secrets
+
+### Qualification du lot ecoute et localisation des 12 et 13 septembre
+
+- Les nouveaux choix de protocole sont vides ; les sujets explicites de
+  l'ecoute suggerent des controles, les choix manuels restant prioritaires.
+  Les anciens booleens sont preserves. Aucun texte client n'est transmis a
+  un modele IA ni utilise pour une inference automatique.
+- La carte IGN charge uniquement les tuiles du secteur consulte, avec
+  `referrerPolicy: no-referrer` : ni nom, ni email, ni notes. Le service
+  externe recoit la requete reseau du navigateur et peut en deduire le secteur.
+  Leaflet est livre localement, sans script tiers charge depuis un CDN.
+- Les confirmations besoin/lieu sont des mentions de travail, pas des
+  signatures electroniques. Leur modification invalide la confirmation liee.
+- L'ancien fond noir est resolu dans l'integration directe : plan, parcelles
+  et photographies aeriennes observes dans le navigateur integre sur un lieu
+  public nantais. La parcelle peut rester absente du resultat API Carto meme
+  lorsque les tuiles cadastrales sont visibles : aucune reference n'est inventee.
+  Restent a qualifier : hebergement et coupure reseau pendant une visite.
+- Audit npm : aucune vulnerabilite de production ; les deux alertes de
+  developpement deja referencees dans DT-RAP-09 restent hors perimetre.
+- Aucun changement d'authentification, de secret, de base ou de workflow de
+  deploiement dans ce lot.
 
 Aucune cle Gemini/Google, cle Firebase/Supabase, cle privee, valeur de mot de passe ou jeton reel n'a ete detecte dans les fichiers applicatifs audites. Les references `secrets.*` des workflows sont des noms de secrets GitHub, pas leurs valeurs.
 

@@ -1,7 +1,15 @@
 export const DEFAULT_CATEGORY = 'Expertise & Visite technique';
 export const DEFAULT_SUBCATEGORY = 'Evaluation Energétique';
 export const HABITOLOGIE_CATEGORY = 'Visite Globale';
-export const HABITOLOGIE_SUBCATEGORY = 'Eau';
+export const HABITOLOGIE_DEFAULT_HOUSING_TYPE = 'À préciser';
+export const HABITOLOGIE_HOUSING_TYPES = Object.freeze([
+  HABITOLOGIE_DEFAULT_HOUSING_TYPE,
+  'Maison',
+  'Appartement',
+  'Immeuble collectif',
+  'Autre habitation',
+]);
+export const HABITOLOGIE_ANALYSIS_STAGES = Object.freeze(['Eau', 'Air', 'Terre', 'Feu']);
 export const LEGACY_DEFAULT_CATEGORY = 'Expertise & visite technique';
 export const LEGACY_HABITOLOGIE_CATEGORY = 'Rapport Habitologue';
 export const LEGACY_HABITOLOGIE_SUBCATEGORY = "Rapport d'habitologie";
@@ -14,9 +22,9 @@ export const REPORT_CATEGORIES = Object.freeze({
     legacySubcategories: ['Constat general', 'Fissures', 'Humidite', 'Toiture'],
   },
   [HABITOLOGIE_CATEGORY]: {
-    description: 'Lecture globale du bien selon les quatre elements.',
-    subcategories: [HABITOLOGIE_SUBCATEGORY, 'Air', 'Terre', 'Feu'],
-    legacySubcategories: [LEGACY_HABITOLOGIE_SUBCATEGORY],
+    description: 'Lecture globale et ordonnee du bien : Eau, Air, Terre puis Feu.',
+    subcategories: HABITOLOGIE_HOUSING_TYPES,
+    legacySubcategories: [LEGACY_HABITOLOGIE_SUBCATEGORY, ...HABITOLOGIE_ANALYSIS_STAGES],
   },
   'Assistance avant-projet': {
     description: 'Aide a la decision, cadrage travaux et consultation.',
@@ -52,7 +60,8 @@ export function getReportSubcategories(category, currentSubcategory = '') {
 
   const visibleSubcategories = [...definition.subcategories];
   if (
-    currentSubcategory
+    category !== HABITOLOGIE_CATEGORY
+    && currentSubcategory
     && definition.legacySubcategories?.includes(currentSubcategory)
     && !visibleSubcategories.includes(currentSubcategory)
   ) {
@@ -109,12 +118,14 @@ export function normalizeReportClassification(incoming = {}) {
     ...categoryDefinition.subcategories,
     ...(categoryDefinition.legacySubcategories || []),
   ];
-  const requestedSubcategory = legacyHabitologie || intermediateHabitologie || previousHabitologie
-    ? LEGACY_HABITOLOGIE_SUBCATEGORY
-    : report.sous_categorie;
-  const sousCategorie = availableSubcategories.includes(requestedSubcategory)
-    ? requestedSubcategory
-    : categoryDefinition.subcategories[0];
+  const requestedSubcategory = report.sous_categorie;
+  const sousCategorie = categorie === HABITOLOGIE_CATEGORY
+    ? HABITOLOGIE_HOUSING_TYPES.includes(requestedSubcategory)
+      ? requestedSubcategory
+      : HABITOLOGIE_DEFAULT_HOUSING_TYPE
+    : availableSubcategories.includes(requestedSubcategory)
+      ? requestedSubcategory
+      : categoryDefinition.subcategories[0];
 
   return {
     ...report,

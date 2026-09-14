@@ -5,7 +5,7 @@ title: Plan de mise en oeuvre de Visite Globale en habitologie
 status: in-progress
 version: git
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-13
 owner: jpdandin
 tags:
   - rapport
@@ -43,11 +43,27 @@ la sauvegarde et l'export restent ceux du moteur actuel. Les anciens dossiers
 d'une nouvelle creation. `Assistance avant-projet` et `Diagnostic specifique`
 sont egalement conserves dans le code comme modules complementaires masques.
 
-Les nouvelles sous-categories sont :
+Les classifications visibles sont :
 
 - `Evaluation Energétique`, `Mesures`, `cartographie` et `pathologies` pour
   `Expertise & Visite technique` ;
-- `Eau`, `Air`, `Terre` et `Feu` pour `Visite Globale`.
+- un type d'habitation `Maison`, `Appartement`, `Immeuble collectif` ou
+  `Autre habitation` pour `Visite Globale`.
+
+Les quatre dimensions `Eau`, `Air`, `Terre` et `Feu` constituent le parcours
+d'analyse de chaque visite globale, dans cet ordre. Elles ne sont pas des
+sous-categories exclusives.
+
+Le prototype transpose maintenant cet ordre dans `Protocoles`, avec des
+points de controle propres a chaque phase, puis dans `Observations`, ou chaque
+constat peut etre rattache a la phase et au controle concernes. Les anciennes
+observations sans rattachement restent visibles dans `A classer`.
+
+Le fil conducteur est affiche en tete de `Protocoles`, pas dans `Dossier`.
+L'ecoute est enrichie et les sujets explicitement coches suggerent les points
+du protocole, initialement non selectionnes. Les choix manuels priment. Le
+cadastre IGN direct et sa confirmation sont integres et verifies localement ;
+la qualification hebergee reste a faire, comme precise dans le workflow de reference.
 
 Le workflow operationnel futur est maintenu comme proposition en etude dans
 [`../workflows/workflow-habitologie.md`](../workflows/workflow-habitologie.md).
@@ -84,10 +100,11 @@ Correspondance du besoin metier avec l'assistant :
 - niveau, source, date de consultation et avertissement sur les limites ;
 - possibilite de confirmer, completer ou commenter les donnees officielles.
 
-Le socle commun retablit d'abord l'ouverture du rapport PDF officiel Georisques
-a partir des coordonnees du bien. Cette consultation ne remplace pas le lot 3 :
-celui-ci devra integrer des donnees structurees, leur date et une confirmation
-manuelle dans le dossier Habitologue.
+Le socle commun ouvre le rapport officiel Georisques a partir des coordonnees
+du bien. Il affiche aussi directement la reponse structuree de l'endpoint V1
+`resultats_rapport_risque` : risques presents, statuts a l'adresse et sur la
+commune, source et date de consultation. La confirmation ou le commentaire
+manuel des donnees officielles reste a definir dans une tranche ulterieure.
 
 ### 4. Analyse et visite
 
@@ -124,13 +141,13 @@ suppression.
 | --- | --- | --- |
 | Adresse et localisation | Service de geocodage de la Geoplateforme | Appel avec temporisation, resultat modifiable manuellement et coordonnees conservees avec la source. |
 | Cadastre | API Carto IGN, module Cadastre | Recuperer la parcelle depuis l'adresse ou les coordonnees ; garder une saisie manuelle de secours. |
-| Risques | API Georisques | Appeler l'API cote serveur, conserver la date et les niveaux tels que fournis, sans transformer l'information en diagnostic. |
+| Risques | API Georisques V1 | Appel direct sans jeton avec les seules coordonnees, conservation de la source, de la date et des statuts fournis, sans transformer l'information en diagnostic. |
 | Aides nationales | API Mes Aides Reno | Commencer par les aides calculees par l'API et les liens officiels, puis elargir les criteres. |
 | Aides locales | Catalogue Mes Aides Reno | Presenter une liste geolocalisee sourcee plutot qu'un moteur de regles local duplique. |
 | CEE | Catalogue officiel des operations standardisees | Associer des fiches aux travaux selectionnes et enregistrer la version/date du catalogue. |
 | AQC, ADEME, Ubakus, Guidance Wheel | Sites des editeurs | Utiliser des liens et credits dans le MVP. N'integrer une image, un calcul ou un contenu qu'apres validation explicite de la licence ou de l'autorisation. |
 
-References consultees le 10 septembre 2026 :
+References consultees ou reverifiees le 12 septembre 2026 :
 
 - <https://geoservices.ign.fr/documentation/services/api-et-services-ogc/api-carto-rest>
 - <https://adresse.data.gouv.fr/outils/api-doc/adresse>
@@ -201,6 +218,27 @@ Les champs metier et les appels externes specifiques ne font pas partie de ce
 lot. La sauvegarde serveur et l'export sont deja ceux de Rapport ; leur contenu
 sera enrichi au fil des adaptations metier.
 
+### Premiere tranche du lot 2 au 11 septembre 2026
+
+Une premiere tranche `Ecoute client` est implementee dans l'etape `Dossier`,
+uniquement lorsque la categorie `Visite Globale` est selectionnee :
+
+- motif de la visite ;
+- attentes et priorites du client ;
+- preoccupations exprimees ;
+- usages du logement et habitudes ;
+- occupants et contexte d'occupation ;
+- accords distincts pour les photos et la dictee vocale.
+
+Les champs acceptent la saisie manuelle et, apres accord, la dictee texte. Les
+accords desactivent effectivement les commandes photo et micro lorsqu'ils ne
+sont pas enregistres. Aucun audio brut n'est conserve. Les donnees sont
+reprises par le brouillon, le payload JSON, la sauvegarde serveur et le document
+Word sans evolution de schema MySQL.
+
+Cette tranche ne livre pas encore la machine d'etats, la cloture de collecte,
+les traitements d'analyse ni la synthese client.
+
 ### Delai global
 
 - MVP vraiment leger : **15 a 20 jours**, soit environ **3 a 4 semaines**,
@@ -215,8 +253,9 @@ sera enrichi au fil des adaptations metier.
 ## Ordre de livraison recommande
 
 1. valider les donnees indispensables sur un exemple reel ;
-2. stabiliser la categorie `Visite Globale` dans le parcours actuel ;
-3. adapter Dossier, Site et Observations sans aucune API externe ;
+2. stabiliser la categorie `Visite Globale` et sa phase `Ecoute` dans le
+   parcours actuel ;
+3. adapter `Observation/Analyse` sans nouvelle API externe ;
 4. brancher geocodage, cadastre puis risques avec des modes de secours ;
 5. ajouter les aides sans promettre automatiquement l'eligibilite ;
 6. finaliser la synthese et l'export ;

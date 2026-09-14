@@ -5,7 +5,7 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -30,8 +30,26 @@ masque. Elles demeurent chargeables pour assurer la compatibilite des dossiers
 existants et pourront etre reactivees comme modules complementaires.
 
 `Visite Globale` reutilise le meme assistant, la meme API et le meme stockage.
-La valeur existante `categorie` permettra de conditionner progressivement son
-workflow. Aucune nouvelle base, API, table ou application n'est introduite.
+La valeur existante `categorie` conditionne l'affichage de la phase `Ecoute`
+dans l'etape `Dossier`. Ses champs et consentements sont conserves dans l'objet
+JSON `ecoute`, au sein du payload existant. Aucune nouvelle base, API, table ou
+application n'est introduite.
 Les anciennes classifications `Expertise & visite technique` et
-`Rapport Habitologue` sont normalisees sans inventer un nouvel element Eau,
-Air, Terre ou Feu.
+`Rapport Habitologue` sont normalisees sans inventer un type d'habitation. Pour
+`Visite Globale`, le champ technique historique `sous_categorie` conserve la
+valeur du type d'habitation afin de preserver le schema existant. Les constantes
+de workflow portent separement l'ordre d'analyse `Eau -> Air -> Terre -> Feu`.
+Le payload conserve egalement `habitologie_protocoles` pour les points retenus,
+`phase_habitologie` et `controle_habitologie` sur chaque observation, ainsi
+qu'une synthese `risques` sourcee et horodatee issue de Georisques V1. Ces
+ajouts restent compatibles avec les brouillons plus anciens grace a la fusion
+des valeurs par defaut.
+
+La selection Habitologie est resolue depuis les sujets explicites de `ecoute`
+et les choix manuels de `habitologie_protocoles` (prioritaires). Le payload
+`localisation` conserve l'adresse geocodee et la confirmation datee du lieu.
+Leaflet 1.9.4 affiche les images WMTS publiques IGN dans le frontend, sans
+iframe ni API interne supplementaire. Le stockage reste le payload JSON :
+`urbanisme.context` conserve les attributs GPU et `terrain` les mesures
+altimetriques, l'orientation et les notes. Voir
+[`api/cartographie.md`](api/cartographie.md).

@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-11
+updated: 2026-09-14
 owner: jpdandin
 tags:
   - rapport
@@ -25,8 +25,15 @@ tags:
 - La derniere validation de production n'a cree aucune donnee metier ; le parcours complet creation, sauvegarde, rechargement et isolation multi-utilisateur reste a qualifier dans un environnement de test.
 - Le premier lot Habitologie et le retablissement du rapport officiel
   Georisques ont ete integres par les PR #57 et #58.
-- La simplification du catalogue est en cours sur une branche dediee : deux
+- La simplification du catalogue a ete integree par la PR #59 : deux
   categories visibles et modules historiques conserves mais masques.
+- La PR #60 a confirme la priorite donnee au prototype fonctionnel et reporte
+  le chantier TDD a la phase d'industrialisation.
+- Une premiere tranche `Ecoute client` pour `Visite Globale` est implementee
+  sur une branche dediee et reste soumise a revue humaine.
+- La meme branche structure le protocole et les observations selon
+  `Eau -> Air -> Terre -> Feu`, et affiche dans `Site` une synthese Georisques
+  sourcee et horodatee. Elle reste soumise a revue humaine.
 
 ## Dette technique non bloquante
 
@@ -75,12 +82,34 @@ la conservation des donnees vocales et le role habilite a valider.
 
 ## Travail actuel et prochaine evolution
 
-Le travail actuel limite la creation a `Expertise & Visite technique` et
-`Visite Globale`, avec leurs quatre sous-categories respectives. Les autres
-categories sont masquees, mais pas supprimees. Apres validation de cette
-simplification, la prochaine tranche pourra implementer progressivement le
-workflow de visite globale, en commencant par les donnees et controles de la
-phase `Ecoute`.
+Le lot du 14 septembre remonte les accords en debut de Dossier, rend la
+synthese des risques accessible dans une vue explicite et ajoute des panneaux
+urbanisme et relief/orientation. 39 tests et le build passent ; le parcours
+local, la reprise et l'apercu ont ete controles. Revue humaine et qualification
+hebergee restent requises avant mise en production.
+Voir la [recette du contexte du bien](api/contexte-du-bien.md).
+
+La branche de prototype enrichit l'ecoute et relie ses sujets explicites aux
+suggestions du protocole, sans preselection globale. La confirmation du besoin
+reste manuelle. La carte cadastrale directe IGN remplace l'iframe dont le fond
+restait noir. Plan, vue aerienne et parcelles ont ete verifies localement ;
+la confirmation et le retour au champ adresse sont fonctionnels. Il reste a
+qualifier ce volet en preproduction avant tout deploiement de production.
+Les supports Solive/Habitologue annonces ne sont pas encore fournis.
+
+La tranche actuelle ajoute `Ecoute client` a `Visite Globale` sans modifier le
+parcours des rapports techniques. Les donnees sont sauvegardees et exportees
+dans le payload existant ; les accords conditionnent l'usage des photos et de
+la dictee. Le motif et les attentes manquants restent des alertes non
+bloquantes pendant le prototype. Le dossier distingue le type d'habitation du
+parcours d'analyse commun `Eau -> Air -> Terre -> Feu`.
+
+Le protocole detaille et les observations sont maintenant alignes sur ces
+quatre phases. La synthese Georisques est integree a `Site` sans jeton et
+reste consultable dans le rapport officiel. Apres revue et validation de cette
+tranche, la prochaine evolution fonctionnelle consiste a enrichir les champs
+metier de chaque phase, puis a cadrer `Explication` et
+`Pistes d'accompagnement`.
 
 Le cadrage, les hypotheses, les lots et le chiffrage sont decrits dans
 `docs/habitologie-light-plan.md`.
