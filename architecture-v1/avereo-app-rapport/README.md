@@ -74,6 +74,13 @@ Dans Site, quatre vues separent validation cadastrale, synthese des risques,
 urbanisme et relief/orientation. Voir le
 [parcours et les limites du contexte du bien](api/contexte-du-bien.md).
 
+Apres confirmation du lieu, le bloc `Informations deja disponibles` propose
+GoRenove et les typologies Pro'Reno. Les fiches sont choisies manuellement,
+avec date et notes conservees dans le dossier et l'export ; aucun resultat
+n'est importe automatiquement. Voir [l'evolution 2 et sa recette](api/ressources-batiment.md).
+Son apercu isole utilise `npm.cmd run dev -- --host 127.0.0.1 --port 52873 --strictPort`
+depuis `frontend/`, puis <http://127.0.0.1:52873/>.
+
 Le choix complementaire de `Visite Globale` correspond au type d'habitation :
 `Maison`, `Appartement`, `Immeuble collectif` ou `Autre habitation`. `Eau`,
 `Air`, `Terre` et `Feu` ne sont pas des sous-categories : ils forment le fil

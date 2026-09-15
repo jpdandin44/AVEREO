@@ -31,6 +31,8 @@ tags:
   le chantier TDD a la phase d'industrialisation.
 - La PR #61 est mergee : la tranche `Ecoute client` pour `Visite Globale`,
   le contexte du bien et la carte cadastrale sont integres a `main`.
+- La PR #62 est mergee : phases activables integrees a `main` au commit
+  `c6319b9abc118d883802fea14d673d42d8a876a9`, sans deploiement implicite.
 - Cette tranche structure le protocole et les observations selon
   `Eau -> Air -> Terre -> Feu`, et affiche dans `Site` une synthese Georisques
   sourcee et horodatee. Cela ne constitue pas un deploiement heberge.
@@ -86,8 +88,10 @@ Evolution 1 : phases activables dans le fil conducteur, suspension reversible
 avec preservation des choix, observations et photos. Recette locale et
 verification des exports : voir la
 [recette dediee](workflows/workflow-habitologie.md#recette-de-levolution-1).
-La PR dediee doit etre livree et validee avant de commencer l'evolution 2
-(GoRenove/Pro'Reno), qui n'est pas implementee. Pas de deploiement automatique.
+L'evolution 1 est integree par la PR #62. L'evolution 2 autorisee le 15 septembre
+ajoute le bloc de ressources GoRenove/Pro'Reno et leur rattachement manuel au
+bien, sans extraction automatique. Livraison en PR distincte ; voir
+[la recette et les limites](api/ressources-batiment.md). Pas de deploiement automatique.
 
 ### Socle integre par la PR #61
 

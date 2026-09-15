@@ -95,6 +95,15 @@ tags:
 
 ## Exigences techniques et securite
 
+- Apres confirmation du lieu, proposer GoRenove et Pro'Reno dans Site pour
+  les deux parcours, sans attribuer automatiquement de fiche au bien.
+- Conserver liens choisis, notes et dates de consultation dans le dossier
+  et ses exports. Distinguer simulations, donnees publiees et typologies generales.
+- Invalider le rattachement d'une fiche apres changement de lien ou de lieu,
+  sans supprimer les notes ; ne pas le restaurer implicitement.
+- Refuser la navigation vers des URL non autorisees ; aucun scraping,
+  abonnement, compte, cle ni acceptation de conditions automatique.
+
 - Les accords de Visite Globale precedent l'entretien dans Dossier, sans
   accord photo ou dictee coche implicitement.
 - Rapport des risques ouvre la synthese dans Site ; les erreurs sont

@@ -15,6 +15,17 @@ tags:
 
 # Decisions structurantes de Rapport AVEREO
 
+## 2026-09-15 - Ressources externes choisies par le professionnel
+
+Contexte : exploiter les informations deja disponibles apres validation du bien.
+Decision : deux acces complementaires GoRenove/Pro'Reno, consultation externe
+et rattachement manuel date, sans API ni extraction automatique. Le changement
+de lieu invalide l'association sans effacer les notes.
+Raisons : prototype simple, pas d'ID BDNB suppose ni de typologie appliquee par
+defaut ; distinction entre donnees, simulations et diagnostic terrain.
+Consequences : ajout JSON compatible, limites d'acces externes explicites,
+validation humaine des correspondances. Voir [la source de reference](api/ressources-batiment.md).
+
 ## 2026-09-15 - Suspendre une phase sans effacer le travail
 
 Contexte : adapter le perimetre de la visite au besoin client, depuis le fil

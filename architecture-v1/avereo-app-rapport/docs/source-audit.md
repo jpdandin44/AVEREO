@@ -37,6 +37,18 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 
 ## Constats
 
+### Evolution 2 — ressources du batiment
+
+Perimetre : frontend Rapport uniquement, aucune modification de secret,
+authentification, base ou deploiement. Liens ouverts sur action, routes HTTPS
+et domaines autorises, parametres inutiles retires, notes echappees dans le
+document. Aucun ID de batiment ou choix typologique automatique. Les anciennes
+associations sont marquees a verifier apres modification du lieu sans perte
+des notes. Donnees, risques, rollback et limites :
+[`../api/ressources-batiment.md`](../api/ressources-batiment.md).
+
+### Evolutions precedentes
+
 Evolution 1 du 15 septembre : etat reversible par phase, conservation des
 choix et de toutes les observations/photos, sans nouvel appel reseau ni
 secret. Perimetre limite au frontend Rapport et a sa documentation. Le payload

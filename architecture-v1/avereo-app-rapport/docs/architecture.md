@@ -96,6 +96,12 @@ La configuration sensible est chargee depuis `/home/CPANEL_USERNAME/.avereo/rapp
 
 ## Structure
 
+`BuildingResources.jsx` complete Site avec GoRenove et Pro'Reno.
+`buildingResources.js` centralise les sources, routes autorisees, rattachement
+au lieu confirme et restitution. Les donnees suivent `ressources_batiment`
+dans le payload JSON. Les ouvertures externes sont manuelles, sans requete
+d'enrichissement ni secret ; voir [le contrat fonctionnel](../api/ressources-batiment.md).
+
 - `frontend/src/` : interface et mode brouillon local.
 - `frontend/public/api/` : API PHP publiee au build.
 - `frontend/public/auth/callback/` : callback OAuth.

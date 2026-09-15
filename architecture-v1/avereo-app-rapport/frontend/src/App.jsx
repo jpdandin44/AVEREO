@@ -41,6 +41,8 @@ import {
 } from './habitologieProtocol.js';
 import { LISTENING_SECTIONS, emptyClientListening } from './clientListening.js';
 import LocationMap from './LocationMap.jsx';
+import BuildingResources from './BuildingResources.jsx';
+import { buildingResourcesHtml, emptyBuildingResources, normalizeBuildingResources } from './buildingResources.js';
 import { emptyLocation, locationConfirmed, validLocation } from './locationMap.js';
 import { TerrainPanel, UrbanismPanel } from './SiteInsights.jsx';
 import { DIRECTIONS, emptyTerrain, normalizeStoredTerrain } from './terrainContext.js';
@@ -179,6 +181,7 @@ const initialReport = normalizeReportClassification({
   },
   risques: emptyGeorisquesRiskSummary(),
   localisation: emptyLocation(),
+  ressources_batiment: emptyBuildingResources(),
   terrain: emptyTerrain(),
   ecoute: emptyClientListening(),
   protocoles: {
@@ -215,6 +218,7 @@ function deepMergeReport(base, incoming) {
     urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
     risques: { ...base.risques, ...(classifiedIncoming.risques || {}) },
     localisation: { ...base.localisation, ...(classifiedIncoming.localisation || {}) },
+    ressources_batiment: normalizeBuildingResources(classifiedIncoming.ressources_batiment),
     terrain: { ...base.terrain, ...(classifiedIncoming.terrain || {}) },
     ecoute: { ...base.ecoute, ...(classifiedIncoming.ecoute || {}) },
     habitologie_protocoles: mergeHabitologieProtocolState(classifiedIncoming.habitologie_protocoles),
@@ -592,6 +596,8 @@ function buildWordDocumentHtml(report) {
     <table><tr><th>Point</th><th>Altitude (m)</th></tr>${report.terrain.analysis.samples.map((p) => `<tr><td>${escapeHtml(p.label)}</td><td>${p.z.toFixed(2)}</td></tr>`).join('')}</table>
     <p>Neuf points autour de l'adresse, pouvant depasser la propriete. Precision variable. Ce n'est ni une etude hydrologique ni un releve de geometre ; aucun ecoulement reel ou absence de risque n'en est deduit.</p>` : ''}
   ${report.terrain?.notes ? `<h4>Verifications terrain / eaux pluviales</h4><p>${textToHtml(report.terrain.notes)}</p>` : ''}
+
+  ${buildingResourcesHtml(report, escapeHtml)}
 
   ${ecouteHtml}
 
@@ -1643,6 +1649,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
           />
         </Field>
       </div>}
+      <BuildingResources report={report} setReport={setReport} />
     </section>
   );
 }

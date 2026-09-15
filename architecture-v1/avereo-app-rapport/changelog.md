@@ -16,6 +16,12 @@ tags:
 
 ## 2026-09-15
 
+- Evolution 2 : cartes GoRenove/Pro'Reno dans Site apres confirmation du bien,
+  copie de l'adresse, liens et notes manuels dates, restitution dans l'export.
+- Rattachement invalide apres modification du lien/lieu, sans perte des notes.
+  Validation des URL officielles et tests de reprise/export ; aucune API ni
+  dependance supplementaire. Voir [la recette](api/ressources-batiment.md).
+
 - Evolution 1 : activation/desactivation complete d'une phase depuis son
   numero ou son nom dans Protocoles ; bouton accessible au clavier et etat visible.
 - Conservation puis restauration des choix effectifs ; l'exclusion prime
