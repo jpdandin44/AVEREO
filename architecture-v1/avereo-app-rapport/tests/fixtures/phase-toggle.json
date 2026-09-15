@@ -1,0 +1,60 @@
+{
+  "categorie": "Visite Globale",
+  "sous_categorie": "Maison",
+  "titre": "RECETTE FICTIVE - phases activables",
+  "reference_dossier": "DEMO-PHASES-20260915",
+  "proprietaire": "CLIENT FICTIF - TEST",
+  "adresse_logement": "Adresse fictive - aucune recherche",
+  "date_visite": "2026-09-15",
+  "intervenant": "RECETTE LOCALE",
+  "nom_signataire": "SIGNATURE FICTIVE - TEST UNIQUEMENT",
+  "signature": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aXuoAAAAASUVORK5CYII=",
+  "ecoute": {
+    "motif_visite": "Test de conservation du protocole",
+    "attentes_client": "Recette locale uniquement",
+    "sujets_identifies": [
+      "humidite"
+    ],
+    "consentement_photos": false,
+    "consentement_dictee": false
+  },
+  "habitologie_protocoles": {
+    "air": {
+      "controls": {
+        "presence_ventilation": true,
+        "fonctionnement_ventilation": true,
+        "installation_entretien": false
+      }
+    }
+  },
+  "observations": [
+    {
+      "id": "qa-air",
+      "phase_habitologie": "air",
+      "controle_habitologie": "presence_ventilation",
+      "titre": "VMC - constat fictif conservé",
+      "observations": "RECETTE : cette observation reste présente lorsque Air est non retenue.",
+      "photos": [
+        {
+          "id": "qa-photo",
+          "name": "pixel-test.png",
+          "src": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aXuoAAAAASUVORK5CYII=",
+          "horodatageISO": "2026-09-15T08:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "qa-eau",
+      "phase_habitologie": "eau",
+      "titre": "Humidité - constat fictif",
+      "observations": "Contrôle de non-régression Eau",
+      "photos": []
+    },
+    {
+      "id": "qa-old",
+      "titre": "Ancien constat sans phase",
+      "observations": "Reste à classer, sans perte.",
+      "photos": []
+    }
+  ]
+}

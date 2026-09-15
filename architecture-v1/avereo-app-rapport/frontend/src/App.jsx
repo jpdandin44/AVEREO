@@ -10,7 +10,6 @@ import {
 import {
   DEFAULT_CATEGORY,
   DEFAULT_SUBCATEGORY,
-  HABITOLOGIE_ANALYSIS_STAGES,
   HABITOLOGIE_DEFAULT_HOUSING_TYPE,
   REPORT_CATEGORIES,
   getReportSubcategories,
@@ -33,6 +32,8 @@ import {
   LISTENING_TOPICS,
   createHabitologieProtocolState,
   isHabitologieControlSelected,
+  isHabitologieStageEnabled,
+  setHabitologieStageEnabled,
   listeningSuggestions,
   findHabitologieControl,
   findHabitologieStage,
@@ -365,7 +366,9 @@ function buildProtocolHtml(report) {
           <h3>Phase ${index + 1} - ${escapeHtml(stage.label)}</h3>
           <p>${escapeHtml(stage.summary)}</p>
           ${
-            selectedControls.length > 0
+            !isHabitologieStageEnabled(report, stage.key)
+              ? '<p><strong>Non retenue pour cette visite.</strong> Les éventuelles observations antérieures sont conservées ci-dessous.</p>'
+              : selectedControls.length > 0
               ? `<ul>${selectedControls.map((control) => `<li>${escapeHtml(control.label)}</li>`).join('')}</ul>`
               : '<p><span class="muted">Aucun point retenu pour cette phase.</span></p>'
           }
@@ -472,7 +475,7 @@ function buildWordDocumentHtml(report) {
               habitologie
                 ? `<tr><td>Phase d'analyse</td><td>${escapeHtml(
                     findHabitologieStage(obs.phase_habitologie)?.label || 'A classer',
-                  )}</td></tr>
+                  )}${findHabitologieStage(obs.phase_habitologie) && !isHabitologieStageEnabled(report, obs.phase_habitologie) ? ' — phase non retenue, observation conservée' : ''}</td></tr>
                    <tr><td>Point du protocole</td><td>${escapeHtml(
                      findHabitologieControl(obs.phase_habitologie, obs.controle_habitologie)?.label ||
                        'Constat transversal ou non classe',
@@ -1671,7 +1674,7 @@ function ProtocolStep({ report, setReport }) {
           <h2>Protocoles</h2>
           <p>
             {habitologie
-              ? "Suivre les quatre phases dans l'ordre et retenir les points a observer."
+              ? "Retenir les phases utiles à la visite, puis les suivre dans l'ordre Eau, Air, Terre, Feu."
               : 'Selectionner les controles qui seront repris dans le rapport.'}
           </p>
         </div>
@@ -1681,12 +1684,19 @@ function ProtocolStep({ report, setReport }) {
           <div className="analysis-sequence" aria-label="Ordre de l'analyse globale">
             <div>
               <strong>Fil conducteur de l'analyse</strong>
-              <small>Faire le point avec le client avant de lancer les observations.</small>
+              <small>Cliquer sur le numéro ou le nom pour activer ou désactiver une phase avec le client.</small>
             </div>
             <ol>
-              {HABITOLOGIE_ANALYSIS_STAGES.map((stage, index) => (
-                <li key={stage}><span>{index + 1}</span><strong>{stage}</strong>
-                  {index < HABITOLOGIE_ANALYSIS_STAGES.length - 1 && <ArrowRight size={16} aria-hidden="true" />}
+              {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
+                <li key={stage.key}>
+                  <button type="button" className="phase-toggle"
+                    aria-label={`Phase ${index + 1} ${stage.label}`}
+                    aria-pressed={isHabitologieStageEnabled(report, stage.key)}
+                    onClick={() => setReport((prev) => setHabitologieStageEnabled(prev, stage.key, !isHabitologieStageEnabled(prev, stage.key)))}>
+                    <span aria-hidden="true">{index + 1}</span>
+                    <strong>{stage.label}<small>{isHabitologieStageEnabled(report, stage.key) ? 'Retenue' : 'Non retenue'}</small></strong>
+                  </button>
+                  {index < HABITOLOGIE_PROTOCOL_STAGES.length - 1 && <ArrowRight size={16} aria-hidden="true" />}
                 </li>
               ))}
             </ol>
@@ -1695,10 +1705,11 @@ function ProtocolStep({ report, setReport }) {
             <strong>Besoin reformulé : {report.ecoute.besoin_reformule || 'À préciser avec le client'}</strong>
             <p>{report.ecoute.besoin_confirme ? 'Reformulation confirmée avec le client.' : 'Reformulation à confirmer avec le client.'}</p>
             <p>Les nouveaux dossiers commencent sans contrôle coché. Seuls les sujets identifiés à l'écoute proposent une sélection, ajustable ici. Vos choix précédents sont conservés.</p>
+            <p>Désactiver une phase suspend ses contrôles sans effacer les observations. La réactiver restaure les choix présents au moment de sa désactivation.</p>
             <small>Un point non retenu n'est ni vérifié ni déclaré sans risque. Complétez le périmètre selon votre expertise et les conditions de visite.</small>
           </div>
           {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
-            <article className={`protocol-phase phase-${stage.key}`} key={stage.key}>
+            <article className={`protocol-phase phase-${stage.key}${isHabitologieStageEnabled(report, stage.key) ? '' : ' is-inactive'}`} key={stage.key}>
               <div className="protocol-phase-heading">
                 <span>Phase {index + 1}</span>
                 <div>
@@ -1706,6 +1717,7 @@ function ProtocolStep({ report, setReport }) {
                   <p>{stage.summary}</p>
                 </div>
               </div>
+              {!isHabitologieStageEnabled(report, stage.key) && <p className="phase-status" role="status"><strong>Non retenue pour cette visite.</strong> Choix et observations conservés. Réactivez cette phase dans le fil conducteur pour modifier les contrôles.</p>}
               <div className="protocol-list compact">
                 {stage.controls.map((control) => {
                   const selected = isHabitologieControlSelected(report, stage.key, control.key);
@@ -1715,6 +1727,7 @@ function ProtocolStep({ report, setReport }) {
                       <input
                         type="checkbox"
                         checked={selected}
+                        disabled={!isHabitologieStageEnabled(report, stage.key)}
                         onChange={(event) => updateHabitologieControl(stage.key, control.key, event.target.checked)}
                       />
                       <span>
@@ -1772,7 +1785,7 @@ function ObservationStep({ report, setReport }) {
   const consentReason = "Enregistrer d'abord l'accord du client dans l'etape Dossier.";
 
   const addObservation = (phaseKey = '') => {
-    setReport((prev) => ({
+    setReport((prev) => isHabitologieReport(prev) && phaseKey && !isHabitologieStageEnabled(prev, phaseKey) ? prev : ({
       ...prev,
       observations: [...prev.observations, { ...emptyObservation(), phase_habitologie: phaseKey }],
     }));
@@ -1864,8 +1877,8 @@ function ObservationStep({ report, setReport }) {
               >
                 <option value="">A classer</option>
                 {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
-                  <option key={stage.key} value={stage.key}>
-                    Phase {index + 1} · {stage.label}
+                  <option key={stage.key} value={stage.key} disabled={!isHabitologieStageEnabled(report, stage.key) && stage.key !== obs.phase_habitologie}>
+                    Phase {index + 1} · {stage.label}{!isHabitologieStageEnabled(report, stage.key) ? ' — non retenue' : ''}
                   </option>
                 ))}
               </select>
@@ -1873,7 +1886,7 @@ function ObservationStep({ report, setReport }) {
             <Field label="Point du protocole">
               <select
                 value={obs.controle_habitologie}
-                disabled={!selectedStage}
+                disabled={!selectedStage || !isHabitologieStageEnabled(report, selectedStage.key)}
                 onChange={(event) => updateObservation(obs.id, { controle_habitologie: event.target.value })}
               >
                 <option value="">{selectedStage ? 'Autre point ou constat transversal' : "Choisir d'abord une phase"}</option>
@@ -2000,18 +2013,19 @@ function ObservationStep({ report, setReport }) {
           {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => {
             const stageObservations = report.observations.filter((obs) => obs.phase_habitologie === stage.key);
             return (
-              <section className={`observation-phase phase-${stage.key}`} key={stage.key}>
+              <section className={`observation-phase phase-${stage.key}${isHabitologieStageEnabled(report, stage.key) ? '' : ' is-inactive'}`} key={stage.key}>
                 <div className="observation-phase-heading">
                   <div>
                     <span>Phase {index + 1}</span>
                     <h3>{stage.label}</h3>
                     <p>{stage.summary}</p>
                   </div>
-                  <button className="button secondary" type="button" onClick={() => addObservation(stage.key)}>
+                  <button className="button secondary" type="button" disabled={!isHabitologieStageEnabled(report, stage.key)} onClick={() => addObservation(stage.key)}>
                     <Plus size={18} />
                     Ajouter
                   </button>
                 </div>
+                {!isHabitologieStageEnabled(report, stage.key) && <p className="phase-status"><strong>Non retenue pour cette visite.</strong> Les observations et photos existantes restent conservées et exportées. Réactivez la phase dans Protocoles pour ajouter un constat.</p>}
                 {stageObservations.length > 0 ? (
                   <div className="observation-list">{stageObservations.map(renderObservationCard)}</div>
                 ) : (

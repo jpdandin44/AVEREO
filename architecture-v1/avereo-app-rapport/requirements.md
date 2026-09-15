@@ -5,7 +5,7 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -34,6 +34,13 @@ tags:
   les sujets explicitement identifies a l'ecoute suggerent des selections.
   Les choix manuels priment et les anciens brouillons conservent leurs choix.
   Un controle non retenu n'est jamais presente comme verifie.
+- Chaque phase peut etre desactivee depuis son numero ou son nom, puis
+  reactivee avec les choix precedents. Une exclusion manuelle prime sur les
+  suggestions de l'ecoute ; aucun constat ni photo n'est supprime. La phase
+  reste visible et explicitement non retenue dans l'interface et les exports.
+  L'ajout/rattachement de nouveaux constats a cette phase demande sa
+  reactivation. Les anciens brouillons sans indicateur restent disponibles
+  dans les quatre phases, sans selection globale de controles.
 - L'etape `Observations` de `Visite Globale` regroupe les constats par phase et
   permet de les rattacher a un point du protocole. Une observation historique
   sans phase reste visible dans `A classer` et n'est jamais reclassee

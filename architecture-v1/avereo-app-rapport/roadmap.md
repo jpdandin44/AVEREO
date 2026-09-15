@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -29,11 +29,11 @@ tags:
   categories visibles et modules historiques conserves mais masques.
 - La PR #60 a confirme la priorite donnee au prototype fonctionnel et reporte
   le chantier TDD a la phase d'industrialisation.
-- Une premiere tranche `Ecoute client` pour `Visite Globale` est implementee
-  sur une branche dediee et reste soumise a revue humaine.
-- La meme branche structure le protocole et les observations selon
+- La PR #61 est mergee : la tranche `Ecoute client` pour `Visite Globale`,
+  le contexte du bien et la carte cadastrale sont integres a `main`.
+- Cette tranche structure le protocole et les observations selon
   `Eau -> Air -> Terre -> Feu`, et affiche dans `Site` une synthese Georisques
-  sourcee et horodatee. Elle reste soumise a revue humaine.
+  sourcee et horodatee. Cela ne constitue pas un deploiement heberge.
 
 ## Dette technique non bloquante
 
@@ -81,6 +81,15 @@ traitements, les regles de passage entre statuts, le fournisseur IA eventuel,
 la conservation des donnees vocales et le role habilite a valider.
 
 ## Travail actuel et prochaine evolution
+
+Evolution 1 : phases activables dans le fil conducteur, suspension reversible
+avec preservation des choix, observations et photos. Recette locale et
+verification des exports : voir la
+[recette dediee](workflows/workflow-habitologie.md#recette-de-levolution-1).
+La PR dediee doit etre livree et validee avant de commencer l'evolution 2
+(GoRenove/Pro'Reno), qui n'est pas implementee. Pas de deploiement automatique.
+
+### Socle integre par la PR #61
 
 Le lot du 14 septembre remonte les accords en debut de Dossier, rend la
 synthese des risques accessible dans une vue explicite et ajoute des panneaux
