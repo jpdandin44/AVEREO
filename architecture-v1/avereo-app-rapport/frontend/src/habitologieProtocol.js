@@ -51,6 +51,7 @@ export function createHabitologieProtocolState() {
     HABITOLOGIE_PROTOCOL_STAGES.map((stage) => [
       stage.key,
       {
+        enabled: true,
         // An absent choice follows the listening suggestions; an explicit boolean wins.
         controls: {},
       },
@@ -66,6 +67,7 @@ export function mergeHabitologieProtocolState(value = {}) {
       {
         ...defaults[stage.key],
         ...(value?.[stage.key] || {}),
+        enabled: value?.[stage.key]?.enabled !== false,
         controls: {
           ...defaults[stage.key].controls,
           ...(value?.[stage.key]?.controls || {}),
@@ -98,6 +100,32 @@ export function listeningSuggestions(ecoute, stageKey, controlKey) {
 }
 
 export function isHabitologieControlSelected(report, stageKey, controlKey) {
+  if (!isHabitologieStageEnabled(report, stageKey)) return false;
   const choice = report.habitologie_protocoles?.[stageKey]?.controls?.[controlKey];
   return typeof choice === 'boolean' ? choice : listeningSuggestions(report.ecoute, stageKey, controlKey).length > 0;
+}
+
+export function isHabitologieStageEnabled(report, stageKey) {
+  return Boolean(findHabitologieStage(stageKey)) && report.habitologie_protocoles?.[stageKey]?.enabled !== false;
+}
+
+export function setHabitologieStageEnabled(report, stageKey, enabled) {
+  const stage = findHabitologieStage(stageKey);
+  if (!stage || typeof enabled !== 'boolean' || isHabitologieStageEnabled(report, stageKey) === enabled) return report;
+  const previous = report.habitologie_protocoles?.[stageKey] || {};
+  // Freeze the effective choices before suspending them, including listening suggestions.
+  // Later listening changes must not silently change the restored visit scope.
+  const controls = enabled ? previous.controls : {
+    ...previous.controls,
+    ...Object.fromEntries(stage.controls.map((control) => [
+      control.key, isHabitologieControlSelected(report, stageKey, control.key),
+    ])),
+  };
+  return {
+    ...report,
+    habitologie_protocoles: {
+      ...report.habitologie_protocoles,
+      [stageKey]: { ...previous, enabled, controls: controls || {} },
+    },
+  };
 }

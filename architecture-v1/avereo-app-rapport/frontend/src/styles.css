@@ -631,7 +631,7 @@ img {
   color: #1d4ed8;
 }
 
-.analysis-sequence li > span {
+.phase-toggle > span {
   display: inline-flex;
   width: 26px;
   height: 26px;
@@ -644,8 +644,39 @@ img {
   font-weight: 800;
 }
 
-.analysis-sequence li > strong {
+.phase-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 7px 12px;
+  border: 1px solid #93c5fd;
+  border-radius: 8px;
+  background: #eff6ff;
   color: #172033;
+  cursor: pointer;
+  text-align: left;
+}
+
+.phase-toggle strong small {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+.phase-toggle[aria-pressed="false"] {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  color: #475569;
+}
+
+.phase-toggle[aria-pressed="false"] > span {
+  background: #64748b;
+}
+
+.phase-toggle:focus-visible {
+  outline: 3px solid #1d4ed8;
+  outline-offset: 3px;
 }
 
 .analysis-sequence li > svg {
@@ -1122,6 +1153,27 @@ img {
 .observation-phase.unassigned {
   border-left-color: #f59e0b;
   background: #fffbeb;
+}
+
+.protocol-phase.is-inactive,
+.observation-phase.is-inactive {
+  border-left-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.protocol-phase.is-inactive .protocol-list label {
+  background: #f8fafc;
+  color: #475569;
+  cursor: not-allowed;
+}
+
+.phase-status {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 0.9rem;
 }
 
 .protocol-phase-heading {

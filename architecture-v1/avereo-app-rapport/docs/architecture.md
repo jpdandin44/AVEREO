@@ -5,7 +5,7 @@ title: Architecture technique de Rapport AVEREO
 status: active
 version: git
 created: 2026-07-14
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -57,6 +57,15 @@ par l'interface et l'export. Un booleen manuel conserve dans
 `habitologie_protocoles` prime sur la suggestion. Les booleens des anciens
 dossiers sont preserves. Les libelles d'entretien et d'export partagent la
 definition `clientListening.js`.
+
+Chaque entree `habitologie_protocoles[phase]` porte maintenant `enabled` :
+seul `false` suspend la phase ; son absence dans un ancien brouillon equivaut
+a `true`. `setHabitologieStageEnabled` fige les selections effectives dans
+`controls` avant de suspendre la phase, puis les restaure a la reactivation.
+`isHabitologieControlSelected` retourne toujours faux pour une phase suspendue,
+meme si ses controles conserves ou les nouveaux sujets d'ecoute sont vrais.
+Les observations ne sont ni filtrees ni modifiees par cette operation.
+Le champ suit le payload JSON existant sans migration SQL ni nouvel endpoint.
 
 `LocationMap.jsx` affiche les tuiles WMTS IGN via Leaflet 1.9.4 embarque dans
 le build, sans iframe, CDN de code ou cle. `localisation` conserve l'adresse

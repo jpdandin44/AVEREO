@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -36,6 +36,16 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 - Aucun hook `preinstall`, `install`, `postinstall` ou `prepare` dans `package.json`.
 
 ## Constats
+
+Evolution 1 du 15 septembre : etat reversible par phase, conservation des
+choix et de toutes les observations/photos, sans nouvel appel reseau ni
+secret. Perimetre limite au frontend Rapport et a sa documentation. Le payload
+conserve `enabled` et les controles ; aucune migration ni modification API.
+Les exclusions sont affichees dans l'apercu et l'export. Une ancienne version
+anterieure a ce lot ne comprend pas `enabled` : ne pas y reexporter un dossier
+en supposant ses exclusions respectees. Conserver son JSON avant un retour
+arriere. La recette et ses limites sont centralisees dans le
+[workflow](../workflows/workflow-habitologie.md#recette-de-levolution-1).
 
 Lot du 14 septembre : correction du bouton de risques qui ouvrait uniquement
 le rapport externe et de la disparition silencieuse du bloc sans resultat.

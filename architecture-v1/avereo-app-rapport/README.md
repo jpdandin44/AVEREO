@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -45,6 +45,12 @@ npm run build
 
 Le build produit `frontend/dist/`, y compris l'API PHP venant de `frontend/public/api/`.
 
+Pour le prototype frontend hors ligne, depuis `frontend/` :
+`npm.cmd run dev -- --host 127.0.0.1 --port 52872 --strictPort`, puis ouvrir
+<http://127.0.0.1:52872/>. Garder le terminal ouvert ; un redemarrage du PC
+necessite de relancer cette commande. Ce serveur Vite ne remplace pas le
+parcours CONNECT/MySQL sur Docker. Exporter regulierement une copie JSON.
+
 ## Types de rapport
 
 Rapport conserve un seul assistant : `Dossier`, `Site`, `Protocoles`,
@@ -71,7 +77,8 @@ urbanisme et relief/orientation. Voir le
 Le choix complementaire de `Visite Globale` correspond au type d'habitation :
 `Maison`, `Appartement`, `Immeuble collectif` ou `Autre habitation`. `Eau`,
 `Air`, `Terre` et `Feu` ne sont pas des sous-categories : ils forment le fil
-conducteur obligatoire de l'analyse, dans cet ordre, pour chaque visite.
+conducteur de l'analyse, dans cet ordre. Le perimetre retenu peut exclure une
+phase sans la supprimer du fil conducteur.
 
 Dans l'etape `Protocoles`, ces quatre phases portent maintenant les controles
 terrain adaptes : eau et humidite, renouvellement d'air, interfaces de
@@ -83,6 +90,11 @@ Le fil conducteur est en en-tete de `Protocoles`. Les nouveaux dossiers
 Habitologie n'ont aucun controle coche par defaut ; les sujets explicitement
 identifies a l'ecoute suggerent des controles que le professionnel ajuste.
 Ses choix manuels et les selections des anciens brouillons sont preserves.
+
+Cliquer sur le numero ou le nom d'une phase permet de la suspendre puis de
+restaurer ses choix. Une phase non retenue reste grisee ; ses observations et
+photos restent visibles et exportees avec cette mention. Voir les regles et
+la [recette des phases activables](workflows/workflow-habitologie.md#recette-de-levolution-1).
 
 L'etape `Site` interroge l'endpoint JSON public Georisques V1 apres le
 geocodage et affiche directement les risques naturels et technologiques

@@ -5,7 +5,7 @@ title: Proposition de workflow operationnel pour Visite Globale
 status: proposed
 version: git
 created: 2026-09-11
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -32,8 +32,8 @@ ses photos, sa dictee, ses observations et ses exports. Un dossier
 `Visite Globale` qualifie le type d'habitation : `Maison`, `Appartement`,
 `Immeuble collectif` ou `Autre habitation`.
 
-Chaque dossier suit ensuite le meme fil conducteur d'analyse, dans un ordre
-fixe :
+Chaque dossier presente le meme fil conducteur d'analyse, dans un ordre
+fixe. Le professionnel retient les phases utiles a la visite :
 
 `Eau -> Air -> Terre -> Feu`
 
@@ -77,7 +77,7 @@ confort, le calme ou les economies ; la visite doit clarifier cette finalite.
 
 ### Etat implemente du protocole et des observations
 
-L'etape `Protocoles` suit obligatoirement les quatre phases suivantes :
+L'etape `Protocoles` presente les quatre phases dans l'ordre suivant :
 
 1. `Eau` : infiltrations, apports et evacuations, toiture et eaux pluviales,
    humidite, condensation et moisissures ;
@@ -97,6 +97,20 @@ Un choix manuel explicite (oui ou non) reste prioritaire, meme si l'ecoute
 evolue. Les selections deja sauvegardees des anciens brouillons sont conservees.
 Les protocoles des rapports techniques restent inchanges.
 
+Depuis l'evolution 1, un clic sur le numero ou le nom d'une phase la desactive
+ou la reactive. Le bouton fonctionne aussi avec Entree/Espace et indique son
+etat. La phase desactivee reste grisee et affiche `Non retenue pour cette visite`.
+Ses controles sont suspendus ; les choix effectifs au moment de la
+desactivation sont conserves, y compris les suggestions alors retenues.
+La reactivation restaure exactement ces choix, pas une selection globale.
+Un nouveau sujet d'ecoute ne reactive pas implicitement une phase exclue et
+ne remplace pas les choix ainsi figes ; ils restent ajustables manuellement.
+
+Toutes les observations et photos deja rattachees restent visibles, editables
+et exportees. Une nouvelle observation ou un nouveau rattachement a cette
+phase demande de la reactiver dans Protocoles. Le document exporte indique
+explicitement le contexte non retenu pour les observations conservees.
+
 Le professionnel fait le point avec le client avant la visite ; les quatre
 phases restent visibles et il peut ajouter des controles au-dela des sujets
 exprimes. Un point non retenu n'est ni verifie ni declare sans risque. Il n'y
@@ -106,6 +120,38 @@ constat directement dans une phase et peut le rattacher a l'un de ces points.
 Les photos, la dictee et les autres champs existants restent disponibles selon
 les accords recueillis. Un constat historique sans phase est conserve dans
 `A classer`.
+
+### Recette de l'evolution 1
+
+Jeu synthetique : [`../tests/fixtures/phase-toggle.json`](../tests/fixtures/phase-toggle.json).
+Il contient des choix partiels Air, une suggestion Humidite, trois observations
+(Eau, Air, sans phase), un pixel de test et une signature factice identifiee.
+Avant import : exporter le brouillon courant en JSON ; le restaurer apres recette.
+
+1. Importer le JSON dans Export. Les quatre phases sont actives, Air a deux
+   controles retenus et deux non retenus, sans indicateur historique `enabled`.
+2. Desactiver Air dans Protocoles : controles visibles mais decoches/desactives,
+   autres phases inchangees. Dans Observations, le constat et la photo Air
+   restent presents ; Ajouter Air et le rattachement depuis une autre phase
+   sont indisponibles. Le constat sans phase reste dans `A classer`.
+3. Enregistrer, recharger et reprendre : Air reste non retenue. Reactiver
+   avec Espace : retrouver exactement les deux controles precedents.
+4. Desactiver de nouveau, cocher le sujet Air dans Ecoute, revenir : la phase
+   reste exclue. Reactiver : les deux controles non retenus restent decoches.
+5. Desactiver Air a nouveau. Exporter le JSON et le Word, consulter l'apercu : mention non retenue,
+   trois constats et photo conserves. Reimporter le JSON exporte et verifier
+   l'etat suspendu, puis la reactivation.
+6. Basculer en expertise technique : verifier les protocoles historiques,
+   sans fil de phases Habitologie. Restaurer le brouillon initial apres essai.
+
+Qualification locale du 15 septembre : tests frontend (44/44), compilation,
+ancien brouillon, clic, clavier, persistance apres rechargement, priorite sur
+l'ecoute, observations conservees et contenu des exports JSON/Word verifies.
+L'apercu HTML et le contenu du fichier `.doc` sont controles ; le rendu dans
+Microsoft Word et le parcours heberge CONNECT/MySQL ne sont pas qualifies par
+cette recette frontend. Aucun microphone ni camera n'a ete active.
+La validation metier et le merge restent humains ; cette recette ne constitue
+ni une attestation de zero bug ni une autorisation de deploiement.
 
 ### Etat implemente de la synthese des risques
 

@@ -5,7 +5,7 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -46,7 +46,9 @@ ajouts restent compatibles avec les brouillons plus anciens grace a la fusion
 des valeurs par defaut.
 
 La selection Habitologie est resolue depuis les sujets explicites de `ecoute`
-et les choix manuels de `habitologie_protocoles` (prioritaires). Le payload
+et les choix manuels de `habitologie_protocoles` (prioritaires), sous reserve
+que la phase soit active. La suspension reversible est detaillee dans
+[`docs/architecture.md`](docs/architecture.md). Le payload
 `localisation` conserve l'adresse geocodee et la confirmation datee du lieu.
 Leaflet 1.9.4 affiche les images WMTS publiques IGN dans le frontend, sans
 iframe ni API interne supplementaire. Le stockage reste le payload JSON :

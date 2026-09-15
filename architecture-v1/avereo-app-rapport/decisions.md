@@ -5,7 +5,7 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,23 @@ tags:
 ---
 
 # Decisions structurantes de Rapport AVEREO
+
+## 2026-09-15 - Suspendre une phase sans effacer le travail
+
+Contexte : adapter le perimetre de la visite au besoin client, depuis le fil
+conducteur de Protocoles, sans desactiver chaque point individuellement.
+
+Decision : ajouter un etat reversible par phase. La desactivation fige les
+choix effectifs avant de les suspendre ; la reactivation retrouve cet instantane.
+Les sujets d'ecoute modifies ensuite ne remplacent pas cette decision manuelle.
+
+Raisons : eviter toute perte de constat/photo, toute reactivation implicite
+et toute assimilation entre une phase non retenue et une verification realisee.
+
+Consequences : etat et instantane dans le JSON existant, mention explicite
+dans l'interface et les exports, ajout de constat apres reactivation. Les
+rapports techniques restent inchanges. Livraison en PR distincte ; les liens
+GoRenove/Pro'Reno (evolution 2) ne sont pas implementes dans ce lot.
 
 ## 2026-09-14 - Distinguer donnees publiques et interpretation du bien
 

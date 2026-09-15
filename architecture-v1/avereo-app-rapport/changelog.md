@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,20 @@ tags:
 ---
 
 # Evolutions significatives de Rapport AVEREO
+
+## 2026-09-15
+
+- Evolution 1 : activation/desactivation complete d'une phase depuis son
+  numero ou son nom dans Protocoles ; bouton accessible au clavier et etat visible.
+- Conservation puis restauration des choix effectifs ; l'exclusion prime
+  sur les sujets d'ecoute. Aucun constat ni photo supprime.
+- Observations conservees, ajout bloque dans une phase suspendue jusqu'a
+  reactivation, mentions alignees dans l'apercu et le document exporte.
+- Ancien JSON sans `enabled` compatible ; fixture de recette synthetique,
+  cinq tests cibles ajoutes (44 tests frontend au total).
+- Livraison separee de l'evolution 2, sans changement MySQL, authentification,
+  dependance ou workflow de deploiement. Voir la
+  [recette](workflows/workflow-habitologie.md#recette-de-levolution-1).
 
 ## 2026-09-14
 
