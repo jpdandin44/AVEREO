@@ -84,6 +84,42 @@ hydrologique. Precision variable ; emprise pouvant inclure voirie et voisins.
 Gouttieres, seuils, murs, drains et sols impermeables ne sont pas modelises.
 Les observations pluviales restent a recueillir sur place dans les notes.
 
+### Altitudes sur le fond cadastral
+
+Dans `Relief / orientation`, le fond IGN est visible avant meme le calcul.
+Choisir `Etudier le relief` pour superposer les neuf altitudes a leurs
+coordonnees geographiques : nord en haut, centre nomme `Visite` et entoure
+en bleu. Les minima du releve sont en turquoise, les maxima en ocre ; a
+altitudes toutes identiques, aucun contraste bas/haut n'est applique.
+Ces couleurs sont relatives aux neuf points, pas des niveaux de risque.
+
+Le cadre pointille relie les points peripheriques de l'emprise de 50 ou
+100 metres. Ce n'est ni la delimitation de la parcelle, ni une emprise
+cadastree extraite : les parcelles sont les images du fond IGN existant.
+Aucune interpolation, courbe de niveau ou trajectoire d'ecoulement n'est
+inventee. Les valeurs sont des altitudes du sol, pas du toit.
+
+Le plan et la vue aerienne sont interchangeables. `Recentrer les mesures`
+recadre les neuf points. Le tableau numerique reste consultable dans un
+volet repliable, notamment si les tuiles ne repondent pas.
+Changer l'emprise sans lancer un nouveau calcul laisse le releve precedent
+affiche, avec sa largeur et un avertissement explicite.
+
+`terrainMapSamples` reutilise la validation de reprise : aucun marqueur
+altimetrique pour des mesures absentes, invalides ou liees a un autre lieu.
+Le stockage, la methode IGN et l'export chiffre restent inchanges ; la carte
+n'est pas ajoutee au document Word. Pas de compte, cle, dependance ou nouvel
+endpoint. Seules les tuiles des fonds deja utilises sont chargees en plus
+lors de la consultation de cette vue.
+
+Recette locale du 15 septembre : 55 tests et build reussis. Fond avant calcul,
+releves 50 et 100 m, changement de fond, recentrage, avertissement d'emprise,
+correspondance carte/tableau et reprise du brouillon verifies dans le
+navigateur integre sur un lieu public de demonstration. Les cas absents,
+invalides, anciens points, altitudes nulles/negatives et terrain plat sont
+couverts par les tests unitaires. La recette tactile, les tuiles hors ligne
+et l'environnement heberge restent a qualifier avant production.
+
 ## Orientation
 
 La carte garde le nord en haut. La rose des vents affiche une fleche bleue

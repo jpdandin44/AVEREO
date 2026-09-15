@@ -1,15 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapPin, Map, Image, Check, Pencil, LocateFixed, ExternalLink, Loader2 } from 'lucide-react';
 import { buildIgnMapUrl, buildIgnTileUrl, locationConfirmed, validLocation } from './locationMap.js';
+import { terrainMapSamples } from './terrainContext.js';
 
-export function CadastralMap({ lon, lat, mode, revision, editing = false, draft = null, onPointChange }) {
+export function CadastralMap({ lon, lat, mode, revision, editing = false, draft = null, onPointChange, terrainAnalysis = null }) {
   const container = useRef(null);
   const markerRef = useRef(null);
   const interaction = useRef({ editing, onPointChange });
   interaction.current = { editing, onPointChange };
   const [tiles, setTiles] = useState({ base: 'loading', cadastre: 'loading' });
+  const samples = useMemo(() => terrainMapSamples(terrainAnalysis, lon, lat), [terrainAnalysis, lon, lat]);
 
   useEffect(() => {
     let active = true;
@@ -32,7 +34,7 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
     };
     addTiles(mode === 'aerial' ? 'aerial' : 'plan', 'base', '<a href="https://cartes.gouv.fr/" target="_blank" rel="noopener noreferrer">© IGN</a>');
     addTiles('cadastre', 'cadastre', 'Parcellaire Express (PCI) © IGN / DGFiP');
-    const marker = L.marker([Number(lat), Number(lon)], {
+    const marker = samples.length ? null : L.marker([Number(lat), Number(lon)], {
       icon: L.divIcon({ className: 'property-map-marker', html: '<span></span>', iconSize: [30, 38], iconAnchor: [15, 38] }),
       title: 'Bien à vérifier', alt: 'Repère du bien recherché', draggable: false,
     }).addTo(map).bindTooltip('Bien à vérifier', { direction: 'top', offset: [0, -35] });
@@ -43,7 +45,26 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
       }
     };
     map.on('click', (event) => selectPoint(event.latlng));
-    marker.on('dragend', () => selectPoint(marker.getLatLng()));
+    marker?.on('dragend', () => selectPoint(marker.getLatLng()));
+    if (samples.length) {
+      const bounds = L.latLngBounds(samples.map((p) => [p.lat, p.lon]));
+      L.rectangle(bounds, { color: '#334155', weight: 2, dashArray: '6 6', fill: false, interactive: false }).addTo(map);
+      for (const point of samples) {
+        const center = point.label === 'Centre';
+        const value = point.z.toFixed(2).replace('.', ',');
+        const caption = center ? 'Visite' : point.label;
+        // Labels come from the validated grid; only finite numeric elevations enter HTML.
+        L.marker([point.lat, point.lon], {
+          interactive: false, keyboard: false,
+          icon: L.divIcon({
+            className: 'terrain-map-label',
+            html: `<div class="terrain-map-value ${point.level}${center ? ' visit' : ''}" role="img" aria-label="${caption} : ${value} mètres"><small>${caption}</small><strong>${value} m</strong></div>`,
+            iconSize: [78, 44], iconAnchor: [39, 22],
+          }),
+        }).addTo(map);
+      }
+      map.fitBounds(bounds, { padding: [60, 65], maxZoom: 19, animate: false });
+    }
     const resize = new ResizeObserver(() => map.invalidateSize());
     resize.observe(container.current);
     const timeout = setTimeout(() => {
@@ -56,7 +77,7 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
       markerRef.current = null;
       map.remove();
     };
-  }, [lon, lat, mode, revision]);
+  }, [lon, lat, mode, revision, samples]);
 
   useEffect(() => {
     const marker = markerRef.current;
@@ -65,7 +86,7 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
     marker.setLatLng([Number(point.lat), Number(point.lon)]);
     if (editing) marker.dragging.enable(); else marker.dragging.disable();
     marker.setTooltipContent(editing ? 'Déplacez le point puis validez' : 'Bien à vérifier');
-  }, [draft, editing, lon, lat, mode, revision]);
+  }, [draft, editing, lon, lat, mode, revision, samples]);
 
   const failed = Object.values(tiles).includes('error');
   const loading = Object.values(tiles).includes('loading');

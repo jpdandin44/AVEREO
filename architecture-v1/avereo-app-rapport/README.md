@@ -74,6 +74,10 @@ Dans Site, quatre vues separent validation cadastrale, synthese des risques,
 urbanisme et relief/orientation. Voir le
 [parcours et les limites du contexte du bien](api/contexte-du-bien.md).
 
+Dans `Relief / orientation`, `Etudier le relief` affiche maintenant les
+neuf altitudes sur le fond cadastral (plan ou photo aerienne). La zone
+mesuree est distincte des limites de la parcelle ; le tableau reste disponible.
+
 Si le repere ne correspond pas au batiment, choisir `Deplacer le point`,
 cliquer ou faire glisser le repere, puis `Utiliser ce point` et confirmer
 de nouveau le bien. L'adresse reste inchangee ; les recherches utilisent

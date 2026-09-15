@@ -85,6 +85,8 @@ export function TerrainPanel({ report, setReport }) {
   const [width, setWidth] = useState(terrain.analysis?.width || 50);
   const [status, setStatus] = useState('');
   const [request, setRequest] = useState(0);
+  const [mapMode, setMapMode] = useState('cadastre');
+  const [mapRevision, setMapRevision] = useState(0);
   const data = terrain.analysis;
   useEffect(() => {
     if (!request) return;
@@ -120,12 +122,32 @@ export function TerrainPanel({ report, setReport }) {
       <button className="button secondary" type="button" disabled={status === 'loading'} onClick={() => setRequest((n) => n + 1)}>Étudier le relief</button></div>
     {status === 'loading' && <p role="status">Récupération des neuf altitudes IGN…</p>}
     {status === 'error' && <p className="status-line warning" role="alert">Données altimétriques indisponibles ou incomplètes. Aucune nouvelle estimation produite. {data && 'Le dernier relevé reste affiché.'}</p>}
+    <div className="terrain-map" role="region" aria-label="Altitudes sur le plan cadastral">
+      <div className="property-map-toolbar">
+        <div className="property-map-switch" role="group" aria-label="Fond de carte du relief">
+          <button type="button" aria-pressed={mapMode === 'cadastre'} onClick={() => setMapMode('cadastre')}>Cadastre</button>
+          <button type="button" aria-pressed={mapMode === 'aerial'} onClick={() => setMapMode('aerial')}>Vue aérienne</button>
+        </div>
+        <button className="property-map-recenter" type="button" onClick={() => setMapRevision((n) => n + 1)}>Recentrer les mesures</button>
+      </div>
+      <CadastralMap lon={lon} lat={lat} mode={mapMode} revision={mapRevision} terrainAnalysis={data} />
+      <div className="terrain-map-legend">
+        <span><i className="visit" /> Point de visite</span>
+        {data?.range > 0 && <><span><i className="low" /> Plus bas du relevé</span><span><i className="high" /> Plus haut du relevé</span></>}
+        {data && <span><i className="extent" /> Zone mesurée : {data.width} × {data.width} m</span>}
+      </div>
+      <p className="location-help">{data ? 'Les valeurs sont placées aux neuf points interrogés. Le cadre pointillé représente la zone mesurée, pas la limite de propriété. Les parcelles restent visibles en fond.'
+        : 'Le fond cadastral situe le bien. Lancez « Étudier le relief » pour afficher les neuf altitudes au sol sur cette carte.'}</p>
+      {data && width !== data.width && <p className="status-line warning" role="status">Le relevé affiché reste celui de {data.width} m. Lancez « Étudier le relief » pour appliquer la nouvelle emprise de {width} m.</p>}
+    </div>
     {data && <><p className="muted">{data.source} · {dateLabel(data.fetchedAt)} · emprise du résultat : {data.width} m × {data.width} m</p>
       <div className="terrain-metrics"><div><small>Altitude minimale</small><strong>{data.min.toFixed(2)} m</strong></div>
         <div><small>Altitude maximale</small><strong>{data.max.toFixed(2)} m</strong></div>
         <div><small>Écart observé</small><strong>{data.range.toFixed(2)} m</strong></div></div>
-      <div className="terrain-grid" role="group" aria-label="Neuf altitudes, nord en haut">{data.samples.map((p) =>
-        <div key={p.label} className={p.label === 'Centre' ? 'terrain-center' : ''}><small>{p.label}</small><strong>{p.z.toFixed(2)} m</strong></div>)}</div>
+      <details className="urban-group"><summary>Voir les neuf valeurs sous forme de tableau</summary>
+        <div className="terrain-grid" role="group" aria-label="Neuf altitudes, nord en haut">{data.samples.map((p) =>
+          <div key={p.label} className={p.label === 'Centre' ? 'terrain-center' : ''}><small>{p.label}</small><strong>{p.z.toFixed(2)} m</strong></div>)}</div>
+      </details>
       <p>{data.descent ? `Baisse relative la plus forte depuis le centre parmi ces points : vers ${data.descent.direction}, pente entre deux points ≈ ${data.descent.percent.toFixed(1)} %.`
         : 'Aucun des huit points périphériques n’est plus bas que le centre. Cela ne permet pas de conclure sur le drainage.'}</p>
     </>}

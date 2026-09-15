@@ -16,6 +16,11 @@ tags:
 
 ## 2026-09-15
 
+- Relief : les neuf altitudes se superposent au fond cadastral ou aerien,
+  avec point de visite, extremes relatifs, emprise pointillee et tableau
+  repliable. Calcul et stockage inchanges ; voir
+  [fonctionnement et recette](api/contexte-du-bien.md#altitudes-sur-le-fond-cadastral).
+
 - Correction manuelle du point de visite dans Site : clic, glisser-deposer,
   saisie de coordonnees, validation/annulation. Actualisation au point corrige,
   nouvelle confirmation et preservation des notes/photos ; voir

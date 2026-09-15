@@ -37,6 +37,15 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 
 ## Constats
 
+### Relief visuel sur fond cadastral
+
+Les altitudes auparavant affichees seulement en grille sont maintenant
+placees sur la carte aux coordonnees mesurees. Valeurs validees et libelles
+de grille controles avant insertion dans les etiquettes ; ancien lieu et
+donnees incompletes refuses. Pas de nouveau fournisseur, schema, secret,
+dependance ou estimation hydraulique. Calcul et exports existants inchanges.
+Recette et limites : [contexte du bien](../api/contexte-du-bien.md#altitudes-sur-le-fond-cadastral).
+
 ### Correction du point de visite
 
 Le repere fixe ne permettait pas de corriger un geocodage decale. Le frontend

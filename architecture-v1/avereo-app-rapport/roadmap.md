@@ -98,6 +98,10 @@ visite, actualisation au point corrige et reprise du brouillon. Revue humaine
 et qualification hebergee restent requises ; voir
 [la recette](api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
 
+Le relief dispose aussi d'une restitution geographique des neuf altitudes
+sur plan cadastral ou vue aerienne ; voir
+[la recette et les limites](api/contexte-du-bien.md#altitudes-sur-le-fond-cadastral).
+
 ### Socle integre par la PR #61
 
 Le lot du 14 septembre remonte les accords en debut de Dossier, rend la

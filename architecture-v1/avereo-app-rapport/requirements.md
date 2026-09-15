@@ -121,6 +121,10 @@ tags:
   sans deduire une interdiction du seul code de zone.
 - Le relief est un reperage MNT indicatif, source et date visibles, sans
   confondre une erreur de couverture et un resultat plat.
+- Les neuf altitudes doivent etre placees sur le fond cadastral a leurs
+  coordonnees, avec point de visite, extremes relatifs, emprise explicite
+  et tableau de secours. Ne pas confondre emprise mesuree et parcelle,
+  altitude au sol et toit, ni contraste de couleur et risque.
 - L'orientation de facade reste une saisie humaine, distincte du nord du plan.
 - Notes et contexte enrichi suivent le dossier et les exports existants.
 

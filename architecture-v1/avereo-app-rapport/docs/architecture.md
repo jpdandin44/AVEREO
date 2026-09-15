@@ -97,6 +97,12 @@ Le payload ajoute `urbanisme.context`, `urbanisme.notes` et `terrain`,
 sans table ni migration supplementaire. Les formats et limites sont
 centralises dans [`../api/contexte-du-bien.md`](../api/contexte-du-bien.md).
 
+`TerrainPanel` reutilise `CadastralMap` avec une superposition facultative.
+`terrainMapSamples` valide les mesures du lieu courant avant de produire les
+etiquettes Leaflet et les classes d'extremes relatifs. Aucune nouvelle
+persistance, geometrie cadastrale ou interpolation ; voir
+[la presentation du relief](../api/contexte-du-bien.md#altitudes-sur-le-fond-cadastral).
+
 La configuration sensible est chargee depuis `/home/CPANEL_USERNAME/.avereo/rapport/config.php`, hors de `frontend/dist`.
 
 ## Structure
