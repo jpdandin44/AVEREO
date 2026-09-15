@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { terrainGrid, elevationUrl, summarizeTerrain, normalizeStoredTerrain, emptyTerrain } from './terrainContext.js';
+import { terrainGrid, elevationUrl, summarizeTerrain, normalizeStoredTerrain, emptyTerrain, terrainMapSamples } from './terrainContext.js';
 import { urbanismUrl, normalizeUrbanLayer, safeDocumentUrl, fetchUrbanism, normalizeStoredUrbanism } from './urbanismContext.js';
 import { normalizeGeorisquesRiskSummary, emptyGeorisquesRiskSummary, buildGeorisquesRiskSummaryUrl } from './georisquesRiskSummary.js';
 
@@ -49,6 +49,36 @@ test('reprise JSON preserve les saisies et recalcule le relief seulement au meme
   assert.equal(normalizeStoredTerrain(saved, 2.2, 48.8).analysis, null);
   assert.deepEqual(normalizeStoredTerrain(null, '', ''), emptyTerrain());
   assert.equal(normalizeStoredTerrain({ orientation: 'inconnue' }, '', '').orientation, '');
+});
+
+test('la carte place les neuf valeurs aux coordonnees mesurees et distingue les extremes relatifs', () => {
+  const analysis = summarizeTerrain(payload([8, 9, 10, 7, 8, 9, 6, 7, 8]), grid, 50);
+  const samples = terrainMapSamples(analysis, grid[4].lon, grid[4].lat);
+  assert.equal(samples.length, 9);
+  samples.forEach((sample, i) => {
+    assert.equal(sample.lon, grid[i].lon); assert.equal(sample.lat, grid[i].lat);
+    assert.equal(sample.z, analysis.samples[i].z);
+  });
+  assert.equal(samples[2].level, 'high'); assert.equal(samples[6].level, 'low');
+  assert.equal(samples[4].label, 'Centre'); assert.equal(samples[4].level, 'neutral');
+});
+
+test('la carte ne dessine aucune altitude absente, invalide ou liee a un ancien point', () => {
+  const analysis = summarizeTerrain(payload(Array(9).fill(0)), grid, 50);
+  assert.deepEqual(terrainMapSamples(null, grid[4].lon, grid[4].lat), []);
+  assert.deepEqual(terrainMapSamples(analysis, 2, 48), []);
+  analysis.samples[0].z = -99999;
+  assert.deepEqual(terrainMapSamples(analysis, grid[4].lon, grid[4].lat), []);
+});
+
+test('une emprise de 100 m et des altitudes nulles ou negatives restent fideles sans faux contraste', () => {
+  const wider = terrainGrid(grid[4].lon, grid[4].lat, 100);
+  for (const z of [0, -2]) {
+    const analysis = summarizeTerrain({ elevations: wider.map((p) => ({ ...p, z })) }, wider, 100);
+    const samples = terrainMapSamples(analysis, grid[4].lon, grid[4].lat);
+    assert.equal(samples.length, 9); assert.equal(samples[0].east, -50);
+    assert.ok(samples.every((p) => p.z === z && p.level === 'neutral'));
+  }
 });
 
 test('urbanisme ne transforme pas les libelles source en conclusions juridiques', () => {

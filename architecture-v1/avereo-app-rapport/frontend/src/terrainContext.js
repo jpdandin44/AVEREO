@@ -68,3 +68,13 @@ export async function fetchTerrain(lon, lat, width, signal) {
   if (!response.ok) throw new Error('Service IGN indisponible');
   return summarizeTerrain(await response.json(), points, width);
 }
+
+// Only measured, validated positions for this visit may be drawn on the map.
+export function terrainMapSamples(analysis, lon, lat) {
+  const valid = normalizeStoredTerrain({ analysis }, lon, lat).analysis;
+  if (!valid) return [];
+  return valid.samples.map((sample) => ({
+    ...sample,
+    level: valid.range === 0 ? 'neutral' : sample.z === valid.min ? 'low' : sample.z === valid.max ? 'high' : 'neutral',
+  }));
+}

@@ -41,7 +41,10 @@ import {
 } from './habitologieProtocol.js';
 import { LISTENING_SECTIONS, emptyClientListening } from './clientListening.js';
 import LocationMap from './LocationMap.jsx';
+import BuildingResources from './BuildingResources.jsx';
+import { buildingResourcesHtml, emptyBuildingResources, normalizeBuildingResources } from './buildingResources.js';
 import { emptyLocation, locationConfirmed, validLocation } from './locationMap.js';
+import { moveVisitPoint } from './visitPoint.js';
 import { TerrainPanel, UrbanismPanel } from './SiteInsights.jsx';
 import { DIRECTIONS, emptyTerrain, normalizeStoredTerrain } from './terrainContext.js';
 import { safeDocumentUrl, normalizeStoredUrbanism, URBAN_LAYERS } from './urbanismContext.js';
@@ -179,6 +182,7 @@ const initialReport = normalizeReportClassification({
   },
   risques: emptyGeorisquesRiskSummary(),
   localisation: emptyLocation(),
+  ressources_batiment: emptyBuildingResources(),
   terrain: emptyTerrain(),
   ecoute: emptyClientListening(),
   protocoles: {
@@ -215,6 +219,7 @@ function deepMergeReport(base, incoming) {
     urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
     risques: { ...base.risques, ...(classifiedIncoming.risques || {}) },
     localisation: { ...base.localisation, ...(classifiedIncoming.localisation || {}) },
+    ressources_batiment: normalizeBuildingResources(classifiedIncoming.ressources_batiment),
     terrain: { ...base.terrain, ...(classifiedIncoming.terrain || {}) },
     ecoute: { ...base.ecoute, ...(classifiedIncoming.ecoute || {}) },
     habitologie_protocoles: mergeHabitologieProtocolState(classifiedIncoming.habitologie_protocoles),
@@ -563,6 +568,7 @@ function buildWordDocumentHtml(report) {
     <tr><td>Conditions meteo</td><td>${escapeHtml(meteoLine)}</td></tr>
     <tr><td>References cadastrales</td><td>${escapeHtml(cadastreLine)}</td></tr>
     <tr><td>Lieu confirmé avec le client</td><td>${locationConfirmed(report) ? `Oui — ${escapeHtml(formatDate(report.localisation.confirmation.date))}` : 'À confirmer'}</td></tr>
+    ${validLocation(report.cadastre.lon, report.cadastre.lat) ? `<tr><td>Point de visite (latitude, longitude)</td><td>${Number(report.cadastre.lat).toFixed(7)}, ${Number(report.cadastre.lon).toFixed(7)}${report.localisation?.point_manuel ? ' — Ajuste manuellement ; notes du contexte et ressources a reverifier.' : ''}</td></tr>` : ''}
     <tr><td>Zonage urbanisme</td><td>${escapeHtml(report.urbanisme?.zone || '')} ${escapeHtml(
       report.urbanisme?.description || '',
     )}${mapLink ? `<br /><a href="${mapLink}">Voir la parcelle</a>` : ''}${
@@ -592,6 +598,8 @@ function buildWordDocumentHtml(report) {
     <table><tr><th>Point</th><th>Altitude (m)</th></tr>${report.terrain.analysis.samples.map((p) => `<tr><td>${escapeHtml(p.label)}</td><td>${p.z.toFixed(2)}</td></tr>`).join('')}</table>
     <p>Neuf points autour de l'adresse, pouvant depasser la propriete. Precision variable. Ce n'est ni une etude hydrologique ni un releve de geometre ; aucun ecoulement reel ou absence de risque n'en est deduit.</p>` : ''}
   ${report.terrain?.notes ? `<h4>Verifications terrain / eaux pluviales</h4><p>${textToHtml(report.terrain.notes)}</p>` : ''}
+
+  ${buildingResourcesHtml(report, escapeHtml)}
 
   ${ecouteHtml}
 
@@ -1408,8 +1416,9 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
     setReport((prev) => ({ ...prev, [group]: { ...prev[group], [field]: value } }));
   };
 
-  const lookupCadastre = async () => {
-    if (!report.adresse_logement.trim()) {
+  const lookupCadastre = async (point = null) => {
+    const manual = point && validLocation(point.lon, point.lat);
+    if (!manual && !report.adresse_logement.trim()) {
       setLookupStatus({ state: 'error', message: 'Renseigner une adresse avant la recherche.' });
       return;
     }
@@ -1418,20 +1427,25 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
     const isCurrent = () => lookupSequence.current === sequence;
     setView('cadastre');
     setReport((prev) => ({ ...prev, localisation: { ...prev.localisation, confirmation: null } }));
-    setLookupStatus({ state: 'loading', message: "Recherche de l'adresse..." });
+    setLookupStatus({ state: 'loading', message: manual ? 'Actualisation au point de visite...' : "Recherche de l'adresse..." });
     try {
-      const banUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(report.adresse_logement)}&limit=1`;
-      const banResponse = await fetch(banUrl, { signal: AbortSignal.timeout(15000) });
-      if (!banResponse.ok) throw new Error('Recherche indisponible');
-      const banData = await banResponse.json();
-      const feature = banData.features?.[0];
-      if (!feature) throw new Error('Adresse introuvable');
+      let feature;
+      if (manual) {
+        feature = { geometry: { coordinates: [Number(point.lon), Number(point.lat)] }, properties: {} };
+      } else {
+        const banUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(report.adresse_logement)}&limit=1`;
+        const banResponse = await fetch(banUrl, { signal: AbortSignal.timeout(15000) });
+        if (!banResponse.ok) throw new Error('Recherche indisponible');
+        const banData = await banResponse.json();
+        feature = banData.features?.[0];
+        if (!feature) throw new Error('Adresse introuvable');
+      }
 
       const [lon, lat] = feature.geometry.coordinates;
       if (!validLocation(lon, lat)) throw new Error('Coordonnees invalides');
       if (!isCurrent()) return;
       // Display the location immediately: cadastral enrichment must not block client review.
-      setReport((prev) => ({ ...prev,
+      setReport((prev) => manual ? moveVisitPoint(prev, lon, lat, new Date().toISOString()) : ({ ...prev,
         cadastre: { ...initialReport.cadastre, lon, lat },
         urbanisme: { ...initialReport.urbanisme },
         risques: emptyGeorisquesRiskSummary(),
@@ -1493,12 +1507,12 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
           section: parcelle?.section || '',
           numero: parcelle?.numero || '',
           contenance: parcelle?.contenance || '',
-          commune: feature.properties.citycode || '',
-          nom_commune: feature.properties.city || '',
+          commune: parcelle?.code_insee || feature.properties.citycode || '',
+          nom_commune: parcelle?.nom_com || feature.properties.city || '',
           lon,
           lat,
         },
-        urbanisme,
+        urbanisme: manual ? { ...prev.urbanisme, ...urbanisme } : urbanisme,
         risques,
       }));
       setLookupStatus({
@@ -1510,10 +1524,10 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
               ? "Adresse et synthese des risques recuperees. La parcelle cadastrale n'a pas ete identifiee automatiquement."
               : parcelle
                 ? 'Parcelle et contexte recuperes. La synthese Georisques est temporairement indisponible.'
-                : "Adresse localisee. La parcelle et la synthese Georisques n'ont pas pu etre recuperees.",
+                : "Point localise. La parcelle et la synthese Georisques n'ont pas pu etre recuperees.",
       });
     } catch {
-      if (isCurrent()) setLookupStatus({ state: 'error', message: 'Recherche indisponible ou adresse non trouvee.' });
+      if (isCurrent()) setLookupStatus({ state: 'error', message: manual ? 'Actualisation indisponible. Le point corrigé reste conservé.' : 'Recherche indisponible ou adresse non trouvee.' });
     }
   };
 
@@ -1586,13 +1600,14 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
       <div className="cadastre-box">
         <div>
           <h3>Cadastre et PLU</h3>
-          <p>Recherche automatique depuis l'adresse du dossier.</p>
+          <p>{report.localisation?.point_manuel ? 'Recherche au point ajusté. Une recherche d’adresse remplace ce point.' : "Recherche automatique depuis l'adresse du dossier."}</p>
         </div>
         <div className="toolbar">
-          <button className="button secondary" type="button" onClick={lookupCadastre} disabled={lookupStatus.state === 'loading'}>
+          <button className="button secondary" type="button" onClick={() => lookupCadastre(report.localisation?.point_manuel ? { lon: report.cadastre.lon, lat: report.cadastre.lat } : null)} disabled={lookupStatus.state === 'loading'}>
             {lookupStatus.state === 'loading' ? <Loader2 className="spin" size={18} /> : <MapPin size={18} />}
-            Rechercher
+            {report.localisation?.point_manuel ? 'Actualiser ce point' : 'Rechercher'}
           </button>
+          {report.localisation?.point_manuel && <button className="button ghost" type="button" onClick={() => lookupCadastre()} disabled={lookupStatus.state === 'loading'}>Rechercher l’adresse à nouveau</button>}
         </div>
       </div>
 
@@ -1605,7 +1620,8 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
             <button type="button" key={key} aria-pressed={view === key} onClick={() => setView(key)}>{label}</button>)}
         </nav>
         {view !== 'cadastre' && <p className="site-location-status">{locationConfirmed(report) ? 'Lieu confirmé avec le client' : 'Lieu à confirmer dans Cadastre'} · {report.localisation.adresse_trouvee || report.adresse_logement}</p>}
-        {view === 'cadastre' && <LocationMap report={report} setReport={setReport} onCorrectAddress={onCorrectAddress} />}
+        {view === 'cadastre' && <LocationMap report={report} setReport={setReport} onCorrectAddress={onCorrectAddress}
+          onMovePoint={(lon, lat) => lookupCadastre({ lon, lat })} />}
         {view === 'risques' && <RiskSummary summary={report.risques} fallbackReportUrl={georisquesReportUrl}
           hasCoordinates={hasCoordinates} report={report} setReport={setReport} busy={lookupStatus.state === 'loading'} />}
         {view === 'urbanisme' && (lookupStatus.state === 'loading' ? <p role="status">Localisation en cours…</p>
@@ -1643,6 +1659,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
           />
         </Field>
       </div>}
+      <BuildingResources report={report} setReport={setReport} />
     </section>
   );
 }
