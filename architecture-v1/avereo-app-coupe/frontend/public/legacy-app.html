@@ -1497,7 +1497,7 @@
 
             async handleOnlineAuthClick() {
                 if (this.authConfig?.mode === 'connect_gateway') {
-                    window.location.assign('/connect/logout.php');
+                    window.top.location.assign('/connect/logout.php');
                     return;
                 }
 
