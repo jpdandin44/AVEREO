@@ -93,6 +93,11 @@ ajoute le bloc de ressources GoRenove/Pro'Reno et leur rattachement manuel au
 bien, sans extraction automatique. Livraison en PR distincte ; voir
 [la recette et les limites](api/ressources-batiment.md). Pas de deploiement automatique.
 
+Complement implemente dans le prototype : correction manuelle du repere de
+visite, actualisation au point corrige et reprise du brouillon. Revue humaine
+et qualification hebergee restent requises ; voir
+[la recette](api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
+
 ### Socle integre par la PR #61
 
 Le lot du 14 septembre remonte les accords en debut de Dossier, rend la

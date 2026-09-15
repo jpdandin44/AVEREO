@@ -37,7 +37,23 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 
 ## Constats
 
+### Correction du point de visite
+
+Le repere fixe ne permettait pas de corriger un geocodage decale. Le frontend
+propose maintenant un ajustement explicite, sans modification implicite de
+l'adresse ni perte des notes/photos. Les donnees de l'ancien point sont
+invalidees ; un compteur de recherche ignore les retours obsoletes. Aucun
+changement d'authentification, secret, base, fournisseur ou deploiement.
+La procedure, les controles realises et limites sont centralises dans
+[le contexte du bien](../api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
+
 ### Evolution 2 — ressources du batiment
+
+Demande complementaire du 15 septembre : ouverture directe du bien, puis
+report explicite par l'utilisateur qui confirme l'absence d'accord GoRenove.
+Les acces actuels sont conserves. Aucun changement du code ni appel au
+service de redirection RNB. Constat et conditions de reprise centralises dans
+[`../api/ressources-batiment.md`](../api/ressources-batiment.md).
 
 Perimetre : frontend Rapport uniquement, aucune modification de secret,
 authentification, base ou deploiement. Liens ouverts sur action, routes HTTPS

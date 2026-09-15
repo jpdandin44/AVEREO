@@ -92,11 +92,20 @@ tags:
 - Une confirmation de lieu est liee a l'adresse et aux coordonnees. Elle
   devient caduque apres modification ou nouvelle recherche. Un deplacement
   dans la carte integree ne modifie pas implicitement le dossier.
+- Le professionnel doit pouvoir corriger explicitement le point de visite,
+  par clic, glisser-deposer ou coordonnees, puis valider ou annuler. Une
+  correction conserve l'adresse et les notes, invalide les anciennes donnees
+  derivees et exige une nouvelle confirmation. L'actualisation doit utiliser
+  ce point sans le remplacer implicitement par le resultat du geocodage.
 
 ## Exigences techniques et securite
 
 - Apres confirmation du lieu, proposer GoRenove et Pro'Reno dans Site pour
   les deux parcours, sans attribuer automatiquement de fiche au bien.
+- Ouverture directe du bien reportee sur decision utilisateur : conserver
+  les acces actuels et la recherche manuelle, sans pre-remplissage d'adresse.
+  Pro'Reno reste une ressource typologique, pas une fiche a l'adresse. Voir
+  les [conditions d'une reprise future](api/ressources-batiment.md#liens-directs-au-bien--evolution-reportee).
 - Conserver liens choisis, notes et dates de consultation dans le dossier
   et ses exports. Distinguer simulations, donnees publiees et typologies generales.
 - Invalider le rattachement d'une fiche apres changement de lien ou de lieu,

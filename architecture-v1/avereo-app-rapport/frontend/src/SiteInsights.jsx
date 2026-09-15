@@ -46,7 +46,7 @@ export function UrbanismPanel({ report, setReport }) {
     <div className="insight-heading"><div><p className="property-map-eyebrow">CARTE ET URBANISME</p>
       <h3 id="urbanism-title">Points de vigilance connus</h3></div>
       <button type="button" className="button secondary" disabled={status === 'loading'} onClick={() => setRevision((n) => n + 1)}>Actualiser l’urbanisme</button></div>
-    <p>Interrogation au point d’adresse, pas sur toute la parcelle. Les informations ci-dessous signalent des éléments à vérifier avant travaux.</p>
+    <p>Interrogation au point de visite, pas sur toute la parcelle. Les informations ci-dessous signalent des éléments à vérifier avant travaux.</p>
     {status === 'loading' && <p role="status">Recherche des prescriptions et servitudes…</p>}
     {status === 'error' && <p className="status-line warning" role="alert">Récupération indisponible. Réessayez ou consultez la carte officielle. {data ? 'La dernière consultation est conservée ci-dessous.' : 'Aucune conclusion réglementaire possible.'}</p>}
     {data && <><p className="muted">Source : {data.source} · consultée le {dateLabel(data.fetchedAt)}</p>
@@ -113,7 +113,7 @@ export function TerrainPanel({ report, setReport }) {
       </div><small>Aucune orientation du bâtiment ni direction de vent n’est déduite automatiquement.</small>
     </div></div>
     <h4>Repérage altimétrique indicatif</h4>
-    <p>Neuf altitudes du terrain autour du point d’adresse. L’emprise peut dépasser le bien et inclure la voirie ou les parcelles voisines.</p>
+    <p>Neuf altitudes du terrain autour du point de visite. L’emprise peut dépasser le bien et inclure la voirie ou les parcelles voisines.</p>
     <div className="toolbar"><label>Emprise du repérage <select value={width} disabled={status === 'loading'}
       onChange={(e) => { setRequest(0); setWidth(Number(e.target.value)); }}>
       <option value={50}>50 m × 50 m</option><option value={100}>100 m × 100 m</option></select></label>

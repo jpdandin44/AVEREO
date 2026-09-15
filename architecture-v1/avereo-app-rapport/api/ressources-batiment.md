@@ -120,6 +120,36 @@ ne pas remplacer le brouillon utilisateur. Aucun vrai compte, micro ou camera re
 
 ## Limites restantes
 
+### Liens directs au bien — evolution reportee
+
+Le 15 septembre 2026, apres avoir demande l'ouverture directe du bien,
+l'utilisateur confirme ne pas disposer des accords GoRenove et choisit de
+conserver les acces externes actuels pour le moment. L'evolution est reportee,
+pas en attente de realisation immediate. Les liens et le comportement de la
+PR #63 restent inchanges : accueil GoRenove (connexion si necessaire),
+arborescences Pro'Reno et recherche manuelle. Aucun pre-remplissage d'adresse.
+
+Le [guide officiel de redirection RNB](https://gorenove.fr/assets/pdf/Guide_int%C3%A9gration_rnb.pdf),
+accessible depuis l'accueil GoRenove, documente
+`https://gorenove.fr/fiche-batiment?rnb=IDENTIFIANT_RNB`.
+Il exige prealablement de contacter le support avec l'URL du site integrateur,
+d'obtenir le droit d'utiliser le service et de signer les CGU specifiques
+communiquees par email. L'absence d'accord AVEREO est confirmee par l'utilisateur.
+Aucun appel a ce service ni acceptation de conditions n'a ete effectue.
+
+En cas de reprise explicitement demandee et apres accord, il faudra identifier le ou les batiments RNB correspondant au
+bien confirme ; une adresse ou un point sur une parcelle ne suffit pas a
+garantir une correspondance unique. En cas de plusieurs candidats, demander
+un choix explicite avant d'ouvrir la fiche. Ne pas reutiliser un identifiant
+d'exemple ni presenter un batiment voisin comme le bien valide.
+
+Pro'Reno est un catalogue documentaire par typologie, lot technique et besoin,
+pas un annuaire de fiches par adresse, selon sa
+[presentation officielle](https://programmeprofeel.fr/journal/proreno-la-ressource-pro-de-la-renovation-energetique/).
+Un eventuel ciblage futur serait le type d'habitation deja renseigne, ou une
+ressource retenue explicitement pour ce dossier, sans envoyer inutilement son adresse.
+Ne pas inventer de parametre d'adresse ni annoncer un pre-remplissage non verifie.
+
 Verification locale du 15 septembre : 49 tests frontend et compilation
 reussis ; liens invalides refuses, confirmation manuelle, dates et notes,
 rechargement/reprise, annulation et renouvellement du lieu controles dans

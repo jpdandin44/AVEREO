@@ -16,6 +16,11 @@ tags:
 
 ## 2026-09-15
 
+- Correction manuelle du point de visite dans Site : clic, glisser-deposer,
+  saisie de coordonnees, validation/annulation. Actualisation au point corrige,
+  nouvelle confirmation et preservation des notes/photos ; voir
+  [la procedure et la recette](api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
+
 - Evolution 2 : cartes GoRenove/Pro'Reno dans Site apres confirmation du bien,
   copie de l'adresse, liens et notes manuels dates, restitution dans l'export.
 - Rattachement invalide apres modification du lien/lieu, sans perte des notes.

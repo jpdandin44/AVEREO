@@ -5,7 +5,7 @@ title: Contexte du bien - urbanisme, relief et orientation
 status: active
 version: git
 created: 2026-09-14
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -25,7 +25,7 @@ Site distingue quatre vues, sans quitter l'assistant :
 - **Rapport des risques** : synthese interne, relance independante et lien
   vers le rapport officiel ; voir [Georisques](georisques.md) ;
 - **Carte PLU / regles** : libelles de zonage, prescriptions et servitudes
-  retournes au point d'adresse, textes sources et saisie des regles verifiees ;
+  retournes au point de visite, textes sources et saisie des regles verifiees ;
 - **Relief / orientation** : facade et direction renseignees par le
   professionnel, rose des vents, puis reperage altimetrique a la demande.
 
@@ -44,7 +44,7 @@ date source si fournie et URL HTTPS sans identifiants. Ni geometrie complete
 ni interpretation automatique des articles du PLU. Un libelle de protection
 ou de secteur n'enumere pas les interdictions effectivement applicables.
 
-Le point d'adresse n'est pas l'emprise de la propriete. Les servitudes
+Le point de visite n'est pas l'emprise de la propriete. Les servitudes
 lineaires/ponctuelles de SUP et d'autres regimes locaux ne sont pas couverts.
 Une liste vide ne signifie jamais absence de regle. Les erreurs de couche
 et resultats partiels sont distincts ; les listes longues sont repliables.
@@ -65,7 +65,7 @@ urbanisme restent necessaires.
 Parametres : `resource=ign_rge_alti_wld`, `zonly=false`,
 `measures=false`, `delimiter=|`, neuf longitudes et latitudes.
 Une requete fournit une grille 3 x 3, nord en haut. L'emprise est un carre
-approximatif de 50 ou 100 metres de cote autour du point d'adresse.
+approximatif de 50 ou 100 metres de cote autour du point de visite.
 Conversion locale : 111320 m/degre en latitude, correction cosinus en
 longitude ; latitudes au-dela de 80 degres exclues.
 
@@ -103,7 +103,7 @@ ni direction de vent n'est deduite de l'adresse ; aucun capteur sollicite.
   importees sont validees et les indicateurs recalcules ; un resultat lie
   a d'autres coordonnees est ignore.
 - Une actualisation echouee conserve le dernier resultat date. Changer
-  l'adresse ou refaire la recherche generale reinitialise le contexte du
+  l'adresse ou refaire la recherche d'adresse reinitialise le contexte du
   lieu et ses notes : enregistrer/exporter avant de changer de bien.
 - Delai maximal de 15 secondes, annulation a la fermeture de la vue,
   protection contre les retours obsoletes.
@@ -113,6 +113,58 @@ Seules les coordonnees sont transmises aux services. Ceux-ci voient aussi
 l'IP et les metadonnees reseau usuelles, mais pas les noms, emails, notes,
 photos ou donnees vocales. Nouveaux appels en `no-referrer`.
 Disponibilite reseau et CORS dependent des fournisseurs.
+
+## Correction manuelle du point de visite
+
+Lorsque le geocodage place le repere sur la rue ou sur un autre batiment :
+
+1. Dans Site, choisir `Deplacer le point` sur le plan ou la vue aerienne.
+2. Cliquer sur le batiment ou faire glisser le repere bleu. Les champs
+   latitude/longitude offrent aussi une saisie au clavier.
+3. Choisir `Utiliser ce point`, puis `Confirmer ce bien` avec le client.
+   `Annuler le deplacement` conserve le point et la confirmation precedents.
+
+Le mode d'ajustement est explicite : deplacer le fond de carte seul ne change
+pas le dossier. Les coordonnees vides, non numeriques ou hors bornes ne sont
+pas validables. L'adresse saisie et le libelle BAN restent inchanges.
+Le point courant devient `cadastre.lon/lat` ; `localisation.point_manuel`
+conserve longitude, latitude et date du dernier ajustement. Le brouillon,
+le JSON et le document exporte conservent le point corrige.
+
+La transition pure `visitPoint.js` invalide confirmation, references
+cadastrales, zonage/contexte GPU, risques et mesures de relief de l'ancien
+point. Les notes terrain/urbanisme, orientation, ecoute, observations, photos
+et ressources restent conservees et doivent etre reverifiees. Le rattachement
+des ressources a l'ancien point devient caduc, sans effacer leur contenu.
+
+Cadastre, zonage et risques sont redemandes aux services existants avec les
+nouvelles coordonnees, sans repasser par BAN. Les couches detaillees GPU sont
+chargees dans Carte PLU ; le relief exige une nouvelle action explicite.
+Les retours d'une recherche precedente sont ignores. Une erreur de service
+ne restaure pas l'ancien point et n'invente pas de resultat.
+
+`Actualiser ce point` reutilise la correction. Seule l'action distincte
+`Rechercher l'adresse a nouveau` revient au geocodage et reinitialise son
+contexte, selon la regle historique ci-dessus. Exporter le JSON avant cette
+action si les notes doivent etre archivees. Aucun nouveau fournisseur,
+compte, secret, endpoint PHP, schema SQL ou dependance.
+
+### Verification du 15 septembre 2026
+
+- `npm.cmd test` : 52/52 reussis ; `npm.cmd run build` reussi.
+- Tests cibles : invalidation des donnees derivees et associations,
+  conservation des notes/photos/adresse, valeurs invalides, passage JSON et
+  nouvelle confirmation.
+- Navigateur, brouillon fictif sur un lieu public nantais : clic, glisser-
+  deposer, annulation, application du point, actualisation cadastre/PLU/risques,
+  rechargement/reprise du point confirme, saisie vide bloquee et apercu
+  exporte controles. Aucune erreur console observee. L'adresse de la capture
+  utilisateur n'a pas ete utilisee pour la recette.
+- La qualification hebergee via CONNECT, le reseau coupe et les interactions
+  tactiles restent a tester, ainsi que le telechargement/reimport JSON et
+  l'ouverture Word native. Les retours reseau desordonnes sont proteges par
+  le compteur existant mais n'ont pas ete simules dans l'interface.
+  Aucune mise en production dans ce lot.
 
 ## Verification du 14 septembre 2026
 

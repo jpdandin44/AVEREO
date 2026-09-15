@@ -15,6 +15,17 @@ tags:
 
 # Decisions structurantes de Rapport AVEREO
 
+## 2026-09-15 - Distinguer adresse et point reel de visite
+
+Contexte : un resultat de geocodage peut viser la rue ou le mauvais batiment.
+Decision : correction manuelle explicite du repere, sans changer l'adresse,
+avec annulation possible avant validation et nouvelle confirmation du bien.
+Raisons : garder un parcours simple et eviter une correction perdue lors de
+l'actualisation ou des donnees de l'ancien point attribuees au nouveau.
+Consequences : invalidation des donnees derivees, conservation des notes a
+reverifier et stockage JSON compatible ; voir
+[les regles detaillees](api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
+
 ## 2026-09-15 - Ressources externes choisies par le professionnel
 
 Contexte : exploiter les informations deja disponibles apres validation du bien.
@@ -25,6 +36,10 @@ Raisons : prototype simple, pas d'ID BDNB suppose ni de typologie appliquee par
 defaut ; distinction entre donnees, simulations et diagnostic terrain.
 Consequences : ajout JSON compatible, limites d'acces externes explicites,
 validation humaine des correspondances. Voir [la source de reference](api/ressources-batiment.md).
+
+Confirmation utilisateur du meme jour : faute d'accord GoRenove, conserver
+les acces actuels et reporter l'ouverture directe du bien. Aucune integration
+RNB ni recherche pre-remplie a activer dans ce lot.
 
 ## 2026-09-15 - Suspendre une phase sans effacer le travail
 

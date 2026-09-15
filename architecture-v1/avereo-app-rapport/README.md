@@ -74,6 +74,12 @@ Dans Site, quatre vues separent validation cadastrale, synthese des risques,
 urbanisme et relief/orientation. Voir le
 [parcours et les limites du contexte du bien](api/contexte-du-bien.md).
 
+Si le repere ne correspond pas au batiment, choisir `Deplacer le point`,
+cliquer ou faire glisser le repere, puis `Utiliser ce point` et confirmer
+de nouveau le bien. L'adresse reste inchangee ; les recherches utilisent
+ensuite le point ajuste. La procedure et ses effets sur les donnees sont
+decrits dans [le contexte du bien](api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
+
 Apres confirmation du lieu, le bloc `Informations deja disponibles` propose
 GoRenove et les typologies Pro'Reno. Les fiches sont choisies manuellement,
 avec date et notes conservees dans le dossier et l'export ; aucun resultat
