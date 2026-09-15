@@ -150,6 +150,10 @@ l'ecoute, observations conservees et contenu des exports JSON/Word verifies.
 L'apercu HTML et le contenu du fichier `.doc` sont controles ; le rendu dans
 Microsoft Word et le parcours heberge CONNECT/MySQL ne sont pas qualifies par
 cette recette frontend. Aucun microphone ni camera n'a ete active.
+Limite de l'outillage de recette : la restauration automatique du brouillon
+de demonstration initial n'a pas ete confirmee. Sa copie JSON exportee est
+conservee et verifiee ; le navigateur de recette garde le dossier synthetique.
+Restaurer cette copie manuellement via Export > Import JSON si necessaire.
 La validation metier et le merge restent humains ; cette recette ne constitue
 ni une attestation de zero bug ni une autorisation de deploiement.
 
