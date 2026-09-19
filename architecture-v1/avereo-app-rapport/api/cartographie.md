@@ -5,7 +5,7 @@ title: Carte cadastrale IGN et confirmation du lieu
 status: active
 version: git
 created: 2026-09-12
-updated: 2026-09-14
+updated: 2026-09-15
 owner: jpdandin
 tags:
   - rapport
@@ -22,9 +22,13 @@ directement les images publiques IGN. Elle remplace l'iframe dont le fond
 restait noir. Aucun projet Google, compte, cle API ou service interne ajoute.
 
 Deux vues sont disponibles : `Cadastre` (plan et parcelles) et `Vue aerienne`
-(photographies et parcelles). Le repere correspond au point d'adresse, pas a
-une parcelle selectionnee. Zoom et deplacement servent seulement a la lecture ;
-`Recentrer` revient au point initial et recharge les couches.
+(photographies et parcelles). Le repere correspond initialement au point
+d'adresse, pas a une parcelle selectionnee. Zoom et deplacement du fond servent
+a la lecture ; `Recentrer` revient au point du dossier et recharge les couches.
+Le mode explicite `Deplacer le point` permet maintenant une correction
+manuelle, avec validation ou annulation. Le fonctionnement, la conservation
+des donnees et la recette sont centralises dans
+[le contexte du bien](contexte-du-bien.md#correction-manuelle-du-point-de-visite).
 
 Le bouton `Confirmer ce bien` conserve l'adresse saisie, les coordonnees et
 la date dans `localisation.confirmation`. La confirmation peut etre annulee.

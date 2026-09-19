@@ -55,3 +55,7 @@ iframe ni API interne supplementaire. Le stockage reste le payload JSON :
 `urbanisme.context` conserve les attributs GPU et `terrain` les mesures
 altimetriques, l'orientation et les notes. Voir
 [`api/cartographie.md`](api/cartographie.md).
+
+L'evolution 2 ajoute les liens externes et notes `ressources_batiment` au meme
+payload. Aucun raccordement automatique aux fournisseurs : voir
+[`api/ressources-batiment.md`](api/ressources-batiment.md).
