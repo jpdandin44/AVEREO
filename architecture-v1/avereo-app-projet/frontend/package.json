@@ -4,8 +4,11 @@
     "private":  true,
     "type":  "module",
     "scripts":  {
-                    "dev":  "node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite",
-                    "build":  "node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite build",
+                    "dev":  "npm run generate:planning && node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite",
+                    "generate:planning": "node ../workflows/generer-planning-pilote.mjs",
+                    "check:planning": "node ../workflows/generer-planning-pilote.mjs --check",
+                    "test": "node --test ../tests/*.test.mjs",
+                    "build":  "npm run check:planning && npm test && node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite build",
                     "preview":  "vite preview"
                 },
     "dependencies":  {

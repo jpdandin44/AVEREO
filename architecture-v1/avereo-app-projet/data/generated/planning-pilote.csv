@@ -1,0 +1,7 @@
+﻿"ID";"Nom";"Lot";"Durée (jours ouvrés)";"Dépendances";"Responsable";"Statut";"Avancement (%)";"Criticité"
+"L0";"Cadrer et sécuriser";"L0";"5";"";"À confirmer";"À faire";"0";"Majeur"
+"L1";"Qualifier et sauvegarder";"L1";"5.75";"L0";"À confirmer";"À faire";"0";"Majeur"
+"L2";"Structurer les preuves";"L2";"5.25";"L1";"À confirmer";"À faire";"0";"Majeur"
+"L3";"Valider et produire";"L3";"7";"L2";"À confirmer";"À faire";"0";"Majeur"
+"RES";"Réserve avant pilote";"RES";"4.9";"L3";"À confirmer";"À faire";"0";"Majeur"
+"L4";"Essais et pilote terrain";"L4";"1.5";"RES";"À confirmer";"À faire";"0";"Majeur"

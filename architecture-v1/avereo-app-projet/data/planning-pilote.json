@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "name": "Pilote AVEREO — CONNECT vers Rapport",
+  "startDate": "2026-09-21",
+  "targetDate": "2026-10-30",
+  "capacityPerWeek": 5,
+  "schedulingMode": "sequential",
+  "provenance": {
+    "auditDate": "2026-09-17",
+    "sourceCommit": "c6319b9abc118d883802fea14d673d42d8a876a9",
+    "estimateCase": "central",
+    "totalChargeDays": 29.4,
+    "sourceNote": "Scénario central issu de l’audit AVEREO du 17 septembre 2026 : 24,5 jours-personne, dont la provision EV-15, et 4,9 jours de réserve."
+  },
+  "notes": [
+    "Dates proposées du 21 septembre au 30 octobre 2026 ; affectations et rendez-vous restent à confirmer. Les lots sont séquencés, sans parallélisme supposé.",
+    "EV-15 est provisionné à hauteur de 1,5 jour dans L0. Sa correction ou un confinement effectif devient obligatoire si un contournement du sas est exposé.",
+    "Le scénario central totalise 29,4 jours-personne pour une capacité de 30 jours : marge restante de 0,6 jour après la réserve de 4,9 jours."
+  ],
+  "tasks": [
+    {
+      "id": "L0",
+      "name": "Cadrer et sécuriser",
+      "lot": "L0",
+      "duration": 5,
+      "dependencies": [],
+      "owner": "À confirmer",
+      "status": "À faire",
+      "progress": 0,
+      "riskWeight": "Majeur",
+      "riskStatus": "Aucun",
+      "isMilestone": false
+    },
+    {
+      "id": "L1",
+      "name": "Qualifier et sauvegarder",
+      "lot": "L1",
+      "duration": 5.75,
+      "dependencies": ["L0"],
+      "owner": "À confirmer",
+      "status": "À faire",
+      "progress": 0,
+      "riskWeight": "Majeur",
+      "riskStatus": "Aucun",
+      "isMilestone": false
+    },
+    {
+      "id": "L2",
+      "name": "Structurer les preuves",
+      "lot": "L2",
+      "duration": 5.25,
+      "dependencies": ["L1"],
+      "owner": "À confirmer",
+      "status": "À faire",
+      "progress": 0,
+      "riskWeight": "Majeur",
+      "riskStatus": "Aucun",
+      "isMilestone": false
+    },
+    {
+      "id": "L3",
+      "name": "Valider et produire",
+      "lot": "L3",
+      "duration": 7,
+      "dependencies": ["L2"],
+      "owner": "À confirmer",
+      "status": "À faire",
+      "progress": 0,
+      "riskWeight": "Majeur",
+      "riskStatus": "Aucun",
+      "isMilestone": false
+    },
+    {
+      "id": "RES",
+      "name": "Réserve avant pilote",
+      "lot": "RES",
+      "duration": 4.9,
+      "dependencies": ["L3"],
+      "owner": "À confirmer",
+      "status": "À faire",
+      "progress": 0,
+      "riskWeight": "Majeur",
+      "riskStatus": "Aucun",
+      "isMilestone": false
+    },
+    {
+      "id": "L4",
+      "name": "Essais et pilote terrain",
+      "lot": "L4",
+      "duration": 1.5,
+      "dependencies": ["RES"],
+      "owner": "À confirmer",
+      "status": "À faire",
+      "progress": 0,
+      "riskWeight": "Majeur",
+      "riskStatus": "Aucun",
+      "isMilestone": false
+    }
+  ]
+}
