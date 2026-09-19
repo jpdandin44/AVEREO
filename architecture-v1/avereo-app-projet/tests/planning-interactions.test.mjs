@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const read = name => readFileSync(new URL('../frontend/public/' + name, import.meta.url), 'utf8');
 const html = read('legacy-app.html');
 const inlineSource = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(match => match[1]).join('\n');
-const sources = [read('planning-core.js'), inlineSource, read('planning-local.js')];
+const sources = [read('planning-core.js'), inlineSource, read('planning-local.js'), read('task-details.js')];
 const storageKey = 'avereo.projet.planning.v1';
 const task = (id, duration, dependencies = []) => ({ id, name: `Tâche ${id}`, duration, dependencies });
 

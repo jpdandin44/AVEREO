@@ -10,9 +10,16 @@
     const MAX_TASKS = 1000;
     const MAX_HORIZON = 3660;
     const MAX_CALENDAR_DAYS = 3660;
+    const MAX_PROJECT_CHARACTERS = 5000000;
+    const MAX_PROJECT_BYTES = 5 * 1024 * 1024;
+    const MAX_CHECKLIST_ITEMS = 100;
+    const MAX_RISKS = 60;
     const STATUSES = ['À faire', 'En cours', 'En attente', 'Bloqué', 'Terminé', 'Validé'];
     const RISK_WEIGHTS = ['Mineur', 'Majeur', 'Critique'];
     const RISK_STATUSES = ['Aucun', 'Sous surveillance', 'Actif', 'Résolu'];
+    const PROBABILITIES = ['À qualifier', 'Faible', 'Moyenne', 'Élevée'];
+    const IMPACTS = ['À qualifier', 'Mineur', 'Majeur', 'Critique'];
+    const DETAILED_RISK_STATUSES = ['À qualifier', 'Ouvert', 'Sous surveillance', 'Actif', 'Résolu', 'Accepté'];
     const RESERVED_IDS = new Set(['__proto__', 'constructor', 'prototype']);
 
     function fail(message) { throw new Error(message); }
@@ -26,6 +33,20 @@
             fail(label + ' est vide, trop long ou contient des caractères interdits.');
         }
         return result;
+    }
+    function checkProjectSize(project) {
+        const serialized = JSON.stringify(project, null, 2);
+        if (serialized.length > MAX_PROJECT_CHARACTERS) fail('Le projet dépasse 5 millions de caractères. Réduisez les descriptions ou preuves pour conserver une sauvegarde réimportable.');
+        // Match the file import limit, including multibyte French/Unicode text.
+        let bytes = 0;
+        for (let i = 0; i < serialized.length; i++) {
+            const code = serialized.charCodeAt(i);
+            if (code < 0x80) bytes++;
+            else if (code < 0x800) bytes += 2;
+            else if (code >= 0xd800 && code <= 0xdbff && serialized.charCodeAt(i + 1) >= 0xdc00 && serialized.charCodeAt(i + 1) <= 0xdfff) { bytes += 4; i++; }
+            else bytes += 3;
+            if (bytes > MAX_PROJECT_BYTES) fail('Le projet dépasse 5 Mio UTF-8. Réduisez les descriptions ou preuves pour conserver une sauvegarde réimportable.');
+        }
     }
     function identifier(value, label) {
         const result = text(value, label, 128, true);
@@ -55,6 +76,107 @@
         return date;
     }
     function isoDate(date) { return date.toISOString().slice(0, 10); }
+    function dateTimeValue(value, label) {
+        if (typeof value !== 'string') fail(label + ' doit être un horodatage ISO avec fuseau.');
+        const match = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.\d{1,3})?(Z|[+-]\d{2}:\d{2})$/.exec(value);
+        if (!match) fail(label + ' doit être un horodatage ISO avec fuseau.');
+        dateValue(match[1], label);
+        const zone = match[5];
+        if (Number(match[2]) > 23 || Number(match[3]) > 59 || Number(match[4]) > 59 ||
+            (zone !== 'Z' && (Number(zone.slice(1, 3)) > 23 || Number(zone.slice(4, 6)) > 59))) {
+            fail(label + ' est un horodatage impossible.');
+        }
+        const date = new Date(value);
+        if (!Number.isFinite(date.getTime()) || date.getUTCFullYear() < 1 || date.getUTCFullYear() > 9999) fail(label + ' est un horodatage impossible.');
+        return date.toISOString();
+    }
+    function boolean(value, label) {
+        if (value === undefined) return false;
+        if (typeof value !== 'boolean') fail(label + ' doit être un booléen.');
+        return value;
+    }
+    function sourceReferences(input, label) {
+        const refs = input === undefined ? [] : input;
+        if (!Array.isArray(refs) || refs.length > 20) fail(label + ' : au maximum 20 références sont autorisées.');
+        return refs.map(ref => text(ref, label + ' : référence', 500, true));
+    }
+    function validateChecklist(input, taskId) {
+        if (input === undefined) return [];
+        if (!Array.isArray(input) || input.length > MAX_CHECKLIST_ITEMS) fail('La checklist de ' + taskId + ' doit contenir au maximum ' + MAX_CHECKLIST_ITEMS + ' éléments.');
+        const seen = new Set();
+        return input.map((entry, index) => {
+            const label = 'Checklist de ' + taskId + ', élément ' + (index + 1);
+            object(entry, label);
+            const id = identifier(entry.id, label + ' : ID');
+            if (seen.has(id)) fail('ID de checklist dupliqué pour ' + taskId + ' : ' + id);
+            seen.add(id);
+            const completed = boolean(entry.completed, label + ' : terminé');
+            const validated = boolean(entry.validated, label + ' : validé');
+            const evidence = text(entry.evidence === undefined ? '' : entry.evidence, label + ' : preuve', 6000, false);
+            const validatedBy = text(entry.validatedBy === undefined ? '' : entry.validatedBy, label + ' : validateur', 200, false);
+            const rawValidatedAt = entry.validatedAt === undefined ? null : entry.validatedAt;
+            let validatedAt = null;
+            if (validated) {
+                if (!completed || !evidence || !validatedBy || rawValidatedAt === null) fail(label + ' : une validation exige un élément terminé, une preuve, un validateur et un horodatage.');
+                validatedAt = dateTimeValue(rawValidatedAt, label + ' : date de validation');
+            } else if (rawValidatedAt !== null) fail(label + ' : un élément non validé doit avoir une date de validation nulle.');
+            return {
+                id,
+                title: text(entry.title, label + ' : titre', 1000, true),
+                action: text(entry.action === undefined ? '' : entry.action, label + ' : action', 12000, false),
+                expected: text(entry.expected === undefined ? '' : entry.expected, label + ' : résultat attendu', 12000, false),
+                sourceRefs: sourceReferences(entry.sourceRefs, label),
+                completed,
+                validated,
+                evidence,
+                validatedBy,
+                validatedAt
+            };
+        });
+    }
+    function riskScore(risk) {
+        object(risk, 'Risque');
+        const probability = choice(risk.probability === undefined ? 'À qualifier' : risk.probability, PROBABILITIES, 'Probabilité du risque');
+        const impact = choice(risk.impact === undefined ? 'À qualifier' : risk.impact, IMPACTS, 'Impact du risque');
+        if (probability === 'À qualifier' || impact === 'À qualifier') return null;
+        return PROBABILITIES.indexOf(probability) * IMPACTS.indexOf(impact);
+    }
+    function riskLevel(risk) {
+        const score = riskScore(risk);
+        return score === null ? 'À qualifier' : score <= 2 ? 'Mineur' : score <= 4 ? 'Majeur' : 'Critique';
+    }
+    function validateRisks(input, taskId) {
+        if (input === undefined) return [];
+        if (!Array.isArray(input) || input.length > MAX_RISKS) fail('La liste des risques de ' + taskId + ' doit contenir au maximum ' + MAX_RISKS + ' éléments.');
+        const seen = new Set();
+        return input.map((entry, index) => {
+            const label = 'Risque de ' + taskId + ', élément ' + (index + 1);
+            object(entry, label);
+            const id = identifier(entry.id, label + ' : ID');
+            if (seen.has(id)) fail('ID de risque dupliqué pour ' + taskId + ' : ' + id);
+            seen.add(id);
+            const risk = {
+                id,
+                title: text(entry.title, label + ' : titre', 1000, true),
+                cause: text(entry.cause === undefined ? '' : entry.cause, label + ' : cause', 12000, false),
+                consequence: text(entry.consequence === undefined ? '' : entry.consequence, label + ' : conséquence', 12000, false),
+                probability: choice(entry.probability === undefined ? 'À qualifier' : entry.probability, PROBABILITIES, label + ' : probabilité'),
+                impact: choice(entry.impact === undefined ? 'À qualifier' : entry.impact, IMPACTS, label + ' : impact'),
+                prevention: text(entry.prevention === undefined ? '' : entry.prevention, label + ' : prévention', 12000, false),
+                contingency: text(entry.contingency === undefined ? '' : entry.contingency, label + ' : plan de secours', 12000, false),
+                owner: text(entry.owner === undefined ? '' : entry.owner, label + ' : responsable', 200, false),
+                status: choice(entry.status === undefined ? 'À qualifier' : entry.status, DETAILED_RISK_STATUSES, label + ' : statut'),
+                followUp: text(entry.followUp === undefined ? '' : entry.followUp, label + ' : suivi', 6000, false),
+                evidence: text(entry.evidence === undefined ? '' : entry.evidence, label + ' : preuve', 6000, false),
+                reviewDate: entry.reviewDate === undefined || entry.reviewDate === null || entry.reviewDate === '' ? null : isoDate(dateValue(entry.reviewDate, label + ' : date de revue')),
+                sourceRefs: sourceReferences(entry.sourceRefs, label)
+            };
+            if (['Résolu', 'Accepté'].includes(risk.status) && (riskScore(risk) === null || !risk.owner || /^(à confirmer|à affecter|à qualifier|tbd)$/i.test(risk.owner) || !risk.evidence || !risk.reviewDate)) {
+                fail(label + ' : résoudre ou accepter un risque exige probabilité et impact qualifiés, responsable, preuve et date de revue.');
+            }
+            return risk;
+        });
+    }
     function localDate(date) {
         const result = new Date(0);
         result.setFullYear(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
@@ -143,6 +265,9 @@
             return {
                 id,
                 name: text(entry.name, 'Nom de ' + id, 1000, true),
+                description: text(entry.description === undefined ? '' : entry.description, 'Description de ' + id, 12000, false),
+                checklist: validateChecklist(entry.checklist, id),
+                risks: validateRisks(entry.risks, id),
                 lot: text(entry.lot === undefined || entry.lot === '' ? 'Général' : entry.lot, 'Lot de ' + id, 200, true),
                 duration,
                 dependencies,
@@ -174,7 +299,7 @@
                 if (positions.get(id) >= index) fail('En mode séquentiel, la dépendance ' + id + ' doit précéder ' + task.id + ' dans la liste.');
             }));
         }
-        return {
+        const project = {
             schemaVersion: 1,
             name: text(input.name, 'Nom du projet', 200, true),
             startDate,
@@ -183,6 +308,8 @@
             schedulingMode,
             tasks
         };
+        checkProjectSize(project);
+        return project;
     }
     function schedule(input, todayISO) {
         const project = normalizeProject(input);
@@ -317,7 +444,7 @@
     }
     function encodeProject(project) { return JSON.stringify(normalizeProject(project), null, 2); }
     function decodeProject(source) {
-        if (typeof source !== 'string' || source.length > 5000000) fail('Sauvegarde invalide ou trop volumineuse.');
+        if (typeof source !== 'string' || source.length > MAX_PROJECT_CHARACTERS) fail('Sauvegarde invalide ou trop volumineuse.');
         let project;
         try { project = JSON.parse(source.replace(/^\uFEFF/, '')); }
         catch (_) { fail('La sauvegarde JSON est illisible.'); }
@@ -336,8 +463,8 @@
     }
     return Object.freeze({
         parseNumber, parseCsv, mapRows, validateTasks, normalizeProject, schedule,
-        offsetToDate, encodeProject, decodeProject, tasksToCsv,
+        offsetToDate, encodeProject, decodeProject, tasksToCsv, riskScore, riskLevel,
         STATUSES: Object.freeze(STATUSES),
-        LIMITS: Object.freeze({ maxTasks: MAX_TASKS, maxWorkingDays: MAX_HORIZON, maxCalendarDays: MAX_CALENDAR_DAYS })
+        LIMITS: Object.freeze({ maxTasks: MAX_TASKS, maxWorkingDays: MAX_HORIZON, maxCalendarDays: MAX_CALENDAR_DAYS, maxChecklistItems: MAX_CHECKLIST_ITEMS, maxRisks: MAX_RISKS, maxProjectCharacters: MAX_PROJECT_CHARACTERS, maxProjectBytes: MAX_PROJECT_BYTES })
     });
 });

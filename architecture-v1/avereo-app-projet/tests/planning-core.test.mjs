@@ -149,3 +149,244 @@ test('tiny positive durations never collapse into a milestone or an end date bef
     assert.equal(date(result.tasks[1].calcEnd), '2026-09-22');
     assert.throws(() => P.schedule(project([task('A'), task('B', 1e-12)]), '2026-09-19'), /précision/);
 });
+
+const checklistItem = (extra = {}) => ({
+    id: 'VERIFY_1', title: 'Vérifier le résultat', action: 'Exécuter le scénario et relever le résultat.',
+    expected: 'Le résultat attendu est observable.', sourceRefs: ['audit.md#ev-01'], ...extra
+});
+
+test('old JSON and CSV gain empty detail fields without changing existing tracking', () => {
+    const legacy = project([task('A', .875, [], { status: 'En cours', progress: 12.5 })]);
+    const jsonTask = P.decodeProject(JSON.stringify(legacy)).tasks[0];
+    assert.equal(jsonTask.description, '');
+    assert.deepEqual(plain(jsonTask.checklist), []);
+    assert.equal(jsonTask.status, 'En cours');
+    assert.equal(jsonTask.progress, 12.5);
+    assert.equal(jsonTask.duration, .875);
+    const csvTask = P.mapRows(P.parseCsv('ID;Nom;Durée;Statut;Avancement\nA;Ancienne tâche;0,875;En cours;12,5'))[0];
+    assert.equal(csvTask.description, '');
+    assert.deepEqual(plain(csvTask.checklist), []);
+    assert.equal(csvTask.duration, .875);
+    assert.equal(csvTask.progress, 12.5);
+});
+
+test('JSON preserves detailed checklists, proof and validation identity without completing the task', () => {
+    const detailed = project([task('A', .875, [], {
+        description: 'Objectif du lot.\nDeuxième ligne.', status: 'En cours', progress: 12.5,
+        checklist: [checklistItem({ completed: true, validated: true, evidence: 'Résultat consigné dans preuve-01.pdf.', validatedBy: 'Relecteur local', validatedAt: '2026-09-21T14:30:15+02:00' })]
+    })]);
+    const decoded = P.decodeProject(P.encodeProject(detailed));
+    assert.deepEqual(plain(decoded), plain(P.normalizeProject(detailed)));
+    assert.equal(decoded.schemaVersion, 1);
+    assert.equal(decoded.tasks[0].description, 'Objectif du lot.\nDeuxième ligne.');
+    assert.equal(decoded.tasks[0].checklist[0].validatedAt, '2026-09-21T12:30:15.000Z');
+    assert.equal(decoded.tasks[0].checklist[0].validated, true);
+    assert.equal(decoded.tasks[0].status, 'En cours');
+    assert.equal(decoded.tasks[0].progress, 12.5);
+});
+
+test('checklist validation requires completion, proof, identity and a real ISO timestamp', () => {
+    const valid = checklistItem({ completed: true, validated: true, evidence: 'Observation vérifiée', validatedBy: 'Relecteur', validatedAt: '2026-09-21T12:30:00.000Z' });
+    for (const override of [
+        { completed: false }, { completed: 'true' }, { validated: 1 },
+        { evidence: '  ' }, { validatedBy: '' }, { validatedAt: null },
+        { validatedAt: '2026-02-30T12:30:00Z' }, { validatedAt: '2026-09-21' },
+        { validatedAt: '2026-09-21T12:30:00' }, { validatedAt: '2026-09-21T24:00:00Z' },
+        { validatedAt: '2026-09-21T12:30:00+25:00' }
+    ]) {
+        assert.throws(() => P.validateTasks([task('A', 1, [], { checklist: [{ ...valid, ...override }] })]), JSON.stringify(override));
+    }
+    assert.equal(P.validateTasks([task('A', 1, [], { checklist: [valid] })])[0].checklist[0].validated, true);
+    assert.equal(P.validateTasks([task('A', 1, [], { checklist: [{ ...valid, validatedAt: '2028-02-29T12:30:00Z' }] })])[0].checklist[0].validatedAt, '2028-02-29T12:30:00.000Z');
+});
+
+test('draft checklist progress is explicit and cannot retain a validation timestamp', () => {
+    const normalized = P.validateTasks([task('A', 1, [], { checklist: [checklistItem({ completed: true, evidence: 'Preuve en attente de relecture' })] })])[0];
+    assert.equal(normalized.status, 'À faire');
+    assert.equal(normalized.progress, 0);
+    assert.equal(normalized.checklist[0].completed, true);
+    assert.equal(normalized.checklist[0].validated, false);
+    assert.equal(normalized.checklist[0].validatedBy, '');
+    assert.equal(normalized.checklist[0].validatedAt, null);
+    assert.throws(() => P.validateTasks([task('A', 1, [], { checklist: [checklistItem({ validatedAt: '2026-09-21T12:30:00Z' })] })]), /non validé/);
+});
+
+test('detail bounds, types, unsafe identifiers and checklist duplicates are rejected', () => {
+    for (const extra of [
+        { description: 'x'.repeat(12001) }, { description: null }, { checklist: null },
+        { checklist: Array.from({ length: 101 }, (_, i) => checklistItem({ id: 'C' + i })) },
+        { checklist: [checklistItem(), checklistItem()] },
+        { checklist: [checklistItem({ id: '__proto__' })] },
+        { checklist: [checklistItem({ title: '' })] },
+        { checklist: [checklistItem({ action: 'x'.repeat(12001) })] },
+        { checklist: [checklistItem({ expected: 'x'.repeat(12001) })] },
+        { checklist: [checklistItem({ evidence: 'x'.repeat(6001) })] },
+        { checklist: [checklistItem({ sourceRefs: Array(21).fill('source') })] },
+        { checklist: [checklistItem({ sourceRefs: ['x'.repeat(501)] })] },
+        { checklist: [checklistItem({ sourceRefs: [42] })] },
+        { checklist: [checklistItem({ completed: 'false' })] }
+    ]) assert.throws(() => P.validateTasks([task('A', 1, [], extra)]));
+    const boundary = P.validateTasks([task('A', 1, [], {
+        description: 'x'.repeat(12000),
+        checklist: Array.from({ length: 100 }, (_, i) => checklistItem({ id: 'C' + i }))
+    })]);
+    assert.equal(boundary[0].checklist.length, 100);
+    assert.equal(P.validateTasks([task('A', 1, [], { checklist: [checklistItem()] }), task('B', 1, [], { checklist: [checklistItem()] })]).length, 2);
+});
+
+test('normalization and scheduling make independent copies of nested checklist data', () => {
+    const original = project([task('A', .75, [], { checklist: [checklistItem()] })]);
+    const before = JSON.stringify(original);
+    const normalized = P.normalizeProject(original);
+    const scheduled = P.schedule(normalized, '2026-09-19');
+    scheduled.tasks[0].checklist[0].completed = true;
+    scheduled.tasks[0].checklist[0].sourceRefs.push('another-source');
+    assert.equal(normalized.tasks[0].checklist[0].completed, false);
+    assert.equal(normalized.tasks[0].checklist[0].sourceRefs.length, 1);
+    assert.equal(JSON.stringify(original), before);
+});
+
+test('adding completed checklists does not change fractional scheduling or the six-lot finish', () => {
+    const detailed = [5, 5.75, 5.25, 7, 4.9, 1.5].map((duration, i) => task('L' + i, duration, i ? ['L' + (i - 1)] : [], {
+        description: 'Description détaillée', checklist: [checklistItem({ completed: true })]
+    }));
+    const result = P.schedule(project(detailed), '2026-09-19');
+    assert.equal(result.totalDuration, 29.4);
+    assert.equal(date(result.projectEnd), '2026-10-30');
+    assert.equal(result.tasks[2].startOffset, 10.75);
+    assert.equal(result.tasks[5].endOffset, 29.4);
+    assert.ok(result.tasks.every(entry => entry.status === 'À faire' && entry.progress === 0));
+});
+
+test('aggregate detail volume is rejected before producing a JSON backup that cannot be imported', () => {
+    const largeChecklist = Array.from({ length: 100 }, (_, i) => checklistItem({
+        id: 'C' + i, action: 'a'.repeat(12000), expected: 'b'.repeat(12000), evidence: 'c'.repeat(6000)
+    }));
+    const large = project([task('A', 1, [], { checklist: largeChecklist }), task('B', 1, [], { checklist: largeChecklist })]);
+    assert.throws(() => P.normalizeProject(large), /5 millions de caractères/);
+    assert.throws(() => P.encodeProject(large), /5 millions de caractères/);
+    const smaller = project([task('A', 1, [], { checklist: largeChecklist })]);
+    const serialized = P.encodeProject(smaller);
+    assert.ok(serialized.length <= P.LIMITS.maxProjectCharacters);
+    assert.equal(P.decodeProject(serialized).tasks[0].checklist.length, 100);
+});
+
+test('Unicode-rich details respect the same five-MiB file limit as the import controller', () => {
+    const tooLarge = project([task('A', 1, [], {
+        checklist: Array.from({ length: 100 }, (_, i) => checklistItem({ id: 'C' + i, action: '漢'.repeat(12000), expected: '漢'.repeat(12000), evidence: '漢'.repeat(6000) }))
+    })]);
+    assert.ok(JSON.stringify(tooLarge, null, 2).length < P.LIMITS.maxProjectCharacters);
+    assert.throws(() => P.encodeProject(tooLarge), /5 Mio UTF-8/);
+    const acceptable = project([task('A', 1, [], {
+        checklist: Array.from({ length: 100 }, (_, i) => checklistItem({ id: 'C' + i, action: 'é'.repeat(12000), expected: 'Contrôle 🙂' }))
+    })]);
+    const serialized = P.encodeProject(acceptable);
+    assert.ok(Buffer.byteLength(serialized, 'utf8') <= P.LIMITS.maxProjectBytes);
+    assert.equal(P.decodeProject(serialized).tasks[0].checklist[0].expected, 'Contrôle 🙂');
+});
+
+const detailedRisk = (extra = {}) => ({ id: 'R1', title: 'Risque de dépendance', ...extra });
+
+test('risk scoring covers the whole 3 by 3 matrix and leaves unqualified risks unscored', () => {
+    const cases = [
+        ['Faible', 'Mineur', 1, 'Mineur'], ['Faible', 'Majeur', 2, 'Mineur'], ['Faible', 'Critique', 3, 'Majeur'],
+        ['Moyenne', 'Mineur', 2, 'Mineur'], ['Moyenne', 'Majeur', 4, 'Majeur'], ['Moyenne', 'Critique', 6, 'Critique'],
+        ['Élevée', 'Mineur', 3, 'Majeur'], ['Élevée', 'Majeur', 6, 'Critique'], ['Élevée', 'Critique', 9, 'Critique']
+    ];
+    for (const [probability, impact, score, level] of cases) {
+        assert.equal(P.riskScore({ probability, impact }), score, `${probability}/${impact}`);
+        assert.equal(P.riskLevel({ probability, impact }), level, `${probability}/${impact}`);
+    }
+    for (const risk of [{}, { probability: 'À qualifier', impact: 'Critique' }, { probability: 'Élevée', impact: 'À qualifier' }]) {
+        assert.equal(P.riskScore(risk), null);
+        assert.equal(P.riskLevel(risk), 'À qualifier');
+    }
+    assert.throws(() => P.riskScore({ probability: 'Certaine', impact: 'Mineur' }));
+    assert.throws(() => P.riskLevel({ probability: 'Faible', impact: 'Nul' }));
+});
+
+test('legacy projects retain their risk summary and acquire an empty detailed risk register', () => {
+    const old = project([task('A', .875, [], { riskWeight: 'Critique', riskStatus: 'Actif', progress: 35 })]);
+    const restored = P.decodeProject(JSON.stringify(old)).tasks[0];
+    assert.deepEqual(plain(restored.risks), []);
+    assert.equal(restored.riskWeight, 'Critique');
+    assert.equal(restored.riskStatus, 'Actif');
+    assert.equal(restored.progress, 35);
+    assert.equal(P.mapRows(P.parseCsv('ID;Nom;Durée\nA;Ancienne tâche;0,875'))[0].risks.length, 0);
+});
+
+test('JSON preserves detailed risk causes, response plans, follow-up, references and review proof', () => {
+    const input = project([task('A', .875, [], { riskWeight: 'Majeur', riskStatus: 'Sous surveillance', status: 'En cours', progress: 35,
+        risks: [detailedRisk({
+            cause: 'Indisponibilité de la dépendance.', consequence: 'Validation retardée.',
+            probability: 'Moyenne', impact: 'Critique', prevention: 'Vérifier les prérequis.',
+            contingency: 'Utiliser le scénario de secours.', owner: 'Responsable local', status: 'Résolu',
+            followUp: 'Action réalisée et revue.', evidence: 'Compte rendu de vérification.',
+            reviewDate: '2026-09-21', sourceRefs: ['audit.md#risque-01', 'EV-03']
+        })]
+    })]);
+    const restored = P.decodeProject(P.encodeProject(input));
+    assert.deepEqual(plain(restored), plain(P.normalizeProject(input)));
+    assert.equal(restored.tasks[0].risks[0].reviewDate, '2026-09-21');
+    assert.equal(restored.tasks[0].risks[0].status, 'Résolu');
+    assert.equal(P.riskScore(restored.tasks[0].risks[0]), 6);
+    assert.equal(restored.tasks[0].riskWeight, 'Majeur');
+    assert.equal(restored.tasks[0].riskStatus, 'Sous surveillance');
+    assert.equal(restored.tasks[0].status, 'En cours');
+    assert.equal(restored.tasks[0].progress, 35);
+    assert.equal(restored.tasks[0].duration, .875);
+});
+
+test('resolved or accepted risks require qualification, an owner, evidence and a valid review date', () => {
+    for (const status of ['Résolu', 'Accepté']) {
+        const complete = detailedRisk({ probability: 'Faible', impact: 'Mineur', owner: 'Responsable', status, evidence: 'Résultat observé', reviewDate: '2026-09-21' });
+        for (const override of [
+            { probability: 'À qualifier' }, { impact: 'À qualifier' }, { owner: ' ' }, { owner: 'À confirmer' },
+            { evidence: '' }, { reviewDate: null }, { reviewDate: '2026-02-30' },
+            { reviewDate: '21/09/2026' }, { reviewDate: '2026-09-21T12:00:00Z' }
+        ]) assert.throws(() => P.validateTasks([task('A', 1, [], { risks: [{ ...complete, ...override }] })]), status + ' ' + JSON.stringify(override));
+        assert.equal(P.validateTasks([task('A', 1, [], { risks: [complete] })])[0].risks[0].status, status);
+    }
+});
+
+test('an open or unqualified risk can remain a draft without inventing qualification or ownership', () => {
+    for (const status of ['À qualifier', 'Ouvert', 'Sous surveillance', 'Actif']) {
+        const normalized = P.validateTasks([task('A', 1, [], { risks: [detailedRisk({ status })] })])[0].risks[0];
+        assert.equal(normalized.probability, 'À qualifier');
+        assert.equal(normalized.impact, 'À qualifier');
+        assert.equal(normalized.owner, '');
+        assert.equal(normalized.evidence, '');
+        assert.equal(normalized.reviewDate, null);
+        assert.equal(P.riskScore(normalized), null);
+    }
+});
+
+test('risk registers reject duplicates, excessive volumes, wrong types and invalid dates', () => {
+    for (const risks of [
+        null, Array.from({ length: 61 }, (_, i) => detailedRisk({ id: 'R' + i })),
+        [detailedRisk(), detailedRisk()], [detailedRisk({ id: 'constructor' })],
+        [detailedRisk({ title: '' })], [detailedRisk({ cause: 'a'.repeat(12001) })],
+        [detailedRisk({ consequence: null })], [detailedRisk({ prevention: 'a'.repeat(12001) })],
+        [detailedRisk({ contingency: 'a'.repeat(12001) })], [detailedRisk({ followUp: 'a'.repeat(6001) })],
+        [detailedRisk({ evidence: 'a'.repeat(6001) })], [detailedRisk({ owner: 'a'.repeat(201) })],
+        [detailedRisk({ sourceRefs: Array(21).fill('source') })], [detailedRisk({ sourceRefs: [true] })],
+        [detailedRisk({ status: 'Fermé' })], [detailedRisk({ reviewDate: '2026-02-29' })]
+    ]) assert.throws(() => P.validateTasks([task('A', 1, [], { risks })]));
+    const maximum = Array.from({ length: 60 }, (_, i) => detailedRisk({ id: 'R' + i }));
+    assert.equal(P.validateTasks([task('A', 1, [], { risks: maximum })])[0].risks.length, P.LIMITS.maxRisks);
+    assert.equal(P.validateTasks([task('A', 1, [], { risks: [detailedRisk()] }), task('B', 1, [], { risks: [detailedRisk()] })]).length, 2);
+});
+
+test('scheduled risks are independent copies and never alter dates or legacy risk summaries', () => {
+    const input = project([task('A', .75, [], { riskWeight: 'Mineur', riskStatus: 'Aucun', risks: [detailedRisk({ probability: 'Élevée', impact: 'Critique', status: 'Actif', sourceRefs: ['EV-01'] })] })]);
+    const normalized = P.normalizeProject(input);
+    const scheduled = P.schedule(normalized, '2026-09-19');
+    assert.equal(scheduled.tasks[0].endOffset, .75);
+    assert.equal(date(scheduled.tasks[0].calcEnd), '2026-09-21');
+    scheduled.tasks[0].risks[0].sourceRefs.push('EV-02');
+    scheduled.tasks[0].risks[0].status = 'Ouvert';
+    assert.equal(normalized.tasks[0].risks[0].sourceRefs.length, 1);
+    assert.equal(input.tasks[0].risks[0].status, 'Actif');
+    assert.equal(scheduled.tasks[0].riskWeight, 'Mineur');
+    assert.equal(scheduled.tasks[0].riskStatus, 'Aucun');
+});

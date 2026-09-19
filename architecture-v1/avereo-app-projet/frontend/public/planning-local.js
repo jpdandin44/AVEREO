@@ -5,6 +5,9 @@ let lastStoredRaw = null;
 let storageBlocked = false;
 let storageAvailable = true;
 let projectLoaded = false;
+let editingChecklist = [];
+let editingRisks = [];
+let editingOriginalDetails = { description: '', checklistIds: [], riskIds: [] };
 
 function localIso(value = new Date()) {
     const date = value instanceof Date ? value : new Date(value);
@@ -75,7 +78,7 @@ function commitProject(candidate, { replacing = false, message = 'Planning enreg
     try {
         const normalized = ProjetPlanning.normalizeProject(candidate);
         ProjetPlanning.schedule(normalized, localIso()); // Aucun changement avant validation complète.
-        if (replacing && (tasks.length || lastStoredRaw !== null) && !window.confirm('Remplacer le planning de cette session par le fichier sélectionné ? Exporte d’abord le JSON si tu souhaites conserver le travail en cours.')) return false;
+        if (replacing && (tasks.length || lastStoredRaw !== null) && !window.confirm('Remplacer le planning de cette session par le fichier sélectionné ? Exporte d’abord le JSON complet pour conserver les fiches et validations. Un CSV conserve les fiches actuelles uniquement pour les tâches de mêmes ID, nom et lot.')) return false;
         const saved = persistProject(normalized, replacing);
         applyProject(normalized);
         showToast(saved ? message : 'Modification en mémoire — export JSON nécessaire', saved ? 'emerald' : 'amber');
@@ -141,7 +144,11 @@ async function readImport(file) {
         rows = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { defval: '', raw: false });
     } else throw new Error('Format accepté : CSV, Excel (.xlsx, .xls) ou sauvegarde JSON Projet.');
     if (!rows.length) throw new Error('Le fichier ne contient aucune tâche.');
-    return { ...currentProject(), tasks: ProjetPlanning.mapRows(rows) };
+    const importedTasks = ProjetPlanning.mapRows(rows).map(task => {
+        const existing = tasks.find(current => current.id === task.id && current.name === task.name && current.lot === task.lot);
+        return existing ? { ...task, description: existing.description, checklist: existing.checklist, risks: existing.risks } : task;
+    });
+    return { ...currentProject(), tasks: importedTasks };
 }
 
 async function importPlanningFile(file) {
@@ -163,7 +170,60 @@ async function getPilotProject() {
     if (responses.some(response => !response.ok)) throw new Error('Le planning initial est indisponible. Lance npm run dev depuis le dossier frontend, ou importe ton fichier.');
     const metadata = await responses[0].json();
     const csv = await responses[1].text();
-    return { ...metadata, tasks: ProjetPlanning.mapRows(ProjetPlanning.parseCsv(csv)) };
+    const pilotTasks = ProjetPlanning.mapRows(ProjetPlanning.parseCsv(csv)).map(task => ({
+        ...task,
+        description: metadata.taskDetails?.[task.id]?.description || '',
+        checklist: metadata.taskDetails?.[task.id]?.checklist || [],
+        risks: metadata.taskDetails?.[task.id]?.risks || [],
+    }));
+    return ProjetPlanning.normalizeProject({ ...metadata, tasks: pilotTasks });
+}
+
+function mergeDocumentedTaskDetails(project, pilot) {
+    return ProjetPlanning.normalizeProject({ ...project, tasks: project.tasks.map(task => {
+        const source = pilot.tasks.find(item => item.id === task.id && item.lot === task.lot);
+        if (!source) return task;
+        const missingDetails = !task.description && !task.checklist?.length;
+        const risks = task.risks?.length ? task.risks.map(risk => {
+            const proposed = source.risks?.find(item => item.id === risk.id);
+            const untouched = risk.probability === 'À qualifier' && risk.impact === 'À qualifier'
+                && risk.status === 'À qualifier' && !risk.evidence && !risk.reviewDate
+                && ['', 'À confirmer'].includes(risk.owner)
+                && (!risk.followUp || risk.followUp === 'Qualification initiale à réaliser avec le responsable ; consigner observations, décision et prochaine revue sans clôture automatique.');
+            return proposed && untouched ? { ...risk, probability: proposed.probability, impact: proposed.impact, followUp: proposed.followUp } : risk;
+        }) : source.risks;
+        return { ...task,
+            ...(missingDetails ? { description: source.description, checklist: source.checklist } : {}),
+            risks,
+        };
+    }) });
+}
+
+async function enrichPilotTaskDetails(automatic = false) {
+    if (!isLocalHost()) return;
+    // Restauration et enrichissement ont des erreurs distinctes : une source absente
+    // ne rend jamais le brouillon invalide. Relire le projet après le fetch.
+    try {
+        const pilot = await getPilotProject();
+        const current = currentProject();
+        const recognized = current.name === pilot.name && pilot.tasks.every(source =>
+            current.tasks.some(task => task.id === source.id && task.lot === source.lot));
+        if (!recognized) {
+            if (!automatic) window.alert('Les fiches concernent les six lots du pilote AVEREO. Le projet actuel ne correspond pas à ce modèle ; utilise un JSON complet pour reprendre ses fiches.');
+            return;
+        }
+        const enriched = mergeDocumentedTaskDetails(current, pilot);
+        if (ProjetPlanning.encodeProject(enriched) === ProjetPlanning.encodeProject(current)) {
+            if (!automatic) showToast('Les fiches documentées sont déjà présentes');
+            return;
+        }
+        ProjetPlanning.schedule(enriched, localIso());
+        const saved = persistProject(enriched, true);
+        applyProject(enriched);
+        showToast(saved ? 'Actions, checklists et risques ajoutés aux lots existants' : 'Fiches en mémoire — sauvegarde JSON nécessaire', saved ? 'emerald' : 'amber');
+    } catch (error) {
+        setStorageMessage(`Planning conservé. Complément des fiches indisponible : ${error.message}`, true);
+    }
 }
 
 async function loadPilotProject() {
@@ -173,6 +233,7 @@ async function loadPilotProject() {
 
 async function initializeLocalProject() {
     document.getElementById('load-pilot').hidden = !isLocalHost();
+    document.getElementById('enrich-pilot').hidden = !isLocalHost();
     try {
         lastStoredRaw = localStorage.getItem(STORAGE_KEY);
     } catch (_) {
@@ -183,12 +244,13 @@ async function initializeLocalProject() {
         try {
             applyProject(ProjetPlanning.decodeProject(lastStoredRaw));
             setStorageMessage('Brouillon restauré depuis ce navigateur. Sauvegarde indépendante : export JSON.');
-            return;
         } catch (_) {
             storageBlocked = true;
             setStorageMessage('Brouillon local illisible : il a été conservé. Exporte la copie précédente, puis importe une sauvegarde valide.', true);
             refreshAll(); fillProjectSettings(); return;
         }
+        await enrichPilotTaskDetails(true);
+        return;
     }
     if (isLocalHost()) {
         try {

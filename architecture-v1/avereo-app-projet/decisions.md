@@ -61,3 +61,34 @@ absence dans `dist/` et le chargement initial sans écrasement de brouillon.
 
 **Conséquences.** Aucun merge/déploiement dans cette intervention ; l'approbation
 ultérieure doit tenir compte du déclencheur automatique existant.
+
+## 2026-09-19 — Séparer fiches de référence et suivi local
+
+**Contexte.** Les lots doivent expliquer les actions attendues et permettre de
+consigner leur vérification sans effacer le suivi commencé.
+
+**Décision.** Conserver les fiches structurées dans la source JSON du pilote et
+leurs références documentaires ; générer leurs représentations et stocker les
+modifications et preuves dans le projet local. Ajouter les fiches absentes d'un
+pilote reconnu et compléter uniquement les préqualifications restées dans leur
+état initial, selon les conditions du contrôleur.
+
+**Raisons.** Donner un point de départ documenté et conserver les saisies humaines.
+
+**Conséquences.** Une fiche partiellement remplie n'est pas écrasée. Le JSON de
+sauvegarde conserve tous les détails ; le CSV reste au format neuf colonnes.
+
+## 2026-09-19 — Garder des états de suivi distincts
+
+**Contexte.** Réaliser une action, vérifier son résultat et traiter un risque
+ne constituent pas la même opération.
+
+**Décision.** Séparer réalisation, validation documentée, avancement du lot et
+qualification du risque. Une validation ou clôture exige les informations
+explicites prévues par le modèle, sans transition automatique entre ces états.
+
+**Raisons.** Éviter qu'un préchargement ou un calcul de score atteste un travail
+ou une décision qui n'a pas été consigné.
+
+**Conséquences.** Les risques initiaux restent à qualifier ; le suivi et sa
+validation restent humains, sans authentification propre du vérificateur.

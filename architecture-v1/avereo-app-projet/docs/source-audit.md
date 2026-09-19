@@ -40,10 +40,13 @@ moment-là. C'est un résultat historique, pas le résultat de ce lot.
 | Remplacement immédiat à l'import | Validation préalable et confirmation |
 | État perdu au rechargement | Brouillon versionné, JSON de reprise |
 | Exemple dans le HTML | Source unique du pilote et dérivés hors assets publics |
+| Lots sans fiche d'exécution | Description, actions, critères et checklist avec réalisation/validation distinctes |
+| Qualification globale du lot seulement | Registre de risques détaillés, score explicite et clôture documentée |
 
 Les vues tableau/Gantt/lots/risques restent présentes. Aucune API métier,
 base, compte ou secret nouveau. Le lot est implémenté localement et proposé
-pour revue dans une PR brouillon dédiée. Les contrôles ci-dessous délimitent
+pour revue dans la [PR #64](https://github.com/jpdandin44/AVEREO/pull/64).
+Les contrôles ci-dessous délimitent
 la qualification obtenue.
 
 ## Sécurité et données
@@ -61,8 +64,9 @@ protection ; une recette navigateur avec contenu HTML hostile reste à effectuer
 Les contrôles n'exigent aucun secret.
 
 Le pilote est servi par middleware Vite de développement depuis
-`data/generated/`, hors de `frontend/public/`. Le build inspecté contient dix
-fichiers PHP/assets/JavaScript, sans fichier CSV ou JSON du pilote. Le code et
+`data/generated/`, hors de `frontend/public/`. Le build initial inspecté contient dix
+fichiers PHP/assets/JavaScript, sans fichier CSV ou JSON du pilote ; le contrôle
+du build enrichi à onze fichiers est consigné plus bas. Le code et
 les tests limitent aussi le chargement automatique aux hôtes locaux autorisés,
 sans remplacer un brouillon existant.
 
@@ -72,6 +76,12 @@ Contrôles locaux dans le checkout dédié. Les tests automatisés s'exécutent
 avec Node.js ; la recette visuelle utilise le navigateur intégré Codex (IAB)
 à `http://127.0.0.1:5186/`. Les tests de contrôleur utilisent un environnement
 navigateur simulé en VM et ne constituent pas une recette sur tous les navigateurs.
+
+### Planning initial — avant l'extension des fiches
+
+Les résultats de ce tableau qualifient le premier lot de planning local. Les
+nouveaux parcours de fiches et risques ont un état de qualification séparé
+ci-dessous ; ils ne sont pas couverts implicitement par le build à 34 tests.
 
 | Contrôle | Résultat constaté |
 |---|---|
@@ -91,12 +101,60 @@ navigateur simulé en VM et ne constituent pas une recette sur tous les navigate
 | Front matter, liens et whitespace des Markdown du lot | Réussi : 13 documents, 33 liens locaux existants, métadonnées obligatoires présentes, pas de BOM ni de clôture de bloc manquante ; aucune erreur de whitespace détectée |
 | Policy PR prépublication, cases décochées | Réussie avec `--allow-unchecked` et le titre `feat(projet): fiabiliser le planning local et intégrer le pilote` ; cette prévalidation ne remplace pas la validation humaine des cases |
 
+### Extension descriptions, checklists et risques — contrôles ciblés réalisés
+
+Le schéma de sauvegarde reste en version 1. Les détails absents d'un ancien JSON
+deviennent des valeurs vides, sans réinitialisation du suivi. Le contrôleur
+complète les fiches absentes et les préqualifications de risques restées dans
+leur état initial pour un pilote reconnu ; les conditions exactes sont
+dans [data/README.md](../data/README.md). Il conserve les fiches partielles,
+relit les modifications effectuées pendant un chargement et refuse l'écrasement
+d'une écriture concurrente. Le réimport tabulaire ne conserve les détails déjà
+présents que pour le même ID, nom et lot.
+
+La validation humaine et la clôture des risques ont des conditions vérifiées
+par le moteur. Elles n'authentifient pas l'identité saisie, ne prouvent pas la
+réalité des éléments décrits et ne modifient pas automatiquement la progression
+du lot. La source commence avec des étapes non réalisées/non validées et des
+risques dont le statut reste À qualifier ; les champs de preuve sont vierges.
+La préqualification probabilité/impact ajoutée au pilote est proposée et
+argumentée dans le suivi. Elle n'est pas une mesure de probabilité ; le score
+proposé ne confirme pas la qualification humaine.
+
+| Contrôle de l'extension | Résultat réellement disponible |
+|---|---|
+| Tests du moteur seul | 31 tests réussis : rétrocompatibilité, normalisation des détails, preuves et horodatages, matrice 3 × 3 des risques, conditions de clôture, copies indépendantes et limites de volume/caractères/UTF-8, avec calendrier antérieur conservé |
+| `generer-planning-pilote.mjs --check` | Réussi après ajout des fiches : six lots, 29,4 jours-personne, 46 étapes et 20 risques ; CSV, manifeste et document Markdown alignés |
+| Métadonnées du pilote | Six entrées `taskDetails`, 46 étapes et 20 risques constatés ; probabilité/impact proposés avec justification, statut À qualifier, preuve et date de revue vides. `--check` réussi après régénération de ces propositions |
+| Build final et suites intégrées | `npm.cmd run build` réussi après le correctif de concurrence : contrôle des trois dérivés, **99 tests réussis sur 99**, zéro échec, préparation du sas et compilation Vite de 30 modules. `npm.cmd test` exécuté séparément confirme aussi les 99 réussites |
+| Contrôles racine et whitespace | `npm.cmd run check` à la racine et `git diff --check` réussis |
+| Première fiche dans IAB | L0 affiche 12 étapes et 5 risques ; actions et résultats attendus inspectés visuellement |
+| Validation d'étape dans IAB | Une tentative sans preuve est refusée avec message dans la fiche. Une étape réalisée avec preuve temporaire est enregistrée et retrouvée après rechargement, puis remise à son état initial |
+| Risque dans IAB | Qualification Moyenne/Majeur et statut Sous surveillance enregistrés puis retrouvés après rechargement ; registre de 20 risques dont 19 à qualifier, score 4 constaté. Données de recette ensuite restaurées |
+| Document dans la fiche | Bouton exécuté et contenu Markdown accessible comme texte ; lecture constatée avant la dernière régénération des propositions |
+| Affichage des préqualifications proposées dans IAB | Registre de 20 risques ouverts, 20 à qualifier/confirmer et aucun clos ; badge Critique 6/9 proposé et santé À qualifier constatés. Six lots, 29,4 jours-personne et fin au 30 octobre conservés |
+| Dernier rechargement de la version corrigée dans IAB | Fiche L0 à 0/12 validations, preuve DA-01 vide et aucune case cochée ; risques affichés à 6/9 proposé. Aucune erreur console constatée ; fiche laissée ouverte pour consultation |
+| Fiche ouverte pendant l'enrichissement | Risque d'écrasement détecté en revue puis corrigé : état à l'ouverture mémorisé, nouvelles étapes/risques préservés lors de la sauvegarde sans écraser les saisies de la fiche. Tests de non-régression inclus dans les 99 réussites |
+| Inspection de `frontend/dist` | Onze fichiers, aucun CSV/JSON/Markdown du pilote ; `planning-core.js`, `planning-local.js`, `task-details.js` et `legacy-app.html` identiques aux sources par empreinte SHA-256 |
+| Documentation de l'extension | Onze documents structurants vérifiés, 44 liens locaux existants, métadonnées présentes, pas de BOM, titres non dupliqués et blocs de code équilibrés |
+
+Un essai intermédiaire du runner avait échoué au niveau fichier sans détail de
+sous-test. Cet échec n'a pas été reproduit lors de l'exécution TAP, du test npm
+séparé ou du build final ; aucun test n'a été désactivé pour obtenir ces résultats.
+
+Le document [pilotage-etapes.md](pilotage-etapes.md) est généré depuis le JSON
+applicatif. Il est servi en `text/plain` et affecté à `textContent` par
+`task-details.js`. La route et ce rendu ont été vérifiés par lecture, puis le
+bouton a été utilisé dans IAB sur la version du document précisée dans le tableau.
+
 ## Limites
 
 Le clic d'export non observé par l'instrumentation ne démontre pas un échec du
 téléchargement ; il ne permet pas non plus de l'attester. Le JSON est le format
-de reprise des paramètres, dates manuelles et états des risques, absents du CSV
-neuf colonnes. Les contrôles manuels ouverts restent donc nécessaires avant
+de reprise complète : paramètres, dates manuelles, descriptions, checklists,
+preuves et risques détaillés. Ces détails sont absents du CSV neuf colonnes,
+même lorsqu'un réimport conserve ceux déjà présents dans le navigateur.
+Les contrôles manuels ouverts restent donc nécessaires avant
 de considérer tous les échanges de fichiers qualifiés.
 
 Le local ne prouve ni le sas PHP hébergé, ni DNS/HTTPS, ni la réalisation des
@@ -105,4 +163,4 @@ Les CDN historiques restent une dépendance réseau ; le fonctionnement
 entièrement hors connexion n'est pas établi.
 
 Le déclenchement d'un futur déploiement est expliqué dans
-[deployment.md](deployment.md). Aucun déploiement ou migration n'est attesté ici.
+[deployment.md](deployment.md). Aucun déploiement ni migration de données hébergées n'est attesté ici.

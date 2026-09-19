@@ -142,6 +142,7 @@
                 <p id="storage-status" role="status" class="text-sm text-slate-600">Chargement du planning local…</p>
                 <div class="flex gap-3 text-xs">
                     <button id="load-pilot" onclick="loadPilotProject()" class="text-blue-700 underline">Recharger le pilote AVEREO</button>
+                    <button id="enrich-pilot" onclick="enrichPilotTaskDetails()" class="text-blue-700 underline">Compléter les fiches documentées</button>
                     <button onclick="exportPreviousSave()" class="text-slate-600 underline">Copie précédente</button>
                 </div>
             </div>
@@ -305,7 +306,8 @@
             <div class="flex justify-between items-end mb-4">
                 <div>
                     <h2 class="text-xl font-semibold text-slate-800">Registre des Risques & Points d'Attention</h2>
-                    <p class="text-sm text-slate-500 mt-1">Suivi des points de blocage et alertes de pilotage.</p>
+                    <p class="text-sm text-slate-500 mt-1" id="risk-register-summary">Suivi des risques documentés et alertes de pilotage.</p>
+                    <p class="text-xs text-slate-500 mt-1">Criticité = probabilité × impact : 1–2 mineur, 3–4 majeur, 6–9 critique. Une qualification manquante reste visible.</p>
                 </div>
             </div>
             
@@ -314,8 +316,8 @@
                     <thead>
                         <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
                             <th class="px-6 py-4 font-medium">Tâche impactée</th>
-                            <th class="px-6 py-4 font-medium">Motif d'alerte</th>
-                            <th class="px-6 py-4 font-medium">Pondération</th>
+                            <th class="px-6 py-4 font-medium">Risque / conséquence / suivi</th>
+                            <th class="px-6 py-4 font-medium">Criticité</th>
                             <th class="px-6 py-4 font-medium">Statut du Risque</th>
                             <th class="px-6 py-4 font-medium">Action</th>
                         </tr>
@@ -333,12 +335,12 @@
     <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm backdrop z-40" onclick="closeTaskModal()"></div>
 
     <!-- Task Edit Slide Panel -->
-    <div id="task-modal" class="fixed top-0 right-0 h-full w-full md:w-[480px] bg-white shadow-2xl z-50 slide-panel flex flex-col border-l border-slate-200">
+    <div id="task-modal" role="dialog" aria-modal="true" aria-hidden="true" inert aria-labelledby="modal-title" class="fixed top-0 right-0 h-full w-full md:w-[760px] bg-white shadow-2xl z-50 slide-panel flex flex-col border-l border-slate-200">
         <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-slate-50">
             <h2 class="text-lg font-semibold text-slate-800 flex items-center" id="modal-title">
                 <i data-lucide="edit-3" class="w-5 h-5 mr-2 text-blue-600"></i> Nouvelle Tâche
             </h2>
-            <button onclick="closeTaskModal()" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors">
+            <button aria-label="Fermer la fiche" onclick="closeTaskModal()" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
@@ -348,10 +350,29 @@
                 <input type="hidden" id="task-id">
                 
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Nom de la tâche <span class="text-red-500">*</span></label>
+                    <label for="task-name" class="block text-sm font-medium text-slate-700 mb-1">Nom de la tâche <span class="text-red-500">*</span></label>
                     <input type="text" id="task-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow">
                 </div>
 
+                <div>
+                    <label for="task-description" class="block text-sm font-semibold text-slate-700 mb-1">Objectif et contenu de la tâche</label>
+                    <textarea id="task-description" maxlength="12000" rows="4" class="w-full border rounded-lg p-3 text-sm"></textarea>
+                </div>
+                <section aria-labelledby="task-actions-heading" class="space-y-3">
+                    <div class="flex justify-between gap-3 items-center"><h3 id="task-actions-heading" class="font-semibold text-slate-800">Actions et checklist de validation</h3><span id="task-checklist-summary" class="text-sm text-blue-700"></span></div>
+                    <p class="text-xs text-slate-500">Ouvre chaque étape pour lire les actions, le résultat attendu et ses sources. Les cases ne modifient pas automatiquement le statut ou l’avancement du lot. Enregistre la fiche pour conserver le suivi.</p>
+                    <div id="task-checklist" class="space-y-3"></div>
+                    <button type="button" onclick="showPilotDocumentation()" class="text-sm text-blue-700 underline">Lire le document des étapes et des risques</button>
+                    <pre id="task-documentation" hidden class="whitespace-pre-wrap max-h-96 overflow-y-auto text-xs border rounded p-3 bg-slate-50"></pre>
+                </section>
+                <section aria-labelledby="task-risks-heading" class="space-y-3 border-t pt-5">
+                    <div class="flex items-center justify-between"><h3 id="task-risks-heading" class="font-semibold text-slate-800">Risques et suivi des mesures</h3><button type="button" onclick="addTaskRisk()" class="text-sm text-blue-700 underline">Ajouter un risque</button></div>
+                    <p class="text-xs text-slate-500">Les préqualifications proposées sont à confirmer. Renseigne ton analyse dans le suivi, puis choisis le statut adapté. Une clôture exige une preuve, un responsable et une date de revue.</p>
+                    <div id="task-risks" class="space-y-3"></div>
+                </section>
+                <details id="task-parameters" class="border-t pt-4">
+                <summary class="font-semibold cursor-pointer mb-4">Paramètres du planning et alerte du lot</summary>
+                <div class="space-y-5">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Lot / Phase <span class="text-red-500">*</span></label>
@@ -409,7 +430,7 @@
                 </div>
                 <div class="p-4 border border-orange-200 rounded-lg bg-orange-50/50 space-y-4">
                     <h3 class="text-sm font-semibold text-orange-800 border-b border-orange-200 pb-2 flex items-center">
-                        <i data-lucide="alert-triangle" class="w-4 h-4 mr-2"></i> Qualification des Risques
+                        <i data-lucide="alert-triangle" class="w-4 h-4 mr-2"></i> Alerte globale du lot
                     </h3>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -431,6 +452,8 @@
                         </div>
                     </div>
                 </div>
+                </div>
+                </details>
             </form>
         </div>
         
@@ -531,7 +554,7 @@
                 totalDuration += d;
                 
                 if (t.isLate) lateCount++;
-                if (t.status === 'Bloqué' || t.riskStatus === 'Actif') blockedCount++;
+                if (t.status === 'Bloqué' || t.riskStatus === 'Actif' || riskAttention(t)) blockedCount++;
 
                 if (t.isMilestone && !['Terminé', 'Validé'].includes(t.status)) {
                     milestonesHtml += `
@@ -542,9 +565,9 @@
                     `;
                 }
 
-                if (t.status === 'Bloqué' || t.isLate || t.riskStatus === 'Actif' || t.riskStatus === 'Sous surveillance') {
-                    let badgeColor = (t.status === 'Bloqué' || t.riskStatus === 'Actif') ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700';
-                    let reason = (t.status === 'Bloqué' || t.riskStatus === 'Actif') ? 'Alerte' : (t.isLate ? 'Retard' : 'Surveillance');
+                if (t.status === 'Bloqué' || t.isLate || t.riskStatus === 'Actif' || t.riskStatus === 'Sous surveillance' || riskAttention(t)) {
+                    let badgeColor = (t.status === 'Bloqué' || t.riskStatus === 'Actif' || riskAttention(t)) ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700';
+                    let reason = (t.status === 'Bloqué' || t.riskStatus === 'Actif' || riskAttention(t)) ? 'Alerte' : (t.isLate ? 'Retard' : 'Surveillance');
                     criticalHtml += `
                         <li class="px-5 py-3 hover:bg-slate-50 transition-colors cursor-pointer" onclick="handleTaskClick('${t.id}')">
                             <div class="flex justify-between items-start mb-1">
@@ -573,6 +596,10 @@
                 healthEl.textContent = 'Critique'; healthEl.className = 'text-lg font-bold text-red-600';
                 healthDetailEl.textContent = 'Tâches bloquantes actives';
                 healthIcon.className = "p-2 bg-red-50 text-red-600 rounded-lg";
+            } else if (tasks.some(task => (task.risks || []).some(risk => risk.status === 'À qualifier' || ProjetPlanning.riskScore(risk) === null))) {
+                healthEl.textContent = 'À qualifier'; healthEl.className = 'text-lg font-bold text-amber-700';
+                healthDetailEl.textContent = 'Risques documentés à évaluer';
+                healthIcon.className = 'p-2 bg-orange-50 text-orange-600 rounded-lg';
             } else if (lateCount > 2) {
                 healthEl.textContent = 'À surveiller'; healthEl.className = 'text-lg font-bold text-orange-500';
                 healthDetailEl.textContent = 'Glissement calendaire';
@@ -653,7 +680,7 @@
                             <div class="w-10 flex-shrink-0 text-center text-[10px] text-slate-400 font-mono">${t.id.replace('T','')}</div>
                             <div class="flex-1 px-3 flex items-center overflow-hidden">
                                 ${warnIcon}${manualPin}
-                                <span class="text-sm font-medium text-slate-800 truncate group-hover:text-blue-600 transition-colors">${escapeHtml(t.name)}</span>
+                                <div class="min-w-0"><span class="block text-sm font-medium text-slate-800 truncate group-hover:text-blue-600 transition-colors">${escapeHtml(t.name)}</span><span class="block text-[10px] text-slate-500">${t.checklist?.length ? checklistLabel(t.checklist) : 'Fiche à compléter'} · ${(t.risks || []).length} risques</span></div>
                             </div>
                             <div class="w-16 px-2 text-center text-xs text-slate-600">${t.duration}j</div>
                             <div class="w-24 px-2 text-center text-xs text-slate-600">${formatDateShort(t.calcStart)}</div>
@@ -728,32 +755,7 @@
         }
 
         function renderRisksView() {
-            const tbody = document.getElementById('risks-table-body');
-            let html = '';
-            
-            tasks.forEach(t => {
-                if (t.status === 'Bloqué' || t.isLate || t.riskStatus === 'Sous surveillance' || t.riskStatus === 'Actif') {
-                    let issue = t.status === 'Bloqué' ? 'Tâche bloquée' : (t.isLate ? 'Délai dépassé' : 'Alerte manuelle');
-                    let weightBadge = t.riskWeight === 'Critique' ? '<span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold uppercase border border-red-200">Critique</span>' : (t.riskWeight === 'Majeur' ? '<span class="px-2 py-1 bg-orange-100 text-orange-700 rounded text-xs font-bold uppercase border border-orange-200">Majeur</span>' : '<span class="px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs font-bold uppercase border border-slate-200">Mineur</span>');
-                    let statusBadge = t.riskStatus === 'Actif' ? '<span class="text-red-600 font-semibold flex items-center"><i data-lucide="alert-circle" class="w-4 h-4 mr-1"></i> Actif</span>' : (t.riskStatus === 'Sous surveillance' ? '<span class="text-amber-500 font-semibold flex items-center"><i data-lucide="eye" class="w-4 h-4 mr-1"></i> Sous surveillance</span>' : '<span class="text-emerald-600 font-semibold flex items-center"><i data-lucide="check" class="w-4 h-4 mr-1"></i> Résolu</span>');
-                    
-                    html += `
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="px-6 py-4">
-                                <p class="text-sm font-semibold text-slate-800">${escapeHtml(t.name)}</p>
-                                <p class="text-xs text-slate-500 mt-0.5"><span class="font-mono bg-slate-100 px-1 rounded">${escapeHtml(t.id)}</span> - ${escapeHtml(t.lot)}</p>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-slate-700 font-medium">${issue}</td>
-                            <td class="px-6 py-4 text-sm">${weightBadge}</td>
-                            <td class="px-6 py-4 text-sm">${statusBadge}</td>
-                            <td class="px-6 py-4">
-                                <button class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded transition-colors shadow-sm" onclick="openTaskModal('${t.id}')">Gérer</button>
-                            </td>
-                        </tr>
-                    `;
-                }
-            });
-            tbody.innerHTML = html || '<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500 italic flex flex-col items-center justify-center"><i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-400 mb-2"></i> Aucun risque majeur ou point d\'attention identifié.</td></tr>';
+            renderDetailedRisksView();
         }
 
         // --- 4. INTERACTIONS & DRAG AND DROP ---
@@ -867,11 +869,14 @@
             if (taskId) {
                 state.editingTaskId = taskId;
                 let t = state.tasksDict[taskId];
-                modalTitle.innerHTML = `<i data-lucide="edit-3" class="w-5 h-5 mr-2 text-blue-600"></i> Modifier la tâche`;
+                modalTitle.textContent = `${t.id} · ${t.name}`;
                 btnDelete.classList.remove('hidden');
                 
                 document.getElementById('task-id').value = t.id;
                 document.getElementById('task-name').value = t.name;
+                document.getElementById('task-description').value = t.description || '';
+                editingChecklist = JSON.parse(JSON.stringify(t.checklist || []));
+                editingRisks = JSON.parse(JSON.stringify(t.risks || []));
                 document.getElementById('task-lot').value = t.lot;
                 document.getElementById('task-owner').value = t.owner || "";
                 document.getElementById('task-duration').value = t.duration;
@@ -896,25 +901,41 @@
                 document.getElementById('task-duration').value = 1;
                 document.getElementById('task-risk-weight').value = "Mineur";
                 document.getElementById('task-risk-status').value = "Aucun";
+                editingChecklist = [];
+                editingRisks = [];
             }
-            
+            editingOriginalDetails = {
+                description: document.getElementById('task-description').value,
+                checklistIds: editingChecklist.map(item => item.id),
+                riskIds: editingRisks.map(item => item.id),
+            };
+            document.getElementById('task-parameters').open = !taskId;
+            document.getElementById('task-documentation').hidden = true;
+            renderTaskChecklist();
+            renderTaskRisks();
             toggleDurationField();
             drawIcons();
             document.getElementById('modal-backdrop').classList.add('open');
             document.getElementById('task-modal').classList.add('open');
+            document.getElementById('task-modal').inert = false;
+            document.getElementById('task-modal').ariaHidden = 'false';
         }
 
         function closeTaskModal() {
             document.getElementById('modal-backdrop').classList.remove('open');
             document.getElementById('task-modal').classList.remove('open');
+            document.getElementById('task-modal').inert = true;
+            document.getElementById('task-modal').ariaHidden = 'true';
             state.editingTaskId = null;
         }
 
         function saveTask() {
+            document.getElementById('task-parameters').open = true;
             if (!document.getElementById('task-form').reportValidity()) return;
             const taskData = {
                 id: document.getElementById('task-id').value,
                 name: document.getElementById('task-name').value.trim(),
+                ...taskDetailsForSave(tasks.find(task => task.id === state.editingTaskId)),
                 lot: document.getElementById('task-lot').value.trim(),
                 owner: document.getElementById('task-owner').value.trim(),
                 duration: document.getElementById('task-is-milestone').checked ? 0 : Number(document.getElementById('task-duration').value),
@@ -970,5 +991,6 @@
 
     </script>
     <script src="./planning-local.js"></script>
+    <script src="./task-details.js"></script>
 </body>
 </html>

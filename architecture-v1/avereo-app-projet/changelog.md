@@ -27,3 +27,21 @@ Les résultats exécutés et les limites restantes sont dans
 [l'audit source](docs/source-audit.md). L'évolution est proposée pour revue
 dans une PR brouillon dédiée.
 Cette entrée n'atteste aucune publication ni qualification préproduction/production.
+
+## 2026-09-19 — Fiches d'actions, checklists et risques détaillés
+
+- Descriptions, actions, résultats attendus et sources ajoutés aux lots du pilote.
+- Réalisation et validation humaine distinctes, preuves et vérificateur conservés
+  dans le JSON ; aucun avancement de lot déduit automatiquement.
+- Registre des risques avec causes, conséquences, qualification, mesures et suivi ;
+  préqualification indicative argumentée, statut initial À qualifier maintenu,
+  clôture ou acceptation justifiée.
+- Enrichissement des fiches absentes compatible avec les anciens brouillons,
+  complément des préqualifications encore vierges, conservation des détails
+  d'une même tâche lors d'un réimport tabulaire.
+- Consultation locale du document généré en texte brut et contrôles des limites
+  de sauvegarde, y compris le volume UTF-8.
+
+Extension préparée localement dans le périmètre de la PR #64. Sa recette ciblée
+et ses limites sont détaillées dans l'audit : tests/build réussis et parcours
+locaux constatés, sans publication hébergée.

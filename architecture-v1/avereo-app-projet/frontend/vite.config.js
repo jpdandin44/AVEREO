@@ -11,11 +11,12 @@ const localPlanning = {
       const filename = {
         '/local-planning/planning-pilote.csv': 'planning-pilote.csv',
         '/local-planning/planning-pilote.json': 'planning-pilote.json',
+        '/local-planning/pilotage-etapes.md': '../../docs/pilotage-etapes.md',
       }[(request.url || '').split('?')[0]];
       if (!filename) return next();
       try {
         const content = await readFile(fileURLToPath(new URL(`../data/generated/${filename}`, import.meta.url)));
-        response.setHeader('Content-Type', filename.endsWith('.json') ? 'application/json; charset=utf-8' : 'text/csv; charset=utf-8');
+        response.setHeader('Content-Type', filename.endsWith('.json') ? 'application/json; charset=utf-8' : filename.endsWith('.md') ? 'text/plain; charset=utf-8' : 'text/csv; charset=utf-8');
         response.setHeader('Cache-Control', 'no-store');
         response.end(content);
       } catch (_) {

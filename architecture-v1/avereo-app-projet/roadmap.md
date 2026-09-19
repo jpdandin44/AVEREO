@@ -31,10 +31,26 @@ Les tests automatisés et la recette navigateur du pilote sont réalisés ;
 l'évolution est proposée pour revue dans une PR brouillon dédiée. Les résultats sont dans
 [docs/source-audit.md](docs/source-audit.md).
 
-Le build final et la prévalidation de policy avec cases décochées sont réussis.
+Le build du planning initial et la prévalidation de policy avec cases décochées sont réussis.
 Le téléchargement JSON et l'import XLSX dans l'interface restent à qualifier
 avant une validation complète des échanges de fichiers. Le cochage de la
 checklist et le merge restent humains. Aucun déploiement n'est réalisé par ce lot.
+
+## Extension fiches et risques — testée localement
+
+Le moteur et l'interface disposent des descriptions, actions, critères,
+checklists et risques détaillés. La reprise des anciens projets est compatible ;
+l'enrichissement ajoute les fiches manquantes sans remettre à zéro le suivi.
+Le document des étapes est généré depuis la même source structurée et consultable
+localement. Les tests moteur des validations et de la matrice sont exécutés.
+
+Les tests intégrés, le build et l'inspection de l'artefact de cette extension
+sont réussis. Les parcours de fiche, preuve et qualification/reprise de risque
+ont été vérifiés dans le navigateur local. Les preuves et les compléments de
+recette encore ouverts sont consignés dans [l'audit](docs/source-audit.md).
+Le travail continue dans le périmètre de la
+[PR #64](https://github.com/jpdandin44/AVEREO/pull/64), sans nouvelle publication
+hébergée ni réalisation implicite des EV planifiées.
 
 ## Suite à arbitrer
 
