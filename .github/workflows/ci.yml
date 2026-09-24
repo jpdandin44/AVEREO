@@ -88,6 +88,7 @@ jobs:
             architecture-v1/avereo-app-projet/frontend/public \
             architecture-v1/avereo-app-thermo/frontend/public \
             architecture-v1/avereo-app-drone/frontend/public \
+            architecture-v1/avereo-app-recherche/frontend/public \
             architecture-v1/avereo-platform/shared \
             architecture-v1/avereo-platform/tests \
             -type f -name '*.php' -print0 \
@@ -107,7 +108,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        application: [rapport, coupe, projet, thermo, drone]
+        application: [rapport, coupe, projet, thermo, drone, recherche]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -120,6 +121,11 @@ jobs:
       - name: Install dependencies
         working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
         run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Test frontend business rules
+        if: matrix.application == 'recherche'
+        working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
+        run: npm test
 
       - name: Build protected frontend
         working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend

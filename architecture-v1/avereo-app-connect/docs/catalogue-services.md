@@ -72,9 +72,10 @@ habilitations : elle retire immédiatement la carte et bloque les lancements.
 | `projet` | `https://projet-preprod.avereo.fr/connect/entry.php` |
 | `thermo` | `https://thermo-preprod.avereo.fr/connect/entry.php` |
 | `drone` | `https://drone-preprod.avereo.fr/connect/entry.php` |
+| `recherche` | `https://recherche-preprod.avereo.fr/connect/entry.php` |
 
 Chaque application utilise un secret différent et un répertoire anti-rejeu
-privé différent. Les cinq configurations applicatives pointent vers
+privé différent. Les six configurations applicatives pointent vers
 `https://connect-preprod.avereo.fr/`.
 
 ## Session et déconnexion
