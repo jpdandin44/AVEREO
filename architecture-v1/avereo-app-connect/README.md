@@ -49,7 +49,9 @@ applications hébergées, consomme son nonce une seule fois et établit un cooki
 de sas local avant d'afficher une page de confirmation. Les clés présentes dans
 le récepteur Docker sont distinctes, explicitement factices et ne sont chargées
 que lorsque les deux garde-fous du mode local sont actifs. Aucune application
-hébergée n'est contactée.
+hébergée n'est contactée. Pour Recherche, la page de confirmation propose en plus
+un lien vers son conteneur local (`LOCAL_APP_RECHERCHE_URL`, par défaut
+`http://127.0.0.1:5174/`, voir `avereo-app-recherche/compose.local.yaml`).
 
 Les contrôles backend restent disponibles séparément :
 

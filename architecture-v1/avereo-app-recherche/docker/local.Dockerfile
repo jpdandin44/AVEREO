@@ -5,6 +5,8 @@ WORKDIR /app
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY frontend/ ./
+# « ← CONNECT » ramène au CONNECT local Docker (compose.c7.yaml), pas à la production
+ENV VITE_CONNECT_URL=http://127.0.0.1:8080/
 RUN npm test \
     && npx vite build \
     && rm -rf dist/connect dist/index.php dist/.htaccess

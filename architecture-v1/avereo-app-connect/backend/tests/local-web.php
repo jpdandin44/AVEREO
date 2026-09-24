@@ -263,7 +263,9 @@ if (filter_var(getenv('CONNECT_LOCAL_DEMO_EXPECTED') ?: 'false', FILTER_VALIDATE
             "local {$applicationCode} signed session",
             $baseUrl . localLocation($applicationEntry),
             static fn (array $response): bool => $response['status'] === 200
-                && str_contains($response['body'], 'Sas AVEREO CONNECT validé'),
+                && str_contains($response['body'], 'Sas AVEREO CONNECT validé')
+                && ($applicationCode !== 'recherche'
+                    || str_contains($response['body'], 'href="http://127.0.0.1:5174/"')),
             ['Cookie: ' . localCookie($applicationEntry)],
         );
     }
