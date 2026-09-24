@@ -73,7 +73,7 @@ if (
 if (
     $localDemoEnabled
     && ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'GET'
-    && preg_match('#^/local-app/(rapport|coupe|projet|thermo|drone)$#', $requestPath, $matches)
+    && preg_match('#^/local-app/(rapport|coupe|projet|thermo|drone|recherche)$#', $requestPath, $matches)
 ) {
     parse_str((string) (parse_url($requestUri, PHP_URL_QUERY) ?: ''), $query);
     $ticket = is_string($query['ticket'] ?? null) ? $query['ticket'] : '';

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 function localAppGatewayConfigureEnvironment(): void
 {
-    foreach (['rapport', 'coupe', 'projet', 'thermo', 'drone'] as $applicationCode) {
+    foreach (['rapport', 'coupe', 'projet', 'thermo', 'drone', 'recherche'] as $applicationCode) {
         $prefix = 'APP_LAUNCH_' . strtoupper($applicationCode);
         if (getenv("{$prefix}_URL") === false) {
             putenv("{$prefix}_URL=http://127.0.0.1:8080/local-app/{$applicationCode}");
@@ -192,6 +192,7 @@ function localAppGatewayRender(string $applicationCode, string $userId): void
         'projet' => 'Projet AVEREO',
         'thermo' => 'Thermo AVEREO',
         'drone' => 'Drone AVEREO',
+        'recherche' => 'AVEREO Collector Recherche',
     ];
     $name = htmlspecialchars($names[$applicationCode] ?? $applicationCode, ENT_QUOTES, 'UTF-8');
     $code = htmlspecialchars(strtoupper($applicationCode), ENT_QUOTES, 'UTF-8');

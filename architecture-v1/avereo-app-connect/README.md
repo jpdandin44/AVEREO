@@ -43,7 +43,7 @@ Ils permettent de contrôler le catalogue, les rôles et l'administration des
 droits sans solliciter Drupal. Les adresses utilisent le domaine réservé
 `example.invalid` et ne correspondent à aucun compte réel.
 
-Les cinq cartes ouvrent aussi un récepteur applicatif fictif sur
+Les six cartes ouvrent aussi un récepteur applicatif fictif sur
 `127.0.0.1:8080`. Le parcours utilise le même ticket HMAC court que les
 applications hébergées, consomme son nonce une seule fois et établit un cookie
 de sas local avant d'afficher une page de confirmation. Les clés présentes dans

@@ -35,6 +35,20 @@ npm run build    # copie le sas partagé, puis construit dist/
 
 `npm run dev` et `npm run build` copient d'abord `avereo-platform/shared/connect-gate.php` dans `public/connect/gate.php`, par `.github/scripts/prepare-connect-gate.mjs recherche`, comme pour Projet, Thermo et Drone.
 
+## Docker Desktop
+
+Même adresse (http://127.0.0.1:5174), donc même corpus dans le navigateur. Node n'est pas nécessaire sur le poste :
+
+```bash
+docker compose -f compose.local.yaml up -d --build   # construit (tests compris) et démarre
+docker compose -f compose.local.yaml down            # arrête
+```
+
+- Le conteneur `avereo-recherche-local` redémarre avec Docker Desktop, jusqu'à ce qu'il soit arrêté.
+- Après une modification du code, relancer la commande avec `--build`.
+- L'image sert la SPA sans le sas CONNECT : les fichiers PHP du sas sont retirés.
+- Le CONNECT local (`avereo-app-connect/compose.c7.yaml`, http://127.0.0.1:8080) affiche la carte Recherche. Comme les cinq autres cartes, elle ouvre le récepteur fictif du mode local, pas ce conteneur.
+
 ## Déploiement
 
 Voir `docs/deployment.md`. Le workflow `.github/workflows/deploy-recherche-o2switch.yml` est manuel.
