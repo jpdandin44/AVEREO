@@ -2,7 +2,7 @@
 
 ## Objectif
 
-Rapport, Coupe, Projet, Thermo et Drone ne doivent pas être ouverts depuis leur URL publique sans un
+Rapport, Coupe, Projet, Thermo, Drone et Recherche ne doivent pas être ouverts depuis leur URL publique sans un
 passage préalable par AVEREO CONNECT. Une simple redirection ou un paramètre
 `from=connect` serait falsifiable ; le passage est donc prouvé par un ticket
 signé côté serveur.
@@ -25,7 +25,7 @@ signé côté serveur.
 
 ## Credentials
 
-Les cinq secrets doivent être aléatoires, faire au moins 32 caractères et rester
+Les six secrets doivent être aléatoires, faire au moins 32 caractères et rester
 hors document root :
 
 - `APP_LAUNCH_RAPPORT_SECRET` dans la configuration privée CONNECT correspond à
@@ -33,7 +33,8 @@ hors document root :
 - `APP_LAUNCH_COUPE_SECRET` dans la configuration privée CONNECT correspond à
   `connect_launch_secret` dans la configuration privée Coupe.
 - le même contrat s'applique à `APP_LAUNCH_PROJET_SECRET`,
-  `APP_LAUNCH_THERMO_SECRET` et `APP_LAUNCH_DRONE_SECRET`.
+  `APP_LAUNCH_THERMO_SECRET`, `APP_LAUNCH_DRONE_SECRET` et
+  `APP_LAUNCH_RECHERCHE_SECRET`.
 
 Les secrets sont différents. Ils ne sont ni partagés avec le navigateur, ni
 commités, ni affichés dans le catalogue.

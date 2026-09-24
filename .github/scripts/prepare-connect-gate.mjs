@@ -2,7 +2,7 @@ import { copyFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
 const application = String(process.argv[2] || '').trim().toLowerCase();
-if (!['projet', 'thermo', 'drone'].includes(application)) {
+if (!['projet', 'thermo', 'drone', 'recherche'].includes(application)) {
   throw new Error('Application de sas inconnue.');
 }
 
