@@ -74,6 +74,23 @@ Dans Site, quatre vues separent validation cadastrale, synthese des risques,
 urbanisme et relief/orientation. Voir le
 [parcours et les limites du contexte du bien](api/contexte-du-bien.md).
 
+Dans `Relief / orientation`, `Etudier le relief` affiche maintenant les
+neuf altitudes sur le fond cadastral (plan ou photo aerienne). La zone
+mesuree est distincte des limites de la parcelle ; le tableau reste disponible.
+
+Si le repere ne correspond pas au batiment, choisir `Deplacer le point`,
+cliquer ou faire glisser le repere, puis `Utiliser ce point` et confirmer
+de nouveau le bien. L'adresse reste inchangee ; les recherches utilisent
+ensuite le point ajuste. La procedure et ses effets sur les donnees sont
+decrits dans [le contexte du bien](api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
+
+Apres confirmation du lieu, le bloc `Informations deja disponibles` propose
+GoRenove et les typologies Pro'Reno. Les fiches sont choisies manuellement,
+avec date et notes conservees dans le dossier et l'export ; aucun resultat
+n'est importe automatiquement. Voir [l'evolution 2 et sa recette](api/ressources-batiment.md).
+Son apercu isole utilise `npm.cmd run dev -- --host 127.0.0.1 --port 52873 --strictPort`
+depuis `frontend/`, puis <http://127.0.0.1:52873/>.
+
 Le choix complementaire de `Visite Globale` correspond au type d'habitation :
 `Maison`, `Appartement`, `Immeuble collectif` ou `Autre habitation`. `Eau`,
 `Air`, `Terre` et `Feu` ne sont pas des sous-categories : ils forment le fil

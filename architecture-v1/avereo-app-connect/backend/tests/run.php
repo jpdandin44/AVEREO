@@ -1043,6 +1043,20 @@ $tests['oauth transaction fallback rejects another browser'] = static function (
     rmdir($directory);
 };
 
+$tests['private config allows every application launch key'] = static function (): void {
+    // Chaque application déclarée dans Config.php doit pouvoir être configurée
+    // depuis le fichier privé ; sinon elle reste invisible dans le catalogue.
+    $configSource = (string) file_get_contents(dirname(__DIR__) . '/src/Config.php');
+    $entrySource = (string) file_get_contents(dirname(__DIR__) . '/public/index.php');
+    preg_match_all("/=> self::env\\('APP_LAUNCH_([A-Z]+)_URL'\\)/", $configSource, $matches);
+    assertSameValue(true, count($matches[1]) >= 6, 'launch codes declared in Config');
+    foreach ($matches[1] as $code) {
+        foreach (["APP_LAUNCH_{$code}_URL", "APP_LAUNCH_{$code}_SECRET"] as $key) {
+            assertSameValue(true, str_contains($entrySource, "'{$key}'"), "{$key} allowed in private config");
+        }
+    }
+};
+
 $passed = 0;
 foreach ($tests as $name => $test) {
     $test();

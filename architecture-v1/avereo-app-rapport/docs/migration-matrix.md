@@ -17,6 +17,9 @@ tags:
 
 | Fonctionnalite | Source | Donnees/services | Cible AVEREO et test | Statut |
 | --- | --- | --- | --- | --- |
+| Relief sur cadastre | demande utilisateur | `terrain.analysis.samples`, tuiles IGN existantes | Neuf valeurs geolocalisees, extremes relatifs, emprise et tableau ; voir `../api/contexte-du-bien.md` | valide localement, qualification hebergee/tactile restante |
+| Correction du repere | demande utilisateur | `cadastre.lon/lat`, `localisation.point_manuel` | Ajustement explicite, annulation, donnees derivees invalidees, notes conservees, reprise locale ; voir `../api/contexte-du-bien.md` | valide localement, qualification hebergee restante |
+| Ressources du batiment (evolution 2) | demande utilisateur | `ressources_batiment`, liens manuels GoRenove/Pro'Reno | Sources/date/notes, URL validees, ancien brouillon compatible, rattachement caduc sans perte | prototype implemente, qualification hebergee restante ; voir `../api/ressources-batiment.md` |
 | Phases activables (evolution 1) | demande utilisateur | `habitologie_protocoles[phase].enabled`, controles conserves | Sans indicateur : phase active ; desactivation/retablissement sans perte ; reprise et exports controles, 44 tests | valide localement, revue humaine et qualification hebergee restantes |
 | Vues du contexte du bien | retour utilisateur du 14 septembre | Georisques, attributs GPU, neuf altitudes IGN, orientation manuelle | Synthese dans Site, relance, notes et exports ; 39 tests et build ; vues, reprise et apercu verifies | valide localement, qualification hebergee restante |
 | Assistant multi-etapes | `Rapport_AVEREO_Pro.txt`, `frontend/src/App.jsx` | Donnees du rapport | Frontend Vite; navigation et reprise manuelles | conservee |

@@ -16,6 +16,22 @@ tags:
 
 ## 2026-09-15
 
+- Relief : les neuf altitudes se superposent au fond cadastral ou aerien,
+  avec point de visite, extremes relatifs, emprise pointillee et tableau
+  repliable. Calcul et stockage inchanges ; voir
+  [fonctionnement et recette](api/contexte-du-bien.md#altitudes-sur-le-fond-cadastral).
+
+- Correction manuelle du point de visite dans Site : clic, glisser-deposer,
+  saisie de coordonnees, validation/annulation. Actualisation au point corrige,
+  nouvelle confirmation et preservation des notes/photos ; voir
+  [la procedure et la recette](api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
+
+- Evolution 2 : cartes GoRenove/Pro'Reno dans Site apres confirmation du bien,
+  copie de l'adresse, liens et notes manuels dates, restitution dans l'export.
+- Rattachement invalide apres modification du lien/lieu, sans perte des notes.
+  Validation des URL officielles et tests de reprise/export ; aucune API ni
+  dependance supplementaire. Voir [la recette](api/ressources-batiment.md).
+
 - Evolution 1 : activation/desactivation complete d'une phase depuis son
   numero ou son nom dans Protocoles ; bouton accessible au clavier et etat visible.
 - Conservation puis restauration des choix effectifs ; l'exclusion prime

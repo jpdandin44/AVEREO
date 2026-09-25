@@ -92,8 +92,26 @@ tags:
 - Une confirmation de lieu est liee a l'adresse et aux coordonnees. Elle
   devient caduque apres modification ou nouvelle recherche. Un deplacement
   dans la carte integree ne modifie pas implicitement le dossier.
+- Le professionnel doit pouvoir corriger explicitement le point de visite,
+  par clic, glisser-deposer ou coordonnees, puis valider ou annuler. Une
+  correction conserve l'adresse et les notes, invalide les anciennes donnees
+  derivees et exige une nouvelle confirmation. L'actualisation doit utiliser
+  ce point sans le remplacer implicitement par le resultat du geocodage.
 
 ## Exigences techniques et securite
+
+- Apres confirmation du lieu, proposer GoRenove et Pro'Reno dans Site pour
+  les deux parcours, sans attribuer automatiquement de fiche au bien.
+- Ouverture directe du bien reportee sur decision utilisateur : conserver
+  les acces actuels et la recherche manuelle, sans pre-remplissage d'adresse.
+  Pro'Reno reste une ressource typologique, pas une fiche a l'adresse. Voir
+  les [conditions d'une reprise future](api/ressources-batiment.md#liens-directs-au-bien--evolution-reportee).
+- Conserver liens choisis, notes et dates de consultation dans le dossier
+  et ses exports. Distinguer simulations, donnees publiees et typologies generales.
+- Invalider le rattachement d'une fiche apres changement de lien ou de lieu,
+  sans supprimer les notes ; ne pas le restaurer implicitement.
+- Refuser la navigation vers des URL non autorisees ; aucun scraping,
+  abonnement, compte, cle ni acceptation de conditions automatique.
 
 - Les accords de Visite Globale precedent l'entretien dans Dossier, sans
   accord photo ou dictee coche implicitement.
@@ -103,6 +121,10 @@ tags:
   sans deduire une interdiction du seul code de zone.
 - Le relief est un reperage MNT indicatif, source et date visibles, sans
   confondre une erreur de couverture et un resultat plat.
+- Les neuf altitudes doivent etre placees sur le fond cadastral a leurs
+  coordonnees, avec point de visite, extremes relatifs, emprise explicite
+  et tableau de secours. Ne pas confondre emprise mesuree et parcelle,
+  altitude au sol et toit, ni contraste de couleur et risque.
 - L'orientation de facade reste une saisie humaine, distincte du nord du plan.
 - Notes et contexte enrichi suivent le dossier et les exports existants.
 

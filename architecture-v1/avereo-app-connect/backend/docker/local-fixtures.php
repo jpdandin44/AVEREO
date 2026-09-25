@@ -102,6 +102,7 @@ try {
         ['projet', 'Projet AVEREO', 'Pilotage des projets AVEREO', 30],
         ['thermo', 'Thermo AVEREO', 'Analyse thermique AVEREO', 40],
         ['drone', 'Drone AVEREO', 'Inspection et donnees drone AVEREO', 50],
+        ['recherche', 'AVEREO Collector Recherche', 'Retrouver, citer et reemployer les connaissances AVEREO', 60],
     ];
     $application = $pdo->prepare(
         'INSERT INTO applications '

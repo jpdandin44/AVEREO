@@ -100,6 +100,7 @@ final class Config
                 'projet' => self::env('APP_LAUNCH_PROJET_URL'),
                 'thermo' => self::env('APP_LAUNCH_THERMO_URL'),
                 'drone' => self::env('APP_LAUNCH_DRONE_URL'),
+                'recherche' => self::env('APP_LAUNCH_RECHERCHE_URL'),
             ],
             [
                 'rapport' => self::env('APP_LAUNCH_RAPPORT_SECRET'),
@@ -107,6 +108,7 @@ final class Config
                 'projet' => self::env('APP_LAUNCH_PROJET_SECRET'),
                 'thermo' => self::env('APP_LAUNCH_THERMO_SECRET'),
                 'drone' => self::env('APP_LAUNCH_DRONE_SECRET'),
+                'recherche' => self::env('APP_LAUNCH_RECHERCHE_SECRET'),
             ],
             self::envInt('APP_LAUNCH_TTL_SECONDS', 90),
             self::envInt('OAUTH_TRANSACTION_TTL_SECONDS', 900),

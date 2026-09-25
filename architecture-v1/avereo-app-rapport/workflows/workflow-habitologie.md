@@ -197,6 +197,16 @@ Voir [`../api/cartographie.md`](../api/cartographie.md).
 Ce reperage ne vaut ni identification juridique de parcelle ni preuve de
 propriete. Aucun nom, email ni contenu de l'entretien n'est transmis a IGN.
 
+### Ressources du batiment — evolution 2
+
+Le lot `Informations deja disponibles` (evolution 2) complete maintenant Site
+apres confirmation cadastrale. GoRenove et Pro'Reno sont consultes dans un
+nouvel onglet ; le professionnel conserve les fiches utiles, dates et notes
+sans association automatique. La description fonctionnelle, les limites et la
+[recette de l'evolution 2](../api/ressources-batiment.md) sont centralisees
+dans la documentation d'integration. Ce lot ne livre pas la machine d'etats
+ci-dessous ni un moteur automatique d'analyse.
+
 ## Etats operationnels proposes
 
 | Etat propose | Entree attendue | Sortie ou action principale |

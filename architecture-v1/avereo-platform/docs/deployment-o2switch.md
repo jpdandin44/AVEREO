@@ -12,6 +12,7 @@ Creer un sous-domaine par application dans cPanel, puis pointer chaque sous-doma
 - `~/public_html/projet`
 - `~/public_html/thermo`
 - `~/public_html/drone`
+- `~/public_html/recherche`
 
 ## Secrets GitHub
 

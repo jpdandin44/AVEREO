@@ -70,13 +70,18 @@ Le champ suit le payload JSON existant sans migration SQL ni nouvel endpoint.
 `LocationMap.jsx` affiche les tuiles WMTS IGN via Leaflet 1.9.4 embarque dans
 le build, sans iframe, CDN de code ou cle. `localisation` conserve l'adresse
 geocodee et la confirmation liee aux coordonnees, a l'adresse saisie et a une
-date. Le deplacement de la carte ne change pas le point du dossier.
+date. Le deplacement du fond de carte ne change pas le point du dossier.
+Le mode explicite d'ajustement conserve un point provisoire dans l'etat local
+de `LocationMap`, sans modifier le rapport avant validation. `visitPoint.js`
+applique ensuite la transition et invalide les donnees derivees ; les champs,
+flux et regles de conservation sont decrits dans
+[le contexte du bien](../api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
 Le geocodage expose immediatement la localisation ; les enrichissements sont
 bordes par des delais et un compteur ignore les retours apres sortie de Site.
 Les couches et limites de qualification sont centralisees dans
 [`../api/cartographie.md`](../api/cartographie.md).
 
-Apres le geocodage BAN, le frontend appelle directement les services publics
+Apres le geocodage BAN ou la correction manuelle du point, le frontend appelle directement les services publics
 API Carto et Georisques. Le cadastre, l'urbanisme et les risques sont traites
 comme des enrichissements independants : l'absence de parcelle ne bloque pas
 la synthese des risques. L'endpoint Georisques V1 public recoit uniquement
@@ -92,9 +97,21 @@ Le payload ajoute `urbanisme.context`, `urbanisme.notes` et `terrain`,
 sans table ni migration supplementaire. Les formats et limites sont
 centralises dans [`../api/contexte-du-bien.md`](../api/contexte-du-bien.md).
 
+`TerrainPanel` reutilise `CadastralMap` avec une superposition facultative.
+`terrainMapSamples` valide les mesures du lieu courant avant de produire les
+etiquettes Leaflet et les classes d'extremes relatifs. Aucune nouvelle
+persistance, geometrie cadastrale ou interpolation ; voir
+[la presentation du relief](../api/contexte-du-bien.md#altitudes-sur-le-fond-cadastral).
+
 La configuration sensible est chargee depuis `/home/CPANEL_USERNAME/.avereo/rapport/config.php`, hors de `frontend/dist`.
 
 ## Structure
+
+`BuildingResources.jsx` complete Site avec GoRenove et Pro'Reno.
+`buildingResources.js` centralise les sources, routes autorisees, rattachement
+au lieu confirme et restitution. Les donnees suivent `ressources_batiment`
+dans le payload JSON. Les ouvertures externes sont manuelles, sans requete
+d'enrichissement ni secret ; voir [le contrat fonctionnel](../api/ressources-batiment.md).
 
 - `frontend/src/` : interface et mode brouillon local.
 - `frontend/public/api/` : API PHP publiee au build.
