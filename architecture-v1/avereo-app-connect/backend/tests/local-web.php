@@ -182,11 +182,11 @@ if (filter_var(getenv('CONNECT_LOCAL_DEMO_EXPECTED') ?: 'false', FILTER_VALIDATE
             $payload = json_decode($response['body'], true);
             return $response['status'] === 200
                 && is_array($payload)
-                && count($payload['data'] ?? []) === 5
+                && count($payload['data'] ?? []) === 6
                 && count(array_filter(
                     $payload['data'] ?? [],
                     static fn (array $application): bool => ($application['available'] ?? null) === true,
-                )) === 5;
+                )) === 6;
         },
         ['Cookie: ' . $cookie],
     );
@@ -243,7 +243,7 @@ if (filter_var(getenv('CONNECT_LOCAL_DEMO_EXPECTED') ?: 'false', FILTER_VALIDATE
         str_replace('/local-app/rapport', '/local-app/coupe', $secondEntryUrl),
         static fn (array $response): bool => $response['status'] === 403,
     );
-    foreach (['coupe', 'projet', 'thermo', 'drone'] as $applicationCode) {
+    foreach (['coupe', 'projet', 'thermo', 'drone', 'recherche'] as $applicationCode) {
         $application = array_values(array_filter(
             $catalogPayload['data'] ?? [],
             static fn (array $candidate): bool => ($candidate['code'] ?? null) === $applicationCode,
@@ -263,7 +263,9 @@ if (filter_var(getenv('CONNECT_LOCAL_DEMO_EXPECTED') ?: 'false', FILTER_VALIDATE
             "local {$applicationCode} signed session",
             $baseUrl . localLocation($applicationEntry),
             static fn (array $response): bool => $response['status'] === 200
-                && str_contains($response['body'], 'Sas AVEREO CONNECT validé'),
+                && str_contains($response['body'], 'Sas AVEREO CONNECT validé')
+                && ($applicationCode !== 'recherche'
+                    || str_contains($response['body'], 'href="http://127.0.0.1:5174/"')),
             ['Cookie: ' . localCookie($applicationEntry)],
         );
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 function localAppGatewayConfigureEnvironment(): void
 {
-    foreach (['rapport', 'coupe', 'projet', 'thermo', 'drone'] as $applicationCode) {
+    foreach (['rapport', 'coupe', 'projet', 'thermo', 'drone', 'recherche'] as $applicationCode) {
         $prefix = 'APP_LAUNCH_' . strtoupper($applicationCode);
         if (getenv("{$prefix}_URL") === false) {
             putenv("{$prefix}_URL=http://127.0.0.1:8080/local-app/{$applicationCode}");
@@ -192,10 +192,20 @@ function localAppGatewayRender(string $applicationCode, string $userId): void
         'projet' => 'Projet AVEREO',
         'thermo' => 'Thermo AVEREO',
         'drone' => 'Drone AVEREO',
+        'recherche' => 'AVEREO Collector Recherche',
     ];
     $name = htmlspecialchars($names[$applicationCode] ?? $applicationCode, ENT_QUOTES, 'UTF-8');
     $code = htmlspecialchars(strtoupper($applicationCode), ENT_QUOTES, 'UTF-8');
     $identity = htmlspecialchars($userId, ENT_QUOTES, 'UTF-8');
+    // Recherche dispose d'un conteneur local (avereo-app-recherche/compose.local.yaml) :
+    // simple lien de confort, sans ticket, limité à une adresse locale.
+    $localApplicationUrl = $applicationCode === 'recherche'
+        ? (string) (getenv('LOCAL_APP_RECHERCHE_URL') ?: 'http://127.0.0.1:5174/')
+        : '';
+    $localLink = preg_match('#^http://(127\.0\.0\.1|localhost)(:\d+)?/#', $localApplicationUrl) === 1
+        ? '<a href="' . htmlspecialchars($localApplicationUrl, ENT_QUOTES, 'UTF-8') . '">Ouvrir '
+            . $name . ' (conteneur local)</a> '
+        : '';
     header('Content-Type: text/html; charset=utf-8');
     echo <<<HTML
 <!doctype html>
@@ -212,6 +222,7 @@ function localAppGatewayRender(string $applicationCode, string $userId): void
     h1 { margin: .8rem 0; font-size: clamp(2rem, 6vw, 3.5rem); }
     .status { padding: 1rem; border-radius: 12px; background: #edf4ff; }
     a { display: inline-block; margin-top: 1.5rem; padding: .85rem 1.1rem; border-radius: 10px; color: white; background: #155eef; text-decoration: none; font-weight: 700; }
+    a + a { margin-left: .6rem; color: #155eef; background: #edf4ff; }
   </style>
 </head>
 <body>
@@ -220,7 +231,7 @@ function localAppGatewayRender(string $applicationCode, string $userId): void
     <h1>{$name}</h1>
     <p class="status">Sas AVEREO CONNECT validé pour le compte local n° {$identity}.</p>
     <p>Cette page confirme le ticket signé, sa durée de vie et son usage unique. Elle ne contacte aucune application hébergée.</p>
-    <a href="/">Retour à AVEREO CONNECT</a>
+    {$localLink}<a href="/">Retour à AVEREO CONNECT</a>
   </main>
 </body>
 </html>
