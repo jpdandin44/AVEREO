@@ -1,0 +1,269 @@
+{
+  "project": "avereo-n8n-deployment",
+  "title": "AVEREO — Déploiement n8n sur NAS Synology",
+  "owner": "Jean-Philippe Dandin",
+  "updated": "2026-09-25",
+  "trackingOnly": true,
+  "currentPhase": 1,
+  "state": "in_progress",
+  "statusLabels": {
+    "awaiting_review": "À valider",
+    "validated": "Terminée",
+    "in_progress": "En cours",
+    "not_started": "À faire",
+    "blocked": "Bloquée"
+  },
+  "phases": [
+    {
+      "id": 0,
+      "shortTitle": "Audit NAS & prérequis",
+      "title": "Audit NAS & prérequis",
+      "objective": "Audit du Synology DS224+, DSM, Container Manager, stockage, réseau, SSH et sauvegarde.",
+      "status": "validated",
+      "startedOn": "2026-09-25",
+      "deliveredOn": "2026-09-25",
+      "validatedOn": "2026-09-25",
+      "validationEvidence": null,
+      "dependsOn": [],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Phase 0 validée. Passer à l’architecture n8n P0."
+    },
+    {
+      "id": 1,
+      "shortTitle": "Architecture n8n P0",
+      "title": "Architecture n8n P0",
+      "objective": "Choisir l’architecture cible n8n, PostgreSQL, volumes, réseau local et trajectoire OVH.",
+      "status": "in_progress",
+      "startedOn": "2026-09-25",
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        0
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Arbitrer SQLite vs PostgreSQL et figer l’architecture P0."
+    },
+    {
+      "id": 2,
+      "shortTitle": "Préparation environnement Docker",
+      "title": "Préparation environnement Docker",
+      "objective": "Préparer l’arborescence, les variables d’environnement et le projet Docker Compose.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        1
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Attendre la validation de l’architecture P0."
+    },
+    {
+      "id": 3,
+      "shortTitle": "Déploiement n8n",
+      "title": "Déploiement n8n",
+      "objective": "Déployer n8n dans Container Manager et valider son démarrage local.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        2
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Créer le projet Docker Compose puis démarrer n8n."
+    },
+    {
+      "id": 4,
+      "shortTitle": "PostgreSQL & persistance",
+      "title": "PostgreSQL & persistance",
+      "objective": "Configurer la base et les volumes persistants nécessaires au P0.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        3
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Configurer la persistance après le premier déploiement."
+    },
+    {
+      "id": 5,
+      "shortTitle": "Tests locaux",
+      "title": "Tests locaux",
+      "objective": "Valider accès, redémarrage, persistance et premiers appels HTTP.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        4
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Exécuter les tests fonctionnels locaux."
+    },
+    {
+      "id": 6,
+      "shortTitle": "Sécurisation",
+      "title": "Sécurisation",
+      "objective": "Réduire l’exposition, organiser les secrets et vérifier le pare-feu DSM.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        5
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Durcir la configuration avant toute exposition Internet."
+    },
+    {
+      "id": 7,
+      "shortTitle": "HTTPS / Reverse Proxy / DNS",
+      "title": "HTTPS / Reverse Proxy / DNS",
+      "objective": "Préparer un accès HTTPS propre et le futur sous-domaine n8n.avereo.fr.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        6
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Configurer seulement après validation du socle local."
+    },
+    {
+      "id": 8,
+      "shortTitle": "Webhooks externes",
+      "title": "Webhooks externes",
+      "objective": "Valider un webhook entrant depuis Internet avec exposition maîtrisée.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        7
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Tester après HTTPS et reverse proxy."
+    },
+    {
+      "id": 9,
+      "shortTitle": "Sauvegarde / restauration",
+      "title": "Sauvegarde / restauration",
+      "objective": "Mettre en place une sauvegarde minimale puis tester la restauration.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        8
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Traiter le risque P0 de sauvegarde avant production."
+    },
+    {
+      "id": 10,
+      "shortTitle": "Workflow POC AVEREO",
+      "title": "Workflow POC AVEREO",
+      "objective": "Créer un workflow simple Webhook → traitement → appel API → réponse.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        9
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Démarrer uniquement lorsque le socle est stable."
+    },
+    {
+      "id": 11,
+      "shortTitle": "Intégrations AVEREO",
+      "title": "Intégrations AVEREO",
+      "objective": "Préparer OpenAI, Gmail, Drive, Calendar, Axonaut, Qonto, Stripe, Supabase, Connect et Drupal.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        10
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Recenser les méthodes d’authentification et secrets."
+    },
+    {
+      "id": 12,
+      "shortTitle": "Documentation & exploitation",
+      "title": "Documentation & exploitation",
+      "objective": "Documenter installation, exploitation, mise à jour, sauvegarde et dépannage.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        11
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Capitaliser les commandes et décisions au fil du chantier."
+    },
+    {
+      "id": 13,
+      "shortTitle": "Préparation migration OVH",
+      "title": "Préparation migration OVH",
+      "objective": "Préparer la migration future du NAS vers un VPS OVH sans refonte.",
+      "status": "not_started",
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "dependsOn": [
+        12
+      ],
+      "deliverables": [],
+      "exitCriteria": [],
+      "nextAction": "Documenter les éléments portables et la procédure de migration."
+    }
+  ],
+  "decisions": [],
+  "history": [
+    {
+      "date": "2026-09-25",
+      "event": "Phase 0 — Audit NAS & prérequis validée. DS224+ sous DSM 7.3.2, Container Manager installé, Btrfs/RAID1, 1,3 To libres, SSH actif. Risque identifié : absence de stratégie de sauvegarde structurée."
+    },
+    {
+      "date": "2026-09-25",
+      "event": "Phase 1 — Architecture n8n P0 ouverte."
+    }
+  ],
+  "publication": {
+    "pushAuthorized": false,
+    "deploymentAuthorized": false
+  }
+}
