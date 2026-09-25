@@ -5,7 +5,7 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-19
+updated: 2026-09-25
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,29 @@ tags:
 ---
 
 # Feuille de route de Projet
+
+## Revue locale des phases — 24 septembre 2026
+
+L'espace de revue est développé sur `feat/projet-revue-phases`, à partir de
+`48ae277`. Il consulte le chantier existant et enregistre observations,
+corrections, remises, approbations et accords de passage. Résultats :
+[recette locale](docs/recette-revue-locale.md).
+
+L'état de revue du chantier est celui de son journal actuel, sans redemander
+les accords déjà enregistrés. L'évolution du 24 septembre ajoute la progression
+par phase et la consultation des validations antérieures fournies par le
+chantier. Les fiches de livrables prévus et la lecture automatique du suivi sont
+également implémentées et testées localement, avec conservation des saisies
+et invalidation ciblée des attestations. Les résultats et la limite de recette
+navigateur sont dans le complément de recette cité ci-dessus.
+Livrer l'outil ne crée aucune nouvelle approbation de livrable.
+Le moteur et ses évolutions de progression et de revues complémentaires sont
+proposés dans la [PR #68](https://github.com/jpdandin44/AVEREO/pull/68), en brouillon
+sur `feat/projet-pilotage-revues`. La base est `feat/projet-planning-local`
+(`48ae277`), dont la PR #64 est encore ouverte en brouillon au constat du
+25 septembre. Cette dépendance et ses validations ne sont pas modifiées.
+Voir [la procédure](workflows/revue-developpement.md) pour les accords de publication.
+
 
 ## Existant constaté
 
@@ -48,7 +71,7 @@ Les tests intégrés, le build et l'inspection de l'artefact de cette extension
 sont réussis. Les parcours de fiche, preuve et qualification/reprise de risque
 ont été vérifiés dans le navigateur local. Les preuves et les compléments de
 recette encore ouverts sont consignés dans [l'audit](docs/source-audit.md).
-Le travail continue dans le périmètre de la
+L’extension de planning du 19 septembre relève de la
 [PR #64](https://github.com/jpdandin44/AVEREO/pull/64), sans nouvelle publication
 hébergée ni réalisation implicite des EV planifiées.
 

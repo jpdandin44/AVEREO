@@ -5,7 +5,7 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-19
+updated: 2026-09-25
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,79 @@ tags:
 ---
 
 # Audit et recette du planning Projet
+
+## Revues complémentaires d'une phase — 25 septembre 2026
+
+L'interface lisait uniquement `phase.pullRequest`, ce qui masquait une PR
+documentaire conservée dans `reviewFollowUps[].documentationPullRequest`.
+Le frontend présente désormais ces compléments dans la phase exacte avec
+leur contexte, sans remplacer la carte principale. Il réutilise le normaliseur
+PR et dédoublonne les références par dépôt et numéro. Le service d'écriture,
+les décisions, leurs preuves et les transitions ne changent pas.
+
+Les trois tests ajoutés couvrent le filtrage strict de la phase, les champs
+invalides, le contexte, le dédoublonnage et l'absence de mutation de la source.
+Les dix tests PR passent. `npm.cmd run build` réussit avec **144 tests sur 144**,
+la cohérence des dérivés du planning, Vite et la vérification des douze fichiers
+de l'artefact, sans données ou API de revue. Ces contrôles utilisent des fixtures ;
+ils ne valident aucune phase ni aucune PR réelle. L'état GitHub reste un constat
+fourni par le chantier connecté et cette correction n'est pas publiée en production.
+
+Contrôle navigateur du 25 septembre : la phase 2 du chantier site présente
+simultanément PR #6 « Fusionnée » et « Revue complémentaire · PR #7 » ouverte,
+avec liens exacts et portée distincte. Les compteurs restent à trois remises et
+trois validations sur sept ; Services reste non commencé. Les douze empreintes
+des pièces approuvées, cinq événements et huit décisions historiques ont été
+contrôlés sans modification. Le moteur commun est proposé dans la
+[PR #68](https://github.com/jpdandin44/AVEREO/pull/68), distincte de la PR du site.
+
+## Carte de PR par phase — 25 septembre 2026
+
+L’espace de revue affiche facultativement `phase.pullRequest` dans la phase
+sélectionnée. Le normaliseur accepte uniquement une URL HTTPS GitHub
+cohérente avec le dépôt et le numéro, un état admis, une révision complète
+et une date valide. Les éléments de fusion sont facultatifs. L’affichage
+signale qu’il s’agit d’un constat du suivi local et ne contacte pas GitHub.
+Le journal, les décisions et les transitions du service restent inchangés.
+
+Les sept tests de [review-pull-request.test.mjs](../tests/review-pull-request.test.mjs)
+vérifient absence et rétrocompatibilité, préservation de la source, liens
+hostiles ou incohérents, champs obligatoires et états de fusion. Ils ne
+prouvent pas l’état actuel d’une PR réelle ni sa validation humaine.
+
+`npm.cmd run build` a réussi après cet ajout : **141 tests sur 141**, contrôle
+des dérivés du planning, compilation Vite et contrôle de release sur douze
+fichiers. L’artefact reste sans données ni API de revue et conserve sas et
+planning. Aucun journal réel n’a été utilisé pour les tests automatisés.
+
+Constat navigateur transmis par l’agent principal le 25 septembre : après
+**Actualiser** sur le suivi local `127.0.0.1:5192`, la phase Homepage apparaît
+« À valider » et sa carte affiche la [PR site #6](https://github.com/jpdandin44/avereo-site-drupal/pull/6)
+« Ouverte », le constat du 25 septembre à 09:47 et la révision
+`78d0108ff729`. Le lien canonique et les mentions d’absence de synchronisation
+GitHub et de validation automatique sont visibles. Les compteurs restent à
+trois remises sur sept et deux phases validées sur sept. Ce relevé transmis
+consigne le contrôle de l’interface ; aucune image n’a été inspectée pour
+cette mise à jour documentaire et aucun test supplémentaire n’est revendiqué.
+
+## Extension locale de revue — 24 septembre 2026
+
+Le wrapper accueille l'espace de revue et le planning existant. Le middleware
+Vite de développement peut enregistrer des décisions dans le JSON d'un chantier
+connecté. Ce changement reste local, sans API hébergée, MySQL ou qualification
+du sas. Résultats et limites dans [recette-revue-locale.md](recette-revue-locale.md).
+
+L'évolution suivante du 24 septembre ajoute les descriptions de livrables
+prévus et l'actualisation du snapshot avec conservation des brouillons de revue.
+Les attestations sont remises à vérifier seulement si les preuves pertinentes
+ou leurs dépendances changent. Le service et les données du planning ne sont
+pas modifiés. Les tests, le build et les limites de cette extension sont
+consignés dans le [complément de recette](recette-revue-locale.md#complément-du-24-septembre--livrables-attendus-et-actualisation).
+Aucune publication ni décision humaine n'est produite par ces tests.
+
+Les sections du 19 septembre ci-dessous restent les preuves historiques
+du planning ; elles ne constituent pas la recette de la nouvelle interface.
+
 
 ## Origine et état initial
 

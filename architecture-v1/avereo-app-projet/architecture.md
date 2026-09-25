@@ -5,7 +5,7 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-19
+updated: 2026-09-24
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,29 @@ tags:
 ---
 
 # Architecture du planning Projet
+
+## Extension locale de revue — 24 septembre 2026
+
+Le wrapper React propose en développement deux espaces. L'iframe du planning
+est conservée en mémoire lorsqu'on revient aux revues. Le build hébergé garde
+le planning ; le module de revue est exclu par `import.meta.env.DEV`.
+
+`ReviewWorkspace.jsx` lit les phases et présente les livrables avec un rendu
+React échappé. `review-plugin.mjs` ajoute les routes locales au serveur Vite ;
+`review-http.mjs` borne les requêtes à la boucle locale et à leur origine ;
+`review-store.mjs` vérifie les décisions et écrit le suivi choisi par le lanceur.
+Le contrat est décrit dans [l'API locale](api/revue-locale.md).
+
+Le JSON du chantier reste la référence. Événement, preuves SHA-256 et nouvel
+état sont enregistrés ensemble, avec sauvegarde préalable, verrou exclusif et
+contrôle de révision. Le générateur Python du chantier actualise ses vues dérivées.
+Cette extension n'utilise pas le stockage navigateur du planning et n'introduit
+pas de base ou d'API hébergée. L'identité est déclarative ; le journal local
+reste modifiable par le propriétaire des fichiers.
+
+La [procédure](workflows/revue-developpement.md) décrit les limites et la reprise.
+Les sections suivantes documentent le sous-système de planning conservé.
+
 
 ## Vue d'ensemble
 
@@ -123,3 +146,38 @@ multiutilisateur des conflits.
 Le build conserve les fichiers publics, les points d'entrée PHP et la garde
 CONNECT copiée depuis la plateforme. Configuration réelle et état public
 n'ont pas été qualifiés dans ce lot. Voir [publication](docs/deployment.md).
+
+## Vue de progression de la revue
+
+`review-progress.mjs` calcule une synthèse de présentation à partir du snapshot
+existant : phases, actions disponibles, documents accessibles et décisions.
+`ReviewProgress.jsx` affiche cette synthèse et sélectionne les phases dans
+`ReviewWorkspace.jsx`. Les autorisations restent calculées par le service
+existant ; aucun second moteur de transitions ni stockage n'est ajouté.
+
+Le champ optionnel `priorApprovals` est une vue dérivée fournie par le chantier
+consommateur. Projet l'affiche avec sa provenance et sa date ; il ne l'importe
+pas dans `reviewEvents`, ne la rafraîchit pas depuis une source externe et ne
+l'utilise pas pour autoriser une nouvelle phase. Le contrat HTTP reste inchangé.
+
+## Rafraîchissement et preuves de revue
+
+`ReviewWorkspace.jsx` relit le snapshot existant toutes les 25 secondes si la
+page est visible, ainsi qu'au retour au focus ou à la visibilité. Le bouton
+manuel utilise le même chemin de lecture. Les brouillons restent en mémoire
+React ; le rafraîchissement n'écrit ni le suivi ni le journal et n'ajoute aucune
+sauvegarde persistante du commentaire.
+
+`review-refresh.mjs` compare, par phase, les documents et empreintes, problèmes
+de lecture, critères, livrables attendus, état, autorisation, validation,
+actions disponibles et dépendances. Les attestations en cours sont invalidées
+sur changement de ces preuves ; les textes saisis et choix encore disponibles
+sont préservés. La révision serveur inclut déjà les empreintes documentaires :
+un fichier modifié est détecté même sans modification du JSON.
+
+Une seule lecture d'état est gardée en vol. Le démarrage d'une écriture invalide
+la lecture précédente et suspend les suivantes ; sa réponse tardive ne peut
+pas remplacer celle du POST. Les handlers de minuterie/focus/visibilité sont
+retirés au démontage. Cette coordination ne modifie pas le protocole serveur.
+Les métadonnées facultatives de livrable sont décrites dans
+[le contrat local](api/revue-locale.md#description-des-livrables-prévus).
