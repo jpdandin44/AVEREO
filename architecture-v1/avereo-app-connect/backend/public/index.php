@@ -55,6 +55,7 @@ try {
             'APP_LAUNCH_PROJET_URL', 'APP_LAUNCH_PROJET_SECRET',
             'APP_LAUNCH_THERMO_URL', 'APP_LAUNCH_THERMO_SECRET',
             'APP_LAUNCH_DRONE_URL', 'APP_LAUNCH_DRONE_SECRET',
+            'APP_LAUNCH_RECHERCHE_URL', 'APP_LAUNCH_RECHERCHE_SECRET',
             'APP_LAUNCH_TTL_SECONDS',
         ];
         if (!is_array($privateValues)) {
