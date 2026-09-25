@@ -5,7 +5,7 @@ title: Recette du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-19
+updated: 2026-09-24
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,21 @@ tags:
 ---
 
 # Recette du planning local Projet
+
+## Revue des phases
+
+[review-workflow.test.mjs](review-workflow.test.mjs) couvre les transitions,
+preuves, critères, conflits, sauvegardes, reprise, accès fichiers et journal.
+[review-http.test.mjs](review-http.test.mjs) vérifie le service sur boucle
+locale : lecture/écriture, export, origine, Host, jeton, type et taille du corps.
+Toutes les mutations utilisent des fixtures temporaires, sans le suivi réel.
+
+`npm.cmd run test:review` exécute ces suites ; elles sont aussi incluses dans
+le build et la CI existante. `npm.cmd run check:release` inspecte le build :
+données et routes de revue exclues, assets du planning et sas conservés.
+Résultats et recette navigateur :
+[recette-revue-locale.md](../docs/recette-revue-locale.md).
+
 
 Les résultats réels sont consignés dans
 [docs/source-audit.md](../docs/source-audit.md). Une liste de scénarios ne
@@ -84,3 +99,24 @@ interactions tactiles. Les erreurs de quota, stockage corrompu et concurrence
 sont couvertes automatiquement, sans simulation manuelle dans IAB.
 
 Cette recette ne qualifie pas l'authentification ni la publication hébergées.
+
+## Progression des phases
+
+[review-progress.test.mjs](review-progress.test.mjs) vérifie les compteurs,
+livraisons historiques, autorisations issues du service, disponibilité par
+livrable, blocages, dates, accords antérieurs et activité. La suite couvre aussi
+les titres, descriptions et preuves des documents prévus, les erreurs de lecture
+et les messages de préparation. Ses douze tests sont inclus dans le build ;
+ils n'écrivent aucun journal. La recette de l'affichage
+est consignée dans les compléments du 24 septembre de
+[recette-revue-locale.md](../docs/recette-revue-locale.md).
+
+## Actualisation du suivi
+
+[review-refresh.test.mjs](review-refresh.test.mjs) couvre la conservation des
+brouillons et sélections, l'invalidation ciblée des attestations par changement
+de preuves/critères/dépendances, la détection d'un fichier modifié sans toucher
+au JSON et la protection contre un GET périmé après POST. Les sept tests utilisent
+des snapshots et un dossier temporaire ; ils ne modifient pas les journaux réels.
+La cadence et les comportements de l'interface restent à vérifier séparément
+dans le navigateur selon [la recette](../docs/recette-revue-locale.md#complément-du-24-septembre--livrables-attendus-et-actualisation).

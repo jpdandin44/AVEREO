@@ -5,7 +5,7 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-19
+updated: 2026-09-24
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,26 @@ tags:
 ---
 
 # Feuille de route de Projet
+
+## Revue locale des phases — 24 septembre 2026
+
+L'espace de revue est développé sur `feat/projet-revue-phases`, à partir de
+`48ae277`. Il consulte le chantier existant et enregistre observations,
+corrections, remises, approbations et accords de passage. Résultats :
+[recette locale](docs/recette-revue-locale.md).
+
+L'état de revue du chantier est celui de son journal actuel, sans redemander
+les accords déjà enregistrés. L'évolution du 24 septembre ajoute la progression
+par phase et la consultation des validations antérieures fournies par le
+chantier. Les fiches de livrables prévus et la lecture automatique du suivi sont
+également implémentées et testées localement, avec conservation des saisies
+et invalidation ciblée des attestations. Les résultats et la limite de recette
+navigateur sont dans le complément de recette cité ci-dessus.
+Livrer l'outil ne crée aucune nouvelle approbation de livrable.
+La PR de ce nouveau lot n'est pas publiée ; le planning précédent reste
+une dépendance de branche dont l'état distant n'a pas été recontrôlé ici.
+Voir [la procédure](workflows/revue-developpement.md) pour les accords de publication.
+
 
 ## Existant constaté
 
@@ -48,7 +68,7 @@ Les tests intégrés, le build et l'inspection de l'artefact de cette extension
 sont réussis. Les parcours de fiche, preuve et qualification/reprise de risque
 ont été vérifiés dans le navigateur local. Les preuves et les compléments de
 recette encore ouverts sont consignés dans [l'audit](docs/source-audit.md).
-Le travail continue dans le périmètre de la
+L’extension de planning du 19 septembre relève de la
 [PR #64](https://github.com/jpdandin44/AVEREO/pull/64), sans nouvelle publication
 hébergée ni réalisation implicite des EV planifiées.
 

@@ -1,7 +1,8 @@
-﻿import { defineConfig } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
+import { localReviewPlugin } from '../workflows/review-plugin.mjs';
 
 // Les données de travail sont servies uniquement en développement, jamais copiées dans dist.
 const localPlanning = {
@@ -28,6 +29,6 @@ const localPlanning = {
 };
 
 export default defineConfig({
-  plugins: [react(), localPlanning],
+  plugins: [react(), localPlanning, localReviewPlugin()],
   server: { host: '127.0.0.1', port: 5186, strictPort: true },
 });

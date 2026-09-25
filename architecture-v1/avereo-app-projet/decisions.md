@@ -5,7 +5,7 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-19
+updated: 2026-09-24
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,26 @@ tags:
 ---
 
 # Décisions de Projet
+
+## 2026-09-24 — Revue dans l'outil de développement local
+
+**Contexte.** L'utilisateur demande la revue et l'approbation directes dans
+Projet, avec une version locale et son workflow de développement.
+
+**Décision.** Ajouter l'espace de revue et un middleware de développement
+sur boucle locale. Écrire dans le JSON existant du chantier, en conservant
+événement, empreintes, sauvegarde et verrou. Séparer l'approbation de phase,
+l'accord de passage et le démarrage ; conserver le planning distinct.
+
+**Raisons.** Rendre les décisions durables et disponibles à la reprise,
+avec une seule référence et sans changer le périmètre hébergé. Une copie
+du suivi dans le stockage du planning créerait une divergence.
+
+**Conséquences.** Node et Python nécessaires. Identité déclarative et journal
+modifiable par le propriétaire des fichiers. Aucun accord GitHub, fusion,
+publication ou démarrage d'agent n'est déduit d'une décision locale.
+Voir [le workflow](workflows/revue-developpement.md).
+
 
 ## 2026-09-19 — Maintenir le métier dans le navigateur
 

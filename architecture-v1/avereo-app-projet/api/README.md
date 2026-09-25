@@ -5,7 +5,7 @@ title: API et frontières de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-19
+updated: 2026-09-24
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,12 @@ tags:
 ---
 
 # API et frontières de Projet
+
+Le [contrat de revue locale](revue-locale.md) décrit les routes de lecture et
+d'écriture du serveur de développement sur le port 5190. Elles sont absentes
+du build hébergé. Les routes et le moteur de planning ci-dessous conservent
+leur rôle ; aucun backend métier de planning n'est activé.
+
 
 Aucune API métier ni connexion MySQL de planning n'est active en V1.
 Imports, calculs, brouillons et exports relèvent du navigateur.

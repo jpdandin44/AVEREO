@@ -5,7 +5,7 @@ title: Prévisualisation et publication de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-19
+updated: 2026-09-24
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,14 @@ tags:
 ---
 
 # Prévisualisation et publication de Projet
+
+L'espace **Revues & approbations** se lance avec `npm.cmd run dev:review` sur
+le port 5190 ; voir le [workflow local](../workflows/revue-developpement.md).
+Il utilise le middleware de développement et le chantier choisi.
+Le build hébergé exclut son module et ses données, avec contrôle intégré.
+Publier le site actuel ne publierait donc pas ce service de revue.
+Une revue multiutilisateur hébergée nécessitera un lot dédié et son autorisation.
+
 
 ## Local
 
