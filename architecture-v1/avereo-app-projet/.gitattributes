@@ -1,0 +1,6 @@
+# Conserver les octets du CSV (BOM UTF-8 et CRLF) contrôlés par le générateur.
+data/generated/*.csv -text whitespace=cr-at-eol
+# Le JSON généré reste identique sur Windows et Linux.
+data/generated/*.json text eol=lf
+# Le document de pilotage est également une sortie exacte du générateur.
+docs/pilotage-etapes.md text eol=lf

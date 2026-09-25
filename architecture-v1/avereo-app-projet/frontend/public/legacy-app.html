@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVEREO - Pilotage Pro</title>
+    <script src="./planning-core.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -113,17 +114,19 @@
     <!-- Main Content -->
     <main class="flex-1 flex flex-col min-w-0 bg-white relative">
         <!-- Header -->
-        <header class="h-16 border-b border-slate-200 flex items-center justify-between px-6 shrink-0 bg-white z-20 shadow-sm">
+        <header class="min-h-16 flex-wrap gap-3 py-3 border-b border-slate-200 flex items-center justify-between px-6 shrink-0 bg-white z-20 shadow-sm">
             <div>
-                <h1 class="text-xl font-semibold text-slate-800 flex items-center">Pilotage de Chantier <span class="text-xs font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded ml-3 border border-emerald-200">Mode Local (V1.0)</span></h1>
-                <p class="text-xs text-slate-500 font-medium mt-0.5">Glissez-déposez un fichier Excel (.xlsx, .csv) pour initialiser</p>
+                <h1 class="text-xl font-semibold text-slate-800 flex items-center">Pilotage de projet <span class="text-xs font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded ml-3 border border-emerald-200">Suivi local</span></h1>
+                <p class="text-xs text-slate-500 font-medium mt-0.5">Sauvegarde dans ce navigateur · export JSON pour conserver une copie indépendante</p>
             </div>
-            <div class="flex items-center space-x-3">
-                <input type="file" id="data-upload" accept=".csv, .xlsx, .xls" class="hidden" onchange="handleFileImport(event)">
+            <div class="flex items-center flex-wrap gap-2">
+                <input type="file" id="data-upload" accept=".csv,.xlsx,.xls,.json" class="hidden" onchange="handleFileImport(event)">
                 <button onclick="document.getElementById('data-upload').click()" class="flex items-center px-3 py-2 text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 rounded-lg transition-all text-sm font-medium bg-white">
                     <i data-lucide="upload" class="w-4 h-4 mr-2"></i>
-                    Importer Excel
+                    Importer un planning
                 </button>
+                <button onclick="exportProject()" class="px-3 py-2 text-sm border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-50">Exporter JSON</button>
+                <button onclick="exportCsv()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50">Exporter CSV</button>
                 <button onclick="simulateSync()" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg transition-all bg-white" title="Recalculer le planning">
                     <i data-lucide="refresh-cw" class="w-5 h-5"></i>
                 </button>
@@ -133,6 +136,27 @@
                 </button>
             </div>
         </header>
+
+        <section class="border-b border-slate-200 bg-slate-50 px-6 py-3 shrink-0" aria-label="Paramètres et sauvegarde du projet">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <p id="storage-status" role="status" class="text-sm text-slate-600">Chargement du planning local…</p>
+                <div class="flex gap-3 text-xs">
+                    <button id="load-pilot" onclick="loadPilotProject()" class="text-blue-700 underline">Recharger le pilote AVEREO</button>
+                    <button id="enrich-pilot" onclick="enrichPilotTaskDetails()" class="text-blue-700 underline">Compléter les fiches documentées</button>
+                    <button onclick="exportPreviousSave()" class="text-slate-600 underline">Copie précédente</button>
+                </div>
+            </div>
+            <form id="project-settings-form" onsubmit="saveProjectSettings(event)" class="flex flex-wrap items-end gap-3">
+                <label class="text-xs text-slate-600 flex flex-col gap-1">Projet<input id="project-name" required maxlength="200" class="border rounded px-2 py-1.5 text-sm w-60" aria-label="Nom du projet"></label>
+                <label class="text-xs text-slate-600 flex flex-col gap-1">Démarrage<input id="project-start" type="date" required class="border rounded px-2 py-1.5 text-sm" aria-label="Démarrage du projet"></label>
+                <label class="text-xs text-slate-600 flex flex-col gap-1">Cible<input id="project-target" type="date" class="border rounded px-2 py-1.5 text-sm" aria-label="Date cible"></label>
+                <label class="text-xs text-slate-600 flex flex-col gap-1">Jours productifs / semaine<input id="project-capacity" type="number" min="0.1" max="5" step="0.1" required class="border rounded px-2 py-1.5 text-sm w-32" aria-label="Capacité hebdomadaire"></label>
+                <label class="text-xs text-slate-600 flex flex-col gap-1">Organisation<select id="project-mode" class="border rounded px-2 py-1.5 text-sm" aria-label="Organisation des tâches"><option value="sequential">Séquentiel — capacité partagée</option><option value="dependencies">Selon dépendances — parallèle possible</option></select></label>
+                <button class="bg-blue-600 text-white rounded px-3 py-1.5 text-sm" type="submit">Appliquer les paramètres</button>
+            </form>
+            <p id="project-summary" class="mt-2 text-sm font-medium text-slate-700"></p>
+            <p class="mt-1 text-xs text-slate-500">Lundi à vendredi, sans jours fériés ni absences. Les dates sont des prévisions ; aucune validation métier n’est automatique. Le mode parallèle ne contrôle pas la disponibilité des responsables.</p>
+        </section>
 
         <!-- View: Dashboard -->
         <div id="view-dashboard" class="flex-1 overflow-y-auto p-6 bg-slate-50">
@@ -198,7 +222,7 @@
                 <!-- Critical Tasks -->
                 <div class="bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col">
                     <div class="px-5 py-4 border-b border-slate-200 flex justify-between items-center bg-slate-50/50 rounded-t-xl">
-                        <h3 class="font-semibold text-slate-800 flex items-center"><i data-lucide="zap" class="w-4 h-4 mr-2 text-orange-500"></i>Chemin Critique</h3>
+                        <h3 class="font-semibold text-slate-800 flex items-center"><i data-lucide="zap" class="w-4 h-4 mr-2 text-orange-500"></i>Points d’attention</h3>
                         <button onclick="switchView('risks')" class="text-xs font-medium text-blue-600 hover:text-blue-800">Voir tout</button>
                     </div>
                     <div class="p-0 flex-1">
@@ -282,7 +306,8 @@
             <div class="flex justify-between items-end mb-4">
                 <div>
                     <h2 class="text-xl font-semibold text-slate-800">Registre des Risques & Points d'Attention</h2>
-                    <p class="text-sm text-slate-500 mt-1">Suivi des points de blocage et alertes de pilotage.</p>
+                    <p class="text-sm text-slate-500 mt-1" id="risk-register-summary">Suivi des risques documentés et alertes de pilotage.</p>
+                    <p class="text-xs text-slate-500 mt-1">Criticité = probabilité × impact : 1–2 mineur, 3–4 majeur, 6–9 critique. Une qualification manquante reste visible.</p>
                 </div>
             </div>
             
@@ -291,8 +316,8 @@
                     <thead>
                         <tr class="bg-slate-50 border-b border-slate-200 text-xs uppercase tracking-wider text-slate-500">
                             <th class="px-6 py-4 font-medium">Tâche impactée</th>
-                            <th class="px-6 py-4 font-medium">Motif d'alerte</th>
-                            <th class="px-6 py-4 font-medium">Pondération</th>
+                            <th class="px-6 py-4 font-medium">Risque / conséquence / suivi</th>
+                            <th class="px-6 py-4 font-medium">Criticité</th>
                             <th class="px-6 py-4 font-medium">Statut du Risque</th>
                             <th class="px-6 py-4 font-medium">Action</th>
                         </tr>
@@ -310,12 +335,12 @@
     <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm backdrop z-40" onclick="closeTaskModal()"></div>
 
     <!-- Task Edit Slide Panel -->
-    <div id="task-modal" class="fixed top-0 right-0 h-full w-full md:w-[480px] bg-white shadow-2xl z-50 slide-panel flex flex-col border-l border-slate-200">
+    <div id="task-modal" role="dialog" aria-modal="true" aria-hidden="true" inert aria-labelledby="modal-title" class="fixed top-0 right-0 h-full w-full md:w-[760px] bg-white shadow-2xl z-50 slide-panel flex flex-col border-l border-slate-200">
         <div class="px-6 py-5 border-b border-slate-200 flex justify-between items-center bg-slate-50">
             <h2 class="text-lg font-semibold text-slate-800 flex items-center" id="modal-title">
                 <i data-lucide="edit-3" class="w-5 h-5 mr-2 text-blue-600"></i> Nouvelle Tâche
             </h2>
-            <button onclick="closeTaskModal()" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors">
+            <button aria-label="Fermer la fiche" onclick="closeTaskModal()" class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors">
                 <i data-lucide="x" class="w-5 h-5"></i>
             </button>
         </div>
@@ -325,10 +350,29 @@
                 <input type="hidden" id="task-id">
                 
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Nom de la tâche <span class="text-red-500">*</span></label>
+                    <label for="task-name" class="block text-sm font-medium text-slate-700 mb-1">Nom de la tâche <span class="text-red-500">*</span></label>
                     <input type="text" id="task-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow">
                 </div>
 
+                <div>
+                    <label for="task-description" class="block text-sm font-semibold text-slate-700 mb-1">Objectif et contenu de la tâche</label>
+                    <textarea id="task-description" maxlength="12000" rows="4" class="w-full border rounded-lg p-3 text-sm"></textarea>
+                </div>
+                <section aria-labelledby="task-actions-heading" class="space-y-3">
+                    <div class="flex justify-between gap-3 items-center"><h3 id="task-actions-heading" class="font-semibold text-slate-800">Actions et checklist de validation</h3><span id="task-checklist-summary" class="text-sm text-blue-700"></span></div>
+                    <p class="text-xs text-slate-500">Ouvre chaque étape pour lire les actions, le résultat attendu et ses sources. Les cases ne modifient pas automatiquement le statut ou l’avancement du lot. Enregistre la fiche pour conserver le suivi.</p>
+                    <div id="task-checklist" class="space-y-3"></div>
+                    <button type="button" onclick="showPilotDocumentation()" class="text-sm text-blue-700 underline">Lire le document des étapes et des risques</button>
+                    <pre id="task-documentation" hidden class="whitespace-pre-wrap max-h-96 overflow-y-auto text-xs border rounded p-3 bg-slate-50"></pre>
+                </section>
+                <section aria-labelledby="task-risks-heading" class="space-y-3 border-t pt-5">
+                    <div class="flex items-center justify-between"><h3 id="task-risks-heading" class="font-semibold text-slate-800">Risques et suivi des mesures</h3><button type="button" onclick="addTaskRisk()" class="text-sm text-blue-700 underline">Ajouter un risque</button></div>
+                    <p class="text-xs text-slate-500">Les préqualifications proposées sont à confirmer. Renseigne ton analyse dans le suivi, puis choisis le statut adapté. Une clôture exige une preuve, un responsable et une date de revue.</p>
+                    <div id="task-risks" class="space-y-3"></div>
+                </section>
+                <details id="task-parameters" class="border-t pt-4">
+                <summary class="font-semibold cursor-pointer mb-4">Paramètres du planning et alerte du lot</summary>
+                <div class="space-y-5">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Lot / Phase <span class="text-red-500">*</span></label>
@@ -347,7 +391,7 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Durée (Jours ouvrés)</label>
-                        <input type="number" id="task-duration" min="1" value="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="number" step="any" id="task-duration" min="0" max="3650" required value="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Dépend de (Prédécesseurs)</label>
@@ -367,20 +411,26 @@
                             <option value="En attente">En attente</option>
                             <option value="Bloqué">Bloqué</option>
                             <option value="Terminé">Terminé</option>
+                            <option value="Validé">Validé</option>
                         </select>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Avancement (%)</label>
                         <div class="flex items-center space-x-2">
                             <input type="range" id="task-progress-range" min="0" max="100" value="0" class="w-full" oninput="document.getElementById('task-progress').value = this.value">
-                            <input type="number" id="task-progress" min="0" max="100" value="0" class="w-16 px-2 py-1 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm" oninput="document.getElementById('task-progress-range').value = this.value">
+                            <input type="number" id="task-progress" min="0" max="100" step="any" value="0" class="w-16 px-2 py-1 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm" oninput="document.getElementById('task-progress-range').value = this.value">
                         </div>
                     </div>
                 </div>
 
+                <div>
+                    <label for="task-manual-start" class="block text-sm font-medium text-slate-700 mb-1">Ne pas démarrer avant (facultatif)</label>
+                    <input id="task-manual-start" type="date" class="w-full px-3 py-2 border rounded-lg">
+                    <p class="text-xs text-slate-500 mt-1">Les dépendances restent prioritaires. Efface la date pour retirer l’épinglage.</p>
+                </div>
                 <div class="p-4 border border-orange-200 rounded-lg bg-orange-50/50 space-y-4">
                     <h3 class="text-sm font-semibold text-orange-800 border-b border-orange-200 pb-2 flex items-center">
-                        <i data-lucide="alert-triangle" class="w-4 h-4 mr-2"></i> Qualification des Risques
+                        <i data-lucide="alert-triangle" class="w-4 h-4 mr-2"></i> Alerte globale du lot
                     </h3>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
@@ -402,6 +452,8 @@
                         </div>
                     </div>
                 </div>
+                </div>
+                </details>
             </form>
         </div>
         
@@ -423,123 +475,66 @@
     </div>
 
     <script>
-        // --- 1. INITIAL DATA & STATE ---
-        const PROJECT_START_DATE = new Date(2024, 4, 6); // 6 Mai 2024
-        const MS_PER_DAY = 1000 * 60 * 60 * 24;
+        // --- 1. LOCAL PROJECT & DERIVED SCHEDULE ---
+        const MS_PER_DAY = 86400000;
+        const initialDate = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+        let projectSettings = { schemaVersion: 1, name: 'Mon projet', startDate: initialDate, targetDate: initialDate, capacityPerWeek: 5, schedulingMode: 'sequential' };
+        let tasks = [];
         let zoomLevel = 'days';
         let ganttScale = 40;
-        let isDraggingAction = false; 
+        let isDraggingAction = false;
+        let state = { currentDate: new Date(), projectStart: new Date(), projectEnd: new Date(), totalDays: 20, tasksDict: Object.create(null), groupedTasks: Object.create(null), editingTaskId: null, renderStateGlobal: { renderStartDate: null } };
 
-        // Mock Database
-        let tasks = [
-            { id: "T1", name: "Démarrage du projet", lot: "1. Cadrage", duration: 0, isMilestone: true, dependencies: [], progress: 100, status: "Terminé", owner: "MOA", riskWeight: "Mineur", riskStatus: "Aucun" },
-            { id: "T2", name: "Audit Énergétique existant", lot: "1. Cadrage", duration: 10, isMilestone: false, dependencies: ["T1"], progress: 100, status: "Terminé", owner: "Bureau d'Etude", riskWeight: "Mineur", riskStatus: "Aucun" },
-            { id: "T3", name: "Validation Scénario Rénovation", lot: "2. Conception", duration: 5, isMilestone: false, dependencies: ["T2"], progress: 100, status: "Terminé", owner: "MOA", riskWeight: "Majeur", riskStatus: "Résolu" },
-            { id: "T4", name: "Dépôt Déclaration Préalable", lot: "2. Conception", duration: 2, isMilestone: false, dependencies: ["T3"], progress: 100, status: "Terminé", owner: "MOE", riskWeight: "Critique", riskStatus: "Résolu" },
-            { id: "T5", name: "Délai instruction DP (Mairie)", lot: "2. Conception", duration: 20, isMilestone: false, dependencies: ["T4"], progress: 50, status: "En cours", owner: "MOA", riskWeight: "Critique", riskStatus: "Sous surveillance" },
-            { id: "T6", name: "DCE et Consultation Entreprises", lot: "3. Consultation", duration: 15, isMilestone: false, dependencies: ["T3"], progress: 90, status: "En cours", owner: "MOE", riskWeight: "Majeur", riskStatus: "Aucun" },
-            { id: "T7", name: "Analyse des offres", lot: "3. Consultation", duration: 5, isMilestone: false, dependencies: ["T6"], progress: 0, status: "À faire", owner: "AMO", riskWeight: "Majeur", riskStatus: "Sous surveillance" },
-            { id: "T8", name: "Signature Marchés de Travaux", lot: "3. Consultation", duration: 0, isMilestone: true, dependencies: ["T5", "T7"], progress: 0, status: "Bloqué", owner: "MOA", riskWeight: "Critique", riskStatus: "Actif" },
-            { id: "T9", name: "Préparation & Installation Chantier", lot: "4. Travaux", duration: 3, isMilestone: false, dependencies: ["T8"], progress: 0, status: "À faire", owner: "Entreprise", riskWeight: "Mineur", riskStatus: "Aucun" },
-            { id: "T10", name: "Dépose menuiseries et ITE", lot: "4. Travaux", duration: 5, isMilestone: false, dependencies: ["T9"], progress: 0, status: "À faire", owner: "Entreprise", riskWeight: "Majeur", riskStatus: "Aucun" },
-            { id: "T11", name: "Pose Menuiseries Extérieures", lot: "4. Travaux", duration: 8, isMilestone: false, dependencies: ["T10"], progress: 0, status: "À faire", owner: "Entreprise", riskWeight: "Critique", riskStatus: "Aucun" }
-        ];
+        function calendarSerial(date) { return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / MS_PER_DAY; }
 
-        let state = {
-            currentDate: new Date(2024, 5, 5), // Simulated "Today"
-            projectStart: PROJECT_START_DATE,
-            projectEnd: PROJECT_START_DATE,
-            totalDays: 0,
-            tasksDict: {},
-            groupedTasks: {},
-            editingTaskId: null,
-            renderStateGlobal: { renderStartDate: null } 
-        };
-
-        // --- 2. CORE SCHEDULING ENGINE ---
-        
-        function addWorkingDays(startDate, daysToAdd) {
-            let date = new Date(startDate);
-            let added = 0;
-            if (daysToAdd <= 0) return date;
-            
-            let daysToLoop = daysToAdd - 1; 
-            while (added < daysToLoop) {
-                date.setDate(date.getDate() + 1);
-                if (date.getDay() !== 0 && date.getDay() !== 6) added++;
+        function workingOffsetAtCalendarPosition(origin, position) {
+            const originDay = calendarSerial(origin);
+            const targetDay = Math.floor(position);
+            let offset = 0;
+            for (let day = originDay; day < targetDay; day++) {
+                const weekday = new Date(day * MS_PER_DAY).getUTCDay();
+                if (weekday !== 0 && weekday !== 6) offset++;
             }
-            return date;
+            const weekday = new Date(targetDay * MS_PER_DAY).getUTCDay();
+            if (targetDay >= originDay && weekday !== 0 && weekday !== 6) offset += position - targetDay;
+            return Math.max(0, offset);
         }
 
-        function getNextWorkingDay(date) {
-            let nextDay = new Date(date);
-            do { nextDay.setDate(nextDay.getDate() + 1); } 
-            while (nextDay.getDay() === 0 || nextDay.getDay() === 6);
-            return nextDay;
+        function durationAfterDrag(task, dx, scale, capacity, origin) {
+            const fraction = task.endOffset - Math.floor(task.endOffset + 1e-9) || 1;
+            const calendarEnd = calendarSerial(task.calcEnd) + fraction + dx / scale;
+            const workDelta = workingOffsetAtCalendarPosition(origin, calendarEnd) - task.endOffset;
+            const chargeDelta = Math.round(workDelta * capacity / 5 * 4) / 4;
+            return Math.max(Math.min(task.duration, 0.25), Math.round((task.duration + chargeDelta) * 1000000) / 1000000);
+        }
+
+        function dateAfterDrag(task, dx, scale) {
+            const delta = Math.round(dx / scale);
+            if (delta === 0) return task.manualStart;
+            const date = new Date(task.calcStart);
+            date.setDate(date.getDate() + delta);
+            return localIso(date);
         }
 
         function recalculateSchedule() {
-            state.tasksDict = {};
-            tasks.forEach(t => state.tasksDict[t.id] = t);
-
-            let changed = true;
-            let iterations = 0;
-            let maxDate = new Date(state.projectStart);
-            let globalStart = null;
-
-            tasks.forEach(t => { 
-                t.calcStart = null; t.calcEnd = null; t.isLate = false;
-                if(t.manualStart && (!globalStart || t.manualStart < globalStart)) globalStart = new Date(t.manualStart);
+            const result = ProjetPlanning.schedule(currentProject(), localIso());
+            tasks = result.tasks;
+            state.currentDate = new Date(); state.currentDate.setHours(0, 0, 0, 0);
+            state.projectStart = result.projectStart;
+            state.projectEnd = result.projectEnd;
+            state.totalDays = result.totalDays + 20;
+            state.tasksDict = Object.create(null); state.groupedTasks = Object.create(null);
+            tasks.forEach(task => {
+                state.tasksDict[task.id] = task;
+                (state.groupedTasks[task.lot] ??= []).push(task);
             });
-            
-            if(!globalStart) globalStart = new Date(state.projectStart);
-            state.projectStart = globalStart;
-
-            while (changed && iterations < 100) {
-                changed = false;
-                iterations++;
-
-                tasks.forEach(t => {
-                    if (t.calcStart) return;
-
-                    if (t.manualStart) {
-                        t.calcStart = new Date(t.manualStart);
-                    } else if (!t.dependencies || t.dependencies.length === 0) {
-                        t.calcStart = new Date(state.projectStart);
-                    } else {
-                        let predsReady = true;
-                        let maxPredEnd = new Date(0);
-                        
-                        for (let depId of t.dependencies) {
-                            let pred = state.tasksDict[depId];
-                            if (!pred) continue;
-                            if (!pred.calcEnd) { predsReady = false; break; }
-                            if (pred.calcEnd > maxPredEnd) maxPredEnd = new Date(pred.calcEnd);
-                        }
-                        if (predsReady) t.calcStart = getNextWorkingDay(maxPredEnd);
-                    }
-
-                    if (t.calcStart && !t.calcEnd) {
-                        t.calcEnd = addWorkingDays(t.calcStart, t.duration);
-                        changed = true;
-                        if (t.calcEnd > maxDate) maxDate = new Date(t.calcEnd);
-                    }
-                });
-            }
-
-            state.projectEnd = maxDate;
-            state.totalDays = Math.ceil((state.projectEnd - state.projectStart) / MS_PER_DAY) + 20; // 20 days padding
-            
-            state.groupedTasks = {};
-            tasks.forEach(t => {
-                if (t.calcEnd < state.currentDate && t.status !== "Terminé" && t.status !== "Validé") t.isLate = true;
-                if (!state.groupedTasks[t.lot]) state.groupedTasks[t.lot] = [];
-                state.groupedTasks[t.lot].push(t);
-            });
-
-            Object.keys(state.groupedTasks).forEach(lot => {
-                state.groupedTasks[lot].sort((a, b) => a.calcStart - b.calcStart);
-            });
+            const charge = tasks.reduce((sum, task) => sum + task.duration, 0).toLocaleString('fr-FR', { maximumFractionDigits: 3 });
+            const finish = state.projectEnd.toLocaleDateString('fr-FR');
+            const target = projectSettings.targetDate ? new Date(projectSettings.targetDate + 'T00:00:00') : null;
+            const late = target && state.projectEnd > target;
+            const summary = document.getElementById('project-summary');
+            summary.textContent = `${tasks.length} tâches · Charge : ${charge} j-p · Fin calculée : ${finish}${late ? ' · Cible dépassée : replanification nécessaire' : ''} · Date de lecture : ${state.currentDate.toLocaleDateString('fr-FR')}`;
+            summary.className = late ? 'mt-2 text-sm font-medium text-red-700' : 'mt-2 text-sm font-medium text-slate-700';
         }
 
         // --- 3. UI RENDERING ---
@@ -553,34 +548,34 @@
             let totalProgress = 0, totalDuration = 0, lateCount = 0, blockedCount = 0;
             let milestonesHtml = '', criticalHtml = '';
 
-            tasks.sort((a,b) => a.calcStart - b.calcStart).forEach(t => {
+            [...tasks].sort((a,b) => a.calcStart - b.calcStart).forEach(t => {
                 let d = t.duration === 0 ? 1 : t.duration;
                 totalProgress += (t.progress * d);
                 totalDuration += d;
                 
                 if (t.isLate) lateCount++;
-                if (t.status === 'Bloqué' || t.riskStatus === 'Actif') blockedCount++;
+                if (t.status === 'Bloqué' || t.riskStatus === 'Actif' || riskAttention(t)) blockedCount++;
 
-                if (t.isMilestone && t.status !== 'Terminé') {
+                if (t.isMilestone && !['Terminé', 'Validé'].includes(t.status)) {
                     milestonesHtml += `
                         <li class="px-5 py-3 flex items-center justify-between hover:bg-slate-50 transition-colors">
-                            <div class="flex items-center"><div class="w-2 h-2 bg-slate-800 rotate-45 mr-3"></div><span class="text-sm font-medium text-slate-700">${t.name}</span></div>
+                            <div class="flex items-center"><div class="w-2 h-2 bg-slate-800 rotate-45 mr-3"></div><span class="text-sm font-medium text-slate-700">${escapeHtml(t.name)}</span></div>
                             <span class="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-600 rounded">${formatDateShort(t.calcStart)}</span>
                         </li>
                     `;
                 }
 
-                if (t.status === 'Bloqué' || t.isLate || t.riskStatus === 'Actif' || t.riskStatus === 'Sous surveillance') {
-                    let badgeColor = (t.status === 'Bloqué' || t.riskStatus === 'Actif') ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700';
-                    let reason = (t.status === 'Bloqué' || t.riskStatus === 'Actif') ? 'Alerte' : (t.isLate ? 'Retard' : 'Surveillance');
+                if (t.status === 'Bloqué' || t.isLate || t.riskStatus === 'Actif' || t.riskStatus === 'Sous surveillance' || riskAttention(t)) {
+                    let badgeColor = (t.status === 'Bloqué' || t.riskStatus === 'Actif' || riskAttention(t)) ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-orange-700';
+                    let reason = (t.status === 'Bloqué' || t.riskStatus === 'Actif' || riskAttention(t)) ? 'Alerte' : (t.isLate ? 'Retard' : 'Surveillance');
                     criticalHtml += `
                         <li class="px-5 py-3 hover:bg-slate-50 transition-colors cursor-pointer" onclick="handleTaskClick('${t.id}')">
                             <div class="flex justify-between items-start mb-1">
-                                <span class="text-sm font-medium text-slate-800">${t.name}</span>
+                                <span class="text-sm font-medium text-slate-800">${escapeHtml(t.name)}</span>
                                 <span class="text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${badgeColor}">${reason}</span>
                             </div>
                             <div class="flex justify-between items-center text-xs text-slate-500">
-                                <span>Resp: ${t.owner || '-'}</span><span>Fin: ${formatDateShort(t.calcEnd)}</span>
+                                <span>Resp: ${escapeHtml(t.owner || '-')}</span><span>Fin: ${formatDateShort(t.calcEnd)}</span>
                             </div>
                         </li>
                     `;
@@ -601,6 +596,10 @@
                 healthEl.textContent = 'Critique'; healthEl.className = 'text-lg font-bold text-red-600';
                 healthDetailEl.textContent = 'Tâches bloquantes actives';
                 healthIcon.className = "p-2 bg-red-50 text-red-600 rounded-lg";
+            } else if (tasks.some(task => (task.risks || []).some(risk => risk.status === 'À qualifier' || ProjetPlanning.riskScore(risk) === null))) {
+                healthEl.textContent = 'À qualifier'; healthEl.className = 'text-lg font-bold text-amber-700';
+                healthDetailEl.textContent = 'Risques documentés à évaluer';
+                healthIcon.className = 'p-2 bg-orange-50 text-orange-600 rounded-lg';
             } else if (lateCount > 2) {
                 healthEl.textContent = 'À surveiller'; healthEl.className = 'text-lg font-bold text-orange-500';
                 healthDetailEl.textContent = 'Glissement calendaire';
@@ -627,7 +626,7 @@
         function getStatusBadge(status) {
             let colors = { 'Terminé': 'bg-emerald-100 text-emerald-700', 'Bloqué': 'bg-red-100 text-red-700', 'En cours': 'bg-blue-100 text-blue-700', 'En attente': 'bg-amber-100 text-amber-700', 'À faire': 'bg-slate-100 text-slate-600' };
             let c = colors[status] || colors['À faire'];
-            return `<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${c}">${status}</span>`;
+            return `<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${c}">${escapeHtml(status)}</span>`;
         }
 
         function renderPlanningView() {
@@ -651,9 +650,7 @@
                 if (zoomLevel === 'days') {
                     headerHtml += `<div class="flex-shrink-0 flex flex-col items-center justify-center border-r border-slate-200 ${isWeekend ? 'bg-slate-100 text-slate-400' : 'text-slate-600'}" style="width: ${ganttScale}px; height: 100%; box-sizing: border-box;"><span class="text-[9px] uppercase">${currentDateWalker.toLocaleDateString('fr-FR', {weekday:'narrow'})}</span><span class="text-xs font-semibold">${dayNum}</span></div>`;
                 } else {
-                    if (currentDateWalker.getDay() === 1) { // Monday
-                         headerHtml += `<div class="flex-shrink-0 flex items-center justify-center border-r border-slate-200 text-slate-600" style="width: ${ganttScale * 7}px; height: 100%; box-sizing: border-box;"><span class="text-[10px] font-semibold">S${Math.ceil(dayNum/7)} ${currentDateWalker.toLocaleDateString('fr-FR', {month:'short'})}</span></div>`;
-                    }
+                    headerHtml += `<div class="flex-shrink-0 border-r border-slate-100 text-slate-600" style="width: ${ganttScale}px; position: relative; height: 100%"><span style="position:absolute;white-space:nowrap;top:15px;font-size:10px">${currentDateWalker.getDay() === 1 ? currentDateWalker.toLocaleDateString('fr-FR', {day:'2-digit',month:'short'}) : ''}</span></div>`;
                 }
                 gridHtml += `<div class="flex-shrink-0 border-r border-slate-100 ${isWeekend ? 'gantt-weekend' : ''}" style="width: ${ganttScale}px; height: 100%; box-sizing: border-box;"></div>`;
                 currentDateWalker.setDate(currentDateWalker.getDate() + 1);
@@ -663,27 +660,27 @@
             ganttBgGrid.innerHTML = gridHtml;
 
             let tableHtml = '', barsHtml = '';
-            let sortedLots = Object.keys(state.groupedTasks).sort();
+            let sortedLots = Object.keys(state.groupedTasks);
             
             // To store coordinates for drawing SVG arrows
             let renderState = {};
             let currentY = 0; // Tracks vertical pixel position from top of container
 
             sortedLots.forEach(lot => {
-                tableHtml += `<div class="lot-header flex items-center px-3 font-semibold text-xs text-slate-700 uppercase tracking-wider w-full"><i data-lucide="folder" class="w-4 h-4 mr-2 text-slate-400"></i> <span class="truncate">${lot}</span></div>`;
+                tableHtml += `<div class="lot-header flex items-center px-3 font-semibold text-xs text-slate-700 uppercase tracking-wider w-full"><i data-lucide="folder" class="w-4 h-4 mr-2 text-slate-400"></i> <span class="truncate">${escapeHtml(lot)}</span></div>`;
                 barsHtml += `<div class="lot-header w-full border-b border-transparent"></div>`;
                 currentY += 40; // lot-header height
 
                 state.groupedTasks[lot].forEach(t => {
                     let warnIcon = t.isLate ? `<i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mr-2 shrink-0" title="En retard"></i>` : '';
-                    let manualPin = t.manualStart ? `<i data-lucide="pin" class="w-3 h-3 text-blue-500 mr-1 shrink-0" title="Date figée manuellement"></i>` : '';
+                    let manualPin = t.manualStart ? `<i data-lucide="pin" class="w-3 h-3 text-blue-500 mr-1 shrink-0" title="Démarrage au plus tôt imposé"></i>` : '';
                     
                     tableHtml += `
                         <div class="planning-row flex items-center cursor-pointer group w-full" onclick="handleTaskClick('${t.id}')">
                             <div class="w-10 flex-shrink-0 text-center text-[10px] text-slate-400 font-mono">${t.id.replace('T','')}</div>
                             <div class="flex-1 px-3 flex items-center overflow-hidden">
                                 ${warnIcon}${manualPin}
-                                <span class="text-sm font-medium text-slate-800 truncate group-hover:text-blue-600 transition-colors">${t.name}</span>
+                                <div class="min-w-0"><span class="block text-sm font-medium text-slate-800 truncate group-hover:text-blue-600 transition-colors">${escapeHtml(t.name)}</span><span class="block text-[10px] text-slate-500">${t.checklist?.length ? checklistLabel(t.checklist) : 'Fiche à compléter'} · ${(t.risks || []).length} risques</span></div>
                             </div>
                             <div class="w-16 px-2 text-center text-xs text-slate-600">${t.duration}j</div>
                             <div class="w-24 px-2 text-center text-xs text-slate-600">${formatDateShort(t.calcStart)}</div>
@@ -696,25 +693,23 @@
                     let widthPx = 0;
 
                     if (t.calcStart && t.calcEnd) {
-                        let startDiffMs = t.calcStart - renderStartDate;
-                        leftPx = (startDiffMs / MS_PER_DAY) * ganttScale;
-                        let durationMs = t.calcEnd - t.calcStart;
-                        widthPx = (durationMs / MS_PER_DAY) * ganttScale;
-                        
-                        // Save coordinates for arrows (y is center of the row)
+                        const startFraction = t.startOffset - Math.floor(t.startOffset + 1e-9);
+                        const endFraction = t.duration === 0 ? startFraction : (t.endOffset - Math.floor(t.endOffset + 1e-9) || 1);
+                        leftPx = (calendarSerial(t.calcStart) - calendarSerial(renderStartDate) + Math.max(0, startFraction)) * ganttScale;
+                        widthPx = t.duration === 0 ? 0 : (calendarSerial(t.calcEnd) - calendarSerial(t.calcStart) + endFraction - Math.max(0, startFraction)) * ganttScale;
                         renderState[t.id] = { y: currentY + 24, left: leftPx, right: leftPx + widthPx };
 
                         if (t.isMilestone) {
                             widthPx = 0;
-                            barHtml = `<div class="milestone" data-id="${t.id}" style="left: ${leftPx - 12}px;" title="${t.name}"></div>`;
+                            barHtml = `<div class="milestone" data-id="${escapeHtml(t.id)}" style="left: ${leftPx - 12}px;" title="${escapeHtml(t.name)}"></div>`;
                         } else {
-                            if (widthPx < ganttScale) widthPx = ganttScale; 
+                            if (widthPx < 4) widthPx = 4;
                             let colorClass = getStatusColorClass(t.status, t.isLate);
                             barHtml = `
-                                <div class="gantt-bar ${colorClass}" data-id="${t.id}" style="left: ${leftPx}px; width: ${widthPx}px;" title="${t.name}">
+                                <div class="gantt-bar ${colorClass}" data-id="${escapeHtml(t.id)}" style="left: ${leftPx}px; width: ${widthPx}px;" title="${escapeHtml(t.name)}">
                                     <div class="gantt-progress" style="width: ${t.progress}%"></div>
                                     <span class="gantt-label">${t.progress}%</span>
-                                    <div class="resize-handle" data-id="${t.id}" title="Étirer pour modifier la durée"></div>
+                                    <div class="resize-handle" data-id="${escapeHtml(t.id)}" title="Étirer par pas de 0,25 j-p (édition précise dans la fiche)"></div>
                                 </div>
                             `;
                         }
@@ -756,36 +751,11 @@
 
             tableBody.innerHTML = tableHtml;
             ganttBody.innerHTML = barsHtml;
-            lucide.createIcons();
+            drawIcons();
         }
 
         function renderRisksView() {
-            const tbody = document.getElementById('risks-table-body');
-            let html = '';
-            
-            tasks.forEach(t => {
-                if (t.status === 'Bloqué' || t.isLate || t.riskStatus === 'Sous surveillance' || t.riskStatus === 'Actif') {
-                    let issue = t.status === 'Bloqué' ? 'Tâche bloquée' : (t.isLate ? 'Délai dépassé' : 'Alerte manuelle');
-                    let weightBadge = t.riskWeight === 'Critique' ? '<span class="px-2 py-1 bg-red-100 text-red-700 rounded text-xs font-bold uppercase border border-red-200">Critique</span>' : (t.riskWeight === 'Majeur' ? '<span class="px-2 py-1 bg-orange-100 text-orange-700 rounded text-xs font-bold uppercase border border-orange-200">Majeur</span>' : '<span class="px-2 py-1 bg-slate-100 text-slate-700 rounded text-xs font-bold uppercase border border-slate-200">Mineur</span>');
-                    let statusBadge = t.riskStatus === 'Actif' ? '<span class="text-red-600 font-semibold flex items-center"><i data-lucide="alert-circle" class="w-4 h-4 mr-1"></i> Actif</span>' : (t.riskStatus === 'Sous surveillance' ? '<span class="text-amber-500 font-semibold flex items-center"><i data-lucide="eye" class="w-4 h-4 mr-1"></i> Sous surveillance</span>' : '<span class="text-emerald-600 font-semibold flex items-center"><i data-lucide="check" class="w-4 h-4 mr-1"></i> Résolu</span>');
-                    
-                    html += `
-                        <tr class="hover:bg-slate-50 transition-colors">
-                            <td class="px-6 py-4">
-                                <p class="text-sm font-semibold text-slate-800">${t.name}</p>
-                                <p class="text-xs text-slate-500 mt-0.5"><span class="font-mono bg-slate-100 px-1 rounded">${t.id}</span> - ${t.lot}</p>
-                            </td>
-                            <td class="px-6 py-4 text-sm text-slate-700 font-medium">${issue}</td>
-                            <td class="px-6 py-4 text-sm">${weightBadge}</td>
-                            <td class="px-6 py-4 text-sm">${statusBadge}</td>
-                            <td class="px-6 py-4">
-                                <button class="text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1.5 rounded transition-colors shadow-sm" onclick="openTaskModal('${t.id}')">Gérer</button>
-                            </td>
-                        </tr>
-                    `;
-                }
-            });
-            tbody.innerHTML = html || '<tr><td colspan="5" class="px-6 py-8 text-center text-slate-500 italic flex flex-col items-center justify-center"><i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-400 mb-2"></i> Aucun risque majeur ou point d\'attention identifié.</td></tr>';
+            renderDetailedRisksView();
         }
 
         // --- 4. INTERACTIONS & DRAG AND DROP ---
@@ -819,7 +789,7 @@
             if (!dnd.active) return;
             let dx = e.clientX - dnd.startX;
             if (dnd.type === 'resize') {
-                dnd.element.style.width = Math.max(ganttScale, dnd.origVal + dx) + 'px';
+                dnd.element.style.width = Math.max(4, dnd.origVal + dx) + 'px';
             } else if (dnd.type === 'move') {
                 dnd.element.style.left = Math.max(0, dnd.origVal + dx) + 'px';
             }
@@ -834,30 +804,19 @@
                 setTimeout(() => isDraggingAction = false, 200); 
             }
 
-            let task = state.tasksDict[dnd.taskId];
-            
-            if (dnd.type === 'resize' && Math.abs(dx) > 3) {
-                let daysDelta = Math.round(dx / ganttScale);
-                if (daysDelta !== 0) {
-                    task.duration = Math.max(1, task.duration + daysDelta);
-                    showToast("Durée mise à jour");
+            const nextTasks = tasks.map(task => ({ ...task, dependencies: [...task.dependencies] }));
+            const task = nextTasks.find(task => task.id === dnd.taskId);
+            if (task && Math.abs(dx) > 3) {
+                if (dnd.type === 'resize') {
+                    task.duration = durationAfterDrag(task, dx, ganttScale, projectSettings.capacityPerWeek, state.projectStart);
+                } else {
+                    task.manualStart = dateAfterDrag(task, dx, ganttScale);
                 }
-            } else if (dnd.type === 'move' && Math.abs(dx) > 3) {
-                let newLeft = parseFloat(dnd.element.style.left);
-                let msOffset = (newLeft / ganttScale) * MS_PER_DAY;
-                let newDate = new Date(state.renderStateGlobal.renderStartDate.getTime() + msOffset);
-                newDate.setHours(0,0,0,0);
-                
-                if (newDate.getDay() === 0) newDate.setDate(newDate.getDate() + 1);
-                if (newDate.getDay() === 6) newDate.setDate(newDate.getDate() + 2);
-                
-                task.manualStart = newDate;
-                showToast("Date épinglée manuellement", "blue");
+                commitProject({ ...currentProject(), tasks: nextTasks });
             }
-
             dnd.active = false;
             document.body.classList.remove('is-dragging', 'is-resizing');
-            if (Math.abs(dx) > 3) refreshAll(); 
+            refreshAll();
         });
 
         function switchView(viewId) {
@@ -910,14 +869,18 @@
             if (taskId) {
                 state.editingTaskId = taskId;
                 let t = state.tasksDict[taskId];
-                modalTitle.innerHTML = `<i data-lucide="edit-3" class="w-5 h-5 mr-2 text-blue-600"></i> Modifier la tâche`;
+                modalTitle.textContent = `${t.id} · ${t.name}`;
                 btnDelete.classList.remove('hidden');
                 
                 document.getElementById('task-id').value = t.id;
                 document.getElementById('task-name').value = t.name;
+                document.getElementById('task-description').value = t.description || '';
+                editingChecklist = JSON.parse(JSON.stringify(t.checklist || []));
+                editingRisks = JSON.parse(JSON.stringify(t.risks || []));
                 document.getElementById('task-lot').value = t.lot;
                 document.getElementById('task-owner').value = t.owner || "";
                 document.getElementById('task-duration').value = t.duration;
+                document.getElementById('task-manual-start').value = t.manualStart || '';
                 document.getElementById('task-status').value = t.status;
                 document.getElementById('task-progress').value = t.progress;
                 document.getElementById('task-progress-range').value = t.progress;
@@ -933,69 +896,76 @@
                 btnDelete.classList.add('hidden');
                 document.getElementById('task-form').reset();
                 document.getElementById('task-progress-range').value = 0;
-                document.getElementById('task-id').value = 'T' + (tasks.length + 1);
+                let suffix = 1; while (tasks.some(task => task.id === `T${suffix}`)) suffix++;
+                document.getElementById('task-id').value = `T${suffix}`;
                 document.getElementById('task-duration').value = 1;
                 document.getElementById('task-risk-weight').value = "Mineur";
                 document.getElementById('task-risk-status').value = "Aucun";
+                editingChecklist = [];
+                editingRisks = [];
             }
-            
+            editingOriginalDetails = {
+                description: document.getElementById('task-description').value,
+                checklistIds: editingChecklist.map(item => item.id),
+                riskIds: editingRisks.map(item => item.id),
+            };
+            document.getElementById('task-parameters').open = !taskId;
+            document.getElementById('task-documentation').hidden = true;
+            renderTaskChecklist();
+            renderTaskRisks();
             toggleDurationField();
-            lucide.createIcons();
+            drawIcons();
             document.getElementById('modal-backdrop').classList.add('open');
             document.getElementById('task-modal').classList.add('open');
+            document.getElementById('task-modal').inert = false;
+            document.getElementById('task-modal').ariaHidden = 'false';
         }
 
         function closeTaskModal() {
             document.getElementById('modal-backdrop').classList.remove('open');
             document.getElementById('task-modal').classList.remove('open');
+            document.getElementById('task-modal').inert = true;
+            document.getElementById('task-modal').ariaHidden = 'true';
             state.editingTaskId = null;
         }
 
         function saveTask() {
-            const name = document.getElementById('task-name').value;
-            const lot = document.getElementById('task-lot').value;
-            if (!name || !lot) { alert("Le nom et le lot sont obligatoires."); return; }
-
-            const depSelect = document.getElementById('task-dependencies');
-            const selectedDeps = Array.from(depSelect.selectedOptions).map(opt => opt.value);
-
-            let taskData = {
+            document.getElementById('task-parameters').open = true;
+            if (!document.getElementById('task-form').reportValidity()) return;
+            const taskData = {
                 id: document.getElementById('task-id').value,
-                name: name, lot: lot,
-                owner: document.getElementById('task-owner').value,
-                duration: parseInt(document.getElementById('task-duration').value) || 0,
+                name: document.getElementById('task-name').value.trim(),
+                ...taskDetailsForSave(tasks.find(task => task.id === state.editingTaskId)),
+                lot: document.getElementById('task-lot').value.trim(),
+                owner: document.getElementById('task-owner').value.trim(),
+                duration: document.getElementById('task-is-milestone').checked ? 0 : Number(document.getElementById('task-duration').value),
                 status: document.getElementById('task-status').value,
-                progress: parseInt(document.getElementById('task-progress').value) || 0,
+                progress: Number(document.getElementById('task-progress').value),
                 isMilestone: document.getElementById('task-is-milestone').checked,
-                dependencies: selectedDeps,
+                dependencies: Array.from(document.getElementById('task-dependencies').selectedOptions).map(option => option.value),
                 riskWeight: document.getElementById('task-risk-weight').value,
-                riskStatus: document.getElementById('task-risk-status').value
+                riskStatus: document.getElementById('task-risk-status').value,
+                manualStart: document.getElementById('task-manual-start').value || null,
             };
-
-            if (state.editingTaskId) {
-                let index = tasks.findIndex(t => t.id === state.editingTaskId);
-                taskData.manualStart = tasks[index].manualStart; // preserve pin
-                tasks[index] = { ...tasks[index], ...taskData };
-            } else {
-                tasks.push(taskData);
-            }
-
-            closeTaskModal(); refreshAll(); showToast("Tâche enregistrée avec succès");
+            const candidate = state.editingTaskId ? tasks.map(task => task.id === state.editingTaskId ? taskData : task) : [...tasks, taskData];
+            if (commitProject({ ...currentProject(), tasks: candidate }, { message: 'Tâche enregistrée' })) closeTaskModal();
         }
 
         function deleteCurrentTask() {
-            if(state.editingTaskId) {
-                tasks.forEach(t => { t.dependencies = t.dependencies.filter(depId => depId !== state.editingTaskId); });
-                tasks = tasks.filter(t => t.id !== state.editingTaskId);
-                closeTaskModal(); refreshAll(); showToast("Tâche supprimée", "red");
-            }
+            const id = state.editingTaskId;
+            if (!id) return;
+            const successors = tasks.filter(task => task.dependencies.includes(id));
+            if (successors.length) { alert(`Suppression refusée : ${successors.map(task => task.id).join(', ')} dépend de cette tâche. Révise ces dépendances avant suppression.`); return; }
+            if (!confirm('Supprimer cette tâche du planning local ?')) return;
+            if (commitProject({ ...currentProject(), tasks: tasks.filter(task => task.id !== id) }, { message: 'Tâche supprimée' })) closeTaskModal();
         }
 
         function showToast(message, color = "emerald") {
             const toast = document.getElementById('toast');
             document.getElementById('toast-message').textContent = message;
-            toast.querySelector('i').className = `w-5 h-5 mr-2 text-${color}-400 lucide lucide-check-circle`;
-            lucide.createIcons();
+            const icon = toast.querySelector('i, svg');
+            if (icon) icon.setAttribute('class', `w-5 h-5 mr-2 text-${color}-400`);
+            drawIcons();
             toast.classList.add('toast-show');
             setTimeout(() => { toast.classList.remove('toast-show'); toast.style.opacity = '0'; }, 3000);
             setTimeout(() => { toast.style.opacity = ''; }, 3300);
@@ -1006,88 +976,21 @@
             showToast("Planning recalculé avec succès");
         }
 
-        // --- 5. EXCEL/CSV IMPORT ---
-        function handleFileImport(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, {type: 'array'});
-                    const firstSheetName = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: ""});
-                    
-                    if(jsonData.length === 0) throw new Error("Le fichier semble vide");
-
-                    // Intelligent fuzzy mapping
-                    const mappedTasks = [];
-                    jsonData.forEach((row, index) => {
-                        let obj = { id: `T${index+1}`, dependencies: [], isMilestone: false, riskWeight: "Mineur", riskStatus: "Aucun" };
-                        
-                        Object.keys(row).forEach(key => {
-                            let k = key.toLowerCase();
-                            let val = row[key];
-                            
-                            if(k.includes('id') && !k.includes('val')) obj.id = val.toString().trim();
-                            else if(k.includes('nom') || k.includes('tâche') || k.includes('task')) obj.name = val.toString().trim();
-                            else if(k.includes('lot') || k.includes('phase')) obj.lot = val.toString().trim();
-                            else if(k.includes('durée') || k.includes('duree') || k.includes('jour')) obj.duration = parseInt(val) || 0;
-                            else if(k.includes('dépend') || k.includes('depend') || k.includes('prédécesseur')) {
-                                if(val) obj.dependencies = val.toString().split(',').map(s => s.trim()).filter(s => s);
-                            }
-                            else if(k.includes('resp') || k.includes('assign')) obj.owner = val.toString().trim();
-                            else if(k.includes('statut') || k.includes('état')) obj.status = val.toString().trim();
-                            else if(k.includes('%') || k.includes('avancement')) {
-                                let p = parseFloat(val);
-                                obj.progress = (p > 1 && p <= 100) ? p : (p <= 1 ? p * 100 : 0);
-                            }
-                            else if(k.includes('criti') || k.includes('pond')) obj.riskWeight = val.toString().trim();
-                        });
-
-                        // Fallbacks
-                        if(!obj.name) obj.name = "Tâche importée " + (index+1);
-                        if(!obj.lot) obj.lot = "Général";
-                        if(obj.duration === 0) obj.isMilestone = true;
-                        if(obj.duration === undefined) obj.duration = 1;
-                        if(!obj.status) obj.status = "À faire";
-                        if(!obj.progress) obj.progress = 0;
-
-                        mappedTasks.push(obj);
-                    });
-
-                    // Update global state
-                    tasks = mappedTasks;
-                    refreshAll();
-                    showToast(`Import réussi : ${tasks.length} tâches chargées`);
-                    
-                } catch(err) {
-                    console.error("Erreur d'import", err);
-                    alert("Erreur lors de l'import du fichier. Assurez-vous qu'il s'agit d'un Excel ou CSV valide.");
-                }
-                
-                // Reset file input
-                event.target.value = '';
-            };
-            
-            reader.readAsArrayBuffer(file);
-        }
-
         function refreshAll() {
             recalculateSchedule();
             renderDashboard();
             renderPlanningView();
             renderRisksView();
-            lucide.createIcons();
+            drawIcons();
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-            refreshAll();
+            drawIcons();
+            initializeLocalProject();
         });
 
     </script>
+    <script src="./planning-local.js"></script>
+    <script src="./task-details.js"></script>
 </body>
 </html>
