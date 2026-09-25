@@ -5,7 +5,7 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-24
+updated: 2026-09-25
 owner: jpdandin
 tags:
   - projet
@@ -29,8 +29,11 @@ chantier. Les fiches de livrables prévus et la lecture automatique du suivi son
 et invalidation ciblée des attestations. Les résultats et la limite de recette
 navigateur sont dans le complément de recette cité ci-dessus.
 Livrer l'outil ne crée aucune nouvelle approbation de livrable.
-La PR de ce nouveau lot n'est pas publiée ; le planning précédent reste
-une dépendance de branche dont l'état distant n'a pas été recontrôlé ici.
+Le moteur et ses évolutions de progression et de revues complémentaires sont
+proposés dans la [PR #68](https://github.com/jpdandin44/AVEREO/pull/68), en brouillon
+sur `feat/projet-pilotage-revues`. La base est `feat/projet-planning-local`
+(`48ae277`), dont la PR #64 est encore ouverte en brouillon au constat du
+25 septembre. Cette dépendance et ses validations ne sont pas modifiées.
 Voir [la procédure](workflows/revue-developpement.md) pour les accords de publication.
 
 

@@ -32,6 +32,14 @@ de l'artefact, sans données ou API de revue. Ces contrôles utilisent des fixtu
 ils ne valident aucune phase ni aucune PR réelle. L'état GitHub reste un constat
 fourni par le chantier connecté et cette correction n'est pas publiée en production.
 
+Contrôle navigateur du 25 septembre : la phase 2 du chantier site présente
+simultanément PR #6 « Fusionnée » et « Revue complémentaire · PR #7 » ouverte,
+avec liens exacts et portée distincte. Les compteurs restent à trois remises et
+trois validations sur sept ; Services reste non commencé. Les douze empreintes
+des pièces approuvées, cinq événements et huit décisions historiques ont été
+contrôlés sans modification. Le moteur commun est proposé dans la
+[PR #68](https://github.com/jpdandin44/AVEREO/pull/68), distincte de la PR du site.
+
 ## Carte de PR par phase — 25 septembre 2026
 
 L’espace de revue affiche facultativement `phase.pullRequest` dans la phase
