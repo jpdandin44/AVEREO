@@ -37,6 +37,43 @@ Le ZIP est un snapshot AVEREO deja prepare, et non un export Google AI Studio br
 
 ## Constats
 
+### Relief visuel sur fond cadastral
+
+Les altitudes auparavant affichees seulement en grille sont maintenant
+placees sur la carte aux coordonnees mesurees. Valeurs validees et libelles
+de grille controles avant insertion dans les etiquettes ; ancien lieu et
+donnees incompletes refuses. Pas de nouveau fournisseur, schema, secret,
+dependance ou estimation hydraulique. Calcul et exports existants inchanges.
+Recette et limites : [contexte du bien](../api/contexte-du-bien.md#altitudes-sur-le-fond-cadastral).
+
+### Correction du point de visite
+
+Le repere fixe ne permettait pas de corriger un geocodage decale. Le frontend
+propose maintenant un ajustement explicite, sans modification implicite de
+l'adresse ni perte des notes/photos. Les donnees de l'ancien point sont
+invalidees ; un compteur de recherche ignore les retours obsoletes. Aucun
+changement d'authentification, secret, base, fournisseur ou deploiement.
+La procedure, les controles realises et limites sont centralises dans
+[le contexte du bien](../api/contexte-du-bien.md#correction-manuelle-du-point-de-visite).
+
+### Evolution 2 — ressources du batiment
+
+Demande complementaire du 15 septembre : ouverture directe du bien, puis
+report explicite par l'utilisateur qui confirme l'absence d'accord GoRenove.
+Les acces actuels sont conserves. Aucun changement du code ni appel au
+service de redirection RNB. Constat et conditions de reprise centralises dans
+[`../api/ressources-batiment.md`](../api/ressources-batiment.md).
+
+Perimetre : frontend Rapport uniquement, aucune modification de secret,
+authentification, base ou deploiement. Liens ouverts sur action, routes HTTPS
+et domaines autorises, parametres inutiles retires, notes echappees dans le
+document. Aucun ID de batiment ou choix typologique automatique. Les anciennes
+associations sont marquees a verifier apres modification du lieu sans perte
+des notes. Donnees, risques, rollback et limites :
+[`../api/ressources-batiment.md`](../api/ressources-batiment.md).
+
+### Evolutions precedentes
+
 Evolution 1 du 15 septembre : etat reversible par phase, conservation des
 choix et de toutes les observations/photos, sans nouvel appel reseau ni
 secret. Perimetre limite au frontend Rapport et a sa documentation. Le payload

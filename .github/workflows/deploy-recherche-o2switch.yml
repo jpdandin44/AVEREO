@@ -1,0 +1,122 @@
+name: Deploy Recherche to O2Switch
+
+# Déclenchement manuel uniquement tant que l'environnement GitHub « recherche »,
+# le sous-domaine et le secret de sas ne sont pas configurés.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-recherche-o2switch-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    environment: recherche
+    defaults:
+      run:
+        working-directory: architecture-v1/avereo-app-recherche/frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install; fi
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Get runner public IP
+        id: runner-ip
+        run: |
+          set -euo pipefail
+          echo "ipv4=$(curl -fsS https://api.ipify.org)" >> "$GITHUB_OUTPUT"
+
+      - name: Whitelist runner IP in cPanel
+        env:
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
+        run: |
+          bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" add
+          echo "RUNNER_WHITELISTED=1" >> "$GITHUB_ENV"
+
+      - name: Confirm runner IP is whitelisted
+        env:
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
+        run: bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" list
+
+      - name: Configure SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
+
+      - name: Validate remote target path
+        run: |
+          set -euo pipefail
+          PORT="${{ secrets.O2SWITCH_PORT }}"
+          if [ -z "$PORT" ]; then PORT=8888; fi
+          TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
+          if [ -z "$TARGET" ]; then
+            echo "O2SWITCH_TARGET_PATH secret is required for environment 'recherche'." >&2
+            exit 1
+          fi
+          ssh -o BatchMode=yes \
+            -o PasswordAuthentication=no \
+            -o StrictHostKeyChecking=no \
+            -p "${PORT}" \
+            "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}" \
+            "mkdir -p \"$TARGET\" && test -w \"$TARGET\" && pwd"
+
+      - name: Deploy with rsync
+        run: |
+          set -euo pipefail
+          PORT="${{ secrets.O2SWITCH_PORT }}"
+          if [ -z "$PORT" ]; then PORT=8888; fi
+          TARGET="${{ secrets.O2SWITCH_TARGET_PATH }}"
+          if [ -z "$TARGET" ]; then
+            echo "O2SWITCH_TARGET_PATH secret is required for environment 'recherche'." >&2
+            exit 1
+          fi
+          rsync -az --delete \
+            -e "ssh -p ${PORT} -o StrictHostKeyChecking=no" \
+            ./dist/ \
+            "${{ secrets.O2SWITCH_USER }}@${{ secrets.O2SWITCH_HOST }}:${TARGET}/"
+
+      - name: Verify public deployment
+        run: bash "$GITHUB_WORKSPACE/.github/scripts/verify-public-spa.sh" "recherche" "https://recherche.avereo.fr"
+
+      - name: Remove runner IP from cPanel whitelist
+        if: always()
+        env:
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT }}
+          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
+        run: |
+          set -euo pipefail
+          if [ "${RUNNER_WHITELISTED:-0}" != "1" ] || [ -z "${RUNNER_IPV4:-}" ]; then
+            echo "Runner IP was not added; skipping cPanel whitelist cleanup."
+            exit 0
+          fi
+          bash "$GITHUB_WORKSPACE/.github/scripts/cpanel-ssh-whitelist.sh" remove

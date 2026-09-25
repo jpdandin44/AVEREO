@@ -8,3 +8,4 @@
 | Projet AVEREO Pro | avereo-app-projet | projet | projet.avereo.fr | api-projet.avereo.fr | HTML/JS autonome legacy | Projet_AVEREO_Pro.txt | Legacy HTML + wrapper iframe |
 | Thermo AVEREO Pro | avereo-app-thermo | thermo | thermo.avereo.fr | api-thermo.avereo.fr | React SPA | Thermo_AVEREO_Pro.txt | Copie dans App.jsx |
 | Drone AVEREO Pro | avereo-app-drone | drone | drone.avereo.fr | api-drone.avereo.fr | React / TypeScript SPA | Missions_AVEREO_Pro.txt | Conserve App.tsx |
+| AVEREO Collector Recherche | avereo-app-recherche | recherche | recherche.avereo.fr | GED AVEREO `GET /search` | React SPA | Aucune (application nouvelle) | Sas CONNECT, carte du catalogue |

@@ -1,0 +1,14 @@
+# Environnement local Recherche (Docker Desktop) : http://127.0.0.1:5174
+# Même adresse que `npm run dev`, donc même corpus dans le navigateur.
+#   docker compose -f compose.local.yaml up -d --build   # démarrer / reconstruire
+#   docker compose -f compose.local.yaml down            # arrêter
+name: avereo-recherche-local
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+    ports:
+      - "127.0.0.1:5174:80"
+    restart: unless-stopped

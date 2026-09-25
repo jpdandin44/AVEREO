@@ -46,7 +46,7 @@ try {
     }
     if ((!$bootstrap && $applicationCodes === []) || array_diff(
         $applicationCodes,
-        ['rapport', 'coupe', 'projet', 'thermo', 'drone'],
+        ['rapport', 'coupe', 'projet', 'thermo', 'drone', 'recherche'],
     ) !== []) {
         throw new InvalidArgumentException('--applications contient un code inconnu.');
     }
