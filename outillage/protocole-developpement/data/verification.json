@@ -1,7 +1,7 @@
 {
   "project": "protocole-developpement",
   "document_type": "verification-locale",
-  "observedAt": "2026-10-03T11:04:00Z",
+  "observedAt": "2026-10-03T14:20:45Z",
   "status": "passed_local",
   "checks": [
     "Douze tests du contrôleur réussis sur données fictives : preuves, versions, accords, restauration et retour arrière.",
@@ -12,11 +12,12 @@
     "Interface observée dans le navigateur : trois étapes visibles, revue locale en attente, bouton d’approbation conditionné aux critères humains.",
     "Les deux installations utilisateur pointent vers la même source ; la règle globale référence le skill.",
     "Appel court DEV : / $dev installé et validé ; une seule source du protocole, sans nouvelle permission de livraison.",
-    "Intégration AVEREO vérifiée : douze tests, deux skills valides, installateur dans un profil temporaire, 31 documents et 61 liens locaux, contrôle de base du monorepo réussi.",
-    "Deux tests supplémentaires vérifient la projection de la PR, la conservation des décisions humaines et le refus de remplacer une preuve approuvée."
+    "Intégration AVEREO vérifiée : quatorze tests, deux skills valides, installateur dans un profil temporaire, 31 documents et 61 liens locaux, contrôle de base du monorepo réussi.",
+    "Deux tests supplémentaires vérifient la projection de la PR, la conservation des décisions humaines et le refus de remplacer une preuve approuvée.",
+    "PR #73 visible en phase 0 ; contrôles GitHub CI et Developpement commun réussis sur la révision consignée, sans validation humaine."
   ],
   "humanApprovalRecorded": false,
-  "remoteCiExecuted": false,
+  "remoteCiExecuted": true,
   "preproductionDelivered": false,
   "productionDelivered": false,
   "remaining": [
@@ -50,7 +51,7 @@
     "limitation": "La découverte dans le sélecteur de l’application n’a pas été testée par une interaction utilisateur."
   },
   "integrationVerification": {
-    "observedAt": "2026-10-03T13:53:59Z",
+    "observedAt": "2026-10-03T14:20:45Z",
     "repository": "jpdandin44/AVEREO",
     "localTests": 14,
     "skillsValidated": 2,
@@ -61,6 +62,30 @@
       "localLinks": 61,
       "errors": []
     },
-    "remoteCi": "pending_observation"
+    "remoteCi": "passed"
+  },
+  "remoteObservation": {
+    "repository": "jpdandin44/AVEREO",
+    "sourceSha": "cce2cb2b11ca678f55d60f5ecb3f07d1d03e3dea",
+    "observedAt": "2026-10-03T14:20:45Z",
+    "scope": "pull_request_runs",
+    "workflows": [
+      {
+        "name": "CI",
+        "conclusion": "success",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37129083274"
+      },
+      {
+        "name": "Developpement commun",
+        "conclusion": "success",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37129083282"
+      },
+      {
+        "name": "PR Policy",
+        "conclusion": "skipped",
+        "reason": "draft PR",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37129083308"
+      }
+    ]
   }
 }

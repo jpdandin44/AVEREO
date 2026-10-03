@@ -37,3 +37,5 @@ Socle documentaire créé et sources identifiées. Le processus reste dans le sk
 ## Rattachement GitHub et source locale
 
 La [PR #73](https://github.com/jpdandin44/AVEREO/pull/73) porte le socle transverse. Les deux skills installés pointent vers ce checkout AVEREO ; le cockpit utilise son suivi canonique. La copie locale initiale est conservée comme historique avec un renvoi vers cette source, car Windows a refusé son déplacement. Aucun accord humain de phase, de merge ou de production n’a été ajouté.
+
+Les quatorze tests locaux, le raccordement du cockpit et les contrôles documentaires ont réussi. Les workflows GitHub `CI` et `Developpement commun` ont réussi sur le SHA indiqué dans `verification.json` ; `PR Policy` est ignoré pour cette PR en brouillon. Les observations de GitHub sont datées : la révision observée peut précéder un commit documentaire ultérieur. Vérifier à nouveau la tête de PR avant une décision ou un passage d’environnement.

@@ -24,8 +24,9 @@ Document dérivé automatiquement de la source du skill. Les accords et livraiso
 - Interface observée dans le navigateur : trois étapes visibles, revue locale en attente, bouton d’approbation conditionné aux critères humains.
 - Les deux installations utilisateur pointent vers la même source ; la règle globale référence le skill.
 - Appel court DEV : / $dev installé et validé ; une seule source du protocole, sans nouvelle permission de livraison.
-- Intégration AVEREO vérifiée : douze tests, deux skills valides, installateur dans un profil temporaire, 31 documents et 61 liens locaux, contrôle de base du monorepo réussi.
+- Intégration AVEREO vérifiée : quatorze tests, deux skills valides, installateur dans un profil temporaire, 31 documents et 61 liens locaux, contrôle de base du monorepo réussi.
 - Deux tests supplémentaires vérifient la projection de la PR, la conservation des décisions humaines et le refus de remplacer une preuve approuvée.
+- PR #73 visible en phase 0 ; contrôles GitHub CI et Developpement commun réussis sur la révision consignée, sans validation humaine.
 
 ## Protocole de référence
 
