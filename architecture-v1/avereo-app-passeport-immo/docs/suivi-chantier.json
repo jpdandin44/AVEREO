@@ -287,6 +287,10 @@
     {
       "date": "2026-10-03",
       "event": "Responsable : préproduction dédiée sur o2switch choisie, puis confirmation de fusion PR nº71. Connecteur GitHub et fetch main confirment merge 6399524 et checklist humaine cochée. Choix de cible sans accord de déploiement ; statuts de phase conservés."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "PR nº72 en brouillon pour le complément de pilotage ; décisions de phase et accord de déploiement inchangés."
     }
   ],
   "reviewEvents": [],
@@ -433,7 +437,18 @@
       },
       "mergedAt": "2026-10-03T12:46:58Z",
       "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775",
-      "sourceReviewVerified": true
+      "sourceReviewVerified": true,
+      "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
+      "followUpObservation": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/72",
+        "repository": "jpdandin44/AVEREO",
+        "number": 72,
+        "state": "open",
+        "headSha": "7401e3582f56d60e610b138ba35abc30922265c5",
+        "observedAt": "2026-10-03T12:58:59+00:00",
+        "draft": true,
+        "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch."
+      }
     },
     "checks": [
       {
@@ -569,5 +584,21 @@
         "observedAt": "2026-10-03T12:54:59+00:00"
       }
     ]
-  }
+  },
+  "followUps": [
+    {
+      "phaseId": 1,
+      "result": "Complément de suivi après fusion nº71, sans changement frontend ni décision de phase.",
+      "documentationPullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/72",
+        "repository": "jpdandin44/AVEREO",
+        "number": 72,
+        "state": "open",
+        "headSha": "7401e3582f56d60e610b138ba35abc30922265c5",
+        "observedAt": "2026-10-03T12:58:59+00:00",
+        "draft": true,
+        "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch."
+      }
+    }
+  ]
 }

@@ -44,6 +44,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - SHA source : `{candidate.get('sourceSha') or 'Non qualifié'}`.
 - SHA-256 de l'archive : `{candidate.get('artifactSha256') or 'Non qualifié'}`.
 - PR : {'[Ouvrir la PR]('+pr+')' if pr.startswith('https://github.com/') else pr}.
+- Complément de suivi : {'[Ouvrir la PR de suivi]('+github['followUpPrUrl']+')' if github.get('followUpPrUrl', '').startswith('https://github.com/') else 'Aucun'}.
 - Dernière observation GitHub : {github.get('observedAt') or 'Non observé'}.
 - Revue humaine de la source GitHub : {'Confirmée' if github.get('sourceReviewVerified') else 'Non consignée'}.
 - Acceptation de l'archive exacte pour promotion : {'Vérifiée' if github['humanAcceptanceVerified'] else 'À consigner avant production'}.

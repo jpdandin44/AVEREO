@@ -68,6 +68,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - SHA source : `f076a9b1644ae9c0620aa77df8531773c8cb00af`.
 - SHA-256 de l'archive : `84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab`.
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/71).
+- Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - Dernière observation GitHub : 2026-10-03T12:52:58+00:00.
 - Revue humaine de la source GitHub : Confirmée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
