@@ -14,4 +14,4 @@ skill = Path(settings['developmentProtocolSkill'])
 checker = skill.parent / 'scripts/check-gate.py'
 if not checker.is_file():
     raise SystemExit('Contrôleur absent : qualifier developmentProtocolSkill dans .local/review-settings.json.')
-raise SystemExit(subprocess.call([sys.executable, str(checker), '--state', str(ROOT / 'docs/suivi-chantier.json'), '--gate', args.gate]))
+raise SystemExit(subprocess.call([sys.executable, '-X', 'utf8', str(checker), '--state', str(ROOT / 'docs/suivi-chantier.json'), '--gate', args.gate]))

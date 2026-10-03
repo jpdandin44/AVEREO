@@ -24,3 +24,5 @@ Le [suivi JSON](suivi-chantier.json) fait foi pour les statuts et décisions de 
 [Raccordement au protocole](../workflows/developpement-github-cockpit.md).
 Le bloc `developmentWorkflow` du même JSON pilote l'itération ; aucune seconde
 source de statuts ni d'accords.
+
+[Qualification de la cible o2switch](qualification-preproduction.md).
