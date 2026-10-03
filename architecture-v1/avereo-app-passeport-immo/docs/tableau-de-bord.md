@@ -1,0 +1,176 @@
+---
+project: avereo-app-passeport-immo
+document_type: tableau-de-bord
+title: AVEREO – Passeport Immo
+status: active
+version: git
+created: 2026-10-03
+updated: 2026-10-03
+owner: jpdandin
+tags: [suivi, passeport-immo, genere]
+---
+
+# AVEREO – Passeport Immo
+
+Vue générée depuis `suivi-chantier.json`. Ne pas modifier manuellement.
+La revue et les décisions se font dans [Projet local](http://127.0.0.1:5193/).
+
+<!-- BEGIN GENERATED: suivi-chantier.json -->
+Mise à jour : **2026-10-03**. **0 phase livrée sur 6 ; 0 phase validée par le responsable.**
+
+| Phase | Statut | Livrables | Livraison | Validation humaine |
+|---|---|---|---|---|
+| 0 — Reprise et état des lieux | En cours | [00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | — | Non acquise |
+| 1 — Reprise à l’identique | Non commencée | [01-reprise-identique.md](01-reprise-identique.md)<br>[iteration-developpement.md](iteration-developpement.md) | — | Non acquise |
+| 2 — Intégration CONNECT | Non commencée | `02-integration-connect.md` (prévu) | — | Non acquise |
+| 3 — Préproduction | Non commencée | `03-preproduction.md` (prévu)<br>`deployment.md` (prévu) | — | Non acquise |
+| 4 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
+| 5 — Spécification du passeport client | Non commencée | `05-specification-passeport.md` (prévu) | — | Non acquise |
+
+### Décisions attendues
+
+Aucune décision en attente.
+
+### Décisions enregistrées
+
+| ID | Décision | Date | Référence de preuve |
+|---|---|---|---|
+
+### Questions de vérification
+
+| ID | Question | Impact | Prochaine action |
+|---|---|---|---|
+| Q01 | Comment traiter le partage d’URL sans données du bien ? | Un autre poste ne reçoit pas le dossier. | Décider le partage sécurisé dans un lot ultérieur. |
+| Q02 | Conserver ou remplacer les accès et abonnement simulés derrière CONNECT ? | Aucune authentification ni facturation réelle dans le prototype. | Décision de phase 2. |
+| Q03 | Quel sort réserver au frontend historique CONNECT ? | Deux sources de code après reprise. | Décision de phase 2 ; historique inchangé. |
+| Q04 | Accepter les limites du calcul : h/ml à zéro, groupement PDF par nom de pièce ? | Certaines estimations peuvent être nulles ou fusionnées. | Recetter les cas limites puis autoriser un correctif distinct. |
+| Q05 | Validation humaine du rendu, import CSV, PDF et usage mobile ? | Les contrôles techniques ne constituent pas une recette humaine. | Remplir le tableau R dans le livrable local. |
+| Q07 | Les captures tiers confirment-elles les mêmes anomalies dans cette V1 ? | Les versions et parcours diffèrent ; les captures ne sont pas une preuve runtime. | Examiner les captures en recette ; conserver les références neutres. |
+| Q08 | Faut-il corriger le placement conditionnel des hooks de la fenêtre bien ? | Placement conditionnel conservé ; aucune erreur reproduite sur création et édition locales, couverture de parcours limitée. | Recetter les autres parcours avant un éventuel correctif distinct. |
+<!-- END GENERATED: suivi-chantier.json -->
+
+## Itération GitHub et cockpit
+
+**passeport-immo-2026-10-03** — Rattacher le prototype au protocole GitHub/cockpit et corriger la page blanche PDF.
+
+Responsable : jpdandin. Étape : local. État : En cours.
+
+| Étape | État | Prochaine action |
+|---|---|---|
+| Local | En cours | Corriger et vérifier PDF, candidat et PR. |
+| Préproduction | Bloquée | Qualifier cible isolée, intégration requise, récupération et accord exact. |
+| Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
+
+### Candidat et GitHub
+
+- SHA source : `Non qualifié`.
+- SHA-256 de l'archive : `Non qualifié`.
+- PR : Non publiée.
+- Dernière observation GitHub : 2026-10-03T12:23:56.148487+00:00.
+- Acceptation humaine GitHub : Non acquise.
+
+### Contrôles datés
+
+| Nature | Résultat | SHA source | Observation | Preuve |
+|---|---|---|---|---|
+
+
+### Blocages de passage
+
+- Candidat et contrôles CI à qualifier.
+- Cible Passeport Immo de préproduction non qualifiée ; intégration CONNECT non réalisée.
+- Accord exact de préproduction absent.
+- Recette humaine et production non qualifiées.
+
+Prochaine action : Qualifier le candidat local et préparer sa PR ; vérifier les conditions de préproduction.
+
+### Accords et livraison
+
+Accords spécifiques enregistrés : 0. Sauvegardes qualifiées : 0.
+Retour arrière : not_tested. Livraison : not_delivered.
+Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
+
+### Suite proposée
+
+- Intégration CONNECT après accord sur les fichiers concernés.
+- Partage sécurisé et stockage centralisé à spécifier à la demande des clients.
+
+
+## Livrables attendus par phase
+
+Description issue du suivi JSON ; disponibilité vérifiée lors de la génération.
+
+### Phase 0 — Reprise et état des lieux
+
+**00 etat des lieux** — Document disponible (`00-etat-des-lieux.md`).
+
+Reprise et état des lieux
+
+- Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.
+- Audit source et inconnues explicites ; vues générées contrôlées.
+
+**source audit** — Document disponible (`source-audit.md`).
+
+Reprise et état des lieux
+
+- Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.
+- Audit source et inconnues explicites ; vues générées contrôlées.
+
+### Phase 1 — Reprise à l’identique
+
+**01 reprise identique** — Document disponible (`01-reprise-identique.md`).
+
+Reprise à l’identique
+
+- Installation, tests et build réussis.
+- Diff limité aux transformations autorisées ou écarts explicitement consignés.
+- Recette locale préparée et contrôles techniques distincts de la validation humaine.
+
+**Itération GitHub et cockpit** — Document disponible (`iteration-developpement.md`).
+
+Projection générée du bloc canonique developmentWorkflow.
+
+- Candidat, PR, contrôles datés, blocages et prochaine action.
+
+### Phase 2 — Intégration CONNECT
+
+**02 integration connect** — Prévu — document non produit (`02-integration-connect.md`).
+
+Intégration CONNECT
+
+- Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.
+- Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.
+
+### Phase 3 — Préproduction
+
+**03 preproduction** — Prévu — document non produit (`03-preproduction.md`).
+
+Préproduction
+
+- Procédure et workflow manuel préparés.
+- Recette préproduction conforme, remplie par le responsable.
+
+**deployment** — Prévu — document non produit (`deployment.md`).
+
+Préproduction
+
+- Procédure et workflow manuel préparés.
+- Recette préproduction conforme, remplie par le responsable.
+
+### Phase 4 — Mise en production
+
+**04 mise en production** — Prévu — document non produit (`04-mise-en-production.md`).
+
+Mise en production
+
+- Autorisation humaine enregistrée après phase 3 validée.
+- Procédure, fumée et retour arrière vérifiés par le responsable.
+
+### Phase 5 — Spécification du passeport client
+
+**05 specification passeport** — Prévu — document non produit (`05-specification-passeport.md`).
+
+Spécification du passeport client
+
+- Exigences et modèle client/biens/documents proposés.
+- Options de stockage comparées ; aucun code ajouté.

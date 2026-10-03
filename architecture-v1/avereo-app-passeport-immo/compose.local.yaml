@@ -1,0 +1,10 @@
+# Prototype local, limité à la boucle locale du poste.
+name: avereo-passeport-immo-local
+services:
+  web:
+    build:
+      context: .
+      dockerfile: docker/local.Dockerfile
+    ports:
+      - "127.0.0.1:5175:80"
+    restart: unless-stopped

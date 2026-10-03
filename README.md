@@ -1,4 +1,18 @@
-﻿# AVEREO CONNECT
+---
+project: avereo
+document_type: readme
+title: AVEREO — index du dépôt
+status: active
+version: git
+created: 2026-10-03
+updated: 2026-10-03
+owner: jpdandin
+tags: [avereo, documentation, local]
+---
+
+# AVEREO — index du dépôt
+
+# AVEREO CONNECT
 
 Ce depot contient la V1 en cours de developpement.
 
@@ -79,3 +93,14 @@ Regles a activer dans GitHub (`Settings > Branches > Branch protection`):
 
 ## Validation PR - Exemple
 - Cette section a ete ajoutee depuis la branche codex/pr-validation-example pour valider le workflow PR.
+
+## Chantier local Passeport Immo
+
+[Application et guide](architecture-v1/avereo-app-passeport-immo/README.md).
+Le prototype racine et sa maquette sont historiques ; les composants sous
+`architecture-v1/` possèdent leur documentation propre. Les commandes ci-dessus
+concernent le prototype racine, pas le portail PHP CONNECT ni Passeport Immo.
+
+[Architecture](architecture.md) · [Exigences](requirements.md) · [Roadmap](roadmap.md) ·
+[Décisions](decisions.md) · [Changelog](changelog.md).
+Configuration privée, état distant et installation serveur : non vérifiés dans ce lot.

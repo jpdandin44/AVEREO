@@ -1,0 +1,3 @@
+.local/
+docs/.review-backups/
+__pycache__/

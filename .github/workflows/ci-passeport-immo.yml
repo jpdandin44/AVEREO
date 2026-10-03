@@ -1,0 +1,48 @@
+name: Passeport Immo CI
+
+on:
+  push:
+    paths:
+      - 'architecture-v1/avereo-app-passeport-immo/**'
+      - '.github/workflows/ci-passeport-immo.yml'
+  pull_request:
+    paths:
+      - 'architecture-v1/avereo-app-passeport-immo/**'
+      - '.github/workflows/ci-passeport-immo.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install
+        working-directory: architecture-v1/avereo-app-passeport-immo/frontend
+        run: npm ci
+      - name: Test
+        working-directory: architecture-v1/avereo-app-passeport-immo/frontend
+        run: npm test
+      - name: Verify parity
+        working-directory: architecture-v1/avereo-app-passeport-immo
+        run: node tests/check-parity.mjs
+      - name: Build
+        working-directory: architecture-v1/avereo-app-passeport-immo/frontend
+        run: npm run build
+      - name: Package and verify candidate
+        working-directory: architecture-v1/avereo-app-passeport-immo
+        run: python3 workflows/package-candidate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: passeport-immo-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            architecture-v1/avereo-app-passeport-immo/.local/candidate.zip
+            architecture-v1/avereo-app-passeport-immo/.local/candidate.manifest.json
+          include-hidden-files: true
+          if-no-files-found: error
