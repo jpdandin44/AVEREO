@@ -34,3 +34,7 @@ Complément de pilotage préparé séparément après fusion, sans nouveau chang
 Enveloppe du contrôleur corrigée pour produire du JSON UTF-8 lors des appels
 successifs sous Windows. Les trois contrôles de passage sont exécutés et consignés ;
 leurs refus correspondent aux cibles, accords et preuves de récupération manquants.
+
+PR nº72 rebasée sans conflit après fusion du protocole commun nº73. Contenu des deux
+commits de suivi préservé ; documentation et paramètre local raccordés à la source
+commune. Le candidat nº71, les statuts formels et les accords humains sont conservés.

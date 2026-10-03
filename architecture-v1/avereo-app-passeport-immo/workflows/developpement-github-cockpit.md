@@ -18,6 +18,12 @@ commune. Sa source n'est pas recopiée ici. Le paramètre local
 `developmentProtocolSkill` dans `.local/review-settings.json` identifie son fichier
 SKILL.md installé ; `check-workflow-gate.py` appelle son contrôleur en lecture seule.
 
+Le [socle commun versionné dans AVEREO](../../../outillage/protocole-developpement/README.md)
+est présent dans la branche après le rebase de la PR nº72 sur la fusion nº73.
+Sur ce poste, le paramètre local est réaligné vers le skill installé au niveau utilisateur,
+afin de ne plus utiliser la copie historique initiale. L'appel `DEV :` ou `$dev` suit
+ce même protocole ; les cibles et accords Passeport Immo restent à qualifier.
+
 Le bloc `developmentWorkflow` du [suivi](../docs/suivi-chantier.json) est la fiche
 canonique de l'itération. Les six phases antérieures, leurs dates, décisions et
 événements sont conservés. Les trois étapes du protocole complètent ce suivi sans

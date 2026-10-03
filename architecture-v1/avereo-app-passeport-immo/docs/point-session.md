@@ -72,3 +72,15 @@ Socles du sous-projet et de la racine présents. Contrôle des métadonnées sim
 liens locaux, matrice, JSON, vues dérivées et lecture native du cockpit effectué.
 Les détails et preuves sont dans [raccordement-cockpit.md](raccordement-cockpit.md).
 Le périmètre vérifié est ce lot ; audit global des autres applications : TBD.
+
+## Rebase de la PR nº72 après fusion du socle commun
+
+Le responsable demande le rebase après avoir fusionné la PR nº73. Les deux commits
+de suivi ont été rejoués sans conflit sur cette fusion. La comparaison des commits
+avant et après confirme le même contenu ; aucun changement du frontend ni du
+candidat accepté de la PR nº71. Le suivi conserve les phases et décisions humaines.
+
+Le protocole commun est désormais présent dans cette branche. Le paramètre du poste
+qui appelle son contrôleur est réaligné vers le skill utilisateur installé ; aucune
+copie supplémentaire de la procédure n'est créée. Les informations GitHub du rebase
+sont datées dans le suivi ; vérifier la tête de PR avant une décision.

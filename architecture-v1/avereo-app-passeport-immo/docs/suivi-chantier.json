@@ -291,6 +291,10 @@
     {
       "date": "2026-10-03",
       "event": "PR nº72 en brouillon pour le complément de pilotage ; décisions de phase et accord de déploiement inchangés."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Rebase demandé de la PR nº72 après fusion nº73 : deux commits rejoués sans conflit ; protocole commun disponible, candidat nº71 et décisions humaines conservés."
     }
   ],
   "reviewEvents": [],
@@ -444,10 +448,34 @@
         "repository": "jpdandin44/AVEREO",
         "number": 72,
         "state": "open",
-        "headSha": "7401e3582f56d60e610b138ba35abc30922265c5",
-        "observedAt": "2026-10-03T12:58:59+00:00",
+        "headSha": "5eb47ddd587afffad1b7fd2721621e048b283aab",
+        "observedAt": "2026-10-03T16:27:59+00:00",
         "draft": true,
         "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch."
+      },
+      "rebaseObservation": {
+        "baseSha": "f14bfc97b8f15a06cb4010f493240c5362fc5242",
+        "baseMergePrUrl": "https://github.com/jpdandin44/AVEREO/pull/73",
+        "previousHeadSha": "e9afc3bb2003f8feb551547e949c52a0d0a66366",
+        "rebasedHeadSha": "5eb47ddd587afffad1b7fd2721621e048b283aab",
+        "status": "rebased_without_conflicts",
+        "observedAt": "2026-10-03T16:25:45+00:00",
+        "verification": "Deux commits identiques au range-diff ; frontend identique à main ; candidat et accords humains conservés.",
+        "localVerification": {
+          "commonProtocolTests": 14,
+          "baseline": "passed",
+          "parity": "passed",
+          "views": "aligned",
+          "documentation": {
+            "passeportMarkdownFiles": 32,
+            "passeportLocalLinks": 86,
+            "commonMarkdownFiles": 31,
+            "commonLocalLinks": 61,
+            "errors": []
+          },
+          "humanStateAndCandidate": "preserved",
+          "gates": "preproduction_production_close_refused_for_missing_evidence"
+        }
       }
     },
     "checks": [
@@ -594,8 +622,8 @@
         "repository": "jpdandin44/AVEREO",
         "number": 72,
         "state": "open",
-        "headSha": "7401e3582f56d60e610b138ba35abc30922265c5",
-        "observedAt": "2026-10-03T12:58:59+00:00",
+        "headSha": "5eb47ddd587afffad1b7fd2721621e048b283aab",
+        "observedAt": "2026-10-03T16:27:59+00:00",
         "draft": true,
         "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch."
       }
