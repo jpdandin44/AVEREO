@@ -47,3 +47,9 @@ Tout champ absent ou preuve d'une ancienne version est refusé. Le contrôleur n
 Le modèle à trois phases est compatible avec le moteur de revue local Projet déjà utilisé par le site. Le [raccordement de ce socle](../../../workflows/cockpit-local.md) permet de le consulter sans remplacer les suivis AVEREO. Les approbations de phase sont des décisions humaines ; avant une action distante, vérifier en plus les préconditions de la fiche.
 
 Le skill oblige l'agent à actualiser le suivi ; il n'ajoute pas de boutons de déploiement ni de synchronisation GitHub à ce cockpit.
+
+Dans le lot de ce socle, l'observation GitHub est conservée dans `developmentWorkflow.github`
+avec l'URL, le dépôt, le numéro, l'état, le SHA observé et la date. Le générateur en dérive
+`phases[0].pullRequest`, lu par le cockpit. Actualiser seulement la source de l'observation,
+puis régénérer ; ne pas maintenir séparément les deux représentations. Les champs
+d'acceptation humaine restent distincts et sont préservés.

@@ -12,7 +12,8 @@
     "Interface observée dans le navigateur : trois étapes visibles, revue locale en attente, bouton d’approbation conditionné aux critères humains.",
     "Les deux installations utilisateur pointent vers la même source ; la règle globale référence le skill.",
     "Appel court DEV : / $dev installé et validé ; une seule source du protocole, sans nouvelle permission de livraison.",
-    "Intégration AVEREO vérifiée : douze tests, deux skills valides, installateur dans un profil temporaire, 31 documents et 61 liens locaux, contrôle de base du monorepo réussi."
+    "Intégration AVEREO vérifiée : douze tests, deux skills valides, installateur dans un profil temporaire, 31 documents et 61 liens locaux, contrôle de base du monorepo réussi.",
+    "Deux tests supplémentaires vérifient la projection de la PR, la conservation des décisions humaines et le refus de remplacer une preuve approuvée."
   ],
   "humanApprovalRecorded": false,
   "remoteCiExecuted": false,
@@ -51,7 +52,7 @@
   "integrationVerification": {
     "observedAt": "2026-10-03T13:53:59Z",
     "repository": "jpdandin44/AVEREO",
-    "localTests": 12,
+    "localTests": 14,
     "skillsValidated": 2,
     "installer": "passed_isolated_profile_idempotence_and_ordinary_folder_protection",
     "repositoryBaseline": "passed",

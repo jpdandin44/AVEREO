@@ -33,3 +33,7 @@ ni son merge, ni l'installation d'une CI ou d'une préproduction dans tous les d
 ## Bilan documentaire
 
 Socle documentaire créé et sources identifiées. Le processus reste dans le skill ; les vues du cockpit sont dérivées du protocole et du suivi. Les vérifications portent sur ce socle, ses liens, ses métadonnées et le raccordement local. Elles ne constituent pas un audit documentaire de tous les projets.
+
+## Rattachement GitHub et source locale
+
+La [PR #73](https://github.com/jpdandin44/AVEREO/pull/73) porte le socle transverse. Les deux skills installés pointent vers ce checkout AVEREO ; le cockpit utilise son suivi canonique. La copie locale initiale est conservée comme historique avec un renvoi vers cette source, car Windows a refusé son déplacement. Aucun accord humain de phase, de merge ou de production n’a été ajouté.

@@ -4,6 +4,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 folder = Path(__file__).resolve().parent
 state = json.loads((folder/'suivi-chantier.json').read_text(encoding='utf-8'))
+github = state.get('developmentWorkflow',{}).get('github',{})
+projection_changed = False
+if all(github.get(key) is not None for key in ('prUrl','repository','number','state','headSha','observedAt')):
+    projection = {key:github[key] for key in ('repository','number','state','headSha','observedAt')}
+    projection['url'] = github['prUrl']
+    phase = next(p for p in state['phases'] if p['id']==0)
+    projection_changed = phase.get('pullRequest') != projection
+    phase['pullRequest'] = projection
 protocol = (ROOT/'skills/developpement-github-cockpit/references/protocole.md').read_text(encoding='utf-8')
 body = protocol.split('---', 2)[2].lstrip()
 source_folder = ROOT/'skills/developpement-github-cockpit/references'
@@ -28,6 +36,8 @@ for p in approved:
 if path.exists() and any(p['path']=='local.md' for p in approved) and path.read_text(encoding='utf-8')!=local:
     raise ValueError('La source a changé après approbation. Ouvrir une nouvelle revue sans écraser la preuve approuvée.')
 path.write_text(local, encoding='utf-8', newline='\n')
+if projection_changed:
+    (folder/'suivi-chantier.json').write_text(json.dumps(state,ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
 view_front=front.replace('generated-cockpit-document','generated-dashboard').replace('Protocole et preuves locales','Tableau de pilotage')
 lines=[view_front+'# Pilotage des trois étapes','', '| Étape | État | Prochaine action |', '| --- | --- | --- |']
 for p in state['phases']:

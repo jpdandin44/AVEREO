@@ -46,7 +46,15 @@
         "Les contrôles et les validations restent distincts.",
         "Le rôle du cockpit et les limites d’automatisation sont compris."
       ],
-      "nextAction": "Revue humaine du protocole et de ses preuves."
+      "nextAction": "Revue humaine du protocole et de ses preuves.",
+      "pullRequest": {
+        "repository": "jpdandin44/AVEREO",
+        "number": 73,
+        "state": "open",
+        "headSha": "e2d647bad02b03a990faad9b05adb446e512316f",
+        "observedAt": "2026-10-03T14:03:26Z",
+        "url": "https://github.com/jpdandin44/AVEREO/pull/73"
+      }
     },
     {
       "id": 1,
@@ -129,6 +137,10 @@
     {
       "date": "2026-10-03",
       "event": "Le responsable choisit AVEREO comme dépôt de rattachement et demande un protocole commun à tous ses dépôts. Préparation de la PR et de l’installateur utilisateur."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "PR #73 créée dans AVEREO ; son observation datée est projetée vers la phase 0. Les décisions humaines et autorisations de livraison restent inchangées."
     }
   ],
   "verificationQuestions": [
@@ -185,12 +197,16 @@
     },
     "github": {
       "repository": "jpdandin44/AVEREO",
-      "prUrl": null,
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/73",
       "acceptedSourceSha": null,
       "acceptedArtifactSha256": null,
       "humanAcceptanceVerified": false,
-      "evidence": null,
-      "observedAt": null
+      "evidence": "https://github.com/jpdandin44/AVEREO/pull/73",
+      "observedAt": "2026-10-03T14:03:26Z",
+      "number": 73,
+      "state": "open",
+      "draft": true,
+      "headSha": "e2d647bad02b03a990faad9b05adb446e512316f"
     },
     "checks": [],
     "approvals": [],
@@ -226,7 +242,7 @@
   "reviewEvents": [],
   "sessionSummary": {
     "date": "2026-10-03",
-    "result": "Socle transverse préparé dans AVEREO ; installation utilisateur et contrôles locaux vérifiés ; PR à créer, revue humaine en attente.",
+    "result": "Socle transverse et installateur vérifiés ; PR #73 ouverte en brouillon dans AVEREO ; phase locale en attente de revue humaine.",
     "proof": "../../data/verification.json",
     "handoff": "../point-session.md",
     "nextAction": "Examiner la PR du socle transverse et confirmer le cockpit cible."
