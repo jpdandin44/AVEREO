@@ -16,3 +16,8 @@ Les exigences sont décrites dans chaque sous-projet. La maquette racine est his
 et ne remplace pas le comportement du frontend React repris.
 Voir [Passeport Immo](architecture-v1/avereo-app-passeport-immo/requirements.md).
 Contraintes : préserver les sources et les validations humaines. TBD : consolidation globale.
+
+Le [protocole commun](outillage/protocole-developpement/requirements.md) doit être
+réutilisable hors de ce monorepo, avec un suivi canonique propre à chaque projet
+et les accords humains applicables. Sa disponibilité ne prouve pas l'installation
+d'une CI ou d'une préproduction dans chaque dépôt.

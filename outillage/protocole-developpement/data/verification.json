@@ -1,0 +1,91 @@
+{
+  "project": "protocole-developpement",
+  "document_type": "verification-locale",
+  "observedAt": "2026-10-03T14:20:45Z",
+  "status": "passed_local",
+  "checks": [
+    "Douze tests du contrôleur réussis sur données fictives : preuves, versions, accords, restauration et retour arrière.",
+    "Validation structurelle du skill réussie à la source et via son installation utilisateur.",
+    "Le modèle d’itération vide est refusé pour un passage en production.",
+    "Compatibilité du moteur de cockpit vérifiée : trois phases, dépendances et décision fictive dans une copie temporaire ; aucune décision ajoutée au suivi réel.",
+    "L’API du cockpit local répond sur 127.0.0.1:5194 avec la source de ce lot et aucun défaut de suivi signalé.",
+    "Interface observée dans le navigateur : trois étapes visibles, revue locale en attente, bouton d’approbation conditionné aux critères humains.",
+    "Les deux installations utilisateur pointent vers la même source ; la règle globale référence le skill.",
+    "Appel court DEV : / $dev installé et validé ; une seule source du protocole, sans nouvelle permission de livraison.",
+    "Intégration AVEREO vérifiée : quatorze tests, deux skills valides, installateur dans un profil temporaire, 31 documents et 61 liens locaux, contrôle de base du monorepo réussi.",
+    "Deux tests supplémentaires vérifient la projection de la PR, la conservation des décisions humaines et le refus de remplacer une preuve approuvée.",
+    "PR #73 visible en phase 0 ; contrôles GitHub CI et Developpement commun réussis sur la révision consignée, sans validation humaine."
+  ],
+  "humanApprovalRecorded": false,
+  "remoteCiExecuted": true,
+  "preproductionDelivered": false,
+  "productionDelivered": false,
+  "remaining": [
+    "Cockpit commun définitif à confirmer ; le moteur local existant est qualifié pour ce lot.",
+    "Environnements, accès et commandes réels à qualifier pour chaque projet lors de son adoption.",
+    "Merge de la PR du socle sous contrôle humain ; cockpit cible et environnements des projets encore à qualifier."
+  ],
+  "documentation": {
+    "markdownFiles": 31,
+    "localLinks": 61,
+    "errors": []
+  },
+  "skillInstallation": {
+    "source": "skills/developpement-github-cockpit/SKILL.md",
+    "installed": "Profil utilisateur : .agents/skills et .codex/skills",
+    "sameSourceVerified": true
+  },
+  "aliasVerification": {
+    "observedAt": "2026-10-03T12:09:35Z",
+    "keyword": "DEV :",
+    "nativeInvocation": "$dev",
+    "status": "passed_structure_and_links",
+    "source": "skills/dev/SKILL.md",
+    "installed": [
+      "Profil utilisateur : .agents/skills/dev",
+      "Profil utilisateur : .codex/skills/dev"
+    ],
+    "sameCanonicalTargetVerified": true,
+    "globalRuleVerified": true,
+    "uiMetadataVerified": true,
+    "limitation": "La découverte dans le sélecteur de l’application n’a pas été testée par une interaction utilisateur."
+  },
+  "integrationVerification": {
+    "observedAt": "2026-10-03T14:20:45Z",
+    "repository": "jpdandin44/AVEREO",
+    "localTests": 14,
+    "skillsValidated": 2,
+    "installer": "passed_isolated_profile_idempotence_and_ordinary_folder_protection",
+    "repositoryBaseline": "passed",
+    "documentation": {
+      "markdownFiles": 31,
+      "localLinks": 61,
+      "errors": []
+    },
+    "remoteCi": "passed"
+  },
+  "remoteObservation": {
+    "repository": "jpdandin44/AVEREO",
+    "sourceSha": "cce2cb2b11ca678f55d60f5ecb3f07d1d03e3dea",
+    "observedAt": "2026-10-03T14:20:45Z",
+    "scope": "pull_request_runs",
+    "workflows": [
+      {
+        "name": "CI",
+        "conclusion": "success",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37129083274"
+      },
+      {
+        "name": "Developpement commun",
+        "conclusion": "success",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37129083282"
+      },
+      {
+        "name": "PR Policy",
+        "conclusion": "skipped",
+        "reason": "draft PR",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37129083308"
+      }
+    ]
+  }
+}

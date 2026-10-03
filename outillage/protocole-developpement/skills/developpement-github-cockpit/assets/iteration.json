@@ -1,0 +1,69 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "À compléter",
+  "project": "À compléter",
+  "owner": "jpdandin",
+  "kind": "À qualifier",
+  "stage": "local",
+  "status": "in_progress",
+  "objective": "À compléter",
+  "candidate": {
+    "sourceSha": null,
+    "artifactSha256": null
+  },
+  "targets": {
+    "preproduction": {
+      "id": null,
+      "ready": false,
+      "isolated": false,
+      "empty": false,
+      "evidence": null,
+      "observedAt": null
+    },
+    "production": {
+      "id": null,
+      "ready": false,
+      "evidence": null,
+      "observedAt": null
+    }
+  },
+  "github": {
+    "repository": null,
+    "prUrl": null,
+    "acceptedSourceSha": null,
+    "acceptedArtifactSha256": null,
+    "humanAcceptanceVerified": false,
+    "evidence": null,
+    "observedAt": null
+  },
+  "checks": [],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested",
+    "target": null,
+    "artifactSha256": null,
+    "evidence": null,
+    "observedAt": null
+  },
+  "delivery": {
+    "status": "not_delivered",
+    "sourceSha": null,
+    "artifactSha256": null,
+    "target": null,
+    "evidence": null,
+    "observedAt": null
+  },
+  "blockers": [
+    "Cibles, candidat et preuves non qualifiés."
+  ],
+  "nextAction": "Inspecter le projet et raccorder le suivi au cockpit.",
+  "nextIteration": [],
+  "budget": {
+    "limit": null,
+    "unit": null,
+    "observedUsage": null,
+    "observedAt": null
+  }
+}

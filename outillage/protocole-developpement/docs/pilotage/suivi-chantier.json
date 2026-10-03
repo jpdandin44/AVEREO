@@ -1,0 +1,250 @@
+{
+  "project": "protocole-developpement",
+  "document_type": "suivi-chantier",
+  "title": "Protocole commun — local, préproduction, production",
+  "version": "git",
+  "created": "2026-10-03",
+  "updated": "2026-10-03",
+  "owner": "jpdandin",
+  "scope": "Création locale du protocole et du skill ; aucune livraison des sites, applications ou agents.",
+  "currentPhase": 0,
+  "state": "awaiting_review",
+  "statusLabels": {
+    "not_started": "Non commencée",
+    "in_progress": "En cours",
+    "awaiting_review": "À valider",
+    "validated": "Validée",
+    "blocked": "Bloquée"
+  },
+  "phases": [
+    {
+      "id": 0,
+      "shortTitle": "Local",
+      "title": "Développer, ajuster et corriger",
+      "objective": "Examiner le protocole et les contrôles locaux de ce socle.",
+      "status": "awaiting_review",
+      "dependsOn": [],
+      "startedOn": "2026-10-03",
+      "deliveredOn": "2026-10-03",
+      "validatedOn": null,
+      "validationEvidence": null,
+      "deliverables": [
+        {
+          "path": "local.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Protocole et résultat local",
+          "description": "Source du processus et preuves réellement obtenues.",
+          "expectedEvidence": [
+            "Cycle à trois étapes",
+            "Skill et contrôleur vérifiés"
+          ]
+        }
+      ],
+      "exitCriteria": [
+        "Le cycle local → préproduction → production répond au besoin.",
+        "Les contrôles et les validations restent distincts.",
+        "Le rôle du cockpit et les limites d’automatisation sont compris."
+      ],
+      "nextAction": "Revue humaine du protocole et de ses preuves.",
+      "pullRequest": {
+        "repository": "jpdandin44/AVEREO",
+        "number": 73,
+        "state": "open",
+        "headSha": "cce2cb2b11ca678f55d60f5ecb3f07d1d03e3dea",
+        "observedAt": "2026-10-03T14:20:45Z",
+        "url": "https://github.com/jpdandin44/AVEREO/pull/73"
+      }
+    },
+    {
+      "id": 1,
+      "shortTitle": "Préproduction",
+      "title": "Installer, ajuster et contrôler en préproduction",
+      "objective": "Adopter le protocole sur un premier projet et qualifier son environnement réel.",
+      "status": "not_started",
+      "dependsOn": [
+        0
+      ],
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "deliverables": [
+        {
+          "path": "preproduction.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Conditions de préproduction",
+          "description": "Procédure prévue ; aucune livraison de préproduction de ce socle.",
+          "expectedEvidence": [
+            "Premier projet à choisir",
+            "Cible réelle et reçu à qualifier"
+          ]
+        }
+      ],
+      "exitCriteria": [
+        "Le premier projet et la cible isolée sont identifiés.",
+        "Le candidat installé et ses tests réels sont enregistrés.",
+        "L’accord et le plan de récupération sont liés au candidat."
+      ],
+      "nextAction": "Choisir le projet pilote, qualifier la cible puis obtenir l’accord applicable."
+    },
+    {
+      "id": 2,
+      "shortTitle": "Production",
+      "title": "Livrer, contrôler et préparer la suite",
+      "objective": "Effectuer seulement une livraison autorisée puis conserver le résultat et la prochaine itération.",
+      "status": "not_started",
+      "dependsOn": [
+        1
+      ],
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "deliverables": [
+        {
+          "path": "production.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Conditions de production",
+          "description": "Procédure prévue ; aucune production autorisée par ce lot.",
+          "expectedEvidence": [
+            "Accord exact",
+            "Sauvegarde/restauration et retour arrière",
+            "Contrôles et backlog de suite"
+          ]
+        }
+      ],
+      "exitCriteria": [
+        "La version livrée correspond au candidat recetté et autorisé.",
+        "La sauvegarde restaurée et le retour arrière sont qualifiés.",
+        "Les contrôles réels et la suite sont enregistrés."
+      ],
+      "nextAction": "Attendre la recette et l’accord exact ; contrôler et archiver après livraison."
+    }
+  ],
+  "decisions": [],
+  "history": [
+    {
+      "date": "2026-10-03",
+      "event": "Demande du responsable : protocole simple en trois étapes, GitHub et cockpit, consigné comme skill commun."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "À la demande du responsable, ajout du mot-clé DEV : et du skill court $dev ; validation de la structure, des installations et des liens sans changement de décisions humaines."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Le responsable choisit AVEREO comme dépôt de rattachement et demande un protocole commun à tous ses dépôts. Préparation de la PR et de l’installateur utilisateur."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "PR #73 créée dans AVEREO ; son observation datée est projetée vers la phase 0. Les décisions humaines et autorisations de livraison restent inchangées."
+    }
+  ],
+  "verificationQuestions": [
+    {
+      "id": "COCKPIT-CIBLE",
+      "status": "open",
+      "question": "Quel cockpit doit porter le protocole commun ?",
+      "impact": "Le raccordement courant qualifie le moteur local existant ; son adoption définitive reste à confirmer.",
+      "nextAction": "Préciser le cockpit cible."
+    },
+    {
+      "id": "DISTRIBUTION-GITHUB",
+      "status": "resolved",
+      "question": "Quel dépôt GitHub doit distribuer ce socle ?",
+      "impact": "Source commune aux dépôts, distribuée par PR.",
+      "nextAction": "Créer la PR et conserver son observation dans la phase 0.",
+      "answer": "jpdandin44/AVEREO — outillage/protocole-developpement"
+    }
+  ],
+  "publication": {
+    "pushAuthorized": true,
+    "deploymentAuthorized": false,
+    "openingAuthorized": false
+  },
+  "developmentWorkflow": {
+    "protocol": "developpement-github-cockpit",
+    "version": "git",
+    "iterationId": "creation-protocole-20261003",
+    "project": "protocole-developpement",
+    "owner": "jpdandin",
+    "kind": "outillage",
+    "stage": "local",
+    "status": "awaiting_review",
+    "objective": "Créer le skill commun et qualifier son raccordement au cockpit.",
+    "candidate": {
+      "sourceSha": null,
+      "artifactSha256": null
+    },
+    "targets": {
+      "preproduction": {
+        "id": null,
+        "ready": false,
+        "isolated": false,
+        "empty": false,
+        "evidence": null,
+        "observedAt": null
+      },
+      "production": {
+        "id": null,
+        "ready": false,
+        "evidence": null,
+        "observedAt": null
+      }
+    },
+    "github": {
+      "repository": "jpdandin44/AVEREO",
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/73",
+      "acceptedSourceSha": null,
+      "acceptedArtifactSha256": null,
+      "humanAcceptanceVerified": false,
+      "evidence": "https://github.com/jpdandin44/AVEREO/pull/73",
+      "observedAt": "2026-10-03T14:20:45Z",
+      "number": 73,
+      "state": "open",
+      "draft": true,
+      "headSha": "cce2cb2b11ca678f55d60f5ecb3f07d1d03e3dea"
+    },
+    "checks": [],
+    "approvals": [],
+    "backups": [],
+    "rollback": {
+      "status": "not_tested",
+      "target": null,
+      "artifactSha256": null,
+      "evidence": null,
+      "observedAt": null
+    },
+    "delivery": {
+      "status": "not_delivered",
+      "sourceSha": null,
+      "artifactSha256": null,
+      "target": null,
+      "evidence": null,
+      "observedAt": null
+    },
+    "blockers": [
+      "Cibles, candidat et preuves non qualifiés."
+    ],
+    "nextAction": "Examiner la PR du socle transverse et confirmer le cockpit cible.",
+    "nextIteration": [],
+    "budget": {
+      "limit": 20,
+      "unit": "percent_weekly_account_quota",
+      "observedUsage": null,
+      "observedAt": null,
+      "limitation": "Usage global arrondi du compte ; coût du lot non isolé."
+    }
+  },
+  "reviewEvents": [],
+  "sessionSummary": {
+    "date": "2026-10-03",
+    "result": "Socle transverse et installateur vérifiés ; PR #73 ouverte en brouillon dans AVEREO ; phase locale en attente de revue humaine.",
+    "proof": "../../data/verification.json",
+    "handoff": "../point-session.md",
+    "nextAction": "Examiner la PR du socle transverse et confirmer le cockpit cible."
+  }
+}
