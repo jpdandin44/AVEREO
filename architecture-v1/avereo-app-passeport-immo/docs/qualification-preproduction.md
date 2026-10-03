@@ -18,11 +18,17 @@ Ce choix est inscrit dans le suivi canonique. La source de la PR nº71 est fusio
 le candidat local et CI est identifié dans la [fiche générée](iteration-developpement.md).
 Aucun déploiement de Passeport Immo n'a été engagé.
 
+Dans le chat de reprise, le responsable retient l'adresse proposée et une lune
+gratuite si disponible. `requestedAddress` et `hostingPreference` conservent ce
+choix dans la cible canonique ; la [fiche générée](iteration-developpement.md)
+l'affiche. La lune, le routage et le dossier ne sont pas encore créés ni qualifiés.
+L'espace client o2switch affiche l'écran de connexion dans les surfaces de ce chat.
+
 ## Informations à établir
 | Élément | État observé | Action nécessaire |
 |---|---|---|
 | Hébergeur et destination | o2switch, préproduction dédiée choisie | Qualifier une cible distincte des autres applications |
-| URL exacte et certificat | TBD | Fournir le sous-domaine voulu, vérifier DNS/HTTPS et routage |
+| URL exacte et certificat | Adresse demandée consignée ; DNS/HTTPS et routage non vérifiés | Créer et qualifier le sous-domaine retenu après vérification de la lune |
 | Répertoire cible réel | TBD | Vérifier le document root et sa séparation du site public |
 | Compte/mode d'accès | TBD | Identifier accès cPanel/SSH et chemin autorisé, sans valeur de secret dans Git |
 | Protection de consultation | TBD, sas CONNECT absent | Définir et vérifier accès privé/CONNECT avant une consultation distante |
@@ -40,8 +46,9 @@ la protection de la préproduction doit être réellement définie avant publica
 ## Suivi et prochaine action
 Les champs machine-readable de la cible restent dans `developmentWorkflow.targets`.
 Cette fiche décrit leur qualification ; elle ne maintient pas une deuxième liste de
-statuts. Prochaine action : préciser URL/répertoire, accès et protection, puis préparer
-le lot CONNECT et la procédure correspondante. Exécuter le contrôleur du skill sur
+statuts. Prochaine action : se connecter à o2switch, vérifier la disponibilité de la
+lune gratuite, puis qualifier le sous-domaine demandé, le répertoire et la protection.
+Préparer ensuite le lot CONNECT et la procédure correspondante. Exécuter le contrôleur du skill sur
 les preuves actualisées ; obtenir ensuite l'accord exact avant l'action distante.
 
 Le lot local et sa répétition de restauration sont consignés dans

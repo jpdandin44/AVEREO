@@ -39,6 +39,8 @@ def iteration_view(data):
     if handoff.get('status') == 'resumed_on_user_request':
         session_notice = 'Reprise demandée par le responsable dans '+handoff['destinationProject']+' le '+handoff['resumedAt']+'.'
     preparation = flow.get('preproductionPreparation')
+    requested_address = flow['targets']['preproduction'].get('requestedAddress')
+    target_preference = ('\nAdresse demandée : `'+requested_address+'`. Le responsable privilégie une lune gratuite si disponible ; disponibilité, création, routage et accès privés restent à vérifier.\n') if requested_address else ''
     preparation_md = ''
     if preparation:
         preparation_labels = {
@@ -70,6 +72,8 @@ Travail actuel : **{active_stage} — {labels.get(flow['status'], flow['status']
 
 Parcours formel : **phase {formal_phase['id']} — {formal_phase['title']}**, {data['statusLabels'][formal_phase['status']].lower()}.
 {review_notice} Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
+
+{target_preference}
 
 ## Itération GitHub et cockpit
 

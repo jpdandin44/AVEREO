@@ -325,6 +325,10 @@
     {
       "date": "2026-10-03",
       "event": "PR nº74 publiée en brouillon pour la préparation locale de préproduction ; checklist humaine décochée, sans merge ni livraison distante. Observations datées dans le bloc de préparation."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Le responsable retient l’adresse de préproduction proposée et privilégie une lune gratuite si disponible. Préférence enregistrée ; disponibilité, création et accès privé non qualifiés, écran de connexion o2switch constaté."
     }
   ],
   "reviewEvents": [],
@@ -440,7 +444,15 @@
         "selectedAt": "2026-10-03T12:52:58+00:00",
         "selectionReference": "Réponse directe du responsable : Préproduction dédiée sur o2switch, 2026-10-03",
         "address": null,
-        "directory": null
+        "directory": null,
+        "requestedAddress": "https://passeport-immo-preprod.avereo.fr",
+        "hostingPreference": {
+          "kind": "free_moon_if_available",
+          "availability": "not_verified",
+          "selectedAt": "2026-10-03T19:35:00+02:00",
+          "selectionReference": "Réponse directe du responsable dans ce chat : Oui, lune gratuite si disponible.",
+          "accessObservation": "L’espace client o2switch présente l’écran de connexion ; aucune session cPanel authentifiée accessible dans ce chat."
+        }
       },
       "production": {
         "id": null,
@@ -563,7 +575,7 @@
       "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
       "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
     ],
-    "nextAction": "Fournir le sous-domaine et le dossier o2switch ; qualifier accès, protection et récupération avant l’accord de préproduction.",
+    "nextAction": "Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -582,7 +594,7 @@
       },
       "preproduction": {
         "status": "blocked",
-        "nextAction": "Fournir le sous-domaine et le dossier o2switch ; qualifier accès, protection et récupération avant l’accord de préproduction."
+        "nextAction": "Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée."
       },
       "production": {
         "status": "blocked",
@@ -690,7 +702,7 @@
       "status": "prepared_local",
       "observedAt": "2026-10-03T16:56:55+00:00",
       "workflow": "workflows/preparer-preproduction.md",
-      "nextAction": "Qualifier URL, répertoire, accès et protection sur la cible o2switch, puis préparer l’accord exact.",
+      "nextAction": "Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée.",
       "publication": {
         "status": "published_draft",
         "branch": "feat/passeport-immo-preproduction",
@@ -875,7 +887,7 @@
     "closedAt": "2026-10-03T17:14:44+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
-    "nextAction": "Examiner la PR de préparation et ses contrôles ; choisir et qualifier la cible dédiée o2switch avant l’accord d’installation.",
+    "nextAction": "Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée.",
     "resumedAt": "2026-10-03T19:26:15+02:00",
     "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
   }

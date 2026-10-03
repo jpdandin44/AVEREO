@@ -26,9 +26,11 @@ observation GitHub et les preuves de publication sont enregistrées dans
 `developmentWorkflow.preproductionPreparation.publication`, puis affichées par
 la fiche générée. Le candidat métier, les validations de phase et les accords
 restent ceux du suivi existant. Cible o2switch et accès privés restent à préciser.
-Le sous-domaine et le dossier dédié peuvent être créés dans le compte actuel ou
-dans une lune gratuite disponible ; le responsable est consulté sur ce choix.
-La session cPanel n'est pas accessible depuis les surfaces disponibles de ce chat.
+Le responsable retient le sous-domaine proposé et privilégie une lune gratuite si
+disponible. L'adresse demandée et cette préférence sont dans
+`developmentWorkflow.targets.preproduction`, affichées dans la fiche générée.
+L'espace client o2switch présente l'écran de connexion ; disponibilité de la lune,
+création du sous-domaine et qualification privée restent à réaliser après connexion.
 
 ## Historique de clôture avant cette reprise
 

@@ -52,3 +52,7 @@ Reprise explicitement demandée dans le nouveau chat AVEREO_2 : clone et changem
 conservés, disponibilité locale contrôlée, tests de préparation et parité réussis.
 Le suivi garde la clôture antérieure et affiche la reprise ; la publication du lot
 est tracée séparément du candidat métier et des décisions humaines.
+
+Préférence d'hébergement retenue par le responsable : sous-domaine de test proposé
+et lune gratuite si disponible. Choix enregistré dans le suivi ; l'accès o2switch
+reste sur l'écran de connexion, sans création ni installation distante.

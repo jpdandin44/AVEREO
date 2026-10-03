@@ -42,3 +42,8 @@ Le responsable choisit une préproduction dédiée sur o2switch. Cette orientati
 rattache la préparation à cet hébergeur ; elle ne qualifie aucune adresse,
 aucun accès ni aucune permission de déploiement. Les valeurs observées restent
 dans le suivi canonique, les champs à établir dans la fiche de qualification.
+
+Dans le chat de reprise, le responsable retient l'adresse de test proposée et
+privilégie une lune gratuite si disponible, pour disposer d'un espace séparé.
+Cette préférence conditionnelle reste dans la cible canonique ; la disponibilité
+et l'installation doivent être vérifiées après connexion à o2switch.
