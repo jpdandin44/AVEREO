@@ -12,6 +12,66 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Reprise demandée dans AVEREO_2
+
+Le 2026-10-03, le responsable demande explicitement de reprendre le fichier et
+de lancer la reprise de Passeport Immo dans ce nouveau chat. Le clone existant
+et les modifications de préparation sont relus ; la branche dédiée est conservée.
+L'application et le cockpit répondent sur leurs ports locaux. La reprise est
+consignée dans `sessionHandoff`, en conservant la date de clôture précédente.
+
+Le lot est publié dans la [PR nº74 en brouillon](https://github.com/jpdandin44/AVEREO/pull/74),
+après contrôles locaux, sans merge ni installation distante de l'application. Son
+observation GitHub et les preuves de publication sont enregistrées dans
+`developmentWorkflow.preproductionPreparation.publication`, puis affichées par
+la fiche générée. Le candidat métier, les validations de phase et les accords
+restent ceux du suivi existant. L'accès privé de consultation reste à préciser.
+Le responsable retient le sous-domaine proposé et privilégie une lune gratuite si
+disponible. L'adresse demandée et cette préférence sont dans
+`developmentWorkflow.targets.preproduction`, affichées dans la fiche générée.
+Après correction de l'URL par le responsable, cPanel est accessible et authentifié.
+La lune préparée est constatée active, avec accès à son cPanel. Le diagnostic montre
+que Mon Univers Web bloque l'affichage dans un panneau étroit ; le test en largeur
+ordinateur fonctionne. Chrome n'est pas accessible aux outils de cette session.
+Après vérification de la restriction o2switch entre comptes, le responsable conserve
+l'adresse demandée sur le compte qui héberge `avereo.fr`, avec un dossier dédié protégé.
+La première session cPanel est invalidée au retour vers le compte parent. Après
+reconnexion du responsable, l'accès authentifié au compte parent est vérifié ; dossier
+dédié hors `public_html` et sous-domaine sont créés. Le seul fichier présent est le
+modèle `.htaccess` fermé, enregistré puis relu. Un certificat gratuit est simulé puis
+installé par validation DNS, sans retirer cette fermeture. L'adresse HTTPS affiche
+403 dans le navigateur ; Python valide le certificat et reçoit le même refus avec
+l'en-tête d'interdiction d'indexation. Aucun fichier applicatif n'est installé.
+Accès privé de test, récupération hébergée et lot CONNECT restent à qualifier.
+Les observations datées et la prochaine action sont dans
+la cible canonique et la [qualification](qualification-preproduction.md).
+
+## Historique de clôture avant cette reprise
+
+Le 2026-10-03, le responsable demande de documenter l'état puis de reprendre dans
+un nouveau chat du projet **AVEREO_2**, afin de séparer les contextes. Ce point est
+le relais du clone source ; le document de reprise du projet AVEREO_2 renvoie ici.
+La clôture précédente est conservée dans `sessionHandoff` du suivi canonique.
+La demande explicite du nouveau chat autorise la présente reprise ; elle ne
+constitue pas une validation de phase.
+
+À cette clôture, les modifications du lot étaient conservées localement sur
+`feat/passeport-immo-preproduction`, à partir de la fusion nº72. Aucun nouveau commit,
+push ou PR n'avait été créé pour ce lot. Une description de PR était seulement préparée dans
+`.local/preproduction-preparation/pr-body.md` et sa forme est contrôlée en mode
+prépublication, toutes les cases humaines décochées. Aucune CI distante de ce lot
+n'avait été observée. Les serveurs locaux de l'application et du cockpit restaient actifs
+à la clôture ; vérifier leur disponibilité lors de la reprise.
+
+Contrôles du lot : six tests de préparation, raccordement au contrat du cockpit,
+parité a/b/c+d, relecture du lot fermé, restauration locale, vues dérivées et
+cohérence documentaire réussis. Le contrôleur de passage refuse la préproduction
+pour les prérequis absents ; ce refus est attendu. La carte de la PR nº72 fusionnée
+est vérifiée à l'écran en phase 0. Les 33 documents et 98 liens locaux du sous-projet
+et des index racine sont vérifiés ; décisions, événements humains, statuts/dates de
+phase, candidat, cibles, accords et livraison restent conservés. Audit des autres
+applications et installation distante : non effectués.
+
 ## Disponible
 Prototype local React/Tailwind après phase 0, puis raccordement demandé au protocole
 GitHub/cockpit et correction PDF autorisée. Quatorze tests, build et parité a/b/c+d
@@ -22,7 +82,7 @@ La CI et le candidat local sont identiques octet par octet, manifeste et cinq as
 vérifiés. Consulter cette fiche pour les SHA et dates ; ils ne sont pas dupliqués ici.
 
 ## Git et périmètre
-Branche active : `feat/passeport-immo-suivi`, complément de pilotage post-fusion.
+Branche active : `feat/passeport-immo-preproduction`, préparation locale de préproduction.
 PR nº71 fusionnée par le responsable, observation vérifiée sur GitHub et dans main.
 Base du prototype : `f4695d662546fe7277bf3a50c8c975ce97e8b9a0`.
 Fusion observée dans main : `6399524cc0f92a90ab9c53c1990f07016e827775`.
@@ -40,14 +100,16 @@ phase 0 en cours, phase 1 formellement non commencée ; la copie locale reste
 disponible sous l'accord de session. La checklist GitHub humaine et la fusion valident le lot source nº71 ; les phases
 formelles et la recette détaillée restent distinctes. Aucun accord de déploiement,
 d'accès production ou d'ouverture n'a été acquis.
-Préproduction dédiée o2switch choisie ; adresse/répertoire et accès non déterminés.
+Préproduction dédiée o2switch choisie ; adresse demandée et stratégie de compte parent
+retenues. Sous-domaine et répertoire créés ; HTTPS et fermeture initiale vérifiés.
+L'accès privé utilisable par le responsable reste à configurer et vérifier.
 Préproduction et production : isolement/vacuité ou sauvegarde
 restaurée, intégration CONNECT et retour arrière à qualifier.
 
 ## Ouvrir et reprendre
 Application : `../start-local.cmd`, <http://127.0.0.1:5175/>, « Se connecter ».
 Cockpit Projet : `../start-review.cmd`, <http://127.0.0.1:5193/>.
-Dans phase 1, sélectionner le document « Itération GitHub et cockpit ».
+Dans phase 0 ou 1, sélectionner le document « Itération GitHub et cockpit ».
 Les deux services ont été lancés sur ce poste ; leurs instances peuvent être arrêtées
 par Ctrl+C dans leur terminal. Ne pas arrêter un service inconnu occupant le port.
 
@@ -84,3 +146,27 @@ Le protocole commun est désormais présent dans cette branche. Le paramètre du
 qui appelle son contrôleur est réaligné vers le skill utilisateur installé ; aucune
 copie supplémentaire de la procédure n'est créée. Les informations GitHub du rebase
 sont datées dans le suivi ; vérifier la tête de PR avant une décision.
+
+## Reprise après fusion de la PR nº72
+
+La fusion est vérifiée sur GitHub et dans `main`. La demande « continuer le
+développement » lance un lot de préparation locale de la préproduction dédiée.
+La [procédure de préparation](../workflows/preparer-preproduction.md) contrôle le
+candidat déjà identifié, crée une archive avec fermeture initiale de l'accès,
+relit ses fichiers et répète leur restauration dans un répertoire temporaire.
+Six tests couvrent les contrôles d'intégrité, les chemins et les liens symboliques.
+Les preuves et empreintes sont dans la fiche d'itération générée depuis le suivi.
+
+À cette étape de l'historique, le sous-domaine et le dossier o2switch sont demandés
+au responsable et restent inconnus. Leur création ultérieure est décrite au début
+de ce point de reprise. Aucun accès privé ni sauvegarde/restauration hébergée n'est qualifié ;
+aucune livraison distante n'est réalisée. La V1 statique, les décisions de phase
+et les assets du candidat sont conservés. Le lot CONNECT reste à définir et à
+autoriser séparément. Le plafond de ressources autorisé reste 20 % de la limite
+hebdomadaire ; l'usage du compte n'est pas une mesure attribuable à ce lot.
+
+Le responsable signale l'absence de la PR nº72 dans la vue. Le champ de suivi est
+réaligné sur `reviewFollowUps`, attendu par le moteur ; la carte complémentaire
+est rattachée à la phase 0. La fiche d'itération est disponible dès cette phase et
+indique le travail actuel ainsi que les validations formelles restant à consigner.
+La correction est vérifiée par le contrat du moteur et dans le navigateur.

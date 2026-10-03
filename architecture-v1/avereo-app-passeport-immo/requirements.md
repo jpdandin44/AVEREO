@@ -38,3 +38,12 @@ et suppression future du frontend historique. Questions Q01… dans le suivi.
 - E08 : appliquer le contrôleur du skill installé ; conserver les décisions antérieures.
 - E09 : qualifier la cible réelle et l'accord exact avant un passage distant.
 La correction PDF d est le seul nouvel écart fonctionnel autorisé dans cette itération.
+
+## Préparation de préproduction après fusion du suivi
+
+La demande de continuation du 2026-10-03 permet de préparer le lot local suivant.
+E10 : conserver le candidat identifié et refuser une archive ou un manifeste différents.
+E11 : préparer une fermeture initiale et vérifier sa prise en compte sur la cible réelle.
+E12 : distinguer récupération locale, récupération hébergée et accord d'installation.
+Les inconnues de cible et d'accès restent bloquantes ; le choix d'une préproduction
+ne constitue pas un accord de livraison distante.

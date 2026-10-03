@@ -45,6 +45,14 @@ partir du même JSON, plus les tableaux Markdown/HTML. Cette projection est déc
 comme livrable consultable dans la revue Projet sur 5193. Aucun second journal manuel.
 Le moteur Projet reste celui du monorepo ; les décisions restent humaines.
 
+Les revues complémentaires utilisent le champ `reviewFollowUps` défini par le
+[contrat du moteur](../../avereo-app-projet/api/revue-locale.md). Le champ antérieur
+`followUps` n'était pas lu par l'interface : il est corrigé pour afficher la PR
+nº72 dans la phase 0. La PR principale nº71 est conservée. La fiche d'itération
+est le premier document disponible dans cette phase ; son début distingue les
+travaux actuels des validations du parcours formel. `tests/check-cockpit.mjs`
+contrôle ce raccordement avec le normaliseur réellement utilisé par le moteur.
+
 ## Commandes qualifiées
 Depuis `frontend/` : `npm.cmd ci`, `npm.cmd test`, `npm.cmd run build`.
 Depuis le sous-projet :

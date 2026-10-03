@@ -30,6 +30,12 @@ Prochaine action : revue du candidat, puis qualification de la cible et du lot C
 Les trois étapes du protocole sont affichées sans modifier les statuts formels.
 
 La source du lot local est désormais fusionnée dans la PR nº71 après checklist humaine.
-La suite retenue est la qualification d'une préproduction dédiée o2switch ; l'adresse,
-les accès, la protection et la récupération restent à définir avant l'accord exact.
+La suite retenue est la qualification d'une préproduction dédiée o2switch. L'adresse,
+le dossier, le certificat et la fermeture initiale sont établis ; accès privé de test
+et récupération restent à définir avant l'accord exact d'installation du candidat.
 Les détails datés et les statuts sont conservés uniquement dans le suivi canonique.
+
+Après fusion du complément nº72, le lot courant prépare l'archive privée et la
+récupération locale. L'espace distant est créé et fermé ; qualification de l'accès
+privé, récupération hébergée et lot CONNECT précèdent l'installation de l'application.
+Le suivi conserve les preuves datées et la prochaine action.

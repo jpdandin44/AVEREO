@@ -20,7 +20,7 @@ Mise à jour : **2026-10-03**. **0 phase livrée sur 6 ; 0 phase validée par le
 
 | Phase | Statut | Livrables | Livraison | Validation humaine |
 |---|---|---|---|---|
-| 0 — Reprise et état des lieux | En cours | [00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | — | Non acquise |
+| 0 — Reprise et état des lieux | En cours | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | — | Non acquise |
 | 1 — Reprise à l’identique | Non commencée | [01-reprise-identique.md](01-reprise-identique.md)<br>[iteration-developpement.md](iteration-developpement.md) | — | Non acquise |
 | 2 — Intégration CONNECT | Non commencée | `02-integration-connect.md` (prévu) | — | Non acquise |
 | 3 — Préproduction | Non commencée | `03-preproduction.md` (prévu)<br>`deployment.md` (prévu) | — | Non acquise |
@@ -49,9 +49,25 @@ Aucune décision en attente.
 | Q08 | Faut-il corriger le placement conditionnel des hooks de la fenêtre bien ? | Placement conditionnel conservé ; aucune erreur reproduite sur création et édition locales, couverture de parcours limitée. | Recetter les autres parcours avant un éventuel correctif distinct. |
 <!-- END GENERATED: suivi-chantier.json -->
 
+## Où en est le développement ?
+
+Travail actuel : **Préproduction — Bloquée**.
+Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.
+
+Reprise demandée par le responsable dans AVEREO_2 le 2026-10-03T19:26:15+02:00.
+
+Parcours formel : **phase 0 — Reprise et état des lieux**, en cours.
+Validation formelle restant à consigner : phase 0, phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
+
+
+Adresse créée : `https://passeport-immo-preprod.avereo.fr`. Dossier dédié : `/home/daje3540/passeport-immo-preprod.avereo.fr/public` dans le compte parent. La lune gratuite `sc4daje3540` reste distincte de cette cible.
+
+Certificat installé ; adresse HTTPS contrôlée avec accès refusé (403). Aucun fichier applicatif installé. Accès privé de consultation et récupération hébergée restent à qualifier.
+
+
 ## Itération GitHub et cockpit
 
-**passeport-immo-2026-10-03** — Rattacher le prototype au protocole GitHub/cockpit et corriger la page blanche PDF.
+**passeport-immo-2026-10-03** — Qualifier et préparer la préproduction privée du prototype Passeport Immo après fusion du lot local et de son suivi.
 
 Responsable : jpdandin. Étape : preproduction. État : Bloquée.
 
@@ -60,7 +76,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées. |
-| Préproduction | Bloquée | Préparer la cible dédiée o2switch : adresse, accès, protection et récupération ; aucun déploiement engagé. |
+| Préproduction | Bloquée | Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -69,6 +85,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - SHA-256 de l'archive : `84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab`.
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/71).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
+- État du complément : Fusionnée ; observation : 2026-10-03T16:56:55+00:00.
 - Dernière observation GitHub : 2026-10-03T12:52:58+00:00.
 - Revue humaine de la source GitHub : Confirmée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
@@ -95,11 +112,11 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- o2switch choisi ; adresse, répertoire, accès et isolation de la cible dédiée non qualifiés.
+- Sous-domaine et dossier créés, certificat installé et fermeture 403 vérifiée en HTTPS ; accès privé de consultation et récupération hébergée non qualifiés.
 - Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
 - Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
 
-Prochaine action : Préciser la cible dédiée o2switch, ses accès et sa protection, puis préparer le lot CONNECT et l’accord de déploiement du candidat exact.
+Prochaine action : Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.
 
 ### Accords et livraison
 
@@ -112,12 +129,30 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 - Intégration CONNECT après accord sur les fichiers concernés.
 - Partage sécurisé et stockage centralisé à spécifier à la demande des clients.
 
+### Préparation locale de préproduction
+
+- État : Préparée sur le poste ; observation : 2026-10-03T16:56:55+00:00.
+- Empreinte du lot fermé : `ad0f6ab22fc6c117107c78c0f7b881e4b34faa1a98b62435b0fcbe7a9969804a`.
+- Assets du candidat conservés : Oui.
+- Relecture de l'archive : Réussie.
+- Restauration : Réussie sur des fichiers temporaires locaux ; cible hébergée : Non vérifiée.
+- Livraison distante : Non effectuée.
+- PR de préparation : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/74).
+
+Cette préparation ne qualifie ni la cible ni l'accès privé. La récupération locale est distincte d'une sauvegarde restaurée de l'hébergement.
+
 
 ## Livrables attendus par phase
 
 Description issue du suivi JSON ; disponibilité vérifiée lors de la génération.
 
 ### Phase 0 — Reprise et état des lieux
+
+**Itération GitHub et cockpit** — Document disponible (`iteration-developpement.md`).
+
+Projection générée du bloc canonique developmentWorkflow.
+
+- Candidat, PR, contrôles datés, blocages et prochaine action.
 
 **00 etat des lieux** — Document disponible (`00-etat-des-lieux.md`).
 

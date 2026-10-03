@@ -38,3 +38,41 @@ leurs refus correspondent aux cibles, accords et preuves de récupération manqu
 PR nº72 rebasée sans conflit après fusion du protocole commun nº73. Contenu des deux
 commits de suivi préservé ; documentation et paramètre local raccordés à la source
 commune. Le candidat nº71, les statuts formels et les accords humains sont conservés.
+
+Après signalement du responsable, champ de revues complémentaires corrigé selon
+le contrat réel du cockpit : PR nº72 fusionnée visible en phase 0, fiche d'itération
+proposée dès cette phase et état réel de préparation de préproduction explicite.
+Contrôle automatique de raccordement ajouté ; aucun accord de phase déduit du merge.
+
+Préparation privée après fusion nº72 : archive vérifiée du même candidat avec
+fermeture initiale, restauration sur fichiers locaux et six tests d'intégrité/version/
+chemins, exécutés par la CI Passeport Immo. Cible et accès distants restent non qualifiés.
+
+Reprise explicitement demandée dans le nouveau chat AVEREO_2 : clone et changements
+conservés, disponibilité locale contrôlée, tests de préparation et parité réussis.
+Le suivi garde la clôture antérieure et affiche la reprise ; la publication du lot
+est tracée séparément du candidat métier et des décisions humaines.
+
+Préférence d'hébergement retenue par le responsable : sous-domaine de test proposé
+et lune gratuite si disponible. Choix enregistré dans le suivi ; l'accès o2switch
+reste sur l'écran de connexion, sans création ni installation distante.
+
+Après correction de l'URL et connexion du responsable : session cPanel vérifiée,
+cinq lunes gratuites libres constatées et formulaire d'activation préparé. La saisie
+et la validation du nouveau mot de passe sont laissées au responsable ; aucun
+compte, sous-domaine ou déploiement déclaré comme créé.
+
+Diagnostic du navigateur : affichage Mon Univers Web bloqué à 817 pixels, utilisable
+à 1280 pixels ; Chrome non exposé aux outils. Lune préparée constatée active, accès
+à son cPanel vérifié. Restriction des sous-domaines entre comptes confirmée chez
+o2switch ; le responsable conserve l'adresse demandée sur le compte parent, avec
+un dossier dédié protégé. Suivi et vues actualisés ; reconnexion cPanel requise avant
+création du dossier et du sous-domaine.
+
+Après reconnexion du responsable : sous-domaine demandé et dossier dédié hors
+`public_html` créés dans le compte parent. Modèle `.htaccess` fermé enregistré puis
+relu ; certificat gratuit simulé puis installé par validation DNS. Adresse HTTPS
+contrôlée dans le navigateur et avec le contexte SSL par défaut de Python : accès
+refusé 403, en-tête d'interdiction d'indexation présent. L'application n'est pas
+installée ; accès privé de test et récupération restent à qualifier. Observations,
+documentation et vues actualisées, candidat et décisions humaines conservés.

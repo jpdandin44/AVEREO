@@ -33,7 +33,8 @@ Serveur Vite sur 127.0.0.1:5175 ; build dans `frontend/dist/`.
 Le modèle Docker contient un étage Node 22 pour tests/build puis Nginx pour les assets.
 Configuration Compose vérifiée ; exécution Docker non vérifiée.
 La session admin/pro et l'abonnement sont simulés. Aucun service serveur métier
-ni API client/document n'est présent. Le sas CONNECT et o2switch restent prévus.
+ni API client/document n'est présent. Le sas CONNECT reste prévu ; l'espace o2switch
+est créé et fermé, sans installation de l'application.
 
 ## Suivi indépendant de l'application
 AVEREO Projet existant lit `docs/suivi-chantier.json` et les livrables déclarés.
@@ -58,3 +59,20 @@ et les empreintes. Aucun workflow de déploiement Passeport Immo n'est configur�
 La pagination compare le débordement au pas d'un pixel du canvas. Une dernière ligne
 blanche issue de l'arrondi A4 ne crée plus de page ; une ligne avec du contenu conserve
 la page. Le téléchargement reste en image, comme le prototype historique.
+
+## Préparation privée de livraison
+
+`workflows/prepare-preproduction.py` lit le candidat canonique, son archive et son
+manifeste. Le lot hors Git contient les mêmes assets et un `.htaccess` initialement
+fermé. Version et empreintes sont contrôlées ; la restauration est répétée uniquement
+sur des fichiers temporaires locaux. La [procédure](workflows/preparer-preproduction.md)
+précise la qualification restante. Aucun transport distant ni identité CONNECT ajouté.
+
+La cible o2switch retenue est un dossier dédié protégé dans le compte du domaine
+parent : l'hébergeur impose ce compte aux sous-domaines. Le dossier, son rattachement
+et le certificat gratuit sont créés. Le modèle `workflows/preproduction.htaccess`
+est le seul fichier installé : il refuse toute consultation et interdit l'indexation.
+L'adresse HTTPS reçoit 403 avec validation TLS active ; aucun isolement entre comptes
+n'est déclaré pour cette cible. Accès privé de test et récupération restent à qualifier.
+Les observations et valeurs exactes restent dans le suivi canonique et la
+[fiche de qualification](docs/qualification-preproduction.md).

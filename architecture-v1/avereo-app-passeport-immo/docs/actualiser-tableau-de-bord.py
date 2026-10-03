@@ -27,7 +27,71 @@ def iteration_view(data):
     gates = '\n'.join('- '+{'preproduction': 'Préproduction', 'production': 'Production', 'close': 'Clôture'}[gate['gate']] + ' : ' + ('conditions remplies' if gate['declaredEvidenceConsistent'] else 'passage refusé') + f" ({gate['observedAt']})." for gate in flow.get('gates', [])) or 'À contrôler.'
     blockers = '\n'.join('- '+item for item in flow['blockers']) or 'Aucun blocage déclaré.'
     pr = github.get('prUrl') or 'Non publiée'
-    body = f"""## Itération GitHub et cockpit
+    follow_up = github.get('followUpObservation', {})
+    follow_up_state = {'open': 'Ouverte', 'merged': 'Fusionnée', 'closed': 'Fermée sans fusion'}.get(follow_up.get('state'), 'Non observée')
+    formal_phase = next(phase for phase in data['phases'] if phase['id'] == data['currentPhase'])
+    active_stage = dict(stages).get(flow['stage'], flow['stage'])
+    active_action = flow['stages'][flow['stage']]['nextAction']
+    missing_reviews = [f"phase {phase['id']}" for phase in data['phases'] if phase['id'] in (0, 1) and phase['status'] != 'validated']
+    review_notice = ('Validation formelle restant à consigner : '+', '.join(missing_reviews)+'.') if missing_reviews else 'Phases 0 et 1 validées dans le suivi.'
+    handoff = data.get('sessionHandoff', {})
+    session_notice = ('Session clôturée à la demande du responsable : reprise prévue dans un nouveau chat du projet '+handoff['destinationProject']+'. Aucun travail ne reprend automatiquement.') if handoff.get('status') == 'closed_on_user_request' else ''
+    if handoff.get('status') == 'resumed_on_user_request':
+        session_notice = 'Reprise demandée par le responsable dans '+handoff['destinationProject']+' le '+handoff['resumedAt']+'.'
+    preparation = flow.get('preproductionPreparation')
+    requested_address = flow['targets']['preproduction'].get('requestedAddress')
+    target_preference = ('\nAdresse demandée : `'+requested_address+'`. Le responsable privilégie une lune gratuite si disponible ; disponibilité, création, routage et accès privés restent à vérifier.\n') if requested_address else ''
+    hosting = flow['targets']['preproduction'].get('hostingPreference', {})
+    if requested_address and hosting.get('activationStatus') == 'awaiting_user_password':
+        target_preference = '\nAdresse demandée : `'+requested_address+'`. Lune gratuite `'+hosting['preparedMoon']+'` disponible ; formulaire d’activation ouvert. Le responsable doit saisir et valider son nouveau mot de passe dans cPanel. Rattachement du sous-domaine, dossier et accès privé restent à vérifier.\n'
+    if requested_address and hosting.get('targetStrategy') == 'parent_domain_account_with_protected_directory':
+        target_preference = '\nAdresse demandée : `'+requested_address+'`. Le responsable retient le compte du domaine parent, avec un dossier dédié protégé. La lune gratuite `'+hosting['preparedMoon']+'` est active, distincte de cette cible. Création du sous-domaine, dossier et accès privé restent à qualifier.\n'
+        target = flow['targets']['preproduction']
+        provisioning = target.get('provisioning', {})
+        if provisioning.get('subdomainCreated') and provisioning.get('directoryCreated'):
+            certificate = provisioning.get('certificate', {})
+            protection = provisioning.get('protection', {})
+            target_preference = '\nAdresse créée : `'+target['address']+'`. Dossier dédié : `'+target['directory']+'` dans le compte parent. La lune gratuite `'+hosting['preparedMoon']+'` reste distincte de cette cible.\n'
+            if certificate.get('installation') == 'confirmed_in_cpanel' and protection.get('publicHttpsStatus') == 403:
+                target_preference += '\nCertificat installé ; adresse HTTPS contrôlée avec accès refusé (403). '
+                if provisioning.get('applicationFilesInstalled') is False:
+                    target_preference += 'Aucun fichier applicatif installé. '
+                target_preference += 'Accès privé de consultation et récupération hébergée restent à qualifier.\n'
+    preparation_md = ''
+    if preparation:
+        preparation_labels = {
+            'prepared_local': 'Préparée sur le poste',
+            'passed': 'Réussie',
+            'passed_local_files_only': 'Réussie sur des fichiers temporaires locaux',
+            'not_verified': 'Non vérifiée',
+            'not_performed': 'Non effectuée',
+        }
+        preparation_md = f"""### Préparation locale de préproduction
+
+- État : {preparation_labels.get(preparation['status'], preparation['status'])} ; observation : {preparation['observedAt']}.
+- Empreinte du lot fermé : `{preparation['bundleSha256']}`.
+- Assets du candidat conservés : {'Oui' if preparation['candidateAssetsUnchanged'] else 'Non'}.
+- Relecture de l'archive : {preparation_labels.get(preparation['archiveReadback'], preparation['archiveReadback'])}.
+- Restauration : {preparation_labels.get(preparation['restoreRehearsal'], preparation['restoreRehearsal'])} ; cible hébergée : {preparation_labels.get(preparation['hostedBackupRestore'], preparation['hostedBackupRestore'])}.
+- Livraison distante : {preparation_labels.get(preparation['remoteDelivery'], preparation['remoteDelivery'])}.
+- PR de préparation : {('[Ouvrir la PR]('+preparation['publication']['url']+')') if preparation.get('publication', {}).get('url') else 'Non publiée'}.
+
+Cette préparation ne qualifie ni la cible ni l'accès privé. La récupération locale est distincte d'une sauvegarde restaurée de l'hébergement.
+
+"""
+    body = f"""## Où en est le développement ?
+
+Travail actuel : **{active_stage} — {labels.get(flow['status'], flow['status'])}**.
+{active_action}
+
+{session_notice}
+
+Parcours formel : **phase {formal_phase['id']} — {formal_phase['title']}**, {data['statusLabels'][formal_phase['status']].lower()}.
+{review_notice} Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
+
+{target_preference}
+
+## Itération GitHub et cockpit
 
 **{flow['iterationId']}** — {flow['objective']}
 
@@ -45,6 +109,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - SHA-256 de l'archive : `{candidate.get('artifactSha256') or 'Non qualifié'}`.
 - PR : {'[Ouvrir la PR]('+pr+')' if pr.startswith('https://github.com/') else pr}.
 - Complément de suivi : {'[Ouvrir la PR de suivi]('+github['followUpPrUrl']+')' if github.get('followUpPrUrl', '').startswith('https://github.com/') else 'Aucun'}.
+- État du complément : {follow_up_state} ; observation : {follow_up.get('observedAt') or 'Non observée'}.
 - Dernière observation GitHub : {github.get('observedAt') or 'Non observé'}.
 - Revue humaine de la source GitHub : {'Confirmée' if github.get('sourceReviewVerified') else 'Non consignée'}.
 - Acceptation de l'archive exacte pour promotion : {'Vérifiée' if github['humanAcceptanceVerified'] else 'À consigner avant production'}.
@@ -78,10 +143,14 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 ### Suite proposée
 
 {chr(10).join('- '+str(item) for item in flow['nextIteration']) or 'À définir.'}
+
+{preparation_md}
 """
     stages_html = ''.join(f"<tr><td>{name}</td><td>{esc(labels.get(flow['stages'][key]['status'], flow['stages'][key]['status']))}</td><td>{esc(flow['stages'][key]['nextAction'])}</td></tr>" for key, name in stages)
-    page = f'<section><h2>Itération GitHub et cockpit</h2><p>{esc(flow["objective"])}</p><table><tr><th>Étape</th><th>État</th><th>Prochaine action</th></tr>{stages_html}</table><p>PR : {esc(pr)}</p><p>SHA source : <code>{esc(candidate.get("sourceSha") or "Non qualifié")}</code></p><p>Artefact : <code>{esc(candidate.get("artifactSha256") or "Non qualifié")}</code></p><h3>Blocages</h3><ul>{"".join("<li>"+esc(item)+"</li>" for item in flow["blockers"])}</ul><p>{esc(flow["nextAction"])}</p><p><a href="iteration-developpement.md">Fiche complète générée</a></p></section>'
-    return body, page
+    summary_html = f'<h2>Où en est le développement ?</h2><p>Travail actuel : <strong>{esc(active_stage)} — {esc(labels.get(flow["status"], flow["status"]))}</strong>.</p><p>{esc(active_action)}</p><p>{esc(session_notice)}</p><p>Parcours formel : phase {formal_phase["id"]} — {esc(formal_phase["title"])}. {esc(review_notice)}</p>'
+    follow_up_html = f'<p>PR de suivi : {esc(github.get("followUpPrUrl") or "Aucune")} — {esc(follow_up_state)}.</p>'
+    page = f'<section>{summary_html}<h2>Itération GitHub et cockpit</h2><p>{esc(flow["objective"])}</p><table><tr><th>Étape</th><th>État</th><th>Prochaine action</th></tr>{stages_html}</table><p>PR : {esc(pr)}</p>{follow_up_html}<p>SHA source : <code>{esc(candidate.get("sourceSha") or "Non qualifié")}</code></p><p>Artefact : <code>{esc(candidate.get("artifactSha256") or "Non qualifié")}</code></p><h3>Blocages</h3><ul>{"".join("<li>"+esc(item)+"</li>" for item in flow["blockers"])}</ul><p>{esc(flow["nextAction"])}</p><p><a href="iteration-developpement.md">Fiche complète générée</a></p></section>'
+    return body.rstrip()+'\n', page
 
 
 def main():
