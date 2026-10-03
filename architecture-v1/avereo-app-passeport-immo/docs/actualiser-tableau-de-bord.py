@@ -46,6 +46,17 @@ def iteration_view(data):
         target_preference = '\nAdresse demandée : `'+requested_address+'`. Lune gratuite `'+hosting['preparedMoon']+'` disponible ; formulaire d’activation ouvert. Le responsable doit saisir et valider son nouveau mot de passe dans cPanel. Rattachement du sous-domaine, dossier et accès privé restent à vérifier.\n'
     if requested_address and hosting.get('targetStrategy') == 'parent_domain_account_with_protected_directory':
         target_preference = '\nAdresse demandée : `'+requested_address+'`. Le responsable retient le compte du domaine parent, avec un dossier dédié protégé. La lune gratuite `'+hosting['preparedMoon']+'` est active, distincte de cette cible. Création du sous-domaine, dossier et accès privé restent à qualifier.\n'
+        target = flow['targets']['preproduction']
+        provisioning = target.get('provisioning', {})
+        if provisioning.get('subdomainCreated') and provisioning.get('directoryCreated'):
+            certificate = provisioning.get('certificate', {})
+            protection = provisioning.get('protection', {})
+            target_preference = '\nAdresse créée : `'+target['address']+'`. Dossier dédié : `'+target['directory']+'` dans le compte parent. La lune gratuite `'+hosting['preparedMoon']+'` reste distincte de cette cible.\n'
+            if certificate.get('installation') == 'confirmed_in_cpanel' and protection.get('publicHttpsStatus') == 403:
+                target_preference += '\nCertificat installé ; adresse HTTPS contrôlée avec accès refusé (403). '
+                if provisioning.get('applicationFilesInstalled') is False:
+                    target_preference += 'Aucun fichier applicatif installé. '
+                target_preference += 'Accès privé de consultation et récupération hébergée restent à qualifier.\n'
     preparation_md = ''
     if preparation:
         preparation_labels = {

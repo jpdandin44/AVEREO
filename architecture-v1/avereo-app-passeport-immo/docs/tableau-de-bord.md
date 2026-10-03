@@ -52,7 +52,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — Bloquée**.
-Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.
+Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-03T19:26:15+02:00.
 
@@ -60,7 +60,9 @@ Parcours formel : **phase 0 — Reprise et état des lieux**, en cours.
 Validation formelle restant à consigner : phase 0, phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
 
 
-Adresse demandée : `https://passeport-immo-preprod.avereo.fr`. Le responsable retient le compte du domaine parent, avec un dossier dédié protégé. La lune gratuite `sc4daje3540` est active, distincte de cette cible. Création du sous-domaine, dossier et accès privé restent à qualifier.
+Adresse créée : `https://passeport-immo-preprod.avereo.fr`. Dossier dédié : `/home/daje3540/passeport-immo-preprod.avereo.fr/public` dans le compte parent. La lune gratuite `sc4daje3540` reste distincte de cette cible.
+
+Certificat installé ; adresse HTTPS contrôlée avec accès refusé (403). Aucun fichier applicatif installé. Accès privé de consultation et récupération hébergée restent à qualifier.
 
 
 ## Itération GitHub et cockpit
@@ -74,7 +76,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées. |
-| Préproduction | Bloquée | Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat. |
+| Préproduction | Bloquée | Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -110,11 +112,11 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- Compte parent retenu après vérification de la restriction des sous-domaines entre comptes. Session cPanel à reconnecter ; sous-domaine, dossier protégé et qualification distante restent à réaliser.
+- Sous-domaine et dossier créés, certificat installé et fermeture 403 vérifiée en HTTPS ; accès privé de consultation et récupération hébergée non qualifiés.
 - Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
 - Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
 
-Prochaine action : Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.
+Prochaine action : Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.
 
 ### Accords et livraison
 

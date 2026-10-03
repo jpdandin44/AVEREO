@@ -68,3 +68,11 @@ Diagnostic du navigateur : affichage Mon Univers Web bloqué à 817 pixels, util
 o2switch ; le responsable conserve l'adresse demandée sur le compte parent, avec
 un dossier dédié protégé. Suivi et vues actualisés ; reconnexion cPanel requise avant
 création du dossier et du sous-domaine.
+
+Après reconnexion du responsable : sous-domaine demandé et dossier dédié hors
+`public_html` créés dans le compte parent. Modèle `.htaccess` fermé enregistré puis
+relu ; certificat gratuit simulé puis installé par validation DNS. Adresse HTTPS
+contrôlée dans le navigateur et avec le contexte SSL par défaut de Python : accès
+refusé 403, en-tête d'interdiction d'indexation présent. L'application n'est pas
+installée ; accès privé de test et récupération restent à qualifier. Observations,
+documentation et vues actualisées, candidat et décisions humaines conservés.

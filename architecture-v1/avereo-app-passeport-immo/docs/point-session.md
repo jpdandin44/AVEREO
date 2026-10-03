@@ -21,11 +21,11 @@ L'application et le cockpit répondent sur leurs ports locaux. La reprise est
 consignée dans `sessionHandoff`, en conservant la date de clôture précédente.
 
 Le lot est publié dans la [PR nº74 en brouillon](https://github.com/jpdandin44/AVEREO/pull/74),
-après contrôles locaux, sans merge ni installation distante. Son
+après contrôles locaux, sans merge ni installation distante de l'application. Son
 observation GitHub et les preuves de publication sont enregistrées dans
 `developmentWorkflow.preproductionPreparation.publication`, puis affichées par
 la fiche générée. Le candidat métier, les validations de phase et les accords
-restent ceux du suivi existant. Cible o2switch et accès privés restent à préciser.
+restent ceux du suivi existant. L'accès privé de consultation reste à préciser.
 Le responsable retient le sous-domaine proposé et privilégie une lune gratuite si
 disponible. L'adresse demandée et cette préférence sont dans
 `developmentWorkflow.targets.preproduction`, affichées dans la fiche générée.
@@ -35,8 +35,15 @@ que Mon Univers Web bloque l'affichage dans un panneau étroit ; le test en larg
 ordinateur fonctionne. Chrome n'est pas accessible aux outils de cette session.
 Après vérification de la restriction o2switch entre comptes, le responsable conserve
 l'adresse demandée sur le compte qui héberge `avereo.fr`, avec un dossier dédié protégé.
-La session cPanel est ensuite invalidée au retour vers le compte parent ; reconnexion
-requise avant création. Les observations datées et la prochaine action sont dans
+La première session cPanel est invalidée au retour vers le compte parent. Après
+reconnexion du responsable, l'accès authentifié au compte parent est vérifié ; dossier
+dédié hors `public_html` et sous-domaine sont créés. Le seul fichier présent est le
+modèle `.htaccess` fermé, enregistré puis relu. Un certificat gratuit est simulé puis
+installé par validation DNS, sans retirer cette fermeture. L'adresse HTTPS affiche
+403 dans le navigateur ; Python valide le certificat et reçoit le même refus avec
+l'en-tête d'interdiction d'indexation. Aucun fichier applicatif n'est installé.
+Accès privé de test, récupération hébergée et lot CONNECT restent à qualifier.
+Les observations datées et la prochaine action sont dans
 la cible canonique et la [qualification](qualification-preproduction.md).
 
 ## Historique de clôture avant cette reprise
@@ -94,7 +101,8 @@ disponible sous l'accord de session. La checklist GitHub humaine et la fusion va
 formelles et la recette détaillée restent distinctes. Aucun accord de déploiement,
 d'accès production ou d'ouverture n'a été acquis.
 Préproduction dédiée o2switch choisie ; adresse demandée et stratégie de compte parent
-retenues. Répertoire, protection effective et accès distants non qualifiés.
+retenues. Sous-domaine et répertoire créés ; HTTPS et fermeture initiale vérifiés.
+L'accès privé utilisable par le responsable reste à configurer et vérifier.
 Préproduction et production : isolement/vacuité ou sauvegarde
 restaurée, intégration CONNECT et retour arrière à qualifier.
 
@@ -149,8 +157,9 @@ relit ses fichiers et répète leur restauration dans un répertoire temporaire.
 Six tests couvrent les contrôles d'intégrité, les chemins et les liens symboliques.
 Les preuves et empreintes sont dans la fiche d'itération générée depuis le suivi.
 
-Le sous-domaine et le dossier o2switch sont demandés au responsable et restent
-inconnus. Aucun accès privé ni sauvegarde/restauration hébergée n'est qualifié ;
+À cette étape de l'historique, le sous-domaine et le dossier o2switch sont demandés
+au responsable et restent inconnus. Leur création ultérieure est décrite au début
+de ce point de reprise. Aucun accès privé ni sauvegarde/restauration hébergée n'est qualifié ;
 aucune livraison distante n'est réalisée. La V1 statique, les décisions de phase
 et les assets du candidat sont conservés. Le lot CONNECT reste à définir et à
 autoriser séparément. Le plafond de ressources autorisé reste 20 % de la limite

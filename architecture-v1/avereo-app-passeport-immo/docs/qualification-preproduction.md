@@ -40,19 +40,49 @@ Le responsable choisit donc de conserver l'adresse demandée dans le compte qui
 héberge `avereo.fr`, avec un dossier dédié et protégé. La lune active est conservée ;
 elle n'est pas retenue comme cible de cette adresse.
 
-Le retour au compte principal rencontre un jeton de session invalide, puis cPanel
+Lors du premier retour au compte principal, un jeton de session est invalide, puis cPanel
 demande une reconnexion pour cookie invalide. Le formulaire de connexion est laissé
-au responsable. Aucun dossier ni sous-domaine n'est créé pendant ce contrôle.
+au responsable. Aucun dossier ni sous-domaine n'est créé pendant ce premier contrôle.
+
+## Création et contrôle de fermeture après reconnexion
+
+Après la nouvelle connexion du responsable, le compte parent authentifié est
+accessible. Le dossier dédié est créé hors `public_html`, initialement vide, puis
+son enfant `public` reçoit uniquement le modèle `workflows/preproduction.htaccess`.
+Le fichier est enregistré puis relu après rechargement de l'éditeur. Le sous-domaine
+est ensuite créé vers ce dossier ; cPanel affiche la confirmation de création.
+Les valeurs exactes et observations datées sont dans la cible canonique, présentées
+par la [fiche générée](iteration-developpement.md). Les confirmations visuelles
+restent dans `.local/hosting-qualification/`, hors Git et sans jeton de session dans le suivi.
+
+Le contrôle HTTP dirigé explicitement vers l'IP constatée dans cPanel reçoit 403,
+avec `X-Robots-Tag: noindex, nofollow, noarchive`. Un certificat Let's Encrypt gratuit
+est simulé puis installé par validation `dns-01`, pour le seul nom demandé, sans
+wildcard ni ajout des hôtes cPanel. La fermeture du dossier reste en place.
+
+L'adresse HTTPS est ensuite ouverte normalement dans le navigateur : page 403,
+sans alerte de sécurité. Un contrôle Python avec `ssl.create_default_context()`
+valide le certificat et reçoit aussi 403 avec le même en-tête. Aucune validation
+TLS n'est désactivée. La résolution DNS était initialement absente sur le poste et
+les requêtes directes vers o2switch/1.1.1.1 expiraient ; l'accès par le nom demandé
+est ensuite constaté. Cela ne mesure pas la propagation dans tous les résolveurs.
+`curl` avec Schannel conserve une erreur de confiance sur ce poste ; cette limite
+de l'outil est distinguée des contrôles HTTPS réussis. Aucun réglage global de
+confiance du poste n'est modifié.
+
+Cette fermeture protège l'espace de toute consultation ; elle ne fournit pas
+encore un accès privé utilisable par le responsable. Aucun asset du candidat,
+compte applicatif ou CONNECT n'est installé.
 
 ## Informations à établir
 | Élément | État observé | Action nécessaire |
 |---|---|---|
-| Hébergeur et destination | o2switch ; compte parent choisi, lune active distincte de la cible | Reconnecter le compte parent puis qualifier le dossier dédié |
-| URL exacte et certificat | Adresse demandée consignée ; DNS/HTTPS et routage non vérifiés | Créer et qualifier le sous-domaine dans le compte parent |
-| Répertoire cible réel | TBD | Vérifier le document root et sa séparation du site public |
-| Compte/mode d'accès | Compte parent identifié ; session à reconnecter | Vérifier l'accès authentifié avant création, sans valeur de secret dans Git |
-| Protection de consultation | TBD, sas CONNECT absent | Définir et vérifier accès privé/CONNECT avant une consultation distante |
-| Contenu existant / isolation | TBD | Prouver vacuité et isolation, ou sauvegarde restaurée du contenu présent |
+| Hébergeur et destination | o2switch ; compte parent authentifié, lune active distincte de la cible | Qualifier les accès et la récupération propres à cette cible |
+| URL exacte et certificat | Sous-domaine créé ; certificat installé et HTTPS vérifié par le nom demandé | Recontrôler lors de la future installation et de la recette |
+| Répertoire cible réel | Document root dédié créé hors `public_html`, déclaré dans le suivi | Conserver la séparation des chemins lors de l'installation |
+| Compte/mode d'accès | Gestionnaire de fichiers et création de sous-domaines accessibles | Qualifier le mode de livraison et les droits, sans valeur de secret dans Git |
+| Protection de consultation | Fermeture totale vérifiée en HTTPS ; sas CONNECT absent | Définir l'accès privé de test, faire saisir les nouveaux identifiants par le responsable puis contrôler les refus et accès autorisés |
+| Contenu existant / isolation | Dossier initialement vide ; seul `.htaccess` présent après préparation, compte partagé avec le domaine parent | Qualifier l'isolation et la récupération avant accord d'installation |
 | Retour arrière | Non testé | Préparer un retour au candidat précédent puis le répéter sur la cible dédiée |
 | Procédure/workflow Passeport Immo | Préparation locale disponible, installation distante non qualifiée | [Préparer le lot privé](../workflows/preparer-preproduction.md), puis adapter l'installation aux accès constatés |
 | Accord du candidat précis | Absent | Présenter URL, effet, SHA source et archive avant demander l'accord exact |
@@ -66,10 +96,9 @@ la protection de la préproduction doit être réellement définie avant publica
 ## Suivi et prochaine action
 Les champs machine-readable de la cible restent dans `developmentWorkflow.targets`.
 Cette fiche décrit leur qualification ; elle ne maintient pas une deuxième liste de
-statuts. Prochaine action : reconnecter le compte parent, préparer un dossier dédié
-fermé aux visiteurs, puis créer le sous-domaine vers ce dossier. Vérifier le répertoire,
-la protection effective, DNS/HTTPS et la récupération avant tout déploiement.
-Préparer ensuite le lot CONNECT et la procédure correspondante. Exécuter le contrôleur du skill sur
+statuts. Prochaine action : définir l'accès privé de test, qualifier la récupération
+et le lot CONNECT avant installation de l'application. Le sous-domaine existe et
+l'espace est fermé à tous. Exécuter le contrôleur du skill sur
 les preuves actualisées ; obtenir ensuite l'accord exact avant l'action distante.
 
 Le lot local et sa répétition de restauration sont consignés dans

@@ -337,6 +337,10 @@
     {
       "date": "2026-10-03",
       "event": "Diagnostic navigateur : affichage o2switch bloqué par une largeur de 817 pixels, utilisable à 1280 pixels ; Chrome non exposé aux outils. Lune gratuite sc4daje3540 constatée active, avec accès à son compte. Restriction des sous-domaines entre comptes vérifiée chez o2switch ; le responsable retient l’adresse demandée sur le compte parent, dans un dossier dédié protégé. Reconnexion cPanel requise avant création ; aucun sous-domaine ni déploiement réalisé."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Après reconnexion du responsable : compte parent authentifié vérifié ; dossier dédié hors public_html créé avec le modèle .htaccess fermé, relu après enregistrement. Sous-domaine demandé créé ; certificat gratuit simulé puis installé par validation DNS. Adresse HTTPS vérifiée dans le navigateur et par Python avec validation TLS active : 403 et en-tête noindex. Aucun asset applicatif installé, aucun accord ou statut de phase modifié."
     }
   ],
   "reviewEvents": [],
@@ -441,43 +445,43 @@
     },
     "targets": {
       "preproduction": {
-        "id": null,
+        "id": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
         "ready": false,
         "isolated": false,
         "empty": false,
-        "evidence": null,
-        "observedAt": null,
+        "evidence": "docs/qualification-preproduction.md",
+        "observedAt": "2026-10-03T21:15:31+02:00",
         "provider": "o2switch",
         "purpose": "Préproduction dédiée",
         "selectedAt": "2026-10-03T12:52:58+00:00",
         "selectionReference": "Réponse directe du responsable : Préproduction dédiée sur o2switch, 2026-10-03",
-        "address": null,
-        "directory": null,
+        "address": "https://passeport-immo-preprod.avereo.fr",
+        "directory": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
         "requestedAddress": "https://passeport-immo-preprod.avereo.fr",
         "hostingPreference": {
           "kind": "free_moon_if_available",
           "availability": "free_moon_available",
           "selectedAt": "2026-10-03T19:35:00+02:00",
           "selectionReference": "Réponse directe du responsable dans ce chat : Oui, lune gratuite si disponible.",
-          "accessObservation": "Lune sc4daje3540 active et accès à son cPanel constatés. Après retour au compte principal, cPanel signale un jeton puis un cookie de session invalides et demande une reconnexion.",
+          "accessObservation": "Nouvelle session cPanel authentifiée vérifiée sur daje3540 ; dossier dédié hors public_html créé et sous-domaine rattaché au domaine parent avereo.fr.",
           "availableFreeMoons": 4,
           "activeMoons": 4,
           "includedFreeMoons": 8,
           "preparedMoon": "sc4daje3540",
           "activationStatus": "active",
-          "observedAt": "2026-10-03T20:50:33+02:00",
-          "evidence": "docs/qualification-preproduction.md ; captures locales de la lune active et du formulaire des sous-domaines hors Git.",
+          "observedAt": "2026-10-03T20:58:55+02:00",
+          "evidence": "docs/qualification-preproduction.md ; confirmations de création et de certificat conservées localement hors Git.",
           "credentialHandling": "Aucune valeur de secret saisie ou conservée par l’agent.",
           "moonHomeDirectory": "/home/sc4daje3540",
           "moonTechnicalDomain": "sc4daje3540.universe.wf",
           "moonUsedForTarget": false,
-          "accessStatus": "reauthentication_required",
+          "accessStatus": "authenticated_parent_account",
           "targetStrategy": "parent_domain_account_with_protected_directory",
           "targetAccount": "daje3540",
           "targetSelectedAt": "2026-10-03T20:50:33+02:00",
           "targetSelectionReference": "Réponse directe du responsable : Conserver passeport-immo-preprod.avereo.fr dans le compte qui héberge avereo.fr, avec un dossier dédié et protégé (recommandé).",
           "domainAttachment": {
-            "status": "parent_account_selected_creation_pending",
+            "status": "created_on_parent_account",
             "parentDomainAvailableOnMoon": false,
             "observedParentDomainsOnMoon": [
               "sc4daje3540.universe.wf"
@@ -490,6 +494,45 @@
             "result": "Interface Mon Univers Web bloquée par un message ordinateur à 817 pixels, liste des lunes accessible à 1280 pixels.",
             "chromeExposed": false
           }
+        },
+        "provisioning": {
+          "status": "created_closed_application_not_installed",
+          "observedAt": "2026-10-03T21:15:31+02:00",
+          "directoryCreated": true,
+          "initialDirectoryInventory": "empty_before_control_file_creation",
+          "currentDirectoryInventory": [
+            ".htaccess"
+          ],
+          "applicationFilesInstalled": false,
+          "subdomainCreated": true,
+          "originIp": "109.234.166.140",
+          "protection": {
+            "template": "workflows/preproduction.htaccess",
+            "configuration": "Require all denied",
+            "savedAndReloaded": true,
+            "originHttpStatus": 403,
+            "publicHttpsStatus": 403,
+            "xRobotsTag": "noindex, nofollow, noarchive",
+            "consultationAccess": "closed_to_all"
+          },
+          "certificate": {
+            "provider": "Lets Encrypt",
+            "validationMethod": "dns-01",
+            "hosts": [
+              "passeport-immo-preprod.avereo.fr"
+            ],
+            "simulation": "passed",
+            "installation": "confirmed_in_cpanel",
+            "httpsValidation": "passed_python_default_ssl_context_and_browser",
+            "validationDisabled": false
+          },
+          "publicRouting": "requested_https_address_reached_in_browser_and_python",
+          "diagnosticLimitations": [
+            "Résolution DNS initialement absente sur le résolveur du poste ; requêtes DNS directes vers o2switch et 1.1.1.1 expirées. Le routage de l’adresse est ensuite constaté via navigateur et urllib.",
+            "curl/Schannel signale encore SEC_E_UNTRUSTED_ROOT sur ce poste ; le contrôle Python avec ssl.create_default_context valide HTTPS et reçoit 403. Aucun contournement de validation."
+          ],
+          "recovery": "hosted_restore_not_verified",
+          "evidence": "docs/qualification-preproduction.md"
         }
       },
       "production": {
@@ -609,11 +652,11 @@
       "observedAt": null
     },
     "blockers": [
-      "Compte parent retenu après vérification de la restriction des sous-domaines entre comptes. Session cPanel à reconnecter ; sous-domaine, dossier protégé et qualification distante restent à réaliser.",
+      "Sous-domaine et dossier créés, certificat installé et fermeture 403 vérifiée en HTTPS ; accès privé de consultation et récupération hébergée non qualifiés.",
       "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
       "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
     ],
-    "nextAction": "Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.",
+    "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -632,7 +675,7 @@
       },
       "preproduction": {
         "status": "blocked",
-        "nextAction": "Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat."
+        "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous."
       },
       "production": {
         "status": "blocked",
@@ -740,7 +783,7 @@
       "status": "prepared_local",
       "observedAt": "2026-10-03T16:56:55+00:00",
       "workflow": "workflows/preparer-preproduction.md",
-      "nextAction": "Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.",
+      "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
       "publication": {
         "status": "published_draft",
         "branch": "feat/passeport-immo-preproduction",
@@ -925,7 +968,7 @@
     "closedAt": "2026-10-03T17:14:44+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
-    "nextAction": "Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.",
+    "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
     "resumedAt": "2026-10-03T19:26:15+02:00",
     "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
   }

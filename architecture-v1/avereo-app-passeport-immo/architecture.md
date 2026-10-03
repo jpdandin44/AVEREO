@@ -33,7 +33,8 @@ Serveur Vite sur 127.0.0.1:5175 ; build dans `frontend/dist/`.
 Le modèle Docker contient un étage Node 22 pour tests/build puis Nginx pour les assets.
 Configuration Compose vérifiée ; exécution Docker non vérifiée.
 La session admin/pro et l'abonnement sont simulés. Aucun service serveur métier
-ni API client/document n'est présent. Le sas CONNECT et o2switch restent prévus.
+ni API client/document n'est présent. Le sas CONNECT reste prévu ; l'espace o2switch
+est créé et fermé, sans installation de l'application.
 
 ## Suivi indépendant de l'application
 AVEREO Projet existant lit `docs/suivi-chantier.json` et les livrables déclarés.
@@ -68,7 +69,10 @@ sur des fichiers temporaires locaux. La [procédure](workflows/preparer-preprodu
 précise la qualification restante. Aucun transport distant ni identité CONNECT ajouté.
 
 La cible o2switch retenue est un dossier dédié protégé dans le compte du domaine
-parent : l'hébergeur impose ce compte aux sous-domaines. Ce dossier et son rattachement
-restent à créer ; aucun isolement entre comptes n'est déclaré pour cette cible.
+parent : l'hébergeur impose ce compte aux sous-domaines. Le dossier, son rattachement
+et le certificat gratuit sont créés. Le modèle `workflows/preproduction.htaccess`
+est le seul fichier installé : il refuse toute consultation et interdit l'indexation.
+L'adresse HTTPS reçoit 403 avec validation TLS active ; aucun isolement entre comptes
+n'est déclaré pour cette cible. Accès privé de test et récupération restent à qualifier.
 Les observations et valeurs exactes restent dans le suivi canonique et la
 [fiche de qualification](docs/qualification-preproduction.md).
