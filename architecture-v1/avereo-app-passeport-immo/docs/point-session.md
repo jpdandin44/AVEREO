@@ -29,8 +29,11 @@ restent ceux du suivi existant. Cible o2switch et accès privés restent à pré
 Le responsable retient le sous-domaine proposé et privilégie une lune gratuite si
 disponible. L'adresse demandée et cette préférence sont dans
 `developmentWorkflow.targets.preproduction`, affichées dans la fiche générée.
-L'espace client o2switch présente l'écran de connexion ; disponibilité de la lune,
-création du sous-domaine et qualification privée restent à réaliser après connexion.
+Après correction de l'URL par le responsable, cPanel est accessible et authentifié.
+La disponibilité gratuite est vérifiée ; le formulaire d'activation de la lune
+préparée est ouvert. Le responsable saisit et valide le nouveau mot de passe dans
+cPanel. Les observations datées sont dans la cible canonique ; activation,
+rattachement du sous-domaine et qualification privée restent à vérifier.
 
 ## Historique de clôture avant cette reprise
 

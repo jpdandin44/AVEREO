@@ -329,6 +329,10 @@
     {
       "date": "2026-10-03",
       "event": "Le responsable retient l’adresse de préproduction proposée et privilégie une lune gratuite si disponible. Préférence enregistrée ; disponibilité, création et accès privé non qualifiés, écran de connexion o2switch constaté."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Après connexion du responsable : cPanel authentifié vérifié, cinq lunes gratuites libres sur huit incluses. Formulaire d’activation de sc4daje3540 ouvert ; nouveau mot de passe réservé au responsable, aucune activation ou installation effectuée par l’agent."
     }
   ],
   "reviewEvents": [],
@@ -448,10 +452,18 @@
         "requestedAddress": "https://passeport-immo-preprod.avereo.fr",
         "hostingPreference": {
           "kind": "free_moon_if_available",
-          "availability": "not_verified",
+          "availability": "free_moon_available",
           "selectedAt": "2026-10-03T19:35:00+02:00",
           "selectionReference": "Réponse directe du responsable dans ce chat : Oui, lune gratuite si disponible.",
-          "accessObservation": "L’espace client o2switch présente l’écran de connexion ; aucune session cPanel authentifiée accessible dans ce chat."
+          "accessObservation": "Session cPanel authentifiée sur hevea.o2switch.net, compte principal ; gestion Mon Univers Web consultée.",
+          "availableFreeMoons": 5,
+          "activeMoons": 3,
+          "includedFreeMoons": 8,
+          "preparedMoon": "sc4daje3540",
+          "activationStatus": "awaiting_user_password",
+          "observedAt": "2026-10-03T19:55:03+02:00",
+          "evidence": "docs/qualification-preproduction.md ; capture locale du formulaire hors Git.",
+          "credentialHandling": "Aucune valeur saisie ou conservée par l’agent ; saisie et validation du nouveau mot de passe réservées au responsable."
         }
       },
       "production": {
@@ -571,11 +583,11 @@
       "observedAt": null
     },
     "blockers": [
-      "o2switch choisi ; adresse, répertoire, accès et isolation de la cible dédiée non qualifiés.",
+      "Lune gratuite disponible et formulaire d’activation préparé ; activation par le responsable, rattachement du sous-domaine, dossier et accès privé restent à vérifier.",
       "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
       "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
     ],
-    "nextAction": "Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée.",
+    "nextAction": "Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -594,7 +606,7 @@
       },
       "preproduction": {
         "status": "blocked",
-        "nextAction": "Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée."
+        "nextAction": "Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé."
       },
       "production": {
         "status": "blocked",
@@ -702,7 +714,7 @@
       "status": "prepared_local",
       "observedAt": "2026-10-03T16:56:55+00:00",
       "workflow": "workflows/preparer-preproduction.md",
-      "nextAction": "Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée.",
+      "nextAction": "Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.",
       "publication": {
         "status": "published_draft",
         "branch": "feat/passeport-immo-preproduction",
@@ -887,7 +899,7 @@
     "closedAt": "2026-10-03T17:14:44+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
-    "nextAction": "Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée.",
+    "nextAction": "Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.",
     "resumedAt": "2026-10-03T19:26:15+02:00",
     "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
   }

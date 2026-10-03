@@ -56,3 +56,8 @@ est tracée séparément du candidat métier et des décisions humaines.
 Préférence d'hébergement retenue par le responsable : sous-domaine de test proposé
 et lune gratuite si disponible. Choix enregistré dans le suivi ; l'accès o2switch
 reste sur l'écran de connexion, sans création ni installation distante.
+
+Après correction de l'URL et connexion du responsable : session cPanel vérifiée,
+cinq lunes gratuites libres constatées et formulaire d'activation préparé. La saisie
+et la validation du nouveau mot de passe sont laissées au responsable ; aucun
+compte, sous-domaine ou déploiement déclaré comme créé.

@@ -21,16 +21,24 @@ Aucun déploiement de Passeport Immo n'a été engagé.
 Dans le chat de reprise, le responsable retient l'adresse proposée et une lune
 gratuite si disponible. `requestedAddress` et `hostingPreference` conservent ce
 choix dans la cible canonique ; la [fiche générée](iteration-developpement.md)
-l'affiche. La lune, le routage et le dossier ne sont pas encore créés ni qualifiés.
-L'espace client o2switch affiche l'écran de connexion dans les surfaces de ce chat.
+l'affiche. Le responsable corrige l'URL et se connecte directement à cPanel.
+La session authentifiée est vérifiée ; Mon Univers Web indique huit lunes gratuites
+incluses, trois actives et cinq disponibles. Le formulaire de la première libre
+est ouvert, sans saisie ni validation du nouveau mot de passe par l'agent.
+Le compte dédié, le rattachement du sous-domaine et le dossier restent à qualifier.
+
+L'activation demande un nouveau mot de passe et sa confirmation. Le responsable
+effectue cette saisie et clique sur « Continuer » directement dans cPanel ; aucune
+valeur de secret n'est conservée. La lune préparée et l'observation datée sont dans
+`hostingPreference` du suivi, puis présentées dans la fiche générée.
 
 ## Informations à établir
 | Élément | État observé | Action nécessaire |
 |---|---|---|
-| Hébergeur et destination | o2switch, préproduction dédiée choisie | Qualifier une cible distincte des autres applications |
+| Hébergeur et destination | o2switch ; lune gratuite disponible, activation préparée | Activer la lune puis qualifier son compte dédié |
 | URL exacte et certificat | Adresse demandée consignée ; DNS/HTTPS et routage non vérifiés | Créer et qualifier le sous-domaine retenu après vérification de la lune |
 | Répertoire cible réel | TBD | Vérifier le document root et sa séparation du site public |
-| Compte/mode d'accès | TBD | Identifier accès cPanel/SSH et chemin autorisé, sans valeur de secret dans Git |
+| Compte/mode d'accès | Session cPanel du compte principal vérifiée ; compte dédié non activé | Vérifier ensuite l'accès à la lune et son chemin, sans valeur de secret dans Git |
 | Protection de consultation | TBD, sas CONNECT absent | Définir et vérifier accès privé/CONNECT avant une consultation distante |
 | Contenu existant / isolation | TBD | Prouver vacuité et isolation, ou sauvegarde restaurée du contenu présent |
 | Retour arrière | Non testé | Préparer un retour au candidat précédent puis le répéter sur la cible dédiée |
@@ -46,8 +54,9 @@ la protection de la préproduction doit être réellement définie avant publica
 ## Suivi et prochaine action
 Les champs machine-readable de la cible restent dans `developmentWorkflow.targets`.
 Cette fiche décrit leur qualification ; elle ne maintient pas une deuxième liste de
-statuts. Prochaine action : se connecter à o2switch, vérifier la disponibilité de la
-lune gratuite, puis qualifier le sous-domaine demandé, le répertoire et la protection.
+statuts. Prochaine action : le responsable termine l'activation dans le formulaire
+ouvert ; vérifier ensuite le compte de la lune, le rattachement du sous-domaine,
+le répertoire et la protection.
 Préparer ensuite le lot CONNECT et la procédure correspondante. Exécuter le contrôleur du skill sur
 les preuves actualisées ; obtenir ensuite l'accord exact avant l'action distante.
 

@@ -17,7 +17,7 @@ Vue générée depuis `developmentWorkflow` dans `suivi-chantier.json`. Ne pas m
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — Bloquée**.
-Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée.
+Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-03T19:26:15+02:00.
 
@@ -25,7 +25,7 @@ Parcours formel : **phase 0 — Reprise et état des lieux**, en cours.
 Validation formelle restant à consigner : phase 0, phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
 
 
-Adresse demandée : `https://passeport-immo-preprod.avereo.fr`. Le responsable privilégie une lune gratuite si disponible ; disponibilité, création, routage et accès privés restent à vérifier.
+Adresse demandée : `https://passeport-immo-preprod.avereo.fr`. Lune gratuite `sc4daje3540` disponible ; formulaire d’activation ouvert. Le responsable doit saisir et valider son nouveau mot de passe dans cPanel. Rattachement du sous-domaine, dossier et accès privé restent à vérifier.
 
 
 ## Itération GitHub et cockpit
@@ -39,7 +39,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées. |
-| Préproduction | Bloquée | Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée. |
+| Préproduction | Bloquée | Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -75,11 +75,11 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- o2switch choisi ; adresse, répertoire, accès et isolation de la cible dédiée non qualifiés.
+- Lune gratuite disponible et formulaire d’activation préparé ; activation par le responsable, rattachement du sous-domaine, dossier et accès privé restent à vérifier.
 - Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
 - Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
 
-Prochaine action : Se connecter à o2switch ; vérifier une lune gratuite disponible, puis qualifier le sous-domaine demandé, son dossier et sa protection privée.
+Prochaine action : Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.
 
 ### Accords et livraison
 

@@ -41,6 +41,9 @@ def iteration_view(data):
     preparation = flow.get('preproductionPreparation')
     requested_address = flow['targets']['preproduction'].get('requestedAddress')
     target_preference = ('\nAdresse demandée : `'+requested_address+'`. Le responsable privilégie une lune gratuite si disponible ; disponibilité, création, routage et accès privés restent à vérifier.\n') if requested_address else ''
+    hosting = flow['targets']['preproduction'].get('hostingPreference', {})
+    if requested_address and hosting.get('activationStatus') == 'awaiting_user_password':
+        target_preference = '\nAdresse demandée : `'+requested_address+'`. Lune gratuite `'+hosting['preparedMoon']+'` disponible ; formulaire d’activation ouvert. Le responsable doit saisir et valider son nouveau mot de passe dans cPanel. Rattachement du sous-domaine, dossier et accès privé restent à vérifier.\n'
     preparation_md = ''
     if preparation:
         preparation_labels = {
