@@ -1,0 +1,6 @@
+interface:
+  display_name: "Développement GitHub et cockpit"
+  short_description: "Local, préproduction et production avec preuves"
+  default_prompt: "Utilise $developpement-github-cockpit pour conduire cette itération et tenir le cockpit à jour."
+policy:
+  allow_implicit_invocation: true

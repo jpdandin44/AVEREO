@@ -104,3 +104,10 @@ concernent le prototype racine, pas le portail PHP CONNECT ni Passeport Immo.
 [Architecture](architecture.md) · [Exigences](requirements.md) · [Roadmap](roadmap.md) ·
 [Décisions](decisions.md) · [Changelog](changelog.md).
 Configuration privée, état distant et installation serveur : non vérifiés dans ce lot.
+
+## Protocole commun à tous les dépôts
+
+Le [socle de développement](outillage/protocole-developpement/README.md) est versionné ici
+et utilisable pour les sites, applications et agents de tous les dépôts du responsable.
+Installer ses skills au niveau utilisateur une seule fois, puis appeler `$dev` ou `DEV :`
+depuis le projet concerné. Chaque projet conserve ses commandes, son suivi et ses accords.

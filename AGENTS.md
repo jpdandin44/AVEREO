@@ -1,3 +1,15 @@
+---
+project: avereo
+document_type: agent-instructions
+title: Règles de développement du monorepo AVEREO
+status: active
+version: git
+created: 2026-09-15
+updated: 2026-10-03
+owner: jpdandin
+tags: [avereo, developpement, github]
+---
+
 # Règles de développement du projet
 
 Ces règles constituent la base de fonctionnement du monorepo. Elles s'appliquent à toute intervention, y compris lorsqu'un `AGENTS.md` plus spécifique complète les contraintes d'une application.
@@ -128,3 +140,11 @@ Ne pas réaliser sans autorisation explicite :
 - avant de créer ou modifier une pull request, valider le fichier de description avec `python .github/scripts/check-pr-policy.py --allow-unchecked --title "TYPE(SCOPE): DESCRIPTION" --body-file CHEMIN_DESCRIPTION` ;
 - après une validation humaine, relire puis contrôler la description réellement enregistrée avec `python .github/scripts/check-pr-policy.py --pr-number NUMERO --repo PROPRIETAIRE/DEPOT` avant d'annoncer que la policy doit passer ;
 - ne jamais contourner un échec du vérificateur en modifiant les libelles attendus, en cochant une case ou en assouplissant la policy.
+
+## 11. Protocole commun
+
+Le [socle transverse](outillage/protocole-developpement/README.md) héberge le processus
+commun et les skills. Appliquer ce protocole aux lots de développement en conservant
+les règles et suivis existants. Le mot-clé `DEV :` et le skill `$dev` utilisent la même
+source. L'installateur rend les skills disponibles au niveau utilisateur pour les autres
+dépôts ; les commandes, cibles et accords restent qualifiés projet par projet.

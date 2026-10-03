@@ -1,0 +1,5 @@
+{
+  "appRoot": "../../architecture-v1/avereo-app-projet",
+  "port": 5194,
+  "scope": "Cockpit local du protocole ; accès et runtime à qualifier sur ce poste."
+}

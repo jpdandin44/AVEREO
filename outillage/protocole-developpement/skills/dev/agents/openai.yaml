@@ -1,0 +1,6 @@
+interface:
+  display_name: "DEV — GitHub et cockpit"
+  short_description: "Le protocole de développement en trois étapes"
+  default_prompt: "Utilise $dev pour cette évolution et pilote le lot dans le cockpit du projet."
+policy:
+  allow_implicit_invocation: true

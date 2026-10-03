@@ -18,3 +18,8 @@ Voir [le catalogue existant](architecture-v1/avereo-platform/docs/applications.m
 [Projet et revue](architecture-v1/avereo-app-projet/api/revue-locale.md)
 et [le nouveau sous-projet](architecture-v1/avereo-app-passeport-immo/architecture.md).
 TBD : audit global code/documentation ; les domaines déclarés ne prouvent pas la production.
+
+Le [socle transverse](outillage/protocole-developpement/architecture.md) contient le
+protocole, les skills et le contrôleur de passage. AVEREO en héberge la source ;
+l'installation au niveau utilisateur le rend disponible dans les autres dépôts.
+Les opérations et données métier restent dans les projets concernés.

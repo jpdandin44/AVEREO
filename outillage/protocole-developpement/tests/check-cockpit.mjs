@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {readFile,mkdtemp,writeFile,copyFile} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join,resolve} from 'node:path';
+import {pathToFileURL,fileURLToPath} from 'node:url';
+const root=fileURLToPath(new URL('..',import.meta.url));
+let cfg;
+try { cfg=JSON.parse(await readFile(join(root,'.local/cockpit-local.json'),'utf8')); }
+catch(error) { if(error.code!=='ENOENT')throw error;cfg=JSON.parse(await readFile(join(root,'data/cockpit-local.json'),'utf8')); }
+cfg.appRoot=resolve(root,cfg.appRoot);
+const {createReviewStore}=await import(pathToFileURL(resolve(cfg.appRoot,'workflows/review-store.mjs')).href);
+const folder=join(root,'docs/pilotage');
+const original=await readFile(join(folder,'suivi-chantier.json'));
+const live=await (await createReviewStore(folder)).snapshot();
+assert.deepEqual(live.data.phases.map(p=>p.shortTitle),['Local','Préproduction','Production']);
+assert.equal(live.data.decisions.length,0);
+assert.equal(live.issues.length,0);
+assert.ok(live.actions[0].includes('approve'));
+assert.ok(!live.actions[1].includes('start'));
+const temporary=await mkdtemp(join(tmpdir(),'protocol-cockpit-fixture-'));
+await writeFile(join(temporary,'suivi-chantier.json'),original);
+for(const file of ['local.md','preproduction.md','production.md'])await copyFile(join(folder,file),join(temporary,file));
+const store=await createReviewStore(temporary);
+const view=await store.snapshot();
+const result=await store.act({revision:view.revision,phaseId:0,action:'approve',reviewer:'Test fictif uniquement',comment:'Vérifier une copie temporaire, sans décision réelle.',confirm:true,checkedCriteria:[0,1,2],reviewedArtifacts:view.documents.filter(d=>d.phaseId===0).map(({path,sha256})=>({path,sha256}))});
+assert.equal(result.data.phases[0].status,'validated');
+assert.equal(result.data.phases[1].status,'not_started');
+assert.equal(result.data.publication.deploymentAuthorized,false);
+assert.deepEqual(await readFile(join(folder,'suivi-chantier.json')),original);
+console.log('Compatibilité des trois étapes et décision fictive : réussies ; suivi réel inchangé.');
