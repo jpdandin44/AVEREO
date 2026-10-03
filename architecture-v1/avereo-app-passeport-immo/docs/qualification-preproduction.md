@@ -28,7 +28,7 @@ Aucun déploiement de Passeport Immo n'a été engagé.
 | Protection de consultation | TBD, sas CONNECT absent | Définir et vérifier accès privé/CONNECT avant une consultation distante |
 | Contenu existant / isolation | TBD | Prouver vacuité et isolation, ou sauvegarde restaurée du contenu présent |
 | Retour arrière | Non testé | Préparer un retour au candidat précédent puis le répéter sur la cible dédiée |
-| Procédure/workflow Passeport Immo | Absent | Préparer un déploiement manuel adapté aux accès vérifiés |
+| Procédure/workflow Passeport Immo | Préparation locale disponible, installation distante non qualifiée | [Préparer le lot privé](../workflows/preparer-preproduction.md), puis adapter l'installation aux accès constatés |
 | Accord du candidat précis | Absent | Présenter URL, effet, SHA source et archive avant demander l'accord exact |
 | Recette de la cible | Non réalisée | Contrôler accès, navigation, persistance, import et PDF sur la cible réelle |
 
@@ -43,3 +43,7 @@ Cette fiche décrit leur qualification ; elle ne maintient pas une deuxième lis
 statuts. Prochaine action : préciser URL/répertoire, accès et protection, puis préparer
 le lot CONNECT et la procédure correspondante. Exécuter le contrôleur du skill sur
 les preuves actualisées ; obtenir ensuite l'accord exact avant l'action distante.
+
+Le lot local et sa répétition de restauration sont consignés dans
+`developmentWorkflow.preproductionPreparation`. Ils ne qualifient ni vacuité,
+ni isolation, ni sauvegarde restaurée de la cible distante.

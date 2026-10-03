@@ -26,3 +26,4 @@ Le bloc `developmentWorkflow` du même JSON pilote l'itération ; aucune seconde
 source de statuts ni d'accords.
 
 [Qualification de la cible o2switch](qualification-preproduction.md).
+[Préparation du lot privé](../workflows/preparer-preproduction.md).

@@ -33,6 +33,16 @@
       "validatedOn": null,
       "deliverables": [
         {
+          "path": "iteration-developpement.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Itération GitHub et cockpit",
+          "description": "Projection générée du bloc canonique developmentWorkflow.",
+          "expectedEvidence": [
+            "Candidat, PR, contrôles datés, blocages et prochaine action."
+          ]
+        },
+        {
           "path": "00-etat-des-lieux.md",
           "kind": "file",
           "availability": "present",
@@ -59,7 +69,7 @@
         "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
         "Audit source et inconnues explicites ; vues générées contrôlées."
       ],
-      "nextAction": "Prête pour revue : soumettre dans AVEREO Projet",
+      "nextAction": "Travaux actuels : préparation locale de préproduction. Lire la fiche d’itération ; soumettre l’audit à la revue pour régulariser le parcours formel.",
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/71",
         "repository": "jpdandin44/AVEREO",
@@ -295,6 +305,22 @@
     {
       "date": "2026-10-03",
       "event": "Rebase demandé de la PR nº72 après fusion nº73 : deux commits rejoués sans conflit ; protocole commun disponible, candidat nº71 et décisions humaines conservés."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Fusion nº72 vérifiée après confirmation du responsable ; continuation demandée. Lot de préproduction préparé et récupération répétée localement, sans qualification ni livraison distante."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Correction demandée par le responsable : reviewFollowUps est le champ lu par le cockpit ; PR nº72 rattachée à la phase courante, fiche d’itération disponible dès la phase 0. Travail réel en préparation de préproduction et validations formelles distingués ; aucun statut ni accord humain modifié."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Session clôturée à la demande du responsable pour reprendre dans AVEREO_2 : changements locaux conservés, aucun nouveau commit ou push, aucune nouvelle PR ni livraison distante. Phases et décisions humaines inchangées."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Reprise explicitement demandée dans le nouveau chat AVEREO_2 ; clone et lot local relus, application et cockpit accessibles. Publication de la préparation à poursuivre sans modification des décisions humaines ni du candidat métier."
     }
   ],
   "reviewEvents": [],
@@ -390,7 +416,7 @@
     "kind": "application",
     "stage": "preproduction",
     "status": "blocked",
-    "objective": "Rattacher le prototype au protocole GitHub/cockpit et corriger la page blanche PDF.",
+    "objective": "Qualifier et préparer la préproduction privée du prototype Passeport Immo après fusion du lot local et de son suivi.",
     "candidate": {
       "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
       "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
@@ -447,11 +473,13 @@
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
         "repository": "jpdandin44/AVEREO",
         "number": 72,
-        "state": "open",
-        "headSha": "5eb47ddd587afffad1b7fd2721621e048b283aab",
-        "observedAt": "2026-10-03T16:27:59+00:00",
-        "draft": true,
-        "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch."
+        "state": "merged",
+        "headSha": "d1e97d328cac3e88120379e369b260a8c7d01b4e",
+        "observedAt": "2026-10-03T16:56:55+00:00",
+        "draft": false,
+        "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch.",
+        "mergedAt": "2026-10-03T16:42:36Z",
+        "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64"
       },
       "rebaseObservation": {
         "baseSha": "f14bfc97b8f15a06cb4010f493240c5362fc5242",
@@ -531,16 +559,17 @@
       "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
       "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
     ],
-    "nextAction": "Préciser la cible dédiée o2switch, ses accès et sa protection, puis préparer le lot CONNECT et l’accord de déploiement du candidat exact.",
+    "nextAction": "Fournir le sous-domaine et le dossier o2switch ; qualifier accès, protection et récupération avant l’accord de préproduction.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
     ],
     "budget": {
-      "limit": null,
-      "unit": null,
+      "limit": 20,
+      "unit": "weekly_limit_percent",
       "observedUsage": null,
-      "observedAt": null
+      "observedAt": null,
+      "measurementLimitation": "La consommation attribuable à ce lot n’est pas mesurée par la limite globale du compte."
     },
     "stages": {
       "local": {
@@ -549,7 +578,7 @@
       },
       "preproduction": {
         "status": "blocked",
-        "nextAction": "Préparer la cible dédiée o2switch : adresse, accès, protection et récupération ; aucun déploiement engagé."
+        "nextAction": "Fournir le sous-domaine et le dossier o2switch ; qualifier accès, protection et récupération avant l’accord de préproduction."
       },
       "production": {
         "status": "blocked",
@@ -611,22 +640,98 @@
         "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
         "observedAt": "2026-10-03T12:54:59+00:00"
       }
-    ]
+    ],
+    "preproductionPreparation": {
+      "candidateSourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+      "candidateArtifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+      "bundleSha256": "ad0f6ab22fc6c117107c78c0f7b881e4b34faa1a98b62435b0fcbe7a9969804a",
+      "files": [
+        {
+          "path": ".htaccess",
+          "sha256": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+          "size": 248
+        },
+        {
+          "path": "assets/index-B6-J-id_.js",
+          "sha256": "1bff68615d47d1c7f4228ef2b8a752cd837c2ab44c977e90620ee907e6cdfe99",
+          "size": 775488
+        },
+        {
+          "path": "assets/index-rS3DXAdr.css",
+          "sha256": "ed2b39d3d15c00d02af7332efd6542805dcf1cf3d92b6e0796554c263cd660ba",
+          "size": 20378
+        },
+        {
+          "path": "assets/index.es-B4ypi1Kv.js",
+          "sha256": "3f3fb5000c6bef463d4bacb56c704e72b8be064d99c0a1c27db3025394e24659",
+          "size": 150852
+        },
+        {
+          "path": "assets/purify.es-BwoZCkIS.js",
+          "sha256": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+          "size": 22028
+        },
+        {
+          "path": "index.html",
+          "sha256": "8aa9b697834321cfa4a390c092fbf741f3191fc87b4f51343187aa491789d10a",
+          "size": 499
+        }
+      ],
+      "candidateAssetsUnchanged": true,
+      "initialAccess": "deny_all_configuration_requires_hosted_verification",
+      "archiveReadback": "passed",
+      "restoreRehearsal": "passed_local_files_only",
+      "hostedBackupRestore": "not_verified",
+      "remoteDelivery": "not_performed",
+      "status": "prepared_local",
+      "observedAt": "2026-10-03T16:56:55+00:00",
+      "workflow": "workflows/preparer-preproduction.md",
+      "nextAction": "Qualifier URL, répertoire, accès et protection sur la cible o2switch, puis préparer l’accord exact.",
+      "publication": {
+        "status": "preparing",
+        "branch": "feat/passeport-immo-preproduction",
+        "baseSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
+        "url": null,
+        "observedAt": "2026-10-03T19:26:15+02:00",
+        "localVerification": {
+          "preparationTests": 6,
+          "preparationTestsStatus": "passed",
+          "parity": "passed",
+          "cockpitContract": "passed",
+          "baseline": "passed",
+          "bundleUnchanged": true,
+          "application": "Local login and property list checked in browser on port 5175.",
+          "cockpit": "Phase 0 and merged follow-up PR 72 visible on port 5193.",
+          "preproductionGate": "refused_missing_target_approval_recovery"
+        }
+      }
+    }
   },
-  "followUps": [
+  "reviewFollowUps": [
     {
-      "phaseId": 1,
-      "result": "Complément de suivi après fusion nº71, sans changement frontend ni décision de phase.",
+      "phaseId": 0,
+      "result": "Complément de pilotage de l’itération locale et préparation de sa préproduction ; phases formelles non validées.",
       "documentationPullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
         "repository": "jpdandin44/AVEREO",
         "number": 72,
-        "state": "open",
-        "headSha": "5eb47ddd587afffad1b7fd2721621e048b283aab",
-        "observedAt": "2026-10-03T16:27:59+00:00",
-        "draft": true,
-        "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch."
+        "state": "merged",
+        "headSha": "d1e97d328cac3e88120379e369b260a8c7d01b4e",
+        "observedAt": "2026-10-03T16:56:55+00:00",
+        "draft": false,
+        "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch.",
+        "mergedAt": "2026-10-03T16:42:36Z",
+        "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64"
       }
     }
-  ]
+  ],
+  "sessionHandoff": {
+    "status": "resumed_on_user_request",
+    "closedAt": "2026-10-03T17:14:44+00:00",
+    "destinationProject": "AVEREO_2",
+    "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
+    "nextAction": "Relire et publier le lot de préparation dans une PR dédiée, observer la CI puis qualifier la cible o2switch.",
+    "resumedAt": "2026-10-03T19:26:15+02:00",
+    "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
+  }
 }

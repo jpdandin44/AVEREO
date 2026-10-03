@@ -38,3 +38,17 @@ leurs refus correspondent aux cibles, accords et preuves de récupération manqu
 PR nº72 rebasée sans conflit après fusion du protocole commun nº73. Contenu des deux
 commits de suivi préservé ; documentation et paramètre local raccordés à la source
 commune. Le candidat nº71, les statuts formels et les accords humains sont conservés.
+
+Après signalement du responsable, champ de revues complémentaires corrigé selon
+le contrat réel du cockpit : PR nº72 fusionnée visible en phase 0, fiche d'itération
+proposée dès cette phase et état réel de préparation de préproduction explicite.
+Contrôle automatique de raccordement ajouté ; aucun accord de phase déduit du merge.
+
+Préparation privée après fusion nº72 : archive vérifiée du même candidat avec
+fermeture initiale, restauration sur fichiers locaux et six tests d'intégrité/version/
+chemins, exécutés par la CI Passeport Immo. Cible et accès distants restent non qualifiés.
+
+Reprise explicitement demandée dans le nouveau chat AVEREO_2 : clone et changements
+conservés, disponibilité locale contrôlée, tests de préparation et parité réussis.
+Le suivi garde la clôture antérieure et affiche la reprise ; la publication du lot
+est tracée séparément du candidat métier et des décisions humaines.

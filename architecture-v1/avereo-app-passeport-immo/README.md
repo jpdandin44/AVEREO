@@ -89,3 +89,7 @@ Après build, `python workflows/package-candidate.py` produit une archive vérif
 et son manifeste dans `.local/`. Les [preuves du correctif](docs/raccordement-cockpit.md)
 distinguent recette technique et acceptation humaine. Les cibles de préproduction
 et production restent à qualifier avant tout déploiement.
+
+La [préparation privée de préproduction](workflows/preparer-preproduction.md) produit
+un lot contrôlé du candidat, avec fermeture initiale et répétition locale de restauration.
+Commande depuis le sous-projet : `python workflows/prepare-preproduction.py`.

@@ -14,9 +14,19 @@ tags: [cockpit, genere]
 
 Vue générée depuis `developmentWorkflow` dans `suivi-chantier.json`. Ne pas modifier à la main.
 
+## Où en est le développement ?
+
+Travail actuel : **Préproduction — Bloquée**.
+Fournir le sous-domaine et le dossier o2switch ; qualifier accès, protection et récupération avant l’accord de préproduction.
+
+Reprise demandée par le responsable dans AVEREO_2 le 2026-10-03T19:26:15+02:00.
+
+Parcours formel : **phase 0 — Reprise et état des lieux**, en cours.
+Validation formelle restant à consigner : phase 0, phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
+
 ## Itération GitHub et cockpit
 
-**passeport-immo-2026-10-03** — Rattacher le prototype au protocole GitHub/cockpit et corriger la page blanche PDF.
+**passeport-immo-2026-10-03** — Qualifier et préparer la préproduction privée du prototype Passeport Immo après fusion du lot local et de son suivi.
 
 Responsable : jpdandin. Étape : preproduction. État : Bloquée.
 
@@ -25,7 +35,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées. |
-| Préproduction | Bloquée | Préparer la cible dédiée o2switch : adresse, accès, protection et récupération ; aucun déploiement engagé. |
+| Préproduction | Bloquée | Fournir le sous-domaine et le dossier o2switch ; qualifier accès, protection et récupération avant l’accord de préproduction. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -34,6 +44,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - SHA-256 de l'archive : `84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab`.
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/71).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
+- État du complément : Fusionnée ; observation : 2026-10-03T16:56:55+00:00.
 - Dernière observation GitHub : 2026-10-03T12:52:58+00:00.
 - Revue humaine de la source GitHub : Confirmée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
@@ -64,7 +75,7 @@ Preuves du candidat identifié ci-dessus :
 - Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
 - Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
 
-Prochaine action : Préciser la cible dédiée o2switch, ses accès et sa protection, puis préparer le lot CONNECT et l’accord de déploiement du candidat exact.
+Prochaine action : Fournir le sous-domaine et le dossier o2switch ; qualifier accès, protection et récupération avant l’accord de préproduction.
 
 ### Accords et livraison
 
@@ -76,3 +87,15 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 
 - Intégration CONNECT après accord sur les fichiers concernés.
 - Partage sécurisé et stockage centralisé à spécifier à la demande des clients.
+
+### Préparation locale de préproduction
+
+- État : Préparée sur le poste ; observation : 2026-10-03T16:56:55+00:00.
+- Empreinte du lot fermé : `ad0f6ab22fc6c117107c78c0f7b881e4b34faa1a98b62435b0fcbe7a9969804a`.
+- Assets du candidat conservés : Oui.
+- Relecture de l'archive : Réussie.
+- Restauration : Réussie sur des fichiers temporaires locaux ; cible hébergée : Non vérifiée.
+- Livraison distante : Non effectuée.
+- PR de préparation : Non publiée.
+
+Cette préparation ne qualifie ni la cible ni l'accès privé. La récupération locale est distincte d'une sauvegarde restaurée de l'hébergement.

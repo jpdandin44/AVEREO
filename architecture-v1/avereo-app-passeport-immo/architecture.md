@@ -58,3 +58,11 @@ et les empreintes. Aucun workflow de déploiement Passeport Immo n'est configur�
 La pagination compare le débordement au pas d'un pixel du canvas. Une dernière ligne
 blanche issue de l'arrondi A4 ne crée plus de page ; une ligne avec du contenu conserve
 la page. Le téléchargement reste en image, comme le prototype historique.
+
+## Préparation privée de livraison
+
+`workflows/prepare-preproduction.py` lit le candidat canonique, son archive et son
+manifeste. Le lot hors Git contient les mêmes assets et un `.htaccess` initialement
+fermé. Version et empreintes sont contrôlées ; la restauration est répétée uniquement
+sur des fichiers temporaires locaux. La [procédure](workflows/preparer-preproduction.md)
+précise la qualification restante. Aucun transport distant ni identité CONNECT ajouté.

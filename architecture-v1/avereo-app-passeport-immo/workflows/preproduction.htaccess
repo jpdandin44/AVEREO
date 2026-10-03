@@ -1,0 +1,7 @@
+# Fermeture initiale : remplacer uniquement après qualification de l'accès privé.
+Options -Indexes
+DirectoryIndex index.html
+Require all denied
+<IfModule mod_headers.c>
+  Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+</IfModule>

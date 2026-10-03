@@ -32,6 +32,10 @@ jobs:
       - name: Verify parity
         working-directory: architecture-v1/avereo-app-passeport-immo
         run: node tests/check-parity.mjs
+      - name: Test preproduction preparation
+        run: python3 -m unittest discover -s architecture-v1/avereo-app-passeport-immo/tests -p 'test_preproduction.py'
+      - name: Check cockpit tracking
+        run: node architecture-v1/avereo-app-passeport-immo/tests/check-cockpit.mjs
       - name: Build
         working-directory: architecture-v1/avereo-app-passeport-immo/frontend
         run: npm run build

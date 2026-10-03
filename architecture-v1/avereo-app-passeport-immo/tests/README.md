@@ -36,3 +36,17 @@ T05 a reproduit le défaut avant correction (un échec, trois réussites), puis 
 quatre cas ont réussi. Le PDF court réel a aussi été téléchargé et rendu :
 une page A4 complète. Les scénarios longs sont vérifiés automatiquement avec
 canvas/jsPDF simulés ; leur recette humaine reste ouverte.
+
+## Préparation de la préproduction
+
+Depuis le sous-projet, `python -m unittest discover -s tests -p test_preproduction.py`
+vérifie six cas fictifs : archive reproductible et candidat conservé, source différente,
+asset modifié, chemin hors du lot, fichier non déclaré et lien symbolique. Le cas nominal
+répète une restauration locale ; aucune cible ni sauvegarde distante n'est authentifiée.
+
+## Raccordement du cockpit
+
+Depuis le sous-projet, `node tests/check-cockpit.mjs` applique le normaliseur du
+moteur Projet au suivi réel. Il vérifie la carte de la PR nº72 en phase 0, son état
+observé, la disponibilité initiale de la fiche d'itération et la distinction entre
+étape réelle et phase formelle. Ce contrôle est exécuté dans la CI Passeport Immo.

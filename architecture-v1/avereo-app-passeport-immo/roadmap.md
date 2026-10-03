@@ -33,3 +33,7 @@ La source du lot local est désormais fusionnée dans la PR nº71 après checkli
 La suite retenue est la qualification d'une préproduction dédiée o2switch ; l'adresse,
 les accès, la protection et la récupération restent à définir avant l'accord exact.
 Les détails datés et les statuts sont conservés uniquement dans le suivi canonique.
+
+Après fusion du complément nº72, le lot courant prépare l'archive privée et la
+récupération locale. Cible et protection de consultation restent à qualifier avant
+l'installation distante ; le suivi conserve les preuves et la prochaine action.
