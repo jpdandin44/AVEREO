@@ -66,3 +66,9 @@ manifeste. Le lot hors Git contient les mêmes assets et un `.htaccess` initiale
 fermé. Version et empreintes sont contrôlées ; la restauration est répétée uniquement
 sur des fichiers temporaires locaux. La [procédure](workflows/preparer-preproduction.md)
 précise la qualification restante. Aucun transport distant ni identité CONNECT ajouté.
+
+La cible o2switch retenue est un dossier dédié protégé dans le compte du domaine
+parent : l'hébergeur impose ce compte aux sous-domaines. Ce dossier et son rattachement
+restent à créer ; aucun isolement entre comptes n'est déclaré pour cette cible.
+Les observations et valeurs exactes restent dans le suivi canonique et la
+[fiche de qualification](docs/qualification-preproduction.md).

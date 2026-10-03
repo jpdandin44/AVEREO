@@ -44,6 +44,8 @@ def iteration_view(data):
     hosting = flow['targets']['preproduction'].get('hostingPreference', {})
     if requested_address and hosting.get('activationStatus') == 'awaiting_user_password':
         target_preference = '\nAdresse demandée : `'+requested_address+'`. Lune gratuite `'+hosting['preparedMoon']+'` disponible ; formulaire d’activation ouvert. Le responsable doit saisir et valider son nouveau mot de passe dans cPanel. Rattachement du sous-domaine, dossier et accès privé restent à vérifier.\n'
+    if requested_address and hosting.get('targetStrategy') == 'parent_domain_account_with_protected_directory':
+        target_preference = '\nAdresse demandée : `'+requested_address+'`. Le responsable retient le compte du domaine parent, avec un dossier dédié protégé. La lune gratuite `'+hosting['preparedMoon']+'` est active, distincte de cette cible. Création du sous-domaine, dossier et accès privé restent à qualifier.\n'
     preparation_md = ''
     if preparation:
         preparation_labels = {

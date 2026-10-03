@@ -61,3 +61,10 @@ Après correction de l'URL et connexion du responsable : session cPanel vérifi�
 cinq lunes gratuites libres constatées et formulaire d'activation préparé. La saisie
 et la validation du nouveau mot de passe sont laissées au responsable ; aucun
 compte, sous-domaine ou déploiement déclaré comme créé.
+
+Diagnostic du navigateur : affichage Mon Univers Web bloqué à 817 pixels, utilisable
+à 1280 pixels ; Chrome non exposé aux outils. Lune préparée constatée active, accès
+à son cPanel vérifié. Restriction des sous-domaines entre comptes confirmée chez
+o2switch ; le responsable conserve l'adresse demandée sur le compte parent, avec
+un dossier dédié protégé. Suivi et vues actualisés ; reconnexion cPanel requise avant
+création du dossier et du sous-domaine.

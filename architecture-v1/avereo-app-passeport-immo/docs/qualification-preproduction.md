@@ -22,23 +22,35 @@ Dans le chat de reprise, le responsable retient l'adresse proposée et une lune
 gratuite si disponible. `requestedAddress` et `hostingPreference` conservent ce
 choix dans la cible canonique ; la [fiche générée](iteration-developpement.md)
 l'affiche. Le responsable corrige l'URL et se connecte directement à cPanel.
-La session authentifiée est vérifiée ; Mon Univers Web indique huit lunes gratuites
-incluses, trois actives et cinq disponibles. Le formulaire de la première libre
-est ouvert, sans saisie ni validation du nouveau mot de passe par l'agent.
-Le compte dédié, le rattachement du sous-domaine et le dossier restent à qualifier.
+La lune préparée est ensuite constatée active et son cPanel est accessible ; aucune
+valeur de secret n'est saisie ou conservée par l'agent. L'observation datée du compte,
+du répertoire de base et de la disponibilité restante est dans `hostingPreference`
+du suivi, puis présentée dans la fiche générée.
 
-L'activation demande un nouveau mot de passe et sa confirmation. Le responsable
-effectue cette saisie et clique sur « Continuer » directement dans cPanel ; aucune
-valeur de secret n'est conservée. La lune préparée et l'observation datée sont dans
-`hostingPreference` du suivi, puis présentées dans la fiche générée.
+## Diagnostic du navigateur et choix de rattachement
+Dans le panneau Codex de 817 pixels de large, Mon Univers Web affiche « Pour utiliser
+l'application, veuillez passer sur ordinateur ». Le test à 1280 pixels rend la liste
+des lunes accessible. Le réglage temporaire est retiré après le contrôle. Chrome
+n'est pas exposé aux outils de cette session ; son affichage n'a pas été inspecté.
+
+La lune ne propose que son domaine technique dans l'outil Sous-domaines. La
+[règle publiée par o2switch](https://blog.o2switch.fr/creer-un-sous-domaine-o2switch-a-quoi-ca-sert-et-comment-le-configurer/)
+impose qu'un sous-domaine reste dans le même compte que son domaine parent.
+Le responsable choisit donc de conserver l'adresse demandée dans le compte qui
+héberge `avereo.fr`, avec un dossier dédié et protégé. La lune active est conservée ;
+elle n'est pas retenue comme cible de cette adresse.
+
+Le retour au compte principal rencontre un jeton de session invalide, puis cPanel
+demande une reconnexion pour cookie invalide. Le formulaire de connexion est laissé
+au responsable. Aucun dossier ni sous-domaine n'est créé pendant ce contrôle.
 
 ## Informations à établir
 | Élément | État observé | Action nécessaire |
 |---|---|---|
-| Hébergeur et destination | o2switch ; lune gratuite disponible, activation préparée | Activer la lune puis qualifier son compte dédié |
-| URL exacte et certificat | Adresse demandée consignée ; DNS/HTTPS et routage non vérifiés | Créer et qualifier le sous-domaine retenu après vérification de la lune |
+| Hébergeur et destination | o2switch ; compte parent choisi, lune active distincte de la cible | Reconnecter le compte parent puis qualifier le dossier dédié |
+| URL exacte et certificat | Adresse demandée consignée ; DNS/HTTPS et routage non vérifiés | Créer et qualifier le sous-domaine dans le compte parent |
 | Répertoire cible réel | TBD | Vérifier le document root et sa séparation du site public |
-| Compte/mode d'accès | Session cPanel du compte principal vérifiée ; compte dédié non activé | Vérifier ensuite l'accès à la lune et son chemin, sans valeur de secret dans Git |
+| Compte/mode d'accès | Compte parent identifié ; session à reconnecter | Vérifier l'accès authentifié avant création, sans valeur de secret dans Git |
 | Protection de consultation | TBD, sas CONNECT absent | Définir et vérifier accès privé/CONNECT avant une consultation distante |
 | Contenu existant / isolation | TBD | Prouver vacuité et isolation, ou sauvegarde restaurée du contenu présent |
 | Retour arrière | Non testé | Préparer un retour au candidat précédent puis le répéter sur la cible dédiée |
@@ -54,9 +66,9 @@ la protection de la préproduction doit être réellement définie avant publica
 ## Suivi et prochaine action
 Les champs machine-readable de la cible restent dans `developmentWorkflow.targets`.
 Cette fiche décrit leur qualification ; elle ne maintient pas une deuxième liste de
-statuts. Prochaine action : le responsable termine l'activation dans le formulaire
-ouvert ; vérifier ensuite le compte de la lune, le rattachement du sous-domaine,
-le répertoire et la protection.
+statuts. Prochaine action : reconnecter le compte parent, préparer un dossier dédié
+fermé aux visiteurs, puis créer le sous-domaine vers ce dossier. Vérifier le répertoire,
+la protection effective, DNS/HTTPS et la récupération avant tout déploiement.
 Préparer ensuite le lot CONNECT et la procédure correspondante. Exécuter le contrôleur du skill sur
 les preuves actualisées ; obtenir ensuite l'accord exact avant l'action distante.
 

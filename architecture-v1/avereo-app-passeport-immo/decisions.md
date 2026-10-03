@@ -45,5 +45,11 @@ dans le suivi canonique, les champs à établir dans la fiche de qualification.
 
 Dans le chat de reprise, le responsable retient l'adresse de test proposée et
 privilégie une lune gratuite si disponible, pour disposer d'un espace séparé.
-Cette préférence conditionnelle reste dans la cible canonique ; la disponibilité
-et l'installation doivent être vérifiées après connexion à o2switch.
+Cette préférence conditionnelle reste dans la cible canonique ; son observation
+et la qualification de la cible sont décrites dans la fiche dédiée.
+
+Après vérification de la restriction o2switch imposant le même compte au domaine
+parent et à ses sous-domaines, le responsable retient le compte qui héberge
+`avereo.fr`, avec un dossier dédié et protégé. Raison : conserver l'adresse demandée.
+Conséquence : la lune active n'est pas la cible de cette adresse ; la séparation
+des répertoires et la protection effective doivent être qualifiées sur le compte parent.

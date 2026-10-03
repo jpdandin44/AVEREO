@@ -17,7 +17,7 @@ Vue générée depuis `developmentWorkflow` dans `suivi-chantier.json`. Ne pas m
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — Bloquée**.
-Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.
+Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-03T19:26:15+02:00.
 
@@ -25,7 +25,7 @@ Parcours formel : **phase 0 — Reprise et état des lieux**, en cours.
 Validation formelle restant à consigner : phase 0, phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
 
 
-Adresse demandée : `https://passeport-immo-preprod.avereo.fr`. Lune gratuite `sc4daje3540` disponible ; formulaire d’activation ouvert. Le responsable doit saisir et valider son nouveau mot de passe dans cPanel. Rattachement du sous-domaine, dossier et accès privé restent à vérifier.
+Adresse demandée : `https://passeport-immo-preprod.avereo.fr`. Le responsable retient le compte du domaine parent, avec un dossier dédié protégé. La lune gratuite `sc4daje3540` est active, distincte de cette cible. Création du sous-domaine, dossier et accès privé restent à qualifier.
 
 
 ## Itération GitHub et cockpit
@@ -39,7 +39,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées. |
-| Préproduction | Bloquée | Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé. |
+| Préproduction | Bloquée | Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -75,11 +75,11 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- Lune gratuite disponible et formulaire d’activation préparé ; activation par le responsable, rattachement du sous-domaine, dossier et accès privé restent à vérifier.
+- Compte parent retenu après vérification de la restriction des sous-domaines entre comptes. Session cPanel à reconnecter ; sous-domaine, dossier protégé et qualification distante restent à réaliser.
 - Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
 - Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
 
-Prochaine action : Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.
+Prochaine action : Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.
 
 ### Accords et livraison
 

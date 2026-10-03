@@ -30,10 +30,14 @@ Le responsable retient le sous-domaine proposé et privilégie une lune gratuite
 disponible. L'adresse demandée et cette préférence sont dans
 `developmentWorkflow.targets.preproduction`, affichées dans la fiche générée.
 Après correction de l'URL par le responsable, cPanel est accessible et authentifié.
-La disponibilité gratuite est vérifiée ; le formulaire d'activation de la lune
-préparée est ouvert. Le responsable saisit et valide le nouveau mot de passe dans
-cPanel. Les observations datées sont dans la cible canonique ; activation,
-rattachement du sous-domaine et qualification privée restent à vérifier.
+La lune préparée est constatée active, avec accès à son cPanel. Le diagnostic montre
+que Mon Univers Web bloque l'affichage dans un panneau étroit ; le test en largeur
+ordinateur fonctionne. Chrome n'est pas accessible aux outils de cette session.
+Après vérification de la restriction o2switch entre comptes, le responsable conserve
+l'adresse demandée sur le compte qui héberge `avereo.fr`, avec un dossier dédié protégé.
+La session cPanel est ensuite invalidée au retour vers le compte parent ; reconnexion
+requise avant création. Les observations datées et la prochaine action sont dans
+la cible canonique et la [qualification](qualification-preproduction.md).
 
 ## Historique de clôture avant cette reprise
 
@@ -89,7 +93,8 @@ phase 0 en cours, phase 1 formellement non commencée ; la copie locale reste
 disponible sous l'accord de session. La checklist GitHub humaine et la fusion valident le lot source nº71 ; les phases
 formelles et la recette détaillée restent distinctes. Aucun accord de déploiement,
 d'accès production ou d'ouverture n'a été acquis.
-Préproduction dédiée o2switch choisie ; adresse/répertoire et accès non déterminés.
+Préproduction dédiée o2switch choisie ; adresse demandée et stratégie de compte parent
+retenues. Répertoire, protection effective et accès distants non qualifiés.
 Préproduction et production : isolement/vacuité ou sauvegarde
 restaurée, intégration CONNECT et retour arrière à qualifier.
 

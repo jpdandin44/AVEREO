@@ -333,6 +333,10 @@
     {
       "date": "2026-10-03",
       "event": "Après connexion du responsable : cPanel authentifié vérifié, cinq lunes gratuites libres sur huit incluses. Formulaire d’activation de sc4daje3540 ouvert ; nouveau mot de passe réservé au responsable, aucune activation ou installation effectuée par l’agent."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Diagnostic navigateur : affichage o2switch bloqué par une largeur de 817 pixels, utilisable à 1280 pixels ; Chrome non exposé aux outils. Lune gratuite sc4daje3540 constatée active, avec accès à son compte. Restriction des sous-domaines entre comptes vérifiée chez o2switch ; le responsable retient l’adresse demandée sur le compte parent, dans un dossier dédié protégé. Reconnexion cPanel requise avant création ; aucun sous-domaine ni déploiement réalisé."
     }
   ],
   "reviewEvents": [],
@@ -455,15 +459,37 @@
           "availability": "free_moon_available",
           "selectedAt": "2026-10-03T19:35:00+02:00",
           "selectionReference": "Réponse directe du responsable dans ce chat : Oui, lune gratuite si disponible.",
-          "accessObservation": "Session cPanel authentifiée sur hevea.o2switch.net, compte principal ; gestion Mon Univers Web consultée.",
-          "availableFreeMoons": 5,
-          "activeMoons": 3,
+          "accessObservation": "Lune sc4daje3540 active et accès à son cPanel constatés. Après retour au compte principal, cPanel signale un jeton puis un cookie de session invalides et demande une reconnexion.",
+          "availableFreeMoons": 4,
+          "activeMoons": 4,
           "includedFreeMoons": 8,
           "preparedMoon": "sc4daje3540",
-          "activationStatus": "awaiting_user_password",
-          "observedAt": "2026-10-03T19:55:03+02:00",
-          "evidence": "docs/qualification-preproduction.md ; capture locale du formulaire hors Git.",
-          "credentialHandling": "Aucune valeur saisie ou conservée par l’agent ; saisie et validation du nouveau mot de passe réservées au responsable."
+          "activationStatus": "active",
+          "observedAt": "2026-10-03T20:50:33+02:00",
+          "evidence": "docs/qualification-preproduction.md ; captures locales de la lune active et du formulaire des sous-domaines hors Git.",
+          "credentialHandling": "Aucune valeur de secret saisie ou conservée par l’agent.",
+          "moonHomeDirectory": "/home/sc4daje3540",
+          "moonTechnicalDomain": "sc4daje3540.universe.wf",
+          "moonUsedForTarget": false,
+          "accessStatus": "reauthentication_required",
+          "targetStrategy": "parent_domain_account_with_protected_directory",
+          "targetAccount": "daje3540",
+          "targetSelectedAt": "2026-10-03T20:50:33+02:00",
+          "targetSelectionReference": "Réponse directe du responsable : Conserver passeport-immo-preprod.avereo.fr dans le compte qui héberge avereo.fr, avec un dossier dédié et protégé (recommandé).",
+          "domainAttachment": {
+            "status": "parent_account_selected_creation_pending",
+            "parentDomainAvailableOnMoon": false,
+            "observedParentDomainsOnMoon": [
+              "sc4daje3540.universe.wf"
+            ],
+            "ruleSource": "https://blog.o2switch.fr/creer-un-sous-domaine-o2switch-a-quoi-ca-sert-et-comment-le-configurer/"
+          },
+          "browserObservation": {
+            "defaultWidth": 817,
+            "desktopTestWidth": 1280,
+            "result": "Interface Mon Univers Web bloquée par un message ordinateur à 817 pixels, liste des lunes accessible à 1280 pixels.",
+            "chromeExposed": false
+          }
         }
       },
       "production": {
@@ -583,11 +609,11 @@
       "observedAt": null
     },
     "blockers": [
-      "Lune gratuite disponible et formulaire d’activation préparé ; activation par le responsable, rattachement du sous-domaine, dossier et accès privé restent à vérifier.",
+      "Compte parent retenu après vérification de la restriction des sous-domaines entre comptes. Session cPanel à reconnecter ; sous-domaine, dossier protégé et qualification distante restent à réaliser.",
       "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
       "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
     ],
-    "nextAction": "Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.",
+    "nextAction": "Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -606,7 +632,7 @@
       },
       "preproduction": {
         "status": "blocked",
-        "nextAction": "Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé."
+        "nextAction": "Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat."
       },
       "production": {
         "status": "blocked",
@@ -714,7 +740,7 @@
       "status": "prepared_local",
       "observedAt": "2026-10-03T16:56:55+00:00",
       "workflow": "workflows/preparer-preproduction.md",
-      "nextAction": "Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.",
+      "nextAction": "Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.",
       "publication": {
         "status": "published_draft",
         "branch": "feat/passeport-immo-preproduction",
@@ -899,7 +925,7 @@
     "closedAt": "2026-10-03T17:14:44+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
-    "nextAction": "Le responsable saisit et confirme le mot de passe de la lune gratuite sc4daje3540 dans cPanel, puis active la lune. Vérifier ensuite le compte et le rattachement du sous-domaine demandé.",
+    "nextAction": "Reconnecter le compte principal cPanel, puis préparer un dossier dédié fermé aux visiteurs et créer passeport-immo-preprod.avereo.fr vers ce dossier. Qualifier ensuite DNS/HTTPS, accès privé et récupération avant tout déploiement du candidat.",
     "resumedAt": "2026-10-03T19:26:15+02:00",
     "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
   }
