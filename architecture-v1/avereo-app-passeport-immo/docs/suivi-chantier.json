@@ -1,0 +1,432 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "document_type": "suivi-chantier",
+  "title": "AVEREO – Passeport Immo",
+  "owner": "jpdandin",
+  "version": "git",
+  "created": "2026-10-03",
+  "updated": "2026-10-03",
+  "statusLabels": {
+    "not_started": "Non commencée",
+    "in_progress": "En cours",
+    "awaiting_review": "À valider",
+    "validated": "Validée",
+    "blocked": "Bloquée"
+  },
+  "measurementRules": [
+    "Les statuts formels changent par une décision humaine dans AVEREO Projet.",
+    "Un prototype local disponible ne valide pas une phase.",
+    "Les charges et dates futures restent non estimées."
+  ],
+  "currentPhase": 0,
+  "state": "in_progress",
+  "phases": [
+    {
+      "id": 0,
+      "shortTitle": "Reprise et état des lieux",
+      "title": "Reprise et état des lieux",
+      "objective": "Reprise et état des lieux",
+      "status": "in_progress",
+      "dependsOn": [],
+      "startedOn": "2026-10-03",
+      "deliveredOn": null,
+      "validatedOn": null,
+      "deliverables": [
+        {
+          "path": "00-etat-des-lieux.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "00 etat des lieux",
+          "description": "Reprise et état des lieux",
+          "expectedEvidence": [
+            "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
+            "Audit source et inconnues explicites ; vues générées contrôlées."
+          ]
+        },
+        {
+          "path": "source-audit.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "source audit",
+          "description": "Reprise et état des lieux",
+          "expectedEvidence": [
+            "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
+            "Audit source et inconnues explicites ; vues générées contrôlées."
+          ]
+        }
+      ],
+      "exitCriteria": [
+        "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
+        "Audit source et inconnues explicites ; vues générées contrôlées."
+      ],
+      "nextAction": "Prête pour revue : soumettre dans AVEREO Projet"
+    },
+    {
+      "id": 1,
+      "shortTitle": "Reprise à l’identique",
+      "title": "Reprise à l’identique",
+      "objective": "Reprise à l’identique",
+      "status": "not_started",
+      "dependsOn": [
+        0
+      ],
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "deliverables": [
+        {
+          "path": "01-reprise-identique.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "01 reprise identique",
+          "description": "Reprise à l’identique",
+          "expectedEvidence": [
+            "Installation, tests et build réussis.",
+            "Diff limité aux transformations autorisées ou écarts explicitement consignés.",
+            "Recette locale préparée et contrôles techniques distincts de la validation humaine."
+          ]
+        },
+        {
+          "path": "iteration-developpement.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Itération GitHub et cockpit",
+          "description": "Projection générée du bloc canonique developmentWorkflow.",
+          "expectedEvidence": [
+            "Candidat, PR, contrôles datés, blocages et prochaine action."
+          ]
+        }
+      ],
+      "exitCriteria": [
+        "Installation, tests et build réussis.",
+        "Diff limité aux transformations autorisées ou écarts explicitement consignés.",
+        "Recette locale préparée et contrôles techniques distincts de la validation humaine."
+      ],
+      "nextAction": "Prototype local disponible sous accord de session ; recette et passage formel à décider dans AVEREO Projet."
+    },
+    {
+      "id": 2,
+      "shortTitle": "Intégration CONNECT",
+      "title": "Intégration CONNECT",
+      "objective": "Intégration CONNECT",
+      "status": "not_started",
+      "dependsOn": [
+        1
+      ],
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "deliverables": [
+        {
+          "path": "02-integration-connect.md",
+          "kind": "file",
+          "availability": "planned",
+          "title": "02 integration connect",
+          "description": "Intégration CONNECT",
+          "expectedEvidence": [
+            "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
+            "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
+          ]
+        }
+      ],
+      "exitCriteria": [
+        "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
+        "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
+      ],
+      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+    },
+    {
+      "id": 3,
+      "shortTitle": "Préproduction",
+      "title": "Préproduction",
+      "objective": "Préproduction",
+      "status": "not_started",
+      "dependsOn": [
+        2
+      ],
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "deliverables": [
+        {
+          "path": "03-preproduction.md",
+          "kind": "file",
+          "availability": "planned",
+          "title": "03 preproduction",
+          "description": "Préproduction",
+          "expectedEvidence": [
+            "Procédure et workflow manuel préparés.",
+            "Recette préproduction conforme, remplie par le responsable."
+          ]
+        },
+        {
+          "path": "deployment.md",
+          "kind": "file",
+          "availability": "planned",
+          "title": "deployment",
+          "description": "Préproduction",
+          "expectedEvidence": [
+            "Procédure et workflow manuel préparés.",
+            "Recette préproduction conforme, remplie par le responsable."
+          ]
+        }
+      ],
+      "exitCriteria": [
+        "Procédure et workflow manuel préparés.",
+        "Recette préproduction conforme, remplie par le responsable."
+      ],
+      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+    },
+    {
+      "id": 4,
+      "shortTitle": "Mise en production",
+      "title": "Mise en production",
+      "objective": "Mise en production",
+      "status": "not_started",
+      "dependsOn": [
+        3
+      ],
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "deliverables": [
+        {
+          "path": "04-mise-en-production.md",
+          "kind": "file",
+          "availability": "planned",
+          "title": "04 mise en production",
+          "description": "Mise en production",
+          "expectedEvidence": [
+            "Autorisation humaine enregistrée après phase 3 validée.",
+            "Procédure, fumée et retour arrière vérifiés par le responsable."
+          ]
+        }
+      ],
+      "exitCriteria": [
+        "Autorisation humaine enregistrée après phase 3 validée.",
+        "Procédure, fumée et retour arrière vérifiés par le responsable."
+      ],
+      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+    },
+    {
+      "id": 5,
+      "shortTitle": "Spécification du passeport client",
+      "title": "Spécification du passeport client",
+      "objective": "Spécification du passeport client",
+      "status": "not_started",
+      "dependsOn": [
+        4
+      ],
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "deliverables": [
+        {
+          "path": "05-specification-passeport.md",
+          "kind": "file",
+          "availability": "planned",
+          "title": "05 specification passeport",
+          "description": "Spécification du passeport client",
+          "expectedEvidence": [
+            "Exigences et modèle client/biens/documents proposés.",
+            "Options de stockage comparées ; aucun code ajouté."
+          ]
+        }
+      ],
+      "exitCriteria": [
+        "Exigences et modèle client/biens/documents proposés.",
+        "Options de stockage comparées ; aucun code ajouté."
+      ],
+      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+    }
+  ],
+  "decisions": [],
+  "history": [
+    {
+      "date": "2026-10-03",
+      "event": "Initialisation de phase 0 selon le kit V4 fourni et la demande du responsable."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Le responsable autorise en conversation « Phase 0 puis prototype local dans cette session ». Aucun événement de revue ou validation ajouté."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Prototype local livré sous accord de session : dix tests, build, parité a/b/c et configuration Compose réussis ; parcours navigateur et PDF inspectés. Aucune transition de phase."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Responsable : appliquer le skill developpement-github-cockpit ; choix explicite raccordement et correction PDF. Initialisation du seul bloc developmentWorkflow, phases et décisions conservées."
+    }
+  ],
+  "reviewEvents": [],
+  "verificationQuestions": [
+    {
+      "id": "Q01",
+      "status": "open",
+      "question": "Comment traiter le partage d’URL sans données du bien ?",
+      "impact": "Un autre poste ne reçoit pas le dossier.",
+      "nextAction": "Décider le partage sécurisé dans un lot ultérieur."
+    },
+    {
+      "id": "Q02",
+      "status": "open",
+      "question": "Conserver ou remplacer les accès et abonnement simulés derrière CONNECT ?",
+      "impact": "Aucune authentification ni facturation réelle dans le prototype.",
+      "nextAction": "Décision de phase 2."
+    },
+    {
+      "id": "Q03",
+      "status": "open",
+      "question": "Quel sort réserver au frontend historique CONNECT ?",
+      "impact": "Deux sources de code après reprise.",
+      "nextAction": "Décision de phase 2 ; historique inchangé."
+    },
+    {
+      "id": "Q04",
+      "status": "open",
+      "question": "Accepter les limites du calcul : h/ml à zéro, groupement PDF par nom de pièce ?",
+      "impact": "Certaines estimations peuvent être nulles ou fusionnées.",
+      "nextAction": "Recetter les cas limites puis autoriser un correctif distinct."
+    },
+    {
+      "id": "Q05",
+      "status": "open",
+      "question": "Validation humaine du rendu, import CSV, PDF et usage mobile ?",
+      "impact": "Les contrôles techniques ne constituent pas une recette humaine.",
+      "nextAction": "Remplir le tableau R dans le livrable local."
+    },
+    {
+      "id": "Q06",
+      "status": "in_progress",
+      "question": "Publication des branches et PR de phase ?",
+      "impact": "Raccordement GitHub autorisé pour cette itération ; PR en préparation.",
+      "nextAction": "Publier le candidat et lier la PR observée au suivi, checklist humaine non cochée."
+    },
+    {
+      "id": "Q07",
+      "status": "open",
+      "question": "Les captures tiers confirment-elles les mêmes anomalies dans cette V1 ?",
+      "impact": "Les versions et parcours diffèrent ; les captures ne sont pas une preuve runtime.",
+      "nextAction": "Examiner les captures en recette ; conserver les références neutres."
+    },
+    {
+      "id": "Q08",
+      "status": "open",
+      "question": "Faut-il corriger le placement conditionnel des hooks de la fenêtre bien ?",
+      "impact": "Placement conditionnel conservé ; aucune erreur reproduite sur création et édition locales, couverture de parcours limitée.",
+      "nextAction": "Recetter les autres parcours avant un éventuel correctif distinct."
+    },
+    {
+      "id": "Q09",
+      "status": "resolved_technical",
+      "question": "Faut-il corriger la page blanche finale observée dans le PDF fictif exporté ?",
+      "impact": "Page blanche d'arrondi supprimée ; export court réel complet et quatre régressions PDF réussies. Recette humaine distincte.",
+      "nextAction": "Recetter les PDF de la grille R08 ; ne pas modifier les autres règles de chiffrage."
+    }
+  ],
+  "publication": {
+    "pushAuthorized": true,
+    "mergeAuthorized": false,
+    "deploymentAuthorized": false,
+    "productionAccessAuthorized": false,
+    "authorizationReference": "Invocation du skill developpement-github-cockpit et choix « Raccordement et correction du PDF », 2026-10-03 : branche/PR de cette itération seulement."
+  },
+  "localPrototype": {
+    "scopeAuthorizedInConversation": true,
+    "authorizationReference": "Réponse du responsable du 2026-10-03 : Phase 0 puis prototype local dans cette session",
+    "formalReviewPending": true,
+    "availability": "present",
+    "entrypoint": "start-local.cmd",
+    "reviewDeliverable": "01-reprise-identique.md"
+  },
+  "developmentWorkflow": {
+    "protocol": "developpement-github-cockpit",
+    "version": "git",
+    "iterationId": "passeport-immo-2026-10-03",
+    "project": "avereo-app-passeport-immo",
+    "owner": "jpdandin",
+    "kind": "application",
+    "stage": "local",
+    "status": "in_progress",
+    "objective": "Rattacher le prototype au protocole GitHub/cockpit et corriger la page blanche PDF.",
+    "candidate": {
+      "sourceSha": null,
+      "artifactSha256": null
+    },
+    "targets": {
+      "preproduction": {
+        "id": null,
+        "ready": false,
+        "isolated": false,
+        "empty": false,
+        "evidence": null,
+        "observedAt": null
+      },
+      "production": {
+        "id": null,
+        "ready": false,
+        "evidence": null,
+        "observedAt": null
+      }
+    },
+    "github": {
+      "repository": "jpdandin44/AVEREO",
+      "prUrl": null,
+      "acceptedSourceSha": null,
+      "acceptedArtifactSha256": null,
+      "humanAcceptanceVerified": false,
+      "evidence": "Connecteur GitHub : accès jpdandin44/AVEREO confirmé, aucune PR Passeport Immo retrouvée. Main f4695d6 confirmé par fetch Git.",
+      "observedAt": "2026-10-03T12:23:56.148487+00:00"
+    },
+    "checks": [],
+    "approvals": [],
+    "backups": [],
+    "rollback": {
+      "status": "not_tested",
+      "target": null,
+      "artifactSha256": null,
+      "evidence": null,
+      "observedAt": null
+    },
+    "delivery": {
+      "status": "not_delivered",
+      "sourceSha": null,
+      "artifactSha256": null,
+      "target": null,
+      "evidence": null,
+      "observedAt": null
+    },
+    "blockers": [
+      "Candidat et contrôles CI à qualifier.",
+      "Cible Passeport Immo de préproduction non qualifiée ; intégration CONNECT non réalisée.",
+      "Accord exact de préproduction absent.",
+      "Recette humaine et production non qualifiées."
+    ],
+    "nextAction": "Qualifier le candidat local et préparer sa PR ; vérifier les conditions de préproduction.",
+    "nextIteration": [
+      "Intégration CONNECT après accord sur les fichiers concernés.",
+      "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
+    ],
+    "budget": {
+      "limit": null,
+      "unit": null,
+      "observedUsage": null,
+      "observedAt": null
+    },
+    "stages": {
+      "local": {
+        "status": "in_progress",
+        "nextAction": "Corriger et vérifier PDF, candidat et PR."
+      },
+      "preproduction": {
+        "status": "blocked",
+        "nextAction": "Qualifier cible isolée, intégration requise, récupération et accord exact."
+      },
+      "production": {
+        "status": "blocked",
+        "nextAction": "Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée."
+      }
+    }
+  }
+}

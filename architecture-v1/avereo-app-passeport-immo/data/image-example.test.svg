@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="100" viewBox="0 0 320 100">
+  <rect width="320" height="100" fill="#eef2ff"/>
+  <text x="18" y="45" font-family="sans-serif" font-size="18" fill="#3730a3">Image de recette fictive</text>
+  <text x="18" y="75" font-family="sans-serif" font-size="16" fill="#3730a3">example.test</text>
+</svg>
