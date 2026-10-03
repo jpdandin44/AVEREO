@@ -20,11 +20,15 @@ et les modifications de préparation sont relus ; la branche dédiée est conser
 L'application et le cockpit répondent sur leurs ports locaux. La reprise est
 consignée dans `sessionHandoff`, en conservant la date de clôture précédente.
 
-Le lot prépare la publication d'une PR en brouillon après contrôles locaux. Son
+Le lot est publié dans la [PR nº74 en brouillon](https://github.com/jpdandin44/AVEREO/pull/74),
+après contrôles locaux, sans merge ni installation distante. Son
 observation GitHub et les preuves de publication sont enregistrées dans
 `developmentWorkflow.preproductionPreparation.publication`, puis affichées par
 la fiche générée. Le candidat métier, les validations de phase et les accords
 restent ceux du suivi existant. Cible o2switch et accès privés restent à préciser.
+Le sous-domaine et le dossier dédié peuvent être créés dans le compte actuel ou
+dans une lune gratuite disponible ; le responsable est consulté sur ce choix.
+La session cPanel n'est pas accessible depuis les surfaces disponibles de ce chat.
 
 ## Historique de clôture avant cette reprise
 

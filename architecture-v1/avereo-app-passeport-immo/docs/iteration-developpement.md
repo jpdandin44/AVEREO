@@ -96,6 +96,6 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 - Relecture de l'archive : Réussie.
 - Restauration : Réussie sur des fichiers temporaires locaux ; cible hébergée : Non vérifiée.
 - Livraison distante : Non effectuée.
-- PR de préparation : Non publiée.
+- PR de préparation : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/74).
 
 Cette préparation ne qualifie ni la cible ni l'accès privé. La récupération locale est distincte d'une sauvegarde restaurée de l'hébergement.

@@ -321,6 +321,10 @@
     {
       "date": "2026-10-03",
       "event": "Reprise explicitement demandée dans le nouveau chat AVEREO_2 ; clone et lot local relus, application et cockpit accessibles. Publication de la préparation à poursuivre sans modification des décisions humaines ni du candidat métier."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "PR nº74 publiée en brouillon pour la préparation locale de préproduction ; checklist humaine décochée, sans merge ni livraison distante. Observations datées dans le bloc de préparation."
     }
   ],
   "reviewEvents": [],
@@ -688,11 +692,11 @@
       "workflow": "workflows/preparer-preproduction.md",
       "nextAction": "Qualifier URL, répertoire, accès et protection sur la cible o2switch, puis préparer l’accord exact.",
       "publication": {
-        "status": "preparing",
+        "status": "published_draft",
         "branch": "feat/passeport-immo-preproduction",
         "baseSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
-        "url": null,
-        "observedAt": "2026-10-03T19:26:15+02:00",
+        "url": "https://github.com/jpdandin44/AVEREO/pull/74",
+        "observedAt": "2026-10-03T19:30:40+02:00",
         "localVerification": {
           "preparationTests": 6,
           "preparationTestsStatus": "passed",
@@ -703,7 +707,134 @@
           "application": "Local login and property list checked in browser on port 5175.",
           "cockpit": "Phase 0 and merged follow-up PR 72 visible on port 5193.",
           "preproductionGate": "refused_missing_target_approval_recovery"
-        }
+        },
+        "number": 74,
+        "state": "open",
+        "draft": true,
+        "sourceSha": "1129428329f794c2dd3c0a6abf8cad29e0ce04a3",
+        "ciObservation": [
+          {
+            "name": "policy",
+            "status": "COMPLETED",
+            "conclusion": "SKIPPED",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573050/job/111253988702"
+          },
+          {
+            "name": "policy",
+            "status": "COMPLETED",
+            "conclusion": "SKIPPED",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140662657/job/111254253578"
+          },
+          {
+            "name": "validate",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988360"
+          },
+          {
+            "name": "validate",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949176"
+          },
+          {
+            "name": "candidate",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573030/job/111253987682"
+          },
+          {
+            "name": "candidate",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560501/job/111253949046"
+          },
+          {
+            "name": "frontend-gates (rapport)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988552"
+          },
+          {
+            "name": "frontend-gates (rapport)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949405"
+          },
+          {
+            "name": "frontend-gates (coupe)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988576"
+          },
+          {
+            "name": "frontend-gates (coupe)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949441"
+          },
+          {
+            "name": "frontend-gates (projet)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988589"
+          },
+          {
+            "name": "frontend-gates (projet)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949672"
+          },
+          {
+            "name": "frontend-gates (thermo)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988528"
+          },
+          {
+            "name": "frontend-gates (thermo)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949412"
+          },
+          {
+            "name": "frontend-gates (drone)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988561"
+          },
+          {
+            "name": "frontend-gates (drone)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949357"
+          },
+          {
+            "name": "frontend-gates (recherche)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988560"
+          },
+          {
+            "name": "frontend-gates (recherche)",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949391"
+          },
+          {
+            "name": "connect-integration",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988501"
+          },
+          {
+            "name": "connect-integration",
+            "status": "COMPLETED",
+            "conclusion": "SUCCESS",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949350"
+          }
+        ],
+        "ciLimitation": "Observation datée du commit de préparation ; les commits de suivi ultérieurs doivent aussi être contrôlés sur GitHub."
       }
     }
   },
@@ -723,6 +854,20 @@
         "mergedAt": "2026-10-03T16:42:36Z",
         "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64"
       }
+    },
+    {
+      "phaseId": 0,
+      "result": "Lot de préparation publié en brouillon ; revue humaine et qualification de cible à poursuivre.",
+      "documentationPullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/74",
+        "repository": "jpdandin44/AVEREO",
+        "number": 74,
+        "state": "open",
+        "headSha": "1129428329f794c2dd3c0a6abf8cad29e0ce04a3",
+        "observedAt": "2026-10-03T19:30:40+02:00",
+        "draft": true,
+        "scope": "Préparation locale de préproduction et correction de l’affichage du suivi ; aucun déploiement."
+      }
     }
   ],
   "sessionHandoff": {
@@ -730,7 +875,7 @@
     "closedAt": "2026-10-03T17:14:44+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
-    "nextAction": "Relire et publier le lot de préparation dans une PR dédiée, observer la CI puis qualifier la cible o2switch.",
+    "nextAction": "Examiner la PR de préparation et ses contrôles ; choisir et qualifier la cible dédiée o2switch avant l’accord d’installation.",
     "resumedAt": "2026-10-03T19:26:15+02:00",
     "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
   }
