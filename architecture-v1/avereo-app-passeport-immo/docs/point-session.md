@@ -7,49 +7,68 @@ version: git
 created: 2026-10-03
 updated: 2026-10-03
 owner: jpdandin
-tags: [passeport-immo, local]
+tags: [passeport-immo, local, cockpit]
 ---
 
 # Point de reprise de session
 
-## Livré le 2026-10-03
-État des lieux, inventaire des sources, matrice de 40 fonctions, socle documentaire et
-suivi à six phases. Prototype local React/Tailwind autonome, calculs extraits sans
-changement de logique, dix tests réussis, build et parité vérifiés.
-Copie isolée à chemin court ; clone Collector et source historique CONNECT préservés.
-Base `origin/main` observée : `f4695d662546fe7277bf3a50c8c975ce97e8b9a0`.
-Phase 0 : commit local `f1d865b`, branche `feat/passeport-immo-phase-0`.
-Lot local : branche `feat/passeport-immo-phase-1` ; consulter Git pour son commit final.
-Les chemins personnels, imports et preuves du poste sont hors Git.
+## Disponible
+Prototype local React/Tailwind après phase 0, puis raccordement demandé au protocole
+GitHub/cockpit et correction PDF autorisée. Quatorze tests, build et parité a/b/c+d
+réussis ; le même export court réel donne une page A4 complète.
+La [fiche générée](iteration-developpement.md), issue du seul suivi JSON, identifie
+le candidat, la PR nº71, les observations CI et les blocages. Ne pas la modifier à la main.
+La CI et le candidat local sont identiques octet par octet, manifeste et cinq assets
+vérifiés. Consulter cette fiche pour les SHA et dates ; ils ne sont pas dupliqués ici.
 
-## Autorisation et limites
-Accord explicite du responsable : « Phase 0 puis prototype local dans cette session ».
-Le JSON reste à la phase 0 en cours ; phase 1 formellement non commencée, prototype
-disponible sous cet accord distinct. Aucun événement de revue ou décision humain simulé.
-Aucun push, PR, merge, déploiement, sas CONNECT ou accès production réalisé.
-Le cockpit multi-projets et le stockage centralisé restent hors de ce lot.
+## Git et périmètre
+Branche active : `feat/passeport-immo-suivi`, complément de pilotage post-fusion.
+PR nº71 fusionnée par le responsable, observation vérifiée sur GitHub et dans main.
+Base du prototype : `f4695d662546fe7277bf3a50c8c975ce97e8b9a0`.
+Fusion observée dans main : `6399524cc0f92a90ab9c53c1990f07016e827775`.
+La publication par connecteur GitHub a conservé exactement l'arbre local après
+échec d'authentification du Git habituel. Les branches locales phase-0, phase-1
+et `feat/passeport-immo-cockpit-local` conservent les étapes précédentes.
+Le clone Collector original et la source CONNECT historique sont préservés.
+Les chemins du poste, imports, données navigateur et preuves locales sont hors Git.
+
+## Autorisation et état
+Accords de périmètre : « Phase 0 puis prototype local dans cette session », puis
+invocation du skill et « Raccordement et correction du PDF ».
+Les six statuts formels, décisions et événements de revue restent inchangés :
+phase 0 en cours, phase 1 formellement non commencée ; la copie locale reste
+disponible sous l'accord de session. La checklist GitHub humaine et la fusion valident le lot source nº71 ; les phases
+formelles et la recette détaillée restent distinctes. Aucun accord de déploiement,
+d'accès production ou d'ouverture n'a été acquis.
+Préproduction dédiée o2switch choisie ; adresse/répertoire et accès non déterminés.
+Préproduction et production : isolement/vacuité ou sauvegarde
+restaurée, intégration CONNECT et retour arrière à qualifier.
 
 ## Ouvrir et reprendre
-Application : `../start-local.cmd`, <http://127.0.0.1:5175/>, bouton « Se connecter ».
-Contrôles : `npm.cmd test` et `npm.cmd run build` depuis `frontend/` ;
-`node tests/check-parity.mjs` depuis le sous-projet.
-Revue : `../start-review.cmd`, <http://127.0.0.1:5193/> ; dépendances installées,
-serveur non démarré par l'agent. Examiner les livrables de phase 0 puis le
-[livrable local](01-reprise-identique.md), remplir les résultats de recette humaine.
-Vues de suivi : régénérer avec `docs/actualiser-tableau-de-bord.py`, puis `--check`.
-Avant tout écrit JSON, vérifier l'absence de `.projet-review.lock`.
+Application : `../start-local.cmd`, <http://127.0.0.1:5175/>, « Se connecter ».
+Cockpit Projet : `../start-review.cmd`, <http://127.0.0.1:5193/>.
+Dans phase 1, sélectionner le document « Itération GitHub et cockpit ».
+Les deux services ont été lancés sur ce poste ; leurs instances peuvent être arrêtées
+par Ctrl+C dans leur terminal. Ne pas arrêter un service inconnu occupant le port.
 
-## Points à traiter
-Page blanche finale sur le PDF fictif exporté (Q09) : correction de pagination à décider.
-Recette humaine, partage/suppressions, scénarios PDF longs et téléphone réel (Q05).
-Comparaison visuelle des captures historiques (Q07), unités/groupement PDF (Q04).
-Docker : configuration vérifiée, image non exécutée. Bundle Vite volumineux conservé.
-Connexion Claude non disponible : application native absente des surfaces accessibles,
-site web à l'écran de connexion. Le prompt fourni a servi de ressource, sans échange
-avec Claude ni ouverture de session à sa place.
+Tests et build depuis `frontend/` ; parité depuis le sous-projet.
+Lire le [mapping du protocole](../workflows/developpement-github-cockpit.md)
+pour packaging et contrôles de passage. Les paramètres locaux du skill et du rendu
+sont dans `.local/review-settings.json` ignoré.
+Avant chaque écriture du suivi, vérifier l'absence de `.projet-review.lock`,
+puis régénérer les vues et utiliser `--check`.
 
-## Périmètre documentaire vérifié
-Sources Markdown/YAML/JSON identifiées ; socle obligatoire du sous-projet présent.
-Socle racine complété par des index, sans audit global des autres applications.
-Métadonnées et liens des nouveaux documents, vues générées, JSON et parité contrôlés.
-Audit global du monorepo : TBD, n'est pas acquis par cette session.
+## Suite et limites
+Recette humaine R01…R13 et téléphone réel ouverts. Q09 est résolue techniquement ;
+h/ml à zéro, partage d'URL et groupement PDF par nom restent inchangés.
+Docker : configuration vérifiée, image non exécutée. Avertissement de bundle conservé.
+Qualifier la cible dédiée o2switch et le lot CONNECT, puis préparer un accord
+portant sur le candidat exact. Les contrôles de passage refusent les preuves absentes.
+Claude n'a pas été consulté : interface accessible à l'écran de connexion dans
+le lot initial ; le prompt fourni reste une ressource, sans session ouverte à sa place.
+
+## Vérification documentaire
+Socles du sous-projet et de la racine présents. Contrôle des métadonnées simples,
+liens locaux, matrice, JSON, vues dérivées et lecture native du cockpit effectué.
+Les détails et preuves sont dans [raccordement-cockpit.md](raccordement-cockpit.md).
+Le périmètre vérifié est ce lot ; audit global des autres applications : TBD.

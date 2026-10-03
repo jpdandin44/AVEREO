@@ -12,7 +12,7 @@ tags: [passeport-immo, audit, local]
 
 # Phase 0 — reprise et état des lieux
 
-## Périmètre et autorisation
+## Périmètre et autorisation du lot initial
 
 Base : `origin/main` observée à `f4695d662546fe7277bf3a50c8c975ce97e8b9a0`. Clone visé : `jpdandin44/AVEREO`. Copie isolée, branche de phase locale. Le chantier Collector est préservé.
 La demande explicite « Phase 0 puis prototype local dans cette session » autorise la reprise locale après audit. Les phases et approbations restent inchangées dans le moteur ; aucune publication autorisée.
@@ -157,11 +157,11 @@ Les attentes d’une autre version servent à préparer la recette. Une attente 
 
 Copie isolée à chemin court pour éviter la limite Windows sur les chemins du clone original. Import et binaires tiers exclus de Git. Suivi au schéma du site, rendu Markdown mutualisé, aucune décision ni événement de revue créé. Installation Tailwind 3.4.17 réalisée pour les classes existantes ; configuration selon la documentation officielle Vite.
 
-## Limites de la phase
+## Limites constatées au terme du lot initial
 
 Les captures et bilans de la version précédente ne prouvent pas le comportement de cette application. Les questions ouvertes sont dans le JSON. Le lot reste local : publication des PR, revue humaine, intégration CONNECT, Docker et hébergement ne sont pas acquis.
 
-## Constat de recette technique locale
+## Constat initial de recette technique locale
 
 La reprise est disponible. Les contrôles et le décompte a/b/c sont consignés dans
 [le livrable local](01-reprise-identique.md). Sur le PDF fictif exporté, la première
@@ -173,3 +173,9 @@ La page blanche décrite dans le résultat initial est résolue dans le candidat
 suivant, après autorisation du responsable. P26 est le seul nouvel écart d.
 Les preuves a/b/c restent historiques ; le contrôle actuel inverse aussi d.
 [Contrôles et limites du correctif](raccordement-cockpit.md).
+
+## Actualisation GitHub et cockpit
+Le lot suivant est publié dans la PR nº71 en brouillon sur demande du responsable.
+La [fiche d’itération](iteration-developpement.md) est la référence des observations
+actuelles. Les preuves initiales ci-dessus restent datées et les validations humaines
+ne sont pas déduites de la publication.

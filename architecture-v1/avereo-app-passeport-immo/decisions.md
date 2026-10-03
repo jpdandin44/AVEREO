@@ -36,3 +36,9 @@ Le débordement blanc de moins d'un pixel A4 est ignoré uniquement après lectu
 de la dernière ligne du canvas. Un pixel de contenu conserve la page.
 Quatre tests PDF bornent cet écart d ; le contrôle inverse isole ce changement
 et vérifie que les autres comportements et classes restent identiques.
+
+## Orientation de préproduction, 2026-10-03
+Le responsable choisit une préproduction dédiée sur o2switch. Cette orientation
+rattache la préparation à cet hébergeur ; elle ne qualifie aucune adresse,
+aucun accès ni aucune permission de déploiement. Les valeurs observées restent
+dans le suivi canonique, les champs à établir dans la fiche de qualification.

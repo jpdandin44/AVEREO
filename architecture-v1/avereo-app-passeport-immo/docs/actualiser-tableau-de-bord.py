@@ -20,7 +20,11 @@ def iteration_view(data):
     labels = {'in_progress': 'En cours', 'awaiting_review': 'À valider', 'blocked': 'Bloquée', 'validated': 'Validée'}
     stages = [('local', 'Local'), ('preproduction', 'Préproduction'), ('production', 'Production')]
     rows = [f"| {name} | {labels.get(flow['stages'][key]['status'], flow['stages'][key]['status'])} | {flow['stages'][key]['nextAction']} |" for key, name in stages]
-    checks = [f"| {check['kind']} | {check['status']} | {check.get('sourceSha') or 'Non qualifié'} | {check['observedAt']} | {check['evidence']} |" for check in flow['checks']]
+    kind_labels = {'local': 'Sur le poste', 'ci': 'GitHub Actions', 'documentation': 'Documentation'}
+    result_labels = {'passed': 'Réussi', 'failed': 'Échec', 'pending': 'En attente'}
+    checks = [f"| {kind_labels.get(check['kind'], check['kind'])} | {result_labels.get(check['status'], check['status'])} | {check['observedAt']} |" for check in flow['checks']]
+    proofs = '\n'.join('- ' + kind_labels.get(check['kind'], check['kind']) + ' : ' + check['evidence'] for check in flow['checks'])
+    gates = '\n'.join('- '+{'preproduction': 'Préproduction', 'production': 'Production', 'close': 'Clôture'}[gate['gate']] + ' : ' + ('conditions remplies' if gate['declaredEvidenceConsistent'] else 'passage refusé') + f" ({gate['observedAt']})." for gate in flow.get('gates', [])) or 'À contrôler.'
     blockers = '\n'.join('- '+item for item in flow['blockers']) or 'Aucun blocage déclaré.'
     pr = github.get('prUrl') or 'Non publiée'
     body = f"""## Itération GitHub et cockpit
@@ -28,6 +32,8 @@ def iteration_view(data):
 **{flow['iterationId']}** — {flow['objective']}
 
 Responsable : {flow['owner']}. Étape : {flow['stage']}. État : {labels.get(flow['status'], flow['status'])}.
+
+Ces étapes techniques complètent les phases formelles du chantier ; une fusion GitHub ne modifie pas leurs décisions.
 
 | Étape | État | Prochaine action |
 |---|---|---|
@@ -37,15 +43,24 @@ Responsable : {flow['owner']}. Étape : {flow['stage']}. État : {labels.get(flo
 
 - SHA source : `{candidate.get('sourceSha') or 'Non qualifié'}`.
 - SHA-256 de l'archive : `{candidate.get('artifactSha256') or 'Non qualifié'}`.
-- PR : {pr}.
+- PR : {'[Ouvrir la PR]('+pr+')' if pr.startswith('https://github.com/') else pr}.
 - Dernière observation GitHub : {github.get('observedAt') or 'Non observé'}.
-- Acceptation humaine GitHub : {'Vérifiée' if github['humanAcceptanceVerified'] else 'Non acquise'}.
+- Revue humaine de la source GitHub : {'Confirmée' if github.get('sourceReviewVerified') else 'Non consignée'}.
+- Acceptation de l'archive exacte pour promotion : {'Vérifiée' if github['humanAcceptanceVerified'] else 'À consigner avant production'}.
 
 ### Contrôles datés
 
-| Nature | Résultat | SHA source | Observation | Preuve |
-|---|---|---|---|---|
+| Nature | Résultat | Observation |
+|---|---|---|
 {chr(10).join(checks)}
+
+Preuves du candidat identifié ci-dessus :
+
+{proofs}
+
+### Contrôles de passage
+
+{gates}
 
 ### Blocages de passage
 
@@ -56,7 +71,7 @@ Prochaine action : {flow['nextAction']}
 ### Accords et livraison
 
 Accords spécifiques enregistrés : {len(flow['approvals'])}. Sauvegardes qualifiées : {len(flow['backups'])}.
-Retour arrière : {flow['rollback']['status']}. Livraison : {flow['delivery']['status']}.
+Retour arrière : { {'not_tested': 'non testé', 'tested': 'testé'}.get(flow['rollback']['status'], flow['rollback']['status']) }. Livraison : { {'not_delivered': 'non réalisée', 'delivered': 'réalisée'}.get(flow['delivery']['status'], flow['delivery']['status']) }.
 Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
 
 ### Suite proposée

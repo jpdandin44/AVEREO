@@ -66,3 +66,18 @@ le lot CONNECT nécessaire, puis préparer un accord portant sur ce candidat pr�
 
 Les décisions de phase, acceptation GitHub, merge, déploiement et ouverture restent
 humaines. Aucune case de recette ni de checklist PR n'est cochée par l'agent.
+
+## CI et lecture du cockpit observées
+Le job Passeport Immo et la CI générale ont réussi sur le candidat qualifié.
+L’artefact GitHub téléchargé contient archive et manifeste : empreinte du conteneur,
+intégrité ZIP, manifeste et octets des cinq fichiers comparés au poste avec succès.
+La [fiche générée](iteration-developpement.md) porte les identifiants et dates.
+La lecture Projet affiche les six phases et quatre livrables disponibles sans mutation.
+La fusion de la PR nº71 et sa checklist humaine sont désormais observées : source
+acceptée, sans validation automatique des phases ni accord de déploiement.
+Les cibles et les accords manquants empêchent toujours la promotion distante.
+
+## Cible suivante choisie
+Le responsable choisit une préproduction dédiée sur o2switch. Les champs restant
+à qualifier sont dans [la fiche de cible](qualification-preproduction.md). Ce choix
+ne renseigne ni une URL réelle, ni des accès, ni une autorisation de déploiement.

@@ -44,7 +44,7 @@ Aucune décision en attente.
 | Q02 | Conserver ou remplacer les accès et abonnement simulés derrière CONNECT ? | Aucune authentification ni facturation réelle dans le prototype. | Décision de phase 2. |
 | Q03 | Quel sort réserver au frontend historique CONNECT ? | Deux sources de code après reprise. | Décision de phase 2 ; historique inchangé. |
 | Q04 | Accepter les limites du calcul : h/ml à zéro, groupement PDF par nom de pièce ? | Certaines estimations peuvent être nulles ou fusionnées. | Recetter les cas limites puis autoriser un correctif distinct. |
-| Q05 | Validation humaine du rendu, import CSV, PDF et usage mobile ? | Les contrôles techniques ne constituent pas une recette humaine. | Remplir le tableau R dans le livrable local. |
+| Q05 | Validation humaine du rendu, import CSV, PDF et usage mobile ? | Checklist de test local cochée humainement dans la PR nº71 ; résultats détaillés R01…R13 et téléphone réel non consignés. | Remplir le tableau R dans le livrable local. |
 | Q07 | Les captures tiers confirment-elles les mêmes anomalies dans cette V1 ? | Les versions et parcours diffèrent ; les captures ne sont pas une preuve runtime. | Examiner les captures en recette ; conserver les références neutres. |
 | Q08 | Faut-il corriger le placement conditionnel des hooks de la fenêtre bien ? | Placement conditionnel conservé ; aucune erreur reproduite sur création et édition locales, couverture de parcours limitée. | Recetter les autres parcours avant un éventuel correctif distinct. |
 <!-- END GENERATED: suivi-chantier.json -->
@@ -53,41 +53,57 @@ Aucune décision en attente.
 
 **passeport-immo-2026-10-03** — Rattacher le prototype au protocole GitHub/cockpit et corriger la page blanche PDF.
 
-Responsable : jpdandin. Étape : local. État : En cours.
+Responsable : jpdandin. Étape : preproduction. État : Bloquée.
+
+Ces étapes techniques complètent les phases formelles du chantier ; une fusion GitHub ne modifie pas leurs décisions.
 
 | Étape | État | Prochaine action |
 |---|---|---|
-| Local | En cours | Corriger et vérifier PDF, candidat et PR. |
-| Préproduction | Bloquée | Qualifier cible isolée, intégration requise, récupération et accord exact. |
+| Local | Validée | Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées. |
+| Préproduction | Bloquée | Préparer la cible dédiée o2switch : adresse, accès, protection et récupération ; aucun déploiement engagé. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
 
-- SHA source : `Non qualifié`.
-- SHA-256 de l'archive : `Non qualifié`.
-- PR : Non publiée.
-- Dernière observation GitHub : 2026-10-03T12:23:56.148487+00:00.
-- Acceptation humaine GitHub : Non acquise.
+- SHA source : `f076a9b1644ae9c0620aa77df8531773c8cb00af`.
+- SHA-256 de l'archive : `84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab`.
+- PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/71).
+- Dernière observation GitHub : 2026-10-03T12:52:58+00:00.
+- Revue humaine de la source GitHub : Confirmée.
+- Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
 ### Contrôles datés
 
-| Nature | Résultat | SHA source | Observation | Preuve |
-|---|---|---|---|---|
+| Nature | Résultat | Observation |
+|---|---|---|
+| Sur le poste | Réussi | 2026-10-03T12:44:51+00:00 |
+| GitHub Actions | Réussi | 2026-10-03T12:42:48+00:00 |
+| Documentation | Réussi | 2026-10-03T12:44:51+00:00 |
 
+Preuves du candidat identifié ci-dessus :
+
+- Sur le poste : raccordement-cockpit.md : 14 tests, build, parité a/b/c+d ; PDF réel court 1 page complète ; archive relue et répétée.
+- GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/37123530922
+- Documentation : 32 documents, socles, métadonnées simples, liens locaux, matrice 40 lignes, vues générées ; lecture Projet sans mutation.
+
+### Contrôles de passage
+
+- Préproduction : passage refusé (2026-10-03T12:54:58+00:00).
+- Production : passage refusé (2026-10-03T12:54:59+00:00).
+- Clôture : passage refusé (2026-10-03T12:54:59+00:00).
 
 ### Blocages de passage
 
-- Candidat et contrôles CI à qualifier.
-- Cible Passeport Immo de préproduction non qualifiée ; intégration CONNECT non réalisée.
-- Accord exact de préproduction absent.
-- Recette humaine et production non qualifiées.
+- o2switch choisi ; adresse, répertoire, accès et isolation de la cible dédiée non qualifiés.
+- Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
+- Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
 
-Prochaine action : Qualifier le candidat local et préparer sa PR ; vérifier les conditions de préproduction.
+Prochaine action : Préciser la cible dédiée o2switch, ses accès et sa protection, puis préparer le lot CONNECT et l’accord de déploiement du candidat exact.
 
 ### Accords et livraison
 
 Accords spécifiques enregistrés : 0. Sauvegardes qualifiées : 0.
-Retour arrière : not_tested. Livraison : not_delivered.
+Retour arrière : non testé. Livraison : non réalisée.
 Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
 
 ### Suite proposée

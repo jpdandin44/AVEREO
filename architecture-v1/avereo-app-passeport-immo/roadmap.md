@@ -28,3 +28,8 @@ Le raccordement réutilise le cockpit Projet existant. Préproduction et product
 restent bloquées par l'absence de cible Passeport Immo qualifiée et d'accord exact.
 Prochaine action : revue du candidat, puis qualification de la cible et du lot CONNECT.
 Les trois étapes du protocole sont affichées sans modifier les statuts formels.
+
+La source du lot local est désormais fusionnée dans la PR nº71 après checklist humaine.
+La suite retenue est la qualification d'une préproduction dédiée o2switch ; l'adresse,
+les accès, la protection et la récupération restent à définir avant l'accord exact.
+Les détails datés et les statuts sont conservés uniquement dans le suivi canonique.

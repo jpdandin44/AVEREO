@@ -59,7 +59,18 @@
         "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
         "Audit source et inconnues explicites ; vues générées contrôlées."
       ],
-      "nextAction": "Prête pour revue : soumettre dans AVEREO Projet"
+      "nextAction": "Prête pour revue : soumettre dans AVEREO Projet",
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/71",
+        "repository": "jpdandin44/AVEREO",
+        "number": 71,
+        "state": "merged",
+        "headSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "observedAt": "2026-10-03T12:52:58+00:00",
+        "draft": false,
+        "mergedAt": "2026-10-03T12:46:58Z",
+        "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775"
+      }
     },
     {
       "id": 1,
@@ -102,7 +113,18 @@
         "Diff limité aux transformations autorisées ou écarts explicitement consignés.",
         "Recette locale préparée et contrôles techniques distincts de la validation humaine."
       ],
-      "nextAction": "Prototype local disponible sous accord de session ; recette et passage formel à décider dans AVEREO Projet."
+      "nextAction": "Prototype local disponible sous accord de session ; recette et passage formel à décider dans AVEREO Projet.",
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/71",
+        "repository": "jpdandin44/AVEREO",
+        "number": 71,
+        "state": "merged",
+        "headSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "observedAt": "2026-10-03T12:52:58+00:00",
+        "draft": false,
+        "mergedAt": "2026-10-03T12:46:58Z",
+        "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775"
+      }
     },
     {
       "id": 2,
@@ -257,6 +279,14 @@
     {
       "date": "2026-10-03",
       "event": "Responsable : appliquer le skill developpement-github-cockpit ; choix explicite raccordement et correction PDF. Initialisation du seul bloc developmentWorkflow, phases et décisions conservées."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "PR nº71 en brouillon. CI Passeport Immo et CI générale réussies sur f076a9b ; archive CI téléchargée et identique octet par octet au candidat local. PDF court corrigé. Aucune transition de phase ni accord distant."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Responsable : préproduction dédiée sur o2switch choisie, puis confirmation de fusion PR nº71. Connecteur GitHub et fetch main confirment merge 6399524 et checklist humaine cochée. Choix de cible sans accord de déploiement ; statuts de phase conservés."
     }
   ],
   "reviewEvents": [],
@@ -293,15 +323,15 @@
       "id": "Q05",
       "status": "open",
       "question": "Validation humaine du rendu, import CSV, PDF et usage mobile ?",
-      "impact": "Les contrôles techniques ne constituent pas une recette humaine.",
+      "impact": "Checklist de test local cochée humainement dans la PR nº71 ; résultats détaillés R01…R13 et téléphone réel non consignés.",
       "nextAction": "Remplir le tableau R dans le livrable local."
     },
     {
       "id": "Q06",
-      "status": "in_progress",
+      "status": "resolved_technical",
       "question": "Publication des branches et PR de phase ?",
-      "impact": "Raccordement GitHub autorisé pour cette itération ; PR en préparation.",
-      "nextAction": "Publier le candidat et lier la PR observée au suivi, checklist humaine non cochée."
+      "impact": "PR nº71 fusionnée après checklist humaine ; preuves et observation de fusion dans le cockpit.",
+      "nextAction": "Examiner la PR de suivi post-fusion ; aucune autre fusion déduite."
     },
     {
       "id": "Q07",
@@ -327,10 +357,13 @@
   ],
   "publication": {
     "pushAuthorized": true,
-    "mergeAuthorized": false,
+    "mergeAuthorized": true,
     "deploymentAuthorized": false,
     "productionAccessAuthorized": false,
-    "authorizationReference": "Invocation du skill developpement-github-cockpit et choix « Raccordement et correction du PDF », 2026-10-03 : branche/PR de cette itération seulement."
+    "authorizationReference": "Invocation du skill developpement-github-cockpit et choix « Raccordement et correction du PDF », 2026-10-03 : branche/PR de cette itération seulement.",
+    "mergeSourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+    "mergeTarget": "main",
+    "mergeAuthorizationReference": "Checklist PR nº71 remplie par le responsable, fusion GitHub vérifiée et confirmée directement en conversation, 2026-10-03 ; portée limitée à cette PR."
   },
   "localPrototype": {
     "scopeAuthorizedInConversation": true,
@@ -347,12 +380,14 @@
     "project": "avereo-app-passeport-immo",
     "owner": "jpdandin",
     "kind": "application",
-    "stage": "local",
-    "status": "in_progress",
+    "stage": "preproduction",
+    "status": "blocked",
     "objective": "Rattacher le prototype au protocole GitHub/cockpit et corriger la page blanche PDF.",
     "candidate": {
-      "sourceSha": null,
-      "artifactSha256": null
+      "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+      "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+      "evidence": "docs/raccordement-cockpit.md ; archive locale et artefact CI relus fichier par fichier.",
+      "observedAt": "2026-10-03T12:42:48+00:00"
     },
     "targets": {
       "preproduction": {
@@ -361,7 +396,13 @@
         "isolated": false,
         "empty": false,
         "evidence": null,
-        "observedAt": null
+        "observedAt": null,
+        "provider": "o2switch",
+        "purpose": "Préproduction dédiée",
+        "selectedAt": "2026-10-03T12:52:58+00:00",
+        "selectionReference": "Réponse directe du responsable : Préproduction dédiée sur o2switch, 2026-10-03",
+        "address": null,
+        "directory": null
       },
       "production": {
         "id": null,
@@ -372,14 +413,59 @@
     },
     "github": {
       "repository": "jpdandin44/AVEREO",
-      "prUrl": null,
-      "acceptedSourceSha": null,
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/71",
+      "acceptedSourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
       "acceptedArtifactSha256": null,
       "humanAcceptanceVerified": false,
-      "evidence": "Connecteur GitHub : accès jpdandin44/AVEREO confirmé, aucune PR Passeport Immo retrouvée. Main f4695d6 confirmé par fetch Git.",
-      "observedAt": "2026-10-03T12:23:56.148487+00:00"
+      "evidence": "https://github.com/jpdandin44/AVEREO/pull/71 : quatre cases de checklist cochées par le responsable et fusion vérifiée. Source acceptée ; acceptation humaine de l’archive exacte non consignée séparément.",
+      "observedAt": "2026-10-03T12:52:58+00:00",
+      "headSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+      "state": "merged",
+      "draft": false,
+      "ciObservation": {
+        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "passeportRunId": 37123530922,
+        "passeportStatus": "success",
+        "globalRunId": 37123530935,
+        "globalStatus": "success",
+        "prPolicyStatus": "skipped_draft",
+        "observedAt": "2026-10-03T12:44:51+00:00"
+      },
+      "mergedAt": "2026-10-03T12:46:58Z",
+      "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775",
+      "sourceReviewVerified": true
     },
-    "checks": [],
+    "checks": [
+      {
+        "kind": "local",
+        "status": "passed",
+        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+        "observedAt": "2026-10-03T12:44:51+00:00",
+        "evidence": "raccordement-cockpit.md : 14 tests, build, parité a/b/c+d ; PDF réel court 1 page complète ; archive relue et répétée."
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+        "observedAt": "2026-10-03T12:42:48+00:00",
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37123530922",
+        "runId": 37123530922,
+        "artifactId": 11274322556,
+        "containerSha256": "ee7d630593070b7ddd67324bb41f413f7f9b8836dc4d9abc386cd9a6a7c4659a",
+        "candidateBytesEqual": true,
+        "manifestEqual": true
+      },
+      {
+        "kind": "documentation",
+        "status": "passed",
+        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+        "observedAt": "2026-10-03T12:44:51+00:00",
+        "evidence": "32 documents, socles, métadonnées simples, liens locaux, matrice 40 lignes, vues générées ; lecture Projet sans mutation."
+      }
+    ],
     "approvals": [],
     "backups": [],
     "rollback": {
@@ -398,12 +484,11 @@
       "observedAt": null
     },
     "blockers": [
-      "Candidat et contrôles CI à qualifier.",
-      "Cible Passeport Immo de préproduction non qualifiée ; intégration CONNECT non réalisée.",
-      "Accord exact de préproduction absent.",
-      "Recette humaine et production non qualifiées."
+      "o2switch choisi ; adresse, répertoire, accès et isolation de la cible dédiée non qualifiés.",
+      "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
+      "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
     ],
-    "nextAction": "Qualifier le candidat local et préparer sa PR ; vérifier les conditions de préproduction.",
+    "nextAction": "Préciser la cible dédiée o2switch, ses accès et sa protection, puis préparer le lot CONNECT et l’accord de déploiement du candidat exact.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -416,17 +501,73 @@
     },
     "stages": {
       "local": {
-        "status": "in_progress",
-        "nextAction": "Corriger et vérifier PDF, candidat et PR."
+        "status": "validated",
+        "nextAction": "Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées."
       },
       "preproduction": {
         "status": "blocked",
-        "nextAction": "Qualifier cible isolée, intégration requise, récupération et accord exact."
+        "nextAction": "Préparer la cible dédiée o2switch : adresse, accès, protection et récupération ; aucun déploiement engagé."
       },
       "production": {
         "status": "blocked",
         "nextAction": "Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée."
       }
-    }
+    },
+    "gates": [
+      {
+        "gate": "preproduction",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Blocages présents ou non renseignés.",
+          "Préproduction prête et isolée non prouvée.",
+          "Accord humain exact absent : preproduction.",
+          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+        "observedAt": "2026-10-03T12:54:58+00:00"
+      },
+      {
+        "gate": "production",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Blocages présents ou non renseignés.",
+          "Préproduction prête et isolée non prouvée.",
+          "Cible de production non prouvée.",
+          "Contrôle actuel absent : preproduction.",
+          "Accord humain exact absent : review.",
+          "Accord humain exact absent : production.",
+          "Acceptation GitHub du candidat non vérifiée.",
+          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+          "Retour arrière de ce candidat non qualifié."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+        "observedAt": "2026-10-03T12:54:59+00:00"
+      },
+      {
+        "gate": "close",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Blocages présents ou non renseignés.",
+          "Préproduction prête et isolée non prouvée.",
+          "Cible de production non prouvée.",
+          "Contrôle actuel absent : preproduction.",
+          "Accord humain exact absent : review.",
+          "Accord humain exact absent : production.",
+          "Acceptation GitHub du candidat non vérifiée.",
+          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+          "Retour arrière de ce candidat non qualifié.",
+          "Contrôle actuel absent : production.",
+          "Livraison réelle du candidat non établie."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+        "observedAt": "2026-10-03T12:54:59+00:00"
+      }
+    ]
   }
 }

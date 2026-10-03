@@ -63,7 +63,7 @@ du candidat contrôlé, observer aussi le HEAD de la PR et vérifier les sources
 toute promotion. Une CI d'un autre SHA ou artefact n'est pas déclarée équivalente.
 
 ## Cibles et accès
-Local réel : <http://127.0.0.1:5175/> ; cockpit réel à vérifier lors de son lancement :
+Local réel : <http://127.0.0.1:5175/> ; cockpit lancé et lecture du chantier vérifiée :
 <http://127.0.0.1:5193/>.
 Préproduction/production Passeport Immo : TBD — aucune cible, vacuité/isolement,
 sauvegarde restaurée, accès ou configuration dédiée qualifiée dans ce lot.
