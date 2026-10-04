@@ -81,8 +81,8 @@
         "repository": "jpdandin44/AVEREO",
         "number": 75,
         "state": "open",
-        "headSha": "eb45089346a51680e182d827fb7225c8557e1d0a",
-        "observedAt": "2026-10-04T18:27:45.730186+00:00",
+        "headSha": "26ec09d6369c88ef754c35f150f3d359d44d0838",
+        "observedAt": "2026-10-04T18:37:05.621663+00:00",
         "url": "https://github.com/jpdandin44/AVEREO/pull/75"
       }
     },
@@ -231,8 +231,8 @@
       "number": 75,
       "state": "open",
       "draft": true,
-      "headSha": "eb45089346a51680e182d827fb7225c8557e1d0a",
-      "observedAt": "2026-10-04T18:27:45.730186+00:00",
+      "headSha": "26ec09d6369c88ef754c35f150f3d359d44d0838",
+      "observedAt": "2026-10-04T18:37:05.621663+00:00",
       "acceptedSourceSha": null,
       "acceptedArtifactSha256": null,
       "humanAcceptanceVerified": false,
@@ -293,7 +293,36 @@
       "sourceCommit": "eb45089346a51680e182d827fb7225c8557e1d0a",
       "recordedAt": "2026-10-04T18:27:45.730186+00:00",
       "evidence": "data/verification.json#fourPhaseUpdate",
-      "humanApprovalRecorded": false
+      "humanApprovalRecorded": false,
+      "githubObservation": {
+        "observedAt": "2026-10-04T18:37:05.621663+00:00",
+        "headSha": "26ec09d6369c88ef754c35f150f3d359d44d0838",
+        "runs": [
+          {
+            "conclusion": "skipped",
+            "databaseId": 37224606038,
+            "name": "PR Policy",
+            "status": "completed",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37224606038"
+          },
+          {
+            "conclusion": "success",
+            "databaseId": 37224606054,
+            "name": "Developpement commun",
+            "status": "completed",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37224606054"
+          },
+          {
+            "conclusion": "success",
+            "databaseId": 37224606037,
+            "name": "CI",
+            "status": "completed",
+            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37224606037"
+          }
+        ],
+        "humanApprovalRecorded": false,
+        "laterReceiptCommitsNotTestedByTheseRuns": true
+      }
     }
   },
   "reviewEvents": [],

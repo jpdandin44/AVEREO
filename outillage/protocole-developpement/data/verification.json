@@ -107,13 +107,42 @@
       "localLinks": 66,
       "errors": []
     },
-    "githubCiObserved": false,
+    "githubCiObserved": true,
     "humanApprovalRecorded": false,
     "preproductionDelivered": false,
     "productionDelivered": false,
     "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/75",
     "sourceCommit": "eb45089346a51680e182d827fb7225c8557e1d0a",
-    "pullRequestObservedAt": "2026-10-04T18:27:45.730186+00:00"
+    "pullRequestObservedAt": "2026-10-04T18:27:45.730186+00:00",
+    "githubObservation": {
+      "observedAt": "2026-10-04T18:37:05.621663+00:00",
+      "headSha": "26ec09d6369c88ef754c35f150f3d359d44d0838",
+      "runs": [
+        {
+          "conclusion": "skipped",
+          "databaseId": 37224606038,
+          "name": "PR Policy",
+          "status": "completed",
+          "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37224606038"
+        },
+        {
+          "conclusion": "success",
+          "databaseId": 37224606054,
+          "name": "Developpement commun",
+          "status": "completed",
+          "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37224606054"
+        },
+        {
+          "conclusion": "success",
+          "databaseId": 37224606037,
+          "name": "CI",
+          "status": "completed",
+          "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37224606037"
+        }
+      ],
+      "humanApprovalRecorded": false,
+      "laterReceiptCommitsNotTestedByTheseRuns": true
+    }
   },
   "creationMergeObservation": {
     "observedAt": "2026-10-04T18:03:11.473774Z",

@@ -18,7 +18,7 @@ Le [suivi canonique](pilotage/suivi-chantier.json) porte la revue de ce lot. Les
 
 Le cockpit de revue fonctionne sur [la boucle locale](http://127.0.0.1:5194/), avec le moteur AVEREO existant et une source de suivi distincte. Le lanceur et le mapping sont décrits dans [le raccordement](../workflows/cockpit-local.md). L'installation du skill référence ce dossier : tout déplacement doit réaligner les liens utilisateur.
 
-La [PR #75](https://github.com/jpdandin44/AVEREO/pull/75) porte désormais la règle à quatre phases, en brouillon. Elle est rattachée à la phase locale ; le merge historique de création #73 ne vaut pas validation de ce lot. La CI de cette nouvelle PR reste à observer.
+La [PR #75](https://github.com/jpdandin44/AVEREO/pull/75) porte désormais la règle à quatre phases, en brouillon. Elle est rattachée à la phase locale ; le merge historique de création #73 ne vaut pas validation de ce lot. Les Actions CI et Développement commun réussissent sur `26ec09d` ; PR Policy est ignoré pendant le brouillon. Le reçu conserve les liens et la tête observée. Ces résultats ne sont pas réattribués aux commits de reçus ultérieurs.
 
 ## Prochaine reprise
 
