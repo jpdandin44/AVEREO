@@ -5,7 +5,7 @@ title: Contrat de pilotage d'une itération
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-04
 owner: jpdandin
 tags: [developpement, github, cockpit]
 ---
@@ -20,7 +20,7 @@ Le contrôleur accepte une fiche directe ou ce bloc. Il est en lecture seule et 
 
 ## Informations visibles
 
-Les trois étapes affichent un état parmi en cours, à contrôler, à valider, validée ou bloquée. Montrer l'objectif, le responsable, la prochaine action et les blocages. Relier PR, version/candidat, preuves de tests et recette, accords humains, reçus, sauvegarde/restauration, retour arrière et backlog de la suite. Indiquer la dernière observation GitHub et la date des preuves ; ne pas afficher un pourcentage arbitraire d'avancement.
+Les quatre phases affichent un état parmi en cours, à contrôler, à valider, validée ou bloquée. Montrer l'objectif, le responsable, la prochaine action et les blocages. Relier PR, version/candidat, preuves de tests et recette, accords humains, reçus, sauvegarde/restauration, retour arrière et backlog de la suite. Indiquer la dernière observation GitHub et la date des preuves ; ne pas afficher un pourcentage arbitraire d'avancement.
 
 ## Champs de la fiche
 
@@ -44,12 +44,12 @@ Tout champ absent ou preuve d'une ancienne version est refusé. Le contrôleur n
 
 ## Raccordement au cockpit AVEREO
 
-Le modèle à trois phases est compatible avec le moteur de revue local Projet déjà utilisé par le site. Le [raccordement de ce socle](../../../workflows/cockpit-local.md) permet de le consulter sans remplacer les suivis AVEREO. Les approbations de phase sont des décisions humaines ; avant une action distante, vérifier en plus les préconditions de la fiche.
+Le [modèle à quatre phases](../assets/phase-model.json) est la référence pour les nouvelles itérations et les adaptations demandées. Le moteur de revue doit être qualifié avec ce modèle avant de déclarer son raccordement opérationnel. Le [raccordement de ce socle](../../../workflows/cockpit-local.md) permet de le consulter sans remplacer les suivis AVEREO. Les approbations de phase sont des décisions humaines ; avant une action distante, vérifier en plus les préconditions de la fiche.
 
 Le skill oblige l'agent à actualiser le suivi ; il n'ajoute pas de boutons de déploiement ni de synchronisation GitHub à ce cockpit.
 
 Dans le lot de ce socle, l'observation GitHub est conservée dans `developmentWorkflow.github`
 avec l'URL, le dépôt, le numéro, l'état, le SHA observé et la date. Le générateur en dérive
-`phases[0].pullRequest`, lu par le cockpit. Actualiser seulement la source de l'observation,
+`phases[1].pullRequest`, lu par le cockpit. Actualiser seulement la source de l'observation,
 puis régénérer ; ne pas maintenir séparément les deux représentations. Les champs
 d'acceptation humaine restent distincts et sont préservés.

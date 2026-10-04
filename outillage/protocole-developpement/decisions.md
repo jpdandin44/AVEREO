@@ -5,7 +5,7 @@ title: Décisions du protocole commun
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-04
 owner: jpdandin
 tags: [developpement, github, cockpit]
 ---
@@ -49,3 +49,13 @@ Décision : intégrer ce socle dans `outillage/protocole-developpement`, avec un
 Raison : une source versionnée et réutilisable, sans nouveau dépôt obligatoire ni duplication des processus.
 
 Conséquence : le rattachement passe par une PR d'AVEREO. Sur chaque autre poste, il faut récupérer cette source et installer ses liens. Cette installation ne configure pas automatiquement les environnements GitHub des autres dépôts.
+
+## 2026-10-04 — Quatre phases communes
+
+Contexte : le responsable demande de simplifier le suivi TC et d’en faire une règle commune en référence au fonctionnement Passeport. La source Passeport observée comporte six phases spécifiques.
+
+Décision de réalisation : adopter Cadrage → Développement local → Préproduction → Mise en production, après proposition laissée ouverte puis hypothèse annoncée. Archiver les anciens découpages et leurs mappings ; préserver les accords et libellés obligatoires.
+
+Raison : rendre l’avancement lisible tout en conservant les tâches et preuves détaillées.
+
+Conséquence : mise à jour du skill installé et du modèle ; chaque raccordement conserve ses contrôles, données et accords. Le regroupement ne vaut pas validation ni livraison.

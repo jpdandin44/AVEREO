@@ -5,7 +5,7 @@
   "project": "À compléter",
   "owner": "jpdandin",
   "kind": "À qualifier",
-  "stage": "local",
+  "stage": "cadrage",
   "status": "in_progress",
   "objective": "À compléter",
   "candidate": {
@@ -65,5 +65,6 @@
     "unit": null,
     "observedUsage": null,
     "observedAt": null
-  }
+  },
+  "phaseModelRef": "phase-model.json"
 }

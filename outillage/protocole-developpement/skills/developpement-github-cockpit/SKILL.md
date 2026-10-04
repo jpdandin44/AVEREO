@@ -8,20 +8,20 @@ metadata:
   status: active
   version: git
   created: 2026-10-03
-  updated: 2026-10-03
+  updated: 2026-10-04
   owner: jpdandin
   tags: [developpement, github, cockpit]
 ---
 
 # Développement avec GitHub et cockpit
 
-Appliquer le [protocole commun](references/protocole.md). Le responsable a demandé trois étapes : développer et corriger localement ; livrer et contrôler en préproduction ; livrer et contrôler en production, puis préparer la suite.
+Appliquer le [protocole commun](references/protocole.md). Le suivi présente exactement quatre phases : **Cadrage → Développement local → Préproduction → Mise en production**. Les tâches détaillées restent dans leurs dossiers. La dernière phase inclut les contrôles après livraison et la préparation de la prochaine itération.
 
 Le [skill DEV](../dev/SKILL.md) fournit l'appel court `$dev` et le préfixe conversationnel `DEV :`. Il renvoie à ces instructions ; le nom long reste utilisable.
 
 ## Reprise
 
-Lire les AGENTS.md applicables, le dépôt, son état Git et le suivi existant. Identifier le cockpit et la fiche de l'itération. Actualiser les preuves GitHub utiles. Conserver les validations, brouillons et modifications des autres lots.
+Lire les AGENTS.md applicables, le dépôt, son état Git et le suivi existant. Identifier le cockpit et la fiche de l'itération. Actualiser les preuves GitHub utiles. Conserver les validations, brouillons et modifications des autres lots. Lors du regroupement d’un ancien suivi, archiver ses phases et documenter le mapping sans renuméroter ses décisions ni créer d’approbation. Les contrôles de passage et accords existants gardent leur portée.
 
 Pour un cockpit non raccordé, lire le [contrat](references/cockpit.md), identifier sa source canonique et réaliser le mapping dans le périmètre autorisé. Ne pas inventer une synchronisation ni un environnement. Le [modèle JSON](assets/iteration.json) initialise seulement une nouvelle itération ; ne jamais écraser un suivi existant avec ce modèle.
 

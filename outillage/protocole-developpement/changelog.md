@@ -5,7 +5,7 @@ title: Évolutions du protocole commun
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-04
 owner: jpdandin
 tags: [developpement, github, cockpit]
 ---
@@ -21,3 +21,8 @@ tags: [developpement, github, cockpit]
 - Validation du skill, douze tests du contrôleur et contrôle du cockpit local ; aucune livraison distante de projet réalisée.
 - Ajout de l'appel court `$dev` et du mot-clé `DEV :`, avec un alias installé qui renvoie au protocole existant.
 - Rattachement du socle à AVEREO pour une distribution commune aux dépôts ; installateur utilisateur et CI ciblée du protocole. Les projets conservent leurs suivis et accords.
+
+## 2026-10-04
+
+- Règle et modèle de suivi à quatre phases, avec conservation de l’historique et des checklists obligatoires.
+- Adaptation du cockpit du protocole ; les décisions humaines restent inchangées.

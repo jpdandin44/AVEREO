@@ -1,0 +1,30 @@
+{
+  "id": "github-cockpit-four-phases",
+  "version": "git",
+  "phases": [
+    {
+      "id": 0,
+      "key": "cadrage",
+      "label": "Cadrage",
+      "environment": "local"
+    },
+    {
+      "id": 1,
+      "key": "developpement-local",
+      "label": "Développement local",
+      "environment": "local"
+    },
+    {
+      "id": 2,
+      "key": "preproduction",
+      "label": "Préproduction",
+      "environment": "preproduction"
+    },
+    {
+      "id": 3,
+      "key": "mise-en-production",
+      "label": "Mise en production",
+      "environment": "production"
+    }
+  ]
+}

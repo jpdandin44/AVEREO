@@ -5,7 +5,7 @@ title: Avancement du protocole commun
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-04
 owner: jpdandin
 tags: [developpement, github, cockpit]
 ---
@@ -27,3 +27,7 @@ lot local ; confirmer le cockpit cible. Adopter le protocole dans chaque dépôt
 tâches autorisées : mapper le suivi existant, vérifier les environnements GitHub et
 hébergeur, puis qualifier les commandes de préproduction et production. Aucun déploiement
 massif ni migration des décisions historiques n'est engagé.
+
+## Évolution du 4 octobre
+
+Le suivi et le skill adoptent les quatre phases communes. La revue humaine du protocole reste à effectuer ; l’adaptation des autres applications se fera dans leurs lots autorisés. Passeport a été consulté sans modification.

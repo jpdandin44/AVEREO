@@ -5,7 +5,7 @@ title: Protocole et preuves locales
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-04
 owner: jpdandin
 tags: [cockpit, derive]
 ---
@@ -14,7 +14,7 @@ tags: [cockpit, derive]
 
 Document dérivé automatiquement de la source du skill. Les accords et livraisons réels restent distincts.
 
-## Contrôles de ce lot
+## Contrôles historiques de création
 
 - Douze tests du contrôleur réussis sur données fictives : preuves, versions, accords, restauration et retour arrière.
 - Validation structurelle du skill réussie à la source et via son installation utilisateur.
@@ -34,13 +34,14 @@ Document dérivé automatiquement de la source du skill. Les accords et livraiso
 
 **Une itération = un objectif, un périmètre, un candidat vérifié et un suivi dans le cockpit.** Le cycle reste le même pour un site, une application ou un agent. Les contrôles techniques s'adaptent au projet.
 
-## Les trois étapes
+## Les quatre phases
 
 | Étape | Travail | Condition de passage | Mise à jour du cockpit |
 | --- | --- | --- | --- |
-| 1. Local | Développer, essayer, ajuster, corriger et documenter. | Contrôles locaux et CI pertinents réussis ; PR et candidat identifiés ; cible de préproduction prête et accord applicable. | Objectif, branche, PR, candidat, tests, réserves et prochaine action. |
+| 0. Cadrage | Examiner l’existant, fixer l’objectif, le périmètre, les critères, les responsables et les ressources. | Sources et limites identifiées ; inconnues et accords nécessaires consignés. | Objectif, exigences, décisions existantes, risques et tâches du lot. |
+| 1. Développement local | Développer, essayer, ajuster, corriger et documenter. | Contrôles locaux et CI pertinents réussis ; PR et candidat identifiés ; cible de préproduction prête et accord applicable. | Objectif, branche, PR, candidat, tests, réserves et prochaine action. |
 | 2. Préproduction | Installer le candidat sur une cible isolée, tester le comportement réel et corriger. | Recette réelle réussie sur la version retenue ; validation humaine, version acceptée pour livraison et préparation de production complète. | URL/cible, candidat installé, preuves de recette, corrections, validation et sauvegarde/retour arrière. |
-| 3. Production | Livrer la version autorisée, contrôler le résultat et traiter les incidents. | Contrôles de production réussis ou incident explicitement pris en charge ; bilan et suite conservés. | Version effectivement livrée, reçu, contrôles réels, retour arrière, réserves et prochaine itération. |
+| 3. Mise en production | Livrer la version autorisée, contrôler le résultat et traiter les incidents. | Contrôles de production réussis ou incident explicitement pris en charge ; bilan et suite conservés. | Version effectivement livrée, reçu, contrôles réels, retour arrière, réserves et prochaine itération. |
 
 Un échec revient à la correction de l'étape concernée. Une correction du code en préproduction est enregistrée dans la branche, contrôlée localement, poussée dans la PR puis réinstallée ; éviter les correctifs serveur sans source et sans trace.
 
@@ -51,7 +52,13 @@ Un échec revient à la correction de l'étape concernée. Une correction du cod
 3. Rattacher le lot au cockpit canonique. Réutiliser son journal ; conserver les phases et preuves antérieures. Une absence de cockpit ou de cible se consigne comme inconnue, pas comme réussite.
 4. Identifier les commandes réellement disponibles pour tester, construire et livrer. Préparer les trois cibles et le plan de récupération avant les écritures distantes.
 
-## 1 — Local
+## 0 — Cadrage
+
+Appliquer les vérifications ci-dessus. Le [modèle des quatre phases](../../skills/developpement-github-cockpit/assets/phase-model.json) donne leurs identifiants communs. Un ancien découpage est conservé dans un instantané avec son mapping. Ses décisions et preuves restent attachées à leur périmètre original ; le regroupement ne les étend pas. Conserver les libellés obligatoires des checklists et les brouillons personnels.
+
+Le suivi Passeport consulté le 4 octobre comporte encore six phases spécifiques. Il constitue une référence de fonctionnement ; il n’établit pas que les quatre libellés communs étaient déjà installés dans cette application. La règle nouvelle regroupe reprise, réalisation et intégration dans Cadrage ou Développement local selon leur effet ; recette hébergée dans Préproduction ; livraison, observation et transfert dans Mise en production.
+
+## 1 — Développement local
 
 Travailler sur une branche dédiée au lot, à partir de l'état Git pertinent. Préserver les autres applications et les travaux de l'utilisateur. Faire les corrections dans la source, exécuter les contrôles proportionnés et actualiser la documentation.
 
@@ -73,7 +80,7 @@ Le responsable examine le candidat final et ses réserves. Vérifier la PR et la
 
 **Passage vers production :** recette du candidat retenu réussie, revue humaine et acceptation GitHub établies, accord explicite pour sa cible et son effet, sauvegarde fraîche et restauration contrôlée, retour arrière qualifié et contrôles après livraison prêts. Livraison en maintenance et ouverture publique sont deux effets distincts.
 
-## 3 — Production
+## 3 — Mise en production
 
 Préparer d'abord un résultat concret à examiner : version, contenu livré, cible, effet public, risques connus, sauvegarde, restauration et retour arrière. Demander l'accord qui manque seulement à ce point ; un accord déjà acquis pour ces mêmes paramètres n'est pas redemandé par routine.
 
@@ -108,3 +115,10 @@ Ces exemples ne remplacent pas les règles locales. Un champ non applicable doit
 - [GitHub — environnements de déploiement](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments).
 
 Les choix de cycle et d'accords ci-dessus proviennent du responsable ; ces documentations expliquent les mécanismes des outils.
+
+## Contrôles du lot à quatre phases
+
+- Quatorze tests Python réussis sur données fictives, dont conservation des preuves approuvées après projection.
+- Skill validé à la source installée.
+- Moteur de cockpit qualifié avec quatre phases ; décision testée uniquement dans une copie temporaire et suivi réel inchangé.
+- Trente-deux documents et soixante-six liens locaux contrôlés, sans erreur.

@@ -5,14 +5,14 @@ title: Protocole commun de développement
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-04
 owner: jpdandin
 tags: [developpement, github, cockpit]
 ---
 
 # Protocole commun de développement
 
-Un cycle pour les sites, applications et agents : **local → préproduction → production → prochaine itération**.
+Un cycle pour les sites, applications et agents : **Cadrage → Développement local → Préproduction → Mise en production**.
 
 La source du processus est le [protocole du skill](skills/developpement-github-cockpit/references/protocole.md). Le [skill](skills/developpement-github-cockpit/SKILL.md) rend ce processus réutilisable par Codex. Les consignes globales le référencent ; aucune installation de workflow distant ni autorisation de production n'en découle.
 
@@ -75,8 +75,8 @@ exécute ces tests sur les modifications du socle ; aucun de ses jobs ne déploi
 - [Architecture](architecture.md), [exigences](requirements.md), [décisions](decisions.md), [roadmap](roadmap.md), [changelog](changelog.md).
 - [Contrat du cockpit](skills/developpement-github-cockpit/references/cockpit.md) et [fiche d'itération](skills/developpement-github-cockpit/assets/iteration.json).
 - [Raccordement local](workflows/cockpit-local.md), [consigne réutilisable](prompts/nouvelle-iteration.md), [API locale](api/README.md).
-- [État du lot de création](docs/pilotage/suivi-chantier.json) : les trois phases sont visibles dans le moteur de revue existant ; aucune phase n'est approuvée par l'agent.
+- [État du lot de création](docs/pilotage/suivi-chantier.json) : les quatre phases sont visibles dans le moteur de revue existant ; aucune phase n'est approuvée par l'agent.
 
 ## État et limites
 
-Socle et skills créés, installés et vérifiés localement. Les [preuves de vérification](data/verification.json) distinguent les essais locaux des décisions humaines et des livraisons. La [PR #73](https://github.com/jpdandin44/AVEREO/pull/73) rattache le socle à AVEREO et à la phase 0 du cockpit ; elle reste en brouillon, sans merge. Les contrôles GitHub du socle et du dépôt ont réussi sur la révision consignée dans les preuves. Le cockpit commun définitif reste à confirmer. Les workflows opérationnels existants restent propres à leurs projets. Le skill et le contrat ne constituent pas une surveillance GitHub continue ni un pilote de déploiement automatique.
+Socle et skills créés, installés et vérifiés localement. Les [preuves de vérification](data/verification.json) distinguent les essais locaux des décisions humaines et des livraisons. La [PR #73](https://github.com/jpdandin44/AVEREO/pull/73) de création a été fusionnée le 3 octobre, état relu sur GitHub le 4 octobre. La règle à quatre phases constitue un nouveau lot local à revoir ; le merge de création n’en vaut pas approbation. Les contrôles GitHub de création restent ceux de la révision consignée dans les preuves. Le cockpit commun définitif reste à confirmer. Les workflows opérationnels existants restent propres à leurs projets. Le skill et le contrat ne constituent pas une surveillance GitHub continue ni un pilote de déploiement automatique.
