@@ -76,14 +76,14 @@
         "Les contrôles et les validations restent distincts.",
         "Le rôle du cockpit et les limites d’automatisation sont compris."
       ],
-      "nextAction": "Revue humaine du protocole et de ses preuves.",
+      "nextAction": "Examiner la PR #75, la règle commune et les preuves locales ; aucune validation héritée du merge #73.",
       "pullRequest": {
         "repository": "jpdandin44/AVEREO",
-        "number": 73,
-        "state": "merged",
-        "headSha": "8c51b4ac5a5dfa41dc5c636aa241e7de20b4b62e",
-        "observedAt": "2026-10-04T18:03:11.473774Z",
-        "url": "https://github.com/jpdandin44/AVEREO/pull/73"
+        "number": 75,
+        "state": "open",
+        "headSha": "eb45089346a51680e182d827fb7225c8557e1d0a",
+        "observedAt": "2026-10-04T18:27:45.730186+00:00",
+        "url": "https://github.com/jpdandin44/AVEREO/pull/75"
       }
     },
     {
@@ -227,18 +227,17 @@
     },
     "github": {
       "repository": "jpdandin44/AVEREO",
-      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/73",
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/75",
+      "number": 75,
+      "state": "open",
+      "draft": true,
+      "headSha": "eb45089346a51680e182d827fb7225c8557e1d0a",
+      "observedAt": "2026-10-04T18:27:45.730186+00:00",
       "acceptedSourceSha": null,
       "acceptedArtifactSha256": null,
       "humanAcceptanceVerified": false,
-      "evidence": "https://github.com/jpdandin44/AVEREO/pull/73",
-      "observedAt": "2026-10-04T18:03:11.473774Z",
-      "number": 73,
-      "state": "merged",
-      "draft": true,
-      "headSha": "8c51b4ac5a5dfa41dc5c636aa241e7de20b4b62e",
-      "mergedAt": "2026-10-03T16:15:30Z",
-      "mergeCommit": "f14bfc97b8f15a06cb4010f493240c5362fc5242"
+      "evidence": "https://github.com/jpdandin44/AVEREO/pull/75",
+      "limit": "PR de la règle à quatre phases en brouillon ; tête et CI à relire après le commit des reçus."
     },
     "checks": [],
     "approvals": [],
@@ -269,6 +268,32 @@
       "observedUsage": null,
       "observedAt": null,
       "limitation": "Usage global arrondi du compte ; coût du lot non isolé."
+    },
+    "previousGithubReviews": [
+      {
+        "repository": "jpdandin44/AVEREO",
+        "prUrl": "https://github.com/jpdandin44/AVEREO/pull/73",
+        "acceptedSourceSha": null,
+        "acceptedArtifactSha256": null,
+        "humanAcceptanceVerified": false,
+        "evidence": "https://github.com/jpdandin44/AVEREO/pull/73",
+        "observedAt": "2026-10-04T18:03:11.473774Z",
+        "number": 73,
+        "state": "merged",
+        "draft": true,
+        "headSha": "8c51b4ac5a5dfa41dc5c636aa241e7de20b4b62e",
+        "mergedAt": "2026-10-03T16:15:30Z",
+        "mergeCommit": "f14bfc97b8f15a06cb4010f493240c5362fc5242"
+      }
+    ],
+    "fourPhaseRule": {
+      "status": "tested_locally_pr_draft",
+      "phaseModelRef": "skills/developpement-github-cockpit/assets/phase-model.json",
+      "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/75",
+      "sourceCommit": "eb45089346a51680e182d827fb7225c8557e1d0a",
+      "recordedAt": "2026-10-04T18:27:45.730186+00:00",
+      "evidence": "data/verification.json#fourPhaseUpdate",
+      "humanApprovalRecorded": false
     }
   },
   "reviewEvents": [],

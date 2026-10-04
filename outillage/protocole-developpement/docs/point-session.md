@@ -18,6 +18,8 @@ Le [suivi canonique](pilotage/suivi-chantier.json) porte la revue de ce lot. Les
 
 Le cockpit de revue fonctionne sur [la boucle locale](http://127.0.0.1:5194/), avec le moteur AVEREO existant et une source de suivi distincte. Le lanceur et le mapping sont décrits dans [le raccordement](../workflows/cockpit-local.md). L'installation du skill référence ce dossier : tout déplacement doit réaligner les liens utilisateur.
 
+La [PR #75](https://github.com/jpdandin44/AVEREO/pull/75) porte désormais la règle à quatre phases, en brouillon. Elle est rattachée à la phase locale ; le merge historique de création #73 ne vaut pas validation de ce lot. La CI de cette nouvelle PR reste à observer.
+
 ## Prochaine reprise
 
 Dans le dépôt du prochain développement, invoquer `$dev` ou commencer par `DEV :`, avec l'objectif et le périmètre. Le nom `$developpement-github-cockpit` reste disponible. L'appel court renvoie au même protocole et ne vaut pas accord de livraison. Réutiliser le suivi existant et qualifier les commandes, GitHub, environnements et accords avant les actions qui en dépendent.

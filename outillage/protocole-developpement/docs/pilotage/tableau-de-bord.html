@@ -15,7 +15,7 @@ tags: [cockpit, derive]
 | Étape | État | Prochaine action |
 | --- | --- | --- |
 | Cadrage | En cours | Examiner le cadrage et la règle de regroupement. |
-| Développement local | À valider | Revue humaine du protocole et de ses preuves. |
+| Développement local | À valider | Examiner la PR #75, la règle commune et les preuves locales ; aucune validation héritée du merge #73. |
 | Préproduction | Non commencée | Choisir le projet pilote, qualifier la cible puis obtenir l’accord applicable. |
 | Mise en production | Non commencée | Attendre la recette et l’accord exact ; contrôler et archiver après livraison. |
 

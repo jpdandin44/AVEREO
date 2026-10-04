@@ -110,7 +110,10 @@
     "githubCiObserved": false,
     "humanApprovalRecorded": false,
     "preproductionDelivered": false,
-    "productionDelivered": false
+    "productionDelivered": false,
+    "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/75",
+    "sourceCommit": "eb45089346a51680e182d827fb7225c8557e1d0a",
+    "pullRequestObservedAt": "2026-10-04T18:27:45.730186+00:00"
   },
   "creationMergeObservation": {
     "observedAt": "2026-10-04T18:03:11.473774Z",
