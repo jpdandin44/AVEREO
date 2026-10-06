@@ -1,10 +1,8 @@
 """Unit and local Apache tests with synthetic, disposable credentials only."""
 import base64
-import grp
 import json
 import os
 from pathlib import Path
-import pwd
 import secrets
 import shutil
 import socket
@@ -15,6 +13,7 @@ import unittest
 from urllib.request import Request
 
 from check_access import CANDIDATES, NoRedirect, basic_header, observe, refused, target_url
+from prepare_connect import compose, MARKER
 
 HERE = Path(__file__).resolve().parent
 
@@ -59,7 +58,7 @@ class ContractTests(unittest.TestCase):
         self.assertEqual(source.count("__PRIVATE_HTPASSWD_ABSOLUTE_PATH__"), 1)
 
     def test_tracking_requires_evidence_for_deployment(self):
-        state = json.loads((HERE / "suivi.json").read_text())
+        state = json.loads((HERE / "suivi-chantier.json").read_text())
         self.assertFalse(state["production_modified"])
         if state["server_modified"]:
             self.assertTrue(state["hosted_evidence"])
@@ -70,12 +69,36 @@ class ContractTests(unittest.TestCase):
                 self.assertTrue(row["deployment_receipt"])
                 self.assertTrue(row["acceptance_receipt"])
 
+    def test_connect_candidate_preserves_application_rules(self):
+        block = MARKER + '''
+<IfModule mod_authz_core.c>
+  Require ip 127.0.0.1 ::1 192.0.2.1
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order Deny,Allow
+  Deny from all
+  Allow from 127.0.0.1 ::1 192.0.2.1
+</IfModule>'''
+        prefix = 'Options -Indexes\nSetEnv AVEREO_PRIVATE_CONFIG /private/config.php\n'
+        suffix = '\nRewriteEngine On\nRewriteRule ^ index.php [QSA,L]\n'
+        candidate = compose(prefix+block+suffix, '/home/daje3540/.htpasswds/test/passwd')
+        self.assertTrue(candidate.startswith(prefix))
+        self.assertTrue(candidate.endswith(suffix))
+        self.assertIn('SSLRequireSSL\nAuthType Basic', candidate)
+        self.assertIn('Require valid-user', candidate)
+        self.assertNotIn('Require ip', candidate)
+        for invalid in (block+block, block.replace('Deny from all', 'Deny from other'), candidate):
+            with self.assertRaises(ValueError):
+                compose(invalid, '/home/daje3540/.htpasswds/test/passwd')
+
 
 @unittest.skipUnless(shutil.which("apache2") and shutil.which("htpasswd") and
                      Path("/usr/lib/apache2/modules").is_dir(), "Apache local indisponible")
 class ApacheTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        import grp
+        import pwd
         cls.tmp = tempfile.TemporaryDirectory(prefix="avereo-basic-test-")
         cls.addClassCleanup(cls.tmp.cleanup)
         root = Path(cls.tmp.name)
@@ -83,6 +106,9 @@ class ApacheTests(unittest.TestCase):
         www = root / "www"
         protected = www / "protected"
         (protected / "api").mkdir(parents=True)
+        (protected / "https-only").mkdir()
+        (protected / "https-only" / ".htaccess").write_text('SSLRequireSSL\n')
+        (protected / "https-only" / "index.html").write_text('tls-only-fixture')
         (www / "index.html").write_text("outside-scope")
         (protected / "index.html").write_text("protected-fixture")
         (protected / "api" / "probe.html").write_text("api-fixture")
@@ -109,7 +135,7 @@ RewriteRule ^redirect$ https://not-contacted.invalid/ [R=302,L]
         user = pwd.getpwuid(os.getuid()).pw_name if os.getuid() else "www-data"
         group = grp.getgrgid(os.getgid()).gr_name if os.getuid() else "www-data"
         modules = ("mpm_event", "authn_core", "authn_file", "authz_core", "authz_host",
-                   "authz_user", "auth_basic", "dir", "rewrite")
+                   "authz_user", "auth_basic", "dir", "rewrite", "ssl")
         config = root / "httpd.conf"
         config.write_text(f'ServerRoot "{root}"\nListen 127.0.0.1:{port}\nServerName localhost\n' +
             "\n".join(f"LoadModule {m}_module /usr/lib/apache2/modules/mod_{m}.so" for m in modules) +
@@ -155,6 +181,11 @@ RewriteRule ^redirect$ https://not-contacted.invalid/ [R=302,L]
     def test_redirect_is_reported_not_followed(self):
         self.assertEqual(observe(self.base + "/protected/redirect",
                          basic_header(self.username, self.password))["status"], 302)
+
+    def test_http_does_not_request_a_password_on_tls_only_directory(self):
+        result = observe(self.base + '/protected/https-only/')
+        self.assertEqual(result['status'], 403)
+        self.assertFalse(result['basic_challenge'])
 
 
 if __name__ == "__main__":

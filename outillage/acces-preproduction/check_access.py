@@ -18,6 +18,7 @@ CANDIDATES = (
     "preprod.avereo.fr", "connect-preprod.avereo.fr", "rapport-preprod.avereo.fr",
     "coupe-preprod.avereo.fr", "projet-preprod.avereo.fr", "thermo-preprod.avereo.fr",
     "drone-preprod.avereo.fr", "auth-preprod.avereo.fr", "auth-next-preprod.avereo.fr",
+    "passeport-immo-preprod.avereo.fr", "preprod-cv.avereo.fr",
 )
 
 

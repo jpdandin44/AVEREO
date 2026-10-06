@@ -19,14 +19,14 @@ porte sur le remplacement du filtrage IP de consultation par une protection HTTP
 par identifiants, CONNECT d'abord, puis les autres préproductions. Il autorise une
 PR dédiée, pas un merge ni une modification de production.
 
-Le navigateur du responsable est connecté à cPanel. L'agent de cette intervention
-ne dispose toutefois pas d'un outil pour piloter cette session. Le fichier effectif
-qui provoque le 403, les document roots et les flux hébergés restent à relever.
+La reprise du 6 octobre permet de piloter la session cPanel. Les onze racines
+réelles sont relevées dans le [relevé hébergé](releve-heberge.md), dérivé du suivi
+canonique. Le bloc IP de CONNECT est confirmé. Aucun fichier public n'est encore
+modifié ; un candidat privé et sa copie de restauration sont préparés avant bascule.
 Aucun mot de passe, cookie, lien de session cPanel ou hachage de compte n'est versionné.
 
-Le [suivi du lot](suivi.json) conserve cette limite. Il ne remplace pas le cockpit
-canonique : rattachement au cockpit existant à compléter par l'opérateur, sans
-réinitialiser les autres phases ni inventer de validation. Protocole applicable :
+Le [suivi du lot](suivi-chantier.json) conserve cette limite. Il est la source canonique de cette itération et porte les quatre phases du
+cockpit Projet. Le suivi initial est archivé sans perte ni nouvelle validation. Protocole applicable :
 [quatre phases](../protocole-developpement/skills/developpement-github-cockpit/references/protocole.md).
 
 ## Objectif et frontières
@@ -207,3 +207,29 @@ sortie sur poste partagé et utiliser des comptes de consultation révocables.
 
 Les documentations externes décrivent les mécanismes. Les états hébergés doivent
 être établis par les reçus d'exploitation du responsable, pas par ces références.
+
+## Pilote préparé lors de la reprise
+
+`prepare_connect.py` prépare uniquement le candidat CONNECT dans un répertoire privé.
+Il vérifie le bloc IP exact, conserve les autres octets, copie la sauvegarde et
+contrôle sa restauration dans un fichier privé. Il ne modifie aucune cible web,
+aucun compte ni aucune production. La bascule reste une action distincte.
+
+Le candidat utilise le fichier de comptes existant du site et ajoute
+`SSLRequireSSL` : le HTTP est refusé avant le challenge Basic. Le refus HTTP ne
+prouve pas le fonctionnement HTTPS. Après bascule, contrôler HTTPS, les mauvais
+identifiants, le bon compte et les parcours métier ; revenir au fichier original
+si la couche TLS de l’hébergement n’est pas compatible.
+
+Le site demande actuellement aussi le mot de passe sur HTTP. Sa protection reste
+en place ; ce point doit être corrigé pendant son harmonisation. Le périmètre
+CV et Passeport est inventorié mais reste fermé. Les fournisseurs d’identité
+restent à qualifier ; `auth-next-preprod` répond actuellement 500.
+
+## Consultation dans le cockpit
+
+La source est `suivi-chantier.json`. Depuis un checkout du moteur Projet déjà
+qualifié, lancer le cockpit avec `AVEREO_REVIEW_ROOT` égal au présent dossier.
+Le [générateur](actualiser-tableau-de-bord.py) actualise seulement les vues dérivées
+et protège les documents approuvés. Le relevé hébergé et la PR apparaissent dans
+les quatre phases ; aucun bouton ne déploie et aucune décision n’est automatique.
