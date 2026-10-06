@@ -24,3 +24,8 @@ dans chaque dépôt ; aucun déploiement des applications n'en découle.
 Le [suivi des accès préproduction](outillage/acces-preproduction/suivi-chantier.json)
 porte le pilote CONNECT puis la généralisation demandée. Les préproductions
 CV/Passeport fermées et les fournisseurs d’identité restent à qualifier.
+
+La réparation technique de `auth-next-preprod` est appliquée ; la prochaine
+étape du pilote est la recette avec le compte du responsable et le lancement
+des applications, avant généralisation. Les preuves et limites restent dans
+le suivi canonique du lot.

@@ -4,19 +4,18 @@
   "source_commit": "fbf395b31917ad46565896ae46317e11db0b611e",
   "objective": "Acces par identifiants aux preproductions ; CONNECT en premier.",
   "phase": "preproduction",
-  "status": "pilote_connect_applique_authentification_bloquee",
+  "status": "pilote_connect_et_identite_appliques_recette_metier_en_attente",
   "server_modified": true,
   "production_modified": false,
   "owner_authorization": "Méthode et généralisation demandées dans Cahier des charges AVEREO, reprises ici le 6 octobre. Accord direct reçu pour appliquer le seul pilote CONNECT avec le compte existant du site, refus HTTP, recette et retour arrière en cas d’échec. Aucun accord de merge ou de production.",
   "cockpit_reference": "outillage/acces-preproduction/suivi-chantier.json",
   "cockpit_status": "Source canonique raccordée au moteur de revue Projet ; aucune décision automatique.",
   "blockers": [
-    "Authentification bloquée sur auth-next-preprod.avereo.fr : HTTP 500, interface OpenID Connect introuvable ; bibliothèques OIDC et OAuth absentes du vendor hébergé.",
-    "Réparation ciblée de l’installation Simple OAuth 6.1.1 à préparer et qualifier avec sauvegarde/retour arrière ; dépôt source du serveur d’identité à identifier avant changement.",
-    "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter après réparation.",
-    "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation."
+    "Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+    "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.",
+    "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo."
   ],
-  "next_action": "Préparer le candidat privé de dépendances, conserver son verrou Composer dans Git puis appliquer la réparation autorisée et recetter.",
+  "next_action": "Recetter avec le compte du responsable sur connect-preprod.avereo.fr, puis qualifier les applications et examiner la PR #77 avant toute généralisation.",
   "phases": [
     {
       "id": 0,
@@ -54,7 +53,7 @@
       "shortTitle": "Développement local",
       "title": "Développement local",
       "status": "awaiting_review",
-      "objective": "Examiner la PR #76 et le candidat préparé.",
+      "objective": "Examiner le pilote CONNECT livré et la réparation d’identité versionnée dans la PR #77.",
       "dependsOn": [],
       "startedOn": "2026-10-06",
       "deliveredOn": "2026-10-06",
@@ -77,7 +76,7 @@
       "exitCriteria": [
         "Tests du candidat et sauvegarde vérifiés."
       ],
-      "nextAction": "Examiner la PR #76 et le candidat préparé.",
+      "nextAction": "Examiner les fichiers, preuves et documentation de la PR #77.",
       "blockers": [],
       "pullRequest": {
         "repository": "jpdandin44/AVEREO",
@@ -86,16 +85,16 @@
         "state": "open",
         "draft": true,
         "merged": false,
-        "headSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
-        "observedAt": "2026-10-06T18:30:51.000Z"
+        "headSha": "9db26fd5afa63abc861b190f6b2dccf5cbf4f0f5",
+        "observedAt": "2026-10-06T18:35:38.000Z"
       }
     },
     {
       "id": 2,
       "shortTitle": "Préproduction",
       "title": "Préproduction",
-      "status": "blocked",
-      "objective": "Le filtre IP CONNECT est remplacé ; la recette est bloquée au fournisseur d’identité.",
+      "status": "in_progress",
+      "objective": "Pilote CONNECT et réparation technique de l’identité livrés ; recette métier avec le responsable à faire.",
       "dependsOn": [],
       "startedOn": "2026-10-06",
       "deliveredOn": null,
@@ -113,18 +112,23 @@
           "kind": "file",
           "availability": "present",
           "title": "Relevé réel et candidat"
+        },
+        {
+          "path": "identite/README.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Contrat exact de la réparation d’identité"
         }
       ],
       "exitCriteria": [
         "Accès anonyme/incorrect refusé, accès autorisé réussi sur HTTPS.",
         "Connexion, lancement Rapport, sauvegarde et rechargement vérifiés."
       ],
-      "nextAction": "Préparer le candidat privé de dépendances, conserver son verrou Composer dans Git puis appliquer la réparation autorisée et recetter.",
+      "nextAction": "Recetter avec le compte du responsable sur connect-preprod.avereo.fr, puis qualifier les applications et examiner la PR #77 avant toute généralisation.",
       "blockers": [
-        "Authentification bloquée sur auth-next-preprod.avereo.fr : HTTP 500, interface OpenID Connect introuvable ; bibliothèques OIDC et OAuth absentes du vendor hébergé.",
-        "Réparation ciblée de l’installation Simple OAuth 6.1.1 à préparer et qualifier avec sauvegarde/retour arrière ; dépôt source du serveur d’identité à identifier avant changement.",
-        "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter après réparation.",
-        "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation."
+        "Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+        "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.",
+        "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo."
       ]
     },
     {
@@ -152,6 +156,11 @@
       "kind": "read_only_inventory",
       "observedAt": "2026-10-06T17:19:21.381+00:00",
       "evidence": "cPanel : Sous-domaines, fichiers d’accès et configuration des hôtes OAuth sans secrets ; contrôles HTTP/HTTPS sans contenu."
+    },
+    {
+      "kind": "identity_repair_delivery",
+      "observedAt": "2026-10-06T18:33:00.022890+00:00",
+      "evidence": "Recette technique réussie : racine identité 200, OAuth anonyme 302 vers /user/login puis écran 200 ; CONNECT HTTPS anonyme/incorrect 401 Basic, HTTP 403 sans challenge ; Rapport 303 vers sa porte CONNECT. Aucun nouvel octet dans error_log pendant ces contrôles. Connexion avec le compte du responsable et parcours métier non vérifiés."
     }
   ],
   "targets": [
@@ -226,7 +235,7 @@
           "protection_checks_passed": true
         },
         "authorized_access": "user_reported_navigation_to_identity",
-        "application_journey": "blocked_at_identity",
+        "application_journey": "oauth_login_screen_verified_authenticated_journey_pending",
         "user_evidence": {
           "observedAt": "2026-10-06T17:59:31.987+00:00",
           "source": "user_chat_and_screenshot",
@@ -402,26 +411,94 @@
     },
     {
       "domain": "auth-next-preprod.avereo.fr",
-      "status": "incident_dependances_identite",
+      "status": "repare_recette_metier_a_faire",
       "document_root": "/home/daje3540/auth-next-preprod.avereo.fr",
-      "backup_receipt": null,
-      "deployment_receipt": null,
-      "acceptance_receipt": null,
-      "note": "HTTP 500 reproduit ; Simple OAuth 6.1.1 chargé avec bibliothèques OIDC/OAuth absentes. Aucun fichier ni compte de ce serveur modifié.",
+      "backup_receipt": {
+        "directory": "/home/daje3540/private/identity-repair/20261006T182856355876Z",
+        "original_sha256": "10da791af3725c43a379aa9a33fa64d112dac6323c790852185d3b2556c5b780",
+        "restore_copy_verified": true
+      },
+      "deployment_receipt": {
+        "target": "/home/daje3540/auth-next-preprod.avereo.fr",
+        "artifact_sha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+        "applied_at": "2026-10-06T18:31:21.138040+00:00",
+        "database_modified": false,
+        "accounts_or_keys_modified": false,
+        "production_modified": false,
+        "backup": "/home/daje3540/private/identity-repair/20261006T182856355876Z"
+      },
+      "acceptance_receipt": {
+        "observed_at": "2026-10-06T18:33:00.022890+00:00",
+        "artifact_sha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+        "summary": "Recette technique réussie : racine identité 200, OAuth anonyme 302 vers /user/login puis écran 200 ; CONNECT HTTPS anonyme/incorrect 401 Basic, HTTP 403 sans challenge ; Rapport 303 vers sa porte CONNECT. Aucun nouvel octet dans error_log pendant ces contrôles. Connexion avec le compte du responsable et parcours métier non vérifiés.",
+        "new_error_log_bytes": 0,
+        "authenticated_journey_verified": false,
+        "checks": [
+          {
+            "label": "identity_root",
+            "status": 200
+          },
+          {
+            "label": "oauth_authorize_anonymous",
+            "status": 302
+          },
+          {
+            "label": "oauth_login_screen",
+            "status": 200
+          },
+          {
+            "label": "connect_https_anonymous",
+            "status": 401
+          },
+          {
+            "label": "connect_https_invalid",
+            "status": 401
+          },
+          {
+            "label": "connect_http",
+            "status": 403
+          },
+          {
+            "label": "rapport_gate",
+            "status": 303
+          }
+        ],
+        "evidence": "/home/daje3540/private/identity-repair/20261006T182856355876Z/acceptance.json",
+        "local_screenshot": ".local/recette-identite-connexion.png"
+      },
+      "note": "Dépendances manquantes réparées ; racine HTTPS 200 et écran OAuth accessible.",
       "observation": {
         "domain": "auth-next-preprod.avereo.fr",
         "https": {
-          "status": 500,
+          "status": 200,
           "basic_challenge": false,
           "transport": "ok"
         },
         "http": {
-          "status": 500,
-          "redirects_to_same_https": false,
-          "basic_challenge": false
+          "status": null,
+          "transport": "not_retested",
+          "note": "Contrôle de réparation limité à HTTPS ; état HTTP initial conservé dans observation_history."
         }
       },
-      "observedAt": "2026-10-06T17:19:21.381+00:00"
+      "observedAt": "2026-10-06T18:33:00.022890+00:00",
+      "observation_history": [
+        {
+          "observedAt": "2026-10-06T17:19:21.381+00:00",
+          "observation": {
+            "domain": "auth-next-preprod.avereo.fr",
+            "https": {
+              "status": 500,
+              "basic_challenge": false,
+              "transport": "ok"
+            },
+            "http": {
+              "status": 500,
+              "redirects_to_same_https": false,
+              "basic_challenge": false
+            }
+          }
+        }
+      ]
     },
     {
       "domain": "passeport-immo-preprod.avereo.fr",
@@ -516,6 +593,10 @@
     {
       "date": "2026-10-06",
       "event": "Accord direct reçu pour effectuer la réparation nécessaire ; script ciblé préparé et six tests de refus/restauration réussis. Aucun merge ou changement de production autorisé."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Premier candidat restauré après conflit de disposition Drupal, empreinte originale vérifiée ; second candidat corrigé livré et recette technique réussie. Aucune connexion du responsable ni validation de phase déclarée."
     }
   ],
   "github": {
@@ -525,8 +606,8 @@
     "state": "open",
     "draft": true,
     "merged": false,
-    "headSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
-    "observedAt": "2026-10-06T18:30:51.000Z"
+    "headSha": "9db26fd5afa63abc861b190f6b2dccf5cbf4f0f5",
+    "observedAt": "2026-10-06T18:35:38.000Z"
   },
   "checks": [
     {
@@ -581,6 +662,15 @@
       "observedAt": "2026-10-06T17:59:31.987+00:00",
       "evidence": "HTTP 500 reproduit ; erreur d’interface absente dans error_log et absence des deux bibliothèques vendor confirmées.",
       "note": "Diagnostic en lecture seule ; aucun test de réparation exécuté, aucun fichier hébergé modifié."
+    },
+    {
+      "kind": "identity_technical_acceptance",
+      "status": "passed",
+      "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+      "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+      "observedAt": "2026-10-06T18:33:00.022890+00:00",
+      "evidence": "/home/daje3540/private/identity-repair/20261006T182856355876Z/acceptance.json",
+      "note": "Recette technique réussie : racine identité 200, OAuth anonyme 302 vers /user/login puis écran 200 ; CONNECT HTTPS anonyme/incorrect 401 Basic, HTTP 403 sans challenge ; Rapport 303 vers sa porte CONNECT. Aucun nouvel octet dans error_log pendant ces contrôles. Connexion avec le compte du responsable et parcours métier non vérifiés."
     }
   ],
   "connect_candidate": {
@@ -651,6 +741,15 @@
         "kind": "documentation",
         "status": "passed",
         "evidence": "Socle racine présent ; neuf documents et cinquante liens locaux vérifiés, métadonnées et empreintes du contrat Composer exacts ; générateur idempotent, cockpit sans problème de lecture."
+      },
+      {
+        "kind": "identity_technical_acceptance",
+        "status": "passed",
+        "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+        "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+        "observedAt": "2026-10-06T18:33:00.022890+00:00",
+        "evidence": "/home/daje3540/private/identity-repair/20261006T182856355876Z/acceptance.json",
+        "note": "Recette technique réussie : racine identité 200, OAuth anonyme 302 vers /user/login puis écran 200 ; CONNECT HTTPS anonyme/incorrect 401 Basic, HTTP 403 sans challenge ; Rapport 303 vers sa porte CONNECT. Aucun nouvel octet dans error_log pendant ces contrôles. Connexion avec le compte du responsable et parcours métier non vérifiés."
       }
     ],
     "approvals": [
@@ -677,7 +776,21 @@
         "evidence": "Sauvegarde et copie privée de restauration identiques à la source active ; retour arrière réel du premier candidat vérifié au même SHA original."
       }
     ],
-    "limitation": "Qualification du seul transfert des dépendances ; la connexion du responsable et le parcours métier restent distincts."
+    "limitation": "Qualification du seul transfert des dépendances ; la connexion du responsable et le parcours métier restent distincts.",
+    "deployments": [
+      {
+        "target": "auth-next-preprod.avereo.fr",
+        "environment": "preproduction",
+        "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+        "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+        "status": "applied",
+        "observedAt": "2026-10-06T18:31:21.138040+00:00",
+        "evidence": "/home/daje3540/private/identity-repair/20261006T182856355876Z/deployment.json"
+      }
+    ],
+    "nextIteration": [
+      "Recetter avec le compte du responsable sur connect-preprod.avereo.fr, puis qualifier les applications et examiner la PR #77 avant toute généralisation."
+    ]
   },
   "previous_blockers": [
     "Accès avec les bons identifiants à vérifier par le responsable : le navigateur intégré ne propose pas l’invite HTTP Basic (ERR_INVALID_AUTH_CREDENTIALS). Aucun secret demandé dans le chat.",
@@ -709,11 +822,11 @@
     "root_composer_declares_simple_oauth": false,
     "openid_autoload_mapping_present": false,
     "cause": "Installation Simple OAuth incomplète : module présent, bibliothèques PHP qu’il requiert absentes. Le mécanisme d’installation historique n’a pas été établi.",
-    "resolution_status": "preparing_candidate",
-    "next_action": "Préparer la réparation des dépendances Simple OAuth du seul serveur auth-next-preprod, puis refaire la connexion avant de qualifier les applications.",
+    "resolution_status": "applied_technical_acceptance_passed",
+    "next_action": "Incident technique réparé ; recetter la connexion du responsable, le lancement des applications et le retour CONNECT avant généralisation.",
     "constraints": "Préserver comptes, configuration privée, base, clés OAuth et contrôles Basic CONNECT. Ne pas installer une mise à jour globale du site ou basculer vers auth-preprod sans qualification.",
     "source_repository": "Réparation des dépendances versionnée dans jpdandin44/AVEREO, outillage/acces-preproduction ; dépôt du reste de l’instance Drupal non identifié, hors de cette réparation.",
-    "remote_writes": false
+    "remote_writes": true
   },
   "identity_repair": {
     "authorization": {
@@ -728,7 +841,7 @@
       "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
       "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39"
     },
-    "status": "qualified_private_candidate",
+    "status": "applied_technical_acceptance_passed",
     "source_script": "outillage/acces-preproduction/repair_identity.py",
     "local_tests": {
       "observedAt": "2026-10-06T18:30:01.000Z",
@@ -777,7 +890,15 @@
       },
       "source_sha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632"
     },
-    "deployment": null,
+    "deployment": {
+      "target": "/home/daje3540/auth-next-preprod.avereo.fr",
+      "artifact_sha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+      "applied_at": "2026-10-06T18:31:21.138040+00:00",
+      "database_modified": false,
+      "accounts_or_keys_modified": false,
+      "production_modified": false,
+      "backup": "/home/daje3540/private/identity-repair/20261006T182856355876Z"
+    },
     "source_contract_status": "Contrat natif extrait et conservé dans identite/composer.json et composer.lock ; empreintes vérifiées.",
     "source_script_sha256": "91cb3617e290b70ba86d773a2e1926a33bd002067cc01632bb036f67b26e952b",
     "source_zip_sha256": "7faca19d6e892d15789c877fde132ad58e04c48154110ee751c855d1aba81323",
@@ -828,7 +949,46 @@
           "verified": true
         }
       }
-    ]
+    ],
+    "acceptance": {
+      "observed_at": "2026-10-06T18:33:00.022890+00:00",
+      "artifact_sha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+      "summary": "Recette technique réussie : racine identité 200, OAuth anonyme 302 vers /user/login puis écran 200 ; CONNECT HTTPS anonyme/incorrect 401 Basic, HTTP 403 sans challenge ; Rapport 303 vers sa porte CONNECT. Aucun nouvel octet dans error_log pendant ces contrôles. Connexion avec le compte du responsable et parcours métier non vérifiés.",
+      "new_error_log_bytes": 0,
+      "authenticated_journey_verified": false,
+      "checks": [
+        {
+          "label": "identity_root",
+          "status": 200
+        },
+        {
+          "label": "oauth_authorize_anonymous",
+          "status": 302
+        },
+        {
+          "label": "oauth_login_screen",
+          "status": 200
+        },
+        {
+          "label": "connect_https_anonymous",
+          "status": 401
+        },
+        {
+          "label": "connect_https_invalid",
+          "status": 401
+        },
+        {
+          "label": "connect_http",
+          "status": 403
+        },
+        {
+          "label": "rapport_gate",
+          "status": 303
+        }
+      ],
+      "evidence": "/home/daje3540/private/identity-repair/20261006T182856355876Z/acceptance.json",
+      "local_screenshot": ".local/recette-identite-connexion.png"
+    }
   },
   "github_history": [
     {

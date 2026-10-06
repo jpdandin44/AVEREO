@@ -14,7 +14,7 @@ tags: [preproduction, securite, exploitation]
 
 ## Statut du lot
 
-**Pilote CONNECT appliqué ; recette bloquée au fournisseur d’identité.** L'accord du responsable
+**Pilote CONNECT et réparation de l’identité appliqués ; recette avec le compte du responsable à faire.** L'accord du responsable
 porte sur le remplacement du filtrage IP de consultation par une protection HTTP
 par identifiants, CONNECT d'abord, puis les autres préproductions. Il autorise une
 PR dédiée, pas un merge ni une modification de production.
@@ -31,10 +31,12 @@ Aucun mot de passe, cookie, lien de session cPanel ou hachage de compte n'est ve
 
 La PR #76 est maintenant fusionnée, comme l’indique le suivi. Le responsable signale
 que le filtrage IP est débloqué, puis une erreur lors de la connexion. Le diagnostic
-en lecture seule du serveur d’identité confirme une installation Simple OAuth
-incomplète. La cause et les dépendances absentes figurent dans
-le [relevé dérivé](releve-heberge.md#incident-dauthentification). La recette n’a pas
-atteint le lancement des applications ; fusionner leurs PR ne corrige pas cet incident.
+initial du serveur d’identité a confirmé une installation Simple OAuth
+incomplète. La réparation autorisée rétablit l’écran OAuth de connexion : la racine
+répond 200 et la demande anonyme redirige vers le formulaire Drupal, qui répond 200.
+La cause, le candidat appliqué et la recette technique figurent dans
+le [relevé dérivé](releve-heberge.md#incident-dauthentification). La connexion avec
+le compte du responsable et le lancement des applications restent à recetter.
 
 Le [suivi du lot](suivi-chantier.json) est la source canonique de cette itération.
 Il porte les quatre phases du cockpit Projet. Le suivi initial est archivé sans
@@ -259,6 +261,11 @@ La seule cible de cette réparation est `auth-next-preprod.avereo.fr`, Drupal
 un dossier privé une copie des fichiers Composer et de `vendor`, puis ajoute
 les deux dépendances exactes déclarées par le module. Il refuse un changement
 de package déjà verrouillé ou d’un autre champ du manifeste.
+
+Le premier candidat a été restauré après un conflit de chargement dû au déplacement
+du cœur par Composer. Le suivi conserve cet échec et le reçu du retour arrière
+réel, vérifié par empreinte. Le second candidat conserve la disposition Drupal et
+passe la recette technique. La sauvegarde privée demeure disponible.
 
 Les scripts Composer sont désactivés. Seul le plugin `composer/installers`, déjà
 verrouillé sur l’instance, est actif pendant la préparation pour conserver

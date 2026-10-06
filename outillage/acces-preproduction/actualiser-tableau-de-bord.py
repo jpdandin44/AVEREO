@@ -32,7 +32,7 @@ lines += ['', '## Domaines vérifiés', '',
 for row in state['targets']:
     observation = row['observation']
     https = observation['https'].get('status')
-    http = observation['http'].get('status', 'Transport non vérifié')
+    http = observation['http'].get('status') or 'Non retesté'
     lines.append(f"| {row['domain']} | `{row['document_root']}` | {https} | {http} | {row['note']} |")
 lines += ['', '## Candidat CONNECT et récupération', '']
 receipt = state.get('connect_candidate')
@@ -45,7 +45,7 @@ if receipt:
     deployment = pilot.get('deployment_receipt')
     if deployment:
         lines += [f"- Pilote appliqué le `{deployment['applied_at']}` ; empreinte active vérifiée.",
-            '- Le seul fichier public modifié est le `.htaccess` de CONNECT préproduction.',
+            '- Sur CONNECT, le seul fichier public modifié est le `.htaccess` de préproduction.',
             '- Compte de consultation et fichiers de production inchangés.']
     else:
         lines += ['- Aucun fichier public, compte de consultation ou fichier de production modifié.']
@@ -53,7 +53,7 @@ else:
     lines += ['TBD — reçu de préparation privée à enregistrer avant bascule.']
 lines += ['', '## Contrôles et limites', '']
 for check in state.get('checks', []):
-    lines.append(f"- {check['kind']} : {check['status']} — {check['evidence']}. {check.get('note', '')}")
+    lines.append(f"- {check['kind']} le `{check.get('observedAt', 'TBD')}` : {check['status']} — {check['evidence']}. {check.get('note', '')}")
 lines += ['', 'Les tests Apache locaux sont complétés par les contrôles hébergés enregistrés ci-dessus.',
     'Le parcours CONNECT → Drupal → Rapport → sauvegarde → rechargement reste à recetter.',
     'La protection doit survivre au prochain déploiement ; cette pérennité reste à qualifier.', '',
@@ -62,11 +62,11 @@ lines += ['- ' + item for item in state['blockers']]
 incident = state.get('identity_incident')
 if incident:
     lines += ['', '## Incident d’authentification', '',
-        f"Cible : `{incident['domain']}`. {incident['symptom']}", '',
+        f"Diagnostic initial du `{incident['observedAt']}` sur `{incident['domain']}`. {incident['symptom']}", '',
         incident['preexisting_evidence'], '',
         f"Erreur du journal : `{incident['technical_error']}` dans `{incident['file']}`.",
         f"Drupal `{incident['drupal_version']}` ; Simple OAuth `{incident['simple_oauth_version']}`.", '',
-        incident['cause'], '', 'Bibliothèques déclarées par le module et absentes du vendor :', '']
+        incident['cause'], '', 'Bibliothèques déclarées par le module et absentes du vendor lors du diagnostic initial :', '']
     lines += [f"- `{dependency['package']}` — contrainte `{dependency['declared_constraint']}`."
         for dependency in incident['missing_dependencies']]
     lines += ['', incident['next_action'], '', incident['constraints'], '',

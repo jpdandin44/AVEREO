@@ -36,3 +36,11 @@ sur le fournisseur d’identité de préproduction. Le suivi identifie une insta
 Simple OAuth incomplète, avec deux bibliothèques PHP absentes ; la recette reste
 bloquée avant le lancement des applications. Aucune réparation distante ni
 modification des comptes ou secrets effectuée pendant ce diagnostic.
+
+Réparation demandée puis appliquée au seul serveur d’identité : contrat Composer
+exact conservé dans Git, ajout des bibliothèques manquantes, disposition et
+empreinte du cœur Drupal préservées. Premier candidat restauré après échec de
+chargement ; second candidat qualifié et recette technique réussie, avec écran
+OAuth de connexion accessible. Huit tests locaux de réparation et 22 tests CI
+réussis. Parcours avec le compte du responsable et lancement des applications
+encore à recetter ; aucune livraison de production ni modification de compte.
