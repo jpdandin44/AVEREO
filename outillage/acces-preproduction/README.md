@@ -14,6 +14,13 @@ tags: [preproduction, securite, exploitation]
 
 ## Statut du lot
 
+Pour tester la connexion et les applications, utiliser les
+[accès de recette](releve-heberge.md#accès-pour-la-recette). Le cockpit local
+sert à consulter les phases, preuves et décisions. Il ne constitue pas
+l’environnement de recette de CONNECT ni du fournisseur d’identité.
+Ce lot fournit des tests locaux automatisés de réparation ; aucune interface
+locale du fournisseur d’identité n’est fournie.
+
 **Pilote CONNECT et réparation de l’identité appliqués ; recette avec le compte du responsable à faire.** L'accord du responsable
 porte sur le remplacement du filtrage IP de consultation par une protection HTTP
 par identifiants, CONNECT d'abord, puis les autres préproductions. Il autorise une

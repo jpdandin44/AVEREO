@@ -27,6 +27,13 @@ Recetter avec le compte du responsable sur connect-preprod.avereo.fr, puis quali
 | Préproduction | En cours | Recetter avec le compte du responsable sur connect-preprod.avereo.fr, puis qualifier les applications et examiner la PR #77 avant toute généralisation. |
 | Mise en production | Non commencée | Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé. |
 
+## Accès pour la recette
+
+- Application à tester : [CONNECT préproduction](https://connect-preprod.avereo.fr/). Démarrer une nouvelle connexion depuis cette adresse.
+- Fournisseur d’identité concerné : [AVEREO Identité préproduction](https://auth-next-preprod.avereo.fr/user/login). Le parcours CONNECT y redirige automatiquement.
+- Suivi du chantier : [Cockpit local du chantier](http://127.0.0.1:5196/). Il affiche les phases et les preuves ; il ne teste pas la connexion applicative.
+- Tests locaux du correctif : [procédure de validation](README.md#validation-locale). Aucune interface locale du fournisseur d’identité n’est fournie.
+
 ## Domaines vérifiés
 
 Racines relevées dans cPanel le 6 octobre 2026, sous `/home/daje3540`.
@@ -35,7 +42,7 @@ Contrôles sans identifiants, sans suivi des redirections, sans corps ni cookies
 | Domaine | Racine réelle | HTTPS | HTTP | Observation |
 | --- | --- | --- | --- | --- |
 | preprod.avereo.fr | `/home/daje3540/preprod.avereo.fr` | 401 | 401 | Basic existant ; challenge aussi sur HTTP, à corriger avant harmonisation. |
-| connect-preprod.avereo.fr | `/home/daje3540/connect-preprod.avereo.fr/public` | 401 | 403 | Pilote Basic/HTTPS actif ; refus anonyme/incorrect et HTTP vérifiés. Accès de consultation franchi selon le responsable ; connexion bloquée au fournisseur d’identité, recette métier non réussie. |
+| connect-preprod.avereo.fr | `/home/daje3540/connect-preprod.avereo.fr/public` | 401 | 403 | Pilote Basic/HTTPS actif ; refus anonyme/incorrect et HTTP vérifiés. Accès de consultation franchi selon le responsable ; écran OAuth accessible, connexion authentifiée et recette métier à faire. |
 | rapport-preprod.avereo.fr | `/home/daje3540/rapport-preprod.avereo.fr` | 303 | 303 | Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés. |
 | coupe-preprod.avereo.fr | `/home/daje3540/coupe-preprod.avereo.fr` | 303 | 303 | Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés. |
 | projet-preprod.avereo.fr | `/home/daje3540/projet-preprod.avereo.fr` | 303 | 303 | Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés. |

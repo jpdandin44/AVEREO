@@ -44,3 +44,9 @@ chargement ; second candidat qualifié et recette technique réussie, avec écra
 OAuth de connexion accessible. Huit tests locaux de réparation et 22 tests CI
 réussis. Parcours avec le compte du responsable et lancement des applications
 encore à recetter ; aucune livraison de production ni modification de compte.
+
+Clarification des liens de revue de la PR #77 : accès de recette CONNECT,
+fournisseur d’identité, tests locaux du correctif et cockpit de suivi distingués.
+Le lien erroné du cockpit dans la case des tests locaux est remplacé par la
+procédure de validation ; un accès direct à la recette hébergée est ajouté.
+Les serveurs et validations humaines sont inchangés.

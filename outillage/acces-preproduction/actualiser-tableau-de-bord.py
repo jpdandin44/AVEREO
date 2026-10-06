@@ -25,6 +25,13 @@ lines = [front, '# Relevé hébergé', '',
     '| Phase | État | Prochaine action |', '| --- | --- | --- |']
 for phase in state['phases']:
     lines.append(f"| {phase['shortTitle']} | {state['statusLabels'][phase['status']]} | {phase['nextAction']} |")
+review_links = (state.get('identity_repair') or {}).get('review_links')
+if review_links:
+    lines += ['', '## Accès pour la recette', '',
+        f"- Application à tester : [{review_links['acceptance']['title']}]({review_links['acceptance']['url']}). Démarrer une nouvelle connexion depuis cette adresse.",
+        f"- Fournisseur d’identité concerné : [{review_links['identity']['title']}]({review_links['identity']['url']}). Le parcours CONNECT y redirige automatiquement.",
+        f"- Suivi du chantier : [{review_links['cockpit']['title']}]({review_links['cockpit']['url']}). Il affiche les phases et les preuves ; il ne teste pas la connexion applicative.",
+        '- Tests locaux du correctif : [procédure de validation](README.md#validation-locale). Aucune interface locale du fournisseur d’identité n’est fournie.']
 lines += ['', '## Domaines vérifiés', '',
     'Racines relevées dans cPanel le 6 octobre 2026, sous `/home/daje3540`.',
     'Contrôles sans identifiants, sans suivi des redirections, sans corps ni cookies.', '',

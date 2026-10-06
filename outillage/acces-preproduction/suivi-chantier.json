@@ -242,7 +242,7 @@
           "evidence": "Le responsable indique que la PR #76 règle le problème IP et fournit la redirection de connexion vers auth-next-preprod /oauth/authorize avec client CONNECT préproduction. Aucun paramètre OAuth transitoire conservé."
         }
       },
-      "note": "Pilote Basic/HTTPS actif ; refus anonyme/incorrect et HTTP vérifiés. Accès de consultation franchi selon le responsable ; connexion bloquée au fournisseur d’identité, recette métier non réussie.",
+      "note": "Pilote Basic/HTTPS actif ; refus anonyme/incorrect et HTTP vérifiés. Accès de consultation franchi selon le responsable ; écran OAuth accessible, connexion authentifiée et recette métier à faire.",
       "observation": {
         "domain": "connect-preprod.avereo.fr",
         "https": {
@@ -597,6 +597,10 @@
     {
       "date": "2026-10-06",
       "event": "Premier candidat restauré après conflit de disposition Drupal, empreinte originale vérifiée ; second candidat corrigé livré et recette technique réussie. Aucune connexion du responsable ni validation de phase déclarée."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Lien erroné du cockpit dans la case des tests locaux de la PR #77 corrigé ; accès de recette, identité et suivi explicitement distingués. Aucune validation ni modification hébergée."
     }
   ],
   "github": {
@@ -988,6 +992,20 @@
       ],
       "evidence": "/home/daje3540/private/identity-repair/20261006T182856355876Z/acceptance.json",
       "local_screenshot": ".local/recette-identite-connexion.png"
+    },
+    "review_links": {
+      "acceptance": {
+        "title": "CONNECT préproduction",
+        "url": "https://connect-preprod.avereo.fr/"
+      },
+      "identity": {
+        "title": "AVEREO Identité préproduction",
+        "url": "https://auth-next-preprod.avereo.fr/user/login"
+      },
+      "cockpit": {
+        "title": "Cockpit local du chantier",
+        "url": "http://127.0.0.1:5196/"
+      }
     }
   },
   "github_history": [
