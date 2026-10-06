@@ -86,8 +86,8 @@
         "state": "open",
         "draft": true,
         "merged": false,
-        "headSha": "663878b376275dddee54db54fa03d8ff3b3bab3b",
-        "observedAt": "2026-10-06T18:25:00.000Z"
+        "headSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+        "observedAt": "2026-10-06T18:30:51.000Z"
       }
     },
     {
@@ -525,8 +525,8 @@
     "state": "open",
     "draft": true,
     "merged": false,
-    "headSha": "663878b376275dddee54db54fa03d8ff3b3bab3b",
-    "observedAt": "2026-10-06T18:25:00.000Z"
+    "headSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+    "observedAt": "2026-10-06T18:30:51.000Z"
   },
   "checks": [
     {
@@ -609,94 +609,75 @@
     "effect": "Remplacer le bloc IP par Basic avec le compte existant du site et refus HTTP ; recette puis retour arrière si échec."
   },
   "developmentWorkflow": {
-    "iterationId": "acces-preprod-connect-20261006",
+    "iterationId": "reparation-identite-preprod-20261006",
     "owner": "jpdandin",
     "candidate": {
-      "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
-      "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155"
+      "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+      "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39"
     },
     "blockers": [],
     "targets": {
       "preproduction": {
-        "id": "connect-preprod.avereo.fr",
+        "id": "auth-next-preprod.avereo.fr",
         "ready": true,
         "isolated": true,
         "empty": false,
-        "observedAt": "2026-10-06T17:21:03.912007+00:00",
-        "evidence": "cPanel : racine public distincte de connect.avereo.fr ; chemin réel contrôlé ; reçu privé /home/daje3540/private/preprod-access/20261006T172103911203Z"
+        "observedAt": "2026-10-06T18:29:28.770515+00:00",
+        "evidence": "Racine réelle distincte ; préparation privée avec cœur copié et inchangé, disposition core/ conservée et chargement commun testé."
       }
     },
     "checks": [
       {
+        "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+        "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+        "observedAt": "2026-10-06T18:30:51.000Z",
         "kind": "local",
         "status": "passed",
-        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
-        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
-        "observedAt": "2026-10-06T17:30:05.252+00:00",
-        "evidence": "14 tests réels Apache/Docker, composition ciblée et refus HTTP vérifiés ; script préparateur contrôlé par SHA-256 sur le serveur."
+        "evidence": "Huit tests locaux de réparation réussis, dont la régression du double cœur Drupal."
       },
       {
+        "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+        "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+        "observedAt": "2026-10-06T18:30:51.000Z",
         "kind": "ci",
         "status": "passed",
-        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
-        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
-        "observedAt": "2026-10-06T17:30:05.252+00:00",
-        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37502834488"
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37511637432",
+        "note": "22 tests sans saut, CI générale 37511637347 réussie ; PR Policy ignorée sur brouillon."
       },
       {
+        "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+        "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
+        "observedAt": "2026-10-06T18:30:51.000Z",
         "kind": "documentation",
         "status": "passed",
-        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
-        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
-        "observedAt": "2026-10-06T17:30:05.252+00:00",
-        "evidence": "8 documents vérifiés ; relevé canonique, liens, métadonnées et candidat privé enregistrés."
-      },
-      {
-        "kind": "hosted_protection",
-        "status": "passed",
-        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
-        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
-        "observedAt": "2026-10-06T17:33:13.331+00:00",
-        "evidence": "Pilote hébergé : HTTPS 401/Basic sans identifiants et avec identifiants incorrects ; HTTP 403 sans challenge. Empreinte active vérifiée dans cPanel après remplacement atomique.",
-        "note": "Aucun contrôle avec bon compte ni parcours métier déclaré réussi."
+        "evidence": "Socle racine présent ; neuf documents et cinquante liens locaux vérifiés, métadonnées et empreintes du contrat Composer exacts ; générateur idempotent, cockpit sans problème de lecture."
       }
     ],
     "approvals": [
       {
-        "scope": "preproduction",
-        "status": "approved",
-        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
-        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
-        "target": "connect-preprod.avereo.fr",
         "actor": "jpdandin",
         "source": "user_chat",
-        "recordedAt": "2026-10-06T17:30:05.252+00:00",
-        "evidence": "Réponse directe dans ce chat : Oui, appliquer le pilote CONNECT.",
-        "effect": "Remplacer le bloc IP par Basic avec le compte existant du site et refus HTTP ; recette puis retour arrière si échec."
+        "recordedAt": "2026-10-06T18:16:49.179+00:00",
+        "evidence": "Demande directe : OK fais les modifications nécessaires stp.",
+        "target": "auth-next-preprod.avereo.fr",
+        "effect": "Réparer les dépendances manquantes du serveur d’identité de préproduction, conserver comptes/clés, sauvegarder et recetter.",
+        "scope": "preproduction",
+        "status": "approved",
+        "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+        "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39"
       }
     ],
     "backups": [
       {
-        "target": "connect-preprod.avereo.fr",
-        "id": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+        "target": "auth-next-preprod.avereo.fr",
+        "id": "/home/daje3540/private/identity-repair/20261006T182856355876Z",
         "status": "verified",
         "restoreStatus": "passed",
-        "observedAt": "2026-10-06T17:21:03.912007+00:00",
-        "evidence": "Copie privée de restauration identique octet par octet à original.htaccess ; SHA-256 5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e"
+        "observedAt": "2026-10-06T18:29:28.770515+00:00",
+        "evidence": "Sauvegarde et copie privée de restauration identiques à la source active ; retour arrière réel du premier candidat vérifié au même SHA original."
       }
     ],
-    "limitation": "Projection historique du seul pilote CONNECT installé. Elle ne qualifie ni la réparation auth-next-preprod ni les applications ; la recette est bloquée au fournisseur d’identité.",
-    "deployments": [
-      {
-        "target": "connect-preprod.avereo.fr",
-        "environment": "preproduction",
-        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
-        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
-        "status": "applied",
-        "observedAt": "2026-10-06T17:31:40.100824+00:00",
-        "evidence": "/home/daje3540/private/preprod-access/20261006T172103911203Z/deployment-receipt.json"
-      }
-    ]
+    "limitation": "Qualification du seul transfert des dépendances ; la connexion du responsable et le parcours métier restent distincts."
   },
   "previous_blockers": [
     "Accès avec les bons identifiants à vérifier par le responsable : le navigateur intégré ne propose pas l’invite HTTP Basic (ERR_INVALID_AUTH_CREDENTIALS). Aucun secret demandé dans le chat.",
@@ -741,24 +722,28 @@
       "recordedAt": "2026-10-06T18:16:49.179+00:00",
       "evidence": "Demande directe : OK fais les modifications nécessaires stp.",
       "target": "auth-next-preprod.avereo.fr",
-      "effect": "Réparer les dépendances manquantes du serveur d’identité de préproduction, conserver comptes/clés, sauvegarder et recetter."
+      "effect": "Réparer les dépendances manquantes du serveur d’identité de préproduction, conserver comptes/clés, sauvegarder et recetter.",
+      "scope": "preproduction",
+      "status": "approved",
+      "sourceSha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632",
+      "artifactSha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39"
     },
     "status": "qualified_private_candidate",
     "source_script": "outillage/acces-preproduction/repair_identity.py",
     "local_tests": {
-      "observedAt": "2026-10-06T18:16:49.179+00:00",
-      "count": 6,
+      "observedAt": "2026-10-06T18:30:01.000Z",
+      "count": 8,
       "status": "passed",
-      "evidence": "Refus production, changements de dépendances existantes et contrat non liés ; application/restauration byte-identiques, refus état concurrent et restauration après transfert en échec."
+      "evidence": "Six tests de refus/restauration et deux tests de disposition Drupal réussis."
     },
     "target_root": "/home/daje3540/auth-next-preprod.avereo.fr",
     "php_version": "8.3.35",
     "composer_version": "2.10.2",
     "candidate": {
       "target": "/home/daje3540/auth-next-preprod.avereo.fr",
-      "folder": "/home/daje3540/private/identity-repair/20261006T182031409560Z",
+      "folder": "/home/daje3540/private/identity-repair/20261006T182856355876Z",
       "original_sha256": "10da791af3725c43a379aa9a33fa64d112dac6323c790852185d3b2556c5b780",
-      "artifact_sha256": "0f019cadd01a17514ee31f3b0e3501390a37b09731a4247958499ccd60f93028",
+      "artifact_sha256": "5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39",
       "added_packages": {
         "defuse/php-encryption": "v2.4.0",
         "lcobucci/jwt": "5.6.0",
@@ -775,24 +760,75 @@
       "backup_restore_copy_verified": true,
       "autoload_verified": true,
       "existing_packages_unchanged": true,
-      "composer_scripts_and_plugins_disabled": true,
+      "composer_scripts_disabled": true,
+      "composer_plugins_allowed": [
+        "composer/installers"
+      ],
+      "other_plugins_disabled": true,
+      "drupal_layout_verified": true,
+      "core_unchanged": true,
       "database_modified": false,
       "public_target_written": false,
-      "prepared_at": "2026-10-06T18:20:45.485335+00:00",
+      "prepared_at": "2026-10-06T18:29:28.770515+00:00",
       "modes": {
         "composer.json": 420,
         "composer.lock": 420,
         "vendor": 493
-      }
+      },
+      "source_sha": "85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632"
     },
     "deployment": null,
     "source_contract_status": "Contrat natif extrait et conservé dans identite/composer.json et composer.lock ; empreintes vérifiées.",
-    "source_script_sha256": "481f2d3627e733bc982ad381f7e7fbc57a3d95628b7c64cf306af3457c52a714",
-    "source_zip_sha256": "78e67524fa0b7a24d28ad0156dde083f501a0a73c1b4e26fe985f9ee1826c9bc",
+    "source_script_sha256": "91cb3617e290b70ba86d773a2e1926a33bd002067cc01632bb036f67b26e952b",
+    "source_zip_sha256": "7faca19d6e892d15789c877fde132ad58e04c48154110ee751c855d1aba81323",
     "source_files_sha256": {
-      "composer.json": "fa6bfa24218dc4e215794916798acc3133e15d79a833588619d1b195067dab80",
+      "composer.json": "5251f131700643a2ca2be5444ece10ad8f84e83d0e281b0f56991f750d83ddb0",
       "composer.lock": "2545befaf4c5ad9938b0a9024e9267f45eef941345519a7c4a142be3a969a3ba"
-    }
+    },
+    "previous_candidates": [
+      {
+        "target": "/home/daje3540/auth-next-preprod.avereo.fr",
+        "folder": "/home/daje3540/private/identity-repair/20261006T182031409560Z",
+        "original_sha256": "10da791af3725c43a379aa9a33fa64d112dac6323c790852185d3b2556c5b780",
+        "artifact_sha256": "0f019cadd01a17514ee31f3b0e3501390a37b09731a4247958499ccd60f93028",
+        "added_packages": {
+          "defuse/php-encryption": "v2.4.0",
+          "lcobucci/jwt": "5.6.0",
+          "league/event": "3.0.3",
+          "league/oauth2-server": "9.4.1",
+          "league/uri": "7.8.1",
+          "league/uri-interfaces": "7.8.1",
+          "paragonie/random_compat": "v9.99.100",
+          "psr/clock": "1.0.0",
+          "psr/http-server-handler": "1.0.2",
+          "psr/http-server-middleware": "1.0.2",
+          "steverhoades/oauth2-openid-connect-server": "v3.0.1"
+        },
+        "backup_restore_copy_verified": true,
+        "autoload_verified": true,
+        "existing_packages_unchanged": true,
+        "composer_scripts_and_plugins_disabled": true,
+        "database_modified": false,
+        "public_target_written": false,
+        "prepared_at": "2026-10-06T18:20:45.485335+00:00",
+        "modes": {
+          "composer.json": 420,
+          "composer.lock": 420,
+          "vendor": 493
+        },
+        "deployment": {
+          "applied_at": "2026-10-06T18:25:40.645826+00:00",
+          "artifact_sha256": "0f019cadd01a17514ee31f3b0e3501390a37b09731a4247958499ccd60f93028"
+        },
+        "status": "rolled_back_after_failed_acceptance",
+        "failure": "Cannot redeclare base_path(), core déplacé dans vendor/drupal/core avec plugins désactivés.",
+        "rollback": {
+          "restored_at": "2026-10-06T18:26:56.891168+00:00",
+          "restored_sha256": "10da791af3725c43a379aa9a33fa64d112dac6323c790852185d3b2556c5b780",
+          "verified": true
+        }
+      }
+    ]
   },
   "github_history": [
     {
@@ -806,6 +842,98 @@
       "merged": true,
       "mergedAt": "2026-10-06T17:46:04Z",
       "mergeCommit": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1"
+    }
+  ],
+  "developmentWorkflowHistory": [
+    {
+      "iterationId": "acces-preprod-connect-20261006",
+      "owner": "jpdandin",
+      "candidate": {
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155"
+      },
+      "blockers": [],
+      "targets": {
+        "preproduction": {
+          "id": "connect-preprod.avereo.fr",
+          "ready": true,
+          "isolated": true,
+          "empty": false,
+          "observedAt": "2026-10-06T17:21:03.912007+00:00",
+          "evidence": "cPanel : racine public distincte de connect.avereo.fr ; chemin réel contrôlé ; reçu privé /home/daje3540/private/preprod-access/20261006T172103911203Z"
+        }
+      },
+      "checks": [
+        {
+          "kind": "local",
+          "status": "passed",
+          "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+          "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+          "observedAt": "2026-10-06T17:30:05.252+00:00",
+          "evidence": "14 tests réels Apache/Docker, composition ciblée et refus HTTP vérifiés ; script préparateur contrôlé par SHA-256 sur le serveur."
+        },
+        {
+          "kind": "ci",
+          "status": "passed",
+          "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+          "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+          "observedAt": "2026-10-06T17:30:05.252+00:00",
+          "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37502834488"
+        },
+        {
+          "kind": "documentation",
+          "status": "passed",
+          "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+          "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+          "observedAt": "2026-10-06T17:30:05.252+00:00",
+          "evidence": "8 documents vérifiés ; relevé canonique, liens, métadonnées et candidat privé enregistrés."
+        },
+        {
+          "kind": "hosted_protection",
+          "status": "passed",
+          "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+          "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+          "observedAt": "2026-10-06T17:33:13.331+00:00",
+          "evidence": "Pilote hébergé : HTTPS 401/Basic sans identifiants et avec identifiants incorrects ; HTTP 403 sans challenge. Empreinte active vérifiée dans cPanel après remplacement atomique.",
+          "note": "Aucun contrôle avec bon compte ni parcours métier déclaré réussi."
+        }
+      ],
+      "approvals": [
+        {
+          "scope": "preproduction",
+          "status": "approved",
+          "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+          "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+          "target": "connect-preprod.avereo.fr",
+          "actor": "jpdandin",
+          "source": "user_chat",
+          "recordedAt": "2026-10-06T17:30:05.252+00:00",
+          "evidence": "Réponse directe dans ce chat : Oui, appliquer le pilote CONNECT.",
+          "effect": "Remplacer le bloc IP par Basic avec le compte existant du site et refus HTTP ; recette puis retour arrière si échec."
+        }
+      ],
+      "backups": [
+        {
+          "target": "connect-preprod.avereo.fr",
+          "id": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+          "status": "verified",
+          "restoreStatus": "passed",
+          "observedAt": "2026-10-06T17:21:03.912007+00:00",
+          "evidence": "Copie privée de restauration identique octet par octet à original.htaccess ; SHA-256 5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e"
+        }
+      ],
+      "limitation": "Projection historique du seul pilote CONNECT installé. Elle ne qualifie ni la réparation auth-next-preprod ni les applications ; la recette est bloquée au fournisseur d’identité.",
+      "deployments": [
+        {
+          "target": "connect-preprod.avereo.fr",
+          "environment": "preproduction",
+          "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+          "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+          "status": "applied",
+          "observedAt": "2026-10-06T17:31:40.100824+00:00",
+          "evidence": "/home/daje3540/private/preprod-access/20261006T172103911203Z/deployment-receipt.json"
+        }
+      ]
     }
   ]
 }

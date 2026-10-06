@@ -108,9 +108,9 @@ Statut : `qualified_private_candidate`. Cible : `/home/daje3540/auth-next-prepro
 
 [Contrat Composer natif](identite/README.md) ; [script ciblé](repair_identity.py).
 
-Candidat préparé le `2026-10-06T18:20:45.485335+00:00`.
-Empreinte de l’artefact : `0f019cadd01a17514ee31f3b0e3501390a37b09731a4247958499ccd60f93028`.
-Sauvegarde privée : `/home/daje3540/private/identity-repair/20261006T182031409560Z` ; copie de restauration vérifiée.
+Candidat préparé le `2026-10-06T18:29:28.770515+00:00`.
+Empreinte de l’artefact : `5cb737238ce549d20b8e660837f99941947c0bb0e08910f9f4b513c71929ce39`.
+Sauvegarde privée : `/home/daje3540/private/identity-repair/20261006T182856355876Z` ; copie de restauration vérifiée.
 
 Packages ajoutés (les packages préexistants restent inchangés) :
 
@@ -128,5 +128,5 @@ Packages ajoutés (les packages préexistants restent inchangés) :
 
 ## Source GitHub
 
-[PR #77](https://github.com/jpdandin44/AVEREO/pull/77) — brouillon, observée le `2026-10-06T18:25:00.000Z`.
-SHA source `663878b376275dddee54db54fa03d8ff3b3bab3b`. Aucune validation de phase créée automatiquement.
+[PR #77](https://github.com/jpdandin44/AVEREO/pull/77) — brouillon, observée le `2026-10-06T18:30:51.000Z`.
+SHA source `85a9ed9ba4bebe2b60008b499b9c13a1e7ab2632`. Aucune validation de phase créée automatiquement.
