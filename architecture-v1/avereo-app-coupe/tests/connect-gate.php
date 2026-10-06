@@ -39,6 +39,22 @@ $config = [
     'connect_gate_session_seconds' => 3600,
 ];
 
+foreach (['http://127.0.0.1:8080/', 'http://localhost:8080/', 'https://connect.avereo.localhost/'] as $url) {
+    gate_test_assert(avereo_gate_portal_url_is_allowed($config, $url), 'Le portail local doit etre accepte.');
+}
+foreach (['http://connect.avereo.fr/', 'https://example.com/', 'http://localhost.evil.test/', 'http://user@localhost/'] as $url) {
+    gate_test_assert(!avereo_gate_portal_url_is_allowed($config, $url), 'Une redirection hors boucle locale doit etre refusee.');
+}
+$production = ['environment' => 'production'];
+gate_test_assert(avereo_gate_portal_url_is_allowed($production, 'https://connect.avereo.fr/'), 'HTTPS AVEREO doit rester autorise.');
+gate_test_assert(!avereo_gate_portal_url_is_allowed($production, 'http://connect.avereo.fr/'), 'HTTP doit rester interdit en production.');
+gate_test_assert(!avereo_gate_portal_url_is_allowed($production, 'http://127.0.0.1:8080/'), 'Le portail local ne doit pas etre accepte en production.');
+gate_test_assert(!avereo_gate_portal_url_is_allowed($production, 'https://connect.avereo.fr.evil.test/'), 'Le suffixe AVEREO doit etre exact.');
+gate_test_assert(!avereo_gate_cookie_is_secure($config), 'Le cookie local doit fonctionner en HTTP.');
+gate_test_assert(avereo_gate_cookie_is_secure($production), 'Le cookie de production doit rester Secure.');
+gate_test_assert(avereo_gate_cookie_is_secure([]), 'Sans environnement explicite, le cookie doit rester Secure.');
+gate_test_assert(avereo_gate_cookie_is_secure(['environment' => 'preproduction']), 'Le cookie de preproduction doit rester Secure.');
+
 $nonce = avereo_gate_base64url_encode(random_bytes(24));
 $ticket = gate_test_ticket('coupe', $secret, $nonce);
 avereo_gate_exchange_ticket($config, $ticket);
@@ -116,6 +132,19 @@ try {
     gate_test_assert(
         $exception->getMessage() === 'Ticket expire ou non conforme.',
         'Le code application doit etre lie au ticket.',
+    );
+}
+
+$expiredPayload = avereo_gate_decode_signed($ticket, $secret);
+$expiredPayload['iat'] = time() - 120;
+$expiredPayload['exp'] = time() - 30;
+try {
+    avereo_gate_assert_payload($expiredPayload, 300);
+    throw new RuntimeException('Un ticket expire ne doit pas ouvrir Coupe.');
+} catch (RuntimeException $exception) {
+    gate_test_assert(
+        $exception->getMessage() === 'Ticket expire ou non conforme.',
+        'La date d expiration doit etre controlee.',
     );
 }
 

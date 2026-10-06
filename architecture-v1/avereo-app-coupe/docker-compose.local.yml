@@ -1,0 +1,19 @@
+name: avereo-coupe-local
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: local/Dockerfile.php-apache
+    environment:
+      AVEREO_CONFIG_FILE: /var/www/private/coupe/config.php
+    ports:
+      - "127.0.0.1:8200:80"
+    volumes:
+      - ./frontend/dist:/var/www/html:ro
+      - ./local/config.php:/var/www/private/coupe/config.php:ro
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost/api/health.php"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
