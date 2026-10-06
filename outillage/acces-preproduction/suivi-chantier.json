@@ -1,0 +1,677 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-06",
+  "source_commit": "fbf395b31917ad46565896ae46317e11db0b611e",
+  "objective": "Acces par identifiants aux preproductions ; CONNECT en premier.",
+  "phase": "preproduction",
+  "status": "pilote_connect_applique_recette_en_attente",
+  "server_modified": true,
+  "production_modified": false,
+  "owner_authorization": "Méthode et généralisation demandées dans Cahier des charges AVEREO, reprises ici le 6 octobre. Accord direct reçu pour appliquer le seul pilote CONNECT avec le compte existant du site, refus HTTP, recette et retour arrière en cas d’échec. Aucun accord de merge ou de production.",
+  "cockpit_reference": "outillage/acces-preproduction/suivi-chantier.json",
+  "cockpit_status": "Source canonique raccordée au moteur de revue Projet ; aucune décision automatique.",
+  "blockers": [
+    "Accès avec les bons identifiants à vérifier par le responsable : le navigateur intégré ne propose pas l’invite HTTP Basic (ERR_INVALID_AUTH_CREDENTIALS). Aucun secret demandé dans le chat.",
+    "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+    "Compatibilité OAuth, alias et pérennité au prochain déploiement à qualifier avant généralisation."
+  ],
+  "next_action": "Confirmer l’accès avec le compte de consultation existant dans un navigateur habituel, puis recetter CONNECT/Drupal/Rapport avant généralisation.",
+  "phases": [
+    {
+      "id": 0,
+      "shortTitle": "Cadrage",
+      "title": "Cadrage",
+      "status": "awaiting_review",
+      "objective": "Examiner la décision et le relevé des domaines.",
+      "dependsOn": [],
+      "startedOn": "2026-10-06",
+      "deliveredOn": "2026-10-06",
+      "validatedOn": null,
+      "validationEvidence": null,
+      "deliverables": [
+        {
+          "path": "README.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Méthode et procédure"
+        },
+        {
+          "path": "releve-heberge.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Relevé réel et candidat"
+        }
+      ],
+      "exitCriteria": [
+        "Méthode, périmètre et inconnues examinés."
+      ],
+      "nextAction": "Examiner la décision et le relevé des domaines.",
+      "blockers": []
+    },
+    {
+      "id": 1,
+      "shortTitle": "Développement local",
+      "title": "Développement local",
+      "status": "awaiting_review",
+      "objective": "Examiner la PR #76 et le candidat préparé.",
+      "dependsOn": [],
+      "startedOn": "2026-10-06",
+      "deliveredOn": "2026-10-06",
+      "validatedOn": null,
+      "validationEvidence": null,
+      "deliverables": [
+        {
+          "path": "README.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Méthode et procédure"
+        },
+        {
+          "path": "releve-heberge.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Relevé réel et candidat"
+        }
+      ],
+      "exitCriteria": [
+        "Tests du candidat et sauvegarde vérifiés."
+      ],
+      "nextAction": "Examiner la PR #76 et le candidat préparé.",
+      "blockers": [],
+      "pullRequest": {
+        "repository": "jpdandin44/AVEREO",
+        "number": 76,
+        "state": "open",
+        "headSha": "3559d19603750751d3abbf58f6010e2545a8e50e",
+        "observedAt": "2026-10-06T17:36:20.050+00:00",
+        "url": "https://github.com/jpdandin44/AVEREO/pull/76",
+        "draft": true
+      }
+    },
+    {
+      "id": 2,
+      "shortTitle": "Préproduction",
+      "title": "Préproduction",
+      "status": "in_progress",
+      "objective": "Pilote CONNECT appliqué ; contrôler l’accès autorisé et le parcours applicatif avant généralisation.",
+      "dependsOn": [],
+      "startedOn": "2026-10-06",
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "deliverables": [
+        {
+          "path": "README.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Méthode et procédure"
+        },
+        {
+          "path": "releve-heberge.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Relevé réel et candidat"
+        }
+      ],
+      "exitCriteria": [
+        "Accès anonyme/incorrect refusé, accès autorisé réussi sur HTTPS.",
+        "Connexion, lancement Rapport, sauvegarde et rechargement vérifiés."
+      ],
+      "nextAction": "Confirmer l’accès avec le compte de consultation existant dans un navigateur habituel, puis recetter CONNECT/Drupal/Rapport avant généralisation.",
+      "blockers": [
+        "Accès avec les bons identifiants à vérifier par le responsable : le navigateur intégré ne propose pas l’invite HTTP Basic (ERR_INVALID_AUTH_CREDENTIALS). Aucun secret demandé dans le chat.",
+        "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+        "Compatibilité OAuth, alias et pérennité au prochain déploiement à qualifier avant généralisation."
+      ]
+    },
+    {
+      "id": 3,
+      "shortTitle": "Mise en production",
+      "title": "Mise en production",
+      "status": "not_started",
+      "objective": "Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé.",
+      "dependsOn": [],
+      "startedOn": null,
+      "deliveredOn": null,
+      "validatedOn": null,
+      "validationEvidence": null,
+      "deliverables": [],
+      "exitCriteria": [
+        "Nouvelle autorisation explicite requise."
+      ],
+      "nextAction": "Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé.",
+      "blockers": []
+    }
+  ],
+  "local_evidence": "Voir Validation dans la PR et executions du workflow CI dedie.",
+  "hosted_evidence": [
+    {
+      "kind": "read_only_inventory",
+      "observedAt": "2026-10-06T17:19:21.381+00:00",
+      "evidence": "cPanel : Sous-domaines, fichiers d’accès et configuration des hôtes OAuth sans secrets ; contrôles HTTP/HTTPS sans contenu."
+    }
+  ],
+  "targets": [
+    {
+      "domain": "preprod.avereo.fr",
+      "status": "inventorie_non_bascule",
+      "document_root": "/home/daje3540/preprod.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Basic existant ; challenge aussi sur HTTP, à corriger avant harmonisation.",
+      "observation": {
+        "domain": "preprod.avereo.fr",
+        "https": {
+          "status": 401,
+          "basic_challenge": true,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 401,
+          "redirects_to_same_https": false,
+          "basic_challenge": true
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00"
+    },
+    {
+      "domain": "connect-preprod.avereo.fr",
+      "status": "pilote_applique_recette_en_attente",
+      "document_root": "/home/daje3540/connect-preprod.avereo.fr/public",
+      "backup_receipt": {
+        "target": "/home/daje3540/connect-preprod.avereo.fr/public/.htaccess",
+        "backup_directory": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+        "original_sha256": "5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e",
+        "candidate_sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "original_mode": "0o664",
+        "restore_copy_verified": true,
+        "public_target_written": false,
+        "account_file_written": false,
+        "production_written": false,
+        "account_file": "/home/daje3540/.htpasswds/preprod.avereo.fr/passwd",
+        "prepared_at": "2026-10-06T17:21:03.912007+00:00"
+      },
+      "deployment_receipt": {
+        "target": "/home/daje3540/connect-preprod.avereo.fr/public/.htaccess",
+        "applied_at": "2026-10-06T17:31:40.100824+00:00",
+        "active_sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "previous_sha256": "5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e",
+        "backup_directory": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+        "production_written": false,
+        "account_file_written": false
+      },
+      "acceptance_receipt": {
+        "protection_checks": {
+          "domain": "connect-preprod.avereo.fr",
+          "observedAt": "2026-10-06T17:33:13.331+00:00",
+          "https_anonymous": {
+            "status": 401,
+            "basic_challenge": true,
+            "transport": "ok"
+          },
+          "https_invalid": {
+            "status": 401,
+            "basic_challenge": true,
+            "transport": "ok"
+          },
+          "http_anonymous": {
+            "status": 403,
+            "basic_challenge": false,
+            "transport": "ok"
+          },
+          "protection_checks_passed": true
+        },
+        "authorized_access": "not_verified",
+        "application_journey": "not_verified"
+      },
+      "note": "Bloc IP remplacé par Basic avec le compte existant du site. HTTPS anonyme/incorrect : 401 ; HTTP : 403 sans challenge. Accès avec bons identifiants et recette métier en attente.",
+      "observation": {
+        "domain": "connect-preprod.avereo.fr",
+        "https": {
+          "status": 401,
+          "basic_challenge": true,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 403,
+          "basic_challenge": false,
+          "transport": "ok"
+        }
+      },
+      "observedAt": "2026-10-06T17:33:13.331+00:00",
+      "observation_before": {
+        "domain": "connect-preprod.avereo.fr",
+        "https": {
+          "status": 403,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 403,
+          "redirects_to_same_https": false,
+          "basic_challenge": false
+        }
+      }
+    },
+    {
+      "domain": "rapport-preprod.avereo.fr",
+      "status": "inventorie_non_bascule",
+      "document_root": "/home/daje3540/rapport-preprod.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés.",
+      "observation": {
+        "domain": "rapport-preprod.avereo.fr",
+        "https": {
+          "status": 303,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 303,
+          "redirects_to_same_https": false,
+          "basic_challenge": false
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00"
+    },
+    {
+      "domain": "coupe-preprod.avereo.fr",
+      "status": "inventorie_non_bascule",
+      "document_root": "/home/daje3540/coupe-preprod.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés.",
+      "observation": {
+        "domain": "coupe-preprod.avereo.fr",
+        "https": {
+          "status": 303,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 303,
+          "redirects_to_same_https": false,
+          "basic_challenge": false
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00"
+    },
+    {
+      "domain": "projet-preprod.avereo.fr",
+      "status": "inventorie_non_bascule",
+      "document_root": "/home/daje3540/projet-preprod.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés.",
+      "observation": {
+        "domain": "projet-preprod.avereo.fr",
+        "https": {
+          "status": 303,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 303,
+          "redirects_to_same_https": false,
+          "basic_challenge": false
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00"
+    },
+    {
+      "domain": "thermo-preprod.avereo.fr",
+      "status": "inventorie_non_bascule",
+      "document_root": "/home/daje3540/thermo-preprod.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés.",
+      "observation": {
+        "domain": "thermo-preprod.avereo.fr",
+        "https": {
+          "status": 303,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 303,
+          "redirects_to_same_https": false,
+          "basic_challenge": false
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00"
+    },
+    {
+      "domain": "drone-preprod.avereo.fr",
+      "status": "inventorie_non_bascule",
+      "document_root": "/home/daje3540/drone-preprod.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés.",
+      "observation": {
+        "domain": "drone-preprod.avereo.fr",
+        "https": {
+          "status": 303,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 303,
+          "redirects_to_same_https": false,
+          "basic_challenge": false
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00"
+    },
+    {
+      "domain": "auth-preprod.avereo.fr",
+      "status": "inventorie_non_bascule",
+      "document_root": "/home/daje3540/auth-preprod.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Fournisseur identité ; aucune protection Basic indifférenciée avant qualification OAuth.",
+      "observation": {
+        "domain": "auth-preprod.avereo.fr",
+        "https": {
+          "status": 200,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 200,
+          "redirects_to_same_https": false,
+          "basic_challenge": false
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00"
+    },
+    {
+      "domain": "auth-next-preprod.avereo.fr",
+      "status": "inventorie_non_bascule",
+      "document_root": "/home/daje3540/auth-next-preprod.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Fournisseur identité ; HTTP 500 observé, diagnostic nécessaire.",
+      "observation": {
+        "domain": "auth-next-preprod.avereo.fr",
+        "https": {
+          "status": 500,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 500,
+          "redirects_to_same_https": false,
+          "basic_challenge": false
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00"
+    },
+    {
+      "domain": "passeport-immo-preprod.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "document_root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "status": "inventorie_non_bascule",
+      "observation": {
+        "domain": "passeport-immo-preprod.avereo.fr",
+        "https": {
+          "status": 403,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 403,
+          "redirects_to_same_https": false,
+          "basic_challenge": false
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00",
+      "note": "Fermeture initiale explicite Require all denied ; conserver jusqu’à qualification propre."
+    },
+    {
+      "domain": "preprod-cv.avereo.fr",
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "document_root": "/home/daje3540/cv-preproduction",
+      "status": "inventorie_non_bascule",
+      "observation": {
+        "domain": "preprod-cv.avereo.fr",
+        "https": {
+          "status": 403,
+          "basic_challenge": false,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 301,
+          "redirects_to_same_https": true,
+          "basic_challenge": false
+        }
+      },
+      "observedAt": "2026-10-06T17:19:21.381+00:00",
+      "note": "Préproduction CV fermée ; HTTP redirige vers HTTPS, accès privé à qualifier."
+    }
+  ],
+  "project": "avereo-acces-preproduction",
+  "document_type": "suivi-chantier",
+  "title": "Accès privés aux préproductions AVEREO",
+  "version": "git",
+  "created": "2026-10-06",
+  "updated": "2026-10-06",
+  "owner": "jpdandin",
+  "currentPhase": 2,
+  "state": "in_progress",
+  "statusLabels": {
+    "not_started": "Non commencée",
+    "in_progress": "En cours",
+    "awaiting_review": "À valider",
+    "validated": "Validée",
+    "blocked": "Bloquée"
+  },
+  "scope": "Préproductions AVEREO ; CONNECT pilote, production hors périmètre.",
+  "decisions": [],
+  "history": [
+    {
+      "date": "2026-10-06",
+      "event": "Reprise de la décision du chat Cahier des charges AVEREO ; préparation initiale conservée dans archives/preparation-initiale.json."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Session cPanel lue ; onze cibles inventoriées. Restriction IP de CONNECT confirmée. Aucune configuration publique modifiée."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Candidat privé CONNECT préparé sur le serveur depuis le script versionné a0aa172 ; sauvegarde et copie de restauration vérifiées. Aucun fichier public modifié."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Accord direct du responsable : appliquer le seul pilote CONNECT, candidat 90c1ab2e, puis recetter et restaurer en cas d’échec."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Pilote CONNECT appliqué après accord direct ; remplacement atomique ciblé et empreinte active vérifiée. HTTPS anonyme/incorrect 401 ; HTTP 403 sans challenge. Autres cibles et production inchangées."
+    }
+  ],
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "number": 76,
+    "state": "open",
+    "headSha": "3559d19603750751d3abbf58f6010e2545a8e50e",
+    "observedAt": "2026-10-06T17:36:20.050+00:00",
+    "url": "https://github.com/jpdandin44/AVEREO/pull/76",
+    "draft": true
+  },
+  "checks": [
+    {
+      "kind": "ci",
+      "sourceSha": "121a0d0d576bdea39a423fc5fc981aadfe1cb502",
+      "status": "passed",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37497652175",
+      "observedAt": "2026-10-06T17:19:21.381+00:00",
+      "note": "Archive du candidat initial, 12 tests ; candidat suivant vérifié séparément."
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "observedAt": "2026-10-06T17:21:39.061+00:00",
+      "evidence": "Tests locaux Docker/Apache : 14 tests réussis, aucun saut.",
+      "note": "Apache réel et refus HTTP vérifiés localement ; ces tests ne remplacent pas la recette hébergée."
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "observedAt": "2026-10-06T17:21:39.061+00:00",
+      "evidence": "8 documents contrôlés : front matter, liens locaux et socle racine ; git diff --check réussi.",
+      "note": "Audit global des autres sous-projets hors périmètre."
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+      "observedAt": "2026-10-06T17:24:20.080+00:00",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37502834488",
+      "note": "Tests dédiés réussis sur a0aa172 ; CI générale réussie (37502834464), PR Policy ignorée sur brouillon."
+    },
+    {
+      "kind": "cockpit",
+      "status": "passed",
+      "observedAt": "2026-10-06T17:24:20.080+00:00",
+      "evidence": "http://127.0.0.1:5196/",
+      "note": "Moteur Projet raccordé à cette source canonique ; quatre phases, documents accessibles, zéro problème de lecture ; aucune décision créée."
+    },
+    {
+      "kind": "hosted_protection",
+      "status": "passed",
+      "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+      "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+      "observedAt": "2026-10-06T17:33:13.331+00:00",
+      "evidence": "Pilote hébergé : HTTPS 401/Basic sans identifiants et avec identifiants incorrects ; HTTP 403 sans challenge. Empreinte active vérifiée dans cPanel après remplacement atomique.",
+      "note": "Aucun contrôle avec bon compte ni parcours métier déclaré réussi."
+    }
+  ],
+  "connect_candidate": {
+    "target": "/home/daje3540/connect-preprod.avereo.fr/public/.htaccess",
+    "backup_directory": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+    "original_sha256": "5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e",
+    "candidate_sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+    "original_mode": "0o664",
+    "restore_copy_verified": true,
+    "public_target_written": false,
+    "account_file_written": false,
+    "production_written": false,
+    "account_file": "/home/daje3540/.htpasswds/preprod.avereo.fr/passwd",
+    "prepared_at": "2026-10-06T17:21:03.912007+00:00"
+  },
+  "pilotAuthorization": {
+    "scope": "preproduction",
+    "status": "approved",
+    "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+    "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+    "target": "connect-preprod.avereo.fr",
+    "actor": "jpdandin",
+    "source": "user_chat",
+    "recordedAt": "2026-10-06T17:30:05.252+00:00",
+    "evidence": "Réponse directe dans ce chat : Oui, appliquer le pilote CONNECT.",
+    "effect": "Remplacer le bloc IP par Basic avec le compte existant du site et refus HTTP ; recette puis retour arrière si échec."
+  },
+  "developmentWorkflow": {
+    "iterationId": "acces-preprod-connect-20261006",
+    "owner": "jpdandin",
+    "candidate": {
+      "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+      "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155"
+    },
+    "blockers": [],
+    "targets": {
+      "preproduction": {
+        "id": "connect-preprod.avereo.fr",
+        "ready": true,
+        "isolated": true,
+        "empty": false,
+        "observedAt": "2026-10-06T17:21:03.912007+00:00",
+        "evidence": "cPanel : racine public distincte de connect.avereo.fr ; chemin réel contrôlé ; reçu privé /home/daje3540/private/preprod-access/20261006T172103911203Z"
+      }
+    },
+    "checks": [
+      {
+        "kind": "local",
+        "status": "passed",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "observedAt": "2026-10-06T17:30:05.252+00:00",
+        "evidence": "14 tests réels Apache/Docker, composition ciblée et refus HTTP vérifiés ; script préparateur contrôlé par SHA-256 sur le serveur."
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "observedAt": "2026-10-06T17:30:05.252+00:00",
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37502834488"
+      },
+      {
+        "kind": "documentation",
+        "status": "passed",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "observedAt": "2026-10-06T17:30:05.252+00:00",
+        "evidence": "8 documents vérifiés ; relevé canonique, liens, métadonnées et candidat privé enregistrés."
+      },
+      {
+        "kind": "hosted_protection",
+        "status": "passed",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "observedAt": "2026-10-06T17:33:13.331+00:00",
+        "evidence": "Pilote hébergé : HTTPS 401/Basic sans identifiants et avec identifiants incorrects ; HTTP 403 sans challenge. Empreinte active vérifiée dans cPanel après remplacement atomique.",
+        "note": "Aucun contrôle avec bon compte ni parcours métier déclaré réussi."
+      }
+    ],
+    "approvals": [
+      {
+        "scope": "preproduction",
+        "status": "approved",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "target": "connect-preprod.avereo.fr",
+        "actor": "jpdandin",
+        "source": "user_chat",
+        "recordedAt": "2026-10-06T17:30:05.252+00:00",
+        "evidence": "Réponse directe dans ce chat : Oui, appliquer le pilote CONNECT.",
+        "effect": "Remplacer le bloc IP par Basic avec le compte existant du site et refus HTTP ; recette puis retour arrière si échec."
+      }
+    ],
+    "backups": [
+      {
+        "target": "connect-preprod.avereo.fr",
+        "id": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "observedAt": "2026-10-06T17:21:03.912007+00:00",
+        "evidence": "Copie privée de restauration identique octet par octet à original.htaccess ; SHA-256 5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e"
+      }
+    ],
+    "limitation": "Projection du seul pilote installé ; accès autorisé, recette métier et généralisation ne sont pas déclarés réussis.",
+    "deployments": [
+      {
+        "target": "connect-preprod.avereo.fr",
+        "environment": "preproduction",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "status": "applied",
+        "observedAt": "2026-10-06T17:31:40.100824+00:00",
+        "evidence": "/home/daje3540/private/preprod-access/20261006T172103911203Z/deployment-receipt.json"
+      }
+    ]
+  }
+}

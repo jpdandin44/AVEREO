@@ -1,0 +1,122 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-06",
+  "source_commit": "fbf395b31917ad46565896ae46317e11db0b611e",
+  "objective": "Acces par identifiants aux preproductions ; CONNECT en premier.",
+  "phase": "developpement_local",
+  "status": "preparation_non_deployee",
+  "server_modified": false,
+  "production_modified": false,
+  "owner_authorization": "Methode et PR demandees dans la conversation ; aucun accord de merge/production.",
+  "cockpit_reference": null,
+  "cockpit_status": "Rattachement au cockpit existant a completer ; aucun etat existant reinitialise.",
+  "blockers": [
+    "Aucun outil disponible pour piloter la session cPanel du responsable.",
+    "Racines effectives, regles heritees et restriction du 403 non inspectees.",
+    "Echanges OAuth/Bearer et callbacks a qualifier avant protection des fournisseurs identite."
+  ],
+  "next_action": "Inventaire authentifie cPanel ; sauvegarde privee ; modification ciblee puis recette.",
+  "phases": [
+    {
+      "id": "cadrage",
+      "status": "accord_methode_recu_cibles_a_confirmer"
+    },
+    {
+      "id": "developpement_local",
+      "status": "realise_a_revoir"
+    },
+    {
+      "id": "preproduction",
+      "status": "bloque_acces_operateur"
+    },
+    {
+      "id": "mise_en_production",
+      "status": "hors_perimetre"
+    }
+  ],
+  "local_evidence": "Voir Validation dans la PR et executions du workflow CI dedie.",
+  "hosted_evidence": [],
+  "targets": [
+    {
+      "domain": "preprod.avereo.fr",
+      "status": "a_inventorier",
+      "document_root": null,
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Conserver la protection existante signalee fonctionnelle ; requalification requise."
+    },
+    {
+      "domain": "connect-preprod.avereo.fr",
+      "status": "a_inventorier",
+      "document_root": null,
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Candidat ; existence et configuration hebergee non verifiees."
+    },
+    {
+      "domain": "rapport-preprod.avereo.fr",
+      "status": "a_inventorier",
+      "document_root": null,
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Candidat ; existence et configuration hebergee non verifiees."
+    },
+    {
+      "domain": "coupe-preprod.avereo.fr",
+      "status": "a_inventorier",
+      "document_root": null,
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Candidat ; existence et configuration hebergee non verifiees."
+    },
+    {
+      "domain": "projet-preprod.avereo.fr",
+      "status": "a_inventorier",
+      "document_root": null,
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Candidat ; existence et configuration hebergee non verifiees."
+    },
+    {
+      "domain": "thermo-preprod.avereo.fr",
+      "status": "a_inventorier",
+      "document_root": null,
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Candidat ; existence et configuration hebergee non verifiees."
+    },
+    {
+      "domain": "drone-preprod.avereo.fr",
+      "status": "a_inventorier",
+      "document_root": null,
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Candidat ; existence et configuration hebergee non verifiees."
+    },
+    {
+      "domain": "auth-preprod.avereo.fr",
+      "status": "a_inventorier",
+      "document_root": null,
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Bloque : compatibilite appels serveur a qualifier."
+    },
+    {
+      "domain": "auth-next-preprod.avereo.fr",
+      "status": "a_inventorier",
+      "document_root": null,
+      "backup_receipt": null,
+      "deployment_receipt": null,
+      "acceptance_receipt": null,
+      "note": "Bloque : compatibilite appels serveur a qualifier."
+    }
+  ]
+}

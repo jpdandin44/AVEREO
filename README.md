@@ -5,7 +5,7 @@ title: AVEREO — index du dépôt
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-06
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -111,3 +111,10 @@ Le [socle de développement](outillage/protocole-developpement/README.md) est ve
 et utilisable pour les sites, applications et agents de tous les dépôts du responsable.
 Installer ses skills au niveau utilisateur une seule fois, puis appeler `$dev` ou `DEV :`
 depuis le projet concerné. Chaque projet conserve ses commandes, son suivi et ses accords.
+
+## Accès aux préproductions
+
+Le [lot d’accès privés](outillage/acces-preproduction/README.md) conserve la
+méthode, l’application du pilote CONNECT et les limites de sa recette et de la généralisation.
+Son [suivi canonique](outillage/acces-preproduction/suivi-chantier.json) alimente
+le cockpit. La PR de préparation ne vaut pas bascule ni ouverture.

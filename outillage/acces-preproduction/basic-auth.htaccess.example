@@ -1,0 +1,12 @@
+# MODELE UNIQUEMENT : ne pas publier ce fichier en l'etat.
+# Fusionner ce bloc dans le .htaccess effectif de la SEULE cible de preproduction.
+# Remplacer le chemin par le fichier de comptes existant, hors de tout document root.
+# Ne pas recopier les regles Drupal/CONNECT d'une autre application.
+# HTTPS doit etre impose avant l'authentification sur l'hebergement.
+# BEGIN AVEREO PREPROD BASIC AUTH
+AuthType Basic
+AuthName "AVEREO Preproduction"
+AuthBasicProvider file
+AuthUserFile "__PRIVATE_HTPASSWD_ABSOLUTE_PATH__"
+Require valid-user
+# END AVEREO PREPROD BASIC AUTH

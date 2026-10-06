@@ -5,7 +5,7 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-06
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -20,3 +20,13 @@ Les évolutions historiques des autres applications ne sont pas reconstruites ic
 Ajout du [socle transverse GitHub et cockpit](outillage/protocole-developpement/README.md),
 des skills `dev` et `developpement-github-cockpit`, de leur installateur utilisateur
 et des contrôles ciblés. Les applications et déploiements restent sous leurs lots propres.
+
+## 2026-10-06
+
+Reprise de la PR #76 : inventaire cPanel de onze préproductions, confirmation du
+filtrage IP de CONNECT et préparation privée de son remplacement par Basic sur
+HTTPS. Raccordement du lot au cockpit avec conservation du suivi initial, et
+contrôles d’accès portables sur Windows. Pilote CONNECT appliqué après accord direct,
+avec sauvegarde privée vérifiée, contrôle HTTPS 401/Basic et refus HTTP 403 sans
+challenge. Accès avec le bon compte et recette métier en attente ; aucune modification
+de production. Voir le [relevé](outillage/acces-preproduction/releve-heberge.md).

@@ -5,7 +5,7 @@ title: Exigences du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-06
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -21,3 +21,7 @@ Le [protocole commun](outillage/protocole-developpement/requirements.md) doit ê
 réutilisable hors de ce monorepo, avec un suivi canonique propre à chaque projet
 et les accords humains applicables. Sa disponibilité ne prouve pas l'installation
 d'une CI ou d'une préproduction dans chaque dépôt.
+
+Les [exigences d’accès aux préproductions](outillage/acces-preproduction/README.md#objectif-et-frontières)
+portent sur des comptes de consultation, HTTPS, la conservation des droits
+applicatifs et une recette par environnement. CONNECT est le pilote demandé.
