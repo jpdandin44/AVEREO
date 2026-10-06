@@ -31,3 +31,14 @@ préproductions. Le [lot d’accès](outillage/acces-preproduction/README.md) co
 la méthode et ses contraintes ; le [suivi](outillage/acces-preproduction/suivi-chantier.json)
 conserve les preuves, limites et décisions de bascule. Aucun accord de merge
 ou de production n’est déduit de ce choix.
+
+## 2026-10-06 — Réparation ciblée de l’identité de préproduction
+
+Le responsable a demandé de corriger l’échec de connexion CONNECT. Le diagnostic
+constate un module Simple OAuth présent avec ses bibliothèques absentes. Le
+[contrat de réparation](outillage/acces-preproduction/identite/README.md) conserve
+le verrou hébergé complété, pour rétablir le chargement sans mise à jour globale
+de Drupal, modification de compte ou migration de base. La livraison est bornée
+à `auth-next-preprod`, avec sauvegarde privée et restauration par empreinte.
+Le reste de l’instance doit être rattaché à ses propres sources avant une évolution
+plus large ; aucune validation de phase ni autorisation de merge n’est créée.

@@ -81,15 +81,13 @@
       "blockers": [],
       "pullRequest": {
         "repository": "jpdandin44/AVEREO",
-        "number": 76,
-        "state": "closed",
-        "headSha": "ecdfc330e2e709082268106e99583640b52fa20d",
-        "observedAt": "2026-10-06T17:58:36.522Z",
-        "url": "https://github.com/jpdandin44/AVEREO/pull/76",
-        "draft": false,
-        "merged": true,
-        "mergedAt": "2026-10-06T17:46:04Z",
-        "mergeCommit": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1"
+        "number": 77,
+        "url": "https://github.com/jpdandin44/AVEREO/pull/77",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "headSha": "663878b376275dddee54db54fa03d8ff3b3bab3b",
+        "observedAt": "2026-10-06T18:25:00.000Z"
       }
     },
     {
@@ -522,15 +520,13 @@
   ],
   "github": {
     "repository": "jpdandin44/AVEREO",
-    "number": 76,
-    "state": "closed",
-    "headSha": "ecdfc330e2e709082268106e99583640b52fa20d",
-    "observedAt": "2026-10-06T17:58:36.522Z",
-    "url": "https://github.com/jpdandin44/AVEREO/pull/76",
-    "draft": false,
-    "merged": true,
-    "mergedAt": "2026-10-06T17:46:04Z",
-    "mergeCommit": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1"
+    "number": 77,
+    "url": "https://github.com/jpdandin44/AVEREO/pull/77",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "headSha": "663878b376275dddee54db54fa03d8ff3b3bab3b",
+    "observedAt": "2026-10-06T18:25:00.000Z"
   },
   "checks": [
     {
@@ -747,7 +743,7 @@
       "target": "auth-next-preprod.avereo.fr",
       "effect": "Réparer les dépendances manquantes du serveur d’identité de préproduction, conserver comptes/clés, sauvegarder et recetter."
     },
-    "status": "preparing",
+    "status": "qualified_private_candidate",
     "source_script": "outillage/acces-preproduction/repair_identity.py",
     "local_tests": {
       "observedAt": "2026-10-06T18:16:49.179+00:00",
@@ -758,8 +754,58 @@
     "target_root": "/home/daje3540/auth-next-preprod.avereo.fr",
     "php_version": "8.3.35",
     "composer_version": "2.10.2",
-    "candidate": null,
+    "candidate": {
+      "target": "/home/daje3540/auth-next-preprod.avereo.fr",
+      "folder": "/home/daje3540/private/identity-repair/20261006T182031409560Z",
+      "original_sha256": "10da791af3725c43a379aa9a33fa64d112dac6323c790852185d3b2556c5b780",
+      "artifact_sha256": "0f019cadd01a17514ee31f3b0e3501390a37b09731a4247958499ccd60f93028",
+      "added_packages": {
+        "defuse/php-encryption": "v2.4.0",
+        "lcobucci/jwt": "5.6.0",
+        "league/event": "3.0.3",
+        "league/oauth2-server": "9.4.1",
+        "league/uri": "7.8.1",
+        "league/uri-interfaces": "7.8.1",
+        "paragonie/random_compat": "v9.99.100",
+        "psr/clock": "1.0.0",
+        "psr/http-server-handler": "1.0.2",
+        "psr/http-server-middleware": "1.0.2",
+        "steverhoades/oauth2-openid-connect-server": "v3.0.1"
+      },
+      "backup_restore_copy_verified": true,
+      "autoload_verified": true,
+      "existing_packages_unchanged": true,
+      "composer_scripts_and_plugins_disabled": true,
+      "database_modified": false,
+      "public_target_written": false,
+      "prepared_at": "2026-10-06T18:20:45.485335+00:00",
+      "modes": {
+        "composer.json": 420,
+        "composer.lock": 420,
+        "vendor": 493
+      }
+    },
     "deployment": null,
-    "source_contract_status": "À extraire du candidat privé avant application."
-  }
+    "source_contract_status": "Contrat natif extrait et conservé dans identite/composer.json et composer.lock ; empreintes vérifiées.",
+    "source_script_sha256": "481f2d3627e733bc982ad381f7e7fbc57a3d95628b7c64cf306af3457c52a714",
+    "source_zip_sha256": "78e67524fa0b7a24d28ad0156dde083f501a0a73c1b4e26fe985f9ee1826c9bc",
+    "source_files_sha256": {
+      "composer.json": "fa6bfa24218dc4e215794916798acc3133e15d79a833588619d1b195067dab80",
+      "composer.lock": "2545befaf4c5ad9938b0a9024e9267f45eef941345519a7c4a142be3a969a3ba"
+    }
+  },
+  "github_history": [
+    {
+      "repository": "jpdandin44/AVEREO",
+      "number": 76,
+      "state": "closed",
+      "headSha": "ecdfc330e2e709082268106e99583640b52fa20d",
+      "observedAt": "2026-10-06T17:58:36.522Z",
+      "url": "https://github.com/jpdandin44/AVEREO/pull/76",
+      "draft": false,
+      "merged": true,
+      "mergedAt": "2026-10-06T17:46:04Z",
+      "mergeCommit": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1"
+    }
+  ]
 }

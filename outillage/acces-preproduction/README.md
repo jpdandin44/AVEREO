@@ -274,8 +274,8 @@ OAuth sans identifiant, les protections CONNECT et les journaux d’erreurs, pui
 recetter le parcours avec le compte du responsable. Une absence d’erreur 500 ne
 constitue pas une validation humaine du parcours métier.
 
-Le verrou Composer candidat sera conservé dans le dépôt après extraction du
-paquet de sources sans paramètres privés. Le source de référence de la réparation
+Le [contrat Composer candidat](identite/README.md) est conservé dans le dépôt après extraction du
+paquet de sources sans paramètres privés. La source de référence de la réparation
 est ce lot du monorepo AVEREO ; le dépôt éventuel du reste de l’instance Drupal
 reste à identifier et aucun de ses thèmes ou contenus n’est repris ici.
 

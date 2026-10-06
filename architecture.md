@@ -28,3 +28,9 @@ Le [lot d’accès aux préproductions](outillage/acces-preproduction/README.md)
 définit une couche HTTP de consultation, appliquée au pilote CONNECT et distincte de l’identité Drupal/CONNECT
 et des habilitations métier. Son relevé décrit les racines hébergées observées ;
 aucune surcouche Basic indifférenciée n’est appliquée aux fournisseurs d’identité.
+
+La [réparation ciblée du fournisseur d’identité](outillage/acces-preproduction/identite/README.md)
+conserve le contrat Composer natif de `auth-next-preprod` et le mécanisme de
+livraison/restauration des seules bibliothèques manquantes. Le dépôt du reste de
+l’instance Drupal n’est pas établi ; aucune copie de sa base ou de ses secrets
+n’est intégrée au monorepo.

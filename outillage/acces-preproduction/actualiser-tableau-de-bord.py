@@ -71,7 +71,26 @@ if incident:
         for dependency in incident['missing_dependencies']]
     lines += ['', incident['next_action'], '', incident['constraints'], '',
         incident['source_repository'], '',
-        'Diagnostic en lecture seule ; aucune réparation distante effectuée. Les comptes et secrets sont inchangés.']
+        ('Diagnostic initial en lecture seule ; réparation distante enregistrée ci-dessous.'
+         if incident.get('remote_writes') else 'Diagnostic initial en lecture seule ; aucune réparation publique effectuée.'),
+        'Les comptes et secrets sont inchangés.']
+repair = state.get('identity_repair')
+if repair:
+    lines += ['', '## Réparation du fournisseur d’identité', '',
+        f"Statut : `{repair['status']}`. Cible : `{repair['target_root']}`.", '',
+        '[Contrat Composer natif](identite/README.md) ; [script ciblé](repair_identity.py).', '']
+    candidate = repair.get('candidate')
+    if candidate:
+        lines += [f"Candidat préparé le `{candidate['prepared_at']}`.",
+            f"Empreinte de l’artefact : `{candidate['artifact_sha256']}`.",
+            f"Sauvegarde privée : `{candidate['folder']}` ; copie de restauration vérifiée.", '',
+            'Packages ajoutés (les packages préexistants restent inchangés) :', '']
+        lines += [f"- `{name}` — `{version}`." for name, version in candidate['added_packages'].items()]
+    if repair.get('deployment'):
+        delivery = repair['deployment']
+        lines += ['', f"Appliqué le `{delivery['applied_at']}` ; empreinte active identique au candidat."]
+    if repair.get('acceptance'):
+        lines += ['', repair['acceptance']['summary']]
 github = state['github']
 github_status = 'fusionnée' if github.get('merged') else ('brouillon' if github.get('draft') else github['state'])
 lines += ['', '## Source GitHub', '',

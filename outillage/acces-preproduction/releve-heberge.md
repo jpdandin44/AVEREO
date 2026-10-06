@@ -99,10 +99,34 @@ Préserver comptes, configuration privée, base, clés OAuth et contrôles Basic
 
 Réparation des dépendances versionnée dans jpdandin44/AVEREO, outillage/acces-preproduction ; dépôt du reste de l’instance Drupal non identifié, hors de cette réparation.
 
-Diagnostic en lecture seule ; aucune réparation distante effectuée. Les comptes et secrets sont inchangés.
+Diagnostic initial en lecture seule ; aucune réparation publique effectuée.
+Les comptes et secrets sont inchangés.
+
+## Réparation du fournisseur d’identité
+
+Statut : `qualified_private_candidate`. Cible : `/home/daje3540/auth-next-preprod.avereo.fr`.
+
+[Contrat Composer natif](identite/README.md) ; [script ciblé](repair_identity.py).
+
+Candidat préparé le `2026-10-06T18:20:45.485335+00:00`.
+Empreinte de l’artefact : `0f019cadd01a17514ee31f3b0e3501390a37b09731a4247958499ccd60f93028`.
+Sauvegarde privée : `/home/daje3540/private/identity-repair/20261006T182031409560Z` ; copie de restauration vérifiée.
+
+Packages ajoutés (les packages préexistants restent inchangés) :
+
+- `defuse/php-encryption` — `v2.4.0`.
+- `lcobucci/jwt` — `5.6.0`.
+- `league/event` — `3.0.3`.
+- `league/oauth2-server` — `9.4.1`.
+- `league/uri` — `7.8.1`.
+- `league/uri-interfaces` — `7.8.1`.
+- `paragonie/random_compat` — `v9.99.100`.
+- `psr/clock` — `1.0.0`.
+- `psr/http-server-handler` — `1.0.2`.
+- `psr/http-server-middleware` — `1.0.2`.
+- `steverhoades/oauth2-openid-connect-server` — `v3.0.1`.
 
 ## Source GitHub
 
-[PR #76](https://github.com/jpdandin44/AVEREO/pull/76) — fusionnée, observée le `2026-10-06T17:58:36.522Z`.
-SHA source `ecdfc330e2e709082268106e99583640b52fa20d`. Aucune validation de phase créée automatiquement.
-Fusion enregistrée par GitHub le `2026-10-06T17:46:04Z` ; commit `3d70b530acc236f36ade6c06a553d3c9f7ed07f1`.
+[PR #77](https://github.com/jpdandin44/AVEREO/pull/77) — brouillon, observée le `2026-10-06T18:25:00.000Z`.
+SHA source `663878b376275dddee54db54fa03d8ff3b3bab3b`. Aucune validation de phase créée automatiquement.
