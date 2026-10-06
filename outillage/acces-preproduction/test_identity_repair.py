@@ -10,6 +10,26 @@ import repair_identity as repair
 
 
 class RepairContractTests(unittest.TestCase):
+    def test_original_core_layout_is_accepted(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'core').mkdir()
+            (root / 'vendor/composer').mkdir(parents=True)
+            (root / 'vendor/composer/installed.json').write_text(json.dumps({'packages':[
+                {'name': 'drupal/core', 'install-path': '../../core'}]}))
+            repair.verify_drupal_layout(root)
+
+    def test_core_relocated_by_disabled_installer_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'core').mkdir()
+            (root / 'vendor/composer').mkdir(parents=True)
+            (root / 'vendor/drupal/core').mkdir(parents=True)
+            (root / 'vendor/composer/installed.json').write_text(json.dumps({'packages':[
+                {'name': 'drupal/core', 'install-path': '../drupal/core'}]}))
+            with self.assertRaisesRegex(ValueError, 'Disposition'):
+                repair.verify_drupal_layout(root)
+
     def test_existing_package_changes_are_rejected(self):
         original = {'require': {'drupal/core-recommended': '^11.4'}}
         candidate = {'require': dict(original['require'], **repair.DEPENDENCIES)}

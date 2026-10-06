@@ -260,7 +260,12 @@ un dossier privé une copie des fichiers Composer et de `vendor`, puis ajoute
 les deux dépendances exactes déclarées par le module. Il refuse un changement
 de package déjà verrouillé ou d’un autre champ du manifeste.
 
-Les scripts et plugins Composer sont désactivés. Aucun bootstrap Drupal,
+Les scripts Composer sont désactivés. Seul le plugin `composer/installers`, déjà
+verrouillé sur l’instance, est actif pendant la préparation pour conserver
+l’emplacement `core/` de Drupal ; tous les autres plugins sont désactivés.
+Le cœur est copié en privé, jamais lié à la cible active, et son empreinte reste
+identique. Un cœur déplacé dans `vendor/drupal/core` est refusé ; son chargement
+commun est également testé pour détecter une double déclaration. Aucun bootstrap Drupal,
 commande de base, compte, clé ou configuration privée n’est inclus dans la
 préparation. Le candidat vérifie les exigences PHP et l’autoload des interfaces
 OAuth, OpenID Connect, Drupal et du fournisseur Simple OAuth réellement installé.

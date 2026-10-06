@@ -1,7 +1,8 @@
 """Targeted Composer dependency repair for the qualified identity preproduction.
 
 Preparation stays private. Apply/rollback require the exact receipt and digest.
-No Drupal bootstrap, database command, password, plugin or Composer script runs.
+No Drupal bootstrap, database command, password or Composer script runs.
+Only the already-locked composer/installers plugin preserves Drupal's core path.
 """
 import argparse
 from datetime import datetime, timezone
@@ -82,6 +83,26 @@ def verify_contract(original, candidate, original_lock, candidate_lock):
     return {name: package['version'] for name, package in after.items() if name not in before}
 
 
+def tree_digest(root):
+    h = hashlib.sha256()
+    for path in sorted(root.rglob('*')):
+        if path.is_symlink():
+            raise ValueError('Lien inattendu dans le coeur prive.')
+        if path.is_file():
+            relative = str(path.relative_to(root)).replace(os.sep, '/')
+            h.update(relative.encode('utf-8') + b'\0' + hashlib.sha256(path.read_bytes()).digest())
+    return h.hexdigest()
+
+
+def verify_drupal_layout(candidate):
+    data = json.loads((candidate / 'vendor/composer/installed.json').read_text())
+    packages = data['packages'] if isinstance(data, dict) else data
+    core = next(p for p in packages if p['name'] == 'drupal/core')
+    location = (candidate / 'vendor/composer' / core.get('install-path', '')).resolve()
+    if location != (candidate / 'core').resolve() or (candidate / 'vendor/drupal/core').exists():
+        raise ValueError('Disposition Drupal modifiee ; candidat refuse.')
+
+
 def prepare():
     validate_target()
     if PRIVATE.parent.resolve() != PRIVATE.parent:
@@ -103,8 +124,13 @@ def prepare():
                 shutil.copy2(str(source), str(root / name))
     if digest(backup) != original_digest or digest(candidate) != original_digest:
         raise ValueError('Copie de sauvegarde ou de restauration invalide.')
-    # Read-only autoload context, outside the promoted vendor; plugins/scripts disabled.
-    (candidate / 'core').symlink_to(TARGET / 'core', target_is_directory=True)
+    # The installer must see a real private core, never a link to the active site.
+    core_digest = tree_digest(TARGET / 'core')
+    shutil.copytree(str(TARGET / 'core'), str(candidate / 'core'), symlinks=True)
+    original_manifest = json.loads((backup / 'composer.json').read_text())
+    build_manifest = json.loads(json.dumps(original_manifest))
+    build_manifest.setdefault('config', {})['allow-plugins'] = {'composer/installers': True, '*': False}
+    write_json(candidate / 'composer.json', build_manifest)
     php, composer = shutil.which('php'), shutil.which('composer')
     if not php or not composer:
         raise ValueError('PHP ou Composer absent.')
@@ -112,15 +138,21 @@ def prepare():
     environment['COMPOSER_HOME'] = str(folder / 'composer-home')
     environment['COMPOSER_CACHE_DIR'] = str(folder / 'composer-cache')
     command = [composer, 'require'] + [k + ':' + v for k, v in sorted(DEPENDENCIES.items())]
-    command += ['--update-no-dev', '--no-interaction', '--no-scripts', '--no-plugins', '--no-progress', '--no-audit']
+    command += ['--update-no-dev', '--no-interaction', '--no-scripts', '--no-progress', '--no-audit']
     with (folder / 'build.log').open('wb') as log:
         subprocess.check_call(command, cwd=str(candidate), env=environment, stdout=log, stderr=subprocess.STDOUT)
         subprocess.check_call([composer, '--no-plugins', 'check-platform-reqs', '--no-dev', '--no-interaction'],
             cwd=str(candidate), env=environment, stdout=log, stderr=subprocess.STDOUT)
     (folder / 'build.log').chmod(0o600)
+    completed_manifest = json.loads((candidate / 'composer.json').read_text())
+    completed_manifest['config'] = original_manifest['config']
+    write_json(candidate / 'composer.json', completed_manifest)
     added = verify_contract(json.loads((backup / 'composer.json').read_text()),
         json.loads((candidate / 'composer.json').read_text()),
         json.loads((backup / 'composer.lock').read_text()), json.loads((candidate / 'composer.lock').read_text()))
+    verify_drupal_layout(candidate)
+    if tree_digest(candidate / 'core') != core_digest or tree_digest(TARGET / 'core') != core_digest:
+        raise ValueError('Le coeur Drupal a change ; candidat refuse.')
     code = r'''$loader = require $argv[1] . '/vendor/autoload.php';
 $loader->addPsr4('Drupal\\simple_oauth\\', $argv[2] . '/modules/contrib/simple_oauth/src');
 $loader->addPsr4('Drupal\\user\\', $argv[2] . '/core/modules/user/src');
@@ -128,6 +160,7 @@ if (!interface_exists('OpenIDConnectServer\\Repositories\\IdentityProviderInterf
  || !class_exists('League\\OAuth2\\Server\\AuthorizationServer')
  || !class_exists('Drupal\\Core\\DrupalKernel')) { exit(3); }
 require $argv[2] . '/modules/contrib/simple_oauth/src/OpenIdConnect/UserIdentityProvider.php';
+require_once $argv[1] . '/core/includes/common.inc';
 if (!class_exists('Drupal\\simple_oauth\\OpenIdConnect\\UserIdentityProvider', false)) { exit(4); }
 echo "Autoload OIDC, OAuth, Drupal et fournisseur Simple OAuth : OK\n";'''
     result = subprocess.check_output([php, '-r', code, str(candidate), str(TARGET)], stderr=subprocess.STDOUT)
@@ -136,7 +169,9 @@ echo "Autoload OIDC, OAuth, Drupal et fournisseur Simple OAuth : OK\n";'''
     receipt = {'target': str(TARGET), 'folder': str(folder), 'original_sha256': original_digest,
         'artifact_sha256': digest(candidate), 'added_packages': added,
         'backup_restore_copy_verified': True, 'autoload_verified': True,
-        'existing_packages_unchanged': True, 'composer_scripts_and_plugins_disabled': True,
+        'existing_packages_unchanged': True, 'composer_scripts_disabled': True,
+        'composer_plugins_allowed': ['composer/installers'], 'other_plugins_disabled': True,
+        'drupal_layout_verified': True, 'core_unchanged': True,
         'database_modified': False, 'public_target_written': False,
         'prepared_at': datetime.now(timezone.utc).isoformat(),
         'modes': {name: TARGET.joinpath(name).stat().st_mode & 0o777 for name in PARTS}}
