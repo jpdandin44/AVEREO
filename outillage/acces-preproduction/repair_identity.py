@@ -112,7 +112,7 @@ def prepare():
     environment['COMPOSER_HOME'] = str(folder / 'composer-home')
     environment['COMPOSER_CACHE_DIR'] = str(folder / 'composer-cache')
     command = [composer, 'require'] + [k + ':' + v for k, v in sorted(DEPENDENCIES.items())]
-    command += ['--no-dev', '--no-interaction', '--no-scripts', '--no-plugins', '--no-progress', '--no-audit']
+    command += ['--update-no-dev', '--no-interaction', '--no-scripts', '--no-plugins', '--no-progress', '--no-audit']
     with (folder / 'build.log').open('wb') as log:
         subprocess.check_call(command, cwd=str(candidate), env=environment, stdout=log, stderr=subprocess.STDOUT)
         subprocess.check_call([composer, '--no-plugins', 'check-platform-reqs', '--no-dev', '--no-interaction'],

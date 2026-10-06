@@ -251,8 +251,6 @@ en place ; ce point doit être corrigé pendant son harmonisation. Le périmètr
 CV et Passeport est inventorié mais reste fermé. Les fournisseurs d’identité
 restent à qualifier ; `auth-next-preprod` répond actuellement 500.
 
-## Consultation dans le cockpit
-
 ## Réparation des dépendances du fournisseur d’identité
 
 Le responsable a demandé le 6 octobre de réaliser la réparation diagnostiquée.
