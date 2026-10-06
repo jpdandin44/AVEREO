@@ -87,5 +87,69 @@
         "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37129083308"
       }
     ]
+  },
+  "fourPhaseUpdate": {
+    "recordedAt": "2026-10-04T18:03:11.473774Z",
+    "status": "tested_locally",
+    "phaseModelSha256": "30ea8ec0ab9903c5b49bf2c7a0dcddb35b54c35102d777a3417fae3a3ab2e137",
+    "checks": [
+      "Quatorze tests Python réussis sur données fictives, dont conservation des preuves approuvées après projection.",
+      "Skill validé à la source installée.",
+      "Moteur de cockpit qualifié avec quatre phases ; décision testée uniquement dans une copie temporaire et suivi réel inchangé.",
+      "Trente-deux documents et soixante-six liens locaux contrôlés, sans erreur."
+    ],
+    "pythonTests": 14,
+    "pythonPassed": 14,
+    "cockpitCompatibilityPassed": true,
+    "liveHumanDecisionsModified": false,
+    "documentation": {
+      "markdownFiles": 32,
+      "localLinks": 66,
+      "errors": []
+    },
+    "githubCiObserved": true,
+    "humanApprovalRecorded": false,
+    "preproductionDelivered": false,
+    "productionDelivered": false,
+    "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/75",
+    "sourceCommit": "eb45089346a51680e182d827fb7225c8557e1d0a",
+    "pullRequestObservedAt": "2026-10-04T18:27:45.730186+00:00",
+    "githubObservation": {
+      "observedAt": "2026-10-04T18:37:05.621663+00:00",
+      "headSha": "26ec09d6369c88ef754c35f150f3d359d44d0838",
+      "runs": [
+        {
+          "conclusion": "skipped",
+          "databaseId": 37224606038,
+          "name": "PR Policy",
+          "status": "completed",
+          "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37224606038"
+        },
+        {
+          "conclusion": "success",
+          "databaseId": 37224606054,
+          "name": "Developpement commun",
+          "status": "completed",
+          "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37224606054"
+        },
+        {
+          "conclusion": "success",
+          "databaseId": 37224606037,
+          "name": "CI",
+          "status": "completed",
+          "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37224606037"
+        }
+      ],
+      "humanApprovalRecorded": false,
+      "laterReceiptCommitsNotTestedByTheseRuns": true
+    }
+  },
+  "creationMergeObservation": {
+    "observedAt": "2026-10-04T18:03:11.473774Z",
+    "url": "https://github.com/jpdandin44/AVEREO/pull/73",
+    "status": "merged",
+    "mergedAt": "2026-10-03T16:15:30Z",
+    "mergeCommit": "f14bfc97b8f15a06cb4010f493240c5362fc5242",
+    "scope": "Création historique du socle ; ne vaut pas approbation de la règle nouvelle."
   }
 }

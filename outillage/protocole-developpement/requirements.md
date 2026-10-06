@@ -5,14 +5,14 @@ title: Exigences du protocole commun
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-04
 owner: jpdandin
 tags: [developpement, github, cockpit]
 ---
 
 # Exigences
 
-- Trois étapes communes avec boucles de correction : local, préproduction et production ; ensuite préparer une nouvelle itération.
+- Quatre phases communes : Cadrage, Développement local, Préproduction, Mise en production ; tâches détaillées à l’intérieur des phases, puis nouvelle itération. Préserver les décisions historiques et les libellés obligatoires lors du regroupement.
 - Un lot et une PR par périmètre cohérent ; préserver les autres applications et les travaux existants.
 - Cockpit : état réel, responsable, prochaine action, blocages, budget, candidat, PR, tests, décisions, sauvegarde, restauration et retour arrière.
 - Relier les preuves à un candidat exact et à leur environnement ; une nouvelle version exige les contrôles concernés à nouveau.

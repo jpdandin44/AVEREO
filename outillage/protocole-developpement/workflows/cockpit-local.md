@@ -5,7 +5,7 @@ title: Raccordement du protocole au cockpit local
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-04
 owner: jpdandin
 tags: [developpement, github, cockpit]
 ---
@@ -17,7 +17,7 @@ qualifié, `.local/cockpit-local.json` peut préciser le checkout du moteur, ses
 et le port ; ce fichier privé est ignoré par Git. Le lanceur et le test de raccordement
 résolvent les chemins relatifs depuis la racine du socle.
 
-Ce socle réutilise le moteur de revue Projet existant pour afficher les trois phases de [son suivi](../docs/pilotage/suivi-chantier.json). La cible définitive du cockpit reste à préciser par le responsable. Les suivis des sites et applications restent inchangés.
+Ce socle réutilise le moteur de revue Projet existant pour afficher les quatre phases de [son suivi](../docs/pilotage/suivi-chantier.json). Les trois anciennes étapes sont conservées en instantané avec leur mapping. La cible définitive du cockpit reste à préciser par le responsable. Le lot de simplification ne modifie pas les applications Passeport et Projet.
 
 La [configuration](../data/cockpit-local.json) indique le chemin local du moteur et le port explicite 5194. Vérifier ce chemin sur une autre machine. Le moteur doit disposer de ses dépendances Node.js existantes.
 

@@ -5,7 +5,7 @@ title: Architecture du protocole commun
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-04
 owner: jpdandin
 tags: [developpement, github, cockpit]
 ---
@@ -14,7 +14,7 @@ tags: [developpement, github, cockpit]
 
 Le skill décrit le cycle. Son protocole Markdown constitue l'unique source humaine du processus ; la fiche JSON contient les faits d'une itération. Le contrôleur vérifie la cohérence des preuves déclarées et des passages. GitHub porte branches, PR, commits et exécutions réelles. Le cockpit présente le suivi canonique, les décisions et les liens de preuve.
 
-Le modèle conserve le suivi existant : ajouter ou mapper un bloc `developmentWorkflow` plutôt que créer un second journal concurrent. Le moteur de revue local AVEREO peut afficher trois phases et enregistrer les décisions humaines sous verrou. Les opérations de déploiement restent effectuées par les outils autorisés de chaque projet ; le cockpit de revue n'en exécute aucune.
+Le modèle conserve le suivi existant : ajouter ou mapper un bloc `developmentWorkflow` plutôt que créer un second journal concurrent. Le modèle commun définit quatre phases ; le moteur de revue local AVEREO les présente depuis le suivi canonique et enregistrer les décisions humaines sous verrou. Les opérations de déploiement restent effectuées par les outils autorisés de chaque projet ; le cockpit de revue n'en exécute aucune.
 
 La copie installée est un lien de dossier vers le skill de ce socle ; aucun texte concurrent n'est maintenu. Secrets et données sensibles restent dans les stockages privés des projets. Le présent socle contient uniquement instructions, modèles et tests fictifs.
 
