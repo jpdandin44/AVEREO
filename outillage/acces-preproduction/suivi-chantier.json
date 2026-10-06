@@ -1006,6 +1006,17 @@
         "title": "Cockpit local du chantier",
         "url": "http://127.0.0.1:5196/"
       }
+    },
+    "review_link_verification": {
+      "observed_at": "2026-10-06T18:58:08.585+00:00",
+      "source": "https://github.com/jpdandin44/AVEREO/pull/77",
+      "clicked_link": "l'application en local",
+      "destination": "https://connect-preprod.avereo.fr/",
+      "browser_result": "ERR_INVALID_AUTH_CREDENTIALS",
+      "anonymous_https_status": 401,
+      "www_authenticate": "Basic realm=\"AVEREO Preproduction\"",
+      "authenticated_journey_verified": false,
+      "summary": "Lien de la première case cliqué depuis la PR #77 : destination CONNECT préproduction confirmée. Contrôle HTTPS indépendant : 401 avec challenge Basic attendu. Le navigateur intégré bloque à l’authentification avec ERR_INVALID_AUTH_CREDENTIALS ; le parcours après connexion n’est pas vérifié par ce contrôle."
     }
   },
   "github_history": [

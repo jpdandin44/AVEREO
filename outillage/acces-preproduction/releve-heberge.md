@@ -34,6 +34,10 @@ Recetter avec le compte du responsable sur connect-preprod.avereo.fr, puis quali
 - Suivi du chantier : [Cockpit local du chantier](http://127.0.0.1:5196/). Il affiche les phases et les preuves ; il ne teste pas la connexion applicative.
 - Tests locaux du correctif : [procédure de validation](README.md#validation-locale). Aucune interface locale du fournisseur d’identité n’est fournie.
 
+Contrôle du lien le `2026-10-06T18:58:08.585+00:00` :
+
+Lien de la première case cliqué depuis la PR #77 : destination CONNECT préproduction confirmée. Contrôle HTTPS indépendant : 401 avec challenge Basic attendu. Le navigateur intégré bloque à l’authentification avec ERR_INVALID_AUTH_CREDENTIALS ; le parcours après connexion n’est pas vérifié par ce contrôle.
+
 ## Domaines vérifiés
 
 Racines relevées dans cPanel le 6 octobre 2026, sous `/home/daje3540`.

@@ -47,6 +47,9 @@ encore à recetter ; aucune livraison de production ni modification de compte.
 
 Clarification des liens de revue de la PR #77 : accès de recette CONNECT,
 fournisseur d’identité, tests locaux du correctif et cockpit de suivi distingués.
-Le lien erroné du cockpit dans la case des tests locaux est remplacé par la
-procédure de validation ; un accès direct à la recette hébergée est ajouté.
-Les serveurs et validations humaines sont inchangés.
+Une première correction de la case de test pointait vers la procédure de
+validation ; elle est corrigée pour ouvrir directement CONNECT préproduction.
+Le lien a été cliqué depuis la PR : destination CONNECT confirmée, protection
+HTTPS 401 Basic contrôlée. Le navigateur intégré bloque sur l’authentification ;
+le parcours avec le compte du responsable reste à recetter. Le suivi conserve
+ce contrôle et sa limite. Les serveurs et validations humaines sont inchangés.

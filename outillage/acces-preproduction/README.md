@@ -21,6 +21,11 @@ l’environnement de recette de CONNECT ni du fournisseur d’identité.
 Ce lot fournit des tests locaux automatisés de réparation ; aucune interface
 locale du fournisseur d’identité n’est fournie.
 
+Dans la PR #77, le lien de la première case de test ouvre directement CONNECT
+préproduction. Le libellé obligatoire du modèle « en local » est conservé ; la
+cible de recette de ce lot est hébergée. La procédure des tests automatisés est
+un lien distinct. Le relevé indique le contrôle de navigation et ses limites.
+
 **Pilote CONNECT et réparation de l’identité appliqués ; recette avec le compte du responsable à faire.** L'accord du responsable
 porte sur le remplacement du filtrage IP de consultation par une protection HTTP
 par identifiants, CONNECT d'abord, puis les autres préproductions. Il autorise une

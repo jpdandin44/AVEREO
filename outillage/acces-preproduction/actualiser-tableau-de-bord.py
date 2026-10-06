@@ -32,6 +32,9 @@ if review_links:
         f"- Fournisseur d’identité concerné : [{review_links['identity']['title']}]({review_links['identity']['url']}). Le parcours CONNECT y redirige automatiquement.",
         f"- Suivi du chantier : [{review_links['cockpit']['title']}]({review_links['cockpit']['url']}). Il affiche les phases et les preuves ; il ne teste pas la connexion applicative.",
         '- Tests locaux du correctif : [procédure de validation](README.md#validation-locale). Aucune interface locale du fournisseur d’identité n’est fournie.']
+    verification = state['identity_repair'].get('review_link_verification')
+    if verification:
+        lines += ['', f"Contrôle du lien le `{verification['observed_at']}` :", '', verification['summary']]
 lines += ['', '## Domaines vérifiés', '',
     'Racines relevées dans cPanel le 6 octobre 2026, sous `/home/daje3540`.',
     'Contrôles sans identifiants, sans suivi des redirections, sans corps ni cookies.', '',
