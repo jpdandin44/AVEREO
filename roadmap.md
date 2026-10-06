@@ -29,3 +29,10 @@ La réparation technique de `auth-next-preprod` est appliquée ; la prochaine
 étape du pilote est la recette avec le compte du responsable et le lancement
 des applications, avant généralisation. Les preuves et limites restent dans
 le suivi canonique du lot.
+
+La prochaine qualification couvre les huit applications avant production :
+ensemble local construit depuis une même référence, comparaison des versions et
+configurations hébergées, puis livraisons de recette qualifiées par cible.
+Les preuves, réserves et prochaines actions par application restent dans
+[le relevé dérivé](outillage/acces-preproduction/releve-heberge.md#alignement-des-applications).
+Aucun passage de phase ni remplacement applicatif n’est déduit des tests locaux.

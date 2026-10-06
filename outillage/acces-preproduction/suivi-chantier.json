@@ -2,9 +2,9 @@
   "schema_version": 1,
   "date": "2026-10-06",
   "source_commit": "fbf395b31917ad46565896ae46317e11db0b611e",
-  "objective": "Acces par identifiants aux preproductions ; CONNECT en premier.",
+  "objective": "Accès privés CONNECT et cohérence des huit applications de préproduction avant production.",
   "phase": "preproduction",
-  "status": "pilote_connect_et_identite_appliques_recette_metier_en_attente",
+  "status": "verification_multi_applications_en_cours",
   "server_modified": true,
   "production_modified": false,
   "owner_authorization": "Méthode et généralisation demandées dans Cahier des charges AVEREO, reprises ici le 6 octobre. Accord direct reçu pour appliquer le seul pilote CONNECT avec le compte existant du site, refus HTTP, recette et retour arrière en cas d’échec. Aucun accord de merge ou de production.",
@@ -13,9 +13,15 @@
   "blockers": [
     "Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
     "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.",
-    "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo."
+    "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.",
+    "Lecture cPanel interrompue : empreintes, racines réelles, configurations privées, catalogue actif et versions SQL de toutes les applications non qualifiés.",
+    "Recherche : adresse attendue non résolue ; cible réelle et dépendance GED à établir.",
+    "Passeport Immo : préproduction fermée ; aucun lancement CONNECT implémenté dans la référence retenue.",
+    "Coupe : PR #54 ouverte ; changements hors de main à examiner séparément avant inclusion.",
+    "Sauvegarde et restauration de chaque cible applicative non préparées ; aucun remplacement autorisable sur cette seule preuve locale.",
+    "Parcours métier authentifiés, stockage, retour au portail et droits/revocation à recetter sur les versions effectivement livrées."
   ],
-  "next_action": "Recetter avec le compte du responsable sur connect-preprod.avereo.fr, puis qualifier les applications et examiner la PR #77 avant toute généralisation.",
+  "next_action": "Terminer la comparaison cPanel des huit applications avec les candidats issus de la même référence ; préparer sauvegardes/restauration et recette avant remplacement. Recherche et Passeport Immo restent à qualifier séparément.",
   "phases": [
     {
       "id": 0,
@@ -71,6 +77,12 @@
           "kind": "file",
           "availability": "present",
           "title": "Relevé réel et candidat"
+        },
+        {
+          "path": "archives/alignement-applications.json",
+          "kind": "file",
+          "availability": "present",
+          "title": "Versions communes, contrôles et candidats des huit applications"
         }
       ],
       "exitCriteria": [
@@ -94,7 +106,7 @@
       "shortTitle": "Préproduction",
       "title": "Préproduction",
       "status": "in_progress",
-      "objective": "Pilote CONNECT et réparation technique de l’identité livrés ; recette métier avec le responsable à faire.",
+      "objective": "Accès CONNECT rétabli ; qualification des versions et du parcours des huit applications en cours.",
       "dependsOn": [],
       "startedOn": "2026-10-06",
       "deliveredOn": null,
@@ -124,11 +136,17 @@
         "Accès anonyme/incorrect refusé, accès autorisé réussi sur HTTPS.",
         "Connexion, lancement Rapport, sauvegarde et rechargement vérifiés."
       ],
-      "nextAction": "Recetter avec le compte du responsable sur connect-preprod.avereo.fr, puis qualifier les applications et examiner la PR #77 avant toute généralisation.",
+      "nextAction": "Terminer la comparaison cPanel des huit applications avec les candidats issus de la même référence ; préparer sauvegardes/restauration et recette avant remplacement. Recherche et Passeport Immo restent à qualifier séparément.",
       "blockers": [
         "Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
         "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.",
-        "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo."
+        "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.",
+        "Lecture cPanel interrompue : empreintes, racines réelles, configurations privées, catalogue actif et versions SQL de toutes les applications non qualifiés.",
+        "Recherche : adresse attendue non résolue ; cible réelle et dépendance GED à établir.",
+        "Passeport Immo : préproduction fermée ; aucun lancement CONNECT implémenté dans la référence retenue.",
+        "Coupe : PR #54 ouverte ; changements hors de main à examiner séparément avant inclusion.",
+        "Sauvegarde et restauration de chaque cible applicative non préparées ; aucun remplacement autorisable sur cette seule preuve locale.",
+        "Parcours métier authentifiés, stockage, retour au portail et droits/revocation à recetter sur les versions effectivement livrées."
       ]
     },
     {
@@ -1019,6 +1037,31 @@
       "summary": "Lien de la première case cliqué depuis la PR #77 : destination CONNECT préproduction confirmée. Contrôle HTTPS indépendant : 401 avec challenge Basic attendu. Le navigateur intégré bloque à l’authentification avec ERR_INVALID_AUTH_CREDENTIALS ; le parcours après connexion n’est pas vérifié par ce contrôle."
     }
   },
+  "rapport_version_diagnostic": {
+    "observed_at": "2026-10-06T19:04:57.261+00:00",
+    "status": "ancienne_version_hebergee",
+    "user_report": "Le responsable confirme que l’accès fonctionne désormais, puis signale que Rapport ne présente pas la nouvelle version limitée à Expertise et Habitologie. Cette confirmation ne vaut pas validation complète des sauvegardes, exports, droits ou autres applications.",
+    "connect_launch_url": "https://rapport-preprod.avereo.fr/connect/entry.php",
+    "connect_configuration_observed": "/home/daje3540/private/connect/config.php",
+    "target_root": "/home/daje3540/rapport-preprod.avereo.fr",
+    "hosted_index_modified_at": "2026-08-03T20:07:28+00:00",
+    "hosted_script_url": "https://rapport-preprod.avereo.fr/assets/index-C7slbMpC.js",
+    "hosted_script_sha256": "786a6d8c32bfc26c0b2d16f24a634ba774107c12d30d2a3a445305e0f9705360",
+    "hosted_script_http_status": 200,
+    "hosted_visite_globale_present": false,
+    "source_repository": "jpdandin44/AVEREO",
+    "source_ref": "main",
+    "classification_path": "architecture-v1/avereo-app-rapport/frontend/src/reportClassification.js",
+    "classification_git_blob_sha": "72344607c1f67f1b5feb1e35fc195e22f09e8cd8",
+    "selectable_categories": [
+      "Expertise & Visite technique",
+      "Visite Globale"
+    ],
+    "merged_pull_request": "https://github.com/jpdandin44/AVEREO/pull/61",
+    "merged_at": "2026-09-14T19:56:55Z",
+    "summary": "CONNECT vise le bon sous-domaine Rapport préproduction. Son index hébergé date du 3 août et charge un ancien bundle sans Visite Globale ; l’empreinte relevée sur le serveur correspond au fichier servi en HTTPS. Le catalogue courant de main propose exactement Expertise & Visite technique et Visite Globale (parcours Habitologie), déjà intégrés via la PR #61 fusionnée le 14 septembre. La réparation de connexion n’a pas livré cette version de Rapport.",
+    "next_action": "Préparer et qualifier le build courant de Rapport pour ce seul sous-domaine, préserver le sas CONNECT, la configuration privée et les données, puis effectuer sa livraison de préproduction avec sauvegarde et recette. Aucun déploiement supplémentaire effectué lors de ce diagnostic."
+  },
   "github_history": [
     {
       "repository": "jpdandin44/AVEREO",
@@ -1124,5 +1167,252 @@
         }
       ]
     }
-  ]
+  ],
+  "application_alignment": {
+    "status": "local_candidates_verified_hosted_alignment_not_qualified",
+    "observed_at": "2026-10-06T19:35:06.261+00:00",
+    "requested_scope": "Vérifier et aligner toutes les applications avant la mise en production.",
+    "source_reference": "origin/main",
+    "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+    "evidence_path": "archives/alignement-applications.json",
+    "candidate_directory": ".local/alignement",
+    "ensemble_artifact_sha256": "bd0b8e40ba55982a04e876b6753112a2d356c528d840fa62ad9b9c5283c79d75",
+    "report_selectable_types": [
+      "Expertise & Visite technique",
+      "Visite Globale (Habitologie)"
+    ],
+    "report_legacy_data_preserved": true,
+    "applications": [
+      {
+        "app": "connect",
+        "domain": "connect-preprod.avereo.fr",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifact_sha256": "16437493fb7e49a0fbe2fa79e3cd47d1514280f8582923bbf86e4233664795ba",
+        "archive": ".local/alignement/connect.zip",
+        "file_count": 38,
+        "local_status": "passed",
+        "local_evidence": "37 tests du backend, pont Drupal et six contrats de lancement réussis.",
+        "https_status": 401,
+        "http_status": 403,
+        "entry_without_ticket_status": null,
+        "hosted_status": "not_qualified",
+        "hosted_observation": "Version du code hébergé à comparer ; couche HTTPS 401 Basic et HTTP 403 vérifiée.",
+        "authenticated_journey_verified": false,
+        "private_configuration_verified": false,
+        "next_action": "Conserver la surcouche Basic active ; qualifier configuration privée et versions SQL avant tout remplacement."
+      },
+      {
+        "app": "rapport",
+        "domain": "rapport-preprod.avereo.fr",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifact_sha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+        "archive": ".local/alignement/rapport.zip",
+        "file_count": 14,
+        "local_status": "passed",
+        "local_evidence": "55 tests et build avec synchronisation en ligne activée.",
+        "https_status": 303,
+        "http_status": 303,
+        "entry_without_ticket_status": 403,
+        "hosted_status": "not_qualified",
+        "hosted_observation": "Ancien bundle confirmé lors du diagnostic précédent ; nouvelle version non livrée.",
+        "authenticated_journey_verified": false,
+        "private_configuration_verified": false,
+        "next_action": "Livrer le candidat à deux types après inventaire, sauvegarde/restauration et accord applicable ; recetter sauvegarde et réouverture."
+      },
+      {
+        "app": "coupe",
+        "domain": "coupe-preprod.avereo.fr",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifact_sha256": "03393eb8488f4ac233b66f1b3c00fdc4a06ffee8aa11641414ddd35581a79215",
+        "archive": ".local/alignement/coupe.zip",
+        "file_count": 15,
+        "local_status": "passed",
+        "local_evidence": "Build et sas PHP réussis ; contrat avec le vrai émetteur CONNECT réussi.",
+        "https_status": 303,
+        "http_status": 303,
+        "entry_without_ticket_status": 403,
+        "hosted_status": "not_qualified",
+        "hosted_observation": "Version hébergée à comparer ; PR #54 encore ouverte, exclue du candidat main.",
+        "authenticated_journey_verified": false,
+        "private_configuration_verified": false,
+        "next_action": "Comparer au candidat main et examiner séparément la PR #54 avant de retenir ses évolutions ; qualifier le stockage existant sans nouvelle activation."
+      },
+      {
+        "app": "projet",
+        "domain": "projet-preprod.avereo.fr",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifact_sha256": "47498878254b5ddfda205c32afd51287c14e1dd266bcbc42baf9d9e5e4823acc",
+        "archive": ".local/alignement/projet.zip",
+        "file_count": 12,
+        "local_status": "passed",
+        "local_evidence": "144 tests, planning cohérent et build ; 12 fichiers, aucune donnée/API de revue locale dans la livraison.",
+        "https_status": 303,
+        "http_status": 303,
+        "entry_without_ticket_status": 403,
+        "hosted_status": "not_qualified",
+        "hosted_observation": "Version hébergée à comparer ; entrée sans ticket refusée.",
+        "authenticated_journey_verified": false,
+        "private_configuration_verified": false,
+        "next_action": "Comparer l’interface métier au candidat ; conserver le cockpit local hors de l’artefact hébergé."
+      },
+      {
+        "app": "thermo",
+        "domain": "thermo-preprod.avereo.fr",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifact_sha256": "5637e275c09be123c2a56bfb3498f407384400e8fbff58ae718514ce4e05cf04",
+        "archive": ".local/alignement/thermo.zip",
+        "file_count": 8,
+        "local_status": "passed",
+        "local_evidence": "Build et contrat réel CONNECT réussis ; pas de suite métier dédiée dans le package.",
+        "https_status": 303,
+        "http_status": 303,
+        "entry_without_ticket_status": 403,
+        "hosted_status": "not_qualified",
+        "hosted_observation": "Version hébergée à comparer ; entrée sans ticket refusée.",
+        "authenticated_journey_verified": false,
+        "private_configuration_verified": false,
+        "next_action": "Comparer au candidat et recetter le métier avec données fictives autorisées."
+      },
+      {
+        "app": "drone",
+        "domain": "drone-preprod.avereo.fr",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifact_sha256": "e5a50c81a73a0dbca5893ac43760d28d3e34a2d6d630519d7fae556de6381b59",
+        "archive": ".local/alignement/drone.zip",
+        "file_count": 8,
+        "local_status": "passed",
+        "local_evidence": "Build et contrat réel CONNECT réussis ; pas de suite métier dédiée dans le package.",
+        "https_status": 303,
+        "http_status": 303,
+        "entry_without_ticket_status": 403,
+        "hosted_status": "not_qualified",
+        "hosted_observation": "Version hébergée à comparer ; entrée sans ticket refusée.",
+        "authenticated_journey_verified": false,
+        "private_configuration_verified": false,
+        "next_action": "Comparer au candidat et recetter le métier avec données fictives autorisées."
+      },
+      {
+        "app": "recherche",
+        "domain": "recherche-preprod.avereo.fr",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifact_sha256": "3c1d1c5d56c56fd9bbd953e3a3ea8fdc13a387ab48e5bc182c05b9949f78b6a4",
+        "archive": ".local/alignement/recherche.zip",
+        "file_count": 8,
+        "local_status": "passed",
+        "local_evidence": "23 tests, build et contrat réel CONNECT réussis.",
+        "https_status": null,
+        "http_status": null,
+        "entry_without_ticket_status": null,
+        "hosted_status": "not_qualified",
+        "hosted_observation": "Adresse de recette attendue non résolue depuis ce poste ; déclaration cPanel non vérifiée.",
+        "authenticated_journey_verified": false,
+        "private_configuration_verified": false,
+        "next_action": "Identifier une cible de recette réelle et vérifier GED, catalogue et configuration privée ; aucune cible créée ni habilitation accordée."
+      },
+      {
+        "app": "passeport-immo",
+        "domain": "passeport-immo-preprod.avereo.fr",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifact_sha256": "1dc4fa4c8a8eac6c76a3b46abe29bd41e23311875a180c8b14cc5ca66372ae64",
+        "archive": ".local/alignement/passeport-immo.zip",
+        "file_count": 6,
+        "local_status": "passed",
+        "local_evidence": "14 tests, build, parité source et six tests de préparation fermée réussis.",
+        "https_status": 403,
+        "http_status": 403,
+        "entry_without_ticket_status": null,
+        "hosted_status": "not_qualified",
+        "hosted_observation": "Préproduction fermée : HTTPS et HTTP 403 ; pas de contrat de lancement dans CONNECT courant.",
+        "authenticated_journey_verified": false,
+        "private_configuration_verified": false,
+        "next_action": "Conserver la fermeture ; qualifier son candidat et définir séparément l’intégration CONNECT avant toute ouverture."
+      }
+    ],
+    "pending_source_change": {
+      "repository": "jpdandin44/AVEREO",
+      "number": 54,
+      "url": "https://github.com/jpdandin44/AVEREO/pull/54",
+      "state": "open",
+      "merged": false,
+      "head_sha": "5e1293b49b591d1092fb3a383d90b31ba05715a4",
+      "included_in_candidate": false,
+      "scope": "Coupe locale réelle : sas/configuration locale, déconnexion et interface historique ; pas une livraison automatique."
+    },
+    "dependencies": {
+      "identity": "Réparation technique ciblée appliquée et accès confirmé par le responsable ; dépôt de l’instance complète encore inconnu.",
+      "private_configuration": "Les chargeurs applicatifs peuvent utiliser le repli de configuration sans suffixe préproduction ; une configuration dédiée et la séparation des bases doivent être constatées.",
+      "coupe_health": "Le healthcheck Coupe appelle api_ensure_schema lorsque la base est configurée. Il n’a pas été sollicité pour cet audit en lecture seule."
+    },
+    "blockers": [
+      "Lecture cPanel interrompue : empreintes, racines réelles, configurations privées, catalogue actif et versions SQL de toutes les applications non qualifiés.",
+      "Recherche : adresse attendue non résolue ; cible réelle et dépendance GED à établir.",
+      "Passeport Immo : préproduction fermée ; aucun lancement CONNECT implémenté dans la référence retenue.",
+      "Coupe : PR #54 ouverte ; changements hors de main à examiner séparément avant inclusion.",
+      "Sauvegarde et restauration de chaque cible applicative non préparées ; aucun remplacement autorisable sur cette seule preuve locale.",
+      "Parcours métier authentifiés, stockage, retour au portail et droits/revocation à recetter sur les versions effectivement livrées."
+    ],
+    "application_deployment_performed": false,
+    "production_modified": false,
+    "workflow": {
+      "iterationId": "alignement-applications-preprod-20261006",
+      "owner": "jpdandin",
+      "stage": "developpement_local",
+      "status": "awaiting_host_inventory",
+      "candidate": {
+        "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifactSha256": "bd0b8e40ba55982a04e876b6753112a2d356c528d840fa62ad9b9c5283c79d75"
+      },
+      "targets": {
+        "preproduction": {
+          "id": "ensemble-des-huit-applications",
+          "ready": false,
+          "isolated": false,
+          "empty": false,
+          "evidence": "Les contrôles anonymes sont enregistrés ; inventaire privé et isolation actualisée non qualifiés.",
+          "observedAt": "2026-10-06T19:35:06.261+00:00"
+        },
+        "production": {
+          "id": null,
+          "ready": false
+        }
+      },
+      "checks": [
+        {
+          "kind": "local",
+          "status": "passed",
+          "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+          "artifactSha256": "bd0b8e40ba55982a04e876b6753112a2d356c528d840fa62ad9b9c5283c79d75",
+          "observedAt": "2026-10-06T19:35:06.261+00:00",
+          "evidence": "archives/alignement-applications.json : sept builds, suites métier et contrats réels de lancement réussis."
+        },
+        {
+          "kind": "documentation",
+          "status": "passed",
+          "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+          "artifactSha256": "bd0b8e40ba55982a04e876b6753112a2d356c528d840fa62ad9b9c5283c79d75",
+          "observedAt": "2026-10-06T19:39:34.403+00:00",
+          "evidence": "Socle racine présent ; 9 documents et 57 liens locaux vérifiés, métadonnées exactes ; inventaire de 8 archives vérifié et générateur idempotent ; décisions et validations préservées."
+        }
+      ],
+      "approvals": [],
+      "backups": [],
+      "blockers": [
+        "Lecture cPanel interrompue : empreintes, racines réelles, configurations privées, catalogue actif et versions SQL de toutes les applications non qualifiés.",
+        "Recherche : adresse attendue non résolue ; cible réelle et dépendance GED à établir.",
+        "Passeport Immo : préproduction fermée ; aucun lancement CONNECT implémenté dans la référence retenue.",
+        "Coupe : PR #54 ouverte ; changements hors de main à examiner séparément avant inclusion.",
+        "Sauvegarde et restauration de chaque cible applicative non préparées ; aucun remplacement autorisable sur cette seule preuve locale.",
+        "Parcours métier authentifiés, stockage, retour au portail et droits/revocation à recetter sur les versions effectivement livrées."
+      ],
+      "rollback": {
+        "status": "not_tested"
+      },
+      "nextAction": "Terminer le relevé cPanel, qualifier le contenu de chaque cible et préparer ses sauvegardes avant livraison de recette."
+    },
+    "gate_result": {
+      "gate": "preproduction",
+      "allowed": false,
+      "reason": "Inventaire privé, cibles isolées, récupération, recette et accord exact non qualifiés ; preuve CI des archives locales absente."
+    }
+  }
 }

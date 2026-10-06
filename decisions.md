@@ -42,3 +42,20 @@ de Drupal, modification de compte ou migration de base. La livraison est bornée
 à `auth-next-preprod`, avec sauvegarde privée et restauration par empreinte.
 Le reste de l’instance doit être rattaché à ses propres sources avant une évolution
 plus large ; aucune validation de phase ni autorisation de merge n’est créée.
+
+## 2026-10-06 — Cohérence de l’ensemble applicatif avant production
+
+**Contexte :** après rétablissement de la connexion, Rapport ouvre une version
+hébergée antérieure aux évolutions intégrées. Le responsable demande de vérifier
+toutes les applications et leur cohérence avant la mise en production.
+
+**Décision de préparation :** qualifier les applications du monorepo depuis une
+même référence intégrée, identifier leurs archives et tester les contrats réels
+de lancement. Traiter explicitement les changements encore en PR, les applications
+fermées et les cibles non établies ; ne pas les considérer comme livrées.
+
+**Raisons et conséquences :** comparer des versions identifiées et conserver les
+droits/données existants. Les preuves locales et hébergées restent distinctes dans
+[le suivi](outillage/acces-preproduction/suivi-chantier.json). Les configurations,
+sauvegardes et recettes par cible restent nécessaires avant tout remplacement.
+Cette préparation ne crée pas d’accord de merge, de production ou d’ouverture.

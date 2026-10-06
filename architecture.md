@@ -34,3 +34,11 @@ conserve le contrat Composer natif de `auth-next-preprod` et le mécanisme de
 livraison/restauration des seules bibliothèques manquantes. Le dépôt du reste de
 l’instance Drupal n’est pas établi ; aucune copie de sa base ou de ses secrets
 n’est intégrée au monorepo.
+
+La qualification des versions applicatives relie une référence Git commune aux
+archives locales, à leur inventaire d’empreintes et aux observations hébergées.
+Le [suivi canonique](outillage/acces-preproduction/suivi-chantier.json) porte l’état
+par application ; le relevé Markdown en est dérivé. Les tests transversaux utilisent
+l’émetteur CONNECT réel et les sas récepteurs. L’identité Drupal conserve sa source
+et son candidat distincts ; une compilation commune ne prouve pas la configuration
+des serveurs, le catalogue actif ou l’isolation des bases.

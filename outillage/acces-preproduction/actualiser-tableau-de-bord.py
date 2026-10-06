@@ -101,6 +101,44 @@ if repair:
         lines += ['', f"Appliqué le `{delivery['applied_at']}` ; empreinte active identique au candidat."]
     if repair.get('acceptance'):
         lines += ['', repair['acceptance']['summary']]
+rapport_version = state.get('rapport_version_diagnostic')
+if rapport_version:
+    lines += ['', '## Version Rapport en préproduction', '',
+        f"Diagnostic du `{rapport_version['observed_at']}` : `{rapport_version['status']}`.", '',
+        rapport_version['user_report'], '', rapport_version['summary'], '',
+        f"- Lancement configuré : `{rapport_version['connect_launch_url']}`.",
+        f"- Bundle hébergé : `{rapport_version['hosted_script_url']}`.",
+        f"- SHA-256 hébergé : `{rapport_version['hosted_script_sha256']}`.",
+        f"- Catalogue de `main` : blob Git `{rapport_version['classification_git_blob_sha']}`.",
+        f"- Évolution intégrée : [PR #61]({rapport_version['merged_pull_request']}) ; fusion le `{rapport_version['merged_at']}`.", '',
+        rapport_version['next_action']]
+
+alignment = state.get('application_alignment')
+if alignment:
+    lines += ['', '## Alignement des applications', '',
+        f"Contrôle du `{alignment['observed_at']}` ; statut `{alignment['status']}`.", '',
+        f"Référence commune des huit candidats : `{alignment['source_sha']}` (`{alignment['source_reference']}`).",
+        f"Ensemble local : `{alignment['candidate_directory']}/ensemble-candidats.zip` ; SHA-256 `{alignment['ensemble_artifact_sha256']}`.",
+        f"[Inventaire des fichiers, builds et observations HTTP]({alignment['evidence_path']}).",
+        'Les archives sont des candidats locaux. Aucune application n’a été remplacée par ces archives et aucune recette authentifiée n’est déclarée réussie.', '',
+        '| Application | Contrôles locaux | HTTPS / HTTP anonymes | Version et état hébergés |',
+        '| --- | --- | --- | --- |']
+    for app in alignment['applications']:
+        https = app['https_status'] if app['https_status'] is not None else 'Indisponible'
+        http = app['http_status'] if app['http_status'] is not None else 'Indisponible'
+        lines.append(f"| {app['app']} | {app['local_evidence']} | {https} / {http} | {app['hosted_observation']} |")
+    lines += ['', 'Deux choix de création Rapport : ' + ', '.join(alignment['report_selectable_types']) + '.',
+        'Les anciens types restent lisibles ; aucune donnée de rapport hébergée n’a été modifiée.', '',
+        '### Corrections et qualifications par cible', '']
+    lines += [f"- **{app['app']}** : {app['next_action']}" for app in alignment['applications']]
+    lines += ['', '### Dépendances et limites', '']
+    lines += ['- ' + item for item in alignment['dependencies'].values()]
+    lines += ['', 'Le contrôle de passage multi-applications reste bloqué :', '']
+    lines += ['- ' + item for item in alignment['blockers']]
+    lines += ['', 'Les décisions historiques du pilote et de la réparation d’identité conservent leur portée.',
+        'Les candidats applicatifs ne possèdent encore ni accord de remplacement enregistré ni sauvegarde/restauration qualifiée.',
+        'Les workflows de production restent manuels ; le merge et l’ouverture publique sont des décisions distinctes.']
+
 github = state['github']
 github_status = 'fusionnée' if github.get('merged') else ('brouillon' if github.get('draft') else github['state'])
 lines += ['', '## Source GitHub', '',

@@ -57,6 +57,46 @@ perte ni nouvelle validation. Protocole applicable :
 
 ## Objectif et frontières
 
+La qualification couvre aussi la cohérence des huit applications du monorepo.
+Le [relevé dérivé](releve-heberge.md#alignement-des-applications) présente les
+candidats d’une même référence, les contrôles réalisés et les limites hébergées.
+Le bloc `application_alignment` du suivi reste la source canonique ; son reçu JSON
+conserve l’inventaire des fichiers et les observations datées. Un sas qui renvoie
+vers CONNECT ne prouve ni la version de l’interface ni le fonctionnement du stockage.
+
+### Préparer un ensemble de versions vérifiables
+
+Construire les frontends dans un checkout propre de la référence retenue, avec
+les commandes et les modes documentés par chaque application. Conserver les
+preuves de compilation et de test avant de préparer les archives. Le script
+ci-dessous inventorie des builds **déjà construits** : il ne certifie pas à lui
+seul leur provenance ni leurs variables de compilation. Il contrôle la référence
+Git, la propreté des fichiers suivis, les fichiers privés/liens symboliques et
+l’intégrité des archives ; il n’accède à aucun compte et ne déploie rien.
+
+```powershell
+python prepare_application_candidates.py --source CHEMIN_CHECKOUT_PROPRE `
+  --expected-sha SHA_GIT_COMPLET --output .local/alignement --observe-http
+```
+
+L’option HTTP observe uniquement les huit adresses de recette attendues, sans
+identifiant, cookie ni suivi de redirection. Une adresse attendue n’est pas une
+preuve de domaine déclaré. Les configurations et empreintes hébergées doivent
+être relevées dans la session d’exploitation avant toute qualification complète.
+Les archives de référence ne remplacent pas les règles d’accès hébergées : préparer
+la surcouche de protection, la sauvegarde et la restauration de chaque cible.
+Passeport Immo reçoit toujours son fragment `Require all denied` ; aucune entrée
+CONNECT ou habilitation n’est créée par l’outillage.
+
+Le test `test_launch_contract.php` utilise le véritable émetteur de CONNECT et
+les sas récepteurs avec un compte fictif, un secret synthétique et des nonces
+éphémères. Il contrôle l’échange, l’identité lorsqu’elle est utilisée, l’anti-rejeu,
+la signature, l’application, l’expiration et le refus anonyme. La suite Python
+l’exécute pour les six applications disposant d’un lancement CONNECT. La CI
+installe explicitement PHP et Apache ; aucun serveur distant n’est sollicité.
+
+### Périmètre de consultation
+
 Autoriser un testeur depuis ses différents réseaux, sans liste de son IP publique,
 en conservant la connexion Drupal/CONNECT et les droits métier. Comptes de
 consultation individuels et distincts des comptes cPanel, Drupal et SQL. Même

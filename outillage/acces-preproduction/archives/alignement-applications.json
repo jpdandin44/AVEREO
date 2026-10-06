@@ -1,0 +1,957 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-10-06T19:35:06.261+00:00",
+  "candidate_manifest": {
+    "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+    "prepared_at": "2026-10-06T19:32:31.862+00:00",
+    "applications": [
+      {
+        "app": "connect",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "archive": "connect.zip",
+        "artifact_sha256": "16437493fb7e49a0fbe2fa79e3cd47d1514280f8582923bbf86e4233664795ba",
+        "build_mode": "prebuilt",
+        "build_environment_verified_by_tool": false,
+        "hosted_access_overlay_required": true,
+        "deployment_authorized": false,
+        "files": {
+          "bin/approve-pending-user.php": {
+            "sha256": "aa5a8299ebc9f06e94c2ba9294f38e0b0f361ee8214817d302219b7aae868f8c",
+            "sha256_lf": "36ecd3008f27ead61dda2cce76d0530d1784d3e78d48508e7562fe83de8fa9c4",
+            "bytes": 13268
+          },
+          "bin/manage-catalog.php": {
+            "sha256": "655de1f7624f8e9a897c5d4104d0aa18c5e1c30d0f6c31878bf6af8881159d8f",
+            "sha256_lf": "83a4d178e55ef69053c7fc5ce73d3aa7ad59efefc5bceddf7163c7ab3592acf4",
+            "bytes": 9838
+          },
+          "bin/migrate.php": {
+            "sha256": "c1fa775e62438f95722c78e3d166cb0496d65ade2a4adc1c2722d6c04c143d0a",
+            "sha256_lf": "b274e0d599981124f480fa0bf78b9a48ee33eeea434c44fae7dd3c0d8fcc10ee",
+            "bytes": 6132
+          },
+          "database/README.md": {
+            "sha256": "0be8dcf5dd9000971604b4128ad96d87f36dfb7468acc1a123044153e1597f89",
+            "sha256_lf": "47d84f116a6f8ed826783f7a61543b108fea0f486087bc9bba29b29e0118fc8e",
+            "bytes": 955
+          },
+          "database/migrations/20260721120000_core.down.sql": {
+            "sha256": "2ad0c0d4cf89930357c9d50aa05c4955d7fefb8e52f0e499f9c51af5c102c1c2",
+            "sha256_lf": "56ef208cb7c938e54ef4d9415ae97177bbb8b73a2b3b48cba7a2575c5143aaa1",
+            "bytes": 314
+          },
+          "database/migrations/20260721120000_core.up.sql": {
+            "sha256": "a4aebd55700fd3b6a2fafa2dadac13fb56c369e1e9908df208533c703adf5555",
+            "sha256_lf": "b7aeda3440878268449f527895d6fcd2a8ee1bf02250029d3be795cac155aa64",
+            "bytes": 6629
+          },
+          "database/migrations/20260729120000_pending_identities.down.sql": {
+            "sha256": "69e82d1a4fc32865b708839694fb66baecd8c89527b56fbcf00b4e531fafef71",
+            "sha256_lf": "404aa7a8edf9485980c210e432a2e57305dd4aa6c3100c17cae8039c917c85e2",
+            "bytes": 42
+          },
+          "database/migrations/20260729120000_pending_identities.up.sql": {
+            "sha256": "7ecc26ef23a0804fbf7faf8978416e6161a18018049e5b4427451f5ff22f4bca",
+            "sha256_lf": "a351f4121bffb695481aad72333017f59b49750451c2694f8fd410bace80c1d5",
+            "bytes": 1062
+          },
+          "database/migrations/20260730120000_catalog_metadata.down.sql": {
+            "sha256": "bb1f8b4165a2413d622a794f9d63cea923847eb42ad0a4ae8d72cca8ec523830",
+            "sha256_lf": "cc01c431c41d0037959a48e92339bb7acc1e5d23ea204c0cbd0b89a685965de4",
+            "bytes": 124
+          },
+          "database/migrations/20260730120000_catalog_metadata.up.sql": {
+            "sha256": "83b94277e16d1f0795bafd871cf4116683ffbc1f350f4f2f45444870560b8a0e",
+            "sha256_lf": "8c88d0f8f74d5807a6652d939db99171b36d120844199766858d9bc422c5413e",
+            "bytes": 332
+          },
+          "database/migrations/20260803160000_user_application_access.down.sql": {
+            "sha256": "dd38ed5d5cea4a74834837c312d2790cb95e555a6b7b50a15613d09b781d7ba5",
+            "sha256_lf": "030c1dddf02ba436288ad202b4512c5cd5607eff730c63b45e427562475bfa47",
+            "bytes": 37
+          },
+          "database/migrations/20260803160000_user_application_access.up.sql": {
+            "sha256": "01e09a1b2e6b05698e4d55c5eea40289aebfc3372b8d96922ab2a6ffdbc474ef",
+            "sha256_lf": "d0276def20a8bd470f448ff8bc4586e723b1c89440d88ecb7637f2df45822e73",
+            "bytes": 1323
+          },
+          "database/migrations/20260804140000_account_activation_status.down.sql": {
+            "sha256": "5dbe71275cc320cdfe131a220ce4139fb5af5f8b4a234df482a9f47139ab00a1",
+            "sha256_lf": "6e82e140e166dd94dc0de546a1523bd4d6a789fe8ed3cf1fa589635371e41f18",
+            "bytes": 142
+          },
+          "database/migrations/20260804140000_account_activation_status.up.sql": {
+            "sha256": "21ef0dc96dfb7e509e9af66d1df579b120c3a78c706492b483e06451cdb3a770",
+            "sha256_lf": "e94b5878eb77c14416e98d53a143fffd50ba25490bf77f21d8afb17890902e6c",
+            "bytes": 410
+          },
+          "database/seeds/README.md": {
+            "sha256": "be61c79626331f55d929979c7dde515c160062c41db1c7ae84d18708f6d9be7d",
+            "sha256_lf": "4bc868b3ab87c854bac00b8646ab07a065337126e44442702591b5c177aa2377",
+            "bytes": 198
+          },
+          "public/.htaccess": {
+            "sha256": "29eb6d6c8c3e1ea8dce4a3737eef62216e320b1486521dded7449f2c9393d37a",
+            "sha256_lf": "e032606b41bea6480ad7fe1d06756068766751c171108998ac782118ff9af8ba",
+            "bytes": 673
+          },
+          "public/index.html": {
+            "sha256": "e0c87e4b5ccd01efc0d6cf7d9f72727c2e7c9512c2638cb3ffe7353ba4d8120c",
+            "sha256_lf": "cdcf2f8154b8acf2cd4448fed88c880cf6e0ad74a93f431bab2e63c583ae8b62",
+            "bytes": 38281
+          },
+          "public/index.php": {
+            "sha256": "376a877e3f3b2c34418f52afbdb8fa8382c89486b9bfc28c490a9801b9e60a73",
+            "sha256_lf": "d85296be5c0489678cfdf74948b5368bb6b4358c41ebb40c7d09fd2880bc3e33",
+            "bytes": 7444
+          },
+          "src/Application.php": {
+            "sha256": "b36281ad7c21bb0c94648f5fd0d24aa22be02853ba1242ac0b5dc736c799a37e",
+            "sha256_lf": "cb966e44847e0c22eebf29797a9a3e7cdc5a1657d5a14c656eee50bdcdd6ff13",
+            "bytes": 24478
+          },
+          "src/Config.php": {
+            "sha256": "ecc8ad6619ce9e026ddd67ee1aed85b498b53ec9c6676941bd0e42793b14f341",
+            "sha256_lf": "2eecc89ee4f4735f91229f62d92c233f94c59284527dabc7c22e455f3fc38859",
+            "bytes": 8215
+          },
+          "src/Database.php": {
+            "sha256": "83fd5b43c4c3fcda380e1afceeaf3020bf4a9f8f6c125764d9d0a33b46af9f8f",
+            "sha256_lf": "7d6c20e5da28cf8aa12a8ddcf942776e458d04015382de1a295b3288d5dd933a",
+            "bytes": 857
+          },
+          "src/Http/ApiException.php": {
+            "sha256": "d9625e977272088c3994913bd6e2141382f56b9aa4ebda5a38f25c1bae678bbf",
+            "sha256_lf": "90d290744dbadb522ef5f934fe359c0ed48456463a36687f71dd36d8797f8bef",
+            "bytes": 422
+          },
+          "src/Http/Request.php": {
+            "sha256": "e9343a95fc5ea91884bfbdcb5f725f39c3f28c8c6a38ef61a93450d1cbdbe69a",
+            "sha256_lf": "fd12c57402115c0e98fbfbed58d1c430ad25a340fa577a94adb5bf20b219e871",
+            "bytes": 2558
+          },
+          "src/Http/Response.php": {
+            "sha256": "649d7e47d333992ead5bbc38954de186ff99c4755ab5bc4fdf1174581f6a2533",
+            "sha256_lf": "bfffbd001c981e6ecb5ac81ecfe56895fcb188c95f95851c5d711291f0cab452",
+            "bytes": 2038
+          },
+          "src/Identity/AccountActivationNotifier.php": {
+            "sha256": "b1ddd1d13a6f8a6f7ce2f985d41d2279b80ec850bf551115c256d9ef2a69c38f",
+            "sha256_lf": "d4e11448eefd9d67084fe04b4dcc4dc7259f76cbe5e13d39fb57d763dcf15191",
+            "bytes": 368
+          },
+          "src/Identity/IdentityAccountActivationClient.php": {
+            "sha256": "8156f336fb925677688d6cddca70e4e77ac09865fc92ff9fcfe71be7874feb0d",
+            "sha256_lf": "d20f840182a029f360c341dcdaf10846f02645aeb58995cb4216fd0e023cc06b",
+            "bytes": 5028
+          },
+          "src/Identity/OAuthFlow.php": {
+            "sha256": "d42800e8a480e27df07a6f1253d255f9a6712a587f4bb218415b864a941142ba",
+            "sha256_lf": "74397735649aa5a5ed9fe6006320547d0a941676bfd66c0b9d16179f2f3fb518",
+            "bytes": 12686
+          },
+          "src/Repository/ConnectRepository.php": {
+            "sha256": "691977d3a7af1fb97e526ac148faf29f25a49a050b42ed582a532329da72c087",
+            "sha256_lf": "039002f696e5bd58bcf57e8ffc7801eb14a24ec94aa9ff92391502cb31a48d0e",
+            "bytes": 3043
+          },
+          "src/Repository/PdoConnectRepository.php": {
+            "sha256": "f22442f89d9f3cf592b6c6ca94c015d8089fdd872f00efa27e4611013be94978",
+            "sha256_lf": "02496b5326d0aa5ef50120e5441fd0a9cec2d7913bda7debd7aafb60ae8250b6",
+            "bytes": 42771
+          },
+          "src/Repository/UnavailableRepository.php": {
+            "sha256": "498d0fdd84db764989ac9f29d3de8307d39f8dc403b24d5e275b8e8efdb30d6d",
+            "sha256_lf": "d11d4ad8dea7e515b888fe3733bc1b2589e6aeb021174026b69c3d81db030524",
+            "bytes": 3502
+          },
+          "src/Security/AppLaunchTicketIssuer.php": {
+            "sha256": "c1aa66023115f00e208e20aca67d835909351f2ba4fed51e8691515d57baf724",
+            "sha256_lf": "496e7a4b1986b1a382d409f69044a39dedabcbb97e6c3d251e2991768fbfef47",
+            "bytes": 3381
+          },
+          "src/Security/AuthContext.php": {
+            "sha256": "411e06463976670e366e22e8e513c18d4317ff8ec83cde15c686a2012655e133",
+            "sha256_lf": "36c03694f9e213d3eec79a698d0ee2837bd1d1e0c699321eee8d08a50e237c3a",
+            "bytes": 571
+          },
+          "src/Security/CsrfGuard.php": {
+            "sha256": "b129138cddb360ab8153fe9ca8834ddd3e99860b8994935fec05da375edbc42e",
+            "sha256_lf": "5a29163b2ce0b9776b28bc01c978e637a00dc09786deccd68b24c0d026977648",
+            "bytes": 553
+          },
+          "src/Security/IdentityAccountActivationCompletionVerifier.php": {
+            "sha256": "94b9e7f26ef4842049577445fb9918fb9c05807172cd67e34a147068bdbf84a7",
+            "sha256_lf": "1e5f57148e13e1e7026fc9c1dd5202d29adf3dc2ae254203c2d770f4966e0a67",
+            "bytes": 1977
+          },
+          "src/Security/IdentityLogoutUrlSigner.php": {
+            "sha256": "18138f5873ed7f89f15fbef65aec2f7b758aaa83e587eb73f40084e62ac71758",
+            "sha256_lf": "34bd016da305a3b3b01483cd31ed00692f315cb37dfb177de23f49e64a0d99ec",
+            "bytes": 2310
+          },
+          "src/Security/OAuthTransactionStore.php": {
+            "sha256": "f883a650707662011ff2806f7f932da572d04db83b80fd85729ef5fd1269e429",
+            "sha256_lf": "4faffc491e659cbe6e77e1bf677ca066688572a3256df58a43aee0d41ddb589f",
+            "bytes": 6934
+          },
+          "src/Security/SessionManager.php": {
+            "sha256": "70b96266bd97fd7bd05871ae981851205eda21a588d54c045324bdaa58f2537b",
+            "sha256_lf": "0a1a35489c83d9ebc1d97846f9bf199101c400840d0aa04a2d0a503a0fae3217",
+            "bytes": 7071
+          },
+          "src/autoload.php": {
+            "sha256": "d4467dbb5b1f8cd43f0b2408cb91bb58b88b0cc6afe08731d759d397c6d0ef3b",
+            "sha256_lf": "c4ac262267475820afa0291fb4a4938b170e503d0a7e7987804aec0117ea5b84",
+            "bytes": 426
+          }
+        }
+      },
+      {
+        "app": "rapport",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "archive": "rapport.zip",
+        "artifact_sha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+        "build_mode": "prebuilt",
+        "build_environment_verified_by_tool": false,
+        "hosted_access_overlay_required": true,
+        "deployment_authorized": false,
+        "files": {
+          ".htaccess": {
+            "sha256": "99fcc6d270cec6b80626ad20e32e53d8081aa23d6a5309747a79377859ce98a9",
+            "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+            "bytes": 565
+          },
+          "api/.htaccess": {
+            "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+            "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+            "bytes": 128
+          },
+          "api/auth.php": {
+            "sha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+            "sha256_lf": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+            "bytes": 4164
+          },
+          "api/bootstrap.php": {
+            "sha256": "8222a3c159d7d133996af0773ce8e2092b8b56959757e5923c48e55ce0510cf7",
+            "sha256_lf": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+            "bytes": 26411
+          },
+          "api/health.php": {
+            "sha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+            "sha256_lf": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+            "bytes": 1043
+          },
+          "api/reports.php": {
+            "sha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+            "sha256_lf": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+            "bytes": 11303
+          },
+          "assets/index-BnYLeEcL.css": {
+            "sha256": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+            "sha256_lf": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+            "bytes": 45291
+          },
+          "assets/index-CKpXCVG6.js": {
+            "sha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+            "sha256_lf": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+            "bytes": 417207
+          },
+          "auth/callback/index.html": {
+            "sha256": "d07c523f9d7bb258204112132a52f4a4226a895141eab551d069f53ba4f6487c",
+            "sha256_lf": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+            "bytes": 272
+          },
+          "connect/entry.php": {
+            "sha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+            "sha256_lf": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+            "bytes": 588
+          },
+          "connect/gate.php": {
+            "sha256": "afc167d128d0baf62ade6259de4ed821a71f88b2bd75f171f5a5d4d5d058dce4",
+            "sha256_lf": "3c2fb628f06ce56129943545f8502538fc94af6f589eb946b942358944d019d5",
+            "bytes": 11844
+          },
+          "connect/logout.php": {
+            "sha256": "06a85d72831268291e0ac0eae1ac6c1c4da3ee8d8993728ffd20adc4ad41b3fa",
+            "sha256_lf": "9aabc1a587ddf0fa22658f41ba0c1075147a5d3bae507c7600e0d49b155fe045",
+            "bytes": 478
+          },
+          "index.html": {
+            "sha256": "7f16b8093cdb743728ac118a0508f5f1c969535d94594fc6abdfdb3efcc601be",
+            "sha256_lf": "cfa09b3ae6c0b3078d72ff738a0703bc28bb70f3b5dc400813e7a1e7d7d49760",
+            "bytes": 415
+          },
+          "index.php": {
+            "sha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+            "sha256_lf": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+            "bytes": 977
+          }
+        }
+      },
+      {
+        "app": "coupe",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "archive": "coupe.zip",
+        "artifact_sha256": "03393eb8488f4ac233b66f1b3c00fdc4a06ffee8aa11641414ddd35581a79215",
+        "build_mode": "prebuilt",
+        "build_environment_verified_by_tool": false,
+        "hosted_access_overlay_required": true,
+        "deployment_authorized": false,
+        "files": {
+          ".htaccess": {
+            "sha256": "a1a811c7ba94e800a6bb9f9400ec4804c518ebe6cfc27004ad66b5d29b9b2eaf",
+            "sha256_lf": "0dd46004c98cb4257bffa32a0b26b3253b8cae105d2472b74e3a95a4c43a9c58",
+            "bytes": 678
+          },
+          "api/.htaccess": {
+            "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+            "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+            "bytes": 128
+          },
+          "api/auth.php": {
+            "sha256": "1b5f9b95049dde0dc04932bf92282a92e3d615774a59810036fb998016166c43",
+            "sha256_lf": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+            "bytes": 3700
+          },
+          "api/bootstrap.php": {
+            "sha256": "415e30719addcee710c64411e15aaa96a07f32ed83896068a86c6f37adeb52be",
+            "sha256_lf": "a1efdce51c1ce5e6ef521bceec7013998e347ef9f1c09a4a71f51eb6bc6d8b9b",
+            "bytes": 24723
+          },
+          "api/health.php": {
+            "sha256": "493b8f83aa7450080e9448df15b877d59f43d09b537928972779863b7f683e00",
+            "sha256_lf": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+            "bytes": 1015
+          },
+          "api/projects.php": {
+            "sha256": "9bde8e49cac15479e897b309f30db694a700ce7720b986a275d7838f65dcdc87",
+            "sha256_lf": "ecb28010b59d8c541f76ddae2913df693926681c1be7b1c6b4e6700349026d9d",
+            "bytes": 7193
+          },
+          "assets/index-BEJu3O3V.js": {
+            "sha256": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+            "sha256_lf": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+            "bytes": 142823
+          },
+          "auth/callback/index.html": {
+            "sha256": "f61bb957dbb321b657c0c6aadd5b902eab7bfc0495c4b82a856485ef757e7015",
+            "sha256_lf": "1f520c1c0e0e94bc0ea3bcf0546791ade87b52042f2ba2c7b5f06f67b73c88f9",
+            "bytes": 287
+          },
+          "connect/content.php": {
+            "sha256": "b72df5639d67062c0f26e4793db246b5cd23aafdb4b5972ffe62ac7222f28914",
+            "sha256_lf": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+            "bytes": 570
+          },
+          "connect/entry.php": {
+            "sha256": "c571c5148d7a3a28d665d1bd6f012ea4a975e41b3664941ee133795e4d859741",
+            "sha256_lf": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+            "bytes": 586
+          },
+          "connect/gate.php": {
+            "sha256": "09184f3d41f66bed7cbd7c5ad0dcf73c8ec97a227d6a56fe320073055746239b",
+            "sha256_lf": "aec0d25fc5267aa2f2b2d828530e0b1b689fba6caa8b92629f1a45f5342903ac",
+            "bytes": 10984
+          },
+          "connect/logout.php": {
+            "sha256": "2d6a25946e7e5d8b578303f89cb858096ab799d7e105c2a1dc805339d98eb9c7",
+            "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+            "bytes": 696
+          },
+          "index.html": {
+            "sha256": "db371fcd620a720f7f5cac2fe93654b4cf61fec0c8c4d35119719aa7054ee1a2",
+            "sha256_lf": "a401268f4bb5e56c3dc8d98d121e6d1d37a52f8d871697d3a3ad176c50b78fb3",
+            "bytes": 344
+          },
+          "index.php": {
+            "sha256": "590ea3e678b50ff6fd9da107ec33eec58f5850c32420e4e13530943f85af60ca",
+            "sha256_lf": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+            "bytes": 561
+          },
+          "legacy-app.html": {
+            "sha256": "8fb57c5c3dc6f3be60b9929f85ed11caabf3db5c6ccd463e8ba72fa0a0a60c47",
+            "sha256_lf": "9454396dd5ce693ec511270d07b860eaf0f42dfbf437340205edb3f53a8b778c",
+            "bytes": 342802
+          }
+        }
+      },
+      {
+        "app": "projet",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "archive": "projet.zip",
+        "artifact_sha256": "47498878254b5ddfda205c32afd51287c14e1dd266bcbc42baf9d9e5e4823acc",
+        "build_mode": "prebuilt",
+        "build_environment_verified_by_tool": false,
+        "hosted_access_overlay_required": true,
+        "deployment_authorized": false,
+        "files": {
+          ".htaccess": {
+            "sha256": "5f46968a9d943d24c1070970ec9bc63ca6cc4b8e5a754311540ede860f67b7d6",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "bytes": 512
+          },
+          "assets/index-BRgM2m8J.css": {
+            "sha256": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+            "sha256_lf": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+            "bytes": 21535
+          },
+          "assets/index-YYKZ9H0l.js": {
+            "sha256": "a997d0f419095833ff9fff9fcc95a564ac01e1a288da9ceef15e5643445cf5b0",
+            "sha256_lf": "a997d0f419095833ff9fff9fcc95a564ac01e1a288da9ceef15e5643445cf5b0",
+            "bytes": 142843
+          },
+          "connect/entry.php": {
+            "sha256": "cbb62a3a29d97d5027e2e5e47ad059f26d842317fe23a2df6423b540aa7d21a8",
+            "sha256_lf": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+            "bytes": 622
+          },
+          "connect/gate.php": {
+            "sha256": "00570dd42f6b6ebd1abeec5cbfb2c07cfb3cb87a79179b3457f1df4c57f6577f",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "bytes": 9025
+          },
+          "connect/logout.php": {
+            "sha256": "cccf8268fe51c23fe08872a01e33e4304d3ce0cac4c0d5d78793d22eca4a064d",
+            "sha256_lf": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+            "bytes": 299
+          },
+          "index.html": {
+            "sha256": "08ab864e170f624745d2d718b4c23264dc5cd044372910fe40504440ce7c9c80",
+            "sha256_lf": "a3fc4f7a314f5eb5fb601ed789b3ab60d9cccb8443602eb056e78fa6ec1387fe",
+            "bytes": 414
+          },
+          "index.php": {
+            "sha256": "71346649d27bd89fdb002075457a83d72588d21762531360ae8c81dc93249d1a",
+            "sha256_lf": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+            "bytes": 907
+          },
+          "legacy-app.html": {
+            "sha256": "126f36f9c80a721ae948ba72089fff2a8e3a47c025896142b4e27c0cad1bf3ee",
+            "sha256_lf": "91ebf39774740011fee349f8513f25d7c94b1ba8b170fcf37ea865b335358ac5",
+            "bytes": 67129
+          },
+          "planning-core.js": {
+            "sha256": "3e8469d5fe6c3f8ee74ee87ce64c3b9ed788dad3426917f539c1b23311c8d97b",
+            "sha256_lf": "bb50798370c973d53f5de05428a5ee94bced73f988c57c9694c0b139d63b5c49",
+            "bytes": 29301
+          },
+          "planning-local.js": {
+            "sha256": "282a2ad65546113520c6a94c1095432a3a8abba308a7e6aa26e49beee50f9cd5",
+            "sha256_lf": "5d490801f4a5b414aeae811dc5c9f0e85908f8fd491278ee39dc33b78e10cbab",
+            "bytes": 14413
+          },
+          "task-details.js": {
+            "sha256": "b74118cfb408131969b32769021ca2e4ff8eee3cebdc344218b0c735b91bf56d",
+            "sha256_lf": "f033f58689fb0239a21e593c497312924a669ebc4cac3c125d048031768ea92b",
+            "bytes": 14328
+          }
+        }
+      },
+      {
+        "app": "thermo",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "archive": "thermo.zip",
+        "artifact_sha256": "5637e275c09be123c2a56bfb3498f407384400e8fbff58ae718514ce4e05cf04",
+        "build_mode": "prebuilt",
+        "build_environment_verified_by_tool": false,
+        "hosted_access_overlay_required": true,
+        "deployment_authorized": false,
+        "files": {
+          ".htaccess": {
+            "sha256": "5f46968a9d943d24c1070970ec9bc63ca6cc4b8e5a754311540ede860f67b7d6",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "bytes": 512
+          },
+          "assets/index-CxkFAWK0.js": {
+            "sha256": "f0ce682e4e255d330e40451de981a07d0db3bbd535fc9cfc6ffe258b14bc060e",
+            "sha256_lf": "f0ce682e4e255d330e40451de981a07d0db3bbd535fc9cfc6ffe258b14bc060e",
+            "bytes": 234812
+          },
+          "assets/index-DBhIFcGx.css": {
+            "sha256": "72070dd63aba07de8b5bf07605049b3646059766862a32bb891aac9b6a64321d",
+            "sha256_lf": "72070dd63aba07de8b5bf07605049b3646059766862a32bb891aac9b6a64321d",
+            "bytes": 25297
+          },
+          "connect/entry.php": {
+            "sha256": "3bf9e99a270e95f3a1ea8bfb5a32ebdd2fc6c0b58a3a2f096e7ceecab743c928",
+            "sha256_lf": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+            "bytes": 622
+          },
+          "connect/gate.php": {
+            "sha256": "00570dd42f6b6ebd1abeec5cbfb2c07cfb3cb87a79179b3457f1df4c57f6577f",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "bytes": 9025
+          },
+          "connect/logout.php": {
+            "sha256": "d13351d952ab1f73594949bf04d261926d657945240334daa68345c2b80d17ac",
+            "sha256_lf": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+            "bytes": 299
+          },
+          "index.html": {
+            "sha256": "f3db63d99a4f7de586cf6a36297979abea1909768e515c2b1db477a41e10fc9b",
+            "sha256_lf": "1592fd4d5cac796756e05f87423d760862411e1934cd8e919ffc60ae671f6048",
+            "bytes": 414
+          },
+          "index.php": {
+            "sha256": "015d4df4c47d6e766b3e62caeb44477aaaec24458c503368e5ce9897d88bb8e8",
+            "sha256_lf": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+            "bytes": 907
+          }
+        }
+      },
+      {
+        "app": "drone",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "archive": "drone.zip",
+        "artifact_sha256": "e5a50c81a73a0dbca5893ac43760d28d3e34a2d6d630519d7fae556de6381b59",
+        "build_mode": "prebuilt",
+        "build_environment_verified_by_tool": false,
+        "hosted_access_overlay_required": true,
+        "deployment_authorized": false,
+        "files": {
+          ".htaccess": {
+            "sha256": "5f46968a9d943d24c1070970ec9bc63ca6cc4b8e5a754311540ede860f67b7d6",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "bytes": 512
+          },
+          "assets/index-BmzmAYJo.css": {
+            "sha256": "95600f6cce54aed0c950903db21b1037cf1d61afc144d0db29ffad94ea11f1a4",
+            "sha256_lf": "95600f6cce54aed0c950903db21b1037cf1d61afc144d0db29ffad94ea11f1a4",
+            "bytes": 20920
+          },
+          "assets/index-HLKEE8D6.js": {
+            "sha256": "2307ed7df447569d80387e3f827217063b1a46c8dbe68746e9c3fffdc046826b",
+            "sha256_lf": "2307ed7df447569d80387e3f827217063b1a46c8dbe68746e9c3fffdc046826b",
+            "bytes": 178421
+          },
+          "connect/entry.php": {
+            "sha256": "a5565aa0198a3693639bc67a7f14324b5d42532bdee3ce0e36881314a527fecf",
+            "sha256_lf": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+            "bytes": 620
+          },
+          "connect/gate.php": {
+            "sha256": "00570dd42f6b6ebd1abeec5cbfb2c07cfb3cb87a79179b3457f1df4c57f6577f",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "bytes": 9025
+          },
+          "connect/logout.php": {
+            "sha256": "e410c9936d365947c3d6186cabe0892c06275fd9a36c6636d8ca46a21f5a7b7c",
+            "sha256_lf": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+            "bytes": 298
+          },
+          "index.html": {
+            "sha256": "8310b622a6b04affb990b81a7f4fbc87c2c7e254792c952345c0dab2ed46574b",
+            "sha256_lf": "eadfa35a2e8c96e1e3cfaec61d8b15a4cb804d64a38534bcc1a00fcb8fb0823c",
+            "bytes": 413
+          },
+          "index.php": {
+            "sha256": "443ca094b07fe8e7cbdca4d5dd4b1c667feb24b36404026016a60b973bd05a50",
+            "sha256_lf": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+            "bytes": 905
+          }
+        }
+      },
+      {
+        "app": "recherche",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "archive": "recherche.zip",
+        "artifact_sha256": "3c1d1c5d56c56fd9bbd953e3a3ea8fdc13a387ab48e5bc182c05b9949f78b6a4",
+        "build_mode": "prebuilt",
+        "build_environment_verified_by_tool": false,
+        "hosted_access_overlay_required": true,
+        "deployment_authorized": false,
+        "files": {
+          ".htaccess": {
+            "sha256": "5f46968a9d943d24c1070970ec9bc63ca6cc4b8e5a754311540ede860f67b7d6",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "bytes": 512
+          },
+          "assets/index-3B1lTp4J.js": {
+            "sha256": "4badb73ca2682c843263c0a7c6a8d77028b5d64dc8c76b59f10452147249737a",
+            "sha256_lf": "4badb73ca2682c843263c0a7c6a8d77028b5d64dc8c76b59f10452147249737a",
+            "bytes": 220830
+          },
+          "assets/index-DuvZ9ii-.css": {
+            "sha256": "690b09a32e8056234f97b285cf13a16cc7f63bc267d9bb0bd44ef00deeb1e5ff",
+            "sha256_lf": "690b09a32e8056234f97b285cf13a16cc7f63bc267d9bb0bd44ef00deeb1e5ff",
+            "bytes": 11565
+          },
+          "connect/entry.php": {
+            "sha256": "52a8fe30def49e8f49f08b3956ed7ef70fce60a4ce0efa1eac0748ad4f15354c",
+            "sha256_lf": "7967b2b577f191fdf150375e44e2db35e5f75e8c2d2bdd2b6365251c9fc55b16",
+            "bytes": 628
+          },
+          "connect/gate.php": {
+            "sha256": "00570dd42f6b6ebd1abeec5cbfb2c07cfb3cb87a79179b3457f1df4c57f6577f",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "bytes": 9025
+          },
+          "connect/logout.php": {
+            "sha256": "7e30268244f928da756b2161952a96df14fc54cce7f34ea2a5113d51e6ed8c2b",
+            "sha256_lf": "ad65d77242658056c89b8ae1b84ea22f3c2dda4bed79ae5d8674dd7e240f52b9",
+            "bytes": 302
+          },
+          "index.html": {
+            "sha256": "704c3b44ed079bd806086094e14d1bce9f3063e1022cbae0e7a0aa8f91dd9ada",
+            "sha256_lf": "b2a29a1f3932ab7891b73a66e692edbcb7a73442eeb4a891a3fec641b91da438",
+            "bytes": 479
+          },
+          "index.php": {
+            "sha256": "cbf25c6372a01b3465f5124401de9f7dfd3e1cb15d4da8da6436d22cacd5040f",
+            "sha256_lf": "1ac41d5998f489cf1a25c2104e027450850655da01d33da44259737e3e0c525b",
+            "bytes": 913
+          }
+        }
+      },
+      {
+        "app": "passeport-immo",
+        "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "archive": "passeport-immo.zip",
+        "artifact_sha256": "1dc4fa4c8a8eac6c76a3b46abe29bd41e23311875a180c8b14cc5ca66372ae64",
+        "build_mode": "closed",
+        "build_environment_verified_by_tool": false,
+        "hosted_access_overlay_required": false,
+        "deployment_authorized": false,
+        "files": {
+          ".htaccess": {
+            "sha256": "dd862f436e7e31b43dd3d63c6a1c60108fa674fefd2c00fa7a46e605c0e4bc68",
+            "sha256_lf": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+            "bytes": 255
+          },
+          "assets/index-B6-J-id_.js": {
+            "sha256": "1bff68615d47d1c7f4228ef2b8a752cd837c2ab44c977e90620ee907e6cdfe99",
+            "sha256_lf": "1bff68615d47d1c7f4228ef2b8a752cd837c2ab44c977e90620ee907e6cdfe99",
+            "bytes": 775488
+          },
+          "assets/index-rS3DXAdr.css": {
+            "sha256": "ed2b39d3d15c00d02af7332efd6542805dcf1cf3d92b6e0796554c263cd660ba",
+            "sha256_lf": "ed2b39d3d15c00d02af7332efd6542805dcf1cf3d92b6e0796554c263cd660ba",
+            "bytes": 20378
+          },
+          "assets/index.es-B4ypi1Kv.js": {
+            "sha256": "3f3fb5000c6bef463d4bacb56c704e72b8be064d99c0a1c27db3025394e24659",
+            "sha256_lf": "3f3fb5000c6bef463d4bacb56c704e72b8be064d99c0a1c27db3025394e24659",
+            "bytes": 150852
+          },
+          "assets/purify.es-BwoZCkIS.js": {
+            "sha256": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+            "sha256_lf": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+            "bytes": 22028
+          },
+          "index.html": {
+            "sha256": "1242ba10be8313ab7cc2433f2a78e9eb34051c04b3a459d93a15b364888b2091",
+            "sha256_lf": "8aa9b697834321cfa4a390c092fbf741f3191fc87b4f51343187aa491789d10a",
+            "bytes": 504
+          }
+        }
+      }
+    ],
+    "remote_writes": false,
+    "production_modified": false
+  },
+  "http_observations": [
+    {
+      "app": "connect",
+      "root_https": {
+        "url": "https://connect-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.076+00:00",
+        "status": 401,
+        "basic_challenge": true
+      },
+      "root_http": {
+        "url": "http://connect-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.222+00:00",
+        "status": 403,
+        "basic_challenge": false
+      },
+      "index": {
+        "url": "https://connect-preprod.avereo.fr/index.html",
+        "observed_at": "2026-10-06T19:26:57.313+00:00",
+        "status": 401,
+        "basic_challenge": true
+      },
+      "assets": [],
+      "authenticated_journey_verified": false,
+      "server_configuration_verified": false
+    },
+    {
+      "app": "rapport",
+      "root_https": {
+        "url": "https://rapport-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.082+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "root_http": {
+        "url": "http://rapport-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.270+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "index": {
+        "url": "https://rapport-preprod.avereo.fr/index.html",
+        "observed_at": "2026-10-06T19:26:57.366+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "assets": [],
+      "authenticated_journey_verified": false,
+      "server_configuration_verified": false,
+      "entry_without_ticket": {
+        "url": "https://rapport-preprod.avereo.fr/connect/entry.php",
+        "observed_at": "2026-10-06T19:26:57.503+00:00",
+        "status": 403,
+        "basic_challenge": false
+      }
+    },
+    {
+      "app": "coupe",
+      "root_https": {
+        "url": "https://coupe-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.081+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "root_http": {
+        "url": "http://coupe-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.255+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "index": {
+        "url": "https://coupe-preprod.avereo.fr/index.html",
+        "observed_at": "2026-10-06T19:26:57.346+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "assets": [],
+      "authenticated_journey_verified": false,
+      "server_configuration_verified": false,
+      "entry_without_ticket": {
+        "url": "https://coupe-preprod.avereo.fr/connect/entry.php",
+        "observed_at": "2026-10-06T19:26:57.471+00:00",
+        "status": 403,
+        "basic_challenge": false
+      }
+    },
+    {
+      "app": "projet",
+      "root_https": {
+        "url": "https://projet-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.074+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "root_http": {
+        "url": "http://projet-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.288+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "index": {
+        "url": "https://projet-preprod.avereo.fr/index.html",
+        "observed_at": "2026-10-06T19:26:57.392+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "assets": [],
+      "authenticated_journey_verified": false,
+      "server_configuration_verified": false,
+      "entry_without_ticket": {
+        "url": "https://projet-preprod.avereo.fr/connect/entry.php",
+        "observed_at": "2026-10-06T19:26:57.531+00:00",
+        "status": 403,
+        "basic_challenge": false
+      }
+    },
+    {
+      "app": "thermo",
+      "root_https": {
+        "url": "https://thermo-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.444+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "root_http": {
+        "url": "http://thermo-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.563+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "index": {
+        "url": "https://thermo-preprod.avereo.fr/index.html",
+        "observed_at": "2026-10-06T19:26:57.639+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "assets": [],
+      "authenticated_journey_verified": false,
+      "server_configuration_verified": false,
+      "entry_without_ticket": {
+        "url": "https://thermo-preprod.avereo.fr/connect/entry.php",
+        "observed_at": "2026-10-06T19:26:57.778+00:00",
+        "status": 403,
+        "basic_challenge": false
+      }
+    },
+    {
+      "app": "drone",
+      "root_https": {
+        "url": "https://drone-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.594+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "root_http": {
+        "url": "http://drone-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.726+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "index": {
+        "url": "https://drone-preprod.avereo.fr/index.html",
+        "observed_at": "2026-10-06T19:26:57.827+00:00",
+        "status": 303,
+        "redirect_origin_path": "https://connect-preprod.avereo.fr/",
+        "basic_challenge": false
+      },
+      "assets": [],
+      "authenticated_journey_verified": false,
+      "server_configuration_verified": false,
+      "entry_without_ticket": {
+        "url": "https://drone-preprod.avereo.fr/connect/entry.php",
+        "observed_at": "2026-10-06T19:26:57.952+00:00",
+        "status": 403,
+        "basic_challenge": false
+      }
+    },
+    {
+      "app": "recherche",
+      "root_https": {
+        "url": "https://recherche-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.670+00:00",
+        "status": null,
+        "error_type": "URLError"
+      },
+      "root_http": {
+        "url": "http://recherche-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:27:08.759+00:00",
+        "status": null,
+        "error_type": "URLError"
+      },
+      "index": {
+        "url": "https://recherche-preprod.avereo.fr/index.html",
+        "observed_at": "2026-10-06T19:27:19.838+00:00",
+        "status": null,
+        "error_type": "URLError"
+      },
+      "assets": [],
+      "authenticated_journey_verified": false,
+      "server_configuration_verified": false,
+      "entry_without_ticket": {
+        "url": "https://recherche-preprod.avereo.fr/connect/entry.php",
+        "observed_at": "2026-10-06T19:27:30.919+00:00",
+        "status": null,
+        "error_type": "URLError"
+      }
+    },
+    {
+      "app": "passeport-immo",
+      "root_https": {
+        "url": "https://passeport-immo-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.686+00:00",
+        "status": 403,
+        "basic_challenge": false
+      },
+      "root_http": {
+        "url": "http://passeport-immo-preprod.avereo.fr/",
+        "observed_at": "2026-10-06T19:26:57.804+00:00",
+        "status": 403,
+        "basic_challenge": false
+      },
+      "index": {
+        "url": "https://passeport-immo-preprod.avereo.fr/index.html",
+        "observed_at": "2026-10-06T19:26:57.893+00:00",
+        "status": 403,
+        "basic_challenge": false
+      },
+      "assets": [],
+      "authenticated_journey_verified": false,
+      "server_configuration_verified": false
+    }
+  ],
+  "ensemble_artifact_sha256": "bd0b8e40ba55982a04e876b6753112a2d356c528d840fa62ad9b9c5283c79d75",
+  "source_ci": {
+    "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+    "status": "success",
+    "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37506091820",
+    "scope": "Contrôles de la source, sans attestation des archives construites sur ce poste.",
+    "prototype_pages_run": "https://github.com/jpdandin44/AVEREO/actions/runs/37506091863",
+    "prototype_pages_status": "failure"
+  },
+  "dns_recherche": {
+    "host": "recherche-preprod.avereo.fr",
+    "resolves_from_local_workstation": false,
+    "error_type": "gaierror",
+    "cpanel_declaration_verified": false
+  },
+  "build_environment": {
+    "node": "24.18.0",
+    "php_local_tests": "8.4.23",
+    "source_checkout": "C:\\Users\\examg\\OneDrive\\Documents\\AVEREO_2\\preprod-alignement-source",
+    "tracked_tree_clean_after_builds": true,
+    "source_architecture_v1_identical_to_pr77": true,
+    "commands": [
+      "npm.cmd ci --no-audit --no-fund",
+      "npm.cmd test (applications disposant de cette commande)",
+      "npm.cmd run build"
+    ],
+    "rapport_build_flag": "VITE_ENABLE_ONLINE_SYNC=true",
+    "limits": "Pas de parcours hébergé authentifié, de sauvegarde métier distante ni de preuve de configuration privée."
+  },
+  "source_contract_tests": {
+    "connect_backend": "37/37",
+    "identity_bridge": "passed",
+    "receiving_gate_suites": [
+      "rapport",
+      "coupe",
+      "shared"
+    ],
+    "real_issuer_receivers": [
+      "rapport",
+      "coupe",
+      "projet",
+      "thermo",
+      "drone",
+      "recherche"
+    ],
+    "assertions": [
+      "ticket réel accepté",
+      "identité compatible si utilisée",
+      "rejeu refusé",
+      "autre secret refusé",
+      "autre application refusée",
+      "expiration refusée",
+      "type de persistance invalide refusé",
+      "compte non provisionné refusé",
+      "cookie anonyme refusé"
+    ]
+  },
+  "production_modified": false,
+  "application_deployment_performed": false
+}

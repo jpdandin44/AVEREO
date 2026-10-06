@@ -53,3 +53,19 @@ Le lien a été cliqué depuis la PR : destination CONNECT confirmée, protectio
 HTTPS 401 Basic contrôlée. Le navigateur intégré bloque sur l’authentification ;
 le parcours avec le compte du responsable reste à recetter. Le suivi conserve
 ce contrôle et sa limite. Les serveurs et validations humaines sont inchangés.
+
+Après confirmation utilisateur du fonctionnement de l’accès, contrôle en lecture
+seule de la version Rapport ouverte depuis CONNECT. La cible configurée est bien
+Rapport préproduction, mais elle sert encore un ancien bundle sans Visite Globale.
+Le catalogue à deux choix est déjà dans `main`, via la PR #61 fusionnée le
+14 septembre. L’écart de livraison est enregistré dans le suivi et le relevé ;
+aucun fichier hébergé, compte ou donnée modifié pendant ce diagnostic.
+
+Qualification multi-applications demandée avant production : préparation locale
+de huit candidats depuis la même référence intégrée, sept builds réussis, suites
+métier existantes et test transversal du véritable émetteur CONNECT vers six sas.
+Ajout des contrôles d’intégrité et d’exclusion des fichiers privés dans les archives.
+Observations HTTP anonymes enregistrées ; version ancienne Rapport, PR Coupe #54
+ouverte, adresse Recherche non résolue et Passeport Immo fermé explicités.
+Comparaison cPanel interrompue : versions/configurations hébergées et sauvegardes
+par cible encore à qualifier. Aucun remplacement applicatif ni production effectué.
