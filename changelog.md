@@ -67,5 +67,11 @@ métier existantes et test transversal du véritable émetteur CONNECT vers six 
 Ajout des contrôles d’intégrité et d’exclusion des fichiers privés dans les archives.
 Observations HTTP anonymes enregistrées ; version ancienne Rapport, PR Coupe #54
 ouverte, adresse Recherche non résolue et Passeport Immo fermé explicités.
-Comparaison cPanel interrompue : versions/configurations hébergées et sauvegardes
-par cible encore à qualifier. Aucun remplacement applicatif ni production effectué.
+La première lecture cPanel était interrompue ; la reprise complète maintenant
+l’inventaire des huit applications. Les cinq bundles hébergés et sept fichiers
+CONNECT diffèrent des candidats. Sept sauvegardes/restaurations privées des
+fichiers passent, avec source active inchangée ; aucune base n’est sauvegardée
+par ce reçu. CONNECT manque les colonnes de la migration d’activation, Recherche
+n’a pas de cible/configuration/catalogue, Passeport n’a que sa fermeture.
+Un lot exact de cinq cibles existantes est préparé avec règles d’accès et plan de
+recette/retour arrière ; aucun candidat applicatif installé ni production modifiée.

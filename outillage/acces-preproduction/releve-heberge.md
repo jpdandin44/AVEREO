@@ -18,13 +18,13 @@ ni validation humaine ni bascule. La préparation initiale est conservée dans
 
 ## État du lot
 
-Terminer la comparaison cPanel des huit applications avec les candidats issus de la même référence ; préparer sauvegardes/restauration et recette avant remplacement. Recherche et Passeport Immo restent à qualifier séparément.
+Accord de recette du lot préparé Rapport/Coupe/Projet/Thermo/Drone ; traiter séparément la migration CONNECT et les raccordements Recherche/Passeport. Aucun candidat applicatif installé à ce stade.
 
 | Phase | État | Prochaine action |
 | --- | --- | --- |
 | Cadrage | À valider | Examiner la décision et le relevé des domaines. |
 | Développement local | À valider | Examiner les fichiers, preuves et documentation de la PR #77. |
-| Préproduction | En cours | Terminer la comparaison cPanel des huit applications avec les candidats issus de la même référence ; préparer sauvegardes/restauration et recette avant remplacement. Recherche et Passeport Immo restent à qualifier séparément. |
+| Préproduction | En cours | Accord de recette du lot préparé Rapport/Coupe/Projet/Thermo/Drone ; traiter séparément la migration CONNECT et les raccordements Recherche/Passeport. Aucun candidat applicatif installé à ce stade. |
 | Mise en production | Non commencée | Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé. |
 
 ## Accès pour la recette
@@ -87,12 +87,12 @@ La protection doit survivre au prochain déploiement ; cette pérennité reste �
 - Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.
 - Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.
 - Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.
-- Lecture cPanel interrompue : empreintes, racines réelles, configurations privées, catalogue actif et versions SQL de toutes les applications non qualifiés.
-- Recherche : adresse attendue non résolue ; cible réelle et dépendance GED à établir.
-- Passeport Immo : préproduction fermée ; aucun lancement CONNECT implémenté dans la référence retenue.
-- Coupe : PR #54 ouverte ; changements hors de main à examiner séparément avant inclusion.
-- Sauvegarde et restauration de chaque cible applicative non préparées ; aucun remplacement autorisable sur cette seule preuve locale.
-- Parcours métier authentifiés, stockage, retour au portail et droits/revocation à recetter sur les versions effectivement livrées.
+- CONNECT : onboarding_status et activation_email_sent_at absents de users ; migration et récupération de la base non préparées. Ne pas remplacer son backend en bloc.
+- Recherche : cible, configuration de lancement et entrée catalogue absentes ; dépendance GED à établir.
+- Passeport Immo : seule protection de fermeture installée ; frontend et contrat CONNECT absents.
+- Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.
+- Accord de livraison applicative du candidat préparé non enregistré ; les accords antérieurs couvrent le pilote d’accès et la réparation ciblée.
+- Recette métier authentifiée sur les versions effectivement livrées : lancement, stockage lorsqu’il existe, réouverture, exports, déconnexion et révocation.
 
 ## Incident d’authentification
 
@@ -165,7 +165,7 @@ Préparer et qualifier le build courant de Rapport pour ce seul sous-domaine, pr
 
 ## Alignement des applications
 
-Contrôle du `2026-10-06T19:35:06.261+00:00` ; statut `local_candidates_verified_hosted_alignment_not_qualified`.
+Contrôle du `2026-10-06T20:12:00.235+00:00` ; statut `host_inventory_verified_versions_differ_delivery_pending`.
 
 Référence commune des huit candidats : `3d70b530acc236f36ade6c06a553d3c9f7ed07f1` (`origin/main`).
 Ensemble local : `.local/alignement/ensemble-candidats.zip` ; SHA-256 `bd0b8e40ba55982a04e876b6753112a2d356c528d840fa62ad9b9c5283c79d75`.
@@ -174,49 +174,59 @@ Les archives sont des candidats locaux. Aucune application n’a été remplacé
 
 | Application | Contrôles locaux | HTTPS / HTTP anonymes | Version et état hébergés |
 | --- | --- | --- | --- |
-| connect | 37 tests du backend, pont Drupal et six contrats de lancement réussis. | 401 / 403 | Version du code hébergé à comparer ; couche HTTPS 401 Basic et HTTP 403 vérifiée. |
-| rapport | 55 tests et build avec synchronisation en ligne activée. | 303 / 303 | Ancien bundle confirmé lors du diagnostic précédent ; nouvelle version non livrée. |
-| coupe | Build et sas PHP réussis ; contrat avec le vrai émetteur CONNECT réussi. | 303 / 303 | Version hébergée à comparer ; PR #54 encore ouverte, exclue du candidat main. |
-| projet | 144 tests, planning cohérent et build ; 12 fichiers, aucune donnée/API de revue locale dans la livraison. | 303 / 303 | Version hébergée à comparer ; entrée sans ticket refusée. |
-| thermo | Build et contrat réel CONNECT réussis ; pas de suite métier dédiée dans le package. | 303 / 303 | Version hébergée à comparer ; entrée sans ticket refusée. |
-| drone | Build et contrat réel CONNECT réussis ; pas de suite métier dédiée dans le package. | 303 / 303 | Version hébergée à comparer ; entrée sans ticket refusée. |
-| recherche | 23 tests, build et contrat réel CONNECT réussis. | Indisponible / Indisponible | Adresse de recette attendue non résolue depuis ce poste ; déclaration cPanel non vérifiée. |
-| passeport-immo | 14 tests, build, parité source et six tests de préparation fermée réussis. | 403 / 403 | Préproduction fermée : HTTPS et HTTP 403 ; pas de contrat de lancement dans CONNECT courant. |
+| connect | 37 tests du backend, pont Drupal et six contrats de lancement réussis. | 401 / 403 | Sept fichiers de code diffèrent de main (normalisation LF) ; douze correspondent, dont l’émetteur de tickets. Base préproduction distincte ; migration onboarding_status/activation_email_sent_at absente. |
+| rapport | 55 tests et build avec synchronisation en ligne activée. | 303 / 303 | Ancien bundle du 3 août confirmé, sans Visite Globale ; index, sas et déconnexion diffèrent du candidat. Base distincte et colonnes rapport_reports présentes ; restauration privée des fichiers réussie. |
+| coupe | Build et sas PHP réussis ; contrat avec le vrai émetteur CONNECT réussi. | 303 / 303 | Index, interface historique, règle auth, sas et API diffèrent du candidat. Base non configurée, auth_mode drupal_oauth ; lancement dédié cohérent. PR #54 exclue. Restauration privée des fichiers réussie. |
+| projet | 144 tests, planning cohérent et build ; 12 fichiers, aucune donnée/API de revue locale dans la livraison. | 303 / 303 | Index et interface historique diffèrent du candidat, bundle différent ; sas identique à main. Configuration préprod et secret de lancement cohérents ; restauration privée des fichiers réussie. |
+| thermo | Build et contrat réel CONNECT réussis ; pas de suite métier dédiée dans le package. | 303 / 303 | Index et bundle différents du candidat ; sas identique à main. Configuration préprod et secret de lancement cohérents ; restauration privée des fichiers réussie. |
+| drone | Build et contrat réel CONNECT réussis ; pas de suite métier dédiée dans le package. | 303 / 303 | Index et bundle différents du candidat ; sas identique à main. Configuration préprod et secret de lancement cohérents ; restauration privée des fichiers réussie. |
+| recherche | 23 tests, build et contrat réel CONNECT réussis. | Indisponible / Indisponible | Domaine de recette non déclaré dans cPanel et non résolu ; configuration de lancement et entrée catalogue absentes. |
+| passeport-immo | 14 tests, build, parité source et six tests de préparation fermée réussis. | 403 / 403 | Cible fermée : seul public/.htaccess est installé, sans frontend. Aucune entrée catalogue ni lancement CONNECT. Sauvegarde/restauration de cette fermeture vérifiée. |
 
 Deux choix de création Rapport : Expertise & Visite technique, Visite Globale (Habitologie).
 Les anciens types restent lisibles ; aucune donnée de rapport hébergée n’a été modifiée.
 
 ### Corrections et qualifications par cible
 
+[Inventaire hébergé, comparaison et reçus de récupération](archives/audit-applications-hebergees.json).
+Sept cibles existantes sauvegardées ; copies restaurées en privé vérifiées le `2026-10-06T20:10:27.126+00:00`. Fichiers seulement : aucune récupération de base n’est attestée.
+Dossier privé : `/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z`.
+Les empreintes frontend différentes établissent un écart d’artefact ; seule la version Rapport possède aussi une preuve fonctionnelle des anciens choix.
+
+**Lot de recette préparé** : rapport, coupe, projet, thermo, drone.
+Référence `3d70b530acc236f36ade6c06a553d3c9f7ed07f1` ; archive `.local/alignement/lot-recette-cinq-applications.zip` ; SHA-256 `e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324`.
+Le plan exact figure dans le reçu. Configuration privée, habilitations et données conservées ; aucune migration SQL prévue. La règle auth de Coupe rejoint le portail, son sas historique restant protégé.
+Ce lot attend son accord de préproduction. CONNECT, Recherche et Passeport Immo ont des prérequis distincts et sont exclus du remplacement préparé.
+
 CI des outils sur `af17cb371469e503d6964dab391a4fffb1b8b1ca` : [27 tests sans saut](https://github.com/jpdandin44/AVEREO/actions/runs/37520544589) et [CI générale](https://github.com/jpdandin44/AVEREO/actions/runs/37520544556) réussis.
 Ces runs valident les sources ; ils ne produisent pas les archives locales et ne prouvent pas le contenu hébergé. PR Policy reste ignorée sur le brouillon.
 
-- **connect** : Conserver la surcouche Basic active ; qualifier configuration privée et versions SQL avant tout remplacement.
-- **rapport** : Livrer le candidat à deux types après inventaire, sauvegarde/restauration et accord applicable ; recetter sauvegarde et réouverture.
-- **coupe** : Comparer au candidat main et examiner séparément la PR #54 avant de retenir ses évolutions ; qualifier le stockage existant sans nouvelle activation.
-- **projet** : Comparer l’interface métier au candidat ; conserver le cockpit local hors de l’artefact hébergé.
-- **thermo** : Comparer au candidat et recetter le métier avec données fictives autorisées.
-- **drone** : Comparer au candidat et recetter le métier avec données fictives autorisées.
-- **recherche** : Identifier une cible de recette réelle et vérifier GED, catalogue et configuration privée ; aucune cible créée ni habilitation accordée.
-- **passeport-immo** : Conserver la fermeture ; qualifier son candidat et définir séparément l’intégration CONNECT avant toute ouverture.
+- **connect** : Préparer la migration requise et la sauvegarde/restauration de sa base distincte ; recetter le pont d’activation avant de remplacer le code. Conserver Basic.
+- **rapport** : Promouvoir le candidat exact à deux types dans le lot de recette après accord applicable ; vérifier empreintes, lancement, sauvegarde/réouverture et exports.
+- **coupe** : Promouvoir uniquement le candidat main, sans PR #54, activation MySQL ou modification du mode privé ; vérifier legacy-app et redirection auth, puis fonctionnement métier.
+- **projet** : Promouvoir le candidat préparé après accord de recette ; conserver données/règles privées et cockpit local hors artefact ; vérifier le parcours métier.
+- **thermo** : Promouvoir le candidat préparé après accord de recette, puis vérifier lancement, fonctions métier et sortie du portail.
+- **drone** : Promouvoir le candidat préparé après accord de recette, puis vérifier lancement, fonctions métier et sortie du portail.
+- **recherche** : Préparer séparément une cible isolée, son raccordement au catalogue, sa configuration de lancement et la dépendance GED ; aucune habilitation créée.
+- **passeport-immo** : Conserver la fermeture ; préparer son installation et un contrat de lancement CONNECT séparé avant toute ouverture.
 
 ### Dépendances et limites
 
 - Réparation technique ciblée appliquée et accès confirmé par le responsable ; dépôt de l’instance complète encore inconnu.
-- Les chargeurs applicatifs peuvent utiliser le repli de configuration sans suffixe préproduction ; une configuration dédiée et la séparation des bases doivent être constatées.
+- Configurations dédiées et cinq paires de secrets de lancement cohérentes. CONNECT et Rapport ont une base distincte ; Coupe ne configure pas de base. Parcours réel, droits et replis restent à recetter.
 - Le healthcheck Coupe appelle api_ensure_schema lorsque la base est configurée. Il n’a pas été sollicité pour cet audit en lecture seule.
 
 Le contrôle de passage multi-applications reste bloqué :
 
-- Lecture cPanel interrompue : empreintes, racines réelles, configurations privées, catalogue actif et versions SQL de toutes les applications non qualifiés.
-- Recherche : adresse attendue non résolue ; cible réelle et dépendance GED à établir.
-- Passeport Immo : préproduction fermée ; aucun lancement CONNECT implémenté dans la référence retenue.
-- Coupe : PR #54 ouverte ; changements hors de main à examiner séparément avant inclusion.
-- Sauvegarde et restauration de chaque cible applicative non préparées ; aucun remplacement autorisable sur cette seule preuve locale.
-- Parcours métier authentifiés, stockage, retour au portail et droits/revocation à recetter sur les versions effectivement livrées.
+- CONNECT : onboarding_status et activation_email_sent_at absents de users ; migration et récupération de la base non préparées. Ne pas remplacer son backend en bloc.
+- Recherche : cible, configuration de lancement et entrée catalogue absentes ; dépendance GED à établir.
+- Passeport Immo : seule protection de fermeture installée ; frontend et contrat CONNECT absents.
+- Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.
+- Accord de livraison applicative du candidat préparé non enregistré ; les accords antérieurs couvrent le pilote d’accès et la réparation ciblée.
+- Recette métier authentifiée sur les versions effectivement livrées : lancement, stockage lorsqu’il existe, réouverture, exports, déconnexion et révocation.
 
 Les décisions historiques du pilote et de la réparation d’identité conservent leur portée.
-Les candidats applicatifs ne possèdent encore ni accord de remplacement enregistré ni sauvegarde/restauration qualifiée.
+Les candidats applicatifs ne possèdent encore aucun accord de remplacement enregistré. Les reçus de fichiers qualifient les cibles existantes, sans couvrir les bases ni une recette authentifiée.
 Les workflows de production restent manuels ; le merge et l’ouverture publique sont des décisions distinctes.
 
 ## Source GitHub

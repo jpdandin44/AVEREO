@@ -33,6 +33,12 @@ le suivi canonique du lot.
 La prochaine qualification couvre les huit applications avant production :
 ensemble local construit depuis une même référence, comparaison des versions et
 configurations hébergées, puis livraisons de recette qualifiées par cible.
+L’inventaire hébergé est maintenant terminé et les restaurations privées des
+fichiers de sept cibles sont vérifiées. Le prochain passage porte sur le lot
+préparé Rapport/Coupe/Projet/Thermo/Drone, après accord de préproduction.
+CONNECT exige une migration et une récupération de base préparées ; Recherche
+exige une cible et un raccordement, Passeport Immo une installation et un contrat
+CONNECT. Aucune de ces opérations n’est une mise en production.
 Les preuves, réserves et prochaines actions par application restent dans
 [le relevé dérivé](outillage/acces-preproduction/releve-heberge.md#alignement-des-applications).
 Aucun passage de phase ni remplacement applicatif n’est déduit des tests locaux.

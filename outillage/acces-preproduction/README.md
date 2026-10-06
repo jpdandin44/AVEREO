@@ -88,6 +88,36 @@ la surcouche de protection, la sauvegarde et la restauration de chaque cible.
 Passeport Immo reçoit toujours son fragment `Require all denied` ; aucune entrée
 CONNECT ou habilitation n’est créée par l’outillage.
 
+### Inventaire hébergé et livraison de recette
+
+La lecture cPanel a repris le 6 octobre. Le suivi et son relevé dérivé renvoient
+au reçu `archives/audit-applications-hebergees.json` : huit cibles examinées,
+empreintes comparées après normalisation LF, métadonnées dédiées de lancement,
+catalogue actif et schémas lus sans données applicatives. Les bundles de cinq
+applications et sept fichiers de CONNECT diffèrent des candidats. Une empreinte
+frontend différente prouve un écart d’artefact ; le caractère ancien de Rapport
+est aussi établi par l’absence de Visite Globale et les quatre choix observés.
+
+Les sept cibles existantes ont une sauvegarde et une copie restaurée en privé,
+identiques par empreintes et modes, avec vérification que les fichiers actifs
+n’ont pas changé pendant la copie. Cette preuve concerne les **fichiers** ; elle
+ne constitue pas une sauvegarde ni une recette de restauration des bases.
+
+Un lot exact Rapport/Coupe/Projet/Thermo/Drone est préparé. Le suivi en conserve
+le plan, l’archive, les empreintes et le workflow distinct de l’ensemble des huit
+applications. Les règles hébergées identiques sont conservées. Coupe reprend la
+redirection auth du candidat main ; son sas historique reste protégé, sa base
+non configurée et son mode privé inchangés. Les configurations privées, droits
+et données restent hors de l’archive. Aucun candidat applicatif n’est installé.
+
+CONNECT ne peut pas recevoir son backend main sans la migration ajoutant
+`onboarding_status` et `activation_email_sent_at`, absents de `users`. Sa base
+de recette est distincte ; préparer sa récupération avant toute migration.
+Recherche n’a ni domaine de recette déclaré, ni configuration de lancement,
+ni entrée catalogue. Passeport Immo ne contient que la fermeture `.htaccess`,
+sans frontend ni contrat de lancement CONNECT. Ces trois travaux restent
+distincts du lot préparé et ne sont pas déduits d’un merge.
+
 Le test `test_launch_contract.php` utilise le véritable émetteur de CONNECT et
 les sas récepteurs avec un compte fictif, un secret synthétique et des nonces
 éphémères. Il contrôle l’échange, l’identité lorsqu’elle est utilisée, l’anti-rejeu,

@@ -130,6 +130,18 @@ if alignment:
     lines += ['', 'Deux choix de création Rapport : ' + ', '.join(alignment['report_selectable_types']) + '.',
         'Les anciens types restent lisibles ; aucune donnée de rapport hébergée n’a été modifiée.', '',
         '### Corrections et qualifications par cible', '']
+    hosted_evidence = alignment.get('hosted_evidence_path')
+    if hosted_evidence:
+        recovery = alignment['file_recovery']
+        batch = alignment['prepared_delivery_batch']
+        lines += [f"[Inventaire hébergé, comparaison et reçus de récupération]({hosted_evidence}).",
+            f"Sept cibles existantes sauvegardées ; copies restaurées en privé vérifiées le `{recovery['observed_at']}`. Fichiers seulement : aucune récupération de base n’est attestée.",
+            f"Dossier privé : `{recovery['recovery_directory']}`.",
+            'Les empreintes frontend différentes établissent un écart d’artefact ; seule la version Rapport possède aussi une preuve fonctionnelle des anciens choix.', '',
+            '**Lot de recette préparé** : ' + ', '.join(batch['applications']) + '.',
+            f"Référence `{batch['source_sha']}` ; archive `{batch['archive']}` ; SHA-256 `{batch['artifact_sha256']}`.",
+            'Le plan exact figure dans le reçu. Configuration privée, habilitations et données conservées ; aucune migration SQL prévue. La règle auth de Coupe rejoint le portail, son sas historique restant protégé.',
+            'Ce lot attend son accord de préproduction. CONNECT, Recherche et Passeport Immo ont des prérequis distincts et sont exclus du remplacement préparé.', '']
     ci = alignment.get('tooling_ci')
     if ci:
         lines += [f"CI des outils sur `{ci['source_sha']}` : [{ci['tests']} tests sans saut]({ci['url']}) et [CI générale]({ci['general_ci_url']}) réussis.",
@@ -140,7 +152,7 @@ if alignment:
     lines += ['', 'Le contrôle de passage multi-applications reste bloqué :', '']
     lines += ['- ' + item for item in alignment['blockers']]
     lines += ['', 'Les décisions historiques du pilote et de la réparation d’identité conservent leur portée.',
-        'Les candidats applicatifs ne possèdent encore ni accord de remplacement enregistré ni sauvegarde/restauration qualifiée.',
+        'Les candidats applicatifs ne possèdent encore aucun accord de remplacement enregistré. Les reçus de fichiers qualifient les cibles existantes, sans couvrir les bases ni une recette authentifiée.',
         'Les workflows de production restent manuels ; le merge et l’ouverture publique sont des décisions distinctes.']
 
 github = state['github']
