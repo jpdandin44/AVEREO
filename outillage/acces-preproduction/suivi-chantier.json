@@ -4,18 +4,19 @@
   "source_commit": "fbf395b31917ad46565896ae46317e11db0b611e",
   "objective": "Acces par identifiants aux preproductions ; CONNECT en premier.",
   "phase": "preproduction",
-  "status": "pilote_connect_applique_recette_en_attente",
+  "status": "pilote_connect_applique_authentification_bloquee",
   "server_modified": true,
   "production_modified": false,
   "owner_authorization": "Méthode et généralisation demandées dans Cahier des charges AVEREO, reprises ici le 6 octobre. Accord direct reçu pour appliquer le seul pilote CONNECT avec le compte existant du site, refus HTTP, recette et retour arrière en cas d’échec. Aucun accord de merge ou de production.",
   "cockpit_reference": "outillage/acces-preproduction/suivi-chantier.json",
   "cockpit_status": "Source canonique raccordée au moteur de revue Projet ; aucune décision automatique.",
   "blockers": [
-    "Accès avec les bons identifiants à vérifier par le responsable : le navigateur intégré ne propose pas l’invite HTTP Basic (ERR_INVALID_AUTH_CREDENTIALS). Aucun secret demandé dans le chat.",
-    "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
-    "Compatibilité OAuth, alias et pérennité au prochain déploiement à qualifier avant généralisation."
+    "Authentification bloquée sur auth-next-preprod.avereo.fr : HTTP 500, interface OpenID Connect introuvable ; bibliothèques OIDC et OAuth absentes du vendor hébergé.",
+    "Réparation ciblée de l’installation Simple OAuth 6.1.1 à préparer et qualifier avec sauvegarde/retour arrière ; dépôt source du serveur d’identité à identifier avant changement.",
+    "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter après réparation.",
+    "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation."
   ],
-  "next_action": "Confirmer l’accès avec le compte de consultation existant dans un navigateur habituel, puis recetter CONNECT/Drupal/Rapport avant généralisation.",
+  "next_action": "Préparer le candidat privé de dépendances, conserver son verrou Composer dans Git puis appliquer la réparation autorisée et recetter.",
   "phases": [
     {
       "id": 0,
@@ -81,19 +82,22 @@
       "pullRequest": {
         "repository": "jpdandin44/AVEREO",
         "number": 76,
-        "state": "open",
-        "headSha": "3559d19603750751d3abbf58f6010e2545a8e50e",
-        "observedAt": "2026-10-06T17:36:20.050+00:00",
+        "state": "closed",
+        "headSha": "ecdfc330e2e709082268106e99583640b52fa20d",
+        "observedAt": "2026-10-06T17:58:36.522Z",
         "url": "https://github.com/jpdandin44/AVEREO/pull/76",
-        "draft": true
+        "draft": false,
+        "merged": true,
+        "mergedAt": "2026-10-06T17:46:04Z",
+        "mergeCommit": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1"
       }
     },
     {
       "id": 2,
       "shortTitle": "Préproduction",
       "title": "Préproduction",
-      "status": "in_progress",
-      "objective": "Pilote CONNECT appliqué ; contrôler l’accès autorisé et le parcours applicatif avant généralisation.",
+      "status": "blocked",
+      "objective": "Le filtre IP CONNECT est remplacé ; la recette est bloquée au fournisseur d’identité.",
       "dependsOn": [],
       "startedOn": "2026-10-06",
       "deliveredOn": null,
@@ -117,11 +121,12 @@
         "Accès anonyme/incorrect refusé, accès autorisé réussi sur HTTPS.",
         "Connexion, lancement Rapport, sauvegarde et rechargement vérifiés."
       ],
-      "nextAction": "Confirmer l’accès avec le compte de consultation existant dans un navigateur habituel, puis recetter CONNECT/Drupal/Rapport avant généralisation.",
+      "nextAction": "Préparer le candidat privé de dépendances, conserver son verrou Composer dans Git puis appliquer la réparation autorisée et recetter.",
       "blockers": [
-        "Accès avec les bons identifiants à vérifier par le responsable : le navigateur intégré ne propose pas l’invite HTTP Basic (ERR_INVALID_AUTH_CREDENTIALS). Aucun secret demandé dans le chat.",
-        "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
-        "Compatibilité OAuth, alias et pérennité au prochain déploiement à qualifier avant généralisation."
+        "Authentification bloquée sur auth-next-preprod.avereo.fr : HTTP 500, interface OpenID Connect introuvable ; bibliothèques OIDC et OAuth absentes du vendor hébergé.",
+        "Réparation ciblée de l’installation Simple OAuth 6.1.1 à préparer et qualifier avec sauvegarde/retour arrière ; dépôt source du serveur d’identité à identifier avant changement.",
+        "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter après réparation.",
+        "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation."
       ]
     },
     {
@@ -222,10 +227,15 @@
           },
           "protection_checks_passed": true
         },
-        "authorized_access": "not_verified",
-        "application_journey": "not_verified"
+        "authorized_access": "user_reported_navigation_to_identity",
+        "application_journey": "blocked_at_identity",
+        "user_evidence": {
+          "observedAt": "2026-10-06T17:59:31.987+00:00",
+          "source": "user_chat_and_screenshot",
+          "evidence": "Le responsable indique que la PR #76 règle le problème IP et fournit la redirection de connexion vers auth-next-preprod /oauth/authorize avec client CONNECT préproduction. Aucun paramètre OAuth transitoire conservé."
+        }
       },
-      "note": "Bloc IP remplacé par Basic avec le compte existant du site. HTTPS anonyme/incorrect : 401 ; HTTP : 403 sans challenge. Accès avec bons identifiants et recette métier en attente.",
+      "note": "Pilote Basic/HTTPS actif ; refus anonyme/incorrect et HTTP vérifiés. Accès de consultation franchi selon le responsable ; connexion bloquée au fournisseur d’identité, recette métier non réussie.",
       "observation": {
         "domain": "connect-preprod.avereo.fr",
         "https": {
@@ -394,12 +404,12 @@
     },
     {
       "domain": "auth-next-preprod.avereo.fr",
-      "status": "inventorie_non_bascule",
+      "status": "incident_dependances_identite",
       "document_root": "/home/daje3540/auth-next-preprod.avereo.fr",
       "backup_receipt": null,
       "deployment_receipt": null,
       "acceptance_receipt": null,
-      "note": "Fournisseur identité ; HTTP 500 observé, diagnostic nécessaire.",
+      "note": "HTTP 500 reproduit ; Simple OAuth 6.1.1 chargé avec bibliothèques OIDC/OAuth absentes. Aucun fichier ni compte de ce serveur modifié.",
       "observation": {
         "domain": "auth-next-preprod.avereo.fr",
         "https": {
@@ -470,7 +480,7 @@
   "updated": "2026-10-06",
   "owner": "jpdandin",
   "currentPhase": 2,
-  "state": "in_progress",
+  "state": "blocked",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -500,16 +510,27 @@
     {
       "date": "2026-10-06",
       "event": "Pilote CONNECT appliqué après accord direct ; remplacement atomique ciblé et empreinte active vérifiée. HTTPS anonyme/incorrect 401 ; HTTP 403 sans challenge. Autres cibles et production inchangées."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "PR #76 observée fusionnée au commit 3d70b53. Retour du responsable : consultation IP débloquée, connexion en échec sur auth-next-preprod. Cause serveur identifiée en lecture seule : dépendances Simple OAuth absentes. Aucun accord de réparation distante ou de merge supplémentaire créé."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Accord direct reçu pour effectuer la réparation nécessaire ; script ciblé préparé et six tests de refus/restauration réussis. Aucun merge ou changement de production autorisé."
     }
   ],
   "github": {
     "repository": "jpdandin44/AVEREO",
     "number": 76,
-    "state": "open",
-    "headSha": "3559d19603750751d3abbf58f6010e2545a8e50e",
-    "observedAt": "2026-10-06T17:36:20.050+00:00",
+    "state": "closed",
+    "headSha": "ecdfc330e2e709082268106e99583640b52fa20d",
+    "observedAt": "2026-10-06T17:58:36.522Z",
     "url": "https://github.com/jpdandin44/AVEREO/pull/76",
-    "draft": true
+    "draft": false,
+    "merged": true,
+    "mergedAt": "2026-10-06T17:46:04Z",
+    "mergeCommit": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1"
   },
   "checks": [
     {
@@ -557,6 +578,13 @@
       "observedAt": "2026-10-06T17:33:13.331+00:00",
       "evidence": "Pilote hébergé : HTTPS 401/Basic sans identifiants et avec identifiants incorrects ; HTTP 403 sans challenge. Empreinte active vérifiée dans cPanel après remplacement atomique.",
       "note": "Aucun contrôle avec bon compte ni parcours métier déclaré réussi."
+    },
+    {
+      "kind": "identity_diagnostic",
+      "status": "failed",
+      "observedAt": "2026-10-06T17:59:31.987+00:00",
+      "evidence": "HTTP 500 reproduit ; erreur d’interface absente dans error_log et absence des deux bibliothèques vendor confirmées.",
+      "note": "Diagnostic en lecture seule ; aucun test de réparation exécuté, aucun fichier hébergé modifié."
     }
   ],
   "connect_candidate": {
@@ -661,7 +689,7 @@
         "evidence": "Copie privée de restauration identique octet par octet à original.htaccess ; SHA-256 5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e"
       }
     ],
-    "limitation": "Projection du seul pilote installé ; accès autorisé, recette métier et généralisation ne sont pas déclarés réussis.",
+    "limitation": "Projection historique du seul pilote CONNECT installé. Elle ne qualifie ni la réparation auth-next-preprod ni les applications ; la recette est bloquée au fournisseur d’identité.",
     "deployments": [
       {
         "target": "connect-preprod.avereo.fr",
@@ -673,5 +701,65 @@
         "evidence": "/home/daje3540/private/preprod-access/20261006T172103911203Z/deployment-receipt.json"
       }
     ]
+  },
+  "previous_blockers": [
+    "Accès avec les bons identifiants à vérifier par le responsable : le navigateur intégré ne propose pas l’invite HTTP Basic (ERR_INVALID_AUTH_CREDENTIALS). Aucun secret demandé dans le chat.",
+    "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+    "Compatibilité OAuth, alias et pérennité au prochain déploiement à qualifier avant généralisation."
+  ],
+  "identity_incident": {
+    "domain": "auth-next-preprod.avereo.fr",
+    "observedAt": "2026-10-06T17:59:31.987+00:00",
+    "symptom": "Drupal renvoie une erreur inattendue pendant /oauth/authorize, avant connexion CONNECT et lancement des applications. HTTP 500 également sur la racine.",
+    "preexisting_evidence": "HTTP 500 enregistré le 6 octobre à 17:19 UTC, avant l’application du pilote CONNECT à 17:31 UTC.",
+    "source": "cPanel, journal error_log, fichiers Composer et répertoires vendor du seul auth-next-preprod ; valeurs privées et paramètres OAuth non conservés.",
+    "drupal_version": "11.4.6",
+    "simple_oauth_version": "6.1.1",
+    "technical_error": "Interface OpenIDConnectServer\\Repositories\\IdentityProviderInterface not found",
+    "file": "modules/contrib/simple_oauth/src/OpenIdConnect/UserIdentityProvider.php:14",
+    "missing_dependencies": [
+      {
+        "package": "steverhoades/oauth2-openid-connect-server",
+        "declared_constraint": "^3.0",
+        "vendor_directory_present": false
+      },
+      {
+        "package": "league/oauth2-server",
+        "declared_constraint": "^9.0",
+        "vendor_directory_present": false
+      }
+    ],
+    "root_composer_declares_simple_oauth": false,
+    "openid_autoload_mapping_present": false,
+    "cause": "Installation Simple OAuth incomplète : module présent, bibliothèques PHP qu’il requiert absentes. Le mécanisme d’installation historique n’a pas été établi.",
+    "resolution_status": "preparing_candidate",
+    "next_action": "Préparer la réparation des dépendances Simple OAuth du seul serveur auth-next-preprod, puis refaire la connexion avant de qualifier les applications.",
+    "constraints": "Préserver comptes, configuration privée, base, clés OAuth et contrôles Basic CONNECT. Ne pas installer une mise à jour globale du site ou basculer vers auth-preprod sans qualification.",
+    "source_repository": "Réparation des dépendances versionnée dans jpdandin44/AVEREO, outillage/acces-preproduction ; dépôt du reste de l’instance Drupal non identifié, hors de cette réparation.",
+    "remote_writes": false
+  },
+  "identity_repair": {
+    "authorization": {
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-10-06T18:16:49.179+00:00",
+      "evidence": "Demande directe : OK fais les modifications nécessaires stp.",
+      "target": "auth-next-preprod.avereo.fr",
+      "effect": "Réparer les dépendances manquantes du serveur d’identité de préproduction, conserver comptes/clés, sauvegarder et recetter."
+    },
+    "status": "preparing",
+    "source_script": "outillage/acces-preproduction/repair_identity.py",
+    "local_tests": {
+      "observedAt": "2026-10-06T18:16:49.179+00:00",
+      "count": 6,
+      "status": "passed",
+      "evidence": "Refus production, changements de dépendances existantes et contrat non liés ; application/restauration byte-identiques, refus état concurrent et restauration après transfert en échec."
+    },
+    "target_root": "/home/daje3540/auth-next-preprod.avereo.fr",
+    "php_version": "8.3.35",
+    "composer_version": "2.10.2",
+    "candidate": null,
+    "deployment": null,
+    "source_contract_status": "À extraire du candidat privé avant application."
   }
 }

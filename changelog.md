@@ -30,3 +30,9 @@ contrôles d’accès portables sur Windows. Pilote CONNECT appliqué après acc
 avec sauvegarde privée vérifiée, contrôle HTTPS 401/Basic et refus HTTP 403 sans
 challenge. Accès avec le bon compte et recette métier en attente ; aucune modification
 de production. Voir le [relevé](outillage/acces-preproduction/releve-heberge.md).
+
+Après fusion de la PR #76, diagnostic en lecture seule de l’échec de connexion
+sur le fournisseur d’identité de préproduction. Le suivi identifie une installation
+Simple OAuth incomplète, avec deux bibliothèques PHP absentes ; la recette reste
+bloquée avant le lancement des applications. Aucune réparation distante ni
+modification des comptes ou secrets effectuée pendant ce diagnostic.

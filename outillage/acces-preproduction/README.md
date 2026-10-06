@@ -14,7 +14,7 @@ tags: [preproduction, securite, exploitation]
 
 ## Statut du lot
 
-**Pilote CONNECT appliqué ; accès autorisé et recette métier en attente.** L'accord du responsable
+**Pilote CONNECT appliqué ; recette bloquée au fournisseur d’identité.** L'accord du responsable
 porte sur le remplacement du filtrage IP de consultation par une protection HTTP
 par identifiants, CONNECT d'abord, puis les autres préproductions. Il autorise une
 PR dédiée, pas un merge ni une modification de production.
@@ -28,6 +28,13 @@ Les reçus et contrôles hébergés sont conservés dans le suivi : HTTPS anonym
 identifiants incorrects renvoie 401 avec Basic ; HTTP renvoie 403 sans challenge.
 La sauvegarde privée reste disponible. Les autres cibles ne sont pas basculées.
 Aucun mot de passe, cookie, lien de session cPanel ou hachage de compte n'est versionné.
+
+La PR #76 est maintenant fusionnée, comme l’indique le suivi. Le responsable signale
+que le filtrage IP est débloqué, puis une erreur lors de la connexion. Le diagnostic
+en lecture seule du serveur d’identité confirme une installation Simple OAuth
+incomplète. La cause et les dépendances absentes figurent dans
+le [relevé dérivé](releve-heberge.md#incident-dauthentification). La recette n’a pas
+atteint le lancement des applications ; fusionner leurs PR ne corrige pas cet incident.
 
 Le [suivi du lot](suivi-chantier.json) est la source canonique de cette itération.
 Il porte les quatre phases du cockpit Projet. Le suivi initial est archivé sans
@@ -243,6 +250,38 @@ Le site demande actuellement aussi le mot de passe sur HTTP. Sa protection reste
 en place ; ce point doit être corrigé pendant son harmonisation. Le périmètre
 CV et Passeport est inventorié mais reste fermé. Les fournisseurs d’identité
 restent à qualifier ; `auth-next-preprod` répond actuellement 500.
+
+## Consultation dans le cockpit
+
+## Réparation des dépendances du fournisseur d’identité
+
+Le responsable a demandé le 6 octobre de réaliser la réparation diagnostiquée.
+La seule cible de cette réparation est `auth-next-preprod.avereo.fr`, Drupal
+11.4.6 avec Simple OAuth 6.1.1. Le [script ciblé](repair_identity.py) prépare dans
+un dossier privé une copie des fichiers Composer et de `vendor`, puis ajoute
+les deux dépendances exactes déclarées par le module. Il refuse un changement
+de package déjà verrouillé ou d’un autre champ du manifeste.
+
+Les scripts et plugins Composer sont désactivés. Aucun bootstrap Drupal,
+commande de base, compte, clé ou configuration privée n’est inclus dans la
+préparation. Le candidat vérifie les exigences PHP et l’autoload des interfaces
+OAuth, OpenID Connect, Drupal et du fournisseur Simple OAuth réellement installé.
+La sauvegarde privée est comparée au contenu actif avant toute application.
+
+L’application exige le dossier et l’empreinte du reçu ; elle refuse un état actif
+modifié depuis la préparation. Elle conserve l’ancien `vendor` et restaure les
+fichiers d’origine en cas d’échec du transfert. Le retour arrière explicite refuse
+d’écraser un nouvel état divergent. Contrôler ensuite HTTPS, l’écran de connexion
+OAuth sans identifiant, les protections CONNECT et les journaux d’erreurs, puis
+recetter le parcours avec le compte du responsable. Une absence d’erreur 500 ne
+constitue pas une validation humaine du parcours métier.
+
+Le verrou Composer candidat sera conservé dans le dépôt après extraction du
+paquet de sources sans paramètres privés. Le source de référence de la réparation
+est ce lot du monorepo AVEREO ; le dépôt éventuel du reste de l’instance Drupal
+reste à identifier et aucun de ses thèmes ou contenus n’est repris ici.
+
+Référence du mécanisme : [Composer — require et install](https://getcomposer.org/doc/03-cli.md#require).
 
 ## Consultation dans le cockpit
 

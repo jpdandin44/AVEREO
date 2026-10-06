@@ -59,9 +59,26 @@ lines += ['', 'Les tests Apache locaux sont complétés par les contrôles hébe
     'La protection doit survivre au prochain déploiement ; cette pérennité reste à qualifier.', '',
     '## Points restant à traiter', '']
 lines += ['- ' + item for item in state['blockers']]
+incident = state.get('identity_incident')
+if incident:
+    lines += ['', '## Incident d’authentification', '',
+        f"Cible : `{incident['domain']}`. {incident['symptom']}", '',
+        incident['preexisting_evidence'], '',
+        f"Erreur du journal : `{incident['technical_error']}` dans `{incident['file']}`.",
+        f"Drupal `{incident['drupal_version']}` ; Simple OAuth `{incident['simple_oauth_version']}`.", '',
+        incident['cause'], '', 'Bibliothèques déclarées par le module et absentes du vendor :', '']
+    lines += [f"- `{dependency['package']}` — contrainte `{dependency['declared_constraint']}`."
+        for dependency in incident['missing_dependencies']]
+    lines += ['', incident['next_action'], '', incident['constraints'], '',
+        incident['source_repository'], '',
+        'Diagnostic en lecture seule ; aucune réparation distante effectuée. Les comptes et secrets sont inchangés.']
+github = state['github']
+github_status = 'fusionnée' if github.get('merged') else ('brouillon' if github.get('draft') else github['state'])
 lines += ['', '## Source GitHub', '',
-    f"[PR #{state['github']['number']}]({state['github']['url']}) — brouillon observé,",
-    f"SHA `{state['github']['headSha']}`. Aucun merge ni validation de phase créée automatiquement."]
+    f"[PR #{github['number']}]({github['url']}) — {github_status}, observée le `{github['observedAt']}`.",
+    f"SHA source `{github['headSha']}`. Aucune validation de phase créée automatiquement."]
+if github.get('merged'):
+    lines += [f"Fusion enregistrée par GitHub le `{github['mergedAt']}` ; commit `{github['mergeCommit']}`."]
 output = '\n'.join(lines) + '\n'
 approved = [artifact for decision in state.get('decisions', [])
     if decision.get('status') == 'approved'
