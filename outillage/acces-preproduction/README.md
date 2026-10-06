@@ -14,6 +14,11 @@ tags: [preproduction, securite, exploitation]
 
 ## Statut du lot
 
+La session du 6 octobre est clôturée à la demande du responsable. Lire le
+[point de reprise](point-session.md) avant de reprendre ce lot ; il rattache les
+constats au suivi canonique et conserve l'accord encore en attente sur les cinq
+candidats applicatifs. Aucun de ces candidats n'a été déployé à la clôture.
+
 Pour tester la connexion et les applications, utiliser les
 [accès de recette](releve-heberge.md#accès-pour-la-recette). Le cockpit local
 sert à consulter les phases, preuves et décisions. Il ne constitue pas

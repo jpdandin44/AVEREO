@@ -75,3 +75,8 @@ par ce reçu. CONNECT manque les colonnes de la migration d’activation, Recher
 n’a pas de cible/configuration/catalogue, Passeport n’a que sa fermeture.
 Un lot exact de cinq cibles existantes est préparé avec règles d’accès et plan de
 recette/retour arrière ; aucun candidat applicatif installé ni production modifiée.
+
+Clôture de session demandée par le responsable : [point de reprise](outillage/acces-preproduction/point-session.md)
+enregistré, avec les sources, archives privées à conserver, limites des sauvegardes
+et ordre de reprise. L'accord sur le lot exact de cinq applications reste en attente ;
+aucun déploiement ni validation de phase ajouté par cette clôture.

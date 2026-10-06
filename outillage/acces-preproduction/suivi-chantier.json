@@ -1786,5 +1786,12 @@
       ],
       "scope": "Fichiers seulement ; restauration privée vérifiée ; aucune sauvegarde/restauration de base qualifiée."
     }
+  },
+  "sessionHandoff": {
+    "status": "closed_on_user_request",
+    "closedAt": "2026-10-06T21:15:30.378+00:00",
+    "path": "outillage/acces-preproduction/point-session.md",
+    "reason": "Fin de session demandée par le responsable ; conserver les informations pour le prochain redémarrage.",
+    "nextAction": "Lire le point de reprise, actualiser les preuves et vérifier un accord exact avant toute livraison du lot de cinq applications."
   }
 }
