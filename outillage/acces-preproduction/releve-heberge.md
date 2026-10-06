@@ -24,7 +24,7 @@ Confirmer la bascule du seul pilote CONNECT avec le compte existant du site ; ap
 | --- | --- | --- |
 | Cadrage | À valider | Examiner la décision et le relevé des domaines. |
 | Développement local | À valider | Examiner la PR #76 et le candidat préparé. |
-| Préproduction | À valider | Confirmer le pilote CONNECT puis contrôler les accès et le parcours applicatif. |
+| Préproduction | Bloquée | Confirmer le pilote CONNECT puis contrôler les accès et le parcours applicatif. |
 | Mise en production | Non commencée | Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé. |
 
 ## Domaines vérifiés
@@ -35,7 +35,7 @@ Contrôles sans identifiants, sans suivi des redirections, sans corps ni cookies
 | Domaine | Racine réelle | HTTPS | HTTP | Observation |
 | --- | --- | --- | --- | --- |
 | preprod.avereo.fr | `/home/daje3540/preprod.avereo.fr` | 401 | 401 | Basic existant ; challenge aussi sur HTTP, à corriger avant harmonisation. |
-| connect-preprod.avereo.fr | `/home/daje3540/connect-preprod.avereo.fr/public` | 403 | 403 | Restriction IP observée dans public/.htaccess ; candidat ciblé en préparation. |
+| connect-preprod.avereo.fr | `/home/daje3540/connect-preprod.avereo.fr/public` | 403 | 403 | Candidat Basic/HTTPS préparé hors racine web ; bloc IP remplacé uniquement dans le candidat. Sauvegarde et copie de restauration vérifiées. |
 | rapport-preprod.avereo.fr | `/home/daje3540/rapport-preprod.avereo.fr` | 303 | 303 | Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés. |
 | coupe-preprod.avereo.fr | `/home/daje3540/coupe-preprod.avereo.fr` | 303 | 303 | Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés. |
 | projet-preprod.avereo.fr | `/home/daje3540/projet-preprod.avereo.fr` | 303 | 303 | Lancement à ticket CONNECT ; Basic absent, aucun changement encore appliqué. Les refus descendants sont conservés. |
@@ -48,13 +48,19 @@ Contrôles sans identifiants, sans suivi des redirections, sans corps ni cookies
 
 ## Candidat CONNECT et récupération
 
-TBD — reçu de préparation privée à enregistrer avant bascule.
+- Sauvegarde privée : `/home/daje3540/private/preprod-access/20261006T172103911203Z`.
+- SHA-256 original : `5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e`.
+- SHA-256 candidat : `90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155`.
+- Copie de restauration vérifiée octet par octet dans le dossier privé.
+- Aucun fichier public, compte de consultation ou fichier de production modifié.
 
 ## Contrôles et limites
 
 - ci : passed — https://github.com/jpdandin44/AVEREO/actions/runs/37497652175. Candidat initial, 12 tests ; nouveau candidat à contrôler.
 - local : passed — Tests locaux Docker/Apache : 14 tests réussis, aucun saut.. Apache réel, refus HTTP sans challenge Basic ; la compatibilité TLS hébergée reste à recetter.
 - documentation : passed — 8 documents contrôlés : front matter, liens locaux et socle racine ; git diff --check réussi.. Audit global des autres sous-projets hors périmètre.
+- ci : passed — https://github.com/jpdandin44/AVEREO/actions/runs/37502834488. Tests dédiés réussis sur a0aa172 ; CI générale réussie (37502834464), PR Policy ignorée sur brouillon.
+- cockpit : passed — http://127.0.0.1:5196/. Moteur Projet raccordé à cette source canonique ; quatre phases, documents accessibles, zéro problème de lecture ; aucune décision créée.
 
 Les tests Apache locaux ne prouvent pas la compatibilité du TLS hébergé.
 Le parcours CONNECT → Drupal → Rapport → sauvegarde → rechargement reste à recetter.
@@ -69,4 +75,4 @@ La protection doit survivre au prochain déploiement ; cette pérennité reste �
 ## Source GitHub
 
 [PR #76](https://github.com/jpdandin44/AVEREO/pull/76) — brouillon observé,
-SHA `121a0d0d576bdea39a423fc5fc981aadfe1cb502`. Aucun merge ni accord humain créé.
+SHA `a0aa172ba2a26fd05a5d1ea07ab603ab9471b598`. Aucun merge ni accord humain créé.

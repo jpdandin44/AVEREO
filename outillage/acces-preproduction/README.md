@@ -25,8 +25,9 @@ canonique. Le bloc IP de CONNECT est confirmé. Aucun fichier public n'est encor
 modifié ; un candidat privé et sa copie de restauration sont préparés avant bascule.
 Aucun mot de passe, cookie, lien de session cPanel ou hachage de compte n'est versionné.
 
-Le [suivi du lot](suivi-chantier.json) conserve cette limite. Il est la source canonique de cette itération et porte les quatre phases du
-cockpit Projet. Le suivi initial est archivé sans perte ni nouvelle validation. Protocole applicable :
+Le [suivi du lot](suivi-chantier.json) est la source canonique de cette itération.
+Il porte les quatre phases du cockpit Projet. Le suivi initial est archivé sans
+perte ni nouvelle validation. Protocole applicable :
 [quatre phases](../protocole-developpement/skills/developpement-github-cockpit/references/protocole.md).
 
 ## Objectif et frontières
@@ -46,7 +47,7 @@ Les workflows de publication existants ne sont pas modifiés par ce lot.
 
 Dans Domaines, inventorier les seuls sous-domaines de préproduction réellement
 présents ; noter leurs racines réelles et tous leurs alias. Les candidats dans
-`suivi.json` ne prouvent pas leur existence ni leur disponibilité. Ajouter un autre
+`suivi-chantier.json` ne prouvent pas leur existence ni leur disponibilité. Ajouter un autre
 candidat dans la source uniquement après identification, jamais par wildcard.
 
 Pour chaque cible, en session d'exploitation autorisée :

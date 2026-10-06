@@ -82,8 +82,8 @@
         "repository": "jpdandin44/AVEREO",
         "number": 76,
         "state": "open",
-        "headSha": "121a0d0d576bdea39a423fc5fc981aadfe1cb502",
-        "observedAt": "2026-10-06T17:19:21.381+00:00",
+        "headSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "observedAt": "2026-10-06T17:24:20.080+00:00",
         "url": "https://github.com/jpdandin44/AVEREO/pull/76",
         "draft": true
       }
@@ -92,11 +92,11 @@
       "id": 2,
       "shortTitle": "Préproduction",
       "title": "Préproduction",
-      "status": "awaiting_review",
+      "status": "blocked",
       "objective": "Confirmer le pilote CONNECT puis contrôler les accès et le parcours applicatif.",
       "dependsOn": [],
       "startedOn": "2026-10-06",
-      "deliveredOn": "2026-10-06",
+      "deliveredOn": null,
       "validatedOn": null,
       "validationEvidence": null,
       "deliverables": [
@@ -177,12 +177,24 @@
     },
     {
       "domain": "connect-preprod.avereo.fr",
-      "status": "inventorie_non_bascule",
+      "status": "candidat_prive_prepare_a_confirmer",
       "document_root": "/home/daje3540/connect-preprod.avereo.fr/public",
-      "backup_receipt": null,
+      "backup_receipt": {
+        "target": "/home/daje3540/connect-preprod.avereo.fr/public/.htaccess",
+        "backup_directory": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+        "original_sha256": "5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e",
+        "candidate_sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "original_mode": "0o664",
+        "restore_copy_verified": true,
+        "public_target_written": false,
+        "account_file_written": false,
+        "production_written": false,
+        "account_file": "/home/daje3540/.htpasswds/preprod.avereo.fr/passwd",
+        "prepared_at": "2026-10-06T17:21:03.912007+00:00"
+      },
       "deployment_receipt": null,
       "acceptance_receipt": null,
-      "note": "Restriction IP observée dans public/.htaccess ; candidat ciblé en préparation.",
+      "note": "Candidat Basic/HTTPS préparé hors racine web ; bloc IP remplacé uniquement dans le candidat. Sauvegarde et copie de restauration vérifiées.",
       "observation": {
         "domain": "connect-preprod.avereo.fr",
         "https": {
@@ -414,7 +426,7 @@
   "updated": "2026-10-06",
   "owner": "jpdandin",
   "currentPhase": 2,
-  "state": "awaiting_review",
+  "state": "blocked",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -432,14 +444,18 @@
     {
       "date": "2026-10-06",
       "event": "Session cPanel lue ; onze cibles inventoriées. Restriction IP de CONNECT confirmée. Aucune configuration publique modifiée."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Candidat privé CONNECT préparé sur le serveur depuis le script versionné a0aa172 ; sauvegarde et copie de restauration vérifiées. Aucun fichier public modifié."
     }
   ],
   "github": {
     "repository": "jpdandin44/AVEREO",
     "number": 76,
     "state": "open",
-    "headSha": "121a0d0d576bdea39a423fc5fc981aadfe1cb502",
-    "observedAt": "2026-10-06T17:19:21.381+00:00",
+    "headSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+    "observedAt": "2026-10-06T17:24:20.080+00:00",
     "url": "https://github.com/jpdandin44/AVEREO/pull/76",
     "draft": true
   },
@@ -465,6 +481,34 @@
       "observedAt": "2026-10-06T17:21:39.061+00:00",
       "evidence": "8 documents contrôlés : front matter, liens locaux et socle racine ; git diff --check réussi.",
       "note": "Audit global des autres sous-projets hors périmètre."
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+      "observedAt": "2026-10-06T17:24:20.080+00:00",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37502834488",
+      "note": "Tests dédiés réussis sur a0aa172 ; CI générale réussie (37502834464), PR Policy ignorée sur brouillon."
+    },
+    {
+      "kind": "cockpit",
+      "status": "passed",
+      "observedAt": "2026-10-06T17:24:20.080+00:00",
+      "evidence": "http://127.0.0.1:5196/",
+      "note": "Moteur Projet raccordé à cette source canonique ; quatre phases, documents accessibles, zéro problème de lecture ; aucune décision créée."
     }
-  ]
+  ],
+  "connect_candidate": {
+    "target": "/home/daje3540/connect-preprod.avereo.fr/public/.htaccess",
+    "backup_directory": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+    "original_sha256": "5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e",
+    "candidate_sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+    "original_mode": "0o664",
+    "restore_copy_verified": true,
+    "public_target_written": false,
+    "account_file_written": false,
+    "production_written": false,
+    "account_file": "/home/daje3540/.htpasswds/preprod.avereo.fr/passwd",
+    "prepared_at": "2026-10-06T17:21:03.912007+00:00"
+  }
 }
