@@ -188,6 +188,9 @@ Les anciens types restent lisibles ; aucune donnée de rapport hébergée n’a 
 
 ### Corrections et qualifications par cible
 
+CI des outils sur `af17cb371469e503d6964dab391a4fffb1b8b1ca` : [27 tests sans saut](https://github.com/jpdandin44/AVEREO/actions/runs/37520544589) et [CI générale](https://github.com/jpdandin44/AVEREO/actions/runs/37520544556) réussis.
+Ces runs valident les sources ; ils ne produisent pas les archives locales et ne prouvent pas le contenu hébergé. PR Policy reste ignorée sur le brouillon.
+
 - **connect** : Conserver la surcouche Basic active ; qualifier configuration privée et versions SQL avant tout remplacement.
 - **rapport** : Livrer le candidat à deux types après inventaire, sauvegarde/restauration et accord applicable ; recetter sauvegarde et réouverture.
 - **coupe** : Comparer au candidat main et examiner séparément la PR #54 avant de retenir ses évolutions ; qualifier le stockage existant sans nouvelle activation.

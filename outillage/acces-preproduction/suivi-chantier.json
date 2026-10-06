@@ -97,8 +97,8 @@
         "state": "open",
         "draft": true,
         "merged": false,
-        "headSha": "9db26fd5afa63abc861b190f6b2dccf5cbf4f0f5",
-        "observedAt": "2026-10-06T18:35:38.000Z"
+        "headSha": "af17cb371469e503d6964dab391a4fffb1b8b1ca",
+        "observedAt": "2026-10-06T19:43:14.265+00:00"
       }
     },
     {
@@ -1413,6 +1413,19 @@
       "gate": "preproduction",
       "allowed": false,
       "reason": "Inventaire privé, cibles isolées, récupération, recette et accord exact non qualifiés ; preuve CI des archives locales absente."
+    },
+    "tooling_ci": {
+      "source_sha": "af17cb371469e503d6964dab391a4fffb1b8b1ca",
+      "observed_at": "2026-10-06T19:43:14.265+00:00",
+      "status": "passed",
+      "tests": 27,
+      "skipped": 0,
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37520544589",
+      "general_ci_url": "https://github.com/jpdandin44/AVEREO/actions/runs/37520544556",
+      "general_ci_status": "passed",
+      "pr_policy_status": "skipped_draft",
+      "artifact_attestation": false,
+      "scope": "Tests des sources et outils ; les archives locales ne sont pas produites par ce run."
     }
   }
 }

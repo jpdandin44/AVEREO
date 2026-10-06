@@ -130,6 +130,10 @@ if alignment:
     lines += ['', 'Deux choix de création Rapport : ' + ', '.join(alignment['report_selectable_types']) + '.',
         'Les anciens types restent lisibles ; aucune donnée de rapport hébergée n’a été modifiée.', '',
         '### Corrections et qualifications par cible', '']
+    ci = alignment.get('tooling_ci')
+    if ci:
+        lines += [f"CI des outils sur `{ci['source_sha']}` : [{ci['tests']} tests sans saut]({ci['url']}) et [CI générale]({ci['general_ci_url']}) réussis.",
+            'Ces runs valident les sources ; ils ne produisent pas les archives locales et ne prouvent pas le contenu hébergé. PR Policy reste ignorée sur le brouillon.', '']
     lines += [f"- **{app['app']}** : {app['next_action']}" for app in alignment['applications']]
     lines += ['', '### Dépendances et limites', '']
     lines += ['- ' + item for item in alignment['dependencies'].values()]
