@@ -115,6 +115,6 @@ depuis le projet concerné. Chaque projet conserve ses commandes, son suivi et s
 ## Accès aux préproductions
 
 Le [lot d’accès privés](outillage/acces-preproduction/README.md) conserve la
-méthode, la préparation du pilote CONNECT et les limites de généralisation.
+méthode, l’application du pilote CONNECT et les limites de sa recette et de la généralisation.
 Son [suivi canonique](outillage/acces-preproduction/suivi-chantier.json) alimente
 le cockpit. La PR de préparation ne vaut pas bascule ni ouverture.

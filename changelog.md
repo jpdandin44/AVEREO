@@ -26,5 +26,7 @@ et des contrôles ciblés. Les applications et déploiements restent sous leurs 
 Reprise de la PR #76 : inventaire cPanel de onze préproductions, confirmation du
 filtrage IP de CONNECT et préparation privée de son remplacement par Basic sur
 HTTPS. Raccordement du lot au cockpit avec conservation du suivi initial, et
-contrôles d’accès portables sur Windows. Aucune bascule publique ni production
-réalisée dans cette préparation ; voir le [relevé](outillage/acces-preproduction/releve-heberge.md).
+contrôles d’accès portables sur Windows. Pilote CONNECT appliqué après accord direct,
+avec sauvegarde privée vérifiée, contrôle HTTPS 401/Basic et refus HTTP 403 sans
+challenge. Accès avec le bon compte et recette métier en attente ; aucune modification
+de production. Voir le [relevé](outillage/acces-preproduction/releve-heberge.md).

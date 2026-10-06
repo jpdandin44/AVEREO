@@ -2,7 +2,7 @@
 project: avereo
 document_type: runbook
 title: Acces par identifiants aux preproductions AVEREO
-status: proposed
+status: active
 version: git
 created: 2026-10-06
 updated: 2026-10-06
@@ -14,15 +14,19 @@ tags: [preproduction, securite, exploitation]
 
 ## Statut du lot
 
-**Préparation locale ; aucune bascule serveur effectuée.** L'accord du responsable
+**Pilote CONNECT appliqué ; accès autorisé et recette métier en attente.** L'accord du responsable
 porte sur le remplacement du filtrage IP de consultation par une protection HTTP
 par identifiants, CONNECT d'abord, puis les autres préproductions. Il autorise une
 PR dédiée, pas un merge ni une modification de production.
 
 La reprise du 6 octobre permet de piloter la session cPanel. Les onze racines
 réelles sont relevées dans le [relevé hébergé](releve-heberge.md), dérivé du suivi
-canonique. Le bloc IP de CONNECT est confirmé. Aucun fichier public n'est encore
-modifié ; un candidat privé et sa copie de restauration sont préparés avant bascule.
+canonique. Après accord direct « Oui, appliquer le pilote CONNECT », le seul bloc
+IP de consultation de CONNECT a été remplacé atomiquement par le candidat préparé.
+Le compte de consultation existant du site a été réutilisé sans modification.
+Les reçus et contrôles hébergés sont conservés dans le suivi : HTTPS anonyme ou
+identifiants incorrects renvoie 401 avec Basic ; HTTP renvoie 403 sans challenge.
+La sauvegarde privée reste disponible. Les autres cibles ne sont pas basculées.
 Aucun mot de passe, cookie, lien de session cPanel ou hachage de compte n'est versionné.
 
 Le [suivi du lot](suivi-chantier.json) est la source canonique de cette itération.
@@ -72,9 +76,9 @@ la cible reste bloquée et sa protection actuelle est conservée.
 
 ## Bascule pilote CONNECT
 
-La cible reste `connect-preprod.avereo.fr`, mais son chemin doit venir du relevé
-cPanel actuel. Le chemin historique finissant par `/public` est un indice, pas
-une confirmation. Ne pas appliquer cette procédure à `connect.avereo.fr`.
+La cible est `connect-preprod.avereo.fr`. Sa racine réelle a été confirmée dans
+cPanel et figure dans le suivi canonique ; la requalifier avant une nouvelle action.
+Ne pas appliquer cette procédure à `connect.avereo.fr`.
 
 Dans Confidentialité du répertoire (Directory Privacy), sélectionner cette racine
 exacte. Activer la protection par mot de passe avec le libellé `AVEREO Preproduction`.
@@ -163,10 +167,10 @@ Sinon, composer explicitement le fichier final à partir de la source applicativ
 et de la protection privée, puis qualifier l'artefact résultant avant transfert.
 Ne pas ignorer tout `.htaccess` au risque de bloquer ses mises à jour applicatives.
 
-La décision précise dépend du relevé réel ; elle n'est pas implémentée par cette
-PR de préparation. Rejouer les tests HTTP et métier après un déploiement de recette
-avant de déclarer la généralisation durable. La fusion de cette PR seule ne
-change aucun serveur et ne corrige pas le 403.
+La décision précise dépend du relevé réel ; la pérennité n'est pas implémentée par
+cette PR. Rejouer les tests HTTP et métier après un déploiement de recette avant de
+déclarer la généralisation durable. Le pilote a été appliqué en exploitation avec
+un accord propre ; la fusion de cette PR seule ne change aucun serveur.
 
 ## Validation locale
 
@@ -209,7 +213,7 @@ sortie sur poste partagé et utiliser des comptes de consultation révocables.
 Les documentations externes décrivent les mécanismes. Les états hébergés doivent
 être établis par les reçus d'exploitation du responsable, pas par ces références.
 
-## Pilote préparé lors de la reprise
+## Préparation et application du pilote lors de la reprise
 
 `prepare_connect.py` prépare uniquement le candidat CONNECT dans un répertoire privé.
 Il vérifie le bloc IP exact, conserve les autres octets, copie la sauvegarde et
@@ -218,9 +222,22 @@ aucun compte ni aucune production. La bascule reste une action distincte.
 
 Le candidat utilise le fichier de comptes existant du site et ajoute
 `SSLRequireSSL` : le HTTP est refusé avant le challenge Basic. Le refus HTTP ne
-prouve pas le fonctionnement HTTPS. Après bascule, contrôler HTTPS, les mauvais
-identifiants, le bon compte et les parcours métier ; revenir au fichier original
-si la couche TLS de l’hébergement n’est pas compatible.
+prouve pas le fonctionnement HTTPS. Le candidat est maintenant actif sur le seul
+pilote : les contrôles HTTPS sans identifiants et avec de mauvais identifiants sont
+réussis. Le bon compte et les parcours métier restent à vérifier ; revenir au
+fichier original si la recette révèle un échec.
+
+Le navigateur intégré a signalé `ERR_INVALID_AUTH_CREDENTIALS` au lieu de proposer
+l’invite HTTP Basic. Le responsable doit vérifier l’accès dans son navigateur
+habituel, puis le parcours décrit ci-dessus. Cette limite n’est pas assimilée à
+un échec du compte ; aucun mot de passe n’est demandé dans le chat.
+
+Pour revenir en arrière, utiliser exclusivement le dossier de sauvegarde du reçu
+CONNECT : vérifier l’empreinte du fichier actif et celle de `original.htaccess`,
+préparer une copie privée avec les permissions d’origine, puis remplacer
+atomiquement le seul `.htaccess` du pilote. Vérifier l’empreinte originale après
+restauration et inscrire l’incident dans le suivi. Ne pas recopier un fichier
+depuis une autre cible et ne pas écraser un fichier qui a changé depuis le reçu.
 
 Le site demande actuellement aussi le mot de passe sur HTTP. Sa protection reste
 en place ; ce point doit être corrigé pendant son harmonisation. Le périmètre

@@ -4,18 +4,18 @@
   "source_commit": "fbf395b31917ad46565896ae46317e11db0b611e",
   "objective": "Acces par identifiants aux preproductions ; CONNECT en premier.",
   "phase": "preproduction",
-  "status": "candidat_connect_a_confirmer",
-  "server_modified": false,
+  "status": "pilote_connect_applique_recette_en_attente",
+  "server_modified": true,
   "production_modified": false,
-  "owner_authorization": "Méthode et généralisation demandées dans Cahier des charges AVEREO, reprises ici le 6 octobre. Aucun accord de merge ou de production. Confirmation de sécurité au moment de la bascule requise par le contrôle du navigateur.",
+  "owner_authorization": "Méthode et généralisation demandées dans Cahier des charges AVEREO, reprises ici le 6 octobre. Accord direct reçu pour appliquer le seul pilote CONNECT avec le compte existant du site, refus HTTP, recette et retour arrière en cas d’échec. Aucun accord de merge ou de production.",
   "cockpit_reference": "outillage/acces-preproduction/suivi-chantier.json",
   "cockpit_status": "Source canonique raccordée au moteur de revue Projet ; aucune décision automatique.",
   "blockers": [
-    "Confirmation au moment du remplacement de la restriction IP par Basic sur CONNECT.",
-    "Recette avec les identifiants de consultation et parcours CONNECT/Drupal/Rapport à effectuer.",
-    "Compatibilité et pérennité des autres cibles à qualifier avant généralisation."
+    "Accès avec les bons identifiants à vérifier par le responsable : le navigateur intégré ne propose pas l’invite HTTP Basic (ERR_INVALID_AUTH_CREDENTIALS). Aucun secret demandé dans le chat.",
+    "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+    "Compatibilité OAuth, alias et pérennité au prochain déploiement à qualifier avant généralisation."
   ],
-  "next_action": "Confirmer la bascule du seul pilote CONNECT avec le compte existant du site ; appliquer puis recetter avant généralisation.",
+  "next_action": "Confirmer l’accès avec le compte de consultation existant dans un navigateur habituel, puis recetter CONNECT/Drupal/Rapport avant généralisation.",
   "phases": [
     {
       "id": 0,
@@ -82,8 +82,8 @@
         "repository": "jpdandin44/AVEREO",
         "number": 76,
         "state": "open",
-        "headSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
-        "observedAt": "2026-10-06T17:24:20.080+00:00",
+        "headSha": "3559d19603750751d3abbf58f6010e2545a8e50e",
+        "observedAt": "2026-10-06T17:36:20.050+00:00",
         "url": "https://github.com/jpdandin44/AVEREO/pull/76",
         "draft": true
       }
@@ -92,8 +92,8 @@
       "id": 2,
       "shortTitle": "Préproduction",
       "title": "Préproduction",
-      "status": "blocked",
-      "objective": "Confirmer le pilote CONNECT puis contrôler les accès et le parcours applicatif.",
+      "status": "in_progress",
+      "objective": "Pilote CONNECT appliqué ; contrôler l’accès autorisé et le parcours applicatif avant généralisation.",
       "dependsOn": [],
       "startedOn": "2026-10-06",
       "deliveredOn": null,
@@ -117,11 +117,11 @@
         "Accès anonyme/incorrect refusé, accès autorisé réussi sur HTTPS.",
         "Connexion, lancement Rapport, sauvegarde et rechargement vérifiés."
       ],
-      "nextAction": "Confirmer le pilote CONNECT puis contrôler les accès et le parcours applicatif.",
+      "nextAction": "Confirmer l’accès avec le compte de consultation existant dans un navigateur habituel, puis recetter CONNECT/Drupal/Rapport avant généralisation.",
       "blockers": [
-        "Confirmation au moment du remplacement de la restriction IP par Basic sur CONNECT.",
-        "Recette avec les identifiants de consultation et parcours CONNECT/Drupal/Rapport à effectuer.",
-        "Compatibilité et pérennité des autres cibles à qualifier avant généralisation."
+        "Accès avec les bons identifiants à vérifier par le responsable : le navigateur intégré ne propose pas l’invite HTTP Basic (ERR_INVALID_AUTH_CREDENTIALS). Aucun secret demandé dans le chat.",
+        "Parcours CONNECT/Drupal/Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+        "Compatibilité OAuth, alias et pérennité au prochain déploiement à qualifier avant généralisation."
       ]
     },
     {
@@ -177,7 +177,7 @@
     },
     {
       "domain": "connect-preprod.avereo.fr",
-      "status": "candidat_prive_prepare_a_confirmer",
+      "status": "pilote_applique_recette_en_attente",
       "document_root": "/home/daje3540/connect-preprod.avereo.fr/public",
       "backup_receipt": {
         "target": "/home/daje3540/connect-preprod.avereo.fr/public/.htaccess",
@@ -192,10 +192,55 @@
         "account_file": "/home/daje3540/.htpasswds/preprod.avereo.fr/passwd",
         "prepared_at": "2026-10-06T17:21:03.912007+00:00"
       },
-      "deployment_receipt": null,
-      "acceptance_receipt": null,
-      "note": "Candidat Basic/HTTPS préparé hors racine web ; bloc IP remplacé uniquement dans le candidat. Sauvegarde et copie de restauration vérifiées.",
+      "deployment_receipt": {
+        "target": "/home/daje3540/connect-preprod.avereo.fr/public/.htaccess",
+        "applied_at": "2026-10-06T17:31:40.100824+00:00",
+        "active_sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "previous_sha256": "5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e",
+        "backup_directory": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+        "production_written": false,
+        "account_file_written": false
+      },
+      "acceptance_receipt": {
+        "protection_checks": {
+          "domain": "connect-preprod.avereo.fr",
+          "observedAt": "2026-10-06T17:33:13.331+00:00",
+          "https_anonymous": {
+            "status": 401,
+            "basic_challenge": true,
+            "transport": "ok"
+          },
+          "https_invalid": {
+            "status": 401,
+            "basic_challenge": true,
+            "transport": "ok"
+          },
+          "http_anonymous": {
+            "status": 403,
+            "basic_challenge": false,
+            "transport": "ok"
+          },
+          "protection_checks_passed": true
+        },
+        "authorized_access": "not_verified",
+        "application_journey": "not_verified"
+      },
+      "note": "Bloc IP remplacé par Basic avec le compte existant du site. HTTPS anonyme/incorrect : 401 ; HTTP : 403 sans challenge. Accès avec bons identifiants et recette métier en attente.",
       "observation": {
+        "domain": "connect-preprod.avereo.fr",
+        "https": {
+          "status": 401,
+          "basic_challenge": true,
+          "transport": "ok"
+        },
+        "http": {
+          "status": 403,
+          "basic_challenge": false,
+          "transport": "ok"
+        }
+      },
+      "observedAt": "2026-10-06T17:33:13.331+00:00",
+      "observation_before": {
         "domain": "connect-preprod.avereo.fr",
         "https": {
           "status": 403,
@@ -207,8 +252,7 @@
           "redirects_to_same_https": false,
           "basic_challenge": false
         }
-      },
-      "observedAt": "2026-10-06T17:19:21.381+00:00"
+      }
     },
     {
       "domain": "rapport-preprod.avereo.fr",
@@ -426,7 +470,7 @@
   "updated": "2026-10-06",
   "owner": "jpdandin",
   "currentPhase": 2,
-  "state": "blocked",
+  "state": "in_progress",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -448,14 +492,22 @@
     {
       "date": "2026-10-06",
       "event": "Candidat privé CONNECT préparé sur le serveur depuis le script versionné a0aa172 ; sauvegarde et copie de restauration vérifiées. Aucun fichier public modifié."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Accord direct du responsable : appliquer le seul pilote CONNECT, candidat 90c1ab2e, puis recetter et restaurer en cas d’échec."
+    },
+    {
+      "date": "2026-10-06",
+      "event": "Pilote CONNECT appliqué après accord direct ; remplacement atomique ciblé et empreinte active vérifiée. HTTPS anonyme/incorrect 401 ; HTTP 403 sans challenge. Autres cibles et production inchangées."
     }
   ],
   "github": {
     "repository": "jpdandin44/AVEREO",
     "number": 76,
     "state": "open",
-    "headSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
-    "observedAt": "2026-10-06T17:24:20.080+00:00",
+    "headSha": "3559d19603750751d3abbf58f6010e2545a8e50e",
+    "observedAt": "2026-10-06T17:36:20.050+00:00",
     "url": "https://github.com/jpdandin44/AVEREO/pull/76",
     "draft": true
   },
@@ -466,14 +518,14 @@
       "status": "passed",
       "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37497652175",
       "observedAt": "2026-10-06T17:19:21.381+00:00",
-      "note": "Candidat initial, 12 tests ; nouveau candidat à contrôler."
+      "note": "Archive du candidat initial, 12 tests ; candidat suivant vérifié séparément."
     },
     {
       "kind": "local",
       "status": "passed",
       "observedAt": "2026-10-06T17:21:39.061+00:00",
       "evidence": "Tests locaux Docker/Apache : 14 tests réussis, aucun saut.",
-      "note": "Apache réel, refus HTTP sans challenge Basic ; la compatibilité TLS hébergée reste à recetter."
+      "note": "Apache réel et refus HTTP vérifiés localement ; ces tests ne remplacent pas la recette hébergée."
     },
     {
       "kind": "documentation",
@@ -496,6 +548,15 @@
       "observedAt": "2026-10-06T17:24:20.080+00:00",
       "evidence": "http://127.0.0.1:5196/",
       "note": "Moteur Projet raccordé à cette source canonique ; quatre phases, documents accessibles, zéro problème de lecture ; aucune décision créée."
+    },
+    {
+      "kind": "hosted_protection",
+      "status": "passed",
+      "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+      "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+      "observedAt": "2026-10-06T17:33:13.331+00:00",
+      "evidence": "Pilote hébergé : HTTPS 401/Basic sans identifiants et avec identifiants incorrects ; HTTP 403 sans challenge. Empreinte active vérifiée dans cPanel après remplacement atomique.",
+      "note": "Aucun contrôle avec bon compte ni parcours métier déclaré réussi."
     }
   ],
   "connect_candidate": {
@@ -510,5 +571,107 @@
     "production_written": false,
     "account_file": "/home/daje3540/.htpasswds/preprod.avereo.fr/passwd",
     "prepared_at": "2026-10-06T17:21:03.912007+00:00"
+  },
+  "pilotAuthorization": {
+    "scope": "preproduction",
+    "status": "approved",
+    "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+    "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+    "target": "connect-preprod.avereo.fr",
+    "actor": "jpdandin",
+    "source": "user_chat",
+    "recordedAt": "2026-10-06T17:30:05.252+00:00",
+    "evidence": "Réponse directe dans ce chat : Oui, appliquer le pilote CONNECT.",
+    "effect": "Remplacer le bloc IP par Basic avec le compte existant du site et refus HTTP ; recette puis retour arrière si échec."
+  },
+  "developmentWorkflow": {
+    "iterationId": "acces-preprod-connect-20261006",
+    "owner": "jpdandin",
+    "candidate": {
+      "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+      "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155"
+    },
+    "blockers": [],
+    "targets": {
+      "preproduction": {
+        "id": "connect-preprod.avereo.fr",
+        "ready": true,
+        "isolated": true,
+        "empty": false,
+        "observedAt": "2026-10-06T17:21:03.912007+00:00",
+        "evidence": "cPanel : racine public distincte de connect.avereo.fr ; chemin réel contrôlé ; reçu privé /home/daje3540/private/preprod-access/20261006T172103911203Z"
+      }
+    },
+    "checks": [
+      {
+        "kind": "local",
+        "status": "passed",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "observedAt": "2026-10-06T17:30:05.252+00:00",
+        "evidence": "14 tests réels Apache/Docker, composition ciblée et refus HTTP vérifiés ; script préparateur contrôlé par SHA-256 sur le serveur."
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "observedAt": "2026-10-06T17:30:05.252+00:00",
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37502834488"
+      },
+      {
+        "kind": "documentation",
+        "status": "passed",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "observedAt": "2026-10-06T17:30:05.252+00:00",
+        "evidence": "8 documents vérifiés ; relevé canonique, liens, métadonnées et candidat privé enregistrés."
+      },
+      {
+        "kind": "hosted_protection",
+        "status": "passed",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "observedAt": "2026-10-06T17:33:13.331+00:00",
+        "evidence": "Pilote hébergé : HTTPS 401/Basic sans identifiants et avec identifiants incorrects ; HTTP 403 sans challenge. Empreinte active vérifiée dans cPanel après remplacement atomique.",
+        "note": "Aucun contrôle avec bon compte ni parcours métier déclaré réussi."
+      }
+    ],
+    "approvals": [
+      {
+        "scope": "preproduction",
+        "status": "approved",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "target": "connect-preprod.avereo.fr",
+        "actor": "jpdandin",
+        "source": "user_chat",
+        "recordedAt": "2026-10-06T17:30:05.252+00:00",
+        "evidence": "Réponse directe dans ce chat : Oui, appliquer le pilote CONNECT.",
+        "effect": "Remplacer le bloc IP par Basic avec le compte existant du site et refus HTTP ; recette puis retour arrière si échec."
+      }
+    ],
+    "backups": [
+      {
+        "target": "connect-preprod.avereo.fr",
+        "id": "/home/daje3540/private/preprod-access/20261006T172103911203Z",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "observedAt": "2026-10-06T17:21:03.912007+00:00",
+        "evidence": "Copie privée de restauration identique octet par octet à original.htaccess ; SHA-256 5ab423f418b30de39ec0a5455a7b325a83a7cfdeaad908586fd99410e3952b7e"
+      }
+    ],
+    "limitation": "Projection du seul pilote installé ; accès autorisé, recette métier et généralisation ne sont pas déclarés réussis.",
+    "deployments": [
+      {
+        "target": "connect-preprod.avereo.fr",
+        "environment": "preproduction",
+        "sourceSha": "a0aa172ba2a26fd05a5d1ea07ab603ab9471b598",
+        "artifactSha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "status": "applied",
+        "observedAt": "2026-10-06T17:31:40.100824+00:00",
+        "evidence": "/home/daje3540/private/preprod-access/20261006T172103911203Z/deployment-receipt.json"
+      }
+    ]
   }
 }
