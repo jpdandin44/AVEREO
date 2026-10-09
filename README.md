@@ -103,7 +103,8 @@ concernent le prototype racine, pas le portail PHP CONNECT ni Passeport Immo.
 
 [Architecture](architecture.md) · [Exigences](requirements.md) · [Roadmap](roadmap.md) ·
 [Décisions](decisions.md) · [Changelog](changelog.md).
-Configuration privée, état distant et installation serveur : non vérifiés dans ce lot.
+Configuration privée et état distant du prototype racine : non qualifiés ici.
+Les preuves hébergées des lots restent dans leurs suivis propres.
 
 ## Protocole commun à tous les dépôts
 
