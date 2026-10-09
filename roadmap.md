@@ -5,7 +5,7 @@ title: Roadmap du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-06
+updated: 2026-10-09
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -42,3 +42,9 @@ CONNECT. Aucune de ces opérations n’est une mise en production.
 Les preuves, réserves et prochaines actions par application restent dans
 [le relevé dérivé](outillage/acces-preproduction/releve-heberge.md#alignement-des-applications).
 Aucun passage de phase ni remplacement applicatif n’est déduit des tests locaux.
+
+Le 9 octobre, les cibles et récupérations de fichiers sont revérifiées. La
+préparation conserve désormais le retour OAuth de Coupe et détaille le retrait
+des fichiers ajoutés lors d'un éventuel retour arrière. La prochaine action porte
+sur l'accord du **lot corrigé**, puis sa livraison et sa recette réelle ; les
+préparations distinctes CONNECT, Recherche et Passeport restent nécessaires.

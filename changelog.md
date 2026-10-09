@@ -5,7 +5,7 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-06
+updated: 2026-10-09
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -80,3 +80,19 @@ Clôture de session demandée par le responsable : [point de reprise](outillage/
 enregistré, avec les sources, archives privées à conserver, limites des sauvegardes
 et ordre de reprise. L'accord sur le lot exact de cinq applications reste en attente ;
 aucun déploiement ni validation de phase ajouté par cette clôture.
+
+## 2026-10-09
+
+Reprise demandée avec session cPanel et revue dans Claude. État GitHub actualisé,
+archives originales vérifiées et huit cibles réexaminées en lecture seule ; les
+sept sauvegardes et copies privées de fichiers/modes correspondent toujours aux
+racines actives. Les configurations dédiées et les prérequis SQL sont inchangés.
+
+Correction de la préparation du lot de cinq applications : règle OAuth de Coupe
+conservée, fichiers identiques après normalisation LF laissés en place, opérations
+de création/remplacement et retour arrière explicites, modes d'origine conservés.
+Six tests du préparateur passent ; suite locale : 33 tests, dont six Apache sautés
+sur ce poste. Le plan corrigé possède une nouvelle empreinte et reste en attente
+d'accord de préproduction. Le [point de session](outillage/acces-preproduction/point-session.md)
+et le suivi canonique portent les preuves datées ; aucune application remplacée,
+aucune base migrée et aucune production modifiée.

@@ -21,7 +21,7 @@
     "Accord de livraison applicative du candidat préparé non enregistré ; les accords antérieurs couvrent le pilote d’accès et la réparation ciblée.",
     "Recette métier authentifiée sur les versions effectivement livrées : lancement, stockage lorsqu’il existe, réouverture, exports, déconnexion et révocation."
   ],
-  "next_action": "Accord de recette du lot préparé Rapport/Coupe/Projet/Thermo/Drone ; traiter séparément la migration CONNECT et les raccordements Recherche/Passeport. Aucun candidat applicatif installé à ce stade.",
+  "next_action": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
   "phases": [
     {
       "id": 0,
@@ -97,9 +97,22 @@
         "state": "open",
         "draft": true,
         "merged": false,
-        "headSha": "af17cb371469e503d6964dab391a4fffb1b8b1ca",
-        "observedAt": "2026-10-06T19:43:14.265+00:00"
-      }
+        "headSha": "70fbcac44517f11c8031cedf627957ead6efd6fe",
+        "observedAt": "2026-10-09T10:46:22.090+00:00",
+        "note": "Tête observée avant les corrections locales de reprise ; la PR reste un brouillon."
+      },
+      "pullRequestHistory": [
+        {
+          "repository": "jpdandin44/AVEREO",
+          "number": 77,
+          "url": "https://github.com/jpdandin44/AVEREO/pull/77",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "headSha": "af17cb371469e503d6964dab391a4fffb1b8b1ca",
+          "observedAt": "2026-10-06T19:43:14.265+00:00"
+        }
+      ]
     },
     {
       "id": 2,
@@ -132,17 +145,17 @@
           "title": "Contrat exact de la réparation d’identité"
         },
         {
-          "path": "archives/audit-applications-hebergees.json",
+          "path": "point-session.md",
           "kind": "file",
           "availability": "present",
-          "title": "Inventaire des huit applications, compatibilité et restauration privée"
+          "title": "Point de reprise du 9 octobre et lien vers le plan exact"
         }
       ],
       "exitCriteria": [
         "Accès anonyme/incorrect refusé, accès autorisé réussi sur HTTPS.",
         "Connexion, lancement Rapport, sauvegarde et rechargement vérifiés."
       ],
-      "nextAction": "Accord de recette du lot préparé Rapport/Coupe/Projet/Thermo/Drone ; traiter séparément la migration CONNECT et les raccordements Recherche/Passeport. Aucun candidat applicatif installé à ce stade.",
+      "nextAction": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
       "blockers": [
         "Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
         "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.",
@@ -153,6 +166,18 @@
         "Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.",
         "Accord de livraison applicative du candidat préparé non enregistré ; les accords antérieurs couvrent le pilote d’accès et la réparation ciblée.",
         "Recette métier authentifiée sur les versions effectivement livrées : lancement, stockage lorsqu’il existe, réouverture, exports, déconnexion et révocation."
+      ],
+      "deliverableMappings": [
+        {
+          "source": {
+            "path": "archives/audit-applications-hebergees.json",
+            "kind": "file",
+            "availability": "present",
+            "title": "Inventaire des huit applications, compatibilité et restauration privée"
+          },
+          "consultable_in": "releve-heberge.md",
+          "reason": "Le lecteur du cockpit accepte seulement Markdown ; le reçu JSON reste une preuve structurée liée dans le relevé."
+        }
       ]
     },
     {
@@ -576,7 +601,7 @@
   "title": "Accès privés aux préproductions AVEREO",
   "version": "git",
   "created": "2026-10-06",
-  "updated": "2026-10-06",
+  "updated": "2026-10-09",
   "owner": "jpdandin",
   "currentPhase": 2,
   "state": "blocked",
@@ -640,8 +665,9 @@
     "state": "open",
     "draft": true,
     "merged": false,
-    "headSha": "9db26fd5afa63abc861b190f6b2dccf5cbf4f0f5",
-    "observedAt": "2026-10-06T18:35:38.000Z"
+    "headSha": "70fbcac44517f11c8031cedf627957ead6efd6fe",
+    "observedAt": "2026-10-09T10:46:22.090+00:00",
+    "note": "Tête observée avant les corrections locales de reprise ; la PR reste un brouillon."
   },
   "checks": [
     {
@@ -1086,6 +1112,16 @@
       "merged": true,
       "mergedAt": "2026-10-06T17:46:04Z",
       "mergeCommit": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1"
+    },
+    {
+      "repository": "jpdandin44/AVEREO",
+      "number": 77,
+      "url": "https://github.com/jpdandin44/AVEREO/pull/77",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "headSha": "9db26fd5afa63abc861b190f6b2dccf5cbf4f0f5",
+      "observedAt": "2026-10-06T18:35:38.000Z"
     }
   ],
   "developmentWorkflowHistory": [
@@ -1594,9 +1630,10 @@
         "drone"
       ],
       "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
-      "artifact_sha256": "e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324",
-      "archive": ".local/alignement/lot-recette-cinq-applications.zip",
-      "plan": ".local/alignement/plan-livraison-recette.json",
+      "artifact_sha256": "6c3a3c56420be49bc0b26383fd4b282d118ba03b4b99aef96a39dc2cf1f130dd",
+      "archive": ".local/alignement-reprise/lot-recette-cinq-applications.zip",
+      "plan": ".local/alignement-reprise/plan-livraison-recette.json",
+      "plan_reference": "archives/reprise-applications-20261009.json#delivery_plan",
       "performed": false
     },
     "delivery_batch_workflow": {
@@ -1606,7 +1643,7 @@
       "status": "awaiting_preproduction_approval",
       "candidate": {
         "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
-        "artifactSha256": "e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324"
+        "artifactSha256": "6c3a3c56420be49bc0b26383fd4b282d118ba03b4b99aef96a39dc2cf1f130dd"
       },
       "targets": {
         "preproduction": {
@@ -1614,8 +1651,8 @@
           "ready": true,
           "isolated": true,
           "empty": false,
-          "evidence": "Cinq racines cPanel réelles sous /home/daje3540/*-preprod.avereo.fr, sans lien symbolique ; configurations préprod dédiées, cinq secrets cohérents ; Rapport base distincte, Coupe base non configurée. archives/audit-applications-hebergees.json",
-          "observedAt": "2026-10-06T20:12:00.235+00:00"
+          "evidence": "Cinq racines, configurations et fichiers/modes inchangés ; règles OAuth conservées. archives/reprise-applications-20261009.json",
+          "observedAt": "2026-10-09T10:15:02.308+00:00"
         },
         "production": {
           "id": null,
@@ -1623,6 +1660,65 @@
         }
       },
       "checks": [
+        {
+          "kind": "local",
+          "status": "passed",
+          "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+          "artifactSha256": "6c3a3c56420be49bc0b26383fd4b282d118ba03b4b99aef96a39dc2cf1f130dd",
+          "observedAt": "2026-10-09T10:46:22.090+00:00",
+          "evidence": "Cinq ZIP inchangés et plan embarqué vérifiés, 57 chemins candidats qualifiés ; six tests du préparateur passent. Les builds et contrats applicatifs de référence restent ceux du reçu du 6 octobre. archives/reprise-applications-20261009.json"
+        },
+        {
+          "kind": "ci",
+          "status": "passed",
+          "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+          "artifactSha256": "6c3a3c56420be49bc0b26383fd4b282d118ba03b4b99aef96a39dc2cf1f130dd",
+          "observedAt": "2026-10-09T10:46:22.090+00:00",
+          "evidence": "Source applicative 3d70b530 inchangée, CI de référence réussie : https://github.com/jpdandin44/AVEREO/actions/runs/37506091820 ; ZIP applicatifs exacts inchangés, liaison et plan revérifiés localement. Ce run du 6 octobre ne produit ni ne certifie la nouvelle archive locale.",
+          "artifact_attestation": false
+        },
+        {
+          "kind": "documentation",
+          "status": "passed",
+          "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+          "artifactSha256": "6c3a3c56420be49bc0b26383fd4b282d118ba03b4b99aef96a39dc2cf1f130dd",
+          "observedAt": "2026-10-09T10:47:47.692+00:00",
+          "evidence": "Socle racine présent, dix Markdown et 72 liens locaux vérifiés ; métadonnées, quatre phases, hashes Composer conservés, plan du reçu égal au ZIP corrigé. Générateur et cockpit contrôlés séparément."
+        }
+      ],
+      "approvals": [],
+      "backups": [
+        {
+          "id": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z",
+          "target": "recette-rapport-coupe-projet-thermo-drone",
+          "status": "verified",
+          "restoreStatus": "passed",
+          "evidence": "archives/reprise-applications-20261009.json : cinq snapshots actifs, sauvegardés et restaurés privés restent identiques en fichiers/modes ; aucune récupération de base attestée.",
+          "observedAt": "2026-10-09T10:15:02.308+00:00"
+        }
+      ],
+      "blockers": [],
+      "nextAction": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
+      "gate_result": {
+        "gate": "preproduction",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Accord humain exact absent : preproduction."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "observedAt": "2026-10-09T10:47:47.692+00:00"
+      },
+      "candidate_history": [
+        {
+          "candidate": {
+            "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+            "artifactSha256": "e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324"
+          },
+          "evidence": "archives/audit-applications-hebergees.json",
+          "superseded_at": "2026-10-09T10:46:22.090+00:00"
+        }
+      ],
+      "checks_history": [
         {
           "kind": "local",
           "status": "passed",
@@ -1649,27 +1745,13 @@
           "evidence": "Suivi canonique, reçus d’inventaire/récupération et plan exact conservés ; relevé dérivé et documents d’impact actualisés. Contrôle documentaire réel : 9 Markdown et 58 liens locaux valides."
         }
       ],
-      "approvals": [],
-      "backups": [
-        {
-          "id": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z",
-          "target": "recette-rapport-coupe-projet-thermo-drone",
-          "status": "verified",
-          "restoreStatus": "passed",
-          "evidence": "archives/audit-applications-hebergees.json : cinq snapshots de fichiers, modes et SHA vérifiés, copies privées restaurées identiques ; pas de modification SQL prévue.",
-          "observedAt": "2026-10-06T20:10:27.126+00:00"
-        }
-      ],
-      "blockers": [],
-      "nextAction": "Accord de préproduction sur ce lot exact, puis contrôle des fichiers/règles d’accès et recette des applications ; retour arrière aux snapshots si un contrôle échoue.",
-      "gate_result": {
-        "gate": "preproduction",
-        "declaredEvidenceConsistent": false,
-        "errors": [
-          "Accord humain exact absent : preproduction."
-        ],
-        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
-        "observedAt": "2026-10-06T20:25:56.516+00:00"
+      "rollback": {
+        "status": "planned_file_inverse_operations",
+        "target": "recette-rapport-coupe-projet-thermo-drone",
+        "artifactSha256": "6c3a3c56420be49bc0b26383fd4b282d118ba03b4b99aef96a39dc2cf1f130dd",
+        "evidence": "archives/reprise-applications-20261009.json",
+        "active_rollback_performed": false,
+        "limitation": "Snapshots privés de restauration vérifiés ; plan des inverses testé, pas de retour arrière de livraison active du nouveau lot."
       }
     },
     "file_recovery": {
@@ -1785,13 +1867,49 @@
         }
       ],
       "scope": "Fichiers seulement ; restauration privée vérifiée ; aucune sauvegarde/restauration de base qualifiée."
+    },
+    "latest_resumption": {
+      "observed_at": "2026-10-09T10:46:22.090+00:00",
+      "hosted_observed_at": "2026-10-09T10:15:02.308+00:00",
+      "paths_observed_at": "2026-10-09T10:35:21.725+00:00",
+      "evidence_path": "archives/reprise-applications-20261009.json",
+      "operation_counts": {
+        "rapport": {
+          "preserve": 9,
+          "replace": 3,
+          "create": 2
+        },
+        "coupe": {
+          "preserve": 9,
+          "replace": 5,
+          "create": 1
+        },
+        "projet": {
+          "preserve": 5,
+          "replace": 2,
+          "create": 5
+        },
+        "thermo": {
+          "preserve": 5,
+          "replace": 1,
+          "create": 2
+        },
+        "drone": {
+          "preserve": 5,
+          "replace": 1,
+          "create": 2
+        }
+      },
+      "summary": "Huit cibles et sept récupérations privées revérifiées, fichiers actifs inchangés. Lot corrigé avec les cinq règles d’accès conservées et opérations inverses explicites. Aucun candidat applicatif installé ; accord exact encore absent."
     }
   },
   "sessionHandoff": {
-    "status": "closed_on_user_request",
+    "status": "resumed_on_user_request",
     "closedAt": "2026-10-06T21:15:30.378+00:00",
     "path": "outillage/acces-preproduction/point-session.md",
     "reason": "Fin de session demandée par le responsable ; conserver les informations pour le prochain redémarrage.",
-    "nextAction": "Lire le point de reprise, actualiser les preuves et vérifier un accord exact avant toute livraison du lot de cinq applications."
+    "nextAction": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
+    "resumedAt": "2026-10-09T10:46:22.090+00:00",
+    "resumptionReason": "Reprise demandée ; cPanel connecté et revue dans Claude autorisés."
   }
 }

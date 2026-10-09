@@ -5,7 +5,7 @@ title: Acces par identifiants aux preproductions AVEREO
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-06
+updated: 2026-10-09
 owner: jpdandin
 tags: [preproduction, securite, exploitation]
 ---
@@ -14,10 +14,11 @@ tags: [preproduction, securite, exploitation]
 
 ## Statut du lot
 
-La session du 6 octobre est clôturée à la demande du responsable. Lire le
-[point de reprise](point-session.md) avant de reprendre ce lot ; il rattache les
-constats au suivi canonique et conserve l'accord encore en attente sur les cinq
-candidats applicatifs. Aucun de ces candidats n'a été déployé à la clôture.
+Le lot est repris le 9 octobre, avec accès cPanel contrôlé et revue locale dans
+Claude à la demande du responsable. Le [point de reprise](point-session.md)
+rattache les constats au suivi canonique. Les versions hébergées et les sept
+copies privées de récupération sont inchangées ; le plan des cinq applications
+est corrigé et son nouvel accord de livraison reste en attente.
 
 Pour tester la connexion et les applications, utiliser les
 [accès de recette](releve-heberge.md#accès-pour-la-recette). Le cockpit local
@@ -110,10 +111,40 @@ ne constitue pas une sauvegarde ni une recette de restauration des bases.
 
 Un lot exact Rapport/Coupe/Projet/Thermo/Drone est préparé. Le suivi en conserve
 le plan, l’archive, les empreintes et le workflow distinct de l’ensemble des huit
-applications. Les règles hébergées identiques sont conservées. Coupe reprend la
-redirection auth du candidat main ; son sas historique reste protégé, sa base
-non configurée et son mode privé inchangés. Les configurations privées, droits
-et données restent hors de l’archive. Aucun candidat applicatif n’est installé.
+applications. Le contrôle du 9 octobre est conservé dans le
+[reçu de reprise](archives/reprise-applications-20261009.json). Le `.htaccess`
+hébergé de chacune des cinq cibles est conservé, y compris celui de Coupe : la
+redirection `/auth` du candidat empêcherait le retour OAuth utilisé par son mode
+privé `drupal_oauth`. Son sas historique reste protégé, sa base non configurée et
+son mode privé inchangés. Les configurations privées, droits et données restent
+hors de l’archive. Aucun candidat applicatif n’est installé.
+
+Le [préparateur du lot](prepare_delivery_batch.py) utilise les ZIP déjà vérifiés
+et un relevé serveur de **tous leurs chemins**, permissions comprises. Il ne
+déploie rien. Il conserve aussi les fichiers identiques après normalisation LF,
+liste les créations/remplacements et décrit leur opération inverse. Les ZIP
+applicatifs inclus restent inchangés ; leur extraction directe sur une racine
+active est interdite, car elle ignorerait ces règles de conservation.
+
+```powershell
+python prepare_delivery_batch.py --original-batch .local/alignement/lot-recette-cinq-applications.zip `
+  --host-metadata ../../.local/reprise-20261009/audit-delivery-20261009.json `
+  --output .local/alignement-reprise
+```
+
+Avant toute écriture, comparer les empreintes, modes et absences attendus de tous
+les chemins. Ne toucher qu'aux opérations `create` et `replace`, par remplacement
+atomique de chaque fichier ; la livraison des cinq cibles n'est pas atomique.
+Conserver tous les autres chemins et les anciens assets. Pour revenir en arrière,
+contrôler d'abord tous les chemins concernés : restaurer uniquement les fichiers
+remplacés depuis la sauvegarde vérifiée avec leur mode d'origine ; retirer les
+fichiers créés seulement si leurs empreintes et modes correspondent encore au
+candidat livré. Refuser un état divergent. Retirer un répertoire créé seulement
+s'il est vide. Le plan couvre les fichiers et modes ; aucune restauration de base
+ni retour arrière d'une livraison active n'est attesté par cette préparation.
+
+Les fichiers planning de Projet constituent son planning stocké dans le
+navigateur. Aucune donnée ou API de revue privée du cockpit n'est incluse.
 
 CONNECT ne peut pas recevoir son backend main sans la migration ajoutant
 `onboarding_status` et `activation_email_sent_at`, absents de `users`. Sa base
@@ -338,7 +369,9 @@ depuis une autre cible et ne pas écraser un fichier qui a changé depuis le re�
 Le site demande actuellement aussi le mot de passe sur HTTP. Sa protection reste
 en place ; ce point doit être corrigé pendant son harmonisation. Le périmètre
 CV et Passeport est inventorié mais reste fermé. Les fournisseurs d’identité
-restent à qualifier ; `auth-next-preprod` répond actuellement 500.
+restaient à qualifier lors du diagnostic initial, où `auth-next-preprod` répondait
+500. La réparation et ses contrôles figurent ci-dessous ; la racine répond encore
+200 lors du contrôle anonyme du 9 octobre. Cela ne valide pas le parcours connecté.
 
 ## Réparation des dépendances du fournisseur d’identité
 

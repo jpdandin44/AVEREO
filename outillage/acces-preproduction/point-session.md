@@ -5,12 +5,43 @@ title: Point de reprise — alignement des applications en préproduction
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-06
+updated: 2026-10-09
 owner: jpdandin
 tags: [preproduction, reprise, applications, cockpit]
 ---
 
-# Point de reprise du 6 octobre 2026
+# Point de reprise
+
+## Reprise active du 9 octobre 2026
+
+Le responsable a demandé la reprise, donné accès à sa session cPanel et demandé
+une revue dans Claude. Le dépôt de travail et le checkout de construction restent
+ceux indiqués ci-dessous. La PR #77 est toujours ouverte en brouillon ; `main`
+reste à la référence `3d70b530acc236f36ade6c06a553d3c9f7ed07f1`, la PR #54 ouverte.
+
+Les archives originales, les huit cibles et les sept sauvegardes/restaurations
+privées de fichiers/modes ont été revérifiées. Les racines actives sont inchangées.
+Le [reçu du 9 octobre](archives/reprise-applications-20261009.json) conserve les
+observations réelles, les conclusions de revue vérifiées et le nouveau plan exact.
+Le [suivi canonique](suivi-chantier.json) identifie son archive et son empreinte.
+
+Le lot corrigé est conservé dans `.local/alignement-reprise/`, à côté de l'ancien
+lot conservé dans `.local/alignement/`. Les cinq ZIP applicatifs restent identiques,
+mais le plan change : conserver le `.htaccess` hébergé des **cinq** cibles pour
+préserver le retour OAuth de Coupe ; conserver les fichiers identiques après
+normalisation LF ; contrôler tous les états avant écriture et distinguer création,
+remplacement et conservation. Le retour arrière restaure les anciens fichiers et
+modes, retire seulement les ajouts encore identiques au candidat et refuse toute
+dérive. Aucun fichier applicatif actif n'a été remplacé.
+
+Prochaine action : accord de préproduction sur ce lot corrigé, puis livraison
+gardée par ses empreintes et recette réelle des cinq applications. Les deux choix
+Rapport attendus restent « Expertise & Visite technique » et
+« Visite Globale (Habitologie) ». CONNECT, Recherche et Passeport restent des
+travaux distincts avec les prérequis décrits ci-dessous. Ni validation humaine
+de phase, ni accord de merge, ni mise en production ne sont ajoutés à la reprise.
+
+## Historique — clôture du 6 octobre 2026
 
 Session arrêtée à la demande du responsable. Le lot de cinq applications est
 préparé, **sans déploiement applicatif effectué et sans accord reçu sur ce nouveau
@@ -94,7 +125,8 @@ Son plan est aussi conservé dans
 la copie de référence figure dans `delivery_plan` du reçu d'audit versionné.
 Les configurations privées, données et droits actuels sont conservés. Les règles
 d'accès restent celles du plan : `.htaccess` hébergé conservé pour quatre cibles,
-règle `/auth` de Coupe remplacée par la redirection préparée. Aucun backend CONNECT,
+règle `/auth` de Coupe alors prévue avec la redirection préparée. **Ce plan a été
+supplanté lors de la reprise du 9 octobre et n'a jamais été appliqué.** Aucun backend CONNECT,
 SQL, accès Recherche ou ouverture Passeport n'est inclus.
 
 La demande d'accord sur cette cible, cette référence et cette archive est restée

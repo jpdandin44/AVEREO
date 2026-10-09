@@ -5,7 +5,7 @@ title: Relevé des accès aux préproductions AVEREO
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-06
+updated: 2026-10-09
 owner: jpdandin
 tags: [preproduction, exploitation, cockpit, derive]
 ---
@@ -18,13 +18,13 @@ ni validation humaine ni bascule. La préparation initiale est conservée dans
 
 ## État du lot
 
-Accord de recette du lot préparé Rapport/Coupe/Projet/Thermo/Drone ; traiter séparément la migration CONNECT et les raccordements Recherche/Passeport. Aucun candidat applicatif installé à ce stade.
+Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.
 
 | Phase | État | Prochaine action |
 | --- | --- | --- |
 | Cadrage | À valider | Examiner la décision et le relevé des domaines. |
 | Développement local | À valider | Examiner les fichiers, preuves et documentation de la PR #77. |
-| Préproduction | En cours | Accord de recette du lot préparé Rapport/Coupe/Projet/Thermo/Drone ; traiter séparément la migration CONNECT et les raccordements Recherche/Passeport. Aucun candidat applicatif installé à ce stade. |
+| Préproduction | En cours | Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec. |
 | Mise en production | Non commencée | Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé. |
 
 ## Accès pour la recette
@@ -194,9 +194,29 @@ Dossier privé : `/home/daje3540/private/preprod-alignment/recovery-20261006T201
 Les empreintes frontend différentes établissent un écart d’artefact ; seule la version Rapport possède aussi une preuve fonctionnelle des anciens choix.
 
 **Lot de recette préparé** : rapport, coupe, projet, thermo, drone.
-Référence `3d70b530acc236f36ade6c06a553d3c9f7ed07f1` ; archive `.local/alignement/lot-recette-cinq-applications.zip` ; SHA-256 `e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324`.
-Le plan exact figure dans le reçu. Configuration privée, habilitations et données conservées ; aucune migration SQL prévue. La règle auth de Coupe rejoint le portail, son sas historique restant protégé.
+Référence `3d70b530acc236f36ade6c06a553d3c9f7ed07f1` ; archive `.local/alignement-reprise/lot-recette-cinq-applications.zip` ; SHA-256 `6c3a3c56420be49bc0b26383fd4b282d118ba03b4b99aef96a39dc2cf1f130dd`.
+Le plan exact figure dans le reçu courant indiqué ci-dessous. Configuration privée, habilitations et données conservées ; aucune migration SQL prévue. Les cinq règles hébergées restent identiques, y compris le retour OAuth de Coupe ; son sas historique reste protégé.
 Ce lot attend son accord de préproduction. CONNECT, Recherche et Passeport Immo ont des prérequis distincts et sont exclus du remplacement préparé.
+
+### Reprise du 9 octobre
+
+Observations serveur du `2026-10-09T10:15:02.308+00:00` et chemins candidats du `2026-10-09T10:35:21.725+00:00`.
+[Reçu de reprise et plan corrigé](archives/reprise-applications-20261009.json).
+
+Huit cibles et sept récupérations privées revérifiées, fichiers actifs inchangés. Lot corrigé avec les cinq règles d’accès conservées et opérations inverses explicites. Aucun candidat applicatif installé ; accord exact encore absent.
+
+Claude a effectué une revue locale en lecture seule ; les conclusions retenues ont été vérifiées sur les sources et les reçus serveur.
+
+| Application | Conservés | Remplacés prévus | Ajoutés prévus |
+| --- | --- | --- | --- |
+| rapport | 9 | 3 | 2 |
+| coupe | 9 | 5 | 1 |
+| projet | 5 | 2 | 5 |
+| thermo | 5 | 1 | 2 |
+| drone | 5 | 1 | 2 |
+
+Les fichiers conservés incluent les règles d’accès et les différences limitées aux fins de ligne.
+Retour arrière prévu : restaurer uniquement les fichiers remplacés et leurs modes depuis la copie vérifiée ; retirer uniquement les ajouts encore identiques au candidat. Refuser toute dérive. Aucun retour arrière d’une livraison active du nouveau lot n’est déclaré réussi.
 
 CI des outils sur `af17cb371469e503d6964dab391a4fffb1b8b1ca` : [27 tests sans saut](https://github.com/jpdandin44/AVEREO/actions/runs/37520544589) et [CI générale](https://github.com/jpdandin44/AVEREO/actions/runs/37520544556) réussis.
 Ces runs valident les sources ; ils ne produisent pas les archives locales et ne prouvent pas le contenu hébergé. PR Policy reste ignorée sur le brouillon.
@@ -231,5 +251,5 @@ Les workflows de production restent manuels ; le merge et l’ouverture publique
 
 ## Source GitHub
 
-[PR #77](https://github.com/jpdandin44/AVEREO/pull/77) — brouillon, observée le `2026-10-06T18:35:38.000Z`.
-SHA source `9db26fd5afa63abc861b190f6b2dccf5cbf4f0f5`. Aucune validation de phase créée automatiquement.
+[PR #77](https://github.com/jpdandin44/AVEREO/pull/77) — brouillon, observée le `2026-10-09T10:46:22.090+00:00`.
+SHA source `70fbcac44517f11c8031cedf627957ead6efd6fe`. Aucune validation de phase créée automatiquement.

@@ -1,0 +1,3852 @@
+{
+  "recorded_at": "2026-10-09T10:46:22.090+00:00",
+  "scope": "read_only_resumption_and_corrected_five_app_preparation",
+  "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+  "previous_tooling_head": "70fbcac44517f11c8031cedf627957ead6efd6fe",
+  "github_before_changes": {
+    "pr-77": {
+      "headRefOid": "70fbcac44517f11c8031cedf627957ead6efd6fe",
+      "isDraft": true,
+      "mergedAt": null,
+      "number": 77,
+      "state": "OPEN",
+      "title": "fix(preprod): fiabiliser CONNECT et qualifier les applications",
+      "url": "https://github.com/jpdandin44/AVEREO/pull/77",
+      "checks_summary": [
+        {
+          "workflow": "PR Policy",
+          "name": "policy",
+          "conclusion": "SKIPPED"
+        },
+        {
+          "workflow": "Acces preproduction - tests uniquement",
+          "name": "test",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "Acces preproduction - tests uniquement",
+          "name": "test",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "validate",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "validate",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (rapport)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (rapport)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (coupe)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (coupe)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (projet)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (projet)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (thermo)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (thermo)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (drone)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (drone)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (recherche)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (recherche)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "connect-integration",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "connect-integration",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    },
+    "pr-54": {
+      "headRefOid": "5e1293b49b591d1092fb3a383d90b31ba05715a4",
+      "isDraft": false,
+      "mergedAt": null,
+      "number": 54,
+      "state": "OPEN",
+      "title": "feat(coupe): intégrer Coupe réelle à CONNECT local",
+      "url": "https://github.com/jpdandin44/AVEREO/pull/54",
+      "checks_summary": [
+        {
+          "workflow": "PR Policy",
+          "name": "policy",
+          "conclusion": "FAILURE"
+        },
+        {
+          "workflow": "PR Policy",
+          "name": "policy",
+          "conclusion": "FAILURE"
+        },
+        {
+          "workflow": "CI",
+          "name": "validate",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "validate",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (rapport)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (rapport)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (coupe)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (coupe)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (projet)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (projet)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (thermo)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (thermo)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (drone)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "frontend-gates (drone)",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "connect-integration",
+          "conclusion": "SUCCESS"
+        },
+        {
+          "workflow": "CI",
+          "name": "connect-integration",
+          "conclusion": "SUCCESS"
+        }
+      ]
+    }
+  },
+  "hosted_inventory": {
+    "observed_at": "2026-10-09T10:15:02.308+00:00",
+    "applications": [
+      {
+        "app": "connect",
+        "domain": "connect-preprod.avereo.fr",
+        "cpanel_status": 1,
+        "declared_roots": [
+          "/home/daje3540/connect-preprod.avereo.fr/public"
+        ],
+        "root": "/home/daje3540/connect-preprod.avereo.fr/public",
+        "real_root": "/home/daje3540/connect-preprod.avereo.fr/public",
+        "root_exists": true,
+        "production_roots": [
+          "/home/daje3540/connect.avereo.fr/public"
+        ],
+        "separate_from_production": true,
+        "status": "observed",
+        "code_files": {
+          "public/index.php": {
+            "sha256": "5aa7a16722ef4cd989d4d5607d22bfd4b51c504e9fb47dc4cde4440e2b0282b0",
+            "sha256_lf": "5aa7a16722ef4cd989d4d5607d22bfd4b51c504e9fb47dc4cde4440e2b0282b0",
+            "bytes": 6387
+          },
+          "public/index.html": {
+            "sha256": "3c2967a1d7e344ff7fcc56dd0e116b329a694802fc880b321b7eac18030f1973",
+            "sha256_lf": "3c2967a1d7e344ff7fcc56dd0e116b329a694802fc880b321b7eac18030f1973",
+            "bytes": 37478
+          },
+          "src/Application.php": {
+            "sha256": "50125e1c9f70aadaf31e4846ce752d71ffc29c6791c15947e99f64bcdf83cbbd",
+            "sha256_lf": "50125e1c9f70aadaf31e4846ce752d71ffc29c6791c15947e99f64bcdf83cbbd",
+            "bytes": 19272
+          },
+          "src/autoload.php": {
+            "sha256": "c4ac262267475820afa0291fb4a4938b170e503d0a7e7987804aec0117ea5b84",
+            "sha256_lf": "c4ac262267475820afa0291fb4a4938b170e503d0a7e7987804aec0117ea5b84",
+            "bytes": 410
+          },
+          "src/Database.php": {
+            "sha256": "7d6c20e5da28cf8aa12a8ddcf942776e458d04015382de1a295b3288d5dd933a",
+            "sha256_lf": "7d6c20e5da28cf8aa12a8ddcf942776e458d04015382de1a295b3288d5dd933a",
+            "bytes": 826
+          },
+          "src/Config.php": {
+            "sha256": "efd426f0e89118f1f70f05f3f58dda9b69058a2a9ac55d84cf667759fd75caca",
+            "sha256_lf": "efd426f0e89118f1f70f05f3f58dda9b69058a2a9ac55d84cf667759fd75caca",
+            "bytes": 6565
+          },
+          "src/Security/OAuthTransactionStore.php": {
+            "sha256": "4faffc491e659cbe6e77e1bf677ca066688572a3256df58a43aee0d41ddb589f",
+            "sha256_lf": "4faffc491e659cbe6e77e1bf677ca066688572a3256df58a43aee0d41ddb589f",
+            "bytes": 6735
+          },
+          "src/Security/AuthContext.php": {
+            "sha256": "36c03694f9e213d3eec79a698d0ee2837bd1d1e0c699321eee8d08a50e237c3a",
+            "sha256_lf": "36c03694f9e213d3eec79a698d0ee2837bd1d1e0c699321eee8d08a50e237c3a",
+            "bytes": 545
+          },
+          "src/Security/SessionManager.php": {
+            "sha256": "0a1a35489c83d9ebc1d97846f9bf199101c400840d0aa04a2d0a503a0fae3217",
+            "sha256_lf": "0a1a35489c83d9ebc1d97846f9bf199101c400840d0aa04a2d0a503a0fae3217",
+            "bytes": 6853
+          },
+          "src/Security/CsrfGuard.php": {
+            "sha256": "5a29163b2ce0b9776b28bc01c978e637a00dc09786deccd68b24c0d026977648",
+            "sha256_lf": "5a29163b2ce0b9776b28bc01c978e637a00dc09786deccd68b24c0d026977648",
+            "bytes": 534
+          },
+          "src/Security/AppLaunchTicketIssuer.php": {
+            "sha256": "496e7a4b1986b1a382d409f69044a39dedabcbb97e6c3d251e2991768fbfef47",
+            "sha256_lf": "496e7a4b1986b1a382d409f69044a39dedabcbb97e6c3d251e2991768fbfef47",
+            "bytes": 3281
+          },
+          "src/Security/IdentityLogoutUrlSigner.php": {
+            "sha256": "34bd016da305a3b3b01483cd31ed00692f315cb37dfb177de23f49e64a0d99ec",
+            "sha256_lf": "34bd016da305a3b3b01483cd31ed00692f315cb37dfb177de23f49e64a0d99ec",
+            "bytes": 2244
+          },
+          "src/Identity/OAuthFlow.php": {
+            "sha256": "74397735649aa5a5ed9fe6006320547d0a941676bfd66c0b9d16179f2f3fb518",
+            "sha256_lf": "74397735649aa5a5ed9fe6006320547d0a941676bfd66c0b9d16179f2f3fb518",
+            "bytes": 12406
+          },
+          "src/Repository/UnavailableRepository.php": {
+            "sha256": "67468f1dff590fb1f2854b2830b976f42f8841e2e8b37c2f35739ffad0152d58",
+            "sha256_lf": "67468f1dff590fb1f2854b2830b976f42f8841e2e8b37c2f35739ffad0152d58",
+            "bytes": 2822
+          },
+          "src/Repository/ConnectRepository.php": {
+            "sha256": "a983dc6ea59c4919efce8f41ce6b685ebd6e578c3b22a983cd84742533fc1e56",
+            "sha256_lf": "a983dc6ea59c4919efce8f41ce6b685ebd6e578c3b22a983cd84742533fc1e56",
+            "bytes": 2464
+          },
+          "src/Repository/PdoConnectRepository.php": {
+            "sha256": "c326e5cf756915df07e15738cdaa6838cb31b76edba31a49cfa0622be3d20323",
+            "sha256_lf": "c326e5cf756915df07e15738cdaa6838cb31b76edba31a49cfa0622be3d20323",
+            "bytes": 36220
+          },
+          "src/Http/Response.php": {
+            "sha256": "bfffbd001c981e6ecb5ac81ecfe56895fcb188c95f95851c5d711291f0cab452",
+            "sha256_lf": "bfffbd001c981e6ecb5ac81ecfe56895fcb188c95f95851c5d711291f0cab452",
+            "bytes": 1974
+          },
+          "src/Http/ApiException.php": {
+            "sha256": "90d290744dbadb522ef5f934fe359c0ed48456463a36687f71dd36d8797f8bef",
+            "sha256_lf": "90d290744dbadb522ef5f934fe359c0ed48456463a36687f71dd36d8797f8bef",
+            "bytes": 404
+          },
+          "src/Http/Request.php": {
+            "sha256": "fd12c57402115c0e98fbfbed58d1c430ad25a340fa577a94adb5bf20b219e871",
+            "sha256_lf": "fd12c57402115c0e98fbfbed58d1c430ad25a340fa577a94adb5bf20b219e871",
+            "bytes": 2486
+          }
+        },
+        "index_modified_at": "2026-08-18T12:56:31.614022+00:00",
+        "assets": [],
+        "deny_all": false,
+        "basic_auth": true,
+        "http_refused": false
+      },
+      {
+        "app": "rapport",
+        "domain": "rapport-preprod.avereo.fr",
+        "cpanel_status": 1,
+        "declared_roots": [
+          "/home/daje3540/rapport-preprod.avereo.fr"
+        ],
+        "root": "/home/daje3540/rapport-preprod.avereo.fr",
+        "real_root": "/home/daje3540/rapport-preprod.avereo.fr",
+        "root_exists": true,
+        "production_roots": [
+          "/home/daje3540/rapport.avereo.fr"
+        ],
+        "separate_from_production": true,
+        "status": "observed",
+        "code_files": {
+          "index.html": {
+            "sha256": "c6656cb551f611154e1c6b172a3a651fe6ff3fa85fd29f6ba750a41d71e87e8a",
+            "sha256_lf": "02363733307c22936347d8a2cf028572ea02b388e9194308a1a1701b3905b95c",
+            "bytes": 415
+          },
+          "index.php": {
+            "sha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+            "sha256_lf": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+            "bytes": 977
+          },
+          ".htaccess": {
+            "sha256": "b3b46c7f005428864fbc082fd6251e59d44cb260aadb0bbe814e1839677ae509",
+            "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+            "bytes": 561
+          },
+          "connect/entry.php": {
+            "sha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+            "sha256_lf": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+            "bytes": 588
+          },
+          "connect/logout.php": {
+            "sha256": "2d6a25946e7e5d8b578303f89cb858096ab799d7e105c2a1dc805339d98eb9c7",
+            "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+            "bytes": 696
+          },
+          "connect/gate.php": {
+            "sha256": "59fe848fe9a3da7bb2a69ec2c4f982cf7e10e9598e9f0b6d917c4526b943d470",
+            "sha256_lf": "53d5516f9f270d8ff9ade6e0fe130803e3dc22354c19e321d7dd99ca98d473a6",
+            "bytes": 10891
+          },
+          "api/health.php": {
+            "sha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+            "sha256_lf": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+            "bytes": 1043
+          },
+          "api/reports.php": {
+            "sha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+            "sha256_lf": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+            "bytes": 11303
+          },
+          "api/bootstrap.php": {
+            "sha256": "2781bef70d420e1f892a41f03a7563790fd3d610920e0d5f90cd5e90868da525",
+            "sha256_lf": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+            "bytes": 26337
+          },
+          "api/auth.php": {
+            "sha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+            "sha256_lf": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+            "bytes": 4164
+          }
+        },
+        "index_modified_at": "2026-08-03T20:07:28+00:00",
+        "assets": [
+          {
+            "path": "assets/index-C7slbMpC.js",
+            "sha256": "786a6d8c32bfc26c0b2d16f24a634ba774107c12d30d2a3a445305e0f9705360",
+            "bytes": 195574
+          },
+          {
+            "path": "assets/index-8XI2p7EJ.css",
+            "sha256": "5e70f973c28ad379045f8baf702ccc9897cb28bff0d414b77ee39a1b98547f2c",
+            "bytes": 14405
+          }
+        ],
+        "visite_globale_present": false,
+        "habitologie_present": false,
+        "deny_all": false,
+        "basic_auth": false,
+        "http_refused": false
+      },
+      {
+        "app": "coupe",
+        "domain": "coupe-preprod.avereo.fr",
+        "cpanel_status": 1,
+        "declared_roots": [
+          "/home/daje3540/coupe-preprod.avereo.fr"
+        ],
+        "root": "/home/daje3540/coupe-preprod.avereo.fr",
+        "real_root": "/home/daje3540/coupe-preprod.avereo.fr",
+        "root_exists": true,
+        "production_roots": [
+          "/home/daje3540/coupe.avereo.fr"
+        ],
+        "separate_from_production": true,
+        "status": "observed",
+        "code_files": {
+          "index.html": {
+            "sha256": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+            "sha256_lf": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+            "bytes": 332
+          },
+          "index.php": {
+            "sha256": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+            "sha256_lf": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+            "bytes": 538
+          },
+          ".htaccess": {
+            "sha256": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+            "sha256_lf": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+            "bytes": 643
+          },
+          "legacy-app.html": {
+            "sha256": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+            "sha256_lf": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+            "bytes": 335404
+          },
+          "connect/entry.php": {
+            "sha256": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+            "sha256_lf": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+            "bytes": 565
+          },
+          "connect/content.php": {
+            "sha256": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+            "sha256_lf": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+            "bytes": 547
+          },
+          "connect/logout.php": {
+            "sha256": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+            "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+            "bytes": 673
+          },
+          "connect/gate.php": {
+            "sha256": "e791bb71453f298146ad22748e8d64bc23badaf5eba7ef8a0d0dd2a841a96945",
+            "sha256_lf": "e791bb71453f298146ad22748e8d64bc23badaf5eba7ef8a0d0dd2a841a96945",
+            "bytes": 8934
+          },
+          "api/health.php": {
+            "sha256": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+            "sha256_lf": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+            "bytes": 980
+          },
+          "api/bootstrap.php": {
+            "sha256": "813ac2c9b01e09562019dc2fb7e84b29b382d3bb99083acf582564ee99afc980",
+            "sha256_lf": "813ac2c9b01e09562019dc2fb7e84b29b382d3bb99083acf582564ee99afc980",
+            "bytes": 22425
+          },
+          "api/auth.php": {
+            "sha256": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+            "sha256_lf": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+            "bytes": 3590
+          },
+          "api/projects.php": {
+            "sha256": "bab1a48a96a00fd3da907e6ecc5f72e893af808c4fb76fa4b2ca9cf416857611",
+            "sha256_lf": "bab1a48a96a00fd3da907e6ecc5f72e893af808c4fb76fa4b2ca9cf416857611",
+            "bytes": 7005
+          }
+        },
+        "index_modified_at": "2026-07-30T18:00:03.259033+00:00",
+        "assets": [
+          {
+            "path": "assets/index-C0BO-CEH.js",
+            "sha256": "cfdeb1e58833c20c0397a927543b983633b76d334528bd1cdbdb9e9e2a95cb82",
+            "bytes": 142739
+          }
+        ],
+        "deny_all": false,
+        "basic_auth": false,
+        "http_refused": false
+      },
+      {
+        "app": "projet",
+        "domain": "projet-preprod.avereo.fr",
+        "cpanel_status": 1,
+        "declared_roots": [
+          "/home/daje3540/projet-preprod.avereo.fr"
+        ],
+        "root": "/home/daje3540/projet-preprod.avereo.fr",
+        "real_root": "/home/daje3540/projet-preprod.avereo.fr",
+        "root_exists": true,
+        "production_roots": [],
+        "separate_from_production": false,
+        "status": "observed",
+        "code_files": {
+          "index.html": {
+            "sha256": "977dc9ccba286ff28e8557fc0f6438a2b6b10dd262ef603466b8262615b45229",
+            "sha256_lf": "977dc9ccba286ff28e8557fc0f6438a2b6b10dd262ef603466b8262615b45229",
+            "bytes": 328
+          },
+          "index.php": {
+            "sha256": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+            "sha256_lf": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+            "bytes": 879
+          },
+          ".htaccess": {
+            "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "bytes": 493
+          },
+          "legacy-app.html": {
+            "sha256": "2084ff2bf1b315ba47abaf2902d176d17e72904244d1aa9d08d5cd2bbf1c5fa7",
+            "sha256_lf": "2084ff2bf1b315ba47abaf2902d176d17e72904244d1aa9d08d5cd2bbf1c5fa7",
+            "bytes": 67193
+          },
+          "connect/entry.php": {
+            "sha256": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+            "sha256_lf": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+            "bytes": 600
+          },
+          "connect/logout.php": {
+            "sha256": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+            "sha256_lf": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+            "bytes": 286
+          },
+          "connect/gate.php": {
+            "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "bytes": 8780
+          }
+        },
+        "index_modified_at": "2026-07-30T18:35:00.627033+00:00",
+        "assets": [
+          {
+            "path": "assets/index-TREds7iY.js",
+            "sha256": "118df044505557fa14d551efa56e79fe821cb0a6099c182e94eae5279ae34975",
+            "bytes": 142707
+          }
+        ],
+        "deny_all": false,
+        "basic_auth": false,
+        "http_refused": false
+      },
+      {
+        "app": "thermo",
+        "domain": "thermo-preprod.avereo.fr",
+        "cpanel_status": 1,
+        "declared_roots": [
+          "/home/daje3540/thermo-preprod.avereo.fr"
+        ],
+        "root": "/home/daje3540/thermo-preprod.avereo.fr",
+        "real_root": "/home/daje3540/thermo-preprod.avereo.fr",
+        "root_exists": true,
+        "production_roots": [],
+        "separate_from_production": false,
+        "status": "observed",
+        "code_files": {
+          "index.html": {
+            "sha256": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+            "sha256_lf": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+            "bytes": 328
+          },
+          "index.php": {
+            "sha256": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+            "sha256_lf": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+            "bytes": 879
+          },
+          ".htaccess": {
+            "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "bytes": 493
+          },
+          "connect/entry.php": {
+            "sha256": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+            "sha256_lf": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+            "bytes": 600
+          },
+          "connect/logout.php": {
+            "sha256": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+            "sha256_lf": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+            "bytes": 286
+          },
+          "connect/gate.php": {
+            "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "bytes": 8780
+          }
+        },
+        "index_modified_at": "2026-07-30T18:35:08.810034+00:00",
+        "assets": [
+          {
+            "path": "assets/index-D_01_A33.js",
+            "sha256": "f0ce682e4e255d330e40451de981a07d0db3bbd535fc9cfc6ffe258b14bc060e",
+            "bytes": 234812
+          }
+        ],
+        "deny_all": false,
+        "basic_auth": false,
+        "http_refused": false
+      },
+      {
+        "app": "drone",
+        "domain": "drone-preprod.avereo.fr",
+        "cpanel_status": 1,
+        "declared_roots": [
+          "/home/daje3540/drone-preprod.avereo.fr"
+        ],
+        "root": "/home/daje3540/drone-preprod.avereo.fr",
+        "real_root": "/home/daje3540/drone-preprod.avereo.fr",
+        "root_exists": true,
+        "production_roots": [],
+        "separate_from_production": false,
+        "status": "observed",
+        "code_files": {
+          "index.html": {
+            "sha256": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+            "sha256_lf": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+            "bytes": 327
+          },
+          "index.php": {
+            "sha256": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+            "sha256_lf": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+            "bytes": 877
+          },
+          ".htaccess": {
+            "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "bytes": 493
+          },
+          "connect/entry.php": {
+            "sha256": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+            "sha256_lf": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+            "bytes": 598
+          },
+          "connect/logout.php": {
+            "sha256": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+            "sha256_lf": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+            "bytes": 285
+          },
+          "connect/gate.php": {
+            "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "bytes": 8780
+          }
+        },
+        "index_modified_at": "2026-07-30T18:35:14.936034+00:00",
+        "assets": [
+          {
+            "path": "assets/index-BHVevbzp.js",
+            "sha256": "2307ed7df447569d80387e3f827217063b1a46c8dbe68746e9c3fffdc046826b",
+            "bytes": 178421
+          }
+        ],
+        "deny_all": false,
+        "basic_auth": false,
+        "http_refused": false
+      },
+      {
+        "app": "recherche",
+        "domain": "recherche-preprod.avereo.fr",
+        "cpanel_status": 0,
+        "declared_roots": [],
+        "status": "target_not_declared"
+      },
+      {
+        "app": "passeport-immo",
+        "domain": "passeport-immo-preprod.avereo.fr",
+        "cpanel_status": 1,
+        "declared_roots": [
+          "/home/daje3540/passeport-immo-preprod.avereo.fr/public"
+        ],
+        "root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+        "real_root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+        "root_exists": true,
+        "production_roots": [],
+        "separate_from_production": false,
+        "status": "observed",
+        "code_files": {
+          ".htaccess": {
+            "sha256": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+            "sha256_lf": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+            "bytes": 248
+          }
+        },
+        "deny_all": true,
+        "basic_auth": false,
+        "http_refused": false
+      }
+    ],
+    "connections": {
+      "configuration_path": "/home/daje3540/private/connect-preprod/config.php",
+      "applications": [
+        {
+          "app": "rapport",
+          "launch_url": "https://rapport-preprod.avereo.fr/connect/entry.php",
+          "config_present": true,
+          "environment": "preprod",
+          "portal_url": "https://connect-preprod.avereo.fr/",
+          "auth_mode": "connect_gateway",
+          "launch_secret_matches": true,
+          "nonce_directory_configured": true
+        },
+        {
+          "app": "coupe",
+          "launch_url": "https://coupe-preprod.avereo.fr/connect/entry.php",
+          "config_present": true,
+          "environment": "preprod",
+          "portal_url": "https://connect-preprod.avereo.fr/",
+          "auth_mode": "drupal_oauth",
+          "launch_secret_matches": true,
+          "nonce_directory_configured": true
+        },
+        {
+          "app": "projet",
+          "launch_url": "https://projet-preprod.avereo.fr/connect/entry.php",
+          "config_present": true,
+          "environment": "preprod",
+          "portal_url": "https://connect-preprod.avereo.fr/",
+          "auth_mode": null,
+          "launch_secret_matches": true,
+          "nonce_directory_configured": true
+        },
+        {
+          "app": "thermo",
+          "launch_url": "https://thermo-preprod.avereo.fr/connect/entry.php",
+          "config_present": true,
+          "environment": "preprod",
+          "portal_url": "https://connect-preprod.avereo.fr/",
+          "auth_mode": null,
+          "launch_secret_matches": true,
+          "nonce_directory_configured": true
+        },
+        {
+          "app": "drone",
+          "launch_url": "https://drone-preprod.avereo.fr/connect/entry.php",
+          "config_present": true,
+          "environment": "preprod",
+          "portal_url": "https://connect-preprod.avereo.fr/",
+          "auth_mode": null,
+          "launch_secret_matches": true,
+          "nonce_directory_configured": true
+        },
+        {
+          "app": "recherche",
+          "launch_url": null,
+          "config_present": false,
+          "environment": null,
+          "portal_url": null,
+          "auth_mode": null,
+          "launch_secret_matches": false,
+          "nonce_directory_configured": false
+        }
+      ],
+      "OAUTH_ISSUER": "https://auth-next-preprod.avereo.fr/",
+      "OAUTH_AUTHORIZE_URL": "https://auth-next-preprod.avereo.fr/oauth/authorize",
+      "OAUTH_REDIRECT_URI": "https://connect-preprod.avereo.fr/api/v1/auth/callback",
+      "catalogue": [
+        {
+          "code": "coupe",
+          "launch_url": "https://coupe-preprod.avereo.fr/",
+          "status": "active"
+        },
+        {
+          "code": "drone",
+          "launch_url": "https://drone-preprod.avereo.fr/",
+          "status": "active"
+        },
+        {
+          "code": "projet",
+          "launch_url": "https://projet-preprod.avereo.fr/",
+          "status": "active"
+        },
+        {
+          "code": "rapport",
+          "launch_url": "https://rapport-preprod.avereo.fr/",
+          "status": "active"
+        },
+        {
+          "code": "thermo",
+          "launch_url": "https://thermo-preprod.avereo.fr/",
+          "status": "active"
+        }
+      ],
+      "schema_migrations": [
+        "20260721120000_core",
+        "20260729120000_pending_identities",
+        "20260730120000_catalog_metadata",
+        "20260803160000_user_application_access"
+      ]
+    },
+    "recovery_recheck": {
+      "directory": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z",
+      "scope": "files_and_modes_only",
+      "applications": [
+        {
+          "app": "connect",
+          "active": {
+            "sha256": "ccfc01165ff7eb4b3a4eed53f588d06bb3fc80fb90d68298331847b3b9fa35f5",
+            "count": 63,
+            "bytes": 364502
+          },
+          "backup": {
+            "sha256": "ccfc01165ff7eb4b3a4eed53f588d06bb3fc80fb90d68298331847b3b9fa35f5",
+            "count": 63,
+            "bytes": 364502
+          },
+          "restored": {
+            "sha256": "ccfc01165ff7eb4b3a4eed53f588d06bb3fc80fb90d68298331847b3b9fa35f5",
+            "count": 63,
+            "bytes": 364502
+          },
+          "active_matches_previous": true,
+          "backup_matches_previous": true,
+          "restored_matches_previous": true,
+          "status": "observed"
+        },
+        {
+          "app": "rapport",
+          "active": {
+            "sha256": "ea5ef20427fec542acc655cb9d5582fbe7f2af2c8846ed24ee1d66b81d9db6f8",
+            "count": 17,
+            "bytes": 655879
+          },
+          "backup": {
+            "sha256": "ea5ef20427fec542acc655cb9d5582fbe7f2af2c8846ed24ee1d66b81d9db6f8",
+            "count": 17,
+            "bytes": 655879
+          },
+          "restored": {
+            "sha256": "ea5ef20427fec542acc655cb9d5582fbe7f2af2c8846ed24ee1d66b81d9db6f8",
+            "count": 17,
+            "bytes": 655879
+          },
+          "active_matches_previous": true,
+          "backup_matches_previous": true,
+          "restored_matches_previous": true,
+          "status": "observed"
+        },
+        {
+          "app": "coupe",
+          "active": {
+            "sha256": "081835e9d0cfff14a53287cf8906c52fb339ad29c3e8c8c07785f80aab179e05",
+            "count": 16,
+            "bytes": 525064
+          },
+          "backup": {
+            "sha256": "081835e9d0cfff14a53287cf8906c52fb339ad29c3e8c8c07785f80aab179e05",
+            "count": 16,
+            "bytes": 525064
+          },
+          "restored": {
+            "sha256": "081835e9d0cfff14a53287cf8906c52fb339ad29c3e8c8c07785f80aab179e05",
+            "count": 16,
+            "bytes": 525064
+          },
+          "active_matches_previous": true,
+          "backup_matches_previous": true,
+          "restored_matches_previous": true,
+          "status": "observed"
+        },
+        {
+          "app": "projet",
+          "active": {
+            "sha256": "ffdfc2cbdff0f43f2b4049bb019fa1e3c1cae02de68bbca85f9f2b6dbe90c7ad",
+            "count": 9,
+            "bytes": 221562
+          },
+          "backup": {
+            "sha256": "ffdfc2cbdff0f43f2b4049bb019fa1e3c1cae02de68bbca85f9f2b6dbe90c7ad",
+            "count": 9,
+            "bytes": 221562
+          },
+          "restored": {
+            "sha256": "ffdfc2cbdff0f43f2b4049bb019fa1e3c1cae02de68bbca85f9f2b6dbe90c7ad",
+            "count": 9,
+            "bytes": 221562
+          },
+          "active_matches_previous": true,
+          "backup_matches_previous": true,
+          "restored_matches_previous": true,
+          "status": "observed"
+        },
+        {
+          "app": "thermo",
+          "active": {
+            "sha256": "f5153e1d2c69d8fe3cb95a5e9ff5f8843daeb93ac8dd7ec61dbbf1cfd02e3002",
+            "count": 8,
+            "bytes": 246548
+          },
+          "backup": {
+            "sha256": "f5153e1d2c69d8fe3cb95a5e9ff5f8843daeb93ac8dd7ec61dbbf1cfd02e3002",
+            "count": 8,
+            "bytes": 246548
+          },
+          "restored": {
+            "sha256": "f5153e1d2c69d8fe3cb95a5e9ff5f8843daeb93ac8dd7ec61dbbf1cfd02e3002",
+            "count": 8,
+            "bytes": 246548
+          },
+          "active_matches_previous": true,
+          "backup_matches_previous": true,
+          "restored_matches_previous": true,
+          "status": "observed"
+        },
+        {
+          "app": "drone",
+          "active": {
+            "sha256": "f79423846e2f87b5442bc26a047611a2fa241e5bcb16a868385488723384818c",
+            "count": 8,
+            "bytes": 190146
+          },
+          "backup": {
+            "sha256": "f79423846e2f87b5442bc26a047611a2fa241e5bcb16a868385488723384818c",
+            "count": 8,
+            "bytes": 190146
+          },
+          "restored": {
+            "sha256": "f79423846e2f87b5442bc26a047611a2fa241e5bcb16a868385488723384818c",
+            "count": 8,
+            "bytes": 190146
+          },
+          "active_matches_previous": true,
+          "backup_matches_previous": true,
+          "restored_matches_previous": true,
+          "status": "observed"
+        },
+        {
+          "app": "passeport-immo",
+          "active": {
+            "sha256": "f96f3e80e966b10593ae410fe4eeb8ac2f9c096e9ebdc812ba1655ea05640383",
+            "count": 1,
+            "bytes": 248
+          },
+          "backup": {
+            "sha256": "f96f3e80e966b10593ae410fe4eeb8ac2f9c096e9ebdc812ba1655ea05640383",
+            "count": 1,
+            "bytes": 248
+          },
+          "restored": {
+            "sha256": "f96f3e80e966b10593ae410fe4eeb8ac2f9c096e9ebdc812ba1655ea05640383",
+            "count": 1,
+            "bytes": 248
+          },
+          "active_matches_previous": true,
+          "backup_matches_previous": true,
+          "restored_matches_previous": true,
+          "status": "observed"
+        }
+      ]
+    },
+    "compatibility": {
+      "connect": {
+        "dedicated_configuration_present": true,
+        "legacy_configuration_present": false,
+        "production_configuration_present": true,
+        "dedicated_legacy_database_same": false,
+        "dedicated_database_distinct_from_production": true,
+        "environment": "preprod",
+        "users_schema_columns": [
+          "id",
+          "drupal_subject",
+          "email_normalized",
+          "display_name",
+          "status",
+          "created_at",
+          "updated_at"
+        ]
+      },
+      "applications": [
+        {
+          "app": "rapport",
+          "database_configured": true,
+          "production_config_present": true,
+          "database_distinct_from_production": true,
+          "auth_mode": "connect_gateway",
+          "table_columns": [
+            "id",
+            "public_id",
+            "title",
+            "reference_code",
+            "address",
+            "payload_json",
+            "payload_bytes",
+            "owner_provider",
+            "owner_id",
+            "owner_email",
+            "created_by_id",
+            "updated_by_id",
+            "created_at",
+            "updated_at"
+          ],
+          "connection_status": "read_only_connection_passed"
+        },
+        {
+          "app": "coupe",
+          "database_configured": false,
+          "production_config_present": true,
+          "database_distinct_from_production": null,
+          "auth_mode": "drupal_oauth"
+        }
+      ]
+    }
+  },
+  "candidate_path_metadata": {
+    "observed_at": "2026-10-09T10:35:21.725+00:00",
+    "scope": "five_application_candidate_paths_and_access_rules",
+    "active_files_modified": false,
+    "applications": [
+      {
+        "app": "rapport",
+        "root": "/home/daje3540/rapport-preprod.avereo.fr",
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/rapport/backup",
+        "files": {
+          ".htaccess": {
+            "active": {
+              "exists": true,
+              "sha256": "b3b46c7f005428864fbc082fd6251e59d44cb260aadb0bbe814e1839677ae509",
+              "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+              "bytes": 561,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/.htaccess": {
+            "active": {
+              "exists": true,
+              "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+              "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+              "bytes": 128,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/auth.php": {
+            "active": {
+              "exists": true,
+              "sha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+              "sha256_lf": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+              "bytes": 4164,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/bootstrap.php": {
+            "active": {
+              "exists": true,
+              "sha256": "2781bef70d420e1f892a41f03a7563790fd3d610920e0d5f90cd5e90868da525",
+              "sha256_lf": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+              "bytes": 26337,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/health.php": {
+            "active": {
+              "exists": true,
+              "sha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+              "sha256_lf": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+              "bytes": 1043,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/reports.php": {
+            "active": {
+              "exists": true,
+              "sha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+              "sha256_lf": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+              "bytes": 11303,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "assets/index-BnYLeEcL.css": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "assets/index-CKpXCVG6.js": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "auth/callback/index.html": {
+            "active": {
+              "exists": true,
+              "sha256": "d07c523f9d7bb258204112132a52f4a4226a895141eab551d069f53ba4f6487c",
+              "sha256_lf": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+              "bytes": 272,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/entry.php": {
+            "active": {
+              "exists": true,
+              "sha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+              "sha256_lf": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+              "bytes": 588,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/gate.php": {
+            "active": {
+              "exists": true,
+              "sha256": "59fe848fe9a3da7bb2a69ec2c4f982cf7e10e9598e9f0b6d917c4526b943d470",
+              "sha256_lf": "53d5516f9f270d8ff9ade6e0fe130803e3dc22354c19e321d7dd99ca98d473a6",
+              "bytes": 10891,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/logout.php": {
+            "active": {
+              "exists": true,
+              "sha256": "2d6a25946e7e5d8b578303f89cb858096ab799d7e105c2a1dc805339d98eb9c7",
+              "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+              "bytes": 696,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.html": {
+            "active": {
+              "exists": true,
+              "sha256": "c6656cb551f611154e1c6b172a3a651fe6ff3fa85fd29f6ba750a41d71e87e8a",
+              "sha256_lf": "02363733307c22936347d8a2cf028572ea02b388e9194308a1a1701b3905b95c",
+              "bytes": 415,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.php": {
+            "active": {
+              "exists": true,
+              "sha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+              "sha256_lf": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+              "bytes": 977,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          }
+        }
+      },
+      {
+        "app": "coupe",
+        "root": "/home/daje3540/coupe-preprod.avereo.fr",
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/coupe/backup",
+        "files": {
+          ".htaccess": {
+            "active": {
+              "exists": true,
+              "sha256": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+              "sha256_lf": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+              "bytes": 643,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/.htaccess": {
+            "active": {
+              "exists": true,
+              "sha256": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+              "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+              "bytes": 123,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/auth.php": {
+            "active": {
+              "exists": true,
+              "sha256": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+              "sha256_lf": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+              "bytes": 3590,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/bootstrap.php": {
+            "active": {
+              "exists": true,
+              "sha256": "813ac2c9b01e09562019dc2fb7e84b29b382d3bb99083acf582564ee99afc980",
+              "sha256_lf": "813ac2c9b01e09562019dc2fb7e84b29b382d3bb99083acf582564ee99afc980",
+              "bytes": 22425,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/health.php": {
+            "active": {
+              "exists": true,
+              "sha256": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+              "sha256_lf": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+              "bytes": 980,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "api/projects.php": {
+            "active": {
+              "exists": true,
+              "sha256": "bab1a48a96a00fd3da907e6ecc5f72e893af808c4fb76fa4b2ca9cf416857611",
+              "sha256_lf": "bab1a48a96a00fd3da907e6ecc5f72e893af808c4fb76fa4b2ca9cf416857611",
+              "bytes": 7005,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "assets/index-BEJu3O3V.js": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "auth/callback/index.html": {
+            "active": {
+              "exists": true,
+              "sha256": "1f520c1c0e0e94bc0ea3bcf0546791ade87b52042f2ba2c7b5f06f67b73c88f9",
+              "sha256_lf": "1f520c1c0e0e94bc0ea3bcf0546791ade87b52042f2ba2c7b5f06f67b73c88f9",
+              "bytes": 274,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/content.php": {
+            "active": {
+              "exists": true,
+              "sha256": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+              "sha256_lf": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+              "bytes": 547,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/entry.php": {
+            "active": {
+              "exists": true,
+              "sha256": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+              "sha256_lf": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+              "bytes": 565,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/gate.php": {
+            "active": {
+              "exists": true,
+              "sha256": "e791bb71453f298146ad22748e8d64bc23badaf5eba7ef8a0d0dd2a841a96945",
+              "sha256_lf": "e791bb71453f298146ad22748e8d64bc23badaf5eba7ef8a0d0dd2a841a96945",
+              "bytes": 8934,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/logout.php": {
+            "active": {
+              "exists": true,
+              "sha256": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+              "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+              "bytes": 673,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.html": {
+            "active": {
+              "exists": true,
+              "sha256": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+              "sha256_lf": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+              "bytes": 332,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.php": {
+            "active": {
+              "exists": true,
+              "sha256": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+              "sha256_lf": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+              "bytes": 538,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "legacy-app.html": {
+            "active": {
+              "exists": true,
+              "sha256": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+              "sha256_lf": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+              "bytes": 335404,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          }
+        },
+        "hosted_htaccess_text": "Options -Indexes\nDirectoryIndex index.php\n\n<IfModule mod_headers.c>\n  <FilesMatch \"\\.html$\">\n    Header set Cache-Control \"no-store, no-cache, must-revalidate, max-age=0\"\n    Header set Pragma \"no-cache\"\n    Header set Expires \"0\"\n  </FilesMatch>\n</IfModule>\n\n<IfModule mod_rewrite.c>\n  RewriteEngine On\n  RewriteRule ^connect/ - [L]\n  RewriteRule ^api/ - [L]\n  RewriteRule ^auth/ - [L]\n  RewriteRule ^legacy-app\\.html$ connect/content.php [L,QSA]\n  RewriteRule ^index\\.html$ index.php [L,QSA]\n  RewriteRule ^$ index.php [L]\n  RewriteCond %{REQUEST_FILENAME} !-f\n  RewriteCond %{REQUEST_FILENAME} !-d\n  RewriteRule ^ index.php [L]\n</IfModule>\n"
+      },
+      {
+        "app": "projet",
+        "root": "/home/daje3540/projet-preprod.avereo.fr",
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/projet/backup",
+        "files": {
+          ".htaccess": {
+            "active": {
+              "exists": true,
+              "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "bytes": 493,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "assets/index-BRgM2m8J.css": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "assets/index-YYKZ9H0l.js": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "connect/entry.php": {
+            "active": {
+              "exists": true,
+              "sha256": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+              "sha256_lf": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+              "bytes": 600,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/gate.php": {
+            "active": {
+              "exists": true,
+              "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "bytes": 8780,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/logout.php": {
+            "active": {
+              "exists": true,
+              "sha256": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+              "sha256_lf": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+              "bytes": 286,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.html": {
+            "active": {
+              "exists": true,
+              "sha256": "977dc9ccba286ff28e8557fc0f6438a2b6b10dd262ef603466b8262615b45229",
+              "sha256_lf": "977dc9ccba286ff28e8557fc0f6438a2b6b10dd262ef603466b8262615b45229",
+              "bytes": 328,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.php": {
+            "active": {
+              "exists": true,
+              "sha256": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+              "sha256_lf": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+              "bytes": 879,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "legacy-app.html": {
+            "active": {
+              "exists": true,
+              "sha256": "2084ff2bf1b315ba47abaf2902d176d17e72904244d1aa9d08d5cd2bbf1c5fa7",
+              "sha256_lf": "2084ff2bf1b315ba47abaf2902d176d17e72904244d1aa9d08d5cd2bbf1c5fa7",
+              "bytes": 67193,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "planning-core.js": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "planning-local.js": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "task-details.js": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          }
+        }
+      },
+      {
+        "app": "thermo",
+        "root": "/home/daje3540/thermo-preprod.avereo.fr",
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/thermo/backup",
+        "files": {
+          ".htaccess": {
+            "active": {
+              "exists": true,
+              "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "bytes": 493,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "assets/index-CxkFAWK0.js": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "assets/index-DBhIFcGx.css": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "connect/entry.php": {
+            "active": {
+              "exists": true,
+              "sha256": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+              "sha256_lf": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+              "bytes": 600,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/gate.php": {
+            "active": {
+              "exists": true,
+              "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "bytes": 8780,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/logout.php": {
+            "active": {
+              "exists": true,
+              "sha256": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+              "sha256_lf": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+              "bytes": 286,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.html": {
+            "active": {
+              "exists": true,
+              "sha256": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+              "sha256_lf": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+              "bytes": 328,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.php": {
+            "active": {
+              "exists": true,
+              "sha256": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+              "sha256_lf": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+              "bytes": 879,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          }
+        }
+      },
+      {
+        "app": "drone",
+        "root": "/home/daje3540/drone-preprod.avereo.fr",
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/drone/backup",
+        "files": {
+          ".htaccess": {
+            "active": {
+              "exists": true,
+              "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "bytes": 493,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "assets/index-BmzmAYJo.css": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "assets/index-HLKEE8D6.js": {
+            "active": {
+              "exists": false
+            },
+            "backup_matches_active": true
+          },
+          "connect/entry.php": {
+            "active": {
+              "exists": true,
+              "sha256": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+              "sha256_lf": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+              "bytes": 598,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/gate.php": {
+            "active": {
+              "exists": true,
+              "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "bytes": 8780,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "connect/logout.php": {
+            "active": {
+              "exists": true,
+              "sha256": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+              "sha256_lf": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+              "bytes": 285,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.html": {
+            "active": {
+              "exists": true,
+              "sha256": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+              "sha256_lf": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+              "bytes": 327,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          },
+          "index.php": {
+            "active": {
+              "exists": true,
+              "sha256": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+              "sha256_lf": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+              "bytes": 877,
+              "mode": 436
+            },
+            "backup_matches_active": true
+          }
+        }
+      }
+    ]
+  },
+  "anonymous_http_observations": {
+    "observed_at": "2026-10-09T10:17:57.273+00:00",
+    "scope": "Anonymous HEAD only, no redirects, accounts, tickets or healthchecks",
+    "observations": [
+      {
+        "app": "connect",
+        "url": "https://connect-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 401,
+        "location": null,
+        "basic_challenge": true
+      },
+      {
+        "app": "connect",
+        "url": "http://connect-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 403,
+        "location": null,
+        "basic_challenge": false
+      },
+      {
+        "app": "rapport",
+        "url": "https://rapport-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=rapport",
+        "basic_challenge": false
+      },
+      {
+        "app": "rapport",
+        "url": "http://rapport-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=rapport",
+        "basic_challenge": false
+      },
+      {
+        "app": "coupe",
+        "url": "https://coupe-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=coupe",
+        "basic_challenge": false
+      },
+      {
+        "app": "coupe",
+        "url": "http://coupe-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=coupe",
+        "basic_challenge": false
+      },
+      {
+        "app": "projet",
+        "url": "https://projet-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=projet",
+        "basic_challenge": false
+      },
+      {
+        "app": "projet",
+        "url": "http://projet-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=projet",
+        "basic_challenge": false
+      },
+      {
+        "app": "thermo",
+        "url": "https://thermo-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=thermo",
+        "basic_challenge": false
+      },
+      {
+        "app": "thermo",
+        "url": "http://thermo-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=thermo",
+        "basic_challenge": false
+      },
+      {
+        "app": "drone",
+        "url": "https://drone-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=drone",
+        "basic_challenge": false
+      },
+      {
+        "app": "drone",
+        "url": "http://drone-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=drone",
+        "basic_challenge": false
+      },
+      {
+        "app": "recherche",
+        "url": "https://recherche-preprod.avereo.fr/",
+        "method": "HEAD",
+        "error": "URLError"
+      },
+      {
+        "app": "recherche",
+        "url": "http://recherche-preprod.avereo.fr/",
+        "method": "HEAD",
+        "error": "URLError"
+      },
+      {
+        "app": "passeport-immo",
+        "url": "https://passeport-immo-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 403,
+        "location": null,
+        "basic_challenge": false
+      },
+      {
+        "app": "passeport-immo",
+        "url": "http://passeport-immo-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 403,
+        "location": null,
+        "basic_challenge": false
+      },
+      {
+        "app": "rapport",
+        "url": "https://rapport-preprod.avereo.fr/connect/entry.php",
+        "method": "HEAD",
+        "status": 403,
+        "location": null,
+        "basic_challenge": false
+      },
+      {
+        "app": "coupe",
+        "url": "https://coupe-preprod.avereo.fr/connect/entry.php",
+        "method": "HEAD",
+        "status": 403,
+        "location": null,
+        "basic_challenge": false
+      },
+      {
+        "app": "projet",
+        "url": "https://projet-preprod.avereo.fr/connect/entry.php",
+        "method": "HEAD",
+        "status": 403,
+        "location": null,
+        "basic_challenge": false
+      },
+      {
+        "app": "thermo",
+        "url": "https://thermo-preprod.avereo.fr/connect/entry.php",
+        "method": "HEAD",
+        "status": 403,
+        "location": null,
+        "basic_challenge": false
+      },
+      {
+        "app": "drone",
+        "url": "https://drone-preprod.avereo.fr/connect/entry.php",
+        "method": "HEAD",
+        "status": 403,
+        "location": null,
+        "basic_challenge": false
+      },
+      {
+        "app": "coupe",
+        "url": "https://coupe-preprod.avereo.fr/legacy-app.html",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=coupe",
+        "basic_challenge": false
+      },
+      {
+        "app": "coupe",
+        "url": "https://coupe-preprod.avereo.fr/auth/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=coupe",
+        "basic_challenge": false
+      },
+      {
+        "app": "coupe",
+        "url": "https://coupe-preprod.avereo.fr/auth/callback/",
+        "method": "HEAD",
+        "status": 303,
+        "location": "https://connect-preprod.avereo.fr/?app=coupe",
+        "basic_challenge": false,
+        "observed_at": "2026-10-09T10:41:37.420+00:00"
+      },
+      {
+        "app": "auth-next",
+        "url": "https://auth-next-preprod.avereo.fr/",
+        "method": "HEAD",
+        "status": 200,
+        "location": null,
+        "basic_challenge": false,
+        "observed_at": "2026-10-09T10:41:37.669+00:00"
+      }
+    ]
+  },
+  "download_integrity": {
+    "audit-reprise-20261009.zip": "b61b86540a36fa605589b657755cdd6e1017e63ba4507490111406e26673bf84",
+    "audit-delivery-20261009.zip": "5adbde824ce8c688937f6166851b80dae27076ebc214f43bd2ba861fc13e2589",
+    "verified_against_server_terminal": true
+  },
+  "claude_review": {
+    "application": "Claude desktop",
+    "session_title": "Revue AVEREO reprise 9 octobre",
+    "scope": "Local source and candidate plan review; read only, no cPanel or credential access",
+    "findings_verified": {
+      "coupe_auth_route": "Confirmed: candidate redirects ^auth to / while hosted config stays drupal_oauth; preserve hosted root rule in corrected plan. Live callback HEAD returned 303 to CONNECT, no authenticated callback success asserted.",
+      "line_endings": "Normalized digests explain the raw PHP differences; retain these exact hosted files. Rapport bootstrap has no schema-creating call.",
+      "rollback": "Original plan omitted explicit removal of added files and modes; corrected operations bind inverse steps to before/after hash and mode. Filesystem deployment rollback remains unperformed.",
+      "artifact_binding": "Original combined ZIP already contained its exact plan and five app ZIPs; aggregate hash remains external to avoid self-reference.",
+      "projet_planning": "Candidate planning uses browser localStorage; it is not the private cockpit review API or data."
+    }
+  },
+  "prepared_delivery_batch": {
+    "archive": ".local/alignement-reprise/lot-recette-cinq-applications.zip",
+    "artifact_sha256": "6c3a3c56420be49bc0b26383fd4b282d118ba03b4b99aef96a39dc2cf1f130dd",
+    "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+    "supersedes_artifact_sha256": "e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324",
+    "application_archives_unchanged": true,
+    "hosted_writes": false
+  },
+  "delivery_plan": {
+    "source_sha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+    "applications": [
+      {
+        "app": "rapport",
+        "domain": "rapport-preprod.avereo.fr",
+        "document_root": "/home/daje3540/rapport-preprod.avereo.fr",
+        "archive": "rapport.zip",
+        "artifact_sha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+        "hosted_htaccess_sha256": "b3b46c7f005428864fbc082fd6251e59d44cb260aadb0bbe814e1839677ae509",
+        "preserve_hosted_htaccess": true,
+        "preserve_private_configuration": true,
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/rapport/backup",
+        "snapshot_manifest_sha256": "ea5ef20427fec542acc655cb9d5582fbe7f2af2c8846ed24ee1d66b81d9db6f8",
+        "known_limits": "Authenticated hosted business recipe remains to be performed.",
+        "access_overlay": "Preserve the exact hosted root .htaccess bytes and mode; Coupe keeps its Drupal OAuth callback route.",
+        "promoted_files": {
+          ".htaccess": {
+            "sha256": "b3b46c7f005428864fbc082fd6251e59d44cb260aadb0bbe814e1839677ae509",
+            "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "api/.htaccess": {
+            "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+            "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "api/auth.php": {
+            "sha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+            "sha256_lf": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "api/bootstrap.php": {
+            "sha256": "2781bef70d420e1f892a41f03a7563790fd3d610920e0d5f90cd5e90868da525",
+            "sha256_lf": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "api/health.php": {
+            "sha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+            "sha256_lf": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "api/reports.php": {
+            "sha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+            "sha256_lf": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "assets/index-BnYLeEcL.css": {
+            "sha256": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+            "sha256_lf": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "assets/index-CKpXCVG6.js": {
+            "sha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+            "sha256_lf": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "auth/callback/index.html": {
+            "sha256": "d07c523f9d7bb258204112132a52f4a4226a895141eab551d069f53ba4f6487c",
+            "sha256_lf": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/entry.php": {
+            "sha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+            "sha256_lf": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/gate.php": {
+            "sha256": "afc167d128d0baf62ade6259de4ed821a71f88b2bd75f171f5a5d4d5d058dce4",
+            "sha256_lf": "3c2fb628f06ce56129943545f8502538fc94af6f589eb946b942358944d019d5",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "connect/logout.php": {
+            "sha256": "06a85d72831268291e0ac0eae1ac6c1c4da3ee8d8993728ffd20adc4ad41b3fa",
+            "sha256_lf": "9aabc1a587ddf0fa22658f41ba0c1075147a5d3bae507c7600e0d49b155fe045",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "index.html": {
+            "sha256": "7f16b8093cdb743728ac118a0508f5f1c969535d94594fc6abdfdb3efcc601be",
+            "sha256_lf": "cfa09b3ae6c0b3078d72ff738a0703bc28bb70f3b5dc400813e7a1e7d7d49760",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "index.php": {
+            "sha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+            "sha256_lf": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          }
+        },
+        "promoted_manifest_sha256": "b4e4f6a2f3970135c86ef9fea398d9942fdb57b60a5cf055152c9c9862076739",
+        "operations": {
+          ".htaccess": {
+            "action": "preserve",
+            "reason": "hosted_access_rule",
+            "before": {
+              "exists": true,
+              "sha256": "b3b46c7f005428864fbc082fd6251e59d44cb260aadb0bbe814e1839677ae509",
+              "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+              "bytes": 561,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "b3b46c7f005428864fbc082fd6251e59d44cb260aadb0bbe814e1839677ae509",
+              "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+              "bytes": 561,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "api/.htaccess": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+              "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+              "bytes": 128,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+              "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+              "bytes": 128,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "api/auth.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+              "sha256_lf": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+              "bytes": 4164,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+              "sha256_lf": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+              "bytes": 4164,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "api/bootstrap.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "2781bef70d420e1f892a41f03a7563790fd3d610920e0d5f90cd5e90868da525",
+              "sha256_lf": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+              "bytes": 26337,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "2781bef70d420e1f892a41f03a7563790fd3d610920e0d5f90cd5e90868da525",
+              "sha256_lf": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+              "bytes": 26337,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "api/health.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+              "sha256_lf": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+              "bytes": 1043,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+              "sha256_lf": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+              "bytes": 1043,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "api/reports.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+              "sha256_lf": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+              "bytes": 11303,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+              "sha256_lf": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+              "bytes": 11303,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "assets/index-BnYLeEcL.css": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+              "sha256_lf": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+              "bytes": 45291,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+                "sha256_lf": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+                "bytes": 45291,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "assets/index-CKpXCVG6.js": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+              "sha256_lf": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+              "bytes": 417207,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+                "sha256_lf": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+                "bytes": 417207,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "auth/callback/index.html": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "d07c523f9d7bb258204112132a52f4a4226a895141eab551d069f53ba4f6487c",
+              "sha256_lf": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+              "bytes": 272,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "d07c523f9d7bb258204112132a52f4a4226a895141eab551d069f53ba4f6487c",
+              "sha256_lf": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+              "bytes": 272,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/entry.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+              "sha256_lf": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+              "bytes": 588,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+              "sha256_lf": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+              "bytes": 588,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/gate.php": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "59fe848fe9a3da7bb2a69ec2c4f982cf7e10e9598e9f0b6d917c4526b943d470",
+              "sha256_lf": "53d5516f9f270d8ff9ade6e0fe130803e3dc22354c19e321d7dd99ca98d473a6",
+              "bytes": 10891,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "afc167d128d0baf62ade6259de4ed821a71f88b2bd75f171f5a5d4d5d058dce4",
+              "sha256_lf": "3c2fb628f06ce56129943545f8502538fc94af6f589eb946b942358944d019d5",
+              "bytes": 11844,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "afc167d128d0baf62ade6259de4ed821a71f88b2bd75f171f5a5d4d5d058dce4",
+                "sha256_lf": "3c2fb628f06ce56129943545f8502538fc94af6f589eb946b942358944d019d5",
+                "bytes": 11844,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "59fe848fe9a3da7bb2a69ec2c4f982cf7e10e9598e9f0b6d917c4526b943d470",
+                "sha256_lf": "53d5516f9f270d8ff9ade6e0fe130803e3dc22354c19e321d7dd99ca98d473a6",
+                "bytes": 10891,
+                "mode": 436
+              }
+            }
+          },
+          "connect/logout.php": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "2d6a25946e7e5d8b578303f89cb858096ab799d7e105c2a1dc805339d98eb9c7",
+              "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+              "bytes": 696,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "06a85d72831268291e0ac0eae1ac6c1c4da3ee8d8993728ffd20adc4ad41b3fa",
+              "sha256_lf": "9aabc1a587ddf0fa22658f41ba0c1075147a5d3bae507c7600e0d49b155fe045",
+              "bytes": 478,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "06a85d72831268291e0ac0eae1ac6c1c4da3ee8d8993728ffd20adc4ad41b3fa",
+                "sha256_lf": "9aabc1a587ddf0fa22658f41ba0c1075147a5d3bae507c7600e0d49b155fe045",
+                "bytes": 478,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "2d6a25946e7e5d8b578303f89cb858096ab799d7e105c2a1dc805339d98eb9c7",
+                "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+                "bytes": 696,
+                "mode": 436
+              }
+            }
+          },
+          "index.html": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "c6656cb551f611154e1c6b172a3a651fe6ff3fa85fd29f6ba750a41d71e87e8a",
+              "sha256_lf": "02363733307c22936347d8a2cf028572ea02b388e9194308a1a1701b3905b95c",
+              "bytes": 415,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "7f16b8093cdb743728ac118a0508f5f1c969535d94594fc6abdfdb3efcc601be",
+              "sha256_lf": "cfa09b3ae6c0b3078d72ff738a0703bc28bb70f3b5dc400813e7a1e7d7d49760",
+              "bytes": 415,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "7f16b8093cdb743728ac118a0508f5f1c969535d94594fc6abdfdb3efcc601be",
+                "sha256_lf": "cfa09b3ae6c0b3078d72ff738a0703bc28bb70f3b5dc400813e7a1e7d7d49760",
+                "bytes": 415,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "c6656cb551f611154e1c6b172a3a651fe6ff3fa85fd29f6ba750a41d71e87e8a",
+                "sha256_lf": "02363733307c22936347d8a2cf028572ea02b388e9194308a1a1701b3905b95c",
+                "bytes": 415,
+                "mode": 436
+              }
+            }
+          },
+          "index.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+              "sha256_lf": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+              "bytes": 977,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+              "sha256_lf": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+              "bytes": 977,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          }
+        },
+        "operation_counts": {
+          "preserve": 9,
+          "replace": 3,
+          "create": 2
+        }
+      },
+      {
+        "app": "coupe",
+        "domain": "coupe-preprod.avereo.fr",
+        "document_root": "/home/daje3540/coupe-preprod.avereo.fr",
+        "archive": "coupe.zip",
+        "artifact_sha256": "03393eb8488f4ac233b66f1b3c00fdc4a06ffee8aa11641414ddd35581a79215",
+        "hosted_htaccess_sha256": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+        "preserve_hosted_htaccess": true,
+        "preserve_private_configuration": true,
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/coupe/backup",
+        "snapshot_manifest_sha256": "081835e9d0cfff14a53287cf8906c52fb339ad29c3e8c8c07785f80aab179e05",
+        "known_limits": "Coupe database is not configured and auth_mode remains drupal_oauth; no activation or SQL migration.",
+        "access_overlay": "Preserve the exact hosted root .htaccess bytes and mode; Coupe keeps its Drupal OAuth callback route.",
+        "promoted_files": {
+          ".htaccess": {
+            "sha256": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+            "sha256_lf": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "api/.htaccess": {
+            "sha256": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+            "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "api/auth.php": {
+            "sha256": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+            "sha256_lf": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "api/bootstrap.php": {
+            "sha256": "415e30719addcee710c64411e15aaa96a07f32ed83896068a86c6f37adeb52be",
+            "sha256_lf": "a1efdce51c1ce5e6ef521bceec7013998e347ef9f1c09a4a71f51eb6bc6d8b9b",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "api/health.php": {
+            "sha256": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+            "sha256_lf": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "api/projects.php": {
+            "sha256": "9bde8e49cac15479e897b309f30db694a700ce7720b986a275d7838f65dcdc87",
+            "sha256_lf": "ecb28010b59d8c541f76ddae2913df693926681c1be7b1c6b4e6700349026d9d",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "assets/index-BEJu3O3V.js": {
+            "sha256": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+            "sha256_lf": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "auth/callback/index.html": {
+            "sha256": "1f520c1c0e0e94bc0ea3bcf0546791ade87b52042f2ba2c7b5f06f67b73c88f9",
+            "sha256_lf": "1f520c1c0e0e94bc0ea3bcf0546791ade87b52042f2ba2c7b5f06f67b73c88f9",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/content.php": {
+            "sha256": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+            "sha256_lf": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/entry.php": {
+            "sha256": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+            "sha256_lf": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/gate.php": {
+            "sha256": "09184f3d41f66bed7cbd7c5ad0dcf73c8ec97a227d6a56fe320073055746239b",
+            "sha256_lf": "aec0d25fc5267aa2f2b2d828530e0b1b689fba6caa8b92629f1a45f5342903ac",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "connect/logout.php": {
+            "sha256": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+            "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "index.html": {
+            "sha256": "db371fcd620a720f7f5cac2fe93654b4cf61fec0c8c4d35119719aa7054ee1a2",
+            "sha256_lf": "a401268f4bb5e56c3dc8d98d121e6d1d37a52f8d871697d3a3ad176c50b78fb3",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "index.php": {
+            "sha256": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+            "sha256_lf": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "legacy-app.html": {
+            "sha256": "8fb57c5c3dc6f3be60b9929f85ed11caabf3db5c6ccd463e8ba72fa0a0a60c47",
+            "sha256_lf": "9454396dd5ce693ec511270d07b860eaf0f42dfbf437340205edb3f53a8b778c",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          }
+        },
+        "promoted_manifest_sha256": "cbf4db0e27ed4be249514ab1e9f1d8ebe5f8caf642ab75abdc681ba4fc4a0a80",
+        "operations": {
+          ".htaccess": {
+            "action": "preserve",
+            "reason": "hosted_access_rule",
+            "before": {
+              "exists": true,
+              "sha256": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+              "sha256_lf": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+              "bytes": 643,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+              "sha256_lf": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+              "bytes": 643,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "api/.htaccess": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+              "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+              "bytes": 123,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+              "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+              "bytes": 123,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "api/auth.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+              "sha256_lf": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+              "bytes": 3590,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+              "sha256_lf": "cea7f29465a1b803b2d072d693c0616d027c94d6d05bffae8a63c0988b1f29ee",
+              "bytes": 3590,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "api/bootstrap.php": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "813ac2c9b01e09562019dc2fb7e84b29b382d3bb99083acf582564ee99afc980",
+              "sha256_lf": "813ac2c9b01e09562019dc2fb7e84b29b382d3bb99083acf582564ee99afc980",
+              "bytes": 22425,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "415e30719addcee710c64411e15aaa96a07f32ed83896068a86c6f37adeb52be",
+              "sha256_lf": "a1efdce51c1ce5e6ef521bceec7013998e347ef9f1c09a4a71f51eb6bc6d8b9b",
+              "bytes": 24723,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "415e30719addcee710c64411e15aaa96a07f32ed83896068a86c6f37adeb52be",
+                "sha256_lf": "a1efdce51c1ce5e6ef521bceec7013998e347ef9f1c09a4a71f51eb6bc6d8b9b",
+                "bytes": 24723,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "813ac2c9b01e09562019dc2fb7e84b29b382d3bb99083acf582564ee99afc980",
+                "sha256_lf": "813ac2c9b01e09562019dc2fb7e84b29b382d3bb99083acf582564ee99afc980",
+                "bytes": 22425,
+                "mode": 436
+              }
+            }
+          },
+          "api/health.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+              "sha256_lf": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+              "bytes": 980,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+              "sha256_lf": "f76a0d1c5816bd2738d81218a5b65fe3030a3bce9f384981985dd84ef3658d4d",
+              "bytes": 980,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "api/projects.php": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "bab1a48a96a00fd3da907e6ecc5f72e893af808c4fb76fa4b2ca9cf416857611",
+              "sha256_lf": "bab1a48a96a00fd3da907e6ecc5f72e893af808c4fb76fa4b2ca9cf416857611",
+              "bytes": 7005,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "9bde8e49cac15479e897b309f30db694a700ce7720b986a275d7838f65dcdc87",
+              "sha256_lf": "ecb28010b59d8c541f76ddae2913df693926681c1be7b1c6b4e6700349026d9d",
+              "bytes": 7193,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "9bde8e49cac15479e897b309f30db694a700ce7720b986a275d7838f65dcdc87",
+                "sha256_lf": "ecb28010b59d8c541f76ddae2913df693926681c1be7b1c6b4e6700349026d9d",
+                "bytes": 7193,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "bab1a48a96a00fd3da907e6ecc5f72e893af808c4fb76fa4b2ca9cf416857611",
+                "sha256_lf": "bab1a48a96a00fd3da907e6ecc5f72e893af808c4fb76fa4b2ca9cf416857611",
+                "bytes": 7005,
+                "mode": 436
+              }
+            }
+          },
+          "assets/index-BEJu3O3V.js": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+              "sha256_lf": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+              "bytes": 142823,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+                "sha256_lf": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+                "bytes": 142823,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "auth/callback/index.html": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "1f520c1c0e0e94bc0ea3bcf0546791ade87b52042f2ba2c7b5f06f67b73c88f9",
+              "sha256_lf": "1f520c1c0e0e94bc0ea3bcf0546791ade87b52042f2ba2c7b5f06f67b73c88f9",
+              "bytes": 274,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "1f520c1c0e0e94bc0ea3bcf0546791ade87b52042f2ba2c7b5f06f67b73c88f9",
+              "sha256_lf": "1f520c1c0e0e94bc0ea3bcf0546791ade87b52042f2ba2c7b5f06f67b73c88f9",
+              "bytes": 274,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/content.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+              "sha256_lf": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+              "bytes": 547,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+              "sha256_lf": "bcec92586e128b0d35138c50445d9a7177351d04c164ec1a33605bfb2ef7f533",
+              "bytes": 547,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/entry.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+              "sha256_lf": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+              "bytes": 565,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+              "sha256_lf": "5dd8a25915a8a81dd055d8dbac004b48c1d0fb72c5c0486f9f66046762937850",
+              "bytes": 565,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/gate.php": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "e791bb71453f298146ad22748e8d64bc23badaf5eba7ef8a0d0dd2a841a96945",
+              "sha256_lf": "e791bb71453f298146ad22748e8d64bc23badaf5eba7ef8a0d0dd2a841a96945",
+              "bytes": 8934,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "09184f3d41f66bed7cbd7c5ad0dcf73c8ec97a227d6a56fe320073055746239b",
+              "sha256_lf": "aec0d25fc5267aa2f2b2d828530e0b1b689fba6caa8b92629f1a45f5342903ac",
+              "bytes": 10984,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "09184f3d41f66bed7cbd7c5ad0dcf73c8ec97a227d6a56fe320073055746239b",
+                "sha256_lf": "aec0d25fc5267aa2f2b2d828530e0b1b689fba6caa8b92629f1a45f5342903ac",
+                "bytes": 10984,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "e791bb71453f298146ad22748e8d64bc23badaf5eba7ef8a0d0dd2a841a96945",
+                "sha256_lf": "e791bb71453f298146ad22748e8d64bc23badaf5eba7ef8a0d0dd2a841a96945",
+                "bytes": 8934,
+                "mode": 436
+              }
+            }
+          },
+          "connect/logout.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+              "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+              "bytes": 673,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+              "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+              "bytes": 673,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "index.html": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+              "sha256_lf": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+              "bytes": 332,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "db371fcd620a720f7f5cac2fe93654b4cf61fec0c8c4d35119719aa7054ee1a2",
+              "sha256_lf": "a401268f4bb5e56c3dc8d98d121e6d1d37a52f8d871697d3a3ad176c50b78fb3",
+              "bytes": 344,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "db371fcd620a720f7f5cac2fe93654b4cf61fec0c8c4d35119719aa7054ee1a2",
+                "sha256_lf": "a401268f4bb5e56c3dc8d98d121e6d1d37a52f8d871697d3a3ad176c50b78fb3",
+                "bytes": 344,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+                "sha256_lf": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+                "bytes": 332,
+                "mode": 436
+              }
+            }
+          },
+          "index.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+              "sha256_lf": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+              "bytes": 538,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+              "sha256_lf": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+              "bytes": 538,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "legacy-app.html": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+              "sha256_lf": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+              "bytes": 335404,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "8fb57c5c3dc6f3be60b9929f85ed11caabf3db5c6ccd463e8ba72fa0a0a60c47",
+              "sha256_lf": "9454396dd5ce693ec511270d07b860eaf0f42dfbf437340205edb3f53a8b778c",
+              "bytes": 342802,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "8fb57c5c3dc6f3be60b9929f85ed11caabf3db5c6ccd463e8ba72fa0a0a60c47",
+                "sha256_lf": "9454396dd5ce693ec511270d07b860eaf0f42dfbf437340205edb3f53a8b778c",
+                "bytes": 342802,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+                "sha256_lf": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+                "bytes": 335404,
+                "mode": 436
+              }
+            }
+          }
+        },
+        "operation_counts": {
+          "preserve": 9,
+          "replace": 5,
+          "create": 1
+        }
+      },
+      {
+        "app": "projet",
+        "domain": "projet-preprod.avereo.fr",
+        "document_root": "/home/daje3540/projet-preprod.avereo.fr",
+        "archive": "projet.zip",
+        "artifact_sha256": "47498878254b5ddfda205c32afd51287c14e1dd266bcbc42baf9d9e5e4823acc",
+        "hosted_htaccess_sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+        "preserve_hosted_htaccess": true,
+        "preserve_private_configuration": true,
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/projet/backup",
+        "snapshot_manifest_sha256": "ffdfc2cbdff0f43f2b4049bb019fa1e3c1cae02de68bbca85f9f2b6dbe90c7ad",
+        "known_limits": "Authenticated hosted business recipe remains to be performed.",
+        "access_overlay": "Preserve the exact hosted root .htaccess bytes and mode; Coupe keeps its Drupal OAuth callback route.",
+        "promoted_files": {
+          ".htaccess": {
+            "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "assets/index-BRgM2m8J.css": {
+            "sha256": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+            "sha256_lf": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "assets/index-YYKZ9H0l.js": {
+            "sha256": "a997d0f419095833ff9fff9fcc95a564ac01e1a288da9ceef15e5643445cf5b0",
+            "sha256_lf": "a997d0f419095833ff9fff9fcc95a564ac01e1a288da9ceef15e5643445cf5b0",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "connect/entry.php": {
+            "sha256": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+            "sha256_lf": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/gate.php": {
+            "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/logout.php": {
+            "sha256": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+            "sha256_lf": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "index.html": {
+            "sha256": "08ab864e170f624745d2d718b4c23264dc5cd044372910fe40504440ce7c9c80",
+            "sha256_lf": "a3fc4f7a314f5eb5fb601ed789b3ab60d9cccb8443602eb056e78fa6ec1387fe",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "index.php": {
+            "sha256": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+            "sha256_lf": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "legacy-app.html": {
+            "sha256": "126f36f9c80a721ae948ba72089fff2a8e3a47c025896142b4e27c0cad1bf3ee",
+            "sha256_lf": "91ebf39774740011fee349f8513f25d7c94b1ba8b170fcf37ea865b335358ac5",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "planning-core.js": {
+            "sha256": "3e8469d5fe6c3f8ee74ee87ce64c3b9ed788dad3426917f539c1b23311c8d97b",
+            "sha256_lf": "bb50798370c973d53f5de05428a5ee94bced73f988c57c9694c0b139d63b5c49",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "planning-local.js": {
+            "sha256": "282a2ad65546113520c6a94c1095432a3a8abba308a7e6aa26e49beee50f9cd5",
+            "sha256_lf": "5d490801f4a5b414aeae811dc5c9f0e85908f8fd491278ee39dc33b78e10cbab",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "task-details.js": {
+            "sha256": "b74118cfb408131969b32769021ca2e4ff8eee3cebdc344218b0c735b91bf56d",
+            "sha256_lf": "f033f58689fb0239a21e593c497312924a669ebc4cac3c125d048031768ea92b",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          }
+        },
+        "promoted_manifest_sha256": "fff8bc43e03ddcdf47d7b0b69d7bd9815ca4b06a82acc2a1a784470b3d39f4cd",
+        "operations": {
+          ".htaccess": {
+            "action": "preserve",
+            "reason": "hosted_access_rule",
+            "before": {
+              "exists": true,
+              "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "bytes": 493,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "bytes": 493,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "assets/index-BRgM2m8J.css": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+              "sha256_lf": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+              "bytes": 21535,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+                "sha256_lf": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+                "bytes": 21535,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "assets/index-YYKZ9H0l.js": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "a997d0f419095833ff9fff9fcc95a564ac01e1a288da9ceef15e5643445cf5b0",
+              "sha256_lf": "a997d0f419095833ff9fff9fcc95a564ac01e1a288da9ceef15e5643445cf5b0",
+              "bytes": 142843,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "a997d0f419095833ff9fff9fcc95a564ac01e1a288da9ceef15e5643445cf5b0",
+                "sha256_lf": "a997d0f419095833ff9fff9fcc95a564ac01e1a288da9ceef15e5643445cf5b0",
+                "bytes": 142843,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "connect/entry.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+              "sha256_lf": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+              "bytes": 600,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+              "sha256_lf": "d4e6b90471eb5ad257f9952aa1d5cda21c16d328dee90d3e8e75e2ca0d2ce5cb",
+              "bytes": 600,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/gate.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "bytes": 8780,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "bytes": 8780,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/logout.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+              "sha256_lf": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+              "bytes": 286,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+              "sha256_lf": "fbc923b15d669ca77a7c92a44a3687fd6b0a48f1d4e0cbd3128fe0ccc6db2b10",
+              "bytes": 286,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "index.html": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "977dc9ccba286ff28e8557fc0f6438a2b6b10dd262ef603466b8262615b45229",
+              "sha256_lf": "977dc9ccba286ff28e8557fc0f6438a2b6b10dd262ef603466b8262615b45229",
+              "bytes": 328,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "08ab864e170f624745d2d718b4c23264dc5cd044372910fe40504440ce7c9c80",
+              "sha256_lf": "a3fc4f7a314f5eb5fb601ed789b3ab60d9cccb8443602eb056e78fa6ec1387fe",
+              "bytes": 414,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "08ab864e170f624745d2d718b4c23264dc5cd044372910fe40504440ce7c9c80",
+                "sha256_lf": "a3fc4f7a314f5eb5fb601ed789b3ab60d9cccb8443602eb056e78fa6ec1387fe",
+                "bytes": 414,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "977dc9ccba286ff28e8557fc0f6438a2b6b10dd262ef603466b8262615b45229",
+                "sha256_lf": "977dc9ccba286ff28e8557fc0f6438a2b6b10dd262ef603466b8262615b45229",
+                "bytes": 328,
+                "mode": 436
+              }
+            }
+          },
+          "index.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+              "sha256_lf": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+              "bytes": 879,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+              "sha256_lf": "8bdca5f82db2540763fe7b707cd2f9219b733aea4f79edc8ff77dd67f7ed9c88",
+              "bytes": 879,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "legacy-app.html": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "2084ff2bf1b315ba47abaf2902d176d17e72904244d1aa9d08d5cd2bbf1c5fa7",
+              "sha256_lf": "2084ff2bf1b315ba47abaf2902d176d17e72904244d1aa9d08d5cd2bbf1c5fa7",
+              "bytes": 67193,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "126f36f9c80a721ae948ba72089fff2a8e3a47c025896142b4e27c0cad1bf3ee",
+              "sha256_lf": "91ebf39774740011fee349f8513f25d7c94b1ba8b170fcf37ea865b335358ac5",
+              "bytes": 67129,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "126f36f9c80a721ae948ba72089fff2a8e3a47c025896142b4e27c0cad1bf3ee",
+                "sha256_lf": "91ebf39774740011fee349f8513f25d7c94b1ba8b170fcf37ea865b335358ac5",
+                "bytes": 67129,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "2084ff2bf1b315ba47abaf2902d176d17e72904244d1aa9d08d5cd2bbf1c5fa7",
+                "sha256_lf": "2084ff2bf1b315ba47abaf2902d176d17e72904244d1aa9d08d5cd2bbf1c5fa7",
+                "bytes": 67193,
+                "mode": 436
+              }
+            }
+          },
+          "planning-core.js": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "3e8469d5fe6c3f8ee74ee87ce64c3b9ed788dad3426917f539c1b23311c8d97b",
+              "sha256_lf": "bb50798370c973d53f5de05428a5ee94bced73f988c57c9694c0b139d63b5c49",
+              "bytes": 29301,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "3e8469d5fe6c3f8ee74ee87ce64c3b9ed788dad3426917f539c1b23311c8d97b",
+                "sha256_lf": "bb50798370c973d53f5de05428a5ee94bced73f988c57c9694c0b139d63b5c49",
+                "bytes": 29301,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "planning-local.js": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "282a2ad65546113520c6a94c1095432a3a8abba308a7e6aa26e49beee50f9cd5",
+              "sha256_lf": "5d490801f4a5b414aeae811dc5c9f0e85908f8fd491278ee39dc33b78e10cbab",
+              "bytes": 14413,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "282a2ad65546113520c6a94c1095432a3a8abba308a7e6aa26e49beee50f9cd5",
+                "sha256_lf": "5d490801f4a5b414aeae811dc5c9f0e85908f8fd491278ee39dc33b78e10cbab",
+                "bytes": 14413,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "task-details.js": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "b74118cfb408131969b32769021ca2e4ff8eee3cebdc344218b0c735b91bf56d",
+              "sha256_lf": "f033f58689fb0239a21e593c497312924a669ebc4cac3c125d048031768ea92b",
+              "bytes": 14328,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "b74118cfb408131969b32769021ca2e4ff8eee3cebdc344218b0c735b91bf56d",
+                "sha256_lf": "f033f58689fb0239a21e593c497312924a669ebc4cac3c125d048031768ea92b",
+                "bytes": 14328,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          }
+        },
+        "operation_counts": {
+          "preserve": 5,
+          "replace": 2,
+          "create": 5
+        }
+      },
+      {
+        "app": "thermo",
+        "domain": "thermo-preprod.avereo.fr",
+        "document_root": "/home/daje3540/thermo-preprod.avereo.fr",
+        "archive": "thermo.zip",
+        "artifact_sha256": "5637e275c09be123c2a56bfb3498f407384400e8fbff58ae718514ce4e05cf04",
+        "hosted_htaccess_sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+        "preserve_hosted_htaccess": true,
+        "preserve_private_configuration": true,
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/thermo/backup",
+        "snapshot_manifest_sha256": "f5153e1d2c69d8fe3cb95a5e9ff5f8843daeb93ac8dd7ec61dbbf1cfd02e3002",
+        "known_limits": "Authenticated hosted business recipe remains to be performed.",
+        "access_overlay": "Preserve the exact hosted root .htaccess bytes and mode; Coupe keeps its Drupal OAuth callback route.",
+        "promoted_files": {
+          ".htaccess": {
+            "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "assets/index-CxkFAWK0.js": {
+            "sha256": "f0ce682e4e255d330e40451de981a07d0db3bbd535fc9cfc6ffe258b14bc060e",
+            "sha256_lf": "f0ce682e4e255d330e40451de981a07d0db3bbd535fc9cfc6ffe258b14bc060e",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "assets/index-DBhIFcGx.css": {
+            "sha256": "72070dd63aba07de8b5bf07605049b3646059766862a32bb891aac9b6a64321d",
+            "sha256_lf": "72070dd63aba07de8b5bf07605049b3646059766862a32bb891aac9b6a64321d",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "connect/entry.php": {
+            "sha256": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+            "sha256_lf": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/gate.php": {
+            "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/logout.php": {
+            "sha256": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+            "sha256_lf": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "index.html": {
+            "sha256": "f3db63d99a4f7de586cf6a36297979abea1909768e515c2b1db477a41e10fc9b",
+            "sha256_lf": "1592fd4d5cac796756e05f87423d760862411e1934cd8e919ffc60ae671f6048",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "index.php": {
+            "sha256": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+            "sha256_lf": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          }
+        },
+        "promoted_manifest_sha256": "b3295fd9641eecc15bf76505e7efd9f33f41c173d1e7680dd8feb71578be55d9",
+        "operations": {
+          ".htaccess": {
+            "action": "preserve",
+            "reason": "hosted_access_rule",
+            "before": {
+              "exists": true,
+              "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "bytes": 493,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "bytes": 493,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "assets/index-CxkFAWK0.js": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "f0ce682e4e255d330e40451de981a07d0db3bbd535fc9cfc6ffe258b14bc060e",
+              "sha256_lf": "f0ce682e4e255d330e40451de981a07d0db3bbd535fc9cfc6ffe258b14bc060e",
+              "bytes": 234812,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "f0ce682e4e255d330e40451de981a07d0db3bbd535fc9cfc6ffe258b14bc060e",
+                "sha256_lf": "f0ce682e4e255d330e40451de981a07d0db3bbd535fc9cfc6ffe258b14bc060e",
+                "bytes": 234812,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "assets/index-DBhIFcGx.css": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "72070dd63aba07de8b5bf07605049b3646059766862a32bb891aac9b6a64321d",
+              "sha256_lf": "72070dd63aba07de8b5bf07605049b3646059766862a32bb891aac9b6a64321d",
+              "bytes": 25297,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "72070dd63aba07de8b5bf07605049b3646059766862a32bb891aac9b6a64321d",
+                "sha256_lf": "72070dd63aba07de8b5bf07605049b3646059766862a32bb891aac9b6a64321d",
+                "bytes": 25297,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "connect/entry.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+              "sha256_lf": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+              "bytes": 600,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+              "sha256_lf": "c6704e87235aaeca9e8247ccdc5040529bcb894fe77ce09746f22717d5911c5c",
+              "bytes": 600,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/gate.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "bytes": 8780,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "bytes": 8780,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/logout.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+              "sha256_lf": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+              "bytes": 286,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+              "sha256_lf": "7e59bed8659859d7b9d7d6f02d44c01cb9ab51296882ac67ca824c5f5a108e1b",
+              "bytes": 286,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "index.html": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+              "sha256_lf": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+              "bytes": 328,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "f3db63d99a4f7de586cf6a36297979abea1909768e515c2b1db477a41e10fc9b",
+              "sha256_lf": "1592fd4d5cac796756e05f87423d760862411e1934cd8e919ffc60ae671f6048",
+              "bytes": 414,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "f3db63d99a4f7de586cf6a36297979abea1909768e515c2b1db477a41e10fc9b",
+                "sha256_lf": "1592fd4d5cac796756e05f87423d760862411e1934cd8e919ffc60ae671f6048",
+                "bytes": 414,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+                "sha256_lf": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+                "bytes": 328,
+                "mode": 436
+              }
+            }
+          },
+          "index.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+              "sha256_lf": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+              "bytes": 879,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+              "sha256_lf": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+              "bytes": 879,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          }
+        },
+        "operation_counts": {
+          "preserve": 5,
+          "replace": 1,
+          "create": 2
+        }
+      },
+      {
+        "app": "drone",
+        "domain": "drone-preprod.avereo.fr",
+        "document_root": "/home/daje3540/drone-preprod.avereo.fr",
+        "archive": "drone.zip",
+        "artifact_sha256": "e5a50c81a73a0dbca5893ac43760d28d3e34a2d6d630519d7fae556de6381b59",
+        "hosted_htaccess_sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+        "preserve_hosted_htaccess": true,
+        "preserve_private_configuration": true,
+        "backup": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z/drone/backup",
+        "snapshot_manifest_sha256": "f79423846e2f87b5442bc26a047611a2fa241e5bcb16a868385488723384818c",
+        "known_limits": "Authenticated hosted business recipe remains to be performed.",
+        "access_overlay": "Preserve the exact hosted root .htaccess bytes and mode; Coupe keeps its Drupal OAuth callback route.",
+        "promoted_files": {
+          ".htaccess": {
+            "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "assets/index-BmzmAYJo.css": {
+            "sha256": "95600f6cce54aed0c950903db21b1037cf1d61afc144d0db29ffad94ea11f1a4",
+            "sha256_lf": "95600f6cce54aed0c950903db21b1037cf1d61afc144d0db29ffad94ea11f1a4",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "assets/index-HLKEE8D6.js": {
+            "sha256": "2307ed7df447569d80387e3f827217063b1a46c8dbe68746e9c3fffdc046826b",
+            "sha256_lf": "2307ed7df447569d80387e3f827217063b1a46c8dbe68746e9c3fffdc046826b",
+            "mode": 420,
+            "source": "verified_candidate_archive"
+          },
+          "connect/entry.php": {
+            "sha256": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+            "sha256_lf": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/gate.php": {
+            "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "connect/logout.php": {
+            "sha256": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+            "sha256_lf": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          },
+          "index.html": {
+            "sha256": "8310b622a6b04affb990b81a7f4fbc87c2c7e254792c952345c0dab2ed46574b",
+            "sha256_lf": "eadfa35a2e8c96e1e3cfaec61d8b15a4cb804d64a38534bcc1a00fcb8fb0823c",
+            "mode": 436,
+            "source": "verified_candidate_archive"
+          },
+          "index.php": {
+            "sha256": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+            "sha256_lf": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+            "mode": 436,
+            "source": "existing_hosted_file"
+          }
+        },
+        "promoted_manifest_sha256": "6f2fca5555b3efd3654580814798a41743af46be8dade1bcc31d5f955a17a3c7",
+        "operations": {
+          ".htaccess": {
+            "action": "preserve",
+            "reason": "hosted_access_rule",
+            "before": {
+              "exists": true,
+              "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "bytes": 493,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+              "bytes": 493,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "assets/index-BmzmAYJo.css": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "95600f6cce54aed0c950903db21b1037cf1d61afc144d0db29ffad94ea11f1a4",
+              "sha256_lf": "95600f6cce54aed0c950903db21b1037cf1d61afc144d0db29ffad94ea11f1a4",
+              "bytes": 20920,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "95600f6cce54aed0c950903db21b1037cf1d61afc144d0db29ffad94ea11f1a4",
+                "sha256_lf": "95600f6cce54aed0c950903db21b1037cf1d61afc144d0db29ffad94ea11f1a4",
+                "bytes": 20920,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "assets/index-HLKEE8D6.js": {
+            "action": "create",
+            "reason": "candidate_change",
+            "before": {
+              "exists": false
+            },
+            "after": {
+              "exists": true,
+              "sha256": "2307ed7df447569d80387e3f827217063b1a46c8dbe68746e9c3fffdc046826b",
+              "sha256_lf": "2307ed7df447569d80387e3f827217063b1a46c8dbe68746e9c3fffdc046826b",
+              "bytes": 178421,
+              "mode": 420
+            },
+            "rollback": {
+              "action": "remove_added_file",
+              "require_current": {
+                "exists": true,
+                "sha256": "2307ed7df447569d80387e3f827217063b1a46c8dbe68746e9c3fffdc046826b",
+                "sha256_lf": "2307ed7df447569d80387e3f827217063b1a46c8dbe68746e9c3fffdc046826b",
+                "bytes": 178421,
+                "mode": 420
+              },
+              "restore": {
+                "exists": false
+              }
+            }
+          },
+          "connect/entry.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+              "sha256_lf": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+              "bytes": 598,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+              "sha256_lf": "eacb9738cf70dc8a38e144296907d75177fccccd75b7e20aaa64b2d36befdf08",
+              "bytes": 598,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/gate.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "bytes": 8780,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+              "bytes": 8780,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "connect/logout.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+              "sha256_lf": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+              "bytes": 285,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+              "sha256_lf": "0230a4959f5ba713d51aa94ca01d611b907eeeba653e4e99b3ea5b544b5c779c",
+              "bytes": 285,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          },
+          "index.html": {
+            "action": "replace",
+            "reason": "candidate_change",
+            "before": {
+              "exists": true,
+              "sha256": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+              "sha256_lf": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+              "bytes": 327,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "8310b622a6b04affb990b81a7f4fbc87c2c7e254792c952345c0dab2ed46574b",
+              "sha256_lf": "eadfa35a2e8c96e1e3cfaec61d8b15a4cb804d64a38534bcc1a00fcb8fb0823c",
+              "bytes": 413,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "restore_backup",
+              "require_current": {
+                "exists": true,
+                "sha256": "8310b622a6b04affb990b81a7f4fbc87c2c7e254792c952345c0dab2ed46574b",
+                "sha256_lf": "eadfa35a2e8c96e1e3cfaec61d8b15a4cb804d64a38534bcc1a00fcb8fb0823c",
+                "bytes": 413,
+                "mode": 436
+              },
+              "restore": {
+                "exists": true,
+                "sha256": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+                "sha256_lf": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+                "bytes": 327,
+                "mode": 436
+              }
+            }
+          },
+          "index.php": {
+            "action": "preserve",
+            "reason": "same_content_after_lf_normalization",
+            "before": {
+              "exists": true,
+              "sha256": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+              "sha256_lf": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+              "bytes": 877,
+              "mode": 436
+            },
+            "after": {
+              "exists": true,
+              "sha256": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+              "sha256_lf": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+              "bytes": 877,
+              "mode": 436
+            },
+            "rollback": {
+              "action": "none"
+            }
+          }
+        },
+        "operation_counts": {
+          "preserve": 5,
+          "replace": 1,
+          "create": 2
+        }
+      }
+    ],
+    "production_modified": false,
+    "deployment_performed": false,
+    "requires_preproduction_approval": true,
+    "includes_sql_migration": false,
+    "changes_private_configuration": false,
+    "changes_habilitations": false,
+    "recovery_directory": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z",
+    "recipe": [
+      "Verify exact promoted file hashes and the original hosted .htaccess",
+      "Reject anonymous root/index and entry without ticket; verify HTTPS portal destinations",
+      "Verify Rapport presents Expertise and Visite Globale (Habitologie), preserving legacy imports",
+      "Responsible-account launch, save/reopen, exports, logout and revocation per app; rollback files if a technical check fails",
+      "Coupe: preserve Drupal OAuth callback query forwarding to the gated legacy app; anonymous legacy-app.html must redirect/refuse. Do not activate the absent database or change auth_mode.",
+      "Do not call a schema-creating health endpoint; verify new synthetic Rapport drafts, save/reopen/export and legacy imports without changing customer reports."
+    ],
+    "excluded": [
+      "CONNECT code until schema migration and database recovery are prepared",
+      "Recherche target/catalogue/launch configuration absent",
+      "Passeport Immo empty closed target; integration not implemented",
+      "Coupe PR54 pending and excluded from main candidate"
+    ],
+    "host_metadata_observed_at": "2026-10-09T10:35:21.725+00:00",
+    "supersedes_batch_sha256": "e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324",
+    "delivery_method": {
+      "write_only_explicit_create_replace_paths": true,
+      "require_all_before_hashes_modes_and_missing_paths_before_first_write": true,
+      "preserve_paths_not_listed_in_operations": true,
+      "preserve_old_assets_and_private_configuration": true,
+      "existing_file_modes_retained": true,
+      "new_file_mode": 420,
+      "atomic_per_file_replacement": true,
+      "atomic_across_applications": false,
+      "no_recursive_delete_or_bulk_unzip_into_live_root": true
+    },
+    "rollback_method": {
+      "restore_replaced_files_and_original_modes_from_verified_backup": true,
+      "remove_only_added_files_matching_expected_deployed_hash_and_mode": true,
+      "preflight_all_rollback_paths_before_first_write": true,
+      "refuse_divergent_file_instead_of_overwriting_it": true,
+      "remove_created_directories_only_if_empty": true,
+      "preserve_data_private_configuration_and_unlisted_paths": true,
+      "scope": "files_and_modes_only_no_database_recovery",
+      "active_deployment_rollback_performed": false
+    }
+  },
+  "previous_delivery_workflow": {
+    "iterationId": "alignement-recette-cinq-applications-20261006",
+    "owner": "jpdandin",
+    "stage": "developpement_local",
+    "status": "awaiting_preproduction_approval",
+    "candidate": {
+      "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+      "artifactSha256": "e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324"
+    },
+    "targets": {
+      "preproduction": {
+        "id": "recette-rapport-coupe-projet-thermo-drone",
+        "ready": true,
+        "isolated": true,
+        "empty": false,
+        "evidence": "Cinq racines cPanel réelles sous /home/daje3540/*-preprod.avereo.fr, sans lien symbolique ; configurations préprod dédiées, cinq secrets cohérents ; Rapport base distincte, Coupe base non configurée. archives/audit-applications-hebergees.json",
+        "observedAt": "2026-10-06T20:12:00.235+00:00"
+      },
+      "production": {
+        "id": null,
+        "ready": false
+      }
+    },
+    "checks": [
+      {
+        "kind": "local",
+        "status": "passed",
+        "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifactSha256": "e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324",
+        "observedAt": "2026-10-06T20:12:00.235+00:00",
+        "evidence": "Sept builds, suites existantes et six contrats de lancement vérifiés ; archives exactes et manifestes de promotion contrôlés, couches d’accès conservées ou règle auth Coupe explicitée. archives/alignement-applications.json et archives/audit-applications-hebergees.json."
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifactSha256": "e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324",
+        "observedAt": "2026-10-06T20:12:00.235+00:00",
+        "evidence": "CI de la source exacte 3d70b530 réussie : https://github.com/jpdandin44/AVEREO/actions/runs/37506091820 ; les archives locales ne sont pas produites par ce run. Contrôles de source liés au lot préparé, intégrité des archives vérifiée localement.",
+        "artifact_attestation": false
+      },
+      {
+        "kind": "documentation",
+        "status": "passed",
+        "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+        "artifactSha256": "e7302748033c3708b971f66dc8f35882ec08869732227c7ad7db037f0ccab324",
+        "observedAt": "2026-10-06T20:25:56.516+00:00",
+        "evidence": "Suivi canonique, reçus d’inventaire/récupération et plan exact conservés ; relevé dérivé et documents d’impact actualisés. Contrôle documentaire réel : 9 Markdown et 58 liens locaux valides."
+      }
+    ],
+    "approvals": [],
+    "backups": [
+      {
+        "id": "/home/daje3540/private/preprod-alignment/recovery-20261006T201027126442Z",
+        "target": "recette-rapport-coupe-projet-thermo-drone",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "evidence": "archives/audit-applications-hebergees.json : cinq snapshots de fichiers, modes et SHA vérifiés, copies privées restaurées identiques ; pas de modification SQL prévue.",
+        "observedAt": "2026-10-06T20:10:27.126+00:00"
+      }
+    ],
+    "blockers": [],
+    "nextAction": "Accord de préproduction sur ce lot exact, puis contrôle des fichiers/règles d’accès et recette des applications ; retour arrière aux snapshots si un contrôle échoue.",
+    "gate_result": {
+      "gate": "preproduction",
+      "declaredEvidenceConsistent": false,
+      "errors": [
+        "Accord humain exact absent : preproduction."
+      ],
+      "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+      "observedAt": "2026-10-06T20:25:56.516+00:00"
+    }
+  },
+  "local_validation": {
+    "command": "python -m unittest discover -s outillage/acces-preproduction -p test_*.py -v",
+    "tests": 33,
+    "passed": 27,
+    "skipped": 6,
+    "skip_reason": "Apache local indisponible",
+    "new_preparer_tests": 6,
+    "application_archives_verified": 5,
+    "plan_matches_archive": true
+  },
+  "deployment_performed": false,
+  "database_modified": false,
+  "private_configuration_modified": false,
+  "production_modified": false
+}

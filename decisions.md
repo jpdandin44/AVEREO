@@ -5,7 +5,7 @@ title: Décisions du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-06
+updated: 2026-10-09
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -59,3 +59,20 @@ droits/données existants. Les preuves locales et hébergées restent distinctes
 [le suivi](outillage/acces-preproduction/suivi-chantier.json). Les configurations,
 sauvegardes et recettes par cible restent nécessaires avant tout remplacement.
 Cette préparation ne crée pas d’accord de merge, de production ou d’ouverture.
+
+## 2026-10-09 — Préserver le contrat d'accès de Coupe dans le lot de recette
+
+**Contexte :** la revue de reprise identifie une redirection `/auth` dans le
+candidat commun, alors que Coupe hébergé conserve le mode privé `drupal_oauth`.
+
+**Décision de préparation :** conserver les octets et permissions du `.htaccess`
+hébergé pour les cinq cibles, y compris Coupe. Conserver également les fichiers
+ne différant que par leurs fins de ligne. La version des frontends et les cinq
+archives applicatives restent issues de la référence commune déjà construite.
+
+**Raisons et conséquences :** éviter une modification implicite du retour OAuth
+et réduire les écritures sans effet fonctionnel. Le plan corrigé et son empreinte
+sont dans le [reçu de reprise](outillage/acces-preproduction/archives/reprise-applications-20261009.json).
+Ses opérations inverses distinguent fichiers remplacés et ajoutés, avec refus
+d'un état divergent. Cette préparation ne change ni mode d'authentification,
+ni base de Coupe et ne donne aucun accord de déploiement.

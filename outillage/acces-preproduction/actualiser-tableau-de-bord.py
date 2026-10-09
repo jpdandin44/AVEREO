@@ -16,7 +16,7 @@ updated: 2026-10-06
 owner: jpdandin
 tags: [preproduction, exploitation, cockpit, derive]
 ---
-'''
+'''.replace('updated: 2026-10-06', 'updated: ' + state.get('updated', '2026-10-06'))
 lines = [front, '# Relevé hébergé', '',
     'Vue dérivée du [suivi canonique](suivi-chantier.json). Les observations ne valent',
     'ni validation humaine ni bascule. La préparation initiale est conservée dans',
@@ -140,8 +140,21 @@ if alignment:
             'Les empreintes frontend différentes établissent un écart d’artefact ; seule la version Rapport possède aussi une preuve fonctionnelle des anciens choix.', '',
             '**Lot de recette préparé** : ' + ', '.join(batch['applications']) + '.',
             f"Référence `{batch['source_sha']}` ; archive `{batch['archive']}` ; SHA-256 `{batch['artifact_sha256']}`.",
-            'Le plan exact figure dans le reçu. Configuration privée, habilitations et données conservées ; aucune migration SQL prévue. La règle auth de Coupe rejoint le portail, son sas historique restant protégé.',
+            'Le plan exact figure dans le reçu courant indiqué ci-dessous. Configuration privée, habilitations et données conservées ; aucune migration SQL prévue. Les cinq règles hébergées restent identiques, y compris le retour OAuth de Coupe ; son sas historique reste protégé.',
             'Ce lot attend son accord de préproduction. CONNECT, Recherche et Passeport Immo ont des prérequis distincts et sont exclus du remplacement préparé.', '']
+    resumed = alignment.get('latest_resumption')
+    if resumed:
+        lines += ['### Reprise du 9 octobre', '',
+            f"Observations serveur du `{resumed['hosted_observed_at']}` et chemins candidats du `{resumed['paths_observed_at']}`.",
+            f"[Reçu de reprise et plan corrigé]({resumed['evidence_path']}).", '',
+            resumed['summary'], '',
+            'Claude a effectué une revue locale en lecture seule ; les conclusions retenues ont été vérifiées sur les sources et les reçus serveur.', '',
+            '| Application | Conservés | Remplacés prévus | Ajoutés prévus |',
+            '| --- | --- | --- | --- |']
+        for app, counts in resumed['operation_counts'].items():
+            lines.append(f"| {app} | {counts['preserve']} | {counts['replace']} | {counts['create']} |")
+        lines += ['', 'Les fichiers conservés incluent les règles d’accès et les différences limitées aux fins de ligne.',
+            'Retour arrière prévu : restaurer uniquement les fichiers remplacés et leurs modes depuis la copie vérifiée ; retirer uniquement les ajouts encore identiques au candidat. Refuser toute dérive. Aucun retour arrière d’une livraison active du nouveau lot n’est déclaré réussi.', '']
     ci = alignment.get('tooling_ci')
     if ci:
         lines += [f"CI des outils sur `{ci['source_sha']}` : [{ci['tests']} tests sans saut]({ci['url']}) et [CI générale]({ci['general_ci_url']}) réussis.",
