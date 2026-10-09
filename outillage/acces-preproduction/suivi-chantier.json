@@ -97,9 +97,9 @@
         "state": "open",
         "draft": true,
         "merged": false,
-        "headSha": "70fbcac44517f11c8031cedf627957ead6efd6fe",
-        "observedAt": "2026-10-09T10:46:22.090+00:00",
-        "note": "Tête observée avant les corrections locales de reprise ; la PR reste un brouillon."
+        "headSha": "0f541b6beddfa9fb6c759d024ed1c92efa846328",
+        "observedAt": "2026-10-09T10:54:04.222+00:00",
+        "note": "Tête technique qualifiée du correctif ; enregistrement documentaire des contrôles réalisé après cette observation."
       },
       "pullRequestHistory": [
         {
@@ -665,9 +665,9 @@
     "state": "open",
     "draft": true,
     "merged": false,
-    "headSha": "70fbcac44517f11c8031cedf627957ead6efd6fe",
-    "observedAt": "2026-10-09T10:46:22.090+00:00",
-    "note": "Tête observée avant les corrections locales de reprise ; la PR reste un brouillon."
+    "headSha": "0f541b6beddfa9fb6c759d024ed1c92efa846328",
+    "observedAt": "2026-10-09T10:54:04.222+00:00",
+    "note": "Tête technique qualifiée du correctif ; enregistrement documentaire des contrôles réalisé après cette observation."
   },
   "checks": [
     {
@@ -1122,6 +1122,17 @@
       "merged": false,
       "headSha": "9db26fd5afa63abc861b190f6b2dccf5cbf4f0f5",
       "observedAt": "2026-10-06T18:35:38.000Z"
+    },
+    {
+      "repository": "jpdandin44/AVEREO",
+      "number": 77,
+      "url": "https://github.com/jpdandin44/AVEREO/pull/77",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "headSha": "70fbcac44517f11c8031cedf627957ead6efd6fe",
+      "observedAt": "2026-10-09T10:46:22.090+00:00",
+      "note": "Tête observée avant les corrections locales de reprise ; la PR reste un brouillon."
     }
   ],
   "developmentWorkflowHistory": [
@@ -1608,17 +1619,13 @@
       "reason": "Inventaire privé, cibles isolées, récupération, recette et accord exact non qualifiés ; preuve CI des archives locales absente."
     },
     "tooling_ci": {
-      "source_sha": "af17cb371469e503d6964dab391a4fffb1b8b1ca",
-      "observed_at": "2026-10-06T19:43:14.265+00:00",
-      "status": "passed",
-      "tests": 27,
+      "source_sha": "0f541b6beddfa9fb6c759d024ed1c92efa846328",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37920033496",
+      "general_ci_url": "https://github.com/jpdandin44/AVEREO/actions/runs/37920033778",
+      "tests": 33,
       "skipped": 0,
-      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37520544589",
-      "general_ci_url": "https://github.com/jpdandin44/AVEREO/actions/runs/37520544556",
-      "general_ci_status": "passed",
-      "pr_policy_status": "skipped_draft",
-      "artifact_attestation": false,
-      "scope": "Tests des sources et outils ; les archives locales ne sont pas produites par ce run."
+      "observed_at": "2026-10-09T10:54:04.222+00:00",
+      "artifact_attestation": false
     },
     "hosted_evidence_path": "archives/audit-applications-hebergees.json",
     "prepared_delivery_batch": {
@@ -1900,8 +1907,32 @@
           "create": 2
         }
       },
-      "summary": "Huit cibles et sept récupérations privées revérifiées, fichiers actifs inchangés. Lot corrigé avec les cinq règles d’accès conservées et opérations inverses explicites. Aucun candidat applicatif installé ; accord exact encore absent."
-    }
+      "summary": "Huit cibles et sept récupérations privées revérifiées, fichiers actifs inchangés. Lot corrigé avec les cinq règles d’accès conservées et opérations inverses explicites. Aucun candidat applicatif installé ; accord exact encore absent.",
+      "tooling_ci": {
+        "source_sha": "0f541b6beddfa9fb6c759d024ed1c92efa846328",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37920033496",
+        "general_ci_url": "https://github.com/jpdandin44/AVEREO/actions/runs/37920033778",
+        "tests": 33,
+        "skipped": 0,
+        "observed_at": "2026-10-09T10:54:04.222+00:00",
+        "artifact_attestation": false
+      }
+    },
+    "tooling_ci_history": [
+      {
+        "source_sha": "af17cb371469e503d6964dab391a4fffb1b8b1ca",
+        "observed_at": "2026-10-06T19:43:14.265+00:00",
+        "status": "passed",
+        "tests": 27,
+        "skipped": 0,
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37520544589",
+        "general_ci_url": "https://github.com/jpdandin44/AVEREO/actions/runs/37520544556",
+        "general_ci_status": "passed",
+        "pr_policy_status": "skipped_draft",
+        "artifact_attestation": false,
+        "scope": "Tests des sources et outils ; les archives locales ne sont pas produites par ce run."
+      }
+    ]
   },
   "sessionHandoff": {
     "status": "resumed_on_user_request",

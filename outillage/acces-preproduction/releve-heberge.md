@@ -218,7 +218,7 @@ Claude a effectué une revue locale en lecture seule ; les conclusions retenues 
 Les fichiers conservés incluent les règles d’accès et les différences limitées aux fins de ligne.
 Retour arrière prévu : restaurer uniquement les fichiers remplacés et leurs modes depuis la copie vérifiée ; retirer uniquement les ajouts encore identiques au candidat. Refuser toute dérive. Aucun retour arrière d’une livraison active du nouveau lot n’est déclaré réussi.
 
-CI des outils sur `af17cb371469e503d6964dab391a4fffb1b8b1ca` : [27 tests sans saut](https://github.com/jpdandin44/AVEREO/actions/runs/37520544589) et [CI générale](https://github.com/jpdandin44/AVEREO/actions/runs/37520544556) réussis.
+CI des outils sur `0f541b6beddfa9fb6c759d024ed1c92efa846328` : [33 tests sans saut](https://github.com/jpdandin44/AVEREO/actions/runs/37920033496) et [CI générale](https://github.com/jpdandin44/AVEREO/actions/runs/37920033778) réussis.
 Ces runs valident les sources ; ils ne produisent pas les archives locales et ne prouvent pas le contenu hébergé. PR Policy reste ignorée sur le brouillon.
 
 - **connect** : Préparer la migration requise et la sauvegarde/restauration de sa base distincte ; recetter le pont d’activation avant de remplacer le code. Conserver Basic.
@@ -251,5 +251,5 @@ Les workflows de production restent manuels ; le merge et l’ouverture publique
 
 ## Source GitHub
 
-[PR #77](https://github.com/jpdandin44/AVEREO/pull/77) — brouillon, observée le `2026-10-09T10:46:22.090+00:00`.
-SHA source `70fbcac44517f11c8031cedf627957ead6efd6fe`. Aucune validation de phase créée automatiquement.
+[PR #77](https://github.com/jpdandin44/AVEREO/pull/77) — brouillon, observée le `2026-10-09T10:54:04.222+00:00`.
+SHA source `0f541b6beddfa9fb6c759d024ed1c92efa846328`. Aucune validation de phase créée automatiquement.

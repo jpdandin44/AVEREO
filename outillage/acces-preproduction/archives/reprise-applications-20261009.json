@@ -3848,5 +3848,23 @@
   "deployment_performed": false,
   "database_modified": false,
   "private_configuration_modified": false,
-  "production_modified": false
+  "production_modified": false,
+  "ci_validation": {
+    "source_sha": "0f541b6beddfa9fb6c759d024ed1c92efa846328",
+    "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37920033496",
+    "general_ci_url": "https://github.com/jpdandin44/AVEREO/actions/runs/37920033778",
+    "tests": 33,
+    "skipped": 0,
+    "observed_at": "2026-10-09T10:54:04.222+00:00",
+    "artifact_attestation": false
+  },
+  "documentation_validation": {
+    "observed_at": "2026-10-09T10:54:04.222+00:00",
+    "markdown_files": 10,
+    "local_links": 72,
+    "errors": [],
+    "generator_idempotent": true,
+    "cockpit_readable_preproduction_documents": 4,
+    "human_phase_statuses_unchanged": true
+  }
 }
