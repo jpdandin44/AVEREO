@@ -5,7 +5,7 @@ title: Acces par identifiants aux preproductions AVEREO
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-06
+updated: 2026-10-09
 owner: jpdandin
 tags: [preproduction, securite, exploitation]
 ---
@@ -14,7 +14,25 @@ tags: [preproduction, securite, exploitation]
 
 ## Statut du lot
 
-**Pilote CONNECT appliqué ; accès autorisé et recette métier en attente.** L'accord du responsable
+Le lot est repris le 9 octobre, avec accès cPanel contrôlé et revue locale dans
+Claude à la demande du responsable. Le [point de reprise](point-session.md)
+rattache les constats au suivi canonique. Les versions hébergées et les sept
+copies privées de récupération sont inchangées ; le plan des cinq applications
+est corrigé et son nouvel accord de livraison reste en attente.
+
+Pour tester la connexion et les applications, utiliser les
+[accès de recette](releve-heberge.md#accès-pour-la-recette). Le cockpit local
+sert à consulter les phases, preuves et décisions. Il ne constitue pas
+l’environnement de recette de CONNECT ni du fournisseur d’identité.
+Ce lot fournit des tests locaux automatisés de réparation ; aucune interface
+locale du fournisseur d’identité n’est fournie.
+
+Dans la PR #77, le lien de la première case de test ouvre directement CONNECT
+préproduction. Le libellé obligatoire du modèle « en local » est conservé ; la
+cible de recette de ce lot est hébergée. La procédure des tests automatisés est
+un lien distinct. Le relevé indique le contrôle de navigation et ses limites.
+
+**Pilote CONNECT et réparation de l’identité appliqués ; recette avec le compte du responsable à faire.** L'accord du responsable
 porte sur le remplacement du filtrage IP de consultation par une protection HTTP
 par identifiants, CONNECT d'abord, puis les autres préproductions. Il autorise une
 PR dédiée, pas un merge ni une modification de production.
@@ -29,12 +47,121 @@ identifiants incorrects renvoie 401 avec Basic ; HTTP renvoie 403 sans challenge
 La sauvegarde privée reste disponible. Les autres cibles ne sont pas basculées.
 Aucun mot de passe, cookie, lien de session cPanel ou hachage de compte n'est versionné.
 
+La PR #76 est maintenant fusionnée, comme l’indique le suivi. Le responsable signale
+que le filtrage IP est débloqué, puis une erreur lors de la connexion. Le diagnostic
+initial du serveur d’identité a confirmé une installation Simple OAuth
+incomplète. La réparation autorisée rétablit l’écran OAuth de connexion : la racine
+répond 200 et la demande anonyme redirige vers le formulaire Drupal, qui répond 200.
+La cause, le candidat appliqué et la recette technique figurent dans
+le [relevé dérivé](releve-heberge.md#incident-dauthentification). La connexion avec
+le compte du responsable et le lancement des applications restent à recetter.
+
 Le [suivi du lot](suivi-chantier.json) est la source canonique de cette itération.
 Il porte les quatre phases du cockpit Projet. Le suivi initial est archivé sans
 perte ni nouvelle validation. Protocole applicable :
 [quatre phases](../protocole-developpement/skills/developpement-github-cockpit/references/protocole.md).
 
 ## Objectif et frontières
+
+La qualification couvre aussi la cohérence des huit applications du monorepo.
+Le [relevé dérivé](releve-heberge.md#alignement-des-applications) présente les
+candidats d’une même référence, les contrôles réalisés et les limites hébergées.
+Le bloc `application_alignment` du suivi reste la source canonique ; son reçu JSON
+conserve l’inventaire des fichiers et les observations datées. Un sas qui renvoie
+vers CONNECT ne prouve ni la version de l’interface ni le fonctionnement du stockage.
+
+### Préparer un ensemble de versions vérifiables
+
+Construire les frontends dans un checkout propre de la référence retenue, avec
+les commandes et les modes documentés par chaque application. Conserver les
+preuves de compilation et de test avant de préparer les archives. Le script
+ci-dessous inventorie des builds **déjà construits** : il ne certifie pas à lui
+seul leur provenance ni leurs variables de compilation. Il contrôle la référence
+Git, la propreté des fichiers suivis, les fichiers privés/liens symboliques et
+l’intégrité des archives ; il n’accède à aucun compte et ne déploie rien.
+
+```powershell
+python prepare_application_candidates.py --source CHEMIN_CHECKOUT_PROPRE `
+  --expected-sha SHA_GIT_COMPLET --output .local/alignement --observe-http
+```
+
+L’option HTTP observe uniquement les huit adresses de recette attendues, sans
+identifiant, cookie ni suivi de redirection. Une adresse attendue n’est pas une
+preuve de domaine déclaré. Les configurations et empreintes hébergées doivent
+être relevées dans la session d’exploitation avant toute qualification complète.
+Les archives de référence ne remplacent pas les règles d’accès hébergées : préparer
+la surcouche de protection, la sauvegarde et la restauration de chaque cible.
+Passeport Immo reçoit toujours son fragment `Require all denied` ; aucune entrée
+CONNECT ou habilitation n’est créée par l’outillage.
+
+### Inventaire hébergé et livraison de recette
+
+La lecture cPanel a repris le 6 octobre. Le suivi et son relevé dérivé renvoient
+au reçu `archives/audit-applications-hebergees.json` : huit cibles examinées,
+empreintes comparées après normalisation LF, métadonnées dédiées de lancement,
+catalogue actif et schémas lus sans données applicatives. Les bundles de cinq
+applications et sept fichiers de CONNECT diffèrent des candidats. Une empreinte
+frontend différente prouve un écart d’artefact ; le caractère ancien de Rapport
+est aussi établi par l’absence de Visite Globale et les quatre choix observés.
+
+Les sept cibles existantes ont une sauvegarde et une copie restaurée en privé,
+identiques par empreintes et modes, avec vérification que les fichiers actifs
+n’ont pas changé pendant la copie. Cette preuve concerne les **fichiers** ; elle
+ne constitue pas une sauvegarde ni une recette de restauration des bases.
+
+Un lot exact Rapport/Coupe/Projet/Thermo/Drone est préparé. Le suivi en conserve
+le plan, l’archive, les empreintes et le workflow distinct de l’ensemble des huit
+applications. Le contrôle du 9 octobre est conservé dans le
+[reçu de reprise](archives/reprise-applications-20261009.json). Le `.htaccess`
+hébergé de chacune des cinq cibles est conservé, y compris celui de Coupe : la
+redirection `/auth` du candidat empêcherait le retour OAuth utilisé par son mode
+privé `drupal_oauth`. Son sas historique reste protégé, sa base non configurée et
+son mode privé inchangés. Les configurations privées, droits et données restent
+hors de l’archive. Aucun candidat applicatif n’est installé.
+
+Le [préparateur du lot](prepare_delivery_batch.py) utilise les ZIP déjà vérifiés
+et un relevé serveur de **tous leurs chemins**, permissions comprises. Il ne
+déploie rien. Il conserve aussi les fichiers identiques après normalisation LF,
+liste les créations/remplacements et décrit leur opération inverse. Les ZIP
+applicatifs inclus restent inchangés ; leur extraction directe sur une racine
+active est interdite, car elle ignorerait ces règles de conservation.
+
+```powershell
+python prepare_delivery_batch.py --original-batch .local/alignement/lot-recette-cinq-applications.zip `
+  --host-metadata ../../.local/reprise-20261009/audit-delivery-20261009.json `
+  --output .local/alignement-reprise
+```
+
+Avant toute écriture, comparer les empreintes, modes et absences attendus de tous
+les chemins. Ne toucher qu'aux opérations `create` et `replace`, par remplacement
+atomique de chaque fichier ; la livraison des cinq cibles n'est pas atomique.
+Conserver tous les autres chemins et les anciens assets. Pour revenir en arrière,
+contrôler d'abord tous les chemins concernés : restaurer uniquement les fichiers
+remplacés depuis la sauvegarde vérifiée avec leur mode d'origine ; retirer les
+fichiers créés seulement si leurs empreintes et modes correspondent encore au
+candidat livré. Refuser un état divergent. Retirer un répertoire créé seulement
+s'il est vide. Le plan couvre les fichiers et modes ; aucune restauration de base
+ni retour arrière d'une livraison active n'est attesté par cette préparation.
+
+Les fichiers planning de Projet constituent son planning stocké dans le
+navigateur. Aucune donnée ou API de revue privée du cockpit n'est incluse.
+
+CONNECT ne peut pas recevoir son backend main sans la migration ajoutant
+`onboarding_status` et `activation_email_sent_at`, absents de `users`. Sa base
+de recette est distincte ; préparer sa récupération avant toute migration.
+Recherche n’a ni domaine de recette déclaré, ni configuration de lancement,
+ni entrée catalogue. Passeport Immo ne contient que la fermeture `.htaccess`,
+sans frontend ni contrat de lancement CONNECT. Ces trois travaux restent
+distincts du lot préparé et ne sont pas déduits d’un merge.
+
+Le test `test_launch_contract.php` utilise le véritable émetteur de CONNECT et
+les sas récepteurs avec un compte fictif, un secret synthétique et des nonces
+éphémères. Il contrôle l’échange, l’identité lorsqu’elle est utilisée, l’anti-rejeu,
+la signature, l’application, l’expiration et le refus anonyme. La suite Python
+l’exécute pour les six applications disposant d’un lancement CONNECT. La CI
+installe explicitement PHP et Apache ; aucun serveur distant n’est sollicité.
+
+### Périmètre de consultation
 
 Autoriser un testeur depuis ses différents réseaux, sans liste de son IP publique,
 en conservant la connexion Drupal/CONNECT et les droits métier. Comptes de
@@ -242,7 +369,49 @@ depuis une autre cible et ne pas écraser un fichier qui a changé depuis le re�
 Le site demande actuellement aussi le mot de passe sur HTTP. Sa protection reste
 en place ; ce point doit être corrigé pendant son harmonisation. Le périmètre
 CV et Passeport est inventorié mais reste fermé. Les fournisseurs d’identité
-restent à qualifier ; `auth-next-preprod` répond actuellement 500.
+restaient à qualifier lors du diagnostic initial, où `auth-next-preprod` répondait
+500. La réparation et ses contrôles figurent ci-dessous ; la racine répond encore
+200 lors du contrôle anonyme du 9 octobre. Cela ne valide pas le parcours connecté.
+
+## Réparation des dépendances du fournisseur d’identité
+
+Le responsable a demandé le 6 octobre de réaliser la réparation diagnostiquée.
+La seule cible de cette réparation est `auth-next-preprod.avereo.fr`, Drupal
+11.4.6 avec Simple OAuth 6.1.1. Le [script ciblé](repair_identity.py) prépare dans
+un dossier privé une copie des fichiers Composer et de `vendor`, puis ajoute
+les deux dépendances exactes déclarées par le module. Il refuse un changement
+de package déjà verrouillé ou d’un autre champ du manifeste.
+
+Le premier candidat a été restauré après un conflit de chargement dû au déplacement
+du cœur par Composer. Le suivi conserve cet échec et le reçu du retour arrière
+réel, vérifié par empreinte. Le second candidat conserve la disposition Drupal et
+passe la recette technique. La sauvegarde privée demeure disponible.
+
+Les scripts Composer sont désactivés. Seul le plugin `composer/installers`, déjà
+verrouillé sur l’instance, est actif pendant la préparation pour conserver
+l’emplacement `core/` de Drupal ; tous les autres plugins sont désactivés.
+Le cœur est copié en privé, jamais lié à la cible active, et son empreinte reste
+identique. Un cœur déplacé dans `vendor/drupal/core` est refusé ; son chargement
+commun est également testé pour détecter une double déclaration. Aucun bootstrap Drupal,
+commande de base, compte, clé ou configuration privée n’est inclus dans la
+préparation. Le candidat vérifie les exigences PHP et l’autoload des interfaces
+OAuth, OpenID Connect, Drupal et du fournisseur Simple OAuth réellement installé.
+La sauvegarde privée est comparée au contenu actif avant toute application.
+
+L’application exige le dossier et l’empreinte du reçu ; elle refuse un état actif
+modifié depuis la préparation. Elle conserve l’ancien `vendor` et restaure les
+fichiers d’origine en cas d’échec du transfert. Le retour arrière explicite refuse
+d’écraser un nouvel état divergent. Contrôler ensuite HTTPS, l’écran de connexion
+OAuth sans identifiant, les protections CONNECT et les journaux d’erreurs, puis
+recetter le parcours avec le compte du responsable. Une absence d’erreur 500 ne
+constitue pas une validation humaine du parcours métier.
+
+Le [contrat Composer candidat](identite/README.md) est conservé dans le dépôt après extraction du
+paquet de sources sans paramètres privés. La source de référence de la réparation
+est ce lot du monorepo AVEREO ; le dépôt éventuel du reste de l’instance Drupal
+reste à identifier et aucun de ses thèmes ou contenus n’est repris ici.
+
+Référence du mécanisme : [Composer — require et install](https://getcomposer.org/doc/03-cli.md#require).
 
 ## Consultation dans le cockpit
 

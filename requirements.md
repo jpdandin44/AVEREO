@@ -25,3 +25,10 @@ d'une CI ou d'une préproduction dans chaque dépôt.
 Les [exigences d’accès aux préproductions](outillage/acces-preproduction/README.md#objectif-et-frontières)
 portent sur des comptes de consultation, HTTPS, la conservation des droits
 applicatifs et une recette par environnement. CONNECT est le pilote demandé.
+
+Avant production, le responsable demande la cohérence de toutes les applications.
+La qualification doit identifier la référence et l’empreinte de chaque candidat,
+vérifier son lancement depuis CONNECT, ses droits, sa configuration de recette et
+son stockage, puis comparer au contenu effectivement hébergé. Une PR ouverte,
+un merge, une compilation ou un refus anonyme ne constitue pas une recette complète.
+Les sauvegardes, restaurations et validations gardent une portée par cible/version.
