@@ -14,9 +14,12 @@ tags: [passeport-immo, connect, preproduction, sauvegarde]
 
 La demande du responsable porte sur la préparation de CONNECT, sa sauvegarde de
 base et sa migration d’activation, puis les vérifications permettant de finaliser
-Passeport Immo. Le [suivi canonique](suivi-chantier.json), bloc
+Passeport Immo. Le [suivi vivant du clone de travail](suivi-chantier.json), bloc
 `developmentWorkflow.preproductionVerification`, porte les preuves et blocages de
-cette vérification. Les décisions humaines et la revue du lot documents/coupes
+cette vérification sur le poste. Les décisions de revue locales et les changements
+antérieurs du moteur Projet restent conservés dans ce clone ; la PR de préparation
+CONNECT publie uniquement ce rapport et l’option de destination du préparateur.
+Les décisions humaines et la revue du lot documents/coupes
 restent distinctes du passage hébergé.
 
 ## Cadrage

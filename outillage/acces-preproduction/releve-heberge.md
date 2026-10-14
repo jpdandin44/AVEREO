@@ -264,7 +264,6 @@ Blocages de ce lot :
 - URL et secret IDENTITY_ACCOUNT_ACTIVATION_* absents de la configuration CONNECT ; raccordement prive et callback Drupal a qualifier sans changer OAuth ou deconnexion.
 - Transport et destinataire des messages de recette a choisir ; aucun e-mail reel envoye.
 - Accord exact de migration/livraison CONNECT absent ; la preparation ne vaut pas deploiement.
-- CI du nouvel outillage a observer apres publication.
 
 ## Source GitHub
 

@@ -32,7 +32,7 @@ Les contrôles publics du jour reçoivent 401 Basic sur CONNECT et 403 sur
 Passeport Immo. Après connexion du responsable et démarrage de Docker, la
 répétition locale complète passe. Les 37 tests du backend, le pont Drupal et les
 six tests du nouveau préparateur passent. Les six tests Apache ne sont pas
-exécutés sur ce poste ; la CI complète reste à observer sur la publication du lot.
+exécutés sur ce poste ; la CI complète réussit sur la révision publiée indiquée ci-dessous.
 
 Le [reçu réel du serveur](archives/connect-activation-preparation-20261014.json)
 identifie une base CONNECT distincte de production, quatre migrations et trois
@@ -66,10 +66,19 @@ contient l’approbation D05 du lot documents/coupes ; elle reste préservée.
 Le sas, le catalogue et les paramètres privés CONNECT de Passeport Immo restent
 des prérequis absents. Sa préparation de fichiers ne les implémente pas.
 
-Prochaine action : terminer les prérequis du pont d’activation, observer la CI
-de l’outillage et préparer les accords exacts de mise à jour des deux cibles.
+Prochaine action : terminer les prérequis du pont d’activation, préparer les accords exacts de mise à jour des deux cibles.
 Pour Passeport Immo, réaliser ensuite le sas/catalogue et la qualification privée.
 Les accords de phase, d’installation et d’ouverture restent distincts.
+
+### Publication et contrôle de passage
+
+La [PR nº79](https://github.com/jpdandin44/AVEREO/pull/79) est ouverte en brouillon,
+avec quatre cases humaines décochées. La CI générale, la CI Passeport Immo et le
+workflow d’accès réussissent sur `edcfac3`, dont le job de sauvegarde/restauration
+et migration. Les sources runtime/SQL/pont sont identiques à celles du candidat ;
+les observations de CI sont séparées de sa qualification hébergée et des accords.
+Le contrôleur de passage reste en refus pour les blocages d’activation, la cible
+non prête et l’accord exact absent. La récupération CONNECT restaurée est reconnue.
 
 ## Reprise active du 9 octobre 2026
 

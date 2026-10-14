@@ -2097,6 +2097,15 @@
           "artifactSha256": "d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e",
           "evidence": "10 documents Markdown et 71 liens de fichiers locaux controles ; socle racine, metadonnees et git diff --check sans erreur.",
           "observedAt": "2026-10-14T17:41:33.182791+00:00"
+        },
+        {
+          "kind": "ci",
+          "status": "passed",
+          "sourceSha": "c45812cc97d91062d562be2370d032b1977232fc",
+          "artifactSha256": "d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e",
+          "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38609487354",
+          "observedAt": "2026-10-14T17:54:05.544308+00:00",
+          "note": "Tests et repetition activation-migration reussis ; CI generale 38609487150 et Passeport Immo 38609487382 reussies sur edcfac3. Runtime CONNECT/SQL/pont identique au candidat c45812c ; ce run ne deploie rien. PR Policy ignoree en brouillon."
         }
       ],
       "approvals": [],
@@ -2121,11 +2130,32 @@
         "Le fournisseur d’identite ne possede ni controleur ni formulaire d’activation ; module et routes differents. Candidat du pont prepare, recuperation et accord de sa mise a jour encore requis.",
         "URL et secret IDENTITY_ACCOUNT_ACTIVATION_* absents de la configuration CONNECT ; raccordement prive et callback Drupal a qualifier sans changer OAuth ou deconnexion.",
         "Transport et destinataire des messages de recette a choisir ; aucun e-mail reel envoye.",
-        "Accord exact de migration/livraison CONNECT absent ; la preparation ne vaut pas deploiement.",
-        "CI du nouvel outillage a observer apres publication."
+        "Accord exact de migration/livraison CONNECT absent ; la preparation ne vaut pas deploiement."
       ],
-      "nextAction": "Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue."
+      "nextAction": "Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue.",
+      "github": {
+        "repository": "jpdandin44/AVEREO",
+        "prNumber": 79,
+        "prUrl": "https://github.com/jpdandin44/AVEREO/pull/79",
+        "state": "open",
+        "draft": true,
+        "headSha": "edcfac324d28e817fdf45eabe4b95892269ca6c1",
+        "observedAt": "2026-10-14T17:54:05.544308+00:00",
+        "humanAcceptanceVerified": false,
+        "evidence": "PR #79 ouverte en brouillon ; quatre cases non cochees."
+      }
     },
-    "tooling_branch": "codex/connect-preprod-activation-20261014"
+    "tooling_branch": "codex/connect-preprod-activation-20261014",
+    "publication": {
+      "repository": "jpdandin44/AVEREO",
+      "prNumber": 79,
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/79",
+      "state": "open",
+      "draft": true,
+      "headSha": "edcfac324d28e817fdf45eabe4b95892269ca6c1",
+      "observedAt": "2026-10-14T17:54:05.544308+00:00",
+      "humanAcceptanceVerified": false,
+      "evidence": "PR #79 ouverte en brouillon ; quatre cases non cochees."
+    }
   }
 }
