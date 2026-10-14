@@ -21,7 +21,7 @@ clés URL/SECRET reconnues côté CONNECT et catalogue proposé sans droit autom
 Les cinq livrables approuvés D05 et toutes les décisions restent intacts.
 
 Contrôles locaux : 15 assertions du contrat, 18 assertions sur Apache, 38 tests
-backend, 26 tests frontend, 14 tests Python, build et parité réussis. Le candidat
+backend, 26 tests frontend, 15 tests Python, build et parité réussis. Le candidat
 contient douze fichiers ; l'archive de préparation est fermée et restaurée localement.
 Le delta CONNECT contient seulement deux fichiers, avec préconditions d'empreinte.
 Le [rapport](02-integration-connect.md) et le [runbook](deployment.md) décrivent

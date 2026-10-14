@@ -24,10 +24,10 @@ porte candidat, empreintes, preuves et accords.
 Construire avec `npm.cmd run build` dans `frontend/`, puis
 `python workflows/package-candidate.py --output CHEMIN_CANDIDAT`.
 Préparer le ZIP fermé avec `prepare-preproduction.py`, options `--candidate`,
-Les cinq textes du sas sont normalisés en LF dans le candidat pour garder les
-mêmes octets d'archive sur Windows et Linux ; les assets Vite restent inchangés.
 `--manifest` et un nouveau dossier `--output`. Le candidat contient HTML,
-assets et cinq fichiers du sas. Le ZIP fermé remplace uniquement `.htaccess`
+assets et cinq fichiers du sas. Les cinq textes du sas sont normalisés en LF pour
+garder les mêmes octets sur Windows et Linux ; les assets Vite restent inchangés.
+Le ZIP fermé remplace uniquement `.htaccess`
 par `Require all denied` ; le manifeste garde l'empreinte de la politique runtime
 présente dans le candidat original. Conserver les archives historiques.
 

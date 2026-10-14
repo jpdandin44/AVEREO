@@ -22,7 +22,7 @@ après reconnexion. La déclaration du responsable est conservée comme contexte
 
 Le [raccordement local](02-integration-connect.md) est désormais implémenté :
 15 assertions de contrat, 18 assertions HTTP sur Apache isolé, 38 tests backend,
-26 tests frontend, 14 tests Python et parité réussis. Le build ajoute cinq fichiers
+26 tests frontend, 15 tests Python et parité réussis. Le build ajoute cinq fichiers
 de sas aux sept assets. Catalogue proposé en brouillon sans grant, configuration
 privée non emballée et ZIP de préproduction initialement fermé. Les opérations
 et préconditions de version sont dans le [runbook](deployment.md).

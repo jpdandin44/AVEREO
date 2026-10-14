@@ -194,7 +194,7 @@
         {
           "path": "02-integration-connect.md",
           "kind": "file",
-          "availability": "planned",
+          "availability": "present",
           "title": "02 integration connect",
           "description": "Prérequis CONNECT conservé : travaux locaux à réaliser avant toute installation en préproduction.",
           "expectedEvidence": [
@@ -216,7 +216,7 @@
         {
           "path": "deployment.md",
           "kind": "file",
-          "availability": "planned",
+          "availability": "present",
           "title": "deployment",
           "description": "Préproduction",
           "expectedEvidence": [
@@ -231,11 +231,25 @@
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Après décision de phase distincte, livrer CONNECT et qualifier accès privé, récupération et candidat exact avant de demander l’accord d’installation.",
+      "nextAction": "Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette.",
       "legacyPhaseId": 3,
       "blockers": [
-        "Intégration CONNECT non livrée ; document et preuves à produire avant toute installation en préproduction."
-      ]
+        "Session cPanel expirée ; version CONNECT et contenu de la cible à recontrôler.",
+        "Paramètres privés, entrée de catalogue et habilitation ciblée Passeport Immo non qualifiés sur le serveur.",
+        "Récupération hébergée de Passeport Immo, accord exact et recette privée du nouveau candidat absents."
+      ],
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/80",
+        "repository": "jpdandin44/AVEREO",
+        "number": 80,
+        "state": "open",
+        "headSha": "4640fdf4ccd4f9865b3251c1e143cbd0899c6c02",
+        "draft": true,
+        "observedAt": "2026-10-14T20:09:10.890Z",
+        "mergedAt": null,
+        "mergeCommitSha": null,
+        "mergedBy": null
+      }
     },
     {
       "id": 3,
@@ -874,14 +888,14 @@
     "project": "avereo-app-passeport-immo",
     "owner": "jpdandin",
     "kind": "application",
-    "stage": "local",
-    "status": "awaiting_start_authorization",
+    "stage": "preproduction",
+    "status": "blocked",
     "objective": "Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.",
     "candidate": {
-      "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
-      "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
-      "evidence": "docs/source-audit-documents.md ; 26 tests frontend, 10 tests Python, build, parité, archive des sept assets relue. Aucun document client dans l’archive.",
-      "observedAt": "2026-10-14T12:30:33+02:00"
+      "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+      "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+      "evidence": "docs/02-integration-connect.md ; douze fichiers publics, contrat et recette Apache isolée réussis.",
+      "observedAt": "2026-10-14T20:08:19.812Z"
     },
     "targets": {
       "preproduction": {
@@ -984,16 +998,16 @@
     },
     "github": {
       "repository": "jpdandin44/AVEREO",
-      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/78",
-      "headSha": "81b757b096887af942f2dc9c965bada4b0e23a9d",
-      "state": "merged",
-      "draft": false,
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
+      "headSha": "4640fdf4ccd4f9865b3251c1e143cbd0899c6c02",
+      "state": "open",
+      "draft": true,
       "acceptedSourceSha": null,
       "acceptedArtifactSha256": null,
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
-      "evidence": "PR #78 fusionnée ; revue GitHub approuvée sur le HEAD 81b757b et quatre cases humaines cochées constatées le 14 octobre. Validation de phase et déploiement restent distincts.",
-      "observedAt": "2026-10-14T15:52:09.004Z",
+      "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
+      "observedAt": "2026-10-14T20:09:10.890Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1008,29 +1022,9 @@
         "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
         "mergedBy": "jpdandinavereo-design"
       },
-      "ciObservation": {
-        "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
-        "passeportRunId": 38549381653,
-        "passeportStatus": "success",
-        "globalRunId": 38549381394,
-        "globalStatus": "success",
-        "prPolicyStatus": "skipped_draft",
-        "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
-        "candidateBytesEqual": true,
-        "manifestEqual": true,
-        "observedAt": "2026-10-14T12:30:33+02:00"
-      },
-      "mergedAt": "2026-10-14T15:47:20.000Z",
-      "mergeCommitSha": "c45812cc97d91062d562be2370d032b1977232fc",
-      "mergedBy": "jpdandinavereo-design",
-      "reviewObservation": {
-        "state": "approved",
-        "headSha": "81b757b096887af942f2dc9c965bada4b0e23a9d",
-        "submittedAt": "2026-10-14T15:47:12Z",
-        "checklistChecked": 4,
-        "observedAt": "2026-10-14T15:58:45.047Z",
-        "evidence": "https://github.com/jpdandin44/AVEREO/pull/78"
-      }
+      "mergedAt": null,
+      "mergeCommitSha": null,
+      "mergedBy": null
     },
     "checks": [
       {
@@ -1059,6 +1053,22 @@
         "candidateBytesEqual": true,
         "manifestEqual": true,
         "observedAt": "2026-10-14T12:30:33+02:00"
+      },
+      {
+        "kind": "local",
+        "status": "passed",
+        "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+        "observedAt": "2026-10-14T20:09:51.631Z",
+        "evidence": "26 tests frontend, 15 tests Python, 38 tests backend, 15 assertions de contrat et 18 HTTP Apache ; build, parité, archive et restauration locale réussis."
+      },
+      {
+        "kind": "documentation",
+        "status": "passed",
+        "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+        "observedAt": "2026-10-14T20:09:51.631Z",
+        "evidence": "Socles Passeport Immo et CONNECT vérifiés ; métadonnées, liens locaux, vues et 15 empreintes approuvées conformes."
       }
     ],
     "approvals": [],
@@ -1079,11 +1089,11 @@
       "observedAt": null
     },
     "blockers": [
-      "Sous-domaine et dossier créés, certificat installé et fermeture 403 vérifiée en HTTPS ; accès privé de consultation et récupération hébergée non qualifiés.",
-      "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
-      "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
+      "Session cPanel expirée ; version CONNECT et contenu de la cible à recontrôler.",
+      "Paramètres privés, entrée de catalogue et habilitation ciblée Passeport Immo non qualifiés sur le serveur.",
+      "Récupération hébergée de Passeport Immo, accord exact et recette privée du nouveau candidat absents."
     ],
-    "nextAction": "Terminer les prerequis d’activation CONNECT et le lot sas/catalogue Passeport Immo ; qualifier l’acces prive et la recuperation puis presenter le candidat complet pour accord exact.",
+    "nextAction": "Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1102,7 +1112,7 @@
       },
       "preproduction": {
         "status": "blocked",
-        "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous."
+        "nextAction": "Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette."
       },
       "production": {
         "status": "blocked",
@@ -1275,48 +1285,201 @@
       }
     },
     "preproductionPreparation": {
-      "status": "prepared_local_only",
-      "bundle": ".local/preproduction-preparation/documents-20261014/preproduction.zip",
-      "manifest": ".local/preproduction-preparation/documents-20261014/preproduction.manifest.json",
-      "observedAt": "2026-10-14T17:10:04.568760+00:00",
-      "candidateSourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
-      "candidateArtifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
-      "bundleSha256": "847cff54aa1bd396ceb3586e480338df2f7c3bb78161054044a4e8965d617484",
+      "candidateSourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+      "candidateArtifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+      "bundleSha256": "c59311d764bbde23f0e4d0ad6c85a7d278c0eaedf073ecb2a57b75057b7a0c91",
       "candidateAssetsUnchanged": true,
+      "connectGateIncluded": true,
+      "runtimeAccessPolicySha256": "42c1a483801c86fd62e8a79909efb12fc769d607a07544711678fc437c078917",
+      "initialClosureReplacesRuntimePolicy": true,
       "initialAccess": "deny_all_configuration_requires_hosted_verification",
       "archiveReadback": "passed",
       "restoreRehearsal": "passed_local_files_only",
       "hostedBackupRestore": "not_verified",
-      "remoteDelivery": "not_performed"
+      "remoteDelivery": "not_performed",
+      "status": "prepared_local_only",
+      "bundle": ".local/preproduction-preparation/connect-20261014/preproduction.zip",
+      "manifest": ".local/preproduction-preparation/connect-20261014/preproduction.manifest.json",
+      "observedAt": "2026-10-14T20:09:51.631Z"
     },
     "preproductionVerification": {
       "requestedAt": "2026-10-14",
-      "status": "candidate_prepared_connect_dependencies_missing",
+      "status": "connect_gate_tested_locally_hosted_authentication_required",
       "evidence": "docs/verification-preproduction.md",
-      "observedAt": "2026-10-14T17:10:04.568760+00:00",
+      "observedAt": "2026-10-14T20:08:19.812Z",
       "checks": {
-        "python_tests": 11,
-        "parity": "passed",
-        "cockpit": "passed",
-        "canonical_candidate_files": 7,
-        "closed_bundle_readback": "passed",
-        "local_file_restore": "passed",
-        "public_root_and_entry_anonymous_status": 403
-      },
-      "connectPreparation": {
-        "source": "AVEREO/outillage/acces-preproduction/suivi-chantier.json#connect_activation_preparation",
-        "backendSourceSha": "c45812cc97d91062d562be2370d032b1977232fc",
-        "databaseBackupRestore": "passed_hosted_distinct_test_database",
-        "activationMigration": "passed_on_restored_clone_only",
-        "activeConnectUpdated": false,
-        "providerActivationCodeAndConfiguration": "missing_requires_separate_qualification"
+        "frontendTests": 26,
+        "pythonTests": 15,
+        "connectBackendTests": 38,
+        "gateAssertions": 15,
+        "apacheHttpAssertions": 18,
+        "build": "passed",
+        "parity": "passed"
       },
       "remaining": [
-        "Sas Passeport Immo absent du code courant.",
-        "Entree de catalogue, variables de lancement et habilitations Passeport Immo absentes de CONNECT.",
-        "Acces prive utilisable, recuperation de la cible et accord exact d’installation a qualifier.",
-        "Recette reelle sur la nouvelle origine HTTPS a effectuer ; donnees du navigateur local non transferees automatiquement."
+        "Session cPanel expirée ; version CONNECT et contenu de la cible à recontrôler.",
+        "Paramètres privés, entrée de catalogue et habilitation ciblée Passeport Immo non qualifiés sur le serveur.",
+        "Récupération hébergée de Passeport Immo, accord exact et recette privée du nouveau candidat absents."
       ]
+    },
+    "connectPreparation": {
+      "status": "tested_local_pending_hosted_qualification",
+      "requestedOn": "2026-10-14",
+      "observedAt": "2026-10-14T20:08:19.812Z",
+      "source": "docs/02-integration-connect.md",
+      "runbook": "docs/deployment.md",
+      "previous": {
+        "candidate": {
+          "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+          "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+          "evidence": "docs/source-audit-documents.md ; 26 tests frontend, 10 tests Python, build, parité, archive des sept assets relue. Aucun document client dans l’archive.",
+          "observedAt": "2026-10-14T12:30:33+02:00"
+        },
+        "github": {
+          "repository": "jpdandin44/AVEREO",
+          "prUrl": "https://github.com/jpdandin44/AVEREO/pull/78",
+          "headSha": "81b757b096887af942f2dc9c965bada4b0e23a9d",
+          "state": "merged",
+          "draft": false,
+          "acceptedSourceSha": null,
+          "acceptedArtifactSha256": null,
+          "humanAcceptanceVerified": false,
+          "sourceReviewVerified": false,
+          "evidence": "PR #78 fusionnée ; revue GitHub approuvée sur le HEAD 81b757b et quatre cases humaines cochées constatées le 14 octobre. Validation de phase et déploiement restent distincts.",
+          "observedAt": "2026-10-14T15:52:09.004Z",
+          "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
+          "followUpObservation": {
+            "url": "https://github.com/jpdandin44/AVEREO/pull/72",
+            "repository": "jpdandin44/AVEREO",
+            "number": 72,
+            "state": "merged",
+            "headSha": "d1e97d328cac3e88120379e369b260a8c7d01b4e",
+            "observedAt": "2026-10-03T19:41:38.385Z",
+            "draft": false,
+            "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch.",
+            "mergedAt": "2026-10-03T16:42:36.000Z",
+            "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
+            "mergedBy": "jpdandinavereo-design"
+          },
+          "ciObservation": {
+            "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+            "passeportRunId": 38549381653,
+            "passeportStatus": "success",
+            "globalRunId": 38549381394,
+            "globalStatus": "success",
+            "prPolicyStatus": "skipped_draft",
+            "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+            "candidateBytesEqual": true,
+            "manifestEqual": true,
+            "observedAt": "2026-10-14T12:30:33+02:00"
+          },
+          "mergedAt": "2026-10-14T15:47:20.000Z",
+          "mergeCommitSha": "c45812cc97d91062d562be2370d032b1977232fc",
+          "mergedBy": "jpdandinavereo-design",
+          "reviewObservation": {
+            "state": "approved",
+            "headSha": "81b757b096887af942f2dc9c965bada4b0e23a9d",
+            "submittedAt": "2026-10-14T15:47:12Z",
+            "checklistChecked": 4,
+            "observedAt": "2026-10-14T15:58:45.047Z",
+            "evidence": "https://github.com/jpdandin44/AVEREO/pull/78"
+          }
+        },
+        "preparation": {
+          "status": "prepared_local_only",
+          "bundle": ".local/preproduction-preparation/documents-20261014/preproduction.zip",
+          "manifest": ".local/preproduction-preparation/documents-20261014/preproduction.manifest.json",
+          "observedAt": "2026-10-14T17:10:04.568760+00:00",
+          "candidateSourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+          "candidateArtifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+          "bundleSha256": "847cff54aa1bd396ceb3586e480338df2f7c3bb78161054044a4e8965d617484",
+          "candidateAssetsUnchanged": true,
+          "initialAccess": "deny_all_configuration_requires_hosted_verification",
+          "archiveReadback": "passed",
+          "restoreRehearsal": "passed_local_files_only",
+          "hostedBackupRestore": "not_verified",
+          "remoteDelivery": "not_performed"
+        },
+        "verification": {
+          "requestedAt": "2026-10-14",
+          "status": "candidate_prepared_connect_dependencies_missing",
+          "evidence": "docs/verification-preproduction.md",
+          "observedAt": "2026-10-14T17:10:04.568760+00:00",
+          "checks": {
+            "python_tests": 11,
+            "parity": "passed",
+            "cockpit": "passed",
+            "canonical_candidate_files": 7,
+            "closed_bundle_readback": "passed",
+            "local_file_restore": "passed",
+            "public_root_and_entry_anonymous_status": 403
+          },
+          "connectPreparation": {
+            "source": "AVEREO/outillage/acces-preproduction/suivi-chantier.json#connect_activation_preparation",
+            "backendSourceSha": "c45812cc97d91062d562be2370d032b1977232fc",
+            "databaseBackupRestore": "passed_hosted_distinct_test_database",
+            "activationMigration": "passed_on_restored_clone_only",
+            "activeConnectUpdated": false,
+            "providerActivationCodeAndConfiguration": "missing_requires_separate_qualification"
+          },
+          "remaining": [
+            "Sas Passeport Immo absent du code courant.",
+            "Entree de catalogue, variables de lancement et habilitations Passeport Immo absentes de CONNECT.",
+            "Acces prive utilisable, recuperation de la cible et accord exact d’installation a qualifier.",
+            "Recette reelle sur la nouvelle origine HTTPS a effectuer ; donnees du navigateur local non transferees automatiquement."
+          ]
+        }
+      },
+      "checks": {
+        "frontendTests": 26,
+        "pythonTests": 15,
+        "connectBackendTests": 38,
+        "gateAssertions": 15,
+        "apacheHttpAssertions": 18,
+        "build": "passed",
+        "parity": "passed"
+      },
+      "runtimeDelta": {
+        "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+        "baseSha": "c45812cc97d91062d562be2370d032b1977232fc",
+        "artifactSha256": "622279f5e5198e2998ce5d7ed32788086ac4417220ac6ad241f427d826c118cb",
+        "files": [
+          {
+            "path": "public/index.php",
+            "expectedBeforeSha256": "d85296be5c0489678cfdf74948b5368bb6b4358c41ebb40c7d09fd2880bc3e33",
+            "sha256": "ea3962b7d91c8d251244cd9c25d39f7c968f7d044cdc673d68610ccd424990b3",
+            "size": 7349
+          },
+          {
+            "path": "src/Config.php",
+            "expectedBeforeSha256": "2eecc89ee4f4735f91229f62d92c233f94c59284527dabc7c22e455f3fc38859",
+            "sha256": "610354c522862d6bd48d77a046e583dfdcbdae52e5d32286bb845e79eb8423d5",
+            "size": 8172
+          }
+        ],
+        "configurationIncluded": false,
+        "databaseMigrationIncluded": false
+      },
+      "publicObservations": {
+        "connectStatus": 401,
+        "connectHealthStatus": 401,
+        "connectBasicChallenge": true,
+        "passeportRootStatus": 403,
+        "passeportHtmlStatus": 403,
+        "tlsValidation": true
+      },
+      "hosted": {
+        "status": "authentication_required",
+        "cpanelSession": "expired",
+        "activeConnectVersion": "not_verified",
+        "catalogue": "not_verified",
+        "privateConfiguration": "not_verified",
+        "recovery": "not_verified",
+        "deployment": "not_performed"
+      },
+      "catalogue": "api/connect-catalogue.json",
+      "newEntitlementsCreated": false,
+      "secretsCreated": false
     }
   },
   "reviewFollowUps": [

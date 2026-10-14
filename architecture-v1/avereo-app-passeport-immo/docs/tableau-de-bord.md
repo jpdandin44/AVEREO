@@ -22,7 +22,7 @@ Mise à jour : **2026-10-14**. **2 phases livrées sur 4 ; 2 phases validées pa
 |---|---|---|---|---|
 | 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
 | 1 — Développement local | Validée | [documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | 2026-10-14 | 2026-10-14 |
-| 2 — Préproduction | Non commencée | `02-integration-connect.md` (prévu)<br>`03-preproduction.md` (prévu)<br>`deployment.md` (prévu) | — | Non acquise |
+| 2 — Préproduction | Non commencée | [02-integration-connect.md](02-integration-connect.md)<br>`03-preproduction.md` (prévu)<br>[deployment.md](deployment.md) | — | Non acquise |
 | 3 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
 
 ### Décisions attendues
@@ -54,8 +54,8 @@ Aucune décision en attente.
 
 ## Où en est le développement ?
 
-Travail actuel : **Local — awaiting_start_authorization**.
-Attendre la qualification de CONNECT en préproduction, puis vérifier le raccordement de Passeport Immo et préparer sa recette privée. Autorisation de phase et accord d’installation restent à enregistrer séparément.
+Travail actuel : **Préproduction — Bloquée**.
+Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
@@ -72,24 +72,24 @@ Certificat installé ; adresse HTTPS contrôlée avec accès refusé (403). Aucu
 
 **passeport-immo-documents-2026-10-14** — Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.
 
-Responsable : jpdandin. Étape : local. État : awaiting_start_authorization.
+Responsable : jpdandin. Étape : preproduction. État : Bloquée.
 
 Ces étapes techniques complètent les phases formelles du chantier ; une fusion GitHub ne modifie pas leurs décisions.
 
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Attendre la qualification de CONNECT en préproduction, puis vérifier le raccordement de Passeport Immo et préparer sa recette privée. Autorisation de phase et accord d’installation restent à enregistrer séparément. |
-| Préproduction | Bloquée | Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous. |
+| Préproduction | Bloquée | Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
 
-- SHA source : `322ad1275c240a9bc70ad8641102c58600c1f67c`.
-- SHA-256 de l'archive : `bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983`.
-- PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/78).
+- SHA source : `91d8e466fcf4caa799e9c08319c8b1514c2dd927`.
+- SHA-256 de l'archive : `e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3`.
+- PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-14T15:52:09.004Z.
+- Dernière observation GitHub : 2026-10-14T20:09:10.890Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -100,12 +100,16 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Sur le poste | Réussi | 2026-10-14T12:30:33+02:00 |
 | Documentation | Réussi | 2026-10-14T12:30:33+02:00 |
 | GitHub Actions | Réussi | 2026-10-14T12:30:33+02:00 |
+| Sur le poste | Réussi | 2026-10-14T20:09:51.631Z |
+| Documentation | Réussi | 2026-10-14T20:09:51.631Z |
 
 Preuves du candidat identifié ci-dessus :
 
 - Sur le poste : 26 tests frontend, 10 tests Python, parité a/b/c/d/e, build, contrat cockpit ; six PDF réels dans le navigateur, PDF comparatif consulté sur deux pages et téléchargement identique.
 - Documentation : 31 documents Markdown et 104 liens locaux contrôlés ; socles racine et application présents ; progression et vues alignées ; empreintes approuvées historiques conservées.
 - GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38549381653 ; archive téléchargée identique au candidat local, manifeste et sept assets vérifiés.
+- Sur le poste : 26 tests frontend, 15 tests Python, 38 tests backend, 15 assertions de contrat et 18 HTTP Apache ; build, parité, archive et restauration locale réussis.
+- Documentation : Socles Passeport Immo et CONNECT vérifiés ; métadonnées, liens locaux, vues et 15 empreintes approuvées conformes.
 
 ### Contrôles de passage
 
@@ -115,11 +119,11 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- Sous-domaine et dossier créés, certificat installé et fermeture 403 vérifiée en HTTPS ; accès privé de consultation et récupération hébergée non qualifiés.
-- Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
-- Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
+- Session cPanel expirée ; version CONNECT et contenu de la cible à recontrôler.
+- Paramètres privés, entrée de catalogue et habilitation ciblée Passeport Immo non qualifiés sur le serveur.
+- Récupération hébergée de Passeport Immo, accord exact et recette privée du nouveau candidat absents.
 
-Prochaine action : Terminer les prerequis d’activation CONNECT et le lot sas/catalogue Passeport Immo ; qualifier l’acces prive et la recuperation puis presenter le candidat complet pour accord exact.
+Prochaine action : Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette.
 
 ### Accords et livraison
 
@@ -134,8 +138,8 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 
 ### Préparation locale de préproduction
 
-- État : prepared_local_only ; observation : 2026-10-14T17:10:04.568760+00:00.
-- Empreinte du lot fermé : `847cff54aa1bd396ceb3586e480338df2f7c3bb78161054044a4e8965d617484`.
+- État : prepared_local_only ; observation : 2026-10-14T20:09:51.631Z.
+- Empreinte du lot fermé : `c59311d764bbde23f0e4d0ad6c85a7d278c0eaedf073ecb2a57b75057b7a0c91`.
 - Assets du candidat conservés : Oui.
 - Relecture de l'archive : Réussie.
 - Restauration : Réussie sur des fichiers temporaires locaux ; cible hébergée : Non vérifiée.
@@ -205,7 +209,7 @@ Sources, hypothèses et restitution comparative intégrée au bien
 
 ### Phase 2 — Préproduction
 
-**02 integration connect** — Prévu — document non produit (`02-integration-connect.md`).
+**02 integration connect** — Document disponible (`02-integration-connect.md`).
 
 Prérequis CONNECT conservé : travaux locaux à réaliser avant toute installation en préproduction.
 
@@ -219,7 +223,7 @@ Préproduction
 - Procédure et workflow manuel préparés.
 - Recette préproduction conforme, remplie par le responsable.
 
-**deployment** — Prévu — document non produit (`deployment.md`).
+**deployment** — Document disponible (`deployment.md`).
 
 Préproduction
 
