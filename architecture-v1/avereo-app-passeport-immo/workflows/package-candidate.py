@@ -28,8 +28,10 @@ def build(output):
     manifest = []
     with ZipFile(output, 'w', compression=ZIP_STORED) as archive:
         for path in files:
-            content = path.read_bytes()
             name = path.relative_to(dist).as_posix()
+            content = path.read_bytes()
+            if name in GATE_FILES:
+                content = content.replace(b'\r\n', b'\n')
             entry = ZipInfo(name, (1980, 1, 1, 0, 0, 0))
             entry.create_system = 3
             entry.external_attr = 0o100644 << 16
