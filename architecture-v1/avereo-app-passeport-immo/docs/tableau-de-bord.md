@@ -83,12 +83,12 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 
 ### Candidat et GitHub
 
-- SHA source : `Non qualifié`.
-- SHA-256 de l'archive : `Non qualifié`.
-- PR : Non publiée.
+- SHA source : `322ad1275c240a9bc70ad8641102c58600c1f67c`.
+- SHA-256 de l'archive : `bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983`.
+- PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/78).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : Non observé.
+- Dernière observation GitHub : 2026-10-14T12:27:15+02:00.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -96,15 +96,21 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 
 | Nature | Résultat | Observation |
 |---|---|---|
-
+| Sur le poste | Réussi | 2026-10-14T12:30:33+02:00 |
+| Documentation | Réussi | 2026-10-14T12:30:33+02:00 |
+| GitHub Actions | Réussi | 2026-10-14T12:30:33+02:00 |
 
 Preuves du candidat identifié ci-dessus :
 
-
+- Sur le poste : 26 tests frontend, 10 tests Python, parité a/b/c/d/e, build, contrat cockpit ; six PDF réels dans le navigateur, PDF comparatif consulté sur deux pages et téléchargement identique.
+- Documentation : 31 documents Markdown et 104 liens locaux contrôlés ; socles racine et application présents ; progression et vues alignées ; empreintes approuvées historiques conservées.
+- GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38549381653 ; archive téléchargée identique au candidat local, manifeste et sept assets vérifiés.
 
 ### Contrôles de passage
 
-À contrôler.
+- Préproduction : passage refusé (2026-10-14T12:32:31+02:00).
+- Production : passage refusé (2026-10-14T12:32:31+02:00).
+- Clôture : passage refusé (2026-10-14T12:32:31+02:00).
 
 ### Blocages de passage
 

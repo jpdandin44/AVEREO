@@ -83,8 +83,10 @@ Les observations et valeurs exactes restent dans le suivi canonique et la
 dans le suivi. Une vue encore conforme n'est plus réécrite ; une vue déjà modifiée
 est signalée en erreur. `iteration-developpement.md` peut donc conserver l'état
 historique de sa revue, tandis que les tableaux et le cockpit montrent le JSON
-actuel. Quatre tests dédiés complètent les six tests de préparation ; la CI les
-exécute par découverte `test_*.py`.
+actuel. Quatre tests dédiés complètent les six tests de préparation ; un onzième
+test protège l’ordre de packaging des noms mêlant majuscules et minuscules.
+Les noms relatifs des assets sont triés comme chaînes pour obtenir les mêmes
+octets d’archive sur Windows et Linux. La CI exécute ces tests par découverte `test_*.py`.
 
 ## Documents par client et par bien
 

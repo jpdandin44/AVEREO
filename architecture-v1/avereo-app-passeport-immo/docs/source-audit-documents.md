@@ -58,6 +58,12 @@ des scans. Les références du bien ont été corrigées après lecture en grand
 et confirmation du responsable ; il n’y avait pas de divergence d’adresse établie.
 Aucune approbation de phase n’est créée par cette recette.
 
+Onze tests Python vérifient préparation, protection des vues approuvées et ordre
+du packaging. Une première comparaison CI/local a montré les mêmes sept assets
+mais un ordre différent des deux noms d’assets index, lié au tri des chemins sur
+Windows et Linux. Le tri par nom relatif corrige cet écart ; archive et manifeste
+sont ensuite identiques aux fichiers construits par la CI du candidat.
+
 Deux projets de coupe locaux sont chargés et sauvegardés dans Coupe. Les SVG
 exportés constituent la source du PDF comparatif de deux pages ajouté au bien.
 Les deux pages sont inspectées et consultées dans Passeport Immo ; la copie

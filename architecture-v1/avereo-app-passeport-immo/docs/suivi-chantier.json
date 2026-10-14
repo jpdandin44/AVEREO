@@ -174,7 +174,16 @@
         "decisionId": "D04"
       },
       "authorizedOn": "2026-10-03",
-      "legacyPhaseId": 2
+      "legacyPhaseId": 2,
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/78",
+        "repository": "jpdandin44/AVEREO",
+        "number": 78,
+        "state": "open",
+        "headSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+        "observedAt": "2026-10-14T12:27:15+02:00",
+        "draft": true
+      }
     },
     {
       "id": 2,
@@ -495,6 +504,13 @@
     {
       "date": "2026-10-14",
       "event": "Reprise documents client/bien et cas réel local demandée par le responsable. Regroupement en quatre phases : ancien suivi, décisions, brouillons et preuves conservés dans legacyTracking ; aucune nouvelle approbation créée."
+    },
+    {
+      "date": "2026-10-14",
+      "actor": "codex",
+      "type": "agent_observation",
+      "phaseId": 1,
+      "summary": "Lot documents testé localement, coupes comparatives ajoutées au cas privé ; PR #78 publiée en brouillon. Aucun accord humain de phase, merge ou livraison créé."
     }
   ],
   "reviewEvents": [
@@ -765,10 +781,10 @@
     "status": "in_progress",
     "objective": "Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.",
     "candidate": {
-      "sourceSha": null,
-      "artifactSha256": null,
-      "evidence": "Nouveau module contrôlé localement ; candidat exact à consigner après commit et packaging.",
-      "observedAt": null
+      "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+      "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+      "evidence": "docs/source-audit-documents.md ; 26 tests frontend, 10 tests Python, build, parité, archive des sept assets relue. Aucun document client dans l’archive.",
+      "observedAt": "2026-10-14T12:30:33+02:00"
     },
     "targets": {
       "preproduction": {
@@ -871,16 +887,16 @@
     },
     "github": {
       "repository": "jpdandin44/AVEREO",
-      "prUrl": null,
-      "headSha": null,
-      "state": "not_published",
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/78",
+      "headSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+      "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
       "acceptedArtifactSha256": null,
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
-      "evidence": "La PR et l’acceptation du prototype initial restent dans legacyTracking.developmentWorkflow. Nouvelle PR documentaire à publier.",
-      "observedAt": null,
+      "evidence": "PR #78 publiée en brouillon ; checklist humaine décochée.",
+      "observedAt": "2026-10-14T12:27:15+02:00",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -894,9 +910,49 @@
         "mergedAt": "2026-10-03T16:42:36.000Z",
         "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
         "mergedBy": "jpdandinavereo-design"
+      },
+      "ciObservation": {
+        "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+        "passeportRunId": 38549381653,
+        "passeportStatus": "success",
+        "globalRunId": 38549381394,
+        "globalStatus": "success",
+        "prPolicyStatus": "skipped_draft",
+        "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+        "candidateBytesEqual": true,
+        "manifestEqual": true,
+        "observedAt": "2026-10-14T12:30:33+02:00"
       }
     },
-    "checks": [],
+    "checks": [
+      {
+        "kind": "local",
+        "status": "passed",
+        "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+        "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+        "observedAt": "2026-10-14T12:30:33+02:00",
+        "evidence": "26 tests frontend, 10 tests Python, parité a/b/c/d/e, build, contrat cockpit ; six PDF réels dans le navigateur, PDF comparatif consulté sur deux pages et téléchargement identique."
+      },
+      {
+        "kind": "documentation",
+        "status": "passed",
+        "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+        "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+        "observedAt": "2026-10-14T12:30:33+02:00",
+        "evidence": "31 documents Markdown et 104 liens locaux contrôlés ; socles racine et application présents ; progression et vues alignées ; empreintes approuvées historiques conservées."
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+        "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38549381653 ; archive téléchargée identique au candidat local, manifeste et sept assets vérifiés.",
+        "runId": 38549381653,
+        "candidateBytesEqual": true,
+        "manifestEqual": true,
+        "observedAt": "2026-10-14T12:30:33+02:00"
+      }
+    ],
     "approvals": [],
     "backups": [],
     "rollback": {
@@ -945,7 +1001,62 @@
         "nextAction": "Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée."
       }
     },
-    "gates": [],
+    "gates": [
+      {
+        "gate": "preproduction",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Blocages présents ou non renseignés.",
+          "Préproduction prête et isolée non prouvée.",
+          "Accord humain exact absent : preproduction.",
+          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+        "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+        "observedAt": "2026-10-14T12:32:31+02:00"
+      },
+      {
+        "gate": "production",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Blocages présents ou non renseignés.",
+          "Préproduction prête et isolée non prouvée.",
+          "Cible de production non prouvée.",
+          "Contrôle actuel absent : preproduction sur o2switch:daje3540:passeport-immo-preprod.avereo.fr.",
+          "Accord humain exact absent : review.",
+          "Accord humain exact absent : production.",
+          "Acceptation GitHub du candidat non vérifiée.",
+          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+          "Retour arrière de ce candidat non qualifié."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+        "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+        "observedAt": "2026-10-14T12:32:31+02:00"
+      },
+      {
+        "gate": "close",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Blocages présents ou non renseignés.",
+          "Préproduction prête et isolée non prouvée.",
+          "Cible de production non prouvée.",
+          "Contrôle actuel absent : preproduction sur o2switch:daje3540:passeport-immo-preprod.avereo.fr.",
+          "Accord humain exact absent : review.",
+          "Accord humain exact absent : production.",
+          "Acceptation GitHub du candidat non vérifiée.",
+          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+          "Retour arrière de ce candidat non qualifié.",
+          "Contrôle actuel absent : production.",
+          "Livraison réelle du candidat non établie."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+        "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+        "observedAt": "2026-10-14T12:32:31+02:00"
+      }
+    ],
     "previousIterationRef": "legacyTracking.developmentWorkflow",
     "phaseModelRef": "docs/mapping-phases.md",
     "documentsLot": {
@@ -960,7 +1071,7 @@
       "rotatedFiles": 2,
       "rotatedPages": 10,
       "clientDocumentsStored": "browser_only",
-      "githubPr": null,
+      "githubPr": "https://github.com/jpdandin44/AVEREO/pull/78",
       "open": [
         "Recette humaine",
         "Identité et intégration CONNECT",
@@ -986,7 +1097,16 @@
           "Épaisseur murs et planchers",
           "Altimétrie et géométrie verticale complète"
         ]
-      }
+      },
+      "candidateSourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+      "candidateArtifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+      "publication": {
+        "status": "published_draft",
+        "headSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+        "observedAt": "2026-10-14T12:27:15+02:00"
+      },
+      "pythonTests": 11,
+      "packagingOrder": "relative_path_string_same_windows_linux"
     }
   },
   "reviewFollowUps": [

@@ -246,3 +246,20 @@ cotes et les mesures manquantes. Le code de Coupe est conservé.
 Le nouveau candidat documentaire est distinct du prototype déjà accepté :
 les anciens contrôles, PR, préparations et accords restent dans `legacyTracking`.
 La recette locale et les coupes ne donnent pas d’accord de phase ou de livraison.
+
+### Publication du lot
+
+[PR nº78](https://github.com/jpdandin44/AVEREO/pull/78) publiée en brouillon,
+avec les quatre cases humaines décochées. Le candidat fonctionnel `322ad127`
+est construit par la CI et par le poste. Les mêmes sept assets ont d’abord donné
+des ZIP différents par l’ordre de deux noms, lié au tri Windows/Linux ; le tri
+par chaîne du nom relatif corrige cette différence. Archive et manifeste sont
+identiques après correction. Un test de packaging porte la suite Python à onze
+cas ; les 26 tests frontend restent réussis. Les révisions GitHub de suivi sont
+observées séparément du candidat et de son acceptation.
+
+Les passages de préproduction, production et clôture sont contrôlés et refusés
+pour les qualifications, accords et preuves de récupération manquants. Les
+documents du cas, exports et captures restent hors Git. Prochaine action :
+recette humaine du dossier et des coupes, puis cadrage du lot CONNECT et
+qualification de la préproduction privée.

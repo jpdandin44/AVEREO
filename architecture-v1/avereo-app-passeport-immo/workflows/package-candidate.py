@@ -12,7 +12,7 @@ def build(output):
     dist = ROOT / 'frontend/dist'
     if not (dist / 'index.html').is_file():
         raise ValueError('Build absent : exécuter npm run build dans frontend.')
-    files = sorted(p for p in dist.rglob('*') if p.is_file())
+    files = sorted((p for p in dist.rglob('*') if p.is_file()), key=lambda p: p.relative_to(dist).as_posix())
     output = output.resolve()
     if output.is_relative_to(dist.resolve()):
         raise ValueError('Archive de sortie à placer hors dist.')
