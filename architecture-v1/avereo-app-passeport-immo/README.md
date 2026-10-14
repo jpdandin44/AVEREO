@@ -5,7 +5,7 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -82,8 +82,9 @@ La recette humaine et l'usage sur téléphone réel restent à effectuer.
 [Roadmap](roadmap.md) · [Décisions](decisions.md) · [Changelog](changelog.md).
 
 ## Candidat et protocole GitHub/cockpit
-La [fiche d'itération générée](docs/iteration-developpement.md) donne le candidat,
-la PR, les contrôles et les blocages depuis le JSON canonique.
+La [fiche d'itération initiale](docs/iteration-developpement.md) reste une preuve
+historique conservée dans ses octets approuvés. Le [tableau courant](docs/tableau-de-bord.md)
+donne le candidat, la PR, les contrôles et les blocages depuis le JSON canonique.
 Le [raccordement local](workflows/developpement-github-cockpit.md) décrit les commandes.
 Après build, `python workflows/package-candidate.py` produit une archive vérifiée
 et son manifeste dans `.local/`. Les [preuves du correctif](docs/raccordement-cockpit.md)
@@ -98,3 +99,15 @@ L'espace o2switch est désormais créé et fermé à toute consultation, avec ce
 HTTPS installé. L'application y reste absente ; accès privé de test, récupération
 et accord du candidat exact restent à établir. Voir la
 [qualification de la cible](docs/qualification-preproduction.md) pour les contrôles observés.
+
+## Lot documents du 14 octobre 2026
+
+La [gestion documentaire](docs/documents-bien.md) associe client, bien et fichiers
+sur ce PC : import multiple, classement, aperçu, recherche et archives. Le stockage
+documentaire utilise IndexedDB ; les biens et calculs gardent leur fonctionnement.
+Les 26 tests frontend et le build réussissent. Les documents clients ne sont pas
+commités. Le [comparatif ExamIn](docs/progression-examin.md) décrit les exigences
+couvertes, partielles, simulées et absentes. La centralisation serveur reste prévue.
+
+Le [cas de coupes avant/après](docs/coupes-bien.md) utilise Coupe pour préparer
+deux scènes CAO, exporter leurs SVG et joindre un PDF comparatif au bien.

@@ -5,7 +5,7 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -13,7 +13,7 @@ tags: [avereo, documentation, local]
 # Roadmap Passeport Immo
 
 Le [suivi JSON](docs/suivi-chantier.json) fait foi sur les statuts et décisions.
-Les phases prévues sont : reprise/état des lieux, reprise identique, intégration
+Le découpage initial prévoyait : reprise/état des lieux, reprise identique, intégration
 CONNECT, préproduction, préparation de production, spécification du passeport client.
 La session autorise l'état des lieux puis un prototype local, sans valider les phases.
 Les jalons ultérieurs et dates restent à décider ; aucun engagement de livraison.
@@ -39,3 +39,12 @@ Après fusion du complément nº72, le lot courant prépare l'archive privée et
 récupération locale. L'espace distant est créé et fermé ; qualification de l'accès
 privé, récupération hébergée et lot CONNECT précèdent l'installation de l'application.
 Le suivi conserve les preuves datées et la prochaine action.
+
+## Cadre courant en quatre phases
+
+Le cockpit présente Cadrage, Développement local, Préproduction et Mise en production.
+Le [mapping](docs/mapping-phases.md) conserve l’ancien découpage et ses preuves.
+Le lot documents client/bien est préparé localement ; l’intégration CONNECT reste à réaliser.
+Le comparatif ExamIn fixe les réserves ; les prochaines étapes proposées sont
+recette humaine du dossier et des coupes de principe, identité CONNECT,
+puis stockage partagé et droits après cadrage. La production reste non livrée.

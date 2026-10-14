@@ -5,7 +5,7 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -76,3 +76,39 @@ L'adresse HTTPS reçoit 403 avec validation TLS active ; aucun isolement entre c
 n'est déclaré pour cette cible. Accès privé de test et récupération restent à qualifier.
 Les observations et valeurs exactes restent dans le suivi canonique et la
 [fiche de qualification](docs/qualification-preproduction.md).
+
+## Conservation d'une projection approuvée
+
+`actualiser-tableau-de-bord.py` recense les empreintes des vues générées approuvées
+dans le suivi. Une vue encore conforme n'est plus réécrite ; une vue déjà modifiée
+est signalée en erreur. `iteration-developpement.md` peut donc conserver l'état
+historique de sa revue, tandis que les tableaux et le cockpit montrent le JSON
+actuel. Quatre tests dédiés complètent les six tests de préparation ; un onzième
+test protège l’ordre de packaging des noms mêlant majuscules et minuscules.
+Les noms relatifs des assets sont triés comme chaînes pour obtenir les mêmes
+octets d’archive sur Windows et Linux. La CI exécute ces tests par découverte `test_*.py`.
+
+## Documents par client et par bien
+
+`DocumentsPanel` est placé au-dessus du dossier de travaux. `document-store.js`
+utilise quatre collections IndexedDB : `clients`, `biens` (association du bien au
+client), `documents` (métadonnées, SHA-256, catégorie, dates, archive), `files`
+(Blob). Les index isolent les dossiers et dédoublonnent le contenu par bien.
+Les noms/titres et catégories ne changent pas les fichiers sources. La transaction
+confirme les métadonnées et le Blob ensemble. Les PDF/images sont servis au lecteur
+par URL locale temporaire, libérée à sa fermeture ; les autres formats se téléchargent.
+PDF.js dessine une page à la fois dans un canvas, via son worker local et un import
+dynamique, pour fonctionner aussi dans le navigateur intégré. Le changement de page
+annule le rendu précédent ; le document et le worker sont libérés à la fermeture.
+Il n’y a ni API de document ni transport distant. Les limites de conservation
+du navigateur sont explicitées dans le guide. Références :
+[IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API),
+[transactions](https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction),
+[URL temporaires](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static).
+
+Le cas de coupes utilise une circulation de fichiers locale : plans source →
+projets CAO dans Coupe → exports SVG → PDF comparatif → import dans le dossier
+documentaire. Les projets Coupe et exports restent dans le dossier source privé.
+Le PDF est une restitution des SVG, sans API entre les applications ; le code de
+Coupe est inchangé. Le [guide](docs/coupes-bien.md) distingue les mesures lues,
+les hypothèses et la reprise des projets modifiables.

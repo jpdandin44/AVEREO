@@ -1,6 +1,7 @@
 """Regénère les vues Passeport Immo avec le rendu Markdown mutualisé du chantier AVEREO."""
 
 import argparse
+import hashlib
 import html
 import json
 import runpy
@@ -8,6 +9,18 @@ from pathlib import Path
 
 DIRECTORY = Path(__file__).resolve().parent
 ROOT = DIRECTORY.parent
+
+
+def approved_document_hashes(data):
+    """Keep the exact reviewed bytes; current dashboards remain projections of JSON."""
+    protected = {}
+    for phase in data['phases']:
+        if phase.get('status') != 'validated':
+            continue
+        decision = next((item for item in data['decisions'] if item.get('id') == phase.get('validationEvidence', {}).get('decisionId') and item.get('status') == 'approved'), None)
+        for artifact in (decision or {}).get('evidence', {}).get('reviewedArtifacts', []):
+            protected[artifact['path']] = artifact['sha256']
+    return protected
 
 
 def iteration_view(data):
@@ -234,8 +247,13 @@ La revue et les décisions se font dans [Projet local](http://127.0.0.1:{setting
 <table><thead><tr><th>Phase</th><th>État</th><th>Livraison</th><th>Validation humaine</th></tr></thead><tbody>{rows}</tbody></table>{iteration_html}<h2>Livrables attendus</h2>{"".join(catalog_html)}<h2>Source de suivi</h2><p><a href="suivi-chantier.json">JSON canonique</a> · <a href="tableau-de-bord.md">Compte rendu Markdown</a></p></html>\n'''
     changed = []
     derived.update({'tableau-de-bord.md': markdown, 'tableau-de-bord.html': page})
+    protected = approved_document_hashes(data)
     for filename, content in derived.items():
         path = DIRECTORY / filename
+        if filename in protected:
+            if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != protected[filename]:
+                raise ValueError('Le document approuvé a changé : '+filename+'. Restaurer sa version exacte ou demander une nouvelle revue.')
+            continue
         if not path.exists() or path.read_text(encoding='utf-8') != content:
             changed.append(filename)
             if not args.check:

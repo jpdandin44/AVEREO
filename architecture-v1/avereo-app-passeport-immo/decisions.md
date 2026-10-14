@@ -5,7 +5,7 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -53,3 +53,13 @@ parent et à ses sous-domaines, le responsable retient le compte qui héberge
 `avereo.fr`, avec un dossier dédié et protégé. Raison : conserver l'adresse demandée.
 Conséquence : la lune active n'est pas la cible de cette adresse ; la séparation
 des répertoires et la protection effective doivent être qualifiées sur le compte parent.
+
+## 2026-10-14 — Première gestion documentaire locale
+
+Contexte : démarrer un cas concret client/bien avec les fichiers fournis, conservés
+sur ce PC. Décision : stocker les Blob et métadonnées dans IndexedDB, conserver les
+biens/calculs existants, proposer l’archivage réversible et la détection des doublons.
+Raison : gérer les PDF sans le quota restreint des pièces jointes base64 historiques.
+Conséquence : même profil et même origine du navigateur nécessaires ; conserver le
+dossier source. Le serveur partagé, les droits réels et la sauvegarde centralisée
+restent un lot ultérieur. Aucun accord de déploiement n’est déduit de la recette.

@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { create } from 'zustand';
 import { calculateDevis, calculateDevisForPdf } from './lib/chiffrage.js';
+import DocumentsPanel from './documents/DocumentsPanel.jsx';
+import './documents/documents.css';
 
 // --- MOCK DATA & CONFIGURATION ---
 const MOCK_BIENS = [
@@ -803,6 +805,7 @@ const BienPage = () => {
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900">{bien.address}</h1>
             </header>
 
+            <DocumentsPanel bien={bien} />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-8">
                     <div className="bg-white p-6 rounded-xl shadow-sm border">
@@ -825,28 +828,7 @@ const BienPage = () => {
                         </form>
                     </div>
 
-                    <div className="bg-white p-6 rounded-xl shadow-sm border">
-                        <h2 className="text-xl font-semibold mb-4">Pièces Jointes</h2>
-                        <div className="space-y-3 mb-6">
-                           {(bien.dossier.attachments || []).map(att => (
-                                <div key={att.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-md">
-                                   <div className="flex items-center space-x-3 overflow-hidden">
-                                       {att.type.startsWith('image/') ?
-                                           <img src={att.url} alt={att.name} className="w-10 h-10 object-cover rounded-md flex-shrink-0" /> :
-                                           <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-md flex-shrink-0"><FileIcon/></div>
-                                        }
-                                       <span className="text-sm text-gray-800 truncate" title={att.name}>{att.name}</span>
-                                   </div>
-                                    <button onClick={() => deleteAttachment(selectedBienId, att.id)} className="p-2 rounded-full hover:bg-red-100 text-red-500 hover:text-red-700"><TrashIcon/></button>
-                                </div>
-                            ))}
-                        </div>
-                        <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileSelect} />
-                        <button onClick={() => fileInputRef.current.click()} className="w-full flex justify-center items-center py-2 px-4 border border-dashed border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                            <UploadIcon />
-                            Ajouter un fichier
-                        </button>
-                    </div>
+                    {/* Documents du bien regroupés au-dessus du dossier travaux. */}
 
                 </div>
                 <div>

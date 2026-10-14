@@ -5,7 +5,7 @@ title: Vérification de la reprise
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -13,14 +13,16 @@ tags: [passeport-immo, local]
 # Vérification de la reprise
 
 ## Commandes
-Depuis `frontend/`, `npm.cmd test` exécute quatorze tests :
+Depuis `frontend/`, `npm.cmd test` exécute 26 tests :
 - T01 : deux biens × trois gammes, calcul manuel commenté ; totaux PDF.
 - T02/T03 : m², unité, forfait, unités non prises en charge, tarif absent, pièce vide.
 - T04 : import CSV fictif via l'écran Admin et PapaParse, puis sauvegarde locale.
 - T05 : quatre exports depuis l'écran : arrondi blanc, pixel final de contenu, deux
   et trois pages ; dimensions canvas et jsPDF simulés, téléchargement appelé.
+- T06 : dix tests de stockage : association client, isolation, doublons/concurrence, limites, lots invalides, persistance et archives.
+- T07 : deux parcours documentaires : client préalable, import, filtre/recherche, consultation et libération des URL temporaires.
 
-Depuis le sous-projet, `node tests/check-parity.mjs` isole le correctif d autorisé puis inverse les transformations a/b/c
+Depuis le sous-projet, `node tests/check-parity.mjs` isole les écarts d et e autorisés puis inverse les transformations a/b/c
 et compare la copie à la source historique, corps des calculs et classes compris.
 Le test nécessite le monorepo ; les tests Vitest lisent les fixtures intégrées à la copie.
 `npm.cmd run build` construit les assets. La configuration Docker est vérifiable avec
@@ -50,3 +52,19 @@ Depuis le sous-projet, `node tests/check-cockpit.mjs` applique le normaliseur du
 moteur Projet au suivi réel. Il vérifie la carte de la PR nº72 en phase 0, son état
 observé, la disponibilité initiale de la fiche d'itération et la distinction entre
 étape réelle et phase formelle. Ce contrôle est exécuté dans la CI Passeport Immo.
+
+Le contrat vérifie aussi les quatre phases, la conservation des décisions originales
+dans `legacyTracking` et les empreintes des documents approuvés.
+
+## Documents approuvés et packaging
+
+`python -m unittest discover -s tests -p 'test_*.py'` exécute onze tests : les six
+cas de préparation ci-dessus, quatre protections des vues approuvées et un cas
+d’ordre reproductible des assets avec noms mêlant majuscules/minuscules. Ce dernier
+couvre la différence Windows/Linux qui peut changer les octets du ZIP sans changer
+le contenu des assets. Les noms relatifs sont triés comme chaînes identiques sur
+les deux systèmes.
+
+`node workflows/generer-progression-examin.mjs --check` vérifie la projection
+Markdown du JSON de progression. `python docs/actualiser-tableau-de-bord.py --check`
+contrôle les vues courantes et conserve les preuves historiques approuvées.
