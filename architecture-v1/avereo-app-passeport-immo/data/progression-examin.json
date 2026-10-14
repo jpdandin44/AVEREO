@@ -1,0 +1,231 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "observedAt": "2026-10-14",
+  "method": "Couverture fonctionnelle locale ; aucun pourcentage de livraison ou de validation humaine déduit. Les résultats ExamIn de 2025 ne sont pas des tests de Passeport Immo.",
+  "statusLabels": {
+    "local": "Disponible localement",
+    "partiel": "Partiel",
+    "simule": "Simulé",
+    "absent": "Absent"
+  },
+  "features": [
+    {
+      "feature": "Authentification",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 2
+      },
+      "historicalStatus": "✅ / Validé",
+      "currentStatus": "simule",
+      "finding": "Connexion Admin Démo imposée ; inscription et mots de passe réels absents.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "P01"
+    },
+    {
+      "feature": "Abonnements",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 3
+      },
+      "historicalStatus": "🟠 / Partiellement validé",
+      "currentStatus": "simule",
+      "finding": "Écran Pro simulé ; Stripe absent.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "P03"
+    },
+    {
+      "feature": "Gestion des Biens",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 4
+      },
+      "historicalStatus": "🟠 / Partiellement validé",
+      "currentStatus": "local",
+      "finding": "Création, édition, consultation et suppression locales ; aucun droit partagé.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "P04–P09"
+    },
+    {
+      "feature": "Gestion des Dossiers",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 5
+      },
+      "historicalStatus": "🟠 / Partiellement validé",
+      "currentStatus": "partiel",
+      "finding": "Pièces et interventions par bien ; plusieurs dossiers de travaux et édition nom/surface de pièce absents.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "P10–P15"
+    },
+    {
+      "feature": "Estimation des Coûts",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 6
+      },
+      "historicalStatus": "❌ / Anomalie",
+      "currentStatus": "partiel",
+      "finding": "Trois gammes vérifiées pour m², unité et forfait ; h et ml restent à zéro.",
+      "code": "frontend/src/lib/chiffrage.js",
+      "evidence": "T01–T03"
+    },
+    {
+      "feature": "Affichage Devis",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 7
+      },
+      "historicalStatus": "❌ / Anomalie",
+      "currentStatus": "partiel",
+      "finding": "Estimation recalculée localement ; TVA indépendante et nom de devis absents.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "P16–P21"
+    },
+    {
+      "feature": "Partage",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 8
+      },
+      "historicalStatus": "🟠 / Partiellement validé",
+      "currentStatus": "absent",
+      "finding": "Copie de l’URL uniquement ; pas de partage de dossier, de permissions ou d’expiration.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "P29"
+    },
+    {
+      "feature": "Export PDF",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 9
+      },
+      "historicalStatus": "❌ / Fonctionnalité manquante",
+      "currentStatus": "partiel",
+      "finding": "Export réellement testé, pagination corrigée ; TVA et certaines règles historiques restent incomplètes.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "export-pdf.test.jsx"
+    },
+    {
+      "feature": "Téléchargement",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 10
+      },
+      "historicalStatus": "❌ / Fonctionnalité manquante",
+      "currentStatus": "local",
+      "finding": "Le PDF généré est téléchargé localement.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "export-pdf.test.jsx"
+    },
+    {
+      "feature": "Partage par Email",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 11
+      },
+      "historicalStatus": "❌ / Fonctionnalité manquante",
+      "currentStatus": "absent",
+      "finding": "Aucun envoi de document par email.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "Inspection des sources"
+    },
+    {
+      "feature": "Interface Admin",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 12
+      },
+      "historicalStatus": "❌ / Fonctionnalité manquante",
+      "currentStatus": "partiel",
+      "finding": "Éditeur local de tarifs ; administration des utilisateurs et rôles serveur absente.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "P30–P35"
+    },
+    {
+      "feature": "Gestion des Métiers",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 13
+      },
+      "historicalStatus": "❌ / Fonctionnalité manquante",
+      "currentStatus": "partiel",
+      "finding": "Édition/import du catalogue local ; tarifs intégrés pouvant réapparaître après suppression.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "import-csv.test.jsx"
+    },
+    {
+      "feature": "Gestion des Calculs",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 14
+      },
+      "historicalStatus": "❌ / Fonctionnalité manquante",
+      "currentStatus": "absent",
+      "finding": "Aucun écran de modification des règles de calcul.",
+      "code": "frontend/src/lib/chiffrage.js",
+      "evidence": "Inspection des sources"
+    },
+    {
+      "feature": "Notifications Push",
+      "source": {
+        "id": "SRC-38",
+        "file": "Peux-tu me rajouter une colonne avec le REQ_PATH....xlsx",
+        "sheet": "Peux-tu me rajouter une colonne",
+        "row": 15
+      },
+      "historicalStatus": "❌ / Fonctionnalité manquante",
+      "currentStatus": "absent",
+      "finding": "Aucun système de notifications push.",
+      "code": "frontend/src/App.jsx",
+      "evidence": "Inspection des sources"
+    }
+  ],
+  "documentsExtension": {
+    "sources": [
+      "SRC-01 : coffre documentaire, page 1",
+      "SRC-02 : documents liés aux biens, page 3",
+      "SRC-37 : TC, ligne 4, PDF dans dossier client"
+    ],
+    "status": "Disponible localement ; coffre partagé sécurisé non livré",
+    "capabilities": [
+      "Client lié à un ou plusieurs biens",
+      "Import de plusieurs PDF/images/documents bureautiques",
+      "Classement et titres lisibles",
+      "Consultation PDF/image et téléchargement",
+      "Recherche, filtres et archive réversible",
+      "Persistance locale et détection des doublons"
+    ],
+    "open": [
+      "Identité CONNECT et droits réels",
+      "Stockage serveur/chiffrement et sauvegarde centralisée",
+      "Liens partagés expirables et traçabilité serveur",
+      "Email, paiement, suivi artisans et notifications"
+    ]
+  }
+}

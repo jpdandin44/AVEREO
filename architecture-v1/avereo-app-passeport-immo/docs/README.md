@@ -5,7 +5,7 @@ title: Documentation Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -27,3 +27,12 @@ source de statuts ni d'accords.
 
 [Qualification de la cible o2switch](qualification-preproduction.md).
 [Préparation du lot privé](../workflows/preparer-preproduction.md).
+
+## Documents du client et progression
+
+[Guide documentaire](documents-bien.md) · [Comparatif ExamIn](progression-examin.md) ·
+[Audit de l’écart documentaire](source-audit-documents.md) · [Mapping des quatre phases](mapping-phases.md).
+L’audit et la matrice initiaux validés restent des preuves historiques inchangées.
+
+[Coupes avant/après et reprise dans Coupe](coupes-bien.md) : sources, hypothèses,
+exports et intégration dans le dossier documentaire local.

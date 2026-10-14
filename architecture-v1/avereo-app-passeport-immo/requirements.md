@@ -5,7 +5,7 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -28,10 +28,10 @@ Le lot initial était local. La demande suivante autorise son raccordement GitHu
 et la correction de pagination PDF, sans intégrer CONNECT ni déployer.
 
 ## Inconnues
-TBD : stockage futur des documents clients, limites de volumétrie, identité CONNECT
+TBD : stockage partagé futur et sa volumétrie, identité CONNECT
 et suppression future du frontend historique. Questions Q01… dans le suivi.
 
-## Exigences de l'itération autorisée
+## Exigences de l'itération initiale du 3 octobre 2026
 - E06 : supprimer la page blanche finale du PDF court sans perdre un pixel de contenu
   et conserver les documents de deux ou trois pages ; quatre tests de régression.
 - E07 : rattacher PR, candidat, preuves, blocages et prochaine action au suivi existant.
@@ -47,3 +47,17 @@ E11 : préparer une fermeture initiale et vérifier sa prise en compte sur la ci
 E12 : distinguer récupération locale, récupération hébergée et accord d'installation.
 Les inconnues de cible et d'accès restent bloquantes ; le choix d'une préproduction
 ne constitue pas un accord de livraison distante.
+
+## Lot documents demandé le 14 octobre 2026
+
+- E13 : associer un client existant ou nouveau au bien ; un client peut posséder plusieurs biens.
+- E14 : importer fichiers/dossier local, classer, renommer, rechercher et consulter les documents du bien.
+- E15 : conserver les Blob sur le PC, dédoublonner par contenu et protéger les lots invalides/concurrents.
+- E16 : archiver/restaurer sans suppression définitive ; garder les fichiers sources et anciennes pièces jointes.
+- E17 : retourner les scans dans le dossier fourni et conserver les originaux ; signaler les références divergentes.
+- E18 : maintenir un statut sourcé face aux 14 fonctionnalités ExamIn, sans convertir leurs anciennes recettes en validations actuelles.
+- E19 : préparer dans Coupe une comparaison avant/après à partir des plans fournis, distinguer cotes et hypothèses, puis intégrer le PDF au dossier du bien.
+
+L’écart e est autorisé par cette demande. L’initiale conservation stricte concerne
+le reste du prototype ; le stockage serveur, l’identité réelle, les droits et le
+partage sécurisé restent hors de ce lot local.

@@ -1,6 +1,7 @@
 // Vérifie le raccordement du suivi réel au contrat de présentation du cockpit.
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { reviewFollowUpPullRequests } from '../../avereo-app-projet/frontend/src/review/review-pull-request.mjs';
 
 const state = JSON.parse(await readFile(new URL('../docs/suivi-chantier.json', import.meta.url), 'utf8'));
@@ -14,5 +15,20 @@ assert.equal(phase.deliverables[0].path, 'iteration-developpement.md', 'L’ité
 const document = await readFile(new URL('../docs/iteration-developpement.md', import.meta.url), 'utf8');
 assert.ok(document.includes('## Où en est le développement ?'));
 assert.ok(document.includes(state.developmentWorkflow.github.followUpPrUrl));
-assert.ok(document.includes(`phase ${state.currentPhase} —`));
-console.log('PR de suivi visible par le contrat du cockpit ; étape réelle et phase formelle présentes.');
+const approval = state.decisions.find(item => item.id === phase.validationEvidence?.decisionId);
+const frozen = approval?.evidence?.reviewedArtifacts?.find(item => item.path === 'iteration-developpement.md');
+if (frozen) {
+  assert.equal(createHash('sha256').update(Buffer.from(document)).digest('hex'), frozen.sha256, 'La fiche historique doit conserver ses octets approuvés.');
+} else assert.ok(document.includes(`phase ${state.currentPhase} —`));
+assert.deepEqual(state.phases.map(item => item.title), ['Cadrage', 'Développement local', 'Préproduction', 'Mise en production']);
+assert.equal(state.legacyTracking.phases.length, 6, 'Le découpage antérieur doit rester conservé.');
+assert.deepEqual(state.decisions.map(item => item.id), state.legacyTracking.decisions.map(item => item.id), 'Le regroupement ne crée ni ne renumérote de décision.');
+for (const decision of state.legacyTracking.decisions.filter(item => item.type === 'approval')) {
+  for (const proof of decision.evidence.reviewedArtifacts) {
+    const bytes = await readFile(new URL(`../docs/${proof.path}`, import.meta.url));
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), proof.sha256, `Preuve historique conservée : ${proof.path}`);
+  }
+}
+const dashboard = await readFile(new URL('../docs/tableau-de-bord.md', import.meta.url), 'utf8');
+for (const item of state.phases) assert.ok(dashboard.includes(item.title), `Phase courante affichée : ${item.title}`);
+console.log('Quatre phases et PR raccordées ; décisions originales archivées, preuves approuvées intactes et tableau courant aligné.');

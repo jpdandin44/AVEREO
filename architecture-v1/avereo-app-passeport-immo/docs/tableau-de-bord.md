@@ -5,7 +5,7 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [suivi, passeport-immo, genere]
 ---
@@ -16,16 +16,14 @@ Vue générée depuis `suivi-chantier.json`. Ne pas modifier manuellement.
 La revue et les décisions se font dans [Projet local](http://127.0.0.1:5193/).
 
 <!-- BEGIN GENERATED: suivi-chantier.json -->
-Mise à jour : **2026-10-03**. **0 phase livrée sur 6 ; 0 phase validée par le responsable.**
+Mise à jour : **2026-10-14**. **1 phase livrée sur 4 ; 1 phase validée par le responsable.**
 
 | Phase | Statut | Livrables | Livraison | Validation humaine |
 |---|---|---|---|---|
-| 0 — Reprise et état des lieux | En cours | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | — | Non acquise |
-| 1 — Reprise à l’identique | Non commencée | [01-reprise-identique.md](01-reprise-identique.md)<br>[iteration-developpement.md](iteration-developpement.md) | — | Non acquise |
-| 2 — Intégration CONNECT | Non commencée | `02-integration-connect.md` (prévu) | — | Non acquise |
-| 3 — Préproduction | Non commencée | `03-preproduction.md` (prévu)<br>`deployment.md` (prévu) | — | Non acquise |
-| 4 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
-| 5 — Spécification du passeport client | Non commencée | `05-specification-passeport.md` (prévu) | — | Non acquise |
+| 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
+| 1 — Développement local | En cours | `02-integration-connect.md` (prévu)<br>[documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | — | Non acquise |
+| 2 — Préproduction | Non commencée | `03-preproduction.md` (prévu)<br>`deployment.md` (prévu) | — | Non acquise |
+| 3 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
 
 ### Décisions attendues
 
@@ -35,6 +33,10 @@ Aucune décision en attente.
 
 | ID | Décision | Date | Référence de preuve |
 |---|---|---|---|
+| D01 | Valider le livrable de phase 0 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
+| D02 | Historique — Reprise à l’identique : Autoriser le passage en phase 1 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
+| D03 | Historique — Reprise à l’identique : Valider le livrable de phase 1 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
+| D04 | Historique — Intégration CONNECT : Autoriser le passage en phase 2 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
 
 ### Questions de vérification
 
@@ -51,13 +53,13 @@ Aucune décision en attente.
 
 ## Où en est le développement ?
 
-Travail actuel : **Préproduction — Bloquée**.
-Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.
+Travail actuel : **Local — En cours**.
+Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.
 
-Reprise demandée par le responsable dans AVEREO_2 le 2026-10-03T19:26:15+02:00.
+Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
-Parcours formel : **phase 0 — Reprise et état des lieux**, en cours.
-Validation formelle restant à consigner : phase 0, phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
+Parcours formel : **phase 1 — Développement local**, en cours.
+Validation formelle restant à consigner : phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
 
 
 Adresse créée : `https://passeport-immo-preprod.avereo.fr`. Dossier dédié : `/home/daje3540/passeport-immo-preprod.avereo.fr/public` dans le compte parent. La lune gratuite `sc4daje3540` reste distincte de cette cible.
@@ -67,48 +69,42 @@ Certificat installé ; adresse HTTPS contrôlée avec accès refusé (403). Aucu
 
 ## Itération GitHub et cockpit
 
-**passeport-immo-2026-10-03** — Qualifier et préparer la préproduction privée du prototype Passeport Immo après fusion du lot local et de son suivi.
+**passeport-immo-documents-2026-10-14** — Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.
 
-Responsable : jpdandin. Étape : preproduction. État : Bloquée.
+Responsable : jpdandin. Étape : local. État : En cours.
 
 Ces étapes techniques complètent les phases formelles du chantier ; une fusion GitHub ne modifie pas leurs décisions.
 
 | Étape | État | Prochaine action |
 |---|---|---|
-| Local | Validée | Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées. |
+| Local | En cours | Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante. |
 | Préproduction | Bloquée | Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
 
-- SHA source : `f076a9b1644ae9c0620aa77df8531773c8cb00af`.
-- SHA-256 de l'archive : `84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab`.
-- PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/71).
+- SHA source : `Non qualifié`.
+- SHA-256 de l'archive : `Non qualifié`.
+- PR : Non publiée.
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
-- État du complément : Fusionnée ; observation : 2026-10-03T16:56:55+00:00.
-- Dernière observation GitHub : 2026-10-03T12:52:58+00:00.
-- Revue humaine de la source GitHub : Confirmée.
+- État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
+- Dernière observation GitHub : Non observé.
+- Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
 ### Contrôles datés
 
 | Nature | Résultat | Observation |
 |---|---|---|
-| Sur le poste | Réussi | 2026-10-03T12:44:51+00:00 |
-| GitHub Actions | Réussi | 2026-10-03T12:42:48+00:00 |
-| Documentation | Réussi | 2026-10-03T12:44:51+00:00 |
+
 
 Preuves du candidat identifié ci-dessus :
 
-- Sur le poste : raccordement-cockpit.md : 14 tests, build, parité a/b/c+d ; PDF réel court 1 page complète ; archive relue et répétée.
-- GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/37123530922
-- Documentation : 32 documents, socles, métadonnées simples, liens locaux, matrice 40 lignes, vues générées ; lecture Projet sans mutation.
+
 
 ### Contrôles de passage
 
-- Préproduction : passage refusé (2026-10-03T12:54:58+00:00).
-- Production : passage refusé (2026-10-03T12:54:59+00:00).
-- Clôture : passage refusé (2026-10-03T12:54:59+00:00).
+À contrôler.
 
 ### Blocages de passage
 
@@ -116,7 +112,7 @@ Preuves du candidat identifié ci-dessus :
 - Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
 - Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
 
-Prochaine action : Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.
+Prochaine action : Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.
 
 ### Accords et livraison
 
@@ -129,24 +125,12 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 - Intégration CONNECT après accord sur les fichiers concernés.
 - Partage sécurisé et stockage centralisé à spécifier à la demande des clients.
 
-### Préparation locale de préproduction
-
-- État : Préparée sur le poste ; observation : 2026-10-03T16:56:55+00:00.
-- Empreinte du lot fermé : `ad0f6ab22fc6c117107c78c0f7b881e4b34faa1a98b62435b0fcbe7a9969804a`.
-- Assets du candidat conservés : Oui.
-- Relecture de l'archive : Réussie.
-- Restauration : Réussie sur des fichiers temporaires locaux ; cible hébergée : Non vérifiée.
-- Livraison distante : Non effectuée.
-- PR de préparation : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/74).
-
-Cette préparation ne qualifie ni la cible ni l'accès privé. La récupération locale est distincte d'une sauvegarde restaurée de l'hébergement.
-
 
 ## Livrables attendus par phase
 
 Description issue du suivi JSON ; disponibilité vérifiée lors de la génération.
 
-### Phase 0 — Reprise et état des lieux
+### Phase 0 — Cadrage
 
 **Itération GitHub et cockpit** — Document disponible (`iteration-developpement.md`).
 
@@ -168,23 +152,7 @@ Reprise et état des lieux
 - Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.
 - Audit source et inconnues explicites ; vues générées contrôlées.
 
-### Phase 1 — Reprise à l’identique
-
-**01 reprise identique** — Document disponible (`01-reprise-identique.md`).
-
-Reprise à l’identique
-
-- Installation, tests et build réussis.
-- Diff limité aux transformations autorisées ou écarts explicitement consignés.
-- Recette locale préparée et contrôles techniques distincts de la validation humaine.
-
-**Itération GitHub et cockpit** — Document disponible (`iteration-developpement.md`).
-
-Projection générée du bloc canonique developmentWorkflow.
-
-- Candidat, PR, contrôles datés, blocages et prochaine action.
-
-### Phase 2 — Intégration CONNECT
+### Phase 1 — Développement local
 
 **02 integration connect** — Prévu — document non produit (`02-integration-connect.md`).
 
@@ -193,7 +161,37 @@ Intégration CONNECT
 - Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.
 - Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.
 
-### Phase 3 — Préproduction
+**Documents du client et du bien** — Document disponible (`documents-bien.md`).
+
+Lot local demandé le 14 octobre
+
+- Cas concret et limites conservés ; aucune validation distante déduite.
+
+**Progression face aux sources ExamIn** — Document disponible (`progression-examin.md`).
+
+Lot local demandé le 14 octobre
+
+- Cas concret et limites conservés ; aucune validation distante déduite.
+
+**Audit du lot documentaire** — Document disponible (`source-audit-documents.md`).
+
+Lot local demandé le 14 octobre
+
+- Cas concret et limites conservés ; aucune validation distante déduite.
+
+**Correspondance des phases** — Document disponible (`mapping-phases.md`).
+
+Lot local demandé le 14 octobre
+
+- Cas concret et limites conservés ; aucune validation distante déduite.
+
+**Coupes avant/après préparées dans Coupe** — Document disponible (`coupes-bien.md`).
+
+Sources, hypothèses et restitution comparative intégrée au bien
+
+- Deux projets Coupe modifiables et SVG locaux ; PDF comparatif de deux pages consulté et téléchargé.
+
+### Phase 2 — Préproduction
 
 **03 preproduction** — Prévu — document non produit (`03-preproduction.md`).
 
@@ -209,7 +207,7 @@ Préproduction
 - Procédure et workflow manuel préparés.
 - Recette préproduction conforme, remplie par le responsable.
 
-### Phase 4 — Mise en production
+### Phase 3 — Mise en production
 
 **04 mise en production** — Prévu — document non produit (`04-mise-en-production.md`).
 
@@ -217,12 +215,3 @@ Mise en production
 
 - Autorisation humaine enregistrée après phase 3 validée.
 - Procédure, fumée et retour arrière vérifiés par le responsable.
-
-### Phase 5 — Spécification du passeport client
-
-**05 specification passeport** — Prévu — document non produit (`05-specification-passeport.md`).
-
-Spécification du passeport client
-
-- Exigences et modèle client/biens/documents proposés.
-- Options de stockage comparées ; aucun code ajouté.

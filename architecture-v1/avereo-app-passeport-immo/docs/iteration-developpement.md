@@ -21,7 +21,7 @@ Définir et configurer l’accès privé de test avec saisie des identifiants pa
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-03T19:26:15+02:00.
 
-Parcours formel : **phase 0 — Reprise et état des lieux**, en cours.
+Parcours formel : **phase 0 — Reprise et état des lieux**, à valider.
 Validation formelle restant à consigner : phase 0, phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
 
 

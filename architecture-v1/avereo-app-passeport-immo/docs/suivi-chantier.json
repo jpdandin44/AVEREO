@@ -5,7 +5,7 @@
   "owner": "jpdandin",
   "version": "git",
   "created": "2026-10-03",
-  "updated": "2026-10-03",
+  "updated": "2026-10-14",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -18,19 +18,19 @@
     "Un prototype local disponible ne valide pas une phase.",
     "Les charges et dates futures restent non estimées."
   ],
-  "currentPhase": 0,
+  "currentPhase": 1,
   "state": "in_progress",
   "phases": [
     {
       "id": 0,
-      "shortTitle": "Reprise et état des lieux",
-      "title": "Reprise et état des lieux",
-      "objective": "Reprise et état des lieux",
-      "status": "in_progress",
+      "shortTitle": "Cadrage",
+      "title": "Cadrage",
+      "objective": "Cadrage initial approuvé ; sa validation couvre les documents de reprise du 3 octobre uniquement.",
+      "status": "validated",
       "dependsOn": [],
       "startedOn": "2026-10-03",
-      "deliveredOn": null,
-      "validatedOn": null,
+      "deliveredOn": "2026-10-03",
+      "validatedOn": "2026-10-03",
       "deliverables": [
         {
           "path": "iteration-developpement.md",
@@ -69,83 +69,34 @@
         "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
         "Audit source et inconnues explicites ; vues générées contrôlées."
       ],
-      "nextAction": "Travaux actuels : préparation locale de préproduction. Lire la fiche d’itération ; soumettre l’audit à la revue pour régulariser le parcours formel.",
+      "nextAction": "Phase 1 autorisée, non démarrée.",
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/71",
         "repository": "jpdandin44/AVEREO",
         "number": 71,
         "state": "merged",
         "headSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-        "observedAt": "2026-10-03T12:52:58+00:00",
+        "observedAt": "2026-10-03T19:41:38.385Z",
         "draft": false,
-        "mergedAt": "2026-10-03T12:46:58Z",
-        "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775"
-      }
+        "mergedAt": "2026-10-03T12:46:58.000Z",
+        "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775",
+        "mergedBy": "jpdandinavereo-design"
+      },
+      "validationEvidence": {
+        "decisionId": "D01"
+      },
+      "legacyPhaseId": 0
     },
     {
       "id": 1,
-      "shortTitle": "Reprise à l’identique",
-      "title": "Reprise à l’identique",
-      "objective": "Reprise à l’identique",
-      "status": "not_started",
+      "shortTitle": "Développement local",
+      "title": "Développement local",
+      "objective": "Gestion locale des documents client/bien, comparaison ExamIn et tâches d’intégration CONNECT.",
+      "status": "in_progress",
       "dependsOn": [
         0
       ],
-      "startedOn": null,
-      "deliveredOn": null,
-      "validatedOn": null,
-      "deliverables": [
-        {
-          "path": "01-reprise-identique.md",
-          "kind": "file",
-          "availability": "present",
-          "title": "01 reprise identique",
-          "description": "Reprise à l’identique",
-          "expectedEvidence": [
-            "Installation, tests et build réussis.",
-            "Diff limité aux transformations autorisées ou écarts explicitement consignés.",
-            "Recette locale préparée et contrôles techniques distincts de la validation humaine."
-          ]
-        },
-        {
-          "path": "iteration-developpement.md",
-          "kind": "file",
-          "availability": "present",
-          "title": "Itération GitHub et cockpit",
-          "description": "Projection générée du bloc canonique developmentWorkflow.",
-          "expectedEvidence": [
-            "Candidat, PR, contrôles datés, blocages et prochaine action."
-          ]
-        }
-      ],
-      "exitCriteria": [
-        "Installation, tests et build réussis.",
-        "Diff limité aux transformations autorisées ou écarts explicitement consignés.",
-        "Recette locale préparée et contrôles techniques distincts de la validation humaine."
-      ],
-      "nextAction": "Prototype local disponible sous accord de session ; recette et passage formel à décider dans AVEREO Projet.",
-      "pullRequest": {
-        "url": "https://github.com/jpdandin44/AVEREO/pull/71",
-        "repository": "jpdandin44/AVEREO",
-        "number": 71,
-        "state": "merged",
-        "headSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-        "observedAt": "2026-10-03T12:52:58+00:00",
-        "draft": false,
-        "mergedAt": "2026-10-03T12:46:58Z",
-        "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775"
-      }
-    },
-    {
-      "id": 2,
-      "shortTitle": "Intégration CONNECT",
-      "title": "Intégration CONNECT",
-      "objective": "Intégration CONNECT",
-      "status": "not_started",
-      "dependsOn": [
-        1
-      ],
-      "startedOn": null,
+      "startedOn": "2026-10-03",
       "deliveredOn": null,
       "validatedOn": null,
       "deliverables": [
@@ -159,22 +110,80 @@
             "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
             "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
           ]
+        },
+        {
+          "path": "documents-bien.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Documents du client et du bien",
+          "description": "Lot local demandé le 14 octobre",
+          "expectedEvidence": [
+            "Cas concret et limites conservés ; aucune validation distante déduite."
+          ]
+        },
+        {
+          "path": "progression-examin.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Progression face aux sources ExamIn",
+          "description": "Lot local demandé le 14 octobre",
+          "expectedEvidence": [
+            "Cas concret et limites conservés ; aucune validation distante déduite."
+          ]
+        },
+        {
+          "path": "source-audit-documents.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Audit du lot documentaire",
+          "description": "Lot local demandé le 14 octobre",
+          "expectedEvidence": [
+            "Cas concret et limites conservés ; aucune validation distante déduite."
+          ]
+        },
+        {
+          "path": "mapping-phases.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Correspondance des phases",
+          "description": "Lot local demandé le 14 octobre",
+          "expectedEvidence": [
+            "Cas concret et limites conservés ; aucune validation distante déduite."
+          ]
+        },
+        {
+          "path": "coupes-bien.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Coupes avant/après préparées dans Coupe",
+          "description": "Sources, hypothèses et restitution comparative intégrée au bien",
+          "expectedEvidence": [
+            "Deux projets Coupe modifiables et SVG locaux ; PDF comparatif de deux pages consulté et téléchargé."
+          ]
         }
       ],
       "exitCriteria": [
         "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
-        "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
+        "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.",
+        "Import, consultation, classement et persistance du dossier client/bien vérifiés.",
+        "Comparatif ExamIn sourcé ; références du cas concret contrôlées.",
+        "Coupes comparatives de principe intégrées ; dimensions connues et hypothèses distinguées."
       ],
-      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+      "nextAction": "Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.",
+      "startEvidence": {
+        "decisionId": "D04"
+      },
+      "authorizedOn": "2026-10-03",
+      "legacyPhaseId": 2
     },
     {
-      "id": 3,
+      "id": 2,
       "shortTitle": "Préproduction",
       "title": "Préproduction",
       "objective": "Préproduction",
       "status": "not_started",
       "dependsOn": [
-        2
+        1
       ],
       "startedOn": null,
       "deliveredOn": null,
@@ -207,16 +216,17 @@
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet.",
+      "legacyPhaseId": 3
     },
     {
-      "id": 4,
+      "id": 3,
       "shortTitle": "Mise en production",
       "title": "Mise en production",
       "objective": "Mise en production",
       "status": "not_started",
       "dependsOn": [
-        3
+        2
       ],
       "startedOn": null,
       "deliveredOn": null,
@@ -236,43 +246,139 @@
       ],
       "exitCriteria": [
         "Autorisation humaine enregistrée après phase 3 validée.",
-        "Procédure, fumée et retour arrière vérifiés par le responsable."
+        "Procédure, fumée et retour arrière vérifiés par le responsable.",
+        "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
-    },
-    {
-      "id": 5,
-      "shortTitle": "Spécification du passeport client",
-      "title": "Spécification du passeport client",
-      "objective": "Spécification du passeport client",
-      "status": "not_started",
-      "dependsOn": [
-        4
-      ],
-      "startedOn": null,
-      "deliveredOn": null,
-      "validatedOn": null,
-      "deliverables": [
-        {
-          "path": "05-specification-passeport.md",
-          "kind": "file",
-          "availability": "planned",
-          "title": "05 specification passeport",
-          "description": "Spécification du passeport client",
-          "expectedEvidence": [
-            "Exigences et modèle client/biens/documents proposés.",
-            "Options de stockage comparées ; aucun code ajouté."
-          ]
-        }
-      ],
-      "exitCriteria": [
-        "Exigences et modèle client/biens/documents proposés.",
-        "Options de stockage comparées ; aucun code ajouté."
-      ],
-      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet.",
+      "legacyPhaseId": 4
     }
   ],
-  "decisions": [],
+  "decisions": [
+    {
+      "id": "D01",
+      "title": "Valider le livrable de phase 0",
+      "type": "approval",
+      "phaseId": 0,
+      "status": "approved",
+      "owner": "jpdandin",
+      "blocksPhase": 1,
+      "recordedOn": "2026-10-03",
+      "evidence": {
+        "kind": "local_review",
+        "reviewId": "fad576f0-3b33-4d97-916e-0676713283fa",
+        "reviewer": "jpdandin",
+        "comment": "Phase 0 validée",
+        "recordedAt": "2026-10-03T19:30:04.025Z",
+        "reviewedArtifacts": [
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          },
+          {
+            "path": "00-etat-des-lieux.md",
+            "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+          },
+          {
+            "path": "source-audit.md",
+            "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+          }
+        ]
+      },
+      "nextAction": "Décision humaine enregistrée dans Projet local.",
+      "legacyPhaseId": 0
+    },
+    {
+      "id": "D02",
+      "title": "Historique — Reprise à l’identique : Autoriser le passage en phase 1",
+      "type": "historical_authorization",
+      "phaseId": 1,
+      "status": "approved",
+      "owner": "jpdandin",
+      "blocksPhase": 1,
+      "recordedOn": "2026-10-03",
+      "evidence": {
+        "kind": "local_review",
+        "reviewId": "64ae1ec5-def1-41f0-8d2d-f0705392973d",
+        "reviewer": "jpdandin",
+        "comment": "OK passage autorisé",
+        "recordedAt": "2026-10-03T19:54:04.103Z",
+        "reviewedArtifacts": [
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          },
+          {
+            "path": "00-etat-des-lieux.md",
+            "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+          },
+          {
+            "path": "source-audit.md",
+            "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+          }
+        ]
+      },
+      "nextAction": "Décision humaine enregistrée dans Projet local.",
+      "legacyPhaseId": 1
+    },
+    {
+      "id": "D03",
+      "title": "Historique — Reprise à l’identique : Valider le livrable de phase 1",
+      "type": "historical_approval",
+      "phaseId": 1,
+      "status": "approved",
+      "owner": "jpdandin",
+      "blocksPhase": 1,
+      "recordedOn": "2026-10-03",
+      "evidence": {
+        "kind": "local_review",
+        "reviewId": "f5e28f5e-00ae-4690-a2b0-735427178df7",
+        "reviewer": "jpdandin",
+        "comment": "Livrables et critères OK",
+        "recordedAt": "2026-10-03T19:56:32.364Z",
+        "reviewedArtifacts": [
+          {
+            "path": "01-reprise-identique.md",
+            "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+          },
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          }
+        ]
+      },
+      "nextAction": "Décision humaine enregistrée dans Projet local.",
+      "legacyPhaseId": 1
+    },
+    {
+      "id": "D04",
+      "title": "Historique — Intégration CONNECT : Autoriser le passage en phase 2",
+      "type": "historical_authorization",
+      "phaseId": 1,
+      "status": "approved",
+      "owner": "jpdandin",
+      "blocksPhase": 1,
+      "recordedOn": "2026-10-03",
+      "evidence": {
+        "kind": "local_review",
+        "reviewId": "8de5da26-3aa1-46f5-b8ab-5bc727f32c15",
+        "reviewer": "jpdandin",
+        "comment": "Phase 2 OK",
+        "recordedAt": "2026-10-03T19:56:42.916Z",
+        "reviewedArtifacts": [
+          {
+            "path": "01-reprise-identique.md",
+            "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+          },
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          }
+        ]
+      },
+      "nextAction": "Décision humaine enregistrée dans Projet local.",
+      "legacyPhaseId": 2
+    }
+  ],
   "history": [
     {
       "date": "2026-10-03",
@@ -341,9 +447,230 @@
     {
       "date": "2026-10-03",
       "event": "Après reconnexion du responsable : compte parent authentifié vérifié ; dossier dédié hors public_html créé avec le modèle .htaccess fermé, relu après enregistrement. Sous-domaine demandé créé ; certificat gratuit simulé puis installé par validation DNS. Adresse HTTPS vérifiée dans le navigateur et par Python avec validation TLS active : 403 et en-tête noindex. Aucun asset applicatif installé, aucun accord ou statut de phase modifié."
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Revue locale : submit, phase 0, par jpdandin.",
+      "reviewId": "f1a607c0-80e0-4c6d-a244-c80c7ca0d95c"
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Revue locale : approve, phase 0, par jpdandin.",
+      "reviewId": "fad576f0-3b33-4d97-916e-0676713283fa"
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Revue locale : authorize_next, phase 0, par jpdandin.",
+      "reviewId": "64ae1ec5-def1-41f0-8d2d-f0705392973d"
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Revue locale : start, phase 1, par jpdandin.",
+      "reviewId": "cccb138e-ae2e-4374-aaa7-fd7b9b8f6b41"
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Revue locale : submit, phase 1, par jpdandin.",
+      "reviewId": "e8bae9cb-e10f-434b-a875-f98c374d86b0"
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Revue locale : approve, phase 1, par jpdandin.",
+      "reviewId": "f5e28f5e-00ae-4690-a2b0-735427178df7"
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Revue locale : authorize_next, phase 1, par jpdandin.",
+      "reviewId": "8de5da26-3aa1-46f5-b8ab-5bc727f32c15"
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Revue locale : start, phase 2, par jpdandin.",
+      "reviewId": "05b498c6-6c56-48c7-b4c7-0d26417470f1"
+    },
+    {
+      "date": "2026-10-03",
+      "event": "Session clôturée sur demande du responsable. PR nº74 fusionnée ; validations humaines des phases 0 et 1 et démarrage de phase 2 présents dans le suivi. Lot cockpit conservé localement, sans nouvelle PR ni installation distante."
+    },
+    {
+      "date": "2026-10-14",
+      "event": "Reprise documents client/bien et cas réel local demandée par le responsable. Regroupement en quatre phases : ancien suivi, décisions, brouillons et preuves conservés dans legacyTracking ; aucune nouvelle approbation créée."
     }
   ],
-  "reviewEvents": [],
+  "reviewEvents": [
+    {
+      "id": "f1a607c0-80e0-4c6d-a244-c80c7ca0d95c",
+      "action": "submit",
+      "phaseId": 0,
+      "reviewer": "jpdandin",
+      "comment": "[Historique : Reprise et état des lieux] Revue OK",
+      "recordedAt": "2026-10-03T19:29:10.064Z",
+      "reviewedArtifacts": [
+        {
+          "path": "iteration-developpement.md",
+          "sha256": "f748245d13238731b1337804dfc2ff3f98cc0dac36f72627a2d3643a5fc5a876"
+        },
+        {
+          "path": "00-etat-des-lieux.md",
+          "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+        },
+        {
+          "path": "source-audit.md",
+          "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+        }
+      ],
+      "previousRevision": "ab702d4d12fbdceecb573020b68ce20264e7dc0b2100243795e38de633ed9228",
+      "legacyPhaseId": 0
+    },
+    {
+      "id": "fad576f0-3b33-4d97-916e-0676713283fa",
+      "action": "approve",
+      "phaseId": 0,
+      "reviewer": "jpdandin",
+      "comment": "[Historique : Reprise et état des lieux] Phase 0 validée",
+      "recordedAt": "2026-10-03T19:30:04.025Z",
+      "reviewedArtifacts": [
+        {
+          "path": "iteration-developpement.md",
+          "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+        },
+        {
+          "path": "00-etat-des-lieux.md",
+          "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+        },
+        {
+          "path": "source-audit.md",
+          "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+        }
+      ],
+      "previousRevision": "0a850e300760ddc73b2b4e0c3b7151dc522f1969ead6ef3f7f8aad30766eee4e",
+      "checkedCriteria": [
+        "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
+        "Audit source et inconnues explicites ; vues générées contrôlées."
+      ],
+      "legacyPhaseId": 0
+    },
+    {
+      "id": "64ae1ec5-def1-41f0-8d2d-f0705392973d",
+      "action": "authorize_next",
+      "phaseId": 0,
+      "reviewer": "jpdandin",
+      "comment": "[Historique : Reprise et état des lieux] OK passage autorisé",
+      "recordedAt": "2026-10-03T19:54:04.103Z",
+      "reviewedArtifacts": [
+        {
+          "path": "iteration-developpement.md",
+          "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+        },
+        {
+          "path": "00-etat-des-lieux.md",
+          "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+        },
+        {
+          "path": "source-audit.md",
+          "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+        }
+      ],
+      "previousRevision": "0b721a9c3505360ab6c9edf0c383c3fc58ab00172f9426b98e5f3ee0e760f4d7",
+      "legacyPhaseId": 0
+    },
+    {
+      "id": "cccb138e-ae2e-4374-aaa7-fd7b9b8f6b41",
+      "action": "start",
+      "phaseId": 1,
+      "reviewer": "jpdandin",
+      "comment": "[Historique : Reprise à l’identique] Phase 1 démarrage OK",
+      "recordedAt": "2026-10-03T19:55:19.839Z",
+      "reviewedArtifacts": [
+        {
+          "path": "01-reprise-identique.md",
+          "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+        },
+        {
+          "path": "iteration-developpement.md",
+          "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+        }
+      ],
+      "previousRevision": "53779d7d252b69b81aa5d02bdb1d1523c8dbcbc0fd3c9ce965bd60ba151f3758",
+      "legacyPhaseId": 1
+    },
+    {
+      "id": "e8bae9cb-e10f-434b-a875-f98c374d86b0",
+      "action": "submit",
+      "phaseId": 1,
+      "reviewer": "jpdandin",
+      "comment": "[Historique : Reprise à l’identique] Revue OK",
+      "recordedAt": "2026-10-03T19:55:53.839Z",
+      "reviewedArtifacts": [
+        {
+          "path": "01-reprise-identique.md",
+          "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+        },
+        {
+          "path": "iteration-developpement.md",
+          "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+        }
+      ],
+      "previousRevision": "4bf0e5f02ac13da0226143967895c753570b67f20e659d1649f237b7c988a3fb",
+      "legacyPhaseId": 1
+    },
+    {
+      "id": "f5e28f5e-00ae-4690-a2b0-735427178df7",
+      "action": "approve",
+      "phaseId": 1,
+      "reviewer": "jpdandin",
+      "comment": "[Historique : Reprise à l’identique] Livrables et critères OK",
+      "recordedAt": "2026-10-03T19:56:32.364Z",
+      "reviewedArtifacts": [
+        {
+          "path": "01-reprise-identique.md",
+          "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+        },
+        {
+          "path": "iteration-developpement.md",
+          "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+        }
+      ],
+      "previousRevision": "84b47b5da88eedeea788da48db4203d7bde12142c8902ebc091a14e09fb86870",
+      "checkedCriteria": [
+        "Installation, tests et build réussis.",
+        "Diff limité aux transformations autorisées ou écarts explicitement consignés.",
+        "Recette locale préparée et contrôles techniques distincts de la validation humaine."
+      ],
+      "legacyPhaseId": 1
+    },
+    {
+      "id": "8de5da26-3aa1-46f5-b8ab-5bc727f32c15",
+      "action": "authorize_next",
+      "phaseId": 1,
+      "reviewer": "jpdandin",
+      "comment": "[Historique : Reprise à l’identique] Phase 2 OK",
+      "recordedAt": "2026-10-03T19:56:42.916Z",
+      "reviewedArtifacts": [
+        {
+          "path": "01-reprise-identique.md",
+          "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+        },
+        {
+          "path": "iteration-developpement.md",
+          "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+        }
+      ],
+      "previousRevision": "40faf53ca1cf242b9d7165984cbb24ad6173b5625727f5e496b942248ecca9f6",
+      "legacyPhaseId": 1
+    },
+    {
+      "id": "05b498c6-6c56-48c7-b4c7-0d26417470f1",
+      "action": "start",
+      "phaseId": 1,
+      "reviewer": "jpdandin",
+      "comment": "[Historique : Intégration CONNECT] Phase 2 OK pour démarrage",
+      "recordedAt": "2026-10-03T19:57:01.844Z",
+      "reviewedArtifacts": [],
+      "previousRevision": "cdd62d3d014d0a1ed7a31a3b20161faeac8f528b34da7a841ab700fca2f410c6",
+      "legacyPhaseId": 2
+    }
+  ],
   "verificationQuestions": [
     {
       "id": "Q01",
@@ -430,18 +757,18 @@
   "developmentWorkflow": {
     "protocol": "developpement-github-cockpit",
     "version": "git",
-    "iterationId": "passeport-immo-2026-10-03",
+    "iterationId": "passeport-immo-documents-2026-10-14",
     "project": "avereo-app-passeport-immo",
     "owner": "jpdandin",
     "kind": "application",
-    "stage": "preproduction",
-    "status": "blocked",
-    "objective": "Qualifier et préparer la préproduction privée du prototype Passeport Immo après fusion du lot local et de son suivi.",
+    "stage": "local",
+    "status": "in_progress",
+    "objective": "Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.",
     "candidate": {
-      "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-      "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
-      "evidence": "docs/raccordement-cockpit.md ; archive locale et artefact CI relus fichier par fichier.",
-      "observedAt": "2026-10-03T12:42:48+00:00"
+      "sourceSha": null,
+      "artifactSha256": null,
+      "evidence": "Nouveau module contrôlé localement ; candidat exact à consigner après commit et packaging.",
+      "observedAt": null
     },
     "targets": {
       "preproduction": {
@@ -544,27 +871,16 @@
     },
     "github": {
       "repository": "jpdandin44/AVEREO",
-      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/71",
-      "acceptedSourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+      "prUrl": null,
+      "headSha": null,
+      "state": "not_published",
+      "draft": true,
+      "acceptedSourceSha": null,
       "acceptedArtifactSha256": null,
       "humanAcceptanceVerified": false,
-      "evidence": "https://github.com/jpdandin44/AVEREO/pull/71 : quatre cases de checklist cochées par le responsable et fusion vérifiée. Source acceptée ; acceptation humaine de l’archive exacte non consignée séparément.",
-      "observedAt": "2026-10-03T12:52:58+00:00",
-      "headSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-      "state": "merged",
-      "draft": false,
-      "ciObservation": {
-        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-        "passeportRunId": 37123530922,
-        "passeportStatus": "success",
-        "globalRunId": 37123530935,
-        "globalStatus": "success",
-        "prPolicyStatus": "skipped_draft",
-        "observedAt": "2026-10-03T12:44:51+00:00"
-      },
-      "mergedAt": "2026-10-03T12:46:58Z",
-      "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775",
-      "sourceReviewVerified": true,
+      "sourceReviewVerified": false,
+      "evidence": "La PR et l’acceptation du prototype initial restent dans legacyTracking.developmentWorkflow. Nouvelle PR documentaire à publier.",
+      "observedAt": null,
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -572,68 +888,15 @@
         "number": 72,
         "state": "merged",
         "headSha": "d1e97d328cac3e88120379e369b260a8c7d01b4e",
-        "observedAt": "2026-10-03T16:56:55+00:00",
+        "observedAt": "2026-10-03T19:41:38.385Z",
         "draft": false,
         "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch.",
-        "mergedAt": "2026-10-03T16:42:36Z",
-        "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64"
-      },
-      "rebaseObservation": {
-        "baseSha": "f14bfc97b8f15a06cb4010f493240c5362fc5242",
-        "baseMergePrUrl": "https://github.com/jpdandin44/AVEREO/pull/73",
-        "previousHeadSha": "e9afc3bb2003f8feb551547e949c52a0d0a66366",
-        "rebasedHeadSha": "5eb47ddd587afffad1b7fd2721621e048b283aab",
-        "status": "rebased_without_conflicts",
-        "observedAt": "2026-10-03T16:25:45+00:00",
-        "verification": "Deux commits identiques au range-diff ; frontend identique à main ; candidat et accords humains conservés.",
-        "localVerification": {
-          "commonProtocolTests": 14,
-          "baseline": "passed",
-          "parity": "passed",
-          "views": "aligned",
-          "documentation": {
-            "passeportMarkdownFiles": 32,
-            "passeportLocalLinks": 86,
-            "commonMarkdownFiles": 31,
-            "commonLocalLinks": 61,
-            "errors": []
-          },
-          "humanStateAndCandidate": "preserved",
-          "gates": "preproduction_production_close_refused_for_missing_evidence"
-        }
+        "mergedAt": "2026-10-03T16:42:36.000Z",
+        "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
+        "mergedBy": "jpdandinavereo-design"
       }
     },
-    "checks": [
-      {
-        "kind": "local",
-        "status": "passed",
-        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
-        "observedAt": "2026-10-03T12:44:51+00:00",
-        "evidence": "raccordement-cockpit.md : 14 tests, build, parité a/b/c+d ; PDF réel court 1 page complète ; archive relue et répétée."
-      },
-      {
-        "kind": "ci",
-        "status": "passed",
-        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
-        "observedAt": "2026-10-03T12:42:48+00:00",
-        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37123530922",
-        "runId": 37123530922,
-        "artifactId": 11274322556,
-        "containerSha256": "ee7d630593070b7ddd67324bb41f413f7f9b8836dc4d9abc386cd9a6a7c4659a",
-        "candidateBytesEqual": true,
-        "manifestEqual": true
-      },
-      {
-        "kind": "documentation",
-        "status": "passed",
-        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
-        "observedAt": "2026-10-03T12:44:51+00:00",
-        "evidence": "32 documents, socles, métadonnées simples, liens locaux, matrice 40 lignes, vues générées ; lecture Projet sans mutation."
-      }
-    ],
+    "checks": [],
     "approvals": [],
     "backups": [],
     "rollback": {
@@ -656,7 +919,7 @@
       "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
       "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
     ],
-    "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
+    "nextAction": "Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -670,8 +933,8 @@
     },
     "stages": {
       "local": {
-        "status": "validated",
-        "nextAction": "Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées."
+        "status": "in_progress",
+        "nextAction": "Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante."
       },
       "preproduction": {
         "status": "blocked",
@@ -682,252 +945,47 @@
         "nextAction": "Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée."
       }
     },
-    "gates": [
-      {
-        "gate": "preproduction",
-        "declaredEvidenceConsistent": false,
-        "errors": [
-          "Blocages présents ou non renseignés.",
-          "Préproduction prête et isolée non prouvée.",
-          "Accord humain exact absent : preproduction.",
-          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés."
-        ],
-        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
-        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
-        "observedAt": "2026-10-03T12:54:58+00:00"
-      },
-      {
-        "gate": "production",
-        "declaredEvidenceConsistent": false,
-        "errors": [
-          "Blocages présents ou non renseignés.",
-          "Préproduction prête et isolée non prouvée.",
-          "Cible de production non prouvée.",
-          "Contrôle actuel absent : preproduction.",
-          "Accord humain exact absent : review.",
-          "Accord humain exact absent : production.",
-          "Acceptation GitHub du candidat non vérifiée.",
-          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
-          "Retour arrière de ce candidat non qualifié."
-        ],
-        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
-        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
-        "observedAt": "2026-10-03T12:54:59+00:00"
-      },
-      {
-        "gate": "close",
-        "declaredEvidenceConsistent": false,
-        "errors": [
-          "Blocages présents ou non renseignés.",
-          "Préproduction prête et isolée non prouvée.",
-          "Cible de production non prouvée.",
-          "Contrôle actuel absent : preproduction.",
-          "Accord humain exact absent : review.",
-          "Accord humain exact absent : production.",
-          "Acceptation GitHub du candidat non vérifiée.",
-          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
-          "Retour arrière de ce candidat non qualifié.",
-          "Contrôle actuel absent : production.",
-          "Livraison réelle du candidat non établie."
-        ],
-        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
-        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
-        "observedAt": "2026-10-03T12:54:59+00:00"
-      }
-    ],
-    "preproductionPreparation": {
-      "candidateSourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
-      "candidateArtifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
-      "bundleSha256": "ad0f6ab22fc6c117107c78c0f7b881e4b34faa1a98b62435b0fcbe7a9969804a",
-      "files": [
-        {
-          "path": ".htaccess",
-          "sha256": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
-          "size": 248
-        },
-        {
-          "path": "assets/index-B6-J-id_.js",
-          "sha256": "1bff68615d47d1c7f4228ef2b8a752cd837c2ab44c977e90620ee907e6cdfe99",
-          "size": 775488
-        },
-        {
-          "path": "assets/index-rS3DXAdr.css",
-          "sha256": "ed2b39d3d15c00d02af7332efd6542805dcf1cf3d92b6e0796554c263cd660ba",
-          "size": 20378
-        },
-        {
-          "path": "assets/index.es-B4ypi1Kv.js",
-          "sha256": "3f3fb5000c6bef463d4bacb56c704e72b8be064d99c0a1c27db3025394e24659",
-          "size": 150852
-        },
-        {
-          "path": "assets/purify.es-BwoZCkIS.js",
-          "sha256": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
-          "size": 22028
-        },
-        {
-          "path": "index.html",
-          "sha256": "8aa9b697834321cfa4a390c092fbf741f3191fc87b4f51343187aa491789d10a",
-          "size": 499
-        }
+    "gates": [],
+    "previousIterationRef": "legacyTracking.developmentWorkflow",
+    "phaseModelRef": "docs/mapping-phases.md",
+    "documentsLot": {
+      "requestedOn": "2026-10-14",
+      "branch": "feat/passeport-immo-documents",
+      "status": "tested_local",
+      "frontendTests": 26,
+      "build": "passed",
+      "parity": "a_b_c_d_e_passed",
+      "caseFiles": 5,
+      "casePages": 33,
+      "rotatedFiles": 2,
+      "rotatedPages": 10,
+      "clientDocumentsStored": "browser_only",
+      "githubPr": null,
+      "open": [
+        "Recette humaine",
+        "Identité et intégration CONNECT",
+        "Qualification préproduction et accès privé"
       ],
-      "candidateAssetsUnchanged": true,
-      "initialAccess": "deny_all_configuration_requires_hosted_verification",
-      "archiveReadback": "passed",
-      "restoreRehearsal": "passed_local_files_only",
-      "hostedBackupRestore": "not_verified",
-      "remoteDelivery": "not_performed",
-      "status": "prepared_local",
-      "observedAt": "2026-10-03T16:56:55+00:00",
-      "workflow": "workflows/preparer-preproduction.md",
-      "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
-      "publication": {
-        "status": "published_draft",
-        "branch": "feat/passeport-immo-preproduction",
-        "baseSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
-        "url": "https://github.com/jpdandin44/AVEREO/pull/74",
-        "observedAt": "2026-10-03T19:30:40+02:00",
-        "localVerification": {
-          "preparationTests": 6,
-          "preparationTestsStatus": "passed",
-          "parity": "passed",
-          "cockpitContract": "passed",
-          "baseline": "passed",
-          "bundleUnchanged": true,
-          "application": "Local login and property list checked in browser on port 5175.",
-          "cockpit": "Phase 0 and merged follow-up PR 72 visible on port 5193.",
-          "preproductionGate": "refused_missing_target_approval_recovery"
-        },
-        "number": 74,
-        "state": "open",
-        "draft": true,
-        "sourceSha": "1129428329f794c2dd3c0a6abf8cad29e0ce04a3",
-        "ciObservation": [
-          {
-            "name": "policy",
-            "status": "COMPLETED",
-            "conclusion": "SKIPPED",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573050/job/111253988702"
-          },
-          {
-            "name": "policy",
-            "status": "COMPLETED",
-            "conclusion": "SKIPPED",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140662657/job/111254253578"
-          },
-          {
-            "name": "validate",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988360"
-          },
-          {
-            "name": "validate",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949176"
-          },
-          {
-            "name": "candidate",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573030/job/111253987682"
-          },
-          {
-            "name": "candidate",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560501/job/111253949046"
-          },
-          {
-            "name": "frontend-gates (rapport)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988552"
-          },
-          {
-            "name": "frontend-gates (rapport)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949405"
-          },
-          {
-            "name": "frontend-gates (coupe)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988576"
-          },
-          {
-            "name": "frontend-gates (coupe)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949441"
-          },
-          {
-            "name": "frontend-gates (projet)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988589"
-          },
-          {
-            "name": "frontend-gates (projet)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949672"
-          },
-          {
-            "name": "frontend-gates (thermo)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988528"
-          },
-          {
-            "name": "frontend-gates (thermo)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949412"
-          },
-          {
-            "name": "frontend-gates (drone)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988561"
-          },
-          {
-            "name": "frontend-gates (drone)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949357"
-          },
-          {
-            "name": "frontend-gates (recherche)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988560"
-          },
-          {
-            "name": "frontend-gates (recherche)",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949391"
-          },
-          {
-            "name": "connect-integration",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988501"
-          },
-          {
-            "name": "connect-integration",
-            "status": "COMPLETED",
-            "conclusion": "SUCCESS",
-            "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949350"
-          }
-        ],
-        "ciLimitation": "Observation datée du commit de préparation ; les commits de suivi ultérieurs doivent aussi être contrôlés sur GitHub."
+      "caseReferences": "confirmed_by_user_and_source_reread",
+      "pdfReader": "pdfjs_local_worker",
+      "caseActiveDocuments": 6,
+      "caseArchivedDocuments": 1,
+      "casePagesWithGeneratedDocuments": 35,
+      "caseDerivedFiles": 1,
+      "caseDerivedPages": 2,
+      "coupe": {
+        "comparison": "before_after",
+        "editableProjects": 2,
+        "nativeSvgExports": 2,
+        "pdfPages": 2,
+        "status": "prepared_local_and_imported",
+        "codeChanged": false,
+        "evidence": "docs/coupes-bien.md ; reçus, exports et captures privés hors Git.",
+        "remainingMeasurements": [
+          "Hauteur après travaux",
+          "Épaisseur murs et planchers",
+          "Altimétrie et géométrie verticale complète"
+        ]
       }
     }
   },
@@ -941,11 +999,12 @@
         "number": 72,
         "state": "merged",
         "headSha": "d1e97d328cac3e88120379e369b260a8c7d01b4e",
-        "observedAt": "2026-10-03T16:56:55+00:00",
+        "observedAt": "2026-10-03T19:41:38.385Z",
         "draft": false,
         "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch.",
-        "mergedAt": "2026-10-03T16:42:36Z",
-        "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64"
+        "mergedAt": "2026-10-03T16:42:36.000Z",
+        "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
+        "mergedBy": "jpdandinavereo-design"
       }
     },
     {
@@ -955,21 +1014,1235 @@
         "url": "https://github.com/jpdandin44/AVEREO/pull/74",
         "repository": "jpdandin44/AVEREO",
         "number": 74,
-        "state": "open",
-        "headSha": "1129428329f794c2dd3c0a6abf8cad29e0ce04a3",
-        "observedAt": "2026-10-03T19:30:40+02:00",
-        "draft": true,
-        "scope": "Préparation locale de préproduction et correction de l’affichage du suivi ; aucun déploiement."
+        "state": "merged",
+        "headSha": "a700ea814e559cb97f69e2d017a57c929b9fd989",
+        "observedAt": "2026-10-03T19:41:38.385Z",
+        "draft": false,
+        "scope": "Préparation locale de préproduction et correction de l’affichage du suivi ; aucun déploiement.",
+        "mergedAt": "2026-10-03T19:25:02.000Z",
+        "mergeCommitSha": "d881b9d511c5205d022648878f86f6beb6d29f6e",
+        "mergedBy": "jpdandinavereo-design"
       }
     }
   ],
   "sessionHandoff": {
     "status": "resumed_on_user_request",
-    "closedAt": "2026-10-03T17:14:44+00:00",
+    "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
-    "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
-    "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
-    "resumedAt": "2026-10-03T19:26:15+02:00",
-    "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
+    "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
+    "nextAction": "Sur reprise explicite : relire les états Git et cockpit, publier le lot local de synchronisation/revue, puis reprendre le lot CONNECT de phase 2 autorisé. Accès privé et récupération hébergée restent à qualifier.",
+    "resumedAt": "2026-10-14T09:40:12+00:00",
+    "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
+    "previousClosure": {
+      "status": "resumed_on_user_request",
+      "closedAt": "2026-10-03T17:14:44+00:00",
+      "destinationProject": "AVEREO_2",
+      "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
+      "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
+      "resumedAt": "2026-10-03T19:26:15+02:00",
+      "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
+    },
+    "localCockpitWork": {
+      "branch": "feat/projet-github-sync",
+      "publication": "not_committed_not_pushed_no_new_pr",
+      "projetTests": 157,
+      "passeportPythonTests": 10,
+      "build": "passed",
+      "realPhaseOverridePerformed": false
+    }
+  },
+  "legacyTracking": {
+    "recordedAt": "2026-10-14T09:40:12.597261+00:00",
+    "model": "six-phases-passeport",
+    "mapping": {
+      "0": 0,
+      "1": 1,
+      "2": 1,
+      "3": 2,
+      "4": 3,
+      "5": "backlog"
+    },
+    "phases": [
+      {
+        "id": 0,
+        "shortTitle": "Reprise et état des lieux",
+        "title": "Reprise et état des lieux",
+        "objective": "Reprise et état des lieux",
+        "status": "validated",
+        "dependsOn": [],
+        "startedOn": "2026-10-03",
+        "deliveredOn": "2026-10-03",
+        "validatedOn": "2026-10-03",
+        "deliverables": [
+          {
+            "path": "iteration-developpement.md",
+            "kind": "file",
+            "availability": "present",
+            "title": "Itération GitHub et cockpit",
+            "description": "Projection générée du bloc canonique developmentWorkflow.",
+            "expectedEvidence": [
+              "Candidat, PR, contrôles datés, blocages et prochaine action."
+            ]
+          },
+          {
+            "path": "00-etat-des-lieux.md",
+            "kind": "file",
+            "availability": "present",
+            "title": "00 etat des lieux",
+            "description": "Reprise et état des lieux",
+            "expectedEvidence": [
+              "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
+              "Audit source et inconnues explicites ; vues générées contrôlées."
+            ]
+          },
+          {
+            "path": "source-audit.md",
+            "kind": "file",
+            "availability": "present",
+            "title": "source audit",
+            "description": "Reprise et état des lieux",
+            "expectedEvidence": [
+              "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
+              "Audit source et inconnues explicites ; vues générées contrôlées."
+            ]
+          }
+        ],
+        "exitCriteria": [
+          "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
+          "Audit source et inconnues explicites ; vues générées contrôlées."
+        ],
+        "nextAction": "Phase 1 autorisée, non démarrée.",
+        "pullRequest": {
+          "url": "https://github.com/jpdandin44/AVEREO/pull/71",
+          "repository": "jpdandin44/AVEREO",
+          "number": 71,
+          "state": "merged",
+          "headSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+          "observedAt": "2026-10-03T19:41:38.385Z",
+          "draft": false,
+          "mergedAt": "2026-10-03T12:46:58.000Z",
+          "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775",
+          "mergedBy": "jpdandinavereo-design"
+        },
+        "validationEvidence": {
+          "decisionId": "D01"
+        }
+      },
+      {
+        "id": 1,
+        "shortTitle": "Reprise à l’identique",
+        "title": "Reprise à l’identique",
+        "objective": "Reprise à l’identique",
+        "status": "validated",
+        "dependsOn": [
+          0
+        ],
+        "startedOn": "2026-10-03",
+        "deliveredOn": "2026-10-03",
+        "validatedOn": "2026-10-03",
+        "deliverables": [
+          {
+            "path": "01-reprise-identique.md",
+            "kind": "file",
+            "availability": "present",
+            "title": "01 reprise identique",
+            "description": "Reprise à l’identique",
+            "expectedEvidence": [
+              "Installation, tests et build réussis.",
+              "Diff limité aux transformations autorisées ou écarts explicitement consignés.",
+              "Recette locale préparée et contrôles techniques distincts de la validation humaine."
+            ]
+          },
+          {
+            "path": "iteration-developpement.md",
+            "kind": "file",
+            "availability": "present",
+            "title": "Itération GitHub et cockpit",
+            "description": "Projection générée du bloc canonique developmentWorkflow.",
+            "expectedEvidence": [
+              "Candidat, PR, contrôles datés, blocages et prochaine action."
+            ]
+          }
+        ],
+        "exitCriteria": [
+          "Installation, tests et build réussis.",
+          "Diff limité aux transformations autorisées ou écarts explicitement consignés.",
+          "Recette locale préparée et contrôles techniques distincts de la validation humaine."
+        ],
+        "nextAction": "Phase 2 autorisée, non démarrée.",
+        "pullRequest": {
+          "url": "https://github.com/jpdandin44/AVEREO/pull/71",
+          "repository": "jpdandin44/AVEREO",
+          "number": 71,
+          "state": "merged",
+          "headSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+          "observedAt": "2026-10-03T19:41:38.385Z",
+          "draft": false,
+          "mergedAt": "2026-10-03T12:46:58.000Z",
+          "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775",
+          "mergedBy": "jpdandinavereo-design"
+        },
+        "startEvidence": {
+          "decisionId": "D02"
+        },
+        "authorizedOn": "2026-10-03",
+        "validationEvidence": {
+          "decisionId": "D03"
+        }
+      },
+      {
+        "id": 2,
+        "shortTitle": "Intégration CONNECT",
+        "title": "Intégration CONNECT",
+        "objective": "Intégration CONNECT",
+        "status": "in_progress",
+        "dependsOn": [
+          1
+        ],
+        "startedOn": "2026-10-03",
+        "deliveredOn": null,
+        "validatedOn": null,
+        "deliverables": [
+          {
+            "path": "02-integration-connect.md",
+            "kind": "file",
+            "availability": "planned",
+            "title": "02 integration connect",
+            "description": "Intégration CONNECT",
+            "expectedEvidence": [
+              "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
+              "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
+            ]
+          }
+        ],
+        "exitCriteria": [
+          "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
+          "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
+        ],
+        "nextAction": "Préparer les livrables et les soumettre à la revue.",
+        "startEvidence": {
+          "decisionId": "D04"
+        },
+        "authorizedOn": "2026-10-03"
+      },
+      {
+        "id": 3,
+        "shortTitle": "Préproduction",
+        "title": "Préproduction",
+        "objective": "Préproduction",
+        "status": "not_started",
+        "dependsOn": [
+          2
+        ],
+        "startedOn": null,
+        "deliveredOn": null,
+        "validatedOn": null,
+        "deliverables": [
+          {
+            "path": "03-preproduction.md",
+            "kind": "file",
+            "availability": "planned",
+            "title": "03 preproduction",
+            "description": "Préproduction",
+            "expectedEvidence": [
+              "Procédure et workflow manuel préparés.",
+              "Recette préproduction conforme, remplie par le responsable."
+            ]
+          },
+          {
+            "path": "deployment.md",
+            "kind": "file",
+            "availability": "planned",
+            "title": "deployment",
+            "description": "Préproduction",
+            "expectedEvidence": [
+              "Procédure et workflow manuel préparés.",
+              "Recette préproduction conforme, remplie par le responsable."
+            ]
+          }
+        ],
+        "exitCriteria": [
+          "Procédure et workflow manuel préparés.",
+          "Recette préproduction conforme, remplie par le responsable."
+        ],
+        "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+      },
+      {
+        "id": 4,
+        "shortTitle": "Mise en production",
+        "title": "Mise en production",
+        "objective": "Mise en production",
+        "status": "not_started",
+        "dependsOn": [
+          3
+        ],
+        "startedOn": null,
+        "deliveredOn": null,
+        "validatedOn": null,
+        "deliverables": [
+          {
+            "path": "04-mise-en-production.md",
+            "kind": "file",
+            "availability": "planned",
+            "title": "04 mise en production",
+            "description": "Mise en production",
+            "expectedEvidence": [
+              "Autorisation humaine enregistrée après phase 3 validée.",
+              "Procédure, fumée et retour arrière vérifiés par le responsable."
+            ]
+          }
+        ],
+        "exitCriteria": [
+          "Autorisation humaine enregistrée après phase 3 validée.",
+          "Procédure, fumée et retour arrière vérifiés par le responsable."
+        ],
+        "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+      },
+      {
+        "id": 5,
+        "shortTitle": "Spécification du passeport client",
+        "title": "Spécification du passeport client",
+        "objective": "Spécification du passeport client",
+        "status": "not_started",
+        "dependsOn": [
+          4
+        ],
+        "startedOn": null,
+        "deliveredOn": null,
+        "validatedOn": null,
+        "deliverables": [
+          {
+            "path": "05-specification-passeport.md",
+            "kind": "file",
+            "availability": "planned",
+            "title": "05 specification passeport",
+            "description": "Spécification du passeport client",
+            "expectedEvidence": [
+              "Exigences et modèle client/biens/documents proposés.",
+              "Options de stockage comparées ; aucun code ajouté."
+            ]
+          }
+        ],
+        "exitCriteria": [
+          "Exigences et modèle client/biens/documents proposés.",
+          "Options de stockage comparées ; aucun code ajouté."
+        ],
+        "nextAction": "Attendre le passage de phase formel dans AVEREO Projet."
+      }
+    ],
+    "decisions": [
+      {
+        "id": "D01",
+        "title": "Valider le livrable de phase 0",
+        "type": "approval",
+        "phaseId": 0,
+        "status": "approved",
+        "owner": "jpdandin",
+        "blocksPhase": 1,
+        "recordedOn": "2026-10-03",
+        "evidence": {
+          "kind": "local_review",
+          "reviewId": "fad576f0-3b33-4d97-916e-0676713283fa",
+          "reviewer": "jpdandin",
+          "comment": "Phase 0 validée",
+          "recordedAt": "2026-10-03T19:30:04.025Z",
+          "reviewedArtifacts": [
+            {
+              "path": "iteration-developpement.md",
+              "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+            },
+            {
+              "path": "00-etat-des-lieux.md",
+              "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+            },
+            {
+              "path": "source-audit.md",
+              "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+            }
+          ]
+        },
+        "nextAction": "Décision humaine enregistrée dans Projet local."
+      },
+      {
+        "id": "D02",
+        "title": "Autoriser le passage en phase 1",
+        "type": "authorization",
+        "phaseId": 1,
+        "status": "approved",
+        "owner": "jpdandin",
+        "blocksPhase": 1,
+        "recordedOn": "2026-10-03",
+        "evidence": {
+          "kind": "local_review",
+          "reviewId": "64ae1ec5-def1-41f0-8d2d-f0705392973d",
+          "reviewer": "jpdandin",
+          "comment": "OK passage autorisé",
+          "recordedAt": "2026-10-03T19:54:04.103Z",
+          "reviewedArtifacts": [
+            {
+              "path": "iteration-developpement.md",
+              "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+            },
+            {
+              "path": "00-etat-des-lieux.md",
+              "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+            },
+            {
+              "path": "source-audit.md",
+              "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+            }
+          ]
+        },
+        "nextAction": "Décision humaine enregistrée dans Projet local."
+      },
+      {
+        "id": "D03",
+        "title": "Valider le livrable de phase 1",
+        "type": "approval",
+        "phaseId": 1,
+        "status": "approved",
+        "owner": "jpdandin",
+        "blocksPhase": 2,
+        "recordedOn": "2026-10-03",
+        "evidence": {
+          "kind": "local_review",
+          "reviewId": "f5e28f5e-00ae-4690-a2b0-735427178df7",
+          "reviewer": "jpdandin",
+          "comment": "Livrables et critères OK",
+          "recordedAt": "2026-10-03T19:56:32.364Z",
+          "reviewedArtifacts": [
+            {
+              "path": "01-reprise-identique.md",
+              "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+            },
+            {
+              "path": "iteration-developpement.md",
+              "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+            }
+          ]
+        },
+        "nextAction": "Décision humaine enregistrée dans Projet local."
+      },
+      {
+        "id": "D04",
+        "title": "Autoriser le passage en phase 2",
+        "type": "authorization",
+        "phaseId": 2,
+        "status": "approved",
+        "owner": "jpdandin",
+        "blocksPhase": 2,
+        "recordedOn": "2026-10-03",
+        "evidence": {
+          "kind": "local_review",
+          "reviewId": "8de5da26-3aa1-46f5-b8ab-5bc727f32c15",
+          "reviewer": "jpdandin",
+          "comment": "Phase 2 OK",
+          "recordedAt": "2026-10-03T19:56:42.916Z",
+          "reviewedArtifacts": [
+            {
+              "path": "01-reprise-identique.md",
+              "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+            },
+            {
+              "path": "iteration-developpement.md",
+              "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+            }
+          ]
+        },
+        "nextAction": "Décision humaine enregistrée dans Projet local."
+      }
+    ],
+    "reviewEvents": [
+      {
+        "id": "f1a607c0-80e0-4c6d-a244-c80c7ca0d95c",
+        "action": "submit",
+        "phaseId": 0,
+        "reviewer": "jpdandin",
+        "comment": "Revue OK",
+        "recordedAt": "2026-10-03T19:29:10.064Z",
+        "reviewedArtifacts": [
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "f748245d13238731b1337804dfc2ff3f98cc0dac36f72627a2d3643a5fc5a876"
+          },
+          {
+            "path": "00-etat-des-lieux.md",
+            "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+          },
+          {
+            "path": "source-audit.md",
+            "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+          }
+        ],
+        "previousRevision": "ab702d4d12fbdceecb573020b68ce20264e7dc0b2100243795e38de633ed9228"
+      },
+      {
+        "id": "fad576f0-3b33-4d97-916e-0676713283fa",
+        "action": "approve",
+        "phaseId": 0,
+        "reviewer": "jpdandin",
+        "comment": "Phase 0 validée",
+        "recordedAt": "2026-10-03T19:30:04.025Z",
+        "reviewedArtifacts": [
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          },
+          {
+            "path": "00-etat-des-lieux.md",
+            "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+          },
+          {
+            "path": "source-audit.md",
+            "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+          }
+        ],
+        "previousRevision": "0a850e300760ddc73b2b4e0c3b7151dc522f1969ead6ef3f7f8aad30766eee4e",
+        "checkedCriteria": [
+          "Sources et prérequis identifiés ; matrice de parité et cas tiers rattachés.",
+          "Audit source et inconnues explicites ; vues générées contrôlées."
+        ]
+      },
+      {
+        "id": "64ae1ec5-def1-41f0-8d2d-f0705392973d",
+        "action": "authorize_next",
+        "phaseId": 0,
+        "reviewer": "jpdandin",
+        "comment": "OK passage autorisé",
+        "recordedAt": "2026-10-03T19:54:04.103Z",
+        "reviewedArtifacts": [
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          },
+          {
+            "path": "00-etat-des-lieux.md",
+            "sha256": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99"
+          },
+          {
+            "path": "source-audit.md",
+            "sha256": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e"
+          }
+        ],
+        "previousRevision": "0b721a9c3505360ab6c9edf0c383c3fc58ab00172f9426b98e5f3ee0e760f4d7"
+      },
+      {
+        "id": "cccb138e-ae2e-4374-aaa7-fd7b9b8f6b41",
+        "action": "start",
+        "phaseId": 1,
+        "reviewer": "jpdandin",
+        "comment": "Phase 1 démarrage OK",
+        "recordedAt": "2026-10-03T19:55:19.839Z",
+        "reviewedArtifacts": [
+          {
+            "path": "01-reprise-identique.md",
+            "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+          },
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          }
+        ],
+        "previousRevision": "53779d7d252b69b81aa5d02bdb1d1523c8dbcbc0fd3c9ce965bd60ba151f3758"
+      },
+      {
+        "id": "e8bae9cb-e10f-434b-a875-f98c374d86b0",
+        "action": "submit",
+        "phaseId": 1,
+        "reviewer": "jpdandin",
+        "comment": "Revue OK",
+        "recordedAt": "2026-10-03T19:55:53.839Z",
+        "reviewedArtifacts": [
+          {
+            "path": "01-reprise-identique.md",
+            "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+          },
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          }
+        ],
+        "previousRevision": "4bf0e5f02ac13da0226143967895c753570b67f20e659d1649f237b7c988a3fb"
+      },
+      {
+        "id": "f5e28f5e-00ae-4690-a2b0-735427178df7",
+        "action": "approve",
+        "phaseId": 1,
+        "reviewer": "jpdandin",
+        "comment": "Livrables et critères OK",
+        "recordedAt": "2026-10-03T19:56:32.364Z",
+        "reviewedArtifacts": [
+          {
+            "path": "01-reprise-identique.md",
+            "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+          },
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          }
+        ],
+        "previousRevision": "84b47b5da88eedeea788da48db4203d7bde12142c8902ebc091a14e09fb86870",
+        "checkedCriteria": [
+          "Installation, tests et build réussis.",
+          "Diff limité aux transformations autorisées ou écarts explicitement consignés.",
+          "Recette locale préparée et contrôles techniques distincts de la validation humaine."
+        ]
+      },
+      {
+        "id": "8de5da26-3aa1-46f5-b8ab-5bc727f32c15",
+        "action": "authorize_next",
+        "phaseId": 1,
+        "reviewer": "jpdandin",
+        "comment": "Phase 2 OK",
+        "recordedAt": "2026-10-03T19:56:42.916Z",
+        "reviewedArtifacts": [
+          {
+            "path": "01-reprise-identique.md",
+            "sha256": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04"
+          },
+          {
+            "path": "iteration-developpement.md",
+            "sha256": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236"
+          }
+        ],
+        "previousRevision": "40faf53ca1cf242b9d7165984cbb24ad6173b5625727f5e496b942248ecca9f6"
+      },
+      {
+        "id": "05b498c6-6c56-48c7-b4c7-0d26417470f1",
+        "action": "start",
+        "phaseId": 2,
+        "reviewer": "jpdandin",
+        "comment": "Phase 2 OK pour démarrage",
+        "recordedAt": "2026-10-03T19:57:01.844Z",
+        "reviewedArtifacts": [],
+        "previousRevision": "cdd62d3d014d0a1ed7a31a3b20161faeac8f528b34da7a841ab700fca2f410c6"
+      }
+    ],
+    "history": [
+      {
+        "date": "2026-10-03",
+        "event": "Initialisation de phase 0 selon le kit V4 fourni et la demande du responsable."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Le responsable autorise en conversation « Phase 0 puis prototype local dans cette session ». Aucun événement de revue ou validation ajouté."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Prototype local livré sous accord de session : dix tests, build, parité a/b/c et configuration Compose réussis ; parcours navigateur et PDF inspectés. Aucune transition de phase."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Responsable : appliquer le skill developpement-github-cockpit ; choix explicite raccordement et correction PDF. Initialisation du seul bloc developmentWorkflow, phases et décisions conservées."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "PR nº71 en brouillon. CI Passeport Immo et CI générale réussies sur f076a9b ; archive CI téléchargée et identique octet par octet au candidat local. PDF court corrigé. Aucune transition de phase ni accord distant."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Responsable : préproduction dédiée sur o2switch choisie, puis confirmation de fusion PR nº71. Connecteur GitHub et fetch main confirment merge 6399524 et checklist humaine cochée. Choix de cible sans accord de déploiement ; statuts de phase conservés."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "PR nº72 en brouillon pour le complément de pilotage ; décisions de phase et accord de déploiement inchangés."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Rebase demandé de la PR nº72 après fusion nº73 : deux commits rejoués sans conflit ; protocole commun disponible, candidat nº71 et décisions humaines conservés."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Fusion nº72 vérifiée après confirmation du responsable ; continuation demandée. Lot de préproduction préparé et récupération répétée localement, sans qualification ni livraison distante."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Correction demandée par le responsable : reviewFollowUps est le champ lu par le cockpit ; PR nº72 rattachée à la phase courante, fiche d’itération disponible dès la phase 0. Travail réel en préparation de préproduction et validations formelles distingués ; aucun statut ni accord humain modifié."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Session clôturée à la demande du responsable pour reprendre dans AVEREO_2 : changements locaux conservés, aucun nouveau commit ou push, aucune nouvelle PR ni livraison distante. Phases et décisions humaines inchangées."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Reprise explicitement demandée dans le nouveau chat AVEREO_2 ; clone et lot local relus, application et cockpit accessibles. Publication de la préparation à poursuivre sans modification des décisions humaines ni du candidat métier."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "PR nº74 publiée en brouillon pour la préparation locale de préproduction ; checklist humaine décochée, sans merge ni livraison distante. Observations datées dans le bloc de préparation."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Le responsable retient l’adresse de préproduction proposée et privilégie une lune gratuite si disponible. Préférence enregistrée ; disponibilité, création et accès privé non qualifiés, écran de connexion o2switch constaté."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Après connexion du responsable : cPanel authentifié vérifié, cinq lunes gratuites libres sur huit incluses. Formulaire d’activation de sc4daje3540 ouvert ; nouveau mot de passe réservé au responsable, aucune activation ou installation effectuée par l’agent."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Diagnostic navigateur : affichage o2switch bloqué par une largeur de 817 pixels, utilisable à 1280 pixels ; Chrome non exposé aux outils. Lune gratuite sc4daje3540 constatée active, avec accès à son compte. Restriction des sous-domaines entre comptes vérifiée chez o2switch ; le responsable retient l’adresse demandée sur le compte parent, dans un dossier dédié protégé. Reconnexion cPanel requise avant création ; aucun sous-domaine ni déploiement réalisé."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Après reconnexion du responsable : compte parent authentifié vérifié ; dossier dédié hors public_html créé avec le modèle .htaccess fermé, relu après enregistrement. Sous-domaine demandé créé ; certificat gratuit simulé puis installé par validation DNS. Adresse HTTPS vérifiée dans le navigateur et par Python avec validation TLS active : 403 et en-tête noindex. Aucun asset applicatif installé, aucun accord ou statut de phase modifié."
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Revue locale : submit, phase 0, par jpdandin.",
+        "reviewId": "f1a607c0-80e0-4c6d-a244-c80c7ca0d95c"
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Revue locale : approve, phase 0, par jpdandin.",
+        "reviewId": "fad576f0-3b33-4d97-916e-0676713283fa"
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Revue locale : authorize_next, phase 0, par jpdandin.",
+        "reviewId": "64ae1ec5-def1-41f0-8d2d-f0705392973d"
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Revue locale : start, phase 1, par jpdandin.",
+        "reviewId": "cccb138e-ae2e-4374-aaa7-fd7b9b8f6b41"
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Revue locale : submit, phase 1, par jpdandin.",
+        "reviewId": "e8bae9cb-e10f-434b-a875-f98c374d86b0"
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Revue locale : approve, phase 1, par jpdandin.",
+        "reviewId": "f5e28f5e-00ae-4690-a2b0-735427178df7"
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Revue locale : authorize_next, phase 1, par jpdandin.",
+        "reviewId": "8de5da26-3aa1-46f5-b8ab-5bc727f32c15"
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Revue locale : start, phase 2, par jpdandin.",
+        "reviewId": "05b498c6-6c56-48c7-b4c7-0d26417470f1"
+      },
+      {
+        "date": "2026-10-03",
+        "event": "Session clôturée sur demande du responsable. PR nº74 fusionnée ; validations humaines des phases 0 et 1 et démarrage de phase 2 présents dans le suivi. Lot cockpit conservé localement, sans nouvelle PR ni installation distante."
+      }
+    ],
+    "currentPhase": 2,
+    "state": "in_progress",
+    "developmentWorkflow": {
+      "protocol": "developpement-github-cockpit",
+      "version": "git",
+      "iterationId": "passeport-immo-2026-10-03",
+      "project": "avereo-app-passeport-immo",
+      "owner": "jpdandin",
+      "kind": "application",
+      "stage": "preproduction",
+      "status": "blocked",
+      "objective": "Qualifier et préparer la préproduction privée du prototype Passeport Immo après fusion du lot local et de son suivi.",
+      "candidate": {
+        "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+        "evidence": "docs/raccordement-cockpit.md ; archive locale et artefact CI relus fichier par fichier.",
+        "observedAt": "2026-10-03T12:42:48+00:00"
+      },
+      "targets": {
+        "preproduction": {
+          "id": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+          "ready": false,
+          "isolated": false,
+          "empty": false,
+          "evidence": "docs/qualification-preproduction.md",
+          "observedAt": "2026-10-03T21:15:31+02:00",
+          "provider": "o2switch",
+          "purpose": "Préproduction dédiée",
+          "selectedAt": "2026-10-03T12:52:58+00:00",
+          "selectionReference": "Réponse directe du responsable : Préproduction dédiée sur o2switch, 2026-10-03",
+          "address": "https://passeport-immo-preprod.avereo.fr",
+          "directory": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+          "requestedAddress": "https://passeport-immo-preprod.avereo.fr",
+          "hostingPreference": {
+            "kind": "free_moon_if_available",
+            "availability": "free_moon_available",
+            "selectedAt": "2026-10-03T19:35:00+02:00",
+            "selectionReference": "Réponse directe du responsable dans ce chat : Oui, lune gratuite si disponible.",
+            "accessObservation": "Nouvelle session cPanel authentifiée vérifiée sur daje3540 ; dossier dédié hors public_html créé et sous-domaine rattaché au domaine parent avereo.fr.",
+            "availableFreeMoons": 4,
+            "activeMoons": 4,
+            "includedFreeMoons": 8,
+            "preparedMoon": "sc4daje3540",
+            "activationStatus": "active",
+            "observedAt": "2026-10-03T20:58:55+02:00",
+            "evidence": "docs/qualification-preproduction.md ; confirmations de création et de certificat conservées localement hors Git.",
+            "credentialHandling": "Aucune valeur de secret saisie ou conservée par l’agent.",
+            "moonHomeDirectory": "/home/sc4daje3540",
+            "moonTechnicalDomain": "sc4daje3540.universe.wf",
+            "moonUsedForTarget": false,
+            "accessStatus": "authenticated_parent_account",
+            "targetStrategy": "parent_domain_account_with_protected_directory",
+            "targetAccount": "daje3540",
+            "targetSelectedAt": "2026-10-03T20:50:33+02:00",
+            "targetSelectionReference": "Réponse directe du responsable : Conserver passeport-immo-preprod.avereo.fr dans le compte qui héberge avereo.fr, avec un dossier dédié et protégé (recommandé).",
+            "domainAttachment": {
+              "status": "created_on_parent_account",
+              "parentDomainAvailableOnMoon": false,
+              "observedParentDomainsOnMoon": [
+                "sc4daje3540.universe.wf"
+              ],
+              "ruleSource": "https://blog.o2switch.fr/creer-un-sous-domaine-o2switch-a-quoi-ca-sert-et-comment-le-configurer/"
+            },
+            "browserObservation": {
+              "defaultWidth": 817,
+              "desktopTestWidth": 1280,
+              "result": "Interface Mon Univers Web bloquée par un message ordinateur à 817 pixels, liste des lunes accessible à 1280 pixels.",
+              "chromeExposed": false
+            }
+          },
+          "provisioning": {
+            "status": "created_closed_application_not_installed",
+            "observedAt": "2026-10-03T21:15:31+02:00",
+            "directoryCreated": true,
+            "initialDirectoryInventory": "empty_before_control_file_creation",
+            "currentDirectoryInventory": [
+              ".htaccess"
+            ],
+            "applicationFilesInstalled": false,
+            "subdomainCreated": true,
+            "originIp": "109.234.166.140",
+            "protection": {
+              "template": "workflows/preproduction.htaccess",
+              "configuration": "Require all denied",
+              "savedAndReloaded": true,
+              "originHttpStatus": 403,
+              "publicHttpsStatus": 403,
+              "xRobotsTag": "noindex, nofollow, noarchive",
+              "consultationAccess": "closed_to_all"
+            },
+            "certificate": {
+              "provider": "Lets Encrypt",
+              "validationMethod": "dns-01",
+              "hosts": [
+                "passeport-immo-preprod.avereo.fr"
+              ],
+              "simulation": "passed",
+              "installation": "confirmed_in_cpanel",
+              "httpsValidation": "passed_python_default_ssl_context_and_browser",
+              "validationDisabled": false
+            },
+            "publicRouting": "requested_https_address_reached_in_browser_and_python",
+            "diagnosticLimitations": [
+              "Résolution DNS initialement absente sur le résolveur du poste ; requêtes DNS directes vers o2switch et 1.1.1.1 expirées. Le routage de l’adresse est ensuite constaté via navigateur et urllib.",
+              "curl/Schannel signale encore SEC_E_UNTRUSTED_ROOT sur ce poste ; le contrôle Python avec ssl.create_default_context valide HTTPS et reçoit 403. Aucun contournement de validation."
+            ],
+            "recovery": "hosted_restore_not_verified",
+            "evidence": "docs/qualification-preproduction.md"
+          }
+        },
+        "production": {
+          "id": null,
+          "ready": false,
+          "evidence": null,
+          "observedAt": null
+        }
+      },
+      "github": {
+        "repository": "jpdandin44/AVEREO",
+        "prUrl": "https://github.com/jpdandin44/AVEREO/pull/71",
+        "acceptedSourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "acceptedArtifactSha256": null,
+        "humanAcceptanceVerified": false,
+        "evidence": "https://github.com/jpdandin44/AVEREO/pull/71 : quatre cases de checklist cochées par le responsable et fusion vérifiée. Source acceptée ; acceptation humaine de l’archive exacte non consignée séparément.",
+        "observedAt": "2026-10-03T19:41:38.385Z",
+        "headSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "state": "merged",
+        "draft": false,
+        "ciObservation": {
+          "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+          "passeportRunId": 37123530922,
+          "passeportStatus": "success",
+          "globalRunId": 37123530935,
+          "globalStatus": "success",
+          "prPolicyStatus": "skipped_draft",
+          "observedAt": "2026-10-03T12:44:51+00:00"
+        },
+        "mergedAt": "2026-10-03T12:46:58.000Z",
+        "mergeCommitSha": "6399524cc0f92a90ab9c53c1990f07016e827775",
+        "sourceReviewVerified": true,
+        "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
+        "followUpObservation": {
+          "url": "https://github.com/jpdandin44/AVEREO/pull/72",
+          "repository": "jpdandin44/AVEREO",
+          "number": 72,
+          "state": "merged",
+          "headSha": "d1e97d328cac3e88120379e369b260a8c7d01b4e",
+          "observedAt": "2026-10-03T19:41:38.385Z",
+          "draft": false,
+          "scope": "Pilotage post-fusion : preuves, candidat et cible o2switch.",
+          "mergedAt": "2026-10-03T16:42:36.000Z",
+          "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
+          "mergedBy": "jpdandinavereo-design"
+        },
+        "rebaseObservation": {
+          "baseSha": "f14bfc97b8f15a06cb4010f493240c5362fc5242",
+          "baseMergePrUrl": "https://github.com/jpdandin44/AVEREO/pull/73",
+          "previousHeadSha": "e9afc3bb2003f8feb551547e949c52a0d0a66366",
+          "rebasedHeadSha": "5eb47ddd587afffad1b7fd2721621e048b283aab",
+          "status": "rebased_without_conflicts",
+          "observedAt": "2026-10-03T16:25:45+00:00",
+          "verification": "Deux commits identiques au range-diff ; frontend identique à main ; candidat et accords humains conservés.",
+          "localVerification": {
+            "commonProtocolTests": 14,
+            "baseline": "passed",
+            "parity": "passed",
+            "views": "aligned",
+            "documentation": {
+              "passeportMarkdownFiles": 32,
+              "passeportLocalLinks": 86,
+              "commonMarkdownFiles": 31,
+              "commonLocalLinks": 61,
+              "errors": []
+            },
+            "humanStateAndCandidate": "preserved",
+            "gates": "preproduction_production_close_refused_for_missing_evidence"
+          }
+        },
+        "mergedBy": "jpdandinavereo-design"
+      },
+      "checks": [
+        {
+          "kind": "local",
+          "status": "passed",
+          "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+          "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+          "observedAt": "2026-10-03T12:44:51+00:00",
+          "evidence": "raccordement-cockpit.md : 14 tests, build, parité a/b/c+d ; PDF réel court 1 page complète ; archive relue et répétée."
+        },
+        {
+          "kind": "ci",
+          "status": "passed",
+          "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+          "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+          "observedAt": "2026-10-03T12:42:48+00:00",
+          "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37123530922",
+          "runId": 37123530922,
+          "artifactId": 11274322556,
+          "containerSha256": "ee7d630593070b7ddd67324bb41f413f7f9b8836dc4d9abc386cd9a6a7c4659a",
+          "candidateBytesEqual": true,
+          "manifestEqual": true
+        },
+        {
+          "kind": "documentation",
+          "status": "passed",
+          "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+          "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+          "observedAt": "2026-10-03T12:44:51+00:00",
+          "evidence": "32 documents, socles, métadonnées simples, liens locaux, matrice 40 lignes, vues générées ; lecture Projet sans mutation."
+        }
+      ],
+      "approvals": [],
+      "backups": [],
+      "rollback": {
+        "status": "not_tested",
+        "target": null,
+        "artifactSha256": null,
+        "evidence": null,
+        "observedAt": null
+      },
+      "delivery": {
+        "status": "not_delivered",
+        "sourceSha": null,
+        "artifactSha256": null,
+        "target": null,
+        "evidence": null,
+        "observedAt": null
+      },
+      "blockers": [
+        "Sous-domaine et dossier créés, certificat installé et fermeture 403 vérifiée en HTTPS ; accès privé de consultation et récupération hébergée non qualifiés.",
+        "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
+        "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
+      ],
+      "nextAction": "Sur reprise explicite : relire les états Git et cockpit, publier le lot local de synchronisation/revue, puis reprendre le lot CONNECT de phase 2 autorisé. Accès privé et récupération hébergée restent à qualifier.",
+      "nextIteration": [
+        "Intégration CONNECT après accord sur les fichiers concernés.",
+        "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
+      ],
+      "budget": {
+        "limit": 20,
+        "unit": "weekly_limit_percent",
+        "observedUsage": null,
+        "observedAt": null,
+        "measurementLimitation": "La consommation attribuable à ce lot n’est pas mesurée par la limite globale du compte."
+      },
+      "stages": {
+        "local": {
+          "status": "validated",
+          "nextAction": "Source fusionnée après checklist GitHub humaine ; conserver les limites de recette non documentées."
+        },
+        "preproduction": {
+          "status": "blocked",
+          "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous."
+        },
+        "production": {
+          "status": "blocked",
+          "nextAction": "Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée."
+        }
+      },
+      "gates": [
+        {
+          "gate": "preproduction",
+          "declaredEvidenceConsistent": false,
+          "errors": [
+            "Blocages présents ou non renseignés.",
+            "Préproduction prête et isolée non prouvée.",
+            "Accord humain exact absent : preproduction.",
+            "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés."
+          ],
+          "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+          "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+          "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+          "observedAt": "2026-10-03T12:54:58+00:00"
+        },
+        {
+          "gate": "production",
+          "declaredEvidenceConsistent": false,
+          "errors": [
+            "Blocages présents ou non renseignés.",
+            "Préproduction prête et isolée non prouvée.",
+            "Cible de production non prouvée.",
+            "Contrôle actuel absent : preproduction.",
+            "Accord humain exact absent : review.",
+            "Accord humain exact absent : production.",
+            "Acceptation GitHub du candidat non vérifiée.",
+            "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+            "Retour arrière de ce candidat non qualifié."
+          ],
+          "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+          "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+          "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+          "observedAt": "2026-10-03T12:54:59+00:00"
+        },
+        {
+          "gate": "close",
+          "declaredEvidenceConsistent": false,
+          "errors": [
+            "Blocages présents ou non renseignés.",
+            "Préproduction prête et isolée non prouvée.",
+            "Cible de production non prouvée.",
+            "Contrôle actuel absent : preproduction.",
+            "Accord humain exact absent : review.",
+            "Accord humain exact absent : production.",
+            "Acceptation GitHub du candidat non vérifiée.",
+            "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+            "Retour arrière de ce candidat non qualifié.",
+            "Contrôle actuel absent : production.",
+            "Livraison réelle du candidat non établie."
+          ],
+          "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+          "sourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+          "artifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+          "observedAt": "2026-10-03T12:54:59+00:00"
+        }
+      ],
+      "preproductionPreparation": {
+        "candidateSourceSha": "f076a9b1644ae9c0620aa77df8531773c8cb00af",
+        "candidateArtifactSha256": "84b4d07bb966bd674a98576c1fb3a9564e87cade118a01700f257091c099ceab",
+        "bundleSha256": "ad0f6ab22fc6c117107c78c0f7b881e4b34faa1a98b62435b0fcbe7a9969804a",
+        "files": [
+          {
+            "path": ".htaccess",
+            "sha256": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+            "size": 248
+          },
+          {
+            "path": "assets/index-B6-J-id_.js",
+            "sha256": "1bff68615d47d1c7f4228ef2b8a752cd837c2ab44c977e90620ee907e6cdfe99",
+            "size": 775488
+          },
+          {
+            "path": "assets/index-rS3DXAdr.css",
+            "sha256": "ed2b39d3d15c00d02af7332efd6542805dcf1cf3d92b6e0796554c263cd660ba",
+            "size": 20378
+          },
+          {
+            "path": "assets/index.es-B4ypi1Kv.js",
+            "sha256": "3f3fb5000c6bef463d4bacb56c704e72b8be064d99c0a1c27db3025394e24659",
+            "size": 150852
+          },
+          {
+            "path": "assets/purify.es-BwoZCkIS.js",
+            "sha256": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+            "size": 22028
+          },
+          {
+            "path": "index.html",
+            "sha256": "8aa9b697834321cfa4a390c092fbf741f3191fc87b4f51343187aa491789d10a",
+            "size": 499
+          }
+        ],
+        "candidateAssetsUnchanged": true,
+        "initialAccess": "deny_all_configuration_requires_hosted_verification",
+        "archiveReadback": "passed",
+        "restoreRehearsal": "passed_local_files_only",
+        "hostedBackupRestore": "not_verified",
+        "remoteDelivery": "not_performed",
+        "status": "prepared_local",
+        "observedAt": "2026-10-03T16:56:55+00:00",
+        "workflow": "workflows/preparer-preproduction.md",
+        "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
+        "publication": {
+          "status": "published_draft",
+          "branch": "feat/passeport-immo-preproduction",
+          "baseSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
+          "url": "https://github.com/jpdandin44/AVEREO/pull/74",
+          "observedAt": "2026-10-03T19:41:38.385Z",
+          "localVerification": {
+            "preparationTests": 6,
+            "preparationTestsStatus": "passed",
+            "parity": "passed",
+            "cockpitContract": "passed",
+            "baseline": "passed",
+            "bundleUnchanged": true,
+            "application": "Local login and property list checked in browser on port 5175.",
+            "cockpit": "Phase 0 and merged follow-up PR 72 visible on port 5193.",
+            "preproductionGate": "refused_missing_target_approval_recovery"
+          },
+          "number": 74,
+          "state": "merged",
+          "draft": false,
+          "sourceSha": "1129428329f794c2dd3c0a6abf8cad29e0ce04a3",
+          "ciObservation": [
+            {
+              "name": "policy",
+              "status": "COMPLETED",
+              "conclusion": "SKIPPED",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573050/job/111253988702"
+            },
+            {
+              "name": "policy",
+              "status": "COMPLETED",
+              "conclusion": "SKIPPED",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140662657/job/111254253578"
+            },
+            {
+              "name": "validate",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988360"
+            },
+            {
+              "name": "validate",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949176"
+            },
+            {
+              "name": "candidate",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573030/job/111253987682"
+            },
+            {
+              "name": "candidate",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560501/job/111253949046"
+            },
+            {
+              "name": "frontend-gates (rapport)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988552"
+            },
+            {
+              "name": "frontend-gates (rapport)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949405"
+            },
+            {
+              "name": "frontend-gates (coupe)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988576"
+            },
+            {
+              "name": "frontend-gates (coupe)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949441"
+            },
+            {
+              "name": "frontend-gates (projet)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988589"
+            },
+            {
+              "name": "frontend-gates (projet)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949672"
+            },
+            {
+              "name": "frontend-gates (thermo)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988528"
+            },
+            {
+              "name": "frontend-gates (thermo)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949412"
+            },
+            {
+              "name": "frontend-gates (drone)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988561"
+            },
+            {
+              "name": "frontend-gates (drone)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949357"
+            },
+            {
+              "name": "frontend-gates (recherche)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988560"
+            },
+            {
+              "name": "frontend-gates (recherche)",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949391"
+            },
+            {
+              "name": "connect-integration",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140573141/job/111253988501"
+            },
+            {
+              "name": "connect-integration",
+              "status": "COMPLETED",
+              "conclusion": "SUCCESS",
+              "url": "https://github.com/jpdandin44/AVEREO/actions/runs/37140560554/job/111253949350"
+            }
+          ],
+          "ciLimitation": "Observation datée du commit de préparation ; les commits de suivi ultérieurs doivent aussi être contrôlés sur GitHub.",
+          "headSha": "a700ea814e559cb97f69e2d017a57c929b9fd989",
+          "mergedAt": "2026-10-03T19:25:02.000Z",
+          "mergeCommitSha": "d881b9d511c5205d022648878f86f6beb6d29f6e",
+          "mergedBy": "jpdandinavereo-design"
+        }
+      }
+    }
   }
 }

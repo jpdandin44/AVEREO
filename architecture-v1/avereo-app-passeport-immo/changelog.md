@@ -5,12 +5,23 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Changelog Passeport Immo
+
+## 2026-10-14 — Documents et cas de coupes
+
+Gestion locale de documents associés au client et au bien, lecteur PDF intégré,
+classement, recherche, téléchargement et archives. Comparatif sourcé des
+exigences ExamIn ; suivi regroupé en quatre phases avec conservation des
+validations et preuves historiques. Deux scènes CAO avant/après préparées dans
+Coupe, SVG natifs exportés, PDF comparatif de deux pages intégré au cas local.
+Les données du cas restent privées ; le code de Coupe est inchangé. Les dix
+pages inversées de deux PDF source sont corrigées et le DPE remis dans l’ordre,
+avec originaux conservés. Le nouveau candidat reste soumis à recette humaine.
 
 ## 2026-10-03
 Socle documentaire et suivi initialisés ; audit des sources et matrice de 40 fonctions.
@@ -76,3 +87,21 @@ contrôlée dans le navigateur et avec le contexte SSL par défaut de Python : a
 refusé 403, en-tête d'interdiction d'indexation présent. L'application n'est pas
 installée ; accès privé de test et récupération restent à qualifier. Observations,
 documentation et vues actualisées, candidat et décisions humaines conservés.
+
+## Clôture du 2026-10-03 — Cockpit et preuves
+
+Conservation des vues approuvées lors de la génération, avec quatre tests de
+protection supplémentaires exécutés par la CI. Le moteur Projet de cette copie
+actualise les PR, conserve la revue en cours et permet un passage forcé motivé.
+Le responsable a validé les phases 0 et 1 et démarré la phase 2 dans le cockpit.
+Ces événements restent dans le suivi canonique ; aucune installation applicative
+distante. Nouveau lot cockpit conservé localement, non publié à la clôture.
+
+## 2026-10-14 — Documents par client et bien
+
+Module documentaire local : client, import multiple/dossier, Blob persistants,
+titres/catégories, lecteur PDF/image, téléchargement, recherche et archive réversible.
+Contrôles de volume, de doublons et de séparation des biens. Douze nouveaux tests
+portent le frontend à 26 tests ; chiffrage et export conservés par le contrôle a/b/c/d/e.
+Comparatif des sources ExamIn et regroupement du cockpit en quatre phases avec
+conservation de l’instantané, des décisions et preuves historiques.

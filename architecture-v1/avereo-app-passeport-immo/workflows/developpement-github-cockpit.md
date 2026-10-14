@@ -42,7 +42,10 @@ canonique de l'itération. Les six phases antérieures, leurs dates, décisions 
 
 `docs/actualiser-tableau-de-bord.py` produit la vue `iteration-developpement.md` à
 partir du même JSON, plus les tableaux Markdown/HTML. Cette projection est déclarée
-comme livrable consultable dans la revue Projet sur 5193. Aucun second journal manuel.
+comme livrable consultable dans la revue Projet sur 5193. Après approbation,
+la version conforme de cette fiche reste conservée pour maintenir sa preuve ;
+le JSON, les tableaux et les cartes affichent les observations actuelles. Aucun
+second journal manuel.
 Le moteur Projet reste celui du monorepo ; les décisions restent humaines.
 
 Les revues complémentaires utilisent le champ `reviewFollowUps` défini par le

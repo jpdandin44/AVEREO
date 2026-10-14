@@ -4,6 +4,16 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Écart e autorisé le 14 octobre : documents liés au client et au bien.
+const documentImport = "import DocumentsPanel from './documents/DocumentsPanel.jsx';\nimport './documents/documents.css';\n";
+assert.ok(restored.includes(documentImport), 'Le module documentaire doit être raccordé');
+restored = restored.replace(documentImport, '').replace('            <DocumentsPanel bien={bien} />\n', '');
+const attachmentLabel = original.indexOf('<h2 className="text-xl font-semibold mb-4">Pièces Jointes</h2>');
+const attachmentStart = original.lastIndexOf('                    <div className="bg-white p-6 rounded-xl shadow-sm border">', attachmentLabel);
+const attachmentEnd = original.indexOf('                    </div>\n\n                </div>', attachmentLabel) + '                    </div>'.length;
+const attachmentMarker = '                    {/* Documents du bien regroupés au-dessus du dossier travaux. */}';
+assert.ok(restored.includes(attachmentMarker), 'La substitution documentaire doit rester explicite');
+restored = restored.replace(attachmentMarker, original.slice(attachmentStart, attachmentEnd));
 // Écart d autorisé par le responsable : correction ciblée de la page blanche PDF.
 const pdfCorrection = `            const hasOverflowContent = () => {
                 if (heightLeft <= 0) return false;
@@ -44,4 +54,4 @@ if (actual !== expected) {
   console.error('Écart de parité, ligne reconstruite', line + 1, { actuel: a.slice(line, line + 3), source: b.slice(line, line + 3) });
   process.exit(1);
 }
-console.log('Parité a/b/c + correctif PDF d vérifiée : autres comportements et classes inchangés.');
+console.log('Parité a/b/c + correctif PDF d + module documentaire e vérifiée : chiffrage et autres comportements conservés.');
