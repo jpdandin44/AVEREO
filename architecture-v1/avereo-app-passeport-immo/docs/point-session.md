@@ -263,3 +263,25 @@ pour les qualifications, accords et preuves de récupération manquants. Les
 documents du cas, exports et captures restent hors Git. Prochaine action :
 recette humaine du dossier et des coupes, puis cadrage du lot CONNECT et
 qualification de la préproduction privée.
+
+### Complément de lecture thermique
+
+Le responsable demande d’utiliser les fonctions thermiques avancées de Coupe,
+puis précise les environnements adjacents. Les renseignements restent dans les
+projets et le PDF privés ; le chauffage non renseigné des volumes voisins est
+marqué à confirmer. La source thermique historique est datée dans les dessins.
+Les champs de zones/interfaces sont renseignés pour les sept éléments traversés,
+tous laissés non validés. Les commandes natives appliquent les couleurs des
+groupes chauffés et non chauffés sans régénérer la géométrie.
+
+Le tableau de repérage arrondit au pas de 5 cm : commentaires et notice signalent
+ce comportement ; les cotes exactes lues restent dans la scène CAO et le PDF.
+La première esquisse et une préparation intermédiaire sont archivées dans le
+dossier. Six PDF sont actifs, trois copies historiques archivées. Les deux pages
+du PDF final sont inspectées puis consultées ; sa copie téléchargée est identique
+au source. Les deux projets natifs et leurs SVG sont réenregistrés dans le dossier
+source, avec une sauvegarde privée des premières coupes.
+
+Le code des applications et les décisions humaines restent inchangés. Le guide,
+l’audit et les vues courantes sont actualisés dans le lot de la PR nº78 ; aucune
+nouvelle acceptation ou livraison distante n’est déduite des indications métier.

@@ -52,7 +52,7 @@ contrôlés ensemble. Les scans non textuels ne sont pas automatiquement OCRisé
 
 26 tests frontend réussis, dont 10 tests de stockage documentaire et 2 parcours
 d’interface ; build Vite réussi. La parité a/b/c/d/e est vérifiée. L’avertissement
-de taille du bundle préexistait au lot. La recette réelle confirme six documents actifs, une ancienne copie archivée,
+de taille du bundle préexistait au lot. La recette réelle confirme six documents actifs, des copies précédentes archivées,
 la conservation après rechargement, le classement, l’import et la consultation
 des scans. Les références du bien ont été corrigées après lecture en grand format
 et confirmation du responsable ; il n’y avait pas de divergence d’adresse établie.
@@ -70,3 +70,10 @@ Les deux pages sont inspectées et consultées dans Passeport Immo ; la copie
 téléchargée est identique au PDF source. Les dimensions manquantes et la hauteur
 après travaux hypothétique sont explicites dans les dessins et dans le
 [guide des coupes](coupes-bien.md). Le code de Coupe reste inchangé.
+
+Le complément thermique renseigne les zones et interfaces des éléments natifs,
+utilise les commandes de couleurs chauffé/non chauffé, puis réexporte les SVG.
+Les renseignements du responsable complètent la source historique du DPE ; les
+incertitudes et les arrondis du tableau de repérage restent explicites.
+Les deux pages du PDF enrichi sont inspectées et consultées ; les versions
+antérieures restent archivées. Les fichiers de ce cas et les captures sont privés.

@@ -88,7 +88,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/78).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-14T12:27:15+02:00.
+- Dernière observation GitHub : 2026-10-14T10:34:14.532Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -195,7 +195,7 @@ Lot local demandé le 14 octobre
 
 Sources, hypothèses et restitution comparative intégrée au bien
 
-- Deux projets Coupe modifiables et SVG locaux ; PDF comparatif de deux pages consulté et téléchargé.
+- Deux projets Coupe avec zones/interface/support, champs inconnus signalés ; SVG natifs et PDF comparatif consulté et téléchargé ; cotes CAO conservées.
 
 ### Phase 2 — Préproduction
 

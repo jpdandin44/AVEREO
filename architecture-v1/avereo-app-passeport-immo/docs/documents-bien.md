@@ -57,9 +57,13 @@ et du diagnostic confirme la même référence. La surface retenue provient du D
 Une première réserve issue d’une erreur de lecture a été retirée de la fiche.
 
 Les [coupes comparatives préparées dans Coupe](coupes-bien.md) ajoutent un PDF
-de deux pages : six documents actifs et 35 pages au total, avec une ancienne
-copie du diagnostic archivée. Les projets modifiables et SVG restent dans le
+de deux pages : six documents actifs et 35 pages au total. Les anciennes copies
+du diagnostic et les esquisses de coupes sont archivées. Les projets modifiables et SVG restent dans le
 sous-dossier `coupes/` du dossier source réel.
+
+Le PDF actif inclut la lecture thermique et les confirmations sur les volumes
+adjacents. Les champs inconnus restent visibles ; les anciennes esquisses sont
+conservées dans les archives du dossier.
 
 ## Suite
 

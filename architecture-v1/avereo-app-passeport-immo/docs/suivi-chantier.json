@@ -158,7 +158,7 @@
           "title": "Coupes avant/après préparées dans Coupe",
           "description": "Sources, hypothèses et restitution comparative intégrée au bien",
           "expectedEvidence": [
-            "Deux projets Coupe modifiables et SVG locaux ; PDF comparatif de deux pages consulté et téléchargé."
+            "Deux projets Coupe avec zones/interface/support, champs inconnus signalés ; SVG natifs et PDF comparatif consulté et téléchargé ; cotes CAO conservées."
           ]
         }
       ],
@@ -180,9 +180,12 @@
         "repository": "jpdandin44/AVEREO",
         "number": 78,
         "state": "open",
-        "headSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
-        "observedAt": "2026-10-14T12:27:15+02:00",
-        "draft": true
+        "headSha": "62172897eded2f1d588c5b5be8ff5b472ac7a6fb",
+        "observedAt": "2026-10-14T10:34:14.532Z",
+        "draft": true,
+        "mergedAt": null,
+        "mergeCommitSha": null,
+        "mergedBy": null
       }
     },
     {
@@ -511,6 +514,13 @@
       "type": "agent_observation",
       "phaseId": 1,
       "summary": "Lot documents testé localement, coupes comparatives ajoutées au cas privé ; PR #78 publiée en brouillon. Aucun accord humain de phase, merge ou livraison créé."
+    },
+    {
+      "date": "2026-10-14",
+      "actor": "codex",
+      "type": "agent_observation",
+      "phaseId": 1,
+      "summary": "Coupes complétées avec fonctions thermiques natives et indications du responsable ; PDF enrichi intégré au cas local, anciennes esquisses conservées. Aucune validation de relevé ni de phase créée."
     }
   ],
   "reviewEvents": [
@@ -888,7 +898,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/78",
-      "headSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+      "headSha": "62172897eded2f1d588c5b5be8ff5b472ac7a6fb",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -896,7 +906,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #78 publiée en brouillon ; checklist humaine décochée.",
-      "observedAt": "2026-10-14T12:27:15+02:00",
+      "observedAt": "2026-10-14T10:34:14.532Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -922,7 +932,10 @@
         "candidateBytesEqual": true,
         "manifestEqual": true,
         "observedAt": "2026-10-14T12:30:33+02:00"
-      }
+      },
+      "mergedAt": null,
+      "mergeCommitSha": null,
+      "mergedBy": null
     },
     "checks": [
       {
@@ -1080,7 +1093,7 @@
       "caseReferences": "confirmed_by_user_and_source_reread",
       "pdfReader": "pdfjs_local_worker",
       "caseActiveDocuments": 6,
-      "caseArchivedDocuments": 1,
+      "caseArchivedDocuments": 3,
       "casePagesWithGeneratedDocuments": 35,
       "caseDerivedFiles": 1,
       "caseDerivedPages": 2,
@@ -1093,10 +1106,21 @@
         "codeChanged": false,
         "evidence": "docs/coupes-bien.md ; reçus, exports et captures privés hors Git.",
         "remainingMeasurements": [
+          "Chauffage des volumes voisins et état du chauffage après travaux",
           "Hauteur après travaux",
           "Épaisseur murs et planchers",
           "Altimétrie et géométrie verticale complète"
-        ]
+        ],
+        "thermalClassification": "native_elements_and_hatched_groups",
+        "thermalColorsAppliedInUI": true,
+        "thermalData": "historical_source_and_user_context_with_explicit_unknowns",
+        "pdfTitle": "Coupes A-A — avant et après travaux · lecture thermique",
+        "elementsPerProject": 7,
+        "validatedElementsPerProject": 0,
+        "modelMetricStepCm": 5,
+        "sourceDimensionsPreservedInCao": true,
+        "historicalCopies": "private_source_backup_and_browser_archives",
+        "thermalRequestedOn": "2026-10-14"
       },
       "candidateSourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
       "candidateArtifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",

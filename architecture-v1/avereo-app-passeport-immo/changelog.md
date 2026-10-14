@@ -23,6 +23,12 @@ Les données du cas restent privées ; le code de Coupe est inchangé. Les dix
 pages inversées de deux PDF source sont corrigées et le DPE remis dans l’ordre,
 avec originaux conservés. Le nouveau candidat reste soumis à recette humaine.
 
+Complément des coupes : zones thermiques natives, interfaces et support bas
+renseignés depuis les sources historiques et les précisions du responsable.
+PDF comparatif enrichi avec légende et réserves, projets modifiables et archives
+conservés ; le pas de 5 cm du tableau de repérage est signalé et les cotes CAO
+lues sur les plans sont préservées.
+
 ## 2026-10-03
 Socle documentaire et suivi initialisés ; audit des sources et matrice de 40 fonctions.
 Reprise locale autorisée en conversation : renommage et clés distinctes, bibliothèques
