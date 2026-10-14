@@ -21,7 +21,7 @@
     "Accord de livraison applicative du candidat préparé non enregistré ; les accords antérieurs couvrent le pilote d’accès et la réparation ciblée.",
     "Recette métier authentifiée sur les versions effectivement livrées : lancement, stockage lorsqu’il existe, réouverture, exports, déconnexion et révocation."
   ],
-  "next_action": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
+  "next_action": "Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue.",
   "phases": [
     {
       "id": 0,
@@ -601,7 +601,7 @@
   "title": "Accès privés aux préproductions AVEREO",
   "version": "git",
   "created": "2026-10-06",
-  "updated": "2026-10-09",
+  "updated": "2026-10-14",
   "owner": "jpdandin",
   "currentPhase": 2,
   "state": "blocked",
@@ -662,12 +662,13 @@
     "repository": "jpdandin44/AVEREO",
     "number": 77,
     "url": "https://github.com/jpdandin44/AVEREO/pull/77",
-    "state": "open",
-    "draft": true,
-    "merged": false,
-    "headSha": "0f541b6beddfa9fb6c759d024ed1c92efa846328",
-    "observedAt": "2026-10-09T10:54:04.222+00:00",
-    "note": "Tête technique qualifiée du correctif ; enregistrement documentaire des contrôles réalisé après cette observation."
+    "state": "closed",
+    "draft": false,
+    "merged": true,
+    "headSha": "91b408f80a70be9293c49001df39c28ce438f35e",
+    "observedAt": "2026-10-14T17:10:03.917461+00:00",
+    "note": "Fusion #77 confirmee par connecteur ; main observee inclut aussi #78. Aucun accord de livraison deduit.",
+    "mergeCommit": "1f98758441babc7691ce66b5e12e7f71aea0ceee"
   },
   "checks": [
     {
@@ -1133,6 +1134,17 @@
       "headSha": "70fbcac44517f11c8031cedf627957ead6efd6fe",
       "observedAt": "2026-10-09T10:46:22.090+00:00",
       "note": "Tête observée avant les corrections locales de reprise ; la PR reste un brouillon."
+    },
+    {
+      "repository": "jpdandin44/AVEREO",
+      "number": 77,
+      "url": "https://github.com/jpdandin44/AVEREO/pull/77",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "headSha": "0f541b6beddfa9fb6c759d024ed1c92efa846328",
+      "observedAt": "2026-10-09T10:54:04.222+00:00",
+      "note": "Tête technique qualifiée du correctif ; enregistrement documentaire des contrôles réalisé après cette observation."
     }
   ],
   "developmentWorkflowHistory": [
@@ -1942,5 +1954,178 @@
     "nextAction": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
     "resumedAt": "2026-10-09T10:46:22.090+00:00",
     "resumptionReason": "Reprise demandée ; cPanel connecté et revue dans Claude autorisés."
+  },
+  "connect_activation_preparation": {
+    "status": "hosted_backup_restore_and_migration_clone_verified_bridge_required",
+    "observed_at": "2026-10-14T17:10:03.917461+00:00",
+    "requested_scope": "Demande directe du responsable le 14 octobre : preparation CONNECT, sauvegarde de base, migration activation et verifications Passeport Immo.",
+    "evidence_path": "archives/connect-activation-preparation-20261014.json",
+    "evidence_sha256": "a0a749a736be86b47bcf5fbb29b29cf790d93ecb06e12fda59b3b631798905a2",
+    "candidate_directory": ".local/connect-activation/release",
+    "hosted_private_directory": "/home/daje3540/private/connect-preprod-recovery/preparation-20261014T163531Z",
+    "hosted_database_backup_status": "verified_restoration_on_separate_test_database",
+    "hosted_migration_status": "tested_on_restored_clone_only_not_on_active_connect",
+    "identity_bridge_candidate": {
+      "source_sha": "c45812cc97d91062d562be2370d032b1977232fc",
+      "artifact_sha256": "417186fde0b6b317a1b3571a91b9eb1d7c197575e646bd9698499b719f0133ad",
+      "archive": "identity-bridge.zip",
+      "target": "auth-next-preprod.avereo.fr",
+      "module_directory": "/home/daje3540/auth-next-preprod.avereo.fr/modules/custom/avereo_identity_bridge",
+      "private_settings_preserved": true,
+      "new_secret_created": false,
+      "remote_writes": false,
+      "required_before_delivery": [
+        "provider_recovery_qualified",
+        "activation_configuration_qualified",
+        "exact_human_provider_approval",
+        "test_mail_transport_selected"
+      ]
+    },
+    "test_database_retained": "daje3540_connrest_20261014",
+    "local_test_environment": "avereo-connect-activation-test-20261014",
+    "hosted_inspection": {
+      "observed_at": "2026-10-14T16:36:53+00:00",
+      "source_sha": "c45812cc97d91062d562be2370d032b1977232fc",
+      "artifact_sha256": "d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e",
+      "document_root": "/home/daje3540/connect-preprod.avereo.fr/public",
+      "database_distinct_from_production": true,
+      "mysql_version": "11.4.13-MariaDB",
+      "migration_versions": [
+        "20260721120000_core",
+        "20260729120000_pending_identities",
+        "20260730120000_catalog_metadata",
+        "20260803160000_user_application_access"
+      ],
+      "users_columns": [
+        "id",
+        "drupal_subject",
+        "email_normalized",
+        "display_name",
+        "status",
+        "created_at",
+        "updated_at"
+      ],
+      "users_count": 3,
+      "active_catalog_codes": [
+        "coupe",
+        "drone",
+        "projet",
+        "rapport",
+        "thermo"
+      ],
+      "files_matched": 24,
+      "files_different": [
+        "bin/approve-pending-user.php",
+        "public/index.html",
+        "public/index.php",
+        "src/Application.php",
+        "src/Config.php",
+        "src/Repository/ConnectRepository.php",
+        "src/Repository/PdoConnectRepository.php",
+        "src/Repository/UnavailableRepository.php"
+      ],
+      "files_missing": [
+        "database/migrations/20260804140000_account_activation_status.down.sql",
+        "database/migrations/20260804140000_account_activation_status.up.sql",
+        "src/Identity/AccountActivationNotifier.php",
+        "src/Identity/IdentityAccountActivationClient.php",
+        "src/Security/IdentityAccountActivationCompletionVerifier.php"
+      ],
+      "htaccess_sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+      "basic_auth_preserved": true,
+      "activation_url_is_preproduction": false,
+      "activation_secret_configured": false,
+      "passport_launch_url_configured": false,
+      "passport_launch_secret_configured": false,
+      "passport_root_canonical": true,
+      "passport_files": [
+        ".htaccess",
+        "cgi-bin"
+      ],
+      "hosted_application_modified": false,
+      "production_modified": false
+    },
+    "developmentWorkflow": {
+      "iterationId": "connect-preprod-activation-20261014",
+      "owner": "jpdandin",
+      "project": "avereo-connect",
+      "stage": "local",
+      "status": "prepared_with_blockers",
+      "objective": "Preparer CONNECT preproduction, sauvegarder/restaurer sa base, repeter la migration activation et verifier les prerequis Passeport Immo.",
+      "candidate": {
+        "sourceSha": "c45812cc97d91062d562be2370d032b1977232fc",
+        "artifactSha256": "d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e",
+        "evidence": ".local/connect-activation/release/connect.manifest.json",
+        "observedAt": "2026-10-14T17:10:03.917461+00:00"
+      },
+      "targets": {
+        "preproduction": {
+          "id": "connect-preprod.avereo.fr",
+          "ready": false,
+          "isolated": true,
+          "empty": false,
+          "evidence": "archives/connect-activation-preparation-20261014.json ; racine et base dediees, compte cPanel partage conserve.",
+          "observedAt": "2026-10-14T16:36:53+00:00"
+        },
+        "production": {
+          "id": null,
+          "ready": false
+        }
+      },
+      "checks": [
+        {
+          "kind": "local",
+          "status": "passed",
+          "sourceSha": "c45812cc97d91062d562be2370d032b1977232fc",
+          "artifactSha256": "d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e",
+          "evidence": "37 tests backend, pont Drupal, six tests de packaging ; repetition Docker complete sauvegarde/restauration/migration et refus de mauvaises destinations.",
+          "observedAt": "2026-10-14T17:10:03.917461+00:00"
+        },
+        {
+          "kind": "hosted_recovery",
+          "status": "passed",
+          "sourceSha": "c45812cc97d91062d562be2370d032b1977232fc",
+          "artifactSha256": "d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e",
+          "target": "connect-preprod.avereo.fr",
+          "evidence": "archives/connect-activation-preparation-20261014.json ; DDL/toutes lignes restaures, migration seulement sur clone, 33 fichiers restaures.",
+          "observedAt": "2026-10-14T16:47:59+00:00"
+        },
+        {
+          "kind": "documentation",
+          "status": "passed",
+          "sourceSha": "c45812cc97d91062d562be2370d032b1977232fc",
+          "artifactSha256": "d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e",
+          "evidence": "10 documents Markdown et 71 liens de fichiers locaux controles ; socle racine, metadonnees et git diff --check sans erreur.",
+          "observedAt": "2026-10-14T17:41:33.182791+00:00"
+        }
+      ],
+      "approvals": [],
+      "backups": [
+        {
+          "id": "/home/daje3540/private/connect-preprod-recovery/preparation-20261014T163531Z/database-backup",
+          "target": "connect-preprod.avereo.fr",
+          "status": "verified",
+          "restoreStatus": "passed",
+          "evidence": "archives/connect-activation-preparation-20261014.json",
+          "observedAt": "2026-10-14T16:43:24+00:00"
+        }
+      ],
+      "rollback": {
+        "status": "partially_qualified",
+        "evidence": "33 fichiers et modes restaures en prive ; base restauree sur cible distincte. SQL down non automatique ; retour avec ecritures recentes a requalifier."
+      },
+      "delivery": {
+        "status": "not_performed"
+      },
+      "blockers": [
+        "Le fournisseur d’identite ne possede ni controleur ni formulaire d’activation ; module et routes differents. Candidat du pont prepare, recuperation et accord de sa mise a jour encore requis.",
+        "URL et secret IDENTITY_ACCOUNT_ACTIVATION_* absents de la configuration CONNECT ; raccordement prive et callback Drupal a qualifier sans changer OAuth ou deconnexion.",
+        "Transport et destinataire des messages de recette a choisir ; aucun e-mail reel envoye.",
+        "Accord exact de migration/livraison CONNECT absent ; la preparation ne vaut pas deploiement.",
+        "CI du nouvel outillage a observer apres publication."
+      ],
+      "nextAction": "Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue."
+    },
+    "tooling_branch": "codex/connect-preprod-activation-20261014"
   }
 }
