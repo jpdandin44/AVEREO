@@ -28,4 +28,15 @@ class CandidatePackageTests(unittest.TestCase):
                 for name,content in fixtures.items(): self.assertEqual(archive.read(name),content)
             self.assertEqual([item['path'] for item in manifest],archive.namelist())
 
+    def test_private_file_is_rejected_before_archive_creation(self):
+        with tempfile.TemporaryDirectory(prefix='passeport-package-private-') as temporary:
+            root=Path(temporary)
+            dist=root/'frontend/dist'
+            (dist/'connect').mkdir(parents=True)
+            (dist/'index.html').write_bytes(b'<html>Fictif</html>')
+            (dist/'connect/config.php').write_bytes(b'<?php /* fixture private */')
+            with patch.object(module,'ROOT',root), self.assertRaises(ValueError):
+                module.build(root/'candidate.zip')
+            self.assertFalse((root/'candidate.zip').exists())
+
 if __name__=='__main__': unittest.main()

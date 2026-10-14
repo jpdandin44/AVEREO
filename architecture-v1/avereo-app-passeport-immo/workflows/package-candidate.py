@@ -3,16 +3,24 @@ import argparse
 import hashlib
 import json
 import subprocess
+import sys
 from pathlib import Path
 from zipfile import ZipFile, ZipInfo, ZIP_STORED
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from candidate_contract import GATE_FILES, valid_name
 
 def build(output):
     dist = ROOT / 'frontend/dist'
     if not (dist / 'index.html').is_file():
         raise ValueError('Build absent : exécuter npm run build dans frontend.')
     files = sorted((p for p in dist.rglob('*') if p.is_file()), key=lambda p: p.relative_to(dist).as_posix())
+    names = {p.relative_to(dist).as_posix() for p in files}
+    if any(p.is_symlink() or not valid_name(p.relative_to(dist).as_posix()) for p in files):
+        raise ValueError('Fichier privé, lien ou chemin non autorisé dans le build.')
+    if names.intersection(GATE_FILES) and not GATE_FILES.issubset(names):
+        raise ValueError('Sas CONNECT incomplet dans le build.')
     output = output.resolve()
     if output.is_relative_to(dist.resolve()):
         raise ValueError('Archive de sortie à placer hors dist.')

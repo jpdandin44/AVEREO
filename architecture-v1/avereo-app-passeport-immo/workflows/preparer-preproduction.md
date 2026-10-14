@@ -5,7 +5,7 @@ title: Préparer la livraison privée en préproduction
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [preproduction, o2switch, livraison]
 ---
@@ -33,6 +33,13 @@ python -m unittest discover -s tests -p test_preproduction.py
 Les options `--candidate` et `--manifest` permettent d'indiquer une archive conservée
 ailleurs. La source et l'empreinte doivent correspondre au candidat canonique.
 Le script ne reconstruit pas l'application et n'écrit aucun accord dans le suivi.
+
+Le candidat raccordé inclut les cinq fichiers du sas, selon l'inventaire public
+`candidate_contract.py` commun aux packagers. La préparation conserve tous les
+fichiers sauf la politique runtime `.htaccess`, remplacée volontairement par la
+fermeture totale. Son empreinte d'origine est dans le manifeste ; activer cette
+politique nécessite la [qualification privée](../docs/deployment.md).
+Un sas partiel, une configuration privée ou un lien est refusé avant livraison.
 
 ## Sorties et contrôles
 
@@ -65,3 +72,11 @@ existant. Présenter candidat, empreinte du lot, cible et effet pour l'accord ap
 La procédure distante dépendra des accès constatés. Cette préparation ne transfère
 aucun fichier et ne crée ni domaine ni secret. Exécuter les contrôles du skill avec
 les preuves de la cible réelle avant tout passage.
+
+## Reprise du candidat documentaire
+
+Le chemin par défaut peut encore désigner l’ancien prototype. Pour le candidat
+courant, suivre la [vérification](../docs/verification-preproduction.md) et passer
+explicitement `--candidate`, `--manifest` et `--output`. Le refus d’un ancien
+manifeste protège le candidat ; l’option de sortie permet de préserver l’archive
+historique. Le suivi JSON reste la source du candidat à préparer.

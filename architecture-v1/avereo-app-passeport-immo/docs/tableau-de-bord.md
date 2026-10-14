@@ -16,13 +16,13 @@ Vue générée depuis `suivi-chantier.json`. Ne pas modifier manuellement.
 La revue et les décisions se font dans [Projet local](http://127.0.0.1:5193/).
 
 <!-- BEGIN GENERATED: suivi-chantier.json -->
-Mise à jour : **2026-10-14**. **1 phase livrée sur 4 ; 1 phase validée par le responsable.**
+Mise à jour : **2026-10-14**. **2 phases livrées sur 4 ; 2 phases validées par le responsable.**
 
 | Phase | Statut | Livrables | Livraison | Validation humaine |
 |---|---|---|---|---|
 | 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
-| 1 — Développement local | En cours | `02-integration-connect.md` (prévu)<br>[documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | — | Non acquise |
-| 2 — Préproduction | Non commencée | `03-preproduction.md` (prévu)<br>`deployment.md` (prévu) | — | Non acquise |
+| 1 — Développement local | Validée | [documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | 2026-10-14 | 2026-10-14 |
+| 2 — Préproduction | Non commencée | `02-integration-connect.md` (prévu)<br>`03-preproduction.md` (prévu)<br>`deployment.md` (prévu) | — | Non acquise |
 | 3 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
 
 ### Décisions attendues
@@ -37,6 +37,7 @@ Aucune décision en attente.
 | D02 | Historique — Reprise à l’identique : Autoriser le passage en phase 1 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
 | D03 | Historique — Reprise à l’identique : Valider le livrable de phase 1 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
 | D04 | Historique — Intégration CONNECT : Autoriser le passage en phase 2 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
+| D05 | Valider le livrable de phase 1 — accord enregistré | 2026-10-14 | Décision et preuve consignées dans le JSON |
 
 ### Questions de vérification
 
@@ -53,13 +54,13 @@ Aucune décision en attente.
 
 ## Où en est le développement ?
 
-Travail actuel : **Local — En cours**.
-Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.
+Travail actuel : **Local — awaiting_start_authorization**.
+Attendre la qualification de CONNECT en préproduction, puis vérifier le raccordement de Passeport Immo et préparer sa recette privée. Autorisation de phase et accord d’installation restent à enregistrer séparément.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
-Parcours formel : **phase 1 — Développement local**, en cours.
-Validation formelle restant à consigner : phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
+Parcours formel : **phase 1 — Développement local**, validée.
+Phases 0 et 1 validées dans le suivi. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
 
 
 Adresse créée : `https://passeport-immo-preprod.avereo.fr`. Dossier dédié : `/home/daje3540/passeport-immo-preprod.avereo.fr/public` dans le compte parent. La lune gratuite `sc4daje3540` reste distincte de cette cible.
@@ -71,13 +72,13 @@ Certificat installé ; adresse HTTPS contrôlée avec accès refusé (403). Aucu
 
 **passeport-immo-documents-2026-10-14** — Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.
 
-Responsable : jpdandin. Étape : local. État : En cours.
+Responsable : jpdandin. Étape : local. État : awaiting_start_authorization.
 
 Ces étapes techniques complètent les phases formelles du chantier ; une fusion GitHub ne modifie pas leurs décisions.
 
 | Étape | État | Prochaine action |
 |---|---|---|
-| Local | En cours | Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante. |
+| Local | Validée | Attendre la qualification de CONNECT en préproduction, puis vérifier le raccordement de Passeport Immo et préparer sa recette privée. Autorisation de phase et accord d’installation restent à enregistrer séparément. |
 | Préproduction | Bloquée | Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
@@ -88,7 +89,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/78).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-14T10:34:14.532Z.
+- Dernière observation GitHub : 2026-10-14T15:52:09.004Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -118,7 +119,7 @@ Preuves du candidat identifié ci-dessus :
 - Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
 - Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
 
-Prochaine action : Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.
+Prochaine action : Terminer les prerequis d’activation CONNECT et le lot sas/catalogue Passeport Immo ; qualifier l’acces prive et la recuperation puis presenter le candidat complet pour accord exact.
 
 ### Accords et livraison
 
@@ -130,6 +131,18 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 
 - Intégration CONNECT après accord sur les fichiers concernés.
 - Partage sécurisé et stockage centralisé à spécifier à la demande des clients.
+
+### Préparation locale de préproduction
+
+- État : prepared_local_only ; observation : 2026-10-14T17:10:04.568760+00:00.
+- Empreinte du lot fermé : `847cff54aa1bd396ceb3586e480338df2f7c3bb78161054044a4e8965d617484`.
+- Assets du candidat conservés : Oui.
+- Relecture de l'archive : Réussie.
+- Restauration : Réussie sur des fichiers temporaires locaux ; cible hébergée : Non vérifiée.
+- Livraison distante : Non effectuée.
+- PR de préparation : Non publiée.
+
+Cette préparation ne qualifie ni la cible ni l'accès privé. La récupération locale est distincte d'une sauvegarde restaurée de l'hébergement.
 
 
 ## Livrables attendus par phase
@@ -159,13 +172,6 @@ Reprise et état des lieux
 - Audit source et inconnues explicites ; vues générées contrôlées.
 
 ### Phase 1 — Développement local
-
-**02 integration connect** — Prévu — document non produit (`02-integration-connect.md`).
-
-Intégration CONNECT
-
-- Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.
-- Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.
 
 **Documents du client et du bien** — Document disponible (`documents-bien.md`).
 
@@ -198,6 +204,13 @@ Sources, hypothèses et restitution comparative intégrée au bien
 - Deux projets Coupe avec zones/interface/support, champs inconnus signalés ; SVG natifs et PDF comparatif consulté et téléchargé ; cotes CAO conservées.
 
 ### Phase 2 — Préproduction
+
+**02 integration connect** — Prévu — document non produit (`02-integration-connect.md`).
+
+Prérequis CONNECT conservé : travaux locaux à réaliser avant toute installation en préproduction.
+
+- Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.
+- Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.
 
 **03 preproduction** — Prévu — document non produit (`03-preproduction.md`).
 

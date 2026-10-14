@@ -12,6 +12,16 @@ tags: [avereo, documentation, local]
 
 # Décisions Passeport Immo
 
+## 2026-10-14 — Réutilisation du sas CONNECT
+
+Contexte : préparer la préproduction après l'approbation du dossier documentaire.
+Décision technique : utiliser le sas commun et deux clés dédiées côté CONNECT,
+sans backend de documents ni migration Passeport Immo.
+Raison : conserver les tickets HMAC courts, le refus par défaut et l'anti-rejeu
+des applications existantes ; éviter une seconde source du sas.
+Conséquences : le build contient PHP/règles Apache et exige une configuration
+privée distincte. La recette authentifiée et l'installation restent à qualifier.
+
 ## Source des décisions de chantier
 Les décisions de validation sont enregistrées par le responsable dans AVEREO Projet,
 au sein du [suivi JSON](docs/suivi-chantier.json). Aucune décision n'est dupliquée ici.

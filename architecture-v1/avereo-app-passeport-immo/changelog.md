@@ -12,6 +12,15 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-14 — Sas CONNECT et préparation privée
+
+Sas commun copié au build ; entrypoint PHP, contrôle du HTML/routes et déconnexion.
+Configuration CONNECT étendue à Passeport Immo, sans droits automatiques.
+Contrat d'inventaire public commun aux deux packagers ; fichiers privés et sas
+incomplet refusés, ZIP initialement fermé avec politique runtime identifiée.
+Tests de contrat et recette Apache isolée, procédure de catalogue/installation
+et socle CONNECT documentés. Aucune installation hébergée effectuée.
+
 ## 2026-10-14 — Documents et cas de coupes
 
 Gestion locale de documents associés au client et au bien, lecteur PDF intégré,
@@ -28,6 +37,12 @@ renseignés depuis les sources historiques et les précisions du responsable.
 PDF comparatif enrichi avec légende et réserves, projets modifiables et archives
 conservés ; le pas de 5 cm du tableau de repérage est signalé et les cotes CAO
 lues sur les plans sont préservées.
+
+Reprise du suivi après arrêt du serveur : fusion de la PR nº78 constatée et
+publication actualisée. Sur clarification du responsable, le lot documents/coupes
+est remis à revue avec cinq livrables et trois critères ; CONNECT et ses preuves
+attendues restent un prérequis non livré de Préproduction. Historique et accords
+existants conservés, aucune approbation de phase ajoutée.
 
 ## 2026-10-03
 Socle documentaire et suivi initialisés ; audit des sources et matrice de 40 fonctions.
@@ -111,3 +126,10 @@ Contrôles de volume, de doublons et de séparation des biens. Douze nouveaux te
 portent le frontend à 26 tests ; chiffrage et export conservés par le contrôle a/b/c/d/e.
 Comparatif des sources ExamIn et regroupement du cockpit en quatre phases avec
 conservation de l’instantané, des décisions et preuves historiques.
+
+## 2026-10-14 — Vérification des prérequis de préproduction
+
+Archive du candidat documentaire contrôlée et préparation fermée créée séparément ;
+option de destination de préparation ajoutée. Rapport et preuves du suivi actualisés,
+avec prérequis CONNECT et limites d’origine navigateur explicites. Les décisions
+humaines et assets sont conservés ; aucune installation hébergée.

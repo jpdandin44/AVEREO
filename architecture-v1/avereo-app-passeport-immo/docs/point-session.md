@@ -12,6 +12,101 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Raccordement demandé après préproduction CONNECT — 14 octobre 2026
+
+Le responsable indique CONNECT en préproduction et demande le raccordement puis
+la préparation de Passeport Immo. Le lot est sur `feat/passeport-immo-connect-preprod`.
+Sas commun copié au build, protection du HTML/routes, entrée et déconnexion PHP,
+clés URL/SECRET reconnues côté CONNECT et catalogue proposé sans droit automatique.
+Les cinq livrables approuvés D05 et toutes les décisions restent intacts.
+
+Contrôles locaux : 15 assertions du contrat, 18 assertions sur Apache, 38 tests
+backend, 26 tests frontend, 14 tests Python, build et parité réussis. Le candidat
+contient douze fichiers ; l'archive de préparation est fermée et restaurée localement.
+Le delta CONNECT contient seulement deux fichiers, avec préconditions d'empreinte.
+Le [rapport](02-integration-connect.md) et le [runbook](deployment.md) décrivent
+le fonctionnement, les limites du prototype et la recette encore nécessaire.
+
+Le contrôle public confirme 401 Basic sur CONNECT et 403 sur Passeport Immo.
+La session cPanel de ce chat est expirée ; une reconnexion est demandée. Le contenu
+réel du catalogue et les paramètres hébergés restent non qualifiés. Aucun déploiement,
+nouveau droit, secret réel ou migration n'est réalisé. Après reconnexion : relever
+versions et cible, qualifier récupération et configuration, puis présenter le
+lot exact pour l'accord applicable et la recette privée.
+
+## Approbation locale enregistrée — 14 octobre 2026
+
+Le responsable confirme la validation locale et la fusion de la PR nº78.
+La relecture du cockpit constate l’approbation D05 des cinq livrables du lot
+documents/coupes et de ses trois critères. Les empreintes approuvées sont
+vérifiées ; ces documents restent figés dans leurs octets examinés. La fusion
+de la PR est revérifiée sur GitHub. Le résumé `developmentWorkflow` est réaligné
+sur cette décision existante, sans créer d’accord ni modifier les phases.
+
+Le responsable indique travailler actuellement à la mise en préproduction de
+CONNECT dans son lot distinct ; son achèvement n’est pas vérifié ici. La suite
+Passeport Immo attend cette qualification : vérifier ensuite le raccordement
+CONNECT, les accès privés et la récupération, puis préparer la recette privée
+du candidat exact. Préproduction Passeport Immo reste non démarrée et sans
+autorisation enregistrée ; aucun déploiement n’est lancé dans cette session.
+
+## Préparation CONNECT et vérification de préproduction — 14 octobre 2026
+
+La demande du responsable prépare CONNECT et les vérifications nécessaires à
+Passeport Immo. Le [rapport](verification-preproduction.md) et le bloc canonique
+`developmentWorkflow.preproductionVerification` conservent les constats.
+Le candidat courant est retrouvé dans son archive CI et préparé séparément,
+avec les sept assets conservés, fermeture initiale et restauration locale vérifiées.
+Le lanceur de préparation accepte désormais `--output` pour préserver les archives
+historiques. Onze tests Python, parité et contrat du cockpit passent.
+
+Le lot distinct CONNECT possède maintenant une sauvegarde réelle de base, une
+restauration hébergée et une répétition de migration sur clone, avec la base source
+inchangée. Le module et la configuration d’activation restent à compléter avant
+mise à jour du portail actif. Le sas, le catalogue et les paramètres de lancement
+Passeport Immo restent absents ; la préparation de ses fichiers ne les implémente pas.
+La cible publique reste fermée (403). Le passage hébergé reste en refus.
+
+Le suivi vivant porte l’approbation D05 du lot documents/coupes, constatée lors de
+cette reprise ; elle reste conservée avec ses preuves. Les phases, décisions,
+revues, candidat et accords sont préservés. Le présent travail ne crée pas d’accord
+sur l’intégration CONNECT ou sur une livraison. Le moteur Projet local est conservé.
+
+## Accès au cockpit et revue de la PR nº78 — 14 octobre 2026
+
+Le responsable signale que le suivi local est indisponible après fusion de la
+PR nº78. Aucun service ne répond sur 5193 ; le cockpit est relancé en arrière-plan
+avec son lanceur de revue existant. HTTP 200, lecture du suivi et synchronisation
+GitHub sont contrôlés ; la carte indique désormais « Fusionnée ». La fusion
+GitHub est observée le 14 octobre à 15:47:20 UTC, au commit
+`c45812cc97d91062d562be2370d032b1977232fc`, pour le HEAD
+`81b757b096887af942f2dc9c965bada4b0e23a9d`. La revue approuvée et les quatre
+cases humaines de la PR sont constatées, sans les convertir en validation de phase.
+
+Le diagnostic distingue l'arrêt du serveur du blocage fonctionnel : la phase
+Développement local mélange le lot documents/coupes livré avec CONNECT non livré.
+Ses cinq documents présents étaient consultables, mais le sixième livrable absent
+empêchait « Soumettre à la revue », puis « Approuver la phase ». Le responsable
+précise que la revue porte sur le lot documents/coupes, avec CONNECT conservé
+comme prérequis de préproduction. La phase Développement local a été remise
+« À valider » : cinq documents et trois critères ; D05 a ensuite été enregistrée
+par le responsable, comme indiqué dans le point courant ci-dessus.
+CONNECT et ses deux critères sont conservés dans les attentes de Préproduction,
+avec blocage explicite avant toute installation distante. Le
+[mapping courant](mapping-phases.md) décrit cette portée ; la clarification est
+consignée dans le JSON, sans écrire de décision humaine ni changer l’historique.
+
+Les 58 tests ciblés du moteur de revue, les onze tests Python Passeport Immo,
+le contrat du cockpit et les vues générées passent. Sur une copie temporaire,
+une approbation complète crée une décision D05 distincte, conserve D01 à D04
+et laisse Préproduction non démarrée ; une revue aux critères incomplets est
+refusée. Cette recette n’approuve pas le chantier réel. Le contrôle du cockpit
+accepte désormais de futures décisions humaines tout en vérifiant la présence
+des identifiants historiques et le maintien de CONNECT dans les prérequis.
+Les 31 documents Markdown et 107 liens locaux sont contrôlés, socles présents.
+Les documents historiques approuvés, décisions et journaux sont préservés.
+Le lot du moteur Projet déjà présent reste local et séparé de la PR nº78 fusionnée.
+
 ## Session clôturée le 3 octobre 2026 au soir
 
 Le responsable demande de confirmer le rattrapage du suivi puis d'arrêter la

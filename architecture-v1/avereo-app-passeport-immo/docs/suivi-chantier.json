@@ -19,7 +19,7 @@
     "Les charges et dates futures restent non estimées."
   ],
   "currentPhase": 1,
-  "state": "in_progress",
+  "state": "awaiting_start_authorization",
   "phases": [
     {
       "id": 0,
@@ -91,26 +91,15 @@
       "id": 1,
       "shortTitle": "Développement local",
       "title": "Développement local",
-      "objective": "Gestion locale des documents client/bien, comparaison ExamIn et tâches d’intégration CONNECT.",
-      "status": "in_progress",
+      "objective": "Revue du lot documents client/bien, comparaison ExamIn et coupes de principe avant/après livré par la PR #78. CONNECT reste un prérequis distinct de préproduction.",
+      "status": "validated",
       "dependsOn": [
         0
       ],
       "startedOn": "2026-10-03",
-      "deliveredOn": null,
-      "validatedOn": null,
+      "deliveredOn": "2026-10-14",
+      "validatedOn": "2026-10-14",
       "deliverables": [
-        {
-          "path": "02-integration-connect.md",
-          "kind": "file",
-          "availability": "planned",
-          "title": "02 integration connect",
-          "description": "Intégration CONNECT",
-          "expectedEvidence": [
-            "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
-            "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
-          ]
-        },
         {
           "path": "documents-bien.md",
           "kind": "file",
@@ -163,13 +152,11 @@
         }
       ],
       "exitCriteria": [
-        "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
-        "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.",
         "Import, consultation, classement et persistance du dossier client/bien vérifiés.",
         "Comparatif ExamIn sourcé ; références du cas concret contrôlées.",
         "Coupes comparatives de principe intégrées ; dimensions connues et hypothèses distinguées."
       ],
-      "nextAction": "Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.",
+      "nextAction": "Validation enregistrée ; l’autorisation de phase 2 reste une décision distincte.",
       "startEvidence": {
         "decisionId": "D04"
       },
@@ -179,20 +166,23 @@
         "url": "https://github.com/jpdandin44/AVEREO/pull/78",
         "repository": "jpdandin44/AVEREO",
         "number": 78,
-        "state": "open",
-        "headSha": "62172897eded2f1d588c5b5be8ff5b472ac7a6fb",
-        "observedAt": "2026-10-14T10:34:14.532Z",
-        "draft": true,
-        "mergedAt": null,
-        "mergeCommitSha": null,
-        "mergedBy": null
+        "state": "merged",
+        "headSha": "81b757b096887af942f2dc9c965bada4b0e23a9d",
+        "observedAt": "2026-10-14T15:52:09.004Z",
+        "draft": false,
+        "mergedAt": "2026-10-14T15:47:20.000Z",
+        "mergeCommitSha": "c45812cc97d91062d562be2370d032b1977232fc",
+        "mergedBy": "jpdandinavereo-design"
+      },
+      "validationEvidence": {
+        "decisionId": "D05"
       }
     },
     {
       "id": 2,
       "shortTitle": "Préproduction",
       "title": "Préproduction",
-      "objective": "Préproduction",
+      "objective": "Qualifier la préproduction privée ; livrer et vérifier le prérequis CONNECT avant toute installation distante.",
       "status": "not_started",
       "dependsOn": [
         1
@@ -201,6 +191,17 @@
       "deliveredOn": null,
       "validatedOn": null,
       "deliverables": [
+        {
+          "path": "02-integration-connect.md",
+          "kind": "file",
+          "availability": "planned",
+          "title": "02 integration connect",
+          "description": "Prérequis CONNECT conservé : travaux locaux à réaliser avant toute installation en préproduction.",
+          "expectedEvidence": [
+            "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
+            "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
+          ]
+        },
         {
           "path": "03-preproduction.md",
           "kind": "file",
@@ -225,11 +226,16 @@
         }
       ],
       "exitCriteria": [
+        "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
+        "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.",
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet.",
-      "legacyPhaseId": 3
+      "nextAction": "Après décision de phase distincte, livrer CONNECT et qualifier accès privé, récupération et candidat exact avant de demander l’accord d’installation.",
+      "legacyPhaseId": 3,
+      "blockers": [
+        "Intégration CONNECT non livrée ; document et preuves à produire avant toute installation en préproduction."
+      ]
     },
     {
       "id": 3,
@@ -389,6 +395,46 @@
       },
       "nextAction": "Décision humaine enregistrée dans Projet local.",
       "legacyPhaseId": 2
+    },
+    {
+      "id": "D05",
+      "title": "Valider le livrable de phase 1",
+      "type": "approval",
+      "phaseId": 1,
+      "status": "approved",
+      "owner": "jpdandin",
+      "blocksPhase": 2,
+      "recordedOn": "2026-10-14",
+      "evidence": {
+        "kind": "local_review",
+        "reviewId": "afdaead5-328f-4ebd-a58d-fc6836a866ec",
+        "reviewer": "jpdandin",
+        "comment": "La phase locale est approuvée",
+        "recordedAt": "2026-10-14T16:11:09.281Z",
+        "reviewedArtifacts": [
+          {
+            "path": "documents-bien.md",
+            "sha256": "3dafa2a1cddcd454c4987378f8e5e95e57de36ecc0c5e7b207df4e9661d53e5c"
+          },
+          {
+            "path": "progression-examin.md",
+            "sha256": "3f1b048e02a695b5b90528ceced42f3b3a117dc00acc6ab23944d80d29f17aee"
+          },
+          {
+            "path": "source-audit-documents.md",
+            "sha256": "12546560d70e854caa82c43a7a61768c6b6044141c1cab72142617b9d55b48ed"
+          },
+          {
+            "path": "mapping-phases.md",
+            "sha256": "5e0268be61e5f7762d4a2b803ac0ca211b83db53364c4d93d4de1878f9583d70"
+          },
+          {
+            "path": "coupes-bien.md",
+            "sha256": "763d26a59a71398aa1bae8d38da09cd75440a22e0a53a09801808c64eb86fbce"
+          }
+        ]
+      },
+      "nextAction": "Décision humaine enregistrée dans Projet local."
     }
   ],
   "history": [
@@ -521,6 +567,11 @@
       "type": "agent_observation",
       "phaseId": 1,
       "summary": "Coupes complétées avec fonctions thermiques natives et indications du responsable ; PDF enrichi intégré au cas local, anciennes esquisses conservées. Aucune validation de relevé ni de phase créée."
+    },
+    {
+      "date": "2026-10-14",
+      "event": "Revue locale : approve, phase 1, par jpdandin.",
+      "reviewId": "afdaead5-328f-4ebd-a58d-fc6836a866ec"
     }
   ],
   "reviewEvents": [
@@ -695,6 +746,42 @@
       "reviewedArtifacts": [],
       "previousRevision": "cdd62d3d014d0a1ed7a31a3b20161faeac8f528b34da7a841ab700fca2f410c6",
       "legacyPhaseId": 2
+    },
+    {
+      "id": "afdaead5-328f-4ebd-a58d-fc6836a866ec",
+      "action": "approve",
+      "phaseId": 1,
+      "reviewer": "jpdandin",
+      "comment": "La phase locale est approuvée",
+      "recordedAt": "2026-10-14T16:11:09.281Z",
+      "reviewedArtifacts": [
+        {
+          "path": "documents-bien.md",
+          "sha256": "3dafa2a1cddcd454c4987378f8e5e95e57de36ecc0c5e7b207df4e9661d53e5c"
+        },
+        {
+          "path": "progression-examin.md",
+          "sha256": "3f1b048e02a695b5b90528ceced42f3b3a117dc00acc6ab23944d80d29f17aee"
+        },
+        {
+          "path": "source-audit-documents.md",
+          "sha256": "12546560d70e854caa82c43a7a61768c6b6044141c1cab72142617b9d55b48ed"
+        },
+        {
+          "path": "mapping-phases.md",
+          "sha256": "5e0268be61e5f7762d4a2b803ac0ca211b83db53364c4d93d4de1878f9583d70"
+        },
+        {
+          "path": "coupes-bien.md",
+          "sha256": "763d26a59a71398aa1bae8d38da09cd75440a22e0a53a09801808c64eb86fbce"
+        }
+      ],
+      "previousRevision": "d92d58e38b2db5ce4b415482c47441a97a1fd156dbd6655dc31ab1e0ff43e11c",
+      "checkedCriteria": [
+        "Import, consultation, classement et persistance du dossier client/bien vérifiés.",
+        "Comparatif ExamIn sourcé ; références du cas concret contrôlées.",
+        "Coupes comparatives de principe intégrées ; dimensions connues et hypothèses distinguées."
+      ]
     }
   ],
   "verificationQuestions": [
@@ -788,7 +875,7 @@
     "owner": "jpdandin",
     "kind": "application",
     "stage": "local",
-    "status": "in_progress",
+    "status": "awaiting_start_authorization",
     "objective": "Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.",
     "candidate": {
       "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
@@ -898,15 +985,15 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/78",
-      "headSha": "62172897eded2f1d588c5b5be8ff5b472ac7a6fb",
-      "state": "open",
-      "draft": true,
+      "headSha": "81b757b096887af942f2dc9c965bada4b0e23a9d",
+      "state": "merged",
+      "draft": false,
       "acceptedSourceSha": null,
       "acceptedArtifactSha256": null,
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
-      "evidence": "PR #78 publiée en brouillon ; checklist humaine décochée.",
-      "observedAt": "2026-10-14T10:34:14.532Z",
+      "evidence": "PR #78 fusionnée ; revue GitHub approuvée sur le HEAD 81b757b et quatre cases humaines cochées constatées le 14 octobre. Validation de phase et déploiement restent distincts.",
+      "observedAt": "2026-10-14T15:52:09.004Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -933,9 +1020,17 @@
         "manifestEqual": true,
         "observedAt": "2026-10-14T12:30:33+02:00"
       },
-      "mergedAt": null,
-      "mergeCommitSha": null,
-      "mergedBy": null
+      "mergedAt": "2026-10-14T15:47:20.000Z",
+      "mergeCommitSha": "c45812cc97d91062d562be2370d032b1977232fc",
+      "mergedBy": "jpdandinavereo-design",
+      "reviewObservation": {
+        "state": "approved",
+        "headSha": "81b757b096887af942f2dc9c965bada4b0e23a9d",
+        "submittedAt": "2026-10-14T15:47:12Z",
+        "checklistChecked": 4,
+        "observedAt": "2026-10-14T15:58:45.047Z",
+        "evidence": "https://github.com/jpdandin44/AVEREO/pull/78"
+      }
     },
     "checks": [
       {
@@ -988,7 +1083,7 @@
       "Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.",
       "Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier."
     ],
-    "nextAction": "Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.",
+    "nextAction": "Terminer les prerequis d’activation CONNECT et le lot sas/catalogue Passeport Immo ; qualifier l’acces prive et la recuperation puis presenter le candidat complet pour accord exact.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1002,8 +1097,8 @@
     },
     "stages": {
       "local": {
-        "status": "in_progress",
-        "nextAction": "Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante."
+        "status": "validated",
+        "nextAction": "Attendre la qualification de CONNECT en préproduction, puis vérifier le raccordement de Passeport Immo et préparer sa recette privée. Autorisation de phase et accord d’installation restent à enregistrer séparément."
       },
       "preproduction": {
         "status": "blocked",
@@ -1075,7 +1170,7 @@
     "documentsLot": {
       "requestedOn": "2026-10-14",
       "branch": "feat/passeport-immo-documents",
-      "status": "tested_local",
+      "status": "validated_local",
       "frontendTests": 26,
       "build": "passed",
       "parity": "a_b_c_d_e_passed",
@@ -1125,12 +1220,103 @@
       "candidateSourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
       "candidateArtifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
       "publication": {
-        "status": "published_draft",
-        "headSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
-        "observedAt": "2026-10-14T12:27:15+02:00"
+        "status": "merged",
+        "headSha": "81b757b096887af942f2dc9c965bada4b0e23a9d",
+        "observedAt": "2026-10-14T15:52:09.004Z",
+        "mergedAt": "2026-10-14T15:47:20.000Z",
+        "mergeCommitSha": "c45812cc97d91062d562be2370d032b1977232fc",
+        "evidence": "https://github.com/jpdandin44/AVEREO/pull/78"
       },
       "pythonTests": 11,
-      "packagingOrder": "relative_path_string_same_windows_linux"
+      "packagingOrder": "relative_path_string_same_windows_linux",
+      "reviewScope": {
+        "clarifiedOn": "2026-10-14",
+        "phaseId": 1,
+        "reference": "Réponse directe du responsable : rendre le lot documents et coupes validable, conserver CONNECT comme prérequis de préproduction.",
+        "originalObjective": "Gestion locale des documents client/bien, comparaison ExamIn et tâches d’intégration CONNECT.",
+        "originalDeliverables": [
+          "02-integration-connect.md",
+          "documents-bien.md",
+          "progression-examin.md",
+          "source-audit-documents.md",
+          "mapping-phases.md",
+          "coupes-bien.md"
+        ],
+        "originalExitCriteria": [
+          "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
+          "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.",
+          "Import, consultation, classement et persistance du dossier client/bien vérifiés.",
+          "Comparatif ExamIn sourcé ; références du cas concret contrôlées.",
+          "Coupes comparatives de principe intégrées ; dimensions connues et hypothèses distinguées."
+        ],
+        "deferredConnect": {
+          "phaseId": 2,
+          "requiredBefore": "installation_preproduction",
+          "legacyPhaseId": 2,
+          "originalAuthorizationId": "D04",
+          "status": "not_delivered",
+          "deliverable": "02-integration-connect.md",
+          "exitCriteria": [
+            "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
+            "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
+          ]
+        },
+        "approval": "recorded_in_cockpit"
+      },
+      "reviewDeliverables": [
+        "documents-bien.md",
+        "progression-examin.md",
+        "source-audit-documents.md",
+        "mapping-phases.md",
+        "coupes-bien.md"
+      ],
+      "reviewEvidence": {
+        "decisionId": "D05"
+      }
+    },
+    "preproductionPreparation": {
+      "status": "prepared_local_only",
+      "bundle": ".local/preproduction-preparation/documents-20261014/preproduction.zip",
+      "manifest": ".local/preproduction-preparation/documents-20261014/preproduction.manifest.json",
+      "observedAt": "2026-10-14T17:10:04.568760+00:00",
+      "candidateSourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
+      "candidateArtifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
+      "bundleSha256": "847cff54aa1bd396ceb3586e480338df2f7c3bb78161054044a4e8965d617484",
+      "candidateAssetsUnchanged": true,
+      "initialAccess": "deny_all_configuration_requires_hosted_verification",
+      "archiveReadback": "passed",
+      "restoreRehearsal": "passed_local_files_only",
+      "hostedBackupRestore": "not_verified",
+      "remoteDelivery": "not_performed"
+    },
+    "preproductionVerification": {
+      "requestedAt": "2026-10-14",
+      "status": "candidate_prepared_connect_dependencies_missing",
+      "evidence": "docs/verification-preproduction.md",
+      "observedAt": "2026-10-14T17:10:04.568760+00:00",
+      "checks": {
+        "python_tests": 11,
+        "parity": "passed",
+        "cockpit": "passed",
+        "canonical_candidate_files": 7,
+        "closed_bundle_readback": "passed",
+        "local_file_restore": "passed",
+        "public_root_and_entry_anonymous_status": 403
+      },
+      "connectPreparation": {
+        "source": "AVEREO/outillage/acces-preproduction/suivi-chantier.json#connect_activation_preparation",
+        "backendSourceSha": "c45812cc97d91062d562be2370d032b1977232fc",
+        "databaseBackupRestore": "passed_hosted_distinct_test_database",
+        "activationMigration": "passed_on_restored_clone_only",
+        "activeConnectUpdated": false,
+        "providerActivationCodeAndConfiguration": "missing_requires_separate_qualification"
+      },
+      "remaining": [
+        "Sas Passeport Immo absent du code courant.",
+        "Entree de catalogue, variables de lancement et habilitations Passeport Immo absentes de CONNECT.",
+        "Acces prive utilisable, recuperation de la cible et accord exact d’installation a qualifier.",
+        "Recette reelle sur la nouvelle origine HTTPS a effectuer ; donnees du navigateur local non transferees automatiquement."
+      ]
     }
   },
   "reviewFollowUps": [

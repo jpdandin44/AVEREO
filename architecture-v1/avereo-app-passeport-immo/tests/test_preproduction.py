@@ -81,5 +81,26 @@ class PreproductionTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             module.prepare(self.archive,self.manifest,self.candidate,self.root/'output')
 
+    def test_gate_is_packaged_but_initial_access_stays_closed(self):
+        gate = {name:b'<?php /* fixture */' for name in module.GATE_FILES}
+        gate['.htaccess'] = b'DirectoryIndex index.php\n'
+        self.build_fixture(gate)
+        proof = module.prepare(self.archive,self.manifest,self.candidate,self.root/'output')
+        self.assertTrue(proof['connectGateIncluded'])
+        self.assertTrue(proof['initialClosureReplacesRuntimePolicy'])
+        self.assertEqual(proof['runtimeAccessPolicySha256'],hashlib.sha256(gate['.htaccess']).hexdigest())
+        with ZipFile(self.root/'output/preproduction.zip') as archive:
+            self.assertIn(b'Require all denied',archive.read('.htaccess'))
+            for name in module.GATE_FILES - {'.htaccess'}:
+                self.assertEqual(archive.read(name),gate[name])
+
+    def test_incomplete_gate_and_private_configuration_are_refused(self):
+        self.build_fixture({'index.php':b'<?php'})
+        with self.assertRaisesRegex(ValueError,'Sas CONNECT incomplet'):
+            module.prepare(self.archive,self.manifest,self.candidate,self.root/'output')
+        self.build_fixture({'connect/config.php':b'<?php /* not public */'})
+        with self.assertRaises(ValueError):
+            module.prepare(self.archive,self.manifest,self.candidate,self.root/'output')
+
 
 if __name__ == '__main__': unittest.main()

@@ -12,6 +12,19 @@ tags: [avereo, documentation, local]
 
 # Exigences Passeport Immo
 
+## Préparation CONNECT demandée le 14 octobre 2026
+
+- E20 : protéger le HTML et les routes SPA par le sas existant, refuser tickets
+  absents, altérés, expirés, d'une autre application ou rejoués.
+- E21 : déclarer les clés de lancement dans CONNECT sans accorder de droit implicite.
+- E22 : garder paramètres privés et documents hors archive ; fermer le ZIP initial,
+  vérifier restauration locale et préparer la recette/récupération hébergée.
+- E23 : préserver les cinq livrables et décisions approuvés, ainsi que le parcours
+  local du prototype ; documenter l'absence d'identité métier dans son interface.
+
+Le [rapport de raccordement](docs/02-integration-connect.md) décrit l'écart f
+autorisé par cette demande et les critères qui restent à qualifier sur le serveur.
+
 ## Fonctionnelles
 - E01 : conserver création, édition, suppression et consultation des biens.
 - E02 : conserver composition, pièces, interventions et trois gammes de chiffrage.

@@ -526,6 +526,33 @@ $tests['launch ticket is signed and application bound'] = static function () use
     $repository->allowedApps = ['rapport', 'coupe'];
 };
 
+$tests['Passeport Immo catalog and launch keep explicit authorization'] = static function () use ($repository, $authenticated, $anonymous, $logout): void {
+    $original = $repository->allowedApps;
+    $settings = new Config(
+        environment: 'preprod', debug: false, databaseDsn: null, databaseUser: '', databasePassword: '',
+        sessionCookieName: 'PASSEPORT_TEST', sessionIdleSeconds: 1800, sessionAbsoluteSeconds: 43200,
+        appLaunchEntryUrls: ['passeport-immo' => 'https://passeport-immo-preprod.avereo.fr/connect/entry.php'],
+        appLaunchSecrets: ['passeport-immo' => str_repeat('fixture-passeport-', 3)],
+    );
+    $portal = new Application($settings, $repository, new AppLaunchTicketIssuer($settings));
+    try {
+        $route = request('GET', '/api/v1/apps/passeport-immo/launch');
+        assertSameValue(401, $portal->handle($route, $anonymous, 'csrf-test', $logout)->status, 'anonymous launch denied');
+        $repository->allowedApps = [];
+        assertSameValue(403, $portal->handle($route, $authenticated, 'csrf-test', $logout)->status, 'ungranted launch denied');
+        assertSameValue([], $portal->handle(request('GET', '/api/v1/catalog'), $authenticated, 'csrf-test', $logout)->payload['data'], 'ungranted application absent');
+        $repository->allowedApps = ['passeport-immo'];
+        $catalog = $portal->handle(request('GET', '/api/v1/catalog'), $authenticated, 'csrf-test', $logout)->payload['data'];
+        assertSameValue('passeport-immo', $catalog[0]['code'], 'granted catalog entry');
+        assertSameValue(true, $catalog[0]['available'], 'configured launch available');
+        $launch = $portal->handle($route, $authenticated, 'csrf-test', $logout);
+        assertSameValue(303, $launch->status, 'granted launch redirect');
+        assertSameValue(true, str_starts_with($launch->headers['Location'], 'https://passeport-immo-preprod.avereo.fr/connect/entry.php?ticket='), 'dedicated entry');
+    } finally {
+        $repository->allowedApps = $original;
+    }
+};
+
 $tests['identity disabled'] = static function () use ($application, $anonymous, $logout): void {
     $response = $application->handle(request('GET', '/api/v1/auth/login'), $anonymous, 'csrf-test', $logout);
     assertSameValue(503, $response->status, 'identity status');
@@ -1048,7 +1075,7 @@ $tests['private config allows every application launch key'] = static function (
     // depuis le fichier privé ; sinon elle reste invisible dans le catalogue.
     $configSource = (string) file_get_contents(dirname(__DIR__) . '/src/Config.php');
     $entrySource = (string) file_get_contents(dirname(__DIR__) . '/public/index.php');
-    preg_match_all("/=> self::env\\('APP_LAUNCH_([A-Z]+)_URL'\\)/", $configSource, $matches);
+    preg_match_all("/=> self::env\\('APP_LAUNCH_([A-Z_]+)_URL'\\)/", $configSource, $matches);
     assertSameValue(true, count($matches[1]) >= 6, 'launch codes declared in Config');
     foreach ($matches[1] as $code) {
         foreach (["APP_LAUNCH_{$code}_URL", "APP_LAUNCH_{$code}_SECRET"] as $key) {

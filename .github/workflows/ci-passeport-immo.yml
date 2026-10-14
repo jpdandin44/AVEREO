@@ -5,10 +5,16 @@ on:
     paths:
       - 'architecture-v1/avereo-app-passeport-immo/**'
       - '.github/workflows/ci-passeport-immo.yml'
+      - 'architecture-v1/avereo-platform/shared/connect-gate.php'
+      - 'architecture-v1/avereo-app-connect/backend/src/Config.php'
+      - 'architecture-v1/avereo-app-connect/backend/public/index.php'
   pull_request:
     paths:
       - 'architecture-v1/avereo-app-passeport-immo/**'
       - '.github/workflows/ci-passeport-immo.yml'
+      - 'architecture-v1/avereo-platform/shared/connect-gate.php'
+      - 'architecture-v1/avereo-app-connect/backend/src/Config.php'
+      - 'architecture-v1/avereo-app-connect/backend/public/index.php'
 
 permissions:
   contents: read
@@ -39,6 +45,15 @@ jobs:
       - name: Build
         working-directory: architecture-v1/avereo-app-passeport-immo/frontend
         run: npm run build
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - name: Verify CONNECT launch contract
+        run: php architecture-v1/avereo-app-passeport-immo/tests/connect-gate.php
+      - name: Verify hosted entry under isolated Apache
+        run: |
+          docker build -f architecture-v1/avereo-app-passeport-immo/docker/connect-test.Dockerfile -t avereo-passeport-connect-test:local architecture-v1/avereo-app-passeport-immo
+          python3 architecture-v1/avereo-app-passeport-immo/tests/check-connect-http.py
       - name: Package and verify candidate
         working-directory: architecture-v1/avereo-app-passeport-immo
         run: python3 workflows/package-candidate.py

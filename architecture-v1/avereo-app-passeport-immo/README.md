@@ -12,6 +12,16 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
+## Raccordement CONNECT préparé
+
+Le [sas CONNECT](docs/02-integration-connect.md) et les paramètres de lancement
+sont préparés et testés localement. Le build ajoute les fichiers PHP et règles
+Apache ; l'application locale sur 5175 garde son fonctionnement. PHP 8.3 et
+Apache avec réécriture sont requis pour le sas hébergé. Le
+[runbook](docs/deployment.md) précise configuration privée, catalogue et droits,
+archive fermée, récupération et recette. Aucun secret, installation ou droit
+hébergé n'est créé par la préparation.
+
 ## Objectif et état
 Version locale du prototype de chiffrage, reprise après l'état des lieux puis raccordée
 au protocole GitHub/cockpit. La pagination PDF a été corrigée sur accord explicite.
@@ -24,7 +34,7 @@ Le [suivi JSON](docs/suivi-chantier.json) reste l'autorité des statuts de chant
 aucune décision ni validation humaine n'a été créée par l'agent.
 
 ## Lancer sur le poste
-Prérequis : Node.js 20 ou supérieur et npm. Après installation, double-cliquer sur
+Prérequis : Node.js 22.13 ou supérieur et npm. Après installation, double-cliquer sur
 [start-local.cmd](start-local.cmd), puis ouvrir <http://127.0.0.1:5175/>.
 Cliquer sur « Se connecter » pour accéder aux deux biens de démonstration.
 Le lanceur reste ouvert ; Ctrl+C arrête son instance. Un port occupé provoque un
@@ -51,7 +61,7 @@ node tests/check-parity.mjs
 docker compose -f compose.local.yaml config --quiet
 ```
 Le contrôle de parité nécessite la source historique présente dans ce monorepo.
-Les quatorze tests Vitest sont autonomes dans `frontend/`. Le modèle Docker local exécute
+Les 26 tests Vitest sont autonomes dans `frontend/`. Le modèle Docker local exécute
 tests puis build ; sa configuration a été vérifiée, son image n'a pas été construite.
 Après recette Docker séparée : `docker compose -f compose.local.yaml up --build`
 sur ce même port (arrêter d'abord son propre serveur de développement).

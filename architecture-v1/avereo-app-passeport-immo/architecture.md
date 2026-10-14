@@ -12,6 +12,19 @@ tags: [passeport-immo, local]
 
 # Architecture Passeport Immo
 
+## Sas CONNECT préparé pour la préproduction
+
+Le build copie le sas commun depuis `avereo-platform/shared/connect-gate.php`.
+CONNECT → ticket HMAC → entrée à nonce unique → cookie signé → HTML protégé.
+`index.php`, `connect/entry.php`, `connect/logout.php` et `.htaccess`
+complètent les assets ; la configuration privée reste hors document root.
+Sans module de réécriture Apache, la politique runtime ferme l'accès.
+
+CONNECT reconnaît les deux clés de lancement de `passeport-immo`. Le
+[contrat de catalogue](api/connect-catalogue.json) reste en brouillon sans droit
+accordé. Aucun serveur métier ou changement du store navigateur : le sas protège
+l'entrée, sans remplacer la connexion interne de démonstration.
+
 ## Composants présents
 SPA React 18 / Zustand 5 construite par Vite 5, avec Tailwind 3.4.17 compilé localement.
 `frontend/src/App.jsx:100` porte le store et les écrans historiques.
@@ -33,7 +46,7 @@ Serveur Vite sur 127.0.0.1:5175 ; build dans `frontend/dist/`.
 Le modèle Docker contient un étage Node 22 pour tests/build puis Nginx pour les assets.
 Configuration Compose vérifiée ; exécution Docker non vérifiée.
 La session admin/pro et l'abonnement sont simulés. Aucun service serveur métier
-ni API client/document n'est présent. Le sas CONNECT reste prévu ; l'espace o2switch
+ni API client/document n'est présent. Le sas CONNECT est préparé et testé localement ; l'espace o2switch
 est créé et fermé, sans installation de l'application.
 
 ## Suivi indépendant de l'application
@@ -50,7 +63,7 @@ et de facturation. Le futur stockage centralisé est TBD. Questions canoniques d
 le suivi, résultats techniques dans le livrable local ; aucun statut humain inféré.
 
 ## Candidat et contrôles
-Le bloc `developmentWorkflow` complète le suivi à six phases. Le générateur Python
+Le bloc `developmentWorkflow` complète le suivi actif à quatre phases ; les six phases historiques sont archivées. Le générateur Python
 en produit une fiche d'itération consultable dans Projet et dans les vues dérivées.
 Le workflow GitHub dédié exécute tests, parité, build puis packaging. L'archive des
 assets est déterministe et relue fichier par fichier ; le manifeste lie le SHA Git
@@ -66,12 +79,12 @@ la page. Le téléchargement reste en image, comme le prototype historique.
 manifeste. Le lot hors Git contient les mêmes assets et un `.htaccess` initialement
 fermé. Version et empreintes sont contrôlées ; la restauration est répétée uniquement
 sur des fichiers temporaires locaux. La [procédure](workflows/preparer-preproduction.md)
-précise la qualification restante. Aucun transport distant ni identité CONNECT ajouté.
+précise la qualification restante. Aucun transport distant ajouté ; le sas d'entrée CONNECT est préparé séparément.
 
 La cible o2switch retenue est un dossier dédié protégé dans le compte du domaine
 parent : l'hébergeur impose ce compte aux sous-domaines. Le dossier, son rattachement
 et le certificat gratuit sont créés. Le modèle `workflows/preproduction.htaccess`
-est le seul fichier installé : il refuse toute consultation et interdit l'indexation.
+était le seul fichier installé lors de la qualification initiale : il refuse toute consultation et interdit l'indexation.
 L'adresse HTTPS reçoit 403 avec validation TLS active ; aucun isolement entre comptes
 n'est déclaré pour cette cible. Accès privé de test et récupération restent à qualifier.
 Les observations et valeurs exactes restent dans le suivi canonique et la

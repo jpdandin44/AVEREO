@@ -1,4 +1,23 @@
+---
+project: avereo-connect
+document_type: readme
+title: AVEREO CONNECT
+status: active
+version: git
+created: 2026-07-08
+updated: 2026-10-14
+owner: jpdandin
+tags: [connect, documentation]
+---
+
 # AVEREO CONNECT
+
+[Architecture](architecture.md) · [Exigences](requirements.md) ·
+[Suite](roadmap.md) · [Décisions](decisions.md) · [Changelog](changelog.md).
+
+Le raccordement Passeport Immo ajoute ses deux clés de lancement dans la configuration
+du backend ; catalogue et droits hébergés restent distincts.
+Voir le [rapport d'intégration](../avereo-app-passeport-immo/docs/02-integration-connect.md).
 
 - Slug : `connect`
 - Domaine cible : `connect.avereo.fr`

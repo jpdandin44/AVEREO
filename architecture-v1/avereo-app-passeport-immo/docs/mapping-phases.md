@@ -32,3 +32,19 @@ projection active, pour que le moteur ne la réutilise pas comme validation de
 l’ensemble du développement local. Le démarrage actif vient de l’autorisation
 historique d’intégration, avec son périmètre affiché. Les objets originaux sont
 dans l’instantané ; les projections se distinguent par `legacyPhaseId`.
+
+## Périmètre de la revue de PR nº78
+
+Le 14 octobre, le responsable précise que la revue actuelle porte sur le lot
+documents et coupes, et que CONNECT doit rester un prérequis de préproduction.
+La phase active Développement local est donc remise à la revue avec cinq
+livrables et trois critères : dossier documentaire, comparaison ExamIn et coupes.
+Cette remise technique ne constitue aucune approbation humaine.
+
+Le livrable CONNECT absent et ses deux critères sont conservés dans les attentes
+de Préproduction comme prérequis à réaliser localement avant toute installation
+distante. CONNECT reste non livré ; son autorisation historique D04 et les
+preuves originales gardent leur portée. La clarification et le périmètre initial
+de la revue sont conservés dans `developmentWorkflow.documentsLot.reviewScope`.
+Le tableau ci-dessus décrit le regroupement initial ; ce paragraphe explique
+l’ajustement actif. Les quatre phases et l’instantané historique restent inchangés.

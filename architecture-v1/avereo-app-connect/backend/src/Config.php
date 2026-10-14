@@ -101,6 +101,7 @@ final class Config
                 'thermo' => self::env('APP_LAUNCH_THERMO_URL'),
                 'drone' => self::env('APP_LAUNCH_DRONE_URL'),
                 'recherche' => self::env('APP_LAUNCH_RECHERCHE_URL'),
+                'passeport-immo' => self::env('APP_LAUNCH_PASSEPORT_IMMO_URL'),
             ],
             [
                 'rapport' => self::env('APP_LAUNCH_RAPPORT_SECRET'),
@@ -109,6 +110,7 @@ final class Config
                 'thermo' => self::env('APP_LAUNCH_THERMO_SECRET'),
                 'drone' => self::env('APP_LAUNCH_DRONE_SECRET'),
                 'recherche' => self::env('APP_LAUNCH_RECHERCHE_SECRET'),
+                'passeport-immo' => self::env('APP_LAUNCH_PASSEPORT_IMMO_SECRET'),
             ],
             self::envInt('APP_LAUNCH_TTL_SECONDS', 90),
             self::envInt('OAUTH_TRANSACTION_TTL_SECONDS', 900),

@@ -12,6 +12,15 @@ tags: [avereo, documentation, local]
 
 # Roadmap Passeport Immo
 
+## Suite du lot CONNECT
+
+Le lot documents/coupes est approuvé dans le cockpit. Le sas et ses paramètres
+CONNECT sont préparés et testés localement. La prochaine action est le contrôle
+authentifié du portail actif et de la cible, puis la préparation des droits ciblés,
+des paramètres et du retour arrière avant accord exact d'installation.
+Le [runbook](docs/deployment.md) garde les opérations concrètes. La production
+reste distincte ; les statuts font foi uniquement dans le suivi canonique.
+
 Le [suivi JSON](docs/suivi-chantier.json) fait foi sur les statuts et décisions.
 Le découpage initial prévoyait : reprise/état des lieux, reprise identique, intégration
 CONNECT, préproduction, préparation de production, spécification du passeport client.
@@ -48,3 +57,9 @@ Le lot documents client/bien est préparé localement ; l’intégration CONNECT
 Le comparatif ExamIn fixe les réserves ; les prochaines étapes proposées sont
 recette humaine du dossier et des coupes de principe, identité CONNECT,
 puis stockage partagé et droits après cadrage. La production reste non livrée.
+
+La revue actuelle du développement local porte sur le lot documents et coupes
+de la PR nº78, après clarification du responsable. CONNECT reste un prérequis
+de Préproduction à réaliser localement avant toute installation distante.
+Le [mapping](docs/mapping-phases.md) conserve le périmètre initial et l’ajustement,
+sans transformer la fusion GitHub en approbation de phase.
