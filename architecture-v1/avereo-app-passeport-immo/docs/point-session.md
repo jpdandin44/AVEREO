@@ -5,12 +5,35 @@ title: Point de reprise de session
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, local, cockpit]
 ---
 
 # Point de reprise de session
+
+## Vérification hébergée après reconnexion — 15 octobre 2026
+
+cPanel authentifié ; catalogue CONNECT lu sans écriture et base distincte de
+production vérifiée. Passeport Immo absent du catalogue, des droits actifs et des
+paramètres de lancement ; sas privé et dossier anti-rejeu absents. Sa cible déclarée
+contient seulement `.htaccess` et `cgi-bin`, fermée à tous. Les octets du fichier
+de fermeture correspondent encore à la sauvegarde et restauration du 6 octobre.
+Le [relevé sans secrets](../api/connect-hosted-observation.json) porte les faits.
+
+Le delta initial CONNECT est refusé sur les empreintes hébergées. Les deux fichiers
+correspondent exactement à la base Git `76566ca43b3e1e03a4a465391aac2f99017517cb`.
+Variante limitée à trois lignes de lancement préparée : 32 tests du backend
+historique, 15 assertions du sas et 19 tests Python réussis. Les autres fichiers
+CONNECT et sa protection restent inchangés. Le [runbook](deployment.md) donne la
+commande et exige une nouvelle vérification des empreintes avant installation.
+
+Suite : choisir le compte de recette et son accès ciblé, compléter la récupération
+sur la cible, préparer les paramètres privés et le catalogue, puis présenter le
+candidat exact pour l'accord d'installation. La PR nº80 reste en brouillon.
+Aucune installation, modification de secret, migration ou création de droit.
+Les phases et l'approbation D05 restent inchangées. Le moteur Projet local conserve
+ses modifications antérieures séparées de ce lot.
 
 ## Raccordement demandé après préproduction CONNECT — 14 octobre 2026
 

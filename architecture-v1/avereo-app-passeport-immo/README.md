@@ -5,7 +5,7 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -21,6 +21,9 @@ Apache avec réécriture sont requis pour le sas hébergé. Le
 [runbook](docs/deployment.md) précise configuration privée, catalogue et droits,
 archive fermée, récupération et recette. Aucun secret, installation ou droit
 hébergé n'est créé par la préparation.
+Le [contrôle authentifié du 15 octobre](api/connect-hosted-observation.json)
+confirme la cible fermée et le raccordement absent. Un delta compatible avec les
+deux fichiers CONNECT observés est préparé ; sa commande figure dans le runbook.
 
 ## Objectif et état
 Version locale du prototype de chiffrage, reprise après l'état des lieux puis raccordée

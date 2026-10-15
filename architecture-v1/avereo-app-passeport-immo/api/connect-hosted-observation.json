@@ -1,0 +1,130 @@
+{
+  "observedAt": "2026-10-15T06:24:06.077412+00:00",
+  "scope": "read_only_applications",
+  "sourceReceiptZipSha256": "eca0b6a0dc5a3d92bcc2ba21d1a1e7a2ce7d5f9ec440d40cc4ece532299f5dc4",
+  "applications": {
+    "connect": {
+      "declared": true,
+      "cpanelData": {
+        "domain": "connect-preprod.avereo.fr",
+        "documentroot": "/home/daje3540/connect-preprod.avereo.fr/public"
+      },
+      "root": "/home/daje3540/connect-preprod.avereo.fr/public",
+      "realRoot": "/home/daje3540/connect-preprod.avereo.fr/public",
+      "basicAuth": true,
+      "codeFiles": {
+        "public/index.php": {
+          "sha256": "5aa7a16722ef4cd989d4d5607d22bfd4b51c504e9fb47dc4cde4440e2b0282b0",
+          "sha256Lf": "5aa7a16722ef4cd989d4d5607d22bfd4b51c504e9fb47dc4cde4440e2b0282b0",
+          "bytes": 6387
+        },
+        "src/Config.php": {
+          "sha256": "efd426f0e89118f1f70f05f3f58dda9b69058a2a9ac55d84cf667759fd75caca",
+          "sha256Lf": "efd426f0e89118f1f70f05f3f58dda9b69058a2a9ac55d84cf667759fd75caca",
+          "bytes": 6565
+        },
+        "public/.htaccess": {
+          "sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+          "sha256Lf": "7627b9425a1f58a9a46722601479b0d142a01dc9f8b69d4654f90c78e9125a16",
+          "bytes": 1091
+        }
+      }
+    },
+    "passeport-immo": {
+      "declared": true,
+      "cpanelData": {
+        "domain": "passeport-immo-preprod.avereo.fr",
+        "documentroot": "/home/daje3540/passeport-immo-preprod.avereo.fr/public"
+      },
+      "root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "realRoot": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "symlink": false,
+      "exists": true,
+      "files": [
+        ".htaccess",
+        "cgi-bin"
+      ],
+      "codeFiles": {
+        ".htaccess": {
+          "sha256": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+          "sha256Lf": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+          "bytes": 248
+        }
+      },
+      "denyAll": true,
+      "basicAuth": false
+    }
+  },
+  "configuration": {
+    "dedicatedConfigPresent": true,
+    "privateMode": "600",
+    "productionDatabaseDistinct": true,
+    "launchUrlConfigured": false,
+    "launchUrlMatchesTarget": false,
+    "launchSecretConfigured": false,
+    "applicationPrivateConfigPresent": false,
+    "applicationPrivateMode": null,
+    "sharedSecretMatches": null,
+    "nonceDirectoryPresent": false,
+    "activationConfigured": false,
+    "migrations": [
+      "20260721120000_core",
+      "20260729120000_pending_identities",
+      "20260730120000_catalog_metadata",
+      "20260803160000_user_application_access"
+    ],
+    "catalog": [
+      {
+        "code": "coupe",
+        "status": "active",
+        "launch_url": "https://coupe-preprod.avereo.fr/"
+      },
+      {
+        "code": "drone",
+        "status": "active",
+        "launch_url": "https://drone-preprod.avereo.fr/"
+      },
+      {
+        "code": "projet",
+        "status": "active",
+        "launch_url": "https://projet-preprod.avereo.fr/"
+      },
+      {
+        "code": "rapport",
+        "status": "active",
+        "launch_url": "https://rapport-preprod.avereo.fr/"
+      },
+      {
+        "code": "thermo",
+        "status": "active",
+        "launch_url": "https://thermo-preprod.avereo.fr/"
+      }
+    ],
+    "passeportEntitlements": 0,
+    "databaseReadOnly": "passed"
+  },
+  "existingRecovery": {
+    "backup": {
+      "present": true,
+      "files": {
+        "public/.htaccess": {
+          "sha256": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+          "mode": 420
+        }
+      }
+    },
+    "restored": {
+      "present": true,
+      "files": {
+        "public/.htaccess": {
+          "sha256": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+          "mode": 420
+        }
+      }
+    }
+  },
+  "identifiedGitBase": {
+    "sha": "76566ca43b3e1e03a4a465391aac2f99017517cb",
+    "scope": "public/index.php and src/Config.php exact SHA256; not a claim about all deployed files"
+  }
+}

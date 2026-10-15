@@ -5,7 +5,7 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -15,9 +15,10 @@ tags: [avereo, documentation, local]
 ## Suite du lot CONNECT
 
 Le lot documents/coupes est approuvé dans le cockpit. Le sas et ses paramètres
-CONNECT sont préparés et testés localement. La prochaine action est le contrôle
-authentifié du portail actif et de la cible, puis la préparation des droits ciblés,
-des paramètres et du retour arrière avant accord exact d'installation.
+CONNECT sont préparés et testés localement. Le contrôle authentifié confirme la
+cible fermée et l'absence du raccordement hébergé. Un delta compatible avec les
+deux fichiers CONNECT observés est préparé. La prochaine action est la préparation
+des droits ciblés, des paramètres et du retour arrière avant accord exact d'installation.
 Le [runbook](docs/deployment.md) garde les opérations concrètes. La production
 reste distincte ; les statuts font foi uniquement dans le suivi canonique.
 

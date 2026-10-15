@@ -5,12 +5,27 @@ title: Qualification de la préproduction dédiée
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, o2switch, preproduction]
 ---
 
 # Qualification de la préproduction dédiée
+
+## Recontrôle authentifié du 15 octobre 2026
+
+Le [relevé structuré](../api/connect-hosted-observation.json) confirme le document
+root déclaré, son chemin réel sans redirection symbolique, et l'inventaire courant
+`.htaccess`, `cgi-bin`. La fermeture totale est toujours présente ; aucun fichier
+du candidat n'est installé. Le catalogue et les paramètres de lancement Passeport
+Immo sont absents de CONNECT. Le `.htaccess` sauvegardé puis restauré dans les
+dossiers privés du 6 octobre correspond toujours à la cible par empreinte.
+Cette relecture porte sur les octets sauvegardés/restaurés, sans nouvelle restauration
+ni contrôle de toutes les permissions de la cible. Le [runbook](deployment.md)
+décrit la préparation compatible avec le runtime CONNECT observé.
+La consultation privée, le compte de recette, les accords exacts et la recette
+hébergée restent à établir. Les observations ci-dessous conservent l'historique
+de création et ses inconnues à leur date.
 
 ## Choix acquis
 Le responsable choisit « Préproduction dédiée sur o2switch » en conversation.

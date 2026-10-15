@@ -5,7 +5,7 @@ title: Raccordement Passeport Immo à CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [connect, passeport-immo, preproduction]
 ---
@@ -19,10 +19,13 @@ après approbation D05 des documents/coupes. Les cinq documents approuvés garde
 leurs empreintes. Le nouveau lot ajoute un sas autour du même frontend ; aucun
 serveur de documents, identité métier ou stockage partagé n'est ajouté.
 
-Le contrôle public du 14 octobre reçoit 401 Basic sur CONNECT et sa santé, puis
-403 sur la racine et le HTML de Passeport Immo, avec TLS vérifié. Le catalogue,
-la version active et les paramètres privés restent à vérifier avec un accès
-authentifié courant ; la session cPanel disponible est expirée.
+Le [relevé authentifié du 15 octobre](../api/connect-hosted-observation.json)
+confirme le document root dédié, fermé et contenant `.htaccess` et `cgi-bin`.
+CONNECT conserve Basic et une base distincte de production. Son catalogue compte
+cinq applications actives ; Passeport Immo n'y figure pas et n'a aucun droit actif.
+URL, clé de lancement, configuration privée du sas et dossier anti-rejeu sont absents.
+Le contrôle public du 14 octobre avait reçu 401 Basic sur CONNECT et 403 sur
+Passeport Immo avec TLS vérifié ; la recette connectée reste à réaliser.
 
 ## Développement local
 
@@ -46,10 +49,21 @@ comptes fictifs et ne donnent aucun droit à un utilisateur réel.
 ## Préproduction
 
 La [procédure](deployment.md) distingue ZIP fermé et politique Apache runtime.
-Catalogue, droits ciblés, paramètres privés, récupération et parcours réel
-Drupal → CONNECT → Passeport Immo restent à qualifier. TBD : version CONNECT
-active et compte de recette autorisé. Préparer des fichiers ne prouve pas leur
-installation ; les critères CONNECT du cockpit restent à vérifier sur la cible.
+Les deux fichiers CONNECT concernés correspondent exactement au commit historique
+`76566ca43b3e1e03a4a465391aac2f99017517cb`, sans identifier pour autant toute
+la version déployée. Le delta initial basé sur `c45812cc` est incompatible.
+Une variante conserve les fichiers observés et ajoute seulement trois lignes
+URL/SECRET : aucun code d'activation de compte ou autre fonction n'est importé.
+Elle passe 32 tests du backend historique et les 15 assertions du sas ; les
+19 tests Python incluent quatre contrôles du refus d'une base ou d'un contexte différent.
+
+La sauvegarde et sa restauration hébergées du 6 octobre contiennent encore le même
+`.htaccess` ; leurs empreintes correspondent à la cible. Cette relecture ne constitue
+pas une nouvelle restauration complète ni un contrôle des permissions de la cible.
+Avant installation : recontrôler la version, compléter récupération, paramètres,
+catalogue, droits ciblés et accord exact. TBD : compte de recette autorisé et
+parcours réel Drupal → CONNECT → Passeport Immo. Les critères CONNECT restent
+à vérifier sur la cible. Aucun code, droit ou secret hébergé n'a été modifié.
 
 ## Mise en production
 

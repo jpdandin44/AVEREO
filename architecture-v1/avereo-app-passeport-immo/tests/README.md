@@ -5,12 +5,23 @@ title: Vérification de la reprise
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Vérification de la reprise
+
+## Qualification du raccordement CONNECT
+
+`python -m unittest discover -s tests -p 'test_*.py'` exécute actuellement 19 tests.
+Les quatre cas du delta compatible vérifient l'ajout limité au lancement et le
+refus d'une observation périmée, d'un contexte différent ou d'un runtime déjà intégré.
+Le 15 octobre, le runtime historique des deux fichiers observés a aussi été repris
+dans une copie isolée depuis Git, complété par le ZIP compatible, puis contrôlé :
+syntaxe PHP, 32 tests backend et 15 assertions du sas réussis. Cette qualification
+locale ne prouve pas la recette sur l'hébergement. Les sections datées ci-dessous
+conservent les résultats des lots précédents.
 
 ## Commandes
 Depuis `frontend/`, `npm.cmd test` exécute 26 tests :

@@ -89,7 +89,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-14T20:09:10.890Z.
+- Dernière observation GitHub : 2026-10-14T20:10:10.903Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -102,6 +102,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | GitHub Actions | Réussi | 2026-10-14T12:30:33+02:00 |
 | Sur le poste | Réussi | 2026-10-14T20:09:51.631Z |
 | Documentation | Réussi | 2026-10-14T20:09:51.631Z |
+| GitHub Actions | Réussi | 2026-10-14T20:13:18.664Z |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -110,6 +111,7 @@ Preuves du candidat identifié ci-dessus :
 - GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38549381653 ; archive téléchargée identique au candidat local, manifeste et sept assets vérifiés.
 - Sur le poste : 26 tests frontend, 15 tests Python, 38 tests backend, 15 assertions de contrat et 18 HTTP Apache ; build, parité, archive et restauration locale réussis.
 - Documentation : Socles Passeport Immo et CONNECT vérifiés ; métadonnées, liens locaux, vues et 15 empreintes approuvées conformes.
+- GitHub Actions : CI 01be7d2 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon.
 
 ### Contrôles de passage
 

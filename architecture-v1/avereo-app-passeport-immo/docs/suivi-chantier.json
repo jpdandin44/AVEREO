@@ -243,9 +243,9 @@
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "4640fdf4ccd4f9865b3251c1e143cbd0899c6c02",
+        "headSha": "01be7d2f8b3ae33927d30e13b2026df2b7d10154",
         "draft": true,
-        "observedAt": "2026-10-14T20:09:10.890Z",
+        "observedAt": "2026-10-14T20:10:10.903Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
@@ -999,7 +999,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "4640fdf4ccd4f9865b3251c1e143cbd0899c6c02",
+      "headSha": "01be7d2f8b3ae33927d30e13b2026df2b7d10154",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1007,7 +1007,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-14T20:09:10.890Z",
+      "observedAt": "2026-10-14T20:10:10.903Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1024,7 +1024,20 @@
       },
       "mergedAt": null,
       "mergeCommitSha": null,
-      "mergedBy": null
+      "mergedBy": null,
+      "ciObservation": {
+        "sourceSha": "01be7d2f8b3ae33927d30e13b2026df2b7d10154",
+        "candidateSourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+        "passeportRunId": 38629553120,
+        "status": "success",
+        "checksPassed": 18,
+        "policy": "skipped_draft",
+        "candidateBytesEqual": true,
+        "fileInventoryEqual": true,
+        "runtimeSourcesEqual": true,
+        "observedAt": "2026-10-14T20:13:18.664Z"
+      }
     },
     "checks": [
       {
@@ -1069,6 +1082,14 @@
         "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
         "observedAt": "2026-10-14T20:09:51.631Z",
         "evidence": "Socles Passeport Immo et CONNECT vérifiés ; métadonnées, liens locaux, vues et 15 empreintes approuvées conformes."
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+        "observedAt": "2026-10-14T20:13:18.664Z",
+        "evidence": "CI 01be7d2 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon."
       }
     ],
     "approvals": [],

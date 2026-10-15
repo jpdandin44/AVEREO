@@ -5,12 +5,22 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Changelog Passeport Immo
+
+## 2026-10-15 — Contrôle hébergé et delta compatible
+
+Catalogue et configuration CONNECT contrôlés en lecture seule ; cible Passeport
+Immo déclarée et fermée, raccordement absent. Reçu structuré sans secrets et
+relecture de la sauvegarde/restauration existante du fichier de fermeture.
+Préparateur du delta étendu pour ne modifier que trois lignes sur le runtime
+historique exact, avec refus d'une empreinte ou d'un contexte différent.
+19 tests Python, 32 tests du backend historique et 15 assertions du sas réussis.
+Aucune installation ni création de droits ou de secrets hébergés.
 
 ## 2026-10-14 — Sas CONNECT et préparation privée
 

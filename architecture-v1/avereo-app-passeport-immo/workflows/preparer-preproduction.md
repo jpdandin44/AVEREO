@@ -5,7 +5,7 @@ title: Préparer la livraison privée en préproduction
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [preproduction, o2switch, livraison]
 ---
@@ -80,3 +80,12 @@ courant, suivre la [vérification](../docs/verification-preproduction.md) et pas
 explicitement `--candidate`, `--manifest` et `--output`. Le refus d’un ancien
 manifeste protège le candidat ; l’option de sortie permet de préserver l’archive
 historique. Le suivi JSON reste la source du candidat à préparer.
+
+## Delta CONNECT sur le runtime hébergé
+
+`package-connect-delta.py` prépare deux fichiers sans accès distant. La variante
+`--hosted-receipt` conserve les blobs d'une base Git observée et ajoute seulement
+les paramètres Passeport Immo. Le reçu et la base complète sont obligatoirement
+cohérents ; un contexte non unique ou déjà raccordé est refusé. Les fichiers privés,
+le catalogue et les droits restent exclus du ZIP. Le [runbook](../docs/deployment.md)
+donne la commande courante et les conditions d'installation distinctes.

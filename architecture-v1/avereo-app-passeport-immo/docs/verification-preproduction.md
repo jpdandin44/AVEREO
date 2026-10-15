@@ -5,20 +5,37 @@ title: Vérification des prérequis CONNECT et de préproduction
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, connect, preproduction, sauvegarde]
 ---
 
 # Vérification des prérequis de préproduction
 
-## Vérification du raccordement après déclaration CONNECT en préproduction
+## Contrôle authentifié du 15 octobre 2026
+
+Le [relevé structuré](../api/connect-hosted-observation.json) remplace l'inconnue
+liée à l'expiration de session : cPanel est accessible, les deux cibles déclarées
+et les fichiers concernés identifiés. La lecture du catalogue en transaction SQL
+en lecture seule réussit ; cinq applications actives, aucune entrée Passeport Immo,
+aucun droit actif associé. La base CONNECT est distincte de production. Les
+paramètres Passeport Immo et son sas privé sont absents. La cible contient seulement
+`.htaccess` et `cgi-bin`, avec fermeture totale. Aucun fichier applicatif modifié.
+
+Les empreintes exactes des deux fichiers CONNECT concernés permettent de préparer
+le delta compatible décrit dans le [rapport](02-integration-connect.md). Le delta
+initial ne doit pas être installé sur ce runtime. Sauvegarde/restauration existantes
+du `.htaccess` recontrôlées par empreintes ; permissions et nouvelle répétition du
+retour arrière restent à qualifier avant installation. Les accords, paramètres,
+droits ciblés et recette privée restent nécessaires.
+
+## Préparation locale du 14 octobre 2026
 
 La nouvelle demande du responsable autorise la préparation du sas Passeport Immo.
 Le contrôle anonyme courant confirme CONNECT protégé (401 Basic) et Passeport Immo
 fermé (403), avec validation TLS. La session cPanel de ce chat affiche un cookie
-expiré ; version active, catalogue, paramètres et droits restent à recontrôler
-après reconnexion. La déclaration du responsable est conservée comme contexte.
+expiré à cette date. Le contrôle authentifié du 15 octobre est présenté ci-dessus.
+La déclaration du responsable est conservée comme contexte.
 
 Le [raccordement local](02-integration-connect.md) est désormais implémenté :
 15 assertions de contrat, 18 assertions HTTP sur Apache isolé, 38 tests backend,
@@ -40,7 +57,7 @@ CONNECT publie uniquement ce rapport et l’option de destination du préparateu
 Les décisions humaines et la revue du lot documents/coupes
 restent distinctes du passage hébergé.
 
-## Cadrage
+## Cadrage antérieur du lot documentaire
 
 La PR nº78 est fusionnée ; le candidat documentaire de sept assets reste celui
 du suivi. La préproduction dédiée et son HTTPS ont été préparés antérieurement.

@@ -5,7 +5,7 @@ title: Installation privée de Passeport Immo
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [connect, preproduction, installation]
 ---
@@ -46,6 +46,21 @@ présente dans le candidat original. Conserver les archives historiques.
    produit deux fichiers et les empreintes attendues avant écriture. Refuser le
    remplacement si le runtime hébergé diffère : qualifier sa version et préparer
    un delta compatible, sans remplacer aveuglément tout CONNECT.
+   Le [relevé du 15 octobre](../api/connect-hosted-observation.json) correspond,
+   pour ces deux fichiers seulement, à `76566ca43b3e1e03a4a465391aac2f99017517cb`.
+   Depuis le sous-projet, préparer la variante ciblée avec :
+
+   ```powershell
+   python workflows/package-connect-delta.py --base-sha 76566ca43b3e1e03a4a465391aac2f99017517cb --hosted-receipt api/connect-hosted-observation.json
+   ```
+
+   Elle produit `runtime-connect-compatible.zip` et son manifeste dans
+   `.local/connect-preparation/`. Trois lignes sont ajoutées au runtime historique ;
+   la protection Basic et les autres fonctions restent dans leurs octets observés.
+   Le reçu doit correspondre exactement aux deux blobs Git ; contexte ambigu,
+   intégration déjà présente ou empreinte différente provoquent un refus.
+   Relever à nouveau les empreintes immédiatement avant écriture, même si le reçu
+   précédent correspond. Si CONNECT évolue entre-temps, préparer un nouveau delta.
 5. Prévisualiser le [catalogue proposé](../api/connect-catalogue.json) via
    `bin/manage-catalog.php`, la configuration dédiée et un opérateur réel
    owner/admin. Aucun `--confirm`, activation ni habilitation n'est exécuté par
