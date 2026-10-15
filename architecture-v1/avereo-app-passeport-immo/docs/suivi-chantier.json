@@ -2212,8 +2212,12 @@
         "number": 81,
         "state": "open",
         "draft": true,
-        "observedAt": "2026-10-15T15:36:52.272428+00:00",
-        "scope": "Préparation documentaire de production après PR nº80 ; aucune transition de phase ni livraison."
+        "observedAt": "2026-10-15T15:37:49.257Z",
+        "scope": "Préparation documentaire de production après PR nº80 ; aucune transition de phase ni livraison.",
+        "headSha": "b03e7aa3413867ae93b2f0770323e86c4ee6d641",
+        "mergedAt": null,
+        "mergeCommitSha": null,
+        "mergedBy": null
       }
     }
   ],

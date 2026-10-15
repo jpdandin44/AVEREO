@@ -61,6 +61,12 @@ est le premier document disponible dans cette phase ; son début distingue les
 travaux actuels des validations du parcours formel. `tests/check-cockpit.mjs`
 contrôle ce raccordement avec le normaliseur réellement utilisé par le moteur.
 
+La préparation après PR nº80 est liée à la phase 2 par la PR nº81 en brouillon.
+Chaque observation publiée conserve un SHA réellement observé et une date ISO
+avec au plus trois décimales, requis par le normaliseur. Le cockpit peut ensuite
+rafraîchir cette observation dans le JSON local après un nouveau commit ; cette
+actualisation ne crée aucune décision humaine.
+
 ## Commandes qualifiées
 Depuis `frontend/` : `npm.cmd ci`, `npm.cmd test`, `npm.cmd run build`.
 Depuis le sous-projet :
