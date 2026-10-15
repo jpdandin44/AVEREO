@@ -12,6 +12,13 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Sauvegarde automatique demandée — 15 octobre 2026
+
+Le [lot de sauvegarde automatique](sauvegarde-automatique.md) complète le stockage
+serveur. Les six lignes existantes de crontab ont été inventoriées sans divulguer
+leur contenu ; aucune tâche Passeport Immo équivalente détectée. Préserver ces
+lignes et les copies manuelles lors de l’installation. Déclenchement réel à vérifier.
+
 ## Stockage documentaire demandé — 15 octobre 2026
 
 Lot g installé et vérifié ; [conception et recette](stockage-serveur.md),

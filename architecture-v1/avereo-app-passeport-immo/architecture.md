@@ -12,6 +12,14 @@ tags: [passeport-immo, local]
 
 # Architecture Passeport Immo
 
+## Sauvegarde privée planifiée
+
+Le [travailleur CLI](docs/sauvegarde-automatique.md) copie les quatre tables et
+les fichiers privés, contrôle leur intégrité et restitue les lignes dans des
+tables temporaires. Un verrou et une date quotidienne évitent les doublons.
+La copie vérifiée est publiée avant rotation ; un échec préserve le dernier succès.
+Les scripts, copies, statut et journal restent hors document root.
+
 ## Stockage privé du 15 octobre 2026
 
 Le [lot serveur](docs/stockage-serveur.md) complète le mode local décrit ci-dessous :

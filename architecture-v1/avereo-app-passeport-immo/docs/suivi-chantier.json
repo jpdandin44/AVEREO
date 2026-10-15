@@ -251,9 +251,9 @@
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "12a59875d078448cc91ecfb31d04ad15bc9442cf",
+        "headSha": "47ae21b99b9800409460e724f62f3f02f150b042",
         "draft": true,
-        "observedAt": "2026-10-15T10:00:46.770Z",
+        "observedAt": "2026-10-15T10:03:46.786Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
@@ -1037,7 +1037,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "12a59875d078448cc91ecfb31d04ad15bc9442cf",
+      "headSha": "47ae21b99b9800409460e724f62f3f02f150b042",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1045,7 +1045,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T10:00:46.770Z",
+      "observedAt": "2026-10-15T10:03:46.786Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1981,6 +1981,21 @@
         "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
         "observedAt": "2026-10-15T08:22:25.214977+00:00",
         "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup"
+      },
+      "automaticBackup": {
+        "status": "prepared_local_tests_passed",
+        "requestedAt": "2026-10-15",
+        "authorization": "Demande directe du responsable : sauvegarde automatique de la base et des documents Passeport Immo en préproduction.",
+        "schedule": {
+          "timezone": "Europe/Paris",
+          "dailyAt": "03:20",
+          "schedulerPoll": "hourly_at_minute_20"
+        },
+        "retentionSuccessfulCopies": 30,
+        "destination": "/home/daje3540/private/passeport-immo-backups/preprod",
+        "runbook": "docs/sauvegarde-automatique.md",
+        "localBackupAssertions": 10,
+        "nextAction": "Terminer CI, installer la tâche privée, constater le premier déclenchement cron et sa copie vérifiée."
       }
     }
   },

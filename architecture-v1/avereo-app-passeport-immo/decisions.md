@@ -12,6 +12,16 @@ tags: [avereo, documentation, local]
 
 # Décisions Passeport Immo
 
+## 2026-10-15 — Sauvegarde quotidienne de préproduction
+
+Contexte : le responsable demande de rendre la sauvegarde automatique. Décision :
+réutiliser la sauvegarde CLI, la déclencher quotidiennement à 03 h 20 Europe/Paris
+sur o2switch et conserver trente copies réussies dans un répertoire privé dédié.
+Raisons : indépendance du poste, récupération des tables et fichiers ensemble,
+rotation bornée et échec sans perte du dernier succès. Conséquences : tâche cron,
+verrou, traces privées, contrôles à chaque copie et récupération documentée.
+Aucun destinataire externe ni nouveau droit de service n’est ajouté.
+
 ## 2026-10-15 — Base dédiée et fichiers privés
 
 Contexte : le responsable demande de rendre le stockage documentaire opérationnel

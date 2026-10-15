@@ -12,6 +12,12 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
+## Sauvegarde automatique en préparation
+
+Le [travailleur de sauvegarde](docs/sauvegarde-automatique.md) ajoute une copie
+complète quotidienne, avec conservation de trente succès et contrôles de
+restauration temporaire. Installation et premier déclenchement serveur à vérifier.
+
 ## Stockage serveur opérationnel en préproduction privée
 
 Le [lot de stockage privé](docs/stockage-serveur.md) est installé : base dédiée,

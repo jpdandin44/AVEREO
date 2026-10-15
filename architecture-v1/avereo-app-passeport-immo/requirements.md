@@ -12,6 +12,14 @@ tags: [avereo, documentation, local]
 
 # Exigences Passeport Immo
 
+## Sauvegarde automatique demandée le 15 octobre 2026
+
+- E25 : sauvegarder automatiquement la base applicative et tous les documents de préproduction, archives incluses.
+- E26 : vérifier chaque copie, conserver trente succès et préserver le dernier en cas d’échec.
+- E27 : exécuter sur l’hébergement sans dépendre du PC ; conserver les autres tâches et les sauvegardes manuelles.
+
+Procédure et limites : [sauvegarde automatique](docs/sauvegarde-automatique.md).
+
 ## Lot serveur autorisé le 15 octobre 2026
 
 - E20 : conserver biens, clients, tarifs et métadonnées dans une base dédiée en préproduction.

@@ -12,6 +12,12 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Sauvegarde automatique préparée
+
+Travailleur CLI quotidien, trente copies complètes réussies, verrou, diagnostic
+privé et protection du dernier succès. Treize contrôles de rotation/échec/récupération
+sont intégrés à la recette MariaDB et à la CI. Planification hébergée à vérifier.
+
 ## 2026-10-15 — Stockage serveur installé et cas SCI migré
 
 API PHP et schéma MySQL dédiés, fichiers privés, identité CONNECT conservée,

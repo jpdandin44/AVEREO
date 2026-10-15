@@ -12,6 +12,13 @@ tags: [passeport-immo, local]
 
 # Vérification de la reprise
 
+## Sauvegardes automatiques
+
+`tests/scheduled-backup.php` ajoute treize cas réels sur la base MariaDB fictive,
+appelés par `tests/check-storage-http.py` : conservation, rotation, répétition,
+verrouillage, échec, reprise et garde-fous de chemins. Les sources actives sont
+contrôlées après les tests ; aucun document réel n’est utilisé dans la CI.
+
 ## Persistance serveur
 
 `python tests/check-storage-http.py` utilise deux conteneurs temporaires sur un

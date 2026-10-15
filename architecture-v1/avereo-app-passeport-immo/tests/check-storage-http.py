@@ -44,6 +44,9 @@ def run():
                 '--mount',f'type=bind,source={root}/config.php,target=/fixture/config.php,readonly',
                 '--mount',f'type=bind,source={APP}/database/storage.sql,target=/fixture/storage.sql,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/backup-storage.php,target=/fixture/backup-storage.php,readonly',
+                '--mount',f'type=bind,source={APP}/workflows/scheduled-backup.php,target=/fixture/scheduled-backup.php,readonly',
+                '--mount',f'type=bind,source={APP}/workflows/backup-cron.php,target=/fixture/backup-cron.php,readonly',
+                '--mount',f'type=bind,source={APP}/tests/scheduled-backup.php,target=/fixture/scheduled-backup-test.php,readonly',
                 '-e','AVEREO_CONFIG_FILE=/fixture/config.php',IMAGE); created.append(web)
             port=int(command('docker','port',web,'80/tcp').rsplit(':',1)[1])
             bootstrap="mkdir('/private-documents',0700); chmod('/private-documents',0700); chown('/private-documents','www-data'); $c=require '/fixture/config.php'; for($i=0;$i<60;$i++){try{$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);break;}catch(Throwable){usleep(500000);}} $p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); $p->exec(file_get_contents('/fixture/storage.sql'));"
@@ -120,9 +123,11 @@ def run():
             check(request('/api/storage.php',cookie)[0]==404 and request('/connect/session.php',cookie)[0]==403,'implementation endpoints blocked')
             backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-test'))
             check(backup['documents']==1 and backup['fileReadback']=='passed' and backup['temporaryRowRestore']=='passed','private snapshot row restoration and file readback')
+            scheduled=json.loads(command('docker','exec',web,'php','/fixture/scheduled-backup-test.php'))
+            check(scheduled['assertions']==13,'scheduled backup safety and rotation')
             command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
             check(request(path+'/file',cookie)[0]==503,'altered blob not returned')
-            print(json.dumps({'assertions':len(checks),'checks':checks,'database':'MariaDB 11.4','isolated':True},ensure_ascii=False))
+            print(json.dumps({'assertions':len(checks),'checks':checks,'scheduledBackup':scheduled,'database':'MariaDB 11.4','isolated':True},ensure_ascii=False))
         finally:
             for container in reversed(created): subprocess.run(['docker','stop',container],check=True,stdout=subprocess.DEVNULL)
             subprocess.run(['docker','network','rm',network],check=False,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
