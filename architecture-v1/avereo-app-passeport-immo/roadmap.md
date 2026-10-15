@@ -18,7 +18,7 @@ Le lot documents/coupes est approuvé dans le cockpit. Le sas et ses paramètres
 CONNECT sont préparés et testés localement. Le contrôle authentifié confirme la
 cible fermée et l'absence du raccordement hébergé. Un delta compatible avec les
 deux fichiers CONNECT observés est préparé. La prochaine action est la préparation
-des droits ciblés, des paramètres et du retour arrière avant accord exact d'installation.
+des droits ciblés, des paramètres et de la récupération des données du catalogue avant accord exact d'installation ; la récupération des fichiers a été vérifiée.
 Le [runbook](docs/deployment.md) garde les opérations concrètes. La production
 reste distincte ; les statuts font foi uniquement dans le suivi canonique.
 

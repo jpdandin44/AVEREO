@@ -24,9 +24,11 @@ paramètres Passeport Immo et son sas privé sont absents. La cible contient seu
 
 Les empreintes exactes des deux fichiers CONNECT concernés permettent de préparer
 le delta compatible décrit dans le [rapport](02-integration-connect.md). Le delta
-initial ne doit pas être installé sur ce runtime. Sauvegarde/restauration existantes
-du `.htaccess` recontrôlées par empreintes ; permissions et nouvelle répétition du
-retour arrière restent à qualifier avant installation. Les accords, paramètres,
+initial ne doit pas être installé sur ce runtime. Après relecture des sauvegardes
+existantes, une [répétition hébergée](../api/connect-recovery-observation.json)
+confirme la récupération de l'arbre Passeport Immo, des deux fichiers CONNECT et
+de sa configuration privée dans un dossier séparé : octets et permissions conformes,
+actifs inchangés, aucune base ou valeur de secret exportée. Les accords, paramètres,
 droits ciblés et recette privée restent nécessaires.
 
 ## Préparation locale du 14 octobre 2026

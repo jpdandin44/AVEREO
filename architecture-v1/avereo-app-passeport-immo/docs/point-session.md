@@ -28,8 +28,13 @@ historique, 15 assertions du sas et 19 tests Python réussis. Les autres fichier
 CONNECT et sa protection restent inchangés. Le [runbook](deployment.md) donne la
 commande et exige une nouvelle vérification des empreintes avant installation.
 
-Suite : choisir le compte de recette et son accès ciblé, compléter la récupération
-sur la cible, préparer les paramètres privés et le catalogue, puis présenter le
+Une [répétition hébergée](../api/connect-recovery-observation.json) sauvegarde et
+restaure ensuite dans un dossier privé l'arbre Passeport Immo, les deux fichiers
+CONNECT et sa configuration privée. Octets et permissions conformes ; emplacements
+actifs inchangés, aucune base ni valeur de secret exportée.
+
+Suite : choisir le compte de recette et son accès ciblé, préparer les paramètres
+privés et le catalogue avec sa récupération de données, puis présenter le
 candidat exact pour l'accord d'installation. La PR nº80 reste en brouillon.
 Aucune installation, modification de secret, migration ou création de droit.
 Les phases et l'approbation D05 restent inchangées. Le moteur Projet local conserve

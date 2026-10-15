@@ -20,3 +20,6 @@ Le [catalogue proposé](connect-catalogue.json) et la
 Le [relevé hébergé daté](connect-hosted-observation.json) décrit catalogue,
 présence des paramètres et empreintes utiles sans secret ni compte personnel.
 Il constitue une observation ; recontrôler la cible avant toute écriture.
+Le [reçu de récupération](connect-recovery-observation.json) constate une restauration
+hébergée en dossier privé et des actifs inchangés ; seuls les faits sans secrets
+sont exportés. La récupération des données CONNECT reste distincte.

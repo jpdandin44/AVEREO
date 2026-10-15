@@ -1,0 +1,47 @@
+{
+  "observedAt": "2026-10-15T06:37:17.855634+00:00",
+  "directory": "/home/daje3540/private/passeport-immo-preparation/recovery-20261015T063717Z",
+  "scope": "passeport_tree_connect_two_runtime_files_and_private_config",
+  "activeFilesModified": false,
+  "databaseIncluded": false,
+  "items": {
+    "passeport-immo": {
+      "fileCount": 1,
+      "backupVerified": true,
+      "restoreVerified": true,
+      "modesVerified": true,
+      "activeUnchanged": true,
+      "files": {
+        "public/.htaccess": {
+          "sha256": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+          "mode": 420
+        }
+      }
+    },
+    "connect-runtime": {
+      "fileCount": 2,
+      "backupVerified": true,
+      "restoreVerified": true,
+      "modesVerified": true,
+      "activeUnchanged": true,
+      "files": {
+        "public/index.php": {
+          "sha256": "5aa7a16722ef4cd989d4d5607d22bfd4b51c504e9fb47dc4cde4440e2b0282b0",
+          "mode": 436
+        },
+        "src/Config.php": {
+          "sha256": "efd426f0e89118f1f70f05f3f58dda9b69058a2a9ac55d84cf667759fd75caca",
+          "mode": 436
+        }
+      }
+    },
+    "connect-private": {
+      "fileCount": 1,
+      "backupVerified": true,
+      "restoreVerified": true,
+      "modesVerified": true,
+      "activeUnchanged": true,
+      "secretValuesExported": false
+    }
+  }
+}

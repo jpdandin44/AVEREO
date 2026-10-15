@@ -231,21 +231,21 @@
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Désigner le compte de recette et son accès ciblé, compléter récupération et paramètres privés, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.",
+      "nextAction": "Désigner le compte de recette et son accès ciblé, préparer paramètres privés et catalogue avec récupération des données, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.",
       "legacyPhaseId": 3,
       "blockers": [
         "Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.",
         "Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.",
-        "Permissions, retour arrière complet et accord exact d’installation du candidat à qualifier ; la relecture des sauvegardes existantes ne les remplace pas."
+        "Accord exact d’installation absent ; récupération des données CONNECT à qualifier avant modification du catalogue et des droits."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/80",
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "01be7d2f8b3ae33927d30e13b2026df2b7d10154",
+        "headSha": "dd788594727893c83d0f52ffdd61557cb2e7cff2",
         "draft": true,
-        "observedAt": "2026-10-14T20:10:10.903Z",
+        "observedAt": "2026-10-15T06:37:15.964Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
@@ -986,7 +986,7 @@
             "Résolution DNS initialement absente sur le résolveur du poste ; requêtes DNS directes vers o2switch et 1.1.1.1 expirées. Le routage de l’adresse est ensuite constaté via navigateur et urllib.",
             "curl/Schannel signale encore SEC_E_UNTRUSTED_ROOT sur ce poste ; le contrôle Python avec ssl.create_default_context valide HTTPS et reçoit 403. Aucun contournement de validation."
           ],
-          "recovery": "existing_htaccess_backup_and_restored_bytes_match_current_no_fresh_full_restore",
+          "recovery": "passed_files_and_modes_private_rehearsal_no_database",
           "evidence": "docs/qualification-preproduction.md"
         }
       },
@@ -1000,7 +1000,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "01be7d2f8b3ae33927d30e13b2026df2b7d10154",
+      "headSha": "dd788594727893c83d0f52ffdd61557cb2e7cff2",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1008,7 +1008,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-14T20:10:10.903Z",
+      "observedAt": "2026-10-15T06:37:15.964Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1102,7 +1102,20 @@
       }
     ],
     "approvals": [],
-    "backups": [],
+    "backups": [
+      {
+        "id": "recovery-20261015T063717Z",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "evidence": "api/connect-recovery-observation.json",
+        "observedAt": "2026-10-15T06:37:17.855634+00:00",
+        "scope": "passeport_tree_connect_two_runtime_files_and_private_config",
+        "location": "/home/daje3540/private/passeport-immo-preparation/recovery-20261015T063717Z",
+        "databaseIncluded": false,
+        "activeFilesModified": false
+      }
+    ],
     "rollback": {
       "status": "not_tested",
       "target": null,
@@ -1121,9 +1134,9 @@
     "blockers": [
       "Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.",
       "Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.",
-      "Permissions, retour arrière complet et accord exact d’installation du candidat à qualifier ; la relecture des sauvegardes existantes ne les remplace pas."
+      "Accord exact d’installation absent ; récupération des données CONNECT à qualifier avant modification du catalogue et des droits."
     ],
-    "nextAction": "Désigner le compte de recette et son accès ciblé, compléter récupération et paramètres privés, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.",
+    "nextAction": "Désigner le compte de recette et son accès ciblé, préparer paramètres privés et catalogue avec récupération des données, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1142,7 +1155,7 @@
       },
       "preproduction": {
         "status": "blocked",
-        "nextAction": "Désigner le compte de recette et son accès ciblé, compléter récupération et paramètres privés, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette."
+        "nextAction": "Désigner le compte de recette et son accès ciblé, préparer paramètres privés et catalogue avec récupération des données, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette."
       },
       "production": {
         "status": "blocked",
@@ -1325,12 +1338,13 @@
       "initialAccess": "deny_all_configuration_requires_hosted_verification",
       "archiveReadback": "passed",
       "restoreRehearsal": "passed_local_files_only",
-      "hostedBackupRestore": "not_verified",
+      "hostedBackupRestore": "passed_files_and_modes_private_rehearsal_no_database",
       "remoteDelivery": "not_performed",
       "status": "prepared_local_only",
       "bundle": ".local/preproduction-preparation/connect-20261014/preproduction.zip",
       "manifest": ".local/preproduction-preparation/connect-20261014/preproduction.manifest.json",
-      "observedAt": "2026-10-14T20:09:51.631Z"
+      "observedAt": "2026-10-14T20:09:51.631Z",
+      "hostedBackupRestoreEvidence": "api/connect-recovery-observation.json"
     },
     "preproductionVerification": {
       "requestedAt": "2026-10-14",
@@ -1352,9 +1366,10 @@
       "remaining": [
         "Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.",
         "Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.",
-        "Permissions, retour arrière complet et accord exact d’installation du candidat à qualifier ; la relecture des sauvegardes existantes ne les remplace pas."
+        "Accord exact d’installation absent ; récupération des données CONNECT à qualifier avant modification du catalogue et des droits."
       ],
-      "observation": "api/connect-hosted-observation.json"
+      "observation": "api/connect-hosted-observation.json",
+      "recoveryObservation": "api/connect-recovery-observation.json"
     },
     "connectPreparation": {
       "status": "tested_local_hosted_gap_identified",
@@ -1521,8 +1536,9 @@
         "activeConnectVersion": "two_files_match_git_base_76566ca_full_runtime_not_identified",
         "catalogue": "passeport_immo_absent",
         "privateConfiguration": "passeport_launch_and_gate_configuration_absent",
-        "recovery": "existing_htaccess_backup_and_restored_bytes_match_current_no_fresh_full_restore",
-        "deployment": "not_performed"
+        "recovery": "passed_files_and_modes_private_rehearsal_no_database",
+        "deployment": "not_performed",
+        "recoveryObservation": "api/connect-recovery-observation.json"
       },
       "catalogue": "api/connect-catalogue.json",
       "newEntitlementsCreated": false,

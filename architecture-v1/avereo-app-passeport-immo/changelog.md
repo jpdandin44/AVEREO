@@ -16,7 +16,10 @@ tags: [passeport-immo, local]
 
 Catalogue et configuration CONNECT contrôlés en lecture seule ; cible Passeport
 Immo déclarée et fermée, raccordement absent. Reçu structuré sans secrets et
-relecture de la sauvegarde/restauration existante du fichier de fermeture.
+relecture de la sauvegarde/restauration existante du fichier de fermeture, puis
+nouvelle sauvegarde et restauration hébergées en dossier privé : arbre Passeport
+Immo, deux fichiers CONNECT et configuration privée, permissions et actifs vérifiés.
+Les secrets restent sur le serveur ; aucune base n'est incluse.
 Préparateur du delta étendu pour ne modifier que trois lignes sur le runtime
 historique exact, avec refus d'une empreinte ou d'un contexte différent.
 19 tests Python, 32 tests du backend historique et 15 assertions du sas réussis.

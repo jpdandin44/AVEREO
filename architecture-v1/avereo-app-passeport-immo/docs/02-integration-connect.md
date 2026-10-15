@@ -57,11 +57,14 @@ URL/SECRET : aucun code d'activation de compte ou autre fonction n'est importé.
 Elle passe 32 tests du backend historique et les 15 assertions du sas ; les
 19 tests Python incluent quatre contrôles du refus d'une base ou d'un contexte différent.
 
-La sauvegarde et sa restauration hébergées du 6 octobre contiennent encore le même
-`.htaccess` ; leurs empreintes correspondent à la cible. Cette relecture ne constitue
-pas une nouvelle restauration complète ni un contrôle des permissions de la cible.
-Avant installation : recontrôler la version, compléter récupération, paramètres,
-catalogue, droits ciblés et accord exact. TBD : compte de recette autorisé et
+Après relecture des sauvegardes du 6 octobre, une nouvelle
+[répétition hébergée](../api/connect-recovery-observation.json) sauvegarde l'arbre
+Passeport Immo, les deux fichiers CONNECT et sa configuration privée, puis les
+restaure dans un dossier privé séparé. Octets, permissions et absence de changement
+des actifs sont vérifiés. Aucun secret n'est exporté ; aucune base n'est incluse.
+Avant installation : recontrôler la version, préparer paramètres, catalogue,
+droits ciblés et accord exact. Les changements futurs du catalogue nécessitent
+leur propre récupération de données. TBD : compte de recette autorisé et
 parcours réel Drupal → CONNECT → Passeport Immo. Les critères CONNECT restent
 à vérifier sur la cible. Aucun code, droit ou secret hébergé n'a été modifié.
 

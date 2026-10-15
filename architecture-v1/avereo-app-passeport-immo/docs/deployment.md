@@ -34,7 +34,11 @@ présente dans le candidat original. Conserver les archives historiques.
 ## Préproduction
 
 1. Vérifier PR/CI du candidat et version CONNECT réellement installée.
-2. Sauvegarder la cible et ses permissions ; répéter la restauration hébergée.
+2. Recontrôler la [sauvegarde restaurée le 15 octobre](../api/connect-recovery-observation.json) :
+   arbre Passeport Immo, deux fichiers CONNECT et configuration privée, octets et
+   permissions vérifiés dans un dossier privé distinct. Les actifs sont inchangés.
+   Refaire la sauvegarde si l'état a évolué. Cette preuve porte sur les fichiers ;
+   préparer séparément la récupération des données avant modification du catalogue.
 3. Préparer hors document root
    `/home/daje3540/.avereo/passeport-immo-preprod/config.php` (0600) et le dossier
    anti-rejeu privé. Le [modèle](../api/connect-config.example.php) contient une clé
