@@ -14,12 +14,12 @@
     "blocked": "Bloquée"
   },
   "measurementRules": [
-    "Les statuts formels changent par une décision humaine dans AVEREO Projet.",
+    "Les validations et autorisations formelles sont réservées aux décisions humaines dans AVEREO Projet ; la remise technique des livrables ne vaut pas approbation.",
     "Un prototype local disponible ne valide pas une phase.",
     "Les charges et dates futures restent non estimées."
   ],
-  "currentPhase": 1,
-  "state": "awaiting_start_authorization",
+  "currentPhase": 2,
+  "state": "awaiting_human_review",
   "phases": [
     {
       "id": 0,
@@ -182,21 +182,31 @@
       "id": 2,
       "shortTitle": "Préproduction",
       "title": "Préproduction",
-      "objective": "Qualifier la préproduction privée ; livrer et vérifier le prérequis CONNECT avant toute installation distante.",
-      "status": "not_started",
+      "objective": "Recetter la préproduction privée installée : raccordement CONNECT, dossier SCI, documents partagés et sauvegarde quotidienne ; revoir la PR nº80.",
+      "status": "awaiting_review",
       "dependsOn": [
         1
       ],
-      "startedOn": null,
-      "deliveredOn": null,
+      "startedOn": "2026-10-15",
+      "deliveredOn": "2026-10-15",
       "validatedOn": null,
       "deliverables": [
+        {
+          "path": "recette-preproduction.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Guide de recette et revue PR nº80",
+          "description": "Parcours humain sur la cible hébergée, dossier SCI en lecture et bien fictif pour les essais d’écriture ; correspondance des huit critères.",
+          "expectedEvidence": [
+            "Étapes et résultats attendus, composants installés, preuves techniques datées et limites de validation clairement distingués."
+          ]
+        },
         {
           "path": "02-integration-connect.md",
           "kind": "file",
           "availability": "present",
-          "title": "02 integration connect",
-          "description": "Prérequis CONNECT conservé : travaux locaux à réaliser avant toute installation en préproduction.",
+          "title": "Raccordement CONNECT",
+          "description": "Sas signé, catalogue et droits installés ; constats initiaux conservés comme historiques.",
           "expectedEvidence": [
             "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
             "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés."
@@ -206,22 +216,20 @@
           "path": "03-preproduction.md",
           "kind": "file",
           "availability": "present",
-          "title": "03 preproduction",
-          "description": "Préproduction",
+          "title": "Installation privée et constats datés",
+          "description": "Chronologie des installations et distinction entre ancien stockage navigateur et lot serveur courant.",
           "expectedEvidence": [
-            "Procédure et workflow manuel préparés.",
-            "Recette préproduction conforme, remplie par le responsable."
+            "Reçus de la cible HTTPS, confirmation humaine de la fin de la troisième fenêtre ; renvoi au guide de recette courant."
           ]
         },
         {
           "path": "deployment.md",
           "kind": "file",
           "availability": "present",
-          "title": "deployment",
-          "description": "Préproduction",
+          "title": "Installation et retour arrière",
+          "description": "Procédure et workflow manuel ; cible privée et récupération avant remplacement.",
           "expectedEvidence": [
-            "Procédure et workflow manuel préparés.",
-            "Recette préproduction conforme, remplie par le responsable."
+            "Procédure et workflow manuel préparés."
           ]
         },
         {
@@ -248,10 +256,14 @@
       "exitCriteria": [
         "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
         "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.",
-        "Procédure et workflow manuel préparés.",
-        "Recette préproduction conforme, remplie par le responsable."
+        "Compte CONNECT habituel reconnu, ouverture sans troisième identification visiteur et déconnexion applicative vérifiées sur la cible HTTPS.",
+        "Dossier SCI migré retrouvé : références du bien, six documents actifs, trois archives, PDF et deux pages des coupes contrôlés.",
+        "Sur un bien fictif : ajout, consultation ou téléchargement, classement, détection du doublon, archivage et restauration d’un document vérifiés.",
+        "Persistance après rechargement, lecture dans une session indépendante et refus d’une écriture périmée entre deux fenêtres vérifiés.",
+        "Sauvegarde quotidienne à 03 h 20 Europe/Paris, trente copies réussies, premier succès réel et récupération temporaire examinés ; limites de même hébergement et absence d’alerte mail connues.",
+        "Procédure et workflow manuel préparés."
       ],
-      "nextAction": "Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.",
+      "nextAction": "Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.",
       "legacyPhaseId": 3,
       "blockers": [
         "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
@@ -261,14 +273,15 @@
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
+        "headSha": "c2aa73a12bd83f83449a3de9e44cdeb003e76284",
         "draft": true,
-        "observedAt": "2026-10-15T13:31:48.455Z",
+        "observedAt": "2026-10-15T13:42:48.518Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
       },
-      "technicalState": "installed_private_storage_verified"
+      "technicalState": "installed_private_storage_verified",
+      "validationEvidence": null
     },
     {
       "id": 3,
@@ -1047,7 +1060,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
+      "headSha": "c2aa73a12bd83f83449a3de9e44cdeb003e76284",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1055,7 +1068,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T13:31:48.455Z",
+      "observedAt": "2026-10-15T13:42:48.518Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1406,7 +1419,7 @@
     "blockers": [
       "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
     ],
-    "nextAction": "Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.",
+    "nextAction": "Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1425,7 +1438,7 @@
       },
       "preproduction": {
         "status": "awaiting_review",
-        "nextAction": "Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés."
+        "nextAction": "Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80."
       },
       "production": {
         "status": "blocked",
@@ -2034,6 +2047,30 @@
         "externalTransfer": false,
         "emailAlerts": false
       }
+    },
+    "humanRecipe": {
+      "status": "ready_for_human_review",
+      "preparedAt": "2026-10-15T13:54:49.157189+00:00",
+      "guide": "docs/recette-preproduction.md",
+      "testFile": "data/document-recette.test.txt",
+      "phaseId": 2,
+      "deliverables": 6,
+      "exitCriteria": 8,
+      "submissionKind": "technical_delivery",
+      "requestReference": "Demande directe du 15 octobre : préparer la recette de préproduction, les livrables et critères du cockpit et la revue de la PR nº80.",
+      "previousPresentation": {
+        "currentPhase": 1,
+        "state": "awaiting_start_authorization",
+        "phase2Status": "not_started"
+      },
+      "alignmentReason": "L’installation privée et le stockage ont été autorisés directement dans le chat et réalisés le 15 octobre ; remise technique à la revue demandée, sans création de décision ou événement humain.",
+      "humanDecisionsAdded": false,
+      "humanReviewPending": true,
+      "productionAuthorized": false,
+      "sourceEvidence": [
+        "api/storage-observation.json",
+        "api/automatic-backup-observation.json"
+      ]
     }
   },
   "reviewFollowUps": [
@@ -2077,7 +2114,7 @@
     "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.",
+    "nextAction": "Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.",
     "resumedAt": "2026-10-14T09:40:12+00:00",
     "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
     "previousClosure": {

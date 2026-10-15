@@ -12,6 +12,14 @@ tags: [passeport-immo, connect, preproduction, recette]
 
 # Installation privée et recette restante
 
+## Recette humaine courante
+
+Utiliser [le guide de recette de la PR nº80](recette-preproduction.md) pour les
+livrables et les huit critères du cockpit. La phase est remise à la revue technique
+« À valider » à la demande du responsable, sans nouvelle décision humaine enregistrée.
+Les sections datées ci-dessous conservent les étapes successives : les limites
+de stockage navigateur de l'installation initiale sont remplacées par le lot serveur.
+
 ## Nouveau lot de stockage
 
 Le stockage par navigateur constaté dans la recette suivante est remplacé par
@@ -23,7 +31,7 @@ de métadonnées, PDF, téléchargement et persistance après rechargement. Les 
 SSO et déclarations humaines ci-dessous restent historiques. La revue humaine de
 préproduction, la fusion et la production sont toujours distinctes.
 
-## État courant après correction de la troisième identification
+## Historique — correction de la troisième identification avant stockage serveur
 
 Le responsable confirme l'ouverture de Passeport Immo depuis CONNECT dans Chrome.
 Cette déclaration établit un premier parcours humain ; elle ne vaut pas validation
@@ -92,7 +100,7 @@ Les lignes actives sont inchangées. Cette répétition complète la récupérat
 des fichiers et paramètres ; elle ne constitue pas une restauration complète
 de base. Le test des droits d'installation est exécuté en transaction puis annulé.
 
-## Préproduction
+## Préproduction — installation initiale avant stockage serveur
 
 Installation effectuée le 15 octobre à 07:33:53 UTC sur
 <https://passeport-immo-preprod.avereo.fr/>. Le candidat apporte douze fichiers ;

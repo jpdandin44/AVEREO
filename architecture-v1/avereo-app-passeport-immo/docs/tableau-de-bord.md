@@ -16,13 +16,13 @@ Vue générée depuis `suivi-chantier.json`. Ne pas modifier manuellement.
 La revue et les décisions se font dans [Projet local](http://127.0.0.1:5193/).
 
 <!-- BEGIN GENERATED: suivi-chantier.json -->
-Mise à jour : **2026-10-15**. **2 phases livrées sur 4 ; 2 phases validées par le responsable.**
+Mise à jour : **2026-10-15**. **3 phases livrées sur 4 ; 2 phases validées par le responsable.**
 
 | Phase | Statut | Livrables | Livraison | Validation humaine |
 |---|---|---|---|---|
 | 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
 | 1 — Développement local | Validée | [documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | 2026-10-14 | 2026-10-14 |
-| 2 — Préproduction | Non commencée | [02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md)<br>[sauvegarde-automatique.md](sauvegarde-automatique.md) | — | Non acquise |
+| 2 — Préproduction | À valider | [recette-preproduction.md](recette-preproduction.md)<br>[02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md)<br>[sauvegarde-automatique.md](sauvegarde-automatique.md) | 2026-10-15 | Non acquise |
 | 3 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
 
 ### Décisions attendues
@@ -55,11 +55,11 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — À valider**.
-Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.
+Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
-Parcours formel : **phase 1 — Développement local**, validée.
+Parcours formel : **phase 2 — Préproduction**, à valider.
 Phases 0 et 1 validées dans le suivi. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
 
 
@@ -77,7 +77,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
-| Préproduction | À valider | Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés. |
+| Préproduction | À valider | Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -87,7 +87,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T13:31:48.455Z.
+- Dernière observation GitHub : 2026-10-15T13:42:48.518Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -157,7 +157,7 @@ Preuves du candidat identifié ci-dessus :
 
 - Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique.
 
-Prochaine action : Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.
+Prochaine action : Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.
 
 ### Accords et livraison
 
@@ -243,26 +243,30 @@ Sources, hypothèses et restitution comparative intégrée au bien
 
 ### Phase 2 — Préproduction
 
-**02 integration connect** — Document disponible (`02-integration-connect.md`).
+**Guide de recette et revue PR nº80** — Document disponible (`recette-preproduction.md`).
 
-Prérequis CONNECT conservé : travaux locaux à réaliser avant toute installation en préproduction.
+Parcours humain sur la cible hébergée, dossier SCI en lecture et bien fictif pour les essais d’écriture ; correspondance des huit critères.
+
+- Étapes et résultats attendus, composants installés, preuves techniques datées et limites de validation clairement distingués.
+
+**Raccordement CONNECT** — Document disponible (`02-integration-connect.md`).
+
+Sas signé, catalogue et droits installés ; constats initiaux conservés comme historiques.
 
 - Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.
 - Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.
 
-**03 preproduction** — Document disponible (`03-preproduction.md`).
+**Installation privée et constats datés** — Document disponible (`03-preproduction.md`).
 
-Préproduction
+Chronologie des installations et distinction entre ancien stockage navigateur et lot serveur courant.
+
+- Reçus de la cible HTTPS, confirmation humaine de la fin de la troisième fenêtre ; renvoi au guide de recette courant.
+
+**Installation et retour arrière** — Document disponible (`deployment.md`).
+
+Procédure et workflow manuel ; cible privée et récupération avant remplacement.
 
 - Procédure et workflow manuel préparés.
-- Recette préproduction conforme, remplie par le responsable.
-
-**deployment** — Document disponible (`deployment.md`).
-
-Préproduction
-
-- Procédure et workflow manuel préparés.
-- Recette préproduction conforme, remplie par le responsable.
 
 **Stockage privé des documents** — Document disponible (`stockage-serveur.md`).
 

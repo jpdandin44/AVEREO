@@ -12,6 +12,12 @@ tags: [connect, passeport-immo, preproduction]
 
 # Raccordement Passeport Immo à CONNECT
 
+La [recette humaine courante](recette-preproduction.md) précise les vérifications
+CONNECT et les critères du cockpit. Le [lot serveur](stockage-serveur.md) complète
+le sas avec l'identité métier et le stockage partagé. Les sections Cadrage à Mise
+en production ci-dessous conservent le périmètre historique du raccordement initial,
+antérieur à ce lot ; elles ne décrivent pas le stockage actuellement installé.
+
 ## Correction de la troisième identification — 15 octobre 2026
 
 Le responsable confirme dans Chrome la présence de la carte et l'ouverture de

@@ -1,0 +1,7 @@
+Document fictif de recette Passeport Immo — PR 80
+
+Ce fichier ne contient aucune donnée client.
+Il sert à vérifier l'import, le téléchargement, le classement, la détection
+des doublons, l'archivage et la restauration sur un bien fictif de préproduction.
+
+Contenu attendu après téléchargement : ce même texte, sans modification.

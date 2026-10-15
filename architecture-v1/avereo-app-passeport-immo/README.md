@@ -12,6 +12,15 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
+## Recette humaine prête
+
+Le [guide de recette de la PR nº80](docs/recette-preproduction.md) accompagne les
+six livrables et les huit critères de la phase Préproduction dans le
+[cockpit local](http://127.0.0.1:5193/). Cette phase est soumise à revue, sans
+approbation humaine préremplie. La recette utilise l'application hébergée via
+CONNECT et un bien fictif pour les écritures ; le prototype local conserve son
+stockage navigateur. La revue de PR et l'autorisation de production restent distinctes.
+
 ## Sauvegarde automatique active
 
 Une [sauvegarde complète automatique](docs/sauvegarde-automatique.md) est active

@@ -12,6 +12,17 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Recette humaine préparée — 15 octobre 2026
+
+Le [guide de recette](recette-preproduction.md) est le point d'entrée courant.
+Le cockpit local reste sur le port 5193 et la source réelle `docs/suivi-chantier.json`.
+La phase 2 Préproduction est remise techniquement « À valider » avec six livrables
+et huit critères. Les décisions et événements humains restent inchangés ; aucune
+case cochée par l'agent. Les preuves approuvées des phases 0/1 sont conservées.
+Relire les livrables, faire les essais sur la cible hébergée et un bien fictif,
+puis laisser le responsable enregistrer sa décision et revoir la PR nº80.
+La production reste non commencée et sans autorisation nouvelle.
+
 ## Sauvegarde automatique demandée — 15 octobre 2026
 
 La [sauvegarde automatique](sauvegarde-automatique.md) est active : 03 h 20

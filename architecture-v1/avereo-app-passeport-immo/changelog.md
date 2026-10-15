@@ -12,6 +12,14 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Recette humaine et revue PR nº80 préparées
+
+Guide de recette, fichier d'essai sans donnée client, six livrables décrits et
+huit critères observables dans le cockpit. La Préproduction passe en revue
+technique « À valider », en cohérence avec l'installation déjà autorisée et
+réalisée ; aucune approbation, autorisation de production ou case humaine ajoutée.
+Les preuves approuvées des phases précédentes restent inchangées.
+
 ## 2026-10-15 — Sauvegarde automatique installée et exécutée
 
 Travailleur CLI quotidien, conservation de trente copies complètes réussies, verrou, diagnostic

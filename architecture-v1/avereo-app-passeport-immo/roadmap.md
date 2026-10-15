@@ -12,6 +12,13 @@ tags: [avereo, documentation, local]
 
 # Roadmap Passeport Immo
 
+## Recette humaine à réaliser
+
+Suivre [le guide de recette](docs/recette-preproduction.md), lire les six livrables
+et vérifier les huit critères de la phase Préproduction dans le cockpit. Examiner
+la PR nº80 et consigner les anomalies ou la décision. L'installation et la première
+sauvegarde restent des preuves techniques ; la production attend son accord distinct.
+
 ## Sauvegarde automatique active
 
 Le stockage partagé et sa sauvegarde quotidienne sont opérationnels. Le premier
