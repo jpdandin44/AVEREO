@@ -12,7 +12,22 @@ tags: [passeport-immo, o2switch, preproduction]
 
 # Qualification de la préproduction dédiée
 
-## Recontrôle authentifié du 15 octobre 2026
+## État après installation privée du 15 octobre 2026
+
+Le [rapport courant](03-preproduction.md) et les reçus liés constatent l'installation
+du candidat, du catalogue et des droits ciblés. Les racines réelles et les bases
+distinctes sont contrôlées. La fermeture initiale est remplacée par la protection
+visiteur Basic et le sas CONNECT, après sauvegarde/restauration des fichiers et
+des lignes ciblées du catalogue. Les sous-dossiers publics sont en 0755, les
+configurations et dossiers privés en 0600/0700. Les six requêtes anonymes vérifiées
+reçoivent 401, avec TLS validé et noindex sur Passeport Immo.
+
+La sauvegarde du bien réel est reçue hors document root. Le parcours avec identité
+réelle et l'import dans l'application à cette origine restent ouverts. Les
+observations ci-dessous décrivent les états antérieurs et ne doivent pas être
+prises pour l'inventaire courant après installation.
+
+## Recontrôle authentifié du 15 octobre 2026 avant installation
 
 Le [relevé structuré](../api/connect-hosted-observation.json) confirme le document
 root déclaré, son chemin réel sans redirection symbolique, et l'inventaire courant

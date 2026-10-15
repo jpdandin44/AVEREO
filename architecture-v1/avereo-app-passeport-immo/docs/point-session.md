@@ -12,6 +12,98 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Préproduction privée installée — 15 octobre 2026
+
+cPanel reconnecté et compte habituel confirmé par le responsable. L'autorisation
+déjà exprimée dans le chat est rattachée au candidat exact ; les décisions,
+événements, dates et statuts de phase humains restent conservés. Le contrôle de
+passage a réussi avant installation, après vérification des cibles réelles et
+de la récupération des données ciblées. Cette trace ne crée pas une nouvelle
+acceptation de phase ou de production.
+
+Le [rapport de préproduction](03-preproduction.md) donne le résultat et les reçus :
+installation des douze fichiers applicatifs et des deux fichiers CONNECT compatibles,
+paramètres privés, catalogue actif et droits ciblés. Autres paramètres et protection
+CONNECT conservés ; deux autres comptes existants refusés pour cette application.
+Masque privé corrigé sur les deux sous-dossiers publics après refus 403 ; six
+ressources reçoivent ensuite 401 Basic avec TLS valide. Le test du sas installé
+accepte le ticket de l'émetteur réel et refuse signature invalide, expiration,
+autre application et rejeu. Les secrets et tickets restent uniquement sur le serveur.
+
+La sauvegarde du bien et de ses neuf documents est reçue et relue dans un dossier
+privé hors site public : six actifs, trois archivés. **Elle n'est pas encore importée
+dans l'application HTTPS.** Le stockage reste lié au navigateur et à l'origine.
+Le navigateur intégré échoue à la porte visiteur ; une recette humaine dans Chrome
+avec le compte choisi est demandée. Ensuite, terminer l'import, vérifier PDF,
+classement et persistance. Les versions locales et la copie privée sont conservées.
+PR nº80 toujours ouverte en brouillon au contrôle de cette reprise ; aucun merge
+ou changement de production. Le moteur Projet local est préservé séparément.
+
+Les sources impactées sont le présent point, le [rapport](03-preproduction.md),
+le [suivi](suivi-chantier.json), ses vues, [README](../README.md),
+[architecture](../architecture.md), [roadmap](../roadmap.md),
+[décisions techniques](../decisions.md), [changelog](../changelog.md),
+[qualification](qualification-preproduction.md), [vérification](verification-preproduction.md),
+[runbook](deployment.md) et [index des reçus](../api/README.md).
+
+Bilan documentaire : politique globale appliquée, socles racine et application
+présents ; 35 documents Markdown et 189 liens locaux contrôlés sans erreur.
+Les 19 tests Python, contrat cockpit, parité, vues générées et baseline passent.
+Les preuves approuvées restent intactes. Aucun problème documentaire détecté
+dans ce périmètre ; les deux réserves fonctionnelles sont la recette réelle et
+l'import du dossier, conservées dans le suivi. Le passage en production est
+contrôlé et reste refusé.
+
+## Installation demandée et accès interrompu — 15 octobre 2026
+
+Le responsable demande explicitement de poursuivre le raccordement et
+l'installation en préproduction privée, avec son compte CONNECT habituel et le
+transfert du bien de la SCI. Cet accord de périmètre est acquis dans le chat ;
+il ne faut pas le redemander pour ces mêmes opérations. Aucune validation de
+phase, décision ou case humaine n'est ajoutée au cockpit par l'agent.
+
+Une nouvelle inspection authentifiée à 07:04 UTC retrouve les empreintes CONNECT
+attendues, cinq applications actives sans Passeport Immo et trois comptes actifs.
+L'identité du compte habituel reste à préciser par le responsable avant création
+des droits ciblés. Les rôles existants sont conservés. Le relevé détaillé reste
+uniquement dans le dossier privé d'installation sur le serveur.
+
+Les neuf documents du cas ont été téléchargés par leurs commandes existantes,
+avec leur classement : six actifs et trois archivés. Métadonnées du bien,
+manifeste et archive de transfert sont conservés hors Git dans
+`.local/preproduction-installation-20261015/`. Le reçu privé
+`transfer-verification.json` constate tailles, SHA-256, relecture des octets et CRC.
+Ces données ne sont ni téléversées ni importées sur l'origine HTTPS à ce stade.
+Le stockage V1 reste propre au navigateur et à l'origine ; aucune base documentaire
+partagée n'est ajoutée.
+
+Le [relevé d'accès courant](../api/preproduction-access-observation.json) constate
+401 Basic sur CONNECT et son healthcheck, 403 sur Passeport Immo, TLS valide.
+Le navigateur intégré échoue avant la connexion CONNECT avec
+`ERR_INVALID_AUTH_CREDENTIALS`. Cela ne prouve pas un mot de passe CONNECT erroné,
+ni une incompatibilité générale du navigateur. La session cPanel précédente
+n'est plus accessible ; son nouvel onglet affiche l'identification. Reconnexion
+cPanel et choix du compte ont été demandés, sans transmission de secrets au chat.
+Les services locaux arrêtés ont été relancés : HTTP 200 sur 5175 et 5193.
+
+Reprise : rétablir cPanel, confirmer le compte de recette, qualifier la
+récupération des données de catalogue, puis installer les mêmes archives
+identifiées et leurs paramètres privés. Tester ensuite le parcours réel et
+importer le dossier sur la nouvelle origine privée en conservant les archives.
+La préparation de transfert est vérifiée ; installation et migration restent
+non réalisées. La PR nº80 reste en brouillon, sans merge effectué par l'agent.
+
+Bilan documentaire de cette reprise : [suivi canonique](suivi-chantier.json),
+[vues du cockpit](tableau-de-bord.md), [rapport de vérification](verification-preproduction.md),
+[relevé d'accès](../api/preproduction-access-observation.json),
+[index des intégrations](../api/README.md), [roadmap](../roadmap.md),
+[changelog](../changelog.md) et présent point actualisés. Socles racine/application,
+34 documents Markdown, 161 liens locaux, contrat cockpit, parité et vues générées
+contrôlés sans erreur. Les preuves approuvées restent intactes. Le contrôleur de
+passage refuse encore les prérequis hébergés manquants et l'accord exact non
+enregistré dans son bloc formel ; ce dernier constat ne retire pas l'autorisation
+reçue dans le chat et ne justifie pas de la demander de nouveau.
+
 ## Vérification hébergée après reconnexion — 15 octobre 2026
 
 cPanel authentifié ; catalogue CONNECT lu sans écriture et base distincte de

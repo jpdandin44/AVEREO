@@ -5,12 +5,27 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Décisions Passeport Immo
+
+## 2026-10-15 — Politique d'environnement et transfert privé
+
+Contexte : installation privée autorisée sur le compte parent, après choix du
+compte de recette et récupération vérifiée. Décision technique : compléter la
+politique Apache du candidat par la protection visiteur existante, avec une
+empreinte d'environnement séparée ; conserver les configurations en dehors du
+document root. Les répertoires publics exigent un chmod explicite en 0755 même
+quand l'installateur applique un masque privé ; les répertoires et fichiers
+privés restent en 0700/0600.
+Raisons : maintenir deux portes distinctes, rendre les ressources servables et
+conserver exactement les assets du candidat contrôlé.
+Conséquences : la copie privée du dossier réel ne constitue pas un backend
+documentaire et ne peuple pas le navigateur. L'import et la recette réels restent
+ouverts ; aucune acceptation de phase ou de production n'est déduite des tests.
 
 ## 2026-10-14 — Réutilisation du sas CONNECT
 

@@ -12,6 +12,48 @@ tags: [passeport-immo, connect, preproduction, sauvegarde]
 
 # Vérification des prérequis de préproduction
 
+## Résultat après installation privée
+
+Le [rapport de préproduction](03-preproduction.md) porte l'état courant : candidat
+installé, paramètres privés et catalogue raccordés, compte choisi autorisé et deux
+autres comptes existants refusés. Les récupérations des fichiers et données ciblées
+sont vérifiées. Les octets déployés, les permissions corrigées et six refus anonymes
+401 sont contrôlés ; le ticket de l'émetteur réel est accepté par le sas installé,
+avec refus des signatures invalides, expirations, autre application et rejeu.
+La sauvegarde de la SCI est sur le serveur privé. Sa migration dans l'interface et
+le parcours authentifié réel restent non réalisés. Les constats qui suivent sont
+les étapes antérieures, conservées avec leur portée et leur date.
+
+## Accès et migration préparée après demande d'installation
+
+Le responsable autorise dans le chat le raccordement et l'installation privés,
+avec son compte habituel et le bien de la SCI. L'accord de périmètre est acquis ;
+le choix du compte parmi les trois comptes actifs reste en attente. L'inspection
+authentifiée du 15 octobre à 07:04 UTC confirme encore l'absence du catalogue et
+des paramètres Passeport Immo et les empreintes attendues du runtime CONNECT.
+
+Le [relevé d'accès](../api/preproduction-access-observation.json) conserve les
+observations et les limites actuelles. CONNECT et son healthcheck répondent
+401 avec une demande HTTP Basic, avant l'identité applicative ; le certificat
+HTTPS est validé. Le navigateur intégré échoue à cette porte avec
+`ERR_INVALID_AUTH_CREDENTIALS`. La cause détaillée du traitement de cette demande
+par le navigateur reste indéterminée. Une connexion Chrome ne s'applique pas
+automatiquement au profil du navigateur intégré, comme l'indique la
+[documentation officielle OpenAI](https://learn.chatgpt.com/docs/browser).
+Aucune protection n'est retirée. La session cPanel doit être rétablie.
+
+Le dossier de transfert privé, exporté depuis les commandes de téléchargement
+de l'application locale, contient les six documents actifs, les trois archivés
+et les métadonnées du bien. Manifeste et archive sont relus : tailles, SHA-256,
+octets et CRC conformes. Ils restent hors Git et hors archive applicative.
+Le téléversement et l'import HTTPS ne sont pas effectués ; la persistance du
+nouveau dossier doit être vérifiée sur cette origine. La V1 reste un stockage
+de navigateur, sans espace documentaire partagé entre appareils.
+
+L'accord reçu ne remplace ni la récupération des données CONNECT avant écriture,
+ni la qualification des droits ciblés, ni la recette réelle. Les observations
+antérieures ci-dessous sont conservées avec leur date et leur périmètre.
+
 ## Contrôle authentifié du 15 octobre 2026
 
 Le [relevé structuré](../api/connect-hosted-observation.json) remplace l'inconnue
@@ -84,7 +126,7 @@ répétition locale de restauration des fichiers sont contrôlés. Les onze test
 Python, la parité a/b/c/d/e et le contrat du cockpit passent. Ces preuves ne
 qualifient pas une récupération hébergée ou une recette du dossier privé.
 
-## Préproduction
+## Préproduction — constats antérieurs au raccordement local
 
 | Prérequis | Constat | Condition restante |
 |---|---|---|
@@ -111,6 +153,6 @@ déploiement ni une validation de la recette HTTPS.
 
 ## Mise en production
 
-Aucune livraison ni ouverture n’est incluse. La prochaine action est la
-qualification du lot CONNECT et du contrat Passeport Immo, puis un accord exact
-de préproduction sur un artefact complet et récupérable.
+Aucune livraison ni ouverture de production n’est incluse. La prochaine action
+courante est de rétablir les accès nécessaires, puis d'installer et recetter la
+préproduction privée autorisée, avec récupération et droits ciblés qualifiés.

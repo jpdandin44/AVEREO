@@ -5,14 +5,14 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Architecture Passeport Immo
 
-## Sas CONNECT préparé pour la préproduction
+## Sas CONNECT installé en préproduction privée
 
 Le build copie le sas commun depuis `avereo-platform/shared/connect-gate.php`.
 CONNECT → ticket HMAC → entrée à nonce unique → cookie signé → HTML protégé.
@@ -21,8 +21,9 @@ complètent les assets ; la configuration privée reste hors document root.
 Sans module de réécriture Apache, la politique runtime ferme l'accès.
 
 CONNECT reconnaît les deux clés de lancement de `passeport-immo`. Le
-[contrat de catalogue](api/connect-catalogue.json) reste en brouillon sans droit
-accordé. Aucun serveur métier ou changement du store navigateur : le sas protège
+[modèle de catalogue](api/connect-catalogue.json) conserve sa proposition en brouillon ;
+l'installation réelle est active avec l'habilitation ciblée décrite dans le
+[rapport de préproduction](docs/03-preproduction.md). Aucun serveur métier ou changement du store navigateur : le sas protège
 l'entrée, sans remplacer la connexion interne de démonstration.
 
 ## Composants présents
@@ -46,8 +47,11 @@ Serveur Vite sur 127.0.0.1:5175 ; build dans `frontend/dist/`.
 Le modèle Docker contient un étage Node 22 pour tests/build puis Nginx pour les assets.
 Configuration Compose vérifiée ; exécution Docker non vérifiée.
 La session admin/pro et l'abonnement sont simulés. Aucun service serveur métier
-ni API client/document n'est présent. Le sas CONNECT est préparé et testé localement ; l'espace o2switch
-est créé et fermé, sans installation de l'application.
+ni API client/document n'est présent. Le sas CONNECT est installé sur o2switch,
+avec protection visiteur Basic distincte de l'identité et des droits CONNECT.
+La configuration d'environnement complète la politique Apache du candidat,
+en conservant le fichier de comptes visiteurs privé. Les sous-dossiers publics
+sont en 0755 ; configurations et répertoires privés sont en 0600/0700.
 
 ## Suivi indépendant de l'application
 AVEREO Projet existant lit `docs/suivi-chantier.json` et les livrables déclarés.
@@ -58,8 +62,9 @@ Les paramètres du poste restent dans `.local/review-settings.json`, ignoré par
 Les vues HTML/Markdown sont générées et contrôlées, sans modification manuelle.
 
 ## Limites et inconnues
-Partage d'URL sans dossier ; stockage lié au navigateur ; absence d'identité réelle
-et de facturation. Le futur stockage centralisé est TBD. Questions canoniques dans
+Partage d'URL sans dossier ; stockage lié au navigateur ; session interne de
+démonstration et absence de facturation. L'identité CONNECT protège l'entrée
+hébergée, sans synchroniser les dossiers. Le futur stockage centralisé est TBD. Questions canoniques dans
 le suivi, résultats techniques dans le livrable local ; aucun statut humain inféré.
 
 ## Candidat et contrôles
@@ -85,8 +90,10 @@ La cible o2switch retenue est un dossier dédié protégé dans le compte du dom
 parent : l'hébergeur impose ce compte aux sous-domaines. Le dossier, son rattachement
 et le certificat gratuit sont créés. Le modèle `workflows/preproduction.htaccess`
 était le seul fichier installé lors de la qualification initiale : il refuse toute consultation et interdit l'indexation.
-L'adresse HTTPS reçoit 403 avec validation TLS active ; aucun isolement entre comptes
-n'est déclaré pour cette cible. Accès privé de test et récupération restent à qualifier.
+La fermeture 403 initiale est remplacée lors de l'installation par la protection
+visiteur 401 Basic et le sas CONNECT. Aucun isolement entre comptes n'est déclaré :
+les chemins dédiés et les bases distinctes sont contrôlés. Fichiers et lignes de
+catalogue/droits disposent de récupérations vérifiées ; la recette authentifiée reste ouverte.
 Les observations et valeurs exactes restent dans le suivi canonique et la
 [fiche de qualification](docs/qualification-preproduction.md).
 
@@ -118,6 +125,11 @@ du navigateur sont explicitées dans le guide. Références :
 [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API),
 [transactions](https://developer.mozilla.org/en-US/docs/Web/API/IDBTransaction),
 [URL temporaires](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static).
+
+La copie de migration du cas réel est déposée séparément dans un répertoire privé
+du serveur, sans exposition par l'application. Ce dépôt n'ajoute pas de stockage
+documentaire partagé et ne peuple pas IndexedDB à la nouvelle origine : l'import
+dans le navigateur de recette reste nécessaire.
 
 Le cas de coupes utilise une circulation de fichiers locale : plans source →
 projets CAO dans Coupe → exports SVG → PDF comparatif → import dans le dossier

@@ -33,6 +33,12 @@ présente dans le candidat original. Conserver les archives historiques.
 
 ## Préproduction
 
+Le [rapport du 15 octobre](03-preproduction.md) décrit l'installation réellement
+effectuée et la recette restante. Les étapes suivantes constituent la procédure
+de préparation ; leurs inconnues initiales sont maintenant remplacées par les
+reçus liés dans ce rapport. Ne pas réexécuter un installateur initial sur une cible
+déjà peuplée : refaire inventaire, comparaison et récupération du nouvel état.
+
 1. Vérifier PR/CI du candidat et version CONNECT réellement installée.
 2. Recontrôler la [sauvegarde restaurée le 15 octobre](../api/connect-recovery-observation.json) :
    arbre Passeport Immo, deux fichiers CONNECT et configuration privée, octets et
@@ -76,6 +82,10 @@ présente dans le candidat original. Conserver les archives historiques.
 8. Après qualification de l'accès privé et accord applicable, activer la politique
    runtime du candidat. Conserver la protection de répertoire distincte de
    Drupal/CONNECT ; ne pas ouvrir globalement API ou points d'identité.
+   Consigner séparément l'empreinte de la politique Apache complétée par la
+   configuration Basic d'environnement. Fixer explicitement les sous-dossiers
+   publics en 0755 : un masque privé peut réduire le mode demandé à la création.
+   Garder les dossiers privés en 0700 et configurations/nonces en 0600.
 9. Recetter connexion, catalogue/droits, ticket, ouverture, refus, rejeu et
    déconnexion ; importer explicitement les pièces privées et tester consultation,
    classement, archives, persistance et PDF sur l'origine HTTPS.

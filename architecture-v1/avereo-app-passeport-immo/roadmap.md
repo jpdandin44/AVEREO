@@ -14,11 +14,15 @@ tags: [avereo, documentation, local]
 
 ## Suite du lot CONNECT
 
-Le lot documents/coupes est approuvé dans le cockpit. Le sas et ses paramètres
-CONNECT sont préparés et testés localement. Le contrôle authentifié confirme la
-cible fermée et l'absence du raccordement hébergé. Un delta compatible avec les
-deux fichiers CONNECT observés est préparé. La prochaine action est la préparation
-des droits ciblés, des paramètres et de la récupération des données du catalogue avant accord exact d'installation ; la récupération des fichiers a été vérifiée.
+Le lot documents/coupes est approuvé dans le cockpit. Le sas, les paramètres
+privés et le delta compatible CONNECT sont installés en préproduction, après
+l'autorisation du responsable et son choix de compte. Catalogue et droits ciblés,
+octets et permissions, tickets techniques et protection visiteur sont contrôlés.
+Fichiers et lignes du catalogue/droits disposent de récupérations vérifiées.
+La sauvegarde privée du bien conserve six documents actifs et trois archivés
+sur le serveur ; leur import dans l'application HTTPS reste à réaliser.
+La prochaine action est la recette dans le navigateur avec l'identité réelle,
+puis l'import et la vérification du dossier. Voir le [rapport courant](docs/03-preproduction.md).
 Le [runbook](docs/deployment.md) garde les opérations concrètes. La production
 reste distincte ; les statuts font foi uniquement dans le suivi canonique.
 

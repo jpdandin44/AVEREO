@@ -1,0 +1,16 @@
+{
+  "observedAt": "2026-10-15T07:20:05+00:00",
+  "directory": "/home/daje3540/private/passeport-immo-preparation/catalogue-recovery-20261015T072005Z",
+  "databaseDistinctFromProduction": true,
+  "tableCounts": {
+    "applications": 5,
+    "entitlements": 5,
+    "user_application_access": 6
+  },
+  "backupReadback": "passed",
+  "temporaryTableRestore": "passed",
+  "activeTableRowsUnchanged": true,
+  "privateBackupMode": "0600",
+  "privateBackupDirectoryMode": "0700",
+  "limitation": "Catalogue/access rows restored to temporary tables in isolated preproduction database. No database-wide recovery claim; no private row data exported."
+}

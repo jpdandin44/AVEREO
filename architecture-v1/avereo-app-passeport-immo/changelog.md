@@ -12,6 +12,28 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Installation privée et sauvegarde du cas reçue
+
+Installation des douze fichiers applicatifs et du delta CONNECT compatible de
+deux fichiers, après récupération des fichiers et restauration ciblée des données
+de catalogue/droits. Paramètres privés et clé dédiée sur serveur ; habilitation
+du compte choisi, refus des deux autres comptes existants et autres droits conservés.
+Protection visiteur maintenue en configuration d'environnement ; correction des
+deux sous-dossiers publics en 0755 après détection des refus 403 dus au masque privé.
+Six contrôles HTTPS anonymes reçoivent ensuite 401 Basic ; tickets réels de
+l'émetteur installés, refus et rejeu contrôlés sur le serveur. Copie privée du cas
+reçue ; recette navigateur et import effectif du bien restent à terminer.
+
+## 2026-10-15 — Transfert préparé et diagnostic d'accès
+
+Après demande d'installation privée, export local du dossier de recette : six
+documents actifs, trois archivés et métadonnées conservés hors Git. Archive et
+manifeste vérifiés par tailles, SHA-256, octets et CRC. Le transfert vers la
+préproduction reste non réalisé. Diagnostic d'accès : TLS valide, porte visiteur
+Basic active et échec d'identification dans le navigateur intégré avant CONNECT.
+Reconnexion cPanel et identification du compte habituel nécessaires ; aucun
+nouveau droit ni secret créé. Application et cockpit locaux relancés.
+
 ## 2026-10-15 — Contrôle hébergé et delta compatible
 
 Catalogue et configuration CONNECT contrôlés en lecture seule ; cible Passeport

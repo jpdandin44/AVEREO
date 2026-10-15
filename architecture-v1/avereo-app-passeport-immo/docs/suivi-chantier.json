@@ -205,7 +205,7 @@
         {
           "path": "03-preproduction.md",
           "kind": "file",
-          "availability": "planned",
+          "availability": "present",
           "title": "03 preproduction",
           "description": "Préproduction",
           "expectedEvidence": [
@@ -231,25 +231,25 @@
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Désigner le compte de recette et son accès ciblé, préparer paramètres privés et catalogue avec récupération des données, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.",
+      "nextAction": "Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine.",
       "legacyPhaseId": 3,
       "blockers": [
-        "Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.",
-        "Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.",
-        "Accord exact d’installation absent ; récupération des données CONNECT à qualifier avant modification du catalogue et des droits."
+        "Recette authentifiée Drupal → CONNECT → Passeport Immo non réalisée dans un navigateur utilisable ; porte visiteur du navigateur intégré toujours en échec.",
+        "Sauvegarde du bien et de ses neuf documents reçue sur le serveur privé ; import et persistance dans l’application HTTPS encore non réalisés."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/80",
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "e26f5643a685adc2b6498391f233c6a9752d468a",
+        "headSha": "f0a00868c4538ea5b9f0686e7b883f9474ac3b21",
         "draft": true,
-        "observedAt": "2026-10-15T06:44:16.024Z",
+        "observedAt": "2026-10-15T06:48:16.038Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
-      }
+      },
+      "technicalState": "installed_private_recipe_pending"
     },
     {
       "id": 3,
@@ -889,7 +889,7 @@
     "owner": "jpdandin",
     "kind": "application",
     "stage": "preproduction",
-    "status": "blocked",
+    "status": "in_progress",
     "objective": "Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.",
     "candidate": {
       "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
@@ -900,11 +900,11 @@
     "targets": {
       "preproduction": {
         "id": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
-        "ready": false,
-        "isolated": false,
+        "ready": true,
+        "isolated": true,
         "empty": false,
-        "evidence": "docs/qualification-preproduction.md",
-        "observedAt": "2026-10-15T06:24:06.077412+00:00",
+        "evidence": "api/preproduction-installation-observation.json ; api/connect-recovery-observation.json ; api/connect-catalogue-recovery-observation.json",
+        "observedAt": "2026-10-15T07:32:09+00:00",
         "provider": "o2switch",
         "purpose": "Préproduction dédiée",
         "selectedAt": "2026-10-03T12:52:58+00:00",
@@ -950,25 +950,30 @@
           }
         },
         "provisioning": {
-          "status": "created_closed_application_not_installed",
-          "observedAt": "2026-10-15T06:24:06.077412+00:00",
+          "status": "installed_private_recipe_pending",
+          "observedAt": "2026-10-15T07:40:02+00:00",
           "directoryCreated": true,
           "initialDirectoryInventory": "empty_before_control_file_creation",
           "currentDirectoryInventory": [
             ".htaccess",
-            "cgi-bin"
+            "assets",
+            "cgi-bin",
+            "connect",
+            "index.html",
+            "index.php"
           ],
-          "applicationFilesInstalled": false,
+          "applicationFilesInstalled": true,
           "subdomainCreated": true,
           "originIp": "109.234.166.140",
           "protection": {
-            "template": "workflows/preproduction.htaccess",
-            "configuration": "Require all denied",
+            "runtimeTemplate": "frontend/public/.htaccess",
+            "environmentOverlay": "existing visitor Basic Auth from private account file",
+            "configuration": "HTTP Basic visitor protection, CONNECT ticket gate and noindex",
             "savedAndReloaded": true,
-            "originHttpStatus": 403,
-            "publicHttpsStatus": 403,
+            "publicHttpsStatus": 401,
             "xRobotsTag": "noindex, nofollow, noarchive",
-            "consultationAccess": "closed_to_all"
+            "consultationAccess": "visitor_authentication_then_connect_authorization",
+            "runtimePolicyWithEnvironmentSha256": "a3feb21b854911f5b03fd87d171075bf5b85b6c2d6e12861e6d72098095fff96"
           },
           "certificate": {
             "provider": "Lets Encrypt",
@@ -986,8 +991,17 @@
             "Résolution DNS initialement absente sur le résolveur du poste ; requêtes DNS directes vers o2switch et 1.1.1.1 expirées. Le routage de l’adresse est ensuite constaté via navigateur et urllib.",
             "curl/Schannel signale encore SEC_E_UNTRUSTED_ROOT sur ce poste ; le contrôle Python avec ssl.create_default_context valide HTTPS et reçoit 403. Aucun contournement de validation."
           ],
-          "recovery": "passed_files_and_modes_private_rehearsal_no_database",
-          "evidence": "docs/qualification-preproduction.md"
+          "recovery": "files_and_targeted_catalogue_rows_verified_private_rehearsals",
+          "evidence": "api/preproduction-installation-observation.json ; api/preproduction-post-install-observation.json ; api/preproduction-http-observation.json",
+          "initialProtection": {
+            "template": "workflows/preproduction.htaccess",
+            "configuration": "Require all denied",
+            "savedAndReloaded": true,
+            "originHttpStatus": 403,
+            "publicHttpsStatus": 403,
+            "xRobotsTag": "noindex, nofollow, noarchive",
+            "consultationAccess": "closed_to_all"
+          }
         }
       },
       "production": {
@@ -1000,7 +1014,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "e26f5643a685adc2b6498391f233c6a9752d468a",
+      "headSha": "f0a00868c4538ea5b9f0686e7b883f9474ac3b21",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1008,7 +1022,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T06:44:16.024Z",
+      "observedAt": "2026-10-15T06:48:16.038Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1109,7 +1123,20 @@
         "evidence": "CI e26f564 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon."
       }
     ],
-    "approvals": [],
+    "approvals": [
+      {
+        "scope": "preproduction",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "approved",
+        "actor": "jpdandin",
+        "source": "user_chat",
+        "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+        "recordedAt": "2026-10-15T07:35:02.235103+00:00",
+        "evidence": "Instruction directe dans ce chat : « OK, utilise mon compte CONNECT habituel pour la recette et poursuis le raccordement puis l’installation de Passeport Immo en préproduction privée stp. Assure toi que le bien de la SCI est également migré en préprod stp ». Compte existant confirmé ensuite par le responsable. Référence : docs/point-session.md.",
+        "limitation": "Trace de l’autorisation déjà exprimée, pas une nouvelle décision de phase, un merge, une recette réussie ou une ouverture de production."
+      }
+    ],
     "backups": [
       {
         "id": "recovery-20261015T063717Z",
@@ -1122,6 +1149,15 @@
         "location": "/home/daje3540/private/passeport-immo-preparation/recovery-20261015T063717Z",
         "databaseIncluded": false,
         "activeFilesModified": false
+      },
+      {
+        "id": "passeport-connect-catalogue-20261015T072005Z",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "observedAt": "2026-10-15T07:20:05+00:00",
+        "evidence": "api/connect-catalogue-recovery-observation.json",
+        "scope": "Catalogue and access rows only, restored into temporary tables; active rows unchanged."
       }
     ],
     "rollback": {
@@ -1140,11 +1176,10 @@
       "observedAt": null
     },
     "blockers": [
-      "Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.",
-      "Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.",
-      "Accord exact d’installation absent ; récupération des données CONNECT à qualifier avant modification du catalogue et des droits."
+      "Recette authentifiée Drupal → CONNECT → Passeport Immo non réalisée dans un navigateur utilisable ; porte visiteur du navigateur intégré toujours en échec.",
+      "Sauvegarde du bien et de ses neuf documents reçue sur le serveur privé ; import et persistance dans l’application HTTPS encore non réalisés."
     ],
-    "nextAction": "Désigner le compte de recette et son accès ciblé, préparer paramètres privés et catalogue avec récupération des données, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.",
+    "nextAction": "Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1159,11 +1194,11 @@
     "stages": {
       "local": {
         "status": "validated",
-        "nextAction": "Attendre la qualification de CONNECT en préproduction, puis vérifier le raccordement de Passeport Immo et préparer sa recette privée. Autorisation de phase et accord d’installation restent à enregistrer séparément."
+        "nextAction": "Lot documents/coupes approuvé ; intégration installée en préproduction privée, recette et import du dossier à terminer."
       },
       "preproduction": {
-        "status": "blocked",
-        "nextAction": "Désigner le compte de recette et son accès ciblé, préparer paramètres privés et catalogue avec récupération des données, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette."
+        "status": "in_progress",
+        "nextAction": "Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine."
       },
       "production": {
         "status": "blocked",
@@ -1224,6 +1259,16 @@
         "sourceSha": "322ad1275c240a9bc70ad8641102c58600c1f67c",
         "artifactSha256": "bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983",
         "observedAt": "2026-10-14T12:32:31+02:00"
+      },
+      {
+        "gate": "preproduction",
+        "declaredEvidenceConsistent": true,
+        "errors": [],
+        "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+        "observedAt": "2026-10-15T07:35:02.235103+00:00",
+        "evidence": "api/preproduction-installation-observation.json#preflight",
+        "limitation": "Contrôle avant installation ; recette humaine et import du dossier encore ouverts."
       }
     ],
     "previousIterationRef": "legacyTracking.developmentWorkflow",
@@ -1347,18 +1392,18 @@
       "archiveReadback": "passed",
       "restoreRehearsal": "passed_local_files_only",
       "hostedBackupRestore": "passed_files_and_modes_private_rehearsal_no_database",
-      "remoteDelivery": "not_performed",
-      "status": "prepared_local_only",
+      "remoteDelivery": "installed_private_recipe_pending",
+      "status": "installed_private_recipe_pending",
       "bundle": ".local/preproduction-preparation/connect-20261014/preproduction.zip",
       "manifest": ".local/preproduction-preparation/connect-20261014/preproduction.manifest.json",
-      "observedAt": "2026-10-14T20:09:51.631Z",
+      "observedAt": "2026-10-15T07:40:02+00:00",
       "hostedBackupRestoreEvidence": "api/connect-recovery-observation.json"
     },
     "preproductionVerification": {
       "requestedAt": "2026-10-14",
-      "status": "hosted_observed_integration_absent_compatible_delta_tested",
+      "status": "installed_private_recipe_pending",
       "evidence": "docs/verification-preproduction.md",
-      "observedAt": "2026-10-15T06:36:09.982Z",
+      "observedAt": "2026-10-15T07:40:02+00:00",
       "checks": {
         "frontendTests": 26,
         "pythonTests": 19,
@@ -1372,17 +1417,20 @@
         "compatibleDelta": "passed_local"
       },
       "remaining": [
-        "Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.",
-        "Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.",
-        "Accord exact d’installation absent ; récupération des données CONNECT à qualifier avant modification du catalogue et des droits."
+        "Recette authentifiée Drupal → CONNECT → Passeport Immo non réalisée dans un navigateur utilisable ; porte visiteur du navigateur intégré toujours en échec.",
+        "Sauvegarde du bien et de ses neuf documents reçue sur le serveur privé ; import et persistance dans l’application HTTPS encore non réalisés."
       ],
       "observation": "api/connect-hosted-observation.json",
-      "recoveryObservation": "api/connect-recovery-observation.json"
+      "recoveryObservation": "api/connect-recovery-observation.json",
+      "accessObservation": "api/preproduction-access-observation.json",
+      "installationObservation": "api/preproduction-installation-observation.json",
+      "postInstallationObservation": "api/preproduction-post-install-observation.json",
+      "httpObservation": "api/preproduction-http-observation.json"
     },
     "connectPreparation": {
-      "status": "tested_local_hosted_gap_identified",
+      "status": "installed_private_recipe_pending",
       "requestedOn": "2026-10-14",
-      "observedAt": "2026-10-15T06:36:09.982Z",
+      "observedAt": "2026-10-15T07:40:02+00:00",
       "source": "docs/02-integration-connect.md",
       "runbook": "docs/deployment.md",
       "previous": {
@@ -1531,13 +1579,14 @@
         "connectStatus": 401,
         "connectHealthStatus": 401,
         "connectBasicChallenge": true,
-        "passeportRootStatus": 403,
-        "passeportHtmlStatus": 403,
+        "passeportRootStatus": 401,
         "tlsValidation": true,
-        "observedAt": "2026-10-15T06:36:09.982Z"
+        "observedAt": "2026-10-15T07:37:06.557670+00:00",
+        "evidence": "api/preproduction-http-observation.json",
+        "passeportHtmlStatus": 401
       },
       "hosted": {
-        "status": "observed_read_only",
+        "status": "installed_private_recipe_pending",
         "observedAt": "2026-10-15T06:24:06.077412+00:00",
         "observation": "api/connect-hosted-observation.json",
         "cpanelSession": "authenticated_at_observation",
@@ -1545,12 +1594,15 @@
         "catalogue": "passeport_immo_absent",
         "privateConfiguration": "passeport_launch_and_gate_configuration_absent",
         "recovery": "passed_files_and_modes_private_rehearsal_no_database",
-        "deployment": "not_performed",
-        "recoveryObservation": "api/connect-recovery-observation.json"
+        "deployment": "installed_private_recipe_pending",
+        "recoveryObservation": "api/connect-recovery-observation.json",
+        "currentSession": "authenticated",
+        "installationObservation": "api/preproduction-installation-observation.json",
+        "postInstallationObservation": "api/preproduction-post-install-observation.json"
       },
       "catalogue": "api/connect-catalogue.json",
-      "newEntitlementsCreated": false,
-      "secretsCreated": false,
+      "newEntitlementsCreated": true,
+      "secretsCreated": true,
       "previousRuntimeDelta": {
         "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
         "baseSha": "c45812cc97d91062d562be2370d032b1977232fc",
@@ -1571,6 +1623,32 @@
         ],
         "configurationIncluded": false,
         "databaseMigrationIncluded": false
+      },
+      "installationPreparation": {
+        "status": "installed_private_recipe_pending",
+        "requestedScopeReference": "docs/point-session.md#installation-demandée-et-accès-interrompu--15-octobre-2026",
+        "accountSelection": "confirmed_existing_administrator",
+        "existingRolesChanged": false,
+        "cpanelSession": "authenticated",
+        "privateMigration": {
+          "activeDocuments": 6,
+          "archivedDocuments": 3,
+          "exportMethod": "existing_document_download_controls",
+          "localManifestAndArchiveReadback": "passed_sha256_size_bytes_crc",
+          "privateDataIncludedInPublicCandidate": false,
+          "serverUpload": "verified_private_backup_only",
+          "httpsOriginImport": "not_performed",
+          "storageLimit": "browser_and_origin_specific_no_shared_document_backend",
+          "privateReceipt": ".local/preproduction-installation-20261015/transfer-verification.json"
+        },
+        "remoteInstallation": "performed_verified_private",
+        "evidence": "api/preproduction-installation-observation.json",
+        "resolvedPrerequisites": [
+          "Session cPanel à rétablir ; porte visiteur CONNECT en échec dans le navigateur intégré avant la connexion applicative.",
+          "Compte CONNECT habituel à identifier avant habilitation ciblée ; parcours réel et accès privé HTTPS non recettés.",
+          "Récupération des données du catalogue CONNECT, paramètres privés et raccordement hébergé à réaliser avant installation."
+        ],
+        "catalogueRecoveryObservation": "api/connect-catalogue-recovery-observation.json"
       }
     }
   },
@@ -1615,7 +1693,7 @@
     "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "Sur reprise explicite : relire les états Git et cockpit, publier le lot local de synchronisation/revue, puis reprendre le lot CONNECT de phase 2 autorisé. Accès privé et récupération hébergée restent à qualifier.",
+    "nextAction": "Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine.",
     "resumedAt": "2026-10-14T09:40:12+00:00",
     "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
     "previousClosure": {

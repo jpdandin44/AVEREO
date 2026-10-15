@@ -12,18 +12,18 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
-## Raccordement CONNECT préparé
+## Préproduction privée installée
 
 Le [sas CONNECT](docs/02-integration-connect.md) et les paramètres de lancement
-sont préparés et testés localement. Le build ajoute les fichiers PHP et règles
+sont installés sur la préproduction privée. Le build ajoute les fichiers PHP et règles
 Apache ; l'application locale sur 5175 garde son fonctionnement. PHP 8.3 et
 Apache avec réécriture sont requis pour le sas hébergé. Le
 [runbook](docs/deployment.md) précise configuration privée, catalogue et droits,
-archive fermée, récupération et recette. Aucun secret, installation ou droit
-hébergé n'est créé par la préparation.
-Le [contrôle authentifié du 15 octobre](api/connect-hosted-observation.json)
-confirme la cible fermée et le raccordement absent. Un delta compatible avec les
-deux fichiers CONNECT observés est préparé ; sa commande figure dans le runbook.
+archive fermée, récupération et recette. L'installation du 15 octobre conserve
+la protection visiteur et réserve le lancement au compte choisi. Les clés restent
+sur le serveur. Le [rapport de préproduction](docs/03-preproduction.md) distingue
+installation vérifiée, recette authentifiée restante et sauvegarde de la SCI reçue.
+Le bien et ses documents restent à importer dans le navigateur de cette origine.
 
 ## Objectif et état
 Version locale du prototype de chiffrage, reprise après l'état des lieux puis raccordée
@@ -81,7 +81,8 @@ le chemin du poste est dans `.local/review-settings.json`, hors Git.
 
 ## Limites connues
 Le partage transmet l'URL, sans transférer le dossier à un autre poste. Les données
-et images sont dans `localStorage`, sans compte réel ni synchronisation.
+et images du dossier de travaux sont dans `localStorage`, les documents dans
+IndexedDB, sans synchronisation entre navigateurs ni stockage partagé par compte CONNECT.
 Les unités h/ml restent à zéro selon le calcul historique ; deux pièces homonymes
 peuvent mélanger leurs lignes dans le PDF. La page blanche finale de l'export court
 a été corrigée et recettée techniquement. Les autres limites restent dans le suivi.
@@ -101,16 +102,16 @@ donne le candidat, la PR, les contrôles et les blocages depuis le JSON canoniqu
 Le [raccordement local](workflows/developpement-github-cockpit.md) décrit les commandes.
 Après build, `python workflows/package-candidate.py` produit une archive vérifiée
 et son manifeste dans `.local/`. Les [preuves du correctif](docs/raccordement-cockpit.md)
-distinguent recette technique et acceptation humaine. Les cibles de préproduction
-et production restent à qualifier avant tout déploiement.
+distinguent recette technique et acceptation humaine. La préproduction est
+installée ; recette réelle et import restent ouverts. La production reste à qualifier.
 
 La [préparation privée de préproduction](workflows/preparer-preproduction.md) produit
 un lot contrôlé du candidat, avec fermeture initiale et répétition locale de restauration.
 Commande depuis le sous-projet : `python workflows/prepare-preproduction.py`.
 
-L'espace o2switch est désormais créé et fermé à toute consultation, avec certificat
-HTTPS installé. L'application y reste absente ; accès privé de test, récupération
-et accord du candidat exact restent à établir. Voir la
+L'espace o2switch héberge l'application sous protection visiteur et sas CONNECT,
+avec certificat HTTPS validé et récupération des fichiers et données ciblées vérifiée.
+La recette avec l'identité réelle et l'import du dossier restent à effectuer. Voir la
 [qualification de la cible](docs/qualification-preproduction.md) pour les contrôles observés.
 
 ## Lot documents du 14 octobre 2026

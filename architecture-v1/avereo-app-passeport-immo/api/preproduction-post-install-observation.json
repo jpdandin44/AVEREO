@@ -1,0 +1,27 @@
+{
+  "observedAt": "2026-10-15T07:40:02+00:00",
+  "status": "passed_hosted_cli_checks",
+  "publicCandidateBytesVerified": 12,
+  "connectDeltaFilesVerified": 2,
+  "environmentVisitorPolicyVerified": true,
+  "publicSubdirectoryModes": "0755",
+  "privateDirectoryModes": "0700",
+  "privateConfigurationAndNonceFileModes": "0600",
+  "otherConnectSettingsUnchanged": true,
+  "selectedAccountLaunchAllowed": true,
+  "otherExistingAccountsLaunchAllowed": false,
+  "installedIssuerConfigured": true,
+  "installedGateDiscoversDedicatedPrivateConfiguration": true,
+  "realIssuerTicketAcceptedByInstalledGate": true,
+  "invalidTicketRejections": [
+    "invalid_signature",
+    "expired_ticket",
+    "wrong_application",
+    "replayed_nonce"
+  ],
+  "ownTestNonceRemoved": true,
+  "secretOrTicketValueExported": false,
+  "authenticatedBrowserRecipe": "not_performed",
+  "caseApplicationImport": "not_performed",
+  "limitation": "Technical CLI checks on deployed code and private configuration; no HTTP visitor login, OAuth identity or browser business recipe claim."
+}

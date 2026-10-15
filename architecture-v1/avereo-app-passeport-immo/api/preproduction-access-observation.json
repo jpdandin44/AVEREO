@@ -1,0 +1,44 @@
+{
+  "observedAt": "2026-10-15T07:15:59.668488+00:00",
+  "publicHttps": [
+    {
+      "url": "https://connect-preprod.avereo.fr/",
+      "status": 401,
+      "tlsValidated": true,
+      "basicChallenge": true
+    },
+    {
+      "url": "https://connect-preprod.avereo.fr/api/v1/health",
+      "status": 401,
+      "tlsValidated": true,
+      "basicChallenge": true
+    },
+    {
+      "url": "https://passeport-immo-preprod.avereo.fr/",
+      "status": 403,
+      "tlsValidated": true,
+      "basicChallenge": false
+    }
+  ],
+  "browser": {
+    "connectObservedError": "ERR_INVALID_AUTH_CREDENTIALS",
+    "failureStage": "visitor_http_basic_authentication_before_connect_login",
+    "cpanelSession": "login_required_after_previous_session_ended",
+    "connectAuthenticatedRecipe": "not_performed",
+    "universalBrowserIncompatibility": "not_established"
+  },
+  "migrationPreparation": {
+    "activeDocuments": 6,
+    "archivedDocuments": 3,
+    "exportMethod": "existing_document_download_controls",
+    "localManifestAndArchiveReadback": "passed_sha256_size_bytes_crc",
+    "privateDataIncludedInPublicCandidate": false,
+    "serverUpload": "not_performed",
+    "httpsOriginImport": "not_performed",
+    "storageLimit": "browser_and_origin_specific_no_shared_document_backend",
+    "privateReceipt": ".local/preproduction-installation-20261015/transfer-verification.json"
+  },
+  "remoteApplicationInstallation": "not_performed",
+  "secretsCreated": false,
+  "newEntitlementsCreated": false
+}
