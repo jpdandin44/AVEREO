@@ -37,7 +37,14 @@ Le remplacement des deux fichiers est effectué en préproduction. Un premier
 contrôle hébergé révèle une page 403 héritée qui repasse par le routage SPA :
 les scripts internes restent protégés mais leur refus devient une redirection.
 Le test Apache reproduit cet héritage ; `ErrorDocument 403 default` impose le
-refus attendu. Cette dernière règle et son nouveau candidat restent à réinstaller.
+refus attendu. Le nouveau candidat est installé et les douze contrôles HTTPS
+sont conformes. L'ouverture avec le ticket du compte autorisé, le chargement des
+assets, le worker et les deux pages du PDF sont vérifiés dans le navigateur intégré.
+Ce ticket est émis par le composant installé après contrôle des droits existants ;
+ce parcours ne constitue pas une connexion OAuth dans ce navigateur. Un ticket
+court est transféré uniquement dans un fichier privé de recette, jamais dans Git
+ou le chat. Le responsable confirme ensuite dans Chrome la disparition de la
+troisième fenêtre ; la revue humaine et la déconnexion restent distinctes.
 Les sections ci-dessous
 conservent les constats initiaux, antérieurs à l'installation décrite dans le
 [rapport courant](03-preproduction.md). Les preuves approuvées restent inchangées.

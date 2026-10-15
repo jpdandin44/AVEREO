@@ -15,12 +15,13 @@ tags: [passeport-immo, local]
 ## Sas CONNECT installé en préproduction privée
 
 Le build copie le sas commun depuis `avereo-platform/shared/connect-gate.php`.
-CONNECT → ticket HMAC → entrée à nonce unique → cookie signé → HTML protégé.
-Le correctif local du 15 octobre étend ce contrôle aux assets CSS/JS/MJS :
+CONNECT → ticket HMAC → entrée à nonce unique → cookie signé → HTML et assets protégés.
+Le correctif installé du 15 octobre étend ce contrôle aux assets CSS/JS/MJS :
 réécriture vers l'entrée, vérification du cookie et du chemin réel, réponse privée
 sans cache partagé. Les scripts internes ne sont pas directement accessibles.
-Cette version est préparée pour remplacer la porte Basic du seul sous-domaine
-Passeport Immo ; l'état installé initial décrit ci-dessous reste historique.
+Cette version remplace la porte Basic du seul sous-domaine Passeport Immo.
+La politique impose une page 403 standard pour éviter qu'une page d'erreur héritée
+repasse par le routage SPA. CONNECT conserve sa protection visiteur.
 `index.php`, `connect/entry.php`, `connect/logout.php` et `.htaccess`
 complètent les assets ; la configuration privée reste hors document root.
 Sans module de réécriture Apache, la politique runtime ferme l'accès.
@@ -52,10 +53,10 @@ Serveur Vite sur 127.0.0.1:5175 ; build dans `frontend/dist/`.
 Le modèle Docker contient un étage Node 22 pour tests/build puis Nginx pour les assets.
 Configuration Compose vérifiée ; exécution Docker non vérifiée.
 La session admin/pro et l'abonnement sont simulés. Aucun service serveur métier
-ni API client/document n'est présent. Le sas CONNECT est installé sur o2switch,
-avec protection visiteur Basic distincte de l'identité et des droits CONNECT.
-La configuration d'environnement complète la politique Apache du candidat,
-en conservant le fichier de comptes visiteurs privé. Les sous-dossiers publics
+ni API client/document n'est présent. Le sas CONNECT est installé sur o2switch ;
+la protection visiteur Basic est portée par CONNECT, distincte de son identité
+et de ses droits. Passeport Immo vérifie le cookie signé sans autre porte Basic.
+Les sous-dossiers publics
 sont en 0755 ; configurations et répertoires privés sont en 0600/0700.
 
 ## Suivi indépendant de l'application
@@ -95,8 +96,10 @@ La cible o2switch retenue est un dossier dédié protégé dans le compte du dom
 parent : l'hébergeur impose ce compte aux sous-domaines. Le dossier, son rattachement
 et le certificat gratuit sont créés. Le modèle `workflows/preproduction.htaccess`
 était le seul fichier installé lors de la qualification initiale : il refuse toute consultation et interdit l'indexation.
-La fermeture 403 initiale est remplacée lors de l'installation par la protection
-visiteur 401 Basic et le sas CONNECT. Aucun isolement entre comptes n'est déclaré :
+La fermeture 403 initiale a d'abord été remplacée par Basic et le sas, puis par
+le sas seul sur Passeport Immo après contrôle de tous les assets. Sans session,
+le HTML renvoie vers CONNECT (303), les assets et tickets invalides sont refusés
+(403). Aucun isolement entre comptes n'est déclaré :
 les chemins dédiés et les bases distinctes sont contrôlés. Fichiers et lignes de
 catalogue/droits disposent de récupérations vérifiées ; la recette authentifiée reste ouverte.
 Les observations et valeurs exactes restent dans le suivi canonique et la
@@ -133,8 +136,10 @@ du navigateur sont explicitées dans le guide. Références :
 
 La copie de migration du cas réel est déposée séparément dans un répertoire privé
 du serveur, sans exposition par l'application. Ce dépôt n'ajoute pas de stockage
-documentaire partagé et ne peuple pas IndexedDB à la nouvelle origine : l'import
-dans le navigateur de recette reste nécessaire.
+documentaire partagé. L'import explicite sur l'origine HTTPS est effectué dans
+le navigateur intégré, avec six actifs et trois archivés ; persistance et octets
+restitués sont vérifiés. Chrome conserve son propre stockage. Les dates de nouvel
+import sont celles du 15 octobre ; le manifeste privé garde les métadonnées sources.
 
 Le cas de coupes utilise une circulation de fichiers locale : plans source →
 projets CAO dans Coupe → exports SVG → PDF comparatif → import dans le dossier

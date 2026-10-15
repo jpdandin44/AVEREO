@@ -12,6 +12,40 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Correction SSO et dossier importé — 15 octobre 2026
+
+Le candidat `8f7b26f84b50e0f36a9763a3744d18a9169f27b4`, ZIP
+`84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575`,
+est installé en préproduction privée. L'entrée et les règles d'accès protègent
+HTML et tous les assets par cookie signé. La porte Basic propre à Passeport Immo
+est retirée ; CONNECT conserve sa porte et ses habilitations. Une page 403 héritée
+a été reproduite localement puis neutralisée. Sauvegardes et restaurations ciblées
+répétées avant remplacement, douze fichiers relus, neuf contrôles CI et douze
+contrôles HTTPS conformes. Les [reçus](../api/preproduction-sso-observation.json)
+conservent les deux candidats successifs et les preuves datées.
+
+Le ticket normal du compte choisi ouvre l'application dans le navigateur intégré,
+sans nouvelle saisie ; styles, scripts, worker et deux pages des coupes chargés.
+Le responsable confirme ensuite dans Chrome : « La troisième fenêtre a disparu ».
+La recette complète de déconnexion et la revue humaine restent ouvertes ; le
+bouton interne « Se connecter » et le profil Admin Démo restent ceux du prototype.
+
+Le bien de la SCI est importé sur l'origine HTTPS dans le navigateur intégré :
+six documents actifs et trois archivés, titres/catégories repris, conservation
+après réouverture et neuf téléchargements identiques aux sources vérifiés.
+**Ce dossier n'est pas partagé avec Chrome.** La sauvegarde privée serveur est
+conservée ; les nouvelles dates d'import sont celles du 15 octobre, le manifeste
+privé garde l'historique. Aucun serveur de documents métier n'est ajouté.
+
+PR nº80 reste le support de la correction et de ses preuves. Les décisions et
+statuts humains restent conservés ; aucune fusion ou livraison de production.
+Le [rapport courant](03-preproduction.md) précise le périmètre et les réserves.
+La question distincte sur la version de Rapport est contrôlée en lecture seule
+dans le clone `preprod-acces-local`, sans installer ce lot depuis Passeport Immo.
+
+Prochaine action : terminer la recette de déconnexion/revue et préciser le
+navigateur de travail du dossier. Les sections suivantes conservent l'historique.
+
 ## Préproduction privée installée — 15 octobre 2026
 
 cPanel reconnecté et compte habituel confirmé par le responsable. L'autorisation

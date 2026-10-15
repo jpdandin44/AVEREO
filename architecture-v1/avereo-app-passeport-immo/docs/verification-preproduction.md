@@ -12,7 +12,20 @@ tags: [passeport-immo, connect, preproduction, sauvegarde]
 
 # Vérification des prérequis de préproduction
 
-## Résultat après installation privée
+## Résultat courant après correction SSO
+
+Le [rapport](03-preproduction.md) et le [reçu SSO](../api/preproduction-sso-observation.json)
+constatent l'installation du correctif : assets protégés par session signée,
+porte Basic redondante retirée de Passeport Immo, page 403 héritée neutralisée.
+Douze contrôles HTTPS conformes ; ticket valide, worker PDF et deux pages des
+coupes vérifiés dans le navigateur intégré. Le responsable confirme l'ouverture
+sans troisième fenêtre dans Chrome. Le bien est conservé après réouverture et
+les neuf téléchargements sont identiques aux sources : six actifs et trois archives.
+Ce dossier est propre au navigateur intégré ; Chrome n'est pas synchronisé.
+La déconnexion complète et la revue humaine restent à renseigner, sans décision
+de phase fabriquée. Les résultats ci-dessous sont des observations historiques.
+
+## Résultat après installation privée initiale
 
 Le [rapport de préproduction](03-preproduction.md) porte l'état courant : candidat
 installé, paramètres privés et catalogue raccordés, compte choisi autorisé et deux

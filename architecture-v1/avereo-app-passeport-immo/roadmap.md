@@ -19,10 +19,14 @@ privés et le delta compatible CONNECT sont installés en préproduction, après
 l'autorisation du responsable et son choix de compte. Catalogue et droits ciblés,
 octets et permissions, tickets techniques et protection visiteur sont contrôlés.
 Fichiers et lignes du catalogue/droits disposent de récupérations vérifiées.
-La sauvegarde privée du bien conserve six documents actifs et trois archivés
-sur le serveur ; leur import dans l'application HTTPS reste à réaliser.
-La prochaine action est la recette dans le navigateur avec l'identité réelle,
-puis l'import et la vérification du dossier. Voir le [rapport courant](docs/03-preproduction.md).
+Le lancement utilise désormais le sas pour toutes les ressources et ne présente
+plus de porte Basic propre à Passeport Immo. Le dossier de la SCI est importé et
+vérifié dans le navigateur intégré, six documents actifs et trois archivés.
+Le responsable confirme dans Chrome la disparition de la troisième fenêtre.
+La prochaine action est la revue humaine de préproduction avec sa déconnexion.
+Le stockage par navigateur reste une limite : import
+Chrome ou futur stockage partagé à choisir avant un usage sur plusieurs navigateurs.
+Voir le [rapport courant](docs/03-preproduction.md).
 Le [runbook](docs/deployment.md) garde les opérations concrètes. La production
 reste distincte ; les statuts font foi uniquement dans le suivi canonique.
 
@@ -58,12 +62,13 @@ Le suivi conserve les preuves datées et la prochaine action.
 
 Le cockpit présente Cadrage, Développement local, Préproduction et Mise en production.
 Le [mapping](docs/mapping-phases.md) conserve l’ancien découpage et ses preuves.
-Le lot documents client/bien est préparé localement ; l’intégration CONNECT reste à réaliser.
+Le lot documents client/bien est approuvé localement ; l’intégration CONNECT est
+installée en préproduction privée, avec recette partielle décrite dans le rapport courant.
 Le comparatif ExamIn fixe les réserves ; les prochaines étapes proposées sont
 recette humaine du dossier et des coupes de principe, identité CONNECT,
 puis stockage partagé et droits après cadrage. La production reste non livrée.
 
-La revue actuelle du développement local porte sur le lot documents et coupes
+La revue approuvée du développement local portait sur le lot documents et coupes
 de la PR nº78, après clarification du responsable. CONNECT reste un prérequis
 de Préproduction à réaliser localement avant toute installation distante.
 Le [mapping](docs/mapping-phases.md) conserve le périmètre initial et l’ajustement,

@@ -55,7 +55,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — En cours**.
-Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.
+Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
@@ -64,8 +64,6 @@ Phases 0 et 1 validées dans le suivi. Les constats GitHub et les contrôles loc
 
 
 Adresse créée : `https://passeport-immo-preprod.avereo.fr`. Dossier dédié : `/home/daje3540/passeport-immo-preprod.avereo.fr/public` dans le compte parent. La lune gratuite `sc4daje3540` reste distincte de cette cible.
-
-Application installée en préproduction privée ; HTTPS contrôlé avec protection visiteur (401). Recette avec l’identité réelle et import du dossier dans le navigateur restent à terminer.
 
 
 ## Itération GitHub et cockpit
@@ -79,17 +77,17 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; intégration installée en préproduction privée, recette et import du dossier à terminer. |
-| Préproduction | En cours | Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier. |
+| Préproduction | En cours | Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
 
-- SHA source : `14d83041343c090ebed374f4e770fc2c1a86c244`.
-- SHA-256 de l'archive : `4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068`.
+- SHA source : `8f7b26f84b50e0f36a9763a3744d18a9169f27b4`.
+- SHA-256 de l'archive : `84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575`.
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T08:09:46.044Z.
+- Dernière observation GitHub : 2026-10-15T08:20:46.125Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -109,6 +107,11 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Sur le poste | Réussi | 2026-10-15T08:13:50.587851+00:00 |
 | GitHub Actions | Réussi | 2026-10-15T08:13:50.587851+00:00 |
 | Documentation | Réussi | 2026-10-15T08:14:26.469641+00:00 |
+| Sur le poste | Réussi | 2026-10-15T08:22:25.214977+00:00 |
+| GitHub Actions | Réussi | 2026-10-15T08:22:25.214977+00:00 |
+| Documentation | Réussi | 2026-10-15T08:22:25.214977+00:00 |
+| hosted_entry | Réussi | 2026-10-15T08:36:22.326328+00:00 |
+| case_migration | Réussi | 2026-10-15T08:36:22.326328+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -124,6 +127,11 @@ Preuves du candidat identifié ci-dessus :
 - Sur le poste : api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes.
 - GitHub Actions : api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes.
 - Documentation : 35 Markdown, 191 liens locaux et socles racine/application contrôlés ; sources de revue approuvées conservées, description locale et état installé initial distingués.
+- Sur le poste : api/preproduction-sso-observation.json#errorDocumentFollowup
+- GitHub Actions : api/preproduction-sso-observation.json#errorDocumentFollowup
+- Documentation : api/preproduction-sso-observation.json#errorDocumentFollowup
+- hosted_entry : api/preproduction-sso-observation.json
+- case_migration : api/preproduction-sso-observation.json
 
 ### Contrôles de passage
 
@@ -131,16 +139,18 @@ Preuves du candidat identifié ci-dessus :
 - Production : passage refusé (2026-10-14T12:32:31+02:00).
 - Clôture : passage refusé (2026-10-14T12:32:31+02:00).
 - Préproduction : conditions remplies (2026-10-15T07:35:02.235103+00:00).
+- Préproduction : conditions remplies (2026-10-15T08:21:00+00:00).
 
 ### Blocages de passage
 
-Aucun blocage déclaré.
+- Recette de déconnexion et revue humaine de préproduction encore ouvertes ; disparition de la troisième fenêtre confirmée dans Chrome par le responsable.
+- Dossier de la SCI importé et vérifié dans le navigateur intégré seulement ; Chrome possède un stockage distinct, sans synchronisation documentaire serveur.
 
-Prochaine action : Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.
+Prochaine action : Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.
 
 ### Accords et livraison
 
-Accords spécifiques enregistrés : 2. Sauvegardes qualifiées : 3.
+Accords spécifiques enregistrés : 3. Sauvegardes qualifiées : 5.
 Retour arrière : non testé. Livraison : non réalisée.
 Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
 

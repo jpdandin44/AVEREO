@@ -80,10 +80,12 @@ déjà peuplée : refaire inventaire, comparaison et récupération du nouvel é
 7. Après accord, installer le ZIP fermé, sans écraser paramètres privés ou fichiers
    hors inventaire. Vérifier 403 sur racine, HTML, assets et entrée du sas.
 8. Après qualification de l'accès privé et accord applicable, activer la politique
-   runtime du candidat. Conserver la protection de répertoire distincte de
+   runtime du candidat. CONNECT conserve sa protection visiteur distincte de
    Drupal/CONNECT ; ne pas ouvrir globalement API ou points d'identité.
-   Consigner séparément l'empreinte de la politique Apache complétée par la
-   configuration Basic d'environnement. Fixer explicitement les sous-dossiers
+   Passeport Immo protège HTML et tous les assets par le sas signé : ne pas ajouter
+   une seconde porte Basic sur son origine, qui redemanderait le compte visiteur.
+   Conserver `ErrorDocument 403 default` pour neutraliser les pages d'erreur
+   héritées et vérifier les refus depuis l'extérieur. Fixer explicitement les sous-dossiers
    publics en 0755 : un masque privé peut réduire le mode demandé à la création.
    Garder les dossiers privés en 0700 et configurations/nonces en 0600.
 9. Recetter connexion, catalogue/droits, ticket, ouverture, refus, rejeu et

@@ -12,7 +12,20 @@ tags: [passeport-immo, o2switch, preproduction]
 
 # Qualification de la préproduction dédiée
 
-## État après installation privée du 15 octobre 2026
+## État courant après correction du 15 octobre 2026
+
+Le [reçu SSO](../api/preproduction-sso-observation.json) constate le remplacement
+limité de l'entrée et du routage, puis le complément sur la page d'erreur héritée.
+CONNECT conserve Basic ; Passeport Immo vérifie la session signée pour le HTML
+et tous les assets. Douze contrôles HTTPS, neuf contrôles CI et relecture des
+douze fichiers installés conformes. Le ticket du compte autorisé ouvre l'application
+dans le navigateur intégré ; le responsable confirme la disparition de la troisième
+fenêtre dans Chrome. Le dossier de la SCI est importé dans le navigateur intégré,
+six actifs et trois archives, persistance et neuf restitutions conformes aux sources.
+Le [rapport courant](03-preproduction.md) précise la connexion interne simulée,
+le stockage distinct de Chrome et la recette de déconnexion/revue encore ouverte.
+
+## Installation initiale du 15 octobre 2026
 
 Le [rapport courant](03-preproduction.md) et les reçus liés constatent l'installation
 du candidat, du catalogue et des droits ciblés. Les racines réelles et les bases

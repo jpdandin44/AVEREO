@@ -1,6 +1,6 @@
 {
-  "observedAt": "2026-10-15T08:13:50.587851+00:00",
-  "status": "installed_followup_required_inherited_403_handler",
+  "observedAt": "2026-10-15T08:36:22.326328+00:00",
+  "status": "installed_private_sso_verified_browser_recipe_partial",
   "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
   "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
   "localChecks": {
@@ -33,8 +33,8 @@
     "privateDirectoryMode": "0700",
     "applicationBrowserRecipe": "pending"
   },
-  "authenticatedBrowserRecipe": "pending",
-  "caseApplicationImport": "not_performed",
+  "authenticatedBrowserRecipe": "partial: Chrome launch confirmed by user, application gate/documents tested; logout and phase review remain open",
+  "caseApplicationImport": "performed_integrated_browser_only",
   "installation": {
     "observedAt": "2026-10-15T08:13:14+00:00",
     "status": "installed_private_sso_correction",
@@ -74,5 +74,192 @@
     "internalGate": 303,
     "basicChallengeOnApplication": false,
     "remaining": "Inherited Apache error document transforms internal script 403 into a CONNECT redirect; reproduced locally and fixed in source."
+  },
+  "errorDocumentFollowup": {
+    "observedAt": "2026-10-15T08:22:25.214977+00:00",
+    "status": "installed_and_https_verified",
+    "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+    "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+    "ciRun": 38704811013,
+    "ciChecksPassed": 9,
+    "ciArtifactBytesEqual": true,
+    "apacheAssertions": 67,
+    "inheritedErrorDocumentReproduced": true,
+    "hostedPreflight": {
+      "observedAt": "2026-10-15T08:19:58+00:00",
+      "status": "preflight_verified",
+      "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+      "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+      "target": "passeport-immo-preprod.avereo.fr",
+      "documentRoot": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "changedFiles": [
+        ".htaccess"
+      ],
+      "unchangedFilesVerified": 11,
+      "backupDirectory": "/home/daje3540/private/passeport-immo-preparation/sso-errors-20261015/before-20261015T081958Z",
+      "backupAndRestoreRehearsal": "passed",
+      "connectPolicyUnchanged": true,
+      "connectRuntimeConfigurationRightsAndSecretsTouched": false,
+      "privateBackupMode": "0600",
+      "privateDirectoryMode": "0700",
+      "applicationBrowserRecipe": "pending"
+    },
+    "installation": {
+      "observedAt": "2026-10-15T08:21:11+00:00",
+      "status": "installed_private_sso_error_correction",
+      "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+      "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+      "target": "passeport-immo-preprod.avereo.fr",
+      "documentRoot": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "changedFiles": [
+        ".htaccess"
+      ],
+      "unchangedFilesVerified": 11,
+      "backupDirectory": "/home/daje3540/private/passeport-immo-preparation/sso-errors-20261015/before-20261015T082111Z",
+      "backupAndRestoreRehearsal": "passed",
+      "connectPolicyUnchanged": true,
+      "connectRuntimeConfigurationRightsAndSecretsTouched": false,
+      "privateBackupMode": "0600",
+      "privateDirectoryMode": "0700",
+      "applicationBrowserRecipe": "pending",
+      "installedFilesVerified": 12,
+      "installedFileHashes": [
+        {
+          "path": ".htaccess",
+          "sha256": "8bb232cfa72be6fd24ccafe9e1f5f707b22aaa72cc01f113f33201ce4e3b01ec"
+        }
+      ]
+    }
+  },
+  "currentInstalledCandidate": {
+    "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+    "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575"
+  },
+  "externalHttps": {
+    "observedAt": "2026-10-15T08:22:49.164054+00:00",
+    "status": "passed",
+    "checks": [
+      {
+        "host": "connect-preprod.avereo.fr",
+        "path": "/",
+        "status": 401,
+        "basicChallenge": true,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/",
+        "status": 303,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/index.html",
+        "status": 303,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/bien/fictif",
+        "status": 303,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/connect/entry.php?ticket=invalid",
+        "status": 403,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/connect/gate.php",
+        "status": 403,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/assets/index-CZHy6Q0F.css",
+        "status": 403,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/assets/index-Co36eb1F.js",
+        "status": 403,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/assets/index.es-D8TFaBNl.js",
+        "status": 403,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/assets/pdf-WgYdDwYK.js",
+        "status": 403,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/assets/pdf.worker.min-CjEcRF4W.mjs",
+        "status": 403,
+        "basicChallenge": false,
+        "tlsVerified": true
+      },
+      {
+        "host": "passeport-immo-preprod.avereo.fr",
+        "path": "/assets/purify.es-BwoZCkIS.js",
+        "status": 403,
+        "basicChallenge": false,
+        "tlsVerified": true
+      }
+    ],
+    "credentialsUsed": false,
+    "authenticatedRecipe": false
+  },
+  "caseMigration": {
+    "observedAt": "2026-10-15T08:31:37.651789+00:00",
+    "filesDownloadedAndSha256Verified": 9,
+    "activeDocuments": 6,
+    "archivedDocuments": 3,
+    "bytesEqualToSource": true,
+    "sourceFilesModified": false,
+    "browser": "Codex integrated browser",
+    "origin": "https://passeport-immo-preprod.avereo.fr",
+    "sharedStorage": false,
+    "chromeImport": "not_performed",
+    "originalImportDates": "preserved_in_private_source_manifest_only; new UI imports dated 2026-10-15",
+    "persistenceAfterReloadVerified": true,
+    "clientPropertyTitlesCategoriesAndArchivesVerified": true,
+    "comparisonPdfPagesViewed": 2
+  },
+  "browserRecipe": {
+    "observedAt": "2026-10-15T08:36:22.326328+00:00",
+    "status": "application_entry_and_documents_verified",
+    "browser": "Codex integrated browser",
+    "ticketIssuer": "installed CONNECT component after existing account entitlement verification",
+    "selectedAccountAllowed": true,
+    "otherExistingAccountsAllowed": false,
+    "additionalBrowserCredentialPopup": false,
+    "htmlCssJavaScriptAndPdfWorkerLoaded": true,
+    "comparisonPdfPagesViewed": 2,
+    "oauthLoginPerformedByAgent": false,
+    "userReportedChromeBeforeCorrection": true,
+    "chromeAfterCorrection": "confirmed_by_user",
+    "internalFrontendIdentity": "unchanged_demo_profile",
+    "ticketTransport": "short_lived_one_use_ticket_via_private_file; no secret or ticket printed or committed",
+    "humanPhaseAcceptanceCreated": false,
+    "userConfirmation": "Le responsable confirme dans ce chat : La troisième fenêtre a disparu.",
+    "userConfirmationRecordedAt": "2026-10-15T08:44:00.194686+00:00"
   }
 }

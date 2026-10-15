@@ -12,18 +12,45 @@ tags: [passeport-immo, connect, preproduction, recette]
 
 # Installation privée et recette restante
 
-## Retour de recette et correction préparée
+## État courant après correction de la troisième identification
 
 Le responsable confirme l'ouverture de Passeport Immo depuis CONNECT dans Chrome.
 Cette déclaration établit un premier parcours humain ; elle ne vaut pas validation
 de tous les critères. La troisième fenêtre identifiant/mot de passe provient de
 la protection Basic propre au sous-domaine Passeport Immo.
 
-Le [correctif local](02-integration-connect.md) protège tous les assets avec la
+Le [correctif installé](02-integration-connect.md) protège tous les assets avec la
 session signée du sas. Il permet de retirer la porte Basic redondante uniquement
 sur Passeport Immo ; la porte visiteur CONNECT et les habilitations restent en place.
-Le nouveau candidat et sa réinstallation sont à qualifier. La copie serveur du
-cas de la SCI est conservée ; son import dans le navigateur n'est pas encore réalisé.
+Le [reçu courant](../api/preproduction-sso-observation.json) identifie le candidat,
+ses neuf contrôles CI, les sauvegardes des seuls fichiers concernés et les douze
+contrôles HTTPS : CONNECT 401 Basic, HTML 303 vers CONNECT, assets/ticket invalide
+et script interne 403 sans demande Basic. Les douze fichiers installés sont relus.
+La page 403 héritée de l'hébergement a été reproduite localement puis neutralisée.
+
+La recette dans le navigateur intégré utilise un ticket normal du composant
+CONNECT installé, après vérification des droits du compte choisi et du refus
+des deux autres comptes. Aucun nouveau droit ou secret n'est ajouté. HTML,
+styles, scripts, worker PDF et les deux pages des coupes se chargent. L'identité
+OAuth n'est pas rejouée dans ce navigateur : sa porte visiteur CONNECT restait
+inutilisable par les outils. Le responsable avait confirmé le parcours dans Chrome
+avant correction ; il confirme ensuite que la troisième fenêtre a disparu dans
+Chrome. Cette déclaration porte sur l'ouverture, sans recette complète de déconnexion. Le bouton
+interne « Se connecter » demeure celui du prototype de démonstration, sans champ
+identifiant/mot de passe et sans identité métier synchronisée.
+
+Le bien de la SCI est importé sur l'origine HTTPS dans le navigateur intégré :
+association du client, références confirmées, six documents actifs et trois
+archives, titres et catégories repris. Après réouverture, le bien et les neuf
+documents sont conservés. Les neuf téléchargements ont le même SHA-256 que les
+fichiers sources ; les deux pages des coupes s'affichent. Les dates d'import dans
+la nouvelle interface sont celles du 15 octobre ; les métadonnées historiques
+restent dans le manifeste privé. **Ce dossier n'est pas synchronisé avec Chrome.**
+La copie privée du serveur est conservée ; aucun backend documentaire n'est ajouté.
+
+Les sections suivantes décrivent l'installation initiale et ses limites à cette
+date. Elles ne remplacent pas l'état courant ci-dessus. Les cases humaines restent
+au responsable et aucune validation de phase ou de production n'est déduite.
 
 ## Cadrage
 

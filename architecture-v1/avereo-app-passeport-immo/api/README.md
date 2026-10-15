@@ -33,3 +33,7 @@ Le [reçu d'installation](preproduction-installation-observation.json), les
 [contrôles du code déployé](preproduction-post-install-observation.json) et les
 [requêtes HTTPS anonymes](preproduction-http-observation.json) décrivent l'état suivant.
 Les observations antérieures restent datées ; aucun document privé, secret ou ticket n'est publié.
+Le [reçu de correction SSO](preproduction-sso-observation.json) conserve les candidats
+successifs, récupération ciblée, contrôles CI/HTTPS et recette par ticket dans le
+navigateur intégré. Il constate l'import et la persistance des neuf documents,
+sans leurs contenus ni données personnelles ; le stockage Chrome reste distinct.

@@ -22,7 +22,9 @@ Raison : permettre le lancement selon les droits CONNECT sans nouvelle saisie
 et conserver une préproduction privée. Conséquences : seuls les assets construits
 CSS/JS/MJS sont servis sous contrôle PHP, sans cache partagé ; aucun cookie de
 domaine parent, partage de mot de passe ou changement des droits n'est ajouté.
-La recette hébergée et la migration navigateur restent à vérifier.
+Les ressources et le dossier sont vérifiés dans le navigateur intégré ; le retour
+Chrome, l'identité métier et le stockage partagé gardent leurs limites dans le
+[rapport courant](docs/03-preproduction.md).
 
 ## 2026-10-15 — Politique d'environnement et transfert privé
 

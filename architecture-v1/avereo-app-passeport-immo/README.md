@@ -19,11 +19,13 @@ sont installés sur la préproduction privée. Le build ajoute les fichiers PHP 
 Apache ; l'application locale sur 5175 garde son fonctionnement. PHP 8.3 et
 Apache avec réécriture sont requis pour le sas hébergé. Le
 [runbook](docs/deployment.md) précise configuration privée, catalogue et droits,
-archive fermée, récupération et recette. L'installation du 15 octobre conserve
-la protection visiteur et réserve le lancement au compte choisi. Les clés restent
-sur le serveur. Le [rapport de préproduction](docs/03-preproduction.md) distingue
-installation vérifiée, recette authentifiée restante et sauvegarde de la SCI reçue.
-Le bien et ses documents restent à importer dans le navigateur de cette origine.
+archive fermée, récupération et recette. CONNECT conserve sa porte visiteur ;
+Passeport Immo utilise le ticket et la session signée, y compris pour ses assets,
+sans seconde demande visiteur. Le lancement reste réservé au compte choisi.
+Les clés restent sur le serveur. Le [rapport de préproduction](docs/03-preproduction.md)
+distingue contrôle avec ticket, confirmation Chrome du responsable et import de la SCI effectué
+dans le navigateur intégré : six documents actifs, trois archivés, persistance
+et neuf fichiers restitués vérifiés. Ce stockage n'est pas partagé avec Chrome.
 
 ## Objectif et état
 Version locale du prototype de chiffrage, reprise après l'état des lieux puis raccordée

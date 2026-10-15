@@ -12,6 +12,20 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Correction hébergée et import du dossier de recette
+
+Le sas protège aussi les assets, la porte Basic redondante de Passeport Immo est
+retirée ; CONNECT conserve sa porte et ses droits. Une page 403 héritée est
+reproduite sous Apache puis remplacée par le refus standard. Douze fichiers
+installés vérifiés, neuf contrôles CI réussis et douze contrôles HTTPS conformes.
+Le ticket du compte autorisé ouvre l'application sans nouvelle saisie dans le
+navigateur intégré ; styles, scripts, worker PDF et deux pages des coupes chargés.
+Le bien de la SCI est importé dans ce navigateur, six actifs et trois archives,
+persistance et neuf restitutions identiques aux sources vérifiées. Stockage non
+partagé avec Chrome, bouton interne de démonstration conservé ; disparition de
+la troisième fenêtre ensuite confirmée dans Chrome par le responsable.
+Aucun merge ni livraison de production.
+
 ## 2026-10-15 — Correction locale du lancement sans troisième identification
 
 Retour humain : Passeport Immo s'ouvre depuis CONNECT, mais la porte Basic de

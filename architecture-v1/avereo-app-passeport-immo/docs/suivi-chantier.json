@@ -231,20 +231,20 @@
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.",
+      "nextAction": "Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.",
       "legacyPhaseId": 3,
       "blockers": [
-        "Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.",
-        "Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés."
+        "Recette de déconnexion et revue humaine de préproduction encore ouvertes ; disparition de la troisième fenêtre confirmée dans Chrome par le responsable.",
+        "Dossier de la SCI importé et vérifié dans le navigateur intégré seulement ; Chrome possède un stockage distinct, sans synchronisation documentaire serveur."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/80",
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
+        "headSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
         "draft": true,
-        "observedAt": "2026-10-15T08:09:46.044Z",
+        "observedAt": "2026-10-15T08:20:46.125Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
@@ -892,10 +892,10 @@
     "status": "in_progress",
     "objective": "Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.",
     "candidate": {
-      "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
-      "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
-      "observedAt": "2026-10-15T08:13:50.587851+00:00",
-      "evidence": "api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes."
+      "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+      "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+      "observedAt": "2026-10-15T08:22:25.214977+00:00",
+      "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup"
     },
     "targets": {
       "preproduction": {
@@ -951,7 +951,7 @@
         },
         "provisioning": {
           "status": "installed_private_recipe_pending",
-          "observedAt": "2026-10-15T07:40:02+00:00",
+          "observedAt": "2026-10-15T08:36:22.326328+00:00",
           "directoryCreated": true,
           "initialDirectoryInventory": "empty_before_control_file_creation",
           "currentDirectoryInventory": [
@@ -967,13 +967,15 @@
           "originIp": "109.234.166.140",
           "protection": {
             "runtimeTemplate": "frontend/public/.htaccess",
-            "environmentOverlay": "existing visitor Basic Auth from private account file",
-            "configuration": "HTTP Basic visitor protection, CONNECT ticket gate and noindex",
+            "environmentOverlay": "none on application; visitor Basic remains on CONNECT",
+            "configuration": "Signed CONNECT gate for HTML and all assets; default 403 error handler; noindex",
             "savedAndReloaded": true,
-            "publicHttpsStatus": 401,
+            "publicHttpsStatus": 303,
+            "anonymousAssetsStatus": 403,
+            "invalidTicketStatus": 403,
             "xRobotsTag": "noindex, nofollow, noarchive",
-            "consultationAccess": "visitor_authentication_then_connect_authorization",
-            "runtimePolicyWithEnvironmentSha256": "a3feb21b854911f5b03fd87d171075bf5b85b6c2d6e12861e6d72098095fff96"
+            "consultationAccess": "CONNECT authorization ticket then signed cookie",
+            "runtimePolicyWithEnvironmentSha256": "8bb232cfa72be6fd24ccafe9e1f5f707b22aaa72cc01f113f33201ce4e3b01ec"
           },
           "certificate": {
             "provider": "Lets Encrypt",
@@ -992,7 +994,7 @@
             "curl/Schannel signale encore SEC_E_UNTRUSTED_ROOT sur ce poste ; le contrôle Python avec ssl.create_default_context valide HTTPS et reçoit 403. Aucun contournement de validation."
           ],
           "recovery": "files_and_targeted_catalogue_rows_verified_private_rehearsals",
-          "evidence": "api/preproduction-installation-observation.json ; api/preproduction-post-install-observation.json ; api/preproduction-http-observation.json",
+          "evidence": "api/preproduction-sso-observation.json",
           "initialProtection": {
             "template": "workflows/preproduction.htaccess",
             "configuration": "Require all denied",
@@ -1001,7 +1003,19 @@
             "publicHttpsStatus": 403,
             "xRobotsTag": "noindex, nofollow, noarchive",
             "consultationAccess": "closed_to_all"
-          }
+          },
+          "protectionHistory": [
+            {
+              "runtimeTemplate": "frontend/public/.htaccess",
+              "environmentOverlay": "existing visitor Basic Auth from private account file",
+              "configuration": "HTTP Basic visitor protection, CONNECT ticket gate and noindex",
+              "savedAndReloaded": true,
+              "publicHttpsStatus": 401,
+              "xRobotsTag": "noindex, nofollow, noarchive",
+              "consultationAccess": "visitor_authentication_then_connect_authorization",
+              "runtimePolicyWithEnvironmentSha256": "a3feb21b854911f5b03fd87d171075bf5b85b6c2d6e12861e6d72098095fff96"
+            }
+          ]
         }
       },
       "production": {
@@ -1014,7 +1028,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
+      "headSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1022,7 +1036,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T08:09:46.044Z",
+      "observedAt": "2026-10-15T08:20:46.125Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1054,14 +1068,14 @@
         "observedAt": "2026-10-15T06:46:34.094Z"
       },
       "currentCi": {
-        "observedAt": "2026-10-15T08:13:50.587851+00:00",
-        "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
+        "observedAt": "2026-10-15T08:22:25.214977+00:00",
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
         "technicalChecksPassed": 9,
         "technicalChecksFailed": 0,
-        "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
         "artifactBytesEqualToCandidate": true,
-        "runId": 38703533775,
-        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38703533775"
+        "runId": 38704811013,
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38704811013"
       }
     },
     "checks": [
@@ -1164,6 +1178,48 @@
         "evidence": "35 Markdown, 191 liens locaux et socles racine/application contrôlés ; sources de revue approuvées conservées, description locale et état installé initial distingués.",
         "kind": "documentation",
         "status": "passed"
+      },
+      {
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "observedAt": "2026-10-15T08:22:25.214977+00:00",
+        "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup",
+        "kind": "local",
+        "status": "passed"
+      },
+      {
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "observedAt": "2026-10-15T08:22:25.214977+00:00",
+        "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup",
+        "kind": "ci",
+        "status": "passed"
+      },
+      {
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "observedAt": "2026-10-15T08:22:25.214977+00:00",
+        "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup",
+        "kind": "documentation",
+        "status": "passed"
+      },
+      {
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "observedAt": "2026-10-15T08:36:22.326328+00:00",
+        "evidence": "api/preproduction-sso-observation.json",
+        "kind": "hosted_entry",
+        "status": "passed",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr"
+      },
+      {
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "observedAt": "2026-10-15T08:36:22.326328+00:00",
+        "evidence": "api/preproduction-sso-observation.json",
+        "kind": "case_migration",
+        "status": "passed",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr"
       }
     ],
     "approvals": [
@@ -1189,6 +1245,18 @@
         "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
         "recordedAt": "2026-10-15T08:13:50.587851+00:00",
         "evidence": "Poursuite de l’instruction directe d’installation et de recette privée dans ce chat ; correction limitée à la troisième identification signalée et confirmée par le responsable, sur la même cible privée et avec les mêmes habilitations.",
+        "limitation": "Portée opérationnelle de l’instruction existante, aucune nouvelle validation de phase, acceptation de PR, autorisation de production ou ouverture publique."
+      },
+      {
+        "scope": "preproduction",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "approved",
+        "actor": "jpdandin",
+        "source": "user_chat",
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "recordedAt": "2026-10-15T08:22:25.214977+00:00",
+        "evidence": "Poursuite de l’instruction directe d’installation et de recette privée dans ce chat ; correction limitée à la troisième identification signalée et confirmée par le responsable, sur la même cible privée et avec les mêmes habilitations. Complément de la même correction : neutraliser la page 403 héritée, un seul fichier applicatif.",
         "limitation": "Portée opérationnelle de l’instruction existante, aucune nouvelle validation de phase, acceptation de PR, autorisation de production ou ouverture publique."
       }
     ],
@@ -1223,6 +1291,26 @@
         "location": "/home/daje3540/private/passeport-immo-preparation/sso-20261015/before-20261015T081053Z",
         "scope": "Only application index.php and htaccess; separate private restoration rehearsal, no configuration or database mutation.",
         "evidence": "api/preproduction-sso-observation.json#hostedPreflight"
+      },
+      {
+        "id": "sso-errors-20261015T081958Z",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "observedAt": "2026-10-15T08:19:58+00:00",
+        "location": "/home/daje3540/private/passeport-immo-preparation/sso-errors-20261015/before-20261015T081958Z",
+        "scope": "Only application htaccess; private restore rehearsal, no config/data mutation.",
+        "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup"
+      },
+      {
+        "id": "sso-errors-20261015T082111Z",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "observedAt": "2026-10-15T08:21:11+00:00",
+        "location": "/home/daje3540/private/passeport-immo-preparation/sso-errors-20261015/before-20261015T082111Z",
+        "scope": "Only htaccess, fresh private restoration rehearsal before last replacement.",
+        "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup.installation"
       }
     ],
     "rollback": {
@@ -1240,8 +1328,11 @@
       "evidence": null,
       "observedAt": null
     },
-    "blockers": [],
-    "nextAction": "Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.",
+    "blockers": [
+      "Recette de déconnexion et revue humaine de préproduction encore ouvertes ; disparition de la troisième fenêtre confirmée dans Chrome par le responsable.",
+      "Dossier de la SCI importé et vérifié dans le navigateur intégré seulement ; Chrome possède un stockage distinct, sans synchronisation documentaire serveur."
+    ],
+    "nextAction": "Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1260,7 +1351,7 @@
       },
       "preproduction": {
         "status": "in_progress",
-        "nextAction": "Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier."
+        "nextAction": "Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs."
       },
       "production": {
         "status": "blocked",
@@ -1331,6 +1422,16 @@
         "observedAt": "2026-10-15T07:35:02.235103+00:00",
         "evidence": "api/preproduction-installation-observation.json#preflight",
         "limitation": "Contrôle avant installation ; recette humaine et import du dossier encore ouverts."
+      },
+      {
+        "gate": "preproduction",
+        "declaredEvidenceConsistent": true,
+        "errors": [],
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "observedAt": "2026-10-15T08:21:00+00:00",
+        "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup",
+        "limitation": "Contrôle avant correction privée ; aucun passage en production ni validation humaine de recette."
       }
     ],
     "previousIterationRef": "legacyTracking.developmentWorkflow",
@@ -1465,7 +1566,7 @@
       "requestedAt": "2026-10-14",
       "status": "installed_private_recipe_pending",
       "evidence": "docs/verification-preproduction.md",
-      "observedAt": "2026-10-15T07:40:02+00:00",
+      "observedAt": "2026-10-15T08:36:22.326328+00:00",
       "checks": {
         "frontendTests": 26,
         "pythonTests": 19,
@@ -1479,15 +1580,17 @@
         "compatibleDelta": "passed_local"
       },
       "remaining": [
-        "Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.",
-        "Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés."
+        "Recette de déconnexion et revue humaine de préproduction encore ouvertes ; disparition de la troisième fenêtre confirmée dans Chrome par le responsable.",
+        "Dossier de la SCI importé et vérifié dans le navigateur intégré seulement ; Chrome possède un stockage distinct, sans synchronisation documentaire serveur."
       ],
       "observation": "api/connect-hosted-observation.json",
       "recoveryObservation": "api/connect-recovery-observation.json",
       "accessObservation": "api/preproduction-access-observation.json",
       "installationObservation": "api/preproduction-installation-observation.json",
       "postInstallationObservation": "api/preproduction-post-install-observation.json",
-      "httpObservation": "api/preproduction-http-observation.json"
+      "httpObservation": "api/preproduction-http-observation.json",
+      "ssoObservation": "api/preproduction-sso-observation.json",
+      "caseApplicationImport": "performed_integrated_browser_only"
     },
     "connectPreparation": {
       "status": "installed_private_recipe_pending",
@@ -1639,13 +1742,13 @@
       },
       "publicObservations": {
         "connectStatus": 401,
-        "connectHealthStatus": 401,
-        "connectBasicChallenge": true,
-        "passeportRootStatus": 401,
-        "tlsValidation": true,
-        "observedAt": "2026-10-15T07:37:06.557670+00:00",
-        "evidence": "api/preproduction-http-observation.json",
-        "passeportHtmlStatus": 401
+        "passeportRootStatus": 303,
+        "passeportHtmlStatus": 303,
+        "passeportAssetsStatus": 403,
+        "invalidTicketStatus": 403,
+        "applicationBasicChallenge": false,
+        "observedAt": "2026-10-15T08:22:49.164054+00:00",
+        "evidence": "api/preproduction-sso-observation.json#externalHttps"
       },
       "hosted": {
         "status": "installed_private_recipe_pending",
@@ -1699,9 +1802,14 @@
           "localManifestAndArchiveReadback": "passed_sha256_size_bytes_crc",
           "privateDataIncludedInPublicCandidate": false,
           "serverUpload": "verified_private_backup_only",
-          "httpsOriginImport": "not_performed",
+          "httpsOriginImport": "performed_integrated_browser_only",
           "storageLimit": "browser_and_origin_specific_no_shared_document_backend",
-          "privateReceipt": ".local/preproduction-installation-20261015/transfer-verification.json"
+          "privateReceipt": ".local/preproduction-installation-20261015/transfer-verification.json",
+          "sourceBytesVerifiedByDownload": true,
+          "persistenceAfterReloadVerified": true,
+          "chromeImport": "not_performed",
+          "sharedStorage": false,
+          "evidence": "api/preproduction-sso-observation.json#caseMigration"
         },
         "remoteInstallation": "performed_verified_private",
         "evidence": "api/preproduction-installation-observation.json",
@@ -1713,8 +1821,8 @@
         "catalogueRecoveryObservation": "api/connect-catalogue-recovery-observation.json"
       },
       "ssoCorrection": {
-        "status": "locally_verified_installation_pending",
-        "observedAt": "2026-10-15T08:09:27.647665+00:00",
+        "status": "installed_private_sso_verified",
+        "observedAt": "2026-10-15T08:36:22.326328+00:00",
         "userReportedRecipe": "Chrome: CONNECT catalogue card and application launch work; third browser credential popup confirmed.",
         "cause": "Independent HTTP Basic challenge on the application origin.",
         "scope": [
@@ -1723,7 +1831,7 @@
         ],
         "localApacheAssertions": 67,
         "sharedGateAndBusinessRightsUnchanged": true,
-        "evidence": "docs/02-integration-connect.md ; docs/03-preproduction.md",
+        "evidence": "api/preproduction-sso-observation.json",
         "previousInstalledCandidate": {
           "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
           "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
@@ -1731,11 +1839,30 @@
           "observedAt": "2026-10-14T20:08:19.812Z"
         },
         "remainingAfterInstallation": [
-          "Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.",
-          "Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés."
+          "Recette de déconnexion et revue humaine de préproduction encore ouvertes ; disparition de la troisième fenêtre confirmée dans Chrome par le responsable.",
+          "Dossier de la SCI importé et vérifié dans le navigateur intégré seulement ; Chrome possède un stockage distinct, sans synchronisation documentaire serveur."
         ],
         "installationBlockers": [],
-        "gateScope": "Installation du correctif privé uniquement. Recette et import restent ouverts dans phase 2 et preproductionVerification.remaining ; ils conditionnent la revue et la production."
+        "gateScope": "Installation du correctif privé uniquement. Recette et import restent ouverts dans phase 2 et preproductionVerification.remaining ; ils conditionnent la revue et la production.",
+        "candidateHistory": [
+          {
+            "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
+            "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
+            "observedAt": "2026-10-15T08:13:50.587851+00:00",
+            "evidence": "api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes."
+          }
+        ],
+        "candidate": {
+          "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+          "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575"
+        },
+        "additionalBrowserCredentialPopup": false,
+        "caseMigration": "performed_integrated_browser_only",
+        "chromeConfirmation": {
+          "status": "reported_success_by_user",
+          "recordedAt": "2026-10-15T08:44:00.194686+00:00",
+          "evidence": "Réponse directe : La troisième fenêtre a disparu. Portée : ouverture depuis CONNECT dans Chrome, sans validation de phase ou de PR."
+        }
       }
     }
   },
@@ -1780,7 +1907,7 @@
     "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.",
+    "nextAction": "Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.",
     "resumedAt": "2026-10-14T09:40:12+00:00",
     "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
     "previousClosure": {
