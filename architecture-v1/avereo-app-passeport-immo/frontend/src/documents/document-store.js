@@ -1,3 +1,4 @@
+import { SERVER_STORAGE, serverStorage } from './server-store.js';
 export const CATEGORIES = {
   diagnostics: 'Diagnostics', plans: 'Plans et façades', urbanisme: 'Urbanisme',
   travaux: 'Devis et factures', juridique: 'Propriété et contrats', autres: 'Autres documents',
@@ -169,4 +170,4 @@ export function createDocumentRepository({ indexedDB = globalThis.indexedDB, nam
   return { load, linkClient, addFiles, updateDocument, getFile, close: async () => { if (connection) (await connection).close(); connection = null; } };
 }
 
-export const documentRepository = createDocumentRepository();
+export const documentRepository = SERVER_STORAGE ? serverStorage.repository : createDocumentRepository();

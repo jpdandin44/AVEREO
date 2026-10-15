@@ -5,7 +5,7 @@ title: AVEREO — index du dépôt
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-06
+updated: 2026-10-15
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -49,8 +49,15 @@ Regles appliquees automatiquement sur chaque PR:
 - Liens temporaires `URL_*` obligatoirement remplaces
 - Reviewer par defaut via `CODEOWNERS`
 
-Le modele `.github/PULL_REQUEST_TEMPLATE.md` est la source unique des
-libelles. Le meme verificateur est utilise localement et dans GitHub Actions :
+Le modèle `.github/PULL_REQUEST_TEMPLATE.md` est la source unique des libellés.
+La section `Validation` nomme la phase, l'environnement et la version à examiner :
+local pour 0 Cadrage et 1 Développement local ; préproduction pour 2 Préproduction
+et 3 Mise en production. La première case ouvre cet environnement : en préproduction, elle ouvre le
+point d'entrée hébergé confirmé, y compris le portail d'accès si nécessaire.
+La recette est l'activité de vérification sur cette cible. Le cockpit et les
+essais locaux restent des preuves distinctes. En phase 3, la livraison et ses contrôles
+portent toujours sur la production réelle. Les quatre cases humaines sont conservées.
+Le même vérificateur est utilisé localement et dans GitHub Actions :
 
 ```powershell
 # Avant publication : les cases peuvent encore etre decochees.

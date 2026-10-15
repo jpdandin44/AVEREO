@@ -28,4 +28,30 @@ class CandidatePackageTests(unittest.TestCase):
                 for name,content in fixtures.items(): self.assertEqual(archive.read(name),content)
             self.assertEqual([item['path'] for item in manifest],archive.namelist())
 
+    def test_private_file_is_rejected_before_archive_creation(self):
+        with tempfile.TemporaryDirectory(prefix='passeport-package-private-') as temporary:
+            root=Path(temporary)
+            dist=root/'frontend/dist'
+            (dist/'connect').mkdir(parents=True)
+            (dist/'index.html').write_bytes(b'<html>Fictif</html>')
+            (dist/'connect/config.php').write_bytes(b'<?php /* fixture private */')
+            with patch.object(module,'ROOT',root), self.assertRaises(ValueError):
+                module.build(root/'candidate.zip')
+            self.assertFalse((root/'candidate.zip').exists())
+
+    def test_gate_text_has_same_archive_bytes_on_windows_and_linux(self):
+        with tempfile.TemporaryDirectory(prefix='passeport-package-gate-') as temporary:
+            root=Path(temporary)
+            dist=root/'frontend/dist'
+            (dist/'connect').mkdir(parents=True)
+            (dist/'index.html').write_bytes(b'<html>Fictif</html>')
+            for name in module.GATE_FILES:
+                (dist/name).write_bytes(b'Fixture\nligne\n')
+            with patch.object(module,'ROOT',root):
+                first,_=module.build(root/'linux.zip')
+                for name in module.GATE_FILES:
+                    (dist/name).write_bytes(b'Fixture\r\nligne\r\n')
+                second,_=module.build(root/'windows.zip')
+            self.assertEqual(first,second)
+
 if __name__=='__main__': unittest.main()

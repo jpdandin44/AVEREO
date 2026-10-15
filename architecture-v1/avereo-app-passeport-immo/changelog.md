@@ -5,12 +5,110 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Changelog Passeport Immo
+
+## 2026-10-15 — Recette humaine et revue PR nº80 préparées
+
+Guide de recette, fichier d'essai sans donnée client, six livrables décrits et
+huit critères observables dans le cockpit. La Préproduction passe en revue
+technique « À valider », en cohérence avec l'installation déjà autorisée et
+réalisée ; aucune approbation, autorisation de production ou case humaine ajoutée.
+Les preuves approuvées des phases précédentes restent inchangées.
+
+## 2026-10-15 — Sauvegarde automatique installée et exécutée
+
+Travailleur CLI quotidien, conservation de trente copies complètes réussies, verrou, diagnostic
+privé et protection du dernier succès. Treize contrôles de rotation/échec/récupération
+sont intégrés à la recette MariaDB et à la CI. Tâche privée installée, premier
+succès cron constaté le 15 octobre à 13:34 UTC : quatre tables, neuf documents,
+empreintes et restitution temporaire vérifiées. Les autres tâches sont conservées
+et l’entrée de qualification est retirée ; rythme définitif 03 h 20 Europe/Paris.
+Les seize fichiers publics de l’application restent identiques.
+
+## 2026-10-15 — Stockage serveur installé et cas SCI migré
+
+API PHP et schéma MySQL dédiés, fichiers privés, identité CONNECT conservée,
+anti-CSRF, accès par propriétaire, imports atomiques et contrôle de révision.
+Le mode hébergé charge l’API et affiche les erreurs ; le mode local est conservé.
+Sauvegarde et restauration temporaire des lignes ajoutées ; recette MariaDB isolée.
+Seize fichiers publics relus, neuf documents migrés, 34 assertions HTTPS avec deux
+sessions indépendantes. Import dédoublonné, métadonnées, PDF deux pages, téléchargement
+exact et rechargement vérifiés dans l’interface. Répertoire API corrigé en 0755 ;
+fichiers et répertoire documentaires privés restent en 0600/0700. Quatre tables
+et neuf fichiers sauvegardés, retour des lignes et empreintes vérifiés.
+Voir [le lot serveur](docs/stockage-serveur.md) ; aucune production ou fusion.
+
+## 2026-10-15 — Correction hébergée et import du dossier de recette
+
+Le sas protège aussi les assets, la porte Basic redondante de Passeport Immo est
+retirée ; CONNECT conserve sa porte et ses droits. Une page 403 héritée est
+reproduite sous Apache puis remplacée par le refus standard. Douze fichiers
+installés vérifiés, neuf contrôles CI réussis et douze contrôles HTTPS conformes.
+Le ticket du compte autorisé ouvre l'application sans nouvelle saisie dans le
+navigateur intégré ; styles, scripts, worker PDF et deux pages des coupes chargés.
+Le bien de la SCI est importé dans ce navigateur, six actifs et trois archives,
+persistance et neuf restitutions identiques aux sources vérifiées. Stockage non
+partagé avec Chrome, bouton interne de démonstration conservé ; disparition de
+la troisième fenêtre ensuite confirmée dans Chrome par le responsable.
+Aucun merge ni livraison de production.
+
+## 2026-10-15 — Correction locale du lancement sans troisième identification
+
+Retour humain : Passeport Immo s'ouvre depuis CONNECT, mais la porte Basic de
+son sous-domaine redemande le compte visiteur. L'entrée PHP et le routage Apache
+protègent désormais aussi les assets par cookie signé. Lecture anonyme, cookie
+altéré, fichiers interdits et accès aux internes sont refusés ; 67 assertions
+HTTP locales réussies. Aucun changement du sas commun, des droits ou du frontend.
+Réinstallation privée préparée, recette hébergée et import du dossier encore ouverts.
+
+## 2026-10-15 — Installation privée et sauvegarde du cas reçue
+
+Installation des douze fichiers applicatifs et du delta CONNECT compatible de
+deux fichiers, après récupération des fichiers et restauration ciblée des données
+de catalogue/droits. Paramètres privés et clé dédiée sur serveur ; habilitation
+du compte choisi, refus des deux autres comptes existants et autres droits conservés.
+Protection visiteur maintenue en configuration d'environnement ; correction des
+deux sous-dossiers publics en 0755 après détection des refus 403 dus au masque privé.
+Six contrôles HTTPS anonymes reçoivent ensuite 401 Basic ; tickets réels de
+l'émetteur installés, refus et rejeu contrôlés sur le serveur. Copie privée du cas
+reçue ; recette navigateur et import effectif du bien restent à terminer.
+
+## 2026-10-15 — Transfert préparé et diagnostic d'accès
+
+Après demande d'installation privée, export local du dossier de recette : six
+documents actifs, trois archivés et métadonnées conservés hors Git. Archive et
+manifeste vérifiés par tailles, SHA-256, octets et CRC. Le transfert vers la
+préproduction reste non réalisé. Diagnostic d'accès : TLS valide, porte visiteur
+Basic active et échec d'identification dans le navigateur intégré avant CONNECT.
+Reconnexion cPanel et identification du compte habituel nécessaires ; aucun
+nouveau droit ni secret créé. Application et cockpit locaux relancés.
+
+## 2026-10-15 — Contrôle hébergé et delta compatible
+
+Catalogue et configuration CONNECT contrôlés en lecture seule ; cible Passeport
+Immo déclarée et fermée, raccordement absent. Reçu structuré sans secrets et
+relecture de la sauvegarde/restauration existante du fichier de fermeture, puis
+nouvelle sauvegarde et restauration hébergées en dossier privé : arbre Passeport
+Immo, deux fichiers CONNECT et configuration privée, permissions et actifs vérifiés.
+Les secrets restent sur le serveur ; aucune base n'est incluse.
+Préparateur du delta étendu pour ne modifier que trois lignes sur le runtime
+historique exact, avec refus d'une empreinte ou d'un contexte différent.
+19 tests Python, 32 tests du backend historique et 15 assertions du sas réussis.
+Aucune installation ni création de droits ou de secrets hébergés.
+
+## 2026-10-14 — Sas CONNECT et préparation privée
+
+Sas commun copié au build ; entrypoint PHP, contrôle du HTML/routes et déconnexion.
+Configuration CONNECT étendue à Passeport Immo, sans droits automatiques.
+Contrat d'inventaire public commun aux deux packagers ; fichiers privés et sas
+incomplet refusés, ZIP initialement fermé avec politique runtime identifiée.
+Tests de contrat et recette Apache isolée, procédure de catalogue/installation
+et socle CONNECT documentés. Aucune installation hébergée effectuée.
 
 ## 2026-10-14 — Documents et cas de coupes
 
@@ -28,6 +126,12 @@ renseignés depuis les sources historiques et les précisions du responsable.
 PDF comparatif enrichi avec légende et réserves, projets modifiables et archives
 conservés ; le pas de 5 cm du tableau de repérage est signalé et les cotes CAO
 lues sur les plans sont préservées.
+
+Reprise du suivi après arrêt du serveur : fusion de la PR nº78 constatée et
+publication actualisée. Sur clarification du responsable, le lot documents/coupes
+est remis à revue avec cinq livrables et trois critères ; CONNECT et ses preuves
+attendues restent un prérequis non livré de Préproduction. Historique et accords
+existants conservés, aucune approbation de phase ajoutée.
 
 ## 2026-10-03
 Socle documentaire et suivi initialisés ; audit des sources et matrice de 40 fonctions.
@@ -111,3 +215,10 @@ Contrôles de volume, de doublons et de séparation des biens. Douze nouveaux te
 portent le frontend à 26 tests ; chiffrage et export conservés par le contrôle a/b/c/d/e.
 Comparatif des sources ExamIn et regroupement du cockpit en quatre phases avec
 conservation de l’instantané, des décisions et preuves historiques.
+
+## 2026-10-14 — Vérification des prérequis de préproduction
+
+Archive du candidat documentaire contrôlée et préparation fermée créée séparément ;
+option de destination de préparation ajoutée. Rapport et preuves du suivi actualisés,
+avec prérequis CONNECT et limites d’origine navigateur explicites. Les décisions
+humaines et assets sont conservés ; aucune installation hébergée.

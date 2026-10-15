@@ -1,4 +1,24 @@
+---
+project: avereo-connect
+document_type: source-audit
+title: Audit source CONNECT
+status: active
+version: git
+created: 2026-07-08
+updated: 2026-10-14
+owner: jpdandin
+tags: [connect, audit, preproduction]
+---
+
 # Audit source - AVEREO CONNECT
+
+## Raccordement Passeport Immo — 14 octobre 2026
+
+Les clés URL/SECRET de `passeport-immo` sont ajoutées à `Config.php` et au
+chargeur privé de `public/index.php`. Le catalogue natif et les autorisations
+restent inchangés ; l'entrée proposée reste en brouillon, sans grant automatique.
+Le [rapport du sas](../../avereo-app-passeport-immo/docs/02-integration-connect.md)
+porte les contrôles locaux et les limites de qualification hébergée.
 
 ## Source historique V1
 

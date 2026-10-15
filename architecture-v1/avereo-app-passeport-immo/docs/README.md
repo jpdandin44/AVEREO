@@ -12,6 +12,11 @@ tags: [passeport-immo, local]
 
 # Documentation Passeport Immo
 
+[Raccordement CONNECT et écart f](02-integration-connect.md) ·
+[Installation privée et retour arrière](deployment.md).
+Les audits initiaux et les cinq livrables approuvés restent figés ; le rapport
+d'intégration documente le nouvel écart sans les réécrire.
+
 [État des lieux](00-etat-des-lieux.md) · [Audit source](source-audit.md) ·
 [Reprise et recette](01-reprise-identique.md) · [Accès au suivi](acces-suivi-local.md) ·
 [Point de session](point-session.md).
@@ -36,3 +41,7 @@ L’audit et la matrice initiaux validés restent des preuves historiques inchan
 
 [Coupes avant/après et reprise dans Coupe](coupes-bien.md) : sources, hypothèses,
 exports et intégration dans le dossier documentaire local.
+
+La [vérification de préproduction et des prérequis CONNECT](verification-preproduction.md)
+conserve les contrôles du candidat documentaire, la préparation fermée et les
+blocages avant toute installation distante.

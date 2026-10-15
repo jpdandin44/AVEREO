@@ -1,0 +1,49 @@
+{
+  "observedAt": "2026-10-15T07:37:06.557670+00:00",
+  "checks": [
+    {
+      "url": "https://connect-preprod.avereo.fr/",
+      "status": 401,
+      "basicChallenge": true,
+      "tlsValidated": true,
+      "xRobotsTag": null
+    },
+    {
+      "url": "https://connect-preprod.avereo.fr/api/v1/health",
+      "status": 401,
+      "basicChallenge": true,
+      "tlsValidated": true,
+      "xRobotsTag": null
+    },
+    {
+      "url": "https://passeport-immo-preprod.avereo.fr/",
+      "status": 401,
+      "basicChallenge": true,
+      "tlsValidated": true,
+      "xRobotsTag": "noindex, nofollow, noarchive"
+    },
+    {
+      "url": "https://passeport-immo-preprod.avereo.fr/index.html",
+      "status": 401,
+      "basicChallenge": true,
+      "tlsValidated": true,
+      "xRobotsTag": "noindex, nofollow, noarchive"
+    },
+    {
+      "url": "https://passeport-immo-preprod.avereo.fr/connect/entry.php",
+      "status": 401,
+      "basicChallenge": true,
+      "tlsValidated": true,
+      "xRobotsTag": "noindex, nofollow, noarchive"
+    },
+    {
+      "url": "https://passeport-immo-preprod.avereo.fr/assets/index-Co36eb1F.js",
+      "status": 401,
+      "basicChallenge": true,
+      "tlsValidated": true,
+      "xRobotsTag": "noindex, nofollow, noarchive"
+    }
+  ],
+  "anonymousProtectedResources": "passed_6_of_6",
+  "authenticatedRecipe": "not_performed"
+}

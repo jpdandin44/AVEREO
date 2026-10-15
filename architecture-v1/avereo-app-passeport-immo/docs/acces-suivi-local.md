@@ -5,7 +5,7 @@ title: Accéder au suivi Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -47,3 +47,28 @@ Une fiche d'itération approuvée conserve sa version historique. Le JSON, les
 cartes GitHub et les tableaux affichent l'état actuel du chantier. Les décisions
 sur disque survivent à la fermeture du serveur ; un brouillon non enregistré
 reste propre à la page ouverte.
+
+## Serveur arrêté et approbation indisponible
+
+Si l'adresse refuse la connexion, le serveur de revue doit être relancé avec
+`../start-review.cmd`. Le service de l'application sur 5175 et celui du suivi
+sur 5193 sont deux services distincts. Le 14 octobre, le suivi a été relancé
+en arrière-plan sur ce poste ; la lecture de l'état et la synchronisation GitHub
+ont été vérifiées. Fermer le serveur ou redémarrer le PC nécessite un nouveau lancement.
+
+Une PR fusionnée actualise sa carte, sans soumettre ni approuver automatiquement
+la phase. « Soumettre à la revue » demande tous les livrables déclarés et des
+preuves amont courantes. « Approuver la phase » apparaît ensuite lorsque la phase
+est soumise ; le responsable examine chaque document et coche chaque critère.
+
+Lors du diagnostic de la PR nº78, la phase Développement local mélangeait cinq
+documents disponibles et un livrable CONNECT absent, ainsi que deux critères
+CONNECT non réalisés. Le responsable a limité la revue au lot documents/coupes :
+les cinq livrables sont maintenant « À valider » avec trois critères. CONNECT
+reste un prérequis explicite et non livré de Préproduction, à réaliser avant
+toute installation distante ; aucune approbation n’a été ajoutée.
+
+Dans Développement local, choisir chaque document puis cocher « J’ai examiné
+cette version du livrable ». Dans « Critères », vérifier les trois cases. L’action
+« Approuver la phase » nécessite ensuite le nom du décideur, un commentaire et
+la confirmation explicite. L’autorisation de la phase suivante reste distincte.

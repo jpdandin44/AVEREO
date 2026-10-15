@@ -5,12 +5,319 @@ title: Point de reprise de session
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, local, cockpit]
 ---
 
 # Point de reprise de session
+
+## Résolution des conflits GitHub — 15 octobre 2026
+
+La [PR #80](https://github.com/jpdandin44/AVEREO/pull/80) est réalignée sur
+`main` au commit `db7858ff110f5ceb954079532257d6619ca28e0c` après la fusion
+historique de la PR #79. Les deux conflits sont documentaires : le rapport de
+vérification conserve les observations plus récentes de cette branche et le
+changelog racine conserve les entrées des deux branches. Le préparateur de
+préproduction est identique à celui de la tête précédente `6daface` ; les apports
+CONNECT de `main` sont conservés. Le suivi humain et les preuves approuvées de
+Passeport Immo ne sont pas modifiés par la résolution.
+
+Avant remise : contrôler la fusion avec la tête actuelle de `main`, le diff,
+les tests locaux concernés puis l'état de fusion et les contrôles GitHub après
+envoi. Les quatre cases de la PR étaient cochées lors de la lecture du 15 octobre ;
+cette observation reste distincte d'une nouvelle décision de phase et d'une
+qualification de production. Les sections suivantes conservent leur état daté.
+
+Contrôles locaux de la résolution : 19 tests Python Passeport Immo et 6 tests du
+contrôleur de PR réussis, parité et raccordement du cockpit conformes. Les neuf
+documents approuvés conservent leurs empreintes ; les fins de ligne de la copie
+de résolution Windows ont été rematérialisées depuis les blobs Git pour retrouver
+leurs octets exacts. Trois documents, 57 liens locaux et les deux socles sont
+contrôlés sans défaut. Le contrôle strict de la description doit porter sur les
+cases réellement conservées sur GitHub, sans les recocher au nom du responsable.
+
+## Recette humaine préparée — 15 octobre 2026
+
+Le [guide de recette](recette-preproduction.md) est le point d'entrée courant.
+Le cockpit local reste sur le port 5193 et la source réelle `docs/suivi-chantier.json`.
+La phase 2 Préproduction est remise techniquement « À valider » avec six livrables
+et huit critères. Les décisions et événements humains restent inchangés ; aucune
+case cochée par l'agent. Les preuves approuvées des phases 0/1 sont conservées.
+Relire les livrables, faire les essais sur la cible hébergée et un bien fictif,
+puis laisser le responsable enregistrer sa décision et revoir la PR nº80.
+La production reste non commencée et sans autorisation nouvelle.
+
+## Sauvegarde automatique demandée — 15 octobre 2026
+
+La [sauvegarde automatique](sauvegarde-automatique.md) est active : 03 h 20
+Europe/Paris, trente copies complètes réussies, répertoire privé dédié. Premier
+succès réellement déclenché par cron à 13:34 UTC, copie des quatre tables et neuf
+documents vérifiée. Les autres lignes de crontab et les copies manuelles sont
+conservées ; entrée provisoire retirée. Le [reçu](../api/automatic-backup-observation.json)
+porte les empreintes et contrôles. Scripts source `652ef6d63cddea3e343c39a616be9cf1f9500ecd`,
+lot `dd574fb98b8fe770f4c33c2fd2bacf76e17963c58aaa9c056e070d3326798ae1`.
+Consulter `latest.json` et `status.json` dans le répertoire privé pour les prochains
+résultats ; le reçu Git est un constat daté. Prochaine action : revue humaine de la PR nº80.
+
+## Stockage documentaire demandé — 15 octobre 2026
+
+Lot g installé et vérifié ; [conception et recette](stockage-serveur.md),
+[reçu courant](../api/storage-observation.json). Candidat `7209bf3334a5f3f98d422b41d177c734970a0750`,
+ZIP `c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf`.
+Base dédiée, répertoire privé et neuf documents SCI opérationnels. Reprendre depuis
+la revue humaine et la PR nº80 ; aucun nouvel import par navigateur.
+Ne pas rejouer l’installation initiale ni écrire sur les bases CONNECT.
+Les preuves antérieures de recette navigateur ci-dessous restent historiques.
+
+## Correction SSO et dossier importé — 15 octobre 2026
+
+Le candidat `8f7b26f84b50e0f36a9763a3744d18a9169f27b4`, ZIP
+`84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575`,
+est installé en préproduction privée. L'entrée et les règles d'accès protègent
+HTML et tous les assets par cookie signé. La porte Basic propre à Passeport Immo
+est retirée ; CONNECT conserve sa porte et ses habilitations. Une page 403 héritée
+a été reproduite localement puis neutralisée. Sauvegardes et restaurations ciblées
+répétées avant remplacement, douze fichiers relus, neuf contrôles CI et douze
+contrôles HTTPS conformes. Les [reçus](../api/preproduction-sso-observation.json)
+conservent les deux candidats successifs et les preuves datées.
+
+Le ticket normal du compte choisi ouvre l'application dans le navigateur intégré,
+sans nouvelle saisie ; styles, scripts, worker et deux pages des coupes chargés.
+Le responsable confirme ensuite dans Chrome : « La troisième fenêtre a disparu ».
+La recette complète de déconnexion et la revue humaine restent ouvertes ; le
+bouton interne « Se connecter » et le profil Admin Démo restent ceux du prototype.
+
+Le bien de la SCI est importé sur l'origine HTTPS dans le navigateur intégré :
+six documents actifs et trois archivés, titres/catégories repris, conservation
+après réouverture et neuf téléchargements identiques aux sources vérifiés.
+**Ce dossier n'est pas partagé avec Chrome.** La sauvegarde privée serveur est
+conservée ; les nouvelles dates d'import sont celles du 15 octobre, le manifeste
+privé garde l'historique. Aucun serveur de documents métier n'est ajouté.
+
+PR nº80 reste le support de la correction et de ses preuves. Les décisions et
+statuts humains restent conservés ; aucune fusion ou livraison de production.
+Le [rapport courant](03-preproduction.md) précise le périmètre et les réserves.
+La question distincte sur la version de Rapport est contrôlée en lecture seule
+dans le clone `preprod-acces-local`, sans installer ce lot depuis Passeport Immo.
+
+Prochaine action : terminer la recette de déconnexion/revue et préciser le
+navigateur de travail du dossier. Les sections suivantes conservent l'historique.
+
+## Préproduction privée installée — 15 octobre 2026
+
+cPanel reconnecté et compte habituel confirmé par le responsable. L'autorisation
+déjà exprimée dans le chat est rattachée au candidat exact ; les décisions,
+événements, dates et statuts de phase humains restent conservés. Le contrôle de
+passage a réussi avant installation, après vérification des cibles réelles et
+de la récupération des données ciblées. Cette trace ne crée pas une nouvelle
+acceptation de phase ou de production.
+
+Le [rapport de préproduction](03-preproduction.md) donne le résultat et les reçus :
+installation des douze fichiers applicatifs et des deux fichiers CONNECT compatibles,
+paramètres privés, catalogue actif et droits ciblés. Autres paramètres et protection
+CONNECT conservés ; deux autres comptes existants refusés pour cette application.
+Masque privé corrigé sur les deux sous-dossiers publics après refus 403 ; six
+ressources reçoivent ensuite 401 Basic avec TLS valide. Le test du sas installé
+accepte le ticket de l'émetteur réel et refuse signature invalide, expiration,
+autre application et rejeu. Les secrets et tickets restent uniquement sur le serveur.
+
+La sauvegarde du bien et de ses neuf documents est reçue et relue dans un dossier
+privé hors site public : six actifs, trois archivés. **Elle n'est pas encore importée
+dans l'application HTTPS.** Le stockage reste lié au navigateur et à l'origine.
+Le navigateur intégré échoue à la porte visiteur ; une recette humaine dans Chrome
+avec le compte choisi est demandée. Ensuite, terminer l'import, vérifier PDF,
+classement et persistance. Les versions locales et la copie privée sont conservées.
+PR nº80 toujours ouverte en brouillon au contrôle de cette reprise ; aucun merge
+ou changement de production. Le moteur Projet local est préservé séparément.
+
+Les sources impactées sont le présent point, le [rapport](03-preproduction.md),
+le [suivi](suivi-chantier.json), ses vues, [README](../README.md),
+[architecture](../architecture.md), [roadmap](../roadmap.md),
+[décisions techniques](../decisions.md), [changelog](../changelog.md),
+[qualification](qualification-preproduction.md), [vérification](verification-preproduction.md),
+[runbook](deployment.md) et [index des reçus](../api/README.md).
+
+Bilan documentaire : politique globale appliquée, socles racine et application
+présents ; 35 documents Markdown et 189 liens locaux contrôlés sans erreur.
+Les 19 tests Python, contrat cockpit, parité, vues générées et baseline passent.
+Les preuves approuvées restent intactes. Aucun problème documentaire détecté
+dans ce périmètre ; les deux réserves fonctionnelles sont la recette réelle et
+l'import du dossier, conservées dans le suivi. Le passage en production est
+contrôlé et reste refusé.
+
+## Installation demandée et accès interrompu — 15 octobre 2026
+
+Le responsable demande explicitement de poursuivre le raccordement et
+l'installation en préproduction privée, avec son compte CONNECT habituel et le
+transfert du bien de la SCI. Cet accord de périmètre est acquis dans le chat ;
+il ne faut pas le redemander pour ces mêmes opérations. Aucune validation de
+phase, décision ou case humaine n'est ajoutée au cockpit par l'agent.
+
+Une nouvelle inspection authentifiée à 07:04 UTC retrouve les empreintes CONNECT
+attendues, cinq applications actives sans Passeport Immo et trois comptes actifs.
+L'identité du compte habituel reste à préciser par le responsable avant création
+des droits ciblés. Les rôles existants sont conservés. Le relevé détaillé reste
+uniquement dans le dossier privé d'installation sur le serveur.
+
+Les neuf documents du cas ont été téléchargés par leurs commandes existantes,
+avec leur classement : six actifs et trois archivés. Métadonnées du bien,
+manifeste et archive de transfert sont conservés hors Git dans
+`.local/preproduction-installation-20261015/`. Le reçu privé
+`transfer-verification.json` constate tailles, SHA-256, relecture des octets et CRC.
+Ces données ne sont ni téléversées ni importées sur l'origine HTTPS à ce stade.
+Le stockage V1 reste propre au navigateur et à l'origine ; aucune base documentaire
+partagée n'est ajoutée.
+
+Le [relevé d'accès courant](../api/preproduction-access-observation.json) constate
+401 Basic sur CONNECT et son healthcheck, 403 sur Passeport Immo, TLS valide.
+Le navigateur intégré échoue avant la connexion CONNECT avec
+`ERR_INVALID_AUTH_CREDENTIALS`. Cela ne prouve pas un mot de passe CONNECT erroné,
+ni une incompatibilité générale du navigateur. La session cPanel précédente
+n'est plus accessible ; son nouvel onglet affiche l'identification. Reconnexion
+cPanel et choix du compte ont été demandés, sans transmission de secrets au chat.
+Les services locaux arrêtés ont été relancés : HTTP 200 sur 5175 et 5193.
+
+Reprise : rétablir cPanel, confirmer le compte de recette, qualifier la
+récupération des données de catalogue, puis installer les mêmes archives
+identifiées et leurs paramètres privés. Tester ensuite le parcours réel et
+importer le dossier sur la nouvelle origine privée en conservant les archives.
+La préparation de transfert est vérifiée ; installation et migration restent
+non réalisées. La PR nº80 reste en brouillon, sans merge effectué par l'agent.
+
+Bilan documentaire de cette reprise : [suivi canonique](suivi-chantier.json),
+[vues du cockpit](tableau-de-bord.md), [rapport de vérification](verification-preproduction.md),
+[relevé d'accès](../api/preproduction-access-observation.json),
+[index des intégrations](../api/README.md), [roadmap](../roadmap.md),
+[changelog](../changelog.md) et présent point actualisés. Socles racine/application,
+34 documents Markdown, 161 liens locaux, contrat cockpit, parité et vues générées
+contrôlés sans erreur. Les preuves approuvées restent intactes. Le contrôleur de
+passage refuse encore les prérequis hébergés manquants et l'accord exact non
+enregistré dans son bloc formel ; ce dernier constat ne retire pas l'autorisation
+reçue dans le chat et ne justifie pas de la demander de nouveau.
+
+## Vérification hébergée après reconnexion — 15 octobre 2026
+
+cPanel authentifié ; catalogue CONNECT lu sans écriture et base distincte de
+production vérifiée. Passeport Immo absent du catalogue, des droits actifs et des
+paramètres de lancement ; sas privé et dossier anti-rejeu absents. Sa cible déclarée
+contient seulement `.htaccess` et `cgi-bin`, fermée à tous. Les octets du fichier
+de fermeture correspondent encore à la sauvegarde et restauration du 6 octobre.
+Le [relevé sans secrets](../api/connect-hosted-observation.json) porte les faits.
+
+Le delta initial CONNECT est refusé sur les empreintes hébergées. Les deux fichiers
+correspondent exactement à la base Git `76566ca43b3e1e03a4a465391aac2f99017517cb`.
+Variante limitée à trois lignes de lancement préparée : 32 tests du backend
+historique, 15 assertions du sas et 19 tests Python réussis. Les autres fichiers
+CONNECT et sa protection restent inchangés. Le [runbook](deployment.md) donne la
+commande et exige une nouvelle vérification des empreintes avant installation.
+
+Une [répétition hébergée](../api/connect-recovery-observation.json) sauvegarde et
+restaure ensuite dans un dossier privé l'arbre Passeport Immo, les deux fichiers
+CONNECT et sa configuration privée. Octets et permissions conformes ; emplacements
+actifs inchangés, aucune base ni valeur de secret exportée.
+
+Suite : choisir le compte de recette et son accès ciblé, préparer les paramètres
+privés et le catalogue avec sa récupération de données, puis présenter le
+candidat exact pour l'accord d'installation. La PR nº80 reste en brouillon.
+Aucune installation, modification de secret, migration ou création de droit.
+Les phases et l'approbation D05 restent inchangées. Le moteur Projet local conserve
+ses modifications antérieures séparées de ce lot.
+
+## Raccordement demandé après préproduction CONNECT — 14 octobre 2026
+
+Le responsable indique CONNECT en préproduction et demande le raccordement puis
+la préparation de Passeport Immo. Le lot est sur `feat/passeport-immo-connect-preprod`.
+Sas commun copié au build, protection du HTML/routes, entrée et déconnexion PHP,
+clés URL/SECRET reconnues côté CONNECT et catalogue proposé sans droit automatique.
+Les cinq livrables approuvés D05 et toutes les décisions restent intacts.
+
+Contrôles locaux : 15 assertions du contrat, 18 assertions sur Apache, 38 tests
+backend, 26 tests frontend, 15 tests Python, build et parité réussis. Le candidat
+contient douze fichiers ; l'archive de préparation est fermée et restaurée localement.
+Le delta CONNECT contient seulement deux fichiers, avec préconditions d'empreinte.
+Le [rapport](02-integration-connect.md) et le [runbook](deployment.md) décrivent
+le fonctionnement, les limites du prototype et la recette encore nécessaire.
+
+Le contrôle public confirme 401 Basic sur CONNECT et 403 sur Passeport Immo.
+La session cPanel de ce chat est expirée ; une reconnexion est demandée. Le contenu
+réel du catalogue et les paramètres hébergés restent non qualifiés. Aucun déploiement,
+nouveau droit, secret réel ou migration n'est réalisé. Après reconnexion : relever
+versions et cible, qualifier récupération et configuration, puis présenter le
+lot exact pour l'accord applicable et la recette privée.
+
+## Approbation locale enregistrée — 14 octobre 2026
+
+Le responsable confirme la validation locale et la fusion de la PR nº78.
+La relecture du cockpit constate l’approbation D05 des cinq livrables du lot
+documents/coupes et de ses trois critères. Les empreintes approuvées sont
+vérifiées ; ces documents restent figés dans leurs octets examinés. La fusion
+de la PR est revérifiée sur GitHub. Le résumé `developmentWorkflow` est réaligné
+sur cette décision existante, sans créer d’accord ni modifier les phases.
+
+Le responsable indique travailler actuellement à la mise en préproduction de
+CONNECT dans son lot distinct ; son achèvement n’est pas vérifié ici. La suite
+Passeport Immo attend cette qualification : vérifier ensuite le raccordement
+CONNECT, les accès privés et la récupération, puis préparer la recette privée
+du candidat exact. Préproduction Passeport Immo reste non démarrée et sans
+autorisation enregistrée ; aucun déploiement n’est lancé dans cette session.
+
+## Préparation CONNECT et vérification de préproduction — 14 octobre 2026
+
+La demande du responsable prépare CONNECT et les vérifications nécessaires à
+Passeport Immo. Le [rapport](verification-preproduction.md) et le bloc canonique
+`developmentWorkflow.preproductionVerification` conservent les constats.
+Le candidat courant est retrouvé dans son archive CI et préparé séparément,
+avec les sept assets conservés, fermeture initiale et restauration locale vérifiées.
+Le lanceur de préparation accepte désormais `--output` pour préserver les archives
+historiques. Onze tests Python, parité et contrat du cockpit passent.
+
+Le lot distinct CONNECT possède maintenant une sauvegarde réelle de base, une
+restauration hébergée et une répétition de migration sur clone, avec la base source
+inchangée. Le module et la configuration d’activation restent à compléter avant
+mise à jour du portail actif. Le sas, le catalogue et les paramètres de lancement
+Passeport Immo restent absents ; la préparation de ses fichiers ne les implémente pas.
+La cible publique reste fermée (403). Le passage hébergé reste en refus.
+
+Le suivi vivant porte l’approbation D05 du lot documents/coupes, constatée lors de
+cette reprise ; elle reste conservée avec ses preuves. Les phases, décisions,
+revues, candidat et accords sont préservés. Le présent travail ne crée pas d’accord
+sur l’intégration CONNECT ou sur une livraison. Le moteur Projet local est conservé.
+
+## Accès au cockpit et revue de la PR nº78 — 14 octobre 2026
+
+Le responsable signale que le suivi local est indisponible après fusion de la
+PR nº78. Aucun service ne répond sur 5193 ; le cockpit est relancé en arrière-plan
+avec son lanceur de revue existant. HTTP 200, lecture du suivi et synchronisation
+GitHub sont contrôlés ; la carte indique désormais « Fusionnée ». La fusion
+GitHub est observée le 14 octobre à 15:47:20 UTC, au commit
+`c45812cc97d91062d562be2370d032b1977232fc`, pour le HEAD
+`81b757b096887af942f2dc9c965bada4b0e23a9d`. La revue approuvée et les quatre
+cases humaines de la PR sont constatées, sans les convertir en validation de phase.
+
+Le diagnostic distingue l'arrêt du serveur du blocage fonctionnel : la phase
+Développement local mélange le lot documents/coupes livré avec CONNECT non livré.
+Ses cinq documents présents étaient consultables, mais le sixième livrable absent
+empêchait « Soumettre à la revue », puis « Approuver la phase ». Le responsable
+précise que la revue porte sur le lot documents/coupes, avec CONNECT conservé
+comme prérequis de préproduction. La phase Développement local a été remise
+« À valider » : cinq documents et trois critères ; D05 a ensuite été enregistrée
+par le responsable, comme indiqué dans le point courant ci-dessus.
+CONNECT et ses deux critères sont conservés dans les attentes de Préproduction,
+avec blocage explicite avant toute installation distante. Le
+[mapping courant](mapping-phases.md) décrit cette portée ; la clarification est
+consignée dans le JSON, sans écrire de décision humaine ni changer l’historique.
+
+Les 58 tests ciblés du moteur de revue, les onze tests Python Passeport Immo,
+le contrat du cockpit et les vues générées passent. Sur une copie temporaire,
+une approbation complète crée une décision D05 distincte, conserve D01 à D04
+et laisse Préproduction non démarrée ; une revue aux critères incomplets est
+refusée. Cette recette n’approuve pas le chantier réel. Le contrôle du cockpit
+accepte désormais de futures décisions humaines tout en vérifiant la présence
+des identifiants historiques et le maintien de CONNECT dans les prérequis.
+Les 31 documents Markdown et 107 liens locaux sont contrôlés, socles présents.
+Les documents historiques approuvés, décisions et journaux sont préservés.
+Le lot du moteur Projet déjà présent reste local et séparé de la PR nº78 fusionnée.
 
 ## Session clôturée le 3 octobre 2026 au soir
 

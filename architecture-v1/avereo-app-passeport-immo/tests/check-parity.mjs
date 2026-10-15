@@ -4,6 +4,21 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Écart g autorisé le 15 octobre : persistance serveur et identité CONNECT.
+for (const addition of [
+  "import { SERVER_STORAGE, persistLocal, attachServerStorage, hydrateServer } from './documents/server-store.js';\n",
+  "        if (SERVER_STORAGE) return hydrateServer(useAppStore, LATEST_INITIAL_TARIFS);\n",
+  "        if (SERVER_STORAGE) { window.location.assign('/connect/logout.php'); return; }\n",
+  "attachServerStorage(useAppStore);\n\n",
+  "      {SERVER_STORAGE && storageSaving && <p role=\"status\" className=\"bg-blue-50 p-3 text-center\">Enregistrement sur le serveur…</p>}\n",
+  "      {SERVER_STORAGE && storageError && <div role=\"alert\" className=\"fixed inset-0 z-50 flex items-center justify-center bg-white/95 p-6\"><div className=\"max-w-xl\"><h1 className=\"text-xl font-bold\">Enregistrement interrompu</h1><p className=\"my-4\">{storageError}</p><p className=\"my-4\">Les dernières modifications peuvent ne pas être enregistrées. Copiez-les avant de recharger le dossier conservé sur le serveur.</p><button className=\"rounded bg-indigo-600 px-4 py-2 text-white\" onClick={() => window.location.reload()}>Recharger le dossier du serveur</button><a className=\"ml-4 underline\" href=\"/connect/logout.php\">Revenir à CONNECT</a></div></div>}\n",
+]) {
+  assert.ok(restored.includes(addition), 'Chaque ajout de persistance g est contrôlé explicitement');
+  restored = restored.replace(addition, '');
+}
+restored = restored.replaceAll('persistLocal(', 'localStorage.setItem(')
+  .replace(' const { isLoading, isAuthenticated, hydrate, storageSaving, storageError } = useAppStore();',
+    ' const { isLoading, isAuthenticated, hydrate } = useAppStore();');
 // Écart e autorisé le 14 octobre : documents liés au client et au bien.
 const documentImport = "import DocumentsPanel from './documents/DocumentsPanel.jsx';\nimport './documents/documents.css';\n";
 assert.ok(restored.includes(documentImport), 'Le module documentaire doit être raccordé');
@@ -54,4 +69,4 @@ if (actual !== expected) {
   console.error('Écart de parité, ligne reconstruite', line + 1, { actuel: a.slice(line, line + 3), source: b.slice(line, line + 3) });
   process.exit(1);
 }
-console.log('Parité a/b/c + correctif PDF d + module documentaire e vérifiée : chiffrage et autres comportements conservés.');
+console.log('Parité a/b/c + correctif PDF d + module documentaire e et persistance g vérifiée : chiffrage et autres comportements conservés.');

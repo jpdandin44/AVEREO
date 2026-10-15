@@ -5,12 +5,49 @@ title: Vérification de la reprise
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Vérification de la reprise
+
+## Sauvegardes automatiques
+
+`tests/scheduled-backup.php` ajoute treize cas réels sur la base MariaDB fictive,
+appelés par `tests/check-storage-http.py` : conservation, rotation, répétition,
+verrouillage, échec, reprise et garde-fous de chemins. Les sources actives sont
+contrôlées après les tests ; aucun document réel n’est utilisé dans la CI.
+
+## Persistance serveur
+
+`python tests/check-storage-http.py` utilise deux conteneurs temporaires sur un
+réseau dédié, Apache/PHP et MariaDB 11.4. Le test inclut la sauvegarde et le retour
+des lignes dans des tables temporaires. Les 29 tests frontend couvrent aussi
+la file d’écriture, le refus de conflit et l’import après sauvegarde du bien.
+La CI exécute ces contrôles ; les identités et documents y sont fictifs.
+
+## Qualification du raccordement CONNECT
+
+Le correctif du 15 octobre est couvert par `python tests/check-connect-http.py`
+après le build. L'image `docker/connect-test.Dockerfile` doit être disponible sous
+`avereo-passeport-connect-test:local` ; Docker et PHP CLI sont nécessaires.
+Les 67 assertions incluent les assets sans session (refus), leurs octets/MIME et
+HEAD avec session, cookie altéré, chemins/fichiers interdits et méthodes, puis
+la fermeture initiale et la fermeture sans module de réécriture. Aucun compte,
+secret ou dossier réel n'est utilisé. Un conteneur isolé est créé puis arrêté.
+La configuration de test hérite d'une page d'erreur 403 qui repasse par la SPA,
+comme sur la cible o2switch ; la politique applicative doit imposer le refus 403
+standard même dans ce contexte.
+
+`python -m unittest discover -s tests -p 'test_*.py'` exécute actuellement 19 tests.
+Les quatre cas du delta compatible vérifient l'ajout limité au lancement et le
+refus d'une observation périmée, d'un contexte différent ou d'un runtime déjà intégré.
+Le 15 octobre, le runtime historique des deux fichiers observés a aussi été repris
+dans une copie isolée depuis Git, complété par le ZIP compatible, puis contrôlé :
+syntaxe PHP, 32 tests backend et 15 assertions du sas réussis. Cette qualification
+locale ne prouve pas la recette sur l'hébergement. Les sections datées ci-dessous
+conservent les résultats des lots précédents.
 
 ## Commandes
 Depuis `frontend/`, `npm.cmd test` exécute 26 tests :
@@ -42,8 +79,9 @@ canvas/jsPDF simulés ; leur recette humaine reste ouverte.
 ## Préparation de la préproduction
 
 Depuis le sous-projet, `python -m unittest discover -s tests -p test_preproduction.py`
-vérifie six cas fictifs : archive reproductible et candidat conservé, source différente,
-asset modifié, chemin hors du lot, fichier non déclaré et lien symbolique. Le cas nominal
+vérifie huit cas fictifs : archive reproductible et candidat conservé, source différente,
+asset modifié, chemin hors du lot, fichier non déclaré, lien symbolique, sas complet
+initialement fermé et refus d'un sas partiel ou d'une configuration privée. Le cas nominal
 répète une restauration locale ; aucune cible ni sauvegarde distante n'est authentifiée.
 
 ## Raccordement du cockpit
@@ -58,9 +96,10 @@ dans `legacyTracking` et les empreintes des documents approuvés.
 
 ## Documents approuvés et packaging
 
-`python -m unittest discover -s tests -p 'test_*.py'` exécute onze tests : les six
-cas de préparation ci-dessus, quatre protections des vues approuvées et un cas
-d’ordre reproductible des assets avec noms mêlant majuscules/minuscules. Ce dernier
+`python -m unittest discover -s tests -p 'test_*.py'` exécute dix-neuf tests : huit
+cas de préparation, quatre protections des vues approuvées, trois contrôles du
+packaging et quatre contrôles du delta compatible. Le packaging couvre notamment
+l’ordre reproductible des assets avec noms mêlant majuscules/minuscules. Ce cas
 couvre la différence Windows/Linux qui peut changer les octets du ZIP sans changer
 le contenu des assets. Les noms relatifs sont triés comme chaînes identiques sur
 les deux systèmes.

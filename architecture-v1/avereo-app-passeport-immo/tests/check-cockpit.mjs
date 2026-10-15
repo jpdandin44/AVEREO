@@ -22,7 +22,23 @@ if (frozen) {
 } else assert.ok(document.includes(`phase ${state.currentPhase} —`));
 assert.deepEqual(state.phases.map(item => item.title), ['Cadrage', 'Développement local', 'Préproduction', 'Mise en production']);
 assert.equal(state.legacyTracking.phases.length, 6, 'Le découpage antérieur doit rester conservé.');
-assert.deepEqual(state.decisions.map(item => item.id), state.legacyTracking.decisions.map(item => item.id), 'Le regroupement ne crée ni ne renumérote de décision.');
+const decisionIds = state.decisions.map(item => item.id);
+assert.equal(new Set(decisionIds).size, decisionIds.length, 'Les décisions conservent des identifiants uniques.');
+for (const historical of state.legacyTracking.decisions) {
+  assert.ok(decisionIds.includes(historical.id), `Décision historique conservée : ${historical.id}`);
+}
+// Later human reviews may add decisions without deleting or renumbering the archive.
+const reviewScope = state.developmentWorkflow.documentsLot?.reviewScope;
+if (reviewScope) {
+  const local = state.phases.find(item => item.id === reviewScope.phaseId);
+  const preproduction = state.phases.find(item => item.id === reviewScope.deferredConnect.phaseId);
+  assert.ok(!local.deliverables.some(item => item.path === reviewScope.deferredConnect.deliverable));
+  assert.ok(preproduction.deliverables.some(item => item.path === reviewScope.deferredConnect.deliverable), 'CONNECT reste un prérequis explicite.');
+  for (const criterion of reviewScope.deferredConnect.exitCriteria) {
+    assert.ok(preproduction.exitCriteria.includes(criterion));
+    assert.ok(!local.exitCriteria.includes(criterion));
+  }
+}
 for (const decision of state.legacyTracking.decisions.filter(item => item.type === 'approval')) {
   for (const proof of decision.evidence.reviewedArtifacts) {
     const bytes = await readFile(new URL(`../docs/${proof.path}`, import.meta.url));

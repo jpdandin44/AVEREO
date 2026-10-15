@@ -1,0 +1,80 @@
+{
+  "observedAt": "2026-10-15T07:33:53+00:00",
+  "status": "installed_private_recipe_pending",
+  "candidateSourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+  "candidateSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+  "deltaSha256": "1cbd15edf31bfda766007a255de83e4f58f8192e1d2edd592b86165d6c3b106d",
+  "target": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+  "installedFiles": 12,
+  "runtimePolicyWithEnvironmentSha256": "a3feb21b854911f5b03fd87d171075bf5b85b6c2d6e12861e6d72098095fff96",
+  "visitorProtection": "401_basic_https_verified",
+  "selectedAccountLaunchAllowed": true,
+  "otherExistingAccountLaunchAllowed": false,
+  "otherApplicationRightsUnchanged": true,
+  "existingRolesChanged": false,
+  "existingConnectSettingsPreserved": true,
+  "connectProtectionUnchanged": true,
+  "privateConfigurationMode": "0600",
+  "privateNonceDirectoryMode": "0700",
+  "newDedicatedServiceKeyCreatedOnServer": true,
+  "secretValueExported": false,
+  "backupDirectory": "/home/daje3540/private/passeport-immo-preparation/install-20261015/before-install-20261015T073353Z",
+  "catalogueRecovery": "/home/daje3540/private/passeport-immo-preparation/catalogue-recovery-20261015T072005Z",
+  "privateCaseBackupOnServer": true,
+  "httpsCaseImport": "not_performed",
+  "authenticatedBrowserRecipe": "not_performed",
+  "selectedAccount": "existing_administrator_confirmed_by_user",
+  "preflight": {
+    "observedAt": "2026-10-15T07:32:09+00:00",
+    "status": "preflight_verified_installation_pending",
+    "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+    "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+    "deltaSha256": "1cbd15edf31bfda766007a255de83e4f58f8192e1d2edd592b86165d6c3b106d",
+    "cpanelSession": "authenticated",
+    "domainInfoVerified": {
+      "avereo.fr": "/home/daje3540/public_html",
+      "passeport-immo-preprod.avereo.fr": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "connect-preprod.avereo.fr": "/home/daje3540/connect-preprod.avereo.fr/public",
+      "connect.avereo.fr": "/home/daje3540/connect.avereo.fr/public"
+    },
+    "targetPathsResolvedWithoutSymlink": true,
+    "databasesDistinct": true,
+    "privateInputsSha256": "3fa1c168abb1134e5c2bf612299a15752dc95605d27130be86ae8049c50718c7",
+    "privateInputFilesVerified": 7,
+    "publicCandidateFilesVerified": 12,
+    "compatibleConnectFilesVerified": 2,
+    "privateInputDirectoryMode": "0700",
+    "privateInputFileModes": "0600",
+    "targetedRightsDryRun": {
+      "selectedAccountAllowed": true,
+      "otherExistingAccountsAllowed": false,
+      "otherApplicationRightsUnchanged": true,
+      "transactionRolledBack": true
+    },
+    "privateCaseBackup": {
+      "serverCopy": "verified_bytes",
+      "activeDocuments": 6,
+      "archivedDocuments": 3,
+      "applicationImport": "not_performed"
+    },
+    "applicationInstalled": false,
+    "secretsCreated": false,
+    "newEntitlementsCreated": false,
+    "installerSha256": "1e9bbd1cfb31fa6f0f4087c9b95df7e77f94f679161fc954cf80f6631d92b4dd",
+    "runtimeProtectionPlan": "Candidate htaccess plus separate environment Basic Auth using existing private visitor account file; verify HTTPS 401 or restore closure.",
+    "remainingAfterInstallation": [
+      "Authenticated CONNECT browser recipe",
+      "Import and persistence of case on HTTPS browser origin"
+    ]
+  },
+  "publicDirectoryPermissionCorrection": {
+    "initialPublicSubdirectoryMode": "0700_due_to_process_umask",
+    "correctedMode": "0755",
+    "directories": [
+      "assets",
+      "connect"
+    ],
+    "privateConfigurationAndCaseBackupModesUnchanged": true,
+    "verifiedBy": "api/preproduction-post-install-observation.json ; api/preproduction-http-observation.json"
+  }
+}

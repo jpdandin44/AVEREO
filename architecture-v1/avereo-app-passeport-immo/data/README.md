@@ -5,7 +5,7 @@ title: Données de démonstration
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -21,5 +21,9 @@ lorsqu'un contact est nécessaire. Les pièces jointes réelles restent hors Git
 
 `progression-examin.json` est la source structurée du comparatif des 14 fonctions.
 `workflows/generer-progression-examin.mjs` en produit la vue Markdown avec `--check`.
-Les exemples de tests restent fictifs. Le cas réel fourni est conservé exclusivement
-dans le navigateur du poste et les répertoires privés hors Git.
+Les exemples de tests restent fictifs. Le cas réel est conservé hors Git dans
+les sources privées du poste et, après migration autorisée, dans la base et le
+répertoire documentaire privés de préproduction. Voir [le lot serveur](../docs/stockage-serveur.md).
+
+Le [document texte fictif](document-recette.test.txt) sert aux essais d'import,
+classement, doublon, archivage et restauration du [guide de recette](../docs/recette-preproduction.md).

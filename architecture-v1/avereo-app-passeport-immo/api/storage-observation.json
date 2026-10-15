@@ -1,0 +1,141 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "observedAt": "2026-10-15T09:53:50+00:00",
+  "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+  "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+  "target": "https://passeport-immo-preprod.avereo.fr",
+  "installation": {
+    "observedAt": "2026-10-15T09:53:50+00:00",
+    "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+    "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "publicFiles": 16,
+    "database": "dedicated_mysql",
+    "privateDirectoryMode": "0700",
+    "privateFileMode": "0600",
+    "account": "selected_connect_account_1",
+    "biens": 1,
+    "clients": 1,
+    "activeDocuments": 6,
+    "archivedDocuments": 3,
+    "documentHashesVerified": 9,
+    "runtimeReadback": "passed",
+    "previousFilesRestoreReadback": "passed",
+    "privateConfigRestoreReadback": "passed",
+    "dataBackup": {
+      "snapshotSha256": "9367f3dcebe37b1a67c6a18345d0ed34b9f727d95b995a6087c6ba860b59c2ae",
+      "tables": 4,
+      "documents": 9,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false
+    },
+    "servicePrivilegesReduced": true,
+    "connectRuntimeUnchanged": true,
+    "storageEnabled": true,
+    "browserRecipe": "real_connect_identity_property_documents_duplicate_upload_metadata_save_pdf_two_pages_download_hash_reload_passed",
+    "productionChanged": false,
+    "httpsRecipe": {
+      "observedAt": "2026-10-15T09:49:18+00:00",
+      "assertions": 34,
+      "checks": [
+        "normal_signed_launch_0",
+        "normal_signed_launch_1",
+        "anonymous_api_denied",
+        "anonymous_assets_denied",
+        "connect_identity_0",
+        "shared_property_0",
+        "six_active_three_archived_0",
+        "exact_private_document_0_0",
+        "exact_private_document_0_1",
+        "exact_private_document_0_2",
+        "exact_private_document_0_3",
+        "exact_private_document_0_4",
+        "exact_private_document_0_5",
+        "exact_private_document_0_6",
+        "exact_private_document_0_7",
+        "exact_private_document_0_8",
+        "unknown_property_denied_0",
+        "csrf_missing_denied_0",
+        "stale_revision_denied_0",
+        "connect_identity_1",
+        "shared_property_1",
+        "six_active_three_archived_1",
+        "exact_private_document_1_9",
+        "exact_private_document_1_9",
+        "exact_private_document_1_9",
+        "exact_private_document_1_9",
+        "exact_private_document_1_9",
+        "exact_private_document_1_9",
+        "exact_private_document_1_9",
+        "exact_private_document_1_9",
+        "exact_private_document_1_9",
+        "unknown_property_denied_1",
+        "csrf_missing_denied_1",
+        "stale_revision_denied_1"
+      ],
+      "independentSessions": 2,
+      "allNineBytesVerifiedPerSession": true,
+      "tlsValidation": true,
+      "newEntitlements": false
+    },
+    "runtimeUploadLimits": {
+      "cli_upload_max_filesize": "512M",
+      "cli_post_max_size": "512M",
+      "cli_max_file_uploads": "20"
+    },
+    "finalBackup": {
+      "snapshotSha256": "0ad273540b675bdaf3ab4ffb505c6b95c79ba83278e6d2d6af0443e5acf3ec55",
+      "tables": 4,
+      "documents": 9,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false
+    },
+    "apiDirectoryMode": "0755",
+    "serviceGrants": [
+      {
+        "privileges": "USAGE",
+        "target": "*.*"
+      },
+      {
+        "privileges": "SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES",
+        "target": "`daje3540\\_pimpreprod`.*"
+      }
+    ],
+    "finalTables": [
+      "pi_biens",
+      "pi_clients",
+      "pi_documents",
+      "pi_workspaces"
+    ],
+    "finalDocumentCount": 9,
+    "directoryCorrection": "New public api directory chmod 0755; private blob directory remains 0700."
+  },
+  "privateReceiptSha256": "9cea659d1d88b4c4580ccc6afd59f12d668cb4c6d3c4c4a904e4141096cd2b96",
+  "browser": {
+    "account": "selected_connect_account_1",
+    "demoLoginRequired": false,
+    "apiRead": "passed",
+    "duplicateUpload": "passed_http_201_no_new_document",
+    "metadataSave": "passed",
+    "archives": 3,
+    "pdfPages": 2,
+    "downloadHash": "matches_private_source",
+    "persistenceAfterReload": "passed",
+    "transientUploadError": "First integrated-browser upload reported network failure; retry returned 201 and detected the duplicate."
+  },
+  "ci": {
+    "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+    "runId": 38714544403,
+    "status": "success",
+    "artifactBytesEqualToInstalled": true
+  },
+  "limits": {
+    "humanPreproductionReview": "pending",
+    "prMerge": "not_performed",
+    "production": "not_changed",
+    "scheduledBackup": "not_installed",
+    "localPrototype": "browser_storage_unchanged",
+    "testRestoreScope": "four application tables restored into temporary tables, private file copies rehashed; no whole-host restoration"
+  }
+}

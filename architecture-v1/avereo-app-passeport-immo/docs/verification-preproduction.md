@@ -5,12 +5,104 @@ title: Vérification des prérequis CONNECT et de préproduction
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, connect, preproduction, sauvegarde]
 ---
 
 # Vérification des prérequis de préproduction
+
+## Résultat courant après correction SSO
+
+Le [rapport](03-preproduction.md) et le [reçu SSO](../api/preproduction-sso-observation.json)
+constatent l'installation du correctif : assets protégés par session signée,
+porte Basic redondante retirée de Passeport Immo, page 403 héritée neutralisée.
+Douze contrôles HTTPS conformes ; ticket valide, worker PDF et deux pages des
+coupes vérifiés dans le navigateur intégré. Le responsable confirme l'ouverture
+sans troisième fenêtre dans Chrome. Le bien est conservé après réouverture et
+les neuf téléchargements sont identiques aux sources : six actifs et trois archives.
+Ce dossier est propre au navigateur intégré ; Chrome n'est pas synchronisé.
+La déconnexion complète et la revue humaine restent à renseigner, sans décision
+de phase fabriquée. Les résultats ci-dessous sont des observations historiques.
+
+## Résultat après installation privée initiale
+
+Le [rapport de préproduction](03-preproduction.md) porte l'état courant : candidat
+installé, paramètres privés et catalogue raccordés, compte choisi autorisé et deux
+autres comptes existants refusés. Les récupérations des fichiers et données ciblées
+sont vérifiées. Les octets déployés, les permissions corrigées et six refus anonymes
+401 sont contrôlés ; le ticket de l'émetteur réel est accepté par le sas installé,
+avec refus des signatures invalides, expirations, autre application et rejeu.
+La sauvegarde de la SCI est sur le serveur privé. Sa migration dans l'interface et
+le parcours authentifié réel restent non réalisés. Les constats qui suivent sont
+les étapes antérieures, conservées avec leur portée et leur date.
+
+## Accès et migration préparée après demande d'installation
+
+Le responsable autorise dans le chat le raccordement et l'installation privés,
+avec son compte habituel et le bien de la SCI. L'accord de périmètre est acquis ;
+le choix du compte parmi les trois comptes actifs reste en attente. L'inspection
+authentifiée du 15 octobre à 07:04 UTC confirme encore l'absence du catalogue et
+des paramètres Passeport Immo et les empreintes attendues du runtime CONNECT.
+
+Le [relevé d'accès](../api/preproduction-access-observation.json) conserve les
+observations et les limites actuelles. CONNECT et son healthcheck répondent
+401 avec une demande HTTP Basic, avant l'identité applicative ; le certificat
+HTTPS est validé. Le navigateur intégré échoue à cette porte avec
+`ERR_INVALID_AUTH_CREDENTIALS`. La cause détaillée du traitement de cette demande
+par le navigateur reste indéterminée. Une connexion Chrome ne s'applique pas
+automatiquement au profil du navigateur intégré, comme l'indique la
+[documentation officielle OpenAI](https://learn.chatgpt.com/docs/browser).
+Aucune protection n'est retirée. La session cPanel doit être rétablie.
+
+Le dossier de transfert privé, exporté depuis les commandes de téléchargement
+de l'application locale, contient les six documents actifs, les trois archivés
+et les métadonnées du bien. Manifeste et archive sont relus : tailles, SHA-256,
+octets et CRC conformes. Ils restent hors Git et hors archive applicative.
+Le téléversement et l'import HTTPS ne sont pas effectués ; la persistance du
+nouveau dossier doit être vérifiée sur cette origine. La V1 reste un stockage
+de navigateur, sans espace documentaire partagé entre appareils.
+
+L'accord reçu ne remplace ni la récupération des données CONNECT avant écriture,
+ni la qualification des droits ciblés, ni la recette réelle. Les observations
+antérieures ci-dessous sont conservées avec leur date et leur périmètre.
+
+## Contrôle authentifié du 15 octobre 2026
+
+Le [relevé structuré](../api/connect-hosted-observation.json) remplace l'inconnue
+liée à l'expiration de session : cPanel est accessible, les deux cibles déclarées
+et les fichiers concernés identifiés. La lecture du catalogue en transaction SQL
+en lecture seule réussit ; cinq applications actives, aucune entrée Passeport Immo,
+aucun droit actif associé. La base CONNECT est distincte de production. Les
+paramètres Passeport Immo et son sas privé sont absents. La cible contient seulement
+`.htaccess` et `cgi-bin`, avec fermeture totale. Aucun fichier applicatif modifié.
+
+Les empreintes exactes des deux fichiers CONNECT concernés permettent de préparer
+le delta compatible décrit dans le [rapport](02-integration-connect.md). Le delta
+initial ne doit pas être installé sur ce runtime. Après relecture des sauvegardes
+existantes, une [répétition hébergée](../api/connect-recovery-observation.json)
+confirme la récupération de l'arbre Passeport Immo, des deux fichiers CONNECT et
+de sa configuration privée dans un dossier séparé : octets et permissions conformes,
+actifs inchangés, aucune base ou valeur de secret exportée. Les accords, paramètres,
+droits ciblés et recette privée restent nécessaires.
+
+## Préparation locale du 14 octobre 2026
+
+La nouvelle demande du responsable autorise la préparation du sas Passeport Immo.
+Le contrôle anonyme courant confirme CONNECT protégé (401 Basic) et Passeport Immo
+fermé (403), avec validation TLS. La session cPanel de ce chat affiche un cookie
+expiré à cette date. Le contrôle authentifié du 15 octobre est présenté ci-dessus.
+La déclaration du responsable est conservée comme contexte.
+
+Le [raccordement local](02-integration-connect.md) est désormais implémenté :
+15 assertions de contrat, 18 assertions HTTP sur Apache isolé, 38 tests backend,
+26 tests frontend, 15 tests Python et parité réussis. Le build ajoute cinq fichiers
+de sas aux sept assets. Catalogue proposé en brouillon sans grant, configuration
+privée non emballée et ZIP de préproduction initialement fermé. Les opérations
+et préconditions de version sont dans le [runbook](deployment.md).
+
+Les observations ci-dessous décrivent la préparation antérieure de CONNECT et
+du candidat documentaire. Le bloc canonique porte l'état courant et ses versions.
 
 La demande du responsable porte sur la préparation de CONNECT, sa sauvegarde de
 base et sa migration d’activation, puis les vérifications permettant de finaliser
@@ -22,7 +114,7 @@ CONNECT publie uniquement ce rapport et l’option de destination du préparateu
 Les décisions humaines et la revue du lot documents/coupes
 restent distinctes du passage hébergé.
 
-## Cadrage
+## Cadrage antérieur du lot documentaire
 
 La PR nº78 est fusionnée ; le candidat documentaire de sept assets reste celui
 du suivi. La préproduction dédiée et son HTTPS ont été préparés antérieurement.
@@ -47,7 +139,7 @@ répétition locale de restauration des fichiers sont contrôlés. Les onze test
 Python, la parité a/b/c/d/e et le contrat du cockpit passent. Ces preuves ne
 qualifient pas une récupération hébergée ou une recette du dossier privé.
 
-## Préproduction
+## Préproduction — constats antérieurs au raccordement local
 
 | Prérequis | Constat | Condition restante |
 |---|---|---|
@@ -74,6 +166,6 @@ déploiement ni une validation de la recette HTTPS.
 
 ## Mise en production
 
-Aucune livraison ni ouverture n’est incluse. La prochaine action est la
-qualification du lot CONNECT et du contrat Passeport Immo, puis un accord exact
-de préproduction sur un artefact complet et récupérable.
+Aucune livraison ni ouverture de production n’est incluse. La prochaine action
+courante est de rétablir les accès nécessaires, puis d'installer et recetter la
+préproduction privée autorisée, avec récupération et droits ciblés qualifiés.

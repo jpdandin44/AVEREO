@@ -5,12 +5,72 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Décisions Passeport Immo
+
+## 2026-10-15 — Sauvegarde quotidienne de préproduction
+
+Contexte : le responsable demande de rendre la sauvegarde automatique. Décision :
+réutiliser la sauvegarde CLI, la déclencher quotidiennement à 03 h 20 Europe/Paris
+sur o2switch et conserver trente copies réussies dans un répertoire privé dédié.
+Raisons : indépendance du poste, récupération des tables et fichiers ensemble,
+rotation bornée et échec sans perte du dernier succès. Conséquences : tâche cron,
+verrou, traces privées, contrôles à chaque copie et récupération documentée.
+Aucun destinataire externe ni nouveau droit de service n’est ajouté.
+
+## 2026-10-15 — Base dédiée et fichiers privés
+
+Contexte : le responsable demande de rendre le stockage documentaire opérationnel
+sur la préproduction déjà installée. Décision : conserver les métadonnées dans
+une base MySQL distincte de CONNECT et les fichiers hors document root ; utiliser
+l’identité signée du ticket pour isoler les propriétaires. Raison : retrouver les
+mêmes documents depuis plusieurs navigateurs sans exposer les fichiers statiquement.
+Conséquences : API PHP, sauvegarde des tables et fichiers, révision des écritures,
+nouveau lancement CONNECT pour remplacer les anciens cookies sans identité.
+Le [lot serveur](docs/stockage-serveur.md) garde limites et recette ; la production reste distincte.
+
+## 2026-10-15 — Session CONNECT pour toutes les ressources de l'application
+
+Contexte : le parcours réel ouvre l'application mais exige une seconde porte
+visiteur sur son origine. Décision technique : vérifier la session HMAC existante
+pour le HTML et tous les assets, puis retirer la configuration Basic redondante
+de Passeport Immo après qualification. La porte Basic de CONNECT reste en place.
+Raison : permettre le lancement selon les droits CONNECT sans nouvelle saisie
+et conserver une préproduction privée. Conséquences : seuls les assets construits
+CSS/JS/MJS sont servis sous contrôle PHP, sans cache partagé ; aucun cookie de
+domaine parent, partage de mot de passe ou changement des droits n'est ajouté.
+Les ressources et le dossier sont vérifiés dans le navigateur intégré ; le retour
+Chrome, l'identité métier et le stockage partagé gardent leurs limites dans le
+[rapport courant](docs/03-preproduction.md).
+
+## 2026-10-15 — Politique d'environnement et transfert privé
+
+Contexte : installation privée autorisée sur le compte parent, après choix du
+compte de recette et récupération vérifiée. Décision technique : compléter la
+politique Apache du candidat par la protection visiteur existante, avec une
+empreinte d'environnement séparée ; conserver les configurations en dehors du
+document root. Les répertoires publics exigent un chmod explicite en 0755 même
+quand l'installateur applique un masque privé ; les répertoires et fichiers
+privés restent en 0700/0600.
+Raisons : maintenir deux portes distinctes, rendre les ressources servables et
+conserver exactement les assets du candidat contrôlé.
+Conséquences : la copie privée du dossier réel ne constitue pas un backend
+documentaire et ne peuple pas le navigateur. L'import et la recette réels restent
+ouverts ; aucune acceptation de phase ou de production n'est déduite des tests.
+
+## 2026-10-14 — Réutilisation du sas CONNECT
+
+Contexte : préparer la préproduction après l'approbation du dossier documentaire.
+Décision technique : utiliser le sas commun et deux clés dédiées côté CONNECT,
+sans backend de documents ni migration Passeport Immo.
+Raison : conserver les tickets HMAC courts, le refus par défaut et l'anti-rejeu
+des applications existantes ; éviter une seconde source du sas.
+Conséquences : le build contient PHP/règles Apache et exige une configuration
+privée distincte. La recette authentifiée et l'installation restent à qualifier.
 
 ## Source des décisions de chantier
 Les décisions de validation sont enregistrées par le responsable dans AVEREO Projet,

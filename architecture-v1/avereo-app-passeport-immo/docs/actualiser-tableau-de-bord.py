@@ -70,10 +70,13 @@ def iteration_view(data):
                 if provisioning.get('applicationFilesInstalled') is False:
                     target_preference += 'Aucun fichier applicatif installé. '
                 target_preference += 'Accès privé de consultation et récupération hébergée restent à qualifier.\n'
+            elif protection.get('publicHttpsStatus') == 401 and provisioning.get('applicationFilesInstalled') is True:
+                target_preference += '\nApplication installée en préproduction privée ; HTTPS contrôlé avec protection visiteur (401). Recette avec l’identité réelle et import du dossier dans le navigateur restent à terminer.\n'
     preparation_md = ''
     if preparation:
         preparation_labels = {
             'prepared_local': 'Préparée sur le poste',
+            'installed_private_recipe_pending': 'Installée en préproduction privée, recette à terminer',
             'passed': 'Réussie',
             'passed_local_files_only': 'Réussie sur des fichiers temporaires locaux',
             'not_verified': 'Non vérifiée',

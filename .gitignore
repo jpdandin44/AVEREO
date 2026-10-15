@@ -24,6 +24,7 @@ architecture-v1/avereo-app-coupe/*.zip
 /architecture-v1/avereo-app-projet/frontend/public/connect/gate.php
 /architecture-v1/avereo-app-thermo/frontend/public/connect/gate.php
 /architecture-v1/avereo-app-drone/frontend/public/connect/gate.php
+/architecture-v1/avereo-app-passeport-immo/frontend/public/connect/gate.php
 
 # Env
 .env

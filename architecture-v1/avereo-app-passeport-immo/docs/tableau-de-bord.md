@@ -5,7 +5,7 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [suivi, passeport-immo, genere]
 ---
@@ -16,13 +16,13 @@ Vue générée depuis `suivi-chantier.json`. Ne pas modifier manuellement.
 La revue et les décisions se font dans [Projet local](http://127.0.0.1:5193/).
 
 <!-- BEGIN GENERATED: suivi-chantier.json -->
-Mise à jour : **2026-10-14**. **1 phase livrée sur 4 ; 1 phase validée par le responsable.**
+Mise à jour : **2026-10-15**. **3 phases livrées sur 4 ; 2 phases validées par le responsable.**
 
 | Phase | Statut | Livrables | Livraison | Validation humaine |
 |---|---|---|---|---|
 | 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
-| 1 — Développement local | En cours | `02-integration-connect.md` (prévu)<br>[documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | — | Non acquise |
-| 2 — Préproduction | Non commencée | `03-preproduction.md` (prévu)<br>`deployment.md` (prévu) | — | Non acquise |
+| 1 — Développement local | Validée | [documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | 2026-10-14 | 2026-10-14 |
+| 2 — Préproduction | À valider | [recette-preproduction.md](recette-preproduction.md)<br>[02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md)<br>[sauvegarde-automatique.md](sauvegarde-automatique.md) | 2026-10-15 | Non acquise |
 | 3 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
 
 ### Décisions attendues
@@ -37,13 +37,14 @@ Aucune décision en attente.
 | D02 | Historique — Reprise à l’identique : Autoriser le passage en phase 1 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
 | D03 | Historique — Reprise à l’identique : Valider le livrable de phase 1 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
 | D04 | Historique — Intégration CONNECT : Autoriser le passage en phase 2 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
+| D05 | Valider le livrable de phase 1 — accord enregistré | 2026-10-14 | Décision et preuve consignées dans le JSON |
 
 ### Questions de vérification
 
 | ID | Question | Impact | Prochaine action |
 |---|---|---|---|
-| Q01 | Comment traiter le partage d’URL sans données du bien ? | Un autre poste ne reçoit pas le dossier. | Décider le partage sécurisé dans un lot ultérieur. |
-| Q02 | Conserver ou remplacer les accès et abonnement simulés derrière CONNECT ? | Aucune authentification ni facturation réelle dans le prototype. | Décision de phase 2. |
+| Q01 | Comment traiter le partage d’URL sans données du bien ? | Le même compte retrouve son dossier sur ses appareils ; le partage à un autre compte reste absent. | Définir le partage intercomptes dans un lot ultérieur. |
+| Q02 | Conserver ou remplacer les accès et abonnement simulés derrière CONNECT ? | Identité CONNECT réelle en préproduction ; abonnement et facturation restent simulés. | Recetter les accès réels ; définir séparément la gestion des abonnements. |
 | Q03 | Quel sort réserver au frontend historique CONNECT ? | Deux sources de code après reprise. | Décision de phase 2 ; historique inchangé. |
 | Q04 | Accepter les limites du calcul : h/ml à zéro, groupement PDF par nom de pièce ? | Certaines estimations peuvent être nulles ou fusionnées. | Recetter les cas limites puis autoriser un correctif distinct. |
 | Q05 | Validation humaine du rendu, import CSV, PDF et usage mobile ? | Checklist de test local cochée humainement dans la PR nº71 ; résultats détaillés R01…R13 et téléphone réel non consignés. | Remplir le tableau R dans le livrable local. |
@@ -53,42 +54,40 @@ Aucune décision en attente.
 
 ## Où en est le développement ?
 
-Travail actuel : **Local — En cours**.
-Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.
+Travail actuel : **Préproduction — À valider**.
+Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
-Parcours formel : **phase 1 — Développement local**, en cours.
-Validation formelle restant à consigner : phase 1. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
+Parcours formel : **phase 2 — Préproduction**, à valider.
+Phases 0 et 1 validées dans le suivi. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
 
 
 Adresse créée : `https://passeport-immo-preprod.avereo.fr`. Dossier dédié : `/home/daje3540/passeport-immo-preprod.avereo.fr/public` dans le compte parent. La lune gratuite `sc4daje3540` reste distincte de cette cible.
 
-Certificat installé ; adresse HTTPS contrôlée avec accès refusé (403). Aucun fichier applicatif installé. Accès privé de consultation et récupération hébergée restent à qualifier.
-
 
 ## Itération GitHub et cockpit
 
-**passeport-immo-documents-2026-10-14** — Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.
+**passeport-immo-documents-2026-10-14** — Cas documentaire client/bien, raccordement CONNECT privé et stockage serveur opérationnel.
 
-Responsable : jpdandin. Étape : local. État : En cours.
+Responsable : jpdandin. Étape : preproduction. État : À valider.
 
 Ces étapes techniques complètent les phases formelles du chantier ; une fusion GitHub ne modifie pas leurs décisions.
 
 | Étape | État | Prochaine action |
 |---|---|---|
-| Local | En cours | Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante. |
-| Préproduction | Bloquée | Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous. |
+| Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
+| Préproduction | À valider | Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
 
-- SHA source : `322ad1275c240a9bc70ad8641102c58600c1f67c`.
-- SHA-256 de l'archive : `bf9e285c1f34fbb0dc49deafccd32597bc514b41fe93c5f955a17e510fba0983`.
-- PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/78).
+- SHA source : `7209bf3334a5f3f98d422b41d177c734970a0750`.
+- SHA-256 de l'archive : `c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf`.
+- PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-14T10:34:14.532Z.
+- Dernière observation GitHub : 2026-10-15T13:42:48.518Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -99,30 +98,70 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Sur le poste | Réussi | 2026-10-14T12:30:33+02:00 |
 | Documentation | Réussi | 2026-10-14T12:30:33+02:00 |
 | GitHub Actions | Réussi | 2026-10-14T12:30:33+02:00 |
+| Sur le poste | Réussi | 2026-10-14T20:09:51.631Z |
+| Documentation | Réussi | 2026-10-14T20:09:51.631Z |
+| GitHub Actions | Réussi | 2026-10-14T20:13:18.664Z |
+| Sur le poste | Réussi | 2026-10-15T06:36:09.982Z |
+| GitHub Actions | Réussi | 2026-10-15T06:46:34.094Z |
+| GitHub Actions | Réussi | 2026-10-15T07:53:22.944438+00:00 |
+| Sur le poste | Réussi | 2026-10-15T08:13:50.587851+00:00 |
+| GitHub Actions | Réussi | 2026-10-15T08:13:50.587851+00:00 |
+| Documentation | Réussi | 2026-10-15T08:14:26.469641+00:00 |
+| Sur le poste | Réussi | 2026-10-15T08:22:25.214977+00:00 |
+| GitHub Actions | Réussi | 2026-10-15T08:22:25.214977+00:00 |
+| Documentation | Réussi | 2026-10-15T08:22:25.214977+00:00 |
+| hosted_entry | Réussi | 2026-10-15T08:36:22.326328+00:00 |
+| case_migration | Réussi | 2026-10-15T08:36:22.326328+00:00 |
+| GitHub Actions | Réussi | 2026-10-15T08:48:25.718643+00:00 |
+| Sur le poste | Réussi | 2026-10-15T09:53:50+00:00 |
+| GitHub Actions | Réussi | 2026-10-15T09:53:50+00:00 |
+| hosted_storage | Réussi | 2026-10-15T09:53:50+00:00 |
+| Documentation | Réussi | 2026-10-15T10:03:25.433202+00:00 |
+| hosted_backup | Réussi | 2026-10-15T13:36:34+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
 - Sur le poste : 26 tests frontend, 10 tests Python, parité a/b/c/d/e, build, contrat cockpit ; six PDF réels dans le navigateur, PDF comparatif consulté sur deux pages et téléchargement identique.
 - Documentation : 31 documents Markdown et 104 liens locaux contrôlés ; socles racine et application présents ; progression et vues alignées ; empreintes approuvées historiques conservées.
 - GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38549381653 ; archive téléchargée identique au candidat local, manifeste et sept assets vérifiés.
+- Sur le poste : 26 tests frontend, 15 tests Python, 38 tests backend, 15 assertions de contrat et 18 HTTP Apache ; build, parité, archive et restauration locale réussis.
+- Documentation : Socles Passeport Immo et CONNECT vérifiés ; métadonnées, liens locaux, vues et 15 empreintes approuvées conformes.
+- GitHub Actions : CI 01be7d2 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon.
+- Sur le poste : Delta compatible 1cbd15edf31bfda766007a255de83e4f58f8192e1d2edd592b86165d6c3b106d (source 9bc5e351781a0a59169e4dc09ec29f67f9cb2dec) : 19 tests Python, 32 tests du backend historique, 15 assertions du sas. ZIP frontend inchangé ; reçu hébergé api/connect-hosted-observation.json.
+- GitHub Actions : CI e26f564 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon.
+- GitHub Actions : CI f6e5aaa : neuf contrôles techniques réussis ; archive téléchargée identique octet par octet à celle installée. Aucun changement applicatif dans le complément documentaire.
+- Sur le poste : api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes.
+- GitHub Actions : api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes.
+- Documentation : 35 Markdown, 191 liens locaux et socles racine/application contrôlés ; sources de revue approuvées conservées, description locale et état installé initial distingués.
+- Sur le poste : api/preproduction-sso-observation.json#errorDocumentFollowup
+- GitHub Actions : api/preproduction-sso-observation.json#errorDocumentFollowup
+- Documentation : api/preproduction-sso-observation.json#errorDocumentFollowup
+- hosted_entry : api/preproduction-sso-observation.json
+- case_migration : api/preproduction-sso-observation.json
+- GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38707718594 ; archive téléchargée identique au candidat installé, complément documentaire uniquement.
+- Sur le poste : 29 tests frontend, 29 assertions API MariaDB isolée, 67 assertions Apache, 19 tests Python et parité g.
+- GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38714544403 ; archive identique au candidat installé.
+- hosted_storage : api/storage-observation.json ; 34 assertions HTTPS, deux sessions, neuf fichiers et sauvegarde restaurée en tables temporaires.
+- Documentation : 42 documents Markdown et 256 liens locaux contrôlés ; socles racine/application, métadonnées, vues et empreintes approuvées conservés.
+- hosted_backup : api/automatic-backup-observation.json ; cron réel, quatre tables/neuf fichiers, retour temporaire, permissions et autres tâches vérifiés.
 
 ### Contrôles de passage
 
 - Préproduction : passage refusé (2026-10-14T12:32:31+02:00).
 - Production : passage refusé (2026-10-14T12:32:31+02:00).
 - Clôture : passage refusé (2026-10-14T12:32:31+02:00).
+- Préproduction : conditions remplies (2026-10-15T07:35:02.235103+00:00).
+- Préproduction : conditions remplies (2026-10-15T08:21:00+00:00).
 
 ### Blocages de passage
 
-- Sous-domaine et dossier créés, certificat installé et fermeture 403 vérifiée en HTTPS ; accès privé de consultation et récupération hébergée non qualifiés.
-- Accord exact de préproduction absent ; vacuité/isolement ou sauvegarde restaurée non prouvés.
-- Intégration CONNECT non réalisée ; recette humaine détaillée, cible de production et récupération à qualifier.
+- Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique.
 
-Prochaine action : Examiner le dossier documentaire local ; poursuivre CONNECT puis qualifier la préproduction privée avant une installation distante.
+Prochaine action : Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.
 
 ### Accords et livraison
 
-Accords spécifiques enregistrés : 0. Sauvegardes qualifiées : 0.
+Accords spécifiques enregistrés : 3. Sauvegardes qualifiées : 6.
 Retour arrière : non testé. Livraison : non réalisée.
 Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
 
@@ -130,6 +169,18 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 
 - Intégration CONNECT après accord sur les fichiers concernés.
 - Partage sécurisé et stockage centralisé à spécifier à la demande des clients.
+
+### Préparation locale de préproduction
+
+- État : Installée en préproduction privée, recette à terminer ; observation : 2026-10-15T07:40:02+00:00.
+- Empreinte du lot fermé : `c59311d764bbde23f0e4d0ad6c85a7d278c0eaedf073ecb2a57b75057b7a0c91`.
+- Assets du candidat conservés : Oui.
+- Relecture de l'archive : Réussie.
+- Restauration : Réussie sur des fichiers temporaires locaux ; cible hébergée : passed_files_and_modes_private_rehearsal_no_database.
+- Livraison distante : Installée en préproduction privée, recette à terminer.
+- PR de préparation : Non publiée.
+
+Cette préparation ne qualifie ni la cible ni l'accès privé. La récupération locale est distincte d'une sauvegarde restaurée de l'hébergement.
 
 
 ## Livrables attendus par phase
@@ -159,13 +210,6 @@ Reprise et état des lieux
 - Audit source et inconnues explicites ; vues générées contrôlées.
 
 ### Phase 1 — Développement local
-
-**02 integration connect** — Prévu — document non produit (`02-integration-connect.md`).
-
-Intégration CONNECT
-
-- Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.
-- Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.
 
 **Documents du client et du bien** — Document disponible (`documents-bien.md`).
 
@@ -199,19 +243,42 @@ Sources, hypothèses et restitution comparative intégrée au bien
 
 ### Phase 2 — Préproduction
 
-**03 preproduction** — Prévu — document non produit (`03-preproduction.md`).
+**Guide de recette et revue PR nº80** — Document disponible (`recette-preproduction.md`).
 
-Préproduction
+Parcours humain sur la cible hébergée, dossier SCI en lecture et bien fictif pour les essais d’écriture ; correspondance des huit critères.
+
+- Étapes et résultats attendus, composants installés, preuves techniques datées et limites de validation clairement distingués.
+
+**Raccordement CONNECT** — Document disponible (`02-integration-connect.md`).
+
+Sas signé, catalogue et droits installés ; constats initiaux conservés comme historiques.
+
+- Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.
+- Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.
+
+**Installation privée et constats datés** — Document disponible (`03-preproduction.md`).
+
+Chronologie des installations et distinction entre ancien stockage navigateur et lot serveur courant.
+
+- Reçus de la cible HTTPS, confirmation humaine de la fin de la troisième fenêtre ; renvoi au guide de recette courant.
+
+**Installation et retour arrière** — Document disponible (`deployment.md`).
+
+Procédure et workflow manuel ; cible privée et récupération avant remplacement.
 
 - Procédure et workflow manuel préparés.
-- Recette préproduction conforme, remplie par le responsable.
 
-**deployment** — Prévu — document non produit (`deployment.md`).
+**Stockage privé des documents** — Document disponible (`stockage-serveur.md`).
 
-Préproduction
+Base dédiée, identité CONNECT, fichiers privés, migration et recette vérifiées ; revue humaine distincte.
 
-- Procédure et workflow manuel préparés.
-- Recette préproduction conforme, remplie par le responsable.
+- Neuf fichiers migrés et partagés entre sessions ; récupération des tables et copies vérifiée.
+
+**Sauvegarde automatique de préproduction** — Document disponible (`sauvegarde-automatique.md`).
+
+Planification quotidienne, trente copies réussies, contrôles et récupération ; premier déclenchement cron observé.
+
+- Premier succès cron réel, quatre tables et neuf fichiers vérifiés ; tâche provisoire retirée et autres tâches préservées.
 
 ### Phase 3 — Mise en production
 

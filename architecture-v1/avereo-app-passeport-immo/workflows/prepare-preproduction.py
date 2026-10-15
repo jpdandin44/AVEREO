@@ -4,25 +4,18 @@ import hashlib
 import json
 import re
 import tempfile
-from pathlib import Path, PurePosixPath
+import sys
+from pathlib import Path
 from zipfile import ZipFile, ZipInfo, ZIP_STORED
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from candidate_contract import GATE_FILES, STORAGE_FILES, valid_name
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = Path(__file__).with_name('preproduction.htaccess')
 
 
 def sha256(content):
     return hashlib.sha256(content).hexdigest()
-
-
-def valid_name(name):
-    if not isinstance(name, str):
-        return False
-    path = PurePosixPath(name)
-    return (isinstance(name, str) and bool(name) and not path.is_absolute()
-            and '\\' not in name and ':' not in name and name == path.as_posix()
-            and not any(part in ('.', '..') or part.startswith('.') for part in path.parts)
-            and (name == 'index.html' or len(path.parts) > 1 and path.parts[0] == 'assets'))
 
 
 def candidate_files(archive_path, manifest_path, candidate):
@@ -86,6 +79,12 @@ def rehearse_restore(files, parent):
 
 def prepare(archive, manifest, candidate, output):
     files = candidate_files(archive, manifest, candidate)
+    present_gate = set(files).intersection(GATE_FILES)
+    if present_gate and present_gate != GATE_FILES:
+        raise ValueError('Sas CONNECT incomplet dans le candidat.')
+    if set(files).intersection(STORAGE_FILES) and not (GATE_FILES | STORAGE_FILES).issubset(files):
+        raise ValueError('Stockage serveur incomplet dans le candidat.')
+    runtime_policy = files.get('.htaccess')
     protection = TEMPLATE.read_text(encoding='utf-8').encode('utf-8')
     if 'Require all denied' not in protection.decode('utf-8').splitlines():
         raise ValueError('Protection initiale absente.')
@@ -107,6 +106,9 @@ def prepare(archive, manifest, candidate, output):
         'bundleSha256':sha256(bundle.read_bytes()),
         'files':[{'path':name,'sha256':sha256(content),'size':len(content)} for name, content in sorted(files.items())],
         'candidateAssetsUnchanged':True,
+        'connectGateIncluded':bool(present_gate),
+        'runtimeAccessPolicySha256':sha256(runtime_policy) if runtime_policy else None,
+        'initialClosureReplacesRuntimePolicy':bool(runtime_policy),
         'initialAccess':'deny_all_configuration_requires_hosted_verification',
         'archiveReadback':'passed',
         'restoreRehearsal':'passed_local_files_only',

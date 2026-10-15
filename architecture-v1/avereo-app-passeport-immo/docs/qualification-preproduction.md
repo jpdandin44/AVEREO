@@ -5,12 +5,57 @@ title: Qualification de la préproduction dédiée
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-15
 owner: jpdandin
 tags: [passeport-immo, o2switch, preproduction]
 ---
 
 # Qualification de la préproduction dédiée
+
+## État courant après correction du 15 octobre 2026
+
+Le [reçu SSO](../api/preproduction-sso-observation.json) constate le remplacement
+limité de l'entrée et du routage, puis le complément sur la page d'erreur héritée.
+CONNECT conserve Basic ; Passeport Immo vérifie la session signée pour le HTML
+et tous les assets. Douze contrôles HTTPS, neuf contrôles CI et relecture des
+douze fichiers installés conformes. Le ticket du compte autorisé ouvre l'application
+dans le navigateur intégré ; le responsable confirme la disparition de la troisième
+fenêtre dans Chrome. Le dossier de la SCI est importé dans le navigateur intégré,
+six actifs et trois archives, persistance et neuf restitutions conformes aux sources.
+Le [rapport courant](03-preproduction.md) précise la connexion interne simulée,
+le stockage distinct de Chrome et la recette de déconnexion/revue encore ouverte.
+
+## Installation initiale du 15 octobre 2026
+
+Le [rapport courant](03-preproduction.md) et les reçus liés constatent l'installation
+du candidat, du catalogue et des droits ciblés. Les racines réelles et les bases
+distinctes sont contrôlées. La fermeture initiale est remplacée par la protection
+visiteur Basic et le sas CONNECT, après sauvegarde/restauration des fichiers et
+des lignes ciblées du catalogue. Les sous-dossiers publics sont en 0755, les
+configurations et dossiers privés en 0600/0700. Les six requêtes anonymes vérifiées
+reçoivent 401, avec TLS validé et noindex sur Passeport Immo.
+
+La sauvegarde du bien réel est reçue hors document root. Le parcours avec identité
+réelle et l'import dans l'application à cette origine restent ouverts. Les
+observations ci-dessous décrivent les états antérieurs et ne doivent pas être
+prises pour l'inventaire courant après installation.
+
+## Recontrôle authentifié du 15 octobre 2026 avant installation
+
+Le [relevé structuré](../api/connect-hosted-observation.json) confirme le document
+root déclaré, son chemin réel sans redirection symbolique, et l'inventaire courant
+`.htaccess`, `cgi-bin`. La fermeture totale est toujours présente ; aucun fichier
+du candidat n'est installé. Le catalogue et les paramètres de lancement Passeport
+Immo sont absents de CONNECT. Le `.htaccess` sauvegardé puis restauré dans les
+dossiers privés du 6 octobre correspond toujours à la cible par empreinte.
+Une nouvelle [répétition privée](../api/connect-recovery-observation.json) contrôle
+ensuite les sauvegardes et restaurations de l'arbre cible, des deux fichiers CONNECT
+et de sa configuration privée : octets et permissions conformes, actifs inchangés.
+Elle ne restaure pas sur les emplacements actifs et n'inclut aucune base. Le [runbook](deployment.md)
+décrit la préparation compatible avec le runtime CONNECT observé.
+La consultation privée, le compte de recette, les accords exacts et la recette
+hébergée restent à établir. Les observations ci-dessous conservent l'historique
+de création et ses inconnues à leur date.
 
 ## Choix acquis
 Le responsable choisit « Préproduction dédiée sur o2switch » en conversation.

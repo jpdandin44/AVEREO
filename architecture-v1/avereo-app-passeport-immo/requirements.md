@@ -5,12 +5,53 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Exigences Passeport Immo
+
+## Sauvegarde automatique demandée le 15 octobre 2026
+
+- E25 : sauvegarder automatiquement la base applicative et tous les documents de préproduction, archives incluses.
+- E26 : vérifier chaque copie, conserver trente succès et préserver le dernier en cas d’échec.
+- E27 : exécuter sur l’hébergement sans dépendre du PC ; conserver les autres tâches et les sauvegardes manuelles.
+
+Procédure et limites : [sauvegarde automatique](docs/sauvegarde-automatique.md).
+
+## Lot serveur autorisé le 15 octobre 2026
+
+- E20 : conserver biens, clients, tarifs et métadonnées dans une base dédiée en préproduction.
+- E21 : conserver les fichiers privés sur le serveur, accessibles au propriétaire CONNECT du bien.
+- E22 : retrouver le même dossier depuis plusieurs sessions, refuser les écritures périmées et les accès d’un autre compte.
+- E23 : migrer les neuf documents du cas SCI sans perte des archives ni modification des octets.
+- E24 : vérifier une sauvegarde des données et fichiers avant activation ; garder les données locales et les sources.
+
+La description [du lot g](docs/stockage-serveur.md) complète les exigences locales historiques.
+
+## Accès continu demandé le 15 octobre 2026
+
+- E24 : après la porte visiteur de CONNECT et l'identification habituelle,
+  ouvrir Passeport Immo selon les droits CONNECT sans nouvelle saisie du mot de passe.
+- E25 : protéger aussi les assets de Passeport Immo par la session signée ;
+  refuser leur lecture anonyme ou avec un cookie altéré avant de retirer sa porte Basic redondante.
+
+Cette correction de préproduction ne crée pas d'identité métier dans le prototype.
+Le compte de démonstration interne et le stockage par navigateur restent documentés.
+
+## Préparation CONNECT demandée le 14 octobre 2026
+
+- E20 : protéger le HTML et les routes SPA par le sas existant, refuser tickets
+  absents, altérés, expirés, d'une autre application ou rejoués.
+- E21 : déclarer les clés de lancement dans CONNECT sans accorder de droit implicite.
+- E22 : garder paramètres privés et documents hors archive ; fermer le ZIP initial,
+  vérifier restauration locale et préparer la recette/récupération hébergée.
+- E23 : préserver les cinq livrables et décisions approuvés, ainsi que le parcours
+  local du prototype ; documenter l'absence d'identité métier dans son interface.
+
+Le [rapport de raccordement](docs/02-integration-connect.md) décrit l'écart f
+autorisé par cette demande et les critères qui restent à qualifier sur le serveur.
 
 ## Fonctionnelles
 - E01 : conserver création, édition, suppression et consultation des biens.
