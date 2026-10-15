@@ -12,6 +12,11 @@ tags: [connect, preproduction, installation]
 
 # Installation privée de Passeport Immo
 
+Cette procédure décrit l'installation initiale de **préproduction**.
+Pour la suite après fusion de la PR nº80, consulter le
+[dossier de mise en production](04-mise-en-production.md), qui précise la cible
+encore à qualifier et la récupération à préparer avant toute nouvelle installation.
+
 ## Complément de stockage privé
 
 Le [lot serveur](stockage-serveur.md) ajoute quatre fichiers runtime explicitement

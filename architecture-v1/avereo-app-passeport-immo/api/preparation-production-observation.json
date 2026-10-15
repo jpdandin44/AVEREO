@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "kind": "production_preparation",
+  "observedAt": "2026-10-15T15:30:29.857716+00:00",
+  "scope": "Local files and GitHub metadata/artifacts; no hosted production observation or mutation.",
+  "requestReference": "Demande directe du 15 octobre 2026 : PR nº80 mergée, préparer la suite.",
+  "github": {
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
+    "state": "merged",
+    "headSha": "74421367dadcae8de5b57636407bed45a6d74f04",
+    "mergeCommitSha": "437f2689e8ea5a0f12e055be9e2b8713bf99b1bd",
+    "mergedAt": "2026-10-15T15:11:21Z",
+    "mergedBy": "jpdandinavereo-design",
+    "humanChecklistChecked": 4,
+    "mergeTreeEqualToReviewedHead": true,
+    "runs": [
+      {
+        "id": 38758110234,
+        "name": "Deploy Prototype To GitHub Pages",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/38758110234",
+        "headSha": "437f2689e8ea5a0f12e055be9e2b8713bf99b1bd",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 38758111043,
+        "name": "CI",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/38758111043",
+        "headSha": "437f2689e8ea5a0f12e055be9e2b8713bf99b1bd",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 38758111947,
+        "name": "Passeport Immo CI",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/38758111947",
+        "headSha": "437f2689e8ea5a0f12e055be9e2b8713bf99b1bd",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "publicCandidate": {
+    "candidateSourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+    "mainSourceSha": "437f2689e8ea5a0f12e055be9e2b8713bf99b1bd",
+    "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "ciArtifactId": 11984422099,
+    "ciArtifactName": "passeport-immo-437f2689e8ea5a0f12e055be9e2b8713bf99b1bd",
+    "localDirectory": ".local/production-preparation/main-437f268",
+    "archive": "candidate.zip",
+    "manifest": "candidate.manifest.json",
+    "fileCount": 16,
+    "crcAndFileHashes": "passed",
+    "equalToInstalledReceipt": true,
+    "installedReceipt": "api/storage-observation.json"
+  },
+  "privateBackupBundle": {
+    "sourceSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
+    "artifactSha256": "dd574fb98b8fe770f4c33c2fd2bacf76e17963c58aaa9c056e070d3326798ae1",
+    "bundle": "bundle.json",
+    "manifest": "bundle.manifest.json",
+    "localDirectory": ".local/production-preparation/main-437f268",
+    "files": [
+      {
+        "name": "scheduled-backup.php",
+        "size": 7637,
+        "sha256": "9356a02a7f53ab813d1e8da50d470e6213f5a31593b36b102fe4aa1716a8caf3"
+      },
+      {
+        "name": "backup-storage.php",
+        "size": 3970,
+        "sha256": "734d7ca313632792a93efaa18bc95dbc6857f057493ba67ffc51414a6e65dffb"
+      },
+      {
+        "name": "backup-cron.php",
+        "size": 5184,
+        "sha256": "8a86282b0c0d434e2519f1de5f7bb2a6a8d8b66dff9118b6ca04eac48db2a232"
+      },
+      {
+        "name": "storage.sql",
+        "size": 1420,
+        "sha256": "b2e283afcc8e20079b5f0e07c65ebb733ad3fb9ffc8897158d166dec9186af55"
+      }
+    ],
+    "fileHashesAndMainSources": "passed",
+    "hostedReceipt": "api/automatic-backup-observation.json"
+  },
+  "separateIssue": {
+    "workflow": "Deploy Prototype To GitHub Pages",
+    "runUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38758110234",
+    "step": "Setup Pages",
+    "reason": "Site Pages introuvable/non configuré : Get Pages site failed; Not Found.",
+    "actionPerformed": false
+  },
+  "limits": {
+    "productionTargetQualified": false,
+    "newHostedChecksPerformed": false,
+    "phaseApprovalAdded": false,
+    "productionDeliveryPerformed": false,
+    "publicOpeningPerformed": false,
+    "humanAcceptanceForExactPromotionRecorded": false
+  },
+  "productionGate": {
+    "gate": "production",
+    "declaredEvidenceConsistent": false,
+    "errors": [
+      "Blocages présents ou non renseignés.",
+      "Cible de production non prouvée.",
+      "Contrôle actuel absent : preproduction sur o2switch:daje3540:passeport-immo-preprod.avereo.fr.",
+      "Accord humain exact absent : review.",
+      "Accord humain exact absent : production.",
+      "Acceptation GitHub du candidat non vérifiée.",
+      "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+      "Retour arrière de ce candidat non qualifié."
+    ],
+    "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+    "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+    "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "observedAt": "2026-10-15T15:31:40.759972+00:00"
+  },
+  "productionGateInterpretation": "Le contrôleur vérifie les déclarations exactes : les reçus hébergés historiques existent, mais le contrôle preproduction attendu, les accords de revue/promotion et la cible de production ne sont pas qualifiés dans ce format. La revue de source GitHub et le merge sont confirmés séparément.",
+  "localVerification": {
+    "pythonUnitTests": {
+      "passed": 19,
+      "failed": 0
+    },
+    "cockpitContract": "passed",
+    "parity": "passed",
+    "generatedViews": "passed",
+    "approvedDocumentHashesPreserved": 9,
+    "unrelatedWorkingFilesPreserved": 27,
+    "documentationFoundation": "root_and_application_present",
+    "applicationRuntimeChanged": false,
+    "markdownDocumentsChecked": 10,
+    "localLinksChecked": 152
+  }
+}
