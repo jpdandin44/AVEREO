@@ -99,8 +99,11 @@ Une différence par rapport au dossier attendu se consigne dans le commentaire.
 ## Critère 05 — import, classement, doublon et archives
 
 Créer un bien fictif avec **Créer un bien**, renseigner « RECETTE PR80 — TEST »
-dans **Adresse**, puis une surface d'essai. Utiliser uniquement ce bien
-pour les écritures. Le [fichier texte d'essai](../data/document-recette.test.txt)
+dans **Adresse**, puis une surface d'essai. Ouvrir sa fiche et, dans **Documents du bien**,
+choisir **Créer un nouveau client**, saisir « CLIENT RECETTE PR80 » et cliquer sur
+**Associer le client** : les boutons d'import apparaissent une fois cette association
+enregistrée. Utiliser uniquement ce bien fictif pour les écritures.
+Le [fichier texte d'essai](../data/document-recette.test.txt)
 est sans donnée client : le récupérer depuis [sa page GitHub](https://github.com/jpdandin44/AVEREO/blob/feat/passeport-immo-connect-preprod/architecture-v1/avereo-app-passeport-immo/data/document-recette.test.txt) ou le copier depuis le dépôt,
 puis l'ajouter avec **Ajouter des fichiers**.
 
