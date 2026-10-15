@@ -251,9 +251,9 @@
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "headSha": "12a59875d078448cc91ecfb31d04ad15bc9442cf",
         "draft": true,
-        "observedAt": "2026-10-15T09:41:46.671Z",
+        "observedAt": "2026-10-15T10:00:46.770Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
@@ -812,15 +812,15 @@
       "id": "Q01",
       "status": "open",
       "question": "Comment traiter le partage d’URL sans données du bien ?",
-      "impact": "Un autre poste ne reçoit pas le dossier.",
-      "nextAction": "Décider le partage sécurisé dans un lot ultérieur."
+      "impact": "Le même compte retrouve son dossier sur ses appareils ; le partage à un autre compte reste absent.",
+      "nextAction": "Définir le partage intercomptes dans un lot ultérieur."
     },
     {
       "id": "Q02",
       "status": "open",
       "question": "Conserver ou remplacer les accès et abonnement simulés derrière CONNECT ?",
-      "impact": "Aucune authentification ni facturation réelle dans le prototype.",
-      "nextAction": "Décision de phase 2."
+      "impact": "Identité CONNECT réelle en préproduction ; abonnement et facturation restent simulés.",
+      "nextAction": "Recetter les accès réels ; définir séparément la gestion des abonnements."
     },
     {
       "id": "Q03",
@@ -1037,7 +1037,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+      "headSha": "12a59875d078448cc91ecfb31d04ad15bc9442cf",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1045,7 +1045,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T09:41:46.671Z",
+      "observedAt": "2026-10-15T10:00:46.770Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1077,14 +1077,14 @@
         "observedAt": "2026-10-15T06:46:34.094Z"
       },
       "currentCi": {
-        "observedAt": "2026-10-15T08:48:25.718643+00:00",
-        "sourceSha": "367fcf9140f874486984937b0675216ab5f2c69b",
+        "observedAt": "2026-10-15T10:03:25.433202+00:00",
+        "sourceSha": "12a59875d078448cc91ecfb31d04ad15bc9442cf",
         "technicalChecksPassed": 9,
         "technicalChecksFailed": 0,
-        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
         "artifactBytesEqualToInstalled": true,
-        "runId": 38707718594,
-        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38707718594 ; archive téléchargée identique au candidat installé, complément documentaire uniquement."
+        "runId": 38716965916,
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38716965916 ; archive téléchargée identique au candidat installé, complément documentaire uniquement."
       }
     },
     "checks": [
@@ -1262,6 +1262,14 @@
         "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
         "observedAt": "2026-10-15T09:53:50+00:00",
         "evidence": "api/storage-observation.json ; 34 assertions HTTPS, deux sessions, neuf fichiers et sauvegarde restaurée en tables temporaires."
+      },
+      {
+        "kind": "documentation",
+        "status": "passed",
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "observedAt": "2026-10-15T10:03:25.433202+00:00",
+        "evidence": "42 documents Markdown et 256 liens locaux contrôlés ; socles racine/application, métadonnées, vues et empreintes approuvées conservés."
       }
     ],
     "approvals": [
@@ -1395,11 +1403,11 @@
     "stages": {
       "local": {
         "status": "validated",
-        "nextAction": "Lot documents/coupes approuvé ; intégration installée en préproduction privée, recette et import du dossier à terminer."
+        "nextAction": "Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte."
       },
       "preproduction": {
-        "status": "in_progress",
-        "nextAction": "Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs."
+        "status": "awaiting_review",
+        "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import."
       },
       "production": {
         "status": "blocked",

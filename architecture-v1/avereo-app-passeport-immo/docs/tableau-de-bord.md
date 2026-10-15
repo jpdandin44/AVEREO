@@ -43,8 +43,8 @@ Aucune décision en attente.
 
 | ID | Question | Impact | Prochaine action |
 |---|---|---|---|
-| Q01 | Comment traiter le partage d’URL sans données du bien ? | Un autre poste ne reçoit pas le dossier. | Décider le partage sécurisé dans un lot ultérieur. |
-| Q02 | Conserver ou remplacer les accès et abonnement simulés derrière CONNECT ? | Aucune authentification ni facturation réelle dans le prototype. | Décision de phase 2. |
+| Q01 | Comment traiter le partage d’URL sans données du bien ? | Le même compte retrouve son dossier sur ses appareils ; le partage à un autre compte reste absent. | Définir le partage intercomptes dans un lot ultérieur. |
+| Q02 | Conserver ou remplacer les accès et abonnement simulés derrière CONNECT ? | Identité CONNECT réelle en préproduction ; abonnement et facturation restent simulés. | Recetter les accès réels ; définir séparément la gestion des abonnements. |
 | Q03 | Quel sort réserver au frontend historique CONNECT ? | Deux sources de code après reprise. | Décision de phase 2 ; historique inchangé. |
 | Q04 | Accepter les limites du calcul : h/ml à zéro, groupement PDF par nom de pièce ? | Certaines estimations peuvent être nulles ou fusionnées. | Recetter les cas limites puis autoriser un correctif distinct. |
 | Q05 | Validation humaine du rendu, import CSV, PDF et usage mobile ? | Checklist de test local cochée humainement dans la PR nº71 ; résultats détaillés R01…R13 et téléphone réel non consignés. | Remplir le tableau R dans le livrable local. |
@@ -55,7 +55,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — À valider**.
-Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.
+Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
@@ -76,8 +76,8 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 
 | Étape | État | Prochaine action |
 |---|---|---|
-| Local | Validée | Lot documents/coupes approuvé ; intégration installée en préproduction privée, recette et import du dossier à terminer. |
-| Préproduction | En cours | Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs. |
+| Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
+| Préproduction | À valider | Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -87,7 +87,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T09:41:46.671Z.
+- Dernière observation GitHub : 2026-10-15T10:00:46.770Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -116,6 +116,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Sur le poste | Réussi | 2026-10-15T09:53:50+00:00 |
 | GitHub Actions | Réussi | 2026-10-15T09:53:50+00:00 |
 | hosted_storage | Réussi | 2026-10-15T09:53:50+00:00 |
+| Documentation | Réussi | 2026-10-15T10:03:25.433202+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -140,6 +141,7 @@ Preuves du candidat identifié ci-dessus :
 - Sur le poste : 29 tests frontend, 29 assertions API MariaDB isolée, 67 assertions Apache, 19 tests Python et parité g.
 - GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38714544403 ; archive identique au candidat installé.
 - hosted_storage : api/storage-observation.json ; 34 assertions HTTPS, deux sessions, neuf fichiers et sauvegarde restaurée en tables temporaires.
+- Documentation : 42 documents Markdown et 256 liens locaux contrôlés ; socles racine/application, métadonnées, vues et empreintes approuvées conservés.
 
 ### Contrôles de passage
 
