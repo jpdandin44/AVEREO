@@ -241,7 +241,12 @@ La revue et les décisions se font dans [Projet local](http://127.0.0.1:{setting
             proof_html = ''.join(f'<li>{html.escape(proof)}</li>' for proof in proofs)
             items_html.append(f'<article><h3>{html.escape(title_item)}</h3><p>{html.escape(label)} — <code>{html.escape(item["path"])}</code></p><p>{html.escape(description)}</p><ul>{proof_html}</ul></article>')
         catalog_html.append(f'<details><summary>Phase {phase["id"]} — {html.escape(phase["shortTitle"])}</summary>{"".join(items_html)}</details>')
-    markdown = header + renderer(data) + '\n\n' + iteration_md + '\n\n' + '\n'.join(catalog_md).rstrip() + '\n'
+    phase_summary = renderer(data)
+    awaiting_review = [phase for phase in data['phases'] if phase['status'] == 'awaiting_review']
+    if awaiting_review:
+        pending_review = ' ; '.join(f"phase {phase['id']} — {phase['shortTitle']}" for phase in awaiting_review)
+        phase_summary = phase_summary.replace('Aucune décision en attente.', f'Revue humaine attendue : {pending_review}. La décision reste à enregistrer dans le cockpit.')
+    markdown = header + phase_summary + '\n\n' + iteration_md + '\n\n' + '\n'.join(catalog_md).rstrip() + '\n'
     esc = html.escape
     rows = ''.join(f"<tr><td>{p['id']} — {esc(p['shortTitle'])}</td><td>{esc(data['statusLabels'][p['status']])}</td><td>{esc(p['deliveredOn'] or '—')}</td><td>{esc(p['validatedOn'] or 'Non acquise')}</td></tr>" for p in data['phases'])
     page = f'''<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{esc(title)}</title>

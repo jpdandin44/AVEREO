@@ -23,11 +23,11 @@ Mise à jour : **2026-10-15**. **3 phases livrées sur 4 ; 2 phases validées pa
 | 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
 | 1 — Développement local | Validée | [documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | 2026-10-14 | 2026-10-14 |
 | 2 — Préproduction | À valider | [recette-preproduction.md](recette-preproduction.md)<br>[02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md)<br>[sauvegarde-automatique.md](sauvegarde-automatique.md) | 2026-10-15 | Non acquise |
-| 3 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
+| 3 — Mise en production | Non commencée | [04-mise-en-production.md](04-mise-en-production.md) | — | Non acquise |
 
 ### Décisions attendues
 
-Aucune décision en attente.
+Revue humaine attendue : phase 2 — Préproduction. La décision reste à enregistrer dans le cockpit.
 
 ### Décisions enregistrées
 
@@ -55,7 +55,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — À valider**.
-Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.
+PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
@@ -77,8 +77,8 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
-| Préproduction | À valider | Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80. |
-| Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
+| Préproduction | À valider | PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md. |
+| Production | Bloquée | Dossier préparé dans docs/04-mise-en-production.md ; cible, récupération et accords à qualifier avant démarrage et livraison. |
 
 ### Candidat et GitHub
 
@@ -87,8 +87,8 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T13:42:48.518Z.
-- Revue humaine de la source GitHub : Non consignée.
+- Dernière observation GitHub : 2026-10-15T15:30:29.857716+00:00.
+- Revue humaine de la source GitHub : Confirmée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
 ### Contrôles datés
@@ -152,12 +152,16 @@ Preuves du candidat identifié ci-dessus :
 - Clôture : passage refusé (2026-10-14T12:32:31+02:00).
 - Préproduction : conditions remplies (2026-10-15T07:35:02.235103+00:00).
 - Préproduction : conditions remplies (2026-10-15T08:21:00+00:00).
+- Production : passage refusé (2026-10-15T15:31:40.759972+00:00).
 
 ### Blocages de passage
 
-- Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique.
+- Décision formelle de phase 2 et acceptation de l’archive exacte pour promotion à consigner ; la fusion PR nº80 est confirmée.
+- Cible de production et CONNECT de production non qualifiés ; adresse, configuration privée et contenu initial à confirmer.
+- Sauvegarde/restauration de la cible et retour arrière du candidat en production non qualifiés.
+- Accord exact de déploiement en production absent ; aucune ouverture aux utilisateurs autorisée par cette préparation.
 
-Prochaine action : Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.
+Prochaine action : PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.
 
 ### Accords et livraison
 
@@ -167,8 +171,8 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 
 ### Suite proposée
 
-- Intégration CONNECT après accord sur les fichiers concernés.
-- Partage sécurisé et stockage centralisé à spécifier à la demande des clients.
+- À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.
+- À qualifier séparément : utilité du workflow Deploy Prototype To GitHub Pages en échec après fusion.
 
 ### Préparation locale de préproduction
 
@@ -282,9 +286,9 @@ Planification quotidienne, trente copies réussies, contrôles et récupération
 
 ### Phase 3 — Mise en production
 
-**04 mise en production** — Prévu — document non produit (`04-mise-en-production.md`).
+**Préparation de la mise en production** — Document disponible (`04-mise-en-production.md`).
 
-Mise en production
+Dossier après fusion de la PR nº80 : candidat identique, cible et récupération à qualifier, procédure et accords attendus.
 
-- Autorisation humaine enregistrée après phase 3 validée.
+- Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.
 - Procédure, fumée et retour arrière vérifiés par le responsable.

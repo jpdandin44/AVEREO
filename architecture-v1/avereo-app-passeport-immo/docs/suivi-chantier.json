@@ -263,22 +263,22 @@
         "Sauvegarde quotidienne à 03 h 20 Europe/Paris, trente copies réussies, premier succès réel et récupération temporaire examinés ; limites de même hébergement et absence d’alerte mail connues.",
         "Procédure et workflow manuel préparés."
       ],
-      "nextAction": "Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.",
+      "nextAction": "PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.",
       "legacyPhaseId": 3,
       "blockers": [
-        "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
+        "Décision humaine de phase 2 à consigner dans le cockpit ; la revue GitHub et la fusion de la PR nº80 sont confirmées."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/80",
         "repository": "jpdandin44/AVEREO",
         "number": 80,
-        "state": "open",
-        "headSha": "c2aa73a12bd83f83449a3de9e44cdeb003e76284",
-        "draft": true,
-        "observedAt": "2026-10-15T13:42:48.518Z",
-        "mergedAt": null,
-        "mergeCommitSha": null,
-        "mergedBy": null
+        "state": "merged",
+        "headSha": "74421367dadcae8de5b57636407bed45a6d74f04",
+        "draft": false,
+        "observedAt": "2026-10-15T15:12:49.101Z",
+        "mergedAt": "2026-10-15T15:11:21.000Z",
+        "mergeCommitSha": "437f2689e8ea5a0f12e055be9e2b8713bf99b1bd",
+        "mergedBy": "jpdandinavereo-design"
       },
       "technicalState": "installed_private_storage_verified",
       "validationEvidence": null
@@ -299,21 +299,21 @@
         {
           "path": "04-mise-en-production.md",
           "kind": "file",
-          "availability": "planned",
-          "title": "04 mise en production",
-          "description": "Mise en production",
+          "availability": "present",
+          "title": "Préparation de la mise en production",
+          "description": "Dossier après fusion de la PR nº80 : candidat identique, cible et récupération à qualifier, procédure et accords attendus.",
           "expectedEvidence": [
-            "Autorisation humaine enregistrée après phase 3 validée.",
+            "Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.",
             "Procédure, fumée et retour arrière vérifiés par le responsable."
           ]
         }
       ],
       "exitCriteria": [
-        "Autorisation humaine enregistrée après phase 3 validée.",
+        "Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.",
         "Procédure, fumée et retour arrière vérifiés par le responsable.",
         "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Attendre le passage de phase formel dans AVEREO Projet.",
+      "nextAction": "Dossier préparé dans docs/04-mise-en-production.md ; cible, récupération et accords à qualifier avant démarrage et livraison.",
       "legacyPhaseId": 4
     }
   ],
@@ -1060,15 +1060,15 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "c2aa73a12bd83f83449a3de9e44cdeb003e76284",
-      "state": "open",
-      "draft": true,
+      "headSha": "74421367dadcae8de5b57636407bed45a6d74f04",
+      "state": "merged",
+      "draft": false,
       "acceptedSourceSha": null,
       "acceptedArtifactSha256": null,
       "humanAcceptanceVerified": false,
-      "sourceReviewVerified": false,
-      "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T13:42:48.518Z",
+      "sourceReviewVerified": true,
+      "evidence": "api/preparation-production-observation.json ; quatre cases humaines cochées et fusion observées, sans nouvelle décision de phase ni accord de promotion.",
+      "observedAt": "2026-10-15T15:30:29.857716+00:00",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1083,9 +1083,9 @@
         "mergeCommitSha": "397038d1bab5ca7548b75c52af3cf065756b0e64",
         "mergedBy": "jpdandinavereo-design"
       },
-      "mergedAt": null,
-      "mergeCommitSha": null,
-      "mergedBy": null,
+      "mergedAt": "2026-10-15T15:11:21.000Z",
+      "mergeCommitSha": "437f2689e8ea5a0f12e055be9e2b8713bf99b1bd",
+      "mergedBy": "jpdandinavereo-design",
       "ciObservation": {
         "sourceSha": "e26f5643a685adc2b6498391f233c6a9752d468a",
         "candidateSourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
@@ -1100,15 +1100,30 @@
         "observedAt": "2026-10-15T06:46:34.094Z"
       },
       "currentCi": {
-        "observedAt": "2026-10-15T10:03:25.433202+00:00",
-        "sourceSha": "12a59875d078448cc91ecfb31d04ad15bc9442cf",
-        "technicalChecksPassed": 9,
-        "technicalChecksFailed": 0,
+        "observedAt": "2026-10-15T15:30:29.857716+00:00",
+        "sourceSha": "437f2689e8ea5a0f12e055be9e2b8713bf99b1bd",
         "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
         "artifactBytesEqualToInstalled": true,
-        "runId": 38716965916,
-        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38716965916 ; archive téléchargée identique au candidat installé, complément documentaire uniquement."
-      }
+        "runId": 38758111947,
+        "status": "success",
+        "mainCiRunId": 38758111043,
+        "mainCiStatus": "success",
+        "evidence": "api/preparation-production-observation.json",
+        "separatePrototypePagesRunId": 38758110234,
+        "separatePrototypePagesStatus": "failure"
+      },
+      "ciHistory": [
+        {
+          "observedAt": "2026-10-15T10:03:25.433202+00:00",
+          "sourceSha": "12a59875d078448cc91ecfb31d04ad15bc9442cf",
+          "technicalChecksPassed": 9,
+          "technicalChecksFailed": 0,
+          "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+          "artifactBytesEqualToInstalled": true,
+          "runId": 38716965916,
+          "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38716965916 ; archive téléchargée identique au candidat installé, complément documentaire uniquement."
+        }
+      ]
     },
     "checks": [
       {
@@ -1417,12 +1432,15 @@
       "observedAt": null
     },
     "blockers": [
-      "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
+      "Décision formelle de phase 2 et acceptation de l’archive exacte pour promotion à consigner ; la fusion PR nº80 est confirmée.",
+      "Cible de production et CONNECT de production non qualifiés ; adresse, configuration privée et contenu initial à confirmer.",
+      "Sauvegarde/restauration de la cible et retour arrière du candidat en production non qualifiés.",
+      "Accord exact de déploiement en production absent ; aucune ouverture aux utilisateurs autorisée par cette préparation."
     ],
-    "nextAction": "Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.",
+    "nextAction": "PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.",
     "nextIteration": [
-      "Intégration CONNECT après accord sur les fichiers concernés.",
-      "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
+      "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
+      "À qualifier séparément : utilité du workflow Deploy Prototype To GitHub Pages en échec après fusion."
     ],
     "budget": {
       "limit": 20,
@@ -1438,11 +1456,11 @@
       },
       "preproduction": {
         "status": "awaiting_review",
-        "nextAction": "Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80."
+        "nextAction": "PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md."
       },
       "production": {
         "status": "blocked",
-        "nextAction": "Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée."
+        "nextAction": "Dossier préparé dans docs/04-mise-en-production.md ; cible, récupération et accords à qualifier avant démarrage et livraison."
       }
     },
     "gates": [
@@ -1519,6 +1537,24 @@
         "observedAt": "2026-10-15T08:21:00+00:00",
         "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup",
         "limitation": "Contrôle avant correction privée ; aucun passage en production ni validation humaine de recette."
+      },
+      {
+        "gate": "production",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Blocages présents ou non renseignés.",
+          "Cible de production non prouvée.",
+          "Contrôle actuel absent : preproduction sur o2switch:daje3540:passeport-immo-preprod.avereo.fr.",
+          "Accord humain exact absent : review.",
+          "Accord humain exact absent : production.",
+          "Acceptation GitHub du candidat non vérifiée.",
+          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+          "Retour arrière de ce candidat non qualifié."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "observedAt": "2026-10-15T15:31:40.759972+00:00"
       }
     ],
     "previousIterationRef": "legacyTracking.developmentWorkflow",
@@ -2070,7 +2106,65 @@
       "sourceEvidence": [
         "api/storage-observation.json",
         "api/automatic-backup-observation.json"
-      ]
+      ],
+      "githubObservation": "api/preparation-production-observation.json"
+    },
+    "planningHistory": [
+      {
+        "observedAt": "2026-10-15T15:30:29.857716+00:00",
+        "replacedNextIteration": [
+          "Intégration CONNECT après accord sur les fichiers concernés.",
+          "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
+        ],
+        "reason": "CONNECT et stockage partagé réalisés en préproduction ; propositions de suite actualisées après fusion."
+      }
+    ],
+    "productionPreparation": {
+      "status": "prepared_local_prerequisites_pending",
+      "preparedAt": "2026-10-15T15:30:29.857716+00:00",
+      "document": "docs/04-mise-en-production.md",
+      "evidence": "api/preparation-production-observation.json",
+      "requestedBy": "user",
+      "requestReference": "Demande directe du 15 octobre 2026 : PR nº80 mergée, préparer la suite.",
+      "proposedAddress": "https://passeport-immo.avereo.fr",
+      "addressStatus": "awaiting_user_choice",
+      "productionTargetQualified": false,
+      "phaseStarted": false,
+      "nextAction": "PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.",
+      "readiness": [
+        {
+          "id": "candidate",
+          "status": "verified",
+          "evidence": "api/preparation-production-observation.json"
+        },
+        {
+          "id": "preproduction_phase_decision",
+          "status": "pending_human_record",
+          "evidence": "docs/suivi-chantier.json"
+        },
+        {
+          "id": "production_target_and_connect",
+          "status": "to_qualify"
+        },
+        {
+          "id": "initial_data_scope",
+          "status": "to_decide"
+        },
+        {
+          "id": "production_recovery_and_rollback",
+          "status": "to_qualify"
+        },
+        {
+          "id": "exact_production_authorization",
+          "status": "not_recorded"
+        }
+      ],
+      "phaseCriterionCorrection": {
+        "previous": "Autorisation humaine enregistrée après phase 3 validée.",
+        "current": "Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.",
+        "reason": "Référence historique devenue circulaire après mapping ; critère de phase 3 non approuvée uniquement."
+      },
+      "gateStatus": "refused_prerequisites_missing"
     }
   },
   "reviewFollowUps": [
@@ -2114,7 +2208,7 @@
     "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "Lire les six livrables, réaliser le guide de recette, vérifier les huit critères puis enregistrer la décision humaine ; revoir séparément la PR nº80.",
+    "nextAction": "PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.",
     "resumedAt": "2026-10-14T09:40:12+00:00",
     "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
     "previousClosure": {
@@ -2134,7 +2228,8 @@
       "build": "passed",
       "realPhaseOverridePerformed": false
     },
-    "storageLotEvidence": "api/storage-observation.json"
+    "storageLotEvidence": "api/storage-observation.json",
+    "productionPreparationEvidence": "api/preparation-production-observation.json"
   },
   "legacyTracking": {
     "recordedAt": "2026-10-14T09:40:12.597261+00:00",

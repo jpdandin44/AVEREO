@@ -12,14 +12,28 @@ tags: [avereo, documentation, local]
 
 # Roadmap Passeport Immo
 
-## Recette humaine à réaliser
+## Suite après fusion de la PR nº80
+
+Le [dossier de mise en production](docs/04-mise-en-production.md) est préparé.
+La CI de `main` et la relecture de son archive établissent l'équivalence avec le
+candidat installé en préproduction. Les prochaines actions sont la décision de
+phase 2 dans le cockpit, la confirmation de l'adresse de production, puis la
+qualification de cette cible, de CONNECT, du contenu initial et de la récupération.
+La phase 3 n'est pas démarrée ; le déploiement attend son accord exact.
+
+La copie hors hébergement et les alertes de sauvegarde restent des propositions
+à prioriser. L'échec du workflow GitHub Pages du prototype est consigné séparément
+pour déterminer son utilité actuelle avant toute correction. Les statuts et
+réserves sont portés par le [suivi canonique](docs/suivi-chantier.json).
+
+## Historique — recette humaine préparée avant fusion
 
 Suivre [le guide de recette](docs/recette-preproduction.md), lire les six livrables
 et vérifier les huit critères de la phase Préproduction dans le cockpit. Examiner
 la PR nº80 et consigner les anomalies ou la décision. L'installation et la première
 sauvegarde restent des preuves techniques ; la production attend son accord distinct.
 
-## Sauvegarde automatique active
+## Historique — sauvegarde automatique active avant revue
 
 Le stockage partagé et sa sauvegarde quotidienne sont opérationnels. Le premier
 déclenchement réel, les quatre tables, neuf fichiers et la récupération temporaire
@@ -27,7 +41,7 @@ sont vérifiés ; treize cas de sécurité/rotation passent aussi en CI.
 Prochaine action : revue humaine de préproduction avec ces preuves dans la PR nº80.
 Voir [la procédure](docs/sauvegarde-automatique.md).
 
-## Stockage livré en préproduction privée
+## Historique — stockage livré en préproduction privée
 
 Le stockage centralisé est installé et vérifié : base dédiée, session CONNECT réelle,
 API et neuf documents SCI partagés entre sessions. La CI, la recette HTTPS,
@@ -63,7 +77,7 @@ Les jalons ultérieurs et dates restent à décider ; aucun engagement de livrai
 Le prototype de session est disponible ; sa recette est préparée dans le livrable local.
 La prochaine action est la revue par le responsable, puis sa décision sur la suite.
 
-## Itération GitHub/cockpit
+## Historique — premières itérations GitHub/cockpit
 Le responsable a demandé « Raccordement et correction du PDF ». Le correctif court
 et multipage est testé ; le candidat et les preuves sont liés à la fiche d'itération.
 Le raccordement réutilise le cockpit Projet existant. Préproduction et production

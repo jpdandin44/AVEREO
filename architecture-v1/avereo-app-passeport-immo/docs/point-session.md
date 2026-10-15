@@ -12,6 +12,36 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Reprise après fusion de la PR nº80 — 15 octobre 2026
+
+La PR nº80 est fusionnée dans `main` au commit
+`437f2689e8ea5a0f12e055be9e2b8713bf99b1bd`. Le dossier
+[04 mise en production](04-mise-en-production.md) prépare la suite demandée.
+La branche de préparation est `docs/passeport-immo-preparation-production`, dans
+la copie modifiable `C:\Users\examg\Documents local\passeport-immo-local`.
+
+Les CI du monorepo et de Passeport Immo ont réussi. L'archive téléchargée est
+identique au candidat installé en préproduction ; le lot privé de sauvegarde
+est vérifié séparément. Les [preuves](../api/preparation-production-observation.json)
+identifient les artefacts, leurs empreintes et leur copie locale ignorée par Git.
+Le workflow distinct du prototype GitHub Pages échoue sur sa configuration Pages ;
+aucun paramètre de déploiement n'est modifié.
+
+**Prochaine action :** consigner la décision formelle de phase 2, confirmer
+l'adresse proposée puis qualifier la cible de production et CONNECT en lecture seule.
+La cible, le contenu initial, les accès privés et la récupération restent à établir
+avant un accord de déploiement précis. La phase 3 reste non démarrée.
+
+Vérifications de la préparation : 19 tests Python réussis, raccordement du cockpit
+et parité conformes, tableaux régénérés et contrôlés, neuf documents approuvés
+inchangés. Le contrôle de production refuse le passage : les huit prérequis
+manquants sont conservés dans la preuve, sans contournement.
+
+Le suivi et les tableaux dérivés décrivent cet état. Les décisions et documents
+approuvés restent inchangés ; les modifications locales préexistantes d'AVEREO Projet
+sont conservées à part. Les sections suivantes sont des observations historiques,
+notamment celles où la PR était encore ouverte.
+
 ## Résolution des conflits GitHub — 15 octobre 2026
 
 La [PR #80](https://github.com/jpdandin44/AVEREO/pull/80) est réalignée sur

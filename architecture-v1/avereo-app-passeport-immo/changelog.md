@@ -12,6 +12,18 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Préparation de production après fusion de la PR nº80
+
+Fusion et CI de `main` observées ; archive publique identique au candidat de
+préproduction, seize fichiers relus et lot privé de sauvegarde vérifié. Dossier
+de production ajouté, suivi et point de reprise actualisés, ancienne référence
+circulaire au numéro de phase corrigée dans les critères non approuvés de phase 3.
+Les quatre phases, décisions et neuf documents approuvés sont conservés.
+Le tableau dérivé signale la revue de phase attendue même lorsqu'aucune demande
+distincte n'a encore été créée dans la liste des décisions.
+Cible, récupération et accords de production restent à qualifier. L'échec distinct
+du workflow prototype GitHub Pages est consigné sans modification de son paramétrage.
+
 ## 2026-10-15 — Recette humaine et revue PR nº80 préparées
 
 Guide de recette, fichier d'essai sans donnée client, six livrables décrits et

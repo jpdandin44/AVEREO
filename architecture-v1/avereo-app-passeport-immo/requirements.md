@@ -12,6 +12,15 @@ tags: [avereo, documentation, local]
 
 # Exigences Passeport Immo
 
+## Préparation de production après fusion du 15 octobre 2026
+
+Conserver le candidat vérifié en préproduction et établir son équivalence avec
+l'archive de `main`. Qualifier la cible de production, CONNECT, la configuration
+privée, le contenu initial et la récupération avant livraison. Enregistrer la
+décision de préproduction et l'accord précis de déploiement sans les déduire du merge.
+Les contrôles et inconnues de ce lot sont décrits dans le
+[dossier de mise en production](docs/04-mise-en-production.md).
+
 ## Sauvegarde automatique demandée le 15 octobre 2026
 
 - E25 : sauvegarder automatiquement la base applicative et tous les documents de préproduction, archives incluses.
@@ -69,8 +78,10 @@ Le lot initial était local. La demande suivante autorise son raccordement GitHu
 et la correction de pagination PDF, sans intégrer CONNECT ni déployer.
 
 ## Inconnues
-TBD : stockage partagé futur et sa volumétrie, identité CONNECT
-et suppression future du frontend historique. Questions Q01… dans le suivi.
+TBD : cible et identité CONNECT de production, contenu initial, volumétrie et
+objectifs de récupération en production, suppression future du frontend historique.
+Le stockage partagé et l'identité CONNECT sont réalisés en préproduction dans le
+lot serveur du 15 octobre ; les questions historiques Q01… restent conservées dans le suivi.
 
 ## Exigences de l'itération initiale du 3 octobre 2026
 - E06 : supprimer la page blanche finale du PDF court sans perdre un pixel de contenu
