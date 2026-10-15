@@ -12,6 +12,31 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Résolution des conflits GitHub — 15 octobre 2026
+
+La [PR #80](https://github.com/jpdandin44/AVEREO/pull/80) est réalignée sur
+`main` au commit `db7858ff110f5ceb954079532257d6619ca28e0c` après la fusion
+historique de la PR #79. Les deux conflits sont documentaires : le rapport de
+vérification conserve les observations plus récentes de cette branche et le
+changelog racine conserve les entrées des deux branches. Le préparateur de
+préproduction est identique à celui de la tête précédente `6daface` ; les apports
+CONNECT de `main` sont conservés. Le suivi humain et les preuves approuvées de
+Passeport Immo ne sont pas modifiés par la résolution.
+
+Avant remise : contrôler la fusion avec la tête actuelle de `main`, le diff,
+les tests locaux concernés puis l'état de fusion et les contrôles GitHub après
+envoi. Les quatre cases de la PR étaient cochées lors de la lecture du 15 octobre ;
+cette observation reste distincte d'une nouvelle décision de phase et d'une
+qualification de production. Les sections suivantes conservent leur état daté.
+
+Contrôles locaux de la résolution : 19 tests Python Passeport Immo et 6 tests du
+contrôleur de PR réussis, parité et raccordement du cockpit conformes. Les neuf
+documents approuvés conservent leurs empreintes ; les fins de ligne de la copie
+de résolution Windows ont été rematérialisées depuis les blobs Git pour retrouver
+leurs octets exacts. Trois documents, 57 liens locaux et les deux socles sont
+contrôlés sans défaut. Le contrôle strict de la description doit porter sur les
+cases réellement conservées sur GitHub, sans les recocher au nom du responsable.
+
 ## Recette humaine préparée — 15 octobre 2026
 
 Le [guide de recette](recette-preproduction.md) est le point d'entrée courant.

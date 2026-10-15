@@ -5,7 +5,7 @@ title: Acces par identifiants aux preproductions AVEREO
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-09
+updated: 2026-10-14
 owner: jpdandin
 tags: [preproduction, securite, exploitation]
 ---
@@ -13,6 +13,14 @@ tags: [preproduction, securite, exploitation]
 # Accès aux préproductions par identifiants
 
 ## Statut du lot
+
+Le 14 octobre, le responsable demande la préparation distincte de CONNECT,
+de la sauvegarde de sa base et de la migration d’activation, puis la vérification
+des prérequis Passeport Immo. La [procédure dédiée](preparer-connect-activation.md)
+et le bloc `connect_activation_preparation` du suivi portent cette préparation.
+Les outils de sauvegarde ne migrent ni ne déploient automatiquement. Les observations
+hébergées antérieures restent datées jusqu’à leur requalification dans cPanel.
+La PR #77 est désormais constatée fusionnée ; ce merge ne vaut pas livraison.
 
 Le lot est repris le 9 octobre, avec accès cPanel contrôlé et revue locale dans
 Claude à la demande du responsable. Le [point de reprise](point-session.md)

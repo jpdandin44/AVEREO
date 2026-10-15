@@ -5,7 +5,7 @@ title: Relevé des accès aux préproductions AVEREO
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-09
+updated: 2026-10-14
 owner: jpdandin
 tags: [preproduction, exploitation, cockpit, derive]
 ---
@@ -18,7 +18,7 @@ ni validation humaine ni bascule. La préparation initiale est conservée dans
 
 ## État du lot
 
-Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.
+Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue.
 
 | Phase | État | Prochaine action |
 | --- | --- | --- |
@@ -249,7 +249,24 @@ Les décisions historiques du pilote et de la réparation d’identité conserve
 Les candidats applicatifs ne possèdent encore aucun accord de remplacement enregistré. Les reçus de fichiers qualifient les cibles existantes, sans couvrir les bases ni une recette authentifiée.
 Les workflows de production restent manuels ; le merge et l’ouverture publique sont des décisions distinctes.
 
+## Préparation CONNECT et activation des comptes
+
+Lot distinct décrit par la [procédure](preparer-connect-activation.md) et son bloc canonique `connect_activation_preparation`.
+Source `c45812cc97d91062d562be2370d032b1977232fc` ; ZIP `d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e`.
+État observé le `2026-10-14T17:10:03.917461+00:00` : hosted_backup_restore_and_migration_clone_verified_bridge_required.
+Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue.
+
+Sauvegarde de base hébergée : verified_restoration_on_separate_test_database.
+Migration hébergée : tested_on_restored_clone_only_not_on_active_connect.
+
+Blocages de ce lot :
+- Le fournisseur d’identite ne possede ni controleur ni formulaire d’activation ; module et routes differents. Candidat du pont prepare, recuperation et accord de sa mise a jour encore requis.
+- URL et secret IDENTITY_ACCOUNT_ACTIVATION_* absents de la configuration CONNECT ; raccordement prive et callback Drupal a qualifier sans changer OAuth ou deconnexion.
+- Transport et destinataire des messages de recette a choisir ; aucun e-mail reel envoye.
+- Accord exact de migration/livraison CONNECT absent ; la preparation ne vaut pas deploiement.
+
 ## Source GitHub
 
-[PR #77](https://github.com/jpdandin44/AVEREO/pull/77) — brouillon, observée le `2026-10-09T10:54:04.222+00:00`.
-SHA source `0f541b6beddfa9fb6c759d024ed1c92efa846328`. Aucune validation de phase créée automatiquement.
+[PR #77](https://github.com/jpdandin44/AVEREO/pull/77) — fusionnée, observée le `2026-10-14T17:10:03.917461+00:00`.
+SHA source `91b408f80a70be9293c49001df39c28ce438f35e`. Aucune validation de phase créée automatiquement.
+Fusion constatée sur GitHub ; commit `1f98758441babc7691ce66b5e12e7f71aea0ceee`.

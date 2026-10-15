@@ -5,7 +5,7 @@ title: Index workflows AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-14
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -19,3 +19,5 @@ TBD : inventaire global des autres applications ; il n’a pas été audité dan
 Le [protocole transverse](../outillage/protocole-developpement/skills/developpement-github-cockpit/references/protocole.md)
 décrit le cycle local, préproduction et production. Le [guide du socle](../outillage/protocole-developpement/README.md)
 décrit son installation utilisateur pour les différents dépôts.
+
+La [preparation CONNECT et de sa migration d’activation](../outillage/acces-preproduction/preparer-connect-activation.md) documente les candidats backend/pont, les sauvegardes privees, la restauration et les controles avant accord exact. La verification Passeport Immo reste dans son suivi propre.

@@ -1,0 +1,299 @@
+{
+  "observed_at": "2026-10-14T16:52:10.530264+00:00",
+  "private_directory": "/home/daje3540/private/connect-preprod-recovery/preparation-20261014T163531Z",
+  "inspection": {
+    "observed_at": "2026-10-14T16:36:53+00:00",
+    "source_sha": "c45812cc97d91062d562be2370d032b1977232fc",
+    "artifact_sha256": "d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e",
+    "document_root": "/home/daje3540/connect-preprod.avereo.fr/public",
+    "database_distinct_from_production": true,
+    "mysql_version": "11.4.13-MariaDB",
+    "migration_versions": [
+      "20260721120000_core",
+      "20260729120000_pending_identities",
+      "20260730120000_catalog_metadata",
+      "20260803160000_user_application_access"
+    ],
+    "users_columns": [
+      "id",
+      "drupal_subject",
+      "email_normalized",
+      "display_name",
+      "status",
+      "created_at",
+      "updated_at"
+    ],
+    "users_count": 3,
+    "active_catalog_codes": [
+      "coupe",
+      "drone",
+      "projet",
+      "rapport",
+      "thermo"
+    ],
+    "files_matched": 24,
+    "files_different": [
+      "bin/approve-pending-user.php",
+      "public/index.html",
+      "public/index.php",
+      "src/Application.php",
+      "src/Config.php",
+      "src/Repository/ConnectRepository.php",
+      "src/Repository/PdoConnectRepository.php",
+      "src/Repository/UnavailableRepository.php"
+    ],
+    "files_missing": [
+      "database/migrations/20260804140000_account_activation_status.down.sql",
+      "database/migrations/20260804140000_account_activation_status.up.sql",
+      "src/Identity/AccountActivationNotifier.php",
+      "src/Identity/IdentityAccountActivationClient.php",
+      "src/Security/IdentityAccountActivationCompletionVerifier.php"
+    ],
+    "htaccess_sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+    "basic_auth_preserved": true,
+    "activation_url_is_preproduction": false,
+    "activation_secret_configured": false,
+    "passport_launch_url_configured": false,
+    "passport_launch_secret_configured": false,
+    "passport_root_canonical": true,
+    "passport_files": [
+      ".htaccess",
+      "cgi-bin"
+    ],
+    "hosted_application_modified": false,
+    "production_modified": false
+  },
+  "database_backup": {
+    "target": "connect-preprod.avereo.fr",
+    "created_at": "2026-10-14T16:37:29+00:00",
+    "database_distinct_from_production": true,
+    "dump_sha256": "5c65f02f50e29cbbb4d858203408d6d267c7126b85b57eb7b271f51c88fec26d",
+    "dump_bytes": 23073,
+    "source_database_modified": false,
+    "restore_verified": false
+  },
+  "database_restore": {
+    "target": "connect-preprod.avereo.fr",
+    "dump_sha256": "5c65f02f50e29cbbb4d858203408d6d267c7126b85b57eb7b271f51c88fec26d",
+    "restore_verified": true,
+    "restored_at": "2026-10-14T16:43:24+00:00",
+    "verification": "ddl_and_all_rows_hashes_equal",
+    "source_database_modified": false
+  },
+  "migration_rehearsal": {
+    "observed_at": "2026-10-14T16:47:59+00:00",
+    "source_sha": "c45812cc97d91062d562be2370d032b1977232fc",
+    "artifact_sha256": "d3206f81df98cd076e184a3bc099713d926b424ae62f787293865497a4b0969e",
+    "dump_sha256": "5c65f02f50e29cbbb4d858203408d6d267c7126b85b57eb7b271f51c88fec26d",
+    "restore_test_database_distinct": true,
+    "runner_first": "four_skips_one_activation_up",
+    "runner_second": "five_skips",
+    "after_versions": [
+      "20260721120000_core",
+      "20260729120000_pending_identities",
+      "20260730120000_catalog_metadata",
+      "20260803160000_user_application_access",
+      "20260804140000_account_activation_status"
+    ],
+    "existing_user_count": 3,
+    "old_user_fields_hash_equal": true,
+    "existing_users_completed_without_mail": true,
+    "source_database_unchanged": true,
+    "active_application_modified": false,
+    "production_modified": false,
+    "migration_applied_to_connect_preproduction": false
+  },
+  "file_recovery": {
+    "files": {
+      "bin/approve-pending-user.php": {
+        "sha256": "37c197ab96548be30a2f5fca3c78e8e6a0033806657f43434e52a8324671c9d0",
+        "mode": "0o664",
+        "bytes": 12912
+      },
+      "bin/manage-catalog.php": {
+        "sha256": "83a4d178e55ef69053c7fc5ce73d3aa7ad59efefc5bceddf7163c7ab3592acf4",
+        "mode": "0o664",
+        "bytes": 9596
+      },
+      "bin/migrate.php": {
+        "sha256": "b274e0d599981124f480fa0bf78b9a48ee33eeea434c44fae7dd3c0d8fcc10ee",
+        "mode": "0o664",
+        "bytes": 5955
+      },
+      "database/README.md": {
+        "sha256": "47d84f116a6f8ed826783f7a61543b108fea0f486087bc9bba29b29e0118fc8e",
+        "mode": "0o664",
+        "bytes": 938
+      },
+      "database/migrations/20260721120000_core.down.sql": {
+        "sha256": "56ef208cb7c938e54ef4d9415ae97177bbb8b73a2b3b48cba7a2575c5143aaa1",
+        "mode": "0o664",
+        "bytes": 305
+      },
+      "database/migrations/20260721120000_core.up.sql": {
+        "sha256": "b7aeda3440878268449f527895d6fcd2a8ee1bf02250029d3be795cac155aa64",
+        "mode": "0o664",
+        "bytes": 6502
+      },
+      "database/migrations/20260729120000_pending_identities.down.sql": {
+        "sha256": "404aa7a8edf9485980c210e432a2e57305dd4aa6c3100c17cae8039c917c85e2",
+        "mode": "0o664",
+        "bytes": 41
+      },
+      "database/migrations/20260729120000_pending_identities.up.sql": {
+        "sha256": "a351f4121bffb695481aad72333017f59b49750451c2694f8fd410bace80c1d5",
+        "mode": "0o664",
+        "bytes": 1044
+      },
+      "database/migrations/20260730120000_catalog_metadata.down.sql": {
+        "sha256": "cc01c431c41d0037959a48e92339bb7acc1e5d23ea204c0cbd0b89a685965de4",
+        "mode": "0o664",
+        "bytes": 119
+      },
+      "database/migrations/20260730120000_catalog_metadata.up.sql": {
+        "sha256": "8c88d0f8f74d5807a6652d939db99171b36d120844199766858d9bc422c5413e",
+        "mode": "0o664",
+        "bytes": 326
+      },
+      "database/migrations/20260803160000_user_application_access.down.sql": {
+        "sha256": "030c1dddf02ba436288ad202b4512c5cd5607eff730c63b45e427562475bfa47",
+        "mode": "0o664",
+        "bytes": 36
+      },
+      "database/migrations/20260803160000_user_application_access.up.sql": {
+        "sha256": "d0276def20a8bd470f448ff8bc4586e723b1c89440d88ecb7637f2df45822e73",
+        "mode": "0o664",
+        "bytes": 1298
+      },
+      "database/seeds/README.md": {
+        "sha256": "4bc868b3ab87c854bac00b8646ab07a065337126e44442702591b5c177aa2377",
+        "mode": "0o664",
+        "bytes": 193
+      },
+      "public/.htaccess": {
+        "sha256": "90c1ab2e443ffeb7efbe6408514abce7ac79d71a5400d881f83a9b768b39d155",
+        "mode": "0o664",
+        "bytes": 1091
+      },
+      "public/index.html": {
+        "sha256": "3c2967a1d7e344ff7fcc56dd0e116b329a694802fc880b321b7eac18030f1973",
+        "mode": "0o664",
+        "bytes": 37478
+      },
+      "public/index.php": {
+        "sha256": "5aa7a16722ef4cd989d4d5607d22bfd4b51c504e9fb47dc4cde4440e2b0282b0",
+        "mode": "0o664",
+        "bytes": 6387
+      },
+      "src/Application.php": {
+        "sha256": "50125e1c9f70aadaf31e4846ce752d71ffc29c6791c15947e99f64bcdf83cbbd",
+        "mode": "0o664",
+        "bytes": 19272
+      },
+      "src/Config.php": {
+        "sha256": "efd426f0e89118f1f70f05f3f58dda9b69058a2a9ac55d84cf667759fd75caca",
+        "mode": "0o664",
+        "bytes": 6565
+      },
+      "src/Database.php": {
+        "sha256": "7d6c20e5da28cf8aa12a8ddcf942776e458d04015382de1a295b3288d5dd933a",
+        "mode": "0o664",
+        "bytes": 826
+      },
+      "src/Http/ApiException.php": {
+        "sha256": "90d290744dbadb522ef5f934fe359c0ed48456463a36687f71dd36d8797f8bef",
+        "mode": "0o664",
+        "bytes": 404
+      },
+      "src/Http/Request.php": {
+        "sha256": "fd12c57402115c0e98fbfbed58d1c430ad25a340fa577a94adb5bf20b219e871",
+        "mode": "0o664",
+        "bytes": 2486
+      },
+      "src/Http/Response.php": {
+        "sha256": "bfffbd001c981e6ecb5ac81ecfe56895fcb188c95f95851c5d711291f0cab452",
+        "mode": "0o664",
+        "bytes": 1974
+      },
+      "src/Identity/OAuthFlow.php": {
+        "sha256": "74397735649aa5a5ed9fe6006320547d0a941676bfd66c0b9d16179f2f3fb518",
+        "mode": "0o664",
+        "bytes": 12406
+      },
+      "src/Repository/ConnectRepository.php": {
+        "sha256": "a983dc6ea59c4919efce8f41ce6b685ebd6e578c3b22a983cd84742533fc1e56",
+        "mode": "0o664",
+        "bytes": 2464
+      },
+      "src/Repository/PdoConnectRepository.php": {
+        "sha256": "c326e5cf756915df07e15738cdaa6838cb31b76edba31a49cfa0622be3d20323",
+        "mode": "0o664",
+        "bytes": 36220
+      },
+      "src/Repository/UnavailableRepository.php": {
+        "sha256": "67468f1dff590fb1f2854b2830b976f42f8841e2e8b37c2f35739ffad0152d58",
+        "mode": "0o664",
+        "bytes": 2822
+      },
+      "src/Security/AppLaunchTicketIssuer.php": {
+        "sha256": "496e7a4b1986b1a382d409f69044a39dedabcbb97e6c3d251e2991768fbfef47",
+        "mode": "0o664",
+        "bytes": 3281
+      },
+      "src/Security/AuthContext.php": {
+        "sha256": "36c03694f9e213d3eec79a698d0ee2837bd1d1e0c699321eee8d08a50e237c3a",
+        "mode": "0o664",
+        "bytes": 545
+      },
+      "src/Security/CsrfGuard.php": {
+        "sha256": "5a29163b2ce0b9776b28bc01c978e637a00dc09786deccd68b24c0d026977648",
+        "mode": "0o664",
+        "bytes": 534
+      },
+      "src/Security/IdentityLogoutUrlSigner.php": {
+        "sha256": "34bd016da305a3b3b01483cd31ed00692f315cb37dfb177de23f49e64a0d99ec",
+        "mode": "0o664",
+        "bytes": 2244
+      },
+      "src/Security/OAuthTransactionStore.php": {
+        "sha256": "4faffc491e659cbe6e77e1bf677ca066688572a3256df58a43aee0d41ddb589f",
+        "mode": "0o664",
+        "bytes": 6735
+      },
+      "src/Security/SessionManager.php": {
+        "sha256": "0a1a35489c83d9ebc1d97846f9bf199101c400840d0aa04a2d0a503a0fae3217",
+        "mode": "0o664",
+        "bytes": 6853
+      },
+      "src/autoload.php": {
+        "sha256": "c4ac262267475820afa0291fb4a4938b170e503d0a7e7987804aec0117ea5b84",
+        "mode": "0o664",
+        "bytes": 410
+      }
+    },
+    "restore_verified": true,
+    "active_files_written": false,
+    "private_configuration_backup_verified": true,
+    "configuration_values_exported": false
+  },
+  "identity_inspection": {
+    "document_root": "/home/daje3540/auth-next-preprod.avereo.fr",
+    "files": {
+      "avereo_identity_bridge.module": "differs",
+      "avereo_identity_bridge.info.yml": "matches_main",
+      "avereo_identity_bridge.routing.yml": "differs",
+      "avereo_identity_bridge.libraries.yml": "matches_main",
+      "css/identity.css": "matches_main",
+      "src/Controller/LogoutController.php": "matches_main",
+      "src/Controller/AccountActivationController.php": "missing",
+      "src/Form/ActivationPasswordForm.php": "missing"
+    },
+    "modified": false
+  },
+  "secret_values_exported": false,
+  "dump_exported": false,
+  "active_application_modified": false,
+  "source_database_modified": false,
+  "production_modified": false,
+  "test_database_retained": "daje3540_connrest_20261014"
+}

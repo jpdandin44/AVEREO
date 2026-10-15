@@ -168,13 +168,29 @@ if alignment:
         'Les candidats applicatifs ne possèdent encore aucun accord de remplacement enregistré. Les reçus de fichiers qualifient les cibles existantes, sans couvrir les bases ni une recette authentifiée.',
         'Les workflows de production restent manuels ; le merge et l’ouverture publique sont des décisions distinctes.']
 
+activation = state.get('connect_activation_preparation')
+if activation:
+    workflow = activation['developmentWorkflow']
+    candidate = workflow['candidate']
+    lines += ['', '## Préparation CONNECT et activation des comptes', '',
+        'Lot distinct décrit par la [procédure](preparer-connect-activation.md) et son bloc canonique `connect_activation_preparation`.',
+        f"Source `{candidate['sourceSha']}` ; ZIP `{candidate['artifactSha256']}`.",
+        f"État observé le `{activation['observed_at']}` : {activation['status']}.",
+        workflow['nextAction'], '',
+        'Sauvegarde de base hébergée : ' + activation['hosted_database_backup_status'] + '.',
+        'Migration hébergée : ' + activation['hosted_migration_status'] + '.', '',
+        'Blocages de ce lot :']
+    lines += ['- ' + item for item in workflow['blockers']]
+
 github = state['github']
 github_status = 'fusionnée' if github.get('merged') else ('brouillon' if github.get('draft') else github['state'])
 lines += ['', '## Source GitHub', '',
     f"[PR #{github['number']}]({github['url']}) — {github_status}, observée le `{github['observedAt']}`.",
     f"SHA source `{github['headSha']}`. Aucune validation de phase créée automatiquement."]
 if github.get('merged'):
-    lines += [f"Fusion enregistrée par GitHub le `{github['mergedAt']}` ; commit `{github['mergeCommit']}`."]
+    lines += [f"Fusion constatée sur GitHub ; commit `{github['mergeCommit']}`."]
+    if github.get('mergedAt'):
+        lines += [f"Date de fusion enregistrée : `{github['mergedAt']}`."]
 output = '\n'.join(lines) + '\n'
 approved = [artifact for decision in state.get('decisions', [])
     if decision.get('status') == 'approved'

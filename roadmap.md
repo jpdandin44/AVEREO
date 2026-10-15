@@ -5,12 +5,19 @@ title: Roadmap du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-09
+updated: 2026-10-14
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Roadmap du dépôt AVEREO
+
+La demande du 14 octobre prépare séparément CONNECT préproduction :
+qualification de sauvegarde/restauration de base et migration d’activation,
+puis vérification des prérequis de Passeport Immo. La
+[procédure](outillage/acces-preproduction/preparer-connect-activation.md) et le
+bloc `connect_activation_preparation` du suivi canonique portent les contrôles
+et la prochaine action. Le lot des cinq autres applications reste conservé.
 
 Les suivis propres à chaque chantier font foi. Le chantier
 [Passeport Immo](architecture-v1/avereo-app-passeport-immo/roadmap.md) conserve son périmètre

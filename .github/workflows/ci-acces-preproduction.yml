@@ -22,4 +22,34 @@ jobs:
           sudo apt-get install -y --no-install-recommends apache2 apache2-utils php-cli
       - name: Executer les contrats et les tests HTTP locaux
         run: python3 -m unittest discover -s outillage/acces-preproduction -p 'test_*.py' -v
+  activation-migration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      database:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: local_root_only
+          MARIADB_ROOT_HOST: '%'
+          MARIADB_DATABASE: avereo_connect_test
+        ports:
+          - 33306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=2s --health-timeout=3s --health-retries=30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installer les clients locaux de la repetition
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends php-cli php-mysql mariadb-client
+          sudo mkdir -p /home/daje3540/private
+          sudo chown -R "$USER" /home/daje3540
+          chmod 700 /home/daje3540/private
+      - name: Repeter sauvegarde, restauration distincte et migration activation
+        env:
+          CONNECT_ACTIVATION_TEST_DISPOSABLE: '1'
+          CONNECT_ACTIVATION_TEST_HOST: 127.0.0.1
+          CONNECT_ACTIVATION_TEST_PORT: '33306'
+        run: php outillage/acces-preproduction/test_connect_activation.php
 # Aucun secret ni cible distante, aucun deploiement et aucune modification de production.

@@ -12,6 +12,15 @@ tags: [avereo, documentation, local]
 
 # Changelog du dépôt AVEREO
 
+## 2026-10-15 — Résolution des conflits de la PR #80
+
+Intégration de `main` au commit `db7858ff110f5ceb954079532257d6619ca28e0c`
+dans la branche de la PR #80. Le rapport Passeport Immo conserve ses observations
+plus récentes et le journal conserve les entrées des deux branches. Les apports
+CONNECT de la PR #79 restent intacts ; aucun fichier exécutable de Passeport Immo
+ne change par rapport à la tête précédente de la PR. La résolution ne constitue
+ni la fusion de la PR dans `main`, ni une nouvelle qualification hébergée.
+
 ## 2026-10-15 — Environnement de validation des PR
 
 Le modèle de PR nomme la phase et l'environnement réellement soumis à validation :
@@ -22,6 +31,16 @@ préproduction privée de Passeport Immo, accessible depuis CONNECT. Les quatre
 attestations humaines et le vérificateur strict restent conservés ; les essais
 locaux ne constituent pas une validation de cette cible. Le contrôle lit les libellés
 du modèle ; son implémentation et les workflows de déploiement restent inchangés.
+
+## 2026-10-14 — Préparation CONNECT et activation
+
+Ajout du [lot de préparation CONNECT](outillage/acces-preproduction/preparer-connect-activation.md),
+du ZIP reproductible issu des blobs de main, du helper de sauvegarde privée et
+de la restauration sur base de test distincte. Tests de refus, répétition MariaDB
+et CI sans accès distant préparés. Le suivi et ses vues distinguent préparation,
+sauvegarde réellement exécutée, migration et livraison après accord exact.
+Vérification du candidat documentaire Passeport Immo et de ses prérequis,
+sans installation ni création de compte, secret ou validation humaine.
 
 ## 2026-10-03
 Ajout du socle documentaire racine manquant sous forme d’index et du chantier local
