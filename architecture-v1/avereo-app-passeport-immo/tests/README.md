@@ -21,6 +21,9 @@ Les 67 assertions incluent les assets sans session (refus), leurs octets/MIME et
 HEAD avec session, cookie altéré, chemins/fichiers interdits et méthodes, puis
 la fermeture initiale et la fermeture sans module de réécriture. Aucun compte,
 secret ou dossier réel n'est utilisé. Un conteneur isolé est créé puis arrêté.
+La configuration de test hérite d'une page d'erreur 403 qui repasse par la SPA,
+comme sur la cible o2switch ; la politique applicative doit imposer le refus 403
+standard même dans ce contexte.
 
 `python -m unittest discover -s tests -p 'test_*.py'` exécute actuellement 19 tests.
 Les quatre cas du delta compatible vérifient l'ajout limité au lancement et le

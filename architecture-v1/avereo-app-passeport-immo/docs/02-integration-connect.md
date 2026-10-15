@@ -33,8 +33,12 @@ Après correction : 67 assertions Apache/PHP réussies avec le véritable émett
 CONNECT, dont tous les assets, leurs octets/MIME, HEAD, cookie altéré, fichiers
 interdits, rejeu, déconnexion et fermeture sans réécriture. Les 15 assertions du
 sas, 26 tests frontend et 19 tests Python réussissent aussi ; parité conservée.
-Le remplacement de deux fichiers est préparé ; la cible hébergée utilise encore
-la politique Basic initiale jusqu'au reçu de correction. Les sections ci-dessous
+Le remplacement des deux fichiers est effectué en préproduction. Un premier
+contrôle hébergé révèle une page 403 héritée qui repasse par le routage SPA :
+les scripts internes restent protégés mais leur refus devient une redirection.
+Le test Apache reproduit cet héritage ; `ErrorDocument 403 default` impose le
+refus attendu. Cette dernière règle et son nouveau candidat restent à réinstaller.
+Les sections ci-dessous
 conservent les constats initiaux, antérieurs à l'installation décrite dans le
 [rapport courant](03-preproduction.md). Les preuves approuvées restent inchangées.
 

@@ -84,12 +84,12 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 
 ### Candidat et GitHub
 
-- SHA source : `91d8e466fcf4caa799e9c08319c8b1514c2dd927`.
-- SHA-256 de l'archive : `e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3`.
+- SHA source : `14d83041343c090ebed374f4e770fc2c1a86c244`.
+- SHA-256 de l'archive : `4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068`.
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T07:53:22.944438+00:00.
+- Dernière observation GitHub : 2026-10-15T08:09:46.044Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -106,6 +106,9 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Sur le poste | Réussi | 2026-10-15T06:36:09.982Z |
 | GitHub Actions | Réussi | 2026-10-15T06:46:34.094Z |
 | GitHub Actions | Réussi | 2026-10-15T07:53:22.944438+00:00 |
+| Sur le poste | Réussi | 2026-10-15T08:13:50.587851+00:00 |
+| GitHub Actions | Réussi | 2026-10-15T08:13:50.587851+00:00 |
+| Documentation | Réussi | 2026-10-15T08:14:26.469641+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -118,6 +121,9 @@ Preuves du candidat identifié ci-dessus :
 - Sur le poste : Delta compatible 1cbd15edf31bfda766007a255de83e4f58f8192e1d2edd592b86165d6c3b106d (source 9bc5e351781a0a59169e4dc09ec29f67f9cb2dec) : 19 tests Python, 32 tests du backend historique, 15 assertions du sas. ZIP frontend inchangé ; reçu hébergé api/connect-hosted-observation.json.
 - GitHub Actions : CI e26f564 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon.
 - GitHub Actions : CI f6e5aaa : neuf contrôles techniques réussis ; archive téléchargée identique octet par octet à celle installée. Aucun changement applicatif dans le complément documentaire.
+- Sur le poste : api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes.
+- GitHub Actions : api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes.
+- Documentation : 35 Markdown, 191 liens locaux et socles racine/application contrôlés ; sources de revue approuvées conservées, description locale et état installé initial distingués.
 
 ### Contrôles de passage
 
@@ -128,14 +134,13 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.
-- Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés.
+Aucun blocage déclaré.
 
 Prochaine action : Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.
 
 ### Accords et livraison
 
-Accords spécifiques enregistrés : 1. Sauvegardes qualifiées : 2.
+Accords spécifiques enregistrés : 2. Sauvegardes qualifiées : 3.
 Retour arrière : non testé. Livraison : non réalisée.
 Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
 

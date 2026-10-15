@@ -1,5 +1,6 @@
 Options -Indexes -MultiViews
 DirectoryIndex index.php
+ErrorDocument 403 default
 
 <IfModule !mod_rewrite.c>
   Require all denied

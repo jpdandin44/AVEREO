@@ -47,6 +47,11 @@ def run():
             for _ in range(40):
                 try: request('/'); break
                 except (ConnectionError,OSError): time.sleep(0.25)
+            # A hosting account may inherit a custom error page routed through the SPA.
+            command('docker','exec',container,'php','-r',
+                'file_put_contents("/etc/apache2/conf-enabled/error-fixture.conf", "ErrorDocument 403 /403.shtml\n");')
+            command('docker','exec',container,'apache2ctl','-k','graceful')
+            time.sleep(0.5)
             checks = 0
             for path in ['/', '/index.html', '/bien/fictif']:
                 status, headers, _ = request(path)

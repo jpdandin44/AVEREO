@@ -242,9 +242,9 @@
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "f6e5aaa64a41d3b5ee129aa7f3f333c5e89e1dfc",
+        "headSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
         "draft": true,
-        "observedAt": "2026-10-15T07:53:22.944438+00:00",
+        "observedAt": "2026-10-15T08:09:46.044Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
@@ -892,10 +892,10 @@
     "status": "in_progress",
     "objective": "Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.",
     "candidate": {
-      "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
-      "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
-      "evidence": "docs/02-integration-connect.md ; douze fichiers publics, contrat et recette Apache isolée réussis.",
-      "observedAt": "2026-10-14T20:08:19.812Z"
+      "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
+      "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
+      "observedAt": "2026-10-15T08:13:50.587851+00:00",
+      "evidence": "api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes."
     },
     "targets": {
       "preproduction": {
@@ -1014,7 +1014,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "f6e5aaa64a41d3b5ee129aa7f3f333c5e89e1dfc",
+      "headSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1022,7 +1022,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T07:53:22.944438+00:00",
+      "observedAt": "2026-10-15T08:09:46.044Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1054,14 +1054,14 @@
         "observedAt": "2026-10-15T06:46:34.094Z"
       },
       "currentCi": {
-        "observedAt": "2026-10-15T07:53:22.944438+00:00",
-        "sourceSha": "f6e5aaa64a41d3b5ee129aa7f3f333c5e89e1dfc",
+        "observedAt": "2026-10-15T08:13:50.587851+00:00",
+        "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
         "technicalChecksPassed": 9,
         "technicalChecksFailed": 0,
-        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
-        "artifactBytesEqualToInstalled": true,
-        "runId": 38701245509,
-        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38701245509 ; artefact CI téléchargé et SHA-256 identique au candidat installé."
+        "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
+        "artifactBytesEqualToCandidate": true,
+        "runId": 38703533775,
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38703533775"
       }
     },
     "checks": [
@@ -1140,6 +1140,30 @@
         "observedAt": "2026-10-15T07:53:22.944438+00:00",
         "executionSourceSha": "f6e5aaa64a41d3b5ee129aa7f3f333c5e89e1dfc",
         "evidence": "CI f6e5aaa : neuf contrôles techniques réussis ; archive téléchargée identique octet par octet à celle installée. Aucun changement applicatif dans le complément documentaire."
+      },
+      {
+        "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
+        "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
+        "observedAt": "2026-10-15T08:13:50.587851+00:00",
+        "evidence": "api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes.",
+        "kind": "local",
+        "status": "passed"
+      },
+      {
+        "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
+        "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
+        "observedAt": "2026-10-15T08:13:50.587851+00:00",
+        "evidence": "api/preproduction-sso-observation.json ; 12 fichiers dont deux modifiés, CI et Apache isolé conformes.",
+        "kind": "ci",
+        "status": "passed"
+      },
+      {
+        "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
+        "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
+        "observedAt": "2026-10-15T08:14:26.469641+00:00",
+        "evidence": "35 Markdown, 191 liens locaux et socles racine/application contrôlés ; sources de revue approuvées conservées, description locale et état installé initial distingués.",
+        "kind": "documentation",
+        "status": "passed"
       }
     ],
     "approvals": [
@@ -1154,6 +1178,18 @@
         "recordedAt": "2026-10-15T07:35:02.235103+00:00",
         "evidence": "Instruction directe dans ce chat : « OK, utilise mon compte CONNECT habituel pour la recette et poursuis le raccordement puis l’installation de Passeport Immo en préproduction privée stp. Assure toi que le bien de la SCI est également migré en préprod stp ». Compte existant confirmé ensuite par le responsable. Référence : docs/point-session.md.",
         "limitation": "Trace de l’autorisation déjà exprimée, pas une nouvelle décision de phase, un merge, une recette réussie ou une ouverture de production."
+      },
+      {
+        "scope": "preproduction",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "approved",
+        "actor": "jpdandin",
+        "source": "user_chat",
+        "sourceSha": "14d83041343c090ebed374f4e770fc2c1a86c244",
+        "artifactSha256": "4c603ffbd2a168709bcc89afb5bf26264c1d7d2624af1d071977ed868f162068",
+        "recordedAt": "2026-10-15T08:13:50.587851+00:00",
+        "evidence": "Poursuite de l’instruction directe d’installation et de recette privée dans ce chat ; correction limitée à la troisième identification signalée et confirmée par le responsable, sur la même cible privée et avec les mêmes habilitations.",
+        "limitation": "Portée opérationnelle de l’instruction existante, aucune nouvelle validation de phase, acceptation de PR, autorisation de production ou ouverture publique."
       }
     ],
     "backups": [
@@ -1177,6 +1213,16 @@
         "observedAt": "2026-10-15T07:20:05+00:00",
         "evidence": "api/connect-catalogue-recovery-observation.json",
         "scope": "Catalogue and access rows only, restored into temporary tables; active rows unchanged."
+      },
+      {
+        "id": "sso-20261015T081053Z",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "observedAt": "2026-10-15T08:10:53+00:00",
+        "location": "/home/daje3540/private/passeport-immo-preparation/sso-20261015/before-20261015T081053Z",
+        "scope": "Only application index.php and htaccess; separate private restoration rehearsal, no configuration or database mutation.",
+        "evidence": "api/preproduction-sso-observation.json#hostedPreflight"
       }
     ],
     "rollback": {
@@ -1194,10 +1240,7 @@
       "evidence": null,
       "observedAt": null
     },
-    "blockers": [
-      "Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.",
-      "Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés."
-    ],
+    "blockers": [],
     "nextAction": "Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
@@ -1680,7 +1723,19 @@
         ],
         "localApacheAssertions": 67,
         "sharedGateAndBusinessRightsUnchanged": true,
-        "evidence": "docs/02-integration-connect.md ; docs/03-preproduction.md"
+        "evidence": "docs/02-integration-connect.md ; docs/03-preproduction.md",
+        "previousInstalledCandidate": {
+          "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+          "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+          "evidence": "docs/02-integration-connect.md ; douze fichiers publics, contrat et recette Apache isolée réussis.",
+          "observedAt": "2026-10-14T20:08:19.812Z"
+        },
+        "remainingAfterInstallation": [
+          "Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.",
+          "Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés."
+        ],
+        "installationBlockers": [],
+        "gateScope": "Installation du correctif privé uniquement. Recette et import restent ouverts dans phase 2 et preproductionVerification.remaining ; ils conditionnent la revue et la production."
       }
     }
   },
