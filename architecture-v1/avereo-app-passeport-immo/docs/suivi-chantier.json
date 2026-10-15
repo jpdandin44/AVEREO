@@ -2164,7 +2164,8 @@
         "current": "Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.",
         "reason": "Référence historique devenue circulaire après mapping ; critère de phase 3 non approuvée uniquement."
       },
-      "gateStatus": "refused_prerequisites_missing"
+      "gateStatus": "refused_prerequisites_missing",
+      "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/81"
     }
   },
   "reviewFollowUps": [
@@ -2200,6 +2201,19 @@
         "mergedAt": "2026-10-03T19:25:02.000Z",
         "mergeCommitSha": "d881b9d511c5205d022648878f86f6beb6d29f6e",
         "mergedBy": "jpdandinavereo-design"
+      }
+    },
+    {
+      "phaseId": 2,
+      "result": "Dossier de mise en production préparé ; cible et accords à qualifier. La phase 3 reste non démarrée.",
+      "documentationPullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/81",
+        "repository": "jpdandin44/AVEREO",
+        "number": 81,
+        "state": "open",
+        "draft": true,
+        "observedAt": "2026-10-15T15:36:52.272428+00:00",
+        "scope": "Préparation documentaire de production après PR nº80 ; aucune transition de phase ni livraison."
       }
     }
   ],

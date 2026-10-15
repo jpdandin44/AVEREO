@@ -16,6 +16,8 @@ Ce dossier prépare la suite demandée après la fusion de la
 [PR nº80](https://github.com/jpdandin44/AVEREO/pull/80). Il décrit les opérations
 à qualifier avant leur exécution. Les statuts et accords actuels font foi dans
 le [suivi canonique](suivi-chantier.json), notamment `developmentWorkflow.productionPreparation`.
+[PR nº81 en brouillon](https://github.com/jpdandin44/AVEREO/pull/81) : préparation à relire, sans livraison.
+
 La [preuve de préparation](../api/preparation-production-observation.json) conserve
 les observations GitHub et les vérifications des archives du 15 octobre.
 

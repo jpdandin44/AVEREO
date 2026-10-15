@@ -17,6 +17,8 @@ tags: [passeport-immo, local, cockpit]
 La PR nº80 est fusionnée dans `main` au commit
 `437f2689e8ea5a0f12e055be9e2b8713bf99b1bd`. Le dossier
 [04 mise en production](04-mise-en-production.md) prépare la suite demandée.
+[PR nº81 en brouillon](https://github.com/jpdandin44/AVEREO/pull/81) : préparation à relire, sans livraison.
+
 La branche de préparation est `docs/passeport-immo-preparation-production`, dans
 la copie modifiable `C:\Users\examg\Documents local\passeport-immo-local`.
 
