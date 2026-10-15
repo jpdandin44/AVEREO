@@ -53,8 +53,9 @@ canvas/jsPDF simulés ; leur recette humaine reste ouverte.
 ## Préparation de la préproduction
 
 Depuis le sous-projet, `python -m unittest discover -s tests -p test_preproduction.py`
-vérifie six cas fictifs : archive reproductible et candidat conservé, source différente,
-asset modifié, chemin hors du lot, fichier non déclaré et lien symbolique. Le cas nominal
+vérifie huit cas fictifs : archive reproductible et candidat conservé, source différente,
+asset modifié, chemin hors du lot, fichier non déclaré, lien symbolique, sas complet
+initialement fermé et refus d'un sas partiel ou d'une configuration privée. Le cas nominal
 répète une restauration locale ; aucune cible ni sauvegarde distante n'est authentifiée.
 
 ## Raccordement du cockpit
@@ -69,9 +70,10 @@ dans `legacyTracking` et les empreintes des documents approuvés.
 
 ## Documents approuvés et packaging
 
-`python -m unittest discover -s tests -p 'test_*.py'` exécute onze tests : les six
-cas de préparation ci-dessus, quatre protections des vues approuvées et un cas
-d’ordre reproductible des assets avec noms mêlant majuscules/minuscules. Ce dernier
+`python -m unittest discover -s tests -p 'test_*.py'` exécute dix-neuf tests : huit
+cas de préparation, quatre protections des vues approuvées, trois contrôles du
+packaging et quatre contrôles du delta compatible. Le packaging couvre notamment
+l’ordre reproductible des assets avec noms mêlant majuscules/minuscules. Ce cas
 couvre la différence Windows/Linux qui peut changer les octets du ZIP sans changer
 le contenu des assets. Les noms relatifs sont triés comme chaînes identiques sur
 les deux systèmes.

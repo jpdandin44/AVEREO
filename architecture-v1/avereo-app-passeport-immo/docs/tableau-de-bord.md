@@ -89,7 +89,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T06:37:15.964Z.
+- Dernière observation GitHub : 2026-10-15T06:44:16.024Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -104,6 +104,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Documentation | Réussi | 2026-10-14T20:09:51.631Z |
 | GitHub Actions | Réussi | 2026-10-14T20:13:18.664Z |
 | Sur le poste | Réussi | 2026-10-15T06:36:09.982Z |
+| GitHub Actions | Réussi | 2026-10-15T06:46:34.094Z |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -114,6 +115,7 @@ Preuves du candidat identifié ci-dessus :
 - Documentation : Socles Passeport Immo et CONNECT vérifiés ; métadonnées, liens locaux, vues et 15 empreintes approuvées conformes.
 - GitHub Actions : CI 01be7d2 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon.
 - Sur le poste : Delta compatible 1cbd15edf31bfda766007a255de83e4f58f8192e1d2edd592b86165d6c3b106d (source 9bc5e351781a0a59169e4dc09ec29f67f9cb2dec) : 19 tests Python, 32 tests du backend historique, 15 assertions du sas. ZIP frontend inchangé ; reçu hébergé api/connect-hosted-observation.json.
+- GitHub Actions : CI e26f564 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon.
 
 ### Contrôles de passage
 
