@@ -5,7 +5,7 @@ title: Architecture du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-06
+updated: 2026-10-14
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -42,3 +42,5 @@ par application ; le relevé Markdown en est dérivé. Les tests transversaux ut
 l’émetteur CONNECT réel et les sas récepteurs. L’identité Drupal conserve sa source
 et son candidat distincts ; une compilation commune ne prouve pas la configuration
 des serveurs, le catalogue actif ou l’isolation des bases.
+
+Le [lot CONNECT et activation](outillage/acces-preproduction/preparer-connect-activation.md) ajoute un preparateur de sources Git et deux helpers CLI : inventaire sans donnees de compte exportees, sauvegarde privee et restauration sur base distincte. Les dumps/configurations restent sur le serveur hors document root ; le monorepo conserve seulement des recus techniques sans valeurs de secrets. Le bloc `connect_activation_preparation` est canonique, son releve Markdown derive. Ces outils n’installent aucun backend ni module et ne migrent pas la base active.

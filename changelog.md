@@ -5,12 +5,22 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-09
+updated: 2026-10-14
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Changelog du dépôt AVEREO
+
+## 2026-10-14 — Préparation CONNECT et activation
+
+Ajout du [lot de préparation CONNECT](outillage/acces-preproduction/preparer-connect-activation.md),
+du ZIP reproductible issu des blobs de main, du helper de sauvegarde privée et
+de la restauration sur base de test distincte. Tests de refus, répétition MariaDB
+et CI sans accès distant préparés. Le suivi et ses vues distinguent préparation,
+sauvegarde réellement exécutée, migration et livraison après accord exact.
+Vérification du candidat documentaire Passeport Immo et de ses prérequis,
+sans installation ni création de compte, secret ou validation humaine.
 
 ## 2026-10-03
 Ajout du socle documentaire racine manquant sous forme d’index et du chantier local

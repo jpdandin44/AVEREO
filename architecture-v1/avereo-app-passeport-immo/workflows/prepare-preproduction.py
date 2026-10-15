@@ -121,9 +121,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--candidate', type=Path, default=ROOT/'.local/candidate.zip')
     parser.add_argument('--manifest', type=Path, default=ROOT/'.local/candidate.manifest.json')
+    parser.add_argument('--output', type=Path, default=ROOT/'.local/preproduction-preparation/release')
     args = parser.parse_args()
     state = json.loads((ROOT/'docs/suivi-chantier.json').read_text(encoding='utf-8'))
-    output = ROOT/'.local/preproduction-preparation/release'
+    output = args.output.resolve()
     proof = prepare(args.candidate, args.manifest, state['developmentWorkflow']['candidate'], output)
     print(json.dumps({key:value for key,value in proof.items() if key != 'files'},ensure_ascii=False))
 

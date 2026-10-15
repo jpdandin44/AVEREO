@@ -5,12 +5,80 @@ title: Point de reprise — alignement des applications en préproduction
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-09
+updated: 2026-10-14
 owner: jpdandin
 tags: [preproduction, reprise, applications, cockpit]
 ---
 
 # Point de reprise
+
+## Préparation CONNECT et vérification Passeport Immo — 14 octobre 2026
+
+La demande porte sur la préparation du backend CONNECT préproduction, sa
+sauvegarde de base et la migration d’activation, puis les prérequis de Passeport
+Immo. Le nouveau lot est sur `codex/connect-preprod-activation-20261014` ; le lot
+des cinq applications et ses accords restent distincts. La PR #77 est fusionnée,
+et `main` observée contient aussi la fusion #78 de Passeport Immo.
+
+La [procédure](preparer-connect-activation.md) décrit le candidat, les contrôles,
+la sauvegarde privée et la restauration sur une base de test distincte, puis le
+passage après accord exact. Le [suivi canonique](suivi-chantier.json), bloc
+`connect_activation_preparation`, porte les preuves et blocages courants.
+Le helper de sauvegarde ne possède aucune action de migration ni de déploiement.
+Le navigateur intégré est ouvert pour la connexion du responsable ; aucun
+identifiant, cookie ou jeton n’est enregistré dans ce relais.
+
+Les contrôles publics du jour reçoivent 401 Basic sur CONNECT et 403 sur
+Passeport Immo. Après connexion du responsable et démarrage de Docker, la
+répétition locale complète passe. Les 37 tests du backend, le pont Drupal et les
+six tests du nouveau préparateur passent. Les six tests Apache ne sont pas
+exécutés sur ce poste ; la CI complète réussit sur la révision publiée indiquée ci-dessous.
+
+Le [reçu réel du serveur](archives/connect-activation-preparation-20261014.json)
+identifie une base CONNECT distincte de production, quatre migrations et trois
+comptes. Le dump privé est créé et restauré dans une nouvelle base de test vide.
+Les DDL et toutes les lignes sont identiques. Le candidat stagé est ensuite migré
+sur ce clone seulement : quatre `SKIP`, un `UP`, puis cinq `SKIP`. Les anciens
+champs et statuts des comptes sont conservés, sans envoi de mail ; la base source
+reste inchangée. Les 33 fichiers existants et leurs modes sont sauvegardés et
+restaurés en privé, ainsi que la configuration dédiée protégée.
+
+Répertoire privé :
+`/home/daje3540/private/connect-preprod-recovery/preparation-20261014T163531Z`.
+La base `daje3540_connrest_20261014` conserve la répétition ; aucun nouveau compte
+ou secret MySQL n’est créé. Le dump et les valeurs de configuration ne sont pas
+exportés. Seul le reçu technique sans valeurs de secrets est archivé dans Git.
+
+Le fournisseur `auth-next-preprod` ne possède pas le contrôleur et le formulaire
+d’activation ; son module et ses routes diffèrent. Les variables d’activation
+CONNECT sont absentes. Le ZIP de huit fichiers du pont est préparé depuis la même
+source ; récupération du fournisseur, configuration partagée, transport de recette
+et accords exacts restent à qualifier avant livraison. Le backend actif n’est ni
+remplacé ni migré par cette préparation.
+
+Dans le clone Passeport Immo, la préparation par défaut désignait encore l’ancien
+prototype. Le candidat documentaire canonique de #78 a été retrouvé dans son
+archive CI, vérifié et préparé séparément dans
+`.local/preproduction-preparation/documents-20261014/`. Ses sept assets sont
+conservés ; fermeture initiale, relecture et restauration locale des fichiers
+passent. Onze tests Python, parité et contrat du cockpit passent. Le suivi vivant
+contient l’approbation D05 du lot documents/coupes ; elle reste préservée.
+Le sas, le catalogue et les paramètres privés CONNECT de Passeport Immo restent
+des prérequis absents. Sa préparation de fichiers ne les implémente pas.
+
+Prochaine action : terminer les prérequis du pont d’activation, préparer les accords exacts de mise à jour des deux cibles.
+Pour Passeport Immo, réaliser ensuite le sas/catalogue et la qualification privée.
+Les accords de phase, d’installation et d’ouverture restent distincts.
+
+### Publication et contrôle de passage
+
+La [PR nº79](https://github.com/jpdandin44/AVEREO/pull/79) est ouverte en brouillon,
+avec quatre cases humaines décochées. La CI générale, la CI Passeport Immo et le
+workflow d’accès réussissent sur `edcfac3`, dont le job de sauvegarde/restauration
+et migration. Les sources runtime/SQL/pont sont identiques à celles du candidat ;
+les observations de CI sont séparées de sa qualification hébergée et des accords.
+Le contrôleur de passage reste en refus pour les blocages d’activation, la cible
+non prête et l’accord exact absent. La récupération CONNECT restaurée est reconnue.
 
 ## Reprise active du 9 octobre 2026
 
