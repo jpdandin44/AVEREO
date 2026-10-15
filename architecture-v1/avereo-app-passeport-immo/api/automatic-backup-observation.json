@@ -1,0 +1,91 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "observedAt": "2026-10-15T13:36:34+00:00",
+  "status": "active_verified",
+  "sourceSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
+  "artifactSha256": "dd574fb98b8fe770f4c33c2fd2bacf76e17963c58aaa9c056e070d3326798ae1",
+  "runbook": "docs/sauvegarde-automatique.md",
+  "ci": {
+    "runId": 38743249295,
+    "status": "success"
+  },
+  "hosted": {
+    "observedAt": "2026-10-15T13:36:34+00:00",
+    "status": "active_verified",
+    "worker": {
+      "sourceSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
+      "artifactSha256": "dd574fb98b8fe770f4c33c2fd2bacf76e17963c58aaa9c056e070d3326798ae1",
+      "installedAt": "2026-10-15T13:33:07+00:00",
+      "scriptReadback": "passed",
+      "publicApplicationFilesUnchanged": true,
+      "privateConfigurationUnchanged": true,
+      "dataDestination": "/home/daje3540/private/passeport-immo-backups/preprod",
+      "sourcePublicFiles": 16,
+      "newCredentials": false
+    },
+    "cron": {
+      "operation": "finalized",
+      "observedAt": "2026-10-15T13:34:38+00:00",
+      "schedule": "daily 03:20 Europe/Paris with hourly catch-up",
+      "retentionSuccessfulCopies": 30,
+      "beforeSha256": "a26152d82fff5a820ff440570ce1f0f82bde25fb9a87b81963acd69157448e68",
+      "afterSha256": "a4455bef60d7d8ad7b3fed698ce11d6048a088669366d0360d5e3ad3025f8c6e",
+      "otherCronLinesPreserved": true,
+      "qualificationEntryPresent": false,
+      "command": "AVEREO_BACKUP_TRIGGER=cron /opt/alt/php83/usr/bin/php '/home/daje3540/.avereo/passeport-immo-preprod/backups/bin/scheduled-backup.php' --config='/home/daje3540/.avereo/passeport-immo-preprod/config.php' --root='/home/daje3540/private/passeport-immo-backups/preprod' --schema='/home/daje3540/.avereo/passeport-immo-preprod/backups/bin/storage.sql' --keep=30 >> '/home/daje3540/private/passeport-immo-backups/preprod/scheduler.log' 2>&1"
+    },
+    "firstScheduledCopy": {
+      "format": "avereo-passeport-private-backup",
+      "version": 1,
+      "id": "20261015T133401Z-0e3107c0cb8f",
+      "backupDate": "2026-10-15",
+      "completedAt": "2026-10-15T13:34:02+00:00",
+      "timezone": "Europe/Paris",
+      "retentionSuccessfulCopies": 30,
+      "trigger": "cron",
+      "proof": {
+        "snapshotSha256": "0ad273540b675bdaf3ab4ffb505c6b95c79ba83278e6d2d6af0443e5acf3ec55",
+        "tables": 4,
+        "documents": 9,
+        "fileReadback": "passed",
+        "temporaryRowRestore": "passed",
+        "liveRowsChanged": false
+      },
+      "schemaSha256": "b2e283afcc8e20079b5f0e07c65ebb733ad3fb9ffc8897158d166dec9186af55"
+    },
+    "lastStatus": {
+      "status": "success",
+      "completedAt": "2026-10-15T13:34:02+00:00",
+      "backupDate": "2026-10-15",
+      "id": "20261015T133401Z-0e3107c0cb8f",
+      "trigger": "cron",
+      "tables": 4,
+      "documents": 9,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "retainedCopies": 1,
+      "expiredManagedCopiesRemoved": 0,
+      "snapshotSha256": "0ad273540b675bdaf3ab4ffb505c6b95c79ba83278e6d2d6af0443e5acf3ec55"
+    },
+    "scriptFilesVerified": 4,
+    "backupFileHashesVerified": 9,
+    "snapshotReadback": "passed",
+    "sourceApplicationFilesVerified": 16,
+    "otherCronLinesPreserved": true,
+    "temporaryEntryRemoved": true,
+    "directoriesMode": "0700",
+    "filesMode": "0600",
+    "nextDailyRun": "2026-10-16T03:20:00+02:00",
+    "retentionSuccessfulCopies": 30,
+    "externalTransfer": false,
+    "newCredentials": false,
+    "productionChanged": false
+  },
+  "privateReceiptSha256": "bc3db683ffd991f9b58e1e45d77b100ac65ae53e85b650a9b183436f431276af",
+  "limits": {
+    "offsiteCopy": false,
+    "emailAlerts": false,
+    "fullHostingRestore": "not_tested",
+    "proofScope": "installation, first real cron execution, application-table temporary restore and file hashes"
+  }
+}

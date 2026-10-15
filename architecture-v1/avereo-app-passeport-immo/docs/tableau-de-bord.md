@@ -22,7 +22,7 @@ Mise à jour : **2026-10-15**. **2 phases livrées sur 4 ; 2 phases validées pa
 |---|---|---|---|---|
 | 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
 | 1 — Développement local | Validée | [documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | 2026-10-14 | 2026-10-14 |
-| 2 — Préproduction | Non commencée | [02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md) | — | Non acquise |
+| 2 — Préproduction | Non commencée | [02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md)<br>[sauvegarde-automatique.md](sauvegarde-automatique.md) | — | Non acquise |
 | 3 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
 
 ### Décisions attendues
@@ -55,7 +55,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — À valider**.
-Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.
+Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
@@ -77,7 +77,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
-| Préproduction | À valider | Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import. |
+| Préproduction | À valider | Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -87,7 +87,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T10:03:46.786Z.
+- Dernière observation GitHub : 2026-10-15T13:31:48.455Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -117,6 +117,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | GitHub Actions | Réussi | 2026-10-15T09:53:50+00:00 |
 | hosted_storage | Réussi | 2026-10-15T09:53:50+00:00 |
 | Documentation | Réussi | 2026-10-15T10:03:25.433202+00:00 |
+| hosted_backup | Réussi | 2026-10-15T13:36:34+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -142,6 +143,7 @@ Preuves du candidat identifié ci-dessus :
 - GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38714544403 ; archive identique au candidat installé.
 - hosted_storage : api/storage-observation.json ; 34 assertions HTTPS, deux sessions, neuf fichiers et sauvegarde restaurée en tables temporaires.
 - Documentation : 42 documents Markdown et 256 liens locaux contrôlés ; socles racine/application, métadonnées, vues et empreintes approuvées conservés.
+- hosted_backup : api/automatic-backup-observation.json ; cron réel, quatre tables/neuf fichiers, retour temporaire, permissions et autres tâches vérifiés.
 
 ### Contrôles de passage
 
@@ -155,7 +157,7 @@ Preuves du candidat identifié ci-dessus :
 
 - Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique.
 
-Prochaine action : Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.
+Prochaine action : Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.
 
 ### Accords et livraison
 
@@ -267,6 +269,12 @@ Préproduction
 Base dédiée, identité CONNECT, fichiers privés, migration et recette vérifiées ; revue humaine distincte.
 
 - Neuf fichiers migrés et partagés entre sessions ; récupération des tables et copies vérifiée.
+
+**Sauvegarde automatique de préproduction** — Document disponible (`sauvegarde-automatique.md`).
+
+Planification quotidienne, trente copies réussies, contrôles et récupération ; premier déclenchement cron observé.
+
+- Premier succès cron réel, quatre tables et neuf fichiers vérifiés ; tâche provisoire retirée et autres tâches préservées.
 
 ### Phase 3 — Mise en production
 

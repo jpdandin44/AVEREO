@@ -12,11 +12,15 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
-## 2026-10-15 — Sauvegarde automatique préparée
+## 2026-10-15 — Sauvegarde automatique installée et exécutée
 
-Travailleur CLI quotidien, trente copies complètes réussies, verrou, diagnostic
+Travailleur CLI quotidien, conservation de trente copies complètes réussies, verrou, diagnostic
 privé et protection du dernier succès. Treize contrôles de rotation/échec/récupération
-sont intégrés à la recette MariaDB et à la CI. Planification hébergée à vérifier.
+sont intégrés à la recette MariaDB et à la CI. Tâche privée installée, premier
+succès cron constaté le 15 octobre à 13:34 UTC : quatre tables, neuf documents,
+empreintes et restitution temporaire vérifiées. Les autres tâches sont conservées
+et l’entrée de qualification est retirée ; rythme définitif 03 h 20 Europe/Paris.
+Les seize fichiers publics de l’application restent identiques.
 
 ## 2026-10-15 — Stockage serveur installé et cas SCI migré
 

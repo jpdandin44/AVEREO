@@ -14,10 +14,15 @@ tags: [passeport-immo, local, cockpit]
 
 ## Sauvegarde automatique demandée — 15 octobre 2026
 
-Le [lot de sauvegarde automatique](sauvegarde-automatique.md) complète le stockage
-serveur. Les six lignes existantes de crontab ont été inventoriées sans divulguer
-leur contenu ; aucune tâche Passeport Immo équivalente détectée. Préserver ces
-lignes et les copies manuelles lors de l’installation. Déclenchement réel à vérifier.
+La [sauvegarde automatique](sauvegarde-automatique.md) est active : 03 h 20
+Europe/Paris, trente copies complètes réussies, répertoire privé dédié. Premier
+succès réellement déclenché par cron à 13:34 UTC, copie des quatre tables et neuf
+documents vérifiée. Les autres lignes de crontab et les copies manuelles sont
+conservées ; entrée provisoire retirée. Le [reçu](../api/automatic-backup-observation.json)
+porte les empreintes et contrôles. Scripts source `652ef6d63cddea3e343c39a616be9cf1f9500ecd`,
+lot `dd574fb98b8fe770f4c33c2fd2bacf76e17963c58aaa9c056e070d3326798ae1`.
+Consulter `latest.json` et `status.json` dans le répertoire privé pour les prochains
+résultats ; le reçu Git est un constat daté. Prochaine action : revue humaine de la PR nº80.
 
 ## Stockage documentaire demandé — 15 octobre 2026
 

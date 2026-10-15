@@ -100,8 +100,9 @@ quatre tables du snapshot dans une base dédiée neuve dans l'ordre du schéma,
 recopier les Blob dans un répertoire privé neuf, vérifier les sommes, tester les
 accès et pointer la configuration sur cette copie. Les tables temporaires testent
 le retour des données ; elles ne constituent pas un exercice de reprise de
-l'ensemble de l'hébergement. Aucun transfert hors hébergeur ni planification
-automatique de sauvegarde n'est installé par ce lot.
+l'ensemble de l'hébergement. La planification automatique est maintenant installée par le
+[complément de sauvegarde](sauvegarde-automatique.md) ; aucun transfert hors hébergeur
+n’est ajouté.
 
 La recette isolée exécute PHP/Apache et MariaDB 11.4 avec deux propriétaires
 fictifs et deux sessions indépendantes du même propriétaire. Elle vérifie les
@@ -160,7 +161,8 @@ cette correction. Le masque doit être pris en compte dans toute future livraiso
 
 Une sauvegarde finale après recette contient les quatre tables et neuf fichiers.
 La restitution des lignes en tables temporaires et les empreintes des copies
-passent avec les privilèges réduits. La sauvegarde n’est pas planifiée automatiquement.
+passent avec les privilèges réduits. La [sauvegarde automatique](sauvegarde-automatique.md) est désormais installée et
+son premier déclenchement réel est vérifié.
 La reprise complète d’un hébergement reste hors du test effectué.
 
 ## Mise en production

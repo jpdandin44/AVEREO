@@ -12,11 +12,12 @@ tags: [avereo, documentation, local]
 
 # Roadmap Passeport Immo
 
-## Sauvegarde automatique en cours
+## Sauvegarde automatique active
 
-Le stockage partagé est opérationnel. La demande suivante prépare sa sauvegarde
-quotidienne ; les essais de rotation et de conservation après échec passent.
-Prochaine action : CI, installation privée et observation d’un déclenchement cron.
+Le stockage partagé et sa sauvegarde quotidienne sont opérationnels. Le premier
+déclenchement réel, les quatre tables, neuf fichiers et la récupération temporaire
+sont vérifiés ; treize cas de sécurité/rotation passent aussi en CI.
+Prochaine action : revue humaine de préproduction avec ces preuves dans la PR nº80.
 Voir [la procédure](docs/sauvegarde-automatique.md).
 
 ## Stockage livré en préproduction privée

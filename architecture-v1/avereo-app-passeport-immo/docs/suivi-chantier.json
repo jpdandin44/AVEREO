@@ -233,6 +233,16 @@
           "expectedEvidence": [
             "Neuf fichiers migrés et partagés entre sessions ; récupération des tables et copies vérifiée."
           ]
+        },
+        {
+          "path": "sauvegarde-automatique.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Sauvegarde automatique de préproduction",
+          "description": "Planification quotidienne, trente copies réussies, contrôles et récupération ; premier déclenchement cron observé.",
+          "expectedEvidence": [
+            "Premier succès cron réel, quatre tables et neuf fichiers vérifiés ; tâche provisoire retirée et autres tâches préservées."
+          ]
         }
       ],
       "exitCriteria": [
@@ -241,7 +251,7 @@
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.",
+      "nextAction": "Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.",
       "legacyPhaseId": 3,
       "blockers": [
         "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
@@ -251,9 +261,9 @@
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "47ae21b99b9800409460e724f62f3f02f150b042",
+        "headSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
         "draft": true,
-        "observedAt": "2026-10-15T10:03:46.786Z",
+        "observedAt": "2026-10-15T13:31:48.455Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
@@ -1037,7 +1047,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "47ae21b99b9800409460e724f62f3f02f150b042",
+      "headSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1045,7 +1055,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T10:03:46.786Z",
+      "observedAt": "2026-10-15T13:31:48.455Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1270,6 +1280,14 @@
         "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
         "observedAt": "2026-10-15T10:03:25.433202+00:00",
         "evidence": "42 documents Markdown et 256 liens locaux contrôlés ; socles racine/application, métadonnées, vues et empreintes approuvées conservés."
+      },
+      {
+        "kind": "hosted_backup",
+        "status": "passed",
+        "sourceSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
+        "artifactSha256": "dd574fb98b8fe770f4c33c2fd2bacf76e17963c58aaa9c056e070d3326798ae1",
+        "observedAt": "2026-10-15T13:36:34+00:00",
+        "evidence": "api/automatic-backup-observation.json ; cron réel, quatre tables/neuf fichiers, retour temporaire, permissions et autres tâches vérifiés."
       }
     ],
     "approvals": [
@@ -1388,7 +1406,7 @@
     "blockers": [
       "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
     ],
-    "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.",
+    "nextAction": "Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1407,7 +1425,7 @@
       },
       "preproduction": {
         "status": "awaiting_review",
-        "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import."
+        "nextAction": "Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés."
       },
       "production": {
         "status": "blocked",
@@ -1639,7 +1657,8 @@
         "hostedHttpsAssertions": 34,
         "independentSessions": 2,
         "browser": "passed",
-        "candidateCi": "passed"
+        "candidateCi": "passed",
+        "scheduledBackupAssertions": 13
       },
       "remaining": [
         "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
@@ -1940,13 +1959,14 @@
       "checks": {
         "frontendTests": 29,
         "apacheGateAssertions": 67,
-        "storageHttpAssertions": 29,
+        "storageHttpAssertions": 30,
         "pythonTests": 19,
         "parity": "passed",
         "hostedHttpsAssertions": 34,
         "independentSessions": 2,
         "browser": "passed",
-        "candidateCi": "passed"
+        "candidateCi": "passed",
+        "scheduledBackupAssertions": 13
       },
       "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.",
       "candidate": {
@@ -1983,7 +2003,7 @@
         "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup"
       },
       "automaticBackup": {
-        "status": "prepared_local_tests_passed",
+        "status": "active_verified",
         "requestedAt": "2026-10-15",
         "authorization": "Demande directe du responsable : sauvegarde automatique de la base et des documents Passeport Immo en préproduction.",
         "schedule": {
@@ -1994,8 +2014,25 @@
         "retentionSuccessfulCopies": 30,
         "destination": "/home/daje3540/private/passeport-immo-backups/preprod",
         "runbook": "docs/sauvegarde-automatique.md",
-        "localBackupAssertions": 10,
-        "nextAction": "Terminer CI, installer la tâche privée, constater le premier déclenchement cron et sa copie vérifiée."
+        "localBackupAssertions": 13,
+        "nextAction": "Consulter les prochains résultats dans le statut privé du serveur ; revue humaine de préproduction et de la PR nº80.",
+        "observedAt": "2026-10-15T13:36:34+00:00",
+        "sourceSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
+        "artifactSha256": "dd574fb98b8fe770f4c33c2fd2bacf76e17963c58aaa9c056e070d3326798ae1",
+        "ciRunId": 38743249295,
+        "evidence": "api/automatic-backup-observation.json",
+        "firstScheduledCopy": {
+          "trigger": "cron",
+          "completedAt": "2026-10-15T13:34:02+00:00",
+          "tables": 4,
+          "documents": 9,
+          "fileReadback": "passed",
+          "temporaryRowRestore": "passed"
+        },
+        "otherCronLinesPreserved": true,
+        "temporaryEntryRemoved": true,
+        "externalTransfer": false,
+        "emailAlerts": false
       }
     }
   },
@@ -2040,7 +2077,7 @@
     "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.",
+    "nextAction": "Revue humaine de préproduction et de la PR nº80 : stockage partagé et sauvegarde quotidienne installés et vérifiés.",
     "resumedAt": "2026-10-14T09:40:12+00:00",
     "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
     "previousClosure": {

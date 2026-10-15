@@ -12,11 +12,14 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
-## Sauvegarde automatique en préparation
+## Sauvegarde automatique active
 
-Le [travailleur de sauvegarde](docs/sauvegarde-automatique.md) ajoute une copie
-complète quotidienne, avec conservation de trente succès et contrôles de
-restauration temporaire. Installation et premier déclenchement serveur à vérifier.
+Une [sauvegarde complète automatique](docs/sauvegarde-automatique.md) est active
+chaque nuit à 03 h 20, heure de Paris, avec conservation de trente copies réussies.
+Le premier déclenchement cron a sauvegardé les quatre tables et neuf documents ;
+retour des lignes et empreintes des fichiers contrôlés. Copies et journal restent
+sur le même hébergement, hors dossier public. Le [reçu](api/automatic-backup-observation.json)
+consigne l’installation ; le statut privé sur le serveur indique les exécutions suivantes.
 
 ## Stockage serveur opérationnel en préproduction privée
 
