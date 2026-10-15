@@ -12,6 +12,15 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Données initiales de production choisies
+
+Le responsable choisit la reprise du dossier SCI de préproduction. Le suivi
+canonique enregistre cette sélection et le dossier de production décrit la
+préparation : inventaire à actualiser, propriétaire CONNECT à qualifier,
+documents actifs et archivés, intégrité, absence de doublons et récupération.
+Point de reprise, exigences, roadmap et tableaux dérivés alignés. Ce choix
+n'autorise ni transfert, ni déploiement, ni changement de phase.
+
 ## 2026-10-15 — Qualification de production après fusion de la PR nº81
 
 Fusion et CI vérifiées ; DNS et inventaire cPanel lus sans modification hébergée.

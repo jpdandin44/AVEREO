@@ -161,7 +161,7 @@ Preuves du candidat identifié ci-dessus :
 - Sauvegarde/restauration de la cible et retour arrière du candidat en production non qualifiés.
 - Accord exact de déploiement en production absent ; aucune ouverture aux utilisateurs autorisée par cette préparation.
 
-Prochaine action : PR nº81 fusionnée et inventaire production réalisé. Consigner la décision de phase 2 et le contenu initial, puis autoriser la cible fermée et le raccordement CONNECT exacts ; récupération et recette hébergées restent à qualifier.
+Prochaine action : Dossier SCI de préproduction retenu pour les données initiales. Consigner la décision de phase 2, qualifier son propriétaire CONNECT en production et actualiser l’inventaire avant tout transfert ; cible fermée, raccordement, récupération et déploiement exacts restent à autoriser et qualifier.
 
 ### Accords et livraison
 

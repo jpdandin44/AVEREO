@@ -1443,7 +1443,7 @@
       "Sauvegarde/restauration de la cible et retour arrière du candidat en production non qualifiés.",
       "Accord exact de déploiement en production absent ; aucune ouverture aux utilisateurs autorisée par cette préparation."
     ],
-    "nextAction": "PR nº81 fusionnée et inventaire production réalisé. Consigner la décision de phase 2 et le contenu initial, puis autoriser la cible fermée et le raccordement CONNECT exacts ; récupération et recette hébergées restent à qualifier.",
+    "nextAction": "Dossier SCI de préproduction retenu pour les données initiales. Consigner la décision de phase 2, qualifier son propriétaire CONNECT en production et actualiser l’inventaire avant tout transfert ; cible fermée, raccordement, récupération et déploiement exacts restent à autoriser et qualifier.",
     "nextIteration": [
       "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
       "À qualifier séparément : utilité du workflow Deploy Prototype To GitHub Pages en échec après fusion."
@@ -2135,7 +2135,7 @@
       "addressStatus": "confirmed_by_user",
       "productionTargetQualified": false,
       "phaseStarted": false,
-      "nextAction": "PR nº81 fusionnée et inventaire production réalisé. Consigner la décision de phase 2 et le contenu initial, puis autoriser la cible fermée et le raccordement CONNECT exacts ; récupération et recette hébergées restent à qualifier.",
+      "nextAction": "Dossier SCI de préproduction retenu pour les données initiales. Consigner la décision de phase 2, qualifier son propriétaire CONNECT en production et actualiser l’inventaire avant tout transfert ; cible fermée, raccordement, récupération et déploiement exacts restent à autoriser et qualifier.",
       "readiness": [
         {
           "id": "candidate",
@@ -2154,7 +2154,8 @@
         },
         {
           "id": "initial_data_scope",
-          "status": "to_decide"
+          "status": "scope_confirmed_preparation_pending",
+          "evidence": "docs/04-mise-en-production.md"
         },
         {
           "id": "production_recovery_and_rollback",
@@ -2215,8 +2216,20 @@
         "localDirectory": ".local/production-qualification-20261015/backup-production"
       },
       "initialData": {
-        "status": "awaiting_user_choice",
-        "question": "Base vide ou reprise du dossier SCI de préproduction ; aucun transfert déclenché."
+        "status": "scope_confirmed_preparation_pending",
+        "selection": "preproduction_sci_case",
+        "recordedAt": "2026-10-15T19:22:54.301+00:00",
+        "source": "user_chat_reply",
+        "reference": "Réponse directe à la question sur les données initiales de production : « Reprendre le dossier SCI de préproduction ».",
+        "scope": "Dossier SCI sélectionné, informations du bien et du client lié, métadonnées et documents actifs ou archivés associés ; aucun autre dossier ni compte CONNECT à reprendre.",
+        "sourceTargetRef": "developmentWorkflow.targets.preproduction",
+        "targetRef": "developmentWorkflow.targets.production",
+        "sourceEvidence": "api/storage-observation.json",
+        "planRef": "docs/04-mise-en-production.md#reprise-du-dossier-sci",
+        "sourceInventoryStatus": "dated_receipt_refresh_required_before_transfer",
+        "productionOwnerMappingStatus": "not_qualified",
+        "transferStatus": "not_performed",
+        "authorizationScope": "Choix des données à intégrer au plan uniquement ; aucune autorisation de transfert, de déploiement ou de passage de phase."
       }
     }
   },
@@ -2281,9 +2294,12 @@
         "number": 82,
         "state": "open",
         "draft": true,
-        "headSha": "971e97460c90e9ae3ed36c5538491da400162982",
-        "observedAt": "2026-10-15T18:35:17.362+00:00",
-        "scope": "Qualification de production et outillage privé après PR nº81 ; cible fermée et raccordement soumis aux décisions et accords distincts."
+        "headSha": "37cf9699811ae3f60b9899babf3a296737baffd1",
+        "observedAt": "2026-10-15T18:37:50.210Z",
+        "scope": "Qualification de production et outillage privé après PR nº81 ; cible fermée et raccordement soumis aux décisions et accords distincts.",
+        "mergedAt": null,
+        "mergeCommitSha": null,
+        "mergedBy": null
       }
     }
   ],
@@ -2292,7 +2308,7 @@
     "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "PR nº81 fusionnée et inventaire production réalisé. Consigner la décision de phase 2 et le contenu initial, puis autoriser la cible fermée et le raccordement CONNECT exacts ; récupération et recette hébergées restent à qualifier.",
+    "nextAction": "Dossier SCI de préproduction retenu pour les données initiales. Consigner la décision de phase 2, qualifier son propriétaire CONNECT en production et actualiser l’inventaire avant tout transfert ; cible fermée, raccordement, récupération et déploiement exacts restent à autoriser et qualifier.",
     "resumedAt": "2026-10-14T09:40:12+00:00",
     "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
     "previousClosure": {

@@ -20,8 +20,11 @@ absente, les trois paramètres de code CONNECT à ajouter, les lots préparés e
 récupération à qualifier. L'outillage de sauvegarde adapté est testé localement.
 L'archive applicative publique reste identique au candidat installé en préproduction.
 
-Prochaines actions : consigner la revue de phase 2, décider du contenu initial,
-puis autoriser la création de la cible fermée et le raccordement exact de production.
+Le dossier SCI de préproduction est retenu pour les données initiales, selon le
+[plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci), sans transfert effectué.
+Prochaines actions : consigner la revue de phase 2, qualifier le propriétaire
+CONNECT et actualiser l'inventaire SCI, puis autoriser la création de la cible
+fermée, le raccordement et le transfert exacts de production.
 La récupération hébergée, le compte autorisé, la recette authentifiée et les accords
 restent à traiter avant activation. La phase 3 n'est pas démarrée.
 

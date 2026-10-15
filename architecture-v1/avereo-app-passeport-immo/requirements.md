@@ -28,6 +28,13 @@ sans modifier la tâche de préproduction. Les erreurs, tâches non identifiées
 blocs incomplets et destinations publiques restent bloquants. La qualification
 locale de cet outillage n'autorise pas son installation.
 
+Les données initiales choisies par le responsable sont celles du dossier SCI de
+préproduction. Conserver le bien, le client lié, les métadonnées, les documents
+actifs et les archives ; vérifier leur intégrité et leur correspondance avec le
+propriétaire CONNECT de production. La reprise doit préserver les sources,
+détecter doublons et conflits et attendre l'accord exact de transfert. Voir le
+[plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci).
+
 ## Sauvegarde automatique demandée le 15 octobre 2026
 
 - E25 : sauvegarder automatiquement la base applicative et tous les documents de préproduction, archives incluses.
@@ -86,7 +93,7 @@ et la correction de pagination PDF, sans intégrer CONNECT ni déployer.
 
 ## Inconnues
 TBD : compte et organisation CONNECT autorisés en production, configuration et
-recette de la cible à créer, contenu initial, volumétrie et
+recette de la cible à créer, inventaire actualisé et mécanisme de reprise du dossier SCI, volumétrie et
 objectifs de récupération en production, suppression future du frontend historique.
 Le stockage partagé et l'identité CONNECT sont réalisés en préproduction dans le
 lot serveur du 15 octobre ; les questions historiques Q01… restent conservées dans le suivi.

@@ -23,8 +23,10 @@ les emplacements proposés et la séquence d'installation à autoriser.
 Une archive initialement fermée et l'adaptation minimale de CONNECT sont préparées
 localement. L'outillage de sauvegarde distingue désormais préproduction et production,
 avec des tâches indépendantes ; cette évolution n'est pas installée sur l'hébergement.
-La décision de phase 2, le contenu initial et l'accord exact de production restent
-à consigner dans le [suivi canonique](docs/suivi-chantier.json).
+Le responsable retient la reprise du dossier SCI de préproduction ; le
+[plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci) inclut ses
+documents actifs et archivés. La décision de phase 2 et l'accord exact de production
+restent à consigner dans le [suivi canonique](docs/suivi-chantier.json) ; aucun transfert effectué.
 
 ## Recette de préproduction et décision de phase
 

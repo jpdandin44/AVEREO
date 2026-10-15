@@ -38,9 +38,15 @@ Contrôles réussis : 36 tests backend historique, 15 assertions du sas, 19 test
 30 assertions API/stockage et 22 assertions de sauvegarde sous MariaDB isolée.
 Aucun fichier, domaine, base, droit ni cron modifié sur l'hébergement.
 
-**Prochaine action :** consigner la décision de phase 2, choisir le contenu initial,
-puis autoriser la création de la cible fermée et le raccordement exact décrits dans
-le dossier. La récupération et la recette sur la production restent à qualifier.
+**Données initiales retenues :** reprise du dossier SCI de préproduction, selon la
+réponse du responsable du 15 octobre. Le [plan de reprise](04-mise-en-production.md#reprise-du-dossier-sci)
+préserve les documents actifs et archivés ; aucun transfert réalisé ou autorisé
+par ce seul choix.
+
+**Prochaine action :** consigner la décision de phase 2, qualifier le propriétaire
+CONNECT de production et actualiser l'inventaire du dossier SCI, puis autoriser
+la cible fermée, le raccordement et le transfert exacts décrits dans le dossier.
+La récupération et la recette sur la production restent à qualifier.
 Les quatre phases, décisions et documents approuvés sont conservés. Les changements
 locaux préexistants d'AVEREO Projet restent séparés du lot.
 

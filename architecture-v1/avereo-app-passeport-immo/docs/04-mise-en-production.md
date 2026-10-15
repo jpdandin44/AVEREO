@@ -162,6 +162,54 @@ sur l'hébergement avant activation ; ne pas copier les secrets de préproductio
 Le [modèle existant](../api/connect-config.example.php) illustre la préproduction.
 Il ne constitue pas une configuration de production prête à déposer.
 
+## Reprise du dossier SCI
+
+Le responsable a choisi le 15 octobre 2026 de **reprendre le dossier SCI de
+préproduction** pour les données initiales de production. Ce choix est enregistré
+dans `developmentWorkflow.productionPreparation.initialData` du
+[suivi canonique](suivi-chantier.json). Il fixe le périmètre du plan ; aucun transfert,
+accord de déploiement ou changement de phase n'en résulte.
+
+Le périmètre comprend le bien sélectionné, son client lié, les informations du
+dossier, les métadonnées et les fichiers de ses documents actifs et archivés.
+Le [reçu du 15 octobre à 09:53:50 UTC](../api/storage-observation.json) constate
+un bien, un client, six documents actifs et trois archivés, avec les neuf fichiers
+vérifiés dans deux sessions indépendantes. Ces nombres sont un repère historique :
+l'inventaire réel devra être relu avant le transfert. Les autres dossiers, données
+de démonstration, comptes, droits et secrets de préproduction sont exclus.
+
+La préparation et les contrôles à effectuer sont les suivants :
+
+1. **Identifier les données exactes.** Inventorier le dossier sélectionné et ses
+   dépendances utiles, y compris les archives, puis conserver hors Git un manifeste
+   avec les identifiants sources, les nombres, les métadonnées, les tailles et les
+   empreintes SHA-256. Toute dépendance extérieure au dossier doit être explicitée
+   avant inclusion ; ne pas recopier l'ensemble de la base de préproduction.
+2. **Qualifier le propriétaire en production.** Identifier le compte et, le cas
+   échéant, l'organisation CONNECT destinataires ; établir la correspondance avec
+   le propriétaire source. Ne pas supposer qu'un identifiant numérique identique
+   désigne le même compte entre environnements. Les habilitations de production
+   restent à accorder dans le périmètre autorisé.
+3. **Préparer une reprise cohérente et sans doublon.** Définir un instant de copie
+   stable pour les données et les fichiers, comparer l'état cible avant import,
+   puis conserver la correspondance des identifiants source/cible et le manifeste
+   appliqué. Une reprise de l'opération doit détecter les éléments déjà importés
+   et les conflits, sans écrasement silencieux. L'outil exact et cette propriété
+   restent à qualifier sur une cible isolée avant utilisation en production.
+4. **Préserver les sources et la récupération.** Conserver le dossier de
+   préproduction intact. Sauvegarder l'état cible avant écriture, ou constater sa
+   vacuité et son isolement, puis vérifier la récupération conformément à la
+   section [sauvegarde et retour arrière](#sauvegarde-et-retour-arrière).
+5. **Contrôler après transfert autorisé.** Comparer nombres, liens client/bien,
+   métadonnées, états actif/archivé, tailles et empreintes de tous les documents
+   avec le manifeste actualisé. Vérifier lecture, téléchargement et persistance
+   avec le compte de production, ainsi que le refus d'un autre compte. Conserver
+   un reçu sans données personnelles ni secrets avant toute ouverture.
+
+À qualifier : compte propriétaire de production, inventaire actualisé, mécanisme
+de reprise, essai sans doublon et récupération sur la cible réelle. Le transfert
+attend l'accord précis portant sur ces données, la cible et le candidat à livrer.
+
 ## Séquence de préparation et de livraison
 
 1. **Terminer la revue formelle de préproduction.** Consigner les résultats du
@@ -173,10 +221,10 @@ Il ne constitue pas une configuration de production prête à déposer.
    du nom SQL avant leur création ou adaptation. Créer d'abord le dossier avec sa
    fermeture `Require all denied`, puis rattacher le sous-domaine et qualifier TLS.
    Ne pas réexécuter l'installateur initial sur une cible peuplée.
-3. **Décider du contenu initial.** Démarrage vide ou transfert explicitement choisi :
-   TBD. L'import SCI autorisé en préproduction n'autorise pas son transfert automatique
-   en production. Préparer un inventaire, un contrôle des propriétaires CONNECT,
-   une comparaison des octets et une procédure d'import sans doublon si ce transfert est retenu.
+3. **Préparer la reprise du dossier SCI choisi.** Appliquer le
+   [plan de reprise](#reprise-du-dossier-sci) : inventaire actualisé, correspondance
+   du propriétaire CONNECT, intégrité et import sans doublon. Le choix est consigné ;
+   le transfert attend son accord exact avec la livraison de production.
 4. **Préparer la récupération.** Sauvegarder fichiers, configuration et données
    existants avant écriture. Vérifier leur restauration dans un emplacement isolé.
    Pour une cible réellement vide, conserver la preuve d'isolement et la procédure
@@ -245,8 +293,9 @@ ci-dessus reste celui de l'exécution précédente.
 ## Reprise opérationnelle
 
 Ouvrir [le point de session](point-session.md), puis le suivi du cockpit.
-Prochaine action : consigner la revue de phase 2, choisir le contenu initial,
-puis faire autoriser la préparation de la cible fermée et le raccordement exact
+Prochaine action : consigner la revue de phase 2, qualifier le propriétaire CONNECT
+du dossier SCI en production et préparer son inventaire actualisé, puis faire
+autoriser la préparation de la cible fermée, le raccordement et le transfert exacts
 décrits ici. Qualifier ensuite la récupération et la recette sur la cible réelle.
 La phase 3 et le déploiement attendent les décisions et preuves correspondantes.
 
