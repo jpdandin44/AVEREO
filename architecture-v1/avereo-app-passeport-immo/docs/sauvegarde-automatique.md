@@ -1,16 +1,16 @@
 ---
 project: avereo-app-passeport-immo
 document_type: operations-runbook
-title: Sauvegarde automatique de préproduction
+title: Sauvegarde automatique de Passeport Immo
 status: active
 version: git
 created: 2026-10-15
 updated: 2026-10-15
 owner: jpdandin
-tags: [sauvegarde, preproduction, cron, restauration]
+tags: [sauvegarde, preproduction, production, cron, restauration]
 ---
 
-# Sauvegarde automatique de préproduction
+# Sauvegarde automatique de Passeport Immo
 
 ## Cadrage
 
@@ -47,7 +47,7 @@ Les liens symboliques et les chemins pouvant atteindre les documents actifs
 sont refusés. Les dossiers incomplets de l'essai courant sont nettoyés en cas
 d'échec ; le dernier succès et un diagnostic privé sont conservés.
 
-La recette PHP/MariaDB fictive vérifie treize cas : copie complète, rotation,
+La recette initiale PHP/MariaDB fictive vérifie treize cas : copie complète, rotation,
 pointeur, répétition quotidienne, concurrence, échec conservant le dernier succès,
 diagnostic, reprise, protection des liens, séparation des sources, préservation
 des tâches existantes et refus d'un doublon ou d'un bloc modifié. Elle est
@@ -131,5 +131,39 @@ tâches ont changé entre-temps.
 
 ## Mise en production
 
-Cette tâche couvre uniquement la préproduction privée. Elle ne modifie pas les
-quatre phases, leurs décisions humaines ni la version publique de l'application.
+Le lot suivant est préparé et testé localement après la PR nº81 ; seule la version
+historique de préproduction décrite ci-dessus est installée. Les quatre phases
+et leurs décisions humaines restent inchangées.
+
+Le travailleur accepte `local`, `preprod` ou `production` dans la configuration
+privée. Les contrôles de stockage actif, chemins privés, séparation des sources,
+verrou, rotation et relecture restent applicables. L'installateur cron accepte
+`--environment=preprod` (défaut historique) ou `--environment=production` ; il exige
+que la configuration privée porte le même environnement avant toute écriture.
+
+| Élément | Préproduction | Production proposée |
+|---|---|---|
+| Configuration | `/home/daje3540/.avereo/passeport-immo-preprod/config.php` | `/home/daje3540/.avereo/passeport-immo/config.php` |
+| Scripts | Sous-dossier `backups/bin` de la configuration | Sous-dossier `backups/bin` de la configuration |
+| Copies et journaux | `/home/daje3540/private/passeport-immo-backups/preprod` | `/home/daje3540/private/passeport-immo-backups/production` |
+| Bloc cron | `AVEREO PASSEPORT IMMO PREPROD BACKUP` | `AVEREO PASSEPORT IMMO PRODUCTION BACKUP` |
+
+Le compte et les chemins correspondent à l'inventaire o2switch du dossier de production.
+Les dossiers de production n'existent pas encore. L'installation doit requalifier
+ces emplacements et l'interpréteur avant exécution. Une tâche complète de l'autre
+environnement est conservée octet pour octet. Un doublon, une tâche non identifiée
+ou un bloc incomplet fait refuser l'ajout. La finalisation retire uniquement l'entrée
+de qualification du bloc choisi, après constat d'un succès réel déclenché par cron.
+
+Les neuf nouveaux cas portent la recette de sauvegarde à **22 assertions** : copie
+avec configuration production, indépendance des pointeurs, refus d'un chemin public,
+coexistence et finalisation des deux blocs, doublon de production, environnement inconnu,
+tâche non identifiée et bloc incomplet. Les 30 contrôles API/stockage passent également
+sur données fictives. Aucune crontab ou sauvegarde de production n'est créée par ces tests.
+
+La cadence de production, la rétention et le contenu initial restent à confirmer
+avec [le dossier de mise en production](04-mise-en-production.md). Une fois l'accord
+obtenu, installer le nouveau lot privé, vérifier les empreintes, puis lancer
+`backup-cron.php --environment=production` depuis son dossier privé ; après contrôle
+du premier succès et des autres lignes, utiliser le même argument avec `--finalize`.
+Ne pas utiliser l'ancien lot préproduction pour cette opération.

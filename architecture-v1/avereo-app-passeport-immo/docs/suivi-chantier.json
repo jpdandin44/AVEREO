@@ -263,7 +263,7 @@
         "Sauvegarde quotidienne à 03 h 20 Europe/Paris, trente copies réussies, premier succès réel et récupération temporaire examinés ; limites de même hébergement et absence d’alerte mail connues.",
         "Procédure et workflow manuel préparés."
       ],
-      "nextAction": "PR nº80 fusionnée. Adresse de production retenue : https://passeport-immo.avereo.fr. Consigner la décision de phase 2, puis qualifier cette cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.",
+      "nextAction": "Consigner la revue de phase 2 dans le cockpit ; PR nº80 et nº81 fusionnées, préparation de production rattachée au dossier courant.",
       "legacyPhaseId": 3,
       "blockers": [
         "Décision humaine de phase 2 à consigner dans le cockpit ; la revue GitHub et la fusion de la PR nº80 sont confirmées."
@@ -313,7 +313,7 @@
         "Procédure, fumée et retour arrière vérifiés par le responsable.",
         "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Dossier préparé dans docs/04-mise-en-production.md ; cible, récupération et accords à qualifier avant démarrage et livraison.",
+      "nextAction": "Lots locaux préparés et testés ; créer la cible fermée et raccorder CONNECT après décisions et accord exacts, puis qualifier récupération et recette hébergées.",
       "legacyPhaseId": 4
     }
   ],
@@ -1053,9 +1053,14 @@
       "production": {
         "id": null,
         "ready": false,
-        "evidence": null,
-        "observedAt": null,
-        "address": "https://passeport-immo.avereo.fr"
+        "evidence": "api/qualification-production-observation.json",
+        "observedAt": "2026-10-15T18:29:46.848+00:00",
+        "address": "https://passeport-immo.avereo.fr",
+        "qualificationStatus": "inventory_complete_provisioning_and_connect_pending",
+        "proposedDirectory": "/home/daje3540/passeport-immo.avereo.fr/public",
+        "provider": "o2switch",
+        "proposedAccount": "daje3540",
+        "provisioned": false
       }
     },
     "github": {
@@ -1434,11 +1439,11 @@
     },
     "blockers": [
       "Décision formelle de phase 2 et acceptation de l’archive exacte pour promotion à consigner ; la fusion PR nº80 est confirmée.",
-      "Cible https://passeport-immo.avereo.fr et CONNECT de production non qualifiés ; hébergement, configuration privée et contenu initial à établir.",
+      "Cible Passeport Immo absente du DNS et de cPanel ; domaine, dossier, base, configuration et droits CONNECT de production à créer après accord exact. Inventaire authentifié terminé.",
       "Sauvegarde/restauration de la cible et retour arrière du candidat en production non qualifiés.",
       "Accord exact de déploiement en production absent ; aucune ouverture aux utilisateurs autorisée par cette préparation."
     ],
-    "nextAction": "PR nº80 fusionnée. Adresse de production retenue : https://passeport-immo.avereo.fr. Consigner la décision de phase 2, puis qualifier cette cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.",
+    "nextAction": "PR nº81 fusionnée et inventaire production réalisé. Consigner la décision de phase 2 et le contenu initial, puis autoriser la cible fermée et le raccordement CONNECT exacts ; récupération et recette hébergées restent à qualifier.",
     "nextIteration": [
       "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
       "À qualifier séparément : utilité du workflow Deploy Prototype To GitHub Pages en échec après fusion."
@@ -1457,11 +1462,11 @@
       },
       "preproduction": {
         "status": "awaiting_review",
-        "nextAction": "PR nº80 fusionnée. Adresse de production retenue : https://passeport-immo.avereo.fr. Consigner la décision de phase 2, puis qualifier cette cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md."
+        "nextAction": "Consigner la revue de phase 2 dans le cockpit ; PR nº80 et nº81 fusionnées, préparation de production rattachée au dossier courant."
       },
       "production": {
         "status": "blocked",
-        "nextAction": "Dossier préparé dans docs/04-mise-en-production.md ; cible, récupération et accords à qualifier avant démarrage et livraison."
+        "nextAction": "Lots locaux préparés et testés ; créer la cible fermée et raccorder CONNECT après décisions et accord exacts, puis qualifier récupération et recette hébergées."
       }
     },
     "gates": [
@@ -2121,7 +2126,7 @@
       }
     ],
     "productionPreparation": {
-      "status": "prepared_local_prerequisites_pending",
+      "status": "inventory_complete_local_lot_prepared",
       "preparedAt": "2026-10-15T15:30:29.857716+00:00",
       "document": "docs/04-mise-en-production.md",
       "evidence": "api/preparation-production-observation.json",
@@ -2130,7 +2135,7 @@
       "addressStatus": "confirmed_by_user",
       "productionTargetQualified": false,
       "phaseStarted": false,
-      "nextAction": "PR nº80 fusionnée. Adresse de production retenue : https://passeport-immo.avereo.fr. Consigner la décision de phase 2, puis qualifier cette cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.",
+      "nextAction": "PR nº81 fusionnée et inventaire production réalisé. Consigner la décision de phase 2 et le contenu initial, puis autoriser la cible fermée et le raccordement CONNECT exacts ; récupération et recette hébergées restent à qualifier.",
       "readiness": [
         {
           "id": "candidate",
@@ -2144,7 +2149,8 @@
         },
         {
           "id": "production_target_and_connect",
-          "status": "to_qualify"
+          "status": "inventory_complete_not_provisioned",
+          "evidence": "api/qualification-production-observation.json"
         },
         {
           "id": "initial_data_scope",
@@ -2152,7 +2158,8 @@
         },
         {
           "id": "production_recovery_and_rollback",
-          "status": "to_qualify"
+          "status": "local_tools_verified_hosted_recovery_pending",
+          "evidence": "api/qualification-production-observation.json"
         },
         {
           "id": "exact_production_authorization",
@@ -2172,6 +2179,40 @@
         "source": "user_chat_reply",
         "reference": "Réponse directe à la question sur l’adresse cible : passeport-immo.avereo.fr.",
         "scope": "Choix du nom de domaine uniquement ; qualification technique et déploiement distincts."
+      },
+      "qualification": {
+        "status": "inventory_complete_provisioning_and_connect_pending",
+        "observedAt": "2026-10-15T18:29:46.848+00:00",
+        "evidence": "api/qualification-production-observation.json",
+        "publicDns": "nxdomain_two_resolvers",
+        "privateAccess": "authenticated_inventory_complete",
+        "closedBundlePrepared": true,
+        "connectDeltaPrepared": true,
+        "remoteMutation": false
+      },
+      "closedInstallation": {
+        "evidence": "api/qualification-production-observation.json",
+        "bundleSha256": "9e9bde15d4b2c625967053220fc79f5a602ef2ab01a6a5fc3fdf537ee01b0404",
+        "localDirectory": ".local/production-qualification-20261015/closed-installation",
+        "remoteDelivery": "not_performed"
+      },
+      "mergedPreparationEvidence": "api/qualification-production-observation.json",
+      "connectDelta": {
+        "evidence": "api/qualification-production-observation.json",
+        "artifactSha256": "3b41fda26c0358a0a4eb3f49ebd2e132162fd737ce0078822d3e15a687884b63",
+        "baseSha": "7216fb1b1439d71a68bb948f16db0f57793c1fd8",
+        "localDirectory": ".local/production-qualification-20261015/connect-delta",
+        "remoteDelivery": "not_performed"
+      },
+      "backupTooling": {
+        "status": "locally_verified_not_installed",
+        "evidence": "api/qualification-production-observation.json",
+        "scheduledBackupAssertions": 22,
+        "productionScheduleApproved": false
+      },
+      "initialData": {
+        "status": "awaiting_user_choice",
+        "question": "Base vide ou reprise du dossier SCI de préproduction ; aucun transfert déclenché."
       }
     }
   },
@@ -2217,14 +2258,14 @@
         "url": "https://github.com/jpdandin44/AVEREO/pull/81",
         "repository": "jpdandin44/AVEREO",
         "number": 81,
-        "state": "open",
-        "draft": true,
-        "observedAt": "2026-10-15T15:39:49.275Z",
+        "state": "merged",
+        "draft": false,
+        "observedAt": "2026-10-15T18:09:50.051Z",
         "scope": "Préparation documentaire de production après PR nº80 ; aucune transition de phase ni livraison.",
-        "headSha": "e4fbc111df47b2ce696a65fe41f4bcd498806de0",
-        "mergedAt": null,
-        "mergeCommitSha": null,
-        "mergedBy": null
+        "headSha": "5e287e23ccdd70b2c6a5b0a0e48628351c0b2d7e",
+        "mergedAt": "2026-10-15T17:58:57.000Z",
+        "mergeCommitSha": "2995a2b95003016df0fefa84b34353c34dc5fee0",
+        "mergedBy": "jpdandinavereo-design"
       }
     }
   ],
@@ -2233,7 +2274,7 @@
     "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "PR nº80 fusionnée. Adresse de production retenue : https://passeport-immo.avereo.fr. Consigner la décision de phase 2, puis qualifier cette cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.",
+    "nextAction": "PR nº81 fusionnée et inventaire production réalisé. Consigner la décision de phase 2 et le contenu initial, puis autoriser la cible fermée et le raccordement CONNECT exacts ; récupération et recette hébergées restent à qualifier.",
     "resumedAt": "2026-10-14T09:40:12+00:00",
     "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
     "previousClosure": {
@@ -2254,7 +2295,8 @@
       "realPhaseOverridePerformed": false
     },
     "storageLotEvidence": "api/storage-observation.json",
-    "productionPreparationEvidence": "api/preparation-production-observation.json"
+    "productionPreparationEvidence": "api/preparation-production-observation.json",
+    "productionQualificationEvidence": "api/qualification-production-observation.json"
   },
   "legacyTracking": {
     "recordedAt": "2026-10-14T09:40:12.597261+00:00",

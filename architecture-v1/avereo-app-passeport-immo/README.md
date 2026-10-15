@@ -12,14 +12,19 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
-## Suite après fusion de la PR nº80
+## Suite après fusion de la PR nº81
 
-La PR nº80 est fusionnée. Le [dossier de mise en production](docs/04-mise-en-production.md)
-prépare la cible, la configuration privée, les données, la récupération et les
-contrôles à réaliser. L'archive issue de `main` a la même empreinte que celle installée
-en préproduction ; les preuves sont liées au [suivi canonique](docs/suivi-chantier.json).
-La décision formelle de phase 2 reste à consigner dans le cockpit et la production
-reste à qualifier. Le dossier préparé n'a déclenché aucune installation.
+La PR nº81 est fusionnée. L'inventaire de production est réalisé : le domaine et
+le dossier Passeport Immo sont absents ; CONNECT répond en HTTPS mais son catalogue,
+ses droits et ses paramètres de lancement ne contiennent pas encore l'application.
+Le [dossier de mise en production](docs/04-mise-en-production.md) donne les preuves,
+les emplacements proposés et la séquence d'installation à autoriser.
+
+Une archive initialement fermée et l'adaptation minimale de CONNECT sont préparées
+localement. L'outillage de sauvegarde distingue désormais préproduction et production,
+avec des tâches indépendantes ; cette évolution n'est pas installée sur l'hébergement.
+La décision de phase 2, le contenu initial et l'accord exact de production restent
+à consigner dans le [suivi canonique](docs/suivi-chantier.json).
 
 ## Recette de préproduction et décision de phase
 

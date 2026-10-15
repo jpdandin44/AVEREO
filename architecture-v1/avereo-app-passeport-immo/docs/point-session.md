@@ -12,7 +12,42 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
-## Reprise après fusion de la PR nº80 — 15 octobre 2026
+## Qualification après fusion de la PR nº81 — 15 octobre 2026
+
+La PR nº81 est fusionnée dans `main` au commit
+`2995a2b95003016df0fefa84b34353c34dc5fee0`, avec ses quatre cases humaines cochées.
+Les CI du monorepo et de Passeport Immo réussissent sur ce commit. Le workflow
+prototype GitHub Pages reste en échec ; il n'est pas le déploiement de cette application.
+
+Copie de travail : `C:\Users\examg\Documents local\passeport-immo-local`.
+Branche : `docs/passeport-immo-qualification-production`.
+Le [dossier de production](04-mise-en-production.md) est la procédure de reprise ;
+la [preuve de qualification](../api/qualification-production-observation.json)
+conserve les constats et les lots exacts. Les fichiers privés sont dans
+`.local/production-qualification-20261015/` ; ils restent hors Git.
+
+Après reconnexion du responsable, cPanel confirme l'absence du domaine de production,
+de son dossier et des emplacements privés Passeport Immo. Deux résolveurs confirment
+NXDOMAIN. CONNECT de production répond en HTTPS mais n'a ni paramètres de lancement,
+ni entrée de catalogue, ni droits Passeport Immo. Sa base et les deux fichiers à adapter
+sont identifiés en lecture seule ; aucune donnée personnelle ou valeur de secret restituée.
+
+Préparations locales : archive fermée de 16 fichiers (15 identiques au candidat),
+adaptation CONNECT limitée à trois lignes, sauvegardes avec environnements séparés.
+Contrôles réussis : 36 tests backend historique, 15 assertions du sas, 19 tests Python,
+30 assertions API/stockage et 22 assertions de sauvegarde sous MariaDB isolée.
+Aucun fichier, domaine, base, droit ni cron modifié sur l'hébergement.
+
+**Prochaine action :** consigner la décision de phase 2, choisir le contenu initial,
+puis autoriser la création de la cible fermée et le raccordement exact décrits dans
+le dossier. La récupération et la recette sur la production restent à qualifier.
+Les quatre phases, décisions et documents approuvés sont conservés. Les changements
+locaux préexistants d'AVEREO Projet restent séparés du lot.
+
+Les sections suivantes conservent les observations datées antérieures ; leurs
+anciennes mentions de PR ouvertes ou d'actions futures ne sont pas le statut courant.
+
+## Historique — reprise après fusion de la PR nº80 — 15 octobre 2026
 
 La PR nº80 est fusionnée dans `main` au commit
 `437f2689e8ea5a0f12e055be9e2b8713bf99b1bd`. Le dossier

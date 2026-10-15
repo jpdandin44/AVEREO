@@ -12,6 +12,17 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Qualification de production après fusion de la PR nº81
+
+Fusion et CI vérifiées ; DNS et inventaire cPanel lus sans modification hébergée.
+Domaine, dossier et raccordement Passeport Immo absents en production. Archive fermée
+et delta CONNECT préparés contre les deux fichiers réellement observés. L'outillage
+privé de sauvegarde accepte la production, isole ses chemins et son bloc cron, tout
+en conservant les tâches existantes. Neuf cas supplémentaires portent la recette
+sauvegarde à 22 assertions, toutes réussies avec les 30 contrôles API/stockage.
+Dossier, exigences, point de reprise et suivi actualisés. Aucun déploiement,
+changement de droits, transfert de données ni validation de phase effectué.
+
 ## 2026-10-15 — Adresse de production confirmée
 
 Le responsable retient `https://passeport-immo.avereo.fr`. Suivi canonique, dossier

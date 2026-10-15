@@ -21,6 +21,13 @@ décision de préproduction et l'accord précis de déploiement sans les déduir
 Les contrôles et inconnues de ce lot sont décrits dans le
 [dossier de mise en production](docs/04-mise-en-production.md).
 
+Pour la suite après PR nº81, préparer un lot CONNECT limité aux fichiers observés
+et refuser sa pose si leurs empreintes divergent. Les sauvegardes doivent accepter
+l'environnement de production avec des emplacements et un bloc cron distincts,
+sans modifier la tâche de préproduction. Les erreurs, tâches non identifiées,
+blocs incomplets et destinations publiques restent bloquants. La qualification
+locale de cet outillage n'autorise pas son installation.
+
 ## Sauvegarde automatique demandée le 15 octobre 2026
 
 - E25 : sauvegarder automatiquement la base applicative et tous les documents de préproduction, archives incluses.
