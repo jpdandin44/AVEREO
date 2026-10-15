@@ -47,6 +47,8 @@ locaux préexistants d'AVEREO Projet restent séparés du lot.
 Les sections suivantes conservent les observations datées antérieures ; leurs
 anciennes mentions de PR ouvertes ou d'actions futures ne sont pas le statut courant.
 
+[PR nº82 en brouillon](https://github.com/jpdandin44/AVEREO/pull/82) : qualification et outillage de production à relire ; aucun déploiement.
+
 ## Historique — reprise après fusion de la PR nº80 — 15 octobre 2026
 
 La PR nº80 est fusionnée dans `main` au commit

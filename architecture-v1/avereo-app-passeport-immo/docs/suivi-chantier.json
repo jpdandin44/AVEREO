@@ -2188,7 +2188,8 @@
         "privateAccess": "authenticated_inventory_complete",
         "closedBundlePrepared": true,
         "connectDeltaPrepared": true,
-        "remoteMutation": false
+        "remoteMutation": false,
+        "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/82"
       },
       "closedInstallation": {
         "evidence": "api/qualification-production-observation.json",
@@ -2208,7 +2209,10 @@
         "status": "locally_verified_not_installed",
         "evidence": "api/qualification-production-observation.json",
         "scheduledBackupAssertions": 22,
-        "productionScheduleApproved": false
+        "productionScheduleApproved": false,
+        "sourceSha": "971e97460c90e9ae3ed36c5538491da400162982",
+        "artifactSha256": "b06e74f2528caa1887b151bb1d6052f7733388228ed710c2289cf0b6ab9ca0e8",
+        "localDirectory": ".local/production-qualification-20261015/backup-production"
       },
       "initialData": {
         "status": "awaiting_user_choice",
@@ -2266,6 +2270,20 @@
         "mergedAt": "2026-10-15T17:58:57.000Z",
         "mergeCommitSha": "2995a2b95003016df0fefa84b34353c34dc5fee0",
         "mergedBy": "jpdandinavereo-design"
+      }
+    },
+    {
+      "phaseId": 2,
+      "result": "Inventaire production et lots locaux préparés ; outillage de sauvegarde adapté et testé. Aucune installation ou décision de phase.",
+      "documentationPullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/82",
+        "repository": "jpdandin44/AVEREO",
+        "number": 82,
+        "state": "open",
+        "draft": true,
+        "headSha": "971e97460c90e9ae3ed36c5538491da400162982",
+        "observedAt": "2026-10-15T18:35:17.362+00:00",
+        "scope": "Qualification de production et outillage privé après PR nº81 ; cible fermée et raccordement soumis aux décisions et accords distincts."
       }
     }
   ],

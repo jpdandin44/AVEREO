@@ -24,6 +24,8 @@ la fusion de la PR nº81, les contrôles DNS/HTTPS, l'inventaire cPanel et la pr
 locale. La [preuve précédente](../api/preparation-production-observation.json) conserve
 la provenance des archives après la PR nº80. Aucun de ces inventaires n'est un reçu de livraison.
 
+[PR nº82 en brouillon](https://github.com/jpdandin44/AVEREO/pull/82) : qualification et outillage de production à relire ; aucun déploiement.
+
 ## Place dans les quatre phases
 
 | Phase | Environnement de revue | Situation lors de la préparation |
@@ -99,15 +101,6 @@ La lecture de la configuration et les comptages SQL n'ont restitué aucune valeu
 de secret ni donnée personnelle. L'identification Git ci-dessous ne concerne que
 deux fichiers ; elle ne certifie pas l'intégralité du runtime CONNECT hébergé.
 
-| Élément à établir | Résultat attendu avant installation |
-|---|---|
-| Adresse, compte d'hébergement, document root | Cible exacte confirmée ; inventaire en lecture seule ; vacuité ou contenu existant établi |
-| DNS, TLS, Apache/PHP | HTTPS valide, réécriture et restrictions actives, extensions MySQL et limites d'envoi compatibles |
-| CONNECT de production | URL, version hébergée, lancement signé, catalogue et droits vérifiés sur cette cible |
-| Paramètres privés | Fichier hors document root, clé dédiée, cookie distinct, répertoire anti-rejeu privé |
-| Données et documents | Base dédiée, compte SQL limité, stockage privé, origine HTTPS exacte |
-| Exploitation | Responsable, sauvegarde, restauration, retour arrière et accès de maintenance qualifiés |
-
 La préproduction connue est `https://passeport-immo-preprod.avereo.fr`.
 Ses reçus sont datés ; ils ne prouvent ni l'état actuel du serveur ni la préparation
 de CONNECT en production. Le lot CONNECT utilisé en préproduction ne doit pas être
@@ -136,6 +129,10 @@ Le dossier local ignoré par Git est `.local/production-qualification-20261015/`
   [backup-cron.php](../workflows/backup-cron.php), avec environnement explicite,
   chemins et blocs cron distincts. L'ancien lot privé de préproduction ci-dessus
   reste la preuve de ce qui est installé ; il ne suffit pas pour la production.
+  Lot `backup-production/bundle.json`, source
+  `971e97460c90e9ae3ed36c5538491da400162982`, empreinte
+  `b06e74f2528caa1887b151bb1d6052f7733388228ed710c2289cf0b6ab9ca0e8` :
+  quatre fichiers relus contre le manifeste et les sources Git.
   Voir [la procédure de sauvegarde](sauvegarde-automatique.md#mise-en-production).
 
 Aucun de ces lots n'est installé en production. Les archives et configurations

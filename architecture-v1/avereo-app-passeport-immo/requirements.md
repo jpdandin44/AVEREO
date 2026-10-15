@@ -85,7 +85,8 @@ Le lot initial était local. La demande suivante autorise son raccordement GitHu
 et la correction de pagination PDF, sans intégrer CONNECT ni déployer.
 
 ## Inconnues
-TBD : cible et identité CONNECT de production, contenu initial, volumétrie et
+TBD : compte et organisation CONNECT autorisés en production, configuration et
+recette de la cible à créer, contenu initial, volumétrie et
 objectifs de récupération en production, suppression future du frontend historique.
 Le stockage partagé et l'identité CONNECT sont réalisés en préproduction dans le
 lot serveur du 15 octobre ; les questions historiques Q01… restent conservées dans le suivi.

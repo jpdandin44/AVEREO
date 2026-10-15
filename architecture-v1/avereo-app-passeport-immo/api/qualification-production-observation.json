@@ -368,7 +368,17 @@
     "scheduledBackupAssertions": 22,
     "database": "isolated MariaDB 11.4",
     "productionBackupRegression": "new production configuration test failed before support was added; suite passed after correction",
-    "serverMutation": false
+    "serverMutation": false,
+    "documentation": {
+      "foundations": [
+        "repository",
+        "application"
+      ],
+      "approvedDocumentsUnchanged": 9,
+      "unrelatedLocalFilesUnchanged": 27,
+      "humanDecisionsUnchanged": true,
+      "candidateUnchanged": true
+    }
   },
   "backupTooling": {
     "status": "locally_verified_not_installed",
@@ -380,7 +390,37 @@
     "productionConfiguration": "/home/daje3540/.avereo/passeport-immo/config.php",
     "productionBackupRoot": "/home/daje3540/private/passeport-immo-backups/production",
     "productionCronBlock": "AVEREO PASSEPORT IMMO PRODUCTION BACKUP",
-    "productionScheduleApproved": false
+    "productionScheduleApproved": false,
+    "bundle": {
+      "sourceSha": "971e97460c90e9ae3ed36c5538491da400162982",
+      "artifactSha256": "b06e74f2528caa1887b151bb1d6052f7733388228ed710c2289cf0b6ab9ca0e8",
+      "files": [
+        {
+          "name": "backup-cron.php",
+          "size": 6491,
+          "sha256": "3e2bf449abeed38647529d51630be06abc56aef146e26154edb058bfc817e4a8"
+        },
+        {
+          "name": "backup-storage.php",
+          "size": 3970,
+          "sha256": "734d7ca313632792a93efaa18bc95dbc6857f057493ba67ffc51414a6e65dffb"
+        },
+        {
+          "name": "scheduled-backup.php",
+          "size": 7667,
+          "sha256": "b73c6c2209c3a81175169ff680be057af017d4ab5282055f356a805f323fba74"
+        },
+        {
+          "name": "storage.sql",
+          "size": 1420,
+          "sha256": "b2e283afcc8e20079b5f0e07c65ebb733ad3fb9ffc8897158d166dec9186af55"
+        }
+      ],
+      "configurationIncluded": false,
+      "dataIncluded": false,
+      "remoteDelivery": "not_performed",
+      "localDirectory": ".local/production-qualification-20261015/backup-production"
+    }
   },
   "productionGate": {
     "exitCode": 1,
