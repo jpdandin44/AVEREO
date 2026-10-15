@@ -17,8 +17,9 @@ tags: [avereo, documentation, local]
 Le [dossier de mise en production](docs/04-mise-en-production.md) est préparé.
 La CI de `main` et la relecture de son archive établissent l'équivalence avec le
 candidat installé en préproduction. Les prochaines actions sont la décision de
-phase 2 dans le cockpit, la confirmation de l'adresse de production, puis la
-qualification de cette cible, de CONNECT, du contenu initial et de la récupération.
+phase 2 dans le cockpit, puis la qualification de la cible retenue
+`https://passeport-immo.avereo.fr`, de CONNECT, du contenu initial et de la récupération.
+Le responsable a confirmé cette adresse le 15 octobre 2026.
 La phase 3 n'est pas démarrée ; le déploiement attend son accord exact.
 
 La copie hors hébergement et les alertes de sauvegarde restent des propositions

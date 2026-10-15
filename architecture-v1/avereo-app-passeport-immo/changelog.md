@@ -12,6 +12,12 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Adresse de production confirmée
+
+Le responsable retient `https://passeport-immo.avereo.fr`. Suivi canonique, dossier
+de production, point de reprise et tableaux actualisés. Ce choix d'adresse laisse
+la qualification technique et l'accord de déploiement à traiter séparément.
+
 ## 2026-10-15 — Préparation de production après fusion de la PR nº80
 
 Fusion et CI de `main` observées ; archive publique identique au candidat de

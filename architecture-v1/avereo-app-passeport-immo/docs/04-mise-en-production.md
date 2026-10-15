@@ -66,9 +66,9 @@ Ce lot ne contient aucune configuration ni donnée du serveur.
 
 ## Qualification de la cible
 
-La cible de production est **TBD — non qualifiée**. L'adresse
-`https://passeport-immo.avereo.fr` est une proposition soumise au responsable,
-sans création de domaine ni constat de disponibilité. La cible reste non prête
+L'adresse de production **`https://passeport-immo.avereo.fr` est confirmée par le
+responsable le 15 octobre 2026**. La configuration de la cible reste à qualifier,
+sans création de domaine ni constat de disponibilité à ce stade. La cible reste non prête
 dans le cockpit tant que les éléments suivants n'ont pas leurs preuves.
 
 | Élément à établir | Résultat attendu avant installation |
@@ -179,8 +179,8 @@ Pages n'a été modifié par cette préparation.
 ## Reprise opérationnelle
 
 Ouvrir [le point de session](point-session.md), puis le suivi du cockpit.
-Prochaine action : consigner la revue de phase 2 et confirmer la cible proposée,
-puis qualifier en lecture seule la cible, CONNECT, les accès et la récupération.
+Prochaine action : consigner la revue de phase 2, puis qualifier en lecture seule
+la cible retenue `https://passeport-immo.avereo.fr`, CONNECT, les accès et la récupération.
 La phase 3 et le déploiement attendent les décisions et preuves correspondantes.
 
 Le contrôleur de production a été exécuté pendant la préparation ; il refuse le

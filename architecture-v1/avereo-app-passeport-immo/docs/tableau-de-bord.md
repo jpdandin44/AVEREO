@@ -55,7 +55,7 @@ Revue humaine attendue : phase 2 — Préproduction. La décision reste à enreg
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — À valider**.
-PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.
+PR nº80 fusionnée. Adresse de production retenue : https://passeport-immo.avereo.fr. Consigner la décision de phase 2, puis qualifier cette cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
@@ -77,7 +77,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
-| Préproduction | À valider | PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md. |
+| Préproduction | À valider | PR nº80 fusionnée. Adresse de production retenue : https://passeport-immo.avereo.fr. Consigner la décision de phase 2, puis qualifier cette cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md. |
 | Production | Bloquée | Dossier préparé dans docs/04-mise-en-production.md ; cible, récupération et accords à qualifier avant démarrage et livraison. |
 
 ### Candidat et GitHub
@@ -157,11 +157,11 @@ Preuves du candidat identifié ci-dessus :
 ### Blocages de passage
 
 - Décision formelle de phase 2 et acceptation de l’archive exacte pour promotion à consigner ; la fusion PR nº80 est confirmée.
-- Cible de production et CONNECT de production non qualifiés ; adresse, configuration privée et contenu initial à confirmer.
+- Cible https://passeport-immo.avereo.fr et CONNECT de production non qualifiés ; hébergement, configuration privée et contenu initial à établir.
 - Sauvegarde/restauration de la cible et retour arrière du candidat en production non qualifiés.
 - Accord exact de déploiement en production absent ; aucune ouverture aux utilisateurs autorisée par cette préparation.
 
-Prochaine action : PR nº80 fusionnée. Consigner la décision de phase 2 dans le cockpit ; confirmer l’adresse de production, puis qualifier la cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.
+Prochaine action : PR nº80 fusionnée. Adresse de production retenue : https://passeport-immo.avereo.fr. Consigner la décision de phase 2, puis qualifier cette cible, CONNECT, le contenu initial et la récupération selon docs/04-mise-en-production.md.
 
 ### Accords et livraison
 

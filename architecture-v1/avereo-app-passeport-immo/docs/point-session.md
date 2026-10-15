@@ -29,8 +29,9 @@ identifient les artefacts, leurs empreintes et leur copie locale ignorée par Gi
 Le workflow distinct du prototype GitHub Pages échoue sur sa configuration Pages ;
 aucun paramètre de déploiement n'est modifié.
 
-**Prochaine action :** consigner la décision formelle de phase 2, confirmer
-l'adresse proposée puis qualifier la cible de production et CONNECT en lecture seule.
+**Adresse retenue :** `https://passeport-immo.avereo.fr`, confirmée par le responsable
+le 15 octobre 2026. **Prochaine action :** consigner la décision formelle de phase 2,
+puis qualifier cette cible de production et CONNECT en lecture seule.
 La cible, le contenu initial, les accès privés et la récupération restent à établir
 avant un accord de déploiement précis. La phase 3 reste non démarrée.
 
