@@ -5,12 +5,23 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-09
+updated: 2026-10-15
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Changelog du dépôt AVEREO
+
+## 2026-10-15 — Environnement de validation des PR
+
+Le modèle de PR nomme la phase et l'environnement réellement soumis à validation :
+local pour les phases 0 et 1, préproduction pour les phases 2 et 3. La livraison et
+les contrôles après livraison de phase 3 concernent toujours la production.
+La première case désigne l'environnement de validation. Pour la PR #80, la cible est la
+préproduction privée de Passeport Immo, accessible depuis CONNECT. Les quatre
+attestations humaines et le vérificateur strict restent conservés ; les essais
+locaux ne constituent pas une validation de cette cible. Le contrôle lit les libellés
+du modèle ; son implémentation et les workflows de déploiement restent inchangés.
 
 ## 2026-10-03
 Ajout du socle documentaire racine manquant sous forme d’index et du chantier local

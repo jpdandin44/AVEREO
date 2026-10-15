@@ -5,7 +5,7 @@ title: Règles de développement du monorepo AVEREO
 status: active
 version: git
 created: 2026-09-15
-updated: 2026-10-03
+updated: 2026-10-15
 owner: jpdandin
 tags: [avereo, developpement, github]
 ---
@@ -133,7 +133,7 @@ Ne pas réaliser sans autorisation explicite :
 
 - conserver la structure de `.github/pull_request_template.md` sauf demande explicite du responsable du projet ;
 - utiliser le fichier `.github/PULL_REQUEST_TEMPLATE.md` comme source unique des libelles et conserver son encodage UTF-8 ; ne jamais ressaisir ou simplifier les textes de la checklist ;
-- remplacer les emplacements du modèle par les liens directs vers l'application locale, le diff de la pull request, la validation sécurité/données et la documentation ;
+- appliquer le protocole commun : revue locale pour 0 Cadrage et 1 Développement local ; revue en préproduction pour 2 Préproduction et 3 Mise en production ; nommer la phase, le candidat et son point d'entrée réel dans la PR, puis relier le diff, la validation sécurité/données et la documentation ; les contrôles après livraison de phase 3 portent toujours sur la production réelle ; la recette désigne les vérifications sur une cible ;
 - laisser toutes les cases décochées lors de la création ou de la mise à jour d'une pull request ;
 - fournir les contrôles exécutés et leurs résultats dans la section `Validation`, sans les transformer en attestation humaine ;
 - réserver la validation et le cochage de la checklist au responsable humain du projet ;
