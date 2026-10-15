@@ -73,7 +73,7 @@ Les fichiers PHP internes ne sont pas directement accessibles par la réécritur
 
 État initial de ce lot : PHP 8.3.35, PDO MySQL, Fileinfo et ZIP constatés ; base
 `daje3540_pimpreprod` créée et vide, paramètres préparés hors du dossier public.
-L'application active reste inchangée jusqu'à la livraison du candidat testé.
+Le candidat est maintenant installé ; le reçu ci-dessous précise la vérification.
 Les paramètres attendus figurent sans secret dans
 [connect-config.example.php](../api/connect-config.example.php).
 
@@ -107,7 +107,61 @@ La recette isolée exécute PHP/Apache et MariaDB 11.4 avec deux propriétaires
 fictifs et deux sessions indépendantes du même propriétaire. Elle vérifie les
 refus anonymes/CSRF/origine/autre compte, conflits, import atomique, dédoublonnage,
 archives, restitution exacte, suppression logique et sauvegarde/restauration
-temporaire. La recette HTTPS et le reçu d'installation sont encore à produire.
+temporaire. La recette HTTPS et le reçu d’installation sont produits ci-dessous.
+
+
+### Complément à l’audit et matrice de parité g
+
+| Élément | Mode local conservé | Mode serveur ajouté | Vérification |
+| --- | --- | --- | --- |
+| Identité | Démonstration | Identité du ticket CONNECT signé | Ticket sans identité refusé, compte réel affiché |
+| Biens et tarifs | localStorage | MySQL et révision | Deux sessions et conflit 409 |
+| Documents | IndexedDB | API, métadonnées MySQL, Blob privés | Imports, isolation, archives, empreintes |
+| Calculs, CSV et PDF | Comportement antérieur | Même calcul et rendu | Parité reconstruite et tests frontend |
+
+### Livraison et recette constatées
+
+Candidat source `7209bf3334a5f3f98d422b41d177c734970a0750`, ZIP
+`c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf`.
+La [CI](https://github.com/jpdandin44/AVEREO/actions/runs/38714544403)
+réussit ; son archive est identique au candidat installé. Seize fichiers publics
+relus après transfert. L’état précédent et sa configuration sont copiés et
+restitués dans un répertoire de test privé avant activation. Le
+[reçu courant](../api/storage-observation.json) est la preuve structurée de cette livraison.
+
+Un dossier client/bien, six documents actifs et trois archives sont migrés depuis
+le ZIP privé validé ; leurs neuf tailles et SHA-256 sont vérifiés. Les fichiers
+sources et anciennes données du navigateur restent conservés. Les dates affichées
+sont celles de cette migration ; le manifeste privé préserve les références sources.
+Le compte de service possède SELECT, INSERT, UPDATE, DELETE et CREATE TEMPORARY
+TABLES sur la seule base dédiée, sans droit DDL permanent après initialisation.
+
+La recette HTTPS valide 34 assertions avec deux lancements CONNECT autorisés
+indépendants, sans réutilisation de cookies : les deux sessions retrouvent le même
+bien, les six actifs/trois archives et les neuf téléchargements exacts. Accès sans
+session, bien inexistant, écriture sans CSRF et révision périmée sont refusés.
+L’isolation entre propriétaires différents est exercée localement avec des comptes
+fictifs ; aucun compte réellement non habilité ne reçoit de ticket de recette.
+
+Le navigateur intégré affiche le compte réel sans bouton de démonstration,
+importe un PDF déjà présent en doublon sans créer de ligne, enregistre les
+métadonnées, affiche les trois archives et les deux pages des coupes, télécharge
+un fichier identique et retrouve le dossier après rechargement. Un premier
+téléversement y a signalé une erreur réseau ; le nouvel essai répond 201 et le
+contrôle de doublon passe. Les deux sessions HTTPS indépendantes vérifient la
+conservation partagée ; aucune recette humaine Chrome n’est attribuée à l’agent.
+
+Le premier accès API a révélé un répertoire public créé en 0700 par le masque
+restrictif de l’installateur. Correction : **0755 pour chaque sous-dossier public,
+après création**, en contrôlant le mode effectif ; les fichiers publics sont en
+0644. La copie privée des Blob reste en 0700/0600. Ne pas appliquer 0755 aux
+répertoires de documents, secrets ou sauvegardes. La recette complète passe après
+cette correction. Le masque doit être pris en compte dans toute future livraison.
+
+Une sauvegarde finale après recette contient les quatre tables et neuf fichiers.
+La restitution des lignes en tables temporaires et les empreintes des copies
+passent avec les privilèges réduits. La sauvegarde n’est pas planifiée automatiquement.
+La reprise complète d’un hébergement reste hors du test effectué.
 
 ## Mise en production
 

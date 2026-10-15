@@ -12,14 +12,15 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
-## Stockage serveur — lot en cours
+## Stockage serveur opérationnel en préproduction privée
 
-Le [lot de stockage privé](docs/stockage-serveur.md) ajoute une base dédiée, des fichiers
-privés et l’identité CONNECT en préproduction. Les données locales existantes sont
-conservées. L’état de livraison et la migration sont consignés dans le suivi canonique ;
-les paragraphes de recette précédents ci-dessous décrivent le lot navigateur antérieur.
+Le [lot de stockage privé](docs/stockage-serveur.md) est installé : base dédiée,
+fichiers privés et identité CONNECT réelle. Le dossier SCI contient six documents
+actifs et trois archivés, vérifiés depuis deux sessions indépendantes. Aucun import
+par navigateur n’est nécessaire en préproduction. Les données locales sont conservées.
+Le [reçu courant](api/storage-observation.json) et le suivi canonique gardent les preuves.
 
-## Préproduction privée installée
+## Historique — installation du sas et import navigateur
 
 Le [sas CONNECT](docs/02-integration-connect.md) et les paramètres de lancement
 sont installés sur la préproduction privée. Le build ajoute les fichiers PHP et règles
@@ -74,7 +75,7 @@ node tests/check-parity.mjs
 docker compose -f compose.local.yaml config --quiet
 ```
 Le contrôle de parité nécessite la source historique présente dans ce monorepo.
-Les 26 tests Vitest sont autonomes dans `frontend/`. Le modèle Docker local exécute
+Les 29 tests Vitest sont autonomes dans `frontend/`. Le modèle Docker local exécute
 tests puis build ; sa configuration a été vérifiée, son image n'a pas été construite.
 Après recette Docker séparée : `docker compose -f compose.local.yaml up --build`
 sur ce même port (arrêter d'abord son propre serveur de développement).

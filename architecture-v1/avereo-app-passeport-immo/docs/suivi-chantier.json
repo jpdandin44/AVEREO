@@ -223,6 +223,16 @@
             "Procédure et workflow manuel préparés.",
             "Recette préproduction conforme, remplie par le responsable."
           ]
+        },
+        {
+          "path": "stockage-serveur.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Stockage privé des documents",
+          "description": "Base dédiée, identité CONNECT, fichiers privés, migration et recette vérifiées ; revue humaine distincte.",
+          "expectedEvidence": [
+            "Neuf fichiers migrés et partagés entre sessions ; récupération des tables et copies vérifiée."
+          ]
         }
       ],
       "exitCriteria": [
@@ -231,25 +241,24 @@
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.",
+      "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.",
       "legacyPhaseId": 3,
       "blockers": [
-        "Recette de déconnexion et revue humaine de préproduction encore ouvertes ; disparition de la troisième fenêtre confirmée dans Chrome par le responsable.",
-        "Dossier de la SCI importé et vérifié dans le navigateur intégré seulement ; Chrome possède un stockage distinct, sans synchronisation documentaire serveur."
+        "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/80",
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "367fcf9140f874486984937b0675216ab5f2c69b",
+        "headSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
         "draft": true,
-        "observedAt": "2026-10-15T08:45:46.274Z",
+        "observedAt": "2026-10-15T09:41:46.671Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
       },
-      "technicalState": "installed_private_recipe_pending"
+      "technicalState": "installed_private_storage_verified"
     },
     {
       "id": 3,
@@ -889,13 +898,13 @@
     "owner": "jpdandin",
     "kind": "application",
     "stage": "preproduction",
-    "status": "in_progress",
+    "status": "awaiting_review",
     "objective": "Cas documentaire client/bien, raccordement CONNECT privé et stockage serveur opérationnel.",
     "candidate": {
-      "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
-      "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
-      "observedAt": "2026-10-15T08:22:25.214977+00:00",
-      "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup"
+      "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+      "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+      "observedAt": "2026-10-15T09:53:50+00:00",
+      "evidence": "api/storage-observation.json"
     },
     "targets": {
       "preproduction": {
@@ -1028,7 +1037,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "367fcf9140f874486984937b0675216ab5f2c69b",
+      "headSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1036,7 +1045,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T08:45:46.274Z",
+      "observedAt": "2026-10-15T09:41:46.671Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1229,6 +1238,30 @@
         "kind": "ci",
         "status": "passed",
         "executionSourceSha": "367fcf9140f874486984937b0675216ab5f2c69b"
+      },
+      {
+        "kind": "local",
+        "status": "passed",
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "observedAt": "2026-10-15T09:53:50+00:00",
+        "evidence": "29 tests frontend, 29 assertions API MariaDB isolée, 67 assertions Apache, 19 tests Python et parité g."
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "observedAt": "2026-10-15T09:53:50+00:00",
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38714544403 ; archive identique au candidat installé."
+      },
+      {
+        "kind": "hosted_storage",
+        "status": "passed",
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "observedAt": "2026-10-15T09:53:50+00:00",
+        "evidence": "api/storage-observation.json ; 34 assertions HTTPS, deux sessions, neuf fichiers et sauvegarde restaurée en tables temporaires."
       }
     ],
     "approvals": [
@@ -1320,6 +1353,13 @@
         "location": "/home/daje3540/private/passeport-immo-preparation/sso-errors-20261015/before-20261015T082111Z",
         "scope": "Only htaccess, fresh private restoration rehearsal before last replacement.",
         "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup.installation"
+      },
+      {
+        "kind": "application_data_and_files",
+        "observedAt": "2026-10-15T09:53:50+00:00",
+        "status": "verified",
+        "evidence": "api/storage-observation.json#installation/finalBackup",
+        "scope": "Quatre tables applicatives et neuf fichiers ; restitution temporaire, aucune reprise complète hébergeur."
       }
     ],
     "rollback": {
@@ -1338,10 +1378,9 @@
       "observedAt": null
     },
     "blockers": [
-      "Recette de déconnexion et revue humaine de préproduction encore ouvertes ; disparition de la troisième fenêtre confirmée dans Chrome par le responsable.",
-      "Dossier de la SCI importé et vérifié dans le navigateur intégré seulement ; Chrome possède un stockage distinct, sans synchronisation documentaire serveur."
+      "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
     ],
-    "nextAction": "Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.",
+    "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1573,11 +1612,11 @@
     },
     "preproductionVerification": {
       "requestedAt": "2026-10-14",
-      "status": "installed_private_recipe_pending",
+      "status": "installed_private_storage_verified",
       "evidence": "docs/verification-preproduction.md",
-      "observedAt": "2026-10-15T08:36:22.326328+00:00",
+      "observedAt": "2026-10-15T09:53:50+00:00",
       "checks": {
-        "frontendTests": 26,
+        "frontendTests": 29,
         "pythonTests": 19,
         "connectBackendTests": 38,
         "gateAssertions": 15,
@@ -1586,11 +1625,16 @@
         "parity": "passed",
         "historicalConnectBackendTests": 32,
         "compatibleGateAssertions": 15,
-        "compatibleDelta": "passed_local"
+        "compatibleDelta": "passed_local",
+        "apacheGateAssertions": 67,
+        "storageHttpAssertions": 29,
+        "hostedHttpsAssertions": 34,
+        "independentSessions": 2,
+        "browser": "passed",
+        "candidateCi": "passed"
       },
       "remaining": [
-        "Recette de déconnexion et revue humaine de préproduction encore ouvertes ; disparition de la troisième fenêtre confirmée dans Chrome par le responsable.",
-        "Dossier de la SCI importé et vérifié dans le navigateur intégré seulement ; Chrome possède un stockage distinct, sans synchronisation documentaire serveur."
+        "Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique."
       ],
       "observation": "api/connect-hosted-observation.json",
       "recoveryObservation": "api/connect-recovery-observation.json",
@@ -1599,7 +1643,8 @@
       "postInstallationObservation": "api/preproduction-post-install-observation.json",
       "httpObservation": "api/preproduction-http-observation.json",
       "ssoObservation": "api/preproduction-sso-observation.json",
-      "caseApplicationImport": "performed_integrated_browser_only"
+      "caseApplicationImport": "migrated_shared_server",
+      "storageObservation": "api/storage-observation.json"
     },
     "connectPreparation": {
       "status": "installed_private_recipe_pending",
@@ -1811,14 +1856,14 @@
           "localManifestAndArchiveReadback": "passed_sha256_size_bytes_crc",
           "privateDataIncludedInPublicCandidate": false,
           "serverUpload": "verified_private_backup_only",
-          "httpsOriginImport": "performed_integrated_browser_only",
-          "storageLimit": "browser_and_origin_specific_no_shared_document_backend",
+          "httpsOriginImport": "migrated_to_server_storage",
+          "storageLimit": "server_data_isolated_by_signed_connect_identity",
           "privateReceipt": ".local/preproduction-installation-20261015/transfer-verification.json",
           "sourceBytesVerifiedByDownload": true,
           "persistenceAfterReloadVerified": true,
-          "chromeImport": "not_performed",
-          "sharedStorage": false,
-          "evidence": "api/preproduction-sso-observation.json#caseMigration"
+          "chromeImport": "not_required_for_shared_server_data",
+          "sharedStorage": true,
+          "evidence": "api/storage-observation.json"
         },
         "remoteInstallation": "performed_verified_private",
         "evidence": "api/preproduction-installation-observation.json",
@@ -1875,7 +1920,7 @@
       }
     },
     "serverStorage": {
-      "status": "local_verified_server_prepared",
+      "status": "installed_private_verified",
       "authorization": {
         "source": "Demande directe du responsable dans ce chat, 2026-10-15",
         "request": "OK, peux-tu faire le nécessaire pour rendre le stockage de document opérationnel maintenant stp?",
@@ -1883,15 +1928,52 @@
       },
       "design": "docs/stockage-serveur.md",
       "dedicatedDatabase": "daje3540_pimpreprod",
-      "activeApplicationChanged": false,
+      "activeApplicationChanged": true,
       "checks": {
         "frontendTests": 29,
         "apacheGateAssertions": 67,
         "storageHttpAssertions": 29,
         "pythonTests": 19,
-        "parity": "passed"
+        "parity": "passed",
+        "hostedHttpsAssertions": 34,
+        "independentSessions": 2,
+        "browser": "passed",
+        "candidateCi": "passed"
       },
-      "nextAction": "Terminer CI, sauvegarde, livraison privée puis migration et recette serveur de la SCI."
+      "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.",
+      "candidate": {
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "observedAt": "2026-10-15T09:53:50+00:00",
+        "evidence": "api/storage-observation.json"
+      },
+      "observedAt": "2026-10-15T09:53:50+00:00",
+      "evidence": "api/storage-observation.json",
+      "migration": {
+        "biens": 1,
+        "clients": 1,
+        "activeDocuments": 6,
+        "archivedDocuments": 3,
+        "fileHashesVerified": 9,
+        "sharedStorage": true
+      },
+      "recovery": {
+        "snapshotSha256": "0ad273540b675bdaf3ab4ffb505c6b95c79ba83278e6d2d6af0443e5acf3ec55",
+        "tables": 4,
+        "documents": 9,
+        "fileReadback": "passed",
+        "temporaryRowRestore": "passed",
+        "liveRowsChanged": false
+      },
+      "privateDirectoryMode": "0700",
+      "privateFileMode": "0600",
+      "publicApiDirectoryMode": "0755",
+      "previousCandidate": {
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "observedAt": "2026-10-15T08:22:25.214977+00:00",
+        "evidence": "api/preproduction-sso-observation.json#errorDocumentFollowup"
+      }
     }
   },
   "reviewFollowUps": [
@@ -1935,7 +2017,7 @@
     "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.",
+    "nextAction": "Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.",
     "resumedAt": "2026-10-14T09:40:12+00:00",
     "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
     "previousClosure": {
@@ -1954,7 +2036,8 @@
       "passeportPythonTests": 10,
       "build": "passed",
       "realPhaseOverridePerformed": false
-    }
+    },
+    "storageLotEvidence": "api/storage-observation.json"
   },
   "legacyTracking": {
     "recordedAt": "2026-10-14T09:40:12.597261+00:00",

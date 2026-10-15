@@ -14,8 +14,11 @@ tags: [passeport-immo, local, cockpit]
 
 ## Stockage documentaire demandé — 15 octobre 2026
 
-Lot g en cours dans ce clone ; [conception et recette](stockage-serveur.md).
-Base dédiée vide et configuration en attente créées hors document root.
+Lot g installé et vérifié ; [conception et recette](stockage-serveur.md),
+[reçu courant](../api/storage-observation.json). Candidat `7209bf3334a5f3f98d422b41d177c734970a0750`,
+ZIP `c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf`.
+Base dédiée, répertoire privé et neuf documents SCI opérationnels. Reprendre depuis
+la revue humaine et la PR nº80 ; aucun nouvel import par navigateur.
 Ne pas rejouer l’installation initiale ni écrire sur les bases CONNECT.
 Les preuves antérieures de recette navigateur ci-dessous restent historiques.
 

@@ -12,15 +12,16 @@ tags: [avereo, documentation, local]
 
 # Roadmap Passeport Immo
 
-## Lot de stockage en cours
+## Stockage livré en préproduction privée
 
-Le responsable a autorisé la centralisation serveur maintenant. API, mode hébergé
-et essais d’isolation sont réalisés localement ; la base privée vide est préparée.
-Prochaine étape : candidat/CI, sauvegarde, migration et recette HTTPS de la SCI.
+Le stockage centralisé est installé et vérifié : base dédiée, session CONNECT réelle,
+API et neuf documents SCI partagés entre sessions. La CI, la recette HTTPS,
+l’import sans doublon et la sauvegarde avec restitution temporaire sont conformes.
+Prochaine étape : revue humaine de préproduction et décision sur la PR.
 Cette priorité remplace le choix encore ouvert « import Chrome ou stockage partagé »
 du bilan précédent. Voir [le lot serveur](docs/stockage-serveur.md).
 
-## Suite du lot CONNECT
+## Historique — bilan du sas avant stockage partagé
 
 Le lot documents/coupes est approuvé dans le cockpit. Le sas, les paramètres
 privés et le delta compatible CONNECT sont installés en préproduction, après

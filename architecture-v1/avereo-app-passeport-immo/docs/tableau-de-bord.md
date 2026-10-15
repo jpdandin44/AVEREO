@@ -22,7 +22,7 @@ Mise à jour : **2026-10-15**. **2 phases livrées sur 4 ; 2 phases validées pa
 |---|---|---|---|---|
 | 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
 | 1 — Développement local | Validée | [documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | 2026-10-14 | 2026-10-14 |
-| 2 — Préproduction | Non commencée | [02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md) | — | Non acquise |
+| 2 — Préproduction | Non commencée | [02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md) | — | Non acquise |
 | 3 — Mise en production | Non commencée | `04-mise-en-production.md` (prévu) | — | Non acquise |
 
 ### Décisions attendues
@@ -54,7 +54,7 @@ Aucune décision en attente.
 
 ## Où en est le développement ?
 
-Travail actuel : **Préproduction — En cours**.
+Travail actuel : **Préproduction — À valider**.
 Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
@@ -70,7 +70,7 @@ Adresse créée : `https://passeport-immo-preprod.avereo.fr`. Dossier dédié : 
 
 **passeport-immo-documents-2026-10-14** — Cas documentaire client/bien, raccordement CONNECT privé et stockage serveur opérationnel.
 
-Responsable : jpdandin. Étape : preproduction. État : En cours.
+Responsable : jpdandin. Étape : preproduction. État : À valider.
 
 Ces étapes techniques complètent les phases formelles du chantier ; une fusion GitHub ne modifie pas leurs décisions.
 
@@ -82,12 +82,12 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 
 ### Candidat et GitHub
 
-- SHA source : `8f7b26f84b50e0f36a9763a3744d18a9169f27b4`.
-- SHA-256 de l'archive : `84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575`.
+- SHA source : `7209bf3334a5f3f98d422b41d177c734970a0750`.
+- SHA-256 de l'archive : `c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf`.
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T08:45:46.274Z.
+- Dernière observation GitHub : 2026-10-15T09:41:46.671Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -113,6 +113,9 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | hosted_entry | Réussi | 2026-10-15T08:36:22.326328+00:00 |
 | case_migration | Réussi | 2026-10-15T08:36:22.326328+00:00 |
 | GitHub Actions | Réussi | 2026-10-15T08:48:25.718643+00:00 |
+| Sur le poste | Réussi | 2026-10-15T09:53:50+00:00 |
+| GitHub Actions | Réussi | 2026-10-15T09:53:50+00:00 |
+| hosted_storage | Réussi | 2026-10-15T09:53:50+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -134,6 +137,9 @@ Preuves du candidat identifié ci-dessus :
 - hosted_entry : api/preproduction-sso-observation.json
 - case_migration : api/preproduction-sso-observation.json
 - GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38707718594 ; archive téléchargée identique au candidat installé, complément documentaire uniquement.
+- Sur le poste : 29 tests frontend, 29 assertions API MariaDB isolée, 67 assertions Apache, 19 tests Python et parité g.
+- GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38714544403 ; archive identique au candidat installé.
+- hosted_storage : api/storage-observation.json ; 34 assertions HTTPS, deux sessions, neuf fichiers et sauvegarde restaurée en tables temporaires.
 
 ### Contrôles de passage
 
@@ -145,14 +151,13 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- Recette de déconnexion et revue humaine de préproduction encore ouvertes ; disparition de la troisième fenêtre confirmée dans Chrome par le responsable.
-- Dossier de la SCI importé et vérifié dans le navigateur intégré seulement ; Chrome possède un stockage distinct, sans synchronisation documentaire serveur.
+- Revue humaine de préproduction et décision sur la PR nº80 encore à réaliser ; aucun merge ni accord de production déduit de la recette technique.
 
-Prochaine action : Terminer la recette de déconnexion et la revue humaine de préproduction ; dossier SCI vérifié dans le navigateur intégré, import Chrome ou stockage partagé à décider pour travailler sur plusieurs navigateurs.
+Prochaine action : Revue humaine de préproduction et de la PR ; utilisation du dossier depuis CONNECT sans nouvel import.
 
 ### Accords et livraison
 
-Accords spécifiques enregistrés : 3. Sauvegardes qualifiées : 5.
+Accords spécifiques enregistrés : 3. Sauvegardes qualifiées : 6.
 Retour arrière : non testé. Livraison : non réalisée.
 Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
 
@@ -254,6 +259,12 @@ Préproduction
 
 - Procédure et workflow manuel préparés.
 - Recette préproduction conforme, remplie par le responsable.
+
+**Stockage privé des documents** — Document disponible (`stockage-serveur.md`).
+
+Base dédiée, identité CONNECT, fichiers privés, migration et recette vérifiées ; revue humaine distincte.
+
+- Neuf fichiers migrés et partagés entre sessions ; récupération des tables et copies vérifiée.
 
 ### Phase 3 — Mise en production
 

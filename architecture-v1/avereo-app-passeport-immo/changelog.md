@@ -12,13 +12,18 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
-## 2026-10-15 — Stockage serveur préparé
+## 2026-10-15 — Stockage serveur installé et cas SCI migré
 
 API PHP et schéma MySQL dédiés, fichiers privés, identité CONNECT conservée,
 anti-CSRF, accès par propriétaire, imports atomiques et contrôle de révision.
 Le mode hébergé charge l’API et affiche les erreurs ; le mode local est conservé.
 Sauvegarde et restauration temporaire des lignes ajoutées ; recette MariaDB isolée.
-Installation et migration réelles restent à vérifier dans [le lot serveur](docs/stockage-serveur.md).
+Seize fichiers publics relus, neuf documents migrés, 34 assertions HTTPS avec deux
+sessions indépendantes. Import dédoublonné, métadonnées, PDF deux pages, téléchargement
+exact et rechargement vérifiés dans l’interface. Répertoire API corrigé en 0755 ;
+fichiers et répertoire documentaires privés restent en 0600/0700. Quatre tables
+et neuf fichiers sauvegardés, retour des lignes et empreintes vérifiés.
+Voir [le lot serveur](docs/stockage-serveur.md) ; aucune production ou fusion.
 
 ## 2026-10-15 — Correction hébergée et import du dossier de recette
 

@@ -15,9 +15,13 @@ tags: [passeport-immo, connect, preproduction, recette]
 ## Nouveau lot de stockage
 
 Le stockage par navigateur constaté dans la recette suivante est remplacé par
-un [lot serveur autorisé](stockage-serveur.md), actuellement préparé et testé localement.
-Le reçu de nouvelle installation déterminera son état effectif ; les constats SSO
-et déclarations humaines antérieurs sont conservés à leur portée.
+un [lot serveur installé et vérifié](stockage-serveur.md). Le
+[reçu courant](../api/storage-observation.json) établit seize fichiers publics relus,
+base dédiée et neuf documents partagés, 34 assertions HTTPS et deux sessions
+indépendantes. Le navigateur intégré confirme import dédoublonné, modification
+de métadonnées, PDF, téléchargement et persistance après rechargement. Les constats
+SSO et déclarations humaines ci-dessous restent historiques. La revue humaine de
+préproduction, la fusion et la production sont toujours distinctes.
 
 ## État courant après correction de la troisième identification
 

@@ -36,8 +36,9 @@ Sans module de réécriture Apache, la politique runtime ferme l'accès.
 CONNECT reconnaît les deux clés de lancement de `passeport-immo`. Le
 [modèle de catalogue](api/connect-catalogue.json) conserve sa proposition en brouillon ;
 l'installation réelle est active avec l'habilitation ciblée décrite dans le
-[rapport de préproduction](docs/03-preproduction.md). Aucun serveur métier ou changement du store navigateur : le sas protège
-l'entrée, sans remplacer la connexion interne de démonstration.
+[rapport de préproduction](docs/03-preproduction.md). Le lot serveur ajoute ensuite
+la persistance métier et l’identité réelle ; seule la version locale conserve la
+connexion de démonstration.
 
 ## Composants présents
 SPA React 18 / Zustand 5 construite par Vite 5, avec Tailwind 3.4.17 compilé localement.
@@ -46,7 +47,7 @@ SPA React 18 / Zustand 5 construite par Vite 5, avec Tailwind 3.4.17 compilé lo
 `frontend/src/main.jsx:3` importe PapaParse 5.3.2, jsPDF 2.5.1 et html2canvas 1.4.1,
 puis expose leurs globals attendus par le prototype. Aucun script CDN chargé.
 
-## Flux et stockage
+## Flux et stockage du mode local
 Actions d'écran → store Zustand → biens/tarifs → `localStorage`.
 Clés : `avereo-passeport-immo-biens`, `avereo-passeport-immo-tarifs`.
 Biens → dossier → pièces/interventions et pièces jointes en URL de données.
@@ -59,8 +60,8 @@ trois totaux. Les unités calculées sont `m²`, `unité`, `forfait` ; les autre
 Serveur Vite sur 127.0.0.1:5175 ; build dans `frontend/dist/`.
 Le modèle Docker contient un étage Node 22 pour tests/build puis Nginx pour les assets.
 Configuration Compose vérifiée ; exécution Docker non vérifiée.
-La session admin/pro et l'abonnement sont simulés. Aucun service serveur métier
-ni API client/document n'est présent. Le sas CONNECT est installé sur o2switch ;
+La session admin/pro et l’abonnement sont simulés dans le serveur Vite local.
+Le mode hébergé utilise l’API PHP et la session CONNECT décrites dans le lot serveur. Le sas CONNECT est installé sur o2switch ;
 la protection visiteur Basic est portée par CONNECT, distincte de son identité
 et de ses droits. Passeport Immo vérifie le cookie signé sans autre porte Basic.
 Les sous-dossiers publics
@@ -74,7 +75,7 @@ L'enveloppe Python réutilise `markdown_view` du générateur mutualisé.
 Les paramètres du poste restent dans `.local/review-settings.json`, ignoré par Git.
 Les vues HTML/Markdown sont générées et contrôlées, sans modification manuelle.
 
-## Limites et inconnues
+## Limites du mode local et inconnues initiales
 Partage d'URL sans dossier ; stockage lié au navigateur ; session interne de
 démonstration et absence de facturation. L'identité CONNECT protège l'entrée
 hébergée, sans synchroniser les dossiers. Le futur stockage centralisé est TBD. Questions canoniques dans
