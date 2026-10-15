@@ -5,7 +5,7 @@
   "owner": "jpdandin",
   "version": "git",
   "created": "2026-10-03",
-  "updated": "2026-10-14",
+  "updated": "2026-10-15",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -231,12 +231,12 @@
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette.",
+      "nextAction": "Désigner le compte de recette et son accès ciblé, compléter récupération et paramètres privés, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.",
       "legacyPhaseId": 3,
       "blockers": [
-        "Session cPanel expirée ; version CONNECT et contenu de la cible à recontrôler.",
-        "Paramètres privés, entrée de catalogue et habilitation ciblée Passeport Immo non qualifiés sur le serveur.",
-        "Récupération hébergée de Passeport Immo, accord exact et recette privée du nouveau candidat absents."
+        "Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.",
+        "Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.",
+        "Permissions, retour arrière complet et accord exact d’installation du candidat à qualifier ; la relecture des sauvegardes existantes ne les remplace pas."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/80",
@@ -904,7 +904,7 @@
         "isolated": false,
         "empty": false,
         "evidence": "docs/qualification-preproduction.md",
-        "observedAt": "2026-10-03T21:15:31+02:00",
+        "observedAt": "2026-10-15T06:24:06.077412+00:00",
         "provider": "o2switch",
         "purpose": "Préproduction dédiée",
         "selectedAt": "2026-10-03T12:52:58+00:00",
@@ -951,11 +951,12 @@
         },
         "provisioning": {
           "status": "created_closed_application_not_installed",
-          "observedAt": "2026-10-03T21:15:31+02:00",
+          "observedAt": "2026-10-15T06:24:06.077412+00:00",
           "directoryCreated": true,
           "initialDirectoryInventory": "empty_before_control_file_creation",
           "currentDirectoryInventory": [
-            ".htaccess"
+            ".htaccess",
+            "cgi-bin"
           ],
           "applicationFilesInstalled": false,
           "subdomainCreated": true,
@@ -985,7 +986,7 @@
             "Résolution DNS initialement absente sur le résolveur du poste ; requêtes DNS directes vers o2switch et 1.1.1.1 expirées. Le routage de l’adresse est ensuite constaté via navigateur et urllib.",
             "curl/Schannel signale encore SEC_E_UNTRUSTED_ROOT sur ce poste ; le contrôle Python avec ssl.create_default_context valide HTTPS et reçoit 403. Aucun contournement de validation."
           ],
-          "recovery": "hosted_restore_not_verified",
+          "recovery": "existing_htaccess_backup_and_restored_bytes_match_current_no_fresh_full_restore",
           "evidence": "docs/qualification-preproduction.md"
         }
       },
@@ -1090,6 +1091,14 @@
         "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
         "observedAt": "2026-10-14T20:13:18.664Z",
         "evidence": "CI 01be7d2 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon."
+      },
+      {
+        "kind": "local",
+        "status": "passed",
+        "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+        "observedAt": "2026-10-15T06:36:09.982Z",
+        "evidence": "Delta compatible 1cbd15edf31bfda766007a255de83e4f58f8192e1d2edd592b86165d6c3b106d (source 9bc5e351781a0a59169e4dc09ec29f67f9cb2dec) : 19 tests Python, 32 tests du backend historique, 15 assertions du sas. ZIP frontend inchangé ; reçu hébergé api/connect-hosted-observation.json."
       }
     ],
     "approvals": [],
@@ -1110,11 +1119,11 @@
       "observedAt": null
     },
     "blockers": [
-      "Session cPanel expirée ; version CONNECT et contenu de la cible à recontrôler.",
-      "Paramètres privés, entrée de catalogue et habilitation ciblée Passeport Immo non qualifiés sur le serveur.",
-      "Récupération hébergée de Passeport Immo, accord exact et recette privée du nouveau candidat absents."
+      "Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.",
+      "Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.",
+      "Permissions, retour arrière complet et accord exact d’installation du candidat à qualifier ; la relecture des sauvegardes existantes ne les remplace pas."
     ],
-    "nextAction": "Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette.",
+    "nextAction": "Désigner le compte de recette et son accès ciblé, compléter récupération et paramètres privés, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1133,7 +1142,7 @@
       },
       "preproduction": {
         "status": "blocked",
-        "nextAction": "Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette."
+        "nextAction": "Désigner le compte de recette et son accès ciblé, compléter récupération et paramètres privés, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette."
       },
       "production": {
         "status": "blocked",
@@ -1325,28 +1334,32 @@
     },
     "preproductionVerification": {
       "requestedAt": "2026-10-14",
-      "status": "connect_gate_tested_locally_hosted_authentication_required",
+      "status": "hosted_observed_integration_absent_compatible_delta_tested",
       "evidence": "docs/verification-preproduction.md",
-      "observedAt": "2026-10-14T20:08:19.812Z",
+      "observedAt": "2026-10-15T06:36:09.982Z",
       "checks": {
         "frontendTests": 26,
-        "pythonTests": 15,
+        "pythonTests": 19,
         "connectBackendTests": 38,
         "gateAssertions": 15,
         "apacheHttpAssertions": 18,
         "build": "passed",
-        "parity": "passed"
+        "parity": "passed",
+        "historicalConnectBackendTests": 32,
+        "compatibleGateAssertions": 15,
+        "compatibleDelta": "passed_local"
       },
       "remaining": [
-        "Session cPanel expirée ; version CONNECT et contenu de la cible à recontrôler.",
-        "Paramètres privés, entrée de catalogue et habilitation ciblée Passeport Immo non qualifiés sur le serveur.",
-        "Récupération hébergée de Passeport Immo, accord exact et recette privée du nouveau candidat absents."
-      ]
+        "Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.",
+        "Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.",
+        "Permissions, retour arrière complet et accord exact d’installation du candidat à qualifier ; la relecture des sauvegardes existantes ne les remplace pas."
+      ],
+      "observation": "api/connect-hosted-observation.json"
     },
     "connectPreparation": {
-      "status": "tested_local_pending_hosted_qualification",
+      "status": "tested_local_hosted_gap_identified",
       "requestedOn": "2026-10-14",
-      "observedAt": "2026-10-14T20:08:19.812Z",
+      "observedAt": "2026-10-15T06:36:09.982Z",
       "source": "docs/02-integration-connect.md",
       "runbook": "docs/deployment.md",
       "previous": {
@@ -1453,14 +1466,68 @@
       },
       "checks": {
         "frontendTests": 26,
-        "pythonTests": 15,
+        "pythonTests": 19,
         "connectBackendTests": 38,
         "gateAssertions": 15,
         "apacheHttpAssertions": 18,
         "build": "passed",
-        "parity": "passed"
+        "parity": "passed",
+        "historicalConnectBackendTests": 32,
+        "compatibleGateAssertions": 15,
+        "compatibleDelta": "passed_local"
       },
       "runtimeDelta": {
+        "sourceSha": "9bc5e351781a0a59169e4dc09ec29f67f9cb2dec",
+        "baseSha": "76566ca43b3e1e03a4a465391aac2f99017517cb",
+        "artifactSha256": "1cbd15edf31bfda766007a255de83e4f58f8192e1d2edd592b86165d6c3b106d",
+        "files": [
+          {
+            "path": "public/index.php",
+            "expectedBeforeSha256": "5aa7a16722ef4cd989d4d5607d22bfd4b51c504e9fb47dc4cde4440e2b0282b0",
+            "sha256": "b01300084cf16c1534eac53c90c321b74c3455956673043d57afa4251c5ebf51",
+            "size": 6468
+          },
+          {
+            "path": "src/Config.php",
+            "expectedBeforeSha256": "efd426f0e89118f1f70f05f3f58dda9b69058a2a9ac55d84cf667759fd75caca",
+            "sha256": "58d99d326e7da360dd3313b6bd1fd0b472cc1c6e2f89a337ba0d03d0aecad6ff",
+            "size": 6728
+          }
+        ],
+        "configurationIncluded": false,
+        "databaseMigrationIncluded": false,
+        "deploymentAllowed": false,
+        "precondition": "Refuser si un fichier hébergé diffère de expectedBeforeSha256.",
+        "mode": "historical_runtime_launch_settings_only",
+        "hostedReceiptSha256": "80047f5c59efd6a4ee2927d8179b34bbd50324e6078c6d14c12e29a67860525a",
+        "scope": "Trois lignes ajoutées : allowlist URL/SECRET et deux correspondances de configuration ; aucun autre changement de runtime.",
+        "artifact": ".local/connect-preparation/runtime-connect-compatible.zip",
+        "manifest": ".local/connect-preparation/runtime-connect-compatible.manifest.json"
+      },
+      "publicObservations": {
+        "connectStatus": 401,
+        "connectHealthStatus": 401,
+        "connectBasicChallenge": true,
+        "passeportRootStatus": 403,
+        "passeportHtmlStatus": 403,
+        "tlsValidation": true,
+        "observedAt": "2026-10-15T06:36:09.982Z"
+      },
+      "hosted": {
+        "status": "observed_read_only",
+        "observedAt": "2026-10-15T06:24:06.077412+00:00",
+        "observation": "api/connect-hosted-observation.json",
+        "cpanelSession": "authenticated_at_observation",
+        "activeConnectVersion": "two_files_match_git_base_76566ca_full_runtime_not_identified",
+        "catalogue": "passeport_immo_absent",
+        "privateConfiguration": "passeport_launch_and_gate_configuration_absent",
+        "recovery": "existing_htaccess_backup_and_restored_bytes_match_current_no_fresh_full_restore",
+        "deployment": "not_performed"
+      },
+      "catalogue": "api/connect-catalogue.json",
+      "newEntitlementsCreated": false,
+      "secretsCreated": false,
+      "previousRuntimeDelta": {
         "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
         "baseSha": "c45812cc97d91062d562be2370d032b1977232fc",
         "artifactSha256": "622279f5e5198e2998ce5d7ed32788086ac4417220ac6ad241f427d826c118cb",
@@ -1480,27 +1547,7 @@
         ],
         "configurationIncluded": false,
         "databaseMigrationIncluded": false
-      },
-      "publicObservations": {
-        "connectStatus": 401,
-        "connectHealthStatus": 401,
-        "connectBasicChallenge": true,
-        "passeportRootStatus": 403,
-        "passeportHtmlStatus": 403,
-        "tlsValidation": true
-      },
-      "hosted": {
-        "status": "authentication_required",
-        "cpanelSession": "expired",
-        "activeConnectVersion": "not_verified",
-        "catalogue": "not_verified",
-        "privateConfiguration": "not_verified",
-        "recovery": "not_verified",
-        "deployment": "not_performed"
-      },
-      "catalogue": "api/connect-catalogue.json",
-      "newEntitlementsCreated": false,
-      "secretsCreated": false
+      }
     }
   },
   "reviewFollowUps": [

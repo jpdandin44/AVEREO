@@ -5,7 +5,7 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [suivi, passeport-immo, genere]
 ---
@@ -16,7 +16,7 @@ Vue générée depuis `suivi-chantier.json`. Ne pas modifier manuellement.
 La revue et les décisions se font dans [Projet local](http://127.0.0.1:5193/).
 
 <!-- BEGIN GENERATED: suivi-chantier.json -->
-Mise à jour : **2026-10-14**. **2 phases livrées sur 4 ; 2 phases validées par le responsable.**
+Mise à jour : **2026-10-15**. **2 phases livrées sur 4 ; 2 phases validées par le responsable.**
 
 | Phase | Statut | Livrables | Livraison | Validation humaine |
 |---|---|---|---|---|
@@ -55,7 +55,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — Bloquée**.
-Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette.
+Désigner le compte de recette et son accès ciblé, compléter récupération et paramètres privés, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
@@ -79,7 +79,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Attendre la qualification de CONNECT en préproduction, puis vérifier le raccordement de Passeport Immo et préparer sa recette privée. Autorisation de phase et accord d’installation restent à enregistrer séparément. |
-| Préproduction | Bloquée | Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette. |
+| Préproduction | Bloquée | Désigner le compte de recette et son accès ciblé, compléter récupération et paramètres privés, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -103,6 +103,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Sur le poste | Réussi | 2026-10-14T20:09:51.631Z |
 | Documentation | Réussi | 2026-10-14T20:09:51.631Z |
 | GitHub Actions | Réussi | 2026-10-14T20:13:18.664Z |
+| Sur le poste | Réussi | 2026-10-15T06:36:09.982Z |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -112,6 +113,7 @@ Preuves du candidat identifié ci-dessus :
 - Sur le poste : 26 tests frontend, 15 tests Python, 38 tests backend, 15 assertions de contrat et 18 HTTP Apache ; build, parité, archive et restauration locale réussis.
 - Documentation : Socles Passeport Immo et CONNECT vérifiés ; métadonnées, liens locaux, vues et 15 empreintes approuvées conformes.
 - GitHub Actions : CI 01be7d2 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon.
+- Sur le poste : Delta compatible 1cbd15edf31bfda766007a255de83e4f58f8192e1d2edd592b86165d6c3b106d (source 9bc5e351781a0a59169e4dc09ec29f67f9cb2dec) : 19 tests Python, 32 tests du backend historique, 15 assertions du sas. ZIP frontend inchangé ; reçu hébergé api/connect-hosted-observation.json.
 
 ### Contrôles de passage
 
@@ -121,11 +123,11 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- Session cPanel expirée ; version CONNECT et contenu de la cible à recontrôler.
-- Paramètres privés, entrée de catalogue et habilitation ciblée Passeport Immo non qualifiés sur le serveur.
-- Récupération hébergée de Passeport Immo, accord exact et recette privée du nouveau candidat absents.
+- Raccordement hébergé absent : configuration privée, entrée de catalogue et habilitation ciblée à préparer dans un lot autorisé.
+- Compte de recette à désigner ; consultation privée et parcours réel Drupal → CONNECT → Passeport Immo non recettés.
+- Permissions, retour arrière complet et accord exact d’installation du candidat à qualifier ; la relecture des sauvegardes existantes ne les remplace pas.
 
-Prochaine action : Reconnexion cPanel pour contrôler version CONNECT, catalogue, paramètres privés et récupération ; ensuite présenter le candidat #80 pour accord exact d’installation et recette.
+Prochaine action : Désigner le compte de recette et son accès ciblé, compléter récupération et paramètres privés, puis présenter le candidat #80 et le delta compatible pour accord exact d’installation et recette.
 
 ### Accords et livraison
 
