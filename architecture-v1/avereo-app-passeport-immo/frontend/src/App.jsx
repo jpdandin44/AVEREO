@@ -3,6 +3,7 @@ import { create } from 'zustand';
 import { calculateDevis, calculateDevisForPdf } from './lib/chiffrage.js';
 import DocumentsPanel from './documents/DocumentsPanel.jsx';
 import './documents/documents.css';
+import { SERVER_STORAGE, persistLocal, attachServerStorage, hydrateServer } from './documents/server-store.js';
 
 // --- MOCK DATA & CONFIGURATION ---
 const MOCK_BIENS = [
@@ -110,6 +111,7 @@ const useAppStore = create((set) => ({
     priceTier: 'std', // 'eco', 'std', 'premium'
     setPriceTier: (tier) => set({ priceTier: tier }),
     hydrate: () => {
+        if (SERVER_STORAGE) return hydrateServer(useAppStore, LATEST_INITIAL_TARIFS);
         try {
             const savedBiens = localStorage.getItem('avereo-passeport-immo-biens');
             const savedTarifs = localStorage.getItem('avereo-passeport-immo-tarifs');
@@ -129,6 +131,7 @@ const useAppStore = create((set) => ({
     },
     signIn: () => { set({ isAuthenticated: true, user: { name: 'Admin Démo', plan: 'pro', role: 'admin' } }); },
     signOut: () => {
+        if (SERVER_STORAGE) { window.location.assign('/connect/logout.php'); return; }
         set({ isAuthenticated: false, user: null, currentView: 'dashboard', selectedBienId: null });
     },
     subscribeToPro: () => { set(state => ({ user: { ...state.user, plan: 'pro' }, currentView: 'dashboard' })); },
@@ -143,12 +146,12 @@ const useAppStore = create((set) => ({
                 ? { ...b, dossier: { ...b.dossier, pieces: [...b.dossier.pieces, { ...nouvellePiece, id: Date.now(), interventions: [] }] } }
                 : b
             );
-            localStorage.setItem('avereo-passeport-immo-biens', JSON.stringify(newBiens));
+            persistLocal('avereo-passeport-immo-biens', JSON.stringify(newBiens));
             return { biens: newBiens };
         });
     },
     updateTarifs: (newTarifs) => {
-        localStorage.setItem('avereo-passeport-immo-tarifs', JSON.stringify(newTarifs));
+        persistLocal('avereo-passeport-immo-tarifs', JSON.stringify(newTarifs));
         set({ tarifs: newTarifs });
     },
     setInterventionsForPiece: (bienId, pieceId, interventions) => {
@@ -158,7 +161,7 @@ const useAppStore = create((set) => ({
                 const newPieces = b.dossier.pieces.map(p => p.id === pieceId ? { ...p, interventions } : p);
                 return { ...b, dossier: { ...b.dossier, pieces: newPieces } };
             });
-            localStorage.setItem('avereo-passeport-immo-biens', JSON.stringify(newBiens));
+            persistLocal('avereo-passeport-immo-biens', JSON.stringify(newBiens));
             return { biens: newBiens };
         });
     },
@@ -170,21 +173,21 @@ const useAppStore = create((set) => ({
                 dossier: { pieces: [], attachments: [] },
                 composition: newBienData.composition || { chambres: 0, sdb: 0, sejour: 0, cuisine: 0, garage: 0 }
             }];
-            localStorage.setItem('avereo-passeport-immo-biens', JSON.stringify(newBiens));
+            persistLocal('avereo-passeport-immo-biens', JSON.stringify(newBiens));
             return { biens: newBiens };
         });
     },
     updateBien: (updatedBien) => {
         set(state => {
             const newBiens = state.biens.map(b => b.id === updatedBien.id ? { ...b, ...updatedBien } : b);
-            localStorage.setItem('avereo-passeport-immo-biens', JSON.stringify(newBiens));
+            persistLocal('avereo-passeport-immo-biens', JSON.stringify(newBiens));
             return { biens: newBiens };
         });
     },
     deleteBien: (bienId) => {
         set(state => {
             const newBiens = state.biens.filter(b => b.id !== bienId);
-            localStorage.setItem('avereo-passeport-immo-biens', JSON.stringify(newBiens));
+            persistLocal('avereo-passeport-immo-biens', JSON.stringify(newBiens));
             return { biens: newBiens };
         });
     },
@@ -195,7 +198,7 @@ const useAppStore = create((set) => ({
                 const newAttachments = [...(b.dossier.attachments || []), attachment];
                 return { ...b, dossier: { ...b.dossier, attachments: newAttachments } };
             });
-            localStorage.setItem('avereo-passeport-immo-biens', JSON.stringify(newBiens));
+            persistLocal('avereo-passeport-immo-biens', JSON.stringify(newBiens));
             return { biens: newBiens };
         });
     },
@@ -206,12 +209,14 @@ const useAppStore = create((set) => ({
                 const newAttachments = b.dossier.attachments.filter(a => a.id !== attachmentId);
                 return { ...b, dossier: { ...b.dossier, attachments: newAttachments } };
             });
-            localStorage.setItem('avereo-passeport-immo-biens', JSON.stringify(newBiens));
+            persistLocal('avereo-passeport-immo-biens', JSON.stringify(newBiens));
             return { biens: newBiens };
         });
     },
 }));
 
+
+attachServerStorage(useAppStore);
 
 // --- ICONS ---
 const LockIcon = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2 h-5 w-5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>;
@@ -1100,7 +1105,7 @@ const AppContainer = () => {
 };
 
 export default function App() {
- const { isLoading, isAuthenticated, hydrate } = useAppStore();
+ const { isLoading, isAuthenticated, hydrate, storageSaving, storageError } = useAppStore();
 
  useEffect(() => {
     hydrate();
@@ -1108,6 +1113,8 @@ export default function App() {
 
  return (
     <div className="bg-gray-100 font-sans min-h-screen">
+      {SERVER_STORAGE && storageSaving && <p role="status" className="bg-blue-50 p-3 text-center">Enregistrement sur le serveur…</p>}
+      {SERVER_STORAGE && storageError && <div role="alert" className="fixed inset-0 z-50 flex items-center justify-center bg-white/95 p-6"><div className="max-w-xl"><h1 className="text-xl font-bold">Enregistrement interrompu</h1><p className="my-4">{storageError}</p><p className="my-4">Les dernières modifications peuvent ne pas être enregistrées. Copiez-les avant de recharger le dossier conservé sur le serveur.</p><button className="rounded bg-indigo-600 px-4 py-2 text-white" onClick={() => window.location.reload()}>Recharger le dossier du serveur</button><a className="ml-4 underline" href="/connect/logout.php">Revenir à CONNECT</a></div></div>}
       {isLoading ? (
           <div className="min-h-screen flex justify-center items-center"><Spinner /></div>
       ) : isAuthenticated ? (

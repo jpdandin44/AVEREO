@@ -12,6 +12,16 @@ tags: [avereo, documentation, local]
 
 # Exigences Passeport Immo
 
+## Lot serveur autorisé le 15 octobre 2026
+
+- E20 : conserver biens, clients, tarifs et métadonnées dans une base dédiée en préproduction.
+- E21 : conserver les fichiers privés sur le serveur, accessibles au propriétaire CONNECT du bien.
+- E22 : retrouver le même dossier depuis plusieurs sessions, refuser les écritures périmées et les accès d’un autre compte.
+- E23 : migrer les neuf documents du cas SCI sans perte des archives ni modification des octets.
+- E24 : vérifier une sauvegarde des données et fichiers avant activation ; garder les données locales et les sources.
+
+La description [du lot g](docs/stockage-serveur.md) complète les exigences locales historiques.
+
 ## Accès continu demandé le 15 octobre 2026
 
 - E24 : après la porte visiteur de CONNECT et l'identification habituelle,

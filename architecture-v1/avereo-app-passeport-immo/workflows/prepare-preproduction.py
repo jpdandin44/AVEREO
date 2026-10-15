@@ -9,7 +9,7 @@ from pathlib import Path
 from zipfile import ZipFile, ZipInfo, ZIP_STORED
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from candidate_contract import GATE_FILES, valid_name
+from candidate_contract import GATE_FILES, STORAGE_FILES, valid_name
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = Path(__file__).with_name('preproduction.htaccess')
 
@@ -82,6 +82,8 @@ def prepare(archive, manifest, candidate, output):
     present_gate = set(files).intersection(GATE_FILES)
     if present_gate and present_gate != GATE_FILES:
         raise ValueError('Sas CONNECT incomplet dans le candidat.')
+    if set(files).intersection(STORAGE_FILES) and not (GATE_FILES | STORAGE_FILES).issubset(files):
+        raise ValueError('Stockage serveur incomplet dans le candidat.')
     runtime_policy = files.get('.htaccess')
     protection = TEMPLATE.read_text(encoding='utf-8').encode('utf-8')
     if 'Require all denied' not in protection.decode('utf-8').splitlines():

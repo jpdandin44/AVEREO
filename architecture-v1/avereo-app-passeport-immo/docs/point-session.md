@@ -12,6 +12,13 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Stockage documentaire demandé — 15 octobre 2026
+
+Lot g en cours dans ce clone ; [conception et recette](stockage-serveur.md).
+Base dédiée vide et configuration en attente créées hors document root.
+Ne pas rejouer l’installation initiale ni écrire sur les bases CONNECT.
+Les preuves antérieures de recette navigateur ci-dessous restent historiques.
+
 ## Correction SSO et dossier importé — 15 octobre 2026
 
 Le candidat `8f7b26f84b50e0f36a9763a3744d18a9169f27b4`, ZIP

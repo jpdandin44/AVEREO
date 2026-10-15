@@ -12,6 +12,14 @@ tags: [avereo, documentation, local]
 
 # Roadmap Passeport Immo
 
+## Lot de stockage en cours
+
+Le responsable a autorisé la centralisation serveur maintenant. API, mode hébergé
+et essais d’isolation sont réalisés localement ; la base privée vide est préparée.
+Prochaine étape : candidat/CI, sauvegarde, migration et recette HTTPS de la SCI.
+Cette priorité remplace le choix encore ouvert « import Chrome ou stockage partagé »
+du bilan précédent. Voir [le lot serveur](docs/stockage-serveur.md).
+
 ## Suite du lot CONNECT
 
 Le lot documents/coupes est approuvé dans le cockpit. Le sas, les paramètres

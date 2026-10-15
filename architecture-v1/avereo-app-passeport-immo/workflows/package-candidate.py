@@ -9,7 +9,7 @@ from zipfile import ZipFile, ZipInfo, ZIP_STORED
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from candidate_contract import GATE_FILES, valid_name
+from candidate_contract import GATE_FILES, STORAGE_FILES, valid_name
 
 def build(output):
     dist = ROOT / 'frontend/dist'
@@ -21,6 +21,8 @@ def build(output):
         raise ValueError('Fichier privé, lien ou chemin non autorisé dans le build.')
     if names.intersection(GATE_FILES) and not GATE_FILES.issubset(names):
         raise ValueError('Sas CONNECT incomplet dans le build.')
+    if names.intersection(STORAGE_FILES) and not (GATE_FILES | STORAGE_FILES).issubset(names):
+        raise ValueError('Stockage serveur incomplet dans le build.')
     output = output.resolve()
     if output.is_relative_to(dist.resolve()):
         raise ValueError('Archive de sortie à placer hors dist.')
@@ -30,7 +32,7 @@ def build(output):
         for path in files:
             name = path.relative_to(dist).as_posix()
             content = path.read_bytes()
-            if name in GATE_FILES:
+            if name in GATE_FILES | STORAGE_FILES:
                 content = content.replace(b'\r\n', b'\n')
             entry = ZipInfo(name, (1980, 1, 1, 0, 0, 0))
             entry.create_system = 3

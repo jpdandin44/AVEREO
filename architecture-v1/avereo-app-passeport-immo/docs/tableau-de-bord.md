@@ -68,7 +68,7 @@ Adresse créée : `https://passeport-immo-preprod.avereo.fr`. Dossier dédié : 
 
 ## Itération GitHub et cockpit
 
-**passeport-immo-documents-2026-10-14** — Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.
+**passeport-immo-documents-2026-10-14** — Cas documentaire client/bien, raccordement CONNECT privé et stockage serveur opérationnel.
 
 Responsable : jpdandin. Étape : preproduction. État : En cours.
 
@@ -87,7 +87,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T08:20:46.125Z.
+- Dernière observation GitHub : 2026-10-15T08:45:46.274Z.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -112,6 +112,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Documentation | Réussi | 2026-10-15T08:22:25.214977+00:00 |
 | hosted_entry | Réussi | 2026-10-15T08:36:22.326328+00:00 |
 | case_migration | Réussi | 2026-10-15T08:36:22.326328+00:00 |
+| GitHub Actions | Réussi | 2026-10-15T08:48:25.718643+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -132,6 +133,7 @@ Preuves du candidat identifié ci-dessus :
 - Documentation : api/preproduction-sso-observation.json#errorDocumentFollowup
 - hosted_entry : api/preproduction-sso-observation.json
 - case_migration : api/preproduction-sso-observation.json
+- GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38707718594 ; archive téléchargée identique au candidat installé, complément documentaire uniquement.
 
 ### Contrôles de passage
 

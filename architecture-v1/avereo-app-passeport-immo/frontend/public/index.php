@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 const AVEREO_GATE_APP = 'passeport-immo';
-require __DIR__ . '/connect/gate.php';
+require __DIR__ . '/connect/session.php';
 $config = avereo_gate_config();
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 header('Cache-Control: private, no-store');
@@ -13,7 +13,11 @@ if (!in_array($method, ['GET', 'HEAD'], true)) {
 }
 $path = rawurldecode((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH));
 $asset = str_starts_with($path, '/assets/');
-if (!avereo_gate_cookie_is_valid($config)) {
+$valid = avereo_gate_cookie_is_valid($config);
+if ($valid && !empty($config['storage_enabled'])) {
+    try { passeport_session($config); } catch (Throwable) { $valid = false; }
+}
+if (!$valid) {
     if ($asset) {
         http_response_code(403);
         exit;
@@ -50,7 +54,9 @@ header('Content-Type: text/html; charset=utf-8');
 if ($method === 'HEAD') {
     exit;
 }
-// The browser prototype is unchanged; the hosted entry is protected by CONNECT.
+if (!empty($config['storage_enabled'])) {
+    $html = str_replace('</head>', '<meta name="passeport-storage" content="server"></head>', $html);
+}
 $logout = '<a href="/connect/logout.php" style="position:fixed;right:16px;bottom:16px;z-index:2147483647;'
     . 'padding:10px 14px;border-radius:9px;background:#142033;color:#fff;text-decoration:none;'
     . 'font:600 14px system-ui,sans-serif">Quitter Passeport Immo</a>';

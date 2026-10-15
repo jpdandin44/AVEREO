@@ -12,6 +12,14 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Stockage serveur préparé
+
+API PHP et schéma MySQL dédiés, fichiers privés, identité CONNECT conservée,
+anti-CSRF, accès par propriétaire, imports atomiques et contrôle de révision.
+Le mode hébergé charge l’API et affiche les erreurs ; le mode local est conservé.
+Sauvegarde et restauration temporaire des lignes ajoutées ; recette MariaDB isolée.
+Installation et migration réelles restent à vérifier dans [le lot serveur](docs/stockage-serveur.md).
+
 ## 2026-10-15 — Correction hébergée et import du dossier de recette
 
 Le sas protège aussi les assets, la porte Basic redondante de Passeport Immo est

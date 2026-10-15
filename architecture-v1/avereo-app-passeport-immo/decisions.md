@@ -12,6 +12,17 @@ tags: [avereo, documentation, local]
 
 # Décisions Passeport Immo
 
+## 2026-10-15 — Base dédiée et fichiers privés
+
+Contexte : le responsable demande de rendre le stockage documentaire opérationnel
+sur la préproduction déjà installée. Décision : conserver les métadonnées dans
+une base MySQL distincte de CONNECT et les fichiers hors document root ; utiliser
+l’identité signée du ticket pour isoler les propriétaires. Raison : retrouver les
+mêmes documents depuis plusieurs navigateurs sans exposer les fichiers statiquement.
+Conséquences : API PHP, sauvegarde des tables et fichiers, révision des écritures,
+nouveau lancement CONNECT pour remplacer les anciens cookies sans identité.
+Le [lot serveur](docs/stockage-serveur.md) garde limites et recette ; la production reste distincte.
+
 ## 2026-10-15 — Session CONNECT pour toutes les ressources de l'application
 
 Contexte : le parcours réel ouvre l'application mais exige une seconde porte

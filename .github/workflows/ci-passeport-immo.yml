@@ -54,6 +54,8 @@ jobs:
         run: |
           docker build -f architecture-v1/avereo-app-passeport-immo/docker/connect-test.Dockerfile -t avereo-passeport-connect-test:local architecture-v1/avereo-app-passeport-immo
           python3 architecture-v1/avereo-app-passeport-immo/tests/check-connect-http.py
+      - name: Verify private document storage under MariaDB
+        run: python3 architecture-v1/avereo-app-passeport-immo/tests/check-storage-http.py
       - name: Package and verify candidate
         working-directory: architecture-v1/avereo-app-passeport-immo
         run: python3 workflows/package-candidate.py

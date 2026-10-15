@@ -12,6 +12,13 @@ tags: [passeport-immo, connect, preproduction, recette]
 
 # Installation privée et recette restante
 
+## Nouveau lot de stockage
+
+Le stockage par navigateur constaté dans la recette suivante est remplacé par
+un [lot serveur autorisé](stockage-serveur.md), actuellement préparé et testé localement.
+Le reçu de nouvelle installation déterminera son état effectif ; les constats SSO
+et déclarations humaines antérieurs sont conservés à leur portée.
+
 ## État courant après correction de la troisième identification
 
 Le responsable confirme l'ouverture de Passeport Immo depuis CONNECT dans Chrome.

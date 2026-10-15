@@ -12,6 +12,13 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
+## Stockage serveur — lot en cours
+
+Le [lot de stockage privé](docs/stockage-serveur.md) ajoute une base dédiée, des fichiers
+privés et l’identité CONNECT en préproduction. Les données locales existantes sont
+conservées. L’état de livraison et la migration sont consignés dans le suivi canonique ;
+les paragraphes de recette précédents ci-dessous décrivent le lot navigateur antérieur.
+
 ## Préproduction privée installée
 
 Le [sas CONNECT](docs/02-integration-connect.md) et les paramètres de lancement
@@ -31,8 +38,9 @@ et neuf fichiers restitués vérifiés. Ce stockage n'est pas partagé avec Chro
 Version locale du prototype de chiffrage, reprise après l'état des lieux puis raccordée
 au protocole GitHub/cockpit. La pagination PDF a été corrigée sur accord explicite.
 Biens, pièces, interventions, trois gammes, documents, PDF et catalogue CSV sont présents.
-La connexion Admin Démo/Pro est simulée. Les données restent dans ce navigateur.
-La centralisation des documents clients est une cible ultérieure.
+En mode local, la connexion Admin Démo/Pro est simulée et les données restent
+dans le navigateur. En mode serveur, la session CONNECT et l’API prennent le relais ;
+les erreurs sont visibles sans repli vers les données locales.
 
 La demande « Phase 0 puis prototype local dans cette session » autorise ce lot.
 Le [suivi JSON](docs/suivi-chantier.json) reste l'autorité des statuts de chantier :

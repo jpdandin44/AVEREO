@@ -12,6 +12,14 @@ tags: [connect, preproduction, installation]
 
 # Installation privée de Passeport Immo
 
+## Complément de stockage privé
+
+Le [lot serveur](stockage-serveur.md) ajoute quatre fichiers runtime explicitement
+autorisés (session, contrôleur API, bibliothèque de stockage et limites PHP),
+un schéma hors candidat public et la sauvegarde CLI privée. Tous les textes runtime
+sont normalisés LF. Ne pas installer la base sur CONNECT ni rejouer un amorçage
+sur une base peuplée. La procédure suivante décrit l’installation initiale du sas.
+
 ## Cadrage
 
 Cible retenue : `https://passeport-immo-preprod.avereo.fr`, document root

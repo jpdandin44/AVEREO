@@ -12,6 +12,14 @@ tags: [passeport-immo, local]
 
 # Vérification de la reprise
 
+## Persistance serveur
+
+`python tests/check-storage-http.py` utilise deux conteneurs temporaires sur un
+réseau dédié, Apache/PHP et MariaDB 11.4. Le test inclut la sauvegarde et le retour
+des lignes dans des tables temporaires. Les 29 tests frontend couvrent aussi
+la file d’écriture, le refus de conflit et l’import après sauvegarde du bien.
+La CI exécute ces contrôles ; les identités et documents y sont fictifs.
+
 ## Qualification du raccordement CONNECT
 
 Le correctif du 15 octobre est couvert par `python tests/check-connect-http.py`

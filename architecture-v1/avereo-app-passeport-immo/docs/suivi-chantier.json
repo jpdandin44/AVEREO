@@ -242,9 +242,9 @@
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "headSha": "367fcf9140f874486984937b0675216ab5f2c69b",
         "draft": true,
-        "observedAt": "2026-10-15T08:20:46.125Z",
+        "observedAt": "2026-10-15T08:45:46.274Z",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
@@ -890,7 +890,7 @@
     "kind": "application",
     "stage": "preproduction",
     "status": "in_progress",
-    "objective": "Cas documentaire concret client/bien en local et progression sourcée face à ExamIn.",
+    "objective": "Cas documentaire client/bien, raccordement CONNECT privé et stockage serveur opérationnel.",
     "candidate": {
       "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
       "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
@@ -1028,7 +1028,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+      "headSha": "367fcf9140f874486984937b0675216ab5f2c69b",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1036,7 +1036,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T08:20:46.125Z",
+      "observedAt": "2026-10-15T08:45:46.274Z",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1068,14 +1068,14 @@
         "observedAt": "2026-10-15T06:46:34.094Z"
       },
       "currentCi": {
-        "observedAt": "2026-10-15T08:22:25.214977+00:00",
-        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "observedAt": "2026-10-15T08:48:25.718643+00:00",
+        "sourceSha": "367fcf9140f874486984937b0675216ab5f2c69b",
         "technicalChecksPassed": 9,
         "technicalChecksFailed": 0,
         "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
-        "artifactBytesEqualToCandidate": true,
-        "runId": 38704811013,
-        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38704811013"
+        "artifactBytesEqualToInstalled": true,
+        "runId": 38707718594,
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38707718594 ; archive téléchargée identique au candidat installé, complément documentaire uniquement."
       }
     },
     "checks": [
@@ -1220,6 +1220,15 @@
         "kind": "case_migration",
         "status": "passed",
         "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr"
+      },
+      {
+        "sourceSha": "8f7b26f84b50e0f36a9763a3744d18a9169f27b4",
+        "artifactSha256": "84d1613183b6041518a9c5f5f528adfd55ceaa913e39b4ebf05d9fd419645575",
+        "observedAt": "2026-10-15T08:48:25.718643+00:00",
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38707718594 ; archive téléchargée identique au candidat installé, complément documentaire uniquement.",
+        "kind": "ci",
+        "status": "passed",
+        "executionSourceSha": "367fcf9140f874486984937b0675216ab5f2c69b"
       }
     ],
     "approvals": [
@@ -1864,6 +1873,25 @@
           "evidence": "Réponse directe : La troisième fenêtre a disparu. Portée : ouverture depuis CONNECT dans Chrome, sans validation de phase ou de PR."
         }
       }
+    },
+    "serverStorage": {
+      "status": "local_verified_server_prepared",
+      "authorization": {
+        "source": "Demande directe du responsable dans ce chat, 2026-10-15",
+        "request": "OK, peux-tu faire le nécessaire pour rendre le stockage de document opérationnel maintenant stp?",
+        "scope": "Stockage privé en préproduction Passeport Immo et migration du cas SCI déjà autorisé ; aucune production ou approbation humaine."
+      },
+      "design": "docs/stockage-serveur.md",
+      "dedicatedDatabase": "daje3540_pimpreprod",
+      "activeApplicationChanged": false,
+      "checks": {
+        "frontendTests": 29,
+        "apacheGateAssertions": 67,
+        "storageHttpAssertions": 29,
+        "pythonTests": 19,
+        "parity": "passed"
+      },
+      "nextAction": "Terminer CI, sauvegarde, livraison privée puis migration et recette serveur de la SCI."
     }
   },
   "reviewFollowUps": [

@@ -9,6 +9,7 @@ ErrorDocument 403 default
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+    RewriteRule ^api(?:/.*)?$ api/index.php [END]
   RewriteRule ^connect/(entry|logout)\.php$ - [END]
   RewriteRule ^connect(?:/|$) - [F,END]
   RewriteRule ^index\.php$ - [END]

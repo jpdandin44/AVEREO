@@ -12,6 +12,13 @@ tags: [passeport-immo, local]
 
 # Architecture Passeport Immo
 
+## Stockage privé du 15 octobre 2026
+
+Le [lot serveur](docs/stockage-serveur.md) complète le mode local décrit ci-dessous :
+API PHP, identité CONNECT signée, base MySQL séparée, fichiers privés hors document root,
+transactions et contrôle de révision. Le mode local conserve IndexedDB/localStorage.
+Le schéma SQL et le contrat PHP sont les sources exécutables de référence.
+
 ## Sas CONNECT installé en préproduction privée
 
 Le build copie le sas commun depuis `avereo-platform/shared/connect-gate.php`.
