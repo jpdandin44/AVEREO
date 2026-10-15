@@ -231,20 +231,20 @@
         "Procédure et workflow manuel préparés.",
         "Recette préproduction conforme, remplie par le responsable."
       ],
-      "nextAction": "Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine.",
+      "nextAction": "Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.",
       "legacyPhaseId": 3,
       "blockers": [
-        "Recette authentifiée Drupal → CONNECT → Passeport Immo non réalisée dans un navigateur utilisable ; porte visiteur du navigateur intégré toujours en échec.",
-        "Sauvegarde du bien et de ses neuf documents reçue sur le serveur privé ; import et persistance dans l’application HTTPS encore non réalisés."
+        "Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.",
+        "Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/80",
         "repository": "jpdandin44/AVEREO",
         "number": 80,
         "state": "open",
-        "headSha": "f0a00868c4538ea5b9f0686e7b883f9474ac3b21",
+        "headSha": "f6e5aaa64a41d3b5ee129aa7f3f333c5e89e1dfc",
         "draft": true,
-        "observedAt": "2026-10-15T06:48:16.038Z",
+        "observedAt": "2026-10-15T07:53:22.944438+00:00",
         "mergedAt": null,
         "mergeCommitSha": null,
         "mergedBy": null
@@ -1014,7 +1014,7 @@
     "github": {
       "repository": "jpdandin44/AVEREO",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/80",
-      "headSha": "f0a00868c4538ea5b9f0686e7b883f9474ac3b21",
+      "headSha": "f6e5aaa64a41d3b5ee129aa7f3f333c5e89e1dfc",
       "state": "open",
       "draft": true,
       "acceptedSourceSha": null,
@@ -1022,7 +1022,7 @@
       "humanAcceptanceVerified": false,
       "sourceReviewVerified": false,
       "evidence": "PR #80 de préparation ; quatre cases humaines décochées.",
-      "observedAt": "2026-10-15T06:48:16.038Z",
+      "observedAt": "2026-10-15T07:53:22.944438+00:00",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1052,6 +1052,16 @@
         "fileInventoryEqual": true,
         "runtimeSourcesEqual": true,
         "observedAt": "2026-10-15T06:46:34.094Z"
+      },
+      "currentCi": {
+        "observedAt": "2026-10-15T07:53:22.944438+00:00",
+        "sourceSha": "f6e5aaa64a41d3b5ee129aa7f3f333c5e89e1dfc",
+        "technicalChecksPassed": 9,
+        "technicalChecksFailed": 0,
+        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+        "artifactBytesEqualToInstalled": true,
+        "runId": 38701245509,
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38701245509 ; artefact CI téléchargé et SHA-256 identique au candidat installé."
       }
     },
     "checks": [
@@ -1121,6 +1131,15 @@
         "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
         "observedAt": "2026-10-15T06:46:34.094Z",
         "evidence": "CI e26f564 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon."
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "91d8e466fcf4caa799e9c08319c8b1514c2dd927",
+        "artifactSha256": "e9e17ebbc71f5f1351d2a177bf0316cea30a3780260e216212bd07f861f615f3",
+        "observedAt": "2026-10-15T07:53:22.944438+00:00",
+        "executionSourceSha": "f6e5aaa64a41d3b5ee129aa7f3f333c5e89e1dfc",
+        "evidence": "CI f6e5aaa : neuf contrôles techniques réussis ; archive téléchargée identique octet par octet à celle installée. Aucun changement applicatif dans le complément documentaire."
       }
     ],
     "approvals": [
@@ -1176,10 +1195,10 @@
       "observedAt": null
     },
     "blockers": [
-      "Recette authentifiée Drupal → CONNECT → Passeport Immo non réalisée dans un navigateur utilisable ; porte visiteur du navigateur intégré toujours en échec.",
-      "Sauvegarde du bien et de ses neuf documents reçue sur le serveur privé ; import et persistance dans l’application HTTPS encore non réalisés."
+      "Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.",
+      "Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés."
     ],
-    "nextAction": "Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine.",
+    "nextAction": "Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.",
     "nextIteration": [
       "Intégration CONNECT après accord sur les fichiers concernés.",
       "Partage sécurisé et stockage centralisé à spécifier à la demande des clients."
@@ -1198,7 +1217,7 @@
       },
       "preproduction": {
         "status": "in_progress",
-        "nextAction": "Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine."
+        "nextAction": "Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier."
       },
       "production": {
         "status": "blocked",
@@ -1417,8 +1436,8 @@
         "compatibleDelta": "passed_local"
       },
       "remaining": [
-        "Recette authentifiée Drupal → CONNECT → Passeport Immo non réalisée dans un navigateur utilisable ; porte visiteur du navigateur intégré toujours en échec.",
-        "Sauvegarde du bien et de ses neuf documents reçue sur le serveur privé ; import et persistance dans l’application HTTPS encore non réalisés."
+        "Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.",
+        "Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés."
       ],
       "observation": "api/connect-hosted-observation.json",
       "recoveryObservation": "api/connect-recovery-observation.json",
@@ -1649,6 +1668,19 @@
           "Récupération des données du catalogue CONNECT, paramètres privés et raccordement hébergé à réaliser avant installation."
         ],
         "catalogueRecoveryObservation": "api/connect-catalogue-recovery-observation.json"
+      },
+      "ssoCorrection": {
+        "status": "locally_verified_installation_pending",
+        "observedAt": "2026-10-15T08:09:27.647665+00:00",
+        "userReportedRecipe": "Chrome: CONNECT catalogue card and application launch work; third browser credential popup confirmed.",
+        "cause": "Independent HTTP Basic challenge on the application origin.",
+        "scope": [
+          "frontend/public/index.php",
+          "frontend/public/.htaccess"
+        ],
+        "localApacheAssertions": 67,
+        "sharedGateAndBusinessRightsUnchanged": true,
+        "evidence": "docs/02-integration-connect.md ; docs/03-preproduction.md"
       }
     }
   },
@@ -1693,7 +1725,7 @@
     "closedAt": "2026-10-03T20:06:03+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine.",
+    "nextAction": "Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.",
     "resumedAt": "2026-10-14T09:40:12+00:00",
     "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
     "previousClosure": {

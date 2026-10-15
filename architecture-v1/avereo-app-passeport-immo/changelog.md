@@ -12,6 +12,15 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-15 — Correction locale du lancement sans troisième identification
+
+Retour humain : Passeport Immo s'ouvre depuis CONNECT, mais la porte Basic de
+son sous-domaine redemande le compte visiteur. L'entrée PHP et le routage Apache
+protègent désormais aussi les assets par cookie signé. Lecture anonyme, cookie
+altéré, fichiers interdits et accès aux internes sont refusés ; 67 assertions
+HTTP locales réussies. Aucun changement du sas commun, des droits ou du frontend.
+Réinstallation privée préparée, recette hébergée et import du dossier encore ouverts.
+
 ## 2026-10-15 — Installation privée et sauvegarde du cas reçue
 
 Installation des douze fichiers applicatifs et du delta CONNECT compatible de

@@ -1,4 +1,4 @@
-Options -Indexes
+Options -Indexes -MultiViews
 DirectoryIndex index.php
 
 <IfModule !mod_rewrite.c>
@@ -8,12 +8,10 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-  RewriteRule ^connect(?:/|$) - [L]
-  RewriteRule ^$ index.php [L]
-  RewriteRule ^index\.html$ index.php [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.php [L]
+  RewriteRule ^connect/(entry|logout)\.php$ - [END]
+  RewriteRule ^connect(?:/|$) - [F,END]
+  RewriteRule ^index\.php$ - [END]
+  RewriteRule ^ index.php [END]
 </IfModule>
 
 <IfModule mod_headers.c>

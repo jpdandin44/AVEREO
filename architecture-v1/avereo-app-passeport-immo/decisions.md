@@ -12,6 +12,18 @@ tags: [avereo, documentation, local]
 
 # Décisions Passeport Immo
 
+## 2026-10-15 — Session CONNECT pour toutes les ressources de l'application
+
+Contexte : le parcours réel ouvre l'application mais exige une seconde porte
+visiteur sur son origine. Décision technique : vérifier la session HMAC existante
+pour le HTML et tous les assets, puis retirer la configuration Basic redondante
+de Passeport Immo après qualification. La porte Basic de CONNECT reste en place.
+Raison : permettre le lancement selon les droits CONNECT sans nouvelle saisie
+et conserver une préproduction privée. Conséquences : seuls les assets construits
+CSS/JS/MJS sont servis sous contrôle PHP, sans cache partagé ; aucun cookie de
+domaine parent, partage de mot de passe ou changement des droits n'est ajouté.
+La recette hébergée et la migration navigateur restent à vérifier.
+
 ## 2026-10-15 — Politique d'environnement et transfert privé
 
 Contexte : installation privée autorisée sur le compte parent, après choix du

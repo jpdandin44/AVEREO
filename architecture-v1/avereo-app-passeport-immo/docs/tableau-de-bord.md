@@ -55,7 +55,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Préproduction — En cours**.
-Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine.
+Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
 
@@ -79,7 +79,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; intégration installée en préproduction privée, recette et import du dossier à terminer. |
-| Préproduction | En cours | Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine. |
+| Préproduction | En cours | Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier. |
 | Production | Bloquée | Attendre recette réelle préproduction, acceptation humaine et récupération qualifiée. |
 
 ### Candidat et GitHub
@@ -89,7 +89,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T06:48:16.038Z.
+- Dernière observation GitHub : 2026-10-15T07:53:22.944438+00:00.
 - Revue humaine de la source GitHub : Non consignée.
 - Acceptation de l'archive exacte pour promotion : À consigner avant production.
 
@@ -105,6 +105,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | GitHub Actions | Réussi | 2026-10-14T20:13:18.664Z |
 | Sur le poste | Réussi | 2026-10-15T06:36:09.982Z |
 | GitHub Actions | Réussi | 2026-10-15T06:46:34.094Z |
+| GitHub Actions | Réussi | 2026-10-15T07:53:22.944438+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -116,6 +117,7 @@ Preuves du candidat identifié ci-dessus :
 - GitHub Actions : CI 01be7d2 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon.
 - Sur le poste : Delta compatible 1cbd15edf31bfda766007a255de83e4f58f8192e1d2edd592b86165d6c3b106d (source 9bc5e351781a0a59169e4dc09ec29f67f9cb2dec) : 19 tests Python, 32 tests du backend historique, 15 assertions du sas. ZIP frontend inchangé ; reçu hébergé api/connect-hosted-observation.json.
 - GitHub Actions : CI e26f564 : 18 contrôles réussis ; ZIP et inventaire identiques au candidat 91d8e466, aucun changement de runtime entre ces références. Policy humaine ignorée en brouillon.
+- GitHub Actions : CI f6e5aaa : neuf contrôles techniques réussis ; archive téléchargée identique octet par octet à celle installée. Aucun changement applicatif dans le complément documentaire.
 
 ### Contrôles de passage
 
@@ -126,10 +128,10 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- Recette authentifiée Drupal → CONNECT → Passeport Immo non réalisée dans un navigateur utilisable ; porte visiteur du navigateur intégré toujours en échec.
-- Sauvegarde du bien et de ses neuf documents reçue sur le serveur privé ; import et persistance dans l’application HTTPS encore non réalisés.
+- Corriger la troisième identification visiteur sur Passeport Immo : nouveau candidat local qualifié, réinstallation privée et contrôles HTTPS à effectuer.
+- Copie privée du bien et de ses neuf documents reçue ; import et persistance dans le navigateur de préproduction encore non réalisés.
 
-Prochaine action : Terminer la recette dans Chrome avec le compte administrateur choisi, puis importer le bien et ses six documents actifs et trois archivés sur cette origine HTTPS ; vérifier PDF, classement et persistance avant revue humaine.
+Prochaine action : Qualifier en CI le correctif qui protège aussi les assets, sauvegarder les deux fichiers installés puis remplacer la porte Basic redondante de Passeport Immo ; terminer la recette et le transfert du dossier.
 
 ### Accords et livraison
 

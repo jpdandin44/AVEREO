@@ -16,6 +16,11 @@ tags: [passeport-immo, local]
 
 Le build copie le sas commun depuis `avereo-platform/shared/connect-gate.php`.
 CONNECT → ticket HMAC → entrée à nonce unique → cookie signé → HTML protégé.
+Le correctif local du 15 octobre étend ce contrôle aux assets CSS/JS/MJS :
+réécriture vers l'entrée, vérification du cookie et du chemin réel, réponse privée
+sans cache partagé. Les scripts internes ne sont pas directement accessibles.
+Cette version est préparée pour remplacer la porte Basic du seul sous-domaine
+Passeport Immo ; l'état installé initial décrit ci-dessous reste historique.
 `index.php`, `connect/entry.php`, `connect/logout.php` et `.htaccess`
 complètent les assets ; la configuration privée reste hors document root.
 Sans module de réécriture Apache, la politique runtime ferme l'accès.

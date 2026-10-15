@@ -12,6 +12,19 @@ tags: [passeport-immo, connect, preproduction, recette]
 
 # Installation privée et recette restante
 
+## Retour de recette et correction préparée
+
+Le responsable confirme l'ouverture de Passeport Immo depuis CONNECT dans Chrome.
+Cette déclaration établit un premier parcours humain ; elle ne vaut pas validation
+de tous les critères. La troisième fenêtre identifiant/mot de passe provient de
+la protection Basic propre au sous-domaine Passeport Immo.
+
+Le [correctif local](02-integration-connect.md) protège tous les assets avec la
+session signée du sas. Il permet de retirer la porte Basic redondante uniquement
+sur Passeport Immo ; la porte visiteur CONNECT et les habilitations restent en place.
+Le nouveau candidat et sa réinstallation sont à qualifier. La copie serveur du
+cas de la SCI est conservée ; son import dans le navigateur n'est pas encore réalisé.
+
 ## Cadrage
 
 Le responsable autorise dans ce chat le raccordement, l'installation privée et

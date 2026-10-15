@@ -12,6 +12,32 @@ tags: [connect, passeport-immo, preproduction]
 
 # Raccordement Passeport Immo à CONNECT
 
+## Correction de la troisième identification — 15 octobre 2026
+
+Le responsable confirme dans Chrome la présence de la carte et l'ouverture de
+Passeport Immo avec son compte habituel. Il signale une troisième demande dans
+une fenêtre du navigateur : c'est la porte Basic ajoutée au sous-domaine applicatif.
+Une protection HTTP est liée à son origine ; le même compte visiteur sur deux
+sous-domaines ne transmet pas la session CONNECT.
+
+La correction locale de l'écart f fait passer toutes les ressources par
+`index.php`, y compris CSS, JavaScript et worker PDF. Seuls `connect/entry.php`
+et `connect/logout.php` sont directement routés ; les autres chemins `connect`
+sont refusés. Sans cookie signé, le HTML renvoie vers CONNECT et les assets sont
+refusés. Avec session valide, seuls les fichiers CSS/JS/MJS sous le chemin réel
+`assets` sont servis, sans cache partagé. Les chemins invalides, PHP et source maps
+ne sont pas servis ; seuls GET/HEAD sont acceptés.
+
+Reproduction avant correction : un asset reçoit 200 anonyme sans la porte Basic.
+Après correction : 67 assertions Apache/PHP réussies avec le véritable émetteur
+CONNECT, dont tous les assets, leurs octets/MIME, HEAD, cookie altéré, fichiers
+interdits, rejeu, déconnexion et fermeture sans réécriture. Les 15 assertions du
+sas, 26 tests frontend et 19 tests Python réussissent aussi ; parité conservée.
+Le remplacement de deux fichiers est préparé ; la cible hébergée utilise encore
+la politique Basic initiale jusqu'au reçu de correction. Les sections ci-dessous
+conservent les constats initiaux, antérieurs à l'installation décrite dans le
+[rapport courant](03-preproduction.md). Les preuves approuvées restent inchangées.
+
 ## Cadrage
 
 Le responsable demande de vérifier le raccordement et de préparer la préproduction

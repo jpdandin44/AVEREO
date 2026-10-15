@@ -5,12 +5,22 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-15
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Exigences Passeport Immo
+
+## Accès continu demandé le 15 octobre 2026
+
+- E24 : après la porte visiteur de CONNECT et l'identification habituelle,
+  ouvrir Passeport Immo selon les droits CONNECT sans nouvelle saisie du mot de passe.
+- E25 : protéger aussi les assets de Passeport Immo par la session signée ;
+  refuser leur lecture anonyme ou avec un cookie altéré avant de retirer sa porte Basic redondante.
+
+Cette correction de préproduction ne crée pas d'identité métier dans le prototype.
+Le compte de démonstration interne et le stockage par navigateur restent documentés.
 
 ## Préparation CONNECT demandée le 14 octobre 2026
 

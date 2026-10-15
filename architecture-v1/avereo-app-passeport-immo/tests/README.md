@@ -14,6 +14,14 @@ tags: [passeport-immo, local]
 
 ## Qualification du raccordement CONNECT
 
+Le correctif du 15 octobre est couvert par `python tests/check-connect-http.py`
+après le build. L'image `docker/connect-test.Dockerfile` doit être disponible sous
+`avereo-passeport-connect-test:local` ; Docker et PHP CLI sont nécessaires.
+Les 67 assertions incluent les assets sans session (refus), leurs octets/MIME et
+HEAD avec session, cookie altéré, chemins/fichiers interdits et méthodes, puis
+la fermeture initiale et la fermeture sans module de réécriture. Aucun compte,
+secret ou dossier réel n'est utilisé. Un conteneur isolé est créé puis arrêté.
+
 `python -m unittest discover -s tests -p 'test_*.py'` exécute actuellement 19 tests.
 Les quatre cas du delta compatible vérifient l'ajout limité au lancement et le
 refus d'une observation périmée, d'un contexte différent ou d'un runtime déjà intégré.
