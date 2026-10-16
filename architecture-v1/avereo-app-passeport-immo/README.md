@@ -39,7 +39,8 @@ les emplacements proposés et la séquence d'installation dans le périmètre au
 
 Une archive initialement fermée et l'adaptation minimale de CONNECT sont préparées
 localement. L'outillage de sauvegarde distingue désormais préproduction et production,
-avec des tâches indépendantes ; cette évolution n'est pas installée sur l'hébergement.
+avec des tâches indépendantes ; ses sources sont déposées hors web sans configuration
+ni exécution de production.
 Le responsable retient la reprise du dossier SCI de préproduction ; le
 [plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci) inclut ses
 documents actifs et archivés. Le [suivi canonique](docs/suivi-chantier.json) référence

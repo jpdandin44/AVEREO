@@ -5,12 +5,31 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Architecture Passeport Immo
+
+## Ressources de production fermées — 16 octobre
+
+Le domaine `passeport-immo.avereo.fr`, sa racine dédiée et le certificat HTTPS
+sont créés ; Apache refuse encore tout accès anonyme. La base `daje3540_pimprod`
+est distincte de CONNECT et de la préproduction. Son utilisateur dédié est créé
+par le responsable, avec les sept droits bootstrap attribués sur cette seule base.
+Le schéma, la configuration privée et la clé indépendante restent à initialiser ;
+CREATE et REFERENCES devront ensuite être retirés au profit des cinq droits utiles.
+Le candidat public, le raccordement CONNECT et les données SCI ne sont pas installés.
+
+Le propriétaire destinataire est le compte de production `dandin`, retenu explicitement
+par le responsable après comparaison avec `avereo_admin` en préproduction. La reprise
+utilise les identifiants de stockage lus dans chaque environnement ; leur égalité
+textuelle ne constitue pas une identité externe commune. Le CLI privé de reprise et
+les sources de sauvegarde sont déposés hors web, sans configuration ni données.
+Le [reçu courant](api/production-provisioning-observation.json) et le
+[dossier de production](docs/04-mise-en-production.md) distinguent ces ressources
+de la qualification de récupération, du transfert et de l’activation encore à réaliser.
 
 ## Sauvegarde privée planifiée
 

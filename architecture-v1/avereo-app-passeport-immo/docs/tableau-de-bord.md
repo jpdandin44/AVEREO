@@ -23,7 +23,7 @@ Mise à jour : **2026-10-16**. **3 phases livrées sur 4 ; 3 phases validées pa
 | 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
 | 1 — Développement local | Validée | [documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | 2026-10-14 | 2026-10-14 |
 | 2 — Préproduction | Validée | [recette-preproduction.md](recette-preproduction.md)<br>[02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md)<br>[sauvegarde-automatique.md](sauvegarde-automatique.md) | 2026-10-15 | 2026-10-16 |
-| 3 — Mise en production | En cours | [04-mise-en-production.md](04-mise-en-production.md) | — | Non acquise |
+| 3 — Mise en production | En cours | [04-mise-en-production.md](04-mise-en-production.md)<br>[controle-candidat-preproduction.md](controle-candidat-preproduction.md) | — | Non acquise |
 
 ### Décisions attendues
 
@@ -56,7 +56,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Production — En cours**.
-Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.
+Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-16T06:38:24+00:00.
 
@@ -79,7 +79,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
 | Préproduction | Validée | Phase 2 approuvée par D06 le 16 octobre ; six livrables et huit critères examinés, dont la sauvegarde nocturne. |
-| Production | En cours | Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique. |
+| Production | En cours | Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique. |
 
 ### Candidat et GitHub
 
@@ -165,8 +165,9 @@ Preuves du candidat identifié ci-dessus :
 - Cible fermée créée avec domaine, TLS et base dédiée ; compte SQL, configuration privée, schéma et raccordement CONNECT encore à initialiser.
 - Compte destinataire confirmé et neuf documents SCI vérifiés ; export final stable, application et rejeu sur cible réelle encore à effectuer.
 - Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production.
+- Revue complémentaire du 16 octobre : confirmer l’accès CONNECT du compte interne 2, actif contrairement au relevé historique ; aucun droit modifié.
 
-Prochaine action : Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.
+Prochaine action : Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique.
 
 ### Accords et livraison
 
@@ -298,3 +299,5 @@ Dossier après PR nº82 et D06 : accord de production récupéré, candidat iden
 
 - Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.
 - Procédure, fumée et retour arrière vérifiés par le responsable.
+
+**Contrôle complémentaire du candidat et réserve de droits** — Document disponible (`controle-candidat-preproduction.md`).

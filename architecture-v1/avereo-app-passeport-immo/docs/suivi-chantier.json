@@ -306,6 +306,12 @@
             "Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.",
             "Procédure, fumée et retour arrière vérifiés par le responsable."
           ]
+        },
+        {
+          "path": "controle-candidat-preproduction.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Contrôle complémentaire du candidat et réserve de droits"
         }
       ],
       "exitCriteria": [
@@ -313,7 +319,7 @@
         "Procédure, fumée et retour arrière vérifiés par le responsable.",
         "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.",
+      "nextAction": "Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique.",
       "legacyPhaseId": 4,
       "authorizedOn": "2026-10-16",
       "startEvidence": {
@@ -323,7 +329,8 @@
       "blockers": [
         "Cible fermée créée avec domaine, TLS et base dédiée ; compte SQL, configuration privée, schéma et raccordement CONNECT encore à initialiser.",
         "Compte destinataire confirmé et neuf documents SCI vérifiés ; export final stable, application et rejeu sur cible réelle encore à effectuer.",
-        "Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production."
+        "Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production.",
+        "Revue complémentaire du 16 octobre : confirmer l’accès CONNECT du compte interne 2, actif contrairement au relevé historique ; aucun droit modifié."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/83",
@@ -331,8 +338,8 @@
         "number": 83,
         "state": "open",
         "draft": true,
-        "headSha": "90ad61855a6d5d10aeee4f79d81ba829ae895d6d",
-        "observedAt": "2026-10-16T07:46:52.833Z",
+        "headSha": "cc5a9a8ebfc6a2fc0de59f5affdd80cf58199b86",
+        "observedAt": "2026-10-16T08:32:53.194Z",
         "scope": "Préparation de production après D06 : reprise ciblée SCI qualifiée localement et plan CIL séparé ; aucune livraison ni nouvelle validation.",
         "mergedAt": null,
         "mergeCommitSha": null,
@@ -1178,7 +1185,8 @@
         "provider": "o2switch",
         "proposedAccount": "daje3540",
         "provisioned": false,
-        "closedResourcesCreated": true
+        "closedResourcesCreated": true,
+        "applicationDatabaseUserCreated": true
       }
     },
     "github": {
@@ -1609,9 +1617,10 @@
     "blockers": [
       "Cible fermée créée avec domaine, TLS et base dédiée ; compte SQL, configuration privée, schéma et raccordement CONNECT encore à initialiser.",
       "Compte destinataire confirmé et neuf documents SCI vérifiés ; export final stable, application et rejeu sur cible réelle encore à effectuer.",
-      "Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production."
+      "Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production.",
+      "Revue complémentaire du 16 octobre : confirmer l’accès CONNECT du compte interne 2, actif contrairement au relevé historique ; aucun droit modifié."
     ],
-    "nextAction": "Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.",
+    "nextAction": "Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique.",
     "nextIteration": [
       "À cadrer : service CIL complet selon docs/plan-action-cil.md ; quatorze actions et douze scénarios proposés, Word dérivé dans docs/livrables/plan-action-cil.docx. Périmètre distinct du candidat courant, aucune validation CIL créée.",
       "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
@@ -1635,7 +1644,7 @@
       },
       "production": {
         "status": "in_progress",
-        "nextAction": "Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique."
+        "nextAction": "Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique."
       }
     },
     "gates": [
@@ -2329,7 +2338,7 @@
       "addressStatus": "confirmed_by_user",
       "productionTargetQualified": false,
       "phaseStarted": true,
-      "nextAction": "Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.",
+      "nextAction": "Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique.",
       "readiness": [
         {
           "id": "candidate",
@@ -2404,13 +2413,14 @@
         "remoteDelivery": "not_performed"
       },
       "backupTooling": {
-        "status": "locally_verified_not_installed",
+        "status": "private_sources_staged_not_configured_not_executed",
         "evidence": "api/qualification-production-observation.json",
         "scheduledBackupAssertions": 22,
         "productionScheduleApproved": false,
         "sourceSha": "971e97460c90e9ae3ed36c5538491da400162982",
         "artifactSha256": "b06e74f2528caa1887b151bb1d6052f7733388228ed710c2289cf0b6ab9ca0e8",
-        "localDirectory": ".local/production-qualification-20261015/backup-production"
+        "localDirectory": ".local/production-qualification-20261015/backup-production",
+        "stagingEvidence": "api/production-provisioning-observation.json#privateOperationsSources"
       },
       "initialData": {
         "status": "owner_confirmed_inventory_refreshed_real_transfer_pending",
@@ -2465,7 +2475,20 @@
         "scope": "Préparation de production après D06 : reprise ciblée SCI qualifiée localement et plan CIL séparé ; aucune livraison ni nouvelle validation."
       },
       "provisioningEvidence": "api/production-provisioning-observation.json",
-      "privateInitializationStatus": "human_mysql_ui_handoff_required_json_stdin_unavailable"
+      "privateInitializationStatus": "sql_user_and_bootstrap_grants_created_human_masked_tty_initialization_pending",
+      "sqlUserAndBootstrapGrantsEvidence": "api/production-provisioning-observation.json#sqlBootstrap"
+    },
+    "preproductionRefresh": {
+      "iterationId": "rapport-passeport-preproduction-20261016",
+      "status": "delivered_verified_with_access_review_required",
+      "observedAt": "2026-10-16T08:47:47+00:00",
+      "documentation": "docs/controle-candidat-preproduction.md",
+      "canonicalTracking": "outillage/acces-preproduction/suivi-chantier.json#selected_applications_delivery",
+      "candidateArtifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+      "runtimeChanged": false,
+      "existingDecisionRef": "D06",
+      "productionChanged": false,
+      "rightsReviewRequired": true
     }
   },
   "reviewFollowUps": [

@@ -12,6 +12,11 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Contrôle complémentaire de préproduction — 16 octobre
+
+Le [complément de contrôle](controle-candidat-preproduction.md) consigne la nouvelle recette ciblée : candidat applicatif inchangé, neuf documents conservés, réserve à réconcilier sur le droit CONNECT explicite du compte interne 2. D06 et ses quinze documents approuvés restent intacts. La préparation de production ci-dessous conserve sa prochaine action et ses prérequis.
+
+
 ## Plan CIL livré le 16 octobre
 
 Le [plan d’action CIL](plan-action-cil.md) et son [Word](livrables/plan-action-cil.docx)
@@ -30,15 +35,25 @@ fichiers CONNECT sont encore compatibles avec le delta préparé. La CI de la PR
 passe sur `90ad618` ; son archive téléchargée est identique au candidat c44f397f…
 Voir le [reçu courant](../api/production-provisioning-observation.json).
 
-**Prochaine action :** création des nouveaux identifiants techniques via la reprise
-manuelle préparée dans cPanel, puis configuration privée/schéma et qualification
-de récupération/retour arrière. La règle de sécurité du navigateur impose de laisser
-l’humain effectuer la création de nouvelles informations d’authentification.
-Le précontrôle de l’initialiseur privé a révélé que la voie UAPI JSON sur entrée
-standard n’est pas disponible dans la session cloisonnée : aucun identifiant ni
-schéma n’a été créé. L’interface MySQL standard est préparée avec le suffixe
-`pimprod` ; le responsable doit saisir, confirmer et valider le nouveau mot de passe.
-Ne pas utiliser le mode d’écriture de cet initialiseur non qualifié sur la cible.
+Le responsable a créé l’utilisateur SQL dédié dans cPanel, puis a autorisé les sept
+droits bootstrap sur cette seule base ; leur enregistrement est confirmé par cPanel.
+Les quatre sources de sauvegarde et le CLI de reprise sont déposés hors web,
+en 0600 dans un dossier 0700, sans configuration ni donnée et sans exécution.
+
+**Prochaine action :** initialisation privée sans UAPI avec saisie du mot de passe
+existant par le responsable dans le terminal masqué, contrôle SQL de vacuité avant
+schéma, puis retrait de CREATE et REFERENCES et vérification des cinq droits utiles.
+La règle de sécurité du navigateur impose de laisser l’humain effectuer la saisie
+et la création de nouvelles informations d’authentification. Le précontrôle de
+l’ancien initialiseur s’arrête : UAPI JSON et la commande ordinaire exigent un binaire
+absent de la session cloisonnée. Ne pas utiliser son mode d’écriture.
+Configuration, schéma et clé de sas ne sont pas encore créés ; récupération et
+retour arrière restent à qualifier ensuite.
+La variante sans UAPI est déposée en 0600, empreinte 2ee55c7d… vérifiée. Son précontrôle
+réel de fichiers réussit et conserve les trois contrôles SQL à false. La commande
+humaine est préparée sans exécution dans l’onglet Terminal ; l’invite attendue demande
+le mot de passe existant en mode masqué. Après succès, retirer CREATE et REFERENCES,
+puis relire les droits et le reçu privé avant toute reprise SCI.
 La reprise SCI, le delta et les droits CONNECT, la livraison applicative et la
 recette de production ne sont pas effectués. D06 reste acquis ; aucune ouverture publique.
 

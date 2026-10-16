@@ -13,7 +13,7 @@
     "directoryPermissions": "0755",
     "database": "daje3540_pimprod",
     "databaseCreated": true,
-    "applicationDatabaseUserCreated": false,
+    "applicationDatabaseUserCreated": true,
     "schemaInitialized": false,
     "applicationCandidateInstalled": false,
     "privateApplicationConfigurationCreated": false,
@@ -22,7 +22,8 @@
       "name": "cgi-bin",
       "realDirectoryNotSymlink": true,
       "entries": 0
-    }
+    },
+    "applicationDatabaseUserCreatedBy": "human_through_cpanel_standard_ui"
   },
   "https": {
     "certificateInstalledThroughCpanel": true,
@@ -73,8 +74,8 @@
     "productionLaunchKeyConfigured": false
   },
   "ci": {
-    "headSha": "90ad61855a6d5d10aeee4f79d81ba829ae895d6d",
-    "runUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38869180045",
+    "headSha": "cc5a9a8ebfc6a2fc0de59f5affdd80cf58199b86",
+    "runUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38874230706",
     "status": "passed",
     "selectiveTransferAssertions": 35,
     "apiStorageAssertions": 30,
@@ -87,7 +88,10 @@
     "Created new empty document root with refusal before domain registration.",
     "Created only the selected production subdomain and dedicated database.",
     "Issued and installed the selected domain certificate through DNS validation.",
-    "Staged source-only initializer outside web in 0600; read-only preflight stopped before credential or schema creation."
+    "Staged source-only initializer outside web in 0600; read-only preflight stopped before credential or schema creation.",
+    "Human created the new dedicated SQL user through standard cPanel UI; no password read or changed by agent.",
+    "Applied exactly seven bootstrap privileges to the dedicated database after explicit human action-time confirmation.",
+    "Staged five hash-verified private source files; no configuration, documents or tool execution."
   ],
   "noChangesTo": [
     "preproduction data or files",
@@ -97,7 +101,7 @@
     "human phase decisions"
   ],
   "remaining": [
-    "Human creation of the dedicated SQL user in standard cPanel UI; then private configuration, SQL vacancy check and schema initialization. Prepared initializer is not host-qualified.",
+    "Human masked-TTY entry of existing SQL password into no-UAPI initialization; SQL grant/vacancy check before schema, then UI removal of CREATE and REFERENCES and runtime grant verification.",
     "Qualify actual target recovery and candidate rollback, including only the CONNECT elements concerned.",
     "Export the selected source case at the stable cutover, simulate, apply and replay the exact transfer.",
     "Connect only the selected production account, verify access isolation and run production recipe and backup checks."
@@ -109,9 +113,59 @@
     "filePermissions": "0600",
     "sha256": "4116ebc2ab43cec3a98e7f43126d63c7fe78ee2272ccf76843b439c19c10215a",
     "hostedReadOnlyPreflight": "blocked_before_credential_creation",
-    "cause": "UAPI JSON stdin route requires unavailable /usr/local/cpanel/cpanel in the jailed session; ordinary read-only UAPI works.",
+    "cause": "Both JSON stdin and ordinary UAPI CLI failed in the reopened jailed terminal: required /usr/local/cpanel/cpanel is absent. Earlier ordinary-read observation does not qualify current capability.",
     "writeModeExecuted": false,
     "qualifiedForHostedInitialization": false,
-    "nextStep": "Human creates only the new dedicated SQL user through standard cPanel MySQL UI; no password in chat or command arguments."
+    "nextStep": "Human initializes with existing SQL password through masked /dev/tty in the no-UAPI variant; SQL grant/vacancy checks before schema. Remove CREATE and REFERENCES in UI afterward and verify five runtime privileges.",
+    "manualAlternative": {
+      "sha256": "2ee55c7d1f62051b661437590e2b97517d3aa28b4fb02855c6de4f586d14fb6b",
+      "stagedOutsideWeb": true,
+      "mode": "0600",
+      "apiCallsMade": false,
+      "localMariaDbAssertions": 19,
+      "localPseudoTerminalAssertions": 2,
+      "hostedReadOnlyPreflight": "filesystem_ready_no_sql_check",
+      "sqlAccountChecked": false,
+      "sqlGrantsChecked": false,
+      "sqlVacancyVerified": false,
+      "writeModeExecutedByAgent": false,
+      "humanMaskedTtyInitializationPending": true
+    }
+  },
+  "recordedAt": "2026-10-16T08:49:06.307645+00:00",
+  "sqlBootstrap": {
+    "user": "daje3540_pimprod",
+    "database": "daje3540_pimprod",
+    "rights": [
+      "SELECT",
+      "INSERT",
+      "UPDATE",
+      "DELETE",
+      "CREATE TEMPORARY TABLES",
+      "CREATE",
+      "REFERENCES"
+    ],
+    "humanActionTimeConfirmation": "Oui, appliquer ces droits sur cette seule base",
+    "cpanelSaveSuccessObserved": true,
+    "runtimeRestrictionStillRequired": [
+      "CREATE",
+      "REFERENCES"
+    ],
+    "sqlPasswordReadByAgent": false,
+    "privateApplicationPasswordStored": false
+  },
+  "privateOperationsSources": {
+    "stagedOutsideWeb": true,
+    "directoryMode": "0700",
+    "fileMode": "0600",
+    "files": {
+      "backup-storage.php": "734d7ca313632792a93efaa18bc95dbc6857f057493ba67ffc51414a6e65dffb",
+      "scheduled-backup.php": "b73c6c2209c3a81175169ff680be057af017d4ab5282055f356a805f323fba74",
+      "backup-cron.php": "3e2bf449abeed38647529d51630be06abc56aef146e26154edb058bfc817e4a8",
+      "storage.sql": "b2e283afcc8e20079b5f0e07c65ebb733ad3fb9ffc8897158d166dec9186af55",
+      "transfer-property.php": "7dcb922b88141725632d28f2c03b0964f6002a212018cfde0c9996e3dcc8360a"
+    },
+    "dataOrConfigurationIncluded": false,
+    "toolsExecuted": false
   }
 }

@@ -23,6 +23,13 @@ récupération, reprise et raccordement restent à effectuer ; aucun document cl
 compte/droit CONNECT ou candidat applicatif modifié. CI nº83 réussie et ZIP public
 identique au candidat autorisé.
 
+Le responsable crée ensuite le compte SQL dédié et autorise les sept droits bootstrap
+sur cette seule base ; enregistrement cPanel vérifié. Les cinq sources privées de
+sauvegarde/reprise sont déposées avec contrôle d’empreintes, sans donnée ni exécution.
+UAPI est indisponible dans le terminal rouvert ; la configuration privée passe par
+une initialisation humaine avec saisie masquée, puis réduction aux droits utiles.
+Le schéma, la configuration et la clé de sas ne sont pas encore créés.
+
 ## 2026-10-16 — Plan CIL et reprise ciblée de production
 
 Plan proposé de quatorze actions et douze scénarios de recette, source Markdown

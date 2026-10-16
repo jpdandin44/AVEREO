@@ -29,7 +29,10 @@ la provenance des archives après la PR nº80. Aucun de ces inventaires n'est un
 Le [reçu actuel](../api/production-provisioning-observation.json) remplace l’inventaire
 initial ci-dessous pour l’état des ressources. Le dossier dédié a été créé vide
 avec refus Apache avant création du sous-domaine ; la base `daje3540_pimprod` est
-créée sans utilisateur applicatif ni initialisation. Le certificat DNS-01 est installé
+créée sans utilisateur applicatif ni initialisation. Le responsable a ensuite créé
+l’utilisateur dédié dans cPanel ; les sept droits bootstrap sont enregistrés sur
+cette seule base après son accord explicite. Le schéma et la configuration privée
+ne sont pas encore créés. Le certificat DNS-01 est installé
 pour le seul domaine prévu. Une connexion TLS avec vérification stricte du certificat
 et du nom retourne **403**, comme le navigateur intégré ; aucun contournement de
 certificat n’est utilisé. Le client Windows curl refuse encore la nouvelle chaîne ;
@@ -38,12 +41,32 @@ le contrôle indépendant utilise le magasin de confiance de Node.
 cPanel a ajouté son répertoire `cgi-bin`, réel et strictement vide ; il est conservé
 sous la fermeture du dossier. Un initialiseur technique a été déposé hors web,
 en 0600. Son précontrôle réel s’arrête avant toute création d’identifiant : la voie
-UAPI JSON sur entrée standard exige un binaire absent de la session cloisonnée,
-alors que les commandes de lecture ordinaires fonctionnent. Les tests locaux ne
-qualifient donc pas cet initialiseur sur l’hébergement ; ne pas le lancer en écriture.
-La reprise passe par l’interface MySQL standard : création humaine du seul utilisateur
-`daje3540_pimprod`, puis configuration privée et contrôle SQL de vacuité avant schéma.
+UAPI exige un binaire absent de la session cloisonnée. La relecture dans un terminal
+rouvert confirme que la commande ordinaire est également indisponible ; l’observation
+antérieure d’une lecture réussie ne qualifie pas cette capacité courante.
+Les tests locaux ne qualifient donc pas cet initialiseur sur l’hébergement ; ne pas
+le lancer en écriture. La reprise utilise le compte `daje3540_pimprod` créé par le
+responsable et les droits attribués dans l’interface MySQL standard : SELECT, INSERT,
+UPDATE, DELETE, CREATE TEMPORARY TABLES, CREATE et REFERENCES. Une initialisation
+sans UAPI demandera le mot de passe existant sur le terminal masqué, puis contrôlera
+les droits et la vacuité SQL avant le schéma. CREATE et REFERENCES devront ensuite
+être retirés, et les cinq droits d’exploitation vérifiés avant activation.
 Aucun mot de passe ne doit transiter dans le chat ou les arguments d’une commande.
+
+La variante privée sans UAPI est déposée en 0600 et son empreinte 2ee55c7d… est relue.
+Son précontrôle réel retourne `filesystem_ready_no_sql_check` : fermeture et chemins
+vérifiés, aucun contrôle de compte, droits ou vacuité SQL revendiqué à ce stade.
+Les essais isolés couvrent 19 assertions MariaDB et deux saisies sur pseudo-terminal,
+avec masquage et restauration de l’écho en sortie normale ou erreur. Le responsable
+doit exécuter l’initialisation et saisir le mot de passe lui-même ; aucun mode
+d’écriture de cette variante n’a encore été lancé. Une interruption SIGINT/SIGTERM
+n’est pas gérée ; rétablir l’écho par `stty echo` si nécessaire, puis examiner l’état
+avant toute reprise. Une saisie erronée ou des droits/tables inattendus arrêtent
+la procédure avant création de configuration ou clé.
+
+Les quatre sources de sauvegarde et le CLI de reprise sont déposés dans un nouveau
+répertoire privé d’opérations (0700, fichiers 0600), empreintes relues. Ce dépôt
+ne contient ni configuration ni document client et n’exécute aucun de ces outils.
 
 Le responsable confirme le compte de production **dandin**, trouvé actif avec
 onboarding terminé et appartenance owner active. Le compte source préproduction
