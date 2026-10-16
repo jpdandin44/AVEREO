@@ -132,7 +132,7 @@
   "applicationArtifactChanged": false,
   "applicationDataChanged": false,
   "previousProductionEvidence": "api/production-verification-observation.json",
-  "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et les PR Drupal nº25/nº22 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés.",
+  "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et la PR opératoire Drupal nº25 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés. La source OAuth nº22 est déjà fusionnée humainement dans la branche Gin ; cette acceptation est conservée, sans la convertir en revue du site.",
   "securityAuthorization": {
     "recordedAt": "2026-10-16T14:03:17.474281+00:00",
     "source": "direct_user_chat_reply",
@@ -167,7 +167,7 @@
   },
   "initialSitePullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/21",
   "currentProgress": {
-    "observedAt": "2026-10-16T16:40:21.991962+00:00",
+    "observedAt": "2026-10-16T16:56:14.453901+00:00",
     "siteOperationsPullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/25",
     "canonicalSiteEvidence": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/security-contrib-hosted-20261016/data/recette-securite-site-active.json",
     "status": "site_preproduction_technically_qualified_production_review_pending",
@@ -186,6 +186,17 @@
       "turnId": "01a1456b-4478-7ca2-9f90-133f47c30522",
       "quote": "Nouvelle connexion et deux applications accessibles",
       "scope": "Fresh Chrome login at connect-preprod.avereo.fr then Rapport and Passeport Immo; not production/site delivery acceptance."
+    },
+    "sharedSourceHumanMerge": {
+      "state": "MERGED",
+      "mergedAt": "2026-10-16T16:36:25Z",
+      "headRefOid": "7a06c2b377a386a645efe05dcfb4cd0b363491b3",
+      "baseRefName": "fix/security-gin-preproduction-20261016",
+      "mergeCommit": {
+        "oid": "8cd0d2a393e5f4172466fdab3ec442a1c43b3ebc"
+      },
+      "url": "https://github.com/jpdandin44/avereo-site-drupal/pull/22",
+      "scope": "Human merge of OAuth PR22 into the Gin branch; not main, not site-preproduction phase acceptance or production delivery."
     }
   },
   "oauthDeploymentEnvironment": "site_preproduction_only",
