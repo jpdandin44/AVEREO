@@ -24,7 +24,46 @@ la fusion de la PR nº81, les contrôles DNS/HTTPS, l'inventaire cPanel et la pr
 locale. La [preuve précédente](../api/preparation-production-observation.json) conserve
 la provenance des archives après la PR nº80. Aucun de ces inventaires n'est un reçu de livraison.
 
-## Accord récupéré et préparation courante — 16 octobre
+## Provisionnement fermé du 16 octobre
+
+Le [reçu actuel](../api/production-provisioning-observation.json) remplace l’inventaire
+initial ci-dessous pour l’état des ressources. Le dossier dédié a été créé vide
+avec refus Apache avant création du sous-domaine ; la base `daje3540_pimprod` est
+créée sans utilisateur applicatif ni initialisation. Le certificat DNS-01 est installé
+pour le seul domaine prévu. Une connexion TLS avec vérification stricte du certificat
+et du nom retourne **403**, comme le navigateur intégré ; aucun contournement de
+certificat n’est utilisé. Le client Windows curl refuse encore la nouvelle chaîne ;
+le contrôle indépendant utilise le magasin de confiance de Node.
+
+cPanel a ajouté son répertoire `cgi-bin`, réel et strictement vide ; il est conservé
+sous la fermeture du dossier. Un initialiseur technique a été déposé hors web,
+en 0600. Son précontrôle réel s’arrête avant toute création d’identifiant : la voie
+UAPI JSON sur entrée standard exige un binaire absent de la session cloisonnée,
+alors que les commandes de lecture ordinaires fonctionnent. Les tests locaux ne
+qualifient donc pas cet initialiseur sur l’hébergement ; ne pas le lancer en écriture.
+La reprise passe par l’interface MySQL standard : création humaine du seul utilisateur
+`daje3540_pimprod`, puis configuration privée et contrôle SQL de vacuité avant schéma.
+Aucun mot de passe ne doit transiter dans le chat ou les arguments d’une commande.
+
+Le responsable confirme le compte de production **dandin**, trouvé actif avec
+onboarding terminé et appartenance owner active. Le compte source préproduction
+reste **avereo_admin** ; les identifiants de stockage sont lus séparément.
+Leurs sujets externes et issuers diffèrent : le rattachement repose sur ce choix
+explicite, sans prétendre établir une égalité technique entre les identités.
+Le dossier SCI et ses six documents actifs/trois archives sont relus à
+**08:05:04 UTC**, avec contrôle des neuf tailles et empreintes. L’export final
+reste à stabiliser avant copie. Les deux fichiers CONNECT correspondent encore
+aux préconditions du delta qualifié ; ni delta, ni clé, ni droit ne sont installés.
+
+La CI de la PR nº83, tête `90ad61855a6d5d10aeee4f79d81ba829ae895d6d`, passe les
+contrôles de reprise (35), API/stockage (30) et sauvegarde (22). L’archive publique
+téléchargée contient les mêmes seize fichiers et conserve l’empreinte c44f397f…
+autorisée. La cible reste **non prête pour activation** : identifiants techniques,
+configuration privée, schéma, récupération et retour arrière sont encore à préparer,
+puis reprise SCI et raccordement/recette réels. Aucun candidat applicatif, document
+client ou compte/droit CONNECT n’a été modifié par le provisionnement fermé.
+
+## Accord récupéré et inventaire initial — 16 octobre
 
 La [PR nº83](https://github.com/jpdandin44/AVEREO/pull/83) publie cette préparation
 en brouillon et porte sa revue. Sa fusion reste distincte de l'accord opérationnel
@@ -43,7 +82,7 @@ Le suivi référence D06 sans inventer une nouvelle décision ni demander de ré
 cet accord. La phase 3 est en préparation ; aucune installation ou reprise de données
 n'est effectuée. Une ouverture publique ne fait pas partie de cet accord.
 
-L'inventaire cPanel du 16 octobre confirme l'absence du sous-domaine de production,
+L'inventaire cPanel initial du 16 octobre confirmait l'absence du sous-domaine de production,
 de la base `daje3540_pimprod` et du compte SQL proposé du même nom. Le dossier cible,
 les fichiers CONNECT et le propriétaire restent à relire avant intervention.
 Le contrôle de passage reconnaît la revue et l'accord ; il conserve quatre motifs
@@ -115,7 +154,7 @@ Il contient les trois outils PHP de sauvegarde et `storage.sql`, hors archive pu
 Les quatre contenus sont vérifiés contre leur manifeste et les sources fusionnées.
 Ce lot ne contient aucune configuration ni donnée du serveur.
 
-## Qualification de la cible
+## Historique de qualification de la cible avant provisionnement
 
 L'adresse de production **`https://passeport-immo.avereo.fr` est confirmée par le
 responsable le 15 octobre 2026**. L'inventaire authentifié suivant a été réalisé

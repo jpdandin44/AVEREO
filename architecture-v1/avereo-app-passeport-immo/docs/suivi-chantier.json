@@ -313,7 +313,7 @@
         "Procédure, fumée et retour arrière vérifiés par le responsable.",
         "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.",
+      "nextAction": "Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.",
       "legacyPhaseId": 4,
       "authorizedOn": "2026-10-16",
       "startEvidence": {
@@ -321,9 +321,9 @@
         "basis": "Accord explicite de passage en production dans le commentaire de la décision existante."
       },
       "blockers": [
-        "Cible de production non provisionnée : domaine et base dédiée absents dans cPanel le 16 octobre ; raccordement CONNECT et configuration à qualifier.",
-        "Inventaire SCI après recette et correspondance du propriétaire CONNECT à qualifier ; reprise ciblée et rejeu qualifiés localement, application et vérification sur cible réelle encore à effectuer ; exclure les dossiers de test.",
-        "Sauvegarde/restauration de la cible et retour arrière du candidat exact non qualifiés en production."
+        "Cible fermée créée avec domaine, TLS et base dédiée ; compte SQL, configuration privée, schéma et raccordement CONNECT encore à initialiser.",
+        "Compte destinataire confirmé et neuf documents SCI vérifiés ; export final stable, application et rejeu sur cible réelle encore à effectuer.",
+        "Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/83",
@@ -331,8 +331,8 @@
         "number": 83,
         "state": "open",
         "draft": true,
-        "headSha": "0395dbc1ce9c447680ed3ca708253b2b1a3b16ae",
-        "observedAt": "2026-10-16T07:25:52.728Z",
+        "headSha": "90ad61855a6d5d10aeee4f79d81ba829ae895d6d",
+        "observedAt": "2026-10-16T07:46:52.833Z",
         "scope": "Préparation de production après D06 : reprise ciblée SCI qualifiée localement et plan CIL séparé ; aucune livraison ni nouvelle validation.",
         "mergedAt": null,
         "mergeCommitSha": null,
@@ -1170,14 +1170,15 @@
       "production": {
         "id": "o2switch:daje3540:passeport-immo.avereo.fr",
         "ready": false,
-        "evidence": "api/production-readiness-observation.json#targetObservation",
-        "observedAt": "2026-10-16T07:13:59+00:00",
+        "evidence": "api/production-provisioning-observation.json",
+        "observedAt": "2026-10-16T08:09:19+00:00",
         "address": "https://passeport-immo.avereo.fr",
-        "qualificationStatus": "human_authorized_not_provisioned",
+        "qualificationStatus": "closed_domain_tls_and_database_created_private_initialization_pending",
         "proposedDirectory": "/home/daje3540/passeport-immo.avereo.fr/public",
         "provider": "o2switch",
         "proposedAccount": "daje3540",
-        "provisioned": false
+        "provisioned": false,
+        "closedResourcesCreated": true
       }
     },
     "github": {
@@ -1456,6 +1457,14 @@
         "status": "passed",
         "observedAt": "2026-10-16T07:05:11.475Z",
         "evidence": "docs/suivi-chantier.json#decisions/D06 ; huit critères humains, six empreintes vérifiées dans api/production-readiness-observation.json"
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "90ad61855a6d5d10aeee4f79d81ba829ae895d6d",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "observedAt": "2026-10-16T08:09:19+00:00",
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38869180045 ; 35 reprise, 30 API/stockage, 22 sauvegarde ; ZIP téléchargé identique, seize fichiers."
       }
     ],
     "approvals": [
@@ -1598,11 +1607,11 @@
       "observedAt": null
     },
     "blockers": [
-      "Cible de production non provisionnée : domaine et base dédiée absents dans cPanel le 16 octobre ; raccordement CONNECT et configuration à qualifier.",
-      "Inventaire SCI après recette et correspondance du propriétaire CONNECT à qualifier ; reprise ciblée et rejeu qualifiés localement, application et vérification sur cible réelle encore à effectuer ; exclure les dossiers de test.",
-      "Sauvegarde/restauration de la cible et retour arrière du candidat exact non qualifiés en production."
+      "Cible fermée créée avec domaine, TLS et base dédiée ; compte SQL, configuration privée, schéma et raccordement CONNECT encore à initialiser.",
+      "Compte destinataire confirmé et neuf documents SCI vérifiés ; export final stable, application et rejeu sur cible réelle encore à effectuer.",
+      "Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production."
     ],
-    "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.",
+    "nextAction": "Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.",
     "nextIteration": [
       "À cadrer : service CIL complet selon docs/plan-action-cil.md ; quatorze actions et douze scénarios proposés, Word dérivé dans docs/livrables/plan-action-cil.docx. Périmètre distinct du candidat courant, aucune validation CIL créée.",
       "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
@@ -1626,7 +1635,7 @@
       },
       "production": {
         "status": "in_progress",
-        "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée."
+        "nextAction": "Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique."
       }
     },
     "gates": [
@@ -2320,7 +2329,7 @@
       "addressStatus": "confirmed_by_user",
       "productionTargetQualified": false,
       "phaseStarted": true,
-      "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.",
+      "nextAction": "Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.",
       "readiness": [
         {
           "id": "candidate",
@@ -2334,13 +2343,13 @@
         },
         {
           "id": "production_target_and_connect",
-          "status": "domain_and_database_absence_reconfirmed",
-          "evidence": "api/production-readiness-observation.json#targetObservation"
+          "status": "domain_tls_and_database_created_connect_and_storage_initialization_pending",
+          "evidence": "api/production-provisioning-observation.json"
         },
         {
           "id": "initial_data_scope",
-          "status": "selective_transfer_locally_verified_real_inventory_owner_and_application_pending",
-          "evidence": "api/property-transfer-observation.json"
+          "status": "owner_confirmed_nine_blobs_verified_final_export_and_application_pending",
+          "evidence": "api/production-provisioning-observation.json#sourceInventory"
         },
         {
           "id": "production_recovery_and_rollback",
@@ -2368,16 +2377,16 @@
         "scope": "Choix du nom de domaine uniquement ; qualification technique et déploiement distincts."
       },
       "qualification": {
-        "status": "inventory_complete_provisioning_and_connect_pending",
+        "status": "closed_resources_created_owner_confirmed_storage_initialization_pending",
         "observedAt": "2026-10-15T18:29:46.848+00:00",
         "evidence": "api/qualification-production-observation.json",
         "publicDns": "nxdomain_two_resolvers",
         "privateAccess": "authenticated_inventory_complete",
         "closedBundlePrepared": true,
         "connectDeltaPrepared": true,
-        "remoteMutation": false,
+        "remoteMutation": true,
         "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/82",
-        "latestObservation": "api/production-readiness-observation.json#targetObservation",
+        "latestObservation": "api/production-provisioning-observation.json",
         "mergedPullRequestObservedAt": "2026-10-16T07:13:59+00:00"
       },
       "closedInstallation": {
@@ -2404,7 +2413,7 @@
         "localDirectory": ".local/production-qualification-20261015/backup-production"
       },
       "initialData": {
-        "status": "scope_confirmed_preparation_pending",
+        "status": "owner_confirmed_inventory_refreshed_real_transfer_pending",
         "selection": "preproduction_sci_case",
         "recordedAt": "2026-10-15T19:22:54.301+00:00",
         "source": "user_chat_reply",
@@ -2414,8 +2423,8 @@
         "targetRef": "developmentWorkflow.targets.production",
         "sourceEvidence": "api/storage-observation.json",
         "planRef": "docs/04-mise-en-production.md#reprise-du-dossier-sci",
-        "sourceInventoryStatus": "refresh_required_after_human_recipe_before_transfer",
-        "productionOwnerMappingStatus": "not_qualified",
+        "sourceInventoryStatus": "refreshed_20261016_nine_blobs_final_stable_export_still_required",
+        "productionOwnerMappingStatus": "explicit_user_mapping_and_active_target_verified",
         "transferStatus": "not_performed",
         "authorizationScope": "Choix des données à intégrer au plan uniquement ; aucune autorisation de transfert, de déploiement ou de passage de phase.",
         "productionAuthorizationRef": "D06",
@@ -2426,10 +2435,18 @@
           "evidence": "api/property-transfer-observation.json",
           "localAssertions": 35,
           "realTransferPerformed": false
+        },
+        "ownerMapping": {
+          "sourceOwner": "avereo_connect:1",
+          "targetOwner": "avereo_connect:1",
+          "source": "user_chat_reply_and_read_only_account_checks",
+          "reference": "Réponse directe du responsable : Oui, rattacher au compte dandin.",
+          "sameExternalIdentityClaimed": false,
+          "evidence": "api/production-provisioning-observation.json#ownerMapping"
         }
       },
       "latestReadinessEvidence": "api/production-readiness-observation.json",
-      "updatedAt": "2026-10-16T07:39:22+00:00",
+      "updatedAt": "2026-10-16T08:09:19+00:00",
       "productionAuthorizationRef": "D06",
       "remainingGateErrors": [
         "Blocages présents ou non renseignés.",
@@ -2446,7 +2463,9 @@
         "headSha": "b9018378104b092fed05fe6cd4c06a6ea7f3be44",
         "observedAt": "2026-10-16T07:24:45+00:00",
         "scope": "Préparation de production après D06 : reprise ciblée SCI qualifiée localement et plan CIL séparé ; aucune livraison ni nouvelle validation."
-      }
+      },
+      "provisioningEvidence": "api/production-provisioning-observation.json",
+      "privateInitializationStatus": "human_mysql_ui_handoff_required_json_stdin_unavailable"
     }
   },
   "reviewFollowUps": [

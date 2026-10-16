@@ -56,7 +56,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Production — En cours**.
-Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.
+Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-16T06:38:24+00:00.
 
@@ -79,7 +79,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
 | Préproduction | Validée | Phase 2 approuvée par D06 le 16 octobre ; six livrables et huit critères examinés, dont la sauvegarde nocturne. |
-| Production | En cours | Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée. |
+| Production | En cours | Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique. |
 
 ### Candidat et GitHub
 
@@ -120,6 +120,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | Documentation | Réussi | 2026-10-15T10:03:25.433202+00:00 |
 | hosted_backup | Réussi | 2026-10-15T13:36:34+00:00 |
 | preproduction | Réussi | 2026-10-16T07:05:11.475Z |
+| GitHub Actions | Réussi | 2026-10-16T08:09:19+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -147,6 +148,7 @@ Preuves du candidat identifié ci-dessus :
 - Documentation : 42 documents Markdown et 256 liens locaux contrôlés ; socles racine/application, métadonnées, vues et empreintes approuvées conservés.
 - hosted_backup : api/automatic-backup-observation.json ; cron réel, quatre tables/neuf fichiers, retour temporaire, permissions et autres tâches vérifiés.
 - preproduction : docs/suivi-chantier.json#decisions/D06 ; huit critères humains, six empreintes vérifiées dans api/production-readiness-observation.json
+- GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38869180045 ; 35 reprise, 30 API/stockage, 22 sauvegarde ; ZIP téléchargé identique, seize fichiers.
 
 ### Contrôles de passage
 
@@ -160,11 +162,11 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- Cible de production non provisionnée : domaine et base dédiée absents dans cPanel le 16 octobre ; raccordement CONNECT et configuration à qualifier.
-- Inventaire SCI après recette et correspondance du propriétaire CONNECT à qualifier ; reprise ciblée et rejeu qualifiés localement, application et vérification sur cible réelle encore à effectuer ; exclure les dossiers de test.
-- Sauvegarde/restauration de la cible et retour arrière du candidat exact non qualifiés en production.
+- Cible fermée créée avec domaine, TLS et base dédiée ; compte SQL, configuration privée, schéma et raccordement CONNECT encore à initialiser.
+- Compte destinataire confirmé et neuf documents SCI vérifiés ; export final stable, application et rejeu sur cible réelle encore à effectuer.
+- Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production.
 
-Prochaine action : Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.
+Prochaine action : Créer manuellement le seul utilisateur SQL dédié dans cPanel, puis initialiser la configuration privée et le schéma après contrôle de vacuité. Qualifier récupération/retour arrière, exporter, appliquer et rejouer le dossier SCI pour le compte de production confirmé. D06 reste acquis ; aucune ouverture publique.
 
 ### Accords et livraison
 

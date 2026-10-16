@@ -386,17 +386,21 @@ sur la cible convenue et le dossier SCI, avec le candidat déjà contrôlé ; le
 CIL ne modifie pas ces octets et ne crée pas une nouvelle condition fonctionnelle
 pour cette livraison.
 
+Le domaine fermé, le certificat et la base dédiée sont créés. Le compte cible
+est confirmé et les neuf fichiers SCI sont contrôlés ; le stockage de production
+reste à initialiser avant toute reprise réelle.
+
 | Prérequis actuel | Action à terminer | Preuve attendue |
 |---|---|---|
-| Cible fermée | Qualifier domaine, TLS, runtime, base dédiée, espaces privés et isolement | Inventaire réel, refus anonyme et constat de vacuité ou sauvegarde de l’état présent |
-| Compte et dossier SCI | Identifier le propriétaire CONNECT de production et préparer une reprise ciblée, répétable sans doublon | Correspondance des comptes et inventaire du seul bien ; contrôle des actifs, archives et empreintes |
+| Cible fermée | Initialiser le compte SQL, le schéma et les espaces privés ; conserver le refus d’accès pendant les contrôles | Inventaire réel, schéma isolé et constat de vacuité ou sauvegarde de l’état présent |
+| Compte et dossier SCI | Stabiliser l’export final puis appliquer et rejouer la reprise ciblée pour le compte confirmé | Correspondance des comptes et inventaire du seul bien ; contrôle des actifs, archives et empreintes |
 | Récupération | Préserver les seuls éléments CONNECT touchés puis sauvegarder les données et fichiers repris | Restauration isolée vérifiée et copie fraîche avant écriture |
 | Retour arrière | Qualifier fermeture, restauration des éléments concernés et préservation des nouvelles données | Répétition isolée et contrôle de passage fondé sur les preuves réelles |
 
 Les contrôles locaux des archives et contrats sont disponibles dans le point de
-reprise technique. Ils ne prouvent pas l’état de la future cible. L’outillage de
-reprise ciblée est un prérequis de cette livraison ; son développement et ses
-essais peuvent avancer pendant la préparation CIL.
+reprise technique. L’outillage de reprise ciblée passe 35 contrôles sur des données
+fictives ; son application sur le dossier réel reste à effectuer. La préparation
+de cette livraison continue pendant le cadrage CIL.
 
 ## Contrôles après livraison
 

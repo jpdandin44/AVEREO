@@ -30,9 +30,10 @@ restent à cadrer dans une itération distincte de la production actuelle.
 
 La PR nº82 est fusionnée et la décision D06 du 16 octobre approuve la Préproduction,
 avec ses huit critères, dont la sauvegarde nocturne. Le commentaire du responsable
-autorise le passage en production. La phase 3 est en préparation : domaine et base
-de production toujours absents dans cPanel le 16 octobre ; le raccordement CONNECT,
-le propriétaire, la reprise SCI et la récupération restent à qualifier.
+autorise le passage en production. La phase 3 est en préparation : le domaine et la
+base dédiée sont créés le 16 octobre, avec un dossier vide fermé et HTTPS vérifié
+(403 anonyme). Le propriétaire cible est confirmé et l’inventaire SCI relu ;
+l’initialisation technique, le raccordement, le transfert et la récupération restent à réaliser.
 Le [dossier de mise en production](docs/04-mise-en-production.md) donne les preuves,
 les emplacements proposés et la séquence d'installation dans le périmètre autorisé.
 
@@ -43,12 +44,14 @@ Le responsable retient la reprise du dossier SCI de préproduction ; le
 [plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci) inclut ses
 documents actifs et archivés. Le [suivi canonique](docs/suivi-chantier.json) référence
 l'accord D06 sans nouvelle décision ; le [reçu courant](api/production-readiness-observation.json)
-vérifie le candidat identique après fusion. Aucun transfert ou déploiement effectué.
+vérifie le candidat identique après fusion. Le [reçu de provisionnement fermé](api/production-provisioning-observation.json)
+décrit les créations réelles et leurs limites. Aucun transfert SCI ni livraison applicative effectué.
 
 La [reprise ciblée d’un bien](workflows/reprise-bien.md) est maintenant exécutable
 et qualifiée localement avec 35 assertions sous MariaDB, sur données fictives.
 Elle simule avant écriture et refuse les conflits ; le transfert SCI réel attend
-la qualification du propriétaire, de la cible, de la récupération et du retour arrière.
+l’initialisation de la cible, la récupération et le retour arrière. Le compte de
+production choisi est confirmé, et les six actifs/trois archives sont vérifiés de nouveau.
 
 ## Recette de préproduction et décision de phase
 

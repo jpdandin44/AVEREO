@@ -12,6 +12,17 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-16 — Ressources de production créées et fermées
+
+Dossier dédié créé vide et fermé avant enregistrement du sous-domaine ; base dédiée
+créée sans utilisateur applicatif ni schéma. Certificat DNS-01 installé et HTTPS
+contrôlé avec vérification stricte : 403 anonyme. Compte destinataire confirmé par
+le responsable, inventaire SCI relu et neuf fichiers vérifiés ; préconditions du
+delta CONNECT inchangées. Reçu, suivi et procédures actualisés. Initialisation,
+récupération, reprise et raccordement restent à effectuer ; aucun document client,
+compte/droit CONNECT ou candidat applicatif modifié. CI nº83 réussie et ZIP public
+identique au candidat autorisé.
+
 ## 2026-10-16 — Plan CIL et reprise ciblée de production
 
 Plan proposé de quatorze actions et douze scénarios de recette, source Markdown

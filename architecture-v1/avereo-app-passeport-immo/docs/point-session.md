@@ -22,13 +22,27 @@ et audit d’accessibilité réussis. Le [workflow de génération](../workflows
 conserve la source Markdown comme référence. Le futur lot est mentionné dans
 `developmentWorkflow.nextIteration`, sans modifier les décisions du lot courant.
 
-La session cPanel disponible affiche de nouveau l’identification et un jeton
-de sécurité manquant. Une reconnexion a été demandée au responsable ; aucun
-identifiant n’est demandé dans le chat. Cette absence d’accès empêche de qualifier
-la cible réelle et d’y poursuivre l’installation maintenant. Les prérequis et
-l’accord D06 ci-dessous restent conservés ; aucune livraison n’est déclarée.
+La session cPanel a été reconnectée par le responsable. Domaine et dossier fermé,
+base dédiée et certificat sont créés ; HTTPS vérifié, accès anonyme refusé (403).
+Le compte de production dandin est confirmé explicitement et trouvé actif/completed ;
+les neuf fichiers SCI sont réempreintés, six actifs et trois archives. Les deux
+fichiers CONNECT sont encore compatibles avec le delta préparé. La CI de la PR nº83
+passe sur `90ad618` ; son archive téléchargée est identique au candidat c44f397f…
+Voir le [reçu courant](../api/production-provisioning-observation.json).
 
-## Suite du 16 octobre — reprise ciblée préparée en parallèle du plan CIL
+**Prochaine action :** création des nouveaux identifiants techniques via la reprise
+manuelle préparée dans cPanel, puis configuration privée/schéma et qualification
+de récupération/retour arrière. La règle de sécurité du navigateur impose de laisser
+l’humain effectuer la création de nouvelles informations d’authentification.
+Le précontrôle de l’initialiseur privé a révélé que la voie UAPI JSON sur entrée
+standard n’est pas disponible dans la session cloisonnée : aucun identifiant ni
+schéma n’a été créé. L’interface MySQL standard est préparée avec le suffixe
+`pimprod` ; le responsable doit saisir, confirmer et valider le nouveau mot de passe.
+Ne pas utiliser le mode d’écriture de cet initialiseur non qualifié sur la cible.
+La reprise SCI, le delta et les droits CONNECT, la livraison applicative et la
+recette de production ne sont pas effectués. D06 reste acquis ; aucune ouverture publique.
+
+## Historique local du 16 octobre — reprise ciblée préparée en parallèle du plan CIL
 
 Le [mécanisme privé de reprise d'un bien](../workflows/reprise-bien.md) est produit
 et qualifié localement avec **35 assertions sous MariaDB 11.4**, sur deux bases

@@ -27,17 +27,19 @@ La décision D06 approuve la phase 2, dont le critère 07, et son commentaire au
 le passage en production. La PR nº82 est fusionnée ; l'archive de sa CI reste
 identique au candidat examiné. Voir le [reçu courant](api/production-readiness-observation.json)
 et le [point de session](docs/point-session.md).
-La phase 3 est en préparation. Priorité : cible fermée, propriétaire CONNECT,
-inventaire SCI après recette et reprise ciblée sans doublon, récupération et retour
+La phase 3 est en préparation. Domaine, dossier fermé, base dédiée et certificat
+sont créés ; compte cible confirmé et neuf documents SCI vérifiés. Priorité :
+initialisation technique, reprise ciblée sans doublon, récupération et retour
 arrière. L'installation et les contrôles réels suivent après qualification ;
 aucune ouverture publique n'est autorisée par cette préparation.
 
 La reprise ciblée est qualifiée localement sur deux bases MariaDB fictives,
-avec simulation et rejeu sans doublon. La correspondance du propriétaire réel,
-l’inventaire frais et l’application sur la cible restent à effectuer selon la
-[procédure privée](workflows/reprise-bien.md).
+avec simulation et rejeu sans doublon. L’application sur la cible et la stabilisation
+de l’export final restent à effectuer selon la [procédure privée](workflows/reprise-bien.md).
+Le [reçu de provisionnement](api/production-provisioning-observation.json) conserve
+les constats serveur et les limites réelles.
 
-## Suite après fusion de la PR nº81
+## Historique — suite après fusion de la PR nº81
 
 L'inventaire cPanel et les contrôles publics sont réalisés. Le
 [dossier de mise en production](docs/04-mise-en-production.md) décrit la cible
