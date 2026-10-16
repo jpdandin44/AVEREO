@@ -26,33 +26,28 @@ priorités, dépendances, livrables, critères et douze scénarios de recette. S
 selon le [workflow documentaire](workflows/generation-plan-cil.md). Les évolutions
 restent à cadrer dans une itération distincte de la production actuelle.
 
-## Suite après fusion de la PR nº82 et validation de Préproduction
+## Production privée — candidat fermé installé et SCI reprise
 
-La PR nº82 est fusionnée et la décision D06 du 16 octobre approuve la Préproduction,
-avec ses huit critères, dont la sauvegarde nocturne. Le commentaire du responsable
-autorise le passage en production. La phase 3 est en préparation : le domaine et la
-base dédiée sont créés le 16 octobre, avec un dossier vide fermé et HTTPS vérifié
-(403 anonyme). Le propriétaire cible est confirmé et l’inventaire SCI relu ;
-l’initialisation technique, le raccordement, le transfert et la récupération restent à réaliser.
-Le [dossier de mise en production](docs/04-mise-en-production.md) donne les preuves,
-les emplacements proposés et la séquence d'installation dans le périmètre autorisé.
+Le 16 octobre, après l’accord D06, le candidat de seize fichiers est installé sur
+`https://passeport-immo.avereo.fr` avec une fermeture totale. Le dossier SCI est
+repris pour le compte confirmé `dandin` : un bien, un client, six documents actifs
+et trois archivés. Le rejeu est sans doublon ni changement de révision. La copie
+des quatre tables et neuf fichiers est restaurée dans des espaces isolés ; les
+octets et métadonnées concordent. La source n’est pas modifiée.
 
-Une archive initialement fermée et l'adaptation minimale de CONNECT sont préparées
-localement. L'outillage de sauvegarde distingue désormais préproduction et production,
-avec des tâches indépendantes ; ses sources sont déposées hors web sans configuration
-ni exécution de production.
-Le responsable retient la reprise du dossier SCI de préproduction ; le
-[plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci) inclut ses
-documents actifs et archivés. Le [suivi canonique](docs/suivi-chantier.json) référence
-l'accord D06 sans nouvelle décision ; le [reçu courant](api/production-readiness-observation.json)
-vérifie le candidat identique après fusion. Le [reçu de provisionnement fermé](api/production-provisioning-observation.json)
-décrit les créations réelles et leurs limites. Aucun transfert SCI ni livraison applicative effectué.
+Les cinq droits SQL utiles sont vérifiés, CREATE et REFERENCES retirés. Le stockage
+web reste désactivé. Le raccordement CONNECT, la politique signée et la sauvegarde
+automatique de production sont préparés et répétés isolément, sans activation réelle.
+L’action finale est remise au responsable selon la règle de sécurité du navigateur
+pour le raccordement de la clé et les nouveaux accès. La recette authentifiée et
+le vrai déclenchement cron restent ensuite à vérifier ; aucune ouverture publique.
 
-La [reprise ciblée d’un bien](workflows/reprise-bien.md) est maintenant exécutable
-et qualifiée localement avec 35 assertions sous MariaDB, sur données fictives.
-Elle simule avant écriture et refuse les conflits ; le transfert SCI réel attend
-l’initialisation de la cible, la récupération et le retour arrière. Le compte de
-production choisi est confirmé, et les six actifs/trois archives sont vérifiés de nouveau.
+Le compte `famille` conserve son accès de préproduction selon la confirmation humaine.
+Les méthodes serveur lui refusent le bien SCI et chacun de ses neuf documents.
+La [preuve courante](api/production-execution-observation.json), le
+[dossier de production](docs/04-mise-en-production.md) et la
+[procédure d’activation](workflows/activation-production.md) donnent les limites et la suite.
+La Préproduction reste approuvée par D06, la phase 3 reste en cours et la PR nº83 en brouillon.
 
 ## Recette de préproduction et décision de phase
 

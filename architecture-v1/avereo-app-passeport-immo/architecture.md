@@ -12,24 +12,27 @@ tags: [passeport-immo, local]
 
 # Architecture Passeport Immo
 
-## Ressources de production fermées — 16 octobre
+## Production privée — 16 octobre
 
-Le domaine `passeport-immo.avereo.fr`, sa racine dédiée et le certificat HTTPS
-sont créés ; Apache refuse encore tout accès anonyme. La base `daje3540_pimprod`
-est distincte de CONNECT et de la préproduction. Son utilisateur dédié est créé
-par le responsable, avec les sept droits bootstrap attribués sur cette seule base.
-Le schéma, la configuration privée et la clé indépendante restent à initialiser ;
-CREATE et REFERENCES devront ensuite être retirés au profit des cinq droits utiles.
-Le candidat public, le raccordement CONNECT et les données SCI ne sont pas installés.
+Le domaine, le certificat HTTPS, la base `daje3540_pimprod` et les dossiers privés
+sont dédiés à la production. Après initialisation par le responsable, les droits
+permanents sont SELECT, INSERT, UPDATE, DELETE et CREATE TEMPORARY TABLES.
+Configuration 0600 et dossiers privés 0700 ; CREATE et REFERENCES sont retirés.
 
-Le propriétaire destinataire est le compte de production `dandin`, retenu explicitement
-par le responsable après comparaison avec `avereo_admin` en préproduction. La reprise
-utilise les identifiants de stockage lus dans chaque environnement ; leur égalité
-textuelle ne constitue pas une identité externe commune. Le CLI privé de reprise et
-les sources de sauvegarde sont déposés hors web, sans configuration ni données.
-Le [reçu courant](api/production-provisioning-observation.json) et le
-[dossier de production](docs/04-mise-en-production.md) distinguent ces ressources
-de la qualification de récupération, du transfert et de l’activation encore à réaliser.
+Seize fichiers du candidat sont installés avec la variante fermée de `.htaccess`.
+La base contient un espace, un client, le seul bien SCI et neuf métadonnées/fichiers,
+dont trois archives, repris selon le mapping explicitement confirmé vers `dandin`.
+Le texte identique des identifiants entre environnements ne prouve pas une identité
+externe commune. Simulation, import, rejeu sans révision et sauvegarde/restauration
+isolée sont vérifiés sur la cible réelle. Les sources sont conservées.
+
+La configuration web reste désactivée et le domaine fermé. Le
+[raccordement privé](workflows/activation-production.md) prépare les deux fichiers
+CONNECT, deux configurations et la politique signée du candidat. Sa répétition
+hébergée utilise une copie privée et des tables temporaires ; le catalogue actif
+reste inchangé. L’accès réel et la sauvegarde planifiée de production attendent
+l’exécution humaine finale. Le [reçu courant](api/production-execution-observation.json)
+distingue cette préparation de l’activation et de la recette navigateur.
 
 ## Sauvegarde privée planifiée
 

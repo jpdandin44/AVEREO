@@ -24,7 +24,49 @@ la fusion de la PR nº81, les contrôles DNS/HTTPS, l'inventaire cPanel et la pr
 locale. La [preuve précédente](../api/preparation-production-observation.json) conserve
 la provenance des archives après la PR nº80. Aucun de ces inventaires n'est un reçu de livraison.
 
-## Provisionnement fermé du 16 octobre
+## État courant — installation fermée et reprise SCI du 16 octobre
+
+Le [reçu d’exécution](../api/production-execution-observation.json) est la source
+structurée de l’avancement courant. Les constats ci-dessous remplacent les états
+de préparation historiques conservés plus bas.
+
+| Contrôle réel | Résultat observé, UTC |
+|---|---|
+| Initialisation humaine et restriction SQL | 09:00:13 : quatre tables initialement vides, cinq droits utiles, configuration 0600/dossiers 0700 |
+| Récupération CONNECT isolée | 09:16:34 : cinq fichiers et catalogue restaurés, delta de deux fichiers appliqué/retiré sur copie, dépôt réel vérifié en tables temporaires |
+| Archives et isolement famille | 09:27:05 : trois ZIP conformes ; accès famille conservé, bien SCI et neuf documents refusés par les méthodes serveur |
+| Reprise SCI réelle | 09:28:44 : un bien, un client, six actifs/trois archives ; export stable, import et rejeu exact sans doublon ; source inchangée |
+| Sauvegarde SCI | Quatre tables restaurées temporairement et neuf fichiers restaurés dans un dossier privé séparé ; empreintes et métadonnées conformes |
+| Installation fermée | 09:31:42 : seize fichiers conformes à la variante fermée ; `cgi-bin` vide conservé, stockage web désactivé |
+| Activation répétée isolément | 09:44:01 : deux fichiers CONNECT, deux configurations et politique signée ; propriétaire permis et autre compte existant refusé dans trois tables temporaires ; retour arrière vérifié ; accès réels inchangés |
+
+Le contrôle de passage production ne rapporte plus de réserve technique pour
+l’installation fermée. Il ne réalise pas l’activation et ne valide pas la phase 3.
+HTTPS strict confirme le certificat et le refus 403 à la racine ; les trois contrôles
+rapprochés suivants ont reçu 429, sans contenu applicatif, et ne prouvent pas le
+comportement final du sas. La recette authentifiée reste à effectuer après activation.
+
+La [procédure d’activation](../workflows/activation-production.md) conserve le script
+exact, sa qualification et les effets de l’action finale préparée : clé existante
+copiée uniquement sur le serveur, accès `dandin`, refus explicites des autres membres
+actuels, stockage web, sas signé et sauvegarde de production séparée. La planification
+préparée est 03 h 20 Europe/Paris, rattrapage horaire, trente copies vérifiées.
+Elle n’est pas encore installée et aucun vrai succès cron de production n’est revendiqué.
+
+Le responsable doit exécuter l’action qui raccorde la clé et crée les accès, selon
+la règle de sécurité du navigateur. D06 reste acquis pour cette cible et ce candidat ;
+les critères humains et le merge restent inchangés. Aucun accès public n’est ouvert.
+La sauvegarde reste sur le même hébergement ; copie distante et alertes non qualifiées.
+
+## Historique — initialisation privée qualifiée à 09:00:13 UTC
+
+Le responsable a initialisé les quatre tables vides et la configuration privée,
+puis CREATE et REFERENCES ont été retirés. Les cinq droits utiles sont relus dans
+SQL et testés dans une table temporaire. Aucun secret n’est restitué.
+La [réserve famille](controle-candidat-preproduction.md) est levée par confirmation
+humaine du maintien d’accès ; aucun droit de préproduction n’est modifié.
+
+## Historique — provisionnement fermé avant initialisation du 16 octobre
 
 Le [reçu actuel](../api/production-provisioning-observation.json) remplace l’inventaire
 initial ci-dessous pour l’état des ressources. Le dossier dédié a été créé vide
@@ -86,7 +128,7 @@ configuration privée, schéma, récupération et retour arrière sont encore à
 puis reprise SCI et raccordement/recette réels. Aucun candidat applicatif, document
 client ou compte/droit CONNECT n’a été modifié par le provisionnement fermé.
 
-## Accord récupéré et inventaire initial — 16 octobre
+## Historique — accord récupéré et inventaire initial — 16 octobre
 
 La [PR nº83](https://github.com/jpdandin44/AVEREO/pull/83) publie cette préparation
 en brouillon et porte sa revue. Sa fusion reste distincte de l'accord opérationnel

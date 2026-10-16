@@ -21,23 +21,22 @@ douze scénarios proposés ; cadrage, moyens et calendrier restent à arrêter.
 Le Word est dérivé de cette source. Ce travail accompagne la production actuelle
 sans modifier son candidat ni ajouter de condition fonctionnelle à D06.
 
-## Suite du 16 octobre — préparer la production autorisée
+## Suite du 16 octobre — terminer l’activation privée
 
-La décision D06 approuve la phase 2, dont le critère 07, et son commentaire autorise
-le passage en production. La PR nº82 est fusionnée ; l'archive de sa CI reste
-identique au candidat examiné. Voir le [reçu courant](api/production-readiness-observation.json)
-et le [point de session](docs/point-session.md).
-La phase 3 est en préparation. Domaine, dossier fermé, base dédiée et certificat
-sont créés ; compte cible confirmé et neuf documents SCI vérifiés. Priorité :
-initialisation technique, reprise ciblée sans doublon, récupération et retour
-arrière. L'installation et les contrôles réels suivent après qualification ;
-aucune ouverture publique n'est autorisée par cette préparation.
+D06 valide la Préproduction et autorise le passage en production du candidat examiné.
+Le domaine fermé et les ressources dédiées sont créés, le candidat installé et le
+dossier SCI repris pour `dandin`. Le rejeu ne crée aucun doublon. Les quatre tables,
+neuf documents et les éléments CONNECT concernés ont des copies restaurées isolément.
 
-La reprise ciblée est qualifiée localement sur deux bases MariaDB fictives,
-avec simulation et rejeu sans doublon. L’application sur la cible et la stabilisation
-de l’export final restent à effectuer selon la [procédure privée](workflows/reprise-bien.md).
-Le [reçu de provisionnement](api/production-provisioning-observation.json) conserve
-les constats serveur et les limites réelles.
+Le raccordement et la sauvegarde automatique de production sont préparés et répétés
+sans modifier les accès réels. Prochaine action : exécution humaine finale selon la
+[procédure](workflows/activation-production.md), puis recette authentifiée et preuve
+d’un vrai déclenchement cron. L’ouverture publique reste distincte. Le
+[reçu d’exécution](api/production-execution-observation.json) et le
+[point de session](docs/point-session.md) portent l’avancement courant.
+
+Le compte famille conserve son accès de préproduction, avec isolement SCI vérifié.
+Le plan CIL reste une proposition pour l’itération suivante.
 
 ## Historique — suite après fusion de la PR nº81
 

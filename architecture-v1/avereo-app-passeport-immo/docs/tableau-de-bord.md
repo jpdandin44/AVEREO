@@ -56,7 +56,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Production — En cours**.
-Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique.
+Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-16T06:38:24+00:00.
 
@@ -79,7 +79,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
 | Préproduction | Validée | Phase 2 approuvée par D06 le 16 octobre ; six livrables et huit critères examinés, dont la sauvegarde nocturne. |
-| Production | En cours | Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique. |
+| Production | En cours | Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés. |
 
 ### Candidat et GitHub
 
@@ -162,17 +162,14 @@ Preuves du candidat identifié ci-dessus :
 
 ### Blocages de passage
 
-- Cible fermée créée avec domaine, TLS et base dédiée ; compte SQL, configuration privée, schéma et raccordement CONNECT encore à initialiser.
-- Compte destinataire confirmé et neuf documents SCI vérifiés ; export final stable, application et rejeu sur cible réelle encore à effectuer.
-- Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production.
-- Revue complémentaire du 16 octobre : confirmer l’accès CONNECT du compte interne 2, actif contrairement au relevé historique ; aucun droit modifié.
+Aucun blocage déclaré.
 
-Prochaine action : Initialiser la configuration privée avec saisie masquée du mot de passe existant par le responsable, contrôler la vacuité SQL avant schéma puis retirer CREATE et REFERENCES et vérifier les cinq droits utiles. Qualifier récupération/retour arrière, puis reprise SCI et raccordement. D06 reste acquis ; aucune ouverture publique.
+Prochaine action : Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés.
 
 ### Accords et livraison
 
-Accords spécifiques enregistrés : 5. Sauvegardes qualifiées : 6.
-Retour arrière : non testé. Livraison : non réalisée.
+Accords spécifiques enregistrés : 5. Sauvegardes qualifiées : 8.
+Retour arrière : testé. Livraison : non réalisée.
 Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
 
 ### Suite proposée
@@ -300,4 +297,4 @@ Dossier après PR nº82 et D06 : accord de production récupéré, candidat iden
 - Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.
 - Procédure, fumée et retour arrière vérifiés par le responsable.
 
-**Contrôle complémentaire du candidat et réserve de droits** — Document disponible (`controle-candidat-preproduction.md`).
+**Contrôle complémentaire du candidat et réserve de droits levée** — Document disponible (`controle-candidat-preproduction.md`).

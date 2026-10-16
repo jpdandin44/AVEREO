@@ -12,6 +12,18 @@ tags: [passeport-immo, local]
 
 # Vérification de la reprise
 
+## Qualification hébergée de production du 16 octobre
+
+Le [reçu courant](../api/production-execution-observation.json) distingue les tests
+locaux des opérations réellement exécutées : import SCI et rejeu exact, récupération
+de quatre tables et neuf fichiers, archives et candidat installé fermé, répétition
+du delta CONNECT et de l’activation avec retour arrière isolé. Les méthodes réelles
+de stockage refusent les neuf documents SCI au compte famille. Le dépôt réel CONNECT
+autorise seulement le compte sélectionné parmi les comptes actuels lors de la
+répétition temporaire. Aucune de ces preuves ne remplace la recette OAuth/navigateur
+ou un vrai déclenchement cron de production. Voir la
+[procédure d’activation](../workflows/activation-production.md).
+
 ## Reprise ciblée d'un bien
 
 `python tests/check-transfer-property.py` exécute 35 assertions sur deux bases

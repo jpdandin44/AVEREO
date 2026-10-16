@@ -12,6 +12,32 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-16 — Candidat fermé installé et dossier SCI repris
+
+Reprise réelle du seul bien/client SCI, six documents actifs et trois archivés,
+avec stabilité de source, import, rejeu sans doublon et sauvegarde restaurée sur
+quatre tables temporaires et neuf fichiers privés séparés. Candidat de seize
+fichiers posé fermé après qualification de récupération et retour arrière hébergés.
+Raccordement final préparé et répété isolément, sans activation réelle. Script,
+procédure, reçu, suivi et documents structurants actualisés ; D06 et les preuves
+figées préservés. Sauvegarde planifiée et recette de production restent à terminer.
+
+## 2026-10-16 — Réserve sur les accès de préproduction levée
+
+Le responsable confirme le maintien de Rapport et Passeport Immo pour le compte
+famille en préproduction. Le [complément de contrôle](docs/controle-candidat-preproduction.md)
+et le cockpit clôturent cette seule réserve ; les droits, D06, ses quinze documents
+approuvés et les autres prérequis de production restent conservés.
+
+## 2026-10-16 — Initialisation privée et réduction des droits vérifiées
+
+Après exécution humaine avec saisie masquée, quatre tables vides, configuration 0600
+et dossiers 0700 vérifiés. CREATE et REFERENCES retirés ; cinq droits utiles relus
+dans SQL et opérations vérifiées en table temporaire. Stockage désactivé et site fermé,
+sans candidat, changement CONNECT ou transfert SCI. Reçu d’exécution, suivi et
+documents structurants actualisés ; réserve parallèle de préproduction conservée
+à cette étape, puis levée par la confirmation humaine consignée ci-dessus.
+
 ## 2026-10-16 — Ressources de production créées et fermées
 
 Dossier dédié créé vide et fermé avant enregistrement du sous-domaine ; base dédiée

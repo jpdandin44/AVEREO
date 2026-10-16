@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "kind": "production_execution_qualification",
+  "recordedAt": "2026-10-16T09:42:56.719716+00:00",
+  "humanAuthorizationRef": "D06",
+  "target": "https://passeport-immo.avereo.fr/",
+  "initialization": {
+    "observedAt": "2026-10-16T09:00:13+00:00",
+    "humanExecutedInitialization": true,
+    "database": "daje3540_pimprod",
+    "tables": 4,
+    "applicationRows": 0,
+    "documentFiles": 0,
+    "schemaSha256": "b2e283afcc8e20079b5f0e07c65ebb733ad3fb9ffc8897158d166dec9186af55",
+    "runtimePrivileges": [
+      "SELECT",
+      "INSERT",
+      "UPDATE",
+      "DELETE",
+      "CREATE TEMPORARY TABLES"
+    ],
+    "createAndReferencesRemoved": true,
+    "sqlGrantsAndTemporaryDmlVerified": true,
+    "privateConfigurationMode": "0600",
+    "privateDirectoryMode": "0700",
+    "storageEnabled": false,
+    "independentGateKeyPresent": true,
+    "secretValuesReturned": false,
+    "publicClosureSha256": "662250ed11ca5df085734be329a89115a4ac6bc80e3f1314914a1d4d01fa6efa"
+  },
+  "recoveryAndRollback": {
+    "status": "hosted_isolated_recovery_and_candidate_file_rollback_passed",
+    "connectObservedAt": "2026-10-16T09:16:34+00:00",
+    "connectFilesBackedUpAndRestored": 5,
+    "connectCatalogueTemporaryRestore": "passed",
+    "actualRepositorySelectedOwnerAllowed": true,
+    "actualRepositoryOtherExistingUserDenied": true,
+    "liveConnectChanged": false,
+    "closedCandidateRollbackObservedAt": "2026-10-16T09:30:39+00:00",
+    "closedCandidateFiles": 16,
+    "closedCandidateRestoredToInitialPolicy": true,
+    "generatedFilesRetainedPrivately": true,
+    "businessDataChangedByRehearsal": false,
+    "limitations": [
+      "Isolated application and CONNECT recovery; not a complete hosting disaster-recovery test.",
+      "Refresh the affected CONNECT baseline before actual activation; never overwrite unrelated subsequent catalogue changes."
+    ]
+  },
+  "selectiveSciTransfer": {
+    "status": "imported_replay_and_isolated_recovery_passed",
+    "ownerMappingConfirmedByUser": true,
+    "productionAccount": "dandin",
+    "observedAt": "2026-10-16T09:28:44+00:00",
+    "properties": 1,
+    "clients": 1,
+    "activeDocuments": 6,
+    "archivedDocuments": 3,
+    "documentFiles": 9,
+    "allMetadataAndBlobHashesVerified": true,
+    "sourceStableDuringImport": true,
+    "sourceRowsChanged": false,
+    "replay": "already_imported_without_revision_change",
+    "backupTables": 4,
+    "backupDocuments": 9,
+    "temporaryRowRestore": "passed",
+    "isolatedFileRestore": "passed",
+    "storageEnabledOnDisk": false
+  },
+  "candidateInstallation": {
+    "status": "installed_closed",
+    "sha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "archivesObservedAt": "2026-10-16T09:27:05+00:00",
+    "publicCandidateFiles": 16,
+    "closedBundleSha256": "9e9bde15d4b2c625967053220fc79f5a602ef2ab01a6a5fc3fdf537ee01b0404",
+    "closedStageFiles": 16,
+    "connectDeltaFiles": 2,
+    "phpCliVersion": "8.3.35",
+    "targetInitialVacancyVerified": true,
+    "emptyCgiBinPreserved": true,
+    "observedAt": "2026-10-16T09:31:42+00:00",
+    "files": 16,
+    "publicClosure": "Require all denied",
+    "storageEnabled": false
+  },
+  "applicationActivation": {
+    "performed": false,
+    "publicOpeningPerformed": false,
+    "status": "prepared_and_isolated_rehearsal_passed_human_execution_pending",
+    "preparedAt": "2026-10-16T09:44:01+00:00",
+    "tool": "workflows/activation-production.php",
+    "toolSha256": "68da781d562826a306c5ad5adff09d97dde0f446538af02e44cb3fc2c158e50f",
+    "privateFileAndTemporarySqlRollback": "passed",
+    "otherCurrentAccountsDeniedInRehearsal": 1,
+    "liveConnectChanged": false,
+    "newSecretGenerated": false,
+    "exactPublishedSourceRequalified": true,
+    "previousRehearsalRetainedPrivately": true
+  },
+  "browserUploadAccess": {
+    "status": "manual_file_manager_opened_and_three_archives_uploaded",
+    "overwriteExistingFiles": false,
+    "destination": "private preparation directory outside web root",
+    "secretsIncluded": false,
+    "clientDocumentsIncluded": false
+  },
+  "remaining": [
+    "Human execution of the exact prepared activation: existing key, limited dandin access and production-only backup schedule.",
+    "Authenticated production browser recipe, document integrity/isolation/logout and real cron success, followed by qualification-entry finalization.",
+    "Human phase criteria and PR review remain separate; no public opening."
+  ],
+  "preproductionFamilyScope": {
+    "humanChoice": "Conserver aussi l’accès du compte famille",
+    "source": "direct_user_reply_in_this_chat",
+    "userId": 2,
+    "existingAccessRetained": true,
+    "rightsChanged": false,
+    "isolationObservedAt": "2026-10-16T09:27:05+00:00",
+    "selectedPropertyDenied": true,
+    "selectedDocumentsDenied": 9,
+    "businessRowsWritten": false,
+    "productionScopeUnchanged": "dandin only",
+    "limitation": "Server storage methods and live catalogue predicate checked; not an authenticated family browser recipe."
+  },
+  "productionAutomaticBackup": {
+    "status": "prepared_not_installed",
+    "schedule": "daily 03:20 Europe/Paris with hourly catch-up",
+    "retentionSuccessfulCopies": 30,
+    "location": "private_on_same_hosting",
+    "realCronSuccessVerified": false,
+    "temporaryQualificationEntryMustBeFinalized": true,
+    "offHostCopyAndAlerts": "not_qualified"
+  },
+  "postClosedInstallationHttps": {
+    "tlsValidation": "strict_passed",
+    "rootStatus": 403,
+    "subsequentRapidChecks": {
+      "/api/session": 429,
+      "/connect/gate.php": 429,
+      "/assets/index-B1rPDbH_.js": 429
+    },
+    "interpretation": "No content returned; 429 responses do not qualify the final application gate."
+  }
+}

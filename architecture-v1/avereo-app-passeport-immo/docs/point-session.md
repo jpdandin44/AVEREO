@@ -14,10 +14,36 @@ tags: [passeport-immo, local, cockpit]
 
 ## Contrôle complémentaire de préproduction — 16 octobre
 
-Le [complément de contrôle](controle-candidat-preproduction.md) consigne la nouvelle recette ciblée : candidat applicatif inchangé, neuf documents conservés, réserve à réconcilier sur le droit CONNECT explicite du compte interne 2. D06 et ses quinze documents approuvés restent intacts. La préparation de production ci-dessous conserve sa prochaine action et ses prérequis.
+Le [complément de contrôle](controle-candidat-preproduction.md) consigne la nouvelle recette ciblée : candidat applicatif inchangé, neuf documents conservés, réserve sur le compte famille levée après confirmation du maintien de Rapport et Passeport Immo en préproduction. D06 et ses quinze documents approuvés restent intacts. La préparation de production ci-dessous conserve sa prochaine action et ses prérequis.
 
 
-## Plan CIL livré le 16 octobre
+## Suite courante — candidat installé fermé, SCI reprise
+
+Le [reçu courant](../api/production-execution-observation.json) consigne le candidat
+fermé installé à 09:31:42 UTC et la reprise SCI qualifiée à 09:28:44 UTC : un bien,
+un client, six actifs/trois archives, rejeu sans doublon et sans changement de révision.
+La sauvegarde des quatre tables et neuf fichiers est restaurée isolément. Les sources,
+les décisions humaines et les 21 références d’empreintes approuvées sont conservées.
+
+Le compte famille conserve son accès de préproduction ; les méthodes serveur lui
+refusent le bien SCI et ses neuf documents. La réserve historique est levée.
+Le gestionnaire a été ouvert manuellement et les trois archives transférées hors web.
+
+Le raccordement final est préparé et répété sur copie privée/tables temporaires à
+09:44:01 UTC. Les accès réels CONNECT restent inchangés, le stockage web désactivé
+et la cible fermée. La [procédure](../workflows/activation-production.md) décrit le
+script exact et la sauvegarde prévue, 03 h 20 Europe/Paris avec trente copies vérifiées.
+
+**Prochaine action :** le responsable exécute la commande finale préparée dans
+cPanel, car elle raccorde la clé existante et crée un nouvel accès. Contrôler ensuite
+le reçu, le lancement CONNECT de `dandin`, le dossier SCI, l’isolement, la déconnexion
+et un vrai succès cron avant retrait de l’entrée temporaire de qualification.
+Ne pas relancer après un échec sans lire les reçus et copies privées.
+
+La PR nº83 reste en brouillon. D06 demeure acquis ; aucune nouvelle validation de
+phase ni ouverture publique. Le plan CIL reste séparé et son Word est dérivé du Markdown.
+
+## Historique — plan CIL livré et reprise privée préparée le 16 octobre
 
 Le [plan d’action CIL](plan-action-cil.md) et son [Word](livrables/plan-action-cil.docx)
 sont produits : quatorze actions avec dépendances, livrables et critères, douze
