@@ -12,15 +12,21 @@ tags: [avereo, documentation, local]
 
 # Roadmap Passeport Immo
 
-## Suite après fusion de la PR nº80
+## Suite après fusion de la PR nº81
 
-Le [dossier de mise en production](docs/04-mise-en-production.md) est préparé.
-La CI de `main` et la relecture de son archive établissent l'équivalence avec le
-candidat installé en préproduction. Les prochaines actions sont la décision de
-phase 2 dans le cockpit, puis la qualification de la cible retenue
-`https://passeport-immo.avereo.fr`, de CONNECT, du contenu initial et de la récupération.
-Le responsable a confirmé cette adresse le 15 octobre 2026.
-La phase 3 n'est pas démarrée ; le déploiement attend son accord exact.
+L'inventaire cPanel et les contrôles publics sont réalisés. Le
+[dossier de mise en production](docs/04-mise-en-production.md) décrit la cible
+absente, les trois paramètres de code CONNECT à ajouter, les lots préparés et la
+récupération à qualifier. L'outillage de sauvegarde adapté est testé localement.
+L'archive applicative publique reste identique au candidat installé en préproduction.
+
+Le dossier SCI de préproduction est retenu pour les données initiales, selon le
+[plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci), sans transfert effectué.
+Prochaines actions : consigner la revue de phase 2, qualifier le propriétaire
+CONNECT et actualiser l'inventaire SCI, puis autoriser la création de la cible
+fermée, le raccordement et le transfert exacts de production.
+La récupération hébergée, le compte autorisé, la recette authentifiée et les accords
+restent à traiter avant activation. La phase 3 n'est pas démarrée.
 
 La copie hors hébergement et les alertes de sauvegarde restent des propositions
 à prioriser. L'échec du workflow GitHub Pages du prototype est consigné séparément

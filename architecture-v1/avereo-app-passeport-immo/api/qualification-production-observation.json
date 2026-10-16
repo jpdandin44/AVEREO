@@ -1,0 +1,443 @@
+{
+  "schemaVersion": 1,
+  "kind": "production_target_qualification",
+  "observedAt": "2026-10-15T18:19:39.064+00:00",
+  "scope": "Read-only GitHub, public DNS/HTTPS, anonymous browser, authenticated cPanel inventory and read-only CONNECT database transaction; local closed bundle preparation. No hosted mutation.",
+  "requestReference": "Demande directe après fusion de la PR nº81 : passer à la suite.",
+  "github": {
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/81",
+    "state": "merged",
+    "headSha": "5e287e23ccdd70b2c6a5b0a0e48628351c0b2d7e",
+    "mergeCommitSha": "2995a2b95003016df0fefa84b34353c34dc5fee0",
+    "mergedAt": "2026-10-15T17:58:57Z",
+    "mergedBy": "jpdandinavereo-design",
+    "humanChecklistChecked": 4,
+    "mainTreeEqualToReviewedHead": true,
+    "mainCi": [
+      {
+        "id": 38781823276,
+        "name": "Deploy Prototype To GitHub Pages",
+        "status": "completed",
+        "conclusion": "failure",
+        "head_sha": "2995a2b95003016df0fefa84b34353c34dc5fee0",
+        "html_url": "https://github.com/jpdandin44/AVEREO/actions/runs/38781823276"
+      },
+      {
+        "id": 38781822914,
+        "name": "CI",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "2995a2b95003016df0fefa84b34353c34dc5fee0",
+        "html_url": "https://github.com/jpdandin44/AVEREO/actions/runs/38781822914"
+      },
+      {
+        "id": 38781823500,
+        "name": "Passeport Immo CI",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "2995a2b95003016df0fefa84b34353c34dc5fee0",
+        "html_url": "https://github.com/jpdandin44/AVEREO/actions/runs/38781823500"
+      }
+    ],
+    "changedFilesSincePreviousVerifiedMain": [
+      "architecture-v1/avereo-app-passeport-immo/README.md",
+      "architecture-v1/avereo-app-passeport-immo/api/preparation-production-observation.json",
+      "architecture-v1/avereo-app-passeport-immo/changelog.md",
+      "architecture-v1/avereo-app-passeport-immo/docs/04-mise-en-production.md",
+      "architecture-v1/avereo-app-passeport-immo/docs/README.md",
+      "architecture-v1/avereo-app-passeport-immo/docs/actualiser-tableau-de-bord.py",
+      "architecture-v1/avereo-app-passeport-immo/docs/deployment.md",
+      "architecture-v1/avereo-app-passeport-immo/docs/point-session.md",
+      "architecture-v1/avereo-app-passeport-immo/docs/suivi-chantier.json",
+      "architecture-v1/avereo-app-passeport-immo/docs/tableau-de-bord.html",
+      "architecture-v1/avereo-app-passeport-immo/docs/tableau-de-bord.md",
+      "architecture-v1/avereo-app-passeport-immo/requirements.md",
+      "architecture-v1/avereo-app-passeport-immo/roadmap.md",
+      "architecture-v1/avereo-app-passeport-immo/workflows/developpement-github-cockpit.md"
+    ],
+    "runtimeSourcesUnchanged": true
+  },
+  "publicObservations": [
+    {
+      "host": "passeport-immo.avereo.fr",
+      "observedAt": "2026-10-15T18:03:49.841+00:00",
+      "method": "anonymous_dns_and_https_get",
+      "dns": {
+        "status": "unresolved_from_local_resolver",
+        "code": 11001
+      },
+      "https": {}
+    },
+    {
+      "host": "connect.avereo.fr",
+      "observedAt": "2026-10-15T18:03:49.841+00:00",
+      "method": "anonymous_dns_and_https_get",
+      "dns": {
+        "status": "resolved",
+        "addresses": [
+          "109.234.166.140"
+        ]
+      },
+      "https": {
+        "status": 200,
+        "finalUrl": "https://connect.avereo.fr/",
+        "contentType": "text/html",
+        "xRobotsTag": null,
+        "authenticationScheme": null,
+        "observedBodySha256": "cdcf2f8154b8acf2cd4448fed88c880cf6e0ad74a93f431bab2e63c583ae8b62",
+        "bytesRead": 37394
+      },
+      "tls": {
+        "status": "verified",
+        "notAfter": "Dec 22 21:02:00 2026 GMT",
+        "dnsNames": [
+          "connect.avereo.fr",
+          "www.connect.avereo.fr"
+        ]
+      }
+    }
+  ],
+  "independentDns": [
+    {
+      "resolver": "cloudflare",
+      "name": "passeport-immo.avereo.fr",
+      "type": "A",
+      "observedAt": "2026-10-15T18:05:52.989+00:00",
+      "dnsStatus": 3,
+      "answers": [],
+      "authority": [
+        {
+          "name": "avereo.fr",
+          "type": 6,
+          "TTL": 86400,
+          "data": "ns1.o2switch.net. sysadmin.o2switch.fr. 2026101403 3600 1800 1209600 86400"
+        }
+      ]
+    },
+    {
+      "resolver": "google",
+      "name": "passeport-immo.avereo.fr",
+      "type": "A",
+      "observedAt": "2026-10-15T18:05:52.992+00:00",
+      "dnsStatus": 3,
+      "answers": [],
+      "authority": [
+        {
+          "name": "avereo.fr.",
+          "type": 6,
+          "TTL": 1800,
+          "data": "ns1.o2switch.net. sysadmin.o2switch.fr. 2026101403 3600 1800 1209600 86400"
+        }
+      ]
+    }
+  ],
+  "connectBrowser": {
+    "address": "https://connect.avereo.fr/",
+    "title": "AVEREO CONNECT",
+    "state": "anonymous_login_page",
+    "visibleLoginLink": "https://connect.avereo.fr/api/v1/auth/login",
+    "observedAt": "2026-10-15T18:09:45.908+00:00",
+    "authenticatedRecipePerformed": false,
+    "limitation": "La page de connexion ne prouve ni la configuration, ni le catalogue, ni les droits Passeport Immo en production."
+  },
+  "privateHostingAccess": {
+    "status": "authenticated_inventory_complete",
+    "observedAt": "2026-10-15T18:19:39.064+00:00",
+    "accessReference": "Réponse directe du responsable : Connecté dans cPanel.",
+    "provider": "o2switch",
+    "account": "daje3540",
+    "homeDirectory": "/home/daje3540",
+    "inventoryPerformed": true,
+    "configuredSubdomainsCount": 22,
+    "productionSubdomainDeclared": false,
+    "existingPreproductionRoot": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+    "proposedProductionRoot": "/home/daje3540/passeport-immo.avereo.fr/public",
+    "productionApplicationParentExists": false,
+    "productionDocumentRootExists": false,
+    "productionApplicationConfigDirectoryExists": false,
+    "productionNonceDirectoryExists": false,
+    "productionBackupDirectoryExists": false,
+    "mysqlDatabasesCount": 12,
+    "passeportPreproductionDatabasePresent": true,
+    "passeportProductionDatabaseIdentified": false,
+    "proposedDatabaseNameAvailableInInventory": true,
+    "proposedDatabaseName": "daje3540_pimprod",
+    "databaseInventoryLimitation": "Aucune base identifiée pour Passeport Immo production ; aucun contenu des autres bases métier inspecté.",
+    "secretValuesReadOut": false,
+    "remoteFilesWritten": false,
+    "databaseRowsChanged": false,
+    "phpCli": {
+      "version": "8.3.35",
+      "pdoMysqlLoaded": true,
+      "webRuntimeVerified": false
+    },
+    "configurationLimitation": "Existence et permissions vérifiées ; configuration CONNECT lue sur serveur pour ne restituer que des indicateurs et la base concernée, sans valeur de secret.",
+    "recoveryLimitation": "Répertoire connect-preprod-recovery observé ; aucune récupération de production démontrée ni restauration exécutée."
+  },
+  "closedInstallation": {
+    "candidateSourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+    "candidateArtifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "bundleSha256": "9e9bde15d4b2c625967053220fc79f5a602ef2ab01a6a5fc3fdf537ee01b0404",
+    "files": [
+      {
+        "path": ".htaccess",
+        "sha256": "5128268a58777bae14746abd31c6915f963807279f9f15596c0c0e66cda92c52",
+        "size": 248
+      },
+      {
+        "path": ".user.ini",
+        "sha256": "9140d459d58a6abd46a4b08fb49a1df84ace9ec7617b901034446997c9fb8b96",
+        "size": 91
+      },
+      {
+        "path": "api/index.php",
+        "sha256": "2430a150dc423f7b42e17eb6434ab067f3c2c18a0f2ee5dacf4e67c28883470d",
+        "size": 5223
+      },
+      {
+        "path": "api/storage.php",
+        "sha256": "2d9c1bd0b65c8c2e936eb5d6f1693a3d7ddce5850eac224894385bda9ab681ff",
+        "size": 13117
+      },
+      {
+        "path": "assets/index-B1rPDbH_.js",
+        "sha256": "bbed44495fc88d56414d089e208140091513efc9f087fd4d14e60f3f471536df",
+        "size": 796460
+      },
+      {
+        "path": "assets/index-BnxaifYT.css",
+        "sha256": "76aa0604b003790b503a889a271e60d97883d30c54997841fa69c3ac287e5b8f",
+        "size": 26931
+      },
+      {
+        "path": "assets/index.es-DCbTLmDe.js",
+        "sha256": "7f2857899ca556ef0e911d4019937449380499381dc563977863d3c3c60ad5b1",
+        "size": 150852
+      },
+      {
+        "path": "assets/pdf-WgYdDwYK.js",
+        "sha256": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+        "size": 483747
+      },
+      {
+        "path": "assets/pdf.worker.min-CjEcRF4W.mjs",
+        "sha256": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+        "size": 1264342
+      },
+      {
+        "path": "assets/purify.es-BwoZCkIS.js",
+        "sha256": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+        "size": 22028
+      },
+      {
+        "path": "connect/entry.php",
+        "sha256": "4e13e9e823e95f29999bb39cdf181d1e25e7623aa711e6479c7ab89c1fc2bf3e",
+        "size": 513
+      },
+      {
+        "path": "connect/gate.php",
+        "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+        "size": 8780
+      },
+      {
+        "path": "connect/logout.php",
+        "sha256": "2612327b2b6c476b4428fb138738d93841d4b5ca5211e630266e9621fd87dc7e",
+        "size": 383
+      },
+      {
+        "path": "connect/session.php",
+        "sha256": "1d9eb147a12079971e1c6b00b596e45f84c81ac4bb47321baa41debea34d8950",
+        "size": 2392
+      },
+      {
+        "path": "index.html",
+        "sha256": "020d35d742c260d711d4291d139db2c903fd5d249f00cd67dd584f111374c04e",
+        "size": 499
+      },
+      {
+        "path": "index.php",
+        "sha256": "8fedf2a296f70e06a85fb6fa160dcee17ae85065e7ef9b26d1d09a5833b87672",
+        "size": 2437
+      }
+    ],
+    "candidateAssetsUnchanged": true,
+    "connectGateIncluded": true,
+    "runtimeAccessPolicySha256": "ba1698052b99075c426ddb5abda88a239357ad1dcb6c9efd723472e600370bb8",
+    "initialClosureReplacesRuntimePolicy": true,
+    "initialAccess": "deny_all_configuration_requires_hosted_verification",
+    "archiveReadback": "passed",
+    "restoreRehearsal": "passed_local_files_only",
+    "hostedBackupRestore": "not_verified",
+    "remoteDelivery": "not_performed",
+    "localDirectory": ".local/production-qualification-20261015/closed-installation",
+    "archiveName": "preproduction.zip",
+    "manifestName": "preproduction.manifest.json",
+    "intendedUse": "Initial closed installation preparation for production; legacy packaging names, no delivery.",
+    "unchangedRuntimeFiles": 15
+  },
+  "assessment": {
+    "status": "inventory_complete_provisioning_and_connect_pending",
+    "productionAddress": "https://passeport-immo.avereo.fr",
+    "publicDnsNameExists": false,
+    "productionReady": false,
+    "productionPhaseStarted": false,
+    "deploymentPerformed": false,
+    "publicOpeningPerformed": false,
+    "productionAuthorizationRecorded": false,
+    "nextAction": "PR nº81 fusionnée et inventaire production réalisé. Consigner la décision de phase 2 et le contenu initial, puis autoriser la cible fermée et le raccordement CONNECT exacts ; récupération et recette hébergées restent à qualifier.",
+    "privateAccessBlocked": false
+  },
+  "applications": {
+    "connect": {
+      "declared": true,
+      "address": "https://connect.avereo.fr",
+      "root": "/home/daje3540/connect.avereo.fr/public",
+      "realRoot": "/home/daje3540/connect.avereo.fr/public",
+      "codeFiles": {
+        "public/index.php": {
+          "sha256": "8d112303af417f778baf124eccbe8ac69c94aa0891cd1df11d8c9b7f593b004f",
+          "bytes": 7197,
+          "passeportLaunchSettingsPresent": false
+        },
+        "src/Config.php": {
+          "sha256": "4f18dbbc23142595eb9921af4152e184440f1b5bdceb413247d2867e3feb52b5",
+          "bytes": 7866,
+          "passeportLaunchSettingsPresent": false
+        }
+      },
+      "identifiedGitBase": {
+        "sha": "7216fb1b1439d71a68bb948f16db0f57793c1fd8",
+        "scope": "Two files only; exact SHA256 comparison repeated on server. No claim about the complete deployed runtime."
+      },
+      "configuration": {
+        "environment": "production",
+        "file": "/home/daje3540/private/connect-production/config.php",
+        "mode": "0600",
+        "oauthIssuerHost": "avereo.fr",
+        "launchUrlConfigured": false,
+        "launchSecretConfigured": false
+      },
+      "catalog": {
+        "database": "daje3540_connectprod",
+        "passeportApplicationRows": 0,
+        "passeportOrganizationAccessRows": 0,
+        "passeportUserAccessRows": 0,
+        "readOnlyTransaction": "passed_and_rolled_back",
+        "personalDataReturned": false
+      },
+      "observedAt": "2026-10-15T18:19:39.064+00:00"
+    }
+  },
+  "connectDelta": {
+    "sourceSha": "2995a2b95003016df0fefa84b34353c34dc5fee0",
+    "baseSha": "7216fb1b1439d71a68bb948f16db0f57793c1fd8",
+    "artifactSha256": "3b41fda26c0358a0a4eb3f49ebd2e132162fd737ce0078822d3e15a687884b63",
+    "files": [
+      {
+        "path": "public/index.php",
+        "expectedBeforeSha256": "8d112303af417f778baf124eccbe8ac69c94aa0891cd1df11d8c9b7f593b004f",
+        "sha256": "6568e46bfb942ab00585b512293117da01e0622f88b8f9ab1aae8263591d7bfa",
+        "size": 7278
+      },
+      {
+        "path": "src/Config.php",
+        "expectedBeforeSha256": "4f18dbbc23142595eb9921af4152e184440f1b5bdceb413247d2867e3feb52b5",
+        "sha256": "9195492276204d281eee26f71193c25b3ed2c1ca8d1d932179a5d680dcaecdc6",
+        "size": 8029
+      }
+    ],
+    "configurationIncluded": false,
+    "databaseMigrationIncluded": false,
+    "deploymentAllowed": false,
+    "precondition": "Refuser si un fichier hébergé diffère de expectedBeforeSha256.",
+    "mode": "historical_runtime_launch_settings_only",
+    "hostedReceiptSha256": "40e47d5b22556f00373560ba835dcd4dddb2ecf84e57c6cab98bf8a0eb48ba00",
+    "scope": "Trois lignes ajoutées : allowlist URL/SECRET et deux correspondances de configuration ; aucun autre changement de runtime.",
+    "localDirectory": ".local/production-qualification-20261015/connect-delta",
+    "frozenInput": ".local/production-qualification-20261015/hosted-input.json",
+    "remoteDelivery": "not_performed",
+    "backendTests": 36,
+    "gateAssertions": 15
+  },
+  "localValidation": {
+    "observedAt": "2026-10-15T18:29:46.848+00:00",
+    "pythonTests": 19,
+    "historicalConnectBackendTests": 36,
+    "connectGateAssertions": 15,
+    "storageHttpAssertions": 30,
+    "scheduledBackupAssertions": 22,
+    "database": "isolated MariaDB 11.4",
+    "productionBackupRegression": "new production configuration test failed before support was added; suite passed after correction",
+    "serverMutation": false,
+    "documentation": {
+      "foundations": [
+        "repository",
+        "application"
+      ],
+      "approvedDocumentsUnchanged": 9,
+      "unrelatedLocalFilesUnchanged": 27,
+      "humanDecisionsUnchanged": true,
+      "candidateUnchanged": true
+    }
+  },
+  "backupTooling": {
+    "status": "locally_verified_not_installed",
+    "sourceFiles": [
+      "workflows/scheduled-backup.php",
+      "workflows/backup-cron.php"
+    ],
+    "scope": "Accept production storage and add an explicitly selected cron environment, preserving other tasks. Existing hosted preproduction tooling unchanged.",
+    "productionConfiguration": "/home/daje3540/.avereo/passeport-immo/config.php",
+    "productionBackupRoot": "/home/daje3540/private/passeport-immo-backups/production",
+    "productionCronBlock": "AVEREO PASSEPORT IMMO PRODUCTION BACKUP",
+    "productionScheduleApproved": false,
+    "bundle": {
+      "sourceSha": "971e97460c90e9ae3ed36c5538491da400162982",
+      "artifactSha256": "b06e74f2528caa1887b151bb1d6052f7733388228ed710c2289cf0b6ab9ca0e8",
+      "files": [
+        {
+          "name": "backup-cron.php",
+          "size": 6491,
+          "sha256": "3e2bf449abeed38647529d51630be06abc56aef146e26154edb058bfc817e4a8"
+        },
+        {
+          "name": "backup-storage.php",
+          "size": 3970,
+          "sha256": "734d7ca313632792a93efaa18bc95dbc6857f057493ba67ffc51414a6e65dffb"
+        },
+        {
+          "name": "scheduled-backup.php",
+          "size": 7667,
+          "sha256": "b73c6c2209c3a81175169ff680be057af017d4ab5282055f356a805f323fba74"
+        },
+        {
+          "name": "storage.sql",
+          "size": 1420,
+          "sha256": "b2e283afcc8e20079b5f0e07c65ebb733ad3fb9ffc8897158d166dec9186af55"
+        }
+      ],
+      "configurationIncluded": false,
+      "dataIncluded": false,
+      "remoteDelivery": "not_performed",
+      "localDirectory": ".local/production-qualification-20261015/backup-production"
+    }
+  },
+  "productionGate": {
+    "exitCode": 1,
+    "result": {
+      "gate": "production",
+      "declaredEvidenceConsistent": false,
+      "errors": [
+        "Blocages présents ou non renseignés.",
+        "Cible de production non prouvée.",
+        "Contrôle actuel absent : preproduction sur o2switch:daje3540:passeport-immo-preprod.avereo.fr.",
+        "Accord humain exact absent : review.",
+        "Accord humain exact absent : production.",
+        "Acceptation GitHub du candidat non vérifiée.",
+        "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+        "Retour arrière de ce candidat non qualifié."
+      ],
+      "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord."
+    }
+  }
+}

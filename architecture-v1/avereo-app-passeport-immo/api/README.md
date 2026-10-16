@@ -37,3 +37,11 @@ Le [reçu de correction SSO](preproduction-sso-observation.json) conserve les ca
 successifs, récupération ciblée, contrôles CI/HTTPS et recette par ticket dans le
 navigateur intégré. Il constate l'import et la persistance des neuf documents,
 sans leurs contenus ni données personnelles ; le stockage Chrome reste distinct.
+Ce dernier constat est antérieur au [reçu de stockage serveur](storage-observation.json),
+qui vérifie le partage entre sessions. La [sauvegarde de préproduction](automatic-backup-observation.json)
+dispose de son reçu distinct.
+
+La [préparation de production](preparation-production-observation.json) conserve
+la provenance du candidat après PR nº80. La [qualification suivante](qualification-production-observation.json)
+décrit la fusion de la PR nº81, les observations DNS/HTTPS/cPanel et les lots locaux
+préparés. Elle ne constitue ni une installation ni une recette de production.

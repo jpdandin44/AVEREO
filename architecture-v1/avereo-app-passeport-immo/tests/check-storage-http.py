@@ -124,7 +124,7 @@ def run():
             backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-test'))
             check(backup['documents']==1 and backup['fileReadback']=='passed' and backup['temporaryRowRestore']=='passed','private snapshot row restoration and file readback')
             scheduled=json.loads(command('docker','exec',web,'php','/fixture/scheduled-backup-test.php'))
-            check(scheduled['assertions']==13,'scheduled backup safety and rotation')
+            check(scheduled['assertions']==22,'scheduled backup safety, rotation and environment isolation')
             command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
             check(request(path+'/file',cookie)[0]==503,'altered blob not returned')
             print(json.dumps({'assertions':len(checks),'checks':checks,'scheduledBackup':scheduled,'database':'MariaDB 11.4','isolated':True},ensure_ascii=False))

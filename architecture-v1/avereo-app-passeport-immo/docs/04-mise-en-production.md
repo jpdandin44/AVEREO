@@ -12,14 +12,19 @@ tags: [passeport-immo, production, exploitation]
 
 # Préparation de la mise en production de Passeport Immo
 
-Ce dossier prépare la suite demandée après la fusion de la
-[PR nº80](https://github.com/jpdandin44/AVEREO/pull/80). Il décrit les opérations
-à qualifier avant leur exécution. Les statuts et accords actuels font foi dans
-le [suivi canonique](suivi-chantier.json), notamment `developmentWorkflow.productionPreparation`.
-[PR nº81 en brouillon](https://github.com/jpdandin44/AVEREO/pull/81) : préparation à relire, sans livraison.
+Ce dossier prépare la suite demandée après les fusions des
+[PR nº80](https://github.com/jpdandin44/AVEREO/pull/80) et
+[PR nº81](https://github.com/jpdandin44/AVEREO/pull/81). Il décrit l'inventaire de
+production réalisé le 15 octobre et les opérations à autoriser avant leur exécution.
+Les statuts et accords actuels font foi dans le [suivi canonique](suivi-chantier.json),
+notamment `developmentWorkflow.productionPreparation`.
 
-La [preuve de préparation](../api/preparation-production-observation.json) conserve
-les observations GitHub et les vérifications des archives du 15 octobre.
+La [preuve de qualification](../api/qualification-production-observation.json) conserve
+la fusion de la PR nº81, les contrôles DNS/HTTPS, l'inventaire cPanel et la préparation
+locale. La [preuve précédente](../api/preparation-production-observation.json) conserve
+la provenance des archives après la PR nº80. Aucun de ces inventaires n'est un reçu de livraison.
+
+[PR nº82 en brouillon](https://github.com/jpdandin44/AVEREO/pull/82) : qualification et outillage de production à relire ; aucun déploiement.
 
 ## Place dans les quatre phases
 
@@ -28,13 +33,21 @@ les observations GitHub et les vérifications des archives du 15 octobre.
 | 0 — Cadrage | Local | Validée ; preuves conservées |
 | 1 — Développement local | Local | Validée ; preuves conservées |
 | 2 — Préproduction | Préproduction | PR nº80 fusionnée ; décision formelle de phase encore absente du cockpit |
-| 3 — Mise en production | Préproduction pour la revue du candidat | Dossier préparé ; phase non démarrée ; contrôles après livraison sur la production réelle |
+| 3 — Mise en production | Préproduction pour la revue du candidat | Inventaire réalisé et lots locaux préparés ; phase non démarrée ; contrôles après livraison sur la production réelle |
 
 Le responsable conserve la décision de phase, l'autorisation de déploiement
 sur une cible et une version précises, puis l'éventuelle ouverture aux utilisateurs.
 La fusion constatée ne crée aucune de ces décisions dans le suivi.
 
 ## Candidat conservé
+
+La PR nº81 est fusionnée le 15 octobre à **19 h 58 min 57 s, heure de Paris**,
+au commit `2995a2b95003016df0fefa84b34353c34dc5fee0`. Son arbre est identique à celui
+de la tête revue `5e287e23ccdd70b2c6a5b0a0e48628351c0b2d7e` ; ses quatre cases humaines
+sont observées cochées. Les workflows [CI](https://github.com/jpdandin44/AVEREO/actions/runs/38781822914)
+et [Passeport Immo CI](https://github.com/jpdandin44/AVEREO/actions/runs/38781823500)
+ont réussi. Les sources du runtime et de son packaging n'ont pas changé depuis
+la fusion précédente : le candidat public ci-dessous reste conservé.
 
 La PR nº80 a été fusionnée le 15 octobre 2026 à 17 h 11 min 21 s, heure de Paris.
 Le commit de fusion `437f2689e8ea5a0f12e055be9e2b8713bf99b1bd` possède le même arbre
@@ -67,23 +80,64 @@ Ce lot ne contient aucune configuration ni donnée du serveur.
 ## Qualification de la cible
 
 L'adresse de production **`https://passeport-immo.avereo.fr` est confirmée par le
-responsable le 15 octobre 2026**. La configuration de la cible reste à qualifier,
-sans création de domaine ni constat de disponibilité à ce stade. La cible reste non prête
-dans le cockpit tant que les éléments suivants n'ont pas leurs preuves.
+responsable le 15 octobre 2026**. L'inventaire authentifié suivant a été réalisé
+dans cPanel, après reconnexion du responsable, sans création de domaine, de fichier,
+de base ou de droit. La cible reste non prête dans le cockpit.
 
-| Élément à établir | Résultat attendu avant installation |
-|---|---|
-| Adresse, compte d'hébergement, document root | Cible exacte confirmée ; inventaire en lecture seule ; vacuité ou contenu existant établi |
-| DNS, TLS, Apache/PHP | HTTPS valide, réécriture et restrictions actives, extensions MySQL et limites d'envoi compatibles |
-| CONNECT de production | URL, version hébergée, lancement signé, catalogue et droits vérifiés sur cette cible |
-| Paramètres privés | Fichier hors document root, clé dédiée, cookie distinct, répertoire anti-rejeu privé |
-| Données et documents | Base dédiée, compte SQL limité, stockage privé, origine HTTPS exacte |
-| Exploitation | Responsable, sauvegarde, restauration, retour arrière et accès de maintenance qualifiés |
+| Élément contrôlé | Constat du 15 octobre | Opération encore nécessaire |
+|---|---|---|
+| Domaine et DNS | Absent des 22 sous-domaines cPanel ; NXDOMAIN confirmé par Cloudflare et Google à 18:05 UTC | Créer le sous-domaine dédié et qualifier sa résolution |
+| Compte et dossier | Compte `daje3540`, base `/home/daje3540` ; `passeport-immo.avereo.fr` et son dossier `public` absents | Préparer `/home/daje3540/passeport-immo.avereo.fr/public`, fermé avant rattachement public |
+| HTTPS de Passeport Immo | Aucun contrôle possible par ce nom sans DNS | Certificat, chaîne TLS, redirections et refus anonyme à vérifier après création |
+| CONNECT | `https://connect.avereo.fr/` répond 200 avec TLS valide ; page de connexion anonyme observée | Raccorder Passeport Immo et réaliser le parcours authentifié |
+| Dossier CONNECT | `/home/daje3540/connect.avereo.fr/public`, chemin réel identique | Sauvegarder les deux fichiers concernés avant leur adaptation |
+| Configuration CONNECT | Environnement `production`, fichier privé en 0600 ; paramètres URL/clé de lancement Passeport Immo absents | Compléter seulement les paramètres dédiés, sans réutiliser la clé de préproduction |
+| Catalogue et droits CONNECT | Base `daje3540_connectprod` ; zéro entrée Passeport Immo, zéro droit d'organisation ou de compte ; transaction de lecture seule terminée | Déclarer le service et déterminer le compte/organisation autorisés en production |
+| Base Passeport Immo | 12 bases listées ; seule `daje3540_pimpreprod` identifiée pour l'application | Base et compte dédiés proposés : `daje3540_pimprod`, absents de l'inventaire ; création non réalisée |
+| Stockage privé | Dossiers de configuration, anti-rejeu et sauvegardes de production absents | Créer des emplacements séparés de la préproduction |
+| PHP | CLI 8.3.35 et `pdo_mysql` disponibles | Confirmer le runtime Web, les extensions et limites sur le nouveau domaine |
+
+La lecture de la configuration et les comptages SQL n'ont restitué aucune valeur
+de secret ni donnée personnelle. L'identification Git ci-dessous ne concerne que
+deux fichiers ; elle ne certifie pas l'intégralité du runtime CONNECT hébergé.
 
 La préproduction connue est `https://passeport-immo-preprod.avereo.fr`.
 Ses reçus sont datés ; ils ne prouvent ni l'état actuel du serveur ni la préparation
 de CONNECT en production. Le lot CONNECT utilisé en préproduction ne doit pas être
 rejoué sur un runtime de production sans comparaison des fichiers et de la configuration.
+
+## Lots locaux préparés pour cette cible
+
+Le dossier local ignoré par Git est `.local/production-qualification-20261015/`.
+
+- **Application initialement fermée** : `closed-installation/preproduction.zip`,
+  empreinte `9e9bde15d4b2c625967053220fc79f5a602ef2ab01a6a5fc3fdf537ee01b0404`.
+  Les noms de fichiers sont ceux de l'outil de préparation historique ; cette copie
+  est destinée à la préparation de production. Quinze fichiers du candidat sont
+  identiques ; seul `.htaccess` impose `Require all denied`. CRC, inventaire,
+  empreintes et restauration locale vérifiés. Cette restauration ne prouve pas
+  une récupération sur l'hébergement.
+- **Adaptation CONNECT** : `connect-delta/runtime-connect-compatible.zip`,
+  empreinte `3b41fda26c0358a0a4eb3f49ebd2e132162fd737ce0078822d3e15a687884b63`.
+  Les deux fichiers hébergés correspondent exactement à la base
+  `7216fb1b1439d71a68bb948f16db0f57793c1fd8`. Le lot ajoute trois lignes : les deux
+  variables privées à la liste autorisée et leurs correspondances URL/clé.
+  Toute divergence d'empreinte avant pose doit faire refuser l'opération.
+  Les 36 tests du backend historique et les 15 assertions du sas passent localement.
+- **Sauvegarde de production** : adaptation locale de
+  [scheduled-backup.php](../workflows/scheduled-backup.php) et
+  [backup-cron.php](../workflows/backup-cron.php), avec environnement explicite,
+  chemins et blocs cron distincts. L'ancien lot privé de préproduction ci-dessus
+  reste la preuve de ce qui est installé ; il ne suffit pas pour la production.
+  Lot `backup-production/bundle.json`, source
+  `971e97460c90e9ae3ed36c5538491da400162982`, empreinte
+  `b06e74f2528caa1887b151bb1d6052f7733388228ed710c2289cf0b6ab9ca0e8` :
+  quatre fichiers relus contre le manifeste et les sources Git.
+  Voir [la procédure de sauvegarde](sauvegarde-automatique.md#mise-en-production).
+
+Aucun de ces lots n'est installé en production. Les archives et configurations
+privées restent hors Git ; les preuves et manifestes sans secrets sont rattachés
+au suivi. L'archive applicative publique conserve son empreinte initiale.
 
 ## Paramètres à préparer hors Git
 
@@ -96,17 +150,65 @@ sur l'hébergement avant activation ; ne pas copier les secrets de préproductio
 | Paramètre | Valeur ou exigence à qualifier |
 |---|---|
 | `environment` | `production` |
-| `connect_portal_url` | URL réelle de CONNECT en production, TBD |
+| `connect_portal_url` | `https://connect.avereo.fr/`, disponible anonymement ; parcours authentifié à qualifier |
 | `connect_launch_secret` | Clé dédiée connue seulement du sas et de CONNECT ; valeur absente du dossier |
 | `connect_launch_nonce_directory`, `connect_gate_cookie` | Répertoire privé et cookie distincts de la préproduction |
 | `connect_gate_session_seconds` | Durée à confirmer ; préproduction actuelle : 1 800 secondes |
 | `storage_enabled` | Activer seulement après préparation et vérification de la base et des fichiers |
 | `storage_dsn`, `storage_user`, `storage_password` | Base et compte applicatifs dédiés, sans réutiliser la base CONNECT |
-| `storage_directory`, `storage_origin` | Fichiers hors document root et origine HTTPS exacte de production |
+| `storage_directory`, `storage_origin` | Proposition : `/home/daje3540/.avereo/passeport-immo/documents` et `https://passeport-immo.avereo.fr` ; dossier absent lors de l’inventaire |
 | `storage_profiles` | Profils d'affichage des identités signées ; les habilitations restent portées par CONNECT |
 
 Le [modèle existant](../api/connect-config.example.php) illustre la préproduction.
 Il ne constitue pas une configuration de production prête à déposer.
+
+## Reprise du dossier SCI
+
+Le responsable a choisi le 15 octobre 2026 de **reprendre le dossier SCI de
+préproduction** pour les données initiales de production. Ce choix est enregistré
+dans `developmentWorkflow.productionPreparation.initialData` du
+[suivi canonique](suivi-chantier.json). Il fixe le périmètre du plan ; aucun transfert,
+accord de déploiement ou changement de phase n'en résulte.
+
+Le périmètre comprend le bien sélectionné, son client lié, les informations du
+dossier, les métadonnées et les fichiers de ses documents actifs et archivés.
+Le [reçu du 15 octobre à 09:53:50 UTC](../api/storage-observation.json) constate
+un bien, un client, six documents actifs et trois archivés, avec les neuf fichiers
+vérifiés dans deux sessions indépendantes. Ces nombres sont un repère historique :
+l'inventaire réel devra être relu avant le transfert. Les autres dossiers, données
+de démonstration, comptes, droits et secrets de préproduction sont exclus.
+
+La préparation et les contrôles à effectuer sont les suivants :
+
+1. **Identifier les données exactes.** Inventorier le dossier sélectionné et ses
+   dépendances utiles, y compris les archives, puis conserver hors Git un manifeste
+   avec les identifiants sources, les nombres, les métadonnées, les tailles et les
+   empreintes SHA-256. Toute dépendance extérieure au dossier doit être explicitée
+   avant inclusion ; ne pas recopier l'ensemble de la base de préproduction.
+2. **Qualifier le propriétaire en production.** Identifier le compte et, le cas
+   échéant, l'organisation CONNECT destinataires ; établir la correspondance avec
+   le propriétaire source. Ne pas supposer qu'un identifiant numérique identique
+   désigne le même compte entre environnements. Les habilitations de production
+   restent à accorder dans le périmètre autorisé.
+3. **Préparer une reprise cohérente et sans doublon.** Définir un instant de copie
+   stable pour les données et les fichiers, comparer l'état cible avant import,
+   puis conserver la correspondance des identifiants source/cible et le manifeste
+   appliqué. Une reprise de l'opération doit détecter les éléments déjà importés
+   et les conflits, sans écrasement silencieux. L'outil exact et cette propriété
+   restent à qualifier sur une cible isolée avant utilisation en production.
+4. **Préserver les sources et la récupération.** Conserver le dossier de
+   préproduction intact. Sauvegarder l'état cible avant écriture, ou constater sa
+   vacuité et son isolement, puis vérifier la récupération conformément à la
+   section [sauvegarde et retour arrière](#sauvegarde-et-retour-arrière).
+5. **Contrôler après transfert autorisé.** Comparer nombres, liens client/bien,
+   métadonnées, états actif/archivé, tailles et empreintes de tous les documents
+   avec le manifeste actualisé. Vérifier lecture, téléchargement et persistance
+   avec le compte de production, ainsi que le refus d'un autre compte. Conserver
+   un reçu sans données personnelles ni secrets avant toute ouverture.
+
+À qualifier : compte propriétaire de production, inventaire actualisé, mécanisme
+de reprise, essai sans doublon et récupération sur la cible réelle. Le transfert
+attend l'accord précis portant sur ces données, la cible et le candidat à livrer.
 
 ## Séquence de préparation et de livraison
 
@@ -114,13 +216,15 @@ Il ne constitue pas une configuration de production prête à déposer.
    [guide de recette](recette-preproduction.md), les réserves éventuelles et la
    décision humaine dans le cockpit. La checklist GitHub de la PR nº80 est observée
    cochée ; elle n'est ni effacée ni transformée en nouvelle décision de phase.
-2. **Qualifier la cible en lecture seule.** Établir les éléments du tableau ci-dessus
-   et dater les preuves. Toute création ou modification de cible vient ensuite,
-   dans le périmètre autorisé. Ne pas réexécuter l'installateur initial sur une cible peuplée.
-3. **Décider du contenu initial.** Démarrage vide ou transfert explicitement choisi :
-   TBD. L'import SCI autorisé en préproduction n'autorise pas son transfert automatique
-   en production. Préparer un inventaire, un contrôle des propriétaires CONNECT,
-   une comparaison des octets et une procédure d'import sans doublon si ce transfert est retenu.
+2. **Recontrôler l'inventaire avant écriture.** L'inventaire initial est conservé
+   ci-dessus. Revalider domaine, vacuité du chemin, fichiers CONNECT et disponibilité
+   du nom SQL avant leur création ou adaptation. Créer d'abord le dossier avec sa
+   fermeture `Require all denied`, puis rattacher le sous-domaine et qualifier TLS.
+   Ne pas réexécuter l'installateur initial sur une cible peuplée.
+3. **Préparer la reprise du dossier SCI choisi.** Appliquer le
+   [plan de reprise](#reprise-du-dossier-sci) : inventaire actualisé, correspondance
+   du propriétaire CONNECT, intégrité et import sans doublon. Le choix est consigné ;
+   le transfert attend son accord exact avec la livraison de production.
 4. **Préparer la récupération.** Sauvegarder fichiers, configuration et données
    existants avant écriture. Vérifier leur restauration dans un emplacement isolé.
    Pour une cible réellement vide, conserver la preuve d'isolement et la procédure
@@ -156,6 +260,12 @@ conserve trente succès et protège le dernier en cas d'échec. Réutiliser cett
 en production est une proposition à confirmer ; répertoire, configuration et tâche
 cron doivent rester distincts. Voir [le fonctionnement existant](sauvegarde-automatique.md).
 
+Le travailleur fusionné avant ce lot refusait `environment=production` et
+l'installateur cron visait uniquement les chemins de préproduction. L'adaptation
+locale permet les deux environnements et préserve les autres blocs. Sa recette
+isolée couvre 22 assertions de sauvegarde et 30 assertions d'API/stockage ; elle
+ne déclenche aucune tâche hébergée. La copie préproduction installée reste inchangée.
+
 Les preuves actuelles couvrent une restauration des tables dans un espace temporaire
 et les empreintes des documents. Elles ne démontrent pas une restauration complète
 de l'hébergement. La copie hors hébergement, les alertes et les objectifs de perte
@@ -176,11 +286,17 @@ un déploiement de Passeport Immo. Qualifier séparément l'utilité actuelle de
 workflow avant de proposer sa configuration ou son retrait ; aucun réglage GitHub
 Pages n'a été modifié par cette préparation.
 
+L'échec est également observé sur [le commit de fusion de la PR nº81](https://github.com/jpdandin44/AVEREO/actions/runs/38781823276).
+Seule sa conclusion a été relue lors de cette qualification ; le diagnostic détaillé
+ci-dessus reste celui de l'exécution précédente.
+
 ## Reprise opérationnelle
 
 Ouvrir [le point de session](point-session.md), puis le suivi du cockpit.
-Prochaine action : consigner la revue de phase 2, puis qualifier en lecture seule
-la cible retenue `https://passeport-immo.avereo.fr`, CONNECT, les accès et la récupération.
+Prochaine action : consigner la revue de phase 2, qualifier le propriétaire CONNECT
+du dossier SCI en production et préparer son inventaire actualisé, puis faire
+autoriser la préparation de la cible fermée, le raccordement et le transfert exacts
+décrits ici. Qualifier ensuite la récupération et la recette sur la cible réelle.
 La phase 3 et le déploiement attendent les décisions et preuves correspondantes.
 
 Le contrôleur de production a été exécuté pendant la préparation ; il refuse le

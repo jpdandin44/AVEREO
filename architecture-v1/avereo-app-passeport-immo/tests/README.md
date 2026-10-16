@@ -14,9 +14,10 @@ tags: [passeport-immo, local]
 
 ## Sauvegardes automatiques
 
-`tests/scheduled-backup.php` ajoute treize cas réels sur la base MariaDB fictive,
+`tests/scheduled-backup.php` couvre 22 cas sur la base MariaDB fictive,
 appelés par `tests/check-storage-http.py` : conservation, rotation, répétition,
-verrouillage, échec, reprise et garde-fous de chemins. Les sources actives sont
+verrouillage, échec, reprise, garde-fous de chemins et coexistence des environnements
+préproduction/production avec conservation des autres tâches. Les sources actives sont
 contrôlées après les tests ; aucun document réel n’est utilisé dans la CI.
 
 ## Persistance serveur
@@ -28,6 +29,12 @@ la file d’écriture, le refus de conflit et l’import après sauvegarde du bi
 La CI exécute ces contrôles ; les identités et documents y sont fictifs.
 
 ## Qualification du raccordement CONNECT
+
+La qualification de production après PR nº81 réutilise une copie isolée de la base
+`7216fb1b1439d71a68bb948f16db0f57793c1fd8`, dont deux fichiers correspondent exactement
+à l'hébergement. Le delta de trois lignes passe les 36 tests de ce backend et les
+15 assertions du sas. Les preuves sont dans
+[le reçu de qualification](../api/qualification-production-observation.json).
 
 Le correctif du 15 octobre est couvert par `python tests/check-connect-http.py`
 après le build. L'image `docker/connect-test.Dockerfile` doit être disponible sous

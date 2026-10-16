@@ -36,7 +36,7 @@ function passeport_run_backup(string $configPath, string $root, string $schema, 
     if ($keep<2 || $keep>365 || realpath($root)!==$root || is_link($root)
         || is_link($configPath) || !is_file($schema) || is_link($schema)) throw new RuntimeException('Backup configuration guard');
     $config=require $configPath;
-    if (!in_array($config['environment'] ?? '',['local','preprod'],true) || empty($config['storage_enabled'])) throw new RuntimeException('Preproduction storage required');
+    if (!in_array($config['environment'] ?? '',['local','preprod','production'],true) || empty($config['storage_enabled'])) throw new RuntimeException('Known environment with storage enabled required');
     $source=realpath($config['storage_directory']);
     if (!$source || $root===$source || str_starts_with($root,$source.'/') || str_starts_with($source,$root.'/')) throw new RuntimeException('Source and backup separation required');
     if (($config['environment'] ?? '')!=='local' && (!str_starts_with($root,'/home/') || str_contains($root,'/public'))) throw new RuntimeException('Private root required');
