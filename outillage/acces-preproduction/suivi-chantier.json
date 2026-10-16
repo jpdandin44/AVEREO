@@ -2478,7 +2478,7 @@
         "rapport": {
           "status": "candidate_prepared_not_delivered",
           "label": "Candidat préparé ; livraison en attente",
-          "nextAction": "Après intégration23 et identité de production corrigée selon les accords existants : qualifier récupération, retour arrière et promotion du ZIP exact, puis obtenir l’accord exact Rapport.",
+          "nextAction": "Intégration Drupal23 acquise. Après qualification et livraison autorisée de l’identité de production : qualifier récupération, retour arrière et promotion du ZIP exact Rapport, puis obtenir son accord précis.",
           "operationPlan": "archives/preparation-production-rapport-passeport-20261016/operations-rapport.json"
         },
         "passeport-immo": {
@@ -2536,17 +2536,20 @@
       },
       "oauthDependency": {
         "pullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/22",
-        "canonicalTracking": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/security-core-preproduction-20261016/data/suivi-oauth-maintenance.json",
-        "status": "accepted_integrated_into_core_main_pending",
+        "canonicalTracking": "https://github.com/jpdandin44/avereo-site-drupal/blob/main/data/suivi-oauth-maintenance.json",
+        "status": "accepted_integrated_into_main_production_pending",
         "humanScopeApproval": "approved_preproduction_security_and_oauth",
         "deliveryEvidence": "https://github.com/jpdandin44/avereo-site-drupal/blob/8cd0d2a393e5f4172466fdab3ec442a1c43b3ebc/data/oauth-maintenance/qualification/delivery-receipt.json",
         "productionStatus": "not_delivered_by_this_lot",
         "humanAcceptanceEvidence": "https://github.com/jpdandin44/AVEREO/blob/docs/closure-production-20261016/outillage/acces-preproduction/archives/preparation-production-rapport-passeport-20261016/drupal-integration-github.json",
         "mergedInto": "fix/security-core-preproduction-20261016",
         "mergeSha": "8cd0d2a393e5f4172466fdab3ec442a1c43b3ebc",
-        "integratedIntoMain": false,
+        "integratedIntoMain": true,
         "integrationHeadObserved": "0f246525cb5b16a71b47fdf1cf865d6265d58549",
-        "integrationPullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/23"
+        "integrationPullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/23",
+        "mainMergeSha": "fc9c840c66c8e0647a8add28a47a943dd1e2112a",
+        "mainMergedAt": "2026-10-16T20:34:34Z",
+        "mainMergeEvidence": "archives/preparation-production-rapport-passeport-20261016/fusion-drupal-main.json"
       },
       "dependencyFollowUpHistory": [
         {
@@ -2573,7 +2576,7 @@
         "scope": "Nouvelle connexion CONNECT et ouverture de Rapport/Passeport dans Chrome en préproduction ; aucune validation de production."
       },
       "sitePreproduction": {
-        "status": "delivered_pull_request_scope_accepted",
+        "status": "delivered_human_recipe_and_main_integration_accepted",
         "source": "https://github.com/jpdandin44/avereo-site-drupal/blob/e68f4f59b34ae8a3bee35290bb88e1a9ebcee7ee/data/recette-securite-site-active.json",
         "sourceSha256": "efc9d143d37b4ca7cd7f22d60f18d0175e73bb0946372cb3560453d2ca968d72",
         "operatorPullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/25",
@@ -2587,6 +2590,14 @@
           "state": "merged",
           "humanAcceptanceVerified": true,
           "technicalChecksPassed": 4
+        },
+        "humanRecipe": {
+          "decisionId": "D01",
+          "status": "approved",
+          "recordedAt": "2026-10-16T20:29:25.234Z",
+          "evidence": "archives/preparation-production-rapport-passeport-20261016/recette-humaine-site.json",
+          "reviewedDocuments": 4,
+          "checkedCriteria": 10
         }
       },
       "pullRequestHistory": [
@@ -2641,10 +2652,11 @@
         "recordedAt": "2026-10-16T20:21:43.106804+00:00",
         "resumeOnUserRequest": true,
         "productionChanged": false,
-        "nextAction": "À la reprise demandée : finaliser la revue humaine de #23 et son intégration à main, puis recontrôler les cibles et qualifier les récupérations/retours arrière de production selon les accords conditionnels existants. Lots séparés, maintenance conservée ; aucune exécution pendant la clôture.",
+        "nextAction": "À la reprise demandée : intégration GitHub acquise ; recontrôler les cibles et qualifier une récupération fraîche et les retours arrière de production, puis exécuter les seuls lots autorisés et les recettes CONNECT/Rapport/Passeport. Maintenance conservée ; aucun déploiement pendant la clôture.",
         "drupalWorkingCopy": "C:\\Users\\examg\\Documents local\\avereo-drupal-preparation-production",
         "applicationWorkingCopy": "C:\\Users\\examg\\Documents local\\avereo-preprod-rapport-passeport",
-        "drupalClosurePublication": "local_commit_only_preserve_pr23_review"
+        "drupalClosurePublication": "local_commit_only_preserve_pr23_review",
+        "drupalMainMerge": "fc9c840c66c8e0647a8add28a47a943dd1e2112a"
       },
       "closureReview": {
         "branch": "docs/closure-production-20261016",

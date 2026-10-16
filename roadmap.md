@@ -16,7 +16,8 @@ tags: [avereo, documentation, local]
 
 Les dossiers #85 et #86 sont ensuite fusionnés humainement le 16 octobre au
 soir. Le complément de clôture est préparé sur `docs/closure-production-20261016`,
-avec les prérequis de production maintenus.
+avec les prérequis de production maintenus. Drupal #23 est ensuite fusionnée
+dans `main` à 20:34:34 UTC ; la reprise porte sur la qualification de production.
 
 Après fusion des PR #83 et #84, le [dossier de production Rapport/Passeport Immo](outillage/acces-preproduction/preparation-production-rapport-passeport.md)
 porte la suite. Le correctif OAuth et Core/Symfony sont livrés sur l’identité de

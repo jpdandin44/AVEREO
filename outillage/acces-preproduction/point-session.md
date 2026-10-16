@@ -14,6 +14,21 @@ tags: [preproduction, reprise, applications, cockpit]
 
 ## Clôture du 16 octobre — suite prête à reprendre
 
+La **recette du site est validée dans le cockpit** : décision humaine **D01**,
+quatre livrables et dix critères, à 20:29:25 UTC. Les [preuves et empreintes](archives/preparation-production-rapport-passeport-20261016/recette-humaine-site.json)
+sont vérifiées ; cette revue ne doit pas être refaite. La phase de production du
+cockpit reste non démarrée.
+
+**Dernier événement vérifié : la PR Drupal #23 est fusionnée dans `main`**, à
+20:34:34 UTC, merge `fc9c840…`. Les quatre attestations, la policy stricte et
+l’identité de l’arbre intégré sont vérifiées dans la [preuve de fusion](archives/preparation-production-rapport-passeport-20261016/fusion-drupal-main.json).
+L’intégration GitHub est acquise. La prochaine étape opérationnelle est la
+qualification fraîche de production, puis les lots déjà autorisés sous leurs
+conditions. Cette clôture n’exécute aucune livraison.
+
+Les paragraphes suivants conservent la préparation de revue qui a précédé ce
+dernier merge ; l’attente de fusion de #23 est maintenant levée.
+
 La description de #23 est publiée dans le chat « Finaliser la préproduction OAuth ».
 Sa tête `0f246525…` est conservée pour la revue. Le complément documentaire Drupal
 de cette clôture reste dans un **commit local** de `codex/cloture-core-20261016` ;
@@ -68,7 +83,7 @@ confirmés par le responsable dans Chrome ; cette réserve de préproduction est
 levée. La PR OAuth #22 est ensuite fusionnée humainement dans Gin #24, pas dans
 `main`. Le site de préproduction est livré techniquement et les PR #24/#25 sont ensuite
 acceptées par leurs merges humains dans Core #23. Ses quatre contrôles techniques
-réussissent ; finaliser sa revue et sa fusion humaine vers `main`. Le dernier contrôle de production enregistré reste 503 ; préparer
+réussissent ; sa fusion humaine dans `main` est ensuite acquise. Le dernier contrôle de production enregistré reste 503 ; préparer
 la livraison Drupal selon ses accords et les prérequis Rapport.
 Passeport Immo demeure activé : conserver ses données, sa reprise SCI et son cron.
 

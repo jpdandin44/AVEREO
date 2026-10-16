@@ -1,0 +1,85 @@
+{
+  "recordedAt": "2026-10-16T20:42:40.201099+00:00",
+  "kind": "existing_human_site_recipe_acceptance",
+  "canonicalSource": "C:\\Users\\examg\\Documents local\\avereo-securite-contrib-heberge\\docs\\recette-preproduction-securite\\suivi-chantier.json",
+  "canonicalSourceSha256": "6bd9d5af98b08dd492d525ff890961adf0ab4cf12889a55f04a74ebda8224a9a",
+  "decision": {
+    "id": "D01",
+    "title": "Valider le livrable de phase 2",
+    "type": "approval",
+    "phaseId": 2,
+    "status": "approved",
+    "owner": "jpdandin",
+    "blocksPhase": 3,
+    "recordedOn": "2026-10-16",
+    "evidence": {
+      "kind": "local_review",
+      "reviewId": "cdd5632e-61da-49a4-8bdf-9019c799b008",
+      "reviewer": "jpdandin",
+      "comment": "La phase 2 est validée",
+      "recordedAt": "2026-10-16T20:29:25.234Z",
+      "reviewedArtifacts": [
+        {
+          "path": "README.md",
+          "sha256": "ad40e7fafbfeec18319c0788eeebc7b4a831074d67eeba425796d04d19c3bfa6"
+        },
+        {
+          "path": "recette-pr24-gin.md",
+          "sha256": "64d99d35a2827fae61f3cfeb88f1a8374b7772c07cff2f2d26411f366be1faac"
+        },
+        {
+          "path": "recette-pr25-site-oauth.md",
+          "sha256": "fbe92bed4156c11dcdfd7af79aab914bec8f3723971df0ba8586d07efcd79095"
+        },
+        {
+          "path": "preuves-techniques.md",
+          "sha256": "aacfc58440ce24eaca7c81a9457daee9d9c5079be0c6038168150860ab5a2bb6"
+        }
+      ]
+    },
+    "nextAction": "Décision humaine enregistrée dans Projet local."
+  },
+  "reviewEvent": {
+    "id": "cdd5632e-61da-49a4-8bdf-9019c799b008",
+    "action": "approve",
+    "phaseId": 2,
+    "reviewer": "jpdandin",
+    "comment": "La phase 2 est validée",
+    "recordedAt": "2026-10-16T20:29:25.234Z",
+    "reviewedArtifacts": [
+      {
+        "path": "README.md",
+        "sha256": "ad40e7fafbfeec18319c0788eeebc7b4a831074d67eeba425796d04d19c3bfa6"
+      },
+      {
+        "path": "recette-pr24-gin.md",
+        "sha256": "64d99d35a2827fae61f3cfeb88f1a8374b7772c07cff2f2d26411f366be1faac"
+      },
+      {
+        "path": "recette-pr25-site-oauth.md",
+        "sha256": "fbe92bed4156c11dcdfd7af79aab914bec8f3723971df0ba8586d07efcd79095"
+      },
+      {
+        "path": "preuves-techniques.md",
+        "sha256": "aacfc58440ce24eaca7c81a9457daee9d9c5079be0c6038168150860ab5a2bb6"
+      }
+    ],
+    "previousRevision": "ee740a2c6d5da80ca63bff7c668f36502729b5cca834df896d1dea6301054ce9",
+    "checkedCriteria": [
+      "PR24 · G1 — Connexion Drupal et administration utilisables, sans erreur serveur.",
+      "PR24 · G2 — Gin 5.0.16 installé et Claro conservé ; aucune activation de thème. Vérification en lecture seule ou reçu technique et limite explicitée.",
+      "PR24 · G3 — Accueil, Services, accordéons et Contact utilisables en fenêtre ordinateur et étroite, sans soumission réelle.",
+      "PR24 · G4 — Diff Gin, archive identique, restauration vérifiée et audit final sans alerte examinés ; autres intégrations distinguées.",
+      "PR25 · S1 — Visite authentifiée du vrai site satisfaisante ; contenus, navigation, accordéons et formulaire conservés.",
+      "PR25 · S2 — Préproduction protégée avant accès au contenu ; fenêtre privée ou limite de cache explicitée avec consultation des six preuves 401.",
+      "PR25 · S3 — Quatre versions, cinq récupérations avec clés, audit final zéro et absence d’import actif/changement de comptes examinés.",
+      "PR25 · S4 — 887 routes, trois seules options modifiées, authentification et méthodes conservées ; réponses natives et diagnostic historique compris.",
+      "PR25 · S5 — Confirmation CONNECT auth-next distinguée de la revue du site et de la future recette réelle de production.",
+      "PR25 · S6 — Merges humains24/25 acquis ; revue de23 intégrée et audit avant main, puis récupération fraîche et recette CONNECT/dandin/SCI de production conservés comme étapes restantes."
+    ]
+  },
+  "phaseStatus": "validated",
+  "productionPhaseStatus": "not_started",
+  "fourReviewedArtifactHashesMatched": true,
+  "scope": "Constat de la décision humaine D01 du cockpit de recette du site ; aucune décision créée et aucune production démarrée par cette clôture."
+}

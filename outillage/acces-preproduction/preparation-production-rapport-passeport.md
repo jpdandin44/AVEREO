@@ -14,6 +14,21 @@ tags: [rapport, passeport-immo, production, cockpit]
 
 ## Clôture du 16 octobre — suite prête à reprendre
 
+La **recette du site est validée dans le cockpit** : décision humaine **D01**,
+quatre livrables et dix critères, à 20:29:25 UTC. Les [preuves et empreintes](archives/preparation-production-rapport-passeport-20261016/recette-humaine-site.json)
+sont vérifiées ; cette revue ne doit pas être refaite. La phase de production du
+cockpit reste non démarrée.
+
+**Dernier événement vérifié : la PR Drupal #23 est fusionnée dans `main`**, à
+20:34:34 UTC, merge `fc9c840…`. Les quatre attestations, la policy stricte et
+l’identité de l’arbre intégré sont vérifiées dans la [preuve de fusion](archives/preparation-production-rapport-passeport-20261016/fusion-drupal-main.json).
+L’intégration GitHub est acquise. La prochaine étape opérationnelle est la
+qualification fraîche de production, puis les lots déjà autorisés sous leurs
+conditions. Cette clôture n’exécute aucune livraison.
+
+Les paragraphes suivants conservent la préparation de revue qui a précédé ce
+dernier merge ; l’attente de fusion de #23 est maintenant levée.
+
 La description de #23 est publiée dans le chat « Finaliser la préproduction OAuth ».
 Sa tête `0f246525…` est conservée pour la revue. Le complément documentaire Drupal
 de cette clôture reste dans un **commit local** de `codex/cloture-core-20261016` ;
@@ -26,7 +41,7 @@ conserve les révisions et contrôles observés. #23 passe ses quatre contrôles
 techniques, audit Composer inclus, sans conflit avec `main`. La description de
 #23 est actualisée ; les anciennes cases humaines sont archivées et les nouvelles
 attestations restent au responsable selon la règle du dépôt. Sa fusion dans
-`main` reste à faire. #85 et #86 sont aussi fusionnées humainement à 20:16:37 et 20:19:32 UTC.
+`main` est désormais acquise (dernier événement ci-dessus). #85 et #86 sont aussi fusionnées humainement à 20:16:37 et 20:19:32 UTC.
 Les [preuves](archives/preparation-production-rapport-passeport-20261016/fusions-preparation-applications.json)
 conservent leurs quatre attestations. Ces merges acceptent leurs dossiers, sans
 livrer Rapport ni accomplir la recette finale Passeport.
@@ -40,7 +55,7 @@ de livraison Rapport reste distinct et absent ; aucune ouverture publique autori
 
 Reprise uniquement sur demande du responsable :
 
-1. Repartir des suivis et vérifier GitHub : #23 vers `main`, puis l’intégration acquise de #85/#86 dans `main`.
+1. Repartir des suivis et des intégrations acquises : Drupal #23 dans `main`, AVEREO #85/#86 dans `main` ; vérifier les nouvelles évolutions avant toute opération.
 2. Dans le lot Drupal coordonné, recontrôler la production et les accès ; qualifier
    une sauvegarde fraîche restaurée et le retour arrière de chaque lot séparé
    Easy Breadcrumb, Leaflet, Core, Gin, puis OAuth. Préserver maintenance, clés,
@@ -208,7 +223,7 @@ sans alerte, 887 routes comparées et 23 assertions de rendu natif.
 La revue GitHub des lots #24/#25 est acquise par leurs merges humains ; les limites
 de la preuve visuelle restent explicites. Claro reste sélectionné, Gin installé
 mais non activé. Le suivi courant se poursuit sur Core #23 après ces fusions.
-L’audit de #23 réussit ; sa fusion humaine vers `main` reste à faire.
+L’audit de #23 réussit ; sa fusion humaine vers `main` est ensuite acquise.
 Le dernier contrôle de production, à 15 h 27 UTC dans le relevé de livraison OAuth,
 reste 503 ; aucune nouvelle sonde de production n’est exécutée dans cette actualisation.
 La suite de production reste une livraison Drupal autorisée selon son dossier, puis les prérequis
