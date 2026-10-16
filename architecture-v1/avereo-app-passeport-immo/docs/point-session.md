@@ -5,14 +5,132 @@ title: Point de reprise de session
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [passeport-immo, local, cockpit]
 ---
 
 # Point de reprise de session
 
-## Qualification après fusion de la PR nº81 — 15 octobre 2026
+## Suite du 16 octobre 2026 — D06 récupérée et PR nº82 fusionnée
+
+Le responsable a approuvé la Préproduction dans le cockpit à **09 h 05 min 11 s,
+Europe/Paris** : décision **D06**, six livrables et huit critères cochés, dont le
+critère 07. Commentaire exact : **« Phase approuvée, passage en prod autorisé. »**
+Le suivi conserve la décision et l'événement humain intacts ; il réutilise cet accord
+pour préparer la phase 3. Les quinze documents approuvés sont relus à l'identique.
+
+La [PR nº82](https://github.com/jpdandin44/AVEREO/pull/82) est fusionnée à 09 h 00 min 55 s,
+commit `d95164ea0c9863073427e82fae89e89dadeac01f`. Sa checklist humaine et la policy
+stricte passent. Les CI monorepo et Passeport Immo réussissent sur la fusion ;
+l'archive téléchargée est identique au candidat examiné, avec seize fichiers.
+Les lots fermé, CONNECT et sauvegarde sont relus contre leurs manifestes.
+Le [reçu courant](../api/production-readiness-observation.json) conserve ces preuves.
+
+Le [dossier de production](04-mise-en-production.md) porte la suite concrète :
+créer et qualifier la cible fermée, établir le propriétaire CONNECT du dossier SCI,
+actualiser son inventaire après recette, qualifier la reprise sans doublon puis la
+récupération et le retour arrière. Le domaine et la base de production sont toujours
+absents dans cPanel ; aucune mutation hébergée n'a été réalisée pendant cette préparation.
+Le contrôle de passage conserve quatre réserves techniques, sans redemander l'accord D06.
+
+Copie de travail : `C:\Users\examg\Documents local\passeport-immo-local` ;
+branche `docs/passeport-immo-execution-production`, issue de la fusion nº82.
+Reçus privés et candidat : `.local/production-next-20261016/`.
+Le cockpit reste disponible sur <http://127.0.0.1:5193/> ; prototype local sur
+<http://127.0.0.1:5175/>. Phase 2 validée, phase 3 en préparation, aucune livraison
+ou ouverture publique déclarée. Les modifications Projet/policy préexistantes restent séparées.
+
+## Historique — reprise du 16 octobre 2026 — sauvegarde nocturne disponible
+
+**Statut : historique ; la validation D06 et la suite courante sont décrites ci-dessus.**
+
+Reprise demandée par le responsable. Le cockpit est relancé sur
+<http://127.0.0.1:5193/> et le prototype local sur <http://127.0.0.1:5175/>.
+Le prototype utilise son stockage navigateur ; la revue de phase 2 reste celle
+de la préproduction hébergée, selon le [guide de recette](recette-preproduction.md).
+
+La sauvegarde prévue cette nuit est observée en succès à **03 h 20 min 02 s,
+Europe/Paris, le 16 octobre**. Le [reçu de lecture](../api/nightly-backup-observation.json)
+rapproche `status.json`, `latest.json`, `complete.json` et `scheduler.log` :
+quatre tables, neuf documents, deux copies conservées sur une rétention cible
+de trente succès. Les neuf fichiers sont aussi visibles dans le gestionnaire cPanel.
+Le travailleur déclare les contrôles de fichiers et la récupération temporaire
+réussis, sans changement des lignes actives. Cette reprise lit ces résultats ;
+elle ne réexécute ni le calcul des empreintes ni une restauration indépendante.
+
+Le dossier de cette copie et son compte rendu `complete.json` sont ouverts dans
+le navigateur intégré. Le [mode d'accès](sauvegarde-automatique.md#retrouver-les-copies-et-diagnostiquer-un-echec)
+donne le chemin à saisir dans cPanel ; aucun lien de session privé n'est conservé.
+
+**Prochaine action :** le responsable examine la preuve, puis renseigne le critère 07
+et termine la revue de Préproduction. Le suivi conserve les phases 0 et 1 validées,
+la phase 2 « À valider » et la phase 3 non démarrée. Aucune case humaine, décision,
+autorisation de production ou donnée hébergée n'est modifiée par cette reprise.
+Les notes restent locales, non commitées ; les travaux préexistants sont conservés.
+L'état GitHub ci-dessous est celui observé le 15 octobre, à recontrôler avant toute
+intervention sur la PR ou livraison.
+
+## Historique — clôture du 15 octobre 2026 — attendre la sauvegarde nocturne
+
+**Statut : historique, remplacé pour la reprise par le constat du 16 octobre ci-dessus.**
+
+Session close à la demande du responsable. Il souhaite vérifier la sauvegarde
+automatique de cette nuit avant de valider le **critère 07 de la phase 2 —
+Préproduction**. La prochaine échéance documentée est le **16 octobre 2026
+à 03 h 20, Europe/Paris**. Son résultat n'est pas encore observé à la clôture.
+
+À cette clôture, le [suivi canonique](suivi-chantier.json) portait `sessionHandoff.status =
+closed_on_user_request`. Les phases 0 et 1 restent validées, la phase 2 reste
+« À valider » et la phase 3 non démarrée. Aucune validation, reprise automatique,
+livraison ou migration n'est déclenchée par la clôture.
+
+### Première action à la reprise
+
+1. Lire la [procédure de sauvegarde](sauvegarde-automatique.md), puis consulter
+   en lecture seule `status.json`, `latest.json` et `scheduler.log` dans
+   `/home/daje3540/private/passeport-immo-backups/preprod` via cPanel.
+2. Vérifier un nouveau succès correspondant à la nuit du 15 au 16 octobre,
+   après l'échéance prévue. Le dernier succès déjà prouvé est celui du
+   **15 octobre à 13:34:02 UTC**, issu du déclenchement de qualification ; il ne
+   prouve pas l'exécution de cette nuit. Si la copie est absente ou en échec,
+   conserver le diagnostic et examiner la planification avant toute relance.
+3. Examiner la copie pointée, son marqueur de fin et les résultats de contrôle :
+   quatre tables, inventaire documentaire réel, tailles/empreintes et récupération
+   temporaire. Le dernier reçu comptait neuf documents, actifs et archives inclus ;
+   rapprocher les nombres du contenu réel au moment de la copie. La rétention vise
+   les trente derniers succès ; elle ne signifie pas que trente copies existent déjà.
+4. Conserver un reçu sans secret ni donnée personnelle, puis laisser le responsable
+   valider le critère 07 et terminer la revue dans le cockpit. La validation de
+   phase, le merge de la PR et l'accord de production restent des décisions distinctes.
+
+La tâche de sauvegarde s'exécute sur l'hébergement et ne dépend pas du PC.
+Aucune tâche distante n'est modifiée pendant cette clôture. La production reste
+à préparer selon [son dossier](04-mise-en-production.md) ; le choix de reprendre
+le dossier SCI est conservé, sans transfert effectué.
+
+### État conservé pour la prochaine session
+
+- Copie de travail : `C:\Users\examg\Documents local\passeport-immo-local`.
+- Branche : `docs/passeport-immo-qualification-production` ; dernière tête publiée
+  `8db97ea2a547cf20423c713ce0a609512a8c6d0e`.
+- [PR nº82](https://github.com/jpdandin44/AVEREO/pull/82) ouverte en brouillon,
+  relue à la clôture : 18 contrôles techniques réussis et état GitHub sans conflit
+  avec `main` `2995a2b95003016df0fefa84b34353c34dc5fee0`.
+- Notes de clôture et tableaux dérivés conservés localement, non commités et non
+  poussés. Les travaux préexistants d'AVEREO Projet et de la policy restent séparés.
+- À 21 h 39 à Paris, la vue ouverte du cockpit présente 0/6 livrables examinés,
+  0/8 critères cochés, un commentaire vide et aucune confirmation cochée. Ce constat
+  porte sur cet onglet uniquement ; aucun brouillon coché n'y est observé à sauvegarder.
+- L'onglet de revue est conservé. Aucun service local n'est arrêté par cette clôture.
+  Après fermeture du PC, relancer le cockpit avec [start-review.cmd](../start-review.cmd)
+  si nécessaire ; le [guide d'accès](acces-suivi-local.md) précise que les brouillons
+  non enregistrés restent propres à la page, contrairement aux décisions sur disque.
+
+Les observations suivantes sont historiques. À la reprise, vérifier les états
+GitHub et hébergés avant d'utiliser leurs constats datés.
+
+## Historique — qualification après fusion de la PR nº81 — 15 octobre 2026
 
 La PR nº81 est fusionnée dans `main` au commit
 `2995a2b95003016df0fefa84b34353c34dc5fee0`, avec ses quatre cases humaines cochées.

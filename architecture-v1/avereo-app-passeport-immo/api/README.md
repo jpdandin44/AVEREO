@@ -5,7 +5,7 @@ title: État des intégrations
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -39,9 +39,15 @@ navigateur intégré. Il constate l'import et la persistance des neuf documents,
 sans leurs contenus ni données personnelles ; le stockage Chrome reste distinct.
 Ce dernier constat est antérieur au [reçu de stockage serveur](storage-observation.json),
 qui vérifie le partage entre sessions. La [sauvegarde de préproduction](automatic-backup-observation.json)
-dispose de son reçu distinct.
+dispose de son reçu distinct. Le [reçu de la nuit du 16 octobre](nightly-backup-observation.json)
+consigne ensuite la lecture des résultats automatiques et de l'inventaire visible
+dans cPanel ; il n'est ni une nouvelle installation ni une validation humaine.
 
 La [préparation de production](preparation-production-observation.json) conserve
 la provenance du candidat après PR nº80. La [qualification suivante](qualification-production-observation.json)
 décrit la fusion de la PR nº81, les observations DNS/HTTPS/cPanel et les lots locaux
 préparés. Elle ne constitue ni une installation ni une recette de production.
+Le [reçu de préparation après D06 et PR nº82](production-readiness-observation.json)
+rapproche la validation humaine existante, l'accord du commentaire, la fusion,
+l'archive identique et l'inventaire cPanel du 16 octobre. Il conserve les réserves
+techniques et ne constate aucun déploiement ou transfert de données.

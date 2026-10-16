@@ -5,12 +5,23 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Roadmap Passeport Immo
+
+## Suite du 16 octobre — préparer la production autorisée
+
+La décision D06 approuve la phase 2, dont le critère 07, et son commentaire autorise
+le passage en production. La PR nº82 est fusionnée ; l'archive de sa CI reste
+identique au candidat examiné. Voir le [reçu courant](api/production-readiness-observation.json)
+et le [point de session](docs/point-session.md).
+La phase 3 est en préparation. Priorité : cible fermée, propriétaire CONNECT,
+inventaire SCI après recette et reprise ciblée sans doublon, récupération et retour
+arrière. L'installation et les contrôles réels suivent après qualification ;
+aucune ouverture publique n'est autorisée par cette préparation.
 
 ## Suite après fusion de la PR nº81
 
@@ -22,11 +33,11 @@ L'archive applicative publique reste identique au candidat installé en préprod
 
 Le dossier SCI de préproduction est retenu pour les données initiales, selon le
 [plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci), sans transfert effectué.
-Prochaines actions : consigner la revue de phase 2, qualifier le propriétaire
-CONNECT et actualiser l'inventaire SCI, puis autoriser la création de la cible
-fermée, le raccordement et le transfert exacts de production.
-La récupération hébergée, le compte autorisé, la recette authentifiée et les accords
-restent à traiter avant activation. La phase 3 n'est pas démarrée.
+Prochaines actions : appliquer la décision D06 existante, qualifier le propriétaire
+CONNECT et actualiser l'inventaire SCI avant préparation de la cible fermée,
+du raccordement et du transfert exacts de production.
+La récupération hébergée, le compte destinataire et la recette authentifiée
+restent à traiter avant activation. La phase 3 est en préparation, sans livraison.
 
 La copie hors hébergement et les alertes de sauvegarde restent des propositions
 à prioriser. L'échec du workflow GitHub Pages du prototype est consigné séparément

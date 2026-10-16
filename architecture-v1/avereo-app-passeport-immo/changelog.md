@@ -5,12 +5,31 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Changelog Passeport Immo
+
+## 2026-10-16 — Validation D06 récupérée et suite de la PR nº82 préparée
+
+Préproduction approuvée dans le cockpit : six livrables et huit critères, dont la
+sauvegarde nocturne. L'accord de production explicite du commentaire D06 est repris
+dans le suivi sans nouvelle décision humaine. Phase 3 en préparation, PR nº82 fusionnée,
+policy stricte et CI vérifiées, candidat de fusion identique, lots privés relus.
+Inventaire cPanel actualisé : domaine et base de production encore absents.
+Dossier, reçu, point de reprise et vues alignés ; quinze preuves approuvées conservées.
+Les prérequis de cible, reprise SCI et récupération restent ouverts ; aucune livraison.
+
+## 2026-10-16 — Reprise et première échéance nocturne observée
+
+Cockpit et prototype local relancés. Lecture cPanel de la sauvegarde automatique
+terminée à 03 h 20 min 02 s Europe/Paris : quatre tables, neuf documents et deux
+copies conservées. Statut, pointeur, marqueur de fin et journal concordants ;
+contrôles de fichiers et récupération temporaire déclarés réussis par le travailleur.
+Reçu, suivi, point de reprise, procédure, roadmap et vues dérivées actualisés.
+Critère 07 et phase 2 laissés à la validation humaine ; aucune modification hébergée.
 
 ## 2026-10-15 — Données initiales de production choisies
 

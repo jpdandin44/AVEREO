@@ -5,7 +5,7 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [suivi, passeport-immo, genere]
 ---
@@ -16,18 +16,18 @@ Vue générée depuis `suivi-chantier.json`. Ne pas modifier manuellement.
 La revue et les décisions se font dans [Projet local](http://127.0.0.1:5193/).
 
 <!-- BEGIN GENERATED: suivi-chantier.json -->
-Mise à jour : **2026-10-15**. **3 phases livrées sur 4 ; 2 phases validées par le responsable.**
+Mise à jour : **2026-10-16**. **3 phases livrées sur 4 ; 3 phases validées par le responsable.**
 
 | Phase | Statut | Livrables | Livraison | Validation humaine |
 |---|---|---|---|---|
 | 0 — Cadrage | Validée | [iteration-developpement.md](iteration-developpement.md)<br>[00-etat-des-lieux.md](00-etat-des-lieux.md)<br>[source-audit.md](source-audit.md) | 2026-10-03 | 2026-10-03 |
 | 1 — Développement local | Validée | [documents-bien.md](documents-bien.md)<br>[progression-examin.md](progression-examin.md)<br>[source-audit-documents.md](source-audit-documents.md)<br>[mapping-phases.md](mapping-phases.md)<br>[coupes-bien.md](coupes-bien.md) | 2026-10-14 | 2026-10-14 |
-| 2 — Préproduction | À valider | [recette-preproduction.md](recette-preproduction.md)<br>[02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md)<br>[sauvegarde-automatique.md](sauvegarde-automatique.md) | 2026-10-15 | Non acquise |
-| 3 — Mise en production | Non commencée | [04-mise-en-production.md](04-mise-en-production.md) | — | Non acquise |
+| 2 — Préproduction | Validée | [recette-preproduction.md](recette-preproduction.md)<br>[02-integration-connect.md](02-integration-connect.md)<br>[03-preproduction.md](03-preproduction.md)<br>[deployment.md](deployment.md)<br>[stockage-serveur.md](stockage-serveur.md)<br>[sauvegarde-automatique.md](sauvegarde-automatique.md) | 2026-10-15 | 2026-10-16 |
+| 3 — Mise en production | En cours | [04-mise-en-production.md](04-mise-en-production.md) | — | Non acquise |
 
 ### Décisions attendues
 
-Revue humaine attendue : phase 2 — Préproduction. La décision reste à enregistrer dans le cockpit.
+Aucune décision en attente.
 
 ### Décisions enregistrées
 
@@ -38,6 +38,7 @@ Revue humaine attendue : phase 2 — Préproduction. La décision reste à enreg
 | D03 | Historique — Reprise à l’identique : Valider le livrable de phase 1 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
 | D04 | Historique — Intégration CONNECT : Autoriser le passage en phase 2 — accord enregistré | 2026-10-03 | Décision et preuve consignées dans le JSON |
 | D05 | Valider le livrable de phase 1 — accord enregistré | 2026-10-14 | Décision et preuve consignées dans le JSON |
+| D06 | Valider le livrable de phase 2 — accord enregistré | 2026-10-16 | Décision et preuve consignées dans le JSON |
 
 ### Questions de vérification
 
@@ -54,12 +55,12 @@ Revue humaine attendue : phase 2 — Préproduction. La décision reste à enreg
 
 ## Où en est le développement ?
 
-Travail actuel : **Préproduction — À valider**.
-Consigner la revue de phase 2 dans le cockpit ; PR nº80 et nº81 fusionnées, préparation de production rattachée au dossier courant.
+Travail actuel : **Production — En cours**.
+Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée.
 
-Reprise demandée par le responsable dans AVEREO_2 le 2026-10-14T09:40:12+00:00.
+Reprise demandée par le responsable dans AVEREO_2 le 2026-10-16T06:38:24+00:00.
 
-Parcours formel : **phase 2 — Préproduction**, à valider.
+Parcours formel : **phase 3 — Mise en production**, en cours.
 Phases 0 et 1 validées dans le suivi. Les constats GitHub et les contrôles locaux ne remplacent pas les décisions de phase.
 
 
@@ -70,15 +71,15 @@ Adresse créée : `https://passeport-immo-preprod.avereo.fr`. Dossier dédié : 
 
 **passeport-immo-documents-2026-10-14** — Cas documentaire client/bien, raccordement CONNECT privé et stockage serveur opérationnel.
 
-Responsable : jpdandin. Étape : preproduction. État : À valider.
+Responsable : jpdandin. Étape : production. État : En cours.
 
 Ces étapes techniques complètent les phases formelles du chantier ; une fusion GitHub ne modifie pas leurs décisions.
 
 | Étape | État | Prochaine action |
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
-| Préproduction | À valider | Consigner la revue de phase 2 dans le cockpit ; PR nº80 et nº81 fusionnées, préparation de production rattachée au dossier courant. |
-| Production | Bloquée | Lots locaux préparés et testés ; créer la cible fermée et raccorder CONNECT après décisions et accord exacts, puis qualifier récupération et recette hébergées. |
+| Préproduction | Validée | Phase 2 approuvée par D06 le 16 octobre ; six livrables et huit critères examinés, dont la sauvegarde nocturne. |
+| Production | En cours | Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée. |
 
 ### Candidat et GitHub
 
@@ -87,9 +88,9 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 - PR : [Ouvrir la PR](https://github.com/jpdandin44/AVEREO/pull/80).
 - Complément de suivi : [Ouvrir la PR de suivi](https://github.com/jpdandin44/AVEREO/pull/72).
 - État du complément : Fusionnée ; observation : 2026-10-03T19:41:38.385Z.
-- Dernière observation GitHub : 2026-10-15T15:30:29.857716+00:00.
+- Dernière observation GitHub : 2026-10-16T07:13:59+00:00.
 - Revue humaine de la source GitHub : Confirmée.
-- Acceptation de l'archive exacte pour promotion : À consigner avant production.
+- Acceptation de l'archive exacte pour promotion : Vérifiée.
 
 ### Contrôles datés
 
@@ -118,6 +119,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | hosted_storage | Réussi | 2026-10-15T09:53:50+00:00 |
 | Documentation | Réussi | 2026-10-15T10:03:25.433202+00:00 |
 | hosted_backup | Réussi | 2026-10-15T13:36:34+00:00 |
+| preproduction | Réussi | 2026-10-16T07:05:11.475Z |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -144,6 +146,7 @@ Preuves du candidat identifié ci-dessus :
 - hosted_storage : api/storage-observation.json ; 34 assertions HTTPS, deux sessions, neuf fichiers et sauvegarde restaurée en tables temporaires.
 - Documentation : 42 documents Markdown et 256 liens locaux contrôlés ; socles racine/application, métadonnées, vues et empreintes approuvées conservés.
 - hosted_backup : api/automatic-backup-observation.json ; cron réel, quatre tables/neuf fichiers, retour temporaire, permissions et autres tâches vérifiés.
+- preproduction : docs/suivi-chantier.json#decisions/D06 ; huit critères humains, six empreintes vérifiées dans api/production-readiness-observation.json
 
 ### Contrôles de passage
 
@@ -153,19 +156,19 @@ Preuves du candidat identifié ci-dessus :
 - Préproduction : conditions remplies (2026-10-15T07:35:02.235103+00:00).
 - Préproduction : conditions remplies (2026-10-15T08:21:00+00:00).
 - Production : passage refusé (2026-10-15T15:31:40.759972+00:00).
+- Production : passage refusé (2026-10-16T07:18:38+00:00).
 
 ### Blocages de passage
 
-- Décision formelle de phase 2 et acceptation de l’archive exacte pour promotion à consigner ; la fusion PR nº80 est confirmée.
-- Cible Passeport Immo absente du DNS et de cPanel ; domaine, dossier, base, configuration et droits CONNECT de production à créer après accord exact. Inventaire authentifié terminé.
-- Sauvegarde/restauration de la cible et retour arrière du candidat en production non qualifiés.
-- Accord exact de déploiement en production absent ; aucune ouverture aux utilisateurs autorisée par cette préparation.
+- Cible de production non provisionnée : domaine et base dédiée absents dans cPanel le 16 octobre ; raccordement CONNECT et configuration à qualifier.
+- Inventaire SCI après recette, correspondance du propriétaire CONNECT, reprise ciblée et répétition sans doublon à qualifier avant transfert ; exclure les dossiers de test.
+- Sauvegarde/restauration de la cible et retour arrière du candidat exact non qualifiés en production.
 
-Prochaine action : Dossier SCI de préproduction retenu pour les données initiales. Consigner la décision de phase 2, qualifier son propriétaire CONNECT en production et actualiser l’inventaire avant tout transfert ; cible fermée, raccordement, récupération et déploiement exacts restent à autoriser et qualifier.
+Prochaine action : Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée.
 
 ### Accords et livraison
 
-Accords spécifiques enregistrés : 3. Sauvegardes qualifiées : 6.
+Accords spécifiques enregistrés : 5. Sauvegardes qualifiées : 6.
 Retour arrière : non testé. Livraison : non réalisée.
 Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
 
@@ -288,7 +291,7 @@ Planification quotidienne, trente copies réussies, contrôles et récupération
 
 **Préparation de la mise en production** — Document disponible (`04-mise-en-production.md`).
 
-Dossier après fusion de la PR nº80 : candidat identique, cible et récupération à qualifier, procédure et accords attendus.
+Dossier après PR nº82 et D06 : accord de production récupéré, candidat identique, préparation de la cible, reprise SCI et récupération à qualifier.
 
 - Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.
 - Procédure, fumée et retour arrière vérifiés par le responsable.
