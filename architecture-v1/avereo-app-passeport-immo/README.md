@@ -26,28 +26,31 @@ priorités, dépendances, livrables, critères et douze scénarios de recette. S
 selon le [workflow documentaire](workflows/generation-plan-cil.md). Les évolutions
 restent à cadrer dans une itération distincte de la production actuelle.
 
-## Production privée — candidat fermé installé et SCI reprise
+## Production privée activée — recette OAuth à terminer
 
-Le 16 octobre, après l’accord D06, le candidat de seize fichiers est installé sur
-`https://passeport-immo.avereo.fr` avec une fermeture totale. Le dossier SCI est
-repris pour le compte confirmé `dandin` : un bien, un client, six documents actifs
-et trois archivés. Le rejeu est sans doublon ni changement de révision. La copie
-des quatre tables et neuf fichiers est restaurée dans des espaces isolés ; les
-octets et métadonnées concordent. La source n’est pas modifiée.
+L’activation est exécutée par le responsable le 16 octobre à 12 h 44, heure de Paris.
+Le candidat signé de seize fichiers et le stockage serveur sont actifs pour `dandin`.
+Un bien, un client, six documents actifs et trois archives SCI sont repris ; deux
+sessions signées indépendantes retrouvent les neuf documents aux mêmes empreintes.
+Les 57 contrôles HTTPS de l’application réussissent sans modifier les lignes métier.
 
-Les cinq droits SQL utiles sont vérifiés, CREATE et REFERENCES retirés. Le stockage
-web reste désactivé. Le raccordement CONNECT, la politique signée et la sauvegarde
-automatique de production sont préparés et répétés isolément, sans activation réelle.
-L’action finale est remise au responsable selon la règle de sécurité du navigateur
-pour le raccordement de la clé et les nouveaux accès. La recette authentifiée et
-le vrai déclenchement cron restent ensuite à vérifier ; aucune ouverture publique.
+La sauvegarde quotidienne de production est active à 03 h 20 Europe/Paris, avec
+trente copies vérifiées et un rattrapage horaire. Le premier vrai cron réussit à
+12 h 45 sur quatre tables et neuf fichiers ; l’entrée temporaire est retirée.
+Les copies restent privées sur le même hébergement ; copie distante et alertes
+restent à qualifier.
 
-Le compte `famille` conserve son accès de préproduction selon la confirmation humaine.
-Les méthodes serveur lui refusent le bien SCI et chacun de ses neuf documents.
-La [preuve courante](api/production-execution-observation.json), le
-[dossier de production](docs/04-mise-en-production.md) et la
-[procédure d’activation](workflows/activation-production.md) donnent les limites et la suite.
-La Préproduction reste approuvée par D06, la phase 3 reste en cours et la PR nº83 en brouillon.
+La recette navigateur depuis CONNECT est bloquée par le service de jetons OAuth
+d’AVEREO, qui répond 503 pendant la maintenance. Le [correctif proposé](docs/blocage-oauth-production.md)
+est testé sur une copie privée des routes, sans changement du site. Son périmètre
+Drupal demande un accord distinct de l’accord D06 conservé pour Passeport Immo.
+Le compte famille conserve son accès de préproduction avec isolement SCI vérifié.
+
+Le [reçu de vérification](api/production-verification-observation.json), le
+[dossier de production](docs/04-mise-en-production.md) et le
+[suivi canonique](docs/suivi-chantier.json) distinguent livraison, recette et validation.
+La phase 3 reste en cours. La PR nº83 est fusionnée ; les vérifications après
+activation font l’objet d’une PR de suivi distincte. Aucune ouverture publique.
 
 ## Recette de préproduction et décision de phase
 
@@ -58,7 +61,7 @@ livrables examinés sont désormais figés. La recette utilise l'application hé
 CONNECT et un bien fictif pour les écritures ; le prototype local conserve son
 stockage navigateur. La revue de PR et l'autorisation de production restent distinctes.
 
-## Sauvegarde automatique active
+## Sauvegarde automatique de préproduction
 
 Une [sauvegarde complète automatique](docs/sauvegarde-automatique.md) est active
 chaque nuit à 03 h 20, heure de Paris, avec conservation de trente copies réussies.

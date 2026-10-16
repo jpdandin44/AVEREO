@@ -24,7 +24,31 @@ la fusion de la PR nº81, les contrôles DNS/HTTPS, l'inventaire cPanel et la pr
 locale. La [preuve précédente](../api/preparation-production-observation.json) conserve
 la provenance des archives après la PR nº80. Aucun de ces inventaires n'est un reçu de livraison.
 
-## État courant — installation fermée et reprise SCI du 16 octobre
+## État courant — activation et sauvegarde vérifiées, OAuth bloqué
+
+La [vérification réelle](../api/production-verification-observation.json) complète
+le reçu historique d’installation fermée conservé plus bas.
+
+| Contrôle réel, 16 octobre | Résultat observé, UTC |
+|---|---|
+| Activation humaine | 10:44:23 : sas signé et stockage actifs pour dandin, autres comptes actuels refusés ; aucun rôle ni secret créé |
+| Premier vrai cron | 10:45:02 : quatre tables et neuf documents ; empreintes et restitution temporaire vérifiées |
+| Planification finale | 10:45:51 : entrée temporaire retirée, autres tâches conservées ; quotidien 03 h 20 Paris et trente copies vérifiées |
+| Application HTTPS | 10:52:13 : 57 assertions réussies, deux sessions indépendantes, seize fichiers et neuf téléchargements vérifiés par session ; données métier inchangées |
+| Navigateur OAuth | Connexion native Drupal de dandin réussie ; échange de jetons refusé avec 503, sans erreur de transport |
+| Proposition de correction | 10:59:04 : 27 contrôles sur une collection privée des vraies routes Drupal ; quinze autres routes inchangées, aucun déploiement |
+
+Le [correctif proposé](blocage-oauth-production.md) ajoute l’option de maintenance
+aux seules routes d’autorisation, de jetons et d’identité. Les exigences et mécanismes
+d’authentification restent identiques ; le site public reste fermé. Le site Drupal
+est un autre périmètre : son accord d’extension est demandé avant intégration.
+
+L’installation privée de Passeport Immo est réelle. Sa recette HTTPS signée ne
+remplace pas la recette OAuth complète, qui reste bloquée. D06, les critères humains,
+le merge et l’ouverture publique gardent leurs portées distinctes. La sauvegarde
+reste sur le même hébergement ; copie distante et alertes non qualifiées.
+
+## Historique — installation fermée et reprise SCI du 16 octobre
 
 Le [reçu d’exécution](../api/production-execution-observation.json) est la source
 structurée de l’avancement courant. Les constats ci-dessous remplacent les états

@@ -12,6 +12,16 @@ tags: [passeport-immo, local]
 
 # Vérification de la reprise
 
+## Recette réelle après activation privée
+
+La [vérification du 16 octobre](../api/production-verification-observation.json)
+consigne 57 assertions HTTPS réussies, deux sessions signées indépendantes et les
+neuf téléchargements exacts par session. Les lignes métier restent inchangées.
+Le premier vrai cron vérifie quatre tables/neuf fichiers puis sa tâche temporaire
+est retirée. La connexion OAuth navigateur reste bloquée par un 503 du fournisseur.
+Une proposition de correction passe 27 contrôles en mémoire sur les vraies classes
+Drupal/Symfony ; elle n’est pas installée et ne prouve pas le parcours OAuth complet.
+
 ## Qualification hébergée de production du 16 octobre
 
 Le [reçu courant](../api/production-execution-observation.json) distingue les tests

@@ -56,7 +56,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Production — En cours**.
-Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés.
+Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-16T06:38:24+00:00.
 
@@ -79,7 +79,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
 | Préproduction | Validée | Phase 2 approuvée par D06 le 16 octobre ; six livrables et huit critères examinés, dont la sauvegarde nocturne. |
-| Production | En cours | Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés. |
+| Production | En cours | Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique. |
 
 ### Candidat et GitHub
 
@@ -121,6 +121,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | hosted_backup | Réussi | 2026-10-15T13:36:34+00:00 |
 | preproduction | Réussi | 2026-10-16T07:05:11.475Z |
 | GitHub Actions | Réussi | 2026-10-16T08:09:19+00:00 |
+| production | blocked | 2026-10-16T11:07:57.743545+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -149,6 +150,7 @@ Preuves du candidat identifié ci-dessus :
 - hosted_backup : api/automatic-backup-observation.json ; cron réel, quatre tables/neuf fichiers, retour temporaire, permissions et autres tâches vérifiés.
 - preproduction : docs/suivi-chantier.json#decisions/D06 ; huit critères humains, six empreintes vérifiées dans api/production-readiness-observation.json
 - GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38869180045 ; 35 reprise, 30 API/stockage, 22 sauvegarde ; ZIP téléchargé identique, seize fichiers.
+- production : api/production-verification-observation.json
 
 ### Contrôles de passage
 
@@ -159,17 +161,18 @@ Preuves du candidat identifié ci-dessus :
 - Préproduction : conditions remplies (2026-10-15T08:21:00+00:00).
 - Production : passage refusé (2026-10-15T15:31:40.759972+00:00).
 - Production : passage refusé (2026-10-16T07:18:38+00:00).
+- Clôture : passage refusé (2026-10-16T11:16:37.037079+00:00).
 
 ### Blocages de passage
 
-Aucun blocage déclaré.
+- Recette navigateur de production bloquée : le service OAuth avereo.fr/oauth/token renvoie 503 pendant la maintenance ; correctif ciblé Drupal préparé et testé isolément, accord d’extension de périmètre encore requis.
 
-Prochaine action : Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés.
+Prochaine action : Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.
 
 ### Accords et livraison
 
 Accords spécifiques enregistrés : 5. Sauvegardes qualifiées : 8.
-Retour arrière : testé. Livraison : non réalisée.
+Retour arrière : testé. Livraison : réalisée.
 Les validations antérieures de phase ne sont ni remplacées ni déduites de ces constats.
 
 ### Suite proposée

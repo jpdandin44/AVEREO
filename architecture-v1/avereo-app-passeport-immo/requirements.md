@@ -51,8 +51,9 @@ catalogue, du crontab ou de la copie SCI préparée. Limiter les droits aux memb
 actuels sélectionnés, préserver les rôles et les autres applications, fermer le
 site en cas d’échec et conserver les données pour inspection. Le compte famille
 reste autorisé en préproduction selon le choix humain ; son isolement vis-à-vis
-du dossier SCI est vérifié côté serveur. La recette navigateur et le premier
-succès cron réel restent à qualifier après l’action finale. Voir
+du dossier SCI est vérifié côté serveur. Le premier vrai succès cron est vérifié ;
+la recette navigateur reste bloquée
+par le service de jetons du fournisseur d’identité en maintenance. Voir
 [l’activation privée](workflows/activation-production.md).
 
 ## Sauvegarde automatique demandée le 15 octobre 2026

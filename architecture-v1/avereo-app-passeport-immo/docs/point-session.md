@@ -17,31 +17,40 @@ tags: [passeport-immo, local, cockpit]
 Le [complément de contrôle](controle-candidat-preproduction.md) consigne la nouvelle recette ciblée : candidat applicatif inchangé, neuf documents conservés, réserve sur le compte famille levée après confirmation du maintien de Rapport et Passeport Immo en préproduction. D06 et ses quinze documents approuvés restent intacts. La préparation de production ci-dessous conserve sa prochaine action et ses prérequis.
 
 
-## Suite courante — candidat installé fermé, SCI reprise
+## Suite courante — activation exécutée, blocage OAuth identifié
 
-Le [reçu courant](../api/production-execution-observation.json) consigne le candidat
-fermé installé à 09:31:42 UTC et la reprise SCI qualifiée à 09:28:44 UTC : un bien,
-un client, six actifs/trois archives, rejeu sans doublon et sans changement de révision.
-La sauvegarde des quatre tables et neuf fichiers est restaurée isolément. Les sources,
-les décisions humaines et les 21 références d’empreintes approuvées sont conservées.
+Le responsable confirme « activation terminée » ; le reçu serveur constate
+l’exécution à 10:44:23 UTC. Le compte dandin est habilité, le sas signé et le stockage
+sont actifs. Un premier vrai cron réussit à 10:45:02 UTC sur quatre tables et neuf
+fichiers ; la tâche temporaire est retirée à 10:45:51. Ne pas relancer l’activation.
 
-Le compte famille conserve son accès de préproduction ; les méthodes serveur lui
-refusent le bien SCI et ses neuf documents. La réserve historique est levée.
-Le gestionnaire a été ouvert manuellement et les trois archives transférées hors web.
+La recette applicative passe 57 contrôles HTTPS à 10:52:13 UTC : deux sessions
+signées indépendantes, seize fichiers vérifiés, neuf documents exacts par session,
+refus anonymes et garde-fous d’écriture vérifiés sans modifier les lignes métier.
+Voir le [reçu courant](../api/production-verification-observation.json).
 
-Le raccordement final est préparé et répété sur copie privée/tables temporaires à
-09:44:01 UTC. Les accès réels CONNECT restent inchangés, le stockage web désactivé
-et la cible fermée. La [procédure](../workflows/activation-production.md) décrit le
-script exact et la sauvegarde prévue, 03 h 20 Europe/Paris avec trente copies vérifiées.
+La connexion native Drupal de dandin réussit, puis CONNECT reçoit
+OAUTH_UPSTREAM_REJECTED. Le journal non sensible donne token_exchange/503, sans
+erreur de transport. Les trois routes OAuth installées n’ont pas l’option de
+disponibilité pendant la maintenance ; celle-ci reste active sur le site public.
 
-**Prochaine action :** le responsable exécute la commande finale préparée dans
-cPanel, car elle raccorde la clé existante et crée un nouvel accès. Contrôler ensuite
-le reçu, le lancement CONNECT de `dandin`, le dossier SCI, l’isolement, la déconnexion
-et un vrai succès cron avant retrait de l’entrée temporaire de qualification.
-Ne pas relancer après un échec sans lire les reçus et copies privées.
+Le [correctif concret](blocage-oauth-production.md) passe 27 contrôles isolés avec
+les vraies classes Drupal/Symfony ; quinze autres routes restent identiques.
+Les deux fichiers visés n’existent pas encore dans le module du site. Aucun fichier
+Drupal, cache, rôle ou secret n’est modifié. L’accord d’extension de périmètre est
+demandé dans ce chat ; vérifier sa réponse avant toute intégration ou installation.
 
-La PR nº83 reste en brouillon. D06 demeure acquis ; aucune nouvelle validation de
-phase ni ouverture publique. Le plan CIL reste séparé et son Word est dérivé du Markdown.
+**Prochaine action :** après accord, reprendre le clone du site Drupal et ses règles,
+qualifier le correctif en préproduction, puis effectuer seulement les opérations
+autorisées après leurs contrôles. Rejouer ensuite la recette OAuth réelle et la
+revue humaine du lot. La phase 3 reste en cours. La PR nº83 a été fusionnée par
+le responsable à 10:47:35 UTC sur la tête `08f437a` ; ses quatre attestations
+humaines sont relues et la policy stricte réussit. La PR nº84 est aussi fusionnée.
+Les vérifications après activation et la proposition OAuth sont préparées dans
+une PR de suivi distincte, avec ses propres attestations à examiner. Les 21
+références approuvées et D06 restent intacts. Famille conserve son accès de préproduction.
+Le contrôle de clôture refuse encore le passage en raison du blocage OAuth et de
+l’absence de recette de production complète ; ces deux réserves sont consignées.
 
 ## Historique — plan CIL livré et reprise privée préparée le 16 octobre
 
