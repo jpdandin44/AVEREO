@@ -1,0 +1,61 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "document_type": "nightly-backup-observation",
+  "observedAt": "2026-10-16T06:38:24+00:00",
+  "environment": "preproduction",
+  "method": "Lecture seule du gestionnaire de fichiers cPanel et des reçus affichés dans le navigateur intégré.",
+  "destination": "/home/daje3540/private/passeport-immo-backups/preprod",
+  "installationEvidence": "api/automatic-backup-observation.json",
+  "sources": [
+    "status.json",
+    "latest.json",
+    "runs/20261016T012002Z-049ffb203acd/complete.json",
+    "scheduler.log",
+    "runs/20261016T012002Z-049ffb203acd/documents/"
+  ],
+  "backup": {
+    "status": "success",
+    "id": "20261016T012002Z-049ffb203acd",
+    "backupDate": "2026-10-16",
+    "completedAt": "2026-10-16T01:20:02+00:00",
+    "completedAtLocal": "2026-10-16T03:20:02+02:00",
+    "timezone": "Europe/Paris",
+    "trigger": "cron",
+    "tables": 4,
+    "documents": 9,
+    "fileReadback": "passed",
+    "temporaryRowRestore": "passed",
+    "liveRowsChanged": false,
+    "retentionSuccessfulCopies": 30,
+    "retainedCopies": 2,
+    "expiredManagedCopiesRemoved": 0,
+    "snapshotSha256": "0ad273540b675bdaf3ab4ffb505c6b95c79ba83278e6d2d6af0443e5acf3ec55",
+    "schemaSha256": "b2e283afcc8e20079b5f0e07c65ebb733ad3fb9ffc8897158d166dec9186af55"
+  },
+  "consistency": {
+    "latestEqualsComplete": true,
+    "lastSchedulerEntryEqualsStatus": true,
+    "statusMatchesCompleteProof": true
+  },
+  "visibleInventory": {
+    "rootEntries": [
+      "documents/",
+      "complete.json",
+      "schema.sql",
+      "snapshot.json"
+    ],
+    "documentFiles": 9,
+    "documentDirectoryMode": "0700",
+    "rootFileMode": "0600",
+    "allDocumentFileModes": "0600"
+  },
+  "limits": [
+    "Les empreintes et la récupération temporaire sont déclarées réussies par le travailleur ; aucun recalcul ni essai de restauration indépendant pendant cette lecture.",
+    "Aucun contenu de document client ni instantané de données téléchargé ou restitué.",
+    "La copie demeure sur le même hébergement et aucune alerte par courriel n’est installée.",
+    "Deux copies sont constatées ; trente est la politique de rétention, pas le nombre de copies actuellement disponibles."
+  ],
+  "remoteChangesPerformed": false,
+  "humanApprovalRecorded": false,
+  "nextAction": "Examen humain du reçu puis du critère 07 de la phase 2 dans le cockpit."
+}

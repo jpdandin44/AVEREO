@@ -5,12 +5,93 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Changelog Passeport Immo
+
+## 2026-10-16 — Candidat fermé installé et dossier SCI repris
+
+Reprise réelle du seul bien/client SCI, six documents actifs et trois archivés,
+avec stabilité de source, import, rejeu sans doublon et sauvegarde restaurée sur
+quatre tables temporaires et neuf fichiers privés séparés. Candidat de seize
+fichiers posé fermé après qualification de récupération et retour arrière hébergés.
+Raccordement final préparé et répété isolément, sans activation réelle. Script,
+procédure, reçu, suivi et documents structurants actualisés ; D06 et les preuves
+figées préservés. Sauvegarde planifiée et recette de production restent à terminer.
+
+## 2026-10-16 — Réserve sur les accès de préproduction levée
+
+Le responsable confirme le maintien de Rapport et Passeport Immo pour le compte
+famille en préproduction. Le [complément de contrôle](docs/controle-candidat-preproduction.md)
+et le cockpit clôturent cette seule réserve ; les droits, D06, ses quinze documents
+approuvés et les autres prérequis de production restent conservés.
+
+## 2026-10-16 — Initialisation privée et réduction des droits vérifiées
+
+Après exécution humaine avec saisie masquée, quatre tables vides, configuration 0600
+et dossiers 0700 vérifiés. CREATE et REFERENCES retirés ; cinq droits utiles relus
+dans SQL et opérations vérifiées en table temporaire. Stockage désactivé et site fermé,
+sans candidat, changement CONNECT ou transfert SCI. Reçu d’exécution, suivi et
+documents structurants actualisés ; réserve parallèle de préproduction conservée
+à cette étape, puis levée par la confirmation humaine consignée ci-dessus.
+
+## 2026-10-16 — Ressources de production créées et fermées
+
+Dossier dédié créé vide et fermé avant enregistrement du sous-domaine ; base dédiée
+créée sans utilisateur applicatif ni schéma. Certificat DNS-01 installé et HTTPS
+contrôlé avec vérification stricte : 403 anonyme. Compte destinataire confirmé par
+le responsable, inventaire SCI relu et neuf fichiers vérifiés ; préconditions du
+delta CONNECT inchangées. Reçu, suivi et procédures actualisés. Initialisation,
+récupération, reprise et raccordement restent à effectuer ; aucun document client,
+compte/droit CONNECT ou candidat applicatif modifié. CI nº83 réussie et ZIP public
+identique au candidat autorisé.
+
+Le responsable crée ensuite le compte SQL dédié et autorise les sept droits bootstrap
+sur cette seule base ; enregistrement cPanel vérifié. Les cinq sources privées de
+sauvegarde/reprise sont déposées avec contrôle d’empreintes, sans donnée ni exécution.
+UAPI est indisponible dans le terminal rouvert ; la configuration privée passe par
+une initialisation humaine avec saisie masquée, puis réduction aux droits utiles.
+Le schéma, la configuration et la clé de sas ne sont pas encore créés.
+
+## 2026-10-16 — Plan CIL et reprise ciblée de production
+
+Plan proposé de quatorze actions et douze scénarios de recette, source Markdown
+et Word de dix pages généré puis contrôlé visuellement. Le périmètre CIL futur
+reste distinct du candidat actuel. Reprise privée d’un bien/client/documents,
+avec correspondance explicite des propriétaires, simulation et rejeu sans doublon,
+qualifiée par 35 assertions MariaDB. Les 30 assertions API/stockage, 22 de sauvegarde
+et 19 tests Python passent. Aucun transfert réel ni déploiement ; D06 et les
+21 références de preuves approuvées sont conservés.
+
+## 2026-10-16 — Comparatif CIL et conditions d’utilisation pour AVEREO
+
+Étude du guide propriétaire de huit pages, du modèle officiel distinct et des
+textes/sources institutionnelles : réutilisation commerciale, attribution, limites
+des marques et services tiers. Comparatif avec le code documentaire, l’export de
+devis et les reçus de stockage ; écarts et évolution CIL proposés, sans changement
+du runtime, des pièces client, du candidat ou des décisions de phase.
+
+## 2026-10-16 — Validation D06 récupérée et suite de la PR nº82 préparée
+
+Préproduction approuvée dans le cockpit : six livrables et huit critères, dont la
+sauvegarde nocturne. L'accord de production explicite du commentaire D06 est repris
+dans le suivi sans nouvelle décision humaine. Phase 3 en préparation, PR nº82 fusionnée,
+policy stricte et CI vérifiées, candidat de fusion identique, lots privés relus.
+Inventaire cPanel actualisé : domaine et base de production encore absents.
+Dossier, reçu, point de reprise et vues alignés ; quinze preuves approuvées conservées.
+Les prérequis de cible, reprise SCI et récupération restent ouverts ; aucune livraison.
+
+## 2026-10-16 — Reprise et première échéance nocturne observée
+
+Cockpit et prototype local relancés. Lecture cPanel de la sauvegarde automatique
+terminée à 03 h 20 min 02 s Europe/Paris : quatre tables, neuf documents et deux
+copies conservées. Statut, pointeur, marqueur de fin et journal concordants ;
+contrôles de fichiers et récupération temporaire déclarés réussis par le travailleur.
+Reçu, suivi, point de reprise, procédure, roadmap et vues dérivées actualisés.
+Critère 07 et phase 2 laissés à la validation humaine ; aucune modification hébergée.
 
 ## 2026-10-15 — Données initiales de production choisies
 

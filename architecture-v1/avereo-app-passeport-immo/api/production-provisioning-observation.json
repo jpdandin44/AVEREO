@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "kind": "closed_production_resources_preparation",
+  "observedAt": "2026-10-16T08:09:19+00:00",
+  "humanAuthorizationRef": "D06",
+  "target": {
+    "url": "https://passeport-immo.avereo.fr/",
+    "documentRoot": "/home/daje3540/passeport-immo.avereo.fr/public",
+    "domainCreated": true,
+    "rootCreatedEmptyBeforeDomain": true,
+    "onlyFileAtPreparation": ".htaccess",
+    "closure": "Require all denied",
+    "directoryPermissions": "0755",
+    "database": "daje3540_pimprod",
+    "databaseCreated": true,
+    "applicationDatabaseUserCreated": true,
+    "schemaInitialized": false,
+    "applicationCandidateInstalled": false,
+    "privateApplicationConfigurationCreated": false,
+    "readyForActivation": false,
+    "additionalDirectoryCreatedByCpanel": {
+      "name": "cgi-bin",
+      "realDirectoryNotSymlink": true,
+      "entries": 0
+    },
+    "applicationDatabaseUserCreatedBy": "human_through_cpanel_standard_ui"
+  },
+  "https": {
+    "certificateInstalledThroughCpanel": true,
+    "validationMethod": "dns-01",
+    "alternativeNames": [
+      "passeport-immo.avereo.fr"
+    ],
+    "issuer": "Let's Encrypt YR1",
+    "validTo": "2027-01-14T07:00:11Z",
+    "nodeTlsRejectUnauthorized": true,
+    "nodeCertificateAuthorized": true,
+    "anonymousStatus": 403,
+    "browserStatus": 403,
+    "browserSecurityWarningBypassed": false,
+    "windowsCurl": "SEC_E_UNTRUSTED_ROOT; no verification bypass used; independent Node trust store verified certificate and hostname"
+  },
+  "ownerMapping": {
+    "basis": "User explicitly selected the active completed production account after the account-name difference was reported.",
+    "sourceOwner": "avereo_connect:1",
+    "targetOwner": "avereo_connect:1",
+    "sourceAndTargetIdsIndependentlyRead": true,
+    "targetAccountStatus": "active",
+    "targetAccountOnboarding": "completed",
+    "targetMembershipRole": "owner",
+    "targetMembershipAndOrganizationActive": true,
+    "sameExternalSubject": false,
+    "sameIssuer": false,
+    "technicalIdentityEquivalenceClaimed": false,
+    "targetCanLaunchPasseport": false,
+    "connectRightsChanged": false
+  },
+  "sourceInventory": {
+    "observedAt": "2026-10-16T08:05:04+00:00",
+    "method": "READ ONLY transactions; only selected property and linked client; private blob size and SHA-256 checks",
+    "selectedPropertyPresent": true,
+    "selectedClientPresent": true,
+    "activeDocuments": 6,
+    "archivedDocuments": 3,
+    "allNineBlobHashesVerified": true,
+    "otherPropertiesInSelectedWorkspace": 0,
+    "realTransferPerformed": false,
+    "finalStableExportStillRequired": true
+  },
+  "connectDelta": {
+    "productionIndexAndConfigMatchQualifiedHistoricalBase": true,
+    "deltaInstalled": false,
+    "productionLaunchUrlConfigured": false,
+    "productionLaunchKeyConfigured": false
+  },
+  "ci": {
+    "headSha": "cc5a9a8ebfc6a2fc0de59f5affdd80cf58199b86",
+    "runUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38874230706",
+    "status": "passed",
+    "selectiveTransferAssertions": 35,
+    "apiStorageAssertions": 30,
+    "scheduledBackupAssertions": 22,
+    "downloadedCandidateSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "publicFiles": 16,
+    "sameAuthorizedPublicCandidate": true
+  },
+  "mutations": [
+    "Created new empty document root with refusal before domain registration.",
+    "Created only the selected production subdomain and dedicated database.",
+    "Issued and installed the selected domain certificate through DNS validation.",
+    "Staged source-only initializer outside web in 0600; read-only preflight stopped before credential or schema creation.",
+    "Human created the new dedicated SQL user through standard cPanel UI; no password read or changed by agent.",
+    "Applied exactly seven bootstrap privileges to the dedicated database after explicit human action-time confirmation.",
+    "Staged five hash-verified private source files; no configuration, documents or tool execution."
+  ],
+  "noChangesTo": [
+    "preproduction data or files",
+    "CONNECT runtime or configuration",
+    "CONNECT accounts and permissions",
+    "SCI documents",
+    "human phase decisions"
+  ],
+  "remaining": [
+    "Human masked-TTY entry of existing SQL password into no-UAPI initialization; SQL grant/vacancy check before schema, then UI removal of CREATE and REFERENCES and runtime grant verification.",
+    "Qualify actual target recovery and candidate rollback, including only the CONNECT elements concerned.",
+    "Export the selected source case at the stable cutover, simulate, apply and replay the exact transfer.",
+    "Connect only the selected production account, verify access isolation and run production recipe and backup checks."
+  ],
+  "applicationDeliveryPerformed": false,
+  "publicOpeningPerformed": false,
+  "privateInitializer": {
+    "stagedOutsideWeb": true,
+    "filePermissions": "0600",
+    "sha256": "4116ebc2ab43cec3a98e7f43126d63c7fe78ee2272ccf76843b439c19c10215a",
+    "hostedReadOnlyPreflight": "blocked_before_credential_creation",
+    "cause": "Both JSON stdin and ordinary UAPI CLI failed in the reopened jailed terminal: required /usr/local/cpanel/cpanel is absent. Earlier ordinary-read observation does not qualify current capability.",
+    "writeModeExecuted": false,
+    "qualifiedForHostedInitialization": false,
+    "nextStep": "Human initializes with existing SQL password through masked /dev/tty in the no-UAPI variant; SQL grant/vacancy checks before schema. Remove CREATE and REFERENCES in UI afterward and verify five runtime privileges.",
+    "manualAlternative": {
+      "sha256": "2ee55c7d1f62051b661437590e2b97517d3aa28b4fb02855c6de4f586d14fb6b",
+      "stagedOutsideWeb": true,
+      "mode": "0600",
+      "apiCallsMade": false,
+      "localMariaDbAssertions": 19,
+      "localPseudoTerminalAssertions": 2,
+      "hostedReadOnlyPreflight": "filesystem_ready_no_sql_check",
+      "sqlAccountChecked": false,
+      "sqlGrantsChecked": false,
+      "sqlVacancyVerified": false,
+      "writeModeExecutedByAgent": false,
+      "humanMaskedTtyInitializationPending": true
+    }
+  },
+  "recordedAt": "2026-10-16T08:49:06.307645+00:00",
+  "sqlBootstrap": {
+    "user": "daje3540_pimprod",
+    "database": "daje3540_pimprod",
+    "rights": [
+      "SELECT",
+      "INSERT",
+      "UPDATE",
+      "DELETE",
+      "CREATE TEMPORARY TABLES",
+      "CREATE",
+      "REFERENCES"
+    ],
+    "humanActionTimeConfirmation": "Oui, appliquer ces droits sur cette seule base",
+    "cpanelSaveSuccessObserved": true,
+    "runtimeRestrictionStillRequired": [
+      "CREATE",
+      "REFERENCES"
+    ],
+    "sqlPasswordReadByAgent": false,
+    "privateApplicationPasswordStored": false
+  },
+  "privateOperationsSources": {
+    "stagedOutsideWeb": true,
+    "directoryMode": "0700",
+    "fileMode": "0600",
+    "files": {
+      "backup-storage.php": "734d7ca313632792a93efaa18bc95dbc6857f057493ba67ffc51414a6e65dffb",
+      "scheduled-backup.php": "b73c6c2209c3a81175169ff680be057af017d4ab5282055f356a805f323fba74",
+      "backup-cron.php": "3e2bf449abeed38647529d51630be06abc56aef146e26154edb058bfc817e4a8",
+      "storage.sql": "b2e283afcc8e20079b5f0e07c65ebb733ad3fb9ffc8897158d166dec9186af55",
+      "transfer-property.php": "7dcb922b88141725632d28f2c03b0964f6002a212018cfde0c9996e3dcc8360a"
+    },
+    "dataOrConfigurationIncluded": false,
+    "toolsExecuted": false
+  }
+}

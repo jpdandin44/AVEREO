@@ -5,7 +5,7 @@
   "owner": "jpdandin",
   "version": "git",
   "created": "2026-10-03",
-  "updated": "2026-10-15",
+  "updated": "2026-10-16",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -18,8 +18,8 @@
     "Un prototype local disponible ne valide pas une phase.",
     "Les charges et dates futures restent non estimées."
   ],
-  "currentPhase": 2,
-  "state": "awaiting_human_review",
+  "currentPhase": 3,
+  "state": "in_progress",
   "phases": [
     {
       "id": 0,
@@ -183,13 +183,13 @@
       "shortTitle": "Préproduction",
       "title": "Préproduction",
       "objective": "Recetter la préproduction privée installée : raccordement CONNECT, dossier SCI, documents partagés et sauvegarde quotidienne ; revoir la PR nº80.",
-      "status": "awaiting_review",
+      "status": "validated",
       "dependsOn": [
         1
       ],
       "startedOn": "2026-10-15",
       "deliveredOn": "2026-10-15",
-      "validatedOn": null,
+      "validatedOn": "2026-10-16",
       "deliverables": [
         {
           "path": "recette-preproduction.md",
@@ -263,11 +263,9 @@
         "Sauvegarde quotidienne à 03 h 20 Europe/Paris, trente copies réussies, premier succès réel et récupération temporaire examinés ; limites de même hébergement et absence d’alerte mail connues.",
         "Procédure et workflow manuel préparés."
       ],
-      "nextAction": "Consigner la revue de phase 2 dans le cockpit ; PR nº80 et nº81 fusionnées, préparation de production rattachée au dossier courant.",
+      "nextAction": "Phase validée par D06 ; son commentaire autorise le passage en production. Préparation technique de la phase 3 en cours.",
       "legacyPhaseId": 3,
-      "blockers": [
-        "Décision humaine de phase 2 à consigner dans le cockpit ; la revue GitHub et la fusion de la PR nº80 sont confirmées."
-      ],
+      "blockers": [],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/80",
         "repository": "jpdandin44/AVEREO",
@@ -281,18 +279,20 @@
         "mergedBy": "jpdandinavereo-design"
       },
       "technicalState": "installed_private_storage_verified",
-      "validationEvidence": null
+      "validationEvidence": {
+        "decisionId": "D06"
+      }
     },
     {
       "id": 3,
       "shortTitle": "Mise en production",
       "title": "Mise en production",
-      "objective": "Mise en production",
-      "status": "not_started",
+      "objective": "Préparer puis livrer le candidat approuvé sur la cible fermée, reprendre le dossier SCI et vérifier le fonctionnement réel ; ouverture publique distincte.",
+      "status": "in_progress",
       "dependsOn": [
         2
       ],
-      "startedOn": null,
+      "startedOn": "2026-10-16",
       "deliveredOn": null,
       "validatedOn": null,
       "deliverables": [
@@ -301,11 +301,17 @@
           "kind": "file",
           "availability": "present",
           "title": "Préparation de la mise en production",
-          "description": "Dossier après fusion de la PR nº80 : candidat identique, cible et récupération à qualifier, procédure et accords attendus.",
+          "description": "Dossier après PR nº82 et D06 : accord de production récupéré, candidat identique, préparation de la cible, reprise SCI et récupération à qualifier.",
           "expectedEvidence": [
             "Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.",
             "Procédure, fumée et retour arrière vérifiés par le responsable."
           ]
+        },
+        {
+          "path": "controle-candidat-preproduction.md",
+          "kind": "file",
+          "availability": "present",
+          "title": "Contrôle complémentaire du candidat et réserve de droits levée"
         }
       ],
       "exitCriteria": [
@@ -313,8 +319,27 @@
         "Procédure, fumée et retour arrière vérifiés par le responsable.",
         "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Lots locaux préparés et testés ; créer la cible fermée et raccorder CONNECT après décisions et accord exacts, puis qualifier récupération et recette hébergées.",
-      "legacyPhaseId": 4
+      "nextAction": "Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés.",
+      "legacyPhaseId": 4,
+      "authorizedOn": "2026-10-16",
+      "startEvidence": {
+        "decisionId": "D06",
+        "basis": "Accord explicite de passage en production dans le commentaire de la décision existante."
+      },
+      "blockers": [],
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/83",
+        "repository": "jpdandin44/AVEREO",
+        "number": 83,
+        "state": "open",
+        "draft": true,
+        "headSha": "eed6c0ea05be9cb97051950a36f4c9864ef258bc",
+        "observedAt": "2026-10-16T08:55:53.327Z",
+        "scope": "Candidat installé fermé et SCI repris avec récupération isolée ; activation privée et sauvegarde production préparées, plan CIL proposé. Recette authentifiée et nouvelle validation humaine non acquises.",
+        "mergedAt": null,
+        "mergeCommitSha": null,
+        "mergedBy": null
+      }
     }
   ],
   "decisions": [
@@ -481,6 +506,50 @@
         ]
       },
       "nextAction": "Décision humaine enregistrée dans Projet local."
+    },
+    {
+      "id": "D06",
+      "title": "Valider le livrable de phase 2",
+      "type": "approval",
+      "phaseId": 2,
+      "status": "approved",
+      "owner": "jpdandin",
+      "blocksPhase": 3,
+      "recordedOn": "2026-10-16",
+      "evidence": {
+        "kind": "local_review",
+        "reviewId": "5ed14289-0270-45f5-9aac-1021ec34c8c0",
+        "reviewer": "jpdandin",
+        "comment": "Phase approuvée, passage en prod autorisé.",
+        "recordedAt": "2026-10-16T07:05:11.475Z",
+        "reviewedArtifacts": [
+          {
+            "path": "recette-preproduction.md",
+            "sha256": "999838c9c169dd4f52b377d23e314b1495f6924bd6b6a56d283657391b0cf5e8"
+          },
+          {
+            "path": "02-integration-connect.md",
+            "sha256": "616d09b4df2634ec41d06bbdf1323752ec2a433fff9d5ade8f2c187edd16d543"
+          },
+          {
+            "path": "03-preproduction.md",
+            "sha256": "68568b2bcabd1feb19510595af6dc5b1e51df69560158f1e01f783e9c68124f0"
+          },
+          {
+            "path": "deployment.md",
+            "sha256": "947f669a56d7c2be8e9a4f7fd8bb383b16d377ce572ebec5480cc0dc6ee65162"
+          },
+          {
+            "path": "stockage-serveur.md",
+            "sha256": "e166c43752c21a7d7a32f2982926bf40902bfb52de88f47c2adbf177be420a25"
+          },
+          {
+            "path": "sauvegarde-automatique.md",
+            "sha256": "143206e06d98452ebaedc32e8ccf240dc825f3ba66e3edad98548d6e3e3e4da1"
+          }
+        ]
+      },
+      "nextAction": "Décision humaine enregistrée dans Projet local."
     }
   ],
   "history": [
@@ -618,6 +687,11 @@
       "date": "2026-10-14",
       "event": "Revue locale : approve, phase 1, par jpdandin.",
       "reviewId": "afdaead5-328f-4ebd-a58d-fc6836a866ec"
+    },
+    {
+      "date": "2026-10-16",
+      "event": "Revue locale : approve, phase 2, par jpdandin.",
+      "reviewId": "5ed14289-0270-45f5-9aac-1021ec34c8c0"
     }
   ],
   "reviewEvents": [
@@ -828,6 +902,51 @@
         "Comparatif ExamIn sourcé ; références du cas concret contrôlées.",
         "Coupes comparatives de principe intégrées ; dimensions connues et hypothèses distinguées."
       ]
+    },
+    {
+      "id": "5ed14289-0270-45f5-9aac-1021ec34c8c0",
+      "action": "approve",
+      "phaseId": 2,
+      "reviewer": "jpdandin",
+      "comment": "Phase approuvée, passage en prod autorisé.",
+      "recordedAt": "2026-10-16T07:05:11.475Z",
+      "reviewedArtifacts": [
+        {
+          "path": "recette-preproduction.md",
+          "sha256": "999838c9c169dd4f52b377d23e314b1495f6924bd6b6a56d283657391b0cf5e8"
+        },
+        {
+          "path": "02-integration-connect.md",
+          "sha256": "616d09b4df2634ec41d06bbdf1323752ec2a433fff9d5ade8f2c187edd16d543"
+        },
+        {
+          "path": "03-preproduction.md",
+          "sha256": "68568b2bcabd1feb19510595af6dc5b1e51df69560158f1e01f783e9c68124f0"
+        },
+        {
+          "path": "deployment.md",
+          "sha256": "947f669a56d7c2be8e9a4f7fd8bb383b16d377ce572ebec5480cc0dc6ee65162"
+        },
+        {
+          "path": "stockage-serveur.md",
+          "sha256": "e166c43752c21a7d7a32f2982926bf40902bfb52de88f47c2adbf177be420a25"
+        },
+        {
+          "path": "sauvegarde-automatique.md",
+          "sha256": "143206e06d98452ebaedc32e8ccf240dc825f3ba66e3edad98548d6e3e3e4da1"
+        }
+      ],
+      "previousRevision": "93fe6ece92b66b1b8721028154eb73d1395df6e9abeec9520168481b2fec67bf",
+      "checkedCriteria": [
+        "Sas et catalogue intégrés après autorisation des fichiers hors sous-projet.",
+        "Tests CONNECT, ouverture locale et accès sans ticket 403 vérifiés.",
+        "Compte CONNECT habituel reconnu, ouverture sans troisième identification visiteur et déconnexion applicative vérifiées sur la cible HTTPS.",
+        "Dossier SCI migré retrouvé : références du bien, six documents actifs, trois archives, PDF et deux pages des coupes contrôlés.",
+        "Sur un bien fictif : ajout, consultation ou téléchargement, classement, détection du doublon, archivage et restauration d’un document vérifiés.",
+        "Persistance après rechargement, lecture dans une session indépendante et refus d’une écriture périmée entre deux fenêtres vérifiés.",
+        "Sauvegarde quotidienne à 03 h 20 Europe/Paris, trente copies réussies, premier succès réel et récupération temporaire examinés ; limites de même hébergement et absence d’alerte mail connues.",
+        "Procédure et workflow manuel préparés."
+      ]
     }
   ],
   "verificationQuestions": [
@@ -920,8 +1039,8 @@
     "project": "avereo-app-passeport-immo",
     "owner": "jpdandin",
     "kind": "application",
-    "stage": "preproduction",
-    "status": "awaiting_review",
+    "stage": "production",
+    "status": "in_progress",
     "objective": "Cas documentaire client/bien, raccordement CONNECT privé et stockage serveur opérationnel.",
     "candidate": {
       "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
@@ -1051,16 +1170,24 @@
         }
       },
       "production": {
-        "id": null,
-        "ready": false,
-        "evidence": "api/qualification-production-observation.json",
-        "observedAt": "2026-10-15T18:29:46.848+00:00",
+        "id": "o2switch:daje3540:passeport-immo.avereo.fr",
+        "ready": true,
+        "evidence": "api/production-execution-observation.json",
+        "observedAt": "2026-10-16T09:36:58+00:00",
         "address": "https://passeport-immo.avereo.fr",
-        "qualificationStatus": "inventory_complete_provisioning_and_connect_pending",
+        "qualificationStatus": "closed_candidate_installed_authenticated_activation_pending",
         "proposedDirectory": "/home/daje3540/passeport-immo.avereo.fr/public",
         "provider": "o2switch",
         "proposedAccount": "daje3540",
-        "provisioned": false
+        "provisioned": false,
+        "closedResourcesCreated": true,
+        "applicationDatabaseUserCreated": true,
+        "closedStorageInitialized": true,
+        "isolated": true,
+        "empty": false,
+        "qualificationLimits": [
+          "Storage web activation, production OAuth/browser recipe and scheduled production backups remain pending."
+        ]
       }
     },
     "github": {
@@ -1069,12 +1196,12 @@
       "headSha": "74421367dadcae8de5b57636407bed45a6d74f04",
       "state": "merged",
       "draft": false,
-      "acceptedSourceSha": null,
-      "acceptedArtifactSha256": null,
-      "humanAcceptanceVerified": false,
+      "acceptedSourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+      "acceptedArtifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+      "humanAcceptanceVerified": true,
       "sourceReviewVerified": true,
-      "evidence": "api/preparation-production-observation.json ; quatre cases humaines cochées et fusion observées, sans nouvelle décision de phase ni accord de promotion.",
-      "observedAt": "2026-10-15T15:30:29.857716+00:00",
+      "evidence": "api/production-readiness-observation.json ; D06 et quatre cases PR82 ; archive de fusion identique au candidat examiné.",
+      "observedAt": "2026-10-16T07:13:59+00:00",
       "followUpPrUrl": "https://github.com/jpdandin44/AVEREO/pull/72",
       "followUpObservation": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/72",
@@ -1129,7 +1256,15 @@
           "runId": 38716965916,
           "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38716965916 ; archive téléchargée identique au candidat installé, complément documentaire uniquement."
         }
-      ]
+      ],
+      "promotionAcceptance": {
+        "decisionId": "D06",
+        "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/82",
+        "mergeCommitSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+        "artifactBytesEqual": true,
+        "observedAt": "2026-10-16T07:13:59+00:00",
+        "evidence": "api/production-readiness-observation.json"
+      }
     },
     "checks": [
       {
@@ -1322,6 +1457,23 @@
         "artifactSha256": "dd574fb98b8fe770f4c33c2fd2bacf76e17963c58aaa9c056e070d3326798ae1",
         "observedAt": "2026-10-15T13:36:34+00:00",
         "evidence": "api/automatic-backup-observation.json ; cron réel, quatre tables/neuf fichiers, retour temporaire, permissions et autres tâches vérifiés."
+      },
+      {
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "kind": "preproduction",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "passed",
+        "observedAt": "2026-10-16T07:05:11.475Z",
+        "evidence": "docs/suivi-chantier.json#decisions/D06 ; huit critères humains, six empreintes vérifiées dans api/production-readiness-observation.json"
+      },
+      {
+        "kind": "ci",
+        "status": "passed",
+        "sourceSha": "90ad61855a6d5d10aeee4f79d81ba829ae895d6d",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "observedAt": "2026-10-16T08:09:19+00:00",
+        "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38869180045 ; 35 reprise, 30 API/stockage, 22 sauvegarde ; ZIP téléchargé identique, seize fichiers."
       }
     ],
     "approvals": [
@@ -1360,6 +1512,32 @@
         "recordedAt": "2026-10-15T08:22:25.214977+00:00",
         "evidence": "Poursuite de l’instruction directe d’installation et de recette privée dans ce chat ; correction limitée à la troisième identification signalée et confirmée par le responsable, sur la même cible privée et avec les mêmes habilitations. Complément de la même correction : neutraliser la page 403 héritée, un seul fichier applicatif.",
         "limitation": "Portée opérationnelle de l’instruction existante, aucune nouvelle validation de phase, acceptation de PR, autorisation de production ou ouverture publique."
+      },
+      {
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "scope": "review",
+        "target": "o2switch:daje3540:passeport-immo-preprod.avereo.fr",
+        "status": "approved",
+        "actor": "jpdandin",
+        "source": "cockpit_review",
+        "recordedAt": "2026-10-16T07:05:11.475Z",
+        "evidence": "docs/suivi-chantier.json#decisions/D06 ; commentaire : « Phase approuvée, passage en prod autorisé. » ; api/production-readiness-observation.json",
+        "decisionRef": "D06",
+        "limitation": "Projection de la décision existante, sans nouvelle décision humaine. Les prérequis techniques restent ouverts ; aucune ouverture publique incluse."
+      },
+      {
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "scope": "production",
+        "target": "o2switch:daje3540:passeport-immo.avereo.fr",
+        "status": "approved",
+        "actor": "jpdandin",
+        "source": "cockpit_review",
+        "recordedAt": "2026-10-16T07:05:11.475Z",
+        "evidence": "docs/suivi-chantier.json#decisions/D06 ; commentaire : « Phase approuvée, passage en prod autorisé. » ; api/production-readiness-observation.json",
+        "decisionRef": "D06",
+        "limitation": "Projection de la décision existante, sans nouvelle décision humaine. Les prérequis techniques restent ouverts ; aucune ouverture publique incluse."
       }
     ],
     "backups": [
@@ -1420,14 +1598,33 @@
         "status": "verified",
         "evidence": "api/storage-observation.json#installation/finalBackup",
         "scope": "Quatre tables applicatives et neuf fichiers ; restitution temporaire, aucune reprise complète hébergeur."
+      },
+      {
+        "id": "production-connect-recovery-20261016T091634Z",
+        "observedAt": "2026-10-16T09:16:34+00:00",
+        "scope": "Five affected files restored privately; catalogue restored into temporary tables, real repository access and exact isolated rollback verified.",
+        "target": "o2switch:daje3540:passeport-immo.avereo.fr",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "evidence": "api/production-execution-observation.json"
+      },
+      {
+        "id": "production-sci-recovery-20261016T092844Z",
+        "observedAt": "2026-10-16T09:28:44+00:00",
+        "scope": "Four application tables restored into temporary tables and nine private document files restored into a separate directory; live rows unchanged by backup.",
+        "target": "o2switch:daje3540:passeport-immo.avereo.fr",
+        "status": "verified",
+        "restoreStatus": "passed",
+        "evidence": "api/production-execution-observation.json"
       }
     ],
     "rollback": {
-      "status": "not_tested",
-      "target": null,
-      "artifactSha256": null,
-      "evidence": null,
-      "observedAt": null
+      "status": "tested",
+      "target": "o2switch:daje3540:passeport-immo.avereo.fr",
+      "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+      "evidence": "api/production-execution-observation.json#recoveryAndRollback",
+      "observedAt": "2026-10-16T09:30:39+00:00",
+      "scope": "Hosted isolated closed-candidate and CONNECT affected-file/catalogue rollback; application data retained."
     },
     "delivery": {
       "status": "not_delivered",
@@ -1437,14 +1634,10 @@
       "evidence": null,
       "observedAt": null
     },
-    "blockers": [
-      "Décision formelle de phase 2 et acceptation de l’archive exacte pour promotion à consigner ; la fusion PR nº80 est confirmée.",
-      "Cible Passeport Immo absente du DNS et de cPanel ; domaine, dossier, base, configuration et droits CONNECT de production à créer après accord exact. Inventaire authentifié terminé.",
-      "Sauvegarde/restauration de la cible et retour arrière du candidat en production non qualifiés.",
-      "Accord exact de déploiement en production absent ; aucune ouverture aux utilisateurs autorisée par cette préparation."
-    ],
-    "nextAction": "Dossier SCI de préproduction retenu pour les données initiales. Consigner la décision de phase 2, qualifier son propriétaire CONNECT en production et actualiser l’inventaire avant tout transfert ; cible fermée, raccordement, récupération et déploiement exacts restent à autoriser et qualifier.",
+    "blockers": [],
+    "nextAction": "Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés.",
     "nextIteration": [
+      "À cadrer : service CIL complet selon docs/plan-action-cil.md ; quatorze actions et douze scénarios proposés, Word dérivé dans docs/livrables/plan-action-cil.docx. Périmètre distinct du candidat courant, aucune validation CIL créée.",
       "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
       "À qualifier séparément : utilité du workflow Deploy Prototype To GitHub Pages en échec après fusion."
     ],
@@ -1461,12 +1654,12 @@
         "nextAction": "Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte."
       },
       "preproduction": {
-        "status": "awaiting_review",
-        "nextAction": "Consigner la revue de phase 2 dans le cockpit ; PR nº80 et nº81 fusionnées, préparation de production rattachée au dossier courant."
+        "status": "validated",
+        "nextAction": "Phase 2 approuvée par D06 le 16 octobre ; six livrables et huit critères examinés, dont la sauvegarde nocturne."
       },
       "production": {
-        "status": "blocked",
-        "nextAction": "Lots locaux préparés et testés ; créer la cible fermée et raccorder CONNECT après décisions et accord exacts, puis qualifier récupération et recette hébergées."
+        "status": "in_progress",
+        "nextAction": "Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés."
       }
     },
     "gates": [
@@ -1561,6 +1754,21 @@
         "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
         "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
         "observedAt": "2026-10-15T15:31:40.759972+00:00"
+      },
+      {
+        "gate": "production",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Blocages présents ou non renseignés.",
+          "Cible de production non prouvée.",
+          "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+          "Retour arrière de ce candidat non qualifié."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "observedAt": "2026-10-16T07:18:38+00:00",
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "evidence": "api/production-readiness-observation.json#productionGate"
       }
     ],
     "previousIterationRef": "legacyTracking.developmentWorkflow",
@@ -2070,7 +2278,7 @@
         "destination": "/home/daje3540/private/passeport-immo-backups/preprod",
         "runbook": "docs/sauvegarde-automatique.md",
         "localBackupAssertions": 13,
-        "nextAction": "Consulter les prochains résultats dans le statut privé du serveur ; revue humaine de préproduction et de la PR nº80.",
+        "nextAction": "Critère 07 approuvé dans D06 ; conserver le suivi des prochaines exécutions et qualifier séparément la sauvegarde de production.",
         "observedAt": "2026-10-15T13:36:34+00:00",
         "sourceSha": "652ef6d63cddea3e343c39a616be9cf1f9500ecd",
         "artifactSha256": "dd574fb98b8fe770f4c33c2fd2bacf76e17963c58aaa9c056e070d3326798ae1",
@@ -2087,11 +2295,18 @@
         "otherCronLinesPreserved": true,
         "temporaryEntryRemoved": true,
         "externalTransfer": false,
-        "emailAlerts": false
+        "emailAlerts": false,
+        "nightlyVerification": {
+          "observedAt": "2026-10-16T06:38:24+00:00",
+          "status": "success_observed_human_review_approved",
+          "backupId": "20261016T012002Z-049ffb203acd",
+          "evidence": "api/nightly-backup-observation.json",
+          "humanDecisionRef": "D06"
+        }
       }
     },
     "humanRecipe": {
-      "status": "ready_for_human_review",
+      "status": "approved",
       "preparedAt": "2026-10-15T13:54:49.157189+00:00",
       "guide": "docs/recette-preproduction.md",
       "testFile": "data/document-recette.test.txt",
@@ -2107,13 +2322,16 @@
       },
       "alignmentReason": "L’installation privée et le stockage ont été autorisés directement dans le chat et réalisés le 15 octobre ; remise technique à la revue demandée, sans création de décision ou événement humain.",
       "humanDecisionsAdded": false,
-      "humanReviewPending": true,
-      "productionAuthorized": false,
+      "humanReviewPending": false,
+      "productionAuthorized": true,
       "sourceEvidence": [
         "api/storage-observation.json",
         "api/automatic-backup-observation.json"
       ],
-      "githubObservation": "api/preparation-production-observation.json"
+      "githubObservation": "api/preparation-production-observation.json",
+      "humanDecisionRef": "D06",
+      "reviewedAt": "2026-10-16T07:05:11.475Z",
+      "currentEvidence": "api/production-readiness-observation.json"
     },
     "planningHistory": [
       {
@@ -2126,45 +2344,46 @@
       }
     ],
     "productionPreparation": {
-      "status": "inventory_complete_local_lot_prepared",
+      "status": "human_approved_execution_preparation",
       "preparedAt": "2026-10-15T15:30:29.857716+00:00",
       "document": "docs/04-mise-en-production.md",
       "evidence": "api/preparation-production-observation.json",
       "requestedBy": "user",
       "requestReference": "Demande directe du 15 octobre 2026 : PR nº80 mergée, préparer la suite.",
       "addressStatus": "confirmed_by_user",
-      "productionTargetQualified": false,
-      "phaseStarted": false,
-      "nextAction": "Dossier SCI de préproduction retenu pour les données initiales. Consigner la décision de phase 2, qualifier son propriétaire CONNECT en production et actualiser l’inventaire avant tout transfert ; cible fermée, raccordement, récupération et déploiement exacts restent à autoriser et qualifier.",
+      "productionTargetQualified": true,
+      "phaseStarted": true,
+      "nextAction": "Candidat installé fermé et SCI repris : un bien, un client, six actifs et trois archives, rejeu et récupération isolée vérifiés. Exécuter l’activation finale préparée pour dandin, puis la recette authentifiée et le vrai succès cron de production. Famille conserve son accès de préproduction avec isolement SCI vérifié ; D06 et les critères humains sont préservés.",
       "readiness": [
         {
           "id": "candidate",
-          "status": "verified",
-          "evidence": "api/preparation-production-observation.json"
+          "status": "verified_against_pr82_merge",
+          "evidence": "api/production-readiness-observation.json#artifactVerification"
         },
         {
           "id": "preproduction_phase_decision",
-          "status": "pending_human_record",
-          "evidence": "docs/suivi-chantier.json"
+          "status": "approved",
+          "evidence": "docs/suivi-chantier.json#decisions/D06"
         },
         {
           "id": "production_target_and_connect",
-          "status": "inventory_complete_not_provisioned",
-          "evidence": "api/qualification-production-observation.json"
+          "status": "closed_target_ready_connect_activation_pending",
+          "evidence": "api/production-execution-observation.json"
         },
         {
           "id": "initial_data_scope",
-          "status": "scope_confirmed_preparation_pending",
-          "evidence": "docs/04-mise-en-production.md"
+          "status": "selected_sci_imported_and_replayed",
+          "evidence": "api/production-execution-observation.json#selectiveSciTransfer"
         },
         {
           "id": "production_recovery_and_rollback",
-          "status": "local_tools_verified_hosted_recovery_pending",
-          "evidence": "api/qualification-production-observation.json"
+          "status": "hosted_isolated_recovery_and_exact_rollback_passed",
+          "evidence": "api/production-execution-observation.json#recoveryAndRollback"
         },
         {
           "id": "exact_production_authorization",
-          "status": "not_recorded"
+          "status": "recorded_in_existing_review",
+          "evidence": "docs/suivi-chantier.json#decisions/D06 ; api/production-readiness-observation.json"
         }
       ],
       "phaseCriterionCorrection": {
@@ -2172,7 +2391,7 @@
         "current": "Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.",
         "reason": "Référence historique devenue circulaire après mapping ; critère de phase 3 non approuvée uniquement."
       },
-      "gateStatus": "refused_prerequisites_missing",
+      "gateStatus": "passed_for_closed_installation",
       "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/81",
       "targetRef": "developmentWorkflow.targets.production",
       "addressConfirmation": {
@@ -2182,21 +2401,24 @@
         "scope": "Choix du nom de domaine uniquement ; qualification technique et déploiement distincts."
       },
       "qualification": {
-        "status": "inventory_complete_provisioning_and_connect_pending",
+        "status": "closed_installation_and_sci_recovery_passed_activation_pending",
         "observedAt": "2026-10-15T18:29:46.848+00:00",
         "evidence": "api/qualification-production-observation.json",
         "publicDns": "nxdomain_two_resolvers",
         "privateAccess": "authenticated_inventory_complete",
         "closedBundlePrepared": true,
         "connectDeltaPrepared": true,
-        "remoteMutation": false,
-        "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/82"
+        "remoteMutation": true,
+        "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/82",
+        "latestObservation": "api/production-execution-observation.json",
+        "mergedPullRequestObservedAt": "2026-10-16T07:13:59+00:00"
       },
       "closedInstallation": {
         "evidence": "api/qualification-production-observation.json",
         "bundleSha256": "9e9bde15d4b2c625967053220fc79f5a602ef2ab01a6a5fc3fdf537ee01b0404",
         "localDirectory": ".local/production-qualification-20261015/closed-installation",
-        "remoteDelivery": "not_performed"
+        "remoteDelivery": "installed_closed",
+        "latestEvidence": "api/production-execution-observation.json#candidateInstallation"
       },
       "mergedPreparationEvidence": "api/qualification-production-observation.json",
       "connectDelta": {
@@ -2207,16 +2429,18 @@
         "remoteDelivery": "not_performed"
       },
       "backupTooling": {
-        "status": "locally_verified_not_installed",
+        "status": "manual_populated_backup_and_isolated_restore_passed_schedule_pending",
         "evidence": "api/qualification-production-observation.json",
         "scheduledBackupAssertions": 22,
         "productionScheduleApproved": false,
         "sourceSha": "971e97460c90e9ae3ed36c5538491da400162982",
         "artifactSha256": "b06e74f2528caa1887b151bb1d6052f7733388228ed710c2289cf0b6ab9ca0e8",
-        "localDirectory": ".local/production-qualification-20261015/backup-production"
+        "localDirectory": ".local/production-qualification-20261015/backup-production",
+        "stagingEvidence": "api/production-provisioning-observation.json#privateOperationsSources",
+        "latestEvidence": "api/production-execution-observation.json"
       },
       "initialData": {
-        "status": "scope_confirmed_preparation_pending",
+        "status": "selective_sci_imported_and_replayed",
         "selection": "preproduction_sci_case",
         "recordedAt": "2026-10-15T19:22:54.301+00:00",
         "source": "user_chat_reply",
@@ -2226,11 +2450,109 @@
         "targetRef": "developmentWorkflow.targets.production",
         "sourceEvidence": "api/storage-observation.json",
         "planRef": "docs/04-mise-en-production.md#reprise-du-dossier-sci",
-        "sourceInventoryStatus": "dated_receipt_refresh_required_before_transfer",
-        "productionOwnerMappingStatus": "not_qualified",
-        "transferStatus": "not_performed",
-        "authorizationScope": "Choix des données à intégrer au plan uniquement ; aucune autorisation de transfert, de déploiement ou de passage de phase."
+        "sourceInventoryStatus": "stable_during_import_nine_blobs_verified",
+        "productionOwnerMappingStatus": "explicit_user_mapping_and_active_target_verified",
+        "transferStatus": "performed_closed_target",
+        "authorizationScope": "Choix des données à intégrer au plan uniquement ; aucune autorisation de transfert, de déploiement ou de passage de phase.",
+        "productionAuthorizationRef": "D06",
+        "technicalTool": {
+          "status": "hosted_selected_sci_import_replay_and_recovery_passed",
+          "workflow": "workflows/transfer-property.php",
+          "runbook": "workflows/reprise-bien.md",
+          "evidence": "api/property-transfer-observation.json",
+          "localAssertions": 35,
+          "realTransferPerformed": true
+        },
+        "ownerMapping": {
+          "sourceOwner": "avereo_connect:1",
+          "targetOwner": "avereo_connect:1",
+          "source": "user_chat_reply_and_read_only_account_checks",
+          "reference": "Réponse directe du responsable : Oui, rattacher au compte dandin.",
+          "sameExternalIdentityClaimed": false,
+          "evidence": "api/production-provisioning-observation.json#ownerMapping"
+        },
+        "executionEvidence": "api/production-execution-observation.json#selectiveSciTransfer",
+        "currentExecutionScope": "Reprise exécutée dans le périmètre D06 et selon la correspondance de compte confirmée par le responsable ; le champ authorizationScope conserve la portée historique du choix initial."
+      },
+      "latestReadinessEvidence": "api/production-readiness-observation.json",
+      "updatedAt": "2026-10-16T09:42:56.719716+00:00",
+      "productionAuthorizationRef": "D06",
+      "remainingGateErrors": [],
+      "executionPullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/83",
+        "repository": "jpdandin44/AVEREO",
+        "number": 83,
+        "state": "open",
+        "draft": true,
+        "headSha": "b9018378104b092fed05fe6cd4c06a6ea7f3be44",
+        "observedAt": "2026-10-16T07:24:45+00:00",
+        "scope": "Préparation de production après D06 : reprise ciblée SCI qualifiée localement et plan CIL séparé ; aucune livraison ni nouvelle validation."
+      },
+      "provisioningEvidence": "api/production-provisioning-observation.json",
+      "privateInitializationStatus": "initialized_closed_exact_five_runtime_privileges_verified",
+      "sqlUserAndBootstrapGrantsEvidence": "api/production-provisioning-observation.json#sqlBootstrap",
+      "initializationEvidence": "api/production-execution-observation.json#initialization",
+      "technicalResolutions": [
+        {
+          "previousBlocker": "Cible fermée et stockage privé initialisés : quatre tables vides, cinq droits utiles vérifiés ; candidat et raccordement CONNECT encore à installer après qualification de récupération/retour arrière.",
+          "resolvedBy": "api/production-execution-observation.json",
+          "recordedAt": "2026-10-16T09:32:57.659081+00:00",
+          "scope": "Prerequisite for closed installation only; authenticated activation and recipe still pending."
+        },
+        {
+          "previousBlocker": "Compte destinataire confirmé et neuf documents SCI vérifiés ; export final stable, application et rejeu sur cible réelle encore à effectuer.",
+          "resolvedBy": "api/production-execution-observation.json",
+          "recordedAt": "2026-10-16T09:32:57.659081+00:00",
+          "scope": "Prerequisite for closed installation only; authenticated activation and recipe still pending."
+        },
+        {
+          "previousBlocker": "Sauvegarde/restauration de cible et retour arrière exact non qualifiés en production.",
+          "resolvedBy": "api/production-execution-observation.json",
+          "recordedAt": "2026-10-16T09:32:57.659081+00:00",
+          "scope": "Prerequisite for closed installation only; authenticated activation and recipe still pending."
+        }
+      ],
+      "activation": {
+        "status": "prepared_and_isolated_rehearsal_passed_human_execution_pending",
+        "evidence": "api/production-execution-observation.json#applicationActivation",
+        "runbook": "workflows/activation-production.md"
       }
+    },
+    "preproductionRefresh": {
+      "iterationId": "rapport-passeport-preproduction-20261016",
+      "status": "delivered_verified_access_confirmed",
+      "observedAt": "2026-10-16T08:47:47+00:00",
+      "documentation": "docs/controle-candidat-preproduction.md",
+      "canonicalTracking": "outillage/acces-preproduction/suivi-chantier.json#selected_applications_delivery",
+      "candidateArtifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+      "runtimeChanged": false,
+      "existingDecisionRef": "D06",
+      "productionChanged": false,
+      "rightsReviewRequired": false,
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/84",
+        "repository": "jpdandin44/AVEREO",
+        "number": 84,
+        "state": "open",
+        "draft": true,
+        "mergeable": "MERGEABLE",
+        "observedAt": "2026-10-16T09:32:59+00:00",
+        "scope": "Livraison et contrôles des deux applications en préproduction ; candidates de production préparées, réserve sur le compte famille levée par confirmation humaine.",
+        "headSha": "b97327ab722ba55efe504fab082cb9598b7ab409"
+      },
+      "githubVerification": {
+        "headSha": "b97327ab722ba55efe504fab082cb9598b7ab409",
+        "baseSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+        "mergeable": "MERGEABLE",
+        "technicalChecksPassed": 22,
+        "policySkippedDraft": true,
+        "observedAt": "2026-10-16T09:32:59+00:00",
+        "evidence": "https://github.com/jpdandin44/AVEREO/pull/84/checks"
+      },
+      "updatedAt": "2026-10-16T09:27:45+00:00",
+      "rightsConfirmationEvidence": "https://github.com/jpdandin44/AVEREO/blob/chore/preprod-rapport-passeport-20261016/outillage/acces-preproduction/archives/livraison-rapport-passeport-20261016/rights-confirmation.json",
+      "rightsReservationClosed": true,
+      "rightsChanged": false
     }
   },
   "reviewFollowUps": [
@@ -2287,38 +2609,58 @@
     },
     {
       "phaseId": 2,
-      "result": "Inventaire production et lots locaux préparés ; outillage de sauvegarde adapté et testé. Aucune installation ou décision de phase.",
+      "result": "PR nº82 fusionnée et candidat relu ; D06 approuve la Préproduction et autorise le passage en production. Préparation technique en phase 3, sans installation.",
       "documentationPullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/82",
         "repository": "jpdandin44/AVEREO",
         "number": 82,
-        "state": "open",
-        "draft": true,
-        "headSha": "37cf9699811ae3f60b9899babf3a296737baffd1",
-        "observedAt": "2026-10-15T18:37:50.210Z",
+        "state": "merged",
+        "draft": false,
+        "headSha": "8db97ea2a547cf20423c713ce0a609512a8c6d0e",
+        "observedAt": "2026-10-16T07:14:52.663Z",
         "scope": "Qualification de production et outillage privé après PR nº81 ; cible fermée et raccordement soumis aux décisions et accords distincts.",
-        "mergedAt": null,
-        "mergeCommitSha": null,
-        "mergedBy": null
+        "mergedAt": "2026-10-16T07:00:55.000Z",
+        "mergeCommitSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+        "mergedBy": "jpdandinavereo-design"
       }
     }
   ],
   "sessionHandoff": {
     "status": "resumed_on_user_request",
-    "closedAt": "2026-10-03T20:06:03+00:00",
+    "closedAt": "2026-10-15T19:40:40.524+00:00",
     "destinationProject": "AVEREO_2",
-    "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
-    "nextAction": "Dossier SCI de préproduction retenu pour les données initiales. Consigner la décision de phase 2, qualifier son propriétaire CONNECT en production et actualiser l’inventaire avant tout transfert ; cible fermée, raccordement, récupération et déploiement exacts restent à autoriser et qualifier.",
-    "resumedAt": "2026-10-14T09:40:12+00:00",
-    "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
+    "reason": "Arrêt de la session demandé par le responsable : attendre et vérifier la sauvegarde automatique de cette nuit avant de valider le critère 07 de Préproduction.",
+    "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.",
+    "resumedAt": "2026-10-16T06:38:24+00:00",
+    "resumeReference": "Demande directe du responsable le 16 octobre : relancer le projet et donner accès à la sauvegarde de cette nuit.",
     "previousClosure": {
       "status": "resumed_on_user_request",
-      "closedAt": "2026-10-03T17:14:44+00:00",
+      "closedAt": "2026-10-03T20:06:03+00:00",
       "destinationProject": "AVEREO_2",
-      "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
-      "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
-      "resumedAt": "2026-10-03T19:26:15+02:00",
-      "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
+      "reason": "Le responsable demande de confirmer le rattrapage du suivi et d’arrêter la session pour aujourd’hui.",
+      "nextAction": "Dossier SCI de préproduction retenu pour les données initiales. Consigner la décision de phase 2, qualifier son propriétaire CONNECT en production et actualiser l’inventaire avant tout transfert ; cible fermée, raccordement, récupération et déploiement exacts restent à autoriser et qualifier.",
+      "resumedAt": "2026-10-14T09:40:12+00:00",
+      "resumeReference": "Reprise demandée le 14 octobre : documents client/bien, cas concret réel local et statut ExamIn ; rotation des scans demandée.",
+      "previousClosure": {
+        "status": "resumed_on_user_request",
+        "closedAt": "2026-10-03T17:14:44+00:00",
+        "destinationProject": "AVEREO_2",
+        "reason": "Le responsable demande de documenter l’état et de reprendre dans un nouveau chat pour séparer les contextes.",
+        "nextAction": "Définir et configurer l’accès privé de test avec saisie des identifiants par le responsable, qualifier la récupération et le lot CONNECT, puis présenter le candidat exact pour accord d’installation. Sous-domaine créé et HTTPS contrôlé ; accès actuellement fermé à tous.",
+        "resumedAt": "2026-10-03T19:26:15+02:00",
+        "resumeReference": "Demande directe du responsable dans le nouveau chat AVEREO_2 : reprendre le fichier et lancer la reprise de Passeport Immo."
+      },
+      "localCockpitWork": {
+        "branch": "feat/projet-github-sync",
+        "publication": "not_committed_not_pushed_no_new_pr",
+        "projetTests": 157,
+        "passeportPythonTests": 10,
+        "build": "passed",
+        "realPhaseOverridePerformed": false
+      },
+      "storageLotEvidence": "api/storage-observation.json",
+      "productionPreparationEvidence": "api/preparation-production-observation.json",
+      "productionQualificationEvidence": "api/qualification-production-observation.json"
     },
     "localCockpitWork": {
       "branch": "feat/projet-github-sync",
@@ -2330,7 +2672,54 @@
     },
     "storageLotEvidence": "api/storage-observation.json",
     "productionPreparationEvidence": "api/preparation-production-observation.json",
-    "productionQualificationEvidence": "api/qualification-production-observation.json"
+    "productionQualificationEvidence": "api/qualification-production-observation.json",
+    "waitingFor": {
+      "kind": "scheduled_backup_observation",
+      "phaseId": 2,
+      "criterionNumber": 7,
+      "scheduledAt": "2026-10-16T03:20:00+02:00",
+      "timezone": "Europe/Paris",
+      "environment": "preproduction",
+      "status": "resolved_by_human_review",
+      "runbook": "docs/sauvegarde-automatique.md",
+      "lastVerifiedReceipt": "api/nightly-backup-observation.json",
+      "nextAction": "Critère 07 et phase 2 approuvés dans D06 ; poursuivre la préparation de production.",
+      "automaticResume": false,
+      "observedAt": "2026-10-16T06:38:24+00:00",
+      "humanDecisionRef": "D06"
+    },
+    "reviewDraftObservation": {
+      "observedAt": "2026-10-15T19:40:40.524+00:00",
+      "source": "visible_local_cockpit",
+      "url": "http://127.0.0.1:5193/",
+      "phaseId": 2,
+      "reviewedDeliverables": 0,
+      "availableDeliverables": 6,
+      "checkedCriteria": 0,
+      "totalCriteria": 8,
+      "criterion07Checked": false,
+      "commentPresent": false,
+      "confirmationChecked": false,
+      "scope": "État visible de l’onglet du navigateur intégré seulement ; aucune case ni décision modifiée.",
+      "tabDisposition": "kept_for_resume"
+    },
+    "gitAtClosure": {
+      "branch": "docs/passeport-immo-qualification-production",
+      "publishedHeadSha": "8db97ea2a547cf20423c713ce0a609512a8c6d0e",
+      "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/82",
+      "pullRequestState": "open_draft",
+      "closureNotes": "local_uncommitted",
+      "unrelatedLocalChanges": "preserved"
+    },
+    "productionReadinessEvidence": "api/production-readiness-observation.json",
+    "currentWork": {
+      "branch": "docs/passeport-immo-execution-production",
+      "baseSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+      "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/83",
+      "status": "published_draft_preparation",
+      "productionDeployment": "not_performed",
+      "unrelatedLocalChanges": "preserved"
+    }
   },
   "legacyTracking": {
     "recordedAt": "2026-10-14T09:40:12.597261+00:00",
