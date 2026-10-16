@@ -42,8 +42,10 @@ restent à qualifier.
 
 La recette navigateur depuis CONNECT est bloquée par le service de jetons OAuth
 d’AVEREO, qui répond 503 pendant la maintenance. Le [correctif proposé](docs/blocage-oauth-production.md)
-est testé sur une copie privée des routes, sans changement du site. Son périmètre
-Drupal demande un accord distinct de l’accord D06 conservé pour Passeport Immo.
+est maintenant autorisé et intégré dans la [PR Drupal nº21](https://github.com/jpdandin44/avereo-site-drupal/pull/21).
+Ses 66 contrôles réussissent ; l’audit préalable du site échoue sur six alertes
+touchant quatre composants. Aucune installation OAuth n’est effectuée. Les lots
+de sécurité nécessaires font l’objet d’une demande distincte ; D06 est conservé.
 Le compte famille conserve son accès de préproduction avec isolement SCI vérifié.
 
 Le [reçu de vérification](api/production-verification-observation.json), le

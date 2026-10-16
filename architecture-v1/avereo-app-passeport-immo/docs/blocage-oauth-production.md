@@ -12,6 +12,10 @@ tags: [production, oauth, drupal, maintenance]
 
 # Blocage OAuth de la recette de production et correctif proposé
 
+La [préparation actuelle du fournisseur](../api/oauth-provider-preparation-observation.json)
+complète les premières preuves datées ci-dessous : accord reçu, source intégrée,
+66 contrôles réussis, audit hébergé bloquant et aucun déploiement.
+
 ## Faits observés le 16 octobre
 
 L’activation privée est exécutée par le responsable à 10:44:23 UTC : compte CONNECT
@@ -61,17 +65,22 @@ base Drupal, cache reconstruit, route active ou fichier du site modifié.
 Cette preuve isolée ne constitue ni un déploiement ni une recette OAuth complète.
 
 Cette proposition est conservée comme source native dans le présent dossier de
-reprise. Après accord, l’intégration doit se faire dans le clone du site Drupal,
-sur sa branche et dans son suivi propres ; la proposition examinée reste figée.
+reprise. L’intégration est maintenant faite dans la branche propre du site Drupal ;
+la proposition examinée reste figée et identique. La
+[PR nº21](https://github.com/jpdandin44/avereo-site-drupal/pull/21) porte les sources
+et leur test de 66 assertions ; elle n’est pas une preuve de livraison.
 
 ## Accord et suite nécessaires
 
 L’accord D06 de Passeport Immo reste acquis. Le correctif touche cependant une
 autre application et sa cible d’identité. Les [instructions du site Drupal](<C:/Users/examg/Documents local/avereo-site-drupal/AGENTS.md>)
 imposent de « demander validation avant tout élargissement significatif » et une
-validation humaine explicite avant déploiement. Cet accord d’extension reste à obtenir.
+validation humaine explicite avant déploiement. L’accord sur les seules routes
+est maintenant acquis. Les mises à jour de sécurité distinctes ne sont pas
+couvertes : le précontrôle des cibles échoue avec six alertes sur quatre composants.
 
-Après accord : vérifier les fichiers réellement présents et l’activation du module,
+Après levée de ce contrôle et accords applicables : vérifier les fichiers présents
+et l’activation du module,
 préserver ses autres services, préparer sauvegarde fraîche et retour arrière,
 intégrer la source puis qualifier en préproduction avec maintenance conservée.
 Respecter les contrôles de déploiement du site avant production. Vérifier ensuite

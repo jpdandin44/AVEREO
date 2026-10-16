@@ -166,5 +166,6 @@
     "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
     "observedAt": "2026-10-16T11:16:37.037079+00:00",
     "evidence": "api/production-verification-observation.json#closeGate"
-  }
+  },
+  "latestProviderPreparation": "api/oauth-provider-preparation-observation.json"
 }

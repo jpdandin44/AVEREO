@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "kind": "oauth_provider_scope_authorized_security_gate_blocked",
+  "recordedAt": "2026-10-16T12:56:39.400476+00:00",
+  "authorization": {
+    "source": "direct_user_chat_reply",
+    "text": "Oui, corriger ces seules routes OAuth",
+    "questionScope": "Only /oauth/authorize, /oauth/token and /oauth/userinfo, preproduction qualification followed by production if required checks pass; authentication and public maintenance preserved.",
+    "newCredentialOrRoleChangesAuthorized": false,
+    "dependencyUpgradeAuthorized": false
+  },
+  "siteRepository": "jpdandin44/avereo-site-drupal",
+  "sitePullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/21",
+  "siteImplementation": {
+    "files": [
+      {
+        "path": "modules/custom/avereo_rapport_oauth/avereo_rapport_oauth.services.yml",
+        "sha256": "5a32981fb13bbeba78b2d0ff6ffa61405544723c3f781b4703ab1d6d000c9de2"
+      },
+      {
+        "path": "modules/custom/avereo_rapport_oauth/src/Routing/MaintenanceOauthRouteSubscriber.php",
+        "sha256": "2615916d1ce39d582a8b72f3d06799d6324edac187a460986f39c9f27d5bcf93"
+      }
+    ],
+    "candidateManifest": "data/candidat-oauth-maintenance.json",
+    "candidateManifestSha256": "024592fd4eaabbcbc9da14074c502e19454883081987500c70549390edff484d",
+    "sameAsPreviouslyQualifiedProposal": true,
+    "newLiveFilesInstalled": false,
+    "sourceSha": "d6da130e4a17d5c572edc46770086d65627194c6"
+  },
+  "localRouteQualification": {
+    "status": "passed",
+    "assertions": 66,
+    "test": "tests/oauth-maintenance.test.php",
+    "realDrupalMaintenanceService": true,
+    "selectedRoutes": 3,
+    "unrelatedRoutes": 16,
+    "databaseBootstrapped": false,
+    "liveFilesChanged": false,
+    "limitations": [
+      "Real route definitions and maintenance service in memory; not a hosted OAuth browser recipe."
+    ],
+    "observedAt": "2026-10-16T12:47:06.499876+00:00"
+  },
+  "hostedPreflight": {
+    "observedAt": "2026-10-16T12:29:03+00:00",
+    "environments": [
+      "https://preprod.avereo.fr/",
+      "https://avereo.fr/"
+    ],
+    "drupalVersion": "11.4.7",
+    "oauthModuleEnabledBoth": true,
+    "maintenanceEnabledBoth": true,
+    "composerValidateExitCodeBoth": 0,
+    "composerAuditExitCodeBoth": 1,
+    "advisoryCountPerEnvironment": 6,
+    "affectedPackagesPerEnvironment": 4,
+    "pendingDatabaseUpdatesBoth": 0,
+    "pendingUpdatesMessage": "[success] No database updates required.",
+    "composerJsonSha256Both": "d605ff5179f0314ba189728b088e4f5dce7e757a3249a6a137dfcc0c6b646968",
+    "composerLockSha256Both": "f8177990c8160a12f8232098b9772df473a93f316d3919f44681c34e90e1503a",
+    "dependencyScopeProposal": [
+      {
+        "package": "drupal/core",
+        "installed": "11.4.7",
+        "proposed": "11.4.10",
+        "advisories": [
+          "SA-CORE-2026-014",
+          "SA-CORE-2026-015",
+          "SA-CORE-2026-016"
+        ],
+        "source": "https://www.drupal.org/project/drupal/releases/11.4.10",
+        "separateLot": "core"
+      },
+      {
+        "package": "drupal/easy_breadcrumb",
+        "installed": "2.0.9",
+        "proposed": "2.0.11",
+        "advisories": [
+          "SA-CONTRIB-2026-212"
+        ],
+        "source": "hosted_composer_audit_and_existing_pr20_dependency_receipt",
+        "separateLot": "contrib"
+      },
+      {
+        "package": "drupal/gin",
+        "installed": "5.0.15",
+        "proposed": "5.0.16",
+        "advisories": [
+          "SA-CONTRIB-2026-219"
+        ],
+        "source": "https://www.drupal.org/sa-contrib-2026-219",
+        "separateLot": "admin_theme"
+      },
+      {
+        "package": "drupal/leaflet",
+        "installed": "10.4.9",
+        "proposed": "10.4.13",
+        "advisories": [
+          "SA-CONTRIB-2026-204"
+        ],
+        "source": "https://www.drupal.org/sa-contrib-2026-204",
+        "separateLot": "contrib"
+      }
+    ],
+    "targetComposerFilesChanged": false,
+    "liveSourceFilesChanged": false,
+    "freshBackupForThisDeployment": "not_started_audit_failed_before_source_mutation",
+    "cacheRebuildForThisDeployment": "not_performed_no_source_deployment",
+    "criticalPageRecipeForThisDeployment": "not_performed_gate_blocked"
+  },
+  "githubQualification": {
+    "observedAt": "2026-10-16T12:54:37.998731+00:00",
+    "testedHeadSha": "65aae1c40dbbb8e8bf98000b7b9e0e97f111af60",
+    "baseSha": "1b677eab4c2bfdee1793dcb40fa0a323ed5370a8",
+    "mergeable": "MERGEABLE",
+    "routeAndMaintenanceTest": "passed",
+    "repositoryHygiene": "passed",
+    "composerAudit": "failed",
+    "repositoryAdvisories": 4,
+    "repositoryAffectedPackages": 2,
+    "runUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38903278750",
+    "humanChecklist": "unchecked",
+    "policyDraft": "skipped"
+  },
+  "securityUpdateScope": "requested_separately_not_yet_authorized",
+  "oauthDeploymentPerformed": false,
+  "newPasseportImmoRecipePerformed": false,
+  "applicationArtifactChanged": false,
+  "applicationDataChanged": false,
+  "previousProductionEvidence": "api/production-verification-observation.json",
+  "nextAction": "Lever les alertes de sécurité dans des lots autorisés et qualifiés, puis installer les seuls fichiers OAuth selon l’accord acquis et rejouer le parcours CONNECT/SCI réel."
+}

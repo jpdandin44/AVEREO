@@ -17,7 +17,25 @@ tags: [passeport-immo, local, cockpit]
 Le [complément de contrôle](controle-candidat-preproduction.md) consigne la nouvelle recette ciblée : candidat applicatif inchangé, neuf documents conservés, réserve sur le compte famille levée après confirmation du maintien de Rapport et Passeport Immo en préproduction. D06 et ses quinze documents approuvés restent intacts. La préparation de production ci-dessous conserve sa prochaine action et ses prérequis.
 
 
-## Suite courante — activation exécutée, blocage OAuth identifié
+## Suite courante — accord OAuth reçu, précontrôle de sécurité bloquant
+
+Le responsable autorise les seules routes OAuth. Les deux fichiers sont intégrés
+à l’identique dans une copie isolée du site Drupal, PR nº21. Les 66 contrôles avec
+le vrai service de maintenance réussissent localement et en CI ; l’hygiène réussit.
+La CI échoue sur quatre alertes du verrou de dépôt. Le relevé réel des deux cibles
+est distinct : six alertes sur quatre composants, validate réussi, aucune mise à
+jour de base en attente. Aucun fichier du site hébergé n’est remplacé.
+
+La [preuve courante du fournisseur](../api/oauth-provider-preparation-observation.json)
+conserve l’accord reçu et le précontrôle daté. La demande de lots de sécurité
+distincts est en attente ; ne pas redemander l’accord déjà acquis sur les routes,
+ni désactiver la maintenance ou contourner l’audit. Reprendre ensuite sauvegarde,
+restauration et recette réelle selon les règles du site, puis CONNECT/SCI.
+Les 57 contrôles Passeport Immo et la sauvegarde restent les preuves datées de
+l’activation précédente ; ils ne sont pas rejoués ni étendus à OAuth aujourd’hui.
+D06 et les 21 références approuvées restent inchangés ; phase 3 en cours.
+
+## Historique — activation exécutée, premier blocage OAuth identifié
 
 Le responsable confirme « activation terminée » ; le reçu serveur constate
 l’exécution à 10:44:23 UTC. Le compte dandin est habilité, le sas signé et le stockage

@@ -319,7 +319,7 @@
         "Procédure, fumée et retour arrière vérifiés par le responsable.",
         "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.",
+      "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
       "legacyPhaseId": 4,
       "authorizedOn": "2026-10-16",
       "startEvidence": {
@@ -327,7 +327,7 @@
         "basis": "Accord explicite de passage en production dans le commentaire de la décision existante."
       },
       "blockers": [
-        "Recette navigateur de production bloquée : le service OAuth avereo.fr/oauth/token renvoie 503 pendant la maintenance ; correctif ciblé Drupal préparé et testé isolément, accord d’extension de périmètre encore requis."
+        "Correctif des trois routes OAuth autorisé et intégré dans la PR Drupal nº21 ; 66 contrôles réussis. Déploiement bloqué par l’audit Composer des deux cibles : six alertes sur quatre composants ; lots de sécurité distincts à autoriser et qualifier."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/83",
@@ -1486,6 +1486,16 @@
         "observedAt": "2026-10-16T11:07:57.743545+00:00",
         "evidence": "api/production-verification-observation.json",
         "reason": "Recette navigateur de production bloquée : le service OAuth avereo.fr/oauth/token renvoie 503 pendant la maintenance ; correctif ciblé Drupal préparé et testé isolément, accord d’extension de périmètre encore requis."
+      },
+      {
+        "kind": "provider_preflight",
+        "status": "failed",
+        "target": "https://avereo.fr/",
+        "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+        "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+        "observedAt": "2026-10-16T12:29:03+00:00",
+        "evidence": "api/oauth-provider-preparation-observation.json",
+        "reason": "Hosted provider Composer audit has six advisories; OAuth source deployment not performed."
       }
     ],
     "approvals": [
@@ -1649,9 +1659,9 @@
       "publicOpeningPerformed": false
     },
     "blockers": [
-      "Recette navigateur de production bloquée : le service OAuth avereo.fr/oauth/token renvoie 503 pendant la maintenance ; correctif ciblé Drupal préparé et testé isolément, accord d’extension de périmètre encore requis."
+      "Correctif des trois routes OAuth autorisé et intégré dans la PR Drupal nº21 ; 66 contrôles réussis. Déploiement bloqué par l’audit Composer des deux cibles : six alertes sur quatre composants ; lots de sécurité distincts à autoriser et qualifier."
     ],
-    "nextAction": "Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.",
+    "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
     "nextIteration": [
       "À cadrer : service CIL complet selon docs/plan-action-cil.md ; quatorze actions et douze scénarios proposés, Word dérivé dans docs/livrables/plan-action-cil.docx. Périmètre distinct du candidat courant, aucune validation CIL créée.",
       "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
@@ -1675,7 +1685,7 @@
       },
       "production": {
         "status": "in_progress",
-        "nextAction": "Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique."
+        "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique."
       }
     },
     "gates": [
@@ -1796,6 +1806,17 @@
         "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
         "observedAt": "2026-10-16T11:16:37.037079+00:00",
         "evidence": "api/production-verification-observation.json#closeGate"
+      },
+      {
+        "gate": "close",
+        "declaredEvidenceConsistent": false,
+        "errors": [
+          "Blocages présents ou non renseignés.",
+          "Contrôle actuel absent : production sur o2switch:daje3540:passeport-immo.avereo.fr."
+        ],
+        "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+        "observedAt": "2026-10-16T12:56:39.400476+00:00",
+        "evidence": "api/oauth-provider-preparation-observation.json"
       }
     ],
     "previousIterationRef": "legacyTracking.developmentWorkflow",
@@ -2380,7 +2401,7 @@
       "addressStatus": "confirmed_by_user",
       "productionTargetQualified": true,
       "phaseStarted": true,
-      "nextAction": "Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.",
+      "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
       "readiness": [
         {
           "id": "candidate",
@@ -2418,7 +2439,7 @@
         "current": "Phase 2 Préproduction validée et autorisation humaine de production enregistrée pour la cible et le candidat exacts.",
         "reason": "Référence historique devenue circulaire après mapping ; critère de phase 3 non approuvée uniquement."
       },
-      "gateStatus": "blocked_identity_provider_maintenance",
+      "gateStatus": "blocked_provider_security_preflight_and_oauth_recipe",
       "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/81",
       "targetRef": "developmentWorkflow.targets.production",
       "addressConfirmation": {
@@ -2503,7 +2524,7 @@
         "currentExecutionScope": "Reprise exécutée dans le périmètre D06 et selon la correspondance de compte confirmée par le responsable ; le champ authorizationScope conserve la portée historique du choix initial."
       },
       "latestReadinessEvidence": "api/production-readiness-observation.json",
-      "updatedAt": "2026-10-16T11:07:57.743545+00:00",
+      "updatedAt": "2026-10-16T12:56:39.400476+00:00",
       "productionAuthorizationRef": "D06",
       "remainingGateErrors": [
         "Blocages présents ou non renseignés.",
@@ -2553,9 +2574,11 @@
       },
       "latestVerificationEvidence": "api/production-verification-observation.json",
       "providerCorrection": {
-        "status": "scope_authorization_requested",
-        "evidence": "api/production-verification-observation.json#proposedProviderFix",
-        "document": "docs/blocage-oauth-production.md"
+        "status": "oauth_scope_authorized_local_tests_passed_security_audit_blocked",
+        "evidence": "api/oauth-provider-preparation-observation.json",
+        "document": "docs/blocage-oauth-production.md",
+        "sitePullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/21",
+        "authorizationEvidence": "api/oauth-provider-preparation-observation.json#authorization"
       },
       "verificationPublication": {
         "status": "published_draft_oauth_recipe_blocked",
@@ -2586,7 +2609,8 @@
           "mergeCommitSha": "de33542cb8f16efaac318cb7cfd0b62fb34c092f",
           "mergedBy": "jpdandinavereo-design"
         }
-      }
+      },
+      "latestProviderPreparation": "api/oauth-provider-preparation-observation.json"
     },
     "preproductionRefresh": {
       "iterationId": "rapport-passeport-preproduction-20261016",
@@ -2706,9 +2730,12 @@
         "number": 85,
         "state": "open",
         "draft": true,
-        "headSha": "2ef60654ab7727ffa0939390d133cd3ef362b619",
-        "observedAt": "2026-10-16T11:18:58.299762+00:00",
-        "scope": "Vérification après activation privée, sauvegarde réelle, blocage OAuth et proposition ciblée non installée ; candidat applicatif inchangé."
+        "headSha": "72cd8e68b9cc957dd2b927e01d65e710f4aff168",
+        "observedAt": "2026-10-16T11:19:54.284Z",
+        "scope": "Vérification après activation privée, sauvegarde réelle, blocage OAuth et proposition ciblée non installée ; candidat applicatif inchangé.",
+        "mergedAt": null,
+        "mergeCommitSha": null,
+        "mergedBy": null
       }
     }
   ],
@@ -2717,7 +2744,7 @@
     "closedAt": "2026-10-15T19:40:40.524+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Arrêt de la session demandé par le responsable : attendre et vérifier la sauvegarde automatique de cette nuit avant de valider le critère 07 de Préproduction.",
-    "nextAction": "Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.",
+    "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
     "resumedAt": "2026-10-16T06:38:24+00:00",
     "resumeReference": "Demande directe du responsable le 16 octobre : relancer le projet et donner accès à la sauvegarde de cette nuit.",
     "previousClosure": {
@@ -2819,7 +2846,7 @@
         "mergedBy": "jpdandinavereo-design"
       },
       "latestVerificationEvidence": "api/production-verification-observation.json",
-      "nextAction": "Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.",
+      "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
       "previousBranch": "docs/passeport-immo-execution-production",
       "previousBaseSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
       "publicationObservation": {

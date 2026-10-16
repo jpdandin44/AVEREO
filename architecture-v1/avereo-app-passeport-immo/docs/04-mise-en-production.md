@@ -41,7 +41,12 @@ le reçu historique d’installation fermée conservé plus bas.
 Le [correctif proposé](blocage-oauth-production.md) ajoute l’option de maintenance
 aux seules routes d’autorisation, de jetons et d’identité. Les exigences et mécanismes
 d’authentification restent identiques ; le site public reste fermé. Le site Drupal
-est un autre périmètre : son accord d’extension est demandé avant intégration.
+est un autre périmètre dont l’accord est maintenant acquis. La
+[préparation du fournisseur](../api/oauth-provider-preparation-observation.json)
+constate l’intégration de deux fichiers et 66 contrôles réussis dans la PR Drupal
+nº21, puis l’échec de l’audit des deux cibles : six avis de sécurité, quatre
+composants. Le déploiement OAuth reste non effectué ; les lots de sécurité
+distincts nécessitent leur propre accord et qualification.
 
 L’installation privée de Passeport Immo est réelle. Sa recette HTTPS signée ne
 remplace pas la recette OAuth complète, qui reste bloquée. D06, les critères humains,

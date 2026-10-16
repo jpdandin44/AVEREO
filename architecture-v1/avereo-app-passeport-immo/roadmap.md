@@ -29,9 +29,10 @@ premier vrai succès cron est constaté ; l’entrée temporaire de qualificatio
 
 Le [blocage courant](docs/blocage-oauth-production.md) porte sur l’échange de jetons
 OAuth du site Drupal AVEREO, qui reçoit 503 pendant sa maintenance. Un correctif
-limité à trois routes passe 27 contrôles isolés ; aucun fichier du site n’est changé.
-Après accord du périmètre Drupal et ses contrôles applicables, qualifier le parcours
-complet CONNECT puis préparer la revue humaine de phase 3. D06 est conservé.
+limité à trois routes est autorisé et intégré dans la PR Drupal nº21 ; 66 contrôles
+réussissent avec le vrai service de maintenance. Le précontrôle hébergé échoue sur
+six alertes de dépendances : autoriser et qualifier ces lots de sécurité distincts,
+puis reprendre installation OAuth et parcours complet CONNECT. D06 est conservé.
 Le plan CIL reste une proposition pour l’itération suivante.
 
 ## Historique — suite après fusion de la PR nº81

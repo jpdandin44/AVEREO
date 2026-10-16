@@ -12,6 +12,13 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-16 — Accord OAuth et précontrôle du fournisseur
+
+Accord reçu pour les trois routes, intégrées dans la PR Drupal nº21 ; 66 contrôles
+locaux et CI réussis. Audit du fournisseur hébergé en échec sur six alertes / quatre
+composants ; mises à jour distinctes à autoriser. Aucune installation OAuth ni
+nouvelle recette Passeport Immo ; candidat, données et validations conservés.
+
 ## 2026-10-16 — Activation privée et sauvegarde de production vérifiées
 
 Activation exécutée par le responsable pour dandin ; autres comptes actuels refusés,

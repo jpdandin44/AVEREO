@@ -56,7 +56,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Production — En cours**.
-Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.
+Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-16T06:38:24+00:00.
 
@@ -79,7 +79,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
 | Préproduction | Validée | Phase 2 approuvée par D06 le 16 octobre ; six livrables et huit critères examinés, dont la sauvegarde nocturne. |
-| Production | En cours | Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique. |
+| Production | En cours | Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique. |
 
 ### Candidat et GitHub
 
@@ -122,6 +122,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 | preproduction | Réussi | 2026-10-16T07:05:11.475Z |
 | GitHub Actions | Réussi | 2026-10-16T08:09:19+00:00 |
 | production | blocked | 2026-10-16T11:07:57.743545+00:00 |
+| provider_preflight | Échec | 2026-10-16T12:29:03+00:00 |
 
 Preuves du candidat identifié ci-dessus :
 
@@ -151,6 +152,7 @@ Preuves du candidat identifié ci-dessus :
 - preproduction : docs/suivi-chantier.json#decisions/D06 ; huit critères humains, six empreintes vérifiées dans api/production-readiness-observation.json
 - GitHub Actions : https://github.com/jpdandin44/AVEREO/actions/runs/38869180045 ; 35 reprise, 30 API/stockage, 22 sauvegarde ; ZIP téléchargé identique, seize fichiers.
 - production : api/production-verification-observation.json
+- provider_preflight : api/oauth-provider-preparation-observation.json
 
 ### Contrôles de passage
 
@@ -162,12 +164,13 @@ Preuves du candidat identifié ci-dessus :
 - Production : passage refusé (2026-10-15T15:31:40.759972+00:00).
 - Production : passage refusé (2026-10-16T07:18:38+00:00).
 - Clôture : passage refusé (2026-10-16T11:16:37.037079+00:00).
+- Clôture : passage refusé (2026-10-16T12:56:39.400476+00:00).
 
 ### Blocages de passage
 
-- Recette navigateur de production bloquée : le service OAuth avereo.fr/oauth/token renvoie 503 pendant la maintenance ; correctif ciblé Drupal préparé et testé isolément, accord d’extension de périmètre encore requis.
+- Correctif des trois routes OAuth autorisé et intégré dans la PR Drupal nº21 ; 66 contrôles réussis. Déploiement bloqué par l’audit Composer des deux cibles : six alertes sur quatre composants ; lots de sécurité distincts à autoriser et qualifier.
 
-Prochaine action : Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.
+Prochaine action : Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.
 
 ### Accords et livraison
 

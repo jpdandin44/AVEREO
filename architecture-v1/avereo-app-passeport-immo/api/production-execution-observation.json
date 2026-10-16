@@ -143,5 +143,6 @@
     },
     "interpretation": "No content returned; 429 responses do not qualify the final application gate."
   },
-  "latestVerification": "api/production-verification-observation.json"
+  "latestVerification": "api/production-verification-observation.json",
+  "latestProviderPreparation": "api/oauth-provider-preparation-observation.json"
 }
