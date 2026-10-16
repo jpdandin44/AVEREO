@@ -19,20 +19,26 @@ sont dédiés à la production. Après initialisation par le responsable, les dr
 permanents sont SELECT, INSERT, UPDATE, DELETE et CREATE TEMPORARY TABLES.
 Configuration 0600 et dossiers privés 0700 ; CREATE et REFERENCES sont retirés.
 
-Seize fichiers du candidat sont installés avec la variante fermée de `.htaccess`.
+Seize fichiers du candidat sont d’abord posés sous fermeture totale, puis activés
+avec la politique signée du même candidat.
 La base contient un espace, un client, le seul bien SCI et neuf métadonnées/fichiers,
 dont trois archives, repris selon le mapping explicitement confirmé vers `dandin`.
 Le texte identique des identifiants entre environnements ne prouve pas une identité
 externe commune. Simulation, import, rejeu sans révision et sauvegarde/restauration
 isolée sont vérifiés sur la cible réelle. Les sources sont conservées.
 
-La configuration web reste désactivée et le domaine fermé. Le
+La configuration web et le sas signé sont activés pour le compte confirmé. Le
 [raccordement privé](workflows/activation-production.md) prépare les deux fichiers
 CONNECT, deux configurations et la politique signée du candidat. Sa répétition
-hébergée utilise une copie privée et des tables temporaires ; le catalogue actif
-reste inchangé. L’accès réel et la sauvegarde planifiée de production attendent
-l’exécution humaine finale. Le [reçu courant](api/production-execution-observation.json)
+hébergée utilise une copie privée et des tables temporaires ; le catalogue est
+ensuite raccordé par l’exécution humaine du 16 octobre. Le [reçu d’exécution](api/production-execution-observation.json)
 distingue cette préparation de l’activation et de la recette navigateur.
+
+La [vérification de production](api/production-verification-observation.json) constate
+57 contrôles HTTPS réussis et un vrai succès cron de production sur quatre tables
+et neuf fichiers. Le parcours navigateur OAuth reste bloqué par le service de
+jetons AVEREO en maintenance ; la proposition Drupal conserve les contrôles d’accès
+et ne désactive pas la maintenance. Les autres comptes actuels restent refusés.
 
 ## Sauvegarde privée planifiée
 

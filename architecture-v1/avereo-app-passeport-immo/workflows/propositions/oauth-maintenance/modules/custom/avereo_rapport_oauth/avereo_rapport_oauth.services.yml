@@ -1,0 +1,5 @@
+services:
+  avereo_rapport_oauth.maintenance_oauth_routes:
+    class: Drupal\avereo_rapport_oauth\Routing\MaintenanceOauthRouteSubscriber
+    tags:
+      - { name: event_subscriber }

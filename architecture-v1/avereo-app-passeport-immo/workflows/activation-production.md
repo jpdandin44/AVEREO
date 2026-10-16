@@ -19,6 +19,16 @@ Il ne reçoit ni ne restitue de mot de passe. Le [dossier de production](../docs
 et le [reçu courant](../api/production-execution-observation.json) conservent les faits
 datés ; D06 reste l’accord opérationnel applicable.
 
+## Exécution du 16 octobre
+
+Le responsable a exécuté le mode apply à 10:44:23 UTC. La sauvegarde réelle est
+déclenchée par cron à 10:45:02 puis la tâche de qualification est retirée à 10:45:51.
+Les 57 contrôles HTTPS de l’application réussissent, mais la recette OAuth navigateur
+reste bloquée par le service de jetons AVEREO. Le [reçu courant](../api/production-verification-observation.json)
+et le [correctif proposé](../docs/blocage-oauth-production.md) priment pour l’état réel.
+Les étapes de préparation ci-dessous conservent leur valeur de procédure ; ne pas
+relancer apply sur l’installation déjà activée.
+
 ## Entrées et dépendances
 
 Cible dédiée `passeport-immo.avereo.fr`, installation fermée de seize fichiers,
