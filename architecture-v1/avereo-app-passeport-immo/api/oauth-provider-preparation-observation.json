@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "kind": "oauth_provider_scope_authorized_security_gate_blocked",
+  "kind": "site_preproduction_technically_qualified_production_review_pending",
   "recordedAt": "2026-10-16T12:56:39.400476+00:00",
   "authorization": {
     "source": "direct_user_chat_reply",
@@ -10,7 +10,7 @@
     "dependencyUpgradeAuthorized": false
   },
   "siteRepository": "jpdandin44/avereo-site-drupal",
-  "sitePullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/21",
+  "sitePullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/22",
   "siteImplementation": {
     "files": [
       {
@@ -26,7 +26,8 @@
     "candidateManifestSha256": "024592fd4eaabbcbc9da14074c502e19454883081987500c70549390edff484d",
     "sameAsPreviouslyQualifiedProposal": true,
     "newLiveFilesInstalled": false,
-    "sourceSha": "d6da130e4a17d5c572edc46770086d65627194c6"
+    "sourceSha": "d6da130e4a17d5c572edc46770086d65627194c6",
+    "historicalObservationAt": "2026-10-16T12:56:39.400476+00:00"
   },
   "localRouteQualification": {
     "status": "passed",
@@ -121,13 +122,72 @@
     "repositoryAffectedPackages": 2,
     "runUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38903278750",
     "humanChecklist": "unchecked",
-    "policyDraft": "skipped"
+    "policyDraft": "skipped",
+    "pullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/21",
+    "historical": true
   },
-  "securityUpdateScope": "requested_separately_not_yet_authorized",
-  "oauthDeploymentPerformed": false,
+  "securityUpdateScope": "site_preproduction_technically_qualified_production_review_pending",
+  "oauthDeploymentPerformed": true,
   "newPasseportImmoRecipePerformed": false,
   "applicationArtifactChanged": false,
   "applicationDataChanged": false,
   "previousProductionEvidence": "api/production-verification-observation.json",
-  "nextAction": "Lever les alertes de sécurité dans des lots autorisés et qualifiés, puis installer les seuls fichiers OAuth selon l’accord acquis et rejouer le parcours CONNECT/SCI réel."
+  "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et les PR Drupal nº25/nº22 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés.",
+  "securityAuthorization": {
+    "recordedAt": "2026-10-16T14:03:17.474281+00:00",
+    "source": "direct_user_chat_reply",
+    "questionItem": "call_49c092563dc24319b6ec4fc7605dab7f",
+    "text": "Oui, traiter ces mises à jour dans des lots séparés",
+    "packages": {
+      "drupal/core": "11.4.10",
+      "drupal/gin": "5.0.16",
+      "drupal/easy_breadcrumb": "2.0.11",
+      "drupal/leaflet": "10.4.13"
+    },
+    "targets": [
+      "https://preprod.avereo.fr/",
+      "https://avereo.fr/"
+    ],
+    "conditions": [
+      "Separate lots",
+      "Fresh backups restored privately",
+      "Preproduction qualification before production",
+      "Required checks passed",
+      "Public maintenance preserved"
+    ],
+    "humanMergePerformedByAgent": false,
+    "publicOpeningAuthorized": false,
+    "coordination": {
+      "authorized": true,
+      "source": "direct_user_chat_reply",
+      "text": "Oui, coordonner les deux chats (recommandé)",
+      "threadTitle": "Optimisation Outils AVEREO",
+      "threadId": "01a0ca7f-f534-7620-a6ba-6c51da8e1921"
+    }
+  },
+  "initialSitePullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/21",
+  "currentProgress": {
+    "observedAt": "2026-10-16T16:40:21.991962+00:00",
+    "siteOperationsPullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/25",
+    "canonicalSiteEvidence": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/security-contrib-hosted-20261016/data/recette-securite-site-active.json",
+    "status": "site_preproduction_technically_qualified_production_review_pending",
+    "activePreproductionLotsDelivered": [
+      "easy-breadcrumb",
+      "leaflet",
+      "core",
+      "gin"
+    ],
+    "sitePreproductionOauthDelivered": true,
+    "siteNativeOauthControlsPassed": true,
+    "productionSiteChanged": false,
+    "identityPreproductionHumanRecipe": {
+      "source": "human_reply_in_coordinated_chat_verified_by_read_thread",
+      "threadId": "01a0ca7f-f534-7620-a6ba-6c51da8e1921",
+      "turnId": "01a1456b-4478-7ca2-9f90-133f47c30522",
+      "quote": "Nouvelle connexion et deux applications accessibles",
+      "scope": "Fresh Chrome login at connect-preprod.avereo.fr then Rapport and Passeport Immo; not production/site delivery acceptance."
+    }
+  },
+  "oauthDeploymentEnvironment": "site_preproduction_only",
+  "oauthProductionDeploymentPerformed": false
 }

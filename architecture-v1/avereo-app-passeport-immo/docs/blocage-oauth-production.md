@@ -12,9 +12,9 @@ tags: [production, oauth, drupal, maintenance]
 
 # Blocage OAuth de la recette de production et correctif proposé
 
-La [préparation actuelle du fournisseur](../api/oauth-provider-preparation-observation.json)
-complète les premières preuves datées ci-dessous : accord reçu, source intégrée,
-66 contrôles réussis, audit hébergé bloquant et aucun déploiement.
+La [préparation actuelle du fournisseur](../api/oauth-provider-preparation-observation.json) distingue les preuves historiques ci-dessous et la progression courante. Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et les PR Drupal nº25/nº22 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés.
+
+Les [opérations du site sont suivies dans la PR nº25](https://github.com/jpdandin44/avereo-site-drupal/pull/25), et la source OAuth unique dans la [PR nº22](https://github.com/jpdandin44/avereo-site-drupal/pull/22). La PR nº21 est fermée comme doublon, avec ses preuves historiques conservées.
 
 ## Faits observés le 16 octobre
 
@@ -76,8 +76,11 @@ L’accord D06 de Passeport Immo reste acquis. Le correctif touche cependant une
 autre application et sa cible d’identité. Les [instructions du site Drupal](<C:/Users/examg/Documents local/avereo-site-drupal/AGENTS.md>)
 imposent de « demander validation avant tout élargissement significatif » et une
 validation humaine explicite avant déploiement. L’accord sur les seules routes
-est maintenant acquis. Les mises à jour de sécurité distinctes ne sont pas
-couvertes : le précontrôle des cibles échoue avec six alertes sur quatre composants.
+est maintenant acquis. Le responsable autorise aussi les quatre correctifs de
+sécurité en lots distincts, avec sauvegardes restaurées, qualification en
+préproduction puis production si les contrôles passent, maintenance conservée.
+Le précontrôle daté reste en échec avec six alertes sur quatre composants ;
+l’accord reçu ne constitue pas une réussite technique ni un merge.
 
 Après levée de ce contrôle et accords applicables : vérifier les fichiers présents
 et l’activation du module,

@@ -17,23 +17,13 @@ tags: [passeport-immo, local, cockpit]
 Le [complément de contrôle](controle-candidat-preproduction.md) consigne la nouvelle recette ciblée : candidat applicatif inchangé, neuf documents conservés, réserve sur le compte famille levée après confirmation du maintien de Rapport et Passeport Immo en préproduction. D06 et ses quinze documents approuvés restent intacts. La préparation de production ci-dessous conserve sa prochaine action et ses prérequis.
 
 
-## Suite courante — accord OAuth reçu, précontrôle de sécurité bloquant
+## Suite courante — sécurité du fournisseur et coordination
 
-Le responsable autorise les seules routes OAuth. Les deux fichiers sont intégrés
-à l’identique dans une copie isolée du site Drupal, PR nº21. Les 66 contrôles avec
-le vrai service de maintenance réussissent localement et en CI ; l’hygiène réussit.
-La CI échoue sur quatre alertes du verrou de dépôt. Le relevé réel des deux cibles
-est distinct : six alertes sur quatre composants, validate réussi, aucune mise à
-jour de base en attente. Aucun fichier du site hébergé n’est remplacé.
+Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et les PR Drupal nº25/nº22 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés.
 
-La [preuve courante du fournisseur](../api/oauth-provider-preparation-observation.json)
-conserve l’accord reçu et le précontrôle daté. La demande de lots de sécurité
-distincts est en attente ; ne pas redemander l’accord déjà acquis sur les routes,
-ni désactiver la maintenance ou contourner l’audit. Reprendre ensuite sauvegarde,
-restauration et recette réelle selon les règles du site, puis CONNECT/SCI.
-Les 57 contrôles Passeport Immo et la sauvegarde restent les preuves datées de
-l’activation précédente ; ils ne sont pas rejoués ni étendus à OAuth aujourd’hui.
-D06 et les 21 références approuvées restent inchangés ; phase 3 en cours.
+Les deux fichiers applicatifs OAuth sont identiques à la proposition historique ; les 76 contrôles de la source commune réussissent. Les reçus courants du site sont conservés dans la PR nº25 ; les observations initiales à six alertes restent datées dans la [preuve fournisseur](../api/oauth-provider-preparation-observation.json). Ne pas les présenter comme le résultat actuel de la copie privée ou des lots déjà livrés.
+
+D06 et les 21 références approuvées restent intacts ; la phase 3 est en cours. Aucun rejeu de l’activation, de la reprise SCI ou du cron n’est nécessaire.
 
 ## Historique — activation exécutée, premier blocage OAuth identifié
 

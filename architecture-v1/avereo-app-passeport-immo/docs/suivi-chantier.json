@@ -319,7 +319,7 @@
         "Procédure, fumée et retour arrière vérifiés par le responsable.",
         "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
+      "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et les PR Drupal nº25/nº22 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés.",
       "legacyPhaseId": 4,
       "authorizedOn": "2026-10-16",
       "startEvidence": {
@@ -327,7 +327,7 @@
         "basis": "Accord explicite de passage en production dans le commentaire de la décision existante."
       },
       "blockers": [
-        "Correctif des trois routes OAuth autorisé et intégré dans la PR Drupal nº21 ; 66 contrôles réussis. Déploiement bloqué par l’audit Composer des deux cibles : six alertes sur quatre composants ; lots de sécurité distincts à autoriser et qualifier."
+        "Revue humaine du site de préproduction et acceptation GitHub encore requises avant livraison du fournisseur OAuth de production. La recette CONNECT/dandin/SCI de production reste ouverte ; aucun nouvel accord de déploiement générique à redemander."
       ],
       "pullRequest": {
         "url": "https://github.com/jpdandin44/AVEREO/pull/83",
@@ -1659,9 +1659,9 @@
       "publicOpeningPerformed": false
     },
     "blockers": [
-      "Correctif des trois routes OAuth autorisé et intégré dans la PR Drupal nº21 ; 66 contrôles réussis. Déploiement bloqué par l’audit Composer des deux cibles : six alertes sur quatre composants ; lots de sécurité distincts à autoriser et qualifier."
+      "Revue humaine du site de préproduction et acceptation GitHub encore requises avant livraison du fournisseur OAuth de production. La recette CONNECT/dandin/SCI de production reste ouverte ; aucun nouvel accord de déploiement générique à redemander."
     ],
-    "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
+    "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et les PR Drupal nº25/nº22 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés.",
     "nextIteration": [
       "À cadrer : service CIL complet selon docs/plan-action-cil.md ; quatorze actions et douze scénarios proposés, Word dérivé dans docs/livrables/plan-action-cil.docx. Périmètre distinct du candidat courant, aucune validation CIL créée.",
       "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
@@ -1685,7 +1685,7 @@
       },
       "production": {
         "status": "in_progress",
-        "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique."
+        "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et les PR Drupal nº25/nº22 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés."
       }
     },
     "gates": [
@@ -2401,7 +2401,7 @@
       "addressStatus": "confirmed_by_user",
       "productionTargetQualified": true,
       "phaseStarted": true,
-      "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
+      "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Accord reçu pour les quatre lots de sécurité séparés ; coordonner les candidats, qualifier sauvegarde/restauration et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
       "readiness": [
         {
           "id": "candidate",
@@ -2730,8 +2730,8 @@
         "number": 85,
         "state": "open",
         "draft": true,
-        "headSha": "72cd8e68b9cc957dd2b927e01d65e710f4aff168",
-        "observedAt": "2026-10-16T11:19:54.284Z",
+        "headSha": "565e9b94b627bf295e3c8f8f173c1ef1056e0a53",
+        "observedAt": "2026-10-16T12:59:54.965Z",
         "scope": "Vérification après activation privée, sauvegarde réelle, blocage OAuth et proposition ciblée non installée ; candidat applicatif inchangé.",
         "mergedAt": null,
         "mergeCommitSha": null,
@@ -2744,7 +2744,7 @@
     "closedAt": "2026-10-15T19:40:40.524+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Arrêt de la session demandé par le responsable : attendre et vérifier la sauvegarde automatique de cette nuit avant de valider le critère 07 de Préproduction.",
-    "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
+    "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Accord reçu pour les quatre lots de sécurité séparés ; coordonner les candidats, qualifier sauvegarde/restauration et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
     "resumedAt": "2026-10-16T06:38:24+00:00",
     "resumeReference": "Demande directe du responsable le 16 octobre : relancer le projet et donner accès à la sauvegarde de cette nuit.",
     "previousClosure": {
@@ -2846,7 +2846,7 @@
         "mergedBy": "jpdandinavereo-design"
       },
       "latestVerificationEvidence": "api/production-verification-observation.json",
-      "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Obtenir l’accord pour les lots de sécurité distincts et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
+      "nextAction": "Accord OAuth acquis ; PR Drupal nº21 préparée avec 66 contrôles réussis, aucune installation hébergée. Accord reçu pour les quatre lots de sécurité séparés ; coordonner les candidats, qualifier sauvegarde/restauration et lever les six alertes des cibles avant recette OAuth CONNECT/SCI. Production privée, données SCI et sauvegarde déjà vérifiées restent conservées ; aucune ouverture publique.",
       "previousBranch": "docs/passeport-immo-execution-production",
       "previousBaseSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
       "publicationObservation": {
