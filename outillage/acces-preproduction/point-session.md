@@ -5,12 +5,17 @@ title: Point de reprise — alignement des applications en préproduction
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-14
+updated: 2026-10-16
 owner: jpdandin
 tags: [preproduction, reprise, applications, cockpit]
 ---
 
 # Point de reprise
+
+## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo
+
+Rapport est livré avec ses deux types ; Passeport Immo possède déjà le candidat courant et ses seize fichiers sont vérifiés sans réécriture. La [livraison et la recette](livraison-rapport-passeport.md) rassemblent les preuves, la levée de la réserve sur les accès du compte famille après confirmation humaine et les candidates exactes. Le bloc `selected_applications_delivery` du [suivi](suivi-chantier.json) fait référence pour ce périmètre. Les constats antérieurs ci-dessous restent historiques lorsqu’ils décrivent Rapport ancien ou Passeport Immo absent. Aucune livraison de production dans ce lot.
+
 
 ## Préparation CONNECT et vérification Passeport Immo — 14 octobre 2026
 

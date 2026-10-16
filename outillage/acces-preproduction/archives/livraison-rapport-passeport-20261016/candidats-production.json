@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "iterationId": "rapport-passeport-preproduction-20261016",
+  "preparedAt": "2026-10-16T08:47:47+00:00",
+  "status": "prepared_for_review",
+  "productionReady": false,
+  "productionChanged": false,
+  "documentation": "../../livraison-rapport-passeport.md",
+  "applications": {
+    "rapport": {
+      "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+      "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+      "files": {
+        ".htaccess": {
+          "sha256": "99fcc6d270cec6b80626ad20e32e53d8081aa23d6a5309747a79377859ce98a9",
+          "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+          "bytes": 565
+        },
+        "api/.htaccess": {
+          "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+          "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+          "bytes": 128
+        },
+        "api/auth.php": {
+          "sha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+          "sha256_lf": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+          "bytes": 4164
+        },
+        "api/bootstrap.php": {
+          "sha256": "8222a3c159d7d133996af0773ce8e2092b8b56959757e5923c48e55ce0510cf7",
+          "sha256_lf": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+          "bytes": 26411
+        },
+        "api/health.php": {
+          "sha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+          "sha256_lf": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+          "bytes": 1043
+        },
+        "api/reports.php": {
+          "sha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+          "sha256_lf": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+          "bytes": 11303
+        },
+        "assets/index-BnYLeEcL.css": {
+          "sha256": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+          "sha256_lf": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+          "bytes": 45291
+        },
+        "assets/index-CKpXCVG6.js": {
+          "sha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+          "sha256_lf": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+          "bytes": 417207
+        },
+        "auth/callback/index.html": {
+          "sha256": "d07c523f9d7bb258204112132a52f4a4226a895141eab551d069f53ba4f6487c",
+          "sha256_lf": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+          "bytes": 272
+        },
+        "connect/entry.php": {
+          "sha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+          "sha256_lf": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+          "bytes": 588
+        },
+        "connect/gate.php": {
+          "sha256": "afc167d128d0baf62ade6259de4ed821a71f88b2bd75f171f5a5d4d5d058dce4",
+          "sha256_lf": "3c2fb628f06ce56129943545f8502538fc94af6f589eb946b942358944d019d5",
+          "bytes": 11844
+        },
+        "connect/logout.php": {
+          "sha256": "06a85d72831268291e0ac0eae1ac6c1c4da3ee8d8993728ffd20adc4ad41b3fa",
+          "sha256_lf": "9aabc1a587ddf0fa22658f41ba0c1075147a5d3bae507c7600e0d49b155fe045",
+          "bytes": 478
+        },
+        "index.html": {
+          "sha256": "7f16b8093cdb743728ac118a0508f5f1c969535d94594fc6abdfdb3efcc601be",
+          "sha256_lf": "cfa09b3ae6c0b3078d72ff738a0703bc28bb70f3b5dc400813e7a1e7d7d49760",
+          "bytes": 415
+        },
+        "index.php": {
+          "sha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+          "sha256_lf": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+          "bytes": 977
+        }
+      },
+      "preproductionUrl": "https://rapport-preprod.avereo.fr/",
+      "proposedProductionUrl": "https://rapport.avereo.fr/",
+      "archiveName": "rapport.zip",
+      "directProductionExtractionAuthorized": false
+    },
+    "passeport-immo": {
+      "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+      "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+      "files": {
+        ".htaccess": {
+          "path": ".htaccess",
+          "sha256": "ba1698052b99075c426ddb5abda88a239357ad1dcb6c9efd723472e600370bb8",
+          "size": 627
+        },
+        ".user.ini": {
+          "path": ".user.ini",
+          "sha256": "9140d459d58a6abd46a4b08fb49a1df84ace9ec7617b901034446997c9fb8b96",
+          "size": 91
+        },
+        "api/index.php": {
+          "path": "api/index.php",
+          "sha256": "2430a150dc423f7b42e17eb6434ab067f3c2c18a0f2ee5dacf4e67c28883470d",
+          "size": 5223
+        },
+        "api/storage.php": {
+          "path": "api/storage.php",
+          "sha256": "2d9c1bd0b65c8c2e936eb5d6f1693a3d7ddce5850eac224894385bda9ab681ff",
+          "size": 13117
+        },
+        "assets/index-B1rPDbH_.js": {
+          "path": "assets/index-B1rPDbH_.js",
+          "sha256": "bbed44495fc88d56414d089e208140091513efc9f087fd4d14e60f3f471536df",
+          "size": 796460
+        },
+        "assets/index-BnxaifYT.css": {
+          "path": "assets/index-BnxaifYT.css",
+          "sha256": "76aa0604b003790b503a889a271e60d97883d30c54997841fa69c3ac287e5b8f",
+          "size": 26931
+        },
+        "assets/index.es-DCbTLmDe.js": {
+          "path": "assets/index.es-DCbTLmDe.js",
+          "sha256": "7f2857899ca556ef0e911d4019937449380499381dc563977863d3c3c60ad5b1",
+          "size": 150852
+        },
+        "assets/pdf-WgYdDwYK.js": {
+          "path": "assets/pdf-WgYdDwYK.js",
+          "sha256": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+          "size": 483747
+        },
+        "assets/pdf.worker.min-CjEcRF4W.mjs": {
+          "path": "assets/pdf.worker.min-CjEcRF4W.mjs",
+          "sha256": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+          "size": 1264342
+        },
+        "assets/purify.es-BwoZCkIS.js": {
+          "path": "assets/purify.es-BwoZCkIS.js",
+          "sha256": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+          "size": 22028
+        },
+        "connect/entry.php": {
+          "path": "connect/entry.php",
+          "sha256": "4e13e9e823e95f29999bb39cdf181d1e25e7623aa711e6479c7ab89c1fc2bf3e",
+          "size": 513
+        },
+        "connect/gate.php": {
+          "path": "connect/gate.php",
+          "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+          "size": 8780
+        },
+        "connect/logout.php": {
+          "path": "connect/logout.php",
+          "sha256": "2612327b2b6c476b4428fb138738d93841d4b5ca5211e630266e9621fd87dc7e",
+          "size": 383
+        },
+        "connect/session.php": {
+          "path": "connect/session.php",
+          "sha256": "1d9eb147a12079971e1c6b00b596e45f84c81ac4bb47321baa41debea34d8950",
+          "size": 2392
+        },
+        "index.html": {
+          "path": "index.html",
+          "sha256": "020d35d742c260d711d4291d139db2c903fd5d249f00cd67dd584f111374c04e",
+          "size": 499
+        },
+        "index.php": {
+          "path": "index.php",
+          "sha256": "8fedf2a296f70e06a85fb6fa160dcee17ae85065e7ef9b26d1d09a5833b87672",
+          "size": 2437
+        }
+      },
+      "preproductionUrl": "https://passeport-immo-preprod.avereo.fr/",
+      "proposedProductionUrl": "https://passeport-immo.avereo.fr/",
+      "archiveName": "passeport-immo.zip",
+      "directProductionExtractionAuthorized": false,
+      "existingDecisionReference": "D06 dans le suivi Passeport Immo ; archive identique au candidat de la source 7209bf3334a5f3f98d422b41d177c734970a0750."
+    }
+  },
+  "rightsObservation": "rights-observation.json",
+  "deliveryReceipt": "delivery.json",
+  "browserReceipt": "browser-verification.json",
+  "limitations": [
+    "Connexion OAuth interactive Chrome non observée par cet agent.",
+    "Rendu natif Microsoft Word, dictée, photos, services géographiques externes et second réseau non requalifiés."
+  ],
+  "updatedAt": "2026-10-16T09:27:45+00:00",
+  "rightsConfirmation": "rights-confirmation.json",
+  "rightsReservationClosed": true
+}

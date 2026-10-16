@@ -5,12 +5,17 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Changelog du dépôt AVEREO
+
+## 2026-10-16 — Rapport et Passeport Immo en préproduction
+
+Rapport est livré avec Expertise & Visite technique et Visite Globale. Passeport Immo conserve son candidat actuel, déjà installé. La [recette ciblée](outillage/acces-preproduction/livraison-rapport-passeport.md) documente sauvegardes restaurées en privé, contrôle des fichiers, parcours authentifiés et candidats exacts. La divergence avec un ancien relevé de droits CONNECT est résolue par confirmation humaine : le compte famille conserve Rapport et Passeport Immo en préproduction. Réserve levée dans la PR #84 et les suivis ; aucune habilitation ni production modifiée. Les observations antérieures et les validations de phase sont conservées.
+
 
 ## 2026-10-15 — Résolution des conflits de la PR #80
 
