@@ -30,9 +30,13 @@ Examiner les deux applications en préproduction et confirmer le droit CONNECT a
 ## Livraison ciblée de Rapport et Passeport Immo
 
 Observation du `2026-10-16T08:47:47+00:00` ; état `delivered_verified_with_access_review_required`.
-[Compte rendu et limites](livraison-rapport-passeport.md) ; [candidates exactes](archives/livraison-rapport-passeport-20261016/candidats-production.json).
+[Compte rendu et limites](livraison-rapport-passeport.md).
 
 Les constats antérieurs ci-dessous restent historiques pour ces deux applications ; ce lot ne qualifie pas les autres cibles.
+
+[Candidates exactes](archives/livraison-rapport-passeport-20261016/candidats-production.json).
+
+[PR de revue #84](https://github.com/jpdandin44/AVEREO/pull/84).
 
 - **rapport** : [préproduction](https://rapport-preprod.avereo.fr/), archive `6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366`, livraison `delivered`.
 - **passeport-immo** : [préproduction](https://passeport-immo-preprod.avereo.fr/), archive `c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf`, livraison `verified_unchanged`.

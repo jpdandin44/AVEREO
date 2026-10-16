@@ -29,11 +29,15 @@ selected = state.get('selected_applications_delivery')
 if selected:
     lines += ['', '## Livraison ciblée de Rapport et Passeport Immo', '',
         f"Observation du `{selected['observedAt']}` ; état `{selected['status']}`.",
-        f"[Compte rendu et limites]({selected['documentation']}) ; [candidates exactes]({selected['productionCandidateManifest']}).", '',
+        f"[Compte rendu et limites]({selected['documentation']}).", '',
         'Les constats antérieurs ci-dessous restent historiques pour ces deux applications ; ce lot ne qualifie pas les autres cibles.', '']
+    if selected.get('productionCandidateManifest'):
+        lines += [f"[Candidates exactes]({selected['productionCandidateManifest']}).", '']
+    if selected.get('pullRequest'):
+        lines += [f"[PR de revue #{selected['pullRequest']['number']}]({selected['pullRequest']['url']}).", '']
     for name, flow in selected['workflows'].items():
         lines += [f"- **{name}** : [préproduction]({flow['targets']['preproduction']['url']}), "
-                  f"archive `{flow['candidate']['artifactSha256']}`, livraison `{flow['delivery']['status']}`."]
+                  f"archive `{flow['candidate']['artifactSha256']}`, livraison `{flow.get('delivery', {}).get('status', 'not_delivered')}`."]
     lines += ['', selected['nextAction'], '',
         'La candidature reste soumise à revue ; aucune production modifiée ni nouvelle validation humaine créée.']
 review_links = (state.get('identity_repair') or {}).get('review_links')

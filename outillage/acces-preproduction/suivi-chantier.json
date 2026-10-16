@@ -190,7 +190,17 @@
           "consultable_in": "releve-heberge.md",
           "reason": "Le lecteur du cockpit accepte seulement Markdown ; le reçu JSON reste une preuve structurée liée dans le relevé."
         }
-      ]
+      ],
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/84",
+        "repository": "jpdandin44/AVEREO",
+        "number": 84,
+        "state": "open",
+        "draft": true,
+        "mergeable": "MERGEABLE",
+        "observedAt": "2026-10-16T08:53:53+00:00",
+        "scope": "Livraison et contrôles des deux applications en préproduction ; candidates de production avec réserve."
+      }
     },
     {
       "id": 3,
@@ -2391,6 +2401,16 @@
       "phase2NextAction": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
       "phase3NextAction": "Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé."
     },
-    "productionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates.json"
+    "productionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates.json",
+    "pullRequest": {
+      "url": "https://github.com/jpdandin44/AVEREO/pull/84",
+      "repository": "jpdandin44/AVEREO",
+      "number": 84,
+      "state": "open",
+      "draft": true,
+      "mergeable": "MERGEABLE",
+      "observedAt": "2026-10-16T08:53:53+00:00",
+      "scope": "Livraison et contrôles des deux applications en préproduction ; candidates de production avec réserve."
+    }
   }
 }
