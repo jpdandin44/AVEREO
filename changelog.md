@@ -20,7 +20,10 @@ cron réel réussi, puis identifie le blocage OAuth restant en production. Le co
 Drupal et son préalable Core/Symfony sont désormais livrés sur l’identité de
 préproduction, avec restauration privée, retour arrière et contrôles techniques
 réussis. Le responsable confirme ensuite dans Chrome une nouvelle connexion et
-l’accès à Rapport/Passeport ; la réserve d’accès est levée. Reçus, opérations,
+l’accès à Rapport/Passeport ; la réserve d’accès est levée. La fusion humaine OAuth
+#22 dans Gin #24 est constatée, ainsi que la livraison technique du site suivie
+dans #25. La revue du site, l’intégration à `main` et la production restent distinctes.
+Reçus, opérations,
 contrôles de passage et suivi canonique alignés. Les décisions existantes et les
 travaux Passeport Immo/Projet menés dans leur copie propre sont conservés.
 

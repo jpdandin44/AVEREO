@@ -36,8 +36,11 @@ OAuth et les tests de garde-fous passent. Le [dossier courant](preparation-produ
 renvoie aux reçus réels et au suivi de Gin/site dans le chat coordonné.
 La nouvelle connexion CONNECT et l’accès aux deux applications sont désormais
 confirmés par le responsable dans Chrome ; cette réserve de préproduction est
-levée. Le dernier contrôle de production enregistré reste 503. Reprendre par la
-revue GitHub OAuth, puis la livraison Drupal selon ses accords et les prérequis Rapport.
+levée. La PR OAuth #22 est ensuite fusionnée humainement dans Gin #24, pas dans
+`main`. Le site de préproduction est livré techniquement ; sa revue visuelle reste
+distincte. Examiner #25 et #24, intégrer Gin dans Core #23 puis vérifier son audit
+avant `main`. Le dernier contrôle de production enregistré reste 503 ; préparer
+la livraison Drupal selon ses accords et les prérequis Rapport.
 Passeport Immo demeure activé : conserver ses données, sa reprise SCI et son cron.
 
 ## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo

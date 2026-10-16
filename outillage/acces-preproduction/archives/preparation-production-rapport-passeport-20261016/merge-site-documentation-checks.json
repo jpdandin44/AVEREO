@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-16T17:05:34.469076+00:00",
+  "status": "passed",
+  "scope": "Rattachement de la fusion humaine OAuth22 et du reçu publié du site ; contrôle documentaire, sans nouveau test applicatif ni opération hébergée.",
+  "documentsChecked": [
+    "changelog.md",
+    "outillage/acces-preproduction/point-session.md",
+    "outillage/acces-preproduction/preparation-production-rapport-passeport.md",
+    "roadmap.md"
+  ],
+  "localLinkTargetsChecked": 39,
+  "jsonFilesParsed": 2,
+  "foundationsChecked": 3,
+  "approvedReferences": 21,
+  "uniqueApprovedDocuments": 15,
+  "checkoutCRLFNormalizedReferences": 21,
+  "otherTrackingScopesPreserved": true,
+  "currentCanonicalDependencyAligned": true,
+  "olderSessionContentPreserved": true,
+  "applicationBytesUnchanged": true,
+  "derivedViewsDeterministic": true
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-16T17:02:47.472293+00:00",
+  "kind": "oauth_merge_and_site_preproduction_follow_up",
+  "oauthMerge": {
+    "prUrl": "https://github.com/jpdandin44/avereo-site-drupal/pull/22",
+    "headSha": "7a06c2b377a386a645efe05dcfb4cd0b363491b3",
+    "mergeSha": "8cd0d2a393e5f4172466fdab3ec442a1c43b3ebc",
+    "mergedBy": "jpdandinavereo-design",
+    "mergedAt": "2026-10-16T16:36:25Z",
+    "baseBranch": "fix/security-gin-preproduction-20261016",
+    "humanAcceptanceVerified": true,
+    "strictPolicyPassed": true,
+    "integratedIntoMain": false,
+    "evidence": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/security-gin-preproduction-20261016/data/oauth-maintenance/qualification/github-human-merge.json"
+  },
+  "humanAccessConfirmation": {
+    "url": "https://github.com/jpdandin44/avereo-site-drupal/blob/8cd0d2a393e5f4172466fdab3ec442a1c43b3ebc/data/oauth-maintenance/qualification/human-access-confirmation.json",
+    "sha256": "768ae29ef010ebe7e6a61df499d9b7679a2e9298a6228cb18a7271f919c7dc2d"
+  },
+  "sitePreproduction": {
+    "source": {
+      "url": "https://github.com/jpdandin44/avereo-site-drupal/blob/e68f4f59b34ae8a3bee35290bb88e1a9ebcee7ee/data/recette-securite-site-active.json",
+      "commit": "e68f4f59b34ae8a3bee35290bb88e1a9ebcee7ee",
+      "sha256": "efc9d143d37b4ca7cd7f22d60f18d0175e73bb0946372cb3560453d2ca968d72",
+      "recordedAt": "2026-10-16T16:33:44.243636+00:00",
+      "operatorThread": "01a102c7-978e-78b1-8fb1-5845aa45e2ea",
+      "pullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/25"
+    },
+    "status": "technical_checks_passed_awaiting_human_site_review",
+    "ginDeliveredAt": "2026-10-16T16:05:55.259461+00:00",
+    "oauthDeliveredAt": "2026-10-16T16:16:48.915993+00:00",
+    "routeCount": 887,
+    "remainingAdvisories": 0,
+    "nativeRenderingAssertions": 23,
+    "selectedAdminTheme": "claro",
+    "humanAcceptanceVerified": false
+  },
+  "production": {
+    "recheckedInThisFollowUp": false,
+    "lastEvidence": "oauth-preproduction-delivery.json",
+    "newDeliveryByThisFollowUp": false,
+    "authorizationInferred": false
+  },
+  "nextAction": "Revue site25 et Gin24, intégration Gin dans Core23 puis audit avant main ; production selon ses accords et prérequis, sans rejouer activation/SCI/cron Passeport."
+}

@@ -116,8 +116,8 @@ La provenance et l'empreinte de ce compte rendu sont enregistrées dans l'observ
 Initialement local, il est désormais publié dans la
 [PR #85](https://github.com/jpdandin44/AVEREO/pull/85) ; le document publié est
 strictement identique à celui consulté. Le présent lot ne modifie ni le site Drupal ni sa
-maintenance. L'intégration, la qualification et l'autorisation de son correctif
-restent à effectuer dans le dépôt et le suivi du site.
+maintenance. L’état initial de ce relevé est désormais complété par l’actualisation Drupal
+ci-dessous ; les constats de production gardent leur date et leur périmètre.
 
 ### Actualisation du correctif Drupal
 
@@ -132,19 +132,30 @@ les refus. Ces données de test restent dans la copie privée et sont annulées.
 Le [nouveau relevé de livraison](archives/preparation-production-rapport-passeport-20261016/oauth-preproduction-delivery.json)
 renvoie aux reçus Drupal. L’ancien relevé de blocage est conservé comme historique.
 Le responsable confirme ensuite dans Chrome une **nouvelle connexion CONNECT et
-l’accès aux deux applications**. La [preuve humaine](https://github.com/jpdandin44/avereo-site-drupal/blob/fix/oauth-maintenance-preproduction-20261016/data/oauth-maintenance/qualification/human-access-confirmation.json)
+l’accès aux deux applications**. La [preuve humaine](https://github.com/jpdandin44/avereo-site-drupal/blob/8cd0d2a393e5f4172466fdab3ec442a1c43b3ebc/data/oauth-maintenance/qualification/human-access-confirmation.json)
 lève la réserve de ce parcours d’accès en préproduction. Le blocage du navigateur
 intégré reste historique. La déclaration ne vaut ni recette métier exhaustive,
 ni revue GitHub, ni accord de livraison ou d’ouverture de production.
 
-Gin est préparé séparément dans la [PR Drupal #24](https://github.com/jpdandin44/avereo-site-drupal/pull/24).
+Gin est livré séparément et suivi dans la [PR Drupal #24](https://github.com/jpdandin44/avereo-site-drupal/pull/24).
 Le chat « App Passeport Immo » porte les preuves et livraisons du site dans la
 [PR Drupal #25](https://github.com/jpdandin44/avereo-site-drupal/pull/25), avec ses
 accords propres. Cette PR suit la sauvegarde/restauration des clés OAuth externes,
 la livraison et les contrôles du site actif. Ses reçus font foi pour cette cible.
 L’identité et le site de préproduction restent deux cibles.
-Le point OAuth de production répond encore 503 au contrôle daté de ce nouveau relevé.
-La suite reste une livraison Drupal autorisée selon son dossier, puis les prérequis
+
+Le [relevé de fusion et de livraison du site](archives/preparation-production-rapport-passeport-20261016/oauth-merge-site-follow-up.json)
+confirme la fusion humaine de #22 à **16 h 36 min 25 s UTC** dans **Gin #24**,
+pas dans `main` : quatre attestations cochées, policy stricte réussie et candidat
+inchangé. Le site a reçu ses quatre lots de sécurité et OAuth, avec audit final
+sans alerte, 887 routes comparées et 23 assertions de rendu natif. Sa revue visuelle
+authentifiée demeure à réaliser ; Claro reste sélectionné, Gin installé mais non activé.
+Le suivi OAuth courant se poursuit sur la branche Gin, la branche source supprimée.
+La suite d’intégration est la revue des lots #25/#24, puis Gin dans Core #23 avant
+de vérifier l’audit de #23 et sa fusion vers `main`. Core seul conserve l’alerte Gin.
+Le dernier contrôle de production, à 15 h 27 UTC dans le relevé de livraison OAuth,
+reste 503 ; aucune nouvelle sonde de production n’est exécutée dans cette actualisation.
+La suite de production reste une livraison Drupal autorisée selon son dossier, puis les prérequis
 propres à Rapport et la recette finale Passeport. L’activation D06, la reprise SCI
 et le cron existants ne sont pas rejoués.
 

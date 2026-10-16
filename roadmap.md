@@ -17,7 +17,9 @@ tags: [avereo, documentation, local]
 Après fusion des PR #83 et #84, le [dossier de production Rapport/Passeport Immo](outillage/acces-preproduction/preparation-production-rapport-passeport.md)
 porte la suite. Le correctif OAuth et Core/Symfony sont livrés sur l’identité de
 préproduction ; la nouvelle connexion et l’accès aux deux applications sont
-confirmés par le responsable dans Chrome. La revue GitHub reste à effectuer.
+confirmés par le responsable dans Chrome. OAuth #22 est accepté et fusionné dans
+Gin #24, pas dans `main`. Le site est livré techniquement ; sa revue visuelle reste
+distincte. Examiner #25/#24, intégrer Gin dans Core #23 puis vérifier son audit.
 Le dernier contrôle de l’identité de production reste bloquant. La livraison de
 Rapport attend sa récupération et son retour arrière qualifiés, puis l’accord
 exact ; Passeport Immo conserve son activation, sa reprise SCI et son cron.
