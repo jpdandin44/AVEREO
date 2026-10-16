@@ -5,12 +5,34 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Architecture Passeport Immo
+
+## Production privée — 16 octobre
+
+Le domaine, le certificat HTTPS, la base `daje3540_pimprod` et les dossiers privés
+sont dédiés à la production. Après initialisation par le responsable, les droits
+permanents sont SELECT, INSERT, UPDATE, DELETE et CREATE TEMPORARY TABLES.
+Configuration 0600 et dossiers privés 0700 ; CREATE et REFERENCES sont retirés.
+
+Seize fichiers du candidat sont installés avec la variante fermée de `.htaccess`.
+La base contient un espace, un client, le seul bien SCI et neuf métadonnées/fichiers,
+dont trois archives, repris selon le mapping explicitement confirmé vers `dandin`.
+Le texte identique des identifiants entre environnements ne prouve pas une identité
+externe commune. Simulation, import, rejeu sans révision et sauvegarde/restauration
+isolée sont vérifiés sur la cible réelle. Les sources sont conservées.
+
+La configuration web reste désactivée et le domaine fermé. Le
+[raccordement privé](workflows/activation-production.md) prépare les deux fichiers
+CONNECT, deux configurations et la politique signée du candidat. Sa répétition
+hébergée utilise une copie privée et des tables temporaires ; le catalogue actif
+reste inchangé. L’accès réel et la sauvegarde planifiée de production attendent
+l’exécution humaine finale. Le [reçu courant](api/production-execution-observation.json)
+distingue cette préparation de l’activation et de la recette navigateur.
 
 ## Sauvegarde privée planifiée
 

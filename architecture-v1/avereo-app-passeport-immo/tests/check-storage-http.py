@@ -7,6 +7,7 @@ import json
 import secrets
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 import uuid
@@ -132,4 +133,7 @@ def run():
             for container in reversed(created): subprocess.run(['docker','stop',container],check=True,stdout=subprocess.DEVNULL)
             subprocess.run(['docker','network','rm',network],check=False,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 
-if __name__=='__main__': run()
+if __name__=='__main__':
+    run()
+    # Same private-storage qualification, in separate databases with fictitious data.
+    subprocess.run([sys.executable,str(APP/'tests/check-transfer-property.py')],check=True)

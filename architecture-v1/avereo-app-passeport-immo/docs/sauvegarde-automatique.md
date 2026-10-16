@@ -5,7 +5,7 @@ title: Sauvegarde automatique de Passeport Immo
 status: active
 version: git
 created: 2026-10-15
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [sauvegarde, preproduction, production, cron, restauration]
 ---
@@ -98,9 +98,33 @@ encore expiré aucune copie réelle : elle a été exercée sur les données fic
 en CI. Le reçu Git décrit ce constat ; `status.json` et `latest.json` sur le serveur
 portent les résultats ultérieurs, sans synchronisation continue de ces fichiers vers Git.
 
+### Exécution nocturne observée le 16 octobre
+
+La copie `20261016T012002Z-049ffb203acd` est terminée à **03 h 20 min 02 s,
+Europe/Paris** (01:20:02 UTC), avec un déclenchement `cron`. Le
+[reçu de lecture daté](../api/nightly-backup-observation.json) constate la cohérence
+du statut, du pointeur, du marqueur de fin et de la dernière ligne du journal :
+quatre tables, neuf documents, contrôles de fichiers et restitution temporaire
+déclarés réussis, aucune ligne active modifiée selon le travailleur.
+Deux copies réussies sont conservées ; aucune copie réelle n'a encore expiré.
+
+Le dossier contient `snapshot.json`, `schema.sql`, `complete.json` et neuf fichiers
+dans `documents/`. Les permissions affichées sont 0600 pour les fichiers et 0700
+pour le sous-dossier documentaire. Le contrôle de cette session est en lecture seule :
+aucun recalcul indépendant des empreintes, téléchargement des documents ou nouvel
+essai de restauration n'a été effectué. Le critère 07 reste à la validation humaine.
+
 ### Retrouver les copies et diagnostiquer un échec
 
-Dans le gestionnaire de fichiers cPanel, ouvrir le dossier privé ci-dessus :
+Dans le gestionnaire de fichiers cPanel, saisir le chemin **relatif au dossier
+personnel** `private/passeport-immo-backups/preprod`, puis utiliser « Aller ».
+Le champ de navigation n'attend pas le préfixe `/home/daje3540/`.
+Pour la copie du 16 octobre, ouvrir
+`runs/20261016T012002Z-049ffb203acd` ; sélectionner `complete.json`, puis « Voir »
+pour lire son compte rendu. Éviter le double-clic sur le nom de fichier, qui peut
+ouvrir le renommage. Aucun partage public n'est nécessaire pour cet accès privé.
+
+Le dossier de sauvegarde contient :
 
 - `runs/` contient chaque copie complète : `snapshot.json`, `schema.sql`,
   `complete.json` et le sous-dossier `documents/`.
@@ -161,8 +185,9 @@ coexistence et finalisation des deux blocs, doublon de production, environnement
 tâche non identifiée et bloc incomplet. Les 30 contrôles API/stockage passent également
 sur données fictives. Aucune crontab ou sauvegarde de production n'est créée par ces tests.
 
-La cadence de production, la rétention et le contenu initial restent à confirmer
-avec [le dossier de mise en production](04-mise-en-production.md). Une fois l'accord
+La cadence de production et la rétention restent à confirmer. Le dossier SCI de
+préproduction est choisi pour les données initiales ; son transfert reste à préparer
+et autoriser selon [le dossier de mise en production](04-mise-en-production.md). Une fois l'accord
 obtenu, installer le nouveau lot privé, vérifier les empreintes, puis lancer
 `backup-cron.php --environment=production` depuis son dossier privé ; après contrôle
 du premier succès et des autres lignes, utiliser le même argument avec `--finalize`.

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "kind": "selective_property_transfer_local_qualification",
+  "observedAt": "2026-10-16T07:39:22+00:00",
+  "status": "locally_verified_hosted_application_pending",
+  "sources": [
+    {
+      "path": "workflows/transfer-property.php",
+      "sha256": "7dcb922b88141725632d28f2c03b0964f6002a212018cfde0c9996e3dcc8360a"
+    },
+    {
+      "path": "tests/transfer-property.php",
+      "sha256": "21f8a807cabcb8952c0a92e05bee11c31692a032b278a0c9dd8c81f5d0641a79"
+    },
+    {
+      "path": "tests/check-transfer-property.py",
+      "sha256": "6ceb43633f9ae7302f31855a2ec78e4ca18039b374148df88bc5ad6a33484d77"
+    },
+    {
+      "path": "tests/check-storage-http.py",
+      "sha256": "5e59294ae9a9abeda293437b47175a978c5f82b62907668f16ebb623a2ccbd08"
+    }
+  ],
+  "runbook": "workflows/reprise-bien.md",
+  "qualification": {
+    "commands": [
+      "python tests/check-storage-http.py",
+      "python tests/check-transfer-property.py"
+    ],
+    "selectiveTransferAssertions": 35,
+    "apiStorageAssertions": 30,
+    "scheduledBackupAssertions": 22,
+    "database": "MariaDB 11.4",
+    "separateSourceAndTargetDatabases": true,
+    "network": "Docker internal network",
+    "data": "fictitious_only",
+    "covered": [
+      "one_selected_property_and_linked_client",
+      "active_and_archived_document_metadata_and_bytes",
+      "explicit_source_target_owner_mapping",
+      "wrong_owner_environment_database_and_hash_refused",
+      "default_dry_run_no_rows_or_files_changed",
+      "nonempty_target_conflict_refused",
+      "transaction_failure_rolls_back_new_rows_and_removes_new_blobs",
+      "source_rows_and_bytes_unchanged",
+      "target_settings_other_properties_and_accounts_preserved",
+      "exact_replay_without_duplicate_or_revision_change",
+      "target_edits_not_overwritten"
+    ]
+  },
+  "candidate": {
+    "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+    "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "publicRuntimeChanged": false,
+    "privateCliIncludedInPublicCandidate": false
+  },
+  "humanDecisionRef": "D06",
+  "humanDecisionsOrEventsChanged": false,
+  "realSciExportPerformed": false,
+  "hostedMutationsPerformed": false,
+  "deploymentPerformed": false,
+  "publicOpeningPerformed": false,
+  "remaining": [
+    "Refresh real SCI inventory after recipe.",
+    "Qualify production CONNECT owner mapping and closed isolated target.",
+    "Apply reviewed manifest and repeat on the real target after technical prerequisites.",
+    "Qualify production recovery, rollback and after-delivery recipe."
+  ],
+  "limits": [
+    "Local tests do not establish production data or identity qualification.",
+    "No incremental synchronization: a changed existing target is refused.",
+    "A process crash may leave private orphan blobs; a replay refuses them and requires inspection."
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "kind": "production_readiness_after_human_review",
+  "observedAt": "2026-10-16T07:13:59+00:00",
+  "humanReview": {
+    "decisionId": "D06",
+    "reviewId": "5ed14289-0270-45f5-9aac-1021ec34c8c0",
+    "recordedAt": "2026-10-16T07:05:11.475Z",
+    "reviewer": "jpdandin",
+    "comment": "Phase approuvée, passage en prod autorisé.",
+    "checkedCriteriaCount": 8,
+    "criterion07Checked": true,
+    "reviewedArtifacts": [
+      {
+        "path": "recette-preproduction.md",
+        "sha256": "999838c9c169dd4f52b377d23e314b1495f6924bd6b6a56d283657391b0cf5e8"
+      },
+      {
+        "path": "02-integration-connect.md",
+        "sha256": "616d09b4df2634ec41d06bbdf1323752ec2a433fff9d5ade8f2c187edd16d543"
+      },
+      {
+        "path": "03-preproduction.md",
+        "sha256": "68568b2bcabd1feb19510595af6dc5b1e51df69560158f1e01f783e9c68124f0"
+      },
+      {
+        "path": "deployment.md",
+        "sha256": "947f669a56d7c2be8e9a4f7fd8bb383b16d377ce572ebec5480cc0dc6ee65162"
+      },
+      {
+        "path": "stockage-serveur.md",
+        "sha256": "e166c43752c21a7d7a32f2982926bf40902bfb52de88f47c2adbf177be420a25"
+      },
+      {
+        "path": "sauvegarde-automatique.md",
+        "sha256": "143206e06d98452ebaedc32e8ccf240dc825f3ba66e3edad98548d6e3e3e4da1"
+      }
+    ],
+    "artifactHashesMatch": true,
+    "source": "docs/suivi-chantier.json#decisions/D06"
+  },
+  "authorizationInterpretation": {
+    "source": "Existing human comment in D06, referenced without creating or editing a human decision.",
+    "productionAuthorized": true,
+    "target": "o2switch:daje3540:passeport-immo.avereo.fr",
+    "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+    "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "scope": "Préparation du passage en production du candidat examiné sur le domaine retenu, avec le dossier SCI choisi ; prérequis techniques de cible, identité, reprise et récupération à satisfaire avant exécution.",
+    "publicOpeningAuthorized": false
+  },
+  "github": {
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/82",
+    "state": "merged",
+    "mergedAt": "2026-10-16T07:00:55Z",
+    "mergedBy": "jpdandinavereo-design",
+    "headSha": "8db97ea2a547cf20423c713ce0a609512a8c6d0e",
+    "mergeCommitSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+    "humanChecklistChecked": 4,
+    "strictPolicy": "passed",
+    "strictPolicyWorkflowRunId": 38864512769,
+    "mainCi": [
+      {
+        "conclusion": "success",
+        "databaseId": 38864545332,
+        "event": "push",
+        "headSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+        "name": "Passeport Immo CI",
+        "status": "completed",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/38864545332"
+      },
+      {
+        "conclusion": "failure",
+        "databaseId": 38864545269,
+        "event": "push",
+        "headSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+        "name": "Deploy Prototype To GitHub Pages",
+        "status": "completed",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/38864545269"
+      },
+      {
+        "conclusion": "success",
+        "databaseId": 38864545231,
+        "event": "push",
+        "headSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+        "name": "CI",
+        "status": "completed",
+        "url": "https://github.com/jpdandin44/AVEREO/actions/runs/38864545231"
+      }
+    ],
+    "artifactRunId": 38864545332,
+    "artifactId": 12030771253
+  },
+  "artifactVerification": {
+    "observedAt": "2026-10-16T07:10:00.689882+00:00",
+    "mainMergeTreeEqualsReviewedHead": true,
+    "candidateArtifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "candidateArchiveEqualsInstalled": true,
+    "publicFilesVerified": 16,
+    "closedBundleSha256": "9e9bde15d4b2c625967053220fc79f5a602ef2ab01a6a5fc3fdf537ee01b0404",
+    "closedChangedPaths": [
+      ".htaccess"
+    ],
+    "connectDeltaSha256": "3b41fda26c0358a0a4eb3f49ebd2e132162fd737ce0078822d3e15a687884b63",
+    "connectFilesVerified": 2,
+    "connectHostedPreconditions": [
+      {
+        "path": "public/index.php",
+        "expectedBeforeSha256": "8d112303af417f778baf124eccbe8ac69c94aa0891cd1df11d8c9b7f593b004f"
+      },
+      {
+        "path": "src/Config.php",
+        "expectedBeforeSha256": "4f18dbbc23142595eb9921af4152e184440f1b5bdceb413247d2867e3feb52b5"
+      }
+    ],
+    "backupBundleSha256": "b06e74f2528caa1887b151bb1d6052f7733388228ed710c2289cf0b6ab9ca0e8",
+    "backupFilesVerifiedAgainstMergedSource": 4,
+    "remoteDeliveryPerformed": false
+  },
+  "targetObservation": {
+    "observedAt": "2026-10-16T07:10:45.306Z",
+    "method": "Authenticated cPanel domain list and MySQL lists, read only.",
+    "domain": "passeport-immo.avereo.fr",
+    "domainPresent": false,
+    "preproductionDomainPresent": true,
+    "proposedDatabase": "daje3540_pimprod",
+    "proposedDatabasePresent": false,
+    "proposedDatabaseUserPresent": false,
+    "listedDatabases": 12,
+    "applicationDirectory": "not_rechecked_this_session",
+    "connectRuntimeAndOwnerMapping": "last_runtime_receipt_20261015_refresh_required"
+  },
+  "initialData": {
+    "selection": "preproduction_sci_case",
+    "transferPerformed": false,
+    "currentInventory": "refresh_required_after_human_recipe",
+    "productionOwnerMapping": "not_qualified",
+    "transferMechanism": "qualification_required_on_isolated_target",
+    "excluded": "Autres dossiers, essais de recette, démonstration, comptes CONNECT et secrets."
+  },
+  "hostedMutationsPerformed": false,
+  "deploymentPerformed": false,
+  "limitations": [
+    "La consultation cPanel ne provisionne ni domaine, ni base, ni droit.",
+    "Les tests locaux et CI ne prouvent pas une restauration ou une recette en production.",
+    "Le mécanisme exact de reprise SCI et sa répétition sans doublon restent à qualifier avant transfert.",
+    "L’échec distinct du workflow prototype GitHub Pages persiste sur le commit de fusion ; il ne livre pas Passeport Immo."
+  ],
+  "productionGate": {
+    "gate": "production",
+    "declaredEvidenceConsistent": false,
+    "errors": [
+      "Blocages présents ou non renseignés.",
+      "Cible de production non prouvée.",
+      "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+      "Retour arrière de ce candidat non qualifié."
+    ],
+    "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+    "observedAt": "2026-10-16T07:18:38+00:00",
+    "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+    "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "evidence": "api/production-readiness-observation.json#productionGate"
+  },
+  "documentationVerification": {
+    "approvedFilesIntact": 15,
+    "unrelatedFilesPreserved": 27,
+    "markdownMetadataChecked": 10,
+    "localLinksChecked": 191,
+    "foundationsPresent": true,
+    "humanEventsPreserved": true,
+    "phase2Approved": true,
+    "phase3Status": "in_progress",
+    "generatedReviewTestsPassed": 4
+  }
+}

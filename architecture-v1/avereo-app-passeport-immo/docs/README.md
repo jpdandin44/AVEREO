@@ -5,17 +5,19 @@ title: Documentation Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Documentation Passeport Immo
 
-[Préparation de la mise en production après fusion de la PR nº80](04-mise-en-production.md) ·
-[Observations GitHub et archives vérifiées](../api/preparation-production-observation.json).
-La disponibilité de ce dossier ne démarre pas la phase 3 ; les statuts restent
-dans le suivi canonique.
+[Préparation de la mise en production après PR nº82 et D06](04-mise-en-production.md) ·
+[Validation récupérée et archives vérifiées](../api/production-readiness-observation.json).
+La phase 2 est approuvée ; son commentaire autorise le passage en production.
+La phase 3 est en préparation, avec les prérequis techniques décrits dans le suivi.
+Les six livrables de Préproduction approuvés sont figés ; leur suite est documentée
+dans le dossier de production sans réécrire les preuves humaines.
 
 [Raccordement CONNECT et écart f](02-integration-connect.md) ·
 [Installation privée et retour arrière](deployment.md).

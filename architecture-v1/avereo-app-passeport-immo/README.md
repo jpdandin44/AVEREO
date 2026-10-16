@@ -5,35 +5,56 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # AVEREO – Passeport Immo
 
-## Suite après fusion de la PR nº81
+## Étude du carnet d’information du logement
 
-La PR nº81 est fusionnée. L'inventaire de production est réalisé : le domaine et
-le dossier Passeport Immo sont absents ; CONNECT répond en HTTPS mais son catalogue,
-ses droits et ses paramètres de lancement ne contiennent pas encore l'application.
-Le [dossier de mise en production](docs/04-mise-en-production.md) donne les preuves,
-les emplacements proposés et la séquence d'installation à autoriser.
+Le [comparatif avec le guide ministériel](docs/comparatif-carnet-information-logement.md)
+distingue le concept CIL, la réutilisation des contenus publics et les services tiers.
+Il compare les capacités actuelles aux documents attendus, propose une évolution
+et conserve les limites de complétude, de transmission et de responsabilité.
+Cette étude ne modifie pas le candidat en cours de livraison ni les validations.
 
-Une archive initialement fermée et l'adaptation minimale de CONNECT sont préparées
-localement. L'outillage de sauvegarde distingue désormais préproduction et production,
-avec des tâches indépendantes ; cette évolution n'est pas installée sur l'hébergement.
-Le responsable retient la reprise du dossier SCI de préproduction ; le
-[plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci) inclut ses
-documents actifs et archivés. La décision de phase 2 et l'accord exact de production
-restent à consigner dans le [suivi canonique](docs/suivi-chantier.json) ; aucun transfert effectué.
+Le [plan d’action CIL](docs/plan-action-cil.md) propose quatorze actions avec
+priorités, dépendances, livrables, critères et douze scénarios de recette. Son
+[Word structuré](docs/livrables/plan-action-cil.docx) est généré depuis cette source
+selon le [workflow documentaire](workflows/generation-plan-cil.md). Les évolutions
+restent à cadrer dans une itération distincte de la production actuelle.
+
+## Production privée — candidat fermé installé et SCI reprise
+
+Le 16 octobre, après l’accord D06, le candidat de seize fichiers est installé sur
+`https://passeport-immo.avereo.fr` avec une fermeture totale. Le dossier SCI est
+repris pour le compte confirmé `dandin` : un bien, un client, six documents actifs
+et trois archivés. Le rejeu est sans doublon ni changement de révision. La copie
+des quatre tables et neuf fichiers est restaurée dans des espaces isolés ; les
+octets et métadonnées concordent. La source n’est pas modifiée.
+
+Les cinq droits SQL utiles sont vérifiés, CREATE et REFERENCES retirés. Le stockage
+web reste désactivé. Le raccordement CONNECT, la politique signée et la sauvegarde
+automatique de production sont préparés et répétés isolément, sans activation réelle.
+L’action finale est remise au responsable selon la règle de sécurité du navigateur
+pour le raccordement de la clé et les nouveaux accès. La recette authentifiée et
+le vrai déclenchement cron restent ensuite à vérifier ; aucune ouverture publique.
+
+Le compte `famille` conserve son accès de préproduction selon la confirmation humaine.
+Les méthodes serveur lui refusent le bien SCI et chacun de ses neuf documents.
+La [preuve courante](api/production-execution-observation.json), le
+[dossier de production](docs/04-mise-en-production.md) et la
+[procédure d’activation](workflows/activation-production.md) donnent les limites et la suite.
+La Préproduction reste approuvée par D06, la phase 3 reste en cours et la PR nº83 en brouillon.
 
 ## Recette de préproduction et décision de phase
 
 Le [guide de recette de la PR nº80](docs/recette-preproduction.md) accompagne les
 six livrables et les huit critères de la phase Préproduction dans le
-[cockpit local](http://127.0.0.1:5193/). Cette phase est soumise à revue, sans
-approbation humaine préremplie. La recette utilise l'application hébergée via
+[cockpit local](http://127.0.0.1:5193/). Cette phase est approuvée par D06 ; les six
+livrables examinés sont désormais figés. La recette utilise l'application hébergée via
 CONNECT et un bien fictif pour les écritures ; le prototype local conserve son
 stockage navigateur. La revue de PR et l'autorisation de production restent distinctes.
 
@@ -45,6 +66,10 @@ Le premier déclenchement cron a sauvegardé les quatre tables et neuf documents
 retour des lignes et empreintes des fichiers contrôlés. Copies et journal restent
 sur le même hébergement, hors dossier public. Le [reçu](api/automatic-backup-observation.json)
 consigne l’installation ; le statut privé sur le serveur indique les exécutions suivantes.
+La [copie nocturne du 16 octobre](api/nightly-backup-observation.json) est observée
+en succès à 03 h 20 min 02 s, avec quatre tables et neuf documents. Son accès et
+les limites du constat sont dans la procédure datée ; l'examen humain est ensuite
+consigné dans D06 le 16 octobre.
 
 ## Stockage serveur opérationnel en préproduction privée
 

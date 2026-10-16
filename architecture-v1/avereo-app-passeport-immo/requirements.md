@@ -5,12 +5,21 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Exigences Passeport Immo
+
+## Évolution CIL proposée — 16 octobre
+
+Le responsable demande un plan pour proposer un CIL complet, en parallèle de la
+production de la version actuelle. Le [plan d’action](docs/plan-action-cil.md)
+conserve les quatorze évolutions proposées, leurs dépendances et critères, ainsi
+que les douze scénarios de recette. Son cadrage, ses moyens et son calendrier restent
+à valider dans une itération distincte ; ces propositions ne sont ni des fonctions
+déjà livrées ni de nouveaux prérequis ajoutés au candidat autorisé par D06.
 
 ## Préparation de production après fusion du 15 octobre 2026
 
@@ -34,6 +43,17 @@ actifs et les archives ; vérifier leur intégrité et leur correspondance avec 
 propriétaire CONNECT de production. La reprise doit préserver les sources,
 détecter doublons et conflits et attendre l'accord exact de transfert. Voir le
 [plan de reprise](docs/04-mise-en-production.md#reprise-du-dossier-sci).
+
+## Raccordement privé de production — 16 octobre
+
+L’activation doit refuser toute dérive du candidat, des deux configurations, du
+catalogue, du crontab ou de la copie SCI préparée. Limiter les droits aux membres
+actuels sélectionnés, préserver les rôles et les autres applications, fermer le
+site en cas d’échec et conserver les données pour inspection. Le compte famille
+reste autorisé en préproduction selon le choix humain ; son isolement vis-à-vis
+du dossier SCI est vérifié côté serveur. La recette navigateur et le premier
+succès cron réel restent à qualifier après l’action finale. Voir
+[l’activation privée](workflows/activation-production.md).
 
 ## Sauvegarde automatique demandée le 15 octobre 2026
 
@@ -92,9 +112,14 @@ Le lot initial était local. La demande suivante autorise son raccordement GitHu
 et la correction de pagination PDF, sans intégrer CONNECT ni déployer.
 
 ## Inconnues
-TBD : compte et organisation CONNECT autorisés en production, configuration et
-recette de la cible à créer, inventaire actualisé et mécanisme de reprise du dossier SCI, volumétrie et
-objectifs de récupération en production, suppression future du frontend historique.
+Le compte de production `dandin` et son appartenance active sont relus et le responsable
+confirme ce destinataire. Le domaine fermé, HTTPS, la base et son utilisateur dédié
+sont créés ; l’inventaire SCI est actualisé à neuf documents. Le mécanisme de reprise
+ciblée est qualifié sur données fictives et reste à exécuter sur le dossier réel.
+Le stockage privé est initialisé mais désactivé, quatre tables vides et cinq droits
+utiles vérifiés. TBD : installation et recette authentifiée de la cible, export stabilisé et transfert
+réel du dossier SCI, volumétrie et objectifs de récupération en production,
+qualification de sauvegarde/retour arrière et suppression future du frontend historique.
 Le stockage partagé et l'identité CONNECT sont réalisés en préproduction dans le
 lot serveur du 15 octobre ; les questions historiques Q01… restent conservées dans le suivi.
 
