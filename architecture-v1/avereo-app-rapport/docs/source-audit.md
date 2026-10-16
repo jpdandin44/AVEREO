@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-09-15
+updated: 2026-10-16
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,11 @@ tags:
 ---
 
 # Audit de la source Rapport
+
+## Préproduction du 16 octobre 2026
+
+Les deux types de rapport, leur sauvegarde/relecture en ligne, reprise du brouillon, aperçus et exports JSON/Word sont contrôlés sur le candidat livré. Les données métier existantes et le brouillon initial sont conservés. Le [compte rendu transverse](../../../outillage/acces-preproduction/livraison-rapport-passeport.md) fournit les empreintes et limites exactes. Cette recette ciblée ne requalifie pas les services géographiques, photos, dictée ni le rendu natif Word ; les limites spécifiques de la matrice restent valables.
+
 
 ## Source et integrite
 

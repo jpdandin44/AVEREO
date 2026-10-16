@@ -1,0 +1,19 @@
+{
+    "observedAt": "2026-10-16T08:24:02+00:00",
+    "perUserAccessRows": [
+        {
+            "user_id": 1,
+            "status": "active"
+        },
+        {
+            "user_id": 2,
+            "status": "active"
+        },
+        {
+            "user_id": 3,
+            "status": "revoked"
+        }
+    ],
+    "runtimeChecksPerUserAccess": true,
+    "readOnly": true
+}

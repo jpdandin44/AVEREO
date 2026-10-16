@@ -1,0 +1,49 @@
+{
+  "observedAt": "2026-10-16T11:03:37+02:00",
+  "environment": "preproduction",
+  "target": "https://connect-preprod.avereo.fr/",
+  "source": "Lecture de la base et des méthodes du dépôt réellement hébergé, via la session cPanel autorisée ; transaction SQL READ ONLY puis rollback.",
+  "account": {
+    "internalId": 2,
+    "displayName": "famille",
+    "status": "active",
+    "organization": "AVEREO",
+    "role": "member",
+    "emailStoredInGit": false
+  },
+  "effectiveApplicationAccess": {
+    "rapport": true,
+    "passeport-immo": true,
+    "coupe": false,
+    "projet": false,
+    "thermo": false,
+    "drone": false
+  },
+  "accountAdministration": {
+    "allowed": false,
+    "statusCode": 403,
+    "errorCode": "ACCOUNT_ADMINISTRATION_DENIED"
+  },
+  "passeportAccessAudit": {
+    "action": "user.application_access.update",
+    "status": "active",
+    "outcome": "success",
+    "occurredAt": "2026-10-16T06:59:39.416296+00:00",
+    "actorInternalId": 1,
+    "actorDisplayName": "avereo_admin"
+  },
+  "coupeAccessAudit": {
+    "action": "user.application_access.update",
+    "status": "revoked",
+    "outcome": "success",
+    "occurredAt": "2026-10-16T06:59:38.368795+00:00",
+    "actorInternalId": 1,
+    "actorDisplayName": "avereo_admin"
+  },
+  "sqlSessionTimezone": "+00:00",
+  "accessChangedByThisCheck": false,
+  "productionChecked": false,
+  "finding": "Le compte 2 est identifié ; le journal explique l’écart avec le relevé ancien. La confirmation humaine du périmètre attendu reste nécessaire.",
+  "humanConfirmation": "pending",
+  "reservationClosed": false
+}

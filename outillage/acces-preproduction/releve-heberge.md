@@ -5,7 +5,7 @@ title: Relevé des accès aux préproductions AVEREO
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-14
+updated: 2026-10-16
 owner: jpdandin
 tags: [preproduction, exploitation, cockpit, derive]
 ---
@@ -18,14 +18,35 @@ ni validation humaine ni bascule. La préparation initiale est conservée dans
 
 ## État du lot
 
-Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue.
+Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres.
 
 | Phase | État | Prochaine action |
 | --- | --- | --- |
 | Cadrage | À valider | Examiner la décision et le relevé des domaines. |
 | Développement local | À valider | Examiner les fichiers, preuves et documentation de la PR #77. |
-| Préproduction | En cours | Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec. |
-| Mise en production | Non commencée | Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé. |
+| Préproduction | En cours | Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres. |
+| Mise en production | Non commencée | Candidatures Rapport/Passeport préparées depuis la Préproduction ; revue et prérequis exacts de production à traiter dans leurs lots propres, sans livraison dans ce lot. |
+
+## Livraison ciblée de Rapport et Passeport Immo
+
+Observation du `2026-10-16T08:47:47+00:00` ; état `delivered_verified_access_confirmed`.
+[Compte rendu et limites](livraison-rapport-passeport.md).
+
+Les constats antérieurs ci-dessous restent historiques pour ces deux applications ; ce lot ne qualifie pas les autres cibles.
+
+[Candidates exactes](archives/livraison-rapport-passeport-20261016/candidats-production.json).
+
+[PR de revue #84](https://github.com/jpdandin44/AVEREO/pull/84).
+
+- **rapport** : [préproduction](https://rapport-preprod.avereo.fr/), archive `6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366`, livraison `delivered`.
+- **passeport-immo** : [préproduction](https://passeport-immo-preprod.avereo.fr/), archive `c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf`, livraison `verified_unchanged`.
+
+Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre.
+
+La candidature reste soumise à revue ; aucune production modifiée ni nouvelle validation globale de phase créée.
+
+Le responsable confirme le maintien de Rapport et Passeport Immo pour le compte famille (#2), membre AVEREO, en préproduction. Réserve levée ; aucun droit modifié. Les quatre autres applications et l’administration restent refusées selon le contrôle en lecture seule.
+[Confirmation humaine et portée](archives/livraison-rapport-passeport-20261016/rights-confirmation.json).
 
 ## Accès pour la recette
 
@@ -79,20 +100,19 @@ Contrôles sans identifiants, sans suivi des redirections, sans corps ni cookies
 - identity_technical_acceptance le `2026-10-06T18:33:00.022890+00:00` : passed — /home/daje3540/private/identity-repair/20261006T182856355876Z/acceptance.json. Recette technique réussie : racine identité 200, OAuth anonyme 302 vers /user/login puis écran 200 ; CONNECT HTTPS anonyme/incorrect 401 Basic, HTTP 403 sans challenge ; Rapport 303 vers sa porte CONNECT. Aucun nouvel octet dans error_log pendant ces contrôles. Connexion avec le compte du responsable et parcours métier non vérifiés.
 
 Les tests Apache locaux sont complétés par les contrôles hébergés enregistrés ci-dessus.
-Le parcours CONNECT → Drupal → Rapport → sauvegarde → rechargement reste à recetter.
+Rapport : sauvegarde/rechargement contrôlés dans le lot ciblé ; la connexion OAuth interactive reste distincte.
 La protection doit survivre au prochain déploiement ; cette pérennité reste à qualifier.
 
 ## Points restant à traiter
 
-- Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.
+- Rapport : lancement, sauvegarde/relecture et exports contrôlés ; connexion OAuth interactive du responsable et second réseau non observés dans cette recette.
 - Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.
 - Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.
 - CONNECT : onboarding_status et activation_email_sent_at absents de users ; migration et récupération de la base non préparées. Ne pas remplacer son backend en bloc.
 - Recherche : cible, configuration de lancement et entrée catalogue absentes ; dépendance GED à établir.
-- Passeport Immo : seule protection de fermeture installée ; frontend et contrat CONNECT absents.
 - Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.
-- Accord de livraison applicative du candidat préparé non enregistré ; les accords antérieurs couvrent le pilote d’accès et la réparation ciblée.
-- Recette métier authentifiée sur les versions effectivement livrées : lancement, stockage lorsqu’il existe, réouverture, exports, déconnexion et révocation.
+- Le lot historique de cinq applications conserve son suivi propre ; la demande du 16 octobre couvre seulement Rapport et Passeport Immo.
+- Recettes des autres applications à poursuivre séparément ; preuves Rapport/Passeport dans selected_applications_delivery.
 
 ## Incident d’authentification
 

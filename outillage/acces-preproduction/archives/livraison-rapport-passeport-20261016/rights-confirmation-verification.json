@@ -1,0 +1,25 @@
+{
+  "verifiedAt": "2026-10-16T09:30:08+00:00",
+  "scope": "Clôture documentaire de la réserve de préproduction du compte famille, PR #84",
+  "markdownFilesChecked": 10,
+  "localLinksChecked": 152,
+  "approvedDocumentsUnchanged": 15,
+  "candidateArchivesUnchanged": [
+    "rapport",
+    "passeport-immo"
+  ],
+  "historicalReceiptsUnchanged": [
+    "delivery.json",
+    "http-failure.json",
+    "http-completion.json",
+    "rights-observation.json",
+    "browser-verification.json",
+    "production-gates.json"
+  ],
+  "phaseStatusesAndExistingHumanDecisionsUnchanged": true,
+  "applicationCodeChanged": false,
+  "newHostedTestsRun": false,
+  "cockpitCheck": "passed; four phases, human decisions preserved, views regenerated",
+  "productionReady": false,
+  "limitations": "Contrôle documentaire ciblé ; les prérequis de production restent consignés dans production-gates-after-access-confirmation.json."
+}

@@ -1,0 +1,48 @@
+{
+    "observedAt": "2026-10-16T08:22:40+00:00",
+    "status": "completed_with_access_review_required",
+    "checks": [
+        "Private work directory",
+        "Expected unresolved rights observation retained",
+        "Fresh completion receipt",
+        "TLS request completed",
+        "Existing technical session valid before logout",
+        "TLS request completed",
+        "Passeport logout accepted",
+        "TLS request completed",
+        "Passeport API denied after logout",
+        "TLS request completed",
+        "Existing technical session valid before logout",
+        "TLS request completed",
+        "Passeport logout accepted",
+        "TLS request completed",
+        "Passeport API denied after logout",
+        "Existing Rapport row unchanged",
+        "Existing Rapport row unchanged"
+    ],
+    "accessObservation": [
+        {
+            "internalAccountId": 1,
+            "passeportLaunchAllowed": true
+        },
+        {
+            "internalAccountId": 2,
+            "passeportLaunchAllowed": true
+        },
+        {
+            "internalAccountId": 3,
+            "passeportLaunchAllowed": false
+        }
+    ],
+    "accessChangedByThisLot": false,
+    "rightsFindingResolved": false,
+    "rightsFinding": "Historical targeted access expectation differs from current CONNECT result. No entitlement changed. Review effective grants before production qualification.",
+    "existingRapportRowsUnchanged": 2,
+    "syntheticReportsRetained": [
+        "060baad99a8bd92295524fe4a72391d6",
+        "27616fa696fca0a2c092a513a65ea622"
+    ],
+    "passeportLogoutVerified": true,
+    "productionChanged": false,
+    "privateValuesExported": false
+}
