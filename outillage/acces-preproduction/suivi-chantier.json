@@ -2649,8 +2649,16 @@
       "closureReview": {
         "branch": "docs/closure-production-20261016",
         "baseSha": "78a368423f71945d1b9c4c87fbf7e8d48a6cde47",
-        "status": "prepared_for_documentary_pull_request",
-        "scope": "Complément documentaire de clôture ; les prérequis et accords de livraison restent distincts."
+        "status": "published_draft",
+        "scope": "Complément documentaire de clôture ; les prérequis et accords de livraison restent distincts.",
+        "number": 87,
+        "url": "https://github.com/jpdandin44/AVEREO/pull/87",
+        "draft": true,
+        "observedHeadSha": "28d82bebd45595c7ef19d6be5c6156438e0420cc",
+        "observedAt": "2026-10-16T20:36:54.868194+00:00",
+        "mergeable": "MERGEABLE",
+        "humanAcceptanceVerified": false,
+        "checksStatusAtPublication": "in_progress"
       }
     },
     "previousProductionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates-after-access-confirmation.json",

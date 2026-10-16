@@ -17,8 +17,8 @@ tags: [preproduction, reprise, applications, cockpit]
 La description de #23 est publiée dans le chat « Finaliser la préproduction OAuth ».
 Sa tête `0f246525…` est conservée pour la revue. Le complément documentaire Drupal
 de cette clôture reste dans un **commit local** de `codex/cloture-core-20261016` ;
-le réconcilier à la reprise après vérification de GitHub. La PR #86 a été fusionnée ; un complément documentaire sur
-`docs/closure-production-20261016` conserve le dossier actualisé et les [preuves des fusions](archives/preparation-production-rapport-passeport-20261016/drupal-integration-github.json).
+le réconcilier à la reprise après vérification de GitHub. La PR #86 a été fusionnée ; la [PR de clôture #87](https://github.com/jpdandin44/AVEREO/pull/87),
+en brouillon sur `docs/closure-production-20261016`, conserve le dossier actualisé et les [preuves des fusions](archives/preparation-production-rapport-passeport-20261016/drupal-integration-github.json).
 
 Session arrêtée à la demande du responsable. Les PR AVEREO #85 et #86 sont
 également fusionnées, avec quatre attestations chacune ; leurs dossiers sont
@@ -28,7 +28,7 @@ quatre contrôles techniques réussis. La description actualisée remet les case
 à la disposition du responsable ; les attestations précédentes sont archivées.
 Le [dossier de production](preparation-production-rapport-passeport.md#clôture-du-16-octobre--suite-prête-à-reprendre)
 porte l’ordre de reprise, les accords conditionnels Drupal acquis, les opérations
-Rapport encore à qualifier et la recette finale Passeport. Aucun merge ni
+Rapport encore à qualifier et la recette finale Passeport. Aucune fusion par l’agent ni
 changement hébergé pendant cette clôture. Reprise uniquement sur demande.
 
 Copie Drupal courante : `C:\Users\examg\Documents local\avereo-drupal-preparation-production`.

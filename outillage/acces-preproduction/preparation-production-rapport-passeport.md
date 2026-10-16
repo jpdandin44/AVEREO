@@ -17,8 +17,8 @@ tags: [rapport, passeport-immo, production, cockpit]
 La description de #23 est publiée dans le chat « Finaliser la préproduction OAuth ».
 Sa tête `0f246525…` est conservée pour la revue. Le complément documentaire Drupal
 de cette clôture reste dans un **commit local** de `codex/cloture-core-20261016` ;
-le réconcilier à la reprise après vérification de GitHub. La PR #86 a été fusionnée ; un complément documentaire sur
-`docs/closure-production-20261016` conserve le dossier actualisé et les [preuves des fusions](archives/preparation-production-rapport-passeport-20261016/drupal-integration-github.json).
+le réconcilier à la reprise après vérification de GitHub. La PR #86 a été fusionnée ; la [PR de clôture #87](https://github.com/jpdandin44/AVEREO/pull/87),
+en brouillon sur `docs/closure-production-20261016`, conserve le dossier actualisé et les [preuves des fusions](archives/preparation-production-rapport-passeport-20261016/drupal-integration-github.json).
 
 Les PR Drupal #24 puis #25 sont fusionnées humainement dans Core #23. La
 [preuve de clôture](archives/preparation-production-rapport-passeport-20261016/cloture-integration-drupal.json)
