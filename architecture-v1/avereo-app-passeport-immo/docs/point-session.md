@@ -47,7 +47,7 @@ revue humaine du lot. La phase 3 reste en cours. La PR nº83 a été fusionnée 
 le responsable à 10:47:35 UTC sur la tête `08f437a` ; ses quatre attestations
 humaines sont relues et la policy stricte réussit. La PR nº84 est aussi fusionnée.
 Les vérifications après activation et la proposition OAuth sont préparées dans
-une PR de suivi distincte, avec ses propres attestations à examiner. Les 21
+la [PR nº85](https://github.com/jpdandin44/AVEREO/pull/85), en brouillon, avec ses propres attestations à examiner. Les 21
 références approuvées et D06 restent intacts. Famille conserve son accès de préproduction.
 Le contrôle de clôture refuse encore le passage en raison du blocage OAuth et de
 l’absence de recette de production complète ; ces deux réserves sont consignées.

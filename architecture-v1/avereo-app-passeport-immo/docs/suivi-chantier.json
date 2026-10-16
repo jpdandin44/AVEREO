@@ -2558,8 +2558,22 @@
         "document": "docs/blocage-oauth-production.md"
       },
       "verificationPublication": {
-        "status": "preparing_draft_follow_up",
+        "status": "published_draft_oauth_recipe_blocked",
         "branch": "chore/passeport-immo-verification-production",
+        "pullRequest": {
+          "url": "https://github.com/jpdandin44/AVEREO/pull/85",
+          "repository": "jpdandin44/AVEREO",
+          "number": 85,
+          "state": "open",
+          "draft": true,
+          "headSha": "2ef60654ab7727ffa0939390d133cd3ef362b619",
+          "observedAt": "2026-10-16T11:18:58.299762+00:00",
+          "scope": "Vérification après activation privée, sauvegarde réelle, blocage OAuth et proposition ciblée non installée ; candidat applicatif inchangé."
+        },
+        "baseSha": "0fd533200d3044582d72003aa47eed1582a6dec4",
+        "mergeable": "MERGEABLE",
+        "observedAt": "2026-10-16T11:18:58.299762+00:00",
+        "evidence": "api/production-verification-observation.json",
         "previousMergedPullRequest": {
           "url": "https://github.com/jpdandin44/AVEREO/pull/83",
           "repository": "jpdandin44/AVEREO",
@@ -2571,8 +2585,7 @@
           "mergedAt": "2026-10-16T10:47:35Z",
           "mergeCommitSha": "de33542cb8f16efaac318cb7cfd0b62fb34c092f",
           "mergedBy": "jpdandinavereo-design"
-        },
-        "evidence": "api/production-verification-observation.json"
+        }
       }
     },
     "preproductionRefresh": {
@@ -2683,6 +2696,20 @@
         "mergeCommitSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
         "mergedBy": "jpdandinavereo-design"
       }
+    },
+    {
+      "phaseId": 3,
+      "result": "Production privée activée et sauvegarde vérifiée ; recette OAuth bloquée. Proposition Drupal préparée sans installation, accord de périmètre et revue humaine distincts.",
+      "documentationPullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/85",
+        "repository": "jpdandin44/AVEREO",
+        "number": 85,
+        "state": "open",
+        "draft": true,
+        "headSha": "2ef60654ab7727ffa0939390d133cd3ef362b619",
+        "observedAt": "2026-10-16T11:18:58.299762+00:00",
+        "scope": "Vérification après activation privée, sauvegarde réelle, blocage OAuth et proposition ciblée non installée ; candidat applicatif inchangé."
+      }
     }
   ],
   "sessionHandoff": {
@@ -2775,7 +2802,7 @@
     "currentWork": {
       "branch": "chore/passeport-immo-verification-production",
       "baseSha": "0fd533200d3044582d72003aa47eed1582a6dec4",
-      "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/83",
+      "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/85",
       "status": "private_delivery_active_oauth_browser_blocked",
       "productionDeployment": "private_activated_oauth_browser_recipe_blocked",
       "unrelatedLocalChanges": "preserved",
@@ -2794,7 +2821,37 @@
       "latestVerificationEvidence": "api/production-verification-observation.json",
       "nextAction": "Activation privée exécutée par le responsable ; sauvegarde quotidienne active et premier cron vérifié. 57 contrôles HTTPS de Passeport Immo réussis, SCI intact. Obtenir l’accord pour le correctif ciblé des trois routes OAuth du site Drupal, puis qualifier le parcours CONNECT réel. D06 et les validations humaines existantes sont conservés ; aucune ouverture publique.",
       "previousBranch": "docs/passeport-immo-execution-production",
-      "previousBaseSha": "d95164ea0c9863073427e82fae89e89dadeac01f"
+      "previousBaseSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+      "publicationObservation": {
+        "status": "published_draft_oauth_recipe_blocked",
+        "branch": "chore/passeport-immo-verification-production",
+        "pullRequest": {
+          "url": "https://github.com/jpdandin44/AVEREO/pull/85",
+          "repository": "jpdandin44/AVEREO",
+          "number": 85,
+          "state": "open",
+          "draft": true,
+          "headSha": "2ef60654ab7727ffa0939390d133cd3ef362b619",
+          "observedAt": "2026-10-16T11:18:58.299762+00:00",
+          "scope": "Vérification après activation privée, sauvegarde réelle, blocage OAuth et proposition ciblée non installée ; candidat applicatif inchangé."
+        },
+        "baseSha": "0fd533200d3044582d72003aa47eed1582a6dec4",
+        "mergeable": "MERGEABLE",
+        "observedAt": "2026-10-16T11:18:58.299762+00:00",
+        "evidence": "api/production-verification-observation.json",
+        "previousMergedPullRequest": {
+          "url": "https://github.com/jpdandin44/AVEREO/pull/83",
+          "repository": "jpdandin44/AVEREO",
+          "number": 83,
+          "state": "merged",
+          "draft": false,
+          "headSha": "08f437a6ee93604c59c7c53693b01e78622335e2",
+          "observedAt": "2026-10-16T11:16:37.037079+00:00",
+          "mergedAt": "2026-10-16T10:47:35Z",
+          "mergeCommitSha": "de33542cb8f16efaac318cb7cfd0b62fb34c092f",
+          "mergedBy": "jpdandinavereo-design"
+        }
+      }
     }
   },
   "legacyTracking": {

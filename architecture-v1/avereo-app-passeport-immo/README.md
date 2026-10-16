@@ -50,7 +50,7 @@ Le [reçu de vérification](api/production-verification-observation.json), le
 [dossier de production](docs/04-mise-en-production.md) et le
 [suivi canonique](docs/suivi-chantier.json) distinguent livraison, recette et validation.
 La phase 3 reste en cours. La PR nº83 est fusionnée ; les vérifications après
-activation font l’objet d’une PR de suivi distincte. Aucune ouverture publique.
+activation font l’objet de la [PR nº85](https://github.com/jpdandin44/AVEREO/pull/85), en brouillon. Aucune ouverture publique.
 
 ## Recette de préproduction et décision de phase
 
