@@ -18,18 +18,18 @@ ni validation humaine ni bascule. La préparation initiale est conservée dans
 
 ## État du lot
 
-Examiner les deux applications en préproduction et confirmer le droit CONNECT attendu pour le compte interne 2 ; poursuivre ensuite les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres.
+Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres.
 
 | Phase | État | Prochaine action |
 | --- | --- | --- |
 | Cadrage | À valider | Examiner la décision et le relevé des domaines. |
 | Développement local | À valider | Examiner les fichiers, preuves et documentation de la PR #77. |
-| Préproduction | En cours | Examiner les deux applications en préproduction et confirmer le droit CONNECT attendu pour le compte interne 2 ; poursuivre ensuite les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres. |
+| Préproduction | En cours | Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres. |
 | Mise en production | Non commencée | Candidatures Rapport/Passeport préparées depuis la Préproduction ; revue et prérequis exacts de production à traiter dans leurs lots propres, sans livraison dans ce lot. |
 
 ## Livraison ciblée de Rapport et Passeport Immo
 
-Observation du `2026-10-16T08:47:47+00:00` ; état `delivered_verified_with_access_review_required`.
+Observation du `2026-10-16T08:47:47+00:00` ; état `delivered_verified_access_confirmed`.
 [Compte rendu et limites](livraison-rapport-passeport.md).
 
 Les constats antérieurs ci-dessous restent historiques pour ces deux applications ; ce lot ne qualifie pas les autres cibles.
@@ -41,9 +41,12 @@ Les constats antérieurs ci-dessous restent historiques pour ces deux applicatio
 - **rapport** : [préproduction](https://rapport-preprod.avereo.fr/), archive `6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366`, livraison `delivered`.
 - **passeport-immo** : [préproduction](https://passeport-immo-preprod.avereo.fr/), archive `c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf`, livraison `verified_unchanged`.
 
-Examiner les deux applications en préproduction et confirmer le droit CONNECT attendu pour le compte interne 2 ; poursuivre ensuite les prérequis de production dans leur lot propre.
+Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre.
 
-La candidature reste soumise à revue ; aucune production modifiée ni nouvelle validation humaine créée.
+La candidature reste soumise à revue ; aucune production modifiée ni nouvelle validation globale de phase créée.
+
+Le responsable confirme le maintien de Rapport et Passeport Immo pour le compte famille (#2), membre AVEREO, en préproduction. Réserve levée ; aucun droit modifié. Les quatre autres applications et l’administration restent refusées selon le contrôle en lecture seule.
+[Confirmation humaine et portée](archives/livraison-rapport-passeport-20261016/rights-confirmation.json).
 
 ## Accès pour la recette
 
@@ -107,7 +110,6 @@ La protection doit survivre au prochain déploiement ; cette pérennité reste �
 - Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.
 - CONNECT : onboarding_status et activation_email_sent_at absents de users ; migration et récupération de la base non préparées. Ne pas remplacer son backend en bloc.
 - Recherche : cible, configuration de lancement et entrée catalogue absentes ; dépendance GED à établir.
-- Passeport Immo installé et vérifié ; confirmer le droit actuel du compte interne 2 au regard du relevé historique.
 - Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.
 - Le lot historique de cinq applications conserve son suivi propre ; la demande du 16 octobre couvre seulement Rapport et Passeport Immo.
 - Recettes des autres applications à poursuivre séparément ; preuves Rapport/Passeport dans selected_applications_delivery.

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "iterationId": "rapport-passeport-preproduction-20261016",
   "preparedAt": "2026-10-16T08:47:47+00:00",
-  "status": "prepared_for_review_with_reservation",
+  "status": "prepared_for_review",
   "productionReady": false,
   "productionChanged": false,
   "documentation": "../../livraison-rapport-passeport.md",
@@ -185,5 +185,8 @@
   "limitations": [
     "Connexion OAuth interactive Chrome non observée par cet agent.",
     "Rendu natif Microsoft Word, dictée, photos, services géographiques externes et second réseau non requalifiés."
-  ]
+  ],
+  "updatedAt": "2026-10-16T09:27:45+00:00",
+  "rightsConfirmation": "rights-confirmation.json",
+  "rightsReservationClosed": true
 }

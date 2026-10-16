@@ -129,16 +129,42 @@ pour le compte 3. Le code CONNECT contrôle bien les droits individuels. Le test
 attendait le refus du compte 2 d'après un ancien relevé : cette attente ne
 correspond plus aux droits explicites actuellement enregistrés. Ce constat ne
 démontre pas un contournement du contrôle d'accès. Aucun droit n'a été modifié.
-Le responsable doit confirmer l'accès attendu du compte 2 et réconcilier le
-relevé avant de qualifier la candidature sans réserve. Les observations et
-validations historiques ne sont pas réécrites.
+**Réserve levée le 16 octobre 2026**, après [confirmation explicite du responsable](archives/livraison-rapport-passeport-20261016/rights-confirmation.json) :
+le compte **famille** doit conserver **Rapport** et **Passeport Immo** en
+**préproduction**. Aucun droit n’est modifié. L’échec de l’assertion fondée sur
+l’ancien relevé reste conservé comme observation historique ; la confirmation
+résout l’écart sur le périmètre attendu, sans transformer ce test en réussite.
+Elle ne constitue ni une validation globale de phase, ni un accord de merge,
+ni une nouvelle autorisation de production ou d’ouverture.
+
+### Compte concerné identifié — 16 octobre à 11:03 (Paris)
+
+Le [contrôle complémentaire en lecture seule](archives/livraison-rapport-passeport-20261016/rights-account-detail.json)
+identifie le compte interne **2**, nommé **famille**, actif, avec le rôle
+**membre** de l’organisation AVEREO. Son adresse de connexion est conservée
+dans une note locale privée et communiquée au responsable ; elle n’est pas
+ajoutée aux fichiers destinés à Git.
+
+Il peut lancer **Rapport** et **Passeport Immo**. **Coupe, Projet, Thermo et Drone**
+lui sont refusés. Le contrôle hébergé refuse l’administration des comptes avec
+`403 ACCOUNT_ADMINISTRATION_DENIED`. Ces observations concernent CONNECT
+préproduction ; elles ne qualifient pas un compte de production.
+
+Le journal enregistre l’activation de Passeport Immo le **16 octobre à 08:59:39
+(Paris)**, par **avereo_admin**, compte interne 1. Il enregistre aussi la révocation
+de Coupe une seconde auparavant. L’origine de l’écart avec l’ancien relevé est
+donc identifiée. Le contrôle de 11:03 précédait la confirmation humaine ; son
+reçu demeure inchangé. La [confirmation ultérieure](archives/livraison-rapport-passeport-20261016/rights-confirmation.json)
+clôt cette réserve en maintenant les deux accès. Aucun compte, droit, secret,
+événement humain antérieur ou livrable approuvé n’est modifié.
 
 ## Mise en production
 
 Les mêmes ZIP sont conservés dans le dossier local privé
 `.local/candidates-production-20261016/`, avec leur
 [manifeste de candidature](archives/livraison-rapport-passeport-20261016/candidats-production.json).
-Le statut est **candidats préparés pour revue, avec réserve de droits**. Le plan
+Le statut est **candidats préparés pour revue** ; la réserve sur les droits du
+compte famille est levée. Les archives et leurs empreintes restent identiques. Le plan
 de livraison de production doit qualifier séparément les racines, configurations,
 sauvegardes et retour arrière de production. L'outil de ce lot accepte seulement
 les deux racines de préproduction ; il ne permet aucun déploiement de production.
@@ -153,12 +179,14 @@ Passeport Immo conserve sa portée sur son candidat exact ; elle ne valide pas
 Rapport. Les quinze documents approuvés de Passeport Immo restent identiques.
 Le [complément de contrôle](https://github.com/jpdandin44/AVEREO/blob/chore/preprod-rapport-passeport-20261016/architecture-v1/avereo-app-passeport-immo/docs/controle-candidat-preproduction.md)
 rattache cette observation au suivi de production existant, sans redémarrer de phase.
-Les prochaines actions sont la revue des deux applications et de la réserve de
-droits, puis les contrôles des cibles et de leur récupération avant livraison.
-Les [contrôles de passage](archives/livraison-rapport-passeport-20261016/production-gates.json)
-refusent actuellement la production : Rapport attend notamment sa revue et son
-accord exact ; Passeport Immo conserve D06 mais sa cible, sa récupération et son
-retour arrière restent à qualifier, en plus de la réserve de droits.
+Les prochaines actions sont la revue des deux applications, puis les contrôles
+des cibles et de leur récupération avant livraison. Les [contrôles de passage
+après confirmation des accès](archives/livraison-rapport-passeport-20261016/production-gates-after-access-confirmation.json)
+refusent encore la production : Rapport attend notamment sa revue et son accord
+exact ; Passeport Immo conserve D06, mais la qualification complète de sa cible,
+la récupération, le retour arrière et la reprise SCI restent dans son lot propre.
+La réserve sur le compte famille n’est plus un blocage. Le [contrôle précédent](archives/livraison-rapport-passeport-20261016/production-gates.json)
+est conservé comme observation datée.
 Pour Passeport Immo, la préparation de production et la reprise SCI restent
 dans le lot PR #83. Aucun fichier ni donnée de production n'est modifié ici.
 
@@ -174,5 +202,6 @@ Une vérification de fichiers peut être relancée avec
 sur un dossier ayant déjà son reçu de livraison. Ne pas rejouer la recette
 initiale sur ses identifiants de rapports déjà utilisés : elle exige des
 identifiants fictifs frais et s'arrête sur l'attente historique de droits.
-Le complément termine seulement les contrôles indépendants ; il ne transforme
-jamais la réserve en réussite ni en approbation.
+Le complément termine seulement les contrôles indépendants. La réserve a ensuite
+été levée par la confirmation humaine référencée ci-dessus ; l’assertion initiale
+reste en échec dans son reçu historique et aucune approbation globale n’est créée.

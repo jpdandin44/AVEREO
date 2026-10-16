@@ -39,7 +39,11 @@ if selected:
         lines += [f"- **{name}** : [préproduction]({flow['targets']['preproduction']['url']}), "
                   f"archive `{flow['candidate']['artifactSha256']}`, livraison `{flow.get('delivery', {}).get('status', 'not_delivered')}`."]
     lines += ['', selected['nextAction'], '',
-        'La candidature reste soumise à revue ; aucune production modifiée ni nouvelle validation humaine créée.']
+        'La candidature reste soumise à revue ; aucune production modifiée ni nouvelle validation globale de phase créée.']
+    access_review = selected.get('accessReview') or {}
+    if access_review.get('status') == 'resolved' and access_review.get('confirmationEvidence'):
+        lines += ['', access_review['summary'],
+            f"[Confirmation humaine et portée]({access_review['confirmationEvidence']})."]
 review_links = (state.get('identity_repair') or {}).get('review_links')
 if review_links:
     lines += ['', '## Accès pour la recette', '',

@@ -26,11 +26,14 @@ téléchargements ont les empreintes attendues. Le stockage, les sessions et leu
 déconnexion sont contrôlés. La récupération a été répétée sur des copies et
 tables temporaires privées, sans modification des données métier actives.
 
-Une réserve reste ouverte : le compte interne 2 a actuellement un droit CONNECT
-explicite actif, alors qu'un relevé antérieur attendait son refus. Les droits
-individuels sont effectivement contrôlés ; aucun droit n'est modifié par ce lot.
-Faire confirmer le périmètre attendu et actualiser le relevé correspondant avant
-de présenter la qualification comme dépourvue de réserve.
+**Réserve sur les habilitations levée le 16 octobre 2026.** Le compte interne 2,
+**famille**, doit conserver Rapport et Passeport Immo en préproduction, selon la
+[confirmation explicite du responsable](https://github.com/jpdandin44/AVEREO/blob/chore/preprod-rapport-passeport-20261016/outillage/acces-preproduction/archives/livraison-rapport-passeport-20261016/rights-confirmation.json).
+Le contrôle en lecture seule constate ces accès, le rôle membre, le refus des
+quatre autres applications et de l’administration. Aucun droit n’est changé.
+L’ancienne assertion de refus reste dans son reçu historique ; la confirmation
+résout l’écart d’attente sans constituer une nouvelle validation globale de
+phase, un accord de merge ou une nouvelle autorisation de production/ouverture.
 
 La décision humaine D06, ses preuves et les quinze documents approuvés restent
 intacts. Ce complément n'annule ni ne recrée cette décision. Le code exécutable

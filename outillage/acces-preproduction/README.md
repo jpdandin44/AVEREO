@@ -16,7 +16,7 @@ tags: [preproduction, securite, exploitation]
 
 ## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo
 
-Rapport est livré avec ses deux types ; Passeport Immo possède déjà le candidat courant et ses seize fichiers sont vérifiés sans réécriture. La [livraison et la recette](livraison-rapport-passeport.md) rassemblent les preuves, la réserve de droits et les candidates exactes. Le bloc `selected_applications_delivery` du [suivi](suivi-chantier.json) fait référence pour ce périmètre. Les constats antérieurs ci-dessous restent historiques lorsqu’ils décrivent Rapport ancien ou Passeport Immo absent. Aucune livraison de production dans ce lot.
+Rapport est livré avec ses deux types ; Passeport Immo possède déjà le candidat courant et ses seize fichiers sont vérifiés sans réécriture. La [livraison et la recette](livraison-rapport-passeport.md) rassemblent les preuves, la levée de la réserve sur les accès du compte famille après confirmation humaine et les candidates exactes. Le bloc `selected_applications_delivery` du [suivi](suivi-chantier.json) fait référence pour ce périmètre. Les constats antérieurs ci-dessous restent historiques lorsqu’ils décrivent Rapport ancien ou Passeport Immo absent. Aucune livraison de production dans ce lot.
 
 
 Le 14 octobre, le responsable demande la préparation distincte de CONNECT,

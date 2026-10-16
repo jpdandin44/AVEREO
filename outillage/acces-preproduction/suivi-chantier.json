@@ -16,12 +16,11 @@
     "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.",
     "CONNECT : onboarding_status et activation_email_sent_at absents de users ; migration et récupération de la base non préparées. Ne pas remplacer son backend en bloc.",
     "Recherche : cible, configuration de lancement et entrée catalogue absentes ; dépendance GED à établir.",
-    "Passeport Immo installé et vérifié ; confirmer le droit actuel du compte interne 2 au regard du relevé historique.",
     "Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.",
     "Le lot historique de cinq applications conserve son suivi propre ; la demande du 16 octobre couvre seulement Rapport et Passeport Immo.",
     "Recettes des autres applications à poursuivre séparément ; preuves Rapport/Passeport dans selected_applications_delivery."
   ],
-  "next_action": "Examiner les deux applications en préproduction et confirmer le droit CONNECT attendu pour le compte interne 2 ; poursuivre ensuite les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres.",
+  "next_action": "Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres.",
   "phases": [
     {
       "id": 0,
@@ -167,14 +166,13 @@
         "Accès anonyme/incorrect refusé, accès autorisé réussi sur HTTPS.",
         "Connexion, lancement Rapport, sauvegarde et rechargement vérifiés."
       ],
-      "nextAction": "Examiner les deux applications en préproduction et confirmer le droit CONNECT attendu pour le compte interne 2 ; poursuivre ensuite les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres.",
+      "nextAction": "Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres.",
       "blockers": [
         "Rapport : lancement, sauvegarde/relecture et exports contrôlés ; connexion OAuth interactive du responsable et second réseau non observés dans cette recette.",
         "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.",
         "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.",
         "CONNECT : onboarding_status et activation_email_sent_at absents de users ; migration et récupération de la base non préparées. Ne pas remplacer son backend en bloc.",
         "Recherche : cible, configuration de lancement et entrée catalogue absentes ; dépendance GED à établir.",
-        "Passeport Immo installé et vérifié ; confirmer le droit actuel du compte interne 2 au regard du relevé historique.",
         "Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.",
         "Le lot historique de cinq applications conserve son suivi propre ; la demande du 16 octobre couvre seulement Rapport et Passeport Immo.",
         "Recettes des autres applications à poursuivre séparément ; preuves Rapport/Passeport dans selected_applications_delivery."
@@ -199,7 +197,7 @@
         "draft": true,
         "mergeable": "MERGEABLE",
         "observedAt": "2026-10-16T08:53:53+00:00",
-        "scope": "Livraison et contrôles des deux applications en préproduction ; candidates de production avec réserve."
+        "scope": "Livraison et contrôles des deux applications en préproduction ; candidates de production préparées, réserve sur le compte famille levée par confirmation humaine."
       }
     },
     {
@@ -2182,7 +2180,7 @@
   },
   "selected_applications_delivery": {
     "iterationId": "rapport-passeport-preproduction-20261016",
-    "status": "delivered_verified_with_access_review_required",
+    "status": "delivered_verified_access_confirmed",
     "observedAt": "2026-10-16T08:47:47+00:00",
     "mainObservedSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
     "documentation": "livraison-rapport-passeport.md",
@@ -2327,10 +2325,13 @@
             "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
             "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
             "kind": "preproduction",
-            "status": "passed_with_reservation",
+            "status": "passed",
             "target": "passeport-immo-preproduction",
-            "evidence": "archives/livraison-rapport-passeport-20261016/browser-verification.json ; archives/livraison-rapport-passeport-20261016/delivery.json ; archives/livraison-rapport-passeport-20261016/http-completion.json",
-            "observedAt": "2026-10-16T08:47:47+00:00"
+            "evidence": "archives/livraison-rapport-passeport-20261016/browser-verification.json ; archives/livraison-rapport-passeport-20261016/delivery.json ; archives/livraison-rapport-passeport-20261016/http-completion.json ; archives/livraison-rapport-passeport-20261016/rights-confirmation.json",
+            "observedAt": "2026-10-16T08:47:47+00:00",
+            "reservationClosedAt": "2026-10-16T09:27:45+00:00",
+            "reservationClosureEvidence": "archives/livraison-rapport-passeport-20261016/rights-confirmation.json",
+            "qualificationBasis": "Contrôles techniques précédents conservés ; périmètre des droits confirmé par le responsable. Aucune réécriture de l’assertion historique en échec ni nouvelle recette hébergée."
           }
         ],
         "approvals": [
@@ -2356,9 +2357,7 @@
             "observedAt": "2026-10-16T08:17:13+00:00"
           }
         ],
-        "blockers": [
-          "Revue de l’écart entre droits actuels et relevé historique du compte interne 2."
-        ],
+        "blockers": [],
         "delivery": {
           "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
           "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
@@ -2372,18 +2371,26 @@
     "deliveryEvidence": "archives/livraison-rapport-passeport-20261016/delivery.json",
     "browserEvidence": "archives/livraison-rapport-passeport-20261016/browser-verification.json",
     "productionCandidateManifest": "archives/livraison-rapport-passeport-20261016/candidats-production.json",
-    "nextAction": "Examiner les deux applications en préproduction et confirmer le droit CONNECT attendu pour le compte interne 2 ; poursuivre ensuite les prérequis de production dans leur lot propre.",
+    "nextAction": "Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre.",
     "productionReady": false,
     "limitations": [
       "Connexion OAuth interactive Chrome non observée par cet agent.",
       "Rendu natif Microsoft Word, dictée, photos, services géographiques externes et second réseau non requalifiés."
     ],
     "accessReview": {
-      "status": "required",
+      "status": "resolved",
       "application": "passeport-immo",
       "evidence": "archives/livraison-rapport-passeport-20261016/rights-observation.json",
       "entitlementsChanged": false,
-      "summary": "Compte interne 2 explicitement actif ; ancien relevé à réconcilier, sans contournement des droits individuels constaté."
+      "summary": "Le responsable confirme le maintien de Rapport et Passeport Immo pour le compte famille (#2), membre AVEREO, en préproduction. Réserve levée ; aucun droit modifié. Les quatre autres applications et l’administration restent refusées selon le contrôle en lecture seule.",
+      "accountDisplayName": "famille",
+      "accountRole": "member",
+      "detailEvidence": "archives/livraison-rapport-passeport-20261016/rights-account-detail.json",
+      "identityVerified": true,
+      "entitlementHistoryVerified": true,
+      "humanConfirmationStatus": "confirmed",
+      "confirmationEvidence": "archives/livraison-rapport-passeport-20261016/rights-confirmation.json",
+      "resolvedAt": "2026-10-16T09:27:45+00:00"
     },
     "supersededContext": {
       "next_action": "Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue.",
@@ -2401,7 +2408,7 @@
       "phase2NextAction": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
       "phase3NextAction": "Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé."
     },
-    "productionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates.json",
+    "productionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates-after-access-confirmation.json",
     "pullRequest": {
       "url": "https://github.com/jpdandin44/AVEREO/pull/84",
       "repository": "jpdandin44/AVEREO",
@@ -2410,7 +2417,10 @@
       "draft": true,
       "mergeable": "MERGEABLE",
       "observedAt": "2026-10-16T08:53:53+00:00",
-      "scope": "Livraison et contrôles des deux applications en préproduction ; candidates de production avec réserve."
-    }
+      "scope": "Livraison et contrôles des deux applications en préproduction ; candidates de production préparées, réserve sur le compte famille levée par confirmation humaine."
+    },
+    "updatedAt": "2026-10-16T09:27:45+00:00",
+    "humanConfirmationRecorded": true,
+    "humanReviewScope": "Aucune nouvelle revue globale de phase ; confirmation humaine limitée aux droits existants du compte famille."
   }
 }

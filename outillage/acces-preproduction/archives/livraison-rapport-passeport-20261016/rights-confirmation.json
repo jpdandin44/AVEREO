@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "iterationId": "rapport-passeport-preproduction-20261016",
+  "recordedAt": "2026-10-16T09:27:45+00:00",
+  "source": "user_chat",
+  "actor": "jpdandin",
+  "confirmation": "Oui, c’est bien voulu : le compte famille doit conserver l’accès à Rapport et Passeport Immo en préproduction. Tu peux lever la réserve et mettre à jour la PR #84 stp.",
+  "scope": "Maintien des accès existants du compte famille à Rapport et Passeport Immo en préproduction ; clôture de la seule réserve documentaire sur ces droits.",
+  "environment": "preproduction",
+  "target": "https://connect-preprod.avereo.fr/",
+  "account": {
+    "internalId": 2,
+    "displayName": "famille",
+    "role": "member",
+    "organization": "AVEREO"
+  },
+  "confirmedApplicationAccess": {
+    "rapport": true,
+    "passeport-immo": true
+  },
+  "observedOtherAccessUnchanged": {
+    "coupe": false,
+    "projet": false,
+    "thermo": false,
+    "drone": false,
+    "accountAdministration": false
+  },
+  "observationEvidence": "rights-account-detail.json",
+  "historicalFailedAssertionEvidence": "http-failure.json",
+  "historicalObservationsPreserved": true,
+  "reservationClosed": true,
+  "entitlementsChanged": false,
+  "phaseApprovalCreated": false,
+  "mergeAuthorized": false,
+  "productionAuthorizationChanged": false,
+  "productionChanged": false,
+  "publicOpeningAuthorized": false,
+  "emailStoredInGit": false
+}
