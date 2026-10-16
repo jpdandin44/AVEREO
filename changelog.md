@@ -19,8 +19,8 @@ prépare la livraison exacte de Rapport, constate Passeport Immo déjà activé 
 cron réel réussi, puis identifie le blocage OAuth restant en production. Le correctif
 Drupal et son préalable Core/Symfony sont désormais livrés sur l’identité de
 préproduction, avec restauration privée, retour arrière et contrôles techniques
-réussis. La nouvelle connexion complète reste à examiner dans Chrome : le navigateur
-intégré échoue sur la protection Basic avant OAuth. Reçus, opérations,
+réussis. Le responsable confirme ensuite dans Chrome une nouvelle connexion et
+l’accès à Rapport/Passeport ; la réserve d’accès est levée. Reçus, opérations,
 contrôles de passage et suivi canonique alignés. Les décisions existantes et les
 travaux Passeport Immo/Projet menés dans leur copie propre sont conservés.
 

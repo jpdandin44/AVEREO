@@ -131,16 +131,17 @@ les refus. Ces données de test restent dans la copie privée et sont annulées.
 
 Le [nouveau relevé de livraison](archives/preparation-production-rapport-passeport-20261016/oauth-preproduction-delivery.json)
 renvoie aux reçus Drupal. L’ancien relevé de blocage est conservé comme historique.
-La recette d’une nouvelle connexion CONNECT complète reste à faire dans Chrome :
-le navigateur intégré bloque sur la protection d’accès avant OAuth et Chrome
-n’est pas accessible aux outils. La session Passeport existante ne remplace pas
-cette vérification. Aucune validation humaine n’est créée.
+Le responsable confirme ensuite dans Chrome une **nouvelle connexion CONNECT et
+l’accès aux deux applications**. La [preuve humaine](https://github.com/jpdandin44/avereo-site-drupal/blob/fix/oauth-maintenance-preproduction-20261016/data/oauth-maintenance/qualification/human-access-confirmation.json)
+lève la réserve de ce parcours d’accès en préproduction. Le blocage du navigateur
+intégré reste historique. La déclaration ne vaut ni recette métier exhaustive,
+ni revue GitHub, ni accord de livraison ou d’ouverture de production.
 
 Gin est préparé séparément dans la [PR Drupal #24](https://github.com/jpdandin44/avereo-site-drupal/pull/24).
 Le chat « App Passeport Immo » porte les preuves et livraisons du site dans la
 [PR Drupal #25](https://github.com/jpdandin44/avereo-site-drupal/pull/25), avec ses
-accords propres. Sa copie privée est qualifiée ; la sauvegarde/restauration des
-clés OAuth hors des archives existantes est complétée avant livraison active.
+accords propres. Cette PR suit la sauvegarde/restauration des clés OAuth externes,
+la livraison et les contrôles du site actif. Ses reçus font foi pour cette cible.
 L’identité et le site de préproduction restent deux cibles.
 Le point OAuth de production répond encore 503 au contrôle daté de ce nouveau relevé.
 La suite reste une livraison Drupal autorisée selon son dossier, puis les prérequis

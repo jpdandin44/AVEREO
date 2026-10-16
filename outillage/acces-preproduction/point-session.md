@@ -34,9 +34,10 @@ est livré sur l’identité de préproduction après Core/Symfony. Sauvegarde/r
 retour arrière privé, audit sans alerte et contrôles HTTPS sont vérifiés. Les 76 assertions
 OAuth et les tests de garde-fous passent. Le [dossier courant](preparation-production-rapport-passeport.md#actualisation-du-correctif-drupal)
 renvoie aux reçus réels et au suivi de Gin/site dans le chat coordonné.
-La connexion complète et la revue humaine restent à faire dans Chrome ; le navigateur
-intégré échoue avant OAuth. Le dernier contrôle de production reste 503. Reprendre
-par la revue, puis la livraison Drupal selon son accord et les prérequis Rapport.
+La nouvelle connexion CONNECT et l’accès aux deux applications sont désormais
+confirmés par le responsable dans Chrome ; cette réserve de préproduction est
+levée. Le dernier contrôle de production enregistré reste 503. Reprendre par la
+revue GitHub OAuth, puis la livraison Drupal selon ses accords et les prérequis Rapport.
 Passeport Immo demeure activé : conserver ses données, sa reprise SCI et son cron.
 
 ## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo
