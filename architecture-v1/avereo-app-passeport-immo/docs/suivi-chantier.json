@@ -324,7 +324,17 @@
         "Cible de production non provisionnée : domaine et base dédiée absents dans cPanel le 16 octobre ; raccordement CONNECT et configuration à qualifier.",
         "Inventaire SCI après recette, correspondance du propriétaire CONNECT, reprise ciblée et répétition sans doublon à qualifier avant transfert ; exclure les dossiers de test.",
         "Sauvegarde/restauration de la cible et retour arrière du candidat exact non qualifiés en production."
-      ]
+      ],
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/83",
+        "repository": "jpdandin44/AVEREO",
+        "number": 83,
+        "state": "open",
+        "draft": true,
+        "headSha": "b9018378104b092fed05fe6cd4c06a6ea7f3be44",
+        "observedAt": "2026-10-16T07:24:45+00:00",
+        "scope": "Préparation documentaire de la production après D06 et PR82 ; aucune livraison ni nouvelle autorisation."
+      }
     }
   ],
   "decisions": [
@@ -2414,7 +2424,17 @@
         "Cible de production non prouvée.",
         "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
         "Retour arrière de ce candidat non qualifié."
-      ]
+      ],
+      "executionPullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/83",
+        "repository": "jpdandin44/AVEREO",
+        "number": 83,
+        "state": "open",
+        "draft": true,
+        "headSha": "b9018378104b092fed05fe6cd4c06a6ea7f3be44",
+        "observedAt": "2026-10-16T07:24:45+00:00",
+        "scope": "Préparation documentaire de la production après D06 et PR82 ; aucune livraison ni nouvelle autorisation."
+      }
     }
   },
   "reviewFollowUps": [
@@ -2573,7 +2593,15 @@
       "closureNotes": "local_uncommitted",
       "unrelatedLocalChanges": "preserved"
     },
-    "productionReadinessEvidence": "api/production-readiness-observation.json"
+    "productionReadinessEvidence": "api/production-readiness-observation.json",
+    "currentWork": {
+      "branch": "docs/passeport-immo-execution-production",
+      "baseSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+      "pullRequestUrl": "https://github.com/jpdandin44/AVEREO/pull/83",
+      "status": "published_draft_preparation",
+      "productionDeployment": "not_performed",
+      "unrelatedLocalChanges": "preserved"
+    }
   },
   "legacyTracking": {
     "recordedAt": "2026-10-14T09:40:12.597261+00:00",

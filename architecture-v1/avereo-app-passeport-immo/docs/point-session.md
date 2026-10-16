@@ -36,6 +36,8 @@ Le contrôle de passage conserve quatre réserves techniques, sans redemander l'
 
 Copie de travail : `C:\Users\examg\Documents local\passeport-immo-local` ;
 branche `docs/passeport-immo-execution-production`, issue de la fusion nº82.
+La [PR nº83](https://github.com/jpdandin44/AVEREO/pull/83), en brouillon, conserve
+ce dossier et ses preuves ; elle est rattachée à la phase 3 dans le cockpit.
 Reçus privés et candidat : `.local/production-next-20261016/`.
 Le cockpit reste disponible sur <http://127.0.0.1:5193/> ; prototype local sur
 <http://127.0.0.1:5175/>. Phase 2 validée, phase 3 en préparation, aucune livraison

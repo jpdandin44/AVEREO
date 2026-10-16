@@ -26,6 +26,10 @@ la provenance des archives après la PR nº80. Aucun de ces inventaires n'est un
 
 ## Accord récupéré et préparation courante — 16 octobre
 
+La [PR nº83](https://github.com/jpdandin44/AVEREO/pull/83) publie cette préparation
+en brouillon et porte sa revue. Sa fusion reste distincte de l'accord opérationnel
+D06 déjà reçu et de la future livraison.
+
 La décision **D06**, enregistrée par `jpdandin` le **16 octobre à 09 h 05 min 11 s,
 Europe/Paris**, approuve les six livrables et les huit critères de Préproduction,
 dont le critère 07. Son commentaire est : **« Phase approuvée, passage en prod autorisé. »**
