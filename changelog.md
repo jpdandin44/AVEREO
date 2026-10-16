@@ -14,6 +14,10 @@ tags: [avereo, documentation, local]
 
 ## 2026-10-16 — Préparation de production après les PR #83 et #84
 
+Les dossiers #85 et #86 sont ensuite fusionnés humainement le 16 octobre au
+soir. Le complément de clôture est préparé sur `docs/closure-production-20261016`,
+avec les prérequis de production maintenus.
+
 Fusions et attestations humaines relues. Le [dossier commun](outillage/acces-preproduction/preparation-production-rapport-passeport.md)
 prépare la livraison exacte de Rapport, constate Passeport Immo déjà activé et son
 cron réel réussi, puis identifie le blocage OAuth restant en production. Le correctif
@@ -22,7 +26,10 @@ préproduction, avec restauration privée, retour arrière et contrôles techniq
 réussis. Le responsable confirme ensuite dans Chrome une nouvelle connexion et
 l’accès à Rapport/Passeport ; la réserve d’accès est levée. La fusion humaine OAuth
 #22 dans Gin #24 est constatée, ainsi que la livraison technique du site suivie
-dans #25. La revue du site, l’intégration à `main` et la production restent distinctes.
+dans #25. Les fusions humaines #24/#25 sont ensuite constatées dans Core #23,
+dont les quatre contrôles passent sans conflit avec `main`. La description de #23,
+les suivis et le point de reprise sont réalignés pour clôture ; accords conditionnels
+Drupal conservés, sans livraison ni nouvelle approbation de production.
 Reçus, opérations,
 contrôles de passage et suivi canonique alignés. Les décisions existantes et les
 travaux Passeport Immo/Projet menés dans leur copie propre sont conservés.
