@@ -2497,7 +2497,20 @@
       "mergedPullRequests": [
         83,
         84
-      ]
+      ],
+      "pullRequest": {
+        "number": 86,
+        "url": "https://github.com/jpdandin44/AVEREO/pull/86",
+        "repository": "jpdandin44/AVEREO",
+        "state": "open",
+        "draft": true,
+        "observedAt": "2026-10-16T11:21:16.320509+00:00"
+      },
+      "relatedApplicationPullRequest": {
+        "number": 85,
+        "url": "https://github.com/jpdandin44/AVEREO/pull/85",
+        "scope": "Compte rendu Passeport Immo et proposition OAuth, à revoir dans son lot."
+      }
     },
     "previousProductionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates-after-access-confirmation.json",
     "githubVerificationHistory": [

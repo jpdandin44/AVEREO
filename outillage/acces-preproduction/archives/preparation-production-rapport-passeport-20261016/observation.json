@@ -174,7 +174,16 @@
       "reportedApplicationHttpAssertions": 57,
       "reportedAuthenticatedFailure": "OAUTH_UPSTREAM_REJECTED / token_exchange / 503",
       "reportedCause": "OAuth routes unavailable during Drupal maintenance",
-      "reportedProposal": "Narrow route subscriber for authorize, token and userinfo; not installed"
+      "reportedProposal": "Narrow route subscriber for authorize, token and userinfo; not installed",
+      "subsequentPublication": {
+        "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/85",
+        "state": "open",
+        "draft": true,
+        "observedAt": "2026-10-16T11:21:16.315535+00:00",
+        "headSha": "72cd8e68b9cc957dd2b927e01d65e710f4aff168",
+        "documentSha256": "e678dcf492ef20819aa31ab9580a2cb75d68c23ac6faa4cbb24ba534b45c2a79",
+        "url": "https://github.com/jpdandin44/AVEREO/blob/72cd8e68b9cc957dd2b927e01d65e710f4aff168/architecture-v1/avereo-app-passeport-immo/docs/blocage-oauth-production.md"
+      }
     },
     "limitation": "The anonymous probe corroborates 503 only; authenticated failure and route diagnosis belong to the cited separate lot.",
     "nextAction": "Review and authorize the separate Drupal correction, qualify it in preproduction, then recheck full production login."

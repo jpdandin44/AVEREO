@@ -19,6 +19,11 @@ attestations humaines de chaque PR ont été relues sur GitHub. La revue de cett
 préparation, en phase **3 Mise en production**, se fait en **préproduction** ;
 les contrôles après livraison concernent la production réelle.
 
+La [PR #86](https://github.com/jpdandin44/AVEREO/pull/86) porte ce dossier commun
+et la préparation Rapport. Elle complète la
+[PR #85](https://github.com/jpdandin44/AVEREO/pull/85), consacrée aux contrôles
+Passeport Immo et à la proposition OAuth, sans reprendre ses modifications.
+
 Le [suivi canonique](suivi-chantier.json), bloc
 `selected_applications_delivery.productionPreparation`, porte la suite commune
 et les références. Le [suivi Passeport Immo](../../architecture-v1/avereo-app-passeport-immo/docs/suivi-chantier.json)
@@ -105,8 +110,10 @@ Le compte rendu local du lot Passeport Immo rapporte un échange authentifié re
 par `OAUTH_UPSTREAM_REJECTED`, puis la préparation d'un correctif limité aux trois
 routes OAuth du site Drupal en maintenance. Il rapporte également 57 contrôles HTTPS
 applicatifs réussis ; ces contrôles ne prouvent pas une connexion OAuth complète.
-La provenance, l'empreinte et le statut local non publié de ce compte rendu sont
-enregistrés dans l'observation. Le présent lot ne modifie ni le site Drupal ni sa
+La provenance et l'empreinte de ce compte rendu sont enregistrées dans l'observation.
+Initialement local, il est désormais publié dans la
+[PR #85](https://github.com/jpdandin44/AVEREO/pull/85) ; le document publié est
+strictement identique à celui consulté. Le présent lot ne modifie ni le site Drupal ni sa
 maintenance. L'intégration, la qualification et l'autorisation de son correctif
 restent à effectuer dans le dépôt et le suivi du site.
 

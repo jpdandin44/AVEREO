@@ -49,6 +49,8 @@ Le lot de préproduction ne vaut ni livraison de production ni nouvelle validati
 
 [Dossier, opérations et prérequis](preparation-production-rapport-passeport.md).
 
+[PR de préparation #86](https://github.com/jpdandin44/AVEREO/pull/86) — open.
+
 | Application | État observé | Prochaine action |
 | --- | --- | --- |
 | rapport | Candidat préparé ; livraison en attente | Résoudre OAuth, qualifier récupération/retour arrière et obtenir l’accord exact de production. |
