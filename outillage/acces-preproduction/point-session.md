@@ -27,6 +27,16 @@ locaux et ceux de Projet sont préservés. Les états plus anciens ci-dessous so
 historiques pour ce périmètre. Aucune validation de phase ni livraison Rapport
 n'est effectuée dans cette préparation.
 
+## Reprise du correctif OAuth du 16 octobre
+
+Le [lot Drupal #22](https://github.com/jpdandin44/avereo-site-drupal/pull/22)
+contient le correctif et 76 assertions réussies localement et en CI. L'audit
+Composer bloque encore la livraison : prérequis de sécurité identifiés, accord
+d'élargissement demandé. Le [dossier de production](preparation-production-rapport-passeport.md#actualisation-du-correctif-drupal)
+et le suivi Drupal lié conservent les détails et les preuves.
+Reprendre par ces prérequis, puis la qualification OAuth en préproduction ; aucun
+déploiement de ce correctif ni nouvel accord de production n'a été enregistré.
+
 ## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo
 
 Rapport est livré avec ses deux types ; Passeport Immo possède déjà le candidat courant et ses seize fichiers sont vérifiés sans réécriture. La [livraison et la recette](livraison-rapport-passeport.md) rassemblent les preuves, la levée de la réserve sur les accès du compte famille après confirmation humaine et les candidates exactes. Le bloc `selected_applications_delivery` du [suivi](suivi-chantier.json) fait référence pour ce périmètre. Les constats antérieurs ci-dessous restent historiques lorsqu’ils décrivent Rapport ancien ou Passeport Immo absent. Aucune livraison de production dans ce lot.

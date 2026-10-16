@@ -2478,19 +2478,20 @@
         "rapport": {
           "status": "candidate_prepared_not_delivered",
           "label": "Candidat préparé ; livraison en attente",
-          "nextAction": "Résoudre OAuth, qualifier récupération/retour arrière et obtenir l’accord exact de production.",
+          "nextAction": "Qualifier les prérequis puis OAuth via la PR Drupal #22 ; préparer récupération/retour arrière et accord exact de production Rapport.",
           "operationPlan": "archives/preparation-production-rapport-passeport-20261016/operations-rapport.json"
         },
         "passeport-immo": {
           "status": "activated_automatic_backup_verified_oauth_recipe_blocked",
           "label": "Activé ; sauvegarde automatique vérifiée ; parcours CONNECT bloqué",
-          "nextAction": "Achever le parcours OAuth/CONNECT et la revue humaine après correction du fournisseur d’identité.",
+          "nextAction": "Après qualification puis livraison autorisée du correctif Drupal, achever le parcours OAuth/CONNECT et la revue humaine ; conserver l’installation existante.",
           "canonicalTracking": "../../architecture-v1/avereo-app-passeport-immo/docs/suivi-chantier.json",
           "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#passeport-immo"
         }
       },
       "commonBlockers": [
-        "Le point /oauth/token de production répond 503 ; correction Drupal à traiter dans son lot propre."
+        "Le point /oauth/token de production répondait 503 au relevé du 16 octobre ; aucune correction de production livrée.",
+        "Correctif OAuth préparé dans la PR Drupal #22 (76 contrôles locaux et CI réussis) ; préproduction bloquée par les prérequis de sécurité Core/Symfony et Gin à traiter en lots distincts après accord."
       ],
       "applicationWritesPerformed": false,
       "newHumanApprovalCreated": false,
@@ -2510,6 +2511,18 @@
         "number": 85,
         "url": "https://github.com/jpdandin44/AVEREO/pull/85",
         "scope": "Compte rendu Passeport Immo et proposition OAuth, à revoir dans son lot."
+      },
+      "updatedAt": "2026-10-16T13:04:18.955448+00:00",
+      "dependencyFollowUp": {
+        "evidence": "archives/preparation-production-rapport-passeport-20261016/oauth-dependency-follow-up.json",
+        "sha256": "a56afe9cdb01ebe9cda7e2e81e5f52f792adf6fe5c44e11838e91cf7210d5f01",
+        "observedAt": "2026-10-16T13:04:18.955448+00:00"
+      },
+      "oauthDependency": {
+        "pullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/22",
+        "canonicalTracking": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/oauth-maintenance-preproduction-20261016/data/suivi-oauth-maintenance.json",
+        "status": "local_fix_verified_preproduction_blocked_by_security_prerequisites",
+        "humanScopeApproval": "pending"
       }
     },
     "previousProductionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates-after-access-confirmation.json",

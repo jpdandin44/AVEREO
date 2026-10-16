@@ -117,6 +117,22 @@ strictement identique à celui consulté. Le présent lot ne modifie ni le site 
 maintenance. L'intégration, la qualification et l'autorisation de son correctif
 restent à effectuer dans le dépôt et le suivi du site.
 
+### Actualisation du correctif Drupal
+
+La [PR Drupal #22](https://github.com/jpdandin44/avereo-site-drupal/pull/22)
+porte désormais le correctif dans le dépôt du site. Ses 76 assertions passent
+localement et dans la CI ; l'audit des dépendances reste en échec. La cible réelle
+est `auth-next-preprod.avereo.fr`, distincte du site `preprod.avereo.fr`.
+Les mises à jour de sécurité Core/Symfony et Gin identifiées sont à qualifier
+dans des lots distincts ; l'accord d'élargissement est demandé au responsable.
+La sauvegarde/restauration fraîche et le parcours OAuth hébergé restent à vérifier.
+
+Le [relevé complémentaire](archives/preparation-production-rapport-passeport-20261016/oauth-dependency-follow-up.json)
+renvoie au suivi Drupal canonique et conserve cette observation datée. Le correctif
+n'est livré ni en préproduction ni en production à ce stade. Après sa qualification,
+la production Drupal nécessitera son propre accord ; Rapport conservera ensuite
+ses prérequis de livraison et Passeport Immo sa recette finale.
+
 ### Rapport : plan exact de livraison
 
 Cible confirmée dans cPanel : `https://rapport.avereo.fr/`, racine

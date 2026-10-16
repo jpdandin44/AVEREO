@@ -1,0 +1,24 @@
+{
+  "observedAt": "2026-10-16T13:04:18.955448+00:00",
+  "scope": "Actualisation documentaire de la dépendance OAuth ; aucune livraison.",
+  "oauthPullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/22",
+  "sourceHeadObserved": "da62960d54a3a0437efb13f7364a43ed1fb2adae",
+  "canonicalTracking": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/oauth-maintenance-preproduction-20261016/data/suivi-oauth-maintenance.json",
+  "procedure": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/oauth-maintenance-preproduction-20261016/workflows/oauth-maintenance.md",
+  "snapshotStatus": "blocked_security_prerequisites",
+  "preproductionTarget": "https://auth-next-preprod.avereo.fr/",
+  "checks": {
+    "localOauthAssertions": 76,
+    "githubOauthAssertions": 76,
+    "composerAudit": "failed",
+    "hostedOauthRecipe": "not_performed"
+  },
+  "securityScopeApproval": "requested_pending",
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "originalObservationPreserved": true,
+  "passportActivationReplayed": false,
+  "productionWrites": false,
+  "nextAction": "Après accord du responsable, qualifier séparément les prérequis de sécurité puis la préproduction OAuth ; ensuite préparer la production Drupal sur accord distinct."
+}

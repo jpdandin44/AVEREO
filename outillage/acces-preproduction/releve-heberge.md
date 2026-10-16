@@ -53,10 +53,11 @@ Le lot de préproduction ne vaut ni livraison de production ni nouvelle validati
 
 | Application | État observé | Prochaine action |
 | --- | --- | --- |
-| rapport | Candidat préparé ; livraison en attente | Résoudre OAuth, qualifier récupération/retour arrière et obtenir l’accord exact de production. |
-| passeport-immo | Activé ; sauvegarde automatique vérifiée ; parcours CONNECT bloqué | Achever le parcours OAuth/CONNECT et la revue humaine après correction du fournisseur d’identité. |
+| rapport | Candidat préparé ; livraison en attente | Qualifier les prérequis puis OAuth via la PR Drupal #22 ; préparer récupération/retour arrière et accord exact de production Rapport. |
+| passeport-immo | Activé ; sauvegarde automatique vérifiée ; parcours CONNECT bloqué | Après qualification puis livraison autorisée du correctif Drupal, achever le parcours OAuth/CONNECT et la revue humaine ; conserver l’installation existante. |
 
-- Le point /oauth/token de production répond 503 ; correction Drupal à traiter dans son lot propre.
+- Le point /oauth/token de production répondait 503 au relevé du 16 octobre ; aucune correction de production livrée.
+- Correctif OAuth préparé dans la PR Drupal #22 (76 contrôles locaux et CI réussis) ; préproduction bloquée par les prérequis de sécurité Core/Symfony et Gin à traiter en lots distincts après accord.
 
 
 Le responsable confirme le maintien de Rapport et Passeport Immo pour le compte famille (#2), membre AVEREO, en préproduction. Réserve levée ; aucun droit modifié. Les quatre autres applications et l’administration restent refusées selon le contrôle en lecture seule.
