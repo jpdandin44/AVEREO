@@ -5,7 +5,7 @@ title: Deploiement Rapport sur O2Switch
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-09-09
+updated: 2026-10-16
 owner: jpdandin
 tags:
   - rapport
@@ -15,6 +15,16 @@ tags:
 ---
 
 # Deploiement Rapport sur O2Switch
+
+## Candidat en cours — 16 octobre 2026
+
+Le [dossier de production courant](../../../outillage/acces-preproduction/preparation-production-rapport-passeport.md)
+fait référence pour la suite de la PR #84 fusionnée : archive exacte, racine cPanel
+confirmée, trois remplacements/deux ajouts, préservation des données et prérequis.
+Le workflow manuel décrit plus bas reconstruit les assets ; il n'est pas qualifié
+pour promouvoir cette archive exacte. Sauvegarde/restauration de production,
+retour arrière, connexion OAuth et accord de livraison restent à qualifier.
+La production sert encore l'ancienne interface au relevé du 16 octobre.
 
 ## Cible
 

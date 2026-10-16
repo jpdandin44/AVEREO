@@ -12,6 +12,21 @@ tags: [preproduction, reprise, applications, cockpit]
 
 # Point de reprise
 
+## Suite courante après fusion des PR #83 et #84
+
+Les deux fusions et leurs attestations humaines sont vérifiées. Le [dossier de
+production](preparation-production-rapport-passeport.md) et le bloc canonique
+`selected_applications_delivery.productionPreparation` portent la suite : Rapport
+attend la qualification de sa récupération/retour arrière et son accord exact de
+livraison ; Passeport Immo est déjà activé avec un premier cron vérifié. Le point
+OAuth de production répond 503 ; le correctif du fournisseur d'identité relève du
+lot Drupal. Ne pas rejouer activation, reprise SCI ou installation du cron.
+
+La copie de travail Passeport Immo est actualisée par son lot distinct ; ses travaux
+locaux et ceux de Projet sont préservés. Les états plus anciens ci-dessous sont
+historiques pour ce périmètre. Aucune validation de phase ni livraison Rapport
+n'est effectuée dans cette préparation.
+
 ## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo
 
 Rapport est livré avec ses deux types ; Passeport Immo possède déjà le candidat courant et ses seize fichiers sont vérifiés sans réécriture. La [livraison et la recette](livraison-rapport-passeport.md) rassemblent les preuves, la levée de la réserve sur les accès du compte famille après confirmation humaine et les candidates exactes. Le bloc `selected_applications_delivery` du [suivi](suivi-chantier.json) fait référence pour ce périmètre. Les constats antérieurs ci-dessous restent historiques lorsqu’ils décrivent Rapport ancien ou Passeport Immo absent. Aucune livraison de production dans ce lot.

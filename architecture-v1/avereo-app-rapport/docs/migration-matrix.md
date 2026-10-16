@@ -15,6 +15,14 @@ tags:
 
 # Matrice de migration fonctionnelle
 
+## Passage en production après fusion de la PR #84
+
+La [préparation du 16 octobre](../../../outillage/acces-preproduction/preparation-production-rapport-passeport.md)
+confirme l'identité des sources exécutables avec `main`, l'ancienne version encore
+servie en production et le plan ciblé de cinq écritures. Le point OAuth répond 503 ;
+la récupération et le retour arrière Rapport restent à qualifier. Aucun comportement
+applicatif ni statut de qualification fonctionnelle n'est changé par ce dossier.
+
 ## Préproduction du 16 octobre 2026
 
 Les deux types de rapport, leur sauvegarde/relecture en ligne, reprise du brouillon, aperçus et exports JSON/Word sont contrôlés sur le candidat livré. Les données métier existantes et le brouillon initial sont conservés. Le [compte rendu transverse](../../../outillage/acces-preproduction/livraison-rapport-passeport.md) fournit les empreintes et limites exactes. Cette recette ciblée ne requalifie pas les services géographiques, photos, dictée ni le rendu natif Word ; les limites spécifiques de la matrice restent valables.

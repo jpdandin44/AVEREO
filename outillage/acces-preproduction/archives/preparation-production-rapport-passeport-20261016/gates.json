@@ -1,0 +1,25 @@
+{
+  "observedAt": "2026-10-16T11:08:59+00:00",
+  "rapport": {
+    "gate": "production",
+    "declaredEvidenceConsistent": false,
+    "errors": [
+      "Blocages présents ou non renseignés.",
+      "Accord humain exact absent : production.",
+      "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+      "Retour arrière de ce candidat non qualifié."
+    ],
+    "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord."
+  },
+  "passeport-immo": {
+    "gate": "close",
+    "declaredEvidenceConsistent": false,
+    "errors": [
+      "Blocages présents ou non renseignés.",
+      "Contrôle actuel absent : production sur o2switch:daje3540:passeport-immo.avereo.fr."
+    ],
+    "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord."
+  },
+  "passeportEvidenceSource": "Application canonical working copy, including D06 and the ongoing activation follow-up; not the reduced preproduction delivery record.",
+  "limitation": "Read-only declarations check. Neither a merge nor a successful check authorizes an action."
+}

@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-09-15
+updated: 2026-10-16
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,13 @@ tags:
 ---
 
 # Rapport AVEREO Pro
+
+## État de livraison — 16 octobre 2026
+
+Les deux types de Rapport sont livrés et vérifiés en préproduction ; la PR #84 est
+fusionnée. La production sert encore l'ancienne interface. Le [dossier de passage
+en production](../../outillage/acces-preproduction/preparation-production-rapport-passeport.md)
+décrit le candidat exact, les opérations préparées et les conditions encore à lever.
 
 Application autonome de creation de rapports d'expertise terrain dans le monorepo AVEREO.
 

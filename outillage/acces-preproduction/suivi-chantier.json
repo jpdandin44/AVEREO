@@ -2180,9 +2180,9 @@
   },
   "selected_applications_delivery": {
     "iterationId": "rapport-passeport-preproduction-20261016",
-    "status": "delivered_verified_access_confirmed",
+    "status": "preproduction_merged_production_preparation_blocked",
     "observedAt": "2026-10-16T08:47:47+00:00",
-    "mainObservedSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+    "mainObservedSha": "0fd533200d3044582d72003aa47eed1582a6dec4",
     "documentation": "livraison-rapport-passeport.md",
     "preflightEvidence": "archives/livraison-rapport-passeport-20261016/preflight-public.json",
     "scope": [
@@ -2208,6 +2208,17 @@
             "empty": false,
             "evidence": "archives/livraison-rapport-passeport-20261016/preflight-public.json",
             "observedAt": "2026-10-16T08:17:13+00:00"
+          },
+          "production": {
+            "id": "rapport-production",
+            "url": "https://rapport.avereo.fr/",
+            "ready": true,
+            "isolated": true,
+            "empty": false,
+            "documentRoot": "/home/daje3540/rapport.avereo.fr",
+            "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#rapport",
+            "observedAt": "2026-10-16T11:08:59+00:00",
+            "databaseEmptyAtObservation": true
           }
         },
         "checks": [
@@ -2256,6 +2267,18 @@
             "source": "user_chat",
             "evidence": "OK, peux-tu déployer la dernière version de Rapport avec les deux types + les dernières évolutions Passeport Immo en préproduction, faire les vérifications et la préparer comme candidate à la mise en production stp ?",
             "recordedAt": "2026-10-16T08:17:13+00:00"
+          },
+          {
+            "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+            "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+            "scope": "review",
+            "status": "approved",
+            "target": "rapport-preproduction",
+            "actor": "jpdandinavereo-design",
+            "source": "github_human_review",
+            "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#pullRequests/84",
+            "recordedAt": "2026-10-16T10:50:33Z",
+            "limitation": "Attestation de revue en préproduction ; aucun accord de production ajouté."
           }
         ],
         "backups": [
@@ -2268,7 +2291,11 @@
             "observedAt": "2026-10-16T08:17:13+00:00"
           }
         ],
-        "blockers": [],
+        "blockers": [
+          "OAuth de production répond 503.",
+          "Sauvegarde/restauration et retour arrière Rapport à qualifier sur la cible réelle.",
+          "Accord exact de livraison Rapport en production absent."
+        ],
         "delivery": {
           "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
           "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
@@ -2276,6 +2303,22 @@
           "status": "delivered",
           "evidence": "archives/livraison-rapport-passeport-20261016/delivery.json",
           "observedAt": "2026-10-16T08:15:58+00:00"
+        },
+        "github": {
+          "repository": "jpdandin44/AVEREO",
+          "prUrl": "https://github.com/jpdandin44/AVEREO/pull/84",
+          "acceptedSourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+          "acceptedArtifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+          "humanAcceptanceVerified": true,
+          "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#pullRequests/84",
+          "observedAt": "2026-10-16T11:08:59+00:00"
+        },
+        "rollback": {
+          "status": "not_yet_qualified",
+          "target": "rapport-production",
+          "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+          "evidence": "archives/preparation-production-rapport-passeport-20261016/operations-rapport.json",
+          "observedAt": "2026-10-16T11:08:59+00:00"
         }
       },
       "passeport-immo": {
@@ -2371,7 +2414,7 @@
     "deliveryEvidence": "archives/livraison-rapport-passeport-20261016/delivery.json",
     "browserEvidence": "archives/livraison-rapport-passeport-20261016/browser-verification.json",
     "productionCandidateManifest": "archives/livraison-rapport-passeport-20261016/candidats-production.json",
-    "nextAction": "Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre.",
+    "nextAction": "Traiter le blocage OAuth dans le lot Drupal ; qualifier sauvegarde et retour arrière Rapport puis obtenir son accord de livraison exact. Passeport Immo est déjà activé : achever son parcours CONNECT et la revue humaine sans rejouer la reprise SCI.",
     "productionReady": false,
     "limitations": [
       "Connexion OAuth interactive Chrome non observée par cet agent.",
@@ -2408,19 +2451,74 @@
       "phase2NextAction": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
       "phase3NextAction": "Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé."
     },
-    "productionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates-after-access-confirmation.json",
+    "productionGateEvidence": "archives/preparation-production-rapport-passeport-20261016/gates.json",
     "pullRequest": {
-      "url": "https://github.com/jpdandin44/AVEREO/pull/84",
-      "repository": "jpdandin44/AVEREO",
       "number": 84,
-      "state": "open",
-      "draft": true,
-      "mergeable": "MERGEABLE",
-      "observedAt": "2026-10-16T08:53:53+00:00",
-      "scope": "Livraison et contrôles des deux applications en préproduction ; candidates de production préparées, réserve sur le compte famille levée par confirmation humaine."
+      "repository": "jpdandin44/AVEREO",
+      "url": "https://github.com/jpdandin44/AVEREO/pull/84",
+      "state": "merged",
+      "draft": false,
+      "headSha": "25ec94df960116841a391a980ddfdd92d8bfb7ba",
+      "mergedAt": "2026-10-16T10:50:33Z",
+      "mergeCommitSha": "0fd533200d3044582d72003aa47eed1582a6dec4",
+      "mergedBy": "jpdandinavereo-design",
+      "observedAt": "2026-10-16T11:08:59+00:00",
+      "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#pullRequests/84"
     },
-    "updatedAt": "2026-10-16T09:27:45+00:00",
+    "updatedAt": "2026-10-16T11:08:59+00:00",
     "humanConfirmationRecorded": true,
-    "humanReviewScope": "Aucune nouvelle revue globale de phase ; confirmation humaine limitée aux droits existants du compte famille."
+    "humanReviewScope": "Les quatre attestations humaines de la PR #84 sont relues et sa fusion vérifiée ; aucun nouvel accord de production Rapport ni décision globale de phase déduit.",
+    "productionPreparation": {
+      "status": "blocked",
+      "preparedAt": "2026-10-16T11:08:59+00:00",
+      "document": "preparation-production-rapport-passeport.md",
+      "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json",
+      "scope": "Préparer la suite après fusion des PR #83 et #84 ; aucun déploiement dans cette intervention.",
+      "applications": {
+        "rapport": {
+          "status": "candidate_prepared_not_delivered",
+          "label": "Candidat préparé ; livraison en attente",
+          "nextAction": "Résoudre OAuth, qualifier récupération/retour arrière et obtenir l’accord exact de production.",
+          "operationPlan": "archives/preparation-production-rapport-passeport-20261016/operations-rapport.json"
+        },
+        "passeport-immo": {
+          "status": "activated_automatic_backup_verified_oauth_recipe_blocked",
+          "label": "Activé ; sauvegarde automatique vérifiée ; parcours CONNECT bloqué",
+          "nextAction": "Achever le parcours OAuth/CONNECT et la revue humaine après correction du fournisseur d’identité.",
+          "canonicalTracking": "../../architecture-v1/avereo-app-passeport-immo/docs/suivi-chantier.json",
+          "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#passeport-immo"
+        }
+      },
+      "commonBlockers": [
+        "Le point /oauth/token de production répond 503 ; correction Drupal à traiter dans son lot propre."
+      ],
+      "applicationWritesPerformed": false,
+      "newHumanApprovalCreated": false,
+      "mergedPullRequests": [
+        83,
+        84
+      ]
+    },
+    "previousProductionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates-after-access-confirmation.json",
+    "githubVerificationHistory": [
+      {
+        "headSha": "b97327ab722ba55efe504fab082cb9598b7ab409",
+        "baseSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+        "mergeable": "MERGEABLE",
+        "technicalChecksPassed": 22,
+        "policySkippedDraft": true,
+        "observedAt": "2026-10-16T09:32:59+00:00",
+        "evidence": "https://github.com/jpdandin44/AVEREO/pull/84/checks"
+      }
+    ],
+    "githubVerification": {
+      "state": "merged",
+      "headSha": "25ec94df960116841a391a980ddfdd92d8bfb7ba",
+      "mergeCommitSha": "0fd533200d3044582d72003aa47eed1582a6dec4",
+      "observedAt": "2026-10-16T11:08:59+00:00",
+      "strictPolicyCheck": "passed",
+      "humanChecklistChecked": 4,
+      "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#pullRequests/84"
+    }
   }
 }

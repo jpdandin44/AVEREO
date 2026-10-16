@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-15
+updated: 2026-10-16
 owner: jpdandin
 tags:
   - rapport
@@ -15,6 +15,15 @@ tags:
 ---
 
 # Feuille de route Rapport AVEREO
+
+## Suite de livraison après la PR #84
+
+Le [dossier de production](../../outillage/acces-preproduction/preparation-production-rapport-passeport.md)
+prépare le candidat à deux types déjà vérifié en préproduction. Prochaines actions :
+résoudre la dépendance OAuth du site, qualifier la sauvegarde/restauration et le
+retour arrière Rapport, puis obtenir l'accord humain exact avant livraison.
+La production n'est pas actualisée par cette préparation. Les éléments fonctionnels
+ci-dessous restent distincts de ce lot d'exploitation.
 
 ## Situation actuelle
 

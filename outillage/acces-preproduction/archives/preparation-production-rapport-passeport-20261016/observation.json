@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "kind": "production-preparation-read-only",
+  "observedAt": "2026-10-16T11:08:59+00:00",
+  "mainObservedSha": "0fd533200d3044582d72003aa47eed1582a6dec4",
+  "pullRequests": {
+    "83": {
+      "number": 83,
+      "repository": "jpdandin44/AVEREO",
+      "url": "https://github.com/jpdandin44/AVEREO/pull/83",
+      "state": "merged",
+      "draft": false,
+      "headSha": "08f437a6ee93604c59c7c53693b01e78622335e2",
+      "mergedAt": "2026-10-16T10:47:35Z",
+      "mergeCommitSha": "de33542cb8f16efaac318cb7cfd0b62fb34c092f",
+      "mergedBy": "jpdandinavereo-design",
+      "observedAt": "2026-10-16T11:08:59+00:00",
+      "humanChecklist": [
+        "- [x] J'ai testé [l'environnement de validation](https://connect-preprod.avereo.fr/).",
+        "- [x] J'ai contrôlé [les fichiers modifiés](https://github.com/jpdandin44/AVEREO/pull/83/files) et [les impacts sécurité/données documentés](https://github.com/jpdandin44/AVEREO/blob/docs/passeport-immo-execution-production/architecture-v1/avereo-app-passeport-immo/docs/04-mise-en-production.md#sauvegarde-et-retour-arrière).",
+        "- [x] J'ai consulté et validé [la documentation](https://github.com/jpdandin44/AVEREO/blob/docs/passeport-immo-execution-production/architecture-v1/avereo-app-passeport-immo/docs/04-mise-en-production.md).",
+        "- [x] J'autorise le merge de cette PR."
+      ],
+      "bodySha256": "65c989b3c08bc6c22d481966417de6ba16dd6b1226462ee921f06affed0e6cdb",
+      "strictPolicyCheck": "passed",
+      "scope": "Revue de la PR et accord de merge ; aucun nouvel accord de production déduit."
+    },
+    "84": {
+      "number": 84,
+      "repository": "jpdandin44/AVEREO",
+      "url": "https://github.com/jpdandin44/AVEREO/pull/84",
+      "state": "merged",
+      "draft": false,
+      "headSha": "25ec94df960116841a391a980ddfdd92d8bfb7ba",
+      "mergedAt": "2026-10-16T10:50:33Z",
+      "mergeCommitSha": "0fd533200d3044582d72003aa47eed1582a6dec4",
+      "mergedBy": "jpdandinavereo-design",
+      "observedAt": "2026-10-16T11:08:59+00:00",
+      "humanChecklist": [
+        "- [x] J'ai testé [l'environnement de validation](https://connect-preprod.avereo.fr/).",
+        "- [x] J'ai contrôlé [les fichiers modifiés](https://github.com/jpdandin44/AVEREO/pull/84/files) et [les impacts sécurité/données documentés](https://github.com/jpdandin44/AVEREO/blob/chore/preprod-rapport-passeport-20261016/outillage/acces-preproduction/livraison-rapport-passeport.md#réserve-sur-les-habilitations).",
+        "- [x] J'ai consulté et validé [la documentation](https://github.com/jpdandin44/AVEREO/blob/chore/preprod-rapport-passeport-20261016/outillage/acces-preproduction/livraison-rapport-passeport.md).",
+        "- [x] J'autorise le merge de cette PR."
+      ],
+      "bodySha256": "7c6f96cb80b010e7ad5c7f27ba271fc89740ee3c7178c2e9aec6b9417de8d348",
+      "strictPolicyCheck": "passed",
+      "scope": "Revue de la PR et accord de merge ; aucun nouvel accord de production déduit."
+    }
+  },
+  "productionApplicationWritesPerformedByThisPreparation": false,
+  "humanPhaseDecisionCreated": false,
+  "credentialsReturned": false,
+  "hostedEvidencePrivateDirectory": "/home/daje3540/private/rapport-production-preparation-20261016",
+  "rapport": {
+    "observedAt": "2026-10-16T10:58:49.348081+00:00",
+    "url": "https://rapport.avereo.fr/",
+    "documentRoot": "/home/daje3540/rapport.avereo.fr",
+    "excludedLegacyRoot": "/home/daje3540/public_html/rapport",
+    "candidateInstalled": false,
+    "observedFilesSha256": {
+      ".htaccess": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+      "api/.htaccess": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+      "api/auth.php": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+      "api/bootstrap.php": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+      "api/health.php": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+      "api/reports.php": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+      "assets/index-8XI2p7EJ.css": "5e70f973c28ad379045f8baf702ccc9897cb28bff0d414b77ee39a1b98547f2c",
+      "assets/index-C7slbMpC.js": "786a6d8c32bfc26c0b2d16f24a634ba774107c12d30d2a3a445305e0f9705360",
+      "auth/callback/index.html": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+      "connect/entry.php": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+      "connect/gate.php": "53d5516f9f270d8ff9ade6e0fe130803e3dc22354c19e321d7dd99ca98d473a6",
+      "connect/logout.php": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+      "index.html": "1073be17912026b447cc2f41b13c5e05f1993f6367a4e4b840a6c9082ebc1923",
+      "index.php": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa"
+    },
+    "privateConfigMode": "0600",
+    "authMode": "connect_gateway",
+    "connectPortal": "https://connect.avereo.fr/",
+    "launchSecretPresent": true,
+    "database": {
+      "reportCount": 0,
+      "payloadBytes": 0,
+      "lastUpdated": null,
+      "schemaSha256": "bf635b7db5d0e091cdce7b42f0d5828d36e609b02d5a2bf8f9eef4dc2f610852",
+      "inspection": "SELECT in read-only transaction, rolled back; no payload returned"
+    },
+    "existingPublicFileModeFinding": "Several existing PHP/HTML/htaccess files have mode 0666; observed only, no chmod performed.",
+    "productionRecoveryVerifiedInThisLot": false,
+    "productionRollbackVerifiedInThisLot": false
+  },
+  "passeport-immo": {
+    "observedAt": "2026-10-16T11:05:12.760586+00:00",
+    "url": "https://passeport-immo.avereo.fr/",
+    "documentRoot": "/home/daje3540/passeport-immo.avereo.fr/public",
+    "candidateArtifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "observedFilesSha256": {
+      ".htaccess": "ba1698052b99075c426ddb5abda88a239357ad1dcb6c9efd723472e600370bb8",
+      ".user.ini": "9140d459d58a6abd46a4b08fb49a1df84ace9ec7617b901034446997c9fb8b96",
+      "api/index.php": "2430a150dc423f7b42e17eb6434ab067f3c2c18a0f2ee5dacf4e67c28883470d",
+      "api/storage.php": "2d9c1bd0b65c8c2e936eb5d6f1693a3d7ddce5850eac224894385bda9ab681ff",
+      "assets/index-B1rPDbH_.js": "bbed44495fc88d56414d089e208140091513efc9f087fd4d14e60f3f471536df",
+      "assets/index-BnxaifYT.css": "76aa0604b003790b503a889a271e60d97883d30c54997841fa69c3ac287e5b8f",
+      "assets/index.es-DCbTLmDe.js": "7f2857899ca556ef0e911d4019937449380499381dc563977863d3c3c60ad5b1",
+      "assets/pdf-WgYdDwYK.js": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+      "assets/purify.es-BwoZCkIS.js": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+      "assets/pdf.worker.min-CjEcRF4W.mjs": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+      "connect/entry.php": "4e13e9e823e95f29999bb39cdf181d1e25e7623aa711e6479c7ab89c1fc2bf3e",
+      "connect/gate.php": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+      "connect/logout.php": "2612327b2b6c476b4428fb138738d93841d4b5ca5211e630266e9621fd87dc7e",
+      "connect/session.php": "1d9eb147a12079971e1c6b00b596e45f84c81ac4bb47321baa41debea34d8950",
+      "index.html": "020d35d742c260d711d4291d139db2c903fd5d249f00cd67dd584f111374c04e",
+      "index.php": "8fedf2a296f70e06a85fb6fa160dcee17ae85065e7ef9b26d1d09a5833b87672"
+    },
+    "candidateFilesMatched": 16,
+    "activation": {
+      "performedAt": "2026-10-16T10:44:23+00:00",
+      "receiptSha256": "4aefe81dafdc6d96868150190e1fd53bc41d3eed8ada0aa9b6bd28b29323a4a8",
+      "webStorageEnabled": true,
+      "applicationId": 6,
+      "allowedUserId": 1,
+      "otherCurrentAccountsDenied": 1,
+      "rolesChanged": false,
+      "publicOpeningPerformed": false,
+      "performedByThisPreparation": false
+    },
+    "automaticBackup": {
+      "status": "success",
+      "completedAt": "2026-10-16T10:45:02+00:00",
+      "id": "20261016T104502Z-06ad0b54409f",
+      "trigger": "cron",
+      "tables": 4,
+      "documents": 9,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false,
+      "snapshotSha256": "d49f4bef9928352a0df5f65b568ec20a2bda2cabed372fdc0cca7313cfe4e083",
+      "retainedCopies": 1,
+      "retentionSuccessfulCopies": 30,
+      "schedule": "daily 03:20 Europe/Paris with hourly catch-up",
+      "cronFinalizedAt": "2026-10-16T10:45:51+00:00",
+      "productionBlockPresent": true,
+      "regularEntryPresent": true,
+      "qualificationEntryPresent": false,
+      "offHostCopyAndAlerts": "not_qualified"
+    },
+    "existingAuthorization": "D06 in the application canonical tracker; preserved, not recreated",
+    "canonicalTracking": "../../../../architecture-v1/avereo-app-passeport-immo/docs/suivi-chantier.json",
+    "remaining": "Complete actual OAuth/CONNECT browser recipe and human phase review; do not replay activation or SCI import."
+  },
+  "anonymousHttps": {
+    "observedAt": "2026-10-16T11:05:12.760586+00:00",
+    "strictTls": true,
+    "rapportRoot": 303,
+    "rapportEntryWithoutTicket": 403,
+    "passeportRoot": 303,
+    "passeportEntryWithoutTicket": 403,
+    "drupalLoginPage": 200
+  },
+  "oauthDependency": {
+    "status": "blocked",
+    "observedAt": "2026-10-16T11:08:59+00:00",
+    "independentProbe": {
+      "method": "POST",
+      "url": "https://avereo.fr/oauth/token",
+      "credentialsSent": false,
+      "bodySent": false,
+      "status": 503,
+      "strictTls": true
+    },
+    "parallelLocalReport": {
+      "path": "C:\\Users\\examg\\Documents local\\passeport-immo-local\\architecture-v1\\avereo-app-passeport-immo\\docs\\blocage-oauth-production.md",
+      "sha256": "e678dcf492ef20819aa31ab9580a2cb75d68c23ac6faa4cbb24ba534b45c2a79",
+      "publicationStatusAtRead": "uncommitted_local_work_in_progress",
+      "reportedApplicationHttpAssertions": 57,
+      "reportedAuthenticatedFailure": "OAUTH_UPSTREAM_REJECTED / token_exchange / 503",
+      "reportedCause": "OAuth routes unavailable during Drupal maintenance",
+      "reportedProposal": "Narrow route subscriber for authorize, token and userinfo; not installed"
+    },
+    "limitation": "The anonymous probe corroborates 503 only; authenticated failure and route diagnosis belong to the cited separate lot.",
+    "nextAction": "Review and authorize the separate Drupal correction, qualify it in preproduction, then recheck full production login."
+  },
+  "mainChecks": [
+    {
+      "name": "CI",
+      "status": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/38889877516"
+    },
+    {
+      "name": "Acces preproduction - tests uniquement",
+      "status": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/38889877486"
+    },
+    {
+      "name": "Deploy Prototype To GitHub Pages",
+      "status": "failure",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/38889877487",
+      "reason": "Setup Pages: Get Pages site failed, Not Found; separate prototype workflow, not o2switch deployment."
+    }
+  ]
+}

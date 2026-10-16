@@ -22,10 +22,12 @@ La source de suivi est le bloc `selected_applications_delivery` du
 `archives/livraison-rapport-passeport-20261016/`. Les archives exécutables et les
 copies de récupération restent privées et ne sont pas commitées.
 
-Revue du lot : [PR #84](https://github.com/jpdandin44/AVEREO/pull/84), en brouillon,
-avec les quatre cases réservées au responsable. L'environnement de validation
-est la préproduction des deux applications ; aucune approbation n'est déduite
-des contrôles techniques.
+Revue du lot : [PR #84](https://github.com/jpdandin44/AVEREO/pull/84), fusionnée
+le 16 octobre à 10:50:33 UTC ; les quatre attestations humaines sont relues sur
+GitHub. L'environnement de validation est la préproduction des deux applications.
+La [suite pour la production](preparation-production-rapport-passeport.md) conserve
+les preuves de fusion et les prérequis restants. Les observations de livraison
+ci-dessous restent datées et ne constituent pas un accord de production Rapport.
 
 ## Cadrage
 
