@@ -1,0 +1,31 @@
+{
+  "observedAt": "2026-10-16T08:47:47+00:00",
+  "status": "not_ready",
+  "applications": {
+    "rapport": {
+      "gate": "production",
+      "declaredEvidenceConsistent": false,
+      "errors": [
+        "Cible de production non prouvée.",
+        "Accord humain exact absent : review.",
+        "Accord humain exact absent : production.",
+        "Acceptation GitHub du candidat non vérifiée.",
+        "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+        "Retour arrière de ce candidat non qualifié."
+      ],
+      "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord."
+    },
+    "passeport-immo": {
+      "gate": "production",
+      "declaredEvidenceConsistent": false,
+      "errors": [
+        "Blocages présents ou non renseignés.",
+        "Cible de production non prouvée.",
+        "Sauvegarde restaurée absente pour la cible, ou vacuité/isolement non prouvés.",
+        "Retour arrière de ce candidat non qualifié."
+      ],
+      "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord."
+    }
+  },
+  "scope": "Rapport dans la nouvelle itération ; Passeport dans son suivi courant conservant D06. Aucun accord déduit de ces contrôles."
+}

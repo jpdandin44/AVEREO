@@ -1,0 +1,558 @@
+{
+  "observedAt": "2026-10-16T08:09:55+00:00",
+  "productionChanged": false,
+  "privateConfigurationChanged": false,
+  "databaseMigration": false,
+  "dataRecovery": {
+    "observedAt": "2026-10-16T08:09:56+00:00",
+    "status": "passed",
+    "rapport": {
+      "tables": 1,
+      "rows": 2,
+      "snapshotSha256": "91088a785bf9598e540d8e023762652fb138c2de55090efadb6048b9ea9a6c5c",
+      "readback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false,
+      "productionDatabaseDistinct": true
+    },
+    "passeport-immo": {
+      "snapshotSha256": "6da0b8c76a870cac228be188dc87a84235031b00f58d31d0c9bf1d3a86fcf957",
+      "tables": 4,
+      "documents": 9,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false
+    },
+    "privateValuesExported": false
+  },
+  "applications": {
+    "rapport": {
+      "root": "/home/daje3540/rapport-preprod.avereo.fr",
+      "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+      "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+      "operations": {
+        ".htaccess": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "b3b46c7f005428864fbc082fd6251e59d44cb260aadb0bbe814e1839677ae509",
+            "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+            "mode": 436,
+            "bytes": 561
+          },
+          "after": {
+            "exists": true,
+            "sha256": "b3b46c7f005428864fbc082fd6251e59d44cb260aadb0bbe814e1839677ae509",
+            "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+            "mode": 436,
+            "bytes": 561
+          }
+        },
+        "api/.htaccess": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+            "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+            "mode": 436,
+            "bytes": 128
+          },
+          "after": {
+            "exists": true,
+            "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+            "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+            "mode": 436,
+            "bytes": 128
+          }
+        },
+        "api/auth.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+            "sha256_lf": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+            "mode": 436,
+            "bytes": 4164
+          },
+          "after": {
+            "exists": true,
+            "sha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+            "sha256_lf": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+            "mode": 436,
+            "bytes": 4164
+          }
+        },
+        "api/bootstrap.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "2781bef70d420e1f892a41f03a7563790fd3d610920e0d5f90cd5e90868da525",
+            "sha256_lf": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+            "mode": 436,
+            "bytes": 26337
+          },
+          "after": {
+            "exists": true,
+            "sha256": "2781bef70d420e1f892a41f03a7563790fd3d610920e0d5f90cd5e90868da525",
+            "sha256_lf": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+            "mode": 436,
+            "bytes": 26337
+          }
+        },
+        "api/health.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+            "sha256_lf": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+            "mode": 436,
+            "bytes": 1043
+          },
+          "after": {
+            "exists": true,
+            "sha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+            "sha256_lf": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+            "mode": 436,
+            "bytes": 1043
+          }
+        },
+        "api/reports.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+            "sha256_lf": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+            "mode": 436,
+            "bytes": 11303
+          },
+          "after": {
+            "exists": true,
+            "sha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+            "sha256_lf": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+            "mode": 436,
+            "bytes": 11303
+          }
+        },
+        "assets/index-BnYLeEcL.css": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+            "sha256_lf": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+            "mode": 420,
+            "bytes": 45291
+          }
+        },
+        "assets/index-CKpXCVG6.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+            "sha256_lf": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+            "mode": 420,
+            "bytes": 417207
+          }
+        },
+        "auth/callback/index.html": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "d07c523f9d7bb258204112132a52f4a4226a895141eab551d069f53ba4f6487c",
+            "sha256_lf": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+            "mode": 436,
+            "bytes": 272
+          },
+          "after": {
+            "exists": true,
+            "sha256": "d07c523f9d7bb258204112132a52f4a4226a895141eab551d069f53ba4f6487c",
+            "sha256_lf": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+            "mode": 436,
+            "bytes": 272
+          }
+        },
+        "connect/entry.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+            "sha256_lf": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+            "mode": 436,
+            "bytes": 588
+          },
+          "after": {
+            "exists": true,
+            "sha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+            "sha256_lf": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+            "mode": 436,
+            "bytes": 588
+          }
+        },
+        "connect/gate.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "59fe848fe9a3da7bb2a69ec2c4f982cf7e10e9598e9f0b6d917c4526b943d470",
+            "sha256_lf": "53d5516f9f270d8ff9ade6e0fe130803e3dc22354c19e321d7dd99ca98d473a6",
+            "mode": 436,
+            "bytes": 10891
+          },
+          "after": {
+            "exists": true,
+            "sha256": "afc167d128d0baf62ade6259de4ed821a71f88b2bd75f171f5a5d4d5d058dce4",
+            "sha256_lf": "3c2fb628f06ce56129943545f8502538fc94af6f589eb946b942358944d019d5",
+            "mode": 436,
+            "bytes": 11844
+          }
+        },
+        "connect/logout.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "2d6a25946e7e5d8b578303f89cb858096ab799d7e105c2a1dc805339d98eb9c7",
+            "sha256_lf": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+            "mode": 436,
+            "bytes": 696
+          },
+          "after": {
+            "exists": true,
+            "sha256": "06a85d72831268291e0ac0eae1ac6c1c4da3ee8d8993728ffd20adc4ad41b3fa",
+            "sha256_lf": "9aabc1a587ddf0fa22658f41ba0c1075147a5d3bae507c7600e0d49b155fe045",
+            "mode": 436,
+            "bytes": 478
+          }
+        },
+        "index.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "c6656cb551f611154e1c6b172a3a651fe6ff3fa85fd29f6ba750a41d71e87e8a",
+            "sha256_lf": "02363733307c22936347d8a2cf028572ea02b388e9194308a1a1701b3905b95c",
+            "mode": 436,
+            "bytes": 415
+          },
+          "after": {
+            "exists": true,
+            "sha256": "7f16b8093cdb743728ac118a0508f5f1c969535d94594fc6abdfdb3efcc601be",
+            "sha256_lf": "cfa09b3ae6c0b3078d72ff738a0703bc28bb70f3b5dc400813e7a1e7d7d49760",
+            "mode": 436,
+            "bytes": 415
+          }
+        },
+        "index.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+            "sha256_lf": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+            "mode": 436,
+            "bytes": 977
+          },
+          "after": {
+            "exists": true,
+            "sha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+            "sha256_lf": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+            "mode": 436,
+            "bytes": 977
+          }
+        }
+      },
+      "counts": {
+        "preserve": 9,
+        "replace": 3,
+        "create": 2
+      },
+      "fileRestore": "passed"
+    },
+    "passeport-immo": {
+      "root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+      "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+      "operations": {
+        ".htaccess": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "ba1698052b99075c426ddb5abda88a239357ad1dcb6c9efd723472e600370bb8",
+            "sha256_lf": "ba1698052b99075c426ddb5abda88a239357ad1dcb6c9efd723472e600370bb8",
+            "mode": 420,
+            "bytes": 627
+          },
+          "after": {
+            "exists": true,
+            "sha256": "ba1698052b99075c426ddb5abda88a239357ad1dcb6c9efd723472e600370bb8",
+            "sha256_lf": "ba1698052b99075c426ddb5abda88a239357ad1dcb6c9efd723472e600370bb8",
+            "mode": 420,
+            "bytes": 627
+          }
+        },
+        ".user.ini": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "9140d459d58a6abd46a4b08fb49a1df84ace9ec7617b901034446997c9fb8b96",
+            "sha256_lf": "9140d459d58a6abd46a4b08fb49a1df84ace9ec7617b901034446997c9fb8b96",
+            "mode": 420,
+            "bytes": 91
+          },
+          "after": {
+            "exists": true,
+            "sha256": "9140d459d58a6abd46a4b08fb49a1df84ace9ec7617b901034446997c9fb8b96",
+            "sha256_lf": "9140d459d58a6abd46a4b08fb49a1df84ace9ec7617b901034446997c9fb8b96",
+            "mode": 420,
+            "bytes": 91
+          }
+        },
+        "api/index.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "2430a150dc423f7b42e17eb6434ab067f3c2c18a0f2ee5dacf4e67c28883470d",
+            "sha256_lf": "2430a150dc423f7b42e17eb6434ab067f3c2c18a0f2ee5dacf4e67c28883470d",
+            "mode": 420,
+            "bytes": 5223
+          },
+          "after": {
+            "exists": true,
+            "sha256": "2430a150dc423f7b42e17eb6434ab067f3c2c18a0f2ee5dacf4e67c28883470d",
+            "sha256_lf": "2430a150dc423f7b42e17eb6434ab067f3c2c18a0f2ee5dacf4e67c28883470d",
+            "mode": 420,
+            "bytes": 5223
+          }
+        },
+        "api/storage.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "2d9c1bd0b65c8c2e936eb5d6f1693a3d7ddce5850eac224894385bda9ab681ff",
+            "sha256_lf": "2d9c1bd0b65c8c2e936eb5d6f1693a3d7ddce5850eac224894385bda9ab681ff",
+            "mode": 420,
+            "bytes": 13117
+          },
+          "after": {
+            "exists": true,
+            "sha256": "2d9c1bd0b65c8c2e936eb5d6f1693a3d7ddce5850eac224894385bda9ab681ff",
+            "sha256_lf": "2d9c1bd0b65c8c2e936eb5d6f1693a3d7ddce5850eac224894385bda9ab681ff",
+            "mode": 420,
+            "bytes": 13117
+          }
+        },
+        "assets/index-B1rPDbH_.js": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "bbed44495fc88d56414d089e208140091513efc9f087fd4d14e60f3f471536df",
+            "sha256_lf": "bbed44495fc88d56414d089e208140091513efc9f087fd4d14e60f3f471536df",
+            "mode": 420,
+            "bytes": 796460
+          },
+          "after": {
+            "exists": true,
+            "sha256": "bbed44495fc88d56414d089e208140091513efc9f087fd4d14e60f3f471536df",
+            "sha256_lf": "bbed44495fc88d56414d089e208140091513efc9f087fd4d14e60f3f471536df",
+            "mode": 420,
+            "bytes": 796460
+          }
+        },
+        "assets/index-BnxaifYT.css": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "76aa0604b003790b503a889a271e60d97883d30c54997841fa69c3ac287e5b8f",
+            "sha256_lf": "76aa0604b003790b503a889a271e60d97883d30c54997841fa69c3ac287e5b8f",
+            "mode": 420,
+            "bytes": 26931
+          },
+          "after": {
+            "exists": true,
+            "sha256": "76aa0604b003790b503a889a271e60d97883d30c54997841fa69c3ac287e5b8f",
+            "sha256_lf": "76aa0604b003790b503a889a271e60d97883d30c54997841fa69c3ac287e5b8f",
+            "mode": 420,
+            "bytes": 26931
+          }
+        },
+        "assets/index.es-DCbTLmDe.js": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "7f2857899ca556ef0e911d4019937449380499381dc563977863d3c3c60ad5b1",
+            "sha256_lf": "7f2857899ca556ef0e911d4019937449380499381dc563977863d3c3c60ad5b1",
+            "mode": 420,
+            "bytes": 150852
+          },
+          "after": {
+            "exists": true,
+            "sha256": "7f2857899ca556ef0e911d4019937449380499381dc563977863d3c3c60ad5b1",
+            "sha256_lf": "7f2857899ca556ef0e911d4019937449380499381dc563977863d3c3c60ad5b1",
+            "mode": 420,
+            "bytes": 150852
+          }
+        },
+        "assets/pdf-WgYdDwYK.js": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+            "sha256_lf": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+            "mode": 420,
+            "bytes": 483747
+          },
+          "after": {
+            "exists": true,
+            "sha256": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+            "sha256_lf": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+            "mode": 420,
+            "bytes": 483747
+          }
+        },
+        "assets/pdf.worker.min-CjEcRF4W.mjs": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+            "sha256_lf": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+            "mode": 420,
+            "bytes": 1264342
+          },
+          "after": {
+            "exists": true,
+            "sha256": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+            "sha256_lf": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+            "mode": 420,
+            "bytes": 1264342
+          }
+        },
+        "assets/purify.es-BwoZCkIS.js": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+            "sha256_lf": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+            "mode": 420,
+            "bytes": 22028
+          },
+          "after": {
+            "exists": true,
+            "sha256": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+            "sha256_lf": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+            "mode": 420,
+            "bytes": 22028
+          }
+        },
+        "connect/entry.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "4e13e9e823e95f29999bb39cdf181d1e25e7623aa711e6479c7ab89c1fc2bf3e",
+            "sha256_lf": "4e13e9e823e95f29999bb39cdf181d1e25e7623aa711e6479c7ab89c1fc2bf3e",
+            "mode": 420,
+            "bytes": 513
+          },
+          "after": {
+            "exists": true,
+            "sha256": "4e13e9e823e95f29999bb39cdf181d1e25e7623aa711e6479c7ab89c1fc2bf3e",
+            "sha256_lf": "4e13e9e823e95f29999bb39cdf181d1e25e7623aa711e6479c7ab89c1fc2bf3e",
+            "mode": 420,
+            "bytes": 513
+          }
+        },
+        "connect/gate.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "mode": 420,
+            "bytes": 8780
+          },
+          "after": {
+            "exists": true,
+            "sha256": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "sha256_lf": "b6f511077216238ed165323e3e2affad4e356af8b5917bc4ae1e7d0f3fa95bb2",
+            "mode": 420,
+            "bytes": 8780
+          }
+        },
+        "connect/logout.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "2612327b2b6c476b4428fb138738d93841d4b5ca5211e630266e9621fd87dc7e",
+            "sha256_lf": "2612327b2b6c476b4428fb138738d93841d4b5ca5211e630266e9621fd87dc7e",
+            "mode": 420,
+            "bytes": 383
+          },
+          "after": {
+            "exists": true,
+            "sha256": "2612327b2b6c476b4428fb138738d93841d4b5ca5211e630266e9621fd87dc7e",
+            "sha256_lf": "2612327b2b6c476b4428fb138738d93841d4b5ca5211e630266e9621fd87dc7e",
+            "mode": 420,
+            "bytes": 383
+          }
+        },
+        "connect/session.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "1d9eb147a12079971e1c6b00b596e45f84c81ac4bb47321baa41debea34d8950",
+            "sha256_lf": "1d9eb147a12079971e1c6b00b596e45f84c81ac4bb47321baa41debea34d8950",
+            "mode": 420,
+            "bytes": 2392
+          },
+          "after": {
+            "exists": true,
+            "sha256": "1d9eb147a12079971e1c6b00b596e45f84c81ac4bb47321baa41debea34d8950",
+            "sha256_lf": "1d9eb147a12079971e1c6b00b596e45f84c81ac4bb47321baa41debea34d8950",
+            "mode": 420,
+            "bytes": 2392
+          }
+        },
+        "index.html": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "020d35d742c260d711d4291d139db2c903fd5d249f00cd67dd584f111374c04e",
+            "sha256_lf": "020d35d742c260d711d4291d139db2c903fd5d249f00cd67dd584f111374c04e",
+            "mode": 420,
+            "bytes": 499
+          },
+          "after": {
+            "exists": true,
+            "sha256": "020d35d742c260d711d4291d139db2c903fd5d249f00cd67dd584f111374c04e",
+            "sha256_lf": "020d35d742c260d711d4291d139db2c903fd5d249f00cd67dd584f111374c04e",
+            "mode": 420,
+            "bytes": 499
+          }
+        },
+        "index.php": {
+          "action": "preserve",
+          "before": {
+            "exists": true,
+            "sha256": "8fedf2a296f70e06a85fb6fa160dcee17ae85065e7ef9b26d1d09a5833b87672",
+            "sha256_lf": "8fedf2a296f70e06a85fb6fa160dcee17ae85065e7ef9b26d1d09a5833b87672",
+            "mode": 420,
+            "bytes": 2437
+          },
+          "after": {
+            "exists": true,
+            "sha256": "8fedf2a296f70e06a85fb6fa160dcee17ae85065e7ef9b26d1d09a5833b87672",
+            "sha256_lf": "8fedf2a296f70e06a85fb6fa160dcee17ae85065e7ef9b26d1d09a5833b87672",
+            "mode": 420,
+            "bytes": 2437
+          }
+        }
+      },
+      "counts": {
+        "preserve": 16,
+        "replace": 0,
+        "create": 0
+      },
+      "fileRestore": "passed"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "observedAt": "2026-10-16T08:50:53+00:00",
+  "status": "passed",
+  "scope": "Socles du monorepo et des deux applications, métadonnées et liens locaux des nouveaux comptes rendus, JSON des reçus, preuves documentaires approuvées de Passeport Immo et génération des vues.",
+  "approvedPasseportDocuments": {
+    "iteration-developpement.md": "640a1813b58e85e62215067a2a65553578924dcd7d7ab76bb122907cbacac236",
+    "00-etat-des-lieux.md": "eeb7563a1de3bba8b1fa6dda9691fa91f8e8d1e192980aa8ac4c36f3dfdcce99",
+    "source-audit.md": "4193812389afaddd580cf7cdd3ff97d5c967cb7fb8cdb87ce5d2e9113060c90e",
+    "01-reprise-identique.md": "927d8e2b97c3101f0d8edee03f721845e3e46d6d53512cc7cf9242c6b1f87d04",
+    "documents-bien.md": "3dafa2a1cddcd454c4987378f8e5e95e57de36ecc0c5e7b207df4e9661d53e5c",
+    "progression-examin.md": "3f1b048e02a695b5b90528ceced42f3b3a117dc00acc6ab23944d80d29f17aee",
+    "source-audit-documents.md": "12546560d70e854caa82c43a7a61768c6b6044141c1cab72142617b9d55b48ed",
+    "mapping-phases.md": "5e0268be61e5f7762d4a2b803ac0ca211b83db53364c4d93d4de1878f9583d70",
+    "coupes-bien.md": "763d26a59a71398aa1bae8d38da09cd75440a22e0a53a09801808c64eb86fbce",
+    "recette-preproduction.md": "999838c9c169dd4f52b377d23e314b1495f6924bd6b6a56d283657391b0cf5e8",
+    "02-integration-connect.md": "616d09b4df2634ec41d06bbdf1323752ec2a433fff9d5ade8f2c187edd16d543",
+    "03-preproduction.md": "68568b2bcabd1feb19510595af6dc5b1e51df69560158f1e01f783e9c68124f0",
+    "deployment.md": "947f669a56d7c2be8e9a4f7fd8bb383b16d377ce572ebec5480cc0dc6ee65162",
+    "stockage-serveur.md": "e166c43752c21a7d7a32f2982926bf40902bfb52de88f47c2adbf177be420a25",
+    "sauvegarde-automatique.md": "143206e06d98452ebaedc32e8ccf240dc825f3ba66e3edad98548d6e3e3e4da1"
+  },
+  "approvedDocumentsUnchanged": 15,
+  "humanDecisionsCreated": false,
+  "remainingIssue": "Droit CONNECT explicite du compte interne 2 à réconcilier ; qualification production distincte."
+}

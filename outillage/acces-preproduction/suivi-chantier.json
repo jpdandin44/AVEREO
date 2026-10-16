@@ -11,17 +11,17 @@
   "cockpit_reference": "outillage/acces-preproduction/suivi-chantier.json",
   "cockpit_status": "Source canonique raccordée au moteur de revue Projet ; aucune décision automatique.",
   "blockers": [
-    "Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+    "Rapport : lancement, sauvegarde/relecture et exports contrôlés ; connexion OAuth interactive du responsable et second réseau non observés dans cette recette.",
     "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.",
     "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.",
     "CONNECT : onboarding_status et activation_email_sent_at absents de users ; migration et récupération de la base non préparées. Ne pas remplacer son backend en bloc.",
     "Recherche : cible, configuration de lancement et entrée catalogue absentes ; dépendance GED à établir.",
-    "Passeport Immo : seule protection de fermeture installée ; frontend et contrat CONNECT absents.",
+    "Passeport Immo installé et vérifié ; confirmer le droit actuel du compte interne 2 au regard du relevé historique.",
     "Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.",
-    "Accord de livraison applicative du candidat préparé non enregistré ; les accords antérieurs couvrent le pilote d’accès et la réparation ciblée.",
-    "Recette métier authentifiée sur les versions effectivement livrées : lancement, stockage lorsqu’il existe, réouverture, exports, déconnexion et révocation."
+    "Le lot historique de cinq applications conserve son suivi propre ; la demande du 16 octobre couvre seulement Rapport et Passeport Immo.",
+    "Recettes des autres applications à poursuivre séparément ; preuves Rapport/Passeport dans selected_applications_delivery."
   ],
-  "next_action": "Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue.",
+  "next_action": "Examiner les deux applications en préproduction et confirmer le droit CONNECT attendu pour le compte interne 2 ; poursuivre ensuite les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres.",
   "phases": [
     {
       "id": 0,
@@ -149,23 +149,35 @@
           "kind": "file",
           "availability": "present",
           "title": "Point de reprise du 9 octobre et lien vers le plan exact"
+        },
+        {
+          "path": "livraison-rapport-passeport.md",
+          "title": "Livraison et recette de Rapport/Passeport Immo du 16 octobre",
+          "kind": "file",
+          "availability": "present"
+        },
+        {
+          "path": "archives/livraison-rapport-passeport-20261016/candidats-production.json",
+          "title": "Candidates de production et empreintes exactes",
+          "kind": "file",
+          "availability": "present"
         }
       ],
       "exitCriteria": [
         "Accès anonyme/incorrect refusé, accès autorisé réussi sur HTTPS.",
         "Connexion, lancement Rapport, sauvegarde et rechargement vérifiés."
       ],
-      "nextAction": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
+      "nextAction": "Examiner les deux applications en préproduction et confirmer le droit CONNECT attendu pour le compte interne 2 ; poursuivre ensuite les prérequis de production dans leur lot propre. Les autres lots gardent leurs prérequis et accords propres.",
       "blockers": [
-        "Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+        "Rapport : lancement, sauvegarde/relecture et exports contrôlés ; connexion OAuth interactive du responsable et second réseau non observés dans cette recette.",
         "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.",
         "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.",
         "CONNECT : onboarding_status et activation_email_sent_at absents de users ; migration et récupération de la base non préparées. Ne pas remplacer son backend en bloc.",
         "Recherche : cible, configuration de lancement et entrée catalogue absentes ; dépendance GED à établir.",
-        "Passeport Immo : seule protection de fermeture installée ; frontend et contrat CONNECT absents.",
+        "Passeport Immo installé et vérifié ; confirmer le droit actuel du compte interne 2 au regard du relevé historique.",
         "Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.",
-        "Accord de livraison applicative du candidat préparé non enregistré ; les accords antérieurs couvrent le pilote d’accès et la réparation ciblée.",
-        "Recette métier authentifiée sur les versions effectivement livrées : lancement, stockage lorsqu’il existe, réouverture, exports, déconnexion et révocation."
+        "Le lot historique de cinq applications conserve son suivi propre ; la demande du 16 octobre couvre seulement Rapport et Passeport Immo.",
+        "Recettes des autres applications à poursuivre séparément ; preuves Rapport/Passeport dans selected_applications_delivery."
       ],
       "deliverableMappings": [
         {
@@ -195,7 +207,7 @@
       "exitCriteria": [
         "Nouvelle autorisation explicite requise."
       ],
-      "nextAction": "Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé.",
+      "nextAction": "Candidatures Rapport/Passeport préparées depuis la Préproduction ; revue et prérequis exacts de production à traiter dans leurs lots propres, sans livraison dans ce lot.",
       "blockers": []
     }
   ],
@@ -601,7 +613,7 @@
   "title": "Accès privés aux préproductions AVEREO",
   "version": "git",
   "created": "2026-10-06",
-  "updated": "2026-10-14",
+  "updated": "2026-10-16",
   "owner": "jpdandin",
   "currentPhase": 2,
   "state": "blocked",
@@ -2157,5 +2169,228 @@
       "humanAcceptanceVerified": false,
       "evidence": "PR #79 ouverte en brouillon ; quatre cases non cochees."
     }
+  },
+  "selected_applications_delivery": {
+    "iterationId": "rapport-passeport-preproduction-20261016",
+    "status": "delivered_verified_with_access_review_required",
+    "observedAt": "2026-10-16T08:47:47+00:00",
+    "mainObservedSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+    "documentation": "livraison-rapport-passeport.md",
+    "preflightEvidence": "archives/livraison-rapport-passeport-20261016/preflight-public.json",
+    "scope": [
+      "rapport",
+      "passeport-immo"
+    ],
+    "productionModified": false,
+    "humanReviewCreated": false,
+    "workflows": {
+      "rapport": {
+        "iterationId": "rapport-passeport-preproduction-20261016-rapport",
+        "owner": "jpdandin",
+        "candidate": {
+          "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+          "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366"
+        },
+        "targets": {
+          "preproduction": {
+            "id": "rapport-preproduction",
+            "url": "https://rapport-preprod.avereo.fr/",
+            "ready": true,
+            "isolated": true,
+            "empty": false,
+            "evidence": "archives/livraison-rapport-passeport-20261016/preflight-public.json",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          }
+        },
+        "checks": [
+          {
+            "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+            "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+            "kind": "local",
+            "status": "passed",
+            "evidence": "livraison-rapport-passeport.md#développement-local",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          },
+          {
+            "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+            "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+            "kind": "ci",
+            "status": "passed",
+            "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/37506091820",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          },
+          {
+            "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+            "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+            "kind": "documentation",
+            "status": "passed",
+            "evidence": "livraison-rapport-passeport.md : socle présent, sources et périmètre contrôlés, reçus cohérents, aucune référence approuvée modifiée.",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          },
+          {
+            "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+            "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+            "kind": "preproduction",
+            "status": "passed",
+            "target": "rapport-preproduction",
+            "evidence": "archives/livraison-rapport-passeport-20261016/browser-verification.json ; archives/livraison-rapport-passeport-20261016/delivery.json ; archives/livraison-rapport-passeport-20261016/http-completion.json",
+            "observedAt": "2026-10-16T08:47:47+00:00"
+          }
+        ],
+        "approvals": [
+          {
+            "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+            "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+            "scope": "preproduction",
+            "status": "approved",
+            "target": "rapport-preproduction",
+            "actor": "jpdandin",
+            "source": "user_chat",
+            "evidence": "OK, peux-tu déployer la dernière version de Rapport avec les deux types + les dernières évolutions Passeport Immo en préproduction, faire les vérifications et la préparer comme candidate à la mise en production stp ?",
+            "recordedAt": "2026-10-16T08:17:13+00:00"
+          }
+        ],
+        "backups": [
+          {
+            "id": "/home/daje3540/private/preprod-rapport-passeport-20261016/recovery/rapport",
+            "target": "rapport-preproduction",
+            "status": "verified",
+            "restoreStatus": "passed",
+            "evidence": "archives/livraison-rapport-passeport-20261016/preflight-public.json",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          }
+        ],
+        "blockers": [],
+        "delivery": {
+          "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+          "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+          "target": "rapport-preproduction",
+          "status": "delivered",
+          "evidence": "archives/livraison-rapport-passeport-20261016/delivery.json",
+          "observedAt": "2026-10-16T08:15:58+00:00"
+        }
+      },
+      "passeport-immo": {
+        "iterationId": "rapport-passeport-preproduction-20261016-passeport-immo",
+        "owner": "jpdandin",
+        "candidate": {
+          "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+          "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf"
+        },
+        "targets": {
+          "preproduction": {
+            "id": "passeport-immo-preproduction",
+            "url": "https://passeport-immo-preprod.avereo.fr/",
+            "ready": true,
+            "isolated": true,
+            "empty": false,
+            "evidence": "archives/livraison-rapport-passeport-20261016/preflight-public.json",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          }
+        },
+        "checks": [
+          {
+            "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+            "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+            "kind": "local",
+            "status": "passed",
+            "evidence": "livraison-rapport-passeport.md#développement-local",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          },
+          {
+            "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+            "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+            "kind": "ci",
+            "status": "passed",
+            "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/38864545332",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          },
+          {
+            "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+            "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+            "kind": "documentation",
+            "status": "passed",
+            "evidence": "livraison-rapport-passeport.md : socle présent, sources et périmètre contrôlés, reçus cohérents, aucune référence approuvée modifiée.",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          },
+          {
+            "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+            "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+            "kind": "preproduction",
+            "status": "passed_with_reservation",
+            "target": "passeport-immo-preproduction",
+            "evidence": "archives/livraison-rapport-passeport-20261016/browser-verification.json ; archives/livraison-rapport-passeport-20261016/delivery.json ; archives/livraison-rapport-passeport-20261016/http-completion.json",
+            "observedAt": "2026-10-16T08:47:47+00:00"
+          }
+        ],
+        "approvals": [
+          {
+            "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+            "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+            "scope": "preproduction",
+            "status": "approved",
+            "target": "passeport-immo-preproduction",
+            "actor": "jpdandin",
+            "source": "user_chat",
+            "evidence": "OK, peux-tu déployer la dernière version de Rapport avec les deux types + les dernières évolutions Passeport Immo en préproduction, faire les vérifications et la préparer comme candidate à la mise en production stp ?",
+            "recordedAt": "2026-10-16T08:17:13+00:00"
+          }
+        ],
+        "backups": [
+          {
+            "id": "/home/daje3540/private/preprod-rapport-passeport-20261016/recovery/passeport-immo",
+            "target": "passeport-immo-preproduction",
+            "status": "verified",
+            "restoreStatus": "passed",
+            "evidence": "archives/livraison-rapport-passeport-20261016/preflight-public.json",
+            "observedAt": "2026-10-16T08:17:13+00:00"
+          }
+        ],
+        "blockers": [
+          "Revue de l’écart entre droits actuels et relevé historique du compte interne 2."
+        ],
+        "delivery": {
+          "sourceSha": "d95164ea0c9863073427e82fae89e89dadeac01f",
+          "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+          "target": "passeport-immo-preproduction",
+          "status": "verified_unchanged",
+          "evidence": "archives/livraison-rapport-passeport-20261016/delivery.json",
+          "observedAt": "2026-10-16T08:15:58+00:00"
+        }
+      }
+    },
+    "deliveryEvidence": "archives/livraison-rapport-passeport-20261016/delivery.json",
+    "browserEvidence": "archives/livraison-rapport-passeport-20261016/browser-verification.json",
+    "productionCandidateManifest": "archives/livraison-rapport-passeport-20261016/candidats-production.json",
+    "nextAction": "Examiner les deux applications en préproduction et confirmer le droit CONNECT attendu pour le compte interne 2 ; poursuivre ensuite les prérequis de production dans leur lot propre.",
+    "productionReady": false,
+    "limitations": [
+      "Connexion OAuth interactive Chrome non observée par cet agent.",
+      "Rendu natif Microsoft Word, dictée, photos, services géographiques externes et second réseau non requalifiés."
+    ],
+    "accessReview": {
+      "status": "required",
+      "application": "passeport-immo",
+      "evidence": "archives/livraison-rapport-passeport-20261016/rights-observation.json",
+      "entitlementsChanged": false,
+      "summary": "Compte interne 2 explicitement actif ; ancien relevé à réconcilier, sans contournement des droits individuels constaté."
+    },
+    "supersededContext": {
+      "next_action": "Qualifier le pont Drupal et sa recuperation, faire configurer le secret d’activation prive et la recette de messages, puis obtenir les accords exacts avant migration/livraison. Passeport Immo exige ensuite son sas et son catalogue.",
+      "blockers": [
+        "Connexion avec le compte du responsable, lancement Rapport, sauvegarde/rechargement, second réseau et révocation à recetter.",
+        "Compatibilité des autres cibles, alias et pérennité au prochain déploiement à qualifier avant généralisation.",
+        "Dépôt source du reste de l’instance d’identité à identifier avant une évolution plus large ; contrat de réparation conservé dans ce monorepo.",
+        "CONNECT : onboarding_status et activation_email_sent_at absents de users ; migration et récupération de la base non préparées. Ne pas remplacer son backend en bloc.",
+        "Recherche : cible, configuration de lancement et entrée catalogue absentes ; dépendance GED à établir.",
+        "Passeport Immo : seule protection de fermeture installée ; frontend et contrat CONNECT absents.",
+        "Coupe : base non configurée, auth_mode drupal_oauth ; ne pas activer MySQL ni inclure la PR #54 ouverte.",
+        "Accord de livraison applicative du candidat préparé non enregistré ; les accords antérieurs couvrent le pilote d’accès et la réparation ciblée.",
+        "Recette métier authentifiée sur les versions effectivement livrées : lancement, stockage lorsqu’il existe, réouverture, exports, déconnexion et révocation."
+      ],
+      "phase2NextAction": "Accord de préproduction sur le lot corrigé 6c3a3c56, puis livraison des opérations seules et recette authentifiée ; retour arrière gardé des remplacements et ajouts en cas d’échec.",
+      "phase3NextAction": "Hors périmètre ; aucun merge, déploiement de production ou ouverture demandé."
+    },
+    "productionGateEvidence": "archives/livraison-rapport-passeport-20261016/production-gates.json"
   }
 }

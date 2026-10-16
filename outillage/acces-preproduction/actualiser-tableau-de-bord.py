@@ -25,6 +25,17 @@ lines = [front, '# Relevé hébergé', '',
     '| Phase | État | Prochaine action |', '| --- | --- | --- |']
 for phase in state['phases']:
     lines.append(f"| {phase['shortTitle']} | {state['statusLabels'][phase['status']]} | {phase['nextAction']} |")
+selected = state.get('selected_applications_delivery')
+if selected:
+    lines += ['', '## Livraison ciblée de Rapport et Passeport Immo', '',
+        f"Observation du `{selected['observedAt']}` ; état `{selected['status']}`.",
+        f"[Compte rendu et limites]({selected['documentation']}) ; [candidates exactes]({selected['productionCandidateManifest']}).", '',
+        'Les constats antérieurs ci-dessous restent historiques pour ces deux applications ; ce lot ne qualifie pas les autres cibles.', '']
+    for name, flow in selected['workflows'].items():
+        lines += [f"- **{name}** : [préproduction]({flow['targets']['preproduction']['url']}), "
+                  f"archive `{flow['candidate']['artifactSha256']}`, livraison `{flow['delivery']['status']}`."]
+    lines += ['', selected['nextAction'], '',
+        'La candidature reste soumise à revue ; aucune production modifiée ni nouvelle validation humaine créée.']
 review_links = (state.get('identity_repair') or {}).get('review_links')
 if review_links:
     lines += ['', '## Accès pour la recette', '',
@@ -65,7 +76,8 @@ lines += ['', '## Contrôles et limites', '']
 for check in state.get('checks', []):
     lines.append(f"- {check['kind']} le `{check.get('observedAt', 'TBD')}` : {check['status']} — {check['evidence']}. {check.get('note', '')}")
 lines += ['', 'Les tests Apache locaux sont complétés par les contrôles hébergés enregistrés ci-dessus.',
-    'Le parcours CONNECT → Drupal → Rapport → sauvegarde → rechargement reste à recetter.',
+    ('Rapport : sauvegarde/rechargement contrôlés dans le lot ciblé ; la connexion OAuth interactive reste distincte.'
+     if selected else 'Le parcours CONNECT → Drupal → Rapport → sauvegarde → rechargement reste à recetter.'),
     'La protection doit survivre au prochain déploiement ; cette pérennité reste à qualifier.', '',
     '## Points restant à traiter', '']
 lines += ['- ' + item for item in state['blockers']]

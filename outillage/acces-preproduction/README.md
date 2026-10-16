@@ -5,7 +5,7 @@ title: Acces par identifiants aux preproductions AVEREO
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-14
+updated: 2026-10-16
 owner: jpdandin
 tags: [preproduction, securite, exploitation]
 ---
@@ -13,6 +13,11 @@ tags: [preproduction, securite, exploitation]
 # Accès aux préproductions par identifiants
 
 ## Statut du lot
+
+## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo
+
+Rapport est livré avec ses deux types ; Passeport Immo possède déjà le candidat courant et ses seize fichiers sont vérifiés sans réécriture. La [livraison et la recette](livraison-rapport-passeport.md) rassemblent les preuves, la réserve de droits et les candidates exactes. Le bloc `selected_applications_delivery` du [suivi](suivi-chantier.json) fait référence pour ce périmètre. Les constats antérieurs ci-dessous restent historiques lorsqu’ils décrivent Rapport ancien ou Passeport Immo absent. Aucune livraison de production dans ce lot.
+
 
 Le 14 octobre, le responsable demande la préparation distincte de CONNECT,
 de la sauvegarde de sa base et de la migration d’activation, puis la vérification

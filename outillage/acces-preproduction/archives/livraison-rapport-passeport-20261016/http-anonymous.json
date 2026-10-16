@@ -1,0 +1,38 @@
+{
+  "observedAt": "2026-10-16T08:20:40+00:00",
+  "tlsVerification": true,
+  "authenticated": false,
+  "status": "passed",
+  "checks": [
+    {
+      "url": "https://rapport-preprod.avereo.fr/",
+      "status": 303,
+      "location": "https://connect-preprod.avereo.fr/?app=rapport",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "url": "https://rapport-preprod.avereo.fr/assets/index-CKpXCVG6.js",
+      "status": 200,
+      "location": null,
+      "sha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a"
+    },
+    {
+      "url": "https://rapport-preprod.avereo.fr/api/reports.php",
+      "status": 403,
+      "location": null,
+      "sha256": "04169a28ff9d43fb1e356c4d4b4f63d5e3179ef0851051130a95c6df19ea8789"
+    },
+    {
+      "url": "https://passeport-immo-preprod.avereo.fr/",
+      "status": 303,
+      "location": "https://connect-preprod.avereo.fr/?app=passeport-immo",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "url": "https://passeport-immo-preprod.avereo.fr/api/workspace",
+      "status": 401,
+      "location": null,
+      "sha256": "f6cf9d075fac2c562c0be256df22102c39465d9d711cdb4493ba5f98803e2b62"
+    }
+  ]
+}
