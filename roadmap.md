@@ -5,12 +5,28 @@ title: Roadmap du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-10-16
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Roadmap du dépôt AVEREO
+
+## Suite courante — 16 octobre 2026
+
+Après fusion des PR #83 et #84, le [dossier de production Rapport/Passeport Immo](outillage/acces-preproduction/preparation-production-rapport-passeport.md)
+porte la suite. Le correctif OAuth et Core/Symfony sont livrés sur l’identité de
+préproduction ; la nouvelle connexion et l’accès aux deux applications sont
+confirmés par le responsable dans Chrome. OAuth #22 est accepté et fusionné dans
+Gin #24, pas dans `main`. Le site est livré techniquement ; sa revue visuelle reste
+distincte. Examiner #25/#24, intégrer Gin dans Core #23 puis vérifier son audit.
+Le dernier contrôle de l’identité de production reste bloquant. La livraison de
+Rapport attend sa récupération et son retour arrière qualifiés, puis l’accord
+exact ; Passeport Immo conserve son activation, sa reprise SCI et son cron.
+Les correctifs de sécurité du site sont suivis dans le lot Drupal coordonné.
+Aucune nouvelle validation de phase n’est créée par cette préparation.
+
+## Repères des travaux antérieurs
 
 La demande du 14 octobre prépare séparément CONNECT préproduction :
 qualification de sauvegarde/restauration de base et migration d’activation,

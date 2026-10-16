@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "markdownFiles": 12,
+  "localLinks": 111,
+  "documentaryFoundations": 3,
+  "approvedPassportReferences": 21,
+  "approvedPassportUniqueDocuments": 15,
+  "approvedBytes": "Git LF and canonical working copy exact; Windows checkout equivalent after CRLF normalization",
+  "humanDecisionsAndOtherGlobalScopes": "unchanged",
+  "generatedView": "deterministic",
+  "applicationRuntimeChanged": false,
+  "productionWrites": false,
+  "productionGates": "remain blocked as recorded; validation of this preparation does not clear them"
+}

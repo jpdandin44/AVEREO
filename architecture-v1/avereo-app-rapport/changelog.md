@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-15
+updated: 2026-10-16
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,13 @@ tags:
 ---
 
 # Evolutions significatives de Rapport AVEREO
+
+## 2026-10-16 — Suite de production préparée
+
+PR #84 fusionnée et candidate à deux types réempreintée. Inventaire de production
+en lecture seule, plan exact de trois remplacements/deux ajouts, contraintes de
+récupération et blocage OAuth consignés dans le [dossier commun](../../outillage/acces-preproduction/preparation-production-rapport-passeport.md).
+README, déploiement, audit, matrice et roadmap alignés ; aucune livraison de production.
 
 ## 2026-09-15
 

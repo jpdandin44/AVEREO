@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-16T16:00:54.380568+00:00",
+  "status": "passed",
+  "scope": "Enregistrement de la confirmation humaine d’accès en préproduction ; contrôles documentaires et de préservation uniquement.",
+  "documentsChecked": [
+    "changelog.md",
+    "outillage/acces-preproduction/point-session.md",
+    "outillage/acces-preproduction/preparation-production-rapport-passeport.md",
+    "outillage/acces-preproduction/releve-heberge.md",
+    "roadmap.md"
+  ],
+  "localLinkTargetsChecked": 51,
+  "jsonFilesParsed": 1,
+  "foundationsChecked": 3,
+  "approvedReferencesPreserved": 21,
+  "uniqueApprovedDocuments": 15,
+  "normalizedCRLFReferences": 21,
+  "phaseAndMergeApprovalsUnchanged": true,
+  "otherTrackingScopesPreserved": true,
+  "canonicalHumanConfirmationAligned": true,
+  "derivedViewDeterministic": true
+}

@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-16T15:43:48.189449+00:00",
+  "status": "passed",
+  "scope": "Reprise documentaire ; aucun nouveau test applicatif ni accord humain.",
+  "documentsChecked": [
+    "README.md",
+    "architecture-v1/avereo-app-rapport/README.md",
+    "architecture-v1/avereo-app-rapport/changelog.md",
+    "architecture-v1/avereo-app-rapport/docs/deployment.md",
+    "architecture-v1/avereo-app-rapport/docs/migration-matrix.md",
+    "architecture-v1/avereo-app-rapport/docs/source-audit.md",
+    "architecture-v1/avereo-app-rapport/roadmap.md",
+    "architecture.md",
+    "changelog.md",
+    "decisions.md",
+    "outillage/acces-preproduction/README.md",
+    "outillage/acces-preproduction/livraison-rapport-passeport.md",
+    "outillage/acces-preproduction/point-session.md",
+    "outillage/acces-preproduction/preparation-production-rapport-passeport.md",
+    "outillage/acces-preproduction/releve-heberge.md",
+    "requirements.md",
+    "roadmap.md"
+  ],
+  "localLinkTargetsChecked": 147,
+  "jsonFilesParsed": 8,
+  "sourceFoundationsChecked": 3,
+  "approvedPassportReferences": 21,
+  "uniqueApprovedDocuments": 15,
+  "checkoutReferencesComparedAfterCRLFNormalization": 21,
+  "humanDecisionsAndOtherTrackingScopesPreserved": true,
+  "generatedViewDeterministic": true,
+  "canonicalProductionPreparationAligned": true
+}

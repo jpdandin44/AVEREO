@@ -12,6 +12,13 @@ tags: [preproduction, securite, exploitation]
 
 # Accès aux préproductions par identifiants
 
+## Suite de production — 16 octobre 2026
+
+Après fusion des PR #83 et #84, consulter le [dossier commun de production](preparation-production-rapport-passeport.md).
+Il rattache au suivi canonique les opérations Rapport préparées, l'activation et
+la sauvegarde déjà constatées de Passeport Immo, ainsi que le blocage OAuth restant.
+Les récits datés ci-dessous conservent le contexte des lots précédents.
+
 ## Statut du lot
 
 ## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo

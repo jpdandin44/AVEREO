@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "status": "prepared_not_executable_until_gates_pass",
+  "observedAt": "2026-10-16T11:08:59+00:00",
+  "target": "https://rapport.avereo.fr/",
+  "documentRoot": "/home/daje3540/rapport.avereo.fr",
+  "candidate": {
+    "sourceSha": "3d70b530acc236f36ade6c06a553d3c9f7ed07f1",
+    "artifactSha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366"
+  },
+  "observation": "observation.json#rapport",
+  "operations": [
+    {
+      "path": ".htaccess",
+      "action": "preserve",
+      "beforeSha256": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+      "candidateSha256": "99fcc6d270cec6b80626ad20e32e53d8081aa23d6a5309747a79377859ce98a9",
+      "candidateLfSha256": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b"
+    },
+    {
+      "path": "api/.htaccess",
+      "action": "preserve",
+      "beforeSha256": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+      "candidateSha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+      "candidateLfSha256": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976"
+    },
+    {
+      "path": "api/auth.php",
+      "action": "preserve",
+      "beforeSha256": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+      "candidateSha256": "fbce0c37cf5b7e30d0941835797357bd4753ddf398e58709c2fc21e6ea7626d7",
+      "candidateLfSha256": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "8538a4e4364d4a83cc3b932d1c11c1d168de8a7c2b725643e0ced46992c1de02"
+    },
+    {
+      "path": "api/bootstrap.php",
+      "action": "preserve",
+      "beforeSha256": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+      "candidateSha256": "8222a3c159d7d133996af0773ce8e2092b8b56959757e5923c48e55ce0510cf7",
+      "candidateLfSha256": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "3f68968f64d21185a18fa48e4fab3f9182a95c5d22806ce9240a5a4e6b04a633"
+    },
+    {
+      "path": "api/health.php",
+      "action": "preserve",
+      "beforeSha256": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+      "candidateSha256": "b8350426f2b53a3d4cafd8cac33e14a00543bb1274c5dcd2e9cd1626e60193bb",
+      "candidateLfSha256": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "8deb8350e771ea4d99ebbb4740ba6eb85c4e0cadc73c2c9ee48aaf9e5f470e58"
+    },
+    {
+      "path": "api/reports.php",
+      "action": "preserve",
+      "beforeSha256": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+      "candidateSha256": "af3eb26975c1e7ace232822bbcdc2ddd8c5a3bd14df0e06a52e9ae604d04270d",
+      "candidateLfSha256": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "4342d8ddad7d7da25a1c269264c916adf1ff146daef221185930bf8d50272328"
+    },
+    {
+      "path": "assets/index-BnYLeEcL.css",
+      "action": "create",
+      "beforeSha256": null,
+      "candidateSha256": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+      "candidateLfSha256": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "7a8f38dc0d5c85fcae0c0d5fce24cd3c2bbaeee273e0f00de343c348528461ed",
+      "writeMode": "0644"
+    },
+    {
+      "path": "assets/index-CKpXCVG6.js",
+      "action": "create",
+      "beforeSha256": null,
+      "candidateSha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+      "candidateLfSha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "e94e82712a581c566253c2dcc7f7eb80ef9531344973c7b4fa24ec5215697d9a",
+      "writeMode": "0644"
+    },
+    {
+      "path": "auth/callback/index.html",
+      "action": "preserve",
+      "beforeSha256": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+      "candidateSha256": "d07c523f9d7bb258204112132a52f4a4226a895141eab551d069f53ba4f6487c",
+      "candidateLfSha256": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "00858125a51a7f8a07aa833d19519b0f00ba5a9904becbe1e788f4efb48baae6"
+    },
+    {
+      "path": "connect/entry.php",
+      "action": "preserve",
+      "beforeSha256": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+      "candidateSha256": "4434ed764c9d1381fd8b7eb29b8b3588c445b050d2ec38cd61a94e432583f9ea",
+      "candidateLfSha256": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "fba22a3dd599c40eca563495e554b1d93838a869056b3ffd6b2e742472998e1b"
+    },
+    {
+      "path": "connect/gate.php",
+      "action": "replace",
+      "beforeSha256": "53d5516f9f270d8ff9ade6e0fe130803e3dc22354c19e321d7dd99ca98d473a6",
+      "candidateSha256": "afc167d128d0baf62ade6259de4ed821a71f88b2bd75f171f5a5d4d5d058dce4",
+      "candidateLfSha256": "3c2fb628f06ce56129943545f8502538fc94af6f589eb946b942358944d019d5",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "afc167d128d0baf62ade6259de4ed821a71f88b2bd75f171f5a5d4d5d058dce4",
+      "writeMode": "0644"
+    },
+    {
+      "path": "connect/logout.php",
+      "action": "replace",
+      "beforeSha256": "f121a8cb87d09f0c5dfdfee7e6e17e6718493dfb841eddeb1778448f1ffb116d",
+      "candidateSha256": "06a85d72831268291e0ac0eae1ac6c1c4da3ee8d8993728ffd20adc4ad41b3fa",
+      "candidateLfSha256": "9aabc1a587ddf0fa22658f41ba0c1075147a5d3bae507c7600e0d49b155fe045",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "06a85d72831268291e0ac0eae1ac6c1c4da3ee8d8993728ffd20adc4ad41b3fa",
+      "writeMode": "0644"
+    },
+    {
+      "path": "index.html",
+      "action": "replace",
+      "beforeSha256": "1073be17912026b447cc2f41b13c5e05f1993f6367a4e4b840a6c9082ebc1923",
+      "candidateSha256": "7f16b8093cdb743728ac118a0508f5f1c969535d94594fc6abdfdb3efcc601be",
+      "candidateLfSha256": "cfa09b3ae6c0b3078d72ff738a0703bc28bb70f3b5dc400813e7a1e7d7d49760",
+      "publicationOrder": "last",
+      "expectedAfterSha256": "7f16b8093cdb743728ac118a0508f5f1c969535d94594fc6abdfdb3efcc601be",
+      "writeMode": "0644"
+    },
+    {
+      "path": "index.php",
+      "action": "preserve",
+      "beforeSha256": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+      "candidateSha256": "cb522456065e6f4988c49dcf1b63d2d6442011ef6c2aba2f2dc0d0c8b11bf2b9",
+      "candidateLfSha256": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa",
+      "publicationOrder": "before_index",
+      "expectedAfterSha256": "caf5d7c13cc564084546d00763f790b914bb8b5ed82018ff7e0c6e7ce1b80baa"
+    }
+  ],
+  "preserveOtherFiles": true,
+  "preserveOldAssets": true,
+  "privateConfigWrites": false,
+  "databaseWrites": false,
+  "connectRightsWrites": false,
+  "preproductionDataImport": false,
+  "normalizationRule": "LF hash is used only to identify equivalent files to preserve; write exact ZIP bytes for the five planned changes.",
+  "rollback": {
+    "status": "not_yet_qualified_on_production_copy",
+    "restoreReplacedFiles": true,
+    "removeCreatedFilesOnlyIfStillMatching": true,
+    "stopOnConcurrentChanges": true,
+    "preserveDatabaseAndPrivateConfig": true
+  },
+  "requiredBeforeExecution": [
+    "fresh baseline and source manifest comparison",
+    "verified file/config/database backup and isolated recovery",
+    "exact five-file rollback rehearsal on a private copy",
+    "working OAuth/CONNECT login",
+    "explicit production authorization for this target and artifact",
+    "review existing public modes 0666; qualify and approve any extra permission changes before execution"
+  ],
+  "executionToolStatus": "Procedure prepared; existing preproduction-only helper is not authorized for this target. The manual production workflow rebuilds and cannot attest promotion of this exact ZIP."
+}

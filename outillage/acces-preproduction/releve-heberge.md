@@ -29,7 +29,7 @@ Examiner les deux applications en préproduction ; la réserve sur le compte fam
 
 ## Livraison ciblée de Rapport et Passeport Immo
 
-Observation du `2026-10-16T08:47:47+00:00` ; état `delivered_verified_access_confirmed`.
+Observation du `2026-10-16T08:47:47+00:00` ; état `preproduction_merged_production_preparation_blocked`.
 [Compte rendu et limites](livraison-rapport-passeport.md).
 
 Les constats antérieurs ci-dessous restent historiques pour ces deux applications ; ce lot ne qualifie pas les autres cibles.
@@ -41,9 +41,23 @@ Les constats antérieurs ci-dessous restent historiques pour ces deux applicatio
 - **rapport** : [préproduction](https://rapport-preprod.avereo.fr/), archive `6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366`, livraison `delivered`.
 - **passeport-immo** : [préproduction](https://passeport-immo-preprod.avereo.fr/), archive `c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf`, livraison `verified_unchanged`.
 
-Examiner les deux applications en préproduction ; la réserve sur le compte famille est levée par confirmation humaine. Poursuivre les prérequis de production dans leur lot propre.
+Nouvelle connexion CONNECT et accès aux deux applications confirmés par le responsable. Suite : revue GitHub OAuth et livraison Drupal selon ses accords ; Rapport conserve récupération/retour arrière et accord de livraison, Passeport conserve activation/SCI/cron.
 
-La candidature reste soumise à revue ; aucune production modifiée ni nouvelle validation globale de phase créée.
+Le lot de préproduction ne vaut ni livraison de production ni nouvelle validation globale de phase.
+
+### Suite pour la mise en production
+
+[Dossier, opérations et prérequis](preparation-production-rapport-passeport.md).
+
+[PR de préparation #86](https://github.com/jpdandin44/AVEREO/pull/86) — open.
+
+| Application | État observé | Prochaine action |
+| --- | --- | --- |
+| rapport | Candidat préparé ; livraison en attente | Après revue OAuth et sa livraison autorisée en production : qualifier récupération/retour arrière Rapport et obtenir son accord exact de livraison. |
+| passeport-immo | Activé ; sauvegarde automatique vérifiée ; parcours CONNECT bloqué | Après correction OAuth de production selon son accord : terminer la connexion CONNECT et la revue humaine ; ne pas rejouer activation, SCI ou cron. |
+
+- OAuth de production répond 503 au contrôle du 16 octobre à 2026-10-16T15:27:57.163220+00:00 ; aucune livraison OAuth de production par ce lot.
+
 
 Le responsable confirme le maintien de Rapport et Passeport Immo pour le compte famille (#2), membre AVEREO, en préproduction. Réserve levée ; aucun droit modifié. Les quatre autres applications et l’administration restent refusées selon le contrôle en lecture seule.
 [Confirmation humaine et portée](archives/livraison-rapport-passeport-20261016/rights-confirmation.json).

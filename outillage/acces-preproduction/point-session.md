@@ -12,6 +12,37 @@ tags: [preproduction, reprise, applications, cockpit]
 
 # Point de reprise
 
+## Suite courante après fusion des PR #83 et #84
+
+Les deux fusions et leurs attestations humaines sont vérifiées. Le [dossier de
+production](preparation-production-rapport-passeport.md) et le bloc canonique
+`selected_applications_delivery.productionPreparation` portent la suite : Rapport
+attend la qualification de sa récupération/retour arrière et son accord exact de
+livraison ; Passeport Immo est déjà activé avec un premier cron vérifié. Le point
+OAuth de production répond 503 ; le correctif du fournisseur d'identité relève du
+lot Drupal. Ne pas rejouer activation, reprise SCI ou installation du cron.
+
+La copie de travail Passeport Immo est actualisée par son lot distinct ; ses travaux
+locaux et ceux de Projet sont préservés. Les états plus anciens ci-dessous sont
+historiques pour ce périmètre. Aucune validation de phase ni livraison Rapport
+n'est effectuée dans cette préparation.
+
+## Reprise du correctif OAuth du 16 octobre
+
+Le [lot Drupal #22](https://github.com/jpdandin44/avereo-site-drupal/pull/22)
+est livré sur l’identité de préproduction après Core/Symfony. Sauvegarde/restauration,
+retour arrière privé, audit sans alerte et contrôles HTTPS sont vérifiés. Les 76 assertions
+OAuth et les tests de garde-fous passent. Le [dossier courant](preparation-production-rapport-passeport.md#actualisation-du-correctif-drupal)
+renvoie aux reçus réels et au suivi de Gin/site dans le chat coordonné.
+La nouvelle connexion CONNECT et l’accès aux deux applications sont désormais
+confirmés par le responsable dans Chrome ; cette réserve de préproduction est
+levée. La PR OAuth #22 est ensuite fusionnée humainement dans Gin #24, pas dans
+`main`. Le site de préproduction est livré techniquement ; sa revue visuelle reste
+distincte. Examiner #25 et #24, intégrer Gin dans Core #23 puis vérifier son audit
+avant `main`. Le dernier contrôle de production enregistré reste 503 ; préparer
+la livraison Drupal selon ses accords et les prérequis Rapport.
+Passeport Immo demeure activé : conserver ses données, sa reprise SCI et son cron.
+
 ## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo
 
 Rapport est livré avec ses deux types ; Passeport Immo possède déjà le candidat courant et ses seize fichiers sont vérifiés sans réécriture. La [livraison et la recette](livraison-rapport-passeport.md) rassemblent les preuves, la levée de la réserve sur les accès du compte famille après confirmation humaine et les candidates exactes. Le bloc `selected_applications_delivery` du [suivi](suivi-chantier.json) fait référence pour ce périmètre. Les constats antérieurs ci-dessous restent historiques lorsqu’ils décrivent Rapport ancien ou Passeport Immo absent. Aucune livraison de production dans ce lot.

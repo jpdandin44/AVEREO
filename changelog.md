@@ -12,6 +12,21 @@ tags: [avereo, documentation, local]
 
 # Changelog du dépôt AVEREO
 
+## 2026-10-16 — Préparation de production après les PR #83 et #84
+
+Fusions et attestations humaines relues. Le [dossier commun](outillage/acces-preproduction/preparation-production-rapport-passeport.md)
+prépare la livraison exacte de Rapport, constate Passeport Immo déjà activé et son
+cron réel réussi, puis identifie le blocage OAuth restant en production. Le correctif
+Drupal et son préalable Core/Symfony sont désormais livrés sur l’identité de
+préproduction, avec restauration privée, retour arrière et contrôles techniques
+réussis. Le responsable confirme ensuite dans Chrome une nouvelle connexion et
+l’accès à Rapport/Passeport ; la réserve d’accès est levée. La fusion humaine OAuth
+#22 dans Gin #24 est constatée, ainsi que la livraison technique du site suivie
+dans #25. La revue du site, l’intégration à `main` et la production restent distinctes.
+Reçus, opérations,
+contrôles de passage et suivi canonique alignés. Les décisions existantes et les
+travaux Passeport Immo/Projet menés dans leur copie propre sont conservés.
+
 ## 2026-10-16 — Rapport et Passeport Immo en préproduction
 
 Rapport est livré avec Expertise & Visite technique et Visite Globale. Passeport Immo conserve son candidat actuel, déjà installé. La [recette ciblée](outillage/acces-preproduction/livraison-rapport-passeport.md) documente sauvegardes restaurées en privé, contrôle des fichiers, parcours authentifiés et candidats exacts. La divergence avec un ancien relevé de droits CONNECT est résolue par confirmation humaine : le compte famille conserve Rapport et Passeport Immo en préproduction. Réserve levée dans la PR #84 et les suivis ; aucune habilitation ni production modifiée. Les observations antérieures et les validations de phase sont conservées.

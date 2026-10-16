@@ -39,7 +39,18 @@ if selected:
         lines += [f"- **{name}** : [préproduction]({flow['targets']['preproduction']['url']}), "
                   f"archive `{flow['candidate']['artifactSha256']}`, livraison `{flow.get('delivery', {}).get('status', 'not_delivered')}`."]
     lines += ['', selected['nextAction'], '',
-        'La candidature reste soumise à revue ; aucune production modifiée ni nouvelle validation globale de phase créée.']
+        'Le lot de préproduction ne vaut ni livraison de production ni nouvelle validation globale de phase.']
+    preparation = selected.get('productionPreparation')
+    if preparation:
+        lines += ['', '### Suite pour la mise en production', '',
+            f"[Dossier, opérations et prérequis]({preparation['document']}).", '']
+        if preparation.get('pullRequest'):
+            pr = preparation['pullRequest']
+            lines += [f"[PR de préparation #{pr['number']}]({pr['url']}) — {pr['state']}.", '']
+        lines += ['| Application | État observé | Prochaine action |', '| --- | --- | --- |']
+        for name, application in preparation['applications'].items():
+            lines.append(f"| {name} | {application['label']} | {application['nextAction']} |")
+        lines += ['', *['- ' + blocker for blocker in preparation['commonBlockers']], '']
     access_review = selected.get('accessReview') or {}
     if access_review.get('status') == 'resolved' and access_review.get('confirmationEvidence'):
         lines += ['', access_review['summary'],
