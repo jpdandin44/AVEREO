@@ -5,7 +5,7 @@ title: Index workflows Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-10-16
 owner: jpdandin
 tags: [passeport-immo, audit, local]
 ---
@@ -20,3 +20,10 @@ reste dans le skill installé ; ce projet conserve seulement son raccordement.
 
 [Préparer la préproduction privée](preparer-preproduction.md) : contrôle du candidat,
 lot initialement fermé et répétition locale de restauration, sans transfert distant.
+
+[Reprise ciblée d'un bien](reprise-bien.md) : export privé, correspondance explicite
+des propriétaires, simulation, import sans écrasement et rejeu sans doublon ;
+qualification locale sous MariaDB, application sur la cible réelle encore à effectuer.
+
+[Génération du plan CIL](generation-plan-cil.md) : source Markdown, restitution
+Word et contrôles de contenu, d’accessibilité et de mise en page avant diffusion.

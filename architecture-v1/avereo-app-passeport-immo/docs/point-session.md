@@ -12,6 +12,41 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
+## Plan CIL livré le 16 octobre
+
+Le [plan d’action CIL](plan-action-cil.md) et son [Word](livrables/plan-action-cil.docx)
+sont produits : quatorze actions avec dépendances, livrables et critères, douze
+scénarios de recette, responsabilités proposées et jalons dans les quatre phases.
+Les dix pages sont inspectées après rendu Microsoft Word ; contrôle de contenu
+et audit d’accessibilité réussis. Le [workflow de génération](../workflows/generation-plan-cil.md)
+conserve la source Markdown comme référence. Le futur lot est mentionné dans
+`developmentWorkflow.nextIteration`, sans modifier les décisions du lot courant.
+
+La session cPanel disponible affiche de nouveau l’identification et un jeton
+de sécurité manquant. Une reconnexion a été demandée au responsable ; aucun
+identifiant n’est demandé dans le chat. Cette absence d’accès empêche de qualifier
+la cible réelle et d’y poursuivre l’installation maintenant. Les prérequis et
+l’accord D06 ci-dessous restent conservés ; aucune livraison n’est déclarée.
+
+## Suite du 16 octobre — reprise ciblée préparée en parallèle du plan CIL
+
+Le [mécanisme privé de reprise d'un bien](../workflows/reprise-bien.md) est produit
+et qualifié localement avec **35 assertions sous MariaDB 11.4**, sur deux bases
+isolées et des données fictives. Il sélectionne le seul bien/client/documents
+actifs et archivés, impose une correspondance source/propriétaire cible explicite,
+vérifie les empreintes et simule avant écriture. Le rejeu exact ne crée aucun doublon ;
+toute différence existante est refusée sans écrasement. Comptes, droits, secrets,
+tarifs et autres biens sont exclus. Le [reçu technique](../api/property-transfer-observation.json)
+conserve la portée et les limites ; le [dossier de production](04-mise-en-production.md)
+donne la séquence serveur à poursuivre.
+
+Aucune installation, migration réelle, modification de compte/droit/secret ou
+ouverture publique n'est effectuée. Le candidat applicatif autorisé reste inchangé.
+D06 conserve sa portée ; aucune case, décision ou événement humain n'est ajouté.
+**Prochaine action :** relire la session serveur, qualifier le propriétaire CONNECT
+de production et l'inventaire SCI frais, préparer la cible fermée et la récupération,
+puis appliquer et rejouer la copie exacte avant la recette de production.
+
 ## Suite du 16 octobre 2026 — D06 récupérée et PR nº82 fusionnée
 
 Le responsable a approuvé la Préproduction dans le cockpit à **09 h 05 min 11 s,

@@ -12,6 +12,24 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-16 — Plan CIL et reprise ciblée de production
+
+Plan proposé de quatorze actions et douze scénarios de recette, source Markdown
+et Word de dix pages généré puis contrôlé visuellement. Le périmètre CIL futur
+reste distinct du candidat actuel. Reprise privée d’un bien/client/documents,
+avec correspondance explicite des propriétaires, simulation et rejeu sans doublon,
+qualifiée par 35 assertions MariaDB. Les 30 assertions API/stockage, 22 de sauvegarde
+et 19 tests Python passent. Aucun transfert réel ni déploiement ; D06 et les
+21 références de preuves approuvées sont conservés.
+
+## 2026-10-16 — Comparatif CIL et conditions d’utilisation pour AVEREO
+
+Étude du guide propriétaire de huit pages, du modèle officiel distinct et des
+textes/sources institutionnelles : réutilisation commerciale, attribution, limites
+des marques et services tiers. Comparatif avec le code documentaire, l’export de
+devis et les reçus de stockage ; écarts et évolution CIL proposés, sans changement
+du runtime, des pièces client, du candidat ou des décisions de phase.
+
 ## 2026-10-16 — Validation D06 récupérée et suite de la PR nº82 préparée
 
 Préproduction approuvée dans le cockpit : six livrables et huit critères, dont la

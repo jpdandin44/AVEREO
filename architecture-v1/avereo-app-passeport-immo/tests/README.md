@@ -5,12 +5,24 @@ title: Vérification de la reprise
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-10-16
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Vérification de la reprise
+
+## Reprise ciblée d'un bien
+
+`python tests/check-transfer-property.py` exécute 35 assertions sur deux bases
+MariaDB 11.4 isolées, avec des identités et documents fictifs. Il couvre export
+limité au bien/client/actifs/archives, intégrité, propriétaires/base erronés,
+simulation sans écriture, conflits, retour transactionnel sans fichiers résiduels,
+conservation des tarifs/autres biens et rejeu sans doublon ni écrasement.
+Le CLI reste hors du candidat public. Ce contrôle est aussi appelé à la fin de
+`tests/check-storage-http.py`, dans la CI existante ; il ne démontre pas une reprise
+sur la cible réelle. Voir [la procédure](../workflows/reprise-bien.md) et
+[le reçu local](../api/property-transfer-observation.json).
 
 ## Sauvegardes automatiques
 

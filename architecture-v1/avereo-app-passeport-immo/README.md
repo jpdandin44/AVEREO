@@ -12,6 +12,20 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
+## Étude du carnet d’information du logement
+
+Le [comparatif avec le guide ministériel](docs/comparatif-carnet-information-logement.md)
+distingue le concept CIL, la réutilisation des contenus publics et les services tiers.
+Il compare les capacités actuelles aux documents attendus, propose une évolution
+et conserve les limites de complétude, de transmission et de responsabilité.
+Cette étude ne modifie pas le candidat en cours de livraison ni les validations.
+
+Le [plan d’action CIL](docs/plan-action-cil.md) propose quatorze actions avec
+priorités, dépendances, livrables, critères et douze scénarios de recette. Son
+[Word structuré](docs/livrables/plan-action-cil.docx) est généré depuis cette source
+selon le [workflow documentaire](workflows/generation-plan-cil.md). Les évolutions
+restent à cadrer dans une itération distincte de la production actuelle.
+
 ## Suite après fusion de la PR nº82 et validation de Préproduction
 
 La PR nº82 est fusionnée et la décision D06 du 16 octobre approuve la Préproduction,
@@ -30,6 +44,11 @@ Le responsable retient la reprise du dossier SCI de préproduction ; le
 documents actifs et archivés. Le [suivi canonique](docs/suivi-chantier.json) référence
 l'accord D06 sans nouvelle décision ; le [reçu courant](api/production-readiness-observation.json)
 vérifie le candidat identique après fusion. Aucun transfert ou déploiement effectué.
+
+La [reprise ciblée d’un bien](workflows/reprise-bien.md) est maintenant exécutable
+et qualifiée localement avec 35 assertions sous MariaDB, sur données fictives.
+Elle simule avant écriture et refuse les conflits ; le transfert SCI réel attend
+la qualification du propriétaire, de la cible, de la récupération et du retour arrière.
 
 ## Recette de préproduction et décision de phase
 

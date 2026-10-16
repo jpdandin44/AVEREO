@@ -313,7 +313,7 @@
         "Procédure, fumée et retour arrière vérifiés par le responsable.",
         "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée.",
+      "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.",
       "legacyPhaseId": 4,
       "authorizedOn": "2026-10-16",
       "startEvidence": {
@@ -322,7 +322,7 @@
       },
       "blockers": [
         "Cible de production non provisionnée : domaine et base dédiée absents dans cPanel le 16 octobre ; raccordement CONNECT et configuration à qualifier.",
-        "Inventaire SCI après recette, correspondance du propriétaire CONNECT, reprise ciblée et répétition sans doublon à qualifier avant transfert ; exclure les dossiers de test.",
+        "Inventaire SCI après recette et correspondance du propriétaire CONNECT à qualifier ; reprise ciblée et rejeu qualifiés localement, application et vérification sur cible réelle encore à effectuer ; exclure les dossiers de test.",
         "Sauvegarde/restauration de la cible et retour arrière du candidat exact non qualifiés en production."
       ],
       "pullRequest": {
@@ -331,9 +331,12 @@
         "number": 83,
         "state": "open",
         "draft": true,
-        "headSha": "b9018378104b092fed05fe6cd4c06a6ea7f3be44",
-        "observedAt": "2026-10-16T07:24:45+00:00",
-        "scope": "Préparation documentaire de la production après D06 et PR82 ; aucune livraison ni nouvelle autorisation."
+        "headSha": "0395dbc1ce9c447680ed3ca708253b2b1a3b16ae",
+        "observedAt": "2026-10-16T07:25:52.728Z",
+        "scope": "Préparation de production après D06 : reprise ciblée SCI qualifiée localement et plan CIL séparé ; aucune livraison ni nouvelle validation.",
+        "mergedAt": null,
+        "mergeCommitSha": null,
+        "mergedBy": null
       }
     }
   ],
@@ -1596,11 +1599,12 @@
     },
     "blockers": [
       "Cible de production non provisionnée : domaine et base dédiée absents dans cPanel le 16 octobre ; raccordement CONNECT et configuration à qualifier.",
-      "Inventaire SCI après recette, correspondance du propriétaire CONNECT, reprise ciblée et répétition sans doublon à qualifier avant transfert ; exclure les dossiers de test.",
+      "Inventaire SCI après recette et correspondance du propriétaire CONNECT à qualifier ; reprise ciblée et rejeu qualifiés localement, application et vérification sur cible réelle encore à effectuer ; exclure les dossiers de test.",
       "Sauvegarde/restauration de la cible et retour arrière du candidat exact non qualifiés en production."
     ],
-    "nextAction": "Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée.",
+    "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.",
     "nextIteration": [
+      "À cadrer : service CIL complet selon docs/plan-action-cil.md ; quatorze actions et douze scénarios proposés, Word dérivé dans docs/livrables/plan-action-cil.docx. Périmètre distinct du candidat courant, aucune validation CIL créée.",
       "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
       "À qualifier séparément : utilité du workflow Deploy Prototype To GitHub Pages en échec après fusion."
     ],
@@ -1622,7 +1626,7 @@
       },
       "production": {
         "status": "in_progress",
-        "nextAction": "Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée."
+        "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée."
       }
     },
     "gates": [
@@ -2316,7 +2320,7 @@
       "addressStatus": "confirmed_by_user",
       "productionTargetQualified": false,
       "phaseStarted": true,
-      "nextAction": "Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée.",
+      "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.",
       "readiness": [
         {
           "id": "candidate",
@@ -2335,8 +2339,8 @@
         },
         {
           "id": "initial_data_scope",
-          "status": "scope_confirmed_preparation_pending",
-          "evidence": "docs/04-mise-en-production.md"
+          "status": "selective_transfer_locally_verified_real_inventory_owner_and_application_pending",
+          "evidence": "api/property-transfer-observation.json"
         },
         {
           "id": "production_recovery_and_rollback",
@@ -2414,10 +2418,18 @@
         "productionOwnerMappingStatus": "not_qualified",
         "transferStatus": "not_performed",
         "authorizationScope": "Choix des données à intégrer au plan uniquement ; aucune autorisation de transfert, de déploiement ou de passage de phase.",
-        "productionAuthorizationRef": "D06"
+        "productionAuthorizationRef": "D06",
+        "technicalTool": {
+          "status": "locally_verified_hosted_application_pending",
+          "workflow": "workflows/transfer-property.php",
+          "runbook": "workflows/reprise-bien.md",
+          "evidence": "api/property-transfer-observation.json",
+          "localAssertions": 35,
+          "realTransferPerformed": false
+        }
       },
       "latestReadinessEvidence": "api/production-readiness-observation.json",
-      "updatedAt": "2026-10-16T07:13:59+00:00",
+      "updatedAt": "2026-10-16T07:39:22+00:00",
       "productionAuthorizationRef": "D06",
       "remainingGateErrors": [
         "Blocages présents ou non renseignés.",
@@ -2433,7 +2445,7 @@
         "draft": true,
         "headSha": "b9018378104b092fed05fe6cd4c06a6ea7f3be44",
         "observedAt": "2026-10-16T07:24:45+00:00",
-        "scope": "Préparation documentaire de la production après D06 et PR82 ; aucune livraison ni nouvelle autorisation."
+        "scope": "Préparation de production après D06 : reprise ciblée SCI qualifiée localement et plan CIL séparé ; aucune livraison ni nouvelle validation."
       }
     }
   },
@@ -2512,7 +2524,7 @@
     "closedAt": "2026-10-15T19:40:40.524+00:00",
     "destinationProject": "AVEREO_2",
     "reason": "Arrêt de la session demandé par le responsable : attendre et vérifier la sauvegarde automatique de cette nuit avant de valider le critère 07 de Préproduction.",
-    "nextAction": "Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée.",
+    "nextAction": "Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.",
     "resumedAt": "2026-10-16T06:38:24+00:00",
     "resumeReference": "Demande directe du responsable le 16 octobre : relancer le projet et donner accès à la sauvegarde de cette nuit.",
     "previousClosure": {

@@ -237,7 +237,9 @@ La préparation et les contrôles à effectuer sont les suivants :
    puis conserver la correspondance des identifiants source/cible et le manifeste
    appliqué. Une reprise de l'opération doit détecter les éléments déjà importés
    et les conflits, sans écrasement silencieux. L'outil exact et cette propriété
-   restent à qualifier sur une cible isolée avant utilisation en production.
+   sont désormais disponibles et qualifiés sur deux bases MariaDB fictives avec
+   [l'outil de reprise ciblée](../workflows/reprise-bien.md) ; leur contrôle sur la
+   cible et les propriétaires réels reste nécessaire avant utilisation en production.
 4. **Préserver les sources et la récupération.** Conserver le dossier de
    préproduction intact. Sauvegarder l'état cible avant écriture, ou constater sa
    vacuité et son isolement, puis vérifier la récupération conformément à la
@@ -248,10 +250,30 @@ La préparation et les contrôles à effectuer sont les suivants :
    avec le compte de production, ainsi que le refus d'un autre compte. Conserver
    un reçu sans données personnelles ni secrets avant toute ouverture.
 
-À qualifier : compte propriétaire de production, inventaire actualisé, mécanisme
-de reprise, essai sans doublon et récupération sur la cible réelle. L'accord D06
+À qualifier sur le serveur : compte propriétaire de production, inventaire actualisé,
+application du mécanisme, rejeu sans doublon et récupération sur la cible réelle. L'accord D06
 est conservé ; aucune correspondance d'identité, aucun contenu supplémentaire ni
 réussite de transfert ne sont déduits de ce seul accord.
+
+### Mécanisme exécutable qualifié localement — 16 octobre
+
+Le CLI privé [transfer-property.php](../workflows/transfer-property.php) et sa
+[procédure](../workflows/reprise-bien.md) limitent la copie au bien sélectionné,
+au client lié et aux documents actifs/archivés. Le plan explicite les environnements
+et propriétaires source/cible ; un manifeste privé et son empreinte indépendante
+lient cette sélection. La simulation précède l'import, qui conserve le modèle,
+les métadonnées, les dates et les octets. Les identifiants client/documents sont
+recalculés de façon stable ; un rejeu exact ne crée aucun doublon et ne change
+pas la révision. Une différence cible ou un fichier orphelin entraîne un refus.
+Les comptes, droits, secrets, tarifs et autres biens ne sont pas transférés.
+
+Le [reçu local](../api/property-transfer-observation.json) couvre **35 assertions
+sous MariaDB 11.4**, avec deux bases et des données fictives uniquement : sélection,
+archives, comptes/base erronés, empreintes, simulation sans écriture, conflit,
+retour transactionnel, rejeu et conservation des écritures ultérieures de la cible.
+Ce lot privé ne modifie pas les seize fichiers du candidat public et ne constitue
+pas une livraison de l'outil sur le serveur. L'inventaire SCI actualisé, le propriétaire
+de production, la cible fermée et la récupération/retour arrière réels restent à établir.
 
 ## Séquence de préparation et de livraison
 

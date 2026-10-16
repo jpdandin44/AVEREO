@@ -12,6 +12,15 @@ tags: [avereo, documentation, local]
 
 # Roadmap Passeport Immo
 
+## Évolution CIL proposée le 16 octobre
+
+Le [plan d’action](docs/plan-action-cil.md) prépare une itération distincte :
+contenu applicable, modèle du carnet, documents et travaux, caractéristiques
+techniques, vérification, export et transmission. Il fixe quatorze actions et
+douze scénarios proposés ; cadrage, moyens et calendrier restent à arrêter.
+Le Word est dérivé de cette source. Ce travail accompagne la production actuelle
+sans modifier son candidat ni ajouter de condition fonctionnelle à D06.
+
 ## Suite du 16 octobre — préparer la production autorisée
 
 La décision D06 approuve la phase 2, dont le critère 07, et son commentaire autorise
@@ -22,6 +31,11 @@ La phase 3 est en préparation. Priorité : cible fermée, propriétaire CONNECT
 inventaire SCI après recette et reprise ciblée sans doublon, récupération et retour
 arrière. L'installation et les contrôles réels suivent après qualification ;
 aucune ouverture publique n'est autorisée par cette préparation.
+
+La reprise ciblée est qualifiée localement sur deux bases MariaDB fictives,
+avec simulation et rejeu sans doublon. La correspondance du propriétaire réel,
+l’inventaire frais et l’application sur la cible restent à effectuer selon la
+[procédure privée](workflows/reprise-bien.md).
 
 ## Suite après fusion de la PR nº81
 

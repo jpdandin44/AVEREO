@@ -56,7 +56,7 @@ Aucune décision en attente.
 ## Où en est le développement ?
 
 Travail actuel : **Production — En cours**.
-Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée.
+Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.
 
 Reprise demandée par le responsable dans AVEREO_2 le 2026-10-16T06:38:24+00:00.
 
@@ -79,7 +79,7 @@ Ces étapes techniques complètent les phases formelles du chantier ; une fusion
 |---|---|---|
 | Local | Validée | Lot documents/coupes approuvé ; stockage serveur vérifié techniquement et installé en préproduction privée. Revue humaine du nouveau lot distincte. |
 | Préproduction | Validée | Phase 2 approuvée par D06 le 16 octobre ; six livrables et huit critères examinés, dont la sauvegarde nocturne. |
-| Production | En cours | Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée. |
+| Production | En cours | Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée. |
 
 ### Candidat et GitHub
 
@@ -161,10 +161,10 @@ Preuves du candidat identifié ci-dessus :
 ### Blocages de passage
 
 - Cible de production non provisionnée : domaine et base dédiée absents dans cPanel le 16 octobre ; raccordement CONNECT et configuration à qualifier.
-- Inventaire SCI après recette, correspondance du propriétaire CONNECT, reprise ciblée et répétition sans doublon à qualifier avant transfert ; exclure les dossiers de test.
+- Inventaire SCI après recette et correspondance du propriétaire CONNECT à qualifier ; reprise ciblée et rejeu qualifiés localement, application et vérification sur cible réelle encore à effectuer ; exclure les dossiers de test.
 - Sauvegarde/restauration de la cible et retour arrière du candidat exact non qualifiés en production.
 
-Prochaine action : Préparer la cible fermée passeport-immo.avereo.fr, qualifier le propriétaire CONNECT et la reprise ciblée du dossier SCI, puis la récupération et le retour arrière. Accord de production déjà reçu dans D06 ; aucune ouverture publique autorisée.
+Prochaine action : Qualifier le propriétaire CONNECT de production et l’inventaire SCI frais, préparer la cible fermée et la récupération, puis appliquer et rejouer la copie ciblée qualifiée localement. D06 reste acquis ; aucune ouverture publique autorisée.
 
 ### Accords et livraison
 
@@ -174,6 +174,7 @@ Les validations antérieures de phase ne sont ni remplacées ni déduites de ces
 
 ### Suite proposée
 
+- À cadrer : service CIL complet selon docs/plan-action-cil.md ; quatorze actions et douze scénarios proposés, Word dérivé dans docs/livrables/plan-action-cil.docx. Périmètre distinct du candidat courant, aucune validation CIL créée.
 - À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.
 - À qualifier séparément : utilité du workflow Deploy Prototype To GitHub Pages en échec après fusion.
 
