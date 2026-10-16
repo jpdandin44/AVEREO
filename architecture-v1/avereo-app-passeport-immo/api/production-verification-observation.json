@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "kind": "production_activation_and_verification",
+  "recordedAt": "2026-10-16T11:07:57.743545+00:00",
+  "humanAuthorizationRef": "D06",
+  "target": "https://passeport-immo.avereo.fr/",
+  "candidate": {
+    "sourceSha": "7209bf3334a5f3f98d422b41d177c734970a0750",
+    "artifactSha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+    "installedFilesVerified": 16,
+    "signedGatePolicyInstalled": true
+  },
+  "activation": {
+    "observedAt": "2026-10-16T10:44:23+00:00",
+    "humanExecuted": true,
+    "account": "dandin",
+    "connectUserId": 1,
+    "applicationId": 6,
+    "otherCurrentAccountsDenied": 1,
+    "rolesChanged": false,
+    "existingKeyCopiedServerSide": true,
+    "newSecretGenerated": false,
+    "webStorageEnabled": true,
+    "publicOpeningPerformed": false,
+    "secretValuesReturned": false
+  },
+  "automaticBackup": {
+    "status": "active_real_cron_verified_finalized",
+    "firstCronCompletedAt": "2026-10-16T10:45:02+00:00",
+    "trigger": "cron",
+    "tables": 4,
+    "documents": 9,
+    "fileReadback": "passed",
+    "temporaryRowRestore": "passed",
+    "finalizedAt": "2026-10-16T10:45:51+00:00",
+    "temporaryQualificationEntryPresent": false,
+    "otherCronLinesPreserved": true,
+    "schedule": "daily 03:20 Europe/Paris with hourly catch-up",
+    "retentionSuccessfulCopies": 30,
+    "location": "private_on_same_hosting",
+    "offHostCopyAndAlerts": "not_qualified"
+  },
+  "applicationHttpsRecipe": {
+    "observedAt": "2026-10-16T10:52:13+00:00",
+    "status": "passed",
+    "assertions": 57,
+    "independentSessions": 2,
+    "documentsVerifiedPerSession": 9,
+    "activeDocuments": 6,
+    "archivedDocuments": 3,
+    "candidateFilesVerified": 16,
+    "strictTlsValidation": true,
+    "allBusinessRowsUnchanged": true,
+    "tests": [
+      "real CONNECT issuer and existing account authorization",
+      "anonymous root redirect and API/assets refusal",
+      "invalid and replayed launch tickets refused",
+      "server identity and SCI persistence in two independent signed sessions",
+      "all nine document downloads match sizes and SHA256 in both sessions",
+      "unknown property, missing CSRF/origin and stale revision refused",
+      "logout clears browser cookie; subsequent request without cookie refused"
+    ],
+    "oauthBrowserLoginPerformed": false,
+    "ticketOrCookieValuesReturned": false,
+    "limitations": [
+      "Signed launches for the existing authorized account do not prove OAuth login.",
+      "No valid business write was performed.",
+      "Cookie removal does not prove server-side revocation of a retained stateless cookie."
+    ]
+  },
+  "oauthBrowserRecipe": {
+    "status": "blocked_identity_provider_maintenance",
+    "observedOn": "2026-10-16",
+    "nativeDrupalLoginAccount": "dandin",
+    "nativeDrupalLoginSucceeded": true,
+    "connectError": "OAUTH_UPSTREAM_REJECTED",
+    "upstreamStage": "token_exchange",
+    "upstreamStatus": 503,
+    "transportError": false,
+    "upstreamHost": "avereo.fr",
+    "upstreamPath": "/oauth/token",
+    "maintenanceRemainsEnabled": true,
+    "liveProviderChanged": false
+  },
+  "proposedProviderFix": {
+    "status": "prepared_isolated_qualification_passed_scope_authorization_pending",
+    "document": "docs/blocage-oauth-production.md",
+    "qualifiedAt": "2026-10-16T10:59:04+00:00",
+    "assertions": 27,
+    "unrelatedRoutesUnchanged": 15,
+    "actualInstalledDrupalAndSymfonyClasses": true,
+    "selectedRoutes": [
+      "/oauth/authorize",
+      "/oauth/token",
+      "/oauth/userinfo"
+    ],
+    "change": "Only add _maintenance_access=true; preserve authentication, requirements, methods and controllers.",
+    "files": [
+      {
+        "path": "workflows/propositions/oauth-maintenance/modules/custom/avereo_rapport_oauth/avereo_rapport_oauth.services.yml",
+        "sha256": "5a32981fb13bbeba78b2d0ff6ffa61405544723c3f781b4703ab1d6d000c9de2"
+      },
+      {
+        "path": "workflows/propositions/oauth-maintenance/modules/custom/avereo_rapport_oauth/src/Routing/MaintenanceOauthRouteSubscriber.php",
+        "sha256": "2615916d1ce39d582a8b72f3d06799d6324edac187a460986f39c9f27d5bcf93"
+      },
+      {
+        "path": "workflows/propositions/oauth-maintenance/qualifier-proposition.php",
+        "sha256": "ce4809bbd524cf2122e233ae1c708bec0e07480deeef43bb84c3394f949a2dfb"
+      }
+    ],
+    "newLiveTargetFilesAbsent": true,
+    "liveFilesChanged": false,
+    "liveRoutesChanged": false,
+    "databaseBootstrapped": false,
+    "maintenanceDisabled": false,
+    "remainingPrerequisites": [
+      "User authorization for the site Drupal scope.",
+      "Verify effective module activation; backup and normal site deployment checks.",
+      "Preproduction and production OAuth browser qualification after any authorized deployment."
+    ]
+  },
+  "humanPhaseValidationChanged": false,
+  "remaining": [
+    "Obtain the scope authorization for the prepared provider correction.",
+    "Qualify the actual OAuth browser launch through CONNECT and then the final human recipe.",
+    "Keep merge, phase validation and public opening distinct."
+  ],
+  "integrationObservation": {
+    "observedAt": "2026-10-16T11:16:37.037079+00:00",
+    "pullRequests": [
+      {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/83",
+        "repository": "jpdandin44/AVEREO",
+        "number": 83,
+        "state": "merged",
+        "draft": false,
+        "headSha": "08f437a6ee93604c59c7c53693b01e78622335e2",
+        "observedAt": "2026-10-16T11:16:37.037079+00:00",
+        "mergedAt": "2026-10-16T10:47:35Z",
+        "mergeCommitSha": "de33542cb8f16efaac318cb7cfd0b62fb34c092f",
+        "mergedBy": "jpdandinavereo-design"
+      },
+      {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/84",
+        "repository": "jpdandin44/AVEREO",
+        "number": 84,
+        "state": "merged",
+        "draft": false,
+        "headSha": "25ec94df960116841a391a980ddfdd92d8bfb7ba",
+        "observedAt": "2026-10-16T11:16:37.037079+00:00",
+        "mergedAt": "2026-10-16T10:50:33Z",
+        "mergeCommitSha": "0fd533200d3044582d72003aa47eed1582a6dec4",
+        "mergedBy": "jpdandinavereo-design"
+      }
+    ],
+    "scope": "Human GitHub merges verified; no phase approval, provider deployment or public opening inferred."
+  },
+  "closeGate": {
+    "gate": "close",
+    "declaredEvidenceConsistent": false,
+    "errors": [
+      "Blocages présents ou non renseignés.",
+      "Contrôle actuel absent : production sur o2switch:daje3540:passeport-immo.avereo.fr."
+    ],
+    "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+    "observedAt": "2026-10-16T11:16:37.037079+00:00",
+    "evidence": "api/production-verification-observation.json#closeGate"
+  },
+  "latestProviderPreparation": "api/oauth-provider-preparation-observation.json"
+}

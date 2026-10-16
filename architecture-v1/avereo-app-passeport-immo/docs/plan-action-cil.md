@@ -386,21 +386,21 @@ sur la cible convenue et le dossier SCI, avec le candidat déjà contrôlé ; le
 CIL ne modifie pas ces octets et ne crée pas une nouvelle condition fonctionnelle
 pour cette livraison.
 
-Le domaine, le certificat et la base dédiée sont créés. Le candidat est installé
-fermé et le dossier SCI repris pour le compte confirmé, avec neuf documents et
-rejeu sans doublon. Les cinq droits SQL utiles, la récupération isolée des données
-et le retour arrière sont vérifiés. Le raccordement final est préparé et répété ;
-son activation et la recette authentifiée restent à terminer.
+Le [dossier de production](04-mise-en-production.md) rassemble l’état réel de la
+cible, les reçus de reprise SCI, la récupération, l’activation et la recette CONNECT.
+Les constats datés distinguent la livraison technique de la validation du parcours
+authentifié. Ce tableau rappelle les contrôles du lot courant ; leur avancement
+reste dans le cockpit et le dossier de production.
 
 | Point de contrôle | Action de la livraison courante | Preuve attendue |
 |---|---|---|
-| Cible fermée | Maintenir le refus d’accès pendant la préparation et qualifier le sas à l’activation | Inventaire réel, candidat exact, contrôle HTTPS et refus d’accès |
-| Compte et dossier SCI | Reprise effectuée ; contrôler les parcours du compte confirmé après activation | Bien, client, six actifs et trois archives, empreintes et rejeu exact |
-| Récupération | Préserver les copies qualifiées et en reprendre une fraîche avant activation | Quatre tables et neuf fichiers restaurés isolément ; éléments CONNECT préservés |
-| Retour arrière | Conserver fermeture et restauration ciblée sans perte des nouvelles données | Répétition isolée et contrôle de passage fondé sur les preuves réelles |
+| Accès privé | Conserver le sas signé et vérifier les refus d’accès ainsi que le parcours OAuth | Inventaire réel, candidat exact, contrôles HTTPS et authentification |
+| Compte et dossier SCI | Contrôler les parcours du compte confirmé après reprise ciblée | Bien, client, six actifs et trois archives, empreintes et rejeu exact |
+| Récupération | Préserver les copies qualifiées et la sauvegarde propre à la production | Quatre tables et neuf fichiers restaurés isolément ; éléments CONNECT préservés |
+| Retour arrière | Conserver fermeture et restauration ciblée sans perte des nouvelles données | Répétition isolée et contrôles fondés sur les preuves réelles |
 
-Le [dossier de production](04-mise-en-production.md) conserve l’avancement et la
-prochaine action. Le plan CIL reste une proposition pour l’itération suivante.
+L’exécution et ses éventuels blocages restent suivis dans leur périmètre propre.
+Le plan CIL constitue une proposition pour l’itération suivante.
 
 ## Contrôles après livraison
 

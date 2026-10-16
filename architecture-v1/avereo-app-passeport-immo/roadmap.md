@@ -21,21 +21,18 @@ douze scénarios proposés ; cadrage, moyens et calendrier restent à arrêter.
 Le Word est dérivé de cette source. Ce travail accompagne la production actuelle
 sans modifier son candidat ni ajouter de condition fonctionnelle à D06.
 
-## Suite du 16 octobre — terminer l’activation privée
+## Suite du 16 octobre — lever le blocage OAuth
 
-D06 valide la Préproduction et autorise le passage en production du candidat examiné.
-Le domaine fermé et les ressources dédiées sont créés, le candidat installé et le
-dossier SCI repris pour `dandin`. Le rejeu ne crée aucun doublon. Les quatre tables,
-neuf documents et les éléments CONNECT concernés ont des copies restaurées isolément.
+La production privée est activée selon D06 ; le dossier SCI, la récupération isolée
+et 57 contrôles HTTPS sont vérifiés. La sauvegarde quotidienne est active et le
+premier vrai succès cron est constaté ; l’entrée temporaire de qualification est retirée.
 
-Le raccordement et la sauvegarde automatique de production sont préparés et répétés
-sans modifier les accès réels. Prochaine action : exécution humaine finale selon la
-[procédure](workflows/activation-production.md), puis recette authentifiée et preuve
-d’un vrai déclenchement cron. L’ouverture publique reste distincte. Le
-[reçu d’exécution](api/production-execution-observation.json) et le
-[point de session](docs/point-session.md) portent l’avancement courant.
-
-Le compte famille conserve son accès de préproduction, avec isolement SCI vérifié.
+Le [blocage courant](docs/blocage-oauth-production.md) porte sur l’échange de jetons
+OAuth du site Drupal AVEREO, qui reçoit 503 pendant sa maintenance. Un correctif
+limité à trois routes est autorisé et intégré dans la PR Drupal nº21 ; 66 contrôles
+réussissent avec le vrai service de maintenance. Le précontrôle hébergé échoue sur
+six alertes de dépendances : autoriser et qualifier ces lots de sécurité distincts,
+puis reprendre installation OAuth et parcours complet CONNECT. D06 est conservé.
 Le plan CIL reste une proposition pour l’itération suivante.
 
 ## Historique — suite après fusion de la PR nº81

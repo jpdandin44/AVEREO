@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "kind": "site_preproduction_technically_qualified_production_review_pending",
+  "recordedAt": "2026-10-16T12:56:39.400476+00:00",
+  "authorization": {
+    "source": "direct_user_chat_reply",
+    "text": "Oui, corriger ces seules routes OAuth",
+    "questionScope": "Only /oauth/authorize, /oauth/token and /oauth/userinfo, preproduction qualification followed by production if required checks pass; authentication and public maintenance preserved.",
+    "newCredentialOrRoleChangesAuthorized": false,
+    "dependencyUpgradeAuthorized": false
+  },
+  "siteRepository": "jpdandin44/avereo-site-drupal",
+  "sitePullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/22",
+  "siteImplementation": {
+    "files": [
+      {
+        "path": "modules/custom/avereo_rapport_oauth/avereo_rapport_oauth.services.yml",
+        "sha256": "5a32981fb13bbeba78b2d0ff6ffa61405544723c3f781b4703ab1d6d000c9de2"
+      },
+      {
+        "path": "modules/custom/avereo_rapport_oauth/src/Routing/MaintenanceOauthRouteSubscriber.php",
+        "sha256": "2615916d1ce39d582a8b72f3d06799d6324edac187a460986f39c9f27d5bcf93"
+      }
+    ],
+    "candidateManifest": "data/candidat-oauth-maintenance.json",
+    "candidateManifestSha256": "024592fd4eaabbcbc9da14074c502e19454883081987500c70549390edff484d",
+    "sameAsPreviouslyQualifiedProposal": true,
+    "newLiveFilesInstalled": false,
+    "sourceSha": "d6da130e4a17d5c572edc46770086d65627194c6",
+    "historicalObservationAt": "2026-10-16T12:56:39.400476+00:00"
+  },
+  "localRouteQualification": {
+    "status": "passed",
+    "assertions": 66,
+    "test": "tests/oauth-maintenance.test.php",
+    "realDrupalMaintenanceService": true,
+    "selectedRoutes": 3,
+    "unrelatedRoutes": 16,
+    "databaseBootstrapped": false,
+    "liveFilesChanged": false,
+    "limitations": [
+      "Real route definitions and maintenance service in memory; not a hosted OAuth browser recipe."
+    ],
+    "observedAt": "2026-10-16T12:47:06.499876+00:00"
+  },
+  "hostedPreflight": {
+    "observedAt": "2026-10-16T12:29:03+00:00",
+    "environments": [
+      "https://preprod.avereo.fr/",
+      "https://avereo.fr/"
+    ],
+    "drupalVersion": "11.4.7",
+    "oauthModuleEnabledBoth": true,
+    "maintenanceEnabledBoth": true,
+    "composerValidateExitCodeBoth": 0,
+    "composerAuditExitCodeBoth": 1,
+    "advisoryCountPerEnvironment": 6,
+    "affectedPackagesPerEnvironment": 4,
+    "pendingDatabaseUpdatesBoth": 0,
+    "pendingUpdatesMessage": "[success] No database updates required.",
+    "composerJsonSha256Both": "d605ff5179f0314ba189728b088e4f5dce7e757a3249a6a137dfcc0c6b646968",
+    "composerLockSha256Both": "f8177990c8160a12f8232098b9772df473a93f316d3919f44681c34e90e1503a",
+    "dependencyScopeProposal": [
+      {
+        "package": "drupal/core",
+        "installed": "11.4.7",
+        "proposed": "11.4.10",
+        "advisories": [
+          "SA-CORE-2026-014",
+          "SA-CORE-2026-015",
+          "SA-CORE-2026-016"
+        ],
+        "source": "https://www.drupal.org/project/drupal/releases/11.4.10",
+        "separateLot": "core"
+      },
+      {
+        "package": "drupal/easy_breadcrumb",
+        "installed": "2.0.9",
+        "proposed": "2.0.11",
+        "advisories": [
+          "SA-CONTRIB-2026-212"
+        ],
+        "source": "hosted_composer_audit_and_existing_pr20_dependency_receipt",
+        "separateLot": "contrib"
+      },
+      {
+        "package": "drupal/gin",
+        "installed": "5.0.15",
+        "proposed": "5.0.16",
+        "advisories": [
+          "SA-CONTRIB-2026-219"
+        ],
+        "source": "https://www.drupal.org/sa-contrib-2026-219",
+        "separateLot": "admin_theme"
+      },
+      {
+        "package": "drupal/leaflet",
+        "installed": "10.4.9",
+        "proposed": "10.4.13",
+        "advisories": [
+          "SA-CONTRIB-2026-204"
+        ],
+        "source": "https://www.drupal.org/sa-contrib-2026-204",
+        "separateLot": "contrib"
+      }
+    ],
+    "targetComposerFilesChanged": false,
+    "liveSourceFilesChanged": false,
+    "freshBackupForThisDeployment": "not_started_audit_failed_before_source_mutation",
+    "cacheRebuildForThisDeployment": "not_performed_no_source_deployment",
+    "criticalPageRecipeForThisDeployment": "not_performed_gate_blocked"
+  },
+  "githubQualification": {
+    "observedAt": "2026-10-16T12:54:37.998731+00:00",
+    "testedHeadSha": "65aae1c40dbbb8e8bf98000b7b9e0e97f111af60",
+    "baseSha": "1b677eab4c2bfdee1793dcb40fa0a323ed5370a8",
+    "mergeable": "MERGEABLE",
+    "routeAndMaintenanceTest": "passed",
+    "repositoryHygiene": "passed",
+    "composerAudit": "failed",
+    "repositoryAdvisories": 4,
+    "repositoryAffectedPackages": 2,
+    "runUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38903278750",
+    "humanChecklist": "unchecked",
+    "policyDraft": "skipped",
+    "pullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/21",
+    "historical": true
+  },
+  "securityUpdateScope": "site_preproduction_technically_qualified_production_review_pending",
+  "oauthDeploymentPerformed": true,
+  "newPasseportImmoRecipePerformed": false,
+  "applicationArtifactChanged": false,
+  "applicationDataChanged": false,
+  "previousProductionEvidence": "api/production-verification-observation.json",
+  "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et la PR opératoire Drupal nº25 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés. La source OAuth nº22 est déjà fusionnée humainement dans la branche Gin ; cette acceptation est conservée, sans la convertir en revue du site.",
+  "securityAuthorization": {
+    "recordedAt": "2026-10-16T14:03:17.474281+00:00",
+    "source": "direct_user_chat_reply",
+    "questionItem": "call_49c092563dc24319b6ec4fc7605dab7f",
+    "text": "Oui, traiter ces mises à jour dans des lots séparés",
+    "packages": {
+      "drupal/core": "11.4.10",
+      "drupal/gin": "5.0.16",
+      "drupal/easy_breadcrumb": "2.0.11",
+      "drupal/leaflet": "10.4.13"
+    },
+    "targets": [
+      "https://preprod.avereo.fr/",
+      "https://avereo.fr/"
+    ],
+    "conditions": [
+      "Separate lots",
+      "Fresh backups restored privately",
+      "Preproduction qualification before production",
+      "Required checks passed",
+      "Public maintenance preserved"
+    ],
+    "humanMergePerformedByAgent": false,
+    "publicOpeningAuthorized": false,
+    "coordination": {
+      "authorized": true,
+      "source": "direct_user_chat_reply",
+      "text": "Oui, coordonner les deux chats (recommandé)",
+      "threadTitle": "Optimisation Outils AVEREO",
+      "threadId": "01a0ca7f-f534-7620-a6ba-6c51da8e1921"
+    }
+  },
+  "initialSitePullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/21",
+  "currentProgress": {
+    "observedAt": "2026-10-16T16:56:14.453901+00:00",
+    "siteOperationsPullRequest": "https://github.com/jpdandin44/avereo-site-drupal/pull/25",
+    "canonicalSiteEvidence": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/security-contrib-hosted-20261016/data/recette-securite-site-active.json",
+    "status": "site_preproduction_technically_qualified_production_review_pending",
+    "activePreproductionLotsDelivered": [
+      "easy-breadcrumb",
+      "leaflet",
+      "core",
+      "gin"
+    ],
+    "sitePreproductionOauthDelivered": true,
+    "siteNativeOauthControlsPassed": true,
+    "productionSiteChanged": false,
+    "identityPreproductionHumanRecipe": {
+      "source": "human_reply_in_coordinated_chat_verified_by_read_thread",
+      "threadId": "01a0ca7f-f534-7620-a6ba-6c51da8e1921",
+      "turnId": "01a1456b-4478-7ca2-9f90-133f47c30522",
+      "quote": "Nouvelle connexion et deux applications accessibles",
+      "scope": "Fresh Chrome login at connect-preprod.avereo.fr then Rapport and Passeport Immo; not production/site delivery acceptance."
+    },
+    "sharedSourceHumanMerge": {
+      "state": "MERGED",
+      "mergedAt": "2026-10-16T16:36:25Z",
+      "headRefOid": "7a06c2b377a386a645efe05dcfb4cd0b363491b3",
+      "baseRefName": "fix/security-gin-preproduction-20261016",
+      "mergeCommit": {
+        "oid": "8cd0d2a393e5f4172466fdab3ec442a1c43b3ebc"
+      },
+      "url": "https://github.com/jpdandin44/avereo-site-drupal/pull/22",
+      "scope": "Human merge of OAuth PR22 into the Gin branch; not main, not site-preproduction phase acceptance or production delivery."
+    }
+  },
+  "oauthDeploymentEnvironment": "site_preproduction_only",
+  "oauthProductionDeploymentPerformed": false
+}

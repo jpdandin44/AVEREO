@@ -31,3 +31,7 @@ Word et contrôles de contenu, d’accessibilité et de mise en page avant diffu
 [Activation privée de production](activation-production.md) : candidat fermé et SCI
 repris, préparation avec répétition isolée puis action humaine finale ; clé existante,
 droits limités, politique signée et sauvegarde dédiée, sans ouverture publique.
+
+[Blocage OAuth et proposition ciblée](../docs/blocage-oauth-production.md) : activation
+privée et sauvegarde vérifiées, recette HTTPS réussie, correction Drupal préparée
+sans installation ; trois sources natives de proposition et qualification isolée.

@@ -12,6 +12,23 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-10-16 — Accord OAuth et précontrôle du fournisseur
+
+Accord reçu pour les trois routes, intégrées dans la PR Drupal nº21 ; 66 contrôles
+locaux et CI réussis. Audit du fournisseur hébergé en échec sur six alertes / quatre
+composants ; mises à jour distinctes à autoriser. Aucune installation OAuth ni
+nouvelle recette Passeport Immo ; candidat, données et validations conservés.
+
+## 2026-10-16 — Activation privée et sauvegarde de production vérifiées
+
+Activation exécutée par le responsable pour dandin ; autres comptes actuels refusés,
+stockage et sas actifs. Premier vrai cron de sauvegarde réussi sur quatre tables
+et neuf fichiers, entrée temporaire retirée et autres tâches conservées. Recette
+applicative de 57 contrôles HTTPS réussie, deux sessions et neuf téléchargements
+exacts par session, données inchangées. Recette navigateur bloquée par OAuth/503
+côté site AVEREO en maintenance. Correctif limité à trois routes préparé et testé
+isolément avec 27 assertions ; accord d’extension demandé, sans changement Drupal.
+
 ## 2026-10-16 — Candidat fermé installé et dossier SCI repris
 
 Reprise réelle du seul bien/client SCI, six documents actifs et trois archivés,

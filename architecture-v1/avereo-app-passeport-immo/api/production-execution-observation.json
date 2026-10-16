@@ -83,18 +83,20 @@
     "storageEnabled": false
   },
   "applicationActivation": {
-    "performed": false,
+    "performed": true,
     "publicOpeningPerformed": false,
-    "status": "prepared_and_isolated_rehearsal_passed_human_execution_pending",
+    "status": "activated_private_application_https_passed_oauth_browser_blocked",
     "preparedAt": "2026-10-16T09:44:01+00:00",
     "tool": "workflows/activation-production.php",
     "toolSha256": "68da781d562826a306c5ad5adff09d97dde0f446538af02e44cb3fc2c158e50f",
     "privateFileAndTemporarySqlRollback": "passed",
     "otherCurrentAccountsDeniedInRehearsal": 1,
-    "liveConnectChanged": false,
+    "liveConnectChanged": true,
     "newSecretGenerated": false,
     "exactPublishedSourceRequalified": true,
-    "previousRehearsalRetainedPrivately": true
+    "previousRehearsalRetainedPrivately": true,
+    "observedAt": "2026-10-16T10:44:23+00:00",
+    "webStorageEnabled": true
   },
   "browserUploadAccess": {
     "status": "manual_file_manager_opened_and_three_archives_uploaded",
@@ -104,9 +106,9 @@
     "clientDocumentsIncluded": false
   },
   "remaining": [
-    "Human execution of the exact prepared activation: existing key, limited dandin access and production-only backup schedule.",
-    "Authenticated production browser recipe, document integrity/isolation/logout and real cron success, followed by qualification-entry finalization.",
-    "Human phase criteria and PR review remain separate; no public opening."
+    "Obtain the scope authorization for the prepared provider correction.",
+    "Qualify the actual OAuth browser launch through CONNECT and then the final human recipe.",
+    "Keep merge, phase validation and public opening distinct."
   ],
   "preproductionFamilyScope": {
     "humanChoice": "Conserver aussi l’accès du compte famille",
@@ -122,13 +124,14 @@
     "limitation": "Server storage methods and live catalogue predicate checked; not an authenticated family browser recipe."
   },
   "productionAutomaticBackup": {
-    "status": "prepared_not_installed",
+    "status": "active_real_cron_verified_finalized",
     "schedule": "daily 03:20 Europe/Paris with hourly catch-up",
     "retentionSuccessfulCopies": 30,
     "location": "private_on_same_hosting",
-    "realCronSuccessVerified": false,
-    "temporaryQualificationEntryMustBeFinalized": true,
-    "offHostCopyAndAlerts": "not_qualified"
+    "realCronSuccessVerified": true,
+    "temporaryQualificationEntryMustBeFinalized": false,
+    "offHostCopyAndAlerts": "not_qualified",
+    "latestEvidence": "api/production-verification-observation.json#automaticBackup"
   },
   "postClosedInstallationHttps": {
     "tlsValidation": "strict_passed",
@@ -139,5 +142,7 @@
       "/assets/index-B1rPDbH_.js": 429
     },
     "interpretation": "No content returned; 429 responses do not qualify the final application gate."
-  }
+  },
+  "latestVerification": "api/production-verification-observation.json",
+  "latestProviderPreparation": "api/oauth-provider-preparation-observation.json"
 }
