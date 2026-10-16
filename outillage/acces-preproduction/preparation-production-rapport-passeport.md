@@ -70,6 +70,8 @@ conservées dans Git et dans la copie canonique. Dans cette nouvelle copie Windo
 le checkout convertit leurs fins de ligne en CRLF ; la vérification des octets Git
 et des octets LF approuvés distingue ce changement de représentation d'un changement
 de contenu. Ces fichiers et leurs empreintes de validation ne sont pas modifiés.
+Le [contrôle documentaire actualisé](archives/preparation-production-rapport-passeport-20261016/follow-up-documentation-checks.json)
+conserve le périmètre des vérifications de cette reprise.
 
 La CI générale et les tests d'accès préproduction de `main` réussissent. Le workflow
 distinct [Deploy Prototype To GitHub Pages](https://github.com/jpdandin44/AVEREO/actions/runs/38889877487)
@@ -120,18 +122,30 @@ restent à effectuer dans le dépôt et le suivi du site.
 ### Actualisation du correctif Drupal
 
 La [PR Drupal #22](https://github.com/jpdandin44/avereo-site-drupal/pull/22)
-porte désormais le correctif dans le dépôt du site. Ses 76 assertions passent
-localement et dans la CI ; l'audit des dépendances reste en échec. La cible réelle
-est `auth-next-preprod.avereo.fr`, distincte du site `preprod.avereo.fr`.
-Les mises à jour de sécurité Core/Symfony et Gin identifiées sont à qualifier
-dans des lots distincts ; l'accord d'élargissement est demandé au responsable.
-La sauvegarde/restauration fraîche et le parcours OAuth hébergé restent à vérifier.
+porte le correctif commun. Core 11.4.10 et Symfony corrigé sont installés sur
+`auth-next-preprod.avereo.fr` après accord de sécurité ; l’audit est sans alerte.
+Les deux fichiers OAuth y sont livrés à 15 h 18 UTC, avec sauvegarde fraîche restaurée,
+retour arrière privé, 394 routes comparées et contrôles HTTPS réussis. Les 76 assertions
+passent ; les contrôles de maintenance valident un jeton synthétique autorisé et
+les refus. Ces données de test restent dans la copie privée et sont annulées.
 
-Le [relevé complémentaire](archives/preparation-production-rapport-passeport-20261016/oauth-dependency-follow-up.json)
-renvoie au suivi Drupal canonique et conserve cette observation datée. Le correctif
-n'est livré ni en préproduction ni en production à ce stade. Après sa qualification,
-la production Drupal nécessitera son propre accord ; Rapport conservera ensuite
-ses prérequis de livraison et Passeport Immo sa recette finale.
+Le [nouveau relevé de livraison](archives/preparation-production-rapport-passeport-20261016/oauth-preproduction-delivery.json)
+renvoie aux reçus Drupal. L’ancien relevé de blocage est conservé comme historique.
+La recette d’une nouvelle connexion CONNECT complète reste à faire dans Chrome :
+le navigateur intégré bloque sur la protection d’accès avant OAuth et Chrome
+n’est pas accessible aux outils. La session Passeport existante ne remplace pas
+cette vérification. Aucune validation humaine n’est créée.
+
+Gin est préparé séparément dans la [PR Drupal #24](https://github.com/jpdandin44/avereo-site-drupal/pull/24).
+Le chat « App Passeport Immo » porte les preuves et livraisons du site dans la
+[PR Drupal #25](https://github.com/jpdandin44/avereo-site-drupal/pull/25), avec ses
+accords propres. Sa copie privée est qualifiée ; la sauvegarde/restauration des
+clés OAuth hors des archives existantes est complétée avant livraison active.
+L’identité et le site de préproduction restent deux cibles.
+Le point OAuth de production répond encore 503 au contrôle daté de ce nouveau relevé.
+La suite reste une livraison Drupal autorisée selon son dossier, puis les prérequis
+propres à Rapport et la recette finale Passeport. L’activation D06, la reprise SCI
+et le cron existants ne sont pas rejoués.
 
 ### Rapport : plan exact de livraison
 

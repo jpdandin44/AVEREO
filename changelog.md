@@ -16,7 +16,11 @@ tags: [avereo, documentation, local]
 
 Fusions et attestations humaines relues. Le [dossier commun](outillage/acces-preproduction/preparation-production-rapport-passeport.md)
 prépare la livraison exacte de Rapport, constate Passeport Immo déjà activé et son
-cron réel réussi, puis identifie le blocage OAuth restant. Reçus, opérations,
+cron réel réussi, puis identifie le blocage OAuth restant en production. Le correctif
+Drupal et son préalable Core/Symfony sont désormais livrés sur l’identité de
+préproduction, avec restauration privée, retour arrière et contrôles techniques
+réussis. La nouvelle connexion complète reste à examiner dans Chrome : le navigateur
+intégré échoue sur la protection Basic avant OAuth. Reçus, opérations,
 contrôles de passage et suivi canonique alignés. Les décisions existantes et les
 travaux Passeport Immo/Projet menés dans leur copie propre sont conservés.
 

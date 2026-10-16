@@ -1,0 +1,77 @@
+{
+  "observedAt": "2026-10-16T15:27:57.163220+00:00",
+  "scope": "Actualisation documentaire après livraison OAuth sur l’identité de préproduction ; aucune livraison applicative Rapport/Passeport dans cette PR.",
+  "canonicalTracking": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/oauth-maintenance-preproduction-20261016/data/suivi-oauth-maintenance.json",
+  "procedure": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/oauth-maintenance-preproduction-20261016/workflows/oauth-maintenance.md",
+  "deliveryEvidence": "https://github.com/jpdandin44/avereo-site-drupal/blob/fix/oauth-maintenance-preproduction-20261016/data/oauth-maintenance/qualification/delivery-receipt.json",
+  "deliveryReceiptSha256": "e1e406d7a95c51c0b4506668442bd7356794923ed1a3f0112608d4d3a9af303e",
+  "identity": {
+    "core": "11.4.10",
+    "symfonyHttpFoundation": "v7.4.21",
+    "securityAuditAdvisories": 0,
+    "oauthDeliveredAt": "2026-10-16T15:18:19.008443+00:00",
+    "twoFileCandidateSha256": "6f4ce4db4c2d78b732bcf5ecd8985d075a146449deea4f5820763e9d042a6ee2",
+    "routeCount": 394,
+    "onlyThreeMaintenanceOptionsChanged": true,
+    "freshBackupRestored": true,
+    "privateRollbackPassed": true,
+    "httpsCases": [
+      {
+        "case": "home",
+        "status": 200
+      },
+      {
+        "case": "login",
+        "status": 200
+      },
+      {
+        "case": "core-resource",
+        "status": 200
+      },
+      {
+        "case": "token-missing",
+        "status": 400
+      },
+      {
+        "case": "userinfo-missing",
+        "status": 403
+      },
+      {
+        "case": "userinfo-invalid",
+        "status": 401
+      },
+      {
+        "case": "authorize-invalid",
+        "status": 401
+      }
+    ]
+  },
+  "securityScopeApproval": {
+    "status": "approved_for_preproduction",
+    "quote": "Oui, corriger ces prérequis de sécurité en préproduction",
+    "source": "user_chat:2026-10-16"
+  },
+  "siteGin": {
+    "status": "private_copy_qualified_active_delivery_pending_other_chat",
+    "operator": "App Passeport Immo",
+    "candidatePr": "https://github.com/jpdandin44/avereo-site-drupal/pull/24",
+    "evidenceLocal": "C:\\Users\\examg\\Documents local\\avereo-securite-contrib-heberge\\data\\recette-securite-site.json"
+  },
+  "interactiveConnection": {
+    "status": "not_verified",
+    "reason": "Navigateur intégré bloqué sur la protection d’accès ; Chrome non exposé aux outils.",
+    "userStatement": "Le navigateur intégré ne fonctionne pas"
+  },
+  "productionOauthObservation": {
+    "observedAt": "2026-10-16T15:27:57.163220+00:00",
+    "method": "POST empty without credentials",
+    "url": "https://avereo.fr/oauth/token",
+    "status": 503,
+    "bodyExported": false,
+    "tlsVerified": true
+  },
+  "passportActivationReplayed": false,
+  "productionWritesByThisLot": false,
+  "newHumanApprovalCreated": false,
+  "nextAction": "Revue Chrome, qualification/livraison Drupal de production selon accords propres ; Rapport conserve récupération/retour arrière et accord de livraison ; Passeport conserve activation/SCI/cron existants."
+}

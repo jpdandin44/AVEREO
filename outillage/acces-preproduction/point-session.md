@@ -30,12 +30,14 @@ n'est effectuée dans cette préparation.
 ## Reprise du correctif OAuth du 16 octobre
 
 Le [lot Drupal #22](https://github.com/jpdandin44/avereo-site-drupal/pull/22)
-contient le correctif et 76 assertions réussies localement et en CI. L'audit
-Composer bloque encore la livraison : prérequis de sécurité identifiés, accord
-d'élargissement demandé. Le [dossier de production](preparation-production-rapport-passeport.md#actualisation-du-correctif-drupal)
-et le suivi Drupal lié conservent les détails et les preuves.
-Reprendre par ces prérequis, puis la qualification OAuth en préproduction ; aucun
-déploiement de ce correctif ni nouvel accord de production n'a été enregistré.
+est livré sur l’identité de préproduction après Core/Symfony. Sauvegarde/restauration,
+retour arrière privé, audit sans alerte et contrôles HTTPS sont vérifiés. Les 76 assertions
+OAuth et les tests de garde-fous passent. Le [dossier courant](preparation-production-rapport-passeport.md#actualisation-du-correctif-drupal)
+renvoie aux reçus réels et au suivi de Gin/site dans le chat coordonné.
+La connexion complète et la revue humaine restent à faire dans Chrome ; le navigateur
+intégré échoue avant OAuth. Le dernier contrôle de production reste 503. Reprendre
+par la revue, puis la livraison Drupal selon son accord et les prérequis Rapport.
+Passeport Immo demeure activé : conserver ses données, sa reprise SCI et son cron.
 
 ## Actualisation ciblée du 16 octobre — Rapport et Passeport Immo
 
