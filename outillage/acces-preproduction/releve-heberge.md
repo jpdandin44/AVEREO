@@ -49,11 +49,11 @@ Le lot de préproduction ne vaut ni livraison de production ni nouvelle validati
 
 [Dossier, opérations et prérequis](preparation-production-rapport-passeport.md).
 
-[PR de préparation #86](https://github.com/jpdandin44/AVEREO/pull/86) — open.
+[PR de préparation #86](https://github.com/jpdandin44/AVEREO/pull/86) — merged.
 
 | Application | État observé | Prochaine action |
 | --- | --- | --- |
-| rapport | Candidat préparé ; livraison en attente | Après revue OAuth et sa livraison autorisée en production : qualifier récupération/retour arrière Rapport et obtenir son accord exact de livraison. |
+| rapport | Candidat préparé ; livraison en attente | Intégration Drupal23 acquise. Après qualification et livraison autorisée de l’identité de production : qualifier récupération, retour arrière et promotion du ZIP exact Rapport, puis obtenir son accord précis. |
 | passeport-immo | Activé ; sauvegarde automatique vérifiée ; parcours CONNECT bloqué | Après correction OAuth de production selon son accord : terminer la connexion CONNECT et la revue humaine ; ne pas rejouer activation, SCI ou cron. |
 
 - OAuth de production répond 503 au contrôle du 16 octobre à 2026-10-16T15:27:57.163220+00:00 ; aucune livraison OAuth de production par ce lot.
