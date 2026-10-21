@@ -88,7 +88,15 @@
         "Les contrôles de confidentialité de la règle 3 du prompt ne renvoient aucune ligne."
       ],
       "nextAction": "Prête pour revue : soumettre dans AVEREO Projet",
-      "pullRequest": null,
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/88",
+        "repository": "jpdandin44/AVEREO",
+        "number": 88,
+        "state": "open",
+        "headSha": "17d54729c1b50a9cb121df20bdd35322d0d99295",
+        "observedAt": "2026-10-21T09:46:30.000Z",
+        "draft": false
+      },
       "validationEvidence": null
     },
     {
@@ -200,6 +208,10 @@
     {
       "date": "2026-10-21",
       "event": "Livrables de la phase 0 rédigés : cadrage, catalogue des champs, audit des sources et accès au suivi local. Aucun code applicatif écrit."
+    },
+    {
+      "date": "2026-10-21",
+      "event": "PR de la phase 0 constatée : https://github.com/jpdandin44/AVEREO/pull/88."
     }
   ],
   "reviewEvents": [],
@@ -375,9 +387,9 @@
     {
       "id": "Q25",
       "status": "open",
-      "question": "Le responsable souhaite-t-il que la PR de la phase 0 soit créée, et sous quel intitulé ? La création de la PR est prévue en fin de phase ; la poussée de la branche a été vérifiée à blanc seulement.",
-      "impact": "Sans PR, la revue dans AVEREO Projet ne dispose pas du constat daté de la PR dans le suivi.",
-      "nextAction": "Voir le compte rendu de fin de phase."
+      "question": "L'intitulé de la PR de la phase 0 (« feat(saisie-unique): cadrage de la phase 0 ») et son ouverture vers main conviennent-ils au responsable ?",
+      "impact": "La PR est ouverte, cases décochées, sans fusion ; son constat daté est enregistré dans le suivi. Un autre intitulé se corrige par une édition de la PR, sans effet sur les livrables.",
+      "nextAction": "Confirmer ou demander un autre intitulé lors de la revue de la phase 0 ; la fusion reste une décision du responsable."
     },
     {
       "id": "Q26",
