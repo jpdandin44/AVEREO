@@ -14,12 +14,18 @@ tags: [avereo, documentation, local]
 
 ## Suite courante — 16 octobre 2026
 
+Les dossiers #85 et #86 sont ensuite fusionnés humainement le 16 octobre au
+soir. Le complément de clôture est préparé sur `docs/closure-production-20261016`,
+avec les prérequis de production maintenus. Drupal #23 est ensuite fusionnée
+dans `main` à 20:34:34 UTC ; la reprise porte sur la qualification de production.
+
 Après fusion des PR #83 et #84, le [dossier de production Rapport/Passeport Immo](outillage/acces-preproduction/preparation-production-rapport-passeport.md)
 porte la suite. Le correctif OAuth et Core/Symfony sont livrés sur l’identité de
 préproduction ; la nouvelle connexion et l’accès aux deux applications sont
 confirmés par le responsable dans Chrome. OAuth #22 est accepté et fusionné dans
-Gin #24, pas dans `main`. Le site est livré techniquement ; sa revue visuelle reste
-distincte. Examiner #25/#24, intégrer Gin dans Core #23 puis vérifier son audit.
+Gin #24, puis #24 et #25 sont fusionnées dans Core #23. Les quatre contrôles
+techniques de #23 passent et aucun conflit avec `main` n’est constaté. La session
+est close après préparation de la revue #23 et de la qualification de production.
 Le dernier contrôle de l’identité de production reste bloquant. La livraison de
 Rapport attend sa récupération et son retour arrière qualifiés, puis l’accord
 exact ; Passeport Immo conserve son activation, sa reprise SCI et son cron.
