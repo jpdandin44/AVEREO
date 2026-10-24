@@ -5,7 +5,7 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-15
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,18 @@ tags:
 ---
 
 # Exigences de Rapport AVEREO
+
+## Lot demandé le 24 octobre — critères à vérifier
+
+- En préproduction, modifier un constat du cas fictif Tilleuls, sauvegarder en ligne, rouvrir depuis la liste, retrouver la modification dans l’aperçu et l’export Word/JSON.
+- Conserver les photos et les champs existants ; proposer une sauvegarde JSON du brouillon avant remplacement. Vérifier erreur réseau, absence de rapport, refus d’accès et reprise d’un ancien dossier.
+- Afficher explicitement le RGA, sa source et la date de consultation ; ne jamais assimiler une donnée absente à une absence de risque.
+- Ouvrir les cartes France et Haute-Garonne depuis Rapport préproduction avec accès CONNECT obligatoire. Distinguer la carte territoriale du statut au point interrogé.
+- Maintenir « Suivant » accessible : déconnexion dans l’en-tête, sans chevauchement sur bureau et écran étroit ; conserver la dernière saisie avant sortie.
+- Garder AVEREO en maintenance. La nouvelle version n’a aucune autorisation de production ni de fusion implicite.
+
+Ces critères ne sont pas encore tous exécutés : voir le [point de reprise](docs/reprise-demo-philippe.md).
+
 
 ## Exigences fonctionnelles durables
 

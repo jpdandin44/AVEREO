@@ -5,7 +5,7 @@ title: Integration de la synthese Georisques
 status: active
 version: git
 created: 2026-09-12
-updated: 2026-09-14
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -15,6 +15,13 @@ tags:
 ---
 
 # Integration de la synthese Georisques
+
+## RGA — évolution locale du 24 octobre
+
+Le champ facultatif `risques.rga` conserve les libellés d’adresse et de commune de l’objet dont la clé ou le libellé mentionne RGA, argiles ou retrait-gonflement. Contrairement aux listes génériques filtrées sur `present: true`, cet objet reste conservé si le fournisseur le retourne avec `present: false` : seuls ses libellés explicites sont affichés. Sans libellé, afficher « Information non disponible ». Les anciens rapports sont relus depuis `naturels`.
+
+L’encadré de l’écran et l’export Word reprennent ces statuts avec la source/date existantes. Le lien `/rga/` ouvre une carte territoriale distincte, protégée par CONNECT, sans coordonnées ni données client transmises. Il ne prétend pas que la réponse API utilise la version cartographique 2026. La disponibilité actuelle de l’API et le rendu hébergé restent à vérifier ; les sondes de cette session n’ont pas fourni de réponse exploitable.
+
 
 ## Objectif
 

@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-10-16
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,13 @@ tags:
 ---
 
 # Audit de la source Rapport
+
+## État du lot démo au 24 octobre
+
+L’interface de réouverture depuis la liste serveur est implémentée et livrée en préproduction, en réutilisant les opérations API existantes. Le RGA dispose d’un affichage explicite et les cartes d’origine sont empaquetées derrière CONNECT. Le lien de déconnexion flottant a été remplacé par une action d’en-tête, contrôlée sur écran large et étroit ; le brouillon le plus récent est repris entre les deux stockages. Ces écarts et leurs sources sont décrits dans le [point de reprise](reprise-demo-philippe.md) et l’[architecture](architecture.md). Le build authentifié et les 60 tests réussissent ; les empreintes livrées, la restauration et les refus anonymes sont vérifiés ; la recette authentifiée et la revue native Word restent à effectuer.
+
+Les états du 16 octobre ci-dessous sont historiques ; la production du 23 octobre est enregistrée dans le suivi opérationnel. Aucune preuve antérieure n’est réattribuée au nouveau code.
+
 
 ## Passage en production après fusion de la PR #84
 

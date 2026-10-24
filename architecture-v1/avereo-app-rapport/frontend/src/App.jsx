@@ -26,7 +26,11 @@ import {
   normalizeGeorisquesRiskSummary,
   riskStatusTone,
   safeGeorisquesReportUrl,
+  isRgaRisk,
+  rgaRisk,
 } from './georisquesRiskSummary.js';
+import OnlineReports from './OnlineReports.jsx';
+import { latestDraft } from './draftRecovery.js';
 import {
   HABITOLOGIE_PROTOCOL_STAGES,
   LISTENING_TOPICS,
@@ -281,16 +285,19 @@ async function saveDraft(report) {
 }
 
 async function loadDraft() {
-  const localDraft = localStorage.getItem(DRAFT_KEY) || localStorage.getItem(LEGACY_DRAFT_KEY);
-  if (localDraft) return normalizeStoredDraft(JSON.parse(localDraft));
-
-  try {
-    const draft = (await withTimeout(idbGet(DRAFT_KEY), 800)) || (await withTimeout(idbGet(LEGACY_DRAFT_KEY), 800));
-    if (draft) return normalizeStoredDraft(draft);
-  } catch {
-    return null;
+  const candidates = [];
+  for (const key of [DRAFT_KEY, LEGACY_DRAFT_KEY]) {
+    try { candidates.push(JSON.parse(localStorage.getItem(key))); }
+    catch { /* A malformed or blocked fallback must not hide the IndexedDB copy. */ }
   }
-  return null;
+  try {
+    candidates.push(await withTimeout(idbGet(DRAFT_KEY), 800));
+    candidates.push(await withTimeout(idbGet(LEGACY_DRAFT_KEY), 800));
+  } catch {
+    // The fallback remains usable if IndexedDB is unavailable.
+  }
+  const draft = latestDraft(candidates);
+  return draft ? normalizeStoredDraft(draft) : null;
 }
 
 async function removeDraft() {
@@ -398,13 +405,18 @@ function buildProtocolHtml(report) {
 
 function buildRiskSummaryHtml(summary) {
   if (!summary?.fetchedAt) return '';
+  const rga = rgaRisk(summary);
   const groups = [
-    ['Risques naturels identifies', summary.naturels || []],
+    ['Autres risques naturels identifies', (summary.naturels || []).filter((risk) => !isRgaRisk(risk))],
     ['Risques technologiques identifies', summary.technologiques || []],
   ];
   return `
     <h3>Synthese Georisques</h3>
     <p>${escapeHtml(summary.addressLabel || summary.communeLabel || '')}</p>
+    <h4>Retrait-gonflement des argiles (RGA)</h4>
+    <p>À l’adresse : ${escapeHtml(rga?.addressStatus || 'Information non disponible')}.
+    Sur la commune : ${escapeHtml(rga?.communeStatus || 'Information non disponible')}.</p>
+    <p class="muted">Une information manquante ne signifie pas absence de risque. La carte territoriale AVEREO RGA 2026 est consultable depuis Rapport avec un compte autorisé ; elle ne constitue pas un diagnostic de la parcelle.</p>
     ${groups
       .map(
         ([label, risks]) => `
@@ -912,7 +924,7 @@ function SignaturePad({ value, onChange }) {
   );
 }
 
-function Header({ onHome }) {
+function Header({ onHome, onLogout }) {
   return (
     <header className="app-header">
       <div className="brand-block">
@@ -922,12 +934,15 @@ function Header({ onHome }) {
           <p>Production de rapports terrain</p>
         </div>
       </div>
+      <nav className="header-actions" aria-label="Navigation du compte">
       {onHome && (
         <button className="button ghost" type="button" onClick={onHome}>
           <Home size={18} />
           Accueil
         </button>
       )}
+      {ONLINE_SYNC_ENABLED && <a className="button ghost" href="/connect/logout.php" onClick={onLogout}>Se déconnecter</a>}
+      </nav>
     </header>
   );
 }
@@ -1061,7 +1076,7 @@ function CompletionPanel({ report, validation }) {
   );
 }
 
-function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
+function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onBackup }) {
   const hasDraft = Boolean(draft);
   return (
     <div className="screen">
@@ -1101,6 +1116,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
           )}
         </section>
 
+        {onlineSyncEnabled && <OnlineReports token={accessToken} draft={draft} onOpen={onOpenOnline} onBackup={onBackup} />}
         <section className="panel checklist-panel">
           <h3>Controle rapide</h3>
           <ul>
@@ -1341,10 +1357,11 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setRe
     return () => { active = false; controller.abort(); clearTimeout(timeout); };
   }, [lon, lat, hasCoordinates, busy, refresh, setReport]);
   const groups = [
-    { key: 'naturels', label: 'Risques naturels identifies', items: summary.naturels || [] },
+    { key: 'naturels', label: 'Autres risques naturels identifies', items: (summary.naturels || []).filter((risk) => !isRgaRisk(risk)) },
     { key: 'technologiques', label: 'Risques technologiques identifies', items: summary.technologiques || [] },
   ];
   const reportUrl = safeGeorisquesReportUrl(summary.reportUrl) || fallbackReportUrl;
+  const rga = rgaRisk(summary);
 
   return (
     <section className="risk-summary" aria-labelledby="risk-summary-title">
@@ -1370,6 +1387,15 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setRe
       {status === 'error' && <p className="status-line warning" role="alert">La synthèse n’a pas pu être récupérée. Réessayez ou ouvrez le rapport officiel.
         {summary?.fetchedAt && ' La dernière consultation est conservée ci-dessous.'}</p>}
       {!summary?.fetchedAt && status !== 'loading' && !busy && <p>Aucune synthèse disponible dans ce dossier. Cela ne signifie pas absence de risque.</p>}
+
+      <div className="risk-group">
+        <h4>Retrait-gonflement des argiles (RGA)</h4>
+        <p>À l’adresse : <strong>{rga?.addressStatus || 'Information non disponible'}</strong></p>
+        <p>Sur la commune : {rga?.communeStatus || 'Information non disponible'}</p>
+        <p>Une information manquante ne signifie pas absence de risque. Les statuts ci-dessus proviennent de la synthèse Géorisques, à la date de consultation indiquée.</p>
+        <a className="button secondary" href="/rga/" target="_blank" rel="noopener noreferrer">Ouvrir la carte RGA AVEREO 2026</a>
+        <p className="muted">Carte territoriale de préqualification, distincte du statut à l’adresse. Elle ne remplace ni l’étude de sol ni un diagnostic de la parcelle.</p>
+      </div>
 
       {summary?.fetchedAt && groups.map((group) => (
         <div className="risk-group" key={group.key}>
@@ -2431,7 +2457,14 @@ function ReportWizard({
 
   return (
     <div className="screen">
-      <Header onHome={onHome} />
+      <Header onHome={async () => {
+        try { await saveDraft(report); await onHome(); }
+        catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de quitter.'); }
+      }} onLogout={async (event) => {
+        event.preventDefault();
+        try { await saveDraft(report); window.location.assign('/connect/logout.php'); }
+        catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de vous déconnecter.'); }
+      }} />
       <main className="wizard-layout">
         <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} />
         <div className="wizard-grid">
@@ -2689,6 +2722,16 @@ export default function App() {
           onNew={startNew}
           onResume={resume}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
+          accessToken={accessToken}
+          onOpenOnline={async (loaded) => {
+            const normalized = deepMergeReport(initialReport, loaded);
+            await saveDraft(normalized);
+            setDraft(normalized);
+            setInitialWizardData(normalized);
+            setAppState('wizard');
+          }}
+          onBackup={() => saveAs(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json;charset=utf-8' }),
+            `${toFileName(draft.reference_dossier || draft.titre)}-brouillon.json`)}
         />
       )}
       {appState === 'wizard' && (
