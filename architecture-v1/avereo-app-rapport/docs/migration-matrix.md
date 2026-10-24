@@ -37,6 +37,7 @@ Les deux types de rapport, leur sauvegarde/relecture en ligne, reprise du brouil
 
 | Fonctionnalite | Source | Donnees/services | Cible AVEREO et test | Statut |
 | --- | --- | --- | --- | --- |
+| Valeurs libres importées dans les observations | exemple Cricq du 24 octobre | `piece`, `surface`, `gravite` | Afficher la valeur conservée ; vérifier import, sauvegarde et export, voir [audit](source-audit.md#exemple-importé-et-modèles-éditoriaux-du-24-octobre) | corrigé et contrôlé localement ; deux sorties intégrées, recette hébergée à consigner |
 | Relief sur cadastre | demande utilisateur | `terrain.analysis.samples`, tuiles IGN existantes | Neuf valeurs geolocalisees, extremes relatifs, emprise et tableau ; voir `../api/contexte-du-bien.md` | valide localement, qualification hebergee/tactile restante |
 | Correction du repere | demande utilisateur | `cadastre.lon/lat`, `localisation.point_manuel` | Ajustement explicite, annulation, donnees derivees invalidees, notes conservees, reprise locale ; voir `../api/contexte-du-bien.md` | valide localement, qualification hebergee restante |
 | Ressources du batiment (evolution 2) | demande utilisateur | `ressources_batiment`, liens manuels GoRenove/Pro'Reno | Sources/date/notes, URL validees, ancien brouillon compatible, rattachement caduc sans perte | prototype implemente, qualification hebergee restante ; voir `../api/ressources-batiment.md` |
@@ -55,7 +56,7 @@ Les deux types de rapport, leur sauvegarde/relecture en ligne, reprise du brouil
 | Signature | `App.jsx` | Canvas/data URL | Frontend puis payload prive authentifie | adaptee |
 | Apercu | `App.jsx` | HTML `srcDoc` | Iframe sandboxee sans permission et sans referrer | conservee |
 | Export JSON | `App.jsx` | Blob | Frontend; import/export manuel | conservee |
-| Export document | `App.jsx` | Blob HTML/Word | Frontend; controle du fichier produit | conservee |
+| Export document | `reportDelivery.js`, `reportDocx.js` | DOCX avec images incorporées | Expert complet / client sélectionné ; Word natif et PDF contrôlés | intégré ; état hébergé dans le point de reprise |
 | Sauvegarde en ligne | absente | PHP, PDO, MySQL | `/api/reports.php`, propriete utilisateur, CRUD | adaptee |
 | Reouverture depuis la liste serveur | absente | PHP, MySQL | API existante et interface OnlineReports | livree en preproduction le 24 octobre, recette authentifiee restante |
 | Authentification | absente | AVEREO CONNECT adosse a Drupal | ticket signe, cookie de sas, roles `utilisateur_rapport`/`administrateur_rapport` | adaptee |

@@ -14,9 +14,28 @@ tags:
   - fonctionnalites
 ---
 
+## Itération livrables : reprise autorisée le 24 octobre
+
+L'autorisation de migration en préproduction remplace l'attente d'intégration
+des maquettes. Deux sorties dynamiques sont implémentées, avec vrai DOCX,
+illustrations sourcées et conservation des valeurs importées. La procédure de
+transfert est rédigée. Reste à consigner la livraison du candidat exact, finir
+la recette authentifiée et recueillir la revue métier. Voir la [procédure de transmission](docs/transmission-generation-rapports.md) et le
+point de reprise. Aucune production ni ouverture publique dans ce lot.
+
 # Feuille de route Rapport AVEREO
 
 ## Priorité active — démo Philippe, 24 octobre
+
+Le responsable place la qualité des deux livrables au centre de la démo :
+rapport expert détaillé et synthèse client illustrée, sous identité AVEREO.
+Le [cadrage des livrables](workflows/workflow-habitologie.md#deux-livrables-avereo-demandés-le-24-octobre)
+est enregistré après lecture du dossier du Cricq. Les deux modèles locaux
+(26 pages expert, 6 pages client) sont préparés et relus, avec Word/PDF et
+exemple dans les champs existants. Prochaine tranche : recueillir la revue,
+corriger l’affichage des valeurs libres importées dans les listes, puis
+intégrer et qualifier les deux exports. Aucun modèle nouveau n’est intégré
+ou déployé. Le blocage d’accès à la recette hébergée reste distinct.
 
 Le parcours sauvegarde, réouverture et export est prioritaire, avec l’ajout RGA demandé. Développement local contrôlé : 60 tests, build authentifié, parcours fictif et affichage sans chevauchement des boutons sur bureau/mobile. PR 89 ouverte en brouillon ; sauvegarde/restauration et livraison préproduction effectuées. Recette authentifiée complète et lecture native Word restent à terminer. Le [point de reprise](docs/reprise-demo-philippe.md) porte les actions exactes.
 

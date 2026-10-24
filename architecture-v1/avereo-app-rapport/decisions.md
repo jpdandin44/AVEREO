@@ -13,6 +13,17 @@ tags:
   - architecture
 ---
 
+## 2026-10-24 — Deux restitutions sur le même dossier
+
+Contexte : la livraison attendue est le rapport, avec deux niveaux de lecture
+et des illustrations. Décision : conserver le formulaire et le payload existants,
+ajouter `livrable` et générer un vrai DOCX dans le navigateur avec `docx`.
+Raisons : incorporer durablement les images sans service tiers, conserver les
+anciens dossiers et éviter des copies concurrentes de l'information.
+Conséquences : les textes client et sélections sont explicites, les pièces
+spécifiques sont stockées dans le dossier, la pagination est vérifiée sous Word.
+Le statut reste document de travail jusqu'à validation professionnelle externe.
+
 # Decisions structurantes de Rapport AVEREO
 
 ## 2026-10-24 — Intégrer les cartes existantes dans Rapport protégé

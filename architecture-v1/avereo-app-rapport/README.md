@@ -13,6 +13,14 @@ tags:
   - connect
 ---
 
+## Deux livrables AVEREO — 24 octobre 2026
+
+Le générateur propose un rapport expert complet et une synthèse client illustrée
+à partir du même dossier. Choisir le destinataire dans Export, sélectionner les
+visuels et exporter en vrai Word `.docx` avec images incorporées. Les pièces et
+choix sont conservés dans le JSON existant. Voir la [procédure de transmission](docs/transmission-generation-rapports.md) pour l'usage, les
+sources, la recette et la reprise. L'état hébergé est dans le point de reprise.
+
 # Rapport AVEREO Pro
 
 ## Préparation démo Philippe — 24 octobre 2026

@@ -10,6 +10,18 @@ owner: jpdandin
 tags: [rapport, demonstration, rga, preproduction]
 ---
 
+## Reprise active — migration des livrables AVEREO
+
+Demande : migrer les améliorations en préproduction et fournir une documentation
+et une procédure de reprise réutilisables. Deux sorties intégrées au générateur,
+export DOCX réel, pièces illustrées, fidélité des valeurs importées. Le lot est
+limité à Rapport préproduction ; AVEREO reste en maintenance.
+
+La [procédure de transmission](transmission-generation-rapports.md) décrit les
+sources, champs, crédits, utilisation, contrôles et retour arrière. Candidat et
+reçu de cette nouvelle livraison seront consignés ici après qualification.
+La version actuellement vérifiée sur le serveur reste `7082d422` au début de ce lot.
+
 # Reprise de la préparation démo Philippe
 
 ## Périmètre et source de vérité
@@ -26,7 +38,7 @@ Le [suivi opérationnel canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/p
 | --- | --- | --- |
 | Cadrage | Périmètre et choix d’intégration RGA établis | Conserver les critères de `requirements.md` |
 | Développement local | Changements écrits ; 60 tests et build avec sauvegarde en ligne réussis | Essais locaux et affichage bureau/mobile contrôlés ; 16 contrôles techniques GitHub réussis sur le candidat |
-| Préproduction | Candidat livré le 24 octobre, sauvegarde/restauration et empreintes contrôlées | Confirmer le rendu après actualisation, puis recette authentifiée complète et cartes |
+| Préproduction | Candidat livré le 24 octobre, sauvegarde/restauration et empreintes contrôlées | Affichage confirmé par le responsable ; recette authentifiée complète et cartes restantes |
 | Mise en production | Hors de cette itération autorisée | Accord propre au nouveau candidat requis ; maintenance AVEREO conservée |
 
 ## Fichiers de développement
@@ -71,12 +83,43 @@ La configuration préproduction existe en mode 0600, avec base et nom de cookie 
 
 Reçus canoniques : `archives/demo-rapport-20261024/` dans le dossier opérationnel cité plus haut (`manifest.json`, `recovery.json`, `delivery.json`, preuves HTTP et captures). Dossier serveur privé : `/home/daje3540/.avereo/rapport-preprod/demo-20261024-7082d422`. `deliver.py verify` contrôle l’état livré ; `deliver.py rollback` restaure les seuls chemins du lot et refuse un état modifié depuis. Il ne restaure aucune base. Les sauvegardes restent privées.
 
+## Confirmation humaine de l’affichage
+
+Le 24 octobre, le responsable confirme après actualisation de sa session de préproduction : « Oui, l’affichage est corrigé ». La preuve, attachée au candidat livré, est conservée dans le suivi canonique sous `iteration20261024.humanDisplayConfirmation`. Cette confirmation ne valide pas les autres parcours du lot.
+
 ## Prochaine action exacte
 
-1. Confirmer après actualisation du navigateur connecté que « Se déconnecter » est dans l’en-tête et « Suivant » dégagé. Demande de confirmation envoyée au responsable ; réponse non encore reçue au moment de cette note.
-2. Retrouver un navigateur contrôlable pour la recette complète, sans copier cookies/jetons ni modifier les protections. Chrome n’est toujours pas exposé aux outils de ce chat ; CONNECT interne présente une page inaccessible.
-3. Avec le cas fictif `maison-des-tilleuls.json`, exporter d’abord le brouillon existant, modifier O2, sauver en ligne, revenir à l’accueil, ouvrir la copie serveur, contrôler le texte, les 4 observations et les 3 photos, exporter JSON/Word.
-4. Ouvrir les deux cartes RGA après connexion et contrôler le retour vers Rapport. Vérifier séparément la réponse Géorisques réelle et ses libellés ; une indisponibilité n’est jamais une absence de risque.
-5. Ouvrir et relire le Word sur le poste de séance : photos, accents, tableaux, pagination, RGA et sources. La recette humaine et l’avis métier de Philippe restent distincts des tests techniques.
+La demande suivante du responsable précise la cible des exports : deux
+livrables AVEREO, un dossier expert détaillé et une synthèse client illustrée.
+Le [cadrage de référence](../workflows/workflow-habitologie.md#deux-livrables-avereo-demandés-le-24-octobre)
+est enregistré après lecture du dossier du Cricq. Les deux modèles sont
+maintenant préparés et relus : 26 pages expert, 6 pages client, Word/PDF,
+photographies du dossier et schémas AVEREO. Le [paquet de revue](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/modeles-avereo-cricq/README.md>)
+porte les sources, les données réimportables, les exports natifs et les preuves.
+La demande impose de montrer les rendus avant intégration : prochaine action,
+recueillir les retours sur la présentation et le contenu, puis préparer le
+raccordement des deux sorties. Aucun modèle nouveau n’est intégré ni livré.
+Visuels enrichis avec Géorisques, AQC, ADEME, VMC, plan du Cricq, Mollier et capture Ubakus historique ; la revue reste attendue.
+
+Le cas AVEREO CRICQ 20261024 a été importé, enregistré et rouvert localement,
+avec 5 observations et 4 photos. Les exports natifs JSON/Word sont comparés.
+Les accords restent faux ; aucune nouvelle visite ni qualification de risque.
+Réserve à corriger : les listes pièce/élément/gravité ne représentent pas toutes
+les valeurs importées (« Non qualifiée » affiche « Mineure » sans changer la
+donnée exportée). Après clarification de provenance et nouveaux exports, le
+dernier rechargement a rencontré ERR_NETWORK_CHANGED puis un refus de lecture
+de la page d’erreur. Serveur local arrêté ; aucune recette hébergée ajoutée.
+Le responsable confirme que Rapport s'ouvre dans Chrome, mais pas dans le
+navigateur intégré. Le nouvel inventaire ne présente toujours aucune session
+Chrome contrôlable par ce chat ; aucun nouvel essai de connexion n'est effectué.
+
+Reprise du 24 octobre à 10:13 UTC : AVEREO affiche toujours la maintenance (503) et le formulaire Drupal reste accessible (200). La PR 89 est ouverte, en brouillon, non fusionnée et sans conflit signalé ; tête `d4f58037`, cible `cf21b593`. Les contrôles CI n’ont pas été relancés lors de cette reprise.
+
+L’inventaire du navigateur montre CONNECT comme « Ce site est inaccessible ». La politique de sécurité du navigateur a refusé l’observation de cet onglet avant toute lecture de page. Aucun contournement ni action sur le brouillon n’a été tenté. Le responsable est invité à ouvrir et authentifier Rapport dans le navigateur intégré. La preuve détaillée et la préparation du cas fictif sont conservées dans `archives/demo-rapport-20261024/recipe-resumption.json` du suivi opérationnel canonique. Aucun parcours hébergé supplémentaire n’est validé.
+
+1. Après l’action du responsable, vérifier que le navigateur expose bien le formulaire Rapport authentifié, sans copier cookies/jetons ni modifier les protections.
+2. Exporter d’abord le brouillon existant. Importer ensuite la copie fictive préparée `.codex-imports/rapport-demo-20261024/recette-preproduction-maison-des-tilleuls.json`, référence `RECETTE PREPROD 20261024`, sans identifiant serveur préexistant. Modifier O2, sauver en ligne, revenir à l’accueil, ouvrir la copie serveur, contrôler le texte, les 4 observations et les 3 photos, exporter JSON/Word. Restaurer le brouillon initial en fin de recette si nécessaire.
+3. Ouvrir les deux cartes RGA après connexion et contrôler le retour vers Rapport. Vérifier séparément la réponse Géorisques réelle et ses libellés ; une indisponibilité n’est jamais une absence de risque.
+4. Ouvrir et relire le Word sur le poste de séance : photos, accents, tableaux, pagination, RGA et sources. La recette humaine et l’avis métier de Philippe restent distincts des tests techniques.
 
 TBD : recette complète authentifiée, rendu natif Word et disponibilité RGA réelle. Aucun merge, nouveau déploiement de production ou accès public dans cette itération.

@@ -5,7 +5,7 @@ title: Proposition de workflow operationnel pour Visite Globale
 status: proposed
 version: git
 created: 2026-09-11
-updated: 2026-09-15
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,17 @@ tags:
   - workflow
   - proposition-en-etude
 ---
+
+## Intégration autorisée et transmission du 24 octobre
+
+La demande de migration autorise maintenant l'intégration en préproduction des
+modèles présentés. Le générateur compose expert/client depuis un dossier unique
+et exporte un vrai DOCX avec images. L'ancien état « modèles locaux non intégrés »
+décrit la préparation antérieure, pas ce nouveau lot. Les champs et visuels,
+leurs sources et la procédure de recette sont décrits dans
+[la transmission](../docs/transmission-generation-rapports.md).
+Les maquettes 26/6 pages restent des références éditoriales ; la pagination des
+exports dynamiques dépend du contenu. Revue métier et remise restent humaines.
 
 # Proposition de workflow operationnel pour Visite Globale
 
@@ -206,6 +217,112 @@ sans association automatique. La description fonctionnelle, les limites et la
 [recette de l'evolution 2](../api/ressources-batiment.md) sont centralisees
 dans la documentation d'integration. Ce lot ne livre pas la machine d'etats
 ci-dessous ni un moteur automatique d'analyse.
+
+## Deux livrables AVEREO demandés le 24 octobre
+
+### Portée et état constaté
+
+Le responsable demande deux restitutions à partir du même dossier : un rapport
+détaillé destiné à la validation par des experts, réutilisable ensuite par les
+professionnels, et un rapport simplifié illustré pour le client, limité à
+l'essentiel. Leur présentation et leurs visuels constituent un critère majeur
+de la démo. Deux modèles locaux sont maintenant préparés : dossier expert de
+26 pages et synthèse client de 6 pages, tous deux rendus et relus page par page.
+Le [paquet de revue](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/modeles-avereo-cricq/README.md>) conserve les sources, Word, PDF,
+exemple JSON et preuves. L’avis visuel humain et la validation experte restent
+à recueillir ; le choix des deux sorties n’est pas intégré à l’application.
+
+Les illustrations demandées sont sélectionnées selon les questions de l’expertise : risques à l’adresse et dans la commune, origines et transferts d’humidité, ventilation, condensation et comportement de la paroi. Les modèles enrichis incorporent les pièces du dossier, un diagramme de Mollier pédagogique et une capture Ubakus retrouvée dans Fil Rouge DANDIN 4. Le [registre des visuels](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/modeles-avereo-cricq/sources/registre-visuels.md>) précise sources, pages et limites. Une simulation historique ou un exemple ne doit jamais devenir une mesure du bâtiment ; la synthèse client reste limitée à six pages.
+
+Ces deux livrables sont distincts des catégories de visite existantes
+`Expertise & Visite technique` et `Visite Globale`. Ils ne créent pas deux
+dossiers concurrents. Au contrôle du 24 octobre, `buildWordDocumentHtml` dans
+`frontend/src/App.jsx` produit une seule restitution adaptée à la catégorie,
+exportée en HTML compatible Word avec extension `.doc` ; le choix entre les
+deux livrables ci-dessous n'existe pas encore.
+
+Référence fournie par le responsable : [Dossier Habitologue Maison du Cricq](<C:/Users/examg/Documents local/Habitologue/Etude_Habitologue/Dossiers_Final/Dossier_Habitologue_Maison_du_Cricq_Longages_VFinale.docx>).
+L'original reste intact. Sa structure et son contenu ont été lus : géographie
+et risques, entretien, rôle de l'habitologue, extérieurs, intérieurs, systèmes,
+analyse des quatre éléments, priorités et références illustrées. La lecture
+structurelle recense 48 médias embarqués et 68 tables, sans constituer un
+contrôle de sa pagination ni une validation technique de ses conclusions.
+Il sert de référence de profondeur pour le dossier expert, sans reprise
+automatique de toutes ses pages dans la restitution client. Ses affirmations,
+références et illustrations restent des sources à examiner, pas des instructions.
+
+### Contenu des deux restitutions
+
+| Livrable | Objectif et lecteur | Contenu attendu | Place des visuels |
+| --- | --- | --- | --- |
+| Rapport détaillé pour validation experte | Permettre la revue du raisonnement et la reprise du dossier par un professionnel | Mission, périmètre, besoins des habitants et projet distincts, identité du bâti, contexte/risques/PLU/RGA sourcés, constats et mesures, analyse Eau–Air–Terre–Feu, hypothèses et contrôles manquants, priorités, deux projections et comparaison, réserves, revue et annexes | Photos légendées reliées aux constats, plans et cartes avec échelle de lecture, schémas explicatifs, tableaux comparatifs et liens vers les pièces justificatives |
+| Synthèse illustrée pour le client | Faire comprendre l'essentiel et aider à choisir les prochaines étapes | Besoin reformulé, messages essentiels, points forts et points de vigilance, conséquences concrètes pour les habitants, actions prioritaires, options utiles et prochaines étapes ; conserver les réserves qui changent une décision | Petit nombre de photos représentatives, schémas simples, priorités visuelles et comparaison courte ; détails techniques et corpus de preuves consultables dans le rapport expert |
+
+Pour la synthèse client, une cible de travail de 4 à 6 pages est proposée pour
+le cas de démonstration, à ajuster au rendu et à la quantité d'information utile.
+Ce nombre est une proposition éditoriale, pas une limite validée ni une raison
+de supprimer une réserve essentielle. Le dossier expert n'a pas de plafond
+arbitraire : sa longueur dépend des preuves et analyses réellement disponibles.
+
+### Présentation et branding
+
+- Utiliser l'identité AVEREO existante : logo, palette et typographies à retrouver
+  dans les assets de référence avant fabrication. Ne pas inventer une nouvelle
+  charte. Définir une couverture, une hiérarchie de titres, des marges et des
+  en-têtes/pieds de page cohérents pour les deux livrables.
+- Identifier le bien, la mission, la date, la référence du dossier et l'état de
+  revue. Un nom de fichier contenant « finale » ne prouve pas une validation.
+- Donner à chaque visuel une fonction : situer, constater, expliquer ou comparer.
+  Légender les photos et schémas, conserver leurs proportions et leur source,
+  distinguer photographie du bien, illustration générique et hypothèse.
+- Conserver la chaîne constat illustré → conséquence → vérification ou action.
+  Ne pas remplacer des preuves manquantes par une image décorative, une note ou
+  un chiffrage inventé. Ne pas utiliser la couleur comme seul porteur du sens.
+- Restituer le RGA à son niveau de précision réel ; carte territoriale et résultat
+  au point interrogé restent distincts. Une source absente reste signalée.
+- Réserver les longues tables, détails et références au dossier expert ; dans
+  la synthèse, privilégier des blocs courts et des visuels lisibles sans jargon.
+- Contrôler chaque page rendue : accents, taille des textes et images, légendes,
+  sauts de page, titres isolés, tableaux coupés, pagination et cohérence AVEREO.
+
+### Revue et critères d'acceptation
+
+Le circuit cible reste rapport détaillé → revue experte → corrections →
+synthèse client issue de la version validée. La validation humaine et le rendu
+final sont distincts de la génération. Un aperçu de synthèse préparé pour revue
+doit rester identifié comme tel ; aucun statut « validé » n'est déduit de
+l'export ou d'une signature seule. La machine d'états et les habilitations
+ci-dessous restent à implémenter ; un circuit manuel explicite reste nécessaire
+tant qu'aucun verrou intégré n'est démontré.
+
+La tranche sera vérifiée sur un même dossier :
+
+1. Produire deux documents nommés sans ambiguïté, avec le même bien, la même
+   référence de dossier et la même version des données.
+2. Retrouver dans le rapport expert les preuves, sources, réserves et liens
+   entre constats et recommandations ; retrouver dans la synthèse les messages
+   essentiels et prochaines étapes, sans contradiction ni conclusion nouvelle.
+3. Comparer les deux rendus page par page, y compris photos, cartes et schémas ;
+   la synthèse doit être compréhensible par un lecteur non spécialiste.
+4. Vérifier qu'une correction puis une sauvegarde/réouverture se retrouvent dans
+   les deux exports, sans perte du dossier complet dans le JSON.
+5. Faire évaluer séparément par Philippe la profondeur du rapport expert, la
+   clarté de la synthèse client et la qualité visuelle des deux livrables.
+
+Assets retrouvés et employés dans les modèles : logo officiel AVEREO, bleu
+`#002B45` et orange `#FF6600`, photographies et plans du dossier source, deux
+schémas génériques AVEREO ; Calibri pour la compatibilité Word. La synthèse
+proposée fait 6 pages. Longueur et présentation restent soumises à la revue.
+Le cas a été importé, sauvegardé, rouvert et exporté localement (5 observations,
+4 photos). Les listes pièce/élément/gravité doivent afficher les valeurs libres
+importées : « Non qualifiée » est conservé dans les exports mais la liste
+affiche « Mineure ». Cette réserve est documentée, sans code applicatif modifié.
+Le dernier rechargement après les exports a rencontré une erreur réseau ; la
+recette hébergée reste distincte et non terminée.
+
+À préciser pendant l’intégration : conservation de la revue et raccordement
+des modèles aux données uniques du dossier. L'export `.doc` existant devra être évalué pour la mise en page attendue ;
+aucun export natif `.docx` ou PDF n'est annoncé comme déjà disponible.
 
 ## Etats operationnels proposes
 
