@@ -10,19 +10,69 @@ owner: jpdandin
 tags: [rapport, demonstration, rga, preproduction]
 ---
 
-## Reprise active — migration des livrables AVEREO
+## Reprise active — livrables AVEREO livrés en préproduction
 
-Demande : migrer les améliorations en préproduction et fournir une documentation
-et une procédure de reprise réutilisables. Deux sorties intégrées au générateur,
-export DOCX réel, pièces illustrées, fidélité des valeurs importées. Le lot est
-limité à Rapport préproduction ; AVEREO reste en maintenance.
+Livraison le 24 octobre 2026 à 21 h 19 (Paris), candidat
+`5d70e41ac7d2a814e6a4a318ffe7fcc17836d2cf`, branche
+`feat/rapport-demo-rga-20261024`, [PR 89](https://github.com/jpdandin44/AVEREO/pull/89)
+ouverte en brouillon, sans fusion. Accord de préproduction et transfert documentaire,
+sans production ni ouverture publique. AVEREO reste en maintenance.
 
-La [procédure de transmission](transmission-generation-rapports.md) décrit les
-sources, champs, crédits, utilisation, contrôles et retour arrière. Candidat et
-reçu de cette nouvelle livraison seront consignés ici après qualification.
-La version actuellement vérifiée sur le serveur reste `7082d422` au début de ce lot.
+### Candidat et récupération
 
-# Reprise de la préparation démo Philippe
+- Cible : [CONNECT préproduction → Rapport](https://connect-preprod.avereo.fr/?app=rapport).
+- Deux restitutions AVEREO, quatre illustrations pédagogiques, annexes propres au
+  dossier, vrai DOCX et affichage fidèle des valeurs importées.
+- Archive `rapport-branding-5d70e41.zip`, SHA-256
+  `b09d501e247cc29a891094ea5550a71ed1a5c073e0676f5925d7221770841ac9`.
+- Quatre fichiers livrés : `index.html`, `assets/index-CbZUH6kP.js`,
+  `assets/index-DJfA60DM.css`, `assets/reportDocx-XuLK_hY5.js`.
+  Vingt-quatre autres fichiers et configuration privée inchangés ; aucune écriture
+  de base, modification OAuth, CONNECT ou production.
+- Répertoire privé : `/home/daje3540/.avereo/rapport-preprod/branding-20261024-5d70e41`.
+  Dans ce répertoire, `python3 deliver.py verify` vérifie l'installation ;
+  `python3 deliver.py rollback` restaure le code précédent `7082d422` si l'état
+  n'a pas changé depuis la livraison. Aucune restauration de base.
+- Sauvegarde de 25 fichiers + configuration privée ; installation/restauration
+  testées sur copie privée et empreintes contrôlées avant/après livraison.
+- Preuves : `C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-branding-20261024/`
+  (`manifest.json`, `delivery.json`, `recovery.json`, captures, contrôles HTTP et Word).
+
+### Vérifications et réserve réelle
+
+64 tests, build authentifié, contrôle racine et diff réussis ;
+[CI du candidat](https://github.com/jpdandin44/AVEREO/actions/runs/40124279636) réussie ;
+audit des dépendances de production sans vulnérabilité. Import, sauvegarde locale,
+rechargement, reprise et export JSON : 5 observations, 4 photos et 3 annexes
+conservées ; « Non qualifiée » correctement affiché. Deux DOCX produits depuis le
+formulaire : expert **23 pages / 12 images**, client **5 pages / 4 images**.
+Ouverture Word, rendu PDF et inspection des 28 pages réalisés. Les maquettes
+éditoriales antérieures 26/6 pages restent des preuves historiques distinctes.
+
+À 21 h 21 : AVEREO 503 maintenance, page de connexion 200, CONNECT préproduction
+401, Rapport et les deux cartes RGA 303 vers CONNECT, API rapports 403 sans session.
+Les trois assets servis correspondent aux empreintes du candidat.
+
+**Recette authentifiée hébergée encore à réaliser.** Chrome est exposé mais ne
+présente qu'un nouvel onglet. Ce n'est pas un constat d'échec OAuth. Aucun accès
+contourné, compte technique ou fausse identité de recette. Le scénario local ne
+prouve pas une sauvegarde MySQL ni une nouvelle connexion OAuth sur cette version.
+
+### Reprendre et transmettre
+
+La [procédure réutilisable](transmission-generation-rapports.md) décrit les champs,
+le code, les crédits, l'utilisation, les contrôles et le retour arrière. Copie
+privée importable : `frontend/.local/cricq-demo.json` (2,22 Mo). Une copie reste
+dans le répertoire privé du lot sous `example-cricq.json`, jamais publiée dans
+le document root. Word/PDF et rendus : `frontend/.local/qualification/`.
+
+Prochaine action : exposer l'onglet connecté, exporter préventivement le brouillon,
+importer le cas, sauvegarder en ligne, rouvrir, comparer JSON et DOCX, puis ouvrir
+les cartes RGA. Vérifier identité et dossier cible avant création d'une copie
+serveur. Revue métier, sens de DELTA et autorité de remise restent à confirmer.
+Les légendes distinguent Géorisques historique, Ubakus à requalifier et Mollier
+pédagogique des mesures du bien.
+
 
 ## Périmètre et source de vérité
 

@@ -17,7 +17,7 @@ tags: [rapport, transmission, preproduction, word, demo]
 Un dossier Rapport produit deux livrables AVEREO : **rapport expert détaillé** et
 **synthèse client illustrée**. Le choix du destinataire est indépendant de la
 catégorie de visite : les deux livrables sont disponibles pour les deux catégories.
-Le lot du 24 octobre est autorisé en préproduction. La production et l'ouverture
+Le candidat `5d70e41` du 24 octobre est livré et vérifié en préproduction. La recette avec un compte connecté reste à réaliser. La production et l'ouverture
 publique sont exclues ; AVEREO doit rester en maintenance et les accès protégés.
 
 Le [point de reprise](reprise-demo-philippe.md) porte la version effectivement

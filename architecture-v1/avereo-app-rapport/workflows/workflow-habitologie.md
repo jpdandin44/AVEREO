@@ -230,7 +230,7 @@ de la démo. Deux modèles locaux sont maintenant préparés : dossier expert de
 26 pages et synthèse client de 6 pages, tous deux rendus et relus page par page.
 Le [paquet de revue](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/modeles-avereo-cricq/README.md>) conserve les sources, Word, PDF,
 exemple JSON et preuves. L’avis visuel humain et la validation experte restent
-à recueillir ; le choix des deux sorties n’est pas intégré à l’application.
+à recueillir ; le choix des deux sorties a depuis été intégré et livré en préproduction dans le candidat `5d70e41`.
 
 Les illustrations demandées sont sélectionnées selon les questions de l’expertise : risques à l’adresse et dans la commune, origines et transferts d’humidité, ventilation, condensation et comportement de la paroi. Les modèles enrichis incorporent les pièces du dossier, un diagramme de Mollier pédagogique et une capture Ubakus retrouvée dans Fil Rouge DANDIN 4. Le [registre des visuels](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/modeles-avereo-cricq/sources/registre-visuels.md>) précise sources, pages et limites. Une simulation historique ou un exemple ne doit jamais devenir une mesure du bâtiment ; la synthèse client reste limitée à six pages.
 

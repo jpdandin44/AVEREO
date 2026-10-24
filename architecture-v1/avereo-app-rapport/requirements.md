@@ -35,7 +35,7 @@ Ces sorties sont distinctes des catégories de visite existantes. Leurs contenus
 critères de présentation, référence Maison du Cricq et circuit de revue sont
 centralisés dans le [workflow Habitologie](workflows/workflow-habitologie.md#deux-livrables-avereo-demandés-le-24-octobre).
 Modèles locaux préparés et rendus pour revue (26 pages expert, 6 pages client) ;
-choix des deux exports encore à intégrer. Chaque visuel doit être sourcé, relié à une question de l’expertise et identifié comme constat, principe ou simulation ; les résultats illustratifs ne sont pas des mesures du bâtiment. L’exemple Cricq conserve cinq
+références éditoriales conservées. Les deux sorties sont désormais intégrées et livrées en préproduction ; voir le point de reprise. Chaque visuel doit être sourcé, relié à une question de l’expertise et identifié comme constat, principe ou simulation ; les résultats illustratifs ne sont pas des mesures du bâtiment. L’exemple Cricq conserve cinq
 observations et quatre photos. Les listes doivent afficher fidèlement les
 valeurs importées, notamment une gravité non qualifiée, sans substitution
 visuelle par « Mineure » ; correction et recette à réaliser.
