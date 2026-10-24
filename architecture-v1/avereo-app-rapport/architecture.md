@@ -5,12 +5,20 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-15
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Restitutions expert et client
+
+Le champ optionnel `livrable` reste dans le payload JSON/MySQL existant. La
+composition HTML commune et le module DOCX chargé à la demande consomment les
+mêmes données ; aucun service d'export externe. Les illustrations pédagogiques
+sont incorporées au frontend, les pièces privées uniquement dans leur dossier.
+Sources, schéma et responsabilités : [procédure de transmission](docs/transmission-generation-rapports.md). Authentification et API inchangées.
 
 # Architecture de Rapport AVEREO
 

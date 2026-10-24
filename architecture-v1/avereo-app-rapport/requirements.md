@@ -5,7 +5,7 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-15
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -13,7 +13,44 @@ tags:
   - habitologie
 ---
 
+## Intégration des livrables — 24 octobre 2026
+
+Le choix expert/client, le branding, quatre illustrations pédagogiques et les
+annexes propres au dossier sont implémentés. Le Word est un `.docx` incorporant
+les images ; le JSON conserve tous les champs même en mode client. Les anciens
+dossiers s'ouvrent en expert sans visuel ajouté automatiquement. La synthèse
+client est rédigée par le professionnel, avec au plus trois constats choisis.
+Les valeurs libres importées restent affichées sans reclassement de gravité.
+Critères et procédure : [procédure de transmission](docs/transmission-generation-rapports.md). Qualification hébergée et revue métier distinctes.
+
 # Exigences de Rapport AVEREO
+
+## Livrables expert et client demandés le 24 octobre
+
+Le même dossier doit permettre de produire un rapport détaillé pour validation
+experte, utilisable ensuite par les professionnels, et une synthèse illustrée
+limitée à l'essentiel pour le client. Les deux doivent porter le branding
+AVEREO et présenter des visuels lisibles, légendés et reliés au raisonnement.
+Ces sorties sont distinctes des catégories de visite existantes. Leurs contenus,
+critères de présentation, référence Maison du Cricq et circuit de revue sont
+centralisés dans le [workflow Habitologie](workflows/workflow-habitologie.md#deux-livrables-avereo-demandés-le-24-octobre).
+Modèles locaux préparés et rendus pour revue (26 pages expert, 6 pages client) ;
+références éditoriales conservées. Les deux sorties sont désormais intégrées et livrées en préproduction ; voir le point de reprise. Chaque visuel doit être sourcé, relié à une question de l’expertise et identifié comme constat, principe ou simulation ; les résultats illustratifs ne sont pas des mesures du bâtiment. L’exemple Cricq conserve cinq
+observations et quatre photos. Les listes doivent afficher fidèlement les
+valeurs importées, notamment une gravité non qualifiée, sans substitution
+visuelle par « Mineure » ; correction et recette à réaliser.
+
+## Lot demandé le 24 octobre — critères à vérifier
+
+- En préproduction, modifier un constat du cas fictif Tilleuls, sauvegarder en ligne, rouvrir depuis la liste, retrouver la modification dans l’aperçu et l’export Word/JSON.
+- Conserver les photos et les champs existants ; proposer une sauvegarde JSON du brouillon avant remplacement. Vérifier erreur réseau, absence de rapport, refus d’accès et reprise d’un ancien dossier.
+- Afficher explicitement le RGA, sa source et la date de consultation ; ne jamais assimiler une donnée absente à une absence de risque.
+- Ouvrir les cartes France et Haute-Garonne depuis Rapport préproduction avec accès CONNECT obligatoire. Distinguer la carte territoriale du statut au point interrogé.
+- Maintenir « Suivant » accessible : déconnexion dans l’en-tête, sans chevauchement sur bureau et écran étroit ; conserver la dernière saisie avant sortie.
+- Garder AVEREO en maintenance. La nouvelle version n’a aucune autorisation de production ni de fusion implicite.
+
+Ces critères ne sont pas encore tous exécutés : voir le [point de reprise](docs/reprise-demo-philippe.md).
+
 
 ## Exigences fonctionnelles durables
 

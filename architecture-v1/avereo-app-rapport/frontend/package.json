@@ -8,11 +8,12 @@
     },
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "vite build && node scripts/build-rga.mjs",
         "test": "node --test",
         "preview": "vite preview"
     },
     "dependencies": {
+        "docx": "9.14.0",
         "idb-keyval": "^6.2.1",
         "leaflet": "1.9.4",
         "lucide-react": "^0.468.0",

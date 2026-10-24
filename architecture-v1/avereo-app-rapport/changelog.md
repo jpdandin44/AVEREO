@@ -5,14 +5,54 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-16
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
 
+## 2026-10-24 — Intégration des restitutions AVEREO
+
+- Choix rapport expert / synthèse client sur un dossier unique ; champs de
+  synthèse, sélection de constats et d'illustrations, annexes propres au bien.
+- Logo et palette AVEREO, tableaux des notes importées, en-tête et pagination.
+- Export `.docx` réel avec images incorporées, en remplacement du HTML `.doc`.
+- Valeurs libres importées visibles dans les listes sans changement de gravité.
+- Procédure de transmission et reprise ; aucune modification de base ou d'OAuth.
+
 # Evolutions significatives de Rapport AVEREO
+
+## 2026-10-24 — Modèles locaux AVEREO pour revue
+
+Enrichissement illustré : risques Géorisques, origines AQC, transferts ADEME, VMC et plan du Cricq, Mollier pédagogique et capture Ubakus historique. Sources et limites tracées dans le paquet de revue.
+
+Deux modèles sur le cas Cricq : 26 pages expert et 6 pages client, Word/PDF
+et rendus relus. Logo officiel, palette existante, photographies du dossier
+et schémas explicatifs. Exemple JSON chargé dans les champs actuels, sauvegarde
+et première réouverture locales réussies, exports natifs comparés (5 observations,
+4 photos). Réserve d’affichage des valeurs libres importées et dernier
+rechargement interrompu par erreur réseau consignés. Aucune modification du
+code applicatif, intégration des modèles, livraison ou validation métier.
+Les preuves et limites sont reliées au workflow et au point de reprise.
+
+## 2026-10-24 — Cadrage des deux livrables AVEREO
+
+Demande consignée : dossier expert détaillé à valider et synthèse client courte
+et illustrée, avec branding commun. Structure du dossier du Cricq examinée ;
+contenus, critères visuels et revue reliés au workflow existant. Cette entrée
+décrit un cadrage documentaire, sans nouvel export implémenté ni déploiement.
+
+## 2026-10-24 — Livraison en préproduction pour la démo
+
+- Ajout de la liste des rapports en ligne et de la réouverture avec export préalable possible du brouillon.
+- Retour à l’accueil après sauvegarde des dernières saisies.
+- Encadré RGA et restitution dans l’export Word lorsque la synthèse existe ; information manquante explicitement distinguée.
+- Empaquetage protégé des cartes RGA existantes, sans nouvelle dépendance npm.
+- Correction du chevauchement « Se déconnecter » / « Suivant » : action déplacée dans l’en-tête, avec sauvegarde du brouillon avant sortie.
+- Reprise du brouillon le plus récent entre IndexedDB et localStorage.
+- 60 tests, build authentifié et contrôles GitHub réussis ; parcours local simulé et affichage bureau/mobile contrôlés. Candidat `7082d422` livré après sauvegarde/restauration, huit fichiers vérifiés ; recette authentifiée et rendu natif Word encore à réaliser.
+
 
 ## 2026-10-16 — Suite de production préparée
 
