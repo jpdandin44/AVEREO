@@ -5,7 +5,7 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-15
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,11 @@ tags:
 ---
 
 # Decisions structurantes de Rapport AVEREO
+
+## 2026-10-24 — Intégrer les cartes existantes dans Rapport protégé
+
+Le responsable a choisi l’intégration à Rapport préproduction. Le sous-domaine `rga.avereo.fr` ne résout pas lors du contrôle de cette session. Les exports existants sont conservés comme sources figées et empaquetés derrière le sas CONNECT, sans créer un autre hébergement. Les empreintes assurent la traçabilité ; aucune modification manuelle des géométries n’est prévue. Cette décision ne vaut pas qualification des données au niveau parcellaire ni livraison en production.
+
 
 ## 2026-09-15 - Distinguer adresse et point reel de visite
 

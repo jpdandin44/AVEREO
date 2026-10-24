@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-16
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,17 @@ tags:
 ---
 
 # Evolutions significatives de Rapport AVEREO
+
+## 2026-10-24 — Préparation locale, non livrée
+
+- Ajout de la liste des rapports en ligne et de la réouverture avec export préalable possible du brouillon.
+- Retour à l’accueil après sauvegarde des dernières saisies.
+- Encadré RGA et restitution dans l’export Word lorsque la synthèse existe ; information manquante explicitement distinguée.
+- Empaquetage protégé des cartes RGA existantes, sans nouvelle dépendance npm.
+- Correction du chevauchement « Se déconnecter » / « Suivant » : action déplacée dans l’en-tête, avec sauvegarde du brouillon avant sortie.
+- Reprise du brouillon le plus récent entre IndexedDB et localStorage.
+- 60 tests et build authentifié réussis ; parcours local simulé et affichage bureau/mobile contrôlés. Recette hébergée et rendu natif Word encore à réaliser.
+
 
 ## 2026-10-16 — Suite de production préparée
 

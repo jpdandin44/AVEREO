@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-10-16
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,15 @@ tags:
 ---
 
 # Rapport AVEREO Pro
+
+## Préparation démo Philippe — 24 octobre 2026
+
+La branche `feat/rapport-demo-rga-20261024` prépare la réouverture des sauvegardes en ligne et l’accès à la carte RGA dans Rapport. Ces changements sont locaux, non déployés. Le [point de reprise](docs/reprise-demo-philippe.md) distingue les contrôles acquis et les étapes restantes.
+
+L’état du 16 octobre ci-dessous est historique : le suivi opérationnel du 23 octobre enregistre depuis la livraison de Rapport, le rétablissement OAuth et la confirmation humaine de connexion/ouverture en production. AVEREO reste en maintenance. Cette nouvelle préparation n’a effectué aucune mutation distante.
+
+`npm run build` assemble désormais également les deux cartes sous PHP, avec contrôle de leurs empreintes. Pour un candidat hébergé, construire avec `VITE_ENABLE_ONLINE_SYNC=true` et conserver les protections propres à la cible. Le serveur Vite seul n’exécute pas les pages PHP RGA.
+
 
 ## État de livraison — 16 octobre 2026
 

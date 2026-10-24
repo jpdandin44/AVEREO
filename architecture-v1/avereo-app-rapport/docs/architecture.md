@@ -5,7 +5,7 @@ title: Architecture technique de Rapport AVEREO
 status: active
 version: git
 created: 2026-07-14
-updated: 2026-09-15
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,15 @@ tags:
 ---
 
 # Architecture Rapport
+
+## Réouverture et cartographie RGA — préparation locale
+
+`OnlineReports.jsx` utilise les opérations GET déjà présentes dans `/api/reports.php` : liste des 50 derniers rapports accessibles et chargement par identifiant. Les contrôles de propriété côté PHP restent la référence. L’ouverture conserve l’identifiant serveur et demande de confirmer le remplacement du brouillon, dont une copie JSON peut être exportée. Le retour à l’accueil et la déconnexion attendent la sauvegarde locale des saisies. La reprise choisit le brouillon le plus récent entre IndexedDB et localStorage, afin qu’un ancien secours ne masque pas les dernières saisies. La déconnexion appartient à l’en-tête React ; le serveur ne superpose plus de lien au pied de page.
+
+`risques.rga` conserve les deux libellés officiels, y compris lorsqu’un objet RGA existe avec `present: false`. Aucun niveau n’est calculé. Les anciens rapports restent lisibles par recherche du RGA dans leur liste `naturels`.
+
+Les sources cartographiques figées résident dans `data/rga/`, hors du répertoire public. `frontend/scripts/build-rga.mjs` contrôle les SHA-256 et génère deux pages PHP dans `dist/rga/`. Chaque page exécute `guard.php`, qui réutilise le contrôle CONNECT avant tout HTML. L’index PHP présente les cartes en iframe. Le build ne publie aucun HTML RGA brut. Les cartes utilisent les ressources réseau déclarées dans les exports d’origine ; aucune donnée du rapport n’est ajoutée à leur URL. Aucune table, migration ou identité supplémentaire.
+
 
 ## Decision monorepo
 

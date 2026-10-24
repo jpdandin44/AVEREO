@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-10-16
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,13 @@ tags:
 ---
 
 # Matrice de migration fonctionnelle
+
+## État du lot démo au 24 octobre
+
+L’interface de réouverture depuis la liste serveur est maintenant implémentée localement, en réutilisant les opérations API existantes. Le RGA dispose d’un affichage explicite et les cartes d’origine sont empaquetées derrière CONNECT. Le lien de déconnexion flottant a été remplacé par une action d’en-tête, contrôlée sur écran large et étroit ; le brouillon le plus récent est repris entre les deux stockages. Ces écarts et leurs sources sont décrits dans le [point de reprise](reprise-demo-philippe.md) et l’[architecture](architecture.md). Le build authentifié et les 60 tests réussissent ; aucune nouvelle qualification hébergée ni revue native Word n’est acquise.
+
+Les états du 16 octobre ci-dessous sont historiques ; la production du 23 octobre est enregistrée dans le suivi opérationnel. Aucune preuve antérieure n’est réattribuée au nouveau code.
+
 
 ## Passage en production après fusion de la PR #84
 
@@ -50,7 +57,7 @@ Les deux types de rapport, leur sauvegarde/relecture en ligne, reprise du brouil
 | Export JSON | `App.jsx` | Blob | Frontend; import/export manuel | conservee |
 | Export document | `App.jsx` | Blob HTML/Word | Frontend; controle du fichier produit | conservee |
 | Sauvegarde en ligne | absente | PHP, PDO, MySQL | `/api/reports.php`, propriete utilisateur, CRUD | adaptee |
-| Reouverture depuis la liste serveur | absente | PHP, MySQL | API disponible; interface differee au lot de consolidation OAuth | non integree |
+| Reouverture depuis la liste serveur | absente | PHP, MySQL | API existante et interface OnlineReports | implementee localement le 24 octobre, recette restante |
 | Authentification | absente | AVEREO CONNECT adosse a Drupal | ticket signe, cookie de sas, roles `utilisateur_rapport`/`administrateur_rapport` | adaptee |
 | Mode technique local | absente | Jeton genere localement | `api_token`, ignore de Git, admin local temporaire | adaptee |
 | Parcours CONNECT local reel | absent | CONNECT Docker, ticket HMAC, cookie de sas, MySQL Rapport | `gateway-up`, secret local ignore, vraie interface Rapport sur `127.0.0.1:8100` | adaptee |
@@ -60,7 +67,7 @@ Les deux types de rapport, leur sauvegarde/relecture en ligne, reprise du brouil
 | Confirmation du lieu | retour utilisateur | Tuiles IGN WMTS / Leaflet, objet `localisation` | Cadastre sur plan ou vue aerienne ; confirmation datee, annulation et correction d'adresse ; aucune migration SQL | rendu et transitions valides localement, a qualifier en preproduction |
 | Backend Node.js | absent | aucun | Aucun runtime Node.js en production | non integree |
 
-Aucune fonctionnalite source n'est volontairement supprimee. La persistance serveur et l'authentification sont ajoutees sans retirer le brouillon hors ligne. La preversion reste utilisable sans OAuth avec les brouillons navigateur; la reouverture d'une copie serveur sera finalisee avec le parcours d'authentification de production.
+Aucune fonctionnalite source n'est volontairement supprimee. La persistance serveur et l'authentification sont ajoutees sans retirer le brouillon hors ligne. La preversion reste utilisable sans OAuth avec les brouillons navigateur; la nouvelle interface de reouverture d’une copie serveur reste a qualifier en preproduction.
 
 Le lien vers le rapport officiel Georisques conserve la fonction historique de
 consultation. La synthese structuree, son horodatage et sa source sont
