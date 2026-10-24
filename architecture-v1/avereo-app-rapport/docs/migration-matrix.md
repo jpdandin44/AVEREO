@@ -17,7 +17,7 @@ tags:
 
 ## État du lot démo au 24 octobre
 
-L’interface de réouverture depuis la liste serveur est maintenant implémentée localement, en réutilisant les opérations API existantes. Le RGA dispose d’un affichage explicite et les cartes d’origine sont empaquetées derrière CONNECT. Le lien de déconnexion flottant a été remplacé par une action d’en-tête, contrôlée sur écran large et étroit ; le brouillon le plus récent est repris entre les deux stockages. Ces écarts et leurs sources sont décrits dans le [point de reprise](reprise-demo-philippe.md) et l’[architecture](architecture.md). Le build authentifié et les 60 tests réussissent ; aucune nouvelle qualification hébergée ni revue native Word n’est acquise.
+L’interface de réouverture depuis la liste serveur est implémentée et livrée en préproduction, en réutilisant les opérations API existantes. Le RGA dispose d’un affichage explicite et les cartes d’origine sont empaquetées derrière CONNECT. Le lien de déconnexion flottant a été remplacé par une action d’en-tête, contrôlée sur écran large et étroit ; le brouillon le plus récent est repris entre les deux stockages. Ces écarts et leurs sources sont décrits dans le [point de reprise](reprise-demo-philippe.md) et l’[architecture](architecture.md). Le build authentifié et les 60 tests réussissent ; les empreintes livrées, la restauration et les refus anonymes sont vérifiés ; la recette authentifiée et la revue native Word restent à effectuer.
 
 Les états du 16 octobre ci-dessous sont historiques ; la production du 23 octobre est enregistrée dans le suivi opérationnel. Aucune preuve antérieure n’est réattribuée au nouveau code.
 
@@ -57,7 +57,7 @@ Les deux types de rapport, leur sauvegarde/relecture en ligne, reprise du brouil
 | Export JSON | `App.jsx` | Blob | Frontend; import/export manuel | conservee |
 | Export document | `App.jsx` | Blob HTML/Word | Frontend; controle du fichier produit | conservee |
 | Sauvegarde en ligne | absente | PHP, PDO, MySQL | `/api/reports.php`, propriete utilisateur, CRUD | adaptee |
-| Reouverture depuis la liste serveur | absente | PHP, MySQL | API existante et interface OnlineReports | implementee localement le 24 octobre, recette restante |
+| Reouverture depuis la liste serveur | absente | PHP, MySQL | API existante et interface OnlineReports | livree en preproduction le 24 octobre, recette authentifiee restante |
 | Authentification | absente | AVEREO CONNECT adosse a Drupal | ticket signe, cookie de sas, roles `utilisateur_rapport`/`administrateur_rapport` | adaptee |
 | Mode technique local | absente | Jeton genere localement | `api_token`, ignore de Git, admin local temporaire | adaptee |
 | Parcours CONNECT local reel | absent | CONNECT Docker, ticket HMAC, cookie de sas, MySQL Rapport | `gateway-up`, secret local ignore, vraie interface Rapport sur `127.0.0.1:8100` | adaptee |

@@ -14,7 +14,7 @@ tags:
 
 # Evolutions significatives de Rapport AVEREO
 
-## 2026-10-24 — Préparation locale, non livrée
+## 2026-10-24 — Livraison en préproduction pour la démo
 
 - Ajout de la liste des rapports en ligne et de la réouverture avec export préalable possible du brouillon.
 - Retour à l’accueil après sauvegarde des dernières saisies.
@@ -22,7 +22,7 @@ tags:
 - Empaquetage protégé des cartes RGA existantes, sans nouvelle dépendance npm.
 - Correction du chevauchement « Se déconnecter » / « Suivant » : action déplacée dans l’en-tête, avec sauvegarde du brouillon avant sortie.
 - Reprise du brouillon le plus récent entre IndexedDB et localStorage.
-- 60 tests et build authentifié réussis ; parcours local simulé et affichage bureau/mobile contrôlés. Recette hébergée et rendu natif Word encore à réaliser.
+- 60 tests, build authentifié et contrôles GitHub réussis ; parcours local simulé et affichage bureau/mobile contrôlés. Candidat `7082d422` livré après sauvegarde/restauration, huit fichiers vérifiés ; recette authentifiée et rendu natif Word encore à réaliser.
 
 
 ## 2026-10-16 — Suite de production préparée

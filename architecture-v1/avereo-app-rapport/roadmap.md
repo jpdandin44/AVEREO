@@ -18,7 +18,7 @@ tags:
 
 ## Priorité active — démo Philippe, 24 octobre
 
-Le parcours sauvegarde, réouverture et export est prioritaire, avec l’ajout RGA demandé. Développement local contrôlé : 60 tests, build authentifié, parcours fictif et affichage sans chevauchement des boutons sur bureau/mobile. PR, sauvegarde/restauration, livraison et recette préproduction restent à terminer. Le [point de reprise](docs/reprise-demo-philippe.md) porte les actions exactes.
+Le parcours sauvegarde, réouverture et export est prioritaire, avec l’ajout RGA demandé. Développement local contrôlé : 60 tests, build authentifié, parcours fictif et affichage sans chevauchement des boutons sur bureau/mobile. PR 89 ouverte en brouillon ; sauvegarde/restauration et livraison préproduction effectuées. Recette authentifiée complète et lecture native Word restent à terminer. Le [point de reprise](docs/reprise-demo-philippe.md) porte les actions exactes.
 
 Les paragraphes de livraison du 16 octobre ci-dessous constituent un historique ; leur attente OAuth/production est levée par le suivi opérationnel du 23 octobre. Aucun nouveau lot de production n’est démarré.
 
