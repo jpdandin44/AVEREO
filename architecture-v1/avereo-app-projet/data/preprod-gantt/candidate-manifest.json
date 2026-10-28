@@ -1,0 +1,21 @@
+{
+  "project": "avereo-app-projet",
+  "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc",
+  "target": "/home/daje3540/projet-preprod.avereo.fr",
+  "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51",
+  "files": {
+    "legacy-app.html": "2f531ccaa435153c4890d453cce89a352499da4c9bd5758d32bc1f238088bcaa",
+    "planning-core.js": "03c03d8124b1f1fc7827eba87073e0c44347c42a6f884637583ff8abaa5320c5",
+    "planning-local.js": "282a2ad65546113520c6a94c1095432a3a8abba308a7e6aa26e49beee50f9cd5",
+    "task-details.js": "b74118cfb408131969b32769021ca2e4ff8eee3cebdc344218b0c735b91bf56d"
+  },
+  "preserves": [
+    "index.php",
+    "index.html",
+    ".htaccess",
+    "connect/",
+    "private configuration",
+    "databases"
+  ],
+  "note": "The existing hosted wrapper must reference /legacy-app.html."
+}

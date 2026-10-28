@@ -5,7 +5,7 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-25
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,37 @@ tags:
 ---
 
 # Feuille de route de Projet
+
+## Gantt préproduction — 28 octobre 2026
+
+La version locale (défilement, synthèses repliées, déplacements et repère du jour)
+est reprise sans changement des fichiers métier depuis la copie de pilotage,
+sur une branche issue du `main` courant. Les revues locales déjà intégrées sont
+conservées. Le [suivi](data/suivi-gantt-affichage.json) distingue Cadrage,
+Développement local, Préproduction et Mise en production. La demande du responsable
+autorise la préproduction Projet, pas un merge ou une livraison de production.
+La livraison ciblée est réalisée et vérifiée, après CI réussie et récupération
+privée répétée. La [PR #90](https://github.com/jpdandin44/AVEREO/pull/90) reste en
+brouillon. Recette ciblée dans Chrome connecté réussie : import de la référence,
+repli et trait du jour, export/rechargement avec conservation intégrale des
+45 tâches. Validation humaine encore attendue. Ni merge ni production.
+
+## Prochain lot demandé — dossiers clients et enregistrement serveur
+
+Besoin confirmé le 28 octobre : conserver les projets en préproduction et mener
+plusieurs dossiers clients en parallèle. Le [cadrage fonctionnel](requirements.md#projets-clients-et-enregistrement-serveur--besoin-demandé-non-implémenté)
+est proposé ; cette V2 n'est pas développée. Les destinataires des accès restent à
+préciser avant décision d'architecture. Le suivi du Gantt conserve cette suite,
+sans mélanger son candidat déjà livré avec un futur backend.
+
+1. **Cadrage** : utilisateurs, données, identité et droits, stockage/hébergement,
+   sauvegarde/restauration, critères et budget. Source actuelle préservée.
+2. **Développement local** : registre clients/projets et persistance sécurisée,
+   tests sur deux clients/trois projets fictifs et reprise de la V1 sans perte.
+3. **Préproduction** : candidat isolé autorisé, sauvegarde restaurée, contrôle des
+   droits et de la concurrence, reprise dans un deuxième navigateur, revue humaine.
+4. **Mise en production** : uniquement sur accord distinct et version acceptée,
+   avec récupération qualifiée, contrôles après livraison et suite conservés.
 
 ## Revue locale des phases — 24 septembre 2026
 

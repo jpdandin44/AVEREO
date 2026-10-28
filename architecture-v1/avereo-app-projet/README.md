@@ -5,7 +5,7 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-25
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,33 @@ tags:
 ---
 
 # Projet AVEREO
+
+## Gantt livré en préproduction — 28 octobre 2026
+
+Le calendrier et les tâches partagent un défilement aligné. Les projets sont
+repliables et conservent leur barre de synthèse (étendue et avancement).
+Un trait rouge daté marque aujourd'hui, dans les deux zooms, sans bloquer les gestes.
+Glisser une barre/jalon pour proposer des dates, une synthèse pour un projet
+complet, une poignée ⠿ pour réordonner les projets ou les sujets dans leur projet.
+La prévisualisation montre les impacts des dépendances avant application ; le
+dernier déplacement est annulable pendant la session, hors autre saisie.
+Alt + gauche/droite agit sur les dates, Alt + haut/bas sur les poignées.
+Le statut des différés, les preuves et les validations ne changent pas implicitement.
+
+Le planning est installé sur [Projet préproduction](https://projet-preprod.avereo.fr/),
+sans backend ni livraison de production. Les quatre fichiers et la conservation
+de la configuration ont été vérifiés ; une recette ciblée est réalisée dans
+Chrome connecté : référence de 45 tâches, import/export, synthèses repliées,
+trait du jour et reprise après rechargement. Les exports avant/après sont
+strictement identiques. La validation humaine reste distincte.
+Le [suivi du lot](data/suivi-gantt-affichage.json) porte le candidat
+et les preuves ; la [procédure](docs/deployment.md) impose sauvegarde/restauration
+et conservation des accès. À l'ouverture d'une nouvelle origine, importer le JSON
+complet : le planning reste propre au navigateur/profil, sans sauvegarde serveur.
+
+Le besoin de dossiers clients indépendants et d'enregistrement serveur est
+[demandé et cadré](requirements.md#projets-clients-et-enregistrement-serveur--besoin-demandé-non-implémenté),
+pas encore réalisé. Les cartouches du Gantt ne constituent pas un registre de clients.
 
 Le **[guide utilisateur](docs/guide-utilisateur.md)** explique l'accès local,
 les écrans de suivi, les décisions, le planning, les sauvegardes et le dépannage.
@@ -70,8 +97,9 @@ locale ciblée sont réalisés ; les limites de cette qualification sont consign
 séparément de celles du planning initial dans l'audit.
 Les tests et la recette navigateur effectués,
 ainsi que les contrôles encore ouverts, sont consignés dans
-[docs/source-audit.md](docs/source-audit.md). La préproduction et la production
-ne sont pas qualifiées par ce lot.
+[docs/source-audit.md](docs/source-audit.md). Les contrôles de préproduction du
+28 octobre sont distincts des recettes historiques ; la production et la recette
+métier authentifiée ne sont pas qualifiées.
 
 Le pilote préchargé est une proposition de planning, pas un avancement réalisé.
 Son modèle et ses hypothèses sont décrits dans [data/README.md](data/README.md).
