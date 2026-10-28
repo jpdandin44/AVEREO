@@ -5,7 +5,7 @@
   "project": "avereo-app-projet",
   "owner": "jpdandin",
   "kind": "application",
-  "stage": "developpement-local",
+  "stage": "preproduction",
   "status": "in_progress",
   "preproductionRequest": {"source": "Message direct du responsable : OK, peut-on mettre cette version en préprod que je puisse l'utiliser comme outil?", "scope": "Projet préproduction uniquement, quatre fichiers du planning validé ; aucun merge ou production", "receivedOn": "2026-10-28", "humanPhaseApproval": false},
   "objective": "Conserver une synthèse calendrier des projets repliés, déplacer dates et ordre avec prévisualisation/annulation et afficher un repère rouge du jour courant.",
@@ -16,22 +16,30 @@
   "branch": "feat/projet-preprod-gantt-20261028",
   "baseSha": "cf21b593faf9b6f4fae5e88eea3ff0117d41a074",
   "candidate": {
-    "sourceSha": null,
-    "artifactSha256": "2f531ccaa435153c4890d453cce89a352499da4c9bd5758d32bc1f238088bcaa",
+    "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc",
+    "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51",
+    "reviewedHtmlSha256": "2f531ccaa435153c4890d453cce89a352499da4c9bd5758d32bc1f238088bcaa",
     "sourceFileHashes": {"frontend/public/planning-core.js": "03c03d8124b1f1fc7827eba87073e0c44347c42a6f884637583ff8abaa5320c5"},
-    "artifact": "frontend/dist/legacy-app.html",
-    "note": "Candidat local non commité ; empreinte du HTML source et construit, pas d'une livraison complète."
+    "artifact": "C:/Users/examg/Documents/Codex/2026-07-16/avereo-pilotage/outputs/projet-preproduction/candidate.zip",
+    "manifest": "data/preprod-gantt/candidate-manifest.json",
+    "note": "Archive locale immuable des quatre fichiers statiques, préparée depuis une source commitée et propre. La CI vérifie cette source ; l'archive n'est pas présentée comme un artefact généré par la CI."
   },
   "phases": [
     {"id": 0, "label": "Cadrage", "status": "awaiting_review", "environment": "local", "reviewEnvironment": "local", "result": "Cause reproduite, périmètre limité au Gantt ; aucune validation humaine de phase enregistrée."},
     {"id": 1, "label": "Développement local", "status": "awaiting_review", "environment": "local", "reviewEnvironment": "local", "result": "Repère du jour ajouté aux synthèses et déplacements : 132 tests et build réussis, alignement et données contrôlés. À examiner par le responsable."},
-    {"id": 2, "label": "Préproduction", "status": "not_started", "environment": "preproduction", "reviewEnvironment": "preproduction"},
+    {"id": 2, "label": "Préproduction", "status": "awaiting_review", "environment": "preproduction", "reviewEnvironment": "preproduction", "result": "Livraison ciblée et vérification distante réussies ; empreintes HTTP conformes, accès principal via CONNECT conservé. Recette authentifiée du planning et validation humaine restent ouvertes."},
     {"id": 3, "label": "Mise en production", "status": "not_started", "environment": "production", "reviewEnvironment": "preproduction"}
   ],
   "localUrl": "http://127.0.0.1:5198/legacy-app.html",
-  "targets": {"preproduction": {"id": "https://projet-preprod.avereo.fr", "root": "/home/daje3540/projet-preprod.avereo.fr", "ready": false, "isolated": true, "empty": false, "observedAt": "2026-10-28T17:37:34Z", "evidence": "Lecture directe cPanel DomainInfo : racine dédiée, non symbolique et distincte des autres racines ; lanceur compatible et configuration privée présente."}, "production": {"id": null, "ready": false}},
-  "github": {"repository": "jpdandin44/AVEREO", "prUrl": null, "humanAcceptanceVerified": false, "observedAt": null, "note": "Pas d'écriture distante ni de requalification GitHub dans ce lot local."},
-  "checks": [],
+  "targets": {"preproduction": {"id": "https://projet-preprod.avereo.fr", "root": "/home/daje3540/projet-preprod.avereo.fr", "ready": true, "isolated": true, "empty": false, "observedAt": "2026-10-28T17:47:20Z", "evidence": "Lecture cPanel DomainInfo : racine dédiée, non symbolique et distincte des autres racines, dont public_html/projet ; lanceur compatible. Préparation et récupération réelles dans data/preprod-gantt/prepare-receipt.json."}, "production": {"id": null, "ready": false}},
+  "github": {"repository": "jpdandin44/AVEREO", "prUrl": "https://github.com/jpdandin44/AVEREO/pull/90", "headSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc", "baseSha": "cf21b593faf9b6f4fae5e88eea3ff0117d41a074", "mergeable": true, "mergeState": "blocked", "humanAcceptanceVerified": false, "observedAt": "2026-10-28T17:47:20Z", "evidence": "https://github.com/jpdandin44/AVEREO/pull/90", "note": "PR brouillon, cases humaines décochées ; CI réussie, aucun merge. La branche contient le main courant, fusion à trois voies sans conflit vérifiée."},
+  "checks": [
+    {"kind": "local", "status": "passed", "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc", "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51", "observedAt": "2026-10-28T17:47:20Z", "evidence": "docs/source-audit.md", "result": "Build 162 tests sans échec/saut ; baseline et whitespace réussis ; quatre fichiers archive identiques au build/source."},
+    {"kind": "ci", "status": "passed", "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc", "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51", "observedAt": "2026-10-28T17:47:20Z", "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/40737675957", "result": "Huit jobs CI réussis sur la source exacte, dont Projet et création/restauration POSIX. Paquet local associé à cette source, pas produit par la CI."},
+    {"kind": "documentation", "status": "passed", "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc", "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51", "observedAt": "2026-10-28T17:47:20Z", "evidence": "docs/source-audit.md", "result": "Socle présent ; 9 Markdown concernés, métadonnées et 74 liens vérifiés ; procédure de conservation/récupération documentée."},
+    {"kind": "preproduction", "status": "passed", "target": "https://projet-preprod.avereo.fr", "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc", "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51", "observedAt": "2026-10-28T17:52:18.024094+00:00", "evidence": "data/preprod-gantt/verify-receipt.json", "httpEvidence": "data/preprod-gantt/http-receipt.json", "result": "Vérification serveur de l'arbre et de la configuration privée réussie, quatre empreintes HTTP exactes ; entrée 303 vers CONNECT puis 401 anonyme. Contrôle technique, pas recette métier authentifiée."},
+    {"kind": "documentation", "status": "passed", "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc", "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51", "observedAt": "2026-10-28T17:54:47Z", "evidence": "docs/source-audit.md", "result": "Après livraison : socles présents, 9 documents applicatifs/80 liens et 14 Markdown pilotage/72 liens contrôlés ; métadonnées, archive, sources et reçus rapprochés sans erreur. Policy PR prépublication et baseline réussies. Les commits documentaires ultérieurs ne changent pas les quatre fichiers du candidat technique."}
+  ],
   "todayMarkerChecks": [
     {"kind": "local", "status": "passed", "target": "frontend", "command": "npm.cmd run build", "observedAt": "2026-10-28", "artifactSha256": "2f531ccaa435153c4890d453cce89a352499da4c9bd5758d32bc1f238088bcaa", "result": "132 tests réussis ; 31 modules ; artefact de 12 fichiers contrôlé. HTML source et construit identiques.", "evidence": "docs/source-audit.md"},
     {"kind": "local", "status": "passed", "target": "http://127.0.0.1:5198/legacy-app.html", "observedAt": "2026-10-28", "result": "Repère rouge 28/10/2026 ; position Jours 100 px / Semaines 25 px ; en-tête/corps alignés à 0 px après défilement/repli ; passage du pointeur aux barres ; export identique avant/après.", "evidence": "docs/source-audit.md"},
@@ -49,8 +57,10 @@
     {"kind": "local", "status": "passed", "target": "exports navigateur avant/après/rechargement", "observedAt": "2026-10-28", "result": "45 tâches ; fichiers strictement identiques.", "dataSha256": "c69f4bff3fcb811a2838b7db740e101aed58dec601f78905132779dc9177d732", "evidence": "docs/source-audit.md"},
     {"kind": "documentation", "status": "passed", "target": "sous-projet Projet et espace de pilotage", "observedAt": "2026-10-28", "result": "Socles présents ; 7 documents applicatifs modifiés et 55 liens vérifiés ; 14 Markdown du pilotage contrôlés, aucune erreur. git diff --check réussi.", "evidence": "docs/source-audit.md"}
   ],
-  "approvals": [],
-  "delivery": {"status": "not_delivered"},
-  "blockers": ["Source/PR/CI du candidat exact à publier et qualifier.", "Sauvegarde/restauration réelle requise avant remplacement des quatre fichiers."],
-  "nextAction": "Publier la branche/PR, qualifier le candidat et sa récupération privée, contrôler le passage puis livrer Projet préproduction uniquement."
+  "approvals": [{"scope": "preproduction", "status": "approved", "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc", "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51", "target": "https://projet-preprod.avereo.fr", "actor": "jpdandin", "source": "user_chat", "recordedAt": "2026-10-28T17:47:20Z", "evidence": "Demande directe : OK, peut-on mettre cette version en préprod que je puisse l'utiliser comme outil? Version de planning conservée à l'identique, quatre fichiers seulement ; cible dédiée vérifiée. Aucun accord de merge, de production ou de validation métier déduit."}],
+  "backups": [{"target": "https://projet-preprod.avereo.fr", "id": "/home/daje3540/private/projet-gantt-a6b4cdf-20261028/recovery", "status": "verified", "restoreStatus": "passed", "observedAt": "2026-10-28T17:45:53.824272+00:00", "evidence": "data/preprod-gantt/prepare-receipt.json", "scope": "Fichiers/modes et configuration privée sauvegardés ; installation/restauration répétées en copie privée ; aucune écriture de base."}],
+  "delivery": {"status": "delivered", "environment": "preproduction", "target": "https://projet-preprod.avereo.fr", "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc", "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51", "deliveredAt": "2026-10-28T17:48:40.507482+00:00", "verifiedAt": "2026-10-28T17:49:29.214604+00:00", "evidence": "data/preprod-gantt/deploy-receipt.json", "verification": "data/preprod-gantt/verify-receipt.json", "productionDelivered": false, "privateConfigUnchanged": true, "databaseWrites": false},
+  "openRecipeItems": ["Accès authentifié depuis le navigateur d'usage, non disponible dans la session intégrée", "Exporter le dernier brouillon local puis importer le JSON en préproduction, contrôler repli, repère du jour, export et reprise après rechargement", "Validation humaine de la recette ; aucun accord de merge ou de production"],
+  "blockers": [],
+  "nextAction": "Ouvrir l'entrée préproduction dans le navigateur habituel du responsable, se connecter et vérifier le planning après import de son dernier JSON ; conserver les cases humaines décochées et ne pas fusionner ou publier en production."
 }

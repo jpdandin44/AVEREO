@@ -22,8 +22,10 @@ sur une branche issue du `main` courant. Les revues locales déjà intégrées s
 conservées. Le [suivi](data/suivi-gantt-affichage.json) distingue Cadrage,
 Développement local, Préproduction et Mise en production. La demande du responsable
 autorise la préproduction Projet, pas un merge ou une livraison de production.
-Prochaine action : contrôles du candidat, PR/CI, récupération privée puis livraison
-ciblée et recette sur l'accès protégé. Aucune livraison n'est attestée par cette préparation.
+La livraison ciblée est réalisée et vérifiée, après CI réussie et récupération
+privée répétée. La [PR #90](https://github.com/jpdandin44/AVEREO/pull/90) reste en
+brouillon. Prochaine action : recette authentifiée dans le navigateur d'usage,
+import de son dernier JSON, export/rechargement et revue humaine. Ni merge ni production.
 
 ## Revue locale des phases — 24 septembre 2026
 

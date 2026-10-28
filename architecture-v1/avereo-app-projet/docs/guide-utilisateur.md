@@ -23,7 +23,9 @@ ou Échap abandonne la proposition. Le dernier déplacement est annulable pendan
 la session, hors autre modification. Un différé reste En attente.
 
 La version hébergée du planning n'héberge pas les revues sur disque. À la première
-ouverture en préproduction, importer le JSON exporté depuis le navigateur local.
+ouverture de [Projet préproduction](https://projet-preprod.avereo.fr/), passer par
+CONNECT avec son accès habituel puis importer le JSON exporté depuis le navigateur local.
+Avant remplacement, exporter tout brouillon déjà présent sur cette nouvelle origine.
 Chaque navigateur/profil possède son brouillon ; exporter régulièrement le JSON
 complet. Un changement d'adresse ne transporte pas automatiquement les données.
 

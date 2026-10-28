@@ -40,7 +40,32 @@ L'outillage de livraison est testé sur fixtures : sauvegarde, installation,
 restauration et préservation du sas, refus d'une dérive et d'un candidat invalide.
 Sur Windows, les cas de création/modes POSIX sont réservés à la CI Linux ;
 la fixture locale couvre le remplacement en conservant les modes existants.
-La récupération réelle doit être vérifiée avant écriture de la racine active.
+La récupération réelle a ensuite été vérifiée avant écriture de la racine active.
+
+### Résultat hébergé de cette itération
+
+La [CI de la source a6b4cdf](https://github.com/jpdandin44/AVEREO/actions/runs/40737675957)
+réussit ses huit jobs, y compris Projet et les cas POSIX. La sauvegarde réelle
+et la répétition installation/restauration en copie privée réussissent avant le
+contrôle de passage. Livraison à 17:48 UTC puis vérification à 17:49 UTC : quatre
+fichiers exacts, arbre attendu et configuration privée conservés, aucune écriture
+de base. Les [preuves canoniques](../data/suivi-gantt-affichage.json) relient
+candidat, autorisation ciblée, sauvegarde et reçus serveur.
+
+À 17:52 UTC, les quatre fichiers HTTP répondent 200 et leurs empreintes sont
+identiques au manifeste. L'entrée principale répond 303 vers CONNECT ; CONNECT
+répond 401 en anonyme. Les ressources statiques ne sont pas protégées par ce sas ;
+elles ne contiennent pas le planning personnel. Le navigateur intégré ne possède
+pas l'authentification de préproduction : recette du parcours connecté et
+import/export/rechargement dans le navigateur d'usage encore ouverts. Le contrôle
+serveur et la CI ne valent pas validation humaine ni livraison en production.
+
+Contrôle documentaire après livraison : socles du sous-projet et du pilotage
+présents ; neuf documents applicatifs et 80 liens locaux, 14 Markdown du pilotage
+et 72 liens vérifiés. Métadonnées, archive, sources et reçus rapprochés sans erreur.
+Policy PR prépublication, baseline racine et `git diff --check` réussis.
+Le commit documentaire des preuves est distinct de la source technique a6b4cdf ;
+aucun des quatre fichiers déployés n'est changé par cette consignation.
 
 ## Revues complémentaires d'une phase — 25 septembre 2026
 
@@ -258,9 +283,11 @@ Les contrôles manuels ouverts restent donc nécessaires avant
 de considérer tous les échanges de fichiers qualifiés.
 
 Le local ne prouve ni le sas PHP hébergé, ni DNS/HTTPS, ni la réalisation des
-EV métier planifiées. Préproduction et production ne sont pas qualifiées.
+EV métier planifiées. Les contrôles hébergés du 28 octobre sont limités à leur
+périmètre décrit en tête ; la recette métier authentifiée et la production restent ouvertes.
 Les CDN historiques restent une dépendance réseau ; le fonctionnement
 entièrement hors connexion n'est pas établi.
 
 Le déclenchement d'un futur déploiement est expliqué dans
-[deployment.md](deployment.md). Aucun déploiement ni migration de données hébergées n'est attesté ici.
+[deployment.md](deployment.md). La livraison ciblée de préproduction du 28 octobre
+ne constitue ni une migration de données, ni une livraison de production.

@@ -15,7 +15,7 @@ tags:
 
 # Projet AVEREO
 
-## Gantt et préparation de préproduction — 28 octobre 2026
+## Gantt livré en préproduction — 28 octobre 2026
 
 Le calendrier et les tâches partagent un défilement aligné. Les projets sont
 repliables et conservent leur barre de synthèse (étendue et avancement).
@@ -27,8 +27,10 @@ dernier déplacement est annulable pendant la session, hors autre saisie.
 Alt + gauche/droite agit sur les dates, Alt + haut/bas sur les poignées.
 Le statut des différés, les preuves et les validations ne changent pas implicitement.
 
-La demande de livraison concerne uniquement Projet préproduction, sans backend
-ou production. Le [suivi du lot](data/suivi-gantt-affichage.json) porte le candidat
+Le planning est installé sur [Projet préproduction](https://projet-preprod.avereo.fr/),
+sans backend ni livraison de production. Les quatre fichiers et la conservation
+de la configuration ont été vérifiés ; la recette authentifiée reste ouverte.
+Le [suivi du lot](data/suivi-gantt-affichage.json) porte le candidat
 et les preuves ; la [procédure](docs/deployment.md) impose sauvegarde/restauration
 et conservation des accès. À l'ouverture d'une nouvelle origine, importer le JSON
 complet : le planning reste propre au navigateur/profil, sans sauvegarde serveur.
@@ -88,8 +90,9 @@ locale ciblée sont réalisés ; les limites de cette qualification sont consign
 séparément de celles du planning initial dans l'audit.
 Les tests et la recette navigateur effectués,
 ainsi que les contrôles encore ouverts, sont consignés dans
-[docs/source-audit.md](docs/source-audit.md). La préproduction et la production
-ne sont pas qualifiées par ce lot.
+[docs/source-audit.md](docs/source-audit.md). Les contrôles de préproduction du
+28 octobre sont distincts des recettes historiques ; la production et la recette
+métier authentifiée ne sont pas qualifiées.
 
 Le pilote préchargé est une proposition de planning, pas un avancement réalisé.
 Son modèle et ses hypothèses sont décrits dans [data/README.md](data/README.md).

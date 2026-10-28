@@ -44,8 +44,27 @@ Contrôler ensuite les réponses anonymes, l'accès CONNECT réel, l'affichage,
 l'import/export JSON et la reprise. Le navigateur de préproduction constitue
 une nouvelle origine : importer sa sauvegarde une fois dans le navigateur
 d'usage, puis exporter régulièrement. Pas de base partagée dans cette version.
-Le [suivi](../data/suivi-gantt-affichage.json) porte les preuves réelles ; cette
-procédure ne suffit pas à attester une livraison ou une validation humaine.
+Le [suivi](../data/suivi-gantt-affichage.json) porte les preuves réelles.
+
+### Livraison constatée
+
+Le 28 octobre à 17:48 UTC, le candidat source `a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc`
+et paquet `201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51`
+est installé. La [préparation/restauration](../data/preprod-gantt/prepare-receipt.json),
+le [contrôle de passage](../data/preprod-gantt/gate-before-delivery.json), le
+[reçu de livraison](../data/preprod-gantt/deploy-receipt.json), la
+[vérification distante](../data/preprod-gantt/verify-receipt.json) et le
+[contrôle HTTP](../data/preprod-gantt/http-receipt.json) sont conservés.
+La configuration privée et le reste de l'arbre sont inchangés ; aucune écriture SQL.
+La sauvegarde reste dans le dossier privé de cette itération.
+
+L'entrée principale renvoie 303 vers CONNECT, qui demande l'authentification
+préproduction (401 anonyme). Les fichiers statiques restent lisibles anonymement :
+ce sas n'est pas une protection globale du code frontend. Aucun planning personnel
+n'a été transféré. Le navigateur intégré ne dispose pas de cette authentification ;
+connexion, import/export et reprise dans le navigateur d'usage restent à recetter.
+La [PR #90](https://github.com/jpdandin44/AVEREO/pull/90) reste en brouillon,
+sans merge ni validation humaine déduite de la livraison technique.
 
 L'espace **Revues & approbations** se lance avec `npm.cmd run dev:review` sur
 le port 5190 ; voir le [workflow local](../workflows/revue-developpement.md).
@@ -107,4 +126,5 @@ Comptes, configuration et état DNS/HTTPS ne sont pas qualifiés par ce lot.
 Conserver une archive distante avant transfert destructif et restaurer l'artefact
 précédent si nécessaire. Exports utilisateurs et brouillons navigateur sont
 distincts de la sauvegarde du code. Aucun merge, déploiement ni retour arrière
-distant n'est exécuté dans cette intervention.
+de production n'est exécuté dans cette intervention. La livraison ciblée de
+préproduction et sa récupération sont celles documentées en tête de ce document.

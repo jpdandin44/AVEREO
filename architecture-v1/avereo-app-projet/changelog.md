@@ -14,13 +14,16 @@ tags:
 
 # Changelog de Projet
 
-## 2026-10-28 — Gantt personnel et préparation préproduction
+## 2026-10-28 — Gantt personnel et livraison préproduction
 
 - Défilement aligné, cartouches repliables et synthèses calendrier.
 - Déplacements des dates et de l'ordre avec prévisualisation, annulation et gardes.
 - Repère rouge du jour, zooms et calendrier local conservés, sans écriture des données.
 - Reprise sur le main courant sans modifier les travaux d'autres copies.
 - Préparation d'une livraison gardée de quatre fichiers, sans SQL ni modification d'accès.
+- Livraison et empreintes serveur/HTTP vérifiées après sauvegarde/restauration réelle
+  et contrôle de passage ; PR #90 en brouillon, CI réussie. Recette authentifiée
+  dans le navigateur d'usage encore ouverte ; aucun merge ni livraison de production.
 
 ## 2026-09-25 — Revues complémentaires dans leur phase
 
