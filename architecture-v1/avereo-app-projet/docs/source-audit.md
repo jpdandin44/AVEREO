@@ -5,7 +5,7 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-25
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,33 @@ tags:
 ---
 
 # Audit et recette du planning Projet
+
+## Reprise du Gantt pour préproduction — 28 octobre 2026
+
+Les deux fichiers métier modifiés et leurs tests sont repris depuis la copie de
+pilotage, à l'identique, dans une branche issue de `main` `cf21b593faf9b6f4fae5e88eea3ff0117d41a074`.
+L'HTML du repère du jour conserve l'empreinte
+`2f531ccaa435153c4890d453cce89a352499da4c9bd5758d32bc1f238088bcaa`.
+Les preuves locales antérieures restent datées dans le suivi ; elles ne valent
+pas recette hébergée. Les suites complètes de cette nouvelle base sont rejouées.
+
+Résultat local : `npm.cmd run build` réussi, **162 tests sur 162**, aucun échec
+ou test sauté, 31 modules ; contrôle de l'artefact de 12 fichiers réussi.
+Le paquet de livraison reste limité aux quatre fichiers du planning, et non au
+build complet : les nouveaux assets du wrapper ne sont pas installés.
+
+Lecture cPanel : document root Projet préproduction présent, non symbolique,
+distinct des autres racines ; lanceur compatible avec `/legacy-app.html` ;
+configuration privée présente. L'ancienne interface est encore servie et les
+trois scripts séparés sont absents avant livraison. L'entrée anonyme redirige
+vers CONNECT préproduction ; l'accès SSH direct expire, sans écriture distante.
+Le terminal cPanel connecté fournit le canal d'exploitation autorisé.
+
+L'outillage de livraison est testé sur fixtures : sauvegarde, installation,
+restauration et préservation du sas, refus d'une dérive et d'un candidat invalide.
+Sur Windows, les cas de création/modes POSIX sont réservés à la CI Linux ;
+la fixture locale couvre le remplacement en conservant les modes existants.
+La récupération réelle doit être vérifiée avant écriture de la racine active.
 
 ## Revues complémentaires d'une phase — 25 septembre 2026
 

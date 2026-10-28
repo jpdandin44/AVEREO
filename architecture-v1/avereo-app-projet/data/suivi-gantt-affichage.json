@@ -1,0 +1,56 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-gantt-affichage-20261028",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "developpement-local",
+  "status": "in_progress",
+  "preproductionRequest": {"source": "Message direct du responsable : OK, peut-on mettre cette version en préprod que je puisse l'utiliser comme outil?", "scope": "Projet préproduction uniquement, quatre fichiers du planning validé ; aucun merge ou production", "receivedOn": "2026-10-28", "humanPhaseApproval": false},
+  "objective": "Conserver une synthèse calendrier des projets repliés, déplacer dates et ordre avec prévisualisation/annulation et afficher un repère rouge du jour courant.",
+  "todayMarkerExtension": {"date": "2026-10-28", "source": "Demande explicite du responsable : barre rouge du jour en cours.", "humanPhaseApproval": false},
+  "scopeExtension": {"date": "2026-10-28", "source": "Demande du responsable et réponse Les deux à la question dates ou ordre/priorités.", "status": "development_requested", "humanPhaseApproval": false},
+  "candidateHistory": [{"artifactSha256": "fb94b51f3582f94ed1cdb4d62fae94df5aa5ec2c8fea05cef163ab6a68d47e3c", "scope": "Alignement et cartouches initiaux, sans synthèse de projet ni nouveaux déplacements", "status": "superseded_locally"}, {"artifactSha256": "152991d1e194fea85958143b179f9fa7bcb08aa9427601e4536e6b2a014db358", "scope": "Synthèse et manipulation, avant repère du jour", "status": "superseded_locally"}],
+  "developmentBranch": "feat/projet-gantt-affichage-20261028",
+  "branch": "feat/projet-preprod-gantt-20261028",
+  "baseSha": "cf21b593faf9b6f4fae5e88eea3ff0117d41a074",
+  "candidate": {
+    "sourceSha": null,
+    "artifactSha256": "2f531ccaa435153c4890d453cce89a352499da4c9bd5758d32bc1f238088bcaa",
+    "sourceFileHashes": {"frontend/public/planning-core.js": "03c03d8124b1f1fc7827eba87073e0c44347c42a6f884637583ff8abaa5320c5"},
+    "artifact": "frontend/dist/legacy-app.html",
+    "note": "Candidat local non commité ; empreinte du HTML source et construit, pas d'une livraison complète."
+  },
+  "phases": [
+    {"id": 0, "label": "Cadrage", "status": "awaiting_review", "environment": "local", "reviewEnvironment": "local", "result": "Cause reproduite, périmètre limité au Gantt ; aucune validation humaine de phase enregistrée."},
+    {"id": 1, "label": "Développement local", "status": "awaiting_review", "environment": "local", "reviewEnvironment": "local", "result": "Repère du jour ajouté aux synthèses et déplacements : 132 tests et build réussis, alignement et données contrôlés. À examiner par le responsable."},
+    {"id": 2, "label": "Préproduction", "status": "not_started", "environment": "preproduction", "reviewEnvironment": "preproduction"},
+    {"id": 3, "label": "Mise en production", "status": "not_started", "environment": "production", "reviewEnvironment": "preproduction"}
+  ],
+  "localUrl": "http://127.0.0.1:5198/legacy-app.html",
+  "targets": {"preproduction": {"id": "https://projet-preprod.avereo.fr", "root": "/home/daje3540/projet-preprod.avereo.fr", "ready": false, "isolated": true, "empty": false, "observedAt": "2026-10-28T17:37:34Z", "evidence": "Lecture directe cPanel DomainInfo : racine dédiée, non symbolique et distincte des autres racines ; lanceur compatible et configuration privée présente."}, "production": {"id": null, "ready": false}},
+  "github": {"repository": "jpdandin44/AVEREO", "prUrl": null, "humanAcceptanceVerified": false, "observedAt": null, "note": "Pas d'écriture distante ni de requalification GitHub dans ce lot local."},
+  "checks": [],
+  "todayMarkerChecks": [
+    {"kind": "local", "status": "passed", "target": "frontend", "command": "npm.cmd run build", "observedAt": "2026-10-28", "artifactSha256": "2f531ccaa435153c4890d453cce89a352499da4c9bd5758d32bc1f238088bcaa", "result": "132 tests réussis ; 31 modules ; artefact de 12 fichiers contrôlé. HTML source et construit identiques.", "evidence": "docs/source-audit.md"},
+    {"kind": "local", "status": "passed", "target": "http://127.0.0.1:5198/legacy-app.html", "observedAt": "2026-10-28", "result": "Repère rouge 28/10/2026 ; position Jours 100 px / Semaines 25 px ; en-tête/corps alignés à 0 px après défilement/repli ; passage du pointeur aux barres ; export identique avant/après.", "evidence": "docs/source-audit.md"},
+    {"kind": "documentation", "status": "passed", "target": "Projet et pilotage", "observedAt": "2026-10-28", "artifactSha256": "2f531ccaa435153c4890d453cce89a352499da4c9bd5758d32bc1f238088bcaa", "result": "Socles présents ; métadonnées/liens vérifiés : 8 documents applicatifs / 58 liens et 14 Markdown du pilotage / 67 liens. Empreintes, géométrie et conservation des données rapprochées ; git diff --check réussi.", "evidence": "docs/source-audit.md"}
+  ],
+  "interactionChecks": [
+    {"kind": "local", "status": "passed", "target": "frontend", "command": "npm.cmd run build", "observedAt": "2026-10-28", "artifactSha256": "152991d1e194fea85958143b179f9fa7bcb08aa9427601e4536e6b2a014db358", "result": "129 tests réussis ; 31 modules ; pilote et artefact 12 fichiers contrôlés ; HTML et moteur identiques aux sources.", "evidence": "docs/source-audit.md"},
+    {"kind": "local", "status": "passed", "target": "http://127.0.0.1:5198/legacy-app.html", "observedAt": "2026-10-28", "result": "Huit synthèses repliées, alignement 0 px ; gestes souris projet/différé pour dates et ordre ; application/annulation/export ; clavier et Échap.", "evidence": "docs/source-audit.md"},
+    {"kind": "local", "status": "passed", "target": "exports avant, intermédiaires, après annulation puis rechargement", "observedAt": "2026-10-28", "result": "Ordres modifiés sans autre altération ; date différée modifiée seule ; retour strict à la sauvegarde après annulation et rechargement.", "restoredDataSha256": "c69f4bff3fcb811a2838b7db740e101aed58dec601f78905132779dc9177d732", "evidence": "docs/source-audit.md"},
+    {"kind": "documentation", "status": "passed", "target": "sous-projet Projet et espace de pilotage", "observedAt": "2026-10-28", "artifactSha256": "152991d1e194fea85958143b179f9fa7bcb08aa9427601e4536e6b2a014db358", "result": "Socles présents, métadonnées et liens contrôlés : 8 documents applicatifs / 58 liens, 14 Markdown du pilotage / 65 liens ; preuves et empreintes rapprochées ; git diff --check réussi.", "evidence": "docs/source-audit.md"}
+  ],
+  "previousChecks": [
+    {"kind": "local", "status": "passed", "target": "frontend", "command": "npm.cmd run build", "observedAt": "2026-10-28", "result": "119 tests réussis, 31 modules, contrôle pilote et artefact 12 fichiers réussi.", "evidence": "docs/source-audit.md"},
+    {"kind": "local", "status": "passed", "target": "http://127.0.0.1:5198/legacy-app.html", "observedAt": "2026-10-28", "result": "Alignement 0 px, défilement deux axes, cartouches/clavier, Jours/Semaines, reprise après rechargement.", "evidence": "docs/source-audit.md"},
+    {"kind": "local", "status": "passed", "target": "exports navigateur avant/après/rechargement", "observedAt": "2026-10-28", "result": "45 tâches ; fichiers strictement identiques.", "dataSha256": "c69f4bff3fcb811a2838b7db740e101aed58dec601f78905132779dc9177d732", "evidence": "docs/source-audit.md"},
+    {"kind": "documentation", "status": "passed", "target": "sous-projet Projet et espace de pilotage", "observedAt": "2026-10-28", "result": "Socles présents ; 7 documents applicatifs modifiés et 55 liens vérifiés ; 14 Markdown du pilotage contrôlés, aucune erreur. git diff --check réussi.", "evidence": "docs/source-audit.md"}
+  ],
+  "approvals": [],
+  "delivery": {"status": "not_delivered"},
+  "blockers": ["Source/PR/CI du candidat exact à publier et qualifier.", "Sauvegarde/restauration réelle requise avant remplacement des quatre fichiers."],
+  "nextAction": "Publier la branche/PR, qualifier le candidat et sa récupération privée, contrôler le passage puis livrer Projet préproduction uniquement."
+}

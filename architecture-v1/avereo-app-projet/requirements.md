@@ -5,7 +5,7 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-25
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,18 @@ tags:
 ---
 
 # Exigences du planning local Projet
+
+## Gantt et préproduction ciblée — 28 octobre 2026
+
+- Alignement au défilement ; projets repliables avec synthèse calendrier.
+- Repère du jour daté, correct dans les deux zooms et sans interception des gestes.
+- Dates et ordre modifiables par glisser-déposer/clavier avec proposition puis application.
+- Préserver dépendances, statuts, détails et validations ; refuser les éditions périmées.
+- Annuler le geste ou le dernier déplacement de la session, sans écraser une autre saisie.
+- Livrer uniquement les quatre fichiers du planning sur la racine de préproduction vérifiée.
+- Sauvegarder/restaurer en copie privée, refuser toute dérive avant écriture.
+- Préserver index, règles d'accès, sas, configuration, bases et production.
+- Importer le JSON sur la nouvelle origine ; ne pas annoncer une persistance partagée.
 
 ## Extension de revue locale
 

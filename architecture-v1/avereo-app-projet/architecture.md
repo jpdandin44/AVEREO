@@ -5,7 +5,7 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-24
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,23 @@ tags:
 ---
 
 # Architecture du planning Projet
+
+## Affichage et manipulation du Gantt — 28 octobre 2026
+
+Une grille commune porte tableau, calendrier et en-têtes adhérents. Le repli est
+un état de vue en mémoire ; la synthèse reste visible et les flèches masquées sont
+omises du rendu. Le repère rouge du jour partage l'origine du calendrier, ignore
+les pointeurs et se rafraîchit au changement de jour hors édition active.
+
+`movePlanningDates` et `reorderPlanning` retournent des candidats validés sans
+modifier leur entrée. Les gestes changent les bornes `manualStart` ou l'ordre de
+`tasks`, pas le schéma JSON, les statuts ou les preuves. L'interface prévisualise
+le calcul global avant d'enregistrer, refuse une proposition périmée et conserve
+une seule annulation en mémoire. Les dépendances, week-ends et début du planning
+peuvent modifier l'espacement ; aucun nivellement de ressources n'est ajouté.
+
+La livraison ciblée remplace/crée quatre fichiers statiques ; l'index, le sas,
+la configuration privée et les bases hébergées restent conservés.
 
 ## Extension locale de revue — 24 septembre 2026
 

@@ -5,7 +5,7 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-25
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,14 @@ tags:
 ---
 
 # Changelog de Projet
+
+## 2026-10-28 — Gantt personnel et préparation préproduction
+
+- Défilement aligné, cartouches repliables et synthèses calendrier.
+- Déplacements des dates et de l'ordre avec prévisualisation, annulation et gardes.
+- Repère rouge du jour, zooms et calendrier local conservés, sans écriture des données.
+- Reprise sur le main courant sans modifier les travaux d'autres copies.
+- Préparation d'une livraison gardée de quatre fichiers, sans SQL ni modification d'accès.
 
 ## 2026-09-25 — Revues complémentaires dans leur phase
 

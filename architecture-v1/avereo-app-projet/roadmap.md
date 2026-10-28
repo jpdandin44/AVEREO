@@ -5,7 +5,7 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-25
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,17 @@ tags:
 ---
 
 # Feuille de route de Projet
+
+## Gantt préproduction — 28 octobre 2026
+
+La version locale (défilement, synthèses repliées, déplacements et repère du jour)
+est reprise sans changement des fichiers métier depuis la copie de pilotage,
+sur une branche issue du `main` courant. Les revues locales déjà intégrées sont
+conservées. Le [suivi](data/suivi-gantt-affichage.json) distingue Cadrage,
+Développement local, Préproduction et Mise en production. La demande du responsable
+autorise la préproduction Projet, pas un merge ou une livraison de production.
+Prochaine action : contrôles du candidat, PR/CI, récupération privée puis livraison
+ciblée et recette sur l'accès protégé. Aucune livraison n'est attestée par cette préparation.
 
 ## Revue locale des phases — 24 septembre 2026
 

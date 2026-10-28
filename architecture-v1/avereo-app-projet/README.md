@@ -5,7 +5,7 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-25
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,24 @@ tags:
 ---
 
 # Projet AVEREO
+
+## Gantt et préparation de préproduction — 28 octobre 2026
+
+Le calendrier et les tâches partagent un défilement aligné. Les projets sont
+repliables et conservent leur barre de synthèse (étendue et avancement).
+Un trait rouge daté marque aujourd'hui, dans les deux zooms, sans bloquer les gestes.
+Glisser une barre/jalon pour proposer des dates, une synthèse pour un projet
+complet, une poignée ⠿ pour réordonner les projets ou les sujets dans leur projet.
+La prévisualisation montre les impacts des dépendances avant application ; le
+dernier déplacement est annulable pendant la session, hors autre saisie.
+Alt + gauche/droite agit sur les dates, Alt + haut/bas sur les poignées.
+Le statut des différés, les preuves et les validations ne changent pas implicitement.
+
+La demande de livraison concerne uniquement Projet préproduction, sans backend
+ou production. Le [suivi du lot](data/suivi-gantt-affichage.json) porte le candidat
+et les preuves ; la [procédure](docs/deployment.md) impose sauvegarde/restauration
+et conservation des accès. À l'ouverture d'une nouvelle origine, importer le JSON
+complet : le planning reste propre au navigateur/profil, sans sauvegarde serveur.
 
 Le **[guide utilisateur](docs/guide-utilisateur.md)** explique l'accès local,
 les écrans de suivi, les décisions, le planning, les sauvegardes et le dépannage.

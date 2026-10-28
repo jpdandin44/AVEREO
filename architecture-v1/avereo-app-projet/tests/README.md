@@ -5,7 +5,7 @@ title: Recette du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-24
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,17 @@ tags:
 ---
 
 # Recette du planning local Projet
+
+## Gantt préproduction — 28 octobre 2026
+
+Les suites `planning-groups.test.mjs` et `planning-moves.test.mjs` exercent le
+rendu réel, les synthèses/replis, le repère du jour, les candidats de dates/ordre,
+leurs refus et annulations, les dépendances et la conservation JSON.
+`preprod-delivery.test.mjs` teste l'installateur sur des fichiers fictifs :
+validation d'archive, installation/restauration, accès conservés et refus de dérive.
+La création de nouveaux fichiers avec modes POSIX est vérifiée en CI Linux ;
+sur Windows, la fixture garde les fichiers préexistants et leurs modes natifs.
+Les preuves de livraison et de recette réelle restent distinctes de ces tests.
 
 ## Revue des phases
 

@@ -5,7 +5,7 @@ title: Prévisualisation et publication de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-24
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,38 @@ tags:
 ---
 
 # Prévisualisation et publication de Projet
+
+## Préproduction Gantt — 28 octobre 2026
+
+Le responsable demande la version locale comme outil en préproduction. La cible
+est `https://projet-preprod.avereo.fr/`, racine cPanel vérifiée
+`/home/daje3540/projet-preprod.avereo.fr`, distincte des autres racines.
+Le lanceur hébergé référence déjà `/legacy-app.html` ; la configuration privée
+existe. Le workflow de production ci-dessous n'est pas utilisé.
+
+Le lot contient exactement `legacy-app.html`, `planning-core.js`,
+`planning-local.js` et `task-details.js`. Il conserve index, assets existants,
+`.htaccess`, sas CONNECT, configuration privée et bases. Aucun JSON personnel
+n'est publié. Les sources et tests sont sur une branche dédiée ; pas de merge main.
+
+Après build d'une source commitée et propre, exécuter
+`python workflows/prepare-preprod-gantt.py --source CHEMIN_APP --output DOSSIER_NEUF`.
+L'archive, son manifeste et `deploy-preprod-gantt.py` sont transférés dans un
+dossier privé sous `/home/daje3540/private/`. L'installateur n'accepte aucune
+autre cible ni fichier et relit le document root cPanel.
+
+`prepare` sauvegarde et répète installation/restauration dans une copie privée ;
+`deploy` refuse une dérive puis installe les dépendances avant l'HTML ; `verify`
+contrôle les empreintes et la configuration. `rollback` restaure uniquement les
+chemins du candidat et refuse d'écraser une modification ultérieure. Les reçus
+restent en privé. Exécuter le contrôle du protocole avant le passage effectif.
+
+Contrôler ensuite les réponses anonymes, l'accès CONNECT réel, l'affichage,
+l'import/export JSON et la reprise. Le navigateur de préproduction constitue
+une nouvelle origine : importer sa sauvegarde une fois dans le navigateur
+d'usage, puis exporter régulièrement. Pas de base partagée dans cette version.
+Le [suivi](../data/suivi-gantt-affichage.json) porte les preuves réelles ; cette
+procédure ne suffit pas à attester une livraison ou une validation humaine.
 
 L'espace **Revues & approbations** se lance avec `npm.cmd run dev:review` sur
 le port 5190 ; voir le [workflow local](../workflows/revue-developpement.md).
