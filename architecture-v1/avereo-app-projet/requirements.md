@@ -14,6 +14,54 @@ tags:
 
 # Exigences du planning local Projet
 
+## Projets clients et enregistrement serveur — besoin demandé, non implémenté
+
+Le 28 octobre, le responsable demande l'enregistrement des projets en
+préproduction, avec un projet par client et plusieurs projets menés en parallèle.
+Cette demande forme un nouveau lot : elle ne transforme pas la V1 statique
+livrée en une application dotée d'une sauvegarde distante.
+
+Périmètre fonctionnel proposé pour le premier lot :
+
+- Écran « Mes projets » : créer, nommer, ouvrir et archiver sans suppression
+  définitive ; rattacher un projet à un client et autoriser plusieurs projets
+  pour le même client, sans mélanger leurs tâches.
+- Identifiants stables pour client et projet. Les cartouches actuels regroupent
+  les `lot` d'un seul planning ; ils ne sont pas des dossiers clients indépendants.
+- Projet actif explicite et confirmation des changements non enregistrés avant
+  bascule ; conserver dates, tâches, dépendances, fiches, preuves et risques propres
+  à chaque projet.
+- Enregistrement sur serveur avec accusé de réussite, date et révision ; ne jamais
+  afficher « enregistré » sur la seule réussite du stockage navigateur. En cas
+  d'erreur, préserver la saisie et permettre l'export de secours.
+- Reprise depuis un autre navigateur autorisé ; détection des écritures
+  concurrentes et refus d'écraser silencieusement une révision plus récente.
+- Vue portefeuille des projets actifs et de leurs échéances ; distinguer le
+  parallélisme des dossiers de la capacité réelle du responsable. Un nivellement
+  automatique multi-projet ne fait pas partie du minimum proposé.
+- Export/import complet par projet et récupération contrôlée ; reprendre le
+  Gantt AVEREO actuel comme un projet interne, sans convertir automatiquement ses
+  cartouches en clients ou supprimer le brouillon d'origine.
+
+Contraintes préalables à la réalisation : authentification et droits contrôlés
+sur chaque lecture/écriture serveur, données hors des fichiers statiques publics,
+révisions, validation serveur des entrées, protection des écritures et sauvegarde
+dont la restauration est testée. Aucun mot de passe ni secret dans le frontend.
+La session actuelle de sas autorise une application ; elle ne fournit pas à elle
+seule une identité métier et des droits par client/projet.
+
+TBD — accès pour le responsable seul, équipe interne ou clients ; raccordement
+de l'identité et des droits ; stockage et quotas réellement disponibles ; durée
+de conservation et procédure de sauvegarde ; budget et charge du lot. La piste
+PHP/MySQL sur l'hébergement existant reste une proposition, pas une installation.
+Respecter la frontière V1/V2 et qualifier ce nouveau périmètre avant activation.
+
+Recette minimale proposée : deux clients, trois projets dont deux pour un même
+client ; changements isolés ; fermeture/réouverture et deuxième navigateur ;
+écritures concurrentes ; panne d'enregistrement sans perte ; refus anonyme et
+refus d'accès à un autre projet ; export/reprise et restauration de sauvegarde.
+Utiliser des données fictives jusqu'à qualification de ces protections.
+
 ## Gantt et préproduction ciblée — 28 octobre 2026
 
 - Alignement au défilement ; projets repliables avec synthèse calendrier.

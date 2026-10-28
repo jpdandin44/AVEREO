@@ -60,6 +60,35 @@ pas l'authentification de préproduction : recette du parcours connecté et
 import/export/rechargement dans le navigateur d'usage encore ouverts. Le contrôle
 serveur et la CI ne valent pas validation humaine ni livraison en production.
 
+### Recette Chrome après connexion du responsable — 19:06, Europe/Paris
+
+La session réelle sur l'entrée principale est observée avec son lien de
+déconnexion. Le parcours de saisie des identifiants n'est pas rejoué par l'agent.
+Une ancienne interface encore chargée est remplacée par la version attendue après
+rechargement des fichiers, sans effacement du stockage ; le mécanisme exact du
+cache n'est pas démontré. La nouvelle interface constate un brouillon vide.
+
+La référence initiale du portefeuille est importée : 45 tâches, 22 jours-personne,
+cible du 27 novembre. Les projets repliés gardent leurs synthèses ; trait rouge
+du 28 octobre visible en Jours. Après rechargement, « Brouillon restauré » et les
+45 tâches sont constatés. Les exports avant/après sont strictement identiques,
+SHA-256 `c69f4bff3fcb811a2838b7db740e101aed58dec601f78905132779dc9177d732`,
+et leur contenu JSON complet est identique à la référence importée. Les preuves
+et limites sont dans le [reçu navigateur](../data/preprod-gantt/browser-recipe.json).
+Les exports et la capture restent locaux, sans publication du planning personnel.
+
+Aucun déplacement de date ou d'ordre n'est appliqué pendant cette recette.
+Autres profils, vue Semaines, tactile et gestes de déplacement hébergés ne sont
+pas requalifiés ici. Le besoin nouveau clients/projets et sauvegarde distante
+reste en cadrage ; aucune sauvegarde métier serveur n'a été ajoutée.
+
+Contrôle documentaire de ce complément : socles présents, dix documents
+applicatifs/90 liens et 14 Markdown du pilotage/75 liens vérifiés, sans erreur.
+Preuves navigateur comparées et empreintes des quatre fichiers déployés inchangées.
+Baseline, prévalidation de la description PR et whitespace réussis ; références
+main actualisées et fusion sans conflit vérifiée avant remise. Aucun test du
+futur stockage serveur n'est présenté comme réalisé.
+
 Contrôle documentaire après livraison : socles du sous-projet et du pilotage
 présents ; neuf documents applicatifs et 80 liens locaux, 14 Markdown du pilotage
 et 72 liens vérifiés. Métadonnées, archive, sources et reçus rapprochés sans erreur.

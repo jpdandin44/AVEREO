@@ -25,6 +25,14 @@ La création de nouveaux fichiers avec modes POSIX est vérifiée en CI Linux ;
 sur Windows, la fixture garde les fichiers préexistants et leurs modes natifs.
 Les preuves de livraison et de recette réelle restent distinctes de ces tests.
 
+Recette ciblée du 28 octobre dans Chrome connecté : référence de 45 tâches
+importée dans un brouillon vide, repli avec synthèses et repère du jour constatés,
+export et reprise après rechargement contrôlés. Les fichiers avant/après sont
+strictement identiques ; détails et limites dans le
+[reçu navigateur](../data/preprod-gantt/browser-recipe.json).
+Les scénarios futurs clients/projets et stockage serveur sont proposés dans les
+exigences ; aucune suite ne prouve encore leur implémentation.
+
 ## Revue des phases
 
 [review-workflow.test.mjs](review-workflow.test.mjs) couvre les transitions,

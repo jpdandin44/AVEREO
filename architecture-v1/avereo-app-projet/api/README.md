@@ -5,7 +5,7 @@ title: API et frontières de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-24
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,15 @@ tags:
 ---
 
 # API et frontières de Projet
+
+## Évolution demandée, sans API active
+
+Le besoin clients/projets et sauvegarde serveur est cadré dans
+[requirements.md](../requirements.md#projets-clients-et-enregistrement-serveur--besoin-demandé-non-implémenté).
+Aucun contrat de persistance ni endpoint n'est encore implémenté. Identité,
+droits par projet, validation et révisions doivent être définis avant une API
+métier. Le contrat de revue locale ci-dessous n'est pas réutilisable tel quel
+sur Internet : son identité est déclarative et son accès borné à la boucle locale.
 
 Le [contrat de revue locale](revue-locale.md) décrit les routes de lecture et
 d'écriture du serveur de développement sur le port 5190. Elles sont absentes

@@ -61,10 +61,18 @@ La sauvegarde reste dans le dossier privé de cette itération.
 L'entrée principale renvoie 303 vers CONNECT, qui demande l'authentification
 préproduction (401 anonyme). Les fichiers statiques restent lisibles anonymement :
 ce sas n'est pas une protection globale du code frontend. Aucun planning personnel
-n'a été transféré. Le navigateur intégré ne dispose pas de cette authentification ;
-connexion, import/export et reprise dans le navigateur d'usage restent à recetter.
+n'a été transféré sur le serveur. La session Chrome connectée du responsable a
+ensuite été observée : import de la référence de 45 tâches dans un brouillon vide,
+export et reprise après rechargement réussis, avec fichiers exportés strictement
+identiques. Synthèses repliées et trait du jour observés. Le
+[reçu navigateur](../data/preprod-gantt/browser-recipe.json) précise les limites :
+pas de rejeu de connexion vierge ni de tous les gestes, autres profils indépendants.
 La [PR #90](https://github.com/jpdandin44/AVEREO/pull/90) reste en brouillon,
 sans merge ni validation humaine déduite de la livraison technique.
+
+Le nouvel enregistrement de dossiers clients sur serveur est seulement demandé.
+Il nécessite un lot V2 distinct, des droits par projet et une récupération de
+données qualifiée ; la présente livraison de fichiers statiques ne l'active pas.
 
 L'espace **Revues & approbations** se lance avec `npm.cmd run dev:review` sur
 le port 5190 ; voir le [workflow local](../workflows/revue-developpement.md).

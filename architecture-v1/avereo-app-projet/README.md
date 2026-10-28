@@ -29,11 +29,18 @@ Le statut des différés, les preuves et les validations ne changent pas implici
 
 Le planning est installé sur [Projet préproduction](https://projet-preprod.avereo.fr/),
 sans backend ni livraison de production. Les quatre fichiers et la conservation
-de la configuration ont été vérifiés ; la recette authentifiée reste ouverte.
+de la configuration ont été vérifiés ; une recette ciblée est réalisée dans
+Chrome connecté : référence de 45 tâches, import/export, synthèses repliées,
+trait du jour et reprise après rechargement. Les exports avant/après sont
+strictement identiques. La validation humaine reste distincte.
 Le [suivi du lot](data/suivi-gantt-affichage.json) porte le candidat
 et les preuves ; la [procédure](docs/deployment.md) impose sauvegarde/restauration
 et conservation des accès. À l'ouverture d'une nouvelle origine, importer le JSON
 complet : le planning reste propre au navigateur/profil, sans sauvegarde serveur.
+
+Le besoin de dossiers clients indépendants et d'enregistrement serveur est
+[demandé et cadré](requirements.md#projets-clients-et-enregistrement-serveur--besoin-demandé-non-implémenté),
+pas encore réalisé. Les cartouches du Gantt ne constituent pas un registre de clients.
 
 Le **[guide utilisateur](docs/guide-utilisateur.md)** explique l'accès local,
 les écrans de suivi, les décisions, le planning, les sauvegardes et le dépannage.

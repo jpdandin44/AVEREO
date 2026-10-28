@@ -22,8 +22,12 @@ tags:
 - Reprise sur le main courant sans modifier les travaux d'autres copies.
 - Préparation d'une livraison gardée de quatre fichiers, sans SQL ni modification d'accès.
 - Livraison et empreintes serveur/HTTP vérifiées après sauvegarde/restauration réelle
-  et contrôle de passage ; PR #90 en brouillon, CI réussie. Recette authentifiée
-  dans le navigateur d'usage encore ouverte ; aucun merge ni livraison de production.
+  et contrôle de passage ; PR #90 en brouillon, CI réussie. Recette ciblée dans
+  Chrome connecté : référence de 45 tâches importée, repli/repère du jour et
+  export/rechargement contrôlés avec conservation stricte. Aucun merge ni production.
+- Nouveau besoin consigné : clients/projets indépendants et enregistrement sur
+  serveur. Exigences et piste d'architecture V2 proposées ; utilisateurs et droits
+  à préciser, sans activation de backend, de MySQL ou de nouvelle API métier.
 
 ## 2026-09-25 — Revues complémentaires dans leur phase
 

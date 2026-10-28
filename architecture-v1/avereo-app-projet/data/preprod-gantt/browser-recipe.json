@@ -1,0 +1,36 @@
+{
+  "observedAt": "2026-10-28T18:06:44Z",
+  "target": "https://projet-preprod.avereo.fr",
+  "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc",
+  "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51",
+  "browser": "Google Chrome, fenêtre personnelle observée sur le poste du responsable",
+  "status": "passed_with_limits",
+  "authenticatedSessionObserved": true,
+  "loginFlowReplayedByAgent": false,
+  "initialPlanning": "Aucun planning local après rechargement des fichiers ; aucune donnée navigateur effacée",
+  "referenceImport": {
+    "workspaceArtifact": "outputs/gantt-avereo-projet.json",
+    "inputSha256": "24994f1326da371fe618db8e82d0aba741799f5f06ad1b7f64d49e752ebbf5d9",
+    "taskCount": 45,
+    "effortPersonDays": 22,
+    "targetDate": "2026-11-27",
+    "latestUserAdjustmentsClaimed": false
+  },
+  "exportAfterImportSha256": "c69f4bff3fcb811a2838b7db740e101aed58dec601f78905132779dc9177d732",
+  "exportAfterReloadSha256": "c69f4bff3fcb811a2838b7db740e101aed58dec601f78905132779dc9177d732",
+  "exportsByteIdentical": true,
+  "exportJsonEqualsReference": true,
+  "referenceByteIdentical": false,
+  "referenceDifference": "Mise en forme normalisée de l'export, contenu JSON complet identique",
+  "projectSummaryWhenCollapsed": "observed",
+  "todayMarker": "2026-10-28, observed in day view",
+  "dataMovesDuringRecipe": false,
+  "evidence": "Capture locale outputs/projet-preproduction/gantt-chrome-projets-replies.png ; exports complets conservés dans work/, non publiés",
+  "limits": [
+    "Pas de rejeu du parcours de connexion depuis une session vierge",
+    "Déplacements, vue semaines, tactile et restauration serveur de données client non rejoués dans cette recette ciblée",
+    "Autres profils Chrome indépendants, non alignés automatiquement",
+    "Stockage navigateur seulement ; aucun enregistrement métier sur le serveur",
+    "Aucune validation humaine de phase, de merge ou de production déduite"
+  ]
+}
