@@ -60,9 +60,30 @@ automatique du texte, nouvelle base ou intégration IA n'est nécessaire.
 6. Le client reçoit une comparaison lisible ; le rapport expert conserve le
    raisonnement détaillé. Le DOCX est produit par le générateur existant.
 7. Les entrées structurées sont contrôlées par l'API et échappées dans le HTML.
-8. La sauvegarde/réouverture authentifiée du nouveau candidat est à réaliser en
-   préproduction après livraison autorisée. Les preuves de l'ancien candidat
-   `5d70e41` ne lui sont pas attribuées.
+8. La sauvegarde/réouverture authentifiée est vérifiée sur le candidat `9a4f414`
+   livré en préproduction le 30 octobre. Les preuves de l'ancien candidat
+   `5d70e41` restent distinctes.
+
+## Livraison et recette du 30 octobre
+
+Le [point de reprise](reprise-demo-philippe.md) référence l’accord, la sauvegarde
+fraîche des 28 fichiers et de la configuration privée, le retour arrière répété
+sur copie privée et le reçu des six fichiers livrés. Aucun changement de base
+ou de configuration pendant la livraison.
+
+Les copies serveur `DEMO TILLEULS DECISION` et `DEMO CRICQ DECISION` sont créées
+sans remplacer les rapports précédents. Une conséquence est modifiée à l’écran,
+sauvegardée en ligne, retrouvée après réouverture depuis la liste puis dans le
+JSON et les deux Word. Toutes les données importées restent identiques, sauf
+cette modification volontaire. Quatre observations/trois images pour Tilleuls,
+cinq/quatre et trois annexes pour Cricq. Les Word expert comptent 17/26 pages,
+les synthèses client 5/7 pages. Pages modifiées et clients inspectés ; corps
+inchangés des experts comparés pixel à pixel aux rendus déjà inspectés.
+
+L’alerte d’incontournable omis est contrôlée puis la sélection restaurée. Les
+protections anonymes restent actives et AVEREO conserve sa maintenance. La recette
+porte sur le compte présenté, pas sur l’isolation entre deux comptes ni sur une
+validation métier. [Preuve de recette](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/demo-decision-20261030/hosted-decision-recipe.json>).
 
 ## Contrôles locaux du 30 octobre
 
@@ -72,7 +93,7 @@ exportés en JSON. Une omission d’action incontournable déclenche bien l’al
 Les Word expert sortent directement du générateur : Tilleuls 17 pages, Cricq
 26 pages. Les 43 pages sont inspectées ; 66 et 74 textes du bloc structuré sont
 retrouvés sans omission. Le HTML client est couvert par les tests ; son export
-Word natif reste à relire. Le bundle conserve son avertissement de taille connu.
+Word natif a depuis été relu pendant la recette ci-dessus. Le bundle conserve son avertissement de taille connu.
 
 Preuves privées et empreintes : [reçu du contrôle](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/demo-decision-20261030/local-checks.json>).
 
@@ -90,7 +111,7 @@ par les habitants. Les copies préparées restent privées et hors du dépôt.
 | --- | --- |
 | Cadrage | Dix attentes réévaluées ; deux cas à parts égales ; critères ci-dessus. |
 | Développement local | Rubriques, liens, actions, comparaison, JSON et Word ; contrôles existants et essais des deux cas. |
-| Préproduction | Nouveau candidat à identifier, accord exact, installation récupérable puis recette du compte de démo. Le candidat précédent reste distinct. |
+| Préproduction | `9a4f414` livré et recette des deux cas réalisée ; revue métier à recueillir. Le candidat précédent reste distinct. |
 | Mise en production | Aucun accord ajouté par cette reprise ; maintenance et données conservées. |
 
 Les fiches complètes de composants et de fin de vie, l'analyse hydrologique, le

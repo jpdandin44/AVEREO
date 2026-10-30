@@ -13,9 +13,11 @@ tags:
   - connect
 ---
 
-## Aide à la décision en développement local
+## Aide à la décision en préproduction
 
-Dans une Visite Globale, ouvrir Export puis Aide à la décision : attentes et projet séparés, liens aux constats, actions classées et deux options comparables. Le JSON et les deux restitutions reprennent le même bloc. Aucune décision ni estimation automatique. [Périmètre et critères](docs/aide-decision-demo.md). Nouveau lot non livré en préproduction à ce stade.
+Dans une Visite Globale, ouvrir Export puis Aide à la décision : attentes et projet séparés, liens aux constats, actions classées et deux options comparables. Le JSON et les deux restitutions reprennent le même bloc. Aucune décision ni estimation automatique. [Périmètre et critères](docs/aide-decision-demo.md).
+
+Candidat `9a4f414` livré le 30 octobre après sauvegarde et répétition du retour arrière. Entrée : [CONNECT préproduction → Rapport](https://connect-preprod.avereo.fr/?app=rapport). Deux copies sont disponibles dans la liste serveur : `DEMO TILLEULS DECISION` et `DEMO CRICQ DECISION`. Leur sauvegarde/réouverture, JSON et Word expert/client sont contrôlés. [Reprise et récupération](docs/reprise-demo-philippe.md). La revue métier reste au responsable.
 
 
 ## Deux livrables AVEREO — 24 octobre 2026

@@ -17,12 +17,12 @@ tags:
 
 | Fonction | État local | Qualification restante |
 | --- | --- | --- |
-| Attentes et projet séparés | Rubriques optionnelles à Export ; deux cas importés et modifiés localement | Revue métier |
-| Bilan et actions liés | Liens par identifiants, catégories, préalables et alertes | Sauvegarde/réouverture du nouveau candidat hébergé |
-| Deux options et comparaison | Même grille, HTML expert/client ; Word expert Tilleuls 17 pages et Cricq 26 pages relus | Recette authentifiée du nouveau candidat ; export Word client non relu dans cette session |
-| Dossiers antérieurs | Pas de remplissage ou choix ajouté, JSON conservé ; régressions locales contrôlées | Revue du candidat hébergé |
+| Attentes et projet séparés | Rubriques optionnelles à Export ; deux cas modifiés, sauvés en ligne et rouverts sur `9a4f414` | Revue métier |
+| Bilan et actions liés | Références et données conservées dans le JSON serveur ; alerte d’omission vérifiée puis sélection restaurée | Qualification métier des incontournables |
+| Deux options et comparaison | Même grille ; Word expert Tilleuls/Cricq 17/26 pages et client 5/7 pages contrôlés | Revue des deux restitutions par le responsable |
+| Dossiers antérieurs | Compatibilité contrôlée ; création de deux copies distinctes sans remplacement des rapports précédents | Isolation entre deux comptes non couverte par cette recette |
 
-Le candidat déjà hébergé `5d70e41` reste une base distincte ; ses preuves ne qualifient pas ce nouveau lot. [Spécification](aide-decision-demo.md).
+Le candidat `5d70e41` reste l’état antérieur sauvegardé. Les preuves de la recette du nouveau `9a4f414` sont propres à ce lot. [Spécification](aide-decision-demo.md).
 
 
 # Matrice de migration fonctionnelle

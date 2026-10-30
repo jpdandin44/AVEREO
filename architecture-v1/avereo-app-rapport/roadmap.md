@@ -16,7 +16,7 @@ tags:
 
 ## Reprise du 30 octobre
 
-Noyau local des attentes 4 à 9 : saisie structurée, bilan lié, actions et options comparables. Les 75 tests applicatifs, 15 contrôles PHP et le build authentifié passent. Conservation locale/JSON vérifiée sur les deux cas ; Word expert générés par l’application et relus, 17 et 26 pages. Prochaines étapes : préparer la récupération et l’accord exact puis vérifier les deux cas sur le nouveau candidat en préproduction. Les compléments des attentes 1 à 3 et 10 restent identifiés dans le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>). Aucun accord de production ajouté.
+Le noyau des attentes 4 à 9 est livré en préproduction sur le candidat `9a4f414`, après sauvegarde fraîche et retour arrière répété sur copie privée. Les 75 tests applicatifs, 15 contrôles PHP, build authentifié et CI passent. Deux dossiers distincts sont modifiés, sauvegardés en ligne et rouverts ; JSON intégral conservé. Word expert Tilleuls/Cricq : 17/26 pages ; client : 5/7 pages, rendus contrôlés. Prochaine étape : revue métier des deux maisons et répétition de la séance. Les compléments des attentes 1 à 3 et 10, DELTA et l’horaire restent dans le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>). Aucun accord de production ajouté.
 
 
 ## Itération livrables : reprise autorisée le 24 octobre
