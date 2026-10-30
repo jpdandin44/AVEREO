@@ -5,10 +5,15 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-10-30
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 2026-10-30 Aide à la décision de Rapport
+
+Lot Visite Globale reliant attentes, constats et actions à deux options comparables ; conservation JSON et restitution Word. Candidat `9a4f414` livré en préproduction après sauvegarde et restauration répétée ; deux copies de démonstration sauvées et rouvertes, quatre Word expert/client contrôlés. [Périmètre, critères et limites](architecture-v1/avereo-app-rapport/docs/aide-decision-demo.md). Les preuves et accords de l’ancienne version restent distincts ; aucune livraison de production.
+
 
 # Changelog du dépôt AVEREO
 

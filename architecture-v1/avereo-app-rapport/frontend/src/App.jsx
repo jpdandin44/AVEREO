@@ -1,6 +1,7 @@
 import { protocolOptions } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
+import DecisionSupportPanel from './DecisionSupportPanel.jsx';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { del as idbDel, get as idbGet, set as idbSet } from 'idb-keyval';
 import {
@@ -1802,6 +1803,8 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
           <p>Verifier les points bloquants, signer et generer le document Word.</p>
         </div>
       </div>
+
+      {isHabitologieReport(report) && <DecisionSupportPanel report={report} setReport={setReport} />}
 
       <div className="validation-grid">
         <div className="validation-box">

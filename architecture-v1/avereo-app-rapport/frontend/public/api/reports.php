@@ -2,11 +2,18 @@
 declare(strict_types=1);
 
 require __DIR__ . '/bootstrap.php';
+require __DIR__ . '/decision-validation.php';
 
 api_no_options_response();
 
 function api_validate_report_payload(array $payload): void
 {
+    if (array_key_exists('decision', $payload)) {
+        $decisionError = api_decision_payload_error($payload['decision']);
+        if ($decisionError !== null) {
+            api_json(422, ['ok' => false, 'error' => 'report_decision_invalid', 'message' => $decisionError]);
+        }
+    }
     foreach (['titre', 'reference_dossier', 'adresse_logement', 'signature'] as $key) {
         if (array_key_exists($key, $payload) && !is_string($payload[$key])) {
             api_json(422, [

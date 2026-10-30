@@ -5,12 +5,101 @@ title: Reprise de la préparation démo Philippe
 status: active
 version: git
 created: 2026-10-24
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags: [rapport, demonstration, rga, preproduction]
 ---
 
-## Reprise active — livrables AVEREO livrés en préproduction
+## Reprise active du 30 octobre — aide à la décision livrée et testable
+
+Le candidat **`9a4f41478ee30157c14abaf3ac60bd6756d4fd81`** est livré en
+préproduction le 30 octobre à **21 h 54 (Paris)**, avec accord direct du responsable.
+La [PR 91](https://github.com/jpdandin44/AVEREO/pull/91) reste en brouillon,
+empilée sur la branche de la PR 89, sans fusion. Les éventuels commits documentaires
+suivants ne changent pas l’artefact livré.
+
+Entrée de test : [CONNECT préproduction → Rapport](https://connect-preprod.avereo.fr/?app=rapport).
+Depuis l’accueil, ouvrir `DEMO TILLEULS DECISION` ou `DEMO CRICQ DECISION` dans
+les rapports sauvegardés en ligne, puis Export → Aide à la décision. Ces copies
+distinctes ne remplacent pas les rapports précédents. Le cas Cricq reste ouvert
+dans l’onglet de recette. Les 30 minutes par maison et la séance de 90 minutes
+du 3 novembre sont conservées ; horaire à confirmer.
+
+### Sauvegarde et récupération qualifiées
+
+- Cible exacte confirmée par cPanel : `/home/daje3540/rapport-preprod.avereo.fr`.
+  Base distincte de la production, portail CONNECT préproduction et mode de sas vérifiés.
+- Avant remplacement : sauvegarde fraîche des **28 fichiers existants** et de
+  la configuration privée ; installation puis restauration exacte sur une copie privée.
+- Archive applicative `rapport-decision-9a4f414.zip`, SHA-256
+  `e96f1b98380e57b1872438f408b7f2e7d7cddb2c8e951331cefd39589d3099eb`.
+- Six fichiers livrés : index HTML, deux nouveaux assets, module DOCX existant,
+  `api/reports.php` et `api/decision-validation.php` ; 25 autres fichiers conservés.
+  Configuration privée et base non modifiées par la livraison.
+- Outils et sauvegarde privés :
+  `/home/daje3540/.avereo/rapport-preprod/decision-20261030-9a4f414/`.
+  Dans ce dossier, `python3 deliver.py verify` contrôle l’installation et
+  `python3 deliver.py rollback` rétablit le code sauvegardé **si l’arbre livré
+  n’a pas changé**. Aucune restauration de base : les rapports récents sont conservés.
+  Une modification ultérieure de fichiers impose une revue avant retour arrière.
+- Le premier essai du script privé s’est arrêté sur une option incompatible
+  avec Python 3.6, avant sauvegarde ou remplacement. Le script est corrigé puis
+  les contrôles réexécutés ; l’archive applicative est restée identique.
+
+### Résultats de recette et suite
+
+Avec le compte présenté : import des deux copies, modification volontaire d’une
+conséquence, sauvegarde en ligne, retour accueil, réouverture depuis la liste,
+JSON et Word expert/client. Toutes les données importées restent identiques
+après cette modification attendue : Tilleuls quatre observations et trois images ;
+Cricq cinq, quatre et trois annexes. L’alerte d’incontournable omis est vérifiée,
+puis la sélection restaurée. Word expert **17/26 pages**, client **5/7 pages**,
+rendus et contrôlés. Les corps inchangés des experts sont comparés aux pages déjà
+inspectées ; les pages modifiées et les douze pages client sont inspectées.
+
+Les trois assets publics ont les empreintes du candidat. CONNECT anonyme reste
+401, Rapport et RGA 303 vers CONNECT, API 403 ; AVEREO conserve sa maintenance 503.
+Les 75 tests Node, 15 tests PHP, build et CI du candidat sont acquis. La recette
+avec un second compte et la validation métier ne sont pas déduites de ces résultats.
+
+Preuves dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>)
+et son archive `demo-decision-20261030` : `qualification.json`, `recovery.json`,
+`delivery.json`, `verification.json`, `post-delivery-http.json`,
+`hosted-decision-recipe.json`, `hosted-word-review.json`.
+Le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>)
+porte la revue des deux maisons, les compléments métier et la répétition.
+Aucun accord de merge, production ou ouverture publique ajouté.
+
+## Historique de la préparation locale du 30 octobre
+
+Démo du 3 novembre, 90 minutes, horaire à confirmer ; les deux cas occupent des
+durées égales. Nouveau lot sur `feat/rapport-aide-decision-20261103`, à partir de
+`46a3ca1`, dans la même copie Rapport. [Spécification et contrôles](aide-decision-demo.md).
+Prévisualisation : `http://127.0.0.1:5191/`, Export → Aide à la décision ; le cas
+Cricq est chargé. L’ancien onglet `5189` reste un prototype antérieur.
+
+75 tests Node, 15 tests PHP et build authentifié réussis. Les deux cas sont
+conservés en JSON ; leurs Word expert natifs sont relus, 17 et 26 pages, sans
+retouche hors générateur. Le Word client de ce nouveau lot reste à relire.
+Les profils privés et exports se trouvent dans `Habitologue/Opportunité_Connect` ;
+le [registre des cas](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/cas-demonstration-maisons.md>) décrit leur préparation reproductible.
+
+CONNECT préproduction ouvre bien les six applications de son catalogue pour le
+compte présenté. Recherche est absent. Le candidat hébergé `5d70e41` est confirmé
+par ses assets ; une copie fictive `RECETTE SLH 20261030` a été sauvegardée en
+ligne, retrouvée dans la liste puis rouverte, quatre observations et trois photos
+préservées. Le champ RGA absent devient `null`, sans qualification de risque.
+Les autres parcours des six applications ne sont pas qualifiés par leur ouverture.
+
+**Prochaine action :** revue locale des deux maisons, consolidation des sources
+manuelles des attentes 1 à 3 et 10, puis préparation du retour arrière et accord
+exact pour installer le nouveau candidat en préproduction. Refaire alors la
+recette complète des deux cas et la lecture des deux destinataires Word.
+Aucune nouvelle livraison, fusion ou ouverture publique effectuée.
+
+Le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>) et le bloc `decisionSupport20261030` du suivi portent la suite. Les accords et preuves du lot précédent ci-dessous restent historiques et ne sont pas réattribués.
+
+## Historique du 24 octobre — livrables AVEREO livrés en préproduction
 
 Livraison le 24 octobre 2026 à 21 h 19 (Paris), candidat
 `5d70e41ac7d2a814e6a4a318ffe7fcc17836d2cf`, branche

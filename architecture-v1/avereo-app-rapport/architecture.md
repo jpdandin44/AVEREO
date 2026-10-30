@@ -5,12 +5,17 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Bloc de décision du dossier
+
+Le bloc optionnel `decision` demeure dans le payload JSON de Rapport, stocké dans `reports.payload_json` par les opérations existantes ; aucune migration de base. `DecisionSupportPanel.jsx` édite les données, `decisionSupport.js` compose bilan et comparaison pour `reportDelivery.js`, puis `reportDocx.js` produit le Word existant. `api/decision-validation.php` contrôle les types, listes (100 éléments), références et longueurs avant sauvegarde ; les droits/propriétés existants restent appliqués. Les anciens dossiers ne reçoivent aucun choix prérempli. [Contrat fonctionnel](docs/aide-decision-demo.md).
+
 
 ## Restitutions expert et client
 

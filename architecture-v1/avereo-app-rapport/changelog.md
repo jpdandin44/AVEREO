@@ -5,12 +5,17 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-10-30 Aide à la décision de la Visite Globale
+
+Ajout des attentes permanentes et du projet, liens constat/attentes, actions correctives/préventives/évolutives, incontournables et préalables ; deux options comparées sur neuf critères. Restitution expert et client, alertes sur références perdues et omissions, validation de la nouvelle donnée API. Candidat `9a4f414` livré en préproduction le 30 octobre après sauvegarde et répétition du retour arrière ; recette des deux maisons et Word expert/client contrôlés. Aucun chiffrage, classement automatique ou migration de base. [Critères et limites](docs/aide-decision-demo.md).
+
 
 ## 2026-10-24 — Intégration des restitutions AVEREO
 

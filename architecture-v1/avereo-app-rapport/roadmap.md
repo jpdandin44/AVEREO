@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,11 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Reprise du 30 octobre
+
+Le noyau des attentes 4 à 9 est livré en préproduction sur le candidat `9a4f414`, après sauvegarde fraîche et retour arrière répété sur copie privée. Les 75 tests applicatifs, 15 contrôles PHP, build authentifié et CI passent. Deux dossiers distincts sont modifiés, sauvegardés en ligne et rouverts ; JSON intégral conservé. Word expert Tilleuls/Cricq : 17/26 pages ; client : 5/7 pages, rendus contrôlés. Prochaine étape : revue métier des deux maisons et répétition de la séance. Les compléments des attentes 1 à 3 et 10, DELTA et l’horaire restent dans le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>). Aucun accord de production ajouté.
+
 
 ## Itération livrables : reprise autorisée le 24 octobre
 
