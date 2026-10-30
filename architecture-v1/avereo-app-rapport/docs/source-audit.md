@@ -5,13 +5,20 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## Audit du lot aide à la décision du 30 octobre
+
+Les données `decision` sont saisies par le professionnel ; aucun appel IA, nouvelle dépendance ni accès externe. Les valeurs sont échappées dans les deux restitutions. L’API accepte le bloc optionnel après contrôle de forme et de volume ; ses contrôles de propriétaire/organisation sont conservés. Les références absentes/ambiguës et incontournables omis sont signalés, sans supprimer les identifiants ni fabriquer un accord. Le JSON intégral garde les données même lorsque la catégorie technique masque la rubrique. Les cas privés et leurs photos restent hors Git. Voir les [critères de compatibilité](aide-decision-demo.md).
+
+Contrôles du lot : 75 tests Node, 15 tests PHP, syntaxe des deux fichiers API et build authentifié réussis. Deux imports privés, modification puis conservation locale et JSON ; alerte d’omission constatée à l’écran. Word expert produits sans retouche hors générateur : 17 et 26 pages inspectées, 66 et 74 textes du bloc comparés sans omission. La nouvelle API n’a pas encore reçu ces données en préproduction ; l’essai authentifié du jour porte seulement sur la base antérieure et une copie fictive distincte. Les rapports Word client du nouveau lot restent à relire.
+
 
 ## Intégration des livrables du 24 octobre
 

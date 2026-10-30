@@ -5,13 +5,25 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## État du lot aide à la décision du 30 octobre
+
+| Fonction | État local | Qualification restante |
+| --- | --- | --- |
+| Attentes et projet séparés | Rubriques optionnelles à Export ; deux cas importés et modifiés localement | Revue métier |
+| Bilan et actions liés | Liens par identifiants, catégories, préalables et alertes | Sauvegarde/réouverture du nouveau candidat hébergé |
+| Deux options et comparaison | Même grille, HTML expert/client ; Word expert Tilleuls 17 pages et Cricq 26 pages relus | Recette authentifiée du nouveau candidat ; export Word client non relu dans cette session |
+| Dossiers antérieurs | Pas de remplissage ou choix ajouté, JSON conservé ; régressions locales contrôlées | Revue du candidat hébergé |
+
+Le candidat déjà hébergé `5d70e41` reste une base distincte ; ses preuves ne qualifient pas ce nouveau lot. [Spécification](aide-decision-demo.md).
+
 
 # Matrice de migration fonctionnelle
 

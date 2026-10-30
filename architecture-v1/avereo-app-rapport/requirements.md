@@ -5,13 +5,18 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Aide à la décision demandée le 30 octobre
+
+La séance du 3 novembre réserve une durée égale aux Tilleuls et au Cricq. Attentes/projet distincts, liens, actions et comparaison sont définis par la [spécification du lot](docs/aide-decision-demo.md), source unique des critères. La structure est implémentée localement ; sa qualification hébergée reste distincte de celle du candidat du 24 octobre.
+
 
 ## Intégration des livrables — 24 octobre 2026
 

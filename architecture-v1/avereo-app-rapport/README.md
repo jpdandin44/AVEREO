@@ -5,13 +5,18 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Aide à la décision en développement local
+
+Dans une Visite Globale, ouvrir Export puis Aide à la décision : attentes et projet séparés, liens aux constats, actions classées et deux options comparables. Le JSON et les deux restitutions reprennent le même bloc. Aucune décision ni estimation automatique. [Périmètre et critères](docs/aide-decision-demo.md). Nouveau lot non livré en préproduction à ce stade.
+
 
 ## Deux livrables AVEREO — 24 octobre 2026
 

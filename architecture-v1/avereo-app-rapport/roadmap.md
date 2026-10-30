@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,11 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Reprise du 30 octobre
+
+Noyau local des attentes 4 à 9 : saisie structurée, bilan lié, actions et options comparables. Les 75 tests applicatifs, 15 contrôles PHP et le build authentifié passent. Conservation locale/JSON vérifiée sur les deux cas ; Word expert générés par l’application et relus, 17 et 26 pages. Prochaines étapes : préparer la récupération et l’accord exact puis vérifier les deux cas sur le nouveau candidat en préproduction. Les compléments des attentes 1 à 3 et 10 restent identifiés dans le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>). Aucun accord de production ajouté.
+
 
 ## Itération livrables : reprise autorisée le 24 octobre
 

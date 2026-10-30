@@ -162,7 +162,7 @@ function buildRiskSummaryHtml(summary) {
   `;
 }
 
-export function buildExpertDocumentHtml(report) {
+export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
   const habitologie = isHabitologieReport(report);
   const sectionNumbers = habitologie
     ? { ecoute: 2, protocoles: 3, observations: 4, analyse: 5, signature: 6 }
@@ -345,6 +345,7 @@ export function buildExpertDocumentHtml(report) {
   <h3>Reserves</h3>
   ${narrativeHtml(report.reserves)}
 
+  ${beforeSignatureHtml}
   <h2>${sectionNumbers.signature}. Signature</h2>
   <p>Fait le ${formatDate(new Date().toISOString())}</p>
   <p><strong>Signataire :</strong> ${escapeHtml(report.nom_signataire)}</p>

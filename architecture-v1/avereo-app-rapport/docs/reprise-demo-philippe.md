@@ -5,12 +5,41 @@ title: Reprise de la préparation démo Philippe
 status: active
 version: git
 created: 2026-10-24
-updated: 2026-10-24
+updated: 2026-10-30
 owner: jpdandin
 tags: [rapport, demonstration, rga, preproduction]
 ---
 
-## Reprise active — livrables AVEREO livrés en préproduction
+## Reprise active du 30 octobre — aide à la décision locale
+
+Démo du 3 novembre, 90 minutes, horaire à confirmer ; les deux cas occupent des
+durées égales. Nouveau lot sur `feat/rapport-aide-decision-20261103`, à partir de
+`46a3ca1`, dans la même copie Rapport. [Spécification et contrôles](aide-decision-demo.md).
+Prévisualisation : `http://127.0.0.1:5191/`, Export → Aide à la décision ; le cas
+Cricq est chargé. L’ancien onglet `5189` reste un prototype antérieur.
+
+75 tests Node, 15 tests PHP et build authentifié réussis. Les deux cas sont
+conservés en JSON ; leurs Word expert natifs sont relus, 17 et 26 pages, sans
+retouche hors générateur. Le Word client de ce nouveau lot reste à relire.
+Les profils privés et exports se trouvent dans `Habitologue/Opportunité_Connect` ;
+le [registre des cas](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/cas-demonstration-maisons.md>) décrit leur préparation reproductible.
+
+CONNECT préproduction ouvre bien les six applications de son catalogue pour le
+compte présenté. Recherche est absent. Le candidat hébergé `5d70e41` est confirmé
+par ses assets ; une copie fictive `RECETTE SLH 20261030` a été sauvegardée en
+ligne, retrouvée dans la liste puis rouverte, quatre observations et trois photos
+préservées. Le champ RGA absent devient `null`, sans qualification de risque.
+Les autres parcours des six applications ne sont pas qualifiés par leur ouverture.
+
+**Prochaine action :** revue locale des deux maisons, consolidation des sources
+manuelles des attentes 1 à 3 et 10, puis préparation du retour arrière et accord
+exact pour installer le nouveau candidat en préproduction. Refaire alors la
+recette complète des deux cas et la lecture des deux destinataires Word.
+Aucune nouvelle livraison, fusion ou ouverture publique effectuée.
+
+Le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>) et le bloc `decisionSupport20261030` du suivi portent la suite. Les accords et preuves du lot précédent ci-dessous restent historiques et ne sont pas réattribués.
+
+## Historique du 24 octobre — livrables AVEREO livrés en préproduction
 
 Livraison le 24 octobre 2026 à 21 h 19 (Paris), candidat
 `5d70e41ac7d2a814e6a4a318ffe7fcc17836d2cf`, branche
