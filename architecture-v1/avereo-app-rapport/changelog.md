@@ -12,9 +12,9 @@ tags:
   - changelog
 ---
 
-## 2026-11-01 Corrections de préparation de la démo
+## 2026-11-01 Corrections livrées et deux maisons vérifiées
 
-Correction locale du libellé de complétude et ajout d'un rappel de revue métier sans approbation implicite. Le message photo/dictée décrit séparément l'accord manquant. Aucun changement des autorisations, du calcul, de l'API ou du générateur Word. Les contenus privés des deux maisons sont enrichis et nettoyés ; nouvelle livraison et recette hébergée à effectuer. [Périmètre et réserves](docs/aide-decision-demo.md#corrections-du-1er-novembre).
+Livraison préproduction `9ce22fd` de la clarification de complétude et du message photo/dictée, sans changement des droits, du calcul, de l'API ou du générateur Word. Sauvegarde de 31 fichiers et configuration, retour arrière répété sur copie privée, deux fichiers livrés et arbre de 32 fichiers vérifié. Les deux copies DEMO reçoivent les seuls compléments prévus ; JSON serveur exactement attendus, photos/annexes/accords conservés. Quatre Word natifs hébergés, 56 pages rendues et identiques aux préparations relues. La relance CONNECT après expiration de la session de 30 minutes est contrôlée. [Périmètre et réserves](docs/aide-decision-demo.md#corrections-du-1er-novembre).
 
 ## 2026-10-30 Aide à la décision de la Visite Globale
 

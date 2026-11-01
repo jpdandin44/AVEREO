@@ -37,7 +37,11 @@ Tilleuls reste fictif, sans rattachement réglementaire ou géographique réel. 
 
 Sources de référence privées : `Habitologue/Opportunité_Connect/data/decision-demo/*-decision.json` ; registre daté `sources/preparation-demo-20261101/sources.json`. Les fichiers de présentation conservent les identifiants des deux copies serveur, observations, photos, annexes et écoute. Toute application doit partir d'une nouvelle exportation serveur pour éviter d'écraser une modification intervenue depuis la recette.
 
-75 tests Node et build authentifié réussis localement ; nouvelle livraison et contrôles visuels de l'interface non acquis. Les clics du navigateur intégré sont sans effet au moment du contrôle. La sauvegarde fraîche et le retour arrière doivent être qualifiés avant remplacement du frontend. Le générateur Word n'est pas modifié : ses fonctions originales sont exécutées localement pour les quatre documents enrichis, sans retouche DOCX ; 17/5 pages Tilleuls et 27/7 Cricq. Les 56 pages sont rendues, 27 modifiées inspectées et 29 autres identiques aux rendus déjà inspectés. Cette génération locale ne prouve pas l'installation ni l'export hébergé. Les fichiers et leur reçu sont reliés dans le [registre privé des cas](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/cas-demonstration-maisons.md>). La revue métier, DELTA et l'horaire restent à préciser.
+75 tests Node, build authentifié et CI réussis ; matrice locale des quatre accords et rappel à 100 % contrôlés. Le candidat `9ce22fd` est livré en préproduction après sauvegarde de 31 fichiers et de la configuration, puis installation/restauration répétée sur copie privée. Deux fichiers frontend sont livrés, 30 autres conservés ; l'arbre de 32 fichiers, la configuration et les trois ressources publiques sont vérifiés. Aucun changement d'API ou de schéma.
+
+Après export serveur frais, les deux copies DEMO reçoivent les seuls compléments prévus, puis sont sauvées et rouvertes depuis la liste. Leurs JSON sont exactement ceux préparés, écoute, accords, observations, photos et annexes compris. Les quatre Word sont téléchargés directement du générateur hébergé : 17/5 pages Tilleuls et 27/7 Cricq. Leurs 56 pages sont rendues et identiques pixel à pixel aux préparations déjà relues ; les fichiers restent sans retouche DOCX. [Registre et livrables](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/cas-demonstration-maisons.md>) · [Recette du candidat](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/demo-corrections-20261101/hosted-recipe.json>).
+
+La session applicative dure 30 minutes. Une relance depuis CONNECT est contrôlée pendant les essais ; la prévoir avant chaque maison pour la séance de 90 minutes. Aucun réglage d'authentification n'est modifié. La revue métier, DELTA, l'horaire et l'isolation entre deux comptes restent à qualifier.
 
 ## Lot local
 
@@ -75,9 +79,9 @@ automatique du texte, nouvelle base ou intégration IA n'est nécessaire.
 6. Le client reçoit une comparaison lisible ; le rapport expert conserve le
    raisonnement détaillé. Le DOCX est produit par le générateur existant.
 7. Les entrées structurées sont contrôlées par l'API et échappées dans le HTML.
-8. La sauvegarde/réouverture authentifiée est vérifiée sur le candidat `9a4f414`
-   livré en préproduction le 30 octobre. Les preuves de l'ancien candidat
-   `5d70e41` restent distinctes.
+8. La sauvegarde/réouverture authentifiée est vérifiée sur `9ce22fd`, livré
+   le 1er novembre. Les preuves de `9a4f414` du 30 octobre et de `5d70e41`
+   restent distinctes.
 
 ## Livraison et recette du 30 octobre
 

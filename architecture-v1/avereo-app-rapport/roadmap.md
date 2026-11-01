@@ -16,7 +16,7 @@ tags:
 
 ## Reprise du 1er novembre
 
-Trois priorités de recette prises en charge : nettoyage des marqueurs, compléments manuels sourcés des deux cas et clarification du pourcentage de saisie. Le message photo/dictée est également corrigé localement. Prochaine étape : accès cPanel et CONNECT, nouvelle sauvegarde/restauration sur copie, livraison ciblée puis quatre Word natifs propres avec vérification du rendu. La revue métier, DELTA, l'horaire du 3 novembre et la recette avec un second compte restent distincts. [Critères et statut](docs/aide-decision-demo.md#corrections-du-1er-novembre).
+Les priorités A01 à A04 sont traitées sur `9ce22fd` livré et vérifié en préproduction : données propres, compléments sourcés, complétude distincte de la revue métier et messages d'accords cohérents. Les deux JSON sont relus depuis le serveur et les quatre Word hébergés couvrent 56 pages contrôlées. Prochaine étape : revue métier puis répétition des 90 minutes, avec relance CONNECT avant chaque maison car la session applicative dure 30 minutes. DELTA, l'horaire et l'essai avec un second compte restent ouverts. [Critères et statut](docs/aide-decision-demo.md#corrections-du-1er-novembre).
 
 ## Reprise du 30 octobre
 

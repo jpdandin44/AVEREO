@@ -10,13 +10,19 @@ owner: jpdandin
 tags: [rapport, demonstration, rga, preproduction]
 ---
 
-## Reprise du 1er novembre — corrections préparées
+## Reprise du 1er novembre — corrections livrées et deux maisons vérifiées
 
-Le responsable autorise les trois priorités en préproduction, la correction du message photo/dictée et la régénération des quatre Word. Le code local ne change que la présentation de la complétude et des accords. Les profils privés contiennent les compléments des deux maisons et les calendriers propres. [Détail et critères](aide-decision-demo.md#corrections-du-1er-novembre).
+Le candidat fonctionnel **`9ce22fdf36a018fc7318accd794522c4f2df8bf4`** est livré le 1er novembre à **20 h 38 (Paris)**, dans le périmètre autorisé par le responsable. La PR 91 reste en brouillon, sans fusion. Les commits documentaires suivants ne changent pas l'archive livrée, SHA-256 `86de57efa62ffc53ecac2df9ac0bc6ae03a3d29d0855b73f674a15659abfa1fd`.
 
-Quatre Word sont disponibles dans `Habitologue/Opportunité_Connect/exports-generateur/aide-decision/presentation-20261103/`, générés localement par les fonctions applicatives intactes et relus : Tilleuls expert/client 17/5 pages, Cricq 27/7 pages. Le reçu distingue cette génération locale d'un export hébergé ; 27 pages inspectées et 29 identiques pixel à pixel aux rendus déjà inspectés.
+Sauvegarde fraîche des **31 fichiers** et de la configuration privée, installation/restauration répétée sur copie privée, puis deux fichiers frontend livrés et 30 conservés. L'arbre de 32 fichiers et la configuration sont vérifiés après livraison et après les essais. Base distincte de la production, sas CONNECT et refus anonymes conservés ; AVEREO reste en maintenance. 75 tests Node, build authentifié, CI et matrice locale des quatre accords réussis. Aucun changement d'API, de schéma ou de configuration.
 
-La nouvelle sauvegarde/restauration et la livraison restent à effectuer : cPanel est demandé et la connexion CONNECT a expiré. Les clics du navigateur intégré ne produisent actuellement aucun changement sur les pages locales, en développement comme compilées. Ne pas transformer les tests Node réussis en contrôle visuel ni réutiliser le reçu du 30 octobre pour ce nouveau code. Prochaine action : rétablir les accès et le pilotage, qualifier la cible et la récupération puis installer et tester le candidat préparé. Aucun accord de production ou de fusion ajouté.
+Les deux copies `DEMO TILLEULS DECISION` et `DEMO CRICQ DECISION` sont mises à jour après export frais ; seuls les quatre/sept chemins prévus changent. Les JSON rouverts depuis le serveur sont exactement attendus : quatre constats/trois images Tilleuls ; cinq/quatre et trois annexes Cricq. Les accords et l'écoute sont conservés ; la reformulation du besoin du Cricq reste à confirmer. Le rappel métier est visible à 100 % et les messages photo/dictée correspondent aux accords, sans activer les appareils.
+
+Quatre Word sont disponibles dans `Habitologue/Opportunité_Connect/exports-generateur/aide-decision/presentation-20261103/`, téléchargés du générateur hébergé sans retouche : expert/client 17/5 pages Tilleuls et 27/7 Cricq. Les 56 pages rendues sont identiques aux préparations déjà relues ; médias et textes attendus contrôlés. La préparation locale précédente est archivée. [Registre des cas](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/cas-demonstration-maisons.md>).
+
+Entrée : [CONNECT préproduction → Rapport](https://connect-preprod.avereo.fr/?app=rapport). La session Rapport dure **30 minutes** ; relancer depuis CONNECT avant chaque maison pendant la séance de 90 minutes. Ce renouvellement est contrôlé, sans modification du réglage ni des droits. Le cas Tilleuls reste ouvert à Export. Restent la revue métier, la répétition, DELTA, l'horaire et l'essai avec un second compte.
+
+Récupération privée : `/home/daje3540/.avereo/rapport-preprod/corrections-20261101-9ce22fd/`. Dans ce dossier, `python3 deliver.py verify` contrôle le code et `python3 deliver.py rollback` rétablit la version sauvegardée si l'arbre n'a pas changé ; la base est conservée. Les JSON avant modification des deux cas sont archivés séparément dans `recette-corrections-20261101/`. Les reçus `qualification.json`, `recovery.json`, `delivery.json`, `final-verification.json`, `hosted-recipe.json` et `hosted-word-review.json` sont dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>), archive `demo-corrections-20261101`. Aucun accord de revue métier, merge, production ou ouverture publique créé par les essais.
 
 ## Historique du 30 octobre — aide à la décision livrée et testable
 

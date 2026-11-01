@@ -15,13 +15,14 @@ tags:
 
 ## Corrections du 1er novembre
 
-| Fonction | État local | Qualification restante |
+| Fonction | Contrôle réalisé | Qualification restante |
 | --- | --- | --- |
-| Complétude de saisie | Calcul existant conservé ; explication des inconnues et revue métier toujours visible | Contrôle visuel sur le nouveau candidat, dont un dossier à 100 % |
-| Message photo et dictée | Message correspondant à chaque accord manquant ; capacités et droits inchangés | Quatre combinaisons à contrôler dans l'interface |
-| Compléments des deux maisons | Fiches rédigées, contexte sourcé et demandes manuelles dans les profils privés ; marqueurs d'essai retirés | Sauvegarde et application aux deux copies serveur puis quatre Word natifs relus |
+| Complétude de saisie | Rappel visible à 100 % sur les deux copies hébergées ; calcul conservé | Revue métier indépendante du pourcentage |
+| Message photo et dictée | Quatre états contrôlés localement ; états Tilleuls et Cricq vérifiés en préproduction, boutons cohérents | Essai matériel micro/caméra non réalisé |
+| Compléments des deux maisons | JSON serveur exactement préparés, identifiants et médias conservés ; quatre Word hébergés, 56 pages contrôlées | Revue métier des fiches et des hypothèses |
+| Session de démonstration | Durée de 1 800 secondes relevée ; renouvellement par CONNECT contrôlé | Prévoir une relance avant chaque maison pendant la répétition de 90 minutes |
 
-Ces éléments sont préparés ; le candidat hébergé de référence reste `9a4f414` jusqu'au nouveau reçu. [Détail de la préparation](aide-decision-demo.md#corrections-du-1er-novembre).
+Le candidat `9ce22fd` est livré et contrôlé le 1er novembre ; sauvegarde/restauration et reçus propres à ce lot. [Détail et limites](aide-decision-demo.md#corrections-du-1er-novembre).
 
 ## État du lot aide à la décision du 30 octobre
 
