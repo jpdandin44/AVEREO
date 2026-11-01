@@ -5,13 +5,23 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-10-30
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## Corrections du 1er novembre
+
+| Fonction | État local | Qualification restante |
+| --- | --- | --- |
+| Complétude de saisie | Calcul existant conservé ; explication des inconnues et revue métier toujours visible | Contrôle visuel sur le nouveau candidat, dont un dossier à 100 % |
+| Message photo et dictée | Message correspondant à chaque accord manquant ; capacités et droits inchangés | Quatre combinaisons à contrôler dans l'interface |
+| Compléments des deux maisons | Fiches rédigées, contexte sourcé et demandes manuelles dans les profils privés ; marqueurs d'essai retirés | Sauvegarde et application aux deux copies serveur puis quatre Word natifs relus |
+
+Ces éléments sont préparés ; le candidat hébergé de référence reste `9a4f414` jusqu'au nouveau reçu. [Détail de la préparation](aide-decision-demo.md#corrections-du-1er-novembre).
 
 ## État du lot aide à la décision du 30 octobre
 

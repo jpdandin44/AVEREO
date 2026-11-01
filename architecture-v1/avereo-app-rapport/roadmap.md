@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-30
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,10 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Reprise du 1er novembre
+
+Trois priorités de recette prises en charge : nettoyage des marqueurs, compléments manuels sourcés des deux cas et clarification du pourcentage de saisie. Le message photo/dictée est également corrigé localement. Prochaine étape : accès cPanel et CONNECT, nouvelle sauvegarde/restauration sur copie, livraison ciblée puis quatre Word natifs propres avec vérification du rendu. La revue métier, DELTA, l'horaire du 3 novembre et la recette avec un second compte restent distincts. [Critères et statut](docs/aide-decision-demo.md#corrections-du-1er-novembre).
 
 ## Reprise du 30 octobre
 

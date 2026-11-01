@@ -5,13 +5,17 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-10-30
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Corrections préparées le 1er novembre
+
+Le panneau indique désormais « Complétude de saisie » et précise que son pourcentage ne constitue ni une revue métier ni un accord des habitants. Le message des observations distingue les accords photo et dictée. Les droits et le calcul restent inchangés. Ces corrections sont locales ; leur nouvelle livraison avec sauvegarde et retour arrière reste à effectuer. Les compléments privés des deux maisons et les contrôles restants sont décrits dans la [préparation de la démo](docs/aide-decision-demo.md#corrections-du-1er-novembre).
 
 ## Aide à la décision en préproduction
 

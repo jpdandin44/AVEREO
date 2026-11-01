@@ -5,13 +5,19 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-10-30
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## Corrections du 1er novembre
+
+Deux changements de présentation dans `App.jsx` : libellé de complétude avec rappel de revue métier et message conditionnel des deux accords. Les booléens d'autorisation, le calcul, la persistance, l'API et la génération Word restent identiques. Les sources privées des maisons conservent observations, images, annexes et écoute ; seuls l'analyse, les recommandations, le contexte urbanisme du Cricq et les marqueurs de calendrier sont préparés pour mise à jour. Aucun dossier privé ou renseignement personnel dans Git.
+
+75 tests Node et build authentifié réussis localement. Le navigateur affiche les pages mais ses clics ne modifient pas l'état ; la matrice visuelle des quatre combinaisons d'accords n'est donc pas déclarée réussie. Accès cPanel et connexion CONNECT à renouveler avant sauvegarde fraîche, répétition du retour arrière, installation et recette du nouveau candidat. Les preuves du 30 octobre ci-dessous restent rattachées à `9a4f414`.
 
 ## Audit du lot aide à la décision du 30 octobre
 

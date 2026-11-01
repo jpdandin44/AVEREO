@@ -5,7 +5,7 @@ title: Aide à la décision pour la démonstration du 3 novembre
 status: active
 version: git
 created: 2026-10-30
-updated: 2026-10-30
+updated: 2026-11-01
 owner: jpdandin
 tags: [rapport, demonstration, habitants, decision]
 ---
@@ -23,6 +23,21 @@ pas reconduit implicitement.
 Le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>) porte les dix attentes, les priorités et le calendrier.
 Le suivi canonique est son voisin `suivi-chantier.json`, sous
 `demo_v1_preparation_20261023.decisionSupport20261030`.
+
+## Corrections du 1er novembre
+
+La reprise autorisée traite les trois priorités issues de la recette du jour et le message photo/dictée :
+
+- **A01** : retirer les mentions de contrôle du 30 octobre et d'essai utilisateur des calendriers de présentation. Les archives de recette restent intactes.
+- **A02** : enrichir les deux profils privés avec une lecture du végétal et des eaux, six fiches de composants et une demande manuelle de mise en relation. Chaque fiche décrit nature, âge ou époque connue, état apparent, inconnues, vérifications et source. Aucune durée résiduelle calculée.
+- **A03** : renommer l'indicateur « Complétude de saisie » et expliquer ses limites, y compris à 100 %. La revue métier et l'accord des habitants ne sont jamais déduits du pourcentage.
+- **A04** : distinguer photo/caméra et dictée dans le message selon les accords existants. Aucun accord n'est ajouté pour activer une capacité.
+
+Tilleuls reste fictif, sans rattachement réglementaire ou géographique réel. Cricq reste une reprise du dossier du 27 août, sans nouvelle visite : les pages publiques GPU et mairie sont consultées le 1er novembre ; le PLU présenté comme actuel est distingué du projet arrêté en 2026. Les exemples sur les eaux et plantations sont conditionnels à la confirmation de la zone et de la version applicable. La zone parcellaire, le périmètre patrimonial et les risques actuels ne sont pas certifiés par cette préparation.
+
+Sources de référence privées : `Habitologue/Opportunité_Connect/data/decision-demo/*-decision.json` ; registre daté `sources/preparation-demo-20261101/sources.json`. Les fichiers de présentation conservent les identifiants des deux copies serveur, observations, photos, annexes et écoute. Toute application doit partir d'une nouvelle exportation serveur pour éviter d'écraser une modification intervenue depuis la recette.
+
+75 tests Node et build authentifié réussis localement ; nouvelle livraison et contrôles visuels de l'interface non acquis. Les clics du navigateur intégré sont sans effet au moment du contrôle. La sauvegarde fraîche et le retour arrière doivent être qualifiés avant remplacement du frontend. Le générateur Word n'est pas modifié : ses fonctions originales sont exécutées localement pour les quatre documents enrichis, sans retouche DOCX ; 17/5 pages Tilleuls et 27/7 Cricq. Les 56 pages sont rendues, 27 modifiées inspectées et 29 autres identiques aux rendus déjà inspectés. Cette génération locale ne prouve pas l'installation ni l'export hébergé. Les fichiers et leur reçu sont reliés dans le [registre privé des cas](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/cas-demonstration-maisons.md>). La revue métier, DELTA et l'horaire restent à préciser.
 
 ## Lot local
 

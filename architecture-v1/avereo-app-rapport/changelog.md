@@ -5,12 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-30
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-01 Corrections de préparation de la démo
+
+Correction locale du libellé de complétude et ajout d'un rappel de revue métier sans approbation implicite. Le message photo/dictée décrit séparément l'accord manquant. Aucun changement des autorisations, du calcul, de l'API ou du générateur Word. Les contenus privés des deux maisons sont enrichis et nettoyés ; nouvelle livraison et recette hébergée à effectuer. [Périmètre et réserves](docs/aide-decision-demo.md#corrections-du-1er-novembre).
 
 ## 2026-10-30 Aide à la décision de la Visite Globale
 

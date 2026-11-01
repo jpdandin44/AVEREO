@@ -5,12 +5,20 @@ title: Reprise de la préparation démo Philippe
 status: active
 version: git
 created: 2026-10-24
-updated: 2026-10-30
+updated: 2026-11-01
 owner: jpdandin
 tags: [rapport, demonstration, rga, preproduction]
 ---
 
-## Reprise active du 30 octobre — aide à la décision livrée et testable
+## Reprise du 1er novembre — corrections préparées
+
+Le responsable autorise les trois priorités en préproduction, la correction du message photo/dictée et la régénération des quatre Word. Le code local ne change que la présentation de la complétude et des accords. Les profils privés contiennent les compléments des deux maisons et les calendriers propres. [Détail et critères](aide-decision-demo.md#corrections-du-1er-novembre).
+
+Quatre Word sont disponibles dans `Habitologue/Opportunité_Connect/exports-generateur/aide-decision/presentation-20261103/`, générés localement par les fonctions applicatives intactes et relus : Tilleuls expert/client 17/5 pages, Cricq 27/7 pages. Le reçu distingue cette génération locale d'un export hébergé ; 27 pages inspectées et 29 identiques pixel à pixel aux rendus déjà inspectés.
+
+La nouvelle sauvegarde/restauration et la livraison restent à effectuer : cPanel est demandé et la connexion CONNECT a expiré. Les clics du navigateur intégré ne produisent actuellement aucun changement sur les pages locales, en développement comme compilées. Ne pas transformer les tests Node réussis en contrôle visuel ni réutiliser le reçu du 30 octobre pour ce nouveau code. Prochaine action : rétablir les accès et le pilotage, qualifier la cible et la récupération puis installer et tester le candidat préparé. Aucun accord de production ou de fusion ajouté.
+
+## Historique du 30 octobre — aide à la décision livrée et testable
 
 Le candidat **`9a4f41478ee30157c14abaf3ac60bd6756d4fd81`** est livré en
 préproduction le 30 octobre à **21 h 54 (Paris)**, avec accord direct du responsable.
