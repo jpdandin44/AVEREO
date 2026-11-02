@@ -10,9 +10,9 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
-## RGA distincte — candidat local
+## RGA distincte — préproduction
 
-La déclaration RGA et la copie initiale des droits sont implémentées et testées localement. Qualification hébergée et activation restent à tracer dans le [suivi canonique RGA](../avereo-app-rapport/api/rga.md). La première livraison du raccourci ne prouve pas l’installation de ce nouveau candidat.
+La déclaration RGA et la copie initiale des droits sont implémentées, testées et activées en préproduction. La gestion des comptes présente une autorisation RGA indépendante de Rapport. Les versions, preuves de livraison et réserves sont conservées dans le [suivi canonique RGA](../avereo-app-rapport/api/rga.md). La revue humaine et toute promotion en production restent à effectuer.
 
 
 # Suite CONNECT
