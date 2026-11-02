@@ -13,6 +13,12 @@ tags:
   - fonctionnalites
 ---
 
+## Saisie de Validation et export — candidat local du 2 novembre
+
+Ajout de contrôles vocaux et d'un enregistrement explicite du brouillon d'attente. Les champs, identifiants, liens, accords, médias et contrats JSON restent ceux du dossier existant ; aucune migration. Anciens contenus longs conservés, aucun choix ou accord déduit d'une dictée ou d'un enregistrement. Les deux exports de recette gardent l'attente modifiée ; les quatre Word de présentation restent distincts. [Critères et limites](aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
+
+
+
 ## Lot RGA du 2 novembre
 
 Le complément de superposition est purement visuel : mêmes coordonnées,

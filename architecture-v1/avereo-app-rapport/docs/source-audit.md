@@ -13,6 +13,14 @@ tags:
   - securite
 ---
 
+## Saisie vocale et sauvegarde explicite — candidat local du 2 novembre
+
+Extraction du mécanisme SpeechRecognition existant vers `VoiceField.jsx` afin de le réutiliser dans la décision et les livrables. Aucune nouvelle bibliothèque, clé, intégration IA, permission accordée automatiquement ou configuration serveur. Les autorisations du navigateur et l'accord métier restent nécessaires. Seul le texte rejoint les champs du dossier ; aucun fichier audio n'est ajouté au rapport.
+
+Le bouton d'attente appelle le stockage de brouillon existant, sans appel réseau de sauvegarde. Erreur de stockage simulée contrôlée sans fausse confirmation ; retrait de l'accord et démontage arrêtent le contrôleur. Un accès au microphone résolu tardivement ne relance pas un ancien contrôleur. Voix testée par simulation locale seulement ; matériel et service réel non qualifiés. Aucun contenu des maisons hébergées n'est modifié. [Spécification et réserves](aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
+
+
+
 ## Lot RGA du 2 novembre
 
 La correction de superposition réutilise les mêmes 97 fichiers, sans modifier

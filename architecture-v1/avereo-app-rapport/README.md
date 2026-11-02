@@ -13,6 +13,12 @@ tags:
   - connect
 ---
 
+## Validation et export — candidat local du 2 novembre
+
+Boutons micro dans les champs textuels et bouton « Enregistrer cette attente », avec confirmation de brouillon local ; « Sauver en ligne » reste distinct. Les accords existants sont conservés. [Parcours et état de qualification](docs/aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes). L'aperçu de revue est local ; ce candidat n'est pas déclaré installé en préproduction.
+
+
+
 ## Nouvelle recherche RGA — candidat du 2 novembre
 
 Tuile RGA dans CONNECT et carte à l’adresse dans Site → Rapport des risques. Lecture cartographique indicative 2026 et synthèse Géorisques séparées ; création explicite d’un dossier depuis la carte et conservation dans les restitutions. [Parcours, sources, lancement local et limites](api/rga.md). État hébergé dans le suivi canonique référencé par ce contrat.

@@ -5,10 +5,20 @@ title: Reprise de la préparation démo Philippe
 status: active
 version: git
 created: 2026-10-24
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags: [rapport, demonstration, rga, preproduction]
 ---
+
+## Reprise locale du 2 novembre — dictée et bouton d'attente
+
+Travail isolé dans `C:/Users/examg/Documents local/avereo-rapport-saisie-export`, branche `feat/rapport-dictee-attentes-20261102`, base `59a38c9` pour conserver la dernière superposition RGA/cadastre. L'aperçu de revue utilise `http://127.0.0.1:5192/` ; le service Vite doit être actif. Les deux copies locales ont servi à la recette, sans accès de sauvegarde serveur ni changement des quatre rapports préparés.
+
+Prochaine action : examiner le candidat et sa PR référencés par `finalisation20261102.exportInput20261102` dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>). Avant installation, obtenir l'accord exact pour le nouveau candidat, vérifier l'état hébergé RGA courant et sauvegarder/restaurer les chemins concernés. Puis tester les accords, une attente dictée/enregistrée, rechargement local, sauvegarde/réouverture en ligne et les deux Word sur chaque cas, sans remplacer les copies de présentation par les marqueurs de recette. Microphone réel à qualifier ; aucune validation de production ajoutée.
+
+Les sections suivantes sont l'historique des versions et ne désignent pas le candidat actuel. [Comportement courant](aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
+
+
 
 ## Reprise du 1er novembre — corrections livrées et deux maisons vérifiées
 

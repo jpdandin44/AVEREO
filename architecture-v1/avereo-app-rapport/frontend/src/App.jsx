@@ -2,6 +2,8 @@ import { protocolOptions } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
+import VoiceField, { MicButton } from './VoiceField.jsx';
+import { appendDictation } from './dictationText.js';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { del as idbDel, get as idbGet, set as idbSet } from 'idb-keyval';
 import {
@@ -73,7 +75,6 @@ import {
   Home,
   Loader2,
   MapPin,
-  Mic,
   PenLine,
   Plus,
   RotateCcw,
@@ -322,121 +323,6 @@ function toFileName(value) {
     .replace(/[^a-z0-9]+/gi, '-')
     .replace(/^-+|-+$/g, '')
     .toLowerCase();
-}
-
-function useSpeechRecognition(lang = 'fr-FR', onFinalText) {
-  const [isListening, setIsListening] = useState(false);
-  const [speechError, setSpeechError] = useState('');
-  const recognitionRef = useRef(null);
-  const onFinalTextRef = useRef(onFinalText);
-  const isSupported =
-    typeof window !== 'undefined' && Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
-
-  useEffect(() => {
-    onFinalTextRef.current = onFinalText;
-  }, [onFinalText]);
-
-  useEffect(() => {
-    if (!isSupported) return undefined;
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
-    recognition.lang = lang;
-    recognition.interimResults = true;
-    recognition.continuous = true;
-    recognition.onstart = () => {
-      setSpeechError('');
-      setIsListening(true);
-    };
-    recognition.onend = () => setIsListening(false);
-    recognition.onerror = (event) => {
-      setIsListening(false);
-      const messages = {
-        'audio-capture': "Aucun microphone utilisable n'a ete detecte.",
-        network: 'Le service de dictee est indisponible dans ce navigateur. Essayez Chrome, Edge ou Windows + H.',
-        'no-speech': "Aucune parole n'a ete detectee. Rapprochez-vous du microphone et recommencez.",
-        'not-allowed': "Autorisez l'acces au microphone dans les reglages du navigateur, puis rechargez la page.",
-        'service-not-allowed': 'La dictee vocale est bloquee par ce navigateur. Essayez Chrome, Edge ou Windows + H.',
-      };
-      if (event.error !== 'aborted') {
-        setSpeechError(messages[event.error] || `Dictee interrompue (${event.error || 'erreur inconnue'}).`);
-      }
-    };
-    recognition.onresult = (event) => {
-      let transcript = '';
-      for (let index = event.resultIndex; index < event.results.length; index += 1) {
-        if (event.results[index].isFinal) transcript += event.results[index][0].transcript;
-      }
-      if (transcript) onFinalTextRef.current(`${transcript} `);
-    };
-    recognitionRef.current = recognition;
-    return () => {
-      recognition.onend = null;
-      recognition.onerror = null;
-      recognition.onresult = null;
-      recognition.stop();
-      recognitionRef.current = null;
-    };
-  }, [isSupported, lang]);
-
-  const toggle = useCallback(async () => {
-    if (!recognitionRef.current) return;
-    if (isListening) {
-      recognitionRef.current.stop();
-      return;
-    }
-
-    setSpeechError('');
-    if (navigator.mediaDevices?.getUserMedia) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        stream.getTracks().forEach((track) => track.stop());
-      } catch (error) {
-        const denied = error?.name === 'NotAllowedError' || error?.name === 'SecurityError';
-        setSpeechError(
-          denied
-            ? "Autorisez l'acces au microphone dans les reglages du navigateur, puis rechargez la page."
-            : "Le microphone n'est pas disponible sur cet appareil.",
-        );
-        return;
-      }
-    }
-
-    try {
-      recognitionRef.current.start();
-    } catch (error) {
-      if (error?.name !== 'InvalidStateError') {
-        setSpeechError('Impossible de demarrer la dictee vocale. Essayez Chrome, Edge ou Windows + H.');
-      }
-    }
-  }, [isListening]);
-
-  return { isListening, isSupported, speechError, toggle };
-}
-
-function MicButton({ disabled = false, disabledReason = '', onFinalText, title = 'Dicter' }) {
-  const { isListening, isSupported, speechError, toggle } = useSpeechRecognition('fr-FR', onFinalText);
-  const unavailableMessage = 'Dictee non disponible dans ce navigateur. Utilisez Chrome, Edge ou Windows + H.';
-  const buttonTitle = disabled ? disabledReason : isSupported ? title : unavailableMessage;
-  return (
-    <>
-      <button
-        className={`icon-button ${isListening ? 'danger active' : ''}`}
-        type="button"
-        title={buttonTitle}
-        aria-label={isListening ? 'Arreter la dictee' : title}
-        aria-pressed={isListening}
-        onClick={toggle}
-        disabled={disabled || !isSupported}
-      >
-        <Mic size={18} />
-      </button>
-      {(speechError || !isSupported || isListening) && (
-        <span className={`mic-status ${speechError || !isSupported ? 'error' : 'listening'}`} role="status">
-          {speechError || (!isSupported ? unavailableMessage : 'Ecoute en cours...')}
-        </span>
-      )}
-    </>
-  );
 }
 
 function Modal({ title, children, onClose, actions }) {
@@ -1805,7 +1691,7 @@ function ObservationStep({ report, setReport }) {
   );
 }
 
-function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onImportJson }) {
+function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onImportJson, onSaveDraft }) {
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
   return (
     <section className="panel">
@@ -1817,7 +1703,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         </div>
       </div>
 
-      {isHabitologieReport(report) && <DecisionSupportPanel report={report} setReport={setReport} />}
+      {isHabitologieReport(report) && <DecisionSupportPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} onSaveDraft={onSaveDraft} />}
 
       <div className="validation-grid">
         <div className="validation-box">
@@ -1851,12 +1737,10 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         </div>
 
         <div className="signature-block">
-          <Field label="Nom du signataire">
-            <input
-              value={report.nom_signataire}
-              onChange={(event) => setReport((prev) => ({ ...prev, nom_signataire: event.target.value }))}
-            />
-          </Field>
+          <VoiceField label="Nom du signataire" multiline={false} micDisabled={!dictationAllowed}
+            value={report.nom_signataire}
+            onChange={value => setReport(prev => ({ ...prev, nom_signataire: value }))}
+            onAppend={text => setReport(prev => ({ ...prev, nom_signataire: appendDictation(prev.nom_signataire, text) }))} />
           <SignaturePad value={report.signature} onChange={(signature) => setReport((prev) => ({ ...prev, signature }))} />
         </div>
       </div>
@@ -1867,7 +1751,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         micDisabledReason="Enregistrer d'abord l'accord du client dans l'etape Dossier."
         value={report.analyse_expert}
         onChange={(value) => setReport((prev) => ({ ...prev, analyse_expert: value }))}
-        onAppend={(text) => setReport((prev) => ({ ...prev, analyse_expert: `${prev.analyse_expert || ''}${text}` }))}
+        onAppend={(text) => setReport((prev) => ({ ...prev, analyse_expert: appendDictation(prev.analyse_expert, text) }))}
         placeholder="Synthese technique, causalites probables, limites..."
       />
       <TextAreaWithMic
@@ -1876,11 +1760,11 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         micDisabledReason="Enregistrer d'abord l'accord du client dans l'etape Dossier."
         value={report.recommandations}
         onChange={(value) => setReport((prev) => ({ ...prev, recommandations: value }))}
-        onAppend={(text) => setReport((prev) => ({ ...prev, recommandations: `${prev.recommandations || ''}${text}` }))}
+        onAppend={(text) => setReport((prev) => ({ ...prev, recommandations: appendDictation(prev.recommandations, text) }))}
         placeholder="Actions recommandees, priorites, controles complementaires..."
       />
 
-      <ReportDeliveryOptions report={report} setReport={setReport} />
+      <ReportDeliveryOptions report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
 
       <div className="export-actions">
         <button className="button ghost" type="button" onClick={onImportJson}>
@@ -2093,8 +1977,10 @@ function ReportWizard({
 
   const handleSave = async () => {
     const saved = await saveDraft(report);
-    setReport(saved);
+    // Do not replace input entered while storage was completing.
+    setReport(current => current === report ? saved : current);
     notify('Brouillon enregistre.');
+    return saved;
   };
 
   const handleOnlineSave = async () => {
@@ -2191,6 +2077,7 @@ function ReportWizard({
                 onExport={handleExport}
                 onExportJson={handleExportJson}
                 onImportJson={handleImportJson}
+                onSaveDraft={handleSave}
               />
             )}
           </div>

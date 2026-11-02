@@ -12,6 +12,14 @@ tags:
   - architecture
 ---
 
+## Champs vocaux et brouillon — candidat du 2 novembre
+
+`VoiceField.jsx` mutualise le bouton micro et le cycle SpeechRecognition déjà utilisé dans App. Les rubriques de décision et les notes de livrable réutilisent ce composant ; les ajouts sont appliqués à la dernière valeur React. `dictationText.js` conserve le texte existant et la limite applicable.
+
+Le bouton d'une attente délègue à `handleSave` et au stockage de brouillon existant (IndexedDB et secours localStorage). Il ne déclenche pas `saveOnlineReport`. Aucune API, table, migration ou extension du JSON métier n'est ajoutée. [Spécification](docs/aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
+
+
+
 ## RGA — 2 novembre 2026
 
 Le module cartographique est hébergé sous Rapport et réutilise son sas. Un raccourci CONNECT utilise les mêmes droits. Le champ optionnel `rga_cartographie` conserve une lecture indicative, distincte de `risques.rga`. Les modules de validation sont communs à la carte et au formulaire. [Contrat et flux](api/rga.md).

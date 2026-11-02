@@ -13,6 +13,12 @@ tags:
   - habitologie
 ---
 
+## Saisie de Validation et export — 2 novembre 2026
+
+Les champs textuels de Validation et export doivent proposer la dictée selon l'accord existant de Visite Globale. Chaque attente doit disposer d'un enregistrement explicite, avec distinction visible entre brouillon local et copie serveur et sans validation métier implicite. [Comportement et critères](docs/aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
+
+
+
 ## RGA — demande du 2 novembre 2026
 
 Complément demandé après essai : voir simultanément les couleurs RGA, les

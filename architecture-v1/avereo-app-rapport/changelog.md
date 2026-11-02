@@ -12,6 +12,12 @@ tags:
   - changelog
 ---
 
+## 2026-11-02 — Candidat local dictée et sauvegarde des attentes
+
+Micro dans les champs textuels de décision et de livrable ; mécanisme vocal partagé, accord conservé, ajout au texte courant. Bouton « Enregistrer cette attente » avec confirmation locale ou erreur explicite ; copie serveur distincte. Conservation des saisies pendant un enregistrement. [Comportement et qualification](docs/aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes). Non livré par cette entrée.
+
+
+
 ## 2026-11-02 — Nouvelle carte RGA intégrée
 
 Correction après retour visuel : superposition RGA/cadastre dans la carte du

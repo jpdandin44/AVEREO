@@ -14,6 +14,12 @@ tags:
   - fonctionnalites
 ---
 
+## Candidat local de saisie du 2 novembre
+
+Dictée des champs de Validation et export et enregistrement explicite des attentes développés sur la base RGA `59a38c9`. Contrôles locaux et copies de recette séparés de la présentation. Prochaine étape : revue du candidat, accord exact de préproduction puis sauvegarde/restauration et recette des deux maisons ; microphone réel à essayer dans le navigateur de séance. Aucune livraison de production engagée. [Périmètre](docs/aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
+
+
+
 ## Lot RGA du 2 novembre
 
 Le lot RGA est préparé dans une copie isolée. Les états de candidat, recette et livraison sont tenus dans le suivi canonique ; les priorités de démonstration restent distinctes. [Parcours, contrôles et prochaine qualification](api/rga.md).
