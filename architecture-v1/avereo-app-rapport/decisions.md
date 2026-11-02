@@ -5,7 +5,7 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-15
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -13,7 +13,23 @@ tags:
   - architecture
 ---
 
+## 2026-10-24 — Deux restitutions sur le même dossier
+
+Contexte : la livraison attendue est le rapport, avec deux niveaux de lecture
+et des illustrations. Décision : conserver le formulaire et le payload existants,
+ajouter `livrable` et générer un vrai DOCX dans le navigateur avec `docx`.
+Raisons : incorporer durablement les images sans service tiers, conserver les
+anciens dossiers et éviter des copies concurrentes de l'information.
+Conséquences : les textes client et sélections sont explicites, les pièces
+spécifiques sont stockées dans le dossier, la pagination est vérifiée sous Word.
+Le statut reste document de travail jusqu'à validation professionnelle externe.
+
 # Decisions structurantes de Rapport AVEREO
+
+## 2026-10-24 — Intégrer les cartes existantes dans Rapport protégé
+
+Le responsable a choisi l’intégration à Rapport préproduction. Le sous-domaine `rga.avereo.fr` ne résout pas lors du contrôle de cette session. Les exports existants sont conservés comme sources figées et empaquetés derrière le sas CONNECT, sans créer un autre hébergement. Les empreintes assurent la traçabilité ; aucune modification manuelle des géométries n’est prévue. Cette décision ne vaut pas qualification des données au niveau parcellaire ni livraison en production.
+
 
 ## 2026-09-15 - Distinguer adresse et point reel de visite
 

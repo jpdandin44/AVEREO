@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-10-16
+updated: 2026-10-24
 owner: jpdandin
 tags:
   - rapport
@@ -13,7 +13,35 @@ tags:
   - securite
 ---
 
+## Intégration des livrables du 24 octobre
+
+L'écart d'affichage des listes importées est corrigé : la valeur conservée est
+ajoutée aux options, sans reclassement. Les deux restitutions consomment le même
+payload. Les images externes et schémas inconnus sont rejetés à l'export ; seules
+les images bitmap data URI sont incorporées. Aucun appel IA ou document externe.
+Les photographies/risques/Ubakus du Cricq restent dans le JSON privé, pas dans le
+bundle commun. API, configuration privée et droits inchangés. Le catalogue
+pédagogique tiers conserve les crédits ; diffusion commerciale plus large à vérifier.
+Les réserves de recette hébergée restent dans le point de reprise.
+
 # Audit de la source Rapport
+
+## Exemple importé et modèles éditoriaux du 24 octobre
+
+Deux modèles locaux ont été préparés pour revue, sans changement du code ni
+intégration au générateur. La recette locale Cricq révèle un écart de présentation :
+les listes `piece`, `surface` et `gravite` ne représentent pas les valeurs libres
+importées. « Non qualifiée » est conservé en JSON et dans le Word natif, mais
+le sélecteur affiche « Mineure ». La correction doit préserver la donnée et
+ne pas déduire une sévérité. Voir les preuves et la suite dans le
+[point de reprise](reprise-demo-philippe.md#prochaine-action-exacte).
+
+## État du lot démo au 24 octobre
+
+L’interface de réouverture depuis la liste serveur est implémentée et livrée en préproduction, en réutilisant les opérations API existantes. Le RGA dispose d’un affichage explicite et les cartes d’origine sont empaquetées derrière CONNECT. Le lien de déconnexion flottant a été remplacé par une action d’en-tête, contrôlée sur écran large et étroit ; le brouillon le plus récent est repris entre les deux stockages. Ces écarts et leurs sources sont décrits dans le [point de reprise](reprise-demo-philippe.md) et l’[architecture](architecture.md). Le build authentifié et les 60 tests réussissent ; les empreintes livrées, la restauration et les refus anonymes sont vérifiés ; la recette authentifiée et la revue native Word restent à effectuer.
+
+Les états du 16 octobre ci-dessous sont historiques ; la production du 23 octobre est enregistrée dans le suivi opérationnel. Aucune preuve antérieure n’est réattribuée au nouveau code.
+
 
 ## Passage en production après fusion de la PR #84
 

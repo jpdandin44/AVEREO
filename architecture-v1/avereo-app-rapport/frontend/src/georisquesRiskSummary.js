@@ -37,6 +37,26 @@ function normalizeRiskGroup(group = {}) {
     }));
 }
 
+export function isRgaRisk(risk = {}) {
+  const text = `${risk.key || ''} ${risk.label || ''}`.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  return /\brga\b|argile|retrait.gonflement/.test(text);
+}
+
+export function rgaRisk(summary = {}) {
+  return summary.rga || (summary.naturels || []).find(isRgaRisk) || null;
+}
+
+function normalizeRga(group = {}) {
+  const entry = Object.entries(group).find(([key, risk]) => isRgaRisk({ key, label: risk?.libelle }));
+  if (!entry) return null;
+  const [key, risk] = entry;
+  return {
+    key, label: String(risk?.libelle || 'Retrait-gonflement des argiles (RGA)'),
+    addressStatus: String(risk?.libelleStatutAdresse || 'Information non disponible'),
+    communeStatus: String(risk?.libelleStatutCommune || 'Information non disponible'),
+  };
+}
+
 export function normalizeGeorisquesRiskSummary(payload = {}, fetchedAt = new Date().toISOString()) {
   const isGroup = (value) => value && typeof value === 'object' && !Array.isArray(value);
   if (fetchedAt && (!isGroup(payload?.risquesNaturels) || !isGroup(payload?.risquesTechnologiques))) {
@@ -49,6 +69,7 @@ export function normalizeGeorisquesRiskSummary(payload = {}, fetchedAt = new Dat
     addressLabel: typeof payload.adresse?.libelle === 'string' ? payload.adresse.libelle : '',
     communeLabel: typeof payload.commune?.libelle === 'string' ? payload.commune.libelle : '',
     naturels: normalizeRiskGroup(payload.risquesNaturels),
+    rga: normalizeRga(payload.risquesNaturels),
     technologiques: normalizeRiskGroup(payload.risquesTechnologiques),
   };
 }

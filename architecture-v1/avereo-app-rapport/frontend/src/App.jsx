@@ -1,3 +1,6 @@
+import { protocolOptions } from './reportHtml.js';
+import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
+import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { del as idbDel, get as idbGet, set as idbSet } from 'idb-keyval';
 import {
@@ -26,7 +29,11 @@ import {
   normalizeGeorisquesRiskSummary,
   riskStatusTone,
   safeGeorisquesReportUrl,
+  isRgaRisk,
+  rgaRisk,
 } from './georisquesRiskSummary.js';
+import OnlineReports from './OnlineReports.jsx';
+import { latestDraft } from './draftRecovery.js';
 import {
   HABITOLOGIE_PROTOCOL_STAGES,
   LISTENING_TOPICS,
@@ -42,12 +49,12 @@ import {
 import { LISTENING_SECTIONS, emptyClientListening } from './clientListening.js';
 import LocationMap from './LocationMap.jsx';
 import BuildingResources from './BuildingResources.jsx';
-import { buildingResourcesHtml, emptyBuildingResources, normalizeBuildingResources } from './buildingResources.js';
+import { emptyBuildingResources, normalizeBuildingResources } from './buildingResources.js';
 import { emptyLocation, locationConfirmed, validLocation } from './locationMap.js';
 import { moveVisitPoint } from './visitPoint.js';
 import { TerrainPanel, UrbanismPanel } from './SiteInsights.jsx';
-import { DIRECTIONS, emptyTerrain, normalizeStoredTerrain } from './terrainContext.js';
-import { safeDocumentUrl, normalizeStoredUrbanism, URBAN_LAYERS } from './urbanismContext.js';
+import { emptyTerrain, normalizeStoredTerrain } from './terrainContext.js';
+import { normalizeStoredUrbanism } from './urbanismContext.js';
 import {
   AlertTriangle,
   ArrowLeft,
@@ -106,34 +113,6 @@ const surfacesOptions = [
 ];
 
 const gravities = ['Mineure', 'Moyenne', 'Severe', 'Critique'];
-
-const protocolOptions = [
-  {
-    key: 'standard',
-    label: 'Releve visuel et photographique',
-    detail: 'Inspection non destructive des zones accessibles, avec photos horodatees.',
-  },
-  {
-    key: 'fissures',
-    label: 'Analyse fissures niveau 1',
-    detail: 'Caracterisation visuelle des fissures, orientation, ouverture apparente et contexte.',
-  },
-  {
-    key: 'humidite',
-    label: 'Recherche humidite / infiltrations',
-    detail: 'Reperage des traces, aureoles, moisissures, decollements et zones sensibles.',
-  },
-  {
-    key: 'toiture',
-    label: 'Controle toiture et exterieurs',
-    detail: 'Observation des couvertures, evacuations, points singuliers et raccords visibles.',
-  },
-  {
-    key: 'reception',
-    label: 'Reception et reserves',
-    detail: 'Liste structuree des reserves, localisation et niveau de priorite.',
-  },
-];
 
 const emptyObservation = () => ({
   id: createId(),
@@ -281,16 +260,19 @@ async function saveDraft(report) {
 }
 
 async function loadDraft() {
-  const localDraft = localStorage.getItem(DRAFT_KEY) || localStorage.getItem(LEGACY_DRAFT_KEY);
-  if (localDraft) return normalizeStoredDraft(JSON.parse(localDraft));
-
-  try {
-    const draft = (await withTimeout(idbGet(DRAFT_KEY), 800)) || (await withTimeout(idbGet(LEGACY_DRAFT_KEY), 800));
-    if (draft) return normalizeStoredDraft(draft);
-  } catch {
-    return null;
+  const candidates = [];
+  for (const key of [DRAFT_KEY, LEGACY_DRAFT_KEY]) {
+    try { candidates.push(JSON.parse(localStorage.getItem(key))); }
+    catch { /* A malformed or blocked fallback must not hide the IndexedDB copy. */ }
   }
-  return null;
+  try {
+    candidates.push(await withTimeout(idbGet(DRAFT_KEY), 800));
+    candidates.push(await withTimeout(idbGet(LEGACY_DRAFT_KEY), 800));
+  } catch {
+    // The fallback remains usable if IndexedDB is unavailable.
+  }
+  const draft = latestDraft(candidates);
+  return draft ? normalizeStoredDraft(draft) : null;
 }
 
 async function removeDraft() {
@@ -324,28 +306,6 @@ function saveAs(blob, fileName) {
   URL.revokeObjectURL(url);
 }
 
-function escapeHtml(value = '') {
-  return String(value).replace(/[&<>"']/g, (char) => {
-    const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
-    return map[char];
-  });
-}
-
-function textToHtml(value = '') {
-  const safe = escapeHtml(value.trim());
-  return safe ? safe.replace(/\n/g, '<br />') : '<span class="muted">Non renseigne.</span>';
-}
-
-function safeEmbeddedImageSource(value = '') {
-  const source = String(value).trim();
-  return /^data:image\/(?:png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=\s]+$/i.test(source) ? source : '';
-}
-
-function formatDate(value) {
-  if (!value) return '';
-  return new Date(value).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
-}
-
 function formatDateTime(value) {
   if (!value) return '';
   return new Date(value).toLocaleString('fr-FR');
@@ -358,271 +318,6 @@ function toFileName(value) {
     .replace(/[^a-z0-9]+/gi, '-')
     .replace(/^-+|-+$/g, '')
     .toLowerCase();
-}
-
-function buildProtocolHtml(report) {
-  if (isHabitologieReport(report)) {
-    return HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => {
-      const selectedControls = stage.controls.filter(
-        (control) => isHabitologieControlSelected(report, stage.key, control.key),
-      );
-      return `
-        <section class="protocol-phase-export">
-          <h3>Phase ${index + 1} - ${escapeHtml(stage.label)}</h3>
-          <p>${escapeHtml(stage.summary)}</p>
-          ${
-            !isHabitologieStageEnabled(report, stage.key)
-              ? '<p><strong>Non retenue pour cette visite.</strong> Les éventuelles observations antérieures sont conservées ci-dessous.</p>'
-              : selectedControls.length > 0
-              ? `<ul>${selectedControls.map((control) => `<li>${escapeHtml(control.label)}</li>`).join('')}</ul>`
-              : '<p><span class="muted">Aucun point retenu pour cette phase.</span></p>'
-          }
-        </section>
-      `;
-    }).join('');
-  }
-
-  const selected = protocolOptions.filter((protocol) => report.protocoles?.[protocol.key]);
-  if (selected.length === 0) {
-    return '<p>Aucun protocole specifique n a ete selectionne.</p>';
-  }
-  return selected
-    .map(
-      (protocol) => `
-        <h3>${escapeHtml(protocol.label)}</h3>
-        <p>${escapeHtml(protocol.detail)}</p>
-      `,
-    )
-    .join('');
-}
-
-function buildRiskSummaryHtml(summary) {
-  if (!summary?.fetchedAt) return '';
-  const groups = [
-    ['Risques naturels identifies', summary.naturels || []],
-    ['Risques technologiques identifies', summary.technologiques || []],
-  ];
-  return `
-    <h3>Synthese Georisques</h3>
-    <p>${escapeHtml(summary.addressLabel || summary.communeLabel || '')}</p>
-    ${groups
-      .map(
-        ([label, risks]) => `
-          <h4>${risks.length} ${escapeHtml(label)}</h4>
-          ${
-            risks.length > 0
-              ? `<table>
-                  <tr><td>Risque</td><td>A l'adresse</td><td>Sur la commune</td></tr>
-                  ${risks
-                    .map(
-                      (risk) => `<tr>
-                        <td>${escapeHtml(risk.label)}</td>
-                        <td>${escapeHtml(risk.addressStatus)}</td>
-                        <td>${escapeHtml(risk.communeStatus)}</td>
-                      </tr>`,
-                    )
-                    .join('')}
-                </table>`
-              : '<p><span class="muted">Aucun risque present dans cette categorie selon la reponse recue.</span></p>'
-          }
-        `,
-      )
-      .join('')}
-    <p class="muted">Source : ${escapeHtml(summary.source)} - consultation du ${escapeHtml(
-      formatDateTime(summary.fetchedAt),
-    )}. Synthese informative ; consulter le rapport officiel pour le detail.</p>
-  `;
-}
-
-function buildWordDocumentHtml(report) {
-  const habitologie = isHabitologieReport(report);
-  const sectionNumbers = habitologie
-    ? { ecoute: 2, protocoles: 3, observations: 4, analyse: 5, signature: 6 }
-    : { protocoles: 2, observations: 3, analyse: 4, signature: 5 };
-  const meteoLine = [
-    report.meteo?.ciel && `Ciel : ${report.meteo.ciel}`,
-    report.meteo?.temperatureC && `Temperature : ${report.meteo.temperatureC} C`,
-    report.meteo?.humiditePct && `Humidite : ${report.meteo.humiditePct} %`,
-    report.meteo?.pluie && `Pluie : ${report.meteo.pluie}`,
-    report.meteo?.vent && `Vent : ${report.meteo.vent}`,
-  ]
-    .filter(Boolean)
-    .join(' - ');
-
-  const cadastreLine = report.cadastre?.section
-    ? `Commune ${report.cadastre.nom_commune || report.cadastre.commune || ''} - Section ${
-        report.cadastre.section
-      } - Numero ${report.cadastre.numero || ''}${
-        report.cadastre.contenance ? ` - ${report.cadastre.contenance} m2` : ''
-      }`
-    : '';
-
-  const observationsHtml = report.observations
-    .map((obs, index) => {
-      const photos = obs.photos
-        .map((photo) => {
-          const source = safeEmbeddedImageSource(photo.src);
-          if (!source) return '';
-          return `
-          <div class="photo-block">
-            <img src="${source}" alt="${escapeHtml(photo.name || `Photo ${index + 1}`)}" />
-            <p>${escapeHtml(photo.name || 'Photo')} - ${formatDateTime(photo.horodatageISO)}</p>
-          </div>
-        `;
-        })
-        .join('');
-
-      return `
-        <section class="observation">
-          <h3>${index + 1}. ${escapeHtml(obs.titre || `${obs.piece || 'Zone'} - ${obs.surface || 'Surface'}`)}</h3>
-          <table>
-            ${
-              habitologie
-                ? `<tr><td>Phase d'analyse</td><td>${escapeHtml(
-                    findHabitologieStage(obs.phase_habitologie)?.label || 'A classer',
-                  )}${findHabitologieStage(obs.phase_habitologie) && !isHabitologieStageEnabled(report, obs.phase_habitologie) ? ' — phase non retenue, observation conservée' : ''}</td></tr>
-                   <tr><td>Point du protocole</td><td>${escapeHtml(
-                     findHabitologieControl(obs.phase_habitologie, obs.controle_habitologie)?.label ||
-                       'Constat transversal ou non classe',
-                   )}</td></tr>`
-                : ''
-            }
-            <tr><td>Piece / zone</td><td>${escapeHtml(obs.piece)}</td></tr>
-            <tr><td>Element observe</td><td>${escapeHtml(obs.surface)}</td></tr>
-            <tr><td>Gravite</td><td>${escapeHtml(obs.gravite)}</td></tr>
-          </table>
-          <h4>Constat</h4>
-          <p>${textToHtml(obs.observations)}</p>
-          <h4>Suites proposees</h4>
-          <p>${textToHtml(obs.actions)}</p>
-          ${photos}
-        </section>
-      `;
-    })
-    .join('');
-
-  const mapLink =
-    report.cadastre?.lon && report.cadastre?.lat
-      ? `https://www.geoportail-urbanisme.gouv.fr/map/#tile=1&lon=${report.cadastre.lon}&lat=${report.cadastre.lat}&zoom=19`
-      : '';
-
-  const signatureSource = safeEmbeddedImageSource(report.signature);
-  const signatureHtml = signatureSource
-    ? `<img class="signature" src="${signatureSource}" alt="Signature" />`
-    : `<p>${escapeHtml(report.signature)}</p>`;
-
-  const ecouteHtml = habitologie
-    ? `
-  <h2>${sectionNumbers.ecoute}. Ecoute client</h2>
-  <table>
-    ${LISTENING_SECTIONS.flatMap((section) => section.fields).map((field) => `<tr><td>${escapeHtml(field.label)}</td><td>${textToHtml(report.ecoute?.[field.key] || 'Non renseigné')}</td></tr>`).join('')}
-    <tr><td>Reformulation confirmée avec le client</td><td>${report.ecoute?.besoin_confirme ? 'Oui' : 'À confirmer'}</td></tr>
-    <tr><td>Sujets identifiés à l'écoute</td><td>${escapeHtml(LISTENING_TOPICS.filter((topic) => report.ecoute?.sujets_identifies?.includes(topic.key)).map((topic) => topic.label).join(', ') || 'Aucun sujet coché')}</td></tr>
-    <tr><td>Consentement photos</td><td>${report.ecoute?.consentement_photos ? 'Accorde' : 'Non accorde'}</td></tr>
-    <tr><td>Consentement dictee vocale</td><td>${report.ecoute?.consentement_dictee ? 'Accorde' : 'Non accorde'}</td></tr>
-  </table>
-  `
-    : '';
-
-  return `<!doctype html>
-<html lang="fr" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word">
-<head>
-  <meta charset="utf-8" />
-  <title>${escapeHtml(report.titre)}</title>
-  <style>
-    @page WordSection1 { size: A4; margin: 2.4cm 2cm; }
-    body { font-family: Calibri, Arial, sans-serif; color: #1f2937; font-size: 11pt; line-height: 1.45; }
-    h1 { font-size: 22pt; color: #111827; margin: 0 0 8pt; }
-    h2 { font-size: 16pt; color: #1d4ed8; border-bottom: 1pt solid #d1d5db; padding-bottom: 5pt; margin-top: 24pt; }
-    h3 { font-size: 13pt; color: #111827; margin-bottom: 5pt; }
-    h4 { font-size: 11pt; margin-bottom: 3pt; }
-    table { border-collapse: collapse; width: 100%; margin: 8pt 0 12pt; }
-    td { border: 1pt solid #d1d5db; padding: 6pt; vertical-align: top; }
-    td:first-child { width: 30%; font-weight: 700; background: #f3f4f6; }
-    .cover { margin-top: 90pt; }
-    .muted { color: #6b7280; }
-    .observation { page-break-inside: avoid; margin-bottom: 18pt; }
-    .photo-block { page-break-inside: avoid; margin: 10pt 0; }
-    .photo-block img { max-width: 520pt; width: 100%; border: 1pt solid #d1d5db; }
-    .photo-block p { color: #6b7280; font-size: 9pt; margin-top: 3pt; }
-    .signature { width: 170pt; border-bottom: 1pt solid #9ca3af; padding-bottom: 6pt; }
-  </style>
-</head>
-<body>
-  <div class="cover">
-    <h1>${escapeHtml(report.titre || "Rapport d'expertise")}</h1>
-    <p><strong>Reference dossier :</strong> ${escapeHtml(report.reference_dossier || 'Non renseignee')}</p>
-    <p><strong>Type de dossier :</strong> ${escapeHtml(report.categorie)}</p>
-    <p><strong>${habitologie ? "Type d'habitation" : 'Sous-categorie'} :</strong> ${escapeHtml(report.sous_categorie)}</p>
-    <p><strong>Date de visite :</strong> ${formatDate(report.date_visite)}</p>
-    <p><strong>Intervenant :</strong> ${escapeHtml(report.intervenant)}</p>
-  </div>
-
-  <br style="page-break-before: always;" />
-  <h2>1. Informations generales</h2>
-  <table>
-    <tr><td>Proprietaire</td><td>${escapeHtml(report.proprietaire)}</td></tr>
-    <tr><td>Email</td><td>${escapeHtml(report.email)}</td></tr>
-    <tr><td>Adresse</td><td>${escapeHtml(report.adresse_logement)}</td></tr>
-    <tr><td>Environnement analyse</td><td>${escapeHtml(report.environnement)}</td></tr>
-    <tr><td>Conditions meteo</td><td>${escapeHtml(meteoLine)}</td></tr>
-    <tr><td>References cadastrales</td><td>${escapeHtml(cadastreLine)}</td></tr>
-    <tr><td>Lieu confirmé avec le client</td><td>${locationConfirmed(report) ? `Oui — ${escapeHtml(formatDate(report.localisation.confirmation.date))}` : 'À confirmer'}</td></tr>
-    ${validLocation(report.cadastre.lon, report.cadastre.lat) ? `<tr><td>Point de visite (latitude, longitude)</td><td>${Number(report.cadastre.lat).toFixed(7)}, ${Number(report.cadastre.lon).toFixed(7)}${report.localisation?.point_manuel ? ' — Ajuste manuellement ; notes du contexte et ressources a reverifier.' : ''}</td></tr>` : ''}
-    <tr><td>Zonage urbanisme</td><td>${escapeHtml(report.urbanisme?.zone || '')} ${escapeHtml(
-      report.urbanisme?.description || '',
-    )}${mapLink ? `<br /><a href="${mapLink}">Voir la parcelle</a>` : ''}${
-      safeDocumentUrl(report.urbanisme?.pdfUrl) ? `<br /><a href="${escapeHtml(safeDocumentUrl(report.urbanisme.pdfUrl))}">Document PLU</a>` : ''
-    }</td></tr>
-  </table>
-
-  ${buildRiskSummaryHtml(report.risques)}
-
-  ${report.urbanisme.context ? `
-    <h3>Urbanisme : elements retournes au point d'adresse</h3>
-    <p>Source : ${escapeHtml(report.urbanisme.context.source)} — ${escapeHtml(formatDateTime(report.urbanisme.context.fetchedAt))}.</p>
-    ${report.urbanisme.context.results.map((group) => `
-      <h4>${escapeHtml(URBAN_LAYERS.find(([key]) => key === group.layer)?.[1] || group.layer)}</h4>
-      ${group.error ? '<p>Source indisponible, aucune conclusion possible.</p>' : group.items.length ? `
-        <ul>${group.items.map((item) => `<li><strong>${escapeHtml(item.title)}</strong> ${escapeHtml(item.detail)}
-          — ${escapeHtml(item.document)} ${escapeHtml(item.sourceDate)}
-          ${safeDocumentUrl(item.url) ? `<a href="${escapeHtml(safeDocumentUrl(item.url))}">Texte source</a>` : ''}</li>`).join('')}</ul>`
-        : '<p>Aucun element retourne au point interroge ; cela ne prouve pas l absence de contrainte.</p>'}
-      ${group.partial ? '<p>Resultat partiel : consulter le GPU.</p>' : ''}`).join('')}
-    <p>Reperage non exhaustif au point d'adresse, pas sur toute la parcelle. Les libelles ne remplacent pas la lecture du reglement ni la confirmation par le service urbanisme. Les servitudes lineaires et ponctuelles ne sont pas couvertes.</p>` : ''}
-  ${report.urbanisme.notes ? `<h4>Regles / interdictions : notes de verification du professionnel</h4><p>${textToHtml(report.urbanisme.notes)}</p>` : ''}
-  ${report.terrain?.orientation || report.terrain?.facade ? `<h3>Orientation renseignee par le professionnel</h3><p>Facade : ${escapeHtml(report.terrain.facade || 'Non precisee')} — direction : ${escapeHtml(DIRECTIONS.find(([key]) => key === report.terrain.orientation)?.[1] || 'A relever')}. Ni orientation mesuree automatiquement, ni direction du vent.</p>` : ''}
-  ${report.terrain?.analysis ? `<h3>Reperage altimetrique indicatif</h3>
-    <p>${escapeHtml(report.terrain.analysis.source)} — ${escapeHtml(formatDateTime(report.terrain.analysis.fetchedAt))} — emprise : ${report.terrain.analysis.width} m x ${report.terrain.analysis.width} m.</p>
-    <p>Minimum ${report.terrain.analysis.min.toFixed(2)} m ; maximum ${report.terrain.analysis.max.toFixed(2)} m ; ecart ${report.terrain.analysis.range.toFixed(2)} m.</p>
-    <table><tr><th>Point</th><th>Altitude (m)</th></tr>${report.terrain.analysis.samples.map((p) => `<tr><td>${escapeHtml(p.label)}</td><td>${p.z.toFixed(2)}</td></tr>`).join('')}</table>
-    <p>Neuf points autour de l'adresse, pouvant depasser la propriete. Precision variable. Ce n'est ni une etude hydrologique ni un releve de geometre ; aucun ecoulement reel ou absence de risque n'en est deduit.</p>` : ''}
-  ${report.terrain?.notes ? `<h4>Verifications terrain / eaux pluviales</h4><p>${textToHtml(report.terrain.notes)}</p>` : ''}
-
-  ${buildingResourcesHtml(report, escapeHtml)}
-
-  ${ecouteHtml}
-
-  <h2>${sectionNumbers.protocoles}. Protocole de recherche</h2>
-  ${buildProtocolHtml(report)}
-
-  <h2>${sectionNumbers.observations}. Observations</h2>
-  ${observationsHtml || '<p>Aucune observation n a ete enregistree.</p>'}
-
-  <h2>${sectionNumbers.analyse}. Analyse et recommandations</h2>
-  <h3>Analyse de l expert</h3>
-  <p>${textToHtml(report.analyse_expert)}</p>
-  <h3>Recommandations</h3>
-  <p>${textToHtml(report.recommandations)}</p>
-  <h3>Reserves</h3>
-  <p>${textToHtml(report.reserves)}</p>
-
-  <h2>${sectionNumbers.signature}. Signature</h2>
-  <p>Fait le ${formatDate(new Date().toISOString())}</p>
-  <p><strong>Signataire :</strong> ${escapeHtml(report.nom_signataire)}</p>
-  ${signatureHtml}
-</body>
-</html>`;
 }
 
 function useSpeechRecognition(lang = 'fr-FR', onFinalText) {
@@ -912,7 +607,7 @@ function SignaturePad({ value, onChange }) {
   );
 }
 
-function Header({ onHome }) {
+function Header({ onHome, onLogout }) {
   return (
     <header className="app-header">
       <div className="brand-block">
@@ -922,12 +617,15 @@ function Header({ onHome }) {
           <p>Production de rapports terrain</p>
         </div>
       </div>
+      <nav className="header-actions" aria-label="Navigation du compte">
       {onHome && (
         <button className="button ghost" type="button" onClick={onHome}>
           <Home size={18} />
           Accueil
         </button>
       )}
+      {ONLINE_SYNC_ENABLED && <a className="button ghost" href="/connect/logout.php" onClick={onLogout}>Se déconnecter</a>}
+      </nav>
     </header>
   );
 }
@@ -1061,7 +759,7 @@ function CompletionPanel({ report, validation }) {
   );
 }
 
-function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
+function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onBackup }) {
   const hasDraft = Boolean(draft);
   return (
     <div className="screen">
@@ -1101,6 +799,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled }) {
           )}
         </section>
 
+        {onlineSyncEnabled && <OnlineReports token={accessToken} draft={draft} onOpen={onOpenOnline} onBackup={onBackup} />}
         <section className="panel checklist-panel">
           <h3>Controle rapide</h3>
           <ul>
@@ -1341,10 +1040,11 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setRe
     return () => { active = false; controller.abort(); clearTimeout(timeout); };
   }, [lon, lat, hasCoordinates, busy, refresh, setReport]);
   const groups = [
-    { key: 'naturels', label: 'Risques naturels identifies', items: summary.naturels || [] },
+    { key: 'naturels', label: 'Autres risques naturels identifies', items: (summary.naturels || []).filter((risk) => !isRgaRisk(risk)) },
     { key: 'technologiques', label: 'Risques technologiques identifies', items: summary.technologiques || [] },
   ];
   const reportUrl = safeGeorisquesReportUrl(summary.reportUrl) || fallbackReportUrl;
+  const rga = rgaRisk(summary);
 
   return (
     <section className="risk-summary" aria-labelledby="risk-summary-title">
@@ -1370,6 +1070,15 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setRe
       {status === 'error' && <p className="status-line warning" role="alert">La synthèse n’a pas pu être récupérée. Réessayez ou ouvrez le rapport officiel.
         {summary?.fetchedAt && ' La dernière consultation est conservée ci-dessous.'}</p>}
       {!summary?.fetchedAt && status !== 'loading' && !busy && <p>Aucune synthèse disponible dans ce dossier. Cela ne signifie pas absence de risque.</p>}
+
+      <div className="risk-group">
+        <h4>Retrait-gonflement des argiles (RGA)</h4>
+        <p>À l’adresse : <strong>{rga?.addressStatus || 'Information non disponible'}</strong></p>
+        <p>Sur la commune : {rga?.communeStatus || 'Information non disponible'}</p>
+        <p>Une information manquante ne signifie pas absence de risque. Les statuts ci-dessus proviennent de la synthèse Géorisques, à la date de consultation indiquée.</p>
+        <a className="button secondary" href="/rga/" target="_blank" rel="noopener noreferrer">Ouvrir la carte RGA AVEREO 2026</a>
+        <p className="muted">Carte territoriale de préqualification, distincte du statut à l’adresse. Elle ne remplace ni l’étude de sol ni un diagnostic de la parcelle.</p>
+      </div>
 
       {summary?.fetchedAt && groups.map((group) => (
         <div className="risk-group" key={group.key}>
@@ -1924,7 +1633,7 @@ function ObservationStep({ report, setReport }) {
           <Field label="Piece / zone">
             <select value={obs.piece} onChange={(event) => updateObservation(obs.id, { piece: event.target.value })}>
               <option value="">Selectionner</option>
-              {piecesOptions.map((option) => (
+              {optionsWithCurrent(piecesOptions, obs.piece).map((option) => (
                 <option key={option}>{option}</option>
               ))}
             </select>
@@ -1932,14 +1641,14 @@ function ObservationStep({ report, setReport }) {
           <Field label="Element">
             <select value={obs.surface} onChange={(event) => updateObservation(obs.id, { surface: event.target.value })}>
               <option value="">Selectionner</option>
-              {surfacesOptions.map((option) => (
+              {optionsWithCurrent(surfacesOptions, obs.surface).map((option) => (
                 <option key={option}>{option}</option>
               ))}
             </select>
           </Field>
           <Field label="Gravite">
             <select value={obs.gravite} onChange={(event) => updateObservation(obs.id, { gravite: event.target.value })}>
-              {gravities.map((option) => (
+              {optionsWithCurrent(gravities, obs.gravite).map((option) => (
                 <option key={option}>{option}</option>
               ))}
             </select>
@@ -2155,6 +1864,8 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         placeholder="Actions recommandees, priorites, controles complementaires..."
       />
 
+      <ReportDeliveryOptions report={report} setReport={setReport} />
+
       <div className="export-actions">
         <button className="button ghost" type="button" onClick={onImportJson}>
           <FileJson size={18} />
@@ -2170,7 +1881,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         </button>
         <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0}>
           <Download size={18} />
-          Generer Word
+          Générer Word (.docx)
         </button>
       </div>
     </section>
@@ -2212,7 +1923,7 @@ function validateReport(report) {
 }
 
 function ReportPreview({ report, onClose }) {
-  const html = useMemo(() => buildWordDocumentHtml(report), [report]);
+  const html = useMemo(() => buildReportHtml(report), [report]);
   return (
     <div className="preview-backdrop">
       <div className="preview-shell">
@@ -2391,10 +2102,15 @@ function ReportWizard({
     }
   };
 
-  const handleExport = () => {
-    const html = buildWordDocumentHtml(report);
-    const blob = new Blob(['\ufeff', html], { type: 'application/msword;charset=utf-8' });
-    saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}.doc`);
+  const handleExport = async () => {
+    try {
+      const { createWordBlob } = await import('./reportDocx.js');
+      const blob = await createWordBlob(buildReportHtml(report), report);
+      saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}-${report.livrable?.audience === 'client' ? 'client' : 'expert'}.docx`);
+      notify('Document Word généré.');
+    } catch (error) {
+      notify(`Export Word impossible : ${error.message}`);
+    }
   };
 
   const handleExportJson = () => {
@@ -2431,7 +2147,14 @@ function ReportWizard({
 
   return (
     <div className="screen">
-      <Header onHome={onHome} />
+      <Header onHome={async () => {
+        try { await saveDraft(report); await onHome(); }
+        catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de quitter.'); }
+      }} onLogout={async (event) => {
+        event.preventDefault();
+        try { await saveDraft(report); window.location.assign('/connect/logout.php'); }
+        catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de vous déconnecter.'); }
+      }} />
       <main className="wizard-layout">
         <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} />
         <div className="wizard-grid">
@@ -2689,6 +2412,16 @@ export default function App() {
           onNew={startNew}
           onResume={resume}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
+          accessToken={accessToken}
+          onOpenOnline={async (loaded) => {
+            const normalized = deepMergeReport(initialReport, loaded);
+            await saveDraft(normalized);
+            setDraft(normalized);
+            setInitialWizardData(normalized);
+            setAppState('wizard');
+          }}
+          onBackup={() => saveAs(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json;charset=utf-8' }),
+            `${toFileName(draft.reference_dossier || draft.titre)}-brouillon.json`)}
         />
       )}
       {appState === 'wizard' && (
