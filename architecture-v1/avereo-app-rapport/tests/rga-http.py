@@ -1,13 +1,14 @@
 """Exercise the real PHP entry points with isolated, short-lived test credentials."""
 from pathlib import Path
-import base64, hashlib, hmac, http.client, json, os, secrets, shutil, socket, subprocess, time
+import base64, hashlib, hmac, http.client, json, os, secrets, shutil, socket, subprocess, tempfile, time
 
 APP = Path(__file__).resolve().parents[1]
 PHP = shutil.which('php')
 assert PHP and (APP / 'frontend/dist/rga/connect-gate.php').is_file(), 'Build Rapport first'
-scratch = APP / 'frontend/.local' / ('rga-http-' + secrets.token_hex(6))
-scratch.mkdir(parents=True)
-assert APP.resolve() in scratch.resolve().parents
+temp_root = Path(tempfile.gettempdir()).resolve()
+scratch = temp_root / ('avereo-rga-http-' + secrets.token_hex(6))
+scratch.mkdir(mode=0o700)
+assert scratch.resolve().parent == temp_root
 secrets_by_app = {name: secrets.token_hex(32) for name in ['rapport', 'rga']}
 with socket.socket() as port_probe:
     port_probe.bind(('127.0.0.1', 0))
