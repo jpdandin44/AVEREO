@@ -42,7 +42,7 @@ changes = ['frontend/src/LocationMap.jsx', 'frontend/src/RgaMap.jsx', 'frontend/
 for name in changes:
     destination = build / name
     if destination.exists():
-        assert destination.read_bytes() == at('c3b6c08', prefix + name), 'Overlapping later Rapport change: ' + name
+        assert destination.read_bytes().replace(b'\r\n', b'\n') == at('c3b6c08', prefix + name), 'Overlapping later Rapport change: ' + name
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_bytes((APP / name).read_bytes())
 
