@@ -42,4 +42,14 @@ $pdo->exec("UPDATE user_application_access SET status='revoked' WHERE applicatio
 rejectRga(fn () => $service->rollback(1, $receipt));
 expectRga($service->snapshot('rapport') === $sourceAfter);
 expectRga($service->snapshot('rga')['application'] !== null);
+
+$pdo->exec("UPDATE users SET onboarding_status='required' WHERE id=1");
+rejectRga(fn () => $service->register(1, $url, $service->plan()['sourceFingerprint']));
+$pdo->exec("UPDATE users SET onboarding_status='completed' WHERE id=1");
+$pdo->exec("UPDATE user_application_access SET status='active' WHERE application_id=" . $receipt['applicationId'] . ' AND user_id=2');
+$service->rollback(1, $receipt);
+$pdo->exec('ALTER TABLE users DROP COLUMN onboarding_status');
+$legacy = $service->register(1, $url, $service->plan()['sourceFingerprint']);
+expectRga($legacy['status'] === 'registered');
+expectRga($service->snapshot('rapport') === $sourceAfter);
 echo "$checks contrôles RGA : copie exacte, refus, indépendance, idempotence et retour arrière.\n";

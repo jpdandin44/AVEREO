@@ -37,9 +37,13 @@ final class RgaRegistration
 
     private function assertOperator(int $actor, array $source): void
     {
-        $q = $this->pdo->prepare("SELECT 1 FROM users WHERE id = ? AND status = 'active' AND onboarding_status = 'completed'");
+        // Older hosted CONNECT schemas predate onboarding_status; keep their active-account rule.
+        $q = $this->pdo->prepare("SELECT * FROM users WHERE id = ? AND status = 'active'");
         $q->execute([$actor]);
-        if (!$q->fetchColumn()) throw new \RuntimeException('Opérateur actif requis.');
+        $user = $q->fetch(\PDO::FETCH_ASSOC);
+        if (!$user || (array_key_exists('onboarding_status', $user) && $user['onboarding_status'] !== 'completed')) {
+            throw new \RuntimeException('Opérateur actif requis.');
+        }
         $organizations = array_unique(array_merge(array_column($source['entitlements'], 'organization_id'), array_column($source['access'], 'organization_id')));
         if (!$organizations) throw new \RuntimeException('Aucune habilitation Rapport à reprendre.');
         $q = $this->pdo->prepare("SELECT 1 FROM memberships WHERE user_id = ? AND organization_id = ? AND status = 'active' AND role = 'owner'");

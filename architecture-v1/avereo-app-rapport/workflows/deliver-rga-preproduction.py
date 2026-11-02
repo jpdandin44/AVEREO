@@ -40,6 +40,23 @@ def write_json(name, value):
 def files_for(key):
     return {n.split('/', 1)[1]: h for n, h in MANIFEST['files'].items() if n.startswith(key + '/')}
 
+
+def validate_file_scope(manifest):
+    names = set(manifest['files'])
+    if manifest.get('kind') == 'rga-independent-access':
+        connect = {'connect/' + p for p in ['src/Application.php', 'src/Config.php', 'public/index.php',
+                   'src/Repository/RgaRegistration.php', 'bin/register-rga.php']}
+        rapport = {'rapport/' + p for p in ['index.html', 'rga/guard.php', 'rga/gate.php', 'rga/connect-gate.php',
+                   'rga/entry.php', 'rga/resume.php', 'rga/access.php']}
+        assert {n for n in names if n.startswith('connect/')} == connect
+        assert rapport <= names
+        assert all(n in connect | rapport or (n.startswith('rapport/assets/') and n.endswith(('.js', '.css'))
+                   and '..' not in n and n.count('/') == 2) for n in names)
+    else:
+        assert manifest.get('kind') is None
+        assert all(n.startswith(('rapport/', 'connect/')) and 'gate.php' not in n for n in names)
+        assert {n for n in names if n.startswith('connect/')} == {'connect/src/Application.php'}
+
 def install(roots):
     # Rapport assets and its entry first; CONNECT shortcut last.
     for key in ['rapport', 'connect']:
@@ -103,8 +120,7 @@ def main():
     assert MANIFEST['targets'] == {k: str(v) for k, v in ROOTS.items()}
     assert len(MANIFEST['sourceSha']) == 40
     assert sha(BASE / 'candidate.zip') == MANIFEST['artifactSha256']
-    assert all(n.startswith(('rapport/', 'connect/')) and 'gate.php' not in n for n in MANIFEST['files'])
-    assert list(files_for('connect')) == ['src/Application.php']
+    validate_file_scope(MANIFEST)
     if not SOURCE.exists():
         with zipfile.ZipFile(BASE / 'candidate.zip') as archive:
             assert set(archive.namelist()) == set(MANIFEST['files'])
@@ -150,7 +166,15 @@ def main():
     for key in ROOTS:
         assert tree(BACKUP / key) == state['before'][key]
     for i, (name, expected) in enumerate(state['configs'].items()):
-        assert sha(Path(name)) == expected and sha(BACKUP / ('config-' + str(i) + '.php')) == expected
+        active_expected = expected
+        if action == 'verify' and MANIFEST.get('kind') == 'rga-independent-access' and (BASE / 'access-verification.json').exists():
+            access = json.loads((BASE / 'access-verification.json').read_text())
+            recovery = json.loads((BASE / 'access-recovery.json').read_text())
+            assert access['sourceSha'] == MANIFEST['sourceSha'] and access['artifactSha256'] == MANIFEST['artifactSha256']
+            if name == '/home/daje3540/private/connect-preprod/config.php':
+                assert recovery['connectBefore'] == expected
+                active_expected = recovery['connectAfter']
+        assert sha(Path(name)) == active_expected and sha(BACKUP / ('config-' + str(i) + '.php')) == expected
     if action == 'deploy':
         assert all(tree(v) == state['before'][k] for k, v in ROOTS.items()), 'Hosted files changed since backup'
         qualify()

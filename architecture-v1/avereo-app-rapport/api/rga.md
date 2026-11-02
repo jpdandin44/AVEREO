@@ -22,6 +22,10 @@ Depuis le backend CONNECT, `php bin/register-rga.php --config=CHEMIN_PRIVE`
 produit un plan sans écriture. Conserver ce plan en zone privée. L’application
 du plan exige `--confirm --actor-id=ID_PROPRIETAIRE --launch-url=https://rapport-preprod.avereo.fr/rga/ --expected-fingerprint=EMPREINTE`.
 L’opérateur doit être propriétaire actif de toutes les organisations concernées.
+Sur le schéma courant, son activation doit être terminée. La préproduction
+CONNECT observée le 2 novembre utilise encore le schéma antérieur sans
+`onboarding_status` : la déclaration y conserve le contrôle de compte actif
+et de rôle propriétaire, sans migration globale de l’authentification.
 La transaction refuse un changement des droits source depuis le plan. Si RGA
 existe déjà, elle ne réécrit aucun droit. Le reçu privé contient l’état créé et
 son empreinte. `RgaRegistration::rollback()` accepte ce reçu seulement si les
@@ -195,8 +199,9 @@ sauvegarde et réouverture d'un dossier de test en préproduction.
 Le déploiement doit conserver les fichiers privés, les bases et les fichiers
 hébergés absents du lot. En particulier `connect/gate.php` hébergé diffère de
 la copie Git consultée : il n'appartient pas aux fichiers à remplacer.
-Le précédent outil de livraison du raccourci est historique : il ne déclare
-pas l’application distincte. Le nouveau candidat nécessite les paramètres
+Le précédent paquet du raccourci est historique : il ne déclare pas
+l’application distincte. La [procédure ciblée](../workflows/README.md) compose
+le correctif avec les versions effectivement hébergées et prépare sa restauration. Le nouveau candidat nécessite les paramètres
 CONNECT RGA, les pages du sas RGA, la déclaration ciblée en base CONNECT et
 les composants Rapport concernés. Il ne modifie pas la base des rapports.
 La version Rapport hébergée doit être identifiée avant toute construction de
