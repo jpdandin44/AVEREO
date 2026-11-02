@@ -98,6 +98,7 @@ try {
 
     $applications = [
         ['rapport', 'Rapport AVEREO Pro', 'Rapports et analyses AVEREO', 10],
+        ['rga', 'RGA', 'Carte des argiles, accès indépendant', 11],
         ['coupe', 'Coupe AVEREO Reno Pro', 'Application de coupe et renovation AVEREO', 20],
         ['projet', 'Projet AVEREO', 'Pilotage des projets AVEREO', 30],
         ['thermo', 'Thermo AVEREO', 'Analyse thermique AVEREO', 40],

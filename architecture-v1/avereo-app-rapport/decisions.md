@@ -13,6 +13,11 @@ tags:
   - architecture
 ---
 
+## 2026-11-02 — RGA devient une application distincte
+
+Cette décision remplace le rattachement des droits décrit plus bas pour la première livraison. Sur demande explicite du responsable, RGA utilise une entrée native CONNECT, sa propre clé de lancement et son propre cookie. Les droits Rapport sont copiés une fois au départ puis séparés. Le même hébergement et les données publiques cartographiques sont conservés, ainsi que les résultats des dossiers. [Contrat et procédure](api/rga.md).
+
+
 ## 2026-11-02 — Carte RGA liée aux droits de Rapport
 
 Contexte : nouvelle carte fournie et double accès confirmé par le responsable. Décision : héberger le module dans Rapport, avec un raccourci CONNECT contrôlé par les droits Rapport, sans compte ni base supplémentaire. Séparer la lecture géométrique simplifiée de la synthèse officielle et conserver les deux sources. Conséquences : échange limité au même point, transfert explicite et pas de modification du sas partagé hébergé. [Contrat](api/rga.md).

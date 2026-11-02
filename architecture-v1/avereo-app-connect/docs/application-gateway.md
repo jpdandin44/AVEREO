@@ -1,8 +1,20 @@
+---
+project: avereo-connect
+document_type: architecture
+title: Sas applicatif AVEREO CONNECT
+status: active
+version: git
+created: 2026-11-02
+updated: 2026-11-02
+owner: jpdandin
+tags: [connect, rga, tests]
+---
+
 # Sas applicatif AVEREO CONNECT
 
 ## Objectif
 
-Rapport, Coupe, Projet, Thermo, Drone et Recherche ne doivent pas être ouverts depuis leur URL publique sans un
+Rapport, RGA, Coupe, Projet, Thermo, Drone et Recherche ne doivent pas être ouverts depuis leur URL publique sans un
 passage préalable par AVEREO CONNECT. Une simple redirection ou un paramètre
 `from=connect` serait falsifiable ; le passage est donc prouvé par un ticket
 signé côté serveur.
@@ -25,7 +37,7 @@ signé côté serveur.
 
 ## Credentials
 
-Les six secrets doivent être aléatoires, faire au moins 32 caractères et rester
+Les secrets de lancement doivent être aléatoires, faire au moins 32 caractères et rester
 hors document root :
 
 - `APP_LAUNCH_RAPPORT_SECRET` dans la configuration privée CONNECT correspond à
@@ -74,3 +86,8 @@ Ainsi, les applications savent déjà consommer les tickets lorsque CONNECT
 commence à les émettre. Les workflows de production sont exclusivement manuels,
 refusent une branche autre que `main`, exigent une confirmation explicite et
 archivent le contenu précédent comme artefact de retour arrière avant transfert.
+
+
+## RGA — application distincte
+
+RGA utilise `/rga/entry.php`, un ticket `app=rga`, les paramètres privés `APP_LAUNCH_RGA_URL` et `APP_LAUNCH_RGA_SECRET`, et le cookie `AVEREO_RGA_GATE`. La durée par défaut est de 30 minutes. Le sas générique ne porte pas de données métier ; les résultats des dossiers restent sous le contrôle de Rapport. L’hébergement sur le domaine Rapport ne partage pas les autorisations. [Déclaration, copie initiale et limites](../../avereo-app-rapport/api/rga.md).

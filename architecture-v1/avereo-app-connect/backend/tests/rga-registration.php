@@ -1,0 +1,45 @@
+<?php
+declare(strict_types=1);
+use Avereo\Connect\Repository\RgaRegistration;
+require dirname(__DIR__) . '/src/autoload.php';
+$pdo = new PDO('sqlite::memory:', null, null, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);
+$pdo->exec("CREATE TABLE users (id INTEGER PRIMARY KEY, status TEXT, onboarding_status TEXT);
+CREATE TABLE memberships (user_id INTEGER, organization_id INTEGER, status TEXT, role TEXT);
+CREATE TABLE applications (id INTEGER PRIMARY KEY AUTOINCREMENT, code TEXT UNIQUE, name TEXT, description TEXT, launch_url TEXT, required_scope TEXT, display_order INTEGER, status TEXT);
+CREATE TABLE entitlements (organization_id INTEGER, application_id INTEGER, status TEXT, valid_from TEXT, valid_to TEXT, granted_by_user_id INTEGER);
+CREATE TABLE user_application_access (organization_id INTEGER, user_id INTEGER, application_id INTEGER, status TEXT, granted_by_user_id INTEGER);
+CREATE TABLE audit_events (actor_user_id INTEGER, action TEXT, target_type TEXT, target_id TEXT, outcome TEXT, request_id TEXT, metadata_json TEXT);
+INSERT INTO users VALUES(1,'active','completed'),(2,'active','completed');
+INSERT INTO memberships VALUES(1,1,'active','owner'),(1,2,'active','owner'),(2,1,'active','member');
+INSERT INTO applications VALUES(10,'rapport','Rapport','Test','https://rapport-preprod.avereo.fr/','rapport:use',10,'active');
+INSERT INTO entitlements VALUES(1,10,'active','2026-01-01','2030-01-01',1),(2,10,'revoked',NULL,NULL,1);
+INSERT INTO user_application_access VALUES(1,1,10,'active',1),(1,2,10,'revoked',1);");
+$checks = 0;
+function expectRga(bool $ok): void { global $checks; if (!$ok) throw new RuntimeException('RGA registration assertion failed'); $checks++; }
+function rejectRga(callable $call): void { $failed = false; try { $call(); } catch (RuntimeException $e) { $failed = true; } expectRga($failed); }
+$service = new RgaRegistration($pdo);
+$plan = $service->plan();
+$url = 'https://rapport-preprod.avereo.fr/rga/';
+rejectRga(fn () => $service->register(2, $url, $plan['sourceFingerprint']));
+rejectRga(fn () => $service->register(1, $url, str_repeat('0', 64)));
+expectRga($service->snapshot('rga')['application'] === null);
+$receipt = $service->register(1, $url, $plan['sourceFingerprint']);
+$rga = $service->snapshot('rga');
+expectRga($receipt['status'] === 'registered');
+expectRga($rga['entitlements'] === $plan['source']['entitlements']);
+expectRga($rga['access'] === $plan['source']['access']);
+expectRga($service->snapshot('rapport') === $plan['source']);
+expectRga($service->register(1, $url, $plan['sourceFingerprint'])['status'] === 'already_registered');
+$pdo->exec("UPDATE user_application_access SET status='active' WHERE application_id=10 AND user_id=2");
+$sourceAfter = $service->snapshot('rapport');
+expectRga($service->register(1, $url, $service->plan()['sourceFingerprint'])['permissionsChanged'] === false);
+expectRga($service->snapshot('rga') === $rga);
+$service->rollback(1, $receipt);
+expectRga($service->snapshot('rga')['application'] === null);
+expectRga($service->snapshot('rapport') === $sourceAfter);
+$receipt = $service->register(1, $url, $service->plan()['sourceFingerprint']);
+$pdo->exec("UPDATE user_application_access SET status='revoked' WHERE application_id=" . $receipt['applicationId'] . ' AND user_id=2');
+rejectRga(fn () => $service->rollback(1, $receipt));
+expectRga($service->snapshot('rapport') === $sourceAfter);
+expectRga($service->snapshot('rga')['application'] !== null);
+echo "$checks contrôles RGA : copie exacte, refus, indépendance, idempotence et retour arrière.\n";

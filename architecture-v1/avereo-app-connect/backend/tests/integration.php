@@ -258,3 +258,19 @@ if ($deniedAuditCount !== 1) {
 }
 
 fwrite(STDOUT, "PASS intégration PDO/MariaDB, autorisation et audit atomique\n");
+
+$registration = new \Avereo\Connect\Repository\RgaRegistration($pdo);
+$rgaPlan = $registration->plan();
+$rgaReceipt = $registration->register($ownerId, 'https://rapport-preprod.avereo.fr/rga/', $rgaPlan['sourceFingerprint']);
+$rgaSnapshot = $registration->snapshot('rga');
+if ($rgaSnapshot['entitlements'] !== $rgaPlan['source']['entitlements'] || $rgaSnapshot['access'] !== $rgaPlan['source']['access']) {
+    throw new RuntimeException('Copie des droits RGA inexacte.');
+}
+if ($registration->register($ownerId, 'https://rapport-preprod.avereo.fr/rga/', $rgaPlan['sourceFingerprint'])['status'] !== 'already_registered') {
+    throw new RuntimeException('La déclaration RGA doit être idempotente.');
+}
+$registration->rollback($ownerId, $rgaReceipt);
+if ($registration->snapshot('rga')['application'] !== null || $registration->snapshot('rapport') !== $rgaPlan['source']) {
+    throw new RuntimeException('Retour arrière RGA inexact.');
+}
+fwrite(STDOUT, "PASS déclaration RGA MariaDB : copie, idempotence, restauration ciblée\n");

@@ -13,6 +13,11 @@ tags:
   - deploiement
 ---
 
+## Application RGA distincte — préparation de la suite
+
+Le workflow de fichiers décrit ci-dessous concerne le raccourci historique. Il ne doit pas servir à activer les droits distincts : il ne gère ni clé RGA, ni catalogue, ni copie initiale des habilitations. La [procédure de déclaration](../api/rga.md) prévoit un plan sans écriture, une copie transactionnelle et un retour arrière ciblé. Avant livraison, rapprocher les fichiers des versions réellement hébergées, conserver les ajouts récents de Rapport, sauvegarder configurations et données CONNECT, puis qualifier l’artefact exact en préproduction. Aucun déploiement de ce nouveau candidat n’est affirmé ici.
+
+
 # Workflows de Rapport AVEREO
 
 ## Livraison RGA en préproduction

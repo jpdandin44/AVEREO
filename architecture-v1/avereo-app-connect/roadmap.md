@@ -5,10 +5,15 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## RGA distincte — candidat local
+
+La déclaration RGA et la copie initiale des droits sont implémentées et testées localement. Qualification hébergée et activation restent à tracer dans le [suivi canonique RGA](../avereo-app-rapport/api/rga.md). La première livraison du raccourci ne prouve pas l’installation de ce nouveau candidat.
+
 
 # Suite CONNECT
 

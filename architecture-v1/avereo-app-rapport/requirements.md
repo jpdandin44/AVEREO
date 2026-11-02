@@ -13,6 +13,11 @@ tags:
   - habitologie
 ---
 
+## Droits RGA — précision du responsable
+
+RGA doit être déclarée comme application distincte dans CONNECT. À la première déclaration, reprendre les droits actuels de Rapport puis les rendre indépendants. L’ouverture de la carte, son iframe et la superposition dans Rapport requièrent une session RGA valide. Les résultats déjà enregistrés dans un dossier restent consultables et exportables avec les droits de Rapport.
+
+
 ## RGA — demande du 2 novembre 2026
 
 Complément demandé après essai : voir simultanément les couleurs RGA, les

@@ -12,6 +12,11 @@ tags:
   - changelog
 ---
 
+## 2026-11-02 — Accès RGA indépendant
+
+Ajout du sas RGA et de son contrôle dans la carte cadastrale et l’iframe. Un compte Rapport sans session RGA est invité à ouvrir RGA depuis CONNECT. Le point est conservé lors du passage et les résultats déjà enregistrés restent accessibles dans Rapport. Tests de tickets, cookies et accès HTTP croisés.
+
+
 ## 2026-11-02 — Nouvelle carte RGA intégrée
 
 Correction après retour visuel : superposition RGA/cadastre dans la carte du

@@ -5,10 +5,15 @@ title: Décisions techniques CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 2026-11-02 — Droits RGA indépendants
+
+Contexte : après la première livraison du raccourci, le responsable demande une véritable application distincte et confirme la reprise initiale des droits de Rapport. Décision : utiliser le catalogue et les contrôles natifs de CONNECT ; copier une fois les habilitations et accès individuels, puis ne plus synchroniser. Raison : gérer RGA par compte dans l’administration existante. Conséquences : configuration privée, ticket et cookie dédiés ; contrôle de RGA également dans Rapport. [Contrat commun](../avereo-app-rapport/api/rga.md).
+
 
 # Décisions techniques CONNECT
 

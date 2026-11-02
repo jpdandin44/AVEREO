@@ -1,4 +1,4 @@
-﻿name: CI
+name: CI
 
 on:
   push:
@@ -147,6 +147,12 @@ jobs:
               ;;
           esac
 
+      - name: Test independent RGA gateway
+        if: matrix.application == 'rapport'
+        run: |
+          php architecture-v1/avereo-app-rapport/tests/rga-gate.php
+          python3 architecture-v1/avereo-app-rapport/tests/rga-http.py
+
   connect-integration:
     runs-on: ubuntu-latest
     services:
@@ -177,7 +183,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.3"
-          extensions: curl, openssl, pdo_mysql
+          extensions: curl, openssl, pdo_mysql, pdo_sqlite
 
       - name: Run CONNECT database and local web integration
         working-directory: architecture-v1/avereo-app-connect/backend
@@ -185,6 +191,7 @@ jobs:
           set -euo pipefail
           php bin/migrate.php --direction=up
           php tests/integration.php
+          php tests/rga-registration.php
           if APP_ENV=test LOCAL_DEMO_ENABLED=true php docker/local-fixtures.php; then
             echo "Local fixtures must be rejected outside APP_ENV=local" >&2
             exit 1

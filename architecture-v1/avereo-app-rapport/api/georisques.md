@@ -5,7 +5,7 @@ title: Integration de la synthese Georisques
 status: active
 version: git
 created: 2026-09-12
-updated: 2026-10-24
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
@@ -50,9 +50,10 @@ Chaque risque expose notamment `present`, `libelle`,
 uniquement les risques marques `present: true` dans la synthese, sans recalcul
 de niveau ni interpretation diagnostique.
 
-Le contrat et une reponse d'exemple ont ete verifies le 12 septembre 2026.
-L'API V1 annonce des appels sans jeton et renvoie actuellement un en-tete CORS
-permettant l'appel direct depuis le navigateur.
+Le contrat V1 et l'ordre longitude,latitude ont été revérifiés dans l'OpenAPI
+officielle le 2 novembre 2026. La V1 reste accessible sans jeton. Un en-tête
+CORS `*` est observé sur une réponse réussie depuis l'hébergement ; cela ne
+garantit pas la disponibilité du trajet réseau depuis le navigateur.
 
 ## Donnees transmises et conservees
 
@@ -91,3 +92,38 @@ Les informations publiees sont informatives et peuvent comporter des erreurs
 ou omissions selon les conditions generales du service. L'interface rappelle
 de consulter le rapport officiel. Une saisie de confirmation ou de commentaire
 manuel reste a definir.
+
+## Diagnostic de disponibilité — 2 novembre 2026
+
+Le message d'indisponibilité est un message de repli : le code intercepte
+indifféremment un échec réseau, un délai dépassé, une erreur HTTP ou une réponse
+incomplète. Il ne démontre pas à lui seul une panne générale du fournisseur.
+
+Constats sur la version de préproduction `59a38c9` :
+
+- Le navigateur hébergé interrompt l'appel direct avant toute réponse HTTP,
+  avec `net::ERR_HTTP2_PROTOCOL_ERROR`, sur Toulouse puis le point de Longages.
+- Depuis o2switch, un appel Python vers le point public de Toulouse réussit
+  (HTTP 200, 4,86 s, JSON comportant les deux groupes de risques), puis les
+  essais suivants vers Toulouse et Longages subissent des connexions réinitialisées.
+  PHP cURL subit également une réinitialisation, avec deux agents HTTP différents.
+- Depuis le poste local, un appel à Longages réussit (HTTP 200, 2,62 s, 3 261
+  octets) entre plusieurs interruptions sans réponse. Un contrôle successif
+  avec virgule encodée puis littérale échoue dans les deux cas : l'encodage
+  n'est pas établi comme cause.
+- L'endpoint et ses paramètres correspondent au contrat officiel actuel.
+  Aucune erreur d'authentification Géorisques ni de normalisation d'une réponse
+  valide n'est observée ; les échecs constatés précèdent la réponse exploitable.
+
+Conclusion limitée aux observations : la liaison à l'API est intermittente.
+TBD — cause de la réinitialisation côté réseau ou infrastructure du fournisseur,
+non déterminable sans journaux complémentaires. Ne pas attribuer ces échecs
+aux droits CONNECT ou à l'absence de risques sur le bien.
+
+Un relais PHP a été préparé puis écarté de la livraison, car les échecs se
+reproduisent aussi depuis l'hébergement. Le code applicatif reste identique à
+`59a38c9` ; aucun nouveau déploiement, paramétrage privé ou dossier modifié.
+La synthèse reste à requalifier. L'action existante Site → Rapport des risques →
+Actualiser la synthèse permet une nouvelle tentative ; le lien au rapport
+complet dépend lui aussi du service externe et n'est pas garanti disponible.
+Les preuves datées et la prochaine action figurent dans le [suivi RGA](rga.md).
