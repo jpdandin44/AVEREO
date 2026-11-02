@@ -1,0 +1,616 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-16T20:21:43.106804+00:00",
+  "kind": "production_preparation_session_closure",
+  "drupalIntegrationEvidence": "https://github.com/jpdandin44/AVEREO/blob/docs/closure-production-20261016/outillage/acces-preproduction/archives/preparation-production-rapport-passeport-20261016/drupal-integration-github.json",
+  "drupalIntegrationEvidenceSha256": "7b092cfe410f5010c769e6ea0225550d15fa7641b2426377b020a44a694096c4",
+  "pullRequests": {
+    "23": {
+      "repository": "jpdandin44/avereo-site-drupal",
+      "number": 23,
+      "prUrl": "https://github.com/jpdandin44/avereo-site-drupal/pull/23",
+      "branch": "fix/security-core-preproduction-20261016",
+      "baseBranch": "main",
+      "observedHeadSha": "0f246525cb5b16a71b47fdf1cf865d6265d58549",
+      "baseSha": "1b677eab4c2bfdee1793dcb40fa0a323ed5370a8",
+      "state": "open",
+      "draft": false,
+      "mergeable": "MERGEABLE",
+      "observedAt": "2026-10-16T20:21:43.106804+00:00",
+      "technicalChecksPassed": 4,
+      "technicalChecksTotal": 4,
+      "humanChecklistChecked": 4,
+      "humanAcceptanceVerified": false,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeSha": null,
+      "evidence": "data/securite-core/integration-github.json",
+      "humanPolicyStatus": "strict_passed_at_observation",
+      "integratedIntoMain": false
+    },
+    "24": {
+      "repository": "jpdandin44/avereo-site-drupal",
+      "number": 24,
+      "prUrl": "https://github.com/jpdandin44/avereo-site-drupal/pull/24",
+      "branch": "fix/security-gin-preproduction-20261016",
+      "baseBranch": "fix/security-core-preproduction-20261016",
+      "observedHeadSha": "03ef6ce9f6a3946d4f4f3166a55299a3f30697e6",
+      "baseSha": "0762a4a560679088f611fc36d3dca3e03b749bed",
+      "state": "merged",
+      "draft": false,
+      "mergeable": "UNKNOWN",
+      "observedAt": "2026-10-16T20:21:43.106804+00:00",
+      "technicalChecksPassed": 4,
+      "technicalChecksTotal": 4,
+      "humanChecklistChecked": 4,
+      "humanAcceptanceVerified": true,
+      "mergedAt": "2026-10-16T20:08:34Z",
+      "mergedBy": "jpdandinavereo-design",
+      "mergeSha": "1716aa0a5969301a709855f5782b04ef4a9278c1",
+      "evidence": "data/securite-core/integration-github.json",
+      "humanPolicyStatus": "strict_passed_at_observation",
+      "integratedIntoMain": false
+    },
+    "25": {
+      "repository": "jpdandin44/avereo-site-drupal",
+      "number": 25,
+      "prUrl": "https://github.com/jpdandin44/avereo-site-drupal/pull/25",
+      "branch": "fix/security-contrib-hosted-20261016",
+      "baseBranch": "fix/security-core-preproduction-20261016",
+      "observedHeadSha": "0873e030db61d8f518803fa463c0ed9f4a5b8c3b",
+      "baseSha": "1716aa0a5969301a709855f5782b04ef4a9278c1",
+      "state": "merged",
+      "draft": false,
+      "mergeable": "UNKNOWN",
+      "observedAt": "2026-10-16T20:21:43.106804+00:00",
+      "technicalChecksPassed": 4,
+      "technicalChecksTotal": 4,
+      "humanChecklistChecked": 4,
+      "humanAcceptanceVerified": true,
+      "mergedAt": "2026-10-16T20:09:16Z",
+      "mergedBy": "jpdandinavereo-design",
+      "mergeSha": "0f246525cb5b16a71b47fdf1cf865d6265d58549",
+      "evidence": "data/securite-core/integration-github.json",
+      "humanPolicyStatus": "strict_passed_at_observation",
+      "integratedIntoMain": false
+    }
+  },
+  "avereoPullRequests": {
+    "85": {
+      "baseRefName": "main",
+      "baseRefOid": "0fd533200d3044582d72003aa47eed1582a6dec4",
+      "headRefName": "chore/passeport-immo-verification-production",
+      "headRefOid": "6434787bb3bcd5a715ff8d0b6935b4e263d82e00",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "9702c7e9997b4dae1e9187441137d7f02310a163"
+      },
+      "mergedAt": "2026-10-16T20:16:37Z",
+      "mergedBy": {
+        "id": "U_kgDOD-I1LA",
+        "is_bot": false,
+        "login": "jpdandinavereo-design",
+        "name": ""
+      },
+      "number": 85,
+      "state": "MERGED",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:55:48Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747529/job/117090678938",
+          "name": "policy",
+          "startedAt": "2026-10-16T16:55:49Z",
+          "status": "COMPLETED",
+          "workflowName": "PR Policy"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T17:00:41Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38936368227/job/117092780983",
+          "name": "policy",
+          "startedAt": "2026-10-16T17:00:41Z",
+          "status": "COMPLETED",
+          "workflowName": "PR Policy"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:16:07Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961001449/job/117175771842",
+          "name": "policy",
+          "startedAt": "2026-10-16T20:16:14Z",
+          "status": "COMPLETED",
+          "workflowName": "PR Policy"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:16:08Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961003921/job/117175801230",
+          "name": "policy",
+          "startedAt": "2026-10-16T20:16:19Z",
+          "status": "COMPLETED",
+          "workflowName": "PR Policy"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:16:10Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961008281/job/117175746805",
+          "name": "policy",
+          "startedAt": "2026-10-16T20:16:11Z",
+          "status": "COMPLETED",
+          "workflowName": "PR Policy"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:16:12Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961010520/job/117175806367",
+          "name": "policy",
+          "startedAt": "2026-10-16T20:16:20Z",
+          "status": "COMPLETED",
+          "workflowName": "PR Policy"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:55:59Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747483/job/117090676885",
+          "name": "validate",
+          "startedAt": "2026-10-16T16:55:50Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:55:55Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935740301/job/117090652232",
+          "name": "validate",
+          "startedAt": "2026-10-16T16:55:47Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:16:24Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961020721/job/117175789263",
+          "name": "policy",
+          "startedAt": "2026-10-16T20:16:19Z",
+          "status": "COMPLETED",
+          "workflowName": "PR Policy"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:57:02Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747433/job/117090675903",
+          "name": "candidate",
+          "startedAt": "2026-10-16T16:55:50Z",
+          "status": "COMPLETED",
+          "workflowName": "Passeport Immo CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:57:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935740284/job/117090652200",
+          "name": "candidate",
+          "startedAt": "2026-10-16T16:55:47Z",
+          "status": "COMPLETED",
+          "workflowName": "Passeport Immo CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:56:00Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747483/job/117090676574",
+          "name": "frontend-gates (rapport)",
+          "startedAt": "2026-10-16T16:55:50Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:55:58Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935740301/job/117090652913",
+          "name": "frontend-gates (rapport)",
+          "startedAt": "2026-10-16T16:55:47Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:56:00Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747483/job/117090676604",
+          "name": "frontend-gates (coupe)",
+          "startedAt": "2026-10-16T16:55:50Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:55:58Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935740301/job/117090653012",
+          "name": "frontend-gates (coupe)",
+          "startedAt": "2026-10-16T16:55:48Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:56:00Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747483/job/117090676720",
+          "name": "frontend-gates (projet)",
+          "startedAt": "2026-10-16T16:55:50Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:55:59Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935740301/job/117090652804",
+          "name": "frontend-gates (projet)",
+          "startedAt": "2026-10-16T16:55:47Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:56:03Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747483/job/117090676541",
+          "name": "frontend-gates (thermo)",
+          "startedAt": "2026-10-16T16:55:51Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:56:03Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935740301/job/117090652755",
+          "name": "frontend-gates (thermo)",
+          "startedAt": "2026-10-16T16:55:48Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:56:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747483/job/117090676425",
+          "name": "frontend-gates (drone)",
+          "startedAt": "2026-10-16T16:55:50Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:55:59Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935740301/job/117090652719",
+          "name": "frontend-gates (drone)",
+          "startedAt": "2026-10-16T16:55:47Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:56:03Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747483/job/117090676631",
+          "name": "frontend-gates (recherche)",
+          "startedAt": "2026-10-16T16:55:51Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:55:59Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935740301/job/117090653184",
+          "name": "frontend-gates (recherche)",
+          "startedAt": "2026-10-16T16:55:47Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:56:22Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935747483/job/117090676084",
+          "name": "connect-integration",
+          "startedAt": "2026-10-16T16:55:50Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T16:56:12Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38935740301/job/117090652958",
+          "name": "connect-integration",
+          "startedAt": "2026-10-16T16:55:47Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        }
+      ],
+      "title": "chore(passeport-immo): suivre la recette privée et OAuth",
+      "url": "https://github.com/jpdandin44/AVEREO/pull/85"
+    },
+    "86": {
+      "baseRefName": "main",
+      "baseRefOid": "9702c7e9997b4dae1e9187441137d7f02310a163",
+      "headRefName": "chore/prepare-production-rapport-passeport-20261016",
+      "headRefOid": "1cff48cd577f87135014290d652cef38600edce9",
+      "isDraft": false,
+      "mergeCommit": {
+        "oid": "78a368423f71945d1b9c4c87fbf7e8d48a6cde47"
+      },
+      "mergedAt": "2026-10-16T20:19:32Z",
+      "mergedBy": {
+        "id": "U_kgDOD-I1LA",
+        "is_bot": false,
+        "login": "jpdandinavereo-design",
+        "name": ""
+      },
+      "number": 86,
+      "state": "MERGED",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:17:47Z",
+          "conclusion": "SKIPPED",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202810/job/117176477805",
+          "name": "policy",
+          "startedAt": "2026-10-16T20:17:57Z",
+          "status": "COMPLETED",
+          "workflowName": "PR Policy"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:05Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202837/job/117176406629",
+          "name": "test",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "Acces preproduction - tests uniquement"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:00Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202800/job/117176407121",
+          "name": "validate",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:17:54Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961195158/job/117176380627",
+          "name": "validate",
+          "startedAt": "2026-10-16T20:17:45Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:19:25Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961380921/job/117177019453",
+          "name": "policy",
+          "startedAt": "2026-10-16T20:19:19Z",
+          "status": "COMPLETED",
+          "workflowName": "PR Policy"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:19:09Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961195253/job/117176381855",
+          "name": "candidate",
+          "startedAt": "2026-10-16T20:17:45Z",
+          "status": "COMPLETED",
+          "workflowName": "Passeport Immo CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:44Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202837/job/117176407138",
+          "name": "activation-migration",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "Acces preproduction - tests uniquement"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:03Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202800/job/117176407228",
+          "name": "frontend-gates (rapport)",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:02Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961195158/job/117176380700",
+          "name": "frontend-gates (rapport)",
+          "startedAt": "2026-10-16T20:17:46Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:00Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202800/job/117176407423",
+          "name": "frontend-gates (coupe)",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:02Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961195158/job/117176380588",
+          "name": "frontend-gates (coupe)",
+          "startedAt": "2026-10-16T20:17:46Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202800/job/117176407078",
+          "name": "frontend-gates (projet)",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:17:56Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961195158/job/117176380934",
+          "name": "frontend-gates (projet)",
+          "startedAt": "2026-10-16T20:17:46Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:02Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202800/job/117176407145",
+          "name": "frontend-gates (thermo)",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:05Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961195158/job/117176380712",
+          "name": "frontend-gates (thermo)",
+          "startedAt": "2026-10-16T20:17:51Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:03Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202800/job/117176407183",
+          "name": "frontend-gates (drone)",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:17:57Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961195158/job/117176380538",
+          "name": "frontend-gates (drone)",
+          "startedAt": "2026-10-16T20:17:45Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202800/job/117176407282",
+          "name": "frontend-gates (recherche)",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:17:55Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961195158/job/117176380764",
+          "name": "frontend-gates (recherche)",
+          "startedAt": "2026-10-16T20:17:45Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:22Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961202800/job/117176406737",
+          "name": "connect-integration",
+          "startedAt": "2026-10-16T20:17:49Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-10-16T20:18:09Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/38961195158/job/117176380326",
+          "name": "connect-integration",
+          "startedAt": "2026-10-16T20:17:45Z",
+          "status": "COMPLETED",
+          "workflowName": "CI"
+        }
+      ],
+      "title": "docs(release): prepare Rapport production and Passport follow-up",
+      "url": "https://github.com/jpdandin44/AVEREO/pull/86"
+    }
+  },
+  "scope": "Relevé GitHub et préparation documentaire ; aucune nouvelle sonde de production.",
+  "existingProductionAuthorizations": {
+    "security": "https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/data/securite-contrib-qualification.json",
+    "oauth": "https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/data/recette-oauth-maintenance-site.json",
+    "status": "conditional_existing_site_only",
+    "rapportProductionApproval": "not_granted"
+  },
+  "preserve": [
+    "Activation D06 Passeport",
+    "Reprise SCI six documents actifs et trois archives",
+    "Cron Passeport existant",
+    "Confirmation Chrome préproduction",
+    "Candidats exacts sans reconstruction"
+  ],
+  "resumeOnlyOnUserRequest": true,
+  "productionChanged": false,
+  "newHumanApprovalCreated": false,
+  "drupalReviewDescriptionEvidence": "archives/preparation-production-rapport-passeport-20261016/drupal-revue-integree-github.json",
+  "drupalClosurePublication": {
+    "status": "local_commit_only",
+    "branch": "codex/cloture-core-20261016",
+    "workingCopy": "C:\\Users\\examg\\Documents local\\avereo-drupal-preparation-production",
+    "pr23HeadPreserved": "0f246525cb5b16a71b47fdf1cf865d6265d58549"
+  },
+  "applicationMergesEvidence": "archives/preparation-production-rapport-passeport-20261016/fusions-preparation-applications.json",
+  "closureFollowUp": {
+    "branch": "docs/closure-production-20261016",
+    "baseSha": "78a368423f71945d1b9c4c87fbf7e8d48a6cde47",
+    "scope": "Complément documentaire après fusion86 ; aucune modification des PR85/86 fusionnées."
+  }
+}

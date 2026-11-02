@@ -1,0 +1,71 @@
+{
+  "recordedAt": "2026-10-16T20:34:44.901473+00:00",
+  "status": "passed",
+  "scope": "Clôture documentaire après intégration24/25 ; aucune opération ni nouveau test applicatif hébergé.",
+  "applicationBytesUnchanged": true,
+  "phaseVotesAndExistingApprovalsPreserved": true,
+  "oldWorkingCopyOverwritten": false,
+  "concurrentOriginalCoreDocumentationUpdateObserved": true,
+  "concurrentSourceThread": "01a13404-f9fc-7672-9585-aa63ed64af57",
+  "originalWorkingCopyObservations": [
+    {
+      "path": "docs/suivi-refonte/suivi-chantier.json",
+      "initialSha256": "88ea2586b3d4a5f1719e7db916b62382bdef25583a492d0ab92c461e19fb8906",
+      "currentSha256": "37ecf75598703fbb27d6f15ab9d888ca67ee724223f01a31f6fa3e64cd758606",
+      "concurrentChangeObserved": true,
+      "writtenByThisTask": false
+    },
+    {
+      "path": "docs/suivi-refonte/archives/README.md",
+      "initialSha256": "e905d4403c748fee4a33c8a578afab070609d16a38bf1b570669375a97793e54",
+      "currentSha256": "a22590eb28059aeee687930c67818c0f5da4b821780ba5ed8325b246d589cd30",
+      "concurrentChangeObserved": true,
+      "writtenByThisTask": false
+    },
+    {
+      "path": "docs/suivi-refonte/archives/2026-10-16-185226-464317-point-session.md",
+      "initialSha256": "e61b543970716793ccdb4ec356e68662ab3b877a57533b33b69f3f43d758284d",
+      "currentSha256": "e61b543970716793ccdb4ec356e68662ab3b877a57533b33b69f3f43d758284d",
+      "concurrentChangeObserved": false,
+      "writtenByThisTask": false
+    },
+    {
+      "path": "data/suivi-securite-core.json",
+      "initialSha256": "f6f157448f0be3873409672ef4a92c42633ac1fda480903dff424c0f3b86f43f",
+      "currentSha256": "32fe25444022175be350eece55d0711cd4d1a3866c39f337d75dfb0d24584385",
+      "concurrentChangeObserved": true,
+      "writtenByThisTask": false
+    },
+    {
+      "path": "workflows/securite-core.md",
+      "initialSha256": "a4f375473eb0c8219560f55f1b20932464e39d65225c9da55d7fba120c30501c",
+      "currentSha256": "fec31001af830f6c34780cc8a6d9e8d9e10a51f3656cd49e06f5635b1f019bdd",
+      "concurrentChangeObserved": true,
+      "writtenByThisTask": false
+    }
+  ],
+  "candidates": [
+    {
+      "application": "rapport",
+      "sha256": "6f1016bd44ce56204e2d174a927ec25c6dd5e5f9437afa337d66c704ac1b9366",
+      "status": "matched",
+      "zipIntegrity": "passed"
+    },
+    {
+      "application": "passeport-immo",
+      "sha256": "c44f397fd03daa433f19e6d4c72127f29e55dbf9fca679e8c7f41cc207a843cf",
+      "status": "matched",
+      "zipIntegrity": "passed"
+    }
+  ],
+  "derivedViewsDeterministic": true,
+  "markdownDocuments": 5,
+  "localLinkTargets": 57,
+  "jsonFiles": 6,
+  "approvedProofs": {
+    "references": 21,
+    "documents": 15,
+    "checkoutCRLFReferences": 21
+  },
+  "foundationsChecked": 3
+}

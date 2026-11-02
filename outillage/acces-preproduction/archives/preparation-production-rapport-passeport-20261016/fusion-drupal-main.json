@@ -1,0 +1,135 @@
+{
+  "recordedAt": "2026-10-16T20:40:55.728287+00:00",
+  "kind": "human_main_integration",
+  "source": "github_live",
+  "pullRequest": {
+    "baseRefName": "main",
+    "baseRefOid": "1b677eab4c2bfdee1793dcb40fa0a323ed5370a8",
+    "body": "## Summary\n\nPrésenter pour revue l'ensemble intégré **Core, Gin, OAuth et outillage de récupération du site**, après les fusions humaines de [#22](https://github.com/jpdandin44/avereo-site-drupal/pull/22), [#24](https://github.com/jpdandin44/avereo-site-drupal/pull/24) et [#25](https://github.com/jpdandin44/avereo-site-drupal/pull/25). Les lots et leurs reçus de livraison restent distincts.\n\n**Version à examiner : `0f246525cb5b16a71b47fdf1cf865d6265d58549`**, branche `fix/security-core-preproduction-20261016`, vers `main` à `1b677eab4c2bfdee1793dcb40fa0a323ed5370a8`. L'ancien échec de l'audit Gin est résolu. Cette actualisation ne change aucun code et n'effectue ni fusion ni déploiement.\n\n## Changes\n\n- Verrou du dépôt : les cinq paquets Drupal Core passent de **11.4.7 à 11.4.10** et `drupal/gin` de **5.0.15 à 5.0.16** ; aucun paquet ajouté ou supprimé. Easy Breadcrumb 2.0.11 et Leaflet 10.4.13 étaient déjà intégrés à `main` par #20 : cette PR ajoute leurs preuves et outils de livraison séparée sur le site, pas une nouvelle mise à jour de ces entrées.\n- Identité : manifestes propres à `auth-next-preprod`, Core 11.4.10, Symfony HttpFoundation v7.4.21 et Drush 13.7.6. Le verrou de l'identité ne remplace pas celui du site.\n- OAuth : deux fichiers du module `avereo_rapport_oauth` maintiennent uniquement les trois routes `/oauth/authorize`, `/oauth/token` et `/oauth/userinfo` disponibles pendant la maintenance, sans modifier leurs exigences d'authentification, permissions, méthodes ou contrôleurs.\n- Outillage : sauvegarde/restauration privée, qualification, paquets scellés, promotion ciblée, retour arrière et vérifications du site et de l'identité. Les outils sont présents dans le diff ; aucun n'est exécuté par cette mise à jour de PR.\n- Tests de régression, contrôles CI des manifestes identité et du protocole OAuth, reçus et suivi documentaire. Aucun changement de contenu éditorial, compte, rôle, clé, thème actif ou configuration Contact par cette actualisation.\n\n## Validation\n\n**Phase : Préproduction. Environnement soumis à revue : préproduction**, sur les deux périmètres ci-dessous. Le cycle reste : Cadrage, Développement local, Préproduction, Mise en production. La dernière phase n'est pas autorisée par cette remise en revue.\n\n| Périmètre | Point d'entrée pour la revue | Preuves et limites |\n| --- | --- | --- |\n| Site Drupal | [Connexion du site de préproduction](https://preprod.avereo.fr/user/login), avec la protection et le compte Drupal habituels | [Reçus du site](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/data/recette-securite-site-active.json) : quatre lots séparés, puis OAuth ; sauvegardes fraîches restaurées, empreintes et données conservées, audit final sans alerte, 23 assertions de rendu natif et six contrôles HTTPS Basic/noindex. Ces contrôles ne constituent pas une navigation authentifiée observée par l'agent. |\n| Identité et accès aux applications | [CONNECT préproduction](https://connect-preprod.avereo.fr/) ; service distinct [auth-next](https://auth-next-preprod.avereo.fr/) | [Livraison Core](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/data/securite-core/auth-next/delivery-verification.json), [livraison OAuth](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/data/oauth-maintenance/qualification/delivery-receipt.json) et [confirmation humaine Chrome](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/data/oauth-maintenance/qualification/human-access-confirmation.json) d'une nouvelle connexion et de l'ouverture de Rapport/Passeport. Cette confirmation ne valide pas tous leurs parcours métier ni tous les comptes. |\n\nLes **quatre contrôles techniques** de cette tête réussissent : `composer`, `identity-candidate`, `oauth-maintenance`, `repository-hygiene`. [Exécution CI de référence](https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38960166822). La comparaison avec `main` ne présente pas de conflit au relevé. Aucun audit de sécurité n'est ignoré ou assoupli.\n\nLe verrou du site intégré a pour SHA-256 `678ddaea33d09e632f345d0d0f982732610db37bc8c72c04785a2a19153af317`, identique au verrou final du reçu du site. Le manifeste Gin et les deux fichiers OAuth sont inchangés après les deux fusions. Le [plan des paquets du site](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/data/candidat-securite-site.json) conserve les empreintes propres aux archives ; elles ne sont pas confondues avec celles des manifestes.\n\nPour cette revue :\n1. Examiner le site protégé : Accueil, Services, FAQ/Accordion, affichage du formulaire Contact et administration, sans envoi réel ni modification de contenu. Claro reste le thème d'administration sélectionné ; ne pas activer Gin pour ce contrôle.\n2. Relire ou compléter la vérification d'accès depuis CONNECT préproduction et les preuves de l'identité, séparément de celles du site. Ne transmettre aucun identifiant, mot de passe ou jeton dans la PR.\n3. Examiner le [diff intégré](https://github.com/jpdandin44/avereo-site-drupal/pull/23/files), les dossiers [Core](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/workflows/securite-core.md), [Gin](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/workflows/securite-gin.md), [OAuth](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/workflows/oauth-maintenance.md) et [sécurité du site](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/workflows/securite-site.md), puis renseigner les quatre confirmations ci-dessous.\n\nLe contrôle **PR Policy attend ces confirmations humaines**. Les cases sont remises à zéro pour le périmètre intégré ; cette attente n'est pas un nouvel échec technique. L'approbation du 16 octobre à 18 h 37, heure de Paris, concernait `0762a4a560679088f611fc36d3dca3e03b749bed` : elle reste historique et n'est pas réattribuée à cette version.\n\n## Risks\n\n- Gin est installé mais non sélectionné ; aucune recette visuelle du thème Gin actif n'est revendiquée. Les refus HTTPS anonymes prouvent la protection, pas l'accès authentifié ni les parcours métier.\n- Les reçus du 16 octobre attestent les interventions déjà réalisées sur leurs cibles exactes ; cette modification de description ne relance aucune recette hébergée. Les réserves historiques restent visibles dans les sources liées et ne doivent pas être confondues avec l'état CI intégré ci-dessus.\n- Le compte rendu du site conserve l'ancien attendu 405 corrigé en 503 pour un GET sur le point de jeton réservé à POST sous maintenance. Le changement porte sur le diagnostic, sans ouverture supplémentaire de route.\n- Aucun merge, déploiement, import de base, modification de secrets ou ouverture publique par cette remise en revue. Les accords de production éventuellement consignés dans les suivis opératoires gardent leur cible et leurs conditions ; ils ne sont ni élargis ni exécutés ici. Toute intervention ultérieure exige la vérification de ses prérequis, sauvegardes et retours arrière.\n\n## Checklist\n\n<!-- Seul le responsable humain du projet valide et coche cette checklist pour la tête intégrée ci-dessus. -->\n- [x] J'ai testé [l'environnement de validation](https://preprod.avereo.fr/user/login).\n- [x] J'ai contrôlé [les fichiers modifiés](https://github.com/jpdandin44/avereo-site-drupal/pull/23/files) et [les impacts sécurité/données documentés](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/workflows/securite-site.md).\n- [x] J'ai consulté et validé [la documentation](https://github.com/jpdandin44/avereo-site-drupal/blob/0f246525cb5b16a71b47fdf1cf865d6265d58549/README.md).\n- [x] J'autorise le merge de cette PR.\n",
+    "headRefName": "fix/security-core-preproduction-20261016",
+    "headRefOid": "0f246525cb5b16a71b47fdf1cf865d6265d58549",
+    "isDraft": false,
+    "mergeCommit": {
+      "oid": "fc9c840c66c8e0647a8add28a47a943dd1e2112a"
+    },
+    "mergeable": "UNKNOWN",
+    "mergedAt": "2026-10-16T20:34:34Z",
+    "mergedBy": {
+      "id": "U_kgDOD-I1LA",
+      "is_bot": false,
+      "login": "jpdandinavereo-design",
+      "name": ""
+    },
+    "number": 23,
+    "state": "MERGED",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:25:14Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38962081721/job/117179378145",
+        "name": "policy",
+        "startedAt": "2026-10-16T20:25:06Z",
+        "status": "COMPLETED",
+        "workflowName": "PR Policy"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:34:02Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38963147357/job/117182956631",
+        "name": "policy",
+        "startedAt": "2026-10-16T20:33:55Z",
+        "status": "COMPLETED",
+        "workflowName": "PR Policy"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:34:01Z",
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38963152003/job/117182970999",
+        "name": "policy",
+        "startedAt": "2026-10-16T20:33:56Z",
+        "status": "COMPLETED",
+        "workflowName": "PR Policy"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:09:45Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38960166822/job/117172927829",
+        "name": "identity-candidate",
+        "startedAt": "2026-10-16T20:09:24Z",
+        "status": "COMPLETED",
+        "workflowName": "CI Drupal"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:09:29Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38960166825/job/117172927236",
+        "name": "policy",
+        "startedAt": "2026-10-16T20:09:24Z",
+        "status": "COMPLETED",
+        "workflowName": "PR Policy"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:34:04Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38963156792/job/117182986872",
+        "name": "policy",
+        "startedAt": "2026-10-16T20:33:59Z",
+        "status": "COMPLETED",
+        "workflowName": "PR Policy"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:34:07Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38963158954/job/117182993404",
+        "name": "policy",
+        "startedAt": "2026-10-16T20:34:00Z",
+        "status": "COMPLETED",
+        "workflowName": "PR Policy"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:09:37Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38960166822/job/117172927906",
+        "name": "composer",
+        "startedAt": "2026-10-16T20:09:24Z",
+        "status": "COMPLETED",
+        "workflowName": "CI Drupal"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:09:46Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38960166822/job/117172927517",
+        "name": "oauth-maintenance",
+        "startedAt": "2026-10-16T20:09:24Z",
+        "status": "COMPLETED",
+        "workflowName": "CI Drupal"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-10-16T20:09:34Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/jpdandin44/avereo-site-drupal/actions/runs/38960166822/job/117172930226",
+        "name": "repository-hygiene",
+        "startedAt": "2026-10-16T20:09:25Z",
+        "status": "COMPLETED",
+        "workflowName": "CI Drupal"
+      }
+    ],
+    "title": "fix(security): qualifier Core, Gin et OAuth en préproduction",
+    "url": "https://github.com/jpdandin44/avereo-site-drupal/pull/23"
+  },
+  "humanActorType": "User",
+  "strictPolicy": "passed",
+  "mergedTreeIdenticalToReviewedHead": true,
+  "productionChangedByThisTask": false,
+  "scope": "Acceptation humaine du périmètre intégré et fusion dans main ; aucune livraison ou recette de production déduite."
+}

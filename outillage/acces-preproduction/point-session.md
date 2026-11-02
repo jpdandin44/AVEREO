@@ -12,6 +12,50 @@ tags: [preproduction, reprise, applications, cockpit]
 
 # Point de reprise
 
+## Clôture du 16 octobre — suite prête à reprendre
+
+La **recette du site est validée dans le cockpit** : décision humaine **D01**,
+quatre livrables et dix critères, à 20:29:25 UTC. Les [preuves et empreintes](archives/preparation-production-rapport-passeport-20261016/recette-humaine-site.json)
+sont vérifiées ; cette revue ne doit pas être refaite. La phase de production du
+cockpit reste non démarrée.
+
+**Dernier événement vérifié : la PR Drupal #23 est fusionnée dans `main`**, à
+20:34:34 UTC, merge `fc9c840…`. Les quatre attestations, la policy stricte et
+l’identité de l’arbre intégré sont vérifiées dans la [preuve de fusion](archives/preparation-production-rapport-passeport-20261016/fusion-drupal-main.json).
+L’intégration GitHub est acquise. La prochaine étape opérationnelle est la
+qualification fraîche de production, puis les lots déjà autorisés sous leurs
+conditions. Cette clôture n’exécute aucune livraison.
+
+Les paragraphes suivants conservent la préparation de revue qui a précédé ce
+dernier merge ; l’attente de fusion de #23 est maintenant levée.
+
+La description de #23 est publiée dans le chat « Finaliser la préproduction OAuth ».
+Sa tête `0f246525…` est conservée pour la revue. Le complément documentaire Drupal
+de cette clôture reste dans un **commit local** de `codex/cloture-core-20261016` ;
+le réconcilier à la reprise après vérification de GitHub. La PR #86 a été fusionnée ; la [PR de clôture #87](https://github.com/jpdandin44/AVEREO/pull/87),
+en brouillon sur `docs/closure-production-20261016`, conserve le dossier actualisé et les [preuves des fusions](archives/preparation-production-rapport-passeport-20261016/drupal-integration-github.json).
+
+Session arrêtée à la demande du responsable. Les PR AVEREO #85 et #86 sont
+également fusionnées, avec quatre attestations chacune ; leurs dossiers sont
+acceptés sans nouvelle livraison ni recette de production déduite. Les merges humains Drupal #24/#25
+sont vérifiés ; #23 contient leur intégration, sans conflit avec `main`, avec
+quatre contrôles techniques réussis. La description actualisée remet les cases
+à la disposition du responsable ; les attestations précédentes sont archivées.
+Le [dossier de production](preparation-production-rapport-passeport.md#clôture-du-16-octobre--suite-prête-à-reprendre)
+porte l’ordre de reprise, les accords conditionnels Drupal acquis, les opérations
+Rapport encore à qualifier et la recette finale Passeport. Aucune fusion par l’agent ni
+changement hébergé pendant cette clôture. Reprise uniquement sur demande.
+
+Copie Drupal courante : `C:\Users\examg\Documents local\avereo-drupal-preparation-production`.
+Copie du dossier de production (branche `docs/closure-production-20261016`) : `C:\Users\examg\Documents local\avereo-preprod-rapport-passeport`.
+Source vivante : `C:\Users\examg\OneDrive\Documents\AVEREO_2\preprod-acces-local`.
+Le guide local du site est conservé dans
+`C:\Users\examg\Documents local\avereo-securite-contrib-heberge\docs\recette-preproduction-securite\README.md` ;
+son cockpit est déclaré disponible sur [5201](http://127.0.0.1:5201/) par le chat
+opérateur. Ce guide et son suivi restent locaux, distincts des PR déjà fusionnées.
+Les travaux non commités antérieurs sont conservés ; aucune fermeture du
+navigateur ou déconnexion cPanel n’est revendiquée ici.
+
 ## Suite courante après fusion des PR #83 et #84
 
 Les deux fusions et leurs attestations humaines sont vérifiées. Le [dossier de
@@ -37,9 +81,9 @@ renvoie aux reçus réels et au suivi de Gin/site dans le chat coordonné.
 La nouvelle connexion CONNECT et l’accès aux deux applications sont désormais
 confirmés par le responsable dans Chrome ; cette réserve de préproduction est
 levée. La PR OAuth #22 est ensuite fusionnée humainement dans Gin #24, pas dans
-`main`. Le site de préproduction est livré techniquement ; sa revue visuelle reste
-distincte. Examiner #25 et #24, intégrer Gin dans Core #23 puis vérifier son audit
-avant `main`. Le dernier contrôle de production enregistré reste 503 ; préparer
+`main`. Le site de préproduction est livré techniquement et les PR #24/#25 sont ensuite
+acceptées par leurs merges humains dans Core #23. Ses quatre contrôles techniques
+réussissent ; sa fusion humaine dans `main` est ensuite acquise. Le dernier contrôle de production enregistré reste 503 ; préparer
 la livraison Drupal selon ses accords et les prérequis Rapport.
 Passeport Immo demeure activé : conserver ses données, sa reprise SCI et son cron.
 
