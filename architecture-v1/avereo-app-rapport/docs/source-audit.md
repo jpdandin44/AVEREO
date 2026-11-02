@@ -15,6 +15,15 @@ tags:
 
 ## Saisie vocale et sauvegarde explicite — préproduction du 2 novembre
 
+Après fusion de la PR RGA #92, la branche de la PR #93 est réalignée sur
+`main` (`069e2c5`). Les trois conflits portent uniquement sur le changelog,
+les exigences et cet audit ; les sections des deux lots sont conservées.
+Les 86 tests Rapport, les 8 contrôles du sas RGA et les 17 contrôles HTTP
+passent. Le build authentifié reproduit exactement le HTML et le JavaScript
+du paquet RGA/dictée déjà livré ; quatre fichiers PHP ne diffèrent que par
+les fins de ligne. Cette résolution ne remplace pas les preuves hébergées
+du paquet installé et ne déclenche aucune nouvelle livraison.
+
 Extraction du mécanisme SpeechRecognition existant vers `VoiceField.jsx` afin de le réutiliser dans la décision et les livrables. Aucune nouvelle bibliothèque, clé, intégration IA, permission accordée automatiquement ou configuration serveur. Les autorisations du navigateur et l'accord métier restent nécessaires. Seul le texte rejoint les champs du dossier ; aucun fichier audio n'est ajouté au rapport.
 
 Le bouton d'attente appelle le stockage de brouillon existant, sans appel réseau de sauvegarde. Erreur de stockage simulée contrôlée sans fausse confirmation ; retrait de l'accord et démontage arrêtent le contrôleur. Un accès au microphone résolu tardivement ne relance pas un ancien contrôleur. Voix testée par simulation locale seulement ; matériel et service réel non qualifiés. Les essais hébergés du candidat conservent le contenu des deux maisons, hors horodatage de sauvegarde. [Spécification et réserves](aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
@@ -26,6 +35,19 @@ Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT
 Tilleuls et Cricq : confirmation « Enregistrer cette attente », reprise après rechargement, sauvegarde/réouverture serveur et conservation de toutes les données métier contrôlées (seul `updatedAt` évolue). Quatre DOCX hébergés valides ; textes et médias des deux Tilleuls identiques à la présentation, synthèse client Cricq identique. L'expert Cricq reflète des modifications antérieures de localisation, risques, cadastre, terrain et urbanisme ; ses notes détaillées terrain/urbanisme ont été remplacées ou vidées avant cette installation. Copie récente préservée, arbitrage de contenu demandé au responsable. Les quatre fichiers de présentation restent inchangés. Brouillon initial du navigateur restauré exactement avant nouvel enregistrement local.
 
 Microphone et service vocal réels à essayer avec le responsable ; les essais vocaux antérieurs sont simulés. Contrôles micro présents et cohérents avec l'accord enregistré, sans nouvel accord ni permission micro accordée par l'agent. Revue métier et validation humaine restent distinctes ; aucun merge ni production.
+
+## 2026-11-02 — Candidat de droits RGA distincts
+
+Sas RGA indépendant du sas Rapport, contrôles sur les composants cartographiques et tests HTTP réels avec données fictives. Le diagnostic Géorisques ci-dessous reste valable et ne décrit aucune correction API livrée. Les essais de ce candidat et la version hébergée sont distingués dans le [contrat RGA](../api/rga.md) et le suivi canonique.
+
+
+## Diagnostic Géorisques du 2 novembre
+
+Le contrôle réseau constate une coupure avant réponse dans le navigateur et
+des résultats intermittents depuis le poste et o2switch. Le relais préparé
+n'est pas retenu ni livré : son efficacité n'est pas établie. Aucun changement
+d'authentification, de configuration, de données ou de code applicatif.
+[Constats, limites et reprise](../api/georisques.md#diagnostic-de-disponibilité--2-novembre-2026).
 
 ## Lot RGA du 2 novembre
 

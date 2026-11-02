@@ -20,7 +20,7 @@ Boutons micro dans les champs textuels et « Enregistrer cette attente », avec 
 
 ## Nouvelle recherche RGA — candidat du 2 novembre
 
-Tuile RGA dans CONNECT et carte à l’adresse dans Site → Rapport des risques. Lecture cartographique indicative 2026 et synthèse Géorisques séparées ; création explicite d’un dossier depuis la carte et conservation dans les restitutions. [Parcours, sources, lancement local et limites](api/rga.md). État hébergé dans le suivi canonique référencé par ce contrat.
+Application RGA distincte dans CONNECT et carte à l’adresse dans Site → Rapport des risques, avec un accès RGA propre. Les droits Rapport sont copiés une fois lors de la déclaration, puis gérés indépendamment. Lecture cartographique indicative 2026 et synthèse Géorisques séparées ; création explicite d’un dossier depuis la carte et conservation dans les restitutions. [Parcours, sources, lancement local et limites](api/rga.md). État hébergé dans le suivi canonique référencé par ce contrat.
 
 ## Corrections livrées le 1er novembre
 

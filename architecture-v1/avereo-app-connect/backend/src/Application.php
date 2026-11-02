@@ -197,10 +197,6 @@ final class Application
                 $auth->userId,
                 $auth->remembered,
             );
-            // Fixed view within Rapport; entitlement and signed ticket remain Rapport's.
-            if ($matches[1] === 'rapport' && ($request->query['view'] ?? null) === 'rga') {
-                $location .= '&view=rga';
-            }
             return Response::redirect($location, $request->requestId);
         }
 
@@ -412,19 +408,6 @@ final class Application
             ];
         }
 
-        foreach ($catalog as $application) {
-            if ($application['code'] === 'rapport' && !in_array('rga', array_column($catalog, 'code'), true)) {
-                $catalog[] = [
-                    'code' => 'rga',
-                    'name' => 'RGA',
-                    'description' => 'Rechercher un bien et consulter son exposition aux argiles. Accès lié à Rapport.',
-                    'launchUrl' => '/api/v1/apps/rapport/launch?view=rga',
-                    'available' => $application['available'],
-                    'status' => $application['status'],
-                ];
-                break;
-            }
-        }
         return $catalog;
     }
 

@@ -30,7 +30,7 @@ La nouvelle carte, son transfert et le champ `rga_cartographie` sont décrits da
 
 `risques.rga` conserve les deux libellés officiels, y compris lorsqu’un objet RGA existe avec `present: false`. Aucun niveau n’est calculé. Les anciens rapports restent lisibles par recherche du RGA dans leur liste `naturels`.
 
-Les sources cartographiques figées résident dans `data/rga/`, hors du répertoire public. `frontend/scripts/build-rga.mjs` contrôle les SHA-256 et génère deux pages PHP dans `dist/rga/`. Chaque page exécute `guard.php`, qui réutilise le contrôle CONNECT avant tout HTML. L’index PHP présente les cartes en iframe. Le build ne publie aucun HTML RGA brut. Les cartes utilisent les ressources réseau déclarées dans les exports d’origine ; aucune donnée du rapport n’est ajoutée à leur URL. Aucune table, migration ou identité supplémentaire.
+Les sources cartographiques figées résident dans `data/rga/`, hors du répertoire public. `frontend/scripts/build-rga.mjs` contrôle les SHA-256 et génère deux pages PHP dans `dist/rga/`. Chaque page exécute `guard.php` avant tout HTML. Le candidat du 2 novembre utilise désormais le sas RGA indépendant et sa propre configuration ; le sas Rapport reste intact (voir le contrat RGA). L’index PHP présente les cartes en iframe. Le build ne publie aucun HTML RGA brut. Les cartes utilisent les ressources réseau déclarées dans les exports d’origine ; aucune donnée du rapport n’est ajoutée à leur URL. Aucune table, migration ou identité supplémentaire.
 
 
 ## Decision monorepo

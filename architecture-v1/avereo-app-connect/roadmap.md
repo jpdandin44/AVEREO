@@ -5,10 +5,15 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## RGA distincte — préproduction
+
+La déclaration RGA et la copie initiale des droits sont implémentées, testées et activées en préproduction. La gestion des comptes présente une autorisation RGA indépendante de Rapport. Les versions, preuves de livraison et réserves sont conservées dans le [suivi canonique RGA](../avereo-app-rapport/api/rga.md). La revue humaine et toute promotion en production restent à effectuer.
+
 
 # Suite CONNECT
 

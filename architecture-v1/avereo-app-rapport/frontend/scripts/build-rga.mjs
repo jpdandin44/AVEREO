@@ -1,10 +1,11 @@
-// Package the frozen source maps behind the same CONNECT gate as Rapport.
+// Package the maps behind the distinct RGA gate, using the shared CONNECT implementation.
 import { readFile, writeFile, mkdir, cp } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 const source = new URL('../../data/rga/', import.meta.url);
 const target = new URL('../dist/rga/', import.meta.url);
 const manifest = JSON.parse(await readFile(new URL('sources.json', source), 'utf8'));
 await mkdir(target, { recursive: true });
+await cp(new URL('../../../avereo-platform/shared/connect-gate.php', import.meta.url), new URL('connect-gate.php', target));
 for (const map of manifest.maps) {
   const bytes = await readFile(new URL(map.file, source));
   if (createHash('sha256').update(bytes).digest('hex') !== map.sha256) throw new Error(`RGA source changed: ${map.file}`);

@@ -1,0 +1,9 @@
+{
+  "observedAt": "2026-10-28T17:45:53.824272+00:00",
+  "target": "/home/daje3540/projet-preprod.avereo.fr",
+  "sourceSha": "a6b4cdf309aff8f2ee1c41922d27e84e2fe0bedc",
+  "artifactSha256": "201bf0d501cce3677957fa3f929628be4a3e280fad310949666fda30d16a6b51",
+  "backupVerified": true,
+  "restoreVerified": true,
+  "databaseWrites": false
+}
