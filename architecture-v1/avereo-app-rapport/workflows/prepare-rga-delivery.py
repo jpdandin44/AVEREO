@@ -62,7 +62,8 @@ manifest = {'sourceSha': SOURCE_SHA, 'artifactSha256': sha(archive.read_bytes())
     'previousFiles': {'connect/src/Application.php': '50125e1c9f70aadaf31e4846ce752d71ffc29c6791c15947e99f64bcdf83cbbd',
         'rapport/index.html': '8620dbbc68d201f80b8b6bc3db600039fb7c9747b6cc363fd741758e2bd38ccf',
         'rapport/assets/index-DBhClGNR.js': '69f0ea6cd868901fdbead723f6c797522611782584bfb073b25641de99221263',
-        'rapport/connect/entry.php': sha(at('2e3239b', 'architecture-v1/avereo-app-rapport/frontend/public/connect/entry.php')),
+        # Hosted entry is byte-identical to this source after CRLF normalization (verified 2026-11-02).
+        'rapport/connect/entry.php': sha(at('2e3239b', 'architecture-v1/avereo-app-rapport/frontend/public/connect/entry.php').replace(b'\n', b'\r\n')),
         'rapport/rga/index.php': sha(at('2e3239b', 'architecture-v1/avereo-app-rapport/frontend/public/rga/index.php'))},
     'files': {n: sha(b) for n, b in sorted(files.items())}}
 (OUT / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
