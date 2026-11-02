@@ -1,0 +1,2 @@
+# Preserve the exact imported map bytes and SHA-256 on every platform.
+*.html -text

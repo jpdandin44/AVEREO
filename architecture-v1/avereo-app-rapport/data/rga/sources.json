@@ -1,0 +1,16 @@
+{
+  "source": "AVEREO_2/public/kit",
+  "importedAt": "2026-10-24",
+  "maps": [
+    {
+      "file": "france.html",
+      "output": "france.php",
+      "sha256": "1bc1725b7414a755e8981cad30e38f161dbd17825dd63ef7c7923a58538590ca"
+    },
+    {
+      "file": "haute-garonne.html",
+      "output": "haute-garonne.php",
+      "sha256": "23c3fbf18cd9e4948de6f8003be9cd3edbdee6a432a213146118762f9b7aa85b"
+    }
+  ]
+}
