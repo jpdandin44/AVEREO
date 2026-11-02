@@ -15,14 +15,17 @@
 </head>
 <body><main>
   <a href="/">← Retour à Rapport</a>
-  <h1>Carte RGA AVEREO 2026</h1>
+  <h1>RGA — Rechercher un bien</h1>
   <p>Retrait-gonflement des argiles — préqualification territoriale.</p>
   <p class="notice">Cette carte décrit un contexte territorial. Elle ne permet pas de conclure au risque d’une parcelle, ne remplace pas une étude de sol et ne constitue pas un diagnostic. Le statut à l’adresse reste consultable dans la synthèse Géorisques du rapport.</p>
   <nav aria-label="Choisir une carte">
+    <a href="carte.php" target="rga-map">Nouvelle carte · recherche d’adresse</a>
     <a href="france.php" target="rga-map">France</a>
     <a href="haute-garonne.php" target="rga-map">Haute-Garonne</a>
   </nav>
-  <iframe name="rga-map" src="france.php" title="Carte interactive RGA 2026" referrerpolicy="no-referrer" allowfullscreen></iframe>
+  <iframe name="rga-map" src="carte.php" title="Carte interactive RGA 2026" referrerpolicy="no-referrer" allowfullscreen></iframe>
+  <p>Dans Rapport, rechercher l’adresse dans Site puis ouvrir Rapport des risques et la nouvelle carte. « Utiliser dans ce rapport » reprend la consultation pour le même point, avec sa source et sa date.</p>
+  <p><a href="carte.php" target="_blank" rel="noopener noreferrer">Nouvelle carte en plein écran</a></p>
   <p><a href="france.php" target="_blank" rel="noopener noreferrer">France en plein écran</a> · <a href="haute-garonne.php" target="_blank" rel="noopener noreferrer">Haute-Garonne en plein écran</a></p>
   <small>Cartes issues de l’application AVEREO RGA, données de janvier 2026, traitement du 19 mai 2026. Fonds cartographiques et bibliothèques externes : une connexion Internet est nécessaire.</small>
 </main></body></html>

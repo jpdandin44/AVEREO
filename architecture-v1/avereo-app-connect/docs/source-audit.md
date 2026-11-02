@@ -5,10 +5,19 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 2026-11-02 — Candidat RGA distinct
+
+Relecture du catalogue, de l’émetteur de tickets et des habilitations natives. Le raccourci dérivé est remplacé par `rga`. Tests de copie unique, droits croisés et restauration ciblée ajoutés. Les preuves hébergées du raccourci précédent ne qualifient pas ce candidat ; voir le [contrat commun](../../avereo-app-rapport/api/rga.md).
+
+
+## Historique — raccourci RGA initial du 2 novembre
+
+Modification limitée à `src/Application.php` : raccourci dérivé et paramètre fixe. Le contrôle d’habilitation porte toujours sur Rapport ; l’URL libre est ignorée. Les tests couvrent présence, refus sans droit et destination non autorisée. [Contrat commun](../../avereo-app-rapport/api/rga.md).
 
 # Audit source - AVEREO CONNECT
 

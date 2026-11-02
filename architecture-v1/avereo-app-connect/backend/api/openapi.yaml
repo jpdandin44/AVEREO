@@ -81,6 +81,7 @@ paths:
       tags: [Catalog]
       operationId: launchApplication
       summary: Ouvrir une application au moyen d'un ticket CONNECT signe
+      description: Le raccourci de catalogue RGA utilise applicationCode=rapport et ses droits. Aucune habilitation autonome RGA.
       parameters:
         - name: applicationCode
           in: path
@@ -88,6 +89,12 @@ paths:
           schema:
             type: string
             pattern: "^[a-z0-9][a-z0-9_-]{1,63}$"
+        - name: view
+          in: query
+          required: false
+          description: La valeur rga avec applicationCode=rapport ouvre la carte après échange du ticket. Toute autre valeur est ignorée ; aucune URL libre.
+          schema:
+            type: string
       responses:
         "303":
           description: Redirection vers le point d'entree prive de l'application

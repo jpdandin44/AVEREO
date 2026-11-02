@@ -182,15 +182,28 @@ if (filter_var(getenv('CONNECT_LOCAL_DEMO_EXPECTED') ?: 'false', FILTER_VALIDATE
             $payload = json_decode($response['body'], true);
             return $response['status'] === 200
                 && is_array($payload)
-                && count($payload['data'] ?? []) === 6
+                && count($payload['data'] ?? []) === 7
+                && in_array('rga', array_column($payload['data'] ?? [], 'code'), true)
                 && count(array_filter(
                     $payload['data'] ?? [],
                     static fn (array $application): bool => ($application['available'] ?? null) === true,
-                )) === 6;
+                )) === 7;
         },
         ['Cookie: ' . $cookie],
     );
     $catalogPayload = json_decode($catalog['body'], true);
+    $rga = array_values(array_filter(
+        $catalogPayload['data'] ?? [],
+        static fn (array $application): bool => ($application['code'] ?? null) === 'rga',
+    ))[0] ?? [];
+    assertLocal(
+        'local RGA launch uses its own permission and ticket',
+        $baseUrl . (string) ($rga['launchUrl'] ?? ''),
+        static fn (array $response): bool => $response['status'] === 303
+            && str_contains(localLocation($response), '/local-app/rga?')
+            && !str_contains(localLocation($response), 'view=rga'),
+        ['Cookie: ' . $cookie],
+    );
     $rapport = array_values(array_filter(
         $catalogPayload['data'] ?? [],
         static fn (array $application): bool => ($application['code'] ?? null) === 'rapport',
@@ -243,7 +256,7 @@ if (filter_var(getenv('CONNECT_LOCAL_DEMO_EXPECTED') ?: 'false', FILTER_VALIDATE
         str_replace('/local-app/rapport', '/local-app/coupe', $secondEntryUrl),
         static fn (array $response): bool => $response['status'] === 403,
     );
-    foreach (['coupe', 'projet', 'thermo', 'drone', 'recherche'] as $applicationCode) {
+    foreach (['rga', 'coupe', 'projet', 'thermo', 'drone', 'recherche'] as $applicationCode) {
         $application = array_values(array_filter(
             $catalogPayload['data'] ?? [],
             static fn (array $candidate): bool => ($candidate['code'] ?? null) === $applicationCode,

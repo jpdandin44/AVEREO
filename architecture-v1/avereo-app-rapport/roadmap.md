@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,10 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Lot RGA du 2 novembre
+
+Le lot RGA est préparé dans une copie isolée. Les états de candidat, recette et livraison sont tenus dans le suivi canonique ; les priorités de démonstration restent distinctes. [Parcours, contrôles et prochaine qualification](api/rga.md).
 
 ## Reprise du 1er novembre
 

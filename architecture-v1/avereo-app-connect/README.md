@@ -5,10 +5,14 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## Application RGA — candidat du 2 novembre
+
+RGA est une application distincte du catalogue, administrable avec ses propres droits. À sa première déclaration, les habilitations de Rapport sont copiées une fois, puis évoluent indépendamment. Son ticket et son cookie sont propres à RGA ; aucun nouveau compte utilisateur. [Parcours et contrat commun](../avereo-app-rapport/api/rga.md).
 
 # AVEREO CONNECT
 

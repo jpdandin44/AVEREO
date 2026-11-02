@@ -1,4 +1,4 @@
-import { buildExpertDocumentHtml, escapeHtml, textToHtml, safeEmbeddedImageSource } from './reportHtml.js';
+import { buildExpertDocumentHtml, escapeHtml, textToHtml, safeEmbeddedImageSource, buildRgaCartographyHtml } from './reportHtml.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { buildDecisionHtml } from './decisionSupport.js';
 
@@ -92,6 +92,7 @@ export function buildReportHtml(report) {
         ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(p.src) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(p.src)}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}`).join('')}
       <p class="muted">Le rapport expert conserve l’ensemble des constats et des sources.</p></section>`;
     content += visuals.map(v => `<section class="client-page">${illustration(v, true)}</section>`).join('');
+    content += buildRgaCartographyHtml(report);
     content += buildDecisionHtml(report, true);
     content += `<section class="client-page"><h2>02 · Les priorités</h2><p>${textToHtml(options.priorites || 'Priorités à préciser avec le professionnel.')}</p>
       <h2>03 · La prochaine étape</h2><p>${textToHtml(options.suite || 'Prochaine étape à convenir.')}</p>

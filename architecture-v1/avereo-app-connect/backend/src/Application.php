@@ -192,14 +192,12 @@ final class Application
                 );
             }
 
-            return Response::redirect(
-                $this->appLaunchTickets->issueLocation(
-                    $matches[1],
-                    $auth->userId,
-                    $auth->remembered,
-                ),
-                $request->requestId,
+            $location = $this->appLaunchTickets->issueLocation(
+                $matches[1],
+                $auth->userId,
+                $auth->remembered,
             );
+            return Response::redirect($location, $request->requestId);
         }
 
         if ($auth->userId === null) {

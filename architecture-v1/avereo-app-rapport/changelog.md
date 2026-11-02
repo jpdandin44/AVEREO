@@ -5,12 +5,26 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-02 — Accès RGA indépendant
+
+Ajout du sas RGA et de son contrôle dans la carte cadastrale et l’iframe. Un compte Rapport sans session RGA est invité à ouvrir RGA depuis CONNECT. Le point est conservé lors du passage et les résultats déjà enregistrés restent accessibles dans Rapport. Tests de tickets, cookies et accès HTTP croisés.
+
+
+## 2026-11-02 — Nouvelle carte RGA intégrée
+
+Correction après retour visuel : superposition RGA/cadastre dans la carte du
+lieu, la carte autonome et l'iframe. Intensité réglable, contours cadastraux
+au-dessus des couleurs, légende et repère conservés. Reprojection contrôlée
+avec PROJ ; aucune modification du stockage ni de la lecture officielle.
+
+Ajout de la carte fournie, recherche IGN, repère, lecture cartographique indicative, transfert explicite et restitution expert/client. Accès intégré au bloc Risques et raccourci CONNECT. La recherche d’adresse utilise le service IGN actuel. [Contrat et statut](api/rga.md).
 
 ## 2026-11-01 Corrections livrées et deux maisons vérifiées
 

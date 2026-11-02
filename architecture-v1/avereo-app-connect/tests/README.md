@@ -5,10 +5,15 @@ title: Contrôles CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Droits RGA
+
+`php backend/tests/rga-registration.php` nécessite PDO SQLite et vérifie copie exacte, refus, indépendance après création et restauration ciblée. `backend/tests/integration.php` exerce également cette opération sur MariaDB en CI. `backend/tests/local-web.php` ouvre le catalogue et échange les tickets RGA par HTTP. Les données sont fictives ; ces tests ne modifient pas les comptes hébergés.
+
 
 # Contrôles CONNECT
 

@@ -5,13 +5,17 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Nouvelle recherche RGA — candidat du 2 novembre
+
+Application RGA distincte dans CONNECT et carte à l’adresse dans Site → Rapport des risques, avec un accès RGA propre. Les droits Rapport sont copiés une fois lors de la déclaration, puis gérés indépendamment. Lecture cartographique indicative 2026 et synthèse Géorisques séparées ; création explicite d’un dossier depuis la carte et conservation dans les restitutions. [Parcours, sources, lancement local et limites](api/rga.md). État hébergé dans le suivi canonique référencé par ce contrat.
 
 ## Corrections livrées le 1er novembre
 
@@ -206,6 +210,11 @@ signee par CONNECT. La procedure de bascule preproduction est detaillee dans
 Le merge, la creation des ressources cPanel/Drupal et le deploiement restent des actions humaines.
 
 ## Documentation structurante
+
+Dans Site, « Superposer le RGA » affiche les couleurs sous les parcelles ;
+« Intensité des couleurs » règle leur transparence. La nouvelle carte RGA
+propose également « Cadastre + RGA » et « Vue des territoires ». Le repère
+ne change pas lors de ces réglages. [Usage et limites](api/rga.md).
 
 - `architecture.md` : index de l'architecture et sources techniques de reference.
 - `requirements.md` : exigences durables et limites du parcours Habitologie.

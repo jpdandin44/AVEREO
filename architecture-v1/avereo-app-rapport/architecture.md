@@ -5,12 +5,16 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-30
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## RGA — 2 novembre 2026
+
+Le module cartographique reste hébergé sous `/rga/` sur le domaine de Rapport, avec un sas RGA indépendant. CONNECT le déclare comme application distincte ; l’hébergement commun ne donne aucun droit partagé. Le champ optionnel `rga_cartographie` conserve une lecture indicative, distincte de `risques.rga`. Les modules de validation sont communs à la carte et au formulaire. [Contrat et flux](api/rga.md).
 
 ## Bloc de décision du dossier
 

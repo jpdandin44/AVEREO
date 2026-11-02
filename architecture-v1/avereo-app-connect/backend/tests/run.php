@@ -456,10 +456,12 @@ $tests['launch ticket is signed and application bound'] = static function () use
         appLaunchEntryUrls: [
             'rapport' => 'https://rapport-preprod.avereo.fr/connect/entry.php',
             'coupe' => 'https://coupe-preprod.avereo.fr/connect/entry.php',
+            'rga' => 'https://rapport-preprod.avereo.fr/rga/entry.php',
         ],
         appLaunchSecrets: [
             'rapport' => $secret,
             'coupe' => str_repeat('coupe-secret-', 4),
+            'rga' => str_repeat('rga-secret-', 4),
         ],
         appLaunchTtlSeconds: 90,
     );
@@ -476,6 +478,29 @@ $tests['launch ticket is signed and application bound'] = static function () use
     );
     assertSameValue(true, $catalogResponse->payload['data'][0]['available'], 'rapport gate available');
     assertSameValue(true, $catalogResponse->payload['data'][1]['available'], 'coupe gate available');
+    assertSameValue(false, in_array('rga', array_column($catalogResponse->payload['data'], 'code'), true), 'Rapport does not grant RGA');
+    $deniedRga = $launchApplication->handle(request('GET', '/api/v1/apps/rga/launch'), $authenticated, 'csrf-test', $logout);
+    assertSameValue(403, $deniedRga->status, 'RGA denied without its own permission');
+    $repository->allowedApps = ['rga'];
+    $rgaCatalog = $launchApplication->handle(request('GET', '/api/v1/catalog'), $authenticated, 'csrf-test', $logout);
+    assertSameValue(['rga'], array_column($rgaCatalog->payload['data'], 'code'), 'RGA alone in catalogue');
+    assertSameValue('/api/v1/apps/rga/launch', $rgaCatalog->payload['data'][0]['launchUrl'], 'distinct launch');
+    $rgaResponse = $launchApplication->handle(request('GET', '/api/v1/apps/rga/launch'), $authenticated, 'csrf-test', $logout);
+    assertSameValue(303, $rgaResponse->status, 'RGA alone allowed');
+    parse_str((string) parse_url($rgaResponse->headers['Location'], PHP_URL_QUERY), $rgaQuery);
+    [$rgaEncoded, $rgaSignature] = explode('.', $rgaQuery['ticket']);
+    $rgaPayload = json_decode(base64_decode(strtr($rgaEncoded, '-_', '+/')), true);
+    assertSameValue('rga', $rgaPayload['app'], 'ticket bound to RGA');
+    $actualSignature = base64_decode(strtr($rgaSignature, '-_', '+/'));
+    assertSameValue(true, hash_equals(hash_hmac('sha256', $rgaEncoded, str_repeat('rga-secret-', 4), true), $actualSignature), 'own RGA secret');
+    assertSameValue(false, hash_equals(hash_hmac('sha256', $rgaEncoded, $secret, true), $actualSignature), 'Rapport secret cannot sign RGA');
+    $deniedRapport = $launchApplication->handle(request('GET', '/api/v1/apps/rapport/launch'), $authenticated, 'csrf-test', $logout);
+    assertSameValue(403, $deniedRapport->status, 'RGA does not grant Rapport');
+    $repository->allowedApps = ['rapport', 'coupe'];
+    $legacy = $launchApplication->handle(request('GET', '/api/v1/apps/rapport/launch', [], [], ['view' => 'rga']), $authenticated, 'csrf-test', $logout);
+    assertSameValue(false, str_contains($legacy->headers['Location'], 'view=rga'), 'legacy shortcut never grants RGA');
+
+
 
     $response = $launchApplication->handle(
         request('GET', '/api/v1/apps/rapport/launch'),

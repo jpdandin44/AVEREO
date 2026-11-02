@@ -2,6 +2,17 @@ import { isHabitologieReport } from './reportClassification.js';
 import { HABITOLOGIE_PROTOCOL_STAGES, LISTENING_TOPICS, isHabitologieControlSelected, isHabitologieStageEnabled, findHabitologieControl, findHabitologieStage } from './habitologieProtocol.js';
 import { LISTENING_SECTIONS } from './clientListening.js';
 import { rgaRisk, isRgaRisk } from './georisquesRiskSummary.js';
+import { normalizeRgaCartography, rgaLevelLabel } from './rgaContext.js';
+
+export function buildRgaCartographyHtml(report) {
+  const value = normalizeRgaCartography(report.rga_cartographie, report.cadastre?.lon, report.cadastre?.lat);
+  if (!value) return '';
+  const level = value.level ? `Exposition ${rgaLevelLabel(value.level)} (indicative)`
+    : value.status === 'outside_coverage' ? 'Hors couverture' : 'Zone non classée dans les contours affichés';
+  return `<section><h3>Lecture de la carte RGA 2026</h3><p>${escapeHtml(level)}.</p>
+    <p>Point : ${escapeHtml(value.lon)}, ${escapeHtml(value.lat)}. Source : ${escapeHtml(value.source)} ; fichier ${escapeHtml(value.dataset)}. Consultation : ${escapeHtml(value.fetchedAt)}.</p>
+    <p>${escapeHtml(value.limitation)}</p></section>`;
+}
 import { buildingResourcesHtml } from './buildingResources.js';
 import { locationConfirmed, validLocation } from './locationMap.js';
 import { safeDocumentUrl, URBAN_LAYERS } from './urbanismContext.js';
@@ -305,6 +316,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
   </table>
 
   ${buildRiskSummaryHtml(report.risques)}
+  ${buildRgaCartographyHtml(report)}
 
   ${report.urbanisme.context ? `
     <h3>Urbanisme : elements retournes au point d'adresse</h3>

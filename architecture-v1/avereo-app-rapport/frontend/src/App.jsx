@@ -34,6 +34,8 @@ import {
   rgaRisk,
 } from './georisquesRiskSummary.js';
 import OnlineReports from './OnlineReports.jsx';
+import RgaMap from './RgaMap.jsx';
+import { readRgaTransfer, RGA_TRANSFER_KEY } from './rgaContext.js';
 import { latestDraft } from './draftRecovery.js';
 import {
   HABITOLOGIE_PROTOCOL_STAGES,
@@ -161,6 +163,7 @@ const initialReport = normalizeReportClassification({
     pdfUrl: '',
   },
   risques: emptyGeorisquesRiskSummary(),
+  rga_cartographie: null,
   localisation: emptyLocation(),
   ressources_batiment: emptyBuildingResources(),
   terrain: emptyTerrain(),
@@ -845,6 +848,7 @@ function DossierStep({ report, setReport }) {
         cadastre: { ...initialReport.cadastre },
         urbanisme: { ...initialReport.urbanisme },
         risques: emptyGeorisquesRiskSummary(),
+        rga_cartographie: null,
         localisation: emptyLocation(),
         terrain: emptyTerrain(),
       };
@@ -1027,6 +1031,7 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setRe
   const [refresh, setRefresh] = useState(0);
   const [status, setStatus] = useState('');
   const { lon, lat } = report.cadastre;
+  useEffect(() => { setStatus(''); }, [summary?.fetchedAt]);
   useEffect(() => {
     if (!hasCoordinates || busy || (summary?.fetchedAt && refresh === 0)) return;
     let active = true;
@@ -1081,7 +1086,7 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setRe
         <p>À l’adresse : <strong>{rga?.addressStatus || 'Information non disponible'}</strong></p>
         <p>Sur la commune : {rga?.communeStatus || 'Information non disponible'}</p>
         <p>Une information manquante ne signifie pas absence de risque. Les statuts ci-dessus proviennent de la synthèse Géorisques, à la date de consultation indiquée.</p>
-        <a className="button secondary" href="/rga/" target="_blank" rel="noopener noreferrer">Ouvrir la carte RGA AVEREO 2026</a>
+        <RgaMap report={report} setReport={setReport} />
         <p className="muted">Carte territoriale de préqualification, distincte du statut à l’adresse. Elle ne remplace ni l’étude de sol ni un diagnostic de la parcelle.</p>
       </div>
 
@@ -1147,7 +1152,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
       if (manual) {
         feature = { geometry: { coordinates: [Number(point.lon), Number(point.lat)] }, properties: {} };
       } else {
-        const banUrl = `https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(report.adresse_logement)}&limit=1`;
+        const banUrl = `https://data.geopf.fr/geocodage/search?q=${encodeURIComponent(report.adresse_logement)}&limit=1`;
         const banResponse = await fetch(banUrl, { signal: AbortSignal.timeout(15000) });
         if (!banResponse.ok) throw new Error('Recherche indisponible');
         const banData = await banResponse.json();
@@ -1163,6 +1168,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
         cadastre: { ...initialReport.cadastre, lon, lat },
         urbanisme: { ...initialReport.urbanisme },
         risques: emptyGeorisquesRiskSummary(),
+        rga_cartographie: null,
         localisation: { adresse_trouvee: feature.properties.label || '', confirmation: null },
         terrain: emptyTerrain(),
       }));
@@ -2288,6 +2294,11 @@ function AccessGate({ authConfig, authError, onOAuthLogin }) {
 }
 
 export default function App() {
+  const [rgaImport, setRgaImport] = useState(() => {
+    try { return window.location.hash === '#rga-import' ? readRgaTransfer(sessionStorage.getItem(RGA_TRANSFER_KEY)) : null; }
+    catch { return null; }
+  });
+  const [newContext, setNewContext] = useState(null);
   const [appState, setAppState] = useState('loading');
   const [draft, setDraft] = useState(null);
   const [initialWizardData, setInitialWizardData] = useState(initialReport);
@@ -2368,18 +2379,19 @@ export default function App() {
     }
   };
 
-  const startNew = async () => {
+  const startNew = async (context = null) => {
+    setNewContext(context);
     if (draft) {
       setConfirmReset(true);
       return;
     }
-    setInitialWizardData(createNewReport());
+    setInitialWizardData(deepMergeReport(createNewReport(), context || {}));
     setAppState('wizard');
   };
 
   const confirmNew = async () => {
     await removeDraft();
-    const fresh = createNewReport();
+    const fresh = deepMergeReport(createNewReport(), newContext || {});
     setDraft(null);
     setInitialWizardData(fresh);
     setConfirmReset(false);
@@ -2416,10 +2428,24 @@ export default function App() {
 
   return (
     <>
+      {appState === 'home' && rgaImport && <section className="risk-summary" style={{ maxWidth: '960px', margin: '24px auto' }}>
+        <h2>Recherche RGA prête à reprendre</h2>
+        <p>{rgaImport.adresse_logement}</p>
+        <p>Créer un nouveau dossier avec cette adresse et les risques consultés. Le point du bien restera à confirmer dans Site.</p>
+        <button className="button primary" type="button" onClick={() => {
+          startNew(rgaImport); setRgaImport(null);
+          sessionStorage.removeItem(RGA_TRANSFER_KEY);
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }}>Créer le rapport pour ce bien</button>{' '}
+        <button className="button ghost" type="button" onClick={() => {
+          setRgaImport(null); sessionStorage.removeItem(RGA_TRANSFER_KEY);
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }}>Ignorer cette recherche</button>
+      </section>}
       {appState === 'home' && (
         <HomePage
           draft={draft}
-          onNew={startNew}
+          onNew={() => startNew()}
           onResume={resume}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
           accessToken={accessToken}
@@ -2464,6 +2490,9 @@ export default function App() {
           }
         >
           <p>Un brouillon existe deja. Il sera supprime pour demarrer un dossier vierge.</p>
+          {draft && <button className="button secondary" type="button" onClick={() => saveAs(
+            new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json;charset=utf-8' }),
+            `${toFileName(draft.reference_dossier || draft.titre)}-brouillon.json`)}>Exporter le brouillon avant de continuer</button>}
         </Modal>
       )}
     </>

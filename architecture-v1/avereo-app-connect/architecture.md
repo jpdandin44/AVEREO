@@ -5,10 +5,14 @@ title: Architecture CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Application RGA distincte
+
+Le catalogue natif contient une application `rga`. `/api/v1/apps/rga/launch` applique les contrôles de compte, organisation, habilitation et accès individuel à cette application, puis émet un ticket signé avec sa propre clé. L’initialisation copie les droits Rapport une seule fois ; le schéma SQL existant est conservé. [Contrat](../avereo-app-rapport/api/rga.md).
 
 # Architecture CONNECT
 

@@ -5,13 +5,37 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 2026-11-02 — Candidat de droits RGA distincts
+
+Sas RGA indépendant du sas Rapport, contrôles sur les composants cartographiques et tests HTTP réels avec données fictives. Le diagnostic Géorisques ci-dessous reste valable et ne décrit aucune correction API livrée. Les essais de ce candidat et la version hébergée sont distingués dans le [contrat RGA](../api/rga.md) et le suivi canonique.
+
+
+## Diagnostic Géorisques du 2 novembre
+
+Le contrôle réseau constate une coupure avant réponse dans le navigateur et
+des résultats intermittents depuis le poste et o2switch. Le relais préparé
+n'est pas retenu ni livré : son efficacité n'est pas établie. Aucun changement
+d'authentification, de configuration, de données ou de code applicatif.
+[Constats, limites et reprise](../api/georisques.md#diagnostic-de-disponibilité--2-novembre-2026).
+
+## Lot RGA du 2 novembre
+
+La correction de superposition réutilise les mêmes 97 fichiers, sans modifier
+leurs géométries. Inverse Lambert-93 comparé à PROJ sur cinq points ; décodage
+des anneaux et absence de mutation contrôlés. Leaflet est servi localement.
+Les nouvelles tuiles de données ne transportent aucun contenu de dossier ; les
+requêtes IGN portent seulement le secteur visible. La livraison incrémentale
+vérifie le manifeste de la version précédemment installée avant sauvegarde.
+
+100 fichiers source inventoriés, dont 97 données géographiques avec SHA-256 vérifié au build. Seules les pages PHP passent par le sas ; aucun dossier client dans les assets. Le résultat géométrique simplifié est distinct de Géorisques et du diagnostic. Transfert même origine/fenêtre/point, dates contrôlées et brouillon protégé par confirmation. `connect/gate.php` hébergé diffère du dépôt et reste hors du lot. [Contrat, sources et limites](../api/rga.md).
 
 ## Corrections du 1er novembre
 
