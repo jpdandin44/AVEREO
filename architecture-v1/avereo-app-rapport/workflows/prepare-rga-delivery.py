@@ -4,6 +4,12 @@ import hashlib
 import json
 import subprocess
 import zipfile
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--previous-manifest', type=Path, help='Manifest of the verified previous deployment')
+args = parser.parse_args()
+previous = json.loads(args.previous_manifest.read_text(encoding='utf-8')) if args.previous_manifest else None
 
 APP = Path(__file__).resolve().parents[1]
 REPO = APP.parents[1]
@@ -40,9 +46,9 @@ for start, end in [
     hosted = hosted.replace(old_part, new_part, 1)
 
 files = {'connect/src/Application.php': hosted.encode()}
-for name in ['index.html', 'connect/entry.php', 'rga/index.php', 'rga/guard.php', 'rga/carte.php', 'rga/address-search.js']:
+for name in ['index.html', 'connect/entry.php', 'rga/index.php', 'rga/guard.php', 'rga/carte.php', 'rga/address-search.js', 'rga/cadastre-map.js']:
     files['rapport/' + name] = (DIST / name).read_bytes()
-for folder in ['assets', 'rga/data', 'rga/modules']:
+for folder in ['assets', 'rga/data', 'rga/modules', 'rga/vendor']:
     for p in sorted((DIST / folder).rglob('*')):
         if p.is_file():
             files['rapport/' + p.relative_to(DIST).as_posix()] = p.read_bytes()
@@ -66,6 +72,13 @@ manifest = {'sourceSha': SOURCE_SHA, 'artifactSha256': sha(archive.read_bytes())
         'rapport/connect/entry.php': sha(at('2e3239b', 'architecture-v1/avereo-app-rapport/frontend/public/connect/entry.php').replace(b'\n', b'\r\n')),
         'rapport/rga/index.php': sha(at('2e3239b', 'architecture-v1/avereo-app-rapport/frontend/public/rga/index.php'))},
     'files': {n: sha(b) for n, b in sorted(files.items())}}
+if previous:
+    assert previous['targets'] == manifest['targets'], 'Previous target differs'
+    assert previous['connectBaseline'] == manifest['connectBaseline'], 'Previous CONNECT baseline differs'
+    assert len(previous['sourceSha']) == 40 and len(previous['artifactSha256']) == 64
+    manifest['previousFiles'] = previous['files']
+    manifest['previousSourceSha'] = previous['sourceSha']
+    manifest['previousArtifactSha256'] = previous['artifactSha256']
 (OUT / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
 (OUT / 'connect-Application.php').write_bytes(files['connect/src/Application.php'])
 print(json.dumps({'archive': str(archive), 'files': len(files), 'sha256': manifest['artifactSha256'], 'sourceSha': SOURCE_SHA}))

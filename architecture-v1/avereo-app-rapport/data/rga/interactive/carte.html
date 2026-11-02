@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RGA — Recherche d’un bien · AVEREO</title>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 <style>
 :root{
   --bg:#f5f3ee; --panel:#ffffff; --ink:#1d2433; --muted:#667085; --line:#d9d5ca; --land:#ebe8e0; --border:#9aa0aa; --border-sel:#2b3445;
@@ -46,8 +47,23 @@ input[type=search]{width:100%}
 .stats td{padding:2px 0}.stats td:nth-child(n+2){text-align:right}
 .stats .t{color:var(--muted);font-size:12px;margin-bottom:6px}
 main{position:relative;min-width:0;min-height:0}
-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none}
-canvas.drag{cursor:grabbing}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+#cv.drag{cursor:grabbing}
+#cadastre-view{position:absolute;inset:0;z-index:1;display:none}
+.cadastral #cadastre-view{display:block}
+.cadastral #cv,.cadastral .tools,.cadastral #tip,.cadastral #res,.cadastral #scale{visibility:hidden}
+.view-toolbar{position:absolute;top:12px;right:12px;z-index:800;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 65px)}
+.view-toolbar button{background:#fff;color:#1d2433;box-shadow:var(--shadow)}
+.view-toolbar button[aria-pressed=true]{background:#e9f0ff;border-color:#1f5fbf;color:#124aa0}
+main:not(.cadastral) .tools{top:60px}
+.overlay-controls{position:absolute;bottom:28px;right:10px;left:60px;z-index:700;background:#fffffff2;color:#1d2433;border:1px solid #cbd5e1;border-radius:8px;padding:8px 10px;max-width:420px;margin-left:auto;font-size:12px;box-shadow:var(--shadow)}
+main:not(.cadastral) .overlay-controls{display:none}
+.overlay-controls label{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.overlay-controls input{width:100px;accent-color:#b85f10}
+.overlay-legend{display:flex;align-items:center;gap:5px;margin-top:4px;flex-wrap:wrap}
+.overlay-legend i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-left:5px}
+#overlay-status{font-size:11px;margin:4px 0 0}
+.rga-property-point{background:#075985;border:3px solid #fff;border-radius:50%;box-shadow:0 1px 5px #0009}
 .tools{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:6px}
 .tools button{width:36px;height:36px;padding:0;font-size:18px;box-shadow:var(--shadow)}
 #tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:8px;padding:8px 10px;font-size:13px;display:none;max-width:260px;z-index:3}
@@ -106,6 +122,9 @@ canvas.drag{cursor:grabbing}
 </aside>
 
 <main id="map">
+  <div id="cadastre-view" role="region" aria-label="Superposition RGA et cadastre"></div>
+  <div class="view-toolbar"><button id="view-cadastre" type="button" aria-pressed="false">Cadastre + RGA</button><button id="view-territories" type="button" aria-pressed="true">Vue des territoires</button><button id="view-property" type="button" hidden>Recentrer sur le bien</button></div>
+  <div class="overlay-controls"><label for="rga-opacity">Intensité RGA <input id="rga-opacity" type="range" min="0" max="80" step="5" value="40"><output id="rga-opacity-value">40 %</output></label><div class="overlay-legend">Exposition : <i style="background:#f3cf55"></i>Faible <i style="background:#ee8a22"></i>Moyen <i style="background:#b3202a"></i>Fort</div><p id="overlay-status" role="status"></p></div>
   <canvas id="cv" aria-label="Carte d’exposition RGA"></canvas>
   <div class="tools">
     <button id="zin" title="Zoom +" aria-label="Zoom avant">+</button>
@@ -124,7 +143,7 @@ canvas.drag{cursor:grabbing}
 (function(){
 'use strict';
 const $=s=>document.querySelector(s);
-const R=window.RGA; 
+const R=window.RGA;
 if(!R||!R.meta||!R.coarse){$('#load').textContent='Données introuvables : le dossier « data » doit rester à côté de ce fichier.';return;}
 const M=R.meta, U=M.unit;
 const LV={1:{n:'Faible',c:'#f3cf55'},2:{n:'Moyen',c:'#ee8a22'},3:{n:'Fort',c:'#b3202a'}};
@@ -196,7 +215,7 @@ function bboxOf(list){ let a=1e18,b=1e18,c=-1e18,d=-1e18;
   return [a,b,c,d]; }
 function fitTo(bb,anim){
   const pad=40, w=bb[2]-bb[0], h=bb[3]-bb[1]; if(!(w>0))return;
-  const k=Math.min((V.w-2*pad)/w,(V.h-2*pad)/h); 
+  const k=Math.min((V.w-2*pad)/w,(V.h-2*pad)/h);
   const t={k, tx:V.w/2-k*(bb[0]+bb[2])/2, ty:V.h/2+k*(bb[1]+bb[3])/2};
   if(anim) animateTo(t); else {Object.assign(V,t); draw();}
 }
@@ -271,7 +290,7 @@ window.addEventListener('avereo-rga-point', event => {
   propertyPoint=p; S.hide=false; $('#hide').checked=false;
   S.sel=new Set(codes); S.lv=new Set([1,2,3]);
   document.querySelectorAll('#levels input').forEach(e=>e.checked=true);
-  buildList(); stats(); cancelAnimationFrame(anim);
+  refresh(); cancelAnimationFrame(anim);
   V.k=Math.min(KMAX,Math.max(KMIN,Math.min(V.w,V.h)/3000));
   V.tx=V.w/2-p[0]*V.k; V.ty=V.h/2+p[1]*V.k; updatePropertyReading(); draw();
 });
@@ -358,6 +377,8 @@ function stats(){
   for(const n of [1,2,3]){ let k=0; for(const d of codes)k+=M.stats[d][n][1]; $('#n'+n).textContent=fmt(k)+' km²'; }
 }
 function refresh(rebuild=true){ if(rebuild)buildList(); else $('#cnt').textContent='('+S.sel.size+'/'+codes.length+')';
+  window.RGA.filters={levels:[...S.lv],departments:S.hide?[...S.sel]:null};
+  window.dispatchEvent(new CustomEvent('avereo-rga-filters',{detail:window.RGA.filters}));
   document.querySelectorAll('#levels input').forEach(i=>i.checked=S.lv.has(+i.dataset.n)); $('#hide').checked=S.hide; stats(); saveHash(); draw(); }
 $('#note').innerHTML='Source : Géorisques / BRGM — carte d’exposition RGA 2026 (arrêté du 9 janv. 2026), fichier <i>'+M.source+'</i>, '+fmt(M.n_polygons)+' polygones. Géométries simplifiées pour l’affichage ; surfaces issues de la table attributaire. Indicateur de contexte : ne remplace pas une étude géotechnique ni une visite sur place.';
 
@@ -371,6 +392,7 @@ $('#load').style.display='none';
 window.__rga={S,V,M};
 })();
 </script>
+<script type="module" src="cadastre-map.js"></script>
 <script type="module" src="address-search.js"></script>
 </body>
 </html>

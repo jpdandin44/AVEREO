@@ -17,6 +17,11 @@ tags:
 
 ## Nouvelle carte RGA — 2 novembre
 
+La carte du lieu et la carte autonome partagent `rgaOverlay.js` : une couche
+Canvas Leaflet reprojette les contours locaux sous les tuiles cadastrales.
+Le point et les interactions de confirmation restent dans leurs composants
+existants. Opacité et visibilité sont des états d'affichage, hors payload métier.
+
 La nouvelle carte, son transfert et le champ `rga_cartographie` sont décrits dans le [contrat RGA](../api/rga.md). Elle ajoute un repère transmis par fragment et une lecture indicative indépendante de `risques.rga`, qui garde exclusivement les statuts officiels.
 
 ## Réouverture et anciennes cartes RGA — lot du 24 octobre

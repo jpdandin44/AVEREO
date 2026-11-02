@@ -26,7 +26,12 @@ await writeFile(new URL('carte.php', target), Buffer.concat([
   await readFile(new URL('carte.html', interactive)),
 ]));
 await mkdir(new URL('modules/', target), { recursive: true });
-for (const file of ['rgaContext.js', 'georisquesRiskSummary.js', 'georisquesReport.js', 'locationMap.js']) {
+for (const file of ['rgaContext.js', 'rgaOverlay.js', 'georisquesRiskSummary.js', 'georisquesReport.js', 'locationMap.js']) {
   await cp(new URL(`../src/${file}`, import.meta.url), new URL(`modules/${file}`, target));
 }
+await mkdir(new URL('vendor/leaflet/', target), { recursive: true });
+for (const file of ['leaflet-src.esm.js', 'leaflet.css', 'images']) {
+  await cp(new URL(`../node_modules/leaflet/dist/${file}`, import.meta.url), new URL(`vendor/leaflet/${file}`, target), { recursive: true });
+}
+await cp(new URL('../node_modules/leaflet/LICENSE', import.meta.url), new URL('vendor/leaflet/LICENSE', target));
 console.log('RGA: new address map and verified geographic data packaged.');

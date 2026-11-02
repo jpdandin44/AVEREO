@@ -4,9 +4,14 @@ import 'leaflet/dist/leaflet.css';
 import { MapPin, Map, Image, Check, Pencil, LocateFixed, ExternalLink, Loader2 } from 'lucide-react';
 import { buildIgnMapUrl, buildIgnTileUrl, locationConfirmed, validLocation } from './locationMap.js';
 import { terrainMapSamples } from './terrainContext.js';
+import { createRgaLayer, createRgaPanes } from './rgaOverlay.js';
 
-export function CadastralMap({ lon, lat, mode, revision, editing = false, draft = null, onPointChange, terrainAnalysis = null }) {
+export function CadastralMap({ lon, lat, mode, revision, editing = false, draft = null, onPointChange, terrainAnalysis = null, rga = false, rgaOpacity = .4 }) {
   const container = useRef(null);
+  const mapRef = useRef(null);
+  const rgaRef = useRef(null);
+  const [rgaStatus, setRgaStatus] = useState('loading');
+  const [mapZoom, setMapZoom] = useState(18);
   const markerRef = useRef(null);
   const interaction = useRef({ editing, onPointChange });
   interaction.current = { editing, onPointChange };
@@ -18,13 +23,17 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
     setTiles({ base: 'loading', cadastre: 'loading' });
     const map = L.map(container.current, { scrollWheelZoom: false, minZoom: 3, maxZoom: 20, zoomControl: false })
       .setView([Number(lat), Number(lon)], 18);
+    mapRef.current = map;
+    setMapZoom(18);
+    map.on('zoomend', () => { if (active) setMapZoom(map.getZoom()); });
+    createRgaPanes(map);
     L.control.zoom({ zoomInTitle: 'Zoomer', zoomOutTitle: 'Dézoomer' }).addTo(map);
     L.control.scale({ imperial: false }).addTo(map);
     const addTiles = (layer, name, attribution) => {
       let failed = false;
       L.tileLayer(buildIgnTileUrl(layer), {
         maxNativeZoom: 19, maxZoom: 20, noWrap: true, keepBuffer: 1,
-        referrerPolicy: 'no-referrer', attribution,
+        referrerPolicy: 'no-referrer', attribution, pane: name === 'cadastre' ? 'cadastrePane' : 'tilePane',
       }).on('tileerror', () => {
         failed = true;
         if (active) setTiles((prev) => ({ ...prev, [name]: 'error' }));
@@ -75,9 +84,25 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
       clearTimeout(timeout);
       resize.disconnect();
       markerRef.current = null;
+      mapRef.current = null;
+      rgaRef.current = null;
       map.remove();
     };
   }, [lon, lat, mode, revision, samples]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !rga) return;
+    let active = true, failed = false;
+    setRgaStatus('loading');
+    const layer = createRgaLayer(L).on('loading', () => { failed = false; if (active) setRgaStatus('loading'); })
+      .on('tileerror', () => { failed = true; if (active) setRgaStatus('error'); })
+      .on('load', () => { if (active && !failed) setRgaStatus('ready'); }).addTo(map);
+    rgaRef.current = layer;
+    return () => { active = false; layer.remove(); rgaRef.current = null; };
+  }, [rga, lon, lat, mode, revision, samples]);
+
+  useEffect(() => { rgaRef.current?.setOpacity(rgaOpacity); }, [rgaOpacity, rga, lon, lat, mode, revision, samples]);
 
   useEffect(() => {
     const marker = markerRef.current;
@@ -98,6 +123,8 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
       </div>
       {failed ? <p className="property-map-status warning" role="status">Une partie de la carte est indisponible. Réessayez ou ouvrez le plan IGN.</p>
         : loading ? <p className="property-map-status" role="status"><Loader2 size={16} className="spin" /> Chargement du fond et des parcelles…</p> : null}
+      {rga && <p className={`property-map-status${rgaStatus === 'error' ? ' warning' : ''}`} role="status">
+        {rgaStatus === 'error' ? 'La couche RGA est indisponible. Utilisez Recentrer pour réessayer.' : rgaStatus === 'loading' ? 'Chargement de la couche RGA…' : `RGA 2026 · Contours simplifiés à ${mapZoom >= 11 ? '20' : '250'} m à cette échelle : précision parcellaire non garantie.`}</p>}
     </>
   );
 }
@@ -105,6 +132,8 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
 export default function LocationMap({ report, setReport, onCorrectAddress, onMovePoint }) {
   const [mode, setMode] = useState('cadastre');
   const [revision, setRevision] = useState(0);
+  const [rga, setRga] = useState(true);
+  const [rgaOpacity, setRgaOpacity] = useState(.4);
   const [draft, setDraft] = useState(null);
   const lon = report.cadastre?.lon;
   const lat = report.cadastre?.lat;
@@ -141,6 +170,12 @@ export default function LocationMap({ report, setReport, onCorrectAddress, onMov
         {!editing && <button className="property-map-recenter" type="button" onClick={() => setDraft({ lon, lat })}><MapPin size={17} /> Déplacer le point</button>}
         <button className="property-map-recenter" type="button" onClick={() => setRevision((value) => value + 1)}><LocateFixed size={17} /> Recentrer</button>
       </div>
+      <div className="property-rga-controls">
+        <label><input type="checkbox" checked={rga} onChange={event => setRga(event.target.checked)} /> Superposer le RGA</label>
+        <label>Intensité des couleurs <input type="range" min="0" max="80" step="5" value={Math.round(rgaOpacity * 100)} disabled={!rga}
+          onChange={event => setRgaOpacity(Number(event.target.value) / 100)} /> <output>{Math.round(rgaOpacity * 100)} %</output></label>
+        <span className="rga-level-key"><i style={{ background: '#f3cf55' }} />Faible <i style={{ background: '#ee8a22' }} />Moyen <i style={{ background: '#b3202a' }} />Fort</span>
+      </div>
       {editing && <div className="property-map-edit" role="group" aria-label="Ajuster le point de visite">
         <p>Cliquez sur le bon bâtiment ou faites glisser le point bleu. La correction ne sera conservée qu’après validation.</p>
         <div className="form-grid two">
@@ -155,7 +190,7 @@ export default function LocationMap({ report, setReport, onCorrectAddress, onMov
           <button className="button ghost" type="button" onClick={() => setDraft(null)}>Annuler le déplacement</button>
         </div>
       </div>}
-      <CadastralMap lon={lon} lat={lat} mode={mode} revision={revision} editing={editing} draft={draft}
+      <CadastralMap lon={lon} lat={lat} mode={mode} revision={revision} editing={editing} draft={draft} rga={rga} rgaOpacity={rgaOpacity}
         onPointChange={(nextLon, nextLat) => setDraft({ lon: nextLon, lat: nextLat })} />
       <div className="property-map-legend"><span><i className="property-legend-point" /> Bien recherché</span><span><i className="property-legend-parcel" /> Parcelles cadastrales</span>
         <a href={buildIgnMapUrl(lon, lat)} target="_blank" rel="noopener noreferrer">Ouvrir le plan IGN <ExternalLink size={13} /></a>

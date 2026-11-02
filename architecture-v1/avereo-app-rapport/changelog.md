@@ -14,6 +14,11 @@ tags:
 
 ## 2026-11-02 — Nouvelle carte RGA intégrée
 
+Correction après retour visuel : superposition RGA/cadastre dans la carte du
+lieu, la carte autonome et l'iframe. Intensité réglable, contours cadastraux
+au-dessus des couleurs, légende et repère conservés. Reprojection contrôlée
+avec PROJ ; aucune modification du stockage ni de la lecture officielle.
+
 Ajout de la carte fournie, recherche IGN, repère, lecture cartographique indicative, transfert explicite et restitution expert/client. Accès intégré au bloc Risques et raccourci CONNECT. La recherche d’adresse utilise le service IGN actuel. [Contrat et statut](api/rga.md).
 
 ## 2026-11-01 Corrections livrées et deux maisons vérifiées

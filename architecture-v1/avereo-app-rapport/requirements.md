@@ -15,6 +15,11 @@ tags:
 
 ## RGA — demande du 2 novembre 2026
 
+Complément demandé après essai : voir simultanément les couleurs RGA, les
+parcelles, les bâtiments et le repère. Transparence réglable, masquage réversible
+et recentrage sans déplacer ni reconfirmer le bien. Les contours simplifiés
+conservent leurs limites de précision malgré le fond cadastral.
+
 Rechercher un bien depuis une tuile CONNECT ou depuis Rapport, localiser son point, conserver séparément la lecture indicative de la carte et la réponse Géorisques datée. Aucun écrasement automatique de brouillon, aucune reprise depuis un autre point, aucune interprétation « sans risque » d’une absence de données. [Critères et parcours](api/rga.md).
 
 ## Aide à la décision demandée le 30 octobre

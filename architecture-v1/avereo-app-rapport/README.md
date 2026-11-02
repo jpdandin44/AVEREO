@@ -211,6 +211,11 @@ Le merge, la creation des ressources cPanel/Drupal et le deploiement restent des
 
 ## Documentation structurante
 
+Dans Site, « Superposer le RGA » affiche les couleurs sous les parcelles ;
+« Intensité des couleurs » règle leur transparence. La nouvelle carte RGA
+propose également « Cadastre + RGA » et « Vue des territoires ». Le repère
+ne change pas lors de ces réglages. [Usage et limites](api/rga.md).
+
 - `architecture.md` : index de l'architecture et sources techniques de reference.
 - `requirements.md` : exigences durables et limites du parcours Habitologie.
 - `decisions.md` : decisions structurantes et consequences.

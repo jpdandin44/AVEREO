@@ -42,6 +42,15 @@ Tests : `python -m unittest discover -s tests -p test_rga_delivery.py` ;
 syntaxe Python 3.6 et PHP des fichiers produits. Les essais locaux ne remplacent
 pas `prepare` sur l'état hébergé immédiatement antérieur à la livraison.
 
+Pour une correction après première installation, archiver le manifeste et
+l'artefact précédents, puis lancer `prepare-rga-delivery.py --previous-manifest
+CHEMIN_DU_MANIFESTE_ARCHIVE`. Les cibles et la base CONNECT doivent coïncider.
+La liste complète des empreintes précédentes devient le contrôle préalable
+du serveur ; les deux identités de candidat restent tracées. Utiliser un nouveau
+dossier privé de livraison pour préserver les anciens reçus et sauvegardes.
+Le lot inclut désormais `rga/cadastre-map.js`, le module de reprojection partagé
+et les fichiers Leaflet locaux avec leur licence.
+
 Le workflow executable de deploiement est mutualise a la racine du monorepo :
 `.github/workflows/deploy-rapport-o2switch.yml`.
 
