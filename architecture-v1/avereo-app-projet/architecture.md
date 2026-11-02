@@ -5,7 +5,7 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-24
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,47 @@ tags:
 ---
 
 # Architecture du planning Projet
+
+## Évolution clients/projets — proposition à cadrer, non installée
+
+Le besoin d'enregistrement serveur et de projets clients parallèles est décrit
+dans [les exigences](requirements.md#projets-clients-et-enregistrement-serveur--besoin-demandé-non-implémenté).
+La V1 actuelle reste inchangée. Une piste de V2 est un registre clients/projets
+et un service PHP de persistance, avec stockage MySQL dédié à qualifier sur
+l'hébergement existant. Ni schéma, ni endpoint, ni compte de base n'est créé.
+
+Le contenu JSON complet du planning peut rester un document versionné attaché
+à un identifiant de projet ; les métadonnées du registre et les révisions sont
+distinctes. Le serveur devient la référence après confirmation d'écriture ;
+un brouillon navigateur reste un secours explicitement non synchronisé, jamais
+une preuve de sauvegarde distante. Le modèle exact et les migrations restent à décider.
+
+Le code partagé `avereo-platform/shared/connect-gate.php` émet un cookie signé
+avec application et expiration, sans identifiant de personne ou de projet.
+Il n'est donc pas un contrôle suffisant d'appartenance d'un dossier client.
+Avant toute API métier, qualifier une identité serveur et les droits par projet,
+sans faire confiance à un propriétaire déclaré par le navigateur. Conserver
+le sas existant et ne pas exposer des documents clients comme assets publics.
+
+Cette proposition n'active ni backend V1 ni modification de CONNECT. Le choix
+des utilisateurs et le raccordement d'identité conditionnent le cadrage de la V2.
+
+## Affichage et manipulation du Gantt — 28 octobre 2026
+
+Une grille commune porte tableau, calendrier et en-têtes adhérents. Le repli est
+un état de vue en mémoire ; la synthèse reste visible et les flèches masquées sont
+omises du rendu. Le repère rouge du jour partage l'origine du calendrier, ignore
+les pointeurs et se rafraîchit au changement de jour hors édition active.
+
+`movePlanningDates` et `reorderPlanning` retournent des candidats validés sans
+modifier leur entrée. Les gestes changent les bornes `manualStart` ou l'ordre de
+`tasks`, pas le schéma JSON, les statuts ou les preuves. L'interface prévisualise
+le calcul global avant d'enregistrer, refuse une proposition périmée et conserve
+une seule annulation en mémoire. Les dépendances, week-ends et début du planning
+peuvent modifier l'espacement ; aucun nivellement de ressources n'est ajouté.
+
+La livraison ciblée remplace/crée quatre fichiers statiques ; l'index, le sas,
+la configuration privée et les bases hébergées restent conservés.
 
 ## Extension locale de revue — 24 septembre 2026
 

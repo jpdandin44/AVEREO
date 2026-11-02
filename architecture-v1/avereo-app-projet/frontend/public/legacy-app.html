@@ -21,7 +21,37 @@
         /* Planning View Specifics */
         .planning-row { height: 48px; border-bottom: 1px solid #e2e8f0; box-sizing: border-box; }
         .planning-row:hover { background-color: #f8fafc; }
-        .lot-header { height: 40px; background-color: #f1f5f9; border-bottom: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0; box-sizing: border-box; }
+        .lot-header { height: 56px; background-color: #eff6ff; border-bottom: 1px solid #dbeafe; border-top: 1px solid #dbeafe; box-sizing: border-box; }
+        .gantt-viewport { flex: 1; min-height: 0; overflow: auto; background: white; }
+        #gantt-master-container { display: grid; grid-template-columns: 480px minmax(0, 1fr); grid-template-rows: 48px auto; width: calc(480px + var(--gantt-width, 800px)); min-width: 100%; position: relative; align-items: start; }
+        #planning-table-header { grid-column: 1; grid-row: 1; position: sticky; top: 0; left: 0; z-index: 40; height: 48px; }
+        #gantt-timeline-header { grid-column: 2; grid-row: 1; position: sticky; top: 0; z-index: 20; height: 48px; overflow: hidden; }
+        #planning-table-body { grid-column: 1; grid-row: 2; position: sticky; left: 0; z-index: 30; background: white; border-right: 1px solid #e2e8f0; }
+        #gantt-scroll-pane { grid-column: 2; grid-row: 2; position: relative; min-width: 0; overflow: clip; }
+        .gantt-today-line { position: absolute; top: 0; bottom: 0; width: 2px; transform: translateX(-1px); background: #ef4444; z-index: 25; pointer-events: none; }
+        .gantt-today-caption { position: absolute; top: 0; width: 36px; height: 14px; line-height: 14px; border-radius: 0 0 4px 4px; background: #dc2626; color: white; font-size: 9px; font-weight: 700; text-align: center; z-index: 26; pointer-events: none; }
+        .project-cartouche { display: flex; align-items: center; border-left: 3px solid #3b82f6; }
+        .lot-toggle { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; height: 100%; padding: 0 12px 0 4px; text-align: left; color: #1e3a8a; cursor: pointer; }
+        .lot-toggle:hover { background: #dbeafe; }
+        .lot-toggle:focus-visible { outline: 2px solid #2563eb; outline-offset: -3px; }
+        .lot-chevron { flex: none; width: 16px; transition: transform .15s; }
+        .lot-toggle[aria-expanded="true"] .lot-chevron { transform: rotate(90deg); }
+        .lot-title { flex: 1; min-width: 0; font-size: 12px; font-weight: 600; line-height: 16px; }
+        .lot-count { flex: none; border: 1px solid #bfdbfe; border-radius: 999px; padding: 2px 7px; font-size: 10px; background: white; color: #1d4ed8; }
+        .planning-group { flex-shrink: 0; }
+        .planning-grip { flex: none; width: 24px; padding: 4px; color: #64748b; cursor: grab; font-size: 18px; line-height: 20px; touch-action: none; }
+        .planning-grip:hover, .planning-grip:focus-visible { color: #1d4ed8; background: #dbeafe; border-radius: 4px; }
+        .planning-drag-source { opacity: .5; }
+        .planning-drop-before { box-shadow: inset 0 3px #2563eb; }
+        .planning-drop-after { box-shadow: inset 0 -3px #2563eb; }
+        .lot-timeline { position: relative; }
+        .project-summary-bar { position: absolute; top: 17px; height: 22px; min-width: 24px; background: #1e40af; color: white; border-radius: 3px; cursor: grab; user-select: none; display: flex; align-items: center; font-size: 10px; font-weight: 600; box-shadow: 0 1px 3px #0f172a30; }
+        .project-summary-bar::before, .project-summary-bar::after { content: ''; position: absolute; top: 0; height: 27px; width: 3px; background: inherit; }
+        .project-summary-bar::before { left: 0; }
+        .project-summary-bar::after { right: 0; }
+        .project-summary-bar:focus-visible, .milestone:focus-visible, .gantt-bar:focus-visible { outline: 2px solid #2563eb; outline-offset: 3px; }
+        #planning-change-dialog { width: min(760px, calc(100vw - 32px)); max-height: 85vh; border: 1px solid #cbd5e1; border-radius: 12px; padding: 24px; color: #1e293b; }
+        #planning-change-dialog::backdrop { background: #0f172a80; }
         
         /* Gantt Grid */
         .gantt-bg-grid {
@@ -238,52 +268,51 @@
         <div id="view-planning" class="hidden flex-1 flex flex-col overflow-hidden relative bg-white">
             
             <!-- Toolbar -->
-            <div class="h-12 border-b border-slate-200 bg-white flex items-center justify-between px-4 shrink-0 z-20 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
-                <div class="flex items-center space-x-2 text-sm">
+            <div class="min-h-12 py-2 gap-2 flex-wrap border-b border-slate-200 bg-white flex items-center justify-between px-4 shrink-0 z-20 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+                <div class="flex items-center gap-2 flex-wrap text-sm">
                     <span class="font-medium text-slate-700">Vue:</span>
                     <button class="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-200 text-xs transition-colors" onclick="setZoom('days')" id="btn-zoom-days">Jours</button>
                     <button class="px-3 py-1.5 rounded-md bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 text-xs transition-colors font-medium" onclick="setZoom('weeks')" id="btn-zoom-weeks">Semaines</button>
+                    <button class="px-2 py-1.5 rounded-md border border-slate-200 text-xs text-slate-600 hover:bg-slate-50" onclick="setPlanningGroupsExpanded(false)">Tout replier</button>
+                    <button class="px-2 py-1.5 rounded-md border border-slate-200 text-xs text-slate-600 hover:bg-slate-50" onclick="setPlanningGroupsExpanded(true)">Tout déplier</button>
+                    <button id="planning-undo" disabled class="px-2 py-1.5 rounded-md border border-slate-200 text-xs text-slate-600 disabled:opacity-40" onclick="undoPlanningChange()">Annuler le dernier déplacement</button>
                 </div>
-                <div class="flex items-center space-x-4 text-xs font-medium">
+                <div class="flex items-center gap-4 flex-wrap text-xs font-medium">
                     <div class="flex items-center"><div class="w-3 h-3 rounded bg-blue-500 mr-1.5"></div>En cours</div>
                     <div class="flex items-center"><div class="w-3 h-3 rounded bg-emerald-500 mr-1.5"></div>Terminé</div>
                     <div class="flex items-center"><div class="w-3 h-3 rounded bg-red-500 mr-1.5"></div>Retard / Bloqué</div>
                     <div class="flex items-center"><div class="w-3 h-3 rounded bg-slate-300 mr-1.5"></div>À faire</div>
                 </div>
             </div>
+            <p id="planning-gesture-status" role="status" aria-live="polite" class="px-4 py-1 text-xs text-slate-500 shrink-0">Barres : déplacer les dates · Poignées ⠿ : réordonner · Alt + flèches : clavier · Échap : annuler.</p>
 
             <!-- Split Container -->
-            <div class="flex-1 overflow-y-auto overflow-x-hidden flex flex-col bg-white">
-                <div class="flex flex-row min-w-max relative" id="gantt-master-container">
+            <div class="gantt-viewport" id="gantt-viewport" tabindex="0" role="region" aria-label="Planning défilant : tâches et calendrier">
+                <div id="gantt-master-container">
                     
                     <!-- Left Pane: Data Table (Sticky) -->
-                    <div class="w-[480px] shrink-0 sticky left-0 z-30 bg-white border-r border-slate-200 shadow-[2px_0_8px_rgba(0,0,0,0.05)] flex flex-col">
                         <!-- Header Row -->
-                        <div class="h-12 flex items-center bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider shrink-0">
-                            <div class="w-10 flex-shrink-0 text-center">ID</div>
+                        <div id="planning-table-header" class="flex items-center bg-slate-50 border-b border-r border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                            <div class="w-10 flex-shrink-0 text-center">Ordre</div>
                             <div class="flex-1 px-3">Tâche</div>
                             <div class="w-16 px-2 text-center">Durée</div>
                             <div class="w-24 px-2 text-center">Début</div>
                             <div class="w-24 px-2 text-center">Statut</div>
                         </div>
+                        <div id="gantt-timeline-header" class="border-b border-slate-200 bg-slate-50 flex"></div>
                         <!-- Data Rows Container -->
                         <div id="planning-table-body" class="flex flex-col flex-1 pb-10">
                             <!-- Populated by JS -->
                         </div>
-                    </div>
 
                     <!-- Right Pane: Gantt Chart -->
-                    <div class="flex-1 flex flex-col relative overflow-x-auto" id="gantt-scroll-pane">
-                        <!-- Timeline Header -->
-                        <div id="gantt-timeline-header" class="h-12 border-b border-slate-200 bg-slate-50 flex sticky top-0 z-20 shrink-0">
-                            <!-- Populated by JS -->
-                        </div>
+                    <div id="gantt-scroll-pane">
                         <!-- Gantt Grid Background (Absolute to fill space behind bars) -->
-                        <div id="gantt-bg-grid" class="absolute top-12 bottom-0 left-0 right-0 z-0 flex pointer-events-none">
+                        <div id="gantt-bg-grid" class="absolute inset-0 z-0 flex pointer-events-none">
                             <!-- Columns populated by JS -->
                         </div>
                         <!-- SVG Layer for Dependencies -->
-                        <svg id="gantt-svg-layer" class="absolute top-12 left-0 w-full h-full pointer-events-none" style="z-index: 5;">
+                        <svg id="gantt-svg-layer" class="absolute top-0 left-0 w-full h-full pointer-events-none" style="z-index: 5;">
                             <defs>
                                 <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
                                     <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
@@ -292,9 +321,10 @@
                             <!-- Paths populated by JS -->
                         </svg>
                         <!-- Gantt Bars Container -->
-                        <div id="planning-gantt-body" class="flex flex-col relative z-10 pb-10 min-h-full">
+                        <div id="planning-gantt-body" class="flex flex-col relative z-10 pb-10">
                             <!-- Populated by JS (Height of rows matches Left Pane) -->
                         </div>
+                        <div id="gantt-today-line" class="gantt-today-line" hidden aria-hidden="true"></div>
                     </div>
 
                 </div>
@@ -330,6 +360,17 @@
         </div>
 
     </main>
+
+    <dialog id="planning-change-dialog" aria-labelledby="planning-change-title" oncancel="cancelPlanningChange()">
+        <h2 id="planning-change-title" class="text-lg font-semibold mb-3">Déplacement proposé</h2>
+        <p id="planning-change-summary" class="text-sm mb-3"></p>
+        <p class="text-xs text-slate-500 mb-3">Les dépendances et le début du planning restent prioritaires ; un week-end est reporté au lundi. Les dates sont des bornes « ne pas démarrer avant », pas des engagements fermes. Aucun statut, contenu ou validation de tâche ne change.</p>
+        <div id="planning-change-details" class="max-h-80 overflow-auto border rounded text-xs p-3"></div>
+        <div class="flex justify-end gap-3 mt-4">
+            <button type="button" onclick="cancelPlanningChange()" class="px-4 py-2 border rounded" autofocus>Annuler</button>
+            <button type="button" onclick="applyPlanningChange()" class="px-4 py-2 bg-blue-600 text-white rounded">Appliquer le déplacement</button>
+        </div>
+    </dialog>
 
     <!-- Backdrop -->
     <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm backdrop z-40" onclick="closeTaskModal()"></div>
@@ -483,6 +524,10 @@
         let zoomLevel = 'days';
         let ganttScale = 40;
         let isDraggingAction = false;
+        // Display preference only: never changes the project or its exported tasks.
+        const collapsedPlanningLots = new Set();
+        let pendingPlanningChange = null;
+        let lastPlanningEdit = null;
         let state = { currentDate: new Date(), projectStart: new Date(), projectEnd: new Date(), totalDays: 20, tasksDict: Object.create(null), groupedTasks: Object.create(null), editingTaskId: null, renderStateGlobal: { renderStartDate: null } };
 
         function calendarSerial(date) { return Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / MS_PER_DAY; }
@@ -506,14 +551,6 @@
             const workDelta = workingOffsetAtCalendarPosition(origin, calendarEnd) - task.endOffset;
             const chargeDelta = Math.round(workDelta * capacity / 5 * 4) / 4;
             return Math.max(Math.min(task.duration, 0.25), Math.round((task.duration + chargeDelta) * 1000000) / 1000000);
-        }
-
-        function dateAfterDrag(task, dx, scale) {
-            const delta = Math.round(dx / scale);
-            if (delta === 0) return task.manualStart;
-            const date = new Date(task.calcStart);
-            date.setDate(date.getDate() + delta);
-            return localIso(date);
         }
 
         function recalculateSchedule() {
@@ -637,6 +674,7 @@
             const svgLayer = document.getElementById('gantt-svg-layer');
 
             ganttScale = zoomLevel === 'days' ? 40 : 10;
+            document.getElementById('gantt-master-container').style.width = `${480 + state.totalDays * ganttScale}px`;
             let headerHtml = '', gridHtml = '';
             
             let currentDateWalker = new Date(state.projectStart);
@@ -656,6 +694,16 @@
                 currentDateWalker.setDate(currentDateWalker.getDate() + 1);
             }
 
+            const today = new Date();
+            const todayX = todayMarkerPosition(renderStartDate, today, ganttScale, state.totalDays);
+            const todayLine = document.getElementById('gantt-today-line');
+            todayLine.hidden = todayX === null;
+            if (todayX !== null) {
+                todayLine.style.left = `${todayX}px`;
+                const captionX = Math.max(0, Math.min(state.totalDays * ganttScale - 36, todayX - 18));
+                const label = `Aujourd’hui : ${today.toLocaleDateString('fr-FR')}`;
+                headerHtml += `<span class="gantt-today-line" style="left:${todayX}px" aria-hidden="true"></span><span class="gantt-today-caption" style="left:${captionX}px" title="${escapeHtml(label)}" aria-label="${escapeHtml(label)}">${today.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' })}</span>`;
+            }
             ganttHeader.innerHTML = headerHtml;
             ganttBgGrid.innerHTML = gridHtml;
 
@@ -666,18 +714,33 @@
             let renderState = {};
             let currentY = 0; // Tracks vertical pixel position from top of container
 
-            sortedLots.forEach(lot => {
-                tableHtml += `<div class="lot-header flex items-center px-3 font-semibold text-xs text-slate-700 uppercase tracking-wider w-full"><i data-lucide="folder" class="w-4 h-4 mr-2 text-slate-400"></i> <span class="truncate">${escapeHtml(lot)}</span></div>`;
-                barsHtml += `<div class="lot-header w-full border-b border-transparent"></div>`;
-                currentY += 40; // lot-header height
+            sortedLots.forEach((lot, index) => {
+                const expanded = !collapsedPlanningLots.has(lot);
+                const lotTasks = state.groupedTasks[lot];
+                const count = lotTasks.length;
+                tableHtml += `<div class="lot-header project-cartouche" data-lot-index="${index}"><button type="button" class="planning-grip" data-reorder-kind="lot" data-reorder-id="${index}" aria-label="Réordonner le projet ${escapeHtml(lot)}" title="Glisser pour réordonner ; Alt + haut/bas">⠿</button><button type="button" id="planning-lot-${index}" class="lot-toggle" aria-expanded="${expanded}" aria-controls="planning-group-${index}" onclick="togglePlanningGroup(${index})"><span class="lot-chevron" aria-hidden="true">▶</span><span class="lot-title">${escapeHtml(lot)}</span><span class="lot-count">${count} tâche${count > 1 ? 's' : ''}</span></button></div><div id="planning-group-${index}" class="planning-group"${expanded ? '' : ' hidden'}>`;
+                const positions = lotTasks.map(task => taskTimelinePosition(task, renderStartDate));
+                const left = Math.min(...positions.map(position => position.left));
+                const right = Math.max(...positions.map(position => position.right));
+                const start = new Date(Math.min(...lotTasks.map(task => task.calcStart.getTime())));
+                const end = new Date(Math.max(...lotTasks.map(task => task.calcEnd.getTime())));
+                const charge = lotTasks.reduce((sum, task) => sum + task.duration, 0);
+                const progress = Math.round(lotTasks.reduce((sum, task) => sum + task.progress * (charge ? task.duration : 1), 0) / (charge || count));
+                const label = `${formatDateShort(start)} → ${formatDateShort(end)} · ${progress}%`;
+                barsHtml += `<div class="lot-header lot-timeline" data-summary-row="${index}"><div class="project-summary-bar" role="button" tabindex="0" data-date-kind="lot" data-lot-index="${index}" style="left:${right === left ? left - 12 : left}px;width:${Math.max(24, right - left)}px" title="${escapeHtml(lot)} — ${escapeHtml(label)} — glisser pour décaler le projet ; Alt + gauche/droite" aria-label="Déplacer les dates du projet ${escapeHtml(lot)}"><span class="gantt-progress" style="width:${progress}%"></span><span class="gantt-label">${escapeHtml(label)}</span></div></div>`;
+                currentY += 56; // Both panes use the same project-cartouche height.
+                if (!expanded) {
+                    tableHtml += '</div>';
+                    return;
+                }
 
                 state.groupedTasks[lot].forEach(t => {
                     let warnIcon = t.isLate ? `<i data-lucide="alert-circle" class="w-4 h-4 text-red-500 mr-2 shrink-0" title="En retard"></i>` : '';
                     let manualPin = t.manualStart ? `<i data-lucide="pin" class="w-3 h-3 text-blue-500 mr-1 shrink-0" title="Démarrage au plus tôt imposé"></i>` : '';
                     
                     tableHtml += `
-                        <div class="planning-row flex items-center cursor-pointer group w-full" onclick="handleTaskClick('${t.id}')">
-                            <div class="w-10 flex-shrink-0 text-center text-[10px] text-slate-400 font-mono">${t.id.replace('T','')}</div>
+                        <div class="planning-row flex items-center cursor-pointer group w-full" data-task-id="${escapeHtml(t.id)}" data-lot-index="${index}" onclick="if(!event.target.closest('.planning-grip')) handleTaskClick('${t.id}')">
+                            <div class="w-10 flex-shrink-0 text-center text-[10px] text-slate-400 font-mono"><button type="button" class="planning-grip" data-reorder-kind="task" data-reorder-id="${escapeHtml(t.id)}" aria-label="Réordonner le sujet ${escapeHtml(t.name)}" title="Glisser dans ce projet ; Alt + haut/bas">⠿</button></div>
                             <div class="flex-1 px-3 flex items-center overflow-hidden">
                                 ${warnIcon}${manualPin}
                                 <div class="min-w-0"><span class="block text-sm font-medium text-slate-800 truncate group-hover:text-blue-600 transition-colors">${escapeHtml(t.name)}</span><span class="block text-[10px] text-slate-500">${t.checklist?.length ? checklistLabel(t.checklist) : 'Fiche à compléter'} · ${(t.risks || []).length} risques</span></div>
@@ -693,20 +756,19 @@
                     let widthPx = 0;
 
                     if (t.calcStart && t.calcEnd) {
-                        const startFraction = t.startOffset - Math.floor(t.startOffset + 1e-9);
-                        const endFraction = t.duration === 0 ? startFraction : (t.endOffset - Math.floor(t.endOffset + 1e-9) || 1);
-                        leftPx = (calendarSerial(t.calcStart) - calendarSerial(renderStartDate) + Math.max(0, startFraction)) * ganttScale;
-                        widthPx = t.duration === 0 ? 0 : (calendarSerial(t.calcEnd) - calendarSerial(t.calcStart) + endFraction - Math.max(0, startFraction)) * ganttScale;
+                        const position = taskTimelinePosition(t, renderStartDate);
+                        leftPx = position.left;
+                        widthPx = position.right - position.left;
                         renderState[t.id] = { y: currentY + 24, left: leftPx, right: leftPx + widthPx };
 
                         if (t.isMilestone) {
                             widthPx = 0;
-                            barHtml = `<div class="milestone" data-id="${escapeHtml(t.id)}" style="left: ${leftPx - 12}px;" title="${escapeHtml(t.name)}"></div>`;
+                            barHtml = `<div class="milestone" role="button" tabindex="0" data-date-kind="task" data-id="${escapeHtml(t.id)}" style="left: ${leftPx - 12}px;" title="${escapeHtml(t.name)} — glisser ; Alt + gauche/droite" aria-label="Déplacer les dates de ${escapeHtml(t.name)}"></div>`;
                         } else {
                             if (widthPx < 4) widthPx = 4;
                             let colorClass = getStatusColorClass(t.status, t.isLate);
                             barHtml = `
-                                <div class="gantt-bar ${colorClass}" data-id="${escapeHtml(t.id)}" style="left: ${leftPx}px; width: ${widthPx}px;" title="${escapeHtml(t.name)}">
+                                <div class="gantt-bar ${colorClass}" role="button" tabindex="0" data-date-kind="task" data-id="${escapeHtml(t.id)}" style="left: ${leftPx}px; width: ${widthPx}px;" title="${escapeHtml(t.name)} — glisser ; Alt + gauche/droite" aria-label="Déplacer les dates de ${escapeHtml(t.name)}">
                                     <div class="gantt-progress" style="width: ${t.progress}%"></div>
                                     <span class="gantt-label">${t.progress}%</span>
                                     <div class="resize-handle" data-id="${escapeHtml(t.id)}" title="Étirer par pas de 0,25 j-p (édition précise dans la fiche)"></div>
@@ -715,9 +777,10 @@
                         }
                     }
 
-                    barsHtml += `<div class="planning-row relative w-full border-b border-slate-100 hover:bg-slate-50/50 box-border">${barHtml}</div>`;
+                    barsHtml += `<div class="planning-row relative w-full border-b border-slate-100 hover:bg-slate-50/50 box-border" data-task-id="${escapeHtml(t.id)}">${barHtml}</div>`;
                     currentY += 48; // planning-row height
                 });
+                tableHtml += '</div>';
             });
 
             // Draw SVG arrows
@@ -751,7 +814,47 @@
 
             tableBody.innerHTML = tableHtml;
             ganttBody.innerHTML = barsHtml;
+            updatePlanningUndo();
             drawIcons();
+        }
+
+        function todayMarkerPosition(origin, today, scale, dayCount) {
+            const day = calendarSerial(today) - calendarSerial(origin);
+            return day >= 0 && day < dayCount ? (day + 0.5) * scale : null;
+        }
+
+        function refreshPlanningDay() {
+            if (typeof projectLoaded === 'undefined' || !projectLoaded || dnd.active || pendingPlanningChange || state.editingTaskId) return;
+            if (localIso(state.currentDate) !== localIso()) refreshAll();
+        }
+
+        function schedulePlanningDayRefresh() {
+            setTimeout(() => { refreshPlanningDay(); schedulePlanningDayRefresh(); }, 60000);
+        }
+
+        window.addEventListener('focus', refreshPlanningDay);
+
+        function taskTimelinePosition(task, origin) {
+            const start = Math.max(0, task.startOffset - Math.floor(task.startOffset + 1e-9));
+            const end = task.duration === 0 ? start : (task.endOffset - Math.floor(task.endOffset + 1e-9) || 1);
+            const left = (calendarSerial(task.calcStart) - calendarSerial(origin) + start) * ganttScale;
+            const right = task.duration === 0 ? left : (calendarSerial(task.calcEnd) - calendarSerial(origin) + end) * ganttScale;
+            return { left, right };
+        }
+
+        function togglePlanningGroup(index) {
+            const lot = Object.keys(state.groupedTasks)[index];
+            if (lot === undefined) return;
+            if (collapsedPlanningLots.has(lot)) collapsedPlanningLots.delete(lot);
+            else collapsedPlanningLots.add(lot);
+            renderPlanningView();
+            document.getElementById(`planning-lot-${index}`)?.focus({ preventScroll: true });
+        }
+
+        function setPlanningGroupsExpanded(expanded) {
+            collapsedPlanningLots.clear();
+            if (!expanded) Object.keys(state.groupedTasks).forEach(lot => collapsedPlanningLots.add(lot));
+            renderPlanningView();
         }
 
         function renderRisksView() {
@@ -765,9 +868,106 @@
             openTaskModal(taskId);
         }
 
+        function planningFeedback(message) {
+            document.getElementById('planning-gesture-status').textContent = message;
+        }
+
+        function updatePlanningUndo() {
+            document.getElementById('planning-undo').disabled = !lastPlanningEdit || lastPlanningEdit.after !== ProjetPlanning.encodeProject(currentProject());
+        }
+
+        function proposePlanningChange(candidate, title, selectedIds = [], requireDateChange = false, snapshot = null) {
+            const before = ProjetPlanning.encodeProject(currentProject());
+            if (snapshot && snapshot !== before) throw new Error('Le planning a changé pendant le geste. Recommence le déplacement.');
+            const normalized = ProjetPlanning.normalizeProject(candidate);
+            const encoded = ProjetPlanning.encodeProject(normalized);
+            if (encoded === before) { planningFeedback('Aucun changement.'); return; }
+            const previous = ProjetPlanning.schedule(currentProject(), localIso());
+            const next = ProjetPlanning.schedule(normalized, localIso());
+            const old = new Map(previous.tasks.map(task => [task.id, task]));
+            const dated = next.tasks.filter(task => task.startOffset !== old.get(task.id).startOffset || task.endOffset !== old.get(task.id).endOffset);
+            if (requireDateChange && !dated.length) throw new Error('Aucune date calculée ne peut bouger à cet endroit : vérifie le début du planning, le week-end et les dépendances.');
+            const affected = next.tasks.filter(task => dated.includes(task) || task.manualStart !== old.get(task.id).manualStart);
+            const indirect = dated.filter(task => !selectedIds.includes(task.id)).length;
+            document.getElementById('planning-change-title').textContent = title;
+            document.getElementById('planning-change-summary').textContent = `${dated.length} tâche(s) avec dates recalculées, dont ${indirect} hors de la sélection. Fin du planning : ${formatDateShort(previous.projectEnd)} → ${formatDateShort(next.projectEnd)}. Rien n'est encore enregistré.`;
+            let details = `<p class="mb-3">${escapeHtml(title)}</p>`;
+            if (!affected.length) details += '<p>Dates inchangées ; seul l’ordre de lecture/priorité sera modifié.</p>';
+            else details += `<table class="w-full text-left"><thead><tr><th>Tâche</th><th>Avant</th><th>Après</th></tr></thead><tbody>${affected.map(task => {
+                const previous = old.get(task.id);
+                return `<tr class="border-t"><td class="py-2 pr-3">${escapeHtml(task.name)}${selectedIds.includes(task.id) ? '' : ' (dépendance)'}${task.duration !== previous.duration ? `<br>Charge : ${previous.duration} → ${task.duration} j-p` : ''}</td><td class="pr-3">${formatDateShort(previous.calcStart)} → ${formatDateShort(previous.calcEnd)}</td><td>${formatDateShort(task.calcStart)} → ${formatDateShort(task.calcEnd)}${task.manualStart !== previous.manualStart ? `<br><span class="text-slate-500">Borne : ${escapeHtml(task.manualStart || 'aucune')}</span>` : ''}</td></tr>`;
+            }).join('')}</tbody></table>`;
+            document.getElementById('planning-change-details').innerHTML = details;
+            pendingPlanningChange = { before, candidate: normalized };
+            document.getElementById('planning-change-dialog').showModal();
+        }
+
+        function cancelPlanningChange() {
+            pendingPlanningChange = null;
+            document.getElementById('planning-change-dialog').close();
+            planningFeedback('Déplacement annulé ; planning inchangé.');
+        }
+
+        function applyPlanningChange() {
+            const pending = pendingPlanningChange;
+            if (!pending) return false;
+            if (pending.before !== ProjetPlanning.encodeProject(currentProject())) {
+                cancelPlanningChange();
+                planningFeedback('Le planning a changé depuis la proposition. Recommence le déplacement.');
+                return false;
+            }
+            if (!commitProject(pending.candidate, { message: 'Déplacement enregistré' })) return false;
+            lastPlanningEdit = { before: pending.before, after: ProjetPlanning.encodeProject(currentProject()) };
+            pendingPlanningChange = null;
+            document.getElementById('planning-change-dialog').close();
+            updatePlanningUndo();
+            planningFeedback('Déplacement appliqué. Tu peux annuler ce dernier déplacement tant qu’aucune autre modification n’a été faite.');
+            return true;
+        }
+
+        function undoPlanningChange() {
+            if (!lastPlanningEdit || lastPlanningEdit.after !== ProjetPlanning.encodeProject(currentProject())) {
+                planningFeedback('Annulation indisponible après une autre modification ; utilise un export pour une reprise complète.');
+                return false;
+            }
+            if (!commitProject(ProjetPlanning.decodeProject(lastPlanningEdit.before), { message: 'Dernier déplacement annulé' })) return false;
+            lastPlanningEdit = null;
+            updatePlanningUndo();
+            planningFeedback('Dernier déplacement annulé.');
+            return true;
+        }
+
+        function requestPlanningDates(kind, id, days, snapshot = null) {
+            if (!days) return;
+            try {
+                const lot = Object.keys(state.groupedTasks)[Number(id)];
+                const selected = kind === 'lot' ? state.groupedTasks[lot] : tasks.filter(task => task.id === id);
+                if (!selected?.length) throw new Error('Sélection introuvable.');
+                const ids = selected.map(task => task.id);
+                const candidate = ProjetPlanning.movePlanningDates(currentProject(), ids, days);
+                proposePlanningChange(candidate, `Décaler ${kind === 'lot' ? 'le projet ' + lot : 'le sujet ' + selected[0].name} (${days > 0 ? '+' : ''}${days} j calendaires)`, ids, true, snapshot);
+            } catch (error) { planningFeedback(error.message); }
+        }
+
+        function requestPlanningReorder(kind, source, target, after, snapshot = null) {
+            try {
+                const candidate = ProjetPlanning.reorderPlanning(currentProject(), kind, source, target, after);
+                const name = id => kind === 'lot' ? id : state.tasksDict[id]?.name;
+                proposePlanningChange(candidate, `Réordonner : ${name(source)} ${after ? 'après' : 'avant'} ${name(target)}`, kind === 'lot' ? tasks.filter(task => task.lot === source).map(task => task.id) : [source], false, snapshot);
+            } catch (error) { planningFeedback(error.message); }
+        }
+
         let dnd = { active: false, type: null, taskId: null, startX: 0, element: null, origVal: 0 };
 
         document.getElementById('planning-gantt-body')?.addEventListener('mousedown', e => {
+            if (e.button !== 0) return;
+            dnd.snapshot = ProjetPlanning.encodeProject(currentProject());
+            const summary = e.target.closest('.project-summary-bar');
+            if (summary) {
+                dnd.active = true; dnd.type = 'project-move'; dnd.lotIndex = summary.dataset.lotIndex;
+                dnd.startX = e.clientX; dnd.element = summary; dnd.origVal = parseFloat(summary.style.left) || 0;
+                document.body.classList.add('is-dragging'); e.preventDefault(); return;
+            }
             if (e.target.classList.contains('resize-handle')) {
                 dnd.active = true; dnd.type = 'resize';
                 dnd.taskId = e.target.dataset.id; dnd.startX = e.clientX;
@@ -785,14 +985,47 @@
             }
         });
 
+        document.getElementById('planning-table-body')?.addEventListener('mousedown', e => {
+            const handle = e.target.closest('.planning-grip');
+            if (!handle || e.button !== 0) return;
+            const kind = handle.dataset.reorderKind;
+            const id = handle.dataset.reorderId;
+            dnd = { active: true, type: 'reorder', kind, source: kind === 'lot' ? Object.keys(state.groupedTasks)[Number(id)] : id,
+                startX: e.clientX, startY: e.clientY, snapshot: ProjetPlanning.encodeProject(currentProject()), sourceElement: handle.closest('.project-cartouche, .planning-row') };
+            dnd.sourceElement.classList.add('planning-drag-source');
+            document.body.classList.add('is-dragging'); e.preventDefault();
+        });
+
+        function clearPlanningDropMarks() {
+            for (const element of document.querySelectorAll?.('.planning-drop-before, .planning-drop-after, .planning-drag-source') || []) element.classList.remove('planning-drop-before', 'planning-drop-after', 'planning-drag-source');
+        }
+
         document.addEventListener('mousemove', e => {
             if (!dnd.active) return;
             let dx = e.clientX - dnd.startX;
+            if (dnd.type === 'reorder') {
+                clearPlanningDropMarks();
+                dnd.sourceElement.classList.add('planning-drag-source');
+                const element = document.elementFromPoint(e.clientX, e.clientY)?.closest(dnd.kind === 'lot' ? '[data-lot-index]' : '.planning-row[data-task-id]');
+                dnd.target = null;
+                if (element && document.getElementById('planning-table-body').contains(element)) {
+                    const rect = element.getBoundingClientRect();
+                    dnd.target = dnd.kind === 'lot' ? Object.keys(state.groupedTasks)[Number(element.dataset.lotIndex)] : element.dataset.taskId;
+                    dnd.after = e.clientY > rect.top + rect.height / 2;
+                    element.classList.add(dnd.after ? 'planning-drop-after' : 'planning-drop-before');
+                    planningFeedback(`Déposer ${dnd.after ? 'après' : 'avant'} ${dnd.target}. Échap pour annuler.`);
+                }
+                const viewport = document.getElementById('gantt-viewport'), rect = viewport.getBoundingClientRect();
+                if (e.clientY > rect.bottom - 32) viewport.scrollTop += 20;
+                if (e.clientY < rect.top + 64) viewport.scrollTop -= 20;
+                return;
+            }
             if (dnd.type === 'resize') {
                 dnd.element.style.width = Math.max(4, dnd.origVal + dx) + 'px';
-            } else if (dnd.type === 'move') {
+            } else if (dnd.type === 'move' || dnd.type === 'project-move') {
                 dnd.element.style.left = Math.max(0, dnd.origVal + dx) + 'px';
             }
+            planningFeedback(`Déplacement en cours : ${Math.round(dx / ganttScale)} j calendaires. Échap pour annuler.`);
         });
 
         document.addEventListener('mouseup', e => {
@@ -804,19 +1037,63 @@
                 setTimeout(() => isDraggingAction = false, 200); 
             }
 
-            const nextTasks = tasks.map(task => ({ ...task, dependencies: [...task.dependencies] }));
-            const task = nextTasks.find(task => task.id === dnd.taskId);
-            if (task && Math.abs(dx) > 3) {
-                if (dnd.type === 'resize') {
-                    task.duration = durationAfterDrag(task, dx, ganttScale, projectSettings.capacityPerWeek, state.projectStart);
-                } else {
-                    task.manualStart = dateAfterDrag(task, dx, ganttScale);
-                }
-                commitProject({ ...currentProject(), tasks: nextTasks });
-            }
+            const gesture = { ...dnd };
             dnd.active = false;
+            clearPlanningDropMarks();
             document.body.classList.remove('is-dragging', 'is-resizing');
             refreshAll();
+            if (gesture.type === 'reorder') {
+                if (gesture.target && (Math.abs(dx) > 3 || Math.abs(e.clientY - gesture.startY) > 3)) {
+                    isDraggingAction = true; setTimeout(() => isDraggingAction = false, 200);
+                    requestPlanningReorder(gesture.kind, gesture.source, gesture.target, gesture.after, gesture.snapshot);
+                }
+            } else if (Math.abs(dx) > 3) {
+                if (gesture.type === 'project-move') requestPlanningDates('lot', gesture.lotIndex, Math.round(dx / ganttScale), gesture.snapshot);
+                else if (gesture.type === 'move') requestPlanningDates('task', gesture.taskId, Math.round(dx / ganttScale), gesture.snapshot);
+                else {
+                    const nextTasks = tasks.map(task => ({ ...task, dependencies: [...task.dependencies] }));
+                    const task = nextTasks.find(task => task.id === gesture.taskId);
+                    if (task) {
+                        task.duration = durationAfterDrag(task, dx, ganttScale, projectSettings.capacityPerWeek, state.projectStart);
+                        try { proposePlanningChange({ ...currentProject(), tasks: nextTasks }, `Redimensionner : ${task.name}`, [task.id], false, gesture.snapshot); }
+                        catch (error) { planningFeedback(error.message); }
+                    }
+                }
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && dnd.active) {
+                dnd.active = false; clearPlanningDropMarks();
+                document.body.classList.remove('is-dragging', 'is-resizing'); renderPlanningView();
+                planningFeedback('Geste annulé ; planning inchangé.'); return;
+            }
+            const grip = e.target.closest?.('.planning-grip');
+            const bar = e.target.closest?.('[data-date-kind]');
+            if (e.altKey && grip && ['ArrowUp', 'ArrowDown'].includes(e.key)) {
+                e.preventDefault();
+                const kind = grip.dataset.reorderKind, id = grip.dataset.reorderId;
+                const source = kind === 'lot' ? Object.keys(state.groupedTasks)[Number(id)] : id;
+                const order = kind === 'lot' ? Object.keys(state.groupedTasks) : tasks.filter(task => task.lot === state.tasksDict[id]?.lot).map(task => task.id);
+                const step = e.key === 'ArrowUp' ? -1 : 1, target = order[order.indexOf(source) + step];
+                if (target) requestPlanningReorder(kind, source, target, step > 0);
+            } else if (e.altKey && bar && ['ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                e.preventDefault();
+                const kind = bar.dataset.dateKind, id = kind === 'lot' ? bar.dataset.lotIndex : bar.dataset.id;
+                const selected = kind === 'lot' ? state.groupedTasks[Object.keys(state.groupedTasks)[Number(id)]] : [state.tasksDict[id]];
+                const first = new Date(Math.min(...selected.map(task => task.calcStart.getTime())));
+                let delta = e.key === 'ArrowLeft' ? -1 : 1;
+                const target = new Date(first); target.setDate(target.getDate() + delta);
+                while ([0, 6].includes(target.getDay())) { target.setDate(target.getDate() + Math.sign(delta)); delta += Math.sign(delta); }
+                requestPlanningDates(kind, id, delta);
+            }
+        });
+
+        window.addEventListener('blur', () => {
+            if (!dnd.active) return;
+            dnd.active = false; clearPlanningDropMarks();
+            document.body.classList.remove('is-dragging', 'is-resizing');
+            renderPlanningView(); planningFeedback('Geste annulé au changement de fenêtre.');
         });
 
         function switchView(viewId) {
@@ -987,6 +1264,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             drawIcons();
             initializeLocalProject();
+            schedulePlanningDayRefresh();
         });
 
     </script>
