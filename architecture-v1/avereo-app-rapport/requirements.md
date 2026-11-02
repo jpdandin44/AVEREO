@@ -5,13 +5,17 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## RGA — demande du 2 novembre 2026
+
+Rechercher un bien depuis une tuile CONNECT ou depuis Rapport, localiser son point, conserver séparément la lecture indicative de la carte et la réponse Géorisques datée. Aucun écrasement automatique de brouillon, aucune reprise depuis un autre point, aucune interprétation « sans risque » d’une absence de données. [Critères et parcours](api/rga.md).
 
 ## Aide à la décision demandée le 30 octobre
 

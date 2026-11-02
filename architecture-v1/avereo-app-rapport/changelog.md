@@ -5,12 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-02 — Nouvelle carte RGA intégrée
+
+Ajout de la carte fournie, recherche IGN, repère, lecture cartographique indicative, transfert explicite et restitution expert/client. Accès intégré au bloc Risques et raccourci CONNECT. La recherche d’adresse utilise le service IGN actuel. [Contrat et statut](api/rga.md).
 
 ## 2026-11-01 Corrections livrées et deux maisons vérifiées
 

@@ -5,10 +5,14 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 2026-11-02 — Raccourci RGA
+
+Ajout du raccourci de la carte hébergée dans Rapport et du choix fixe de vue, sans changement de droits ni de configuration. [Contrat et état de livraison](../avereo-app-rapport/api/rga.md).
 
 # Évolutions CONNECT
 

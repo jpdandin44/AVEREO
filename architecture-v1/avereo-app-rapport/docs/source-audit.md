@@ -5,13 +5,17 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## Lot RGA du 2 novembre
+
+100 fichiers source inventoriés, dont 97 données géographiques avec SHA-256 vérifié au build. Seules les pages PHP passent par le sas ; aucun dossier client dans les assets. Le résultat géométrique simplifié est distinct de Géorisques et du diagnostic. Transfert même origine/fenêtre/point, dates contrôlées et brouillon protégé par confirmation. `connect/gate.php` hébergé diffère du dépôt et reste hors du lot. [Contrat, sources et limites](../api/rga.md).
 
 ## Corrections du 1er novembre
 

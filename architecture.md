@@ -5,10 +5,14 @@ title: Architecture du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## Intégration RGA — 2 novembre 2026
+
+La nouvelle carte RGA est un module de Rapport, ouvert également par une tuile CONNECT utilisant ses droits. [Architecture et données](architecture-v1/avereo-app-rapport/api/rga.md).
 
 # Architecture du dépôt AVEREO
 

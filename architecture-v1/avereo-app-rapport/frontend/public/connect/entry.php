@@ -17,5 +17,5 @@ try {
 }
 
 header('Cache-Control: no-store');
-header('Location: /', true, 303);
+header('Location: ' . (($_GET['view'] ?? null) === 'rga' ? '/rga/' : '/'), true, 303);
 exit;

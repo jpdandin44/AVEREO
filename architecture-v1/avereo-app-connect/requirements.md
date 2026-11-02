@@ -5,10 +5,14 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## RGA — 2 novembre 2026
+
+Le responsable confirme une tuile RGA et l’accès depuis Rapport, avec les mêmes droits. Sans accès Rapport, le raccourci est absent et son lancement refusé. [Critères d’intégration](../avereo-app-rapport/api/rga.md).
 
 # Exigences CONNECT
 

@@ -5,13 +5,17 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## Lot RGA du 2 novembre
+
+Anciennes cartes conservées ; nouvelle carte et résultat `rga_cartographie` optionnel. Les anciens dossiers sans ce champ restent lisibles. Les autres données métier ne changent pas lors d’une reprise de lecture au même point. JSON et restitution utilisent le même bloc validé. [Critères et état de recette](../api/rga.md).
 
 ## Corrections du 1er novembre
 

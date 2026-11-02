@@ -476,6 +476,21 @@ $tests['launch ticket is signed and application bound'] = static function () use
     );
     assertSameValue(true, $catalogResponse->payload['data'][0]['available'], 'rapport gate available');
     assertSameValue(true, $catalogResponse->payload['data'][1]['available'], 'coupe gate available');
+    $rga = array_values(array_filter($catalogResponse->payload['data'], static fn (array $app): bool => $app['code'] === 'rga'));
+    assertSameValue(1, count($rga), 'one RGA shortcut');
+    assertSameValue('/api/v1/apps/rapport/launch?view=rga', $rga[0]['launchUrl'], 'RGA uses Rapport entitlement');
+    $rgaResponse = $launchApplication->handle(request('GET', '/api/v1/apps/rapport/launch', [], [], ['view' => 'rga']), $authenticated, 'csrf-test', $logout);
+    assertSameValue(303, $rgaResponse->status, 'RGA redirect');
+    assertSameValue(true, str_ends_with($rgaResponse->headers['Location'], '&view=rga'), 'fixed RGA view');
+    $unsafe = $launchApplication->handle(request('GET', '/api/v1/apps/rapport/launch', [], [], ['view' => 'https://example.invalid/']), $authenticated, 'csrf-test', $logout);
+    assertSameValue(false, str_contains($unsafe->headers['Location'], 'example.invalid'), 'arbitrary redirect ignored');
+    $repository->allowedApps = ['coupe'];
+    $deniedRga = $launchApplication->handle(request('GET', '/api/v1/apps/rapport/launch', [], [], ['view' => 'rga']), $authenticated, 'csrf-test', $logout);
+    assertSameValue(403, $deniedRga->status, 'RGA refuses missing Rapport access');
+    $restricted = $launchApplication->handle(request('GET', '/api/v1/catalog'), $authenticated, 'csrf-test', $logout);
+    assertSameValue(false, in_array('rga', array_column($restricted->payload['data'], 'code'), true), 'RGA absent without Rapport');
+    $repository->allowedApps = ['rapport', 'coupe'];
+
 
     $response = $launchApplication->handle(
         request('GET', '/api/v1/apps/rapport/launch'),

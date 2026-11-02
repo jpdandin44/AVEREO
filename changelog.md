@@ -5,10 +5,14 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-30
+updated: 2026-11-02
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 2026-11-02 — Candidat RGA CONNECT/Rapport
+
+Nouvelle carte, géocodage IGN, lecture indicative conservée séparément de Géorisques, double accès et restitutions. [Périmètre et qualification](architecture-v1/avereo-app-rapport/api/rga.md).
 
 ## 2026-10-30 Aide à la décision de Rapport
 

@@ -5,10 +5,14 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## Raccourci RGA — candidat du 2 novembre
+
+Une tuile RGA est dérivée de l’accès effectif à Rapport. Elle ouvre sa vue cartographique au moyen du ticket Rapport existant ; aucun droit autonome ou nouveau compte. [Parcours et contrat commun](../avereo-app-rapport/api/rga.md).
 
 # AVEREO CONNECT
 

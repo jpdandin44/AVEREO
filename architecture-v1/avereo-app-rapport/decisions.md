@@ -5,13 +5,17 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-24
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 2026-11-02 — Carte RGA liée aux droits de Rapport
+
+Contexte : nouvelle carte fournie et double accès confirmé par le responsable. Décision : héberger le module dans Rapport, avec un raccourci CONNECT contrôlé par les droits Rapport, sans compte ni base supplémentaire. Séparer la lecture géométrique simplifiée de la synthèse officielle et conserver les deux sources. Conséquences : échange limité au même point, transfert explicite et pas de modification du sas partagé hébergé. [Contrat](api/rga.md).
 
 ## 2026-10-24 — Deux restitutions sur le même dossier
 

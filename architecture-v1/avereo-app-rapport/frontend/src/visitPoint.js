@@ -11,6 +11,7 @@ export function moveVisitPoint(report, lon, lat, date) {
     localisation: { ...report.localisation, confirmation: null, point_manuel: { lon: Number(lon), lat: Number(lat), date } },
     urbanisme: { ...report.urbanisme, zone: '', description: '', pdfUrl: '', context: null },
     risques: emptyGeorisquesRiskSummary(),
+    rga_cartographie: null,
     terrain: { ...report.terrain, analysis: null },
   };
 }

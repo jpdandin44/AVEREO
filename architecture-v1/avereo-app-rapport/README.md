@@ -5,13 +5,17 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Nouvelle recherche RGA — candidat du 2 novembre
+
+Tuile RGA dans CONNECT et carte à l’adresse dans Site → Rapport des risques. Lecture cartographique indicative 2026 et synthèse Géorisques séparées ; création explicite d’un dossier depuis la carte et conservation dans les restitutions. [Parcours, sources, lancement local et limites](api/rga.md). État hébergé dans le suivi canonique référencé par ce contrat.
 
 ## Corrections livrées le 1er novembre
 

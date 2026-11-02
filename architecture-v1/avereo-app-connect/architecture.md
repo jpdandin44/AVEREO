@@ -5,10 +5,14 @@ title: Architecture CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-10-14
+updated: 2026-11-02
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Raccourci RGA
+
+Le catalogue ajoute une vue dérivée de Rapport. `/api/v1/apps/rapport/launch?view=rga` conserve le contrôle des droits Rapport et le ticket existant ; seul le paramètre fixe `view=rga` sélectionne la carte après échange. Aucune destination libre ni migration de catalogue. [Contrat](../avereo-app-rapport/api/rga.md).
 
 # Architecture CONNECT
 
