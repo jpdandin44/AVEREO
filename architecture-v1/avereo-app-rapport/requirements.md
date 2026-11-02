@@ -13,6 +13,11 @@ tags:
   - habitologie
 ---
 
+## Saisie de Validation et export — 2 novembre 2026
+
+Les champs textuels de Validation et export doivent proposer la dictée selon l'accord existant de Visite Globale. Chaque attente doit disposer d'un enregistrement explicite, avec distinction visible entre brouillon local et copie serveur et sans validation métier implicite. [Comportement et critères](docs/aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
+
+
 ## Droits RGA — précision du responsable
 
 RGA doit être déclarée comme application distincte dans CONNECT. À la première déclaration, reprendre les droits actuels de Rapport puis les rendre indépendants. L’ouverture de la carte, son iframe et la superposition dans Rapport requièrent une session RGA valide. Les résultats déjà enregistrés dans un dossier restent consultables et exportables avec les droits de Rapport.

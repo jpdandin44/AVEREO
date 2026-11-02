@@ -14,6 +14,11 @@ tags:
   - fonctionnalites
 ---
 
+## Saisie livrée en préproduction le 2 novembre
+
+Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT](https://connect-preprod.avereo.fr/?app=rapport), après accord explicite. Sauvegarde fraîche des 148 fichiers et de la configuration privée ; installation/restauration répétée sur copie privée, puis trois fichiers livrés et 147 fichiers préexistants conservés. Configuration inchangée, aucune migration ni écriture SQL de livraison. Les reçus sont rattachés à `finalisation20261102.exportInput20261102` dans le suivi canonique. Prochaines actions : essai vocal réel, arbitrage des notes Cricq et revue métier avant la démonstration. [Reprise](docs/reprise-demo-philippe.md).
+
+
 ## Lot RGA du 2 novembre
 
 Le lot RGA est préparé dans une copie isolée. Les états de candidat, recette et livraison sont tenus dans le suivi canonique ; les priorités de démonstration restent distinctes. [Parcours, contrôles et prochaine qualification](api/rga.md).

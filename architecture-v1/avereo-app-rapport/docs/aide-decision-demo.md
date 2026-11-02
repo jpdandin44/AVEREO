@@ -5,10 +5,41 @@ title: Aide à la décision pour la démonstration du 3 novembre
 status: active
 version: git
 created: 2026-10-30
-updated: 2026-11-01
+updated: 2026-11-02
 owner: jpdandin
 tags: [rapport, demonstration, habitants, decision]
 ---
+
+## Saisie vocale et enregistrement explicite des attentes
+
+Demande du 2 novembre à partir de deux captures de la rubrique 1 : accès à la dictée dans les champs de Validation et export, plus un bouton d'enregistrement de chaque attente. Candidat local fondé sur `59a38c9` pour conserver la carte RGA/cadastre installée ; branche `feat/rapport-dictee-attentes-20261102`. Le suivi canonique porte `finalisation20261102.exportInput20261102`. Candidat fonctionnel `63ec279` livré en préproduction après accord exact ; la recette et ses réserves sont décrites dans le [point de reprise](reprise-demo-philippe.md).
+
+### Comportement
+
+- Les champs de texte des six rubriques d'aide à la décision reçoivent un bouton micro. Les notes de synthèse client, les titres/légendes/sources des pièces et le nom du signataire disposent du même accès. Analyse et recommandations conservent la dictée existante.
+- La dictée de Visite Globale requiert l'accord déjà prévu dans Dossier ; aucun accord n'est coché par cette évolution. Le retrait de l'accord ou la sortie d'un champ arrête son écoute. Un accès au microphone encore en attente ne peut pas relancer l'écoute après démontage ou retrait de l'accord.
+- Le texte final reconnu est ajouté au contenu courant, sans écraser la saisie manuelle. Les limites de longueur restent applicables ; un ancien texte importé déjà plus long est conservé intégralement.
+- Une liste, un choix d'action ou une case reste une commande structurée : aucun texte vocal ne modifie automatiquement un choix ou un consentement. La signature graphique reste distincte du nom dicté.
+- « Enregistrer cette attente » utilise le stockage du brouillon existant : le dossier courant entier est enregistré, avec les attentes et leurs références. Il ne crée pas de catalogue d'attentes réutilisables ni de nouvelle validation métier.
+- La confirmation précise « dans le brouillon de ce navigateur ». La copie serveur reste l'action distincte « Sauver en ligne ». Les saisies continuent aussi d'alimenter le brouillon automatique.
+- Une erreur de stockage affiche un message d'échec et conserve la saisie à l'écran ; aucun succès n'est annoncé sur rejet. Une modification saisie pendant la fin d'un enregistrement n'est pas remplacée par une ancienne copie.
+
+### Qualification locale et limites
+
+Essais des copies locales Tilleuls et Cricq, sans écriture serveur. Ajouts vocaux simulés dans attentes, projet, liens, actions, options, arbitrage, synthèse client et légende de pièce ; accord absent puis présent, et retrait pendant l'écoute contrôlés. Sauvegarde explicite puis rechargement/reprise des attentes retrouvés sur les deux cas. Échec de sauvegarde simulé : message d'erreur, texte conservé, aucune fausse confirmation. La simulation n'utilise aucun microphone ou service de transcription réel.
+
+Deux DOCX de recette Cricq sont produits par le générateur local : archives ZIP/XML valides, attente modifiée présente dans les deux restitutions et complément vocal présent dans l'expert. Cela ne constitue pas une nouvelle inspection visuelle de leurs pages. Les quatre Word de présentation privés ne sont pas remplacés.
+
+Restent à qualifier : microphone réel et disponibilité du service vocal dans le navigateur de démonstration, puis installation autorisée et recette authentifiée en préproduction. Une simulation de voix ne constitue pas une validation matérielle. Si le navigateur ne prend pas en charge la dictée, la saisie manuelle reste disponible et le message existant oriente vers Chrome, Edge ou Windows + H.
+
+| Phase | État de cet ajout |
+| --- | --- |
+| Cadrage | Demande, portée et distinction brouillon/serveur établies. |
+| Développement local | Implémentation et contrôles locaux ; candidat et PR à relire dans le suivi canonique. |
+| Préproduction | Installation et recette du nouveau candidat en attente d'accord exact, sauvegarde/restauration et vérifications sur les deux maisons. |
+| Mise en production | Non engagée ; aucun accord de production ni merge ajouté. |
+
+
 
 # Aide à la décision pour la démonstration du 3 novembre
 
@@ -17,8 +48,7 @@ tags: [rapport, demonstration, habitants, decision]
 Relier les constats aux attentes des habitants, organiser les actions puis comparer
 deux options dans le même dossier. Maison des Tilleuls et Maison Côte du Cricq
 occupent des durées égales pendant la séance de 90 minutes du 3 novembre 2026.
-L'horaire de cette nouvelle date reste à confirmer ; celui du 27 octobre n'est
-pas reconduit implicitement.
+Le créneau est confirmé le 2 novembre : 9 h 30 à 11 h, heure de Paris.
 
 Le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>) porte les dix attentes, les priorités et le calendrier.
 Le suivi canonique est son voisin `suivi-chantier.json`, sous
@@ -59,7 +89,7 @@ Critères communs : énergie (type et quantité si connus), matériaux, coût et
 qualité d'usage, aides à vérifier, DIY/délégation, budget, calendrier, occupation
 et incertitudes. Les cellules sont rédigées par le professionnel. Une valeur
 absente reste « À évaluer » ; aucun score, prix, gain, aide ou diagnostic n'est
-calculé. DELTA demeure à définir avec Philippe.
+calculé. La fiche DELTA fournie le 2 novembre définit T = D / E et L > T ; les données des maisons restent à instruire et aucun calculateur natif n’est ajouté.
 
 Le bloc structuré `decision` est conservé avec le JSON du rapport ; les notes
 d'écoute existantes restent le verbatim de l'entretien. Aucune extraction
