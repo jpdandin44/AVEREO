@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-24
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,15 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Reprise du 1er novembre
+
+Les priorités A01 à A04 sont traitées sur `9ce22fd` livré et vérifié en préproduction : données propres, compléments sourcés, complétude distincte de la revue métier et messages d'accords cohérents. Les deux JSON sont relus depuis le serveur et les quatre Word hébergés couvrent 56 pages contrôlées. Prochaine étape : revue métier puis répétition des 90 minutes, avec relance CONNECT avant chaque maison car la session applicative dure 30 minutes. DELTA, l'horaire et l'essai avec un second compte restent ouverts. [Critères et statut](docs/aide-decision-demo.md#corrections-du-1er-novembre).
+
+## Reprise du 30 octobre
+
+Le noyau des attentes 4 à 9 est livré en préproduction sur le candidat `9a4f414`, après sauvegarde fraîche et retour arrière répété sur copie privée. Les 75 tests applicatifs, 15 contrôles PHP, build authentifié et CI passent. Deux dossiers distincts sont modifiés, sauvegardés en ligne et rouverts ; JSON intégral conservé. Word expert Tilleuls/Cricq : 17/26 pages ; client : 5/7 pages, rendus contrôlés. Prochaine étape : revue métier des deux maisons et répétition de la séance. Les compléments des attentes 1 à 3 et 10, DELTA et l’horaire restent dans le [plan opérationnel](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/priorites-demo-philippe.md>). Aucun accord de production ajouté.
+
 
 ## Itération livrables : reprise autorisée le 24 octobre
 

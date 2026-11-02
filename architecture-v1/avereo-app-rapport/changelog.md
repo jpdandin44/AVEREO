@@ -5,12 +5,21 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-24
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-01 Corrections livrées et deux maisons vérifiées
+
+Livraison préproduction `9ce22fd` de la clarification de complétude et du message photo/dictée, sans changement des droits, du calcul, de l'API ou du générateur Word. Sauvegarde de 31 fichiers et configuration, retour arrière répété sur copie privée, deux fichiers livrés et arbre de 32 fichiers vérifié. Les deux copies DEMO reçoivent les seuls compléments prévus ; JSON serveur exactement attendus, photos/annexes/accords conservés. Quatre Word natifs hébergés, 56 pages rendues et identiques aux préparations relues. La relance CONNECT après expiration de la session de 30 minutes est contrôlée. [Périmètre et réserves](docs/aide-decision-demo.md#corrections-du-1er-novembre).
+
+## 2026-10-30 Aide à la décision de la Visite Globale
+
+Ajout des attentes permanentes et du projet, liens constat/attentes, actions correctives/préventives/évolutives, incontournables et préalables ; deux options comparées sur neuf critères. Restitution expert et client, alertes sur références perdues et omissions, validation de la nouvelle donnée API. Candidat `9a4f414` livré en préproduction le 30 octobre après sauvegarde et répétition du retour arrière ; recette des deux maisons et Word expert/client contrôlés. Aucun chiffrage, classement automatique ou migration de base. [Critères et limites](docs/aide-decision-demo.md).
+
 
 ## 2026-10-24 — Intégration des restitutions AVEREO
 

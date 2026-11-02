@@ -5,13 +5,28 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-10-24
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## Corrections du 1er novembre
+
+Deux changements de présentation dans `App.jsx` : libellé de complétude avec rappel de revue métier et message conditionnel des deux accords. Les booléens d'autorisation, le calcul, la persistance, l'API et la génération Word restent identiques. Les sources privées des maisons conservent observations, images, annexes et écoute ; seuls l'analyse, les recommandations, le contexte urbanisme du Cricq et les marqueurs de calendrier sont préparés pour mise à jour. Aucun dossier privé ou renseignement personnel dans Git.
+
+Après rétablissement des accès, la matrice locale des quatre accords et le rappel à 100 % réussissent. `9ce22fd` est livré après sauvegarde des 31 fichiers et de la configuration privée, avec installation/restauration répétée sur copie. Deux fichiers remplacés ou ajoutés, 30 conservés ; arbre de 32 fichiers et configuration vérifiés avant puis après les essais. Les trois ressources publiques correspondent aux empreintes attendues, les refus anonymes sont conservés et AVEREO reste en maintenance.
+
+Les deux copies DEMO sont mises à jour par l'API existante après export serveur frais : seuls les quatre chemins Tilleuls et sept chemins Cricq prévus diffèrent. Réouverture serveur et JSON exactement attendus ; identifiants, écoute, accords, observations, photos et annexes conservés. Quatre DOCX téléchargés du générateur hébergé, 56 pages rendues et identiques aux préparations relues ; médias identiques. Aucun changement de schéma ou de configuration. La session de 30 minutes nécessite une relance CONNECT, contrôlée sans changement de droits ou de réglage. Les preuves du 30 octobre ci-dessous restent rattachées à `9a4f414`. [Reprise et limites](reprise-demo-philippe.md).
+
+## Audit du lot aide à la décision du 30 octobre
+
+Les données `decision` sont saisies par le professionnel ; aucun appel IA, nouvelle dépendance ni accès externe. Les valeurs sont échappées dans les deux restitutions. L’API accepte le bloc optionnel après contrôle de forme et de volume ; ses contrôles de propriétaire/organisation sont conservés. Les références absentes/ambiguës et incontournables omis sont signalés, sans supprimer les identifiants ni fabriquer un accord. Le JSON intégral garde les données même lorsque la catégorie technique masque la rubrique. Les cas privés et leurs photos restent hors Git. Voir les [critères de compatibilité](aide-decision-demo.md).
+
+Contrôles du lot : 75 tests Node, 15 tests PHP, syntaxe API, build authentifié et CI réussis. Deux imports privés, modification puis conservation locale et JSON ; alerte d’omission constatée à l’écran. Le candidat `9a4f414` est ensuite livré en préproduction : sauvegarde de 28 fichiers et configuration privée, restauration répétée sur copie, six fichiers contrôlés. Deux nouvelles copies de démonstration sont sauvées et rouvertes par la liste serveur ; toutes les données importées sont conservées après la modification volontaire de calendrier. Word expert 17/26 pages, client 5/7 pages rendus et contrôlés. La livraison n’écrit pas en base ; la recette crée les deux copies attendues. Le script privé de livraison est adapté à Python 3.6 avant toute installation. Configuration, OAuth et production restent inchangés. La recette avec un second compte et la revue métier restent distinctes.
+
 
 ## Intégration des livrables du 24 octobre
 

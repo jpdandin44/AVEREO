@@ -1,6 +1,7 @@
 import { protocolOptions } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
+import DecisionSupportPanel from './DecisionSupportPanel.jsx';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { del as idbDel, get as idbGet, set as idbSet } from 'idb-keyval';
 import {
@@ -719,11 +720,15 @@ function CompletionPanel({ report, validation }) {
   return (
     <aside className="summary-panel">
       <div>
-        <span className="eyebrow">Avancement</span>
+        <span className="eyebrow">Complétude de saisie</span>
         <strong>{score} %</strong>
         <div className="progress">
           <span style={{ width: `${score}%` }} />
         </div>
+        <p className="muted">Repère de remplissage des champs essentiels. Les informations inconnues et les confirmations restent à examiner.</p>
+      </div>
+      <div className="notice" role="status">
+        <span><b>Revue métier à effectuer.</b> Le pourcentage ne vaut ni validation du dossier ni accord des habitants. Relisez le contenu avant remise.</span>
       </div>
       <dl>
         <div>
@@ -1729,8 +1734,11 @@ function ObservationStep({ report, setReport }) {
       {habitologie && (!photoAllowed || !dictationAllowed) && (
         <div className="notice warning consent-warning" role="status">
           <AlertTriangle size={18} />
-          Les photos et la dictee restent desactivees tant que les accords correspondants ne sont pas enregistres dans
-          l'etape Dossier.
+          {!photoAllowed && !dictationAllowed
+            ? "L’import de photos, la caméra et la dictée sont désactivés. Enregistrez chaque accord dans l’étape Dossier pour activer la fonction correspondante."
+            : !photoAllowed
+              ? "L’import de photos et la caméra sont désactivés : l’accord photo reste à recueillir dans l’étape Dossier. L’accord pour la dictée est enregistré."
+              : "La dictée est désactivée : son accord reste à recueillir dans l’étape Dossier. L’accord pour les photos est enregistré."}
         </div>
       )}
 
@@ -1802,6 +1810,8 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
           <p>Verifier les points bloquants, signer et generer le document Word.</p>
         </div>
       </div>
+
+      {isHabitologieReport(report) && <DecisionSupportPanel report={report} setReport={setReport} />}
 
       <div className="validation-grid">
         <div className="validation-box">

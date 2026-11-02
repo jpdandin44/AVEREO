@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildReportHtml, deliveryOptions, optionsWithCurrent } from './reportDelivery.js';
+import { normalizeDecision } from './decisionSupport.js';
 
 const dossier = () => ({titre:'Exemple <script>', reference_dossier:'TEST-1', proprietaire:'Client', adresse_logement:'Adresse test',
   intervenant:'Test', categorie:'Expertise & Visite technique', sous_categorie:'Humidite', date_visite:'',
@@ -8,6 +9,17 @@ const dossier = () => ({titre:'Exemple <script>', reference_dossier:'TEST-1', pr
   protocoles:{standard:true}, analyse_expert:'Analyse intégrale', recommandations:'Action intégrale',reserves:'Réserve conservée',
   signature:'Non signé',nom_signataire:'Test',observations:[{id:'1',titre:'Constat retenu',observations:'Trace relevée',actions:'Examiner',piece:'Cave Est',surface:'Mur ancien',gravite:'Non qualifiée',photos:[]},
     {id:'2',titre:'Autre constat',observations:'Contenu expert uniquement',actions:'',piece:'',surface:'',gravite:'',photos:[]}],
+});
+
+test('decision section and matching comparison are generated before the expert signature', () => {
+  const report = dossier(); report.categorie = 'Visite Globale'; report.sous_categorie = 'Maison';
+  report.decision = normalizeDecision(); report.decision.attentes = [{id:'w1',libelle:'Besoin relié',priorite:'À discuter',source:'Entretien'}];
+  report.decision.option_a.criteres.budget = 'Montant à recueillir';
+  const html = buildReportHtml(report);
+  assert.ok(html.indexOf('Aide à la décision</h2>') < html.indexOf('. Signature</h2>'));
+  assert.match(html, /Besoin relié/); assert.match(html, /Montant à recueillir/);
+  report.livrable = {audience:'client'};
+  assert.match(buildReportHtml(report), /Montant à recueillir/);
 });
 
 test('old reports export as expert without silently adding case-specific or educational material', () => {

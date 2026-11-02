@@ -5,13 +5,20 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-10-24
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Aide à la décision demandée le 30 octobre
+
+La séance du 3 novembre réserve une durée égale aux Tilleuls et au Cricq. Attentes/projet distincts, liens, actions et comparaison sont définis par la [spécification du lot](docs/aide-decision-demo.md), source unique des critères. La structure et les corrections du 1er novembre sont livrées et contrôlées en préproduction ; leurs preuves restent distinctes de celles du 24 octobre.
+
+Le pourcentage de complétude représente les champs essentiels saisis, sans valoir revue métier ou accord des habitants, même à 100 %. Photo/caméra et dictée doivent être décrites selon leurs accords indépendants. Les cas de présentation conservent les inconnues et leurs sources ; l'âge d'un composant n'entraîne pas de durée résiduelle calculée. La séance de 90 minutes doit prévoir le renouvellement CONNECT de la session applicative de 30 minutes.
+
 
 ## Intégration des livrables — 24 octobre 2026
 

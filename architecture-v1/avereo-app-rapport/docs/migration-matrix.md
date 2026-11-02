@@ -5,13 +5,36 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-10-24
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## Corrections du 1er novembre
+
+| Fonction | Contrôle réalisé | Qualification restante |
+| --- | --- | --- |
+| Complétude de saisie | Rappel visible à 100 % sur les deux copies hébergées ; calcul conservé | Revue métier indépendante du pourcentage |
+| Message photo et dictée | Quatre états contrôlés localement ; états Tilleuls et Cricq vérifiés en préproduction, boutons cohérents | Essai matériel micro/caméra non réalisé |
+| Compléments des deux maisons | JSON serveur exactement préparés, identifiants et médias conservés ; quatre Word hébergés, 56 pages contrôlées | Revue métier des fiches et des hypothèses |
+| Session de démonstration | Durée de 1 800 secondes relevée ; renouvellement par CONNECT contrôlé | Prévoir une relance avant chaque maison pendant la répétition de 90 minutes |
+
+Le candidat `9ce22fd` est livré et contrôlé le 1er novembre ; sauvegarde/restauration et reçus propres à ce lot. [Détail et limites](aide-decision-demo.md#corrections-du-1er-novembre).
+
+## État du lot aide à la décision du 30 octobre
+
+| Fonction | État local | Qualification restante |
+| --- | --- | --- |
+| Attentes et projet séparés | Rubriques optionnelles à Export ; deux cas modifiés, sauvés en ligne et rouverts sur `9a4f414` | Revue métier |
+| Bilan et actions liés | Références et données conservées dans le JSON serveur ; alerte d’omission vérifiée puis sélection restaurée | Qualification métier des incontournables |
+| Deux options et comparaison | Même grille ; Word expert Tilleuls/Cricq 17/26 pages et client 5/7 pages contrôlés | Revue des deux restitutions par le responsable |
+| Dossiers antérieurs | Compatibilité contrôlée ; création de deux copies distinctes sans remplacement des rapports précédents | Isolation entre deux comptes non couverte par cette recette |
+
+Le candidat `5d70e41` reste l’état antérieur sauvegardé. Les preuves de la recette du nouveau `9a4f414` sont propres à ce lot. [Spécification](aide-decision-demo.md).
+
 
 # Matrice de migration fonctionnelle
 

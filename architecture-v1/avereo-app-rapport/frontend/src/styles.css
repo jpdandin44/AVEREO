@@ -1726,3 +1726,19 @@ img {
 .delivery-choices input { width: auto; }
 .delivery-annex { padding: 16px; margin: 12px 0; background: #f3f6f9; border-radius: 8px; }
 .delivery-annex img { max-width: 220px; max-height: 150px; object-fit: contain; }
+.decision-support { min-width: 0; border: 1px solid #cad9e1; border-radius: 12px; padding: 20px; margin: 24px 0; }
+.decision-support > legend { color: #002b45; font-weight: 700; padding: 0 8px; }
+.decision-support details { border-top: 1px solid #d6e2e8; padding: 16px 0; }
+.decision-support summary { cursor: pointer; font-weight: 700; color: #173b77; }
+.decision-support label { display: grid; gap: 6px; margin: 12px 0; font-size: 14px; }
+.decision-support textarea, .decision-support select { width: 100%; min-width: 0; }
+.decision-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.decision-card { min-width: 0; background: #f5f8fa; padding: 16px; margin: 16px 0; border-radius: 8px; }
+.decision-refs { border: 1px solid #d6e2e8; margin: 14px 0; min-width: 0; }
+.decision-refs label, .decision-support .decision-check { display: flex; align-items: flex-start; gap: 10px; }
+.decision-refs input, .decision-check input { width: auto; flex-shrink: 0; }
+.decision-table { overflow-x: auto; margin: 18px 0; }
+.decision-table table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 500px; }
+.decision-table th, .decision-table td { padding: 10px; border: 1px solid #cad9e1; vertical-align: top; text-align: left; overflow-wrap: anywhere; white-space: pre-line; }
+.decision-table th { background: #eef4f6; }
+@media (max-width: 760px) { .decision-grid { grid-template-columns: 1fr; } .decision-support { padding: 12px; } }

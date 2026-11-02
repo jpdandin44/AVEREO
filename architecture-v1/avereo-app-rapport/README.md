@@ -5,13 +5,24 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-10-24
+updated: 2026-11-01
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Corrections livrées le 1er novembre
+
+Le candidat `9ce22fd` est livré en préproduction le 1er novembre à 20 h 38 (Paris), après sauvegarde des 31 fichiers et de la configuration privée, puis restauration répétée sur copie privée. « Complétude de saisie » distingue le remplissage de la revue métier ; le message photo/dictée correspond aux accords existants. Les deux copies DEMO sont enrichies, sauvegardées et rouvertes, puis quatre Word natifs hébergés sont contrôlés : Tilleuls expert/client 17/5 pages, Cricq 27/7. [Preuves et reprise](docs/reprise-demo-philippe.md). La session applicative dure 30 minutes ; relancer Rapport depuis CONNECT avant chaque maison pendant la démo de 90 minutes.
+
+## Aide à la décision en préproduction
+
+Dans une Visite Globale, ouvrir Export puis Aide à la décision : attentes et projet séparés, liens aux constats, actions classées et deux options comparables. Le JSON et les deux restitutions reprennent le même bloc. Aucune décision ni estimation automatique. [Périmètre et critères](docs/aide-decision-demo.md).
+
+Candidat `9a4f414` livré le 30 octobre après sauvegarde et répétition du retour arrière. Entrée : [CONNECT préproduction → Rapport](https://connect-preprod.avereo.fr/?app=rapport). Deux copies sont disponibles dans la liste serveur : `DEMO TILLEULS DECISION` et `DEMO CRICQ DECISION`. Leur sauvegarde/réouverture, JSON et Word expert/client sont contrôlés. [Reprise et récupération](docs/reprise-demo-philippe.md). La revue métier reste au responsable.
+
 
 ## Deux livrables AVEREO — 24 octobre 2026
 
