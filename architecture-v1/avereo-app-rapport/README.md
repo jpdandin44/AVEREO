@@ -13,10 +13,9 @@ tags:
   - connect
 ---
 
-## Validation et export — candidat local du 2 novembre
+## Validation et export — livré en préproduction le 2 novembre
 
-Boutons micro dans les champs textuels et bouton « Enregistrer cette attente », avec confirmation de brouillon local ; « Sauver en ligne » reste distinct. Les accords existants sont conservés. [Parcours et état de qualification](docs/aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes). L'aperçu de revue est local ; ce candidat n'est pas déclaré installé en préproduction.
-
+Boutons micro dans les champs textuels et « Enregistrer cette attente », avec confirmation locale ; « Sauver en ligne » conserve la copie serveur. Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT](https://connect-preprod.avereo.fr/?app=rapport), après accord explicite. Sauvegarde fraîche des 148 fichiers et de la configuration privée ; installation/restauration répétée sur copie privée, puis trois fichiers livrés et 147 fichiers préexistants conservés. Configuration inchangée, aucune migration ni écriture SQL de livraison. Les reçus sont rattachés à `finalisation20261102.exportInput20261102` dans le suivi canonique. [Qualification et réserves](docs/reprise-demo-philippe.md).
 
 
 ## Nouvelle recherche RGA — candidat du 2 novembre

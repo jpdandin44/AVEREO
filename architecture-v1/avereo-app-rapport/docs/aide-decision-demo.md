@@ -12,7 +12,7 @@ tags: [rapport, demonstration, habitants, decision]
 
 ## Saisie vocale et enregistrement explicite des attentes
 
-Demande du 2 novembre à partir de deux captures de la rubrique 1 : accès à la dictée dans les champs de Validation et export, plus un bouton d'enregistrement de chaque attente. Candidat local fondé sur `59a38c9` pour conserver la carte RGA/cadastre installée ; branche `feat/rapport-dictee-attentes-20261102`. Le suivi canonique porte `finalisation20261102.exportInput20261102`. Aucun déploiement n'est attesté pour cet ajout.
+Demande du 2 novembre à partir de deux captures de la rubrique 1 : accès à la dictée dans les champs de Validation et export, plus un bouton d'enregistrement de chaque attente. Candidat local fondé sur `59a38c9` pour conserver la carte RGA/cadastre installée ; branche `feat/rapport-dictee-attentes-20261102`. Le suivi canonique porte `finalisation20261102.exportInput20261102`. Candidat fonctionnel `63ec279` livré en préproduction après accord exact ; la recette et ses réserves sont décrites dans le [point de reprise](reprise-demo-philippe.md).
 
 ### Comportement
 

@@ -14,10 +14,9 @@ tags:
   - fonctionnalites
 ---
 
-## Candidat local de saisie du 2 novembre
+## Saisie livrée en préproduction le 2 novembre
 
-Dictée des champs de Validation et export et enregistrement explicite des attentes développés sur la base RGA `59a38c9`. Contrôles locaux et copies de recette séparés de la présentation. Prochaine étape : revue du candidat, accord exact de préproduction puis sauvegarde/restauration et recette des deux maisons ; microphone réel à essayer dans le navigateur de séance. Aucune livraison de production engagée. [Périmètre](docs/aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
-
+Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT](https://connect-preprod.avereo.fr/?app=rapport), après accord explicite. Sauvegarde fraîche des 148 fichiers et de la configuration privée ; installation/restauration répétée sur copie privée, puis trois fichiers livrés et 147 fichiers préexistants conservés. Configuration inchangée, aucune migration ni écriture SQL de livraison. Les reçus sont rattachés à `finalisation20261102.exportInput20261102` dans le suivi canonique. Prochaines actions : essai vocal réel, arbitrage des notes Cricq et revue métier avant la démonstration. [Reprise](docs/reprise-demo-philippe.md).
 
 
 ## Lot RGA du 2 novembre

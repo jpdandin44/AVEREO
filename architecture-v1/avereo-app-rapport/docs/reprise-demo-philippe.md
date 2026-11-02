@@ -10,14 +10,17 @@ owner: jpdandin
 tags: [rapport, demonstration, rga, preproduction]
 ---
 
-## Reprise locale du 2 novembre — dictée et bouton d'attente
+## Reprise du 2 novembre — dictée et bouton d'attente livrés
 
-Travail isolé dans `C:/Users/examg/Documents local/avereo-rapport-saisie-export`, branche `feat/rapport-dictee-attentes-20261102`, base `59a38c9` pour conserver la dernière superposition RGA/cadastre. L'aperçu de revue utilise `http://127.0.0.1:5192/` ; le service Vite doit être actif. Les deux copies locales ont servi à la recette, sans accès de sauvegarde serveur ni changement des quatre rapports préparés.
+Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT](https://connect-preprod.avereo.fr/?app=rapport), après accord explicite. Sauvegarde fraîche des 148 fichiers et de la configuration privée ; installation/restauration répétée sur copie privée, puis trois fichiers livrés et 147 fichiers préexistants conservés. Configuration inchangée, aucune migration ni écriture SQL de livraison. Les reçus sont rattachés à `finalisation20261102.exportInput20261102` dans le suivi canonique.
 
-Prochaine action : examiner le candidat et sa PR référencés par `finalisation20261102.exportInput20261102` dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>). Avant installation, obtenir l'accord exact pour le nouveau candidat, vérifier l'état hébergé RGA courant et sauvegarder/restaurer les chemins concernés. Puis tester les accords, une attente dictée/enregistrée, rechargement local, sauvegarde/réouverture en ligne et les deux Word sur chaque cas, sans remplacer les copies de présentation par les marqueurs de recette. Microphone réel à qualifier ; aucune validation de production ajoutée.
+Tilleuls et Cricq : confirmation « Enregistrer cette attente », reprise après rechargement, sauvegarde/réouverture serveur et conservation de toutes les données métier contrôlées (seul `updatedAt` évolue). Quatre DOCX hébergés valides ; textes et médias des deux Tilleuls identiques à la présentation, synthèse client Cricq identique. L'expert Cricq reflète des modifications antérieures de localisation, risques, cadastre, terrain et urbanisme ; ses notes détaillées terrain/urbanisme ont été remplacées ou vidées avant cette installation. Copie récente préservée, arbitrage de contenu demandé au responsable. Les quatre fichiers de présentation restent inchangés. Brouillon initial du navigateur restauré exactement avant nouvel enregistrement local.
 
-Les sections suivantes sont l'historique des versions et ne désignent pas le candidat actuel. [Comportement courant](aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
+Microphone et service vocal réels à essayer avec le responsable ; les essais vocaux antérieurs sont simulés. Contrôles micro présents et cohérents avec l'accord enregistré, sans nouvel accord ni permission micro accordée par l'agent. Revue métier et validation humaine restent distinctes ; aucun merge ni production.
 
+Retour arrière disponible dans le dossier privé serveur `saisie-export-20261102-63ec279/recovery` ; le script `deliver.py rollback` vérifie l'absence de changements ultérieurs avant restauration des seuls chemins de code de ce lot. La base n'est jamais restaurée. [Suivi et reçus](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>).
+
+Les sections suivantes sont historiques ; les commits documentaires postérieurs ne modifient pas l'artefact fonctionnel `63ec279`.
 
 
 ## Reprise du 1er novembre — corrections livrées et deux maisons vérifiées

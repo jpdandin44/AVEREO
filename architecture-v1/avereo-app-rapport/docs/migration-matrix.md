@@ -13,11 +13,17 @@ tags:
   - fonctionnalites
 ---
 
-## Saisie de Validation et export — candidat local du 2 novembre
+## Saisie de Validation et export — préproduction du 2 novembre
 
 Ajout de contrôles vocaux et d'un enregistrement explicite du brouillon d'attente. Les champs, identifiants, liens, accords, médias et contrats JSON restent ceux du dossier existant ; aucune migration. Anciens contenus longs conservés, aucun choix ou accord déduit d'une dictée ou d'un enregistrement. Les deux exports de recette gardent l'attente modifiée ; les quatre Word de présentation restent distincts. [Critères et limites](aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
 
 
+
+Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT](https://connect-preprod.avereo.fr/?app=rapport), après accord explicite. Sauvegarde fraîche des 148 fichiers et de la configuration privée ; installation/restauration répétée sur copie privée, puis trois fichiers livrés et 147 fichiers préexistants conservés. Configuration inchangée, aucune migration ni écriture SQL de livraison. Les reçus sont rattachés à `finalisation20261102.exportInput20261102` dans le suivi canonique.
+
+Tilleuls et Cricq : confirmation « Enregistrer cette attente », reprise après rechargement, sauvegarde/réouverture serveur et conservation de toutes les données métier contrôlées (seul `updatedAt` évolue). Quatre DOCX hébergés valides ; textes et médias des deux Tilleuls identiques à la présentation, synthèse client Cricq identique. L'expert Cricq reflète des modifications antérieures de localisation, risques, cadastre, terrain et urbanisme ; ses notes détaillées terrain/urbanisme ont été remplacées ou vidées avant cette installation. Copie récente préservée, arbitrage de contenu demandé au responsable. Les quatre fichiers de présentation restent inchangés. Brouillon initial du navigateur restauré exactement avant nouvel enregistrement local.
+
+Microphone et service vocal réels à essayer avec le responsable ; les essais vocaux antérieurs sont simulés. Contrôles micro présents et cohérents avec l'accord enregistré, sans nouvel accord ni permission micro accordée par l'agent. Revue métier et validation humaine restent distinctes ; aucun merge ni production.
 
 ## Lot RGA du 2 novembre
 
