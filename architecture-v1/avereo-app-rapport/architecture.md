@@ -12,6 +12,11 @@ tags:
   - architecture
 ---
 
+## Plans et repères du dossier
+
+Les images et leurs métadonnées appartiennent au champ optionnel `plans` du payload privé. `reperes` sur chaque observation porte le lien vers la vue et ses coordonnées normalisées. `ObservationPlans.jsx` édite le repérage ; `reportHtml.js` compose les vues et légendes ; `reportDocx.js` incorpore les images dérivées avec leurs repères. Le fond source reste intact. La validation PHP rejoint les opérations existantes, sans nouvelle route, base ou migration. [Contrat et limites](docs/reperage-observations.md#données-de-référence).
+
+
 ## Champs vocaux et brouillon — candidat du 2 novembre
 
 `VoiceField.jsx` mutualise le bouton micro et le cycle SpeechRecognition déjà utilisé dans App. Les rubriques de décision et les notes de livrable réutilisent ce composant ; les ajouts sont appliqués à la dernière valeur React. `dictationText.js` conserve le texte existant et la limite applicable.

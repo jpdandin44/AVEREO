@@ -3,6 +3,23 @@ import { HABITOLOGIE_PROTOCOL_STAGES, LISTENING_TOPICS, isHabitologieControlSele
 import { LISTENING_SECTIONS } from './clientListening.js';
 import { rgaRisk, isRgaRisk } from './georisquesRiskSummary.js';
 import { normalizeRgaCartography, rgaLevelLabel } from './rgaContext.js';
+import { markersForPlan, observationPlanNames, planPayloadError } from './observationPlans.js';
+
+export function buildObservationPlansHtml(report, selectedIds = null) {
+  const error = planPayloadError(report);
+  if (error) throw new Error(error);
+  return (report.plans || []).map(plan => {
+    const markers = markersForPlan(report, plan.id, selectedIds);
+    if (selectedIds && !markers.length) return '';
+    return `<section class="plan-sheet"><h2>Repérage des observations — ${escapeHtml(plan.title)}</h2>
+      <p>${plan.kind === 'coupe' ? 'Coupe' : 'Plan de niveau'} · Repérage indicatif, sans mesure automatique.</p>
+      <div class="plan-picture"><img src="${plan.src}" data-plan-id="${escapeHtml(plan.id)}" alt="${escapeHtml(plan.title)} — repères des observations" />
+        ${markers.map(marker => `<span class="plan-dot" style="left:${marker.x * 100}%;top:${marker.y * 100}%">${marker.number}</span>`).join('')}</div>
+      <p class="source">Source : ${escapeHtml(plan.source || 'À renseigner')}.</p>
+      ${markers.length ? `<ul>${markers.map(marker => `<li><strong>Observation ${marker.number}</strong> — ${escapeHtml(marker.title)}</li>`).join('')}</ul>` : '<p>Aucune observation repérée sur cette vue.</p>'}
+      </section>`;
+  }).join('');
+}
 
 export function buildRgaCartographyHtml(report) {
   const value = normalizeRgaCartography(report.rga_cartographie, report.cadastre?.lon, report.cadastre?.lat);
@@ -229,6 +246,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
             <tr><td>Piece / zone</td><td>${escapeHtml(obs.piece)}</td></tr>
             <tr><td>Element observe</td><td>${escapeHtml(obs.surface)}</td></tr>
             <tr><td>Gravite</td><td>${escapeHtml(obs.gravite)}</td></tr>
+            ${observationPlanNames(report, obs).length ? `<tr><td>Repère ${index + 1}</td><td>${escapeHtml(observationPlanNames(report, obs).join(' · '))}</td></tr>` : ''}
           </table>
           <h4>Constat</h4>
           <p>${textToHtml(obs.observations)}</p>
@@ -347,6 +365,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
   ${buildProtocolHtml(report)}
 
   <h2>${sectionNumbers.observations}. Observations</h2>
+  ${buildObservationPlansHtml(report)}
   ${observationsHtml || '<p>Aucune observation n a ete enregistree.</p>'}
 
   <h2>${sectionNumbers.analyse}. Analyse et recommandations</h2>

@@ -13,6 +13,11 @@ tags:
   - fonctionnalites
 ---
 
+## Repérage des observations
+
+Les champs optionnels `plans` et `observations[].reperes` restent dans le payload existant : aucune migration SQL ni conversion destructive. Les anciens dossiers ne reçoivent aucun plan par défaut. Les cinq vues privées du Cricq sont ajoutées seulement à une copie locale de son dossier. [Contrat et état de qualification](reperage-observations.md).
+
+
 ## Saisie de Validation et export — préproduction du 2 novembre
 
 Ajout de contrôles vocaux et d'un enregistrement explicite du brouillon d'attente. Les champs, identifiants, liens, accords, médias et contrats JSON restent ceux du dossier existant ; aucune migration. Anciens contenus longs conservés, aucun choix ou accord déduit d'une dictée ou d'un enregistrement. Les deux exports de recette gardent l'attente modifiée ; les quatre Word de présentation restent distincts. [Critères et limites](aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).

@@ -13,6 +13,11 @@ tags:
   - architecture
 ---
 
+## 2026-11-02 — Repères séparés des fonds et revue expert reportée
+
+Contexte : localiser les observations du Cricq et les reprendre dans le Word. Décision : conserver les images privées et les coordonnées normalisées dans le dossier existant ; produire uniquement une image dérivée pour le DOCX. Raisons : maintenir les fonds d’origine, permettre le déplacement sans dégrader les images et sauvegarder le dossier complet. Conséquences : liaison par identifiant, un point par observation et par vue, placement manuel sur chaque coupe/niveau. Le responsable reporte explicitement les statuts de validation expert au futur circuit PDF final/Passeport Immo. [Spécification](docs/reperage-observations.md).
+
+
 ## 2026-11-02 — Carte RGA liée aux droits de Rapport
 
 Contexte : nouvelle carte fournie et double accès confirmé par le responsable. Décision : héberger le module dans Rapport, avec un raccourci CONNECT contrôlé par les droits Rapport, sans compte ni base supplémentaire. Séparer la lecture géométrique simplifiée de la synthèse officielle et conserver les deux sources. Conséquences : échange limité au même point, transfert explicite et pas de modification du sas partagé hébergé. [Contrat](api/rga.md).

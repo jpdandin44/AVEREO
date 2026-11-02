@@ -13,6 +13,11 @@ tags:
   - securite
 ---
 
+## Plans et repères — candidat local du 2 novembre
+
+Images PNG/JPEG incorporées au dossier, sans URL distante, SVG actif ni publication des plans du Cricq dans les assets. Types, tailles, dimensions, identifiants et coordonnées sont bornés ; les références orphelines et doublons sont refusés explicitement. Le serveur vérifie aussi les octets et dimensions réels. Les contrôles de rôle et de propriété de `reports.php` restent inchangés. Le Word incorpore les repères au rendu dérivé ; la synthèse client filtre aussi les légendes. Les originaux et les dossiers hébergés ne sont pas modifiés. [Contrat et critères](reperage-observations.md).
+
+
 ## Saisie vocale et sauvegarde explicite — préproduction du 2 novembre
 
 Extraction du mécanisme SpeechRecognition existant vers `VoiceField.jsx` afin de le réutiliser dans la décision et les livrables. Aucune nouvelle bibliothèque, clé, intégration IA, permission accordée automatiquement ou configuration serveur. Les autorisations du navigateur et l'accord métier restent nécessaires. Seul le texte rejoint les champs du dossier ; aucun fichier audio n'est ajouté au rapport.

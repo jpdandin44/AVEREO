@@ -1,7 +1,9 @@
-import { protocolOptions } from './reportHtml.js';
+import { protocolOptions, escapeHtml } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
+import ObservationPlans from './ObservationPlans.jsx';
+import { MAX_REPORT_BYTES, observationPlanNames, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -194,6 +196,8 @@ function createId() {
 }
 
 function deepMergeReport(base, incoming) {
+  const planError = planPayloadError(incoming || {});
+  if (planError) throw new Error(planError);
   const classifiedIncoming = normalizeReportClassification(incoming);
   const merged = {
     ...base,
@@ -1402,6 +1406,12 @@ function ProtocolStep({ report, setReport }) {
 
 function ObservationStep({ report, setReport }) {
   const [cameraFor, setCameraFor] = useState(null);
+  const [planObservationId, setPlanObservationId] = useState('');
+  const localize = id => {
+    setPlanObservationId(id);
+    document.getElementById('observation-plans')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('observation-plans')?.focus({ preventScroll: true });
+  };
   const habitologie = isHabitologieReport(report);
   const photoAllowed = !habitologie || Boolean(report.ecoute?.consentement_photos);
   const dictationAllowed = !habitologie || Boolean(report.ecoute?.consentement_dictee);
@@ -1476,7 +1486,7 @@ function ObservationStep({ report, setReport }) {
     const controls = selectedStage?.controls || [];
 
     return (
-      <article className="observation-card" key={obs.id}>
+      <article className="observation-card" key={obs.id} id={`observation-${obs.id}`}>
         <div className="observation-header">
           <h3>Observation {observationIndex + 1}</h3>
           <button
@@ -1552,6 +1562,10 @@ function ObservationStep({ report, setReport }) {
           </Field>
         </div>
 
+        <div className="observation-location">
+          <button type="button" className="button secondary" onClick={() => localize(obs.id)}><MapPin size={18} />Localiser sur un plan</button>
+          <span>{observationPlanNames(report, obs).join(' · ') || 'Aucun repère placé'}</span>
+        </div>
         <TextAreaWithMic
           label="Constat"
           value={obs.observations}
@@ -1622,6 +1636,8 @@ function ObservationStep({ report, setReport }) {
           <p>Constats localises, niveau de gravite, photos et suites proposees.</p>
         </div>
       </div>
+
+      <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId} onSelect={setPlanObservationId} />
 
       {habitologie && (!photoAllowed || !dictationAllowed) && (
         <div className="notice warning consent-warning" role="status">
@@ -1791,6 +1807,8 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
 function validateReport(report) {
   const errors = [];
   const warnings = [];
+  const planError = planPayloadError(report);
+  if (planError) errors.push(planError);
 
   if (!report.reference_dossier.trim()) errors.push('Reference dossier requise.');
   if (!report.proprietaire.trim()) errors.push('Nom du proprietaire requis.');
@@ -1823,7 +1841,10 @@ function validateReport(report) {
 }
 
 function ReportPreview({ report, onClose }) {
-  const html = useMemo(() => buildReportHtml(report), [report]);
+  const html = useMemo(() => {
+    try { return buildReportHtml(report); }
+    catch (error) { return `<!doctype html><html lang="fr"><body><h1>Aperçu indisponible</h1><p>${escapeHtml(error.message)}</p><p>Fermez l’aperçu et corrigez les informations de la vue.</p></body></html>`; }
+  }, [report]);
   return (
     <div className="preview-backdrop">
       <div className="preview-shell">
@@ -2025,8 +2046,8 @@ function ReportWizard({
   const onImportFile = (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      notify('Import JSON refuse : taille maximale 10 Mio.');
+    if (file.size > MAX_REPORT_BYTES) {
+      notify('Import JSON refuse : taille maximale 50 Mio.');
       event.target.value = '';
       return;
     }
@@ -2036,8 +2057,8 @@ function ReportWizard({
         const parsed = JSON.parse(reader.result);
         setReport(deepMergeReport(initialReport, parsed));
         notify('Brouillon importe.');
-      } catch {
-        notify('Import JSON impossible.');
+      } catch (error) {
+        notify(`Import JSON impossible : ${error.message}`);
       }
     };
     reader.readAsText(file);

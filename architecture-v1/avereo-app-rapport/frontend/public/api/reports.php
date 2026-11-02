@@ -3,11 +3,16 @@ declare(strict_types=1);
 
 require __DIR__ . '/bootstrap.php';
 require __DIR__ . '/decision-validation.php';
+require __DIR__ . '/observation-plans-validation.php';
 
 api_no_options_response();
 
 function api_validate_report_payload(array $payload): void
 {
+    $planError = api_observation_plans_error($payload);
+    if ($planError !== null) {
+        api_json(422, ['ok' => false, 'error' => 'report_plans_invalid', 'message' => $planError]);
+    }
     if (array_key_exists('decision', $payload)) {
         $decisionError = api_decision_payload_error($payload['decision']);
         if ($decisionError !== null) {

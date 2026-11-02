@@ -14,6 +14,11 @@ tags:
   - fonctionnalites
 ---
 
+## Repérage Cricq — développement local
+
+Le repérage sur les cinq vues et sa restitution Word sont implémentés dans une copie isolée, fondée sur le candidat local de dictée. Le suivi canonique porte les résultats réels, le candidat et la prochaine action. Restent la revue des positions par le responsable et, après accord distinct, la qualification hébergée. La revue de l’expert est reportée à la génération des PDF finaux destinés à Passeport Immo. [Périmètre et suivi](docs/reperage-observations.md).
+
+
 ## Saisie livrée en préproduction le 2 novembre
 
 Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT](https://connect-preprod.avereo.fr/?app=rapport), après accord explicite. Sauvegarde fraîche des 148 fichiers et de la configuration privée ; installation/restauration répétée sur copie privée, puis trois fichiers livrés et 147 fichiers préexistants conservés. Configuration inchangée, aucune migration ni écriture SQL de livraison. Les reçus sont rattachés à `finalisation20261102.exportInput20261102` dans le suivi canonique. Prochaines actions : essai vocal réel, arbitrage des notes Cricq et revue métier avant la démonstration. [Reprise](docs/reprise-demo-philippe.md).

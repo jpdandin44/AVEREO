@@ -13,6 +13,11 @@ tags:
   - habitologie
 ---
 
+## Repérage sur les vues du Cricq
+
+Localiser manuellement les constats sur les trois plans de niveau et les deux coupes fournis ; conserver les coordonnées, le lien au constat et les images avec le dossier. Même numérotation dans les vues et les restitutions. L’expert reçoit toutes les vues ; le client reçoit uniquement les repères des constats explicitement retenus. Les anciens dossiers doivent rester utilisables. [Critères détaillés](docs/reperage-observations.md#contrôles-attendus).
+
+
 ## Saisie de Validation et export — 2 novembre 2026
 
 Les champs textuels de Validation et export doivent proposer la dictée selon l'accord existant de Visite Globale. Chaque attente doit disposer d'un enregistrement explicite, avec distinction visible entre brouillon local et copie serveur et sans validation métier implicite. [Comportement et critères](docs/aide-decision-demo.md#saisie-vocale-et-enregistrement-explicite-des-attentes).
