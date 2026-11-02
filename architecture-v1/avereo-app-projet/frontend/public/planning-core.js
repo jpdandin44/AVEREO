@@ -357,6 +357,57 @@
         };
     }
 
+    // Planning gestures return a validated candidate, never mutate the input.
+    function movePlanningDates(input, ids, calendarDays) {
+        const project = normalizeProject(input);
+        calendarDays = parseNumber(calendarDays, 'Décalage calendaire', { min: -MAX_CALENDAR_DAYS, max: MAX_CALENDAR_DAYS });
+        if (!Number.isInteger(calendarDays)) fail('Le déplacement doit être un nombre entier de jours.');
+        if (!Array.isArray(ids) || !ids.length || new Set(ids).size !== ids.length) fail('Sélection de tâches invalide.');
+        const selected = new Set(ids);
+        const scheduled = schedule(project).tasks;
+        if (ids.some(id => !scheduled.some(task => task.id === id))) fail('Tâche déplacée introuvable.');
+        if (!calendarDays) return project;
+        project.tasks = project.tasks.map((task, index) => {
+            if (!selected.has(task.id)) return task;
+            const start = scheduled[index].calcStart;
+            const date = dateValue(`${start.getFullYear()}-${String(start.getMonth() + 1).padStart(2, '0')}-${String(start.getDate()).padStart(2, '0')}`);
+            date.setUTCDate(date.getUTCDate() + calendarDays);
+            return { ...task, manualStart: isoDate(workingDate(date)) };
+        });
+        schedule(project); // Dependencies, horizon and sequential rules remain authoritative.
+        return project;
+    }
+
+    function reorderPlanning(input, kind, source, target, after = false) {
+        const project = normalizeProject(input);
+        choice(kind, ['task', 'lot'], 'Type de déplacement');
+        if (typeof after !== 'boolean') fail('Position de dépôt invalide.');
+        const lots = [...new Set(project.tasks.map(task => task.lot))];
+        const move = list => {
+            const from = list.indexOf(source), to = list.indexOf(target);
+            if (from < 0 || to < 0) fail('Élément déplacé ou cible introuvable.');
+            if (source === target) return list;
+            const next = list.filter(value => value !== source);
+            next.splice(next.indexOf(target) + (after ? 1 : 0), 0, source);
+            return next;
+        };
+        if (kind === 'lot') {
+            project.tasks = move(lots).flatMap(lot => project.tasks.filter(task => task.lot === lot));
+        } else {
+            const task = project.tasks.find(task => task.id === source);
+            const destination = project.tasks.find(task => task.id === target);
+            if (!task || !destination) fail('Tâche déplacée ou cible introuvable.');
+            if (task.lot !== destination.lot) fail('Réordonner les sujets dans leur projet ; changer de projet se fait dans la fiche.');
+            const order = move(project.tasks.filter(item => item.lot === task.lot).map(item => item.id));
+            const byId = new Map(project.tasks.map(item => [item.id, item]));
+            let index = 0;
+            project.tasks = project.tasks.map(item => item.lot === task.lot ? byId.get(order[index++]) : item);
+        }
+        const normalized = normalizeProject(project);
+        schedule(normalized); // A sequential order contradicting a dependency is refused.
+        return normalized;
+    }
+
     function parseCsv(input) {
         if (typeof input !== 'string' || input.length > 5000000) fail('CSV invalide ou supérieur à 5 millions de caractères.');
         const source = input.replace(/^\uFEFF/, '');
@@ -464,6 +515,7 @@
     return Object.freeze({
         parseNumber, parseCsv, mapRows, validateTasks, normalizeProject, schedule,
         offsetToDate, encodeProject, decodeProject, tasksToCsv, riskScore, riskLevel,
+        movePlanningDates, reorderPlanning,
         STATUSES: Object.freeze(STATUSES),
         LIMITS: Object.freeze({ maxTasks: MAX_TASKS, maxWorkingDays: MAX_HORIZON, maxCalendarDays: MAX_CALENDAR_DAYS, maxChecklistItems: MAX_CHECKLIST_ITEMS, maxRisks: MAX_RISKS, maxProjectCharacters: MAX_PROJECT_CHARACTERS, maxProjectBytes: MAX_PROJECT_BYTES })
     });

@@ -20,7 +20,7 @@ function browser(tasks, capacityPerWeek = 5) {
     const element = () => ({
         value: '', innerHTML: '', textContent: '', style: {}, className: '',
         addEventListener() {}, classList: { add() {}, remove() {} },
-        querySelector() { return null; }
+        querySelector() { return null; }, showModal() {}, close() {}
     });
     const getElement = id => {
         if (!elements.has(id)) elements.set(id, element());
@@ -49,6 +49,7 @@ function browser(tasks, capacityPerWeek = 5) {
         targetDate: '2026-10-30', capacityPerWeek, schedulingMode: 'sequential', tasks
     };
     run('applyProject(inputProject)');
+    run('persistProject(currentProject())');
     return {
         run, getElement,
         drag(id, type, dx, { scale = 40, originalLeft = 80 } = {}) {
@@ -63,6 +64,8 @@ function browser(tasks, capacityPerWeek = 5) {
                 };
             `);
             listeners.get('mouseup')({ clientX: 100 + dx });
+            // Gestures are proposals until the explicit Apply button is used.
+            if (run('pendingPlanningChange !== null')) run('applyPlanningChange()');
             assert.deepEqual(alerts, [], 'the gesture must pass the same validation as other edits');
             assert.equal(run('dnd.active'), false);
             return JSON.parse(storage.get(storageKey));

@@ -5,7 +5,7 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-25
+updated: 2026-10-28
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,87 @@ tags:
 ---
 
 # Audit et recette du planning Projet
+
+## Reprise du Gantt pour préproduction — 28 octobre 2026
+
+Les deux fichiers métier modifiés et leurs tests sont repris depuis la copie de
+pilotage, à l'identique, dans une branche issue de `main` `cf21b593faf9b6f4fae5e88eea3ff0117d41a074`.
+L'HTML du repère du jour conserve l'empreinte
+`2f531ccaa435153c4890d453cce89a352499da4c9bd5758d32bc1f238088bcaa`.
+Les preuves locales antérieures restent datées dans le suivi ; elles ne valent
+pas recette hébergée. Les suites complètes de cette nouvelle base sont rejouées.
+
+Résultat local : `npm.cmd run build` réussi, **162 tests sur 162**, aucun échec
+ou test sauté, 31 modules ; contrôle de l'artefact de 12 fichiers réussi.
+Le paquet de livraison reste limité aux quatre fichiers du planning, et non au
+build complet : les nouveaux assets du wrapper ne sont pas installés.
+
+Lecture cPanel : document root Projet préproduction présent, non symbolique,
+distinct des autres racines ; lanceur compatible avec `/legacy-app.html` ;
+configuration privée présente. L'ancienne interface est encore servie et les
+trois scripts séparés sont absents avant livraison. L'entrée anonyme redirige
+vers CONNECT préproduction ; l'accès SSH direct expire, sans écriture distante.
+Le terminal cPanel connecté fournit le canal d'exploitation autorisé.
+
+L'outillage de livraison est testé sur fixtures : sauvegarde, installation,
+restauration et préservation du sas, refus d'une dérive et d'un candidat invalide.
+Sur Windows, les cas de création/modes POSIX sont réservés à la CI Linux ;
+la fixture locale couvre le remplacement en conservant les modes existants.
+La récupération réelle a ensuite été vérifiée avant écriture de la racine active.
+
+### Résultat hébergé de cette itération
+
+La [CI de la source a6b4cdf](https://github.com/jpdandin44/AVEREO/actions/runs/40737675957)
+réussit ses huit jobs, y compris Projet et les cas POSIX. La sauvegarde réelle
+et la répétition installation/restauration en copie privée réussissent avant le
+contrôle de passage. Livraison à 17:48 UTC puis vérification à 17:49 UTC : quatre
+fichiers exacts, arbre attendu et configuration privée conservés, aucune écriture
+de base. Les [preuves canoniques](../data/suivi-gantt-affichage.json) relient
+candidat, autorisation ciblée, sauvegarde et reçus serveur.
+
+À 17:52 UTC, les quatre fichiers HTTP répondent 200 et leurs empreintes sont
+identiques au manifeste. L'entrée principale répond 303 vers CONNECT ; CONNECT
+répond 401 en anonyme. Les ressources statiques ne sont pas protégées par ce sas ;
+elles ne contiennent pas le planning personnel. Le navigateur intégré ne possède
+pas l'authentification de préproduction : recette du parcours connecté et
+import/export/rechargement dans le navigateur d'usage encore ouverts. Le contrôle
+serveur et la CI ne valent pas validation humaine ni livraison en production.
+
+### Recette Chrome après connexion du responsable — 19:06, Europe/Paris
+
+La session réelle sur l'entrée principale est observée avec son lien de
+déconnexion. Le parcours de saisie des identifiants n'est pas rejoué par l'agent.
+Une ancienne interface encore chargée est remplacée par la version attendue après
+rechargement des fichiers, sans effacement du stockage ; le mécanisme exact du
+cache n'est pas démontré. La nouvelle interface constate un brouillon vide.
+
+La référence initiale du portefeuille est importée : 45 tâches, 22 jours-personne,
+cible du 27 novembre. Les projets repliés gardent leurs synthèses ; trait rouge
+du 28 octobre visible en Jours. Après rechargement, « Brouillon restauré » et les
+45 tâches sont constatés. Les exports avant/après sont strictement identiques,
+SHA-256 `c69f4bff3fcb811a2838b7db740e101aed58dec601f78905132779dc9177d732`,
+et leur contenu JSON complet est identique à la référence importée. Les preuves
+et limites sont dans le [reçu navigateur](../data/preprod-gantt/browser-recipe.json).
+Les exports et la capture restent locaux, sans publication du planning personnel.
+
+Aucun déplacement de date ou d'ordre n'est appliqué pendant cette recette.
+Autres profils, vue Semaines, tactile et gestes de déplacement hébergés ne sont
+pas requalifiés ici. Le besoin nouveau clients/projets et sauvegarde distante
+reste en cadrage ; aucune sauvegarde métier serveur n'a été ajoutée.
+
+Contrôle documentaire de ce complément : socles présents, dix documents
+applicatifs/90 liens et 14 Markdown du pilotage/75 liens vérifiés, sans erreur.
+Preuves navigateur comparées et empreintes des quatre fichiers déployés inchangées.
+Baseline, prévalidation de la description PR et whitespace réussis ; références
+main actualisées et fusion sans conflit vérifiée avant remise. Aucun test du
+futur stockage serveur n'est présenté comme réalisé.
+
+Contrôle documentaire après livraison : socles du sous-projet et du pilotage
+présents ; neuf documents applicatifs et 80 liens locaux, 14 Markdown du pilotage
+et 72 liens vérifiés. Métadonnées, archive, sources et reçus rapprochés sans erreur.
+Policy PR prépublication, baseline racine et `git diff --check` réussis.
+Le commit documentaire des preuves est distinct de la source technique a6b4cdf ;
+aucun des quatre fichiers déployés n'est changé par cette consignation.
 
 ## Revues complémentaires d'une phase — 25 septembre 2026
 
@@ -231,9 +312,11 @@ Les contrôles manuels ouverts restent donc nécessaires avant
 de considérer tous les échanges de fichiers qualifiés.
 
 Le local ne prouve ni le sas PHP hébergé, ni DNS/HTTPS, ni la réalisation des
-EV métier planifiées. Préproduction et production ne sont pas qualifiées.
+EV métier planifiées. Les contrôles hébergés du 28 octobre sont limités à leur
+périmètre décrit en tête ; la recette métier authentifiée et la production restent ouvertes.
 Les CDN historiques restent une dépendance réseau ; le fonctionnement
 entièrement hors connexion n'est pas établi.
 
 Le déclenchement d'un futur déploiement est expliqué dans
-[deployment.md](deployment.md). Aucun déploiement ni migration de données hébergées n'est attesté ici.
+[deployment.md](deployment.md). La livraison ciblée de préproduction du 28 octobre
+ne constitue ni une migration de données, ni une livraison de production.
