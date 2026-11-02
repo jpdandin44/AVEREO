@@ -205,6 +205,9 @@ Ces critères ne sont pas encore tous exécutés : voir le [point de reprise](do
 - L'integration Georisques utilise l'endpoint public V1 sans jeton et envoie
   uniquement les coordonnees longitude/latitude issues du geocodage. Les
   libelles et statuts affiches proviennent de la reponse officielle.
+- Les interruptions ponctuelles peuvent être reprises un nombre limité de fois,
+  avec délai et annulation. Un échec ne doit pas effacer une consultation datée
+  au même point, ni conserver une synthèse pour un nouveau point. [Contrat](api/georisques.md).
 
 ## Limites du lot courant
 

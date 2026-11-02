@@ -23,6 +23,11 @@ Anciennes cartes conservées ; nouvelle carte et résultat `rga_cartographie` op
 
 ## Corrections du 1er novembre
 
+Complément local Géorisques du 2 novembre : les champs `risques` et leur date
+restent identiques. Seule la récupération évolue, avec reprises limitées et
+conservation au même point en cas d'échec. Aucun changement de schéma, import,
+export ou API PHP ; aucune migration. [Qualification et limites](../api/georisques.md).
+
 | Fonction | Contrôle réalisé | Qualification restante |
 | --- | --- | --- |
 | Complétude de saisie | Rappel visible à 100 % sur les deux copies hébergées ; calcul conservé | Revue métier indépendante du pourcentage |

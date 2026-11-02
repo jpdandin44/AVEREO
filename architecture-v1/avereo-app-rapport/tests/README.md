@@ -12,6 +12,11 @@ tags: [connect, rga, tests]
 
 # Tests Rapport
 
+Les tests `frontend/src/georisquesRiskSummary.test.js`, exécutés par `npm test`,
+simulent les interruptions, les erreurs HTTP et JSON, les délais de quota,
+l'annulation et la conservation d'une synthèse au même point. Ils ne prouvent
+pas la disponibilité réelle du service. [Diagnostic et qualification](../api/georisques.md).
+
 Apres `token-up` :
 
 ```powershell

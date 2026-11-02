@@ -71,6 +71,33 @@ Le payload Rapport conserve dans `risques` :
 
 ## Gestion des erreurs
 
+### Correctif local du 2 novembre — récupération et conservation
+
+Le client commun à Rapport et à la carte RGA effectue au maximum trois
+tentatives en cas d'interruption réseau, de réponse 429 ou d'erreur serveur.
+Chaque appel est borné à huit secondes ; les reprises sont espacées de 1,2
+puis 2,4 secondes. Un `Retry-After` court est respecté ; au-delà de 3,6 secondes,
+la reprise est laissée à une action ultérieure. L'[OpenAPI officielle](https://www.georisques.gouv.fr/api/v3/api-docs/georisques-api-v1)
+annonce un appel par seconde pour cette synthèse. Ces délais concernent une
+recherche ; ils ne constituent pas un quota partagé entre tous les onglets.
+
+Une réponse invalide ou une erreur HTTP client n'est pas réinterrogée. Fermer
+la vue, changer d'adresse ou relancer une recherche annule les reprises de la
+consultation précédente. Aucune ancienne réponse ne doit remplacer un autre lieu.
+
+Une recherche cadastrale au même point préserve désormais la dernière
+synthèse et sa date si la nouvelle consultation échoue. Auparavant, cette
+recherche réinitialisait les risques avant l'appel et à son échec. Une réponse
+réussie remplace la synthèse ; un changement de coordonnées la vide. Il n'y a
+ni stockage supplémentaire ni transformation d'une erreur en absence de risque.
+
+**Statut : candidat local, non livré.** Le correctif traite les interruptions
+ponctuelles et la perte d'une consultation existante ; il ne répare pas le
+service externe. Les essais réels du 2 novembre restent intermittents et le
+dernier essai de trois tentatives échoue. Aucun rétablissement continu de la
+synthèse n'est revendiqué. Les preuves et la prochaine action sont dans le bloc
+`rapportGeorisquesRepair20261102` du [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>).
+
 Le geocodage de l'adresse reste necessaire pour obtenir les coordonnees. La
 parcelle cadastrale, le zonage et la synthese des risques sont ensuite traites
 comme des enrichissements independants. Une parcelle absente ne bloque donc
@@ -127,3 +154,19 @@ La synthèse reste à requalifier. L'action existante Site → Rapport des risqu
 Actualiser la synthèse permet une nouvelle tentative ; le lien au rapport
 complet dépend lui aussi du service externe et n'est pas garanti disponible.
 Les preuves datées et la prochaine action figurent dans le [suivi RGA](rga.md).
+
+### Complément de diagnostic du 2 novembre, après fusion de RGA
+
+Le contrat officiel V1 est de nouveau lu ; aucun jeton n'est requis. Sur le
+poste, des appels HTTP 200 valides alternent avec des fermetures avant réponse.
+Le passage à HTTP/1.1 ou TLS 1.2 ne fournit pas de correction reproductible :
+un succès initial est suivi d'échecs avec les mêmes paramètres. Sur o2switch,
+trois essais Python puis trois essais cURL espacés de cinq et dix secondes
+échouent par réinitialisation de connexion. Le nouvel appel JavaScript avec
+trois reprises échoue également. Ces observations ne prouvent ni une erreur
+de droits CONNECT, ni une absence de risques, ni une cause précise côté BRGM.
+Le relais serveur reste écarté faute d'efficacité démontrée.
+
+TBD — rétablissement d'une réponse répétable sur le point demandé, puis recette
+hébergée. Un diagnostic de l'exploitant Géorisques peut être nécessaire ; aucun
+message ni donnée de dossier n'a été envoyé à un support tiers.
