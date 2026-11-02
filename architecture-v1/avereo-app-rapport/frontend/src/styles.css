@@ -1747,3 +1747,11 @@ img {
 .decision-table th, .decision-table td { padding: 10px; border: 1px solid #cad9e1; vertical-align: top; text-align: left; overflow-wrap: anywhere; white-space: pre-line; }
 .decision-table th { background: #eef4f6; }
 @media (max-width: 760px) { .decision-grid { grid-template-columns: 1fr; } .decision-support { padding: 12px; } }
+
+/* Explicit local save and reusable voice fields in validation/export. */
+.voice-field { min-width: 0; }
+.voice-field > label { display: block; margin: 0 0 6px; }
+.voice-field .input-with-action input, .voice-field .input-with-action textarea { width: 100%; min-width: 0; font-weight: 400; }
+.voice-field .mic-status { grid-column: 1 / -1; }
+.expectation-actions { display: flex; align-items: start; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.expectation-actions p { flex-basis: 100%; margin: 0; }

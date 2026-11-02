@@ -13,6 +13,11 @@ tags:
   - connect
 ---
 
+## Validation et export — livré en préproduction le 2 novembre
+
+Boutons micro dans les champs textuels et « Enregistrer cette attente », avec confirmation locale ; « Sauver en ligne » conserve la copie serveur. Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT](https://connect-preprod.avereo.fr/?app=rapport), après accord explicite. Sauvegarde fraîche des 148 fichiers et de la configuration privée ; installation/restauration répétée sur copie privée, puis trois fichiers livrés et 147 fichiers préexistants conservés. Configuration inchangée, aucune migration ni écriture SQL de livraison. Les reçus sont rattachés à `finalisation20261102.exportInput20261102` dans le suivi canonique. [Qualification et réserves](docs/reprise-demo-philippe.md).
+
+
 ## Nouvelle recherche RGA — candidat du 2 novembre
 
 Application RGA distincte dans CONNECT et carte à l’adresse dans Site → Rapport des risques, avec un accès RGA propre. Les droits Rapport sont copiés une fois lors de la déclaration, puis gérés indépendamment. Lecture cartographique indicative 2026 et synthèse Géorisques séparées ; création explicite d’un dossier depuis la carte et conservation dans les restitutions. [Parcours, sources, lancement local et limites](api/rga.md). État hébergé dans le suivi canonique référencé par ce contrat.
