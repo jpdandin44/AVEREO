@@ -49,6 +49,14 @@ n'est pas retenu ni livré : son efficacité n'est pas établie. Aucun changemen
 d'authentification, de configuration, de données ou de code applicatif.
 [Constats, limites et reprise](../api/georisques.md#diagnostic-de-disponibilité--2-novembre-2026).
 
+Le complément local suivant ajoute des reprises bornées dans le client commun
+et conserve les risques datés lors d'un échec au même point. Aucun relais PHP,
+secret, permission, stockage ou flux de données externe supplémentaire. Les
+tests distinguent interruption suivie d'un succès, échec persistant, réponse
+invalide, quota, annulation et déplacement du bien. Les essais réels restent en
+échec intermittent ; ne pas confondre ces contrôles simulés avec une correction
+du fournisseur ou une livraison hébergée. [État actuel](../api/georisques.md#correctif-local-du-2-novembre--récupération-et-conservation).
+
 ## Lot RGA du 2 novembre
 
 La correction de superposition réutilise les mêmes 97 fichiers, sans modifier

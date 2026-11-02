@@ -22,6 +22,12 @@ Boutons micro dans les champs textuels et « Enregistrer cette attente », avec 
 
 Application RGA distincte dans CONNECT et carte à l’adresse dans Site → Rapport des risques, avec un accès RGA propre. Les droits Rapport sont copiés une fois lors de la déclaration, puis gérés indépendamment. Lecture cartographique indicative 2026 et synthèse Géorisques séparées ; création explicite d’un dossier depuis la carte et conservation dans les restitutions. [Parcours, sources, lancement local et limites](api/rga.md). État hébergé dans le suivi canonique référencé par ce contrat.
 
+## Reprise Géorisques — candidat local
+
+Un correctif local de récupération Géorisques est préparé : tentatives espacées
+et conservation de la dernière synthèse datée au même point. Il n'est pas livré
+et le service externe reste intermittent. [État et limites](api/georisques.md).
+
 ## Corrections livrées le 1er novembre
 
 Le candidat `9ce22fd` est livré en préproduction le 1er novembre à 20 h 38 (Paris), après sauvegarde des 31 fichiers et de la configuration privée, puis restauration répétée sur copie privée. « Complétude de saisie » distingue le remplissage de la revue métier ; le message photo/dictée correspond aux accords existants. Les deux copies DEMO sont enrichies, sauvegardées et rouvertes, puis quatre Word natifs hébergés sont contrôlés : Tilleuls expert/client 17/5 pages, Cricq 27/7. [Preuves et reprise](docs/reprise-demo-philippe.md). La session applicative dure 30 minutes ; relancer Rapport depuis CONNECT avant chaque maison pendant la démo de 90 minutes.

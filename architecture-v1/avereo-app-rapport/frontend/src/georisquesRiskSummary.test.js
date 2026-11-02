@@ -7,7 +7,87 @@ import {
   riskStatusTone,
   safeGeorisquesReportUrl,
   rgaRisk,
+  fetchGeorisquesRiskPayload,
+  previousRisksAtPoint,
 } from './georisquesRiskSummary.js';
+
+const completePayload = { risquesNaturels: { rga: { present: true, libelleStatutAdresse: 'Exposition moyenne' } }, risquesTechnologiques: {} };
+const successfulResponse = () => ({ ok: true, json: async () => structuredClone(completePayload) });
+
+test('retries interrupted connections with bounded spacing and returns only a validated response', async () => {
+  let calls = 0;
+  const delays = [];
+  const result = await fetchGeorisquesRiskPayload(1.23, 43.35, {
+    fetchImpl: async (url, options) => {
+      assert.match(url, /latlon=1.23%2C43.35$/);
+      assert.equal(options.referrerPolicy, 'no-referrer');
+      if (++calls < 3) throw new TypeError('Connection reset');
+      return successfulResponse();
+    }, wait: async (delay) => delays.push(delay),
+  });
+  assert.equal(calls, 3);
+  assert.deepEqual(delays, [1200, 2400]);
+  assert.deepEqual(result.payload, completePayload);
+  assert.ok(Number.isFinite(Date.parse(result.fetchedAt)));
+});
+
+test('a persistent interruption stops after three attempts without returning empty risks', async () => {
+  let calls = 0;
+  await assert.rejects(fetchGeorisquesRiskPayload(1.23, 43.35, {
+    fetchImpl: async () => { calls++; throw new TypeError('Connection reset'); }, wait: async () => {},
+  }), /Connection reset/);
+  assert.equal(calls, 3);
+});
+
+test('does not retry invalid payloads, client errors or a long provider cooldown', async () => {
+  for (const response of [
+    { ok: true, json: async () => ({}) },
+    { ok: false, status: 403 },
+    { ok: false, status: 429, headers: { get: () => '10' } },
+  ]) {
+    let calls = 0;
+    await assert.rejects(fetchGeorisquesRiskPayload(1.23, 43.35, {
+      fetchImpl: async () => { calls++; return response; }, wait: async () => assert.fail('Unexpected retry'),
+    }));
+    assert.equal(calls, 1);
+  }
+});
+
+test('respects a short provider cooldown before retrying a 429', async () => {
+  let calls = 0;
+  const delays = [];
+  await fetchGeorisquesRiskPayload(1.23, 43.35, {
+    fetchImpl: async () => ++calls === 1 ? { ok: false, status: 429, headers: { get: () => '3' } } : successfulResponse(),
+    wait: async delay => delays.push(delay),
+  });
+  assert.deepEqual(delays, [3000]);
+  assert.equal(calls, 2);
+});
+
+test('cancelling a view prevents further attempts and discards late responses', async () => {
+  for (const lateResponse of [false, true]) {
+    const controller = new AbortController();
+    let calls = 0;
+    await assert.rejects(fetchGeorisquesRiskPayload(1.23, 43.35, {
+      signal: controller.signal,
+      fetchImpl: async () => {
+        calls++;
+        if (lateResponse) { controller.abort(); return successfulResponse(); }
+        throw new TypeError('Connection reset');
+      }, wait: async () => controller.abort(),
+    }), { name: 'AbortError' });
+    assert.equal(calls, 1);
+  }
+});
+
+test('a failed refresh retains the dated summary only for the exact same valid point', () => {
+  const report = { cadastre: { lon: '1.23', lat: '43.35' }, risques: normalizeGeorisquesRiskSummary(completePayload, '2026-11-02T10:00:00Z') };
+  const before = structuredClone(report);
+  assert.equal(previousRisksAtPoint(report, 1.23, 43.35), report.risques);
+  assert.equal(previousRisksAtPoint(report, 1.2301, 43.35).fetchedAt, '');
+  assert.equal(previousRisksAtPoint({ ...report, cadastre: {} }, 1.23, 43.35).fetchedAt, '');
+  assert.deepEqual(report, before);
+});
 
 test('RGA preserves official address and commune labels, source and date through JSON', () => {
   const result = normalizeGeorisquesRiskSummary({ risquesNaturels: { argiles: { present: true,

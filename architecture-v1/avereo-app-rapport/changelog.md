@@ -20,6 +20,11 @@ Micro dans les champs textuels de décision et de livrable ; mécanisme vocal pa
 
 Ajout du sas RGA et de son contrôle dans la carte cadastrale et l’iframe. Un compte Rapport sans session RGA est invité à ouvrir RGA depuis CONNECT. Le point est conservé lors du passage et les résultats déjà enregistrés restent accessibles dans Rapport. Tests de tickets, cookies et accès HTTP croisés.
 
+Complément Géorisques préparé localement : reprises limitées des interruptions
+et conservation de la dernière synthèse au même point lors d'une recherche
+cadastrale échouée. Le service externe reste intermittent ; aucun rétablissement
+hébergé annoncé. [Comportement et diagnostic](api/georisques.md).
+
 
 ## 2026-11-02 — Nouvelle carte RGA intégrée
 
