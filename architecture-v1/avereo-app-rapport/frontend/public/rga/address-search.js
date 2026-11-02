@@ -1,6 +1,6 @@
 import { lambert93, RGA_MESSAGE, RGA_TRANSFER_KEY, rgaLevelLabel } from './modules/rgaContext.js';
 import { validLocation } from './modules/locationMap.js';
-import { buildGeorisquesRiskSummaryUrl, normalizeGeorisquesRiskSummary, rgaRisk } from './modules/georisquesRiskSummary.js';
+import { fetchGeorisquesRiskPayload, normalizeGeorisquesRiskSummary, rgaRisk } from './modules/georisquesRiskSummary.js';
 import { buildGeorisquesReportUrl } from './modules/georisquesReport.js';
 
 const $ = id => document.getElementById(id);
@@ -38,13 +38,10 @@ async function lookupRisks() {
   const run = cancel(), point = { ...selected };
   result = null; transferButton();
   $('bien-rga').textContent = 'Consultation en cours…';
-  status('Consultation de Géorisques pour ce point…');
+  status('Consultation de Géorisques pour ce point… Nouvelles tentatives automatiques en cas de coupure (environ 30 secondes maximum).');
   const currentController = controller;
-  const timeout = setTimeout(() => currentController.abort(), 15000);
   try {
-    const response = await fetch(buildGeorisquesRiskSummaryUrl(point.lon, point.lat), { signal: controller.signal, referrerPolicy: 'no-referrer' });
-    if (!response.ok) throw new Error('Service indisponible');
-    const payload = await response.json(), fetchedAt = new Date().toISOString();
+    const { payload, fetchedAt } = await fetchGeorisquesRiskPayload(point.lon, point.lat, { signal: currentController.signal });
     const summary = normalizeGeorisquesRiskSummary(payload, fetchedAt);
     if (run !== sequence) return;
     const rga = rgaRisk(summary);
@@ -61,7 +58,7 @@ async function lookupRisks() {
     $('bien-date').textContent = '';
     transferButton();
     status('Géorisques est indisponible. La lecture indicative de la carte reste distincte. Réessayez ou consultez le rapport officiel.');
-  } finally { clearTimeout(timeout); }
+  }
 }
 $('adresse-form').addEventListener('submit', async event => {
   event.preventDefault();

@@ -258,3 +258,35 @@ if ($deniedAuditCount !== 1) {
 }
 
 fwrite(STDOUT, "PASS intégration PDO/MariaDB, autorisation et audit atomique\n");
+
+$registration = new \Avereo\Connect\Repository\RgaRegistration($pdo);
+$rgaPlan = $registration->plan();
+$rgaReceipt = $registration->register($ownerId, 'https://rapport-preprod.avereo.fr/rga/', $rgaPlan['sourceFingerprint']);
+$rgaSnapshot = $registration->snapshot('rga');
+if ($rgaSnapshot['entitlements'] !== $rgaPlan['source']['entitlements'] || $rgaSnapshot['access'] !== $rgaPlan['source']['access']) {
+    throw new RuntimeException('Copie des droits RGA inexacte.');
+}
+if ($registration->register($ownerId, 'https://rapport-preprod.avereo.fr/rga/', $rgaPlan['sourceFingerprint'])['status'] !== 'already_registered') {
+    throw new RuntimeException('La déclaration RGA doit être idempotente.');
+}
+$adminApps = $repository->getAccountAdministration($ownerId, $organizationId)['applications'];
+if (!in_array('rga', array_column($adminApps, 'code'), true)) {
+    throw new RuntimeException('RGA doit apparaître dans l’administration native.');
+}
+$repository->updateUserApplicationAccess($ownerId, $organizationId, $approvedUserId, 'rga', 'revoked', 'rga-test-independent-revoke');
+if ($repository->canLaunchApplication($approvedUserId, 'rga') || !$repository->canLaunchApplication($approvedUserId, 'rapport')
+    || array_column($repository->listCatalog($approvedUserId), 'code') !== ['rapport']) {
+    throw new RuntimeException('Rapport seul ne doit pas donner accès à RGA.');
+}
+$repository->updateUserApplicationAccess($ownerId, $organizationId, $approvedUserId, 'rga', 'active', 'rga-test-independent-restore');
+$repository->updateUserApplicationAccess($ownerId, $organizationId, $approvedUserId, 'rapport', 'revoked', 'rga-test-rapport-revoke');
+if (!$repository->canLaunchApplication($approvedUserId, 'rga') || $repository->canLaunchApplication($approvedUserId, 'rapport')
+    || array_column($repository->listCatalog($approvedUserId), 'code') !== ['rga']) {
+    throw new RuntimeException('RGA seule ne doit pas donner accès à Rapport.');
+}
+$repository->updateUserApplicationAccess($ownerId, $organizationId, $approvedUserId, 'rapport', 'active', 'rga-test-rapport-restore');
+$registration->rollback($ownerId, $rgaReceipt);
+if ($registration->snapshot('rga')['application'] !== null || $registration->snapshot('rapport') !== $rgaPlan['source']) {
+    throw new RuntimeException('Retour arrière RGA inexact.');
+}
+fwrite(STDOUT, "PASS déclaration RGA MariaDB : copie, administration native, indépendance, idempotence, restauration ciblée\n");

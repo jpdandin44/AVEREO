@@ -10,6 +10,48 @@ owner: jpdandin
 tags: [rga, connect, risques, cartographie]
 ---
 
+## Administration et initialisation des droits
+
+La déclaration s’appuie sur les tables existantes `applications`, `entitlements`
+et `user_application_access`. Les statuts, dates de validité et refus sont repris
+exactement ; compte, type de compte, organisation et adhésion continuent à suivre
+les contrôles natifs de CONNECT. Aucun droit RGA n’est déduit de Rapport après
+création. L’administration CONNECT affiche alors RGA comme les autres applications.
+
+Depuis le backend CONNECT, `php bin/register-rga.php --config=CHEMIN_PRIVE`
+produit un plan sans écriture. Conserver ce plan en zone privée. L’application
+du plan exige `--confirm --actor-id=ID_PROPRIETAIRE --launch-url=https://rapport-preprod.avereo.fr/rga/ --expected-fingerprint=EMPREINTE`.
+L’opérateur doit être propriétaire actif de toutes les organisations concernées.
+Sur le schéma courant, son activation doit être terminée. La préproduction
+CONNECT observée le 2 novembre utilise encore le schéma antérieur sans
+`onboarding_status` : la déclaration y conserve le contrôle de compte actif
+et de rôle propriétaire, sans migration globale de l’authentification.
+La transaction refuse un changement des droits source depuis le plan. Si RGA
+existe déjà, elle ne réécrit aucun droit. Le reçu privé contient l’état créé et
+son empreinte. `RgaRegistration::rollback()` accepte ce reçu seulement si les
+lignes RGA n’ont pas changé depuis ; il ne touche jamais aux droits Rapport.
+Le retour arrière utilise la même commande avec `--confirm --actor-id=ID_PROPRIETAIRE --rollback-receipt=RECU_PRIVE`. L’opération et son retour arrière sont audités. Aucun changement de schéma SQL.
+
+Configuration privée CONNECT : `APP_LAUNCH_RGA_URL` pointe sur
+`https://rapport-preprod.avereo.fr/rga/entry.php`, et `APP_LAUNCH_RGA_SECRET`
+est une nouvelle clé aléatoire propre à RGA (au moins 32 caractères).
+Le `launch_url` du catalogue reste `/rga/` : l’URL d’échange vient de la
+configuration privée, pas d’une destination fournie par le navigateur.
+La même clé est placée dans `connect_launch_secret` du fichier privé RGA,
+sur le modèle de `local/rga-config.example.php`. Le sas lit uniquement
+`AVEREO_RGA_CONFIG_FILE`, ou `~/.avereo/rga-preprod/config.php` pour une racine
+préproduction, `~/.avereo/rga/config.php` sinon ; aucun repli sur la production
+ni sur `AVEREO_CONFIG_FILE` de Rapport. Son répertoire anti-rejeu est distinct.
+Le build copie la bibliothèque commune de sas sans modifier le sas Rapport.
+
+Le cookie RGA est sécurisé, HttpOnly, SameSite=Lax et valide 30 minutes par
+défaut. Comme les autres sas, un retrait de droit bloque les prochains tickets ;
+un cookie déjà délivré reste valable jusqu’à son expiration. Les résultats RGA
+antérieurement enregistrés restent lisibles/exportables par les comptes ayant
+accès au rapport, sans renouveler la consultation cartographique. Ce lot ne crée
+ni persistance métier RGA distincte, ni nouveau compte, ni copie de dossiers.
+
+
 # Recherche RGA dans CONNECT et Rapport
 
 ## Objectif et périmètre
@@ -17,7 +59,9 @@ tags: [rga, connect, risques, cartographie]
 Le responsable demande le 2 novembre 2026 la nouvelle carte fournie dans
 `RGA/RGA_carte_interactive/index.html`, une recherche d'adresse et la reprise
 des résultats au même niveau que les risques dans Rapport. Il confirme une
-tuile RGA dans CONNECT et un accès depuis Rapport, avec les droits de Rapport.
+tuile RGA dans CONNECT et un accès depuis Rapport. Après la première livraison,
+il demande une application distincte et confirme : reprendre les droits actuels
+de Rapport au départ, puis les gérer indépendamment.
 
 La copie de travail est isolée sur `feat/rga-connect-rapport-20261102`, à partir
 de `2e3239b`, suite de la PR 91. Les dossiers de démonstration ne sont pas modifiés.
@@ -27,11 +71,13 @@ Ce document décrit le contrat fonctionnel, pas une preuve d'installation.
 
 ## Parcours
 
-1. CONNECT affiche RGA comme raccourci de Rapport. La route de lancement reste
-   `/api/v1/apps/rapport/launch?view=rga` : mêmes droits contrôlés au serveur,
-   même ticket signé, consommation du nonce et durée de session inchangées.
-2. Après échange du ticket, le seul paramètre reconnu est `view=rga`, qui ouvre
-   `/rga/`. Toute autre valeur ouvre `/`. Aucun redirect libre n'est accepté.
+1. CONNECT affiche l’application native `rga` selon ses propres droits.
+   `/api/v1/apps/rga/launch` contrôle compte, organisation, période d’habilitation
+   et restriction individuelle avant de signer un ticket RGA.
+2. `/rga/entry.php` consomme ce ticket à usage unique avec la clé RGA et crée
+   le cookie sécurisé `AVEREO_RGA_GATE`. Le point éventuel est repris depuis
+   le stockage temporaire de l’onglet, limité au fragment de 2 000 caractères.
+   Aucun ticket ni cookie Rapport ne suffit pour entrer dans RGA.
 3. La nouvelle carte `/rga/carte.php` recherche jusqu'à cinq adresses IGN. Le
    professionnel choisit l'adresse ; un repère est projeté en Lambert-93.
 4. La lecture des contours locaux et la synthèse Géorisques sont présentées
@@ -41,6 +87,9 @@ Ce document décrit le contrat fonctionnel, pas une preuve d'installation.
    Un brouillon existant exige la confirmation habituelle, avec export préalable
    proposé. Le point du nouveau dossier reste à confirmer dans Site.
 5. Dans un dossier existant : Site → Rapport des risques → nouvelle carte.
+   Sans session RGA valide, un lien ouvre le parcours CONNECT dans un autre
+   onglet ; le retour dans Rapport revérifie l’accès. La superposition RGA sur
+   le cadastre suit la même règle. La carte cadastrale reste utilisable.
    La carte reprend le point actuel, y compris son déplacement manuel. Le bouton
    « Utiliser dans ce rapport » transmet les résultats à la fenêtre parente.
    Le destinataire vérifie l'origine, la fenêtre émettrice, les coordonnées exactes,
@@ -73,7 +122,7 @@ est celle des données géologiques au 1/50 000. L'affichage ne remplace ni une
 
 ## Superposition cadastrale — correction du 2 novembre
 
-La carte du lieu dans Rapport affiche par défaut une couche RGA avec une
+Avec une session RGA valide, la carte du lieu dans Rapport affiche une couche RGA avec une
 intensité de 40 %, réglable de 0 à 80 %, et une case pour la masquer. La carte
 RGA autonome et son iframe ouvrent « Cadastre + RGA » à l'échelle du bien dès
 qu'un point est fourni ; la vue des territoires reste accessible. Le bouton
@@ -116,7 +165,8 @@ lien interne sont dans le fragment, absent de la requête HTTP au serveur.
 Les liens et appels utilisent `no-referrer` lorsque prévu par l'intégration.
 Les données géographiques publiques et les modules JavaScript sont publics ;
 les pages applicatives PHP passent par le sas CONNECT. Aucun JSON client
-n'est intégré aux fichiers de publication. Aucun secret nouveau n'est requis.
+n'est intégré aux fichiers de publication. Une clé de lancement RGA distincte
+est requise ; elle reste exclusivement dans les configurations privées.
 
 ## Construction et contrôles
 
@@ -134,7 +184,7 @@ Il est strictement local et doit rester hors de toute archive hébergée.
 
 Critères : adresse choisie et repère ; filtres et zoom ; panne API distincte ;
 transfert explicite ; préservation du brouillon ; rejet d'autre point/origine ;
-JSON et restitutions ; refus anonyme du sas ; accès RGA refusé sans droit Rapport ;
+JSON et restitutions ; refus anonyme du sas ; indépendance des droits RGA/Rapport ;
 sauvegarde et réouverture d'un dossier de test en préproduction.
 
 ## Quatre phases et livraison
@@ -149,9 +199,15 @@ sauvegarde et réouverture d'un dossier de test en préproduction.
 Le déploiement doit conserver les fichiers privés, les bases et les fichiers
 hébergés absents du lot. En particulier `connect/gate.php` hébergé diffère de
 la copie Git consultée : il n'appartient pas aux fichiers à remplacer.
-CONNECT ne nécessite que `src/Application.php` après comparaison exacte de sa
-version active. Rapport nécessite ses assets construits, l'entrée CONNECT et
-les pages/ressources RGA modifiées. Les anciennes cartes sont conservées.
+Le précédent paquet du raccourci est historique : il ne déclare pas
+l’application distincte. La [procédure ciblée](../workflows/README.md) compose
+le correctif avec les versions effectivement hébergées et prépare sa restauration. Le nouveau candidat nécessite les paramètres
+CONNECT RGA, les pages du sas RGA, la déclaration ciblée en base CONNECT et
+les composants Rapport concernés. Il ne modifie pas la base des rapports.
+La version Rapport hébergée doit être identifiée avant toute construction de
+livraison : des améliorations de saisie ont été installées après le premier
+lot RGA et doivent être préservées. Les anciennes cartes restent disponibles
+avec le droit RGA. La qualification de ce nouveau lot reste dans le cockpit.
 
 TBD — rétablissement de Géorisques après l'indisponibilité constatée lors de la
 recette hébergée, acceptation métier, version et livraison de production.

@@ -16,10 +16,23 @@ tags:
 
 Ajout de plans et coupes privés au dossier, placement et déplacement de repères liés aux observations, zoom, légendes et export Word annoté. Import JSON porté à 50 Mio pour accueillir les médias et aligner le plafond sur l’API par défaut. Validation des nouvelles données côté navigateur et PHP. [Parcours et limites](docs/reperage-observations.md). Aucun déploiement ni statut de revue expert créé par cette entrée.
 
+Réalignement sur `main` après les PR #93 et #95 : conflit documentaire résolu
+en conservant les décisions RGA et repères, sans modification des apports
+fonctionnels de la PR #94. [Contrôles du réalignement](docs/source-audit.md).
+
 
 ## 2026-11-02 — Dictée et sauvegarde des attentes livrées en préproduction
 
 Micro dans les champs textuels de décision et de livrable ; mécanisme vocal partagé, accord conservé, ajout au texte courant. Bouton d'attente avec confirmation locale ou erreur explicite ; copie serveur distincte. Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT](https://connect-preprod.avereo.fr/?app=rapport), après accord explicite. Sauvegarde fraîche des 148 fichiers et de la configuration privée ; installation/restauration répétée sur copie privée, puis trois fichiers livrés et 147 fichiers préexistants conservés. Configuration inchangée, aucune migration ni écriture SQL de livraison. Les reçus sont rattachés à `finalisation20261102.exportInput20261102` dans le suivi canonique. [Recette et réserves](docs/reprise-demo-philippe.md).
+
+## 2026-11-02 — Accès RGA indépendant
+
+Ajout du sas RGA et de son contrôle dans la carte cadastrale et l’iframe. Un compte Rapport sans session RGA est invité à ouvrir RGA depuis CONNECT. Le point est conservé lors du passage et les résultats déjà enregistrés restent accessibles dans Rapport. Tests de tickets, cookies et accès HTTP croisés.
+
+Complément Géorisques préparé localement : reprises limitées des interruptions
+et conservation de la dernière synthèse au même point lors d'une recherche
+cadastrale échouée. Le service externe reste intermittent ; aucun rétablissement
+hébergé annoncé. [Comportement et diagnostic](api/georisques.md).
 
 
 ## 2026-11-02 — Nouvelle carte RGA intégrée

@@ -9,6 +9,15 @@ spec.loader.exec_module(delivery)
 
 
 class DeliveryTests(unittest.TestCase):
+    def test_distinct_rga_scope_keeps_rapport_gate_and_other_apps_protected(self):
+        connect = ['src/Application.php', 'src/Config.php', 'public/index.php', 'src/Repository/RgaRegistration.php', 'bin/register-rga.php']
+        rapport = ['index.html', 'rga/guard.php', 'rga/gate.php', 'rga/connect-gate.php', 'rga/entry.php', 'rga/resume.php', 'rga/access.php', 'assets/index-test.js']
+        files = {**{'connect/' + n: 'hash' for n in connect}, **{'rapport/' + n: 'hash' for n in rapport}}
+        delivery.validate_file_scope({'kind': 'rga-independent-access', 'files': files})
+        for invalid in ['rapport/connect/gate.php', 'rapport/.htaccess', 'connect/src/Repository/PdoConnectRepository.php', 'rapport/assets/../gate.php']:
+            with self.assertRaises(AssertionError):
+                delivery.validate_file_scope({'kind': 'rga-independent-access', 'files': dict(files, **{invalid: 'hash'})})
+
     def test_install_restore_preserves_unrelated_files(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -12,7 +12,7 @@ tags: [connect, documentation, preproduction]
 
 ## RGA — 2 novembre 2026
 
-Le responsable confirme une tuile RGA et l’accès depuis Rapport, avec les mêmes droits. Sans accès Rapport, le raccourci est absent et son lancement refusé. [Critères d’intégration](../avereo-app-rapport/api/rga.md).
+Le responsable confirme une tuile RGA distincte et l’accès depuis Rapport. Les droits initiaux de Rapport doivent être repris exactement, refus et périodes de validité compris, puis gérés indépendamment. Rapport seul ne doit pas ouvrir RGA et RGA seule ne doit pas ouvrir Rapport. [Critères d’intégration](../avereo-app-rapport/api/rga.md).
 
 # Exigences CONNECT
 

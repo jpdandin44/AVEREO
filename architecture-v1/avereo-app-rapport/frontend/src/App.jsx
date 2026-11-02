@@ -29,7 +29,8 @@ import {
 } from './reportClassification.js';
 import { buildGeorisquesReportUrl } from './georisquesReport.js';
 import {
-  buildGeorisquesRiskSummaryUrl,
+  fetchGeorisquesRiskPayload,
+  previousRisksAtPoint,
   emptyGeorisquesRiskSummary,
   normalizeGeorisquesRiskSummary,
   riskStatusTone,
@@ -926,18 +927,16 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setRe
     if (!hasCoordinates || busy || (summary?.fetchedAt && refresh === 0)) return;
     let active = true;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
     setStatus('loading');
-    fetch(buildGeorisquesRiskSummaryUrl(lon, lat), { signal: controller.signal, referrerPolicy: 'no-referrer' })
-      .then((response) => { if (!response.ok) throw new Error('Géorisques indisponible'); return response.json(); })
-      .then((payload) => {
-        const risques = normalizeGeorisquesRiskSummary(payload);
+    fetchGeorisquesRiskPayload(lon, lat, { signal: controller.signal })
+      .then(({ payload, fetchedAt }) => {
+        const risques = normalizeGeorisquesRiskSummary(payload, fetchedAt);
         if (!active) return;
         setReport((prev) => Number(prev.cadastre.lon) === Number(lon) && Number(prev.cadastre.lat) === Number(lat)
           ? { ...prev, risques } : prev);
         setStatus('');
-      }).catch(() => { if (active) setStatus('error'); }).finally(() => clearTimeout(timeout));
-    return () => { active = false; controller.abort(); clearTimeout(timeout); };
+      }).catch(() => { if (active) setStatus('error'); });
+    return () => { active = false; controller.abort(); };
   }, [lon, lat, hasCoordinates, busy, refresh, setReport]);
   const groups = [
     { key: 'naturels', label: 'Autres risques naturels identifies', items: (summary.naturels || []).filter((risk) => !isRgaRisk(risk)) },
@@ -966,8 +965,8 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setRe
 
       <button className="button secondary" type="button" disabled={busy || status === 'loading'}
         onClick={() => setRefresh((n) => n + 1)}>Actualiser la synthèse</button>
-      {(busy || status === 'loading') && <p role="status">Récupération de la synthèse des risques…</p>}
-      {status === 'error' && <p className="status-line warning" role="alert">La synthèse n’a pas pu être récupérée. Réessayez ou ouvrez le rapport officiel.
+      {(busy || status === 'loading') && <p role="status">Récupération de la synthèse des risques… En cas de coupure, de nouvelles tentatives sont effectuées automatiquement (environ 30 secondes maximum).</p>}
+      {status === 'error' && <p className="status-line warning" role="alert">La connexion à Géorisques n’a pas fourni de synthèse exploitable. Réessayez plus tard ou consultez le rapport officiel.
         {summary?.fetchedAt && ' La dernière consultation est conservée ci-dessous.'}</p>}
       {!summary?.fetchedAt && status !== 'loading' && !busy && <p>Aucune synthèse disponible dans ce dossier. Cela ne signifie pas absence de risque.</p>}
 
@@ -1019,7 +1018,8 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
   const [lookupStatus, setLookupStatus] = useState({ state: 'idle', message: '' });
   const [view, setView] = useState('cadastre');
   const lookupSequence = useRef(0);
-  useEffect(() => () => { lookupSequence.current += 1; }, [report.adresse_logement]);
+  const lookupAbort = useRef(null);
+  useEffect(() => () => { lookupSequence.current += 1; lookupAbort.current?.abort(); }, [report.adresse_logement]);
 
   const updateNested = (group, field, value) => {
     setReport((prev) => ({ ...prev, [group]: { ...prev[group], [field]: value } }));
@@ -1033,6 +1033,9 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
     }
 
     const sequence = ++lookupSequence.current;
+    lookupAbort.current?.abort();
+    const controller = new AbortController();
+    lookupAbort.current = controller;
     const isCurrent = () => lookupSequence.current === sequence;
     setView('cadastre');
     setReport((prev) => ({ ...prev, localisation: { ...prev.localisation, confirmation: null } }));
@@ -1057,7 +1060,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
       setReport((prev) => manual ? moveVisitPoint(prev, lon, lat, new Date().toISOString()) : ({ ...prev,
         cadastre: { ...initialReport.cadastre, lon, lat },
         urbanisme: { ...initialReport.urbanisme },
-        risques: emptyGeorisquesRiskSummary(),
+        risques: previousRisksAtPoint(prev, lon, lat),
         rga_cartographie: null,
         localisation: { adresse_trouvee: feature.properties.label || '', confirmation: null },
         terrain: emptyTerrain(),
@@ -1095,19 +1098,16 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
         urbanisme = { zone: '', description: '', pdfUrl: '' };
       }
 
-      let risques = emptyGeorisquesRiskSummary();
+      let risques = previousRisksAtPoint(report, lon, lat);
       let risquesDisponibles = false;
       if (!isCurrent()) return;
       try {
         setLookupStatus({ state: 'loading', message: 'Recuperation de la synthese des risques...' });
-        const risksUrl = buildGeorisquesRiskSummaryUrl(lon, lat);
-        if (!risksUrl) throw new Error('Coordonnees invalides');
-        const risksResponse = await fetch(risksUrl, { signal: AbortSignal.timeout(15000) });
-        if (!risksResponse.ok) throw new Error(`Georisques ${risksResponse.status}`);
-        risques = normalizeGeorisquesRiskSummary(await risksResponse.json());
+        const { payload, fetchedAt } = await fetchGeorisquesRiskPayload(lon, lat, { signal: controller.signal });
+        risques = normalizeGeorisquesRiskSummary(payload, fetchedAt);
         risquesDisponibles = true;
       } catch {
-        risques = emptyGeorisquesRiskSummary();
+        // Keep the dated consultation only when it belongs to this exact point.
       }
 
       if (!isCurrent()) return;
@@ -1123,7 +1123,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
           lat,
         },
         urbanisme: manual ? { ...prev.urbanisme, ...urbanisme } : urbanisme,
-        risques,
+        risques: risquesDisponibles ? risques : previousRisksAtPoint(prev, lon, lat),
       }));
       setLookupStatus({
         state: risquesDisponibles && parcelle ? 'success' : 'warning',
@@ -1133,8 +1133,8 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
             : risquesDisponibles
               ? "Adresse et synthese des risques recuperees. La parcelle cadastrale n'a pas ete identifiee automatiquement."
               : parcelle
-                ? 'Parcelle et contexte recuperes. La synthese Georisques est temporairement indisponible.'
-                : "Point localise. La parcelle et la synthese Georisques n'ont pas pu etre recuperees.",
+                ? `Parcelle et contexte récupérés. Connexion à Géorisques indisponible.${risques.fetchedAt ? ' La dernière synthèse datée pour ce point est conservée.' : ' Aucune synthèse disponible ; cela ne signifie pas absence de risque.'}`
+                : `Point localisé. La parcelle et la synthèse Géorisques n’ont pas pu être actualisées.${risques.fetchedAt ? ' La dernière synthèse datée pour ce point est conservée.' : ''}`,
       });
     } catch {
       if (isCurrent()) setLookupStatus({ state: 'error', message: manual ? 'Actualisation indisponible. Le point corrigé reste conservé.' : 'Recherche indisponible ou adresse non trouvee.' });

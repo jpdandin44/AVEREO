@@ -96,6 +96,7 @@ final class Config
             self::env('OAUTH_PUBLIC_KEY_PATH'),
             [
                 'rapport' => self::env('APP_LAUNCH_RAPPORT_URL'),
+                'rga' => self::env('APP_LAUNCH_RGA_URL'),
                 'coupe' => self::env('APP_LAUNCH_COUPE_URL'),
                 'projet' => self::env('APP_LAUNCH_PROJET_URL'),
                 'thermo' => self::env('APP_LAUNCH_THERMO_URL'),
@@ -105,6 +106,7 @@ final class Config
             ],
             [
                 'rapport' => self::env('APP_LAUNCH_RAPPORT_SECRET'),
+                'rga' => self::env('APP_LAUNCH_RGA_SECRET'),
                 'coupe' => self::env('APP_LAUNCH_COUPE_SECRET'),
                 'projet' => self::env('APP_LAUNCH_PROJET_SECRET'),
                 'thermo' => self::env('APP_LAUNCH_THERMO_SECRET'),

@@ -5,12 +5,29 @@ title: Guide utilisateur de l'outil de suivi AVEREO Projet
 status: active
 version: git
 created: 2026-09-24
-updated: 2026-09-25
+updated: 2026-10-28
 owner: jpdandin
 tags: [projet, suivi, guide, local]
 ---
 
 # Guide utilisateur de l'outil de suivi AVEREO Projet
+
+## Planning enrichi et préproduction — 28 octobre 2026
+
+Dans Planning, cliquer un cartouche pour replier/déplier ses tâches. Sa synthèse
+reste visible. Le trait rouge daté marque aujourd'hui. Glisser une barre/losange
+ou la synthèse d'un projet pour proposer de nouvelles dates ; utiliser les
+poignées ⠿ pour réordonner les projets ou les sujets dans leur projet.
+Lire les impacts des dépendances avant **Appliquer le déplacement** ; **Annuler**
+ou Échap abandonne la proposition. Le dernier déplacement est annulable pendant
+la session, hors autre modification. Un différé reste En attente.
+
+La version hébergée du planning n'héberge pas les revues sur disque. À la première
+ouverture de [Projet préproduction](https://projet-preprod.avereo.fr/), passer par
+CONNECT avec son accès habituel puis importer le JSON exporté depuis le navigateur local.
+Avant remplacement, exporter tout brouillon déjà présent sur cette nouvelle origine.
+Chaque navigateur/profil possède son brouillon ; exporter régulièrement le JSON
+complet. Un changement d'adresse ne transporte pas automatiquement les données.
 
 ## À quoi sert l'outil ?
 

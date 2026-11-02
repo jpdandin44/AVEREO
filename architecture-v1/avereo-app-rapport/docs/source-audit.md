@@ -15,10 +15,30 @@ tags:
 
 ## Plans et repères — candidat local du 2 novembre
 
+Après fusion des PR #93 et #95 par le responsable, la branche de la PR #94 est
+réalignée sur `main` (`a7fa3cb`). Le seul conflit porte sur `decisions.md` :
+les décisions relatives aux repères et à l'application RGA distincte sont
+toutes deux conservées. Les ajouts/retraits des onze fichiers de code de la
+PR #94 sont identiques à ceux de son candidat initial `cee43b7` ; le code
+de dictée, les droits RGA et les reprises Géorisques de `main` sont conservés.
+Les 98 tests Node, 12 contrôles PHP des plans, 8 contrôles du sas RGA,
+la syntaxe PHP, le build authentifié et le contrôle du socle passent.
+Les recettes visuelles antérieures restent attachées au candidat initial ;
+ce réalignement n'est pas une nouvelle recette hébergée ni un déploiement.
+
 Images PNG/JPEG incorporées au dossier, sans URL distante, SVG actif ni publication des plans du Cricq dans les assets. Types, tailles, dimensions, identifiants et coordonnées sont bornés ; les références orphelines et doublons sont refusés explicitement. Le serveur vérifie aussi les octets et dimensions réels. Les contrôles de rôle et de propriété de `reports.php` restent inchangés. Le Word incorpore les repères au rendu dérivé ; la synthèse client filtre aussi les légendes. Les originaux et les dossiers hébergés ne sont pas modifiés. [Contrat et critères](reperage-observations.md).
 
 
 ## Saisie vocale et sauvegarde explicite — préproduction du 2 novembre
+
+Après fusion de la PR RGA #92, la branche de la PR #93 est réalignée sur
+`main` (`069e2c5`). Les trois conflits portent uniquement sur le changelog,
+les exigences et cet audit ; les sections des deux lots sont conservées.
+Les 86 tests Rapport, les 8 contrôles du sas RGA et les 17 contrôles HTTP
+passent. Le build authentifié reproduit exactement le HTML et le JavaScript
+du paquet RGA/dictée déjà livré ; quatre fichiers PHP ne diffèrent que par
+les fins de ligne. Cette résolution ne remplace pas les preuves hébergées
+du paquet installé et ne déclenche aucune nouvelle livraison.
 
 Extraction du mécanisme SpeechRecognition existant vers `VoiceField.jsx` afin de le réutiliser dans la décision et les livrables. Aucune nouvelle bibliothèque, clé, intégration IA, permission accordée automatiquement ou configuration serveur. Les autorisations du navigateur et l'accord métier restent nécessaires. Seul le texte rejoint les champs du dossier ; aucun fichier audio n'est ajouté au rapport.
 
@@ -31,6 +51,27 @@ Candidat fonctionnel `63ec279` installé sur [Rapport préproduction via CONNECT
 Tilleuls et Cricq : confirmation « Enregistrer cette attente », reprise après rechargement, sauvegarde/réouverture serveur et conservation de toutes les données métier contrôlées (seul `updatedAt` évolue). Quatre DOCX hébergés valides ; textes et médias des deux Tilleuls identiques à la présentation, synthèse client Cricq identique. L'expert Cricq reflète des modifications antérieures de localisation, risques, cadastre, terrain et urbanisme ; ses notes détaillées terrain/urbanisme ont été remplacées ou vidées avant cette installation. Copie récente préservée, arbitrage de contenu demandé au responsable. Les quatre fichiers de présentation restent inchangés. Brouillon initial du navigateur restauré exactement avant nouvel enregistrement local.
 
 Microphone et service vocal réels à essayer avec le responsable ; les essais vocaux antérieurs sont simulés. Contrôles micro présents et cohérents avec l'accord enregistré, sans nouvel accord ni permission micro accordée par l'agent. Revue métier et validation humaine restent distinctes ; aucun merge ni production.
+
+## 2026-11-02 — Candidat de droits RGA distincts
+
+Sas RGA indépendant du sas Rapport, contrôles sur les composants cartographiques et tests HTTP réels avec données fictives. Le diagnostic Géorisques ci-dessous reste valable et ne décrit aucune correction API livrée. Les essais de ce candidat et la version hébergée sont distingués dans le [contrat RGA](../api/rga.md) et le suivi canonique.
+
+
+## Diagnostic Géorisques du 2 novembre
+
+Le contrôle réseau constate une coupure avant réponse dans le navigateur et
+des résultats intermittents depuis le poste et o2switch. Le relais préparé
+n'est pas retenu ni livré : son efficacité n'est pas établie. Aucun changement
+d'authentification, de configuration, de données ou de code applicatif.
+[Constats, limites et reprise](../api/georisques.md#diagnostic-de-disponibilité--2-novembre-2026).
+
+Le complément local suivant ajoute des reprises bornées dans le client commun
+et conserve les risques datés lors d'un échec au même point. Aucun relais PHP,
+secret, permission, stockage ou flux de données externe supplémentaire. Les
+tests distinguent interruption suivie d'un succès, échec persistant, réponse
+invalide, quota, annulation et déplacement du bien. Les essais réels restent en
+échec intermittent ; ne pas confondre ces contrôles simulés avec une correction
+du fournisseur ou une livraison hébergée. [État actuel](../api/georisques.md#correctif-local-du-2-novembre--récupération-et-conservation).
 
 ## Lot RGA du 2 novembre
 

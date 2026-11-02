@@ -5,6 +5,7 @@ import { MapPin, Map, Image, Check, Pencil, LocateFixed, ExternalLink, Loader2 }
 import { buildIgnMapUrl, buildIgnTileUrl, locationConfirmed, validLocation } from './locationMap.js';
 import { terrainMapSamples } from './terrainContext.js';
 import { createRgaLayer, createRgaPanes } from './rgaOverlay.js';
+import useRgaAccess from './useRgaAccess.js';
 
 export function CadastralMap({ lon, lat, mode, revision, editing = false, draft = null, onPointChange, terrainAnalysis = null, rga = false, rgaOpacity = .4 }) {
   const container = useRef(null);
@@ -130,6 +131,7 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
 }
 
 export default function LocationMap({ report, setReport, onCorrectAddress, onMovePoint }) {
+  const rgaAllowed = useRgaAccess();
   const [mode, setMode] = useState('cadastre');
   const [revision, setRevision] = useState(0);
   const [rga, setRga] = useState(true);
@@ -170,12 +172,12 @@ export default function LocationMap({ report, setReport, onCorrectAddress, onMov
         {!editing && <button className="property-map-recenter" type="button" onClick={() => setDraft({ lon, lat })}><MapPin size={17} /> Déplacer le point</button>}
         <button className="property-map-recenter" type="button" onClick={() => setRevision((value) => value + 1)}><LocateFixed size={17} /> Recentrer</button>
       </div>
-      <div className="property-rga-controls">
+      {rgaAllowed ? <div className="property-rga-controls">
         <label><input type="checkbox" checked={rga} onChange={event => setRga(event.target.checked)} /> Superposer le RGA</label>
         <label>Intensité des couleurs <input type="range" min="0" max="80" step="5" value={Math.round(rgaOpacity * 100)} disabled={!rga}
           onChange={event => setRgaOpacity(Number(event.target.value) / 100)} /> <output>{Math.round(rgaOpacity * 100)} %</output></label>
         <span className="rga-level-key"><i style={{ background: '#f3cf55' }} />Faible <i style={{ background: '#ee8a22' }} />Moyen <i style={{ background: '#b3202a' }} />Fort</span>
-      </div>
+      </div> : <p className="location-help"><a href="/rga/" target="_blank" rel="noopener noreferrer">Ouvrir mon accès RGA dans CONNECT</a> pour afficher la superposition, puis revenir ici.</p>}
       {editing && <div className="property-map-edit" role="group" aria-label="Ajuster le point de visite">
         <p>Cliquez sur le bon bâtiment ou faites glisser le point bleu. La correction ne sera conservée qu’après validation.</p>
         <div className="form-grid two">
@@ -190,7 +192,7 @@ export default function LocationMap({ report, setReport, onCorrectAddress, onMov
           <button className="button ghost" type="button" onClick={() => setDraft(null)}>Annuler le déplacement</button>
         </div>
       </div>}
-      <CadastralMap lon={lon} lat={lat} mode={mode} revision={revision} editing={editing} draft={draft} rga={rga} rgaOpacity={rgaOpacity}
+      <CadastralMap lon={lon} lat={lat} mode={mode} revision={revision} editing={editing} draft={draft} rga={rga && rgaAllowed} rgaOpacity={rgaOpacity}
         onPointChange={(nextLon, nextLat) => setDraft({ lon: nextLon, lat: nextLat })} />
       <div className="property-map-legend"><span><i className="property-legend-point" /> Bien recherché</span><span><i className="property-legend-parcel" /> Parcelles cadastrales</span>
         <a href={buildIgnMapUrl(lon, lat)} target="_blank" rel="noopener noreferrer">Ouvrir le plan IGN <ExternalLink size={13} /></a>

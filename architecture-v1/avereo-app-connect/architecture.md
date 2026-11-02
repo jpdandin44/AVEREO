@@ -10,9 +10,9 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
-## Raccourci RGA
+## Application RGA distincte
 
-Le catalogue ajoute une vue dérivée de Rapport. `/api/v1/apps/rapport/launch?view=rga` conserve le contrôle des droits Rapport et le ticket existant ; seul le paramètre fixe `view=rga` sélectionne la carte après échange. Aucune destination libre ni migration de catalogue. [Contrat](../avereo-app-rapport/api/rga.md).
+Le catalogue natif contient une application `rga`. `/api/v1/apps/rga/launch` applique les contrôles de compte, organisation, habilitation et accès individuel à cette application, puis émet un ticket signé avec sa propre clé. L’initialisation copie les droits Rapport une seule fois ; le schéma SQL existant est conservé. [Contrat](../avereo-app-rapport/api/rga.md).
 
 # Architecture CONNECT
 

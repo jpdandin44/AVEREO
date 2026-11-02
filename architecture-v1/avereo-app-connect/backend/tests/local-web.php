@@ -197,11 +197,11 @@ if (filter_var(getenv('CONNECT_LOCAL_DEMO_EXPECTED') ?: 'false', FILTER_VALIDATE
         static fn (array $application): bool => ($application['code'] ?? null) === 'rga',
     ))[0] ?? [];
     assertLocal(
-        'local RGA launch uses Rapport permission and fixed view',
+        'local RGA launch uses its own permission and ticket',
         $baseUrl . (string) ($rga['launchUrl'] ?? ''),
         static fn (array $response): bool => $response['status'] === 303
-            && str_contains(localLocation($response), '/local-app/rapport?')
-            && str_ends_with(localLocation($response), '&view=rga'),
+            && str_contains(localLocation($response), '/local-app/rga?')
+            && !str_contains(localLocation($response), 'view=rga'),
         ['Cookie: ' . $cookie],
     );
     $rapport = array_values(array_filter(
@@ -256,7 +256,7 @@ if (filter_var(getenv('CONNECT_LOCAL_DEMO_EXPECTED') ?: 'false', FILTER_VALIDATE
         str_replace('/local-app/rapport', '/local-app/coupe', $secondEntryUrl),
         static fn (array $response): bool => $response['status'] === 403,
     );
-    foreach (['coupe', 'projet', 'thermo', 'drone', 'recherche'] as $applicationCode) {
+    foreach (['rga', 'coupe', 'projet', 'thermo', 'drone', 'recherche'] as $applicationCode) {
         $application = array_values(array_filter(
             $catalogPayload['data'] ?? [],
             static fn (array $candidate): bool => ($candidate['code'] ?? null) === $applicationCode,

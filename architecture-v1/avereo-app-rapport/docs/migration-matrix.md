@@ -38,6 +38,13 @@ lieu et d'une vue cadastrale dans la carte autonome. Aucun champ ni migration.
 
 Anciennes cartes conservées ; nouvelle carte et résultat `rga_cartographie` optionnel. Les anciens dossiers sans ce champ restent lisibles. Les autres données métier ne changent pas lors d’une reprise de lecture au même point. JSON et restitution utilisent le même bloc validé. [Critères et état de recette](../api/rga.md).
 
+## Reprise Géorisques — candidat local du 2 novembre
+
+Complément local Géorisques du 2 novembre : les champs `risques` et leur date
+restent identiques. Seule la récupération évolue, avec reprises limitées et
+conservation au même point en cas d'échec. Aucun changement de schéma, import,
+export ou API PHP ; aucune migration. [Qualification et limites](../api/georisques.md).
+
 ## Corrections du 1er novembre
 
 | Fonction | Contrôle réalisé | Qualification restante |
