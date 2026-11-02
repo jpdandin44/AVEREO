@@ -5,13 +5,18 @@ title: API de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-09-14
+updated: 2026-11-02
 owner: jpdandin
 tags:
   - rapport
   - api
   - php
 ---
+
+## Plans et repères
+
+Les opérations de sauvegarde existantes transportent les champs optionnels `plans` et `observations[].reperes`. `observation-plans-validation.php` vérifie images, dimensions, listes et références et retourne une erreur `report_plans_invalid` (422) sans sauvegarde en cas d’invalidité. Les permissions et la propriété existantes restent inchangées. [Données, bornes et compatibilité](../docs/reperage-observations.md#données-de-référence).
+
 
 # API de Rapport AVEREO
 

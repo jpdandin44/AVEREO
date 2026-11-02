@@ -1,4 +1,5 @@
-import { buildExpertDocumentHtml, escapeHtml, textToHtml, safeEmbeddedImageSource, buildRgaCartographyHtml } from './reportHtml.js';
+import { buildExpertDocumentHtml, escapeHtml, textToHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml } from './reportHtml.js';
+import { observationPlanNames } from './observationPlans.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { buildDecisionHtml } from './decisionSupport.js';
 
@@ -69,6 +70,9 @@ const style = `
   .client-page { page-break-before: always; } .client-illustration { page-break-before: auto; }
   .client-illustration img { max-height: 370px; } .signature { width: 170px; }
   .report-footer { margin-top: 30px; border-top: 1px solid #d6e2e8; padding-top: 12px; font-size: 9pt; }
+  .plan-sheet { page-break-before: always; } .plan-picture { position: relative; background: white; line-height: 0; }
+  .plan-picture img { display: block; width: 100%; height: auto; }
+  .plan-dot { position: absolute; transform: translate(-50%,-50%); background: white; color: #002b45; border: 2px solid #002b45; border-radius: 50%; width: 26px; height: 26px; display: grid; place-items: center; font: bold 13px/1 Arial,sans-serif; }
   @media(max-width:600px) { body { padding: 18px; } h1 { font-size: 26pt; } td { padding: 6px; } }
 `;
 
@@ -88,9 +92,10 @@ export function buildReportHtml(report) {
     const selected = (report.observations || []).filter(o => options.observations.includes(o.id));
     content = cover(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
       <p>${textToHtml(options.synthese || 'Synthèse client à rédiger par le professionnel.')}</p>
-      ${selected.map(o => `<h3>${escapeHtml(o.titre || o.piece)}</h3><p>${textToHtml(o.observations)}</p>
+      ${selected.map(o => `<h3>${observationPlanNames(report, o).length ? `Repère ${report.observations.indexOf(o) + 1} · ` : ''}${escapeHtml(o.titre || o.piece)}</h3><p>${textToHtml(o.observations)}</p>
         ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(p.src) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(p.src)}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}`).join('')}
       <p class="muted">Le rapport expert conserve l’ensemble des constats et des sources.</p></section>`;
+    content += buildObservationPlansHtml(report, options.observations);
     content += visuals.map(v => `<section class="client-page">${illustration(v, true)}</section>`).join('');
     content += buildRgaCartographyHtml(report);
     content += buildDecisionHtml(report, true);

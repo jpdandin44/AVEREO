@@ -13,6 +13,10 @@ tags:
   - architecture
 ---
 
+## 2026-11-02 — Repères séparés des fonds et revue expert reportée
+
+Contexte : localiser les observations du Cricq et les reprendre dans le Word. Décision : conserver les images privées et les coordonnées normalisées dans le dossier existant ; produire uniquement une image dérivée pour le DOCX. Raisons : maintenir les fonds d’origine, permettre le déplacement sans dégrader les images et sauvegarder le dossier complet. Conséquences : liaison par identifiant, un point par observation et par vue, placement manuel sur chaque coupe/niveau. Le responsable reporte explicitement les statuts de validation expert au futur circuit PDF final/Passeport Immo. [Spécification](docs/reperage-observations.md).
+
 ## 2026-11-02 — RGA devient une application distincte
 
 Cette décision remplace le rattachement des droits décrit plus bas pour la première livraison. Sur demande explicite du responsable, RGA utilise une entrée native CONNECT, sa propre clé de lancement et son propre cookie. Les droits Rapport sont copiés une fois au départ puis séparés. Le même hébergement et les données publiques cartographiques sont conservés, ainsi que les résultats des dossiers. [Contrat et procédure](api/rga.md).

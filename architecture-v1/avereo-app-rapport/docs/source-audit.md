@@ -13,6 +13,22 @@ tags:
   - securite
 ---
 
+## Plans et repères — candidat local du 2 novembre
+
+Après fusion des PR #93 et #95 par le responsable, la branche de la PR #94 est
+réalignée sur `main` (`a7fa3cb`). Le seul conflit porte sur `decisions.md` :
+les décisions relatives aux repères et à l'application RGA distincte sont
+toutes deux conservées. Les ajouts/retraits des onze fichiers de code de la
+PR #94 sont identiques à ceux de son candidat initial `cee43b7` ; le code
+de dictée, les droits RGA et les reprises Géorisques de `main` sont conservés.
+Les 98 tests Node, 12 contrôles PHP des plans, 8 contrôles du sas RGA,
+la syntaxe PHP, le build authentifié et le contrôle du socle passent.
+Les recettes visuelles antérieures restent attachées au candidat initial ;
+ce réalignement n'est pas une nouvelle recette hébergée ni un déploiement.
+
+Images PNG/JPEG incorporées au dossier, sans URL distante, SVG actif ni publication des plans du Cricq dans les assets. Types, tailles, dimensions, identifiants et coordonnées sont bornés ; les références orphelines et doublons sont refusés explicitement. Le serveur vérifie aussi les octets et dimensions réels. Les contrôles de rôle et de propriété de `reports.php` restent inchangés. Le Word incorpore les repères au rendu dérivé ; la synthèse client filtre aussi les légendes. Les originaux et les dossiers hébergés ne sont pas modifiés. [Contrat et critères](reperage-observations.md).
+
+
 ## Saisie vocale et sauvegarde explicite — préproduction du 2 novembre
 
 Après fusion de la PR RGA #92, la branche de la PR #93 est réalignée sur

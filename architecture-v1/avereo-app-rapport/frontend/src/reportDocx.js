@@ -1,11 +1,19 @@
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, ImageRun,
   Header, Footer, PageNumber, ExternalHyperlink, WidthType, BorderStyle } from 'docx';
+import { annotatedPlanImage, markersForPlan } from './observationPlans.js';
 
 // Translate only our generated report markup. No external HTML or image fetching.
 export async function createWordBlob(html, report, parse = text => new DOMParser().parseFromString(text, 'text/html')) {
   const dom = parse(html);
   async function imageRun(element) {
-    const src = element.getAttribute('src') || '';
+    let src = element.getAttribute('src') || '';
+    const planId = element.getAttribute('data-plan-id');
+    if (planId) {
+      const plan = (report.plans || []).find(p => p.id === planId);
+      if (!plan) throw new Error('Une vue du rapport est introuvable.');
+      const selectedIds = report.livrable?.audience === 'client' ? (report.livrable.observations || []).slice(0, 3) : null;
+      src = await annotatedPlanImage(plan, markersForPlan(report, planId, selectedIds));
+    }
     if (!/^data:image\/(png|jpe?g|gif|webp);base64,/i.test(src)) return null;
     let image = new Image();
     image.src = src;
@@ -44,7 +52,7 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
     const output = [];
     for (const node of parent.children) {
       const tag = node.tagName;
-      const breakBefore = node.classList.contains('client-page') || (node.classList.contains('observation') && node.previousElementSibling?.tagName !== 'H2') || (node.classList.contains('illustration') && !node.classList.contains('client-illustration'));
+      const breakBefore = (node.classList.contains('plan-sheet') && node.previousElementSibling?.tagName !== 'H2') || node.classList.contains('client-page') || (node.classList.contains('observation') && node.previousElementSibling?.tagName !== 'H2') || (node.classList.contains('illustration') && !node.classList.contains('client-illustration'));
       if (tag === 'TABLE') {
         const rows = [];
         for(const row of node.querySelectorAll('tr')) {

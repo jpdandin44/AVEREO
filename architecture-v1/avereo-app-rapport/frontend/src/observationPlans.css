@@ -1,0 +1,21 @@
+.observation-plans { margin: 1.5rem 0 2rem; padding: 1.25rem; background: #f4f8fa; border: 1px solid #cbd9e0; border-radius: 12px; scroll-margin-top: 110px; }
+.observation-plans h3 { margin-top: 0; }
+.plan-toolbar { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; margin: 16px 0; }
+.plan-toolbar label, .plan-import { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.plan-toolbar input, .plan-toolbar select { width: 100%; min-width: 0; }
+.plan-toolbar input:not([type=range]), .plan-toolbar select { padding: 10px; border: 1px solid #bdcdd6; border-radius: 8px; background: white; color: #002b45; font: inherit; }
+.plan-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.plan-instruction { min-height: 2.5em; }
+.plan-scroll { overflow: auto; max-height: 70vh; border: 1px solid #bdcdd6; background: white; padding: 18px; }
+.plan-stage { position: relative; background: white; line-height: 0; }
+.plan-stage.is-placing { cursor: crosshair; }
+.plan-stage > img { display: block; width: 100%; height: auto; max-width: none; user-select: none; }
+.plan-marker { position: absolute; transform: translate(-50%,-50%); width: 32px; height: 32px; padding: 0; border: 2px solid #002b45; border-radius: 50%; background: white; color: #002b45; font: bold 14px/1 Arial,sans-serif; display: grid; place-items: center; cursor: grab; touch-action: none; z-index: 1; }
+.plan-marker.selected { outline: 3px solid #ff6600; outline-offset: 2px; z-index: 2; }
+.plan-marker:focus-visible { outline: 3px solid #1259a1; outline-offset: 3px; }
+.plan-marker:active { cursor: grabbing; }
+.plan-legend { list-style: none; padding: 0; display: grid; gap: 4px; }
+.plan-legend button { background: transparent; color: #002b45; border: none; text-align: left; padding: 6px; cursor: pointer; }
+.observation-card { scroll-margin-top: 110px; }
+.observation-location { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+@media(max-width: 650px) { .observation-plans { padding: 12px; } .plan-toolbar { grid-template-columns: 1fr; } .plan-scroll { padding: 18px; max-height: 60vh; } }
