@@ -369,6 +369,10 @@ final class PdoConnectRepository implements ConnectRepository
                     $actorRole === 'owner'
                     || ($actorRole === 'admin' && in_array($targetRole, ['member', 'viewer'], true))
                 );
+            $user['canSendPasswordResetEmail'] = ($user['onboardingStatus'] ?? null) === 'completed'
+                && ($user['status'] ?? null) === 'active'
+                && ($user['membershipStatus'] ?? null) === 'active'
+                && $user['canManageApplications'];
             $accessMode = (string)($user['applicationAccessMode'] ?? 'inherit');
             $user['canChangePeriod'] = $accessMode === 'explicit' && $user['canManageApplications'];
             $user['applications'] = array_map(
@@ -624,7 +628,24 @@ final class PdoConnectRepository implements ConnectRepository
         int $organizationId,
         int $targetUserId,
     ): array {
+        return $this->accountMailTarget($actorUserId, $organizationId, $targetUserId, false);
+    }
+
+    public function accountPasswordResetTarget(int $actorUserId, int $organizationId, int $targetUserId): array
+    {
+        return $this->accountMailTarget($actorUserId, $organizationId, $targetUserId, true);
+    }
+
+    private function accountMailTarget(int $actorUserId, int $organizationId, int $targetUserId, bool $passwordReset): array
+    {
         $actorRole = $this->administrationRole($actorUserId, $organizationId);
+        if ($passwordReset) {
+            $actor = $this->pdo->prepare('SELECT onboarding_status FROM users WHERE id = ?');
+            $actor->execute([$actorUserId]);
+            if ($actor->fetchColumn() !== 'completed') {
+                throw new ApiException(403, 'ACCOUNT_ADMINISTRATION_DENIED', 'Le compte administrateur doit avoir terminé son activation.');
+            }
+        }
         $statement = $this->pdo->prepare(
             'SELECT u.id, u.drupal_subject AS drupalSubject, '
             . 'u.email_normalized AS email, u.display_name AS displayName, '
@@ -651,7 +672,10 @@ final class PdoConnectRepository implements ConnectRepository
                 'Un administrateur ne peut pas renvoyer l’activation d’un autre administrateur.',
             );
         }
-        if (($target['onboardingStatus'] ?? null) === 'completed') {
+        if ($passwordReset && ($target['onboardingStatus'] ?? null) !== 'completed') {
+            throw new ApiException(409, 'ACCOUNT_ACTIVATION_REQUIRED', 'Utilisez le lien d’activation pour initialiser ce compte.');
+        }
+        if (!$passwordReset && ($target['onboardingStatus'] ?? null) === 'completed') {
             throw new ApiException(
                 409,
                 'ACCOUNT_ACTIVATION_ALREADY_COMPLETED',
@@ -689,6 +713,14 @@ final class PdoConnectRepository implements ConnectRepository
             $requestId,
             ['expiresInSeconds' => 86400],
         );
+    }
+
+    public function recordAccountPasswordResetDelivery(int $actorUserId, int $organizationId, int $targetUserId, string $outcome, string $requestId): void
+    {
+        if (!in_array($outcome, ['success', 'failure'], true)) {
+            throw new \InvalidArgumentException('Résultat de réinitialisation invalide.');
+        }
+        $this->recordAudit($actorUserId, $organizationId, 'identity.password_reset_email', 'user', (string) $targetUserId, $outcome, $requestId, []);
     }
 
     public function completeAccountActivation(int $targetUserId, string $requestId): void

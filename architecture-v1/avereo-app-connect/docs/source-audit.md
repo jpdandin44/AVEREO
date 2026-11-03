@@ -10,6 +10,15 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 2026-11-03 — Reset distinct de l’activation
+
+Le bouton d’activation était masqué pour un compte initialisé ; il ne pouvait donc pas servir au reset. Le nouveau candidat ajoute une opération séparée, conserve les droits et les périodes, et utilise le mail natif Drupal. [Périmètre et contrôles](reinitialisation-mot-de-passe.md).
+
+
+## 2026-11-03 — Invitation métier et période finalisées
+
+Après le go, runtime installé et qualification technique réalisés : voir [état courant et preuves](administration-comptes.md). Entrée HTTP enregistrée par le responsable, envoi réussi enregistré, période de sept jours vérifiée en base et après rechargement UI ; réception et activation restent à confirmer. Le finaliseur CLI a dû recevoir explicitement la racine publique réelle : un DOCUMENT_ROOT vide se résolvait au dossier courant et déclenchait correctement le refus de stockage public. Aucune protection du runtime affaiblie. Les rubriques suivantes restent historiques.
+
 ## 2026-11-03 — Qualification et préparation différée
 
 Le schéma hébergé observé ne possède pas le suivi d'activation. Un contrôle privé MariaDB 11.4.13 sur tables temporaires a passé 36 vérifications et le retour arrière de la migration ; les tables persistantes sont inchangées. Le contrôle de conservation utilisait initialement un nom de variable repris par le test inclus : cette collision de test est corrigée sans affaiblir l'assertion. La fixture sait préparer le suivi d'activation manquant sur sa copie temporaire. Aucune modification du schéma réel.

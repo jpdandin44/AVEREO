@@ -81,6 +81,11 @@ interface ConnectRepository
         string $requestId,
     ): void;
 
+    /** @return array<string, mixed> */
+    public function accountPasswordResetTarget(int $actorUserId, int $organizationId, int $targetUserId): array;
+
+    public function recordAccountPasswordResetDelivery(int $actorUserId, int $organizationId, int $targetUserId, string $outcome, string $requestId): void;
+
     public function completeAccountActivation(int $targetUserId, string $requestId): void;
 
     /** @return array<string, mixed> */

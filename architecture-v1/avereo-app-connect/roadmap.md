@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Reset administratif — développement local
+
+Bouton et service développés et contrôlés localement ; qualification SMTP/lien natif en préproduction après accord sur le candidat. Ne pas confondre avec le parcours de comptes déjà installé. [Procédure](docs/reinitialisation-mot-de-passe.md).
+
+
 ## 3 novembre — préproduction technique vérifiée
 
 Les quatre fonctions sont installées sur le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2`, après sauvegardes et restaurations de contrôle. CI, isolement/expiration HTTP et formulaire d’initialisation sont contrôlés. Le compte métier est préparé sans mail. Suite : terminer son entrée HTTP nominative, envoyer l’invitation puis caler sept jours sur l’envoi enregistré ; réception et activation restent à confirmer. [État et limites](docs/administration-comptes.md).

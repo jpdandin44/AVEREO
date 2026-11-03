@@ -8,6 +8,7 @@ use Avereo\Connect\Http\ApiException;
 use Avereo\Connect\Http\Request;
 use Avereo\Connect\Http\Response;
 use Avereo\Connect\Identity\AccountActivationNotifier;
+use Avereo\Connect\Identity\AccountPasswordResetNotifier;
 use Avereo\Connect\Repository\ConnectRepository;
 use Avereo\Connect\Security\AppLaunchTicketIssuer;
 use Avereo\Connect\Security\AuthContext;
@@ -25,6 +26,7 @@ final class Application
         private readonly ?AccountActivationNotifier $accountActivation = null,
         private readonly ?IdentityAccountActivationCompletionVerifier $activationCompletion = null,
         private readonly ?\Avereo\Connect\Administration\AccountAdministration $accountAdministration = null,
+        private readonly ?AccountPasswordResetNotifier $passwordReset = null,
     ) {
     }
 
@@ -307,6 +309,31 @@ final class Application
                 )),
                 $request->requestId,
             );
+        }
+
+        if ($request->method === 'POST'
+            && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/password-reset-email$#', $request->path, $matches)) {
+            CsrfGuard::assertValid($request, $csrfToken);
+            $this->assertKnownFields($request->body, []);
+            $organizationId = (int) $matches[1];
+            $target = $this->repository->accountPasswordResetTarget($userId, $organizationId, (int) $matches[2]);
+            $outcome = 'failure';
+            $delivery = ['status' => 'not_configured', 'expiresInSeconds' => 0, 'supportEmail' => $this->config->supportEmail];
+            if ($this->passwordReset !== null) {
+                try {
+                    $sent = $this->passwordReset->sendPasswordReset((int) $target['id'], (string) $target['drupalSubject'], (string) $target['email'], (string) $target['displayName'], $request->requestId);
+                    if (($sent['status'] ?? null) !== 'sent' || !is_int($sent['expiresInSeconds'] ?? null) || $sent['expiresInSeconds'] <= 0) {
+                        throw new \RuntimeException('Réponse de réinitialisation invalide.');
+                    }
+                    $delivery = array_merge($delivery, $sent);
+                    $outcome = 'success';
+                } catch (\Throwable $exception) {
+                    error_log(json_encode(['event' => 'identity.password_reset_email_failed', 'requestId' => $request->requestId, 'targetUserId' => (int) $target['id'], 'type' => $exception::class]));
+                    $delivery['status'] = 'failed';
+                }
+            }
+            $this->repository->recordAccountPasswordResetDelivery($userId, $organizationId, (int) $target['id'], $outcome, $request->requestId);
+            return Response::success($delivery, $request->requestId);
         }
 
         if (

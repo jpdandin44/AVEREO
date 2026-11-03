@@ -22,13 +22,16 @@ $identity=new class implements \Avereo\Connect\Identity\AccountIdentityProvision
         $h=hash('sha256',$email);return substr($h,0,8).'-'.substr($h,8,4).'-'.substr($h,12,4).'-'.substr($h,16,4).'-'.substr($h,20,12);
     }
 };
-$notifier=new class implements \Avereo\Connect\Identity\AccountActivationNotifier {
+$notifier=new class implements \Avereo\Connect\Identity\AccountActivationNotifier, \Avereo\Connect\Identity\AccountPasswordResetNotifier {
     public function send(int $id,string $subject,string $email,string $name,string $request):array {
         if(!str_ends_with($email,'@example.invalid'))throw new RuntimeException('Test address required.');
         return ['status'=>'sent','expiresInSeconds'=>86400];
     }
+    public function sendPasswordReset(int $id,string $subject,string $email,string $name,string $request):array {
+        return $this->send($id,$subject,$email,$name,$request);
+    }
 };
 $repo=new \Avereo\Connect\Repository\PdoConnectRepository($pdo);
 $service=new \Avereo\Connect\Administration\AccountAdministration($pdo,$identity,new \Avereo\Connect\Administration\TrialPolicyStore($db.'.policy.json'));
-$app=new \Avereo\Connect\Application(new \Avereo\Connect\Config('local',true,null,'','','ACCOUNT_UI',1800,43200),$repo,null,null,$notifier,null,$service);
+$app=new \Avereo\Connect\Application(new \Avereo\Connect\Config('local',true,null,'','','ACCOUNT_UI',1800,43200),$repo,null,null,$notifier,null,$service,$notifier);
 $app->handle(\Avereo\Connect\Http\Request::fromGlobals(),new \Avereo\Connect\Security\AuthContext(1,time(),'owner'),'local-ui-csrf',static fn()=>null)->emit();

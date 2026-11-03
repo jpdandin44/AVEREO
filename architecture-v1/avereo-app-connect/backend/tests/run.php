@@ -221,6 +221,16 @@ final class FakeRepository implements ConnectRepository
         $this->activationAuditCount++;
     }
 
+    public function accountPasswordResetTarget(int $actorUserId, int $organizationId, int $targetUserId): array
+    {
+        return array_replace($this->accountActivationTarget($actorUserId, $organizationId, $targetUserId), ['onboardingStatus' => 'completed']);
+    }
+
+    public function recordAccountPasswordResetDelivery(int $actorUserId, int $organizationId, int $targetUserId, string $outcome, string $requestId): void
+    {
+        $this->accountAuditCount++;
+    }
+
     public function completeAccountActivation(int $targetUserId, string $requestId): void
     {
         $this->completedActivationUserId = $targetUserId;

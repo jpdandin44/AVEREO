@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Reset administratif — candidat local
+
+Le portail appelle une API protégée par session/CSRF. Le pont signé existant distingue `purpose=password_reset` et délègue au mail natif Drupal ; CONNECT ne reçoit ni jeton ni mot de passe. Audit indépendant de l’activation, sans modification de la projection d’essai. [Flux et limites](docs/reinitialisation-mot-de-passe.md).
+
+
 ## Administration des comptes
 
 `AccountAdministration` orchestre le provisionnement Drupal et la transaction des droits. `TrialPolicyStore` sérialise les mutations et projette les règles hors répertoire public ; les sas Rapport/RGA les relisent. La migration ajoute dates individuelles et mode explicite sans changer l’héritage des anciens comptes. Le pont de création est signé avec un secret distinct ; l’activation existante garde le formulaire de mot de passe. [Contrat et limites](docs/administration-comptes.md). Le stockage natif Drupal `user.data` conserve l’origine de création et l’initialisation réussie du premier mot de passe ; les booléens relus sous forme chaîne sont normalisés strictement. Le renvoi garde le formulaire initial jusqu’à cette confirmation.

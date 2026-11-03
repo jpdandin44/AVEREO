@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Avereo\Connect\Identity;
 
-final class IdentityAccountActivationClient implements AccountActivationNotifier
+final class IdentityAccountActivationClient implements AccountActivationNotifier, AccountPasswordResetNotifier
 {
     /** @var null|\Closure(string, array<string, string>, string): array{status: int, body: string} */
     private readonly ?\Closure $transport;
@@ -35,6 +35,16 @@ final class IdentityAccountActivationClient implements AccountActivationNotifier
         string $displayName,
         string $requestId,
     ): array {
+        return $this->deliver($connectUserId, $drupalSubject, $email, $displayName, $requestId, false);
+    }
+
+    public function sendPasswordReset(int $connectUserId, string $drupalSubject, string $email, string $displayName, string $requestId): array
+    {
+        return $this->deliver($connectUserId, $drupalSubject, $email, $displayName, $requestId, true);
+    }
+
+    private function deliver(int $connectUserId, string $drupalSubject, string $email, string $displayName, string $requestId, bool $passwordReset): array
+    {
         $email = strtolower(trim($email));
         if (
             $connectUserId < 1
@@ -45,7 +55,7 @@ final class IdentityAccountActivationClient implements AccountActivationNotifier
             throw new \InvalidArgumentException('Identité à activer invalide.');
         }
 
-        $body = json_encode([
+        $payload = [
             'version' => 1,
             'connectUserId' => $connectUserId,
             'subject' => trim($drupalSubject),
@@ -54,7 +64,11 @@ final class IdentityAccountActivationClient implements AccountActivationNotifier
             'supportEmail' => $this->supportEmail,
             'expiresInSeconds' => 86400,
             'requestId' => $requestId,
-        ], JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        ];
+        if ($passwordReset) {
+            $payload['purpose'] = 'password_reset';
+        }
+        $body = json_encode($payload, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         $issuedAt = (string) time();
         $nonce = self::base64Url(random_bytes(24));
         $signature = hash_hmac(
@@ -80,12 +94,13 @@ final class IdentityAccountActivationClient implements AccountActivationNotifier
         if (
             !is_array($payload)
             || ($payload['status'] ?? null) !== 'sent'
-            || (int) ($payload['expiresInSeconds'] ?? 0) !== 86400
+            || !is_int($payload['expiresInSeconds'] ?? null)
+            || ($passwordReset ? $payload['expiresInSeconds'] <= 0 : $payload['expiresInSeconds'] !== 86400)
         ) {
             throw new \RuntimeException('La réponse du service d’activation AVEREO est invalide.');
         }
 
-        return ['status' => 'sent', 'expiresInSeconds' => 86400];
+        return ['status' => 'sent', 'expiresInSeconds' => $payload['expiresInSeconds']];
     }
 
     /** @param array<string, string> $headers

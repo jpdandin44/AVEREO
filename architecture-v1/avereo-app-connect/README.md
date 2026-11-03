@@ -10,14 +10,19 @@ owner: jpdandin
 tags: [connect, documentation]
 ---
 
+## Réinitialisation administrative — candidat local
+
+Bouton distinct pour envoyer le reset d’un compte déjà initialisé, confirmation du destinataire et résultat explicite. Le mot de passe reste géré par Drupal ; aucun reset réel, déploiement ou migration dans ce lot local. [Fonctionnement, preuves et livraison](docs/reinitialisation-mot-de-passe.md).
+
+
 ## Parcours des comptes — préproduction du 3 novembre
 
-[Paquet, recette et procédure](docs/preproduction-comptes.md). Le go après démonstration a été reçu ; le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé en préproduction. Les contrôles techniques sont réalisés ; l’entrée nominative HTTP et l’invitation métier restent à finaliser. Aucun merge ni changement de production.
+[Paquet, recette et procédure](docs/preproduction-comptes.md). Le go après démonstration a été reçu ; le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé en préproduction. Les contrôles techniques, l’entrée nominative HTTP et l’envoi d’invitation sont vérifiés ; réception et activation personnelles restent distinctes. Aucun merge ni changement de production.
 
 
 ## Création des comptes — comportement installé
 
-Création sans notification automatique, applications explicites, période et invitation séparée sont implémentées dans le portail PHP. Essai temporaire limité à Rapport/RGA. Migration et paramètres privés installés ; aucun mail d’invitation métier envoyé. [Fonctionnement et réserves](docs/administration-comptes.md).
+Création sans notification automatique, applications explicites, période et invitation séparée sont implémentées dans le portail PHP. Essai temporaire limité à Rapport/RGA. Migration et paramètres privés installés ; envoi d’invitation métier enregistré dans le suivi privé. [Fonctionnement et réserves](docs/administration-comptes.md).
 
 
 ## Historique — préparation avant la démonstration

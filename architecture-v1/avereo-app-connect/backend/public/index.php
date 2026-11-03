@@ -124,6 +124,7 @@ try {
         $accountActivation,
         $activationCompletion,
         $accountAdministration,
+        $accountActivation,
     );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {
