@@ -193,3 +193,5 @@ La recette du candidat après démo a passé 22 contrôles HTTP sur le serveur e
 Une identité préparée par CONNECT conserve le besoin de définir son premier mot de passe lors d’un renvoi, même après génération du secret initial non transmis. Le marqueur `password_initialized` est écrit après l’enregistrement réussi du formulaire. Les mots de passe des comptes existants restent conservés. La fin de qualification porte sur le nouveau candidat exact ; les reçus des versions antérieures restent historiques.
 
 Les marqueurs natifs `user.data` de Drupal peuvent être relus sous la forme chaîne `"1"`. Les contrôles de création et d’initialisation acceptent strictement `true`, `1` et `"1"` ; les tests couvrent cette représentation hébergée. Aucun autre contenu n’est traité comme un accord.
+
+Le formulaire conserve les paramètres nommés `$form` et `$form_state` attendus par le résolveur de route Drupal. Le paramètre camelCase empêchait le résolveur d’injecter l’état du formulaire et provoquait une erreur 500 ; la signature est contrôlée en non-régression et la page publique doit être requalifiée.

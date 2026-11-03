@@ -156,6 +156,11 @@ namespace {
     assertActivationFlow($requiresPassword->invoke($tracked, new ActivationFlowTestUser('chosen-password-hash')) === false,
         'Un mot de passe déjà défini ne doit pas être remplacé lors d’un renvoi.');
 
+    $formSource = file_get_contents(dirname(__DIR__) . '/src/Form/ActivationPasswordForm.php');
+    assertActivationFlow(is_string($formSource)
+        && str_contains($formSource, 'buildForm(array $form, FormStateInterface $form_state)'),
+        'Le résolveur de route Drupal fournit form_state par son nom : le paramètre doit conserver ce nom.');
+
     $routing = file_get_contents(dirname(__DIR__) . '/avereo_identity_bridge.routing.yml');
     assertActivationFlow(
         is_string($routing)

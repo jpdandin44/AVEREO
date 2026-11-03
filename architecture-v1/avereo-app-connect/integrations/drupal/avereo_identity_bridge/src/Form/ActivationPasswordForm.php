@@ -32,7 +32,7 @@ final class ActivationPasswordForm extends FormBase
         return 'avereo_identity_bridge_activation_password';
     }
 
-    public function buildForm(array $form, FormStateInterface $formState): array
+    public function buildForm(array $form, FormStateInterface $form_state): array
     {
         $activation = $this->activation();
         if ($activation === null) {
@@ -62,22 +62,22 @@ final class ActivationPasswordForm extends FormBase
         return $form;
     }
 
-    public function validateForm(array &$form, FormStateInterface $formState): void
+    public function validateForm(array &$form, FormStateInterface $form_state): void
     {
-        $password = $this->password($formState);
+        $password = $this->password($form_state);
         if (
             strlen($password) < 12
             || preg_match('/\p{L}/u', $password) !== 1
             || preg_match('/\d/', $password) !== 1
         ) {
-            $formState->setErrorByName(
+            $form_state->setErrorByName(
                 'password',
                 $this->t('Le mot de passe doit contenir au moins 12 caractères, une lettre et un chiffre.'),
             );
         }
     }
 
-    public function submitForm(array &$form, FormStateInterface $formState): void
+    public function submitForm(array &$form, FormStateInterface $form_state): void
     {
         $activation = $this->activation();
         if ($activation === null) {
@@ -91,7 +91,7 @@ final class ActivationPasswordForm extends FormBase
                 'Le compte AVEREO est indisponible.',
             );
         }
-        $account->setPassword($this->password($formState));
+        $account->setPassword($this->password($form_state));
         $account->activate();
         $account->save();
         \Drupal::service('user.data')->set(
@@ -103,7 +103,7 @@ final class ActivationPasswordForm extends FormBase
         $session?->set('avereo_identity_bridge_activation_complete', [
             'connectUserId' => $activation['connectUserId'],
         ]);
-        $formState->setRedirect('avereo_identity_bridge.account_ready');
+        $form_state->setRedirect('avereo_identity_bridge.account_ready');
     }
 
     /** @return null|array{uid: int, connectUserId: int, expiresAt: int} */
@@ -121,9 +121,9 @@ final class ActivationPasswordForm extends FormBase
             : null;
     }
 
-    private function password(FormStateInterface $formState): string
+    private function password(FormStateInterface $form_state): string
     {
-        $value = $formState->getValue('password');
+        $value = $form_state->getValue('password');
         if (is_array($value)) {
             return (string) ($value['pass1'] ?? '');
         }
