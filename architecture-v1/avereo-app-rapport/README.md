@@ -13,6 +13,11 @@ tags:
   - connect
 ---
 
+## Essais temporaires — candidat local
+
+Contrôle de période et de révocation par identité préparé pour Rapport et RGA, testé localement, sans ouverture de compte. [Contrat, preuves et limites](docs/essais-temporaires.md).
+
+
 ## Repérage des observations — candidat local du 2 novembre
 
 Dans Observations, importer les plans et coupes du dossier, placer et déplacer les repères, puis retrouver les vues annotées dans le Word. Les cinq vues du Cricq sont préparées dans une copie privée locale, sans localisation métier inventée. [Parcours, données et limites](docs/reperage-observations.md). La validation de l’expert est reportée au futur circuit des PDF finaux vers Passeport Immo.

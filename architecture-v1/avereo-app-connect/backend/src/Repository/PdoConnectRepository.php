@@ -12,6 +12,11 @@ final class PdoConnectRepository implements ConnectRepository
     {
     }
 
+    public function isExplicitAccount(int $id):bool
+    {
+        $s=$this->pdo->prepare('SELECT application_access_mode FROM users WHERE id=?');$s->execute([$id]);return $s->fetchColumn()==='explicit';
+    }
+
     public function databaseStatus(): string
     {
         try {
@@ -41,7 +46,7 @@ final class PdoConnectRepository implements ConnectRepository
     public function findIdentityStatusByDrupalSubject(string $drupalSubject): ?string
     {
         $userStatement = $this->pdo->prepare(
-            'SELECT status, onboarding_status AS onboardingStatus '
+            'SELECT status, onboarding_status AS onboardingStatus, access_starts_at, access_ends_at '
             . 'FROM users WHERE drupal_subject = :drupal_subject',
         );
         $userStatement->execute(['drupal_subject' => $drupalSubject]);
@@ -51,6 +56,8 @@ final class PdoConnectRepository implements ConnectRepository
             if ($status === 'active' && ($user['onboardingStatus'] ?? null) !== 'completed') {
                 return 'activation_required';
             }
+            if ($status === 'active' && $user['access_starts_at'] !== null && strtotime($user['access_starts_at'].' UTC') > time()) return 'not_started';
+            if ($status === 'active' && $user['access_ends_at'] !== null && strtotime($user['access_ends_at'].' UTC') <= time()) return 'expired';
             return $status;
         }
 
@@ -96,7 +103,9 @@ final class PdoConnectRepository implements ConnectRepository
             . 'AND ua.user_id = u.id AND ua.application_id = a.id '
             . 'WHERE u.id = :user_id AND u.status = \'active\' '
             . 'AND u.onboarding_status = \'completed\' AND a.code = :application_code '
-            . 'AND (ua.status IS NULL OR ua.status = \'active\') '
+            . 'AND ((ua.status IS NULL AND u.application_access_mode = \'inherit\') OR ua.status = \'active\') '
+            . 'AND (u.access_starts_at IS NULL OR u.access_starts_at <= UTC_TIMESTAMP(6)) '
+            . 'AND (u.access_ends_at IS NULL OR u.access_ends_at > UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
             . 'LIMIT 1',
@@ -121,7 +130,9 @@ final class PdoConnectRepository implements ConnectRepository
             . 'AND ua.user_id = u.id AND ua.application_id = a.id '
             . 'WHERE u.id = :user_id AND u.status = \'active\' '
             . 'AND u.onboarding_status = \'completed\' '
-            . 'AND (ua.status IS NULL OR ua.status = \'active\') '
+            . 'AND ((ua.status IS NULL AND u.application_access_mode = \'inherit\') OR ua.status = \'active\') '
+            . 'AND (u.access_starts_at IS NULL OR u.access_starts_at <= UTC_TIMESTAMP(6)) '
+            . 'AND (u.access_ends_at IS NULL OR u.access_ends_at > UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
             . 'ORDER BY a.display_order, a.name, a.code',
@@ -167,16 +178,19 @@ final class PdoConnectRepository implements ConnectRepository
             . 'e.status AS entitlementStatus, e.valid_from AS validFrom, e.valid_to AS validTo '
             . 'FROM entitlements e '
             . 'INNER JOIN applications a ON a.id = e.application_id '
+            . 'INNER JOIN users u ON u.id = :access_user_id '
             . 'LEFT JOIN user_application_access ua ON ua.organization_id = e.organization_id '
             . 'AND ua.user_id = :user_id AND ua.application_id = a.id '
             . 'WHERE e.organization_id = :organization_id '
             . 'AND e.status = \'active\' AND a.status = \'active\' '
-            . 'AND (ua.status IS NULL OR ua.status = \'active\') '
+            . 'AND ((ua.status IS NULL AND u.application_access_mode = \'inherit\') OR ua.status = \'active\') '
+            . 'AND (u.access_starts_at IS NULL OR u.access_starts_at <= UTC_TIMESTAMP(6)) '
+            . 'AND (u.access_ends_at IS NULL OR u.access_ends_at > UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
             . 'ORDER BY a.name, a.id',
         );
-        $statement->execute(['organization_id' => $organizationId, 'user_id' => $userId]);
+        $statement->execute(['organization_id' => $organizationId, 'user_id' => $userId, 'access_user_id'=>$userId]);
         return $statement->fetchAll();
     }
 
@@ -302,7 +316,7 @@ final class PdoConnectRepository implements ConnectRepository
         $usersStatement = $this->pdo->prepare(
             'SELECT u.id, u.email_normalized AS email, u.display_name AS displayName, '
             . 'u.status, u.onboarding_status AS onboardingStatus, '
-            . 'u.activation_email_sent_at AS activationEmailSentAt, '
+            . 'u.activation_email_sent_at AS activationEmailSentAt, u.access_starts_at AS accessStartsAt, u.access_ends_at AS accessEndsAt, u.application_access_mode AS applicationAccessMode, '
             . 'm.role, m.status AS membershipStatus, u.created_at AS createdAt '
             . 'FROM memberships m INNER JOIN users u ON u.id = m.user_id '
             . 'WHERE m.organization_id = :organization_id '
@@ -355,15 +369,17 @@ final class PdoConnectRepository implements ConnectRepository
                     $actorRole === 'owner'
                     || ($actorRole === 'admin' && in_array($targetRole, ['member', 'viewer'], true))
                 );
+            $accessMode = (string)($user['applicationAccessMode'] ?? 'inherit');
+            $user['canChangePeriod'] = $accessMode === 'explicit' && $user['canManageApplications'];
             $user['applications'] = array_map(
-                static function (array $application) use ($accessByUser, $targetUserId): array {
+                static function (array $application) use ($accessByUser, $targetUserId, $accessMode): array {
                     $code = (string) ($application['code'] ?? '');
                     $explicitStatus = $accessByUser[$targetUserId][$code] ?? null;
                     return [
                         'code' => $code,
                         'name' => (string) ($application['name'] ?? $code),
-                        'status' => $explicitStatus ?? 'active',
-                        'inherited' => $explicitStatus === null,
+                        'status' => $explicitStatus ?? ($accessMode==='explicit'?'revoked':'active'),
+                        'inherited' => $explicitStatus === null && $accessMode === 'inherit',
                     ];
                 },
                 $applications,

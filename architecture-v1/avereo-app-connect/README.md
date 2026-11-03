@@ -5,10 +5,25 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-02
+updated: 2026-11-03
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## Parcours des comptes — préproduction du 3 novembre
+
+[Paquet, recette et procédure](docs/preproduction-comptes.md). Le go après démonstration a été reçu ; le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé en préproduction. Les contrôles techniques sont réalisés ; l’entrée nominative HTTP et l’invitation métier restent à finaliser. Aucun merge ni changement de production.
+
+
+## Création des comptes — comportement installé
+
+Création sans notification automatique, applications explicites, période et invitation séparée sont implémentées dans le portail PHP. Essai temporaire limité à Rapport/RGA. Migration et paramètres privés installés ; aucun mail d’invitation métier envoyé. [Fonctionnement et réserves](docs/administration-comptes.md).
+
+
+## Historique — préparation avant la démonstration
+
+Le [dossier de reprise](docs/reprise-administration-comptes.md) prépare création, choix explicite des applications, période et invitation séparée. Le [parcours fonctionnel](docs/administration-comptes.md) reste la référence. Au moment de cette préparation initiale, ce parcours n’était pas encore implémenté ou livré ; le contrôle temporaire des sas était seulement qualifié localement.
+
 
 ## Application RGA — candidat du 2 novembre
 

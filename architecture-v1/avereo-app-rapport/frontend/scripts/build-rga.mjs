@@ -1,11 +1,14 @@
-// Package the maps behind the distinct RGA gate, using the shared CONNECT implementation.
+// Package RGA with the identity-aware Rapport gate; RGA keeps its own app code and cookie.
 import { readFile, writeFile, mkdir, cp } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 const source = new URL('../../data/rga/', import.meta.url);
 const target = new URL('../dist/rga/', import.meta.url);
 const manifest = JSON.parse(await readFile(new URL('sources.json', source), 'utf8'));
 await mkdir(target, { recursive: true });
-await cp(new URL('../../../avereo-platform/shared/connect-gate.php', import.meta.url), new URL('connect-gate.php', target));
+const gate = await readFile(new URL('../public/connect/gate.php', import.meta.url), 'utf8');
+const appConstant = "const AVEREO_GATE_APP = 'rapport';";
+if (gate.split(appConstant).length !== 2) throw new Error('Unexpected Rapport gate app constant');
+await writeFile(new URL('connect-gate.php', target), gate.replace(appConstant, '// RGA defines AVEREO_GATE_APP in gate.php.'));
 for (const map of manifest.maps) {
   const bytes = await readFile(new URL(map.file, source));
   if (createHash('sha256').update(bytes).digest('hex') !== map.sha256) throw new Error(`RGA source changed: ${map.file}`);

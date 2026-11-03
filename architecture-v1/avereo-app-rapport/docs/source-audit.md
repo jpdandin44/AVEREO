@@ -13,6 +13,11 @@ tags:
   - securite
 ---
 
+## 2026-11-02 — Qualification locale des essais temporaires
+
+La suspension CONNECT ne réévalue pas les cookies déjà délivrés aux applications. Un contrôle de politique privée est préparé dans les sas ; RGA doit conserver l’identité signée. Les essais HTTP isolés et leurs limites sont décrits dans le [contrat](essais-temporaires.md). Aucune preuve hébergée créée par ces essais.
+
+
 ## Plans et repères — candidat local du 2 novembre
 
 Après fusion des PR #93 et #95 par le responsable, la branche de la PR #94 est

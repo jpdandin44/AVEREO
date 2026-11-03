@@ -5,10 +5,27 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-02
+updated: 2026-11-03
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 2026-11-03 — Qualification et préparation différée
+
+Le schéma hébergé observé ne possède pas le suivi d'activation. Un contrôle privé MariaDB 11.4.13 sur tables temporaires a passé 36 vérifications et le retour arrière de la migration ; les tables persistantes sont inchangées. Le contrôle de conservation utilisait initialement un nom de variable repris par le test inclus : cette collision de test est corrigée sans affaiblir l'assertion. La fixture sait préparer le suivi d'activation manquant sur sa copie temporaire. Aucune modification du schéma réel.
+
+La relecture ajoute le refus d'une période incomplète (qui ne doit jamais enlever l'échéance implicitement) et le refus de réutiliser une identité Drupal préparée devenue privilégiée. Les contrôles passent localement : 38 administration et 10 provisionnement. La CI de la tête finale reste à relire. [Paquet et procédure](preproduction-comptes.md). Le responsable exige un nouveau go après la démonstration avant toute reprise hébergée ; compte et invitation non créés.
+
+
+## 2026-11-03 — Candidat d’administration en qualification
+
+Le prototype React historique reste intact. Changements ciblés dans portail PHP, routeur, repository, service de création signé, projection privée, migration et contrats. Essai limité aux deux sas qualifiés Rapport/RGA ; anciens comptes conservés en héritage. Un format de date ISO avec millisecondes émis par le navigateur a été corrigé et ajouté à la recette. La projection manquante n’est jamais réinitialisée silencieusement. [Détail des preuves et limites](administration-comptes.md).
+
+
+## 2026-11-02 — Préparation de création administrative
+
+Lecture du portail PHP, repository, schémas, routes et pont Drupal : activation existante sans provisionnement d’une identité absente ; droits individuels sans période, absence de ligne héritant du catalogue. Le [dossier de reprise](reprise-administration-comptes.md) qualifie les écarts et les fichiers à modifier, sans changer le contrat actif ni présenter une route proposée comme disponible.
+
 
 ## 2026-11-02 — Candidat RGA distinct
 
@@ -183,3 +200,9 @@ préproduction avant production.
 - aucun auto-provisioning : l'approbation crée explicitement l'utilisateur,
   l'adhésion et les habilitations ;
 - aucune modification fonctionnelle du frontend V1.
+
+## Après démonstration du 3 novembre — recette hébergée
+
+Le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` a été installé sur les seules préproductions CONNECT/Rapport/RGA et identité auth-next, après go et restauration de contrôle. La recette a identifié puis corrigé le Reply-To dupliqué, la représentation chaîne des marqueurs Drupal et l’injection nommée de `form_state`. Les contrôles de dossiers/expiration et de formulaire public sont conservés dans le suivi privé. Les comptes fictifs sont suspendus, leurs dossiers retirés et les données initiales Rapport inchangées.
+
+Après conservation du fichier HTTP lors de la livraison, le responsable a demandé de préparer aussi une entrée nominative : seul le fichier d’utilisateurs de CONNECT a été isolé par copie des utilisateurs existants, sans changer le fichier partagé ni supprimer la protection. La saisie du secret et l’invitation métier restent en attente. [État opérationnel](administration-comptes.md).

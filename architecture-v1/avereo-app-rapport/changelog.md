@@ -12,6 +12,11 @@ tags:
   - changelog
 ---
 
+## 2026-11-02 — Préparation locale des essais temporaires
+
+Contrôle d’une période et d’une révocation avec identité signée, conservation de l’identité dans le sas RGA et essais d’isolement serveur. Aucun déploiement, compte réel ou mail. [Preuves et réserves](docs/essais-temporaires.md).
+
+
 ## 2026-11-02 — Candidat local de repérage Cricq
 
 Ajout de plans et coupes privés au dossier, placement et déplacement de repères liés aux observations, zoom, légendes et export Word annoté. Import JSON porté à 50 Mio pour accueillir les médias et aligner le plafond sur l’API par défaut. Validation des nouvelles données côté navigateur et PHP. [Parcours et limites](docs/reperage-observations.md). Aucun déploiement ni statut de revue expert créé par cette entrée.

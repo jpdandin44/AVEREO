@@ -23,6 +23,7 @@ final class AccountActivationController extends ControllerBase
         private readonly CacheBackendInterface $cache,
         private readonly EntityTypeManagerInterface $entityTypeManagerService,
         private readonly MailManagerInterface $mailManager,
+        private readonly ?object $userData = null,
     ) {
     }
 
@@ -32,6 +33,7 @@ final class AccountActivationController extends ControllerBase
             $container->get('cache.data'),
             $container->get('entity_type.manager'),
             $container->get('plugin.manager.mail'),
+            $container->get('user.data'),
         );
     }
 
@@ -341,6 +343,11 @@ final class AccountActivationController extends ControllerBase
 
     private function requiresPasswordInitialization(UserInterface $account): bool
     {
+        if (isset($this->userData)
+            && in_array($this->userData->get('avereo_identity_bridge', $account->id(), 'created_by_connect'), [true, 1, '1'], true)
+            && !in_array($this->userData->get('avereo_identity_bridge', $account->id(), 'password_initialized'), [true, 1, '1'], true)) {
+            return true;
+        }
         return trim((string) $account->getPassword()) === '';
     }
 

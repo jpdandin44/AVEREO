@@ -1,0 +1,47 @@
+openapi: 3.1.0
+info:
+  title: Pont de création des identités CONNECT
+  version: git
+  description: Contrat implémenté localement ; activation et mot de passe restent séparés.
+paths:
+  /avereo/account/provision:
+    post:
+      summary: Préparer une identité bloquée sans mot de passe et sans mail
+      description: >-
+        HMAC SHA-256 sur issuedAt, saut de ligne, nonce, saut de ligne,
+        SHA-256 hexadécimal du corps brut. Secret privé distinct de l’activation.
+        Fenêtre de 120 secondes et nonce consommé une seule fois. Un nouvel appel
+        signé peut reprendre uniquement une identité préparée par ce pont,
+        toujours bloquée, non privilégiée et sans mot de passe ; toute autre identité existante est refusée.
+      parameters:
+        - {name: X-AVEREO-Issued-At, in: header, required: true, schema: {type: string}}
+        - {name: X-AVEREO-Nonce, in: header, required: true, schema: {type: string}}
+        - {name: X-AVEREO-Signature, in: header, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [version, email, displayName]
+              properties:
+                version: {type: integer, const: 1}
+                email: {type: string, format: email, maxLength: 254}
+                displayName: {type: string, minLength: 1, maxLength: 191}
+                requestId: {type: string, maxLength: 128}
+      responses:
+        "200":
+          description: Identité préparée, sans mot de passe ni lien dans la réponse
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, subject]
+                properties:
+                  status: {type: string, const: prepared}
+                  subject: {type: string, format: uuid}
+        "403": {description: Signature invalide, expirée ou rejouée}
+        "409": {description: Identité existante refusée}
+        "422": {description: Champs invalides}
+        "503": {description: Secret privé absent}

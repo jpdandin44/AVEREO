@@ -12,6 +12,11 @@ tags:
   - architecture
 ---
 
+## Contrôle temporaire par identité — candidat local
+
+Les sas Rapport et RGA lisent une politique privée de période au contrôle du cookie et à l’échange du ticket. RGA réutilise le sas porteur d’identité sans partager clé ni cookie. Aucune migration de dossier. [Contrat et limites](docs/essais-temporaires.md).
+
+
 ## Plans et repères du dossier
 
 Les images et leurs métadonnées appartiennent au champ optionnel `plans` du payload privé. `reperes` sur chaque observation porte le lien vers la vue et ses coordonnées normalisées. `ObservationPlans.jsx` édite le repérage ; `reportHtml.js` compose les vues et légendes ; `reportDocx.js` incorpore les images dérivées avec leurs repères. Le fond source reste intact. La validation PHP rejoint les opérations existantes, sans nouvelle route, base ou migration. [Contrat et limites](docs/reperage-observations.md#données-de-référence).

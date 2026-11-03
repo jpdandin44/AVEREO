@@ -100,6 +100,7 @@ jobs:
           set -euo pipefail
           php architecture-v1/avereo-app-connect/backend/tests/run.php
           php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/activation-flow.php
+          php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/provisioning-flow.php
           php architecture-v1/avereo-app-rapport/tests/connect-gate.php
           php architecture-v1/avereo-app-coupe/tests/connect-gate.php
           php architecture-v1/avereo-platform/tests/connect-gate.php
@@ -194,6 +195,7 @@ jobs:
           php bin/migrate.php --direction=up
           php tests/integration.php
           php tests/rga-registration.php
+          php tests/account-administration-mysql.php
           if APP_ENV=test LOCAL_DEMO_ENABLED=true php docker/local-fixtures.php; then
             echo "Local fixtures must be rejected outside APP_ENV=local" >&2
             exit 1

@@ -50,6 +50,7 @@ try {
             'OAUTH_TRANSACTION_TTL_SECONDS', 'IDENTITY_LOGOUT_URL', 'IDENTITY_LOGOUT_SECRET',
             'IDENTITY_ACCOUNT_ACTIVATION_URL', 'IDENTITY_ACCOUNT_ACTIVATION_SECRET',
             'SUPPORT_EMAIL',
+            'IDENTITY_ACCOUNT_PROVISIONING_URL', 'IDENTITY_ACCOUNT_PROVISIONING_SECRET', 'TRIAL_ACCESS_POLICY_FILE',
             'APP_LAUNCH_RAPPORT_URL', 'APP_LAUNCH_RAPPORT_SECRET',
             'APP_LAUNCH_RGA_URL', 'APP_LAUNCH_RGA_SECRET',
             'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET',
@@ -77,6 +78,7 @@ try {
     $request = Request::fromGlobals();
     $requestId = $request->requestId;
 
+    $pdo = null;
     try {
         $pdo = Database::connect($config);
         $repository = $pdo === null
@@ -105,6 +107,15 @@ try {
             $config->identityAccountActivationSecret,
         )
         : null;
+    $accountAdministration = null;
+    $provisionUrl = trim((string)getenv('IDENTITY_ACCOUNT_PROVISIONING_URL'));
+    $provisionSecret = trim((string)getenv('IDENTITY_ACCOUNT_PROVISIONING_SECRET'));
+    $trialPolicy = trim((string)getenv('TRIAL_ACCESS_POLICY_FILE'));
+    if ($pdo !== null && $repository instanceof PdoConnectRepository && $provisionUrl!=='' && $provisionSecret!=='' && $trialPolicy!=='') {
+        $accountAdministration = new \Avereo\Connect\Administration\AccountAdministration($pdo,
+            new \Avereo\Connect\Identity\IdentityAccountProvisioningClient($provisionUrl,$provisionSecret),
+            new \Avereo\Connect\Administration\TrialPolicyStore($trialPolicy));
+    }
     $application = new Application(
         $config,
         $repository,
@@ -112,6 +123,7 @@ try {
         $identityLogout,
         $accountActivation,
         $activationCompletion,
+        $accountAdministration,
     );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {
