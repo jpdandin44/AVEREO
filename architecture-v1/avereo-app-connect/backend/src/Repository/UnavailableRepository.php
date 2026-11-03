@@ -118,6 +118,16 @@ final class UnavailableRepository implements ConnectRepository
         $this->fail();
     }
 
+    public function accountPasswordResetTarget(int $actorUserId, int $organizationId, int $targetUserId): array
+    {
+        $this->fail();
+    }
+
+    public function recordAccountPasswordResetDelivery(int $actorUserId, int $organizationId, int $targetUserId, string $outcome, string $requestId): void
+    {
+        $this->fail();
+    }
+
     public function completeAccountActivation(int $targetUserId, string $requestId): void
     {
         $this->fail();

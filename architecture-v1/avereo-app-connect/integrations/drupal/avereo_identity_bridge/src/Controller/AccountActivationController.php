@@ -69,6 +69,7 @@ final class AccountActivationController extends ControllerBase
             return $this->jsonError(400, 'ACTIVATION_PAYLOAD_INVALID');
         }
         $email = is_array($payload) ? strtolower(trim((string) ($payload['email'] ?? ''))) : '';
+        $purpose = is_array($payload) ? ($payload['purpose'] ?? 'activation') : null;
         $connectUserId = is_array($payload)
             ? filter_var(
                 $payload['connectUserId'] ?? null,
@@ -80,6 +81,7 @@ final class AccountActivationController extends ControllerBase
         if (
             !is_array($payload)
             || ($payload['version'] ?? null) !== 1
+            || !in_array($purpose, ['activation', 'password_reset'], true)
             || $connectUserId === false
             || $connectUserId === null
             || filter_var($email, FILTER_VALIDATE_EMAIL) === false
@@ -106,6 +108,16 @@ final class AccountActivationController extends ControllerBase
                 429,
                 ['Retry-After' => (string) $rateLimitSeconds, 'Cache-Control' => 'no-store'],
             );
+        }
+
+        if ($purpose === 'password_reset') {
+            if (!is_string($payload['subject'] ?? null) || !hash_equals($account->uuid(), $payload['subject'])) {
+                return $this->jsonError(403, 'PASSWORD_RESET_IDENTITY_MISMATCH');
+            }
+            if (!$account->isActive() || $this->requiresPasswordInitialization($account)) {
+                return $this->jsonError(409, 'PASSWORD_RESET_ACCOUNT_NOT_READY');
+            }
+            return $this->sendPasswordReset($account, $email, $rateLimitKey, $rateLimitSeconds);
         }
 
         $token = $this->base64Url(random_bytes(32));
@@ -163,6 +175,22 @@ final class AccountActivationController extends ControllerBase
             200,
             ['Cache-Control' => 'no-store'],
         );
+    }
+
+    private function sendPasswordReset(UserInterface $account, string $email, string $rateLimitKey, int $rateLimitSeconds): JsonResponse
+    {
+        $timeout = (int) $this->config('user.settings')->get('password_reset_timeout');
+        if ($timeout <= 0) {
+            return $this->jsonError(503, 'PASSWORD_RESET_NOT_CONFIGURED');
+        }
+        // Core generates its signed one-time reset URL. No account, password,
+        // activation token, CONNECT entitlement or trial period is modified here.
+        $mail = $this->mailManager->mail('user', 'password_reset', $email, $account->getPreferredLangcode(), ['account' => $account], null, true);
+        if (($mail['result'] ?? false) !== true) {
+            return $this->jsonError(502, 'PASSWORD_RESET_EMAIL_FAILED');
+        }
+        $this->cache->set($rateLimitKey, true, time() + $rateLimitSeconds);
+        return new JsonResponse(['status' => 'sent', 'expiresInSeconds' => $timeout], 200, ['Cache-Control' => 'no-store']);
     }
 
     public function activate(Request $request, string $token): Response

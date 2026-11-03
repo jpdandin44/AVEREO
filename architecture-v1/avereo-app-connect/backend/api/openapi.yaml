@@ -497,6 +497,37 @@ paths:
           description: Compte introuvable
         "409":
           description: Initialisation déjà terminée
+  /admin/organizations/{organizationId}/users/{userId}/password-reset-email:
+    post:
+      tags: [Administration]
+      operationId: sendAccountPasswordResetEmail
+      summary: Envoyer le reset natif du mot de passe d’un compte initialisé
+      description: >-
+        Réservé aux owner/admin autorisés. Le mot de passe reste exclusivement
+        géré par le fournisseur d'identité et n'est jamais retourné par CONNECT.
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/UserId"
+        - $ref: "#/components/parameters/CsrfToken"
+      responses:
+        "200":
+          description: Résultat de l'envoi, audité côté CONNECT
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PasswordResetEmail"
+                  meta:
+                    $ref: "#/components/schemas/Meta"
+        "403":
+          description: Rôle insuffisant ou CSRF rejeté
+        "404":
+          description: Compte introuvable
+        "409":
+          description: Initialisation encore requise
   /admin/organizations/{organizationId}/pending-identities/{pendingIdentityId}/reject:
     post:
       tags: [Administration]
@@ -898,6 +929,20 @@ components:
         expiresInSeconds:
           type: integer
           const: 86400
+        supportEmail:
+          type: string
+          format: email
+    PasswordResetEmail:
+      type: object
+      required: [status, expiresInSeconds, supportEmail]
+      properties:
+        status:
+          type: string
+          enum: [sent, failed, not_configured]
+        expiresInSeconds:
+          type: integer
+          minimum: 0
+          description: Délai natif Drupal en cas de succès, zéro si envoi indisponible ou échoué.
         supportEmail:
           type: string
           format: email

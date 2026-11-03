@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Envoi administratif du reset
+
+Compte actif initialisé et adhésion active ; rôles et organisation contrôlés côté serveur, confirmation du destinataire, CSRF et HMAC, anti-rejeu et quota. Conservation du mot de passe courant, de la période et des droits lors de l’envoi ; succès transport distinct de la réception. [Critères et preuve](docs/reinitialisation-mot-de-passe.md).
+
+
 ## Périmètre implémenté localement le 3 novembre
 
 Créer un compte membre, sélectionner ses applications, fixer une période ou un accès permanent, puis envoyer séparément l’invitation. L’essai temporaire de cette première version concerne Rapport/RGA ; aucun mot de passe géré par CONNECT. Vérifier les routes, les sessions ouvertes et le transport réel avant installation. [Critères et état](docs/administration-comptes.md).

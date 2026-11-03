@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-03 — Candidat du reset administratif
+
+Bouton, confirmation du destinataire, route protégée, mail natif Drupal et audit séparé ; tests de refus, transport, quota et conservation. Runtime 3ac6b66 installé en préproduction après sauvegarde et restauration sur copie. Recette hébergée partielle réussie, réception SMTP et formulaire natif non qualifiés. [État et limites](docs/reinitialisation-mot-de-passe.md).
+
+
 ## 2026-11-03 — Préproduction après démonstration
 
 Runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` installé après go, sauvegardes et restaurations sur copies. Création native, droits explicites, période et invitation séparée ; corrections du Reply-To Drupal/Symfony, des marqueurs natifs et du paramètre de formulaire. Contrôles HTTP d’isolement/expiration et formulaire public réussis ; données Rapport initiales conservées. Compte métier préparé sans mail ; accès HTTP nominatif et invitation encore à finaliser. [État](docs/administration-comptes.md). Aucun merge ni production.

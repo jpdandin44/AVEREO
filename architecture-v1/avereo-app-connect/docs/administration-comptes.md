@@ -10,11 +10,16 @@ owner: jpdandin
 tags: [connect, comptes, essai]
 ---
 
+## Reset administratif — nouveau candidat local
+
+Le reset d’un compte existant est livré en préproduction par le runtime 3ac6b66 de la PR #97. [Bouton, protections, preuves et limites de recette](reinitialisation-mot-de-passe.md).
+
+
 ## Préproduction technique du 3 novembre
 
-Le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé après le go donné à la fin de la démonstration. Le compte métier est préparé sans invitation ; son entrée nominative dans la protection HTTP est en attente de saisie du secret par le responsable dans cPanel. Le suivi privé conserve l’identité et la période, qui sera recalée sur l’envoi effectif pour sept jours complets.
+Le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé après le go donné à la fin de la démonstration. L’entrée nominative HTTP a été enregistrée par le responsable. L’invitation métier est enregistrée comme envoyée et la période de sept jours a été recalée sur cet envoi, puis vérifiée dans la base et après réouverture de l’administration. Le suivi privé conserve l’identité, les dates et les preuves ; réception et activation personnelles restent à confirmer.
 
-Les contrôles hébergés comprennent 22 cas HTTP sur PHP/MySQL réels avec identités fictives (isolement, fin de période et suspension sur cookies ouverts), puis le formulaire public HTTP 200 et le refus d’un second usage du lien (410). Les messages ont été interceptés dans le seul processus de recette ; une construction native Symfony sans livraison confirme le Reply-To unique. Les dix enregistrements Rapport initiaux sont inchangés et les dossiers fictifs sont retirés. Réception SMTP réelle et activation personnelle restent à constater.
+Les contrôles hébergés comprennent 22 cas HTTP sur PHP/MySQL réels avec identités fictives (isolement, fin de période et suspension sur cookies ouverts), puis le formulaire public HTTP 200 et le refus d’un second usage du lien (410). Les messages ont été interceptés dans le seul processus de recette ; une construction native Symfony sans livraison confirme le Reply-To unique. Les dix enregistrements Rapport initiaux sont inchangés et les dossiers fictifs sont retirés. L’envoi réel est désormais enregistré comme réussi ; réception dans la boîte du destinataire et activation personnelle restent à constater. Le retrait de l’entrée HTTP nominative à l’échéance reste à organiser séparément de l’expiration applicative.
 
 Le portail PHP propose la création d’un compte sans mail, la sélection explicite des applications, une période facultative et l’envoi séparé de l’activation. Le bouton de création est disponible seulement si les trois paramètres privés de provisionnement sont complets. Le rôle créé est toujours `member` ; aucune élévation n’est acceptée dans le corps de la requête.
 

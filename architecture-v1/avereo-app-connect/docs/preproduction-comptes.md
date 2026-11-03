@@ -14,7 +14,7 @@ tags: [connect, preproduction, comptes, restauration]
 
 ## État après le go du 3 novembre
 
-Le go requis après la démonstration a été reçu. Le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé ; [la recette et ses limites](administration-comptes.md) distinguent contrôles techniques, entrée HTTP nominative et invitation. Les étapes suivantes sont la saisie humaine du secret d’entrée, l’envoi puis le recalage des sept jours. Aucun envoi ou démarrage automatique n’est prévu.
+Le go requis après la démonstration a été reçu. Le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé ; [la recette et ses limites](administration-comptes.md) distinguent contrôles techniques, entrée HTTP nominative et invitation. Le responsable a enregistré le secret d’entrée ; l’invitation est envoyée et les sept jours sont recalés sur l’envoi enregistré. Réception et première activation restent à confirmer. Retrait de l’entrée HTTP à organiser à l’échéance ; l’expiration applicative est automatique.
 
 ## Historique — condition initiale d’exécution
 
@@ -36,7 +36,7 @@ Deux erreurs de préparation des tests ont été corrigées : création temporai
 | --- | --- |
 | Cadrage | Périmètre défini, cible et version hébergées à requalifier au go |
 | Développement local | Code, tests, contrats, PR et paquet préparés ; CI rattachée à la tête exacte |
-| Préproduction | Runtime installé et contrôles techniques réalisés ; entrée HTTP nominative et invitation métier en attente |
+| Préproduction | Runtime installé et contrôles techniques réalisés ; entrée HTTP nominative et envoi vérifiés ; activation personnelle et retrait HTTP à l’échéance en attente |
 | Mise en production | Non autorisée ; dossier de suite conservé séparément |
 
 ## Composition du paquet à examiner

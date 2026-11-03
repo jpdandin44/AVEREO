@@ -631,6 +631,35 @@
         actions.append(resend);
       }
 
+      if (user.canSendPasswordResetEmail) {
+        const reset = document.createElement('button');
+        reset.type = 'button';
+        reset.className = 'save-status';
+        reset.textContent = 'Envoyer la réinitialisation du mot de passe';
+        reset.addEventListener('click', async () => {
+          const label = nameStrong.textContent;
+          if (!await confirmAccountAction(`Envoyer la procédure de réinitialisation à ${user.email} (${label}) ? Son mot de passe actuel reste valable jusqu’à sa modification.`)) return;
+          reset.disabled = true;
+          adminStatus.textContent = `Envoi de la procédure de réinitialisation à ${label}…`;
+          try {
+            const payload = await mutation(
+              `/api/v1/admin/organizations/${adminOrganizationId}/users/${user.id}/password-reset-email`,
+              'POST'
+            );
+            if (payload.data?.status === 'sent') {
+              await loadAdministration(`La procédure de réinitialisation a été envoyée à ${user.email}. Le destinataire choisira lui-même son nouveau mot de passe.`);
+            } else {
+              adminStatus.textContent = `La procédure n’a pas été envoyée. Si une demande vient d’être faite, attendez une minute puis réessayez. Sinon, contactez contact@avereo.fr.`;
+              reset.disabled = false;
+            }
+          } catch (error) {
+            adminStatus.textContent = `L’envoi a échoué (${error.message}). Le mot de passe actuel est conservé.`;
+            reset.disabled = false;
+          }
+        });
+        actions.append(reset);
+      }
+
       const applicationAccess = document.createElement('div');
       applicationAccess.className = 'admin-app-access';
       const applicationTitle = document.createElement('strong');
