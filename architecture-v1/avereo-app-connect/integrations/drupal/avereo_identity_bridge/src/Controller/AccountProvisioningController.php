@@ -39,7 +39,7 @@ final class AccountProvisioningController extends ControllerBase
             $account=reset($accounts);
             if(count($accounts)!==1 || !$account->isBlocked() || trim((string)$account->getPassword())!==''
                 || array_diff($account->getRoles(),['authenticated'])!==[]
-                || $this->userData->get('avereo_identity_bridge',$account->id(),'created_by_connect')!==true)return $this->answer(['error'=>'IDENTITY_EXISTS'],409);
+                || !in_array($this->userData->get('avereo_identity_bridge',$account->id(),'created_by_connect'), [true, 1, '1'], true))return $this->answer(['error'=>'IDENTITY_EXISTS'],409);
         } else {
             $account=$storage->create(['name'=>'avereo-invite-'.substr(hash('sha256',$email),0,24),'mail'=>$email,
                 'status'=>0,'pass'=>null,'langcode'=>'fr','preferred_langcode'=>'fr']);

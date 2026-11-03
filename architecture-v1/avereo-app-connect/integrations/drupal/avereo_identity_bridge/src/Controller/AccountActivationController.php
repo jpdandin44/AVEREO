@@ -344,8 +344,8 @@ final class AccountActivationController extends ControllerBase
     private function requiresPasswordInitialization(UserInterface $account): bool
     {
         if (isset($this->userData)
-            && $this->userData->get('avereo_identity_bridge', $account->id(), 'created_by_connect') === true
-            && $this->userData->get('avereo_identity_bridge', $account->id(), 'password_initialized') !== true) {
+            && in_array($this->userData->get('avereo_identity_bridge', $account->id(), 'created_by_connect'), [true, 1, '1'], true)
+            && !in_array($this->userData->get('avereo_identity_bridge', $account->id(), 'password_initialized'), [true, 1, '1'], true)) {
             return true;
         }
         return trim((string) $account->getPassword()) === '';

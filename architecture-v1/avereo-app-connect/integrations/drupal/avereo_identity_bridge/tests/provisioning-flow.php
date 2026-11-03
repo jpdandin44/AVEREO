@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Avereo\Connect\Identity\IdentityAccountProvisioningClient;
 $checks=[];function checkProvision(bool $ok,string $name):void{global $checks;if(!$ok)throw new RuntimeException($name);$checks[]=$name;}
 $cache=new class {public array $data=[];public function get($key){return $this->data[$key]??false;}public function set($key,$data,$expiry){$this->data[$key]=(object)['data'=>$data];}};
-$userData=new class {public array $data=[];public function get($module,$id,$key){return $this->data[$id][$key]??null;}public function set($module,$id,$key,$value){$this->data[$id][$key]=$value;}};
+$userData=new class {public array $data=[];public function get($module,$id,$key){return $this->data[$id][$key]??null;}public function set($module,$id,$key,$value){$this->data[$id][$key]=is_bool($value)?(string)(int)$value:$value;}};
 $storage=new class {
     public array $accounts=[];public array $lastFields=[];
     public function loadByProperties($props){return array_filter($this->accounts,fn($a)=>$a->fields['mail']===$props['mail']);}

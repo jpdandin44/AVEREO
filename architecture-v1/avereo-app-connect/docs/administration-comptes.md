@@ -191,3 +191,5 @@ révocation explicite dans l'administration CONNECT.
 La recette du candidat après démo a passé 22 contrôles HTTP sur le serveur et MySQL de préproduction, avec des identités et dossiers fictifs. Le contrôle du formulaire a révélé un doublon de `Reply-To` avec des casses différentes dans les mails Drupal/Symfony. Le module remplace maintenant toutes les variantes par une valeur unique, sans toucher aux autres en-têtes.
 
 Une identité préparée par CONNECT conserve le besoin de définir son premier mot de passe lors d’un renvoi, même après génération du secret initial non transmis. Le marqueur `password_initialized` est écrit après l’enregistrement réussi du formulaire. Les mots de passe des comptes existants restent conservés. La fin de qualification porte sur le nouveau candidat exact ; les reçus des versions antérieures restent historiques.
+
+Les marqueurs natifs `user.data` de Drupal peuvent être relus sous la forme chaîne `"1"`. Les contrôles de création et d’initialisation acceptent strictement `true`, `1` et `"1"` ; les tests couvrent cette représentation hébergée. Aucun autre contenu n’est traité comme un accord.

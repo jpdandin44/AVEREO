@@ -147,7 +147,7 @@ namespace {
     assertActivationFlow(count(array_filter(array_keys($headers['headers']), static fn($k) => strcasecmp($k, 'Reply-To') === 0)) === 1
         && $headers['headers']['Reply-To'] === 'contact@avereo.fr' && $headers['headers']['X-Test'] === 'preserved',
         'Reply-To doit être unique sans supprimer les autres en-têtes.');
-    $data = new class { public bool $initialized = false; public function get($module, $uid, $key) { return $key === 'created_by_connect' ? true : $this->initialized; } };
+    $data = new class { public bool $initialized = false; public function get($module, $uid, $key) { return $key === 'created_by_connect' ? '1' : ($this->initialized ? '1' : null); } };
     $tracked = $reflection->newInstanceWithoutConstructor();
     $reflection->getProperty('userData')->setValue($tracked, $data);
     assertActivationFlow($requiresPassword->invoke($tracked, new ActivationFlowTestUser('random-initial-secret')) === true,
