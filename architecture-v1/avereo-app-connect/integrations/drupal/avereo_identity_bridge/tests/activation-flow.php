@@ -28,6 +28,8 @@ namespace Drupal\user {
             return $this->password;
         }
 
+        public function id(): int { return 99; }
+
         public function setPassword(string $password): self
         {
             $this->password = $password;
@@ -139,6 +141,20 @@ namespace {
         str_contains($initialPasswordBody, 'définir votre premier mot de passe'),
         'Un compte sans mot de passe doit recevoir le parcours d’initialisation.',
     );
+
+    $headers = ['headers' => ['Reply-to' => 'old@example.invalid', 'REPLY-TO' => 'duplicate@example.invalid', 'X-Test' => 'preserved']];
+    avereo_identity_bridge_set_reply_to($headers, 'contact@avereo.fr');
+    assertActivationFlow(count(array_filter(array_keys($headers['headers']), static fn($k) => strcasecmp($k, 'Reply-To') === 0)) === 1
+        && $headers['headers']['Reply-To'] === 'contact@avereo.fr' && $headers['headers']['X-Test'] === 'preserved',
+        'Reply-To doit être unique sans supprimer les autres en-têtes.');
+    $data = new class { public bool $initialized = false; public function get($module, $uid, $key) { return $key === 'created_by_connect' ? true : $this->initialized; } };
+    $tracked = $reflection->newInstanceWithoutConstructor();
+    $reflection->getProperty('userData')->setValue($tracked, $data);
+    assertActivationFlow($requiresPassword->invoke($tracked, new ActivationFlowTestUser('random-initial-secret')) === true,
+        'Un renvoi doit encore proposer le premier mot de passe tant que sa saisie n’est pas terminée.');
+    $data->initialized = true;
+    assertActivationFlow($requiresPassword->invoke($tracked, new ActivationFlowTestUser('chosen-password-hash')) === false,
+        'Un mot de passe déjà défini ne doit pas être remplacé lors d’un renvoi.');
 
     $routing = file_get_contents(dirname(__DIR__) . '/avereo_identity_bridge.routing.yml');
     assertActivationFlow(

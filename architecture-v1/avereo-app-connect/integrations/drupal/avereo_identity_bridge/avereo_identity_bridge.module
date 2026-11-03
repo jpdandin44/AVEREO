@@ -40,7 +40,7 @@ function avereo_identity_bridge_mail(string $key, array &$message, array $params
     $requiresPasswordInitialization = ($params['requires_password_initialization'] ?? false) === true;
     $supportEmail = (string) ($params['support_email'] ?? 'contact@avereo.fr');
     $message['subject'] = 'Votre accès AVEREO Connect est activé';
-    $message['headers']['Reply-To'] = $supportEmail;
+    avereo_identity_bridge_set_reply_to($message, $supportEmail);
     $action = $requiresPasswordInitialization
         ? "Pour définir votre premier mot de passe, utilisez ce lien personnel à usage unique :"
         : "Votre mot de passe choisi lors de l’inscription reste inchangé. "
@@ -80,6 +80,17 @@ function avereo_identity_bridge_mail_alter(array &$message): void
     if (filter_var($supportEmail, FILTER_VALIDATE_EMAIL) === false) {
         $supportEmail = 'contact@avereo.fr';
     }
-    $message['headers']['Reply-To'] = $supportEmail;
+    avereo_identity_bridge_set_reply_to($message, $supportEmail);
     $message['body'][] = "\nBesoin d’aide ? Contactez l’administrateur AVEREO : " . $supportEmail;
+}
+
+/** Replace case-insensitive Reply-To headers; Symfony requires one unique value. */
+function avereo_identity_bridge_set_reply_to(array &$message, string $email): void
+{
+    foreach (array_keys($message['headers'] ?? []) as $name) {
+        if (strcasecmp((string) $name, 'Reply-To') === 0) {
+            unset($message['headers'][$name]);
+        }
+    }
+    $message['headers']['Reply-To'] = $email;
 }

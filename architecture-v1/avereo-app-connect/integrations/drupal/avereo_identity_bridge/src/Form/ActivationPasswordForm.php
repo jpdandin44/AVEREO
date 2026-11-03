@@ -94,6 +94,9 @@ final class ActivationPasswordForm extends FormBase
         $account->setPassword($this->password($formState));
         $account->activate();
         $account->save();
+        \Drupal::service('user.data')->set(
+            'avereo_identity_bridge', (int) $account->id(), 'password_initialized', true,
+        );
 
         $session = $this->requestStackService->getCurrentRequest()?->getSession();
         $session?->remove('avereo_identity_bridge_activation');
