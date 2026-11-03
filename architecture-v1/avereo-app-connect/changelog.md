@@ -10,6 +10,14 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-03 — Candidat login ou e-mail et langue
+
+Résolution d’une adresse unique vers le login natif avant les contrôles Drupal, libellé cohérent et 254 caractères. Opération privée de nom lisible avec sauvegarde et conservation de l’identité et du secret. Langue configurée au provisionnement. Tests ciblés et recette HTTP native locale réussis ; aucune livraison de ce lot. [Preuves et limites](docs/connexion-identifiant-email.md).
+
+## 2026-11-03 — Retour de recette et langue des comptes
+
+Recette réelle du reset : mail reçu, sauvegarde personnelle et nouvelle connexion Identité vérifiées. Réparation ciblée de deux champs de langue invalides sur le compte autorisé. Correctif local de provisionnement utilisant la langue configurée ; 12 contrôles dédiés et 15 régressions reset réussis, sans nouvelle livraison.
+
 ## 2026-11-03 — Candidat du reset administratif
 
 Bouton, confirmation du destinataire, route protégée, mail natif Drupal et audit séparé ; tests de refus, transport, quota et conservation. Runtime 3ac6b66 installé en préproduction après sauvegarde et restauration sur copie. Recette hébergée partielle réussie, réception SMTP et formulaire natif non qualifiés. [État et limites](docs/reinitialisation-mot-de-passe.md).

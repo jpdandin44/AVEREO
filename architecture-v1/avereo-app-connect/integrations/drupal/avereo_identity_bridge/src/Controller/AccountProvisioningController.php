@@ -41,8 +41,9 @@ final class AccountProvisioningController extends ControllerBase
                 || array_diff($account->getRoles(),['authenticated'])!==[]
                 || !in_array($this->userData->get('avereo_identity_bridge',$account->id(),'created_by_connect'), [true, 1, '1'], true))return $this->answer(['error'=>'IDENTITY_EXISTS'],409);
         } else {
+            $language=$this->languageManager()->getDefaultLanguage()->getId();
             $account=$storage->create(['name'=>'avereo-invite-'.substr(hash('sha256',$email),0,24),'mail'=>$email,
-                'status'=>0,'pass'=>null,'langcode'=>'fr','preferred_langcode'=>'fr']);
+                'status'=>0,'pass'=>null,'langcode'=>$language,'preferred_langcode'=>$language]);
             $account->save();
             $this->userData->set('avereo_identity_bridge',$account->id(),'created_by_connect',true);
         }

@@ -1,6 +1,21 @@
 <?php
 declare(strict_types=1);
-namespace Drupal\Core\Controller { abstract class ControllerBase {} }
+namespace Drupal\Core\Controller {
+    abstract class ControllerBase {
+        public static string $testDefaultLanguage = 'en';
+        protected function languageManager(): object {
+            return new class(self::$testDefaultLanguage) {
+                public function __construct(private string $id) {}
+                public function getDefaultLanguage(): object {
+                    return new class($this->id) {
+                        public function __construct(private string $id) {}
+                        public function getId(): string { return $this->id; }
+                    };
+                }
+            };
+        }
+    }
+}
 namespace Drupal\Core\Site { final class Settings {public static array $values=[];public static function get($key,$default=[]){return self::$values[$key]??$default;}} }
 namespace Symfony\Component\HttpFoundation {
     class Request {public object $headers;public function __construct(private string $body,array $headers){$this->headers=new class($headers){public function __construct(private array $h){}public function get($key,$default=''){return $this->h[$key]??$default;}};}public function getContent():string{return $this->body;}}
@@ -30,6 +45,7 @@ $client=new IdentityAccountProvisioningClient('https://identity.example.invalid/
 $subject=$client->provision('client@example.invalid','Client test','request-1');
 checkProvision(count($storage->accounts)===1,'one blocked identity created');
 checkProvision($storage->lastFields['status']===0 && $storage->lastFields['pass']===null && !isset($storage->lastFields['roles']),'no password and no privileged role');
+checkProvision($storage->lastFields['langcode']==='en' && $storage->lastFields['preferred_langcode']==='en','identity uses configured English site language instead of unavailable French');
 checkProvision($controller->provision($last)->status===403,'same signed request cannot be replayed');
 checkProvision($client->provision('client@example.invalid','Client test','retry')===$subject && count($storage->accounts)===1,'retry reuses only own blocked password-free identity');
 $storage->accounts[1]->fields['roles']=['authenticated','administrator'];
@@ -45,6 +61,9 @@ checkProvision($controller->provision($bad)->status===403,'invalid signature rej
 $raw=json_encode(['version'=>1,'email'=>'other@example.invalid','displayName'=>'Other','roles'=>['administrator']]);$at=(string)time();$nonce=str_repeat('y',32);
 $r=$controller->provision(new Request($raw,['X-AVEREO-Issued-At'=>$at,'X-AVEREO-Nonce'=>$nonce,'X-AVEREO-Signature'=>hash_hmac('sha256',$at."\n".$nonce."\n".hash('sha256',$raw),$secret)]));
 checkProvision($r->status===422 && count($storage->accounts)===1,'unknown privilege field causes no creation');
+\Drupal\Core\Controller\ControllerBase::$testDefaultLanguage='fr';
+$client->provision('french-site@example.invalid','Site francophone','french-site');
+checkProvision($storage->lastFields['langcode']==='fr' && $storage->lastFields['preferred_langcode']==='fr','identity uses French when it is the configured site language');
 Settings::$values=[];checkProvision($controller->provision($bad)->status===503,'service disabled without private secret');
 echo json_encode(['passed'=>count($checks),'checks'=>$checks,'scope'=>'controller and signed client with in-memory Drupal test doubles; no mail'],JSON_UNESCAPED_UNICODE).PHP_EOL;
 }

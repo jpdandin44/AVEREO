@@ -10,9 +10,13 @@ owner: jpdandin
 tags: [connect, documentation]
 ---
 
+## Connexion par identifiant ou e-mail — candidat local
+
+Le formulaire Identité accepte un login natif ou une adresse e-mail unique avant les contrôles Drupal habituels. Un ajustement ciblé du nom de connexion conserve le compte et le mot de passe ; le provisionnement prend la langue configurée. [Fonctionnement, tests et préparation](docs/connexion-identifiant-email.md). Candidat non installé en préproduction.
+
 ## Réinitialisation administrative — candidat local
 
-Bouton distinct pour envoyer le reset d’un compte déjà initialisé, confirmation du destinataire et résultat explicite. Le mot de passe reste géré par Drupal ; runtime installé sur CONNECT et Identité préproduction après accord, sans migration. Réception SMTP et formulaire natif restant à qualifier. [Fonctionnement, preuves et livraison](docs/reinitialisation-mot-de-passe.md).
+Bouton distinct pour envoyer le reset d’un compte déjà initialisé, confirmation du destinataire et résultat explicite. Le mot de passe reste géré par Drupal ; runtime installé sur CONNECT et Identité préproduction après accord, sans migration. Réception réelle, sauvegarde personnelle et nouvelle connexion Identité vérifiées après réparation ciblée de la langue du compte testé. Le correctif durable de langue du provisionnement reste local, non installé. [Fonctionnement, preuves et livraison](docs/reinitialisation-mot-de-passe.md).
 
 
 ## Parcours des comptes — préproduction du 3 novembre

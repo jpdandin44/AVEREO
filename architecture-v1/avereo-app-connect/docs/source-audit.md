@@ -10,6 +10,14 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 2026-11-03 — Candidat de connexion lisible et e-mail
+
+Le service user.auth reste natif ; le formulaire convertit une adresse unique en nom avant ses validateurs. 18 contrôles ciblés, 10 contrôles HTTP Drupal natifs et 11 contrôles de réconciliation/retour arrière, plus régressions langue/reset. Recette réelle locale sur 11.4.10, cible observée 11.4.10. Préparation hébergée en lecture seule des fichiers et du compte ; aucun nom réel modifié pour ce lot. [Source de référence](connexion-identifiant-email.md).
+
+## 2026-11-03 — Retour de recette et langue des comptes
+
+Cause reproduite : langue fr imposée par AccountProvisioningController, refusée sur une cible avec en seul. Réparation des seules métadonnées de langue du compte personnel testé, attributs protégés inchangés, sauvegarde et nouvelle connexion confirmées. Correctif local : langue par défaut Drupal ; test rouge puis 12 contrôles provisionnement et 15 reset verts. Non installé. Identifiant technique antérieur au reset, distinct du nom de profil CONNECT ; login lisible et e-mail attendus confirmés, désormais couverts par le candidat local décrit ci-dessus.
+
 ## 2026-11-03 — Livraison du reset
 
 Runtime 3ac6b66 installé sur CONNECT et Identité préproduction ; huit contrôles hébergés avec identité transactionnelle fictive et mail natif construit sans livraison. Première comparaison de l’entité complète trop stricte avant rechargement : recette affinée pour comparer les attributs persistants après rechargement ; aucun changement applicatif. Réception SMTP et formulaire natif restant à qualifier. [État détaillé](reinitialisation-mot-de-passe.md).

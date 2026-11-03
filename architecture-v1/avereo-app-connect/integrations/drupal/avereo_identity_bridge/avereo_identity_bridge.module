@@ -94,3 +94,32 @@ function avereo_identity_bridge_set_reply_to(array &$message, string $email): vo
     }
     $message['headers']['Reply-To'] = $email;
 }
+
+/** Implements hook_form_FORM_ID_alter() for the native login form only. */
+function avereo_identity_bridge_form_user_login_form_alter(array &$form, \Drupal\Core\Form\FormStateInterface $form_state): void
+{
+    $form['name']['#title'] = t('Identifiant ou adresse e-mail');
+    $form['name']['#maxlength'] = 254;
+    $form['#validate'] = array_merge(
+        ['avereo_identity_bridge_login_identifier_validate'],
+        $form['#validate'] ?? [],
+    );
+}
+
+/** Normalizes the identifier before unchanged native credential/flood checks. */
+function avereo_identity_bridge_login_identifier_validate(array &$form, \Drupal\Core\Form\FormStateInterface $form_state): void
+{
+    $identifier = $form_state->getValue('name');
+    $resolver = new \Drupal\avereo_identity_bridge\Authentication\LoginIdentifierResolver(
+        \Drupal::entityTypeManager()->getStorage('user'),
+    );
+    $name = is_string($identifier) ? $resolver->resolve($identifier) : null;
+    if ($name === null) {
+        // An ambiguous email must not authenticate whichever username happens
+        // to match it. Do not reveal the conflicting accounts to the caller.
+        $form_state->setValue('name', '');
+        $form_state->setErrorByName('name', t('Identifiant ou mot de passe non reconnu.'));
+        return;
+    }
+    $form_state->setValue('name', $name);
+}
