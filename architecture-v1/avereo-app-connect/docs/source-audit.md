@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 2026-11-03 — Rattachement des comptes invités
+
+Défaut reproduit : UUID stocké par la création, sujet OIDC numérique à la connexion. Le candidat renvoie le sujet natif et le vérifie pour l'invitation comme pour le reset, tout en acceptant l'UUID exact des comptes anciens sur le pont signé. Aucun rapprochement automatique par e-mail. Régressions et cycle natif Drupal/MariaDB réussis ; recette nominative hébergée distincte et à consigner dans le cockpit. [Contrat, conservation et limites](rattachement-identite.md).
+
+
 ## 2026-11-03 — Candidat de connexion lisible et e-mail
 
 Le service user.auth reste natif ; le formulaire convertit une adresse unique en nom avant ses validateurs. 18 contrôles ciblés, 10 contrôles HTTP Drupal natifs et 11 contrôles de réconciliation/retour arrière, plus régressions langue/reset. Recette réelle locale sur 11.4.10, cible observée 11.4.10. Préparation hébergée en lecture seule des fichiers et du compte ; aucun nom réel modifié pour ce lot. [Source de référence](connexion-identifiant-email.md).

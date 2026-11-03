@@ -96,8 +96,17 @@ final class AccountActivationController extends ControllerBase
             ->getStorage('user')
             ->loadByProperties(['mail' => $email]);
         $account = $accounts === [] ? null : reset($accounts);
-        if (!$account instanceof UserInterface || $account->isAnonymous()) {
+        if (count($accounts) !== 1 || !$account instanceof UserInterface || $account->isAnonymous()) {
             return $this->jsonError(404, 'ACCOUNT_NOT_FOUND');
+        }
+
+        // New requests use the native OIDC UID. Accept the exact UUID too so
+        // existing invited accounts remain usable during targeted reconciliation.
+        $subject = $payload['subject'] ?? null;
+        if (!is_string($subject)
+            || (!hash_equals((string) $account->id(), $subject) && !hash_equals($account->uuid(), $subject))) {
+            return $this->jsonError(403, $purpose === 'password_reset'
+                ? 'PASSWORD_RESET_IDENTITY_MISMATCH' : 'ACTIVATION_IDENTITY_MISMATCH');
         }
 
         $rateLimitSeconds = max(30, min(300, (int) ($configuration['mail_rate_limit_seconds'] ?? 60)));
@@ -111,9 +120,6 @@ final class AccountActivationController extends ControllerBase
         }
 
         if ($purpose === 'password_reset') {
-            if (!is_string($payload['subject'] ?? null) || !hash_equals($account->uuid(), $payload['subject'])) {
-                return $this->jsonError(403, 'PASSWORD_RESET_IDENTITY_MISMATCH');
-            }
             if (!$account->isActive() || $this->requiresPasswordInitialization($account)) {
                 return $this->jsonError(409, 'PASSWORD_RESET_ACCOUNT_NOT_READY');
             }

@@ -38,7 +38,8 @@ final class IdentityAccountProvisioningClient implements AccountIdentityProvisio
         if (($response['status'] ?? 0) === 409) throw new \Avereo\Connect\Http\ApiException(409, 'IDENTITY_EXISTS', 'Cette identité existe déjà ; aucune fusion automatique.');
         $data = json_decode((string)($response['body'] ?? ''), true);
         if (($response['status'] ?? 0) !== 200 || !is_array($data)
-            || !preg_match('/^[0-9a-f-]{36}$/i', (string)($data['subject'] ?? '')) || ($data['status'] ?? '') !== 'prepared') {
+            || !is_string($data['subject'] ?? null)
+            || !preg_match('/^[1-9][0-9]{0,18}$/D', $data['subject']) || ($data['status'] ?? '') !== 'prepared') {
             throw new \Avereo\Connect\Http\ApiException(502, 'IDENTITY_PROVISIONING_FAILED', 'La création de l’identité n’a pas été confirmée. Réessayez sans envoyer d’invitation.');
         }
         return $data['subject'];

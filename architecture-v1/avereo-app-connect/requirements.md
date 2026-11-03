@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Continuité du compte créé et invité
+
+La création doit enregistrer le sujet natif que le fournisseur OIDC renverra à la connexion. Activation et authentification retrouvent le même identifiant CONNECT, sans nouveau compte en attente ni rapprochement implicite par e-mail. Toute réconciliation d'un compte existant conserve mot de passe, droits et période. [Contrat et critères](docs/rattachement-identite.md).
+
+
 ## Connexion par login lisible ou adresse e-mail — attente confirmée
 
 Un libellé « login ou adresse mail » engage les deux possibilités. Le nom de profil CONNECT ne doit pas être présenté comme un login utilisable s’il ne correspond pas à l’identité. Le reset conserve les identifiants et l’identité existants. État hébergé : service natif limité au nom technique. Candidat local : résolution de l’e-mail par le formulaire, login natif lisible préparé pour le compte demandé, collisions refusées et validation native conservée. [Contrat et preuves](docs/connexion-identifiant-email.md). Aucun déploiement de ce candidat.

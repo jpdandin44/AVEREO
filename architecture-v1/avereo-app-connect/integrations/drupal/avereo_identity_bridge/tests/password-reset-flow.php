@@ -19,12 +19,12 @@ namespace {
         public function set($key,$value,$expiry){$this->entries[$key]=$value;}
     };
     $account=new class implements \Drupal\user\UserInterface {
-        public bool $active=true;public string $password='unchanged-hash';
+        public bool $active=true;public bool $duplicate=false;public string $password='unchanged-hash';
         public function id(){return 44;}public function uuid(){return 'subject-44';}public function isAnonymous(){return false;}public function isActive(){return $this->active;}
         public function getPassword(){return $this->password;}public function getPreferredLangcode(){return 'fr';}
     };
     $entities=new class($account) implements \Drupal\Core\Entity\EntityTypeManagerInterface {
-        public function __construct(public object $account){}public function getStorage($type){return new class($this->account){public function __construct(private object $account){}public function loadByProperties($props){return ($props['mail']??'')==='member@example.invalid'?[$this->account]:[];}};}
+        public function __construct(public object $account){}public function getStorage($type){return new class($this->account){public function __construct(private object $account){}public function loadByProperties($props){return ($props['mail']??'')==='member@example.invalid'?($this->account->duplicate?[$this->account,$this->account]:[$this->account]):[];}};}
     };
     $mail=new class implements \Drupal\Core\Mail\MailManagerInterface {
         public array $calls=[];public bool $success=true;
@@ -37,6 +37,12 @@ namespace {
     resetFlow($controller->issue($request($payload,false))->status===403,'unsigned reset refused before mail');
     resetFlow($controller->issue($request(array_replace($payload,['purpose'=>'other'])))->status===422,'unknown purpose refused');
     resetFlow($controller->issue($request(array_replace($payload,['subject'=>'another-user'])))->status===403,'subject/email mismatch refused');
+    foreach (['45','044',44,null] as $wrongSubject) {
+        resetFlow($controller->issue($request(array_replace($payload,['subject'=>$wrongSubject])))->status===403,'non-matching or non-canonical subject refused: '.json_encode($wrongSubject));
+    }
+    resetFlow($controller->issue($request(array_replace($payload,['purpose'=>'activation','subject'=>'45'])))->status===403,'invitation also checks subject before token creation or mail');
+    resetFlow($controller->issue($request(array_diff_key(array_replace($payload,['purpose'=>'activation']),['subject'=>true])))->status===403,'invitation without subject refused');
+    $account->duplicate=true;resetFlow($controller->issue($request($payload))->status===404,'duplicate-email identities refused without selecting the first account');$account->duplicate=false;
     $account->active=false;resetFlow($controller->issue($request($payload))->status===409,'blocked identity cannot be reactivated by reset');$account->active=true;
     $data->initial=true;resetFlow($controller->issue($request($payload))->status===409,'initialization stays in invitation flow');$data->initial=false;
     resetFlow(count($mail->calls)===0,'all refusals avoid mail');
@@ -48,6 +54,9 @@ namespace {
     resetFlow($controller->issue($req)->status===403,'signed reset request cannot be replayed');
     resetFlow($controller->issue($request($payload))->status===429 && count($mail->calls)===1,'per-account cooldown blocks repeated delivery');
     resetFlow(count(array_filter(array_keys($cache->entries),static fn($k)=>str_contains($k,'activation_token:') || str_contains($k,'activation_account:')))===0,'reset does not create or invalidate activation tokens');
+    unset($cache->entries['avereo_identity_bridge:activation_rate:44']);
+    resetFlow($controller->issue($request(array_replace($payload,['subject'=>'44'])))->status===200,'native numeric OIDC subject can request reset for same existing account');
+    resetFlow($account->password==='unchanged-hash','numeric subject reset preserves password');
     unset($cache->entries['avereo_identity_bridge:activation_rate:44']);$mail->success=false;
     resetFlow($controller->issue($request($payload))->status===502,'native mail failure propagated');
     resetFlow($account->password==='unchanged-hash','failed mail preserves password');

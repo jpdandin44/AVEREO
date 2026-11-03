@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: Pont de création des identités CONNECT
   version: git
-  description: Contrat implémenté localement ; activation et mot de passe restent séparés.
+  description: Préparation d’identité ; le sujet est le même identifiant numérique natif que celui renvoyé par OIDC. Activation et mot de passe restent séparés.
 paths:
   /avereo/account/provision:
     post:
@@ -40,7 +40,10 @@ paths:
                 required: [status, subject]
                 properties:
                   status: {type: string, const: prepared}
-                  subject: {type: string, format: uuid}
+                  subject:
+                    type: string
+                    pattern: '^[1-9][0-9]{0,18}$'
+                    description: UID Drupal natif utilisé comme sujet OIDC ; distinct du nom de connexion et du UUID de l’entité.
         "403": {description: Signature invalide, expirée ou rejouée}
         "409": {description: Identité existante refusée}
         "422": {description: Champs invalides}

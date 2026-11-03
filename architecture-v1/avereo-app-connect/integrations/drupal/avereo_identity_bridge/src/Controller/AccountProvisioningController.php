@@ -47,7 +47,9 @@ final class AccountProvisioningController extends ControllerBase
             $account->save();
             $this->userData->set('avereo_identity_bridge',$account->id(),'created_by_connect',true);
         }
-        return $this->answer(['status'=>'prepared','subject'=>$account->uuid()],200);
+        // Simple OAuth identifies this Drupal account by its immutable numeric UID.
+        // The entity UUID must not be substituted for the OIDC subject.
+        return $this->answer(['status'=>'prepared','subject'=>(string)$account->id()],200);
     }
     private function answer(array $data,int $status):JsonResponse
     {
