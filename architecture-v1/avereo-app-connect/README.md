@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation]
 ---
 
+## Livraison du parcours des comptes — préparation
+
+[Paquet, écarts hébergés et procédure](docs/preproduction-comptes.md). Un nouveau go du responsable après la démonstration est requis avant toute intervention hébergée ; aucune reprise automatique à 11 h.
+
+
 ## Création des comptes — candidat local du 3 novembre
 
 Création sans notification automatique, applications explicites, période et invitation séparée sont implémentées dans le portail PHP. Essai temporaire limité à Rapport/RGA. Migration, nouveau contrat signé Drupal et paramètres privés requis ; aucune livraison ni invitation réelle. [Fonctionnement et réserves](docs/administration-comptes.md).

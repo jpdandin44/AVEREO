@@ -12,7 +12,7 @@ paths:
         SHA-256 hexadécimal du corps brut. Secret privé distinct de l’activation.
         Fenêtre de 120 secondes et nonce consommé une seule fois. Un nouvel appel
         signé peut reprendre uniquement une identité préparée par ce pont,
-        toujours bloquée et sans mot de passe ; toute autre identité existante est refusée.
+        toujours bloquée, non privilégiée et sans mot de passe ; toute autre identité existante est refusée.
       parameters:
         - {name: X-AVEREO-Issued-At, in: header, required: true, schema: {type: string}}
         - {name: X-AVEREO-Nonce, in: header, required: true, schema: {type: string}}
@@ -29,7 +29,7 @@ paths:
                 version: {type: integer, const: 1}
                 email: {type: string, format: email, maxLength: 254}
                 displayName: {type: string, minLength: 1, maxLength: 191}
-                requestId: {type: string}
+                requestId: {type: string, maxLength: 128}
       responses:
         "200":
           description: Identité préparée, sans mot de passe ni lien dans la réponse

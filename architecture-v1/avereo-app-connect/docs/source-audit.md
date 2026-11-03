@@ -10,6 +10,13 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 2026-11-03 — Qualification et préparation différée
+
+Le schéma hébergé observé ne possède pas le suivi d'activation. Un contrôle privé MariaDB 11.4.13 sur tables temporaires a passé 36 vérifications et le retour arrière de la migration ; les tables persistantes sont inchangées. Le contrôle de conservation utilisait initialement un nom de variable repris par le test inclus : cette collision de test est corrigée sans affaiblir l'assertion. La fixture sait préparer le suivi d'activation manquant sur sa copie temporaire. Aucune modification du schéma réel.
+
+La relecture ajoute le refus d'une période incomplète (qui ne doit jamais enlever l'échéance implicitement) et le refus de réutiliser une identité Drupal préparée devenue privilégiée. Les contrôles passent localement : 38 administration et 10 provisionnement. La CI de la tête finale reste à relire. [Paquet et procédure](preproduction-comptes.md). Le responsable exige un nouveau go après la démonstration avant toute reprise hébergée ; compte et invitation non créés.
+
+
 ## 2026-11-03 — Candidat d’administration en qualification
 
 Le prototype React historique reste intact. Changements ciblés dans portail PHP, routeur, repository, service de création signé, projection privée, migration et contrats. Essai limité aux deux sas qualifiés Rapport/RGA ; anciens comptes conservés en héritage. Un format de date ISO avec millisecondes émis par le navigateur a été corrigé et ajouté à la recette. La projection manquante n’est jamais réinitialisée silencieusement. [Détail des preuves et limites](administration-comptes.md).

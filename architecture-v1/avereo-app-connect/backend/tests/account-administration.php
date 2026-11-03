@@ -39,6 +39,8 @@ try {
     $before=file_get_contents($path);
     rejects(fn()=>$service->updatePeriod(2,7,$id,['startsAt'=>null,'endsAt'=>null],'intrusion'),403,'unauthorized change denied');
     ok(file_get_contents($path)===$before,'unauthorized request cannot revoke projection');
+    rejects(fn()=>$service->updatePeriod(1,7,$id,[],'missing-period'),422,'missing period fields cannot silently remove the trial deadline');
+    ok(file_get_contents($path)===$before,'invalid period leaves the current projection intact');
     rejects(fn()=>$service->authorizeApplication(1,7,$id,'coupe','active'),422,'trial cannot expand to unqualified application');
     $key=str_repeat('local-only-',5);$payload=avereo_gate_base64url_encode(json_encode(['v'=>2,'app'=>'rapport','iat'=>time(),'exp'=>time()+600,'nonce'=>str_repeat('a',32),'identity'=>['provider'=>'avereo_connect','id'=>(string)$id]]));
     $_COOKIE['TEST']=$payload.'.'.avereo_gate_base64url_encode(hash_hmac('sha256',$payload,$key,true));

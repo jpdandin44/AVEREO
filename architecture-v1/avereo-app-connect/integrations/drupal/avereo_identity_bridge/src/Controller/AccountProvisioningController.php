@@ -30,13 +30,15 @@ final class AccountProvisioningController extends ControllerBase
         $this->cache->set($replay,true,time()+120);
         try {$p=json_decode($raw,true,8,JSON_THROW_ON_ERROR);}catch(\Throwable){return $this->answer(['error'=>'PROVISIONING_INPUT_INVALID'],422);}
         if(!is_array($p) || array_diff(array_keys($p),['version','email','displayName','requestId'])!==[] || ($p['version']??null)!==1
-            || !is_string($p['email']??null) || !is_string($p['displayName']??null))return $this->answer(['error'=>'PROVISIONING_INPUT_INVALID'],422);
+            || !is_string($p['email']??null) || !is_string($p['displayName']??null)
+            || (isset($p['requestId']) && (!is_string($p['requestId']) || strlen($p['requestId'])>128)))return $this->answer(['error'=>'PROVISIONING_INPUT_INVALID'],422);
         $email=strtolower(trim($p['email']));$name=trim($p['displayName']);
         if(!filter_var($email,FILTER_VALIDATE_EMAIL) || strlen($email)>254 || $name==='' || strlen($name)>191)return $this->answer(['error'=>'PROVISIONING_INPUT_INVALID'],422);
         $storage=$this->entities->getStorage('user');$accounts=$storage->loadByProperties(['mail'=>$email]);
         if($accounts!==[]) {
             $account=reset($accounts);
             if(count($accounts)!==1 || !$account->isBlocked() || trim((string)$account->getPassword())!==''
+                || array_diff($account->getRoles(),['authenticated'])!==[]
                 || $this->userData->get('avereo_identity_bridge',$account->id(),'created_by_connect')!==true)return $this->answer(['error'=>'IDENTITY_EXISTS'],409);
         } else {
             $account=$storage->create(['name'=>'avereo-invite-'.substr(hash('sha256',$email),0,24),'mail'=>$email,

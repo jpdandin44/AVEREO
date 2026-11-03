@@ -47,7 +47,9 @@ final class AccountAdministration
 
     public function updatePeriod(int $actor,int $organization,int $id,array $input,string $requestId): array
     {
-        if (array_diff(array_keys($input),['startsAt','endsAt'])!==[]) $this->invalid('Champ de période inconnu.');
+        if (array_diff(array_keys($input),['startsAt','endsAt'])!==[]
+            || !array_key_exists('startsAt',$input) || !array_key_exists('endsAt',$input))
+            $this->invalid('Indiquez explicitement le début et la fin, ou deux valeurs nulles pour un accès permanent.');
         [$start,$end]=$this->period($input);
         return $this->synchronize($id,function() use($actor,$organization,$id,$start,$end,$requestId) {
             $this->authorize($actor,$organization,$id);

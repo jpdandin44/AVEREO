@@ -31,6 +31,8 @@ function accountTestDatabase(?string $file=null):PDO {
         $pdo->exec('ALTER TABLE `__account_fixture_'.$table.'` RENAME TO `'.$table.'`');
         if((int)$pdo->query('SELECT COUNT(*) FROM `'.$table.'`')->fetchColumn()!==0)throw new RuntimeException('Temporary fixture not empty.');
     }
+    if($pdo->query("SHOW COLUMNS FROM users LIKE 'onboarding_status'")->fetch()===false)
+        $pdo->exec(file_get_contents(dirname(__DIR__,2).'/database/migrations/20260804140000_account_activation_status.up.sql'));
     if($pdo->query("SHOW COLUMNS FROM users LIKE 'access_starts_at'")->fetch()===false)
         $pdo->exec(file_get_contents(dirname(__DIR__,2).'/database/migrations/20261103070000_account_access_period.up.sql'));
     $pdo->exec("INSERT INTO users(id,drupal_subject,email_normalized,display_name,status,onboarding_status) VALUES (1,'owner','owner@example.invalid','Owner','active','completed'),(2,'member','member@example.invalid','Member','active','completed');
