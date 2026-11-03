@@ -12,7 +12,11 @@ tags: [connect, preproduction, comptes, restauration]
 
 # Préparer le candidat de préproduction
 
-## Condition d'exécution
+## État après le go du 3 novembre
+
+Le go requis après la démonstration a été reçu. Le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé ; [la recette et ses limites](administration-comptes.md) distinguent contrôles techniques, entrée HTTP nominative et invitation. Les étapes suivantes sont la saisie humaine du secret d’entrée, l’envoi puis le recalage des sept jours. Aucun envoi ou démarrage automatique n’est prévu.
+
+## Historique — condition initiale d’exécution
 
 Le responsable autorise la préparation du candidat et demande un **nouveau go après la démonstration** avant toute reprise hébergée. La précédente plage « après 11 h » n'est pas une autorisation automatique. Aucune bascule, migration persistante, configuration de secret, création de compte ou invitation ne doit être exécutée avant cette nouvelle confirmation. Les anciens accords et leurs périmètres restent historiques.
 
@@ -20,7 +24,7 @@ La source du parcours est [Administration des comptes](administration-comptes.md
 
 ## Écarts effectivement constatés
 
-Le schéma de la préproduction ne contient pas `onboarding_status`. Les paramètres privés d'activation ne figurent pas dans la liste de clés observée. Le portail installé doit donc être rapproché du backend actuel avant livraison ; copier uniquement le formulaire serait incomplet.
+Avant livraison, le schéma de préproduction ne contenait pas `onboarding_status` et les paramètres privés d’activation étaient absents. La mise à niveau d’activation et de période a été effectuée, avec des paramètres propres à cette préproduction et un fichier de pont distinct de la configuration partagée.
 
 Le contrôle MariaDB a utilisé des tables **TEMPORARY** clonées sur une connexion séparée. Les tables persistantes ont été comptées sur une connexion de contrôle : elles sont inchangées. Le contrôle intermédiaire a passé 36 vérifications, la migration de période et son retour arrière. La mise à niveau d'activation a été appliquée aux seules tables temporaires. Cela ne constitue pas une migration du site, une restauration complète de sauvegarde, un test de réception de mail ni une recette Drupal hébergée.
 
@@ -32,7 +36,7 @@ Deux erreurs de préparation des tests ont été corrigées : création temporai
 | --- | --- |
 | Cadrage | Périmètre défini, cible et version hébergées à requalifier au go |
 | Développement local | Code, tests, contrats, PR et paquet préparés ; CI rattachée à la tête exacte |
-| Préproduction | En attente du nouveau go, sauvegarde/restauration et qualification hébergée restantes |
+| Préproduction | Runtime installé et contrôles techniques réalisés ; entrée HTTP nominative et invitation métier en attente |
 | Mise en production | Non autorisée ; dossier de suite conservé séparément |
 
 ## Composition du paquet à examiner

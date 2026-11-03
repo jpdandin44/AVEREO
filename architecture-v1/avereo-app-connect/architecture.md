@@ -10,9 +10,9 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
-## Administration des comptes — candidat local
+## Administration des comptes
 
-`AccountAdministration` orchestre le provisionnement Drupal et la transaction des droits. `TrialPolicyStore` sérialise les mutations et projette les règles hors répertoire public ; les sas Rapport/RGA les relisent. La migration ajoute dates individuelles et mode explicite sans changer l’héritage des anciens comptes. Le pont de création est signé avec un secret distinct ; l’activation existante garde le formulaire de mot de passe. [Contrat et limites](docs/administration-comptes.md).
+`AccountAdministration` orchestre le provisionnement Drupal et la transaction des droits. `TrialPolicyStore` sérialise les mutations et projette les règles hors répertoire public ; les sas Rapport/RGA les relisent. La migration ajoute dates individuelles et mode explicite sans changer l’héritage des anciens comptes. Le pont de création est signé avec un secret distinct ; l’activation existante garde le formulaire de mot de passe. [Contrat et limites](docs/administration-comptes.md). Le stockage natif Drupal `user.data` conserve l’origine de création et l’initialisation réussie du premier mot de passe ; les booléens relus sous forme chaîne sont normalisés strictement. Le renvoi garde le formulaire initial jusqu’à cette confirmation.
 
 
 ## Application RGA distincte

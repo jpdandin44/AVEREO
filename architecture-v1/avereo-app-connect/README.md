@@ -10,19 +10,19 @@ owner: jpdandin
 tags: [connect, documentation]
 ---
 
-## Livraison du parcours des comptes — préparation
+## Parcours des comptes — préproduction du 3 novembre
 
-[Paquet, écarts hébergés et procédure](docs/preproduction-comptes.md). Un nouveau go du responsable après la démonstration est requis avant toute intervention hébergée ; aucune reprise automatique à 11 h.
-
-
-## Création des comptes — candidat local du 3 novembre
-
-Création sans notification automatique, applications explicites, période et invitation séparée sont implémentées dans le portail PHP. Essai temporaire limité à Rapport/RGA. Migration, nouveau contrat signé Drupal et paramètres privés requis ; aucune livraison ni invitation réelle. [Fonctionnement et réserves](docs/administration-comptes.md).
+[Paquet, recette et procédure](docs/preproduction-comptes.md). Le go après démonstration a été reçu ; le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé en préproduction. Les contrôles techniques sont réalisés ; l’entrée nominative HTTP et l’invitation métier restent à finaliser. Aucun merge ni changement de production.
 
 
-## Nouveaux comptes — préparation du 3 novembre
+## Création des comptes — comportement installé
 
-Le [dossier de reprise](docs/reprise-administration-comptes.md) prépare création, choix explicite des applications, période et invitation séparée. Le [parcours fonctionnel](docs/administration-comptes.md) reste la référence. Ce parcours n’est pas encore implémenté ou livré ; le contrôle temporaire des sas est seulement qualifié localement.
+Création sans notification automatique, applications explicites, période et invitation séparée sont implémentées dans le portail PHP. Essai temporaire limité à Rapport/RGA. Migration et paramètres privés installés ; aucun mail d’invitation métier envoyé. [Fonctionnement et réserves](docs/administration-comptes.md).
+
+
+## Historique — préparation avant la démonstration
+
+Le [dossier de reprise](docs/reprise-administration-comptes.md) prépare création, choix explicite des applications, période et invitation séparée. Le [parcours fonctionnel](docs/administration-comptes.md) reste la référence. Au moment de cette préparation initiale, ce parcours n’était pas encore implémenté ou livré ; le contrôle temporaire des sas était seulement qualifié localement.
 
 
 ## Application RGA — candidat du 2 novembre

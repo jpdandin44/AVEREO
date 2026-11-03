@@ -10,9 +10,13 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-03 — Préproduction après démonstration
+
+Runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` installé après go, sauvegardes et restaurations sur copies. Création native, droits explicites, période et invitation séparée ; corrections du Reply-To Drupal/Symfony, des marqueurs natifs et du paramètre de formulaire. Contrôles HTTP d’isolement/expiration et formulaire public réussis ; données Rapport initiales conservées. Compte métier préparé sans mail ; accès HTTP nominatif et invitation encore à finaliser. [État](docs/administration-comptes.md). Aucun merge ni production.
+
 ## 2026-11-03 — Parcours local de création et invitation
 
-Création sans mail, applications explicites, période individuelle, invitation séparée et confirmation accessible dans la page. Pont Drupal de création bloquée sans mot de passe, migration réversible et projection privée pour les deux sas. Tests de doublons, refus, périodes, sessions existantes et erreurs. Non livré ; qualification hébergée restante.
+Création sans mail, applications explicites, période individuelle, invitation séparée et confirmation accessible dans la page. Pont Drupal de création bloquée sans mot de passe, migration réversible et projection privée pour les deux sas. Tests de doublons, refus, périodes, sessions existantes et erreurs. À cette étape locale initiale, non livré et qualification hébergée restante.
 
 
 ## 2026-11-02 — Préparation du parcours des comptes

@@ -10,19 +10,19 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
-## 3 novembre — développement local en qualification
+## 3 novembre — préproduction technique vérifiée
 
-Les quatre fonctions sont codées et contrôlées localement. Prochaines étapes : MariaDB et interface, PR/CI, sauvegarde/restauration du candidat exact, puis accord et installation/recette préproduction. Aucun compte nominatif créé ni mail envoyé. [Reprise](docs/reprise-administration-comptes.md).
+Les quatre fonctions sont installées sur le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2`, après sauvegardes et restaurations de contrôle. CI, isolement/expiration HTTP et formulaire d’initialisation sont contrôlés. Le compte métier est préparé sans mail. Suite : terminer son entrée HTTP nominative, envoyer l’invitation puis caler sept jours sur l’envoi enregistré ; réception et activation restent à confirmer. [État et limites](docs/administration-comptes.md).
 
 
-## Reprise du 3 novembre — préparation close
+## Historique — préparation close avant reprise du 3 novembre
 
 Le responsable demande de préparer le développement et la mise en préproduction du parcours de compte avant la démo de 9 h 30. Priorité : création sans notification automatique, applications explicites, période d’essai et invitation séparée. Réinitialisation administrative d’un mot de passe existant en suite. [Ordre de travail et critères](docs/reprise-administration-comptes.md). Aucun démarrage automatique, candidat installé ou accès réel déduit de cette préparation.
 
 
-## Administration des comptes — cadrage à revoir
+## Historique — cadrage des comptes du 2 novembre
 
-Création administrative, invitation séparée, réinitialisation via Drupal et période d’essai sont cadrées dans le [parcours des comptes](docs/administration-comptes.md). L’envoi/renvoi d’activation existe pour les comptes provisionnés ; création et échéance pilotées par l’interface restent à développer et à qualifier.
+Création administrative, invitation séparée, réinitialisation via Drupal et période d’essai sont cadrées dans le [parcours des comptes](docs/administration-comptes.md). L’envoi/renvoi d’activation existe pour les comptes provisionnés ; création et échéance pilotées par l’interface restaient alors à développer et à qualifier.
 
 
 ## RGA distincte — préproduction

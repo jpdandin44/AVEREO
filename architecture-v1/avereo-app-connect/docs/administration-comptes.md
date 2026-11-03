@@ -10,7 +10,11 @@ owner: jpdandin
 tags: [connect, comptes, essai]
 ---
 
-## Candidat local du 3 novembre — non livré
+## Préproduction technique du 3 novembre
+
+Le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` est installé après le go donné à la fin de la démonstration. Le compte métier est préparé sans invitation ; son entrée nominative dans la protection HTTP est en attente de saisie du secret par le responsable dans cPanel. Le suivi privé conserve l’identité et la période, qui sera recalée sur l’envoi effectif pour sept jours complets.
+
+Les contrôles hébergés comprennent 22 cas HTTP sur PHP/MySQL réels avec identités fictives (isolement, fin de période et suspension sur cookies ouverts), puis le formulaire public HTTP 200 et le refus d’un second usage du lien (410). Les messages ont été interceptés dans le seul processus de recette ; une construction native Symfony sans livraison confirme le Reply-To unique. Les dix enregistrements Rapport initiaux sont inchangés et les dossiers fictifs sont retirés. Réception SMTP réelle et activation personnelle restent à constater.
 
 Le portail PHP propose la création d’un compte sans mail, la sélection explicite des applications, une période facultative et l’envoi séparé de l’activation. Le bouton de création est disponible seulement si les trois paramètres privés de provisionnement sont complets. Le rôle créé est toujours `member` ; aucune élévation n’est acceptée dans le corps de la requête.
 
@@ -24,7 +28,7 @@ Avant la première activation du dispositif, initialiser la projection privée v
 
 Un verrou privé sérialise les mutations et la publication. Un compte explicite est refusé dans les applications avant sa mutation, puis sa politique est publiée après succès ; une erreur le laisse refusé, avec reprise administrative nécessaire. Les contrôles d’autorisation précèdent cette fermeture pour empêcher une requête illégitime de bloquer un autre compte. La fin de période est exclusive et contrôlée sur les cookies déjà ouverts. Les sessions des autres applications ne sont pas qualifiées par ce mécanisme ; c’est la raison de la limite de l’essai Rapport/RGA.
 
-Contrôles locaux : 38 vérifications sur service, routes et projection avec SQLite ; 10 vérifications du client signé et contrôleur Drupal sur doubles de test ; 38 contrôles CONNECT historiques et test d’activation existant réussis. La qualification MariaDB, le Drupal hébergé et le transport mail réel restent séparés. Le contrôle intermédiaire sur MariaDB 11.4.13 a passé 36 vérifications et le retour arrière de la migration sur des tables temporaires, sans changement des tables persistantes. La CI du candidat final doit être relue après publication des corrections. [Préparation de livraison et conditions de reprise](preproduction-comptes.md). La recette locale n’utilise que des identités `example.invalid`, sans e-mail réel. Le compte de l’essai métier n’est pas créé par ces tests.
+Contrôles locaux : 38 vérifications sur service, routes et projection avec SQLite ; 10 vérifications du client signé et contrôleur Drupal sur doubles de test ; 38 contrôles CONNECT historiques et test d’activation existant réussis. La qualification MariaDB, le Drupal hébergé et le transport mail réel restent séparés. Le contrôle intermédiaire sur MariaDB 11.4.13 a passé 36 vérifications et le retour arrière de la migration sur des tables temporaires, sans changement des tables persistantes. La CI du runtime installé est réussie ; les contrôles de l’étape locale ci-dessus restent des preuves distinctes. [Préparation de livraison et conditions de reprise](preproduction-comptes.md). La recette locale n’utilise que des identités `example.invalid`, sans e-mail réel. Le compte de l’essai métier n’est pas créé par ces tests.
 
 Les brouillons Rapport restent liés au profil de navigateur ; utiliser un profil personnel distinct. Aucun mot de passe, lien personnel ou secret n’est publié. [Préparation et reprise](reprise-administration-comptes.md).
 
