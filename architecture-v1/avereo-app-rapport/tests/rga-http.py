@@ -16,7 +16,7 @@ with socket.socket() as port_probe:
 def php_string(value):
     return "'" + str(value).replace('\\', '\\\\').replace("'", "\\'") + "'"
 for name, secret in secrets_by_app.items():
-    values = {'environment': 'local', 'connect_portal_url': f'http://127.0.0.1:{port}' if name == 'rapport' else 'https://connect-preprod.avereo.fr',
+    values = {'environment': 'local', 'connect_portal_url': f'http://127.0.0.1:{port}',
         'connect_launch_secret': secret, 'connect_launch_nonce_directory': str(scratch / (name + '-nonces')),
         'connect_gate_cookie': 'AVEREO_' + name.upper() + '_GATE', 'auth_mode': 'connect_gateway'}
     (scratch / (name + '.php')).write_text('<?php return [' + ','.join(php_string(k) + '=>' + php_string(v) for k, v in values.items()) + '];', encoding='utf-8')
@@ -60,7 +60,7 @@ try:
     status, headers, _ = get('/rga/entry.php?ticket=' + value)
     check('RGA ticket accepted', status == 303 and headers['Location'] == '/rga/resume.php')
     rga_cookie = headers['Set-Cookie'].split(';')[0]
-    check('distinct cookie with secure flags', rga_cookie.startswith('AVEREO_RGA_GATE=') and 'secure' in headers['Set-Cookie'].lower() and 'httponly' in headers['Set-Cookie'].lower())
+    check('distinct local cookie with HttpOnly and SameSite', rga_cookie.startswith('AVEREO_RGA_GATE=') and 'httponly' in headers['Set-Cookie'].lower() and 'samesite=lax' in headers['Set-Cookie'].lower())
     check('RGA works', get('/rga/carte.php', rga_cookie)[0] == 200)
     check('RGA access true', json.loads(get('/rga/access.php', rga_cookie)[2]) == {'authorized': True})
     check('RGA cookie does not grant Rapport', get('/index.php', rga_cookie)[0] == 303)

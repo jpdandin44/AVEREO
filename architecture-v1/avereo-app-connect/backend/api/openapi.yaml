@@ -368,6 +368,39 @@ paths:
         "403":
           description: Signature invalide ou expirée
   /admin/organizations/{organizationId}/accounts:
+    post:
+      tags: [Administration]
+      operationId: createPreparedAccount
+      summary: Créer un compte membre et ses accès sans envoyer de mail
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [email, displayName, applications]
+              properties:
+                email: {type: string, format: email, maxLength: 254}
+                displayName: {type: string, minLength: 1, maxLength: 191}
+                applications:
+                  type: array
+                  minItems: 1
+                  maxItems: 32
+                  uniqueItems: true
+                  items: {type: string}
+                startsAt: {type: [string, "null"], format: date-time}
+                endsAt: {type: [string, "null"], format: date-time}
+      responses:
+        "201": {description: Compte préparé, invitation non envoyée}
+        "403": {description: Rôle, organisation ou CSRF refusé}
+        "409": {description: Compte ou identité existant sans rapprochement automatique}
+        "422": {description: Champs, applications ou période invalides}
+        "502": {description: Provisionnement non confirmé}
+        "503": {description: Paramètres privés de création indisponibles}
     get:
       tags: [Administration]
       operationId: getAccountAdministration
@@ -566,6 +599,31 @@ paths:
           description: Compte ou application indisponible
         "422":
           $ref: "#/components/responses/ValidationError"
+  /admin/organizations/{organizationId}/users/{userId}/access-period:
+    patch:
+      tags: [Administration]
+      operationId: updateAccountAccessPeriod
+      summary: Modifier la période d’un compte explicite membre
+      parameters:
+        - $ref: "#/components/parameters/OrganizationId"
+        - $ref: "#/components/parameters/UserId"
+        - $ref: "#/components/parameters/CsrfToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [startsAt, endsAt]
+              properties:
+                startsAt: {type: [string, "null"], format: date-time}
+                endsAt: {type: [string, "null"], format: date-time}
+      responses:
+        "200": {description: Période enregistrée et projection publiée}
+        "403": {description: Compte protégé, autorisation ou CSRF refusé}
+        "422": {description: Deux dates requises ou deux valeurs nulles pour accès permanent}
+        "503": {description: Service non configuré}
 components:
   securitySchemes:
     sessionCookie:

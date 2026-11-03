@@ -29,6 +29,8 @@ expectRgaGate(!avereo_gate_cookie_is_valid($config));
 $_COOKIE['AVEREO_RGA_GATE'] = rgaTicket('rga', $secret);
 expectRgaGate(avereo_gate_cookie_is_valid($config));
 expectRgaGate(rga_config()['connect_gate_cookie'] === 'AVEREO_RGA_GATE');
+expectRgaGate(avereo_gate_cookie_is_secure(['environment' => 'preproduction']));
+expectRgaGate(!avereo_gate_cookie_is_secure(['environment' => 'local']));
 foreach (glob($dir . '/*.used') ?: [] as $file) unlink($file);
 rmdir($dir);
 echo "$checks contrôles du sas RGA réussis.\n";

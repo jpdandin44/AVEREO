@@ -5,10 +5,20 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-02
+updated: 2026-11-03
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 2026-11-03 — Candidat d’administration en qualification
+
+Le prototype React historique reste intact. Changements ciblés dans portail PHP, routeur, repository, service de création signé, projection privée, migration et contrats. Essai limité aux deux sas qualifiés Rapport/RGA ; anciens comptes conservés en héritage. Un format de date ISO avec millisecondes émis par le navigateur a été corrigé et ajouté à la recette. La projection manquante n’est jamais réinitialisée silencieusement. [Détail des preuves et limites](administration-comptes.md).
+
+
+## 2026-11-02 — Préparation de création administrative
+
+Lecture du portail PHP, repository, schémas, routes et pont Drupal : activation existante sans provisionnement d’une identité absente ; droits individuels sans période, absence de ligne héritant du catalogue. Le [dossier de reprise](reprise-administration-comptes.md) qualifie les écarts et les fichiers à modifier, sans changer le contrat actif ni présenter une route proposée comme disponible.
+
 
 ## 2026-11-02 — Candidat RGA distinct
 

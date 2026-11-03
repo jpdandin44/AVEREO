@@ -13,6 +13,11 @@ tags:
   - habitologie
 ---
 
+## Essai temporaire — besoin du 2 novembre
+
+Limiter un compte personnel à Rapport et RGA pendant une période explicite de sept jours, avec refus des appels serveur après échéance, y compris depuis une session déjà ouverte. Vérifier la propriété des dossiers et distinguer brouillon de navigateur et dossier serveur. [État et critères](docs/essais-temporaires.md).
+
+
 ## Repérage sur les vues du Cricq
 
 Localiser manuellement les constats sur les trois plans de niveau et les deux coupes fournis ; conserver les coordonnées, le lien au constat et les images avec le dossier. Même numérotation dans les vues et les restitutions. L’expert reçoit toutes les vues ; le client reçoit uniquement les repères des constats explicitement retenus. Les anciens dossiers doivent rester utilisables. [Critères détaillés](docs/reperage-observations.md#contrôles-attendus).

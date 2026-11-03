@@ -14,6 +14,11 @@ tags:
   - fonctionnalites
 ---
 
+## Essais temporaires — à qualifier
+
+Candidat local testé ; création et activation du compte, administration CONNECT, sauvegarde/restauration et qualification hébergée restent à réaliser. Aucun envoi d’invitation effectué. [Périmètre](docs/essais-temporaires.md).
+
+
 ## Repérage Cricq — développement local
 
 Le repérage sur les cinq vues et sa restitution Word sont implémentés dans une copie isolée, initialement fondée sur le candidat de dictée puis réalignée sur `main` après les PR #93 et #95. Le suivi canonique porte les résultats réels, le candidat et la prochaine action. Restent la revue des positions par le responsable et, après accord distinct, la qualification hébergée. La revue de l’expert est reportée à la génération des PDF finaux destinés à Passeport Immo. [Périmètre et suivi](docs/reperage-observations.md).

@@ -13,6 +13,11 @@ tags:
   - fonctionnalites
 ---
 
+## Essais temporaires — candidat local
+
+Aucun changement SQL ni payload métier. La politique configurée exige une identité dans le cookie ; les anciens cookies RGA anonymes nécessitent une relance depuis CONNECT. Sans politique, compatibilité conservée. [Contrat](essais-temporaires.md).
+
+
 ## Repérage des observations
 
 Les champs optionnels `plans` et `observations[].reperes` restent dans le payload existant : aucune migration SQL ni conversion destructive. Les anciens dossiers ne reçoivent aucun plan par défaut. Les cinq vues privées du Cricq sont ajoutées seulement à une copie locale de son dossier. [Contrat et état de qualification](reperage-observations.md).

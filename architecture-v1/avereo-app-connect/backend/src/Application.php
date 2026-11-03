@@ -24,6 +24,7 @@ final class Application
         private readonly ?IdentityLogoutUrlSigner $identityLogout = null,
         private readonly ?AccountActivationNotifier $accountActivation = null,
         private readonly ?IdentityAccountActivationCompletionVerifier $activationCompletion = null,
+        private readonly ?\Avereo\Connect\Administration\AccountAdministration $accountAdministration = null,
     ) {
     }
 
@@ -157,7 +158,11 @@ final class Application
                 );
             }
             $targetUserId = $this->activationCompletion->verify($request->query);
-            $this->repository->completeAccountActivation($targetUserId, $request->requestId);
+            $complete = fn()=>$this->repository->completeAccountActivation($targetUserId, $request->requestId);
+            if ($this->accountAdministration !== null) $this->accountAdministration->synchronize($targetUserId,$complete);
+            elseif (method_exists($this->repository,'isExplicitAccount') && $this->repository->isExplicitAccount($targetUserId)) {
+                throw new ApiException(503,'ACCOUNT_ADMIN_NOT_CONFIGURED','La gestion des accès doit être configurée.');
+            } else $complete();
             return Response::redirect('/?activation=completed', $request->requestId);
         }
 
@@ -210,9 +215,21 @@ final class Application
             && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/accounts$#', $request->path, $matches)
         ) {
             return Response::success(
-                $this->repository->getAccountAdministration($userId, (int) $matches[1]),
+                array_merge($this->repository->getAccountAdministration($userId, (int) $matches[1]),
+                    ['accountCreationAvailable'=>$this->accountAdministration!==null]),
                 $request->requestId,
             );
+        }
+
+        if ($request->method === 'POST' && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/accounts$#',$request->path,$matches)) {
+            CsrfGuard::assertValid($request,$csrfToken);
+            if ($this->accountAdministration===null) throw new ApiException(503,'ACCOUNT_ADMIN_NOT_CONFIGURED','La création de comptes doit être configurée.');
+            return Response::success($this->accountAdministration->create($userId,(int)$matches[1],$request->body,$request->requestId),$request->requestId,201);
+        }
+        if ($request->method === 'PATCH' && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/access-period$#',$request->path,$matches)) {
+            CsrfGuard::assertValid($request,$csrfToken);
+            if ($this->accountAdministration===null) throw new ApiException(503,'ACCOUNT_ADMIN_NOT_CONFIGURED','La gestion des périodes doit être configurée.');
+            return Response::success($this->accountAdministration->updatePeriod($userId,(int)$matches[1],(int)$matches[2],$request->body,$request->requestId),$request->requestId);
         }
 
         if (
@@ -282,12 +299,12 @@ final class Application
                 (int) $matches[2],
             );
             return Response::success(
-                $this->deliverAccountActivation(
+                $this->mutateAccount($userId,$organizationId,(int)$matches[2],fn()=>$this->deliverAccountActivation(
                     $userId,
                     $organizationId,
                     $target,
                     $request->requestId,
-                ),
+                )),
                 $request->requestId,
             );
         }
@@ -302,13 +319,13 @@ final class Application
         ) {
             CsrfGuard::assertValid($request, $csrfToken);
             return Response::success(
-                $this->repository->updateUserStatus(
+                $this->mutateAccount($userId,(int)$matches[1],(int)$matches[2],fn()=>$this->repository->updateUserStatus(
                     $userId,
                     (int) $matches[1],
                     (int) $matches[2],
                     $this->validateUserStatus($request->body),
                     $request->requestId,
-                ),
+                )),
                 $request->requestId,
             );
         }
@@ -323,14 +340,14 @@ final class Application
         ) {
             CsrfGuard::assertValid($request, $csrfToken);
             return Response::success(
-                $this->repository->updateUserApplicationAccess(
+                $this->mutateAccount($userId,(int)$matches[1],(int)$matches[2],fn()=>$this->repository->updateUserApplicationAccess(
                     $userId,
                     (int) $matches[1],
                     (int) $matches[2],
                     $matches[3],
                     $this->validateUserApplicationAccess($request->body),
                     $request->requestId,
-                ),
+                ),[$matches[3],$this->validateUserApplicationAccess($request->body)]),
                 $request->requestId,
             );
         }
@@ -502,6 +519,18 @@ final class Application
             new AuthContext($userId, $auth->authenticatedAt, $auth->drupalSubject, $auth->remembered),
             $status,
         ];
+    }
+
+    private function mutateAccount(int $actor,int $organization,int $target,callable $operation,?array $app=null): mixed
+    {
+        if($this->accountAdministration===null) {
+            if(method_exists($this->repository,'isExplicitAccount') && $this->repository->isExplicitAccount($target))
+                throw new ApiException(503,'ACCOUNT_ADMIN_NOT_CONFIGURED','La gestion des accès doit être configurée.');
+            return $operation();
+        }
+        return $this->accountAdministration->synchronize($target,$operation,fn()=> $app===null
+            ? $this->accountAdministration->authorize($actor,$organization,$target)
+            : $this->accountAdministration->authorizeApplication($actor,$organization,$target,$app[0],$app[1]));
     }
 
     private function positiveInt(mixed $value, string $field): int

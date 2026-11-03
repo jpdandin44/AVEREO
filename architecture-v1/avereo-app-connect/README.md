@@ -5,10 +5,20 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-02
+updated: 2026-11-03
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## Création des comptes — candidat local du 3 novembre
+
+Création sans notification automatique, applications explicites, période et invitation séparée sont implémentées dans le portail PHP. Essai temporaire limité à Rapport/RGA. Migration, nouveau contrat signé Drupal et paramètres privés requis ; aucune livraison ni invitation réelle. [Fonctionnement et réserves](docs/administration-comptes.md).
+
+
+## Nouveaux comptes — préparation du 3 novembre
+
+Le [dossier de reprise](docs/reprise-administration-comptes.md) prépare création, choix explicite des applications, période et invitation séparée. Le [parcours fonctionnel](docs/administration-comptes.md) reste la référence. Ce parcours n’est pas encore implémenté ou livré ; le contrôle temporaire des sas est seulement qualifié localement.
+
 
 ## Application RGA — candidat du 2 novembre
 

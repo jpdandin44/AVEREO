@@ -1,3 +1,13 @@
+avereo_identity_bridge.account_provision:
+  path: '/avereo/account/provision'
+  defaults:
+    _controller: '\Drupal\avereo_identity_bridge\Controller\AccountProvisioningController::provision'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
 avereo_identity_bridge.logout:
   path: '/avereo/session/logout'
   defaults:

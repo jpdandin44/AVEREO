@@ -5,10 +5,15 @@ title: Architecture CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-02
+updated: 2026-11-03
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Administration des comptes — candidat local
+
+`AccountAdministration` orchestre le provisionnement Drupal et la transaction des droits. `TrialPolicyStore` sérialise les mutations et projette les règles hors répertoire public ; les sas Rapport/RGA les relisent. La migration ajoute dates individuelles et mode explicite sans changer l’héritage des anciens comptes. Le pont de création est signé avec un secret distinct ; l’activation existante garde le formulaire de mot de passe. [Contrat et limites](docs/administration-comptes.md).
+
 
 ## Application RGA distincte
 

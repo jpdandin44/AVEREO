@@ -187,6 +187,22 @@
       .admin-card { grid-template-columns: 1fr; }
       .admin-actions { justify-content: start; }
     }
+
+    #account-create-form {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:760px}
+    #account-create-form>label {display:grid;gap:6px;font-weight:600}
+    #account-create-form input:not([type=checkbox]),#account-create-form select,.account-period-editor input:not([type=checkbox]) {box-sizing:border-box;min-width:0;width:100%;padding:10px;border:1px solid #c8d2df;border-radius:8px;font:inherit}
+    #account-create-form>fieldset,#account-create-form>p,#account-create-period,#account-create-form>button {grid-column:1/-1}
+    #account-create-form fieldset,.account-period-editor {border:1px solid #d6deea;border-radius:10px;padding:12px;min-width:0}
+    #account-create-apps {display:flex;flex-wrap:wrap;gap:16px}
+    #account-create-period {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    #account-create-period label {display:grid;gap:6px}
+    #account-create-period[hidden] {display:none}
+    #account-create-form>p {margin:0;color:#516174}
+    #account-create-submit {justify-self:start;background:#173e6a;color:#fff}
+    .account-period-editor {display:grid;gap:8px;width:100%;max-width:360px;box-sizing:border-box}
+    dialog[aria-label="Confirmer l’action"] {max-width:520px;padding:24px;border:1px solid #c8d2df;border-radius:14px}
+    dialog[aria-label="Confirmer l’action"] button {margin-right:12px}
+    @media(max-width:640px) {#account-create-form,#account-create-period {grid-template-columns:minmax(0,1fr)}}
   </style>
 </head>
 <body>
@@ -248,6 +264,24 @@
         <article><strong id="admin-pending-count">0</strong> demandes en attente</article>
         <article><strong id="admin-users-count">0</strong> comptes rattachés</article>
         <article><strong id="admin-apps-count">0</strong> applications du catalogue</article>
+      </div>
+
+      <div class="admin-block" id="account-create-panel" hidden>
+        <h3>Créer un compte</h3>
+        <p>Préparez le compte et ses accès. L’invitation sera envoyée séparément ; l’utilisateur choisira lui-même son mot de passe.</p>
+        <form id="account-create-form">
+          <label>Nom <input id="account-create-name" required maxlength="191" autocomplete="off"></label>
+          <label>Adresse e-mail <input id="account-create-email" type="email" required maxlength="254" autocomplete="off"></label>
+          <fieldset><legend>Applications autorisées</legend><div id="account-create-apps"></div></fieldset>
+          <label>Durée d’accès <select id="account-create-mode"><option value="trial">Essai temporaire — Rapport et RGA</option><option value="permanent">Accès permanent</option></select></label>
+          <p id="account-create-zone"></p>
+          <div id="account-create-period">
+            <label>Début <input id="account-create-start" type="datetime-local" required></label>
+            <label>Fin <input id="account-create-end" type="datetime-local" required></label>
+          </div>
+          <button type="submit" id="account-create-submit">Créer sans envoyer l’invitation</button>
+          <p id="account-create-status" role="status" aria-live="polite"></p>
+        </form>
       </div>
 
       <div class="admin-block">
@@ -313,7 +347,7 @@
         ...options
       });
       const payload = await response.json();
-      if (!response.ok) throw new Error(payload.error?.code || 'REQUEST_FAILED');
+      if (!response.ok) {const error=new Error(payload.error?.code || 'REQUEST_FAILED');error.userMessage=payload.error?.message;throw error;}
       return payload;
     }
 
@@ -447,7 +481,7 @@
       approve.textContent = 'Approuver';
       approve.addEventListener('click', async () => {
         const label = nameStrong.textContent;
-        if (!window.confirm(`Approuver ${label} avec le rôle ${roleSelect.selectedOptions[0].textContent} ?`)) return;
+        if (!await confirmAccountAction(`Approuver ${label} avec le rôle ${roleSelect.selectedOptions[0].textContent} ?`)) return;
         approve.disabled = true;
         adminStatus.textContent = `Approbation de ${label}…`;
         try {
@@ -473,7 +507,7 @@
       reject.textContent = 'Refuser';
       reject.addEventListener('click', async () => {
         const label = nameStrong.textContent;
-        if (!window.confirm(`Refuser définitivement la demande de ${label} ?`)) return;
+        if (!await confirmAccountAction(`Refuser définitivement la demande de ${label} ?`)) return;
         reject.disabled = true;
         adminStatus.textContent = `Refus de la demande de ${label}…`;
         try {
@@ -543,7 +577,7 @@
           const action = statusSelect.value === 'active'
             ? 'réactiver'
             : (statusSelect.value === 'suspended' ? 'suspendre' : 'désactiver');
-          if (!window.confirm(`Voulez-vous ${action} le compte de ${label} ?`)) return;
+          if (!await confirmAccountAction(`Voulez-vous ${action} le compte de ${label} ?`)) return;
           save.disabled = true;
           adminStatus.textContent = `Mise à jour du compte de ${label}…`;
           try {
@@ -575,7 +609,7 @@
           : 'Envoyer le lien d’activation';
         resend.addEventListener('click', async () => {
           const label = nameStrong.textContent;
-          if (!window.confirm(`Envoyer un nouveau lien de définition du mot de passe à ${label} ?`)) return;
+          if (!await confirmAccountAction(`Envoyer un nouveau lien de définition du mot de passe à ${label} ?`)) return;
           resend.disabled = true;
           adminStatus.textContent = `Envoi du lien d’activation à ${label}…`;
           try {
@@ -622,7 +656,7 @@
             const requestedStatus = checkbox.checked ? 'active' : 'revoked';
             if (
               requestedStatus === 'revoked'
-              && !window.confirm(`Retirer l’accès à ${application.name} pour ${nameStrong.textContent} ?`)
+              && !await confirmAccountAction(`Retirer l’accès à ${application.name} pour ${nameStrong.textContent} ?`)
             ) {
               checkbox.checked = true;
               return;
@@ -659,14 +693,90 @@
         applicationAccess.append(applicationTitle, applicationList);
       }
 
+      if(user.accessEndsAt){const period=document.createElement('p');period.textContent=`Accès du ${formatAdminDate(user.accessStartsAt)} au ${formatAdminDate(user.accessEndsAt)}${Date.now()>=new Date(user.accessEndsAt.replace(' ','T')+'Z').getTime()?' — expiré':''}.`;information.append(period);}
+      if(user.canChangePeriod)actions.append(periodEditor(user));
       card.append(information, actions, applicationAccess);
       return card;
     }
+
+    function confirmAccountAction(message) {
+      return new Promise((resolve)=>{
+        const dialog=document.createElement('dialog');dialog.setAttribute('aria-label','Confirmer l’action');
+        const text=document.createElement('p');text.textContent=message;
+        const cancel=document.createElement('button');cancel.type='button';cancel.textContent='Annuler';cancel.autofocus=true;
+        const accept=document.createElement('button');accept.type='button';accept.textContent='Confirmer';
+        const finish=(answer)=>{dialog.close();dialog.remove();resolve(answer);};
+        cancel.addEventListener('click',()=>finish(false));accept.addEventListener('click',()=>finish(true));
+        dialog.addEventListener('cancel',(event)=>{event.preventDefault();finish(false);});
+        dialog.append(text,cancel,accept);document.body.append(dialog);dialog.showModal();
+      });
+    }
+    function localDateValue(value) {
+      const d = value ? new Date(/[Zz]|[+-]\d\d:\d\d$/.test(value) ? value : value.replace(' ', 'T') + 'Z') : new Date();
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}T${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    }
+    function periodEditor(user) {
+      const box = document.createElement('fieldset'); box.className='account-period-editor';
+      const title = document.createElement('legend'); title.textContent = 'Période d’accès'; box.append(title);
+      const permanent = document.createElement('input'); permanent.type = 'checkbox'; permanent.checked = !user.accessEndsAt;
+      const label = document.createElement('label'); label.append(permanent, document.createTextNode(' Accès permanent')); box.append(label);
+      const start = document.createElement('input'); start.type = 'datetime-local'; start.value = localDateValue(user.accessStartsAt); start.setAttribute('aria-label', `Début de l’accès de ${user.displayName}`);
+      const end = document.createElement('input'); end.type = 'datetime-local'; end.value = localDateValue(user.accessEndsAt || new Date(Date.now()+7*86400000).toISOString()); end.setAttribute('aria-label', `Fin de l’accès de ${user.displayName}`);
+      const zone = document.createElement('small'); zone.textContent = `Heure du navigateur : ${Intl.DateTimeFormat().resolvedOptions().timeZone}.`;
+      const save = document.createElement('button'); save.type='button'; save.textContent='Enregistrer la période';
+      const refresh=()=>{start.disabled=permanent.checked;end.disabled=permanent.checked;}; permanent.addEventListener('change',refresh);refresh();
+      save.addEventListener('click',async()=>{
+        let period;
+        try {period=permanent.checked?{startsAt:null,endsAt:null}:{startsAt:new Date(start.value).toISOString(),endsAt:new Date(end.value).toISOString()};}
+        catch {adminStatus.textContent='Indiquez deux dates valides.';return;}
+        if(!await confirmAccountAction(`Modifier la période d’accès de ${user.displayName} ?`))return;
+        save.disabled=true;
+        try {await mutation(`/api/v1/admin/organizations/${adminOrganizationId}/users/${user.id}/access-period`,'PATCH',period);await loadAdministration('Période enregistrée.');}
+        catch(error){adminStatus.textContent=`La période n’a pas été confirmée (${error.userMessage || error.message}).`;save.disabled=false;}
+      });
+      box.append(document.createElement('br'),start,end,zone,save);return box;
+    }
+    const createForm = document.getElementById('account-create-form');
+    const createMode = document.getElementById('account-create-mode');
+    function refreshCreatePeriod() {
+      const trial=createMode.value==='trial';document.getElementById('account-create-period').hidden=!trial;
+      for(const id of ['account-create-start','account-create-end'])document.getElementById(id).required=trial;
+      for(const field of document.querySelectorAll('#account-create-apps input')) {
+        field.disabled=trial&&!['rapport','rga'].includes(field.value);if(field.disabled)field.checked=false;
+      }
+    }
+    createMode.addEventListener('change',refreshCreatePeriod);
+    createForm.addEventListener('submit',async(event)=>{
+      event.preventDefault();const status=document.getElementById('account-create-status');
+      const selected=Array.from(document.querySelectorAll('#account-create-apps input:checked')).map(x=>x.value);
+      if(!selected.length){status.textContent='Sélectionnez au moins une application.';return;}
+      const body={displayName:document.getElementById('account-create-name').value.trim(),email:document.getElementById('account-create-email').value.trim(),applications:selected,startsAt:null,endsAt:null};
+      if(createMode.value==='trial') {
+        try{body.startsAt=new Date(document.getElementById('account-create-start').value).toISOString();body.endsAt=new Date(document.getElementById('account-create-end').value).toISOString();}
+        catch{status.textContent='Indiquez deux dates valides.';return;}
+      }
+      const period=body.endsAt?`du ${new Date(body.startsAt).toLocaleString()} au ${new Date(body.endsAt).toLocaleString()}`:'accès permanent';
+      if(!await confirmAccountAction(`Créer le compte ${body.displayName} (${body.email}) : ${selected.join(', ')}, ${period} ? Aucun mail ne sera envoyé par cette création.`))return;
+      const submit=document.getElementById('account-create-submit');submit.disabled=true;status.textContent='Création du compte…';
+      try{
+        await mutation(`/api/v1/admin/organizations/${adminOrganizationId}/accounts`,'POST',body);
+        document.getElementById('account-create-name').value='';document.getElementById('account-create-email').value='';
+        await loadAdministration('Compte créé sans envoi de mail. Vérifiez ses accès puis utilisez « Envoyer le lien d’activation ».');
+        status.textContent='Compte préparé. Aucun mail envoyé.';
+      }catch(error){status.textContent=`Création non confirmée (${error.userMessage || error.message}). Vérifiez la liste avant de réessayer.`;}
+      finally{submit.disabled=false;}
+    });
 
     function renderAdministration(snapshot, message = '') {
       const pending = snapshot.pendingIdentities || [];
       const users = snapshot.users || [];
       const applications = snapshot.applications || [];
+      document.getElementById('account-create-panel').hidden=!snapshot.accountCreationAvailable;
+      const appChoices=document.getElementById('account-create-apps');appChoices.replaceChildren();
+      for(const app of applications){const label=document.createElement('label');const field=document.createElement('input');field.type='checkbox';field.value=app.code;label.append(field,document.createTextNode(' '+app.name+' '));appChoices.append(label);}
+      document.getElementById('account-create-zone').textContent=`Dates en heure du navigateur : ${Intl.DateTimeFormat().resolvedOptions().timeZone}. Proposition initiale : sept jours.`;
+      if(!document.getElementById('account-create-start').value){document.getElementById('account-create-start').value=localDateValue();document.getElementById('account-create-end').value=localDateValue(new Date(Date.now()+7*86400000).toISOString());}
+      refreshCreatePeriod();
       adminOrganization.textContent = `${snapshot.organization.name} · votre rôle : ${adminRoleLabel(snapshot.actorRole)}`;
       adminPendingCount.textContent = String(pending.length);
       adminUsersCount.textContent = String(users.length);

@@ -5,10 +5,20 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-02
+updated: 2026-11-03
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 2026-11-03 — Parcours local de création et invitation
+
+Création sans mail, applications explicites, période individuelle, invitation séparée et confirmation accessible dans la page. Pont Drupal de création bloquée sans mot de passe, migration réversible et projection privée pour les deux sas. Tests de doublons, refus, périodes, sessions existantes et erreurs. Non livré ; qualification hébergée restante.
+
+
+## 2026-11-02 — Préparation du parcours des comptes
+
+Dossier de reprise, ordre de développement, points de code, critères P0 et procédure de qualification rédigés. Création administrative et durée individuelles non implémentées ; aucune invitation ou installation réalisée par cette préparation. [Point de départ](docs/reprise-administration-comptes.md).
+
 
 ## 2026-11-02 — RGA distincte, après retour du responsable
 

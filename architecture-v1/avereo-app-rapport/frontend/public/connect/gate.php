@@ -62,6 +62,16 @@ function avereo_gate_cookie_is_secure(array $config): bool
     return !avereo_gate_environment_is_local($config);
 }
 
+/** @param array<string, mixed> $config */
+function avereo_gate_portal(array $config): string
+{
+    $url = trim((string) ($config['connect_portal_url'] ?? ''));
+    if (!avereo_gate_portal_url_is_allowed($config, $url)) {
+        throw new RuntimeException('Le portail AVEREO CONNECT n est pas configure.');
+    }
+    return rtrim($url, '/');
+}
+
 /** @return array<string, mixed> */
 function avereo_gate_config(): array
 {
@@ -257,6 +267,47 @@ function avereo_gate_clear_cookie(array $config): void
 }
 
 /** @param array<string, mixed> $config */
+function avereo_gate_assert_trial_access(array $config, ?array $identity, ?int $now = null): void
+{
+    $path = trim((string) ($config['connect_trial_access_file'] ?? ''));
+    if ($path === '') {
+        return;
+    }
+    if ($identity === null || !preg_match('~^(?:/|[A-Za-z]:[\\\\/])~', $path)
+        || str_contains($path, '://') || !is_file($path) || !is_readable($path)
+        || filesize($path) > 65536) {
+        throw new RuntimeException('Politique d essai indisponible.');
+    }
+    $real = realpath($path);
+    $root = (string) ($_SERVER['DOCUMENT_ROOT'] ?? '');
+    $root = $root === '' ? false : realpath($root);
+    if ($real === false || ($root !== false
+        && str_starts_with(str_replace('\\', '/', $real), rtrim(str_replace('\\', '/', $root), '/') . '/'))) {
+        throw new RuntimeException('La politique d essai doit rester privee.');
+    }
+    $policy = json_decode((string) file_get_contents($real), true, 16, JSON_THROW_ON_ERROR);
+    if (!is_array($policy) || ($policy['version'] ?? null) !== 1
+        || !is_array($policy['accounts'] ?? null)) {
+        throw new RuntimeException('Politique d essai invalide.');
+    }
+    $identity = avereo_gate_normalize_identity($identity);
+    if (!array_key_exists($identity['id'], $policy['accounts'])) {
+        return;
+    }
+    $rule = $policy['accounts'][$identity['id']];
+    if (!is_array($rule) || ($rule['status'] ?? '') !== 'active'
+        || !is_int($rule['not_before'] ?? null) || !is_int($rule['not_after'] ?? null)
+        || $rule['not_before'] < 0 || $rule['not_after'] <= $rule['not_before']
+        || !is_array($rule['applications'] ?? null)
+        || !in_array(AVEREO_GATE_APP, $rule['applications'], true)) {
+        throw new RuntimeException('Essai non autorise.');
+    }
+    $now ??= time();
+    if ($now < $rule['not_before'] || $now >= $rule['not_after']) {
+        throw new RuntimeException('Essai hors periode autorisee.');
+    }
+}
+
 function avereo_gate_cookie_payload(array $config): array
 {
     $cookieName = (string) ($config['connect_gate_cookie'] ?? '');
@@ -265,6 +316,10 @@ function avereo_gate_cookie_payload(array $config): array
     avereo_gate_assert_payload(
         $payload,
         max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800))),
+    );
+    avereo_gate_assert_trial_access(
+        $config,
+        ($payload['v'] ?? null) === 2 ? avereo_gate_normalize_identity($payload['identity'] ?? null) : null,
     );
     return $payload;
 }
@@ -319,6 +374,7 @@ function avereo_gate_exchange_ticket(array $config, string $ticket): void
     $identity = array_key_exists('identity', $payload)
         ? avereo_gate_normalize_identity($payload['identity'])
         : null;
+    avereo_gate_assert_trial_access($config, $identity);
     avereo_gate_issue_cookie(
         $config,
         ($payload['remembered'] ?? false) === true,

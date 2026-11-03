@@ -5,10 +5,25 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-02
+updated: 2026-11-03
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 3 novembre — développement local en qualification
+
+Les quatre fonctions sont codées et contrôlées localement. Prochaines étapes : MariaDB et interface, PR/CI, sauvegarde/restauration du candidat exact, puis accord et installation/recette préproduction. Aucun compte nominatif créé ni mail envoyé. [Reprise](docs/reprise-administration-comptes.md).
+
+
+## Reprise du 3 novembre — préparation close
+
+Le responsable demande de préparer le développement et la mise en préproduction du parcours de compte avant la démo de 9 h 30. Priorité : création sans notification automatique, applications explicites, période d’essai et invitation séparée. Réinitialisation administrative d’un mot de passe existant en suite. [Ordre de travail et critères](docs/reprise-administration-comptes.md). Aucun démarrage automatique, candidat installé ou accès réel déduit de cette préparation.
+
+
+## Administration des comptes — cadrage à revoir
+
+Création administrative, invitation séparée, réinitialisation via Drupal et période d’essai sont cadrées dans le [parcours des comptes](docs/administration-comptes.md). L’envoi/renvoi d’activation existe pour les comptes provisionnés ; création et échéance pilotées par l’interface restent à développer et à qualifier.
+
 
 ## RGA distincte — préproduction
 
