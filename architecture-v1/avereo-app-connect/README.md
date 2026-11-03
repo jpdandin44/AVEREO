@@ -12,7 +12,7 @@ tags: [connect, documentation]
 
 ## Réinitialisation administrative — candidat local
 
-Bouton distinct pour envoyer le reset d’un compte déjà initialisé, confirmation du destinataire et résultat explicite. Le mot de passe reste géré par Drupal ; aucun reset réel, déploiement ou migration dans ce lot local. [Fonctionnement, preuves et livraison](docs/reinitialisation-mot-de-passe.md).
+Bouton distinct pour envoyer le reset d’un compte déjà initialisé, confirmation du destinataire et résultat explicite. Le mot de passe reste géré par Drupal ; runtime installé sur CONNECT et Identité préproduction après accord, sans migration. Réception SMTP et formulaire natif restant à qualifier. [Fonctionnement, preuves et livraison](docs/reinitialisation-mot-de-passe.md).
 
 
 ## Parcours des comptes — préproduction du 3 novembre

@@ -12,7 +12,7 @@ tags: [connect, comptes, essai]
 
 ## Reset administratif — nouveau candidat local
 
-Le reset d’un compte existant est développé dans un lot distinct du runtime déjà livré. [Bouton, protections et recette](reinitialisation-mot-de-passe.md). Tant que ce candidat n’est pas installé, l’administration hébergée conserve son comportement antérieur.
+Le reset d’un compte existant est livré en préproduction par le runtime 3ac6b66 de la PR #97. [Bouton, protections, preuves et limites de recette](reinitialisation-mot-de-passe.md).
 
 
 ## Préproduction technique du 3 novembre

@@ -14,7 +14,7 @@ tags: [connect, comptes, mot-de-passe, securite]
 
 ## État et parcours
 
-Candidat développé localement sur `feat/connect-password-reset`, fondé sur le parcours des comptes de la PR #96 déjà installé en préproduction. Le nouveau bouton n’est pas encore livré. Aucun reset réel envoyé pendant la préparation.
+Runtime `3ac6b66ccf681c30f825a3c071884205814ccc0e` de la PR #97 installé le 3 novembre 2026 sur CONNECT et Identité préproduction après accord explicite. Patch de neuf fichiers vérifié ; huit fichiers existants sauvegardés et restauration sur copie privée contrôlée par empreintes et permissions. Aucune migration ou livraison en production.
 
 Dans « Gérer les comptes », un compte actif dont l’initialisation est terminée présente « Envoyer la réinitialisation du mot de passe ». Une confirmation affiche le destinataire ; seul le serveur choisit son adresse, depuis le compte. Le bouton est désactivé pendant la demande. Le message final distingue envoi accepté et échec ; « envoyé » ne prouve pas la réception.
 
@@ -35,11 +35,11 @@ L’envoi seul ne change pas le mot de passe, les statuts, la date d’invitatio
 - Régressions : 38 backend, 38 administration, activation Drupal et 10 provisionnement.
 - L’interface locale utilise des adresses `example.invalid` et un transport fictif. La livraison SMTP et l’utilisation d’un véritable lien natif de reset restent à qualifier en préproduction sur une identité de recette. Ne pas qualifier le compte d’un utilisateur réel par substitution de mot de passe.
 
-## Préproduction et retour arrière à préparer
+## Préproduction et retour arrière
 
-Après accord sur le candidat exact : vérifier les empreintes et la version courante, sauvegarder les fichiers touchés, tester la restauration sur copie, puis installer le même patch sur CONNECT et son pont Identité préproduction. Aucun remplacement de `.htaccess`, configuration privée, sas Rapport/RGA, base ou dossier métier.
+Livraison du patch SHA-256 `5c5dce77a1d227102670dddc7e707a5ff01d423bcbf0199014dd2a1123852592`. Les neuf empreintes installées et les fichiers protégés ont été contrôlés. Les empreintes des tables CONNECT des comptes, adhésions, applications, organisations, habilitations et migrations sont identiques avant/après installation. Cache Drupal reconstruit. Aucun remplacement de `.htaccess`, configuration privée, sas Rapport/RGA, base ou dossier métier.
 
-Recette hébergée : compte fictif initialisé, bouton et destinataire, envoi contrôlé, réception, délai natif et lien, puis vérification du maintien des droits/périodes et du refus d’un second usage. La définition d’un mot de passe de compte réel reste à son titulaire. Retour arrière par les seuls fichiers sauvegardés, sans restaurer une base ni réinitialiser la politique d’essai.
+Recette hébergée exécutée : bouton visible sur les comptes initialisés ; confirmation du destinataire puis annulation sans envoi. Identité synthétique créée dans une transaction annulée : contrôleur installé, mail natif réellement construit avec livraison désactivée, présence du lien natif, délai configuré, refus UUID incorrect/rejeu/double demande rapprochée et identité conservée, huit contrôles réussis. La réception SMTP, l’envoi complet depuis le navigateur et l’usage du formulaire natif restent non vérifiés ; le résultat de transport a été simulé uniquement dans le processus de recette, sans changement de configuration globale. Aucun courrier à un utilisateur réel. La définition d’un mot de passe de compte réel reste à son titulaire. Retour arrière par les seuls fichiers sauvegardés, sans restaurer une base ni réinitialiser la politique d’essai.
 
 ## Les quatre phases
 
@@ -47,5 +47,5 @@ Recette hébergée : compte fictif initialisé, bouton et destinataire, envoi co
 | --- | --- |
 | Cadrage | Périmètre et critères établis |
 | Développement local | Implémentation et contrôles locaux ; candidat/CI dans le cockpit |
-| Préproduction | Installation non effectuée pour ce lot ; accord et recette hébergée requis |
+| Préproduction | Runtime installé ; restauration sur copie et recette partielle réussies ; réception SMTP et formulaire natif restant à qualifier |
 | Mise en production | Non autorisée |

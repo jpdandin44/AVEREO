@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 2026-11-03 — Livraison du reset
+
+Runtime 3ac6b66 installé sur CONNECT et Identité préproduction ; huit contrôles hébergés avec identité transactionnelle fictive et mail natif construit sans livraison. Première comparaison de l’entité complète trop stricte avant rechargement : recette affinée pour comparer les attributs persistants après rechargement ; aucun changement applicatif. Réception SMTP et formulaire natif restant à qualifier. [État détaillé](reinitialisation-mot-de-passe.md).
+
 ## 2026-11-03 — Reset distinct de l’activation
 
 Le bouton d’activation était masqué pour un compte initialisé ; il ne pouvait donc pas servir au reset. Le nouveau candidat ajoute une opération séparée, conserve les droits et les périodes, et utilise le mail natif Drupal. [Périmètre et contrôles](reinitialisation-mot-de-passe.md).

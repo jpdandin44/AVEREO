@@ -12,7 +12,7 @@ tags: [connect, documentation, preproduction]
 
 ## 2026-11-03 — Candidat du reset administratif
 
-Bouton, confirmation du destinataire, route protégée, mail natif Drupal et audit séparé ; tests de refus, transport, quota et conservation. Développé localement, non installé en préproduction pour ce lot. [État et limites](docs/reinitialisation-mot-de-passe.md).
+Bouton, confirmation du destinataire, route protégée, mail natif Drupal et audit séparé ; tests de refus, transport, quota et conservation. Runtime 3ac6b66 installé en préproduction après sauvegarde et restauration sur copie. Recette hébergée partielle réussie, réception SMTP et formulaire natif non qualifiés. [État et limites](docs/reinitialisation-mot-de-passe.md).
 
 
 ## 2026-11-03 — Préproduction après démonstration

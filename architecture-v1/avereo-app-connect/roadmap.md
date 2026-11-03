@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-03 — Qualification du reset en préproduction
+
+Runtime 3ac6b66 installé après accord explicite ; sauvegarde, restauration sur copie privée et huit contrôles du pont installé réussis. Bouton et annulation vérifiés en session administrateur. Réception SMTP et utilisation du formulaire natif à qualifier. [Preuves et limites](docs/reinitialisation-mot-de-passe.md).
+
 ## Reset administratif — développement local
 
 Bouton et service développés et contrôlés localement ; qualification SMTP/lien natif en préproduction après accord sur le candidat. Ne pas confondre avec le parcours de comptes déjà installé. [Procédure](docs/reinitialisation-mot-de-passe.md).
