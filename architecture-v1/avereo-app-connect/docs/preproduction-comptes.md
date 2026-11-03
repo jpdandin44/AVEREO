@@ -44,7 +44,7 @@ La génération locale produit un manifeste avec SHA source, arbre Git et emprei
 - `drupal/avereo_identity_bridge` : module et formulaire d'activation, sans tests ni configuration sensible.
 - `rapport/connect/gate.php` et `rapport/rga/connect-gate.php` : seulement les deux sas ; aucun remplacement des assets, cartes, dossiers ou paramètres de Rapport.
 
-La copie hébergée de `connect/public/.htaccess` contient le chemin de configuration privée et la protection HTTP de préproduction. **La conserver intégralement** : le fichier générique du paquet est exclu de la copie effective. Son empreinte avant/après doit rester identique ; le reçu distingue cette exception des fichiers applicatifs installés. La comparaison avant livraison conserve également le filtrage des applications disponibles dans le profil.
+La copie hébergée de `connect/public/.htaccess` contient le chemin de configuration privée et la protection HTTP de préproduction. **La conserver intégralement** : le fichier générique du paquet est exclu de la copie effective. Son empreinte avant/après doit rester identique ; le reçu distingue cette exception des fichiers applicatifs installés. Le profil liste les applications autorisées indépendamment de la disponibilité de leur sas, conformément au comportement et au contrôle de non-régression du candidat ; ne pas réintroduire le filtre historique `available`, qui masquait aussi des droits valides.
 
 Sont exclus : identités et cas réels, fixtures, tests, environnement local Docker, secrets, configurations privées, sessions, bases, fichiers de données et livrables Word. Le paquet ne lance pas le déploiement et n'inclut aucun secret de substitution.
 
