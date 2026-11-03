@@ -10,9 +10,17 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Connexion lisible et e-mail — préparation du 3 novembre
+
+Implémentation locale et recette native réussies sur Drupal 11.4.10, même version observée en préproduction. Préparer un patch de trois fichiers de module et l’opération ciblée de nom, puis faire autoriser la livraison exacte. Ensuite : vérifier avec le titulaire les deux connexions, le même compte CONNECT et ses applications. Aucun changement de production. [Périmètre](docs/connexion-identifiant-email.md).
+
+## 2026-11-03 — Retour de recette et langue des comptes
+
+Qualifier et livrer après accord le correctif local de langue du provisionnement. Examiner les identités existantes concernées avant toute réparation élargie. L’attente login lisible/e-mail est confirmée et couverte par le candidat local ; aucune modification automatique de toutes les identités.
+
 ## 2026-11-03 — Qualification du reset en préproduction
 
-Runtime 3ac6b66 installé après accord explicite ; sauvegarde, restauration sur copie privée et huit contrôles du pont installé réussis. Bouton et annulation vérifiés en session administrateur. Réception SMTP et utilisation du formulaire natif à qualifier. [Preuves et limites](docs/reinitialisation-mot-de-passe.md).
+Runtime 3ac6b66 installé après accord explicite ; sauvegarde, restauration sur copie privée et huit contrôles du pont installé réussis. Bouton et annulation vérifiés en session administrateur. La réception, la sauvegarde et une nouvelle connexion ont ensuite été vérifiées sur le compte personnel autorisé ; voir le retour de recette ci-dessus. [Preuves et limites](docs/reinitialisation-mot-de-passe.md).
 
 ## Reset administratif — développement local
 

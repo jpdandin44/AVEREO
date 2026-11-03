@@ -10,6 +10,14 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Connexion par login lisible ou adresse e-mail — attente confirmée
+
+Un libellé « login ou adresse mail » engage les deux possibilités. Le nom de profil CONNECT ne doit pas être présenté comme un login utilisable s’il ne correspond pas à l’identité. Le reset conserve les identifiants et l’identité existants. État hébergé : service natif limité au nom technique. Candidat local : résolution de l’e-mail par le formulaire, login natif lisible préparé pour le compte demandé, collisions refusées et validation native conservée. [Contrat et preuves](docs/connexion-identifiant-email.md). Aucun déploiement de ce candidat.
+
+## 2026-11-03 — Retour de recette et langue des comptes
+
+La langue de toute identité créée doit appartenir aux langues configurées dans Drupal. Utiliser la langue par défaut du site ; ne pas imposer une langue indisponible. Correction préparée localement le 3 novembre, non installée.
+
 ## Envoi administratif du reset
 
 Compte actif initialisé et adhésion active ; rôles et organisation contrôlés côté serveur, confirmation du destinataire, CSRF et HMAC, anti-rejeu et quota. Conservation du mot de passe courant, de la période et des droits lors de l’envoi ; succès transport distinct de la réception. [Critères et preuve](docs/reinitialisation-mot-de-passe.md).

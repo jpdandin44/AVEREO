@@ -102,6 +102,9 @@ jobs:
           php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/activation-flow.php
           php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/password-reset-flow.php
           php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/provisioning-flow.php
+          php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/login-identifier-flow.php
+          php -l architecture-v1/avereo-app-connect/integrations/drupal/operations/reconcile-login.php
+          python3 -c "import ast, pathlib; ast.parse(pathlib.Path('architecture-v1/avereo-app-connect/integrations/drupal/operations/install-login-language.py').read_text())"
           php architecture-v1/avereo-app-rapport/tests/connect-gate.php
           php architecture-v1/avereo-app-coupe/tests/connect-gate.php
           php architecture-v1/avereo-platform/tests/connect-gate.php

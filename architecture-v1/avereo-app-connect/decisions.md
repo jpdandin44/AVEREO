@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-03 — Résoudre l’e-mail avant la validation native
+
+Contexte : le profil CONNECT et le login Drupal technique sont distincts, et le formulaire natif ne retrouve pas un compte par e-mail. Décision : normaliser uniquement le champ identifiant du formulaire avant les validateurs existants, sans remplacer le service d’authentification. Pour le compte demandé, ajuster le nom natif via une opération privée ciblée, après collision et sauvegarde. Raisons : conserver mot de passe, anti-bruteforce, statut, UID/UUID et droits ; éviter un registre d’alias supplémentaire. Conséquences : aucun alias automatique depuis tous les noms affichés, refus des collisions et retour arrière portant sur le seul nom. Le provisionnement utilise la langue par défaut installée. [Détail](docs/connexion-identifiant-email.md).
+
 ## 2026-11-03 — Réutiliser le reset natif Drupal
 
 Contexte : l’administration n’expose que l’invitation initiale. Décision : une action distincte pour les comptes initialisés, via le pont signé existant et le mail natif Drupal. Raisons : éviter un deuxième système de jetons et conserver le mot de passe chez l’identité. Conséquences : quota et envoi audité, aucune migration ni prolongation des droits ; recette hébergée séparée. [Détail](docs/reinitialisation-mot-de-passe.md).
