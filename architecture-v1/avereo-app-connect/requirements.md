@@ -67,3 +67,7 @@ Le responsable confirme une tuile RGA distincte et l’accès depuis Rapport. Le
 Le [contrat OpenAPI](backend/api/openapi.yaml) et la
 [qualification C7](docs/production-readiness-c7.md) portent les détails existants.
 Runtime installé : `e76f3d77634bafb4056e3f753e31331bbaa613b2`. Recette technique et réserves dans [le parcours des comptes](docs/administration-comptes.md). Restent l’entrée HTTP nominative, l’invitation métier, sa réception et l’activation personnelle ; les dates définitives doivent suivre l’envoi effectif.
+
+## Alignement du cycle de vie des comptes
+
+Les droits hérités et le rôle administrateur d’un compte non propriétaire n’excluent pas son archivage. Le propriétaire conserve la responsabilité de son organisation. La restauration restitue les droits effectifs. La suppression respecte les identités utilisées dans Drupal et la conservation des dossiers Rapport. [Périmètre et conditions](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).

@@ -10,6 +10,14 @@ owner: jpdandin
 tags: [connect, comptes, essai]
 ---
 
+## Alignement des comptes non propriétaires — candidat local
+
+Le propriétaire peut agir sur les administrateurs, membres et lecteurs de sa seule organisation, avec droits hérités ou explicites, lorsque toutes leurs applications disposent de la révocation. Les rattachements multiples, propriétaires et applications non qualifiées restent protégés, avec un motif affiché. La restauration republie les droits calculés par le catalogue, y compris les attributions héritées et les refus individuels. Une session ouverte avant l’archivage ne redonne aucun accès après restauration.
+
+La suppression retire le compte CONNECT, après confirmation de l’adresse. Le pont supprime l’identité native uniquement lorsque CONNECT l’a créée, que l’UID et l’adresse concordent et qu’elle n’a aucun rôle Drupal propre. Une identité préexistante ou dotée d’un rôle Drupal est conservée. Elle peut demander un nouvel accès, qui nécessite une nouvelle approbation CONNECT et reçoit un autre identifiant. Un rattachement discordant ou une dépendance protégée est signalé. La case cochée par défaut s’applique aux dossiers serveur Rapport. Les données Passeport Immo restent sous l’ancien identifiant et demandent leur propre traitement.
+
+Pour intégrer Passeport Immo, configurer `connect_trial_access_file` dans sa configuration privée et qualifier le contrôle des tickets, pages, API et sessions préexistantes. Puis renseigner `ACCOUNT_LIFECYCLE_PASSEPORT_CONFIG` côté CONNECT avec le chemin canonique du même fichier de configuration, de la même cible et de la même politique que Rapport/RGA. Installer d’abord Passeport Immo et le pont Identité. La politique impose une nouvelle connexion aux anciennes sessions Passeport Immo qui ne portent aucune identité. Aucune nouvelle migration SQL. Avant retour arrière, inventorier les comptes archivés ou révoqués depuis la livraison et garantir leur blocage pendant la restauration.
+
 ## Cycle de vie des comptes — candidat du 4 novembre
 
 Dans **Gérer les comptes**, le propriétaire de l’organisation peut archiver et restaurer un compte membre ou lecteur à droits explicites, rattaché à cette seule organisation et limité à Rapport et RGA. Les comptes propriétaires, administrateurs, partagés, historiques à droits hérités ou associés à d’autres applications sont protégés. L’archivage conserve le compte, son adresse, ses droits et ses dossiers. Il coupe les sessions CONNECT, Rapport et RGA. Une restauration rétablit le statut précédent et exige une session nouvelle. La période d’essai conserve ses dates d’origine.

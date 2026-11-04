@@ -11,6 +11,7 @@ return [
     'connect_launch_max_seconds' => 300,
     'connect_gate_cookie' => 'AVEREO_PASSEPORT_IMMO_PREPROD_GATE',
     'connect_gate_session_seconds' => 1800,
+    'connect_trial_access_file' => '', // Same private policy as CONNECT once lifecycle is qualified.
     'storage_enabled' => false, // Activate only after schema, private directory and recovery checks.
     'storage_dsn' => 'mysql:host=localhost;dbname=CPANEL_USERNAME_pimpreprod;charset=utf8mb4',
     'storage_user' => '',

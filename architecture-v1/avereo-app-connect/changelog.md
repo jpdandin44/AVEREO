@@ -73,3 +73,7 @@ Reconnaissance des clés `APP_LAUNCH_PASSEPORT_IMMO_URL` et
 privée. Le contrôle des clés applicatives inclut les noms comportant un underscore.
 Socle documentaire complété avec références vers les contrats et procédures existants.
 Aucune migration, habilitation ou installation hébergée exécutée par ce lot.
+
+## 2026-11-04 — Cycle de vie des comptes à droits hérités
+
+Candidat local pour les comptes non propriétaires avec Rapport, RGA et Passeport Immo qualifié. Motifs d’indisponibilité affichés, droits hérités restaurés et suppression CONNECT dissociée de l’identité native lorsqu’elle doit être conservée.

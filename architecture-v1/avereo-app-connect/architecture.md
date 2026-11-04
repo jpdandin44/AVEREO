@@ -50,3 +50,7 @@ Le [sas applicatif](docs/application-gateway.md) émet un ticket HMAC court apr�
 vérification de l'identité et des droits. Chaque application consomme le nonce et
 crée sa session signée. La configuration reconnaît maintenant `passeport-immo`.
 Elle ne crée ni entrée de catalogue ni habilitation sur un serveur.
+
+## Projection d’accès des comptes archivés et restaurés
+
+CONNECT réutilise le catalogue effectif pour republier les droits d’un compte après restauration. Le fichier privé partagé est vérifié par Rapport, RGA et, lorsque configuré et qualifié, Passeport Immo. Le pont Identité retourne l’issue distincte « retained » pour une identité native que CONNECT doit conserver. [Règles d’administration](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).

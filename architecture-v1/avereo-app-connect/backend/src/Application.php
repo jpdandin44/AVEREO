@@ -563,7 +563,7 @@ final class Application
         }
 
         $status = $this->repository->findIdentityStatusByDrupalSubject($auth->drupalSubject) ?? 'pending';
-        $userId = $status === 'active'
+        $userId = $status === 'active' || $this->repository instanceof PdoConnectRepository
             ? $this->repository->findUserIdByDrupalSubject($auth->drupalSubject)
             : null;
 
@@ -572,7 +572,7 @@ final class Application
             return [AuthContext::anonymous(), null];
         }
         return [
-            new AuthContext($userId, $auth->authenticatedAt, $auth->drupalSubject, $auth->remembered),
+            new AuthContext($status === 'active' ? $userId : null, $auth->authenticatedAt, $auth->drupalSubject, $auth->remembered),
             $status,
         ];
     }

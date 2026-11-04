@@ -44,3 +44,7 @@ le sas commun, sans changer les autorisations du portail ni créer de catalogue.
 Raison : conserver le mécanisme HMAC et les contrôles métier des autres applications.
 Conséquence : configuration, compte de recette et habilitation hébergés restent à qualifier.
 Les accords humains restent dans les suivis canoniques, sans copie ici.
+
+## 2026-11-04 — Distinguer compte CONNECT et identité native
+
+Les comptes historiques peuvent utiliser une identité Drupal qui préexistait à CONNECT. Lors d’une suppression CONNECT, le pont préserve cette identité et ses rôles. Le contrôle UID/adresse protège la correspondance et la réponse du pont indique l’issue réelle. La confirmation distingue la conservation des dossiers Rapport et celle des données des autres applications. [Parcours et déploiement](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).

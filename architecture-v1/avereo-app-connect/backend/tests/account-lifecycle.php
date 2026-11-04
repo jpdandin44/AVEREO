@@ -48,13 +48,16 @@ try {
     $identity = new IdentityAccountDeletionClient('https://id.example.invalid/avereo/account/deletion', str_repeat('a', 32),
         static function ($body, $headers) use (&$deletions, &$fail): array {
             $input = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
+            if ($input['email'] === 'historical@example.invalid') {
+                return [200, '{"status":"retained"}'];
+            }
             if ($input['action'] === 'check') {
                 return [200, '{"status":"eligible"}'];
             }
             $deletions[] = $input['subject'];
             return $fail ? [503, '{}'] : [200, '{"status":"deleted"}'];
         });
-    $service = new AccountLifecycle($db, $admin, $policy, $identity, static fn() => $reports);
+    $service = new AccountLifecycle($db, $admin, $policy, $identity, static fn() => $reports, passeportPolicyReady: true);
     $app = new Application(new Config('test', false, null, '', '', 'TEST', 1800, 43200), $repo,
         accountAdministration: $admin, accountLifecycle: $service);
     $auth = new AuthContext(1, time(), 'owner');
@@ -84,7 +87,8 @@ try {
     expect($call('PATCH', $route($first), ['archived' => true], false)->status === 403, 'CSRF required');
     expect($call('PATCH', $route($first), ['archived' => true], who: new AuthContext(2, time(), 'member'))->status === 403, 'Member refused');
     expect($call('PATCH', $route(1), ['archived' => true])->status === 403, 'Owner protected');
-    expect($call('PATCH', $route($outside), ['archived' => true])->status === 403, 'Account with another application protected');
+    expect($call('PATCH', $route($outside), ['archived' => true])->payload['error']['code'] === 'ACCOUNT_LIFECYCLE_APP_NOT_READY',
+        'Account with an unqualified application protected');
     $now = time();
     expect($call('PATCH', $route($first), ['archived' => true])->status === 200, 'Archive succeeds');
     expect(!$repo->canLaunchApplication($first, 'rapport') && $repo->listCatalog($first) === [], 'Archived catalog and launch denied');
@@ -112,6 +116,54 @@ try {
     expect($call('DELETE', $route($second), ['confirmationEmail' => $otherEmail, 'keepReports' => false])->status === 200, 'Identical deletion request resumes');
     expect($reports->query("SELECT title FROM rapport_reports ORDER BY title")->fetchAll(PDO::FETCH_COLUMN) === ['Preserved','Unrelated'], 'Only the matching CONNECT owner dossiers were purged');
     expect((int) $db->query("SELECT COUNT(*) FROM audit_events WHERE action='user.delete'")->fetchColumn() === 2, 'Both completed deletions are audited');
+    $db->exec("INSERT INTO applications(id,code,name,launch_url,description,display_order,status)
+        VALUES(4,'passeport-immo','Passeport Immo','https://example.invalid/passeport','',4,'active')");
+    $db->exec("INSERT INTO entitlements(organization_id,application_id,status,granted_by_user_id) VALUES(7,4,'active',1)");
+    [$historical, $historicEmail, $historicSubject] = $prepare('historical');
+    $db->exec("UPDATE users SET application_access_mode='inherit' WHERE id=$historical");
+    $db->exec("INSERT INTO user_application_access(organization_id,user_id,application_id,status,granted_by_user_id)
+        VALUES(7,$historical,3,'revoked',1)");
+    $db->exec("UPDATE memberships SET role='viewer' WHERE user_id=$historical");
+    $unconfigured = new AccountLifecycle($db, $admin, $policy, $identity);
+    $unconfiguredSnapshot = $unconfigured->describe(1, $repo->getAccountAdministration(1, 7));
+    $blocked = array_values(array_filter($unconfiguredSnapshot['users'], static fn($user) => (int)$user['id'] === $historical))[0];
+    expect(!($blocked['canArchive'] ?? false) && str_contains($blocked['lifecycleUnavailableReason'], 'passeport-immo'),
+        'A missing Passeport policy shows the reason and blocks account lifecycle');
+    $historicApps = array_column($repo->listCatalog($historical), 'code');
+    expect($historicApps === ['rapport','rga','passeport-immo'], 'Historical viewer inherits Passeport Immo and keeps explicit denials');
+    $row->execute(['avereo_connect', (string) $historical, 'Historical dossier']);
+    $snapshot = $call('GET','/api/v1/admin/organizations/7/accounts')->payload['data'];
+    $historicalRow = array_values(array_filter($snapshot['users'], static fn($user) => (int)$user['id'] === $historical))[0];
+    expect($historicalRow['canArchive'] && $historicalRow['canDelete'], 'Historical account has lifecycle actions');
+    $oldSession = new AuthContext($historical, time(), $historicSubject);
+    expect($call('PATCH', $route($historical), ['archived'=>true])->status === 200
+        && !$repo->canLaunchApplication($historical, 'passeport-immo'), 'Archiving inherited access also blocks Passeport Immo');
+    expect($call('GET','/api/v1/session',who:$oldSession)->payload['data']['authenticated'] === false,
+        'The pre-archive session is immediately rejected by CONNECT');
+    expect($call('PATCH', str_replace('/lifecycle','/status',$route($historical)), ['status'=>'active'])->status === 409,
+        'Legacy status route cannot bypass an archived inherited account');
+    expect($call('PATCH', $route($historical), ['archived'=>false])->status === 200
+        && array_column($repo->listCatalog($historical), 'code') === $historicApps, 'Restore recovers original inherited rights');
+    $projection = json_decode(file_get_contents($file), true)['accounts'][(string) $historical];
+    expect($projection['applications'] === $historicApps && $projection['sessions_revoked_at'] >= $oldSession->authenticatedAt,
+        'Restored policy preserves inherited apps and revocation time');
+    expect($call('GET','/api/v1/session',who:$oldSession)->payload['data']['authenticated'] === false, 'Old historical CONNECT session stays blocked');
+    $beforeDeniedMutation = file_get_contents($file);
+    expect($call('PATCH', str_replace('/lifecycle','/status',$route($historical)), ['status'=>'disabled'],
+        who:new AuthContext(2,time(),'member'))->status === 403 && file_get_contents($file) === $beforeDeniedMutation,
+        'Unauthorized legacy mutation cannot revoke a restored inherited account');
+    $deleted = $call('DELETE', $route($historical), ['confirmationEmail'=>$historicEmail, 'keepReports'=>true]);
+    expect($deleted->status === 200 && $deleted->payload['data']['identityPreserved'] === true
+        && $repo->findUserIdByDrupalSubject($historicSubject) === null
+        && (int)$reports->query("SELECT COUNT(*) FROM rapport_reports WHERE title='Historical dossier'")->fetchColumn() === 1,
+        'Delete only CONNECT for a preexisting native identity and preserve its report');
+    [$adminTarget] = $prepare('admin-target');
+    $db->exec("UPDATE memberships SET role='admin' WHERE user_id=$adminTarget");
+    expect($call('PATCH', $route($adminTarget), ['archived'=>true])->status === 200, 'Owner can archive a non-owner administrator');
+    $db->exec("INSERT INTO organizations(id,name,slug,status) VALUES(8,'Autre organisation','other-test','active')");
+    $db->exec("INSERT INTO memberships(organization_id,user_id,role,status) VALUES(8,$adminTarget,'member','active')");
+    expect($call('PATCH', $route($adminTarget), ['archived'=>false])->payload['error']['code'] === 'ACCOUNT_LIFECYCLE_SHARED',
+        'An organization cannot affect a shared account');
     echo json_encode(['passed' => count($checks), 'checks' => $checks], JSON_THROW_ON_ERROR), PHP_EOL;
 } finally {
     foreach ([$file, $file . '.lock'] as $path) {

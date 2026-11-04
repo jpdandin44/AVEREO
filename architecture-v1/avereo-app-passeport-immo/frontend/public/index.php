@@ -14,7 +14,7 @@ if (!in_array($method, ['GET', 'HEAD'], true)) {
 $path = rawurldecode((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH));
 $asset = str_starts_with($path, '/assets/');
 $valid = avereo_gate_cookie_is_valid($config);
-if ($valid && !empty($config['storage_enabled'])) {
+if ($valid && (!empty($config['storage_enabled']) || !empty($config['connect_trial_access_file']))) {
     try { passeport_session($config); } catch (Throwable) { $valid = false; }
 }
 if (!$valid) {

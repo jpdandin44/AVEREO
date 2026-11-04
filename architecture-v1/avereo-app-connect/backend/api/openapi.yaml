@@ -660,7 +660,7 @@ paths:
       responses:
         '200': { description: État du compte appliqué }
         '403': { description: Compte protégé ou droits insuffisants }
-        '409': { description: Suppression en cours }
+        '409': { description: Suppression en cours, compte partagé ou application à qualifier }
         '422': { description: Corps de demande invalide }
         '503': { description: Gestion du cycle de vie indisponible }
     delete:
@@ -678,7 +678,22 @@ paths:
                 confirmationEmail: { type: string, format: email }
                 keepReports: { type: boolean }
       responses:
-        '200': { description: Compte supprimé et choix de conservation appliqué }
+        '200':
+          description: Compte CONNECT supprimé et choix de conservation des dossiers Rapport appliqué
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: object
+                    required: [id, deleted, reportsPreserved, identityPreserved]
+                    properties:
+                      id: { type: integer }
+                      deleted: { type: boolean }
+                      reportsPreserved: { type: boolean }
+                      identityPreserved: { type: boolean }
         '403': { description: Compte protégé ou droits insuffisants }
         '409': { description: Dépendance protégée ou choix de reprise différent }
         '422': { description: Confirmation invalide }
@@ -957,6 +972,10 @@ components:
           type: boolean
         canDelete:
           type: boolean
+        lifecycleUnavailableReason:
+          type: string
+        deleteUnavailableReason:
+          type: string
         canDeleteReports:
           type: boolean
         pendingDeletionKeepsReports:
