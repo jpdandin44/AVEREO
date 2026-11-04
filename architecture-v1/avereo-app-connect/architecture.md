@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Identifiant commun au provisionnement et à OIDC
+
+Le sujet de création est l'UID Drupal natif sous forme de chaîne, identique au sujet OIDC du fournisseur qualifié. Le pont signé d'invitation/reset vérifie le compte et accepte aussi son UUID historique exact, sans modifier le sujet de session ni les droits. Pas de nouvelle table, d'alias automatique ou de fusion par e-mail. [Flux, données conservées et qualification](docs/rattachement-identite.md).
+
+
 ## Résolution de l’identifiant de connexion — candidat local
 
 Le hook du seul formulaire `user_login_form` précède les validateurs natifs. `LoginIdentifierResolver` recherche le nom et, pour une adresse, l’e-mail ; une résolution unique fournit le nom Drupal, toute collision est refusée. Aucun mot de passe lu par ce résolveur, aucune authentification alternative ; statut, secret, flood et session restent natifs. L’opération privée de login lisible garde UID/UUID et les droits CONNECT. [Contrat et limites](docs/connexion-identifiant-email.md).

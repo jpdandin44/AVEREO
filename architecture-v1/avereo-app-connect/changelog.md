@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-03 — Correction du sujet des comptes créés et invités
+
+Le provisionnement et la connexion partagent le même sujet natif. L'invitation et le reset refusent un sujet discordant ; les anciens UUID exacts restent compatibles avec le pont signé. Aucun schéma SQL ni mot de passe modifié par le patch. La réconciliation éventuelle d'un compte existant reste ciblée et sauvegardée. [Périmètre et tests](docs/rattachement-identite.md).
+
+
 ## 2026-11-03 — Candidat login ou e-mail et langue
 
 Résolution d’une adresse unique vers le login natif avant les contrôles Drupal, libellé cohérent et 254 caractères. Opération privée de nom lisible avec sauvegarde et conservation de l’identité et du secret. Langue configurée au provisionnement. Tests ciblés et recette HTTP native locale réussis ; aucune livraison de ce lot. [Preuves et limites](docs/connexion-identifiant-email.md).

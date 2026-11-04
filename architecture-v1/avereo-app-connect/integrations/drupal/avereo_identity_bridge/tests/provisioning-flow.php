@@ -43,6 +43,7 @@ $last=null;
 $transport=function($url,$headers,$body) use($controller,&$last){$last=new Request($body,$headers);$r=$controller->provision($last);return ['status'=>$r->status,'body'=>json_encode($r->data)];};
 $client=new IdentityAccountProvisioningClient('https://identity.example.invalid/avereo/account/provision',$secret,$transport);
 $subject=$client->provision('client@example.invalid','Client test','request-1');
+checkProvision($subject === (string)$storage->accounts[1]->id(), 'provisioning subject equals native numeric OIDC identifier rather than UUID');
 checkProvision(count($storage->accounts)===1,'one blocked identity created');
 checkProvision($storage->lastFields['status']===0 && $storage->lastFields['pass']===null && !isset($storage->lastFields['roles']),'no password and no privileged role');
 checkProvision($storage->lastFields['langcode']==='en' && $storage->lastFields['preferred_langcode']==='en','identity uses configured English site language instead of unavailable French');
@@ -64,6 +65,15 @@ checkProvision($r->status===422 && count($storage->accounts)===1,'unknown privil
 \Drupal\Core\Controller\ControllerBase::$testDefaultLanguage='fr';
 $client->provision('french-site@example.invalid','Site francophone','french-site');
 checkProvision($storage->lastFields['langcode']==='fr' && $storage->lastFields['preferred_langcode']==='fr','identity uses French when it is the configured site language');
+foreach (['0','01','-1','1.0','12345678-1234-1234-1234-000000000001',44,null,'',str_repeat('9',20)] as $invalidSubject) {
+    $badClient=new IdentityAccountProvisioningClient('https://identity.example.invalid/avereo/account/provision',$secret,
+        static fn()=>['status'=>200,'body'=>json_encode(['status'=>'prepared','subject'=>$invalidSubject])]);
+    try {$badClient->provision('subject@example.invalid','Subject','subject-refusal');throw new RuntimeException('Invalid subject accepted');}
+    catch (\Avereo\Connect\Http\ApiException $e) {checkProvision($e->status===502,'non-canonical subject refused: '.json_encode($invalidSubject));}
+}
+$nativeClient=new IdentityAccountProvisioningClient('https://identity.example.invalid/avereo/account/provision',$secret,
+    static fn()=>['status'=>200,'body'=>json_encode(['status'=>'prepared','subject'=>'123'])]);
+checkProvision($nativeClient->provision('subject@example.invalid','Subject','subject-valid')==='123','native subject kept byte for byte');
 Settings::$values=[];checkProvision($controller->provision($bad)->status===503,'service disabled without private secret');
 echo json_encode(['passed'=>count($checks),'checks'=>$checks,'scope'=>'controller and signed client with in-memory Drupal test doubles; no mail'],JSON_UNESCAPED_UNICODE).PHP_EOL;
 }

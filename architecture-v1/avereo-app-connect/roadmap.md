@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Rattachement des invitations — lot du 3 novembre
+
+Corriger la création et l'invitation, puis qualifier le compte invité existant en préproduction sans le recréer. Le suivi canonique `connectSubjectInvitation20261103` porte version, preuves et état hébergé ; la fin de l'activation personnelle ne se déduit pas d'un test fictif. Production distincte. [Parcours et reprise](docs/rattachement-identite.md).
+
+
 ## Connexion lisible et e-mail — préparation du 3 novembre
 
 Implémentation locale et recette native réussies sur Drupal 11.4.10, même version observée en préproduction. Préparer un patch de trois fichiers de module et l’opération ciblée de nom, puis faire autoriser la livraison exacte. Ensuite : vérifier avec le titulaire les deux connexions, le même compte CONNECT et ses applications. Aucun changement de production. [Périmètre](docs/connexion-identifiant-email.md).
