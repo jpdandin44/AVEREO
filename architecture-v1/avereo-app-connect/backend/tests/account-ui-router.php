@@ -24,7 +24,7 @@ $identity=new class implements \Avereo\Connect\Identity\AccountIdentityProvision
             return '42';
         }
         if ($linkExisting) throw new \Avereo\Connect\Http\ApiException(409,'IDENTITY_LINK_UNAVAILABLE','Identité de recette introuvable.');
-        $h=hash('sha256',$email);return substr($h,0,8).'-'.substr($h,8,4).'-'.substr($h,12,4).'-'.substr($h,16,4).'-'.substr($h,20,12);
+        return (string)(1000 + hexdec(substr(hash('sha256',$email),0,12)));
     }
 };
 $notifier=new class implements \Avereo\Connect\Identity\AccountActivationNotifier, \Avereo\Connect\Identity\AccountPasswordResetNotifier {
@@ -38,6 +38,20 @@ $notifier=new class implements \Avereo\Connect\Identity\AccountActivationNotifie
     }
 };
 $repo=new \Avereo\Connect\Repository\PdoConnectRepository($pdo);
-$service=new \Avereo\Connect\Administration\AccountAdministration($pdo,$identity,new \Avereo\Connect\Administration\TrialPolicyStore($db.'.policy.json'));
-$app=new \Avereo\Connect\Application(new \Avereo\Connect\Config('local',true,null,'','','ACCOUNT_UI',1800,43200),$repo,null,null,$notifier,null,$service,$notifier);
+$policy=new \Avereo\Connect\Administration\TrialPolicyStore($db.'.policy.json');
+$service=new \Avereo\Connect\Administration\AccountAdministration($pdo,$identity,$policy);
+$reports = new PDO('sqlite:'.$db.'.reports', null, null, [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
+$reports->exec('CREATE TABLE IF NOT EXISTS rapport_reports (owner_provider TEXT, owner_id TEXT, title TEXT)');
+$deletion = new \Avereo\Connect\Identity\IdentityAccountDeletionClient(
+    'https://identity.example.invalid/delete', str_repeat('fixture-only-',4),
+    static function (string $body): array {
+        $request = json_decode($body, true, 8, JSON_THROW_ON_ERROR);
+        if (!str_ends_with($request['email'], '@example.invalid')) throw new RuntimeException('Fixture address required.');
+        $status = $request['subject'] === '42' ? 'retained' : ($request['action'] === 'check' ? 'eligible' : 'deleted');
+        return [200, json_encode(['status'=>$status], JSON_THROW_ON_ERROR)];
+    },
+);
+$lifecycle = new \Avereo\Connect\Administration\AccountLifecycle($pdo,$service,$policy,$deletion,static fn()=>$reports);
+$app=new \Avereo\Connect\Application(new \Avereo\Connect\Config('local',true,null,'','','ACCOUNT_UI',1800,43200),
+    $repo,null,null,$notifier,null,$service,$notifier,$lifecycle);
 $app->handle(\Avereo\Connect\Http\Request::fromGlobals(),new \Avereo\Connect\Security\AuthContext(1,time(),'owner'),'local-ui-csrf',static fn()=>null)->emit();

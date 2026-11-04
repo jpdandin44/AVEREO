@@ -16,7 +16,9 @@ Dans **Gérer les comptes**, créer le compte et sélectionner ses applications.
 
 Si une identité AVEREO existe déjà, CONNECT propose au propriétaire un rattachement explicite après une première tentative de création. L’identité doit être active, unique pour cette adresse, disposer d’un mot de passe et ne porter aucun rôle Drupal hors du périmètre qualifié. Le pont autorise les rôles `authenticated` et `utilisateur_rapport` et protège l’utilisateur système. Le nouveau compte CONNECT garde un identifiant distinct. Les anciennes sessions CONNECT sont révoquées et les dossiers conservés ne sont pas réattribués. Le mot de passe et les rôles AVEREO sont préservés. L’accès aux applications reste en attente d’activation, avec ou sans envoi immédiat.
 
-Ce parcours est un candidat local. Livrer le pont de provisionnement et le portail ensemble. La recette hébergée reste à faire sur des identités fictives, avec la conservation du mot de passe et des dossiers anciens, un envoi choisi, un envoi différé et un échec d’envoi simulé.
+Le contrôle de non-régression `python -X utf8 backend/tests/account-ui-lifecycle.py` utilise le même serveur que la revue locale. Il vérifie sur le même parcours la présence de la fiche et des actions, l’archivage, la restauration et les deux choix de suppression. Lors d’une revue de l’administration, vérifier ces actions sur un compte fictif créé depuis l’interface.
+
+La PR #103 est livrée en préproduction au commit `d04c3fb`. Le pont et le portail ont été livrés ensemble. La recette hébergée couvre la recréation et les actions de cycle de vie sur des identités fictives. Les choix d’envoi immédiat ou différé et l’échec simulé ont été vérifiés en recette locale.
 
 ## Alignement des comptes non propriétaires — candidat local
 

@@ -201,6 +201,7 @@ jobs:
           php tests/rga-registration.php
           php tests/account-administration-mysql.php
           php tests/account-lifecycle.php
+          python3 tests/account-ui-lifecycle.py
           ACCOUNT_ADMIN_MYSQL_TEMPORARY=true php tests/password-reset.php
           if APP_ENV=test LOCAL_DEMO_ENABLED=true php docker/local-fixtures.php; then
             echo "Local fixtures must be rejected outside APP_ENV=local" >&2
