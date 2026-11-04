@@ -5,10 +5,15 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-02
+updated: 2026-11-04
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 2026-11-04 — Finition des accès CONNECT
+
+Clarification locale du passage d’un essai en permanent avant attribution d’une autre application. [Parcours, contrôles et réserves](architecture-v1/avereo-app-connect/docs/administration-comptes.md#passer-un-compte-en-permanent-et-ajouter-une-application).
+
 
 ## 2026-11-02 — Candidat RGA CONNECT/Rapport
 

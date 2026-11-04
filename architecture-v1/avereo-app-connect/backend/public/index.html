@@ -734,7 +734,8 @@
           const checkbox = document.createElement('input');
           checkbox.type = 'checkbox';
           checkbox.checked = application.status === 'active';
-          checkbox.disabled = !user.canManageApplications;
+          const trialRestricted = Boolean(user.accessEndsAt) && !['rapport', 'rga'].includes(application.code);
+          checkbox.disabled = !user.canManageApplications || (trialRestricted && !checkbox.checked);
           checkbox.setAttribute(
             'aria-label',
             `${application.name} pour ${nameStrong.textContent}`
@@ -763,11 +764,11 @@
             } catch (error) {
               checkbox.checked = !checkbox.checked;
               checkbox.disabled = false;
-              adminStatus.textContent = `La mise à jour de l’application a échoué (${error.message}).`;
+              adminStatus.textContent = `La mise à jour de l’application a échoué (${error.userMessage || error.message}).`;
             }
           });
           const label = document.createElement('span');
-          label.textContent = application.name;
+          label.textContent = application.name + (trialRestricted ? ' — accès permanent requis' : '');
           option.append(checkbox, label);
           applicationList.append(option);
         }
@@ -778,6 +779,13 @@
         applicationAccess.append(applicationTitle, applicationList, notice);
       } else {
         applicationAccess.append(applicationTitle, applicationList);
+      }
+
+      if (user.accessEndsAt && user.canManageApplications) {
+        const notice = document.createElement('p');
+        notice.className = 'admin-help';
+        notice.textContent = 'L’accès temporaire enregistré est limité à Rapport et RGA. Pour ajouter une autre application, cochez « Accès permanent », puis cliquez sur « Enregistrer l’accès permanent ». Vous pourrez ensuite cocher l’application souhaitée.';
+        applicationAccess.append(notice);
       }
 
       if(user.accessEndsAt){const period=document.createElement('p');period.textContent=`Accès du ${formatAdminDate(user.accessStartsAt)} au ${formatAdminDate(user.accessEndsAt)}${Date.now()>=new Date(user.accessEndsAt.replace(' ','T')+'Z').getTime()?' — expiré':''}.`;information.append(period);}
@@ -870,18 +878,31 @@
       const start = document.createElement('input'); start.type = 'datetime-local'; start.value = localDateValue(user.accessStartsAt); start.setAttribute('aria-label', `Début de l’accès de ${user.displayName}`);
       const end = document.createElement('input'); end.type = 'datetime-local'; end.value = localDateValue(user.accessEndsAt || new Date(Date.now()+7*86400000).toISOString()); end.setAttribute('aria-label', `Fin de l’accès de ${user.displayName}`);
       const zone = document.createElement('small'); zone.textContent = `Heure du navigateur : ${Intl.DateTimeFormat().resolvedOptions().timeZone}.`;
-      const save = document.createElement('button'); save.type='button'; save.textContent='Enregistrer la période';
-      const refresh=()=>{start.disabled=permanent.checked;end.disabled=permanent.checked;}; permanent.addEventListener('change',refresh);refresh();
+      const save = document.createElement('button'); save.type='button';
+      const saved = { permanent: permanent.checked, start: start.value, end: end.value };
+      const periodState = document.createElement('p'); periodState.className = 'admin-help'; periodState.setAttribute('role', 'status');
+      const refresh = () => {
+        start.disabled = permanent.checked; end.disabled = permanent.checked;
+        const changed = permanent.checked !== saved.permanent || (!permanent.checked && (start.value !== saved.start || end.value !== saved.end));
+        save.textContent = permanent.checked ? 'Enregistrer l’accès permanent' : 'Enregistrer la période';
+        periodState.textContent = changed
+          ? (permanent.checked ? 'Modification non enregistrée : cliquez sur « Enregistrer l’accès permanent » pour supprimer la date de fin et pouvoir ajouter d’autres applications.' : 'Modification non enregistrée : cliquez sur « Enregistrer la période » pour appliquer ces dates.')
+          : (saved.permanent ? 'Accès permanent enregistré.' : 'Accès temporaire enregistré. Les dates ci-dessous restent appliquées jusqu’à l’enregistrement d’une modification.');
+      };
+      permanent.addEventListener('change', refresh); start.addEventListener('input', refresh); end.addEventListener('input', refresh); refresh();
       save.addEventListener('click',async()=>{
         let period;
         try {period=permanent.checked?{startsAt:null,endsAt:null}:{startsAt:new Date(start.value).toISOString(),endsAt:new Date(end.value).toISOString()};}
         catch {adminStatus.textContent='Indiquez deux dates valides.';return;}
-        if(!await confirmAccountAction(`Modifier la période d’accès de ${user.displayName} ?`))return;
+        const confirmation = permanent.checked
+          ? `Enregistrer l’accès permanent de ${user.displayName} ? La date de fin sera supprimée. Les applications autorisées restent inchangées ; vous pourrez ensuite en ajouter.`
+          : `Modifier la période d’accès de ${user.displayName} ?`;
+        if(!await confirmAccountAction(confirmation))return;
         save.disabled=true;
-        try {await mutation(`/api/v1/admin/organizations/${adminOrganizationId}/users/${user.id}/access-period`,'PATCH',period);await loadAdministration('Période enregistrée.');}
+        try {await mutation(`/api/v1/admin/organizations/${adminOrganizationId}/users/${user.id}/access-period`,'PATCH',period);await loadAdministration(permanent.checked ? 'Accès permanent enregistré. Vous pouvez maintenant ajouter les applications souhaitées.' : 'Période enregistrée.');}
         catch(error){adminStatus.textContent=`La période n’a pas été confirmée (${error.userMessage || error.message}).`;save.disabled=false;}
       });
-      box.append(document.createElement('br'),start,end,zone,save);return box;
+      box.append(periodState,document.createElement('br'),start,end,zone,save);return box;
     }
     const createForm = document.getElementById('account-create-form');
     const createMode = document.getElementById('account-create-mode');

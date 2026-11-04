@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-04 — Clarification des accès après un essai
+
+Candidat local : distinguer la sélection du mode permanent de son enregistrement, expliquer les cases temporairement indisponibles et afficher les erreurs métier. Recette locale du passage en permanent puis ajout de Passeport Immo, avec rechargement et contrôle natif des droits. [Preuves](data/verification-acces-permanent.json). Aucun compte réel ni déploiement modifié.
+
+
 ## 2026-11-04 — Cycle de vie des comptes
 
 Actions d’archivage et de restauration, suppression définitive confirmée et conservation optionnelle des dossiers serveur Rapport. La version est préparée pour revue locale. [Procédure et limites](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).

@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 2026-11-04 — Enregistrement du mode permanent
+
+Modification ciblée de `backend/public/index.html` : état sélectionné/enregistré, confirmation explicite, motif de blocage pendant l’essai et message métier des erreurs. Le backend d’autorisation, le schéma et les règles d’essai restent identiques. Le test natif `backend/tests/account-administration.php` couvre le passage en permanent puis l’attribution, la persistance et la révocation de Passeport Immo. [Parcours et limites](administration-comptes.md#passer-un-compte-en-permanent-et-ajouter-une-application).
+
+
 ## 2026-11-04 — Administration du cycle de vie
 
 Le portail PHP, son API, sa projection d’accès et le pont Drupal portent le candidat. La source d’interface reste backend/public/index.html. Les sas Rapport et RGA utilisent la date de révocation et les écritures Rapport prennent le verrou de politique. [Périmètre et procédure](administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).

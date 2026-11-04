@@ -10,6 +10,17 @@ owner: jpdandin
 tags: [connect, comptes, essai]
 ---
 
+## Passer un compte en permanent et ajouter une application
+
+La période et les applications sont deux réglages distincts. Cocher **Accès permanent** prépare une modification ; celle-ci devient effective après **Enregistrer l’accès permanent**, confirmation et réponse du serveur. Le message **Modification non enregistrée** reste visible tant que cette étape n’a pas réussi. Annuler la confirmation conserve la période enregistrée.
+
+Pendant un essai, seuls Rapport et RGA sont attribuables. Les autres cases non cochées indiquent **accès permanent requis**. Après confirmation du mode permanent, CONNECT recharge la fiche : la mention **Accès permanent enregistré** apparaît et les applications supplémentaires du catalogue deviennent sélectionnables. Cocher ensuite Passeport Immo enregistre son droit séparément. Le passage en permanent ne donne aucune application automatiquement.
+
+Le défaut signalé le 4 novembre concerne une fiche dont le serveur conservait une fin d’essai malgré la sélection locale du mode permanent. La lecture de préproduction n’a modifié aucun compte. La correction locale clarifie l’enregistrement et affiche le message métier du serveur en cas d’échec. Aucune règle serveur, migration, identité ou durée réelle n’est modifiée par ce candidat.
+
+La recette locale utilise un compte fictif sur MariaDB : sélection non enregistrée, annulation, enregistrement permanent, ajout de Passeport Immo et rechargement. Le test natif couvre aussi le refus pendant l’essai, les droits administrateur, CSRF, la révocation et la conservation de Rapport. [Preuves et limites](../data/verification-acces-permanent.json).
+
+
 ## Recréer un compte dont l’identité AVEREO existe
 
 Dans **Gérer les comptes**, créer le compte et sélectionner ses applications. L’option **Envoyer l’invitation après la création** est décochée par défaut. La fiche apparaît dès que CONNECT confirme la création. Si l’envoi est choisi puis échoue, la fiche reste visible et permet une nouvelle tentative. Sans envoi, l’administrateur dispose de **Envoyer le lien d’activation** sur la fiche.
@@ -20,7 +31,7 @@ Le contrôle de non-régression `python -X utf8 backend/tests/account-ui-lifecyc
 
 La PR #103 est livrée en préproduction au commit `d04c3fb`. Le pont et le portail ont été livrés ensemble. La recette hébergée couvre la recréation et les actions de cycle de vie sur des identités fictives. Les choix d’envoi immédiat ou différé et l’échec simulé ont été vérifiés en recette locale.
 
-## Alignement des comptes non propriétaires — candidat local
+## Alignement des comptes non propriétaires — préproduction
 
 Le propriétaire peut agir sur les administrateurs, membres et lecteurs de sa seule organisation, avec droits hérités ou explicites, lorsque toutes leurs applications disposent de la révocation. Les rattachements multiples, propriétaires et applications non qualifiées restent protégés, avec un motif affiché. La restauration republie les droits calculés par le catalogue, y compris les attributions héritées et les refus individuels. Une session ouverte avant l’archivage ne redonne aucun accès après restauration.
 
@@ -29,6 +40,8 @@ La suppression retire le compte CONNECT, après confirmation de l’adresse. Le 
 Pour intégrer Passeport Immo, configurer `connect_trial_access_file` dans sa configuration privée et qualifier le contrôle des tickets, pages, API et sessions préexistantes. Puis renseigner `ACCOUNT_LIFECYCLE_PASSEPORT_CONFIG` côté CONNECT avec le chemin canonique du même fichier de configuration, de la même cible et de la même politique que Rapport/RGA. Installer d’abord Passeport Immo et le pont Identité. La politique impose une nouvelle connexion aux anciennes sessions Passeport Immo qui ne portent aucune identité. Aucune nouvelle migration SQL. Avant retour arrière, inventorier les comptes archivés ou révoqués depuis la livraison et garantir leur blocage pendant la restauration.
 
 ## Cycle de vie des comptes — candidat du 4 novembre
+
+Cette section conserve le périmètre initial de la PR #101. L’extension aux comptes hérités décrite ci-dessus a ensuite été livrée par la PR #102 ; la PR #103 ajoute le rattachement explicite. Les exclusions initiales ci-dessous sont historiques lorsqu’elles sont remplacées par cet alignement.
 
 Dans **Gérer les comptes**, le propriétaire de l’organisation peut archiver et restaurer un compte membre ou lecteur à droits explicites, rattaché à cette seule organisation et limité à Rapport et RGA. Les comptes propriétaires, administrateurs, partagés, historiques à droits hérités ou associés à d’autres applications sont protégés. L’archivage conserve le compte, son adresse, ses droits et ses dossiers. Il coupe les sessions CONNECT, Rapport et RGA. Une restauration rétablit le statut précédent et exige une session nouvelle. La période d’essai conserve ses dates d’origine.
 

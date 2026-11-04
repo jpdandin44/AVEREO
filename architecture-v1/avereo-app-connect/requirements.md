@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Enregistrement du mode permanent et attribution des applications
+
+L’administration doit distinguer le mode sélectionné du mode réellement enregistré. Une conversion d’essai en permanent exige une confirmation explicite, puis une réponse serveur réussie avant d’autoriser la sélection d’applications supplémentaires. L’annulation conserve la période. Le mode permanent ne donne aucun droit automatiquement. L’interface explique la limite Rapport/RGA d’un essai et présente le message métier des erreurs. Les contrôles de rôle, organisation, CSRF et catalogue restent applicables. [Parcours](docs/administration-comptes.md#passer-un-compte-en-permanent-et-ajouter-une-application).
+
+
 ## Cycle de vie des comptes
 
 Le propriétaire peut archiver et restaurer un compte membre éligible. La suppression définitive requiert la confirmation explicite de son adresse et le choix sur les dossiers Rapport. Le choix par défaut est la conservation. Les reprises conservent ce choix et l’identité ciblée. [Périmètre](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).

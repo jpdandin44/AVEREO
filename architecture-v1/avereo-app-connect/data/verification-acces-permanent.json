@@ -1,0 +1,60 @@
+{
+  "project": "avereo-connect",
+  "document_type": "verification",
+  "owner": "jpdandin",
+  "observedOn": "2026-11-04",
+  "baselineSha": "f0ce2998eef5980198f0fcf3b5aee821566bdf81",
+  "branch": "feat/connect-v1-finition-20261104",
+  "status": "local_verified_not_deployed",
+  "runtimeFiles": [
+    {
+      "path": "backend/public/index.html",
+      "sha256": "ae375c0dbbfb8b9b4310d1af8dc28baddea4ec2b69464bfdf0cf03d18d591817"
+    }
+  ],
+  "hostedReadOnly": {
+    "installedPr103FilesMatch": 5,
+    "catalogApplications": 7,
+    "passeportImmoActive": true,
+    "reportedAccountStillTemporary": true,
+    "accountChanged": false,
+    "scope": "CONNECT preproduction; file hashes, catalog and reported account period only"
+  },
+  "checks": {
+    "nativeMariaDB": {
+      "version": "11.4.13",
+      "passed": 57,
+      "temporaryTablesOnly": true,
+      "persistentTablesUnchanged": true,
+      "migrationRollback": "passed"
+    },
+    "connectCore": 38,
+    "accountLifecycle": 36,
+    "localHttpLifecycle": "passed",
+    "phpSyntax": "passed"
+  },
+  "browser": {
+    "url": "http://127.0.0.1:8101/",
+    "database": "isolated local MariaDB",
+    "identities": "fictitious example.invalid only",
+    "checks": [
+      "trial limitation visible",
+      "unsaved permanent choice explained",
+      "cancel keeps stored trial",
+      "explicit permanent confirmation",
+      "server confirms saved permanent mode",
+      "Passeport checkbox enabled",
+      "Passeport grant confirmed",
+      "permanent mode and grant persist after reload"
+    ],
+    "harness": "Private derivative of account-ui-router.php connected to disposable local MariaDB; identity and mail fixtures unchanged; localhost binding only"
+  },
+  "limitations": [
+    "No hosted UI recipe of this candidate",
+    "No real account changed",
+    "No invitation or password reset sent",
+    "No application launch to real Passeport during browser recipe",
+    "Production and public opening require their own qualified versions and approvals"
+  ],
+  "executionNote": "Windows lifecycle invocation first missed the SQLite extension path; rerun successfully in the existing PHP test image. No runtime dependency changed."
+}
