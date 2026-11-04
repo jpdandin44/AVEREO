@@ -44,10 +44,21 @@ try {
     $verify($send('delete', $uid, $email, signed: false) === 403, 'Unsigned deletion rejected');
     $verify($send('delete', $uid, $email, 121) === 403, 'Expired signature rejected');
     $verify($send('delete', '1', $email) === 409, 'Native administrator protected');
-    $verify($send('delete', $uid, $email) === 409, 'Identity not provisioned by CONNECT protected');
+    $verify($send('delete', $uid, $email) === 200 && $storage->load($uid) !== null,
+        'Preexisting identity is retained by a successful CONNECT unlink');
     Drupal::service('user.data')->set('avereo_identity_bridge', $uid, 'created_by_connect', true);
     $verify($send('delete', $uid, 'other@example.invalid') === 409, 'Email mismatch rejected');
     $verify($send('check', $uid, $email) === 200 && $storage->load($uid) !== null, 'Eligibility check leaves identity intact');
+    $roleId = 'lc_' . bin2hex(random_bytes(4));
+    $role = Drupal::entityTypeManager()->getStorage('user_role')->create(['id'=>$roleId,'label'=>'Lifecycle fixture']);
+    $role->save();
+    $account->addRole($roleId);
+    $account->save();
+    $verify($send('delete', $uid, $email) === 200 && $storage->load($uid) !== null,
+        'A CONNECT-provisioned identity with an additional Drupal role is retained');
+    $account->removeRole($roleId);
+    $account->save();
+
 
     $cache->set('avereo_identity_bridge:activation_account:' . $uid, 'fixture-token-' . $uid);
     $cache->set('avereo_identity_bridge:activation_token:fixture-token-' . $uid, ['uid' => $uid]);

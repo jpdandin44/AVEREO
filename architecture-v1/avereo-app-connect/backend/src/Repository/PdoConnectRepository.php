@@ -127,6 +127,16 @@ final class PdoConnectRepository implements ConnectRepository
 
     public function listCatalog(int $userId): array
     {
+        return $this->applicationCatalog($userId, true);
+    }
+
+    public function listLifecycleApplications(int $userId, bool $includeUpcoming = false): array
+    {
+        return array_column($this->applicationCatalog($userId, false, $includeUpcoming), 'code');
+    }
+
+    private function applicationCatalog(int $userId, bool $availableNow, bool $includeUpcoming = false): array
+    {
         $statement = $this->pdo->prepare(
             'SELECT DISTINCT a.code, a.name, a.description, a.display_order AS displayOrder '
             . 'FROM users u '
@@ -136,12 +146,14 @@ final class PdoConnectRepository implements ConnectRepository
             . 'INNER JOIN applications a ON a.id = e.application_id AND a.status = \'active\' '
             . 'LEFT JOIN user_application_access ua ON ua.organization_id = o.id '
             . 'AND ua.user_id = u.id AND ua.application_id = a.id '
-            . 'WHERE u.id = :user_id AND u.status = \'active\' '
-            . 'AND u.onboarding_status = \'completed\' '
+            . 'WHERE u.id = :user_id '
             . 'AND ((ua.status IS NULL AND u.application_access_mode = \'inherit\') OR ua.status = \'active\') '
-            . 'AND (u.access_starts_at IS NULL OR u.access_starts_at <= UTC_TIMESTAMP(6)) '
-            . 'AND (u.access_ends_at IS NULL OR u.access_ends_at > UTC_TIMESTAMP(6)) '
-            . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
+            . ($availableNow
+                ? 'AND u.status = \'active\' AND u.onboarding_status = \'completed\' '
+                    . 'AND (u.access_starts_at IS NULL OR u.access_starts_at <= UTC_TIMESTAMP(6)) '
+                    . 'AND (u.access_ends_at IS NULL OR u.access_ends_at > UTC_TIMESTAMP(6)) '
+                : '')
+            . ($includeUpcoming ? '' : 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) ')
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
             . 'ORDER BY a.display_order, a.name, a.code',
         );
@@ -807,7 +819,7 @@ final class PdoConnectRepository implements ConnectRepository
             $this->pdo->beginTransaction();
             $targetStatement = $this->pdo->prepare(
                 'SELECT u.id, u.email_normalized AS email, u.display_name AS displayName, '
-                . 'u.status, m.role FROM memberships m INNER JOIN users u ON u.id = m.user_id '
+                . 'u.status, u.archived_from_status, m.role FROM memberships m INNER JOIN users u ON u.id = m.user_id '
                 . 'WHERE m.organization_id = :organization_id AND u.id = :user_id FOR UPDATE',
             );
             $targetStatement->execute([
@@ -817,6 +829,10 @@ final class PdoConnectRepository implements ConnectRepository
             $target = $targetStatement->fetch();
             if (!is_array($target)) {
                 throw new ApiException(404, 'USER_NOT_FOUND', 'Le compte est introuvable dans cette organisation.');
+            }
+
+            if ($target['archived_from_status'] !== null) {
+                throw new ApiException(409, 'ACCOUNT_ARCHIVED', 'Restaurez le compte depuis son action dédiée.');
             }
 
             if (($target['role'] ?? null) === 'owner' && $status !== 'active') {

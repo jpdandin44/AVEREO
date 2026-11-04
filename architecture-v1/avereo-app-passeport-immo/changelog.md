@@ -5,7 +5,7 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-04
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -358,3 +358,7 @@ Archive du candidat documentaire contrôlée et préparation fermée créée sé
 option de destination de préparation ajoutée. Rapport et preuves du suivi actualisés,
 avec prérequis CONNECT et limites d’origine navigateur explicites. Les décisions
 humaines et assets sont conservés ; aucune installation hébergée.
+
+## 2026-11-04 — Révocation CONNECT
+
+Candidat local de vérification de la politique d’accès sur les tickets et sessions Passeport Immo. [Intégration et configuration](docs/02-integration-connect.md#cycle-de-vie-connect--candidat-local).

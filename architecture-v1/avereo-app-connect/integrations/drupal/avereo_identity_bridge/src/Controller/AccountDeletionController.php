@@ -30,7 +30,7 @@ final class AccountDeletionController
         $subject = $input['subject'] ?? null;
         $email = $input['email'] ?? null;
         if (!is_array($input) || count($input) !== 3 || !in_array($action, ['check', 'delete'], true)
-            || !is_string($subject) || preg_match('/^[1-9][0-9]{0,18}$/D', $subject) !== 1 || $subject === '1'
+            || !is_string($subject) || preg_match('/^[1-9][0-9]{0,18}$/D', $subject) !== 1
             || !is_string($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return $this->respond('protected', 409);
         }
@@ -51,10 +51,12 @@ final class AccountDeletionController
             }
             if (!$account instanceof UserInterface
                 || !hash_equals($email, strtolower((string) $account->getEmail()))
-                || count($storage->loadByProperties(['mail' => $email])) !== 1
-                || array_diff($account->getRoles(), ['authenticated']) !== []
-                || !in_array(\Drupal::service('user.data')->get('avereo_identity_bridge', $subject, 'created_by_connect'), [true, 1, '1'], true)) {
+                || count($storage->loadByProperties(['mail' => $email])) !== 1) {
                 return $this->respond('protected', 409);
+            }
+            if ($subject === '1' || array_diff($account->getRoles(), ['authenticated']) !== []
+                || !in_array(\Drupal::service('user.data')->get('avereo_identity_bridge', $subject, 'created_by_connect'), [true, 1, '1'], true)) {
+                return $this->respond('retained', 200);
             }
             if ($action === 'check') {
                 return $this->respond('eligible', 200);

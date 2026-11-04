@@ -5,7 +5,7 @@ use Avereo\Connect\Config;
 use Avereo\Connect\Security\AppLaunchTicketIssuer;
 
 const AVEREO_GATE_APP = 'passeport-immo';
-require dirname(__DIR__) . '/frontend/public/connect/gate.php';
+require dirname(__DIR__) . '/frontend/public/connect/session.php';
 require dirname(__DIR__, 2) . '/avereo-app-connect/backend/src/autoload.php';
 
 $count = 0;
@@ -58,8 +58,32 @@ try {
     verify(!avereo_gate_cookie_is_valid($settings), 'Session altérée refusée.');
     verify(avereo_gate_portal(['connect_portal_url' => 'https://connect-preprod.avereo.fr/']) === 'https://connect-preprod.avereo.fr', 'Portail préproduction.');
     denied(fn() => avereo_gate_portal(['connect_portal_url' => 'https://example.invalid/']));
+    $policy = $folder . DIRECTORY_SEPARATOR . 'policy.json';
+    $scoped = $settings + ['connect_trial_access_file' => $policy];
+    $rule = ['status'=>'active','not_before'=>0,'not_after'=>PHP_INT_MAX,'applications'=>['passeport-immo']];
+    $write = static fn(array $value) => file_put_contents($policy, json_encode(['version'=>1,'accounts'=>['42'=>$value]], JSON_THROW_ON_ERROR));
+    $write($rule);
+    $_COOKIE['PASSEPORT_TEST'] = signedPayload($payload, $secret);
+    verify(passeport_identity(passeport_session($scoped)) === 'avereo_connect:42', 'Session Passeport autorisée avant archivage.');
+    $unconsumed = signedPayload(array_replace($payload, ['nonce'=>avereo_gate_base64url_encode(random_bytes(24))]), $secret);
+    $write(array_replace($rule,['status'=>'revoked']));
+    denied(fn() => passeport_session($scoped));
+    denied(fn() => passeport_exchange($scoped, $unconsumed));
+    $write($rule + ['sessions_revoked_at'=>$payload['iat']]);
+    denied(fn() => passeport_session($scoped));
+    denied(fn() => passeport_exchange($scoped, $unconsumed));
+    $new = array_replace($payload,['iat'=>$payload['iat']+1,'exp'=>$payload['iat']+120]);
+    $_COOKIE['PASSEPORT_TEST'] = signedPayload($new, $secret);
+    verify(passeport_session($scoped)['iat'] === $new['iat'], 'Nouvelle session acceptée après restauration.');
+    $new['identity']['id'] = '43';
+    $_COOKIE['PASSEPORT_TEST'] = signedPayload($new, $secret);
+    verify(passeport_session($scoped)['identity']['id'] === '43', 'Autre compte non impacté.');
+    unlink($policy);
+    denied(fn() => passeport_session($scoped));
+
 } finally {
     foreach (glob($folder . DIRECTORY_SEPARATOR . '*.used') ?: [] as $file) unlink($file);
+    if (is_file($folder . DIRECTORY_SEPARATOR . 'policy.json')) unlink($folder . DIRECTORY_SEPARATOR . 'policy.json');
     if (is_dir($folder)) rmdir($folder);
     putenv('APP_LAUNCH_PASSEPORT_IMMO_URL'); putenv('APP_LAUNCH_PASSEPORT_IMMO_SECRET');
     unset($_COOKIE['PASSEPORT_TEST']);

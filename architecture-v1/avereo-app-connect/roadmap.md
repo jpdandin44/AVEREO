@@ -72,3 +72,7 @@ la vérification authentifiée du portail installé, puis paramètres dédiés,
 catalogue et droits ciblés, avec accords applicables et recette réelle.
 La déclaration du responsable de mise en préproduction est une entrée de contrôle,
 pas une preuve de version ou de parcours de cette nouvelle application.
+
+## Alignement des comptes non propriétaires
+
+Qualifier le candidat local en préproduction avec des profils hérités et explicites, puis étendre la révocation aux applications qui ne lisent pas encore la politique. Traiter séparément les comptes rattachés à plusieurs organisations et la gestion des dossiers hors Rapport. [Parcours et périmètre](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).

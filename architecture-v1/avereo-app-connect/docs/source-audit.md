@@ -246,3 +246,7 @@ préproduction avant production.
 Le runtime `e76f3d77634bafb4056e3f753e31331bbaa613b2` a été installé sur les seules préproductions CONNECT/Rapport/RGA et identité auth-next, après go et restauration de contrôle. La recette a identifié puis corrigé le Reply-To dupliqué, la représentation chaîne des marqueurs Drupal et l’injection nommée de `form_state`. Les contrôles de dossiers/expiration et de formulaire public sont conservés dans le suivi privé. Les comptes fictifs sont suspendus, leurs dossiers retirés et les données initiales Rapport inchangées.
 
 Après conservation du fichier HTTP lors de la livraison, le responsable a demandé de préparer aussi une entrée nominative : seul le fichier d’utilisateurs de CONNECT a été isolé par copie des utilisateurs existants, sans changer le fichier partagé ni supprimer la protection. La saisie du secret et l’invitation métier restent en attente. [État opérationnel](administration-comptes.md).
+
+## 2026-11-04 — Élargissement du cycle de vie
+
+Les contrôles des comptes historiques sont exercés par le moteur CONNECT et le pont Identité. La configuration Passeport Immo est une condition du périmètre éligible. [Référence](administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).

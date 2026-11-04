@@ -52,7 +52,7 @@ try {
             'SUPPORT_EMAIL',
             'IDENTITY_ACCOUNT_PROVISIONING_URL', 'IDENTITY_ACCOUNT_PROVISIONING_SECRET', 'TRIAL_ACCESS_POLICY_FILE',
             'ACCOUNT_LIFECYCLE_ENABLED', 'IDENTITY_ACCOUNT_DELETION_URL', 'IDENTITY_ACCOUNT_DELETION_SECRET',
-            'ACCOUNT_LIFECYCLE_REPORT_CONFIG',
+            'ACCOUNT_LIFECYCLE_REPORT_CONFIG', 'ACCOUNT_LIFECYCLE_PASSEPORT_CONFIG',
             'APP_LAUNCH_RAPPORT_URL', 'APP_LAUNCH_RAPPORT_SECRET',
             'APP_LAUNCH_RGA_URL', 'APP_LAUNCH_RGA_SECRET',
             'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET',
@@ -150,8 +150,20 @@ try {
                     $rapport['db_user'], $rapport['db_password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION],
                 );
             };
+            $passeportReady = false;
+            $passeportPath = trim((string) getenv('ACCOUNT_LIFECYCLE_PASSEPORT_CONFIG'));
+            if ($passeportPath !== '' && is_file($passeportPath) && realpath($passeportPath) === $passeportPath
+                && realpath($documentRoot) !== false
+                && !str_starts_with($passeportPath, realpath($documentRoot) . DIRECTORY_SEPARATOR)) {
+                $passeport = require $passeportPath;
+                $passeportReady = is_array($passeport)
+                    && ($passeport['environment'] ?? null) === $config->environment
+                    && ($passeport['connect_trial_access_file'] ?? null) === $trialPolicy
+                    && rtrim((string) ($passeport['connect_portal_url'] ?? ''), '/')
+                        === preg_replace('~/api/v1/auth/callback$~', '', $config->oauthRedirectUri);
+            }
             $accountLifecycle = new \Avereo\Connect\Administration\AccountLifecycle(
-                $pdo, $accountAdministration, $policyStore, $identityDeletion, $reports,
+                $pdo, $accountAdministration, $policyStore, $identityDeletion, $reports, $passeportReady,
             );
         }
     }

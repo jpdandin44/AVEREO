@@ -25,12 +25,12 @@ final class IdentityAccountDeletionClient
         $this->request('check', $subject, $email);
     }
 
-    public function delete(string $subject, string $email): void
+    public function delete(string $subject, string $email): string
     {
-        $this->request('delete', $subject, $email);
+        return $this->request('delete', $subject, $email);
     }
 
-    private function request(string $action, string $subject, string $email): void
+    private function request(string $action, string $subject, string $email): string
     {
         if (preg_match('/^[1-9][0-9]{0,18}$/D', $subject) !== 1) {
             throw new ApiException(409, 'IDENTITY_DELETION_PROTECTED', 'Identité historique non éligible à cette suppression.');
@@ -55,8 +55,10 @@ final class IdentityAccountDeletionClient
         if ($status === 409) {
             throw new ApiException(409, 'IDENTITY_DELETION_PROTECTED', 'Identité externe, privilégiée ou discordante.');
         }
-        if ($status !== 200 || (json_decode((string) $response, true)['status'] ?? null) !== ($action === 'check' ? 'eligible' : 'deleted')) {
+        $outcome = json_decode((string) $response, true)['status'] ?? null;
+        if ($status !== 200 || !in_array($outcome, ['retained', $action === 'check' ? 'eligible' : 'deleted'], true)) {
             throw new ApiException(503, 'IDENTITY_DELETION_UNAVAILABLE', 'La suppression n’a pas été confirmée par Identité.');
         }
+        return $outcome;
     }
 }

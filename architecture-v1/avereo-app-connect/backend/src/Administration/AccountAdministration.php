@@ -4,6 +4,7 @@ namespace Avereo\Connect\Administration;
 
 use Avereo\Connect\Http\ApiException;
 use Avereo\Connect\Identity\AccountIdentityProvisioner;
+use Avereo\Connect\Repository\PdoConnectRepository;
 
 final class AccountAdministration
 {
@@ -64,15 +65,23 @@ final class AccountAdministration
     }
 
     /** Deny before mutation. On any failure leave the projection denied, never falsely open access. */
-    public function synchronize(int $id,callable $operation,?callable $before=null): mixed
+    public function synchronize(int $id, callable $operation, ?callable $before = null, bool $lifecycle = false): mixed
     {
-        return $this->policy->locked(function() use($id,$operation,$before) {
-            $s=$this->pdo->prepare('SELECT application_access_mode FROM users WHERE id=?');$s->execute([$id]);
-            $explicit=$s->fetchColumn()==='explicit';
-            if($explicit && $before!==null)$before();
-            if($explicit)$this->policy->deny($id);
-            $result=$operation();
-            if($explicit)$this->publish($id);
+        return $this->policy->locked(function () use ($id, $operation, $before, $lifecycle) {
+            $query = $this->pdo->prepare('SELECT application_access_mode, archived_from_status, sessions_revoked_at FROM users WHERE id=?');
+            $query->execute([$id]);
+            $user = $query->fetch(\PDO::FETCH_ASSOC);
+            if (!$lifecycle && ($user['archived_from_status'] ?? null) !== null) {
+                throw new ApiException(409, 'ACCOUNT_ARCHIVED', 'Restaurez le compte depuis son action dédiée.');
+            }
+            $explicit = ($user['application_access_mode'] ?? null) === 'explicit';
+            $denyBefore = $lifecycle || $explicit;
+            if ($denyBefore && $before !== null) $before();
+            if ($denyBefore) $this->policy->deny($id);
+            $result = $operation();
+            // Legacy mutations authorize in the repository. An unauthorized call
+            // must not revoke a previously restored inherited account.
+            if ($denyBefore || (int) ($user['sessions_revoked_at'] ?? 0) > 0) $this->publish($id);
             return $result;
         });
     }
@@ -81,12 +90,12 @@ final class AccountAdministration
     {
         $s=$this->pdo->prepare('SELECT status,onboarding_status,access_starts_at,access_ends_at,sessions_revoked_at FROM users WHERE id=?');$s->execute([$id]);$u=$s->fetch(\PDO::FETCH_ASSOC);
         if(!$u)throw new \RuntimeException('Compte indisponible pour publication.');
-        $s=$this->pdo->prepare("SELECT DISTINCT a.code FROM user_application_access ua INNER JOIN memberships m ON m.user_id=ua.user_id AND m.organization_id=ua.organization_id AND m.status='active' INNER JOIN organizations o ON o.id=m.organization_id AND o.status='active' INNER JOIN entitlements e ON e.organization_id=m.organization_id AND e.application_id=ua.application_id AND e.status='active' INNER JOIN applications a ON a.id=ua.application_id AND a.status='active' WHERE ua.user_id=? AND ua.status='active' AND (e.valid_from IS NULL OR e.valid_from<=UTC_TIMESTAMP(6)) AND (e.valid_to IS NULL OR e.valid_to>UTC_TIMESTAMP(6))");$s->execute([$id]);
+        $applications = (new PdoConnectRepository($this->pdo))->listLifecycleApplications($id);
         $this->policy->set($id,['status'=>$u['status']==='active' && $u['onboarding_status']==='completed'?'active':'revoked',
             'not_before'=>$u['access_starts_at']===null?0:(new \DateTimeImmutable($u['access_starts_at'],new \DateTimeZone('UTC')))->getTimestamp(),
             'not_after'=>$u['access_ends_at']===null?PHP_INT_MAX:(new \DateTimeImmutable($u['access_ends_at'],new \DateTimeZone('UTC')))->getTimestamp(),
             'sessions_revoked_at'=>(int) $u['sessions_revoked_at'],
-            'applications'=>$s->fetchAll(\PDO::FETCH_COLUMN)]);
+            'applications'=>$applications]);
     }
 
     public function authorize(int $actor,int $organization,?int $target=null,bool $allowArchived=false): void
