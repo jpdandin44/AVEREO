@@ -790,6 +790,7 @@
         const dialog = document.createElement('dialog');
         dialog.setAttribute('aria-label', 'Supprimer définitivement le compte');
         const form = document.createElement('form');
+        form.className = 'dialog-content';
         const intro = document.createElement('p');
         intro.textContent = 'Supprimer définitivement le compte ' + user.email + ' dans CONNECT et Identité. Cette action est irréversible.';
         const keepReports = document.createElement('input');
@@ -832,7 +833,10 @@
           event.preventDefault();
           if (valid()) finish({ confirmationEmail: email.value, keepReports: keepReports.checked });
         });
-        form.append(intro, keepLabel, consequences, emailLabel, document.createElement('p'), cancel, submit);
+        const actions = document.createElement('div');
+        actions.className = 'dialog-actions';
+        actions.append(cancel, submit);
+        form.append(intro, keepLabel, consequences, emailLabel, actions);
         dialog.append(form);
         document.body.append(dialog);
         dialog.showModal();
