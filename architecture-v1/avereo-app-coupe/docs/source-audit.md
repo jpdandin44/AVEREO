@@ -1,3 +1,20 @@
+---
+project: avereo-app-coupe
+document_type: reference
+title: source-audit
+status: active
+version: git
+created: 2026-11-04
+updated: 2026-11-04
+owner: jpdandin
+tags: [avereo, acces, documentation]
+---
+
+
+## 4 novembre 2026 — Période CONNECT
+
+Le sas dédié relit la politique privée configurée avant émission de session et à chaque lecture de cookie. Les points d’entrée/API existants utilisent ce contrôle. Le contenu métier, les projets et les migrations restent inchangés. [Contrat et preuve locale](../../avereo-app-connect/docs/acces-temporaires-applications.md).
+
 ﻿# Audit source - Coupe AVEREO Reno Pro
 
 ## Source

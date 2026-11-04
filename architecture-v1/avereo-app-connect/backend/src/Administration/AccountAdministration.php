@@ -23,7 +23,6 @@ final class AccountAdministration
         $linkExisting = $input['linkExisting'] ?? false;
         if (array_key_exists('linkExisting', $input) && !is_bool($input['linkExisting'])) $this->invalid('Confirmez explicitement le rattachement.');
         [$start,$end]=$this->period($input);
-        if ($end!==null && array_diff($apps,['rapport','rga'])!==[]) $this->invalid('L’essai temporaire est disponible pour Rapport et RGA.');
         return $this->policy->locked(function() use($actor,$organization,$email,$name,$apps,$start,$end,$requestId,$linkExisting) {
             $role = $this->authorize($actor,$organization);
             if ($linkExisting && $role !== 'owner') {
@@ -70,10 +69,6 @@ final class AccountAdministration
         [$start,$end]=$this->period($input);
         return $this->synchronize($id,function() use($actor,$organization,$id,$start,$end,$requestId) {
             $this->authorize($actor,$organization,$id);
-            if ($end!==null) {
-                $s=$this->pdo->prepare("SELECT a.code FROM user_application_access ua INNER JOIN applications a ON a.id=ua.application_id WHERE ua.user_id=? AND ua.status='active' AND a.code NOT IN ('rapport','rga')");$s->execute([$id]);
-                if($s->fetchColumn()!==false) $this->invalid('Retirez les autres applications avant de définir un essai Rapport/RGA.');
-            }
             $s=$this->pdo->prepare("UPDATE users SET access_starts_at=?,access_ends_at=? WHERE id=? AND application_access_mode='explicit'");$s->execute([$start,$end,$id]);
             $this->audit($actor,$organization,$id,'user.access_period.update',$requestId);
             return ['id'=>$id,'startsAt'=>$start,'endsAt'=>$end];
@@ -131,8 +126,6 @@ final class AccountAdministration
     public function authorizeApplication(int $actor,int $organization,int $id,string $app,string $status):void
     {
         $this->authorize($actor,$organization,$id);
-        $s=$this->pdo->prepare('SELECT access_ends_at FROM users WHERE id=?');$s->execute([$id]);
-        if($s->fetchColumn()!==null && $status==='active' && !in_array($app,['rapport','rga'],true))$this->invalid('L’essai temporaire est limité à Rapport et RGA.');
     }
 
     private function period(array $input): array

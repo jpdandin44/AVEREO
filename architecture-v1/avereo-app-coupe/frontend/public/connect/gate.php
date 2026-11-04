@@ -73,6 +73,7 @@ function avereo_gate_config(): array
         'connect_launch_max_seconds' => 300,
         'connect_gate_cookie' => 'AVEREO_COUPE_GATE',
         'connect_gate_session_seconds' => 1800,
+        'connect_trial_access_file' => '',
     ], $fileConfig);
 }
 
@@ -235,7 +236,46 @@ function avereo_gate_cookie_payload(array $config): array
         $payload,
         max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800))),
     );
+    avereo_gate_assert_account_access($config, $payload);
     return $payload;
+}
+
+/** Re-read CONNECT's private account policy on every protected request. */
+function avereo_gate_assert_account_access(array $config, array $payload): void
+{
+    $path = trim((string) ($config['connect_trial_access_file'] ?? ''));
+    if ($path === '') return;
+    $identity = $payload['identity'] ?? null;
+    if (!is_array($identity) || ($identity['provider'] ?? null) !== 'avereo_connect'
+        || !is_string($identity['id'] ?? null)
+        || !preg_match('/^[1-9][0-9]{0,18}$/D', $identity['id'])) {
+        throw new RuntimeException('Identité CONNECT requise.');
+    }
+    $real = realpath($path);
+    $public = realpath((string) ($_SERVER['DOCUMENT_ROOT'] ?? dirname(__DIR__)));
+    if ($real === false || !is_file($real) || !is_readable($real)
+        || ($public !== false && str_starts_with(str_replace('\\', '/', $real), rtrim(str_replace('\\', '/', $public), '/') . '/'))) {
+        throw new RuntimeException('Politique CONNECT privée indisponible.');
+    }
+    $raw = file_get_contents($real, false, null, 0, 65537);
+    if ($raw === false || strlen($raw) > 65536) throw new RuntimeException('Politique CONNECT indisponible.');
+    $policy = json_decode($raw, true, 16, JSON_THROW_ON_ERROR);
+    if (!is_array($policy) || ($policy['version'] ?? null) !== 1 || !is_array($policy['accounts'] ?? null)) {
+        throw new RuntimeException('Politique CONNECT invalide.');
+    }
+    // Historical inherited accounts are still authorized by their signed ticket.
+    if (!array_key_exists($identity['id'], $policy['accounts'])) return;
+    $rule = $policy['accounts'][$identity['id']];
+    $now = time();
+    if (!is_array($rule) || ($rule['status'] ?? null) !== 'active'
+        || !is_int($rule['not_before'] ?? null) || !is_int($rule['not_after'] ?? null)
+        || $rule['not_before'] < 0 || $rule['not_after'] <= $rule['not_before']
+        || $now < $rule['not_before'] || $now >= $rule['not_after']
+        || !is_array($rule['applications'] ?? null)
+        || !in_array(AVEREO_GATE_APP, $rule['applications'], true)
+        || $payload['iat'] <= ($rule['sessions_revoked_at'] ?? 0)) {
+        throw new RuntimeException('Accès CONNECT révoqué ou hors période.');
+    }
 }
 
 /** @param array<string, mixed> $config */
@@ -294,6 +334,7 @@ function avereo_gate_exchange_ticket(array $config, string $ticket): void
     $maxLifetime = max(30, min(300, (int) ($config['connect_launch_max_seconds'] ?? 300)));
     $payload = avereo_gate_decode_signed($ticket, $secret);
     avereo_gate_assert_payload($payload, $maxLifetime);
+    avereo_gate_assert_account_access($config, $payload);
     avereo_gate_consume_nonce($config, (string) $payload['nonce'], (int) $payload['exp']);
     $identity = array_key_exists('identity', $payload)
         ? avereo_gate_normalize_identity($payload['identity'])

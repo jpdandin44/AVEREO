@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+
+## 4 novembre 2026 — Applications en accès temporaire
+
+Candidat : choix de toute application du catalogue sans modifier début/fin ; contrôles de période étendus aux sas partagé et Coupe, avec tests natifs et HTTP. Aucune migration, donnée réelle ou installation hébergée. [Contrat](docs/acces-temporaires-applications.md).
+
 ## 2026-11-04 — Clarification des accès après un essai
 
 Candidat local : distinguer la sélection du mode permanent de son enregistrement, expliquer les cases temporairement indisponibles et afficher les erreurs métier. Recette locale du passage en permanent puis ajout de Passeport Immo, avec rechargement et contrôle natif des droits. [Preuves](data/verification-acces-permanent.json). Aucun compte réel ni déploiement modifié.

@@ -10,5 +10,7 @@ return [
     'connect_launch_max_seconds' => 300,
     'connect_gate_cookie' => 'AVEREO_APPLICATION_PREPROD_GATE',
     'connect_gate_session_seconds' => 1800,
+    // Required for temporary accounts: same private policy as CONNECT on this target.
+    'connect_trial_access_file' => '/home/CPANEL_USERNAME/private/connect-preprod/trial-access.json',
 ];
 

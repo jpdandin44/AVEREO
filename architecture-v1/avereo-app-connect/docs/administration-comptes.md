@@ -12,14 +12,9 @@ tags: [connect, comptes, essai]
 
 ## Passer un compte en permanent et ajouter une application
 
-La période et les applications sont deux réglages distincts. Cocher **Accès permanent** prépare une modification ; celle-ci devient effective après **Enregistrer l’accès permanent**, confirmation et réponse du serveur. Le message **Modification non enregistrée** reste visible tant que cette étape n’a pas réussi. Annuler la confirmation conserve la période enregistrée.
+La période et les applications sont indépendantes. Le [candidat des accès temporaires](acces-temporaires-applications.md) permet d’ajouter une application sans supprimer les dates. Cocher **Accès permanent** reste une modification distincte, effective après **Enregistrer l’accès permanent**, confirmation et réponse du serveur ; l’annulation conserve la période.
 
-Pendant un essai, seuls Rapport et RGA sont attribuables. Les autres cases non cochées indiquent **accès permanent requis**. Après confirmation du mode permanent, CONNECT recharge la fiche : la mention **Accès permanent enregistré** apparaît et les applications supplémentaires du catalogue deviennent sélectionnables. Cocher ensuite Passeport Immo enregistre son droit séparément. Le passage en permanent ne donne aucune application automatiquement.
-
-Le défaut signalé le 4 novembre concerne une fiche dont le serveur conservait une fin d’essai malgré la sélection locale du mode permanent. La lecture de préproduction n’a modifié aucun compte. La correction locale clarifie l’enregistrement et affiche le message métier du serveur en cas d’échec. Aucune règle serveur, migration, identité ou durée réelle n’est modifiée par ce candidat.
-
-La recette locale utilise un compte fictif sur MariaDB : sélection non enregistrée, annulation, enregistrement permanent, ajout de Passeport Immo et rechargement. Le test natif couvre aussi le refus pendant l’essai, les droits administrateur, CSRF, la révocation et la conservation de Rapport. [Preuves et limites](../data/verification-acces-permanent.json).
-
+La PR #105, livrée en préproduction, rendait explicite l’ancienne restriction Rapport/RGA. Cette règle est remplacée par la demande du responsable ; la disponibilité hébergée de la nouvelle règle dépend de l’installation coordonnée du candidat.
 
 ## Recréer un compte dont l’identité AVEREO existe
 
@@ -80,7 +75,7 @@ Paramètres privés CONNECT : `IDENTITY_ACCOUNT_PROVISIONING_URL`, `IDENTITY_ACC
 
 Avant la première activation du dispositif, initialiser la projection privée vide `{"version":1,"accounts":{}}` **uniquement après vérification qu’aucun compte explicite ne préexiste**. Si des comptes existent, reconstruire la projection complète depuis la base sous contrôle avant ouverture. Le code ne recrée jamais automatiquement une projection absente : une liste incomplète pourrait laisser passer un ancien compte devenu inconnu de la politique. Les règles expirées ne sont pas supprimées tant que des cookies peuvent subsister.
 
-Un verrou privé sérialise les mutations et la publication. Un compte explicite est refusé dans les applications avant sa mutation, puis sa politique est publiée après succès ; une erreur le laisse refusé, avec reprise administrative nécessaire. Les contrôles d’autorisation précèdent cette fermeture pour empêcher une requête illégitime de bloquer un autre compte. La fin de période est exclusive et contrôlée sur les cookies déjà ouverts. Les sessions des autres applications ne sont pas qualifiées par ce mécanisme ; c’est la raison de la limite de l’essai Rapport/RGA.
+Un verrou privé sérialise les mutations et la publication. Un compte explicite est refusé dans les applications avant sa mutation, puis sa politique est publiée après succès ; une erreur le laisse refusé, avec reprise administrative nécessaire. Les contrôles d’autorisation précèdent cette fermeture pour empêcher une requête illégitime de bloquer un autre compte. La fin de période est exclusive et contrôlée sur les cookies déjà ouverts. La limite initiale de l’essai Rapport/RGA provenait de la qualification des sessions. Son extension locale et ses conditions de livraison sont décrites dans le [lot courant](acces-temporaires-applications.md).
 
 Contrôles locaux : 38 vérifications sur service, routes et projection avec SQLite ; 10 vérifications du client signé et contrôleur Drupal sur doubles de test ; 38 contrôles CONNECT historiques et test d’activation existant réussis. La qualification MariaDB, le Drupal hébergé et le transport mail réel restent séparés. Le contrôle intermédiaire sur MariaDB 11.4.13 a passé 36 vérifications et le retour arrière de la migration sur des tables temporaires, sans changement des tables persistantes. La CI du runtime installé est réussie ; les contrôles de l’étape locale ci-dessus restent des preuves distinctes. [Préparation de livraison et conditions de reprise](preproduction-comptes.md). La recette locale n’utilise que des identités `example.invalid`, sans e-mail réel. Le compte de l’essai métier n’est pas créé par ces tests.
 

@@ -10,10 +10,9 @@ owner: jpdandin
 tags: [connect, documentation]
 ---
 
-## Ajouter une application après un essai
+## Choisir les applications d’un compte temporaire
 
-Dans la fiche du compte, cocher **Accès permanent**, cliquer sur **Enregistrer l’accès permanent**, puis confirmer. Attendre la confirmation d’enregistrement avant de cocher une application supplémentaire, par exemple Passeport Immo. La période et les applications sont deux réglages enregistrés séparément. Le [parcours de gestion des accès](docs/administration-comptes.md#passer-un-compte-en-permanent-et-ajouter-une-application) précise les états affichés. Cette clarification est un candidat local, pas une livraison hébergée.
-
+Le candidat permet de choisir les applications indépendamment de la durée. Les dates de **Période d’accès** sont conservées lors d’une attribution. [Règles, qualification et installation coordonnée](docs/acces-temporaires-applications.md). La préproduction conserve la PR #105 tant que ce nouveau lot n’est pas livré.
 
 ## Première connexion — invitation AVEREO
 
@@ -45,7 +44,7 @@ Bouton distinct pour envoyer le reset d’un compte déjà initialisé, confirma
 
 ## Création des comptes — comportement installé
 
-Création sans notification automatique, applications explicites, période et invitation séparée sont implémentées dans le portail PHP. Essai temporaire limité à Rapport/RGA. Migration et paramètres privés installés ; envoi d’invitation métier enregistré dans le suivi privé. [Fonctionnement et réserves](docs/administration-comptes.md).
+Création sans notification automatique, applications explicites, période et invitation séparée sont implémentées dans le portail PHP. La restriction initiale Rapport/RGA reste celle du runtime hébergé précédent ; le [candidat courant](docs/acces-temporaires-applications.md) la remplace après installation coordonnée. Migration et paramètres privés installés ; envoi d’invitation métier enregistré dans le suivi privé. [Fonctionnement et réserves](docs/administration-comptes.md).
 
 
 ## Historique — préparation avant la démonstration

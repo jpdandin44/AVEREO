@@ -388,6 +388,7 @@ paths:
                 displayName: {type: string, minLength: 1, maxLength: 191}
                 applications:
                   type: array
+                  description: Applications disponibles choisies explicitement, en accès temporaire ou permanent. Leur sélection ne modifie pas la période du compte.
                   minItems: 1
                   maxItems: 32
                   uniqueItems: true

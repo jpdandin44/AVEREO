@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
+
+## 4 novembre 2026 — Applications indépendantes de la durée CONNECT
+
+Candidat local : sélection d’applications en temporaire et respect de la période existante, contrôles des sessions concernés et socles documentaires du socle partagé/Coupe complétés. [Périmètre et qualification](architecture-v1/avereo-app-connect/docs/acces-temporaires-applications.md).
+
 ## 2026-11-04 — Finition des accès CONNECT
 
 Clarification locale du passage d’un essai en permanent avant attribution d’une autre application. [Parcours, contrôles et réserves](architecture-v1/avereo-app-connect/docs/administration-comptes.md#passer-un-compte-en-permanent-et-ajouter-une-application).

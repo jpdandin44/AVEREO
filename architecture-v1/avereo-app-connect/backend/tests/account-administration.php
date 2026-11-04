@@ -41,7 +41,8 @@ try {
     ok(file_get_contents($path)===$before,'unauthorized request cannot revoke projection');
     rejects(fn()=>$service->updatePeriod(1,7,$id,[],'missing-period'),422,'missing period fields cannot silently remove the trial deadline');
     ok(file_get_contents($path)===$before,'invalid period leaves the current projection intact');
-    rejects(fn()=>$service->authorizeApplication(1,7,$id,'coupe','active'),422,'trial cannot expand to unqualified application');
+    $service->authorizeApplication(1,7,$id,'coupe','active');
+    ok(file_get_contents($path)===$before,'temporary selection authorization preserves the recorded period and policy');
     $key=str_repeat('local-only-',5);$payload=avereo_gate_base64url_encode(json_encode(['v'=>2,'app'=>'rapport','iat'=>time(),'exp'=>time()+600,'nonce'=>str_repeat('a',32),'identity'=>['provider'=>'avereo_connect','id'=>(string)$id]]));
     $_COOKIE['TEST']=$payload.'.'.avereo_gate_base64url_encode(hash_hmac('sha256',$payload,$key,true));
     $config=['connect_gate_cookie'=>'TEST','connect_launch_secret'=>$key,'connect_trial_access_file'=>$path];
@@ -84,9 +85,14 @@ try {
         $pdo->exec("INSERT INTO applications(id,code,name,description,display_order,status,launch_url) VALUES(5,'passeport-immo','Passeport Immo','',5,'active','https://example.invalid/passeport'); INSERT INTO entitlements(organization_id,application_id,status,granted_by_user_id) VALUES(7,5,'active',1)");
         $accessUrl = "/api/v1/admin/organizations/7/users/$apiId/applications/passeport-immo";
         $periodUrl = "/api/v1/admin/organizations/7/users/$apiId/access-period";
-        $beforePolicy = file_get_contents($path);
+        $beforePeriod = $pdo->query('SELECT access_starts_at,access_ends_at FROM users WHERE id='.$apiId)->fetch(PDO::FETCH_ASSOC);
         $response = $app->handle($route('PUT',$accessUrl,['status'=>'active']),$owner,'local-csrf',static fn()=>null);
-        ok($response->status===422 && file_get_contents($path)===$beforePolicy,'trial rejects Passeport without changing the access policy');
+        ok($response->status===200,'temporary account accepts an explicit Passeport grant');
+        ok($pdo->query('SELECT access_starts_at,access_ends_at FROM users WHERE id='.$apiId)->fetch(PDO::FETCH_ASSOC)===$beforePeriod,'adding an application preserves both recorded dates');
+        $policyRow=json_decode(file_get_contents($path),true)['accounts'][(string)$apiId];
+        ok(in_array('passeport-immo',$policyRow['applications'],true) && $policyRow['not_after']===(new DateTimeImmutable($beforePeriod['access_ends_at'],new DateTimeZone('UTC')))->getTimestamp(),'grant publishes selected app with the same deadline');
+        $response=$app->handle($route('PUT',$accessUrl,['status'=>'revoked']),$owner,'local-csrf',static fn()=>null);
+        ok($response->status===200,'temporary account can revoke the additional application separately');
         $response = $app->handle($route('PATCH',$periodUrl,['startsAt'=>null,'endsAt'=>null]),$owner,'local-csrf',static fn()=>null);
         ok($response->status===200,'permanent period saved through administration API');
         $snapshot = $repo->getAccountAdministration(1,7);
@@ -106,6 +112,26 @@ try {
         $response = $app->handle($route('PUT',$accessUrl,['status'=>'revoked']),$owner,'local-csrf',static fn()=>null);
         ok($response->status===200 && !$repo->canLaunchApplication($apiId,'passeport-immo'),'Passeport can be revoked again');
         ok($repo->canLaunchApplication($apiId,'rapport'),'Passeport revocation preserves Rapport access');
+        foreach (['projet','thermo','drone'] as $offset=>$code) {
+            $appId=6+$offset;
+            $pdo->exec("INSERT INTO applications(id,code,name,description,display_order,status,launch_url) VALUES($appId,'$code','$code','',$appId,'active','https://example.invalid/$code'); INSERT INTO entitlements(organization_id,application_id,status,granted_by_user_id) VALUES(7,$appId,'active',1)");
+        }
+        $allCodes=['rapport','rga','coupe','projet','thermo','drone','passeport-immo'];
+        $all=$service->create(1,7,array_replace($body,['email'=>'all-apps@example.invalid','applications'=>$allCodes]),'create-all-temporary');
+        $allId=$all['id'];
+        ok($all['applications']===$allCodes && $all['endsAt']!==null,'creation accepts all seven selected applications with a temporary period');
+        $service->synchronize($allId,fn()=>$pdo->exec("UPDATE users SET onboarding_status='completed' WHERE id=".$allId));
+        foreach($allCodes as $code) ok(!$repo->canLaunchApplication($allId,$code),'before start denies '.$code);
+        $period=['startsAt'=>gmdate('Y-m-d\TH:i:s\Z',time()-30),'endsAt'=>gmdate('Y-m-d\TH:i:s\Z',time()+1200)];
+        $service->updatePeriod(1,7,$allId,$period,'adjust-all-temporary');
+        foreach($allCodes as $code) ok($repo->canLaunchApplication($allId,$code),'during period allows selected '.$code);
+        ok(!$repo->canLaunchApplication($allId,'future'),'unselected catalog application remains denied');
+        $service->updatePeriod(1,7,$allId,['startsAt'=>null,'endsAt'=>null],'all-permanent');
+        $service->updatePeriod(1,7,$allId,$period,'all-temporary-again');
+        ok(count(json_decode(file_get_contents($path),true)['accounts'][(string)$allId]['applications'])===7,'switching back to temporary preserves all selected applications');
+        $service->synchronize($allId,fn()=>$pdo->exec("UPDATE users SET access_starts_at='2020-01-01 00:00:00',access_ends_at='2020-01-02 00:00:00' WHERE id=".$allId));
+        foreach($allCodes as $code) ok(!$repo->canLaunchApplication($allId,$code),'expiry denies '.$code);
+
     }
     $reuse = array_replace($body,['email'=>'historic@example.invalid','linkExisting'=>true]);
     $pdo->exec("UPDATE memberships SET role='admin' WHERE user_id=2");
