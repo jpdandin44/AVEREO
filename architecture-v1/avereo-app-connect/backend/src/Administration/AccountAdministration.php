@@ -13,34 +13,50 @@ final class AccountAdministration
 
     public function create(int $actor, int $organization, array $input, string $requestId): array
     {
-        if (array_diff(array_keys($input),['email','displayName','applications','startsAt','endsAt'])!==[]) $this->invalid('Champ inconnu.');
+        if (array_diff(array_keys($input),['email','displayName','applications','startsAt','endsAt','linkExisting'])!==[]) $this->invalid('Champ inconnu.');
         $email = is_string($input['email']??null) ? strtolower(trim($input['email'])) : '';
         $name = is_string($input['displayName']??null) ? trim($input['displayName']) : '';
         if (!filter_var($email,FILTER_VALIDATE_EMAIL) || strlen($email)>254 || $name==='' || strlen($name)>191) $this->invalid('Nom ou adresse e-mail invalide.');
         $apps=$input['applications']??null;
         if (!is_array($apps) || !array_is_list($apps) || count($apps)<1 || count($apps)>32
             || count(array_filter($apps,'is_string'))!==count($apps) || count(array_unique($apps))!==count($apps)) $this->invalid('Sélectionnez des applications distinctes.');
+        $linkExisting = $input['linkExisting'] ?? false;
+        if (array_key_exists('linkExisting', $input) && !is_bool($input['linkExisting'])) $this->invalid('Confirmez explicitement le rattachement.');
         [$start,$end]=$this->period($input);
         if ($end!==null && array_diff($apps,['rapport','rga'])!==[]) $this->invalid('L’essai temporaire est disponible pour Rapport et RGA.');
-        return $this->policy->locked(function() use($actor,$organization,$email,$name,$apps,$start,$end,$requestId) {
-            $this->authorize($actor,$organization);
+        return $this->policy->locked(function() use($actor,$organization,$email,$name,$apps,$start,$end,$requestId,$linkExisting) {
+            $role = $this->authorize($actor,$organization);
+            if ($linkExisting && $role !== 'owner') {
+                throw new ApiException(403,'IDENTITY_LINK_OWNER_REQUIRED','Seul le propriétaire peut rattacher une identité AVEREO existante.');
+            }
             $exists=$this->pdo->prepare('SELECT id FROM users WHERE email_normalized = ?');$exists->execute([$email]);
             if ($exists->fetchColumn()!==false) throw new ApiException(409,'ACCOUNT_EXISTS','Cette adresse possède déjà un compte CONNECT.');
             $available=$this->pdo->prepare("SELECT a.id,a.code FROM applications a INNER JOIN entitlements e ON e.application_id=a.id WHERE e.organization_id=? AND e.status='active' AND a.status='active' AND (e.valid_from IS NULL OR e.valid_from<=UTC_TIMESTAMP(6)) AND (e.valid_to IS NULL OR e.valid_to>UTC_TIMESTAMP(6))");
             $available->execute([$organization]);$byCode=array_column($available->fetchAll(\PDO::FETCH_ASSOC),'id','code');
             if (array_diff($apps,array_keys($byCode))!==[]) $this->invalid('Une application n’est pas disponible dans cette organisation.');
-            $subject=$this->identity->provision($email,$name,$requestId);
+            $subject=$this->identity->provision($email,$name,$requestId,$linkExisting);
+            if ($linkExisting) {
+                $existing = $this->pdo->prepare('SELECT 1 FROM users WHERE drupal_subject=?');
+                $existing->execute([$subject]);
+                if ($existing->fetchColumn() !== false) {
+                    throw new ApiException(409,'IDENTITY_ALREADY_LINKED','Cette identité AVEREO est déjà rattachée à un compte CONNECT.');
+                }
+            }
             $this->pdo->beginTransaction();
             try {
-                $s=$this->pdo->prepare("INSERT INTO users (drupal_subject,email_normalized,display_name,status,onboarding_status,access_starts_at,access_ends_at,application_access_mode) VALUES (?,?,?,'active','required',?,?,'explicit')");
-                $s->execute([$subject,$email,$name,$start,$end]);$id=(int)$this->pdo->lastInsertId();
+                $s=$this->pdo->prepare("INSERT INTO users (drupal_subject,email_normalized,display_name,status,onboarding_status,access_starts_at,access_ends_at,application_access_mode,sessions_revoked_at) VALUES (?,?,?,'active','required',?,?,'explicit',?)");
+                $s->execute([$subject,$email,$name,$start,$end,$linkExisting ? time() : null]);$id=(int)$this->pdo->lastInsertId();
                 $s=$this->pdo->prepare("INSERT INTO memberships (organization_id,user_id,role,status) VALUES (?,?,'member','active')");$s->execute([$organization,$id]);
                 $s=$this->pdo->prepare("INSERT INTO user_application_access (organization_id,user_id,application_id,status,granted_by_user_id) VALUES (?,?,?,'active',?)");
                 foreach($apps as $app) $s->execute([$organization,$id,$byCode[$app],$actor]);
+                if ($linkExisting) {
+                    $pending = $this->pdo->prepare('DELETE FROM pending_identities WHERE drupal_subject=? AND approved_user_id IS NULL');
+                    $pending->execute([$subject]);
+                }
                 $this->policy->deny($id);
-                $this->audit($actor,$organization,$id,'user.create',$requestId);
+                $this->audit($actor,$organization,$id,$linkExisting ? 'user.create_with_identity_link' : 'user.create',$requestId);
                 $this->pdo->commit();
-                return ['id'=>$id,'email'=>$email,'displayName'=>$name,'onboardingStatus'=>'required','invitationSent'=>false,
+                return ['id'=>$id,'email'=>$email,'displayName'=>$name,'onboardingStatus'=>'required','invitationSent'=>false,'identityLinked'=>$linkExisting,
                     'applications'=>$apps,'startsAt'=>$start===null?null:str_replace(' ','T',$start).'Z','endsAt'=>$end===null?null:str_replace(' ','T',$end).'Z'];
             } catch (\Throwable $e) { if($this->pdo->inTransaction())$this->pdo->rollBack(); throw $e; }
         });
@@ -98,7 +114,7 @@ final class AccountAdministration
             'applications'=>$applications]);
     }
 
-    public function authorize(int $actor,int $organization,?int $target=null,bool $allowArchived=false): void
+    public function authorize(int $actor,int $organization,?int $target=null,bool $allowArchived=false): string
     {
         $s=$this->pdo->prepare("SELECT m.role FROM memberships m INNER JOIN users u ON u.id=m.user_id INNER JOIN organizations o ON o.id=m.organization_id WHERE m.user_id=? AND m.organization_id=? AND m.status='active' AND o.status='active' AND u.status='active' AND u.onboarding_status='completed'");$s->execute([$actor,$organization]);$role=$s->fetchColumn();
         if(!in_array($role,['owner','admin'],true))throw new ApiException(403,'ADMIN_REQUIRED','Administration de cette organisation requise.');
@@ -109,6 +125,7 @@ final class AccountAdministration
                 throw new ApiException(409, 'ACCOUNT_ARCHIVED', 'Ce compte est archivé.');
             }
         }
+        return $role;
     }
 
     public function authorizeApplication(int $actor,int $organization,int $id,string $app,string $status):void

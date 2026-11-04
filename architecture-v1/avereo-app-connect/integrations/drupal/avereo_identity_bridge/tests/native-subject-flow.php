@@ -173,6 +173,35 @@ try {
     }
     $pdo->exec("UPDATE users SET access_starts_at='1999-01-01 00:00:00',access_ends_at='2000-01-01 00:00:00' WHERE id=" . $id);
     $expect(!$repo->canLaunchApplication($id, 'rapport') && !$repo->canLaunchApplication($id, 'rga'), 'Expired trial still refuses both applications');
+    $roleStore = Drupal::entityTypeManager()->getStorage('user_role');
+    if (!$roleStore->load('utilisateur_rapport')) {
+        $roleStore->create(['id'=>'utilisateur_rapport','label'=>'Rapport fixture'])->save();
+    }
+    $historicalEmail='historic-' . bin2hex(random_bytes(8)) . '@example.invalid';
+    $historical=$storage->create(['name'=>'historic-' . bin2hex(random_bytes(8)), 'mail'=>$historicalEmail,
+        'status'=>1, 'pass'=>'Fixture123-' . bin2hex(random_bytes(12)), 'roles'=>['utilisateur_rapport']]);
+    $historical->save();
+    $historicalUid=(string)$historical->id();
+    $historicalHash=$historical->getPassword();
+    $priorMessages=Drupal::state()->get('system.test_mail_collector',[]);
+    $newInput=['email'=>$historicalEmail,'displayName'=>'Historical fixture','applications'=>['rapport']];
+    try {
+        $service->create(1,7,$newInput,'implicit-link');
+        throw new RuntimeException('Implicit native link accepted');
+    } catch (\Avereo\Connect\Http\ApiException $error) {
+        $expect($error->errorCode==='IDENTITY_EXISTS' && $repo->findUserIdByDrupalSubject($historicalUid)===null,
+            'Existing Drupal identity does not automatically create a CONNECT record');
+    }
+    $linked=$service->create(1,7,$newInput+['linkExisting'=>true],'explicit-native-link');
+    $expect($linked['identityLinked'] && $repo->findUserIdByDrupalSubject($historicalUid)===$linked['id']
+        && Drupal::state()->get('system.test_mail_collector',[])===$priorMessages, 'Owner relinks the original UID without mail');
+    $notifier->send($linked['id'],$historicalUid,$historicalEmail,'Historical fixture','linked-invite');
+    $mail=Drupal::state()->get('system.test_mail_collector',[]);
+    $expect(count($mail)===count($priorMessages)+1 && end($mail)['params']['requires_password_initialization']===false,
+        'Optional invitation sends one message with no new password step');
+    $storage->resetCache([$historicalUid]); $reloaded=$storage->load($historicalUid);
+    $expect($reloaded->getPassword()===$historicalHash && in_array('utilisateur_rapport',$reloaded->getRoles(),true),
+        'Relink and invitation preserve the native password and role');
     echo json_encode(['passed' => count($checks), 'checks' => $checks, 'nativeVersion' => Drupal::VERSION,
         'realMailSent' => false, 'scope' => 'Real Drupal controllers, entity, mail collector, activation form and native authentication; CONNECT temporary MariaDB tables. No browser HTTP or external OIDC provider claim.'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), PHP_EOL;
 } finally {

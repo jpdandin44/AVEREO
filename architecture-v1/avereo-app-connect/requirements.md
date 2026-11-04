@@ -71,3 +71,7 @@ Runtime installé : `e76f3d77634bafb4056e3f753e31331bbaa613b2`. Recette techniqu
 ## Alignement du cycle de vie des comptes
 
 Les droits hérités et le rôle administrateur d’un compte non propriétaire n’excluent pas son archivage. Le propriétaire conserve la responsabilité de son organisation. La restauration restitue les droits effectifs. La suppression respecte les identités utilisées dans Drupal et la conservation des dossiers Rapport. [Périmètre et conditions](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).
+
+## Création visible et invitation facultative
+
+La création confirmée est visible immédiatement dans l’administration. L’envoi d’invitation est une décision distincte. Un échec d’envoi ne remet pas en cause la création. Le propriétaire peut confirmer un rattachement à une identité conservée sous les conditions du [parcours de recréation](docs/administration-comptes.md#recréer-un-compte-dont-lidentité-avereo-existe).

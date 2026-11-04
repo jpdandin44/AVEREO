@@ -10,7 +10,7 @@ use Avereo\Connect\Http\ApiException;
 
 require_once __DIR__.'/account-administration-fixture.php';
 $pdo=accountTestDatabase();
-$identity=new class implements AccountIdentityProvisioner {public int $calls=0;public function provision(string $email,string $name,string $request):string{$this->calls++;return $this->calls===1?'12345678-1234-1234-1234-123456789abc':'12345678-1234-1234-1234-'.str_pad((string)$this->calls,12,'0',STR_PAD_LEFT);}};
+$identity=new class implements AccountIdentityProvisioner {public int $calls=0;public function provision(string $email,string $name,string $request, bool $linkExisting = false):string{$this->calls++;if($linkExisting)return "42";return $this->calls===1?'12345678-1234-1234-1234-123456789abc':'12345678-1234-1234-1234-'.str_pad((string)$this->calls,12,'0',STR_PAD_LEFT);}};
 $path=sys_get_temp_dir().'/avereo-account-policy-'.bin2hex(random_bytes(8)).'.json';file_put_contents($path,'{"version":1,"accounts":{}}');$store=new TrialPolicyStore($path);$service=new AccountAdministration($pdo,$identity,$store);$repo=new PdoConnectRepository($pdo);$checks=[];
 function ok(bool $v,string $name):void{global $checks;if(!$v)throw new RuntimeException($name);$checks[]=$name;}
 function rejects(callable $fn,int $code,string $name):void{try{$fn();throw new RuntimeException('Expected rejection: '.$name);}catch(ApiException $e){ok($e->status===$code,$name);}}
@@ -79,5 +79,22 @@ try {
     $apiId=$response->payload['data']['id'];
     $response=$app->handle($route('POST',"/api/v1/admin/organizations/7/users/$apiId/activation-email",[]),$owner,'local-csrf',static fn()=>null);
     ok($response->status===200 && $response->payload['data']['status']==='sent' && $notify->calls===1,'separate invitation API invokes transport only on request');
+    $reuse = array_replace($body,['email'=>'historic@example.invalid','linkExisting'=>true]);
+    $pdo->exec("UPDATE memberships SET role='admin' WHERE user_id=2");
+    $beforeCalls = $identity->calls;
+    rejects(fn()=>$service->create(2,7,$reuse,'unauthorized-link'),403,'only organization owner can explicitly link');
+    ok($identity->calls===$beforeCalls,'unauthorized linking never calls Drupal');
+    rejects(fn()=>$service->create(1,7,array_replace($reuse,['linkExisting'=>null]),'invalid-link'),422,'link choice must be boolean');
+    $oldAuth=new \Avereo\Connect\Security\AuthContext(99,time(),'42');
+    $result=$app->handle($route('POST',$url,$reuse),$owner,'local-csrf',static fn()=>null);
+    $new=$result->payload['data'];
+    ok($result->status===201 && $new['identityLinked'] && !$new['invitationSent'] && $notify->calls===1,
+        'explicit relink creates a CONNECT record without sending mail');
+    ok($repo->findUserIdByDrupalSubject('42')===$new['id'] && $new['id']!==99
+        && $repo->isAccountSessionRevoked($new['id'],$oldAuth->authenticatedAt), 'new CONNECT ID invalidates old session for the same Drupal identity');
+    $snapshot=$repo->getAccountAdministration(1,7);
+    ok(in_array($new['id'],array_map('intval',array_column($snapshot['users'],'id')),true),'created record is immediately in the administration snapshot');
+    ok(!$repo->canLaunchApplication($new['id'],'rapport'),'linked identity still requires activation');
+    rejects(fn()=>$service->create(1,7,array_replace($reuse,['email'=>'different@example.invalid']),'other-link'),409,'one Drupal subject cannot belong to another CONNECT account');
     echo json_encode(['passed'=>count($checks),'checks'=>$checks,'database'=>getenv('ACCOUNT_ADMIN_MYSQL_TEMPORARY')==='true'?'MySQL isolated temporary tables':'SQLite local only; MySQL migration qualification separate'],JSON_UNESCAPED_UNICODE).PHP_EOL;
 } finally {foreach([$path,$path.'.lock'] as $f)if(is_file($f))unlink($f);}

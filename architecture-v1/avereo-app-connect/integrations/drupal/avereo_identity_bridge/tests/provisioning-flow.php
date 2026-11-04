@@ -65,6 +65,18 @@ checkProvision($r->status===422 && count($storage->accounts)===1,'unknown privil
 \Drupal\Core\Controller\ControllerBase::$testDefaultLanguage='fr';
 $client->provision('french-site@example.invalid','Site francophone','french-site');
 checkProvision($storage->lastFields['langcode']==='fr' && $storage->lastFields['preferred_langcode']==='fr','identity uses French when it is the configured site language');
+$existing=$storage->accounts[2];
+$existing->fields['status']=1;
+$existing->fields['pass']='historic-password-hash';
+$existing->fields['roles']=['authenticated','utilisateur_rapport'];
+$before=$existing->fields;
+checkProvision($client->provision('french-site@example.invalid','Historical account','explicit-link',true)==='2'
+    && $before===$existing->fields && count($storage->accounts)===2,'explicit link preserves existing password and roles');
+$existing->fields['roles'][]='administrator';
+try {$client->provision('french-site@example.invalid','Historical account','privileged-link',true);throw new RuntimeException('Privilege collision accepted');}
+catch (\Avereo\Connect\Http\ApiException $e) {checkProvision($e->errorCode==='IDENTITY_LINK_UNAVAILABLE','privileged identity cannot be linked');}
+try {$client->provision('absent@example.invalid','Absent','absent-link',true);throw new RuntimeException('Identity unexpectedly created');}
+catch (\Avereo\Connect\Http\ApiException $e) {checkProvision($e->errorCode==='IDENTITY_LINK_UNAVAILABLE' && count($storage->accounts)===2,'explicit linking never creates a missing identity');}
 foreach (['0','01','-1','1.0','12345678-1234-1234-1234-000000000001',44,null,'',str_repeat('9',20)] as $invalidSubject) {
     $badClient=new IdentityAccountProvisioningClient('https://identity.example.invalid/avereo/account/provision',$secret,
         static fn()=>['status'=>200,'body'=>json_encode(['status'=>'prepared','subject'=>$invalidSubject])]);

@@ -10,6 +10,14 @@ owner: jpdandin
 tags: [connect, comptes, essai]
 ---
 
+## Recréer un compte dont l’identité AVEREO existe
+
+Dans **Gérer les comptes**, créer le compte et sélectionner ses applications. L’option **Envoyer l’invitation après la création** est décochée par défaut. La fiche apparaît dès que CONNECT confirme la création. Si l’envoi est choisi puis échoue, la fiche reste visible et permet une nouvelle tentative. Sans envoi, l’administrateur dispose de **Envoyer le lien d’activation** sur la fiche.
+
+Si une identité AVEREO existe déjà, CONNECT propose au propriétaire un rattachement explicite après une première tentative de création. L’identité doit être active, unique pour cette adresse, disposer d’un mot de passe et ne porter aucun rôle Drupal hors du périmètre qualifié. Le pont autorise les rôles `authenticated` et `utilisateur_rapport` et protège l’utilisateur système. Le nouveau compte CONNECT garde un identifiant distinct. Les anciennes sessions CONNECT sont révoquées et les dossiers conservés ne sont pas réattribués. Le mot de passe et les rôles AVEREO sont préservés. L’accès aux applications reste en attente d’activation, avec ou sans envoi immédiat.
+
+Ce parcours est un candidat local. Livrer le pont de provisionnement et le portail ensemble. La recette hébergée reste à faire sur des identités fictives, avec la conservation du mot de passe et des dossiers anciens, un envoi choisi, un envoi différé et un échec d’envoi simulé.
+
 ## Alignement des comptes non propriétaires — candidat local
 
 Le propriétaire peut agir sur les administrateurs, membres et lecteurs de sa seule organisation, avec droits hérités ou explicites, lorsque toutes leurs applications disposent de la révocation. Les rattachements multiples, propriétaires et applications non qualifiées restent protégés, avec un motif affiché. La restauration republie les droits calculés par le catalogue, y compris les attributions héritées et les refus individuels. Une session ouverte avant l’archivage ne redonne aucun accès après restauration.

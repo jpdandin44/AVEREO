@@ -394,8 +394,28 @@ paths:
                   items: {type: string}
                 startsAt: {type: [string, "null"], format: date-time}
                 endsAt: {type: [string, "null"], format: date-time}
+                linkExisting:
+                  type: boolean
+                  default: false
+                  description: Choix explicite réservé au propriétaire pour rattacher une identité AVEREO existante.
       responses:
-        "201": {description: 'Compte préparé, invitation non envoyée'}
+        "201":
+          description: Compte préparé, invitation non envoyée
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data]
+                properties:
+                  data:
+                    type: object
+                    required: [id, email, displayName, invitationSent, identityLinked]
+                    properties:
+                      id: {type: integer}
+                      email: {type: string, format: email}
+                      displayName: {type: string}
+                      invitationSent: {type: boolean}
+                      identityLinked: {type: boolean}
         "403": {description: 'Rôle, organisation ou CSRF refusé'}
         "409": {description: Compte ou identité existant sans rapprochement automatique}
         "422": {description: 'Champs, applications ou période invalides'}

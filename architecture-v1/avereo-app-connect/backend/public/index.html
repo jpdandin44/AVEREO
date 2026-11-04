@@ -268,7 +268,7 @@
 
       <div class="admin-block" id="account-create-panel" hidden>
         <h3>Créer un compte</h3>
-        <p>Préparez le compte et ses accès. L’invitation sera envoyée séparément ; l’utilisateur choisira lui-même son mot de passe.</p>
+        <p>Préparez le compte et ses accès. Vous pouvez envoyer l’invitation maintenant ou plus tard depuis sa fiche.</p>
         <form id="account-create-form">
           <label>Nom <input id="account-create-name" required maxlength="191" autocomplete="off"></label>
           <label>Adresse e-mail <input id="account-create-email" type="email" required maxlength="254" autocomplete="off"></label>
@@ -279,7 +279,11 @@
             <label>Début <input id="account-create-start" type="datetime-local" required></label>
             <label>Fin <input id="account-create-end" type="datetime-local" required></label>
           </div>
-          <button type="submit" id="account-create-submit">Créer sans envoyer l’invitation</button>
+          <fieldset>
+            <legend>Invitation</legend>
+            <label><input id="account-create-invite" type="checkbox"> Envoyer l’invitation après la création</label>
+          </fieldset>
+          <button type="submit" id="account-create-submit">Créer le compte</button>
           <p id="account-create-status" role="status" aria-live="polite"></p>
         </form>
       </div>
@@ -531,6 +535,9 @@
       const card = document.createElement('article');
       card.className = 'admin-card';
 
+      card.dataset.accountId = user.id;
+      card.tabIndex = -1;
+
       const information = document.createElement('div');
       const name = document.createElement('p');
       const nameStrong = document.createElement('strong');
@@ -542,7 +549,7 @@
       membership.textContent = `Adhésion ${adminStatusLabel(user.membershipStatus)} · compte ${adminStatusLabel(user.status)}`;
       const onboarding = document.createElement('small');
       onboarding.textContent = {
-        required: 'Initialisation du mot de passe requise · e-mail à envoyer',
+        required: 'Activation en attente · lien à envoyer',
         sent: `Lien d’activation envoyé${user.activationEmailSentAt ? ` le ${formatAdminDate(user.activationEmailSentAt)}` : ''}`,
         completed: 'Mot de passe initialisé'
       }[user.onboardingStatus] || 'État d’activation indisponible';
@@ -660,7 +667,7 @@
           : 'Envoyer le lien d’activation';
         resend.addEventListener('click', async () => {
           const label = nameStrong.textContent;
-          if (!await confirmAccountAction(`Envoyer un nouveau lien de définition du mot de passe à ${label} ?`)) return;
+          if (!await confirmAccountAction(`Envoyer le lien d’activation à ${label} ?`)) return;
           resend.disabled = true;
           adminStatus.textContent = `Envoi du lien d’activation à ${label}…`;
           try {
@@ -878,6 +885,8 @@
     }
     const createForm = document.getElementById('account-create-form');
     const createMode = document.getElementById('account-create-mode');
+    const createInvite = document.getElementById('account-create-invite');
+    let createCanLinkExisting = false;
     function refreshCreatePeriod() {
       const trial=createMode.value==='trial';document.getElementById('account-create-period').hidden=!trial;
       for(const id of ['account-create-start','account-create-end'])document.getElementById(id).required=trial;
@@ -895,22 +904,77 @@
         try{body.startsAt=new Date(document.getElementById('account-create-start').value).toISOString();body.endsAt=new Date(document.getElementById('account-create-end').value).toISOString();}
         catch{status.textContent='Indiquez deux dates valides.';return;}
       }
-      const period=body.endsAt?`du ${new Date(body.startsAt).toLocaleString()} au ${new Date(body.endsAt).toLocaleString()}`:'accès permanent';
-      if(!await confirmAccountAction(`Créer le compte ${body.displayName} (${body.email}) : ${selected.join(', ')}, ${period} ? Aucun mail ne sera envoyé par cette création.`))return;
-      const submit=document.getElementById('account-create-submit');submit.disabled=true;status.textContent='Création du compte…';
-      try{
-        await mutation(`/api/v1/admin/organizations/${adminOrganizationId}/accounts`,'POST',body);
-        document.getElementById('account-create-name').value='';document.getElementById('account-create-email').value='';
-        await loadAdministration('Compte créé sans envoi de mail. Vérifiez ses accès puis utilisez « Envoyer le lien d’activation ».');
-        status.textContent='Compte préparé. Aucun mail envoyé.';
-      }catch(error){status.textContent=`Création non confirmée (${error.userMessage || error.message}). Vérifiez la liste avant de réessayer.`;}
-      finally{submit.disabled=false;}
+      const period = body.endsAt ? `du ${new Date(body.startsAt).toLocaleString()} au ${new Date(body.endsAt).toLocaleString()}` : 'accès permanent';
+      const invite = createInvite.checked;
+      const submit = document.getElementById('account-create-submit');
+      if (submit.disabled) return;
+      submit.disabled = true;
+      try {
+        const invitation = invite ? 'L’invitation sera envoyée après la création.' : 'L’invitation pourra être envoyée plus tard.';
+        if (!await confirmAccountAction(`Créer ${body.displayName} (${body.email}) avec ${selected.join(', ')} et ${period} ? ${invitation}`)) return;
+        status.textContent = 'Création du compte…';
+        const url = `/api/v1/admin/organizations/${adminOrganizationId}/accounts`;
+        let result;
+        try {
+          result = await mutation(url, 'POST', body);
+        } catch (error) {
+          if (error.message !== 'IDENTITY_EXISTS' || !createCanLinkExisting) throw error;
+          if (!await confirmAccountAction(`Une identité AVEREO existe pour ${body.email}. Créer la fiche CONNECT en la rattachant ? Son mot de passe et ses rôles seront conservés. Les anciens dossiers restent liés à l’ancienne fiche.`)) {
+            status.textContent = 'Création annulée.';
+            return;
+          }
+          result = await mutation(url, 'POST', { ...body, linkExisting: true });
+        }
+        const account = result.data;
+        document.getElementById('account-create-name').value = '';
+        document.getElementById('account-create-email').value = '';
+        createInvite.checked = false;
+        // Keep the confirmed creation visible even if a later refresh or send fails.
+        adminUsersList.querySelector('.empty-state')?.remove();
+        const provisional = {
+          ...account, status: 'active', membershipStatus: 'active', role: 'member',
+          canSendActivationEmail: true, applications: []
+        };
+        const card = adminUserCard({ ...provisional, canSendActivationEmail: !invite });
+        adminUsersList.prepend(card);
+        adminUsersCount.textContent = String(Number(adminUsersCount.textContent) + 1);
+        card.focus();
+        let message = 'Compte créé. Vous pouvez envoyer l’invitation depuis sa fiche.';
+        if (invite) {
+          adminStatus.textContent = 'Compte créé. Envoi de l’invitation…';
+          try {
+            const delivery = await mutation(`/api/v1/admin/organizations/${adminOrganizationId}/users/${account.id}/activation-email`, 'POST');
+            if (delivery.data?.status === 'sent') {
+              message = 'Compte créé et invitation envoyée.';
+              provisional.onboardingStatus = 'sent';
+            } else {
+              message = 'Compte créé. L’invitation n’a pas été envoyée. Vous pouvez réessayer depuis sa fiche.';
+            }
+          } catch (error) {
+            message = `Compte créé. Envoi de l’invitation non confirmé (${error.userMessage || error.message}).`;
+          }
+          const updatedCard = adminUserCard(provisional);
+          card.replaceWith(updatedCard);
+          updatedCard.focus();
+        }
+        status.textContent = message;
+        try {
+          await loadAdministration(message, account.id);
+        } catch {
+          adminStatus.textContent = message + ' Actualisez la liste pour afficher les autres actions.';
+        }
+      } catch (error) {
+        status.textContent = `Création non confirmée. ${error.userMessage || error.message}`;
+      } finally {
+        submit.disabled = false;
+      }
     });
 
     function renderAdministration(snapshot, message = '') {
       const pending = snapshot.pendingIdentities || [];
       const users = snapshot.users || [];
       const applications = snapshot.applications || [];
+      createCanLinkExisting = snapshot.actorRole === 'owner';
       document.getElementById('account-create-panel').hidden=!snapshot.accountCreationAvailable;
       const appChoices=document.getElementById('account-create-apps');appChoices.replaceChildren();
       for(const app of applications){const label=document.createElement('label');const field=document.createElement('input');field.type='checkbox';field.value=app.code;label.append(field,document.createTextNode(' '+app.name+' '));appChoices.append(label);}
@@ -944,7 +1008,7 @@
       }
     }
 
-    async function loadAdministration(message = '') {
+    async function loadAdministration(message = '', accountId = null) {
       if (!adminOrganizationId) return;
       profileSection.hidden = true;
       applicationsSection.hidden = true;
@@ -952,6 +1016,9 @@
       adminStatus.textContent = 'Chargement de l’administration…';
       const payload = await getJson(`/api/v1/admin/organizations/${adminOrganizationId}/accounts`);
       renderAdministration(payload.data, message);
+      if (accountId !== null) {
+        adminUsersList.querySelector(`[data-account-id="${accountId}"]`)?.focus();
+      }
     }
 
     function showPortal() {
