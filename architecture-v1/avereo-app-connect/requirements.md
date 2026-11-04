@@ -5,10 +5,17 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Invitation simple et cycle de vie — attentes du 3 novembre
+
+Un seul e-mail français, un premier mot de passe défini une seule fois, retour fiable à CONNECT et identifiant par e-mail. Les contrôles d’identité, rôles, applications et période restent obligatoires. [Critères du parcours](docs/parcours-invitation-simplifie.md).
+
+L’archivage et la suppression définitive des comptes sont demandés pour plus tard. Les conséquences sur les dossiers liés et les confirmations doivent être cadrées avant implémentation ; voir le document d’administration.
+
 
 ## Continuité du compte créé et invité
 

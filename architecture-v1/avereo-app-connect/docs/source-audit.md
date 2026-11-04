@@ -5,10 +5,20 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 4 novembre — invitation unique et confirmation réessayable
+
+Trois fichiers du pont Drupal sont concernés : le contrôleur d’activation conserve l’échéance de l’invitation pour signer de nouveau le retour, le formulaire valide deux champs dédiés et le module neutralise la notification native uniquement pour l’enregistrement déclenché par le pont. Le test natif active la notification Drupal, compte tous les messages et vérifie le maintien de cette notification lors d’une activation Drupal ordinaire. Le contrat CONNECT de confirmation signée reste le même. [Parcours et risques](parcours-invitation-simplifie.md).
+
+
+## 2026-11-03 — Mail concurrent et confirmation bloquée
+
+Le test natif antérieur comptait seulement les messages AVEREO et acceptait donc la présence de la notification native de statut. La nouvelle assertion exige un seul message total et reproduit l’échec sur Drupal 11.4.10, collecteur de mails et tables temporaires. Le contrôle hébergé avant nettoyage confirme le mot de passe initialisé mais la confirmation CONNECT encore en attente, le retour étant arrêté par HTTP Basic. [Cadrage, limites et critères](parcours-invitation-simplifie.md). Aucun nouveau correctif runtime livré dans cette dernière séquence.
+
 
 ## 2026-11-03 — Rattachement des comptes invités
 

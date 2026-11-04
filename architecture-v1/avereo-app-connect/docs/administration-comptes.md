@@ -5,10 +5,14 @@ title: Administration des comptes CONNECT
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, comptes, essai]
 ---
+
+## Première connexion après l’invitation
+
+Le [parcours d’invitation](parcours-invitation-simplifie.md) décrit le message reçu, le premier mot de passe et la reprise du retour signé vers CONNECT. Le suivi canonique porte l’état de livraison et de recette.
 
 ## Reset administratif — nouveau candidat local
 
@@ -204,3 +208,15 @@ Une identité préparée par CONNECT conserve le besoin de définir son premier 
 Les marqueurs natifs `user.data` de Drupal peuvent être relus sous la forme chaîne `"1"`. Les contrôles de création et d’initialisation acceptent strictement `true`, `1` et `"1"` ; les tests couvrent cette représentation hébergée. Aucun autre contenu n’est traité comme un accord.
 
 Le formulaire conserve les paramètres nommés `$form` et `$form_state` attendus par le résolveur de route Drupal. Le paramètre camelCase empêchait le résolveur d’injecter l’état du formulaire et provoquait une erreur 500 ; la signature est contrôlée en non-régression et la page publique doit être requalifiée.
+
+
+## Archivage et suppression — evolution demandee pour plus tard
+
+Demande explicite du responsable le 3 novembre. Lot futur, non implémenté :
+
+- Archiver un compte de façon réversible, révoquer ses accès et ses sessions, conserver son historique et définir les conditions d’une restauration.
+- Supprimer définitivement un compte après confirmation explicite ; traiter les liens CONNECT/Drupal, invitations et sessions de manière cohérente, sans laisser une adresse bloquée par un enregistrement résiduel.
+- Protéger le compte propriétaire et empêcher la suppression accidentelle de l’administrateur courant. Définir les rôles autorisés et tracer l’action.
+- Présenter les conséquences avant suppression. Pour les dossiers liés : conservation, transfert ou suppression sont **à arbitrer** avant développement ; ne pas effacer silencieusement les rapports.
+
+Les trois suppressions ponctuelles demandées ce soir ont été réalisées par une opération privée sauvegardée et contrôlée. Elles ne signifient pas que les boutons d’archivage ou de suppression sont disponibles dans l’interface.

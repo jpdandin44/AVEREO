@@ -5,10 +5,17 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Priorités après la recette du 3 novembre
+
+Priorité : qualifier [l’invitation et la première connexion](docs/parcours-invitation-simplifie.md) en préproduction. La recette de Philippe et l’évolution éventuelle de la protection d’entrée font l’objet de décisions séparées.
+
+Lot ultérieur demandé : archivage réversible et suppression définitive depuis l’administration, avec politique explicite pour les dossiers liés et protection des comptes propriétaires. Cadrage détaillé dans le document d’administration ; aucune implémentation engagée à la clôture.
+
 
 ## Rattachement des invitations — lot du 3 novembre
 
