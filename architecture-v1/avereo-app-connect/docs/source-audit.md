@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 2026-11-04 — Administration du cycle de vie
+
+Le portail PHP, son API, sa projection d’accès et le pont Drupal portent le candidat. La source d’interface reste backend/public/index.html. Les sas Rapport et RGA utilisent la date de révocation et les écritures Rapport prennent le verrou de politique. [Périmètre et procédure](administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
+
 ## 4 novembre — invitation unique et confirmation réessayable
 
 Trois fichiers du pont Drupal sont concernés : le contrôleur d’activation conserve l’échéance de l’invitation pour signer de nouveau le retour, le formulaire valide deux champs dédiés et le module neutralise la notification native uniquement pour l’enregistrement déclenché par le pont. Le test natif active la notification Drupal, compte tous les messages et vérifie le maintien de cette notification lors d’une activation Drupal ordinaire. Le contrat CONNECT de confirmation signée reste le même. [Parcours et risques](parcours-invitation-simplifie.md).

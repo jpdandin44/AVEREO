@@ -395,10 +395,10 @@ paths:
                 startsAt: {type: [string, "null"], format: date-time}
                 endsAt: {type: [string, "null"], format: date-time}
       responses:
-        "201": {description: Compte préparé, invitation non envoyée}
-        "403": {description: Rôle, organisation ou CSRF refusé}
+        "201": {description: 'Compte préparé, invitation non envoyée'}
+        "403": {description: 'Rôle, organisation ou CSRF refusé'}
         "409": {description: Compte ou identité existant sans rapprochement automatique}
-        "422": {description: Champs, applications ou période invalides}
+        "422": {description: 'Champs, applications ou période invalides'}
         "502": {description: Provisionnement non confirmé}
         "503": {description: Paramètres privés de création indisponibles}
     get:
@@ -630,6 +630,59 @@ paths:
           description: Compte ou application indisponible
         "422":
           $ref: "#/components/responses/ValidationError"
+  /admin/organizations/{organizationId}/users/{userId}/lifecycle:
+    parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema: { type: integer, minimum: 1 }
+      - name: userId
+        in: path
+        required: true
+        schema: { type: integer, minimum: 1 }
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema: { type: string }
+    patch:
+      operationId: setAccountArchived
+      summary: Archiver ou restaurer un compte éligible
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [archived]
+              properties:
+                archived: { type: boolean }
+      responses:
+        '200': { description: État du compte appliqué }
+        '403': { description: Compte protégé ou droits insuffisants }
+        '409': { description: Suppression en cours }
+        '422': { description: Corps de demande invalide }
+        '503': { description: Gestion du cycle de vie indisponible }
+    delete:
+      operationId: deleteManagedAccount
+      summary: Supprimer définitivement le compte confirmé
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [confirmationEmail, keepReports]
+              properties:
+                confirmationEmail: { type: string, format: email }
+                keepReports: { type: boolean }
+      responses:
+        '200': { description: Compte supprimé et choix de conservation appliqué }
+        '403': { description: Compte protégé ou droits insuffisants }
+        '409': { description: Dépendance protégée ou choix de reprise différent }
+        '422': { description: Confirmation invalide }
+        '503': { description: Intégration indisponible ou suppression bloquée à reprendre avec le même choix }
   /admin/organizations/{organizationId}/users/{userId}/access-period:
     patch:
       tags: [Administration]
@@ -652,7 +705,7 @@ paths:
                 endsAt: {type: [string, "null"], format: date-time}
       responses:
         "200": {description: Période enregistrée et projection publiée}
-        "403": {description: Compte protégé, autorisation ou CSRF refusé}
+        "403": {description: 'Compte protégé, autorisation ou CSRF refusé'}
         "422": {description: Deux dates requises ou deux valeurs nulles pour accès permanent}
         "503": {description: Service non configuré}
 components:
@@ -896,6 +949,18 @@ components:
           type: boolean
         canSendActivationEmail:
           type: boolean
+        archived:
+          type: boolean
+        canArchive:
+          type: boolean
+        canRestore:
+          type: boolean
+        canDelete:
+          type: boolean
+        canDeleteReports:
+          type: boolean
+        pendingDeletionKeepsReports:
+          type: [boolean, "null"]
         onboardingStatus:
           type: string
           enum: [required, sent, completed]

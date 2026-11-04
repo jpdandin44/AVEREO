@@ -53,4 +53,4 @@ La protection HTTP de préproduction et les contrôles d’accès aux applicatio
 
 Le responsable a ensuite demandé la suppression de trois comptes de test dans Drupal et CONNECT. Ce nettoyage opérationnel est terminé, avec sauvegardes/restaurations et vérification indépendante. Il ne livre aucune nouvelle fonction produit de suppression. Recréer un compte et inviter une personne uniquement sur instruction de reprise, après correction et qualification du parcours.
 
-L’archivage et la suppression définitive dans l’interface sont un lot ultérieur distinct : voir [administration des comptes](administration-comptes.md#archivage-et-suppression--evolution-demandee-pour-plus-tard).
+L’archivage et la suppression définitive dans l’interface relèvent d’un lot distinct : voir [administration des comptes](administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).

@@ -10,11 +10,13 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Cycle de vie des comptes — qualification
+
+Le candidat local couvre les membres explicites Rapport/RGA d’une seule organisation. Restent la qualification hébergée et l’accord de livraison. L’extension aux comptes à droits hérités ou à d’autres applications suppose de qualifier leurs données et la coupure de leurs sessions.
+
 ## Priorités après la recette du 3 novembre
 
 Priorité : qualifier [l’invitation et la première connexion](docs/parcours-invitation-simplifie.md) en préproduction. La recette de Philippe et l’évolution éventuelle de la protection d’entrée font l’objet de décisions séparées.
-
-Lot ultérieur demandé : archivage réversible et suppression définitive depuis l’administration, avec politique explicite pour les dossiers liés et protection des comptes propriétaires. Cadrage détaillé dans le document d’administration ; aucune implémentation engagée à la clôture.
 
 
 ## Rattachement des invitations — lot du 3 novembre

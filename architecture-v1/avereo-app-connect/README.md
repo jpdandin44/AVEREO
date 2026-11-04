@@ -14,6 +14,10 @@ tags: [connect, documentation]
 
 Le [parcours d’invitation](docs/parcours-invitation-simplifie.md) utilise un seul e-mail français, un formulaire dédié au premier mot de passe et un retour signé réessayable. Les identifiants d’entrée de préproduction sont distincts de la connexion personnelle. Le candidat, sa qualification et les preuves sont suivis dans le cockpit.
 
+## Archivage et suppression des comptes
+
+Le [cycle de vie des comptes](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre) couvre l’archivage, la restauration et la suppression confirmée des comptes éligibles. La conservation des dossiers Rapport est proposée par défaut. La configuration et la recette hébergées restent à effectuer.
+
 
 ## Rattachement des comptes créés et invités
 

@@ -84,13 +84,22 @@ function api_validate_report_payload(array $payload): void
 }
 
 $config = api_config();
+$method = $_SERVER['REQUEST_METHOD'];
 api_require_connect_gate($config);
+$policyPath = trim((string) ($config['connect_trial_access_file'] ?? ''));
+if (in_array($method, ['POST', 'DELETE'], true) && $policyPath !== '') {
+    // Hold a shared lock until the request ends so a deletion cannot race
+    // an in-flight write authenticated against the previous access policy.
+    $reportWriteLock = fopen($policyPath . '.lock', 'c');
+    if ($reportWriteLock === false || !flock($reportWriteLock, LOCK_SH)) {
+        api_json(503, ['ok' => false, 'error' => 'report_policy_unavailable']);
+    }
+    api_require_connect_gate($config);
+}
 $identity = api_require_auth($config);
 $canManageAll = api_identity_can_manage_all($identity, $config);
 
 $pdo = api_pdo($config);
-
-$method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
     $id = api_trim_text($_GET['id'] ?? '', 32);

@@ -11,18 +11,18 @@ $checks = 0;
 function expectTrial(bool $ok, string $name): void {
     global $checks; if (!$ok) throw new RuntimeException($name); $checks++;
 }
-function cookieTrial(string $id = '42', int $version = 2): string {
+function cookieTrial(string $id = '42', int $version = 2, ?int $issuedAt = null): string {
     global $key, $app;
-    $p = ['v' => $version, 'app' => $app, 'iat' => time(), 'exp' => time() + 600,
+    $p = ['v' => $version, 'app' => $app, 'iat' => $issuedAt ?? time(), 'exp' => time() + 600,
         'nonce' => str_repeat('a', 32)];
     if ($version === 2) $p['identity'] = ['provider' => 'avereo_connect', 'id' => $id];
     $b = avereo_gate_base64url_encode(json_encode($p, JSON_THROW_ON_ERROR));
     return $b . '.' . avereo_gate_base64url_encode(hash_hmac('sha256', $b, $key, true));
 }
-function policyTrial(int $start, int $end, string $status = 'active', array $apps = ['rapport','rga']): void {
+function policyTrial(int $start, int $end, string $status = 'active', array $apps = ['rapport','rga'], int $revokedAt = 0): void {
     global $file;
     file_put_contents($file, json_encode(['version' => 1, 'accounts' => ['42' => [
-        'status' => $status, 'not_before' => $start, 'not_after' => $end, 'applications' => $apps,
+        'status' => $status, 'not_before' => $start, 'not_after' => $end, 'applications' => $apps, 'sessions_revoked_at' => $revokedAt,
     ]]], JSON_THROW_ON_ERROR));
 }
 try {
@@ -58,6 +58,12 @@ try {
         catch (Throwable $e) { $ok = false; }
         expectTrial($ok === $allowed, 'Exact start/end boundary ' . $now);
     }
+    $revokedAt = time() - 5;
+    policyTrial(time() - 100, time() + 1000, 'active', ['rapport', 'rga'], $revokedAt);
+    $_COOKIE['TRIAL_TEST'] = cookieTrial('42', 2, $revokedAt);
+    expectTrial(!avereo_gate_cookie_is_valid($cfg), 'Restore must not revive a revoked cookie');
+    $_COOKIE['TRIAL_TEST'] = cookieTrial();
+    expectTrial(avereo_gate_cookie_is_valid($cfg), 'New session after restoration works');
     policyTrial(200, 100);
     expectTrial(!avereo_gate_cookie_is_valid($cfg), 'Invalid period fails closed');
     echo json_encode(['application'=>$app,'checks'=>$checks,'status'=>'passed']) . PHP_EOL;

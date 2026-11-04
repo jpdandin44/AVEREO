@@ -10,6 +10,20 @@ owner: jpdandin
 tags: [connect, comptes, essai]
 ---
 
+## Cycle de vie des comptes — candidat du 4 novembre
+
+Dans **Gérer les comptes**, le propriétaire de l’organisation peut archiver et restaurer un compte membre ou lecteur à droits explicites, rattaché à cette seule organisation et limité à Rapport et RGA. Les comptes propriétaires, administrateurs, partagés, historiques à droits hérités ou associés à d’autres applications sont protégés. L’archivage conserve le compte, son adresse, ses droits et ses dossiers. Il coupe les sessions CONNECT, Rapport et RGA. Une restauration rétablit le statut précédent et exige une session nouvelle. La période d’essai conserve ses dates d’origine.
+
+**Supprimer définitivement** demande de ressaisir l’adresse du compte. **Conserver les dossiers Rapport liés** est coché par défaut. Les dossiers conservés restent sous l’ancien identifiant CONNECT et restent accessibles aux administrateurs Rapport qui ont déjà ce droit. Une nouvelle inscription avec la même adresse reçoit un nouvel identifiant et aucun dossier historique. Quand l’option est décochée, seuls les dossiers serveur rattachés à l’identifiant CONNECT exact sont effacés. Les brouillons locaux, téléchargements et archives de sauvegarde sont distincts du stockage en ligne.
+
+La suppression est limitée aux identités Drupal créées par CONNECT, à l’UID et à l’adresse concordants, sans rôle privilégié. CONNECT refuse les dépendances sensibles avant l’opération, révoque l’accès, bloque le compte et conserve le choix sur les dossiers. Identité retire l’identité, ses sessions et le lien d’activation éventuel. Après traitement des dossiers, CONNECT retire droits et compte tout en conservant l’audit. Si un service échoue, le propriétaire retrouve **Reprendre la suppression** avec le choix enregistré. La reprise utilise le même identifiant, sans jamais supprimer un nouveau compte associé à la même adresse.
+
+### Préparer la préproduction
+
+Appliquer la migration réversible account_lifecycle après sauvegardes CONNECT, Identité, Rapport et politique d’accès, et après vérification de leur restauration sur copies. Installer les contrôles Rapport/RGA et le pont Drupal avant d’activer les actions dans CONNECT. Les options privées sont ACCOUNT_LIFECYCLE_ENABLED, IDENTITY_ACCOUNT_DELETION_URL, IDENTITY_ACCOUNT_DELETION_SECRET et, pour l’effacement des dossiers, ACCOUNT_LIFECYCLE_REPORT_CONFIG. L’URL HTTPS doit cibler le pont Identité de la même cible. Le secret dédié, distinct des secrets de provisionnement et d’activation, correspond à account_lifecycle_secret dans les paramètres Drupal. La configuration Rapport doit être privée et correspondre à l’environnement CONNECT et à sa politique d’accès.
+
+Vérifier le candidat avec des identités et dossiers fictifs. Contrôler les deux choix, l’isolement, les sessions après restauration, les reprises sur incident, l’audit et les anciens comptes. Avant un retour arrière, vérifier les suppressions en cours et les comptes archivés. Restaurer le code avant d’enlever les colonnes. La migration descendante laisse les comptes archivés désactivés et retire leur information de restauration. Une suppression définitive n’est pas annulée par une migration descendante.
+
 ## Première connexion après l’invitation
 
 Le [parcours d’invitation](parcours-invitation-simplifie.md) décrit le message reçu, le premier mot de passe et la reprise du retour signé vers CONNECT. Le suivi canonique porte l’état de livraison et de recette.
@@ -210,13 +224,6 @@ Les marqueurs natifs `user.data` de Drupal peuvent être relus sous la forme cha
 Le formulaire conserve les paramètres nommés `$form` et `$form_state` attendus par le résolveur de route Drupal. Le paramètre camelCase empêchait le résolveur d’injecter l’état du formulaire et provoquait une erreur 500 ; la signature est contrôlée en non-régression et la page publique doit être requalifiée.
 
 
-## Archivage et suppression — evolution demandee pour plus tard
+## Nettoyage ponctuel des comptes de test
 
-Demande explicite du responsable le 3 novembre. Lot futur, non implémenté :
-
-- Archiver un compte de façon réversible, révoquer ses accès et ses sessions, conserver son historique et définir les conditions d’une restauration.
-- Supprimer définitivement un compte après confirmation explicite ; traiter les liens CONNECT/Drupal, invitations et sessions de manière cohérente, sans laisser une adresse bloquée par un enregistrement résiduel.
-- Protéger le compte propriétaire et empêcher la suppression accidentelle de l’administrateur courant. Définir les rôles autorisés et tracer l’action.
-- Présenter les conséquences avant suppression. Pour les dossiers liés : conservation, transfert ou suppression sont **à arbitrer** avant développement ; ne pas effacer silencieusement les rapports.
-
-Les trois suppressions ponctuelles demandées ce soir ont été réalisées par une opération privée sauvegardée et contrôlée. Elles ne signifient pas que les boutons d’archivage ou de suppression sont disponibles dans l’interface.
+Les trois suppressions ponctuelles demandées ce soir ont été réalisées par une opération privée sauvegardée et contrôlée. Le parcours d’administration développé ensuite est décrit dans la [section sur le cycle de vie](#cycle-de-vie-des-comptes--candidat-du-4-novembre).

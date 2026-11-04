@@ -10,6 +10,7 @@ use Avereo\Connect\Http\Response;
 use Avereo\Connect\Identity\AccountActivationNotifier;
 use Avereo\Connect\Identity\AccountPasswordResetNotifier;
 use Avereo\Connect\Repository\ConnectRepository;
+use Avereo\Connect\Repository\PdoConnectRepository;
 use Avereo\Connect\Security\AppLaunchTicketIssuer;
 use Avereo\Connect\Security\AuthContext;
 use Avereo\Connect\Security\CsrfGuard;
@@ -27,6 +28,7 @@ final class Application
         private readonly ?IdentityAccountActivationCompletionVerifier $activationCompletion = null,
         private readonly ?\Avereo\Connect\Administration\AccountAdministration $accountAdministration = null,
         private readonly ?AccountPasswordResetNotifier $passwordReset = null,
+        private readonly ?\Avereo\Connect\Administration\AccountLifecycle $accountLifecycle = null,
     ) {
     }
 
@@ -216,11 +218,10 @@ final class Application
             $request->method === 'GET'
             && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/accounts$#', $request->path, $matches)
         ) {
-            return Response::success(
-                array_merge($this->repository->getAccountAdministration($userId, (int) $matches[1]),
-                    ['accountCreationAvailable'=>$this->accountAdministration!==null]),
-                $request->requestId,
-            );
+            $snapshot = $this->repository->getAccountAdministration($userId, (int) $matches[1]);
+            $snapshot = $this->accountLifecycle?->describe($userId, $snapshot) ?? $snapshot;
+            $snapshot['accountCreationAvailable'] = $this->accountAdministration !== null;
+            return Response::success($snapshot, $request->requestId);
         }
 
         if ($request->method === 'POST' && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/accounts$#',$request->path,$matches)) {
@@ -228,6 +229,30 @@ final class Application
             if ($this->accountAdministration===null) throw new ApiException(503,'ACCOUNT_ADMIN_NOT_CONFIGURED','La création de comptes doit être configurée.');
             return Response::success($this->accountAdministration->create($userId,(int)$matches[1],$request->body,$request->requestId),$request->requestId,201);
         }
+        if (in_array($request->method, ['PATCH', 'DELETE'], true)
+            && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/lifecycle$#', $request->path, $matches)) {
+            CsrfGuard::assertValid($request, $csrfToken);
+            if ($this->accountLifecycle === null) {
+                throw new ApiException(503, 'ACCOUNT_LIFECYCLE_NOT_CONFIGURED', 'Le cycle de vie des comptes doit être configuré.');
+            }
+            $organization = (int) $matches[1];
+            $target = (int) $matches[2];
+            if ($request->method === 'PATCH') {
+                $this->assertKnownFields($request->body, ['archived']);
+                if (!is_bool($request->body['archived'] ?? null)) {
+                    throw new ApiException(422, 'VALIDATION_ERROR', 'Indiquez si le compte doit être archivé.');
+                }
+                $result = $this->accountLifecycle->setArchived($userId, $organization, $target, $request->body['archived'], $request->requestId);
+            } else {
+                $this->assertKnownFields($request->body, ['confirmationEmail', 'keepReports']);
+                if (!is_string($request->body['confirmationEmail'] ?? null) || !is_bool($request->body['keepReports'] ?? null)) {
+                    throw new ApiException(422, 'VALIDATION_ERROR', 'Confirmez le compte et le choix de conservation des dossiers.');
+                }
+                $result = $this->accountLifecycle->delete($userId, $organization, $target, $request->body['confirmationEmail'], $request->body['keepReports'], $request->requestId);
+            }
+            return Response::success($result, $request->requestId);
+        }
+
         if ($request->method === 'PATCH' && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/access-period$#',$request->path,$matches)) {
             CsrfGuard::assertValid($request,$csrfToken);
             if ($this->accountAdministration===null) throw new ApiException(503,'ACCOUNT_ADMIN_NOT_CONFIGURED','La gestion des périodes doit être configurée.');
@@ -542,6 +567,10 @@ final class Application
             ? $this->repository->findUserIdByDrupalSubject($auth->drupalSubject)
             : null;
 
+        if ($userId !== null && $this->repository instanceof PdoConnectRepository
+            && $this->repository->isAccountSessionRevoked($userId, $auth->authenticatedAt)) {
+            return [AuthContext::anonymous(), null];
+        }
         return [
             new AuthContext($userId, $auth->authenticatedAt, $auth->drupalSubject, $auth->remembered),
             $status,

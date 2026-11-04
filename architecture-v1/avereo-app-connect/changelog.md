@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-04 — Cycle de vie des comptes
+
+Actions d’archivage et de restauration, suppression définitive confirmée et conservation optionnelle des dossiers serveur Rapport. La version est préparée pour revue locale. [Procédure et limites](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
+
 ## 2026-11-04 — Simplification de l’invitation et du premier accès
 
 Une invitation française remplace les deux messages concurrents dans le parcours CONNECT. Deux champs dédiés permettent la première définition du mot de passe. Un écran explique les identifiants d’entrée en préproduction et permet de relancer la confirmation signée jusqu’à l’expiration de l’invitation. [Parcours et contrôles](docs/parcours-invitation-simplifie.md).

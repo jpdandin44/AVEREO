@@ -5,13 +5,18 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-02
+updated: 2026-11-04
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 2026-11-04 — Révocation des comptes CONNECT
+
+Le sas vérifie la date de révocation de la projection privée. Les écritures de dossiers utilisent le verrou partagé. Le contrôle d’identité et de propriété des dossiers est conservé. Aucun changement de payload ou de schéma Rapport.
+
 
 ## 2026-11-02 — Qualification locale des essais temporaires
 

@@ -51,6 +51,8 @@ try {
             'IDENTITY_ACCOUNT_ACTIVATION_URL', 'IDENTITY_ACCOUNT_ACTIVATION_SECRET',
             'SUPPORT_EMAIL',
             'IDENTITY_ACCOUNT_PROVISIONING_URL', 'IDENTITY_ACCOUNT_PROVISIONING_SECRET', 'TRIAL_ACCESS_POLICY_FILE',
+            'ACCOUNT_LIFECYCLE_ENABLED', 'IDENTITY_ACCOUNT_DELETION_URL', 'IDENTITY_ACCOUNT_DELETION_SECRET',
+            'ACCOUNT_LIFECYCLE_REPORT_CONFIG',
             'APP_LAUNCH_RAPPORT_URL', 'APP_LAUNCH_RAPPORT_SECRET',
             'APP_LAUNCH_RGA_URL', 'APP_LAUNCH_RGA_SECRET',
             'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET',
@@ -108,13 +110,50 @@ try {
         )
         : null;
     $accountAdministration = null;
+    $accountLifecycle = null;
     $provisionUrl = trim((string)getenv('IDENTITY_ACCOUNT_PROVISIONING_URL'));
     $provisionSecret = trim((string)getenv('IDENTITY_ACCOUNT_PROVISIONING_SECRET'));
     $trialPolicy = trim((string)getenv('TRIAL_ACCESS_POLICY_FILE'));
     if ($pdo !== null && $repository instanceof PdoConnectRepository && $provisionUrl!=='' && $provisionSecret!=='' && $trialPolicy!=='') {
+        $policyStore = new \Avereo\Connect\Administration\TrialPolicyStore($trialPolicy);
         $accountAdministration = new \Avereo\Connect\Administration\AccountAdministration($pdo,
             new \Avereo\Connect\Identity\IdentityAccountProvisioningClient($provisionUrl,$provisionSecret),
-            new \Avereo\Connect\Administration\TrialPolicyStore($trialPolicy));
+            $policyStore);
+        if (getenv('ACCOUNT_LIFECYCLE_ENABLED') === 'true') {
+            $deletionUrl = trim((string) getenv('IDENTITY_ACCOUNT_DELETION_URL'));
+            $deletionSecret = trim((string) getenv('IDENTITY_ACCOUNT_DELETION_SECRET'));
+            if ($deletionSecret !== '' && ($deletionSecret === $provisionSecret
+                || $deletionSecret === $config->identityAccountActivationSecret)) {
+                throw new RuntimeException('La suppression exige un secret dédié.');
+            }
+            $identityDeletion = $deletionUrl !== '' && $deletionSecret !== ''
+                ? new \Avereo\Connect\Identity\IdentityAccountDeletionClient($deletionUrl, $deletionSecret)
+                : null;
+            $reportConfigPath = trim((string) getenv('ACCOUNT_LIFECYCLE_REPORT_CONFIG'));
+            $reports = $reportConfigPath === '' ? null : static function () use ($reportConfigPath, $trialPolicy, $documentRoot, $config): PDO {
+                $path = realpath($reportConfigPath);
+                $root = realpath($documentRoot);
+                if ($path === false || !is_file($path) || $root === false
+                    || str_starts_with($path, $root . DIRECTORY_SEPARATOR)) {
+                    throw new RuntimeException('Configuration Rapport privée requise.');
+                }
+                $rapport = require $path;
+                $expected = $config->environment === 'preprod' ? ['preprod', 'preproduction'] : [$config->environment];
+                if (!is_array($rapport) || !in_array($rapport['environment'] ?? null, $expected, true)
+                    || ($rapport['connect_trial_access_file'] ?? null) !== $trialPolicy
+                    || ($rapport['auth_mode'] ?? null) !== 'connect_gateway') {
+                    throw new RuntimeException('Rapport ne correspond pas à cet environnement CONNECT.');
+                }
+                return new PDO(
+                    'mysql:host=' . $rapport['db_host'] . ';port=' . (int) ($rapport['db_port'] ?? 3306)
+                        . ';dbname=' . $rapport['db_name'] . ';charset=utf8mb4',
+                    $rapport['db_user'], $rapport['db_password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION],
+                );
+            };
+            $accountLifecycle = new \Avereo\Connect\Administration\AccountLifecycle(
+                $pdo, $accountAdministration, $policyStore, $identityDeletion, $reports,
+            );
+        }
     }
     $application = new Application(
         $config,
@@ -125,6 +164,7 @@ try {
         $activationCompletion,
         $accountAdministration,
         $accountActivation,
+        $accountLifecycle,
     );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {
