@@ -79,6 +79,34 @@ try {
     $apiId=$response->payload['data']['id'];
     $response=$app->handle($route('POST',"/api/v1/admin/organizations/7/users/$apiId/activation-email",[]),$owner,'local-csrf',static fn()=>null);
     ok($response->status===200 && $response->payload['data']['status']==='sent' && $notify->calls===1,'separate invitation API invokes transport only on request');
+    if (getenv('ACCOUNT_ADMIN_MYSQL_TEMPORARY') === 'true') {
+        // Exercise the native upsert through the same API used by the account checkboxes.
+        $pdo->exec("INSERT INTO applications(id,code,name,description,display_order,status,launch_url) VALUES(5,'passeport-immo','Passeport Immo','',5,'active','https://example.invalid/passeport'); INSERT INTO entitlements(organization_id,application_id,status,granted_by_user_id) VALUES(7,5,'active',1)");
+        $accessUrl = "/api/v1/admin/organizations/7/users/$apiId/applications/passeport-immo";
+        $periodUrl = "/api/v1/admin/organizations/7/users/$apiId/access-period";
+        $beforePolicy = file_get_contents($path);
+        $response = $app->handle($route('PUT',$accessUrl,['status'=>'active']),$owner,'local-csrf',static fn()=>null);
+        ok($response->status===422 && file_get_contents($path)===$beforePolicy,'trial rejects Passeport without changing the access policy');
+        $response = $app->handle($route('PATCH',$periodUrl,['startsAt'=>null,'endsAt'=>null]),$owner,'local-csrf',static fn()=>null);
+        ok($response->status===200,'permanent period saved through administration API');
+        $snapshot = $repo->getAccountAdministration(1,7);
+        $row = array_values(array_filter($snapshot['users'],static fn($u)=>(int)$u['id']===$apiId))[0];
+        ok($row['accessStartsAt']===null && $row['accessEndsAt']===null,'reloaded account reports saved permanent access');
+        ok(!$repo->canLaunchApplication($apiId,'passeport-immo'),'permanent period does not grant another application');
+        ok($app->handle($route('PUT',$accessUrl,['status'=>'active'],false),$owner,'local-csrf',static fn()=>null)->status===403,'application grant requires CSRF');
+        ok($app->handle($route('PUT',$accessUrl,['status'=>'active']),$member,'local-csrf',static fn()=>null)->status===403,'member cannot grant application access');
+        $response = $app->handle($route('PUT',$accessUrl,['status'=>'active']),$owner,'local-csrf',static fn()=>null);
+        ok($response->status===200 && $response->payload['data']['status']==='active','owner can add Passeport after saving permanent access');
+        $snapshot = $repo->getAccountAdministration(1,7);
+        $row = array_values(array_filter($snapshot['users'],static fn($u)=>(int)$u['id']===$apiId))[0];
+        $access = array_values(array_filter($row['applications'],static fn($a)=>$a['code']==='passeport-immo'))[0];
+        ok($access['status']==='active' && !$access['inherited'],'reloaded account retains the explicit Passeport grant');
+        $service->synchronize($apiId,fn()=>$pdo->exec("UPDATE users SET onboarding_status='completed' WHERE id=".$apiId));
+        ok($repo->canLaunchApplication($apiId,'passeport-immo'),'activated permanent account can launch granted Passeport');
+        $response = $app->handle($route('PUT',$accessUrl,['status'=>'revoked']),$owner,'local-csrf',static fn()=>null);
+        ok($response->status===200 && !$repo->canLaunchApplication($apiId,'passeport-immo'),'Passeport can be revoked again');
+        ok($repo->canLaunchApplication($apiId,'rapport'),'Passeport revocation preserves Rapport access');
+    }
     $reuse = array_replace($body,['email'=>'historic@example.invalid','linkExisting'=>true]);
     $pdo->exec("UPDATE memberships SET role='admin' WHERE user_id=2");
     $beforeCalls = $identity->calls;

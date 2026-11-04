@@ -10,9 +10,14 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## Finition V1 — applications après passage en permanent
+
+Le candidat local clarifie l’enregistrement de la période et l’attribution séparée des applications. La recette navigateur sur un compte fictif et les contrôles natifs passent. Revue locale, intégration GitHub et livraison en préproduction restent à effectuer avant la recette du compte réel. [Preuves](data/verification-acces-permanent.json). Le lot ne modifie pas les comptes réels et ne vaut pas ouverture de la V1.
+
+
 ## Cycle de vie des comptes — qualification
 
-Le candidat local couvre les membres explicites Rapport/RGA d’une seule organisation. Restent la qualification hébergée et l’accord de livraison. L’extension aux comptes à droits hérités ou à d’autres applications suppose de qualifier leurs données et la coupure de leurs sessions.
+Les PR #101 à #103 sont livrées en préproduction. Les comptes non propriétaires à droits hérités et Passeport Immo sont couverts dans le périmètre qualifié par #102. Restent la revue métier de l’administration hébergée et la préparation distincte de production ; les comptes multi-organisations et applications non qualifiées gardent leurs protections.
 
 ## Priorités après la recette du 3 novembre
 

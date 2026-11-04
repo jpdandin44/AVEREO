@@ -10,13 +10,18 @@ owner: jpdandin
 tags: [connect, documentation]
 ---
 
+## Ajouter une application après un essai
+
+Dans la fiche du compte, cocher **Accès permanent**, cliquer sur **Enregistrer l’accès permanent**, puis confirmer. Attendre la confirmation d’enregistrement avant de cocher une application supplémentaire, par exemple Passeport Immo. La période et les applications sont deux réglages enregistrés séparément. Le [parcours de gestion des accès](docs/administration-comptes.md#passer-un-compte-en-permanent-et-ajouter-une-application) précise les états affichés. Cette clarification est un candidat local, pas une livraison hébergée.
+
+
 ## Première connexion — invitation AVEREO
 
 Le [parcours d’invitation](docs/parcours-invitation-simplifie.md) utilise un seul e-mail français, un formulaire dédié au premier mot de passe et un retour signé réessayable. Les identifiants d’entrée de préproduction sont distincts de la connexion personnelle. Le candidat, sa qualification et les preuves sont suivis dans le cockpit.
 
 ## Archivage et suppression des comptes
 
-Le [cycle de vie des comptes](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre) couvre l’archivage, la restauration et la suppression confirmée des comptes éligibles. La conservation des dossiers Rapport est proposée par défaut. La configuration et la recette hébergées restent à effectuer.
+Le [cycle de vie des comptes](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre) couvre l’archivage, la restauration et la suppression confirmée des comptes éligibles. La conservation des dossiers Rapport est proposée par défaut. Les PR #101 à #103 sont livrées en préproduction ; leur recette technique est consignée dans le suivi canonique. La revue métier de l’administration hébergée et la production restent distinctes.
 
 
 ## Rattachement des comptes créés et invités
