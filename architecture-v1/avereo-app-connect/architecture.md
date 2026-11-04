@@ -54,3 +54,7 @@ Elle ne crée ni entrée de catalogue ni habilitation sur un serveur.
 ## Projection d’accès des comptes archivés et restaurés
 
 CONNECT réutilise le catalogue effectif pour republier les droits d’un compte après restauration. Le fichier privé partagé est vérifié par Rapport, RGA et, lorsque configuré et qualifié, Passeport Immo. Le pont Identité retourne l’issue distincte « retained » pour une identité native que CONNECT doit conserver. [Règles d’administration](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).
+
+## Rattachement d’une identité conservée
+
+Après décision explicite du propriétaire, CONNECT transmet au pont un rattachement signé. Le pont relit l’identité native et renvoie son sujet sans créer de doublon. CONNECT crée son propre identifiant, révoque les sessions antérieures et conserve l’activation séparée. [Procédure et protections](docs/administration-comptes.md#recréer-un-compte-dont-lidentité-avereo-existe).

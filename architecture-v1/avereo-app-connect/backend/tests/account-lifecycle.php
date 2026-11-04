@@ -36,7 +36,7 @@ try {
     $policy = new TrialPolicyStore($file);
     $provision = new class implements AccountIdentityProvisioner {
         private int $uid = 40;
-        public function provision(string $email, string $displayName, string $requestId): string
+        public function provision(string $email, string $displayName, string $requestId, bool $linkExisting = false): string
         {
             return (string) ++$this->uid;
         }

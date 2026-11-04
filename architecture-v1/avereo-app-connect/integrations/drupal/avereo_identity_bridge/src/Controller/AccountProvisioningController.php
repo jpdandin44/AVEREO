@@ -29,12 +29,22 @@ final class AccountProvisioningController extends ControllerBase
         if($this->cache->get($replay)!==false)return $this->answer(['error'=>'PROVISIONING_REQUEST_REPLAYED'],403);
         $this->cache->set($replay,true,time()+120);
         try {$p=json_decode($raw,true,8,JSON_THROW_ON_ERROR);}catch(\Throwable){return $this->answer(['error'=>'PROVISIONING_INPUT_INVALID'],422);}
-        if(!is_array($p) || array_diff(array_keys($p),['version','email','displayName','requestId'])!==[] || ($p['version']??null)!==1
+        if(!is_array($p) || array_diff(array_keys($p),['version','email','displayName','requestId','linkExisting'])!==[] || ($p['version']??null)!==1
             || !is_string($p['email']??null) || !is_string($p['displayName']??null)
+            || (array_key_exists('linkExisting',$p) && !is_bool($p['linkExisting']))
             || (isset($p['requestId']) && (!is_string($p['requestId']) || strlen($p['requestId'])>128)))return $this->answer(['error'=>'PROVISIONING_INPUT_INVALID'],422);
         $email=strtolower(trim($p['email']));$name=trim($p['displayName']);
         if(!filter_var($email,FILTER_VALIDATE_EMAIL) || strlen($email)>254 || $name==='' || strlen($name)>191)return $this->answer(['error'=>'PROVISIONING_INPUT_INVALID'],422);
         $storage=$this->entities->getStorage('user');$accounts=$storage->loadByProperties(['mail'=>$email]);
+        if (($p['linkExisting'] ?? false) === true) {
+            $account = count($accounts) === 1 ? reset($accounts) : null;
+            if ($account === null || (int) $account->id() <= 1 || $account->isBlocked()
+                || trim((string) $account->getPassword()) === ''
+                || array_diff($account->getRoles(), ['authenticated', 'utilisateur_rapport']) !== []) {
+                return $this->answer(['error'=>'IDENTITY_LINK_UNAVAILABLE'],409);
+            }
+            return $this->answer(['status'=>'linked','subject'=>(string)$account->id()],200);
+        }
         if($accounts!==[]) {
             $account=reset($accounts);
             if(count($accounts)!==1 || !$account->isBlocked() || trim((string)$account->getPassword())!==''

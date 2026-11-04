@@ -250,3 +250,7 @@ Après conservation du fichier HTTP lors de la livraison, le responsable a deman
 ## 2026-11-04 — Élargissement du cycle de vie
 
 Les contrôles des comptes historiques sont exercés par le moteur CONNECT et le pont Identité. La configuration Passeport Immo est une condition du périmètre éligible. [Référence](administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).
+
+## 2026-11-04 — Séparer création, rattachement et envoi
+
+Le portail appelle toujours deux opérations distinctes. Le pont de provisionnement traite le rattachement signé sans modifier l’identité et renvoie son sujet natif. Le moteur CONNECT inscrit un nouveau compte en attente d’activation et refuse les anciennes sessions. [Procédure](administration-comptes.md#recréer-un-compte-dont-lidentité-avereo-existe).

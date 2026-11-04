@@ -16,9 +16,11 @@ final class IdentityAccountProvisioningClient implements AccountIdentityProvisio
         $this->transport = $transport === null ? null : \Closure::fromCallable($transport);
     }
 
-    public function provision(string $email, string $displayName, string $requestId): string
+    public function provision(string $email, string $displayName, string $requestId, bool $linkExisting = false): string
     {
-        $body = json_encode(['version'=>1, 'email'=>$email, 'displayName'=>$displayName, 'requestId'=>$requestId], JSON_THROW_ON_ERROR);
+        $input = ['version'=>1, 'email'=>$email, 'displayName'=>$displayName, 'requestId'=>$requestId];
+        if ($linkExisting) $input['linkExisting'] = true;
+        $body = json_encode($input, JSON_THROW_ON_ERROR);
         $at = (string) time();
         $nonce = rtrim(strtr(base64_encode(random_bytes(24)), '+/', '-_'), '=');
         $headers = ['Content-Type'=>'application/json', 'Accept'=>'application/json', 'X-AVEREO-Issued-At'=>$at,
@@ -35,11 +37,15 @@ final class IdentityAccountProvisioningClient implements AccountIdentityProvisio
             $response = ['status'=>(int)curl_getinfo($curl,CURLINFO_RESPONSE_CODE), 'body'=>$raw === false ? '' : $raw];
             curl_close($curl);
         }
-        if (($response['status'] ?? 0) === 409) throw new \Avereo\Connect\Http\ApiException(409, 'IDENTITY_EXISTS', 'Cette identité existe déjà ; aucune fusion automatique.');
+        if (($response['status'] ?? 0) === 409) {
+            throw new \Avereo\Connect\Http\ApiException(409, $linkExisting ? 'IDENTITY_LINK_UNAVAILABLE' : 'IDENTITY_EXISTS',
+                $linkExisting ? 'Cette identité AVEREO ne peut pas être rattachée. Vérifiez son état et ses rôles.'
+                    : 'Une identité AVEREO existe déjà. Le propriétaire peut confirmer son rattachement.');
+        }
         $data = json_decode((string)($response['body'] ?? ''), true);
         if (($response['status'] ?? 0) !== 200 || !is_array($data)
             || !is_string($data['subject'] ?? null)
-            || !preg_match('/^[1-9][0-9]{0,18}$/D', $data['subject']) || ($data['status'] ?? '') !== 'prepared') {
+            || !preg_match('/^[1-9][0-9]{0,18}$/D', $data['subject']) || ($data['status'] ?? '') !== ($linkExisting ? 'linked' : 'prepared')) {
             throw new \Avereo\Connect\Http\ApiException(502, 'IDENTITY_PROVISIONING_FAILED', 'La création de l’identité n’a pas été confirmée. Réessayez sans envoyer d’invitation.');
         }
         return $data['subject'];

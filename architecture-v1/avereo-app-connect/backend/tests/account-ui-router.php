@@ -17,14 +17,20 @@ $pdo=accountTestDatabase($db);
 if(!is_file($db.'.policy.json') && (int)$pdo->query("SELECT COUNT(*) FROM users WHERE application_access_mode='explicit'")->fetchColumn()===0)
     file_put_contents($db.'.policy.json','{"version":1,"accounts":{}}');
 $identity=new class implements \Avereo\Connect\Identity\AccountIdentityProvisioner {
-    public function provision(string $email,string $name,string $request):string {
+    public function provision(string $email,string $name,string $request, bool $linkExisting = false):string {
         if(!str_ends_with($email,'@example.invalid'))throw new \Avereo\Connect\Http\ApiException(422,'TEST_ADDRESS_REQUIRED','Utilisez une adresse @example.invalid pour cette recette locale.');
+        if ($email === 'historique@example.invalid') {
+            if (!$linkExisting) throw new \Avereo\Connect\Http\ApiException(409,'IDENTITY_EXISTS','Identité de recette existante.');
+            return '42';
+        }
+        if ($linkExisting) throw new \Avereo\Connect\Http\ApiException(409,'IDENTITY_LINK_UNAVAILABLE','Identité de recette introuvable.');
         $h=hash('sha256',$email);return substr($h,0,8).'-'.substr($h,8,4).'-'.substr($h,12,4).'-'.substr($h,16,4).'-'.substr($h,20,12);
     }
 };
 $notifier=new class implements \Avereo\Connect\Identity\AccountActivationNotifier, \Avereo\Connect\Identity\AccountPasswordResetNotifier {
     public function send(int $id,string $subject,string $email,string $name,string $request):array {
         if(!str_ends_with($email,'@example.invalid'))throw new RuntimeException('Test address required.');
+        if (str_starts_with($email, 'echec')) throw new \Avereo\Connect\Http\ApiException(502,'TEST_MAIL_FAILED','Échec d’envoi simulé.');
         return ['status'=>'sent','expiresInSeconds'=>86400];
     }
     public function sendPasswordReset(int $id,string $subject,string $email,string $name,string $request):array {

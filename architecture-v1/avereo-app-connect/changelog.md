@@ -77,3 +77,7 @@ Aucune migration, habilitation ou installation hébergée exécutée par ce lot.
 ## 2026-11-04 — Cycle de vie des comptes à droits hérités
 
 Candidat local pour les comptes non propriétaires avec Rapport, RGA et Passeport Immo qualifié. Motifs d’indisponibilité affichés, droits hérités restaurés et suppression CONNECT dissociée de l’identité native lorsqu’elle doit être conservée.
+
+## 2026-11-04 — Recréation d’un compte avec identité existante
+
+Le candidat local ajoute le rattachement explicite d’une identité historique, l’affichage immédiat du compte créé et l’option d’invitation après création.

@@ -4,5 +4,5 @@ namespace Avereo\Connect\Identity;
 
 interface AccountIdentityProvisioner
 {
-    public function provision(string $email, string $displayName, string $requestId): string;
+    public function provision(string $email, string $displayName, string $requestId, bool $linkExisting = false): string;
 }
