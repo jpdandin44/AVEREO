@@ -395,10 +395,10 @@ paths:
                 startsAt: {type: [string, "null"], format: date-time}
                 endsAt: {type: [string, "null"], format: date-time}
       responses:
-        "201": {description: Compte préparé, invitation non envoyée}
-        "403": {description: Rôle, organisation ou CSRF refusé}
+        "201": {description: 'Compte préparé, invitation non envoyée'}
+        "403": {description: 'Rôle, organisation ou CSRF refusé'}
         "409": {description: Compte ou identité existant sans rapprochement automatique}
-        "422": {description: Champs, applications ou période invalides}
+        "422": {description: 'Champs, applications ou période invalides'}
         "502": {description: Provisionnement non confirmé}
         "503": {description: Paramètres privés de création indisponibles}
     get:
@@ -705,7 +705,7 @@ paths:
                 endsAt: {type: [string, "null"], format: date-time}
       responses:
         "200": {description: Période enregistrée et projection publiée}
-        "403": {description: Compte protégé, autorisation ou CSRF refusé}
+        "403": {description: 'Compte protégé, autorisation ou CSRF refusé'}
         "422": {description: Deux dates requises ou deux valeurs nulles pour accès permanent}
         "503": {description: Service non configuré}
 components:
@@ -949,6 +949,18 @@ components:
           type: boolean
         canSendActivationEmail:
           type: boolean
+        archived:
+          type: boolean
+        canArchive:
+          type: boolean
+        canRestore:
+          type: boolean
+        canDelete:
+          type: boolean
+        canDeleteReports:
+          type: boolean
+        pendingDeletionKeepsReports:
+          type: [boolean, "null"]
         onboardingStatus:
           type: string
           enum: [required, sent, completed]
