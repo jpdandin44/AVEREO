@@ -42,16 +42,20 @@ final class ActivationPasswordForm extends FormBase
         }
 
         $form['intro'] = [
-            '#markup' => '<p>Définissez votre mot de passe AVEREO. '
-                . 'Il remplacera définitivement l’ancien mot de passe.</p>',
+            '#markup' => '<p>Choisissez votre mot de passe personnel. Il vous servira à vous connecter à AVEREO CONNECT.</p>',
         ];
         $form['password'] = [
-            '#type' => 'password_confirm',
+            '#type' => 'password',
             '#title' => $this->t('Nouveau mot de passe'),
+            '#description' => $this->t('Utilisez au moins 12 caractères, dont une lettre et un chiffre.'),
+            '#attributes' => ['autocomplete' => 'new-password'],
             '#required' => true,
         ];
-        $form['rules'] = [
-            '#markup' => '<p>Utilisez au moins 12 caractères avec des lettres et un chiffre.</p>',
+        $form['confirm_password'] = [
+            '#type' => 'password',
+            '#title' => $this->t('Confirmer le mot de passe'),
+            '#attributes' => ['autocomplete' => 'new-password'],
+            '#required' => true,
         ];
         $form['actions'] = ['#type' => 'actions'];
         $form['actions']['submit'] = [
@@ -64,9 +68,10 @@ final class ActivationPasswordForm extends FormBase
 
     public function validateForm(array &$form, FormStateInterface $form_state): void
     {
-        $password = $this->password($form_state);
+        $submitted = $form_state->getValue('password');
+        $password = is_string($submitted) ? $submitted : '';
         if (
-            strlen($password) < 12
+            mb_strlen($password, 'UTF-8') < 12
             || preg_match('/\p{L}/u', $password) !== 1
             || preg_match('/\d/', $password) !== 1
         ) {
@@ -74,6 +79,10 @@ final class ActivationPasswordForm extends FormBase
                 'password',
                 $this->t('Le mot de passe doit contenir au moins 12 caractères, une lettre et un chiffre.'),
             );
+        }
+        // Previously rendered forms still validate the native password composite themselves.
+        if (isset($form['confirm_password']) && $password !== $form_state->getValue('confirm_password')) {
+            $form_state->setErrorByName('confirm_password', $this->t('Les deux mots de passe doivent être identiques.'));
         }
     }
 
@@ -91,7 +100,7 @@ final class ActivationPasswordForm extends FormBase
                 'Le compte AVEREO est indisponible.',
             );
         }
-        $account->setPassword($this->password($form_state));
+        $account->setPassword((string) $form_state->getValue('password'));
         $account->activate();
         $account->save();
         \Drupal::service('user.data')->set(
@@ -102,6 +111,7 @@ final class ActivationPasswordForm extends FormBase
         $session?->remove('avereo_identity_bridge_activation');
         $session?->set('avereo_identity_bridge_activation_complete', [
             'connectUserId' => $activation['connectUserId'],
+            'expiresAt' => $activation['expiresAt'],
         ]);
         $form_state->setRedirect('avereo_identity_bridge.account_ready');
     }
@@ -119,14 +129,5 @@ final class ActivationPasswordForm extends FormBase
         return $uid > 0 && $connectUserId > 0 && $expiresAt >= time()
             ? ['uid' => $uid, 'connectUserId' => $connectUserId, 'expiresAt' => $expiresAt]
             : null;
-    }
-
-    private function password(FormStateInterface $form_state): string
-    {
-        $value = $form_state->getValue('password');
-        if (is_array($value)) {
-            return (string) ($value['pass1'] ?? '');
-        }
-        return (string) $value;
     }
 }

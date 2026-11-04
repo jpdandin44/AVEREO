@@ -19,6 +19,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class AccountActivationController extends ControllerBase
 {
+    private static ?UserInterface $accountBeingInvited = null;
+
+    public static function sendsOwnActivationMailFor(mixed $account): bool
+    {
+        return $account instanceof UserInterface && self::$accountBeingInvited === $account;
+    }
+
     public function __construct(
         private readonly CacheBackendInterface $cache,
         private readonly EntityTypeManagerInterface $entityTypeManagerService,
@@ -242,6 +249,7 @@ final class AccountActivationController extends ControllerBase
         } else {
             $request->getSession()->set('avereo_identity_bridge_activation_complete', [
                 'connectUserId' => $connectUserId,
+                'expiresAt' => $expiresAt,
             ]);
         }
         $url = Url::fromRoute(
@@ -259,15 +267,47 @@ final class AccountActivationController extends ControllerBase
         $completionUrl = trim((string) ($configuration['connect_activation_complete_url'] ?? ''));
         $secret = trim((string) ($configuration['account_activation_secret'] ?? ''));
         $supportEmail = trim((string) ($configuration['support_email'] ?? 'contact@avereo.fr'));
-        $activation = $request->getSession()->get('avereo_identity_bridge_activation_complete');
-        $request->getSession()->remove('avereo_identity_bridge_activation_complete');
+        $session = $request->getSession();
+        $activation = $session->get('avereo_identity_bridge_activation_complete');
         $connectUserId = is_array($activation) ? (int) ($activation['connectUserId'] ?? 0) : 0;
+        $expiresAt = is_array($activation) ? ($activation['expiresAt'] ?? null) : null;
         if (
             $connectUserId < 1
+            || ($expiresAt !== null && $expiresAt <= time())
             || !str_starts_with($completionUrl, 'https://')
             || strlen($secret) < 32
         ) {
             return $this->completionFailed($supportEmail);
+        }
+
+        if ($request->query->getString('continue') !== '1') {
+            $continueUrl = Url::fromRoute(
+                'avereo_identity_bridge.account_ready',
+                [],
+                ['query' => ['continue' => '1']],
+            )->toString();
+            return new Response(
+                '<!doctype html><html lang="fr"><meta charset="utf-8"><title>Ouvrir AVEREO CONNECT</title>'
+                . '<body><main><h1>Terminer mon activation</h1>'
+                . '<p><a href="' . htmlspecialchars($continueUrl, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')
+                . '">Continuer vers AVEREO CONNECT</a></p>'
+                . '<p>Si le navigateur affiche une fenêtre d’accès à la préproduction, utilisez les identifiants '
+                . 'de préproduction qui vous ont été communiqués séparément.</p>'
+                . '<p>Sur la page de connexion AVEREO, utilisez votre adresse e-mail et votre mot de passe personnel.</p>'
+                . '<p>Si le retour échoue, revenez sur cette page et cliquez de nouveau sur « Continuer vers AVEREO CONNECT ».</p>'
+                . '</main></body></html>',
+                200,
+                [
+                    'Content-Type' => 'text/html; charset=UTF-8',
+                    'Cache-Control' => 'no-store, private',
+                    'Referrer-Policy' => 'no-referrer',
+                ],
+            );
+        }
+
+        // Sessions opened before deployment keep their original one-attempt behavior.
+        if ($expiresAt === null) {
+            $session->remove('avereo_identity_bridge_activation_complete');
         }
         $issuedAt = time();
         $nonce = $this->base64Url(random_bytes(24));
@@ -286,6 +326,7 @@ final class AccountActivationController extends ControllerBase
         return new TrustedRedirectResponse($url, 303, [
             'Cache-Control' => 'no-store, private',
             'Pragma' => 'no-cache',
+            'Referrer-Policy' => 'no-referrer',
         ]);
     }
 
@@ -362,7 +403,7 @@ final class AccountActivationController extends ControllerBase
         return new Response(
             '<!doctype html><html lang="fr"><meta charset="utf-8"><title>AVEREO Connect</title>'
             . '<body><main><h1>Activation à finaliser</h1>'
-            . '<p>Le mot de passe a été défini, mais CONNECT n’a pas reçu la confirmation.</p>'
+            . '<p>Cette étape n’est plus disponible. Si votre accès n’a pas été confirmé, demandez une nouvelle invitation.</p>'
             . '<p>Contactez <a href="mailto:' . $safeSupportEmail . '">'
             . $safeSupportEmail . '</a>.</p></main></body></html>',
             503,
@@ -396,7 +437,13 @@ final class AccountActivationController extends ControllerBase
             $account->setPassword($this->base64Url(random_bytes(48)));
         }
         $account->activate();
-        $account->save();
+        $previous = self::$accountBeingInvited;
+        self::$accountBeingInvited = $account;
+        try {
+            $account->save();
+        } finally {
+            self::$accountBeingInvited = $previous;
+        }
     }
 
     /** @param null|array<string, mixed> $recordData */

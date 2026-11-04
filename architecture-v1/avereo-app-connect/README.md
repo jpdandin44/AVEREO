@@ -5,10 +5,15 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## Première connexion — invitation AVEREO
+
+Le [parcours d’invitation](docs/parcours-invitation-simplifie.md) utilise un seul e-mail français, un formulaire dédié au premier mot de passe et un retour signé réessayable. Les identifiants d’entrée de préproduction sont distincts de la connexion personnelle. Le candidat, sa qualification et les preuves sont suivis dans le cockpit.
+
 
 ## Rattachement des comptes créés et invités
 

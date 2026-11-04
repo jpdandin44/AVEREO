@@ -39,17 +39,17 @@ function avereo_identity_bridge_mail(string $key, array &$message, array $params
     $activationLink = (string) ($params['activation_link'] ?? '');
     $requiresPasswordInitialization = ($params['requires_password_initialization'] ?? false) === true;
     $supportEmail = (string) ($params['support_email'] ?? 'contact@avereo.fr');
-    $message['subject'] = 'Votre accès AVEREO Connect est activé';
+    $message['subject'] = 'Votre invitation à AVEREO CONNECT';
     avereo_identity_bridge_set_reply_to($message, $supportEmail);
     $action = $requiresPasswordInitialization
         ? "Pour définir votre premier mot de passe, utilisez ce lien personnel à usage unique :"
         : "Votre mot de passe choisi lors de l’inscription reste inchangé. "
             . "Pour confirmer votre accès, utilisez ce lien personnel à usage unique :";
     $message['body'][] = ($displayName === '' ? 'Bonjour,' : 'Bonjour ' . $displayName . ',')
-        . "\n\nVotre compte AVEREO Connect a été approuvé."
+        . "\n\nVous êtes invité à accéder à AVEREO CONNECT."
         . "\n\n" . $action
         . "\n" . $activationLink
-        . "\n\nCe lien expire après 24 heures. Aucun mot de passe n’est transmis par e-mail."
+        . "\n\nCe lien expire après 24 heures. Vous pourrez ensuite vous connecter avec cette adresse e-mail."
         . "\n\nSi vous n’êtes pas à l’origine de cette demande ou si vous avez besoin d’aide,"
         . "\ncontactez l’administrateur : " . $supportEmail
         . "\n\nL’équipe AVEREO";
@@ -61,6 +61,13 @@ function avereo_identity_bridge_mail(string $key, array &$message, array $params
 function avereo_identity_bridge_mail_alter(array &$message): void
 {
     if (($message['module'] ?? null) !== 'user') {
+        return;
+    }
+    if (($message['key'] ?? null) === 'status_activated'
+        && \Drupal\avereo_identity_bridge\Controller\AccountActivationController::sendsOwnActivationMailFor(
+            $message['params']['account'] ?? null,
+        )) {
+        $message['send'] = false;
         return;
     }
     $configuration = \Drupal\Core\Site\Settings::get('avereo_identity_bridge', []);

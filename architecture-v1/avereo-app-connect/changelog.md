@@ -5,10 +5,19 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 2026-11-04 — Simplification de l’invitation et du premier accès
+
+Une invitation française remplace les deux messages concurrents dans le parcours CONNECT. Deux champs dédiés permettent la première définition du mot de passe. Un écran explique les identifiants d’entrée en préproduction et permet de relancer la confirmation signée jusqu’à l’expiration de l’invitation. [Parcours et contrôles](docs/parcours-invitation-simplifie.md).
+
+## 3 novembre 2026 — Diagnostic de première connexion et clôture
+
+Diagnostic : notification Drupal concurrente de l’invitation AVEREO, formulaire natif et retour CONNECT bloqué par la protection HTTP. Reproduction native de deux mails, assertion d’unicité rouge ; proposition de correction et critères consignés, pas de nouveau code runtime ni déploiement dans ce dernier lot. Nettoyage exceptionnel de trois comptes de test effectué dans les deux systèmes sur demande, avec sauvegardes/restaurations et invariants vérifiés ; ce n’est pas une fonction produit. Archivage et suppression dans l’interface enregistrés pour plus tard.
+
 
 ## 2026-11-03 — Correction du sujet des comptes créés et invités
 
