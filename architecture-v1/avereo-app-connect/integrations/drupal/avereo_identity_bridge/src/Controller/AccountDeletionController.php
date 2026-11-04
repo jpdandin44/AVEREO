@@ -95,4 +95,3 @@ final class AccountDeletionController
         return new JsonResponse(['status' => $status], $httpStatus, ['Cache-Control' => 'no-store']);
     }
 }
-

@@ -198,4 +198,3 @@ final class AccountLifecycle
             [$actor, $organization, $action, (string) $id, $requestId, json_encode($metadata, JSON_THROW_ON_ERROR)]);
     }
 }
-
