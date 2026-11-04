@@ -24,6 +24,9 @@ Appliquer la migration réversible account_lifecycle après sauvegardes CONNECT,
 
 Vérifier le candidat avec des identités et dossiers fictifs. Contrôler les deux choix, l’isolement, les sessions après restauration, les reprises sur incident, l’audit et les anciens comptes. Avant un retour arrière, vérifier les suppressions en cours et les comptes archivés. Restaurer le code avant d’enlever les colonnes. La migration descendante laisse les comptes archivés désactivés et retire leur information de restauration. Une suppression définitive n’est pas annulée par une migration descendante.
 
+## Première connexion après l’invitation
+
+Le [parcours d’invitation](parcours-invitation-simplifie.md) décrit le message reçu, le premier mot de passe et la reprise du retour signé vers CONNECT. Le suivi canonique porte l’état de livraison et de recette.
 
 ## Reset administratif — nouveau candidat local
 
@@ -219,3 +222,8 @@ Une identité préparée par CONNECT conserve le besoin de définir son premier 
 Les marqueurs natifs `user.data` de Drupal peuvent être relus sous la forme chaîne `"1"`. Les contrôles de création et d’initialisation acceptent strictement `true`, `1` et `"1"` ; les tests couvrent cette représentation hébergée. Aucun autre contenu n’est traité comme un accord.
 
 Le formulaire conserve les paramètres nommés `$form` et `$form_state` attendus par le résolveur de route Drupal. Le paramètre camelCase empêchait le résolveur d’injecter l’état du formulaire et provoquait une erreur 500 ; la signature est contrôlée en non-régression et la page publique doit être requalifiée.
+
+
+## Nettoyage ponctuel des comptes de test
+
+Les trois suppressions ponctuelles demandées ce soir ont été réalisées par une opération privée sauvegardée et contrôlée. Le parcours d’administration développé ensuite est décrit dans la [section sur le cycle de vie](#cycle-de-vie-des-comptes--candidat-du-4-novembre).

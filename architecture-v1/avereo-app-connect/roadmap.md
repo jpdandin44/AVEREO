@@ -14,6 +14,10 @@ tags: [connect, documentation, preproduction]
 
 Le candidat local couvre les membres explicites Rapport/RGA d’une seule organisation. Restent la qualification hébergée et l’accord de livraison. L’extension aux comptes à droits hérités ou à d’autres applications suppose de qualifier leurs données et la coupure de leurs sessions.
 
+## Priorités après la recette du 3 novembre
+
+Priorité : qualifier [l’invitation et la première connexion](docs/parcours-invitation-simplifie.md) en préproduction. La recette de Philippe et l’évolution éventuelle de la protection d’entrée font l’objet de décisions séparées.
+
 
 ## Rattachement des invitations — lot du 3 novembre
 

@@ -58,6 +58,7 @@ $stack->push($request);
 try {
     Drupal::configFactory()->getEditable('system.mail')->set('interface.default', 'test_mail_collector')->save();
     $expect(Drupal::config('system.mail')->get('interface.default') === 'test_mail_collector', 'Native mail backend is collector before any fixture operation');
+    Drupal::configFactory()->getEditable('user.settings')->set('notify.status_activated', true)->save();
     Drupal::state()->set('system.test_mail_collector', []);
     $provision = AccountProvisioningController::create(Drupal::getContainer());
     $activate = AccountActivationController::create(Drupal::getContainer());
@@ -96,9 +97,9 @@ try {
     $notifier->send($id, (string) $uid, $email, 'Subject fixture', 'native-invite');
     $messages = Drupal::state()->get('system.test_mail_collector', []);
     $expect(count(array_filter($messages, static fn($m) => $m['to'] !== $email)) === 0, 'Every captured message targets only the local fixture');
-    $invitations = array_values(array_filter($messages, static fn($m) => $m['id'] === 'avereo_identity_bridge_account_activation'));
-    $expect(count($invitations) === 1, 'Exactly one invitation built and captured by native local mail collector');
-    $messages = $invitations;
+    $expect(array_column($messages, 'id') === ['avereo_identity_bridge_account_activation'],
+        'Exactly one email in total: no native status activation duplicate');
+    $expect(str_contains($messages[0]['subject'], 'Votre invitation'), 'French invitation subject');
     $expect($messages[0]['params']['requires_password_initialization'] === true, 'Invitation requests first password');
     $token = basename(parse_url($messages[0]['params']['activation_link'], PHP_URL_PATH));
     $response = $activate->activate($request, $token);
@@ -106,15 +107,38 @@ try {
     $expect($activate->activate($request, $token)->getStatusCode() === 410, 'Used invitation cannot be replayed');
     $form = ActivationPasswordForm::create(Drupal::getContainer());
     $password = 'Fixture123-' . bin2hex(random_bytes(12));
-    $state = new FormState(); $state->setValues(['password' => ['pass1' => $password, 'pass2' => $password]]);
-    $elements = []; $form->validateForm($elements, $state);
+    $state = new FormState();
+    $elements = $form->buildForm([], $state);
+    $expect($elements['password']['#type'] === 'password' && $elements['confirm_password']['#type'] === 'password',
+        'Two dedicated password fields avoid the native English composite');
+    $state->setValues(['password' => $password, 'confirm_password' => $password . 'x']);
+    $form->validateForm($elements, $state);
+    $expect(isset($state->getErrors()['confirm_password']), 'Password mismatch is rejected by Drupal');
+    $state->clearErrors();
+    $state->setValues(['password' => 'éééééé1', 'confirm_password' => 'éééééé1']);
+    $form->validateForm($elements, $state);
+    $expect(isset($state->getErrors()['password']), 'Minimum length counts characters, not bytes');
+    $state->clearErrors();
+    $state->setValues(['password' => $password, 'confirm_password' => $password]);
+    $form->validateForm($elements, $state);
     $expect(!$state->hasAnyErrors(), 'Native initialization form accepts valid fixture password');
     $form->submitForm($elements, $state);
     $ready = $activate->ready($request);
-    parse_str(parse_url($ready->getTargetUrl(), PHP_URL_QUERY), $completion);
+    $expect($ready->getStatusCode() === 200 && str_contains($ready->getContent(), 'Continuer vers AVEREO CONNECT')
+        && str_contains($ready->getContent(), 'préproduction'), 'Ready page explains the separate entry and retry');
+    $continue = Request::create('/avereo/account/ready?continue=1');
+    $continue->setSession($request->getSession());
+    $first = $activate->ready($continue);
+    $expect($first->getStatusCode() === 303, 'Continue attempts the signed CONNECT return');
+    $expect($activate->ready($request)->getStatusCode() === 200, 'A blocked return can reopen the ready page');
+    $retry = $activate->ready($continue);
+    parse_str(parse_url($retry->getTargetUrl(), PHP_URL_QUERY), $completion);
+    $expect($retry->getTargetUrl() !== $first->getTargetUrl(), 'Each retry has a fresh signed nonce');
     $verifiedId = (new IdentityAccountActivationCompletionVerifier($secret))->verify($completion);
     $expect($verifiedId === $id, 'Signed completion designates original CONNECT account');
     $service->synchronize($id, fn () => $repo->completeAccountActivation($verifiedId, 'native-complete'));
+    $request->getSession()->set('avereo_identity_bridge_activation_complete', ['connectUserId' => $id, 'expiresAt' => time() - 1]);
+    $expect($activate->ready($continue)->getStatusCode() === 503, 'An expired activation session cannot mint a new callback');
     $storage->resetCache([$uid]); $account = $storage->load($uid);
     $resolved = (new LoginIdentifierResolver($storage))->resolve($email);
     $authenticated = Drupal::service('user.auth')->authenticate($resolved, $password);
@@ -134,6 +158,15 @@ try {
     $expect(count(array_filter($captured, static fn($m) => $m['id'] === 'user_password_reset')) === 1, 'Native numeric subject can build native reset after linking');
     $storage->resetCache([$uid]);
     $expect($storage->load($uid)->getPassword() === $passwordHash, 'Invitation and reset preserve initialized password');
+    $independent = $storage->create([
+        'name' => 'independent-' . bin2hex(random_bytes(8)),
+        'mail' => 'independent-' . bin2hex(random_bytes(8)) . '@example.invalid',
+        'status' => 0,
+    ]);
+    $independent->save();
+    $independent->activate()->save();
+    $captured = Drupal::state()->get('system.test_mail_collector', []);
+    $expect(end($captured)['id'] === 'user_status_activated', 'Ordinary Drupal activation still sends its native email');
     $after = $pdo->query('SELECT * FROM users WHERE id=' . $id)->fetch(PDO::FETCH_ASSOC);
     foreach (['id','drupal_subject','email_normalized','application_access_mode','access_starts_at','access_ends_at'] as $key) {
         $expect($after[$key] === $before[$key], 'Activation preserves ' . $key);

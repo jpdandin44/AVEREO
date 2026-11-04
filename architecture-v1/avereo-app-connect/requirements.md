@@ -14,6 +14,10 @@ tags: [connect, documentation, preproduction]
 
 Le propriétaire peut archiver et restaurer un compte membre éligible. La suppression définitive requiert la confirmation explicite de son adresse et le choix sur les dossiers Rapport. Le choix par défaut est la conservation. Les reprises conservent ce choix et l’identité ciblée. [Périmètre](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
 
+## Invitation et première connexion
+
+Un seul e-mail français, un premier mot de passe défini une seule fois, retour fiable à CONNECT et identifiant par e-mail. Les contrôles d’identité, rôles, applications et période restent obligatoires. [Critères du parcours](docs/parcours-invitation-simplifie.md).
+
 
 ## Continuité du compte créé et invité
 

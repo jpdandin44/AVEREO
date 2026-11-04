@@ -14,6 +14,15 @@ tags: [connect, audit, preproduction]
 
 Le portail PHP, son API, sa projection d’accès et le pont Drupal portent le candidat. La source d’interface reste backend/public/index.html. Les sas Rapport et RGA utilisent la date de révocation et les écritures Rapport prennent le verrou de politique. [Périmètre et procédure](administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
 
+## 4 novembre — invitation unique et confirmation réessayable
+
+Trois fichiers du pont Drupal sont concernés : le contrôleur d’activation conserve l’échéance de l’invitation pour signer de nouveau le retour, le formulaire valide deux champs dédiés et le module neutralise la notification native uniquement pour l’enregistrement déclenché par le pont. Le test natif active la notification Drupal, compte tous les messages et vérifie le maintien de cette notification lors d’une activation Drupal ordinaire. Le contrat CONNECT de confirmation signée reste le même. [Parcours et risques](parcours-invitation-simplifie.md).
+
+
+## 2026-11-03 — Mail concurrent et confirmation bloquée
+
+Le test natif antérieur comptait seulement les messages AVEREO et acceptait donc la présence de la notification native de statut. La nouvelle assertion exige un seul message total et reproduit l’échec sur Drupal 11.4.10, collecteur de mails et tables temporaires. Le contrôle hébergé avant nettoyage confirme le mot de passe initialisé mais la confirmation CONNECT encore en attente, le retour étant arrêté par HTTP Basic. [Cadrage, limites et critères](parcours-invitation-simplifie.md). Aucun nouveau correctif runtime livré dans cette dernière séquence.
+
 
 ## 2026-11-03 — Rattachement des comptes invités
 
