@@ -5,10 +5,15 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 2026-11-04 — Cycle de vie des comptes
+
+Actions d’archivage et de restauration, suppression définitive confirmée et conservation optionnelle des dossiers serveur Rapport. La version est préparée pour revue locale. [Procédure et limites](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
+
 
 ## 2026-11-03 — Correction du sujet des comptes créés et invités
 

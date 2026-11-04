@@ -79,22 +79,26 @@ final class AccountAdministration
 
     private function publish(int $id): void
     {
-        $s=$this->pdo->prepare('SELECT status,onboarding_status,access_starts_at,access_ends_at FROM users WHERE id=?');$s->execute([$id]);$u=$s->fetch(\PDO::FETCH_ASSOC);
+        $s=$this->pdo->prepare('SELECT status,onboarding_status,access_starts_at,access_ends_at,sessions_revoked_at FROM users WHERE id=?');$s->execute([$id]);$u=$s->fetch(\PDO::FETCH_ASSOC);
         if(!$u)throw new \RuntimeException('Compte indisponible pour publication.');
         $s=$this->pdo->prepare("SELECT DISTINCT a.code FROM user_application_access ua INNER JOIN memberships m ON m.user_id=ua.user_id AND m.organization_id=ua.organization_id AND m.status='active' INNER JOIN organizations o ON o.id=m.organization_id AND o.status='active' INNER JOIN entitlements e ON e.organization_id=m.organization_id AND e.application_id=ua.application_id AND e.status='active' INNER JOIN applications a ON a.id=ua.application_id AND a.status='active' WHERE ua.user_id=? AND ua.status='active' AND (e.valid_from IS NULL OR e.valid_from<=UTC_TIMESTAMP(6)) AND (e.valid_to IS NULL OR e.valid_to>UTC_TIMESTAMP(6))");$s->execute([$id]);
         $this->policy->set($id,['status'=>$u['status']==='active' && $u['onboarding_status']==='completed'?'active':'revoked',
             'not_before'=>$u['access_starts_at']===null?0:(new \DateTimeImmutable($u['access_starts_at'],new \DateTimeZone('UTC')))->getTimestamp(),
             'not_after'=>$u['access_ends_at']===null?PHP_INT_MAX:(new \DateTimeImmutable($u['access_ends_at'],new \DateTimeZone('UTC')))->getTimestamp(),
+            'sessions_revoked_at'=>(int) $u['sessions_revoked_at'],
             'applications'=>$s->fetchAll(\PDO::FETCH_COLUMN)]);
     }
 
-    public function authorize(int $actor,int $organization,?int $target=null): void
+    public function authorize(int $actor,int $organization,?int $target=null,bool $allowArchived=false): void
     {
         $s=$this->pdo->prepare("SELECT m.role FROM memberships m INNER JOIN users u ON u.id=m.user_id INNER JOIN organizations o ON o.id=m.organization_id WHERE m.user_id=? AND m.organization_id=? AND m.status='active' AND o.status='active' AND u.status='active' AND u.onboarding_status='completed'");$s->execute([$actor,$organization]);$role=$s->fetchColumn();
         if(!in_array($role,['owner','admin'],true))throw new ApiException(403,'ADMIN_REQUIRED','Administration de cette organisation requise.');
         if($target!==null){
-            $s=$this->pdo->prepare("SELECT m.role,u.application_access_mode FROM memberships m INNER JOIN users u ON u.id=m.user_id WHERE m.organization_id=? AND m.user_id=? AND m.status='active'");$s->execute([$organization,$target]);$u=$s->fetch(\PDO::FETCH_ASSOC);
+            $s=$this->pdo->prepare("SELECT m.role,u.application_access_mode,u.archived_from_status FROM memberships m INNER JOIN users u ON u.id=m.user_id WHERE m.organization_id=? AND m.user_id=? AND m.status='active'");$s->execute([$organization,$target]);$u=$s->fetch(\PDO::FETCH_ASSOC);
             if(!$u || $u['application_access_mode']!=='explicit' || !in_array($u['role'],['member','viewer'],true) || $target===$actor)throw new ApiException(403,'ACCOUNT_PROTECTED','Ce compte ne peut pas être modifié par ce parcours.');
+            if (!$allowArchived && $u['archived_from_status'] !== null) {
+                throw new ApiException(409, 'ACCOUNT_ARCHIVED', 'Ce compte est archivé.');
+            }
         }
     }
 

@@ -43,6 +43,14 @@ final class PdoConnectRepository implements ConnectRepository
         return $userId === false ? null : (int) $userId;
     }
 
+    public function isAccountSessionRevoked(int $userId, ?int $authenticatedAt): bool
+    {
+        $statement = $this->pdo->prepare('SELECT sessions_revoked_at FROM users WHERE id=?');
+        $statement->execute([$userId]);
+        $revokedAt = (int) $statement->fetchColumn();
+        return $revokedAt > 0 && ($authenticatedAt ?? 0) <= $revokedAt;
+    }
+
     public function findIdentityStatusByDrupalSubject(string $drupalSubject): ?string
     {
         $userStatement = $this->pdo->prepare(
@@ -455,11 +463,14 @@ final class PdoConnectRepository implements ConnectRepository
             }
 
             $conflictStatement = $this->pdo->prepare(
-                'SELECT id, drupal_subject FROM users '
+                'SELECT id, drupal_subject, application_access_mode FROM users '
                 . 'WHERE drupal_subject = :subject OR email_normalized = :email FOR UPDATE',
             );
             $conflictStatement->execute(['subject' => $subject, 'email' => $email]);
             foreach ($conflictStatement->fetchAll() as $existingUser) {
+                if ($existingUser['application_access_mode'] === 'explicit') {
+                    throw new ApiException(409, 'ACCOUNT_ALREADY_MANAGED', 'Ce compte est déjà géré dans l’administration.');
+                }
                 if (($existingUser['drupal_subject'] ?? null) !== $subject) {
                     throw new ApiException(
                         409,
@@ -728,7 +739,7 @@ final class PdoConnectRepository implements ConnectRepository
         try {
             $this->pdo->beginTransaction();
             $target = $this->pdo->prepare(
-                'SELECT u.id, u.onboarding_status AS onboardingStatus, '
+                'SELECT u.id, u.status, u.onboarding_status AS onboardingStatus, '
                 . '(SELECT m.organization_id FROM memberships m '
                 . 'WHERE m.user_id = u.id AND m.status = \'active\' ORDER BY m.id LIMIT 1) AS organizationId '
                 . 'FROM users u WHERE u.id = :user_id FOR UPDATE',
@@ -737,6 +748,9 @@ final class PdoConnectRepository implements ConnectRepository
             $user = $target->fetch();
             if (!is_array($user)) {
                 throw new ApiException(404, 'USER_NOT_FOUND', 'Le compte CONNECT est introuvable.');
+            }
+            if ($user['status'] !== 'active') {
+                throw new ApiException(409, 'ACCOUNT_INACTIVE', 'Le compte CONNECT est indisponible.');
             }
             if (($user['onboardingStatus'] ?? null) !== 'completed') {
                 $update = $this->pdo->prepare(

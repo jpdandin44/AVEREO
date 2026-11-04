@@ -18,15 +18,15 @@ function accountTestDatabase(?string $file=null):PDO {
         INSERT INTO applications VALUES(1,'rapport','Rapport','',1,'active'),(2,'rga','RGA','',2,'active'),(3,'coupe','Coupe','',3,'active');
         INSERT INTO entitlements(organization_id,application_id,status) VALUES(7,1,'active'),(7,2,'active'),(7,3,'active');");
         $pdo->exec('ALTER TABLE applications ADD COLUMN launch_url TEXT; ALTER TABLE applications ADD COLUMN required_scope TEXT');
-        $pdo->exec("ALTER TABLE users ADD COLUMN created_at TEXT DEFAULT '2026-11-03 07:00:00'; ALTER TABLE users ADD COLUMN updated_at TEXT; ALTER TABLE users ADD COLUMN activation_email_sent_at TEXT;
+        $pdo->exec("ALTER TABLE users ADD COLUMN created_at TEXT DEFAULT '2026-11-03 07:00:00'; ALTER TABLE users ADD COLUMN updated_at TEXT; ALTER TABLE users ADD COLUMN activation_email_sent_at TEXT; ALTER TABLE users ADD COLUMN archived_from_status TEXT; ALTER TABLE users ADD COLUMN deletion_keep_reports INT; ALTER TABLE users ADD COLUMN sessions_revoked_at INT;
         ALTER TABLE organizations ADD COLUMN name TEXT DEFAULT 'Organisation de recette'; ALTER TABLE organizations ADD COLUMN slug TEXT DEFAULT 'test'; ALTER TABLE organizations ADD COLUMN owner_membership_id INT;
-        CREATE TABLE pending_identities(id INT,email_normalized TEXT,display_name TEXT,first_seen_at TEXT,last_seen_at TEXT,status TEXT);");
+        CREATE TABLE pending_identities(id INT,email_normalized TEXT,display_name TEXT,first_seen_at TEXT,last_seen_at TEXT,status TEXT,drupal_subject TEXT,approved_user_id INT); CREATE TABLE invitations(email_normalized TEXT,organization_id INT,invited_by_user_id INT);");
         return $pdo;
     }
     if(!in_array(getenv('APP_ENV'),['test','local'],true))throw new RuntimeException('Explicit test environment required.');
     $pdo=\Avereo\Connect\Database::connect(\Avereo\Connect\Config::fromEnvironment());
     if(!$pdo)throw new RuntimeException('MySQL test connection required.');
-    foreach(['users','organizations','memberships','applications','entitlements','user_application_access','audit_events','pending_identities'] as $table) {
+    foreach(['users','organizations','memberships','applications','entitlements','user_application_access','audit_events','pending_identities','invitations'] as $table) {
         $pdo->exec('CREATE TEMPORARY TABLE `__account_fixture_'.$table.'` LIKE `'.$table.'`');
         $pdo->exec('ALTER TABLE `__account_fixture_'.$table.'` RENAME TO `'.$table.'`');
         if((int)$pdo->query('SELECT COUNT(*) FROM `'.$table.'`')->fetchColumn()!==0)throw new RuntimeException('Temporary fixture not empty.');
@@ -35,6 +35,8 @@ function accountTestDatabase(?string $file=null):PDO {
         $pdo->exec(file_get_contents(dirname(__DIR__,2).'/database/migrations/20260804140000_account_activation_status.up.sql'));
     if($pdo->query("SHOW COLUMNS FROM users LIKE 'access_starts_at'")->fetch()===false)
         $pdo->exec(file_get_contents(dirname(__DIR__,2).'/database/migrations/20261103070000_account_access_period.up.sql'));
+    if($pdo->query("SHOW COLUMNS FROM users LIKE 'archived_from_status'")->fetch()===false)
+        $pdo->exec(file_get_contents(dirname(__DIR__,2).'/database/migrations/20261104160000_account_lifecycle.up.sql'));
     $pdo->exec("INSERT INTO users(id,drupal_subject,email_normalized,display_name,status,onboarding_status) VALUES (1,'owner','owner@example.invalid','Owner','active','completed'),(2,'member','member@example.invalid','Member','active','completed');
 INSERT INTO organizations(id,name,slug,status) VALUES(7,'Organisation de recette','account-test','active');
 INSERT INTO memberships(id,organization_id,user_id,role,status) VALUES(1,7,1,'owner','active'),(2,7,2,'member','active');

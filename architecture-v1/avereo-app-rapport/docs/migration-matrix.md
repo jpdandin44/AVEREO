@@ -5,13 +5,18 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-02
+updated: 2026-11-04
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 2026-11-04 — Candidat d’archivage CONNECT
+
+Changement du sas Rapport, réutilisé par le build RGA, et de l’entrée d’écriture des dossiers. Aucun changement SQL Rapport. Installer avant d’activer les actions d’administration CONNECT. [Contrat de projection](essais-temporaires.md).
+
 
 ## Essais temporaires — candidat local
 

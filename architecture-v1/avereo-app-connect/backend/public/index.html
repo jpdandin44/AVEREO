@@ -550,6 +550,51 @@
 
       const actions = document.createElement('div');
       actions.className = 'admin-actions';
+      const lifecycleUrl = '/api/v1/admin/organizations/' + adminOrganizationId + '/users/' + user.id + '/lifecycle';
+      const lifecycleButton = (label, handler, danger = false) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = label;
+        button.className = danger ? 'danger' : 'save-status';
+        button.addEventListener('click', async () => {
+          button.disabled = true;
+          try {
+            await handler();
+          } catch (error) {
+            adminStatus.textContent = error.message;
+            await loadAdministration();
+            adminStatus.textContent = error.message;
+          } finally {
+            button.disabled = false;
+          }
+        });
+        actions.append(button);
+      };
+      if (user.canArchive || user.canRestore) {
+        const archive = user.canArchive;
+        lifecycleButton(archive ? 'Archiver le compte' : 'Restaurer le compte', async () => {
+          const verb = archive ? 'Archiver' : 'Restaurer';
+          if (!await confirmAccountAction(verb + ' le compte de ' + nameStrong.textContent + ' ?')) return;
+          await mutation(lifecycleUrl, 'PATCH', { archived: archive });
+          await loadAdministration(archive ? 'Compte archivé, accès bloqué.' : 'Compte restauré.');
+        });
+      }
+      if (user.canDelete) {
+        const resuming = typeof user.pendingDeletionKeepsReports === 'boolean';
+        lifecycleButton(resuming ? 'Reprendre la suppression' : 'Supprimer définitivement', async () => {
+          const confirmation = await confirmAccountDeletion(user);
+          if (confirmation === null) return;
+          const result = await mutation(lifecycleUrl, 'DELETE', confirmation);
+          await loadAdministration(result.data?.reportsPreserved
+            ? 'Compte supprimé. Les dossiers Rapport sont conservés.'
+            : 'Compte et dossiers Rapport liés supprimés.');
+        }, true);
+      }
+      if (user.archived) {
+        const label = document.createElement('strong');
+        label.textContent = typeof user.pendingDeletionKeepsReports === 'boolean' ? 'Suppression en cours' : 'Compte archivé';
+        information.append(document.createElement('br'), label);
+      }
       if (user.canChangeStatus) {
         const statusSelect = document.createElement('select');
         statusSelect.setAttribute('aria-label', `Statut de ${nameStrong.textContent}`);
@@ -593,7 +638,7 @@
           }
         });
         actions.append(statusSelect, save);
-      } else {
+      } else if (!user.archived) {
         const protectedLabel = document.createElement('small');
         protectedLabel.textContent = user.role === 'owner'
           ? 'Compte propriétaire protégé'
@@ -740,6 +785,60 @@
         dialog.append(text,cancel,accept);document.body.append(dialog);dialog.showModal();
       });
     }
+    function confirmAccountDeletion(user) {
+      return new Promise((resolve) => {
+        const dialog = document.createElement('dialog');
+        dialog.setAttribute('aria-label', 'Supprimer définitivement le compte');
+        const form = document.createElement('form');
+        const intro = document.createElement('p');
+        intro.textContent = 'Supprimer définitivement le compte ' + user.email + ' dans CONNECT et Identité. Cette action est irréversible.';
+        const keepReports = document.createElement('input');
+        keepReports.type = 'checkbox';
+        const fixedChoice = typeof user.pendingDeletionKeepsReports === 'boolean';
+        keepReports.checked = fixedChoice ? user.pendingDeletionKeepsReports : true;
+        keepReports.disabled = fixedChoice || !user.canDeleteReports;
+        const keepLabel = document.createElement('label');
+        keepLabel.append(keepReports, document.createTextNode(' Conserver les dossiers Rapport liés'));
+        const consequences = document.createElement('p');
+        const updateConsequences = () => {
+          consequences.textContent = keepReports.checked
+            ? 'Les dossiers restent consultables par les administrateurs Rapport habilités.'
+            : 'Les dossiers Rapport appartenant à ce compte seront supprimés définitivement.';
+        };
+        keepReports.addEventListener('change', updateConsequences);
+        updateConsequences();
+        const email = document.createElement('input');
+        email.type = 'email';
+        email.required = true;
+        email.autocomplete = 'off';
+        email.setAttribute('aria-label', 'Ressaisir l’adresse e-mail du compte');
+        const emailLabel = document.createElement('label');
+        emailLabel.append(document.createTextNode('Ressaisir l’adresse e-mail du compte '), email);
+        const cancel = document.createElement('button');
+        cancel.type = 'button';
+        cancel.textContent = 'Annuler';
+        cancel.autofocus = true;
+        const submit = document.createElement('button');
+        submit.type = 'submit';
+        submit.className = 'danger';
+        submit.textContent = 'Supprimer définitivement';
+        submit.disabled = true;
+        const valid = () => email.value.trim().toLowerCase() === user.email.toLowerCase();
+        email.addEventListener('input', () => { submit.disabled = !valid(); });
+        const finish = (value) => { dialog.close(); dialog.remove(); resolve(value); };
+        cancel.addEventListener('click', () => finish(null));
+        dialog.addEventListener('cancel', (event) => { event.preventDefault(); finish(null); });
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          if (valid()) finish({ confirmationEmail: email.value, keepReports: keepReports.checked });
+        });
+        form.append(intro, keepLabel, consequences, emailLabel, document.createElement('p'), cancel, submit);
+        dialog.append(form);
+        document.body.append(dialog);
+        dialog.showModal();
+      });
+    }
+
     function localDateValue(value) {
       const d = value ? new Date(/[Zz]|[+-]\d\d:\d\d$/.test(value) ? value : value.replace(' ', 'T') + 'Z') : new Date();
       return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}T${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;

@@ -5,10 +5,15 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Cycle de vie des comptes — qualification
+
+Le candidat local couvre les membres explicites Rapport/RGA d’une seule organisation. Restent la qualification hébergée et l’accord de livraison. L’extension aux comptes à droits hérités ou à d’autres applications suppose de qualifier leurs données et la coupure de leurs sessions.
+
 
 ## Rattachement des invitations — lot du 3 novembre
 

@@ -5,10 +5,15 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Cycle de vie des comptes
+
+Le propriétaire peut archiver et restaurer un compte membre éligible. La suppression définitive requiert la confirmation explicite de son adresse et le choix sur les dossiers Rapport. Le choix par défaut est la conservation. Les reprises conservent ce choix et l’identité ciblée. [Périmètre](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
+
 
 ## Continuité du compte créé et invité
 

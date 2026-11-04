@@ -5,10 +5,15 @@ title: Décisions techniques CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 2026-11-04 — Conservation et reprise de la suppression
+
+Les dossiers Rapport sont conservés par défaut sous leur identifiant propriétaire. La suppression s’effectue après révocation et reste reprenable avec un choix verrouillé. Ce découpage évite de réactiver un compte lors d’un incident entre les bases et protège les dossiers associés à une autre identité. [Détails](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
+
 
 ## 2026-11-03 — Résoudre l’e-mail avant la validation native
 

@@ -5,10 +5,15 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## Archivage et suppression des comptes
+
+Le [cycle de vie des comptes](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre) couvre l’archivage, la restauration et la suppression confirmée des comptes éligibles. La conservation des dossiers Rapport est proposée par défaut. La configuration et la recette hébergées restent à effectuer.
+
 
 ## Rattachement des comptes créés et invités
 

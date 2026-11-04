@@ -5,10 +5,25 @@ title: Administration des comptes CONNECT
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, comptes, essai]
 ---
+
+## Cycle de vie des comptes — candidat du 4 novembre
+
+Dans **Gérer les comptes**, le propriétaire de l’organisation peut archiver et restaurer un compte membre ou lecteur à droits explicites, rattaché à cette seule organisation et limité à Rapport et RGA. Les comptes propriétaires, administrateurs, partagés, historiques à droits hérités ou associés à d’autres applications sont protégés. L’archivage conserve le compte, son adresse, ses droits et ses dossiers. Il coupe les sessions CONNECT, Rapport et RGA. Une restauration rétablit le statut précédent et exige une session nouvelle. La période d’essai conserve ses dates d’origine.
+
+**Supprimer définitivement** demande de ressaisir l’adresse du compte. **Conserver les dossiers Rapport liés** est coché par défaut. Les dossiers conservés restent sous l’ancien identifiant CONNECT et restent accessibles aux administrateurs Rapport qui ont déjà ce droit. Une nouvelle inscription avec la même adresse reçoit un nouvel identifiant et aucun dossier historique. Quand l’option est décochée, seuls les dossiers serveur rattachés à l’identifiant CONNECT exact sont effacés. Les brouillons locaux, téléchargements et archives de sauvegarde sont distincts du stockage en ligne.
+
+La suppression est limitée aux identités Drupal créées par CONNECT, à l’UID et à l’adresse concordants, sans rôle privilégié. CONNECT refuse les dépendances sensibles avant l’opération, révoque l’accès, bloque le compte et conserve le choix sur les dossiers. Identité retire l’identité, ses sessions et le lien d’activation éventuel. Après traitement des dossiers, CONNECT retire droits et compte tout en conservant l’audit. Si un service échoue, le propriétaire retrouve **Reprendre la suppression** avec le choix enregistré. La reprise utilise le même identifiant, sans jamais supprimer un nouveau compte associé à la même adresse.
+
+### Préparer la préproduction
+
+Appliquer la migration réversible account_lifecycle après sauvegardes CONNECT, Identité, Rapport et politique d’accès, et après vérification de leur restauration sur copies. Installer les contrôles Rapport/RGA et le pont Drupal avant d’activer les actions dans CONNECT. Les options privées sont ACCOUNT_LIFECYCLE_ENABLED, IDENTITY_ACCOUNT_DELETION_URL, IDENTITY_ACCOUNT_DELETION_SECRET et, pour l’effacement des dossiers, ACCOUNT_LIFECYCLE_REPORT_CONFIG. L’URL HTTPS doit cibler le pont Identité de la même cible. Le secret dédié, distinct des secrets de provisionnement et d’activation, correspond à account_lifecycle_secret dans les paramètres Drupal. La configuration Rapport doit être privée et correspondre à l’environnement CONNECT et à sa politique d’accès.
+
+Vérifier le candidat avec des identités et dossiers fictifs. Contrôler les deux choix, l’isolement, les sessions après restauration, les reprises sur incident, l’audit et les anciens comptes. Avant un retour arrière, vérifier les suppressions en cours et les comptes archivés. Restaurer le code avant d’enlever les colonnes. La migration descendante laisse les comptes archivés désactivés et retire leur information de restauration. Une suppression définitive n’est pas annulée par une migration descendante.
+
 
 ## Reset administratif — nouveau candidat local
 

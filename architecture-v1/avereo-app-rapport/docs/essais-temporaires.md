@@ -5,10 +5,15 @@ title: Essais temporaires Rapport et RGA
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, comptes, essai]
 ---
+
+## Sessions et dossiers lors de l’archivage CONNECT
+
+La projection privée peut porter sessions_revoked_at. Rapport et RGA refusent les tickets et cookies antérieurs ou égaux à cette date même après restauration. Les écritures de dossiers prennent un verrou partagé sur la politique puis vérifient de nouveau l’accès. CONNECT prend le verrou exclusif avant un effacement. [Cycle de vie](../../avereo-app-connect/docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
+
 
 ## Intégration CONNECT locale du 3 novembre
 

@@ -5,10 +5,15 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-03
+updated: 2026-11-04
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 2026-11-04 — Administration du cycle de vie
+
+Le portail PHP, son API, sa projection d’accès et le pont Drupal portent le candidat. La source d’interface reste backend/public/index.html. Les sas Rapport et RGA utilisent la date de révocation et les écritures Rapport prennent le verrou de politique. [Périmètre et procédure](administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
+
 
 ## 2026-11-03 — Rattachement des comptes invités
 

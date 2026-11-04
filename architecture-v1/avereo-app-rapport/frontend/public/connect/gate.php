@@ -267,7 +267,7 @@ function avereo_gate_clear_cookie(array $config): void
 }
 
 /** @param array<string, mixed> $config */
-function avereo_gate_assert_trial_access(array $config, ?array $identity, ?int $now = null): void
+function avereo_gate_assert_trial_access(array $config, ?array $identity, ?int $now = null, ?int $issuedAt = null): void
 {
     $path = trim((string) ($config['connect_trial_access_file'] ?? ''));
     if ($path === '') {
@@ -303,6 +303,9 @@ function avereo_gate_assert_trial_access(array $config, ?array $identity, ?int $
         throw new RuntimeException('Essai non autorise.');
     }
     $now ??= time();
+    if (($rule['sessions_revoked_at'] ?? 0) > 0 && ($issuedAt ?? 0) <= $rule['sessions_revoked_at']) {
+        throw new RuntimeException('Session antérieure à la révocation.');
+    }
     if ($now < $rule['not_before'] || $now >= $rule['not_after']) {
         throw new RuntimeException('Essai hors periode autorisee.');
     }
@@ -320,6 +323,8 @@ function avereo_gate_cookie_payload(array $config): array
     avereo_gate_assert_trial_access(
         $config,
         ($payload['v'] ?? null) === 2 ? avereo_gate_normalize_identity($payload['identity'] ?? null) : null,
+        null,
+        (int) $payload['iat'],
     );
     return $payload;
 }
@@ -374,7 +379,7 @@ function avereo_gate_exchange_ticket(array $config, string $ticket): void
     $identity = array_key_exists('identity', $payload)
         ? avereo_gate_normalize_identity($payload['identity'])
         : null;
-    avereo_gate_assert_trial_access($config, $identity);
+    avereo_gate_assert_trial_access($config, $identity, null, (int) $payload['iat']);
     avereo_gate_issue_cookie(
         $config,
         ($payload['remembered'] ?? false) === true,

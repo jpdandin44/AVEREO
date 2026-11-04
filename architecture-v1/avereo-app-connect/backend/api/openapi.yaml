@@ -630,6 +630,59 @@ paths:
           description: Compte ou application indisponible
         "422":
           $ref: "#/components/responses/ValidationError"
+  /admin/organizations/{organizationId}/users/{userId}/lifecycle:
+    parameters:
+      - name: organizationId
+        in: path
+        required: true
+        schema: { type: integer, minimum: 1 }
+      - name: userId
+        in: path
+        required: true
+        schema: { type: integer, minimum: 1 }
+      - name: X-CSRF-Token
+        in: header
+        required: true
+        schema: { type: string }
+    patch:
+      operationId: setAccountArchived
+      summary: Archiver ou restaurer un compte éligible
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [archived]
+              properties:
+                archived: { type: boolean }
+      responses:
+        '200': { description: État du compte appliqué }
+        '403': { description: Compte protégé ou droits insuffisants }
+        '409': { description: Suppression en cours }
+        '422': { description: Corps de demande invalide }
+        '503': { description: Gestion du cycle de vie indisponible }
+    delete:
+      operationId: deleteManagedAccount
+      summary: Supprimer définitivement le compte confirmé
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [confirmationEmail, keepReports]
+              properties:
+                confirmationEmail: { type: string, format: email }
+                keepReports: { type: boolean }
+      responses:
+        '200': { description: Compte supprimé et choix de conservation appliqué }
+        '403': { description: Compte protégé ou droits insuffisants }
+        '409': { description: Dépendance protégée ou choix de reprise différent }
+        '422': { description: Confirmation invalide }
+        '503': { description: Intégration indisponible ou suppression bloquée à reprendre avec le même choix }
   /admin/organizations/{organizationId}/users/{userId}/access-period:
     patch:
       tags: [Administration]
