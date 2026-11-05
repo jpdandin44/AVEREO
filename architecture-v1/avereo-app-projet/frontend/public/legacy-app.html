@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVEREO - Pilotage Pro</title>
-    <script src="./planning-core.js?v=online-20261105"></script>
+    <script src="./planning-core.js?v=space-20261105"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -109,6 +109,7 @@
         @keyframes slideUpFade { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .toast-show { animation: slideUpFade 0.3s forwards; }
     </style>
+    <link rel="stylesheet" href="/project-workspace.css?v=space-20261105">
 </head>
 <body class="flex h-screen text-slate-800">
 
@@ -119,6 +120,9 @@
             <span class="hidden lg:block ml-3 font-bold text-white tracking-wide">AVEREO <span class="text-[10px] text-blue-300 font-normal align-top ml-1">v1.0</span></span>
         </div>
         <nav class="flex-1 py-6 space-y-2 px-3">
+            <button onclick="ProjectWorkspace.show()" id="nav-workspace" title="Mes projets" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all">
+                <i data-lucide="folder-open" class="w-5 h-5 lg:mr-3"></i><span class="hidden lg:block">Mes projets</span>
+            </button>
             <button onclick="switchView('dashboard')" id="nav-dashboard" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all bg-blue-600 text-white shadow-md">
                 <i data-lucide="layout-dashboard" class="w-5 h-5 lg:mr-3"></i>
                 <span class="hidden lg:block">Tableau de bord</span>
@@ -132,19 +136,76 @@
                 <span class="hidden lg:block">Risques & Décisions</span>
             </button>
         </nav>
-        <div class="p-4 border-t border-slate-800 flex items-center justify-center lg:justify-start bg-slate-900/50">
+        <button type="button" onclick="ProjectWorkspace.show()" aria-label="Mon espace : projets, préférences et compte" class="p-4 border-t border-slate-800 flex items-center justify-center lg:justify-start bg-slate-900/50 hover:bg-slate-800 text-left">
             <div class="w-10 h-10 rounded-full bg-indigo-500 border-2 border-indigo-300 flex items-center justify-center text-sm font-bold text-white shadow-lg">MOI</div>
             <div class="hidden lg:block ml-3">
-                <p class="text-sm font-semibold text-white">Moi</p>
-                <p class="text-[10px] text-indigo-300 uppercase tracking-wider font-medium">Chef de Projet</p>
+                <p class="text-sm font-semibold text-white">Mon espace</p>
+                <p class="text-[10px] text-indigo-300 uppercase tracking-wider font-medium">Compte AVEREO</p>
             </div>
-        </div>
+        </button>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 flex flex-col min-w-0 bg-white relative">
+        <section id="view-workspace" class="workspace hidden" aria-label="Mon espace AVEREO">
+            <div class="workspace-inner">
+                <div class="workspace-head">
+                    <div><p class="ws-kicker">AVEREO PROJET · ESPACE PRIVÉ</p><h1>Mon espace</h1><p>Retrouve tes projets, reprends là où tu en étais.</p></div>
+                    <div class="ws-actions"><button type="button" id="workspace-import">Importer un projet</button><button type="button" id="workspace-new" class="primary">+ Nouveau projet</button></div>
+                </div>
+                <div class="ws-tabs" role="tablist" aria-label="Rubriques de mon espace">
+                    <button id="workspace-tab-projects" role="tab" aria-selected="true" aria-controls="workspace-panel-projects">Mes projets</button>
+                    <button id="workspace-tab-archives" role="tab" aria-selected="false" aria-controls="workspace-panel-projects">Archives</button>
+                    <button id="workspace-tab-preferences" role="tab" aria-selected="false" aria-controls="workspace-panel-preferences">Préférences</button>
+                    <button id="workspace-tab-account" role="tab" aria-selected="false" aria-controls="workspace-panel-account">Mon compte</button>
+                </div>
+                <p id="workspace-status" role="status" aria-live="polite" class="ws-status">Chargement de ton espace…</p>
+                <div id="workspace-panel-projects" role="tabpanel" aria-label="Liste des projets">
+                    <div class="ws-tools">
+                        <input id="workspace-search" class="ws-search" type="search" placeholder="Rechercher un projet, un client…" aria-label="Rechercher un projet ou un client">
+                        <select id="workspace-sort" aria-label="Trier les projets"><option value="recent">Modifiés récemment</option><option value="name">Nom du projet</option></select>
+                        <button type="button" id="workspace-refresh">Actualiser</button>
+                    </div>
+                    <p id="workspace-count" class="mb-4 text-sm"></p>
+                    <div id="workspace-list" class="ws-grid"></div>
+                </div>
+                <div id="workspace-panel-preferences" class="ws-panel" role="tabpanel" aria-label="Préférences" hidden>
+                    <h2>Ton affichage par défaut</h2><p>Ces préférences suivent ton compte sur tes différents navigateurs.</p>
+                    <form id="workspace-preferences-form">
+                        <label>Échelle du planning<select id="workspace-zoom"><option value="weeks">Semaines — vue d’ensemble</option><option value="days">Jours — vue détaillée</option></select></label>
+                        <label><input type="checkbox" id="workspace-collapsed"> Replier les lots à l’ouverture du projet</label>
+                        <button type="submit" class="primary">Enregistrer mes préférences</button>
+                    </form>
+                </div>
+                <div id="workspace-panel-account" class="ws-panel" role="tabpanel" aria-label="Mon compte" hidden>
+                    <p class="ws-kicker">Compte AVEREO CONNECT</p><h2>Un compte pour tes applications</h2>
+                    <p>Consulte ton profil et tes accès aux applications depuis CONNECT. Si tu es administrateur, utilise « Gérer les comptes » dans CONNECT pour administrer les utilisateurs et leurs périodes d’accès.</p>
+                    <a class="ws-button" href="https://connect-preprod.avereo.fr/#profile" target="_blank" rel="noopener noreferrer">Ouvrir mon compte CONNECT ↗</a>
+                    <h2 class="mt-8">Conserver une copie de ton travail</h2><p>Ouvre un projet, puis utilise « Exporter JSON » pour télécharger sa sauvegarde complète. « Copie précédente en ligne » permet de récupérer sa version antérieure.</p>
+                    <p>Les archives conservent les projets terminés. Tu peux les restaurer à tout moment depuis l’onglet Archives.</p>
+                </div>
+                <input id="workspace-file" type="file" accept=".json,application/json" hidden>
+            </div>
+        </section>
+        <dialog id="workspace-create" class="ws-dialog" aria-labelledby="workspace-create-title">
+            <h2 id="workspace-create-title">Nouveau projet</h2>
+            <form id="workspace-create-form">
+                <label>Nom du projet<input id="workspace-name" required maxlength="200" autocomplete="off"></label>
+                <label>Client ou référence (facultatif)<input id="workspace-client" maxlength="200" autocomplete="off"></label>
+                <label>Date de début<input id="workspace-start" type="date" required></label>
+                <p id="workspace-create-error" role="alert" class="text-sm text-red-700 mb-4"></p>
+                <div class="ws-actions"><button type="button" id="workspace-create-cancel">Annuler</button><button type="submit" class="primary">Créer et ouvrir le projet</button></div>
+            </form>
+        </dialog>
+        <dialog id="workspace-action" class="ws-dialog" aria-labelledby="workspace-action-title">
+            <h2 id="workspace-action-title"></h2><p id="workspace-action-description" class="my-4"></p>
+            <form id="workspace-action-form">
+                <label id="workspace-action-label">Client ou référence (facultatif)<input id="workspace-action-value" maxlength="200" autocomplete="off"></label>
+                <div class="ws-actions"><button type="button" id="workspace-action-cancel">Annuler</button><button type="submit" class="primary">Confirmer</button></div>
+            </form>
+        </dialog>
         <!-- Header -->
-        <header class="min-h-16 flex-wrap gap-3 py-3 border-b border-slate-200 flex items-center justify-between px-6 shrink-0 bg-white z-20 shadow-sm">
+        <header id="planning-header" class="min-h-16 flex-wrap gap-3 py-3 border-b border-slate-200 flex items-center justify-between px-6 shrink-0 bg-white z-20 shadow-sm">
             <div>
                 <h1 class="text-xl font-semibold text-slate-800 flex items-center">Pilotage de projet <span id="storage-mode" class="text-xs font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded ml-3 border border-emerald-200">Suivi local</span></h1>
                 <p id="storage-description" class="text-xs text-slate-500 font-medium mt-0.5">Sauvegarde dans ce navigateur · export JSON pour conserver une copie indépendante</p>
@@ -167,7 +228,7 @@
             </div>
         </header>
 
-        <section class="border-b border-slate-200 bg-slate-50 px-6 py-3 shrink-0" aria-label="Paramètres et sauvegarde du projet">
+        <section id="planning-settings" class="border-b border-slate-200 bg-slate-50 px-6 py-3 shrink-0" aria-label="Paramètres et sauvegarde du projet">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <p id="storage-status" role="status" class="text-sm text-slate-600">Chargement du planning local…</p>
                 <div class="flex flex-wrap gap-3 text-xs">
@@ -179,7 +240,7 @@
                 <div class="flex gap-3 text-xs">
                     <button id="load-pilot" onclick="loadPilotProject()" class="text-blue-700 underline">Recharger le pilote AVEREO</button>
                     <button id="enrich-pilot" onclick="enrichPilotTaskDetails()" class="text-blue-700 underline">Compléter les fiches documentées</button>
-                    <button onclick="exportPreviousSave()" class="text-slate-600 underline">Copie précédente</button>
+                    <button id="local-previous" onclick="exportPreviousSave()" class="text-slate-600 underline">Copie précédente</button>
                 </div>
             </div>
             <form id="project-settings-form" onsubmit="saveProjectSettings(event)" class="flex flex-wrap items-end gap-3">
@@ -1103,7 +1164,8 @@
         });
 
         function switchView(viewId) {
-            ['dashboard', 'planning', 'risks'].forEach(v => {
+            for (const id of ['planning-header', 'planning-settings']) document.getElementById(id).hidden = viewId === 'workspace';
+            ['dashboard', 'planning', 'risks', 'workspace'].forEach(v => {
                 document.getElementById(`view-${v}`).classList.add('hidden');
                 document.getElementById(`nav-${v}`).classList.remove('bg-blue-600', 'text-white', 'shadow-md');
                 document.getElementById(`nav-${v}`).classList.add('hover:bg-slate-800', 'hover:text-white');
@@ -1274,8 +1336,9 @@
         });
 
     </script>
-    <script src="./planning-local.js?v=online-20261105"></script>
-    <script src="./task-details.js?v=online-20261105"></script>
-    <script src="./planning-online.js?v=online-20261105"></script>
+    <script src="./planning-local.js?v=space-20261105"></script>
+    <script src="./task-details.js?v=space-20261105"></script>
+    <script src="./planning-online.js?v=space-20261105"></script>
+    <script src="/project-workspace.js?v=space-20261105"></script>
 </body>
 </html>

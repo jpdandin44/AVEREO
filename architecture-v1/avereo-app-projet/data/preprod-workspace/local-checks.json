@@ -1,0 +1,19 @@
+{
+  "observedAt": "2026-11-05T11:42:15.097389+00:00",
+  "status": "passed",
+  "frontendTests": 177,
+  "httpChecks": 59,
+  "build": "passed",
+  "documentation": {
+    "documents": 10,
+    "localLinks": 89,
+    "metadata": "passed"
+  },
+  "browserLocal": [
+    "create independent project",
+    "list two projects",
+    "archive and restore",
+    "save preferences and recover after reload"
+  ],
+  "scope": "Local; fictitious projects only"
+}

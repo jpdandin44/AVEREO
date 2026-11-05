@@ -14,6 +14,28 @@ tags:
 
 # Exigences du planning local Projet
 
+## Espace du compte — demande du 5 novembre 2026
+
+Le responsable demande une page liée au compte pour retrouver ses différents
+projets enregistrés en ligne et accéder simplement aux préférences et au compte.
+Le périmètre privé réservé au propriétaire est conservé.
+
+- Accueil Mes projets, accès par la zone du compte, recherche et tri.
+- Création d’un planning vide ; import JSON complet dans un nouveau dossier.
+- Référence client facultative ; titre modifiable dans les paramètres du planning.
+- Archives réversibles sans suppression définitive ; historique indépendant.
+- Préférences en ligne : échelle jours/semaines et lots repliés à l’ouverture.
+- Profil et administration via CONNECT, sans nouveau système de comptes.
+- Conserver le planning existant à l’identique ; aucun découpage automatique.
+- Empêcher les mélanges entre projets, comptes, onglets ou versions concurrentes.
+
+L’identifiant du propriétaire et le stockage sont déjà qualifiés pour le lot de
+sauvegarde. Le cadrage historique ci-dessous ne bloque plus cette réalisation.
+TBD pour un futur lot : portefeuille d’échéances, registre clients structuré,
+partage avec une équipe et sauvegarde indépendante périodique. Aucun de ces
+éléments n’est présenté comme installé par cette page.
+
+
 ## Lot autorisé le 5 novembre — sauvegarde privée du planning existant
 
 - Retrouver le même Gantt et les mêmes fiches depuis plusieurs navigateurs.

@@ -15,6 +15,29 @@ tags:
 
 # Prévisualisation et publication de Projet
 
+## Livraison de Mon espace et des projets indépendants
+
+Le lot s’appuie sur la sauvegarde privée déjà installée. Source dédiée :
+`feat/projet-account-space-20261105`, basée sur la PR #107 encore ouverte.
+Le [suivi canonique](../data/suivi-espace-projets.json) donne l’état effectivement
+observé ; les reçus historiques ci-dessous restent propres aux anciens candidats.
+
+Après tests/build et commit propre :
+`python workflows/prepare-preprod-workspace.py --source CHEMIN_APP --output DOSSIER_NEUF`.
+Le paquet ne contient que 16 fichiers applicatifs, jamais les données utilisateur.
+Le dossier privé de transfert contient aussi les scripts et fixtures de qualification.
+Sur l’hôte : `deploy-preprod-workspace.py prepare`, contrôle du passage,
+`deploy-preprod-workspace.py deploy`, puis `deploy-preprod-workspace.py verify`.
+
+La préparation sauvegarde le site, la configuration privée et tous les documents,
+puis vérifie une restauration sur copie. Toute dérive des données avant livraison
+exige une nouvelle préparation. Aucun document métier n’est migré ou remplacé.
+La qualification HTTP native utilise seulement des identités et projets fictifs.
+Le rollback restaure le code sans modifier la configuration de stockage ni les
+nouveaux dossiers ; ces derniers restent privés et récupérables même si l’ancienne
+interface ne sait pas les lister. Le sas CONNECT reste inchangé.
+
+
 ## Lot de sauvegarde privée — 5 novembre 2026
 
 Livraison observée à `2026-11-05T10:30:49Z` : source `a1933e74de6299153189cff1838f5d6020bbf6eb`,

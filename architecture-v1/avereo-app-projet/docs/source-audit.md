@@ -15,6 +15,20 @@ tags:
 
 # Audit et recette du planning Projet
 
+## Recette Mon espace — 5 novembre 2026
+
+Écart à la source V1 : page associée au compte et catalogue de plusieurs projets
+privés. L’autorisation du responsable porte sur cette page dans la continuité de
+la préproduction et de l’enregistrement en ligne demandés.
+
+Les tests couvrent les projets indépendants, l’import complet, le catalogue privé,
+la traversée de chemins refusée, les conflits, les archives et leurs écritures
+refusées, les préférences, la corruption et la restauration des copies. La recette
+navigateur locale a vérifié création, liste, archive/restauration et préférences
+après rechargement. Les résultats et limites hébergés sont dans le
+[suivi du lot](../data/suivi-espace-projets.json), sans déduire une livraison des tests locaux.
+
+
 ## Lot en ligne — 5 novembre 2026
 
 Résultat : **171 tests frontend**, **23 contrôles HTTP locaux et 23 sur PHP 8.3.36

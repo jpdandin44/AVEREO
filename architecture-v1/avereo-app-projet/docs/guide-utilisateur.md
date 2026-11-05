@@ -12,6 +12,36 @@ tags: [projet, suivi, guide, local]
 
 # Guide utilisateur de l'outil de suivi AVEREO Projet
 
+## Retrouver ses projets depuis le compte
+
+À l’arrivée sur Projet, **Mon espace** présente les projets enregistrés en ligne.
+On peut y revenir par **Mes projets** ou le bloc **Mon espace** en bas à gauche.
+
+1. **Ouvrir** reprend le Gantt choisi et ses dernières données en ligne.
+2. **Nouveau projet** demande un nom, une date de début et une référence client
+   facultative. Il crée un dossier vide indépendant.
+3. **Importer un projet** accepte une sauvegarde JSON complète et crée un nouveau
+   dossier. Le bouton **Importer un planning** dans un Gantt remplace le contenu
+   de ce projet après confirmation ; ce sont deux actions différentes.
+4. **Client / référence** modifie le repère de classement. Pour renommer le projet,
+   l’ouvrir puis modifier son nom et appliquer les paramètres.
+5. **Archiver** conserve le dossier dans Archives ; **Restaurer** le rend à nouveau
+   actif. Aucune suppression définitive n’est proposée.
+6. **Préférences** mémorise jours/semaines et le repli des lots à l’ouverture.
+7. **Mon compte** ouvre CONNECT pour consulter le profil et les accès. Un
+   administrateur peut ensuite utiliser **Gérer les comptes** dans CONNECT.
+
+Si une sauvegarde échoue, le projet reste en attente dans ce navigateur et la
+bascule vers un autre est refusée. Revenir au Gantt, exporter le JSON de secours,
+puis réessayer ou charger explicitement la version en ligne. Une confirmation
+serveur datée reste le signe d’un enregistrement réussi. Le planning déjà présent
+est conservé comme un seul dossier ; ses lots ne sont pas des projets séparés.
+
+Limite actuelle : 100 projets, archives comprises ; un seul propriétaire autorisé.
+Les réglages et projets en ligne sont disponibles sur la préproduction configurée.
+Le mode Vite local conserve son fonctionnement V1.
+
+
 ## Planning privé en ligne
 
 Ouvrir Projet depuis AVEREO CONNECT avec le compte propriétaire. La mention

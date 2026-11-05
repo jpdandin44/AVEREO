@@ -15,6 +15,30 @@ tags:
 
 # Architecture du planning Projet
 
+## Espace privé multi-projet — lot suivant du 5 novembre 2026
+
+`project-workspace.js` affiche le catalogue, les archives et les préférences.
+`api/workspace.php` et `api/planning.php` réutilisent `planning-auth.php` : même
+propriétaire autorisé, session CONNECT, période d’accès, origine et CSRF.
+Aucun changement des identités, secrets ou droits CONNECT.
+
+`workspace.json` conserve révision, références clients facultatives, dates
+ d’archivage et préférences. Les noms, dates de sauvegarde et nombres de tâches
+sont lus dans les documents ; le catalogue ne maintient pas de deuxième titre.
+`principal` désigne le stockage existant, sans déplacement ni découpage des lots.
+Les nouveaux dossiers utilisent `projects/p-<identifiant aléatoire>/` avec les
+mêmes documents complets, révisions et copies de récupération par projet.
+
+Un verrou partagé du catalogue protège les sauvegardes de planning ; les
+changements du catalogue prennent le verrou exclusif, puis le verrou du projet.
+L’archivage interdit les écritures, y compris depuis un ancien onglet. Les
+révisions du catalogue et des documents refusent les modifications périmées.
+Les copies locales en attente sont séparées par propriétaire et projet ; une
+bascule est refusée tant que le travail actuel reste à enregistrer. Le catalogue
+est limité à 100 entrées, archives comprises. La référence client reste du texte,
+sans registre de personnes ni accès client. Aucun MySQL ajouté.
+
+
 ## Stockage privé du Gantt — lot V2 du 5 novembre 2026
 
 `frontend/public/api/planning.php` contrôle à chaque requête le cookie signé

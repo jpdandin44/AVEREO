@@ -14,6 +14,16 @@ tags:
 
 # Changelog de Projet
 
+## 2026-11-05 — Mon espace et plusieurs projets en ligne
+
+- Page du compte et accueil Mes projets : liste, recherche, tri, création, import.
+- Référence client libre, archives réversibles et préférences mémorisées en ligne.
+- Lien vers le profil et la gestion des accès existants dans CONNECT.
+- Révisions et sauvegardes par projet, garde des modifications en attente.
+- Reprise du document existant en place ; contrôles d’isolation et de récupération.
+- État exact du candidat et de la livraison : [suivi](data/suivi-espace-projets.json).
+
+
 ## 2026-11-05 — Candidat de sauvegarde privée du Gantt
 
 Livré en préproduction après qualification ; planning de 45 tâches enregistré

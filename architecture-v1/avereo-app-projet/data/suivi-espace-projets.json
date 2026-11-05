@@ -1,0 +1,59 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-espace-compte-20261105",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "local",
+  "status": "local_verified_delivery_pending",
+  "objective": "Page du compte pour retrouver des projets privés indépendants, archives et préférences en préproduction.",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "candidate": {},
+  "targets": {
+    "preproduction": {
+      "id": "https://projet-preprod.avereo.fr",
+      "ready": false,
+      "isolated": true,
+      "empty": false
+    },
+    "production": {
+      "ready": false
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/projet-account-space-20261105",
+    "dependsOn": "https://github.com/jpdandin44/AVEREO/pull/107",
+    "humanAcceptanceVerified": false
+  },
+  "checks": [],
+  "approvals": [],
+  "backups": [],
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "blockers": [],
+  "nextAction": "Publier le candidat, qualifier CI et sauvegarde/restauration puis livrer en préproduction demandée.",
+  "authorizationSource": "Demande directe : mettre en place une page associée au compte pour récupérer les différents projets enregistrés en ligne ; suite du déblocage et de la mise en place demandés en préproduction. Aucun nouveau droit, secret, merge ou production.",
+  "historicalTracker": "suivi-enregistrement-en-ligne.json",
+  "localValidation": {
+    "frontendTests": 177,
+    "httpChecks": 59,
+    "build": "passed",
+    "browser": "Création, liste, archives/restauration, préférences après rechargement sur données fictives."
+  },
+  "openReviewItems": [
+    "Revue métier par le responsable après livraison.",
+    "Accès limité au propriétaire déjà configuré ; aucun accès équipe/client ajouté."
+  ],
+  "rollback": {
+    "status": "pending_hosted_rehearsal",
+    "preservesOnlineData": true
+  }
+}

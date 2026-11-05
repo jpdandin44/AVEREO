@@ -14,6 +14,19 @@ tags:
 
 # Feuille de route de Projet
 
+## Itération courante — Mon espace
+
+Le [suivi de l’espace projets](data/suivi-espace-projets.json) est la source de
+l’étape, du candidat et de la livraison. Cadrage et développement local couvrent
+l’accueil du compte, les dossiers indépendants, les archives et deux préférences.
+La préproduction demandée est qualifiée séparément. Mise en production et merge
+restent des décisions humaines distinctes.
+
+Les suivis historiques Gantt et sauvegarde conservent leurs preuves et accords.
+Suite éventuelle : tableau des échéances de plusieurs projets et registre clients
+structuré, à cadrer après usage de la page simple.
+
+
 ## Priorité du 5 novembre 2026
 
 **Réalisé en préproduction** : sauvegarde privée du Gantt et reprise en ligne
