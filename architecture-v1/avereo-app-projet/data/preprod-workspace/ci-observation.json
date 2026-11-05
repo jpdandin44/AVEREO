@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-11-05T11:47:22.362678+00:00",
+  "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+  "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42021494254",
+  "status": "passed",
+  "jobs": [
+    "connect-integration",
+    "validate",
+    "frontend-gates (thermo)",
+    "frontend-gates (rapport)",
+    "frontend-gates (projet)",
+    "frontend-gates (drone)",
+    "frontend-gates (recherche)",
+    "frontend-gates (coupe)"
+  ],
+  "humanApproval": false
+}

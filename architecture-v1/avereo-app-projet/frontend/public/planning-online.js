@@ -3,6 +3,7 @@
     'use strict';
     if (isLocalHost() && !new URLSearchParams(location.search).has('online')) return;
     const endpoint = '/api/planning.php';
+    let projectId = 'principal', switching = false, archived = false;
     let revision = null, csrf = '', pendingKey = '', pending = null, lastPendingRaw = null;
     let running = false, blocked = true, ready = false, initialDraft = false;
     const localInitialize = initializeLocalProject;
@@ -14,8 +15,10 @@
         document.getElementById('online-initial').hidden = !ready;
     }
     function message(text, problem = false) { setStorageMessage(text, problem); }
-    async function request(options = {}, suffix = '') {
-        const response = await fetch(endpoint + suffix, { credentials: 'same-origin', cache: 'no-store', redirect: 'error', ...options });
+    async function request(options = {}, suffix = '', id = projectId) {
+        const query = new URLSearchParams(suffix.replace(/^\?/, ''));
+        query.set('project', id);
+        const response = await fetch(endpoint + '?' + query.toString(), { credentials: 'same-origin', cache: 'no-store', redirect: 'error', ...options });
         let data;
         try { data = await response.json(); } catch (_) { throw new Error('Réponse serveur indisponible. Reconnecte-toi à AVEREO CONNECT.'); }
         if (!response.ok) throw new Error(data.error || 'Enregistrement en ligne indisponible.');
@@ -65,9 +68,42 @@
     }
     window.ProjetOnline = {
         enabled: true,
+        setArchived(value) { archived = value; },
+        get projectId() { return projectId; },
+        get ready() { return ready; },
+        async canSwitch() {
+            if (!ready) throw new Error('La connexion au planning est en cours ou indisponible. Recharge la page après reconnexion.');
+            if (switching || running) throw new Error('Enregistrement en cours. Attends sa confirmation avant de changer de projet.');
+            if (pending && !blocked) await flush();
+            if (pending || initialDraft) throw new Error('Ce projet contient des modifications non enregistrées. Reviens au planning pour les enregistrer ou exporter le JSON avant de changer de projet.');
+            return true;
+        },
+        async open(id) {
+            await this.canSwitch();
+            const wasBlocked = blocked;
+            switching = true; blocked = true;
+            try {
+                const result = await request({}, '', id);
+                if (!result.project) throw new Error('Aucun planning enregistré pour ce projet.');
+                const key = 'avereo.projet.online.pending.' + result.scope + (id === 'principal' ? '' : '.' + id);
+                const raw = localStorage.getItem(key);
+                const draft = raw === null ? null : JSON.parse(raw);
+                if (draft && !Number.isInteger(draft.revision)) throw new Error('Copie locale invalide ; aucun changement de projet.');
+                const project = validate(draft ? draft.project : result.project);
+                projectId = id; archived = false; revision = result.revision; csrf = result.csrf;
+                pendingKey = key; lastPendingRaw = raw; pending = draft ? { revision: draft.revision, project } : null;
+                initialDraft = false; blocked = Boolean(draft && draft.revision !== revision); ready = true;
+                if (typeof lastPlanningEdit !== 'undefined') lastPlanningEdit = null;
+                applyProject(project); controls();
+                message(blocked ? 'Une version plus récente existe en ligne. Ton brouillon est conservé ici : exporte-le ou charge la version en ligne.' : 'Projet chargé depuis ton espace en ligne.', blocked);
+                if (pending && !blocked) await flush();
+            } catch (error) { blocked = wasBlocked; throw error; }
+            finally { switching = false; }
+        },
         get pending() { return Boolean(pending || initialDraft); },
         async save() {
-            if (!ready || running) return;
+            if (archived) { message('Projet archivé. Restaure-le depuis Mes projets avant de le modifier.', true); return; }
+            if (!ready || running || switching) return;
             try {
                 // A retry still uses the last read revision: never overwrite a newer server version.
                 blocked = false;
@@ -76,7 +112,7 @@
             } catch (error) { blocked = true; message(`Enregistrement impossible : ${error.message}`, true); }
         },
         async reload() {
-            if (running) return;
+            if (running || switching) return;
             if ((pending || initialDraft) && !window.confirm('Charger la version en ligne ? Une copie JSON du travail affiché sera téléchargée avant son remplacement.')) return;
             try {
                 const result = await request();
@@ -105,7 +141,8 @@
     };
     persistProject = function (project, replacing = false) {
         if (!window.ProjetOnline.enabled) return localPersist(project, replacing);
-        if (!ready || blocked) throw new Error('La sauvegarde en ligne est interrompue. Exporte le JSON, puis utilise Réessayer ou Charger la version en ligne.');
+        if (archived) throw new Error('Projet archivé. Restaure-le depuis Mes projets avant de le modifier.');
+        if (!ready || blocked || switching) throw new Error('La sauvegarde en ligne est interrompue. Exporte le JSON, puis utilise Réessayer ou Charger la version en ligne.');
         remember({ revision, project: validate(project) });
         void flush();
         return true;
@@ -114,6 +151,7 @@
         if (!window.ProjetOnline.enabled) return localInitialize();
         document.getElementById('load-pilot').hidden = true;
         document.getElementById('enrich-pilot').hidden = true;
+        document.getElementById('local-previous').hidden = true;
         document.getElementById('storage-mode').textContent = 'Espace privé';
         document.getElementById('storage-description').textContent = 'Planning enregistré sur AVEREO · copie JSON disponible';
         message('Connexion à ton planning privé…');

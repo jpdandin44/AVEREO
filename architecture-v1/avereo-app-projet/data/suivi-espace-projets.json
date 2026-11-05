@@ -1,0 +1,178 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-espace-compte-20261105",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "preproduction",
+  "status": "preproduction_delivered_awaiting_user_review",
+  "objective": "Page du compte pour retrouver des projets privés indépendants, archives et préférences en préproduction.",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "candidate": {
+    "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+    "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9"
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://projet-preprod.avereo.fr",
+      "ready": true,
+      "isolated": true,
+      "empty": false,
+      "evidence": "data/preprod-workspace/prepare-observation.json",
+      "observedAt": "2026-11-05T14:46:58.513759+00:00"
+    },
+    "production": {
+      "ready": false
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/projet-account-space-20261105",
+    "dependsOn": "https://github.com/jpdandin44/AVEREO/pull/107",
+    "humanAcceptanceVerified": false,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/108",
+    "headSha": "a202beaf8637254911c6d75a583a97a222b0ae8f",
+    "baseSha": "5bac053c681099864c626a891bc532b85cb54b30",
+    "mergeable": true,
+    "observedAt": "2026-11-05T14:56:47.393852+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42021494254",
+    "currentHeadCi": "https://github.com/jpdandin44/AVEREO/actions/runs/42022083511",
+    "note": "Le code livré reste f1a920b ; les commits suivants ne changent que le suivi documentaire."
+  },
+  "checks": [
+    {
+      "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+      "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+      "kind": "local",
+      "status": "passed",
+      "target": "frontend + PHP HTTP",
+      "evidence": "data/preprod-workspace/local-checks.json",
+      "observedAt": "2026-11-05T11:47:22.362678+00:00"
+    },
+    {
+      "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+      "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+      "kind": "documentation",
+      "status": "passed",
+      "target": "10 documents et 89 liens",
+      "evidence": "data/preprod-workspace/local-checks.json",
+      "observedAt": "2026-11-05T11:47:22.362678+00:00"
+    },
+    {
+      "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+      "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+      "kind": "ci",
+      "status": "passed",
+      "target": "GitHub / huit jobs",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42021494254",
+      "observedAt": "2026-11-05T11:47:22.362678+00:00"
+    },
+    {
+      "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+      "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+      "kind": "preproduction",
+      "status": "passed",
+      "target": "https://projet-preprod.avereo.fr",
+      "observedAt": "2026-11-05T14:56:47.393852+00:00",
+      "evidence": "data/preprod-workspace/browser-recipe.json"
+    }
+  ],
+  "approvals": [
+    {
+      "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+      "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+      "scope": "preproduction",
+      "status": "approved",
+      "target": "https://projet-preprod.avereo.fr",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-05T14:50:01.707759+00:00",
+      "evidence": "Demande de mise en place de Mon espace pour retrouver les projets en ligne dans la continuité de la préproduction demandée ; reconnexion cPanel confirmée après demande explicite de sauvegarder et installer cette page. Aucun merge, changement de droits ou production."
+    }
+  ],
+  "backups": [
+    {
+      "target": "https://projet-preprod.avereo.fr",
+      "id": "/home/daje3540/private/projet-workspace-f1a920b-20261105/recovery",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-05T14:46:58.513759+00:00",
+      "evidence": "data/preprod-workspace/prepare-observation.json"
+    }
+  ],
+  "delivery": {
+    "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+    "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+    "status": "delivered",
+    "environment": "preproduction",
+    "target": "https://projet-preprod.avereo.fr",
+    "deliveredAt": "2026-11-05T14:50:12.108089+00:00",
+    "observedAt": "2026-11-05T14:54:13.630300+00:00",
+    "files": 16,
+    "privateGateConfigUnchanged": true,
+    "planningConfigUnchanged": true,
+    "planningByteIdenticalToBackup": true,
+    "planningRevision": 2,
+    "planningTasks": 45,
+    "productionDelivered": false,
+    "evidence": "data/preprod-workspace/delivery-observation.json"
+  },
+  "blockers": [],
+  "nextAction": "Le responsable recharge Projet, ouvre Mon espace puis le projet existant ; peut créer/importer ses autres dossiers. Revue des PR #107 puis #108, sans merge ni production automatiques.",
+  "authorizationSource": "Demande directe : mettre en place une page associée au compte pour récupérer les différents projets enregistrés en ligne ; suite du déblocage et de la mise en place demandés en préproduction. Aucun nouveau droit, secret, merge ou production.",
+  "historicalTracker": "suivi-enregistrement-en-ligne.json",
+  "localValidation": {
+    "frontendTests": 177,
+    "httpChecks": 59,
+    "build": "passed",
+    "browser": "Création, liste, archives/restauration, préférences après rechargement sur données fictives."
+  },
+  "openReviewItems": [
+    "Revue métier par le responsable après livraison.",
+    "Accès limité au propriétaire déjà configuré ; aucun accès équipe/client ajouté."
+  ],
+  "rollback": {
+    "status": "tested_on_copy",
+    "preservesOnlineData": true,
+    "target": "https://projet-preprod.avereo.fr",
+    "evidence": "data/preprod-workspace/prepare-observation.json",
+    "observedAt": "2026-11-05T14:46:58.513759+00:00",
+    "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+    "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9"
+  },
+  "preparation": {
+    "bundle": "C:/Users/examg/Documents/Codex/2026-07-16/avereo-pilotage/outputs/projet-preproduction/workspace-candidate-20261105",
+    "transferSha256": "41880f740fb3a4d50303546c4c2d61a6c810af2c8477462f0e42bc93e7fa5ac0",
+    "plannedRemotePath": "/home/daje3540/private/projet-workspace-f1a920b-20261105",
+    "transferCompleted": true,
+    "remotePath": "/home/daje3540/private/projet-workspace-f1a920b-20261105"
+  },
+  "resolvedBlockers": [
+    {
+      "id": "cpanel_session_expired",
+      "status": "resolved",
+      "observedAt": "2026-11-05T11:47:22.362678+00:00",
+      "impact": "Aucun transfert ni remplacement de fichier hébergé réalisé. Sauvegarde et qualification natives encore requises.",
+      "nextAction": "Reconnexion du responsable à cPanel puis reprise de la livraison préparée.",
+      "resolvedAt": "2026-11-05T14:50:01.707759+00:00"
+    }
+  ],
+  "browserRecipe": {
+    "status": "passed",
+    "observedAt": "2026-11-05T14:56:47.393852+00:00",
+    "evidence": "data/preprod-workspace/browser-recipe.json"
+  },
+  "nextIteration": [
+    {
+      "id": "projet-portefeuille",
+      "status": "proposed",
+      "scope": "Échéances transversales et registre clients structuré à cadrer après retour utilisateur."
+    }
+  ]
+}

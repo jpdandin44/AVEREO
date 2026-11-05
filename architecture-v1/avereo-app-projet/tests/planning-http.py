@@ -53,12 +53,12 @@ def run():
         with open(root / 'server.log', 'wb') as log:
             process = subprocess.Popen(['php', '-S', '127.0.0.1:' + str(port), '-t', str(public)], env=env, stdout=log, stderr=log)
             try:
-                def request(method='GET', data=None, token=None, user='1', path='', origin_header=origin, raw=None):
+                def request(method='GET', data=None, token=None, user='1', path='', origin_header=origin, raw=None, route='planning'):
                     headers = {'Content-Type': 'application/json', 'Origin': origin_header}
                     if user is not None: headers['Cookie'] = 'PROJECT_TEST=' + cookie(user, user == 'expired')
                     if token is not None: headers['X-Projet-CSRF'] = token
                     body = raw if raw is not None else None if data is None else json.dumps(data).encode()
-                    req = urllib.request.Request(origin + '/api/planning.php' + path, data=body, headers=headers, method=method)
+                    req = urllib.request.Request(origin + '/api/' + route + '.php' + path, data=body, headers=headers, method=method)
                     try: response = urllib.request.urlopen(req, timeout=5)
                     except urllib.error.HTTPError as error: response = error
                     return response.status, json.loads(response.read()), response.headers
@@ -99,6 +99,8 @@ def run():
                 check(request('PUT', {'revision': 2, 'project': previous['project']}, token)[1]['revision'] == 3, 'restore produces new revision')
                 check(request('DELETE', token=token)[0] == 405, 'delete unsupported')
                 check(request(user='2', path='?version=previous')[0] == 403, 'backups protected')
+                from workspace_http import verify
+                verify(request, check, token, project, private)
                 before = (private / 'current.json').read_bytes()
                 (private / 'current.json').write_text('{broken', encoding='utf-8')
                 check(request()[0] == 503, 'corrupt storage fails closed')

@@ -15,6 +15,29 @@ tags:
 
 # Audit et recette du planning Projet
 
+## Recette Mon espace — 5 novembre 2026
+
+177 tests applicatifs et 59 contrôles HTTP locaux réussis ; huit jobs CI réussis
+sur le candidat `f1a920b`. Les 59 contrôles passent sur PHP 8.3.36 hébergé avec
+données fictives. Sauvegarde et restauration sur copie du site et des quatre
+fichiers privés vérifiées avant installation de 16 fichiers. Le document courant
+révision 2 (45 tâches) est identique à la copie avant et après recette.
+Accueil, ouverture du Gantt, retour par le compte, préférences, archives et lien
+CONNECT vérifiés dans le navigateur intégré. Les mutations sont testées sur
+fixtures ; aucun projet ni réglage réel modifié pendant cette recette.
+
+Écart à la source V1 : page associée au compte et catalogue de plusieurs projets
+privés. L’autorisation du responsable porte sur cette page dans la continuité de
+la préproduction et de l’enregistrement en ligne demandés.
+
+Les tests couvrent les projets indépendants, l’import complet, le catalogue privé,
+la traversée de chemins refusée, les conflits, les archives et leurs écritures
+refusées, les préférences, la corruption et la restauration des copies. La recette
+navigateur locale a vérifié création, liste, archive/restauration et préférences
+après rechargement. Les résultats et limites hébergés sont dans le
+[suivi du lot](../data/suivi-espace-projets.json), sans déduire une livraison des tests locaux.
+
+
 ## Lot en ligne — 5 novembre 2026
 
 Résultat : **171 tests frontend**, **23 contrôles HTTP locaux et 23 sur PHP 8.3.36

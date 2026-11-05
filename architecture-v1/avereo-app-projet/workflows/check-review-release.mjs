@@ -18,5 +18,5 @@ for (const file of artifacts) {
   }
 }
 for (const file of ['index.php', 'connect/entry.php', 'connect/gate.php', 'connect/logout.php', '.htaccess']) assert.ok((await readFile(join(dist, file))).length > 0, `Sas absent : ${file}`);
-for (const file of ['legacy-app.html', 'planning-core.js', 'planning-local.js', 'task-details.js']) assert.deepEqual(await readFile(join(frontend, 'public', file)), await readFile(join(dist, file)), `Asset historique modifié : ${file}`);
+for (const file of ['legacy-app.html', 'planning-core.js', 'planning-local.js', 'task-details.js', 'planning-online.js', 'project-workspace.js', 'project-workspace.css', 'api/planning.php', 'api/planning-auth.php', 'api/planning-store.php', 'api/workspace.php', 'api/workspace-store.php']) assert.deepEqual(await readFile(join(frontend, 'public', file)), await readFile(join(dist, file)), `Asset historique modifié : ${file}`);
 console.log(`Artefact vérifié : ${artifacts.length} fichiers ; aucune donnée ou API de revue, pilote absent, sas et planning conservés.`);

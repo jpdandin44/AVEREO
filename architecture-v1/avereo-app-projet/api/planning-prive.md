@@ -12,6 +12,40 @@ tags: [projet, api, stockage]
 
 # Contrat de sauvegarde privée
 
+## Extension catalogue et préférences du compte
+
+Toutes les routes ci-dessous appliquent la même identité du propriétaire, la
+période d’accès, l’origine et le CSRF. Aucun identifiant propriétaire n’est accepté
+comme autorisation dans le corps ou l’URL. Les réponses privées sont sans cache.
+
+- `/api/planning.php?project=ID` : contrat GET/PUT ci-dessous, révision propre au
+  projet. L’absence d’ID désigne `principal` pour préserver les anciens onglets.
+  `version=previous` lit la précédente version du projet sélectionné.
+- `GET /api/workspace.php` : `{revision, preferences, projects, csrf, scope}`.
+  Chaque entrée contient `id`, `name`, `client`, `savedAt`, `taskCount`,
+  `revision`, `archivedAt`. Le document complet n’est pas exposé dans cette liste.
+- `POST /api/workspace.php` : `{revision, action, ...}` avec CSRF et JSON comme
+  pour le planning. Actions : `create` (`project`, `client` facultatif), `client`
+  (`id`, `client`), `archive`/`restore` (`id`), `preferences` (`preferences`).
+  Les préférences sont `{zoom: "days"|"weeks", collapsed: boolean}`.
+  Réponse : catalogue actualisé et `createdId` pour une création.
+- 404 : identifiant absent/invalide ; 409 : catalogue périmé ou écriture sur un
+  projet archivé ; 422 : action/préférence/document invalide ou quota atteint.
+  Les refus 401/403/413/503 et le contrat principal restent applicables.
+
+Le serveur génère les identifiants `p-` suivis de 32 caractères hexadécimaux ;
+aucun chemin fourni par le navigateur n’est utilisé. Les projets archivés sont
+lisibles mais non modifiables avant restauration. L’ancien stockage devient
+virtuellement `principal` ; GET ne crée ni catalogue ni document de planning.
+Les verrous privés peuvent être créés par une lecture.
+
+`workspace.json` garde une révision et `workspace.previous.json` sa copie précédente.
+Les nouveaux projets sont dans `projects/ID/`. Chaque répertoire est privé (0700),
+les fichiers 0600. Pas de suppression ni de partage. Limite : 100 entrées incluant
+`principal` et les archives ; 5 Mo par requête. En cas de réponse incertaine à une
+création, actualiser la liste avant de recommencer afin d’éviter un doublon.
+
+
 `/api/planning.php` requiert une session Projet valide issue de CONNECT et
 l'identité du propriétaire de la configuration privée. Refus 401 si session
 absente/expirée, 403 pour un autre compte. Aucune liste de projets d'un tiers.

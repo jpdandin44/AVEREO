@@ -14,6 +14,26 @@ tags:
 
 # Décisions de Projet
 
+## 2026-11-05 — Catalogue de projets du propriétaire
+
+**Contexte.** Après la sauvegarde du Gantt, le responsable demande une page liée
+au compte pour retrouver plusieurs projets en ligne et les réglages essentiels.
+
+**Décision.** Prolonger le stockage privé JSON avec un catalogue et des dossiers
+indépendants. Conserver le Gantt actuel en place sous l’identifiant `principal`.
+Utiliser une référence client libre, des archives réversibles et les comptes CONNECT.
+
+**Raisons.** Le service existant fournit déjà l’identité, les révisions et les
+copies de récupération. Un nouveau système de comptes ou une base SQL n’apporte
+rien au périmètre personnel demandé.
+
+**Conséquences.** Les lots du Gantt ne deviennent pas des dossiers clients.
+La limite est de 100 projets, archives comprises. Le retour arrière restaure le
+code et conserve les documents créés entre-temps ; l’ancienne interface ne liste
+alors que le projet principal. Une panne pendant la publication du catalogue peut
+laisser un dossier privé non listé, récupérable manuellement, sans écraser un projet.
+
+
 ## 2026-11-05 — Sauvegarde privée du Gantt actuel
 
 **Contexte.** Le responsable constate des plannings différents selon le navigateur

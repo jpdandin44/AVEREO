@@ -15,6 +15,26 @@ tags:
 
 # Projet AVEREO
 
+## Mon espace et projets indépendants — 5 novembre 2026
+
+**Livré en préproduction à 15 h 50 (Paris)**, puis vérifié dans le navigateur.
+Le planning courant de 45 tâches (révision 2) reste identique à la sauvegarde
+prise avant livraison. [PR #108](https://github.com/jpdandin44/AVEREO/pull/108)
+en attente de revue humaine, basée sur la PR #107 encore ouverte.
+
+Le lot suivant ajoute l’accueil **Mon espace**, accessible par **Mes projets** ou
+par le bloc du compte en bas de la barre latérale. Création, import JSON complet,
+recherche par projet/client, tri, archives réversibles et préférences du Gantt
+utilisent le stockage privé existant. L’administration des comptes reste dans
+CONNECT. Le planning existant reste un projet unique, avec ses données et son historique.
+
+[Suivi canonique du lot](data/suivi-espace-projets.json) ·
+[Utilisation](docs/guide-utilisateur.md) · [Contrat privé](api/planning-prive.md).
+Le statut de livraison et les preuves sont portés par le suivi ; les sections
+suivantes décrivent les livraisons précédentes. La PR #107 constitue la base
+technique, sans que son merge soit effectué par ce lot.
+
+
 ## Enregistrement privé du planning — 5 novembre 2026
 
 Livré en préproduction le 5 novembre à 11 h 30 (Paris). Le planning de 45 tâches

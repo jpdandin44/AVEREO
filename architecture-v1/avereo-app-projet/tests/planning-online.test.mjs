@@ -123,3 +123,56 @@ test('authentication error never loads the previous private V1 draft into anothe
     assert.equal(first.current().name, 'Vide');
     assert.match(first.message(), /Accès refusé/);
 });
+
+function projectsService() {
+    const primary = service(project('Principal')), second = service(project('Second'));
+    return { primary, second, call: (url, options) => (new URL(url, 'https://fixture.invalid').searchParams.get('project') === 'p-second' ? second : primary).call(url, options) };
+}
+test('switching projects loads independent server documents and scopes pending browser copies', async () => {
+    const server = projectsService(), first = browser(server.call);
+    await first.initialize();
+    await first.run("window.ProjetOnline.open('p-second')");
+    first.stage(project('Deuxième modifié')); await tick();
+    assert.equal(server.second.record.project.name, 'Deuxième modifié');
+    assert.equal(server.primary.record.project.name, 'Principal');
+    await first.run("window.ProjetOnline.open('principal')");
+    assert.equal(first.current().name, 'Principal');
+});
+test('a pending offline edit prevents switching and survives a separate browser session', async () => {
+    const server = projectsService(), first = browser(server.call);
+    await first.initialize(); await first.run("window.ProjetOnline.open('p-second')");
+    server.second.fail = true;
+    first.stage(project('Brouillon du second')); await tick();
+    await assert.rejects(first.run("window.ProjetOnline.open('principal')"), /non enregistrées/);
+    assert.equal(JSON.parse(first.storage.get('avereo.projet.online.pending.owner.p-second')).project.name, 'Brouillon du second');
+    const resumed = browser(server.call, { storage: first.storage });
+    await resumed.initialize();
+    assert.equal(resumed.current().name, 'Principal');
+    server.second.fail = false;
+    await resumed.run("window.ProjetOnline.open('p-second')");
+    assert.equal(resumed.current().name, 'Brouillon du second');
+    assert.equal(server.primary.record.project.name, 'Principal');
+});
+test('failed project opening leaves the active document and its save destination unchanged', async () => {
+    const server = projectsService();
+    const first = browser((url, options) => url.includes('p-missing') ? Promise.resolve({ ok: false, json: async () => ({ error: 'Projet introuvable' }) }) : server.call(url, options));
+    await first.initialize();
+    await assert.rejects(first.run("window.ProjetOnline.open('p-missing')"), /introuvable/);
+    first.stage(project('Toujours principal')); await tick();
+    assert.equal(server.primary.record.project.name, 'Toujours principal');
+    assert.equal(server.second.record.project.name, 'Second');
+});
+test('opening the active project again reads the latest online document', async () => {
+    const server = projectsService(), first = browser(server.call), second = browser(server.call);
+    await first.initialize(); await second.initialize();
+    second.stage(project('Depuis un autre navigateur')); await tick();
+    await first.run("window.ProjetOnline.open('principal')");
+    assert.equal(first.current().name, 'Depuis un autre navigateur');
+});
+
+test('opening a project clears the previous project movement undo snapshot', async () => {
+    const server = projectsService(), first = browser(server.call);
+    await first.initialize(); first.run('let lastPlanningEdit = { before: "other project" };');
+    await first.run("window.ProjetOnline.open('p-second')");
+    assert.equal(first.run('lastPlanningEdit'), null);
+});
