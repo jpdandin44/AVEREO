@@ -5,12 +5,37 @@ title: Guide utilisateur de l'outil de suivi AVEREO Projet
 status: active
 version: git
 created: 2026-09-24
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags: [projet, suivi, guide, local]
 ---
 
 # Guide utilisateur de l'outil de suivi AVEREO Projet
+
+## Planning privé en ligne
+
+Ouvrir Projet depuis AVEREO CONNECT avec le compte propriétaire. La mention
+**Espace privé** et l'état sous l'en-tête indiquent la source et la sauvegarde.
+Après une modification, attendre **Enregistré en ligne**, avec sa date et sa version.
+Un autre navigateur retrouve cette version en ouvrant Projet avec le même compte.
+
+Au premier démarrage sans planning serveur, importer le JSON complet ou utiliser
+**Enregistrer en ligne / Réessayer** pour reprendre le planning affiché. L'ancien
+brouillon du navigateur reste exportable par **Ancien brouillon de ce navigateur**.
+La sauvegarde personnelle ne figure jamais dans les fichiers publics du site.
+
+En cas de panne, la copie locale reste en attente. Réessayer après reconnexion.
+Si une autre session a enregistré une version plus récente, exporter le JSON
+du travail local avant de choisir **Charger la version en ligne**. Ce bouton
+télécharge une copie du brouillon en attente avant remplacement. Il n'existe
+pas de fusion automatique des modifications concurrentes.
+
+**Copie précédente en ligne** télécharge le JSON de la sauvegarde antérieure.
+Pour la restaurer, importer ce JSON : la restauration devient une nouvelle version.
+Exporter régulièrement le JSON vers une sauvegarde indépendante.
+Si Chrome affiche encore « Pilotage de Chantier / Mode Local », recharger avec
+Ctrl + Maj + R après avoir conservé les éventuelles saisies en cours.
+
 
 ## Planning enrichi et préproduction — 28 octobre 2026
 

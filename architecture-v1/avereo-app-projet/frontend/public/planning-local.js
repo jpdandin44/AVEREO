@@ -81,7 +81,7 @@ function commitProject(candidate, { replacing = false, message = 'Planning enreg
         if (replacing && (tasks.length || lastStoredRaw !== null) && !window.confirm('Remplacer le planning de cette session par le fichier sélectionné ? Exporte d’abord le JSON complet pour conserver les fiches et validations. Un CSV conserve les fiches actuelles uniquement pour les tâches de mêmes ID, nom et lot.')) return false;
         const saved = persistProject(normalized, replacing);
         applyProject(normalized);
-        showToast(saved ? message : 'Modification en mémoire — export JSON nécessaire', saved ? 'emerald' : 'amber');
+        showToast(window.ProjetOnline?.enabled ? 'Modification conservée — enregistrement en ligne en cours' : saved ? message : 'Modification en mémoire — export JSON nécessaire', saved ? 'emerald' : 'amber');
         return true;
     } catch (error) {
         window.alert(error.message);

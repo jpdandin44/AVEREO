@@ -5,7 +5,7 @@ title: Recette du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,17 @@ tags:
 ---
 
 # Recette du planning local Projet
+
+## Sauvegarde privée du Gantt
+
+`node --test tests/planning-online.test.mjs` exerce le contrôleur réel avec deux
+stockages indépendants et deux onglets, concurrence, réseau interrompu, quota,
+reprise et absence de fuite du brouillon lors d'un refus d'accès.
+`python tests/planning-http.py` lance PHP sur boucle locale avec identités et
+secret fictifs : droits, CSRF, JSON, taille, révision, récupération, corruption.
+`online-delivery.test.mjs` répète installation et restauration de fichiers fictifs
+et refuse l'ajout d'un sas au paquet. Ces tests sont intégrés à la CI Projet.
+
 
 ## Gantt préproduction — 28 octobre 2026
 

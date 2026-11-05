@@ -165,6 +165,10 @@ jobs:
           python3 architecture-v1/avereo-app-rapport/tests/rga-http.py
           python3 -m unittest discover -s architecture-v1/avereo-app-rapport/tests -p test_rga_delivery.py
 
+      - name: Test private Projet persistence
+        if: matrix.application == 'projet'
+        run: python3 architecture-v1/avereo-app-projet/tests/planning-http.py
+
   connect-integration:
     runs-on: ubuntu-latest
     services:

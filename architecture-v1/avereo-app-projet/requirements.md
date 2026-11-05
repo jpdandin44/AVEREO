@@ -5,7 +5,7 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,18 @@ tags:
 ---
 
 # Exigences du planning local Projet
+
+## Lot autorisé le 5 novembre — sauvegarde privée du planning existant
+
+- Retrouver le même Gantt et les mêmes fiches depuis plusieurs navigateurs.
+- Accès au seul propriétaire CONNECT ; identité vérifiée côté serveur.
+- Accusé daté et révision, copie locale avant envoi, reprise après panne.
+- Refus des écritures périmées, des origines étrangères et des comptes tiers.
+- JSON complet conservé, export indépendant et version précédente récupérable.
+- Données hors dossier public, sauvegarde/restauration répétée avant livraison.
+- Préproduction explicitement demandée ; aucune autorisation de production ou
+  de merge n'est déduite. Les dossiers clients distincts restent différés.
+
 
 ## Projets clients et enregistrement serveur — besoin demandé, non implémenté
 

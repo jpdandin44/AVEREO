@@ -5,7 +5,7 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,20 @@ tags:
 ---
 
 # Audit et recette du planning Projet
+
+## Lot en ligne — 5 novembre 2026
+
+L'interface ancienne de la capture utilisateur et la séparation des brouillons
+par navigateur motivent une actualisation du chargement et une persistance privée.
+La demande autorise un premier backend V2 pour le Gantt existant, sans reprendre
+le registre clients différé. Écart assumé à la V1 statique : deux routes PHP
+servent un document privé, avec l'identité du sas PR #106 inchangé.
+
+Les résultats courants sont conservés dans
+[le suivi du lot](../data/suivi-enregistrement-en-ligne.json). Les tests automatisés
+couvrent droits, CSRF, conflit, panne, stockage privé, sauvegarde précédente et
+reprise ; la preuve hébergée reste séparée du succès local.
+
 
 ## Reprise du Gantt pour préproduction — 28 octobre 2026
 

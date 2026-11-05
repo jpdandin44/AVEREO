@@ -1,8 +1,18 @@
-﻿# Backend - Projet AVEREO Pro
+---
+project: avereo-app-projet
+document_type: backend-index
+title: Service de planning prive
+status: active
+version: git
+created: 2026-11-05
+updated: 2026-11-05
+owner: jpdandin
+tags: [projet, backend]
+---
 
-Backend volontairement desactive en V1.
+# Backend de Projet
 
-- APIs prevues pour V2 seulement si besoin metier reel.
-- Aucun endpoint metier en V1.
-- Aucun serveur Node ou Express actif ne doit etre ajoute en V1.
-- Aucun secret ne doit etre stocke dans ce dossier.
+La V1 historique est statique. Le premier lot V2 ajoute un service PHP dans
+`frontend/public/api/`, livré avec le frontend pour cet hébergement. Voir le
+[contrat](../api/planning-prive.md) et l’[architecture](../architecture.md).
+Aucun serveur Node/Express ni base MySQL de planning n’est ajouté.

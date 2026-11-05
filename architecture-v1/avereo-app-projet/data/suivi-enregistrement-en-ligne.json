@@ -1,0 +1,68 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-enregistrement-en-ligne-20261105",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "developpement_local",
+  "status": "in_progress",
+  "objective": "Enregistrer le Gantt existant dans un espace prive et le retrouver entre navigateurs en preproduction.",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "candidate": {
+    "sourceSha": null,
+    "artifactSha256": null
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://projet-preprod.avereo.fr",
+      "ready": true,
+      "isolated": true,
+      "empty": false,
+      "evidence": "Lecture cPanel 2026-11-05 : racine /home/daje3540/projet-preprod.avereo.fr, PHP 8.3.36, proprietaire actif avereo_admin id 1 ; sas PR106 conserve.",
+      "observedAt": "2026-11-05T10:24:46.429155+00:00"
+    },
+    "production": {
+      "ready": false
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/projet-online-save-20261105",
+    "humanAcceptanceVerified": false
+  },
+  "checks": [],
+  "approvals": [],
+  "backups": [],
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "blockers": [],
+  "nextAction": "Finir les controles locaux, publier le candidat et qualifier la recuperation avant livraison preproduction.",
+  "nextIteration": [
+    {
+      "id": "projet-dossiers-clients",
+      "status": "cadrage",
+      "scope": "Clients et projets independants ; aucun acces equipe/client ajoute."
+    }
+  ],
+  "authorizationSource": "Demande directe 2026-11-05 : debloquer la situation et mettre en place ce qu il faut en preprod ; enregistrement en ligne du planning prive demande au tour precedent.",
+  "localValidation": {
+    "observedAt": "2026-11-05T10:24:46.429155+00:00",
+    "frontendTests": 171,
+    "httpChecks": 23,
+    "build": "passed",
+    "baseline": "passed",
+    "documentation": {
+      "documents": 14,
+      "localLinks": 101,
+      "status": "passed"
+    },
+    "scope": "Local / donnees fictives ; aucune recette hebergee deduite"
+  }
+}

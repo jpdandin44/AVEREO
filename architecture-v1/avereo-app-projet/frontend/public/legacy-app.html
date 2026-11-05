@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVEREO - Pilotage Pro</title>
-    <script src="./planning-core.js"></script>
+    <script src="./planning-core.js?v=online-20261105"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -146,8 +146,8 @@
         <!-- Header -->
         <header class="min-h-16 flex-wrap gap-3 py-3 border-b border-slate-200 flex items-center justify-between px-6 shrink-0 bg-white z-20 shadow-sm">
             <div>
-                <h1 class="text-xl font-semibold text-slate-800 flex items-center">Pilotage de projet <span class="text-xs font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded ml-3 border border-emerald-200">Suivi local</span></h1>
-                <p class="text-xs text-slate-500 font-medium mt-0.5">Sauvegarde dans ce navigateur · export JSON pour conserver une copie indépendante</p>
+                <h1 class="text-xl font-semibold text-slate-800 flex items-center">Pilotage de projet <span id="storage-mode" class="text-xs font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded ml-3 border border-emerald-200">Suivi local</span></h1>
+                <p id="storage-description" class="text-xs text-slate-500 font-medium mt-0.5">Sauvegarde dans ce navigateur · export JSON pour conserver une copie indépendante</p>
             </div>
             <div class="flex items-center flex-wrap gap-2">
                 <input type="file" id="data-upload" accept=".csv,.xlsx,.xls,.json" class="hidden" onchange="handleFileImport(event)">
@@ -170,6 +170,12 @@
         <section class="border-b border-slate-200 bg-slate-50 px-6 py-3 shrink-0" aria-label="Paramètres et sauvegarde du projet">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <p id="storage-status" role="status" class="text-sm text-slate-600">Chargement du planning local…</p>
+                <div class="flex flex-wrap gap-3 text-xs">
+                    <button id="online-save" hidden onclick="ProjetOnline.save()" class="text-blue-700 underline">Enregistrer en ligne / Réessayer</button>
+                    <button id="online-reload" hidden onclick="ProjetOnline.reload()" class="text-blue-700 underline">Charger la version en ligne</button>
+                    <button id="online-previous" hidden onclick="ProjetOnline.previous()" class="text-slate-600 underline">Copie précédente en ligne</button>
+                    <button id="online-initial" hidden onclick="ProjetOnline.exportInitial()" class="text-slate-600 underline">Ancien brouillon de ce navigateur</button>
+                </div>
                 <div class="flex gap-3 text-xs">
                     <button id="load-pilot" onclick="loadPilotProject()" class="text-blue-700 underline">Recharger le pilote AVEREO</button>
                     <button id="enrich-pilot" onclick="enrichPilotTaskDetails()" class="text-blue-700 underline">Compléter les fiches documentées</button>
@@ -1268,7 +1274,8 @@
         });
 
     </script>
-    <script src="./planning-local.js"></script>
-    <script src="./task-details.js"></script>
+    <script src="./planning-local.js?v=online-20261105"></script>
+    <script src="./task-details.js?v=online-20261105"></script>
+    <script src="./planning-online.js?v=online-20261105"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,22 @@ tags:
 ---
 
 # Projet AVEREO
+
+## Enregistrement privé du planning — 5 novembre 2026
+
+Le lot V2 ajoute la sauvegarde complète du Gantt dans l'espace privé de son
+propriétaire CONNECT. Le serveur est la référence après accusé de réception ;
+le même compte retrouve son planning depuis un autre navigateur. L'ancien
+brouillon V1 reste conservé et exportable. Un conflit ou une panne conserve
+la copie en attente et n'écrase aucune version distante plus récente.
+
+Le candidat et sa qualification effective sont dans le
+[suivi de cette itération](data/suivi-enregistrement-en-ligne.json).
+Le [contrat](api/planning-prive.md), le [guide](docs/guide-utilisateur.md)
+et la [livraison](docs/deployment.md) décrivent le fonctionnement.
+Les sections datées ci-dessous conservent l'historique de la V1 statique.
+Le registre de dossiers clients indépendants reste une évolution distincte.
+
 
 ## Gantt livré en préproduction — 28 octobre 2026
 
