@@ -17,6 +17,11 @@ tags:
 
 ## Mon espace et projets indépendants — 5 novembre 2026
 
+**Livré en préproduction à 15 h 50 (Paris)**, puis vérifié dans le navigateur.
+Le planning courant de 45 tâches (révision 2) reste identique à la sauvegarde
+prise avant livraison. [PR #108](https://github.com/jpdandin44/AVEREO/pull/108)
+en attente de revue humaine, basée sur la PR #107 encore ouverte.
+
 Le lot suivant ajoute l’accueil **Mon espace**, accessible par **Mes projets** ou
 par le bloc du compte en bas de la barre latérale. Création, import JSON complet,
 recherche par projet/client, tri, archives réversibles et préférences du Gantt

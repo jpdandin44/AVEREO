@@ -1,0 +1,12 @@
+{
+  "observedAt": "2026-11-05T14:57:53.408856+00:00",
+  "status": "passed",
+  "documents": 10,
+  "localLinks": 91,
+  "baselineRoots": [
+    "monorepo",
+    "avereo-app-projet"
+  ],
+  "sources": "Code deployed, private receipts observed, canonical tracking and operational pointer",
+  "remaining": "Human review and production remain separate; no global repository audit claimed."
+}

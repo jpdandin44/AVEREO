@@ -17,6 +17,15 @@ tags:
 
 ## Livraison de Mon espace et des projets indépendants
 
+Livraison observée à `2026-11-05T14:50:12Z` : code
+`f1a920b313a2a28ac45325f0b7a8bf114679af73`, paquet
+`09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9`.
+Reçus et récupération : `/home/daje3540/private/projet-workspace-f1a920b-20261105`.
+Les [observations](../data/preprod-workspace/delivery-observation.json) et la
+[recette](../data/preprod-workspace/browser-recipe.json) distinguent les contrôles
+du site réel des tests isolés sur données fictives. La session cPanel expirée
+a été rétablie par le responsable avant transfert.
+
 Le lot s’appuie sur la sauvegarde privée déjà installée. Source dédiée :
 `feat/projet-account-space-20261105`, basée sur la PR #107 encore ouverte.
 Le [suivi canonique](../data/suivi-espace-projets.json) donne l’état effectivement

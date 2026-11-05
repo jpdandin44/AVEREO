@@ -16,6 +16,10 @@ tags:
 
 ## Itération courante — Mon espace
 
+**Livré et vérifié en préproduction le 5 novembre à 15 h 50.** Le responsable peut
+retrouver le Gantt et créer ses dossiers indépendants. La revue humaine des PR
+#107 puis #108 reste à faire.
+
 Le [suivi de l’espace projets](data/suivi-espace-projets.json) est la source de
 l’étape, du candidat et de la livraison. Cadrage et développement local couvrent
 l’accueil du compte, les dossiers indépendants, les archives et deux préférences.

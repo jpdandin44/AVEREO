@@ -1,0 +1,22 @@
+{
+  "observedAt": "2026-11-05T14:51:49.895782+00:00",
+  "status": "passed",
+  "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+  "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+  "httpsAssetsMatched": [
+    "legacy-app.html",
+    "planning-core.js",
+    "planning-local.js",
+    "task-details.js",
+    "planning-online.js",
+    "project-workspace.js",
+    "project-workspace.css",
+    "assets/index-BRgM2m8J.css",
+    "assets/index-QC_9TPXr.js"
+  ],
+  "anonymousApisRefused": [
+    "planning",
+    "workspace"
+  ],
+  "privateResponsesNotCached": true
+}

@@ -16,6 +16,9 @@ tags:
 
 ## 2026-11-05 — Mon espace et plusieurs projets en ligne
 
+Livré en préproduction ; planning courant préservé à l’identique, accueil et
+ouverture du Gantt contrôlés après reconnexion et rechargement.
+
 - Page du compte et accueil Mes projets : liste, recherche, tri, création, import.
 - Référence client libre, archives réversibles et préférences mémorisées en ligne.
 - Lien vers le profil et la gestion des accès existants dans CONNECT.

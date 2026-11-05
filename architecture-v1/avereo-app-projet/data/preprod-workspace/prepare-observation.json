@@ -1,0 +1,23 @@
+{
+  "observedAt": "2026-11-05T14:46:58.513759+00:00",
+  "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+  "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+  "target": "https://projet-preprod.avereo.fr",
+  "remoteReceipts": [
+    "/home/daje3540/private/projet-workspace-f1a920b-20261105/prepare-receipt.json",
+    "/home/daje3540/private/projet-workspace-f1a920b-20261105/workspace-recovery.json"
+  ],
+  "codeBackupVerified": true,
+  "codeRestoreOnCopyVerified": true,
+  "dataBackupVerified": true,
+  "dataRestoreOnCopyVerified": true,
+  "currentPlanningByteIdenticalToBackup": true,
+  "privateDataFiles": 4,
+  "planningRevisionBefore": 2,
+  "planningTasksBefore": 45,
+  "hostedPhp": "8.3.36",
+  "isolatedHttpChecks": 59,
+  "isolatedHttpStatus": "passed",
+  "databaseWrites": false,
+  "observationMethod": "cPanel terminal; original hashes and receipts retained in private delivery directory"
+}

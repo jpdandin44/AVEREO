@@ -1,0 +1,26 @@
+{
+  "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+  "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+  "status": "passed",
+  "observedAt": "2026-11-05T14:56:47.393852+00:00",
+  "target": "https://projet-preprod.avereo.fr",
+  "session": "Navigateur intégré, compte propriétaire via reconnexion CONNECT normale",
+  "observations": [
+    "Mon espace affiché à l’arrivée et après rechargement",
+    "Un projet existant listé, 45 tâches, dernière sauvegarde visible à 15:29:23 Paris",
+    "Ouverture du Gantt depuis la carte : tâches et avancement courant retrouvés",
+    "Retour à Mon espace depuis le bloc du compte",
+    "Préférences visibles : semaines et lots repliés ; aucun réglage réel modifié",
+    "Archives visibles et vides ; aucun projet réel archivé",
+    "Mon compte présente le lien CONNECT /#profile"
+  ],
+  "fictitiousCoverage": {
+    "localBrowser": "création, liste de deux projets, archivage, restauration, préférences après rechargement",
+    "hostedIsolatedHttpChecks": 59
+  },
+  "limits": [
+    "La recette authentifiée du compte réel est en lecture seule ; les créations/imports/archives/écritures sont qualifiés sur données fictives.",
+    "Le navigateur Chrome personnel du responsable reste à recharger par le responsable."
+  ],
+  "screenshot": "C:/Users/examg/Documents/Codex/2026-07-16/avereo-pilotage/outputs/projet-preproduction/espace-compte-preproduction.jpg"
+}
