@@ -6,7 +6,7 @@
   "owner": "jpdandin",
   "kind": "application",
   "stage": "local",
-  "status": "local_verified_delivery_pending",
+  "status": "awaiting_cpanel_reconnection",
   "objective": "Page du compte pour retrouver des projets privés indépendants, archives et préférences en préproduction.",
   "phases": [
     "Cadrage",
@@ -14,7 +14,10 @@
     "Préproduction",
     "Mise en production"
   ],
-  "candidate": {},
+  "candidate": {
+    "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+    "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9"
+  },
   "targets": {
     "preproduction": {
       "id": "https://projet-preprod.avereo.fr",
@@ -30,16 +33,58 @@
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/projet-account-space-20261105",
     "dependsOn": "https://github.com/jpdandin44/AVEREO/pull/107",
-    "humanAcceptanceVerified": false
+    "humanAcceptanceVerified": false,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/108",
+    "headSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+    "baseSha": "5bac053c681099864c626a891bc532b85cb54b30",
+    "mergeable": true,
+    "observedAt": "2026-11-05T11:47:22.362678+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42021494254"
   },
-  "checks": [],
+  "checks": [
+    {
+      "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+      "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+      "kind": "local",
+      "status": "passed",
+      "target": "frontend + PHP HTTP",
+      "evidence": "data/preprod-workspace/local-checks.json",
+      "observedAt": "2026-11-05T11:47:22.362678+00:00"
+    },
+    {
+      "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+      "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+      "kind": "documentation",
+      "status": "passed",
+      "target": "10 documents et 89 liens",
+      "evidence": "data/preprod-workspace/local-checks.json",
+      "observedAt": "2026-11-05T11:47:22.362678+00:00"
+    },
+    {
+      "sourceSha": "f1a920b313a2a28ac45325f0b7a8bf114679af73",
+      "artifactSha256": "09895358477965126a893484165f4c6d219f6b8ed8acbad57e0e3a4f58e1d1b9",
+      "kind": "ci",
+      "status": "passed",
+      "target": "GitHub / huit jobs",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42021494254",
+      "observedAt": "2026-11-05T11:47:22.362678+00:00"
+    }
+  ],
   "approvals": [],
   "backups": [],
   "delivery": {
     "status": "not_delivered"
   },
-  "blockers": [],
-  "nextAction": "Publier le candidat, qualifier CI et sauvegarde/restauration puis livrer en préproduction demandée.",
+  "blockers": [
+    {
+      "id": "cpanel_session_expired",
+      "status": "open",
+      "observedAt": "2026-11-05T11:47:22.362678+00:00",
+      "impact": "Aucun transfert ni remplacement de fichier hébergé réalisé. Sauvegarde et qualification natives encore requises.",
+      "nextAction": "Reconnexion du responsable à cPanel puis reprise de la livraison préparée."
+    }
+  ],
+  "nextAction": "Après reconnexion cPanel : transférer le candidat privé, qualifier les 59 contrôles sur PHP hébergé, sauvegarder/restaurer sur copie, passer le contrôle puis installer et vérifier Mon espace.",
   "authorizationSource": "Demande directe : mettre en place une page associée au compte pour récupérer les différents projets enregistrés en ligne ; suite du déblocage et de la mise en place demandés en préproduction. Aucun nouveau droit, secret, merge ou production.",
   "historicalTracker": "suivi-enregistrement-en-ligne.json",
   "localValidation": {
@@ -55,5 +100,11 @@
   "rollback": {
     "status": "pending_hosted_rehearsal",
     "preservesOnlineData": true
+  },
+  "preparation": {
+    "bundle": "C:/Users/examg/Documents/Codex/2026-07-16/avereo-pilotage/outputs/projet-preproduction/workspace-candidate-20261105",
+    "transferSha256": "41880f740fb3a4d50303546c4c2d61a6c810af2c8477462f0e42bc93e7fa5ac0",
+    "plannedRemotePath": "/home/daje3540/private/projet-workspace-f1a920b-20261105",
+    "transferCompleted": false
   }
 }
