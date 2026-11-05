@@ -14,6 +14,11 @@ tags:
 
 # Feuille de route de Projet
 
+## Itération préparée — import privé
+
+Le [suivi de l’import privé](data/suivi-import-prive.json) complète les suivis existants. Cadrage : base Mon espace #108. Développement local : paquet hors dépôt, contrôles et PR. Préproduction : import réel et recette à autoriser sur le compte cible. Mise en production : décision ultérieure distincte, avec contrôles après livraison et suivi du planning.
+
+
 ## Itération courante — Mon espace
 
 **Livré et vérifié en préproduction le 5 novembre à 15 h 50.** Le responsable peut

@@ -5,7 +5,7 @@ title: Génération et reprise du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-24
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,11 @@ tags:
 ---
 
 # Génération et reprise du planning Projet
+
+## Import privé indépendant
+
+Le [workflow d’import privé](import-prive.md) utilise `preparer-import-prive.mjs` pour préparer une copie vérifiée hors dépôt, avant import dans Mon espace. Il conserve le document courant et ne déploie rien.
+
 
 La [revue locale et son workflow de développement](revue-developpement.md)
 forment un parcours distinct du générateur de planning décrit ici : lancement,

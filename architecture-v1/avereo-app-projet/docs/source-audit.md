@@ -15,6 +15,11 @@ tags:
 
 # Audit et recette du planning Projet
 
+## Préparation de l’import privé — 5 novembre 2026
+
+Le nouveau préparateur est un outil local : aucun écart de comportement du frontend ou de l’API. Ses tests utilisent des données fictives. La conservation du JSON privé est contrôlée par empreinte et aller-retour avec le moteur courant ; la recette du nouvel import sur le compte hébergé reste à faire. Les résultats sont rattachés au [suivi canonique](../data/suivi-import-prive.json).
+
+
 ## Recette Mon espace — 5 novembre 2026
 
 177 tests applicatifs et 59 contrôles HTTP locaux réussis ; huit jobs CI réussis

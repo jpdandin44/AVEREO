@@ -14,6 +14,17 @@ tags:
 
 # Décisions de Projet
 
+## 2026-11-05 — Conserver les données de planning hors du dépôt public
+
+**Contexte.** Une PR est demandée pour intégrer un contenu de planning personnel dans la dernière version de Projet ; Mon espace permet déjà l’import indépendant.
+
+**Décision.** Versionner la préparation et la procédure génériques, conserver la source et son paquet privé hors Git, et préparer l’import dans un nouveau projet.
+
+**Raisons.** Protéger les informations privées et éviter le remplacement du document courant par un export antérieur.
+
+**Conséquences.** La PR ne contient pas le planning réel et ne l’installe pas. L’import ultérieur utilise l’API existante après accord sur le fichier et la cible. [Procédure](workflows/import-prive.md).
+
+
 ## 2026-11-05 — Catalogue de projets du propriétaire
 
 **Contexte.** Après la sauvegarde du Gantt, le responsable demande une page liée
