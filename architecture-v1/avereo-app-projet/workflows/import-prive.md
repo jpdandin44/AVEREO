@@ -63,8 +63,7 @@ Aucun appel réseau, compte, secret, paquet externe, migration ou écriture serv
 
 ## Préproduction
 
-Cette procédure est **préparée**, pas exécutée par la création de la PR.
-L'import effectif demande l'accord sur le fichier privé, le compte et la cible.
+**Import effectué le 5 novembre 2026 après accord direct du responsable.** Nouveau projet enregistré puis retrouvé après rechargement ; contenu complet identique au paquet par empreinte du JSON canonique. Le document courant reste identique en révision 5. Le téléchargement navigateur n’a pas abouti dans le navigateur intégré : la comparaison complète a été effectuée côté serveur, sans qualifier l’export navigateur. Voir le [suivi et ses preuves](../data/suivi-import-prive.json). La procédure ci-dessous est conservée pour les imports ultérieurs.
 
 1. Ouvrir CONNECT puis Projet en préproduction avec le compte propriétaire.
 2. Exporter le planning courant et relever sa révision avant toute action.

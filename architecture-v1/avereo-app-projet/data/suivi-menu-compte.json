@@ -1,0 +1,107 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-menu-compte-20261105",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "developpement_local",
+  "status": "local_candidate_ready",
+  "objective": "Ranger la déconnexion dans le menu Mon espace en bas à gauche pour dégager les formulaires.",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "candidate": {
+    "sourceSha": "679e201c2b548acde154a8df290340a07700e9bd",
+    "artifactSha256": "24cefe6d2d0fc30cb2b9de93c55b15be91f89fd1624279f6fd0a2d70f30ff4ee",
+    "files": {
+      "index.php": "975c1bb21bc09007f98b7afeaec8efc29abef125e61b86e17d1835281bf0d67e",
+      "index.html": "11e61c6e397575f10c918c85b1f06fc0fce2dfea5968e582bbb28fedfda88965",
+      "legacy-app.html": "fdb7bfe99521bc25d8669b83bb00cf29de3389de7a76c76d22b97e5ed926d3f8",
+      "project-workspace.js": "4abf762cd987c848e235853ba7bbd4805da96de3f54443e24dd1fb20e2c234fc",
+      "project-workspace.css": "1088a3de19e5cec54d3ea05472a3accfedcb89b28e544845da168340a2ecf1e3",
+      "assets/index-BRgM2m8J.css": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+      "assets/index-CgN1R1PY.js": "e0ce1f75eeb5460b13f23d0b486a70a55383dafc804a5ccf55ea556930174ddf"
+    }
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://projet-preprod.avereo.fr",
+      "ready": true,
+      "isolated": true,
+      "empty": false,
+      "evidence": "Interface Mon espace accessible ; sept chemins contrôlés, sauvegarde et restauration vérifiées via cPanel.",
+      "observedAt": "2026-11-05T21:14:07.961682+00:00"
+    },
+    "production": {
+      "ready": false
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "fix/projet-menu-compte-20261105",
+    "base": "main",
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/110",
+    "humanAcceptanceVerified": false,
+    "headSha": "ca7a63acc171d4cba21cd66ee8b25a9c1edbe303",
+    "mergeable": true,
+    "observedAt": "2026-11-05T21:14:07.961682+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42110451662"
+  },
+  "checks": [
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "679e201c2b548acde154a8df290340a07700e9bd",
+      "artifactSha256": "24cefe6d2d0fc30cb2b9de93c55b15be91f89fd1624279f6fd0a2d70f30ff4ee",
+      "target": "182 tests et recette visuelle locale",
+      "evidence": "data/menu-compte-checks.json",
+      "observedAt": "2026-11-05T21:11:39.805973+00:00"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "679e201c2b548acde154a8df290340a07700e9bd",
+      "artifactSha256": "24cefe6d2d0fc30cb2b9de93c55b15be91f89fd1624279f6fd0a2d70f30ff4ee",
+      "target": "10 documents et 109 liens locaux",
+      "evidence": "data/menu-compte-checks.json",
+      "observedAt": "2026-11-05T21:11:39.805973+00:00"
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "679e201c2b548acde154a8df290340a07700e9bd",
+      "artifactSha256": "24cefe6d2d0fc30cb2b9de93c55b15be91f89fd1624279f6fd0a2d70f30ff4ee",
+      "target": "GitHub : huit jobs ; code candidat inchangé dans le commit documentaire ca7a63a",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42110451662",
+      "observedAt": "2026-11-05T21:14:07.961682+00:00"
+    }
+  ],
+  "approvals": [],
+  "backups": [
+    {
+      "target": "https://projet-preprod.avereo.fr",
+      "id": "projet-menu-679e201-20261105",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "evidence": "Reçu privé prepare-receipt.json : sept chemins, fichiers existants copiés/restaurés à l’identique, quatre fichiers du sas protégés.",
+      "observedAt": "2026-11-05T21:14:07.961682+00:00"
+    }
+  ],
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "rollback": {
+    "status": "not_tested"
+  },
+  "blockers": [
+    "Accord de livraison du candidat UI demandé au responsable ; en attente."
+  ],
+  "nextAction": "Revoir la PR et autoriser la livraison du candidat en préproduction.",
+  "nextIteration": [
+    "Vérifier le menu et les formulaires après livraison ; conserver les deux projets privés."
+  ]
+}

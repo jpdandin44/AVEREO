@@ -15,6 +15,11 @@ tags:
 
 # Prévisualisation et publication de Projet
 
+## Candidat du menu de compte
+
+Ce lot remplace uniquement l’injection visuelle finale de `index.php`, le HTML du Gantt, son script/CSS de compte et le wrapper compilé avec son nouvel asset JS. Il ne remplace ni `connect/gate.php`, ni la configuration privée, ni les routes API, ni les données. Les anciens installateurs qui préservent `index.php` ne conviennent pas à ce lot : ne pas les détourner. Préparer une sauvegarde restaurée des sept fichiers concernés, vérifier les empreintes et obtenir l’accord exact avant livraison. État dans le [suivi](../data/suivi-menu-compte.json).
+
+
 ## Livraison de Mon espace et des projets indépendants
 
 Livraison observée à `2026-11-05T14:50:12Z` : code

@@ -5,8 +5,8 @@
   "project": "avereo-app-projet",
   "owner": "jpdandin",
   "kind": "outillage",
-  "stage": "developpement_local",
-  "status": "prepared_awaiting_review",
+  "stage": "preproduction",
+  "status": "private_import_verified",
   "objective": "Préparer l’intégration d’un planning privé dans un projet indépendant, sur la base Mon espace, sans publication des données.",
   "candidate": {
     "sourceSha": "203641a6ea6293a01a8ea11e5df08c2246c30014",
@@ -17,11 +17,11 @@
   "targets": {
     "preproduction": {
       "id": "https://projet-preprod.avereo.fr",
-      "ready": false,
-      "isolated": false,
+      "ready": true,
+      "isolated": true,
       "empty": false,
-      "evidence": "suivi-espace-projets.json",
-      "observedAt": null
+      "evidence": "Compte propriétaire : un projet avant import ; interface Mon espace disponible. Sauvegarde privée et restauration sur copie vérifiées via cPanel.",
+      "observedAt": "2026-11-05T21:05:22.292380+00:00"
     },
     "production": {
       "id": null,
@@ -37,9 +37,9 @@
     "acceptedArtifactSha256": null,
     "humanAcceptanceVerified": false,
     "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42099159966",
-    "observedAt": "2026-11-05T20:01:24.044290+00:00",
+    "observedAt": "2026-11-05T21:05:22.292380+00:00",
     "branch": "feat/projet-import-prive-20261105",
-    "base": "feat/projet-account-space-20261105",
+    "base": "main",
     "baseSha": "a1fd69134cbc9076217053cc3c7cc17f8982c480",
     "dependsOn": [
       "https://github.com/jpdandin44/AVEREO/pull/107",
@@ -47,7 +47,9 @@
     ],
     "headSha": "203641a6ea6293a01a8ea11e5df08c2246c30014",
     "mergeable": true,
-    "draft": true
+    "draft": false,
+    "merged": true,
+    "mergeCommitSha": "3636f590db863d30cd29ba14c23d8a6de8305a69"
   },
   "checks": [
     {
@@ -78,8 +80,30 @@
       "observedAt": "2026-11-05T20:01:24.044290+00:00"
     }
   ],
-  "approvals": [],
-  "backups": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "sourceSha": "203641a6ea6293a01a8ea11e5df08c2246c30014",
+      "artifactSha256": "a1c6c058db3e64d768354744cb4a5a6cf278049a688057c9875124b7906ae032",
+      "target": "https://projet-preprod.avereo.fr",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-05T21:05:22.292380+00:00",
+      "evidence": "Demande directe : OK la PR#108 est mergée, peut-on faire l’import pour la suite ? Contexte : fichier privé préparé, nouveau projet indépendant en préproduction.",
+      "privatePayloadSha256": "a0566bd0265e9638a9ff12cdb170626a9ca2c172a2e125da4dd9cb8044e0c7f3"
+    }
+  ],
+  "backups": [
+    {
+      "target": "https://projet-preprod.avereo.fr",
+      "id": "projet-import-20261105-2207",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "evidence": "Copie privée des fichiers JSON, seconde copie restore relue par planning_read et planning_validate ; empreintes identiques. Révision courante 5.",
+      "observedAt": "2026-11-05T21:05:22.292380+00:00"
+    }
+  ],
   "rollback": {
     "status": "not_tested",
     "target": null,
@@ -95,11 +119,8 @@
     "evidence": null,
     "observedAt": null
   },
-  "blockers": [
-    "Import réel non exécuté : accord sur le fichier privé, le compte et la cible à recueillir.",
-    "Revue et accords humains des PR dépendantes et de ce lot non acquis."
-  ],
-  "nextAction": "Revoir la PR et le paquet privé, puis autoriser explicitement l’import indépendant en préproduction si souhaité.",
+  "blockers": [],
+  "nextAction": "Utiliser le nouveau planning privé ; la correction du menu de compte est suivie séparément.",
   "nextIteration": [
     "Après import autorisé : vérifier rechargement, export complet et planning courant inchangé."
   ],
@@ -118,21 +139,40 @@
   "phaseStates": [
     {
       "phase": "Cadrage",
-      "status": "à contrôler"
+      "status": "validée",
+      "evidence": "Périmètre confirmé par demande directe."
     },
     {
       "phase": "Développement local",
-      "status": "à valider"
+      "status": "validée",
+      "evidence": "PR #109 fusionnée et checklist humaine cochée."
     },
     {
       "phase": "Préproduction",
-      "status": "bloquée",
-      "reason": "Import privé non autorisé et non exécuté pour ce lot."
+      "status": "à valider",
+      "evidence": "Import réel et contrôles réussis ; revue métier utilisateur distincte."
     },
     {
       "phase": "Mise en production",
       "status": "bloquée",
-      "reason": "Décision ultérieure distincte."
+      "reason": "Aucune demande de production."
     }
-  ]
+  ],
+  "dataImport": {
+    "status": "imported_verified",
+    "target": "https://projet-preprod.avereo.fr",
+    "savedAt": "2026-11-05T21:06:13Z",
+    "revision": 1,
+    "taskCount": 45,
+    "newProjectsCreated": 1,
+    "canonicalSha256": "4cf4ecef3344cf17f6baebaec18537d01307ed3e851c20b2e859369cb0deb9c2",
+    "sourceSha256": "a0566bd0265e9638a9ff12cdb170626a9ca2c172a2e125da4dd9cb8044e0c7f3",
+    "fullContentIdentical": true,
+    "principalRevision": 5,
+    "principalByteIdentical": true,
+    "browserReloadVerified": true,
+    "evidence": "Reçu privé import-receipt.json dans la sauvegarde projet-import-20261105-2207 ; deux projets visibles après rechargement.",
+    "observedAt": "2026-11-05T21:11:01.808410+00:00",
+    "limitation": "Téléchargement navigateur non obtenu dans le navigateur intégré ; comparaison intégrale par JSON canonique du document serveur et contrôle des octets du principal. Première tentative réseau en échec, catalogue relu avant une seule reprise réussie."
+  }
 }

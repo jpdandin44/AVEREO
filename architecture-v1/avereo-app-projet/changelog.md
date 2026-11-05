@@ -14,6 +14,13 @@ tags:
 
 # Changelog de Projet
 
+## 2026-11-05 — Import privé réalisé et menu de compte préparé
+
+- Import d’un projet indépendant autorisé ; rechargement et égalité du contenu vérifiés, document courant inchangé.
+- Candidat local : déconnexion déplacée du bouton flottant vers le menu Mon espace, fermeture clavier/extérieure et accès aux rubriques du compte.
+- [Suivi import](data/suivi-import-prive.json) et [suivi menu](data/suivi-menu-compte.json) distincts.
+
+
 ## 2026-11-05 — Préparation d’un import de planning privé
 
 - Préparateur local : validation du JSON complet sans perte, copie exacte et manifeste SHA-256.
