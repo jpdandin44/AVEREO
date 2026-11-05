@@ -15,6 +15,11 @@ tags:
 
 # Architecture du planning Projet
 
+## Préparation locale des données privées
+
+Le [préparateur d’import](workflows/import-prive.md) utilise le moteur du frontend pour valider un export complet, puis en conserve les octets et l’empreinte dans un dossier privé hors Git et hors assets. Il ne modifie ni le frontend, ni le contrat API, ni le stockage serveur. L’import ultérieur passe par la création de projet existante de Mon espace.
+
+
 ## Espace privé multi-projet — lot suivant du 5 novembre 2026
 
 `project-workspace.js` affiche le catalogue, les archives et les préférences.

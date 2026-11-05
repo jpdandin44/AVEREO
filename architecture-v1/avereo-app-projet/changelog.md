@@ -14,6 +14,14 @@ tags:
 
 # Changelog de Projet
 
+## 2026-11-05 — Préparation d’un import de planning privé
+
+- Préparateur local : validation du JSON complet sans perte, copie exacte et manifeste SHA-256.
+- Refus d’écrasement et de destinations Git ou publiques connues ; tests sur données fictives.
+- [Procédure](workflows/import-prive.md) d’import indépendant et [suivi canonique](data/suivi-import-prive.json).
+- Aucun changement des assets applicatifs, de l’API ou des comptes ; contenu réel conservé hors dépôt.
+
+
 ## 2026-11-05 — Mon espace et plusieurs projets en ligne
 
 Livré en préproduction ; planning courant préservé à l’identique, accueil et

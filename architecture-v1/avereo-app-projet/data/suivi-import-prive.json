@@ -1,0 +1,85 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-import-prive-20261105",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "kind": "outillage",
+  "stage": "developpement_local",
+  "status": "prepared_awaiting_review",
+  "objective": "Préparer l’intégration d’un planning privé dans un projet indépendant, sur la base Mon espace, sans publication des données.",
+  "candidate": {
+    "sourceSha": null,
+    "artifactSha256": null
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://projet-preprod.avereo.fr",
+      "ready": false,
+      "isolated": false,
+      "empty": false,
+      "evidence": "suivi-espace-projets.json",
+      "observedAt": null
+    },
+    "production": {
+      "id": null,
+      "ready": false,
+      "evidence": null,
+      "observedAt": null
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "prUrl": null,
+    "acceptedSourceSha": null,
+    "acceptedArtifactSha256": null,
+    "humanAcceptanceVerified": false,
+    "evidence": null,
+    "observedAt": null,
+    "branch": "feat/projet-import-prive-20261105",
+    "base": "feat/projet-account-space-20261105",
+    "baseSha": "a1fd69134cbc9076217053cc3c7cc17f8982c480",
+    "dependsOn": [
+      "https://github.com/jpdandin44/AVEREO/pull/107",
+      "https://github.com/jpdandin44/AVEREO/pull/108"
+    ]
+  },
+  "checks": [],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested",
+    "target": null,
+    "artifactSha256": null,
+    "evidence": null,
+    "observedAt": null
+  },
+  "delivery": {
+    "status": "not_delivered",
+    "sourceSha": null,
+    "artifactSha256": null,
+    "target": null,
+    "evidence": null,
+    "observedAt": null
+  },
+  "blockers": [
+    "Import réel non exécuté : accord sur le fichier privé, le compte et la cible à recueillir.",
+    "Revue et accords humains des PR dépendantes et de ce lot non acquis."
+  ],
+  "nextAction": "Revoir la PR et le paquet privé, puis autoriser explicitement l’import indépendant en préproduction si souhaité.",
+  "nextIteration": [
+    "Après import autorisé : vérifier rechargement, export complet et planning courant inchangé."
+  ],
+  "budget": {
+    "limit": null,
+    "unit": null,
+    "observedUsage": null,
+    "observedAt": null
+  },
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ]
+}

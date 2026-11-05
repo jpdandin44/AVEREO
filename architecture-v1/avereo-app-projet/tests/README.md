@@ -14,6 +14,11 @@ tags:
 
 # Recette du planning local Projet
 
+## Préparation d’un import privé
+
+`node --test tests/private-import.test.mjs` depuis la racine applicative vérifie la copie exacte, le manifeste, l’absence d’écrasement, le refus des champs perdus et dépendances invalides, et les destinations Git/publiques ou masquées par une jonction. Les fixtures sont fictives et supprimées après test. L’import réel et sa relecture suivent la [procédure](../workflows/import-prive.md).
+
+
 ## Sauvegarde privée du Gantt
 
 `node --test tests/planning-online.test.mjs` exerce le contrôleur réel avec deux

@@ -1,0 +1,19 @@
+{
+  "observedAt": "2026-11-05T19:58:43.846584+00:00",
+  "status": "passed",
+  "scope": "Local preparation only; no real account import",
+  "nodeTests": 182,
+  "httpChecks": 59,
+  "baseline": "passed",
+  "build": "passed",
+  "releaseFiles": 20,
+  "documentation": {
+    "files": 11,
+    "localLinks": 104,
+    "baselineRoots": 2,
+    "issues": []
+  },
+  "privatePayloadInAssets": false,
+  "initialRun": "One existing planning-local test process failed in the first full run; 40 targeted tests and the full 182-test build then passed without source changes.",
+  "newTests": 5
+}

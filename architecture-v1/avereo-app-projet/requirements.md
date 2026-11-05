@@ -14,6 +14,11 @@ tags:
 
 # Exigences du planning local Projet
 
+## Intégration du contenu privé — 5 novembre 2026
+
+Préparer une PR sur la dernière version de Projet, conserver le JSON personnel hors dépôt public, vérifier sa compatibilité sans perte et préparer son import dans un projet indépendant. Préserver le planning courant et ses révisions. La préparation ne vaut ni import effectif, ni fusion des versions, ni accord de merge ou de livraison. Voir le [workflow](workflows/import-prive.md).
+
+
 ## Espace du compte — demande du 5 novembre 2026
 
 Le responsable demande une page liée au compte pour retrouver ses différents

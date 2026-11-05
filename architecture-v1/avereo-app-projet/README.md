@@ -15,6 +15,11 @@ tags:
 
 # Projet AVEREO
 
+## Préparation d’un import privé — 5 novembre 2026
+
+Le [workflow d’import privé](workflows/import-prive.md) prépare un JSON complet pour **Importer un projet** dans Mon espace, sur la base de la PR #108. Le planning nominatif reste hors du dépôt public. Le [suivi du lot](data/suivi-import-prive.json) distingue préparation locale, import réel et livraison ; aucun import serveur effectué par ce lot.
+
+
 ## Mon espace et projets indépendants — 5 novembre 2026
 
 **Livré en préproduction à 15 h 50 (Paris)**, puis vérifié dans le navigateur.

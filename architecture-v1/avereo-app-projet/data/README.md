@@ -5,7 +5,7 @@ title: Données du planning pilote
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-19
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,11 @@ tags:
 ---
 
 # Données du planning pilote
+
+## Contenu privé et suivi d’import
+
+Le [suivi d’import](suivi-import-prive.json) contient uniquement les informations de livraison et de validation non nominatives. Les plannings personnels et leurs paquets restent hors dépôt ; ils ne remplacent pas le pilote historique décrit ci-dessous. Voir la [procédure](../workflows/import-prive.md).
+
 
 ## Référence et dérivés
 
