@@ -17,6 +17,11 @@ tags:
 
 ## Enregistrement privé du planning — 5 novembre 2026
 
+Livré en préproduction le 5 novembre à 11 h 30 (Paris). Le planning de 45 tâches
+est enregistré en version 1 à 11 h 31, puis relu et exporté sans aucune différence
+avec la sauvegarde de départ. [PR #107](https://github.com/jpdandin44/AVEREO/pull/107)
+en attente de revue humaine ; aucune production.
+
 Le lot V2 ajoute la sauvegarde complète du Gantt dans l'espace privé de son
 propriétaire CONNECT. Le serveur est la référence après accusé de réception ;
 le même compte retrouve son planning depuis un autre navigateur. L'ancien

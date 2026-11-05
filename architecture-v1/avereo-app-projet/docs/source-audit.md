@@ -17,6 +17,15 @@ tags:
 
 ## Lot en ligne — 5 novembre 2026
 
+Résultat : **171 tests frontend**, **23 contrôles HTTP locaux et 23 sur PHP 8.3.36
+hébergé avec identités fictives**, huit jobs CI réussis sur `a1933e7`. Sauvegarde
+intégrale et installation/restauration répétées sur copie avant livraison de
+11 fichiers. Sas/configuration CONNECT conservés ; empreintes HTTPS vérifiées.
+Enregistrement réel du planning en version 1, reprise après reconnexion/rechargement
+et export strictement identique (`c69f4bff…`). Sauvegarde réelle du JSON privé et
+restauration sur copie vérifiées. Le contrôle de Chrome natif reste une limite
+explicite ; les sessions indépendantes sont couvertes par les tests automatisés.
+
 L'interface ancienne de la capture utilisateur et la séparation des brouillons
 par navigateur motivent une actualisation du chargement et une persistance privée.
 La demande autorise un premier backend V2 pour le Gantt existant, sans reprendre

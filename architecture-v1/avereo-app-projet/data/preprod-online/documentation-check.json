@@ -1,0 +1,11 @@
+{
+  "observedAt": "2026-11-05T10:37:47.454929+00:00",
+  "status": "passed",
+  "documents": 14,
+  "localLinks": 103,
+  "foundations": "root and Projet present",
+  "tracking": "candidate, approval scope, receipts and browser limits aligned",
+  "crossWorktreePointers": 2,
+  "operationalView": "regenerated",
+  "remaining": "Human Chrome observation and PR acceptance; no production approval."
+}

@@ -16,6 +16,10 @@ tags:
 
 ## Priorité du 5 novembre 2026
 
+**Réalisé en préproduction** : sauvegarde privée du Gantt et reprise en ligne
+qualifiées. Prochaine action : constat dans Chrome par le responsable et revue
+de la PR #107. Les données réelles ont été conservées à l’identique.
+
 Retrouver le Gantt puis enregistrer ce même planning en ligne dans l'espace privé
 AVEREO. Le [suivi du lot](data/suivi-enregistrement-en-ligne.json) porte les quatre
 phases : Cadrage, Développement local, Préproduction, Mise en production.

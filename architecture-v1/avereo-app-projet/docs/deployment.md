@@ -17,6 +17,12 @@ tags:
 
 ## Lot de sauvegarde privée — 5 novembre 2026
 
+Livraison observée à `2026-11-05T10:30:49Z` : source `a1933e74de6299153189cff1838f5d6020bbf6eb`,
+paquet `5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9`.
+Reçus et sauvegardes privés dans `/home/daje3540/private/projet-online-a1933e7-20261105`.
+Les [observations de livraison](../data/preprod-online/delivery-observation.json)
+et la [recette](../data/preprod-online/browser-recipe.json) portent les preuves et limites.
+
 Source : branche dédiée `feat/projet-online-save-20261105`. La demande directe
 autorise la mise en place sur `https://projet-preprod.avereo.fr`.
 Voir le [suivi canonique](../data/suivi-enregistrement-en-ligne.json) pour la

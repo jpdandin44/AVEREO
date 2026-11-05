@@ -1,0 +1,29 @@
+{
+  "observedAt": "2026-11-05T10:35:51.108942+00:00",
+  "status": "passed_with_limits",
+  "session": "Compte propriétaire CONNECT ; navigateur intégré",
+  "savedAt": "2026-11-05T10:31:47Z",
+  "revision": 1,
+  "tasks": 45,
+  "groups": 8,
+  "personDays": 22,
+  "targetDate": "2026-11-27",
+  "completeExportByteIdentical": true,
+  "completeExportSha256": "c69f4bff3fcb811a2838b7db740e101aed58dec601f78905132779dc9177d732",
+  "beforeAfterSource": "C:\\Users\\examg\\Documents\\Codex\\2026-07-16\\avereo-pilotage\\outputs\\projet-preproduction\\online-candidate-20261105\\planning-recharge-exporte.json",
+  "screenshot": "C:\\Users\\examg\\Documents\\Codex\\2026-07-16\\avereo-pilotage\\outputs\\projet-preproduction\\online-candidate-20261105\\gantt-en-ligne.jpg",
+  "checks": [
+    "Réouverture via le parcours CONNECT normal après expiration de session",
+    "Premier enregistrement explicite du brouillon existant dans le stockage privé vide",
+    "Accusé de réussite daté et version 1 affichés",
+    "Rechargement de la page principale et nouvelle vue : planning chargé en ligne",
+    "Export complet strictement identique à la référence locale",
+    "Semaines, groupes repliés et repère du jour visibles",
+    "Sauvegarde du JSON privé réel et restauration sur copie identiques ; fichier 0600, répertoire 0700"
+  ],
+  "limitations": [
+    "La fenêtre Chrome native du responsable n’a pas été pilotée après le refus de contrôle du tour précédent. Un rechargement Chrome reste à constater par le responsable.",
+    "Deux stockages navigateur indépendants, conflits et erreurs sont couverts automatiquement ; la recette réelle utilise deux vues du navigateur intégré.",
+    "Aucune modification des tâches, dates, preuves ou avancements métier pour tester la sauvegarde."
+  ]
+}

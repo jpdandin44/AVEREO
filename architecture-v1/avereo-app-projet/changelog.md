@@ -16,6 +16,9 @@ tags:
 
 ## 2026-11-05 — Candidat de sauvegarde privée du Gantt
 
+Livré en préproduction après qualification ; planning de 45 tâches enregistré
+et repris sans perte. PR #107 en attente de revue humaine.
+
 - Service PHP réservé au propriétaire CONNECT ; JSON complet, révisions et copies.
 - Reprise entre navigateurs, copie locale en attente, refus des conflits et CSRF.
 - Chargement actualisé du wrapper et des scripts ; ancien brouillon conservé.
