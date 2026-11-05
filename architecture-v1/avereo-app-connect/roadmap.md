@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+
+## Lot courant — choix des applications en temporaire
+
+Candidat local en qualification : applications indépendantes de la durée, dates conservées, expiration dans les sas. Prochaine étape : revue puis installation coordonnée en préproduction après accord. [Suivi et réserves](docs/acces-temporaires-applications.md).
+
 ## Finition V1 — applications après passage en permanent
 
 Le candidat local clarifie l’enregistrement de la période et l’attribution séparée des applications. La recette navigateur sur un compte fictif et les contrôles natifs passent. Revue locale, intégration GitHub et livraison en préproduction restent à effectuer avant la recette du compte réel. [Preuves](data/verification-acces-permanent.json). Le lot ne modifie pas les comptes réels et ne vaut pas ouverture de la V1.

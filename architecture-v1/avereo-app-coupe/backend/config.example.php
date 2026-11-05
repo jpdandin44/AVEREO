@@ -32,6 +32,8 @@ return [
     'connect_launch_max_seconds' => 300,
     'connect_gate_cookie' => 'AVEREO_COUPE_GATE',
     'connect_gate_session_seconds' => 1800,
+    // Same private policy as CONNECT; choose the matching environment before deployment.
+    'connect_trial_access_file' => '',
     // IDs CONNECT autorises a administrer tous les projets. Vide = aucun admin.
     'connect_admin_user_ids' => [],
 

@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+
+## Période commune aux applications sélectionnées
+
+Le candidat étend la lecture de la projection privée existante aux sas partagé et Coupe. Aucune migration : les dates et les droits restent deux dimensions de la même fiche. [Flux, compatibilité et installation coordonnée](docs/acces-temporaires-applications.md).
+
 ## Cycle de vie CONNECT, Identité et Rapport
 
 CONNECT gère le statut d’archivage, la révocation et le journal de reprise dans la base. Le pont Identité confirme une suppression signée par UID et adresse. L’effacement optionnel des dossiers utilise la connexion privée de Rapport et le même verrou que ses écritures serveur. [États et orchestration](docs/administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).

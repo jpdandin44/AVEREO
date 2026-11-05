@@ -108,6 +108,11 @@ jobs:
           php architecture-v1/avereo-app-rapport/tests/connect-gate.php
           php architecture-v1/avereo-app-coupe/tests/connect-gate.php
           php architecture-v1/avereo-platform/tests/connect-gate.php
+          node architecture-v1/avereo-app-passeport-immo/workflows/prepare-connect-gate.mjs
+          for application in rapport rga coupe projet thermo drone passeport-immo recherche; do
+            php architecture-v1/avereo-platform/tests/temporary-access.php "$application"
+          done
+          python3 architecture-v1/avereo-platform/tests/temporary-access-http.py
 
   frontend-gates:
     runs-on: ubuntu-latest

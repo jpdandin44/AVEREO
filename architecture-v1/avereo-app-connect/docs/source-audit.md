@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+
+## 4 novembre 2026 — Extension des accès temporaires
+
+Le service et la page lèvent la restriction Rapport/RGA à la création, à l’attribution et au changement de période. Les rôles, CSRF, catalogue, validation des dates et publication privée sont conservés. Le contrôle de session est complété dans les sas partagé et Coupe. La clarification précédente #105 devient historique. [Contrat et qualification](acces-temporaires-applications.md).
+
 ## 2026-11-04 — Enregistrement du mode permanent
 
 Modification ciblée de `backend/public/index.html` : état sélectionné/enregistré, confirmation explicite, motif de blocage pendant l’essai et message métier des erreurs. Le backend d’autorisation, le schéma et les règles d’essai restent identiques. Le test natif `backend/tests/account-administration.php` couvre le passage en permanent puis l’attribution, la persistance et la révocation de Passeport Immo. [Parcours et limites](administration-comptes.md#passer-un-compte-en-permanent-et-ajouter-une-application).

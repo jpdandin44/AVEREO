@@ -1,0 +1,376 @@
+{
+  "project": "avereo-connect",
+  "owner": "jpdandin",
+  "observedOn": "2026-11-04",
+  "status": "local_verified_not_deployed",
+  "baselineSha": "870e236fe201d9dd0a4aff4251174d06e3dc13a0",
+  "branch": "feat/connect-temporary-apps-20261104",
+  "runtimeFiles": [
+    {
+      "path": "architecture-v1/avereo-app-connect/backend/public/index.html",
+      "sha256": "a9d60c210946c524049fbcbf0d43e129ebc7c2066dbe5bf0b81e1a4775a03bf2"
+    },
+    {
+      "path": "architecture-v1/avereo-app-connect/backend/src/Administration/AccountAdministration.php",
+      "sha256": "380cbd45d5101ccf354401cdb1bd22ec5558e5c4fa61608a8f3318cecfc9185f"
+    },
+    {
+      "path": "architecture-v1/avereo-platform/shared/connect-gate.php",
+      "sha256": "8b7c5bdd2789146863804e5732db881917c912efb6e901a84f038283a95fae22"
+    },
+    {
+      "path": "architecture-v1/avereo-app-coupe/frontend/public/connect/gate.php",
+      "sha256": "c05dea8ff90f2b69e1dfb30dd0dbc97f058a967dc1a62f737702a947924a0b51"
+    }
+  ],
+  "nativeMariaDB": {
+    "passed": 84,
+    "version": "11.4.13",
+    "temporaryTablesOnly": true,
+    "persistentTablesUnchanged": true,
+    "migrationRollback": "passed"
+  },
+  "gateChecks": [
+    {
+      "application": "rapport",
+      "passed": 25,
+      "checks": [
+        "selected application accepts an active temporary account",
+        "expired denies the already-open session",
+        "expired also denies ticket exchange",
+        "expired does not affect another account",
+        "future denies the already-open session",
+        "future also denies ticket exchange",
+        "future does not affect another account",
+        "application removed denies the already-open session",
+        "application removed also denies ticket exchange",
+        "application removed does not affect another account",
+        "account revoked denies the already-open session",
+        "account revoked also denies ticket exchange",
+        "account revoked does not affect another account",
+        "old session after restoration denies the already-open session",
+        "old session after restoration also denies ticket exchange",
+        "old session after restoration does not affect another account",
+        "invalid period denies the already-open session",
+        "invalid period also denies ticket exchange",
+        "invalid period does not affect another account",
+        "permanent account remains supported",
+        "old anonymous cookie denied when account policy is configured",
+        "malformed policy fails closed",
+        "missing configured policy fails closed",
+        "valid ticket exchange consumes the nonce",
+        "valid ticket cannot be replayed"
+      ]
+    },
+    {
+      "application": "rga",
+      "passed": 25,
+      "checks": [
+        "selected application accepts an active temporary account",
+        "expired denies the already-open session",
+        "expired also denies ticket exchange",
+        "expired does not affect another account",
+        "future denies the already-open session",
+        "future also denies ticket exchange",
+        "future does not affect another account",
+        "application removed denies the already-open session",
+        "application removed also denies ticket exchange",
+        "application removed does not affect another account",
+        "account revoked denies the already-open session",
+        "account revoked also denies ticket exchange",
+        "account revoked does not affect another account",
+        "old session after restoration denies the already-open session",
+        "old session after restoration also denies ticket exchange",
+        "old session after restoration does not affect another account",
+        "invalid period denies the already-open session",
+        "invalid period also denies ticket exchange",
+        "invalid period does not affect another account",
+        "permanent account remains supported",
+        "old anonymous cookie denied when account policy is configured",
+        "malformed policy fails closed",
+        "missing configured policy fails closed",
+        "valid ticket exchange consumes the nonce",
+        "valid ticket cannot be replayed"
+      ]
+    },
+    {
+      "application": "coupe",
+      "passed": 25,
+      "checks": [
+        "selected application accepts an active temporary account",
+        "expired denies the already-open session",
+        "expired also denies ticket exchange",
+        "expired does not affect another account",
+        "future denies the already-open session",
+        "future also denies ticket exchange",
+        "future does not affect another account",
+        "application removed denies the already-open session",
+        "application removed also denies ticket exchange",
+        "application removed does not affect another account",
+        "account revoked denies the already-open session",
+        "account revoked also denies ticket exchange",
+        "account revoked does not affect another account",
+        "old session after restoration denies the already-open session",
+        "old session after restoration also denies ticket exchange",
+        "old session after restoration does not affect another account",
+        "invalid period denies the already-open session",
+        "invalid period also denies ticket exchange",
+        "invalid period does not affect another account",
+        "permanent account remains supported",
+        "old anonymous cookie denied when account policy is configured",
+        "malformed policy fails closed",
+        "missing configured policy fails closed",
+        "valid ticket exchange consumes the nonce",
+        "valid ticket cannot be replayed"
+      ]
+    },
+    {
+      "application": "projet",
+      "passed": 25,
+      "checks": [
+        "selected application accepts an active temporary account",
+        "expired denies the already-open session",
+        "expired also denies ticket exchange",
+        "expired does not affect another account",
+        "future denies the already-open session",
+        "future also denies ticket exchange",
+        "future does not affect another account",
+        "application removed denies the already-open session",
+        "application removed also denies ticket exchange",
+        "application removed does not affect another account",
+        "account revoked denies the already-open session",
+        "account revoked also denies ticket exchange",
+        "account revoked does not affect another account",
+        "old session after restoration denies the already-open session",
+        "old session after restoration also denies ticket exchange",
+        "old session after restoration does not affect another account",
+        "invalid period denies the already-open session",
+        "invalid period also denies ticket exchange",
+        "invalid period does not affect another account",
+        "permanent account remains supported",
+        "old anonymous cookie denied when account policy is configured",
+        "malformed policy fails closed",
+        "missing configured policy fails closed",
+        "valid ticket exchange consumes the nonce",
+        "valid ticket cannot be replayed"
+      ]
+    },
+    {
+      "application": "thermo",
+      "passed": 25,
+      "checks": [
+        "selected application accepts an active temporary account",
+        "expired denies the already-open session",
+        "expired also denies ticket exchange",
+        "expired does not affect another account",
+        "future denies the already-open session",
+        "future also denies ticket exchange",
+        "future does not affect another account",
+        "application removed denies the already-open session",
+        "application removed also denies ticket exchange",
+        "application removed does not affect another account",
+        "account revoked denies the already-open session",
+        "account revoked also denies ticket exchange",
+        "account revoked does not affect another account",
+        "old session after restoration denies the already-open session",
+        "old session after restoration also denies ticket exchange",
+        "old session after restoration does not affect another account",
+        "invalid period denies the already-open session",
+        "invalid period also denies ticket exchange",
+        "invalid period does not affect another account",
+        "permanent account remains supported",
+        "old anonymous cookie denied when account policy is configured",
+        "malformed policy fails closed",
+        "missing configured policy fails closed",
+        "valid ticket exchange consumes the nonce",
+        "valid ticket cannot be replayed"
+      ]
+    },
+    {
+      "application": "drone",
+      "passed": 25,
+      "checks": [
+        "selected application accepts an active temporary account",
+        "expired denies the already-open session",
+        "expired also denies ticket exchange",
+        "expired does not affect another account",
+        "future denies the already-open session",
+        "future also denies ticket exchange",
+        "future does not affect another account",
+        "application removed denies the already-open session",
+        "application removed also denies ticket exchange",
+        "application removed does not affect another account",
+        "account revoked denies the already-open session",
+        "account revoked also denies ticket exchange",
+        "account revoked does not affect another account",
+        "old session after restoration denies the already-open session",
+        "old session after restoration also denies ticket exchange",
+        "old session after restoration does not affect another account",
+        "invalid period denies the already-open session",
+        "invalid period also denies ticket exchange",
+        "invalid period does not affect another account",
+        "permanent account remains supported",
+        "old anonymous cookie denied when account policy is configured",
+        "malformed policy fails closed",
+        "missing configured policy fails closed",
+        "valid ticket exchange consumes the nonce",
+        "valid ticket cannot be replayed"
+      ]
+    },
+    {
+      "application": "passeport-immo",
+      "passed": 25,
+      "checks": [
+        "selected application accepts an active temporary account",
+        "expired denies the already-open session",
+        "expired also denies ticket exchange",
+        "expired does not affect another account",
+        "future denies the already-open session",
+        "future also denies ticket exchange",
+        "future does not affect another account",
+        "application removed denies the already-open session",
+        "application removed also denies ticket exchange",
+        "application removed does not affect another account",
+        "account revoked denies the already-open session",
+        "account revoked also denies ticket exchange",
+        "account revoked does not affect another account",
+        "old session after restoration denies the already-open session",
+        "old session after restoration also denies ticket exchange",
+        "old session after restoration does not affect another account",
+        "invalid period denies the already-open session",
+        "invalid period also denies ticket exchange",
+        "invalid period does not affect another account",
+        "permanent account remains supported",
+        "old anonymous cookie denied when account policy is configured",
+        "malformed policy fails closed",
+        "missing configured policy fails closed",
+        "valid ticket exchange consumes the nonce",
+        "valid ticket cannot be replayed"
+      ]
+    },
+    {
+      "application": "recherche",
+      "passed": 25,
+      "checks": [
+        "selected application accepts an active temporary account",
+        "expired denies the already-open session",
+        "expired also denies ticket exchange",
+        "expired does not affect another account",
+        "future denies the already-open session",
+        "future also denies ticket exchange",
+        "future does not affect another account",
+        "application removed denies the already-open session",
+        "application removed also denies ticket exchange",
+        "application removed does not affect another account",
+        "account revoked denies the already-open session",
+        "account revoked also denies ticket exchange",
+        "account revoked does not affect another account",
+        "old session after restoration denies the already-open session",
+        "old session after restoration also denies ticket exchange",
+        "old session after restoration does not affect another account",
+        "invalid period denies the already-open session",
+        "invalid period also denies ticket exchange",
+        "invalid period does not affect another account",
+        "permanent account remains supported",
+        "old anonymous cookie denied when account policy is configured",
+        "malformed policy fails closed",
+        "missing configured policy fails closed",
+        "valid ticket exchange consumes the nonce",
+        "valid ticket cannot be replayed"
+      ]
+    }
+  ],
+  "http": {
+    "httpGatewayChecks": [
+      {
+        "application": "rapport",
+        "exchangeCookieIdentityReplay": "passed",
+        "expiryFutureRevocation": "passed",
+        "otherAccountIsolation": "passed",
+        "permanent": "passed"
+      },
+      {
+        "application": "rga",
+        "exchangeCookieIdentityReplay": "passed",
+        "expiryFutureRevocation": "passed",
+        "otherAccountIsolation": "passed",
+        "permanent": "passed"
+      },
+      {
+        "application": "coupe",
+        "exchangeCookieIdentityReplay": "passed",
+        "expiryFutureRevocation": "passed",
+        "otherAccountIsolation": "passed",
+        "permanent": "passed"
+      },
+      {
+        "application": "projet",
+        "exchangeCookieIdentityReplay": "passed",
+        "expiryFutureRevocation": "passed",
+        "otherAccountIsolation": "passed",
+        "permanent": "passed"
+      },
+      {
+        "application": "thermo",
+        "exchangeCookieIdentityReplay": "passed",
+        "expiryFutureRevocation": "passed",
+        "otherAccountIsolation": "passed",
+        "permanent": "passed"
+      },
+      {
+        "application": "drone",
+        "exchangeCookieIdentityReplay": "passed",
+        "expiryFutureRevocation": "passed",
+        "otherAccountIsolation": "passed",
+        "permanent": "passed"
+      },
+      {
+        "application": "passeport-immo",
+        "exchangeCookieIdentityReplay": "passed",
+        "expiryFutureRevocation": "passed",
+        "otherAccountIsolation": "passed",
+        "permanent": "passed"
+      },
+      {
+        "application": "recherche",
+        "exchangeCookieIdentityReplay": "passed",
+        "expiryFutureRevocation": "passed",
+        "otherAccountIsolation": "passed",
+        "permanent": "passed"
+      }
+    ],
+    "externalServices": false
+  },
+  "regressions": {
+    "connectCore": 38,
+    "accountLifecycle": 36,
+    "coupeGate": "passed",
+    "sharedGate": "passed",
+    "passeportGate": 23,
+    "repositoryBaseline": "passed",
+    "portalJavaScriptSyntax": "passed",
+    "localHttpLifecycle": "passed"
+  },
+  "browser": {
+    "url": "http://127.0.0.1:8102/",
+    "database": "dedicated local MariaDB tmpfs",
+    "identityAndMail": "fictitious fixtures only",
+    "checks": [
+      "All catalog applications enabled in temporary creation",
+      "Existing fictitious temporary account accepts Passeport without touching period",
+      "After reload: Passeport checked and start/end unchanged",
+      "Permanent unchecked; period inputs remain editable"
+    ],
+    "periodBeforeAndAfter": {
+      "start": "2026-11-04T22:24",
+      "end": "2026-11-05T23:24",
+      "timezone": "Europe/Paris"
+    }
+  },
+  "limitations": [
+    "No hosted delivery, real account change or email",
+    "Policy configuration and coordinated gateway installation required before relaxing hosted CONNECT",
+    "Lifecycle qualification scope remains unchanged",
+    "Denial applies to next protected HTTP request, not already downloaded content"
+  ]
+}

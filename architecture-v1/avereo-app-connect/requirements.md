@@ -12,7 +12,7 @@ tags: [connect, documentation, preproduction]
 
 ## Enregistrement du mode permanent et attribution des applications
 
-L’administration doit distinguer le mode sélectionné du mode réellement enregistré. Une conversion d’essai en permanent exige une confirmation explicite, puis une réponse serveur réussie avant d’autoriser la sélection d’applications supplémentaires. L’annulation conserve la période. Le mode permanent ne donne aucun droit automatiquement. L’interface explique la limite Rapport/RGA d’un essai et présente le message métier des erreurs. Les contrôles de rôle, organisation, CSRF et catalogue restent applicables. [Parcours](docs/administration-comptes.md#passer-un-compte-en-permanent-et-ajouter-une-application).
+L’administration doit distinguer le mode sélectionné du mode réellement enregistré. Le choix des applications ne dépend pas du mode temporaire/permanent. Une conversion en permanent exige une confirmation explicite, puis une réponse serveur réussie avant de supprimer la date de fin. L’annulation conserve la période. Le mode permanent ne donne aucun droit automatiquement. L’interface explique que les dates enregistrées s’appliquent à toutes les applications cochées et présente le message métier des erreurs. Les contrôles de rôle, organisation, CSRF et catalogue restent applicables. [Parcours](docs/administration-comptes.md#passer-un-compte-en-permanent-et-ajouter-une-application).
 
 
 ## Cycle de vie des comptes
@@ -44,7 +44,7 @@ Compte actif initialisé et adhésion active ; rôles et organisation contrôlé
 
 ## Périmètre implémenté localement le 3 novembre
 
-Créer un compte membre, sélectionner ses applications, fixer une période ou un accès permanent, puis envoyer séparément l’invitation. L’essai temporaire de cette première version concerne Rapport/RGA ; aucun mot de passe géré par CONNECT. Vérifier les routes, les sessions ouvertes et le transport réel avant installation. [Critères et état](docs/administration-comptes.md).
+Créer un compte membre, sélectionner ses applications, fixer une période ou un accès permanent, puis envoyer séparément l’invitation. L’accès temporaire concerne les applications sélectionnées du catalogue ; aucun mot de passe géré par CONNECT. Vérifier les routes, les sessions ouvertes et le transport réel avant installation. [Critères et état](docs/administration-comptes.md).
 
 
 ## Reprise du 3 novembre — préparation close

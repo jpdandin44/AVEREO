@@ -273,7 +273,7 @@
           <label>Nom <input id="account-create-name" required maxlength="191" autocomplete="off"></label>
           <label>Adresse e-mail <input id="account-create-email" type="email" required maxlength="254" autocomplete="off"></label>
           <fieldset><legend>Applications autorisées</legend><div id="account-create-apps"></div></fieldset>
-          <label>Durée d’accès <select id="account-create-mode"><option value="trial">Essai temporaire — Rapport et RGA</option><option value="permanent">Accès permanent</option></select></label>
+          <label>Durée d’accès <select id="account-create-mode"><option value="trial">Accès temporaire</option><option value="permanent">Accès permanent</option></select></label>
           <p id="account-create-zone"></p>
           <div id="account-create-period">
             <label>Début <input id="account-create-start" type="datetime-local" required></label>
@@ -734,8 +734,7 @@
           const checkbox = document.createElement('input');
           checkbox.type = 'checkbox';
           checkbox.checked = application.status === 'active';
-          const trialRestricted = Boolean(user.accessEndsAt) && !['rapport', 'rga'].includes(application.code);
-          checkbox.disabled = !user.canManageApplications || (trialRestricted && !checkbox.checked);
+          checkbox.disabled = !user.canManageApplications;
           checkbox.setAttribute(
             'aria-label',
             `${application.name} pour ${nameStrong.textContent}`
@@ -768,7 +767,7 @@
             }
           });
           const label = document.createElement('span');
-          label.textContent = application.name + (trialRestricted ? ' — accès permanent requis' : '');
+          label.textContent = application.name;
           option.append(checkbox, label);
           applicationList.append(option);
         }
@@ -784,7 +783,7 @@
       if (user.accessEndsAt && user.canManageApplications) {
         const notice = document.createElement('p');
         notice.className = 'admin-help';
-        notice.textContent = 'L’accès temporaire enregistré est limité à Rapport et RGA. Pour ajouter une autre application, cochez « Accès permanent », puis cliquez sur « Enregistrer l’accès permanent ». Vous pourrez ensuite cocher l’application souhaitée.';
+        notice.textContent = 'Vous pouvez choisir les applications pendant un accès temporaire. Les dates enregistrées dans « Période d’accès » s’appliquent à toutes les applications cochées. Ajouter une application ne modifie pas ces dates.';
         applicationAccess.append(notice);
       }
 
@@ -886,7 +885,7 @@
         const changed = permanent.checked !== saved.permanent || (!permanent.checked && (start.value !== saved.start || end.value !== saved.end));
         save.textContent = permanent.checked ? 'Enregistrer l’accès permanent' : 'Enregistrer la période';
         periodState.textContent = changed
-          ? (permanent.checked ? 'Modification non enregistrée : cliquez sur « Enregistrer l’accès permanent » pour supprimer la date de fin et pouvoir ajouter d’autres applications.' : 'Modification non enregistrée : cliquez sur « Enregistrer la période » pour appliquer ces dates.')
+          ? (permanent.checked ? 'Modification non enregistrée : cliquez sur « Enregistrer l’accès permanent » pour supprimer la date de fin.' : 'Modification non enregistrée : cliquez sur « Enregistrer la période » pour appliquer ces dates.')
           : (saved.permanent ? 'Accès permanent enregistré.' : 'Accès temporaire enregistré. Les dates ci-dessous restent appliquées jusqu’à l’enregistrement d’une modification.');
       };
       permanent.addEventListener('change', refresh); start.addEventListener('input', refresh); end.addEventListener('input', refresh); refresh();
@@ -895,11 +894,11 @@
         try {period=permanent.checked?{startsAt:null,endsAt:null}:{startsAt:new Date(start.value).toISOString(),endsAt:new Date(end.value).toISOString()};}
         catch {adminStatus.textContent='Indiquez deux dates valides.';return;}
         const confirmation = permanent.checked
-          ? `Enregistrer l’accès permanent de ${user.displayName} ? La date de fin sera supprimée. Les applications autorisées restent inchangées ; vous pourrez ensuite en ajouter.`
+          ? `Enregistrer l’accès permanent de ${user.displayName} ? La date de fin sera supprimée. Les applications autorisées restent inchangées.`
           : `Modifier la période d’accès de ${user.displayName} ?`;
         if(!await confirmAccountAction(confirmation))return;
         save.disabled=true;
-        try {await mutation(`/api/v1/admin/organizations/${adminOrganizationId}/users/${user.id}/access-period`,'PATCH',period);await loadAdministration(permanent.checked ? 'Accès permanent enregistré. Vous pouvez maintenant ajouter les applications souhaitées.' : 'Période enregistrée.');}
+        try {await mutation(`/api/v1/admin/organizations/${adminOrganizationId}/users/${user.id}/access-period`,'PATCH',period);await loadAdministration(permanent.checked ? 'Accès permanent enregistré. Les applications autorisées sont conservées.' : 'Période enregistrée.');}
         catch(error){adminStatus.textContent=`La période n’a pas été confirmée (${error.userMessage || error.message}).`;save.disabled=false;}
       });
       box.append(periodState,document.createElement('br'),start,end,zone,save);return box;
@@ -911,9 +910,6 @@
     function refreshCreatePeriod() {
       const trial=createMode.value==='trial';document.getElementById('account-create-period').hidden=!trial;
       for(const id of ['account-create-start','account-create-end'])document.getElementById(id).required=trial;
-      for(const field of document.querySelectorAll('#account-create-apps input')) {
-        field.disabled=trial&&!['rapport','rga'].includes(field.value);if(field.disabled)field.checked=false;
-      }
     }
     createMode.addEventListener('change',refreshCreatePeriod);
     createForm.addEventListener('submit',async(event)=>{
