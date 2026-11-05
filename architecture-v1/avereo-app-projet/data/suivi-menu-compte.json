@@ -30,9 +30,11 @@
   "targets": {
     "preproduction": {
       "id": "https://projet-preprod.avereo.fr",
-      "ready": false,
+      "ready": true,
       "isolated": true,
-      "empty": false
+      "empty": false,
+      "evidence": "Interface Mon espace accessible ; sept chemins contrôlés, sauvegarde et restauration vérifiées via cPanel.",
+      "observedAt": "2026-11-05T21:14:07.961682+00:00"
     },
     "production": {
       "ready": false
@@ -42,8 +44,12 @@
     "repository": "jpdandin44/AVEREO",
     "branch": "fix/projet-menu-compte-20261105",
     "base": "main",
-    "prUrl": null,
-    "humanAcceptanceVerified": false
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/110",
+    "humanAcceptanceVerified": false,
+    "headSha": "ca7a63acc171d4cba21cd66ee8b25a9c1edbe303",
+    "mergeable": true,
+    "observedAt": "2026-11-05T21:14:07.961682+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42110451662"
   },
   "checks": [
     {
@@ -63,10 +69,28 @@
       "target": "10 documents et 109 liens locaux",
       "evidence": "data/menu-compte-checks.json",
       "observedAt": "2026-11-05T21:11:39.805973+00:00"
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "679e201c2b548acde154a8df290340a07700e9bd",
+      "artifactSha256": "24cefe6d2d0fc30cb2b9de93c55b15be91f89fd1624279f6fd0a2d70f30ff4ee",
+      "target": "GitHub : huit jobs ; code candidat inchangé dans le commit documentaire ca7a63a",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42110451662",
+      "observedAt": "2026-11-05T21:14:07.961682+00:00"
     }
   ],
   "approvals": [],
-  "backups": [],
+  "backups": [
+    {
+      "target": "https://projet-preprod.avereo.fr",
+      "id": "projet-menu-679e201-20261105",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "evidence": "Reçu privé prepare-receipt.json : sept chemins, fichiers existants copiés/restaurés à l’identique, quatre fichiers du sas protégés.",
+      "observedAt": "2026-11-05T21:14:07.961682+00:00"
+    }
+  ],
   "delivery": {
     "status": "not_delivered"
   },
@@ -74,7 +98,7 @@
     "status": "not_tested"
   },
   "blockers": [
-    "Accord de livraison du candidat UI non acquis ; sauvegarde/restauration des fichiers hébergés à qualifier."
+    "Accord de livraison du candidat UI demandé au responsable ; en attente."
   ],
   "nextAction": "Revoir la PR et autoriser la livraison du candidat en préproduction.",
   "nextIteration": [
