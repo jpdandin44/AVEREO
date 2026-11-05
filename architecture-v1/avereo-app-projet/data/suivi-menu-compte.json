@@ -5,8 +5,8 @@
   "project": "avereo-app-projet",
   "owner": "jpdandin",
   "kind": "application",
-  "stage": "developpement_local",
-  "status": "local_candidate_ready",
+  "stage": "preproduction",
+  "status": "awaiting_human_review",
   "objective": "Ranger la déconnexion dans le menu Mon espace en bas à gauche pour dégager les formulaires.",
   "phases": [
     "Cadrage",
@@ -45,11 +45,16 @@
     "branch": "fix/projet-menu-compte-20261105",
     "base": "main",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/110",
-    "humanAcceptanceVerified": false,
-    "headSha": "ca7a63acc171d4cba21cd66ee8b25a9c1edbe303",
-    "mergeable": true,
-    "observedAt": "2026-11-05T21:14:07.961682+00:00",
-    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42110451662"
+    "humanAcceptanceVerified": true,
+    "headSha": "494448e93a6e93d3d1b200523eb49e276524e3a0",
+    "mergeable": false,
+    "observedAt": "2026-11-05T22:12:55.239624+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42110767223",
+    "merged": true,
+    "mergeCommitSha": "13483a522295ad3dd59e333f1b4a369971f50adc",
+    "mergedAt": "2026-11-05T22:11:51Z",
+    "acceptanceScope": "Checklist de la PR #110 validée sur son environnement local déclaré ; ne constitue pas une validation humaine de la préproduction.",
+    "receiptBranch": "docs/projet-menu-recette-20261105"
   },
   "checks": [
     {
@@ -78,9 +83,30 @@
       "target": "GitHub : huit jobs ; code candidat inchangé dans le commit documentaire ca7a63a",
       "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42110451662",
       "observedAt": "2026-11-05T21:14:07.961682+00:00"
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed",
+      "sourceSha": "679e201c2b548acde154a8df290340a07700e9bd",
+      "artifactSha256": "24cefe6d2d0fc30cb2b9de93c55b15be91f89fd1624279f6fd0a2d70f30ff4ee",
+      "target": "https://projet-preprod.avereo.fr",
+      "evidence": "data/menu-compte-checks.json ; reçu privé delivery-receipt.json",
+      "observedAt": "2026-11-05T22:11:59.618387+00:00"
     }
   ],
-  "approvals": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "sourceSha": "679e201c2b548acde154a8df290340a07700e9bd",
+      "artifactSha256": "24cefe6d2d0fc30cb2b9de93c55b15be91f89fd1624279f6fd0a2d70f30ff4ee",
+      "target": "https://projet-preprod.avereo.fr",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-05T22:05:57.785528+00:00",
+      "evidence": "Réponse à la question identifiant PR #110, la cible et les deux projets : Oui, installer et vérifier en préproduction. Aucun accord de merge ou de production."
+    }
+  ],
   "backups": [
     {
       "target": "https://projet-preprod.avereo.fr",
@@ -92,16 +118,23 @@
     }
   ],
   "delivery": {
-    "status": "not_delivered"
+    "status": "delivered",
+    "target": "https://projet-preprod.avereo.fr",
+    "sourceSha": "679e201c2b548acde154a8df290340a07700e9bd",
+    "artifactSha256": "24cefe6d2d0fc30cb2b9de93c55b15be91f89fd1624279f6fd0a2d70f30ff4ee",
+    "deliveredAt": "2026-11-05T22:08:56.388292+00:00",
+    "files": 7,
+    "protectedFilesUnchanged": 4,
+    "privateDataUnchanged": true,
+    "evidence": "Reçu privé projet-menu-679e201-20261105/delivery-receipt.json ; installation et recette navigateur vérifiées."
   },
   "rollback": {
-    "status": "not_tested"
+    "status": "tested_on_copy",
+    "evidence": "Sauvegarde des fichiers existants restaurée sur copie et empreintes comparées avant installation. Retour arrière actif non nécessaire."
   },
-  "blockers": [
-    "Accord de livraison du candidat UI demandé au responsable ; en attente."
-  ],
-  "nextAction": "Revoir la PR et autoriser la livraison du candidat en préproduction.",
+  "blockers": [],
+  "nextAction": "Confirmation humaine de la recette préproduction ; intégrer le reçu documentaire via une PR distincte. Production non autorisée.",
   "nextIteration": [
-    "Vérifier le menu et les formulaires après livraison ; conserver les deux projets privés."
+    "Préparer la suite selon la revue métier ; cadrer séparément toute production."
   ]
 }

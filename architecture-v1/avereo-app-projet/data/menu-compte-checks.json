@@ -7,9 +7,28 @@
   "baseline": "passed",
   "documentation": {
     "files": 10,
-    "localLinks": 109,
+    "localLinks": 110,
     "issues": []
   },
   "browser": "Local static preview, online query enabled without remote API; opening upwards, Escape, outside click, Preferences and clear Save button inspected. Actual logout not invoked.",
-  "authentication": "index.php gate checks unchanged; existing logout route used with _top; no secrets, cookies or API changes."
+  "authentication": "index.php gate checks unchanged; existing logout route used with _top; no secrets, cookies or API changes.",
+  "preproduction": {
+    "observedAt": "2026-11-05T22:11:59.618387+00:00",
+    "status": "passed",
+    "installedFiles": 7,
+    "protectedFilesUnchanged": 4,
+    "allPrivateJsonUnchangedAfterBrowser": true,
+    "projectsOpened": 2,
+    "taskCounts": [
+      45,
+      45
+    ],
+    "menu": "Opens above bottom-left Mon espace; Escape/outside click close; Preferences opens.",
+    "form": "New task form inspected; Save unobscured; cancelled without writing.",
+    "logout": "Existing route returns top-level navigation to CONNECT; CONNECT identity session stays active; return to Projet works. No global CONNECT logout claimed.",
+    "http": "Anonymous root 303 to CONNECT; three static assets 200 with exact candidate hashes.",
+    "browser": "Desktop in-app browser; usual user browser still awaiting human review.",
+    "receipt": "Private server projet-menu-679e201-20261105/delivery-receipt.json",
+    "anonymousApiStatus": 401
+  }
 }

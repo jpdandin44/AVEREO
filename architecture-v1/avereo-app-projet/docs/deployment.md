@@ -15,7 +15,9 @@ tags:
 
 # Prévisualisation et publication de Projet
 
-## Candidat du menu de compte
+## Menu de compte — livré en préproduction
+
+Le 5 novembre 2026 à 22:08:56 UTC, le candidat `679e201` a été installé après accord explicite du responsable. Sept fichiers vérifiés, quatre fichiers du sas conservés et tous les JSON privés identiques avant/après installation et recette navigateur. Sauvegarde restaurée sur copie et reçu privé : `/home/daje3540/private/projet-menu-679e201-20261105/delivery-receipt.json`. L'accord concerne cette préproduction ; ni merge ni production ne sont autorisés par cet accord.
 
 Ce lot remplace uniquement l’injection visuelle finale de `index.php`, le HTML du Gantt, son script/CSS de compte et le wrapper compilé avec son nouvel asset JS. Il ne remplace ni `connect/gate.php`, ni la configuration privée, ni les routes API, ni les données. Les anciens installateurs qui préservent `index.php` ne conviennent pas à ce lot : ne pas les détourner. Préparer une sauvegarde restaurée des sept fichiers concernés, vérifier les empreintes et obtenir l’accord exact avant livraison. État dans le [suivi](../data/suivi-menu-compte.json).
 
