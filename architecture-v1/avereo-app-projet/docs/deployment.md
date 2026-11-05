@@ -5,7 +5,7 @@ title: Prévisualisation et publication de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,43 @@ tags:
 ---
 
 # Prévisualisation et publication de Projet
+
+## Lot de sauvegarde privée — 5 novembre 2026
+
+Livraison observée à `2026-11-05T10:30:49Z` : source `a1933e74de6299153189cff1838f5d6020bbf6eb`,
+paquet `5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9`.
+Reçus et sauvegardes privés dans `/home/daje3540/private/projet-online-a1933e7-20261105`.
+Les [observations de livraison](../data/preprod-online/delivery-observation.json)
+et la [recette](../data/preprod-online/browser-recipe.json) portent les preuves et limites.
+
+Source : branche dédiée `feat/projet-online-save-20261105`. La demande directe
+autorise la mise en place sur `https://projet-preprod.avereo.fr`.
+Voir le [suivi canonique](../data/suivi-enregistrement-en-ligne.json) pour la
+version effectivement livrée et ses preuves ; les reçus historiques restent datés.
+
+Après tests PHP/HTTP, tests frontend, build, contrôle documentaire et commit :
+`python workflows/prepare-preprod-online.py --source CHEMIN_APP --output DOSSIER_NEUF`.
+Transférer le paquet en privé puis exécuter `deploy-preprod-online.py prepare`,
+le contrôle de passage et `deploy`, puis `verify`. L'installateur réutilise
+le workflow Gantt pour sauvegarde intégrale, répétition installation/restauration,
+refus de dérive et retour arrière. Il qualifie le document root par cPanel.
+
+Les fichiers applicatifs autorisés incluent les deux endpoints PHP, les scripts,
+le wrapper et ses deux assets, ainsi que `.htaccess`. Le sas et ses secrets
+ne sont pas remplacés. Le propriétaire CONNECT `avereo_admin` a été retrouvé
+par lecture serveur comme identité 1, active. Cette donnée est vérifiée avant
+création de `~/.avereo/projet-preprod/planning.php` (0600) et de `planning-data`
+(0700). L'API refuse un stockage situé sous la racine publique.
+
+La qualification HTTP distante utilise un serveur en boucle locale, des secrets
+fictifs et un répertoire temporaire ; aucune donnée métier n'est modifiée.
+Le retour arrière restaure les fichiers et désactive la configuration de planning
+en la conservant dans le dossier privé de livraison. Les JSON créés depuis la
+livraison restent conservés ; aucun retour arrière de données automatique.
+
+La PR #90 a été fusionnée le 2 novembre ; le statut brouillon mentionné dans
+la recette du 28 octobre ci-dessous est une observation historique.
+
 
 ## Préproduction Gantt — 28 octobre 2026
 

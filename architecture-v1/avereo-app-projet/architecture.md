@@ -5,7 +5,7 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,28 @@ tags:
 ---
 
 # Architecture du planning Projet
+
+## Stockage privé du Gantt — lot V2 du 5 novembre 2026
+
+`frontend/public/api/planning.php` contrôle à chaque requête le cookie signé
+CONNECT, sa période d'accès et l'identité du propriétaire configuré hors web.
+Le sas partagé livré par la PR #106 conserve maintenant cette identité ; le
+constat du 28 octobre ci-dessous est historique.
+
+PHP conserve le document JSON complet, sa révision et sa date dans un répertoire
+privé hors racine publique. Le verrou couvre lecture de révision, copies de
+récupération et remplacement atomique. La précédente version et vingt versions
+tournantes sont conservées. Aucun compte de base ni nouveau secret n'est requis.
+`planning-online.js` garde une copie locale en attente avant envoi et sérialise
+les requêtes. Une révision périmée est refusée ; aucune fusion automatique.
+Le cookie signé, l'origine autorisée et un jeton CSRF protègent l'écriture.
+Les requêtes et assets du planning ne sont pas mis en cache ; le wrapper et
+les scripts portent un nouveau repère de chargement.
+
+Le service reste réservé à un seul propriétaire et à son Gantt courant.
+Le développement Vite conserve son mode local ; `?online` permet la recette
+sur un serveur PHP local configuré avec des identités fictives.
+
 
 ## Évolution clients/projets — proposition à cadrer, non installée
 

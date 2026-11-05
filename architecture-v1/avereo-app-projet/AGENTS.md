@@ -5,12 +5,20 @@ title: Instructions de développement de Projet
 status: active
 version: git
 created: 2026-09-15
-updated: 2026-09-24
+updated: 2026-11-05
 owner: jpdandin
 tags: [projet, instructions, developpement]
 ---
 
 # AGENTS.md - AVEREO
+
+## Lot V2 autorisé le 5 novembre 2026
+
+La demande directe d'enregistrement en ligne et de mise en place en préproduction
+autorise le service privé du Gantt décrit dans `api/planning-prive.md`.
+Les règles V1 ci-dessous restent historiques et applicables au mode local.
+Le lot V2 ne modifie pas les secrets CONNECT ni les droits des autres comptes.
+
 
 ## Role du depot
 

@@ -5,7 +5,7 @@ title: API et frontières de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,13 @@ tags:
 ---
 
 # API et frontières de Projet
+
+## Service V2 de sauvegarde privée
+
+Le [contrat de planning privé](planning-prive.md) décrit les deux méthodes
+du nouvel endpoint PHP et leurs garanties. Le backend V1 statique est conservé
+dans l'historique ci-dessous ; la revue locale reste séparée.
+
 
 ## Évolution demandée, sans API active
 

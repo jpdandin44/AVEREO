@@ -1,0 +1,21 @@
+{
+  "observedAt": "2026-11-05T10:30:38.848895+00:00",
+  "source": "Terminal cPanel authentifié, sortie observée",
+  "remoteDirectory": "/home/daje3540/private/projet-online-a1933e7-20261105",
+  "candidate": {
+    "sourceSha": "a1933e74de6299153189cff1838f5d6020bbf6eb",
+    "artifactSha256": "5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9"
+  },
+  "backupVerified": true,
+  "restoreVerified": true,
+  "settingsCopyRestorePassed": true,
+  "nativeHttpChecks": 23,
+  "nativeHttpStatus": "passed",
+  "databaseWrites": false,
+  "receipts": [
+    "prepare-receipt.json",
+    "settings-recovery.json",
+    "native-http-receipt.json"
+  ],
+  "scope": "Copies privées et données fictives ; installation active pas encore effectuée."
+}

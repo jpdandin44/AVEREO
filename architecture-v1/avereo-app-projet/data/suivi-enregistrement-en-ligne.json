@@ -1,0 +1,159 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-enregistrement-en-ligne-20261105",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "preproduction",
+  "status": "preproduction_delivered_awaiting_user_review",
+  "objective": "Enregistrer le Gantt existant dans un espace prive et le retrouver entre navigateurs en preproduction.",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "candidate": {
+    "sourceSha": "a1933e74de6299153189cff1838f5d6020bbf6eb",
+    "artifactSha256": "5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9"
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://projet-preprod.avereo.fr",
+      "ready": true,
+      "isolated": true,
+      "empty": false,
+      "evidence": "Lecture cPanel 2026-11-05 : racine /home/daje3540/projet-preprod.avereo.fr, PHP 8.3.36, proprietaire actif avereo_admin id 1 ; sas PR106 conserve.",
+      "observedAt": "2026-11-05T10:24:46.429155+00:00"
+    },
+    "production": {
+      "ready": false
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/projet-online-save-20261105",
+    "humanAcceptanceVerified": false,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/107",
+    "headSha": "a1933e74de6299153189cff1838f5d6020bbf6eb",
+    "baseSha": "a0f72588233e1eec0eed40bb4d9ffb6dccba2158",
+    "mergeable": true,
+    "observedAt": "2026-11-05T10:30:38.848895+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42010912984"
+  },
+  "checks": [
+    {
+      "sourceSha": "a1933e74de6299153189cff1838f5d6020bbf6eb",
+      "artifactSha256": "5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9",
+      "kind": "local",
+      "status": "passed",
+      "target": "frontend + PHP HTTP",
+      "observedAt": "2026-11-05T10:30:38.848895+00:00",
+      "evidence": "data/preprod-online/local-checks.json"
+    },
+    {
+      "sourceSha": "a1933e74de6299153189cff1838f5d6020bbf6eb",
+      "artifactSha256": "5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9",
+      "kind": "documentation",
+      "status": "passed",
+      "target": "14 documents / 101 liens",
+      "observedAt": "2026-11-05T10:30:38.848895+00:00",
+      "evidence": "data/preprod-online/local-checks.json"
+    },
+    {
+      "sourceSha": "a1933e74de6299153189cff1838f5d6020bbf6eb",
+      "artifactSha256": "5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9",
+      "kind": "ci",
+      "status": "passed",
+      "target": "GitHub / 8 jobs",
+      "observedAt": "2026-11-05T10:30:38.848895+00:00",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42010912984"
+    },
+    {
+      "sourceSha": "a1933e74de6299153189cff1838f5d6020bbf6eb",
+      "artifactSha256": "5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9",
+      "kind": "preproduction",
+      "status": "passed",
+      "target": "https://projet-preprod.avereo.fr",
+      "observedAt": "2026-11-05T10:35:51.108942+00:00",
+      "evidence": "data/preprod-online/browser-recipe.json"
+    }
+  ],
+  "approvals": [
+    {
+      "sourceSha": "a1933e74de6299153189cff1838f5d6020bbf6eb",
+      "artifactSha256": "5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9",
+      "scope": "preproduction",
+      "status": "approved",
+      "target": "https://projet-preprod.avereo.fr",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-05T10:30:38.848895+00:00",
+      "evidence": "Demande directe : Peux-tu débloquer la situation et mettre en place ce qu il faut en preprod stp? Périmètre : sauvegarde privée du planning actuel et chargement actualisé ; aucune production ni merge."
+    }
+  ],
+  "backups": [
+    {
+      "target": "https://projet-preprod.avereo.fr",
+      "id": "/home/daje3540/private/projet-online-a1933e7-20261105/recovery",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-05T10:29:19.638068+00:00",
+      "evidence": "data/preprod-online/prepare-observation.json"
+    }
+  ],
+  "delivery": {
+    "sourceSha": "a1933e74de6299153189cff1838f5d6020bbf6eb",
+    "artifactSha256": "5b50bca10b5bf52509be5c91fcd514addf0da5eda9293c150a6638ffa6507bb9",
+    "status": "delivered",
+    "environment": "preproduction",
+    "target": "https://projet-preprod.avereo.fr",
+    "deliveredAt": "2026-11-05T10:30:49.542428+00:00",
+    "observedAt": "2026-11-05T10:35:51.108942+00:00",
+    "evidence": "data/preprod-online/delivery-observation.json",
+    "files": 11,
+    "privateGateConfigUnchanged": true,
+    "gateSha256": "8b7c5bdd2789146863804e5732db881917c912efb6e901a84f038283a95fae22",
+    "productionDelivered": false
+  },
+  "blockers": [],
+  "nextAction": "Le responsable ouvre Projet avec son compte dans Chrome et constate Espace privé / Planning chargé en ligne. PR #107 reste à examiner et à fusionner humainement ; aucun déploiement de production.",
+  "nextIteration": [
+    {
+      "id": "projet-dossiers-clients",
+      "status": "cadrage",
+      "scope": "Clients et projets independants ; aucun acces equipe/client ajoute."
+    }
+  ],
+  "authorizationSource": "Demande directe 2026-11-05 : debloquer la situation et mettre en place ce qu il faut en preprod ; enregistrement en ligne du planning prive demande au tour precedent.",
+  "localValidation": {
+    "observedAt": "2026-11-05T10:24:46.429155+00:00",
+    "frontendTests": 171,
+    "httpChecks": 23,
+    "build": "passed",
+    "baseline": "passed",
+    "documentation": {
+      "documents": 14,
+      "localLinks": 101,
+      "status": "passed"
+    },
+    "scope": "Local / donnees fictives ; aucune recette hebergee deduite"
+  },
+  "browserRecipe": {
+    "status": "passed_with_limits",
+    "evidence": "data/preprod-online/browser-recipe.json",
+    "observedAt": "2026-11-05T10:35:51.108942+00:00"
+  },
+  "rollback": {
+    "status": "tested_on_copy",
+    "target": "https://projet-preprod.avereo.fr",
+    "evidence": "data/preprod-online/prepare-observation.json",
+    "observedAt": "2026-11-05T10:35:51.108942+00:00",
+    "preservesOnlineData": true
+  },
+  "openReviewItems": [
+    "La fenêtre Chrome native du responsable n’a pas été pilotée après le refus de contrôle du tour précédent. Un rechargement Chrome reste à constater par le responsable.",
+    "Deux stockages navigateur indépendants, conflits et erreurs sont couverts automatiquement ; la recette réelle utilise deux vues du navigateur intégré."
+  ]
+}

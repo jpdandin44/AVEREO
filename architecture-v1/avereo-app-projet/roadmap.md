@@ -5,7 +5,7 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,22 @@ tags:
 ---
 
 # Feuille de route de Projet
+
+## Priorité du 5 novembre 2026
+
+**Réalisé en préproduction** : sauvegarde privée du Gantt et reprise en ligne
+qualifiées. Prochaine action : constat dans Chrome par le responsable et revue
+de la PR #107. Les données réelles ont été conservées à l’identique.
+
+Retrouver le Gantt puis enregistrer ce même planning en ligne dans l'espace privé
+AVEREO. Le [suivi du lot](data/suivi-enregistrement-en-ligne.json) porte les quatre
+phases : Cadrage, Développement local, Préproduction, Mise en production.
+La production reste hors intervention. Les clients/projets distincts restent
+au cadrage, après cette sauvegarde du planning actuel.
+
+La PR #90 est fusionnée depuis le 2 novembre ; son ancienne mention de brouillon
+ci-dessous décrit la situation constatée le 28 octobre.
+
 
 ## Gantt préproduction — 28 octobre 2026
 

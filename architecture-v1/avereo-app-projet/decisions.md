@@ -5,7 +5,7 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-09-24
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,24 @@ tags:
 ---
 
 # Décisions de Projet
+
+## 2026-11-05 — Sauvegarde privée du Gantt actuel
+
+**Contexte.** Le responsable constate des plannings différents selon le navigateur
+et demande l'enregistrement en ligne puis sa mise en place en préproduction.
+L'usage privé réservé au propriétaire était confirmé le 29 octobre.
+
+**Décision.** Livrer le premier service V2 en PHP avec documents JSON privés,
+verrou, révision, écriture atomique et copies de récupération. Réutiliser
+l'identité signée conservée par le sas de la PR #106. Garder l'ancien brouillon.
+
+**Raisons.** Le besoin actuel porte sur un Gantt personnel complet. Une base SQL,
+des accès d'équipe et un registre clients ne sont pas nécessaires pour ce lot.
+
+**Conséquences.** Le JSON reste exportable et portable ; le serveur devient la
+référence après confirmation. Les conflits demandent un choix explicite après
+export. Les versions tournantes ne remplacent pas une sauvegarde indépendante.
+
 
 ## 2026-09-24 — Revue dans l'outil de développement local
 

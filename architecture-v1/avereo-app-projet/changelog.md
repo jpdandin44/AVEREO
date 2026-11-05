@@ -5,7 +5,7 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-10-28
+updated: 2026-11-05
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,18 @@ tags:
 ---
 
 # Changelog de Projet
+
+## 2026-11-05 — Candidat de sauvegarde privée du Gantt
+
+Livré en préproduction après qualification ; planning de 45 tâches enregistré
+et repris sans perte. PR #107 en attente de revue humaine.
+
+- Service PHP réservé au propriétaire CONNECT ; JSON complet, révisions et copies.
+- Reprise entre navigateurs, copie locale en attente, refus des conflits et CSRF.
+- Chargement actualisé du wrapper et des scripts ; ancien brouillon conservé.
+- Tests de sessions indépendantes, pannes, droits, récupération et déploiement.
+- État de livraison et preuves dans le suivi de l'itération ; production distincte.
+
 
 ## 2026-10-28 — Gantt personnel et livraison préproduction
 

@@ -1,0 +1,13 @@
+{
+  "observedAt": "2026-11-05T10:35:51.108942+00:00",
+  "target": "https://projet-preprod.avereo.fr",
+  "anonymousApiStatus": 401,
+  "apiCacheControl": "no-store, private",
+  "publicAssetHashesMatch": [
+    "legacy-app.html",
+    "planning-online.js",
+    "planning-local.js",
+    "assets/index-D5e6z5Sn.js"
+  ],
+  "scope": "Lecture HTTPS publique ; aucune identité privée transmise."
+}

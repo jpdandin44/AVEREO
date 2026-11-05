@@ -1,0 +1,13 @@
+{
+  "observedAt": "2026-11-05T10:24:46.429155+00:00",
+  "frontendTests": 171,
+  "httpChecks": 23,
+  "build": "passed",
+  "baseline": "passed",
+  "documentation": {
+    "documents": 14,
+    "localLinks": 101,
+    "status": "passed"
+  },
+  "scope": "Local / donnees fictives ; aucune recette hebergee deduite"
+}
