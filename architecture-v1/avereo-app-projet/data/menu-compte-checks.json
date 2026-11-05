@@ -1,0 +1,15 @@
+{
+  "observedAt": "2026-11-05T21:11:17.559279+00:00",
+  "status": "passed",
+  "nodeTests": 182,
+  "build": "passed",
+  "phpSyntax": "passed",
+  "baseline": "passed",
+  "documentation": {
+    "files": 10,
+    "localLinks": 109,
+    "issues": []
+  },
+  "browser": "Local static preview, online query enabled without remote API; opening upwards, Escape, outside click, Preferences and clear Save button inspected. Actual logout not invoked.",
+  "authentication": "index.php gate checks unchanged; existing logout route used with _top; no secrets, cookies or API changes."
+}

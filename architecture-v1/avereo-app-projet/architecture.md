@@ -15,6 +15,11 @@ tags:
 
 # Architecture du planning Projet
 
+## Menu de compte et page englobante
+
+`index.php` vérifie toujours la session CONNECT avant de rendre le même artefact HTML, mais n’ajoute plus de lien flottant au-dessus de l’iframe. Le menu natif `details/summary` vit dans la barre latérale du Gantt. Le lien de déconnexion vise la route existante `/connect/logout.php` avec `target="_top"` ; aucune logique d’identité ou de cookie ne change.
+
+
 ## Préparation locale des données privées
 
 Le [préparateur d’import](workflows/import-prive.md) utilise le moteur du frontend pour valider un export complet, puis en conserve les octets et l’empreinte dans un dossier privé hors Git et hors assets. Il ne modifie ni le frontend, ni le contrat API, ni le stockage serveur. L’import ultérieur passe par la création de projet existante de Mon espace.

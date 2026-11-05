@@ -15,7 +15,7 @@ tags: [projet, suivi, guide, local]
 ## Retrouver ses projets depuis le compte
 
 À l’arrivée sur Projet, **Mon espace** présente les projets enregistrés en ligne.
-On peut y revenir par **Mes projets** ou le bloc **Mon espace** en bas à gauche.
+On peut y revenir par **Mes projets**. Dans le candidat du menu de compte, le bloc **Mon espace** en bas à gauche ouvre un menu au-dessus : Mes projets, Préférences, Mon compte et **Se déconnecter**. Échap ou un clic extérieur le referme. Le bouton flottant de déconnexion disparaît ; les boutons des formulaires restent dégagés. La déconnexion n’est proposée que lorsque le service en ligne est actif.
 
 1. **Ouvrir** reprend le Gantt choisi et ses dernières données en ligne.
 2. **Nouveau projet** demande un nom, une date de début et une référence client

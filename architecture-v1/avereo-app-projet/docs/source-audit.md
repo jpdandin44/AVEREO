@@ -15,6 +15,11 @@ tags:
 
 # Audit et recette du planning Projet
 
+## Menu de compte — recette locale
+
+182 tests Node, build, contrôle des 20 fichiers de livraison, syntaxe PHP et baseline réussis. Dans le navigateur local : menu au-dessus de Mon espace, fermeture Échap et clic extérieur, accès Préférences, formulaire de tâche avec bouton Enregistrer dégagé. La navigation vers la déconnexion réelle n’est pas exécutée lors de cette recette ; son lien `_top` conserve la route existante. Le serveur statique local ne fournit pas l’API privée ; ses messages réseau ne sont pas une preuve de panne hébergée.
+
+
 ## Préparation de l’import privé — 5 novembre 2026
 
 Le nouveau préparateur est un outil local : aucun écart de comportement du frontend ou de l’API. Ses tests utilisent des données fictives. La conservation du JSON privé est contrôlée par empreinte et aller-retour avec le moteur courant ; la recette du nouvel import sur le compte hébergé reste à faire. Les résultats sont rattachés au [suivi canonique](../data/suivi-import-prive.json).

@@ -15,6 +15,13 @@ tags:
 
 # Projet AVEREO
 
+## Menu de compte — candidat du 5 novembre 2026
+
+Le bouton de déconnexion flottant est supprimé de la page qui encadre le Gantt. **Mon espace**, en bas à gauche, ouvre désormais un menu vers les projets, les préférences, le compte et la déconnexion. Candidat local, sans livraison hébergée à ce stade : [suivi](data/suivi-menu-compte.json).
+
+L’import privé autorisé est terminé : nouveau dossier relu après rechargement, contenu complet identique et planning courant conservé. [Preuves du lot d’import](data/suivi-import-prive.json).
+
+
 ## Préparation d’un import privé — 5 novembre 2026
 
 Le [workflow d’import privé](workflows/import-prive.md) prépare un JSON complet pour **Importer un projet** dans Mon espace, sur la base de la PR #108. Le planning nominatif reste hors du dépôt public. Le [suivi du lot](data/suivi-import-prive.json) distingue préparation locale, import réel et livraison ; aucun import serveur effectué par ce lot.

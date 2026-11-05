@@ -14,6 +14,15 @@ tags:
 
 # Décisions de Projet
 
+## 2026-11-05 — Déconnexion dans le menu de compte
+
+**Contexte.** Le lien injecté par `index.php`, fixe en bas à droite avec un z-index maximal, recouvre le formulaire du Gantt. Le responsable confirme le maintien de Mon espace en bas à gauche.
+
+**Décision.** Retirer uniquement cette injection et proposer la route existante dans un menu natif du compte, ouvrant au-dessus de la barre.
+
+**Conséquences.** La session reste contrôlée par le sas existant ; la déconnexion quitte l’iframe par `_top`. Échap et le clic extérieur ferment le menu. Aucun changement de données ou de droits.
+
+
 ## 2026-11-05 — Conserver les données de planning hors du dépôt public
 
 **Contexte.** Une PR est demandée pour intégrer un contenu de planning personnel dans la dernière version de Projet ; Mon espace permet déjà l’import indépendant.

@@ -130,6 +130,24 @@
         show(value = 'projects') { switchView('workspace'); selectTab(value); void operation(refresh); },
     };
     document.addEventListener('DOMContentLoaded', () => {
+        const accountMenu = el('account-menu');
+        for (const button of accountMenu.querySelectorAll('[data-account-view]')) {
+            button.addEventListener('click', () => {
+                accountMenu.open = false;
+                window.ProjectWorkspace.show(button.dataset.accountView);
+                el('workspace-tab-' + button.dataset.accountView).focus();
+            });
+        }
+        document.addEventListener('click', event => {
+            if (!accountMenu.contains(event.target)) accountMenu.open = false;
+        });
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape' && accountMenu.open) {
+                accountMenu.open = false;
+                accountMenu.querySelector('summary').focus();
+            }
+        });
+        el('account-logout').hidden = !window.ProjetOnline?.enabled;
         for (const name of ['projects', 'archives', 'preferences', 'account']) el('workspace-tab-' + name).addEventListener('click', () => selectTab(name));
         el('workspace-search').addEventListener('input', render);
         el('workspace-sort').addEventListener('change', render);

@@ -1,0 +1,55 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-menu-compte-20261105",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "developpement_local",
+  "status": "local_candidate_ready",
+  "objective": "Ranger la déconnexion dans le menu Mon espace en bas à gauche pour dégager les formulaires.",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "candidate": {
+    "sourceSha": null,
+    "artifactSha256": null
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://projet-preprod.avereo.fr",
+      "ready": false,
+      "isolated": true,
+      "empty": false
+    },
+    "production": {
+      "ready": false
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "fix/projet-menu-compte-20261105",
+    "base": "main",
+    "prUrl": null,
+    "humanAcceptanceVerified": false
+  },
+  "checks": [],
+  "approvals": [],
+  "backups": [],
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "rollback": {
+    "status": "not_tested"
+  },
+  "blockers": [
+    "Accord de livraison du candidat UI non acquis ; sauvegarde/restauration des fichiers hébergés à qualifier."
+  ],
+  "nextAction": "Revoir la PR et autoriser la livraison du candidat en préproduction.",
+  "nextIteration": [
+    "Vérifier le menu et les formulaires après livraison ; conserver les deux projets privés."
+  ]
+}

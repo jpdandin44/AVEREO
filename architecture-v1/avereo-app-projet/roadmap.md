@@ -14,6 +14,11 @@ tags:
 
 # Feuille de route de Projet
 
+## Menu de compte et import privé
+
+Import indépendant effectué et vérifié en préproduction : [suivi](data/suivi-import-prive.json). La correction du bouton flottant suit les quatre phases dans le [suivi du menu](data/suivi-menu-compte.json) : candidat local prêt, revue puis livraison autorisée à organiser, aucune production engagée.
+
+
 ## Itération préparée — import privé
 
 Le [suivi de l’import privé](data/suivi-import-prive.json) complète les suivis existants. Cadrage : base Mon espace #108. Développement local : paquet hors dépôt, contrôles et PR. Préproduction : import réel et recette à autoriser sur le compte cible. Mise en production : décision ultérieure distincte, avec contrôles après livraison et suivi du planning.
