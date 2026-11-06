@@ -19,3 +19,7 @@ La qualification hébergée et les accords de livraison sont distincts des tests
 ## Fonctions de compte communes
 
 Appliquer les libellés, comportements accessibles et conditions d’affichage de la [règle commune](docs/fonctionnalites-communes.md). Préserver les données, les droits et le mécanisme de déconnexion de chaque application. Vérifier la parité de la source dans chaque livrable.
+
+## Espaces propres aux applications
+
+Le responsable demande des entrées « Mes projets » et « Préférences » adaptées à chaque application avant fusion de #121. Seuls le profil et le catalogue CONNECT sont communs. La [matrice métier](docs/fonctionnalites-communes.md#adaptations-métier-du-candidat-pr-121) constitue la référence ; les listes locales doivent être annoncées comme telles. CONNECT reste le portail sans rubrique de projets, décision explicitement confirmée. Les erreurs d’enregistrement ne doivent pas entraîner la fermeture du travail courant.

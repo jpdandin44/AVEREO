@@ -200,3 +200,7 @@ locaux constatés, sans publication hébergée.
 ## 6 novembre 2026 — Mon espace commun
 
 Candidat local : Le pied de barre latérale réutilise le composant commun ; Mes projets, Préférences et Mon compte conservent les actions ProjectWorkspace. Le lien CONNECT dépend du portail configuré. [Suivi du lot](../avereo-platform/data/suivi-fonctions-communes.json).
+
+## 2026-11-06 — Projets et préférences propres
+
+Mes projets et Préférences conservent les actions natives de ProjectWorkspace. Mon compte ouvre désormais directement le profil CONNECT, comme dans les autres applications ; les plannings, sauvegardes et préférences natives restent inchangés. Candidat local PR #121 ; installation hébergée distincte.

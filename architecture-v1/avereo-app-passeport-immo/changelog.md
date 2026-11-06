@@ -369,3 +369,7 @@ Candidat local : Le menu regroupe Mes biens, l’administration métier conditio
 
 Le script commun passe par le contrôleur d’accès protégé. La recette Apache isolée
 vérifie son type JavaScript, son contenu et les refus sans session ou sous fermeture.
+
+## 2026-11-06 — Projets et préférences propres
+
+Mes projets reprend la liste native des biens. Les préférences de ce navigateur règlent le tri par adresse et l’affichage de la composition ; les biens et documents conservent leur stockage existant. Mon compte et Mes applications ouvrent CONNECT. Candidat local PR #121 ; installation hébergée distincte.

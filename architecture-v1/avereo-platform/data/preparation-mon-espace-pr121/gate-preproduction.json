@@ -1,0 +1,8 @@
+{
+  "gate": "preproduction",
+  "declaredEvidenceConsistent": false,
+  "errors": [
+    "Accord humain exact absent : preproduction."
+  ],
+  "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord."
+}

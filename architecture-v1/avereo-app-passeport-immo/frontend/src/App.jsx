@@ -1,3 +1,4 @@
+import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { create } from 'zustand';
 import { calculateDevis, calculateDevisForPdf } from './lib/chiffrage.js';
@@ -282,8 +283,8 @@ const AppHeader = () => {
                        {user && <span className="text-sm text-gray-600">Bonjour, {user.name}</span>}
 
                         {user && user.plan === 'pro' && <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">PRO</span>}
-                        <avereo-account-menu local-account="true">
-                            <button slot="items" type="button" onClick={goToDashboard}>Mes biens</button>
+                        <avereo-account-menu local-account="true" preferences-app="passeport-immo" preferences-label="Passeport Immo" preferences-fields={JSON.stringify(passeportPreferences)}>
+                            <button slot="items" type="button" onClick={goToDashboard}>Mes projets</button>
                             {user && user.role === 'admin' && <button slot="administration" type="button" onClick={goToAdmin}>Administration de l’application</button>}
                             <button slot="logout" type="button" onClick={signOut}>Se déconnecter</button>
                         </avereo-account-menu>
@@ -998,7 +999,10 @@ const BienModal = ({ isOpen, onClose, onSave, bienToEdit }) => {
     );
 };
 
+const passeportPreferences = [{"key": "sort", "label": "Ordre de mes biens", "type": "select", "default": "existing", "options": [{"value": "existing", "label": "Ordre habituel"}, {"value": "address", "label": "Adresse, de A à Z"}]}, {"key": "composition", "label": "Afficher la composition des biens dans la liste", "type": "checkbox", "default": true}];
+
 const Dashboard = () => {
+    const applicationPreferences = useAppPreferences('passeport-immo', passeportPreferences, { useState, useEffect });
     const { biens, selectBien, user, goToSubscribe, addBien, updateBien, deleteBien } = useAppStore();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [bienEnEdition, setBienEnEdition] = useState(null);
@@ -1062,7 +1066,7 @@ const Dashboard = () => {
                 </div>
             </header>
             <div className="space-y-4">
-                {biens.map((bien) => (
+                {(applicationPreferences.sort === 'address' ? [...biens].sort((a,b) => a.address.localeCompare(b.address, 'fr')) : biens).map((bien) => (
                     <div key={bien.id} className="block rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md">
                         <div className="p-6">
                             <div className="flex justify-between items-start">
@@ -1071,7 +1075,7 @@ const Dashboard = () => {
                                     <div className="mt-2 flex items-center space-x-4 text-sm text-gray-500">
                                        <span>{bien.type}</span><span className="text-gray-300">|</span><span>{bien.size} m²</span>
                                    </div>
-                                    <div className="mt-3"> <CompositionDisplay composition={bien.composition}/> </div>
+                                    {applicationPreferences.composition && <div className="mt-3"> <CompositionDisplay composition={bien.composition}/> </div>}
                                 </div>
                                 <div className="flex-shrink-0 flex items-center space-x-1">
                                     <button onClick={(e) => { e.stopPropagation(); handleOpenEditModal(bien); }} className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-100 rounded-full transition-colors"><EditIcon /></button>

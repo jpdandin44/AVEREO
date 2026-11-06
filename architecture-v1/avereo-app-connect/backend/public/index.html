@@ -211,7 +211,7 @@
     <div class="topbar">
       <span class="badge">Accès sécurisé</span>
       <div class="topbar-actions">
-        <avereo-account-menu id="connect-account-menu" portal="/" hidden>
+        <avereo-account-menu id="connect-account-menu" portal="/" preferences-app="connect" preferences-label="CONNECT" preferences-fields="[{&quot;key&quot;: &quot;sort&quot;, &quot;label&quot;: &quot;Ordre des applications&quot;, &quot;type&quot;: &quot;select&quot;, &quot;default&quot;: &quot;catalogue&quot;, &quot;options&quot;: [{&quot;value&quot;: &quot;catalogue&quot;, &quot;label&quot;: &quot;Ordre du catalogue&quot;}, {&quot;value&quot;: &quot;name&quot;, &quot;label&quot;: &quot;Nom, de A à Z&quot;}]}, {&quot;key&quot;: &quot;unavailable&quot;, &quot;label&quot;: &quot;Afficher aussi les applications non accessibles&quot;, &quot;type&quot;: &quot;checkbox&quot;, &quot;default&quot;: true}]" hidden>
           <a slot="account" id="account-profile" href="#profile">Mon compte</a>
           <a slot="applications" id="account-applications" href="#applications">Mes applications</a>
           <button slot="administration" id="admin-open" type="button" hidden>Gérer les comptes</button>
@@ -1049,9 +1049,14 @@
       applicationsSection.hidden = false;
     }
 
+    let currentApplications = [];
     function renderApplications(applications) {
+      currentApplications = applications;
+      const preferences = document.getElementById('connect-account-menu').settings || { sort: 'catalogue', unavailable: true };
+      const visible = applications.filter(app => preferences.unavailable || app.available).slice();
+      if (preferences.sort === 'name') visible.sort((a, b) => a.name.localeCompare(b.name, 'fr'));
       applicationGrid.replaceChildren();
-      for (const application of applications) {
+      for (const application of visible) {
         const card = document.createElement('article');
         card.className = `app-card${application.available ? '' : ' unavailable'}`;
 
@@ -1088,6 +1093,14 @@
         applicationGrid.append(card);
       }
     }
+
+    document.addEventListener('avereo-preferences-change', event => {
+      if (event.detail.app === 'connect') renderApplications(currentApplications);
+    });
+    window.addEventListener('storage', event => {
+      if (event.key === 'avereo.connect.preferences.v1') renderApplications(currentApplications);
+    });
+    customElements.whenDefined('avereo-account-menu').then(() => renderApplications(currentApplications));
 
     async function refresh() {
       try {

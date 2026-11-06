@@ -141,6 +141,11 @@ jobs:
         working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
         run: npm test
 
+      - name: Test application-specific project storage
+        if: matrix.application == 'thermo' || matrix.application == 'rapport' || matrix.application == 'drone'
+        working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
+        run: node --test tests/*projects.test.mjs
+
       - name: Build protected frontend
         working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
         run: npm run build

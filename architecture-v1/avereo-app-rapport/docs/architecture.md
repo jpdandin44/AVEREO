@@ -5,7 +5,7 @@ title: Architecture technique de Rapport AVEREO
 status: active
 version: git
 created: 2026-07-14
-updated: 2026-11-02
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - rapport
@@ -151,3 +151,7 @@ d'enrichissement ni secret ; voir [le contrat fonctionnel](../api/ressources-bat
 ## Routage local partage
 
 Le compose isole conserve le port technique `8100` pour le diagnostic. Le gateway HTTP partage dans `avereo-platform/infra/local-gateway/` ecoute sur `127.0.0.1:80`, charge une route fichier propre a Rapport sans acces au socket Docker et transmet `http://rapport.avereo.localhost` vers le conteneur applicatif. La commande `down` de Rapport ne touche pas ce composant partage.
+
+## Espaces applicatifs Rapport et RGA
+
+Les rapports conservent leurs services existants. La liste RGA est un catalogue local de points (`avereo.rga.projects.v1`) géré par `frontend/public/rga/project-library.js` ; il conserve les coordonnées et le nom, jamais une réponse de risque présentée comme actuelle. `workspace.js` raccorde le menu à la carte et relance la consultation à la réouverture. Les clés de préférences Rapport et RGA sont distinctes, y compris sur la même origine.

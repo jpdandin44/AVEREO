@@ -83,3 +83,77 @@ test('le retrait React nettoie les écouteurs et ferme le menu', () => {
   const { dom, menu } = fixture(); menu.open = true; menu.remove(); assert.equal(menu.open, false);
   dom.window.document.body.append(menu); menu.open = true; assert.equal(menu.open, true); dom.window.close();
 });
+
+const fields = [
+  { key: 'sort', label: 'Ordre', type: 'select', default: 'recent', options: [{ value: 'recent', label: 'Récent' }, { value: 'name', label: 'Nom' }] },
+  { key: 'details', label: 'Détails', type: 'checkbox', default: true },
+];
+function preferenceFixture() {
+  const context = fixture();
+  context.menu.setAttribute('preferences-app', 'thermo');
+  context.menu.setAttribute('preferences-label', 'Thermo');
+  context.menu.setAttribute('preferences-fields', JSON.stringify(fields));
+  context.menu.refreshLinks();
+  return context;
+}
+test('préférences propres à une application, valeurs enregistrées et brouillon intact', () => {
+  const { dom, menu, root } = preferenceFixture();
+  const storage = dom.window.localStorage;
+  storage.setItem('draftReport', '{"photos":["image-originale"],"signature":"signature"}');
+  storage.setItem('avereo.drone.preferences.v1', '{"sort":"recent","details":true}');
+  const beforeDraft = storage.getItem('draftReport'), beforeDrone = storage.getItem('avereo.drone.preferences.v1');
+  let changed;
+  dom.window.document.addEventListener('avereo-preferences-change', event => { changed = event.detail; });
+  menu.open = true; root.querySelector('.preferences').click();
+  assert.equal(menu.open, false); assert.equal(menu.settingsDialog.open, true);
+  assert.match(root.querySelector('h2').textContent, /Thermo/);
+  root.querySelector('[name=sort]').value = 'name'; root.querySelector('[name=details]').checked = false;
+  root.querySelector('form').dispatchEvent(new dom.window.Event('submit', { cancelable: true }));
+  assert.deepEqual(JSON.parse(storage.getItem('avereo.thermo.preferences.v1')), { sort: 'name', details: false });
+  assert.equal(changed.app, 'thermo'); assert.equal(changed.values.sort, 'name');
+  assert.equal(menu.settingsDialog.open, false); assert.equal(storage.getItem('draftReport'), beforeDraft);
+  assert.equal(storage.getItem('avereo.drone.preferences.v1'), beforeDrone);
+  assert.equal(root.querySelector('.account').href, 'https://connect-preprod.avereo.fr/#profile');
+  menu.openPreferences(); assert.equal(root.querySelector('[name=sort]').value, 'name');
+  dom.window.close();
+});
+test('annuler conserve les préférences et rend le focus sans événement de changement', () => {
+  const { dom, menu, root } = preferenceFixture();
+  let changes = 0; menu.addEventListener('avereo-preferences-change', () => changes++);
+  menu.openPreferences(); root.querySelector('[name=sort]').value = 'name'; root.querySelector('.settings-cancel').click();
+  assert.equal(dom.window.localStorage.getItem('avereo.thermo.preferences.v1'), null);
+  assert.equal(changes, 0); assert.equal(root.activeElement, menu.trigger); dom.window.close();
+});
+test('un stockage plein garde le formulaire ouvert et ne signale pas un succès', () => {
+  const { dom, menu, root } = preferenceFixture();
+  dom.window.Storage.prototype.setItem = () => { throw new Error('Quota exceeded'); };
+  let changed = false; menu.addEventListener('avereo-preferences-change', () => { changed = true; });
+  menu.openPreferences(); root.querySelector('form').dispatchEvent(new dom.window.Event('submit', { cancelable: true }));
+  assert.equal(menu.settingsDialog.open, true); assert.equal(changed, false);
+  assert.match(root.querySelector('[role=alert]').textContent, /pas pu être enregistrées/); dom.window.close();
+});
+test('valeurs inconnues ou stockage illisible : défauts utilisables sans réécriture', () => {
+  const { dom, menu } = preferenceFixture();
+  for (const invalid of ['not-json', 'null', '{"sort":"inconnu","details":"false"}']) {
+    dom.window.localStorage.setItem('avereo.thermo.preferences.v1', invalid);
+    assert.equal(menu.settings.sort, 'recent'); assert.equal(menu.settings.details, true);
+    assert.equal(dom.window.localStorage.getItem('avereo.thermo.preferences.v1'), invalid);
+  }
+  dom.window.close();
+});
+test('définition absente ou invalide : aucun réglage artificiel', () => {
+  const { dom, menu, root } = preferenceFixture();
+  for (const schema of ['[]', '[null]', JSON.stringify([fields[0], fields[0]]), '{"key":"bad"}']) {
+    menu.setAttribute('preferences-fields', schema); menu.refreshLinks(); menu.openPreferences();
+    assert.equal(root.querySelector('.preferences').hidden, true); assert.equal(menu.settingsDialog.open, false);
+  }
+  dom.window.close();
+});
+test('chaque application possède son espace de préférences, y compris sur une origine commune', () => {
+  const { dom, menu } = preferenceFixture();
+  dom.window.localStorage.setItem('avereo.rapport.preferences.v1', '{"sort":"name","details":false}');
+  const Menu = dom.window.customElements.get('avereo-account-menu');
+  assert.equal(Menu.readSettings('rapport', fields).sort, 'name');
+  assert.equal(Menu.readSettings('rga', fields).sort, 'recent');
+  assert.equal(menu.settings.sort, 'recent'); dom.window.close();
+});

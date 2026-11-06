@@ -4,6 +4,22 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Écart h autorisé pour PR121 : projets et préférences propres à Passeport.
+// Inverser uniquement les sept substitutions connues ; le reste doit encore
+// correspondre à la source historique, notamment les calculs et les écritures.
+for (const [current, previous] of [
+  ["import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';\n", ''],
+  ['<avereo-account-menu local-account="true" preferences-app="passeport-immo" preferences-label="Passeport Immo" preferences-fields={JSON.stringify(passeportPreferences)}>', '<avereo-account-menu local-account="true">'],
+  ['<button slot="items" type="button" onClick={goToDashboard}>Mes projets</button>', '<button slot="items" type="button" onClick={goToDashboard}>Mes biens</button>'],
+  ['const passeportPreferences = [{"key": "sort", "label": "Ordre de mes biens", "type": "select", "default": "existing", "options": [{"value": "existing", "label": "Ordre habituel"}, {"value": "address", "label": "Adresse, de A à Z"}]}, {"key": "composition", "label": "Afficher la composition des biens dans la liste", "type": "checkbox", "default": true}];\n\n', ''],
+  ["    const applicationPreferences = useAppPreferences('passeport-immo', passeportPreferences, { useState, useEffect });\n", ''],
+  ["{(applicationPreferences.sort === 'address' ? [...biens].sort((a,b) => a.address.localeCompare(b.address, 'fr')) : biens).map((bien) => (", '{biens.map((bien) => ('],
+  ['{applicationPreferences.composition && <div className="mt-3"> <CompositionDisplay composition={bien.composition}/> </div>}', '<div className="mt-3"> <CompositionDisplay composition={bien.composition}/> </div>'],
+]) {
+  assert.equal(restored.split(current).length - 1, 1, 'Chaque écart h doit correspondre exactement au raccordement autorisé');
+  restored = restored.replace(current, previous);
+}
+
 // Écart g autorisé le 15 octobre : persistance serveur et identité CONNECT.
 for (const addition of [
   "import { SERVER_STORAGE, persistLocal, attachServerStorage, hydrateServer } from './documents/server-store.js';\n",
@@ -69,4 +85,4 @@ if (actual !== expected) {
   console.error('Écart de parité, ligne reconstruite', line + 1, { actuel: a.slice(line, line + 3), source: b.slice(line, line + 3) });
   process.exit(1);
 }
-console.log('Parité a/b/c + correctif PDF d + module documentaire e et persistance g vérifiée : chiffrage et autres comportements conservés.');
+console.log('Parité a/b/c + correctif PDF d + module documentaire e et persistance g + espace applicatif h vérifiée : chiffrage et autres comportements conservés.');

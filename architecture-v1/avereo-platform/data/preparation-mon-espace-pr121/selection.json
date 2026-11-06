@@ -1,0 +1,728 @@
+{
+  "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+  "observedAt": "2026-11-06T18:10:25.234663+00:00",
+  "status": "prepared_not_deployed",
+  "applications": {
+    "rapport": {
+      "root": "/home/daje3540/rapport-preprod.avereo.fr",
+      "operations": {
+        "account-menu.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+            "sha256_lf": "14b63f28ca007ec05761f4539ec9e22fed7979b0ec4cb66c854f79c54fffec60",
+            "bytes": 15616,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/index-Sxs-7L-G.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "5da95b613d596f002b2e57a53f60844458409285654b20ada9a70b996317ff3f",
+            "sha256_lf": "5da95b613d596f002b2e57a53f60844458409285654b20ada9a70b996317ff3f",
+            "bytes": 2115782,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/reportDocx-BIioO7vl.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "b17635299b06710da84d2da691d701e4f844d28ffc4cc32551c052484a596506",
+            "sha256_lf": "b17635299b06710da84d2da691d701e4f844d28ffc4cc32551c052484a596506",
+            "bytes": 399829,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "index.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "79d14e99ccc0b72bc11e315f54ab82b419323524f23cc1de63e7c0edbbead2d7",
+            "sha256_lf": "47c636d7df8bfc1076b7c7775a09ba5efa6e31752f76d911ae8811dcab907158",
+            "mode": 420,
+            "bytes": 415
+          },
+          "after": {
+            "exists": true,
+            "sha256": "1420f31f8d350c1120bd167316885cd29ccad320905dc053192b753ac960d589",
+            "sha256_lf": "1420f31f8d350c1120bd167316885cd29ccad320905dc053192b753ac960d589",
+            "bytes": 450,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "index.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "66ffa0efec82ca3b2156a45da11e58c240c6e609e071fa4f2b7f52f9bfa1720c",
+            "sha256_lf": "4c2e272fe62cbbadd40f6b76c4472663c49d7d6f695afbbafe64c8ba2d68bfa6",
+            "mode": 420,
+            "bytes": 661
+          },
+          "after": {
+            "exists": true,
+            "sha256": "eed9a3c7a9c15331431d01a5cb8ee80a948062f275cea99c2e492fec75107d26",
+            "sha256_lf": "eed9a3c7a9c15331431d01a5cb8ee80a948062f275cea99c2e492fec75107d26",
+            "bytes": 868,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "rga/address-search.js": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "e950e8fddee6e549edd515d5ac09ac71538a76b4d0d006b99fa223738a843479",
+            "sha256_lf": "1e4682a7b6a831f16778a558ff54d19de0bbf10bd8bf724b6af7c129c8fab8fc",
+            "mode": 420,
+            "bytes": 7357
+          },
+          "after": {
+            "exists": true,
+            "sha256": "ea76dd1703974fa2c0eb1d6000ea9df7a7bb4ddbb6121ce87b98c7208e40a6fc",
+            "sha256_lf": "e7670f5d479c997559277d6e7accaf61563e6ace420cc755db010551ce5bd68a",
+            "bytes": 7518,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "rga/carte.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "f4f0a459c35b2f99130a75191a1ff75c70b12818ab84d4f4cdec5804df44ae70",
+            "sha256_lf": "ae1a5c32148371cfdcd15be976db7c166a424a5bab9457d702df4c5fb636741a",
+            "mode": 420,
+            "bytes": 26807
+          },
+          "after": {
+            "exists": true,
+            "sha256": "184ec111d68791c48c11216c0aa8842fa8c86df7b876e14a100ced018d0ef80a",
+            "sha256_lf": "0926d7e11164445a698118407994d5759f0987c42a1371be2d20fd43c4cf7ca5",
+            "bytes": 27390,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "rga/index.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "40cf3ac056b267097d319e718f9c6e58ab0c53ef9346c07f326f3836c6bbdf41",
+            "sha256_lf": "175e969b7be461a3fc646ea3170f59e3eed09fe0977153d75083c76e830fe5f1",
+            "mode": 420,
+            "bytes": 2381
+          },
+          "after": {
+            "exists": true,
+            "sha256": "666eea5ccb6918bb356c2f6a4f9495c290e84158fefd964381febe6fa38b33d5",
+            "sha256_lf": "82da93428e3cfc77c2cb2c8b608212016401d2a68703dcedc9e3696e5c2badff",
+            "bytes": 2796,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "rga/logout.php": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "92ece3dd35e108f784fceacd767449b06a812f0122d1b1c937e124fad0764263",
+            "sha256_lf": "92ece3dd35e108f784fceacd767449b06a812f0122d1b1c937e124fad0764263",
+            "bytes": 240,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "rga/project-library.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "44d587a79fee8cbc1c45b7de950e9042eec666e14f939b338387cddb6b2f35b3",
+            "sha256_lf": "44d587a79fee8cbc1c45b7de950e9042eec666e14f939b338387cddb6b2f35b3",
+            "bytes": 1328,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "rga/workspace.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "153f2ca36a11d251db01eeb7d639355454e45b8e90a0b42572c852984f5bc682",
+            "sha256_lf": "153f2ca36a11d251db01eeb7d639355454e45b8e90a0b42572c852984f5bc682",
+            "bytes": 4781,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        }
+      },
+      "counts": {
+        "replace": 5,
+        "create": 6
+      }
+    },
+    "coupe": {
+      "root": "/home/daje3540/coupe-preprod.avereo.fr",
+      "operations": {
+        "account-menu.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+            "sha256_lf": "14b63f28ca007ec05761f4539ec9e22fed7979b0ec4cb66c854f79c54fffec60",
+            "bytes": 15616,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/index-BEJu3O3V.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+            "sha256_lf": "ec37d5053ca25a9fd93205ffeefe1a8e095b65e52c5c424f1eb0a60553b7a589",
+            "bytes": 142823,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "index.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+            "sha256_lf": "381d1e816fb0c7fad29c1858f832de00ae593b8ba6b46f2ecb143f90b004e269",
+            "mode": 436,
+            "bytes": 332
+          },
+          "after": {
+            "exists": true,
+            "sha256": "a23828f30b6b399d1a79e97fd67fd86ff9dca4519c3a902b02371395b95c7ee8",
+            "sha256_lf": "a23828f30b6b399d1a79e97fd67fd86ff9dca4519c3a902b02371395b95c7ee8",
+            "bytes": 381,
+            "mode": 436
+          },
+          "rollback": "restore_backup"
+        },
+        "index.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+            "sha256_lf": "9cc63aa635decc7bb2ac5463f5f3ca42060eca5de11517f7d8fd8272b288f0f0",
+            "mode": 436,
+            "bytes": 538
+          },
+          "after": {
+            "exists": true,
+            "sha256": "d7ad34094113ce5447523e70bca8517569be0bcb3e22186fa4b3d6ae16770dfd",
+            "sha256_lf": "d7ad34094113ce5447523e70bca8517569be0bcb3e22186fa4b3d6ae16770dfd",
+            "bytes": 858,
+            "mode": 436
+          },
+          "rollback": "restore_backup"
+        },
+        "legacy-app.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+            "sha256_lf": "1f6833caca47351998f1d9baa11d869910cd095da4ae040f9e392fb31d899ef2",
+            "mode": 436,
+            "bytes": 335404
+          },
+          "after": {
+            "exists": true,
+            "sha256": "2ab01ef8aa78333c4152289bbca05a1bf7e43cc2a0298843eff4cce45c671f0c",
+            "sha256_lf": "2ab01ef8aa78333c4152289bbca05a1bf7e43cc2a0298843eff4cce45c671f0c",
+            "bytes": 336702,
+            "mode": 436
+          },
+          "rollback": "restore_backup"
+        }
+      },
+      "counts": {
+        "replace": 3,
+        "create": 2
+      }
+    },
+    "projet": {
+      "root": "/home/daje3540/projet-preprod.avereo.fr",
+      "operations": {
+        "account-menu.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+            "sha256_lf": "14b63f28ca007ec05761f4539ec9e22fed7979b0ec4cb66c854f79c54fffec60",
+            "bytes": 15616,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "index.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "578d6e640a753f039c86f3a148650f9c8bbdd91ada0d09bc6adeb8e61ecf751b",
+            "sha256_lf": "c94b14bbbfab9bffcaea2f3a0711ebcba294c258a01720f29fab877c66ca8a87",
+            "mode": 420,
+            "bytes": 414
+          },
+          "after": {
+            "exists": true,
+            "sha256": "94803e0f308ac760a0587d49252ada174c642aaa04f066b6e07d408d0b726ba2",
+            "sha256_lf": "94803e0f308ac760a0587d49252ada174c642aaa04f066b6e07d408d0b726ba2",
+            "bytes": 449,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "index.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "975c1bb21bc09007f98b7afeaec8efc29abef125e61b86e17d1835281bf0d67e",
+            "sha256_lf": "d67a5e4736bb88157945a2d9f2a12b7ff04c0ca0072913ad6cd284ed9e7c0fd1",
+            "mode": 420,
+            "bytes": 591
+          },
+          "after": {
+            "exists": true,
+            "sha256": "25ac355d68ce27c9ffee88ba293b4a3f74ccb43b1a7df1e6f1064ea669678fe7",
+            "sha256_lf": "25ac355d68ce27c9ffee88ba293b4a3f74ccb43b1a7df1e6f1064ea669678fe7",
+            "bytes": 801,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "legacy-app.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "e22a1932c7aeebfa0d2d1a9ecc69e2f5a7ebc77e185f5aba1db7c9a7e9199051",
+            "sha256_lf": "a4d336943c4ca0334e5a82038c8d99d73121d4ae45bd9e5913bd0192846915d3",
+            "mode": 420,
+            "bytes": 125816
+          },
+          "after": {
+            "exists": true,
+            "sha256": "14a0ed75903f1f0a98981ab609dd47ceb658b03126d0fbc3106420769e7b5a87",
+            "sha256_lf": "de61a4d1c17a3a65fa9c43542db7746511be80b8984acec27d051d4aeab47c3d",
+            "bytes": 125080,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "project-workspace.css": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "6cd0192079bb573c68adca7ef652e4332bcdf12afeb6a37ea494722740c4b1eb",
+            "sha256_lf": "1d0c8b2593c9b65bd2fa4913d8fc240e1e68f8d620a0eaffb4785fc83181892c",
+            "mode": 420,
+            "bytes": 9609
+          },
+          "after": {
+            "exists": true,
+            "sha256": "5d7a7249cd185675b465ecd0f6be765664201801ac3fbac3aba74477095c246d",
+            "sha256_lf": "40df1a9fb23116f5584fc270aef8ef285c2524be7c7367c77861e018ecc9912e",
+            "bytes": 8652,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "project-workspace.js": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "640eb8011bd8870be41f6ab301c0beefef380b8aa5b4aa7ab2f29742c4f74770",
+            "sha256_lf": "3b19b204927fc81fdecec4947ea9e6a16e2319286bd700207f9d3ea3d8999949",
+            "mode": 420,
+            "bytes": 14295
+          },
+          "after": {
+            "exists": true,
+            "sha256": "43e2362793e804240b000d2879a14f7e1c187f950feae63231d7aa3daf396b5e",
+            "sha256_lf": "b259d22ec7449b3af04bb2075c2e9e8a6f2ff14285d1e91b1961d95b6c7f395d",
+            "bytes": 14092,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        }
+      },
+      "counts": {
+        "replace": 5,
+        "create": 1
+      }
+    },
+    "thermo": {
+      "root": "/home/daje3540/thermo-preprod.avereo.fr",
+      "operations": {
+        "account-menu.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+            "sha256_lf": "14b63f28ca007ec05761f4539ec9e22fed7979b0ec4cb66c854f79c54fffec60",
+            "bytes": 15616,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/index-2n39KD4j.css": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "fcad423882e4800d535462bfe65f798c207b0b93992e37599230b77c676385f7",
+            "sha256_lf": "fcad423882e4800d535462bfe65f798c207b0b93992e37599230b77c676385f7",
+            "bytes": 25373,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/index-Oyd-nPZz.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "1317ec426697374b08db96d6d87b8ea98c22958dfc6643547567015775418de3",
+            "sha256_lf": "1317ec426697374b08db96d6d87b8ea98c22958dfc6643547567015775418de3",
+            "bytes": 239447,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "index.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+            "sha256_lf": "c55e1ff925cb154b8aecd8ed81cbafbb00e04d6ce543c9612fe194c6300141f1",
+            "mode": 436,
+            "bytes": 328
+          },
+          "after": {
+            "exists": true,
+            "sha256": "0ba45f57f40a26b051f2f7f8233b6bc41648c99bc0f10753193e7712b2f0c13e",
+            "sha256_lf": "0ba45f57f40a26b051f2f7f8233b6bc41648c99bc0f10753193e7712b2f0c13e",
+            "bytes": 449,
+            "mode": 436
+          },
+          "rollback": "restore_backup"
+        },
+        "index.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+            "sha256_lf": "ced80e69824fb42b01330118db41c943431566d41dafea5af6d11af0ceeac9aa",
+            "mode": 436,
+            "bytes": 879
+          },
+          "after": {
+            "exists": true,
+            "sha256": "6b5b28b3c433c03f28a81ff3487d5d6adef54173579d9cf159e07de75ce9fdfa",
+            "sha256_lf": "6b5b28b3c433c03f28a81ff3487d5d6adef54173579d9cf159e07de75ce9fdfa",
+            "bytes": 801,
+            "mode": 436
+          },
+          "rollback": "restore_backup"
+        }
+      },
+      "counts": {
+        "replace": 2,
+        "create": 3
+      }
+    },
+    "drone": {
+      "root": "/home/daje3540/drone-preprod.avereo.fr",
+      "operations": {
+        "account-menu.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+            "sha256_lf": "14b63f28ca007ec05761f4539ec9e22fed7979b0ec4cb66c854f79c54fffec60",
+            "bytes": 15616,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/index-L7piEKeW.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "29a04702be04642fb08437080a3750ef3e6763aa5ad2bf4a2370c35c03de839d",
+            "sha256_lf": "29a04702be04642fb08437080a3750ef3e6763aa5ad2bf4a2370c35c03de839d",
+            "bytes": 180763,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/index-jWNlrlpU.css": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "e7e4521e5dd5b3376f8c25b57350ba5e8ee8116b20bf4d2e154650b1b5b8178e",
+            "sha256_lf": "e7e4521e5dd5b3376f8c25b57350ba5e8ee8116b20bf4d2e154650b1b5b8178e",
+            "bytes": 20946,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "index.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+            "sha256_lf": "2c97bcd1e59ca36bf652f1b75519e55d62f02672e6066ebd0340069fb9e03e03",
+            "mode": 436,
+            "bytes": 327
+          },
+          "after": {
+            "exists": true,
+            "sha256": "e1ec1d53af78b7bb09079568384d30330a0febeb54f48cc135bb9325d1183552",
+            "sha256_lf": "e1ec1d53af78b7bb09079568384d30330a0febeb54f48cc135bb9325d1183552",
+            "bytes": 448,
+            "mode": 436
+          },
+          "rollback": "restore_backup"
+        },
+        "index.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+            "sha256_lf": "a61e7c9e221def2a690a4276de3fc3292a53a706ca479da77f57d09a7f91c7ad",
+            "mode": 436,
+            "bytes": 877
+          },
+          "after": {
+            "exists": true,
+            "sha256": "d965e2b4b44a02460855ccfdd942c3c8e9ac0d774210cb3f6be5427ce98a9e35",
+            "sha256_lf": "d965e2b4b44a02460855ccfdd942c3c8e9ac0d774210cb3f6be5427ce98a9e35",
+            "bytes": 799,
+            "mode": 436
+          },
+          "rollback": "restore_backup"
+        }
+      },
+      "counts": {
+        "replace": 2,
+        "create": 3
+      }
+    },
+    "connect": {
+      "root": "/home/daje3540/connect-preprod.avereo.fr/public",
+      "operations": {
+        "account-menu.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+            "sha256_lf": "14b63f28ca007ec05761f4539ec9e22fed7979b0ec4cb66c854f79c54fffec60",
+            "bytes": 15616,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "index.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "12850779bae18aaae0dd89854fa3088ae23a4998f1e9ac70f651050e92250500",
+            "sha256_lf": "12850779bae18aaae0dd89854fa3088ae23a4998f1e9ac70f651050e92250500",
+            "mode": 436,
+            "bytes": 60132
+          },
+          "after": {
+            "exists": true,
+            "sha256": "df618bf2545033a19bfabf009387288fa0401b52acb56592c4302e7bdef03256",
+            "sha256_lf": "c33283ba59aafff1acb14cdeac76a0073c2de7de5453dc695b55a84e66c9b0b7",
+            "bytes": 63609,
+            "mode": 436
+          },
+          "rollback": "restore_backup"
+        }
+      },
+      "counts": {
+        "replace": 1,
+        "create": 1
+      }
+    },
+    "passeport-immo": {
+      "root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "operations": {
+        "account-menu.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+            "sha256_lf": "14b63f28ca007ec05761f4539ec9e22fed7979b0ec4cb66c854f79c54fffec60",
+            "bytes": 15616,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/index-fk-lVGaB.css": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "68dd15b38ad538b8f690359bf43b6cf7b7492ad351e2f0dc62c283a6dd4890c4",
+            "sha256_lf": "68dd15b38ad538b8f690359bf43b6cf7b7492ad351e2f0dc62c283a6dd4890c4",
+            "bytes": 26382,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/index-fwNk0Ytt.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "e0ba99749c87562cae65ef2a5dffca85eb1adaac722bea60bdaaad04d2acd66f",
+            "sha256_lf": "e0ba99749c87562cae65ef2a5dffca85eb1adaac722bea60bdaaad04d2acd66f",
+            "bytes": 797300,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "assets/index.es-B8blGxkw.js": {
+          "action": "create",
+          "before": {
+            "exists": false
+          },
+          "after": {
+            "exists": true,
+            "sha256": "81bd7ce84572bbaf08b2d8fcc969897f9e898cc9bd03891234f5ce9b02f5f43d",
+            "sha256_lf": "81bd7ce84572bbaf08b2d8fcc969897f9e898cc9bd03891234f5ce9b02f5f43d",
+            "bytes": 150852,
+            "mode": 420
+          },
+          "rollback": "remove_added_file_if_unchanged"
+        },
+        "index.html": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "020d35d742c260d711d4291d139db2c903fd5d249f00cd67dd584f111374c04e",
+            "sha256_lf": "020d35d742c260d711d4291d139db2c903fd5d249f00cd67dd584f111374c04e",
+            "mode": 420,
+            "bytes": 499
+          },
+          "after": {
+            "exists": true,
+            "sha256": "d7de76ddee71ab97f2334533ee59cbbe19f14de3021c306d364ba9ec9fe473f8",
+            "sha256_lf": "d7de76ddee71ab97f2334533ee59cbbe19f14de3021c306d364ba9ec9fe473f8",
+            "bytes": 550,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        },
+        "index.php": {
+          "action": "replace",
+          "before": {
+            "exists": true,
+            "sha256": "bc4b0c9bd4280556c2d775d17d05fc0a95fb607ef7ddc8d9b5c4239c40a3f355",
+            "sha256_lf": "bc4b0c9bd4280556c2d775d17d05fc0a95fb607ef7ddc8d9b5c4239c40a3f355",
+            "mode": 420,
+            "bytes": 2487
+          },
+          "after": {
+            "exists": true,
+            "sha256": "29962ec20d36e10fe30d612493aca4b3da8ecee8934159ea6ae80f3a06c20c97",
+            "sha256_lf": "29962ec20d36e10fe30d612493aca4b3da8ecee8934159ea6ae80f3a06c20c97",
+            "bytes": 2521,
+            "mode": 420
+          },
+          "rollback": "restore_backup"
+        }
+      },
+      "counts": {
+        "replace": 2,
+        "create": 4
+      }
+    }
+  },
+  "exclusions": {
+    "rapport": [],
+    "coupe": [
+      "api/bootstrap.php",
+      "api/projects.php"
+    ],
+    "projet": [
+      "planning-core.js"
+    ],
+    "thermo": [],
+    "drone": [],
+    "connect": [],
+    "passeport-immo": [
+      "connect/gate.php"
+    ]
+  },
+  "coupeAdaptation": "PR119 menu only on the installed OAuth variant; inverse byte equality",
+  "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b"
+}

@@ -1,0 +1,54 @@
+{
+  "observedAt": "2026-11-06T18:13:50.423170+00:00",
+  "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+  "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+  "prUrl": "https://github.com/jpdandin44/AVEREO/pull/121",
+  "state": "open",
+  "merged": false,
+  "mergeable": true,
+  "baseSha": "a245cdd5dd747b6181a75e691db31a5d31081bd9",
+  "technicalChecksPassed": true,
+  "humanAcceptanceVerified": false,
+  "workflows": [
+    {
+      "name": "CI",
+      "id": 42267027150,
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42267027150"
+    },
+    {
+      "name": "Passeport Immo CI",
+      "id": 42267027083,
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42267027083"
+    },
+    {
+      "name": "Saisie unique CI",
+      "id": 42267027229,
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42267027229"
+    },
+    {
+      "name": "Acces preproduction tests",
+      "id": 42267027087,
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42267027087"
+    },
+    {
+      "name": "PR Policy",
+      "id": 42267027121,
+      "conclusion": "failure",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42267027121"
+    }
+  ],
+  "policy": {
+    "jobId": 128061488474,
+    "onlyErrors": "Four required human checkboxes are unchecked; no technical policy error.",
+    "humanCheckboxesChanged": false
+  },
+  "sourceAudit": {
+    "passeportParity": "seven exact reversible UI substitutions; all remaining legacy content compared",
+    "negativeParityCanary": "unrelated Mes Biens edit rejected",
+    "historicalCockpitFiles": "Git blob unchanged; Windows working-tree CRLF differs; Linux CI check passed"
+  }
+}

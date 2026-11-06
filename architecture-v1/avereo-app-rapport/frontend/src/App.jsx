@@ -1,3 +1,4 @@
+import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';
 import { protocolOptions, escapeHtml } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
@@ -502,6 +503,8 @@ function SignaturePad({ value, onChange }) {
   );
 }
 
+const rapportPreferences = [{"key": "audience", "label": "Format proposé pour un nouveau rapport", "type": "select", "default": "expert", "options": [{"value": "expert", "label": "Rapport expert"}, {"value": "client", "label": "Synthèse client"}]}];
+
 function Header({ onHome, onLogout }) {
   return (
     <header className="app-header">
@@ -519,8 +522,8 @@ function Header({ onHome, onLogout }) {
           Accueil
         </button>
       )}
-      <avereo-account-menu>
-        {onHome && <button slot="items" type="button" onClick={onHome}>Mes rapports</button>}
+      <avereo-account-menu preferences-app="rapport" preferences-label="Rapport" preferences-fields={JSON.stringify(rapportPreferences)}>
+        <button slot="items" type="button" onClick={onHome || (() => document.querySelector('main')?.scrollIntoView())}>Mes projets</button>
         {ONLINE_SYNC_ENABLED ? <a slot="logout" href="/connect/logout.php" onClick={onLogout}>Se déconnecter</a> : <span slot="logout" hidden></span>}
       </avereo-account-menu>
       </nav>
@@ -2205,6 +2208,8 @@ function AccessGate({ authConfig, authError, onOAuthLogin }) {
 }
 
 export default function App() {
+  const applicationPreferences = useAppPreferences('rapport', rapportPreferences, { useState, useEffect });
+  const newReport = () => { const report = createNewReport(); return { ...report, livrable: { ...report.livrable, audience: applicationPreferences.audience } }; };
   const [rgaImport, setRgaImport] = useState(() => {
     try { return window.location.hash === '#rga-import' ? readRgaTransfer(sessionStorage.getItem(RGA_TRANSFER_KEY)) : null; }
     catch { return null; }
@@ -2296,13 +2301,13 @@ export default function App() {
       setConfirmReset(true);
       return;
     }
-    setInitialWizardData(deepMergeReport(createNewReport(), context || {}));
+    setInitialWizardData(deepMergeReport(newReport(), context || {}));
     setAppState('wizard');
   };
 
   const confirmNew = async () => {
     await removeDraft();
-    const fresh = deepMergeReport(createNewReport(), newContext || {});
+    const fresh = deepMergeReport(newReport(), newContext || {});
     setDraft(null);
     setInitialWizardData(fresh);
     setConfirmReset(false);

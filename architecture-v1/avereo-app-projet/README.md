@@ -272,6 +272,12 @@ ce merge.
 
 ## Mon espace — candidat commun du 6 novembre 2026
 
-Le pied de barre latérale réutilise le composant commun ; Mes projets, Préférences et Mon compte conservent les actions ProjectWorkspace. Le lien CONNECT dépend du portail configuré.
+Le pied de barre latérale réutilise le composant commun ; Mes projets et Préférences conservent les actions ProjectWorkspace ; Mon compte ouvre le profil CONNECT. Le lien CONNECT dépend du portail configuré.
 
 [Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.
+
+## Espaces applicatifs — candidat PR #121
+
+Mes projets et Préférences conservent les actions natives de ProjectWorkspace. Mon compte ouvre désormais directement le profil CONNECT, comme dans les autres applications ; les plannings, sauvegardes et préférences natives restent inchangés.
+
+[Règle et portée](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification](../avereo-platform/docs/qualification-mon-espace.md).

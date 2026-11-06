@@ -62,3 +62,9 @@ Notes V1.1 : consolider les exports fichiers, graphiques et stockage local autou
 Le menu est dans l’en-tête du parcours de rapport et au pied de la barre latérale du référentiel. Le bouton de déconnexion flottant est retiré ; le brouillon conserve son stockage existant.
 
 Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.
+
+## 6 novembre 2026 — Extension de PR #121
+
+Mes projets conserve plusieurs rapports dans IndexedDB, en plus du brouillon historique. La sauvegarde et le retour à la liste préservent les données complètes ; un échec garde le rapport ouvert. Les préférences règlent le tri et le nom des étapes. Ces données sont locales au navigateur, sans synchronisation en ligne.
+
+Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.

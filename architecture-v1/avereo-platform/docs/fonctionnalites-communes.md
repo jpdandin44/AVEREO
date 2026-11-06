@@ -34,9 +34,9 @@ Une fonction annoncée doit exister : un menu ne crée ni droit ni stockage en l
 
 | Fonction | Règle commune |
 | --- | --- |
-| Mes projets / Mes rapports / Mes biens | Conserver le nom du contenu métier et son action existante. Indiquer explicitement quand il est local. |
-| Préférences | Afficher cette entrée lorsqu’un écran de préférences existe. Décrire leur portée : navigateur ou compte. |
-| Mon compte | Identité et accès gérés dans CONNECT ; Projet peut d’abord présenter son écran explicatif. |
+| Mes projets | Même libellé dans les applications métier ; ouvrir exclusivement leur liste native. Le contenu et le stockage restent propres à l’application. CONNECT, portail sans projets métier, ne présente pas cette rubrique. |
+| Préférences | Réglages propres à l’application ; même dialogue partagé lorsque nécessaire. Ne jamais modifier les projets existants ni les préférences d’une autre application. Afficher leur portée de stockage. |
+| Mon compte | Ouvrir le profil CONNECT du même environnement ; destination commune, y compris depuis Projet. |
 | Mes applications | Ouvrir le catalogue CONNECT du même environnement, dans un autre onglet pour préserver le travail courant. |
 | Gérer les comptes | Action native CONNECT visible aux administrateurs autorisés ; les autres applications ne dupliquent pas les habilitations. |
 | Administration de l’application | Conserver, si elle existe, l’administration métier et son contrôle de rôle ; la distinguer de la gestion des comptes CONNECT. |
@@ -53,8 +53,13 @@ et les prototypes archivés ne deviennent pas des applications client par ce lot
 [account-menu.js](../shared/account-menu.js) définit le composant natif
 `avereo-account-menu`. Son style est isolé ; les actions des applications sont des
 boutons/liens existants dans les emplacements `items`, `account`, `applications`,
-`administration` et `logout`. Aucun appel API métier, stockage de données ou
-authentification n’est ajouté au composant.
+`administration` et `logout`. Le composant ne fait aucun appel API métier ni authentification. Il enregistre
+uniquement les préférences définies par l’application dans une clé localStorage
+`avereo.<application>.preferences.v1`. Les champs autorisés sont décrits par
+`preferences-fields` ; les événements `avereo-preferences-change` sont filtrés
+par identifiant applicatif. `shared/use-app-preferences.js` raccorde React sans
+seconde dépendance React. Une erreur de stockage garde le formulaire ouvert ;
+annuler ne modifie rien. Les données métier ne passent pas par ce composant.
 
 Le portail public est fourni après le contrôle d’accès par la métadonnée
 `avereo-connect-portal`. Une page intégrée peut lire celle de son parent de même
@@ -89,3 +94,22 @@ La production et l’ouverture publique conservent leurs accords distincts.
 
 [Suivi canonique](../data/suivi-fonctions-communes.json) ·
 [Qualification et limites](qualification-mon-espace.md).
+
+## Adaptations métier du candidat PR #121
+
+| Application | Mes projets | Préférences propres |
+| --- | --- | --- |
+| Projet | Espace privé et dossiers du planning existants | Préférences natives de ProjectWorkspace, inchangées |
+| Rapport | Accueil des rapports et sauvegardes natives ; sauvegarde du brouillon avant sortie | Format proposé pour un nouveau rapport : expert ou synthèse client ; ne transforme pas un rapport existant |
+| RGA | Liste locale des points repérés, distincte des rapports ; consultation Géorisques relancée à l’ouverture | Ordre des départements et intensité de la couche RGA |
+| Coupe | Sélecteur natif de projets en ligne | Grille et aimantation de l’éditeur |
+| Thermo | Rapports locaux indépendants, conservation du brouillon historique avant changement | Tri des rapports et affichage du nom des étapes |
+| Drone | Missions locales ; enregistrement de la mission avant retour à la liste | Tri des missions et affichage des missions archivées |
+| Passeport Immo | Liste native des biens, selon son mode serveur ou démonstration | Tri par adresse et composition visible dans la liste |
+| CONNECT | Sans rubrique de projets, conformément à la décision du responsable | Tri du catalogue et affichage des applications non accessibles ; aucun droit modifié |
+
+Les nouveaux réglages sont propres au navigateur. Ils ne se synchronisent pas par
+le compte CONNECT. Projet conserve sa portée native. Thermo, Drone et les points
+RGA restent locaux : cette extension de menu ne crée pas leur synchronisation en
+ligne. Recherche n’a pas de cible préproduction déclarée et Saisie unique reste
+son application autonome ; leurs fonctions métier sont hors de cette extension.

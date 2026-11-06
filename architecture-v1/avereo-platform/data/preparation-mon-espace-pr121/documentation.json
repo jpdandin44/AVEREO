@@ -1,0 +1,10 @@
+{
+  "observedAt": "2026-11-06T18:16:38.322309+00:00",
+  "scope": "Changed PR121 Markdown metadata and local file links; JSON parsing; required foundations for root, platform and eight applications. Anchors and external links are not tested.",
+  "markdownFiles": 38,
+  "localLinks": 389,
+  "jsonFiles": 16,
+  "foundationRoots": 10,
+  "historicalPasseportProofsPreserved": true,
+  "errors": []
+}

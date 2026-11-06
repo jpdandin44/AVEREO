@@ -57,3 +57,11 @@ Notes V1.1 : auditer les types metier et extraire les composants si la surface f
 Le menu est dans l’accueil des missions et au pied de la barre latérale de l’éditeur, avec un mode compact lorsque celle-ci est repliée. Les missions restent dans le stockage navigateur existant.
 
 Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.
+
+## 6 novembre 2026 — Extension de PR #121
+
+Mes projets revient aux missions locales et enregistre la mission en cours avant navigation. Les préférences règlent le tri et la visibilité des archives. Le stockage `avereo_missions` conserve son format ; aucune synchronisation en ligne n’est ajoutée.
+
+Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.
+
+La lecture ne réécrit pas la liste initiale. Une liste illisible ou un quota dépassé maintient l’éditeur ouvert, sans faux succès. Trois tests fictifs couvrent ces protections.

@@ -1,3 +1,4 @@
+import { setupRgaProjects } from './workspace.js';
 import { lambert93, RGA_MESSAGE, RGA_TRANSFER_KEY, rgaLevelLabel } from './modules/rgaContext.js';
 import { validLocation } from './modules/locationMap.js';
 import { fetchGeorisquesRiskPayload, normalizeGeorisquesRiskSummary, rgaRisk } from './modules/georisquesRiskSummary.js';
@@ -124,3 +125,5 @@ if (validLocation(params.get('lon'), params.get('lat'))) {
   showPoint({ lon: Number(params.get('lon')), lat: Number(params.get('lat')), label: (params.get('adresse') || '').slice(0, 500) });
   lookupRisks();
 }
+
+setupRgaProjects({ getPoint: () => selected, openPoint: point => { showPoint(point); lookupRisks(); } });

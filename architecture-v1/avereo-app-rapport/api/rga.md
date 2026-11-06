@@ -5,7 +5,7 @@ title: Recherche RGA dans CONNECT et Rapport
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-06
 owner: jpdandin
 tags: [rga, connect, risques, cartographie]
 ---
@@ -214,3 +214,7 @@ recette hébergée, acceptation métier, version et livraison de production.
 La recette serveur et les Word du premier candidat sont consignés dans le cockpit ;
 la correction de superposition possède ses propres contrôles. Les résultats locaux
 et l'accès à cPanel ne sont pas des preuves de livraison ni une revue humaine.
+
+## Projets locaux — candidat PR #121
+
+« Mon espace → Mes projets » conserve les points repérés dans ce navigateur. Ouvrir un projet replace le point et consulte à nouveau Géorisques ; aucun ancien résultat n’est réutilisé comme réponse actuelle. La liste n’est pas synchronisée en ligne et ne modifie pas les dossiers Rapport. Les préférences de tri des départements et d’intensité restent propres à RGA.
