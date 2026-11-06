@@ -7,8 +7,8 @@
                      "node":  "^20.19.0 || >=22.12.0"
                  },
     "scripts":  {
-                    "dev":  "vite",
-                    "build":  "vite build",
+                    "dev":  "node ../../../.github/scripts/prepare-account-menu.mjs coupe && vite",
+                    "build":  "node ../../../.github/scripts/prepare-account-menu.mjs coupe && vite build",
                     "preview":  "vite preview"
                 },
     "dependencies":  {

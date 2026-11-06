@@ -5,7 +5,7 @@ title: Règles de développement du monorepo AVEREO
 status: active
 version: git
 created: 2026-09-15
-updated: 2026-10-15
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, developpement, github]
 ---
@@ -148,3 +148,7 @@ commun et les skills. Appliquer ce protocole aux lots de développement en conse
 les règles et suivis existants. Le mot-clé `DEV :` et le skill `$dev` utilisent la même
 source. L'installateur rend les skills disponibles au niveau utilisateur pour les autres
 dépôts ; les commandes, cibles et accords restent qualifiés projet par projet.
+
+## 12. Fonctionnalités communes AVEREO
+
+Pour une fonction partagée entre applications, appliquer la [règle commune](architecture-v1/avereo-platform/docs/fonctionnalites-communes.md). Réutiliser le composant existant et ses libellés ; conserver les actions métier, documenter les écarts et tester chaque intégration concernée. La généralisation ne vaut pas autorisation de modifier les droits, de migrer les données ou de déployer. Mon espace est le premier composant appliquant cette règle.

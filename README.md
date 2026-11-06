@@ -5,7 +5,7 @@ title: AVEREO — index du dépôt
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -126,3 +126,7 @@ Le [lot d’accès privés](outillage/acces-preproduction/README.md) conserve la
 méthode, l’application du pilote CONNECT et les limites de sa recette et de la généralisation.
 Son [suivi canonique](outillage/acces-preproduction/suivi-chantier.json) alimente
 le cockpit. La PR de préparation ne vaut pas bascule ni ouverture.
+
+## Fonctionnalités communes
+
+[Règle Mon espace et fonctions communes](architecture-v1/avereo-platform/docs/fonctionnalites-communes.md) · [Suivi du candidat transversal](architecture-v1/avereo-platform/data/suivi-fonctions-communes.json).

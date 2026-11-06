@@ -5,7 +5,7 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -173,3 +173,7 @@ sur ce poste. Le plan corrigé possède une nouvelle empreinte et reste en atten
 d'accord de préproduction. Le [point de session](outillage/acces-preproduction/point-session.md)
 et le suivi canonique portent les preuves datées ; aucune application remplacée,
 aucune base migrée et aucune production modifiée.
+
+## 6 novembre 2026 — Mon espace partagé
+
+Candidat de présentation commune et règle transversale, raccordés aux applications existantes. [Qualification](architecture-v1/avereo-platform/docs/qualification-mon-espace.md). Aucun déploiement réalisé par ce lot.

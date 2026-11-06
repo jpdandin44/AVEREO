@@ -1,3 +1,15 @@
+---
+project: avereo-app-recherche
+document_type: reference
+title: README
+status: active
+version: git
+created: 2026-11-06
+updated: 2026-11-06
+owner: jpdandin
+tags: [avereo, interface, fonctions-communes]
+---
+
 # AVEREO Collector Recherche
 
 - Slug : `recherche`
@@ -52,3 +64,11 @@ docker compose -f compose.local.yaml down            # arrête
 ## Déploiement
 
 Voir `docs/deployment.md`. Le workflow `.github/workflows/deploy-recherche-o2switch.yml` est manuel.
+
+## Mon espace — candidat commun du 6 novembre 2026
+
+Le menu est dans l’en-tête, avec le lien vers les sauvegardes existantes. Le corpus reste dans IndexedDB ; ce menu n’ajoute pas de synchronisation en ligne.
+
+[Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.
+
+[Architecture](architecture.md) · [Exigences](requirements.md) · [Feuille de route](roadmap.md) · [Décisions](decisions.md) · [Historique](changelog.md).

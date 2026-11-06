@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import '../../../avereo-platform/shared/account-menu.js';
 import { App } from './ui/App.jsx';
 import { StoreContext } from './ui/contexte.js';
 import { createStore } from './lib/store.js';

@@ -62,6 +62,7 @@ function avereo_gate_config(): array
         'connect_launch_max_seconds' => 300,
         'connect_gate_cookie' => 'AVEREO_' . strtoupper(AVEREO_GATE_APP) . '_GATE',
         'connect_gate_session_seconds' => 1800,
+        'connect_trial_access_file' => '',
     ], $fileConfig);
 }
 
@@ -145,7 +146,7 @@ function avereo_gate_consume_nonce(array $config, string $nonce): void
 }
 
 /** @param array<string, mixed> $config */
-function avereo_gate_issue_cookie(array $config, bool $remembered): void
+function avereo_gate_issue_cookie(array $config, bool $remembered, ?array $identity = null): void
 {
     $secret = trim((string) ($config['connect_launch_secret'] ?? ''));
     $lifetime = max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800)));
@@ -155,6 +156,7 @@ function avereo_gate_issue_cookie(array $config, bool $remembered): void
         'app' => AVEREO_GATE_APP,
         'iat' => $issuedAt,
         'exp' => $issuedAt + $lifetime,
+        'identity' => $identity,
         'nonce' => avereo_gate_base64url_encode(random_bytes(24)),
     ], JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR));
     $value = $payload . '.' . avereo_gate_base64url_encode(hash_hmac('sha256', $payload, $secret, true));
@@ -165,6 +167,44 @@ function avereo_gate_issue_cookie(array $config, bool $remembered): void
         'httponly' => true,
         'samesite' => 'Lax',
     ]);
+}
+
+/** Re-read CONNECT's private account policy on every protected request. */
+function avereo_gate_assert_account_access(array $config, array $payload): void
+{
+    $path = trim((string) ($config['connect_trial_access_file'] ?? ''));
+    if ($path === '') return;
+    $identity = $payload['identity'] ?? null;
+    if (!is_array($identity) || ($identity['provider'] ?? null) !== 'avereo_connect'
+        || !is_string($identity['id'] ?? null)
+        || !preg_match('/^[1-9][0-9]{0,18}$/D', $identity['id'])) {
+        throw new RuntimeException('Identité CONNECT requise.');
+    }
+    $real = realpath($path);
+    $public = realpath((string) ($_SERVER['DOCUMENT_ROOT'] ?? dirname(__DIR__)));
+    if ($real === false || !is_file($real) || !is_readable($real)
+        || ($public !== false && str_starts_with(str_replace('\\', '/', $real), rtrim(str_replace('\\', '/', $public), '/') . '/'))) {
+        throw new RuntimeException('Politique CONNECT privée indisponible.');
+    }
+    $raw = file_get_contents($real, false, null, 0, 65537);
+    if ($raw === false || strlen($raw) > 65536) throw new RuntimeException('Politique CONNECT indisponible.');
+    $policy = json_decode($raw, true, 16, JSON_THROW_ON_ERROR);
+    if (!is_array($policy) || ($policy['version'] ?? null) !== 1 || !is_array($policy['accounts'] ?? null)) {
+        throw new RuntimeException('Politique CONNECT invalide.');
+    }
+    // Historical inherited accounts are still authorized by their signed ticket.
+    if (!array_key_exists($identity['id'], $policy['accounts'])) return;
+    $rule = $policy['accounts'][$identity['id']];
+    $now = time();
+    if (!is_array($rule) || ($rule['status'] ?? null) !== 'active'
+        || !is_int($rule['not_before'] ?? null) || !is_int($rule['not_after'] ?? null)
+        || $rule['not_before'] < 0 || $rule['not_after'] <= $rule['not_before']
+        || $now < $rule['not_before'] || $now >= $rule['not_after']
+        || !is_array($rule['applications'] ?? null)
+        || !in_array(AVEREO_GATE_APP, $rule['applications'], true)
+        || $payload['iat'] <= ($rule['sessions_revoked_at'] ?? 0)) {
+        throw new RuntimeException('Accès CONNECT révoqué ou hors période.');
+    }
 }
 
 /** @param array<string, mixed> $config */
@@ -179,6 +219,7 @@ function avereo_gate_cookie_is_valid(array $config): bool
             $payload,
             max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800))),
         );
+        avereo_gate_assert_account_access($config, $payload);
         return true;
     } catch (Throwable) {
         return false;
@@ -240,6 +281,7 @@ function avereo_gate_exchange_ticket(array $config, string $ticket): void
         trim((string) ($config['connect_launch_secret'] ?? '')),
     );
     avereo_gate_assert_payload($payload, $maximumLifetime);
+    avereo_gate_assert_account_access($config, $payload);
     avereo_gate_consume_nonce($config, (string) $payload['nonce']);
-    avereo_gate_issue_cookie($config, ($payload['remembered'] ?? false) === true);
+    avereo_gate_issue_cookie($config, ($payload['remembered'] ?? false) === true, $payload['identity'] ?? null);
 }

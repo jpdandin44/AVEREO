@@ -5,7 +5,7 @@ title: Roadmap du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -77,3 +77,7 @@ préparation conserve désormais le retour OAuth de Coupe et détaille le retrai
 des fichiers ajoutés lors d'un éventuel retour arrière. La prochaine action porte
 sur l'accord du **lot corrigé**, puis sa livraison et sa recette réelle ; les
 préparations distinctes CONNECT, Recherche et Passeport restent nécessaires.
+
+## Lot transverse Mon espace
+
+Le [suivi canonique](architecture-v1/avereo-platform/data/suivi-fonctions-communes.json) porte le candidat, sa revue et les étapes suivantes. Les autres lots conservent leur état et leurs accords.

@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -64,3 +64,9 @@ Notes V1.1 : fabric et pdfjs-dist devront etre integres proprement via npm.
   des appels API. Les administrateurs restent explicitement listés côté serveur.
 - Le sas reste à qualifier intégralement en préproduction avant tout
   déclenchement manuel du workflow de production.
+
+## 6 novembre 2026 — Menu de compte commun
+
+Le menu est au pied de la barre latérale. Ouvrir en ligne et l’action d’authentification existante sont conservés ; le mode jeton API local reste accessible.
+
+Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.

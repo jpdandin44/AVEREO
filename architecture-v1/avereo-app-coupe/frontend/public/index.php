@@ -20,4 +20,7 @@ if (!is_file($index)) {
 header('Content-Type: text/html; charset=utf-8');
 header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
-readfile($index);
+$html = file_get_contents($index);
+if ($html === false) { http_response_code(500); exit; }
+$portalMeta = '<meta name="avereo-connect-portal" content="' . htmlspecialchars(rtrim((string) ($config['connect_portal_url'] ?? ''), '/'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '">';
+echo str_replace('</head>', $portalMeta . '</head>', $html);

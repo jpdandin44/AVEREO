@@ -5,7 +5,7 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -362,3 +362,10 @@ humaines et assets sont conservés ; aucune installation hébergée.
 ## 2026-11-04 — Révocation CONNECT
 
 Candidat local de vérification de la politique d’accès sur les tickets et sessions Passeport Immo. [Intégration et configuration](docs/02-integration-connect.md#cycle-de-vie-connect--candidat-local).
+
+## 6 novembre 2026 — Mon espace commun
+
+Candidat local : Le menu regroupe Mes biens, l’administration métier conditionnée au rôle et la déconnexion native. Le stockage serveur ou local conserve son mode existant. [Suivi du lot](../avereo-platform/data/suivi-fonctions-communes.json).
+
+Le script commun passe par le contrôleur d’accès protégé. La recette Apache isolée
+vérifie son type JavaScript, son contenu et les refus sans session ou sous fermeture.

@@ -65,6 +65,7 @@ def run():
             assets = sorted('/'+p.relative_to(public).as_posix()
                 for p in (public/'assets').rglob('*') if p.is_file())
             assert assets
+            assets.append('/account-menu.js')
             for path in assets:
                 status, headers, _ = request(path)
                 assert status == 403 and 'WWW-Authenticate' not in headers, (path,status)
@@ -110,8 +111,14 @@ def run():
                 checks += 1
             for path in ['/', '/index.html', '/bien/fictif']:
                 status, _, body = request(path,value)
-                assert status == 200 and 'AVEREO'.encode() in body and b'/connect/logout.php' in body
+                assert status == 200 and b'AVEREO' in body
+                assert b'<meta name="avereo-connect-portal" content="https://connect-preprod.avereo.fr">' in body
+                assert b'src="/account-menu.js"' in body
                 checks += 1
+            # Logout now belongs to the menu's native React action, not a floating HTML link.
+            assert any(b'/connect/logout.php' in request(path,value)[2]
+                       for path in assets if path.startswith('/assets/') and path.endswith('.js'))
+            checks += 1
             assert request('/connect/entry.php?ticket='+ticket)[0] == 403
             checks += 1
             assert request('/',value+'invalid')[0] == 303

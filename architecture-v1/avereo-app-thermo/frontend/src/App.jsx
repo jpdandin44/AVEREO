@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { saveAs } from 'file-saver';
 import { Camera, Mic, Upload, FileText, Trash2, ArrowLeft, ArrowRight, CheckCircle, Eye, X, Home, PlusCircle, Edit, BookOpen, ChevronLeft, AlertTriangle } from 'lucide-react';
 
@@ -350,6 +350,7 @@ const ThermoReferentiel = ({ onClose }) => {
                         DOCUMENT TECHNIQUE NON OPPOSABLE
                     </div>
                 </div>
+                <avereo-account-menu placement="sidebar"></avereo-account-menu>
             </aside>
 
             {/* Main Content Area */}
@@ -821,6 +822,7 @@ const Header = ({ onGoHome, onOpenReferentiel }) => {
                     <p className="text-sm text-gray-500 text-orange-600 font-semibold">Expertise Thermographique</p>
                 </div>
                 <div className="flex items-center gap-3">
+                    <avereo-account-menu></avereo-account-menu>
                     {onOpenReferentiel && (
                         <button onClick={onOpenReferentiel} className="flex items-center gap-2 px-3 py-2 bg-orange-50 text-orange-700 border border-orange-200 rounded-md hover:bg-orange-100 transition shadow-sm text-sm font-semibold">
                             <BookOpen size={16}/> <span className="hidden sm:inline">Référentiel</span>

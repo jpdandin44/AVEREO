@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState, useMemo, useRef } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { create } from 'zustand';
 
 // --- SCRIPT LOADER ---
@@ -287,9 +287,13 @@ const AppHeader = () => {
                     <p onClick={goToDashboard} className="text-xl font-bold text-gray-900 cursor-pointer">AVEREO</p>
                     <div className="flex items-center space-x-4">
                        {user && <span className="text-sm text-gray-600">Bonjour, {user.name}</span>}
-                        {user && user.role === 'admin' && <button onClick={goToAdmin} className="inline-flex items-center text-sm font-medium text-indigo-600 hover:text-indigo-800"><AdminIcon/>Admin</button>}
+
                         {user && user.plan === 'pro' && <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">PRO</span>}
-                        <button type="button" onClick={signOut} className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm ring-1 ring-inset ring-gray-300 transition-colors duration-200 hover:bg-gray-50">Déconnexion</button>
+                        <avereo-account-menu local-account="true">
+                            <button slot="items" type="button" onClick={goToDashboard}>Mes biens</button>
+                            {user && user.role === 'admin' && <button slot="administration" type="button" onClick={goToAdmin}>Administration de l’application</button>}
+                            <button slot="logout" type="button" onClick={signOut}>Se déconnecter</button>
+                        </avereo-account-menu>
                     </div>
                 </div>
             </div>

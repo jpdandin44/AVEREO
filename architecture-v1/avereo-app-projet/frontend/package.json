@@ -7,11 +7,11 @@
                     "dev:review": "node ../workflows/start-review.mjs",
                     "test:review": "node --test ../tests/review-*.test.mjs",
                     "check:release": "node ../workflows/check-review-release.mjs",
-                    "dev":  "npm run generate:planning && node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite",
+                    "dev":  "node ../../../.github/scripts/prepare-account-menu.mjs projet && npm run generate:planning && node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite",
                     "generate:planning": "node ../workflows/generer-planning-pilote.mjs",
                     "check:planning": "node ../workflows/generer-planning-pilote.mjs --check",
                     "test": "node --test ../tests/*.test.mjs",
-                    "build":  "npm run check:planning && npm test && node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite build && npm run check:release",
+                    "build":  "node ../../../.github/scripts/prepare-account-menu.mjs projet && npm run check:planning && npm test && node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite build && npm run check:release",
                     "preview":  "vite preview"
                 },
     "dependencies":  {

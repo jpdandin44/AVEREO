@@ -1,4 +1,16 @@
-﻿# Audit source - Thermo AVEREO Pro
+---
+project: avereo-app-thermo
+document_type: reference
+title: source-audit
+status: active
+version: git
+created: 2026-11-06
+updated: 2026-11-06
+owner: jpdandin
+tags: [avereo, interface, fonctions-communes]
+---
+
+# Audit source - Thermo AVEREO Pro
 
 ## Source
 
@@ -44,3 +56,9 @@ Notes V1.1 : consolider les exports fichiers, graphiques et stockage local autou
 - npm install : tente, echec car npm n'est pas reconnu comme commande PowerShell.
 - npm run build : non executable tant que npm est absent du PATH.
 - Correction minimale : installer Node.js 20 LTS ou ajouter Node/npm au PATH, puis relancer cd frontend, npm install, npm run build.
+
+## 6 novembre 2026 — Menu de compte commun
+
+Le menu est dans l’en-tête du parcours de rapport et au pied de la barre latérale du référentiel. Le bouton de déconnexion flottant est retiré ; le brouillon conserve son stockage existant.
+
+Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.

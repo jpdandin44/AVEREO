@@ -5,7 +5,7 @@ title: data
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -13,3 +13,7 @@ tags: [avereo, acces, documentation]
 # data
 
 Répertoire documentaire réservé. Aucun contenu data supplémentaire n’est introduit par le lot des accès temporaires. Les sources existantes sont décrites dans le [README](../README.md).
+
+## Sources du menu commun
+
+`account-menu-applications.json` est le manifeste d’intégration ; `suivi-fonctions-communes.json` est le suivi canonique de cette itération. Les preuves associées ne contiennent aucune donnée personnelle.

@@ -4,7 +4,7 @@ import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/re
 import App from '../src/App.jsx';
 
 afterEach(() => {
-  const logout = screen.queryByRole('button', { name: 'Déconnexion', exact: true });
+  const logout = screen.queryByRole('button', { name: 'Se déconnecter', exact: true });
   if (logout) fireEvent.click(logout);
   cleanup(); localStorage.clear(); delete window.jspdf; delete window.html2canvas;
 });

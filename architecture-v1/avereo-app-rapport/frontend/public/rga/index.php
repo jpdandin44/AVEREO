@@ -12,8 +12,11 @@
     iframe{width:100%;height:72vh;min-height:420px;border:1px solid #b6c7ca;background:white}
     .notice{padding:16px;border-left:4px solid #bd8524;background:#fff8e8}small{display:block}
   </style>
+    <script defer src="/account-menu.js"></script>
+  <meta name="avereo-connect-portal" content="<?= htmlspecialchars(avereo_gate_portal($config), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>">
 </head>
 <body><main>
+  <avereo-account-menu logout-path="/rga/logout.php" style="float:right"></avereo-account-menu>
   <a href="/">← Retour à Rapport</a>
   <h1>RGA — Rechercher un bien</h1>
   <p>Retrait-gonflement des argiles — préqualification territoriale.</p>

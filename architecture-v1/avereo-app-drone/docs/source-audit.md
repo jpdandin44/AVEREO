@@ -1,4 +1,16 @@
-﻿# Audit source - Drone AVEREO Pro
+---
+project: avereo-app-drone
+document_type: reference
+title: source-audit
+status: active
+version: git
+created: 2026-11-06
+updated: 2026-11-06
+owner: jpdandin
+tags: [avereo, interface, fonctions-communes]
+---
+
+# Audit source - Drone AVEREO Pro
 
 ## Source
 
@@ -39,3 +51,9 @@ Notes V1.1 : auditer les types metier et extraire les composants si la surface f
 - npm install : tente, echec car npm n'est pas reconnu comme commande PowerShell.
 - npm run build : non executable tant que npm est absent du PATH.
 - Correction minimale : installer Node.js 20 LTS ou ajouter Node/npm au PATH, puis relancer cd frontend, npm install, npm run build.
+
+## 6 novembre 2026 — Menu de compte commun
+
+Le menu est dans l’accueil des missions et au pied de la barre latérale de l’éditeur, avec un mode compact lorsque celle-ci est repliée. Les missions restent dans le stockage navigateur existant.
+
+Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.

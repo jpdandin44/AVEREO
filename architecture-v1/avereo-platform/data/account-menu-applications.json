@@ -1,0 +1,124 @@
+{
+  "source": "architecture-v1/avereo-platform/shared/account-menu.js",
+  "applications": [
+    {
+      "id": "connect",
+      "publicDirectories": [
+        "architecture-v1/avereo-app-connect/backend/public",
+        "architecture-v1/avereo-app-connect/frontend/public"
+      ],
+      "surface": "Portail PHP actif ; frontend historique conservé",
+      "capabilities": [
+        "account",
+        "applications",
+        "administration",
+        "logout"
+      ]
+    },
+    {
+      "id": "projet",
+      "publicDirectories": [
+        "architecture-v1/avereo-app-projet/frontend/public"
+      ],
+      "surface": "Pied de barre latérale",
+      "capabilities": [
+        "projects",
+        "preferences",
+        "account",
+        "applications",
+        "logout"
+      ]
+    },
+    {
+      "id": "rapport",
+      "publicDirectories": [
+        "architecture-v1/avereo-app-rapport/frontend/public"
+      ],
+      "surface": "En-tête Rapport et barre latérale RGA",
+      "capabilities": [
+        "reports",
+        "account",
+        "applications",
+        "logout"
+      ],
+      "modules": [
+        "rga"
+      ]
+    },
+    {
+      "id": "coupe",
+      "publicDirectories": [
+        "architecture-v1/avereo-app-coupe/frontend/public"
+      ],
+      "surface": "Pied de barre latérale",
+      "capabilities": [
+        "projects",
+        "account",
+        "applications",
+        "logout"
+      ]
+    },
+    {
+      "id": "thermo",
+      "publicDirectories": [
+        "architecture-v1/avereo-app-thermo/frontend/public"
+      ],
+      "surface": "En-tête et pied du référentiel",
+      "capabilities": [
+        "account",
+        "applications",
+        "logout"
+      ]
+    },
+    {
+      "id": "drone",
+      "publicDirectories": [
+        "architecture-v1/avereo-app-drone/frontend/public"
+      ],
+      "surface": "En-tête accueil et pied de barre latérale de mission",
+      "capabilities": [
+        "account",
+        "applications",
+        "logout"
+      ]
+    },
+    {
+      "id": "recherche",
+      "publicDirectories": [
+        "architecture-v1/avereo-app-recherche/frontend/public"
+      ],
+      "surface": "En-tête",
+      "capabilities": [
+        "backup",
+        "account",
+        "applications",
+        "logout"
+      ]
+    },
+    {
+      "id": "passeport-immo",
+      "publicDirectories": [
+        "architecture-v1/avereo-app-passeport-immo/frontend/public"
+      ],
+      "surface": "En-tête",
+      "capabilities": [
+        "properties",
+        "account",
+        "applications",
+        "administration",
+        "logout"
+      ]
+    },
+    {
+      "id": "saisie-unique",
+      "publicDirectories": [],
+      "sourceBundled": true,
+      "surface": "En-tête de l’application autonome locale",
+      "capabilities": [
+        "local-projects",
+        "preferences"
+      ]
+    }
+  ],
+  "deferred": []
+}
