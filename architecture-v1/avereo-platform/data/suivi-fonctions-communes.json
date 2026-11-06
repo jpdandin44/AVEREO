@@ -23,7 +23,7 @@
   },
   "candidate": {
     "commonSourceSha256": "90e94651f832e69a999803de732709a2e55a640e75b2bbc91d856b7b214e83e4",
-    "sourceSha": "366cdb3c9f3edb27a3e1fbc6df9b885ad1182221",
+    "sourceSha": "a3d89d932a306471affced4f5395edb044968ef5",
     "artifactSha256": null
   },
   "github": {
@@ -115,6 +115,13 @@
       "id": "artifact-source-parity",
       "status": "passed",
       "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "passeport-http-74-storage-30-backup-22-transfer-35",
+      "status": "passed",
+      "environment": "local_containers",
       "evidence": "../docs/qualification-mon-espace.md",
       "observedAt": "2026-11-06"
     }
