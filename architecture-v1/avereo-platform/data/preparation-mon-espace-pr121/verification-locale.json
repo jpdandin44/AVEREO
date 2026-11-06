@@ -1,0 +1,50 @@
+{
+  "parity": [
+    {
+      "app": "connect",
+      "passed": true
+    },
+    {
+      "app": "projet",
+      "passed": true
+    },
+    {
+      "app": "rapport",
+      "passed": true
+    },
+    {
+      "app": "coupe",
+      "passed": true
+    },
+    {
+      "app": "thermo",
+      "passed": true
+    },
+    {
+      "app": "drone",
+      "passed": true
+    },
+    {
+      "app": "passeport-immo",
+      "passed": true
+    },
+    {
+      "app": "recherche",
+      "passed": true
+    },
+    {
+      "app": "saisie-unique",
+      "passed": true
+    }
+  ],
+  "commonMenuTests": 20,
+  "rapportTests": 101,
+  "thermoTests": 3,
+  "droneTests": 3,
+  "passeportTests": 29,
+  "passeportPreparationTests": 19,
+  "preparationTests": 10,
+  "packagingTests": 5,
+  "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+  "hostedAuthenticationVerified": false
+}

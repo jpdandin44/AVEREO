@@ -1,0 +1,45 @@
+{
+  "observedAt": "2026-11-06T18:11:17.131921+00:00",
+  "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+  "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+  "status": "rehearsed_not_deployed",
+  "applications": {
+    "rapport": {
+      "root": "/home/daje3540/rapport-preprod.avereo.fr",
+      "fileCount": 11,
+      "backupAndRestoreOnCopies": "passed"
+    },
+    "coupe": {
+      "root": "/home/daje3540/coupe-preprod.avereo.fr",
+      "fileCount": 5,
+      "backupAndRestoreOnCopies": "passed"
+    },
+    "projet": {
+      "root": "/home/daje3540/projet-preprod.avereo.fr",
+      "fileCount": 6,
+      "backupAndRestoreOnCopies": "passed"
+    },
+    "thermo": {
+      "root": "/home/daje3540/thermo-preprod.avereo.fr",
+      "fileCount": 5,
+      "backupAndRestoreOnCopies": "passed"
+    },
+    "drone": {
+      "root": "/home/daje3540/drone-preprod.avereo.fr",
+      "fileCount": 5,
+      "backupAndRestoreOnCopies": "passed"
+    },
+    "connect": {
+      "root": "/home/daje3540/connect-preprod.avereo.fr/public",
+      "fileCount": 2,
+      "backupAndRestoreOnCopies": "passed"
+    },
+    "passeport-immo": {
+      "root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "fileCount": 6,
+      "backupAndRestoreOnCopies": "passed"
+    }
+  },
+  "liveFilesModified": false,
+  "databaseAccessed": false
+}

@@ -14,11 +14,56 @@ tags: [avereo, preproduction, livraison, fonctions-communes]
 
 ## Candidat actuel — PR #121 étendue
 
-La PR inclut désormais Mes projets et Préférences propres aux applications. Le lot
-de 37 fichiers ci-dessous reste une preuve historique de #119 ; il ne contient pas
-cette extension. Un nouveau paquet et une nouvelle comparaison sont requis.
-La [qualification actualisée](qualification-mon-espace.md) distingue les contrôles
-locaux des essais hébergés à refaire. Aucune installation autorisée par cette PR.
+La PR inclut désormais Mes projets et Préférences propres aux applications ; CONNECT
+reste le portail sans projets métier. Le candidat applicatif
+`317863a9e5603fbbed578a5aa9cfc323cb17b977` est construit, comparé aux sept cibles et
+vérifié sur copies privées. Les commits de preuve suivants ne changent pas les
+fichiers applicatifs de ce paquet. Phase : **Développement local**, préparation terminée,
+revue humaine puis accord de livraison à obtenir. Aucun fichier actif remplacé.
+
+| Cible | Fichiers retenus |
+| --- | ---: |
+| CONNECT | 2 |
+| Projet | 6 |
+| Rapport et RGA | 11 |
+| Coupe | 5 |
+| Thermo | 5 |
+| Drone | 5 |
+| Passeport Immo | 6 |
+
+Le [manifeste actuel](../data/preparation-mon-espace-pr121/selection.json) retient
+**40 fichiers : 20 remplacements et 20 créations**, sans suppression de fichier
+existant. SHA-256 du seul paquet à installer, `selection-menu/payload.zip` :
+`14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b`.
+Il est conservé dans
+`/home/daje3540/private/mon-espace-preprod-317863a-20261106/selection-menu` et localement
+dans `C:/Users/examg/Documents local/livraisons-avereo/mon-espace/preparation-pr121-317863a`.
+Les archives complètes de compilation ne doivent pas être installées.
+
+Les [essais du paquet final](../data/preparation-mon-espace-pr121/verification-selection-serveur.json)
+du 6 novembre à **19 h 11, heure de Paris**, prouvent sauvegarde, remplacement et
+restauration sur copies des sept cibles. La
+[préparation initiale](../data/preparation-mon-espace-pr121/preparation-serveur.json)
+confirme sept configurations privées restaurées sur copies, treize fichiers de
+planning Projet identiques et le backend CONNECT #118 préservé. Aucune base consultée
+ou modifiée. Les dix tests de préparation passent aussi sur le serveur Linux.
+
+La sélection conserve les mêmes exclusions d'API, de sas, de classement Projet et
+de fichiers privés que l'historique ci-dessous. Coupe reçoit le menu et le bloc de
+préférences grille/aimantation sur son HTML OAuth installé ; l'inversion de ces
+modifications retrouve la copie initiale à l'octet. Le libellé historique
+`PR119 menu only` du manifeste désigne cette adaptation, étendue ici aux préférences ;
+il ne désigne pas l'ancien paquet de 37 fichiers.
+
+Les [quatre contrôles techniques GitHub](../data/preparation-mon-espace-pr121/github.json)
+réussissent sur le candidat. PR Policy attend uniquement les quatre cases humaines,
+laissées décochées. La [qualification](qualification-mon-espace.md) décrit les essais
+locaux ; la recette authentifiée après installation reste à réaliser. Revalider
+toutes les empreintes avant remplacement, puis conserver exactement ce paquet si
+le merge ne change pas son contenu. Aucune autorisation de déploiement, de production
+ou d'ouverture publique n'est créée par cette préparation.
+
+Les sections suivantes décrivent exclusivement le lot historique #119 de 37 fichiers.
 
 ## Historique de la préparation #119
 

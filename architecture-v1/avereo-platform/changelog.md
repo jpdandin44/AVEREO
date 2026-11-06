@@ -29,3 +29,8 @@ applicatif actif remplacé.
 ## 2026-11-06 — Extension des espaces applicatifs dans PR #121
 
 Menus métier « Mes projets » et « Préférences », profil/catalogue CONNECT communs, listes locales Thermo/RGA, préférences séparées et erreurs de stockage explicites. CONNECT conserve son rôle de portail. Contrat, contrôles et préparation révisés dans le [suivi canonique](data/suivi-fonctions-communes.json). Aucun déploiement induit par ces changements.
+
+Nouveau paquet de 40 fichiers comparé aux sept cibles et restauré sur copies privées ;
+sept configurations et treize fichiers de planning Projet préservés. Quatre contrôles
+techniques GitHub réussis, validation humaine encore attendue. La préparation #119
+reste attachée à son ancien candidat de 37 fichiers.

@@ -33,4 +33,4 @@ Chaque application peut s'assurer que le gateway est actif, mais sa commande `do
 
 La [règle des fonctionnalités communes](docs/fonctionnalites-communes.md) définit le composant et son intégration. [Qualification](docs/qualification-mon-espace.md), [préparation des sept cibles](docs/preparation-mon-espace.md) et [suivi canonique](data/suivi-fonctions-communes.json).
 
-Le candidat PR #121 complète les rubriques propres aux applications ; les [adaptations et limites de stockage](docs/fonctionnalites-communes.md#adaptations-métier-du-candidat-pr-121) sont définies dans la règle commune. La préparation #119 reste historique jusqu’à qualification du nouveau paquet.
+Le candidat PR #121 complète les rubriques propres aux applications ; les [adaptations et limites de stockage](docs/fonctionnalites-communes.md#adaptations-métier-du-candidat-pr-121) sont définies dans la règle commune. Son paquet de 40 fichiers est vérifié sur copies privées des sept cibles ; la préparation #119 de 37 fichiers reste historique. Revue humaine et déploiement restent à effectuer.

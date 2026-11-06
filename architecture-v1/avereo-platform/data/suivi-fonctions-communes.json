@@ -6,7 +6,7 @@
   "owner": "jpdandin",
   "kind": "application",
   "stage": "local",
-  "status": "development_app_specific_workspace",
+  "status": "local_complete_preproduction_prepared",
   "objective": "Appliquer Mon espace aux applications et fixer une règle des fonctions communes.",
   "phases": [
     "Cadrage",
@@ -22,23 +22,26 @@
     "latestMainSha": "a245cdd5dd747b6181a75e691db31a5d31081bd9"
   },
   "candidate": {
-    "sourceSha": null,
-    "artifactSha256": null,
+    "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+    "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
     "scope": "App-specific projects and preferences; shared CONNECT account and catalogue",
-    "commonSourceSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5"
+    "commonSourceSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+    "artifact": "preparation-mon-espace-pr121/selection.json",
+    "coupeHostedVariantPreserved": true,
+    "fileCount": 40
   },
   "github": {
     "repository": "jpdandin44/AVEREO",
-    "branch": "feat/shared-account-menu-20261106",
+    "branch": "docs/mon-espace-preproduction-20261106",
     "base": "main",
-    "humanAcceptanceVerified": true,
-    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/119",
-    "merged": true,
-    "acceptedSourceSha": "223784df56e8f9ba8d66893f19e9b57f1efd7a79",
-    "mergeSourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
-    "observedAt": "2026-11-06T16:29:45.026057+00:00",
-    "evidence": "preparation-mon-espace/github.json",
-    "acceptedArtifactSha256": null
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/121",
+    "merged": false,
+    "humanAcceptanceVerified": false,
+    "observedSourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+    "acceptedSourceSha": null,
+    "acceptedArtifactSha256": null,
+    "observedAt": "2026-11-06T18:13:50.423170+00:00",
+    "evidence": "preparation-mon-espace-pr121/github.json"
   },
   "checks": [
     {
@@ -112,21 +115,49 @@
       "evidence": "../docs/qualification-mon-espace.md"
     },
     {
-      "id": "documentation-36-links-359",
+      "kind": "local",
       "status": "passed",
-      "environment": "local",
-      "observedAt": "2026-11-06",
-      "evidence": "../docs/qualification-mon-espace.md"
+      "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+      "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+      "observedAt": "2026-11-06T18:13:50.423170+00:00",
+      "evidence": "preparation-mon-espace-pr121/verification-locale.json"
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+      "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+      "observedAt": "2026-11-06T18:13:50.423170+00:00",
+      "evidence": "preparation-mon-espace-pr121/github.json",
+      "limitation": "Technical checks passed; PR Policy awaits four human validations."
+    },
+    {
+      "kind": "preparation",
+      "status": "passed",
+      "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+      "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+      "observedAt": "2026-11-06T18:11:17.131921+00:00",
+      "evidence": "preparation-mon-espace-pr121/verification-selection-serveur.json",
+      "environment": "hosted_private_copies",
+      "fileCount": 40
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+      "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+      "observedAt": "2026-11-06T18:16:38.322309+00:00",
+      "evidence": "preparation-mon-espace-pr121/documentation.json"
     }
   ],
   "approvals": [],
   "targets": {
     "preproduction": {
       "id": "mon-espace-seven-preproduction-targets",
-      "ready": false,
+      "ready": true,
       "isolated": true,
-      "observedAt": "2026-11-06T16:23:25.182312+00:00",
-      "evidence": "New candidate requires a fresh comparison and recovery rehearsal; previous receipts are historical.",
+      "observedAt": "2026-11-06T18:11:17.131921+00:00",
+      "evidence": "preparation-mon-espace-pr121/verification-selection-serveur.json",
       "applications": {
         "rapport": "/home/daje3540/rapport-preprod.avereo.fr",
         "coupe": "/home/daje3540/coupe-preprod.avereo.fr",
@@ -147,15 +178,27 @@
   },
   "delivery": {
     "status": "not_deployed",
-    "sourceSha": null,
-    "artifactSha256": null,
+    "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+    "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
     "liveFilesModified": false,
     "databaseAccessed": false,
     "configurationModified": false
   },
-  "backups": [],
+  "backups": [
+    {
+      "id": "mon-espace-pr121-317863a-private-selection",
+      "target": "mon-espace-seven-preproduction-targets",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-06T18:11:17.131921+00:00",
+      "evidence": "preparation-mon-espace-pr121/verification-selection-serveur.json",
+      "serverDirectory": "/home/daje3540/private/mon-espace-preprod-317863a-20261106",
+      "planningFilesPreserved": 13,
+      "privateConfigurationCount": 7
+    }
+  ],
   "blockers": [],
-  "nextAction": "Publish the reviewed application-specific changes in PR121 and rebuild the preproduction selection. No merge or deployment authorization.",
+  "nextAction": "Human review of PR121, then merge by the owner. Before any deployment: explicit authorization for the seven targets and this 40-file payload, refresh before-image hashes, install selected files only, then qualify hosted authenticated flows on fictitious data.",
   "nextIteration": [
     "Qualify Recherche hosting and CONNECT configuration before its first authorized installation.",
     "Keep Saisie unique standalone until a separate hosted scope is agreed.",
@@ -356,7 +399,20 @@
           "testedToolsSourceSha": "3da75f785be3e2dd414009f832861be9e8d92022",
           "limitation": "PR Policy remains blocked by the four human checkboxes; technical CI and preparation tests passed."
         }
-      ]
+      ],
+      "github": {
+        "repository": "jpdandin44/AVEREO",
+        "branch": "feat/shared-account-menu-20261106",
+        "base": "main",
+        "humanAcceptanceVerified": true,
+        "prUrl": "https://github.com/jpdandin44/AVEREO/pull/119",
+        "merged": true,
+        "acceptedSourceSha": "223784df56e8f9ba8d66893f19e9b57f1efd7a79",
+        "mergeSourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+        "observedAt": "2026-11-06T16:29:45.026057+00:00",
+        "evidence": "preparation-mon-espace/github.json",
+        "acceptedArtifactSha256": null
+      }
     }
   ],
   "workspaceDecision": {

@@ -47,6 +47,25 @@ fictives CONNECT/Rapport et seulement des réponses GET ; aucune authentificatio
 hébergée n’est prouvée. Thermo, Drone et les points RGA restent locaux. La recette
 sur les sept cibles et les cases humaines restent à effectuer.
 
+La [préparation de livraison actuelle](preparation-mon-espace.md#candidat-actuel--pr-121-étendue)
+porte le candidat `317863a9e5603fbbed578a5aa9cfc323cb17b977` : 40 fichiers,
+sauvegarde/restauration sur copies privées réussie pour les sept cibles, données et
+configurations conservées. Ce contrôle ne constitue pas une installation ni une
+recette utilisateur hébergée.
+
+Les quatre contrôles techniques GitHub réussissent sur ce candidat. Le contrôle de
+parité Passeport inverse exactement sept modifications autorisées du menu et des
+préférences, puis compare tout le reste au source historique. Un essai négatif sur
+copie altérant « Mes Biens » est refusé. Les preuves historiques restent inchangées.
+Le contrôle local de leur empreinte rencontre la conversion CRLF du checkout
+Windows ; le blob Git est intact et le contrôle complet du cockpit passe dans la CI
+Linux. Aucun hash de référence n'a été modifié pour contourner ce contrôle.
+
+Les [preuves GitHub](../data/preparation-mon-espace-pr121/github.json) séparent ces
+résultats de PR Policy, qui attend uniquement les quatre cases humaines. Les
+archives et captures finales sont conservées dans
+`C:/Users/examg/Documents local/livraisons-avereo/mon-espace/preparation-pr121-317863a`.
+
 ## Historique — socle #119
 
 Lot `mon-espace-commun-20261106`, issu de `main` après la fusion vérifiée de la
