@@ -9,7 +9,7 @@
   "status": "ready_for_review",
   "objective": "Revenir à la connexion avec le même mot de passe après activation, sans conserver une autre identité.",
   "candidate": {
-    "sourceSha": null,
+    "sourceSha": "12e17c14b35f951268482e39497931c86f78d117",
     "artifactSha256": null
   },
   "targets": {
@@ -31,7 +31,7 @@
   },
   "github": {
     "repository": "jpdandin44/AVEREO",
-    "prUrl": null,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/118",
     "acceptedSourceSha": null,
     "acceptedArtifactSha256": null,
     "humanAcceptanceVerified": false,
@@ -65,6 +65,20 @@
       "id": "repository-baseline",
       "status": "passed",
       "environment": "local",
+      "observedAt": "2026-11-06",
+      "evidence": "../docs/retour-activation-connexion.md"
+    },
+    {
+      "id": "native-first-login-17",
+      "status": "passed",
+      "environment": "local-drupal-11.4.10",
+      "observedAt": "2026-11-06",
+      "evidence": "../docs/retour-activation-connexion.md"
+    },
+    {
+      "id": "historical-activation-migration",
+      "status": "passed",
+      "environment": "local-disposable-mariadb",
       "observedAt": "2026-11-06",
       "evidence": "../docs/retour-activation-connexion.md"
     }
@@ -110,6 +124,6 @@
     "nativeLimit": 5,
     "initialCredentialFailureCause": "unknown",
     "userRequestedNativeReset": true,
-    "personalLoginAfterReset": "pending"
+    "personalLoginAfterReset": "confirmed_by_user"
   }
 }

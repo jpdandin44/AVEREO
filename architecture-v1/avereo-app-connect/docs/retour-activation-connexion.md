@@ -40,8 +40,8 @@ normalisation des fins de ligne ; ce constat ne vérifie pas le mot de passe sai
 Le responsable a demandé lui-même une réinitialisation et atteint sa page native.
 Le code Drupal installé confirme que ce parcours efface le compteur individuel
 lors de l’entrée par le lien à usage unique. Aucune suppression manuelle du compteur,
-aucun abaissement de limite, aucune saisie de mot de passe par l’agent. L’enregistrement
-personnel et la nouvelle connexion restent à confirmer. Ce blocage est distinct du
+aucun abaissement de limite, aucune saisie de mot de passe par l’agent. Le responsable confirme ensuite son accès à CONNECT après récupération. Cette
+réussite personnelle ne valide pas la première connexion d’un compte neuf. Ce blocage est distinct du
 correctif de retour proposé ci-dessous ; ce correctif ne prétend pas résoudre un
 mot de passe refusé.
 
@@ -74,6 +74,30 @@ de session au nom du compte ciblé n’est effectuée par la confirmation d’ac
 - Revue locale du portail : `http://127.0.0.1:52968/?logout=1`, serveur PHP natif
   sans fournisseur d’identité ni base de comptes réels. Elle vérifie le message
   et le bouton ; elle ne simule pas une connexion Drupal réussie.
+
+## Recette native de première connexion
+
+`tests/first-login-http.py` et `tests/first-login-fixture.php` dans le module Drupal
+exercent 17 contrôles sur Drupal **11.4.10**, dans un conteneur jetable local lié à
+`127.0.0.1:8094`, avec une base SQLite fictive et le collecteur de mails natif.
+Deux comptes neufs sont créés : navigateur anonyme, puis ancienne identité ouverte.
+Les deux formulaires enregistrent le premier mot de passe (ASCII puis accentué),
+le retour signé cible le compte invité, le pont de déconnexion natif fonctionne et
+le même mot de passe authentifie le compte par e-mail sans reset. Une seule invitation
+est collectée par compte et le lien consommé est refusé. **17/17 réussis.**
+
+La confirmation CONNECT et sa fermeture de session sont vérifiées séparément par
+les 40 tests applicatifs ; cette recette n’est pas un parcours OIDC complet hébergé.
+Le script refuse une cible distante et n’envoie aucun e-mail réel. Il exige
+`AVEREO_FIRST_LOGIN_LOCAL=1`, le conteneur de recette nommé dans le script, Drush et
+le module courant ; la fixture PHP exige la racine et la base SQLite jetables.
+
+La CI a également révélé un ancien test de migration qui attend cinq migrations
+mais exécutait désormais les migrations ultérieures de période/cycle de vie.
+La fixture de cette transition historique copie le runner réel et les cinq fichiers
+SQL concernés, avec égalité d’empreinte ; toutes les assertions de conservation,
+restauration et idempotence restent inchangées. La suite CI générale teste séparément
+l’ensemble des migrations récentes.
 
 ## Sécurité, données et préparation de livraison
 
