@@ -4,6 +4,7 @@ import { CHAMP, copie, lignes, nouveauDossier, planEditable, TYPES } from './mod
 import { enregistrer } from './journal.js';
 import { aujourdHui } from './nombres.js';
 import { dossierExemple, ID_POSTE_SCENARIO, INITIAL, VARIANTE } from './exemple.js';
+import { exporterDonnees, importerDossiers, lireSauvegarde } from './sauvegarde.js';
 
 export const CLE_STOCKAGE = 'avereo-uni-dossiers';
 export const VERSION_DONNEES = 1;
@@ -46,7 +47,7 @@ export function createStore({ storage = null, parametresParDefaut = {}, horloge 
     donnees: lu.donnees || donneesInitiales(parametresParDefaut),
     ui: {
       vue: 'liste', dossierId: null, onglet: 'administratif', planVue: 'devis', docActif: 'PF', planDoc: {}, filtreStatut: '',
-      derniere: {}, modifies: {}, erreurStockage: lu.erreur, suggestionDepot: null, confirmation: null,
+      derniere: {}, modifies: {}, erreurStockage: lu.erreur, suggestionDepot: null, confirmation: null, messageSauvegarde: null,
     },
   };
   const abonnes = new Set();
@@ -275,6 +276,25 @@ export function createStore({ storage = null, parametresParDefaut = {}, horloge 
     demanderConfirmation(confirmation) { setUi({ confirmation }); },
     fermerSuggestion() { setUi({ suggestionDepot: null }); },
     signalerErreur(message) { setUi({ erreurStockage: message }); },
+    // Sauvegarde : texte JSON de tous les dossiers, à enregistrer dans un fichier sur le poste.
+    exporter() {
+      const texte = exporterDonnees(state.donnees, new Date(horloge()));
+      const n = state.donnees.ordre.length;
+      setUi({ messageSauvegarde: { type: 'ok', texte: `${n} dossier${n > 1 ? 's' : ''} exporté${n > 1 ? 's' : ''}.` } });
+      return texte;
+    },
+    // Import : ajoute les dossiers du fichier, sans remplacer ceux présents.
+    importer(texte) {
+      const lu = lireSauvegarde(texte);
+      if (lu.erreur) {
+        setUi({ messageSauvegarde: { type: 'erreur', texte: lu.erreur } });
+        return 0;
+      }
+      majDonnees((donnees) => importerDossiers(donnees, lu.dossiers));
+      const n = lu.dossiers.length;
+      setUi({ messageSauvegarde: { type: 'ok', texte: n ? `${n} dossier${n > 1 ? 's' : ''} importé${n > 1 ? 's' : ''}, ajouté${n > 1 ? 's' : ''} en tête de liste.` : 'La sauvegarde ne contient aucun dossier.' } });
+      return n;
+    },
   };
 
   return {
