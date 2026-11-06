@@ -5,12 +5,23 @@ title: Guide utilisateur de l'outil de suivi AVEREO Projet
 status: active
 version: git
 created: 2026-09-24
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags: [projet, suivi, guide, local]
 ---
 
 # Guide utilisateur de l'outil de suivi AVEREO Projet
+
+## Filtrer les sujets et lire les intitulés — candidat du 6 novembre 2026
+
+Dans **Planning & Gantt**, choisir **Sujet** (Emploi, AVEREO, TC Longages, Transversal ou un sujet personnalisé) et éventuellement **Priorité**. **Effacer les filtres** retrouve toutes les actions. Le compteur indique la partie affichée ; les dates restent celles du planning complet, même lorsqu’un prédécesseur est masqué.
+
+Une ligne ambrée et **★ Haute** signalent une priorité haute. Un **?** indique une proposition : ouvrir la tâche, renseigner **Sujet** et **Priorité métier**, puis enregistrer pour la confirmer ou la corriger. Laisser les champs vides conserve le classement proposé sans l’enregistrer. Le classement n’est pas une validation de l’ordre des travaux.
+
+Glisser les séparateurs des en-têtes pour élargir les colonnes, ou la séparation bleue avec le calendrier pour agrandir la zone des tâches. Au clavier : Tab jusqu’au séparateur, flèches gauche/droite ; Début/Fin atteignent les limites. Échap annule le glissement en cours. **Réinitialiser les colonnes** restaure les largeurs initiales. Elles sont conservées dans ce navigateur ; les filtres sont temporaires.
+
+Le titre complet apparaît au survol ; cliquer sur son bouton ouvre la description et les actions. Pour réordonner ou déplacer un lot entier, effacer d’abord les filtres. Recharger les anciens onglets avant d’utiliser les nouveaux champs. Ce candidat est installé et vérifié en préproduction depuis le 6 novembre ; sa revue humaine reste attendue.
+
 
 ## Retrouver ses projets depuis le compte
 

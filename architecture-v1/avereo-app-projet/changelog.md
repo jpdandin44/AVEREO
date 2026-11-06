@@ -5,7 +5,7 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,24 @@ tags:
 ---
 
 # Changelog de Projet
+
+## 2026-11-06 — Sujets et colonnes installés en préproduction
+
+Installation autorisée, sauvegarde et restauration sur copie vérifiées, 65 contrôles HTTP sur fixtures hébergées réussis. Deux projets relus ; huit JSON privés identiques. [Preuves](data/preprod-sujets-colonnes/delivery-observation.json). PR #112 reste ouverte pour revue humaine ; aucune production engagée.
+
+## 2026-11-06 — Sujets, priorité visible et colonnes ajustables, candidat local
+
+- Filtrer le Gantt par sujet et priorité, avec compteur et avertissement de dépendances masquées.
+- Confirmer un sujet et une priorité dans la fiche ; conserver les champs dans le JSON, le CSV étendu et l’API privée.
+- Proposer un classement des anciennes tâches sans écriture implicite ; mettre en évidence les priorités hautes.
+- Ajuster chaque colonne et la séparation tableau/calendrier au pointeur ou au clavier, mémoriser les largeurs dans le navigateur et les réinitialiser.
+- PR #111 constatée fusionnée ; clôture documentaire précédente conservée. État de qualification et prochaines actions dans le [suivi](data/suivi-sujets-colonnes.json).
+
+
+## 2026-11-05 — Clôture et besoins de la prochaine itération
+
+Confirmation utilisateur du bon fonctionnement du menu enregistrée dans le suivi. Demandes de priorité emploi visible, filtres par sujet et colonnes ajustables consignées dans les exigences et la roadmap, sans implémentation. Écart entre merge #111 annoncé et PR encore ouverte enregistré pour reprise. Aucun test applicatif, déploiement ni écriture de planning exécuté pour la clôture.
+
 
 ## 2026-11-05 — Import privé réalisé et menu de compte livré en préproduction
 

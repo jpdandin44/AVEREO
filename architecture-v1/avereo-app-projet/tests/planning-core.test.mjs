@@ -390,3 +390,45 @@ test('scheduled risks are independent copies and never alter dates or legacy ris
     assert.equal(scheduled.tasks[0].riskWeight, 'Mineur');
     assert.equal(scheduled.tasks[0].riskStatus, 'Aucun');
 });
+
+
+test('explicit subjects and priorities round-trip through JSON and CSV without rescheduling', () => {
+    const input = project([task('A'), task('B', 1, ['A'])]);
+    const baseline = P.schedule(input).tasks.map(t => [t.id, t.startOffset, t.endOffset]);
+    input.tasks[0].subject = 'Emploi'; input.tasks[0].priority = 'haute';
+    input.tasks[1].subject = '=Sujet spécial'; input.tasks[1].priority = 'basse';
+    const result = P.decodeProject(P.encodeProject(input));
+    assert.equal(result.tasks[0].subject, 'Emploi');
+    assert.equal(result.tasks[0].priority, 'haute');
+    const csv = P.mapRows(P.parseCsv(P.tasksToCsv(result.tasks)));
+    assert.deepEqual(plain(csv.map(t => [t.subject, t.priority])), [['Emploi', 'haute'], ['=Sujet spécial', 'basse']]);
+    assert.deepEqual(plain(P.schedule(result).tasks.map(t => [t.id, t.startOffset, t.endOffset])), plain(baseline));
+});
+
+test('classification suggestions never add metadata and explicit choices override them', () => {
+    const input = project([task('S0_emploi'), task('S0_club')]);
+    const normalized = P.normalizeProject(input);
+    const before = JSON.stringify(normalized);
+    assert.equal(P.taskClassification(normalized.tasks[0]).subject, 'Emploi');
+    assert.equal(P.taskClassification(normalized.tasks[0]).priority, 'haute');
+    assert.equal(P.taskClassification(normalized.tasks[1]).subject, 'TC Longages');
+    assert.equal(P.filterTasks(normalized.tasks, 'Emploi').length, 1);
+    assert.equal(JSON.stringify(normalized), before);
+    assert.equal(Object.hasOwn(normalized.tasks[0], 'subject'), false);
+    assert.equal(Object.hasOwn(normalized.tasks[0], 'priority'), false);
+    assert.equal(P.taskClassification({...normalized.tasks[0], subject:'Autre', priority:'basse'}).subject, 'Autre');
+    for (const extra of [{subject:''},{subject:'a'.repeat(81)},{subject:12},{priority:'urgente'},{priority:null}]) {
+        assert.throws(() => P.normalizeProject(project([task('A', 1, [], extra)])));
+    }
+});
+
+test('milestones inherit only a unanimous predecessor subject and cycles remain bounded', () => {
+    const tasks = [task('A', 1, [], {subject:'Emploi'}), task('B', 1, [], {subject:'AVEREO'}), task('J', 0, ['A']), task('K', 0, ['J']), task('Mixed', 0, ['A', 'B'])];
+    const before = JSON.stringify(tasks);
+    assert.equal(P.taskClassification(tasks[3], tasks).subject, 'Emploi');
+    assert.equal(P.taskClassification(tasks[4], tasks).subject, 'À classer');
+    assert.equal(P.filterTasks(tasks, 'Emploi').length, 3);
+    assert.equal(JSON.stringify(tasks), before);
+    const cycle = [task('X', 0, ['Y']), task('Y', 0, ['X'])];
+    assert.equal(P.taskClassification(cycle[0], cycle).subject, 'À classer');
+});

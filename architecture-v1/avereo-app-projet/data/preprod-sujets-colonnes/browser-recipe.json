@@ -1,0 +1,21 @@
+{
+  "observedAt": "2026-11-06T07:43:33.012920+00:00",
+  "target": "https://projet-preprod.avereo.fr",
+  "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+  "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+  "status": "passed",
+  "scope": "Navigateur intégré, bureau ; projets réels en lecture seule ; mutations couvertes sur fixtures fictives.",
+  "checks": [
+    "Reconnexion par CONNECT et accueil de deux projets de 45 tâches.",
+    "Projet importé : 45 tâches, charge 22 j-p, fin 9 décembre ; Emploi 8 résultats, AVEREO 19, TC Longages 8.",
+    "Ouverture de la fiche emploi et lecture description/checklist/risques ; fermeture sans enregistrement.",
+    "Projet principal : 45 tâches, charge 22 j-p, fin 27 novembre ; Emploi 6 résultats, TC Longages 8 ; dépendances hors filtre signalées.",
+    "Séparateur manipulé au pointeur et colonne au clavier ; largeur 460 px relue après rechargement.",
+    "Effacement des filtres, repli/dépli, retour aux projets et réouverture des deux documents.",
+    "Aucune erreur dans le relevé final de console ; huit JSON privés identiques après recette."
+  ],
+  "limits": [
+    "Aucune écriture de sujet/priorité sur les deux documents réels.",
+    "Validation métier du classement proposé et revue humaine de la PR restent attendues."
+  ]
+}

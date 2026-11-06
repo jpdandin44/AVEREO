@@ -1,0 +1,26 @@
+{
+  "observedAt": "2026-11-06T07:43:33.012920+00:00",
+  "source": "Reçus affichés dans le terminal cPanel, comparaison des fichiers et recette navigateur authentifiée.",
+  "target": "https://projet-preprod.avereo.fr",
+  "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+  "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+  "deliveredAt": "2026-11-06T07:38:31.218982+00:00",
+  "filesVerified": 16,
+  "backupVerified": true,
+  "restoreVerified": true,
+  "privateConfigUnchanged": true,
+  "privateJsonByteIdentical": true,
+  "privateJsonFiles": 8,
+  "projectCount": 2,
+  "taskCounts": [
+    45,
+    45
+  ],
+  "revisions": [
+    5,
+    1
+  ],
+  "databaseWrites": false,
+  "privateReceipts": "/home/daje3540/private/projet-sujets-79182df-20261106",
+  "productionDelivered": false
+}

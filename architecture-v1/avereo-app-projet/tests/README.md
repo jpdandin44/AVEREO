@@ -5,7 +5,7 @@ title: Recette du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,11 @@ tags:
 ---
 
 # Recette du planning local Projet
+
+## Sujets, priorités et colonnes
+
+`planning-core.test.mjs` vérifie les champs optionnels et leurs échanges JSON/CSV, les propositions non persistées et les jalons. `planning-groups.test.mjs` vérifie les filtres sans décalage des dates, les groupes non initiaux, les dépendances masquées et les largeurs hors données projet. `planning-http.py` vérifie la conservation serveur et les refus sans écriture. La recette visuelle et ses limites figurent dans [l’audit](../docs/source-audit.md).
+
 
 ## Préparation d’un import privé
 

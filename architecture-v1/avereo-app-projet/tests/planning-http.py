@@ -79,7 +79,7 @@ def run():
                 original_function = globals()['cookie']
                 globals()['cookie'] = lambda identity='1', expired=False: original_cookie if identity == '1' and not expired else original_function(identity, expired)
                 token = request()[1]['csrf']
-                project = {'schemaVersion': 1, 'name': 'Fixture complète', 'startDate': '2026-11-05', 'targetDate': None, 'capacityPerWeek': 5, 'schedulingMode': 'dependencies', 'tasks': [{'id': 'A', 'name': 'Tâche', 'duration': 1, 'progress': 0, 'dependencies': [], 'isMilestone': False, 'status': 'À faire', 'description': 'Texte conservé', 'checklist': [], 'risks': []}]}
+                project = {'schemaVersion': 1, 'name': 'Fixture complète', 'startDate': '2026-11-05', 'targetDate': None, 'capacityPerWeek': 5, 'schedulingMode': 'dependencies', 'tasks': [{'id': 'A', 'name': 'Tâche', 'duration': 1, 'progress': 0, 'dependencies': [], 'isMilestone': False, 'status': 'À faire', 'subject': 'Emploi', 'priority': 'haute', 'description': 'Texte conservé', 'checklist': [], 'risks': []}]}
                 body = {'revision': 0, 'project': project}
                 check(request('PUT', body)[0] == 403, 'CSRF absent refused')
                 check(request('PUT', body, token, origin_header='https://other.invalid')[0] == 403, 'foreign origin refused')
@@ -92,6 +92,10 @@ def run():
                 invalid = json.loads(json.dumps(project)); invalid['tasks'][0]['dependencies'] = ['A']
                 check(request('PUT', {'revision': 1, 'project': invalid}, token)[0] == 422, 'cycle refused')
                 check(request()[1]['project'] == project, 'invalid write preserves data')
+                for extra in [{'subject': ''}, {'subject': 'a' * 81}, {'subject': 12}, {'priority': 'urgente'}, {'priority': None}]:
+                    invalid = json.loads(json.dumps(project)); invalid['tasks'][0].update(extra)
+                    check(request('PUT', {'revision': 1, 'project': invalid}, token)[0] == 422, 'invalid classification refused')
+                check(request()[1]['project'] == project, 'classification rejection preserves full project')
                 changed = dict(project, name='Version deux')
                 check(request('PUT', {'revision': 1, 'project': changed}, token)[1]['revision'] == 2, 'next revision saved')
                 previous = request(path='?version=previous')[1]

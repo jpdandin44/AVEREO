@@ -5,7 +5,7 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,15 @@ tags:
 ---
 
 # Décisions de Projet
+
+## 2026-11-06 — Séparer classement, affichage et ordonnancement
+
+**Contexte.** Le regroupement P1 Revenu masque visuellement l’emploi ; les colonnes fixes tronquent les intitulés. Le responsable ne tranche pas entre candidatures et continuité des ressources.
+
+**Décision.** Conserver ordre et dates. Proposer un sujet et une priorité visibles, avec confirmation ou correction dans la fiche. Conserver les anciens documents sans ajouter implicitement de métadonnées. Enregistrer les largeurs par navigateur et garder les filtres temporaires.
+
+**Raisons et conséquences.** La priorité métier ne se confond ni avec le risque ni avec une modification de calendrier. Les propositions peuvent être erronées et restent signalées. Un reclassement explicite est sauvegardé avec la tâche ; un filtre ne modifie aucune donnée. Recharger les anciens onglets avant de saisir les nouveaux champs.
+
 
 ## 2026-11-05 — Déconnexion dans le menu de compte
 

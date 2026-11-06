@@ -5,7 +5,7 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - projet
@@ -15,11 +15,30 @@ tags:
 
 # Audit et recette du planning Projet
 
+## Sujets et colonnes — recette préproduction du 6 novembre 2026
+
+Installation autorisée du candidat `79182df`, après sauvegarde et restauration sur copie. Les 65 contrôles HTTP isolés passent avec PHP 8.3.36 sur l’hébergement. Seize fichiers livrés et vérifiés côté serveur ; neuf assets contrôlés par empreinte HTTPS. L’index anonyme redirige vers CONNECT (303), les deux API privées refusent l’accès anonyme (401, sans cache).
+
+Après reconnexion CONNECT, les deux projets de 45 tâches sont ouverts et relus, avec leurs paramètres et dates conservés. Filtres Emploi/AVEREO/TC Longages, signalement des dépendances masquées, fiche détaillée en lecture, réglage des largeurs au pointeur et au clavier, repli/dépli et persistance après rechargement vérifiés. Aucun enregistrement sur les projets réels ; huit JSON privés restent identiques à la sauvegarde, révisions 5 et 1. Aucune erreur de console dans le relevé final. Les écritures de classement sont couvertes par les fixtures HTTP et la recette locale ; elles ne sont pas présentées comme une mutation réelle du compte.
+
+[Observation de livraison](../data/preprod-sujets-colonnes/delivery-observation.json), [recette navigateur](../data/preprod-sujets-colonnes/browser-recipe.json) et [contrôles HTTPS](../data/preprod-sujets-colonnes/https-checks.json). Les captures privées restent hors dépôt public. Validation métier et acceptation humaine de la PR restent ouvertes.
+
+### Recette locale antérieure du 6 novembre 2026
+
+Écart fonctionnel : classement optionnel des tâches, suggestions visuelles, filtres après calcul du calendrier et colonnes réglables. Aucun changement des identités, routes d’authentification ou données hébergées.
+
+188 tests Node, build Vite et contrôle des 20 fichiers de livraison réussis. 65 contrôles HTTP PHP locaux sur fixtures fictives réussis : notamment conservation des nouveaux champs et refus des valeurs invalides sans écriture. Les tests couvrent JSON/CSV, dates inchangées, filtres, indices de groupes, dépendances masquées et réglages hors sauvegarde projet.
+
+Recette navigateur locale : filtre Emploi et TC Longages, résultat vide combiné, ouverture et sauvegarde du classement puis réouverture après rechargement, glissement de colonne et séparation, clavier, persistance des largeurs et repli/dépli. Aucun message d’erreur dans le relevé final de console. Le serveur statique ne fournit pas le complément documentaire du pilote ; cette indisponibilité attendue ne remplace pas une recette du serveur privé.
+
+La copie locale du planning est utilisée pour la lecture visuelle ; le fichier source privé reste inchangé et n’est pas publié. La qualification hébergée est décrite ci-dessus. Les preuves et limites sont rattachées au [suivi du lot](../data/suivi-sujets-colonnes.json).
+
+
 ## Menu de compte — recette préproduction du 5 novembre 2026
 
 Après installation autorisée des sept fichiers exacts : ouverture du menu au-dessus de Mon espace en bas à gauche, fermeture par Échap et clic extérieur, accès Préférences, puis ouverture des deux projets de 45 tâches. Le formulaire Nouvelle tâche garde Annuler et Enregistrer dégagés ; il a été annulé sans écriture. Le lien de déconnexion quitte Projet et ouvre CONNECT, dont la session d'identité reste active ; le retour à Projet fonctionne. Cela ne constitue pas une déconnexion globale de CONNECT.
 
-Toutes les empreintes JSON privées restent identiques après ces parcours, comme les quatre fichiers protégés du sas après installation. L'entrée anonyme renvoie 303 vers CONNECT ; trois assets HTTPS répondent 200 avec les empreintes du candidat. Preuves dans le [suivi canonique](../data/suivi-menu-compte.json). Recette visuelle effectuée dans le navigateur intégré sur bureau ; validation dans le navigateur habituel du responsable encore ouverte.
+Toutes les empreintes JSON privées restent identiques après ces parcours, comme les quatre fichiers protégés du sas après installation. L'entrée anonyme renvoie 303 vers CONNECT ; trois assets HTTPS répondent 200 avec les empreintes du candidat. Preuves dans le [suivi canonique](../data/suivi-menu-compte.json). Recette visuelle effectuée dans le navigateur intégré sur bureau ; bon fonctionnement confirmé ensuite par le responsable à la clôture du 5 novembre.
 
 ### Preuves locales antérieures
 

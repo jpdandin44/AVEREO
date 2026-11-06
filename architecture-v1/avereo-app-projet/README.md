@@ -5,7 +5,7 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - projet
@@ -15,16 +15,23 @@ tags:
 
 # Projet AVEREO
 
+## Sujets et colonnes — préproduction du 6 novembre 2026
+
+Filtres par sujet et priorité, repères emploi proposés, colonnes et séparation tableau/calendrier ajustables sont installés en préproduction après accord du responsable. Le [guide](docs/guide-utilisateur.md) décrit leur usage. Le [suivi canonique](data/suivi-sujets-colonnes.json) porte la version, les preuves et les accords. Les deux projets de 45 tâches ont été relus ; leurs données restent identiques à la sauvegarde. PR #112 ouverte, revue humaine attendue.
+
+PR #111 vérifiée fusionnée le 6 novembre ; les observations de clôture du 5 novembre restent historiques.
+
+
 ## Menu de compte — préproduction du 5 novembre 2026
 
-Le bouton de déconnexion flottant est supprimé de la page qui encadre le Gantt. **Mon espace**, en bas à gauche, ouvre désormais un menu vers les projets, les préférences, le compte et la déconnexion. Installé et vérifié en préproduction après accord du responsable ; les deux projets restent inchangés. PR #110 fusionnée ; recette technique hébergée réalisée, validation humaine sur la préproduction à confirmer : [suivi](data/suivi-menu-compte.json).
+Le bouton de déconnexion flottant est supprimé de la page qui encadre le Gantt. **Mon espace**, en bas à gauche, ouvre désormais un menu vers les projets, les préférences, le compte et la déconnexion. Installé et vérifié en préproduction après accord du responsable ; les deux projets restent inchangés. PR #110 fusionnée ; recette technique hébergée réalisée, menu confirmé fonctionnel par le responsable à la clôture : [suivi](data/suivi-menu-compte.json).
 
 L’import privé autorisé est terminé : nouveau dossier relu après rechargement, contenu complet identique et planning courant conservé. [Preuves du lot d’import](data/suivi-import-prive.json).
 
 
 ## Préparation d’un import privé — 5 novembre 2026
 
-Le [workflow d’import privé](workflows/import-prive.md) prépare un JSON complet pour **Importer un projet** dans Mon espace, sur la base de la PR #108. Le planning nominatif reste hors du dépôt public. Le [suivi du lot](data/suivi-import-prive.json) distingue préparation locale, import réel et livraison ; aucun import serveur effectué par ce lot.
+Le [workflow d’import privé](workflows/import-prive.md) prépare un JSON complet pour **Importer un projet** dans Mon espace, sur la base de la PR #108. Le planning nominatif reste hors du dépôt public. Le [suivi du lot](data/suivi-import-prive.json) distingue préparation locale, import réel et livraison ; import serveur désormais réalisé, selon le suivi lié.
 
 
 ## Mon espace et projets indépendants — 5 novembre 2026
@@ -32,7 +39,7 @@ Le [workflow d’import privé](workflows/import-prive.md) prépare un JSON comp
 **Livré en préproduction à 15 h 50 (Paris)**, puis vérifié dans le navigateur.
 Le planning courant de 45 tâches (révision 2) reste identique à la sauvegarde
 prise avant livraison. [PR #108](https://github.com/jpdandin44/AVEREO/pull/108)
-en attente de revue humaine, basée sur la PR #107 encore ouverte.
+fusionnée, comme la PR #107 (constat de clôture du 5 novembre).
 
 Le lot suivant ajoute l’accueil **Mon espace**, accessible par **Mes projets** ou
 par le bloc du compte en bas de la barre latérale. Création, import JSON complet,

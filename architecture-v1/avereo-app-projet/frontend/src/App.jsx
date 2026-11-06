@@ -18,7 +18,7 @@ export default function App() {
     {ReviewWorkspace && <div hidden={tab !== 'reviews'}><Suspense fallback={<p className="loading">Ouverture des revues…</p>}><ReviewWorkspace /></Suspense></div>}
     {planningOpened && <iframe
       title="Projet AVEREO Pro"
-      src="/legacy-app.html?v=menu-20261105"
+      src="/legacy-app.html?v=subjects-20261106"
       style={{
         width: '100%',
         height: import.meta.env.DEV ? 'calc(100vh - 76px)' : '100vh',

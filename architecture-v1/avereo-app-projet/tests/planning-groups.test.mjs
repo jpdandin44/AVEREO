@@ -12,7 +12,7 @@ function browser() {
     const elements = new Map();
     const storage = new Map();
     const element = () => ({
-        innerHTML: '', textContent: '', style: {}, value: '',
+        innerHTML: '', textContent: '', style: { setProperty(key, value) { this[key] = value; } }, setAttribute(key, value) { this[key] = value; }, value: '',
         addEventListener() {}, focus() {}, querySelector() { return null; },
         classList: { add() {}, remove() {} }, showModal() { this.open = true; }, close() { this.open = false; }
     });
@@ -82,7 +82,7 @@ test('expand/collapse all and zoom keep both panes consistent without changing t
     ui.run('setPlanningGroupsExpanded(true); togglePlanningGroup(99)');
     assert.equal((ui.get('planning-table-body').innerHTML.match(/data-task-id=/g) || []).length, 3);
     assert.equal(ui.run('ProjetPlanning.encodeProject(currentProject())'), before);
-    assert.equal(ui.get('gantt-master-container').style.width, `${480 + ui.run('state.totalDays') * 10}px`);
+    assert.equal(ui.get('gantt-master-container').style.width, `${576 + ui.run('state.totalDays') * 10}px`);
 });
 
 test('summary span and progress cover the tasks even when the project is collapsed', () => {
@@ -180,4 +180,54 @@ test('day rollover refresh is read-only and waits while a gesture is active', ()
     assert.equal(ui.run('ProjetPlanning.encodeProject(currentProject())'), before);
     assert.equal(ui.saved(), saved);
     assert.match(html, /\.gantt-today-line[^}]*pointer-events: none/);
+});
+
+
+test('subject filter retains global dates, data and saved state and warns about hidden predecessors', () => {
+    const ui = browser();
+    ui.run("tasks[0].subject = 'AVEREO'; tasks[1].subject = 'Emploi'; tasks[1].priority = 'haute'; refreshAll()");
+    const before = ui.run('ProjetPlanning.encodeProject(currentProject())');
+    const saved = ui.saved();
+    const dates = ui.run('JSON.stringify(tasks.map(t => [t.id, t.calcStart, t.calcEnd]))');
+    ui.get('planning-subject').value = 'Emploi';
+    ui.run('setPlanningFilter()');
+    assert.match(ui.get('planning-table-body').innerHTML, /data-task-id="B"/);
+    assert.doesNotMatch(ui.get('planning-table-body').innerHTML, /data-task-id="[AC]"/);
+    assert.match(ui.get('planning-gantt-body').innerHTML, /data-task-id="B"/);
+    assert.match(ui.get('planning-filter-status').textContent, /1 dépendance/);
+    assert.match(ui.get('planning-table-body').innerHTML, /priority-high/);
+    assert.equal(ui.run('JSON.stringify(tasks.map(t => [t.id, t.calcStart, t.calcEnd]))'), dates);
+    ui.run("requestPlanningReorder('task', 'A', 'B', true); requestPlanningDates('lot', 0, 1)");
+    assert.equal(ui.run('pendingPlanningChange'), null);
+    assert.equal(ui.run('ProjetPlanning.encodeProject(currentProject())'), before);
+    assert.equal(ui.saved(), saved);
+    ui.run('resetPlanningFilters()');
+    assert.equal((ui.get('planning-table-body').innerHTML.match(/data-task-id=/g) || []).length, 3);
+});
+
+test('filtering a later group preserves its original collapse index and empty state', () => {
+    const ui = browser();
+    ui.run("tasks[2].subject = 'TC Longages'; refreshAll()");
+    ui.get('planning-subject').value = 'TC Longages'; ui.run('setPlanningFilter()');
+    assert.match(ui.get('planning-table-body').innerHTML, /planning-lot-1/);
+    ui.run('togglePlanningGroup(1)');
+    assert.doesNotMatch(ui.get('planning-gantt-body').innerHTML, /data-task-id=/);
+    ui.get('planning-subject').value = 'Sans résultat'; ui.run('setPlanningFilter()');
+    assert.match(ui.get('planning-table-body').innerHTML, /Aucune tâche/);
+    assert.equal(ui.get('planning-gantt-body').innerHTML, '');
+});
+
+test('column widths change the shared origin and persist only view settings with bounds and reset', () => {
+    const ui = browser();
+    const before = ui.run('ProjetPlanning.encodeProject(currentProject())');
+    ui.run("setPlanningColumn('task', 600, true); setZoom('weeks')");
+    assert.equal(ui.get('gantt-master-container').style['--table-width'], '896px');
+    assert.equal(ui.get('gantt-master-container').style.width, `${896 + ui.run('state.totalDays') * 10}px`);
+    ui.run("setPlanningColumn('task', -20); setPlanningColumn('status', 9999)");
+    assert.equal(ui.run('planningColumns.task'), 160);
+    assert.equal(ui.run('planningColumns.status'), 240);
+    ui.run('resetPlanningColumns()');
+    assert.equal(ui.get('gantt-master-container').style['--table-width'], '576px');
+    assert.equal(ui.run('ProjetPlanning.encodeProject(currentProject())'), before);
+    assert.match(ui.saved(), /avereo.projet.columns.v1/);
 });

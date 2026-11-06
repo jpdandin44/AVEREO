@@ -5,12 +5,19 @@ title: Sauvegarde privee du planning
 status: active
 version: git
 created: 2026-11-05
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags: [projet, api, stockage]
 ---
 
 # Contrat de sauvegarde privée
+
+## Métadonnées optionnelles de classement — 6 novembre 2026
+
+Dans chaque tâche, `subject` est un texte non vide de 80 caractères maximum et `priority` vaut `haute`, `normale` ou `basse`. Chaque champ peut être absent ; `null` et les valeurs invalides sont refusés (422). Le schéma reste en version 1. Les anciennes tâches sans ces clés sont conservées ainsi ; les suggestions visuelles ne sont pas envoyées automatiquement.
+
+Ces champs suivent le document complet et ses révisions existantes, sans nouvelle route, migration ou modification des droits. Les filtres et largeurs ne sont pas des données serveur. Recharger les anciens onglets avant de confirmer un classement : un ancien client ne garantit pas la conservation de ces nouvelles clés à la réécriture. Qualifier cette extension sur le candidat exact avant toute installation.
+
 
 ## Extension catalogue et préférences du compte
 

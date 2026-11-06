@@ -1,0 +1,69 @@
+{
+  "observedAt": "2026-11-06T07:40:31.770190+00:00",
+  "checks": [
+    {
+      "file": "legacy-app.html",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "planning-core.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "planning-local.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "task-details.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "planning-online.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "project-workspace.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "project-workspace.css",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "assets/index-BrElMX-g.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "assets/index-BRgM2m8J.css",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "index.html",
+      "status": 303,
+      "expectedRefusal": true,
+      "cacheControl": "no-store"
+    },
+    {
+      "file": "api/planning.php",
+      "status": 401,
+      "expectedRefusal": true,
+      "cacheControl": "no-store, private"
+    },
+    {
+      "file": "api/workspace.php",
+      "status": 401,
+      "expectedRefusal": true,
+      "cacheControl": "no-store, private"
+    }
+  ],
+  "note": "index.html protégé : redirection 303, empreinte vérifiée côté serveur et non sur le contenu de la page de connexion."
+}

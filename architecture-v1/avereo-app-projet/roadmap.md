@@ -5,7 +5,7 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - projet
@@ -14,21 +14,53 @@ tags:
 
 # Feuille de route de Projet
 
+## Reprise du 6 novembre — candidat sujets et colonnes
+
+PR #111 constatée fusionnée à 07:04:20 UTC, commit `4d2f7ff`. La branche reprend cette base. Le responsable ne choisit pas un nouvel ordre ; conserver l’ordre et les dates, rendre l’emploi visible puis revoir les priorités si nécessaire.
+
+| Phase | État |
+| --- | --- |
+| Cadrage | Périmètre fixé : classement explicite ou proposé, filtres temporaires, largeurs par navigateur. |
+| Développement local | Implémenté et testé ; candidat et PR dans le suivi canonique. |
+| Préproduction | Installé le 6 novembre après accord, sauvegarde et restauration sur copie ; deux projets vérifiés, données identiques. Revue humaine attendue. |
+| Mise en production | Non autorisée ; contrôles après livraison, récupération et prochaine itération à préparer après acceptation. |
+
+[Suivi canonique](data/suivi-sujets-colonnes.json). Le relevé ci-dessous conserve la situation de clôture historique, désormais dépassée par cette reprise.
+
+## Reprise après clôture du 5 novembre — sujets et lisibilité
+
+Le responsable confirme que le menu fonctionne bien dans son usage. La validation du menu en préproduction est acquise ; aucune validation de l’ordonnancement métier n’en découle. PR #111 annoncée fusionnée par le responsable mais encore ouverte lors du contrôle GitHub de clôture : quatre cases non cochées, tests techniques réussis. Vérifier cet écart à la reprise sans cocher à sa place.
+
+Prochain lot demandé, uniquement consigné à ce stade :
+
+1. **Priorité emploi visible** : dissocier le sujet et la priorité du lot. Rendre la recherche d’emploi immédiatement identifiable ; revoir avec le responsable l’ordre des actions de continuité des ressources et de candidatures. Une priorité métier ne doit pas être déduite de la criticité du risque ou du statut.
+2. **Filtres par sujet** : Tous, Emploi, AVEREO, TC Longages, avec extension possible. Le filtre masque l’affichage, sans recalculer les dates ou supprimer les tâches masquées. Afficher le nombre de résultats et signaler les dépendances vers des tâches masquées. Définir le classement des actions transversales ; ne pas le déduire définitivement des identifiants historiques.
+3. **Colonnes ajustables** : élargir la zone Tâche et déplacer la séparation tableau/calendrier, avec commande clavier, largeur minimale et remise à zéro. Garder l’alignement des lignes, le défilement, les barres et le repère du jour. Prévoir un accès lisible au titre complet et à la description ; le clic sur la tâche ouvre déjà sa fiche.
+
+| Phase | Prochaine étape |
+| --- | --- |
+| Cadrage | Confirmer les sujets et l’ordre emploi/continuité ; fixer le périmètre de mémorisation des largeurs et des filtres. |
+| Développement local | Implémenter sur une nouvelle branche ; adapter modèle, validation frontend/PHP, sauvegarde et import/export si des champs sont ajoutés ; vérifier la rétrocompatibilité. |
+| Préproduction | Préparer le candidat et sa sauvegarde, obtenir l’accord propre à ce lot puis vérifier filtres, colonnes et conservation des deux projets. |
+| Mise en production | Décision distincte non acquise ; prévoir contrôles après livraison, récupération et suite de l’itération. |
+
+Aucun code ni planning réel modifié pour ces demandes. Les mises à jour de clôture restent locales, non commitées et non publiées ; les intégrer dans un lot documentaire à la reprise sans réécrire une PR fusionnée.
+
+
 ## Menu de compte et import privé
 
-Import indépendant effectué et vérifié en préproduction : [suivi](data/suivi-import-prive.json). La correction du bouton flottant suit les quatre phases dans le [suivi du menu](data/suivi-menu-compte.json) : candidat installé et vérifié en préproduction, PR #110 fusionnée et recette technique hébergée réalisée, validation humaine sur la préproduction à confirmer, aucune production engagée.
+Import indépendant effectué et vérifié en préproduction : [suivi](data/suivi-import-prive.json). La correction du bouton flottant suit les quatre phases dans le [suivi du menu](data/suivi-menu-compte.json) : candidat installé et vérifié en préproduction, PR #110 fusionnée et recette technique hébergée réalisée, menu confirmé fonctionnel par le responsable à la clôture, aucune production engagée.
 
 
 ## Itération préparée — import privé
 
-Le [suivi de l’import privé](data/suivi-import-prive.json) complète les suivis existants. Cadrage : base Mon espace #108. Développement local : paquet hors dépôt, contrôles et PR. Préproduction : import réel et recette à autoriser sur le compte cible. Mise en production : décision ultérieure distincte, avec contrôles après livraison et suivi du planning.
+Le [suivi de l’import privé](data/suivi-import-prive.json) complète les suivis existants. Cadrage : base Mon espace #108. Développement local : paquet hors dépôt, contrôles et PR. Préproduction : import autorisé et vérifié le 5 novembre ; contenu conservé dans un nouveau projet. Mise en production : décision ultérieure distincte, avec contrôles après livraison et suivi du planning.
 
 
 ## Itération courante — Mon espace
 
 **Livré et vérifié en préproduction le 5 novembre à 15 h 50.** Le responsable peut
-retrouver le Gantt et créer ses dossiers indépendants. La revue humaine des PR
-#107 puis #108 reste à faire.
+retrouver le Gantt et créer ses dossiers indépendants. Les PR #107 et #108 sont constatées fusionnées le 5 novembre à la clôture.
 
 Le [suivi de l’espace projets](data/suivi-espace-projets.json) est la source de
 l’étape, du candidat et de la livraison. Cadrage et développement local couvrent
