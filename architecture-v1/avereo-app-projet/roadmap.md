@@ -22,7 +22,7 @@ PR #111 constatée fusionnée à 07:04:20 UTC, commit `4d2f7ff`. La branche repr
 | --- | --- |
 | Cadrage | Périmètre fixé : classement explicite ou proposé, filtres temporaires, largeurs par navigateur. |
 | Développement local | Implémenté et testé ; candidat et PR dans le suivi canonique. |
-| Préproduction | Non livré ; accord propre au nouveau candidat, sauvegarde fraîche et recette des deux projets requis. |
+| Préproduction | Installé le 6 novembre après accord, sauvegarde et restauration sur copie ; deux projets vérifiés, données identiques. Revue humaine attendue. |
 | Mise en production | Non autorisée ; contrôles après livraison, récupération et prochaine itération à préparer après acceptation. |
 
 [Suivi canonique](data/suivi-sujets-colonnes.json). Le relevé ci-dessous conserve la situation de clôture historique, désormais dépassée par cette reprise.

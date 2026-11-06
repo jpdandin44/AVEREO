@@ -19,7 +19,7 @@ tags:
 Rendre la priorité emploi visible ; filtrer les actions par sujet (notamment Emploi, AVEREO et TC Longages) ; permettre d’agrandir les colonnes et la zone des intitulés. Distinguer sujet, lot, priorité métier, état d’avancement et risque. Préserver dates, dépendances, identifiants, checklists, risques et contenu complet lors des filtres, de la sauvegarde et des échanges. Les critères de reprise et inconnues sont conservés dans la [roadmap](roadmap.md#reprise-après-clôture-du-5-novembre--sujets-et-lisibilité).
 
 
-Implémentation locale : filtres temporaires, classement optionnel explicite, propositions signalées et largeurs mémorisées par navigateur. Ordre et dates conservés ; recette hébergée encore requise. [Suivi](data/suivi-sujets-colonnes.json).
+Implémentation locale : filtres temporaires, classement optionnel explicite, propositions signalées et largeurs mémorisées par navigateur. Ordre et dates conservés ; recette hébergée technique réalisée le 6 novembre, validation métier attendue. [Suivi](data/suivi-sujets-colonnes.json).
 
 ## Menu de compte — correction demandée le 5 novembre 2026
 

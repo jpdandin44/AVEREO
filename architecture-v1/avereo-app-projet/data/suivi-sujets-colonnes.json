@@ -5,8 +5,8 @@
   "project": "avereo-app-projet",
   "owner": "jpdandin",
   "kind": "application",
-  "stage": "developpement_local",
-  "status": "ready_for_review",
+  "stage": "preproduction",
+  "status": "delivered_awaiting_user_review",
   "objective": "Sujets, priorité métier visible et colonnes ajustables sans changement implicite du planning",
   "phases": [
     "Cadrage",
@@ -43,10 +43,11 @@
     },
     "preproduction": {
       "id": "https://projet-preprod.avereo.fr",
-      "ready": false,
+      "ready": true,
       "isolated": true,
       "empty": false,
-      "evidence": "Cible existante ; sauvegarde fraîche du nouveau lot à préparer."
+      "evidence": "/home/daje3540/private/projet-sujets-79182df-20261106/prepare-receipt.json : identité cPanel/documentroot vérifiée par installateur ; cible existante isolée, sauvegarde et restauration code/données validées.",
+      "observedAt": "2026-11-06T07:37:27.566124+00:00"
     },
     "production": {
       "ready": false
@@ -113,25 +114,74 @@
       "kind": "ci",
       "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
       "observedAt": "2026-11-06T07:29:57.225999+00:00"
+    },
+    {
+      "kind": "local",
+      "id": "hosted-fixtures",
+      "status": "passed",
+      "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+      "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+      "observedAt": "2026-11-06T07:38:24.471133+00:00",
+      "evidence": "/home/daje3540/private/projet-sujets-79182df-20261106/qualification.log : 65 contrôles HTTP sur données fictives, PHP 8.3.36, avant installation."
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed",
+      "target": "https://projet-preprod.avereo.fr",
+      "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+      "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+      "observedAt": "2026-11-06T07:43:33.012920+00:00",
+      "evidence": "data/preprod-sujets-colonnes/browser-recipe.json et https-checks.json ; deux projets de 45 tâches, huit JSON privés identiques."
     }
   ],
-  "approvals": [],
-  "backups": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "target": "https://projet-preprod.avereo.fr",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+      "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+      "recordedAt": "2026-11-06T07:35:37.902109+00:00",
+      "evidence": "Oui, tu peux installer le candidat de la PR #112 en préproduction après sauvegarde et vérification de restauration, puis vérifier les deux projets stp."
+    }
+  ],
+  "backups": [
+    {
+      "target": "https://projet-preprod.avereo.fr",
+      "id": "projet-sujets-79182df-20261106",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-06T07:37:27.566124+00:00",
+      "evidence": "/home/daje3540/private/projet-sujets-79182df-20261106/prepare-receipt.json et workspace-recovery.json ; installation et retour arrière sur copie du site, données privées copiées et restaurées à empreintes identiques."
+    }
+  ],
   "rollback": {
-    "status": "not_tested"
+    "status": "tested_on_copy",
+    "evidence": "Installateur de retour arrière vérifié sur copie ; récupération code uniquement, conservation des données reçues après livraison."
   },
   "delivery": {
-    "status": "not_delivered"
+    "status": "delivered",
+    "target": "https://projet-preprod.avereo.fr",
+    "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+    "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+    "deliveredAt": "2026-11-06T07:38:31.218982+00:00",
+    "observedAt": "2026-11-06T07:43:33.012920+00:00",
+    "evidence": "data/preprod-sujets-colonnes/delivery-observation.json",
+    "files": 16,
+    "privateDataUnchanged": true
   },
-  "blockers": [
-    "Accord de préproduction de ce candidat non acquis ; sauvegarde fraîche et restauration sur copie à refaire sur la cible avant installation."
+  "blockers": [],
+  "nextAction": "Revue humaine de la PR #112 et du candidat installé en préproduction ; aucune autorisation de merge ou production.",
+  "nextIteration": [
+    "Confirmer ou corriger les sujets et priorités proposés après usage.",
+    "Décider séparément d’un éventuel changement de l’ordre emploi/continuité."
   ],
-  "nextAction": "Revue locale PR #112, puis accord de préproduction pour ce candidat ; aucune autorisation de merge ou production.",
-  "nextIteration": [],
   "decisions": [
     "Classement ancien proposé, jamais enregistré implicitement.",
     "Largeurs mémorisées par navigateur ; filtres en mémoire.",
     "Responsable indécis sur un nouvel ordre ; ordre et dates conservés, priorité emploi rendue visible sans réordonnancement."
   ],
-  "observedAt": "2026-11-06T07:29:57.225999+00:00"
+  "observedAt": "2026-11-06T07:43:33.012920+00:00"
 }

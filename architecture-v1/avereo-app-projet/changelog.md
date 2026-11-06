@@ -14,6 +14,10 @@ tags:
 
 # Changelog de Projet
 
+## 2026-11-06 — Sujets et colonnes installés en préproduction
+
+Installation autorisée, sauvegarde et restauration sur copie vérifiées, 65 contrôles HTTP sur fixtures hébergées réussis. Deux projets relus ; huit JSON privés identiques. [Preuves](data/preprod-sujets-colonnes/delivery-observation.json). PR #112 reste ouverte pour revue humaine ; aucune production engagée.
+
 ## 2026-11-06 — Sujets, priorité visible et colonnes ajustables, candidat local
 
 - Filtrer le Gantt par sujet et priorité, avec compteur et avertissement de dépendances masquées.

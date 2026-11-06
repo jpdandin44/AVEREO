@@ -20,7 +20,7 @@ Une ligne ambrée et **★ Haute** signalent une priorité haute. Un **?** indiq
 
 Glisser les séparateurs des en-têtes pour élargir les colonnes, ou la séparation bleue avec le calendrier pour agrandir la zone des tâches. Au clavier : Tab jusqu’au séparateur, flèches gauche/droite ; Début/Fin atteignent les limites. Échap annule le glissement en cours. **Réinitialiser les colonnes** restaure les largeurs initiales. Elles sont conservées dans ce navigateur ; les filtres sont temporaires.
 
-Le titre complet apparaît au survol ; cliquer sur son bouton ouvre la description et les actions. Pour réordonner ou déplacer un lot entier, effacer d’abord les filtres. Recharger les anciens onglets avant d’utiliser les nouveaux champs. Ce candidat doit encore être installé et vérifié en préproduction.
+Le titre complet apparaît au survol ; cliquer sur son bouton ouvre la description et les actions. Pour réordonner ou déplacer un lot entier, effacer d’abord les filtres. Recharger les anciens onglets avant d’utiliser les nouveaux champs. Ce candidat est installé et vérifié en préproduction depuis le 6 novembre ; sa revue humaine reste attendue.
 
 
 ## Retrouver ses projets depuis le compte

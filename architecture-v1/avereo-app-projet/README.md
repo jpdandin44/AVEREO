@@ -15,9 +15,9 @@ tags:
 
 # Projet AVEREO
 
-## Sujets et colonnes — candidat local du 6 novembre 2026
+## Sujets et colonnes — préproduction du 6 novembre 2026
 
-Filtres par sujet et priorité, repères emploi proposés, colonnes et séparation tableau/calendrier ajustables sont disponibles dans le candidat local. Le [guide](docs/guide-utilisateur.md) décrit leur usage. Le [suivi canonique](data/suivi-sujets-colonnes.json) porte la version, les preuves et les accords. Aucun déploiement de ce lot à ce stade.
+Filtres par sujet et priorité, repères emploi proposés, colonnes et séparation tableau/calendrier ajustables sont installés en préproduction après accord du responsable. Le [guide](docs/guide-utilisateur.md) décrit leur usage. Le [suivi canonique](data/suivi-sujets-colonnes.json) porte la version, les preuves et les accords. Les deux projets de 45 tâches ont été relus ; leurs données restent identiques à la sauvegarde. PR #112 ouverte, revue humaine attendue.
 
 PR #111 vérifiée fusionnée le 6 novembre ; les observations de clôture du 5 novembre restent historiques.
 

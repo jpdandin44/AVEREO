@@ -15,9 +15,9 @@ tags:
 
 # Prévisualisation et publication de Projet
 
-## Sujets et colonnes — préparation locale du 6 novembre 2026
+## Sujets et colonnes — livré en préproduction le 6 novembre 2026
 
-Candidat non déployé, suivi dans [la fiche du lot](../data/suivi-sujets-colonnes.json). Réutiliser `prepare-preprod-workspace.py` après build et commit propre : ses 16 fichiers couvrent le moteur, l’interface, la validation PHP et le wrapper compilé. Il préserve notamment `index.php` et le sas ; le menu déjà livré reste conservé. Le paquet ne contient aucune donnée utilisateur.
+Candidat `79182df` installé à 08 h 38 Paris après accord, sauvegarde fraîche et restauration sur copie. Seize fichiers vérifiés, huit JSON privés identiques après recette des deux projets. Reçus privés : `/home/daje3540/private/projet-sujets-79182df-20261106`. Les [preuves](../data/preprod-sujets-colonnes/delivery-observation.json) sont rattachées à [la fiche du lot](../data/suivi-sujets-colonnes.json). Réutiliser `prepare-preprod-workspace.py` après build et commit propre : ses 16 fichiers couvrent le moteur, l’interface, la validation PHP et le wrapper compilé. Il préserve notamment `index.php` et le sas ; le menu déjà livré reste conservé. Le paquet ne contient aucune donnée utilisateur.
 
 Avant installation : accord sur ce candidat et `https://projet-preprod.avereo.fr`, sauvegarde fraîche des fichiers et documents privés, restauration sur copie vérifiée, contrôle du passage et qualification PHP sur fixtures. Après installation : empreintes des assets et fichiers protégés, refus API anonyme, ouverture des deux projets en lecture, filtres et colonnes, comparaison des JSON privés avant/après. Fermer/recharger les anciens onglets avant toute édition des nouveaux champs. Aucun accord de production acquis.
 
