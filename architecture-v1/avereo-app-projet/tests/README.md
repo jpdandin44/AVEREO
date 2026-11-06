@@ -14,6 +14,13 @@ tags:
 
 # Recette du planning local Projet
 
+## Interface simple et vues longues
+
+`task-details.test.mjs` vérifie section simple/statut distincts, preuve historique et date masquée conservées, invalidation d’une vérification après édition, résultats multiples et abandon de brouillon. `planning-groups.test.mjs` vérifie recherche descriptive sans accents, filtre de statut, données inchangées, alignement des densités et périodes réelles (février 2028, années de 365/366 jours, rendu borné). Les tests historiques de gestes restent exécutés.
+
+`python tests/planning-http.py` couvre aussi les nouvelles préférences via `workspace_http.py` : persistance, ancien client, ancien catalogue non réécrit, valeurs invalides et planning inchangé. Les [observations locales](../docs/source-audit.md) distinguent cette preuve des futurs contrôles hébergés.
+
+
 ## Sujets, priorités et colonnes
 
 `planning-core.test.mjs` vérifie les champs optionnels et leurs échanges JSON/CSV, les propositions non persistées et les jalons. `planning-groups.test.mjs` vérifie les filtres sans décalage des dates, les groupes non initiaux, les dépendances masquées et les largeurs hors données projet. `planning-http.py` vérifie la conservation serveur et les refus sans écriture. La recette visuelle et ses limites figurent dans [l’audit](../docs/source-audit.md).

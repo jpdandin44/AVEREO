@@ -14,6 +14,15 @@ tags:
 
 # Décisions de Projet
 
+## 2026-11-06 — Réutiliser les résultats existants et rendre la vérification optionnelle
+
+**Contexte.** Le responsable approuve la simplification de la fiche et du planning après la PR #112.
+
+**Décision.** Conserver le schéma du planning : une entrée de checklist correspond à un résultat cochable. Une section réalisée n’est pas une vérification humaine et ne termine pas la tâche. La vérification complémentaire et la saisie de date contrainte sont des préférences d’affichage, désactivées par défaut. Les preuves, dates actives et textes historiques restent conservés.
+
+**Raisons et conséquences.** Éviter une migration inutile, préserver les échanges JSON et garder une action explicite pour la vérification. Les cellules de calendrier sont agrégées par période réelle, avec la borne existante de 3 660 jours. Le retour arrière après enregistrement de nouvelles préférences requiert un lecteur compatible ; ne pas restaurer un ancien catalogue complet qui écraserait les projets créés depuis.
+
+
 ## 2026-11-06 — Séparer classement, affichage et ordonnancement
 
 **Contexte.** Le regroupement P1 Revenu masque visuellement l’emploi ; les colonnes fixes tronquent les intitulés. Le responsable ne tranche pas entre candidatures et continuité des ressources.

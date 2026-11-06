@@ -1,0 +1,72 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-interface-simple-20261106",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "stage": "developpement_local",
+  "status": "local_candidate_for_review",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "objective": "Simplifier les fiches et le planning, rendre la vérification optionnelle et proposer Mois/Années.",
+  "sourceDocument": "docs/proposition-interface-simple.md",
+  "baseSha": "944ec598c6f9444bc3a57cc1ce9679958cf823d0",
+  "decisions": [
+    {
+      "source": "user_chat",
+      "text": "Le champ facultatif confirmé est Ne pas démarrer avant ; proposer son affichage par préférence sans perdre les dates."
+    },
+    {
+      "source": "user_chat",
+      "text": "OK, tu peux poursuivre : accord de développement local de la proposition ; aucune autorisation de livraison nouvelle."
+    },
+    {
+      "source": "implementation",
+      "text": "Réutiliser une entrée checklist par résultat et les états completed/validated existants ; aucun changement de schéma ni découpage automatique des textes."
+    }
+  ],
+  "candidate": null,
+  "approvals": [],
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "nextAction": "Revue locale du candidat et de la PR ; préproduction après accord exact et sauvegarde/restauration fraîche.",
+  "observedAt": "2026-11-06T08:58:18.541326+00:00",
+  "branch": "feat/projet-interface-simple-20261106",
+  "checks": [
+    {
+      "kind": "local",
+      "status": "passed",
+      "evidence": "196 tests Node ; build Vite ; 20 fichiers de livraison contrôlés."
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "evidence": "74 contrôles HTTP PHP isolés avec données et identités fictives."
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "evidence": "Navigateur : résultats simples/avancés, sauvegarde/réouverture, recherche, préférences persistées, vues Mois/Années, fiche et défilement mobile 390x844."
+    }
+  ],
+  "reviewEnvironment": {
+    "kind": "local",
+    "url": "http://127.0.0.1:52866/legacy-app.html",
+    "data": "Exemple fictif ; aucun projet réel modifié."
+  },
+  "environment": {
+    "kind": "preproduction",
+    "url": "https://projet-preprod.avereo.fr",
+    "status": "not_installed"
+  },
+  "risks": [
+    "Retour à un ancien lecteur PHP incompatible après mémorisation de months/years : lecteur compatible ou conversion ciblée autorisée nécessaire, sans restaurer tout le catalogue.",
+    "Recette des deux projets réels et validation humaine à réaliser avant livraison.",
+    "Publications automatiques cPanel et Pages en échec après #112, suivies séparément."
+  ]
+}

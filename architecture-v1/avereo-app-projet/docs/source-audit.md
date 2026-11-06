@@ -15,13 +15,24 @@ tags:
 
 # Audit et recette du planning Projet
 
+## Interface simple — recette locale du 6 novembre 2026
+
+Écarts autorisés : résultats cochables sur les entrées existantes, vérification/date contrainte optionnelles, simplification de l’en-tête et des fiches, recherche, colonnes secondaires, densité, Mois/Années et navigation temporelle. Le moteur de dates et le schéma de planning sont conservés. Aucun secret, droit CONNECT ou document hébergé modifié.
+
+Contrôles : 196 tests Node, build Vite et vérification des 20 fichiers de livraison ; 74 contrôles HTTP PHP isolés avec identités et données fictives. Les validations finales et le candidat exact sont rattachés au [suivi canonique](../data/suivi-interface-simple.json).
+
+Navigateur local, exemple fictif de cinq tâches 2026–2028 : cocher puis sauvegarder/réouvrir, section simple validée sans changement du statut, activer la vérification et conserver une preuve après rechargement, préférences locales persistées, recherche, vue annuelle, fiche en 390 × 844 et défilement horizontal mobile vers le calendrier. Le serveur Vite assure les ressources locales ; les erreurs 404 initiales du serveur statique ont disparu après son remplacement par Vite. La recette PHP prouve la persistance des préférences par requêtes indépendantes, pas une connexion au compte réel depuis deux navigateurs.
+
+Limites : validation humaine, recette des deux projets réels et sauvegarde/restauration fraîche sur l’hébergement encore à réaliser. Les publications automatiques en échec après #112 restent suivies séparément. La borne existante de 3 660 jours reste en place ; les petits segments sont surtout lisibles via leur fiche ou une échelle plus détaillée.
+
+
 ## Sujets et colonnes — recette préproduction du 6 novembre 2026
 
 Installation autorisée du candidat `79182df`, après sauvegarde et restauration sur copie. Les 65 contrôles HTTP isolés passent avec PHP 8.3.36 sur l’hébergement. Seize fichiers livrés et vérifiés côté serveur ; neuf assets contrôlés par empreinte HTTPS. L’index anonyme redirige vers CONNECT (303), les deux API privées refusent l’accès anonyme (401, sans cache).
 
 Après reconnexion CONNECT, les deux projets de 45 tâches sont ouverts et relus, avec leurs paramètres et dates conservés. Filtres Emploi/AVEREO/TC Longages, signalement des dépendances masquées, fiche détaillée en lecture, réglage des largeurs au pointeur et au clavier, repli/dépli et persistance après rechargement vérifiés. Aucun enregistrement sur les projets réels ; huit JSON privés restent identiques à la sauvegarde, révisions 5 et 1. Aucune erreur de console dans le relevé final. Les écritures de classement sont couvertes par les fixtures HTTP et la recette locale ; elles ne sont pas présentées comme une mutation réelle du compte.
 
-[Observation de livraison](../data/preprod-sujets-colonnes/delivery-observation.json), [recette navigateur](../data/preprod-sujets-colonnes/browser-recipe.json) et [contrôles HTTPS](../data/preprod-sujets-colonnes/https-checks.json). Les captures privées restent hors dépôt public. Validation métier et acceptation humaine de la PR restent ouvertes.
+[Observation de livraison](../data/preprod-sujets-colonnes/delivery-observation.json), [recette navigateur](../data/preprod-sujets-colonnes/browser-recipe.json) et [contrôles HTTPS](../data/preprod-sujets-colonnes/https-checks.json). Les captures privées restent hors dépôt public. Le responsable a ensuite confirmé le fonctionnement des filtres et colonnes ; les quatre cases humaines et le merge #112 sont vérifiés le 6 novembre. Les classements proposés restent à confirmer dans les tâches.
 
 ### Recette locale antérieure du 6 novembre 2026
 
