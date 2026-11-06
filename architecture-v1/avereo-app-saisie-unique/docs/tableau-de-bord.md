@@ -5,7 +5,7 @@ title: AVEREO – Saisie unique
 status: active
 version: git
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-06
 owner: jpdandin
 tags: [suivi, saisie-unique, genere]
 ---
@@ -16,7 +16,7 @@ Vue générée depuis `suivi-chantier.json`. Ne pas modifier manuellement.
 La revue et les décisions se font dans [Projet local](http://127.0.0.1:5191/).
 
 <!-- BEGIN GENERATED: suivi-chantier.json -->
-Mise à jour : **2026-10-21**. **0 phase livrée sur 4 ; 0 phase validée par le responsable.**
+Mise à jour : **2026-11-06**. **0 phase livrée sur 4 ; 0 phase validée par le responsable.**
 
 | Phase | Statut | Livrables | Livraison | Validation humaine |
 |---|---|---|---|---|
@@ -108,7 +108,7 @@ Ouverture du chantier dans AVEREO Projet avec start-review.cmd, réglages locaux
 
 ### Phase 1 — Développement local
 
-**Développement local** — Prévu — document non produit (`01-developpement-local.md`).
+**Développement local** — Document disponible (`01-developpement-local.md`).
 
 Résultat de npm ci, npm test et npm run build, matrice de traçabilité mise à jour, choix techniques et tableau de recette locale R01….
 

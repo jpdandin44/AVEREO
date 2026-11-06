@@ -5,7 +5,7 @@
   "owner": "jpdandin",
   "version": "git",
   "created": "2026-10-21",
-  "updated": "2026-10-21",
+  "updated": "2026-11-06",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -92,10 +92,13 @@
         "url": "https://github.com/jpdandin44/AVEREO/pull/88",
         "repository": "jpdandin44/AVEREO",
         "number": 88,
-        "state": "open",
-        "headSha": "17d54729c1b50a9cb121df20bdd35322d0d99295",
-        "observedAt": "2026-10-21T09:46:30.000Z",
-        "draft": false
+        "state": "merged",
+        "headSha": "0d357021c2db2566faa7883b6fff391423a22d8e",
+        "observedAt": "2026-11-06T08:36:05.000Z",
+        "draft": false,
+        "mergedAt": "2026-11-02T18:23:53.000Z",
+        "mergeCommitSha": "07f7a389a503ca58a7f5efa127c56d8569d8cd98",
+        "mergedBy": "jpdandinavereo-design"
       },
       "validationEvidence": null
     },
@@ -133,7 +136,15 @@
         "La description de la PR passe check-pr-policy.py avec --allow-unchecked."
       ],
       "nextAction": "Phase non démarrée dans le suivi.",
-      "pullRequest": null,
+      "pullRequest": {
+        "url": "https://github.com/jpdandin44/AVEREO/pull/113",
+        "repository": "jpdandin44/AVEREO",
+        "number": 113,
+        "state": "open",
+        "headSha": "dd0b949afe6b4db74db07577feffe4c2197d5284",
+        "observedAt": "2026-11-06T08:36:05.000Z",
+        "draft": false
+      },
       "validationEvidence": null
     },
     {
@@ -212,6 +223,18 @@
     {
       "date": "2026-10-21",
       "event": "PR de la phase 0 constatée : https://github.com/jpdandin44/AVEREO/pull/88."
+    },
+    {
+      "date": "2026-11-02",
+      "event": "PR de la phase 0 fusionnée par le responsable : https://github.com/jpdandin44/AVEREO/pull/88."
+    },
+    {
+      "date": "2026-11-06",
+      "event": "Application AVEREO UNI (lots L1 à L6) versée dans frontend/ sur feu vert explicite du responsable, sans événement « start » de la phase 1 dans le suivi ; les événements de revue restent à enregistrer par le responsable dans AVEREO Projet."
+    },
+    {
+      "date": "2026-11-06",
+      "event": "PR de la phase 1 constatée : https://github.com/jpdandin44/AVEREO/pull/113."
     }
   ],
   "reviewEvents": [],

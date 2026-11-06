@@ -1,0 +1,39 @@
+name: Saisie unique CI
+
+on:
+  push:
+    paths:
+      - 'architecture-v1/avereo-app-saisie-unique/**'
+      - '.github/workflows/ci-saisie-unique.yml'
+  pull_request:
+    paths:
+      - 'architecture-v1/avereo-app-saisie-unique/**'
+      - '.github/workflows/ci-saisie-unique.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    # Playwright 1.56 ne prend pas en charge Ubuntu 26.04 (ubuntu-latest) pour Chromium.
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: architecture-v1/avereo-app-saisie-unique/frontend
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install
+        run: if [ -f package-lock.json ]; then npm ci; else npm install; fi
+      - name: Test business rules and configuration
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test screens
+        run: npm run test:e2e
