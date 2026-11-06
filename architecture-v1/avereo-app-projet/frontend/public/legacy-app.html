@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -129,6 +129,7 @@
         .toast-show { animation: slideUpFade 0.3s forwards; }
     </style>
     <link rel="stylesheet" href="/project-workspace.css?v=interface-20261106">
+    <script defer src="/account-menu.js"></script>
 </head>
 <body class="flex h-screen text-slate-800">
 
@@ -155,22 +156,12 @@
                 <span class="hidden lg:block">Risques & Décisions</span>
             </button>
         </nav>
-        <details id="account-menu" class="account-menu">
-        <summary aria-label="Mon espace : ouvrir le menu du compte" class="p-4 border-t border-slate-800 flex items-center justify-center lg:justify-start bg-slate-900/50 hover:bg-slate-800 text-left">
-            <div class="w-10 h-10 rounded-full bg-indigo-500 border-2 border-indigo-300 flex items-center justify-center text-sm font-bold text-white shadow-lg">MOI</div>
-            <div class="hidden lg:block ml-3">
-                <p class="text-sm font-semibold text-white">Mon espace</p>
-                <p class="text-[10px] text-indigo-300 uppercase tracking-wider font-medium">Compte AVEREO</p>
-            </div>
-        </summary>
-        <nav class="account-menu-panel" aria-label="Menu de Mon espace">
-            <p>Mon espace</p>
-            <button type="button" data-account-view="projects">Mes projets</button>
-            <button type="button" data-account-view="preferences">Préférences</button>
-            <button type="button" data-account-view="account">Mon compte</button>
-            <a id="account-logout" href="/connect/logout.php" target="_top">Se déconnecter</a>
-        </nav>
-        </details>
+        <avereo-account-menu id="account-menu" placement="sidebar" compact="sidebar">
+            <button slot="items" type="button" data-account-view="projects">Mes projets</button>
+            <button slot="items" type="button" data-account-view="preferences">Préférences</button>
+            <button slot="account" type="button" data-account-view="account">Mon compte</button>
+            <a slot="logout" id="account-logout" href="/connect/logout.php" target="_top">Se déconnecter</a>
+        </avereo-account-menu>
     </aside>
 
     <!-- Main Content -->
@@ -213,7 +204,7 @@
                 <div id="workspace-panel-account" class="ws-panel" role="tabpanel" aria-label="Mon compte" hidden>
                     <p class="ws-kicker">Compte AVEREO CONNECT</p><h2>Un compte pour tes applications</h2>
                     <p>Consulte ton profil et tes accès aux applications depuis CONNECT. Si tu es administrateur, utilise « Gérer les comptes » dans CONNECT pour administrer les utilisateurs et leurs périodes d’accès.</p>
-                    <a class="ws-button" href="https://connect-preprod.avereo.fr/#profile" target="_blank" rel="noopener noreferrer">Ouvrir mon compte CONNECT ↗</a>
+                    <a id="workspace-connect-account" class="ws-button" target="_blank" rel="noopener noreferrer" hidden>Ouvrir mon compte CONNECT ↗</a>
                     <h2 class="mt-8">Conserver une copie de ton travail</h2><p>Ouvre un projet, puis utilise « Exporter JSON » pour télécharger sa sauvegarde complète. « Copie précédente en ligne » permet de récupérer sa version antérieure.</p>
                     <p>Les archives conservent les projets terminés. Tu peux les restaurer à tout moment depuis l’onglet Archives.</p>
                 </div>

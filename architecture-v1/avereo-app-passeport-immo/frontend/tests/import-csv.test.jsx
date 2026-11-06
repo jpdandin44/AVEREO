@@ -11,7 +11,7 @@ it('R11 : importe un vrai CSV fictif et sauvegarde le catalogue via l’interfac
   vi.spyOn(window, 'alert').mockImplementation(() => {});
   const { container } = render(<App />);
   fireEvent.click(screen.getByRole('button', { name: /Se connecter/ }));
-  fireEvent.click(screen.getByRole('button', { name: 'Admin', exact: true }));
+  fireEvent.click(screen.getByRole('button', { name: 'Administration de l’application', exact: true }));
   const csv = 'Corps de métier;Prestation;Fourchette basse (€ TTC);Prix Moyen (€ TTC);Fourchette haute (€ TTC);Unité\nPeintre;Intervention fictive;12,50;18,75;24,00;m²\n';
   fireEvent.change(container.querySelector('input[type=file]'), { target: { files: [new File([csv], 'tarifs-example.test.csv', { type: 'text/csv' })] } });
   await waitFor(() => expect(screen.getByDisplayValue('Peintre - Intervention fictive')).toBeTruthy());

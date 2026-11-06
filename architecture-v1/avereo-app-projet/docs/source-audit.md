@@ -428,3 +428,9 @@ entièrement hors connexion n'est pas établi.
 Le déclenchement d'un futur déploiement est expliqué dans
 [deployment.md](deployment.md). La livraison ciblée de préproduction du 28 octobre
 ne constitue ni une migration de données, ni une livraison de production.
+
+## 6 novembre 2026 — Menu de compte commun
+
+Le pied de barre latérale réutilise le composant commun ; Mes projets, Préférences et Mon compte conservent les actions ProjectWorkspace. Le lien CONNECT dépend du portail configuré.
+
+Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.

@@ -57,6 +57,7 @@ export default function App() {
             </a>
           ))}
         </nav>
+        <avereo-account-menu><a slot="items" href="#/amelioration">Sauvegardes</a></avereo-account-menu>
       </header>
       <div className="thermo" aria-hidden="true" />
       {loaded ? <Current key={`${route.page}-${JSON.stringify(route.params)}`} params={route.params} navigate={navigate} /> : <p className="loading">Chargement du corpus…</p>}

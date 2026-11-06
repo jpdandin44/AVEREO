@@ -4,8 +4,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "node ../../../.github/scripts/prepare-connect-gate.mjs drone && vite",
-        "build": "node ../../../.github/scripts/prepare-connect-gate.mjs drone && vite build",
+        "dev": "node ../../../.github/scripts/prepare-account-menu.mjs drone && node ../../../.github/scripts/prepare-connect-gate.mjs drone && vite",
+        "build": "node ../../../.github/scripts/prepare-account-menu.mjs drone && node ../../../.github/scripts/prepare-connect-gate.mjs drone && vite build",
         "preview": "vite preview"
     },
     "dependencies": {

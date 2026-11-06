@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - 'architecture-v1/avereo-app-saisie-unique/**'
+      - 'architecture-v1/avereo-platform/shared/account-menu.js'
       - '.github/workflows/ci-saisie-unique.yml'
   pull_request:
     paths:
       - 'architecture-v1/avereo-app-saisie-unique/**'
+      - 'architecture-v1/avereo-platform/shared/account-menu.js'
       - '.github/workflows/ci-saisie-unique.yml'
 
 permissions:

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!-- Build: COUPE AVEREO RENO PRO V1.2 officielle - base V1.1.5 CAO stabilisée - préparée pour déploiement statique O2switch -->
 <html lang="fr">
 <head>
@@ -173,6 +173,7 @@
         #floating-3d-content { padding: 0; flex: 1; overflow: auto; background: var(--canvas-bg); display: flex; justify-content: center; align-items: center; }
         #floating-3d-img { max-width: 100%; max-height: 100%; object-fit: contain; }
     </style>
+    <script defer src="/account-menu.js"></script>
 </head>
 <body>
 <!-- Release V1.2 officielle — base V1.1.5 stabilisée, éditeur CAO autonome activé. -->
@@ -192,7 +193,6 @@
             <button onclick="document.getElementById('load-project-input').click()"><i class="fas fa-folder-open"></i> Charger</button>
             <button onclick="app.saveProjectOnline()"><i class="fas fa-cloud-upload-alt"></i> Sauver en ligne</button>
             <button onclick="app.openProjectOnline()"><i class="fas fa-cloud-download-alt"></i> Ouvrir en ligne</button>
-            <button id="online-auth-btn" onclick="app.handleOnlineAuthClick()" title="Connexion utilisateur AVEREO"><i class="fas fa-user-circle"></i> Connexion AVEREO</button>
             <button onclick="app.resetProject()"><i class="fas fa-trash-alt"></i> Nouveau</button>
             <button onclick="app.openSectionEditorStandalone()" title="Ouvrir l'éditeur CAO sans ligne de coupe pour charger ou modifier une coupe existante"><i class="fas fa-drafting-compass"></i> Éditeur CAO</button>
             <button class="btn-primary" onclick="app.generateSection()"><i class="fas fa-building"></i> Générer la Coupe</button>
@@ -275,6 +275,10 @@
                 <ul class="item-list" id="cut-list"></ul>
 
             </div>
+            <avereo-account-menu id="coupe-account-menu" placement="sidebar">
+                <button slot="items" type="button" onclick="app.openProjectOnline()">Mes projets en ligne</button>
+                <button slot="logout" id="online-auth-btn" type="button" onclick="app.handleOnlineAuthClick()">Connexion AVEREO</button>
+            </avereo-account-menu>
         </aside>
 
         <!-- MAIN WORKSPACE : CANVAS -->
@@ -1474,7 +1478,7 @@
 
                 if (this.authConfig?.mode === 'connect_gateway') {
                     const label = this.currentUser?.name || this.currentUser?.id || 'Compte CONNECT';
-                    btn.innerHTML = `<i class="fas fa-user-check"></i> ${this.escapeHTML(label)}`;
+                    btn.textContent = 'Se déconnecter';
                     btn.title = 'Se deconnecter et revenir a AVEREO CONNECT';
                     return;
                 }
@@ -1482,7 +1486,7 @@
                 if (this.authConfig?.mode === 'drupal_oauth') {
                     if (this.currentUser) {
                         const label = this.currentUser.name || this.currentUser.email || 'Connecté';
-                        btn.innerHTML = `<i class="fas fa-user-check"></i> ${this.escapeHTML(label)}`;
+                        btn.textContent = 'Se déconnecter';
                         btn.title = 'Déconnecter le compte AVEREO';
                     } else {
                         btn.innerHTML = '<i class="fas fa-user-circle"></i> Connexion AVEREO';

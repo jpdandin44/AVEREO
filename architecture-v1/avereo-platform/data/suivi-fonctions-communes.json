@@ -1,0 +1,146 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "mon-espace-commun-20261106",
+  "project": "avereo-platform",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "local",
+  "status": "ready_for_review",
+  "objective": "Appliquer Mon espace aux applications et fixer une règle des fonctions communes.",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "base": {
+    "pr": 114,
+    "merged": true,
+    "sha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+    "observedAt": "2026-11-06",
+    "latestMainSha": "8ea117d71e51d8b32ea05d47372e9c536a126864"
+  },
+  "candidate": {
+    "commonSourceSha256": "90e94651f832e69a999803de732709a2e55a640e75b2bbc91d856b7b214e83e4",
+    "sourceSha": "a3d89d932a306471affced4f5395edb044968ef5",
+    "artifactSha256": null
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/shared-account-menu-20261106",
+    "base": "main",
+    "humanAcceptanceVerified": false,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/119"
+  },
+  "checks": [
+    {
+      "id": "common-menu-14",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "frontends-build-9",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "projet-196-http-74",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "rapport-98-rga-http-20",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "recherche-23-gate-25",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "passeport-29",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "saisie-36",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "connect-38",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "browser-surfaces-and-projet-mobile",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "documentation-63",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "php-syntax",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "artifact-source-parity",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    },
+    {
+      "id": "passeport-http-74-storage-30-backup-22-transfer-35",
+      "status": "passed",
+      "environment": "local_containers",
+      "evidence": "../docs/qualification-mon-espace.md",
+      "observedAt": "2026-11-06"
+    }
+  ],
+  "approvals": [],
+  "targets": {
+    "preproduction": {
+      "ready": false,
+      "evidence": "Cibles à vérifier individuellement avant remplacement ; aucun déploiement par ce lot."
+    },
+    "production": {
+      "ready": false
+    }
+  },
+  "delivery": {
+    "status": "not_deployed"
+  },
+  "backups": [],
+  "blockers": [],
+  "nextAction": "Revoir la PR et les aperçus locaux ; qualifier les cibles et sauvegardes avant tout remplacement autorisé.",
+  "nextIteration": []
+}

@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-02
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - rapport
@@ -230,3 +230,7 @@ README, déploiement, audit, matrice et roadmap alignés ; aucune livraison de p
 - Conservation des anciens dossiers Reception et conversion des prototypes de
   brouillon Habitologie vers le nouveau type.
 - Extension de la suite a douze tests unitaires executables avec `npm test`.
+
+## 6 novembre 2026 — Mon espace commun
+
+Candidat local : L’en-tête Rapport réutilise le menu et conserve la sauvegarde avant déconnexion. RGA autonome reçoit le même menu et une sortie qui expire seulement le cookie RGA ; la carte intégrée masque le menu redondant. [Suivi du lot](../avereo-platform/data/suivi-fonctions-communes.json).

@@ -32,6 +32,10 @@ export function App() {
                 <button key={n.id} type="button" className="nav-lien" aria-current={vue === n.id || (n.id === 'liste' && vue === 'dossier') ? 'page' : undefined} onClick={() => actions.afficher(n.id)}>{n.libelle}</button>
               ))}
             </nav>
+            <avereo-account-menu>
+              <button slot="items" type="button" onClick={() => actions.afficher('liste')}>Mes dossiers locaux</button>
+              <button slot="items" type="button" onClick={() => actions.afficher('parametres')}>Préférences</button>
+            </avereo-account-menu>
           </div>
           {ui.erreurStockage && <p className="alerte" role="alert">{ui.erreurStockage}</p>}
         </header>

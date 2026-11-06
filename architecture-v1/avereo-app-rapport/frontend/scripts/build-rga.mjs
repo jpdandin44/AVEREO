@@ -27,7 +27,7 @@ for (const file of provenance.sourceFiles.filter(item => item.file.startsWith('d
 await cp(new URL('data/', interactive), new URL('data/', target), { recursive: true });
 await writeFile(new URL('carte.php', target), Buffer.concat([
   Buffer.from("<?php require __DIR__ . '/guard.php'; ?>\n"),
-  await readFile(new URL('carte.html', interactive)),
+  Buffer.from((await readFile(new URL('carte.html', interactive), 'utf8')).replace('</head>', `<meta name="avereo-connect-portal" content="<?= htmlspecialchars(avereo_gate_portal($config), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') ?>"></head>`)),
 ]));
 await mkdir(new URL('modules/', target), { recursive: true });
 for (const file of ['rgaContext.js', 'rgaOverlay.js', 'georisquesRiskSummary.js', 'georisquesReport.js', 'locationMap.js']) {

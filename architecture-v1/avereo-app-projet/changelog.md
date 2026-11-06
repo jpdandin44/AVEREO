@@ -196,3 +196,7 @@ Cette entrée n'atteste aucune publication ni qualification préproduction/produ
 Extension préparée localement dans le périmètre de la PR #64. Sa recette ciblée
 et ses limites sont détaillées dans l'audit : tests/build réussis et parcours
 locaux constatés, sans publication hébergée.
+
+## 6 novembre 2026 — Mon espace commun
+
+Candidat local : Le pied de barre latérale réutilise le composant commun ; Mes projets, Préférences et Mon compte conservent les actions ProjectWorkspace. Le lien CONNECT dépend du portail configuré. [Suivi du lot](../avereo-platform/data/suivi-fonctions-communes.json).

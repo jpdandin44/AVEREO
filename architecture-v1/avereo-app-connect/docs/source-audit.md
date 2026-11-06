@@ -88,6 +88,12 @@ Modification limitée à `src/Application.php` : raccourci dérivé et paramètr
 
 # Audit source - AVEREO CONNECT
 
+## 6 novembre 2026 — Menu de compte commun
+
+Le portail PHP regroupe Mon compte, Mes applications, Gérer les comptes selon les droits et la confirmation de déconnexion. Le menu est masqué pour les visiteurs non authentifiés. Le frontend historique reprend seulement la présentation et conserve ses actions locales.
+
+Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.
+
 ## Raccordement Passeport Immo — 14 octobre 2026
 
 Les clés URL/SECRET de `passeport-immo` sont ajoutées à `Config.php` et au

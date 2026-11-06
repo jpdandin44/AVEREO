@@ -33,7 +33,8 @@ def code_files(folder):
         if path.name == '.gitkeep':
             continue
         name = path.relative_to(folder).as_posix()
-        if any(part.startswith('.') and part != '.htaccess' for part in Path(name).parts):
+        allowed_hidden = {'.htaccess', '.user.ini'} if name == '.user.ini' else {'.htaccess'}
+        if any(part.startswith('.') and part not in allowed_hidden for part in Path(name).parts):
             raise ValueError('Fichier privé ou caché dans le candidat : ' + name)
         if path.suffix in ('.log', '.zip') or path.name == 'config.php':
             raise ValueError('Fichier non livrable : ' + name)
