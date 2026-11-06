@@ -6,7 +6,7 @@
   "owner": "jpdandin",
   "kind": "application",
   "stage": "developpement_local",
-  "status": "in_progress",
+  "status": "ready_for_review",
   "objective": "Sujets, priorité métier visible et colonnes ajustables sans changement implicite du planning",
   "phases": [
     "Cadrage",
@@ -15,8 +15,27 @@
     "Mise en production"
   ],
   "candidate": {
-    "sourceSha": null,
-    "artifactSha256": null
+    "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+    "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+    "files": {
+      ".htaccess": "961dbdd4c4e1a1fe27cdca63f86880459c1bd5c2a2b74a5360f4246e99ef249d",
+      "index.html": "f9a52d46ecaaefde09371d3513832bdb676cf321085c2a839ed71b81b33b8793",
+      "legacy-app.html": "b9741640437fff88b527074e1740fd5cf656bfccc8027ddce907547ced10e231",
+      "planning-core.js": "62e36a4f2c157c28dc1c6fa27ed7d20be3498f6b9dc0aa3c0734f62f8e67dc33",
+      "planning-local.js": "e6f160c7dc81f819ee1fbdd163aaf1cd445affc95ec2e3587dcd84c9701d2b03",
+      "task-details.js": "b74118cfb408131969b32769021ca2e4ff8eee3cebdc344218b0c735b91bf56d",
+      "planning-online.js": "b56f531c95ba8cb1b299f85de502fbfcb465d0315efbad90d963c935cb72e31a",
+      "api/planning.php": "c435fb0e21364b278c842287aada325bbe4f350bed8aa572855d97089bf48e37",
+      "api/planning-store.php": "33283702d285cc77de453e062fb7a422d3eef7742ddc5c4160e743e9388fd2b5",
+      "api/planning-auth.php": "1c9c2970ee0e62482fdc001c1fd27e35a2f001ad13f56bdfe0426fa9950c5c7a",
+      "api/workspace.php": "2c7ffcc57900487cfa17bedccd6f289f9121ff8d7fc6548da14eaa7e3f62d776",
+      "api/workspace-store.php": "0c446d90145e7df3aea021db1a638f53c5ba728b419cfb8a9181b39a0bfa52bc",
+      "project-workspace.js": "4abf762cd987c848e235853ba7bbd4805da96de3f54443e24dd1fb20e2c234fc",
+      "project-workspace.css": "1088a3de19e5cec54d3ea05472a3accfedcb89b28e544845da168340a2ecf1e3",
+      "assets/index-BrElMX-g.js": "369443a39efab84a6380b0d827deffb4ab126dec8586e28d49f404f346de3867",
+      "assets/index-BRgM2m8J.css": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c"
+    },
+    "packageLocation": "Paquet privé hors dépôt, candidat-79182df/candidate.zip"
   },
   "targets": {
     "local": {
@@ -38,7 +57,7 @@
     "branch": "feat/projet-sujets-colonnes-20261106",
     "base": "main",
     "baseSha": "4d2f7ff76f4f81301cf6c9d2675e625a2c0e5835",
-    "prUrl": null,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/112",
     "humanAcceptanceVerified": false
   },
   "checks": [
@@ -56,6 +75,11 @@
       "id": "browser-local",
       "status": "passed",
       "evidence": "docs/source-audit.md ; copie locale, aucun changement serveur."
+    },
+    {
+      "id": "documentation",
+      "status": "passed",
+      "evidence": "Socle présent, métadonnées et liens de 12 Markdown modifiés vérifiés ; contrôleur protocole : 32 Markdown, 95 liens, zéro erreur."
     }
   ],
   "approvals": [],
@@ -66,13 +90,15 @@
   "delivery": {
     "status": "not_delivered"
   },
-  "blockers": [],
-  "nextAction": "Finaliser PR et candidat ; obtenir accord de préproduction puis préparer sauvegarde fraîche et recette.",
+  "blockers": [
+    "Accord de préproduction de ce candidat non acquis ; sauvegarde fraîche et restauration sur copie à refaire sur la cible avant installation."
+  ],
+  "nextAction": "Revue locale PR #112, puis accord de préproduction pour ce candidat ; aucune autorisation de merge ou production.",
   "nextIteration": [],
   "decisions": [
     "Classement ancien proposé, jamais enregistré implicitement.",
     "Largeurs mémorisées par navigateur ; filtres en mémoire.",
     "Responsable indécis sur un nouvel ordre ; ordre et dates conservés, priorité emploi rendue visible sans réordonnancement."
   ],
-  "observedAt": "2026-11-06T07:14:11.010629+00:00"
+  "observedAt": "2026-11-06T07:27:35.669321+00:00"
 }
