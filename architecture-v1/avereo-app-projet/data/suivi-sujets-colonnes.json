@@ -58,7 +58,13 @@
     "base": "main",
     "baseSha": "4d2f7ff76f4f81301cf6c9d2675e625a2c0e5835",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/112",
-    "humanAcceptanceVerified": false
+    "humanAcceptanceVerified": false,
+    "mergeCheck": {
+      "headSha": "ba15435cda056910f21168efc3a2c60ffd531da9",
+      "baseSha": "4d2f7ff76f4f81301cf6c9d2675e625a2c0e5835",
+      "mergeable": true,
+      "evidence": "Fusion à trois voies locale et état GitHub MERGEABLE ; aucun merge effectué."
+    }
   },
   "checks": [
     {
@@ -80,6 +86,13 @@
       "id": "documentation",
       "status": "passed",
       "evidence": "Socle présent, métadonnées et liens de 12 Markdown modifiés vérifiés ; contrôleur protocole : 32 Markdown, 95 liens, zéro erreur."
+    },
+    {
+      "id": "github-ci",
+      "status": "passed",
+      "sourceSha": "ba15435cda056910f21168efc3a2c60ffd531da9",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42181012027",
+      "result": "8 jobs techniques réussis ; contenu applicatif identique au candidat 79182df. Policy en attente des quatre cases humaines."
     }
   ],
   "approvals": [],
