@@ -259,5 +259,11 @@
       "status": "pending",
       "action": "Recueillir le retour utilisateur sur les fiches, préférences et planning après correction."
     }
-  ]
+  ],
+  "documentationPullRequest": {
+    "number": 115,
+    "url": "https://github.com/jpdandin44/AVEREO/pull/115",
+    "status": "open_awaiting_human_review",
+    "scope": "Reçus et documentation de la livraison ; aucun code applicatif."
+  }
 }
