@@ -1,0 +1,12 @@
+{
+  "recordedAt": "2026-11-06T22:06:26.241012+00:00",
+  "actor": "jpdandin",
+  "source": "user_chat",
+  "scope": "preproduction",
+  "target": "rapport-preprod-rga-workspace",
+  "status": "approved",
+  "sourceSha": "40daa7f684d0ecc40c15741f35b455a6a198aa55",
+  "artifactSha256": "0371e53552e7767d6ead4d2d9c233a9f68934eb8cc8e34dea12cdbe833762994",
+  "instruction": "OK, je viens de merger la PR #122. Peux-tu déployer le correctif RGA en préprod et vérifier que « Mes projets » s’ouvre correctement depuis la carte intégrée stp ?",
+  "evidence": "livraison-rga-pr122/autorisation.json"
+}

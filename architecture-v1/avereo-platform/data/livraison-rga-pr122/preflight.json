@@ -1,0 +1,20 @@
+{
+  "observedAt": "2026-11-06T22:06:45+00:00",
+  "status": "prepared_not_deployed",
+  "sourceSha": "40daa7f684d0ecc40c15741f35b455a6a198aa55",
+  "mergeSha": "4f61b77c320716f4966d12d041034356e9ae9c42",
+  "artifactSha256": "0371e53552e7767d6ead4d2d9c233a9f68934eb8cc8e34dea12cdbe833762994",
+  "target": "/home/daje3540/rapport-preprod.avereo.fr/rga/workspace.js",
+  "fileCount": 1,
+  "beforeSha256": "153f2ca36a11d251db01eeb7d639355454e45b8e90a0b42572c852984f5bc682",
+  "afterSha256": "6fc8ab86f593d1390bb1e3cdcb44338e6c44ab177ed465649e97ad1b447ab089",
+  "otherPublicFilesPreserved": true,
+  "privateConfigurationsPreserved": 7,
+  "planningFilesPreserved": 13,
+  "installedPr118Preserved": true,
+  "databaseAccessed": false,
+  "productionChanged": false,
+  "backup": "/home/daje3540/private/mon-espace-preprod-317863a-20261106/correction-pr122/recovery/workspace.js",
+  "liveFilesModified": false,
+  "backupAndRestoreOnCopy": "passed"
+}

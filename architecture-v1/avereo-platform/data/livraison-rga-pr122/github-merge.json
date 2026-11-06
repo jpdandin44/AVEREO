@@ -1,0 +1,84 @@
+{
+  "observedAt": "2026-11-06T22:06:25.776Z",
+  "pr": {
+    "url": "https://github.com/jpdandin44/AVEREO/pull/122",
+    "headSha": "40daa7f684d0ecc40c15741f35b455a6a198aa55",
+    "mergeSha": "4f61b77c320716f4966d12d041034356e9ae9c42",
+    "merged": true,
+    "title": "fix(rga): ouvrir Mes projets depuis la carte intégrée",
+    "body": "## Summary\r\nDepuis la page RGA contenant une carte déjà chargée, « Mon espace → Mes projets » changeait le fragment de la carte sans ouvrir la liste. La correction traite ce changement et permet de fermer puis rouvrir la liste.\r\n\r\nLa PR conserve aussi les reçus de livraison PR #121 : ses 40 fichiers sont installés sur les sept cibles de préproduction après accord du responsable. Le correctif RGA de cette PR reste local, prêt à livrer séparément.\r\n\r\n## Changes\r\n- Un seul fichier applicatif à remplacer : `rga/workspace.js`, avec conservation des paramètres de carte et du stockage existant.\r\n- Deux tests de navigation ajoutés à la suite du menu commun.\r\n- Outil et six tests de la livraison sélective PR #121, reçus hébergés et suivi canonique actualisés.\r\n\r\n## Validation\r\nCycle : Cadrage → Développement local → Préproduction → Mise en production.\r\n\r\n**Correctif soumis à revue : Développement local**, [page RGA locale](http://127.0.0.1:53121/rga/). Ouvrir Mon espace → Mes projets après chargement, fermer puis recommencer. Le test reproduisait l’échec avant correction ; 22 contrôles du menu réussissent après correction. Trois tests de stockage RGA, compilation Rapport et contrôle général du dépôt réussissent. Ouverture et réouverture dans la carte intégrée vérifiées dans le navigateur local.\r\n\r\n**Livraison déjà autorisée : Préproduction**, [CONNECT](https://connect-preprod.avereo.fr/), paquet PR #121 source `317863a9e5603fbbed578a5aa9cfc323cb17b977`, fusion `b12e9bcb6bc529d48565466776f0a5be95791398`, 40 fichiers. Cette version hébergée ne contient pas encore le correctif de cette PR. Les [résultats et réserves](https://github.com/jpdandin44/AVEREO/blob/docs/mon-espace-deploiement-20261106/architecture-v1/avereo-platform/docs/livraison-mon-espace.md) détaillent les rubriques et préférences de chaque cible.\r\n\r\nSeize tests de préparation/livraison réussissent sur Windows et Linux. Les treize fichiers de planning Projet, sept configurations privées, protections et backend CONNECT PR #118 sont conservés. Le contrôle final du serveur est réussi. Les contrôles documentaires couvrent 11 documents, 131 liens locaux et neuf socles.\r\n\r\n## Risks\r\n- RGA : correctif local non déployé ; une livraison distincte du fichier est encore requise, puis recette hébergée de la route contenant la carte.\r\n- Coupe : sa liste de projets en ligne reste bloquée par la configuration OAuth antérieure. Son API est exclue du paquet et inchangée ; alignement d’identité à cadrer séparément.\r\n- Préférences Projet consultées seulement sur le compte réel. Thermo, Drone et RGA conservent leurs projets dans le navigateur ; aucune synchronisation en ligne nouvelle.\r\n- Aucun changement de base, secret, droit, compte réel ou production. Les archives privées et plans de récupération contenant des chemins de données réelles ne sont pas ajoutés au dépôt.\r\n\r\n## Checklist\r\n\r\n<!-- Seul le responsable humain du projet valide et coche cette checklist. -->\r\n- [x] J'ai testé [l'environnement de validation](http://127.0.0.1:53121/rga/).\r\n- [x] J'ai contrôlé [les fichiers modifiés](https://github.com/jpdandin44/AVEREO/pull/122/files) et [les impacts sécurité/données documentés](https://github.com/jpdandin44/AVEREO/blob/docs/mon-espace-deploiement-20261106/architecture-v1/avereo-platform/docs/livraison-mon-espace.md#conservation-et-récupération).\r\n- [x] J'ai consulté et validé [la documentation](https://github.com/jpdandin44/AVEREO/blob/docs/mon-espace-deploiement-20261106/architecture-v1/avereo-platform/docs/livraison-mon-espace.md).\r\n- [x] J'autorise le merge de cette PR.\r\n\r\n"
+  },
+  "mergeTreeIdenticalToAccepted": true,
+  "workflows": [
+    {
+      "id": 42301397674,
+      "name": "PR Policy",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 962,
+      "jobs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42301397674/jobs",
+      "logs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42301397674/logs",
+      "workflow_id": 243194184
+    },
+    {
+      "id": 42301395427,
+      "name": "PR Policy",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 961,
+      "jobs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42301395427/jobs",
+      "logs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42301395427/logs",
+      "workflow_id": 243194184
+    },
+    {
+      "id": 42301387699,
+      "name": "PR Policy",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 960,
+      "jobs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42301387699/jobs",
+      "logs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42301387699/logs",
+      "workflow_id": 243194184
+    },
+    {
+      "id": 42301385902,
+      "name": "PR Policy",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 959,
+      "jobs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42301385902/jobs",
+      "logs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42301385902/logs",
+      "workflow_id": 243194184
+    },
+    {
+      "id": 42296514293,
+      "name": "PR Policy",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 958,
+      "jobs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42296514293/jobs",
+      "logs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42296514293/logs",
+      "workflow_id": 243194184
+    },
+    {
+      "id": 42296514421,
+      "name": "CI",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 784,
+      "jobs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42296514421/jobs",
+      "logs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42296514421/logs",
+      "workflow_id": 243194181
+    },
+    {
+      "id": 42296514417,
+      "name": "Acces preproduction - tests uniquement",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 105,
+      "jobs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42296514417/jobs",
+      "logs_url": "https://api.github.com/repos/jpdandin44/AVEREO/actions/runs/42296514417/logs",
+      "workflow_id": 376620447
+    }
+  ]
+}

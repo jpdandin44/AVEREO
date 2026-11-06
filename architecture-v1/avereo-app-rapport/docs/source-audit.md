@@ -13,6 +13,11 @@ tags:
   - securite
 ---
 
+## 2026-11-06 — Correctif RGA livré
+
+Le seul fichier `rga/workspace.js` est remplacé après fusion de PR #122 et accord explicite. L’ouverture depuis la carte intégrée, la fermeture, la réouverture et le nouvel essai après rechargement complet sont vérifiés sur la préproduction. Les contrôles complets de conservation réussissent. [Livraison et recette](../../avereo-platform/docs/livraison-mon-espace.md).
+
+
 ## 2026-11-06 — Recette hébergée du menu et correction RGA locale
 
 PR #121 est déployée. Le lien Mes projets de la page RGA ne réagit pas au fragment reçu après chargement de la carte intégrée. Le correctif local traite `hashchange`, conserve les autres paramètres et n’écrit aucune donnée de projet. Reproduction en échec puis 22 contrôles du menu réussis, compilation et revue du navigateur local effectuées. Il attend sa propre autorisation de livraison. [Livraison et réserves](../../avereo-platform/docs/livraison-mon-espace.md).

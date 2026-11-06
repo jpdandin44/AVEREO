@@ -14,7 +14,7 @@ tags: [avereo, preproduction, livraison, fonctions-communes]
 
 Le [suivi canonique](../data/suivi-fonctions-communes.json) reste la source de l’état du lot.
 Phases : **Cadrage → Développement local → Préproduction → Mise en production**.
-Phase actuelle : **Préproduction**, livrée avec deux réserves décrites ci-dessous.
+Phase actuelle : **Préproduction**. La réserve RGA est levée après livraison et recette de PR #122 ; la réserve antérieure des projets Coupe reste ouverte.
 
 ## Version installée
 
@@ -42,7 +42,7 @@ Les sept lancements depuis le catalogue fonctionnent.
 | --- | --- | --- |
 | CONNECT | Absence voulue : portail | Ordre du catalogue et visibilité des applications ; rechargement vérifié |
 | Projet | Liste native en ligne : deux projets consultés sans modification | Formulaire natif du compte consulté ; aucun enregistrement sur le compte réel |
-| Rapport + RGA | Rapport : brouillon existant et liste de neuf rapports préservés. RGA : ouverture directe correcte, lien depuis la page contenant la carte en réserve | Format du nouveau rapport ; tri des départements et intensité RGA. Rechargement et indépendance Rapport/RGA vérifiés |
+| Rapport + RGA | Rapport : brouillon existant et liste de neuf rapports préservés. RGA : lien depuis la carte intégrée corrigé par PR #122 ; ouverture, fermeture, réouverture et nouvel essai après rechargement vérifiés | Format du nouveau rapport ; tri des départements et intensité RGA. Rechargement et indépendance Rapport/RGA vérifiés |
 | Coupe | Liste native en ligne bloquée par sa configuration OAuth existante | Grille et aimantation : enregistrement et rechargement vérifiés |
 | Thermo | Rapport fictif enregistré puis retrouvé après rechargement | Tri et noms d’étapes : enregistrement et rechargement vérifiés |
 | Drone | Mission fictive enregistrée puis retrouvée après rechargement | Tri et visibilité des archives : enregistrement et rechargement vérifiés |
@@ -56,7 +56,7 @@ Thermo, Drone et RGA conservent leur stockage local ; ce lot ne prouve pas de
 synchronisation entre navigateurs. Aucune déconnexion de la session du responsable
 n’a été soumise.
 
-## Réserves et correction préparée
+## Correction RGA livrée et réserve restante
 
 **RGA.** Le lien `carte.php#projects` fonctionne lors d’un chargement direct, mais
 pas après le chargement de la carte intégrée : seul le fragment initial était traité.
@@ -67,8 +67,22 @@ et ouverture/réouverture confirmées dans le navigateur local sur
 [l’aperçu RGA](http://127.0.0.1:53121/rga/).
 La [PR corrective #122](https://github.com/jpdandin44/AVEREO/pull/122) et son
 [candidat exact](../data/livraison-mon-espace-pr121/correction-rga.json)
-ne concernent qu’un fichier `rga/workspace.js` ; **il n’est pas installé en préproduction**.
-Sa revue et son accord de livraison restent distincts de l’accord obtenu pour PR #121.
+ne concernent qu’un fichier `rga/workspace.js`. Après fusion et accord explicite, ce fichier est
+**installé à 23 h 07, heure de Paris**, le 6 novembre. Les [preuves PR #122](../data/livraison-rga-pr122/delivery.json)
+identifient le candidat, l’empreinte et la sauvegarde privée. La
+[recette dans le navigateur authentifié](../data/livraison-rga-pr122/recette-navigateur.json)
+réussit depuis la page contenant la carte : ouverture après chargement, fermeture,
+réouverture, puis nouvel essai après rechargement complet. Aucune création ou
+modification de projet ; aucune erreur détectée dans la console. **Réserve RGA levée.**
+
+Le [contrôle final PR #122](../data/livraison-rga-pr122/verification-finale.json)
+compare l’état complet des sept cibles au paquet PR #121 augmenté de ce seul fichier.
+Les treize fichiers de planning, sept configurations privées et backend PR #118
+restent intacts. La sauvegarde du fichier et sa restauration sur copie sont
+[vérifiées avant remplacement](../data/livraison-rga-pr122/preflight.json).
+Récupération : `/home/daje3540/private/mon-espace-preprod-317863a-20261106/correction-pr122/recovery/workspace.js`.
+Ne pas lancer le vérificateur PR #121 seul contre cet état corrigé :
+`deploy_rga_menu_fix.py verify` applique la référence PR #121 et la correction PR #122.
 
 **Coupe.** « Mes projets » appelle l’ancien service en ligne, qui répond « OAuth
 Drupal n’est pas encore configuré côté serveur » puis « Connexion AVEREO requise ».
@@ -106,5 +120,5 @@ des éventuelles écritures ultérieures ; ne pas restaurer aveuglément un rép
 
 Copies locales des reçus, captures et correctif :
 `C:/Users/examg/Documents local/livraisons-avereo/mon-espace/preparation-pr121-317863a`.
-La présence d’un reçu de livraison ne vaut pas levée des deux réserves ni validation
-métier humaine de tous les parcours.
+La recette PR #122 lève la réserve de navigation RGA. La réserve Coupe et la
+validation métier humaine des autres parcours ne sont pas déduites de ce résultat.

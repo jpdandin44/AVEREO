@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [preproduction, securite, exploitation]
 ---
 
+## Correctif RGA PR #122 — livraison ciblée
+
+`deploy_rga_menu_fix.py` réutilise les helpers privés de PR #121. Il fixe le fichier, les empreintes avant/après et le paquet testé. `prepare` sauvegarde le fichier et vérifie sa restauration sur copie ; `apply --authorized-artifact EMPREINTE` effectue le remplacement autorisé ; `verify` contrôle les sept arborescences et les éléments privés en tenant compte de cette seule correction. L’ancien contrôle PR #121 seul ne décrit plus l’état corrigé. [Reçus et récupération](../../architecture-v1/avereo-platform/docs/livraison-mon-espace.md).
+
+
 ## Livraison du menu commun — 6 novembre 2026
 
 Le [reçu de livraison](../../architecture-v1/avereo-platform/docs/livraison-mon-espace.md) documente les 40 fichiers réellement installés et les réserves. `deploy_shared_menu.py` fixe le candidat PR #121, les sept cibles, les sauvegardes privées et la confirmation d’empreinte ; `prepare`, `apply` et `verify` séparent précontrôle, écriture autorisée et conservation finale. Les six tests `test_shared_menu_deployment.py` couvrent notamment le refus d’une divergence et le retour arrière sur fixtures, y compris une écriture concurrente à préserver. Ne pas réutiliser ce paquet figé pour un autre candidat.
