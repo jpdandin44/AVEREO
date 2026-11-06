@@ -5,22 +5,23 @@
   "project": "avereo-connect",
   "owner": "jpdandin",
   "kind": "correctif",
-  "stage": "developpement_local",
-  "status": "ready_for_review",
+  "stage": "preproduction",
+  "status": "preproduction_observed_scenario_passed",
   "objective": "Revenir à la connexion avec le même mot de passe après activation, sans conserver une autre identité.",
   "candidate": {
-    "sourceSha": "12e17c14b35f951268482e39497931c86f78d117",
-    "artifactSha256": null
+    "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+    "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+    "mergedSourceSha": "b042d5ae5cace46791ac8cf78d43ebd0c56e5cf6"
   },
   "targets": {
     "preproduction": {
       "id": "https://connect-preprod.avereo.fr",
-      "ready": false,
-      "isolated": false,
+      "ready": true,
+      "isolated": true,
       "empty": false,
-      "evidence": "../docs/retour-activation-connexion.md",
-      "observedAt": "2026-11-06",
-      "note": "Diagnostic en lecture seule seulement ; ne qualifie pas le candidat."
+      "evidence": "C:/Users/examg/Documents local/livraisons-avereo/activation-connect/preparation-preproduction.json",
+      "observedAt": "2026-11-06T12:06:19.851671+00:00",
+      "note": "PR #118 installée ; contrôles techniques, parcours réel du compte fictif avec ancienne session administrateur et archivage vérifiés. Aucun accord de production déduit."
     },
     "production": {
       "id": null,
@@ -32,12 +33,14 @@
   "github": {
     "repository": "jpdandin44/AVEREO",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/118",
-    "acceptedSourceSha": null,
-    "acceptedArtifactSha256": null,
-    "humanAcceptanceVerified": false,
-    "evidence": null,
-    "observedAt": null,
-    "branch": "fix/connect-activation-completion-20261106"
+    "acceptedSourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+    "acceptedArtifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+    "humanAcceptanceVerified": true,
+    "evidence": "https://github.com/jpdandin44/AVEREO/pull/118",
+    "observedAt": "2026-11-06T12:06:19.851671+00:00",
+    "branch": "fix/connect-activation-completion-20261106",
+    "merged": true,
+    "mergeCommitSha": "b042d5ae5cace46791ac8cf78d43ebd0c56e5cf6"
   },
   "checks": [
     {
@@ -81,29 +84,127 @@
       "environment": "local-disposable-mariadb",
       "observedAt": "2026-11-06",
       "evidence": "../docs/retour-activation-connexion.md"
+    },
+    {
+      "id": "preparation-20261106-local",
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+      "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+      "evidence": "C:/Users/examg/Documents local/livraisons-avereo/activation-connect/preparation-preproduction.json",
+      "observedAt": "2026-11-06T12:06:19.851671+00:00",
+      "scope": "Paquet de deux fichiers ; tests du candidat conservés par identité des octets, CI du commit accepté et documentation vérifiées."
+    },
+    {
+      "id": "preparation-20261106-ci",
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+      "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+      "evidence": "C:/Users/examg/Documents local/livraisons-avereo/activation-connect/preparation-preproduction.json",
+      "observedAt": "2026-11-06T12:06:19.851671+00:00",
+      "scope": "Paquet de deux fichiers ; tests du candidat conservés par identité des octets, CI du commit accepté et documentation vérifiées."
+    },
+    {
+      "id": "preparation-20261106-documentation",
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+      "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+      "evidence": "C:/Users/examg/Documents local/livraisons-avereo/activation-connect/preparation-preproduction.json",
+      "observedAt": "2026-11-06T12:06:19.851671+00:00",
+      "scope": "Paquet de deux fichiers ; tests du candidat conservés par identité des octets, CI du commit accepté et documentation vérifiées."
+    },
+    {
+      "id": "hosted-runtime-40",
+      "kind": "preproduction_partial",
+      "status": "passed",
+      "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+      "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+      "target": "https://connect-preprod.avereo.fr",
+      "evidence": "preproduction-retour-activation/installed-tests.log",
+      "observedAt": "2026-11-06T13:07:14.934305+00:00",
+      "scope": "Forty native PHP tests on installed source with in-memory fixtures; no real database."
+    },
+    {
+      "id": "hosted-browser-and-invalid-callbacks",
+      "kind": "preproduction_partial",
+      "status": "passed",
+      "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+      "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+      "target": "https://connect-preprod.avereo.fr",
+      "evidence": "preproduction-retour-activation/browser-checks.json",
+      "observedAt": "2026-11-06T13:07:14.934305+00:00",
+      "scope": "Existing administrator SSO and three invalid activation-return cases."
+    },
+    {
+      "id": "https-anonymous-access",
+      "kind": "preproduction_partial",
+      "status": "passed",
+      "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+      "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+      "target": "https://connect-preprod.avereo.fr",
+      "evidence": "preproduction-retour-activation/anonymous-https-checks.json",
+      "observedAt": "2026-11-06T13:07:14.934305+00:00",
+      "scope": "Anonymous session is unauthenticated; catalogue and organizations return 401."
+    },
+    {
+      "id": "hosted-first-login-and-cleanup",
+      "kind": "preproduction",
+      "status": "passed",
+      "target": "https://connect-preprod.avereo.fr",
+      "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+      "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+      "evidence": "preproduction-retour-activation/fixture-completion.json",
+      "observedAt": "2026-11-06T14:29:46.169219+00:00",
+      "scope": "New invited account in a browser with an existing administrator identity, native first password, activation return, email login with the same password, correct CONNECT profile.",
+      "humanConfirmation": "preproduction-retour-activation/human-first-login.json"
     }
   ],
-  "approvals": [],
-  "backups": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+      "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+      "target": "https://connect-preprod.avereo.fr",
+      "observedAt": "2026-11-06T12:47:28.516183+00:00",
+      "evidence": "Réponse explicite à call_86ff7b5e5155447c85703d38c4074d7d : Oui, déployer la PR #118 en préproduction.",
+      "effect": "Installer les deux fichiers PR #118 puis contrôler le retour d’activation et la recette fictive ; PR #119 séparée."
+    }
+  ],
+  "backups": [
+    {
+      "id": "activation-return-20261106-115036",
+      "target": "https://connect-preprod.avereo.fr",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "scope": "Deux fichiers restaurés sur copies privées, après remplacement fictif des copies ; aucun fichier actif remplacé.",
+      "evidence": "C:/Users/examg/Documents local/livraisons-avereo/activation-connect/preparation-preproduction.json",
+      "observedAt": "2026-11-06T12:06:19.851671+00:00"
+    }
+  ],
   "rollback": {
-    "status": "not_tested",
-    "target": null,
-    "artifactSha256": null,
-    "evidence": null,
-    "observedAt": null
+    "status": "tested",
+    "target": "https://connect-preprod.avereo.fr",
+    "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+    "evidence": "C:/Users/examg/Documents local/livraisons-avereo/activation-connect/preparation-preproduction.json",
+    "observedAt": "2026-11-06T12:06:19.851671+00:00",
+    "scope": "Restauration des deux fichiers sur copies uniquement."
   },
   "delivery": {
-    "status": "not_delivered",
-    "sourceSha": null,
-    "artifactSha256": null,
-    "target": null,
-    "evidence": null,
-    "observedAt": null
+    "status": "delivered",
+    "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+    "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+    "target": "https://connect-preprod.avereo.fr",
+    "evidence": "preproduction-retour-activation/deployment.json",
+    "observedAt": "2026-11-06T12:51:52+00:00",
+    "scope": "Two runtime files only. No database migration or private configuration replacement."
   },
-  "blockers": [
-    "Installation du correctif en préproduction et recette hébergée non réalisées."
-  ],
-  "nextAction": "Revue humaine de la PR puis autorisation de livraison des deux fichiers en préproduction.",
+  "blockers": [],
+  "nextAction": "Conserver la recette de préproduction et le retour arrière ; livraison du menu PR #119 distincte après réalignement. Aucune ouverture publique ni mise en production autorisée par cette recette.",
   "nextIteration": [],
   "budget": {
     "limit": null,
@@ -125,5 +226,23 @@
     "initialCredentialFailureCause": "unknown",
     "userRequestedNativeReset": true,
     "personalLoginAfterReset": "confirmed_by_user"
+  },
+  "hostedFirstLogin": {
+    "status": "passed",
+    "fixtureReceipt": "preproduction-retour-activation/fixture-preparation.json",
+    "connectUserId": 27,
+    "drupalUid": 26,
+    "email": "recette-pr118-20261106@example.invalid",
+    "applicationAccessCount": 0,
+    "passwordFormOpen": false,
+    "passwordEnteredByAgent": false,
+    "mailSent": false,
+    "completeFlowQualified": true,
+    "nextAction": "No remaining action on the fixture. Production review and delivery remain distinct.",
+    "completionEvidence": "preproduction-retour-activation/fixture-completion.json",
+    "humanEvidence": "preproduction-retour-activation/human-first-login.json",
+    "observedScenario": "New invited account in a browser with an existing administrator identity, native first password, activation return, email login with the same password, correct CONNECT profile.",
+    "freshBrowserHostedCase": "not_separately_exercised",
+    "fixtureArchived": true
   }
 }

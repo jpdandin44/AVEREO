@@ -1,0 +1,24 @@
+{
+    "firstLogin": {
+        "observedAt": "2026-11-06T14:25:41+00:00",
+        "connectUserId": 27,
+        "drupalUid": 26,
+        "onboardingCompleted": true,
+        "passwordInitialized": true,
+        "drupalLastLoginAt": "2026-11-06T14:20:14+00:00",
+        "humanConfirmedSamePasswordLogin": true,
+        "browserConfirmedExpectedProfile": true,
+        "applicationAccessCount": 0
+    },
+    "cleanup": {
+        "archivedAt": "2026-11-06T14:25:41+00:00",
+        "archived": true,
+        "nativeLifecycleUsed": true,
+        "connectDisabled": true,
+        "otherUsersBusinessStateUnchanged": true,
+        "otherApplicationRightsUnchanged": true,
+        "otherPolicyEntriesUnchanged": true,
+        "passwordReadOrChangedByCleanup": false,
+        "permanentDeletion": false
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "scope": "preproduction",
+  "status": "approved",
+  "actor": "jpdandin",
+  "source": "user_chat",
+  "sourceSha": "47eda950604a7c16d26c0f21ae90f2e3768ad527",
+  "artifactSha256": "75c0f54017addd2ae3d95b773d68760702881da972feb03171065556939970a2",
+  "target": "https://connect-preprod.avereo.fr",
+  "observedAt": "2026-11-06T12:47:28.516183+00:00",
+  "evidence": "Réponse explicite à call_86ff7b5e5155447c85703d38c4074d7d : Oui, déployer la PR #118 en préproduction.",
+  "effect": "Installer les deux fichiers PR #118 puis contrôler le retour d’activation et la recette fictive ; PR #119 séparée."
+}

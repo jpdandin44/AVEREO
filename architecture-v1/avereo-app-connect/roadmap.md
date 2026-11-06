@@ -89,4 +89,4 @@ Qualifier le candidat local en préproduction avec des profils hérités et expl
 
 ## Retour d’activation — 6 novembre
 
-Correctif local testé et prêt à revue. Suite : validation humaine de la PR, installation autorisée des deux fichiers en préproduction et recette fictive du parcours. [Suivi canonique](data/suivi-retour-activation.json).
+PR #118 validée, fusionnée et installée en préproduction après accord. Contrôles techniques et première connexion du compte fictif avec une ancienne session administrateur réussis ; même mot de passe et bonne identité confirmés, fixture archivée. Conserver ces preuves et le retour arrière pour la revue globale V1. [Suivi canonique](data/suivi-retour-activation.json). La production et la PR #119 restent distinctes ; la recette ne vaut pas accord d’ouverture publique.
