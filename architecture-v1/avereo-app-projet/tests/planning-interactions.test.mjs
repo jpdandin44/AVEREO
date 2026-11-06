@@ -18,7 +18,7 @@ function browser(tasks, capacityPerWeek = 5) {
     const storage = new Map();
     const alerts = [];
     const element = () => ({
-        value: '', innerHTML: '', textContent: '', style: {}, className: '',
+        value: '', innerHTML: '', textContent: '', style: { setProperty(key, value) { this[key] = value; } }, setAttribute(key, value) { this[key] = value; }, className: '',
         addEventListener() {}, classList: { add() {}, remove() {} },
         querySelector() { return null; }, showModal() {}, close() {}
     });

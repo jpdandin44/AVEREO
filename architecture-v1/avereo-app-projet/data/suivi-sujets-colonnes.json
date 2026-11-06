@@ -6,7 +6,7 @@
   "owner": "jpdandin",
   "kind": "application",
   "stage": "preproduction",
-  "status": "delivered_awaiting_user_review",
+  "status": "preproduction_accepted_merged",
   "objective": "Sujets, priorité métier visible et colonnes ajustables sans changement implicite du planning",
   "phases": [
     "Cadrage",
@@ -59,13 +59,19 @@
     "base": "main",
     "baseSha": "4d2f7ff76f4f81301cf6c9d2675e625a2c0e5835",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/112",
-    "humanAcceptanceVerified": false,
+    "humanAcceptanceVerified": true,
     "mergeCheck": {
       "headSha": "ba15435cda056910f21168efc3a2c60ffd531da9",
       "baseSha": "4d2f7ff76f4f81301cf6c9d2675e625a2c0e5835",
       "mergeable": true,
       "evidence": "Fusion à trois voies locale et état GitHub MERGEABLE ; aucun merge effectué."
-    }
+    },
+    "acceptedSourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+    "acceptedArtifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+    "evidence": "PR #112 fusionnée, quatre cases humaines cochées ; lecture GitHub le 2026-11-06.",
+    "observedAt": "2026-11-06T08:18:52.199463+00:00",
+    "mergedAt": "2026-11-06T07:55:52Z",
+    "mergeCommitSha": "944ec598c6f9444bc3a57cc1ce9679958cf823d0"
   },
   "checks": [
     {
@@ -145,6 +151,17 @@
       "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
       "recordedAt": "2026-11-06T07:35:37.902109+00:00",
       "evidence": "Oui, tu peux installer le candidat de la PR #112 en préproduction après sauvegarde et vérification de restauration, puis vérifier les deux projets stp."
+    },
+    {
+      "scope": "review",
+      "status": "approved",
+      "target": "https://projet-preprod.avereo.fr",
+      "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+      "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-06T08:18:52.199463+00:00",
+      "evidence": "J’ai vérifié en préproduction, les filtres et les colonnes fonctionnent bien. Confirmation complétée par les quatre cases de PR #112 cochées et le merge."
     }
   ],
   "backups": [
@@ -173,7 +190,7 @@
     "privateDataUnchanged": true
   },
   "blockers": [],
-  "nextAction": "Revue humaine de la PR #112 et du candidat installé en préproduction ; aucune autorisation de merge ou production.",
+  "nextAction": "Lot validé et fusionné en préproduction ; proposition de la suite dans docs/proposition-interface-simple.md. Aucune production déclarée.",
   "nextIteration": [
     "Confirmer ou corriger les sujets et priorités proposés après usage.",
     "Décider séparément d’un éventuel changement de l’ordre emploi/continuité."
@@ -183,5 +200,25 @@
     "Largeurs mémorisées par navigateur ; filtres en mémoire.",
     "Responsable indécis sur un nouvel ordre ; ordre et dates conservés, priorité emploi rendue visible sans réordonnancement."
   ],
-  "observedAt": "2026-11-06T07:43:33.012920+00:00"
+  "observedAt": "2026-11-06T08:18:52.199463+00:00",
+  "postMerge": {
+    "observedAt": "2026-11-06T08:18:52.199463+00:00",
+    "mainCodeMatchesCandidate": true,
+    "ci": "https://github.com/jpdandin44/AVEREO/actions/runs/42184110912",
+    "ciStatus": "passed",
+    "preproductionAssetsVerified": 9,
+    "anonymousApisRefused": 2,
+    "automaticDelivery": {
+      "status": "failed_before_transfer",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42184110879",
+      "cause": "HTTP 401 lors de l’authentification cPanel du robot GitHub pour la liste IP autorisées.",
+      "nextAction": "Qualifier séparément les accès du workflow avant une nouvelle publication ; ne pas relancer sans accord de livraison."
+    },
+    "prototypePages": {
+      "status": "failed",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42184110815",
+      "cause": "Setup Pages : site introuvable (Not Found).",
+      "nextAction": "Clarifier séparément si le prototype doit encore être publié et vérifier sa configuration GitHub Pages."
+    }
+  }
 }

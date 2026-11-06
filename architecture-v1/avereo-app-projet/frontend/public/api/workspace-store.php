@@ -3,7 +3,19 @@ declare(strict_types=1);
 
 function workspace_defaults(): array
 {
-    return ['zoom' => 'weeks', 'collapsed' => true];
+    return ['zoom' => 'weeks', 'collapsed' => true, 'verifyResults' => false, 'manualStart' => false, 'density' => 'comfortable'];
+}
+
+function workspace_preferences(mixed $value, ?array $previous = null): array
+{
+    if (!is_array($value)) throw new PlanningFailure(422, 'Préférences invalides.');
+    $result = array_replace($previous ?? workspace_defaults(), $value);
+    if (!in_array($result['zoom'], ['days', 'weeks', 'months', 'years'], true)
+        || !in_array($result['density'], ['comfortable', 'compact'], true)
+        || !is_bool($result['collapsed']) || !is_bool($result['verifyResults']) || !is_bool($result['manualStart'])) {
+        throw new PlanningFailure(422, 'Préférences invalides.');
+    }
+    return array_intersect_key($result, workspace_defaults());
 }
 
 function workspace_locked(string $directory, int $mode, callable $action): array
@@ -37,8 +49,9 @@ function workspace_read(string $directory): array
         if (!is_array($data) || !is_int($data['revision'] ?? null) || $data['revision'] < 1
             || !is_array($data['projects'] ?? null) || count($data['projects']) > 100
             || !isset($data['projects']['principal']) || !is_array($data['preferences'] ?? null)
-            || !in_array($data['preferences']['zoom'] ?? '', ['days', 'weeks'], true)
+            || !in_array($data['preferences']['zoom'] ?? '', ['days', 'weeks', 'months', 'years'], true)
             || !is_bool($data['preferences']['collapsed'] ?? null)) throw new RuntimeException();
+        $data['preferences'] = workspace_preferences($data['preferences']);
         foreach ($data['projects'] as $id => $meta) {
             if (!workspace_id($id) || !is_array($meta) || !is_string($meta['client'] ?? null)
                 || strlen($meta['client']) > 800 || !array_key_exists('archivedAt', $meta)
@@ -92,9 +105,9 @@ function workspace_change(string $directory, array $body): array
             $data['projects'][$created] = ['client' => trim($client), 'archivedAt' => null];
         } elseif ($action === 'preferences') {
             $preferences = $body['preferences'] ?? null;
-            if (!is_array($preferences) || !in_array($preferences['zoom'] ?? '', ['days', 'weeks'], true)
+            if (!is_array($preferences) || !in_array($preferences['zoom'] ?? '', ['days', 'weeks', 'months', 'years'], true)
                 || !is_bool($preferences['collapsed'] ?? null)) throw new PlanningFailure(422, 'Préférences invalides.');
-            $data['preferences'] = ['zoom' => $preferences['zoom'], 'collapsed' => $preferences['collapsed']];
+            $data['preferences'] = workspace_preferences($preferences, $data['preferences']);
         } elseif (in_array($action, ['archive', 'restore', 'client'], true)) {
             $id = $body['id'] ?? null;
             workspace_project_directory($directory, $data, $id);

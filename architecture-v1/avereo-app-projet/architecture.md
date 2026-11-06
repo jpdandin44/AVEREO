@@ -15,6 +15,15 @@ tags:
 
 # Architecture du planning Projet
 
+## Interface simple — architecture du candidat local
+
+Les résultats réutilisent `checklist[]` : `expected` est le texte à cocher, `completed` sa réalisation et `validated/evidence/validatedBy/validatedAt` sa vérification distincte. Une entrée existante reste une entrée : pas de migration, découpage automatique ni changement de schéma. Les nouveaux résultats reçoivent un ID stable.
+
+Les préférences du catalogue sont étendues selon le [contrat](api/planning-prive.md). La lecture complète les anciennes préférences en mémoire sans réécrire le catalogue ou le planning. Les préférences du mode local utilisent une clé indépendante du document projet.
+
+Le calendrier conserve le moteur de calcul et ses bornes. Le rendu regroupe les cellules par semaine, mois ou année, à largeur proportionnelle au nombre réel de jours ; il ne crée pas de grille journalière en Mois/Années. Les filtres et colonnes restent des états de vue. La hauteur de ligne est partagée entre tableau, barres et flèches. Sur mobile, la colonne des tâches cesse d’être figée horizontalement afin de laisser le calendrier accessible.
+
+
 ## Classement et préférences de vue — 6 novembre 2026
 
 Les tâches peuvent porter deux champs optionnels, `subject` et `priority`, validés par le moteur et PHP. Le contrat précis est dans [l’API privée](api/planning-prive.md). Les tâches anciennes conservent l’absence de ces champs ; une suggestion calculée pour l’affichage ne modifie pas le document.

@@ -37,7 +37,7 @@ function browser() {
             { id: 'C', name: 'Site', lot: 'Site', duration: 1, dependencies: ['B'] }
         ]
     };
-    run('applyProject(input)');
+    run("interfacePreferences.density = 'compact'; planningDisplay.duration = true; planningDisplay.start = true; planningDisplay.dependencies = true; applyProject(input)");
     return { get, run, saved: () => JSON.stringify([...storage]) };
 }
 
@@ -49,6 +49,50 @@ test('group cartouches expose counts, escaped titles and keyboard-native disclos
     assert.match(left, /2 tâches/);
     assert.equal((left.match(/data-task-id=/g) || []).length, 3);
     assert.equal((ui.get('planning-gantt-body').innerHTML.match(/data-task-id=/g) || []).length, 3);
+});
+
+test('overview periods use real month and leap-year boundaries with bounded rendering', () => {
+    const ui = browser();
+    const periods = JSON.parse(ui.run("JSON.stringify(timelinePeriods(new Date(2028, 1, 1), 60, 'months'))"));
+    assert.deepEqual(periods.map(p => p.days), [29, 31]);
+    assert.match(periods[0].label, /2028/);
+    const years = JSON.parse(ui.run("JSON.stringify(timelinePeriods(new Date(2027, 0, 1), 731, 'years'))"));
+    assert.deepEqual(years.map(p => p.days), [365, 366]);
+    assert.deepEqual(years.map(p => p.label), ['2027', '2028']);
+    assert(ui.run("timelinePeriods(new Date(2026, 0, 1), 3660, 'months').length") <= 121);
+    assert(ui.run("timelinePeriods(new Date(2026, 0, 1), 3660, 'years').length") <= 11);
+});
+
+test('search matches descriptions and accents, status combines with subjects without changing the project', () => {
+    const ui = browser();
+    ui.run("tasks[0].description = 'Préparer le résumé'; tasks[0].status = 'En cours'; refreshAll()");
+    const before = ui.run('ProjetPlanning.encodeProject(currentProject())');
+    const stored = ui.saved();
+    ui.get('planning-search').value = 'resume';
+    ui.get('planning-status').value = 'En cours';
+    ui.run('setPlanningFilter()');
+    assert.match(ui.get('planning-table-body').innerHTML, /data-task-id="A"/);
+    assert.doesNotMatch(ui.get('planning-table-body').innerHTML, /data-task-id="[BC]"/);
+    ui.get('planning-status').value = 'Terminé'; ui.run('setPlanningFilter()');
+    assert.match(ui.get('planning-table-body').innerHTML, /Aucune tâche/);
+    ui.run('resetPlanningFilters()');
+    assert.equal((ui.get('planning-table-body').innerHTML.match(/data-task-id=/g) || []).length, 3);
+    assert.equal(ui.run('ProjetPlanning.encodeProject(currentProject())'), before);
+    assert.equal(ui.saved(), stored);
+});
+
+test('density, overview zoom and optional columns align both panes without changing planning data', () => {
+    const ui = browser();
+    const before = ui.run('ProjetPlanning.encodeProject(currentProject())');
+    ui.run("applyInterfacePreferences({density:'comfortable'}); setPlanningDisplay('duration',false); setPlanningDisplay('start',false); setZoom('months')");
+    assert.equal(ui.get('gantt-master-container').style['--row-height'], '64px');
+    assert.equal(ui.get('gantt-master-container').style['--table-width'], '416px');
+    assert.match(ui.get('gantt-svg-layer').innerHTML, /M [\d.]+ 88 /);
+    ui.run("setZoom('years'); setPlanningDisplay('dependencies',false)");
+    assert.doesNotMatch(ui.get('gantt-svg-layer').innerHTML, /marker-end=/);
+    assert.match(ui.get('gantt-timeline-header').innerHTML, /2026/);
+    ui.run("setZoom('days')");
+    assert.equal(ui.run('ProjetPlanning.encodeProject(currentProject())'), before);
 });
 
 test('collapse removes matching task rows and hidden dependencies, never project data or storage', () => {
