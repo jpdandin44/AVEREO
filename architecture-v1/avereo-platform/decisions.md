@@ -19,3 +19,7 @@ Contexte : une durée temporaire doit s’appliquer aux applications choisies in
 ## 6 novembre 2026 — Un menu natif pour HTML et React
 
 Contexte : généralisation de Mon espace après PR #114. Décision : un Web Component sans dépendance nouvelle, des actions applicatives fournies par emplacements et une copie générée au build. Raisons : les applications utilisent React, des pages HTML intégrées et PHP. Conséquences : même présentation, contrôle de parité en CI et réutilisation des gestionnaires métier ; la copie publique CONNECT reste versionnée pour son paquet sans build Node. [Règle](docs/fonctionnalites-communes.md).
+
+## 6 novembre 2026 — Même structure, contenu propre à l’application
+
+Contexte : le premier menu de #119 ne fournissait pas une liste et des préférences dans toutes les applications métier. Le responsable demande cette extension dans #121 et confirme que CONNECT demeure un portail sans projets métier. Décision : réutiliser les listes existantes, ajouter des listes locales pour Thermo/RGA et définir les préférences par application. Raisons : préserver les stockages et éviter une synchronisation implicite. Conséquences : profil et catalogue communs ; nouveaux réglages limités au navigateur ; toute centralisation en ligne supplémentaire exige un lot distinct. La préparation de 37 fichiers de #119 devient historique ; reconstruire et qualifier le nouveau candidat avant livraison.

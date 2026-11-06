@@ -55,3 +55,9 @@ Le menu est dans l’accueil des missions et au pied de la barre latérale de l�
 [Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.
 
 [Architecture](architecture.md) · [Exigences](requirements.md) · [Feuille de route](roadmap.md) · [Décisions](decisions.md) · [Historique](changelog.md).
+
+## Espaces applicatifs — candidat PR #121
+
+Mes projets revient aux missions locales et enregistre la mission en cours avant navigation. Les préférences règlent le tri et la visibilité des archives. Le stockage `avereo_missions` conserve son format ; aucune synchronisation en ligne n’est ajoutée.
+
+[Règle et portée](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification](../avereo-platform/docs/qualification-mon-espace.md).

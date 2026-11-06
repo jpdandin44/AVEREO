@@ -13,6 +13,18 @@ class Preview(SimpleHTTPRequestHandler):
 
     def do_GET(self):
         route = urllib.parse.urlsplit(self.path).path
+        if self.server.app_name == 'rapport' and route.startswith('/api/'):
+            query = urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query)
+            fixtures = {
+                ('/api/auth.php', 'config'): {'ok': True, 'auth': {'mode': 'connect_gateway', 'configured': True}},
+                ('/api/auth.php', 'me'): {'ok': True, 'user': {'name': 'Compte fictif de revue', 'email': 'fixture@example.invalid'}},
+                ('/api/reports.php', ''): {'ok': True, 'reports': []},
+            }
+            payload = fixtures.get((route, query.get('action', [''])[0]))
+            if payload is None:
+                self.send_error(404, 'No fixture for this action'); return
+            data = json.dumps(payload).encode()
+            self.send_response(200); self.send_header('Content-Type', 'application/json'); self.end_headers(); self.wfile.write(data); return
         if self.server.app_name == 'connect' and route.startswith('/api/'):
             fixtures = {
                 '/api/v1/session': {'authenticated': True, 'approved': True, 'csrfToken': 'fixture-only'},

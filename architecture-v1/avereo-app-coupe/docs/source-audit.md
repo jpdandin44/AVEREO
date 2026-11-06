@@ -78,3 +78,9 @@ consigne l’écart entre la variante de connexion hébergée et la source cumul
 La livraison proposée applique seulement le menu au HTML installé ; ses API et
 ses traitements OAuth restent inchangés. La restauration sur copie est vérifiée ;
 aucune installation ni recette métier hébergée du menu n’est encore réalisée.
+
+## 6 novembre 2026 — Extension de PR #121
+
+Mes projets ouvre le sélecteur natif des projets en ligne. Les préférences propres à Coupe règlent la grille et l’aimantation de l’éditeur dans ce navigateur. Le candidat de livraison doit appliquer ces raccordements à la variante HTML hébergée en conservant ses traitements OAuth et ses API.
+
+Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.

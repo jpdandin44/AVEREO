@@ -55,3 +55,9 @@ Le menu est dans l’en-tête du parcours de rapport et au pied de la barre lat�
 [Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.
 
 [Architecture](architecture.md) · [Exigences](requirements.md) · [Feuille de route](roadmap.md) · [Décisions](decisions.md) · [Historique](changelog.md).
+
+## Espaces applicatifs — candidat PR #121
+
+Mes projets conserve plusieurs rapports dans IndexedDB, en plus du brouillon historique. La sauvegarde et le retour à la liste préservent les données complètes ; un échec garde le rapport ouvert. Les préférences règlent le tri et le nom des étapes. Ces données sont locales au navigateur, sans synchronisation en ligne.
+
+[Règle et portée](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification](../avereo-platform/docs/qualification-mon-espace.md).

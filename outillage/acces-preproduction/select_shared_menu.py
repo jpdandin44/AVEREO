@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 import zipfile
 
-from prepare_shared_menu import TARGETS, SOURCE, recover_files
+from prepare_shared_menu import TARGETS, SOURCE, recover_files, require_source
 from release_selected_preprod import declared_root, digest, record, require, safe_name
 
 EXCLUDED = {
@@ -39,12 +39,24 @@ def coupe_menu_only(before, accepted):
     sidebar_end = '        </aside>\n\n        <!-- MAIN WORKSPACE : CANVAS -->'
     edits = [('</head>', script + '</head>'), (old_button, ''),
              (sidebar_end, menu + sidebar_end), (old_label, new_label)]
+    preferences = ''
+    start_marker = '    /* AVEREO Coupe preferences begin */'
+    end_marker = '    /* AVEREO Coupe preferences end */'
+    if start_marker in source:
+        require(source.count(start_marker) == source.count(end_marker) == 1, 'Coupe preferences markers differ')
+        start = source.index(start_marker)
+        end = source.index(end_marker, start) + len(end_marker) + 1
+        preferences = source[start:end]
+        require('cad-grid-toggle' in original and 'cad-snap-toggle' in original, 'Coupe editor controls absent')
+        anchor = '    window.onload = () => app.init();'
+        edits.append((anchor, preferences + anchor))
     for old, new in edits:
         require(html.count(old) == 1, 'Installed Coupe menu anchor differs')
         html = html.replace(old, new, 1)
     require('connect_gateway' not in original and 'connect_gateway' not in html,
             'This overlay is only for the observed OAuth variant')
     inverse = html.replace(new_label, old_label, 1).replace(menu, '', 1)
+    if preferences: inverse = inverse.replace(preferences, '', 1)
     inverse = inverse.replace(script, '', 1)
     # Restore the toolbar button at its original position for byte-level comparison.
     following = '            <button onclick="app.resetProject()"'
@@ -54,12 +66,13 @@ def coupe_menu_only(before, accepted):
     return html.replace('\n', newline).encode('utf-8')
 
 
-def build(delivery, output):
+def build(delivery, output, expected_source=SOURCE):
     require(not output.exists(), 'Keep existing selection')
     receipt = json.loads((delivery / 'preparation-serveur.json').read_text(encoding='utf-8'))
-    require(receipt['sourceSha'] == SOURCE and set(receipt['applications']) == set(TARGETS),
+    require_source(receipt['sourceSha'], expected_source)
+    require(set(receipt['applications']) == set(TARGETS),
             'Preparation source or scope differs')
-    selection = {'sourceSha': SOURCE, 'observedAt': datetime.now(timezone.utc).isoformat(),
+    selection = {'sourceSha': expected_source, 'observedAt': datetime.now(timezone.utc).isoformat(),
                  'status': 'prepared_not_deployed', 'applications': {}, 'exclusions': {},
                  'coupeAdaptation': 'PR119 menu only on the installed OAuth variant; inverse byte equality'}
     output.mkdir(parents=True)
@@ -94,16 +107,17 @@ def build(delivery, output):
             'files': sum(len(a['operations']) for a in selection['applications'].values())}
 
 
-def verify(work, selected):
+def verify(work, selected, expected_source=SOURCE):
     require(work.resolve() == work and work.parent == Path('/home/daje3540/private')
             and work.name.startswith('mon-espace-preprod-'), 'Private preparation required')
     require(selected.resolve() == selected and selected.parent == work, 'Private selection required')
     original = json.loads((work / 'preparation.json').read_text())
     selection = json.loads((selected / 'selection.json').read_text())
-    require(selection['sourceSha'] == original['sourceSha'] == SOURCE
+    require_source(original['sourceSha'], expected_source)
+    require(selection['sourceSha'] == original['sourceSha']
             and set(selection['applications']) == set(TARGETS), 'Source or scope differs')
     require(digest((selected / 'payload.zip').read_bytes()) == selection['artifactSha256'], 'Payload differs')
-    result = {'observedAt': datetime.now(timezone.utc).isoformat(), 'sourceSha': SOURCE,
+    result = {'observedAt': datetime.now(timezone.utc).isoformat(), 'sourceSha': expected_source,
               'artifactSha256': selection['artifactSha256'], 'status': 'rehearsed_not_deployed',
               'applications': {}, 'liveFilesModified': False, 'databaseAccessed': False}
     with zipfile.ZipFile(selected / 'payload.zip') as archive:
@@ -132,6 +146,7 @@ if __name__ == '__main__':
     parser.add_argument('action', choices=['build', 'verify'])
     parser.add_argument('--work', type=Path, required=True)
     parser.add_argument('--selection', type=Path, required=True)
+    parser.add_argument('--expected-source', default=SOURCE)
     args = parser.parse_args()
-    result = build(args.work, args.selection) if args.action == 'build' else verify(args.work, args.selection)
+    result = build(args.work, args.selection, args.expected_source) if args.action == 'build' else verify(args.work, args.selection, args.expected_source)
     print(json.dumps(result))

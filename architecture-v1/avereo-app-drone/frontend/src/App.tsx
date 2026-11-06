@@ -1,3 +1,5 @@
+import { readMissions, writeMissions } from './mission-storage.js';
+import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';
 import React, { useState, useEffect } from 'react';
 import { 
   Plane, 
@@ -127,8 +129,12 @@ const EXTERNAL_LINKS = [
 
 // --- COMPONENTS ---
 
+const dronePreferences = [{"key": "sort", "label": "Ordre des missions", "type": "select", "default": "recent", "options": [{"value": "recent", "label": "Plus récentes en premier"}, {"value": "site", "label": "Nom du site, de A à Z"}]}, {"key": "archived", "label": "Afficher les missions archivées", "type": "checkbox", "default": true}];
+
 // 1. DASHBOARD COMPONENT
 const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
+  const preferences = useAppPreferences('drone', dronePreferences, { useState, useEffect });
+  const visibleMissions = missions.filter((m: Mission) => preferences.archived || m.status !== 'ARCHIVED').slice().sort((a: Mission,b: Mission) => preferences.sort === 'site' ? String(a.site_name || '').localeCompare(String(b.site_name || ''), 'fr') : (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
   const getStatusColor = (status: MissionStatus) => {
     switch (status) {
       case 'DRAFT': return 'bg-gray-100 text-gray-600 border-gray-300';
@@ -143,8 +149,8 @@ const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
     <div className="p-6 max-w-7xl mx-auto">
       <div className="flex flex-wrap gap-3 justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-slate-800">Missions AVEREO</h1>
-          <p className="text-slate-500 mt-1">Gestion des opérations drone & conformité</p>
+          <h1 id="drone-projects" tabIndex={-1} className="text-3xl font-bold text-slate-800">Mes projets — Missions Drone</h1>
+          <p className="text-slate-500 mt-1">Missions conservées dans ce navigateur</p>
         </div>
         <button 
           onClick={onCreate}
@@ -152,11 +158,11 @@ const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
         >
           <Plus size={20} /> Nouvelle Mission
         </button>
-        <avereo-account-menu></avereo-account-menu>
+        <avereo-account-menu preferences-app="drone" preferences-label="Drone" preferences-fields={JSON.stringify(dronePreferences)}><button slot="items" type="button" onClick={() => document.getElementById('drone-projects')?.focus()}>Mes projets</button></avereo-account-menu>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {missions.length === 0 && (
+        {visibleMissions.length === 0 && (
           <div className="col-span-full text-center py-20 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300">
             <Plane className="mx-auto h-12 w-12 text-slate-400 mb-4" />
             <h3 className="text-lg font-medium text-slate-900">Aucune mission</h3>
@@ -164,7 +170,7 @@ const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
           </div>
         )}
         
-        {missions.map((m: Mission) => (
+        {visibleMissions.map((m: Mission) => (
           <div key={m.id} className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow overflow-hidden group">
             <div className="p-5">
               <div className="flex justify-between items-start mb-4">
@@ -206,7 +212,7 @@ const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
 };
 
 // 2. WIZARD / MISSION EDITOR
-const MissionEditor = ({ mission: initialData, onSave, onCancel }: any) => {
+const MissionEditor = ({ mission: initialData, onSave, onCancel, onProjects }: any) => {
   const [mission, setMission] = useState<Mission>(initialData);
   const [step, setStep] = useState(1);
   const [showLinks, setShowLinks] = useState(false);
@@ -295,7 +301,7 @@ const MissionEditor = ({ mission: initialData, onSave, onCancel }: any) => {
               {showLinks && <span className="text-xs text-slate-400">Mission prête: {calculateProgress()}%</span>}
            </div>
         </div>
-        <avereo-account-menu placement="sidebar" compact={showLinks ? undefined : "always"}></avereo-account-menu>
+        <avereo-account-menu placement="sidebar" compact={showLinks ? undefined : "always"} preferences-app="drone" preferences-label="Drone" preferences-fields={JSON.stringify(dronePreferences)}><button slot="items" type="button" onClick={() => onProjects(mission)}>Mes projets</button></avereo-account-menu>
       </div>
 
       {/* MAIN CONTENT */}
@@ -721,25 +727,20 @@ export default function App() {
   const [missions, setMissions] = useState<Mission[]>([]);
   const [currentMission, setCurrentMission] = useState<Mission | null>(null);
 
-  // Load from local storage on mount
+  const [storageError, setStorageError] = useState('');
   useEffect(() => {
-    const saved = localStorage.getItem('avereo_missions');
-    if (saved) {
-      try {
-        setMissions(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to load missions", e);
-      }
-    }
+    try { setMissions(readMissions()); }
+    catch { setStorageError('La liste des missions ne peut pas être lue. Son contenu est conservé sans remplacement.'); }
   }, []);
-
-  // Save to local storage on change
-  useEffect(() => {
-    localStorage.setItem('avereo_missions', JSON.stringify(missions));
-  }, [missions]);
+  const persistMissions = (next: Mission[]) => {
+    try { writeMissions(next); setMissions(next); setStorageError(''); return true; }
+    catch { setStorageError('Enregistrement impossible. La mission reste ouverte ; vérifiez le stockage de ce navigateur.'); return false; }
+  };
+  const updatedMissions = (mission: Mission) => missions.some(item => item.id === mission.id)
+    ? missions.map(item => item.id === mission.id ? mission : item) : [...missions, mission];
 
   const handleCreate = () => {
-    const newMission = { ...initialMission, id: Date.now().toString() };
+    const newMission = { ...initialMission, id: crypto.randomUUID(), createdAt: Date.now() };
     setCurrentMission(newMission);
     setView('editor');
   };
@@ -751,18 +752,12 @@ export default function App() {
 
   const handleDelete = (id: string) => {
     if (confirm('Supprimer cette mission définitivement ?')) {
-      setMissions(prev => prev.filter(m => m.id !== id));
+      persistMissions(missions.filter(m => m.id !== id));
     }
   };
 
   const handleSave = (mission: Mission) => {
-    setMissions(prev => {
-      const exists = prev.find(m => m.id === mission.id);
-      if (exists) {
-        return prev.map(m => m.id === mission.id ? mission : m);
-      }
-      return [...prev, mission];
-    });
+    if (!persistMissions(updatedMissions(mission))) return;
     // Check if we want to print or just go back
     if (confirm('Mission sauvegardée. Voulez-vous imprimer la fiche mission PDF maintenant ?')) {
       setCurrentMission(mission);
@@ -782,6 +777,7 @@ export default function App() {
         }
       `}</style>
 
+      {storageError && <p role="alert" className="p-4 bg-red-50 text-red-800">{storageError}</p>}
       {view === 'dashboard' && (
         <Dashboard 
           missions={missions} 
@@ -794,6 +790,7 @@ export default function App() {
       {view === 'editor' && currentMission && (
         <MissionEditor 
           mission={currentMission} 
+          onProjects={(mission: Mission) => { if (persistMissions(updatedMissions(mission))) setView('dashboard'); }}
           onSave={handleSave} 
           onCancel={() => setView('dashboard')} 
         />

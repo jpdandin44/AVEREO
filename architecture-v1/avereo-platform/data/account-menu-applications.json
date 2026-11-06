@@ -9,11 +9,13 @@
       ],
       "surface": "Portail PHP actif ; frontend historique conservé",
       "capabilities": [
+        "preferences",
         "account",
         "applications",
         "administration",
         "logout"
-      ]
+      ],
+      "workspaceScope": "Catalogue CONNECT, réglages de ce navigateur"
     },
     {
       "id": "projet",
@@ -27,7 +29,8 @@
         "account",
         "applications",
         "logout"
-      ]
+      ],
+      "workspaceScope": "Dossiers et préférences natifs de Projet"
     },
     {
       "id": "rapport",
@@ -36,6 +39,8 @@
       ],
       "surface": "En-tête Rapport et barre latérale RGA",
       "capabilities": [
+        "projects",
+        "preferences",
         "reports",
         "account",
         "applications",
@@ -43,7 +48,8 @@
       ],
       "modules": [
         "rga"
-      ]
+      ],
+      "workspaceScope": "Rapports natifs ; préférences du navigateur. RGA : liste de points et préférences distinctes"
     },
     {
       "id": "coupe",
@@ -52,11 +58,13 @@
       ],
       "surface": "Pied de barre latérale",
       "capabilities": [
+        "preferences",
         "projects",
         "account",
         "applications",
         "logout"
-      ]
+      ],
+      "workspaceScope": "Projets en ligne natifs ; grille et aimantation du navigateur"
     },
     {
       "id": "thermo",
@@ -65,10 +73,13 @@
       ],
       "surface": "En-tête et pied du référentiel",
       "capabilities": [
+        "projects",
+        "preferences",
         "account",
         "applications",
         "logout"
-      ]
+      ],
+      "workspaceScope": "Rapports dans IndexedDB et préférences dans ce navigateur"
     },
     {
       "id": "drone",
@@ -77,10 +88,13 @@
       ],
       "surface": "En-tête accueil et pied de barre latérale de mission",
       "capabilities": [
+        "projects",
+        "preferences",
         "account",
         "applications",
         "logout"
-      ]
+      ],
+      "workspaceScope": "Missions et préférences dans ce navigateur"
     },
     {
       "id": "recherche",
@@ -102,12 +116,15 @@
       ],
       "surface": "En-tête",
       "capabilities": [
+        "projects",
+        "preferences",
         "properties",
         "account",
         "applications",
         "administration",
         "logout"
-      ]
+      ],
+      "workspaceScope": "Biens natifs ; préférences dans ce navigateur"
     },
     {
       "id": "saisie-unique",
@@ -120,5 +137,9 @@
       ]
     }
   ],
-  "deferred": []
+  "deferred": [],
+  "commonDestinations": {
+    "account": "CONNECT /#profile",
+    "applications": "CONNECT /"
+  }
 }

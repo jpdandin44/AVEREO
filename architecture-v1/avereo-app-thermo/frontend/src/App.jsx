@@ -1,6 +1,14 @@
+import { thermoProjects } from './thermo-projects.js';
+import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { saveAs } from 'file-saver';
 import { Camera, Mic, Upload, FileText, Trash2, ArrowLeft, ArrowRight, CheckCircle, Eye, X, Home, PlusCircle, Edit, BookOpen, ChevronLeft, AlertTriangle } from 'lucide-react';
+
+const thermoPreferences = [
+    { key: 'sort', label: 'Ordre des rapports', type: 'select', default: 'recent', options: [{ value: 'recent', label: 'Plus récents en premier' }, { value: 'name', label: 'Référence, de A à Z' }] },
+    { key: 'stepLabels', label: 'Afficher le nom des étapes du rapport', type: 'checkbox', default: true },
+];
+const ThermoAccountMenu = ({ onProjects, sidebar = false }) => <avereo-account-menu placement={sidebar ? 'sidebar' : undefined} preferences-app="thermo" preferences-label="Thermo" preferences-fields={JSON.stringify(thermoPreferences)}><button slot="items" type="button" onClick={onProjects}>Mes projets</button></avereo-account-menu>;
 
 // --- Helpers : Chargement dynamique de script (pour Chart.js) ---
 const useScript = (url) => {
@@ -34,10 +42,17 @@ const loadDraft = async () => {
     return Promise.resolve(JSON.parse(localStorage.getItem('draftReport') || 'null'));
 };
 
-const removeDraft = () => {
-    const idb = getIDB();
-    if (idb?.del) return idb.del('draftReport');
-    return Promise.resolve(localStorage.removeItem('draftReport'));
+// Serialize draft/project writes so an older autosave cannot replace a newer report.
+let reportWrites = Promise.resolve();
+const persistReport = (data) => {
+    const snapshot = structuredClone(data);
+    const result = reportWrites.catch(() => {}).then(async () => {
+        const saved = await thermoProjects.save(snapshot);
+        await saveDraft(saved);
+        return saved;
+    });
+    reportWrites = result;
+    return result;
 };
 
 // --- Helpers : Permissions Média ---
@@ -248,7 +263,7 @@ const THERMO_DATA = {
 };
 
 // --- COMPOSANT RÉFÉRENTIEL THERMOGRAPHIQUE ---
-const ThermoReferentiel = ({ onClose }) => {
+const ThermoReferentiel = ({ onClose, onProjects = onClose }) => {
     const [activeTab, setActiveTab] = useState('overview');
     const [selectedCatId, setSelectedCatId] = useState(null);
     const [expandedProtocols, setExpandedProtocols] = useState({});
@@ -350,7 +365,7 @@ const ThermoReferentiel = ({ onClose }) => {
                         DOCUMENT TECHNIQUE NON OPPOSABLE
                     </div>
                 </div>
-                <avereo-account-menu placement="sidebar"></avereo-account-menu>
+                <ThermoAccountMenu sidebar onProjects={onProjects} />
             </aside>
 
             {/* Main Content Area */}
@@ -822,7 +837,7 @@ const Header = ({ onGoHome, onOpenReferentiel }) => {
                     <p className="text-sm text-gray-500 text-orange-600 font-semibold">Expertise Thermographique</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <avereo-account-menu></avereo-account-menu>
+                    <ThermoAccountMenu onProjects={onGoHome || (() => document.getElementById('thermo-projects')?.focus())} />
                     {onOpenReferentiel && (
                         <button onClick={onOpenReferentiel} className="flex items-center gap-2 px-3 py-2 bg-orange-50 text-orange-700 border border-orange-200 rounded-md hover:bg-orange-100 transition shadow-sm text-sm font-semibold">
                             <BookOpen size={16}/> <span className="hidden sm:inline">Référentiel</span>
@@ -1223,14 +1238,16 @@ const Step6_SignatureExport = ({ data, setData, onGenerateDocx, onPreview }) => 
 };
 
 // --- APP PRINCIPALE WIZARD ---
-const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel }) => {
+const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel, onDraftChange }) => {
+    const preferences = useAppPreferences('thermo', thermoPreferences, { useState, useEffect });
     const [currentStep, setCurrentStep] = useState(1);
     const [reportData, setReportData] = useState(initialData);
     const [isPreviewVisible, setIsPreviewVisible] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
 
     useEffect(() => {
-        const handler = setTimeout(() => saveDraft(reportData), 1000);
+        onDraftChange(reportData);
+        const handler = setTimeout(() => persistReport(reportData).catch(() => setToastMessage('Enregistrement impossible. Gardez ce rapport ouvert et vérifiez le stockage du navigateur.')), 1000);
         return () => clearTimeout(handler);
     }, [reportData]);
 
@@ -1242,14 +1259,14 @@ const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel }) => {
 
     return (
         <div className="bg-gray-50 min-h-screen font-sans pb-28">
-            <Header onGoHome={onGoHome} onOpenReferentiel={onOpenReferentiel} />
+            <Header onGoHome={() => onGoHome(reportData)} onOpenReferentiel={onOpenReferentiel} />
 
             <main className="max-w-4xl mx-auto p-4">
                 <div className="flex items-center justify-between mb-8 bg-white p-4 rounded-lg shadow-sm overflow-x-auto hide-scrollbar">
                     {["Type", "Catégorie", "Infos & Mesures", "Protocoles", "Thermogrammes", "Validation"].map((step, index) => (
                         <div key={index} className="flex flex-col items-center mx-2 shrink-0">
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white ${index + 1 <= currentStep ? 'bg-blue-600' : 'bg-gray-300'}`}>{index + 1}</div>
-                            <p className="text-xs mt-1 text-gray-600">{step}</p>
+                            {preferences.stepLabels && <p className="text-xs mt-1 text-gray-600">{step}</p>}
                         </div>
                     ))}
                 </div>
@@ -1264,7 +1281,7 @@ const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel }) => {
 
             <footer className="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow z-20">
                 <div className="max-w-6xl mx-auto flex justify-between items-center">
-                    <button onClick={() => {saveDraft(reportData); setToastMessage('Brouillon sauvé'); setTimeout(()=>setToastMessage(''),2000);}} className="px-4 py-2 text-sm bg-gray-200 rounded-md">Sauver</button>
+                    <button onClick={async () => { try { await persistReport(reportData); setToastMessage('Rapport enregistré dans Mes projets, dans ce navigateur.'); } catch { setToastMessage('Enregistrement impossible. Le rapport reste ouvert.'); } }} className="px-4 py-2 text-sm bg-gray-200 rounded-md">Sauver</button>
                     <div className="flex gap-4">
                         {currentStep > 1 && <button onClick={() => setCurrentStep(s => s - 1)} className="px-6 py-2 bg-white border rounded-md">Précédent</button>}
                         {currentStep < 6 && <button onClick={() => setCurrentStep(s => s + 1)} className="px-6 py-2 bg-blue-600 text-white rounded-md">Suivant</button>}
@@ -1280,7 +1297,7 @@ const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel }) => {
                     </div>
                 </div>
             )}
-            {toastMessage && <div className="fixed bottom-24 right-4 bg-green-600 text-white px-4 py-2 rounded shadow-lg">{toastMessage}</div>}
+            {toastMessage && <div className="fixed bottom-24 right-4 bg-slate-800 text-white px-4 py-2 rounded shadow-lg">{toastMessage}</div>}
         </div>
     );
 };
@@ -1296,77 +1313,100 @@ const initialReport = {
     thermogrammes: [], analyse_expert: '', recommandations: '', nom_signataire: '', signature: ''
 };
 
+const prepareReport = data => ({
+    ...data,
+    avereoProjectId: data.avereoProjectId || crypto.randomUUID(),
+    conditions_mesure: data.conditions_mesure || structuredClone(initialReport.conditions_mesure),
+    materiel_thermique: data.materiel_thermique || structuredClone(initialReport.materiel_thermique),
+    thermogrammes: data.thermogrammes || [],
+});
+
 export default function App() {
-    const [appState, setAppState] = useState('loading'); // 'loading', 'home', 'wizard', 'referentiel_fullscreen'
-    const [initialWizardData, setInitialWizardData] = useState(initialReport);
+    const [appState, setAppState] = useState('loading');
+    const [initialWizardData, setInitialWizardData] = useState(null);
+    const [projects, setProjects] = useState([]);
+    const [error, setError] = useState('');
+    const [storageReadable, setStorageReadable] = useState(true);
+    const [busy, setBusy] = useState(false);
     const [showReferentielOverlay, setShowReferentielOverlay] = useState(false);
+    const currentDraft = useRef(null);
+    const preferences = useAppPreferences('thermo', thermoPreferences, { useState, useEffect });
 
     useEffect(() => {
-        const checkDraft = async () => {
-            const draft = await loadDraft();
-            if(draft && draft.categorie) {
-                // Ensure new fields exist if loading old draft
-                draft.conditions_mesure = draft.conditions_mesure || initialReport.conditions_mesure;
-                draft.materiel_thermique = draft.materiel_thermique || initialReport.materiel_thermique;
-                draft.thermogrammes = draft.thermogrammes || [];
-                setInitialWizardData(draft);
-            }
+        (async () => {
+            try {
+                const draft = await loadDraft();
+                if (draft) {
+                    if (!draft.categorie) throw new Error('Le brouillon existant est illisible. Il est conservé sans remplacement.');
+                    currentDraft.current = prepareReport(draft);
+                    setInitialWizardData(currentDraft.current);
+                }
+                setProjects(await thermoProjects.list());
+            } catch (err) { setError(err.message || 'Stockage indisponible.'); setStorageReadable(false); }
             setAppState('home');
-        };
-        checkDraft();
+        })();
     }, []);
 
-    const startNew = async () => { await removeDraft(); setInitialWizardData(initialReport); setAppState('wizard'); };
+    const changeProject = async (data = null) => {
+        if (busy || !storageReadable) return;
+        setBusy(true); setError('');
+        try {
+            if (currentDraft.current) await persistReport(currentDraft.current);
+            const next = prepareReport((data?.avereoProjectId === currentDraft.current?.avereoProjectId ? currentDraft.current : data) || { ...structuredClone(initialReport), date_visite: new Date().toISOString().split('T')[0] });
+            await persistReport(next);
+            currentDraft.current = next;
+            setInitialWizardData(next);
+            setAppState('wizard');
+        } catch { setError('Le changement de projet est interrompu : vérifiez le stockage du navigateur. Le rapport en cours est conservé.'); }
+        finally { setBusy(false); }
+    };
+    const goProjects = async (data = currentDraft.current) => {
+        if (busy) return;
+        setBusy(true); setError('');
+        try {
+            if (data) {
+                const saved = await persistReport(data);
+                currentDraft.current = saved; setInitialWizardData(saved);
+            }
+            setProjects(await thermoProjects.list());
+            setShowReferentielOverlay(false); setAppState('home');
+        } catch { setError('Impossible d’enregistrer le rapport. Il reste ouvert : vérifiez le stockage du navigateur.'); }
+        finally { setBusy(false); }
+    };
+    const errorBanner = error && <p role="alert" className="p-4 bg-red-50 text-red-800 border border-red-200 rounded">{error}</p>;
 
     if (appState === 'loading') return <div className="min-h-screen bg-gray-100 flex items-center justify-center">Chargement...</div>;
-    
-    if (appState === 'referentiel_fullscreen') {
-        return <ThermoReferentiel onClose={() => setAppState('home')} />;
-    }
-
+    if (appState === 'referentiel_fullscreen') return <ThermoReferentiel onClose={() => setAppState('home')} />;
     if (appState === 'home') {
-        const draftExists = initialWizardData && initialWizardData.categorie && initialWizardData !== initialReport;
-        
-        return (
-            <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
-                <Header onOpenReferentiel={() => setAppState('referentiel_fullscreen')} />
-                
-                <div className="bg-white p-8 rounded-xl shadow-lg max-w-2xl w-full text-center mt-12 border border-gray-200">
-                    <h2 className="text-3xl font-bold text-gray-800 mb-2">Bienvenue sur AVEREO</h2>
-                    <p className="text-gray-600 mb-8">Créez vos rapports d'expertise professionnels simplement.</p>
-                    
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-                        <button onClick={startNew} className="flex-1 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold flex justify-center items-center gap-2 transition shadow-sm">
-                            <PlusCircle size={22}/> Nouveau Rapport
-                        </button>
-                        <button onClick={() => setAppState('wizard')} className="flex-1 py-4 bg-white border-2 border-gray-300 text-gray-800 rounded-lg hover:bg-gray-50 font-bold flex justify-center items-center gap-2 transition shadow-sm">
-                            <Edit size={22}/> Reprendre le brouillon
-                        </button>
-                    </div>
-
-                    <div className="border-t pt-8 mt-4">
-                        <h3 className="text-lg font-semibold text-gray-700 mb-4">Ressources & Documentation</h3>
-                        <button onClick={() => setAppState('referentiel_fullscreen')} className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-orange-50 border-2 border-orange-200 text-orange-700 rounded-lg font-semibold hover:bg-orange-100 transition shadow-sm text-lg">
-                            <BookOpen size={22} /> Consulter le Référentiel Thermographique
-                        </button>
-                    </div>
+        const sorted = projects.slice().sort((a, b) => preferences.sort === 'name'
+            ? (a.data.reference_dossier || a.data.adresse_logement || '').localeCompare(b.data.reference_dossier || b.data.adresse_logement || '', 'fr')
+            : b.updatedAt.localeCompare(a.updatedAt));
+        return <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
+            <Header onOpenReferentiel={() => setAppState('referentiel_fullscreen')} />
+            <main className="bg-white p-6 rounded-xl shadow-lg max-w-3xl w-full mt-8 border border-gray-200">
+                <h2 id="thermo-projects" tabIndex={-1} className="text-3xl font-bold text-gray-800 mb-2">Mes projets — Thermo</h2>
+                <p className="text-gray-600 mb-6">Vos rapports sont enregistrés dans ce navigateur. Ils ne sont pas synchronisés en ligne.</p>
+                {errorBanner}
+                <div className="flex flex-wrap gap-4 my-6">
+                    <button disabled={busy || !storageReadable} onClick={() => changeProject()} className="px-5 py-3 bg-blue-600 text-white rounded-lg disabled:opacity-50">Nouveau rapport</button>
+                    {initialWizardData && <button disabled={busy} onClick={() => setAppState('wizard')} className="px-5 py-3 border rounded-lg">Reprendre le brouillon</button>}
                 </div>
-            </div>
-        );
+                {!sorted.length && <p className="py-4 text-gray-500">Aucun rapport enregistré dans cette liste. Votre brouillon existant sera ajouté à sa prochaine sauvegarde.</p>}
+                <ul className="space-y-3">{sorted.map(project => <li key={project.id} className="flex flex-wrap gap-4 items-center justify-between border rounded-lg p-4">
+                    <div><h3 className="font-semibold">{project.data.reference_dossier || project.data.adresse_logement || 'Rapport sans référence'}</h3><p className="text-sm text-gray-500">{project.data.adresse_logement} · {new Date(project.updatedAt).toLocaleString('fr-FR')}</p></div>
+                    <button disabled={busy || !storageReadable} onClick={() => changeProject(project.data)} className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg">Ouvrir</button>
+                </li>)}</ul>
+                <button onClick={() => setAppState('referentiel_fullscreen')} className="mt-8 px-4 py-3 border rounded-lg text-orange-700">Consulter le référentiel thermographique</button>
+            </main>
+        </div>;
     }
-
-    return (
-        <>
-            <ReportWizard 
-                initialData={initialWizardData} 
-                onGoHome={() => setAppState('home')} 
-                onOpenReferentiel={() => setShowReferentielOverlay(true)} 
-            />
-            {showReferentielOverlay && (
-                <div className="fixed inset-0 z-[60] bg-white overflow-y-auto">
-                    <ThermoReferentiel onClose={() => setShowReferentielOverlay(false)} />
-                </div>
-            )}
-        </>
-    );
+    return <>
+        {errorBanner && <div className="fixed top-0 inset-x-0 z-[70]">{errorBanner}</div>}
+        <ReportWizard key={initialWizardData.avereoProjectId} initialData={initialWizardData}
+            onDraftChange={data => { currentDraft.current = data; }} onGoHome={goProjects}
+            onOpenReferentiel={() => setShowReferentielOverlay(true)} />
+        {showReferentielOverlay && <div className="fixed inset-0 z-[60] bg-white overflow-y-auto">
+            <ThermoReferentiel onClose={() => setShowReferentielOverlay(false)} onProjects={() => goProjects()} />
+        </div>}
+    </>;
 }

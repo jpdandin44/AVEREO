@@ -209,3 +209,9 @@ Le menu regroupe Mes biens, l’administration métier conditionnée au rôle et
 
 L’[annexe d’audit Mon espace](docs/source-audit-mon-espace.md) décrit le nouvel écart
 et sa parité, en conservant les preuves historiques approuvées.
+
+## Espaces applicatifs — candidat PR #121
+
+Mes projets reprend la liste native des biens. Les préférences de ce navigateur règlent le tri par adresse et l’affichage de la composition ; les biens et documents conservent leur stockage existant. Mon compte et Mes applications ouvrent CONNECT.
+
+[Règle et portée](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification](../avereo-platform/docs/qualification-mon-espace.md).

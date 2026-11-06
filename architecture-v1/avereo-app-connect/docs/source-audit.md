@@ -274,3 +274,9 @@ Le portail appelle toujours deux opérations distinctes. Le pont de provisionnem
 ## 2026-11-06 — Session conservée après activation
 
 Écart ciblé du portail PHP : fermeture de session après confirmation réussie et messages de reconnexion. Frontend historique et module Drupal inchangés. Les deux fichiers sont installés en préproduction après accord, avec empreintes et permissions contrôlées ; les tests fictifs sur le code installé réussissent. La première connexion du compte neuf sans accès applicatif a été vérifiée avec saisie humaine et même mot de passe, puis le compte fictif archivé et les autres états/droits conservés. [Diagnostic, données et preuves](retour-activation-connexion.md).
+
+## 6 novembre 2026 — Extension de PR #121
+
+Le portail PHP ajoute ses préférences de tri et de visibilité du catalogue, enregistrées dans ce navigateur. Mon compte et Mes applications restent les destinations communes ; CONNECT ne possède pas de rubrique Mes projets. Aucun contrôle de droit ni parcours d’activation n’est modifié.
+
+Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.

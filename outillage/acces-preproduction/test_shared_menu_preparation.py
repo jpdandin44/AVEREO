@@ -32,6 +32,12 @@ class SharedMenuPreparationTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             coupe_menu_only(original + b'connect_gateway', accepted)
 
+    def test_explicit_source_must_match(self):
+        menu.require_source('a'*40, 'a'*40)
+        for actual, expected in [('a'*40, 'b'*40), ('invalid', 'invalid')]:
+            with self.assertRaisesRegex(ValueError, 'Source differs'):
+                menu.require_source(actual, expected)
+
     def test_private_paths_and_traversal_refused(self):
         for name in ('../x', '/x', '.env', 'api/config.php', 'a\\b'):
             with self.subTest(name=name), self.assertRaises(ValueError):

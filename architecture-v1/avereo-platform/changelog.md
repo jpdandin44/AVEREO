@@ -25,3 +25,7 @@ paquet réduit de 37 fichiers et retour arrière vérifié sur copies privées. 
 écarts antérieurs au menu restent hors du lot ; Coupe conserve sa connexion
 historique. [Dossier de livraison](docs/preparation-mon-espace.md). Aucun fichier
 applicatif actif remplacé.
+
+## 2026-11-06 — Extension des espaces applicatifs dans PR #121
+
+Menus métier « Mes projets » et « Préférences », profil/catalogue CONNECT communs, listes locales Thermo/RGA, préférences séparées et erreurs de stockage explicites. CONNECT conserve son rôle de portail. Contrat, contrôles et préparation révisés dans le [suivi canonique](data/suivi-fonctions-communes.json). Aucun déploiement induit par ces changements.

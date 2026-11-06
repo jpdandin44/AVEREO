@@ -275,8 +275,8 @@
                 <ul class="item-list" id="cut-list"></ul>
 
             </div>
-            <avereo-account-menu id="coupe-account-menu" placement="sidebar">
-                <button slot="items" type="button" onclick="app.openProjectOnline()">Mes projets en ligne</button>
+            <avereo-account-menu id="coupe-account-menu" placement="sidebar" preferences-app="coupe" preferences-label="Coupe" preferences-fields="[{&quot;key&quot;: &quot;grid&quot;, &quot;label&quot;: &quot;Afficher la grille de l’éditeur de coupe&quot;, &quot;type&quot;: &quot;checkbox&quot;, &quot;default&quot;: true}, {&quot;key&quot;: &quot;snap&quot;, &quot;label&quot;: &quot;Activer l’aimantation sur 5 cm&quot;, &quot;type&quot;: &quot;checkbox&quot;, &quot;default&quot;: true}]">
+                <button slot="items" type="button" onclick="app.openProjectOnline()">Mes projets</button>
                 <button slot="logout" id="online-auth-btn" type="button" onclick="app.handleOnlineAuthClick()">Connexion AVEREO</button>
             </avereo-account-menu>
         </aside>
@@ -5983,6 +5983,18 @@
             }
         };
 
+        /* AVEREO Coupe preferences begin */
+        function applyCoupePreferences() {
+            const values = document.getElementById('coupe-account-menu').settings;
+            document.getElementById('cad-grid-toggle').checked = values.grid;
+            document.getElementById('cad-snap-toggle').checked = values.snap;
+            app.toggleGrid();
+        }
+        document.addEventListener('avereo-preferences-change', event => {
+            if (event.detail.app === 'coupe') applyCoupePreferences();
+        });
+        window.addEventListener('load', () => customElements.whenDefined('avereo-account-menu').then(applyCoupePreferences));
+        /* AVEREO Coupe preferences end */
         window.onload = () => app.init();
     </script>
 </body>

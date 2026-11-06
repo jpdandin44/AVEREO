@@ -12,6 +12,43 @@ tags: [avereo, interface, fonctions-communes]
 
 # Qualification de Mon espace
 
+## Candidat actuel — extension PR #121
+
+Phase **Développement local**. Les projets et préférences restent propres à chaque
+application ; profil et catalogue CONNECT communs. CONNECT demeure un portail sans
+projets métier, décision confirmée par le responsable. La préparation #119 de 37
+fichiers ci-dessous est historique et ne qualifie pas cette extension.
+
+Contrôles locaux du 6 novembre : neuf compilations (Rapport en mode en ligne),
+20 tests du composant, 101 tests Rapport dont 3 RGA, 3 Thermo, 3 Drone, 29 Passeport,
+les tests Projet inclus dans son build, 10 tests de préparation, 5 d’emballage et
+le contrôle général du dépôt. La variante Coupe enrichie a été appliquée à sa copie
+hébergée historique avec inversion exacte, sans modification OAuth/API.
+
+Revue du navigateur intégré, ports 53120 à 53127, avec données fictives :
+
+- Thermo : deux rapports indépendants, sauvegarde avant retour à Mes projets,
+  rechargement et réouverture du premier avec sa référence et son propriétaire.
+  Préférences de tri et noms d’étapes conservées après rechargement.
+- Drone : mission conservée par Mes projets, retrouvée après rechargement.
+- RGA : point conservé et réouvert, consultation relancée et tri par nom mémorisé.
+- Rapport : nouveau dossier au format client ; modifier la préférence en expert
+  puis rouvrir ce brouillon conserve le format client. Mes projets sauvegarde le
+  brouillon et revient à la liste native, y compris la liste des rapports en ligne.
+- Passeport : biens de démonstration et masquage effectif de leur composition.
+- Coupe : préférences de grille et d’aimantation retrouvées dans les contrôles CAO.
+- Projet : actions natives et lien Mon compte direct vers CONNECT.
+- CONNECT : préférences du catalogue et rubriques communes, sans Mes projets.
+- Thermo à 390 × 844 : menu entre x=106 et x=378, sans débordement horizontal,
+  dialogue de préférences accessible ; format de test rétabli ensuite.
+
+Captures et journaux locaux : `.local/pr121-apps/`. L’aperçu fournit des identités
+fictives CONNECT/Rapport et seulement des réponses GET ; aucune authentification
+hébergée n’est prouvée. Thermo, Drone et les points RGA restent locaux. La recette
+sur les sept cibles et les cases humaines restent à effectuer.
+
+## Historique — socle #119
+
 Lot `mon-espace-commun-20261106`, issu de `main` après la fusion vérifiée de la
 [PR #114](https://github.com/jpdandin44/AVEREO/pull/114), commit
 `45c184970c9b99f41f345b10f56c545568bab3f2`.
@@ -68,7 +105,7 @@ son backend installé et ne remplace que le menu et la page du portail CONNECT.
 
 ## Revue humaine à réaliser
 
-Ouvrir Mon espace, vérifier les rubriques utiles, essayer les préférences de Projet
+Ouvrir Mon espace, vérifier les rubriques et préférences propres à chaque application
 sur une copie fictive et vérifier le retour au travail. En préproduction, contrôler
 le compte de la bonne cible, la déconnexion et la conservation des données avant
 et après installation. Les cases humaines de la PR restent au responsable.

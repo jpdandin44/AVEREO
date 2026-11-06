@@ -21,4 +21,4 @@ tags: [avereo, acces, documentation]
 
 ## Itération Mon espace
 
-PR #119 fusionnée ; livraison de 37 fichiers préparée pour sept cibles avec restaurations sur copies. Accord de déploiement et recette hébergée à réaliser. Recherche nécessite sa première cible ; Saisie unique reste autonome. [Suivi unique](data/suivi-fonctions-communes.json). Revue, préproduction autorisée puis production constituent des étapes distinctes.
+PR #119 fusionnée ; sa préparation de 37 fichiers est conservée comme historique. PR #121 étendue aux projets et préférences propres à chaque application : revue locale, nouveau candidat puis accord de déploiement et recette hébergée à réaliser. Recherche nécessite sa première cible ; Saisie unique reste autonome. [Suivi unique](data/suivi-fonctions-communes.json). Revue, préproduction autorisée puis production constituent des étapes distinctes.

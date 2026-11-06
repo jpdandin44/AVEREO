@@ -161,3 +161,9 @@ Le [candidat d’alignement](docs/administration-comptes.md#alignement-des-compt
 ## Retour à la connexion après activation — préproduction
 
 La PR #118 est installée en préproduction après accord. La confirmation ferme la session précédente puis revient à la connexion AVEREO ; Drupal conserve le mot de passe. Le parcours réel d’un compte neuf avec une ancienne identité ouverte est vérifié : premier mot de passe, retour à la connexion et entrée avec le même mot de passe. Le compte fictif est archivé après recette. [Diagnostic, tests et livraison](docs/retour-activation-connexion.md).
+
+## Espaces applicatifs — candidat PR #121
+
+Le portail PHP ajoute ses préférences de tri et de visibilité du catalogue, enregistrées dans ce navigateur. Mon compte et Mes applications restent les destinations communes ; CONNECT ne possède pas de rubrique Mes projets. Aucun contrôle de droit ni parcours d’activation n’est modifié.
+
+[Règle et portée](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification](../avereo-platform/docs/qualification-mon-espace.md).

@@ -234,3 +234,7 @@ README, déploiement, audit, matrice et roadmap alignés ; aucune livraison de p
 ## 6 novembre 2026 — Mon espace commun
 
 Candidat local : L’en-tête Rapport réutilise le menu et conserve la sauvegarde avant déconnexion. RGA autonome reçoit le même menu et une sortie qui expire seulement le cookie RGA ; la carte intégrée masque le menu redondant. [Suivi du lot](../avereo-platform/data/suivi-fonctions-communes.json).
+
+## 2026-11-06 — Projets et préférences propres
+
+Mes projets revient à la liste native avec sauvegarde du brouillon avant sortie. Les préférences proposent le format expert/client pour les nouveaux rapports uniquement. RGA conserve ses points repérés et ses réglages dans des espaces de stockage locaux distincts de Rapport ; les résultats de risque sont consultés à nouveau à l’ouverture. Candidat local PR #121 ; installation hébergée distincte.

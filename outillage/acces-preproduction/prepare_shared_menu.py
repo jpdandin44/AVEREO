@@ -7,6 +7,7 @@ import argparse
 from datetime import datetime, timezone
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import zipfile
@@ -88,7 +89,11 @@ def snapshot_private(source, destination):
     return before
 
 
-def main(work):
+def require_source(actual, expected):
+    require(bool(re.fullmatch(r"[0-9a-f]{40}", expected)) and actual == expected, "Source differs")
+
+
+def main(work, expected_source=SOURCE):
     require(work.is_dir() and work.resolve() == work and
             work.parent == HOME / 'private' and work.name.startswith('mon-espace-preprod-'),
             'New private work directory required')
@@ -96,7 +101,7 @@ def main(work):
             'Preserve existing preparation')
     os.umask(0o077)
     manifest = json.loads((work / 'candidate-manifest.json').read_text())
-    require(manifest['source_sha'] == SOURCE, 'Source differs')
+    require_source(manifest['source_sha'], expected_source)
     apps = {a['app']: a for a in manifest['applications']}
     require(set(apps) == set(TARGETS) | {'recherche'}, 'Candidate scope differs')
     roots = {name: declared_root(name + '-preprod.avereo.fr') for name in TARGETS}
@@ -109,7 +114,7 @@ def main(work):
         raise ValueError('Recherche target appeared; inspect it before extending the plan')
     activation = HOME / 'connect-preprod.avereo.fr/src/Application.php'
     require(record(activation)['sha256'] == ACTIVATION_SHA, 'Installed PR118 differs')
-    result = {'observedAt': datetime.now(timezone.utc).isoformat(), 'sourceSha': SOURCE,
+    result = {'observedAt': datetime.now(timezone.utc).isoformat(), 'sourceSha': expected_source,
               'applications': {}, 'liveFilesModified': False, 'databaseAccessed': False,
               'configurationModified': False, 'deploymentAuthorized': False,
               'rollbackScope': 'files and modes; preserve current user data'}
@@ -178,4 +183,6 @@ def main(work):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--work', required=True, type=Path)
-    main(parser.parse_args().work)
+    parser.add_argument('--expected-source', default=SOURCE)
+    args = parser.parse_args()
+    main(args.work, args.expected_source)

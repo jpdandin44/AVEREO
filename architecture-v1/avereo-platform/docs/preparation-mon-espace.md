@@ -12,6 +12,16 @@ tags: [avereo, preproduction, livraison, fonctions-communes]
 
 # Préparation de Mon espace
 
+## Candidat actuel — PR #121 étendue
+
+La PR inclut désormais Mes projets et Préférences propres aux applications. Le lot
+de 37 fichiers ci-dessous reste une preuve historique de #119 ; il ne contient pas
+cette extension. Un nouveau paquet et une nouvelle comparaison sont requis.
+La [qualification actualisée](qualification-mon-espace.md) distingue les contrôles
+locaux des essais hébergés à refaire. Aucune installation autorisée par cette PR.
+
+## Historique de la préparation #119
+
 Le [suivi canonique](../data/suivi-fonctions-communes.json) porte l'état et les
 accords. La PR #119 est fusionnée depuis le 6 novembre à 16 h 23, heure de Paris.
 Les quatre cases humaines et les cinq contrôles GitHub sont vérifiés sur son
@@ -19,11 +29,11 @@ dernier candidat. Son arbre Git est identique à celui de la fusion
 `e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52`, qui inclut la correction CONNECT #118.
 
 Les quatre phases sont **Cadrage → Développement local → Préproduction → Mise en production**.
-État actuel : **Développement local, livraison de préproduction préparée**.
+État de ce candidat historique : **Développement local, livraison de préproduction préparée**.
 Aucun fichier applicatif actif n'a été remplacé. La demande de préparation et
 la fusion de #119 ne constituent pas un accord d'installation.
 
-## Lot proposé
+## Ancien lot proposé — remplacé par le nouveau candidat
 
 | Application | Cible déclarée et vérifiée | Fichiers à écrire |
 | --- | --- | ---: |
@@ -126,7 +136,7 @@ doivent être inclus dans l'accord exact de livraison. Le contrôle de passage
 conserve les accords manquants sans les créer. Les recettes de production et
 l'ouverture publique restent hors de cette préparation.
 
-La [PR de préparation #121](https://github.com/jpdandin44/AVEREO/pull/121)
+La version initiale de la [PR de préparation #121](https://github.com/jpdandin44/AVEREO/pull/121)
 porte les outils et ces preuves. Ses contrôles techniques réussissent sur le
 commit d’outillage `3da75f785be3e2dd414009f832861be9e8d92022`. Le contrôle
 PR Policy attend uniquement les quatre cases humaines, laissées décochées.

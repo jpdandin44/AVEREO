@@ -15,3 +15,7 @@ tags: [avereo, interface, fonctions-communes]
 Permettre les rapports de thermographie en conservant les actions métier actuelles. Préserver les données IndexedDB avec repli localStorage, les imports/exports et le contrôle d’accès CONNECT existant. Appliquer la [règle Mon espace](../avereo-platform/docs/fonctionnalites-communes.md), y compris au clavier et sur petit écran.
 
 TBD — état exact de la version actuellement hébergée, à vérifier avant livraison.
+
+## Projets du navigateur
+
+Permettre la création et la réouverture de rapports indépendants avec conservation des photos, annotations, signatures et champs non reconnus. Préserver le brouillon existant avant changement, refuser le remplacement d’une liste illisible et maintenir le rapport ouvert lors d’un échec d’enregistrement. Afficher explicitement l’absence de synchronisation en ligne.

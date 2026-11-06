@@ -21,3 +21,7 @@ Le [document initial](docs/architecture.md) conserve le cadrage historique des d
 ## 6 novembre 2026 — Présentation commune
 
 Le Web Component `shared/account-menu.js` porte la présentation isolée et les interactions de Mon espace. Les applications lui fournissent leurs actions natives ; le portail vient de la page protégée. La génération copie la même source dans les livrables HTML/React. [Contrat complet](docs/fonctionnalites-communes.md).
+
+## Préférences applicatives
+
+Le composant commun rend un formulaire défini par chaque application, valide les valeurs lues et les conserve dans une clé localStorage distincte. Les adaptateurs appliquent uniquement leurs réglages. Les listes et leurs données restent dans les applications : aucune API transversale de projets n’est créée. [Matrice et contrat de stockage](docs/fonctionnalites-communes.md).

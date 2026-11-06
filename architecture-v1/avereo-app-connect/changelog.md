@@ -99,3 +99,7 @@ Le candidat local ajoute le rattachement explicite d’une identité historique,
 ## 2026-11-06 — Retour à la connexion après activation
 
 Le correctif ferme l’ancienne session après confirmation et rejoint la connexion via le pont signé existant. Les messages expliquent la connexion avec le mot de passe déjà défini. PR #118 installée en préproduction après accord : deux fichiers vérifiés, 40 tests sur le runtime installé et contrôles navigateur/HTTPS réussis. Première connexion du compte fictif réussie avec l’ancien administrateur initialement connecté et le même mot de passe, puis archivage vérifié. [Qualification](docs/retour-activation-connexion.md).
+
+## 2026-11-06 — Projets et préférences propres
+
+Le portail PHP ajoute ses préférences de tri et de visibilité du catalogue, enregistrées dans ce navigateur. Mon compte et Mes applications restent les destinations communes ; CONNECT ne possède pas de rubrique Mes projets. Aucun contrôle de droit ni parcours d’activation n’est modifié. Candidat local PR #121 ; installation hébergée distincte.
