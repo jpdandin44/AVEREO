@@ -24,15 +24,17 @@
     "scope": "Nom et logo AVEREO communs dans les exports existants",
     "sourceBase": "4f61b77c320716f4966d12d041034356e9ae9c42",
     "manifest": "identite-livrables/qualification-locale.json",
-    "artifact": null
+    "artifact": null,
+    "codeSourceSha": "46e131c95b1c8ea7d4055dd15793512dd3135659"
   },
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/livrables-identite-avereo-20261106",
     "base": "docs/rga-livraison-pr122-20261106",
-    "prUrl": null,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/124",
     "merged": false,
-    "dependsOnPr": "https://github.com/jpdandin44/AVEREO/pull/123"
+    "dependsOnPr": "https://github.com/jpdandin44/AVEREO/pull/123",
+    "draft": true
   },
   "checks": [
     {
