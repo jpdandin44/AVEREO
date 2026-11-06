@@ -37,13 +37,13 @@ L'application tient en un seul fichier HTML autonome. Elle s'ouvre d'un double-c
 
 Depuis le dossier `frontend/` :
 
-| Commande | Rôle | Résultat du 02/11/2026 |
+| Commande | Rôle | Résultat du 06/11/2026 |
 |---|---|---|
 | `npm install` | installe React, esbuild et Playwright (versions exactes) | non exécutée ici : le registre npm n'était pas accessible depuis la session ; les mêmes versions étaient déjà installées |
-| `npm test` | tests unitaires (testeur intégré de Node) | 36 tests, 36 réussis |
+| `npm test` | tests unitaires (testeur intégré de Node) | 39 tests, 39 réussis |
 | `npm run build` | assemble `dist/index.html` (fichier unique, environ 380 Ko) | réussi |
 | `npm run build -- --livrer` | assemble puis copie le fichier sous `../AVEREO UNI.html` | réussi |
-| `npm run test:e2e` | assemble puis lance les tests d'écran dans Chromium (`npx playwright install chromium` au préalable) | 8 tests, 8 réussis |
+| `npm run test:e2e` | assemble puis lance les tests d'écran dans Chromium (`npx playwright install chromium` au préalable) | 9 tests, 9 réussis |
 
 `npm ci` n'a pas pu tourner : aucun fichier `package-lock.json` n'a été produit sans accès au registre. La première
 commande `npm install` sur un poste connecté le crée ; il est à conserver ensuite.
@@ -65,6 +65,10 @@ Les écarts avec les choix proposés au cadrage (§13) sont motivés ci-dessous.
 - **Persistance.** Stockage local du navigateur, clé `avereo-uni-dossiers`. Le nom AVEREO UNI répond à la question
   Q01. Si des données enregistrées sont illisibles, elles sont mises de côté sous `avereo-uni-dossiers.illisible`, et
   l'outil le signale. Vider les données du navigateur efface les dossiers.
+- **Sauvegarde.** « Exporter les dossiers », dans la liste, enregistre tous les dossiers dans un fichier JSON du poste
+  (format `avereo-uni-sauvegarde`, version 1). « Importer une sauvegarde… » ajoute les dossiers du fichier sous de nouveaux
+  identifiants, sans remplacer ni modifier ceux présents. Les paramètres du fichier ne sont pas appliqués. Un fichier
+  illisible est refusé en entier. Aucun échange réseau : téléchargement et lecture de fichier restent locaux.
 - **Polices.** Aucune police n'est chargée depuis un service tiers ; l'application utilise les polices du système,
   comme le repli prévu par la maquette. Les fichiers Montserrat et Source Sans 3 n'étaient pas disponibles sans réseau ;
   ils peuvent être embarqués ensuite (licence SIL Open Font).
@@ -136,7 +140,7 @@ et compté à part. Le plan lu dans chaque dossier est le plan Factures quand le
 | E11 Libellés alignés sur les imprimés | partielle | rubriques et intitulés repris ; textes juridiques résumés ; éditions à confirmer (Q21) | T22 |
 | E12 Suivi des dossiers | implémentée | liste filtrable, champs de suivi dans leur onglet, journal | T08, T16, T26 |
 | Bandeau « Données fictives » permanent | implémentée | bandeau fixe sur toutes les vues | T21 |
-| Persistance et montants saisis | implémentée | stockage local, virgule et espaces acceptés | T18, T19 |
+| Persistance et montants saisis | implémentée | stockage local, sauvegarde dans un fichier, virgule et espaces acceptés | T18, T19 |
 
 | Pièce du pack | Statut |
 |---|---|
@@ -155,7 +159,7 @@ et compté à part. Le plan lu dans chaque dossier est le plan Factures quand le
 
 ## 6. Tests de référence
 
-Les 26 tests de référence du cadrage (§12) sont couverts et réussis : 36 tests unitaires et 8 tests d'écran.
+Les 26 tests de référence du cadrage (§12) sont couverts et réussis : 39 tests unitaires et 9 tests d'écran.
 
 | Tests | Où |
 |---|---|
@@ -206,12 +210,14 @@ double-clic, dans Edge ou Chrome. Les colonnes « résultat obtenu », « date �
 | R12 | « Imprimer » sur le plan de financement | Seul l'aperçu est imprimé ; la page de signature est isolée | | | |
 | R13 | Naviguer dans les onglets avec Tab et les flèches | Focus visible ; les flèches changent d'onglet | | | |
 | R14 | Affichage sur téléphone ou fenêtre étroite | Une colonne, sans défilement horizontal | | | |
+| R15 | Liste : « Exporter les dossiers », puis « Importer une sauvegarde… » avec ce fichier dans un autre navigateur | Un fichier `avereo-uni-sauvegarde-AAAA-MM-JJ.json` est enregistré ; l'import ajoute ses dossiers en tête de liste sans remplacer ceux présents | | | |
 
 ## 9. Limites et validations humaines restantes
 
 - La V1 fonctionne sur données fictives (bandeau permanent). L'usage de données réelles demande une décision
   d'hébergement et de conformité distincte.
-- Les dossiers ne vivent que dans le navigateur du poste ; il n'y a ni export ni sauvegarde en V1 (piste).
+- Les dossiers vivent dans le navigateur du poste. Vider ses données les efface : la sauvegarde dans un fichier, à faire
+  régulièrement, est le seul moyen de les conserver ou de les transférer.
 - Les événements de revue (phase 0 approuvée, phase 1 démarrée puis soumise) sont à enregistrer par le responsable
   dans AVEREO Projet. La fusion de la PR reste sa décision.
 - Le fichier `frontend/valeurs-locales.json`, avec les valeurs propres au poste, n'est jamais versé (`.gitignore`).

@@ -3,6 +3,9 @@
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const URL_APP = new URL('../../dist/index.html', import.meta.url).href;
 let navigateur;
@@ -134,6 +137,26 @@ test('T16 — « Figer au dépôt » : confirmation, plan Factures créé, propo
   await page.getByLabel('Filtrer par statut').selectOption('En cours');
   assert.match(await page.locator('.liste-dossiers').innerText(), /Dossier d’exemple/);
   await contexte.close();
+});
+
+test('sauvegarde : export dans un fichier, puis import dans un autre navigateur sans remplacer ses dossiers', async () => {
+  const { page, contexte } = await ouvrir();
+  await exemple(page);
+  await page.getByLabel('Prénom du propriétaire').fill('Camille');
+  await page.getByRole('button', { name: 'Dossiers', exact: true }).click();
+  const [telechargement] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Exporter les dossiers' }).click()]);
+  assert.match(telechargement.suggestedFilename(), /^avereo-uni-sauvegarde-\d{4}-\d{2}-\d{2}\.json$/);
+  const chemin = join(mkdtempSync(join(tmpdir(), 'avereo-uni-')), telechargement.suggestedFilename());
+  await telechargement.saveAs(chemin);
+  await contexte.close();
+  const autre = await ouvrir();
+  await autre.page.getByLabel('Fichier de sauvegarde à importer').setInputFiles(chemin);
+  await assert.doesNotReject(autre.page.getByText('1 dossier importé, ajouté en tête de liste.').waitFor());
+  assert.equal(await autre.page.locator('.liste-dossiers tbody tr').count(), 2);
+  await autre.page.locator('.liste-dossiers tbody tr').first().getByRole('button').first().click();
+  assert.equal(await autre.page.getByLabel('Prénom du propriétaire').inputValue(), 'Camille');
+  assert.deepEqual(autre.requetes, []);
+  await autre.contexte.close();
 });
 
 test('affichage mobile : une colonne, sans défilement horizontal', async () => {
