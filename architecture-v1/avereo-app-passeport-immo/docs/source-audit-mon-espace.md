@@ -41,3 +41,5 @@ planifiées et 35 transferts de bien. Ils ne modifient aucun compte hébergé.
 Mes projets reprend la liste native des biens. Les préférences de ce navigateur règlent le tri par adresse et l’affichage de la composition ; les biens et documents conservent leur stockage existant. Mon compte et Mes applications ouvrent CONNECT.
 
 Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.
+
+Le contrôle de parité inverse explicitement les sept substitutions du menu et des préférences de #121, puis compare toujours le reste à la source historique. Une mutation témoin hors de ces substitutions doit être refusée ; les calculs, imports, exports et stockages restent sous le contrôle existant.
