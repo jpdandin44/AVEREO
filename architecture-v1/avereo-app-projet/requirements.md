@@ -14,9 +14,9 @@ tags:
 
 # Exigences du planning local Projet
 
-## Demandes de simplification du 6 novembre — candidat local
+## Demandes de simplification du 6 novembre — préproduction
 
-Résultats attendus cochables, vérification complémentaire optionnelle, saisie de date contrainte masquée par défaut, planning plus lisible et échelles Mois/Années. La [proposition et sa réalisation locale](docs/proposition-interface-simple.md) distinguent le besoin initial et le candidat. Le schéma de planning est conservé ; le contrat des préférences est étendu. Recette hébergée et validation humaine du candidat restent à réaliser.
+Résultats attendus cochables, vérification complémentaire optionnelle, saisie de date contrainte masquée par défaut, planning plus lisible et échelles Mois/Années. La [proposition et sa réalisation locale](docs/proposition-interface-simple.md) distinguent le besoin initial et le candidat. Le schéma de planning est conservé ; le contrat des préférences est étendu. Recette technique hébergée réalisée le 6 novembre ; validation humaine hébergée encore attendue. Le menu doit rester intégralement dans la largeur disponible, y compris avec un titre long et un en-tête sur plusieurs lignes : réserve observée à 761 px, voir le suivi.
 
 ## Demandes du 5 novembre — implémentées localement le 6 novembre
 

@@ -1,0 +1,70 @@
+{
+  "observedAt": "2026-11-06T09:32:01.401845+00:00",
+  "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+  "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+  "checks": [
+    {
+      "file": "index.html",
+      "status": 303,
+      "expectedRefusal": true,
+      "cacheControl": "no-store"
+    },
+    {
+      "file": "legacy-app.html",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "planning-core.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "planning-local.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "task-details.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "planning-online.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "project-workspace.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "project-workspace.css",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "assets/index-BRgM2m8J.css",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "assets/index-DFeFRZSU.js",
+      "status": 200,
+      "matches": true
+    },
+    {
+      "file": "api/planning.php",
+      "status": 401,
+      "expectedRefusal": true,
+      "cacheControl": "no-store, private"
+    },
+    {
+      "file": "api/workspace.php",
+      "status": 401,
+      "expectedRefusal": true,
+      "cacheControl": "no-store, private"
+    }
+  ]
+}
