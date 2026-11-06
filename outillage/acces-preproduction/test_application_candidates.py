@@ -8,6 +8,13 @@ import prepare_application_candidates as candidates
 
 
 class ApplicationCandidatesTest(unittest.TestCase):
+    def test_public_php_upload_configuration_is_preserved(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            settings = b'upload_max_filesize = 25M\npost_max_size = 105M\ndisplay_errors = Off\n'
+            (root / '.user.ini').write_bytes(settings)
+            self.assertEqual(candidates.code_files(root), {'.user.ini': settings})
+
     def test_private_configuration_is_never_packaged(self):
         for name in ('.env', 'config.php', '.private/secret.txt'):
             with self.subTest(name=name), tempfile.TemporaryDirectory() as temporary:

@@ -85,7 +85,7 @@ nouvelle règle de droit. Il doit être inclus dans la comparaison du candidat �
 | Passeport Immo | 29 tests réussis après adaptation des seuls libellés de navigation |
 | Saisie unique | 36 tests métier/configuration réussis |
 | CONNECT PHP | 38 tests réussis sur ce lot indépendant du correctif d’activation |
-| Documentation | 63 documents vérifiés, socle des applications présent, aucun lien local cassé |
+| Documentation | Socle des applications et liens locaux vérifiés ; preuves historiques Passeport conservées |
 
 La revue dans le navigateur intégré couvre les surfaces Projet, Rapport, RGA, Coupe,
 Thermo, Drone, Recherche, Passeport Immo, CONNECT et Saisie unique. Projet est aussi
@@ -102,3 +102,8 @@ La fixture historique de migration d’activation est réalignée comme dans la 
 runner et cinq migrations copiés sans changement, empreintes vérifiées. Les assertions
 de sauvegarde/restauration et de conservation restent actives ; la CI CONNECT générale
 continue de tester le schéma complet. Ce changement concerne les tests uniquement.
+
+Les audits historiques approuvés de Passeport Immo sont conservés à l’octet ;
+[une annexe](../../avereo-app-passeport-immo/docs/source-audit-mon-espace.md) porte
+l’écart nouveau et sa matrice. Le préparateur transverse conserve aussi le `.user.ini`
+public racine nécessaire aux envois de pièces, sans inclure de configuration privée.

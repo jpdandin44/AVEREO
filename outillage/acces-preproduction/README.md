@@ -444,3 +444,7 @@ les quatre phases ; aucun bouton ne déploie et aucune décision n’est automat
 ## Menu commun Mon espace
 
 Le [suivi canonique du lot](../../architecture-v1/avereo-platform/data/suivi-fonctions-communes.json) est rattaché par `sharedAccountMenu20261106` dans le suivi du cockpit. La [revue locale](../../architecture-v1/avereo-platform/docs/qualification-mon-espace.md) précède toute livraison ; les accords historiques ne sont pas étendus.
+
+Le préparateur des candidats conserve le fichier public racine `.user.ini` utilisé
+par Passeport Immo pour les limites d’envoi ; les fichiers privés et répertoires cachés
+restent refusés. Son test vérifie la conservation exacte de cette configuration.

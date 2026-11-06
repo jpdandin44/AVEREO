@@ -206,3 +206,6 @@ deux scènes CAO, exporter leurs SVG et joindre un PDF comparatif au bien.
 Le menu regroupe Mes biens, l’administration métier conditionnée au rôle et la déconnexion native. Le stockage serveur ou local conserve son mode existant.
 
 [Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.
+
+L’[annexe d’audit Mon espace](docs/source-audit-mon-espace.md) décrit le nouvel écart
+et sa parité, en conservant les preuves historiques approuvées.
