@@ -412,6 +412,8 @@ test('classification suggestions never add metadata and explicit choices overrid
     assert.equal(P.taskClassification(normalized.tasks[0]).subject, 'Emploi');
     assert.equal(P.taskClassification(normalized.tasks[0]).priority, 'haute');
     assert.equal(P.taskClassification(normalized.tasks[1]).subject, 'TC Longages');
+    assert.equal(P.taskClassification(task('Saisie unique : recette')).subject, 'AVEREO');
+    assert.equal(P.taskClassification(task('Partenariat : présentation')).subject, 'AVEREO');
     assert.equal(P.filterTasks(normalized.tasks, 'Emploi').length, 1);
     assert.equal(JSON.stringify(normalized), before);
     assert.equal(Object.hasOwn(normalized.tasks[0], 'subject'), false);
