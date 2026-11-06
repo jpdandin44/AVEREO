@@ -15,7 +15,12 @@ tags:
 
 # Prévisualisation et publication de Projet
 
-## Interface simple — préparation locale, aucune installation
+## État de livraison #114
+
+Version fusionnée `45c1849` installée le 6 novembre à 10 h 30 Paris, avec le même paquet vérifié que le candidat corrigé. [Reçu](../data/preprod-interface-simple/delivery-observation.json), [contrôles HTTPS](../data/preprod-interface-simple/https-checks.json), [recette et réserve](../data/preprod-interface-simple/browser-recipe.json). Sauvegarde/restauration réussies ; 16 fichiers conformes, 74 contrôles HTTP synthétiques passés et huit JSON privés identiques après lecture des deux projets. La réserve du menu à 761 px doit être corrigée avant validation complète. Aucun merge ou déploiement de correction supplémentaire ni production à déduire de ce reçu. Les paragraphes suivants restent la procédure de préparation applicable.
+
+
+## Interface simple — livraison préproduction du 6 novembre 2026
 
 Utiliser le préparateur `prepare-preprod-workspace.py` après commit propre et build pour conserver le même périmètre de livraison que Mon espace. Le nouveau candidat modifie notamment `workspace-store.php` et le wrapper ; ne pas livrer seulement la page HTML. Suivi et version : [interface simple](../data/suivi-interface-simple.json).
 

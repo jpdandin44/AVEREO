@@ -3,7 +3,8 @@
 AVEREO UNI sert à saisir une seule fois les données d'un dossier de rénovation. Les documents du dossier se
 pré-remplissent ensuite : plan de financement, attestations de travaux, demandes d'avance et d'acompte, demande d'aide,
 procurations, rapport de fin d'accompagnement… L'outil suit aussi les dossiers et calcule des ratios de coûts. La
-version 1 fonctionne sur des données fictives, stockées dans le navigateur ; elle n'envoie rien sur le réseau.
+version 1 fonctionne sur des données fictives, stockées dans le navigateur ; elle n'envoie rien sur le réseau. Les
+dossiers s'exportent dans un fichier de sauvegarde, et s'importent sans remplacer ceux présents.
 
 Il faut Node.js 20 ou plus récent. Depuis ce dossier :
 

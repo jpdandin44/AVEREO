@@ -15,6 +15,15 @@ tags:
 
 # Audit et recette du planning Projet
 
+## Recette hébergée de #114 — 6 novembre 2026
+
+Installation explicitement autorisée de la version fusionnée, paquet identique au candidat local corrigé. Sauvegarde/restauration code et données sur copie vérifiées ; 74 contrôles HTTP sur identités fictives réussis sur l’hôte. Seize fichiers vérifiés côté serveur, neuf empreintes publiques HTTPS conformes ; index protégé par CONNECT (303), API planning/espace privées (401, no-store).
+
+Les deux projets réels sont ouverts en lecture seule : 45 tâches chacun, révisions 5 et 1. Huit JSON privés restent identiques octet par octet après recette ; configuration et sas inchangés. Mois/Années, filtres, fiches avec résultats réalisés/non réalisés et préférences par défaut relus. Aucune erreur de console relevée. Les écritures sont qualifiées sur fixtures HTTP et par les essais locaux antérieurs, pas par mutation des dossiers réels.
+
+**Réserve ouverte :** à 761 px et avec l’en-tête replié, le menu Projet et fichiers déborde à gauche derrière la barre latérale. Le contrôle du centre des boutons ne prouve pas la visibilité complète des étiquettes ; la prochaine qualification doit contrôler les bords du panneau. Le correctif de superposition fonctionne, mais ne suffit pas à ce cas de positionnement. [Reçu](../data/preprod-interface-simple/delivery-observation.json), [recette](../data/preprod-interface-simple/browser-recipe.json) et [suivi](../data/suivi-interface-simple.json).
+
+
 ## Correction du menu Projet et fichiers — 6 novembre 2026
 
 Retour utilisateur reproduit dans le candidat local : quatre des cinq commandes du menu sont recouvertes par la barre d’échelle ou les filtres. Leurs couches de priorité 45/50 dépassaient le contexte de l’en-tête (20), malgré la priorité 60 du panneau enfant.
@@ -294,6 +303,7 @@ moment-là. C'est un résultat historique, pas le résultat de ce lot.
 | Exemple dans le HTML | Source unique du pilote et dérivés hors assets publics |
 | Lots sans fiche d'exécution | Description, actions, critères et checklist avec réalisation/validation distinctes |
 | Qualification globale du lot seulement | Registre de risques détaillés, score explicite et clôture documentée |
+| Mot-clé nommant un partenaire dans le classement suggéré des sujets | Mots-clés génériques « partenariat » et « saisie unique » (06/11/2026) : le dépôt public ne cite aucun partenaire ; une tâche qui ne mentionnait que ce nom n'est plus suggérée « AVEREO », le choix manuel du sujet reste possible |
 
 Les vues tableau/Gantt/lots/risques restent présentes. Aucune API métier,
 base, compte ou secret nouveau. Le lot est implémenté localement et proposé

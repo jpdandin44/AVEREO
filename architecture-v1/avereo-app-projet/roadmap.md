@@ -14,9 +14,9 @@ tags:
 
 # Feuille de route de Projet
 
-## Itération en Développement local — interface simple
+## Itération en Préproduction — interface simple
 
-Le [cadrage de l’interface](docs/proposition-interface-simple.md) porte les demandes de résultats cochables, options de vérification/date contrainte, planning allégé et échelles Mois/Années. [Suivi canonique](data/suivi-interface-simple.json). Développement local réalisé ; revue du candidat, CI et préparation du passage en préproduction suivies dans cette fiche. Aucune livraison de cette suite.
+Le [cadrage de l’interface](docs/proposition-interface-simple.md) porte les demandes de résultats cochables, options de vérification/date contrainte, planning allégé et échelles Mois/Années. [Suivi canonique](data/suivi-interface-simple.json). PR #114 fusionnée et installée le 6 novembre après accord, sauvegarde/restauration et contrôle de passage. Deux projets conservés. Réserve à lever : positionnement du menu lorsque l’en-tête revient à la ligne, constaté à 761 px. Prochaine étape : correction locale et nouvelle qualification, puis revue humaine hébergée. Aucune production autorisée.
 
 ## Reprise du 6 novembre — candidat sujets et colonnes
 
