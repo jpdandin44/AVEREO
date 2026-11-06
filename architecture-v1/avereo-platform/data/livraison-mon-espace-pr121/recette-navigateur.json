@@ -1,0 +1,90 @@
+{
+  "observedAt": "2026-11-06T21:18:32.317395+00:00",
+  "environment": "preproduction",
+  "method": "authenticated_browser_ui",
+  "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+  "status": "qualified_with_reservations",
+  "common": {
+    "accountLabel": "Mon compte",
+    "applicationsLabel": "Mes applications",
+    "accountDestination": "https://connect-preprod.avereo.fr/#profile",
+    "applicationsDestination": "https://connect-preprod.avereo.fr/",
+    "profileOpenedFromThermo": true,
+    "catalogueLaunchesPassed": 7
+  },
+  "applications": {
+    "connect": {
+      "menu": "passed",
+      "projects": "not_applicable_portal",
+      "preferences": "order_and_unavailable_apps",
+      "preferenceReload": "passed",
+      "initialPreferencesRestored": true
+    },
+    "projet": {
+      "menu": "passed",
+      "projects": "native_online_list_read_only",
+      "visibleProjectCount": 2,
+      "preferences": "native_account_form_read_only",
+      "preferenceReload": "not_mutated_real_account"
+    },
+    "rapport": {
+      "menu": "passed",
+      "projects": "native_local_and_online_list_read_only",
+      "onlineReportCount": 9,
+      "existingDraftPreserved": true,
+      "preferences": "new_report_format",
+      "preferenceReload": "passed",
+      "initialPreferencesRestored": true
+    },
+    "rga": {
+      "menu": "passed",
+      "projects": "direct_map_passed_parent_iframe_hash_failed",
+      "preferences": "department_sort_and_layer_opacity",
+      "preferenceReload": "passed",
+      "initialPreferencesRestored": true,
+      "sameOriginIsolationFromRapport": "passed"
+    },
+    "coupe": {
+      "menu": "passed",
+      "projects": "blocked_preexisting_online_oauth_configuration",
+      "preferences": "grid_and_snap",
+      "preferenceReload": "passed",
+      "initialPreferencesRestored": true
+    },
+    "thermo": {
+      "menu": "passed",
+      "projects": "fictitious_browser_local_report_saved_and_reloaded",
+      "fixture": "RECETTE-PR121-DEPLOIEMENT",
+      "preferences": "sort_and_step_names",
+      "preferenceReload": "passed",
+      "initialPreferencesRestored": true
+    },
+    "drone": {
+      "menu": "passed",
+      "projects": "fictitious_browser_local_mission_saved_and_reloaded",
+      "fixture": "RECETTE-PR121-DEPLOIEMENT",
+      "preferences": "sort_and_archived_visibility",
+      "preferenceReload": "passed",
+      "initialPreferencesRestored": true
+    },
+    "passeport-immo": {
+      "menu": "passed",
+      "projects": "native_biens_list_read_only",
+      "visiblePropertyCount": 2,
+      "preferences": "sort_and_composition_visibility",
+      "preferenceReload": "passed",
+      "initialPreferencesRestored": true
+    }
+  },
+  "limits": [
+    "No real project or account mutation",
+    "Projet account preferences not saved",
+    "No logout submitted on the administrator session",
+    "No cross-browser online synchronization test",
+    "Thermo, Drone and RGA project storage remains browser-local"
+  ],
+  "screenshots": [
+    "mon-espace-thermo-preprod.png",
+    "rga-correction-locale.png"
+  ]
+}

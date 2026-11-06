@@ -65,9 +65,13 @@ export function setupRgaProjects({ getPoint, openPoint }) {
     try { projects.save(getPoint(), dialog.querySelector('[name=name]').value); render(); status.textContent = 'Projet enregistré dans ce navigateur.'; }
     catch (error) { status.textContent = error.message || 'Enregistrement impossible. Vérifiez le stockage de ce navigateur.'; }
   });
-  if (new URLSearchParams(location.hash.slice(1)).has('projects')) {
-    show();
-    const hash = new URLSearchParams(location.hash.slice(1)); hash.delete('projects');
+  function openProjectsFromHash() {
+    const hash = new URLSearchParams(location.hash.slice(1));
+    if (!hash.has('projects')) return;
+    if (!dialog.open) show();
+    hash.delete('projects');
     history.replaceState(null, '', '#' + hash);
   }
+  window.addEventListener('hashchange', openProjectsFromHash);
+  openProjectsFromHash();
 }

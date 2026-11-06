@@ -13,6 +13,11 @@ tags:
   - fonctionnalites
 ---
 
+## 2026-11-06 — Navigation RGA sans migration
+
+Le correctif préparé ne concerne que `frontend/public/rga/workspace.js`. Aucun schéma, clé de stockage, projet, résultat Géorisques ou contrôle d’identité ne change. Les données déjà enregistrées restent utilisables ; seul le déclenchement de la liste depuis la carte intégrée est corrigé. [Livraison et réserves](../../avereo-platform/docs/livraison-mon-espace.md).
+
+
 ## 2026-11-04 — Candidat d’archivage CONNECT
 
 Changement du sas Rapport, réutilisé par le build RGA, et de l’entrée d’écriture des dossiers. Aucun changement SQL Rapport. Installer avant d’activer les actions d’administration CONNECT. [Contrat de projection](essais-temporaires.md).

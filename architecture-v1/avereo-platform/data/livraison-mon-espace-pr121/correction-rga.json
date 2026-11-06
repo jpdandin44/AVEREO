@@ -1,0 +1,20 @@
+{
+  "observedAt": "2026-11-06T21:18:32.317395+00:00",
+  "status": "local_verified_not_deployed",
+  "file": "architecture-v1/avereo-app-rapport/frontend/public/rga/workspace.js",
+  "target": "/home/daje3540/rapport-preprod.avereo.fr/rga/workspace.js",
+  "beforeSha256": "153f2ca36a11d251db01eeb7d639355454e45b8e90a0b42572c852984f5bc682",
+  "afterSha256": "6fc8ab86f593d1390bb1e3cdcb44338e6c44ab177ed465649e97ad1b447ab089",
+  "artifactSha256": "0371e53552e7767d6ead4d2d9c233a9f68934eb8cc8e34dea12cdbe833762994",
+  "artifact": "C:\\Users\\examg\\Documents local\\livraisons-avereo\\mon-espace\\preparation-pr121-317863a\\correction-rga\\correction-rga.zip",
+  "files": 1,
+  "tests": {
+    "reproducedBeforeFix": true,
+    "menuTests": 22,
+    "allPassed": true,
+    "browserParentIframeOpenAndReopen": "passed_local",
+    "rapportBuild": "passed"
+  },
+  "authorization": "pending_for_new_candidate",
+  "productionChanged": false
+}

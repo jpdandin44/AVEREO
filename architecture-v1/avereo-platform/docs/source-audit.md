@@ -12,6 +12,14 @@ tags: [avereo, acces, documentation]
 
 # Audit source
 
+## 6 novembre 2026 — Livraison et recette hébergée
+
+Les 40 fichiers PR #121 sont installés après accord explicite et contrôle de leur
+empreinte. Le [reçu de livraison](livraison-mon-espace.md) sépare conservation,
+résultats du navigateur et réserves RGA/Coupe. Le correctif RGA est limité au
+déclenchement de la liste de projets ; il est testé localement, non installé.
+Le composant partagé ne change pas, deux tests de navigation complètent sa suite.
+
 Le lot du 4 novembre conserve le sas partagé et son mécanisme de génération. Le cookie conserve désormais l’identité signée ; le paramètre `connect_trial_access_file` active le contrôle de période, révocation et applications. Les tests ciblent le code réellement copié, avec transport HTTP local. Les modèles d’application et l’infrastructure locale restent inchangés. [Périmètre](../../avereo-app-connect/docs/acces-temporaires-applications.md).
 
 ## 6 novembre 2026 — Composant de compte

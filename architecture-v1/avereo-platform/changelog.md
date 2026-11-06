@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
 
+## 2026-11-06 — Livraison autorisée et recette hébergée
+
+PR #121 installée sur les sept cibles ; conservation et protections vérifiées. Rubriques et préférences contrôlées, réserve RGA avec correctif local testé et réserve antérieure Coupe OAuth consignées dans le [reçu de livraison](docs/livraison-mon-espace.md). Aucun changement de production.
+
+
 # Historique des changements
 
 ## 4 novembre 2026

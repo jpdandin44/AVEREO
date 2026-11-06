@@ -12,7 +12,13 @@ tags: [avereo, interface, fonctions-communes]
 
 # Qualification de Mon espace
 
-## Candidat actuel — extension PR #121
+## État actuel — livraison en préproduction
+
+PR #121 est fusionnée et ses 40 fichiers sont installés sur les sept cibles. La
+[recette hébergée et ses deux réserves](livraison-mon-espace.md) font référence.
+Le correctif du lien RGA est vérifié en local et attend sa livraison propre.
+
+## Historique local — extension PR #121
 
 Phase **Développement local**. Les projets et préférences restent propres à chaque
 application ; profil et catalogue CONNECT communs. CONNECT demeure un portail sans
@@ -47,7 +53,7 @@ fictives CONNECT/Rapport et seulement des réponses GET ; aucune authentificatio
 hébergée n’est prouvée. Thermo, Drone et les points RGA restent locaux. La recette
 sur les sept cibles et les cases humaines restent à effectuer.
 
-La [préparation de livraison actuelle](preparation-mon-espace.md#candidat-actuel--pr-121-étendue)
+La [préparation de livraison de PR #121](preparation-mon-espace.md#historique-de-préparation--pr-121-étendue)
 porte le candidat `317863a9e5603fbbed578a5aa9cfc323cb17b977` : 40 fichiers,
 sauvegarde/restauration sur copies privées réussie pour les sept cibles, données et
 configurations conservées. Ce contrôle ne constitue pas une installation ni une

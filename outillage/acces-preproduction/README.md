@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [preproduction, securite, exploitation]
 ---
 
+## Livraison du menu commun — 6 novembre 2026
+
+Le [reçu de livraison](../../architecture-v1/avereo-platform/docs/livraison-mon-espace.md) documente les 40 fichiers réellement installés et les réserves. `deploy_shared_menu.py` fixe le candidat PR #121, les sept cibles, les sauvegardes privées et la confirmation d’empreinte ; `prepare`, `apply` et `verify` séparent précontrôle, écriture autorisée et conservation finale. Les six tests `test_shared_menu_deployment.py` couvrent notamment le refus d’une divergence et le retour arrière sur fixtures, y compris une écriture concurrente à préserver. Ne pas réutiliser ce paquet figé pour un autre candidat.
+
+
 # Accès aux préproductions par identifiants
 
 ## Préparation du menu commun — 6 novembre 2026

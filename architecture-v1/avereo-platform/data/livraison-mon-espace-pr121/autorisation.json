@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-11-06T20:49:19.748352+00:00",
+  "actor": "jpdandin",
+  "source": "user_chat",
+  "instruction": "OK, je viens de merger la PR #121. Peux-tu déployer le menu « Mon espace » sur les sept cibles en préprod, puis vérifier les rubriques et préférences de chaque application stp ?",
+  "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+  "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+  "targets": [
+    "rapport",
+    "coupe",
+    "projet",
+    "thermo",
+    "drone",
+    "connect",
+    "passeport-immo"
+  ],
+  "productionAuthorized": false
+}
