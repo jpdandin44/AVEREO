@@ -30,8 +30,8 @@
     }
   ],
   "candidate": {
-    "sourceSha": "953ea94fb8b99bce59bab623b05e9a4347e5f2e8",
-    "artifactSha256": "1b8431e5033ad8f35761fc54287e3213c428c8d1a36443c254bd4b31d03e470c",
+    "sourceSha": "e4c60f5d52e4981a853b446324dcdf20bad32dc6",
+    "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
     "files": 16,
     "status": "local_verified_not_deployed"
   },
@@ -40,7 +40,7 @@
     "status": "not_delivered"
   },
   "nextAction": "Revue locale du candidat et de la PR ; préproduction après accord exact et sauvegarde/restauration fraîche.",
-  "observedAt": "2026-11-06T09:07:19.091601+00:00",
+  "observedAt": "2026-11-06T09:19:35.055Z",
   "branch": "feat/projet-interface-simple-20261106",
   "checks": [
     {
@@ -93,6 +93,15 @@
       "target": "GitHub CI",
       "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42192428991",
       "observedAt": "2026-11-06T09:07:53.553Z"
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "e4c60f5d52e4981a853b446324dcdf20bad32dc6",
+      "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+      "target": "local_fictitious_fixture",
+      "observedAt": "2026-11-06T09:19:35.055Z",
+      "evidence": "Correction CSS du menu : 1/5 boutons non masqués avant, 5/5 après sur ordinateur 1280x720 et mobile 390x844 ; clavier et fiche au premier plan vérifiés. 196 tests, build et contrôle des 20 fichiers réussis. Tests HTTP précédents non rejoués pour cette correction CSS."
     }
   ],
   "reviewEnvironment": {
@@ -114,13 +123,29 @@
     "repository": "jpdandin44/AVEREO",
     "pr": 114,
     "url": "https://github.com/jpdandin44/AVEREO/pull/114",
-    "sourceSha": "953ea94fb8b99bce59bab623b05e9a4347e5f2e8",
+    "sourceSha": "e4c60f5d52e4981a853b446324dcdf20bad32dc6",
     "status": "open",
     "humanReview": "pending",
-    "observedAt": "2026-11-06T09:07:19.091601+00:00"
+    "observedAt": "2026-11-06T09:19:35.055Z"
   },
   "publication": {
     "method": "github_connector",
     "note": "Envoi Git refusé par les identifiants locaux ; publication via la connexion GitHub active. Arbre Git e99b60ad40a39ea17636790ae7107a258f9db1d3 et paquet identiques aux contrôles locaux."
-  }
+  },
+  "candidateHistory": [
+    {
+      "sourceSha": "953ea94fb8b99bce59bab623b05e9a4347e5f2e8",
+      "artifactSha256": "1b8431e5033ad8f35761fc54287e3213c428c8d1a36443c254bd4b31d03e470c",
+      "files": 16,
+      "status": "local_verified_not_deployed"
+    }
+  ],
+  "corrections": [
+    {
+      "source": "user_screenshot",
+      "problem": "Menu Projet et fichiers recouvert par les barres et filtres du planning.",
+      "resolution": "Isolation du contexte de superposition de la vue planning ; aucune modification des données.",
+      "sourceSha": "e4c60f5d52e4981a853b446324dcdf20bad32dc6"
+    }
+  ]
 }
