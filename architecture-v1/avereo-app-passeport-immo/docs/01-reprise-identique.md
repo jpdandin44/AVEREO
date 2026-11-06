@@ -5,7 +5,7 @@ title: Reprise identique et recette locale
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-11-06
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -127,3 +127,10 @@ l'attendu actuel inclut l'absence de page blanche d'arrondi.
 Q06 et le lien PR sont actualisés dans le suivi canonique. Les états et contrôles
 actuels sont dans la [fiche d'itération](iteration-developpement.md) et les
 [preuves du raccordement](raccordement-cockpit.md).
+
+## Écart d’interface autorisé le 6 novembre
+
+Le menu partagé **Mon espace** regroupe Mes biens, Mon compte, Mes applications,
+l’administration métier selon le rôle et la déconnexion native. Les calculs, données,
+imports et exports conservent leur implémentation. Cet écart succède à la reprise
+identique décrite ci-dessus. [Règle et portée](../../avereo-platform/docs/fonctionnalites-communes.md).

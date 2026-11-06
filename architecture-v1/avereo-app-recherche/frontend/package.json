@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node ../../../.github/scripts/prepare-connect-gate.mjs recherche && vite",
-    "build": "node ../../../.github/scripts/prepare-connect-gate.mjs recherche && vite build",
+    "dev": "node ../../../.github/scripts/prepare-account-menu.mjs recherche && node ../../../.github/scripts/prepare-connect-gate.mjs recherche && vite",
+    "build": "node ../../../.github/scripts/prepare-account-menu.mjs recherche && node ../../../.github/scripts/prepare-connect-gate.mjs recherche && vite build",
     "preview": "vite preview",
     "test": "vitest run"
   },

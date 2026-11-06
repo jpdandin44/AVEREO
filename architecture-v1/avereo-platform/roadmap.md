@@ -5,7 +5,7 @@ title: Feuille de route
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -18,3 +18,7 @@ tags: [avereo, acces, documentation]
 - Production : accord distinct et qualification hébergée requis.
 
 [Suivi du lot](../avereo-app-connect/docs/acces-temporaires-applications.md).
+
+## Itération Mon espace
+
+Généralisation locale en cours de qualification. [Suivi unique](data/suivi-fonctions-communes.json). Revue, préproduction autorisée puis production constituent des étapes distinctes.

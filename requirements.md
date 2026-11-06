@@ -5,7 +5,7 @@ title: Exigences du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-14
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -34,3 +34,7 @@ un merge, une compilation ou un refus anonyme ne constitue pas une recette compl
 Les sauvegardes, restaurations et validations gardent une portée par cible/version.
 
 La [preparation CONNECT et activation](outillage/acces-preproduction/preparer-connect-activation.md) exige une sauvegarde restauree sur une base de test distincte, la conservation des anciennes donnees, des regles d’acces et des configurations privees, puis la qualification du pont Drupal et l’accord exact avant intervention. Les contraintes executables restent dans l’outillage ; aucun SQL down automatique.
+
+## Cohérence des fonctions communes
+
+Réutiliser la [règle commune](architecture-v1/avereo-platform/docs/fonctionnalites-communes.md) pour les fonctionnalités transversales ; chaque application conserve ses capacités réelles et ses contrôles de droits.

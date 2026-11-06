@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - rapport
@@ -283,3 +283,9 @@ Aucune cle Gemini/Google, cle Firebase/Supabase, cle privee, valeur de mot de pa
 ## Ecart d'instructions resolu
 
 Les anciens `AGENTS.md` applicatif et plateforme imposaient une V1 statique sans backend ni MySQL. Le proprietaire a confirme le 13 juillet 2026 l'evolution d'architecture. Les instructions ont ete adaptees pour autoriser l'API PHP, MySQL, OAuth et le gateway HTTP local tout en conservant l'isolation applicative.
+
+## 6 novembre 2026 — Menu de compte commun
+
+L’en-tête Rapport réutilise le menu et conserve la sauvegarde avant déconnexion. RGA autonome reçoit le même menu et une sortie qui expire seulement le cookie RGA ; la carte intégrée masque le menu redondant.
+
+Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.

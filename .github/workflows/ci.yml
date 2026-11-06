@@ -20,6 +20,9 @@ jobs:
       - name: Run baseline checks
         run: npm run check
 
+      - name: Check common account menu source parity
+        run: node .github/scripts/check-account-menu.mjs
+
       - name: Validate CONNECT Docker Compose
         run: docker compose -f architecture-v1/avereo-app-connect/compose.c7.yaml config --quiet
 
@@ -119,7 +122,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        application: [rapport, coupe, projet, thermo, drone, recherche]
+        application: [rapport, coupe, projet, thermo, drone, recherche, passeport-immo, connect]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -143,6 +146,7 @@ jobs:
         run: npm run build
 
       - name: Validate CONNECT gate artifact
+        if: matrix.application != 'connect'
         working-directory: architecture-v1/avereo-app-${{ matrix.application }}/frontend
         run: |
           set -euo pipefail
@@ -168,6 +172,16 @@ jobs:
       - name: Test private Projet persistence
         if: matrix.application == 'projet'
         run: python3 architecture-v1/avereo-app-projet/tests/planning-http.py
+
+      - name: Test common account menu and Passeport regressions
+        if: matrix.application == 'passeport-immo'
+        run: |
+          node --test architecture-v1/avereo-platform/tests/account-menu.test.mjs
+          cd architecture-v1/avereo-app-passeport-immo/frontend
+          npm test
+
+      - name: Check common menu is packaged unchanged
+        run: node .github/scripts/check-account-menu.mjs ${{ matrix.application }}
 
   connect-integration:
     runs-on: ubuntu-latest

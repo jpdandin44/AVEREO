@@ -5,7 +5,7 @@ title: Acces par identifiants aux preproductions AVEREO
 status: active
 version: git
 created: 2026-10-06
-updated: 2026-10-16
+updated: 2026-11-06
 owner: jpdandin
 tags: [preproduction, securite, exploitation]
 ---
@@ -440,3 +440,7 @@ qualifié, lancer le cockpit avec `AVEREO_REVIEW_ROOT` égal au présent dossier
 Le [générateur](actualiser-tableau-de-bord.py) actualise seulement les vues dérivées
 et protège les documents approuvés. Le relevé hébergé et la PR apparaissent dans
 les quatre phases ; aucun bouton ne déploie et aucune décision n’est automatique.
+
+## Menu commun Mon espace
+
+Le [suivi canonique du lot](../../architecture-v1/avereo-platform/data/suivi-fonctions-communes.json) est rattaché par `sharedAccountMenu20261106` dans le suivi du cockpit. La [revue locale](../../architecture-v1/avereo-platform/docs/qualification-mon-espace.md) précède toute livraison ; les accords historiques ne sont pas étendus.

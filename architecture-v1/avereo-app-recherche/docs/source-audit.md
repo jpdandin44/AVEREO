@@ -1,3 +1,15 @@
+---
+project: avereo-app-recherche
+document_type: reference
+title: source-audit
+status: active
+version: git
+created: 2026-11-06
+updated: 2026-11-06
+owner: jpdandin
+tags: [avereo, interface, fonctions-communes]
+---
+
 # Audit source - AVEREO Collector Recherche
 
 ## Source
@@ -26,3 +38,9 @@
 ## Validation
 
 Voir la description de la pull request.
+
+## 6 novembre 2026 — Menu de compte commun
+
+Le menu est dans l’en-tête, avec le lien vers les sauvegardes existantes. Le corpus reste dans IndexedDB ; ce menu n’ajoute pas de synchronisation en ligne.
+
+Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.

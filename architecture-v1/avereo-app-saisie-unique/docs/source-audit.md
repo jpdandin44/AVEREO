@@ -5,7 +5,7 @@ title: Audit source de la maquette Saisie unique
 status: draft
 version: git
 created: 2026-10-21
-updated: 2026-10-21
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, audit, phase-0]
 ---
@@ -170,3 +170,10 @@ signalé), le journal non borné.
 - La version exacte des navigateurs de la recette (question Q33).
 - Le comportement du thème sombre sur les documents (non vérifié).
 - Les mots de passe, aucun n'est stocké : la maquette n'en demande pas (question Q30 pour le dossier par étape du pack).
+
+## 2026-11-06 — Mon espace commun
+
+Le code de la PR #113 étant désormais présent, le lot transversal autorisé pour
+toutes les applications ajoute les liens Dossiers locaux et Préférences au menu
+commun embarqué. Aucun accès réseau ni événement humain ajouté. Le cadrage et
+les statuts du suivi existant restent inchangés. [Référence](../../avereo-platform/docs/fonctionnalites-communes.md).

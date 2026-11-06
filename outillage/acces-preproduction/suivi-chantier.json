@@ -2694,5 +2694,10 @@
       "humanChecklistChecked": 4,
       "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#pullRequests/84"
     }
+  },
+  "sharedAccountMenu20261106": {
+    "sourceOfTruth": "../../architecture-v1/avereo-platform/data/suivi-fonctions-communes.json",
+    "iterationId": "mon-espace-commun-20261106",
+    "note": "Pointeur uniquement : étapes, candidat et preuves dans la source canonique ; aucun accord des lots historiques étendu."
   }
 }

@@ -269,3 +269,9 @@ et ne remplace pas les tests fonctionnels de Projet.
 La PR brouillon dédiée est soumise à revue humaine. Un futur merge sur
 `main` peut déclencher le déploiement automatique : consulter la procédure avant
 ce merge.
+
+## Mon espace — candidat commun du 6 novembre 2026
+
+Le pied de barre latérale réutilise le composant commun ; Mes projets, Préférences et Mon compte conservent les actions ProjectWorkspace. Le lien CONNECT dépend du portail configuré.
+
+[Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.

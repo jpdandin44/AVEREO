@@ -5,7 +5,7 @@ title: README
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -28,3 +28,7 @@ Il porte les templates, la documentation commune, les scripts de generation et l
 Le gateway Traefik dans `infra/local-gateway/` reserve le port HTTP local et charge des routes declaratives sans acces au socket Docker. Il permet a plusieurs applications d'utiliser simultanement leurs sous-domaines `*.avereo.localhost` sans exposer leurs ports techniques dans les URLs.
 
 Chaque application peut s'assurer que le gateway est actif, mais sa commande `down` ne doit pas l'arreter. L'arret explicite du gateway s'effectue avec son propre script.
+
+## Menu commun Mon espace
+
+La [règle des fonctionnalités communes](docs/fonctionnalites-communes.md) définit le composant et son intégration. [Revue locale](docs/qualification-mon-espace.md) et [suivi canonique](data/suivi-fonctions-communes.json).

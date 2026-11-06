@@ -25,4 +25,5 @@ if ($html === false) {
     http_response_code(500);
     exit;
 }
-echo $html;
+$portalMeta = '<meta name="avereo-connect-portal" content="' . htmlspecialchars(rtrim((string) ($config['connect_portal_url'] ?? ''), '/'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '">';
+echo str_replace('</head>', $portalMeta . '</head>', $html);

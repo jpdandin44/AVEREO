@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Plane, 
   MapPin, 
@@ -141,7 +141,7 @@ const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+      <div className="flex flex-wrap gap-3 justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-slate-800">Missions AVEREO</h1>
           <p className="text-slate-500 mt-1">Gestion des opérations drone & conformité</p>
@@ -152,6 +152,7 @@ const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
         >
           <Plus size={20} /> Nouvelle Mission
         </button>
+        <avereo-account-menu></avereo-account-menu>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -294,6 +295,7 @@ const MissionEditor = ({ mission: initialData, onSave, onCancel }: any) => {
               {showLinks && <span className="text-xs text-slate-400">Mission prête: {calculateProgress()}%</span>}
            </div>
         </div>
+        <avereo-account-menu placement="sidebar" compact={showLinks ? undefined : "always"}></avereo-account-menu>
       </div>
 
       {/* MAIN CONTENT */}

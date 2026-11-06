@@ -5,7 +5,7 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-06
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -200,3 +200,9 @@ couvertes, partielles, simulées et absentes. La centralisation serveur reste pr
 
 Le [cas de coupes avant/après](docs/coupes-bien.md) utilise Coupe pour préparer
 deux scènes CAO, exporter leurs SVG et joindre un PDF comparatif au bien.
+
+## Mon espace — candidat commun du 6 novembre 2026
+
+Le menu regroupe Mes biens, l’administration métier conditionnée au rôle et la déconnexion native. Le stockage serveur ou local conserve son mode existant.
+
+[Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.

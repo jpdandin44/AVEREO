@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-02
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - rapport
@@ -247,3 +247,9 @@ ne change pas lors de ces réglages. [Usage et limites](api/rga.md).
 - `docs/authentication.md` : authentification et sas CONNECT.
 - `docs/deployment.md` : procedure de deploiement O2Switch.
 - `database/README.md` : persistance MySQL et migrations.
+
+## Mon espace — candidat commun du 6 novembre 2026
+
+L’en-tête Rapport réutilise le menu et conserve la sauvegarde avant déconnexion. RGA autonome reçoit le même menu et une sortie qui expire seulement le cookie RGA ; la carte intégrée masque le menu redondant.
+
+[Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.

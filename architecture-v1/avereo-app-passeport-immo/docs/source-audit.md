@@ -5,7 +5,7 @@ title: Audit source Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-11-06
 owner: jpdandin
 tags: [passeport-immo, audit, local]
 ---
@@ -71,3 +71,9 @@ une page A4 complète après correction ; quatre tests couvrent arrondi blanc, p
 final de contenu et documents de deux/trois pages. Le contrôle inverse a/b/c+d
 retrouve le code historique pour tous les autres comportements et classes.
 Voir les [preuves et limites](raccordement-cockpit.md).
+
+## 6 novembre 2026 — Menu de compte commun
+
+Le menu regroupe Mes biens, l’administration métier conditionnée au rôle et la déconnexion native. Le stockage serveur ou local conserve son mode existant.
+
+Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.

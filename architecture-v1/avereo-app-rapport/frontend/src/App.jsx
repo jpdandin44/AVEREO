@@ -519,7 +519,10 @@ function Header({ onHome, onLogout }) {
           Accueil
         </button>
       )}
-      {ONLINE_SYNC_ENABLED && <a className="button ghost" href="/connect/logout.php" onClick={onLogout}>Se déconnecter</a>}
+      <avereo-account-menu>
+        {onHome && <button slot="items" type="button" onClick={onHome}>Mes rapports</button>}
+        {ONLINE_SYNC_ENABLED ? <a slot="logout" href="/connect/logout.php" onClick={onLogout}>Se déconnecter</a> : <span slot="logout" hidden></span>}
+      </avereo-account-menu>
       </nav>
     </header>
   );

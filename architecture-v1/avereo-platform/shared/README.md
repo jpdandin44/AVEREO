@@ -5,7 +5,7 @@ title: README
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -19,3 +19,6 @@ tags: [avereo, acces, documentation]
 
 Espace reserve aux standards partages AVEREO. Aucun code applicatif vivant en V1.
 
+## Menu de compte
+
+`account-menu.js` est la source commune vivante du menu. Ses copies publiques sont générées et contrôlées. [Règle](../docs/fonctionnalites-communes.md).

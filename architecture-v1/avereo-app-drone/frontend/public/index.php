@@ -22,7 +22,5 @@ if ($html === false) {
     http_response_code(500);
     exit;
 }
-$logout = '<a href="/connect/logout.php" style="position:fixed;right:16px;bottom:16px;z-index:2147483647;'
-    . 'padding:10px 14px;border-radius:9px;background:#142033;color:#fff;text-decoration:none;'
-    . 'font:600 14px system-ui,sans-serif">Se déconnecter</a>';
-echo str_replace('</body>', $logout . '</body>', $html);
+$portalMeta = '<meta name="avereo-connect-portal" content="' . htmlspecialchars(rtrim((string) ($config['connect_portal_url'] ?? ''), '/'), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . '">';
+echo str_replace('</head>', $portalMeta . '</head>', $html);

@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - rapport
@@ -139,3 +139,7 @@ Le lien vers le rapport officiel Georisques conserve la fonction historique de
 consultation. La synthese structuree, son horodatage et sa source sont
 maintenant integres au dossier ; la confirmation ou le commentaire manuel des
 risques reste a definir.
+
+## 6 novembre 2026 — Navigation de compte
+
+Mon espace remplace le bouton de déconnexion de l’en-tête ; le gestionnaire de sauvegarde est conservé. RGA garde son isolation et son cookie propre. [Règle et qualification](../../avereo-platform/docs/fonctionnalites-communes.md).

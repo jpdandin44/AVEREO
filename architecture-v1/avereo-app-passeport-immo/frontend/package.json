@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "node ../workflows/prepare-connect-gate.mjs && vite build",
+    "dev": "node ../../../.github/scripts/prepare-account-menu.mjs passeport-immo && vite",
+    "build": "node ../../../.github/scripts/prepare-account-menu.mjs passeport-immo && node ../workflows/prepare-connect-gate.mjs && vite build",
     "preview": "vite preview",
     "test": "vitest run"
   },

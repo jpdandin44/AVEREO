@@ -5,7 +5,7 @@ title: README
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -93,3 +93,9 @@ Voir `docs/auth-drupal.md` pour le retour arriere historique et
 - Backend : API PHP minimale pour la sauvegarde projet.
 - MySQL : table `coupe_projects`.
 - APIs : endpoints `/api/health.php` et `/api/projects.php`.
+
+## Mon espace — candidat commun du 6 novembre 2026
+
+Le menu est au pied de la barre latérale. Ouvrir en ligne et l’action d’authentification existante sont conservés ; le mode jeton API local reste accessible.
+
+[Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.
