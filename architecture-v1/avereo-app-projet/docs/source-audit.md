@@ -294,6 +294,7 @@ moment-là. C'est un résultat historique, pas le résultat de ce lot.
 | Exemple dans le HTML | Source unique du pilote et dérivés hors assets publics |
 | Lots sans fiche d'exécution | Description, actions, critères et checklist avec réalisation/validation distinctes |
 | Qualification globale du lot seulement | Registre de risques détaillés, score explicite et clôture documentée |
+| Mot-clé nommant un partenaire dans le classement suggéré des sujets | Mots-clés génériques « partenariat » et « saisie unique » (06/11/2026) : le dépôt public ne cite aucun partenaire ; une tâche qui ne mentionnait que ce nom n'est plus suggérée « AVEREO », le choix manuel du sujet reste possible |
 
 Les vues tableau/Gantt/lots/risques restent présentes. Aucune API métier,
 base, compte ou secret nouveau. Le lot est implémenté localement et proposé
