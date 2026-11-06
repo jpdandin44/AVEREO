@@ -1,0 +1,49 @@
+{
+  "observedAt": "2026-11-06T16:26:13.260Z",
+  "prUrl": "https://github.com/jpdandin44/AVEREO/pull/119",
+  "state": "closed",
+  "merged": true,
+  "mergedAt": "2026-11-06T15:23:09Z",
+  "acceptedSourceSha": "223784df56e8f9ba8d66893f19e9b57f1efd7a79",
+  "mergeSourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+  "sourceTreeEquality": "cc3015e775a5297ac389c56b4b07ef024d5a3a9f",
+  "humanChecklistChecked": 4,
+  "workflowRuns": [
+    {
+      "id": 42236851240,
+      "name": "Saisie unique CI",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42236851240"
+    },
+    {
+      "id": 42236851082,
+      "name": "PR Policy",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42236851082"
+    },
+    {
+      "id": 42236851176,
+      "name": "CI",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42236851176"
+    },
+    {
+      "id": 42236851231,
+      "name": "Acces preproduction - tests uniquement",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42236851231"
+    },
+    {
+      "id": 42236851199,
+      "name": "Passeport Immo CI",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42236851199"
+    }
+  ],
+  "deploymentAuthorization": false
+}

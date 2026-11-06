@@ -17,7 +17,9 @@ Lot `mon-espace-commun-20261106`, issu de `main` après la fusion vérifiée de 
 `45c184970c9b99f41f345b10f56c545568bab3f2`.
 La branche a ensuite intégré `main` à `8ea117d71e51d8b32ea05d47372e9c536a126864`
 (PR #113) et inclut le menu de Saisie unique.
-Phase : **Développement local**. Aucune installation hébergée réalisée par ce lot.
+Phase : **Développement local**. La PR #119 est maintenant fusionnée sur main, à
+`e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52`. La [préparation hébergée](preparation-mon-espace.md)
+est vérifiée pour sept cibles ; aucune installation applicative réalisée par ce lot.
 
 ## Contrôles reproductibles
 
@@ -60,9 +62,9 @@ mis à jour, puis être comparés aux versions hébergées avant remplacement. L
 existant `outillage/acces-preproduction/prepare_application_candidates.py` emballe les
 huit applications web ; le fichier autonome de Saisie unique reste distinct.
 
-La PR #118 porte séparément le retour d’activation. Après sa fusion, le candidat
-CONNECT de ce lot doit être réaligné sur la version cumulée et requalifié avant
-livraison : un paquet préparé avant cette fusion ne doit pas remplacer son backend.
+La PR #118, fusionnée et installée séparément, porte le retour d’activation.
+La reconstruction après #119 inclut sa source ; la sélection de livraison conserve
+son backend installé et ne remplace que le menu et la page du portail CONNECT.
 
 ## Revue humaine à réaliser
 
@@ -79,7 +81,7 @@ après la PR #106. Cet alignement dérivé ajoute à cette copie la lecture de l
 et de la révocation déjà appliquée par la source commune ; ce lot ne définit aucune
 nouvelle règle de droit. Il doit être inclus dans la comparaison du candidat à la cible.
 
-## Résultats du 6 novembre
+## Résultats historiques de qualification du 6 novembre
 
 | Contrôle local | Résultat |
 | --- | --- |
@@ -113,3 +115,10 @@ Les audits historiques approuvés de Passeport Immo sont conservés à l’octet
 [une annexe](../../avereo-app-passeport-immo/docs/source-audit-mon-espace.md) porte
 l’écart nouveau et sa matrice. Le préparateur transverse conserve aussi le `.user.ini`
 public racine nécessaire aux envois de pièces, sans inclure de configuration privée.
+
+## Préparation après fusion
+
+Le [dossier de livraison](preparation-mon-espace.md) précise les nouvelles compilations,
+les 37 fichiers retenus, les restaurations sur copies, les écarts conservés et les
+cas Recherche/Saisie unique. Ces preuves complètent les recettes locales ci-dessus ;
+elles ne constituent pas une recette applicative hébergée après installation.

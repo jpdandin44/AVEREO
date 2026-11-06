@@ -31,4 +31,4 @@ Chaque application peut s'assurer que le gateway est actif, mais sa commande `do
 
 ## Menu commun Mon espace
 
-La [règle des fonctionnalités communes](docs/fonctionnalites-communes.md) définit le composant et son intégration. [Revue locale](docs/qualification-mon-espace.md) et [suivi canonique](data/suivi-fonctions-communes.json).
+La [règle des fonctionnalités communes](docs/fonctionnalites-communes.md) définit le composant et son intégration. [Qualification](docs/qualification-mon-espace.md), [préparation des sept cibles](docs/preparation-mon-espace.md) et [suivi canonique](data/suivi-fonctions-communes.json).

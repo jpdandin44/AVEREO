@@ -1,0 +1,68 @@
+{
+  "observedAt": "2026-11-06T16:00:44.791628+00:00",
+  "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+  "checks": [
+    {
+      "id": "menu-tests",
+      "exitCode": 0,
+      "log": "logs/menu-tests.log"
+    },
+    {
+      "id": "packaging-tests",
+      "exitCode": 0,
+      "log": "logs/packaging-tests.log"
+    },
+    {
+      "id": "menu-build-connect",
+      "exitCode": 0,
+      "log": "logs/menu-build-connect.log"
+    },
+    {
+      "id": "menu-build-rapport",
+      "exitCode": 0,
+      "log": "logs/menu-build-rapport.log"
+    },
+    {
+      "id": "menu-build-coupe",
+      "exitCode": 0,
+      "log": "logs/menu-build-coupe.log"
+    },
+    {
+      "id": "menu-build-projet",
+      "exitCode": 0,
+      "log": "logs/menu-build-projet.log"
+    },
+    {
+      "id": "menu-build-thermo",
+      "exitCode": 0,
+      "log": "logs/menu-build-thermo.log"
+    },
+    {
+      "id": "menu-build-drone",
+      "exitCode": 0,
+      "log": "logs/menu-build-drone.log"
+    },
+    {
+      "id": "menu-build-recherche",
+      "exitCode": 0,
+      "log": "logs/menu-build-recherche.log"
+    },
+    {
+      "id": "menu-build-passeport-immo",
+      "exitCode": 0,
+      "log": "logs/menu-build-passeport-immo.log"
+    },
+    {
+      "id": "menu-build-saisie-unique",
+      "exitCode": 0,
+      "log": "logs/menu-build-saisie-unique.log"
+    },
+    {
+      "id": "baseline",
+      "exitCode": 0,
+      "log": "logs/baseline.log"
+    }
+  ],
+  "saisieSha256": "f88383b6cae420e6068044908edb14c4bb86bbb6d1c3fdec5b04efbd0abbbab7",
+  "logDirectory": "C:/Users/examg/Documents local/livraisons-avereo/mon-espace/preparation-e08cbde"
+}

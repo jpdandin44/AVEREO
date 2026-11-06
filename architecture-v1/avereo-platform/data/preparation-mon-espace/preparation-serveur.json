@@ -1,0 +1,189 @@
+{
+  "observedAt": "2026-11-06T16:09:46.951602+00:00",
+  "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+  "applications": {
+    "rapport": {
+      "root": "/home/daje3540/rapport-preprod.avereo.fr",
+      "artifactSha256": "9a6ccc5a4d024ec0a78c3b1fef1917e718c21a6fa3e30a18f6dadd19f3fc7513",
+      "counts": {
+        "preserve": 133,
+        "replace": 4,
+        "create": 4
+      },
+      "backupAndRestoreOnCopies": "passed",
+      "privateConfigurationRecovery": "passed",
+      "privateConfigurationSha256": "8b4c6c83dbe27fba1ac28e125913e3282613b497bb7e210158f721c492dc8fdd",
+      "hostedProtections": {
+        ".htaccess": {
+          "exists": true,
+          "sha256": "99fcc6d270cec6b80626ad20e32e53d8081aa23d6a5309747a79377859ce98a9",
+          "sha256_lf": "d4765a726e980283e8ea295b11d5791d2a04912ddecb5f53177020bfde197b7b",
+          "mode": 436,
+          "bytes": 565
+        },
+        "api/.htaccess": {
+          "exists": true,
+          "sha256": "e447526a864fa4283a74df0e5ca300677f8d5fe742d197cd89a64c2664902992",
+          "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+          "mode": 436,
+          "bytes": 128
+        }
+      }
+    },
+    "coupe": {
+      "root": "/home/daje3540/coupe-preprod.avereo.fr",
+      "artifactSha256": "000beda0f0d6f5da99427f828884d8937e3aac4f2e2fa7f1cd2969eeac253811",
+      "counts": {
+        "preserve": 9,
+        "replace": 5,
+        "create": 2
+      },
+      "backupAndRestoreOnCopies": "passed",
+      "privateConfigurationRecovery": "passed",
+      "privateConfigurationSha256": "5dc51b838dd4b26c4f09b3fd31bfd07b5195896bb86006243df71d1252a4fb02",
+      "hostedProtections": {
+        ".htaccess": {
+          "exists": true,
+          "sha256": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+          "sha256_lf": "bee7bee844adef3f62d2928257948e8c41c55b4d4b0fb27df5fe2e32e36f7d4f",
+          "mode": 436,
+          "bytes": 643
+        },
+        "api/.htaccess": {
+          "exists": true,
+          "sha256": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+          "sha256_lf": "5a84760fd8b46ccbac9e8775416cfab1f9edc1f3216926ca9a734289e0858976",
+          "mode": 436,
+          "bytes": 123
+        }
+      }
+    },
+    "projet": {
+      "root": "/home/daje3540/projet-preprod.avereo.fr",
+      "artifactSha256": "2d2275b117bedbcb507c4ff4bdc2cc2f389b4be7e82ba94d92f04851f716b56d",
+      "counts": {
+        "preserve": 14,
+        "replace": 6,
+        "create": 1
+      },
+      "backupAndRestoreOnCopies": "passed",
+      "privateConfigurationRecovery": "passed",
+      "privateConfigurationSha256": "f0cf36532aafd461b06391e73a738187f6e1715b9a3382f179568ff3f6be2674",
+      "hostedProtections": {
+        ".htaccess": {
+          "exists": true,
+          "sha256": "961dbdd4c4e1a1fe27cdca63f86880459c1bd5c2a2b74a5360f4246e99ef249d",
+          "sha256_lf": "ef97c15a0777911dc366d300ab53021d122f0583dee3eea083aaa3518731ae95",
+          "mode": 436,
+          "bytes": 687
+        }
+      }
+    },
+    "thermo": {
+      "root": "/home/daje3540/thermo-preprod.avereo.fr",
+      "artifactSha256": "684542974f2326b3003d655e9d6d62107cc476c2d845dfe8982c11f3abceef0a",
+      "counts": {
+        "preserve": 4,
+        "replace": 2,
+        "create": 3
+      },
+      "backupAndRestoreOnCopies": "passed",
+      "privateConfigurationRecovery": "passed",
+      "privateConfigurationSha256": "05b06fbb22b3e46b83de836ed2fe08fbf1bd4a51ecdfa9c5552d622b5b552219",
+      "hostedProtections": {
+        ".htaccess": {
+          "exists": true,
+          "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+          "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+          "mode": 436,
+          "bytes": 493
+        }
+      }
+    },
+    "drone": {
+      "root": "/home/daje3540/drone-preprod.avereo.fr",
+      "artifactSha256": "9236e6572255c6e6b8139335049add00ba38349447722ac909bdf7c1fdd9853b",
+      "counts": {
+        "preserve": 4,
+        "replace": 2,
+        "create": 3
+      },
+      "backupAndRestoreOnCopies": "passed",
+      "privateConfigurationRecovery": "passed",
+      "privateConfigurationSha256": "d2e8d5f27faff27238ffb02c8a9f01cce5017ced9741504aec2821fedf4f37f8",
+      "hostedProtections": {
+        ".htaccess": {
+          "exists": true,
+          "sha256": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+          "sha256_lf": "39105a2eda67d7298ab80db42bea281c09673b85bfe296c0d31ba9a6c4d50629",
+          "mode": 436,
+          "bytes": 493
+        }
+      }
+    },
+    "connect": {
+      "root": "/home/daje3540/connect-preprod.avereo.fr/public",
+      "artifactSha256": "2c37fa7a974fc6cda68518c85375535e8d25faf2d1edaaf868d2b7c28dae94a5",
+      "counts": {
+        "preserve": 0,
+        "replace": 1,
+        "create": 1
+      },
+      "backupAndRestoreOnCopies": "passed",
+      "privateConfigurationRecovery": "passed",
+      "privateConfigurationSha256": "b1f6489e460415088dd1edd38faf7485c2d46506dba0cda54ea0f0224f7d7c26",
+      "hostedProtections": {}
+    },
+    "passeport-immo": {
+      "root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "artifactSha256": "04e3c03569354251d50fb195a83dcc2671a663ce122ee977303b058d7d656a98",
+      "counts": {
+        "preserve": 10,
+        "replace": 3,
+        "create": 4
+      },
+      "backupAndRestoreOnCopies": "passed",
+      "privateConfigurationRecovery": "passed",
+      "privateConfigurationSha256": "53b618cbd49c172736a8d858f1cbdb6aa3ed2f95134cae4154a543c373f7028b",
+      "hostedProtections": {
+        ".htaccess": {
+          "exists": true,
+          "sha256": "ba1698052b99075c426ddb5abda88a239357ad1dcb6c9efd723472e600370bb8",
+          "sha256_lf": "ba1698052b99075c426ddb5abda88a239357ad1dcb6c9efd723472e600370bb8",
+          "mode": 420,
+          "bytes": 627
+        },
+        ".user.ini": {
+          "exists": true,
+          "sha256": "9140d459d58a6abd46a4b08fb49a1df84ace9ec7617b901034446997c9fb8b96",
+          "sha256_lf": "9140d459d58a6abd46a4b08fb49a1df84ace9ec7617b901034446997c9fb8b96",
+          "mode": 420,
+          "bytes": 91
+        }
+      }
+    }
+  },
+  "liveFilesModified": false,
+  "databaseAccessed": false,
+  "configurationModified": false,
+  "deploymentAuthorized": false,
+  "rollbackScope": "files and modes; preserve current user data",
+  "installedPr118Preserved": true,
+  "planningRecovery": {
+    "fileCount": 13,
+    "byteIdentical": true,
+    "dataWillNotBeRestoredOverNewWork": true
+  },
+  "recherche": {
+    "status": "target_not_declared",
+    "candidatePrepared": true,
+    "hostingAndConnectSetupRequired": true
+  },
+  "saisieUnique": {
+    "status": "standalone_local_application",
+    "hostingConfigured": false
+  },
+  "fullReceiptSha256": "5d7ae0ffaecda9c5aeae202bd21dff4e18dbbef2e91c5ee60c047dbfd7d3bc59",
+  "fullReceiptLocalPath": "C:/Users/examg/Documents local/livraisons-avereo/mon-espace/preparation-e08cbde/preparation-serveur.json",
+  "representation": "Summary derived from the preserved complete server receipt; selected file details are in selection.json."
+}

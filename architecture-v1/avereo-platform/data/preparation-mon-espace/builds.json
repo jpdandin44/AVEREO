@@ -1,0 +1,61 @@
+{
+  "observedAt": "2026-11-06T15:59:03.230748+00:00",
+  "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+  "builds": [
+    {
+      "app": "connect",
+      "exitCode": 0,
+      "onlineSync": false,
+      "log": "logs/build-connect.log"
+    },
+    {
+      "app": "coupe",
+      "exitCode": 0,
+      "onlineSync": false,
+      "log": "logs/build-coupe.log"
+    },
+    {
+      "app": "projet",
+      "exitCode": 0,
+      "onlineSync": false,
+      "log": "logs/build-projet.log"
+    },
+    {
+      "app": "rapport",
+      "exitCode": 0,
+      "onlineSync": true,
+      "log": "logs/build-rapport.log"
+    },
+    {
+      "app": "thermo",
+      "exitCode": 0,
+      "onlineSync": false,
+      "log": "logs/build-thermo.log"
+    },
+    {
+      "app": "recherche",
+      "exitCode": 0,
+      "onlineSync": false,
+      "log": "logs/build-recherche.log"
+    },
+    {
+      "app": "saisie-unique",
+      "exitCode": 0,
+      "onlineSync": false,
+      "log": "logs/build-saisie-unique.log"
+    },
+    {
+      "app": "drone",
+      "exitCode": 0,
+      "onlineSync": false,
+      "log": "logs/build-drone.log"
+    },
+    {
+      "app": "passeport-immo",
+      "exitCode": 0,
+      "onlineSync": false,
+      "log": "logs/build-passeport-immo.log"
+    }
+  ],
+  "logDirectory": "C:/Users/examg/Documents local/livraisons-avereo/mon-espace/preparation-e08cbde"
+}

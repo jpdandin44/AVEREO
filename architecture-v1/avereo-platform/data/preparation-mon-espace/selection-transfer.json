@@ -1,0 +1,12 @@
+{
+  "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+  "outerSha256": "f2bdfbf5d6d54c22da34df8d20991cc589b20ca3aaf92f8bf6e74f2825d478c4",
+  "outerBytes": 2126381,
+  "inlineSyntax": [
+    {
+      "script": 3,
+      "exitCode": 0,
+      "output": ""
+    }
+  ]
+}

@@ -21,4 +21,4 @@ tags: [avereo, acces, documentation]
 
 ## Itération Mon espace
 
-Généralisation locale en cours de qualification. [Suivi unique](data/suivi-fonctions-communes.json). Revue, préproduction autorisée puis production constituent des étapes distinctes.
+PR #119 fusionnée ; livraison de 37 fichiers préparée pour sept cibles avec restaurations sur copies. Accord de déploiement et recette hébergée à réaliser. Recherche nécessite sa première cible ; Saisie unique reste autonome. [Suivi unique](data/suivi-fonctions-communes.json). Revue, préproduction autorisée puis production constituent des étapes distinctes.

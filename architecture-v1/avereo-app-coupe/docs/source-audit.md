@@ -70,3 +70,11 @@ Notes V1.1 : fabric et pdfjs-dist devront etre integres proprement via npm.
 Le menu est au pied de la barre latérale. Ouvrir en ligne et l’action d’authentification existante sont conservés ; le mode jeton API local reste accessible.
 
 Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.
+
+## Préparation hébergée du menu après PR #119
+
+Le [dossier transverse](../../avereo-platform/docs/preparation-mon-espace.md)
+consigne l’écart entre la variante de connexion hébergée et la source cumulée.
+La livraison proposée applique seulement le menu au HTML installé ; ses API et
+ses traitements OAuth restent inchangés. La restauration sur copie est vérifiée ;
+aucune installation ni recette métier hébergée du menu n’est encore réalisée.

@@ -6,7 +6,7 @@
   "owner": "jpdandin",
   "kind": "application",
   "stage": "local",
-  "status": "ready_for_review",
+  "status": "preproduction_prepared_awaiting_authorization",
   "objective": "Appliquer Mon espace aux applications et fixer une règle des fonctions communes.",
   "phases": [
     "Cadrage",
@@ -19,19 +19,28 @@
     "merged": true,
     "sha": "45c184970c9b99f41f345b10f56c545568bab3f2",
     "observedAt": "2026-11-06",
-    "latestMainSha": "8ea117d71e51d8b32ea05d47372e9c536a126864"
+    "latestMainSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52"
   },
   "candidate": {
     "commonSourceSha256": "90e94651f832e69a999803de732709a2e55a640e75b2bbc91d856b7b214e83e4",
-    "sourceSha": "a3d89d932a306471affced4f5395edb044968ef5",
-    "artifactSha256": null
+    "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+    "artifactSha256": "93d4103dd2a1d8284acdd94ca54880f9c95a5bbfda18de415fd38dc70146d716",
+    "artifact": "preparation-mon-espace/selection.json",
+    "scope": "seven_verified_preproduction_targets_menu_only",
+    "coupeHostedVariantPreserved": true
   },
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/shared-account-menu-20261106",
     "base": "main",
-    "humanAcceptanceVerified": false,
-    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/119"
+    "humanAcceptanceVerified": true,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/119",
+    "merged": true,
+    "acceptedSourceSha": "223784df56e8f9ba8d66893f19e9b57f1efd7a79",
+    "mergeSourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+    "observedAt": "2026-11-06T16:29:45.026057+00:00",
+    "evidence": "preparation-mon-espace/github.json",
+    "acceptedArtifactSha256": null
   },
   "checks": [
     {
@@ -124,23 +133,95 @@
       "environment": "local_containers",
       "evidence": "../docs/qualification-mon-espace.md",
       "observedAt": "2026-11-06"
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+      "artifactSha256": "93d4103dd2a1d8284acdd94ca54880f9c95a5bbfda18de415fd38dc70146d716",
+      "observedAt": "2026-11-06T16:29:45.026057+00:00",
+      "evidence": "preparation-mon-espace/local-checks.json"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+      "artifactSha256": "93d4103dd2a1d8284acdd94ca54880f9c95a5bbfda18de415fd38dc70146d716",
+      "observedAt": "2026-11-06T16:29:45.026057+00:00",
+      "evidence": "../docs/preparation-mon-espace.md"
+    },
+    {
+      "kind": "source_ci",
+      "status": "passed",
+      "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+      "observedAt": "2026-11-06T16:29:45.026057+00:00",
+      "evidence": "preparation-mon-espace/github.json",
+      "limitation": "Accepted source CI; reduced overlay tool CI belongs to the preparation PR."
+    },
+    {
+      "kind": "preparation",
+      "status": "passed",
+      "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+      "artifactSha256": "93d4103dd2a1d8284acdd94ca54880f9c95a5bbfda18de415fd38dc70146d716",
+      "observedAt": "2026-11-06T16:23:25.182312+00:00",
+      "evidence": "preparation-mon-espace/verification-selection-serveur.json",
+      "environment": "hosted_private_copies",
+      "fileCount": 37
     }
   ],
   "approvals": [],
   "targets": {
     "preproduction": {
-      "ready": false,
-      "evidence": "Cibles à vérifier individuellement avant remplacement ; aucun déploiement par ce lot."
+      "id": "mon-espace-seven-preproduction-targets",
+      "ready": true,
+      "isolated": true,
+      "observedAt": "2026-11-06T16:23:25.182312+00:00",
+      "evidence": "preparation-mon-espace/verification-selection-serveur.json",
+      "applications": {
+        "rapport": "/home/daje3540/rapport-preprod.avereo.fr",
+        "coupe": "/home/daje3540/coupe-preprod.avereo.fr",
+        "projet": "/home/daje3540/projet-preprod.avereo.fr",
+        "thermo": "/home/daje3540/thermo-preprod.avereo.fr",
+        "drone": "/home/daje3540/drone-preprod.avereo.fr",
+        "connect": "/home/daje3540/connect-preprod.avereo.fr/public",
+        "passeport-immo": "/home/daje3540/passeport-immo-preprod.avereo.fr/public"
+      },
+      "excludedTargets": {
+        "recherche": "Domain not declared; infrastructure setup required",
+        "saisie-unique": "Standalone local HTML; no hosted target"
+      }
     },
     "production": {
       "ready": false
     }
   },
   "delivery": {
-    "status": "not_deployed"
+    "status": "not_deployed",
+    "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+    "artifactSha256": "93d4103dd2a1d8284acdd94ca54880f9c95a5bbfda18de415fd38dc70146d716",
+    "liveFilesModified": false,
+    "databaseAccessed": false,
+    "configurationModified": false
   },
-  "backups": [],
+  "backups": [
+    {
+      "id": "mon-espace-e08cbde-private-selection",
+      "target": "mon-espace-seven-preproduction-targets",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-06T16:23:25.182312+00:00",
+      "evidence": "preparation-mon-espace/verification-selection-serveur.json",
+      "serverDirectory": "/home/daje3540/private/mon-espace-preprod-e08cbde-20261106",
+      "planningFilesPreserved": 13,
+      "privateConfigurationCount": 7
+    }
+  ],
   "blockers": [],
-  "nextAction": "Revoir la PR et les aperçus locaux ; qualifier les cibles et sauvegardes avant tout remplacement autorisé.",
-  "nextIteration": []
+  "nextAction": "Review the 37-file selection and Coupe UI-only overlay; obtain the exact seven-target deployment agreement, refresh drift checks, then install and run hosted fictional-account recipes. Recherche hosting remains separate.",
+  "nextIteration": [
+    "Qualify Recherche hosting and CONNECT configuration before its first authorized installation.",
+    "Keep Saisie unique standalone until a separate hosted scope is agreed.",
+    "Review older Coupe, Passeport and Projet hosted drift in their own lots."
+  ],
+  "preparationBranch": "docs/mon-espace-preproduction-20261106"
 }

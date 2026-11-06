@@ -12,6 +12,14 @@ tags: [preproduction, securite, exploitation]
 
 # Accès aux préproductions par identifiants
 
+## Préparation du menu commun — 6 novembre 2026
+
+Le [dossier Mon espace](../../architecture-v1/avereo-platform/docs/preparation-mon-espace.md)
+relie la sélection des sept cibles, les sauvegardes et les preuves. Les outils
+`prepare_shared_menu.py` et `select_shared_menu.py` préparent et vérifient des
+copies privées uniquement ; ils ne remplacent aucun fichier actif. Le suivi
+applicatif lié par ce dossier est la référence pour ce lot.
+
 ## Suite de production — 16 octobre 2026
 
 Après fusion des PR #83 et #84, consulter le [dossier commun de production](preparation-production-rapport-passeport.md).
