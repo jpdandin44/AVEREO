@@ -73,8 +73,9 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
       } else if (tag === 'IMG') {
         const image = await imageRun(node); if(image) output.push(new Paragraph({children:[image], spacing:{before:140,after:140}}));
       } else if (tag === 'P' || tag === 'LI') {
-        output.push(new Paragraph({children:await runs(node), bullet:tag==='LI'?{level:0}:undefined,
-          spacing:{after:160}, shading:node.classList.contains('status')?{fill:'FFF1E7'}:undefined }));
+        const companyIdentity = node.parentElement?.classList.contains('company-identity');
+        output.push(new Paragraph({children:await runs(node, companyIdentity ? {size:18,color:'506573'} : {}), bullet:tag==='LI'?{level:0}:undefined,
+          keepNext:companyIdentity, spacing:{after:companyIdentity?40:160}, shading:node.classList.contains('status')?{fill:'FFF1E7'}:undefined }));
       } else if(tag === 'BR') {
         if(node.getAttribute('style')?.includes('page-break')) output.push(new Paragraph({pageBreakBefore:true}));
       } else {

@@ -1,7 +1,7 @@
 import { buildExpertDocumentHtml, escapeHtml, textToHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml } from './reportHtml.js';
 import { observationPlanNames } from './observationPlans.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
-import { AVEREO_NAME } from '../../../avereo-platform/shared/report-identity.js';
+import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { buildDecisionHtml } from './decisionSupport.js';
 
 export function deliveryOptions(report) {
@@ -34,6 +34,7 @@ function illustration(image, client = false) {
 function cover(report, client) {
   return `<section class="cover">
     <img class="brand-logo" src="${AVEREO_LOGO}" alt="${escapeHtml(AVEREO_NAME)}" />
+    <div class="company-identity">${AVEREO_COMPANY_LINES.map(line => `<p>${escapeHtml(line)}</p>`).join('')}</div>
     <p class="eyebrow">HABITAT · COMPRENDRE · DÉCIDER</p>
     <h1>${client ? 'Votre habitat, l’essentiel' : 'Rapport expert détaillé'}</h1>
     <h2>${escapeHtml(report.titre)}</h2>
@@ -60,6 +61,8 @@ const style = `
   tr { page-break-inside: avoid; } img { max-width: 100%; height: auto; }
   .cover { padding: 30px 0 50px; margin: 0; page-break-after: always; }
   .brand-logo { width: 220px; max-height: 110px; object-fit: contain; }
+  .company-identity { margin: 12px 0 20px; color: #506573; font-size: 9pt; page-break-inside: avoid; }
+  .company-identity p { margin: 2px 0; }
   .eyebrow { color: #FF6600; font-size: 10pt; letter-spacing: 2px; margin-top: 50px; }
   .address { font-size: 18pt; } .status { background: #fff1e7; border-left: 4px solid #FF6600; padding: 14px; }
   .muted,.source,.caption { color: #506573; } .source { font-size: 9pt; }

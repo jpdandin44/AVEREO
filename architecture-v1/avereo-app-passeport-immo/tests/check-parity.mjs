@@ -4,6 +4,21 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Écart j autorisé le 7 novembre : bloc entreprise fourni par le responsable.
+for (const [current, previous] of [
+  [
+    "import { AVEREO_NAME, AVEREO_LOGO, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';\n",
+    "import { AVEREO_NAME, AVEREO_LOGO } from '../../../avereo-platform/shared/report-identity.js';\n"
+  ],
+  [
+    "                <div className=\"text-xs text-gray-600 mb-4\" style={{ breakInside: 'avoid' }}>{AVEREO_COMPANY_LINES.map((line, index) => <p key={index}>{line}</p>)}</div>\n",
+    ""
+  ]
+]) {
+  assert.equal(restored.split(current).length - 1, 1, 'Chaque écart j doit correspondre exactement au bloc entreprise');
+  restored = restored.replace(current, previous);
+}
+
 // Écart i autorisé le 6 novembre : nom et logo AVEREO communs dans le devis PDF.
 // Rétablir les trois modifications exactes avant de contrôler toute la source.
 for (const [current, previous] of [

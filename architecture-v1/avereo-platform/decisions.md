@@ -5,7 +5,7 @@ title: Décisions
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -33,3 +33,13 @@ Raison : éviter les identités divergentes et une modification libre par un mem
 Conséquences : aucune information légale inventée ; préférences individuelles
 séparées ; contrôle serveur et isolement à qualifier dans un candidat ultérieur.
 [Périmètre et limites](docs/identite-livrables.md).
+
+## 2026-11-07 — Préparer l’immatriculation sans la devancer
+
+Contexte : le responsable fournit les informations provisoires d’AVEREO et reporte
+les numéros d’immatriculation. Décision : une source JSON d’entreprise, des champs
+futurs vides et un affichage des seules valeurs renseignées dans les quatre formats.
+Raison : compléter une seule source ultérieurement, sans valeurs fictives sur les
+documents. Conséquences : la mention de formation reste explicite ; le formulaire
+et le contrôle serveur de l’administration d’organisation restent un lot distinct.
+[Source et limites](docs/identite-livrables.md).

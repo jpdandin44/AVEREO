@@ -5,7 +5,7 @@ title: Écart de présentation AVEREO dans le devis
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, livrables, organisation]
 ---
@@ -29,3 +29,15 @@ candidat et n’utilisera pas le profil de démonstration pour autoriser les éc
 Quatre tests de pagination et le contrôle de parité réussissent. Un PDF réel de
 démonstration est généré puis rendu : une page A4, logo présent, montants inchangés.
 Le test témoin de divergence hors des substitutions doit continuer à être refusé.
+
+## 2026-11-07 — Écart j, informations provisoires d’entreprise
+
+Le responsable fournit les données de société en formation et demande la zone
+d’immatriculation future. Deux raccordements précis sont ajoutés : import des
+lignes d’entreprise, puis bloc de paragraphes sous le logo dans `PdfLayout`.
+Le contrôle de parité inverse exactement ces deux ajouts avant les écarts antérieurs.
+Les audits historiques et la matrice approuvée restent inchangés.
+
+Le PDF de démonstration a été téléchargé de nouveau et rendu : une page A4,
+quatre lignes complètes, montants inchangés. Champs vides omis, quatre tests PDF
+et comparaison intégrale réussis. [Identité de référence et preuves datées](../../avereo-platform/docs/identite-livrables.md).

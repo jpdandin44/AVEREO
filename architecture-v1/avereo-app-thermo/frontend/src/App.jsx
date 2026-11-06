@@ -1,4 +1,4 @@
-import { AVEREO_NAME, AVEREO_LOGO } from '../../../avereo-platform/shared/report-identity.js';
+import { AVEREO_NAME, AVEREO_LOGO, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { thermoProjects } from './thermo-projects.js';
 import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
@@ -711,6 +711,7 @@ const buildWordDocumentHtml = (report) => {
     <body>
         <div class="WordSection1">
             <p><img src="${AVEREO_LOGO}" alt="${escapeHtml(AVEREO_NAME)}" width="210" style="width:210px; height:auto;" /></p>
+            <div style="font-size:9pt; color:#506573; margin-bottom:16pt; page-break-inside:avoid;">${AVEREO_COMPANY_LINES.map(line => `<p style="margin:2pt 0;">${escapeHtml(line)}</p>`).join('')}</div>
             <div style="border: 2px solid #ea580c; background-color: #fff7ed; padding: 15pt; margin-bottom: 30pt; page-break-inside: avoid;">
                 <h3 style="color: #ea580c; font-size: 11pt; margin-top:0; text-transform: uppercase;">Mention Légale et Limites de Mission</h3>
                 <p style="font-weight: bold; font-size: 10.5pt; text-align: center; color: #ea580c;">DOCUMENT TECHNIQUE NON OPPOSABLE</p>

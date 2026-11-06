@@ -1,4 +1,4 @@
-import { AVEREO_NAME, AVEREO_LOGO } from '../../../avereo-platform/shared/report-identity.js';
+import { AVEREO_NAME, AVEREO_LOGO, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { readMissions, writeMissions } from './mission-storage.js';
 import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';
 import React, { useState, useEffect } from 'react';
@@ -643,6 +643,7 @@ const PrintView = ({ mission, onClose }: any) => {
          <div className="flex justify-between items-end border-b-2 border-slate-900 pb-4 mb-8">
             <div>
                <img src={AVEREO_LOGO} alt={AVEREO_NAME} style={{ width: 180, height: 'auto', marginBottom: 16 }} />
+               <div className="text-xs text-slate-600 mb-4" style={{ breakInside: 'avoid' }}>{AVEREO_COMPANY_LINES.map((line, index) => <p key={index}>{line}</p>)}</div>
                <h1 className="text-3xl font-bold uppercase tracking-widest text-slate-900">Ordre de Mission</h1>
                <p className="text-slate-500">{AVEREO_NAME} - Opérations Aériennes</p>
             </div>

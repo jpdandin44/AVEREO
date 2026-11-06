@@ -5,7 +5,7 @@ title: Historique des changements
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -50,3 +50,11 @@ reste attachée à son ancien candidat de 37 fichiers.
 Nom et logo officiel mutualisés dans quatre applications ; modèle de configuration
 réservée à l’administrateur d’organisation documenté. Les informations légales
 restent à confirmer. Aucun déploiement. [Détail](docs/identite-livrables.md).
+
+## 2026-11-07 — Identité provisoire de l’entreprise
+
+Ajout de la source JSON d’entreprise et de l’affichage conditionnel dans les quatre
+livrables. Valeurs fournies par le responsable ; champs d’immatriculation préparés
+et vides. Nouvelles preuves locales sans remplacement des preuves du 6 novembre.
+Word expert/client et Thermo, PDF Passeport téléchargés puis rendus ; Drone reste
+qualifié sur composant d’impression. Aucun déploiement. [Contrat](docs/identite-livrables.md).

@@ -1,0 +1,113 @@
+{
+  "observedAt": "2026-11-06T23:39:08.591603+00:00",
+  "environment": "local",
+  "sourceBase": "4f61b77c320716f4966d12d041034356e9ae9c42",
+  "previousEvidence": "../qualification-locale.json",
+  "codeSha256Lf": {
+    "architecture-v1/avereo-app-drone/frontend/src/App.tsx": "68bf2917780512eda4fa09729b4d7edc723bbe4590038e02578544998fb1564e",
+    "architecture-v1/avereo-app-passeport-immo/frontend/src/App.jsx": "1ba763754a5cad9f81f2a5aad6df8f5d615d64b32b2b9dd449dece32c60d6dab",
+    "architecture-v1/avereo-app-passeport-immo/tests/check-parity.mjs": "019c278b9531cc9ea108dae0890b44b060657281b98433b50a8856d623f0284f",
+    "architecture-v1/avereo-app-rapport/frontend/src/reportDelivery.js": "a7cdec50499ff392722810d33c3c0a06db9481218fb585fe8043e768e63843c1",
+    "architecture-v1/avereo-app-rapport/frontend/src/reportDocx.js": "ee352b7e77d602aead2e8ab9735dd9ad2779f4ce4441854f8779e1796ba9e1c5",
+    "architecture-v1/avereo-app-rapport/frontend/src/reportVisuals.js": "13e73ac8b359e6c9b51cf3c73e3178e5f5bb2d8a8fdd9d23401c95635a5eafe2",
+    "architecture-v1/avereo-app-thermo/frontend/src/App.jsx": "99c05aee504f78ac41ec9cb0fb15c26f0aaf3e2e702da72ccbdcd504d12fb85b",
+    "architecture-v1/avereo-platform/shared/report-identity.js": "f5a5a7bfc41cc7ae85af06e5e937aa8aa8d6de63e90552bbfd3e7f61849345ed",
+    "architecture-v1/avereo-platform/data/report-organization.json": "50176e099bf91f9be1fe02aca7d7f236669706fd23f3b6d71a9af58db58eca0e"
+  },
+  "logoOriginalPngSha256": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+  "builds": {
+    "rapport": "passed_with_bundle_size_warning",
+    "thermo": "passed_with_bundle_size_warning",
+    "drone": "passed_with_bundle_size_warning",
+    "passeport-immo": "passed_with_bundle_size_warning"
+  },
+  "tests": {
+    "rapport": 101,
+    "passeportPdfPagination": 4,
+    "passeportParity": "passed",
+    "repositoryBaseline": "passed",
+    "passeportParityNegativeWitness": "passed",
+    "companyEmptyFieldsAndConditionalDisplay": "passed",
+    "downloadedDocxIdentityXml": "passed_expert_and_client"
+  },
+  "companyIdentity": {
+    "source": "../../report-organization.json",
+    "userProvidedOn": "2026-11-07",
+    "currentLines": 4,
+    "emptyFutureFields": 6,
+    "registrationIntentionallyDeferred": true
+  },
+  "visuals": {
+    "rapportExpertHtmlPreview": "passed",
+    "rapportClientHtmlPreview": "passed",
+    "rapportExpertDocxRealDownload": "passed_rendered_in_microsoft_word_6_pages",
+    "rapportClientDocxRealDownload": "passed_rendered_in_microsoft_word_3_pages",
+    "passeportPdfRealDownload": "passed_one_a4_page_amounts_preserved",
+    "thermoRealDocDownload": "passed_company_header_rendered_in_microsoft_word_7_pages",
+    "thermoMissingImagesRefused": "passed",
+    "thermoGeneratorHtmlFixture": "passed",
+    "dronePrintComponentHtmlFixture": "passed"
+  },
+  "rendering": {
+    "requestedRenderer": "LibreOffice unavailable; render_docx.py reported missing soffice.exe",
+    "actualRenderer": "Microsoft Word readonly export to PDF, Poppler PNG",
+    "scope": "Four new identity lines and logo; covers and all page sheets inspected on fictitious fixtures",
+    "thermoHistoricalLimits": [
+      "TOC not updated automatically",
+      "Text TEST used as signature renders an invalid image; unchanged historical exporter"
+    ]
+  },
+  "pending": [
+    "organization_admin_configuration_service",
+    "drone_full_print_flow",
+    "hosted_qualification"
+  ],
+  "filesDirectory": "C:\\Users\\examg\\Documents local\\livraisons-avereo\\identite-avereo\\formation-20261107",
+  "filesSha256": {
+    "devis-fictif-avereo.pdf": "ab4db9fce2f3bc32fa8dc955803fc0105ce42a9843a85f919d4bd620d0ad9051",
+    "devis-page-1.png": "6edd3000432ebd2ee2bfe783ab321de6ac5a58c7d4c250468fd0c4965b354568",
+    "drone-fictif-avereo.html": "6798fd541236e785c7de9ddd216e1047df5e98a7d5e2bc8bd1e76776cad8786c",
+    "drone-modele-avereo.png": "92625c7150a581fd7080540e2147b517cf6207a1d20d3d3ebd7723a2345f92eb",
+    "image-temoin-logo.png": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+    "rapport-apercu-avereo.png": "23c2dd8e947125ad2a4a7d74661b04982aaa64299d9465b6a54b7c44e5546798",
+    "rapport-client-apercu-avereo.png": "d6664b6dcb39dbff5bbdd1f5187eecbe8b29cc0b71676b651094348f13a1eb1c",
+    "rapport-client-fictif-1.png": "62e76486070fd7a5ed27ca6a0450f85be85789260371d7b919060441ab6df123",
+    "rapport-client-fictif-2.png": "df0ceb18a0112b78b1602cc215d83d2030d6eee7bc7e8a5f433bd0c581f6895d",
+    "rapport-client-fictif-3.png": "57db34871775239de1ce64a76e16943bd55072ef7572b1ed892c7e0c7b95baa8",
+    "rapport-client-fictif-planche.jpg": "46d175340634b4f238a9b6e8ffab1b1a220844f70825a9fad1b5ed268fb619a7",
+    "rapport-client-fictif.docx": "a2e6a05e703c7cbaca2458b32bcb32a4ce3971033a628dd927bd508f70132b37",
+    "rapport-client-fictif.pdf": "ab29d43ddd38ca775bb5ad0b4ca544ed00ebd61147e52d250821b242af911ea5",
+    "rapport-expert-fictif-1.png": "e10fdc4f49cf5ae379baf23a958b2b9c3f08123d3f32bd7b4da11aa6b6469448",
+    "rapport-expert-fictif-2.png": "ef01b80be0bfc262c69f9c727b74dca025985be83040bfa089ee7a8cc8c783f8",
+    "rapport-expert-fictif-3.png": "842724ec09bb7c09669d7576bd86c15c68fae3024432d2ac43b6c6cf21f6a131",
+    "rapport-expert-fictif-4.png": "bde0c0ee7782af5ade9be33f80dcf7197a7dfd204d7953fc4fc0fcfa054e66a4",
+    "rapport-expert-fictif-5.png": "888974f74583bc1658fb4abbc200e53b34c677b6d766bf595d7762a75127eebb",
+    "rapport-expert-fictif-6.png": "dc1e875f11b71e91aba2efa285d49845f628c9813c365737f4d2c5391baefb13",
+    "rapport-expert-fictif-planche.jpg": "87d0b4c05f6172684e09c940b66b151e7d3d06f5471e4099e5d3cab9a13d908b",
+    "rapport-expert-fictif.docx": "6aabe3e60d675949938a4eca324c272fed990ac833ae86acd21cbce0d052c5c9",
+    "rapport-expert-fictif.pdf": "54ae993e92ed3fa0f0a63e491ad816dda8c2f864daf4b891ff3bfee39d23bc35",
+    "thermo-fictif-avereo-1.png": "bd8cd4e657b6a612dd72ad9736d0636025d3a49ce924cbfbb769f10ba3708b4b",
+    "thermo-fictif-avereo-2.png": "99b07c4cf4eeb1dabc7d1e0d6c8d6ab65357e2f49340fd50859ad92fea3bb255",
+    "thermo-fictif-avereo-3.png": "48bbc281322a89a1237f4b0f6a076b366712c1661d03ab52afbb555299e6ffde",
+    "thermo-fictif-avereo-4.png": "3cab0ac3473ce87cd027928a2fe804c822a0ab92182b2f8e5b3b7fa533c9d149",
+    "thermo-fictif-avereo-5.png": "12bf00cd226767e2e1a8784c0ddfb27176e0e8c9accedc8a108ba4273afd9b11",
+    "thermo-fictif-avereo-6.png": "1f7072cfa59b37a5566faa3d9e0b1c6b0c6be27fd1be632eb24408365da25b6a",
+    "thermo-fictif-avereo-7.png": "115e7cdcfc5f938668dbd40cb1037647dba3acdfb2ec5eb4e1172a8ecd29a464",
+    "thermo-fictif-avereo-planche.jpg": "d7c7874acbb14732a53fc2283e141021ee49aad9c14b23acfcfdd06ae01e6d73",
+    "thermo-fictif-avereo.html": "d1edabbcca97fd967d3fa794efbcbb7d00c82f029608eb03b8ac2dfd0a44d384",
+    "thermo-fictif-avereo.pdf": "581c4c648c21ac0fc16b8866ffd5fb3953c75a6fa63de4c346c1707883f4dbd5",
+    "thermo-modele-avereo.png": "ca576d9442d764f9fa48d89d5e0f450c5a36d9c638df8726299d155990fdda91",
+    "thermo-parcours-fictif-1.png": "9b7b8f58a5947fc3632dbfd9ea55115231b0f0e68659a81e66f8f4af1afcc180",
+    "thermo-parcours-fictif-2.png": "cadb6631a870d0d7a1ce419a40c4bdc9e540a09e02fd8c79c77f049af3cdb202",
+    "thermo-parcours-fictif-3.png": "4be0716147ca45e777fc0a52c7aac0a3a2d3b4bd7fd8e5f4ebca854acf3cd334",
+    "thermo-parcours-fictif-4.png": "5edd8b7e4e12ab09143f91b4adb617d01148885a29497bf5af8816f523d8c02b",
+    "thermo-parcours-fictif-5.png": "ee988efe31b4f63e3b40df5a721aedb90b1b6342ee427db2f8550bcb1d7e5aeb",
+    "thermo-parcours-fictif-6.png": "f9df840ee4ddb12a0c2caa4cb041d2edc083c289ffcbcf875f3923d537d7fc57",
+    "thermo-parcours-fictif-7.png": "082e206c4806a3dd9d3fbf367096bf118c4c58672c842c417ccabbb814fc584e",
+    "thermo-parcours-fictif-planche.jpg": "298ea661d49408cb53bea3bfd05d59129684d40610bc46419eb8f1a90518a116",
+    "thermo-parcours-fictif.doc": "749afb0edbcda7ee7c035d44d01d97175744571dc6e09c3e035e01523fe33440",
+    "thermo-parcours-fictif.pdf": "0d7d4b0b179727f0a101acf7c958af86d786d203232c0b4fdc9548bde0d22782"
+  },
+  "realDataChanged": false,
+  "deployed": false
+}

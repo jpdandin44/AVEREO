@@ -5,7 +5,7 @@ title: Identité des organisations dans les livrables
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, livrables, organisation]
 ---
@@ -26,17 +26,20 @@ de cette nouvelle identité n’est encore réalisé ou autorisé par une fusion
 
 ## Première réalisation locale : AVEREO
 
-La source [report-identity.js](../shared/report-identity.js) contient uniquement le
-nom AVEREO et le logo officiel déjà utilisé par Rapport. Le PNG est conservé
+La source structurée [report-organization.json](../data/report-organization.json)
+porte le nom AVEREO et les informations provisoires fournies par le responsable
+le 7 novembre : forme sociale, capital, siège social et société en formation.
+[report-identity.js](../shared/report-identity.js) associe ce profil au logo officiel
+déjà utilisé par Rapport et produit les lignes à imprimer. Le PNG est conservé
 octet pour octet ; il est embarqué, sans téléchargement depuis un service tiers.
-Les quatre applications importent la même source lors de leur compilation.
+Les quatre applications importent cette même identité lors de leur compilation.
 
 | Application | Livrable existant raccordé | Effet local |
 | --- | --- | --- |
-| Rapport | Rapport expert et synthèse client HTML/Word natif | Logo commun sur couverture, nom commun dans le pied HTML, le créateur, l’en-tête et le pied Word |
-| Thermo | Rapport Word au format HTML `.doc` existant | Logo sur la première page, nom commun dans l’en-tête et le pied ; protocole et mentions métier conservés |
-| Drone | Ordre de mission imprimable | Logo et nom communs dans l’en-tête ; mission, scénario et signatures conservés |
-| Passeport Immo | Estimation de travaux PDF | Logo, titre et pied communs ; calculs et pagination conservés |
+| Rapport | Rapport expert et synthèse client HTML/Word natif | Logo et quatre lignes d’entreprise sur la couverture ; nom commun dans les pieds et métadonnées Word |
+| Thermo | Rapport Word au format HTML `.doc` existant | Logo et quatre lignes sur la première page ; protocole et mentions métier conservés |
+| Drone | Ordre de mission imprimable | Logo, quatre lignes et nom communs dans l’en-tête ; mission, scénario et signatures conservés |
+| Passeport Immo | Estimation de travaux PDF | Logo et quatre lignes avant le titre ; calculs et algorithme de pagination conservés |
 
 CONNECT est un portail. Projet conserve ses exports de données ; Coupe ses images
 SVG/PNG ; RGA sa carte et sa restitution dans Rapport. Aucun rapport commercial
@@ -45,12 +48,22 @@ unique, dont les formulaires ont déjà des champs d’entreprise, restent à ra
 lors du lot de configuration ; leurs formulaires réglementaires ne sont pas réécrits.
 Les documents clients déjà téléversés ne sont jamais rebaptisés ou modifiés.
 
-**TBD — fiche AVEREO validée** : raison sociale exacte, adresse, SIREN/SIRET,
-assurance et mentions d’entreprise. La recherche ciblée dans le dépôt et les
-métadonnées Drive n’a pas fourni de référence validée. Une demande est adressée
-au responsable. Aucune valeur de démonstration ni déduction n’est imprimée à leur place.
-Les mentions métier préexistantes restent inchangées ; leur validité juridique
-n’est pas attestée par cette harmonisation graphique.
+Le responsable autorise explicitement ces informations provisoires et reporte
+l’immatriculation. La recherche initiale de fiche complète n’est donc plus un
+blocage pour cette présentation. Les textes fournis figurent uniquement dans le
+profil JSON de référence, sans copie documentaire concurrente.
+
+La zone d’immatriculation est préparée dans ce profil : `siren`, `siret`, `rcs`,
+`vatNumber`, `insurance`, `additionalMentions`. Ces champs sont vides ; une valeur
+vide ou composée d’espaces n’imprime ni ligne ni libellé. Les futurs champs
+renseignés suivront les informations d’entreprise dans les quatre livrables.
+**TBD volontaire — immatriculation, TVA, assurance et mentions complémentaires** :
+à renseigner quand le responsable fournira les références. Aucun identifiant de
+démonstration n’est utilisé. Le retrait de la mention de formation devra être
+explicite lors de cette mise à jour.
+
+Cette zone est une préparation du modèle de données et des documents, pas encore
+un formulaire de préférences. Les mentions métier préexistantes restent inchangées.
 
 ## Règle durable pour la configuration par organisation — à implémenter
 
@@ -89,20 +102,32 @@ de logo libre aux membres ; il utilise l’identité AVEREO fixe demandée en pr
   conservés, sans désactivation. Le logo PNG embarqué représente 303 132 octets.
 - Suite Rapport : 101 tests réussis, dont les restitutions expert/client.
 - Passeport : quatre tests de pagination réussis ; contrôle de parité complet avec
-  inversion de trois modifications de présentation précisément autorisées.
-- Aperçu expert de Rapport ouvert depuis l’application sur un dossier fictif ;
-  logo et pied AVEREO constatés. Le Word natif n’est pas régénéré dans cette recette.
+  inversion des trois raccordements de l’écart i puis des deux ajouts de l’écart j.
+  Le témoin de modification étrangère au lot reste refusé.
+- Rapport : aperçus expert/client et deux Word natifs téléchargés depuis
+  l’application sur un dossier fictif. Rendu Microsoft Word puis inspection des
+  couvertures et des pages : six pages expert, trois pages client ; bloc d’identité
+  lisible, complet et non coupé. Ces nombres sont ceux de cette fixture minimale.
 - PDF Passeport généré depuis le parcours réel de démonstration, relu avec Poppler :
   une page A4 complète, logo et montants 1 800 / 2 400 / 3 000 euros conservés.
-- Thermo et Drone : rendu des générateurs réels sur fixtures, puis inspection
-  visuelle des HTML. Cette preuve ne vaut pas parcours utilisateur complet ni
-  validation de pagination dans Word ou du dialogue d’impression PDF.
-- Le navigateur de test ne répond plus après la confirmation d’impression Drone ;
-  les clics Thermo ne font ensuite plus avancer le parcours. Les aperçus et le PDF
-  restent lisibles. Reprendre ces deux parcours avant qualification hébergée.
+- Thermo : générateur HTML sur fixture puis parcours complet jusqu’au téléchargement
+  du `.doc`. Les images témoins sont des logos, explicitement décrits comme test et
+  non exploitables. Le refus d’export sans les deux images a aussi été constaté.
+  Rendu Word sur sept pages ; la nouvelle identité tient sur la couverture.
+- Drone : composant d’impression réel rendu sur fixture et HTML inspecté.
+  Le dialogue d’impression complet reste à qualifier après le blocage observé
+  le 6 novembre. Les autres parcours ont pu être repris le 7 novembre.
+- Le moteur LibreOffice du script de rendu n’est pas installé sur ce PC. Microsoft
+  Word a rendu les documents en lecture seule ; Poppler a produit les images de
+  contrôle. Le sommaire Thermo existant reste à actualiser dans Word ; la signature
+  textuelle de test est rendue comme une image invalide. Ces deux parties historiques
+  ne sont pas modifiées ici ; le rendu de signature est à traiter dans un lot Thermo.
+- Profil contrôlé : quatre lignes actuelles, six champs futurs vides et omis,
+  affichage conditionnel d’un champ renseigné vérifié sur une valeur fictive isolée.
 
-Les [preuves locales](../data/identite-livrables/qualification-locale.json)
-identifient les fichiers et les limites. Aucun compte hébergé, rapport réel,
+Les [preuves du 7 novembre](../data/identite-livrables/formation-20261107/qualification-locale.json)
+identifient les fichiers, leurs empreintes et les limites. Les preuves du 6 novembre
+restent conservées pour leur ancien candidat. Aucun compte hébergé, rapport réel,
 stockage métier, droit ou secret n’est modifié. L’harmonisation n’est pas livrée.
 
 ## Revue et suite
@@ -110,12 +135,11 @@ stockage métier, droit ou secret n’est modifié. L’harmonisation n’est pa
 Entrées locales : [Rapport](http://127.0.0.1:53201/),
 [Thermo](http://127.0.0.1:53202/), [Drone](http://127.0.0.1:53203/),
 [Passeport](http://127.0.0.1:53204/).
-[Modèle Thermo](http://127.0.0.1:53205/thermo-fictif-avereo.html) et
-[modèle Drone](http://127.0.0.1:53205/drone-fictif-avereo.html) sont des exemples de
+[Modèle Thermo](http://127.0.0.1:53205/formation-20261107/thermo-fictif-avereo.html) et
+[modèle Drone](http://127.0.0.1:53205/formation-20261107/drone-fictif-avereo.html) sont des exemples de
 mise en page, sans fonctions de saisie ni dossier réel.
 
-Confirmer la fiche d’entreprise, compléter l’identité AVEREO, terminer la recette
-Word/impression, puis présenter le même candidat et ses sauvegardes pour une
+Terminer le parcours d’impression Drone, puis présenter le même candidat et ses sauvegardes pour une
 livraison de préproduction distincte. Le service de configuration par organisation
 fait ensuite l’objet d’un candidat avec tests d’isolement et de refus aux membres.
 La production et l’ouverture publique gardent leurs accords propres.

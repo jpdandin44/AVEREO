@@ -5,7 +5,7 @@ title: Architecture du socle AVEREO
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -28,8 +28,11 @@ Le composant commun rend un formulaire défini par chaque application, valide le
 
 ## Identité AVEREO des restitutions — candidat local
 
-`shared/report-identity.js` fournit le nom et le PNG déjà validé dans Rapport.
-Rapport, Thermo, Drone et Passeport l’importent au build pour leurs exports existants.
+`data/report-organization.json` porte le nom, les informations provisoires
+d’entreprise fournies par le responsable et les champs d’immatriculation vides.
+`shared/report-identity.js` y associe le PNG déjà utilisé dans Rapport et formate
+uniquement les valeurs non vides. Rapport, Thermo, Drone et Passeport l’importent
+au build ; leurs restitutions échappent le texte (HTML/React/Word).
 Il s’agit d’une identité fixe sans API ni stockage de réglages. Le futur service
 d’identité par organisation doit s’appuyer sur les organisations et habilitations
 CONNECT existantes ; il n’est pas fourni par ce candidat. [Contrat](docs/identite-livrables.md).

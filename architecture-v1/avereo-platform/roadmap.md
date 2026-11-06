@@ -5,7 +5,7 @@ title: Feuille de route
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -25,6 +25,9 @@ PR #119 fusionnée ; sa préparation de 37 fichiers est conservée comme histori
 
 ## Identité des livrables
 
-Première présentation AVEREO préparée localement dans quatre exports. Fiche légale,
-recette Word/impression et livraison restent à terminer. La configuration par
-administrateur d’organisation constitue la suite demandée. [Suivi canonique](data/suivi-identite-livrables.json).
+Nom, logo et informations provisoires fournis par le responsable intégrés localement
+dans quatre exports. Word expert/client, Word Thermo et PDF Passeport téléchargés
+et rendus ; en-tête Drone inspecté sur fixture. Le parcours d’impression Drone reste
+à terminer avant livraison. Les champs d’immatriculation vides sont prêts pour une
+mise à jour future. La configuration par administrateur d’organisation constitue
+la suite demandée, sans formulaire opérationnel à ce stade. [Suivi canonique](data/suivi-identite-livrables.json).

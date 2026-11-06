@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -71,3 +71,10 @@ La lecture ne réécrit pas la liste initiale. Une liste illisible ou un quota d
 Raccordement au nom et au logo officiels partagés, demandé transversalement par le
 responsable. Les contenus, protocoles, calculs, dossiers et accès restent inchangés.
 [Contrat et preuves locales](../../avereo-platform/docs/identite-livrables.md).
+
+## 2026-11-07 — Bloc d’entreprise provisoire
+
+Le responsable fournit les informations de société en formation. L’export ajoute
+les lignes non vides du profil commun sous le logo ; données métier et stockage
+inchangés. Les champs futurs sont préparés sans formulaire d’administration.
+[Preuves actuelles et réserves](../../avereo-platform/docs/identite-livrables.md).
