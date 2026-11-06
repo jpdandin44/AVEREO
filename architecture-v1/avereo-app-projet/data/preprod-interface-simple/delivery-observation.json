@@ -1,0 +1,15 @@
+{
+  "observedAt": "2026-11-06T09:30:45.081301+00:00",
+  "target": "https://projet-preprod.avereo.fr",
+  "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+  "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+  "status": "delivered",
+  "filesVerified": 16,
+  "backupVerified": true,
+  "restoreVerified": true,
+  "privateConfigUnchanged": true,
+  "databaseWrites": false,
+  "privateReceiptDirectory": "/home/daje3540/private/projet-interface-45c1849-20261106",
+  "hostedSyntheticHttpChecks": 74,
+  "note": "Observation des reçus serveur via le terminal cPanel ; aucune configuration ni donnée privée copiée dans ce dépôt."
+}

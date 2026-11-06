@@ -1,0 +1,39 @@
+{
+  "observedAt": "2026-11-06T09:34:12.298459+00:00",
+  "target": "https://projet-preprod.avereo.fr",
+  "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+  "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+  "projectsOpened": 2,
+  "taskCounts": [
+    45,
+    45
+  ],
+  "revisions": [
+    5,
+    1
+  ],
+  "privateJsonFiles": 8,
+  "privateJsonByteIdentical": true,
+  "checks": [
+    "Connexion CONNECT et nouvelle version après rechargement",
+    "Deux projets ouverts sans écriture métier",
+    "Mois et Années affichés",
+    "Filtre Emploi : 8/45 puis 6/45 selon le projet",
+    "Fiche avec résultat attendu non coché et fiche terminée avec résultat réalisé conservés",
+    "Préférences de vérification et date contrainte désactivées par défaut, sans sauvegarde de préférences",
+    "Menu au-dessus des barres du planning",
+    "Aucune erreur de console dans le relevé final"
+  ],
+  "limitations": [
+    "Les mutations de résultats/préférences sont qualifiées avec les 74 contrôles HTTP sur identités fictives et les essais navigateur locaux antérieurs, pas par écriture dans les dossiers réels."
+  ],
+  "reservations": [
+    {
+      "id": "interface-menu-intermediate-width",
+      "status": "open",
+      "description": "À 761 px de large, le bouton Projet et fichiers revient à gauche et le panneau aligné à droite peut déborder derrière la barre latérale. Superposition corrigée, positionnement horizontal encore à corriger.",
+      "impact": "Certaines étiquettes deviennent partiellement illisibles à cette largeur ; données non affectées.",
+      "nextAction": "Corriger localement le positionnement du panneau ; vérifier avec titres longs autour du point de rupture avant nouveau candidat."
+    }
+  ]
+}
