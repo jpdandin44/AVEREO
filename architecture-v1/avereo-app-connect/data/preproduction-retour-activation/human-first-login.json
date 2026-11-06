@@ -1,0 +1,13 @@
+{
+  "observedAt": "2026-11-06T14:29:46.169219+00:00",
+  "source": "user_chat",
+  "firstPassword": "Mot de passe défini",
+  "samePasswordLogin": "Je suis dans CONNECT",
+  "fixtureEmail": "recette-pr118-20261106@example.invalid",
+  "expectedProfileVerified": true,
+  "previousAdministratorReplaced": true,
+  "passwordKnownByAgent": false,
+  "passwordResetRequested": false,
+  "postArchiveBrowserSession": "anonymous",
+  "scope": "New account reached with a previous administrator identity present; hosted fresh-browser case not separately exercised."
+}

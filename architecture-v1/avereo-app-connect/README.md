@@ -152,6 +152,6 @@ restent obligatoires. Voir `docs/deployment.md` et
 
 Le [candidat d’alignement](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local) étend le parcours d’administration aux droits hérités et précise le traitement de l’identité et des dossiers.
 
-## Retour à la connexion après activation — candidat local
+## Retour à la connexion après activation — préproduction
 
-La confirmation ferme la session précédente puis revient à la connexion AVEREO. Le même mot de passe reste géré par Drupal. [Diagnostic, tests et livraison](docs/retour-activation-connexion.md).
+La PR #118 est installée en préproduction après accord. La confirmation ferme la session précédente puis revient à la connexion AVEREO ; Drupal conserve le mot de passe. Le parcours réel d’un compte neuf avec une ancienne identité ouverte est vérifié : premier mot de passe, retour à la connexion et entrée avec le même mot de passe. Le compte fictif est archivé après recette. [Diagnostic, tests et livraison](docs/retour-activation-connexion.md).

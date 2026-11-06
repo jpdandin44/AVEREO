@@ -1,0 +1,23 @@
+{
+  "observedAt": "2026-11-06T13:07:14.934305+00:00",
+  "target": "https://connect-preprod.avereo.fr",
+  "newLoginMessageVisible": true,
+  "existingAdministratorSso": "passed",
+  "invalidCompletionCases": {
+    "missingParameters": "ACCOUNT_ACTIVATION_CONFIRMATION_INVALID",
+    "expiredTimestamp": "ACCOUNT_ACTIVATION_CONFIRMATION_INVALID",
+    "invalidSignature": "ACCOUNT_ACTIVATION_CONFIRMATION_INVALID"
+  },
+  "sessionPreservedAfterInvalidCompletion": true,
+  "fixture": {
+    "connectId": 27,
+    "drupalUid": 26,
+    "applicationAccessCount": 0,
+    "mailSent": false,
+    "nativeFirstPasswordFormVisible": true,
+    "previousAdministratorSessionPresent": true,
+    "passwordEntryDelegatedToUser": true,
+    "firstLoginCompleted": false
+  },
+  "scope": "Browser observations; existing session reconnection does not prove new-account login."
+}

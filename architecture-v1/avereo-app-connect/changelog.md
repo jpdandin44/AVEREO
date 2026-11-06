@@ -94,4 +94,4 @@ Le candidat local ajoute le rattachement explicite d’une identité historique,
 
 ## 2026-11-06 — Retour à la connexion après activation
 
-Le candidat ferme l’ancienne session après confirmation et rejoint la connexion via le pont signé existant. Les messages expliquent la connexion avec le mot de passe déjà défini. [Qualification](docs/retour-activation-connexion.md).
+Le correctif ferme l’ancienne session après confirmation et rejoint la connexion via le pont signé existant. Les messages expliquent la connexion avec le mot de passe déjà défini. PR #118 installée en préproduction après accord : deux fichiers vérifiés, 40 tests sur le runtime installé et contrôles navigateur/HTTPS réussis. Première connexion du compte fictif réussie avec l’ancien administrateur initialement connecté et le même mot de passe, puis archivage vérifié. [Qualification](docs/retour-activation-connexion.md).

@@ -267,4 +267,4 @@ Le portail appelle toujours deux opérations distinctes. Le pont de provisionnem
 
 ## 2026-11-06 — Session conservée après activation
 
-Écart ciblé du portail PHP : fermeture de session après confirmation réussie et messages de reconnexion. Frontend historique et module Drupal inchangés. [Diagnostic, données et preuves](retour-activation-connexion.md).
+Écart ciblé du portail PHP : fermeture de session après confirmation réussie et messages de reconnexion. Frontend historique et module Drupal inchangés. Les deux fichiers sont installés en préproduction après accord, avec empreintes et permissions contrôlées ; les tests fictifs sur le code installé réussissent. La première connexion du compte neuf sans accès applicatif a été vérifiée avec saisie humaine et même mot de passe, puis le compte fictif archivé et les autres états/droits conservés. [Diagnostic, données et preuves](retour-activation-connexion.md).
