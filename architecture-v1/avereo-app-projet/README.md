@@ -15,9 +15,16 @@ tags:
 
 # Projet AVEREO
 
+## Interface simple — candidat local du 6 novembre 2026
+
+Le responsable a autorisé la réalisation de la [proposition](docs/proposition-interface-simple.md). Résultats cochables, vérification et date contrainte optionnelles, planning allégé et vues Mois/Années sont développés localement. [Guide](docs/guide-utilisateur.md), [recette et limites](docs/source-audit.md), [suivi canonique](data/suivi-interface-simple.json). La préproduction reste au lot #112 jusqu’à une installation distinctement autorisée.
+
+
 ## Sujets et colonnes — préproduction du 6 novembre 2026
 
-Filtres par sujet et priorité, repères emploi proposés, colonnes et séparation tableau/calendrier ajustables sont installés en préproduction après accord du responsable. Le [guide](docs/guide-utilisateur.md) décrit leur usage. Le [suivi canonique](data/suivi-sujets-colonnes.json) porte la version, les preuves et les accords. Les deux projets de 45 tâches ont été relus ; leurs données restent identiques à la sauvegarde. PR #112 ouverte, revue humaine attendue.
+Filtres par sujet et priorité, repères emploi proposés, colonnes et séparation tableau/calendrier ajustables sont installés en préproduction après accord du responsable. Le [guide](docs/guide-utilisateur.md) décrit leur usage. Le [suivi canonique](data/suivi-sujets-colonnes.json) porte la version, les preuves et les accords. Les deux projets de 45 tâches ont été relus ; leurs données restent identiques à la sauvegarde. PR #112 fusionnée et filtres/colonnes validés par le responsable. Le contrôle après merge retrouve les neuf assets publics du candidat et les deux API protégées. Les publications automatiques cPanel et du prototype Pages ont échoué ; détails et actions séparées dans le suivi.
+
+La [suite interface simple](docs/proposition-interface-simple.md) est développée localement, sans livraison hébergée à ce stade.
 
 PR #111 vérifiée fusionnée le 6 novembre ; les observations de clôture du 5 novembre restent historiques.
 

@@ -14,6 +14,10 @@ tags:
 
 # Feuille de route de Projet
 
+## Itération en Développement local — interface simple
+
+Le [cadrage de l’interface](docs/proposition-interface-simple.md) porte les demandes de résultats cochables, options de vérification/date contrainte, planning allégé et échelles Mois/Années. [Suivi canonique](data/suivi-interface-simple.json). Développement local réalisé ; revue du candidat, CI et préparation du passage en préproduction suivies dans cette fiche. Aucune livraison de cette suite.
+
 ## Reprise du 6 novembre — candidat sujets et colonnes
 
 PR #111 constatée fusionnée à 07:04:20 UTC, commit `4d2f7ff`. La branche reprend cette base. Le responsable ne choisit pas un nouvel ordre ; conserver l’ordre et les dates, rendre l’emploi visible puis revoir les priorités si nécessaire.
@@ -22,7 +26,7 @@ PR #111 constatée fusionnée à 07:04:20 UTC, commit `4d2f7ff`. La branche repr
 | --- | --- |
 | Cadrage | Périmètre fixé : classement explicite ou proposé, filtres temporaires, largeurs par navigateur. |
 | Développement local | Implémenté et testé ; candidat et PR dans le suivi canonique. |
-| Préproduction | Installé le 6 novembre après accord, sauvegarde et restauration sur copie ; deux projets vérifiés, données identiques. Revue humaine attendue. |
+| Préproduction | Installé le 6 novembre après accord, sauvegarde et restauration sur copie ; deux projets vérifiés, données identiques. Validation utilisateur acquise et PR #112 fusionnée. |
 | Mise en production | Non autorisée ; contrôles après livraison, récupération et prochaine itération à préparer après acceptation. |
 
 [Suivi canonique](data/suivi-sujets-colonnes.json). Le relevé ci-dessous conserve la situation de clôture historique, désormais dépassée par cette reprise.

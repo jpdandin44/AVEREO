@@ -12,6 +12,21 @@ tags: [projet, suivi, guide, local]
 
 # Guide utilisateur de l'outil de suivi AVEREO Projet
 
+## Interface simple — nouveau candidat local
+
+Ces commandes appartiennent au candidat local du 6 novembre, pas encore à la préproduction #112.
+
+- **Résultats attendus** : cocher chaque résultat puis **Enregistrer**. Toutes les cases cochées affichent « Section validée » ; cela ne change ni le statut de la tâche ni son avancement. Une section vide n’est pas validée. Ajouter un résultat avec le champ dédié ; ouvrir **Action et détails** pour lire les sources ou modifier le texte.
+- Dans **Mon espace → Préférences**, **Vérification complémentaire des résultats** révèle preuve, vérificateur et confirmation. Toutes les vérifications donnent « Section vérifiée ». Désactiver cette option conserve les informations ; modifier un résultat vérifié impose une nouvelle vérification.
+- **Afficher « Ne pas démarrer avant »** révèle la saisie dans les paramètres de la fiche. Les dates existantes continuent à contraindre le calendrier ; un repère les signale si le champ est masqué. Les deux options avancées sont désactivées par défaut.
+- La recherche porte sur titre et description, sans distinction d’accents ou de casse. Sujet, statut et priorité se combinent ; retirer une pastille ou effacer les filtres retrouve la vue complète. Le calcul et les dépendances conservent toutes les tâches.
+- **Affichage** révèle durée, début et flèches de dépendance, ainsi que repli/dépli, annulation du déplacement et réinitialisation des colonnes. Les largeurs restent réglables. La densité Confortable/Compacte se règle dans les préférences.
+- **Jours / Semaines / Mois / Années**, **Aujourd’hui**, **Aller au** et **Adapter au projet** changent uniquement la vue. En Mois/Années, cliquer une barre ouvre la fiche ; cliquer une synthèse zoome. Revenir en Jours/Semaines pour déplacer les dates. Une date hors du projet est signalée sans étendre le planning.
+- Sur petit écran, faire défiler horizontalement la barre de commandes et le planning pour accéder au calendrier ; la fiche occupe toute la largeur et garde ses boutons de sauvegarde accessibles.
+
+En ligne, les préférences suivent le compte ; en mode local, elles restent dans ce navigateur. La fermeture d’une fiche modifiée ou de l’onglet demande de confirmer l’abandon. Les erreurs d’enregistrement restent visibles hors des menus. Les paramètres, copies de récupération et fichiers sont accessibles à la demande.
+
+
 ## Filtrer les sujets et lire les intitulés — candidat du 6 novembre 2026
 
 Dans **Planning & Gantt**, choisir **Sujet** (Emploi, AVEREO, TC Longages, Transversal ou un sujet personnalisé) et éventuellement **Priorité**. **Effacer les filtres** retrouve toutes les actions. Le compteur indique la partie affichée ; les dates restent celles du planning complet, même lorsqu’un prédécesseur est masqué.
@@ -20,7 +35,7 @@ Une ligne ambrée et **★ Haute** signalent une priorité haute. Un **?** indiq
 
 Glisser les séparateurs des en-têtes pour élargir les colonnes, ou la séparation bleue avec le calendrier pour agrandir la zone des tâches. Au clavier : Tab jusqu’au séparateur, flèches gauche/droite ; Début/Fin atteignent les limites. Échap annule le glissement en cours. **Réinitialiser les colonnes** restaure les largeurs initiales. Elles sont conservées dans ce navigateur ; les filtres sont temporaires.
 
-Le titre complet apparaît au survol ; cliquer sur son bouton ouvre la description et les actions. Pour réordonner ou déplacer un lot entier, effacer d’abord les filtres. Recharger les anciens onglets avant d’utiliser les nouveaux champs. Ce candidat est installé et vérifié en préproduction depuis le 6 novembre ; sa revue humaine reste attendue.
+Le titre complet apparaît au survol ; cliquer sur son bouton ouvre la description et les actions. Pour réordonner ou déplacer un lot entier, effacer d’abord les filtres. Recharger les anciens onglets avant d’utiliser les nouveaux champs. Ce candidat est installé et vérifié en préproduction depuis le 6 novembre ; les filtres et colonnes ont ensuite été validés par le responsable, puis la PR #112 fusionnée.
 
 
 ## Retrouver ses projets depuis le compte

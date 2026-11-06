@@ -14,6 +14,19 @@ tags:
 
 # Changelog de Projet
 
+## 2026-11-06 — Correction du menu Projet et fichiers
+
+Le menu reste maintenant au-dessus des barres et du tableau du planning. Les couches internes du Gantt sont isolées dans leur zone ; les fiches de tâche conservent leur priorité. Correction visuelle contrôlée sur ordinateur et mobile, sans changement des données.
+
+## 2026-11-06 — Candidat local : interface simple et calendrier pluriannuel
+
+Résultats attendus cochables, ajout/modification, vérification optionnelle, préférence de date contrainte, protection des brouillons de fiche, recherche et filtres combinés, colonnes secondaires et liens optionnels, densité et vues Mois/Années. Schéma des plannings conservé. Les préférences PHP sont compatibles en lecture avec les catalogues précédents. Aucun déploiement réalisé.
+
+
+## 2026-11-06 — Acceptation #112 et cadrage de l’interface simple
+
+Validation utilisateur des filtres/colonnes et merge #112 constatés. Code de main identique au candidat applicatif, CI réussie et assets préproduction conformes. Échecs des publications automatiques cPanel (authentification 401 avant transfert) et Pages du prototype (site introuvable) consignés sans relance. Proposition fonctionnelle et suivi distinct créés pour la simplification des fiches/planning et les échelles Mois/Années. Aucun code ni document de planning modifié.
+
 ## 2026-11-06 — Sujets et colonnes installés en préproduction
 
 Installation autorisée, sauvegarde et restauration sur copie vérifiées, 65 contrôles HTTP sur fixtures hébergées réussis. Deux projets relus ; huit JSON privés identiques. [Preuves](data/preprod-sujets-colonnes/delivery-observation.json). PR #112 reste ouverte pour revue humaine ; aucune production engagée.

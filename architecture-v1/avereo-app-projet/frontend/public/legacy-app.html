@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVEREO - Pilotage Pro</title>
-    <script src="./planning-core.js?v=subjects-20261106"></script>
+    <script src="./planning-core.js?v=interface-20261106"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -128,7 +128,7 @@
         @keyframes slideUpFade { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .toast-show { animation: slideUpFade 0.3s forwards; }
     </style>
-    <link rel="stylesheet" href="/project-workspace.css?v=menu-20261105">
+    <link rel="stylesheet" href="/project-workspace.css?v=interface-20261106">
 </head>
 <body class="flex h-screen text-slate-800">
 
@@ -142,15 +142,15 @@
             <button onclick="ProjectWorkspace.show()" id="nav-workspace" title="Mes projets" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all">
                 <i data-lucide="folder-open" class="w-5 h-5 lg:mr-3"></i><span class="hidden lg:block">Mes projets</span>
             </button>
-            <button onclick="switchView('dashboard')" id="nav-dashboard" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all bg-blue-600 text-white shadow-md">
+            <button onclick="switchView('dashboard')" id="nav-dashboard" aria-label="Tableau de bord" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all bg-blue-600 text-white shadow-md">
                 <i data-lucide="layout-dashboard" class="w-5 h-5 lg:mr-3"></i>
                 <span class="hidden lg:block">Tableau de bord</span>
             </button>
-            <button onclick="switchView('planning')" id="nav-planning" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all">
+            <button onclick="switchView('planning')" id="nav-planning" aria-label="Planning & Gantt" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all">
                 <i data-lucide="gantt-chart" class="w-5 h-5 lg:mr-3"></i>
                 <span class="hidden lg:block">Planning & Gantt</span>
             </button>
-            <button onclick="switchView('risks')" id="nav-risks" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all">
+            <button onclick="switchView('risks')" id="nav-risks" aria-label="Risques & Décisions" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all">
                 <i data-lucide="shield-alert" class="w-5 h-5 lg:mr-3"></i>
                 <span class="hidden lg:block">Risques & Décisions</span>
             </button>
@@ -174,7 +174,7 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col min-w-0 bg-white relative">
+    <main id="project-main" class="flex-1 flex flex-col min-w-0 bg-white relative">
         <section id="view-workspace" class="workspace hidden" aria-label="Mon espace AVEREO">
             <div class="workspace-inner">
                 <div class="workspace-head">
@@ -198,10 +198,15 @@
                     <div id="workspace-list" class="ws-grid"></div>
                 </div>
                 <div id="workspace-panel-preferences" class="ws-panel" role="tabpanel" aria-label="Préférences" hidden>
-                    <h2>Ton affichage par défaut</h2><p>Ces préférences suivent ton compte sur tes différents navigateurs.</p>
+                    <h2>Ton affichage par défaut</h2><p><span id="preferences-scope">Ces préférences suivent ton compte sur tes différents navigateurs.</span></p>
                     <form id="workspace-preferences-form">
-                        <label>Échelle du planning<select id="workspace-zoom"><option value="weeks">Semaines — vue d’ensemble</option><option value="days">Jours — vue détaillée</option></select></label>
+                        <label>Échelle du planning<select id="workspace-zoom"><option value="weeks">Semaines — vue d’ensemble</option><option value="days">Jours — vue détaillée</option><option value="months">Mois — vue à moyen terme</option><option value="years">Années — vue à long terme</option></select></label>
                         <label><input type="checkbox" id="workspace-collapsed"> Replier les lots à l’ouverture du projet</label>
+                        <label><input type="checkbox" id="workspace-verify-results"> Vérification complémentaire des résultats</label>
+                        <p>Afficher les preuves, le vérificateur et la confirmation de vérification.</p>
+                        <label><input type="checkbox" id="workspace-manual-start"> Afficher « Ne pas démarrer avant »</label>
+                        <p>Les dates déjà renseignées restent actives lorsque ce champ est masqué.</p>
+                        <label>Densité<select id="workspace-density"><option value="comfortable">Confortable</option><option value="compact">Compacte</option></select></label>
                         <button type="submit" class="primary">Enregistrer mes préférences</button>
                     </form>
                 </div>
@@ -235,12 +240,12 @@
         <!-- Header -->
         <header id="planning-header" class="min-h-16 flex-wrap gap-3 py-3 border-b border-slate-200 flex items-center justify-between px-6 shrink-0 bg-white z-20 shadow-sm">
             <div>
-                <h1 class="text-xl font-semibold text-slate-800 flex items-center">Pilotage de projet <span id="storage-mode" class="text-xs font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded ml-3 border border-emerald-200">Suivi local</span></h1>
+                <h1 class="text-xl font-semibold text-slate-800 flex items-center"><span id="planning-project-title">Pilotage de projet</span> <span id="storage-mode" class="text-xs font-medium bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded ml-3 border border-emerald-200">Suivi local</span></h1>
                 <p id="storage-description" class="text-xs text-slate-500 font-medium mt-0.5">Sauvegarde dans ce navigateur · export JSON pour conserver une copie indépendante</p>
             </div>
             <div class="flex items-center flex-wrap gap-2">
                 <input type="file" id="data-upload" accept=".csv,.xlsx,.xls,.json" class="hidden" onchange="handleFileImport(event)">
-                <button onclick="document.getElementById('data-upload').click()" class="flex items-center px-3 py-2 text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 rounded-lg transition-all text-sm font-medium bg-white">
+                <details class="planning-menu"><summary>Projet et fichiers</summary><div class="planning-menu-content">                <button onclick="document.getElementById('data-upload').click()" class="flex items-center px-3 py-2 text-slate-600 hover:text-emerald-700 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 rounded-lg transition-all text-sm font-medium bg-white">
                     <i data-lucide="upload" class="w-4 h-4 mr-2"></i>
                     Importer un planning
                 </button>
@@ -249,6 +254,7 @@
                 <button onclick="simulateSync()" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg transition-all bg-white" title="Recalculer le planning">
                     <i data-lucide="refresh-cw" class="w-5 h-5"></i>
                 </button>
+<button type="button" onclick="document.getElementById('project-options').open = !document.getElementById('project-options').open">Paramètres du projet</button></div></details>
                 <button onclick="openTaskModal()" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm shadow-blue-600/20">
                     <i data-lucide="plus" class="w-4 h-4 mr-2"></i>
                     Nouvelle tâche
@@ -259,8 +265,8 @@
         <section id="planning-settings" class="border-b border-slate-200 bg-slate-50 px-6 py-3 shrink-0" aria-label="Paramètres et sauvegarde du projet">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <p id="storage-status" role="status" class="text-sm text-slate-600">Chargement du planning local…</p>
-                <div class="flex flex-wrap gap-3 text-xs">
-                    <button id="online-save" hidden onclick="ProjetOnline.save()" class="text-blue-700 underline">Enregistrer en ligne / Réessayer</button>
+<button id="online-save" hidden onclick="ProjetOnline.save()" class="text-blue-700 underline">Enregistrer en ligne / Réessayer</button></div><details id="project-options"><summary>Paramètres et récupération</summary>                <div class="flex flex-wrap gap-3 text-xs">
+
                     <button id="online-reload" hidden onclick="ProjetOnline.reload()" class="text-blue-700 underline">Charger la version en ligne</button>
                     <button id="online-previous" hidden onclick="ProjetOnline.previous()" class="text-slate-600 underline">Copie précédente en ligne</button>
                     <button id="online-initial" hidden onclick="ProjetOnline.exportInitial()" class="text-slate-600 underline">Ancien brouillon de ce navigateur</button>
@@ -270,7 +276,6 @@
                     <button id="enrich-pilot" onclick="enrichPilotTaskDetails()" class="text-blue-700 underline">Compléter les fiches documentées</button>
                     <button id="local-previous" onclick="exportPreviousSave()" class="text-slate-600 underline">Copie précédente</button>
                 </div>
-            </div>
             <form id="project-settings-form" onsubmit="saveProjectSettings(event)" class="flex flex-wrap items-end gap-3">
                 <label class="text-xs text-slate-600 flex flex-col gap-1">Projet<input id="project-name" required maxlength="200" class="border rounded px-2 py-1.5 text-sm w-60" aria-label="Nom du projet"></label>
                 <label class="text-xs text-slate-600 flex flex-col gap-1">Démarrage<input id="project-start" type="date" required class="border rounded px-2 py-1.5 text-sm" aria-label="Démarrage du projet"></label>
@@ -281,7 +286,7 @@
             </form>
             <p id="project-summary" class="mt-2 text-sm font-medium text-slate-700"></p>
             <p class="mt-1 text-xs text-slate-500">Lundi à vendredi, sans jours fériés ni absences. Les dates sont des prévisions ; aucune validation métier n’est automatique. Le mode parallèle ne contrôle pas la disponibilité des responsables.</p>
-        </section>
+        </details></section>
 
         <!-- View: Dashboard -->
         <div id="view-dashboard" class="flex-1 overflow-y-auto p-6 bg-slate-50">
@@ -365,28 +370,35 @@
             <!-- Toolbar -->
             <div class="min-h-12 py-2 gap-2 flex-wrap border-b border-slate-200 bg-white flex items-center justify-between px-4 shrink-0 z-20 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
                 <div class="flex items-center gap-2 flex-wrap text-sm">
-                    <span class="font-medium text-slate-700">Vue:</span>
+                    <span class="sr-only">Échelle du calendrier</span>
                     <button class="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-200 text-xs transition-colors" onclick="setZoom('days')" id="btn-zoom-days">Jours</button>
-                    <button class="px-3 py-1.5 rounded-md bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 text-xs transition-colors font-medium" onclick="setZoom('weeks')" id="btn-zoom-weeks">Semaines</button>
+                    <button class="px-3 py-1.5 rounded-md bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 text-xs transition-colors font-medium" onclick="setZoom('weeks')" id="btn-zoom-weeks">Semaines</button><button type="button" onclick="setZoom('months')" id="btn-zoom-months">Mois</button><button type="button" onclick="setZoom('years')" id="btn-zoom-years">Années</button>
+                    <button type="button" onclick="navigatePlanningDate(localIso())">Aujourd’hui</button><button type="button" onclick="fitPlanning()">Adapter au projet</button>
+                    <label class="planning-date">Aller au <input type="date" id="planning-go-date" onchange="navigatePlanningDate(this.value)"></label>
+                    <details class="planning-menu"><summary>Affichage</summary><div class="planning-menu-content">
+                    <label><input type="checkbox" onchange="setPlanningDisplay('duration', this.checked)"> Durée</label>
+                    <label><input type="checkbox" onchange="setPlanningDisplay('start', this.checked)"> Début</label>
+                    <label><input type="checkbox" onchange="setPlanningDisplay('dependencies', this.checked)"> Liens de dépendance</label>
+                    <button type="button" onclick="resetPlanningColumns()">Réinitialiser les colonnes</button>
                     <button class="px-2 py-1.5 rounded-md border border-slate-200 text-xs text-slate-600 hover:bg-slate-50" onclick="setPlanningGroupsExpanded(false)">Tout replier</button>
                     <button class="px-2 py-1.5 rounded-md border border-slate-200 text-xs text-slate-600 hover:bg-slate-50" onclick="setPlanningGroupsExpanded(true)">Tout déplier</button>
-                    <button id="planning-undo" disabled class="px-2 py-1.5 rounded-md border border-slate-200 text-xs text-slate-600 disabled:opacity-40" onclick="undoPlanningChange()">Annuler le dernier déplacement</button>
+                    <button id="planning-undo" disabled class="px-2 py-1.5 rounded-md border border-slate-200 text-xs text-slate-600 disabled:opacity-40" onclick="undoPlanningChange()">Annuler le dernier déplacement</button></div></details>
                 </div>
-                <div class="flex items-center gap-4 flex-wrap text-xs font-medium">
+                <details class="planning-menu"><summary>Aide et légende</summary><div class="planning-menu-content">
                     <div class="flex items-center"><div class="w-3 h-3 rounded bg-blue-500 mr-1.5"></div>En cours</div>
                     <div class="flex items-center"><div class="w-3 h-3 rounded bg-emerald-500 mr-1.5"></div>Terminé</div>
                     <div class="flex items-center"><div class="w-3 h-3 rounded bg-red-500 mr-1.5"></div>Retard / Bloqué</div>
-                    <div class="flex items-center"><div class="w-3 h-3 rounded bg-slate-300 mr-1.5"></div>À faire</div>
-                </div>
+                    <div class="flex items-center"><div class="w-3 h-3 rounded bg-slate-300 mr-1.5"></div>À faire</div><p>Barres : déplacer les dates en Jours/Semaines. Poignées ⠿ : réordonner. Alt + flèches : clavier. Échap : annuler.</p>
+                </div></details>
             </div>
             <div class="planning-filters" aria-label="Filtres du planning">
-                <label for="planning-subject">Sujet</label><select id="planning-subject" onchange="setPlanningFilter()"><option value="">Tous les sujets</option></select>
-                <label for="planning-priority">Priorité</label><select id="planning-priority" onchange="setPlanningFilter()"><option value="">Toutes les priorités</option><option value="haute">Haute</option><option value="normale">Normale</option><option value="basse">Basse</option></select>
-                <button type="button" onclick="resetPlanningFilters()">Effacer les filtres</button>
-                <button type="button" onclick="resetPlanningColumns()">Réinitialiser les colonnes</button>
+                <input id="planning-search" type="search" placeholder="Rechercher une tâche…" aria-label="Rechercher dans les titres et descriptions" oninput="setPlanningFilter()"><label class="sr-only" for="planning-subject">Sujet</label><select id="planning-subject" onchange="setPlanningFilter()"><option value="">Tous les sujets</option></select>
+                <label class="sr-only" for="planning-status">Statut</label><select id="planning-status" onchange="setPlanningFilter()"><option value="">Tous les statuts</option><option>À faire</option><option>En cours</option><option>En attente</option><option>Bloqué</option><option>Terminé</option><option>Validé</option></select><details class="planning-menu"><summary>Plus de filtres</summary><div class="planning-menu-content"><label for="planning-priority">Priorité</label><select id="planning-priority" onchange="setPlanningFilter()"><option value="">Toutes les priorités</option><option value="haute">Haute</option><option value="normale">Normale</option><option value="basse">Basse</option></select>
+                </div></details><button type="button" id="planning-clear-filters" onclick="resetPlanningFilters()">Effacer les filtres</button>
+                <span id="planning-filter-chips"></span>
                 <span id="planning-filter-status" role="status" aria-live="polite"></span>
             </div>
-            <p id="planning-gesture-status" role="status" aria-live="polite" class="px-4 py-1 text-xs text-slate-500 shrink-0">Barres : déplacer les dates · Poignées ⠿ : réordonner · Alt + flèches : clavier · Échap : annuler.</p>
+            <p id="planning-gesture-status" role="status" aria-live="polite" class="px-4 py-1 text-xs text-slate-500 shrink-0"></p>
 
             <!-- Split Container -->
             <div class="gantt-viewport" id="gantt-viewport" tabindex="0" role="region" aria-label="Planning défilant : tâches et calendrier">
@@ -490,7 +502,7 @@
         </div>
         
         <div class="flex-1 overflow-y-auto p-6">
-            <form id="task-form" class="space-y-5">
+            <form id="task-form" class="space-y-5" oninput="updateTaskDraftStatus()" onchange="updateTaskDraftStatus()" onsubmit="event.preventDefault(); saveTask()">
                 <input type="hidden" id="task-id">
                 
                 <div>
@@ -504,22 +516,43 @@
                     <input type="text" id="task-name" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow">
                 </div>
 
-                <div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="task-status" class="block text-sm font-medium text-slate-700 mb-1">Statut</label>
+                        <select id="task-status" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                            <option value="À faire">À faire</option>
+                            <option value="En cours">En cours</option>
+                            <option value="En attente">En attente</option>
+                            <option value="Bloqué">Bloqué</option>
+                            <option value="Terminé">Terminé</option>
+                            <option value="Validé">Validé</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="task-progress" class="block text-sm font-medium text-slate-700 mb-1">Avancement (%)</label>
+                        <div class="flex items-center space-x-2">
+                            <input type="range" id="task-progress-range" aria-label="Avancement de la tâche" min="0" max="100" value="0" class="w-full" oninput="document.getElementById('task-progress').value = this.value">
+                            <input type="number" id="task-progress" min="0" max="100" step="any" value="0" class="w-16 px-2 py-1 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm" oninput="document.getElementById('task-progress-range').value = this.value">
+                        </div>
+                    </div>
+                </div>
+
+<p id="task-date-summary" class="text-sm text-slate-600"></p><p id="task-constraint-note" class="text-sm text-blue-700" hidden></p>                <div>
                     <label for="task-description" class="block text-sm font-semibold text-slate-700 mb-1">Objectif et contenu de la tâche</label>
-                    <textarea id="task-description" maxlength="12000" rows="4" class="w-full border rounded-lg p-3 text-sm"></textarea>
+                    <textarea id="task-description" maxlength="12000" rows="2" class="w-full border rounded-lg p-3 text-sm"></textarea>
                 </div>
                 <section aria-labelledby="task-actions-heading" class="space-y-3">
-                    <div class="flex justify-between gap-3 items-center"><h3 id="task-actions-heading" class="font-semibold text-slate-800">Actions et checklist de validation</h3><span id="task-checklist-summary" class="text-sm text-blue-700"></span></div>
-                    <p class="text-xs text-slate-500">Ouvre chaque étape pour lire les actions, le résultat attendu et ses sources. Les cases ne modifient pas automatiquement le statut ou l’avancement du lot. Enregistre la fiche pour conserver le suivi.</p>
-                    <div id="task-checklist" class="space-y-3"></div>
+                    <div class="flex justify-between gap-3 items-center"><h3 id="task-actions-heading" class="font-semibold text-slate-800">Résultats attendus</h3><span id="task-checklist-summary" class="text-sm text-blue-700"></span></div>
+                    <p class="text-xs text-slate-500">Coche les résultats réalisés, puis enregistre. Le statut et l’avancement de la tâche restent indépendants.</p>
+                    <div id="task-checklist" class="space-y-3"></div><div class="result-add"><input id="task-new-result" maxlength="12000" placeholder="Ajouter un résultat attendu…" aria-label="Nouveau résultat attendu"><button type="button" onclick="addTaskResult(); updateTaskDraftStatus()">Ajouter</button></div>
                     <button type="button" onclick="showPilotDocumentation()" class="text-sm text-blue-700 underline">Lire le document des étapes et des risques</button>
                     <pre id="task-documentation" hidden class="whitespace-pre-wrap max-h-96 overflow-y-auto text-xs border rounded p-3 bg-slate-50"></pre>
                 </section>
-                <section aria-labelledby="task-risks-heading" class="space-y-3 border-t pt-5">
-                    <div class="flex items-center justify-between"><h3 id="task-risks-heading" class="font-semibold text-slate-800">Risques et suivi des mesures</h3><button type="button" onclick="addTaskRisk()" class="text-sm text-blue-700 underline">Ajouter un risque</button></div>
+                <details id="task-risk-section" class="space-y-3 border-t pt-5"><summary id="task-risks-heading" class="font-semibold cursor-pointer">Risques et suivi <span id="task-risk-count"></span></summary>
+                    <div class="flex items-center justify-between"><span></span><button type="button" onclick="addTaskRisk()" class="text-sm text-blue-700 underline">Ajouter un risque</button></div>
                     <p class="text-xs text-slate-500">Les préqualifications proposées sont à confirmer. Renseigne ton analyse dans le suivi, puis choisis le statut adapté. Une clôture exige une preuve, un responsable et une date de revue.</p>
                     <div id="task-risks" class="space-y-3"></div>
-                </section>
+                </details>
                 <details id="task-parameters" class="border-t pt-4">
                 <summary class="font-semibold cursor-pointer mb-4">Paramètres du planning et alerte du lot</summary>
                 <div class="space-y-5">
@@ -552,29 +585,8 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Statut</label>
-                        <select id="task-status" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
-                            <option value="À faire">À faire</option>
-                            <option value="En cours">En cours</option>
-                            <option value="En attente">En attente</option>
-                            <option value="Bloqué">Bloqué</option>
-                            <option value="Terminé">Terminé</option>
-                            <option value="Validé">Validé</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Avancement (%)</label>
-                        <div class="flex items-center space-x-2">
-                            <input type="range" id="task-progress-range" min="0" max="100" value="0" class="w-full" oninput="document.getElementById('task-progress').value = this.value">
-                            <input type="number" id="task-progress" min="0" max="100" step="any" value="0" class="w-16 px-2 py-1 border border-slate-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-center text-sm" oninput="document.getElementById('task-progress-range').value = this.value">
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <label for="task-manual-start" class="block text-sm font-medium text-slate-700 mb-1">Ne pas démarrer avant (facultatif)</label>
+                <div id="task-manual-start-field" hidden>
+                    <label for="task-manual-start" class="block text-sm font-medium text-slate-700 mb-1">Ne pas démarrer avant</label>
                     <input id="task-manual-start" type="date" class="w-full px-3 py-2 border rounded-lg">
                     <p class="text-xs text-slate-500 mt-1">Les dépendances restent prioritaires. Efface la date pour retirer l’épinglage.</p>
                 </div>
@@ -611,7 +623,7 @@
             <button id="btn-delete-task" onclick="deleteCurrentTask()" class="text-red-600 hover:text-red-800 text-sm font-medium px-3 py-2 rounded hover:bg-red-50 transition-colors hidden border border-transparent hover:border-red-200">
                 Supprimer
             </button>
-            <div class="flex space-x-3 ml-auto">
+            <div class="flex space-x-3 ml-auto items-center"><span id="task-save-status" role="status" class="text-xs text-slate-500"></span>
                 <button onclick="closeTaskModal()" class="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors">Annuler</button>
                 <button onclick="saveTask()" class="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm shadow-blue-600/20">Enregistrer</button>
             </div>
@@ -631,6 +643,24 @@
         let projectSettings = { schemaVersion: 1, name: 'Mon projet', startDate: initialDate, targetDate: initialDate, capacityPerWeek: 5, schedulingMode: 'sequential' };
         let tasks = [];
         let zoomLevel = 'days';
+        let interfacePreferences = { verifyResults: false, manualStart: false, density: 'comfortable' };
+        let taskDraftSnapshot = null;
+        let taskReturnFocus = null;
+        const timelineScales = { days: 40, weeks: 10, months: 3, years: 0.7 };
+        const planningDisplay = { duration: false, start: false, dependencies: false };
+        function planningRowHeight() { return interfacePreferences.density === 'compact' ? 48 : 64; }
+        function applyInterfacePreferences(value) {
+            interfacePreferences = { verifyResults: value.verifyResults === true, manualStart: value.manualStart === true, density: value.density === 'compact' ? 'compact' : 'comfortable' };
+            document.getElementById('gantt-master-container').style.setProperty('--row-height', planningRowHeight() + 'px');
+            renderPlanningView();
+        }
+        function taskDraftValue() {
+            const fields = ['name','subject','priority','description','lot','owner','duration','manual-start','status','progress','risk-weight','risk-status','new-result'];
+            return JSON.stringify([fields.map(id => document.getElementById('task-' + id).value), document.getElementById('task-is-milestone').checked, Array.from(document.getElementById('task-dependencies').selectedOptions).map(option => option.value), editingChecklist, editingRisks]);
+        }
+        function taskDraftDirty() { return taskDraftSnapshot !== null && taskDraftSnapshot !== taskDraftValue(); }
+        function updateTaskDraftStatus() { document.getElementById('task-save-status').textContent = taskDraftDirty() ? 'Modifications à enregistrer' : ''; }
+        window.addEventListener('beforeunload', event => { if (taskDraftDirty()) { event.preventDefault(); event.returnValue = ''; } });
         let ganttScale = 40;
         let isDraggingAction = false;
         // Display preference only: never changes the project or its exported tasks.
@@ -775,7 +805,7 @@
             return `<span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${c}">${escapeHtml(status)}</span>`;
         }
 
-        const planningFilter = { subject: '', priority: '' };
+        const planningFilter = { subject: '', priority: '', query: '', status: '' };
         const columnDefaults = { task: 280, duration: 64, start: 96, status: 96 };
         const columnMinimums = { task: 160, duration: 64, start: 80, status: 80 };
         let planningColumns = { ...columnDefaults };
@@ -783,19 +813,28 @@
             const saved = JSON.parse(localStorage.getItem('avereo.projet.columns.v1') || '{}');
             for (const key of Object.keys(columnDefaults)) if (Number.isFinite(saved[key])) planningColumns[key] = Math.max(columnMinimums[key], Math.min(key === 'task' ? 1000 : 240, saved[key]));
         } catch (_) { /* View settings must never block the planning. */ }
-        function planningTableWidth() { return 40 + Object.values(planningColumns).reduce((sum, width) => sum + width, 0); }
-        function planningFilterActive() { return !!(planningFilter.subject || planningFilter.priority); }
+        function planningTableWidth() { return 40 + Object.entries(planningColumns).reduce((sum, [key, width]) => sum + (planningDisplay[key] === false ? 0 : width), 0); }
+        function planningFilterActive() { return !!(planningFilter.subject || planningFilter.priority || planningFilter.query || planningFilter.status); }
         function setPlanningFilter() {
             if (dnd.active) return;
             planningFilter.subject = document.getElementById('planning-subject').value;
             planningFilter.priority = document.getElementById('planning-priority').value;
+            planningFilter.query = document.getElementById('planning-search').value;
+            planningFilter.status = document.getElementById('planning-status').value;
             renderPlanningView();
         }
-        function resetPlanningFilters() { planningFilter.subject = ''; planningFilter.priority = ''; renderPlanningView(); }
+        function resetPlanningFilters() { for (const key of Object.keys(planningFilter)) planningFilter[key] = ''; document.getElementById('planning-search').value = ''; renderPlanningView(); }
+        function clearPlanningFilter(key) {
+            if (!Object.hasOwn(planningFilter, key)) return;
+            planningFilter[key] = '';
+            if (key === 'query') document.getElementById('planning-search').value = '';
+            renderPlanningView();
+        }
         function applyPlanningColumns(save = false) {
             const master = document.getElementById('gantt-master-container');
             for (const key of Object.keys(planningColumns)) {
-                master.style.setProperty('--' + key + '-width', planningColumns[key] + 'px');
+                master.style.setProperty('--' + key + '-width', (planningDisplay[key] === false ? 0 : planningColumns[key]) + 'px');
+                master.style.setProperty('--' + key + '-display', planningDisplay[key] === false ? 'none' : 'flex');
                 const handle = document.getElementById('resize-' + key);
                 handle.setAttribute('aria-valuenow', planningColumns[key]);
                 handle.setAttribute('aria-valuemin', columnMinimums[key]);
@@ -845,15 +884,23 @@
             const ganttBody = document.getElementById('planning-gantt-body');
             const svgLayer = document.getElementById('gantt-svg-layer');
 
-            ganttScale = zoomLevel === 'days' ? 40 : 10;
+            ganttScale = timelineScales[zoomLevel];
+            applyPlanningColumns();
             document.getElementById('gantt-master-container').style.width = `${planningTableWidth() + state.totalDays * ganttScale}px`;
-            const filteredTasks = ProjetPlanning.filterTasks(tasks, planningFilter.subject, planningFilter.priority);
+            const query = searchText(planningFilter.query);
+            const overview = ['months', 'years'].includes(zoomLevel);
+            const gestureHelp = overview ? 'ouvrir le détail ; Jours/Semaines pour déplacer' : 'glisser ; Alt + gauche/droite';
+            const filteredTasks = ProjetPlanning.filterTasks(tasks, planningFilter.subject, planningFilter.priority).filter(task => (!planningFilter.status || task.status === planningFilter.status) && (!query || searchText(task.name + ' ' + (task.description || '')).includes(query)));
             const visibleIds = new Set(filteredTasks.map(task => task.id));
             const subjects = [...new Set(['Emploi', 'AVEREO', 'TC Longages', 'Transversal', 'À classer', ...tasks.map(task => ProjetPlanning.taskClassification(task, tasks).subject), ...(planningFilter.subject ? [planningFilter.subject] : [])])];
             const subjectSelect = document.getElementById('planning-subject');
             subjectSelect.innerHTML = '<option value="">Tous les sujets</option>' + subjects.map(subject => `<option value="${escapeHtml(subject)}">${escapeHtml(subject)}</option>`).join('');
             subjectSelect.value = planningFilter.subject;
             document.getElementById('planning-priority').value = planningFilter.priority;
+            document.getElementById('planning-status').value = planningFilter.status;
+            document.getElementById('planning-clear-filters').hidden = !planningFilterActive();
+            document.getElementById('planning-filter-chips').innerHTML = Object.entries(planningFilter).filter(([, value]) => value).map(([key, value]) => `<button type="button" onclick="clearPlanningFilter('${key}')" aria-label="Retirer le filtre ${escapeHtml(value)}">${escapeHtml(value)} ×</button>`).join('');
+            document.getElementById('planning-project-title').textContent = projectSettings.name;
             const hiddenDependencies = new Set(filteredTasks.flatMap(task => task.dependencies.filter(id => !visibleIds.has(id))));
             const proposals = filteredTasks.some(task => !task.subject || !task.priority);
             document.getElementById('planning-filter-status').textContent = `${filteredTasks.length} / ${tasks.length} tâches · dates inchangées${hiddenDependencies.size ? ' · ' + hiddenDependencies.size + ' dépendance(s) hors filtre, conservées dans le calcul' : ''}${proposals ? ' · Classements proposés : à confirmer dans les fiches.' : ''}${planningFilterActive() ? ' · Réordonnancement et déplacement de lots disponibles dans la vue complète.' : ''}`;
@@ -864,16 +911,10 @@
             const renderStartDate = new Date(currentDateWalker); 
             state.renderStateGlobal.renderStartDate = renderStartDate;
 
-            for (let i = 0; i < state.totalDays; i++) {
-                let isWeekend = currentDateWalker.getDay() === 0 || currentDateWalker.getDay() === 6;
-                let dayNum = currentDateWalker.getDate();
-                if (zoomLevel === 'days') {
-                    headerHtml += `<div class="flex-shrink-0 flex flex-col items-center justify-center border-r border-slate-200 ${isWeekend ? 'bg-slate-100 text-slate-400' : 'text-slate-600'}" style="width: ${ganttScale}px; height: 100%; box-sizing: border-box;"><span class="text-[9px] uppercase">${currentDateWalker.toLocaleDateString('fr-FR', {weekday:'narrow'})}</span><span class="text-xs font-semibold">${dayNum}</span></div>`;
-                } else {
-                    headerHtml += `<div class="flex-shrink-0 border-r border-slate-100 text-slate-600" style="width: ${ganttScale}px; position: relative; height: 100%"><span style="position:absolute;white-space:nowrap;top:15px;font-size:10px">${currentDateWalker.getDay() === 1 ? currentDateWalker.toLocaleDateString('fr-FR', {day:'2-digit',month:'short'}) : ''}</span></div>`;
-                }
-                gridHtml += `<div class="flex-shrink-0 border-r border-slate-100 ${isWeekend ? 'gantt-weekend' : ''}" style="width: ${ganttScale}px; height: 100%; box-sizing: border-box;"></div>`;
-                currentDateWalker.setDate(currentDateWalker.getDate() + 1);
+            for (const period of timelinePeriods(renderStartDate, state.totalDays, zoomLevel)) {
+                const width = period.days * ganttScale;
+                headerHtml += `<div class="timeline-period" style="width:${width}px" title="${escapeHtml(period.label)}">${escapeHtml(period.label)}</div>`;
+                gridHtml += `<div class="timeline-grid-period ${period.weekend ? 'gantt-weekend' : ''}" style="width:${width}px"></div>`;
             }
 
             const today = new Date();
@@ -909,8 +950,9 @@
                 const end = new Date(Math.max(...lotTasks.map(task => task.calcEnd.getTime())));
                 const charge = lotTasks.reduce((sum, task) => sum + task.duration, 0);
                 const progress = Math.round(lotTasks.reduce((sum, task) => sum + task.progress * (charge ? task.duration : 1), 0) / (charge || count));
-                const label = `${formatDateShort(start)} → ${formatDateShort(end)} · ${progress}%`;
-                barsHtml += `<div class="lot-header lot-timeline" data-summary-row="${index}"><div class="project-summary-bar" role="button" tabindex="0" data-date-kind="lot" data-lot-index="${index}" style="left:${right === left ? left - 12 : left}px;width:${Math.max(24, right - left)}px" title="${escapeHtml(lot)} — ${escapeHtml(label)} — glisser pour décaler le projet ; Alt + gauche/droite" aria-label="Déplacer les dates du projet ${escapeHtml(lot)}"><span class="gantt-progress" style="width:${progress}%"></span><span class="gantt-label">${escapeHtml(label)}</span></div></div>`;
+                const summaryDate = date => ['months', 'years'].includes(zoomLevel) || start.getFullYear() !== end.getFullYear() ? date.toLocaleDateString('fr-FR', {day:'numeric', month:'short', year:'numeric'}) : formatDateShort(date);
+                const label = `${summaryDate(start)} → ${summaryDate(end)} · ${progress}%`;
+                barsHtml += `<div class="lot-header lot-timeline" data-summary-row="${index}"><div class="project-summary-bar" role="button" tabindex="0" data-date-kind="lot" data-lot-index="${index}" style="left:${right === left ? left - 12 : left}px;width:${Math.max(24, right - left)}px" title="${escapeHtml(lot)} — ${escapeHtml(label)} — ${gestureHelp}" aria-label="${overview ? 'Zoomer sur le projet' : 'Déplacer les dates du projet'} ${escapeHtml(lot)}"><span class="gantt-progress" style="width:${progress}%"></span><span class="gantt-label">${escapeHtml(label)}</span></div></div>`;
                 currentY += 56; // Both panes use the same project-cartouche height.
                 if (!expanded) {
                     tableHtml += '</div>';
@@ -927,7 +969,7 @@
                             <div class="w-10 flex-shrink-0 text-center text-[10px] text-slate-400 font-mono"><button type="button" class="planning-grip" data-reorder-kind="task" data-reorder-id="${escapeHtml(t.id)}" aria-label="Réordonner le sujet ${escapeHtml(t.name)}" title="Glisser dans ce projet ; Alt + haut/bas">⠿</button></div>
                             <div class="planning-column planning-col-task px-3 flex items-center overflow-hidden">
                                 ${warnIcon}${manualPin}
-                                <div class="min-w-0"><button type="button" class="block w-full text-left text-sm font-medium text-slate-800 truncate group-hover:text-blue-600 transition-colors" title="${escapeHtml(t.name)}" aria-label="Ouvrir la tâche : ${escapeHtml(t.name)}">${escapeHtml(t.name)}</button><span class="block text-[10px] text-slate-500 truncate"><span class="subject-badge ${classification.priority === 'haute' ? 'priority-badge' : ''}">${escapeHtml(classification.subject)}${classification.suggestedSubject ? ' ?' : ''} · ${classification.priority === 'haute' ? '★ Haute' : classification.priority === 'basse' ? 'Basse' : 'Normale'}${classification.suggestedPriority ? ' ?' : ''}</span> · ${t.checklist?.length ? checklistLabel(t.checklist) : 'Fiche à compléter'} · ${(t.risks || []).length} risques</span></div>
+                                <div class="min-w-0"><button type="button" class="task-row-title block w-full text-left text-sm font-medium text-slate-800 group-hover:text-blue-600 transition-colors" title="${escapeHtml(t.name)}" aria-label="Ouvrir la tâche : ${escapeHtml(t.name)}">${escapeHtml(t.name)}</button><span class="block text-[10px] text-slate-500 truncate"><span class="subject-badge ${classification.priority === 'haute' ? 'priority-badge' : ''}">${escapeHtml(classification.subject)}${classification.suggestedSubject ? ' ?' : ''} · ${classification.priority === 'haute' ? '★ Haute' : classification.priority === 'basse' ? 'Basse' : 'Normale'}${classification.suggestedPriority ? ' ?' : ''}</span>${riskAttention(t) ? ' · Risque actif' : ''}</span></div>
                             </div>
                             <div class="planning-column planning-col-duration px-2 text-center text-xs text-slate-600">${t.duration}j</div>
                             <div class="planning-column planning-col-start px-2 text-center text-xs text-slate-600">${formatDateShort(t.calcStart)}</div>
@@ -943,16 +985,16 @@
                         const position = taskTimelinePosition(t, renderStartDate);
                         leftPx = position.left;
                         widthPx = position.right - position.left;
-                        renderState[t.id] = { y: currentY + 24, left: leftPx, right: leftPx + widthPx };
+                        renderState[t.id] = { y: currentY + planningRowHeight() / 2, left: leftPx, right: leftPx + widthPx };
 
                         if (t.isMilestone) {
                             widthPx = 0;
-                            barHtml = `<div class="milestone" role="button" tabindex="0" data-date-kind="task" data-id="${escapeHtml(t.id)}" style="left: ${leftPx - 12}px;" title="${escapeHtml(t.name)} — glisser ; Alt + gauche/droite" aria-label="Déplacer les dates de ${escapeHtml(t.name)}"></div>`;
+                            barHtml = `<div class="milestone" role="button" tabindex="0" data-date-kind="task" data-id="${escapeHtml(t.id)}" style="left: ${leftPx - 12}px;" title="${escapeHtml(t.name)} — ${gestureHelp}" aria-label="${overview ? 'Ouvrir la tâche' : 'Déplacer les dates de'} ${escapeHtml(t.name)}"></div>`;
                         } else {
                             if (widthPx < 4) widthPx = 4;
                             let colorClass = getStatusColorClass(t.status, t.isLate);
                             barHtml = `
-                                <div class="gantt-bar ${colorClass}" role="button" tabindex="0" data-date-kind="task" data-id="${escapeHtml(t.id)}" style="left: ${leftPx}px; width: ${widthPx}px;" title="${escapeHtml(t.name)} — glisser ; Alt + gauche/droite" aria-label="Déplacer les dates de ${escapeHtml(t.name)}">
+                                <div class="gantt-bar ${colorClass}" role="button" tabindex="0" data-date-kind="task" data-id="${escapeHtml(t.id)}" style="left: ${leftPx}px; width: ${widthPx}px;" title="${escapeHtml(t.name)} — ${gestureHelp}" aria-label="${overview ? 'Ouvrir la tâche' : 'Déplacer les dates de'} ${escapeHtml(t.name)}">
                                     <div class="gantt-progress" style="width: ${t.progress}%"></div>
                                     <span class="gantt-label">${t.progress}%</span>
                                     <div class="resize-handle" data-id="${escapeHtml(t.id)}" title="Étirer par pas de 0,25 j-p (édition précise dans la fiche)"></div>
@@ -962,14 +1004,14 @@
                     }
 
                     barsHtml += `<div class="planning-row relative w-full border-b border-slate-100 hover:bg-slate-50/50 box-border" data-task-id="${escapeHtml(t.id)}">${barHtml}</div>`;
-                    currentY += 48; // planning-row height
+                    currentY += planningRowHeight();
                 });
                 tableHtml += '</div>';
             });
 
             // Draw SVG arrows
             let svgPaths = '';
-            tasks.forEach(t => {
+            (planningDisplay.dependencies ? tasks : []).forEach(t => {
                 t.dependencies.forEach(depId => {
                     let p = renderState[depId]; // predecessor
                     let s = renderState[t.id];  // successor
@@ -1145,8 +1187,25 @@
 
         let dnd = { active: false, type: null, taskId: null, startX: 0, element: null, origVal: 0 };
 
+        function openTimelineItem(bar) {
+            if (bar.dataset.dateKind === 'task') openTaskModal(bar.dataset.id);
+            else {
+                const lot = state.groupedTasks[Object.keys(state.groupedTasks)[Number(bar.dataset.lotIndex)]];
+                if (!lot?.length) return;
+                const start = new Date(Math.min(...lot.map(task => task.calcStart.getTime())));
+                setZoom(zoomLevel === 'years' ? 'months' : 'weeks');
+                navigatePlanningDate(localIso(start));
+            }
+        }
+        document.getElementById('planning-gantt-body')?.addEventListener('click', event => {
+            if (!['months', 'years'].includes(zoomLevel)) return;
+            const bar = event.target.closest('[data-date-kind]');
+            if (bar) openTimelineItem(bar);
+        });
+
         document.getElementById('planning-gantt-body')?.addEventListener('mousedown', e => {
             if (e.button !== 0) return;
+            if (['months', 'years'].includes(zoomLevel)) { planningFeedback('Passe en Jours ou Semaines pour déplacer précisément les dates.'); return; }
             dnd.snapshot = ProjetPlanning.encodeProject(currentProject());
             const summary = e.target.closest('.project-summary-bar');
             if (summary && planningFilterActive()) { planningFeedback('Efface les filtres avant de déplacer un lot complet.'); return; }
@@ -1250,6 +1309,16 @@
         });
 
         document.addEventListener('keydown', e => {
+            if (taskDraftSnapshot !== null) {
+                if (e.key === 'Escape') { e.preventDefault(); closeTaskModal(); return; }
+                if (e.key === 'Tab') {
+                    const controls = Array.from(document.getElementById('task-modal').querySelectorAll('button,input,select,textarea,summary,[tabindex="0"]')).filter(node => !node.disabled && node.getClientRects().length);
+                    const first = controls[0], last = controls[controls.length - 1];
+                    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+                    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+                }
+                return;
+            }
             if (e.key === 'Escape' && dnd.active) {
                 dnd.active = false; clearPlanningDropMarks();
                 document.body.classList.remove('is-dragging', 'is-resizing'); renderPlanningView();
@@ -1257,6 +1326,7 @@
             }
             const grip = e.target.closest?.('.planning-grip');
             const bar = e.target.closest?.('[data-date-kind]');
+            if (bar && ['Enter', ' '].includes(e.key)) { e.preventDefault(); openTimelineItem(bar); return; }
             if (e.altKey && grip && ['ArrowUp', 'ArrowDown'].includes(e.key)) {
                 e.preventDefault();
                 const kind = grip.dataset.reorderKind, id = grip.dataset.reorderId;
@@ -1266,6 +1336,7 @@
                 if (target) requestPlanningReorder(kind, source, target, step > 0);
             } else if (e.altKey && bar && ['ArrowLeft', 'ArrowRight'].includes(e.key)) {
                 e.preventDefault();
+                if (['months', 'years'].includes(zoomLevel)) { planningFeedback('Passe en Jours ou Semaines pour déplacer précisément les dates.'); return; }
                 const kind = bar.dataset.dateKind, id = kind === 'lot' ? bar.dataset.lotIndex : bar.dataset.id;
                 const selected = kind === 'lot' ? state.groupedTasks[Object.keys(state.groupedTasks)[Number(id)]] : [state.tasksDict[id]];
                 const first = new Date(Math.min(...selected.map(task => task.calcStart.getTime())));
@@ -1295,11 +1366,50 @@
             if (viewId === 'planning') window.dispatchEvent(new Event('resize'));
         }
 
-        function setZoom(level) { 
+        function searchText(value) { return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('fr').trim(); }
+        function setPlanningDisplay(key, enabled) { planningDisplay[key] = enabled; applyPlanningColumns(); renderPlanningView(); }
+        function timelinePeriods(origin, dayCount, level) {
+            const periods = [];
+            let offset = 0;
+            while (offset < dayCount) {
+                const date = new Date(origin); date.setDate(date.getDate() + offset);
+                const next = new Date(date);
+                if (level === 'years') next.setFullYear(date.getFullYear() + 1, 0, 1);
+                else if (level === 'months') next.setFullYear(date.getFullYear(), date.getMonth() + 1, 1);
+                else if (level === 'weeks') next.setDate(date.getDate() + (date.getDay() === 1 ? 7 : (8 - date.getDay()) % 7));
+                else next.setDate(date.getDate() + 1);
+                const days = Math.min(dayCount - offset, calendarSerial(next) - calendarSerial(date));
+                const label = level === 'years' ? String(date.getFullYear()) : date.toLocaleDateString('fr-FR', level === 'months' ? { month: 'short', year: 'numeric' } : level === 'weeks' ? { day: 'numeric', month: 'short', year: 'numeric' } : { day: 'numeric', month: 'short' });
+                periods.push({ days, label, weekend: level === 'days' && [0, 6].includes(date.getDay()) });
+                offset += days;
+            }
+            return periods;
+        }
+        function setZoom(level) {
+            if (!Object.hasOwn(timelineScales, level) || dnd.active) return;
+            const viewport = document.getElementById('gantt-viewport');
+            const dayOffset = (viewport.scrollLeft || 0) / ganttScale;
             zoomLevel = level;
-            document.getElementById('btn-zoom-days').className = level === 'days' ? 'px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-200 text-xs transition-colors' : 'px-3 py-1.5 rounded-md bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 text-xs transition-colors font-medium';
-            document.getElementById('btn-zoom-weeks').className = level === 'weeks' ? 'px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 font-medium border border-blue-200 text-xs transition-colors' : 'px-3 py-1.5 rounded-md bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 text-xs transition-colors font-medium';
-            renderPlanningView(); 
+            for (const key of Object.keys(timelineScales)) {
+                const button = document.getElementById('btn-zoom-' + key);
+                button.className = key === level ? 'scale-button selected' : 'scale-button';
+                button.setAttribute('aria-pressed', String(key === level));
+            }
+            renderPlanningView();
+            viewport.scrollLeft = dayOffset * ganttScale;
+        }
+        function navigatePlanningDate(value) {
+            if (!value) return;
+            const date = new Date(value + 'T12:00:00');
+            const offset = calendarSerial(date) - calendarSerial(state.renderStateGlobal.renderStartDate);
+            if (!Number.isFinite(offset) || offset < 0 || offset >= state.totalDays) { planningFeedback('Cette date est en dehors de la période du projet.'); return; }
+            document.getElementById('gantt-viewport').scrollLeft = Math.max(0, offset * ganttScale - 40);
+            planningFeedback('Calendrier positionné au ' + date.toLocaleDateString('fr-FR'));
+        }
+        function fitPlanning() {
+            const available = Math.max(180, document.getElementById('gantt-viewport').clientWidth - planningTableWidth());
+            setZoom(Object.keys(timelineScales).find(key => state.totalDays * timelineScales[key] <= available) || 'years');
+            document.getElementById('gantt-viewport').scrollLeft = 0;
         }
 
         function populateDependencySelect(excludeId) {
@@ -1327,6 +1437,8 @@
         }
 
         function openTaskModal(taskId = null) {
+            if (taskDraftDirty() && !window.confirm('Abandonner les modifications de la fiche ?')) return;
+            taskReturnFocus = document.activeElement;
             populateDependencySelect(taskId);
             const modalTitle = document.getElementById('modal-title');
             const btnDelete = document.getElementById('btn-delete-task');
@@ -1342,7 +1454,8 @@
                 document.getElementById('task-subject').value = t.subject || '';
                 document.getElementById('task-priority').value = t.priority || '';
                 const c = ProjetPlanning.taskClassification(t, tasks);
-                document.getElementById('task-classification-hint').textContent = !t.subject || !t.priority ? `Proposition d’affichage : ${c.subject}, priorité ${c.priority}. Renseigne les champs pour confirmer ou corriger ; les dates ne changent pas.` : 'Le sujet et la priorité ne changent pas les dates.';
+                document.getElementById('task-classification-hint').textContent = !t.subject || !t.priority ? `Proposition d’affichage : ${c.subject}, priorité ${c.priority}. Renseigne les champs pour confirmer ou corriger ; les dates ne changent pas.` : '';
+                document.getElementById('task-classification-hint').hidden = !!t.subject && !!t.priority;
                 document.getElementById('task-description').value = t.description || '';
                 editingChecklist = JSON.parse(JSON.stringify(t.checklist || []));
                 editingRisks = JSON.parse(JSON.stringify(t.risks || []));
@@ -1364,6 +1477,7 @@
                 modalTitle.innerHTML = `<i data-lucide="plus-circle" class="w-5 h-5 mr-2 text-emerald-600"></i> Nouvelle Tâche`;
                 btnDelete.classList.add('hidden');
                 document.getElementById('task-form').reset();
+                document.getElementById('task-classification-hint').hidden = false;
                 document.getElementById('task-classification-hint').textContent = 'Choisis un sujet et une priorité ; les dates restent indépendantes.';
                 document.getElementById('task-progress-range').value = 0;
                 let suffix = 1; while (tasks.some(task => task.id === `T${suffix}`)) suffix++;
@@ -1380,6 +1494,16 @@
                 riskIds: editingRisks.map(item => item.id),
             };
             document.getElementById('task-parameters').open = !taskId;
+            document.getElementById('task-manual-start-field').hidden = !interfacePreferences.manualStart;
+            const manualStart = document.getElementById('task-manual-start').value;
+            const constraint = document.getElementById('task-constraint-note');
+            constraint.hidden = !manualStart || interfacePreferences.manualStart;
+            constraint.textContent = manualStart ? 'Date contrainte active : ' + new Date(manualStart + 'T12:00:00').toLocaleDateString('fr-FR') + ' · réglage dans Mon espace → Préférences.' : '';
+            const task = state.tasksDict[taskId];
+            document.getElementById('task-date-summary').textContent = task?.calcStart ? 'Calendrier : ' + task.calcStart.toLocaleDateString('fr-FR') + ' → ' + task.calcEnd.toLocaleDateString('fr-FR') : '';
+            document.getElementById('task-risk-count').textContent = editingRisks.length ? '(' + editingRisks.length + (task && riskAttention(task) ? ' · attention requise' : '') + ')' : '';
+            document.getElementById('task-risk-section').open = false;
+            document.getElementById('task-new-result').value = '';
             document.getElementById('task-documentation').hidden = true;
             renderTaskChecklist();
             renderTaskRisks();
@@ -1389,17 +1513,28 @@
             document.getElementById('task-modal').classList.add('open');
             document.getElementById('task-modal').inert = false;
             document.getElementById('task-modal').ariaHidden = 'false';
+            document.getElementById('project-main').inert = true;
+            document.querySelector?.('aside')?.setAttribute('inert', '');
+            taskDraftSnapshot = taskDraftValue();
+            updateTaskDraftStatus();
+            document.getElementById('task-name').focus?.();
         }
 
-        function closeTaskModal() {
+        function closeTaskModal(force = false) {
+            if (!force && taskDraftDirty() && !window.confirm('Abandonner les modifications non enregistrées ?')) return;
+            taskDraftSnapshot = null;
             document.getElementById('modal-backdrop').classList.remove('open');
             document.getElementById('task-modal').classList.remove('open');
             document.getElementById('task-modal').inert = true;
             document.getElementById('task-modal').ariaHidden = 'true';
+            document.getElementById('project-main').inert = false;
+            document.querySelector?.('aside')?.removeAttribute('inert');
             state.editingTaskId = null;
+            taskReturnFocus?.focus?.();
         }
 
         function saveTask() {
+            if (document.getElementById('task-new-result').value.trim()) addTaskResult();
             document.getElementById('task-parameters').open = true;
             if (!document.getElementById('task-form').reportValidity()) return;
             const taskData = {
@@ -1420,7 +1555,7 @@
                 manualStart: document.getElementById('task-manual-start').value || null,
             };
             const candidate = state.editingTaskId ? tasks.map(task => task.id === state.editingTaskId ? taskData : task) : [...tasks, taskData];
-            if (commitProject({ ...currentProject(), tasks: candidate }, { message: 'Tâche enregistrée' })) closeTaskModal();
+            if (commitProject({ ...currentProject(), tasks: candidate }, { message: 'Tâche enregistrée' })) closeTaskModal(true);
         }
 
         function deleteCurrentTask() {
@@ -1429,7 +1564,7 @@
             const successors = tasks.filter(task => task.dependencies.includes(id));
             if (successors.length) { alert(`Suppression refusée : ${successors.map(task => task.id).join(', ')} dépend de cette tâche. Révise ces dépendances avant suppression.`); return; }
             if (!confirm('Supprimer cette tâche du planning local ?')) return;
-            if (commitProject({ ...currentProject(), tasks: tasks.filter(task => task.id !== id) }, { message: 'Tâche supprimée' })) closeTaskModal();
+            if (commitProject({ ...currentProject(), tasks: tasks.filter(task => task.id !== id) }, { message: 'Tâche supprimée' })) closeTaskModal(true);
         }
 
         function showToast(message, color = "emerald") {
@@ -1463,9 +1598,9 @@
         });
 
     </script>
-    <script src="./planning-local.js?v=subjects-20261106"></script>
-    <script src="./task-details.js?v=space-20261105"></script>
-    <script src="./planning-online.js?v=space-20261105"></script>
-    <script src="/project-workspace.js?v=menu-20261105"></script>
+    <script src="./planning-local.js?v=interface-20261106"></script>
+    <script src="./task-details.js?v=interface-20261106"></script>
+    <script src="./planning-online.js?v=interface-20261106"></script>
+    <script src="/project-workspace.js?v=interface-20261106"></script>
 </body>
 </html>

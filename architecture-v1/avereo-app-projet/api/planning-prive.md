@@ -12,6 +12,15 @@ tags: [projet, api, stockage]
 
 # Contrat de sauvegarde privée
 
+## Préférences étendues — candidat local du 6 novembre 2026
+
+L’action `preferences` de `workspace.php` accepte `zoom` (`days`, `weeks`, `months`, `years`) et `collapsed` (booléen), ainsi que `verifyResults` (booléen, défaut false), `manualStart` (booléen, défaut false) et `density` (`comfortable`, défaut, ou `compact`). Les valeurs invalides sont refusées avec 422. La lecture d’un ancien catalogue complète les champs absents en mémoire, sans écriture ; un ancien client envoyant seulement zoom/collapsed conserve les autres préférences déjà enregistrées.
+
+Ces préférences n’écrivent pas dans les documents de planning. Le contrat `checklist` reste identique : une réalisation simple n’est pas une valeur `validated=true` sans preuve, vérificateur et date. Les dates `manualStart` des tâches gardent leur effet même lorsque leur saisie est masquée. En mode navigateur local, les préférences utilisent `avereo.projet.preferences.v1`, distinct de la sauvegarde projet.
+
+**Retour arrière :** le lecteur PHP antérieur refuse `months` et `years`. Après utilisation de ces valeurs, conserver un lecteur compatible ou préparer une conversion ciblée et autorisée de la seule préférence zoom. Ne jamais remplacer le catalogue entier par une copie ancienne au détriment de nouveaux projets, archives ou références client.
+
+
 ## Métadonnées optionnelles de classement — 6 novembre 2026
 
 Dans chaque tâche, `subject` est un texte non vide de 80 caractères maximum et `priority` vaut `haute`, `normale` ou `basse`. Chaque champ peut être absent ; `null` et les valeurs invalides sont refusés (422). Le schéma reste en version 1. Les anciennes tâches sans ces clés sont conservées ainsi ; les suggestions visuelles ne sont pas envoyées automatiquement.

@@ -15,6 +15,15 @@ tags:
 
 # Prévisualisation et publication de Projet
 
+## Interface simple — préparation locale, aucune installation
+
+Utiliser le préparateur `prepare-preprod-workspace.py` après commit propre et build pour conserver le même périmètre de livraison que Mon espace. Le nouveau candidat modifie notamment `workspace-store.php` et le wrapper ; ne pas livrer seulement la page HTML. Suivi et version : [interface simple](../data/suivi-interface-simple.json).
+
+Avant toute préproduction : accord sur le candidat exact, sauvegarde des deux projets et du catalogue, restauration sur copie, qualification HTTP fictive et contrôle des accès. Après installation autorisée : deux projets relus sans écriture, empreintes/revisions conservées, puis parcours fictifs simples/avancés. Ne pas utiliser les cases des projets réels comme données de test.
+
+Après usage de Mois/Années dans les préférences, un retour à l’ancien lecteur PHP de catalogue serait incompatible : conserver le validateur compatible ou préparer la conversion ciblée décrite dans le [contrat](../api/planning-prive.md). Une restauration complète d’un ancien catalogue ne constitue pas un retour arrière acceptable si de nouvelles données y ont été enregistrées.
+
+
 ## Sujets et colonnes — livré en préproduction le 6 novembre 2026
 
 Candidat `79182df` installé à 08 h 38 Paris après accord, sauvegarde fraîche et restauration sur copie. Seize fichiers vérifiés, huit JSON privés identiques après recette des deux projets. Reçus privés : `/home/daje3540/private/projet-sujets-79182df-20261106`. Les [preuves](../data/preprod-sujets-colonnes/delivery-observation.json) sont rattachées à [la fiche du lot](../data/suivi-sujets-colonnes.json). Réutiliser `prepare-preprod-workspace.py` après build et commit propre : ses 16 fichiers couvrent le moteur, l’interface, la validation PHP et le wrapper compilé. Il préserve notamment `index.php` et le sas ; le menu déjà livré reste conservé. Le paquet ne contient aucune donnée utilisateur.

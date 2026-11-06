@@ -1,6 +1,10 @@
 /* Fiches locales : les textes de référence et le suivi sont sauvegardés avec la tâche. */
 function checklistLabel(items = []) {
-    return `${items.filter(item => item.validated).length}/${items.length} étapes validées`;
+    if (!items.length) return 'Aucun résultat défini';
+    const done = items.filter(item => item.completed).length;
+    const verified = items.filter(item => item.validated).length;
+    if (interfacePreferences.verifyResults) return verified === items.length ? 'Section vérifiée' : `${done}/${items.length} réalisés · ${verified}/${items.length} vérifiés`;
+    return done === items.length ? 'Section validée' : `${done}/${items.length} réalisés`;
 }
 
 function taskDetailsForSave(latestTask) {
@@ -21,13 +25,19 @@ function taskDetailsForSave(latestTask) {
 function renderTaskChecklist() {
     document.getElementById('task-checklist-summary').textContent = checklistLabel(editingChecklist);
     document.getElementById('task-checklist').innerHTML = editingChecklist.length ? editingChecklist.map((item, index) => `
-        <details class="border rounded-lg bg-white" ${index === 0 ? 'open' : ''}>
-            <summary class="cursor-pointer p-3 font-medium text-sm text-slate-800">${escapeHtml(item.id)} · ${escapeHtml(item.title)} <span id="step-state-${index}" class="text-xs text-blue-700">${item.validated ? '— Validée' : item.completed ? '— À vérifier' : '— À faire'}</span></summary>
+        <article class="result-card">
+            <label class="result-check"><input type="checkbox" id="step-completed-${index}" onchange="updateChecklistEntry(${index}, 'completed')" ${item.completed ? 'checked' : ''}><span class="whitespace-pre-wrap">${escapeHtml(item.expected || item.title)}</span></label>
+            <span id="step-state-${index}" class="text-xs text-blue-700">${resultState(item)}</span>
+        <details class="result-details">
+            <summary>Action et détails</summary>
             <div class="px-4 pb-4 space-y-3 text-sm">
+                <p class="font-medium">${escapeHtml(item.id)} · ${escapeHtml(item.title)}</p>
                 <div><h4 class="font-semibold text-slate-800">Actions à réaliser</h4><p class="whitespace-pre-wrap text-slate-700 mt-1">${escapeHtml(item.action || 'À compléter')}</p></div>
-                <div class="bg-blue-50 rounded p-3"><h4 class="font-semibold text-blue-900">Résultats attendus / critères de vérification</h4><p class="whitespace-pre-wrap text-slate-700 mt-1">${escapeHtml(item.expected || 'À compléter')}</p></div>
                 <p class="text-xs text-slate-500 whitespace-pre-wrap">Sources : ${escapeHtml(item.sourceRefs.join(' ; ') || 'Non renseignées')}</p>
-                <label class="flex gap-2 items-center"><input type="checkbox" id="step-completed-${index}" onchange="updateChecklistEntry(${index}, 'completed')" ${item.completed ? 'checked' : ''}>Étape réalisée</label>
+                <label class="block">Modifier le résultat attendu<textarea id="step-expected-${index}" rows="2" maxlength="12000" oninput="updateChecklistEntry(${index}, 'expected')" onchange="renderTaskChecklist()" class="w-full border rounded p-2">${escapeHtml(item.expected)}</textarea></label>
+            </div>
+        </details>
+            <div class="result-verification" ${interfacePreferences.verifyResults ? '' : 'hidden'}>
                 <label class="block text-xs font-medium text-slate-700" for="step-evidence-${index}">Preuve / résultat observé / référence du livrable</label>
                 <textarea id="step-evidence-${index}" rows="2" maxlength="6000" oninput="updateChecklistEntry(${index}, 'evidence')" class="w-full border rounded p-2">${escapeHtml(item.evidence)}</textarea>
                 <label class="block text-xs font-medium text-slate-700" for="step-validatedBy-${index}">Vérifié par</label>
@@ -35,7 +45,24 @@ function renderTaskChecklist() {
                 <label class="flex gap-2 items-center font-medium"><input type="checkbox" id="step-validated-${index}" onchange="updateChecklistEntry(${index}, 'validated')" ${item.validated ? 'checked' : ''}>Vérifiée et validée</label>
                 <p id="step-feedback-${index}" role="status" class="text-xs text-slate-600">${item.validatedAt ? `Validation enregistrée le ${escapeHtml(new Date(item.validatedAt).toLocaleString('fr-FR'))}` : 'Validation : réalisation, preuve et nom du vérificateur requis.'}</p>
             </div>
-        </details>`).join('') : '<p class="text-sm text-slate-500">Aucune étape documentée pour cette tâche. La description peut être renseignée ci-dessus.</p>';
+        </article>`).join('') : '<p class="text-sm text-slate-500">Ajoute le premier résultat attendu pour cette tâche.</p>';
+}
+
+function resultState(item) {
+    if (!interfacePreferences.verifyResults) return item.completed ? 'Réalisé' : 'À réaliser';
+    return item.validated ? 'Vérifié' : item.completed ? 'Réalisé — à vérifier' : 'À réaliser';
+}
+
+function addTaskResult() {
+    const input = document.getElementById('task-new-result');
+    const expected = input.value.trim();
+    if (!expected) { input.focus(); return; }
+    if (editingChecklist.length >= ProjetPlanning.LIMITS.maxChecklistItems) { window.alert('Maximum de 100 résultats par tâche.'); return; }
+    let number = 1;
+    while (editingChecklist.some(item => item.id === `RESULT-${number}`)) number++;
+    editingChecklist.push({ id: `RESULT-${number}`, title: expected.slice(0, 1000), expected, action: '', sourceRefs: [], completed: false, validated: false, evidence: '', validatedBy: '', validatedAt: null });
+    input.value = '';
+    renderTaskChecklist();
 }
 
 function updateChecklistEntry(index, field) {
@@ -61,7 +88,7 @@ function updateChecklistEntry(index, field) {
         }
     }
     feedback.textContent = item.validated ? `Validation du ${new Date(item.validatedAt).toLocaleString('fr-FR')} — cliquer sur Enregistrer pour la conserver.` : 'Modifications non enregistrées. La validation reste une action explicite.';
-    document.getElementById(`step-state-${index}`).textContent = item.validated ? '— Validée' : item.completed ? '— À vérifier' : '— À faire';
+    document.getElementById(`step-state-${index}`).textContent = resultState(item);
     document.getElementById('task-checklist-summary').textContent = checklistLabel(editingChecklist);
 }
 
@@ -114,6 +141,7 @@ function addTaskRisk() {
 
 function openTaskRisk(taskId, riskIndex) {
     openTaskModal(taskId);
+    document.getElementById('task-risk-section').open = true;
     const detail = document.getElementById(`risk-detail-${riskIndex}`);
     if (detail) { detail.open = true; detail.scrollIntoView({ block: 'start' }); }
 }

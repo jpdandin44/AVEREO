@@ -48,7 +48,7 @@ function browser({ project = fixture(), storedRaw = null, hostname = 'example.in
         return {
             get value() { return value; }, set value(next) { value = String(next); },
             get innerHTML() { return markup; }, set innerHTML(next) { markup = String(next); this.options = []; },
-            textContent: '', style: {}, className: '', checked: false, disabled: false, hidden: false,
+            textContent: '', style: { setProperty(key, value) { this[key] = value; } }, setAttribute(key, value) { this[key] = value; }, className: '', checked: false, disabled: false, hidden: false,
             options: [], get selectedOptions() { return this.options.filter(option => option.selected); },
             appendChild(child) { this.options.push(child); },
             classList: { add(...names) { names.forEach(name => classes.add(name)); }, remove(...names) { names.forEach(name => classes.delete(name)); }, contains(name) { return classes.has(name); } },
@@ -235,10 +235,11 @@ test('checklist validation requires completion, evidence and a verifier independ
 
 test('completion is distinct from validation and a saved proof survives reopening the browser', async () => {
     const ui = browser();
+    ui.run('interfacePreferences.verifyResults = true');
     ui.open();
     ui.checklistField('completed', true);
     assert.equal(ui.checklist()[0].validated, false);
-    assert.match(ui.element('task-checklist-summary').textContent, /^0\/1/);
+    assert.equal(ui.element('task-checklist-summary').textContent, '1/1 réalisés · 0/1 vérifiés');
     ui.checklistField('evidence', 'Journal de recette local : scénario conforme.');
     ui.checklistField('validatedBy', 'Vérificateur du test');
     ui.checklistField('validated', true);
@@ -246,7 +247,7 @@ test('completion is distinct from validation and a saved proof survives reopenin
     assert.equal(draft.validated, true);
     assert.match(draft.validatedAt, /^\d{4}-\d{2}-\d{2}T.*Z$/);
     assert.equal(ui.project().tasks[0].checklist[0].validated, false, 'validation remains a draft before saving');
-    assert.match(ui.element('task-checklist-summary').textContent, /^1\/1/);
+    assert.equal(ui.element('task-checklist-summary').textContent, 'Section vérifiée');
     ui.run('saveTask()');
     assert.deepEqual(JSON.parse(ui.raw()).tasks[0].checklist[0], draft);
     const restored = browser({ storedRaw: ui.raw() });
@@ -255,6 +256,82 @@ test('completion is distinct from validation and a saved proof survives reopenin
     assert.deepEqual(restored.checklist()[0], draft);
     assert.match(restored.element('task-checklist').innerHTML, /Validation enregistrée le/);
     assert.equal(restored.writes.length, 0);
+});
+
+test('simple results validate the section without verifying it or completing the task', () => {
+    const ui = browser();
+    ui.open();
+    assert.equal(ui.run('interfacePreferences.verifyResults'), false);
+    ui.checklistField('completed', true);
+    assert.equal(ui.element('task-checklist-summary').textContent, 'Section validée');
+    ui.run('saveTask()');
+    const task = JSON.parse(ui.raw()).tasks[0];
+    assert.equal(task.checklist[0].completed, true);
+    assert.equal(task.checklist[0].validated, false);
+    assert.equal(task.status, 'À faire');
+    assert.equal(task.progress, 0);
+    assert.equal(ui.run('checklistLabel([])'), 'Aucun résultat défini');
+});
+
+test('hiding advanced controls preserves a historical verification and active date constraint', () => {
+    const project = fixture();
+    project.tasks[0].manualStart = '2026-09-25';
+    Object.assign(project.tasks[0].checklist[0], { completed: true, validated: true, evidence: 'Référence conservée', validatedBy: 'Exemple', validatedAt: '2026-09-19T10:00:00.000Z' });
+    const ui = browser({ project });
+    const before = ui.project();
+    ui.run('applyInterfacePreferences({verifyResults: false, manualStart: false})');
+    assert.equal(ui.writes.length, 0);
+    ui.open();
+    assert.equal(ui.element('task-manual-start-field').hidden, true);
+    assert.equal(ui.element('task-constraint-note').hidden, false);
+    assert.match(ui.element('task-checklist').innerHTML, /result-verification" hidden/);
+    ui.run('saveTask()');
+    assert.deepEqual(ui.project(), before);
+    ui.run('applyInterfacePreferences({verifyResults: true, manualStart: true})');
+    ui.open();
+    assert.equal(ui.element('task-manual-start-field').hidden, false);
+    assert.equal(ui.element('task-checklist-summary').textContent, 'Section vérifiée');
+});
+
+test('editing a verified result keeps the proof but requires another verification', () => {
+    const project = fixture();
+    Object.assign(project.tasks[0].checklist[0], { completed: true, validated: true, evidence: 'Preuve conservée', validatedBy: 'Exemple', validatedAt: '2026-09-19T10:00:00.000Z' });
+    const ui = browser({ project }); ui.open();
+    ui.checklistField('expected', 'Nouveau résultat attendu');
+    assert.equal(ui.checklist()[0].validated, false);
+    assert.equal(ui.checklist()[0].validatedAt, null);
+    assert.equal(ui.checklist()[0].evidence, 'Preuve conservée');
+    ui.run('saveTask()');
+    assert.equal(ui.project().tasks[0].checklist[0].expected, 'Nouveau résultat attendu');
+});
+
+test('multiple added results keep stable distinct IDs in the existing JSON schema', () => {
+    const ui = browser(); ui.open();
+    for (const expected of ['Premier résultat ajouté', 'Deuxième résultat ajouté']) {
+        ui.element('task-new-result').value = expected;
+        ui.run('addTaskResult()');
+    }
+    assert.equal(ui.checklist().length, 3);
+    assert.equal(new Set(ui.checklist().map(item => item.id)).size, 3);
+    assert.equal(ui.run('taskDraftDirty()'), true);
+    ui.run('saveTask()');
+    const saved = ui.project();
+    assert.equal(saved.schemaVersion, 1);
+    ui.open();
+    assert.deepEqual(ui.checklist(), saved.tasks[0].checklist);
+});
+
+test('cancelling the discard confirmation preserves the open draft without writing', () => {
+    const ui = browser(); ui.open();
+    ui.element('task-description').value = 'Brouillon à conserver';
+    ui.run('window.confirm = () => false; closeTaskModal()');
+    assert.equal(ui.run('state.editingTaskId'), 'L0');
+    assert.equal(ui.element('task-modal').inert, false);
+    assert.equal(ui.writes.length, 0);
+    ui.run('window.confirm = () => true; closeTaskModal()');
+    assert.equal(ui.element('task-modal').inert, true);
+    assert.equal(ui.run('taskDraftDirty()'), false);
+    assert.equal(ui.writes.length, 0);
 });
 
 test('changing a validated proof, verifier or completion requires a fresh explicit validation', async t => {

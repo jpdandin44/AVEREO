@@ -42,7 +42,7 @@ def verify(request, check, token, project, private):
     check(next(p for p in workspace()[1]['projects'] if p['id'] == created)['name'] == changed['name'], 'list title derived from saved planning')
     stale = catalog['revision']
     change('preferences', preferences={'zoom': 'days', 'collapsed': False})
-    check(workspace()[1]['preferences'] == {'zoom': 'days', 'collapsed': False}, 'preferences recovered by independent request')
+    check(workspace()[1]['preferences'] == {'zoom': 'days', 'collapsed': False, 'verifyResults': False, 'manualStart': False, 'density': 'comfortable'}, 'preferences recovered by independent request with simple defaults')
     check(workspace('POST', {'revision': stale, 'action': 'archive', 'id': created})[0] == 409, 'stale catalogue cannot archive')
     change('client', id=created, client='Référence corrigée')
     change('archive', id=created)
@@ -54,6 +54,19 @@ def verify(request, check, token, project, private):
     change('archive', id='principal')
     check(request('PUT', {'revision': 3, 'project': project}, token)[0] == 409, 'legacy tab cannot write archived principal')
     change('restore', id='principal')
+    change('preferences', preferences={'zoom': 'years', 'collapsed': False, 'verifyResults': True, 'manualStart': True, 'density': 'compact'})
+    check(workspace()[1]['preferences']['zoom'] == 'years' and workspace()[1]['preferences']['verifyResults'], 'advanced preferences persist across requests')
+    change('preferences', preferences={'zoom': 'months', 'collapsed': True})
+    check(workspace()[1]['preferences']['manualStart'] is True and workspace()[1]['preferences']['density'] == 'compact', 'old clients preserve unspecified advanced preferences')
+    for key, value in [('verifyResults', 'false'), ('manualStart', None), ('density', 'unknown')]:
+        preferences = dict(catalog['preferences'], **{key: value})
+        check(workspace('POST', {'revision': catalog['revision'], 'action': 'preferences', 'preferences': preferences})[0] == 422, 'invalid advanced preference refused: ' + key)
+    path = private / 'workspace.json'
+    legacy = json.loads(path.read_text(encoding='utf-8'))
+    legacy['preferences'] = {'zoom': 'weeks', 'collapsed': True}
+    path.write_text(json.dumps(legacy), encoding='utf-8'); legacy_bytes = path.read_bytes()
+    check(workspace()[1]['preferences']['verifyResults'] is False and workspace()[1]['preferences']['manualStart'] is False, 'legacy catalog receives safe display defaults')
+    check(path.read_bytes() == legacy_bytes and (private / 'current.json').read_bytes() == original, 'reading preferences never rewrites legacy catalog or planning')
     check(workspace('POST', {'revision': catalog['revision'], 'action': 'preferences', 'preferences': {'zoom': 'invalid', 'collapsed': True}})[0] == 422, 'invalid preference refused')
     path = private / 'workspace.json'; before = path.read_bytes()
     path.write_text('{broken', encoding='utf-8')
