@@ -15,6 +15,12 @@ tags:
 
 # Audit et recette du planning Projet
 
+## Correction du menu Projet et fichiers — 6 novembre 2026
+
+Retour utilisateur reproduit dans le candidat local : quatre des cinq commandes du menu sont recouvertes par la barre d’échelle ou les filtres. Leurs couches de priorité 45/50 dépassaient le contexte de l’en-tête (20), malgré la priorité 60 du panneau enfant.
+
+Correction limitée à `isolation: isolate` sur la vue planning : les couches du Gantt restent dans leur contexte, sous le menu de l’en-tête et sous les fiches. Vérification réelle par ciblage du centre des cinq boutons avant/après : 1/5 accessibles avant, 5/5 après à 1280 × 720 et 390 × 844. Ouverture/fermeture au clavier et fiche au premier plan vérifiées. Exemple fictif uniquement ; aucune donnée ni installation hébergée modifiée. Les preuves et la nouvelle version sont rattachées au [suivi canonique](../data/suivi-interface-simple.json).
+
 ## Interface simple — recette locale du 6 novembre 2026
 
 Écarts autorisés : résultats cochables sur les entrées existantes, vérification/date contrainte optionnelles, simplification de l’en-tête et des fiches, recherche, colonnes secondaires, densité, Mois/Années et navigation temporelle. Le moteur de dates et le schéma de planning sont conservés. Aucun secret, droit CONNECT ou document hébergé modifié.

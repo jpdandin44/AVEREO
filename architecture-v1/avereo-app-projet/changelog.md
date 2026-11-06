@@ -14,6 +14,10 @@ tags:
 
 # Changelog de Projet
 
+## 2026-11-06 — Correction du menu Projet et fichiers
+
+Le menu reste maintenant au-dessus des barres et du tableau du planning. Les couches internes du Gantt sont isolées dans leur zone ; les fiches de tâche conservent leur priorité. Correction visuelle contrôlée sur ordinateur et mobile, sans changement des données.
+
 ## 2026-11-06 — Candidat local : interface simple et calendrier pluriannuel
 
 Résultats attendus cochables, ajout/modification, vérification optionnelle, préférence de date contrainte, protection des brouillons de fiche, recherche et filtres combinés, colonnes secondaires et liens optionnels, densité et vues Mois/Années. Schéma des plannings conservé. Les préférences PHP sont compatibles en lecture avec les catalogues précédents. Aucun déploiement réalisé.

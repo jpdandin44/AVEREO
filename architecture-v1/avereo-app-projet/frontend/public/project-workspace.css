@@ -50,6 +50,8 @@
 
 /* Planning: preserve room for the work, disclose occasional commands. */
 #planning-header { padding:12px 20px; }
+/* Keep sticky table/toolbars below the project menu and task dialogs. */
+#view-planning { isolation:isolate; }
 #planning-project-title { max-width:50vw; overflow-wrap:anywhere; }
 #planning-settings { padding:6px 20px; background:white; }
 #planning-settings > div { margin:0; }
