@@ -1,0 +1,129 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "connect-retour-activation-20261106",
+  "project": "avereo-connect",
+  "owner": "jpdandin",
+  "kind": "correctif",
+  "stage": "developpement_local",
+  "status": "ready_for_review",
+  "objective": "Revenir à la connexion avec le même mot de passe après activation, sans conserver une autre identité.",
+  "candidate": {
+    "sourceSha": "12e17c14b35f951268482e39497931c86f78d117",
+    "artifactSha256": null
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://connect-preprod.avereo.fr",
+      "ready": false,
+      "isolated": false,
+      "empty": false,
+      "evidence": "../docs/retour-activation-connexion.md",
+      "observedAt": "2026-11-06",
+      "note": "Diagnostic en lecture seule seulement ; ne qualifie pas le candidat."
+    },
+    "production": {
+      "id": null,
+      "ready": false,
+      "evidence": null,
+      "observedAt": null
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/118",
+    "acceptedSourceSha": null,
+    "acceptedArtifactSha256": null,
+    "humanAcceptanceVerified": false,
+    "evidence": null,
+    "observedAt": null,
+    "branch": "fix/connect-activation-completion-20261106"
+  },
+  "checks": [
+    {
+      "id": "connect-40-tests",
+      "status": "passed",
+      "environment": "local",
+      "observedAt": "2026-11-06",
+      "evidence": "../docs/retour-activation-connexion.md"
+    },
+    {
+      "id": "drupal-activation-flow",
+      "status": "passed",
+      "environment": "local",
+      "observedAt": "2026-11-06",
+      "evidence": "../docs/retour-activation-connexion.md"
+    },
+    {
+      "id": "php-syntax",
+      "status": "passed",
+      "environment": "local",
+      "observedAt": "2026-11-06",
+      "evidence": "../docs/retour-activation-connexion.md"
+    },
+    {
+      "id": "repository-baseline",
+      "status": "passed",
+      "environment": "local",
+      "observedAt": "2026-11-06",
+      "evidence": "../docs/retour-activation-connexion.md"
+    },
+    {
+      "id": "native-first-login-17",
+      "status": "passed",
+      "environment": "local-drupal-11.4.10",
+      "observedAt": "2026-11-06",
+      "evidence": "../docs/retour-activation-connexion.md"
+    },
+    {
+      "id": "historical-activation-migration",
+      "status": "passed",
+      "environment": "local-disposable-mariadb",
+      "observedAt": "2026-11-06",
+      "evidence": "../docs/retour-activation-connexion.md"
+    }
+  ],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested",
+    "target": null,
+    "artifactSha256": null,
+    "evidence": null,
+    "observedAt": null
+  },
+  "delivery": {
+    "status": "not_delivered",
+    "sourceSha": null,
+    "artifactSha256": null,
+    "target": null,
+    "evidence": null,
+    "observedAt": null
+  },
+  "blockers": [
+    "Installation du correctif en préproduction et recette hébergée non réalisées."
+  ],
+  "nextAction": "Revue humaine de la PR puis autorisation de livraison des deux fichiers en préproduction.",
+  "nextIteration": [],
+  "budget": {
+    "limit": null,
+    "unit": null,
+    "observedUsage": null,
+    "observedAt": null
+  },
+  "phaseModelRef": "../../../outillage/protocole-developpement/skills/developpement-github-cockpit/assets/phase-model.json",
+  "diagnostic": {
+    "hostedReadOnly": true,
+    "drupalPasswordInitialized": true,
+    "connectOnboardingCompleted": true,
+    "exactBrowserIdentity": "unknown",
+    "realAccountMutation": false,
+    "emailResolvesToSameAccount": true,
+    "nativeLoginIsTechnical": true,
+    "failedAttempts": 6,
+    "nativeLimit": 5,
+    "initialCredentialFailureCause": "unknown",
+    "userRequestedNativeReset": true,
+    "personalLoginAfterReset": "confirmed_by_user"
+  }
+}

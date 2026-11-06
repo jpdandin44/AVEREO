@@ -529,7 +529,7 @@
         if (/_emploi\b|recherche d.emploi|candidatur|entretien|offres d.emploi/.test(hint)) suggested = 'Emploi';
         else if (/_club\b|tc\s*longages|tennis|rtennis|rtcsite|site tc\b/.test(hint)) suggested = 'TC Longages';
         else if (/ressources|continuité|_cockpit\b|pilotage/.test(hint)) suggested = 'Transversal';
-        else if (/_creation\b|_site\b|_revenus\b|avereo|création|rapport|passeport|thermo|drone|plans automatiques|coupe|erim/.test(hint)) suggested = 'AVEREO';
+        else if (/_creation\b|_site\b|_revenus\b|avereo|création|rapport|passeport|thermo|drone|plans automatiques|coupe|partenariat|saisie unique/.test(hint)) suggested = 'AVEREO';
         if (suggested === 'À classer' && (task.duration === 0 || task.isMilestone) && !seen.has(task.id)) {
             const nextSeen = new Set(seen); nextSeen.add(task.id);
             const predecessors = (task.dependencies || []).map(id => allTasks.find(item => item.id === id)).filter(Boolean);

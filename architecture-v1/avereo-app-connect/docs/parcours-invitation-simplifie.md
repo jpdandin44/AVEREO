@@ -5,7 +5,7 @@ title: Simplifier l’invitation et la première connexion
 status: active
 version: git
 created: 2026-11-03
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [connect, invitation, connexion, cadrage]
 ---
@@ -54,3 +54,7 @@ La protection HTTP de préproduction et les contrôles d’accès aux applicatio
 Le responsable a ensuite demandé la suppression de trois comptes de test dans Drupal et CONNECT. Ce nettoyage opérationnel est terminé, avec sauvegardes/restaurations et vérification indépendante. Il ne livre aucune nouvelle fonction produit de suppression. Recréer un compte et inviter une personne uniquement sur instruction de reprise, après correction et qualification du parcours.
 
 L’archivage et la suppression définitive dans l’interface relèvent d’un lot distinct : voir [administration des comptes](administration-comptes.md#cycle-de-vie-des-comptes--candidat-du-4-novembre).
+
+## Correctif du retour du 6 novembre
+
+Le candidat ferme les anciennes sessions CONNECT et Identité après confirmation, puis revient à la connexion avec le même mot de passe. [Diagnostic et qualification](retour-activation-connexion.md). Cette évolution locale n’est pas encore installée en préproduction.

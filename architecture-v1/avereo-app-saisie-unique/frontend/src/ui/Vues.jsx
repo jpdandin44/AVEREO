@@ -6,12 +6,46 @@ import { CHAMP, TYPES } from '../lib/modele.js';
 import { calculerDossier } from '../lib/calculs.js';
 import { calculerRatios } from '../lib/ratios.js';
 import { eur, fmtDate } from '../lib/nombres.js';
+import { nomFichierSauvegarde } from '../lib/sauvegarde.js';
 import { Champ } from './Champ.jsx';
 import { OngletsFiche, PanneauFiche } from './Fiche.jsx';
 import { PanneauDocuments } from './Documents.jsx';
 import { useActions } from './contexte.js';
 
 const libType = (t) => TYPES.find((x) => x.id === t)?.libelle || t;
+
+// Sauvegarde dans un fichier du poste (téléchargement) et import, sans aucun échange réseau.
+function Sauvegarde({ message }) {
+  const actions = useActions();
+  const fichier = useRef(null);
+  const exporter = () => {
+    const blob = new Blob([actions.exporter()], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = nomFichierSauvegarde();
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  const importer = async (e) => {
+    const f = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (f) actions.importer(await f.text());
+  };
+  return (
+    <div className="sauvegarde">
+      <div className="toolbar">
+        <button type="button" className="btn" onClick={exporter}>Exporter les dossiers</button>
+        <button type="button" className="btn" onClick={() => fichier.current?.click()}>Importer une sauvegarde…</button>
+        <input ref={fichier} type="file" accept=".json,application/json" className="sr-only" tabIndex={-1} aria-label="Fichier de sauvegarde à importer" onChange={importer} />
+      </div>
+      <p className="hint">La sauvegarde est un fichier enregistré sur ce poste. L’import ajoute ses dossiers sans remplacer ceux déjà présents.</p>
+      {message && <p className={message.type === 'erreur' ? 'alerte' : 'status ok'} role="status">{message.texte}</p>}
+    </div>
+  );
+}
 
 export function ListeDossiers({ donnees, ui }) {
   const actions = useActions();
@@ -38,6 +72,7 @@ export function ListeDossiers({ donnees, ui }) {
         <button type="submit" className="btn btn-primary">Créer le dossier</button>
         {!aExemple && <button type="button" className="btn" onClick={() => actions.creerExemple()}>Ajouter le dossier d’exemple</button>}
       </form>
+      <Sauvegarde message={ui.messageSauvegarde} />
       <div className="filtre">
         <label className="lbl" htmlFor="filtre-statut">Filtrer par statut</label>
         <select id="filtre-statut" value={ui.filtreStatut} onChange={(e) => actions.setFiltreStatut(e.target.value)}>
@@ -210,7 +245,7 @@ export function VueParametres({ donnees }) {
       </fieldset>
       <fieldset>
         <legend>Données</legend>
-        <p>Les dossiers sont enregistrés dans ce navigateur seulement (stockage local), sur ce poste. Rien n’est envoyé sur le réseau. Vider les données du navigateur efface les dossiers.</p>
+        <p>Les dossiers sont enregistrés dans ce navigateur seulement (stockage local), sur ce poste. Rien n’est envoyé sur le réseau. Vider les données du navigateur efface les dossiers : exportez-les régulièrement depuis la liste des dossiers (« Exporter les dossiers »).</p>
       </fieldset>
     </section>
   );

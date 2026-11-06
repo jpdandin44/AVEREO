@@ -162,12 +162,22 @@ final class Application
                 );
             }
             $targetUserId = $this->activationCompletion->verify($request->query);
+            if ($this->identityLogout === null) {
+                throw new ApiException(
+                    503,
+                    'IDENTITY_LOGOUT_NOT_CONFIGURED',
+                    'Le retour vers la connexion AVEREO n’est pas encore configuré.',
+                );
+            }
+            $redirectUrl = $this->identityLogout->issue();
             $complete = fn()=>$this->repository->completeAccountActivation($targetUserId, $request->requestId);
             if ($this->accountAdministration !== null) $this->accountAdministration->synchronize($targetUserId,$complete);
             elseif (method_exists($this->repository,'isExplicitAccount') && $this->repository->isExplicitAccount($targetUserId)) {
                 throw new ApiException(503,'ACCOUNT_ADMIN_NOT_CONFIGURED','La gestion des accès doit être configurée.');
             } else $complete();
-            return Response::redirect('/?activation=completed', $request->requestId);
+            // Activation proves the target account, not the identity already in this browser.
+            $logout();
+            return Response::redirect($redirectUrl, $request->requestId);
         }
 
         $this->requireAuthenticated($auth);

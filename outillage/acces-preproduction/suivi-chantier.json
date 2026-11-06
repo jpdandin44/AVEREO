@@ -2699,5 +2699,9 @@
       "humanChecklistChecked": 4,
       "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#pullRequests/84"
     }
+  },
+  "connectActivationReturn20261106": {
+    "iterationId": "connect-retour-activation-20261106",
+    "canonicalSource": "../../architecture-v1/avereo-app-connect/data/suivi-retour-activation.json"
   }
 }

@@ -157,3 +157,7 @@ restent obligatoires. Voir `docs/deployment.md` et
 ### Comptes non propriétaires
 
 Le [candidat d’alignement](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local) étend le parcours d’administration aux droits hérités et précise le traitement de l’identité et des dossiers.
+
+## Retour à la connexion après activation — candidat local
+
+La confirmation ferme la session précédente puis revient à la connexion AVEREO. Le même mot de passe reste géré par Drupal. [Diagnostic, tests et livraison](docs/retour-activation-connexion.md).

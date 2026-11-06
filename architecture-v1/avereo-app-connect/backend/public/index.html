@@ -1120,7 +1120,7 @@
             OAUTH_ID_TOKEN_INVALID: 'L’identité AVEREO n’a pas pu être validée. Recommencez la connexion.'
           };
           statusNode.textContent = query.get('logout') === '1'
-            ? 'Vous êtes déconnecté. Vous pouvez maintenant utiliser un autre compte.'
+            ? 'Connectez-vous avec votre adresse e-mail et votre mot de passe AVEREO.'
             : (authenticationErrors[query.get('auth_error')] || 'Session anonyme.');
           return;
         }
@@ -1133,8 +1133,8 @@
             'Identité AVEREO authentifiée · compte CONNECT non approuvé.'
           ],
           activation_required: [
-            'Votre compte est approuvé. Définissez maintenant votre mot de passe avec le lien reçu par e-mail.',
-            'Compte CONNECT approuvé · initialisation du mot de passe obligatoire. Besoin d’aide : contact@avereo.fr.'
+            'Terminez l’activation avec le lien reçu par e-mail. Si vous avez déjà défini votre mot de passe, déconnectez-vous puis reconnectez-vous avec votre adresse e-mail.',
+            'Compte CONNECT approuvé · activation à terminer. Besoin d’aide : contact@avereo.fr.'
           ],
           rejected: [
             'Votre demande d’accès CONNECT a été refusée. Contactez contact@avereo.fr.',

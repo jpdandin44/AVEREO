@@ -15,7 +15,7 @@ tags:
 
 # Architecture du planning Projet
 
-## Interface simple — architecture du candidat local
+## Interface simple — architecture livrée en préproduction
 
 Les résultats réutilisent `checklist[]` : `expected` est le texte à cocher, `completed` sa réalisation et `validated/evidence/validatedBy/validatedAt` sa vérification distincte. Une entrée existante reste une entrée : pas de migration, découpage automatique ni changement de schéma. Les nouveaux résultats reçoivent un ID stable.
 

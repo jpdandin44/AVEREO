@@ -95,3 +95,7 @@ Candidat local pour les comptes non propriétaires avec Rapport, RGA et Passepor
 ## 2026-11-04 — Recréation d’un compte avec identité existante
 
 Le candidat local ajoute le rattachement explicite d’une identité historique, l’affichage immédiat du compte créé et l’option d’invitation après création.
+
+## 2026-11-06 — Retour à la connexion après activation
+
+Le candidat ferme l’ancienne session après confirmation et rejoint la connexion via le pont signé existant. Les messages expliquent la connexion avec le mot de passe déjà défini. [Qualification](docs/retour-activation-connexion.md).

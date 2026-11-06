@@ -270,3 +270,7 @@ Les contrôles des comptes historiques sont exercés par le moteur CONNECT et le
 ## 2026-11-04 — Séparer création, rattachement et envoi
 
 Le portail appelle toujours deux opérations distinctes. Le pont de provisionnement traite le rattachement signé sans modifier l’identité et renvoie son sujet natif. Le moteur CONNECT inscrit un nouveau compte en attente d’activation et refuse les anciennes sessions. [Procédure](administration-comptes.md#recréer-un-compte-dont-lidentité-avereo-existe).
+
+## 2026-11-06 — Session conservée après activation
+
+Écart ciblé du portail PHP : fermeture de session après confirmation réussie et messages de reconnexion. Frontend historique et module Drupal inchangés. [Diagnostic, données et preuves](retour-activation-connexion.md).

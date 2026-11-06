@@ -14,6 +14,11 @@ tags:
 
 # Changelog de Projet
 
+## 2026-11-06 — Interface simple livrée en préproduction
+
+Version fusionnée de #114 installée après accord explicite, sauvegarde et restauration sur copie. Paquet identique au candidat vérifié, 16 fichiers conformes, 74 contrôles HTTP synthétiques et deux projets relus ; huit JSON privés inchangés. Réserve de positionnement du menu à largeur intermédiaire consignée pour correction. Aucune production.
+
+
 ## 2026-11-06 — Correction du menu Projet et fichiers
 
 Le menu reste maintenant au-dessus des barres et du tableau du planning. Les couches internes du Gantt sont isolées dans leur zone ; les fiches de tâche conservent leur priorité. Correction visuelle contrôlée sur ordinateur et mobile, sans changement des données.
