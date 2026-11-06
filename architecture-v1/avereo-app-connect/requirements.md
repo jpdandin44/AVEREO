@@ -5,7 +5,7 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
@@ -80,3 +80,7 @@ Les droits hérités et le rôle administrateur d’un compte non propriétaire 
 ## Création visible et invitation facultative
 
 La création confirmée est visible immédiatement dans l’administration. L’envoi d’invitation est une décision distincte. Un échec d’envoi ne remet pas en cause la création. Le propriétaire peut confirmer un rattachement à une identité conservée sous les conditions du [parcours de recréation](docs/administration-comptes.md#recréer-un-compte-dont-lidentité-avereo-existe).
+
+## Première connexion après activation
+
+Une confirmation réussie doit ramener à la connexion avec le mot de passe AVEREO existant, même si une autre session est ouverte. Aucun mot de passe Drupal ne doit être dupliqué dans CONNECT. [Critères et contrôles](docs/retour-activation-connexion.md).

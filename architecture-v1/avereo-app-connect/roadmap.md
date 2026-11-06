@@ -5,7 +5,7 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
@@ -86,3 +86,7 @@ pas une preuve de version ou de parcours de cette nouvelle application.
 ## Alignement des comptes non propriétaires
 
 Qualifier le candidat local en préproduction avec des profils hérités et explicites, puis étendre la révocation aux applications qui ne lisent pas encore la politique. Traiter séparément les comptes rattachés à plusieurs organisations et la gestion des dossiers hors Rapport. [Parcours et périmètre](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).
+
+## Retour d’activation — 6 novembre
+
+Correctif local testé et prêt à revue. Suite : validation humaine de la PR, installation autorisée des deux fichiers en préproduction et recette fictive du parcours. [Suivi canonique](data/suivi-retour-activation.json).
