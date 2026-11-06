@@ -373,3 +373,9 @@ vérifie son type JavaScript, son contenu et les refus sans session ou sous ferm
 ## 2026-11-06 — Projets et préférences propres
 
 Mes projets reprend la liste native des biens. Les préférences de ce navigateur règlent le tri par adresse et l’affichage de la composition ; les biens et documents conservent leur stockage existant. Mon compte et Mes applications ouvrent CONNECT. Candidat local PR #121 ; installation hébergée distincte.
+
+## 2026-11-06 — Présentation AVEREO des livrables, locale
+
+Nom et logo raccordés à la source commune ; contenus métier et stockages conservés.
+Informations légales et configuration par organisation encore à compléter.
+[Qualification et limites](../avereo-platform/docs/identite-livrables.md). Aucun déploiement de ce candidat.

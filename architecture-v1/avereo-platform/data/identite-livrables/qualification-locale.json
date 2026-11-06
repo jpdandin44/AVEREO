@@ -1,0 +1,54 @@
+{
+  "observedAt": "2026-11-06T22:37:49.211897+00:00",
+  "environment": "local",
+  "sourceBase": "4f61b77c320716f4966d12d041034356e9ae9c42",
+  "codeSha256Lf": {
+    "architecture-v1/avereo-app-drone/frontend/src/App.tsx": "d078dace2ab8f94fa07b445dc61f6d54692432eda3b210e8d66b23756bc05607",
+    "architecture-v1/avereo-app-passeport-immo/frontend/src/App.jsx": "9d9dbf019122bcf7c09cde731b095b560067f208fe23f8e5fbfdfb17a1e707af",
+    "architecture-v1/avereo-app-passeport-immo/tests/check-parity.mjs": "bd095c50c9cfe832704abc2efe9c7e93754876662cd498f02103027edd2076ae",
+    "architecture-v1/avereo-app-rapport/frontend/src/reportDelivery.js": "14a07fd1b4aa5806f3b0a154535891f87089eb9f09a5ae2f4b915599a66bd1eb",
+    "architecture-v1/avereo-app-rapport/frontend/src/reportDocx.js": "874d17863bcb9b4bc0d8fbec0935b446dafeb2d812ef6ea3d150140e04c6d6b3",
+    "architecture-v1/avereo-app-rapport/frontend/src/reportVisuals.js": "13e73ac8b359e6c9b51cf3c73e3178e5f5bb2d8a8fdd9d23401c95635a5eafe2",
+    "architecture-v1/avereo-app-thermo/frontend/src/App.jsx": "05753233fd9869c1abc6d74e66ef20c32a4b358ce20e63dc8b7fe6e5fa8f8417",
+    "architecture-v1/avereo-platform/shared/report-identity.js": "19b57254bb07629589b629fbb4b53fecb28024dbc6517de0268c1b700377390b"
+  },
+  "logoOriginalPngSha256": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+  "builds": {
+    "rapport": "passed_with_bundle_size_warning",
+    "thermo": "passed_with_bundle_size_warning",
+    "drone": "passed_with_bundle_size_warning",
+    "passeport-immo": "passed_with_bundle_size_warning"
+  },
+  "tests": {
+    "rapport": 101,
+    "passeportPdfPagination": 4,
+    "passeportParity": "passed",
+    "passeportParityNegativeWitness": "passed",
+    "repositoryBaseline": "passed"
+  },
+  "visuals": {
+    "rapportHtmlAppPreview": "passed",
+    "passeportPdfRealDownload": "passed_one_a4_page",
+    "thermoGeneratorHtmlFixture": "passed",
+    "dronePrintComponentHtmlFixture": "passed"
+  },
+  "pending": [
+    "legal_company_reference",
+    "organization_admin_configuration_service",
+    "native_word_pagination",
+    "drone_full_print_flow_after_browser_dialog_timeout",
+    "hosted_qualification"
+  ],
+  "filesDirectory": "C:\\Users\\examg\\Documents local\\livraisons-avereo\\identite-avereo",
+  "filesSha256": {
+    "devis-fictif-avereo.pdf": "83bb8020c307832cc1593b355f58607681e1bac4aae38c6e60a1877839e38c66",
+    "devis-page-1.png": "e3ce52a6dbc7da13335d7a92ab0f1a2a431835172b085c29a54150e00d8ef20c",
+    "drone-fictif-avereo.html": "9a48c70b37284c01ec923f5570c59be3468928dcb79e990bfd1fcbc92789a37f",
+    "drone-modele-avereo.png": "fe821b27f3772f48d674b9b1a8bbc4a40e4b87ffa735832981223f87e030321d",
+    "rapport-apercu-avereo.png": "788fc0eb26d26404e4db05fdc96f5b1706412866932d411cedc509b53ab4ea1d",
+    "thermo-fictif-avereo.html": "f1e8044918b6806606beb34e19374adb27fa170fa3171760b66983d29170da43",
+    "thermo-modele-avereo.png": "8d2aa4e9518247a9239055530b369a005d2b87a2aaeeaf1b0ec77bbcf8704ea3"
+  },
+  "realDataChanged": false,
+  "deployed": false
+}

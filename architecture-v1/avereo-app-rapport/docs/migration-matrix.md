@@ -153,3 +153,9 @@ risques reste a definir.
 ## 6 novembre 2026 — Navigation de compte
 
 Mon espace remplace le bouton de déconnexion de l’en-tête ; le gestionnaire de sauvegarde est conservé. RGA garde son isolation et son cookie propre. [Règle et qualification](../../avereo-platform/docs/fonctionnalites-communes.md).
+
+## 2026-11-06 — Identité des restitutions
+
+Le PNG AVEREO est déplacé sans modification vers le socle partagé. Aucun changement
+du schéma JSON, de la base ou des archives ; seuls les nouveaux exports utilisent
+la source commune. [Contrat](../../avereo-platform/docs/identite-livrables.md).

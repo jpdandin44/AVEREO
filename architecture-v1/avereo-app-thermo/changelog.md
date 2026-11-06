@@ -19,3 +19,9 @@ Candidat local : intégration Mon espace et socle documentaire complété depuis
 ## 2026-11-06 — Projets et préférences propres
 
 Mes projets conserve plusieurs rapports dans IndexedDB, en plus du brouillon historique. La sauvegarde et le retour à la liste préservent les données complètes ; un échec garde le rapport ouvert. Les préférences règlent le tri et le nom des étapes. Ces données sont locales au navigateur, sans synchronisation en ligne. Candidat local PR #121 ; installation hébergée distincte.
+
+## 2026-11-06 — Présentation AVEREO des livrables, locale
+
+Nom et logo raccordés à la source commune ; contenus métier et stockages conservés.
+Informations légales et configuration par organisation encore à compléter.
+[Qualification et limites](../avereo-platform/docs/identite-livrables.md). Aucun déploiement de ce candidat.

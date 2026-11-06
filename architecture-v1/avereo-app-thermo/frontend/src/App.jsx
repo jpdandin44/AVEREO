@@ -1,3 +1,4 @@
+import { AVEREO_NAME, AVEREO_LOGO } from '../../../avereo-platform/shared/report-identity.js';
 import { thermoProjects } from './thermo-projects.js';
 import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
@@ -709,6 +710,7 @@ const buildWordDocumentHtml = (report) => {
     </style></head>
     <body>
         <div class="WordSection1">
+            <p><img src="${AVEREO_LOGO}" alt="${escapeHtml(AVEREO_NAME)}" width="210" style="width:210px; height:auto;" /></p>
             <div style="border: 2px solid #ea580c; background-color: #fff7ed; padding: 15pt; margin-bottom: 30pt; page-break-inside: avoid;">
                 <h3 style="color: #ea580c; font-size: 11pt; margin-top:0; text-transform: uppercase;">Mention Légale et Limites de Mission</h3>
                 <p style="font-weight: bold; font-size: 10.5pt; text-align: center; color: #ea580c;">DOCUMENT TECHNIQUE NON OPPOSABLE</p>
@@ -780,7 +782,7 @@ const buildWordDocumentHtml = (report) => {
             <p class='MsoHeader'>
                 <table style='width:100%; border:none; border-collapse:collapse;'>
                     <tr>
-                        <td style='border:none; font-size:12pt; font-weight:bold; color:#333;'>AVEREO</td>
+                        <td style='border:none; font-size:12pt; font-weight:bold; color:#333;'>${escapeHtml(AVEREO_NAME)}</td>
                         <td style='border:none; text-align:right; font-size:9pt; color:#555;'>Rapport d'expertise Thermographique</td>
                     </tr>
                 </table>
@@ -794,7 +796,7 @@ const buildWordDocumentHtml = (report) => {
                 <table style='width:100%; font-size:8pt; color:#6b7280; border:none; border-collapse:collapse;'>
                     <tr>
                         <td style='border:none; text-align:left; font-weight:bold; color:#ea580c;'>DOC. NON OPPOSABLE</td>
-                        <td style='border:none; text-align:center;'>Réf: ${escapeHtml(report.reference_dossier)}</td>
+                        <td style='border:none; text-align:center;'>${escapeHtml(AVEREO_NAME)} · Réf: ${escapeHtml(report.reference_dossier)}</td>
                         <td style='border:none; text-align:right;'>Page <span style='mso-field-code:"PAGE"'></span> sur <span style='mso-field-code:"NUMPAGES"'></span></td>
                     </tr>
                 </table>

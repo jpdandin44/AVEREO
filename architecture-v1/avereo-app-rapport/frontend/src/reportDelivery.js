@@ -1,6 +1,7 @@
 import { buildExpertDocumentHtml, escapeHtml, textToHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml } from './reportHtml.js';
 import { observationPlanNames } from './observationPlans.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
+import { AVEREO_NAME } from '../../../avereo-platform/shared/report-identity.js';
 import { buildDecisionHtml } from './decisionSupport.js';
 
 export function deliveryOptions(report) {
@@ -32,7 +33,7 @@ function illustration(image, client = false) {
 
 function cover(report, client) {
   return `<section class="cover">
-    <img class="brand-logo" src="${AVEREO_LOGO}" alt="AVEREO" />
+    <img class="brand-logo" src="${AVEREO_LOGO}" alt="${escapeHtml(AVEREO_NAME)}" />
     <p class="eyebrow">HABITAT · COMPRENDRE · DÉCIDER</p>
     <h1>${client ? 'Votre habitat, l’essentiel' : 'Rapport expert détaillé'}</h1>
     <h2>${escapeHtml(report.titre)}</h2>
@@ -104,5 +105,5 @@ export function buildReportHtml(report) {
       <h3>Limites et points à confirmer</h3><p>${textToHtml(options.limites_client || report.reserves)}</p>
       <p class="status">Cette synthèse accompagne le rapport expert. Elle ne remplace pas les vérifications techniques nécessaires.</p></section>`;
   }
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8" /><title>${escapeHtml(report.titre)} — ${client ? 'Synthèse client' : 'Rapport expert'}</title><style>${style}</style></head><body>${content}<p class="report-footer">AVEREO · ${escapeHtml(report.reference_dossier)} · Document de travail</p></body></html>`;
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8" /><title>${escapeHtml(report.titre)} — ${client ? 'Synthèse client' : 'Rapport expert'}</title><style>${style}</style></head><body>${content}<p class="report-footer">${escapeHtml(AVEREO_NAME)} · ${escapeHtml(report.reference_dossier)} · Document de travail</p></body></html>`;
 }

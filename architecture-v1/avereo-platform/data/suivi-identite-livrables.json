@@ -1,0 +1,86 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "identite-livrables-20261106",
+  "project": "avereo-platform",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "development",
+  "status": "local_candidate_with_reservations",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "objective": "Présenter les livrables au nom AVEREO puis permettre leur configuration par le seul administrateur de chaque organisation.",
+  "scope": [
+    "rapport",
+    "thermo",
+    "drone",
+    "passeport-immo"
+  ],
+  "candidate": {
+    "scope": "Nom et logo AVEREO communs dans les exports existants",
+    "sourceBase": "4f61b77c320716f4966d12d041034356e9ae9c42",
+    "manifest": "identite-livrables/qualification-locale.json",
+    "artifact": null
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/livrables-identite-avereo-20261106",
+    "base": "docs/rga-livraison-pr122-20261106",
+    "prUrl": null,
+    "merged": false,
+    "dependsOnPr": "https://github.com/jpdandin44/AVEREO/pull/123"
+  },
+  "checks": [
+    {
+      "id": "builds-and-regressions",
+      "status": "passed",
+      "environment": "local",
+      "evidence": "identite-livrables/qualification-locale.json"
+    },
+    {
+      "id": "browser-full-export-flows",
+      "status": "partial",
+      "environment": "local",
+      "evidence": "../docs/identite-livrables.md"
+    }
+  ],
+  "approvals": [],
+  "deployment": null,
+  "production": null,
+  "requirements": [
+    {
+      "id": "avereo-first",
+      "status": "implemented_locally_name_logo_only"
+    },
+    {
+      "id": "company-legal-identity",
+      "status": "awaiting_user_reference"
+    },
+    {
+      "id": "organization-admin-only",
+      "status": "specified_not_implemented",
+      "authorization": "Reuse active CONNECT organization membership owner/admin; server-controlled writes; deny members and cross-organization requests"
+    },
+    {
+      "id": "application-specific-output-preferences",
+      "status": "specified_not_implemented"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "legal-reference",
+      "impact": "Coordonnées et mentions d’entreprise non renseignées",
+      "nextAction": "Obtenir la fiche validée demandée au responsable"
+    },
+    {
+      "id": "browser-print-recipe",
+      "impact": "Parcours complet Thermo/Drone et pagination Word non qualifiés",
+      "nextAction": "Reprendre après fermeture de la confirmation d’impression du navigateur"
+    }
+  ],
+  "nextAction": "Confirmer les mentions AVEREO, terminer les recettes Word/impression puis préparer une livraison de préproduction distincte. Implémenter ensuite le service de réglages par organisation avec contrôle administrateur."
+}

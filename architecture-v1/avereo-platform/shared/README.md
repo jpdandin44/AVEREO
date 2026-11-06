@@ -22,3 +22,9 @@ Espace reserve aux standards partages AVEREO. Aucun code applicatif vivant en V1
 ## Menu de compte
 
 `account-menu.js` est la source commune vivante du menu. Ses copies publiques sont générées et contrôlées. [Règle](../docs/fonctionnalites-communes.md).
+
+## Identité des restitutions
+
+`report-identity.js` fournit le nom AVEREO et le logo officiel embarqué aux quatre
+générateurs existants. Aucune configuration par utilisateur n’y est enregistrée.
+[Contrat d’organisation et portée locale](../docs/identite-livrables.md).

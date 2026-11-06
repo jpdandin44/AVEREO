@@ -44,3 +44,9 @@ Nouveau paquet de 40 fichiers comparé aux sept cibles et restauré sur copies p
 sept configurations et treize fichiers de planning Projet préservés. Quatre contrôles
 techniques GitHub réussis, validation humaine encore attendue. La préparation #119
 reste attachée à son ancien candidat de 37 fichiers.
+
+## 2026-11-06 — Identité des livrables préparée localement
+
+Nom et logo officiel mutualisés dans quatre applications ; modèle de configuration
+réservée à l’administrateur d’organisation documenté. Les informations légales
+restent à confirmer. Aucun déploiement. [Détail](docs/identite-livrables.md).

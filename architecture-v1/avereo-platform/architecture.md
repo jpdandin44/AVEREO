@@ -25,3 +25,11 @@ Le Web Component `shared/account-menu.js` porte la présentation isolée et les 
 ## Préférences applicatives
 
 Le composant commun rend un formulaire défini par chaque application, valide les valeurs lues et les conserve dans une clé localStorage distincte. Les adaptateurs appliquent uniquement leurs réglages. Les listes et leurs données restent dans les applications : aucune API transversale de projets n’est créée. [Matrice et contrat de stockage](docs/fonctionnalites-communes.md).
+
+## Identité AVEREO des restitutions — candidat local
+
+`shared/report-identity.js` fournit le nom et le PNG déjà validé dans Rapport.
+Rapport, Thermo, Drone et Passeport l’importent au build pour leurs exports existants.
+Il s’agit d’une identité fixe sans API ni stockage de réglages. Le futur service
+d’identité par organisation doit s’appuyer sur les organisations et habilitations
+CONNECT existantes ; il n’est pas fourni par ce candidat. [Contrat](docs/identite-livrables.md).

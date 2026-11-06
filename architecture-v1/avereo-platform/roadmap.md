@@ -22,3 +22,9 @@ tags: [avereo, acces, documentation]
 ## Itération Mon espace
 
 PR #119 fusionnée ; sa préparation de 37 fichiers est conservée comme historique. PR #121 fusionnée et déployée sur les sept cibles : 40 fichiers vérifiés, conservation des configurations et des plannings prouvée. La [recette hébergée](docs/livraison-mon-espace.md) lève la réserve RGA après livraison PR #122. L’accès aux projets en ligne de Coupe reste à cadrer séparément. Recherche nécessite sa première cible ; Saisie unique reste autonome. [Suivi unique](data/suivi-fonctions-communes.json). Revue, préproduction autorisée puis production constituent des étapes distinctes.
+
+## Identité des livrables
+
+Première présentation AVEREO préparée localement dans quatre exports. Fiche légale,
+recette Word/impression et livraison restent à terminer. La configuration par
+administrateur d’organisation constitue la suite demandée. [Suivi canonique](data/suivi-identite-livrables.json).
