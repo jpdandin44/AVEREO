@@ -70,29 +70,49 @@
     {
       "id": "node-build-release",
       "status": "passed",
-      "evidence": "188 tests Node, build Vite, 20 fichiers de livraison vérifiés le 2026-11-06."
+      "evidence": "188 tests Node, build Vite, 20 fichiers de livraison vérifiés le 2026-11-06.",
+      "kind": "local",
+      "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+      "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+      "observedAt": "2026-11-06T07:29:57.225999+00:00"
     },
     {
       "id": "php-http-local",
       "status": "passed",
-      "evidence": "65 contrôles HTTP sur identités et données fictives."
+      "evidence": "65 contrôles HTTP sur identités et données fictives.",
+      "kind": "local",
+      "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+      "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+      "observedAt": "2026-11-06T07:29:57.225999+00:00"
     },
     {
       "id": "browser-local",
       "status": "passed",
-      "evidence": "docs/source-audit.md ; copie locale, aucun changement serveur."
+      "evidence": "docs/source-audit.md ; copie locale, aucun changement serveur.",
+      "kind": "local",
+      "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+      "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+      "observedAt": "2026-11-06T07:29:57.225999+00:00"
     },
     {
       "id": "documentation",
       "status": "passed",
-      "evidence": "Socle présent, métadonnées et liens de 12 Markdown modifiés vérifiés ; contrôleur protocole : 32 Markdown, 95 liens, zéro erreur."
+      "evidence": "Socle présent, métadonnées et liens de 12 Markdown modifiés vérifiés ; contrôleur protocole : 32 Markdown, 95 liens, zéro erreur.",
+      "kind": "documentation",
+      "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
+      "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+      "observedAt": "2026-11-06T07:29:57.225999+00:00"
     },
     {
       "id": "github-ci",
       "status": "passed",
-      "sourceSha": "ba15435cda056910f21168efc3a2c60ffd531da9",
+      "sourceSha": "79182dfc7474446f9bf7e52c83e005f28e325c30",
       "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42181012027",
-      "result": "8 jobs techniques réussis ; contenu applicatif identique au candidat 79182df. Policy en attente des quatre cases humaines."
+      "result": "8 jobs techniques réussis ; contenu applicatif identique au candidat 79182df. Policy en attente des quatre cases humaines.",
+      "checkedCommitSha": "ba15435cda056910f21168efc3a2c60ffd531da9",
+      "kind": "ci",
+      "artifactSha256": "ba20ba99e8d01d3ef1b975b3f1b5a682b2453e12aabf63fb70fabbe7c916b6e9",
+      "observedAt": "2026-11-06T07:29:57.225999+00:00"
     }
   ],
   "approvals": [],
@@ -113,5 +133,5 @@
     "Largeurs mémorisées par navigateur ; filtres en mémoire.",
     "Responsable indécis sur un nouvel ordre ; ordre et dates conservés, priorité emploi rendue visible sans réordonnancement."
   ],
-  "observedAt": "2026-11-06T07:27:35.669321+00:00"
+  "observedAt": "2026-11-06T07:29:57.225999+00:00"
 }
