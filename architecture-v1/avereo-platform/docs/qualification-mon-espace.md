@@ -45,8 +45,10 @@ les mécanismes réels. Aucune donnée de compte ni de projet hébergée n’est
 ## Portée des changements
 
 Le menu est partagé ; l’identité, les habilitations et les données restent gérées
-par chaque application et CONNECT. Les index PHP ajoutent seulement l’URL publique
-du portail à la page déjà autorisée. RGA reçoit une route de sortie qui expire son
+par chaque application et CONNECT. Les index PHP ajoutent l’URL publique
+du portail à la page déjà autorisée. Passeport Immo sert aussi le chemin exact
+`/account-menu.js` par son contrôleur protégé, comme ses assets compilés ; aucune
+autre ressource racine n’est autorisée. RGA reçoit une route de sortie qui expire son
 cookie propre avant le retour au portail. Les confirmations et les gestionnaires
 de déconnexion existants restent raccordés, notamment la sauvegarde de Rapport.
 
@@ -82,7 +84,7 @@ nouvelle règle de droit. Il doit être inclus dans la comparaison du candidat �
 | Projet | 196 tests ; 74 contrôles HTTP |
 | Rapport et RGA | 98 tests Rapport ; 20 contrôles HTTP RGA |
 | Recherche | 23 tests ; 25 contrôles de période/révocation du sas |
-| Passeport Immo | 29 tests réussis après adaptation des seuls libellés de navigation |
+| Passeport Immo | 29 tests ; 74 contrôles HTTP Apache ; 30 stockage API, 22 sauvegardes et 35 transferts fictifs |
 | Saisie unique | 36 tests métier/configuration réussis |
 | CONNECT PHP | 38 tests réussis sur ce lot indépendant du correctif d’activation |
 | Documentation | Socle des applications et liens locaux vérifiés ; preuves historiques Passeport conservées |

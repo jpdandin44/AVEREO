@@ -12,7 +12,8 @@ if (!in_array($method, ['GET', 'HEAD'], true)) {
     exit;
 }
 $path = rawurldecode((string) parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH));
-$asset = str_starts_with($path, '/assets/');
+$commonMenu = $path === '/account-menu.js';
+$asset = $commonMenu || str_starts_with($path, '/assets/');
 $valid = avereo_gate_cookie_is_valid($config);
 if ($valid && (!empty($config['storage_enabled']) || !empty($config['connect_trial_access_file']))) {
     try { passeport_session($config); } catch (Throwable) { $valid = false; }
@@ -25,17 +26,17 @@ if (!$valid) {
     avereo_gate_redirect_to_connect($config);
 }
 if ($asset) {
-    // Serve only built browser assets, never PHP, source maps or paths outside assets.
+    // Serve built browser assets and the exact shared-menu path through the same gate.
     $types = ['css' => 'text/css', 'js' => 'text/javascript', 'mjs' => 'text/javascript'];
-    $base = realpath(__DIR__ . '/assets');
+    $base = realpath(__DIR__ . ($commonMenu ? '' : '/assets'));
     $file = realpath(__DIR__ . $path);
-    if (!preg_match('#^/assets/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(css|js|mjs)$#D', $path, $match)
+    if ((!$commonMenu && !preg_match('#^/assets/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(css|js|mjs)$#D', $path, $match))
         || $base === false || $file === false || !is_file($file)
         || !str_starts_with($file, $base . DIRECTORY_SEPARATOR)) {
         http_response_code(404);
         exit;
     }
-    header('Content-Type: ' . $types[$match[1]] . '; charset=utf-8');
+    header('Content-Type: ' . $types[$commonMenu ? 'js' : $match[1]] . '; charset=utf-8');
     header('X-Content-Type-Options: nosniff');
     header('Content-Length: ' . filesize($file));
     if ($method !== 'HEAD') {
