@@ -14,10 +14,10 @@ tags:
 
 # Changelog de Projet
 
-## 2026-11-05 — Import privé réalisé et menu de compte préparé
+## 2026-11-05 — Import privé réalisé et menu de compte livré en préproduction
 
 - Import d’un projet indépendant autorisé ; rechargement et égalité du contenu vérifiés, document courant inchangé.
-- Candidat local : déconnexion déplacée du bouton flottant vers le menu Mon espace, fermeture clavier/extérieure et accès aux rubriques du compte.
+- Menu installé en préproduction après accord : déconnexion déplacée du bouton flottant vers Mon espace, fermeture clavier/extérieure et accès aux rubriques du compte. Les deux projets et tous les JSON privés restent identiques après recette.
 - [Suivi import](data/suivi-import-prive.json) et [suivi menu](data/suivi-menu-compte.json) distincts.
 
 

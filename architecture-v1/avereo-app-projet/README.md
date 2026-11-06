@@ -15,9 +15,9 @@ tags:
 
 # Projet AVEREO
 
-## Menu de compte — candidat du 5 novembre 2026
+## Menu de compte — préproduction du 5 novembre 2026
 
-Le bouton de déconnexion flottant est supprimé de la page qui encadre le Gantt. **Mon espace**, en bas à gauche, ouvre désormais un menu vers les projets, les préférences, le compte et la déconnexion. Candidat local, sans livraison hébergée à ce stade : [suivi](data/suivi-menu-compte.json).
+Le bouton de déconnexion flottant est supprimé de la page qui encadre le Gantt. **Mon espace**, en bas à gauche, ouvre désormais un menu vers les projets, les préférences, le compte et la déconnexion. Installé et vérifié en préproduction après accord du responsable ; les deux projets restent inchangés. PR #110 fusionnée ; recette technique hébergée réalisée, validation humaine sur la préproduction à confirmer : [suivi](data/suivi-menu-compte.json).
 
 L’import privé autorisé est terminé : nouveau dossier relu après rechargement, contenu complet identique et planning courant conservé. [Preuves du lot d’import](data/suivi-import-prive.json).
 

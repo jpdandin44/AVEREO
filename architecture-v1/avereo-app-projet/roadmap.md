@@ -16,7 +16,7 @@ tags:
 
 ## Menu de compte et import privé
 
-Import indépendant effectué et vérifié en préproduction : [suivi](data/suivi-import-prive.json). La correction du bouton flottant suit les quatre phases dans le [suivi du menu](data/suivi-menu-compte.json) : candidat local prêt, revue puis livraison autorisée à organiser, aucune production engagée.
+Import indépendant effectué et vérifié en préproduction : [suivi](data/suivi-import-prive.json). La correction du bouton flottant suit les quatre phases dans le [suivi du menu](data/suivi-menu-compte.json) : candidat installé et vérifié en préproduction, PR #110 fusionnée et recette technique hébergée réalisée, validation humaine sur la préproduction à confirmer, aucune production engagée.
 
 
 ## Itération préparée — import privé

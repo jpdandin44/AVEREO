@@ -15,7 +15,13 @@ tags:
 
 # Audit et recette du planning Projet
 
-## Menu de compte — recette locale
+## Menu de compte — recette préproduction du 5 novembre 2026
+
+Après installation autorisée des sept fichiers exacts : ouverture du menu au-dessus de Mon espace en bas à gauche, fermeture par Échap et clic extérieur, accès Préférences, puis ouverture des deux projets de 45 tâches. Le formulaire Nouvelle tâche garde Annuler et Enregistrer dégagés ; il a été annulé sans écriture. Le lien de déconnexion quitte Projet et ouvre CONNECT, dont la session d'identité reste active ; le retour à Projet fonctionne. Cela ne constitue pas une déconnexion globale de CONNECT.
+
+Toutes les empreintes JSON privées restent identiques après ces parcours, comme les quatre fichiers protégés du sas après installation. L'entrée anonyme renvoie 303 vers CONNECT ; trois assets HTTPS répondent 200 avec les empreintes du candidat. Preuves dans le [suivi canonique](../data/suivi-menu-compte.json). Recette visuelle effectuée dans le navigateur intégré sur bureau ; validation dans le navigateur habituel du responsable encore ouverte.
+
+### Preuves locales antérieures
 
 182 tests Node, build, contrôle des 20 fichiers de livraison, syntaxe PHP et baseline réussis. Dans le navigateur local : menu au-dessus de Mon espace, fermeture Échap et clic extérieur, accès Préférences, formulaire de tâche avec bouton Enregistrer dégagé. La navigation vers la déconnexion réelle n’est pas exécutée lors de cette recette ; son lien `_top` conserve la route existante. Le serveur statique local ne fournit pas l’API privée ; ses messages réseau ne sont pas une preuve de panne hébergée.
 
