@@ -1,0 +1,20 @@
+{
+  "name": "avereo-uni",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AVEREO UNI : saisie unique des données d'un dossier de rénovation, qui pré-remplit les documents et suit les dossiers.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test \"tests/unit/*.test.mjs\"",
+    "test:e2e": "node scripts/build.mjs && node --test \"tests/e2e/*.test.mjs\""
+  },
+  "dependencies": {
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "playwright": "1.56.0"
+  }
+}

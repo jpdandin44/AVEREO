@@ -1,0 +1,13 @@
+{
+  "note": "Modèle du fichier local valeurs-locales.json : copier ce fichier sous ce nom et y mettre les valeurs réelles du poste. Le fichier réel n'est jamais versé au dépôt.",
+  "listes": {
+    "dos_origine_contact": ["le partenaire", "Espace conseil public", "Collectivités", "Travailleur social", "Entreprise", "Médias", "Bouche à oreille", "Autre"],
+    "dos_programme": ["Programme A"],
+    "log_epci": ["Territoire A"]
+  },
+  "parametres": {
+    "org_raison_sociale": "Organisation exemple",
+    "org_siret": "",
+    "org_lieu": ""
+  }
+}
