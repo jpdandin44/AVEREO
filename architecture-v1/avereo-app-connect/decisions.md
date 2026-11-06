@@ -5,7 +5,7 @@ title: Décisions techniques CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
@@ -53,3 +53,7 @@ Les accords humains restent dans les suivis canoniques, sans copie ici.
 ## 2026-11-04 — Distinguer compte CONNECT et identité native
 
 Les comptes historiques peuvent utiliser une identité Drupal qui préexistait à CONNECT. Lors d’une suppression CONNECT, le pont préserve cette identité et ses rôles. Le contrôle UID/adresse protège la correspondance et la réponse du pont indique l’issue réelle. La confirmation distingue la conservation des dossiers Rapport et celle des données des autres applications. [Parcours et déploiement](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).
+
+## 2026-11-06 — Réutiliser la déconnexion après activation
+
+Contexte : la confirmation valide le compte ciblé mais conservait l’identité du navigateur. Décision : fermer cette session après confirmation et utiliser le pont signé existant, puis demander la connexion personnelle. Le mot de passe reste uniquement dans Drupal ; aucune modification de secrets ou de liste de retours. [Preuves et conséquences](docs/retour-activation-connexion.md).

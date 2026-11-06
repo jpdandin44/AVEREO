@@ -5,7 +5,7 @@ title: Architecture CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-04
+updated: 2026-11-06
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
@@ -63,3 +63,7 @@ CONNECT réutilise le catalogue effectif pour republier les droits d’un compte
 ## Rattachement d’une identité conservée
 
 Après décision explicite du propriétaire, CONNECT transmet au pont un rattachement signé. Le pont relit l’identité native et renvoie son sujet sans créer de doublon. CONNECT crée son propre identifiant, révoque les sessions antérieures et conserve l’activation séparée. [Procédure et protections](docs/administration-comptes.md#recréer-un-compte-dont-lidentité-avereo-existe).
+
+## Retour signé après activation
+
+Après confirmation, CONNECT détruit sa session puis réutilise le pont de déconnexion Drupal et son URL de retour déjà autorisée. Aucune identité n’est authentifiée par ce retour signé. [Flux et qualification](docs/retour-activation-connexion.md).

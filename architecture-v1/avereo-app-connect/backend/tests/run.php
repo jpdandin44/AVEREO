@@ -861,7 +861,12 @@ $tests['signed activation completion unlocks the CONNECT account'] = static func
     $repository = new FakeRepository();
     $secret = str_repeat('c', 32);
     $verifier = new IdentityAccountActivationCompletionVerifier($secret);
-    $completionApplication = new Application($config, $repository, null, null, null, $verifier);
+    $signer = new IdentityLogoutUrlSigner(
+        'https://identity.example/avereo/session/logout',
+        str_repeat('s', 32),
+        'https://connect.example/api/v1/auth/callback',
+    );
+    $completionApplication = new Application($config, $repository, null, $signer, null, $verifier);
     $issuedAt = time();
     $nonce = str_repeat('n', 32);
     $userId = 51;
@@ -889,6 +894,60 @@ $tests['signed activation completion unlocks the CONNECT account'] = static func
     );
     assertSameValue(303, $response->status, 'activation completion redirect');
     assertSameValue(51, $repository->completedActivationUserId, 'activation completed user');
+};
+
+$tests['activation completion clears an existing identity before returning to login'] = static function () use ($config): void {
+    $secret = str_repeat('c', 32);
+    $logoutSecret = str_repeat('s', 32);
+    $signer = new IdentityLogoutUrlSigner(
+        'https://identity.example/avereo/session/logout', $logoutSecret,
+        'https://connect.example/api/v1/auth/callback',
+    );
+    foreach ([AuthContext::anonymous(), new AuthContext(42, time(), 'drupal-test', true),
+        new AuthContext(null, time(), 'drupal-other-pending')] as $previousIdentity) {
+        $repository = new FakeRepository();
+        $portal = new Application($config, $repository, null, $signer, null,
+            new IdentityAccountActivationCompletionVerifier($secret));
+        $query = ['iat' => (string) time(), 'nonce' => str_repeat('n', 32), 'user_id' => '51'];
+        $query['signature'] = hash_hmac('sha256', implode("\n", $query), $secret);
+        $cleared = false;
+        $response = $portal->handle(request('GET', '/api/v1/identity/account-activation-complete', [], [], $query),
+            $previousIdentity, 'csrf-test', static function () use (&$cleared, $repository): void {
+                assertSameValue(51, $repository->completedActivationUserId, 'confirmation precedes logout');
+                $cleared = true;
+            });
+        assertSameValue(303, $response->status, 'completion redirect');
+        assertSameValue(true, $cleared, 'previous CONNECT identity cleared');
+        $location = parse_url($response->headers['Location']);
+        assertSameValue('identity.example', $location['host'] ?? null, 'identity logout host');
+        assertSameValue('/avereo/session/logout', $location['path'], 'identity logout path');
+        parse_str($location['query'], $logoutQuery);
+        assertSameValue('https://connect.example/?logout=1', $logoutQuery['return'], 'existing allowed login return');
+        assertSameValue(hash_hmac('sha256', $logoutQuery['iat'] . "\n" . $logoutQuery['nonce'] . "\n" . $logoutQuery['return'],
+            $logoutSecret), $logoutQuery['signature'], 'identity logout signature');
+    }
+};
+
+$tests['invalid activation never clears the current session or changes onboarding'] = static function () use ($config, $authenticated): void {
+    $secret = str_repeat('c', 32);
+    foreach (['tampered', 'expired', 'missing-logout'] as $scenario) {
+        $repository = new FakeRepository();
+        $signer = $scenario === 'missing-logout' ? null : new IdentityLogoutUrlSigner(
+            'https://identity.example/avereo/session/logout', str_repeat('s', 32),
+            'https://connect.example/api/v1/auth/callback');
+        $portal = new Application($config, $repository, null, $signer, null,
+            new IdentityAccountActivationCompletionVerifier($secret));
+        $query = ['iat' => (string) (time() - ($scenario === 'expired' ? 600 : 0)),
+            'nonce' => str_repeat('n', 32), 'user_id' => '51'];
+        $query['signature'] = hash_hmac('sha256', implode("\n", $query), $secret);
+        if ($scenario === 'tampered') $query['user_id'] = '52';
+        $cleared = false;
+        $response = $portal->handle(request('GET', '/api/v1/identity/account-activation-complete', [], [], $query),
+            $authenticated, 'csrf-test', static function () use (&$cleared): void { $cleared = true; });
+        assertSameValue($scenario === 'missing-logout' ? 503 : 403, $response->status, $scenario . ' refused');
+        assertSameValue(false, $cleared, $scenario . ' retains session');
+        assertSameValue(null, $repository->completedActivationUserId, $scenario . ' retains onboarding');
+    }
 };
 
 $tests['account rejection is audited'] = static function () use (
