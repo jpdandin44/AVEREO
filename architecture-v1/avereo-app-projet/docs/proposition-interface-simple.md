@@ -14,7 +14,7 @@ tags: [projet, interface, cadrage, planning]
 
 ## État après accord de poursuite
 
-Le responsable a autorisé le développement local le 6 novembre. Le candidat réalise fiche simplifiée, résultats cochables, préférences, recherche et filtres, affichage allégé et échelles Mois/Années. Le [guide](guide-utilisateur.md) décrit le comportement effectif et le [suivi](../data/suivi-interface-simple.json) porte la version et les contrôles. Aucune préproduction ni production de ce lot n’est déclarée.
+Le responsable a autorisé le développement local le 6 novembre. Le candidat réalise fiche simplifiée, résultats cochables, préférences, recherche et filtres, affichage allégé et échelles Mois/Années. Le [guide](guide-utilisateur.md) décrit le comportement effectif et le [suivi](../data/suivi-interface-simple.json) porte la version et les contrôles. La PR #114 fusionnée a ensuite été installée en préproduction sur accord explicite. Les preuves et la réserve de positionnement du menu sont dans le suivi. Aucune production de ce lot n’est déclarée.
 
 Choix de réalisation : une entrée existante de checklist reste un résultat, avec possibilité d’ajouter et modifier les résultats. Aucun nouveau schéma ni découpage automatique des textes. Le calendrier agrège les périodes réelles plutôt que de mettre en place une virtualisation journalière ; les vues longues restent bornées par le moteur existant. Durée, début et dépendances deviennent optionnels ; d’autres colonnes proposées comme responsable ne sont pas ajoutées. Les paragraphes de proposition ci-dessous conservent le cadrage initial ; ces choix et le guide décrivent le candidat effectivement réalisé.
 
