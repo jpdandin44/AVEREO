@@ -1,0 +1,32 @@
+{
+  "observedAt": "2026-11-06T16:35:53.138Z",
+  "prUrl": "https://github.com/jpdandin44/AVEREO/pull/121",
+  "testedToolsSourceSha": "3da75f785be3e2dd414009f832861be9e8d92022",
+  "applicationSourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+  "artifactSha256": "93d4103dd2a1d8284acdd94ca54880f9c95a5bbfda18de415fd38dc70146d716",
+  "mergeable": true,
+  "technicalChecksPassed": true,
+  "humanChecklistChecked": 0,
+  "policyFailure": "Four required human checklist items remain unchecked; confirmed in job 128014564940.",
+  "workflowRuns": [
+    {
+      "name": "Acces preproduction - tests uniquement",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42253536648"
+    },
+    {
+      "name": "PR Policy",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42253536585"
+    },
+    {
+      "name": "CI",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/jpdandin44/AVEREO/actions/runs/42253536539"
+    }
+  ],
+  "deploymentAuthorized": false
+}

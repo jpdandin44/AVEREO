@@ -125,3 +125,10 @@ utilisateur hébergé après installation. Le paquet Coupe adapté et le lot ré
 doivent être inclus dans l'accord exact de livraison. Le contrôle de passage
 conserve les accords manquants sans les créer. Les recettes de production et
 l'ouverture publique restent hors de cette préparation.
+
+La [PR de préparation #121](https://github.com/jpdandin44/AVEREO/pull/121)
+porte les outils et ces preuves. Ses contrôles techniques réussissent sur le
+commit d’outillage `3da75f785be3e2dd414009f832861be9e8d92022`. Le contrôle
+PR Policy attend uniquement les quatre cases humaines, laissées décochées.
+Le [reçu GitHub](../data/preparation-mon-espace/github-preparation.json) distingue
+ce résultat de la CI de #119 et de l’accord de déploiement toujours absent.

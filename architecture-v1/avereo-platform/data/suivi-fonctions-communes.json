@@ -167,6 +167,16 @@
       "evidence": "preparation-mon-espace/verification-selection-serveur.json",
       "environment": "hosted_private_copies",
       "fileCount": 37
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "e08cbde814bb552dd3bdfa0ebec101fc0dcc5d52",
+      "artifactSha256": "93d4103dd2a1d8284acdd94ca54880f9c95a5bbfda18de415fd38dc70146d716",
+      "observedAt": "2026-11-06T16:35:53.138Z",
+      "evidence": "preparation-mon-espace/github-preparation.json",
+      "testedToolsSourceSha": "3da75f785be3e2dd414009f832861be9e8d92022",
+      "limitation": "PR Policy remains blocked by the four human checkboxes; technical CI and preparation tests passed."
     }
   ],
   "approvals": [],
@@ -223,5 +233,6 @@
     "Keep Saisie unique standalone until a separate hosted scope is agreed.",
     "Review older Coupe, Passeport and Projet hosted drift in their own lots."
   ],
-  "preparationBranch": "docs/mon-espace-preproduction-20261106"
+  "preparationBranch": "docs/mon-espace-preproduction-20261106",
+  "preparationPrUrl": "https://github.com/jpdandin44/AVEREO/pull/121"
 }
