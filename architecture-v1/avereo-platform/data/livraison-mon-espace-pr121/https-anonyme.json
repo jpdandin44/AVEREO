@@ -1,0 +1,69 @@
+{
+  "observedAt": "2026-11-06T20:58:30.458899+00:00",
+  "authenticated": false,
+  "checks": [
+    {
+      "url": "https://connect-preprod.avereo.fr/",
+      "status": 200,
+      "redirectHost": null,
+      "cacheControl": "no-store",
+      "contentType": "text/html"
+    },
+    {
+      "url": "https://projet-preprod.avereo.fr/",
+      "status": 303,
+      "redirectHost": "connect-preprod.avereo.fr",
+      "cacheControl": "no-store",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://rapport-preprod.avereo.fr/",
+      "status": 303,
+      "redirectHost": "connect-preprod.avereo.fr",
+      "cacheControl": "no-store",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://coupe-preprod.avereo.fr/",
+      "status": 303,
+      "redirectHost": "connect-preprod.avereo.fr",
+      "cacheControl": "no-store",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://thermo-preprod.avereo.fr/",
+      "status": 303,
+      "redirectHost": "connect-preprod.avereo.fr",
+      "cacheControl": "no-store",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://drone-preprod.avereo.fr/",
+      "status": 303,
+      "redirectHost": "connect-preprod.avereo.fr",
+      "cacheControl": "no-store",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://passeport-immo-preprod.avereo.fr/",
+      "status": 303,
+      "redirectHost": "connect-preprod.avereo.fr",
+      "cacheControl": "no-store",
+      "contentType": "text/html; charset=UTF-8"
+    },
+    {
+      "url": "https://rapport-preprod.avereo.fr/rga/",
+      "status": 403,
+      "redirectHost": null,
+      "cacheControl": "no-store",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "https://projet-preprod.avereo.fr/api/planning.php",
+      "status": 401,
+      "redirectHost": null,
+      "cacheControl": "no-store, private",
+      "contentType": "application/json; charset=utf-8"
+    }
+  ]
+}

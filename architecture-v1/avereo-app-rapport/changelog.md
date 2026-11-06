@@ -12,6 +12,11 @@ tags:
   - changelog
 ---
 
+## 2026-11-06 — Correction locale du lien Mes projets RGA
+
+Après la livraison PR #121, le changement de fragment de la carte intégrée est pris en compte pour ouvrir et rouvrir Mes projets. Correction locale vérifiée, non livrée. Le paquet PR #121 reste la version active en préproduction. [Livraison et réserves](../avereo-platform/docs/livraison-mon-espace.md).
+
+
 ## 2026-11-02 — Préparation locale des essais temporaires
 
 Contrôle d’une période et d’une révocation avec identité signée, conservation de l’identité dans le sas RGA et essais d’isolement serveur. Aucun déploiement, compte réel ou mail. [Preuves et réserves](docs/essais-temporaires.md).

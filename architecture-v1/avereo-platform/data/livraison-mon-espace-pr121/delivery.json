@@ -1,0 +1,220 @@
+{
+  "observedAt": "2026-11-06T20:56:18+00:00",
+  "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+  "mergeSha": "b12e9bcb6bc529d48565466776f0a5be95791398",
+  "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+  "status": "delivered_verified",
+  "writes": [
+    {
+      "application": "rapport",
+      "path": "account-menu.js"
+    },
+    {
+      "application": "rapport",
+      "path": "assets/index-Sxs-7L-G.js"
+    },
+    {
+      "application": "rapport",
+      "path": "assets/reportDocx-BIioO7vl.js"
+    },
+    {
+      "application": "rapport",
+      "path": "rga/address-search.js"
+    },
+    {
+      "application": "rapport",
+      "path": "rga/project-library.js"
+    },
+    {
+      "application": "rapport",
+      "path": "rga/workspace.js"
+    },
+    {
+      "application": "rapport",
+      "path": "index.html"
+    },
+    {
+      "application": "rapport",
+      "path": "rga/carte.php"
+    },
+    {
+      "application": "rapport",
+      "path": "rga/index.php"
+    },
+    {
+      "application": "rapport",
+      "path": "rga/logout.php"
+    },
+    {
+      "application": "rapport",
+      "path": "index.php"
+    },
+    {
+      "application": "coupe",
+      "path": "account-menu.js"
+    },
+    {
+      "application": "coupe",
+      "path": "assets/index-BEJu3O3V.js"
+    },
+    {
+      "application": "coupe",
+      "path": "index.html"
+    },
+    {
+      "application": "coupe",
+      "path": "legacy-app.html"
+    },
+    {
+      "application": "coupe",
+      "path": "index.php"
+    },
+    {
+      "application": "projet",
+      "path": "account-menu.js"
+    },
+    {
+      "application": "projet",
+      "path": "project-workspace.css"
+    },
+    {
+      "application": "projet",
+      "path": "project-workspace.js"
+    },
+    {
+      "application": "projet",
+      "path": "index.html"
+    },
+    {
+      "application": "projet",
+      "path": "legacy-app.html"
+    },
+    {
+      "application": "projet",
+      "path": "index.php"
+    },
+    {
+      "application": "thermo",
+      "path": "account-menu.js"
+    },
+    {
+      "application": "thermo",
+      "path": "assets/index-2n39KD4j.css"
+    },
+    {
+      "application": "thermo",
+      "path": "assets/index-Oyd-nPZz.js"
+    },
+    {
+      "application": "thermo",
+      "path": "index.html"
+    },
+    {
+      "application": "thermo",
+      "path": "index.php"
+    },
+    {
+      "application": "drone",
+      "path": "account-menu.js"
+    },
+    {
+      "application": "drone",
+      "path": "assets/index-L7piEKeW.js"
+    },
+    {
+      "application": "drone",
+      "path": "assets/index-jWNlrlpU.css"
+    },
+    {
+      "application": "drone",
+      "path": "index.html"
+    },
+    {
+      "application": "drone",
+      "path": "index.php"
+    },
+    {
+      "application": "connect",
+      "path": "account-menu.js"
+    },
+    {
+      "application": "connect",
+      "path": "index.html"
+    },
+    {
+      "application": "passeport-immo",
+      "path": "account-menu.js"
+    },
+    {
+      "application": "passeport-immo",
+      "path": "assets/index-fk-lVGaB.css"
+    },
+    {
+      "application": "passeport-immo",
+      "path": "assets/index-fwNk0Ytt.js"
+    },
+    {
+      "application": "passeport-immo",
+      "path": "assets/index.es-B8blGxkw.js"
+    },
+    {
+      "application": "passeport-immo",
+      "path": "index.html"
+    },
+    {
+      "application": "passeport-immo",
+      "path": "index.php"
+    }
+  ],
+  "applications": {
+    "rapport": {
+      "root": "/home/daje3540/rapport-preprod.avereo.fr",
+      "verifiedFiles": 11,
+      "unlistedPathsPreserved": true,
+      "accessProtectionPreserved": true
+    },
+    "coupe": {
+      "root": "/home/daje3540/coupe-preprod.avereo.fr",
+      "verifiedFiles": 5,
+      "unlistedPathsPreserved": true,
+      "accessProtectionPreserved": true
+    },
+    "projet": {
+      "root": "/home/daje3540/projet-preprod.avereo.fr",
+      "verifiedFiles": 6,
+      "unlistedPathsPreserved": true,
+      "accessProtectionPreserved": true
+    },
+    "thermo": {
+      "root": "/home/daje3540/thermo-preprod.avereo.fr",
+      "verifiedFiles": 5,
+      "unlistedPathsPreserved": true,
+      "accessProtectionPreserved": true
+    },
+    "drone": {
+      "root": "/home/daje3540/drone-preprod.avereo.fr",
+      "verifiedFiles": 5,
+      "unlistedPathsPreserved": true,
+      "accessProtectionPreserved": true
+    },
+    "connect": {
+      "root": "/home/daje3540/connect-preprod.avereo.fr/public",
+      "verifiedFiles": 2,
+      "unlistedPathsPreserved": true,
+      "accessProtectionPreserved": true
+    },
+    "passeport-immo": {
+      "root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+      "verifiedFiles": 6,
+      "unlistedPathsPreserved": true,
+      "accessProtectionPreserved": true
+    }
+  },
+  "planningFilesPreserved": 13,
+  "privateConfigurationsPreserved": 7,
+  "installedPr118Preserved": true,
+  "databaseAccessed": false,
+  "productionChanged": false,
+  "configurationModified": false,
+  "rollbackDirectory": "/home/daje3540/private/mon-espace-preprod-317863a-20261106/deployment/recovery"
+}

@@ -2,9 +2,52 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import { createRgaProjects } from '../../avereo-app-rapport/frontend/public/rga/project-library.js';
 const require = createRequire(new URL('../../avereo-app-passeport-immo/frontend/package.json', import.meta.url));
 const { JSDOM } = require('jsdom');
 const source = readFileSync(new URL('../shared/account-menu.js', import.meta.url), 'utf8');
+
+function rgaWorkspaceFixture(hash = '') {
+  const dom = new JSDOM('<button id="rga-projects">Mes projets</button>', {
+    url: 'https://rapport-preprod.avereo.fr/rga/carte.php' + hash, runScripts: 'outside-only',
+  });
+  // JSDOM does not implement native dialog methods; browser acceptance checks the modal.
+  dom.window.HTMLDialogElement.prototype.showModal = function () { this.open = true; };
+  dom.window.HTMLDialogElement.prototype.close = function () { this.open = false; };
+  dom.window.createRgaProjects = createRgaProjects;
+  const workspace = readFileSync(new URL('../../avereo-app-rapport/frontend/public/rga/workspace.js', import.meta.url), 'utf8');
+  dom.window.eval(workspace.replace(/^import .*\n/, '').replace('export function setupRgaProjects', 'function setupRgaProjects')
+    + '\nsetupRgaProjects({ getPoint: () => null, openPoint: () => {} });');
+  return { dom, dialog: dom.window.document.querySelector('dialog') };
+}
+
+test('RGA : le lien du portail ouvre les projets après chargement et peut être réutilisé', () => {
+  const { dom, dialog } = rgaWorkspaceFixture('#lat=43.6&lon=1.4');
+  const { window } = dom;
+  window.localStorage.setItem('rapport-draft', 'brouillon intact');
+  for (let attempt = 0; attempt < 2; attempt++) {
+    window.history.replaceState(null, '', '#lat=43.6&lon=1.4&projects');
+    window.dispatchEvent(new window.HashChangeEvent('hashchange'));
+    assert.equal(dialog.open, true);
+    assert.match(dialog.textContent, /Mes projets — RGA/);
+    assert.equal(window.location.hash, '#lat=43.6&lon=1.4');
+    assert.equal(window.localStorage.getItem('rapport-draft'), 'brouillon intact');
+    dialog.querySelector('.close-projects').click();
+    assert.equal(dialog.open, false);
+  }
+  dom.window.close();
+});
+
+test('RGA : accès direct conservé et changement de carte sans ouverture des projets', () => {
+  const { dom, dialog } = rgaWorkspaceFixture('#lat=43.6&projects');
+  assert.equal(dialog.open, true);
+  assert.equal(dom.window.location.hash, '#lat=43.6');
+  dialog.querySelector('.close-projects').click();
+  dom.window.history.replaceState(null, '', '#lat=44&lon=2');
+  dom.window.dispatchEvent(new dom.window.HashChangeEvent('hashchange'));
+  assert.equal(dialog.open, false);
+  dom.window.close();
+});
 
 function fixture({ portal = 'https://connect-preprod.avereo.fr', content = '', attributes = '' } = {}) {
   const dom = new JSDOM(`<meta name="avereo-connect-portal" content="${portal}"><button id="outside">Extérieur</button><avereo-account-menu ${attributes}>${content}</avereo-account-menu>`, { url: 'https://projet-preprod.avereo.fr/', runScripts: 'outside-only', pretendToBeVisual: true });

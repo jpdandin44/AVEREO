@@ -13,6 +13,11 @@ tags:
   - securite
 ---
 
+## 2026-11-06 — Recette hébergée du menu et correction RGA locale
+
+PR #121 est déployée. Le lien Mes projets de la page RGA ne réagit pas au fragment reçu après chargement de la carte intégrée. Le correctif local traite `hashchange`, conserve les autres paramètres et n’écrit aucune donnée de projet. Reproduction en échec puis 22 contrôles du menu réussis, compilation et revue du navigateur local effectuées. Il attend sa propre autorisation de livraison. [Livraison et réserves](../../avereo-platform/docs/livraison-mon-espace.md).
+
+
 ## 2026-11-04 — Révocation des comptes CONNECT
 
 Le sas vérifie la date de révocation de la projection privée. Les écritures de dossiers utilisent le verrou partagé. Le contrôle d’identité et de propriété des dossiers est conservé. Aucun changement de payload ou de schéma Rapport.

@@ -5,8 +5,8 @@
   "project": "avereo-platform",
   "owner": "jpdandin",
   "kind": "application",
-  "stage": "local",
-  "status": "local_complete_preproduction_prepared",
+  "stage": "preproduction",
+  "status": "deployed_qualified_with_reservations",
   "objective": "Appliquer Mon espace aux applications et fixer une règle des fonctions communes.",
   "phases": [
     "Cadrage",
@@ -19,7 +19,7 @@
     "merged": true,
     "sha": "45c184970c9b99f41f345b10f56c545568bab3f2",
     "observedAt": "2026-11-06",
-    "latestMainSha": "a245cdd5dd747b6181a75e691db31a5d31081bd9"
+    "latestMainSha": "b12e9bcb6bc529d48565466776f0a5be95791398"
   },
   "candidate": {
     "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
@@ -35,13 +35,15 @@
     "branch": "docs/mon-espace-preproduction-20261106",
     "base": "main",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/121",
-    "merged": false,
-    "humanAcceptanceVerified": false,
+    "merged": true,
+    "humanAcceptanceVerified": true,
     "observedSourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
-    "acceptedSourceSha": null,
-    "acceptedArtifactSha256": null,
-    "observedAt": "2026-11-06T18:13:50.423170+00:00",
-    "evidence": "preparation-mon-espace-pr121/github.json"
+    "acceptedSourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+    "acceptedArtifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+    "observedAt": "2026-11-06T20:49:19.748352+00:00",
+    "evidence": "livraison-mon-espace-pr121/github-merge.json",
+    "acceptedHeadSha": "381996a6e061acb7a53571aab2520eb7f1c9a287",
+    "mergeSourceSha": "b12e9bcb6bc529d48565466776f0a5be95791398"
   },
   "checks": [
     {
@@ -148,16 +150,49 @@
       "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
       "observedAt": "2026-11-06T18:16:38.322309+00:00",
       "evidence": "preparation-mon-espace-pr121/documentation.json"
+    },
+    {
+      "id": "hosted-menu-and-preferences",
+      "status": "passed_with_reservations",
+      "environment": "preproduction",
+      "observedAt": "2026-11-06T21:18:32.317395+00:00",
+      "evidence": "livraison-mon-espace-pr121/recette-navigateur.json"
+    },
+    {
+      "id": "final-installed-files-and-preservation",
+      "status": "passed",
+      "environment": "preproduction",
+      "observedAt": "2026-11-06T21:18:32.317395+00:00",
+      "evidence": "livraison-mon-espace-pr121/verification-finale.json"
+    },
+    {
+      "id": "anonymous-https-access",
+      "status": "passed",
+      "environment": "preproduction",
+      "observedAt": "2026-11-06T21:18:32.317395+00:00",
+      "evidence": "livraison-mon-espace-pr121/https-anonyme.json"
     }
   ],
-  "approvals": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "target": "mon-espace-seven-preproduction-targets",
+      "status": "approved",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+      "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+      "recordedAt": "2026-11-06T20:49:19.748352+00:00",
+      "evidence": "livraison-mon-espace-pr121/autorisation.json"
+    }
+  ],
   "targets": {
     "preproduction": {
       "id": "mon-espace-seven-preproduction-targets",
       "ready": true,
       "isolated": true,
-      "observedAt": "2026-11-06T18:11:17.131921+00:00",
-      "evidence": "preparation-mon-espace-pr121/verification-selection-serveur.json",
+      "observedAt": "2026-11-06T20:55:01+00:00",
+      "evidence": "livraison-mon-espace-pr121/preflight.json",
       "applications": {
         "rapport": "/home/daje3540/rapport-preprod.avereo.fr",
         "coupe": "/home/daje3540/coupe-preprod.avereo.fr",
@@ -177,12 +212,20 @@
     }
   },
   "delivery": {
-    "status": "not_deployed",
+    "status": "delivered",
+    "target": "mon-espace-seven-preproduction-targets",
     "sourceSha": "317863a9e5603fbbed578a5aa9cfc323cb17b977",
+    "mergeSha": "b12e9bcb6bc529d48565466776f0a5be95791398",
     "artifactSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
-    "liveFilesModified": false,
+    "observedAt": "2026-11-06T20:56:18+00:00",
+    "evidence": "livraison-mon-espace-pr121/delivery.json",
+    "liveFilesModified": true,
     "databaseAccessed": false,
-    "configurationModified": false
+    "configurationModified": false,
+    "fileCount": 40,
+    "qualification": "qualified_with_reservations",
+    "browserEvidence": "livraison-mon-espace-pr121/recette-navigateur.json",
+    "finalVerification": "livraison-mon-espace-pr121/verification-finale.json"
   },
   "backups": [
     {
@@ -195,10 +238,38 @@
       "serverDirectory": "/home/daje3540/private/mon-espace-preprod-317863a-20261106",
       "planningFilesPreserved": 13,
       "privateConfigurationCount": 7
+    },
+    {
+      "id": "mon-espace-pr121-fresh-preflight",
+      "target": "mon-espace-seven-preproduction-targets",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-06T20:55:01+00:00",
+      "evidence": "livraison-mon-espace-pr121/preflight.json",
+      "serverDirectory": "/home/daje3540/private/mon-espace-preprod-317863a-20261106/deployment/recovery",
+      "planningFilesPreserved": 13,
+      "privateConfigurationCount": 7
     }
   ],
-  "blockers": [],
-  "nextAction": "Human review of PR121, then merge by the owner. Before any deployment: explicit authorization for the seven targets and this 40-file payload, refresh before-image hashes, install selected files only, then qualify hosted authenticated flows on fictitious data.",
+  "blockers": [
+    {
+      "id": "rga-projects-parent-iframe",
+      "scope": "preproduction_acceptance",
+      "status": "local_fix_ready",
+      "impact": "Mes projets does not open from the parent page after the map has loaded; direct map works.",
+      "nextAction": "Review and authorize the one-file RGA correction, then verify the parent route on preproduction.",
+      "evidence": "livraison-mon-espace-pr121/correction-rga.json"
+    },
+    {
+      "id": "coupe-projects-online-oauth",
+      "scope": "existing_online_projects",
+      "status": "preexisting_outside_menu_payload",
+      "impact": "Native online project list cannot load because the preserved Coupe API reports OAuth not configured.",
+      "nextAction": "Scope the Coupe identity/API alignment separately; preserve current configuration and projects.",
+      "evidence": "livraison-mon-espace-pr121/recette-navigateur.json"
+    }
+  ],
+  "nextAction": "Review the local one-file RGA correction and authorize its exact preproduction candidate; qualify Coupe online identity separately.",
   "nextIteration": [
     "Qualify Recherche hosting and CONNECT configuration before its first authorized installation.",
     "Keep Saisie unique standalone until a separate hosted scope is agreed.",
@@ -419,5 +490,10 @@
     "date": "2026-11-06",
     "connectProjects": false,
     "confirmedByUser": true
+  },
+  "correctiveCandidate": {
+    "status": "local_verified_not_deployed",
+    "branch": "docs/mon-espace-deploiement-20261106",
+    "evidence": "livraison-mon-espace-pr121/correction-rga.json"
   }
 }

@@ -12,7 +12,14 @@ tags: [avereo, preproduction, livraison, fonctions-communes]
 
 # Préparation de Mon espace
 
-## Candidat actuel — PR #121 étendue
+## État actuel — PR #121 livrée
+
+La préparation ci-dessous a été exécutée après fusion et accord explicite. La
+[livraison et la recette du 6 novembre](livraison-mon-espace.md) portent les reçus
+frais, les contrôles hébergés et les réserves RGA/Coupe. Le paquet décrit ici reste
+la référence exacte installée ; le correctif RGA constitue un autre candidat.
+
+## Historique de préparation — PR #121 étendue
 
 La PR inclut désormais Mes projets et Préférences propres aux applications ; CONNECT
 reste le portail sans projets métier. Le candidat applicatif
