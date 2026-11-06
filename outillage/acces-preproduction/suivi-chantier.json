@@ -9,6 +9,11 @@
   "production_modified": false,
   "owner_authorization": "Méthode et généralisation demandées dans Cahier des charges AVEREO, reprises ici le 6 octobre. Accord direct reçu pour appliquer le seul pilote CONNECT avec le compte existant du site, refus HTTP, recette et retour arrière en cas d’échec. Aucun accord de merge ou de production.",
   "cockpit_reference": "outillage/acces-preproduction/suivi-chantier.json",
+  "sharedAccountMenu20261106": {
+    "sourceOfTruth": "../../architecture-v1/avereo-platform/data/suivi-fonctions-communes.json",
+    "iterationId": "mon-espace-commun-20261106",
+    "note": "Pointeur uniquement : étapes, candidat et preuves dans la source canonique ; aucun accord des lots historiques étendu."
+  },
   "cockpit_status": "Source canonique raccordée au moteur de revue Projet ; aucune décision automatique.",
   "blockers": [
     "Rapport : lancement, sauvegarde/relecture et exports contrôlés ; connexion OAuth interactive du responsable et second réseau non observés dans cette recette.",
@@ -2694,10 +2699,5 @@
       "humanChecklistChecked": 4,
       "evidence": "archives/preparation-production-rapport-passeport-20261016/observation.json#pullRequests/84"
     }
-  },
-  "sharedAccountMenu20261106": {
-    "sourceOfTruth": "../../architecture-v1/avereo-platform/data/suivi-fonctions-communes.json",
-    "iterationId": "mon-espace-commun-20261106",
-    "note": "Pointeur uniquement : étapes, candidat et preuves dans la source canonique ; aucun accord des lots historiques étendu."
   }
 }

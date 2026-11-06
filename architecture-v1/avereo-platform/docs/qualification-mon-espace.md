@@ -60,6 +60,10 @@ mis à jour, puis être comparés aux versions hébergées avant remplacement. L
 existant `outillage/acces-preproduction/prepare_application_candidates.py` emballe les
 huit applications web ; le fichier autonome de Saisie unique reste distinct.
 
+La PR #118 porte séparément le retour d’activation. Après sa fusion, le candidat
+CONNECT de ce lot doit être réaligné sur la version cumulée et requalifié avant
+livraison : un paquet préparé avant cette fusion ne doit pas remplacer son backend.
+
 ## Revue humaine à réaliser
 
 Ouvrir Mon espace, vérifier les rubriques utiles, essayer les préférences de Projet

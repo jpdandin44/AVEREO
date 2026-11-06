@@ -58,6 +58,12 @@ RGA est une application distincte du catalogue, administrable avec ses propres d
 
 # AVEREO CONNECT
 
+## Mon espace — candidat commun du 6 novembre 2026
+
+Le portail PHP regroupe Mon compte, Mes applications, Gérer les comptes selon les droits et la confirmation de déconnexion. Le menu est masqué pour les visiteurs non authentifiés. Le frontend historique reprend seulement la présentation et conserve ses actions locales.
+
+[Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.
+
 [Architecture](architecture.md) · [Exigences](requirements.md) ·
 [Suite](roadmap.md) · [Décisions](decisions.md) · [Changelog](changelog.md).
 
@@ -151,9 +157,3 @@ restent obligatoires. Voir `docs/deployment.md` et
 ### Comptes non propriétaires
 
 Le [candidat d’alignement](docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local) étend le parcours d’administration aux droits hérités et précise le traitement de l’identité et des dossiers.
-
-## Mon espace — candidat commun du 6 novembre 2026
-
-Le portail PHP regroupe Mon compte, Mes applications, Gérer les comptes selon les droits et la confirmation de déconnexion. Le menu est masqué pour les visiteurs non authentifiés. Le frontend historique reprend seulement la présentation et conserve ses actions locales.
-
-[Règle commune](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification et suivi](../avereo-platform/docs/qualification-mon-espace.md). Ce candidat local ne prouve pas une installation hébergée.

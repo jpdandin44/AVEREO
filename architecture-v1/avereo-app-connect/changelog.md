@@ -76,6 +76,10 @@ Ajout du raccourci de la carte hébergée dans Rapport et du choix fixe de vue, 
 
 # Évolutions CONNECT
 
+## 6 novembre 2026 — Mon espace commun
+
+Candidat local : Le portail PHP regroupe Mon compte, Mes applications, Gérer les comptes selon les droits et la confirmation de déconnexion. Le menu est masqué pour les visiteurs non authentifiés. Le frontend historique reprend seulement la présentation et conserve ses actions locales. [Suivi du lot](../avereo-platform/data/suivi-fonctions-communes.json).
+
 ## 2026-10-14
 
 Reconnaissance des clés `APP_LAUNCH_PASSEPORT_IMMO_URL` et
@@ -91,7 +95,3 @@ Candidat local pour les comptes non propriétaires avec Rapport, RGA et Passepor
 ## 2026-11-04 — Recréation d’un compte avec identité existante
 
 Le candidat local ajoute le rattachement explicite d’une identité historique, l’affichage immédiat du compte créé et l’option d’invitation après création.
-
-## 6 novembre 2026 — Mon espace commun
-
-Candidat local : Le portail PHP regroupe Mon compte, Mes applications, Gérer les comptes selon les droits et la confirmation de déconnexion. Le menu est masqué pour les visiteurs non authentifiés. Le frontend historique reprend seulement la présentation et conserve ses actions locales. [Suivi du lot](../avereo-platform/data/suivi-fonctions-communes.json).
