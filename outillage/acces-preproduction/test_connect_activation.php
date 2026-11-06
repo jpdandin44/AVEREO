@@ -98,8 +98,24 @@ file_put_contents($folder . '/database.sql', $data);
 check((fileperms($folder . '/database.sql') & 0077) === 0 && glob($folder . '/client-*.cnf') === [], 'dump prive et fichier de secrets temporaire retire');
 
 // Apply the real runner to the restored test database, never the source.
+// This regression covers the historical activation transition, not later schema
+// changes (period/lifecycle), which have their own complete migration CI suite.
+// Copy the real runner unchanged with exactly the five migrations under test.
+$runtime = $folder . '/activation-runtime';
+foreach (['bin', 'src', 'database/migrations'] as $directory) mkdir($runtime . '/' . $directory, 0700, true);
+foreach (['bin/migrate.php', 'src/autoload.php', 'src/Config.php', 'src/Database.php'] as $file) {
+    check(copy(TEST_SOURCE . '/backend/' . $file, $runtime . '/' . $file)
+        && hash_file('sha256', TEST_SOURCE . '/backend/' . $file) === hash_file('sha256', $runtime . '/' . $file),
+        'runner de fixture identique : ' . $file);
+}
+foreach (array_merge($legacy, ['20260804140000_account_activation_status']) as $version) {
+    $file = $version . '.up.sql';
+    check(copy($migrationFolder . $file, $runtime . '/database/migrations/' . $file)
+        && hash_file('sha256', $migrationFolder . $file) === hash_file('sha256', $runtime . '/database/migrations/' . $file),
+        'migration de fixture identique : ' . $version);
+}
 $restored = connection(configuration($restoreConfig));
-$command = [PHP_BINARY, TEST_SOURCE . '/backend/bin/migrate.php', '--direction=up', '--config=' . $restoreConfig];
+$command = [PHP_BINARY, $runtime . '/bin/migrate.php', '--direction=up', '--config=' . $restoreConfig];
 $process = proc_open($command, [0=>['pipe','r'],1=>['pipe','w'],2=>['pipe','w']], $pipes);
 fclose($pipes[0]);
 $output = stream_get_contents($pipes[1]); fclose($pipes[1]);

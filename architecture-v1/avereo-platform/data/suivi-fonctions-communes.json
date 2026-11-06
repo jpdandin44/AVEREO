@@ -23,14 +23,15 @@
   },
   "candidate": {
     "commonSourceSha256": "90e94651f832e69a999803de732709a2e55a640e75b2bbc91d856b7b214e83e4",
-    "sourceSha": null,
+    "sourceSha": "366cdb3c9f3edb27a3e1fbc6df9b885ad1182221",
     "artifactSha256": null
   },
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/shared-account-menu-20261106",
     "base": "main",
-    "humanAcceptanceVerified": false
+    "humanAcceptanceVerified": false,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/119"
   },
   "checks": [
     {

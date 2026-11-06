@@ -97,3 +97,8 @@ filtres. Les essais utilisent les versions locales et des données fictives.
 Les compilations signalent les bundles volumineux existants de Rapport et Passeport
 Immo ; ce lot n’ajoute pas de dépendance et ne traite pas leur découpage. Les recettes
 locales ne prouvent ni la connexion hébergée ni le stockage en ligne.
+
+La fixture historique de migration d’activation est réalignée comme dans la PR #118 :
+runner et cinq migrations copiés sans changement, empreintes vérifiées. Les assertions
+de sauvegarde/restauration et de conservation restent actives ; la CI CONNECT générale
+continue de tester le schéma complet. Ce changement concerne les tests uniquement.
