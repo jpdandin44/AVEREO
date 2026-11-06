@@ -65,8 +65,9 @@ et permet de rouvrir la liste après fermeture. Un test reproduit l’échec ava
 correction ; les 22 tests du menu réussissent ensuite, compilation Rapport réussie
 et ouverture/réouverture confirmées dans le navigateur local sur
 [l’aperçu RGA](http://127.0.0.1:53121/rga/).
-Le [candidat correctif](../data/livraison-mon-espace-pr121/correction-rga.json)
-ne remplace qu’un fichier `rga/workspace.js` ; **il n’est pas installé en préproduction**.
+La [PR corrective #122](https://github.com/jpdandin44/AVEREO/pull/122) et son
+[candidat exact](../data/livraison-mon-espace-pr121/correction-rga.json)
+ne concernent qu’un fichier `rga/workspace.js` ; **il n’est pas installé en préproduction**.
 Sa revue et son accord de livraison restent distincts de l’accord obtenu pour PR #121.
 
 **Coupe.** « Mes projets » appelle l’ancien service en ligne, qui répond « OAuth

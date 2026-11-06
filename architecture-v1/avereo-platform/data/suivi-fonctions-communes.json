@@ -494,6 +494,9 @@
   "correctiveCandidate": {
     "status": "local_verified_not_deployed",
     "branch": "docs/mon-espace-deploiement-20261106",
-    "evidence": "livraison-mon-espace-pr121/correction-rga.json"
+    "evidence": "livraison-mon-espace-pr121/correction-rga.json",
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/122",
+    "sourceSha": "e9ef14dbb84912a451116bd532d699e87e010f08",
+    "artifactSha256": "0371e53552e7767d6ead4d2d9c233a9f68934eb8cc8e34dea12cdbe833762994"
   }
 }
