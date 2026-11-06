@@ -1,0 +1,41 @@
+PASS health
+PASS anonymous session
+PASS suspended account is refreshed from repository
+PASS approved account is refreshed without reconnecting
+PASS protected route denied
+PASS anonymous catalog denied
+PASS identified catalog
+PASS preproduction catalog
+PASS launch requires approved CONNECT account
+PASS launch ticket is signed and application bound
+PASS Passeport Immo catalog and launch keep explicit authorization
+PASS identity disabled
+PASS identity navigation
+PASS organizations
+PASS missing organization parameter
+PASS csrf denied
+PASS invalid entitlement
+PASS role denied
+PASS entitlement audited once
+PASS account administration owner snapshot
+PASS account administration denied to member
+PASS account approval denied to member
+PASS account approval requires csrf
+PASS account approval is audited
+PASS account approval sends a one-time activation email
+PASS account activation email can be resent by an administrator
+PASS signed activation request never contains a password
+PASS signed activation completion unlocks the CONNECT account
+PASS activation completion clears an existing identity before returning to login
+PASS invalid activation never clears the current session or changes onboarding
+PASS account rejection is audited
+PASS account status validation
+PASS account suspension is audited
+PASS application access revocation hides and blocks the application
+PASS logout csrf
+PASS portal logout is branded and uses the signed bridge
+PASS signed identity logout URL
+PASS oauth transaction fallback is one-time and bound
+PASS oauth transaction fallback rejects another browser
+PASS private config allows every application launch key
+Tests réussis : 40/40

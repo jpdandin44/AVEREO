@@ -1,0 +1,16 @@
+{
+    "preparedAt": "2026-11-06T13:01:13+00:00",
+    "connectUserId": 27,
+    "drupalUid": 26,
+    "email": "recette-pr118-20261106@example.invalid",
+    "displayName": "Recette PR118 — première connexion",
+    "accessEndsAtUtc": "2026-11-06 15:00:00.000000",
+    "applicationAccessCount": 0,
+    "actualEmailsSent": 0,
+    "capturedInvitations": 1,
+    "nativeControllerUsed": true,
+    "globalMailConfigurationUnchanged": true,
+    "passwordEnteredByAgent": false,
+    "humanPasswordStepPending": true,
+    "scope": "Named disposable preproduction fixture only; invitation captured in memory, no outbound message."
+}

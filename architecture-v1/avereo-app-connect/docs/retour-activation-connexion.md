@@ -12,6 +12,90 @@ tags: [connect, activation, connexion, qualification]
 
 # Retour à la connexion après activation
 
+## Livraison en préproduction du 6 novembre 2026
+
+Après l’accord explicite du responsable, les deux fichiers de la PR #118 sont
+installés à **13 h 51, heure de Paris**. Le [reçu serveur](../data/preproduction-retour-activation/deployment.json)
+porte les empreintes avant/après et le retour arrière privé. L’archive acceptée est
+inchangée ; les remplacements préservent les permissions. Le point d’entrée PHP,
+la protection du répertoire et la configuration privée gardent leurs empreintes.
+Aucune migration ni écriture en base par l’installation.
+
+Les 40 tests natifs passent avec le candidat puis avec les fichiers installés,
+sur des comptes et dépôts fictifs en mémoire. Le navigateur confirme le nouveau
+message de connexion, le retour par SSO de l’administrateur existant et le refus
+de trois confirmations invalides : paramètres absents, date expirée, signature
+incorrecte. La session existante reste utilisable après ces refus.
+Les [contrôles HTTPS anonymes](../data/preproduction-retour-activation/anonymous-https-checks.json)
+constatent un portail public de connexion et une session non authentifiée (`200`),
+puis le refus du catalogue et des organisations (`401`), avec `Cache-Control: no-store`.
+Ils ne constituent pas une preuve de protection HTTP Basic ; cette hypothèse
+initiale a été corrigée sans modifier les protections de la cible.
+
+La [fixture nominative](../data/preproduction-retour-activation/fixture-preparation.json)
+est le compte CONNECT 27 / Drupal 26, « Recette PR118 — première connexion »,
+à adresse `.invalid`, limité jusqu’au 6 novembre à 16 h, heure de Paris. Le formulaire
+de création exige une application : RGA a été choisie puis retirée avant activation.
+Le compte n’a donc aucun accès applicatif. Le contrôleur natif d’invitation a produit
+un lien, capturé par un collecteur en mémoire pour cette seule invocation : aucun
+mail externe, aucun changement de configuration globale d’envoi.
+
+Le responsable a défini le premier mot de passe dans le formulaire natif, depuis
+le navigateur qui possédait encore l’ancienne session administrateur. Après le
+retour à la connexion, il a confirmé son entrée avec ce même mot de passe, sans
+réinitialisation. Le navigateur a affiché **Recette PR118 — première connexion**,
+compte actif, profil Client, aucune application. La base confirme le statut
+`completed`, le mot de passe initialisé et la connexion Drupal du 6 novembre à
+**15 h 20, heure de Paris**. Aucun mot de passe n’a été lu ou saisi par l’agent.
+
+Le [reçu final](../data/preproduction-retour-activation/fixture-completion.json) et
+la [confirmation humaine](../data/preproduction-retour-activation/human-first-login.json)
+valident ce parcours hébergé avec une ancienne identité présente. Le scénario
+hébergé depuis un navigateur entièrement neuf n’a pas été rejoué séparément ;
+les contrôles locaux Drupal et CONNECT décrits plus bas couvrent ce cas.
+Les [observations préalables](../data/preproduction-retour-activation/browser-checks.json)
+restent historiques.
+
+Le compte fictif a ensuite été archivé à **15 h 25, heure de Paris**, via le service
+natif de cycle de vie. Sa session CONNECT est devenue anonyme après rechargement.
+L’état métier des autres comptes, leurs droits applicatifs et leurs entrées dans
+la politique privée sont identiques avant/après cette opération. Aucun compte
+n’a été supprimé définitivement ; aucun dossier réel n’a été modifié.
+
+Les outils ponctuels sont conservés dans le dossier privé de livraison et dans
+`C:/Users/examg/Documents local/livraisons-avereo/activation-connect`. Ils ne font
+pas partie des fichiers applicatifs. La première exécution du préparateur de fixture
+a été refusée sur une colonne mal nommée avant toute mutation ; correction vers
+le champ natif `email_normalized`, puis exécution réussie. Le nettoyage a aussi été
+arrêté avant mutation par une différence de fin de fichier au transfert puis par
+un type de date Drupal inattendu ; transfert exact et conversion explicite en entier
+corrigés, reçu d’archivage vérifié. Les garde-fous de la fixture locale Drupal/SQLite
+d’origine restent inchangés. Ces corrections concernent les outils privés de recette,
+pas l’artefact applicatif accepté.
+
+## Historique — préparation après fusion du 6 novembre 2026
+
+La PR #118 est fusionnée au commit `b042d5ae5cace46791ac8cf78d43ebd0c56e5cf6`.
+Les quatre cases humaines sont cochées et les contrôles GitHub du commit accepté
+`47eda950604a7c16d26c0f21ae90f2e3768ad527` réussissent. Les deux fichiers du paquet
+initial sont identiques aux fichiers fusionnés ; l’archive est conservée.
+
+Les deux fichiers actuels de préproduction correspondent à la base attendue.
+Le pont Drupal et le retour autorisé sont vérifiés sans afficher de secret.
+Une sauvegarde privée et une restauration après remplacement fictif sur copies
+réussissent ; les fichiers actifs restent inchangés. Le [suivi canonique](../data/suivi-retour-activation.json)
+référence le reçu d’exploitation et conserve l’accord de déploiement en attente.
+
+Le lien local de revue a exposé `IDENTITY_PROVIDER_NOT_CONFIGURED` lors d’un clic
+sur Se connecter : cet aperçu ne possède pas de fournisseur d’identité. Le lanceur
+local `preview-router.php`, conservé avec le paquet hors du dépôt applicatif,
+affiche désormais cette limite, désactive le bouton et renvoie l’ancien lien de
+connexion vers l’explication. Il n’entre pas dans les deux fichiers à livrer.
+La première connexion complète reste à vérifier en préproduction après installation.
+
+Les contrôles et étapes ci-dessous décrivent la qualification du candidat ; la
+fusion ne vaut ni installation ni validation du parcours hébergé.
+
 ## Constat et limite du diagnostic
 
 Le contrôle en lecture seule du 6 novembre en préproduction constate, pour le
@@ -128,6 +212,6 @@ au [cockpit](../../../outillage/acces-preproduction/suivi-chantier.json).
 | Phase | État |
 | --- | --- |
 | Cadrage | Lecture seule hébergée et défaut local reproduit |
-| Développement local | Correctif et tests prêts à revue |
-| Préproduction | Cible identifiée ; installation et recette du correctif à autoriser |
+| Développement local | PR #118 validée et fusionnée ; artefact inchangé |
+| Préproduction | Deux fichiers installés ; parcours du compte neuf avec ancienne identité et archivage réussis |
 | Mise en production | Non autorisée |

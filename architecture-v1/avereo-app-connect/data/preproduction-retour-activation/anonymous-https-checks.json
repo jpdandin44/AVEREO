@@ -1,0 +1,34 @@
+{
+  "observedAt": "2026-11-06T13:01:35.852381+00:00",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "cacheControl": "no-store",
+      "passed": true
+    },
+    {
+      "path": "/api/v1/session",
+      "status": 200,
+      "cacheControl": "no-store",
+      "authenticated": false,
+      "passed": true
+    },
+    {
+      "path": "/api/v1/catalog",
+      "status": 401,
+      "cacheControl": "no-store",
+      "errorCode": "AUTHENTICATION_REQUIRED",
+      "passed": true
+    },
+    {
+      "path": "/api/v1/organizations",
+      "status": 401,
+      "cacheControl": "no-store",
+      "errorCode": "AUTHENTICATION_REQUIRED",
+      "passed": true
+    }
+  ],
+  "credentialsUsed": false,
+  "scope": "Public login and anonymous session are 200; protected catalogue and organizations refuse access with 401. No Basic Auth claim."
+}
