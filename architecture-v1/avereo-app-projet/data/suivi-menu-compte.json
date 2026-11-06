@@ -6,7 +6,7 @@
   "owner": "jpdandin",
   "kind": "application",
   "stage": "preproduction",
-  "status": "awaiting_human_review",
+  "status": "preproduction_menu_accepted",
   "objective": "Ranger la déconnexion dans le menu Mon espace en bas à gauche pour dégager les formulaires.",
   "phases": [
     "Cadrage",
@@ -133,8 +133,36 @@
     "evidence": "Sauvegarde des fichiers existants restaurée sur copie et empreintes comparées avant installation. Retour arrière actif non nécessaire."
   },
   "blockers": [],
-  "nextAction": "Confirmation humaine de la recette préproduction ; intégrer le reçu documentaire via une PR distincte. Production non autorisée.",
+  "nextAction": "Lot menu accepté en préproduction ; nouveau lot dans data/suivi-sujets-colonnes.json.",
   "nextIteration": [
-    "Préparer la suite selon la revue métier ; cadrer séparément toute production."
-  ]
+    "Priorité emploi visible",
+    "Filtres par sujet sans recalcul du planning",
+    "Colonnes ajustables et titres lisibles"
+  ],
+  "humanReview": {
+    "status": "accepted",
+    "target": "https://projet-preprod.avereo.fr",
+    "scope": "Fonctionnement du menu Mon espace",
+    "source": "user_chat",
+    "evidence": "OK, le menu fonctionne bien",
+    "observedAt": "2026-11-05T22:24:28.385182+00:00"
+  },
+  "receiptPr": {
+    "url": "https://github.com/jpdandin44/AVEREO/pull/111",
+    "userReported": "merged",
+    "observedState": "closed",
+    "observedMerged": true,
+    "observedAt": "2026-11-06T07:14:11.010629+00:00",
+    "technicalCi": "passed",
+    "humanChecklist": "four_checked",
+    "nextAction": "Suivi intégré à main ; suite dans suivi-sujets-colonnes.json.",
+    "previousObservation": {
+      "observedState": "open",
+      "observedMerged": false,
+      "observedAt": "2026-11-05T22:24:28.385182+00:00",
+      "humanChecklist": "four_unchecked"
+    },
+    "mergeCommitSha": "4d2f7ff76f4f81301cf6c9d2675e625a2c0e5835",
+    "mergedAt": "2026-11-06T07:04:20Z"
+  }
 }

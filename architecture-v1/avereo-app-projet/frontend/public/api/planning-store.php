@@ -41,6 +41,11 @@ function planning_validate(mixed $project): array
             || !in_array($task['status'] ?? null, ['À faire', 'En cours', 'En attente', 'Bloqué', 'Terminé', 'Validé'], true)
             || !is_array($task['dependencies'] ?? null) || !array_is_list($task['dependencies']) || count($task['dependencies']) > 1000) $fail();
         $date($task['manualStart'] ?? null, true);
+        if (array_key_exists('subject', $task)) {
+            $text($task['subject'], 80, true);
+            if (!preg_match('/\A.{1,80}\z/us', $task['subject'])) $fail();
+        }
+        if (array_key_exists('priority', $task) && !in_array($task['priority'], ['haute', 'normale', 'basse'], true)) $fail();
         foreach (['checklist' => 100, 'risks' => 60] as $field => $limit) {
             $items = $task[$field] ?? [];
             if (!is_array($items) || !array_is_list($items) || count($items) > $limit) $fail();

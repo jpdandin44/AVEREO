@@ -146,7 +146,7 @@ async function readImport(file) {
     if (!rows.length) throw new Error('Le fichier ne contient aucune tâche.');
     const importedTasks = ProjetPlanning.mapRows(rows).map(task => {
         const existing = tasks.find(current => current.id === task.id && current.name === task.name && current.lot === task.lot);
-        return existing ? { ...task, description: existing.description, checklist: existing.checklist, risks: existing.risks } : task;
+        return existing ? { ...(existing.subject ? { subject: existing.subject } : {}), ...(existing.priority ? { priority: existing.priority } : {}), ...task, description: existing.description, checklist: existing.checklist, risks: existing.risks } : task;
     });
     return { ...currentProject(), tasks: importedTasks };
 }

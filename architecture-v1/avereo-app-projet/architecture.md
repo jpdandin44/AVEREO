@@ -5,7 +5,7 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,13 @@ tags:
 ---
 
 # Architecture du planning Projet
+
+## Classement et préférences de vue — 6 novembre 2026
+
+Les tâches peuvent porter deux champs optionnels, `subject` et `priority`, validés par le moteur et PHP. Le contrat précis est dans [l’API privée](api/planning-prive.md). Les tâches anciennes conservent l’absence de ces champs ; une suggestion calculée pour l’affichage ne modifie pas le document.
+
+Les filtres interviennent après le calcul global des dates. Les identifiants de groupes restent ceux du planning complet ; les dépendances masquées restent calculées. Réordonner ou déplacer un lot entier exige la vue complète pour éviter un geste ambigu. Les largeurs utilisent des variables CSS communes au tableau et à l’origine du calendrier ; elles sont mémorisées uniquement dans `localStorage`, clé `avereo.projet.columns.v1`. Les filtres restent en mémoire. Aucun de ces réglages n’entre dans le JSON du projet ou les préférences du compte.
+
 
 ## Menu de compte et page englobante
 

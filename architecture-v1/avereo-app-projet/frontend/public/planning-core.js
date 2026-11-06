@@ -265,6 +265,8 @@
             return {
                 id,
                 name: text(entry.name, 'Nom de ' + id, 1000, true),
+                ...(entry.subject === undefined ? {} : { subject: text(entry.subject, 'Sujet de ' + id, 80, true) }),
+                ...(entry.priority === undefined ? {} : { priority: choice(entry.priority, ['haute', 'normale', 'basse'], 'Priorité de ' + id) }),
                 description: text(entry.description === undefined ? '' : entry.description, 'Description de ' + id, 12000, false),
                 checklist: validateChecklist(entry.checklist, id),
                 risks: validateRisks(entry.risks, id),
@@ -458,6 +460,7 @@
     }
     function headerKey(value) { return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9%]/g, ''); }
     const ALIASES = {
+        subject: ['sujet', 'subject'], priority: ['priorite', 'prioritemetier', 'priority'],
         id: ['id', 'identifiant'], name: ['nom', 'tache', 'task', 'name'], lot: ['lot', 'phase'],
         duration: ['duree', 'dureejours', 'dureejoursouvres', 'duration', 'jours', 'jh'],
         dependencies: ['dependances', 'dependance', 'dependencies', 'predecesseur', 'predecesseurs'],
@@ -486,6 +489,8 @@
             if (task.id === undefined || task.name === undefined || task.duration === undefined) fail('Colonnes obligatoires : ID, Nom et Durée (ligne ' + (index + 1) + ').');
             task.id = String(task.id).trim();
             task.name = String(task.name);
+            for (const field of ['subject', 'priority']) if (task[field] !== undefined && String(task[field]).trim() === '') delete task[field];
+            if (typeof task.priority === 'string') task.priority = task.priority.trim().toLowerCase();
             if (task.dependencies === undefined || task.dependencies === '') task.dependencies = [];
             else if (typeof task.dependencies === 'string') task.dependencies = task.dependencies.split(',').map(id => id.trim()).filter(Boolean);
             if (typeof task.progress === 'string' && task.progress.trim().endsWith('%')) task.progress = task.progress.trim().slice(0, -1).trim();
@@ -503,8 +508,13 @@
     }
     function tasksToCsv(input) {
         const tasks = validateTasks(input);
+        const classified = tasks.some(task => task.subject !== undefined || task.priority !== undefined);
         const rows = [['ID', 'Nom', 'Lot', 'Durée (jours ouvrés)', 'Dépendances', 'Responsable', 'Statut', 'Avancement (%)', 'Criticité']];
         tasks.forEach(task => rows.push([task.id, task.name, task.lot, task.duration, task.dependencies.join(','), task.owner, task.status, task.progress, task.riskWeight]));
+        if (classified) {
+            rows[0].push('Sujet', 'Priorité');
+            tasks.forEach((task, i) => rows[i + 1].push(task.subject || '', task.priority || ''));
+        }
         function cell(value) {
             let result = String(value);
             if (/^'|^\s*[=+\-@]/.test(result)) result = "'" + result;
@@ -512,10 +522,34 @@
         }
         return '\uFEFF' + rows.map(row => row.map(cell).join(';')).join('\r\n') + '\r\n';
     }
+    // Legacy suggestions are display-only until explicitly confirmed in the task form.
+    function taskClassification(task, allTasks = [], seen = new Set()) {
+        const hint = (String(task.id || '') + ' ' + String(task.lot || '') + ' ' + String(task.name || '')).toLowerCase();
+        let suggested = 'À classer';
+        if (/_emploi\b|recherche d.emploi|candidatur|entretien|offres d.emploi/.test(hint)) suggested = 'Emploi';
+        else if (/_club\b|tc\s*longages|tennis|rtennis|rtcsite|site tc\b/.test(hint)) suggested = 'TC Longages';
+        else if (/ressources|continuité|_cockpit\b|pilotage/.test(hint)) suggested = 'Transversal';
+        else if (/_creation\b|_site\b|_revenus\b|avereo|création|rapport|passeport|thermo|drone|plans automatiques|coupe|erim/.test(hint)) suggested = 'AVEREO';
+        if (suggested === 'À classer' && (task.duration === 0 || task.isMilestone) && !seen.has(task.id)) {
+            const nextSeen = new Set(seen); nextSeen.add(task.id);
+            const predecessors = (task.dependencies || []).map(id => allTasks.find(item => item.id === id)).filter(Boolean);
+            const subjects = [...new Set(predecessors.map(item => taskClassification(item, allTasks, nextSeen).subject))];
+            if (subjects.length === 1) suggested = subjects[0];
+        }
+        const subject = task.subject || suggested;
+        const priority = task.priority || (subject === 'Emploi' ? 'haute' : 'normale');
+        return { subject, priority, suggestedSubject: !task.subject, suggestedPriority: !task.priority };
+    }
+    function filterTasks(tasks, subject = '', priority = '') {
+        return tasks.filter(task => {
+            const value = taskClassification(task, tasks);
+            return (!subject || value.subject === subject) && (!priority || value.priority === priority);
+        });
+    }
     return Object.freeze({
         parseNumber, parseCsv, mapRows, validateTasks, normalizeProject, schedule,
         offsetToDate, encodeProject, decodeProject, tasksToCsv, riskScore, riskLevel,
-        movePlanningDates, reorderPlanning,
+        movePlanningDates, reorderPlanning, taskClassification, filterTasks,
         STATUSES: Object.freeze(STATUSES),
         LIMITS: Object.freeze({ maxTasks: MAX_TASKS, maxWorkingDays: MAX_HORIZON, maxCalendarDays: MAX_CALENDAR_DAYS, maxChecklistItems: MAX_CHECKLIST_ITEMS, maxRisks: MAX_RISKS, maxProjectCharacters: MAX_PROJECT_CHARACTERS, maxProjectBytes: MAX_PROJECT_BYTES })
     });

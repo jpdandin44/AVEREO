@@ -1,0 +1,78 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "projet-sujets-colonnes-20261106",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "kind": "application",
+  "stage": "developpement_local",
+  "status": "in_progress",
+  "objective": "Sujets, priorité métier visible et colonnes ajustables sans changement implicite du planning",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "candidate": {
+    "sourceSha": null,
+    "artifactSha256": null
+  },
+  "targets": {
+    "local": {
+      "id": "http://127.0.0.1:52864/legacy-app.html"
+    },
+    "preproduction": {
+      "id": "https://projet-preprod.avereo.fr",
+      "ready": false,
+      "isolated": true,
+      "empty": false,
+      "evidence": "Cible existante ; sauvegarde fraîche du nouveau lot à préparer."
+    },
+    "production": {
+      "ready": false
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/projet-sujets-colonnes-20261106",
+    "base": "main",
+    "baseSha": "4d2f7ff76f4f81301cf6c9d2675e625a2c0e5835",
+    "prUrl": null,
+    "humanAcceptanceVerified": false
+  },
+  "checks": [
+    {
+      "id": "node-build-release",
+      "status": "passed",
+      "evidence": "188 tests Node, build Vite, 20 fichiers de livraison vérifiés le 2026-11-06."
+    },
+    {
+      "id": "php-http-local",
+      "status": "passed",
+      "evidence": "65 contrôles HTTP sur identités et données fictives."
+    },
+    {
+      "id": "browser-local",
+      "status": "passed",
+      "evidence": "docs/source-audit.md ; copie locale, aucun changement serveur."
+    }
+  ],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested"
+  },
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "blockers": [],
+  "nextAction": "Finaliser PR et candidat ; obtenir accord de préproduction puis préparer sauvegarde fraîche et recette.",
+  "nextIteration": [],
+  "decisions": [
+    "Classement ancien proposé, jamais enregistré implicitement.",
+    "Largeurs mémorisées par navigateur ; filtres en mémoire.",
+    "Responsable indécis sur un nouvel ordre ; ordre et dates conservés, priorité emploi rendue visible sans réordonnancement."
+  ],
+  "observedAt": "2026-11-06T07:14:11.010629+00:00"
+}

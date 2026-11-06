@@ -5,7 +5,7 @@ title: Données du planning pilote
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-06
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,13 @@ tags:
 ---
 
 # Données du planning pilote
+
+## Suivi sujets et colonnes
+
+[suivi-sujets-colonnes.json](suivi-sujets-colonnes.json) est la fiche canonique du lot du 6 novembre : quatre phases, candidat, contrôles, accords et prochaine action. Les autres suivis conservent leurs preuves propres.
+
+Le JSON de tâche accepte désormais les champs optionnels documentés dans [le contrat privé](../api/planning-prive.md). Le CSV ajoute **Sujet** et **Priorité** lorsqu’au moins une tâche possède un classement explicite ; sinon il conserve les neuf colonnes historiques. Lors d’un import CSV d’une tâche d’identité inchangée, des colonnes absentes ou vides conservent son classement courant. Pour effacer un classement, utiliser la fiche ou un JSON complet. Le CSV reste un échange partiel, pas une sauvegarde complète.
+
 
 ## Contenu privé et suivi d’import
 
