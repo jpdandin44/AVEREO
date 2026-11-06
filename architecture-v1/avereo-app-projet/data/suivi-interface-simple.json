@@ -4,8 +4,8 @@
   "iterationId": "projet-interface-simple-20261106",
   "project": "avereo-app-projet",
   "owner": "jpdandin",
-  "stage": "developpement_local",
-  "status": "local_candidate_for_review",
+  "stage": "preproduction",
+  "status": "preproduction_delivered_with_reservation",
   "phases": [
     "Cadrage",
     "Développement local",
@@ -27,21 +27,42 @@
     {
       "source": "implementation",
       "text": "Réutiliser une entrée checklist par résultat et les états completed/validated existants ; aucun changement de schéma ni découpage automatique des textes."
+    },
+    {
+      "source": "user_chat",
+      "text": "OK, la PR#114 est mergée, peux-tu déployer en préprod stp? Accord sur la version fusionnée, sans production."
     }
   ],
   "candidate": {
-    "sourceSha": "e4c60f5d52e4981a853b446324dcdf20bad32dc6",
+    "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
     "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
     "files": 16,
-    "status": "local_verified_not_deployed"
+    "status": "deployed_preproduction"
   },
-  "approvals": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+      "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+      "target": "https://projet-preprod.avereo.fr",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "evidence": "Demande explicite du responsable après merge PR #114, le 6 novembre 2026.",
+      "recordedAt": "2026-11-06T09:30:40.195680+00:00"
+    }
+  ],
   "delivery": {
-    "status": "not_delivered"
+    "status": "delivered",
+    "target": "https://projet-preprod.avereo.fr",
+    "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+    "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+    "evidence": "data/preprod-interface-simple/delivery-observation.json",
+    "observedAt": "2026-11-06T09:30:45.081301+00:00"
   },
-  "nextAction": "Revue locale du candidat et de la PR ; préproduction après accord exact et sauvegarde/restauration fraîche.",
-  "observedAt": "2026-11-06T09:19:35.055Z",
-  "branch": "feat/projet-interface-simple-20261106",
+  "nextAction": "Corriger et qualifier localement le menu à largeur intermédiaire, puis présenter le nouveau candidat ; recueillir la validation humaine hébergée. Aucune production autorisée.",
+  "observedAt": "2026-11-06T09:37:02.115227+00:00",
+  "branch": "docs/projet-interface-preprod-20261106",
   "checks": [
     {
       "kind": "local",
@@ -102,31 +123,80 @@
       "target": "local_fictitious_fixture",
       "observedAt": "2026-11-06T09:19:35.055Z",
       "evidence": "Correction CSS du menu : 1/5 boutons non masqués avant, 5/5 après sur ordinateur 1280x720 et mobile 390x844 ; clavier et fiche au premier plan vérifiés. 196 tests, build et contrôle des 20 fichiers réussis. Tests HTTP précédents non rejoués pour cette correction CSS."
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+      "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+      "target": "candidate_merged_unchanged",
+      "evidence": "196 tests, build, menu ordinateur/mobile/clavier validés ; comparaison sans différence du code/tests/workflows entre e4c60f5 et le merge. Paquet identique par SHA-256 et ses 16 empreintes.",
+      "observedAt": "2026-11-06T09:30:40.195680+00:00"
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+      "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+      "target": "candidate_merged_unchanged",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/42194191682 ; CI de la tête acceptée 1642079, code fusionné identique. PR Policy acceptée : https://github.com/jpdandin44/AVEREO/actions/runs/42194987203.",
+      "observedAt": "2026-11-06T09:30:40.195680+00:00"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+      "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+      "target": "candidate_merged_unchanged",
+      "evidence": "Socle, métadonnées et liens contrôlés au stade local ; aucune modification documentaire par le merge. Audit et procédure relus avant installation.",
+      "observedAt": "2026-11-06T09:30:40.195680+00:00"
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed",
+      "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+      "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+      "target": "isolated_hosted_fixtures",
+      "evidence": "/home/daje3540/private/projet-interface-45c1849-20261106/qualification.log : 74 contrôles HTTP réussis, identités synthétiques et racine temporaire privée.",
+      "observedAt": "2026-11-06T09:30:40.195680+00:00"
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed_with_reservation",
+      "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+      "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+      "target": "https://projet-preprod.avereo.fr",
+      "evidence": "data/preprod-interface-simple/browser-recipe.json et https-checks.json ; 16 fichiers serveur, 9 empreintes HTTPS, deux projets et 8 JSON privés conservés. Réserve de menu à largeur intermédiaire.",
+      "observedAt": "2026-11-06T09:37:02.115227+00:00"
     }
   ],
   "reviewEnvironment": {
-    "kind": "local",
-    "url": "http://127.0.0.1:52866/legacy-app.html",
-    "data": "Exemple fictif ; aucun projet réel modifié."
+    "kind": "preproduction",
+    "url": "https://projet-preprod.avereo.fr",
+    "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+    "data": "Deux projets réels consultés en lecture seule ; écritures de qualification sur fixtures isolées."
   },
   "environment": {
     "kind": "preproduction",
     "url": "https://projet-preprod.avereo.fr",
-    "status": "not_installed"
+    "status": "installed"
   },
   "risks": [
     "Retour à un ancien lecteur PHP incompatible après mémorisation de months/years : lecteur compatible ou conversion ciblée autorisée nécessaire, sans restaurer tout le catalogue.",
-    "Recette des deux projets réels et validation humaine à réaliser avant livraison.",
+    "Validation humaine de la nouvelle interface hébergée encore attendue ; réserve de positionnement du menu à largeur intermédiaire.",
     "Publications automatiques cPanel et Pages en échec après #112, suivies séparément."
   ],
   "github": {
     "repository": "jpdandin44/AVEREO",
     "pr": 114,
     "url": "https://github.com/jpdandin44/AVEREO/pull/114",
-    "sourceSha": "e4c60f5d52e4981a853b446324dcdf20bad32dc6",
-    "status": "open",
-    "humanReview": "pending",
-    "observedAt": "2026-11-06T09:19:35.055Z"
+    "sourceSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+    "status": "merged",
+    "humanReview": "approved",
+    "observedAt": "2026-11-06T09:30:40.195680+00:00",
+    "mergeCommitSha": "45c184970c9b99f41f345b10f56c545568bab3f2",
+    "acceptedHeadSha": "16420791aabe4d60df2069ee148aad483b08fbb8",
+    "humanAcceptanceVerified": true
   },
   "publication": {
     "method": "github_connector",
@@ -138,6 +208,12 @@
       "artifactSha256": "1b8431e5033ad8f35761fc54287e3213c428c8d1a36443c254bd4b31d03e470c",
       "files": 16,
       "status": "local_verified_not_deployed"
+    },
+    {
+      "sourceSha": "e4c60f5d52e4981a853b446324dcdf20bad32dc6",
+      "artifactSha256": "3b2ea80bdaff4fc9bd4121080af6bf58cc4beeed582e559a803f0595b103f255",
+      "files": 16,
+      "status": "local_verified_not_deployed"
     }
   ],
   "corrections": [
@@ -146,6 +222,42 @@
       "problem": "Menu Projet et fichiers recouvert par les barres et filtres du planning.",
       "resolution": "Isolation du contexte de superposition de la vue planning ; aucune modification des données.",
       "sourceSha": "e4c60f5d52e4981a853b446324dcdf20bad32dc6"
+    }
+  ],
+  "blockers": [
+    "Réserve visuelle interface-menu-intermediate-width à lever avant validation complète de cette interface."
+  ],
+  "targets": {
+    "preproduction": {
+      "id": "https://projet-preprod.avereo.fr",
+      "ready": true,
+      "isolated": true,
+      "empty": false,
+      "evidence": "Document root contrôlé par cPanel : /home/daje3540/projet-preprod.avereo.fr ; stockage privé et configuration qualifiés par le préparateur, cible distincte de la production.",
+      "observedAt": "2026-11-06T09:30:40.195680+00:00"
+    }
+  },
+  "backups": [
+    {
+      "target": "https://projet-preprod.avereo.fr",
+      "id": "/home/daje3540/private/projet-interface-45c1849-20261106",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "evidence": "/home/daje3540/private/projet-interface-45c1849-20261106/prepare-receipt.json et workspace-recovery.json ; sauvegarde/restauration code, configuration et planning vérifiées.",
+      "observedAt": "2026-11-06T09:29:36.451379+00:00"
+    }
+  ],
+  "nextIteration": [
+    {
+      "id": "interface-menu-intermediate-width",
+      "status": "open",
+      "source": "data/preprod-interface-simple/browser-recipe.json",
+      "action": "Panneau contenu dans la largeur disponible lorsque l’en-tête revient à la ligne ; tester titres longs à 761 px et autour des points de rupture."
+    },
+    {
+      "id": "hosted-human-review",
+      "status": "pending",
+      "action": "Recueillir le retour utilisateur sur les fiches, préférences et planning après correction."
     }
   ]
 }

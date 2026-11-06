@@ -12,6 +12,11 @@ tags: [projet, suivi, guide, local]
 
 # Guide utilisateur de l'outil de suivi AVEREO Projet
 
+## Version en préproduction après #114
+
+L’interface simplifiée est disponible sur Projet préproduction depuis le 6 novembre 2026. Recharger les anciens onglets avant utilisation. Une réserve concerne le menu Projet et fichiers dans certaines fenêtres intermédiaires : s’il déborde à gauche, élargir la fenêtre en attendant son correctif. Les données des deux projets sont conservées ; la validation humaine de cette version hébergée reste distincte de son installation.
+
+
 ## Interface simple — nouveau candidat local
 
 Ces commandes appartiennent au candidat local du 6 novembre, pas encore à la préproduction #112.
