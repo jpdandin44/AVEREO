@@ -12,7 +12,7 @@ tags: [avereo, acces, documentation]
 
 ## 7 novembre 2026 — Préremplissage des ordres de mission
 
-Le candidat local génère les tâches de chaque prestation et présente les coordonnées postales et de contact du client séparément du lieu d’intervention. Les options sélectionnées ajoutent leurs propres consignes au Word. [Protocole](docs/protocole-missions.md#préparer-lordre-de-chaque-prestation).
+La PR #127 a été installée sur les sept sites de préproduction. Les quatre ordres de Projet et les quatre ordres de Coupe ont livré les consignes, les traces à conserver et les coordonnées attendues. [Recette hébergée](docs/preparation-missions.md#ordres-détaillés-de-la-pr-127-en-préproduction).
 
 ## 2026-11-06 — Correction RGA PR #122 livrée
 

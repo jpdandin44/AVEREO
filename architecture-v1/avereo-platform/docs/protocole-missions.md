@@ -84,4 +84,4 @@ Le parcours métier proposé est **brouillon → lettre relue → acceptation co
 
 Cycle du projet **Cadrage → Développement local → Préproduction → Mise en production**. L’itération se trouve en Préproduction. Son suivi référence la version fusionnée, le paquet effectivement installé et les essais des documents hébergés.
 
-[Suivi de l’itération](../data/suivi-missions.json).
+La PR #127 a ensuite livré les ordres détaillés. Les quatre prestations ont été contrôlées depuis Projet et Coupe dans Chrome. [Suivi de l’itération initiale](../data/suivi-missions.json) · [Recette des ordres détaillés en préproduction](preparation-missions.md#ordres-détaillés-de-la-pr-127-en-préproduction).

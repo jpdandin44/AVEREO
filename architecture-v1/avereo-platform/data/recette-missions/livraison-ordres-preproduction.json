@@ -1,0 +1,507 @@
+{
+  "observedAt": "2026-11-07T21:54:17.024314+00:00",
+  "environment": "seven_preproduction_targets",
+  "github": {
+    "pullRequest": 127,
+    "reviewedHead": "bef0d2337df04b5526f2daecb63d37d4813151e1",
+    "merge": "2afbdcf065d7a9fee7c868e4e3bb6116e881e7b6",
+    "mergedAt": "2026-11-07T21:25:28Z",
+    "sameReviewedTree": true,
+    "checksPassed": 22,
+    "humanChecklistConfirmed": 4
+  },
+  "authorization": {
+    "scope": "preproduction",
+    "source": "user_chat",
+    "version": "2afbdcf065d7a9fee7c868e4e3bb6116e881e7b6"
+  },
+  "artifactSha256": "60a9e103de0c9ada0521209e2fe94c890b0e8782c5ea7e2a78a5bd0f39286acf",
+  "backup": {
+    "observedAt": "2026-11-07T21:42:20+00:00",
+    "merge": "2afbdcf065d7a9fee7c868e4e3bb6116e881e7b6",
+    "artifactSha256": "60a9e103de0c9ada0521209e2fe94c890b0e8782c5ea7e2a78a5bd0f39286acf",
+    "sevenRootsVerified": true,
+    "restoredOnPrivateCopies": 12,
+    "unchangedDependencies": 2,
+    "planningFilesChecked": 17,
+    "protectedFilesChecked": 8,
+    "liveFilesModified": false
+  },
+  "deployment": {
+    "observedAt": "2026-11-07T21:42:52+00:00",
+    "status": "installed_and_verified",
+    "merge": "2afbdcf065d7a9fee7c868e4e3bb6116e881e7b6",
+    "sourceCommit": "2afbdcf065d7a9fee7c868e4e3bb6116e881e7b6",
+    "artifactSha256": "60a9e103de0c9ada0521209e2fe94c890b0e8782c5ea7e2a78a5bd0f39286acf",
+    "targets": {
+      "rapport": 4,
+      "coupe": 1,
+      "projet": 1,
+      "thermo": 3,
+      "drone": 1,
+      "connect": 1,
+      "passeport-immo": 1
+    },
+    "writes": [
+      [
+        "connect",
+        "assets/missions.js"
+      ],
+      [
+        "coupe",
+        "assets/missions.js"
+      ],
+      [
+        "drone",
+        "assets/missions.js"
+      ],
+      [
+        "passeport-immo",
+        "assets/missions.js"
+      ],
+      [
+        "projet",
+        "assets/missions.js"
+      ],
+      [
+        "rapport",
+        "assets/index-BcX38G0i.js"
+      ],
+      [
+        "rapport",
+        "assets/missions.js"
+      ],
+      [
+        "rapport",
+        "assets/reportDocx-BzTwYQST.js"
+      ],
+      [
+        "thermo",
+        "assets/index-C3PCrP9e.js"
+      ],
+      [
+        "thermo",
+        "assets/missions.js"
+      ],
+      [
+        "rapport",
+        "index.html"
+      ],
+      [
+        "thermo",
+        "index.html"
+      ]
+    ],
+    "createdConnectAssetsDirectory": false,
+    "allOtherPublicFilesPreserved": true,
+    "protectedFilesPreserved": 8,
+    "existingPlanningFilesPreserved": 17,
+    "databaseAccessed": false,
+    "productionChanged": false
+  },
+  "externalChecks": {
+    "observedAt": "2026-11-07T21:46:45.409711+00:00",
+    "filesAndAnonymousAccess": [
+      {
+        "app": "connect",
+        "path": "assets/missions.js",
+        "status": 200,
+        "matched": true,
+        "redirectHost": null,
+        "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "bytes": 536797
+      },
+      {
+        "app": "projet",
+        "path": "assets/missions.js",
+        "status": 200,
+        "matched": true,
+        "redirectHost": null,
+        "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "bytes": 536797
+      },
+      {
+        "app": "rapport",
+        "path": "assets/missions.js",
+        "status": 200,
+        "matched": true,
+        "redirectHost": null,
+        "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "bytes": 536797
+      },
+      {
+        "app": "rapport",
+        "path": "assets/index-BcX38G0i.js",
+        "status": 200,
+        "matched": true,
+        "redirectHost": null,
+        "sha256": "d8c9cf70716870e7da3ed9f32f8b840fc7da6376e494f383103670ae2df32871",
+        "bytes": 2117997
+      },
+      {
+        "app": "rapport",
+        "path": "assets/reportDocx-BzTwYQST.js",
+        "status": 200,
+        "matched": true,
+        "redirectHost": null,
+        "sha256": "335011224d84c85a60cc3bc9ce446df30b6e7ec379c2ffc6596145aea3bd0279",
+        "bytes": 399950
+      },
+      {
+        "app": "rapport",
+        "path": "index.html",
+        "status": 303,
+        "matched": null,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "sha256": null,
+        "bytes": null
+      },
+      {
+        "app": "coupe",
+        "path": "assets/missions.js",
+        "status": 200,
+        "matched": true,
+        "redirectHost": null,
+        "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "bytes": 536797
+      },
+      {
+        "app": "thermo",
+        "path": "assets/missions.js",
+        "status": 200,
+        "matched": true,
+        "redirectHost": null,
+        "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "bytes": 536797
+      },
+      {
+        "app": "thermo",
+        "path": "assets/index-C3PCrP9e.js",
+        "status": 200,
+        "matched": true,
+        "redirectHost": null,
+        "sha256": "10ef7d4803efd0bc4681ff7b744615ee1b2de0685297c5306d57af92446687ac",
+        "bytes": 646301
+      },
+      {
+        "app": "thermo",
+        "path": "index.html",
+        "status": 303,
+        "matched": null,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "sha256": null,
+        "bytes": null
+      },
+      {
+        "app": "drone",
+        "path": "assets/missions.js",
+        "status": 200,
+        "matched": true,
+        "redirectHost": null,
+        "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "bytes": 536797
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/missions.js",
+        "status": 403,
+        "matched": null,
+        "redirectHost": null,
+        "sha256": null,
+        "bytes": null
+      },
+      {
+        "app": "connect",
+        "path": "/",
+        "status": 200,
+        "matched": null,
+        "redirectHost": null,
+        "sha256": null,
+        "bytes": null
+      },
+      {
+        "app": "projet",
+        "path": "/",
+        "status": 303,
+        "matched": null,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "sha256": null,
+        "bytes": null
+      },
+      {
+        "app": "rapport",
+        "path": "/",
+        "status": 303,
+        "matched": null,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "sha256": null,
+        "bytes": null
+      },
+      {
+        "app": "coupe",
+        "path": "/",
+        "status": 303,
+        "matched": null,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "sha256": null,
+        "bytes": null
+      },
+      {
+        "app": "thermo",
+        "path": "/",
+        "status": 303,
+        "matched": null,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "sha256": null,
+        "bytes": null
+      },
+      {
+        "app": "drone",
+        "path": "/",
+        "status": 303,
+        "matched": null,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "sha256": null,
+        "bytes": null
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/",
+        "status": 303,
+        "matched": null,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "sha256": null,
+        "bytes": null
+      }
+    ]
+  },
+  "missionOrders": {
+    "status": "passed",
+    "environment": "authenticated_preproduction_desktop_chrome_windows",
+    "apps": [
+      "projet",
+      "coupe"
+    ],
+    "uniqueFictitiousClients": 8,
+    "menu": "Mon espace → Missions",
+    "embeddedEditorPath": "/legacy-app.html",
+    "tabCountBeforeAndAfter": [
+      1,
+      1
+    ],
+    "businessDossierWrites": false,
+    "wordFiles": 8,
+    "totalPages": 16,
+    "totalStepsChecked": 48,
+    "contactFields": [
+      "nom ou raison sociale",
+      "adresse postale",
+      "téléphone",
+      "e-mail",
+      "adresse distincte du site"
+    ],
+    "documents": [
+      {
+        "app": "projet",
+        "offer": "habitat-confort",
+        "wordFilename": "ordre-REC-PR127-PROJET-HABITAT-CONFORT.docx",
+        "reference": "REC-PR127-PROJET-HABITAT-CONFORT",
+        "orderedSteps": 5,
+        "pages": 2,
+        "contactMatchedInWordAndPdf": true,
+        "otherClientsAbsent": true,
+        "allInstructionsAndExpectedRecordsMatched": true,
+        "officialLogoMatched": true,
+        "wordSha256": "390a4599e4a2efa75006e0af804825f39d578b3e7b9cfa188bd46bd962f41895",
+        "pdfSha256": "35225d666ed0176d4249f027d69ca648120e4a364c23776344be989128a3c6fb"
+      },
+      {
+        "app": "projet",
+        "offer": "energie-travaux",
+        "wordFilename": "ordre-REC-PR127-PROJET-ENERGIE-TRAVAUX.docx",
+        "reference": "REC-PR127-PROJET-ENERGIE-TRAVAUX",
+        "orderedSteps": 6,
+        "pages": 2,
+        "contactMatchedInWordAndPdf": true,
+        "otherClientsAbsent": true,
+        "allInstructionsAndExpectedRecordsMatched": true,
+        "officialLogoMatched": true,
+        "wordSha256": "d03bdb69163b18f1aed43024221ae964d759c09283091f643c1dfa5e822008a2",
+        "pdfSha256": "d2a81134e3ea9f1538040a272ab33da21f8514a7cc8f0eca9c3fe466aba858a9"
+      },
+      {
+        "app": "projet",
+        "offer": "prevention-bati",
+        "wordFilename": "ordre-REC-PR127-PROJET-PREVENTION-BATI.docx",
+        "reference": "REC-PR127-PROJET-PREVENTION-BATI",
+        "orderedSteps": 6,
+        "pages": 2,
+        "contactMatchedInWordAndPdf": true,
+        "otherClientsAbsent": true,
+        "allInstructionsAndExpectedRecordsMatched": true,
+        "officialLogoMatched": true,
+        "wordSha256": "037a5ddfb3d491372cfaad5fba2417d99aebd35f4ebdc760d381d16e255fabab",
+        "pdfSha256": "00d9ed478b708e7a89ec93fa6cb23a14197a142db7fbd6ef749f12476c1a07f3"
+      },
+      {
+        "app": "projet",
+        "offer": "360-premium",
+        "wordFilename": "ordre-REC-PR127-PROJET-360-PREMIUM.docx",
+        "reference": "REC-PR127-PROJET-360-PREMIUM",
+        "orderedSteps": 7,
+        "pages": 2,
+        "contactMatchedInWordAndPdf": true,
+        "otherClientsAbsent": true,
+        "allInstructionsAndExpectedRecordsMatched": true,
+        "officialLogoMatched": true,
+        "wordSha256": "6b4cfe3fe41e77ec358365aded16f720b09af4e2b35a43a5a86e6e8d1e764e31",
+        "pdfSha256": "d84247c33e0a93fa8eb381ef3f9518f990b4b6cd882b696ad386e7f76d86cdeb"
+      },
+      {
+        "app": "coupe",
+        "offer": "habitat-confort",
+        "wordFilename": "ordre-REC-PR127-COUPE-HABITAT-CONFORT.docx",
+        "reference": "REC-PR127-COUPE-HABITAT-CONFORT",
+        "orderedSteps": 5,
+        "pages": 2,
+        "contactMatchedInWordAndPdf": true,
+        "otherClientsAbsent": true,
+        "allInstructionsAndExpectedRecordsMatched": true,
+        "officialLogoMatched": true,
+        "wordSha256": "a5b218a3638f7c72ca8c9958ebd95dc10039ace8013726e88e2c755fdd98d0f2",
+        "pdfSha256": "ff056e89779b24e34f86e5c96fa8b315e897e8f50365609ba5f5776a16cfaed4"
+      },
+      {
+        "app": "coupe",
+        "offer": "energie-travaux",
+        "wordFilename": "ordre-REC-PR127-COUPE-ENERGIE-TRAVAUX.docx",
+        "reference": "REC-PR127-COUPE-ENERGIE-TRAVAUX",
+        "orderedSteps": 6,
+        "pages": 2,
+        "contactMatchedInWordAndPdf": true,
+        "otherClientsAbsent": true,
+        "allInstructionsAndExpectedRecordsMatched": true,
+        "officialLogoMatched": true,
+        "wordSha256": "c8a40e29aacc473e1a0e2e8d9abef0a05fde9e73d35100289fb6df04ead8617d",
+        "pdfSha256": "85127bce30f1c28ca43e1b5eee8a998b101b4e8fe78363f3851ea8c38a71e601"
+      },
+      {
+        "app": "coupe",
+        "offer": "prevention-bati",
+        "wordFilename": "ordre-REC-PR127-COUPE-PREVENTION-BATI.docx",
+        "reference": "REC-PR127-COUPE-PREVENTION-BATI",
+        "orderedSteps": 6,
+        "pages": 2,
+        "contactMatchedInWordAndPdf": true,
+        "otherClientsAbsent": true,
+        "allInstructionsAndExpectedRecordsMatched": true,
+        "officialLogoMatched": true,
+        "wordSha256": "5561564e31fbe2a33e3cce887803836278398d4e0d357c1232fc283b2e1a8ffe",
+        "pdfSha256": "6e330ac495c0f3fff92f0bf0916b46634233101589c54d3aa4392897fc6b644f"
+      },
+      {
+        "app": "coupe",
+        "offer": "360-premium",
+        "wordFilename": "ordre-REC-PR127-COUPE-360-PREMIUM.docx",
+        "reference": "REC-PR127-COUPE-360-PREMIUM",
+        "orderedSteps": 7,
+        "pages": 2,
+        "contactMatchedInWordAndPdf": true,
+        "otherClientsAbsent": true,
+        "allInstructionsAndExpectedRecordsMatched": true,
+        "officialLogoMatched": true,
+        "wordSha256": "930011f6f35e9c4d55ee0628f3b456bdc237aed3828dd14b5de6ff18ec3582ca",
+        "pdfSha256": "75a21bf3451025c14d9284ff7a7078a70552cdfea83f72663f2d28d941388b57"
+      }
+    ],
+    "userArchiveSha256": "ab5ad6c6c8adcb5d120091abd48e4647ea31b11b25b832410001a0c750e4905c"
+  },
+  "testedScope": "Les quatre offres dans Projet et Coupe avec huit clients fictifs distincts. Les options facultatives n’ont pas été cochées. Un ordre contient les tâches de l’offre de base, ses consignes et les traces à consigner.",
+  "productionChanged": false,
+  "fileChecksums": [
+    {
+      "app": "connect",
+      "path": "assets/missions.js",
+      "beforeSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+      "afterSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+      "bytes": 536797
+    },
+    {
+      "app": "projet",
+      "path": "assets/missions.js",
+      "beforeSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+      "afterSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+      "bytes": 536797
+    },
+    {
+      "app": "rapport",
+      "path": "assets/missions.js",
+      "beforeSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+      "afterSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+      "bytes": 536797
+    },
+    {
+      "app": "rapport",
+      "path": "assets/index-BcX38G0i.js",
+      "beforeSha256": null,
+      "afterSha256": "d8c9cf70716870e7da3ed9f32f8b840fc7da6376e494f383103670ae2df32871",
+      "bytes": 2117997
+    },
+    {
+      "app": "rapport",
+      "path": "assets/reportDocx-BzTwYQST.js",
+      "beforeSha256": null,
+      "afterSha256": "335011224d84c85a60cc3bc9ce446df30b6e7ec379c2ffc6596145aea3bd0279",
+      "bytes": 399950
+    },
+    {
+      "app": "rapport",
+      "path": "index.html",
+      "beforeSha256": "6c1cafc9284278e0d4b25165d4e4880d3b73d926a866b5adff4af79cff4500ae",
+      "afterSha256": "0c1ea7a3cda7c050f57b52d7a5adccb0d2e4b7b9dac7034e101c0e676676c43d",
+      "bytes": 450
+    },
+    {
+      "app": "coupe",
+      "path": "assets/missions.js",
+      "beforeSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+      "afterSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+      "bytes": 536797
+    },
+    {
+      "app": "thermo",
+      "path": "assets/missions.js",
+      "beforeSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+      "afterSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+      "bytes": 536797
+    },
+    {
+      "app": "thermo",
+      "path": "assets/index-C3PCrP9e.js",
+      "beforeSha256": null,
+      "afterSha256": "10ef7d4803efd0bc4681ff7b744615ee1b2de0685297c5306d57af92446687ac",
+      "bytes": 646301
+    },
+    {
+      "app": "thermo",
+      "path": "index.html",
+      "beforeSha256": "129fd17c2f3a3209efe3dca12c3379bd2483c77baa0f2c0a290086269a3f35e3",
+      "afterSha256": "664ba34548dff837eccff52e1bf56a75d26d80373ccff7c0b7f08bf394ccedeb",
+      "bytes": 449
+    },
+    {
+      "app": "drone",
+      "path": "assets/missions.js",
+      "beforeSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+      "afterSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+      "bytes": 536797
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/missions.js",
+      "beforeSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+      "afterSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+      "bytes": 536797
+    }
+  ]
+}

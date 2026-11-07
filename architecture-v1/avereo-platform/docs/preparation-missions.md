@@ -76,6 +76,21 @@ Les scripts servis en préproduction sur les deux domaines correspondent au paqu
 
 Microsoft Word a ouvert les dix fichiers. Le passage en PDF a permis de vérifier le client fictif, les deux adresses, la référence, l’objet, l’offre et la mention de formation. Les documents contiennent le logo officiel AVEREO. Chaque ordre tient sur une page. Les lettres Habitat & Confort et Énergie & Travaux comptent cinq pages, celles de Prévention Bâti et 360 Premium en comptent six. Ce parcours fonctionne avec le paquet déjà installé. [Résultats par application et par document](../data/recette-missions/chrome-cadres.json).
 
+### Ordres détaillés de la PR #127 en préproduction
+
+Le 7 novembre 2026 à 22 h 42, heure de Paris, le paquet de la PR #127 a été installé sur les sept sites. Le serveur a comparé les douze chemins, exercé leur restauration sur copies privées, puis relu la livraison. Les 17 fichiers du planning et les huit fichiers de protection ont gardé leurs empreintes. Les points d’entrée de Rapport et de Thermo chargent les ressources correspondant au correctif des coordonnées.
+
+Depuis **Mon espace → Missions** dans les cadres de Projet et de Coupe, Google Chrome a téléchargé un Word par offre et par application en gardant le même onglet. Chaque essai utilisait un client fictif différent. Microsoft Word a ouvert les huit fichiers de deux pages. Sur la première page, le nom, le téléphone, l’e-mail et l’adresse postale correspondent à la saisie et l’adresse du site est distincte.
+
+| Prestation | Étapes présentes dans chaque ordre de Projet et de Coupe |
+| --- | ---: |
+| Habitat & Confort | 5 |
+| Énergie & Travaux | 6 |
+| Prévention Bâti | 6 |
+| 360 Premium | 7 |
+
+La seconde page a été comparée au catalogue fusionné, dans l’ordre prévu, pour chaque titre, consigne et trace à conserver. Les huit ordres ont été émis avec les tâches de base. Les fichiers Word et les PDF correspondants sont conservés en privé. [Reçu des contrôles et empreintes des huit documents](../data/recette-missions/livraison-ordres-preproduction.json).
+
 ## Mise en production
 
 À la fusion de #124, les workflows Drone et Thermo se sont arrêtés à l’étape d’autorisation du serveur avant tout transfert. Le prototype GitHub Pages s’est arrêté à sa configuration avant publication. Le candidat propose de passer ces trois workflows et celui de Projet au lancement manuel sur main avec confirmation explicite. Ces modifications prennent effet après leur fusion. Le job de production conserve son fonctionnement lors d’une publication volontaire.
