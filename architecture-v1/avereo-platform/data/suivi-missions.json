@@ -11,7 +11,7 @@
     "Mise en production"
   ],
   "phase": "Préproduction",
-  "status": "deployed_verified_with_embedded_download_reservation",
+  "status": "deployed_verified_standard_chrome",
   "scope": "Lettres et ordres depuis un dossier et recette des rapports, sur fixtures.",
   "github": {
     "repository": "jpdandin44/AVEREO",
@@ -100,10 +100,9 @@
     "Validation métier des lettres et du parcours",
     "Répertoire en ligne par organisation, droits serveur, révisions et archives",
     "Immatriculation, assurance, annexes et tarifs applicables",
-    "Remise du téléchargement depuis les cadres Projet et Coupe dans un navigateur standard",
     "Parcours sur un compte de recette distinct si exigé pour la qualification des accès"
   ],
-  "updatedAt": "2026-11-07T18:21:00.554044+00:00",
+  "updatedAt": "2026-11-07T20:16:04.829513+00:00",
   "publication": {
     "candidate": "manual_only_from_main_with_confirmation",
     "concerns": [
@@ -114,5 +113,5 @@
     ],
     "effectiveOnMain": true
   },
-  "nextAction": "Vérifier dans Chrome la remise des Word depuis les cadres de Projet et Coupe, puis relire les lettres métier en préproduction."
+  "nextAction": "Relire en préproduction le contenu métier des quatre lettres avant remise à un client."
 }

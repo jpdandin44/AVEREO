@@ -133,8 +133,172 @@
     "rootReturnsToConnectWithoutSession": true
   },
   "authenticatedChromePreproduction": {
-    "status": "pending",
-    "reason": "Le contrôle direct du navigateur Chrome n’est pas connecté. Une fenêtre Chrome authentifiée sur le portail est attendue pour qualifier le parcours hébergé."
+    "status": "passed",
+    "verifiedAt": "2026-11-07T20:13:33.621928+00:00",
+    "browser": {
+      "product": "Google Chrome",
+      "version": "156.0.8078.80",
+      "environment": "Windows desktop, session CONNECT authentifiée existante"
+    },
+    "entry": "Page principale de chaque application, puis Mon espace → Missions dans le cadre intégré",
+    "scope": "Deux séries de quatre lettres et un ordre sur données fictives. Les relevés de première installation conservent leur résultat pour le navigateur intégré de Codex.",
+    "applications": [
+      {
+        "app": "projet",
+        "windowTitle": "Projet AVEREO Pro",
+        "rootBeforeAndAfter": "https://projet-preprod.avereo.fr/",
+        "embeddedEditorPath": "/legacy-app.html",
+        "tabsBefore": 1,
+        "tabsAfter": 1,
+        "extraTabs": 0,
+        "filesFoundInDownloads": 5,
+        "letters": 4,
+        "orders": 1
+      },
+      {
+        "app": "coupe",
+        "windowTitle": "Coupe AVEREO Reno Pro",
+        "rootBeforeAndAfter": "https://coupe-preprod.avereo.fr/",
+        "embeddedEditorPath": "/legacy-app.html",
+        "tabsBefore": 5,
+        "tabsAfter": 5,
+        "extraTabs": 0,
+        "filesFoundInDownloads": 5,
+        "letters": 4,
+        "orders": 1
+      }
+    ],
+    "verification": {
+      "downloadedFiles": 10,
+      "filesOpenedInMicrosoftWord": 10,
+      "renderedPages": 46,
+      "pdfPagesNonEmpty": true,
+      "docxZipAndXmlChecked": true,
+      "fieldsCheckedInDocxAndPdf": [
+        "client",
+        "adresse du client",
+        "adresse d’intervention",
+        "référence de mission",
+        "objet",
+        "offre",
+        "société en cours de formation"
+      ],
+      "officialLogoSha256": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329"
+    },
+    "downloads": [
+      {
+        "app": "projet",
+        "kind": "order",
+        "offer": "habitat-confort",
+        "filename": "ordre-TEST-CHROME-PREPROD-PROJET-0711.docx",
+        "downloadedAtUtc": "2026-11-07T18:37:28.891393+00:00",
+        "bytes": 303634,
+        "sha256": "e1373b94d09a10f4e73c5744feab76af845a54f24e0243b5d27e3d953b055f7e",
+        "wordPages": 1,
+        "wordPdfSha256": "ee44d9ff8f04ecaa7fde55e2acfcf7daa29f47303654a99ee18188cc5e863cae"
+      },
+      {
+        "app": "projet",
+        "kind": "letter",
+        "offer": "habitat-confort",
+        "filename": "lettre-habitat-confort-TEST-CHROME-PREPROD-PROJET-0711.docx",
+        "downloadedAtUtc": "2026-11-07T18:39:03.058678+00:00",
+        "bytes": 346915,
+        "sha256": "cf6f5f7e3c76e0adb109a6c6f9909784dc264e1941f9d01a87f00c2f7924cdea",
+        "wordPages": 5,
+        "wordPdfSha256": "fc21fa4141271b1eebcbb3438cdd34953f9dec92f548b8984c39e8bd39a739c3"
+      },
+      {
+        "app": "projet",
+        "kind": "letter",
+        "offer": "energie-travaux",
+        "filename": "lettre-energie-travaux-TEST-CHROME-PREPROD-PROJET-0711.docx",
+        "downloadedAtUtc": "2026-11-07T18:41:13.073402+00:00",
+        "bytes": 347438,
+        "sha256": "0ffb520f9a63cbf9b3b53abca5f8c70a50f7f296ee947e1b1427ea66d2eabc9a",
+        "wordPages": 5,
+        "wordPdfSha256": "554ac5122107ae9193754929299d1e8508173b069ce78265910e0787b5f70d1a"
+      },
+      {
+        "app": "projet",
+        "kind": "letter",
+        "offer": "prevention-bati",
+        "filename": "lettre-prevention-bati-TEST-CHROME-PREPROD-PROJET-0711.docx",
+        "downloadedAtUtc": "2026-11-07T18:41:33.555611+00:00",
+        "bytes": 347791,
+        "sha256": "c84676631e32845e84e286477c9593c179e0f24d8d34ec927e42448c0a5d0f29",
+        "wordPages": 6,
+        "wordPdfSha256": "0f6c3a8b92e1a7e57d83c169a953180e1cd77e0fb8236f431cb84ebff6caece7"
+      },
+      {
+        "app": "projet",
+        "kind": "letter",
+        "offer": "360-premium",
+        "filename": "lettre-360-premium-TEST-CHROME-PREPROD-PROJET-0711.docx",
+        "downloadedAtUtc": "2026-11-07T18:41:44.848524+00:00",
+        "bytes": 348494,
+        "sha256": "dab7effea8daabb9add54aba54885eebda418d5cc61cc4b44b184f65ec0ca8ac",
+        "wordPages": 6,
+        "wordPdfSha256": "fa07044f914cdf6f6ef03ea59c9f17ee5405be98034f62de4244cf81c990b234"
+      },
+      {
+        "app": "coupe",
+        "kind": "order",
+        "offer": "habitat-confort",
+        "filename": "ordre-TEST-CHROME-PREPROD-COUPE-0711.docx",
+        "downloadedAtUtc": "2026-11-07T20:08:24.780685+00:00",
+        "bytes": 303670,
+        "sha256": "d7a4240999b5af944a890e50de6534fa4e427d9f18bb25e68eaae86e014d27d3",
+        "wordPages": 1,
+        "wordPdfSha256": "b830f3aa9f031d77638f7b294014013ae618b359a9d0cb4f94beb6ddc9ddeb04"
+      },
+      {
+        "app": "coupe",
+        "kind": "letter",
+        "offer": "habitat-confort",
+        "filename": "lettre-habitat-confort-TEST-CHROME-PREPROD-COUPE-0711.docx",
+        "downloadedAtUtc": "2026-11-07T20:08:31.231126+00:00",
+        "bytes": 346950,
+        "sha256": "ddcf85171c7bee4564b0fa86bd5b1ba146efca30e9a2f55d7da10f810acb3231",
+        "wordPages": 5,
+        "wordPdfSha256": "25d5aaa7edc0c5f0ffebf8086ea6f47675c680c4e6138a99f7e34a0d1107ad7b"
+      },
+      {
+        "app": "coupe",
+        "kind": "letter",
+        "offer": "energie-travaux",
+        "filename": "lettre-energie-travaux-TEST-CHROME-PREPROD-COUPE-0711.docx",
+        "downloadedAtUtc": "2026-11-07T20:08:59.907220+00:00",
+        "bytes": 347440,
+        "sha256": "03f542eae7257302dfdb50c96391b661b92ee6ffdcd50cb4d216bd770682b120",
+        "wordPages": 5,
+        "wordPdfSha256": "d37e4d1c7e9ce4aa0c90cc51857ac3cdb91fbbf3434b83c485a6a27064f0e351"
+      },
+      {
+        "app": "coupe",
+        "kind": "letter",
+        "offer": "prevention-bati",
+        "filename": "lettre-prevention-bati-TEST-CHROME-PREPROD-COUPE-0711.docx",
+        "downloadedAtUtc": "2026-11-07T20:09:11.787027+00:00",
+        "bytes": 347796,
+        "sha256": "89cf3b20935df5a5fbeb58dfaacf6fd69e26303b550ca0b1a469713e35c7dc3b",
+        "wordPages": 6,
+        "wordPdfSha256": "36796738dbc5de5292f6b426b74f025af9864e7809f78dd3ebd5d5dbdb9e3fbb"
+      },
+      {
+        "app": "coupe",
+        "kind": "letter",
+        "offer": "360-premium",
+        "filename": "lettre-360-premium-TEST-CHROME-PREPROD-COUPE-0711.docx",
+        "downloadedAtUtc": "2026-11-07T20:09:24.193753+00:00",
+        "bytes": 348494,
+        "sha256": "077ea6f6e602f54568813230c6ef209eecdec4c9f55782ca361081e4a7754725",
+        "wordPages": 6,
+        "wordPdfSha256": "4c8d58335c5ab96862543fdbe19608c12aef1bc5f798131faf73a2e45eb368d9"
+      }
+    ],
+    "wroteToBusinessRecords": false,
+    "applicationChangeRequired": false
   },
   "applicationChanged": false
 }
