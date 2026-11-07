@@ -64,3 +64,5 @@ qualifié sur composant d’impression. Aucun déploiement. [Contrat](docs/ident
 Préparation locale de quatre lettres AVEREO et d’un ordre Word depuis Mon espace. Le parcours vérifie les documents Rapport, Thermo, Drone et Passeport Immo, les citations Recherche et les formulaires Saisie unique. [Qualification](docs/preparation-missions.md).
 
 Le contrôle préalable sur les sept sites de préproduction a vérifié les 27 opérations sur copies privées. Le paquet nécessite un nouveau répertoire dans la racine publique de CONNECT. [Comparaison hébergée](docs/preparation-missions.md#comparaison-sur-lhébergement-du-7-novembre-2026).
+
+Après fusion de #125, le paquet a été livré sur les sept cibles. La recette des sept applications et de l’entrée RGA a permis de vérifier 32 lettres et huit ordres dans Word. Dans Chrome sur Windows, Projet et Coupe ont ensuite remis chacun quatre lettres et un ordre depuis leur cadre intégré, en conservant l’onglet ouvert. [Vérification des téléchargements en préproduction](docs/preparation-missions.md#vérification-des-cadres-dans-google-chrome).

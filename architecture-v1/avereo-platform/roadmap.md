@@ -34,4 +34,4 @@ la suite demandée, sans formulaire opérationnel à ce stade. [Suivi canonique]
 
 ## Missions et dossier client
 
-Le module et les quatre offres sont en revue locale après la fusion de #124. La prochaine décision porte sur le parcours de mission et les lettres métier. Le service privé de clients partagés et les préférences de l’organisation restent à cadrer. [Suivi de livraison](data/suivi-missions.json).
+Le module et les quatre offres sont installés en préproduction après la fusion de #125. Dans Chrome, les quatre lettres et un ordre ont été récupérés depuis le cadre de chacune des deux applications, Projet et Coupe. La relecture métier des lettres précède toute remise à un client. Le service privé de clients partagés et les préférences de l’organisation restent à cadrer. [Suivi de livraison](data/suivi-missions.json).
