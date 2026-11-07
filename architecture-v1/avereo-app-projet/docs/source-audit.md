@@ -15,6 +15,8 @@ tags:
 
 ## Alignement et contrôles CI — 7 novembre
 
+La première CI Linux a refusé une fixture dont le dossier assets utilisait le mode par défaut trop ouvert. La fixture crée désormais explicitement ses dossiers privés en 0700 et fichiers en 0600 ; le test POSIX élargit volontairement dossier/configuration pour vérifier les refus 503, puis rétablit les modes privés et exige 200. Aucun contrôle du runtime n'est affaibli et aucune permission réelle n'est modifiée.
+
 Report sans conflit du candidat dans une branche issue de main, copie locale antérieure préservée. Sur Windows, première qualification : 72 tests ciblés et build complet de 268 tests réussis, 22 fichiers publics sans module privé ; lint explicite de 24 fichiers PHP, suites d'autorisation 41/14 et régression CONNECT 40/40. Le premier essai sur checkout neuf a signalé le sas généré absent avant les tests : ordre corrigé puis suites relancées avec succès. Le contrôle de paquet a ensuite révélé un faux refus du fichier de code `SnapshotReader.php` par une recherche trop large : remplacement par une liste fermée de fichiers autorisés et ajout d'un test de refus des vraies données. La qualification finale est enregistrée dans le suivi canonique. [Commandes et limites CI](../workflows/ci-developpements.md). Aucun vrai compte, suivi, rôle ou hébergement modifié ; les résultats locaux ne sont pas une CI distante.
 
 ## Reprise — session Projet et préparation de préproduction

@@ -39,6 +39,8 @@ L'accès du candidat demeure réservé au propriétaire CONNECT exact, administr
 
 Le sas natif généré est préparé **avant** les tests qui l'utilisent, aussi sur checkout neuf. La construction publique reste séparée de celle du module privé.
 
+Sous POSIX, les fixtures utilisent des dossiers 0700 et fichiers 0600. Le test de configuration vérifie aussi le refus avec permissions volontairement trop ouvertes, puis la réadmission après rétablissement ; ces écritures concernent exclusivement les fichiers fictifs temporaires.
+
 ## Identité de source et sorties
 
 Le constructeur [prepare-development-preproduction.mjs](prepare-development-preproduction.mjs) relève HEAD et l'état Git avant/après construction. Si la source est propre et le HEAD inchangé, `sourceSha` vaut ce SHA et `localUncommitted:false`. Sinon `sourceSha:null` et `localUncommitted:true` ; aucune version propre n'est inventée.

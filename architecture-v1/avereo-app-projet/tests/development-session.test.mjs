@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,mkdir,readFile,writeFile,readdir,rm,realpath} from 'node:fs/promises';
+import {mkdtemp,mkdir,readFile,writeFile,readdir,rm,realpath,chmod} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve,sep} from 'node:path';
 import {createHash} from 'node:crypto';
@@ -17,6 +17,12 @@ test('configuration PHP : défaut fermé, cible préproduction, clés distinctes
  await writeFile(configFile,plan('https://projet-preprod.avereo.fr'),{mode:0o600});
  const config={enabled:true,environment:'preproduction',planning_config_file:configFile,storage_directory:f.storage,asset_directory:f.assets,project_channel_key:'P'.repeat(48),connect_authorization_url:'https://connect.fixture.invalid/api/v1/developments/authorize'};
  assert.equal(invoke({...f,action:'factory',public:web,config}).status,200);
+ if(process.platform!=='win32'){
+  await chmod(f.assets,0o755);assert.equal(invoke({...f,action:'factory',public:web,config}).status,503);
+  await chmod(f.assets,0o700);assert.equal(invoke({...f,action:'factory',public:web,config}).status,200);
+  await chmod(configFile,0o644);assert.equal(invoke({...f,action:'factory',public:web,config}).status,503);
+  await chmod(configFile,0o600);assert.equal(invoke({...f,action:'factory',public:web,config}).status,200);
+ }
  for(const change of [{enabled:false},{environment:'production'},{storage_directory:planning},{storage_directory:web},{asset_directory:planning},{asset_directory:f.storage},{project_channel_key:f.publicationKey},{project_channel_key:'G'.repeat(48)},{connect_authorization_url:'http://connect.fixture.invalid/api/v1/developments/authorize'},{connect_authorization_url:'https://connect.fixture.invalid/wrong'}]){
   assert.equal(invoke({...f,action:'factory',public:web,config:{...config,...change}}).status,503,JSON.stringify(change));
  }
@@ -25,14 +31,14 @@ test('configuration PHP : défaut fermé, cible préproduction, clés distinctes
 });
 const invoke=input=>{const p=spawnSync('php',[join(app,'tests/development-session-fixture.php')],{input:JSON.stringify(input),encoding:'utf8',windowsHide:true});assert.equal(p.status,0,p.stderr);return JSON.parse(p.stdout);};
 async function setup(t){
-  const root=await mkdtemp(join(tmpdir(),'projet-session-fixture-')),storage=join(root,'storage'),assets=join(root,'assets');await mkdir(storage);await mkdir(assets);
+  const root=await mkdtemp(join(tmpdir(),'projet-session-fixture-')),storage=join(root,'storage'),assets=join(root,'assets');await mkdir(storage,{mode:0o700});await mkdir(assets,{mode:0o700});
   const entries=(await createDevelopmentFixture(join(root,'sources'))).map(e=>({...e,writable:false}));
   const registry={schema:'development-portfolio-registry',entries,applications:entries.map(e=>({id:e.id,name:e.application}))};
   const key='K'.repeat(64),data=await exportDevelopmentSnapshot(registry,{sequence:1,proofSelection:[{iterationId:'demo-formulaire',proofId:'demo-parcours'}]});
   const store=await openDevelopmentSnapshotStore({directory:storage,key});await store.importSnapshot(sealDevelopmentSnapshot(data,key));
   const assetBytes={'index.html':'<!doctype html><html lang="fr">Fixture privée</html>','test.js':'console.log("fixture");','test.css':'body{color:black}'};
-  for(const [n,b]of Object.entries(assetBytes))await writeFile(join(assets,n),b);
-  await writeFile(join(assets,'assets.json'),JSON.stringify(Object.fromEntries(Object.entries(assetBytes).map(([n,b])=>[n,hash(b)]))));
+  for(const [n,b]of Object.entries(assetBytes))await writeFile(join(assets,n),b,{mode:0o600});
+  await writeFile(join(assets,'assets.json'),JSON.stringify(Object.fromEntries(Object.entries(assetBytes).map(([n,b])=>[n,hash(b)]))),{mode:0o600});
   const before=await Promise.all(entries.map(e=>readFile(join(e.root,e.file),'utf8')));
   t.after(async()=>{assert.deepEqual(await Promise.all(entries.map(e=>readFile(join(e.root,e.file),'utf8'))),before);assert.ok(resolve(root).startsWith(resolve(tmpdir())+sep)&&root.includes('projet-session-fixture-'));await rm(root,{recursive:true,force:true});});
   return{root,storage,assets,publicationKey:key,store,entries};
