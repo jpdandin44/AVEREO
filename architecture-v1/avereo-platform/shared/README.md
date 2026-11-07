@@ -31,3 +31,7 @@ formate les lignes non vides pour les quatre générateurs existants. Les champs
 d’immatriculation, TVA, assurance et mentions complémentaires sont préparés et
 restent masqués quand ils sont vides. Aucune écriture par utilisateur n’est exposée.
 [Contrat d’organisation et portée locale](../docs/identite-livrables.md).
+
+## Sources de Mon espace → Missions
+
+Le composant mission-workspace.js produit les Word et mission-dossier.js relie les applications à leur dossier courant. Le module chargé à la demande embarque JSZip 3.10.1, déjà utilisé par le générateur Word Rapport. La distribution et la licence sont conservées dans [vendor/jszip](vendor/jszip). Saisie unique embarque le module à la compilation pour fonctionner hors ligne. [Protocole](../docs/protocole-missions.md).

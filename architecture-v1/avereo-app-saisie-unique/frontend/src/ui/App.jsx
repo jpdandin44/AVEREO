@@ -1,5 +1,7 @@
 // Coque de l'application : bandeau « Données fictives » permanent (T21), navigation, vues.
 import { ConfirmationDialogue } from './Dialogue.jsx';
+import { useEffect } from 'react';
+import { useMissionDossier } from '../../../../avereo-platform/shared/mission-dossier.js';
 import { useActions, useStore } from './contexte.js';
 import { ListeDossiers, VueDossier, VueParametres, VueRatios } from './Vues.jsx';
 
@@ -15,6 +17,12 @@ export function App() {
   const actions = useActions();
   const dossier = ui.dossierId ? donnees.dossiers[ui.dossierId] : null;
   const vue = ui.vue === 'dossier' && !dossier ? 'liste' : ui.vue;
+  const fiche = vue === 'dossier' ? dossier.valeurs : null;
+  useMissionDossier(useEffect, fiche ? {label:'Dossier fictif · Saisie unique',fields:{
+    referenceDossier:dossier.id, client:[fiche.prop_prenom,fiche.prop_nom].filter(Boolean).join(' '),
+    email:fiche.prop_email, telephone:fiche.prop_telephone, adresseClient:fiche.prop_adresse_differente,
+    adresseBien:[fiche.log_adresse,fiche.log_cp,fiche.log_commune].filter(Boolean).join(' '),
+  }} : {label:'Mission fictive · Saisie unique',fields:{}});
   return (
     <>
       <p className="bandeau-fictif" role="note"><strong>Données fictives — ne saisir aucune donnée réelle.</strong></p>

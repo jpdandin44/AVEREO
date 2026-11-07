@@ -75,6 +75,7 @@ interface OpsData {
 }
 
 interface Mission {
+  missionBrief?: Record<string,string>;
   id: string;
   client: string;
   site_name: string;
@@ -133,7 +134,7 @@ const EXTERNAL_LINKS = [
 const dronePreferences = [{"key": "sort", "label": "Ordre des missions", "type": "select", "default": "recent", "options": [{"value": "recent", "label": "Plus récentes en premier"}, {"value": "site", "label": "Nom du site, de A à Z"}]}, {"key": "archived", "label": "Afficher les missions archivées", "type": "checkbox", "default": true}];
 
 // 1. DASHBOARD COMPONENT
-const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
+const Dashboard = ({ missions, onCreate, onEdit, onDelete, onPrint }: any) => {
   const preferences = useAppPreferences('drone', dronePreferences, { useState, useEffect });
   const visibleMissions = missions.filter((m: Mission) => preferences.archived || m.status !== 'ARCHIVED').slice().sort((a: Mission,b: Mission) => preferences.sort === 'site' ? String(a.site_name || '').localeCompare(String(b.site_name || ''), 'fr') : (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
   const getStatusColor = (status: MissionStatus) => {
@@ -201,6 +202,9 @@ const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
               <button onClick={() => onEdit(m)} className="text-sm font-medium text-indigo-600 hover:text-indigo-800">
                 Ouvrir le dossier
               </button>
+              <button onClick={() => onPrint(m)} className="flex items-center gap-1 text-sm font-medium text-indigo-600 hover:text-indigo-800">
+                <Printer size={16} aria-hidden="true" /> Ordre de mission
+              </button>
               <button onClick={() => onDelete(m.id)} className="text-slate-400 hover:text-red-600 transition-colors">
                 <Trash2 size={16} />
               </button>
@@ -215,6 +219,12 @@ const Dashboard = ({ missions, onCreate, onEdit, onDelete }: any) => {
 // 2. WIZARD / MISSION EDITOR
 const MissionEditor = ({ mission: initialData, onSave, onCancel, onProjects }: any) => {
   const [mission, setMission] = useState<Mission>(initialData);
+  useMissionDossier(useEffect, {
+    label: 'Mission Drone · '+(mission.client || mission.type),
+    fields: {...mission.missionBrief,client:mission.client,adresseBien:mission.address,date:mission.date,referenceDossier:mission.id},
+    apply: (values: Record<string,string>) => setMission(previous => ({...previous,
+      client:values.client,address:values.adresseBien,date:values.date,missionBrief:missionDetails(values,true)})),
+  });
   const [step, setStep] = useState(1);
   const [showLinks, setShowLinks] = useState(false);
 
@@ -628,16 +638,12 @@ const MissionEditor = ({ mission: initialData, onSave, onCancel, onProjects }: a
 
 // 3. PRINT VIEW
 const PrintView = ({ mission, onClose }: any) => {
-  useEffect(() => {
-    // Auto-trigger print
-    setTimeout(() => window.print(), 500);
-  }, []);
-
   return (
     <div className="bg-white min-h-screen p-8 text-black print-container relative">
-      <button onClick={onClose} className="fixed top-4 right-4 bg-red-600 text-white px-4 py-2 rounded shadow print:hidden">
-         Fermer l'aperçu
-      </button>
+      <nav data-print-controls aria-label="Actions de l’ordre de mission" className="flex justify-end gap-3 mb-4 print:hidden">
+        <button onClick={onClose} className="border px-4 py-2 rounded">Mes missions</button>
+        <button onClick={() => window.print()} className="bg-indigo-600 text-white px-4 py-2 rounded">Imprimer ou enregistrer en PDF</button>
+      </nav>
 
       <div className="max-w-[21cm] mx-auto border border-gray-200 p-8 print:border-0 print:p-0">
          <div className="flex justify-between items-end border-b-2 border-slate-900 pb-4 mb-8">
@@ -656,6 +662,7 @@ const PrintView = ({ mission, onClose }: any) => {
          <div className="grid grid-cols-2 gap-8 mb-8">
             <div className="border p-4 rounded bg-slate-50 print:bg-white print:border-slate-300">
                <h3 className="font-bold border-b pb-2 mb-2">CLIENT & LIEU</h3>
+               {missionContactLines(mission.missionBrief).map(([label,value]) => <p key={label}><b>{label} :</b> {value}</p>)}
                <p><span className="text-slate-500 text-sm">Client:</span> {mission.client}</p>
                <p><span className="text-slate-500 text-sm">Adresse:</span> {mission.address}</p>
                <p><span className="text-slate-500 text-sm">Type:</span> {mission.type}</p>
@@ -761,22 +768,16 @@ export default function App() {
 
   const handleSave = (mission: Mission) => {
     if (!persistMissions(updatedMissions(mission))) return;
-    // Check if we want to print or just go back
-    if (confirm('Mission sauvegardée. Voulez-vous imprimer la fiche mission PDF maintenant ?')) {
-      setCurrentMission(mission);
-      setView('print');
-    } else {
-      setView('dashboard');
-    }
+    setView('dashboard');
   };
 
   return (
     <div className="min-h-screen bg-slate-100 font-sans text-slate-900">
        <style>{`
         @media print {
-          .print:hidden { display: none !important; }
+          [data-print-controls] { display: none !important; }
           body { background: white; }
-          .print-container { padding: 0; }
+          .print-container { padding: 0; min-height: 0; }
         }
       `}</style>
 
@@ -786,6 +787,7 @@ export default function App() {
           missions={missions} 
           onCreate={handleCreate} 
           onEdit={handleEdit} 
+          onPrint={(mission: Mission) => { setCurrentMission(mission); setView('print'); }}
           onDelete={handleDelete} 
         />
       )}
@@ -808,3 +810,4 @@ export default function App() {
     </div>
   );
 }
+import { useMissionDossier, missionDetails, missionContactLines } from '../../../avereo-platform/shared/mission-dossier.js';

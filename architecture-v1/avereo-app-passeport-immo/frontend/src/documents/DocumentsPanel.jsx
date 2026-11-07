@@ -68,12 +68,14 @@ function DocumentCard({ document, bienId, repository, onSaved, onOpen, busy }) {
   </article>;
 }
 
-export default function DocumentsPanel({ bien, repository = documentRepository }) {
+export default function DocumentsPanel({ bien, repository = documentRepository, onClient }) {
   const [data, setData] = useState(initial), [loading, setLoading] = useState(true), [busy, setBusy] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const [clientId, setClientId] = useState(''), [clientName, setClientName] = useState(''), [category, setCategory] = useState('autres');
   const [search, setSearch] = useState(''), [filter, setFilter] = useState(''), [archived, setArchived] = useState(false), [selected, setSelected] = useState(null);
   const filesRef = useRef(), folderRef = useRef();
   const bienId = String(bien.id);
+  useMissionDossier(useEffect,{label:'Bien ouvert · '+bien.address,fields:{referenceDossier:bienId,client:data.client?.name || '',adresseBien:bien.address}});
+  useEffect(() => { onClient?.({bienId,name:data.client?.name || ''}); },[bienId,data.client,onClient]);
   async function reload() { const next = await repository.load(bienId); setData(next); }
   useEffect(() => {
     let active = true; setLoading(true); setData(initial); setSelected(null); setError(''); setNotice('');
@@ -134,3 +136,4 @@ export default function DocumentsPanel({ bien, repository = documentRepository }
     {selected && <DocumentReader document={selected} bienId={bienId} repository={repository} onClose={() => setSelected(null)} />}
   </section>;
 }
+import { useMissionDossier } from '../../../../avereo-platform/shared/mission-dossier.js';

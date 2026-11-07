@@ -1,0 +1,182 @@
+{
+  "sourceCommit": "02d3edfdc4fe993961a12a5d09bb60dab4c0de62",
+  "merge124": "1d483e8419f16bd34fc4809cc2e72a9065a6a2a7",
+  "priorPayloadSha256": "14e1983cc97e113d4238e0f3ffb1f2fc6a2e7d755eeba82dd76a038b45ab359b",
+  "artifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82",
+  "rapportOnlineSync": true,
+  "preparedAt": "2026-11-07T10:34:44.003951+00:00",
+  "localRecovery": "passed_on_reference_copies",
+  "targets": {
+    "connect": "/home/daje3540/connect-preprod.avereo.fr/public",
+    "projet": "/home/daje3540/projet-preprod.avereo.fr",
+    "rapport": "/home/daje3540/rapport-preprod.avereo.fr",
+    "coupe": "/home/daje3540/coupe-preprod.avereo.fr",
+    "thermo": "/home/daje3540/thermo-preprod.avereo.fr",
+    "drone": "/home/daje3540/drone-preprod.avereo.fr",
+    "passeport-immo": "/home/daje3540/passeport-immo-preprod.avereo.fr/public"
+  },
+  "files": [
+    {
+      "app": "connect",
+      "path": "account-menu.js",
+      "beforeSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "afterSha256": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d"
+    },
+    {
+      "app": "connect",
+      "path": "assets/missions.js",
+      "beforeSha256": null,
+      "afterSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c"
+    },
+    {
+      "app": "projet",
+      "path": "account-menu.js",
+      "beforeSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "afterSha256": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d"
+    },
+    {
+      "app": "projet",
+      "path": "assets/missions.js",
+      "beforeSha256": null,
+      "afterSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c"
+    },
+    {
+      "app": "projet",
+      "path": "project-workspace.js",
+      "beforeSha256": "43e2362793e804240b000d2879a14f7e1c187f950feae63231d7aa3daf396b5e",
+      "afterSha256": "756b19566003180325ce68337348db9c7d089f72f462453d9195617d920626c7"
+    },
+    {
+      "app": "rapport",
+      "path": "account-menu.js",
+      "beforeSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "afterSha256": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d"
+    },
+    {
+      "app": "rapport",
+      "path": "assets/missions.js",
+      "beforeSha256": null,
+      "afterSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c"
+    },
+    {
+      "app": "rapport",
+      "path": "index.html",
+      "beforeSha256": "1420f31f8d350c1120bd167316885cd29ccad320905dc053192b753ac960d589",
+      "afterSha256": "6c1cafc9284278e0d4b25165d4e4880d3b73d926a866b5adff4af79cff4500ae"
+    },
+    {
+      "app": "rapport",
+      "path": "assets/index-Cnrdg0Ug.js",
+      "beforeSha256": null,
+      "afterSha256": "aa8c8e6538fd89d9a1a053d9315ca8c9063517dba16a091c1dcb6555b4457ddd"
+    },
+    {
+      "app": "rapport",
+      "path": "assets/reportDocx-CQsSDwF-.js",
+      "beforeSha256": null,
+      "afterSha256": "a66726983c22106bd9f61a97b6dea79d1c4e836cc6dd8c33f3bda8d6912b49bc"
+    },
+    {
+      "app": "coupe",
+      "path": "account-menu.js",
+      "beforeSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "afterSha256": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d"
+    },
+    {
+      "app": "coupe",
+      "path": "assets/missions.js",
+      "beforeSha256": null,
+      "afterSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c"
+    },
+    {
+      "app": "coupe",
+      "path": "legacy-app.html",
+      "beforeSha256": "2ab01ef8aa78333c4152289bbca05a1bf7e43cc2a0298843eff4cce45c671f0c",
+      "afterSha256": "da87d0ab7fcf7346aa79fbb186a06157e826a12b9dbecd9098b36daa583b2735"
+    },
+    {
+      "app": "thermo",
+      "path": "account-menu.js",
+      "beforeSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "afterSha256": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d"
+    },
+    {
+      "app": "thermo",
+      "path": "assets/missions.js",
+      "beforeSha256": null,
+      "afterSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c"
+    },
+    {
+      "app": "thermo",
+      "path": "index.html",
+      "beforeSha256": "0ba45f57f40a26b051f2f7f8233b6bc41648c99bc0f10753193e7712b2f0c13e",
+      "afterSha256": "129fd17c2f3a3209efe3dca12c3379bd2483c77baa0f2c0a290086269a3f35e3"
+    },
+    {
+      "app": "thermo",
+      "path": "assets/index-CF-A1gv5.js",
+      "beforeSha256": null,
+      "afterSha256": "4141fd9fda3982e3fc5a8b31adefa493eb9de504a157ac418aa8a45619976c0d"
+    },
+    {
+      "app": "drone",
+      "path": "account-menu.js",
+      "beforeSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "afterSha256": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d"
+    },
+    {
+      "app": "drone",
+      "path": "assets/missions.js",
+      "beforeSha256": null,
+      "afterSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c"
+    },
+    {
+      "app": "drone",
+      "path": "index.html",
+      "beforeSha256": "e1ec1d53af78b7bb09079568384d30330a0febeb54f48cc135bb9325d1183552",
+      "afterSha256": "8d83a68739ce703ffb69757bc35971afe46b0f0b9b13d5754809c0f364fa6f2d"
+    },
+    {
+      "app": "drone",
+      "path": "assets/index-8Kik6olk.css",
+      "beforeSha256": null,
+      "afterSha256": "9be3f788b488143b616326d2d7db8a9e7c1185a4fd38a7e31f14f405511e2611"
+    },
+    {
+      "app": "drone",
+      "path": "assets/index-DQ8wBXLR.js",
+      "beforeSha256": null,
+      "afterSha256": "af0d4f2aacdb442ce357f9f9f613f9f4baedd12ad707398bef402b1ac9e9dffe"
+    },
+    {
+      "app": "passeport-immo",
+      "path": "account-menu.js",
+      "beforeSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "afterSha256": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d"
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/missions.js",
+      "beforeSha256": null,
+      "afterSha256": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c"
+    },
+    {
+      "app": "passeport-immo",
+      "path": "index.html",
+      "beforeSha256": "d7de76ddee71ab97f2334533ee59cbbe19f14de3021c306d364ba9ec9fe473f8",
+      "afterSha256": "9223acaaf633e8ac62d731645fc06c37147b011027dc5fa42cbae763738c0f94"
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/index-DqKYBoXk.js",
+      "beforeSha256": null,
+      "afterSha256": "19db4f854fc0c4a65db3a278edb8fb9ff2601bed61a76cd2c24066986d5cdb24"
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/index.es-DluhI5Jn.js",
+      "beforeSha256": null,
+      "afterSha256": "06301f54f531bad60d23c3f2fb0c82dd22c7a78b30e0a1aaf33f0a3237f89b9f"
+    }
+  ]
+}

@@ -5,6 +5,7 @@ import { build } from 'esbuild';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { buildMissionScript } from '../../../../.github/scripts/build-mission-script.mjs';
 
 const racine = join(dirname(fileURLToPath(import.meta.url)), '..');
 const paquet = JSON.parse(readFileSync(join(racine, 'package.json'), 'utf-8'));
@@ -42,7 +43,7 @@ const html = `<!doctype html>
 </head>
 <body>
 <div id="app"></div>
-${injection}<script>${sur(js)}</script>
+${injection}<script>${sur((await buildMissionScript()).toString('utf8'))}</script><script>${sur(js)}</script>
 </body>
 </html>
 `;

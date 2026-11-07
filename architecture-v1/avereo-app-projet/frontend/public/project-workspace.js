@@ -3,6 +3,12 @@
     'use strict';
     const el = id => document.getElementById(id);
     let catalog = null, tab = 'projects', busy = false, imported = null;
+    document.addEventListener('avereo-mission-context', event => {
+        if (!window.ProjetOnline?.ready) return;
+        const project = catalog?.projects.find(item => item.id === window.ProjetOnline.projectId);
+        if (project) event.detail.provide({label:'Projet ouvert · '+project.name+
+            (project.client ? ' · Client / référence : '+project.client : ''), fields:{referenceDossier:project.id}});
+    });
     const localPreferenceKey = 'avereo.projet.preferences.v1';
     function status(text, error = false) {
         el('workspace-status').textContent = text;

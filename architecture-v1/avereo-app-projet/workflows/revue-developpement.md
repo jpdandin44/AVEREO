@@ -5,7 +5,7 @@ title: Revue locale et workflow de développement de Projet
 status: active
 version: git
 created: 2026-09-24
-updated: 2026-09-24
+updated: 2026-11-07
 owner: jpdandin
 tags: [projet, revue, local]
 ---
@@ -133,7 +133,7 @@ exécute ce même build ; aucun workflow GitHub n'est modifié par ce lot.
    de `feat/projet-planning-local` : cibler cette base tant que son lot n'est
    pas intégré, ou réaligner explicitement après son intégration.
 8. Faire valider la PR puis obtenir l'accord de fusion/publication applicable.
-   Un push sur `main` peut déclencher le déploiement Projet existant.
+   La livraison publique proposée se déclenche manuellement après la revue de la préproduction et l’accord du responsable.
 
 Une approbation dans Projet ne coche pas de case GitHub, ne crée pas de PR,
 ne commite pas, ne fusionne pas et ne publie pas. Les commandes de revue

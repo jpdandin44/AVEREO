@@ -5,7 +5,7 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
@@ -280,3 +280,7 @@ Le portail appelle toujours deux opérations distinctes. Le pont de provisionnem
 Le portail PHP ajoute ses préférences de tri et de visibilité du catalogue, enregistrées dans ce navigateur. Mon compte et Mes applications restent les destinations communes ; CONNECT ne possède pas de rubrique Mes projets. Aucun contrôle de droit ni parcours d’activation n’est modifié.
 
 Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.
+
+## 7 novembre 2026 — Module Missions en recette locale
+
+Le portail expose la génération autonome de mission depuis Mon espace. Le candidat ne modifie aucune route de compte, aucun rôle et aucune attribution d’application. [Recette commune](../../avereo-platform/docs/preparation-missions.md).

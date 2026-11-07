@@ -318,3 +318,7 @@ Le responsable fournit les informations de société en formation. L’export aj
 les lignes non vides du profil commun sous le logo ; données métier et stockage
 inchangés. Les champs futurs sont préparés sans formulaire d’administration.
 [Preuves actuelles et réserves](../../avereo-platform/docs/identite-livrables.md).
+
+## 7 novembre 2026 — Module Missions en recette locale
+
+La fiche ouverte fournit client, site, référence et date. Le reporter met à jour le formulaire. Les deux restitutions Word, dans chacun des deux types de rapport testés, conservent la séparation entre données expert et synthèse client. [Recette commune](../../avereo-platform/docs/preparation-missions.md).

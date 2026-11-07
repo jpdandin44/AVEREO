@@ -31,3 +31,7 @@ et rendus ; en-tête Drone inspecté sur fixture. Le parcours d’impression Dro
 à terminer avant livraison. Les champs d’immatriculation vides sont prêts pour une
 mise à jour future. La configuration par administrateur d’organisation constitue
 la suite demandée, sans formulaire opérationnel à ce stade. [Suivi canonique](data/suivi-identite-livrables.json).
+
+## Missions et dossier client
+
+Le module et les quatre offres sont en revue locale après la fusion de #124. La prochaine décision porte sur le parcours de mission et les lettres métier. Le service privé de clients partagés et les préférences de l’organisation restent à cadrer. [Suivi de livraison](data/suivi-missions.json).

@@ -1,0 +1,372 @@
+{
+  "environment": "hosted_preproduction_preflight",
+  "mode": "read_active_files_and_rehearse_on_private_copies",
+  "observedAt": "2026-11-07T11:50:13.334563+00:00",
+  "privateRehearsalAt": "2026-11-07T11:48:26.998114+00:00",
+  "directoryRehearsalAt": "2026-11-07T11:51:33.854515+00:00",
+  "candidate": {
+    "pr": 125,
+    "reviewedHead": "e1ce8c7a619caa6c3887ca2a45a6ccb76882022a",
+    "sourceCommit": "02d3edfdc4fe993961a12a5d09bb60dab4c0de62",
+    "artifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82",
+    "manifest": "selection-preproduction.json"
+  },
+  "receipt": {
+    "archiveSha256": "2c79a902748b49af206b04707f1b3ec3910719aaa0c12616ef11ca07463df429",
+    "memberSha256": {
+      "rehearsal.json": "d6f932d7b560206e47a5c32e7db3081e5f927a6d2183953d2fc59398f87e6b86",
+      "directory-rehearsal.json": "9b2fd843e1e079a71456ca598ad5f1da7d19881d6169269cd55b8eb618ed234d",
+      "comparison-final.json": "d787373f8e6c71f99cfdf53a913f1a6e24bfe1dfd43c0667cf40d13e0cffda36"
+    },
+    "privateInterpreter": "Python 3.11.18",
+    "entryPoint": "prepare_mission_delivery.py rehearse"
+  },
+  "totals": {
+    "verifiedDocumentRoots": 7,
+    "scopedFiles": 27,
+    "expectedExisting": 13,
+    "expectedAbsent": 14,
+    "unexpectedDifferences": 0,
+    "unchangedDependencies": 6,
+    "missingParentDirectories": 1
+  },
+  "perTarget": {
+    "connect": {
+      "domain": "connect-preprod.avereo.fr",
+      "documentRootConfirmed": true,
+      "replace": 1,
+      "create": 1
+    },
+    "projet": {
+      "domain": "projet-preprod.avereo.fr",
+      "documentRootConfirmed": true,
+      "replace": 2,
+      "create": 1
+    },
+    "rapport": {
+      "domain": "rapport-preprod.avereo.fr",
+      "documentRootConfirmed": true,
+      "replace": 2,
+      "create": 3
+    },
+    "coupe": {
+      "domain": "coupe-preprod.avereo.fr",
+      "documentRootConfirmed": true,
+      "replace": 2,
+      "create": 1
+    },
+    "thermo": {
+      "domain": "thermo-preprod.avereo.fr",
+      "documentRootConfirmed": true,
+      "replace": 2,
+      "create": 2
+    },
+    "drone": {
+      "domain": "drone-preprod.avereo.fr",
+      "documentRootConfirmed": true,
+      "replace": 2,
+      "create": 3
+    },
+    "passeport-immo": {
+      "domain": "passeport-immo-preprod.avereo.fr",
+      "documentRootConfirmed": true,
+      "replace": 2,
+      "create": 3
+    }
+  },
+  "observedFiles": [
+    {
+      "app": "connect",
+      "path": "account-menu.js",
+      "action": "replace",
+      "observedSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "connect",
+      "path": "assets/missions.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": false
+    },
+    {
+      "app": "projet",
+      "path": "account-menu.js",
+      "action": "replace",
+      "observedSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "projet",
+      "path": "assets/missions.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "projet",
+      "path": "project-workspace.js",
+      "action": "replace",
+      "observedSha256": "43e2362793e804240b000d2879a14f7e1c187f950feae63231d7aa3daf396b5e",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "rapport",
+      "path": "account-menu.js",
+      "action": "replace",
+      "observedSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "rapport",
+      "path": "assets/missions.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "rapport",
+      "path": "index.html",
+      "action": "replace",
+      "observedSha256": "1420f31f8d350c1120bd167316885cd29ccad320905dc053192b753ac960d589",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "rapport",
+      "path": "assets/index-Cnrdg0Ug.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "rapport",
+      "path": "assets/reportDocx-CQsSDwF-.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "coupe",
+      "path": "account-menu.js",
+      "action": "replace",
+      "observedSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "coupe",
+      "path": "assets/missions.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "coupe",
+      "path": "legacy-app.html",
+      "action": "replace",
+      "observedSha256": "2ab01ef8aa78333c4152289bbca05a1bf7e43cc2a0298843eff4cce45c671f0c",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "thermo",
+      "path": "account-menu.js",
+      "action": "replace",
+      "observedSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "thermo",
+      "path": "assets/missions.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "thermo",
+      "path": "index.html",
+      "action": "replace",
+      "observedSha256": "0ba45f57f40a26b051f2f7f8233b6bc41648c99bc0f10753193e7712b2f0c13e",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "thermo",
+      "path": "assets/index-CF-A1gv5.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "drone",
+      "path": "account-menu.js",
+      "action": "replace",
+      "observedSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "drone",
+      "path": "assets/missions.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "drone",
+      "path": "index.html",
+      "action": "replace",
+      "observedSha256": "e1ec1d53af78b7bb09079568384d30330a0febeb54f48cc135bb9325d1183552",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "drone",
+      "path": "assets/index-8Kik6olk.css",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "drone",
+      "path": "assets/index-DQ8wBXLR.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "passeport-immo",
+      "path": "account-menu.js",
+      "action": "replace",
+      "observedSha256": "93e0c41d750dec1a897156adedf92045439ea6e28559acf000dc5d32ce892ae5",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/missions.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "passeport-immo",
+      "path": "index.html",
+      "action": "replace",
+      "observedSha256": "d7de76ddee71ab97f2334533ee59cbbe19f14de3021c306d364ba9ec9fe473f8",
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/index-DqKYBoXk.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/index.es-DluhI5Jn.js",
+      "action": "create",
+      "observedSha256": null,
+      "privateBackupAndRestorationMatch": true,
+      "liveStateUnchanged": true,
+      "parentDirectoryExists": true
+    }
+  ],
+  "unchangedDependencies": [
+    {
+      "app": "rapport",
+      "path": "assets/index-BLjkqStP.css",
+      "observedSha256": "0773a8939f9566c654cf6b9fd72592b85c08d835b94e7662bd8c8973861d587a",
+      "matchesQualifiedAsset": true
+    },
+    {
+      "app": "thermo",
+      "path": "assets/index-2n39KD4j.css",
+      "observedSha256": "fcad423882e4800d535462bfe65f798c207b0b93992e37599230b77c676385f7",
+      "matchesQualifiedAsset": true
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/index-fk-lVGaB.css",
+      "observedSha256": "68dd15b38ad538b8f690359bf43b6cf7b7492ad351e2f0dc62c283a6dd4890c4",
+      "matchesQualifiedAsset": true
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/pdf-WgYdDwYK.js",
+      "observedSha256": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+      "matchesQualifiedAsset": true
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/pdf.worker.min-CjEcRF4W.mjs",
+      "observedSha256": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+      "matchesQualifiedAsset": true
+    },
+    {
+      "app": "passeport-immo",
+      "path": "assets/purify.es-BwoZCkIS.js",
+      "observedSha256": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+      "matchesQualifiedAsset": true
+    }
+  ],
+  "requiredDirectory": {
+    "app": "connect",
+    "relativePath": "assets",
+    "requiredFor": "assets/missions.js",
+    "stateWhenChecked": "absent",
+    "privateCreationAndRollbackVerified": true,
+    "foreignFilePreservedOnRollback": true,
+    "installation": "Créer le répertoire public assets s’il est encore absent et consigner sa création. Le retirer au retour arrière uniquement si la livraison l’a créé et s’il est vide."
+  },
+  "liveFilesModified": false,
+  "deploymentPerformed": false,
+  "hostedFunctionalTestPerformed": false
+}

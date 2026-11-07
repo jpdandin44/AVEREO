@@ -6,7 +6,7 @@
   "owner": "jpdandin",
   "kind": "application",
   "stage": "development",
-  "status": "local_candidate_with_reservations",
+  "status": "merged_followup_in_local_qualification",
   "phases": [
     "Cadrage",
     "Développement local",
@@ -34,9 +34,14 @@
     "branch": "feat/livrables-identite-avereo-20261106",
     "base": "docs/rga-livraison-pr122-20261106",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/124",
-    "merged": false,
+    "merged": true,
     "dependsOnPr": "https://github.com/jpdandin44/AVEREO/pull/123",
-    "draft": true
+    "draft": false,
+    "mergeBase": "main",
+    "baseBeforeMerge": "efd108f6fc1e3aa621a11c0e0c08067303996ec2",
+    "mergedAt": "2026-11-07T08:52:41Z",
+    "headSha": "cc336fff75bacf723766879caa79f36fd4021dd3",
+    "mergeSha": "1d483e8419f16bd34fc4809cc2e72a9065a6a2a7"
   },
   "checks": [
     {
@@ -76,20 +81,21 @@
       "status": "specified_not_implemented"
     }
   ],
-  "blockers": [
-    {
-      "id": "drone-full-print-recipe",
-      "impact": "Dialogue et sortie PDF du parcours Drone encore non qualifiés",
-      "nextAction": "Terminer la recette d’impression sur fixture avant livraison"
-    }
-  ],
-  "nextAction": "Terminer le parcours d’impression Drone puis préparer la livraison distincte de ce candidat. Immatriculation à compléter quand fournie ; service d’organisation avec droits administrateur encore à implémenter.",
-  "knownLimitations": [
-    {
-      "id": "thermo-historical-word",
-      "impact": "Sommaire à actualiser dans Word ; signature textuelle de test rendue comme image invalide",
-      "nextAction": "Traiter le rendu de signature dans un lot Thermo distinct ; code de signature non modifié ici"
-    }
-  ],
-  "updatedAt": "2026-11-06T23:39:08.589477+00:00"
+  "nextAction": "Revoir la préparation Missions et ses sorties. Renseigner ultérieurement les références d’immatriculation. Le service de préférences administrateur reste à réaliser.",
+  "updatedAt": "2026-11-07T10:16:20.569988+00:00",
+  "historicalReservations": {
+    "atPr124": [
+      {
+        "id": "drone-full-print-recipe",
+        "impact": "Dialogue et sortie PDF du parcours Drone encore non qualifiés",
+        "nextAction": "Terminer la recette d’impression sur fixture avant livraison"
+      },
+      {
+        "id": "thermo-historical-word",
+        "impact": "Sommaire à actualiser dans Word ; signature textuelle de test rendue comme image invalide",
+        "nextAction": "Traiter le rendu de signature dans un lot Thermo distinct ; code de signature non modifié ici"
+      }
+    ],
+    "followUp": "suivi-missions.json"
+  }
 }

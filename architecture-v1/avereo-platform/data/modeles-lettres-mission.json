@@ -1,0 +1,36 @@
+{
+  "modeleMaitre": {
+    "fichier": "AVEREO_Lettres_de_Mission_Modele_Maitre_V1.0_2026-08-02.docx",
+    "sha256": "43f64e0c6cf4b1316f15a7b4d7705fba66b1a0473b602d9f5ccaa97d7ef9c871"
+  },
+  "offres": [
+    {
+      "id": "habitat-confort",
+      "nom": "Habitat & Confort",
+      "fichier": "AVEREO_LDM_Template_01_Habitat_Confort_V1_0.docx",
+      "sha256": "031f22e8f11d2d284e0ad64be1946289fb4004777dd874a468cd8a2f0f321929",
+      "modelePrepareSha256": "3e33b1b04bf05d868f3e93c35a7483e71f835eda583551aeb01495b89e6f947c"
+    },
+    {
+      "id": "energie-travaux",
+      "nom": "Énergie & Travaux",
+      "fichier": "AVEREO_LDM_Template_02_Energie_Travaux_V1_0.docx",
+      "sha256": "613696cd82dd38db139b6e524e63938ffef3e36fa2657699219febff6b520456",
+      "modelePrepareSha256": "6dbe4aeaa87954fb1f189a6196ac18914b275b4ba586feaa96b31f9a16b4e420"
+    },
+    {
+      "id": "prevention-bati",
+      "nom": "Prévention Bâti",
+      "fichier": "AVEREO_LDM_Template_03_Prevention_Bati_V1_0.docx",
+      "sha256": "d719499a8a917e0fce5e9c625705c8560dc8549f92dc783e0c061fa49f82843f",
+      "modelePrepareSha256": "14743dfb8354c737e186f698635db6d639a580ba38ec9478ca0099399d5c0447"
+    },
+    {
+      "id": "360-premium",
+      "nom": "360 Premium",
+      "fichier": "AVEREO_LDM_Template_04_360_Premium_V1_0.docx",
+      "sha256": "2b7425595c1a22981473be9859981be7543d9904d106fa6e1d16879061f6705f",
+      "modelePrepareSha256": "c5e0227e9a9330c752bb315f831c0583b02059660cf151502b42321da763e905"
+    }
+  ]
+}
