@@ -11,6 +11,8 @@
   "status": "local_verified",
   "baseSha": "54af84e562d2b5dbfc32611341e386e4fee2c467",
   "branch": "feat/ordres-mission-prestations",
+  "codeSourceSha": "d2efe53aa26c46f1220ac13ee8b974ba6a67e2e0",
+  "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/127",
   "reviewSource": "../modeles-lettres-mission.json",
   "previousRelease": {
     "pullRequest": 125,
