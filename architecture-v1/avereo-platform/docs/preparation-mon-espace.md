@@ -16,8 +16,9 @@ tags: [avereo, preproduction, livraison, fonctions-communes]
 
 La préparation ci-dessous a été exécutée après fusion et accord explicite. La
 [livraison et la recette du 6 novembre](livraison-mon-espace.md) portent les reçus
-frais, les contrôles hébergés et les réserves RGA/Coupe. Le paquet décrit ici reste
-la référence exacte installée ; le correctif RGA constitue un autre candidat.
+frais et les contrôles hébergés. La correction RGA PR #122 est maintenant livrée
+et vérifiée ; la réserve Coupe demeure. Le paquet décrit ici reste la référence
+PR #121, complétée en préproduction par le seul fichier RGA du reçu PR #122.
 
 ## Historique de préparation — PR #121 étendue
 

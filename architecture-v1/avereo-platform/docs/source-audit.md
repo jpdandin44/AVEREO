@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
 
+## 2026-11-06 — Qualification hébergée du correctif RGA
+
+PR #122 est fusionnée et son fichier RGA identique au candidat testé est installé. Le [reçu](livraison-mon-espace.md) confirme la navigation depuis la carte intégrée et la conservation de tous les autres fichiers, configurations et plannings. Les constats de correction locale ci-dessous deviennent historiques.
+
+
 # Audit source
 
 ## 6 novembre 2026 — Livraison et recette hébergée

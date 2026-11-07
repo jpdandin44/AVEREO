@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
 
+## 2026-11-06 — Correction RGA PR #122 livrée
+
+Un fichier remplacé après fusion, accord explicite et sauvegarde/restauration sur copie. Ouverture, fermeture, réouverture de Mes projets depuis la carte intégrée et nouvel essai après rechargement réussis. Réserve RGA levée, réserve Coupe conservée. [Preuves](docs/livraison-mon-espace.md).
+
+
 ## 2026-11-06 — Livraison autorisée et recette hébergée
 
 PR #121 installée sur les sept cibles ; conservation et protections vérifiées. Rubriques et préférences contrôlées, réserve RGA avec correctif local testé et réserve antérieure Coupe OAuth consignées dans le [reçu de livraison](docs/livraison-mon-espace.md). Aucun changement de production.

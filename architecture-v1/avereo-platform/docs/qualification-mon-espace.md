@@ -15,8 +15,9 @@ tags: [avereo, interface, fonctions-communes]
 ## État actuel — livraison en préproduction
 
 PR #121 est fusionnée et ses 40 fichiers sont installés sur les sept cibles. La
-[recette hébergée et ses deux réserves](livraison-mon-espace.md) font référence.
-Le correctif du lien RGA est vérifié en local et attend sa livraison propre.
+[recette hébergée](livraison-mon-espace.md) fait référence. Le correctif RGA de
+PR #122 est fusionné, déployé et vérifié depuis la carte intégrée. La réserve Coupe
+reste ouverte ; les essais locaux ci-dessous conservent leur portée historique.
 
 ## Historique local — extension PR #121
 

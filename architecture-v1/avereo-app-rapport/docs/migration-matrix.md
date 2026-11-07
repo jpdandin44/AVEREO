@@ -13,6 +13,11 @@ tags:
   - fonctionnalites
 ---
 
+## 2026-11-06 — Correction de navigation RGA déployée
+
+Le fichier de navigation PR #122 est installé, sans migration SQL, changement de clé de stockage ni écriture de projet. La liste vide du navigateur de recette reste vide ; seul son déclenchement est testé. [Livraison et recette](../../avereo-platform/docs/livraison-mon-espace.md).
+
+
 ## 2026-11-06 — Navigation RGA sans migration
 
 Le correctif préparé ne concerne que `frontend/public/rga/workspace.js`. Aucun schéma, clé de stockage, projet, résultat Géorisques ou contrôle d’identité ne change. Les données déjà enregistrées restent utilisables ; seul le déclenchement de la liste depuis la carte intégrée est corrigé. [Livraison et réserves](../../avereo-platform/docs/livraison-mon-espace.md).

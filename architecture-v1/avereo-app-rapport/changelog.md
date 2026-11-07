@@ -12,6 +12,11 @@ tags:
   - changelog
 ---
 
+## 2026-11-06 — PR #122 en préproduction
+
+Correction de Mes projets installée et vérifiée depuis la carte intégrée après rechargement. Réserve RGA levée ; aucune modification de données ni de production. [Livraison et recette](../avereo-platform/docs/livraison-mon-espace.md).
+
+
 ## 2026-11-06 — Correction locale du lien Mes projets RGA
 
 Après la livraison PR #121, le changement de fragment de la carte intégrée est pris en compte pour ouvrir et rouvrir Mes projets. Correction locale vérifiée, non livrée. Le paquet PR #121 reste la version active en préproduction. [Livraison et réserves](../avereo-platform/docs/livraison-mon-espace.md).

@@ -1,0 +1,22 @@
+{
+  "observedAt": "2026-11-06T22:14:54.601699+00:00",
+  "environment": "preproduction",
+  "url": "https://rapport-preprod.avereo.fr/rga/",
+  "sourceSha": "40daa7f684d0ecc40c15741f35b455a6a198aa55",
+  "mergeSha": "4f61b77c320716f4966d12d041034356e9ae9c42",
+  "artifactSha256": "0371e53552e7767d6ead4d2d9c233a9f68934eb8cc8e34dea12cdbe833762994",
+  "status": "passed",
+  "method": "authenticated_browser_ui",
+  "tests": {
+    "openFromParentMenuAfterMapLoaded": "passed",
+    "closeDialog": "passed",
+    "reopenFromParentMenu": "passed",
+    "fullReloadThenOpenFromParentMenu": "passed",
+    "dialogTitle": "Mes projets — RGA",
+    "browserConsoleErrors": 0
+  },
+  "dataMutation": false,
+  "projectCreated": false,
+  "screenshot": "C:\\Users\\examg\\Documents local\\livraisons-avereo\\mon-espace\\preparation-pr121-317863a\\correction-rga\\rga-mes-projets-preprod.png",
+  "screenshotSha256": "71af19971fbdde2ad88b268396b041845c9b9d528f8992d528d8b6f5f8d0bf21"
+}
