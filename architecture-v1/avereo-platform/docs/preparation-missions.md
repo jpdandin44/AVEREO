@@ -48,6 +48,10 @@ Pour une livraison autorisée, installer les nouvelles ressources puis les menus
 
 [Outil de préparation et de répétition](../../../outillage/acces-preproduction/prepare_mission_delivery.py) · [État du paquet et du contrôle hébergé](../data/suivi-missions.json).
 
+Le [manifeste du paquet](../data/recette-missions/selection-preproduction.json) identifie 27 fichiers, dont 13 remplacements et 14 ajouts. L’écriture et la restauration ont été vérifiées sur copies de référence. Le contrôle des sept sites actifs attend l’accès à cPanel. La version et son contenu sont soumis à revue en [PR #125](https://github.com/jpdandin44/AVEREO/pull/125).
+
+La procédure serveur a aussi été exécutée dans un environnement Linux local isolé, sur sept racines fictives. La répétition a conservé leur contenu octet pour octet et refusé un paquet différent, une sauvegarde déjà présente et un fichier cible modifié entre-temps.
+
 ## Mise en production
 
 À la fusion de #124, les workflows Drone et Thermo se sont arrêtés à l’étape d’autorisation du serveur avant tout transfert. Le prototype GitHub Pages s’est arrêté à sa configuration avant publication. Le candidat propose de passer ces trois workflows et celui de Projet au lancement manuel sur main avec confirmation explicite. Ces modifications prennent effet après leur fusion. Le job de production conserve son fonctionnement lors d’une publication volontaire.
