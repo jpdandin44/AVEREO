@@ -34,6 +34,8 @@ Deux livrables distincts sont disponibles. La lettre prépare l’accord avec le
 
 Les commandes de l’application ont été essayées dans les neuf menus et dans RGA, hébergé par Rapport. Coupe a repris le nom et l’adresse saisis dans un dessin. Les 231 tests couvrent six applications, le navigateur de Saisie unique et les composants de compte et dossier. Les huit applications compilées ont aussi passé le contrôle de présence du menu et du module Missions. CONNECT sert directement sa copie versionnée.
 
+Passeport Immo distribue le module par le chemin protégé `assets/missions.js`, commun aux applications. Les 80 vérifications Apache/PHP locales couvrent notamment le refus anonyme, le contenu JavaScript reçu avec un ticket valide, le refus du cookie invalide et les requêtes HEAD. Les 19 essais du paquet Passeport et la reconstruction de son archive ont également réussi. L’ordre et la lettre Habitat & Confort ont été régénérés depuis le dossier conservé après ce changement de chemin.
+
 Le pack de modèles est privé. Son manifeste et ses empreintes identifient les quatre Word de travail. Les copies client sont générées en mémoire. Les originaux commerciaux, les prix internes et les coordonnées du dossier ne sont pas publiés dans le dépôt. Avant remise au client, compléter et relire les champs de l’offre, les conditions économiques et les annexes.
 
 ## Préproduction

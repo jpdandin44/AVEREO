@@ -2,7 +2,7 @@
 (() => {
   'use strict';
   if (customElements.get('avereo-account-menu')) return;
-  const moduleUrl = document.currentScript?.src ? new URL('missions.js', document.currentScript.src).href : '/missions.js';
+  const moduleUrl = document.currentScript?.src ? new URL('assets/missions.js', document.currentScript.src).href : '/assets/missions.js';
   let loadingMissions;
   function loadMissions() {
     if (window.avereoOpenMission) return Promise.resolve();

@@ -64,7 +64,7 @@ def run():
                 checks += 1
             assets = sorted('/'+p.relative_to(public).as_posix()
                 for p in (public/'assets').rglob('*') if p.is_file())
-            assert assets
+            assert '/assets/missions.js' in assets
             assets.append('/account-menu.js')
             for path in assets:
                 status, headers, _ = request(path)

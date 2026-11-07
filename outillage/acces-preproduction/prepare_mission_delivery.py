@@ -30,7 +30,7 @@ def write_json(path, data):
 
 def allowed(app, rel):
     safe_name(rel)
-    if rel in ('account-menu.js', 'missions.js'):
+    if rel in ('account-menu.js', 'assets/missions.js'):
         return app in APPS
     if app == 'passeport-immo' and re.fullmatch(r'assets/pdf\.worker\.min-[\w-]+\.mjs', rel):
         return True
@@ -55,10 +55,10 @@ def coupe_overlay(original, source):
 
 
 def candidate_paths(app, dist):
-    names = ['account-menu.js', 'missions.js']
+    names = ['account-menu.js', 'assets/missions.js']
     if app in REPORT_APPS:
         names.append('index.html')
-        names.extend(p.relative_to(dist).as_posix() for p in sorted((dist / 'assets').iterdir()) if p.is_file())
+        names.extend(p.relative_to(dist).as_posix() for p in sorted((dist / 'assets').iterdir()) if p.is_file() and p.name != 'missions.js')
     if app == 'projet':
         names.append('project-workspace.js')
     if app == 'coupe':

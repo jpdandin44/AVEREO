@@ -13,12 +13,12 @@ const missions = await buildMissionScript();
 for (const app of applications) {
   for (const directory of app.publicDirectories) {
     const target = resolve(root, directory, 'account-menu.js');
-    const missionTarget = resolve(root, directory, 'missions.js');
+    const missionTarget = resolve(root, directory, 'assets', 'missions.js');
     if (process.argv.includes('--check')) {
       if (!source.equals(await readFile(target))) throw new Error('Copie du menu différente : ' + target);
       if (!missions.equals(await readFile(missionTarget))) throw new Error('Module Missions différent : ' + missionTarget);
     } else {
-      await mkdir(resolve(root, directory), { recursive: true });
+      await mkdir(resolve(root, directory, 'assets'), { recursive: true });
       await writeFile(target, source);
       await writeFile(missionTarget, missions);
     }

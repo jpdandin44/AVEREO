@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-11-07T10:20:50.928980+00:00",
+  "observedAt": "2026-11-07T10:33:41.579542+00:00",
   "environment": "local_fictitious",
   "baseMerge124": "1d483e8419f16bd34fc4809cc2e72a9065a6a2a7",
   "rapportOnlineSync": true,
@@ -412,32 +412,32 @@
     ]
   },
   "files": {
-    "connect/account-menu.js": "521571105920a5d6ae5d4e3cdb5475ee9a19f54568f9d2af08f8754fc7cf520e",
-    "connect/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
-    "projet/account-menu.js": "521571105920a5d6ae5d4e3cdb5475ee9a19f54568f9d2af08f8754fc7cf520e",
-    "projet/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "connect/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "connect/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "projet/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "projet/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
     "projet/project-workspace.js": "756b19566003180325ce68337348db9c7d089f72f462453d9195617d920626c7",
-    "rapport/account-menu.js": "521571105920a5d6ae5d4e3cdb5475ee9a19f54568f9d2af08f8754fc7cf520e",
-    "rapport/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "rapport/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "rapport/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
     "rapport/index.html": "6c1cafc9284278e0d4b25165d4e4880d3b73d926a866b5adff4af79cff4500ae",
     "rapport/assets/index-BLjkqStP.css": "0773a8939f9566c654cf6b9fd72592b85c08d835b94e7662bd8c8973861d587a",
     "rapport/assets/index-Cnrdg0Ug.js": "aa8c8e6538fd89d9a1a053d9315ca8c9063517dba16a091c1dcb6555b4457ddd",
     "rapport/assets/reportDocx-CQsSDwF-.js": "a66726983c22106bd9f61a97b6dea79d1c4e836cc6dd8c33f3bda8d6912b49bc",
-    "coupe/account-menu.js": "521571105920a5d6ae5d4e3cdb5475ee9a19f54568f9d2af08f8754fc7cf520e",
-    "coupe/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "coupe/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "coupe/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
     "coupe/legacy-app.html": "e195059351cc152c9a32a7b636053be9274aab71d36beda3462e622084c794e5",
-    "thermo/account-menu.js": "521571105920a5d6ae5d4e3cdb5475ee9a19f54568f9d2af08f8754fc7cf520e",
-    "thermo/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "thermo/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "thermo/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
     "thermo/index.html": "129fd17c2f3a3209efe3dca12c3379bd2483c77baa0f2c0a290086269a3f35e3",
     "thermo/assets/index-2n39KD4j.css": "fcad423882e4800d535462bfe65f798c207b0b93992e37599230b77c676385f7",
     "thermo/assets/index-CF-A1gv5.js": "4141fd9fda3982e3fc5a8b31adefa493eb9de504a157ac418aa8a45619976c0d",
-    "drone/account-menu.js": "521571105920a5d6ae5d4e3cdb5475ee9a19f54568f9d2af08f8754fc7cf520e",
-    "drone/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "drone/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "drone/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
     "drone/index.html": "8d83a68739ce703ffb69757bc35971afe46b0f0b9b13d5754809c0f364fa6f2d",
     "drone/assets/index-8Kik6olk.css": "9be3f788b488143b616326d2d7db8a9e7c1185a4fd38a7e31f14f405511e2611",
     "drone/assets/index-DQ8wBXLR.js": "af0d4f2aacdb442ce357f9f9f613f9f4baedd12ad707398bef402b1ac9e9dffe",
-    "passeport-immo/account-menu.js": "521571105920a5d6ae5d4e3cdb5475ee9a19f54568f9d2af08f8754fc7cf520e",
-    "passeport-immo/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "passeport-immo/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "passeport-immo/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
     "passeport-immo/index.html": "9223acaaf633e8ac62d731645fc06c37147b011027dc5fa42cbae763738c0f94",
     "passeport-immo/assets/index-DqKYBoXk.js": "19db4f854fc0c4a65db3a278edb8fb9ff2601bed61a76cd2c24066986d5cdb24",
     "passeport-immo/assets/index-fk-lVGaB.css": "68dd15b38ad538b8f690359bf43b6cf7b7492ad351e2f0dc62c283a6dd4890c4",
@@ -467,6 +467,23 @@
       "id": 42357325193,
       "stoppedAt": "Whitelist runner IP in cPanel",
       "transfer": "skipped"
+    }
+  },
+  "additionalChecks": {
+    "passeportPackagingTests": 19,
+    "passeportApacheAssertions": 80,
+    "protectedMissionModule": "/assets/missions.js",
+    "tenMenusRetestedAfterPathChange": true,
+    "passeportArchiveVerified": true
+  },
+  "reopenedFromFinalModule": {
+    "lettre-chemin-protege.docx": {
+      "wordPages": 5,
+      "sha256": "5482bafcec147a31841609170d582a7723881c5f7945908484dc0cfa310cc113"
+    },
+    "ordre-chemin-protege.docx": {
+      "wordPages": 1,
+      "sha256": "5c8faddf9ea5673d477f2d0702cccfcfc315e74889d3588ac747c9529742b295"
     }
   }
 }
