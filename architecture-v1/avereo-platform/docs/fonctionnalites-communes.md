@@ -113,3 +113,12 @@ le compte CONNECT. Projet conserve sa portée native. Thermo, Drone et les point
 RGA restent locaux : cette extension de menu ne crée pas leur synchronisation en
 ligne. Recherche n’a pas de cible préproduction déclarée et Saisie unique reste
 son application autonome ; leurs fonctions métier sont hors de cette extension.
+
+## Identité des organisations et livrables
+
+Les préférences personnelles restent propres à chaque application. L’identité
+d’entreprise et ses mentions relèvent d’une configuration de l’organisation,
+modifiable uniquement par son administrateur et utilisée par tous ses membres.
+La [règle des livrables](identite-livrables.md) définit les responsabilités, la
+priorité AVEREO, les adaptations métier et les éléments encore à implémenter.
+Le menu actuel et son stockage local ne réalisent pas ce contrôle d’administration.

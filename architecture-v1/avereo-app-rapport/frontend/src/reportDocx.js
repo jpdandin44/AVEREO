@@ -1,5 +1,6 @@
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, ImageRun,
   Header, Footer, PageNumber, ExternalHyperlink, WidthType, BorderStyle } from 'docx';
+import { AVEREO_NAME } from '../../../avereo-platform/shared/report-identity.js';
 import { annotatedPlanImage, markersForPlan } from './observationPlans.js';
 
 // Translate only our generated report markup. No external HTML or image fetching.
@@ -72,8 +73,9 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
       } else if (tag === 'IMG') {
         const image = await imageRun(node); if(image) output.push(new Paragraph({children:[image], spacing:{before:140,after:140}}));
       } else if (tag === 'P' || tag === 'LI') {
-        output.push(new Paragraph({children:await runs(node), bullet:tag==='LI'?{level:0}:undefined,
-          spacing:{after:160}, shading:node.classList.contains('status')?{fill:'FFF1E7'}:undefined }));
+        const companyIdentity = node.parentElement?.classList.contains('company-identity');
+        output.push(new Paragraph({children:await runs(node, companyIdentity ? {size:18,color:'506573'} : {}), bullet:tag==='LI'?{level:0}:undefined,
+          keepNext:companyIdentity, spacing:{after:companyIdentity?40:160}, shading:node.classList.contains('status')?{fill:'FFF1E7'}:undefined }));
       } else if(tag === 'BR') {
         if(node.getAttribute('style')?.includes('page-break')) output.push(new Paragraph({pageBreakBefore:true}));
       } else {
@@ -86,10 +88,10 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
   }
   const children = await blocks(dom.body);
   const label = report.livrable?.audience === 'client' ? 'Synthèse client' : 'Rapport expert';
-  return Packer.toBlob(new Document({ creator:'AVEREO',title:`${report.titre} — ${label}`,description:'Document de travail soumis à validation professionnelle',
+  return Packer.toBlob(new Document({ creator:AVEREO_NAME,title:`${report.titre} — ${label}`,description:'Document de travail soumis à validation professionnelle',
     styles:{default:{document:{run:{font:'Calibri',size:22,color:'002B45'},paragraph:{spacing:{line:285}}}}},
     sections:[{properties:{page:{size:{width:11906,height:16838},margin:{top:1134,bottom:1134,left:1134,right:1134}}},
-      headers:{default:new Header({children:[new Paragraph({children:[new TextRun({text:`AVEREO  |  ${label}`,size:18,color:'506573'})]})]})},
-      footers:{default:new Footer({children:[new Paragraph({children:[new TextRun({text:`${report.reference_dossier || ''} · Document de travail · `,size:16}),new TextRun({children:[PageNumber.CURRENT],size:16})]})]})},
+      headers:{default:new Header({children:[new Paragraph({children:[new TextRun({text:`${AVEREO_NAME}  |  ${label}`,size:18,color:'506573'})]})]})},
+      footers:{default:new Footer({children:[new Paragraph({children:[new TextRun({text:`${AVEREO_NAME} · ${report.reference_dossier || ''} · Document de travail · `,size:16}),new TextRun({children:[PageNumber.CURRENT],size:16})]})]})},
       children}]}));
 }

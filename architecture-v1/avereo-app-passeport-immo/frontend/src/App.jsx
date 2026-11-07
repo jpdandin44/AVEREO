@@ -1,3 +1,4 @@
+import { AVEREO_NAME, AVEREO_LOGO, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { create } from 'zustand';
@@ -596,7 +597,9 @@ const PdfLayout = React.forwardRef(({ bien, devis }, ref) => {
     return (
         <div ref={ref} className="bg-white p-8" style={{ width: '210mm', minHeight: '297mm', fontFamily: 'sans-serif' }}>
             <div className="mb-8">
-                <h1 className="text-2xl font-bold text-gray-900">AVEREO – Passeport Immo</h1>
+                <img src={AVEREO_LOGO} alt={AVEREO_NAME} style={{ width: 180, height: 'auto', marginBottom: 12 }} />
+                <div className="text-xs text-gray-600 mb-4" style={{ breakInside: 'avoid' }}>{AVEREO_COMPANY_LINES.map((line, index) => <p key={index}>{line}</p>)}</div>
+                <h1 className="text-2xl font-bold text-gray-900">{AVEREO_NAME} – Passeport Immo</h1>
                 <p className="text-gray-500">Estimation de travaux</p>
             </div>
 
@@ -667,7 +670,7 @@ const PdfLayout = React.forwardRef(({ bien, devis }, ref) => {
             )}
 
             <footer className="text-center text-xs text-gray-400 mt-12">
-                Document généré le {new Date().toLocaleDateString('fr-FR')} avec AVEREO – Passeport Immo.
+                Document généré le {new Date().toLocaleDateString('fr-FR')} avec {AVEREO_NAME} – Passeport Immo.
             </footer>
         </div>
     );

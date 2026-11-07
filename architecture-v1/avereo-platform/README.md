@@ -5,7 +5,7 @@ title: README
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -34,3 +34,11 @@ Chaque application peut s'assurer que le gateway est actif, mais sa commande `do
 La [règle des fonctionnalités communes](docs/fonctionnalites-communes.md) définit le composant et son intégration. [Qualification](docs/qualification-mon-espace.md), [préparation des sept cibles](docs/preparation-mon-espace.md) et [suivi canonique](data/suivi-fonctions-communes.json).
 
 Le candidat PR #121 complète les rubriques propres aux applications ; les [adaptations et limites de stockage](docs/fonctionnalites-communes.md#adaptations-métier-du-candidat-pr-121) sont définies dans la règle commune. Son paquet de 40 fichiers est installé sur les sept cibles après fusion et accord du responsable. La [recette hébergée](docs/livraison-mon-espace.md) confirme la correction RGA livrée avec PR #122 ; seule la réserve sur l’ancien service de projets Coupe reste ouverte. La préparation #119 de 37 fichiers reste historique.
+
+## Identité des livrables
+
+Le [contrat d’organisation](docs/identite-livrables.md) décrit la présentation AVEREO
+préparée localement avec les informations provisoires d’entreprise, ses contrôles
+et la configuration administrative encore prévue. Les coordonnées et champs
+futurs ont une [source JSON unique](data/report-organization.json).
+[Suivi canonique](data/suivi-identite-livrables.json).

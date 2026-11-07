@@ -5,7 +5,7 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -373,3 +373,16 @@ vérifie son type JavaScript, son contenu et les refus sans session ou sous ferm
 ## 2026-11-06 — Projets et préférences propres
 
 Mes projets reprend la liste native des biens. Les préférences de ce navigateur règlent le tri par adresse et l’affichage de la composition ; les biens et documents conservent leur stockage existant. Mon compte et Mes applications ouvrent CONNECT. Candidat local PR #121 ; installation hébergée distincte.
+
+## 2026-11-06 — Présentation AVEREO des livrables, locale
+
+Nom et logo raccordés à la source commune ; contenus métier et stockages conservés.
+Informations légales et configuration par organisation encore à compléter.
+[Qualification et limites](../avereo-platform/docs/identite-livrables.md). Aucun déploiement de ce candidat.
+
+## 2026-11-07 — Informations provisoires AVEREO
+
+Le livrable ajoute sous le logo l’identité de société en formation fournie par le
+responsable. Les futurs champs d’immatriculation vides restent omis ; identité
+fixe commune, sans réglage libre pour les membres. [Source, portée et contrôles](../avereo-platform/docs/identite-livrables.md).
+Préparation locale, non déployée.

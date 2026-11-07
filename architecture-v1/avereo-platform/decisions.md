@@ -5,7 +5,7 @@ title: Décisions
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -23,3 +23,23 @@ Contexte : généralisation de Mon espace après PR #114. Décision : un Web Com
 ## 6 novembre 2026 — Même structure, contenu propre à l’application
 
 Contexte : le premier menu de #119 ne fournissait pas une liste et des préférences dans toutes les applications métier. Le responsable demande cette extension dans #121 et confirme que CONNECT demeure un portail sans projets métier. Décision : réutiliser les listes existantes, ajouter des listes locales pour Thermo/RGA et définir les préférences par application. Raisons : préserver les stockages et éviter une synchronisation implicite. Conséquences : profil et catalogue communs ; nouveaux réglages limités au navigateur ; toute centralisation en ligne supplémentaire exige un lot distinct. La préparation de 37 fichiers de #119 devient historique ; reconstruire et qualifier le nouveau candidat avant livraison.
+
+## 2026-11-06 — Identité commune, configuration réservée à l’organisation
+
+Contexte : le responsable demande des livrables configurables et donne la priorité
+à AVEREO. Décision : réutiliser le nom et le logo officiel dans une source commune,
+puis centraliser les réglages d’entreprise avec administration par organisation.
+Raison : éviter les identités divergentes et une modification libre par un membre.
+Conséquences : aucune information légale inventée ; préférences individuelles
+séparées ; contrôle serveur et isolement à qualifier dans un candidat ultérieur.
+[Périmètre et limites](docs/identite-livrables.md).
+
+## 2026-11-07 — Préparer l’immatriculation sans la devancer
+
+Contexte : le responsable fournit les informations provisoires d’AVEREO et reporte
+les numéros d’immatriculation. Décision : une source JSON d’entreprise, des champs
+futurs vides et un affichage des seules valeurs renseignées dans les quatre formats.
+Raison : compléter une seule source ultérieurement, sans valeurs fictives sur les
+documents. Conséquences : la mention de formation reste explicite ; le formulaire
+et le contrôle serveur de l’administration d’organisation restent un lot distinct.
+[Source et limites](docs/identite-livrables.md).

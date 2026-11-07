@@ -5,7 +5,7 @@ title: Documentation Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-06
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
@@ -53,3 +53,8 @@ La [vérification de préproduction et des prérequis CONNECT](verification-prep
 conserve les contrôles du candidat documentaire, la préparation fermée et les
 blocages observés avant installation. Le [rapport de préproduction](03-preproduction.md)
 et les reçus liés décrivent les installations et contrôles ultérieurs.
+
+## Identité du devis — candidat local
+
+[Audit de l’écart i et matrice de conservation](source-audit-identite-livrables.md).
+L’identité AVEREO est commune ; les preuves historiques de parité restent intactes.

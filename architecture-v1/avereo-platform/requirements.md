@@ -5,7 +5,7 @@ title: Exigences
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -23,3 +23,17 @@ Appliquer les libellés, comportements accessibles et conditions d’affichage d
 ## Espaces propres aux applications
 
 Le responsable demande des entrées « Mes projets » et « Préférences » adaptées à chaque application avant fusion de #121. Seuls le profil et le catalogue CONNECT sont communs. La [matrice métier](docs/fonctionnalites-communes.md#adaptations-métier-du-candidat-pr-121) constitue la référence ; les listes locales doivent être annoncées comme telles. CONNECT reste le portail sans rubrique de projets, décision explicitement confirmée. Les erreurs d’enregistrement ne doivent pas entraîner la fermeture du travail courant.
+
+## Identité des livrables
+
+Priorité demandée le 6 novembre : présenter les rapports au nom d’AVEREO. La
+configuration future du logo, des coordonnées et des mentions appartient à
+l’organisation ; seul son administrateur peut la modifier, avec contrôle serveur.
+Les préférences de travail restent individuelles et propres aux applications.
+[Contrat, inventaire et critères](docs/identite-livrables.md).
+
+Le 7 novembre, le responsable fournit l’identité provisoire de la société en
+formation et demande de préparer l’immatriculation pour plus tard. Les valeurs
+de [la source structurée](data/report-organization.json) doivent apparaître sous
+le logo dans les quatre livrables. Un champ vide ne doit produire aucun libellé
+ni valeur de remplacement. L’identité reste fixe jusqu’au service administratif.

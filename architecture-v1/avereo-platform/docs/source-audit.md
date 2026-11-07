@@ -39,3 +39,9 @@ privées ; le manifeste réduit trace les 37 fichiers proposés.
 ## Extension PR #121
 
 Le composant conserve désormais uniquement des préférences par application, dans des clés localStorage séparées. Les catalogues restent métier ; Thermo et RGA possèdent leurs listes locales distinctes. Les 37 fichiers de la préparation #119 sont historiques. La [règle révisée](fonctionnalites-communes.md) et la [qualification](qualification-mon-espace.md) décrivent le candidat courant, ses limites et ses contrôles.
+
+## 2026-11-06 — Source partagée des livrables
+
+Le logo historique de Rapport est déplacé sans transformation vers la source
+commune ; son export initial reste compatible. Les raccordements ne modifient ni
+calcul, ni données, ni habilitations. [Audit et qualification](identite-livrables.md).

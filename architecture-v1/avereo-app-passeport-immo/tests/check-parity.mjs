@@ -4,6 +4,41 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Écart j autorisé le 7 novembre : bloc entreprise fourni par le responsable.
+for (const [current, previous] of [
+  [
+    "import { AVEREO_NAME, AVEREO_LOGO, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';\n",
+    "import { AVEREO_NAME, AVEREO_LOGO } from '../../../avereo-platform/shared/report-identity.js';\n"
+  ],
+  [
+    "                <div className=\"text-xs text-gray-600 mb-4\" style={{ breakInside: 'avoid' }}>{AVEREO_COMPANY_LINES.map((line, index) => <p key={index}>{line}</p>)}</div>\n",
+    ""
+  ]
+]) {
+  assert.equal(restored.split(current).length - 1, 1, 'Chaque écart j doit correspondre exactement au bloc entreprise');
+  restored = restored.replace(current, previous);
+}
+
+// Écart i autorisé le 6 novembre : nom et logo AVEREO communs dans le devis PDF.
+// Rétablir les trois modifications exactes avant de contrôler toute la source.
+for (const [current, previous] of [
+  [
+    "import { AVEREO_NAME, AVEREO_LOGO } from '../../../avereo-platform/shared/report-identity.js';\n",
+    ""
+  ],
+  [
+    "                <img src={AVEREO_LOGO} alt={AVEREO_NAME} style={{ width: 180, height: 'auto', marginBottom: 12 }} />\n                <h1 className=\"text-2xl font-bold text-gray-900\">{AVEREO_NAME} – Passeport Immo</h1>",
+    "                <h1 className=\"text-2xl font-bold text-gray-900\">AVEREO – Passeport Immo</h1>"
+  ],
+  [
+    "Document généré le {new Date().toLocaleDateString('fr-FR')} avec {AVEREO_NAME} – Passeport Immo.",
+    "Document généré le {new Date().toLocaleDateString('fr-FR')} avec AVEREO – Passeport Immo."
+  ]
+]) {
+  assert.equal(restored.split(current).length - 1, 1, 'Chaque écart i doit correspondre exactement à la présentation du devis');
+  restored = restored.replace(current, previous);
+}
+
 // Écart h autorisé pour PR121 : projets et préférences propres à Passeport.
 // Inverser uniquement les sept substitutions connues ; le reste doit encore
 // correspondre à la source historique, notamment les calculs et les écritures.

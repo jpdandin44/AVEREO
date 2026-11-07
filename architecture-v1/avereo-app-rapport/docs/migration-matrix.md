@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - rapport
@@ -153,3 +153,15 @@ risques reste a definir.
 ## 6 novembre 2026 — Navigation de compte
 
 Mon espace remplace le bouton de déconnexion de l’en-tête ; le gestionnaire de sauvegarde est conservé. RGA garde son isolation et son cookie propre. [Règle et qualification](../../avereo-platform/docs/fonctionnalites-communes.md).
+
+## 2026-11-06 — Identité des restitutions
+
+Le PNG AVEREO est déplacé sans modification vers le socle partagé. Aucun changement
+du schéma JSON, de la base ou des archives ; seuls les nouveaux exports utilisent
+la source commune. [Contrat](../../avereo-platform/docs/identite-livrables.md).
+
+## 2026-11-07 — Entreprise en formation
+
+Les couvertures expert/client ajoutent le bloc commun d’entreprise ; le Word
+natif conserve ces lignes groupées à 9 points. Aucun changement de schéma du
+dossier. [Source et recette](../../avereo-platform/docs/identite-livrables.md).

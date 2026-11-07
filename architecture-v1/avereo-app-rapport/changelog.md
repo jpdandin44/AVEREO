@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - rapport
@@ -248,3 +248,16 @@ Candidat local : L’en-tête Rapport réutilise le menu et conserve la sauvegar
 ## 2026-11-06 — Projets et préférences propres
 
 Mes projets revient à la liste native avec sauvegarde du brouillon avant sortie. Les préférences proposent le format expert/client pour les nouveaux rapports uniquement. RGA conserve ses points repérés et ses réglages dans des espaces de stockage locaux distincts de Rapport ; les résultats de risque sont consultés à nouveau à l’ouverture. Candidat local PR #121 ; installation hébergée distincte.
+
+## 2026-11-06 — Présentation AVEREO des livrables, locale
+
+Nom et logo raccordés à la source commune ; contenus métier et stockages conservés.
+Informations légales et configuration par organisation encore à compléter.
+[Qualification et limites](../avereo-platform/docs/identite-livrables.md). Aucun déploiement de ce candidat.
+
+## 2026-11-07 — Informations provisoires AVEREO
+
+Le livrable ajoute sous le logo l’identité de société en formation fournie par le
+responsable. Les futurs champs d’immatriculation vides restent omis ; identité
+fixe commune, sans réglage libre pour les membres. [Source, portée et contrôles](../avereo-platform/docs/identite-livrables.md).
+Préparation locale, non déployée.

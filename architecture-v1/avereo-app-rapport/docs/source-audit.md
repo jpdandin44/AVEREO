@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - rapport
@@ -305,3 +305,16 @@ Le périmètre transverse est demandé explicitement par le responsable. [Contra
 Mes projets revient à la liste native avec sauvegarde du brouillon avant sortie. Les préférences proposent le format expert/client pour les nouveaux rapports uniquement. RGA conserve ses points repérés et ses réglages dans des espaces de stockage locaux distincts de Rapport ; les résultats de risque sont consultés à nouveau à l’ouverture.
 
 Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.
+
+## 2026-11-06 — Identité du livrable
+
+Raccordement au nom et au logo officiels partagés, demandé transversalement par le
+responsable. Les contenus, protocoles, calculs, dossiers et accès restent inchangés.
+[Contrat et preuves locales](../../avereo-platform/docs/identite-livrables.md).
+
+## 2026-11-07 — Bloc d’entreprise provisoire
+
+Le responsable fournit les informations de société en formation. L’export ajoute
+les lignes non vides du profil commun sous le logo ; données métier et stockage
+inchangés. Les champs futurs sont préparés sans formulaire d’administration.
+[Preuves actuelles et réserves](../../avereo-platform/docs/identite-livrables.md).
