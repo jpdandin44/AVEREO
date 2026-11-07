@@ -1,0 +1,685 @@
+{
+  "observedAt": "2026-11-07T13:47:53.325945+00:00",
+  "environment": "seven_hosted_preproduction_sites",
+  "github": {
+    "pr": 125,
+    "mergedAt": "2026-11-07T13:31:44Z",
+    "head": "ebc1b099014aa33991e4ed9e65511ab7ca212f4f",
+    "merge": "54af84e562d2b5dbfc32611341e386e4fee2c467",
+    "sameReviewedTree": true,
+    "tree": "ef38ff5ba381ef37feaa3de7ba15d2e7faa5f288",
+    "humanChecklistValidatedStrictly": true
+  },
+  "sourceCommit": "02d3edfdc4fe993961a12a5d09bb60dab4c0de62",
+  "artifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82",
+  "manifest": "selection-preproduction.json",
+  "authorization": {
+    "source": "user_chat",
+    "scope": "preproduction",
+    "condition": "after_user_merge_of_pr125",
+    "conditionMet": true,
+    "productionAuthorized": false
+  },
+  "preflight": {
+    "observedAt": "2026-11-07T13:19:00+00:00",
+    "sourceCommit": "02d3edfdc4fe993961a12a5d09bb60dab4c0de62",
+    "artifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82",
+    "sevenRootsVerified": true,
+    "restoredOnPrivateCopies": 27,
+    "unchangedDependencies": 6,
+    "planningFilesChecked": 17,
+    "connectAssetsExisted": false,
+    "liveFilesModified": false
+  },
+  "deployment": {
+    "observedAt": "2026-11-07T13:32:58+00:00",
+    "status": "installed_and_verified",
+    "merge": "54af84e562d2b5dbfc32611341e386e4fee2c467",
+    "sourceCommit": "02d3edfdc4fe993961a12a5d09bb60dab4c0de62",
+    "artifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82",
+    "targets": {
+      "connect": 2,
+      "projet": 3,
+      "rapport": 5,
+      "coupe": 3,
+      "thermo": 4,
+      "drone": 5,
+      "passeport-immo": 5
+    },
+    "createdConnectAssetsDirectory": true,
+    "allOtherPublicFilesPreserved": true,
+    "protectedFilesPreserved": 8,
+    "existingPlanningFilesPreserved": 17,
+    "databaseAccessed": false,
+    "productionChanged": false
+  },
+  "operator": {
+    "privateSourceName": "deployer_missions.py",
+    "sha256": "f05d840bed0688aeba213c4cf6ee85e6bb5cf91af5a97a4898b5de63350ec4cd",
+    "simulation": {
+      "environment": "local_linux_isolated",
+      "operations": 27,
+      "openPrRejected": true,
+      "writeFailureRecovered": true,
+      "interruptedInstallRecovered": true,
+      "idempotentVerifyInstalled": true,
+      "assetsBeforeMenusAndEntries": true,
+      "foreignFilePreserved": true,
+      "driftRejectedBeforeWrite": true
+    }
+  },
+  "http": {
+    "anonymousBeforeAndAfter": [
+      {
+        "domain": "connect-preprod.avereo.fr",
+        "path": "/",
+        "expected": 200,
+        "status": 200,
+        "redirectHost": null,
+        "passed": true
+      },
+      {
+        "domain": "projet-preprod.avereo.fr",
+        "path": "/",
+        "expected": 303,
+        "status": 303,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "passed": true
+      },
+      {
+        "domain": "rapport-preprod.avereo.fr",
+        "path": "/",
+        "expected": 303,
+        "status": 303,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "passed": true
+      },
+      {
+        "domain": "coupe-preprod.avereo.fr",
+        "path": "/",
+        "expected": 303,
+        "status": 303,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "passed": true
+      },
+      {
+        "domain": "thermo-preprod.avereo.fr",
+        "path": "/",
+        "expected": 303,
+        "status": 303,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "passed": true
+      },
+      {
+        "domain": "drone-preprod.avereo.fr",
+        "path": "/",
+        "expected": 303,
+        "status": 303,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "passed": true
+      },
+      {
+        "domain": "passeport-immo-preprod.avereo.fr",
+        "path": "/",
+        "expected": 303,
+        "status": 303,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "passed": true
+      },
+      {
+        "domain": "rapport-preprod.avereo.fr",
+        "path": "/rga/",
+        "expected": 403,
+        "status": 403,
+        "redirectHost": null,
+        "passed": true
+      },
+      {
+        "domain": "projet-preprod.avereo.fr",
+        "path": "/api/planning.php",
+        "expected": 401,
+        "status": 401,
+        "redirectHost": null,
+        "passed": true
+      }
+    ],
+    "publicScriptsMatchingSha256": 12,
+    "protectedPasseportScriptsRefusedToAnonymous": 2
+  },
+  "functionalTest": {
+    "account": "existing_authorized_CONNECT_session",
+    "data": "fictional_only_no_active_dossier_write",
+    "tested": [
+      {
+        "app": "connect",
+        "domain": "connect-preprod.avereo.fr",
+        "letters": 4,
+        "orders": 1,
+        "nativeDossierWrite": false
+      },
+      {
+        "app": "passeport-immo",
+        "domain": "passeport-immo-preprod.avereo.fr",
+        "letters": 4,
+        "orders": 1,
+        "nativeDossierWrite": false
+      },
+      {
+        "app": "rapport",
+        "domain": "rapport-preprod.avereo.fr",
+        "letters": 4,
+        "orders": 1,
+        "nativeDossierWrite": false
+      },
+      {
+        "app": "thermo",
+        "domain": "thermo-preprod.avereo.fr",
+        "letters": 4,
+        "orders": 1,
+        "nativeDossierWrite": false
+      },
+      {
+        "app": "drone",
+        "domain": "drone-preprod.avereo.fr",
+        "letters": 4,
+        "orders": 1,
+        "nativeDossierWrite": false
+      },
+      {
+        "app": "rga",
+        "domain": "rapport-preprod.avereo.fr",
+        "letters": 4,
+        "orders": 1,
+        "nativeDossierWrite": false
+      },
+      {
+        "app": "projet",
+        "domain": "projet-preprod.avereo.fr",
+        "letters": 4,
+        "orders": 1,
+        "nativeDossierWrite": false,
+        "downloadContext": "authenticated_editor_in_own_tab"
+      },
+      {
+        "app": "coupe",
+        "domain": "coupe-preprod.avereo.fr",
+        "letters": 4,
+        "orders": 1,
+        "nativeDossierWrite": false,
+        "downloadContext": "authenticated_editor_in_own_tab"
+      }
+    ],
+    "documentCount": 40,
+    "letters": 32,
+    "orders": 8,
+    "wordPages": {
+      "orders": 1,
+      "letters": [
+        5,
+        6
+      ]
+    },
+    "validatedInMicrosoftWordAndRenderedPdfs": true,
+    "representativeVisualPagesReviewed": 23,
+    "photosOfRealClients": false,
+    "exports": [
+      {
+        "app": "connect",
+        "type": "letter",
+        "offer": "habitat-confort",
+        "file": "connect-lettre-habitat-confort.docx",
+        "nativeSha256": "3b3cc9c532652f6111b64f23c9434eed4461273a4742d37bb41b7d9073073190",
+        "renderedSha256": "89665488b77d2442cc02f88dc566e48bd9477c5873932c2a6c58871c456454d6",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "connect",
+        "type": "order",
+        "offer": "habitat-confort",
+        "file": "connect-ordre.docx",
+        "nativeSha256": "b7d13ccf497a78e8d39594450265b09d7cc20c5388e75c92ef66d9fd0439c930",
+        "renderedSha256": "79de8317832f9b2134c2d98987b4042f909a04fe95dbb3990b0c8f03ec8a0dc2",
+        "wordPages": 1,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "connect",
+        "type": "letter",
+        "offer": "energie-travaux",
+        "file": "connect-lettre-energie-travaux.docx",
+        "nativeSha256": "de31cbaa905e6732e3adb72daeefe0d3da4d5165b8392390917067b9b89ee0f1",
+        "renderedSha256": "1d43783452d43ab43344fd736cd09a45517e0ce6305785e9c42eb79dbcfccbc1",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "connect",
+        "type": "letter",
+        "offer": "prevention-bati",
+        "file": "connect-lettre-prevention-bati.docx",
+        "nativeSha256": "50450cfb645ea2c262704ff6095185ad391f5efa407070e02334d9de6a0073a8",
+        "renderedSha256": "9ecb7b02039f2ddf398efd9bd93667219441e6998fe2f3f0727062cdaa545134",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "connect",
+        "type": "letter",
+        "offer": "360-premium",
+        "file": "connect-lettre-360-premium.docx",
+        "nativeSha256": "3b0e9f1847a721a82f2c13dcc84649ba46476a558bda4f3ca552303243e7b954",
+        "renderedSha256": "25c8e39fcb4129969f90a6a50f0d947a60c2b3da506b320f582941be63045a09",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "passeport-immo",
+        "type": "letter",
+        "offer": "habitat-confort",
+        "file": "passeport-immo-lettre-habitat-confort.docx",
+        "nativeSha256": "6fb5468b4ff81ea2f4574a38a8a4b35b98a90a9e70b8f567132525374841a84d",
+        "renderedSha256": "84c8f258fe8bf08db651c29c834fa3e0c0c09b0a397b5c1a83b01d06219ecac6",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "passeport-immo",
+        "type": "order",
+        "offer": "habitat-confort",
+        "file": "passeport-immo-ordre.docx",
+        "nativeSha256": "d74acacc5f88c9129d775f9bb90b25f14b330939213d6d035d875cebebefa899",
+        "renderedSha256": "444a635c99ab6a8fe6afcefc66e4ead9027422350074f2e372df4dd91fa2132d",
+        "wordPages": 1,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "passeport-immo",
+        "type": "letter",
+        "offer": "energie-travaux",
+        "file": "passeport-immo-lettre-energie-travaux.docx",
+        "nativeSha256": "e9cfc800c5bccf3ba44944b82b7367c587e0ca8b9aff4be58b2e6992d51fb5b3",
+        "renderedSha256": "2f970c292b5aa1661511566ebafd98856cecc00db6f42050810a32a5d1eb4a21",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "passeport-immo",
+        "type": "letter",
+        "offer": "prevention-bati",
+        "file": "passeport-immo-lettre-prevention-bati.docx",
+        "nativeSha256": "dbac4cd9882ffa876caa083e763126e262831acf136ec9895e8d6dfc28611141",
+        "renderedSha256": "a9c778ec845dcaeb3a150472d03aac6d7bbc8a00ef9b1c9a056215ee409567fe",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "passeport-immo",
+        "type": "letter",
+        "offer": "360-premium",
+        "file": "passeport-immo-lettre-360-premium.docx",
+        "nativeSha256": "5e0c0d2c94ecc1bb2442fae8892a9a2526c10fbe4d8b1990d9ed574f82e2bb76",
+        "renderedSha256": "15167a26acf8d50e1b781907bfc83b510be284daa38a88f12a5ad70cf28dd894",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rapport",
+        "type": "letter",
+        "offer": "habitat-confort",
+        "file": "rapport-lettre-habitat-confort.docx",
+        "nativeSha256": "50d4fa951654fbd156fbb936ad02473d67a030bbca1ef5ca65f63c3c3a50f16e",
+        "renderedSha256": "b6587db58b34d7ac514250521ba0eb568e28c813666485a75242984ab5ca4949",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rapport",
+        "type": "order",
+        "offer": "habitat-confort",
+        "file": "rapport-ordre.docx",
+        "nativeSha256": "490642d18ce07e0bee3ac48239ae5b4c29a83ec990aa1d5c3ff855b22e822d6f",
+        "renderedSha256": "801157294c101aa73aa5bc58c4f58536bb4ba5d8b7cc99ff75e2dbac8d9b82f2",
+        "wordPages": 1,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rapport",
+        "type": "letter",
+        "offer": "energie-travaux",
+        "file": "rapport-lettre-energie-travaux.docx",
+        "nativeSha256": "0912db82926763d9469df2a0c5c4f6b4294a420253430389d8a0158059225017",
+        "renderedSha256": "16b5c788489fdfd3ff8366bbd3e7650c356b6445f9778fde86c49910079a491a",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rapport",
+        "type": "letter",
+        "offer": "prevention-bati",
+        "file": "rapport-lettre-prevention-bati.docx",
+        "nativeSha256": "52cb8bc8020015fc3fc23add70c25969685a8f80ca0c4a0337b899c9a5cabb1f",
+        "renderedSha256": "1f8da72a6d4a1a3dddedf6a5a5d6126273d3b00a63582254fb10e5279344597b",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rapport",
+        "type": "letter",
+        "offer": "360-premium",
+        "file": "rapport-lettre-360-premium.docx",
+        "nativeSha256": "de9c40cc64f10f959c94a3137b161d021e646c4cdf018e8192a72aac979027e2",
+        "renderedSha256": "de12983907380861ab81777a2eecb4fb9c427c2479da4c72a5ba98fd880a5111",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "thermo",
+        "type": "letter",
+        "offer": "habitat-confort",
+        "file": "thermo-lettre-habitat-confort.docx",
+        "nativeSha256": "145fbebc6b21c4fb1f717d32326091d289addbd4467b6251be0ba415762281f6",
+        "renderedSha256": "8c47f9e9485ef0e848aa0fc1f958c50715b3af3ecc55f36d1c9116f00f128c17",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "thermo",
+        "type": "order",
+        "offer": "habitat-confort",
+        "file": "thermo-ordre.docx",
+        "nativeSha256": "cb9d7a839bf3843368f692e5237435b5cd56ea127d05a7fb1a5b3e3a0197453e",
+        "renderedSha256": "a8588b5b65e0ccce1f8090f30cf8f649b1e22ad32fcf5e2466ec5420983eae77",
+        "wordPages": 1,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "thermo",
+        "type": "letter",
+        "offer": "energie-travaux",
+        "file": "thermo-lettre-energie-travaux.docx",
+        "nativeSha256": "d7622e2c5cd219f20edef891b831c7a6d917b856c7c32e56d219ee5caea0d82b",
+        "renderedSha256": "ae294c0be2445309d9ea4f6ec408cb34ee60dffd0fcce88e086f08958dab7fb0",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "thermo",
+        "type": "letter",
+        "offer": "prevention-bati",
+        "file": "thermo-lettre-prevention-bati.docx",
+        "nativeSha256": "7d9bc416e96fa2a22bdb9a919d4c67718c61abe4c36c0206b4577231cce69716",
+        "renderedSha256": "d04689cca5cbf541c824720613ff71832e979cfc85895e15f43dea9c2302a343",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "thermo",
+        "type": "letter",
+        "offer": "360-premium",
+        "file": "thermo-lettre-360-premium.docx",
+        "nativeSha256": "8dfcdc647d0abdfb6e455accddccc9b06613d4ac849953ebed23fe583fd60723",
+        "renderedSha256": "3e397caf0553bf2958fab589aca6470c65aa2baf158535ee2e8e48adc0cf8630",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "drone",
+        "type": "letter",
+        "offer": "habitat-confort",
+        "file": "drone-lettre-habitat-confort.docx",
+        "nativeSha256": "060d9c84380e6e38d046cf17ef4ef6071b23a39cfd22666e78e090c9d2b98932",
+        "renderedSha256": "7dcdcf9b7c982deead0089154dc2cb9777aeb46274ac2274f3b3a598940daffc",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "drone",
+        "type": "order",
+        "offer": "habitat-confort",
+        "file": "drone-ordre.docx",
+        "nativeSha256": "882d01ed8f5b8bf408b704bb9d0156506e8e6bf91b14ef7bd045fd25ee14947e",
+        "renderedSha256": "4a9ef2ca1571d4e379b7b792455e43fa010aa3d413412158519a36de908fc50c",
+        "wordPages": 1,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "drone",
+        "type": "letter",
+        "offer": "energie-travaux",
+        "file": "drone-lettre-energie-travaux.docx",
+        "nativeSha256": "266dddc006849041a2c4afb85774d8d28a0aafbdcf74bdd8e94b9402914ce4a7",
+        "renderedSha256": "8c33d1edec75a8026e881fb435681e7c408d634de66ddc7be0921fed4e7899ac",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "drone",
+        "type": "letter",
+        "offer": "prevention-bati",
+        "file": "drone-lettre-prevention-bati.docx",
+        "nativeSha256": "ccb0420715766397ae65d69a28d21b18b820f95fda1b05b7818fe7721e428dd3",
+        "renderedSha256": "d2a1addf089a453e99186adabcd3871a2bd6a576a1454fcd31d0c356779aadd4",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "drone",
+        "type": "letter",
+        "offer": "360-premium",
+        "file": "drone-lettre-360-premium.docx",
+        "nativeSha256": "c6928aa3bd695ebdfbd864d9698c60f8462d7854fbe82951e7f4a360cda68ef5",
+        "renderedSha256": "d0097c9aab213803215ab8e6c9f7902ec7ca905e05687527be9354e0f9a1060f",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rga",
+        "type": "letter",
+        "offer": "habitat-confort",
+        "file": "rga-lettre-habitat-confort.docx",
+        "nativeSha256": "4e892f460ef490df082b34b5411616d816118fcde4642b6a12db910caf82974e",
+        "renderedSha256": "ca94e448eda4cfdd10df5254fa17807910dc09f72ad1a63cc1909840ef08f64c",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rga",
+        "type": "order",
+        "offer": "habitat-confort",
+        "file": "rga-ordre.docx",
+        "nativeSha256": "fb55ddef6c445a589aae233f30a0aace9ff2dccefe3c3599fea4b00a647ddf54",
+        "renderedSha256": "17e4fd0782df4a5ec1083251a338eb1b7c5b5261eda8a183b72a5c60707df31a",
+        "wordPages": 1,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rga",
+        "type": "letter",
+        "offer": "energie-travaux",
+        "file": "rga-lettre-energie-travaux.docx",
+        "nativeSha256": "123f4c8b60c1d5abd3da6630f8ae7182e5ff0a65b3b45e3417a30323cad4d38e",
+        "renderedSha256": "e2f51e038040c8c550dbb943aea3afd9f9be043541d22e05ed6617e19716f52c",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rga",
+        "type": "letter",
+        "offer": "prevention-bati",
+        "file": "rga-lettre-prevention-bati.docx",
+        "nativeSha256": "dac957eebd24e30693651ba4d6c728f7f76a801553ba07decce7c163e87ee6c5",
+        "renderedSha256": "323aa040fc256c2fc2f68b1f767054f7aad55530cfc37a22017466f4eced6941",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "rga",
+        "type": "letter",
+        "offer": "360-premium",
+        "file": "rga-lettre-360-premium.docx",
+        "nativeSha256": "33150b9dd62b46fbe48000d7596dd285a425905b74bd22e3f8c040d81c1be43e",
+        "renderedSha256": "2f952e282ae855e47d929725fdd60e5ab902270fc96ee3b972df447558ccaa8f",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "projet",
+        "type": "letter",
+        "offer": "habitat-confort",
+        "file": "projet-editeur-lettre-habitat-confort.docx",
+        "nativeSha256": "d72d387f67fc04351957f8db1b13a0bc43503800c4545cd110cf1e6fc7c8a4dd",
+        "renderedSha256": "b681e971d994cfdc88425ce57b04776581977f6be9e7ab067c60d93020dd31e9",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "projet",
+        "type": "order",
+        "offer": "habitat-confort",
+        "file": "projet-editeur-ordre.docx",
+        "nativeSha256": "2671db421b7816e129090811d0867a9abf58a019237cb1c0becfa8de287bc53b",
+        "renderedSha256": "5d8e216e4098ad630c74bb27874578e07234757c1a0e2ddaf304499935a2c826",
+        "wordPages": 1,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "projet",
+        "type": "letter",
+        "offer": "energie-travaux",
+        "file": "projet-editeur-lettre-energie-travaux.docx",
+        "nativeSha256": "0a55c731716839aa467726d3ba617a75e8fd817f25ed32b452299ebbbcfe12c0",
+        "renderedSha256": "f6833b50a55261463571deb0bebd4fdeb29fd440a9988c85420cb5aea4bd4d71",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "projet",
+        "type": "letter",
+        "offer": "prevention-bati",
+        "file": "projet-editeur-lettre-prevention-bati.docx",
+        "nativeSha256": "b191bb3ee71adc48f7b1a7754765b24a6a1decf432bce948ee4c6a517d5f8ecc",
+        "renderedSha256": "ed243db49643f48c99be24ddf351508e93506f89d3fb08cc7279790a139ded88",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "projet",
+        "type": "letter",
+        "offer": "360-premium",
+        "file": "projet-editeur-lettre-360-premium.docx",
+        "nativeSha256": "a54edc448404abe695578a91640427991374014c864263cb720e02cb703193a9",
+        "renderedSha256": "c32df4d3dceef61a5a83dbb81177bb693fb0137baac2af70fb8ec71488093eae",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "coupe",
+        "type": "letter",
+        "offer": "habitat-confort",
+        "file": "coupe-editeur-lettre-habitat-confort.docx",
+        "nativeSha256": "24c875da85f467b8439ef3caa36b922b41f04468556475f1cd1090ff78183aa3",
+        "renderedSha256": "227262ad31509442e485408f5be1311e663148efcaa1ba90a99c7a58f41b5c7c",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "coupe",
+        "type": "order",
+        "offer": "habitat-confort",
+        "file": "coupe-editeur-ordre.docx",
+        "nativeSha256": "3994d7f802b5fe226be880db4bcc420d47645bcf4bcbbdc6672ac4a611f1fdd9",
+        "renderedSha256": "7866d190d62216c82e1c89815a5b690f80fa7145ad93c057a89eed50aca9f46b",
+        "wordPages": 1,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "coupe",
+        "type": "letter",
+        "offer": "energie-travaux",
+        "file": "coupe-editeur-lettre-energie-travaux.docx",
+        "nativeSha256": "93242aab94da45c9ce0c5941e9ca538b432c52ee5f37e5e1f7890bd7a8fb4992",
+        "renderedSha256": "a91e0dc2dc3992bea2548bfef57ea8582bf6a214608df2b190cc6b971d952152",
+        "wordPages": 5,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "coupe",
+        "type": "letter",
+        "offer": "prevention-bati",
+        "file": "coupe-editeur-lettre-prevention-bati.docx",
+        "nativeSha256": "358ae081156d5b594c245d74a5a2aa632657a9843fcc70c38b4b1081fb5138eb",
+        "renderedSha256": "3d09c86217b519b6e514784182b78b33687f968adb741e9d71950f7037cee72e",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      },
+      {
+        "app": "coupe",
+        "type": "letter",
+        "offer": "360-premium",
+        "file": "coupe-editeur-lettre-360-premium.docx",
+        "nativeSha256": "76bbf1c47125967105ac9cea2dae246b9cffdd5ad921c17346705d3d786983ce",
+        "renderedSha256": "fd010d6d02f3144cb2707512fe3d0061bdc87c3324951d43f8789a7a36318ccc",
+        "wordPages": 6,
+        "officialLogoAndCompany": true,
+        "clientAndSiteMatchedInWordAndPdf": true
+      }
+    ]
+  },
+  "limitations": [
+    {
+      "id": "existing_browser_cache",
+      "observed": "Les onglets déjà ouverts de Projet, Rapport, Coupe, Thermo, Drone et RGA ont conservé l’ancien menu après une actualisation ordinaire. Une actualisation complète a chargé Missions.",
+      "next": "Utiliser Ctrl+F5 si l’entrée manque dans un onglet déjà ouvert."
+    },
+    {
+      "id": "projet_coupe_embedded_download",
+      "observed": "Les formulaires intégrés de Projet et Coupe ont signalé la génération, mais le navigateur intégré n’a pas remis le fichier. Un événement d’annulation a été observé dans Projet. Les dix Word ont été récupérés depuis les mêmes éditeurs hébergés ouverts directement dans leur propre onglet.",
+      "next": "Vérifier la remise du fichier depuis les cadres dans un navigateur utilisateur standard. Le contrôle de Chrome sous Windows s’est arrêté faute de pouvoir déterminer de façon fiable son URL active."
+    },
+    {
+      "id": "dedicated_user",
+      "observed": "Les contrôles ont utilisé la session CONNECT autorisée déjà présente. Seules les coordonnées saisies dans le formulaire Missions étaient fictives. Un compte de recette distinct n’a pas été utilisé."
+    }
+  ],
+  "productionChanged": false
+}

@@ -12,7 +12,7 @@ tags: [avereo, missions, clients, livrables, preproduction]
 
 # Protocole des missions et des livrables
 
-Le responsable souhaite préparer la lettre, l’ordre et le rapport depuis un même dossier et saisir les coordonnées du client une seule fois. Le candidat local propose **Mon espace → Missions**. La partie sur le répertoire partagé entre applications est une proposition d’architecture à examiner.
+Le responsable souhaite préparer la lettre, l’ordre et le rapport depuis un même dossier et saisir les coordonnées du client une seule fois. **Mon espace → Missions** est disponible dans les sept applications cibles de préproduction. La partie sur le répertoire partagé entre applications est une proposition d’architecture à examiner. [Recette des documents et cas de Projet et Coupe](preparation-missions.md#installation-et-recette-hébergée-du-7-novembre-2026).
 
 ## Parcours proposé
 
@@ -82,6 +82,6 @@ Le parcours métier proposé est **brouillon → lettre relue → acceptation co
 
 ## Préparation de livraison
 
-Cycle du projet **Cadrage → Développement local → Préproduction → Mise en production**. Le candidat et le protocole sont soumis à revue locale. Le suivi de l’itération référence les essais, le paquet et les réserves de préparation. La préproduction utilisera le même paquet et un contrôle frais de ses cibles avant installation.
+Cycle du projet **Cadrage → Développement local → Préproduction → Mise en production**. L’itération se trouve en Préproduction. Son suivi référence la version fusionnée, le paquet effectivement installé et les essais des documents hébergés.
 
 [Suivi de l’itération](../data/suivi-missions.json).
