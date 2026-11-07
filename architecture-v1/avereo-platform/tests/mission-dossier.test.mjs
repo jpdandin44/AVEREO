@@ -27,3 +27,14 @@ test('les anciens dossiers et les champs non renseignés restent utilisables', (
   mission.apply({...mission.fields,email:'thermo@example.invalid',telephone:'  '});
   assert.deepEqual(missionContactLines(updated.missionBrief),[['E-mail','thermo@example.invalid']]);
 });
+
+test('Thermo reprend le courriel de l’ancien dossier et respecte son effacement explicite', () => {
+  const legacy={proprietaire:'Client fictif',email:'ancien@example.invalid',adresse_logement:'Site B'};
+  let saved;
+  const mission=reportMissionDossier(legacy, update=>{saved=update(legacy);}, false);
+  assert.equal(mission.fields.email,legacy.email);
+  mission.apply({...mission.fields,email:''});
+  assert.equal(reportMissionDossier(saved, null, false).fields.email,'');
+  const newer={...legacy,missionBrief:{email:'confirme@example.invalid'}};
+  assert.equal(reportMissionDossier(newer, null, false).fields.email,'confirme@example.invalid');
+});

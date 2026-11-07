@@ -46,3 +46,5 @@ futurs ont une [source JSON unique](data/report-organization.json).
 ## Missions et rapports
 
 Ouvrir **Mon espace → Missions** depuis un dossier. La lettre et l’ordre Word utilisent les coordonnées du formulaire. Le catalogue de clients entre applications figure dans le protocole proposé. [Protocole des missions](docs/protocole-missions.md).
+
+Pour préparer un ordre, choisir la prestation, vérifier l’adresse postale et le site d’intervention, puis ouvrir **Étapes de l’ordre de mission**. Le document reprend les tâches de l’offre et les options retenues. [Mode d’emploi de l’ordre](docs/protocole-missions.md#préparer-lordre-de-chaque-prestation).

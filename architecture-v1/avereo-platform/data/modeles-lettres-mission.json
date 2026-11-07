@@ -9,28 +9,232 @@
       "nom": "Habitat & Confort",
       "fichier": "AVEREO_LDM_Template_01_Habitat_Confort_V1_0.docx",
       "sha256": "031f22e8f11d2d284e0ad64be1946289fb4004777dd874a468cd8a2f0f321929",
-      "modelePrepareSha256": "3e33b1b04bf05d868f3e93c35a7483e71f835eda583551aeb01495b89e6f947c"
+      "modelePrepareSha256": "3e33b1b04bf05d868f3e93c35a7483e71f835eda583551aeb01495b89e6f947c",
+      "ordre": {
+        "objet": "Localiser les inconforts, les traces d’humidité et les défauts de ventilation apparents dans les pièces convenues.",
+        "livrable": "Synthèse par pièce avec constats, limites de visite et points de vigilance classés par priorité.",
+        "etapes": [
+          {
+            "titre": "Préparer la visite avec l’occupant",
+            "consigne": "Reprendre les questions du client. Demander dans quelles pièces les gênes surviennent, à quelles saisons et après quels usages. Confirmer les pièces accessibles le jour de la visite.",
+            "trace": "Liste des pièces, des gênes signalées et des conditions dans lesquelles elles apparaissent."
+          },
+          {
+            "titre": "Relever le confort pièce par pièce",
+            "consigne": "Parcourir les pièces retenues avec l’occupant. Mettre en regard son ressenti, les horaires de chauffage, les habitudes d’aération et les observations faites le jour de la visite.",
+            "trace": "Pour chaque pièce, distinguer le témoignage de l’occupant et le constat de visite."
+          },
+          {
+            "titre": "Examiner la ventilation apparente",
+            "consigne": "Repérer les entrées et sorties d’air visibles, les bouches et les passages d’air entre pièces. Relever les obstacles et les pratiques d’aération. Consigner les mesures seulement si elles sont prévues et réalisées.",
+            "trace": "Emplacement des dispositifs, état apparent et points qui restent à vérifier."
+          },
+          {
+            "titre": "Localiser les traces d’humidité",
+            "consigne": "Repérer condensation, moisissures ou auréoles sur les surfaces accessibles. Situer chaque trace sur le plan ou sur une photographie et noter les conditions d’apparition rapportées.",
+            "trace": "Relevé localisé distinguant les indices visibles des hypothèses à confirmer."
+          },
+          {
+            "titre": "Restituer les constats et les priorités",
+            "consigne": "Reprendre avec le client les pièces concernées. Distinguer les gestes d’usage, les vérifications techniques à programmer et les zones qui nécessitent une investigation complémentaire.",
+            "trace": "Synthèse des priorités, des limites d’observation et des suites proposées."
+          }
+        ],
+        "options": [
+          "thermographie-interieure",
+          "analyse-documentaire",
+          "accompagnement"
+        ]
+      }
     },
     {
       "id": "energie-travaux",
       "nom": "Énergie & Travaux",
       "fichier": "AVEREO_LDM_Template_02_Energie_Travaux_V1_0.docx",
       "sha256": "613696cd82dd38db139b6e524e63938ffef3e36fa2657699219febff6b520456",
-      "modelePrepareSha256": "6dbe4aeaa87954fb1f189a6196ac18914b275b4ba586feaa96b31f9a16b4e420"
+      "modelePrepareSha256": "6dbe4aeaa87954fb1f189a6196ac18914b275b4ba586feaa96b31f9a16b4e420",
+      "ordre": {
+        "objet": "Comparer les choix de rénovation et ordonner les travaux à partir de l’état du bien et des priorités du client.",
+        "livrable": "Synthèse des scénarios, de leurs hypothèses et des lots de travaux à enchaîner ou à confirmer.",
+        "etapes": [
+          {
+            "titre": "Cadrer la décision de rénovation",
+            "consigne": "Identifier l’arbitrage demandé, le budget ou les contraintes indiqués par le client, les travaux déjà réalisés et ceux envisagés. Repérer les documents disponibles et dater les informations utilisées.",
+            "trace": "Objectif de rénovation, contraintes et liste des informations manquantes."
+          },
+          {
+            "titre": "Décrire l’état initial",
+            "consigne": "Relever les parois accessibles, les menuiseries, la ventilation, le chauffage et l’eau chaude. Distinguer ce qui a été observé, déclaré par le client ou repris d’un document.",
+            "trace": "État initial par lot, avec sources et hypothèses de travail."
+          },
+          {
+            "titre": "Comparer les scénarios",
+            "consigne": "Construire les variantes convenues en indiquant pour chacune les gestes retenus, leurs interactions et les hypothèses de comparaison. Signaler les effets attendus dont la valeur reste à confirmer.",
+            "trace": "Tableau des variantes, de leurs conditions et des points à arbitrer."
+          },
+          {
+            "titre": "Ordonner les lots de travaux",
+            "consigne": "Identifier les travaux préalables et les dépendances entre enveloppe, ventilation et systèmes. Proposer un enchaînement compatible avec les usages du logement et repérer les reprises évitables.",
+            "trace": "Phasage des lots, dépendances et décisions à prendre avant chaque étape."
+          },
+          {
+            "titre": "Qualifier les estimations prévues",
+            "consigne": "Pour les estimations prévues au devis, préciser la source, la date, le périmètre et les incertitudes. Repérer les postes pour lesquels une entreprise doit établir un chiffrage.",
+            "trace": "Ordres de grandeur documentés lorsqu’ils sont convenus, et postes à faire chiffrer."
+          },
+          {
+            "titre": "Restituer les arbitrages",
+            "consigne": "Présenter au client les variantes, le phasage et les points à faire confirmer avant de lancer les travaux. Relier chaque action proposée à l’objectif de départ.",
+            "trace": "Synthèse décisionnelle et liste des validations encore attendues."
+          }
+        ],
+        "options": [
+          "relecture-devis",
+          "thermographie-interieure",
+          "analyse-documentaire",
+          "accompagnement"
+        ]
+      }
     },
     {
       "id": "prevention-bati",
       "nom": "Prévention Bâti",
       "fichier": "AVEREO_LDM_Template_03_Prevention_Bati_V1_0.docx",
       "sha256": "d719499a8a917e0fce5e9c625705c8560dc8549f92dc783e0c061fa49f82843f",
-      "modelePrepareSha256": "14743dfb8354c737e186f698635db6d639a580ba38ec9478ca0099399d5c0447"
+      "modelePrepareSha256": "14743dfb8354c737e186f698635db6d639a580ba38ec9478ca0099399d5c0447",
+      "ordre": {
+        "objet": "Repérer et hiérarchiser les désordres visibles des parties du bâti convenues avec le client.",
+        "livrable": "Relevé localisé des désordres, des limites de visite et des vérifications ou avis spécialisés à prévoir.",
+        "etapes": [
+          {
+            "titre": "Préparer le repérage des désordres",
+            "consigne": "Recueillir la date d’apparition signalée, les évolutions, travaux ou événements connus. Délimiter les façades, pièces et points hauts inclus, ainsi que les accès utilisables.",
+            "trace": "Chronologie déclarée, zones à visiter et repères utilisables pour comparer les observations."
+          },
+          {
+            "titre": "Cartographier les fissures visibles",
+            "consigne": "Attribuer un repère à chaque fissure observée. Noter le support, la position, l’orientation et les signes d’évolution rapportés. Comparer avec les photographies datées disponibles.",
+            "trace": "Croquis ou vues repérées et datées, avec distinction entre observation et témoignage."
+          },
+          {
+            "titre": "Examiner les façades et les points hauts accessibles",
+            "consigne": "Depuis les points d’observation prévus, parcourir les façades, la toiture visible, les raccords et l’évacuation des eaux. Identifier les zones masquées et les secteurs inaccessibles.",
+            "trace": "Relevé par façade ou versant, avec origine des vues et zones non observées."
+          },
+          {
+            "titre": "Suivre les indices d’humidité ou d’infiltration",
+            "consigne": "Localiser les traces intérieures et extérieures. Comparer leur position avec les raccords, évacuations et ruissellements visibles, puis noter les autres explications possibles.",
+            "trace": "Correspondances observées et hypothèses distinguées des causes établies."
+          },
+          {
+            "titre": "Mettre les indices en contexte",
+            "consigne": "Consulter les éléments disponibles sur le retrait-gonflement des argiles pour le site concerné. Les rapprocher de la chronologie et du bâti observable. Préciser les vérifications qui demandent un spécialiste.",
+            "trace": "Sources, date de consultation, incertitudes et motifs d’orientation éventuelle."
+          },
+          {
+            "titre": "Restituer les niveaux de vigilance",
+            "consigne": "Classer les points à documenter, à suivre ou à faire examiner. Expliquer au client comment retrouver chaque repère et quelles informations compléter au prochain contrôle.",
+            "trace": "Synthèse de prévention avec repères, priorités et suites proposées."
+          }
+        ],
+        "options": [
+          "inspection-drone",
+          "thermographie",
+          "analyse-documentaire",
+          "accompagnement"
+        ]
+      }
     },
     {
       "id": "360-premium",
       "nom": "360 Premium",
       "fichier": "AVEREO_LDM_Template_04_360_Premium_V1_0.docx",
       "sha256": "2b7425595c1a22981473be9859981be7543d9904d106fa6e1d16879061f6705f",
-      "modelePrepareSha256": "c5e0227e9a9330c752bb315f831c0583b02059660cf151502b42321da763e905"
+      "modelePrepareSha256": "c5e0227e9a9330c752bb315f831c0583b02059660cf151502b42321da763e905",
+      "ordre": {
+        "objet": "Croiser les observations sur l’habitat, l’énergie et les travaux pour établir une feuille de route adaptée à la décision du client.",
+        "livrable": "Rapport 360 et feuille de route hiérarchisée intégrant les observations et investigations effectivement réalisées.",
+        "etapes": [
+          {
+            "titre": "Cadrer la décision et préparer l’intervention",
+            "consigne": "Identifier la décision de préachat ou de travaux, les questions prioritaires, les pièces et les abords à examiner. Confirmer les accès et préparer les conditions nécessaires aux observations thermographiques et au drone.",
+            "trace": "Programme de visite, documents utiles et interventions dont la faisabilité reste à confirmer."
+          },
+          {
+            "titre": "Examiner le confort et les désordres visibles",
+            "consigne": "Parcourir les pièces retenues avec l’occupant. Relever les usages, les signes d’humidité, la ventilation apparente et les désordres accessibles. Rattacher chaque constat à une pièce ou une façade.",
+            "trace": "Relevé localisé des constats et des limites d’accès."
+          },
+          {
+            "titre": "Réaliser la thermographie prévue",
+            "consigne": "Vérifier que les conditions de prise de vue permettent une interprétation. Associer chaque thermogramme à une vue visible, à sa localisation et aux conditions de mesure. Consigner les vues impossibles ou peu interprétables.",
+            "trace": "Paires de vues annotées, conditions d’acquisition et limites d’interprétation."
+          },
+          {
+            "titre": "Vérifier la faisabilité du drone et documenter les points hauts",
+            "consigne": "Vérifier les conditions de vol, d’accès, de sécurité, de couverture et de météo avant l’intervention. Si le vol est réalisable, rattacher les vues aux zones convenues. Sinon, consigner le motif et convenir avec le client d’un report ou d’un autre moyen.",
+            "trace": "Vues repérées si le vol a eu lieu, ou relevé des zones non observées et de la suite convenue."
+          },
+          {
+            "titre": "Comparer les scénarios énergétiques",
+            "consigne": "Décrire l’enveloppe et les systèmes accessibles, puis rapprocher ces constats des usages et des observations précédentes. Comparer les variantes retenues en précisant les hypothèses et les interactions.",
+            "trace": "Scénarios commentés et points techniques à confirmer."
+          },
+          {
+            "titre": "Construire la feuille de route des travaux",
+            "consigne": "Croiser confort, désordres, énergie et contraintes budgétaires indiquées. Ordonner les investigations et les lots selon leurs dépendances, et signaler les décisions à prendre avant d’engager les travaux.",
+            "trace": "Actions hiérarchisées, lots dépendants et vérifications préalables."
+          },
+          {
+            "titre": "Restituer l’analyse transversale",
+            "consigne": "Revoir avec le client sa question initiale. Présenter les observations effectivement réalisées, leurs limites et la feuille de route. Identifier les arbitrages qui restent au client ou à un spécialiste.",
+            "trace": "Rapport 360, feuille de route et décisions restant à prendre."
+          }
+        ],
+        "options": [
+          "fissures-rga",
+          "relecture-devis",
+          "analyse-documentaire",
+          "accompagnement"
+        ]
+      }
     }
-  ]
+  ],
+  "optionsOrdre": {
+    "thermographie-interieure": {
+      "titre": "Thermographie intérieure",
+      "consigne": "Avant les prises de vue, relever les conditions de chauffage, d’ambiance et d’accès. Associer les thermogrammes intérieurs à des vues visibles de la même zone et préciser les limites de lecture.",
+      "trace": "Paires de vues localisées et conditions d’acquisition."
+    },
+    "thermographie": {
+      "titre": "Thermographie",
+      "consigne": "Définir les zones à examiner et vérifier les conditions de prise de vue. Associer les anomalies apparentes à une vue visible et aux observations du bâti. Relever tout obstacle à une interprétation fiable.",
+      "trace": "Vues thermiques et visibles repérées, hypothèses et limites."
+    },
+    "analyse-documentaire": {
+      "titre": "Analyse documentaire complémentaire",
+      "consigne": "Inventorier les pièces convenues avec le client, dater leurs versions et relever les indications utiles. Confronter ces éléments aux observations de visite et signaler les différences ou pièces manquantes.",
+      "trace": "Liste des pièces analysées et conclusions rattachées à leur source."
+    },
+    "accompagnement": {
+      "titre": "Accompagnement technique ponctuel",
+      "consigne": "Après la restitution, reprendre la question précise convenue avec le client. Examiner les éléments nouveaux dans le périmètre prévu et consigner la réponse apportée et les points encore ouverts.",
+      "trace": "Note de suivi datée précisant la question traitée et la suite retenue."
+    },
+    "relecture-devis": {
+      "titre": "Relecture de devis",
+      "consigne": "Identifier les versions et lots soumis à relecture. Comparer les prestations décrites, les interfaces et les postes omis ou à préciser au regard des objectifs du client.",
+      "trace": "Tableau des écarts et questions à adresser aux entreprises."
+    },
+    "inspection-drone": {
+      "titre": "Inspection visuelle par drone",
+      "consigne": "Vérifier la faisabilité du vol avant de programmer les prises de vue. Si les conditions le permettent, repérer les zones convenues et rattacher chaque image à son emplacement. En cas d’impossibilité, documenter le motif et la suite proposée.",
+      "trace": "Vues localisées ou mention du report, des zones non observées et de la modalité convenue."
+    },
+    "fissures-rga": {
+      "titre": "Fissures et contexte RGA",
+      "consigne": "Relever les fissures concernées par la demande, leurs supports et leur chronologie déclarée. Consulter les données disponibles sur le retrait-gonflement des argiles au droit du site et distinguer le contexte territorial de la cause des désordres.",
+      "trace": "Cartographie des repères, sources consultées et besoin éventuel d’un avis spécialisé."
+    }
+  }
 }

@@ -1,0 +1,167 @@
+{
+  "project": "avereo-platform",
+  "iteration": "ordres-mission-prestations",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "phase": "Développement local",
+  "status": "local_verified",
+  "baseSha": "54af84e562d2b5dbfc32611341e386e4fee2c467",
+  "branch": "feat/ordres-mission-prestations",
+  "codeSourceSha": "d2efe53aa26c46f1220ac13ee8b974ba6a67e2e0",
+  "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/127",
+  "reviewSource": "../modeles-lettres-mission.json",
+  "previousRelease": {
+    "pullRequest": 125,
+    "ordersWithoutTasks": [
+      "e1373b94d09a10f4e73c5744feab76af845a54f24e0243b5d27e3d953b055f7e",
+      "d7a4240999b5af944a890e50de6534fa4e427d9f18bb25e68eaae86e014d27d3"
+    ],
+    "verifiedAt": "2026-11-07T21:00:48.486822+00:00",
+    "servedByProjetAndCoupe": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c"
+  },
+  "preproduction": {
+    "installed": false,
+    "targets": [
+      "connect",
+      "projet",
+      "rapport",
+      "coupe",
+      "thermo",
+      "drone",
+      "passeport-immo"
+    ]
+  },
+  "production": {
+    "installed": false
+  },
+  "localVerification": {
+    "browser": "156.0.8078.80",
+    "offers": 4,
+    "standardSteps": 24,
+    "nativeDocuments": [
+      {
+        "offer": "habitat-confort",
+        "steps": 5,
+        "pages": 2,
+        "docxSha256": "d167b43187acb45013a44a7e9d85553d6f788191851da5b28ef37ed74961ef90",
+        "pdfSha256": "63fa577275baec7ab2dd48efa7a59eea617192f831e4e55726b8ac5f622dbad2"
+      },
+      {
+        "offer": "energie-travaux",
+        "steps": 6,
+        "pages": 2,
+        "docxSha256": "786c94ce9b85b3727e8e601bbb635e03e8faa3b2b746cfdb15b070c8aa4764a7",
+        "pdfSha256": "94226d63ba6eaa3d35d5632c53cc455993121d2d1eb8aa618d7073f1339585be"
+      },
+      {
+        "offer": "prevention-bati",
+        "steps": 6,
+        "pages": 2,
+        "docxSha256": "3b44a1260e1405fcafbcecbb43766b362200d20fd11fdd4ba4c76e556b01a757",
+        "pdfSha256": "a8f54ff7d986e7e0384123d38629e340e770e22891be7461d1e709026113436f"
+      },
+      {
+        "offer": "360-premium",
+        "steps": 7,
+        "pages": 2,
+        "docxSha256": "f922d0c0b6f49a7329f0a9323d55546fd8ee6697deb9b550edcc50286e5d0c48",
+        "pdfSha256": "6c22d1b2cb74a7056d3a5f5aa88fbd0e50fc5cb5db8cad8794cd6cd3cb53be46"
+      }
+    ],
+    "exampleArchiveSha256": "1f0b294fbfed48d4606f22a030961364d37f1d9ff9e96dff4d630ddd2dfe2361",
+    "applications": [
+      {
+        "app": "projet",
+        "iframeTitle": "Projet AVEREO Pro",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 4
+      },
+      {
+        "app": "coupe",
+        "iframeTitle": "Coupe AVEREO Reno Pro",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 4
+      },
+      {
+        "app": "connect",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 1
+      },
+      {
+        "app": "rapport",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 1
+      },
+      {
+        "app": "thermo",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 1
+      },
+      {
+        "app": "drone",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 1
+      },
+      {
+        "app": "passeport-immo",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 1
+      },
+      {
+        "app": "rga",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 1
+      },
+      {
+        "app": "recherche",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 1
+      },
+      {
+        "app": "saisie-unique",
+        "sameTab": true,
+        "extraTabs": 0,
+        "orders": 1
+      }
+    ],
+    "menuDownloads": 16,
+    "contactFieldsChecked": [
+      "nom",
+      "adresse postale",
+      "téléphone",
+      "e-mail",
+      "adresse d’intervention"
+    ],
+    "nativeDossiersReopened": [
+      "rapport",
+      "thermo",
+      "drone"
+    ],
+    "nativeDossierOrders": 3,
+    "unchangedLetterContents": 4,
+    "officialLogoSha256": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+    "privateOriginalTemplatesMatched": 4,
+    "regressions": [
+      "options décochées au changement d’offre",
+      "client différent au changement de dossier",
+      "objet et livrable personnalisés prioritaires",
+      "coordonnées manquantes signalées",
+      "ancien e-mail Thermo et effacement explicite"
+    ]
+  },
+  "nextAction": "Relire les quatre ordres du candidat local. Après validation et fusion, préparer la livraison de cette version en préproduction.",
+  "updatedAt": "2026-11-07T21:02:23.465482+00:00"
+}

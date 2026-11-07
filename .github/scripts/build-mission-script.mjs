@@ -8,7 +8,14 @@ export async function buildMissionScript() {
     readFile(new URL('vendor/jszip/jszip.min.js',shared),'utf8'),
     readFile(new URL('mission-workspace.js',shared),'utf8'),
   ]);
-  const config = {company:{name:AVEREO_NAME,lines:AVEREO_COMPANY_LINES,logo:AVEREO_LOGO},
-    offers:catalog.offres.map(({id,nom,modelePrepareSha256})=>({id,nom,modelePrepareSha256}))};
+  const offers = catalog.offres.map(({id, nom, modelePrepareSha256, ordre}) => {
+    const options = ordre.options.map(key => {
+      const option = catalog.optionsOrdre[key];
+      if (!option) throw Error(`Option d’ordre inconnue pour ${id} : ${key}`);
+      return {id: key, ...option};
+    });
+    return {id, nom, modelePrepareSha256, ordre: {...ordre, options}};
+  });
+  const config = {company:{name:AVEREO_NAME,lines:AVEREO_COMPANY_LINES,logo:AVEREO_LOGO}, offers};
   return Buffer.from('(function(){const module={exports:{}};const exports=module.exports;\n'+zip+'\n'+workspace+'\ninstallMissionWorkspace({JSZip:module.exports,...'+JSON.stringify(config)+'});})();\n');
 }

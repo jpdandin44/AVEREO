@@ -49,3 +49,5 @@ calcul, ni données, ni habilitations. [Audit et qualification](identite-livrabl
 ## 7 novembre 2026 — Source du module Missions
 
 Le nouveau module commun produit des copies de travail à partir du dossier ouvert. Les modèles Word restent privés, le catalogue porte leur empreinte et les intégrations métier restent explicites. [Périmètre et preuves](preparation-missions.md).
+
+Les ordres Projet et Coupe de la livraison #125 comportaient la fiche d’intervention et aucune tâche métier. Le candidat suivant reprend les étapes des quatre offres, les options retenues et les coordonnées du client. [Constat initial et essais du candidat](../data/recette-missions/ordres-prestations.json).

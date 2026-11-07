@@ -18,11 +18,11 @@ export function reportMissionDossier(report, update, emailInReport) {
     label: 'Dossier ouvert · '+(report.reference_dossier || report.titre || 'Rapport'),
     fields: {...report.missionBrief,client:report.proprietaire, adresseBien:report.adresse_logement,
       referenceDossier:report.reference_dossier,date:report.date_visite,
-      email:emailInReport ? report.email : report.missionBrief?.email},
+      email:emailInReport ? (report.email ?? report.missionBrief?.email) : (report.missionBrief?.email ?? report.email)},
     apply(values) {
       update(previous => ({...previous, proprietaire:values.client, adresse_logement:values.adresseBien,
         reference_dossier:values.referenceDossier, date_visite:values.date,
-        ...(emailInReport ? {email:values.email} : {}),
+        ...(emailInReport || Object.hasOwn(previous,'email') ? {email:values.email} : {}),
         missionBrief:missionDetails(values,!emailInReport)}));
     },
   };
