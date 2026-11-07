@@ -10,8 +10,8 @@
     "Préproduction",
     "Mise en production"
   ],
-  "phase": "Développement local",
-  "status": "host_preflight_verified_pending_business_review_and_release_decisions",
+  "phase": "Préproduction",
+  "status": "deployed_verified_with_embedded_download_reservation",
   "scope": "Lettres et ordres depuis un dossier et recette des rapports, sur fixtures.",
   "github": {
     "repository": "jpdandin44/AVEREO",
@@ -19,9 +19,13 @@
     "base": "main",
     "baseMerge124": "1d483e8419f16bd34fc4809cc2e72a9065a6a2a7",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/125",
-    "draft": true,
-    "merged": false,
-    "codeSourceSha": "02d3edfdc4fe993961a12a5d09bb60dab4c0de62"
+    "draft": false,
+    "merged": true,
+    "codeSourceSha": "02d3edfdc4fe993961a12a5d09bb60dab4c0de62",
+    "headSha": "ebc1b099014aa33991e4ed9e65511ab7ca212f4f",
+    "mergeSha": "54af84e562d2b5dbfc32611341e386e4fee2c467",
+    "mergedAt": "2026-11-07T13:31:44Z",
+    "reviewedContentUnchanged": true
   },
   "protocolDocument": "../docs/protocole-missions.md",
   "releaseNotes": "../docs/preparation-missions.md",
@@ -42,13 +46,19 @@
       "recherche",
       "saisie-unique"
     ],
-    "deployment": null,
+    "deployment": {
+      "status": "installed_and_verified",
+      "observedAt": "2026-11-07T13:32:58+00:00",
+      "evidence": "recette-missions/livraison-preproduction.json",
+      "files": 27,
+      "artifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82"
+    },
     "currentHostRehearsal": "passed_on_private_copies_of_seven_hosted_targets",
     "manifest": "recette-missions/selection-preproduction.json",
     "artifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82",
     "files": 27,
     "localRecovery": "passed_on_reference_copies",
-    "liveFilesModified": false,
+    "liveFilesModified": true,
     "linuxSimulation": {
       "environment": "local_isolated",
       "targets": 7,
@@ -63,18 +73,36 @@
     "requiredDirectory": {
       "app": "connect",
       "path": "assets",
-      "status": "absent_creation_and_rollback_rehearsed_on_private_copy"
-    }
+      "status": "created_and_verified_during_installation"
+    },
+    "functionalReceipt": "recette-missions/livraison-preproduction.json"
   },
   "production": null,
-  "approvals": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "source": "user_chat",
+      "condition": "after_pr125_merge",
+      "artifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82",
+      "targets": [
+        "connect",
+        "projet",
+        "rapport",
+        "coupe",
+        "thermo",
+        "drone",
+        "passeport-immo"
+      ]
+    }
+  ],
   "openItems": [
     "Validation métier des lettres et du parcours",
     "Répertoire en ligne par organisation, droits serveur, révisions et archives",
     "Immatriculation, assurance, annexes et tarifs applicables",
-    "Recette hébergée sur compte fictif après autorisation de déployer"
+    "Remise du téléchargement depuis les cadres Projet et Coupe dans un navigateur standard",
+    "Parcours sur un compte de recette distinct si exigé pour la qualification des accès"
   ],
-  "updatedAt": "2026-11-07T11:54:14.952941+00:00",
+  "updatedAt": "2026-11-07T13:47:53.325945+00:00",
   "publication": {
     "candidate": "manual_only_from_main_with_confirmation",
     "concerns": [
@@ -83,7 +111,7 @@
       "projet",
       "prototype-github-pages"
     ],
-    "effectiveOnMain": false
+    "effectiveOnMain": true
   },
-  "nextAction": "Relire le protocole et les lettres de la PR #125. Après les décisions de fusion et de déploiement, recontrôler les empreintes et la présence du répertoire assets de CONNECT avant installation du paquet vérifié."
+  "nextAction": "Vérifier dans Chrome la remise des Word depuis les cadres de Projet et Coupe, puis relire les lettres métier en préproduction."
 }

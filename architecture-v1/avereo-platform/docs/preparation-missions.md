@@ -12,7 +12,7 @@ tags: [avereo, missions, rapports, recette, preproduction]
 
 # Recette des rapports et préparation des missions
 
-La PR #124 a fusionné dans main au commit `1d483e8419f16bd34fc4809cc2e72a9065a6a2a7`. Le candidat suivant ajoute le parcours de mission et les corrections révélées par la génération réelle des documents. Toutes les manipulations de dossiers décrites ici concernent des données fictives locales.
+La PR #124 a fusionné dans main au commit `1d483e8419f16bd34fc4809cc2e72a9065a6a2a7`. La PR #125 a ajouté le parcours de mission, puis son paquet a été installé en préproduction le 7 novembre 2026. Les coordonnées utilisées pour générer les documents de recette sont fictives.
 
 [Protocole métier](protocole-missions.md) · [Suivi de l’itération](../data/suivi-missions.json) · [Empreintes et résultats](../data/recette-missions/qualification.json).
 
@@ -56,9 +56,17 @@ La procédure serveur a aussi été exécutée dans un environnement Linux local
 
 Entre 12 h 48 et 12 h 51, heure de Paris, cPanel a confirmé les sept racines et le serveur a comparé leurs fichiers au manifeste. Les 13 fichiers à remplacer avaient exactement les empreintes attendues. Les 14 chemins à créer étaient libres. Les six ressources conservées correspondaient aussi, octet pour octet, aux ressources utilisées pendant la recette locale. Le contrôle a utilisé Python 3.11 de l’hébergeur.
 
-Pour les 27 opérations, l’outil a appliqué les changements à une copie privée, rétabli son état initial puis relu les fichiers actifs. Toutes les comparaisons ont réussi. Ce contrôle porte sur la préparation du paquet. La recette fonctionnelle hébergée interviendra après une installation autorisée. [Reçu détaillé par fichier et par application](../data/recette-missions/controle-heberge.json).
+Pour les 27 opérations, l’outil a appliqué les changements à une copie privée, rétabli son état initial puis relu les fichiers actifs. Toutes les comparaisons ont réussi. Ce premier contrôle portait sur la préparation du paquet. [Reçu du contrôle préalable](../data/recette-missions/controle-heberge.json).
 
 **CONNECT nécessite la création de `public/assets/`** pour accueillir `missions.js`. L’essai complémentaire a créé puis retiré ce répertoire sur une copie privée. Un second essai a conservé un fichier témoin ajouté entre-temps. Lors de l’installation, vérifier à nouveau sa présence. S’il doit être créé, le consigner pour que le retour arrière retire seulement un répertoire créé par cette livraison et encore vide.
+
+### Installation et recette hébergée du 7 novembre 2026
+
+La PR #125 a été fusionnée à 14 h 31, heure de Paris, au commit `54af84e562d2b5dbfc32611341e386e4fee2c467`. Son arbre Git correspond exactement à celui de la version revue. Après sauvegarde et restauration sur copies privées, les 27 fichiers du paquet ont été installés à 14 h 32 sur les sept domaines. Le répertoire public `assets` de CONNECT a été créé. Les autres fichiers publics, huit fichiers protégés et les 17 fichiers du planning présents avant l’installation ont conservé leurs empreintes. Les neuf contrôles HTTPS anonymes ont donné les réponses attendues avant et après livraison.
+
+Depuis **Mon espace → Missions**, les quatre offres ont produit leurs lettres et un ordre sur chaque cible. L’entrée RGA de Rapport a fait l’objet du même essai supplémentaire. Les 32 lettres et 8 ordres ont été ouverts dans Microsoft Word et rendus en PDF. Le nom, l’e-mail, le téléphone, les deux adresses, la référence, l’objet, le périmètre, le livrable et l’identité AVEREO ont été vérifiés. Les lettres tiennent sur cinq ou six pages et chaque ordre sur une page pour ces données fictives. La recette a utilisé la session CONNECT autorisée existante et n’a écrit dans aucun dossier métier.
+
+Deux particularités concernent la navigation. Dans certains onglets ouverts avant la livraison, **Ctrl+F5** a actualisé le menu. Dans les cadres intégrés de Projet et Coupe, le navigateur intégré a empêché de récupérer le téléchargement. Les dix fichiers correspondants ont été vérifiés en ouvrant l’éditeur hébergé directement dans un onglet. Le téléchargement depuis les cadres dans Chrome standard reste à confirmer. [Reçu de livraison et des documents par application](../data/recette-missions/livraison-preproduction.json).
 
 ## Mise en production
 
