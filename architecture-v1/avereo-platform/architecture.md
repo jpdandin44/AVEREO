@@ -40,3 +40,5 @@ CONNECT existantes ; il n’est pas fourni par ce candidat. [Contrat](docs/ident
 ## Génération de mission dans l’application
 
 Le menu charge le module à la demande. L’application fournit les champs de son dossier et, lorsqu’elle le permet, une action de reprise dans son formulaire métier. Le navigateur produit les Word à partir du profil commun. La sauvegarde des dossiers reste assurée par chaque application. [Protocole des missions](docs/protocole-missions.md).
+
+La compilation intègre les consignes et les options autorisées du [catalogue](data/modeles-lettres-mission.json) dans le module Missions. Le formulaire affiche cette même liste. Le générateur combine le plan de la prestation avec les coordonnées du seul dossier ouvert. La sélection des options reste en mémoire pendant la préparation de cet ordre.

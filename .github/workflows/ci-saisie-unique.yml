@@ -5,11 +5,23 @@ on:
     paths:
       - 'architecture-v1/avereo-app-saisie-unique/**'
       - 'architecture-v1/avereo-platform/shared/account-menu.js'
+      - 'architecture-v1/avereo-platform/shared/mission-workspace.js'
+      - 'architecture-v1/avereo-platform/shared/mission-dossier.js'
+      - 'architecture-v1/avereo-platform/tests/mission-dossier.test.mjs'
+      - 'architecture-v1/avereo-platform/data/modeles-lettres-mission.json'
+      - 'architecture-v1/avereo-platform/tests/ordre-mission.browser.mjs'
+      - '.github/scripts/build-mission-script.mjs'
       - '.github/workflows/ci-saisie-unique.yml'
   pull_request:
     paths:
       - 'architecture-v1/avereo-app-saisie-unique/**'
       - 'architecture-v1/avereo-platform/shared/account-menu.js'
+      - 'architecture-v1/avereo-platform/shared/mission-workspace.js'
+      - 'architecture-v1/avereo-platform/shared/mission-dossier.js'
+      - 'architecture-v1/avereo-platform/tests/mission-dossier.test.mjs'
+      - 'architecture-v1/avereo-platform/data/modeles-lettres-mission.json'
+      - 'architecture-v1/avereo-platform/tests/ordre-mission.browser.mjs'
+      - '.github/scripts/build-mission-script.mjs'
       - '.github/workflows/ci-saisie-unique.yml'
 
 permissions:
@@ -39,3 +51,5 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Test screens
         run: npm run test:e2e
+      - name: Test mission contacts and order downloads from an embedded editor
+        run: node --test ../../avereo-platform/tests/mission-dossier.test.mjs ../../avereo-platform/tests/ordre-mission.browser.mjs

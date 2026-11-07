@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
 
+## 7 novembre 2026 — Préremplissage des ordres de mission
+
+Le candidat local génère les tâches de chaque prestation et présente les coordonnées postales et de contact du client séparément du lieu d’intervention. Les options sélectionnées ajoutent leurs propres consignes au Word. [Protocole](docs/protocole-missions.md#préparer-lordre-de-chaque-prestation).
+
 ## 2026-11-06 — Correction RGA PR #122 livrée
 
 Un fichier remplacé après fusion, accord explicite et sauvegarde/restauration sur copie. Ouverture, fermeture, réouverture de Mes projets depuis la carte intégrée et nouvel essai après rechargement réussis. Réserve RGA levée, réserve Coupe conservée. [Preuves](docs/livraison-mon-espace.md).
