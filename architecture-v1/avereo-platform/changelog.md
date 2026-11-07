@@ -14,6 +14,8 @@ tags: [avereo, acces, documentation]
 
 La PR #127 a été installée sur les sept sites de préproduction. Les quatre ordres de Projet et les quatre ordres de Coupe ont livré les consignes, les traces à conserver et les coordonnées attendues. [Recette hébergée](docs/preparation-missions.md#ordres-détaillés-de-la-pr-127-en-préproduction).
 
+Une recette complémentaire couvre les options ajoutées et retirées, avec cinq Word téléchargés dans Coupe et toutes les combinaisons sur les deux générateurs. [Procédure et résultats](docs/recette-options-ordres.md).
+
 ## 2026-11-06 — Correction RGA PR #122 livrée
 
 Un fichier remplacé après fusion, accord explicite et sauvegarde/restauration sur copie. Ouverture, fermeture, réouverture de Mes projets depuis la carte intégrée et nouvel essai après rechargement réussis. Réserve RGA levée, réserve Coupe conservée. [Preuves](docs/livraison-mon-espace.md).

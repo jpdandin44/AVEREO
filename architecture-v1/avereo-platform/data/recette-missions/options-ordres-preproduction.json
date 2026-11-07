@@ -1,0 +1,131 @@
+{
+  "observedAt": "2026-11-07T22:42:39.333219+00:00",
+  "deployedRelease": {
+    "pullRequest": 127,
+    "mergeSha": "2afbdcf065d7a9fee7c868e4e3bb6116e881e7b6",
+    "releaseReceipt": "livraison-ordres-preproduction.json"
+  },
+  "catalog": "../modeles-lettres-mission.json",
+  "sourceAssets": {
+    "projet": {
+      "url": "https://projet-preprod.avereo.fr/assets/missions.js",
+      "httpStatus": 200,
+      "bytes": 536797,
+      "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+      "observedAt": "2026-11-07T22:40:22.028482+00:00"
+    },
+    "coupe": {
+      "url": "https://coupe-preprod.avereo.fr/assets/missions.js",
+      "httpStatus": 200,
+      "bytes": 536797,
+      "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+      "observedAt": "2026-11-07T22:40:22.230212+00:00"
+    }
+  },
+  "authenticatedChrome": {
+    "scope": "Cadre intégré de Coupe en préproduction, compte connecté et client fictif. Word ouvert en lecture seule et rendu en PDF par Microsoft Word.",
+    "app": "coupe",
+    "files": [
+      {
+        "offer": "habitat-confort",
+        "case": "SANS",
+        "selected": [],
+        "filename": "ordre-OPT128-COUPE-HABITAT-CONFORT-SANS.docx",
+        "docxSha256": "d793d6b6ac134cb2e85e1a10fb3e1019a47d89225f70109a990028da8eeb1468",
+        "pages": 2,
+        "pdfSha256": "008d2f9755286e8e9fc8df698c093bc0e036f6f30f0b353a55007675b12930c8"
+      },
+      {
+        "offer": "habitat-confort",
+        "case": "A",
+        "selected": [
+          "thermographie-interieure",
+          "accompagnement"
+        ],
+        "filename": "ordre-OPT128-COUPE-HABITAT-CONFORT-A.docx",
+        "docxSha256": "ced539b060286e7ecf08634e0de18203a9a174df4eead91c42fd1a4187eff0dc",
+        "pages": 2,
+        "pdfSha256": "c2646a88ff89fa1b3df9c64553a2c78862541b1520f36d72692f94ba35c0d711"
+      },
+      {
+        "offer": "habitat-confort",
+        "case": "B",
+        "selected": [
+          "analyse-documentaire"
+        ],
+        "filename": "ordre-OPT128-COUPE-HABITAT-CONFORT-B.docx",
+        "docxSha256": "73f80b65c3bb05b837cfa19ad8b95426f6c91696fe8f1983e377609ead6b9a0c",
+        "pages": 2,
+        "pdfSha256": "011d1802ed3cbe150e6adbacb6063dae3cc545db58d31cbc2f551136998390e1"
+      },
+      {
+        "offer": "energie-travaux",
+        "case": "SANS",
+        "selected": [],
+        "filename": "ordre-OPT128-COUPE-ENERGIE-TRAVAUX-SANS.docx",
+        "docxSha256": "625075986ba4d42ea430e7c7b5661c6ce8b2b97a6673bdc3417e9caa175b143c",
+        "pages": 2,
+        "pdfSha256": "ea3ee7d0d3db9734d4af2aaab5c1501b5db0074933770dc07531f475b804d6b0"
+      },
+      {
+        "offer": "energie-travaux",
+        "case": "A",
+        "selected": [
+          "relecture-devis",
+          "analyse-documentaire"
+        ],
+        "filename": "ordre-OPT128-COUPE-ENERGIE-TRAVAUX-A.docx",
+        "docxSha256": "4fd278b4a07beac69ee935471d0dbeb67b7bcebf0b77363888bbb664f77ab491",
+        "pages": 2,
+        "pdfSha256": "0b88ddbeefde94dce1ea36d04002117f49fedd704be9fb1e8525348207a90fc8"
+      }
+    ],
+    "orders": 5,
+    "pages": 10,
+    "outcome": "matched",
+    "pending": {
+      "projet": "Essais avec options dans le cadre authentifié.",
+      "coupe": "Énergie & Travaux, sélection complémentaire B, puis Prévention Bâti et 360 Premium avec options et réouverture."
+    },
+    "stopReason": "Le contrôle de Chrome ne pouvait plus déterminer avec certitude l’adresse de la fenêtre."
+  },
+  "isolatedModules": {
+    "scope": "JavaScript relu par HTTPS sur chaque cible et exécuté séparément dans un DOM isolé sans session Chrome. Chaque .docx est relu paragraphe par paragraphe.",
+    "checks": [
+      "cases et intitulés du catalogue",
+      "référence et coordonnées fictives",
+      "étapes obligatoires, consignes et traces dans leur ordre",
+      "rubrique facultative absente si sélection vide",
+      "intitulés, consignes et traces strictement limités aux options cochées",
+      "cases vides après changement d’offre et réouverture"
+    ],
+    "byApp": {
+      "projet": {
+        "combinations": {
+          "habitat-confort": 8,
+          "energie-travaux": 16,
+          "prevention-bati": 16,
+          "360-premium": 16
+        },
+        "combinationTotal": 56,
+        "emptyAfterReopen": true,
+        "caseListSha256": "7c4d8b815a24415967f7109b6d97d9a247f5a72c92f5680a2a56267a262525e0",
+        "outcome": "matched"
+      },
+      "coupe": {
+        "combinations": {
+          "habitat-confort": 8,
+          "energie-travaux": 16,
+          "prevention-bati": 16,
+          "360-premium": 16
+        },
+        "combinationTotal": 56,
+        "emptyAfterReopen": true,
+        "caseListSha256": "e791e248d2eb3a8c406fa38dd793040cf82ef04d648b3476753eacaeee12012a",
+        "outcome": "matched"
+      }
+    },
+    "combinationTotal": 112,
+    "additionalReopens": 2
+  }
+}

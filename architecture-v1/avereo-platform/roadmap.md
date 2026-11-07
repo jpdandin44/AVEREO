@@ -23,6 +23,8 @@ tags: [avereo, acces, documentation]
 
 Les ordres détaillés des quatre offres sont disponibles en préproduction. Les tâches et coordonnées ont été vérifiées dans les huit fichiers issus des cadres Projet et Coupe. [Suivi de cette évolution](data/recette-missions/ordres-prestations.json).
 
+La prochaine vérification dans Chrome porte sur les sélections facultatives de Projet et les cas restants de Coupe. [Cas à reprendre par application](docs/recette-options-ordres.md#résultats-du-7-novembre-2026).
+
 ## Itération Mon espace
 
 PR #119 fusionnée ; sa préparation de 37 fichiers est conservée comme historique. PR #121 fusionnée et déployée sur les sept cibles : 40 fichiers vérifiés, conservation des configurations et des plannings prouvée. La [recette hébergée](docs/livraison-mon-espace.md) lève la réserve RGA après livraison PR #122. L’accès aux projets en ligne de Coupe reste à cadrer séparément. Recherche nécessite sa première cible ; Saisie unique reste autonome. [Suivi unique](data/suivi-fonctions-communes.json). Revue, préproduction autorisée puis production constituent des étapes distinctes.

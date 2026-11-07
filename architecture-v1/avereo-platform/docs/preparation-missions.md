@@ -91,6 +91,8 @@ Depuis **Mon espace → Missions** dans les cadres de Projet et de Coupe, Google
 
 La seconde page a été comparée au catalogue fusionné, dans l’ordre prévu, pour chaque titre, consigne et trace à conserver. Les huit ordres ont été émis avec les tâches de base. Les fichiers Word et les PDF correspondants sont conservés en privé. [Reçu des contrôles et empreintes des huit documents](../data/recette-missions/livraison-ordres-preproduction.json).
 
+La [recette des options dans Projet et Coupe](recette-options-ordres.md) décrit les sélections à reproduire, les cinq téléchargements supplémentaires dans Coupe et la vérification distincte des deux générateurs.
+
 ## Mise en production
 
 À la fusion de #124, les workflows Drone et Thermo se sont arrêtés à l’étape d’autorisation du serveur avant tout transfert. Le prototype GitHub Pages s’est arrêté à sa configuration avant publication. Le candidat propose de passer ces trois workflows et celui de Projet au lancement manuel sur main avec confirmation explicite. Ces modifications prennent effet après leur fusion. Le job de production conserve son fonctionnement lors d’une publication volontaire.
