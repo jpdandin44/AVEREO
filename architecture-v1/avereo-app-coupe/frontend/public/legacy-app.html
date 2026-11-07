@@ -5997,5 +5997,17 @@
         /* AVEREO Coupe preferences end */
         window.onload = () => app.init();
     </script>
+    <script id="avereo-mission-context">
+        document.addEventListener('avereo-mission-context', event => {
+            const name = document.getElementById('proj-name').value.trim();
+            const address = document.getElementById('proj-address').value.trim();
+            if (name || address) {
+                event.detail.provide({
+                    label: 'Coupe ouverte · ' + (name || 'Projet'),
+                    fields: { referenceDossier: name, adresseBien: address },
+                });
+            }
+        });
+    </script>
 </body>
 </html>

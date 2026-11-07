@@ -42,3 +42,7 @@ préparée localement avec les informations provisoires d’entreprise, ses cont
 et la configuration administrative encore prévue. Les coordonnées et champs
 futurs ont une [source JSON unique](data/report-organization.json).
 [Suivi canonique](data/suivi-identite-livrables.json).
+
+## Missions et rapports
+
+Ouvrir **Mon espace → Missions** depuis un dossier. La lettre et l’ordre Word utilisent les coordonnées du formulaire. Le catalogue de clients entre applications figure dans le protocole proposé. [Protocole des missions](docs/protocole-missions.md).

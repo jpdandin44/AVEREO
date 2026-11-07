@@ -569,7 +569,7 @@ const InterventionModal = ({ piece, bienId, onClose }) => {
 
 // This is a new component specifically for the PDF layout.
 // It's rendered off-screen and used by html2canvas.
-const PdfLayout = React.forwardRef(({ bien, devis }, ref) => {
+const PdfLayout = React.forwardRef(({ bien, devis, clientName }, ref) => {
     if (!bien || !devis) return null;
 
     const CompositionDisplay = ({ composition }) => {
@@ -606,6 +606,7 @@ const PdfLayout = React.forwardRef(({ bien, devis }, ref) => {
             <div className="p-4 bg-gray-50 rounded-lg border mb-8">
                 <h2 className="text-xl font-semibold mb-2 text-gray-800">Récapitulatif du bien</h2>
                 <p className="text-lg font-medium text-gray-700">{bien.address}</p>
+                {clientName && <p>Client : {clientName}</p>}
                 <div className="mt-2 flex items-center space-x-4 text-sm text-gray-500 border-b pb-2 mb-2">
                    <span>{bien.type}</span>
                     <span className="text-gray-300">|</span>
@@ -679,6 +680,7 @@ const PdfLayout = React.forwardRef(({ bien, devis }, ref) => {
 
 const BienPage = () => {
     const { selectedBienId, biens, goToDashboard, addPiece, user, tarifs, addAttachment, deleteAttachment, priceTier, setPriceTier } = useAppStore();
+    const [estimateClient, setEstimateClient] = useState(null);
     const bien = biens.find(b => b.id === selectedBienId);
 
     const [nomPiece, setNomPiece] = useState('');
@@ -808,7 +810,7 @@ const BienPage = () => {
     return (
         <>
             <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
-                <PdfLayout ref={pdfRef} bien={bien} devis={devisForPdf} />
+                <PdfLayout ref={pdfRef} bien={bien} devis={devisForPdf} clientName={estimateClient?.bienId === String(bien.id) ? estimateClient.name : ''} />
             </div>
 
             {pieceEnEdition && <InterventionModal piece={pieceEnEdition} bienId={bien.id} onClose={() => setPieceEnEdition(null)} />}
@@ -818,7 +820,7 @@ const BienPage = () => {
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900">{bien.address}</h1>
             </header>
 
-            <DocumentsPanel bien={bien} />
+            <DocumentsPanel key={bien.id} bien={bien} onClient={setEstimateClient} />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-8">
                     <div className="bg-white p-6 rounded-xl shadow-sm border">

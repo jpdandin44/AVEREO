@@ -5,7 +5,7 @@ title: Règle des fonctionnalités communes AVEREO
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -122,3 +122,7 @@ modifiable uniquement par son administrateur et utilisée par tous ses membres.
 La [règle des livrables](identite-livrables.md) définit les responsabilités, la
 priorité AVEREO, les adaptations métier et les éléments encore à implémenter.
 Le menu actuel et son stockage local ne réalisent pas ce contrôle d’administration.
+
+## Missions depuis Mon espace
+
+Afficher la même action **Missions** dans chaque menu. Reprendre uniquement les données que le dossier actif fournit. Quand une application ne porte aucun dossier client, le module ouvre une mission autonome. Chaque application conserve ses enregistrements et ses autorisations. [Protocole et intégrations](protocole-missions.md).

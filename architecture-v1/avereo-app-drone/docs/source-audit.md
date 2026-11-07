@@ -78,3 +78,7 @@ Le responsable fournit les informations de société en formation. L’export aj
 les lignes non vides du profil commun sous le logo ; données métier et stockage
 inchangés. Les champs futurs sont préparés sans formulaire d’administration.
 [Preuves actuelles et réserves](../../avereo-platform/docs/identite-livrables.md).
+
+## 7 novembre 2026 — Module Missions en recette locale
+
+Une mission enregistrée est accessible depuis la liste et possède une action Ordre de mission. Les cinq types ont produit une page PDF chacun sur fixture. Les coordonnées supplémentaires sont facultatives dans les anciennes missions. [Recette commune](../../avereo-platform/docs/preparation-missions.md).

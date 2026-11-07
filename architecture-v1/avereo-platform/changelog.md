@@ -58,3 +58,7 @@ livrables. Valeurs fournies par le responsable ; champs d’immatriculation pré
 et vides. Nouvelles preuves locales sans remplacement des preuves du 6 novembre.
 Word expert/client et Thermo, PDF Passeport téléchargés puis rendus ; Drone reste
 qualifié sur composant d’impression. Aucun déploiement. [Contrat](docs/identite-livrables.md).
+
+## 7 novembre 2026 — Lettres, ordres et recette des rapports
+
+Préparation locale de quatre lettres AVEREO et d’un ordre Word depuis Mon espace. Le parcours vérifie les documents Rapport, Thermo, Drone et Passeport Immo, les citations Recherche et les formulaires Saisie unique. [Qualification](docs/preparation-missions.md).

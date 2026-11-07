@@ -5,7 +5,7 @@ title: Audit source du socle
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -45,3 +45,7 @@ Le composant conserve désormais uniquement des préférences par application, d
 Le logo historique de Rapport est déplacé sans transformation vers la source
 commune ; son export initial reste compatible. Les raccordements ne modifient ni
 calcul, ni données, ni habilitations. [Audit et qualification](identite-livrables.md).
+
+## 7 novembre 2026 — Source du module Missions
+
+Le nouveau module commun produit des copies de travail à partir du dossier ouvert. Les modèles Word restent privés, le catalogue porte leur empreinte et les intégrations métier restent explicites. [Périmètre et preuves](preparation-missions.md).

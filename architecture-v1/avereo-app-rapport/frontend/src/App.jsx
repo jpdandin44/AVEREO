@@ -1983,6 +1983,7 @@ function ReportWizard({
   const steps = ['Dossier', 'Site', 'Protocoles', 'Observations', 'Export'];
   const [currentStep, setCurrentStep] = useState(0);
   const [report, setReport] = useState(() => deepMergeReport(initialReport, initialData));
+  useMissionDossier(useEffect, reportMissionDossier(report, setReport, true));
   const [toast, setToast] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
   const [onlineSaving, setOnlineSaving] = useState(false);
@@ -2414,3 +2415,4 @@ export default function App() {
     </>
   );
 }
+import { useMissionDossier, reportMissionDossier } from '../../../avereo-platform/shared/mission-dossier.js';

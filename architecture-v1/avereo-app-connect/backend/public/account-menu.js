@@ -2,6 +2,19 @@
 (() => {
   'use strict';
   if (customElements.get('avereo-account-menu')) return;
+  const moduleUrl = document.currentScript?.src ? new URL('missions.js', document.currentScript.src).href : '/missions.js';
+  let loadingMissions;
+  function loadMissions() {
+    if (window.avereoOpenMission) return Promise.resolve();
+    if (!loadingMissions) loadingMissions = new Promise((resolve,reject) => {
+      const script = document.createElement('script');
+      script.src = moduleUrl;
+      script.onload = () => window.avereoOpenMission ? resolve() : reject(Error('Module indisponible'));
+      script.onerror = () => reject(Error('Module indisponible'));
+      document.head.append(script);
+    }).catch(error => { loadingMissions = undefined; throw error; });
+    return loadingMissions;
+  }
 
   function portalFor(element) {
     let value = element.getAttribute('portal');
@@ -84,6 +97,8 @@
           <p>Mon espace</p>
           <slot name="items"></slot>
           <button type="button" class="preferences" hidden>Préférences</button>
+          <button type="button" class="preferences missions">Missions</button>
+          <p class="mission-error" role="status" hidden>Le module Missions est indisponible. Réessayez depuis ce menu.</p>
           <slot name="account"><a class="account" target="_blank" rel="noopener noreferrer">Mon compte</a></slot>
           <slot name="applications"><a class="applications" target="_blank" rel="noopener noreferrer">Mes applications</a></slot>
           <slot name="administration"></slot>
@@ -101,6 +116,12 @@
       this.trigger.addEventListener('click', () => { this.open = !this.open; });
       this.settingsDialog = this.shadowRoot.querySelector('dialog');
       this.shadowRoot.querySelector('.preferences').addEventListener('click', () => this.openPreferences());
+      this.shadowRoot.querySelector('.missions').addEventListener('click', async () => {
+        const error = this.shadowRoot.querySelector('.mission-error');
+        error.hidden = true;
+        try { await loadMissions(); await window.avereoOpenMission(this); }
+        catch { this.open = true; error.hidden = false; }
+      });
       this.shadowRoot.querySelector('.settings-cancel').addEventListener('click', () => this.closePreferences());
       this.settingsDialog.addEventListener('close', () => this.trigger.focus());
       this.settingsDialog.querySelector('form').addEventListener('submit', event => {

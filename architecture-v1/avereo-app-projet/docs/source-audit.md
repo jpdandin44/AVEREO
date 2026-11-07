@@ -5,7 +5,7 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
@@ -440,3 +440,7 @@ Le périmètre transverse est demandé explicitement par le responsable. [Contra
 Mes projets et Préférences conservent les actions natives de ProjectWorkspace. Mon compte ouvre désormais directement le profil CONNECT, comme dans les autres applications ; les plannings, sauvegardes et préférences natives restent inchangés.
 
 Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.
+
+## 7 novembre 2026 — Module Missions en recette locale
+
+Le module reprend la référence uniquement si le projet actif et le catalogue en ligne concordent. Le libellé historique « Client / référence » est un indice à confirmer par l’opérateur. La préparation ne modifie pas le planning. [Recette commune](../../avereo-platform/docs/preparation-missions.md).

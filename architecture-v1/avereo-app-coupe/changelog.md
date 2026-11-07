@@ -5,7 +5,7 @@ title: Historique des changements
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -23,3 +23,7 @@ Candidat local : Le menu est au pied de la barre latérale. Ouvrir en ligne et l
 ## 2026-11-06 — Projets et préférences propres
 
 Mes projets ouvre le sélecteur natif des projets en ligne. Les préférences propres à Coupe règlent la grille et l’aimantation de l’éditeur dans ce navigateur. Le candidat de livraison doit appliquer ces raccordements à la variante HTML hébergée en conservant ses traitements OAuth et ses API. Candidat local PR #121 ; installation hébergée distincte.
+
+## 7 novembre 2026 — Missions depuis le dossier
+
+Le candidat local raccorde le dossier au module commun. [Adaptation et preuves](docs/source-audit.md).

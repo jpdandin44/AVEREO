@@ -1,9 +1,13 @@
 ﻿name: Deploy Prototype To GitHub Pages
 
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
+    inputs:
+      confirm_production:
+        description: Confirmer la publication après validation en préproduction
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -16,6 +20,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ github.ref == 'refs/heads/main' && inputs.confirm_production == true }}
     runs-on: ubuntu-latest
     environment:
       name: github-pages

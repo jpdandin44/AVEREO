@@ -165,3 +165,7 @@ la source commune. [Contrat](../../avereo-platform/docs/identite-livrables.md).
 Les couvertures expert/client ajoutent le bloc commun d’entreprise ; le Word
 natif conserve ces lignes groupées à 9 points. Aucun changement de schéma du
 dossier. [Source et recette](../../avereo-platform/docs/identite-livrables.md).
+
+## 7 novembre 2026 — Compatibilité des dossiers de mission
+
+Les champs client, adresse du logement, référence et date restent ceux du dossier. Les coordonnées complémentaires sont optionnelles et les anciens JSON restent lisibles. Aucun changement de table serveur. [Protocole](../../avereo-platform/docs/protocole-missions.md).

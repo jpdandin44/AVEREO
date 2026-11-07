@@ -1,0 +1,53 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "missions-rapports-20261107",
+  "project": "avereo-platform",
+  "owner": "jpdandin",
+  "version": "git",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "phase": "Développement local",
+  "status": "local_qualified_preparing_preproduction",
+  "scope": "Lettres et ordres depuis un dossier et recette des rapports, sur fixtures.",
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/recette-rapports-missions-20261107",
+    "base": "main",
+    "baseMerge124": "1d483e8419f16bd34fc4809cc2e72a9065a6a2a7"
+  },
+  "protocolDocument": "../docs/protocole-missions.md",
+  "releaseNotes": "../docs/preparation-missions.md",
+  "catalog": "modeles-lettres-mission.json",
+  "evidence": "recette-missions/qualification.json",
+  "preproduction": {
+    "targets": [
+      "connect",
+      "projet",
+      "rapport",
+      "coupe",
+      "thermo",
+      "drone",
+      "passeport-immo"
+    ],
+    "rga": "via Rapport",
+    "localOnly": [
+      "recherche",
+      "saisie-unique"
+    ],
+    "deployment": null,
+    "currentHostRehearsal": null
+  },
+  "production": null,
+  "approvals": [],
+  "openItems": [
+    "Validation métier des lettres et du parcours",
+    "Répertoire en ligne par organisation, droits serveur, révisions et archives",
+    "Immatriculation, assurance, annexes et tarifs applicables",
+    "Recette hébergée sur compte fictif après autorisation de déployer"
+  ],
+  "updatedAt": "2026-11-07T10:16:20.570617+00:00"
+}

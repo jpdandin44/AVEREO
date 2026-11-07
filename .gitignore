@@ -33,3 +33,4 @@ architecture-v1/avereo-app-coupe/*.zip
 
 # Generated common account menu (source: avereo-platform/shared)
 /architecture-v1/avereo-app-*/frontend/public/account-menu.js
+/architecture-v1/avereo-app-*/frontend/public/missions.js
