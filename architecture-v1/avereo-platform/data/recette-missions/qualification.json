@@ -1,0 +1,489 @@
+{
+  "observedAt": "2026-11-07T10:33:41.579542+00:00",
+  "environment": "local_fictitious",
+  "baseMerge124": "1d483e8419f16bd34fc4809cc2e72a9065a6a2a7",
+  "rapportOnlineSync": true,
+  "serverCoverage": "Sas et session PHP locaux sur identité fictive. Les écritures de dossiers sur serveur hébergé ne font pas partie de cette recette.",
+  "tests": {
+    "rapport": 101,
+    "thermo": 3,
+    "drone": 3,
+    "passeport-immo": 29,
+    "recherche": 23,
+    "saisie-unique": 39,
+    "saisie-unique-e2e": 9,
+    "account-menu-and-mission-dossier": 24
+  },
+  "totalPassed": 231,
+  "controls": [
+    "Contrôle racine, huit builds, neuf copies du menu et contrôle des huit applications compilées",
+    "Parité du frontend Passeport et rejet d’une altération étrangère sur une copie",
+    "Mauvais modèle Word refusé dans le formulaire Rapport",
+    "Quatre modèles Word reproduits avec Python 3.12.14 et zlib 1.3.2",
+    "Six citations Recherche téléchargées et treize formulaires Saisie unique imprimés sur fixtures",
+    "Quatre workflows de publication relus en YAML, déclenchement manuel sur main avec confirmation explicite."
+  ],
+  "thermoVariants": [
+    {
+      "categorie": "Expertise & Visite Technique",
+      "variante": "Constat général"
+    },
+    {
+      "categorie": "Expertise & Visite Technique",
+      "variante": "Fissures"
+    },
+    {
+      "categorie": "Expertise & Visite Technique",
+      "variante": "Humidité"
+    },
+    {
+      "categorie": "Expertise & Visite Technique",
+      "variante": "Toiture"
+    },
+    {
+      "categorie": "Expertise & Visite Technique",
+      "variante": "Analyse thermographique"
+    },
+    {
+      "categorie": "Expertise Thermographique",
+      "variante": "Bâtiment - Enveloppe (Ponts thermiques & Isolation)"
+    },
+    {
+      "categorie": "Expertise Thermographique",
+      "variante": "Bâtiment - Infiltrations d'air"
+    },
+    {
+      "categorie": "Expertise Thermographique",
+      "variante": "Bâtiment - Humidité & Remontées capillaires"
+    },
+    {
+      "categorie": "Expertise Thermographique",
+      "variante": "Extérieur - Toiture Terrasse"
+    },
+    {
+      "categorie": "Expertise Thermographique",
+      "variante": "Équipements - Réseaux Thermiques (Chauffage/Plomberie)"
+    },
+    {
+      "categorie": "Expertise Thermographique",
+      "variante": "Énergie - Photovoltaïque"
+    },
+    {
+      "categorie": "Expertise Thermographique",
+      "variante": "Équipements - Installations Électriques"
+    },
+    {
+      "categorie": "Expertise Thermographique",
+      "variante": "Drone - Inspection Bâtiment / Toiture"
+    },
+    {
+      "categorie": "Assistance & Gestion avant-projet",
+      "variante": "Avant-projet"
+    },
+    {
+      "categorie": "Assistance & Gestion avant-projet",
+      "variante": "Consultation d'entreprise"
+    },
+    {
+      "categorie": "Réception de travaux",
+      "variante": "Réception de travaux"
+    }
+  ],
+  "menus": [
+    {
+      "app": "connect",
+      "context": "Mission autonome"
+    },
+    {
+      "app": "projet",
+      "context": "Mission autonome"
+    },
+    {
+      "app": "coupe",
+      "context": "Coupe ouverte · Coupe témoin Missions",
+      "verified": "Nom et adresse saisis dans le dessin puis retrouvés dans Missions"
+    },
+    {
+      "app": "recherche",
+      "context": "Mission autonome"
+    },
+    {
+      "app": "saisie-unique",
+      "context": "Dossier fictif · Saisie unique"
+    },
+    {
+      "app": "drone",
+      "context": "Mission Drone · TEST PR124 — mission fictive"
+    },
+    {
+      "app": "passeport-immo",
+      "context": "Bien ouvert · 123 Rue de la République, 75001 Paris",
+      "client": "Client Passeport fictif 124"
+    },
+    {
+      "app": "thermo",
+      "context": "Dossier ouvert · TEST-124-THERMO"
+    },
+    {
+      "app": "rga",
+      "context": "Mission autonome"
+    },
+    {
+      "app": "rapport",
+      "context": "Dossier ouvert · TEST-124-expertise",
+      "verified": "compte de recette local, exports expert et client"
+    }
+  ],
+  "firstPassPdf": {
+    "rapport-expertise-expert.pdf": {
+      "pages": 7,
+      "sha256": "25bc1ba9520aa59a4da664d81b8ffe256b2b03fc1973d898d0247a67d82c63c5"
+    },
+    "rapport-expertise-client.pdf": {
+      "pages": 3,
+      "sha256": "db9d188b86708e1043d21bba0e7f5df91afca2d60fffa07cef0a4c77e4d03d33"
+    },
+    "rapport-globale-expert.pdf": {
+      "pages": 8,
+      "sha256": "6c9c96e91ccbff1bfb40c5076a03cc9256105da77334da755f61c9ea9384d71c"
+    },
+    "rapport-globale-client.pdf": {
+      "pages": 3,
+      "sha256": "0079385bffff164dec28ce3a9b098eb9e71700de4e9e55571a1073968059d3cd"
+    },
+    "thermo-fictif.pdf": {
+      "pages": 7,
+      "sha256": "aa7649d3955916e5deff67efc213fdbd2e27eac603c6ef79ced90b7449dda3c9"
+    },
+    "drone-inspection.pdf": {
+      "pages": 1,
+      "sha256": "6fd5e2898ce7f3903201f95bdf33a273854fa3259ab467adf8f9ffe1ca1014a9"
+    },
+    "drone-thermographie.pdf": {
+      "pages": 1,
+      "sha256": "d4f4a1c499e30771da7ed6eb9e5f45a5801063baf76dd398b04b567e1af5177b"
+    },
+    "drone-photogrammetrie.pdf": {
+      "pages": 1,
+      "sha256": "584b8d8b9dafaef7f870c3c446888f6884b78eff15d9b1f9d12a7a77077055f0"
+    },
+    "drone-etat-des-lieux.pdf": {
+      "pages": 1,
+      "sha256": "830ed54cc2585e68ac59ed4bce626b2e09dac2356b52acd5bb2361e4561bf043"
+    },
+    "drone-video.pdf": {
+      "pages": 1,
+      "sha256": "2548ac1f0cdcc47cb265cef1084c845805f14fb31310db90617b0e7e7be9c6df"
+    },
+    "passeport-exemple.pdf": {
+      "pages": 1,
+      "format": "A4",
+      "sha256": "0111d0a67bddee13317b8e4d5e9f32dc8eb76d87e8e0d5043d547de775f83640"
+    },
+    "saisie-01.pdf": {
+      "pages": 3,
+      "sha256": "19a22d432c21b9969e5b817eceba02a809b8bf28af2d01feeeae5fd47a65ab3c"
+    },
+    "saisie-02.pdf": {
+      "pages": 3,
+      "sha256": "e4feab3ef0d42835762f42f6a1fd3e03a9cfa7a3aebd500ca6c8f97b0285cd84"
+    },
+    "saisie-04.pdf": {
+      "pages": 2,
+      "sha256": "bccf2dfbd7b7b0fc4d5b7bcf96766bb6437fb25f3c00a56c976c4fe6e933c0d9"
+    },
+    "saisie-05.pdf": {
+      "pages": 3,
+      "sha256": "c610ac3c4ecc40db3c976b323d96e912595489eae9bc1b2dc31e9e6f844bb0b7"
+    },
+    "saisie-06.pdf": {
+      "pages": 1,
+      "sha256": "93732060d5afbbd32c9579226db0054a458f69041998fbe5859ac4e3c554824b"
+    },
+    "saisie-07.pdf": {
+      "pages": 3,
+      "sha256": "6df7a9685e5630b287223d0bd6d238c2f8cadf9d7c3438f0e78d36aa999efbb0"
+    },
+    "saisie-09.pdf": {
+      "pages": 2,
+      "sha256": "e24bc5890c3693dc584adf012dc2fbfa3f3d9f76daa5299be3a19a11cfd8032d"
+    },
+    "saisie-10.pdf": {
+      "pages": 2,
+      "sha256": "5b9fcaecb37380703b04f2417a9535f48afb57a441d5005408a76437f843c522"
+    },
+    "saisie-11.pdf": {
+      "pages": 2,
+      "sha256": "304a9957530d5c8ddf89b98c997a1d1b3da0f713dc3965371064939960a599e4"
+    },
+    "saisie-12.pdf": {
+      "pages": 2,
+      "sha256": "a66dc8fafca364ce19b6bb40b306142c3030d911beee85f1e94faad473e873dc"
+    },
+    "saisie-13.pdf": {
+      "pages": 3,
+      "sha256": "bb05d5a2133876284132b16c609fc436242c9016a2fbc1c79a8375fe6b2276f0"
+    },
+    "saisie-03.pdf": {
+      "pages": 3,
+      "sha256": "e8e8da32ffe9d46a5e9c4833c82a637b91c1654c1d70464676b0ab08590f597b"
+    },
+    "saisie-08.pdf": {
+      "pages": 3,
+      "sha256": "4f60539d162fbd3279ed80aa7c3e5a90239fe0f66744ac195c4e1b8aeba61a3c"
+    },
+    "lettres-mission/lettre-mission-habitat-confort.pdf": {
+      "pages": 7,
+      "sha256": "437adc140d001bc12bfc1f0028435342dadadbf57fd9424e531f1c0177a52e60"
+    },
+    "lettres-mission/lettre-mission-energie-travaux.pdf": {
+      "pages": 7,
+      "sha256": "0bf7bd9e81f4a8b64a9a8a3dbf092fe3e9d08292e81581f6524edc7cca8d80f2"
+    },
+    "lettres-mission/lettre-mission-prevention-bati.pdf": {
+      "pages": 8,
+      "sha256": "c9ee2235e4b59ca954137ec49bf0206639fe5387b694b5805c09c93ea0a5a75f"
+    },
+    "lettres-mission/lettre-mission-360-premium.pdf": {
+      "pages": 8,
+      "sha256": "a11167dbd90b26df3edd711fba93a53818b444f34337e3b9f870dda8ff7ecd08"
+    }
+  },
+  "finalDossierOutputs": {
+    "candidat-expertise-client.pdf": {
+      "pages": 3,
+      "sha256": "ae5186dd2493bfe0ec910ca2571ba5e969746b77b8c6bf76aa98e433e607a1ca",
+      "nativeFile": "candidat-expertise-client.docx",
+      "nativeSha256": "c2e2405db1385b22c5aec443458248b8fbe1cbf54e31b0edb3cc80932f416d78"
+    },
+    "candidat-expertise-expert.pdf": {
+      "pages": 7,
+      "sha256": "4fe7cd18cfd30717efb6f2851f57bfc7f708d3c2602ba12ca75c7332c06822da",
+      "nativeFile": "candidat-expertise-expert.docx",
+      "nativeSha256": "e0643e95373af39f2117c564153930eb6e2ed3961451fcd1009d278699457915"
+    },
+    "candidat-globale-client.pdf": {
+      "pages": 3,
+      "sha256": "81d5c7e6b66eccc5296f1fac7227ab488cbd1869d43bf8ddb24e6df71184bd56",
+      "nativeFile": "candidat-globale-client.docx",
+      "nativeSha256": "9c6acd879b818081028c4b4de04d53af6911c246dc273046240ac5f15a5c1bbd"
+    },
+    "candidat-globale-expert.pdf": {
+      "pages": 8,
+      "sha256": "dd9bdef0946ecc91eabe9dec9bbd831626c93976ebf38ece0737a7c36494a76b",
+      "nativeFile": "candidat-globale-expert.docx",
+      "nativeSha256": "622bd109b71090eab5a985d99a86b532c24055dcb00f58fe5f2263abbce44ea2"
+    },
+    "dossier-lettre-360-premium.pdf": {
+      "pages": 6,
+      "sha256": "a2a1f016bc071e7f6c1563f351c7e3f4edbbaf3b24c4075a0ff641e5347a228e",
+      "nativeFile": "dossier-lettre-360-premium.docx",
+      "nativeSha256": "a391fca2879462df41825634c70ce1589186bbf3c46d10288215b8eeb5c00d51"
+    },
+    "dossier-lettre-energie-travaux.pdf": {
+      "pages": 5,
+      "sha256": "7fe82d5499ced07598867f7b899583effc78013c7706ef7f8708f70a54f98bde",
+      "nativeFile": "dossier-lettre-energie-travaux.docx",
+      "nativeSha256": "4a88bb1f660645345ce8f5a51c84b5143069e969ffed9e0535c434676cde9914"
+    },
+    "dossier-lettre-habitat-confort.pdf": {
+      "pages": 5,
+      "sha256": "5e422e7ea89958cdaad0caf74a4b1366620c73ec7919e11933e210d6e3ee35e1",
+      "nativeFile": "dossier-lettre-habitat-confort.docx",
+      "nativeSha256": "045f9535b1a9761728e14820fdf3eaa90b7be9694baf42a21fc5ad13bc2c64fa"
+    },
+    "dossier-lettre-prevention-bati.pdf": {
+      "pages": 6,
+      "sha256": "52f137e6a933f20ede39fd84de167e67c060899a4612f3d3b8d576ce85d09696",
+      "nativeFile": "dossier-lettre-prevention-bati.docx",
+      "nativeSha256": "d61d2425a595b8f1dd9c972903dfc99790cd030250d21a41b1e5e5e0c9371fc2"
+    },
+    "ordre-dossier-fictif.pdf": {
+      "pages": 1,
+      "sha256": "06e98cc4dc23a710d1231dda72d1a9a22e3272ac2bfe6250516e5bf29a6f9b3c",
+      "nativeFile": "ordre-dossier-fictif.docx",
+      "nativeSha256": "7e6824fbe4670fb0e002c363909ac7979ee184d98849b1cb13a3e5ce16e60f03"
+    },
+    "thermo-avec-client.pdf": {
+      "pages": 7,
+      "sha256": "b387e11e834dd92100e6122a5efc36a9c3070c80f4fcab589967d89eeff22970",
+      "nativeFile": "thermo-avec-client.doc",
+      "nativeSha256": "c477b4a3da7aca846c61328806393addd588b8fdaea210e69dde4daec1f35a80"
+    },
+    "drone-avec-client.pdf": {
+      "pages": 1,
+      "sha256": "aad6020d22978dbcf1892cf0c162dfc93d3892bda93fd1124757bc83ae120cd8"
+    },
+    "passeport-avec-client.pdf": {
+      "pages": 1,
+      "sha256": "d190071cc0f9f6f8fa6f26506e966fdc6e8e8fe67b0bf921f830d39acfccac8f"
+    }
+  },
+  "researchOutputs": {
+    "recherche-client-classe.txt": "57839f3b506fa91eac0bf38f66c0ef44da588fb0b1ecdd11e3d3e460b67edda5",
+    "recherche-client-pedagogique.txt": "def622b5dd67ad8d90168bd578bf0459335bb93e8aa4005f5346750a3f22226a",
+    "recherche-client-simple.txt": "114e224814548d3463648c54f9d606d0b25b9394c0086018bad4b36cd9618471",
+    "recherche-court.txt": "e1b6544e21f9e786b6f4594df25141618e0212e6350ef2149c02fe449bf34d16",
+    "recherche-interne.txt": "922b77065a876ad4562c8ece20b427e1be1674b7f8c7e0ee39531f998aa4504b",
+    "recherche-markdown.txt": "84876c0d7f9c60f94f20030f3e96cb6a4f4e5b0e4c4f3f034df96a9dff5fe873"
+  },
+  "saisieForms": [
+    {
+      "file": "saisie-01.pdf",
+      "title": "Plan de financement"
+    },
+    {
+      "file": "saisie-02.pdf",
+      "title": "Attestation de travaux (devis)"
+    },
+    {
+      "file": "saisie-04.pdf",
+      "title": "Demande de versement d’une avance pour le commencement des travaux"
+    },
+    {
+      "file": "saisie-05.pdf",
+      "title": "Demande de paiement d’acompte"
+    },
+    {
+      "file": "saisie-06.pdf",
+      "title": "Synthèse d’analyse du logement"
+    },
+    {
+      "file": "saisie-07.pdf",
+      "title": "Demande d’aide — propriétaire occupant"
+    },
+    {
+      "file": "saisie-09.pdf",
+      "title": "Engagements complémentaires (certificats d’économies d’énergie)"
+    },
+    {
+      "file": "saisie-10.pdf",
+      "title": "Attestation d’exclusivité du professionnel"
+    },
+    {
+      "file": "saisie-11.pdf",
+      "title": "Procuration sous seing privé pour signer les engagements"
+    },
+    {
+      "file": "saisie-12.pdf",
+      "title": "Procuration sous seing privé pour la perception des fonds"
+    },
+    {
+      "file": "saisie-13.pdf",
+      "title": "Votre dossier par étape"
+    },
+    {
+      "file": "saisie-03.pdf",
+      "title": "Attestation de travaux (factures)"
+    },
+    {
+      "file": "saisie-08.pdf",
+      "title": "Rapport de fin d’accompagnement"
+    }
+  ],
+  "privateTemplatePack": {
+    "file": "modeles-lettres-mission.zip",
+    "sha256": "ef08f3cc803867e34e133be686259ed873ffcc27eebcacc18e6d7ee2ede81b47",
+    "templates": [
+      {
+        "offre": "habitat-confort",
+        "sourceSha256": "031f22e8f11d2d284e0ad64be1946289fb4004777dd874a468cd8a2f0f321929",
+        "fichier": "lettre-mission-habitat-confort.docx",
+        "sha256": "3e33b1b04bf05d868f3e93c35a7483e71f835eda583551aeb01495b89e6f947c"
+      },
+      {
+        "offre": "energie-travaux",
+        "sourceSha256": "613696cd82dd38db139b6e524e63938ffef3e36fa2657699219febff6b520456",
+        "fichier": "lettre-mission-energie-travaux.docx",
+        "sha256": "6dbe4aeaa87954fb1f189a6196ac18914b275b4ba586feaa96b31f9a16b4e420"
+      },
+      {
+        "offre": "prevention-bati",
+        "sourceSha256": "d719499a8a917e0fce5e9c625705c8560dc8549f92dc783e0c061fa49f82843f",
+        "fichier": "lettre-mission-prevention-bati.docx",
+        "sha256": "14743dfb8354c737e186f698635db6d639a580ba38ec9478ca0099399d5c0447"
+      },
+      {
+        "offre": "360-premium",
+        "sourceSha256": "2b7425595c1a22981473be9859981be7543d9904d106fa6e1d16879061f6705f",
+        "fichier": "lettre-mission-360-premium.docx",
+        "sha256": "c5e0227e9a9330c752bb315f831c0583b02059660cf151502b42321da763e905"
+      }
+    ]
+  },
+  "files": {
+    "connect/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "connect/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "projet/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "projet/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "projet/project-workspace.js": "756b19566003180325ce68337348db9c7d089f72f462453d9195617d920626c7",
+    "rapport/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "rapport/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "rapport/index.html": "6c1cafc9284278e0d4b25165d4e4880d3b73d926a866b5adff4af79cff4500ae",
+    "rapport/assets/index-BLjkqStP.css": "0773a8939f9566c654cf6b9fd72592b85c08d835b94e7662bd8c8973861d587a",
+    "rapport/assets/index-Cnrdg0Ug.js": "aa8c8e6538fd89d9a1a053d9315ca8c9063517dba16a091c1dcb6555b4457ddd",
+    "rapport/assets/reportDocx-CQsSDwF-.js": "a66726983c22106bd9f61a97b6dea79d1c4e836cc6dd8c33f3bda8d6912b49bc",
+    "coupe/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "coupe/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "coupe/legacy-app.html": "e195059351cc152c9a32a7b636053be9274aab71d36beda3462e622084c794e5",
+    "thermo/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "thermo/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "thermo/index.html": "129fd17c2f3a3209efe3dca12c3379bd2483c77baa0f2c0a290086269a3f35e3",
+    "thermo/assets/index-2n39KD4j.css": "fcad423882e4800d535462bfe65f798c207b0b93992e37599230b77c676385f7",
+    "thermo/assets/index-CF-A1gv5.js": "4141fd9fda3982e3fc5a8b31adefa493eb9de504a157ac418aa8a45619976c0d",
+    "drone/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "drone/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "drone/index.html": "8d83a68739ce703ffb69757bc35971afe46b0f0b9b13d5754809c0f364fa6f2d",
+    "drone/assets/index-8Kik6olk.css": "9be3f788b488143b616326d2d7db8a9e7c1185a4fd38a7e31f14f405511e2611",
+    "drone/assets/index-DQ8wBXLR.js": "af0d4f2aacdb442ce357f9f9f613f9f4baedd12ad707398bef402b1ac9e9dffe",
+    "passeport-immo/account-menu.js": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+    "passeport-immo/assets/missions.js": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c",
+    "passeport-immo/index.html": "9223acaaf633e8ac62d731645fc06c37147b011027dc5fa42cbae763738c0f94",
+    "passeport-immo/assets/index-DqKYBoXk.js": "19db4f854fc0c4a65db3a278edb8fb9ff2601bed61a76cd2c24066986d5cdb24",
+    "passeport-immo/assets/index-fk-lVGaB.css": "68dd15b38ad538b8f690359bf43b6cf7b7492ad351e2f0dc62c283a6dd4890c4",
+    "passeport-immo/assets/index.es-DluhI5Jn.js": "06301f54f531bad60d23c3f2fb0c82dd22c7a78b30e0a1aaf33f0a3237f89b9f",
+    "passeport-immo/assets/pdf-WgYdDwYK.js": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+    "passeport-immo/assets/pdf.worker.min-CjEcRF4W.mjs": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+    "passeport-immo/assets/purify.es-BwoZCkIS.js": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a"
+  },
+  "limits": [
+    "Impression PDF Drone par le moteur du navigateur, pas de tirage papier.",
+    "Deux procurations Saisie unique ont encore un champ à renseigner sur la fixture.",
+    "Documents de travail, relecture du prix, des annexes et des clauses métier à effectuer.",
+    "Pas de synchronisation de clients entre applications ni de service d’administration d’organisation dans ce lot."
+  ],
+  "publicRunsOnMerge124": {
+    "pages": {
+      "id": 42357325158,
+      "stoppedAt": "Setup Pages",
+      "transfer": "skipped"
+    },
+    "thermo": {
+      "id": 42357325153,
+      "stoppedAt": "Whitelist runner IP in cPanel",
+      "transfer": "skipped"
+    },
+    "drone": {
+      "id": 42357325193,
+      "stoppedAt": "Whitelist runner IP in cPanel",
+      "transfer": "skipped"
+    }
+  },
+  "additionalChecks": {
+    "passeportPackagingTests": 19,
+    "passeportApacheAssertions": 80,
+    "protectedMissionModule": "/assets/missions.js",
+    "tenMenusRetestedAfterPathChange": true,
+    "passeportArchiveVerified": true
+  },
+  "reopenedFromFinalModule": {
+    "lettre-chemin-protege.docx": {
+      "wordPages": 5,
+      "sha256": "5482bafcec147a31841609170d582a7723881c5f7945908484dc0cfa310cc113"
+    },
+    "ordre-chemin-protege.docx": {
+      "wordPages": 1,
+      "sha256": "5c8faddf9ea5673d477f2d0702cccfcfc315e74889d3588ac747c9529742b295"
+    }
+  }
+}

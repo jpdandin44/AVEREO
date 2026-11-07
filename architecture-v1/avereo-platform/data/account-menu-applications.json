@@ -13,7 +13,8 @@
         "account",
         "applications",
         "administration",
-        "logout"
+        "logout",
+        "missions"
       ],
       "workspaceScope": "Catalogue CONNECT, réglages de ce navigateur"
     },
@@ -28,7 +29,8 @@
         "preferences",
         "account",
         "applications",
-        "logout"
+        "logout",
+        "missions"
       ],
       "workspaceScope": "Dossiers et préférences natifs de Projet"
     },
@@ -44,7 +46,8 @@
         "reports",
         "account",
         "applications",
-        "logout"
+        "logout",
+        "missions"
       ],
       "modules": [
         "rga"
@@ -62,7 +65,8 @@
         "projects",
         "account",
         "applications",
-        "logout"
+        "logout",
+        "missions"
       ],
       "workspaceScope": "Projets en ligne natifs ; grille et aimantation du navigateur"
     },
@@ -77,7 +81,8 @@
         "preferences",
         "account",
         "applications",
-        "logout"
+        "logout",
+        "missions"
       ],
       "workspaceScope": "Rapports dans IndexedDB et préférences dans ce navigateur"
     },
@@ -92,7 +97,8 @@
         "preferences",
         "account",
         "applications",
-        "logout"
+        "logout",
+        "missions"
       ],
       "workspaceScope": "Missions et préférences dans ce navigateur"
     },
@@ -106,7 +112,8 @@
         "backup",
         "account",
         "applications",
-        "logout"
+        "logout",
+        "missions"
       ]
     },
     {
@@ -122,7 +129,8 @@
         "account",
         "applications",
         "administration",
-        "logout"
+        "logout",
+        "missions"
       ],
       "workspaceScope": "Biens natifs ; préférences dans ce navigateur"
     },
@@ -133,7 +141,8 @@
       "surface": "En-tête de l’application autonome locale",
       "capabilities": [
         "local-projects",
-        "preferences"
+        "preferences",
+        "missions"
       ]
     }
   ],

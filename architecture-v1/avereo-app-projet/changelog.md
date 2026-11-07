@@ -5,7 +5,7 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
@@ -204,3 +204,7 @@ Candidat local : Le pied de barre latérale réutilise le composant commun ; Mes
 ## 2026-11-06 — Projets et préférences propres
 
 Mes projets et Préférences conservent les actions natives de ProjectWorkspace. Mon compte ouvre désormais directement le profil CONNECT, comme dans les autres applications ; les plannings, sauvegardes et préférences natives restent inchangés. Candidat local PR #121 ; installation hébergée distincte.
+
+## 7 novembre 2026 — Missions depuis le dossier
+
+Le candidat local raccorde le dossier au module commun. [Adaptation et preuves](docs/source-audit.md).

@@ -688,6 +688,13 @@ const buildWordDocumentHtml = (report) => {
 
     const cond = report.conditions_mesure || {};
     const mat = report.materiel_thermique || {};
+    const sections = ['Informations générales', 'Protocoles de recherche et méthodes', 'Observations thermographiques', 'Analyse et recommandations', 'Signatures'];
+    const sectionTitle = (index) => `<h2><a name="thermo-section-${index + 1}"></a>${index + 1}. ${sections[index]}</h2>`;
+    const signature = String(report.signature || '').trim();
+    const embeddedSignature = /^data:image\/(?:png|jpe?g|gif|webp);base64,[a-z\d+/]+={0,2}$/i.test(signature);
+    const signatureHtml = embeddedSignature
+        ? `<img src="${escapeHtml(signature)}" alt="Signature" width="200" />`
+        : signature ? `<p><b>Signature :</b> ${escapeHtml(signature)}</p>` : '';
     
     return `
     <!DOCTYPE html><html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" lang="fr">
@@ -722,14 +729,16 @@ const buildWordDocumentHtml = (report) => {
 
             <h1>${escapeHtml(report.titre || "Rapport d'expertise")}</h1>
             <p><b>Référence dossier :</b> ${escapeHtml(report.reference_dossier)}</p>
+            ${missionContactLines(report.missionBrief).length ? `<p><b>Client :</b> ${escapeHtml(report.proprietaire)}<br />${missionContactLines(report.missionBrief).map(([label,value]) => `${escapeHtml(label)} : ${escapeHtml(value)}`).join('<br />')}</p>` : ''}
             
             <br style="page-break-before:always;"/>
             <h2>Sommaire</h2>
-            <p class="MsoToc1"><span style="mso-element:field-begin"></span><span style="mso-spacerun:yes"> </span>TOC \\o "1-3" \\h \\z \\u<span style="mso-element:field-separator"></span></p>
-            <p class="MsoToc1"><span style="mso-element:field-end"></span></p>
+            <p class="MsoToc1"><!--[if supportFields]><span style="mso-element:field-begin"></span> TOC \\o "1-3" \\h \\z \\u <span style="mso-element:field-separator"></span><![endif]-->
+            ${sections.map((title, index) => `<a href="#thermo-section-${index + 1}">${index + 1}. ${title}</a>`).join('<br />')}
+            <!--[if supportFields]><span style="mso-element:field-end"></span><![endif]--></p>
 
             <br style="page-break-before:always;"/>
-            <h2>1. Informations générales</h2>
+            ${sectionTitle(0)}
             <table>
                 <tr><td>Type de rapport</td><td>${escapeHtml(report.categorie)} - ${escapeHtml(report.sous_categorie)}</td></tr>
                 <tr><td>Propriétaire</td><td>${escapeHtml(report.proprietaire)}</td></tr>
@@ -755,28 +764,28 @@ const buildWordDocumentHtml = (report) => {
             </table>
 
             <br style="page-break-before:always;"/>
-            <h2>2. Protocoles de recherche et méthodes</h2>
+            ${sectionTitle(1)}
             ${protocoleHtml}
 
             <br style="page-break-before:always;"/>
-            <h2>3. Observations thermographiques</h2>
+            ${sectionTitle(2)}
             ${thermogrammesHtml || "<p>Aucun thermogramme n'a été enregistré.</p>"}
 
             <br style="page-break-before:always;"/>
-            <h2>4. Analyse et recommandations</h2>
+            ${sectionTitle(3)}
             <h3>Analyse globale de l’expert</h3>
             <p style="white-space:pre-wrap;">${escapeHtml(report.analyse_expert) || "Aucune analyse globale fournie."}</p>
             <h3>Recommandations et actions à mener</h3>
             <p style="white-space:pre-wrap;">${escapeHtml(report.recommandations) || "Aucune recommandation formulée."}</p>
 
             <br style="page-break-before:always;"/>
-            <h2>5. Signatures</h2>
+            ${sectionTitle(4)}
             <div style="border: 2px solid #ea580c; background-color: #fff7ed; padding: 10pt; margin-bottom: 20pt; page-break-inside: avoid;">
                 <p style="font-weight: bold; font-size: 10pt; text-align: center; color: #ea580c; margin:0;">RAPPEL : DOCUMENT TECHNIQUE NON OPPOSABLE AUX TIERS</p>
             </div>
             <p>Fait à ${escapeHtml((report.adresse_logement.split(',').pop() || 'N/A').trim())}, le ${formatDate(new Date().toISOString())}</p>
             <p><b>Signataire (Expert) :</b> ${escapeHtml(report.nom_signataire || '')}</p>
-            ${report.signature ? `<img src="${report.signature}" alt="Signature" style="width: 200px; border-bottom: 1px solid #ccc; padding-bottom: 5px;">` : ""}
+            ${signatureHtml}
         </div>
 
         <div style='mso-element:header' id='h1'>
@@ -1245,6 +1254,7 @@ const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel, onDraftChange 
     const preferences = useAppPreferences('thermo', thermoPreferences, { useState, useEffect });
     const [currentStep, setCurrentStep] = useState(1);
     const [reportData, setReportData] = useState(initialData);
+    useMissionDossier(useEffect, reportMissionDossier(reportData, setReportData, false));
     const [isPreviewVisible, setIsPreviewVisible] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
 
@@ -1413,3 +1423,4 @@ export default function App() {
         </div>}
     </>;
 }
+import { useMissionDossier, reportMissionDossier, missionContactLines } from '../../../avereo-platform/shared/mission-dossier.js';

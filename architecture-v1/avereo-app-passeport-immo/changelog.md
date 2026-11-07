@@ -386,3 +386,7 @@ Le livrable ajoute sous le logo l’identité de société en formation fournie 
 responsable. Les futurs champs d’immatriculation vides restent omis ; identité
 fixe commune, sans réglage libre pour les membres. [Source, portée et contrôles](../avereo-platform/docs/identite-livrables.md).
 Préparation locale, non déployée.
+
+## 7 novembre 2026 — Missions depuis le dossier
+
+Le candidat local raccorde le dossier au module commun. [Adaptation et preuves](docs/source-audit-identite-livrables.md).

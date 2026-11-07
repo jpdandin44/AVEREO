@@ -5,7 +5,7 @@ title: AVEREO — index du dépôt
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -21,7 +21,7 @@ Ce depot contient la V1 en cours de developpement.
 - `prototype-v1/`: prototype fonctionnel (HTML/CSS/JS) du tunnel metier
 - `AVEREO_CONNECT_V1_Maquette_Fonctionnelle.md`: cadrage produit V1
 - `.github/workflows/ci.yml`: verification automatique des fichiers de base
-- `.github/workflows/deploy-pages.yml`: deploiement automatique du prototype sur GitHub Pages
+- `.github/workflows/deploy-pages.yml`: publication manuelle du prototype sur GitHub Pages
 - `.github/workflows/pr-policy.yml`: validation automatique de la politique PR
 - `.github/PULL_REQUEST_TEMPLATE.md`: template obligatoire de description PR
 - `.github/CODEOWNERS`: proprietaire/reviewer par defaut
@@ -90,7 +90,7 @@ Regles a activer dans GitHub (`Settings > Branches > Branch protection`):
 
 1. Aller dans `Settings > Pages` du repo.
 2. S'assurer que la source est `GitHub Actions`.
-3. Push sur `main` pour declencher le workflow `Deploy Prototype To GitHub Pages`.
+3. Après accord de publication, lancer manuellement `Deploy Prototype To GitHub Pages` depuis `main` et confirmer la publication.
 
 ## Prochain jalon
 

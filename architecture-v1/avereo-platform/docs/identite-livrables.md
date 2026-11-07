@@ -143,3 +143,7 @@ Terminer le parcours d’impression Drone, puis présenter le même candidat et 
 livraison de préproduction distincte. Le service de configuration par organisation
 fait ensuite l’objet d’un candidat avec tests d’isolement et de refus aux membres.
 La production et l’ouverture publique gardent leurs accords propres.
+
+## 7 novembre 2026 — Suite après la fusion de #124
+
+La fusion dans main du 7 novembre conserve les preuves historiques ci-dessus. La nouvelle itération a éprouvé les cinq types de fiche Drone dans le moteur PDF du navigateur et corrigé le sommaire et la signature texte Thermo. Les coordonnées provisoires AVEREO sont utilisées dans les quatre lettres. [Recette et limites actuelles](preparation-missions.md).

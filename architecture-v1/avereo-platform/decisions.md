@@ -43,3 +43,7 @@ Raison : compléter une seule source ultérieurement, sans valeurs fictives sur 
 documents. Conséquences : la mention de formation reste explicite ; le formulaire
 et le contrôle serveur de l’administration d’organisation restent un lot distinct.
 [Source et limites](docs/identite-livrables.md).
+
+## 7 novembre 2026 — Partir du dossier ouvert
+
+Le responsable demande les quatre modèles et la génération depuis les applications. Le candidat lit les données déjà présentes et produit des documents datés. Cette première étape conserve la portée des dossiers actuels. Le répertoire interapplications nécessite un service privé, des autorisations par organisation et des identifiants stables. [Protocole des missions](docs/protocole-missions.md).

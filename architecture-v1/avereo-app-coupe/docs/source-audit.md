@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -84,3 +84,7 @@ aucune installation ni recette métier hébergée du menu n’est encore réalis
 Mes projets ouvre le sélecteur natif des projets en ligne. Les préférences propres à Coupe règlent la grille et l’aimantation de l’éditeur dans ce navigateur. Le candidat de livraison doit appliquer ces raccordements à la variante HTML hébergée en conservant ses traitements OAuth et ses API.
 
 Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.
+
+## 7 novembre 2026 — Module Missions en recette locale
+
+Missions reprend le nom du dessin et l’adresse présents dans les champs de la coupe ouverte. La recette a vérifié les valeurs saisies sur un dessin fictif. Le raccordement est additif et indépendant du chargement du moteur CAO. [Recette commune](../../avereo-platform/docs/preparation-missions.md).

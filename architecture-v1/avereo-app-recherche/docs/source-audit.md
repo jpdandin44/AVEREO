@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -44,3 +44,7 @@ Voir la description de la pull request.
 Le menu est dans l’en-tête, avec le lien vers les sauvegardes existantes. Le corpus reste dans IndexedDB ; ce menu n’ajoute pas de synchronisation en ligne.
 
 Le périmètre transverse est demandé explicitement par le responsable. [Contrat commun](../../avereo-platform/docs/fonctionnalites-communes.md) et [preuve du lot](../../avereo-platform/docs/qualification-mon-espace.md). Aucune migration, modification de secret ou de droit ; tests sur données fictives.
+
+## 7 novembre 2026 — Module Missions en recette locale
+
+Le corpus ne contient pas de dossier client. Missions ouvre un formulaire autonome. Les six formats de citation ont été contrôlés dans le navigateur sur des références fictives. [Recette commune](../../avereo-platform/docs/preparation-missions.md).

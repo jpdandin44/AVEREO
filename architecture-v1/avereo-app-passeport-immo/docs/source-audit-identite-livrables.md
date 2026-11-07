@@ -41,3 +41,7 @@ Les audits historiques et la matrice approuvée restent inchangés.
 Le PDF de démonstration a été téléchargé de nouveau et rendu : une page A4,
 quatre lignes complètes, montants inchangés. Champs vides omis, quatre tests PDF
 et comparaison intégrale réussis. [Identité de référence et preuves datées](../../avereo-platform/docs/identite-livrables.md).
+
+## 7 novembre 2026 — Module Missions en recette locale
+
+Écart **k**. Le nom du client lié au bien dans Documents apparaît sur son estimation. La liaison utilise l’identifiant du bien actif et se réinitialise au changement de bien. La garde inverse exactement cinq substitutions, puis compare le reste du frontend à la source figée. Une altération étrangère a été détectée sur une copie. Les calculs et le stockage restent ceux du dossier. [Recette commune](../../avereo-platform/docs/preparation-missions.md).

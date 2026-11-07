@@ -5,7 +5,7 @@ title: Audit source de la maquette Saisie unique
 status: draft
 version: git
 created: 2026-10-21
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, audit, phase-0]
 ---
@@ -177,3 +177,7 @@ Le code de la PR #113 étant désormais présent, le lot transversal autorisé p
 toutes les applications ajoute les liens Dossiers locaux et Préférences au menu
 commun embarqué. Aucun accès réseau ni événement humain ajouté. Le cadrage et
 les statuts du suivi existant restent inchangés. [Référence](../../avereo-platform/docs/fonctionnalites-communes.md).
+
+## 7 novembre 2026 — Module Missions en recette locale
+
+Adaptation transverse en lecture seule des coordonnées du dossier fictif ouvert. La génération locale des treize formulaires et le mode autonome demeurent distincts de l’itération métier de Saisie unique. [Recette commune](../../avereo-platform/docs/preparation-missions.md).

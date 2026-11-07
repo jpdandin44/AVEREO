@@ -4,6 +4,32 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Écart k : nom du client déjà associé au bien, repris dans le PDF.
+for (const [current, previous] of [
+  [
+    "const PdfLayout = React.forwardRef(({ bien, devis, clientName }, ref) => {",
+    "const PdfLayout = React.forwardRef(({ bien, devis }, ref) => {"
+  ],
+  [
+    "                <p className=\"text-lg font-medium text-gray-700\">{bien.address}</p>\n                {clientName && <p>Client : {clientName}</p>}",
+    "                <p className=\"text-lg font-medium text-gray-700\">{bien.address}</p>"
+  ],
+  [
+    "    const { selectedBienId, biens, goToDashboard, addPiece, user, tarifs, addAttachment, deleteAttachment, priceTier, setPriceTier } = useAppStore();\n    const [estimateClient, setEstimateClient] = useState(null);",
+    "    const { selectedBienId, biens, goToDashboard, addPiece, user, tarifs, addAttachment, deleteAttachment, priceTier, setPriceTier } = useAppStore();"
+  ],
+  [
+    "                <PdfLayout ref={pdfRef} bien={bien} devis={devisForPdf} clientName={estimateClient?.bienId === String(bien.id) ? estimateClient.name : ''} />",
+    "                <PdfLayout ref={pdfRef} bien={bien} devis={devisForPdf} />"
+  ],
+  [
+    "            <DocumentsPanel key={bien.id} bien={bien} onClient={setEstimateClient} />",
+    "            <DocumentsPanel bien={bien} />"
+  ]
+]) {
+  assert.equal(restored.split(current).length - 1, 1, 'Raccordement du client Passeport ambigu');
+  restored = restored.replace(current, previous);
+}
 // Écart j autorisé le 7 novembre : bloc entreprise fourni par le responsable.
 for (const [current, previous] of [
   [

@@ -37,3 +37,7 @@ formation et demande de préparer l’immatriculation pour plus tard. Les valeur
 de [la source structurée](data/report-organization.json) doivent apparaître sous
 le logo dans les quatre livrables. Un champ vide ne doit produire aucun libellé
 ni valeur de remplacement. L’identité reste fixe jusqu’au service administratif.
+
+## Coordonnées réutilisées dans les livrables
+
+Conserver séparément le client, son adresse postale, le site d’intervention, la référence du dossier et celle de la mission. Choisir explicitement l’offre. Réserver au seul administrateur de l’organisation la future publication des mentions et modèles communs. [Protocole des missions](docs/protocole-missions.md).

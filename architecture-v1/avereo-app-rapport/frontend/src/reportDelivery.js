@@ -41,6 +41,7 @@ function cover(report, client) {
     <p class="address">${escapeHtml(report.adresse_logement)}</p>
     <table><tr><td>Dossier</td><td>${escapeHtml(report.reference_dossier)}</td></tr>
       <tr><td>Destinataire</td><td>${escapeHtml(report.proprietaire)}</td></tr>
+      ${report.missionBrief ? missionContactLines({...report.missionBrief, email:report.email}).map(([label,value]) => `<tr><td>${escapeHtml(label)}</td><td>${escapeHtml(value)}</td></tr>`).join('') : ''}
       <tr><td>Intervenant</td><td>${escapeHtml(report.intervenant)}</td></tr>
       <tr><td>Visite</td><td>${escapeHtml(report.date_visite || 'Date non renseignée')}</td></tr></table>
     <p class="status">Document de travail · ${client ? 'Restitution à relire avant remise au client' : 'Soumis à validation professionnelle'}</p>
@@ -110,3 +111,4 @@ export function buildReportHtml(report) {
   }
   return `<!doctype html><html lang="fr"><head><meta charset="utf-8" /><title>${escapeHtml(report.titre)} — ${client ? 'Synthèse client' : 'Rapport expert'}</title><style>${style}</style></head><body>${content}<p class="report-footer">${escapeHtml(AVEREO_NAME)} · ${escapeHtml(report.reference_dossier)} · Document de travail</p></body></html>`;
 }
+import { missionContactLines } from '../../../avereo-platform/shared/mission-dossier.js';

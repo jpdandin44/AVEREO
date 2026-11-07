@@ -5,7 +5,7 @@ title: Prévisualisation et publication de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
@@ -201,14 +201,7 @@ Le workflow du monorepo est
 [`.github/workflows/deploy-projet-o2switch.yml`](../../../.github/workflows/deploy-projet-o2switch.yml).
 Les workflows imbriqués dans l'app ne s'exécutent pas pour ce dépôt.
 
-Déclenchement manuel ou push `main` touchant le frontend Projet, son workflow
-ou `.github/scripts/**`. Le job utilise l'environnement `projet`, construit
-`frontend/dist/` puis publie par SSH/rsync avec `--delete`.
-
-Un push de branche dédiée et une PR brouillon ne déclenchent pas cette
-publication automatique. Un futur merge peut la déclencher : l'autorisation
-humaine doit considérer cet effet. Les protections réelles de l'environnement
-GitHub n'ont pas été vérifiées.
+Le candidat Missions prévoit un lancement manuel depuis `main`, avec confirmation de publication. Le job utilise l’environnement `projet`, construit `frontend/dist/` et publie par SSH/rsync avec `--delete`. Les protections réelles de l’environnement GitHub restent à vérifier. [Préparation et périmètre](../../avereo-platform/docs/preparation-missions.md).
 
 ## Cible et paramètres
 

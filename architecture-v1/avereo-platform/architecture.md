@@ -36,3 +36,7 @@ au build ; leurs restitutions échappent le texte (HTML/React/Word).
 Il s’agit d’une identité fixe sans API ni stockage de réglages. Le futur service
 d’identité par organisation doit s’appuyer sur les organisations et habilitations
 CONNECT existantes ; il n’est pas fourni par ce candidat. [Contrat](docs/identite-livrables.md).
+
+## Génération de mission dans l’application
+
+Le menu charge le module à la demande. L’application fournit les champs de son dossier et, lorsqu’elle le permet, une action de reprise dans son formulaire métier. Le navigateur produit les Word à partir du profil commun. La sauvegarde des dossiers reste assurée par chaque application. [Protocole des missions](docs/protocole-missions.md).

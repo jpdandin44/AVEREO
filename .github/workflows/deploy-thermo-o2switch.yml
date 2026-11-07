@@ -2,12 +2,12 @@ name: Deploy Thermo to O2Switch
 
 on:
   workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths:
-      - "architecture-v1/avereo-app-thermo/frontend/**"
-      - ".github/workflows/deploy-thermo-o2switch.yml"
-      - ".github/scripts/**"
+    inputs:
+      confirm_production:
+        description: Confirmer la publication après validation en préproduction
+        required: true
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -18,6 +18,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ github.ref == 'refs/heads/main' && inputs.confirm_production == true }}
     runs-on: ubuntu-latest
     environment: thermo
     defaults:
