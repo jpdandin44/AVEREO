@@ -68,6 +68,12 @@ Depuis **Mon espace → Missions**, les quatre offres ont produit leurs lettres 
 
 Deux particularités concernent la navigation. Dans certains onglets ouverts avant la livraison, **Ctrl+F5** a actualisé le menu. Dans les cadres intégrés de Projet et Coupe, le navigateur intégré a empêché de récupérer le téléchargement. Les dix fichiers correspondants ont été vérifiés en ouvrant l’éditeur hébergé directement dans un onglet. Le téléchargement depuis les cadres dans Chrome standard reste à confirmer. [Reçu de livraison et des documents par application](../data/recette-missions/livraison-preproduction.json).
 
+### Vérification des cadres dans Google Chrome
+
+Avec Google Chrome 156.0.8078.80 et un profil de test isolé sur les applications locales compilées, les quatre lettres et l’ordre de mission de chaque application ont été téléchargés en actionnant leurs boutons à l’intérieur de l’iframe. Les dix Word contiennent les coordonnées fictives attendues et le logo AVEREO. L’adresse de la page principale est restée identique et aucun autre onglet ne s’est ouvert. Le banc d’essai était configuré pour accepter les téléchargements de ce profil.
+
+Un contrôle HTTPS a confirmé les empreintes des scripts de Projet et Coupe en préproduction. La recette authentifiée avec Chrome sur les deux domaines reste à effectuer. [Résultats par application et par document](../data/recette-missions/chrome-cadres.json).
+
 ## Mise en production
 
 À la fusion de #124, les workflows Drone et Thermo se sont arrêtés à l’étape d’autorisation du serveur avant tout transfert. Le prototype GitHub Pages s’est arrêté à sa configuration avant publication. Le candidat propose de passer ces trois workflows et celui de Projet au lancement manuel sur main avec confirmation explicite. Ces modifications prennent effet après leur fusion. Le job de production conserve son fonctionnement lors d’une publication volontaire.

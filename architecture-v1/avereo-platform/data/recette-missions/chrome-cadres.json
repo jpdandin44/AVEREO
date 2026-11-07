@@ -1,0 +1,140 @@
+{
+  "environment": "local_compiled_applications_with_fictitious_data",
+  "browser": {
+    "product": "Google Chrome",
+    "version": "156.0.8078.80",
+    "isolatedProfile": true,
+    "testDownloadHandling": "Playwright acceptDownloads in an isolated test context"
+  },
+  "observedAt": "2026-11-07T18:03:15.139Z",
+  "sourceCommit": "02d3edfdc4fe993961a12a5d09bb60dab4c0de62",
+  "preproductionArtifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82",
+  "applications": [
+    {
+      "app": "projet",
+      "wrapperTitle": "Projet AVEREO Pro",
+      "iframeSameOrigin": true,
+      "unexpectedPages": 0,
+      "sameTab": true
+    },
+    {
+      "app": "coupe",
+      "wrapperTitle": "Coupe AVEREO Reno Pro",
+      "iframeSameOrigin": true,
+      "unexpectedPages": 0,
+      "sameTab": true
+    }
+  ],
+  "downloads": [
+    {
+      "app": "projet",
+      "kind": "letter",
+      "offer": "habitat-confort",
+      "filename": "lettre-habitat-confort-TEST-CHROME-projet-habitat-confort.docx",
+      "sha256": "2e8208766818bc9539a165549303117347816a8c7bc266689e15919ed956f695",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 5
+    },
+    {
+      "app": "projet",
+      "kind": "order",
+      "offer": "habitat-confort",
+      "filename": "ordre-TEST-CHROME-projet-habitat-confort.docx",
+      "sha256": "1a6346ad240799dbc684b01cd429ae197679c494ae8167f7dfbbf99d73ba2421",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 1
+    },
+    {
+      "app": "projet",
+      "kind": "letter",
+      "offer": "energie-travaux",
+      "filename": "lettre-energie-travaux-TEST-CHROME-projet-energie-travaux.docx",
+      "sha256": "7bea07a0cb7b79f4efbd16999998f1310dc36305ffae148bda01db8dda3ece43",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 5
+    },
+    {
+      "app": "projet",
+      "kind": "letter",
+      "offer": "prevention-bati",
+      "filename": "lettre-prevention-bati-TEST-CHROME-projet-prevention-bati.docx",
+      "sha256": "2354b7b0c71ac9b3df6d5c7ebb424425c3fc9c6d2acf08a0fdb9c7e9a350254e",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 6
+    },
+    {
+      "app": "projet",
+      "kind": "letter",
+      "offer": "360-premium",
+      "filename": "lettre-360-premium-TEST-CHROME-projet-360-premium.docx",
+      "sha256": "7e953ec70553a6eb74d6ce40735b06a9ba3f58252a17e0f4d2954be4bb8e11e7",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 6
+    },
+    {
+      "app": "coupe",
+      "kind": "letter",
+      "offer": "habitat-confort",
+      "filename": "lettre-habitat-confort-TEST-CHROME-coupe-habitat-confort.docx",
+      "sha256": "2b4b4f21a2fcf02a56805644ddb2278cfd56e206bb28a7cf19bfd7bcbf03c132",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 5
+    },
+    {
+      "app": "coupe",
+      "kind": "order",
+      "offer": "habitat-confort",
+      "filename": "ordre-TEST-CHROME-coupe-habitat-confort.docx",
+      "sha256": "e863087a64f6b2571dd892a1fca522dc88727dae1aa1866d6cdbb48927195157",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 1
+    },
+    {
+      "app": "coupe",
+      "kind": "letter",
+      "offer": "energie-travaux",
+      "filename": "lettre-energie-travaux-TEST-CHROME-coupe-energie-travaux.docx",
+      "sha256": "082a4e536e1ff2357f6a99e35c1a326e4b64e8d5e90af6b1dd2e01495f40f61b",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 5
+    },
+    {
+      "app": "coupe",
+      "kind": "letter",
+      "offer": "prevention-bati",
+      "filename": "lettre-prevention-bati-TEST-CHROME-coupe-prevention-bati.docx",
+      "sha256": "5aec7853bf21a20d4020e1c97fd7ccf4de50da63b4fa7546067cb207918e1c4c",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 6
+    },
+    {
+      "app": "coupe",
+      "kind": "letter",
+      "offer": "360-premium",
+      "filename": "lettre-360-premium-TEST-CHROME-coupe-360-premium.docx",
+      "sha256": "7b98fac53dfbbf7b3b7acc739f156c1c26187932866c75559a0db88ed0c72a74",
+      "readableOOXML": true,
+      "clientAndSiteChecked": true,
+      "pagesInWordPdf": 6
+    }
+  ],
+  "preproductionReadOnly": {
+    "observedAt": "2026-11-07T18:00:06.867757+00:00",
+    "scriptsAndModuleBytesConfirmed": true,
+    "rootReturnsToConnectWithoutSession": true
+  },
+  "authenticatedChromePreproduction": {
+    "status": "pending",
+    "reason": "Le contrôle direct du navigateur Chrome n’est pas connecté. Une fenêtre Chrome authentifiée sur le portail est attendue pour qualifier le parcours hébergé."
+  },
+  "applicationChanged": false
+}

@@ -75,7 +75,8 @@
       "path": "assets",
       "status": "created_and_verified_during_installation"
     },
-    "functionalReceipt": "recette-missions/livraison-preproduction.json"
+    "functionalReceipt": "recette-missions/livraison-preproduction.json",
+    "embeddedChromeEvidence": "recette-missions/chrome-cadres.json"
   },
   "production": null,
   "approvals": [
@@ -102,7 +103,7 @@
     "Remise du téléchargement depuis les cadres Projet et Coupe dans un navigateur standard",
     "Parcours sur un compte de recette distinct si exigé pour la qualification des accès"
   ],
-  "updatedAt": "2026-11-07T13:47:53.325945+00:00",
+  "updatedAt": "2026-11-07T18:21:00.554044+00:00",
   "publication": {
     "candidate": "manual_only_from_main_with_confirmation",
     "concerns": [
