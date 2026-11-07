@@ -48,9 +48,17 @@ Pour une livraison autorisée, installer les nouvelles ressources puis les menus
 
 [Outil de préparation et de répétition](../../../outillage/acces-preproduction/prepare_mission_delivery.py) · [État du paquet et du contrôle hébergé](../data/suivi-missions.json).
 
-Le [manifeste du paquet](../data/recette-missions/selection-preproduction.json) identifie 27 fichiers, dont 13 remplacements et 14 ajouts. L’écriture et la restauration ont été vérifiées sur copies de référence. Le contrôle des sept sites actifs attend l’accès à cPanel. La version et son contenu sont soumis à revue en [PR #125](https://github.com/jpdandin44/AVEREO/pull/125).
+Le [manifeste du paquet](../data/recette-missions/selection-preproduction.json) identifie les 27 fichiers soumis à revue en [PR #125](https://github.com/jpdandin44/AVEREO/pull/125).
 
 La procédure serveur a aussi été exécutée dans un environnement Linux local isolé, sur sept racines fictives. La répétition a conservé leur contenu octet pour octet et refusé un paquet différent, une sauvegarde déjà présente et un fichier cible modifié entre-temps.
+
+### Comparaison sur l’hébergement du 7 novembre 2026
+
+Entre 12 h 48 et 12 h 51, heure de Paris, cPanel a confirmé les sept racines et le serveur a comparé leurs fichiers au manifeste. Les 13 fichiers à remplacer avaient exactement les empreintes attendues. Les 14 chemins à créer étaient libres. Les six ressources conservées correspondaient aussi, octet pour octet, aux ressources utilisées pendant la recette locale. Le contrôle a utilisé Python 3.11 de l’hébergeur.
+
+Pour les 27 opérations, l’outil a appliqué les changements à une copie privée, rétabli son état initial puis relu les fichiers actifs. Toutes les comparaisons ont réussi. Ce contrôle porte sur la préparation du paquet. La recette fonctionnelle hébergée interviendra après une installation autorisée. [Reçu détaillé par fichier et par application](../data/recette-missions/controle-heberge.json).
+
+**CONNECT nécessite la création de `public/assets/`** pour accueillir `missions.js`. L’essai complémentaire a créé puis retiré ce répertoire sur une copie privée. Un second essai a conservé un fichier témoin ajouté entre-temps. Lors de l’installation, vérifier à nouveau sa présence. S’il doit être créé, le consigner pour que le retour arrière retire seulement un répertoire créé par cette livraison et encore vide.
 
 ## Mise en production
 

@@ -11,7 +11,7 @@
     "Mise en production"
   ],
   "phase": "Développement local",
-  "status": "prepared_locally_pending_host_and_business_review",
+  "status": "host_preflight_verified_pending_business_review_and_release_decisions",
   "scope": "Lettres et ordres depuis un dossier et recette des rapports, sur fixtures.",
   "github": {
     "repository": "jpdandin44/AVEREO",
@@ -43,7 +43,7 @@
       "saisie-unique"
     ],
     "deployment": null,
-    "currentHostRehearsal": "pending_cpanel_access",
+    "currentHostRehearsal": "passed_on_private_copies_of_seven_hosted_targets",
     "manifest": "recette-missions/selection-preproduction.json",
     "artifactSha256": "c63923b9895135510b16c40e864b3b92f05c6df574ec29c8f1d005c824f7ad82",
     "files": 27,
@@ -57,6 +57,13 @@
       "wrongPackageRejected": true,
       "freshRecoveryDirectoryRequired": true,
       "hostDriftRejected": true
+    },
+    "hostPreflightEvidence": "recette-missions/controle-heberge.json",
+    "hostPreflightAt": "2026-11-07T11:50:13.334563+00:00",
+    "requiredDirectory": {
+      "app": "connect",
+      "path": "assets",
+      "status": "absent_creation_and_rollback_rehearsed_on_private_copy"
     }
   },
   "production": null,
@@ -67,7 +74,7 @@
     "Immatriculation, assurance, annexes et tarifs applicables",
     "Recette hébergée sur compte fictif après autorisation de déployer"
   ],
-  "updatedAt": "2026-11-07T10:35:15.092635+00:00",
+  "updatedAt": "2026-11-07T11:54:14.952941+00:00",
   "publication": {
     "candidate": "manual_only_from_main_with_confirmation",
     "concerns": [
@@ -78,5 +85,5 @@
     ],
     "effectiveOnMain": false
   },
-  "nextAction": "Relire le protocole et les lettres. Comparer les fichiers actifs en préproduction et vérifier leur restauration sur copies privées depuis cPanel."
+  "nextAction": "Relire le protocole et les lettres de la PR #125. Après les décisions de fusion et de déploiement, recontrôler les empreintes et la présence du répertoire assets de CONNECT avant installation du paquet vérifié."
 }
