@@ -5,10 +5,14 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 7 novembre — pont et stockage, état local courant
+
+Pont réalisé/testé localement sur fixtures dans le lot cockpit propriétaire. Quatre phases : Cadrage, Développement local à examiner, Préproduction et Mise en production non démarrées/non autorisées. Avant suite : vrai kernel Drupal/session du lecteur, paramètres privés, HTTPS, ACL/quotas/nonces, révocation et tiers fictifs. [Contrat](api/developments-authorization.md).
 
 
 ## Lot courant — choix des applications en temporaire

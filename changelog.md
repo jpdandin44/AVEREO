@@ -5,10 +5,14 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 2026-11-07 — CI du module Développements privé
+
+Alignement du candidat sur main en préservant la copie antérieure ; contrôles PHP et Node explicites, ordre de préparation du sas adapté au checkout neuf, source propre et SHA du paquet vérifiés. Aucun compte, donnée réelle, accord humain ou déploiement. [Workflow de référence](architecture-v1/avereo-app-projet/workflows/ci-developpements.md).
 
 
 ## 4 novembre 2026 — Applications indépendantes de la durée CONNECT

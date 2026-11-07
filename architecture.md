@@ -5,7 +5,7 @@ title: Architecture du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -15,6 +15,8 @@ tags: [avereo, documentation, local]
 La nouvelle carte RGA est un module de Rapport, ouvert également par une tuile CONNECT utilisant ses droits. [Architecture et données](architecture-v1/avereo-app-rapport/api/rga.md).
 
 # Architecture du dépôt AVEREO
+
+Le job consultatif `developments-private` qualifie séparément le code Projet et son pont CONNECT/Drupal avec identités fictives. Il conserve seulement des reçus techniques de code et n'accède pas aux sources privées du portefeuille ou à l'hébergement. [Flux de qualification et limites](architecture-v1/avereo-app-projet/workflows/ci-developpements.md).
 
 Les composants existants sont dans `architecture-v1/`. Leur documentation locale fait foi.
 Voir [le catalogue existant](architecture-v1/avereo-platform/docs/applications.md),

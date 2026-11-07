@@ -13,7 +13,35 @@ tags:
   - recette
 ---
 
+## Alignement et contrôles CI — 7 novembre
+
+Report sans conflit du candidat dans une branche issue de main, copie locale antérieure préservée. Sur Windows, première qualification : 72 tests ciblés et build complet de 268 tests réussis, 22 fichiers publics sans module privé ; lint explicite de 24 fichiers PHP, suites d'autorisation 41/14 et régression CONNECT 40/40. Le premier essai sur checkout neuf a signalé le sas généré absent avant les tests : ordre corrigé puis suites relancées avec succès. Le contrôle de paquet a ensuite révélé un faux refus du fichier de code `SnapshotReader.php` par une recherche trop large : remplacement par une liste fermée de fichiers autorisés et ajout d'un test de refus des vraies données. La qualification finale est enregistrée dans le suivi canonique. [Commandes et limites CI](../workflows/ci-developpements.md). Aucun vrai compte, suivi, rôle ou hébergement modifié ; les résultats locaux ne sont pas une CI distante.
+
+## Reprise — session Projet et préparation de préproduction
+
+La reprise ajoute le lecteur PHP et son API hors du public normal. Session native signée, rôle frais, assets/pièces, refus, interopérabilité Node/PHP, paquet fermé et menu conditionnel sont contrôlés localement sur fixtures. Le sas commun, les fichiers publics du Gantt et les sources externes restent hors modification. Le vrai instantané privé est seulement lu hors ligne pour compatibilité. Le reçu canonique de cette reprise porte les résultats définitifs ; les résultats ci-dessous restent ceux de leurs candidats historiques. [Guide](preproduction-developpements.md).
+
+## 7 novembre — pont et stockage, état local courant
+
+Candidat de la copie isolée : build Projet **260 tests réussis**, 21 fichiers publics, module privé/données exclus. PHP : 41 assertions broker/fournisseur, 14 contrôleur avec doubles de services (pas de kernel Drupal), régression CONNECT 40/40. DACL Windows réellement qualifiée par le test de persistance. Pont sur identités fictives ; copie des vrais suivis privée et consultative, sans connexion réelle. La recette navigateur a révélé une collision de cookie entre ports : le nouveau lanceur utilise désormais un cookie distinct par port, couvert par un test dédié. [Guide](pont-stockage-local.md). Les anciennes preuves sont historiques ; les versions exportées ne mesurent pas les hôtes.
+
 # Audit et recette du planning Projet
+
+## Raccordement Recherche/RGA — vérification locale du 7 novembre
+
+Les sources lues sont `avereo-platform/data/suivi-missions.json` et `data/suivi-fonctions-communes.json # correctiveDeployment`, dans la copie active des travaux communs. Recherche figure dans la qualification locale et n'a pas de livraison déclarée ; RGA possède son candidat et sa livraison historique de correctif PR #122. Aucun champ du parent n'est pris pour le statut propre du correctif. Les quatre phases, les preuves, la provenance et le rechargement sont examinés dans le cockpit local.
+
+Le contrôle de fraîcheur compare les JSON/empreintes et les références Git du poste, sans appel réseau d'audit. Les dates déclarées restent celles des sources, distinctes de l'heure de lecture ; les informations absentes restent inconnues. Les autres chats peuvent continuer à modifier leurs sources, qui seront relues au rafraîchissement. Aucun test n'approuve un vrai critère, aucune écriture externe et aucun déploiement.
+
+## Reprise du 7 novembre — portefeuille réel en lecture seule
+
+Après accord explicite sur l'accès privé local sans SSO, les 12 applications/sites et les 10 suivis du registre sont lus. Recette dans le navigateur : tableau, recherche Rapport, quatre phases, ouverture d'une preuve déclarée, revue d'un critère réel désactivée, rechargement et retour au portefeuille. Une première recette a mis en évidence l'annulation du premier chargement entre effets React : correction et test de régression ajoutés. Les preuves relatives à `data/` sont raccordées explicitement sans sortie de racine.
+
+Les clés/configurations temporaires du cockpit sont limitées au compte Windows courant et SYSTEM, héritage retiré ; aucun profil distant n'est ouvert. Le build exclut le module privé. Les autres chats et leurs sources ne sont pas écrits par ce lot ; les changements légitimes qu'ils effectuent restent visibles à la prochaine lecture. [Guide et limites](cockpit-portefeuille.md). Les résultats de la clôture documentaire ci-dessous restent historiques.
+
+## 7 novembre — Documentation du raccordement local, non exécuté
+
+Le lanceur, le garde d'accès, le contrat des sources et les scénarios fictifs sont relus sans démarrer de service ni lancer de test. Le ticket CONNECT de la copie inspectée contient une identité mais pas le rôle global ; les rôles d'organisation ne prouvent pas ce rôle. La [procédure](raccordement-developpements-local.md) conserve ce blocage et impose ID propriétaire exact, autorité qualifiée, refus des autres profils et pilote consultatif. Aucun raccordement réel, registre actif, changement d'identité, décision métier ou déploiement. Les contrôles du 6 novembre ne deviennent pas des résultats du 7 novembre ; les nouveaux textes restent hors de leur manifeste historique.
 
 ## Recette hébergée de #114 — 6 novembre 2026
 

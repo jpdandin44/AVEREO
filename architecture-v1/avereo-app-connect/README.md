@@ -5,10 +5,18 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## Reprise — session Projet et préparation de préproduction
+
+Le [lecteur PHP Projet](../avereo-app-projet/docs/preproduction-developpements.md) consomme localement le contrat d'habilitation existant avec la session native signée de Projet. Aucun code CONNECT/Drupal modifié par cette reprise, pas de secret/configuration active ni déploiement. Les tests restent fictifs et la qualification réelle du pont ouverte.
+
+## 7 novembre — pont et stockage, état local courant
+
+Pont d'habilitation local, désactivé par défaut. Propriétaire exact et rôle Drupal actuel, sans ajout au ticket ni modification de compte. [Contrat/configuration/recette](api/developments-authorization.md). Lecteur Projet local, aucun service déployé.
 
 ## Choisir les applications d’un compte temporaire
 

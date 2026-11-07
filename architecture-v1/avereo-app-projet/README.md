@@ -5,7 +5,7 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
@@ -13,7 +13,37 @@ tags:
   - local
 ---
 
+## Alignement et CI du module Développements
+
+Le candidat est reporté sur main dans une branche isolée, sans écraser la copie locale antérieure. Le [workflow CI privé](workflows/ci-developpements.md) vérifie explicitement les suites Projet/CONNECT/Drupal fictives, les refus des autres profils, la lecture seule et la séparation public/privé. Le paquet relève le SHA d'une source propre ; une CI ne vaut ni autorisation, ni installation. Les quatre phases et les validations humaines sont conservées.
+
+## Reprise — session Projet et préparation de préproduction
+
+Le [lecteur PHP privé et sa préparation](docs/preproduction-developpements.md) réutilisent maintenant, dans le code local, la session Projet signée et le propriétaire de la configuration existante. Pont global obligatoire par requête, API consultative et assets privés ; recette sur fixtures, aucun cookie réel exporté. Paquet séparé désactivé par défaut, sans secrets/suivis réels ni écrasement du Gantt. **Aucune installation ni connexion effective au module sur le domaine réel.** La préparation reste en Développement local ; les étapes précédentes ci-dessous sont historiques.
+
+## 7 novembre — pont et stockage, état local courant
+
+Le [guide du pont et stockage privé](docs/pont-stockage-local.md) décrit le candidat courant : contrôle Drupal/CONNECT par requête, copie persistante signée et preuves sélectionnées. Chaîne d'habilitation testée sur fixtures ; vrais suivis sous accès privé du poste, sans SSO réel raccordé. Aucun déploiement. Le lecteur reste Node local ; nouveaux endpoints PHP désactivés par défaut. Commandes `dev:private-storage` et `prepare:private-storage`, depuis `frontend/`. Le registre propriétaire comporte 13 projections/11 JSON pour 12 applications. Les rubriques de cadrage/clôture ci-dessous sont historiques ; le build public exclut toujours ce module.
+
 # Projet AVEREO
+
+## Cible future — Développements privé en ligne
+
+Le 7 novembre, le responsable demande un cockpit consultable en ligne dans la durée et propose un module spécifique dans Projet. Le module local existant sert de base à cette préparation, pas de service à exposer. Le [guide du portefeuille](docs/cockpit-portefeuille.md#cible-future-en-ligne--exigence-du-7-novembre) distingue cette cible, réservée au seul propriétaire administrateur global, de l'état local actuel. Exigence et plan documentés seulement : aucun nouveau code, compte, droit CONNECT, synchronisation ou déploiement.
+
+## Portefeuille utilisable en lecture seule — reprise du 7 novembre
+
+La [vue Versions & développements](docs/cockpit-portefeuille.md) référence 12 applications et sites, tous avec un suivi lisible : 12 entrées/projections sur 11 JSON. Recherche est rattachée au lot Missions ; RGA à son sous-suivi de correctif et au lot commun récent. Git local, lots hébergés déclarés, preuves et quatre phases restent distincts. Dates, empreintes et projection source permettent de contrôler la fraîcheur locale, sans promettre un contrôle distant. Le responsable a choisi l'accès privé local, sans SSO CONNECT ni déploiement. Le lanceur `npm.cmd run dev:portfolio -- --local-private-owner --registry CHEMIN_PRIVÉ` protège son accès et les fichiers temporaires ; le guide donne le registre réel et les limites.
+
+## Clôture documentaire du 7 novembre — aucun raccordement
+
+La [procédure locale préparatoire](docs/raccordement-developpements-local.md) décrit l'accès au seul propriétaire administrateur global, la qualification de son identité CONNECT, les vrais suivis en lecture seule et la matrice de confidentialité. Elle n'est pas exécutée. Aucun registre actif, compte, droit, code ou déploiement n'est changé lors de cette clôture. Les tests du 6 novembre ci-dessous restent historiques ; ils ne qualifient pas le rôle CONNECT réel.
+
+## Développements — candidat local privé du 6 novembre 2026
+
+Module séparé du Gantt : plusieurs suivis, quatre phases, critères, preuves versionnées et décisions individuelles dans leur source canonique. Le lanceur privé protège toutes les ressources, pas seulement le menu, et réserve l'accès à un identifiant propriétaire exact. Le navigateur de recette utilise des fixtures fictives ; le rôle réel CONNECT n'est pas qualifié et aucun autre profil n'est raccordé. **Aucun déploiement.**
+
+Depuis `frontend`, lancer `npm.cmd run dev:developments -- --demo` puis suivre le [guide privé local](docs/developpements-local.md). [Contrat](api/developpements-local.md). Le build hébergé exclut ce module et ses API. Le suivi canonique du lot reste dans l'espace de pilotage `avereo-pilotage/data/suivi-cockpit-developpements.json` ; les autres suivis opérationnels ne sont pas réécrits.
 
 ## Interface simple — livrée en préproduction le 6 novembre 2026
 

@@ -29,6 +29,7 @@ final class Application
         private readonly ?\Avereo\Connect\Administration\AccountAdministration $accountAdministration = null,
         private readonly ?AccountPasswordResetNotifier $passwordReset = null,
         private readonly ?\Avereo\Connect\Administration\AccountLifecycle $accountLifecycle = null,
+        private readonly ?\Avereo\Connect\Developments\AuthorizationBroker $developmentAuthorization = null,
     ) {
     }
 
@@ -87,6 +88,12 @@ final class Application
         ?callable $beginIdentity,
         ?callable $completeIdentity,
     ): Response {
+        if ($request->path === '/api/v1/developments/authorize') {
+            if ($request->method !== 'POST') throw new ApiException(405, 'METHOD_NOT_ALLOWED', 'Méthode refusée.');
+            if ($this->developmentAuthorization === null) throw new ApiException(503, 'DEVELOPMENTS_NOT_CONFIGURED', 'Service privé indisponible.');
+            try { return Response::success($this->developmentAuthorization->authorize($request->body), $request->requestId); }
+            catch (\Throwable) { throw new ApiException(403, 'DEVELOPMENTS_DENIED', 'Accès refusé.'); }
+        }
         if ($request->method === 'GET' && $request->path === '/api/v1/health') {
             $database = $this->repository->databaseStatus();
             return Response::success([

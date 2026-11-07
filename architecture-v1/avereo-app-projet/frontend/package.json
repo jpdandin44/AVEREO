@@ -5,13 +5,18 @@
     "type":  "module",
     "scripts":  {
                     "dev:review": "node ../workflows/start-review.mjs",
+                    "dev:developments": "node ../workflows/start-developments.mjs",
+                    "dev:portfolio": "node ../workflows/start-portfolio.mjs",
+                    "dev:private-storage": "node ../workflows/start-private-development-storage.mjs",
+                    "prepare:private-storage": "node ../workflows/prepare-development-storage.mjs",
+                    "test:developments": "node ../../../.github/scripts/prepare-connect-gate.mjs projet && node --test ../tests/development-*.test.mjs",
                     "test:review": "node --test ../tests/review-*.test.mjs",
                     "check:release": "node ../workflows/check-review-release.mjs",
                     "dev":  "node ../../../.github/scripts/prepare-account-menu.mjs projet && npm run generate:planning && node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite",
                     "generate:planning": "node ../workflows/generer-planning-pilote.mjs",
                     "check:planning": "node ../workflows/generer-planning-pilote.mjs --check",
                     "test": "node --test ../tests/*.test.mjs",
-                    "build":  "node ../../../.github/scripts/prepare-account-menu.mjs projet && npm run check:planning && npm test && node ../../../.github/scripts/prepare-connect-gate.mjs projet && vite build && npm run check:release",
+                    "build":  "node ../../../.github/scripts/prepare-account-menu.mjs projet && node ../../../.github/scripts/prepare-connect-gate.mjs projet && npm run check:planning && npm test && vite build && npm run check:release",
                     "preview":  "vite preview"
                 },
     "dependencies":  {

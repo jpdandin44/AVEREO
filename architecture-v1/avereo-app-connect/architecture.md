@@ -5,10 +5,14 @@ title: Architecture CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 7 novembre — pont et stockage, état local courant
+
+`Developments/AuthorizationBroker.php` vérifie la demande Projet, relit le compte/sujet/droit Projet, interroge Drupal puis relit le compte. `PrivateFactory.php` borne HTTPS et nonces privés. Le contrôleur Drupal relit utilisateur, rôle configuré et définition globale ; aucun compte/rôle écrit. [Contrat](api/developments-authorization.md). Désactivé sans configuration privée, autres applications inchangées.
 
 
 ## Période commune aux applications sélectionnées

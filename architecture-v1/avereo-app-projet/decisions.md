@@ -5,14 +5,46 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
 
+## Reprise — session Projet et préparation de préproduction
+
+Contexte : préparer une consultation depuis la session Projet réelle sans déploiement. Décision locale : réutiliser cookie/sas/propriétaire existants ; exiger le pont global et servir aussi les assets derrière l'autorisation. Construire un paquet PHP/React séparé, sans remplacer le Gantt ni y ajouter automatiquement le menu. Raisons : pas de compte parallèle, pas de protection limitée au menu, pas de régression du planning depuis une copie ancienne. Conséquences : installation coordonnée et configuration privée restent à qualifier ; activation de production refusée. [Guide](docs/preproduction-developpements.md).
+
+## 7 novembre — pont et stockage, état local courant
+
+Contexte : préparer le cockpit privé durable sans installation distante. Décision locale : autorité Drupal courante, propriétaire exact, deux clés de frontière et contrôle par requête, sans modifier le ticket existant ; copie signée avec séquence haute et preuves opt-in, sans retour métier. Raisons : ne pas assimiler `owner` à global ni conserver un accord révoqué. Conséquences : accès réel actuel par capacité privée du poste ; lecteur Node n'est pas un SSO. Hébergement et migration privée des sources restent des étapes distinctes. [Contrat et limites](docs/pont-stockage-local.md).
+
 # Décisions de Projet
+
+## 2026-11-07 — Recherche/RGA et fraîcheur par projection canonique
+
+**Contexte.** Recherche possède une recette dans le lot Missions ; RGA possède un correctif isolé dans `correctiveDeployment` du suivi des fonctions communes. Les afficher comme des suivis absents masque des sources existantes, mais les recopier ou leur attribuer le statut du parent serait trompeur.
+
+**Décision.** Référencer ces sources dans le registre et autoriser une projection privée uniquement consultative par propriété propre. Respecter phase, candidats, accords et preuves de chaque portée. Comparer les dates déclarées avec leurs fuseaux et conserver la provenance par empreinte et heure de lecture. Ne pas déduire une version hébergée ou un candidat absent.
+
+**Conséquences.** Douze applications ont un suivi lisible sur onze JSON, sans nouvel historique manuel ni modification de leurs sources. La fraîcheur est qualifiée par rapport au poste uniquement ; le SSO, GitHub distant et les hôtes ne sont pas requalifiés.
+
+## 2026-11-07 — Consultation locale privée du portefeuille, sans SSO
+
+**Contexte et accord.** Le responsable demande un cockpit utilisable pour toutes les applications et confirme « Oui, accès privé local et lecture seule ». Le SSO CONNECT réel reste distinct.
+
+**Décision.** Réutiliser le garde privé existant, un registre de chemins qualifiés et des sources `writable: false`. Observer Git local sans fetch et distinguer les livraisons déclarées par lot d'une version complète mesurée sur l'hôte. Conserver les inconnues et les mappings historiques.
+
+**Conséquences.** Aucun droit CONNECT ni accès distant n'est ajouté. Les clés temporaires sont protégées par ACL du compte Windows courant et SYSTEM ; la confiance dans le poste reste nécessaire. Les sources des autres chats ne sont pas modifiées. Les versions hébergées actuelles et les deux suivis dédiés manquants restent à qualifier. [Guide](docs/cockpit-portefeuille.md).
+
+## 2026-11-06 — Développements réservés au propriétaire et réalisation locale fermée
+
+**Contexte.** Le responsable autorise le développement local du module en exigeant que lui seul, administrateur global, puisse consulter les développements en cours. Aucun déploiement n'est autorisé. Le ticket CONNECT inspecté ne porte pas le rôle global.
+
+**Décision de réalisation locale.** Ajouter un lanceur privé distinct, protéger toutes ses ressources et épingler l'identifiant propriétaire côté serveur. Utiliser une capacité locale temporaire, sans lui attribuer une valeur de preuve du rôle CONNECT. Recetter les mutations sur fixtures uniquement. Les adaptateurs lisent les suivis existants ; les décisions individuelles sont activées seulement par opt-in de la source et enregistrées dans le même JSON.
+
+**Raisons et conséquences.** Un simple menu masqué ou un rôle envoyé par le navigateur n'est pas une protection. Les autres profils, y compris un autre administrateur global, sont refusés. L'hébergement reste fermé : qualifier l'identité réelle et le pont de données avant toute livraison distinctement autorisée. Le module privé est exclu du build hébergé ; aucune nouvelle permission CONNECT ou publique n'est créée. [Contrat et limites](api/developpements-local.md).
 
 ## 2026-11-06 — Réutiliser les résultats existants et rendre la vérification optionnelle
 

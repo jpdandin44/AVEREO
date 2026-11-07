@@ -12,7 +12,43 @@ tags:
   - changelog
 ---
 
+## Alignement et CI du module privé
+
+Report du candidat sur main dans une branche distincte, ancien travail préservé. Lint et suites PHP dédiés, tests de confidentialité/lecture seule, contrôle public/privé et identité du paquet explicites en CI. Préparation du sas natif déplacée avant les tests pour fonctionner sur checkout neuf ; manifeste SHA seulement sur source propre. Aucun rôle, compte, stockage réel, déploiement ou critère humain modifié. [Workflow](workflows/ci-developpements.md).
+
+## Reprise — session Projet et préparation de préproduction
+
+Code de session native Projet, lecteur PHP consultatif des instantanés Node, API/page/assets protégés, frontend privé réutilisé, menu optionnel et constructeur de paquet hors build normal. Tests natifs/fictifs et HTTP, aucune installation ni session hébergée raccordée au module. [Guide](docs/preproduction-developpements.md).
+
+## 7 novembre — pont et stockage, état local courant
+
+Candidat local : pont d'habilitation par requête, endpoints PHP CONNECT/Drupal opt-in, export/import signé persistant, ACL et preuves opt-in, lecture seule et dates de copie. Modes fictif/privé du poste/pont configuré séparés. Aucun compte réel, décision métier, SSO réel ou déploiement. [Guide](docs/pont-stockage-local.md).
+
 # Changelog de Projet
+
+## 2026-11-07 — Recherche/RGA raccordés et fraîcheur locale vérifiable
+
+- Recherche rattachée au suivi Missions et à sa qualification locale ; RGA au sous-suivi canonique du correctif PR #122 et au chantier récent, sans recopier les états ni attribuer une livraison à Recherche.
+- Lecture des phases françaises, référence documentaire unique et réserves, projection interdite en écriture, historique parent non hérité. Dernière donnée datée triée chronologiquement, tableau/liste cohérents, empreinte et modification source affichées.
+- Contrôles sur fixtures de projection, mises à jour de source et dates/fuseaux ; recette locale des preuves Recherche/RGA et rechargement. Aucun suivi externe, compte, accord humain ou environnement hébergé modifié.
+
+## 2026-11-07 — Reprise : portefeuille privé mult Applications
+
+- Vue d'ensemble recherchable de 12 applications/sites, versions Git locales, lots préproduction/production déclarés et chantiers partagés. Sources manquantes visibles, critères sans phase consultables et réserves affichées.
+- Registre réel consultatif après accord explicite ; garde privé conservé et répertoires temporaires protégés par ACL Windows du propriétaire/SYSTEM. Aucun rôle CONNECT réel revendiqué.
+- Raccordement des bases de preuves déclarées sans sortie de racine, mapping historique TC, contrôle du premier chargement React et refus d'écriture sur les sources réelles. Gantt et autres projets préservés, aucun déploiement.
+
+## 2026-11-07 — Préparation documentaire et clôture, sans raccordement
+
+- Procédure de rattachement local au compte propriétaire exact : autorité/rôle réel à qualifier, refus des autres profils, inventaire canonique, exemple de registre fermé non exécutable, pilote en lecture seule et matrice de confidentialité.
+- Relecture statique du garde et des scénarios de tests existants, sans nouvelle exécution applicative. Documentation seule : code, configuration active, comptes, suivis opérationnels, phases et validations préservés ; aucun déploiement. Les preuves du candidat du 6 novembre restent historiques, sans couvrir les nouveaux textes.
+
+## 2026-11-06 — Module Développements local privé
+
+- Ajout d'un espace séparé : quatre phases, registre multisuivi, adaptateurs, critères, consultation de pièces et décisions individuelles versionnées dans la source opt-in.
+- Protection de toutes les ressources du lanceur local, identifiant propriétaire unique, session signée, origine et CSRF ; autres profils refusés. Capacité locale temporaire distincte du rôle CONNECT réel, encore non qualifié.
+- Conflits refusés, historique conservé, sauvegardes exactes et restauration testée sur fixtures. Gantt et données clients inchangés ; exclusion du module privé contrôlée dans le build hébergé. Aucun commit, envoi distant ou déploiement réalisé par ce lot.
+- Guide et contrat local ajoutés ; revue humaine du candidat et raccordement réel restent à faire.
 
 ## 2026-11-06 — Interface simple livrée en préproduction
 

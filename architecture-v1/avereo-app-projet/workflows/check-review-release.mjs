@@ -15,6 +15,7 @@ for (const file of artifacts) {
   if (file.endsWith('.js')) {
     const content = await readFile(file, 'utf8');
     assert.ok(!content.includes('/local-review/'), 'Interface de revue locale présente dans le build hébergé.');
+    assert.ok(!content.includes('/local-developments/'), 'Module de développement privé présent dans le build hébergé.');
   }
 }
 for (const file of ['index.php', 'connect/entry.php', 'connect/gate.php', 'connect/logout.php', '.htaccess']) assert.ok((await readFile(join(dist, file))).length > 0, `Sas absent : ${file}`);

@@ -5,7 +5,7 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
@@ -13,7 +13,35 @@ tags:
   - stockage
 ---
 
+## Qualification CI séparée
+
+Le job consultatif `developments-private` compile et teste le code sur fixtures, sans secrets d'hébergement. `verify-development-ci.mjs` compare le SHA attendu, le manifeste du paquet et la conservation du public/data ; il ne se raccorde pas aux vraies sources. Le constructeur relève Git avant/après construction et n'atteste un SHA propre que si ces deux états le permettent. [Contrat de qualification](workflows/ci-developpements.md).
+
+## Reprise — session Projet et préparation de préproduction
+
+Le lecteur PHP `backend/developments/` ajoute SessionAuthorization, SnapshotReader, Runtime et Factory ; il reprend les fonctions du sas et lit propriétaire/origine du planning sans ouvrir son stockage. L'interface réutilisée cible une API PHP distincte et des assets servis après autorisation complète ; aucun rôle depuis le navigateur. Le build privé séparé ne modifie pas le build public normal. [Flux, chemins et limites](docs/preproduction-developpements.md). Les services restent non installés ; le lecteur Node privé antérieur reste disponible.
+
+## 7 novembre — pont et stockage, état local courant
+
+Composants ajoutés : `development-role-bridge.mjs` (décision HMAC fraîche sans cache de droit), `development-snapshot-export.mjs` (lecture consultative et opt-in de preuves), `development-snapshot-store.mjs` (instantanés/index signés, séquence haute, activation atomique), `development-storage-directory.mjs` (persistance et ACL). Toutes les ressources sont contrôlées avant lecture ; aucune décision métier permise dans cette copie. [Flux et limites](docs/pont-stockage-local.md), [contrat PHP CONNECT/Drupal](../avereo-app-connect/api/developments-authorization.md). Le lecteur est Node local, non un service PHP hébergé. Suivis canoniques et dossiers clients restent distincts.
+
 # Architecture du planning Projet
+
+## Portefeuille de versions — reprise du 7 novembre
+
+Le raccordement Recherche/RGA lit un suivi commun et un sous-objet canonique par `dataPath`, sans projection écrivable. Les dates des données, l'heure de lecture, la modification du fichier et son empreinte sont séparées. Une réponse de tableau et de liste réutilise la même projection ; les dépôts restent observés ponctuellement, sans transaction globale ni appel GitHub/hébergé.
+
+`development-versions.mjs` observe Git local en lecture seule et projette les candidats/lots livrés déclarés. Un catalogue explicite conserve les applications sans suivi ; un chantier peut référencer plusieurs applications sans copier les décisions. L'environnement d'une livraison est mappé dans le registre, pas inféré d'une CI ou d'une URL. `evidenceBase` résout les pièces relatives à un sous-dossier, toujours confiné à la racine autorisée. Les phases historiques conservent leur mapping.
+
+`DevelopmentPortfolio.jsx` porte la vue d'ensemble et la recherche ; `DevelopmentWorkspace.jsx` reste la revue en quatre phases. `start-portfolio.mjs` force le registre en lecture seule. Les répertoires temporaires sont restreints au propriétaire Windows et SYSTEM, sans héritage, avant toute création de clé. L'accès privé local autorisé ne qualifie pas un rôle CONNECT et n'est pas un service hébergé. [Guide](docs/cockpit-portefeuille.md).
+
+## Module Développements local privé — 6 novembre 2026
+
+Le lanceur `workflows/start-developments.mjs` place `development-http.mjs` avant les ressources Vite. `development-access.mjs` contrôle la boucle locale, l'origine, la session signée d'un seul identifiant et le CSRF. `development-store.mjs` projette un registre privé de sources dans quatre phases sans copier les statuts ni inventer d'accord. Les décisions opt-in rejoignent le JSON canonique ; verrou, révision des pièces, sauvegarde exacte et remplacement atomique protègent l'écriture.
+
+`frontend/src/developments/DevelopmentWorkspace.jsx` distingue critères, contrôles, pièces et décisions. Chargé seulement en développement avec le lanceur privé ; aucun composant, API ou suivi de ce module n'est livré dans le build de production. Le Gantt et sa persistance ne changent pas. Les anciennes routes de revue sont bloquées dans ce mode.
+
+Le ticket CONNECT inspecté n'atteste pas le rôle global : ce candidat utilise une capacité locale temporaire, pas une authentification CONNECT qualifiée. Les sources réelles restent à raccorder après qualification de l'identité et du contrat d'écriture. [Flux et frontières](api/developpements-local.md), [utilisation et limites](docs/developpements-local.md).
 
 ## Interface simple — architecture livrée en préproduction
 

@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 7 novembre — pont et stockage, état local courant
+
+Pont de cette copie isolée uniquement : propriétaire/autorité Drupal actuels, nonces, TLS/délais et défaut fermé. PHP : 41 assertions broker/fournisseur et 14 contrôleur avec doubles de services ; régression CONNECT 40/40. Interopérabilité Node/PHP couverte côté Projet sur fixtures. Pas de recette kernel Drupal/hébergée ni de raccordement réel. [Contrat](../api/developments-authorization.md).
+
 
 ## 4 novembre 2026 — Extension des accès temporaires
 

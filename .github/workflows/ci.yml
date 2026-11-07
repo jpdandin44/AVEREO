@@ -90,6 +90,8 @@ jobs:
             architecture-v1/avereo-app-coupe/frontend/public \
             architecture-v1/avereo-app-coupe/tests \
             architecture-v1/avereo-app-projet/frontend/public \
+            architecture-v1/avereo-app-projet/backend/developments \
+            architecture-v1/avereo-app-projet/tests \
             architecture-v1/avereo-app-thermo/frontend/public \
             architecture-v1/avereo-app-drone/frontend/public \
             architecture-v1/avereo-app-recherche/frontend/public \
@@ -187,6 +189,75 @@ jobs:
 
       - name: Check common menu is packaged unchanged
         run: node .github/scripts/check-account-menu.mjs ${{ matrix.application }}
+
+  developments-private:
+    name: Developpements private module
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Setup PHP for private module fixtures
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: curl, openssl, pdo_sqlite
+
+      - name: Install Projet build dependencies
+        working-directory: architecture-v1/avereo-app-projet/frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Lint private PHP runtime and fixtures explicitly
+        run: |
+          set -euo pipefail
+          find architecture-v1/avereo-app-projet/backend/developments \
+            architecture-v1/avereo-app-projet/tests \
+            architecture-v1/avereo-app-connect/backend/src/Developments \
+            architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/src \
+            -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+          php -l architecture-v1/avereo-app-connect/backend/tests/development-authorization.php
+          php -l architecture-v1/avereo-app-connect/backend/tests/development-bridge-fixture.php
+          php -l architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/development-authorization-controller.php
+
+      - name: Test CONNECT broker and Drupal controller doubles
+        run: |
+          set -euo pipefail
+          php architecture-v1/avereo-app-connect/backend/tests/development-authorization.php
+          php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/development-authorization-controller.php
+          php architecture-v1/avereo-app-connect/backend/tests/run.php
+
+      - name: Test private access and read-only fixtures
+        working-directory: architecture-v1/avereo-app-projet/frontend
+        run: npm run test:developments
+
+      - name: Build public Projet and run complete regressions
+        working-directory: architecture-v1/avereo-app-projet/frontend
+        run: npm run build
+
+      - name: Verify isolated private package and exact source identity
+        run: >-
+          node architecture-v1/avereo-app-projet/workflows/verify-development-ci.mjs
+          --output "${{ runner.temp }}/projet-developpements-ci"
+          --expected-source "${{ github.event.pull_request.head.sha || github.sha }}"
+
+      - name: Retain code-only qualification receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: projet-developpements-qualification
+          path: |
+            ${{ runner.temp }}/projet-developpements-ci/manifest.json
+            ${{ runner.temp }}/projet-developpements-ci/ci-verification.json
+          if-no-files-found: error
+          retention-days: 14
 
   connect-integration:
     runs-on: ubuntu-latest

@@ -5,10 +5,14 @@ title: Décisions techniques CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 7 novembre — pont et stockage, état local courant
+
+Contexte : `owner` d'organisation ne prouve pas le rôle global. Décision locale : autorité Drupal dédiée, décision HMAC brève liée à un défi, deux clés distinctes et relecture par requête ; ticket de lancement inchangé. Raisons : révocation à la prochaine requête et défaut fermé sans affecter les autres applications. Conséquences : routes opt-in, paramètres privés séparés, pas de connexion réelle installée. [Contrat](api/developments-authorization.md).
 
 
 ## 4 novembre 2026 — Applications indépendantes de la durée
