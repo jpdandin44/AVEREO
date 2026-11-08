@@ -64,7 +64,9 @@ def run():
                 checks += 1
             assets = sorted('/'+p.relative_to(public).as_posix()
                 for p in (public/'assets').rglob('*') if p.is_file())
-            assert '/assets/missions.js' in assets
+            assert '/assets/missions.js' not in assets
+            assert request('/assets/missions.js')[0] == 403
+            checks += 1
             assets.append('/account-menu.js')
             for path in assets:
                 status, headers, _ = request(path)
@@ -97,7 +99,7 @@ def run():
                 assert head_status == 200 and head_body == b'' and int(head_headers['Content-Length']) == len(expected)
                 checks += 3
             (public/'assets/private.php').write_text('<?php echo "must-not-execute";',encoding='utf-8')
-            for path in ['/assets/private.php','/assets/missing.js','/assets/index.js.map',
+            for path in ['/assets/private.php','/assets/missing.js','/assets/missions.js','/assets/index.js.map',
                          '/assets/%252e%252e/config.js','/assets/no%00.js']:
                 assert request(path,value)[0] == 404, path
                 checks += 1

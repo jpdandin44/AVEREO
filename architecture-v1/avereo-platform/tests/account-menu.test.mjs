@@ -16,7 +16,7 @@ function rgaWorkspaceFixture(hash = '') {
   dom.window.HTMLDialogElement.prototype.close = function () { this.open = false; };
   dom.window.createRgaProjects = createRgaProjects;
   const workspace = readFileSync(new URL('../../avereo-app-rapport/frontend/public/rga/workspace.js', import.meta.url), 'utf8');
-  dom.window.eval(workspace.replace(/^import .*\n/, '').replace('export function setupRgaProjects', 'function setupRgaProjects')
+  dom.window.eval(workspace.replace(/^import .*\r?\n/, '').replace('export function setupRgaProjects', 'function setupRgaProjects')
     + '\nsetupRgaProjects({ getPoint: () => null, openPoint: () => {} });');
   return { dom, dialog: dom.window.document.querySelector('dialog') };
 }
@@ -65,6 +65,23 @@ test('libellés partagés, nom accessible et état fermé initial', () => {
   assert.equal(root.querySelector('nav').getAttribute('aria-label'), 'Menu de Mon espace');
   dom.window.close();
 });
+test('un outil sans Missions conserve ses autres rubriques et ne charge aucun générateur', () => {
+  const { dom, menu, root } = fixture({attributes: 'no-missions', content: '<button slot="items">Mes projets</button>'});
+  const button = root.querySelector('.missions');
+  assert.equal(button.hidden, true);
+  assert.equal(button.disabled, true);
+  button.dispatchEvent(new dom.window.MouseEvent('click', {bubbles: true}));
+  assert.equal(dom.window.document.querySelector('script[src]'), null);
+  assert.equal(root.querySelector('.mission-error').hidden, true);
+  assert.equal(menu.querySelector('[slot="items"]').textContent, 'Mes projets');
+  assert.equal(root.querySelector('.account').hidden, false);
+  assert.equal(root.querySelector('.applications').hidden, false);
+  menu.removeAttribute('no-missions');
+  assert.equal(button.hidden, false);
+  assert.equal(button.disabled, false);
+  dom.window.close();
+});
+
 test('un clic ouvre puis referme ; Échap rend le focus au déclencheur', () => {
   const { dom, menu, root } = fixture();
   root.querySelector('button').click(); assert.equal(menu.open, true);

@@ -17,7 +17,7 @@
 <script type="module" src="workspace.js"></script>
 </head>
 <body><main>
-  <avereo-account-menu logout-path="/rga/logout.php" style="float:right"><a slot="items" href="carte.php#projects" target="rga-map">Mes projets</a></avereo-account-menu>
+  <avereo-account-menu no-missions logout-path="/rga/logout.php" style="float:right"><a slot="items" href="carte.php#projects" target="rga-map">Mes projets</a></avereo-account-menu>
   <a href="/">← Retour à Rapport</a>
   <h1>RGA — Rechercher un bien</h1>
   <p>Retrait-gonflement des argiles — préqualification territoriale.</p>

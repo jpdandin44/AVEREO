@@ -33,6 +33,7 @@
   }
 
   class AvereoAccountMenu extends HTMLElement {
+    static observedAttributes = ['no-missions'];
     static readSettings(app, fields) {
       let saved = {};
       if (!/^[a-z][a-z0-9-]{0,31}$/.test(app)) return {};
@@ -116,11 +117,17 @@
       this.trigger.addEventListener('click', () => { this.open = !this.open; });
       this.settingsDialog = this.shadowRoot.querySelector('dialog');
       this.shadowRoot.querySelector('.preferences').addEventListener('click', () => this.openPreferences());
-      this.shadowRoot.querySelector('.missions').addEventListener('click', async () => {
+      this.missionsButton = this.shadowRoot.querySelector('.missions');
+      this.missionsButton.addEventListener('click', async () => {
+        if (this.missionsButton.disabled) return;
         const error = this.shadowRoot.querySelector('.mission-error');
         error.hidden = true;
         try { await loadMissions(); await window.avereoOpenMission(this); }
-        catch { this.open = true; error.hidden = false; }
+        catch {
+          if (this.missionsButton.disabled) return;
+          this.open = true;
+          error.hidden = false;
+        }
       });
       this.shadowRoot.querySelector('.settings-cancel').addEventListener('click', () => this.closePreferences());
       this.settingsDialog.addEventListener('close', () => this.trigger.focus());
@@ -151,6 +158,12 @@
       this.reposition = () => { if (this.open) this.positionPanel(); };
     }
 
+    attributeChangedCallback() {
+      const disabled = this.hasAttribute('no-missions');
+      this.missionsButton.hidden = disabled;
+      this.missionsButton.disabled = disabled;
+      this.shadowRoot.querySelector('.mission-error').hidden = true;
+    }
     connectedCallback() {
       this.refreshLinks();
       document.addEventListener('pointerdown', this.outside);

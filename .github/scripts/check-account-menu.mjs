@@ -1,15 +1,18 @@
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { access, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { buildMissionScript } from './build-mission-script.mjs';
 const root = fileURLToPath(new URL('../../', import.meta.url));
+const manifest = JSON.parse(await readFile(resolve(root, 'architecture-v1/avereo-platform/data/account-menu-applications.json')));
 const source = await readFile(resolve(root, 'architecture-v1/avereo-platform/shared/account-menu.js'));
 const missionScript = await buildMissionScript();
 assert.deepEqual(await readFile(resolve(root, 'architecture-v1/avereo-app-connect/backend/public/assets/missions.js')), missionScript, 'Module Missions différent dans CONNECT.');
 assert.deepEqual(await readFile(resolve(root, 'architecture-v1/avereo-app-connect/backend/public/account-menu.js')), source, 'Le portail CONNECT doit embarquer la copie générée exacte.');
 const name = process.argv[2];
 if (name) {
+  const app = manifest.applications.find(item => item.id === name);
+  assert.ok(app, 'Application inconnue : ' + name);
   const dist = resolve(root, `architecture-v1/avereo-app-${name}/frontend/dist`);
   if (name === 'saisie-unique') {
     const html = await readFile(resolve(dist, 'index.html'), 'utf8');
@@ -18,12 +21,22 @@ if (name) {
     assert.ok(html.includes(missionScript.toString('utf8').replace(/<\/(script|style)/gi, '<\\/$1')), 'Module Missions absent de Saisie unique hors ligne.');
   } else {
     assert.deepEqual(await readFile(resolve(dist, 'account-menu.js')), source, 'Menu absent ou divergent dans le livrable.');
-    assert.deepEqual(await readFile(resolve(dist, 'assets/missions.js')), missionScript, 'Module Missions absent ou divergent dans le livrable.');
+    const path = resolve(dist, 'assets/missions.js');
+    if (app.capabilities.includes('missions')) assert.deepEqual(await readFile(path), missionScript, 'Module Missions absent ou divergent dans le livrable.');
+    else await assert.rejects(access(path), {code: 'ENOENT'}, 'Un outil complémentaire embarque le générateur de missions.');
     assert.match(await readFile(resolve(dist, 'index.html'), 'utf8'), /src="\/account-menu\.js"/);
   }
-  if (['coupe','projet'].includes(name)) assert.match(await readFile(resolve(dist, 'legacy-app.html'), 'utf8'), /<avereo-account-menu/);
+  if (['coupe','projet'].includes(name)) {
+    const editor = await readFile(resolve(dist, 'legacy-app.html'), 'utf8');
+    assert.match(editor, /<avereo-account-menu\b/);
+    assert.equal(/<avereo-account-menu\b[^>]*\bno-missions\b/.test(editor), !app.capabilities.includes('missions'));
+  }
   if (name === 'rapport') {
-    for (const page of ['rga/index.php','rga/carte.php']) assert.match(await readFile(resolve(dist, page), 'utf8'), /<avereo-account-menu/);
+    for (const page of ['rga/index.php','rga/carte.php']) {
+      const html = await readFile(resolve(dist, page), 'utf8');
+      assert.match(html, /<avereo-account-menu\b/);
+      assert.equal(/<avereo-account-menu\b[^>]*\bno-missions\b/.test(html), !app.moduleCapabilities.rga.includes('missions'));
+    }
     assert.match(await readFile(resolve(dist, 'rga/logout.php'), 'utf8'), /rga_config\(\)/);
   }
 }

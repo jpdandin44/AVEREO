@@ -70,7 +70,7 @@ for (const [current, previous] of [
 // correspondre à la source historique, notamment les calculs et les écritures.
 for (const [current, previous] of [
   ["import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';\n", ''],
-  ['<avereo-account-menu local-account="true" preferences-app="passeport-immo" preferences-label="Passeport Immo" preferences-fields={JSON.stringify(passeportPreferences)}>', '<avereo-account-menu local-account="true">'],
+  ['<avereo-account-menu no-missions="" local-account="true" preferences-app="passeport-immo" preferences-label="Passeport Immo" preferences-fields={JSON.stringify(passeportPreferences)}>', '<avereo-account-menu local-account="true">'],
   ['<button slot="items" type="button" onClick={goToDashboard}>Mes projets</button>', '<button slot="items" type="button" onClick={goToDashboard}>Mes biens</button>'],
   ['const passeportPreferences = [{"key": "sort", "label": "Ordre de mes biens", "type": "select", "default": "existing", "options": [{"value": "existing", "label": "Ordre habituel"}, {"value": "address", "label": "Adresse, de A à Z"}]}, {"key": "composition", "label": "Afficher la composition des biens dans la liste", "type": "checkbox", "default": true}];\n\n', ''],
   ["    const applicationPreferences = useAppPreferences('passeport-immo', passeportPreferences, { useState, useEffect });\n", ''],

@@ -108,4 +108,15 @@ test('l’ordre téléchargé depuis le cadre reprend le client, les étapes de 
   await dialog.getByRole('button',{name:'Générer la lettre Word'}).click();
   assert.match(await dialog.getByRole('status').textContent(),/modèle Word préparé/);
   assert.notEqual(await dialog.locator('.letter-models').getAttribute('open'),null);
+  await dialog.getByRole('button',{name:'Fermer',exact:true}).click();
+
+  // RGA shares Rapport's generator. An already loaded module must also respect the tool's menu.
+  await frame.evaluate(async () => {
+    const menu = document.querySelector('avereo-account-menu');
+    menu.setAttribute('no-missions','');
+    await window.avereoOpenMission(menu);
+  });
+  assert.equal(await dialog.count(),0);
+  await menuButton.click();
+  assert.equal(await editor.getByRole('button',{name:'Missions',exact:true}).count(),0);
 });
