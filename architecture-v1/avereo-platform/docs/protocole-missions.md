@@ -20,7 +20,11 @@ Rapport, Drone et Thermo préparent la lettre et l’ordre de mission. Coupe, RG
 
 Dans le candidat du 8 novembre, « Missions » est absent du menu de Coupe, du menu de Passeport Immo, de l’accueil RGA et de la carte RGA ouverte seule. Dans la carte intégrée, le menu visible appartient à l’accueil RGA. « Mes projets » y ouvre toujours la liste de points du cadre. Le menu de Rapport, sur le même domaine, donne accès aux lettres et aux ordres.
 
-Le paquet de préproduction porte sur trois sites. Avant installation, comparer les fichiers hébergés au manifeste, vérifier que les deux nouveaux noms de fichiers de Passeport Immo sont libres et sauvegarder les fichiers remplacés ou retirés. Après installation, actualiser les onglets, vérifier les menus de Coupe, Passeport Immo et des deux entrées RGA, puis générer une lettre et un ordre depuis Rapport. Le reçu du candidat distingue la répétition locale sur copies et la livraison hébergée. [Suivi du périmètre et des vérifications](../data/recette-missions/outils-complementaires.json).
+L’alignement sur la PR #131 conserve le logo officiel et les commandes de sauvegarde et de déconnexion du bandeau. L’entrée **Mon compte → Missions** reste accessible dans les applications qui génèrent des missions. Le menu de Passeport Immo désactive Missions dès l’écran de connexion.
+
+Le paquet différentiel pour Coupe, Rapport et Passeport Immo a pour référence la version fusionnée de #131. Avant installation, comparer les empreintes des fichiers actifs et des dépendances, vérifier que les deux nouveaux noms de fichiers de Passeport Immo sont libres et sauvegarder les fichiers remplacés ou retirés. À la lecture du 8 novembre, les menus publics de Coupe et de Rapport correspondent encore à la livraison antérieure. Si cet écart subsiste, qualifier le passage depuis l’état hébergé avant toute écriture. Le retour arrière du paquet a été testé sur des copies compilées de #131.
+
+Après installation, actualiser les onglets, vérifier le bandeau et les menus de Coupe, Passeport Immo et des deux entrées RGA, puis générer une lettre et un ordre depuis Rapport. [Suivi du périmètre et des vérifications](../data/recette-missions/outils-complementaires.json).
 
 ## Parcours proposé
 
