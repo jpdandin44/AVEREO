@@ -37,7 +37,7 @@
   "ajustementRapport": {
     "branch": "fix/rapport-bandeau-unique",
     "objectif": "Afficher un seul bandeau. Placer Accueil dans la navigation des étapes.",
-    "revue": "https://github.com/jpdandin44/AVEREO/pulls?q=head%3Afix%2Frapport-bandeau-unique",
+    "revue": "https://github.com/jpdandin44/AVEREO/pull/133",
     "preuves": [
       "101 tests Rapport réussis et paquet vérifié",
       "Chrome : 1180, 390 et 320 px ; retour via Accueil et Mes projets, reprise du brouillon après rechargement",
