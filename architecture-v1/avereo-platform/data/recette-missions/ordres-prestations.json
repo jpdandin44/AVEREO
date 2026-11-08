@@ -39,6 +39,7 @@
     "installedAt": "2026-11-07T21:42:52+00:00",
     "hostedEvidence": "livraison-ordres-preproduction.json",
     "optionEvidence": "options-ordres-preproduction.json",
+    "optionChromeEvidence": "options-ordres-chrome.json",
     "optionGuide": "../../docs/recette-options-ordres.md",
     "verifiedApps": [
       "projet",
@@ -172,6 +173,6 @@
       "ancien e-mail Thermo et effacement explicite"
     ]
   },
-  "nextAction": "Compléter les essais avec options dans le cadre Chrome de Projet et les cas restants de Coupe indiqués dans le guide. La remise à un client relève de la validation métier du dossier.",
-  "updatedAt": "2026-11-07T22:44:33.379Z"
+  "nextAction": "La recette des sélections facultatives est terminée dans Projet et Coupe. Relire chaque ordre dans son dossier avant remise au client.",
+  "updatedAt": "2026-11-08T11:29:49.309399+01:00"
 }

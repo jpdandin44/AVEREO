@@ -5,7 +5,7 @@ title: Tester les options des ordres Word dans Projet et Coupe
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [missions, options, word, projet, coupe, preproduction]
 ---
@@ -13,6 +13,19 @@ tags: [missions, options, word, projet, coupe, preproduction]
 # Tester les options des ordres Word dans Projet et Coupe
 
 Une option cochée doit ajouter son intitulé, sa consigne et sa ligne « À consigner » à la fin de l’ordre Word. Une case décochée doit retirer ces trois éléments du prochain fichier. Si aucune case n’est cochée, le document se termine après les étapes obligatoires.
+
+## Vérification dans Chrome du 8 novembre 2026
+
+Les quatre offres ont été vérifiées dans Projet et Coupe sur les deux journées. Chaque offre a produit un ordre sans option, un ordre avec la sélection A puis un ordre où les cases de A ont été décochées et remplacées par celles de B. Dans les deux applications, le changement d’offre a retiré la sélection précédente. Après fermeture de 360 Premium avec deux cases cochées, le formulaire rouvert a également produit un ordre sans rubrique facultative.
+
+| Cadre intégré | Word téléchargés le 8 novembre | Pages ouvertes et rendues dans Word | Offres et sélections vérifiées |
+| --- | ---: | ---: | --- |
+| Projet | 13 | 27 | Les quatre offres en SANS, A et B, puis 360 Premium après réouverture. |
+| Coupe | 10 | 21 | Énergie & Travaux, Prévention Bâti et 360 Premium en SANS, A et B, puis 360 Premium après réouverture. Habitat & Confort avait déjà passé SANS, A et B dans Coupe le 7 novembre. |
+
+Chaque rubrique a été comparée au catalogue jusqu’à la fin du Word et du rendu PDF. Les tâches obligatoires, les coordonnées du client fictif, les deux adresses et la référence de mission concordent. Par exemple, pour 360 Premium, la sélection B ne comporte que **Relecture de devis** et **Accompagnement technique ponctuel**, même si le drone et la thermographie restent cités dans les étapes obligatoires. La sélection A de cette offre occupe trois pages dans les deux applications. L’analyse documentaire, sa consigne et sa trace figurent ensemble sur la troisième page.
+
+Les 23 fichiers du 8 et les cinq du 7 couvrent **26 cas distincts**. Les essais Énergie & Travaux SANS et A de Coupe ont été repris pour vérifier le passage à B avec le même formulaire. Les téléchargements se sont effectués dans le cadre de l’application, avec un client fictif par application pour la session du 8. [Résultats et empreintes par fichier](../data/recette-missions/options-ordres-chrome.json).
 
 ## Parcours à reproduire dans chaque application
 
