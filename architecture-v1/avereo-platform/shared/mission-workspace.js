@@ -128,7 +128,7 @@ function installMissionWorkspace({JSZip, company, offers}) {
     return offer.nom;
   }
   async function open(menu) {
-    if (document.querySelector('avereo-mission-workspace')) return;
+    if (menu.hasAttribute('no-missions') || document.querySelector('avereo-mission-workspace')) return;
     const host = document.createElement('avereo-mission-workspace'), shadow = host.attachShadow({mode:'open'});
     document.body.append(host);
     const context = {fields:{},label:'Mission autonome'};

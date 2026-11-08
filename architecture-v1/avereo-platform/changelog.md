@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
 
+## 8 novembre 2026 — Périmètre de génération des missions
+
+Le candidat local retire Missions dans Coupe, les pages RGA et Passeport Immo. Rapport, Drone et Thermo conservent la génération des lettres et des ordres. [Périmètre vérifié](docs/protocole-missions.md#applications-qui-génèrent-des-missions).
+
 ## 8 novembre 2026 — Vérification des options dans Projet et Coupe
 
 Les quatre offres ont été exercées dans les deux cadres en préproduction. Les Word ne contiennent que les options cochées, consignes et traces comprises. La rubrique facultative disparaît quand la sélection est vide. [Recette dans Chrome](docs/recette-options-ordres.md#vérification-dans-chrome-du-8-novembre-2026).

@@ -123,4 +123,4 @@ Le menu actuel et son stockage local ne réalisent pas ce contrôle d’administ
 
 ## Missions depuis Mon compte
 
-Afficher la même action **Missions** dans chaque menu. Reprendre uniquement les données que le dossier actif fournit. Quand une application ne porte aucun dossier client, le module ouvre une mission autonome. Chaque application conserve ses enregistrements et ses autorisations. [Protocole et intégrations](protocole-missions.md).
+Afficher **Missions** selon les capacités de l’application et de la surface ouverte. Coupe, RGA et Passeport Immo utilisent un menu `no-missions`. Il retire l’action et empêche l’ouverture du formulaire, y compris si le générateur de Rapport est déjà chargé. La préparation des fichiers de Coupe et Passeport Immo écarte aussi les anciennes copies du générateur. RGA partage les ressources de Rapport et applique son propre choix sur l’accueil et sur la carte. Les autres rubriques conservent leur comportement. [Manifeste des capacités](../data/account-menu-applications.json) · [Périmètre métier](protocole-missions.md#applications-qui-génèrent-des-missions).

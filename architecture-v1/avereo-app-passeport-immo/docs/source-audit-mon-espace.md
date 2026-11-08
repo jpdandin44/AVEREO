@@ -25,6 +25,7 @@ ne modifie ni les octets de ces preuves ni les décisions humaines antérieures.
 | Déconnexion | Action native placée en dernière position | Gestionnaire et confirmation existants conservés |
 | Livrable | Copie générée account-menu.js et métadonnée du portail | Configuration publique d’envoi .user.ini conservée |
 | Accès au script commun | Chemin exact account-menu.js servi par le contrôleur protégé | Session requise, type JavaScript, no-store et refus sans réécriture vérifiés |
+| Missions, candidat du 8 novembre | Action absente, générateur retiré du livrable, client du bien conservé dans Documents | Projets, préférences, chiffrage et export PDF couverts par les contrôles de parité et les tests de Passeport. |
 | Métier | Aucune modification des calculs/imports/exports/documents | 29 tests et contrôle de parité existant réussis |
 
 [Règle commune](../../avereo-platform/docs/fonctionnalites-communes.md) ·

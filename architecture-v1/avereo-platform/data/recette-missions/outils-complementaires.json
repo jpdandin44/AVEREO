@@ -1,0 +1,376 @@
+{
+  "iteration": "missions-outils-complementaires",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "phase": "Développement local",
+  "baseSha": "59e4edb5180a6c840863f028c9f4bb69ea75f86d",
+  "sourceSha": "d3eb26e31043932b9f1c2d3383d779ba7d19bf7c",
+  "branch": "feat/missions-outils-complementaires",
+  "requirement": "Coupe, RGA et Passeport Immo servent aux missions préparées dans Rapport, Drone et Thermo. Retirer la génération de lettres et d’ordres dans ces trois outils.",
+  "manifest": "../account-menu-applications.json",
+  "protocol": "../../docs/protocole-missions.md",
+  "local": {
+    "qualifiedOn": "2026-11-08",
+    "review": "http://127.0.0.1:53242/",
+    "chrome": "156.0.8078.80",
+    "surfaces": {
+      "coupe": {
+        "missions": false,
+        "moduleRequests": 0,
+        "projects": true,
+        "preferences": true
+      },
+      "rga-accueil": {
+        "missions": false,
+        "moduleRequests": 0,
+        "projects": true,
+        "preferences": true
+      },
+      "rga-carte": {
+        "missions": false,
+        "moduleRequests": 0,
+        "projects": true,
+        "preferences": true
+      },
+      "rga-carte-integree": {
+        "missions": false,
+        "moduleRequests": 0,
+        "projects": true,
+        "preferences": true
+      },
+      "passeport-immo": {
+        "missions": false,
+        "moduleRequests": 0,
+        "projects": true,
+        "preferences": true
+      },
+      "rapport": {
+        "ordre": 4,
+        "lettre": 4,
+        "offers": [
+          "360-premium",
+          "energie-travaux",
+          "habitat-confort",
+          "prevention-bati"
+        ],
+        "missions": true
+      },
+      "drone": {
+        "ordre": 4,
+        "lettre": 4,
+        "offers": [
+          "360-premium",
+          "energie-travaux",
+          "habitat-confort",
+          "prevention-bati"
+        ],
+        "missions": true
+      },
+      "thermo": {
+        "ordre": 4,
+        "lettre": 4,
+        "offers": [
+          "360-premium",
+          "energie-travaux",
+          "habitat-confort",
+          "prevention-bati"
+        ],
+        "missions": true
+      },
+      "projet": {
+        "ordre": 1,
+        "lettre": 1,
+        "offers": [
+          "habitat-confort"
+        ],
+        "missions": true
+      },
+      "connect": {
+        "ordre": 1,
+        "lettre": 1,
+        "offers": [
+          "habitat-confort"
+        ],
+        "missions": true
+      },
+      "recherche": {
+        "ordre": 1,
+        "lettre": 1,
+        "offers": [
+          "habitat-confort"
+        ],
+        "missions": true
+      },
+      "saisie-unique": {
+        "ordre": 1,
+        "lettre": 1,
+        "offers": [
+          "habitat-confort"
+        ],
+        "missions": true
+      }
+    },
+    "lettersChecked": 16,
+    "ordersChecked": 16,
+    "commonTests": 28,
+    "rapportTests": 101,
+    "passeportTests": 29,
+    "passeportSourceParity": true,
+    "passeportPhp": {
+      "anonymousHome": 303,
+      "anonymousMenu": 403,
+      "anonymousFormerGenerator": 403,
+      "validTicketEntry": 303,
+      "authenticatedHome": 200,
+      "authenticatedMenu": 200,
+      "authenticatedFormerGenerator": 404,
+      "authenticatedFormerGeneratorHead": 404,
+      "invalidSessionMenu": 403,
+      "anonymousLogo": 403,
+      "authenticatedOfficialLogo": 200
+    },
+    "staleGeneratedCopiesRejectedAndRemoved": [
+      "coupe",
+      "passeport-immo"
+    ],
+    "builds": [
+      "coupe",
+      "rapport",
+      "passeport-immo",
+      "projet",
+      "thermo",
+      "drone",
+      "recherche",
+      "saisie-unique"
+    ],
+    "connectPublicCopyVerified": true,
+    "commonShell": "Logo chargé et boutons du bandeau présents sur les douze parcours. Missions absent sur le menu de connexion et le menu connecté de Passeport Immo."
+  },
+  "preproduction": {
+    "installed": false,
+    "domains": [
+      "coupe-preprod.avereo.fr",
+      "rapport-preprod.avereo.fr",
+      "passeport-immo-preprod.avereo.fr"
+    ],
+    "packageSha256": "768cb76e696ea750365474c640cdff09091f2261a8258acfd2c45fca012860d9",
+    "operations": [
+      {
+        "app": "coupe",
+        "path": "account-menu.js",
+        "action": "replace",
+        "beforeSha256": "5128924423b9d1a0147643452bc364ee1d93ff4d7f1b12e461e4e3596b1c832c",
+        "afterSha256": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067"
+      },
+      {
+        "app": "coupe",
+        "path": "assets/missions.js",
+        "action": "remove",
+        "beforeSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "afterSha256": null
+      },
+      {
+        "app": "coupe",
+        "path": "legacy-app.html",
+        "action": "replace",
+        "beforeSha256": "f77b6f7d5b47e03b347faf63e3f88621e5c8e8ada35bf97f26edc588ba0077f8",
+        "afterSha256": "825b7fdf7359ce6c93a4c29272b6185491d68eb5e582c9e16b9786a2afff0788"
+      },
+      {
+        "app": "rapport",
+        "path": "account-menu.js",
+        "action": "replace",
+        "beforeSha256": "5128924423b9d1a0147643452bc364ee1d93ff4d7f1b12e461e4e3596b1c832c",
+        "afterSha256": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067"
+      },
+      {
+        "app": "rapport",
+        "path": "assets/missions.js",
+        "action": "replace",
+        "beforeSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "afterSha256": "6dd500d41fda1d72c3594eb07edb35a22d87bce4e318ca93f377cf2f05c5cfbf"
+      },
+      {
+        "app": "rapport",
+        "path": "rga/carte.php",
+        "action": "replace",
+        "beforeSha256": "704b253c519a6542cefb6c814b7cc473e81de17c31700a160e79f0657aa62d96",
+        "afterSha256": "fc6c2670d91a0e255a863800932432169ae5527a405d5b771719d7c94e264132"
+      },
+      {
+        "app": "rapport",
+        "path": "rga/index.php",
+        "action": "replace",
+        "beforeSha256": "69091efdfd52d443dba95a5dd73de4aaf0f5eb979845dbd37051795afd89a62e",
+        "afterSha256": "d4728bf61ea4dae11dce49b9a66ea7f6b2d00b48a84e67a27c6b6530ebc6701b"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "account-menu.js",
+        "action": "replace",
+        "beforeSha256": "5128924423b9d1a0147643452bc364ee1d93ff4d7f1b12e461e4e3596b1c832c",
+        "afterSha256": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/index-CILkC07t.js",
+        "action": "create",
+        "beforeSha256": null,
+        "afterSha256": "4b424fd3f0c34307ee4f25d49dba17de1625a832178bb8acc027ed29aa2180ba"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/index.es-4Q3lhq1c.js",
+        "action": "create",
+        "beforeSha256": null,
+        "afterSha256": "fcdbfd3fb9f8a64d925fbd98e4b218024c14c6553a47c053680830d1f8e4783f"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/missions.js",
+        "action": "remove",
+        "beforeSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "afterSha256": null
+      },
+      {
+        "app": "passeport-immo",
+        "path": "index.html",
+        "action": "replace",
+        "beforeSha256": "bd4c4a0205093a4e7dac4da933363895e5c931670bf6a5e37d11098eb31b229e",
+        "afterSha256": "4b825e64b646567ad676227cca7e86dc7ab62fcec2f15073fbfdca3e49d3734e"
+      }
+    ],
+    "unchangedPasseportAssets": {
+      "assets/avereo-logo.png": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "assets/index-fk-lVGaB.css": "68dd15b38ad538b8f690359bf43b6cf7b7492ad351e2f0dc62c283a6dd4890c4",
+      "assets/pdf-WgYdDwYK.js": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+      "assets/pdf.worker.min-CjEcRF4W.mjs": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+      "assets/purify.es-BwoZCkIS.js": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a"
+    },
+    "liveBackupDone": false,
+    "anonymousBeforeAt": "2026-11-08T13:42:05.782333+00:00",
+    "anonymousBefore": [
+      {
+        "app": "coupe",
+        "path": "account-menu.js",
+        "httpStatus": 200,
+        "publicSha256": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+        "matchesBaseline131": false,
+        "matchesPriorDeployment": true
+      },
+      {
+        "app": "coupe",
+        "path": "assets/missions.js",
+        "httpStatus": 200,
+        "publicSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "matchesBaseline131": true,
+        "matchesPriorDeployment": true
+      },
+      {
+        "app": "coupe",
+        "path": "legacy-app.html",
+        "httpStatus": 303,
+        "publicSha256": null,
+        "matchesBaseline131": null,
+        "matchesPriorDeployment": null
+      },
+      {
+        "app": "rapport",
+        "path": "account-menu.js",
+        "httpStatus": 200,
+        "publicSha256": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+        "matchesBaseline131": false,
+        "matchesPriorDeployment": true
+      },
+      {
+        "app": "rapport",
+        "path": "assets/missions.js",
+        "httpStatus": 200,
+        "publicSha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7",
+        "matchesBaseline131": true,
+        "matchesPriorDeployment": true
+      },
+      {
+        "app": "passeport-immo",
+        "path": "account-menu.js",
+        "httpStatus": 403,
+        "publicSha256": null,
+        "matchesBaseline131": null,
+        "matchesPriorDeployment": null
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/index-CILkC07t.js",
+        "httpStatus": 403,
+        "publicSha256": null,
+        "matchesBaseline131": null,
+        "matchesPriorDeployment": null
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/index.es-4Q3lhq1c.js",
+        "httpStatus": 403,
+        "publicSha256": null,
+        "matchesBaseline131": null,
+        "matchesPriorDeployment": null
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/missions.js",
+        "httpStatus": 403,
+        "publicSha256": null,
+        "matchesBaseline131": null,
+        "matchesPriorDeployment": null
+      },
+      {
+        "app": "coupe",
+        "path": "assets/avereo-logo.png",
+        "httpStatus": 303,
+        "publicSha256": null,
+        "matchesBaseline131": null,
+        "matchesPriorDeployment": null
+      },
+      {
+        "app": "rapport",
+        "path": "assets/avereo-logo.png",
+        "httpStatus": 303,
+        "publicSha256": null,
+        "matchesBaseline131": null,
+        "matchesPriorDeployment": null
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/avereo-logo.png",
+        "httpStatus": 403,
+        "publicSha256": null,
+        "matchesBaseline131": null,
+        "matchesPriorDeployment": null
+      }
+    ],
+    "next": "Le paquet est différentiel par rapport à #131. Vérifier sur chaque site les empreintes actives et les chemins à créer. En cas de divergence, qualifier une livraison coordonnée avant toute écriture.",
+    "baseCommit": "59e4edb5180a6c840863f028c9f4bb69ea75f86d",
+    "otherRequiredFiles": {
+      "coupe/assets/avereo-logo.png": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "rapport/assets/avereo-logo.png": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "passeport-immo/index.php": "fe0e9ed3f1086ec91d28fdc959a3aae03e25b5f73432339844c1637a4244646e"
+    },
+    "olderBundlesKept": {
+      "passeport-immo/assets/index-BIttc-Eo.js": "bdb4267d916cce24e54fab6092b1cf7a301666b3f8623d5238fcc9e362d9ca43",
+      "passeport-immo/assets/index.es-D1NKWZBD.js": "ce7c4191469fd921cb344e5aa8c4eb6864a376c4aa0fe2d317064bf5942665d9"
+    },
+    "rollbackOnBaselineCopies": "applied_and_restored_byte_identical_on_local_builds"
+  },
+  "production": {
+    "installed": false
+  },
+  "previousCandidate": {
+    "headSha": "3444e144734dce48a4280dc0657e045c59a0d2e6",
+    "baseSha": "1ffc35c3eaa5599979b8a5b715fb77986d5e2b8e",
+    "codeSha": "e2182a92d43f603781bcf5c72e4bee47fa78fd14",
+    "packageSha256": "61c18e74784965097b1bd1a0a403c0b12de34e6abd556e44c84b3ac8655c58b0"
+  }
+}
