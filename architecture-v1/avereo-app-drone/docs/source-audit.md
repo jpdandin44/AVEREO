@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -82,3 +82,7 @@ inchangés. Les champs futurs sont préparés sans formulaire d’administration
 ## 7 novembre 2026 — Module Missions en recette locale
 
 Une mission enregistrée est accessible depuis la liste et possède une action Ordre de mission. Les cinq types ont produit une page PDF chacun sur fixture. Les coordonnées supplémentaires sont facultatives dans les anciennes missions. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
+
+## 2026-11-08 — Modèle commun
+
+Le bandeau réutilise la sauvegarde locale de la mission en cours. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).

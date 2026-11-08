@@ -5,7 +5,7 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
@@ -288,3 +288,7 @@ Les contrôles actualisés sont dans la [qualification transversale](../../avere
 ## 7 novembre 2026 — Module Missions en recette locale
 
 Le portail expose la génération autonome de mission depuis Mon espace. Le candidat ne modifie aucune route de compte, aucun rôle et aucune attribution d’application. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
+
+## 2026-11-08 — Modèle commun
+
+Le portail PHP porte le réglage administrateur et la confirmation de sortie. Le frontend historique conserve sa session de démonstration. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).

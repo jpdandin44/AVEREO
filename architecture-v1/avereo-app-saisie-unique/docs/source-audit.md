@@ -5,7 +5,7 @@ title: Audit source de la maquette Saisie unique
 status: draft
 version: git
 created: 2026-10-21
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, audit, phase-0]
 ---
@@ -181,3 +181,7 @@ les statuts du suivi existant restent inchangés. [Référence](../../avereo-pla
 ## 7 novembre 2026 — Module Missions en recette locale
 
 Adaptation transverse en lecture seule des coordonnées du dossier fictif ouvert. La génération locale des treize formulaires et le mode autonome demeurent distincts de l’itération métier de Saisie unique. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
+
+## 2026-11-08 — Modèle commun
+
+Le logo et les réglages du modèle sont embarqués dans le fichier autonome. Le bandeau utilise l’export des dossiers. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).

@@ -211,10 +211,11 @@
     <div class="topbar">
       <span class="badge">Accès sécurisé</span>
       <div class="topbar-actions">
-        <avereo-account-menu id="connect-account-menu" portal="/" preferences-app="connect" preferences-label="CONNECT" preferences-fields="[{&quot;key&quot;: &quot;sort&quot;, &quot;label&quot;: &quot;Ordre des applications&quot;, &quot;type&quot;: &quot;select&quot;, &quot;default&quot;: &quot;catalogue&quot;, &quot;options&quot;: [{&quot;value&quot;: &quot;catalogue&quot;, &quot;label&quot;: &quot;Ordre du catalogue&quot;}, {&quot;value&quot;: &quot;name&quot;, &quot;label&quot;: &quot;Nom, de A à Z&quot;}]}, {&quot;key&quot;: &quot;unavailable&quot;, &quot;label&quot;: &quot;Afficher aussi les applications non accessibles&quot;, &quot;type&quot;: &quot;checkbox&quot;, &quot;default&quot;: true}]" hidden>
+        <avereo-account-menu id="connect-account-menu" portal="/" preferences-app="connect" preferences-label="CONNECT" preferences-fields="[{&quot;key&quot;: &quot;sort&quot;, &quot;label&quot;: &quot;Ordre des applications&quot;, &quot;type&quot;: &quot;select&quot;, &quot;default&quot;: &quot;catalogue&quot;, &quot;options&quot;: [{&quot;value&quot;: &quot;catalogue&quot;, &quot;label&quot;: &quot;Ordre du catalogue&quot;}, {&quot;value&quot;: &quot;name&quot;, &quot;label&quot;: &quot;Nom, de A à Z&quot;}]}, {&quot;key&quot;: &quot;unavailable&quot;, &quot;label&quot;: &quot;Afficher aussi les applications non accessibles&quot;, &quot;type&quot;: &quot;checkbox&quot;, &quot;default&quot;: true}]" signed-out>
           <a slot="account" id="account-profile" href="#profile">Mon compte</a>
           <a slot="applications" id="account-applications" href="#applications">Mes applications</a>
           <button slot="administration" id="admin-open" type="button" hidden>Gérer les comptes</button>
+          <button slot="administration" id="appearance-open" type="button" hidden>Apparence des applications</button>
           <button slot="logout" id="logout" type="button" hidden>Se déconnecter</button>
         </avereo-account-menu>
       </div>
@@ -306,6 +307,19 @@
       </div>
     </section>
   </main>
+  <dialog id="appearance-dialog" aria-labelledby="appearance-title">
+    <form id="appearance-form">
+      <h2 id="appearance-title">Apparence des applications</h2>
+      <p>Les réglages seront appliqués à toutes les applications connectées au prochain chargement.</p>
+      <p><label>Hauteur du bandeau <select name="headerHeight"><option value="56">Compact · 56 px</option><option value="68">Standard · 68 px</option><option value="84">Aéré · 84 px</option></select></label></p>
+      <p><label>Largeur du logo <select name="logoWidth"><option value="100">Compact · 100 px</option><option value="116">Standard · 116 px</option><option value="136">Large · 136 px</option></select></label></p>
+      <p><label>Fond de Mon compte <select name="accountTone"><option value="mist">Brume AVEREO</option><option value="white">Blanc</option></select></label></p>
+      <p id="appearance-status" role="status"></p>
+      <button type="button" id="appearance-export">Télécharger le modèle enregistré pour Saisie unique</button>
+      <button type="button" id="appearance-cancel">Annuler</button>
+      <button type="submit">Appliquer à toutes les applications</button>
+    </form>
+  </dialog>
   <dialog id="logout-dialog" aria-labelledby="logout-title">
     <div class="dialog-content">
       <h2 id="logout-title">Confirmer la déconnexion</h2>
@@ -1112,11 +1126,12 @@
         registerNode.hidden = authenticated || !registrationUrl;
         if (registrationUrl) registerLink.href = registrationUrl;
         logoutButton.hidden = !authenticated;
-        document.getElementById('connect-account-menu').hidden = !authenticated;
+        document.getElementById('connect-account-menu').toggleAttribute('signed-out', !authenticated);
         profileSection.hidden = true;
         applicationsSection.hidden = true;
         adminPanel.hidden = true;
         adminOpenButton.hidden = true;
+        appearanceOpen.hidden = true;
         adminOrganizationId = null;
 
         const query = new URLSearchParams(window.location.search);
@@ -1183,12 +1198,64 @@
           return;
         }
         if (approved) {
+          loadAppearance();
           renderProfile(await profile(), catalogPayload.data);
         }
       } catch {
         statusNode.textContent = 'CONNECT ne peut pas charger votre session ou le catalogue.';
       }
     }
+
+    const appearanceOpen = document.getElementById('appearance-open');
+    const appearanceDialog = document.getElementById('appearance-dialog');
+    const appearanceForm = document.getElementById('appearance-form');
+    const appearanceStatus = document.getElementById('appearance-status');
+    let savedAppearance;
+    let applying = false;
+    const previewAppearance = values => document.dispatchEvent(new CustomEvent('avereo-appearance', {detail:values}));
+    function selectedAppearance() {
+      const fields = appearanceForm.elements;
+      return {headerHeight:Number(fields.headerHeight.value), logoWidth:Number(fields.logoWidth.value), accountTone:fields.accountTone.value};
+    }
+    async function loadAppearance() {
+      try {
+        savedAppearance = (await getJson('/api/v1/admin/appearance')).data;
+        appearanceOpen.hidden = false;
+      } catch { appearanceOpen.hidden = true; }
+    }
+    appearanceOpen.addEventListener('click', () => {
+      for (const [name,value] of Object.entries(savedAppearance)) appearanceForm.elements[name].value = String(value);
+      appearanceStatus.textContent = '';
+      appearanceDialog.showModal();
+    });
+    document.getElementById('appearance-export').addEventListener('click', () => {
+      const url = URL.createObjectURL(new Blob([JSON.stringify(savedAppearance, null, 2)], {type:'application/json'}));
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'apparence-avereo.json';
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+    appearanceForm.addEventListener('change', () => previewAppearance(selectedAppearance()));
+    appearanceDialog.addEventListener('close', () => previewAppearance(savedAppearance));
+    appearanceDialog.addEventListener('cancel', event => { if (applying) event.preventDefault(); });
+    document.getElementById('appearance-cancel').addEventListener('click', () => appearanceDialog.close());
+    appearanceForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (applying) return;
+      applying = true;
+      const controls = Array.from(appearanceForm.querySelectorAll('button,select'));
+      controls.forEach(control => {control.disabled = true;});
+      try {
+        savedAppearance = (await getJson('/api/v1/admin/appearance', {
+          method:'PUT', headers:{'Content-Type':'application/json','X-CSRF-Token':csrfToken},
+          body:JSON.stringify(selectedAppearance())
+        })).data;
+        appearanceDialog.close();
+        statusNode.textContent = 'Modèle commun enregistré.';
+      } catch { appearanceStatus.textContent = 'Échec de l’enregistrement. Les réglages peuvent être réessayés.'; }
+      finally { applying = false; controls.forEach(control => {control.disabled = false;}); }
+    });
 
     adminOpenButton.addEventListener('click', async () => {
       adminOpenButton.disabled = true;

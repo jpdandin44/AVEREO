@@ -20,11 +20,9 @@ réutiliser le socle ; chaque application fournit uniquement ses actions métier
 Tout écart nécessaire est décrit dans son audit source, avec sa raison et sa portée.
 Une fonction annoncée doit exister : un menu ne crée ni droit ni stockage en ligne.
 
-## Mon espace
+## Mon compte
 
-- Déclencheur **Mon espace**, sous-titre **Compte AVEREO**, avatar neutre **MOI**.
-- Pied de la navigation latérale ; dans l’en-tête lorsque l’application ne possède
-  pas de barre latérale permanente. Pas de déconnexion flottante au-dessus du travail.
+- Le déclencheur clair **Mon compte** reste en bas à gauche. Le logo officiel et les actions de sauvegarde et de sortie occupent le bandeau supérieur. [Modèle, réglages et recette](modele-affichage.md).
 - Menu ouvert au clic, fermé par le choix d’une action, un clic extérieur ou Échap.
   Navigation au clavier, focus visible et retour au déclencheur avec Échap.
 - Panneau dans les limites de l’écran, défilable sur petit écran ; bouton compact
@@ -123,6 +121,6 @@ La [règle des livrables](identite-livrables.md) définit les responsabilités, 
 priorité AVEREO, les adaptations métier et les éléments encore à implémenter.
 Le menu actuel et son stockage local ne réalisent pas ce contrôle d’administration.
 
-## Missions depuis Mon espace
+## Missions depuis Mon compte
 
 Afficher **Missions** selon les capacités de l’application et de la surface ouverte. Coupe, RGA et Passeport Immo utilisent un menu `no-missions`. Il retire l’action et empêche l’ouverture du formulaire, y compris si le générateur de Rapport est déjà chargé. La préparation des fichiers de Coupe et Passeport Immo écarte aussi les anciennes copies du générateur. RGA partage les ressources de Rapport et applique son propre choix sur l’accueil et sur la carte. Les autres rubriques conservent leur comportement. [Manifeste des capacités](../data/account-menu-applications.json) · [Périmètre métier](protocole-missions.md#applications-qui-génèrent-des-missions).

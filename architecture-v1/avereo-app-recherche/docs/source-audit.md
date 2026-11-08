@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -48,3 +48,7 @@ Le périmètre transverse est demandé explicitement par le responsable. [Contra
 ## 7 novembre 2026 — Module Missions en recette locale
 
 Le corpus ne contient pas de dossier client. Missions ouvre un formulaire autonome. Les six formats de citation ont été contrôlés dans le navigateur sur des références fictives. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
+
+## 2026-11-08 — Modèle commun
+
+L’export du corpus chargé est accessible depuis les écrans de recherche. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).

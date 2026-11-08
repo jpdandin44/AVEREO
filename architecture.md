@@ -5,7 +5,7 @@ title: Architecture du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -54,3 +54,7 @@ Le [lot CONNECT et activation](outillage/acces-preproduction/preparer-connect-ac
 ## Menu commun Mon espace
 
 Le socle fournit désormais le composant de présentation de compte aux applications HTML/React et au portail PHP. Les règles de compte et les données restent dans les services existants. [Architecture du composant](architecture-v1/avereo-platform/architecture.md).
+
+## Bandeau et réglages communs
+
+Le composant de compte rend le bandeau commun aux interfaces HTML et React. CONNECT publie les réglages visuels de son environnement. [Architecture et contrat](architecture-v1/avereo-platform/docs/modele-affichage.md).

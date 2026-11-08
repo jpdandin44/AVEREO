@@ -997,7 +997,7 @@ const BienModal = ({ isOpen, onClose, onSave, bienToEdit }) => {
                 </div>
                 <div className="mt-8 flex justify-end space-x-3">
                     <button onClick={onClose} className="px-4 py-2 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200">Annuler</button>
-                    <button onClick={handleSubmit} className="px-5 py-2 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Sauvegarder</button>
+                    <button data-avereo-save={SERVER_STORAGE ? "online" : "local"} onClick={handleSubmit} className="px-5 py-2 font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">Sauvegarder</button>
                 </div>
             </div>
         </div>
@@ -1134,7 +1134,7 @@ export default function App() {
           <AppContainer />
       ) : (
           <div className="min-h-screen flex flex-col justify-center items-center p-4">
-              <LoginPage />
+              <><avereo-account-menu no-missions="" signed-out="" app-name="Passeport Immo"></avereo-account-menu><LoginPage /></>
               <footer className="mt-8 text-center text-gray-500 text-sm">Application Web de démonstration.</footer>
           </div>
       )}

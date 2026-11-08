@@ -89,6 +89,10 @@ Les contrôles actualisés sont dans la [qualification transversale](../../avere
 
 Missions reprend le nom du dessin et l’adresse présents dans les champs de la coupe ouverte. La recette a vérifié les valeurs saisies sur un dessin fictif. Le raccordement est additif et indépendant du chargement du moteur CAO. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
 
+## 2026-11-08 — Modèle commun
+
+Les deux boutons exécutent la sauvegarde JSON et la sauvegarde en ligne de l’éditeur existant. La variante hébergée reste à qualifier. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).
+
 ## 8 novembre 2026 — Coupe comme outil de mission
 
 Le candidat retire l’action Missions et la transmission du nom et de l’adresse du dessin à ce formulaire. Le menu conserve « Mes projets » et les réglages de grille et d’aimantation. Le moteur CAO et ses exports restent ceux de Coupe. [Candidat des outils complémentaires](../../avereo-platform/data/recette-missions/outils-complementaires.json).

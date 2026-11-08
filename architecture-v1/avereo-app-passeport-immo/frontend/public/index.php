@@ -27,16 +27,18 @@ if (!$valid) {
 }
 if ($asset) {
     // Serve built browser assets and the exact shared-menu path through the same gate.
+    $officialLogo = $path === '/assets/avereo-logo.png';
     $types = ['css' => 'text/css', 'js' => 'text/javascript', 'mjs' => 'text/javascript'];
     $base = realpath(__DIR__ . ($commonMenu ? '' : '/assets'));
     $file = realpath(__DIR__ . $path);
-    if ((!$commonMenu && !preg_match('#^/assets/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(css|js|mjs)$#D', $path, $match))
+    if ((!$commonMenu && !$officialLogo && !preg_match('#^/assets/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(css|js|mjs)$#D', $path, $match))
         || $base === false || $file === false || !is_file($file)
         || !str_starts_with($file, $base . DIRECTORY_SEPARATOR)) {
         http_response_code(404);
         exit;
     }
-    header('Content-Type: ' . $types[$commonMenu ? 'js' : $match[1]] . '; charset=utf-8');
+    $contentType = $officialLogo ? 'image/png' : $types[$commonMenu ? 'js' : $match[1]] . '; charset=utf-8';
+    header('Content-Type: ' . $contentType);
     header('X-Content-Type-Options: nosniff');
     header('Content-Length: ' . filesize($file));
     if ($method !== 'HEAD') {

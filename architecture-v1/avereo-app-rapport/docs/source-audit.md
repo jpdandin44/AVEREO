@@ -326,3 +326,7 @@ inchangés. Les champs futurs sont préparés sans formulaire d’administration
 ## 7 novembre 2026 — Module Missions en recette locale
 
 La fiche ouverte fournit client, site, référence et date. Le reporter met à jour le formulaire. Les deux restitutions Word, dans chacun des deux types de rapport testés, conservent la séparation entre données expert et synthèse client. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
+
+## 2026-11-08 — Modèle commun
+
+L’éditeur raccorde sa copie JSON et sa sauvegarde en ligne. RGA garde sa sortie propre et son dialogue de sauvegarde du point. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).

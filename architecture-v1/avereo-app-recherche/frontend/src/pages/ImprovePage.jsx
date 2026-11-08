@@ -5,16 +5,17 @@ import { makeBackup, parseJson } from '../services/importers.js';
 import { downloadFile } from '../utils/browser.js';
 import { fmtDate, norm, todayISO } from '../utils/text.js';
 
+export function exportResearchBackup() {
+    downloadFile(`avereo-recherche-sauvegarde-${todayISO()}.json`, makeBackup(useStore.getState()));
+    useStore.getState().showToast('Sauvegarde téléchargée');
+}
+
 function Backup() {
   const resources = useStore(s => s.resources);
   const { restoreBackup, showToast } = useStore.getState();
   const [pending, setPending] = useState(null);
   const [error, setError] = useState('');
 
-  const exportNow = () => {
-    downloadFile(`avereo-recherche-sauvegarde-${todayISO()}.json`, makeBackup(useStore.getState()));
-    showToast('Sauvegarde téléchargée');
-  };
   const pick = async file => {
     setError('');
     if (!file) return;
@@ -26,7 +27,7 @@ function Backup() {
       <h3>Sauvegarde</h3>
       <p>Vos {resources.length} ressources sont enregistrées <strong>dans ce navigateur uniquement</strong>. Téléchargez régulièrement une sauvegarde et rangez-la dans <code>GED_AVEREO</code> : elle sert aussi à passer sur un autre poste.</p>
       <div className="actions">
-        <button className="btn primary" onClick={exportNow} disabled={!resources.length}>Télécharger une sauvegarde (.json)</button>
+        <button className="btn primary" onClick={exportResearchBackup} disabled={!resources.length}>Télécharger une sauvegarde (.json)</button>
         <label className="btn" htmlFor="restore-file">Restaurer une sauvegarde…</label>
         <input id="restore-file" type="file" accept=".json" hidden onChange={e => { pick(e.target.files[0]); e.target.value = ''; }} />
       </div>

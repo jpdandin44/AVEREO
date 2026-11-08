@@ -1,6 +1,22 @@
+---
+project: avereo-connect
+document_type: readme
+title: Backend AVEREO CONNECT
+status: active
+version: git
+created: 2026-09-15
+updated: 2026-11-08
+owner: jpdandin
+tags: [avereo, connect, api]
+---
+
 # Backend - AVEREO CONNECT
 
 Backend PHP 8.3 sans dépendance applicative externe, préparé pendant la gate C7.
+
+## Modèle d’affichage
+
+Le [guide d’administration](../../avereo-platform/docs/modele-affichage.md) décrit la configuration privée de l’organisation administratrice, les réglages publiés et le fichier de sauvegarde. Le contrat HTTP est dans [api/openapi.yaml](api/openapi.yaml).
 
 ## Périmètre C7
 

@@ -44,3 +44,9 @@ Mes projets reprend la liste native des biens. Les préférences de ce navigateu
 Les contrôles actualisés sont dans la [qualification transversale](../../avereo-platform/docs/qualification-mon-espace.md). Les preuves précédentes restent attachées à leur candidat.
 
 Le contrôle de parité inverse explicitement les sept substitutions du menu et des préférences de #121, puis compare toujours le reste à la source historique. Une mutation témoin hors de ces substitutions doit être refusée ; les calculs, imports, exports et stockages restent sous le contrôle existant.
+
+## 8 novembre 2026 — Modèle commun
+
+Le bouton Mon compte rejoint le bas gauche. Le bandeau supérieur indique la sauvegarde du bien selon son mode serveur ou démonstration. Le contrôle de parité vérifie les substitutions exactes, y compris sur l’écran de connexion. [Matrice des actions du candidat](../../avereo-platform/docs/modele-affichage.md).
+
+Le frontal PHP sert le seul PNG officiel après vérification de la session, y compris en requête HEAD. Le test Apache vérifie son contenu, son type MIME et le refus des autres PNG.

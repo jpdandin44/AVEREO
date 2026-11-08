@@ -5,7 +5,7 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - projet
@@ -474,3 +474,7 @@ Les contrôles actualisés sont dans la [qualification transversale](../../avere
 ## 7 novembre 2026 — Module Missions en recette locale
 
 Le module reprend la référence uniquement si le projet actif et le catalogue en ligne concordent. Le libellé historique « Client / référence » est un indice à confirmer par l’opérateur. La préparation ne modifie pas le planning. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
+
+## 2026-11-08 — Modèle commun
+
+Le bandeau délègue au planning ouvert son export JSON et son enregistrement privé quand celui-ci est disponible. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).

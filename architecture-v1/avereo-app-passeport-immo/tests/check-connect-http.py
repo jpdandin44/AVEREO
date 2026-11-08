@@ -64,6 +64,7 @@ def run():
                 checks += 1
             assets = sorted('/'+p.relative_to(public).as_posix()
                 for p in (public/'assets').rglob('*') if p.is_file())
+            assert '/assets/avereo-logo.png' in assets
             assert '/assets/missions.js' not in assets
             assert request('/assets/missions.js')[0] == 403
             checks += 1
@@ -91,7 +92,8 @@ def run():
                 status, headers, body = request(path,value)
                 expected = (public/path.lstrip('/')).read_bytes()
                 assert status == 200 and hashlib.sha256(body).digest() == hashlib.sha256(expected).digest()
-                assert headers['Content-Type'].startswith('text/css' if path.endswith('.css') else 'text/javascript')
+                expected_type = {'.png': 'image/png', '.css': 'text/css', '.js': 'text/javascript', '.mjs': 'text/javascript'}[Path(path).suffix]
+                assert headers['Content-Type'].startswith(expected_type), (path, headers['Content-Type'])
                 assert headers['X-Content-Type-Options'] == 'nosniff'
                 assert 'no-store' in headers['Cache-Control'] and 'WWW-Authenticate' not in headers
                 assert request(path,value+'invalid')[0] == 403
@@ -99,7 +101,8 @@ def run():
                 assert head_status == 200 and head_body == b'' and int(head_headers['Content-Length']) == len(expected)
                 checks += 3
             (public/'assets/private.php').write_text('<?php echo "must-not-execute";',encoding='utf-8')
-            for path in ['/assets/private.php','/assets/missing.js','/assets/missions.js','/assets/index.js.map',
+            (public/'assets/other.png').write_bytes(b'not the official logo')
+            for path in ['/assets/other.png','/assets/private.php','/assets/missing.js','/assets/missions.js','/assets/index.js.map',
                          '/assets/%252e%252e/config.js','/assets/no%00.js']:
                 assert request(path,value)[0] == 404, path
                 checks += 1

@@ -171,3 +171,7 @@ dossier. [Source et recette](../../avereo-platform/docs/identite-livrables.md).
 La génération décrite dans cette section concerne le dossier Rapport. Le candidat du 8 novembre retire cette action des surfaces RGA. Les points RGA, leurs préférences et le lien vers Rapport restent utilisables. [Périmètre des missions](../../avereo-platform/docs/protocole-missions.md#applications-qui-génèrent-des-missions).
 
 Les champs client, adresse du logement, référence et date restent ceux du dossier. Les coordonnées complémentaires sont optionnelles et les anciens JSON restent lisibles. Aucun changement de table serveur. [Protocole](../../avereo-platform/docs/protocole-missions.md).
+
+## 2026-11-08 — Présentation commune
+
+Les actions communes réutilisent les handlers du rapport. Le point RGA reste distinct du dossier Rapport. [Matrice des actions](../../avereo-platform/docs/modele-affichage.md).

@@ -1,0 +1,36 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "modele-affichage-20261108",
+  "project": "avereo-platform",
+  "owner": "jpdandin",
+  "version": "git",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "phase": "Développement local",
+  "status": "pull_request_open",
+  "base": "22ea7fae57fb21ef2b7220d0c68a87b85853b4d6",
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/modele-commun-applications",
+    "base": "main",
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/131"
+  },
+  "documentation": "../docs/modele-affichage.md",
+  "reviewEnvironment": "local",
+  "reviewUrl": "http://127.0.0.1:5199/",
+  "evidence": [
+    "9 builds et contrôle du contenu des livrables",
+    "Tests du menu, parité Passeport et tests PHP CONNECT avec fixtures",
+    "Chrome local 1200 et 320 px sur neuf applications et RGA, portail sur session fictive"
+  ],
+  "nextAction": "Revue de la PR et qualification de la configuration administratrice, des variantes hébergées et du retour arrière avant installation.",
+  "deployment": {
+    "preproduction": false,
+    "production": false
+  },
+  "historique": "Les preuves historiques Passeport Immo restent identiques à main. Le nouvel écart figure dans l’annexe source-audit-mon-espace.md et le contrôle de parité."
+}
