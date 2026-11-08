@@ -5,12 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-08 — Navigation de Rapport
+
+Le bandeau commun identifie l’application. Le bouton Accueil rejoint la navigation des étapes et sauvegarde le brouillon avant le retour.
 
 ## 2026-11-06 — PR #122 en préproduction
 

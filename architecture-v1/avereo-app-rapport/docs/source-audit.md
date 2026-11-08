@@ -330,3 +330,5 @@ La fiche ouverte fournit client, site, référence et date. Le reporter met à j
 ## 2026-11-08 — Modèle commun
 
 L’éditeur raccorde sa copie JSON et sa sauvegarde en ligne. RGA garde sa sortie propre et son dialogue de sauvegarde du point. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).
+
+Rapport affiche directement l’accueil ou le contenu de l’étape sous le bandeau commun.

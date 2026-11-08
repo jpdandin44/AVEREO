@@ -505,29 +505,13 @@ function SignaturePad({ value, onChange }) {
 
 const rapportPreferences = [{"key": "audience", "label": "Format proposé pour un nouveau rapport", "type": "select", "default": "expert", "options": [{"value": "expert", "label": "Rapport expert"}, {"value": "client", "label": "Synthèse client"}]}];
 
-function Header({ onHome, onLogout, onLocalCopy }) {
+function ReportAccountMenu({ onHome, onLogout, onLocalCopy }) {
   return (
-    <header className="app-header">
-      <div className="brand-block">
-        <div>
-          <h1>AVEREO Rapport</h1>
-          <p>Production de rapports terrain</p>
-        </div>
-      </div>
-      <nav className="header-actions" aria-label="Navigation du compte">
-      {onHome && (
-        <button className="button ghost" type="button" onClick={onHome}>
-          <Home size={18} />
-          Accueil
-        </button>
-      )}
-      <avereo-account-menu preferences-app="rapport" preferences-label="Rapport" preferences-fields={JSON.stringify(rapportPreferences)}>
-        <button slot="items" type="button" onClick={onHome || (() => document.querySelector('main')?.scrollIntoView())}>Mes projets</button>
-        {onLocalCopy && <button slot="local-copy" data-avereo-save="local" data-avereo-proxy="" onClick={onLocalCopy}>Exporter le rapport JSON</button>}
-        {ONLINE_SYNC_ENABLED ? <a slot="logout" href="/connect/logout.php" onClick={onLogout}>Se déconnecter</a> : <span slot="logout" hidden></span>}
-      </avereo-account-menu>
-      </nav>
-    </header>
+    <avereo-account-menu preferences-app="rapport" preferences-label="Rapport" preferences-fields={JSON.stringify(rapportPreferences)}>
+      <button slot="items" type="button" onClick={onHome || (() => document.querySelector('main')?.scrollIntoView())}>Mes projets</button>
+      {onLocalCopy && <button slot="local-copy" data-avereo-save="local" data-avereo-proxy="" onClick={onLocalCopy}>Exporter le rapport JSON</button>}
+      {ONLINE_SYNC_ENABLED ? <a slot="logout" href="/connect/logout.php" onClick={onLogout}>Se déconnecter</a> : <span slot="logout" hidden></span>}
+    </avereo-account-menu>
   );
 }
 
@@ -575,9 +559,10 @@ function TextAreaWithMic({
   );
 }
 
-function StepNav({ steps, currentStep, setStep }) {
+function StepNav({ steps, currentStep, setStep, onHome }) {
   return (
-    <nav className="step-nav" aria-label="Progression du rapport">
+    <nav className="step-nav" aria-label="Navigation du rapport">
+      <button type="button" onClick={onHome}><Home size={18} aria-hidden="true" /> Accueil</button>
       {steps.map((step, index) => (
         <button
           key={step}
@@ -668,11 +653,11 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
   const hasDraft = Boolean(draft);
   return (
     <div className="screen">
-      <Header />
+      <ReportAccountMenu />
       <main className="home-grid">
         <section className="panel home-panel">
           <span className="eyebrow">Rapport AVEREO Pro</span>
-          <h2>Creer ou reprendre un rapport</h2>
+          <h1>Créer ou reprendre un rapport</h1>
           <p>
             Un seul parcours conserve les fonctions existantes. Le type de dossier, dont Visite Globale,
             se choisit dans l'etape Dossier et pourra adapter le workflow a la mission.
@@ -792,7 +777,7 @@ function DossierStep({ report, setReport }) {
       <div className="section-title">
         <ClipboardList size={22} />
         <div>
-          <h2>Dossier</h2>
+          <h1>Dossier</h1>
           <p>Informations de base, client et mission.</p>
         </div>
       </div>
@@ -1155,7 +1140,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
       <div className="section-title">
         <CloudSun size={22} />
         <div>
-          <h2>Site et contexte</h2>
+          <h1>Site et contexte</h1>
           <p>Environnement analyse, meteo, cadastre et urbanisme.</p>
         </div>
       </div>
@@ -1304,7 +1289,7 @@ function ProtocolStep({ report, setReport }) {
       <div className="section-title">
         <ShieldCheck size={22} />
         <div>
-          <h2>Protocoles</h2>
+          <h1>Protocoles</h1>
           <p>
             {habitologie
               ? "Retenir les phases utiles à la visite, puis les suivre dans l'ordre Eau, Air, Terre, Feu."
@@ -1638,7 +1623,7 @@ function ObservationStep({ report, setReport }) {
       <div className="section-title">
         <Camera size={22} />
         <div>
-          <h2>Observations</h2>
+          <h1>Observations</h1>
           <p>Constats localises, niveau de gravite, photos et suites proposees.</p>
         </div>
       </div>
@@ -1720,7 +1705,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
       <div className="section-title">
         <FileText size={22} />
         <div>
-          <h2>Validation et export</h2>
+          <h1>Validation et export</h1>
           <p>Verifier les points bloquants, signer et generer le document Word.</p>
         </div>
       </div>
@@ -2072,21 +2057,23 @@ function ReportWizard({
     event.target.value = '';
   };
 
+  const returnToHome = async () => {
+    try { await saveDraft(report); await onHome(); }
+    catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de quitter.'); }
+  };
+
   const goNext = () => setCurrentStep((step) => Math.min(step + 1, steps.length - 1));
   const goPrev = () => setCurrentStep((step) => Math.max(step - 1, 0));
 
   return (
     <div className="screen">
-      <Header onLocalCopy={handleExportJson} onHome={async () => {
-        try { await saveDraft(report); await onHome(); }
-        catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de quitter.'); }
-      }} onLogout={async (event) => {
+      <ReportAccountMenu onLocalCopy={handleExportJson} onHome={returnToHome} onLogout={async (event) => {
         event.preventDefault();
         try { await saveDraft(report); window.location.assign('/connect/logout.php'); }
         catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de vous déconnecter.'); }
       }} />
       <main className="wizard-layout">
-        <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} />
+        <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} onHome={returnToHome} />
         <div className="wizard-grid">
           <div className="wizard-main">
             {currentStep === 0 && <DossierStep report={report} setReport={setReport} />}
@@ -2157,11 +2144,11 @@ function AccessGate({ authConfig, authError, onOAuthLogin }) {
 
   return (
     <div className="screen">
-      <Header />
+      <ReportAccountMenu />
       <main className="auth-gate">
         <section className="panel auth-panel">
           <span className="eyebrow">Acces securise</span>
-          <h2>Connexion a AVEREO Rapport</h2>
+          <h1>Connexion à AVEREO Rapport</h1>
           {connectMode ? (
             <p>Votre session applicative doit etre renouvelee depuis AVEREO CONNECT.</p>
           ) : (
