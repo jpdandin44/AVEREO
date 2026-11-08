@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Toast from './components/Toast.jsx';
 import { useStore } from './hooks/useStore.js';
 import AddPage from './pages/AddPage.jsx';
-import ImprovePage from './pages/ImprovePage.jsx';
+import ImprovePage, { exportResearchBackup } from './pages/ImprovePage.jsx';
 import RegistryPage from './pages/RegistryPage.jsx';
 import ReviewPage from './pages/ReviewPage.jsx';
 import SearchPage from './pages/SearchPage.jsx';
@@ -26,6 +26,7 @@ function parseHash() {
 
 export default function App() {
   const loaded = useStore(s => s.loaded);
+  const canExport = useStore(s => s.loaded && s.resources.length > 0);
   const pendingCount = useStore(s => s.resources.filter(r => r.client === 'ELIGIBLE_FOR_REVIEW').length);
   const [route, setRoute] = useState(parseHash);
 
@@ -57,7 +58,7 @@ export default function App() {
             </a>
           ))}
         </nav>
-        <avereo-account-menu><a slot="items" href="#/amelioration">Sauvegardes</a></avereo-account-menu>
+        <avereo-account-menu app-name="Recherche"><button slot="local-copy" data-avereo-save="local" data-avereo-proxy="" onClick={exportResearchBackup} disabled={!canExport}>Exporter la sauvegarde JSON</button><a slot="items" href="#/amelioration">Sauvegardes</a></avereo-account-menu>
       </header>
       <div className="thermo" aria-hidden="true" />
       {loaded ? <Current key={`${route.page}-${JSON.stringify(route.params)}`} params={route.params} navigate={navigate} /> : <p className="loading">Chargement du corpus…</p>}

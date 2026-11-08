@@ -5,7 +5,7 @@ title: Décisions du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-09
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -76,3 +76,7 @@ sont dans le [reçu de reprise](outillage/acces-preproduction/archives/reprise-a
 Ses opérations inverses distinguent fichiers remplacés et ajoutés, avec refus
 d'un état divergent. Cette préparation ne change ni mode d'authentification,
 ni base de Coupe et ne donne aucun accord de déploiement.
+
+## 2026-11-08 — Modèle d’interface des applications
+
+Le responsable a retenu le modèle à trois repères fixes. Il réutilise le menu existant et les actions natives pour préserver la navigation, les dossiers et les autorisations. Les réglages transversaux relèvent de l’administration CONNECT. [Portée et exception hors ligne](architecture-v1/avereo-platform/docs/modele-affichage.md).

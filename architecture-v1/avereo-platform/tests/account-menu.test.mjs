@@ -16,7 +16,7 @@ function rgaWorkspaceFixture(hash = '') {
   dom.window.HTMLDialogElement.prototype.close = function () { this.open = false; };
   dom.window.createRgaProjects = createRgaProjects;
   const workspace = readFileSync(new URL('../../avereo-app-rapport/frontend/public/rga/workspace.js', import.meta.url), 'utf8');
-  dom.window.eval(workspace.replace(/^import .*\n/, '').replace('export function setupRgaProjects', 'function setupRgaProjects')
+  dom.window.eval(workspace.replace(/^import .*\r?\n/, '').replace('export function setupRgaProjects', 'function setupRgaProjects')
     + '\nsetupRgaProjects({ getPoint: () => null, openPoint: () => {} });');
   return { dom, dialog: dom.window.document.querySelector('dialog') };
 }
@@ -51,7 +51,11 @@ test('RGA : accès direct conservé et changement de carte sans ouverture des pr
 
 function fixture({ portal = 'https://connect-preprod.avereo.fr', content = '', attributes = '' } = {}) {
   const dom = new JSDOM(`<meta name="avereo-connect-portal" content="${portal}"><button id="outside">Extérieur</button><avereo-account-menu ${attributes}>${content}</avereo-account-menu>`, { url: 'https://projet-preprod.avereo.fr/', runScripts: 'outside-only', pretendToBeVisual: true });
-  dom.window.fetch = () => { throw new Error('Le menu ne doit pas appeler une API'); };
+  dom.window.fetch = async (url, options) => {
+    assert.equal(url, portal + '/api/v1/appearance');
+    assert.equal(options.credentials, 'omit');
+    return {ok:true, json:async () => ({data:{headerHeight:68, logoWidth:116, accountTone:'mist'}})};
+  };
   dom.window.eval(source);
   const menu = dom.window.document.querySelector('avereo-account-menu');
   return { dom, menu, root: menu.shadowRoot };
@@ -61,14 +65,14 @@ test('libellés partagés, nom accessible et état fermé initial', () => {
   const { dom, menu, root } = fixture();
   assert.equal(menu.open, false);
   assert.equal(root.querySelector('.trigger').getAttribute('aria-expanded'), 'false');
-  assert.match(root.textContent, /Mon espace/); assert.match(root.textContent, /Compte AVEREO/);
-  assert.equal(root.querySelector('nav').getAttribute('aria-label'), 'Menu de Mon espace');
+  assert.match(root.textContent, /Mon compte/); assert.match(root.textContent, /Compte AVEREO/);
+  assert.equal(root.querySelector('nav').getAttribute('aria-label'), 'Menu de Mon compte');
   dom.window.close();
 });
 test('un clic ouvre puis referme ; Échap rend le focus au déclencheur', () => {
   const { dom, menu, root } = fixture();
-  root.querySelector('button').click(); assert.equal(menu.open, true);
-  root.querySelector('button').click(); assert.equal(menu.open, false);
+  menu.trigger.click(); assert.equal(menu.open, true);
+  menu.trigger.click(); assert.equal(menu.open, false);
   menu.open = true;
   menu.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   assert.equal(menu.open, false); assert.equal(root.activeElement, menu.trigger);
@@ -199,4 +203,33 @@ test('chaque application possède son espace de préférences, y compris sur une
   assert.equal(Menu.readSettings('rapport', fields).sort, 'name');
   assert.equal(Menu.readSettings('rga', fields).sort, 'recent');
   assert.equal(menu.settings.sort, 'recent'); dom.window.close();
+});
+
+test('bandeau : les actions suivent le contexte courant et respectent le refus de déconnexion', async () => {
+  const {dom,menu,root} = fixture({content:'<button slot="logout">Se déconnecter</button>'});
+  const {document} = dom.window;
+  const action = kind => root.querySelector('[data-action="' + kind + '"]');
+  assert.equal(action('online').getAttribute('aria-disabled'), 'true');
+  action('online').click();
+  assert.match(root.querySelector('.notice').textContent, /indisponible/);
+  const native = document.createElement('button');
+  native.dataset.avereoSave = 'local';
+  native.dataset.avereoProxy = '';
+  menu.getClientRects = () => [{}];
+  menu.append(native);
+  let calls = 0;
+  native.onclick = () => calls++;
+  await Promise.resolve();
+  assert.equal(action('local').getAttribute('aria-disabled'), 'false');
+  action('local').click();
+  assert.equal(calls, 1);
+  native.disabled = true;
+  action('local').click();
+  assert.equal(calls, 1);
+  menu.querySelector('[slot=logout]').onclick = event => {event.preventDefault(); calls++;};
+  action('logout').click();
+  assert.equal(calls, 2);
+  document.dispatchEvent(new dom.window.CustomEvent('avereo-appearance',{detail:{headerHeight:84,logoWidth:136,accountTone:'white'}}));
+  assert.equal(document.documentElement.style.getPropertyValue('--av-header'), '84px');
+  dom.window.close();
 });

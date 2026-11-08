@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -85,3 +85,7 @@ inchangés. Les champs futurs sont préparés sans formulaire d’administration
 ## 7 novembre 2026 — Module Missions en recette locale
 
 Le rapport reprend les coordonnées du dossier en couverture. Le sommaire est lisible dès l’ouverture dans Word et la signature texte est échappée. Les signatures graphiques prises en charge restent des images. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
+
+## 2026-11-08 — Modèle commun
+
+Le rapport ouvert garde sa sauvegarde dans ce navigateur. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).

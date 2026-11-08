@@ -5,7 +5,7 @@ title: Audit source Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-11-08
 owner: jpdandin
 tags: [passeport-immo, audit, local]
 ---
@@ -71,3 +71,7 @@ une page A4 complète après correction ; quatre tests couvrent arrondi blanc, p
 final de contenu et documents de deux/trois pages. Le contrôle inverse a/b/c+d
 retrouve le code historique pour tous les autres comportements et classes.
 Voir les [preuves et limites](raccordement-cockpit.md).
+
+## 2026-11-08 — Modèle commun
+
+La sauvegarde du formulaire de bien est présentée selon le mode serveur ou démonstration. La parité contrôle les substitutions exactes. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).

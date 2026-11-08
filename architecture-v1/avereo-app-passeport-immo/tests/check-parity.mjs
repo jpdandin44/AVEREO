@@ -4,6 +4,13 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Le bouton métier reste identique. Seul le mode de sauvegarde annoncé au bandeau varie.
+const saveMarker = 'data-avereo-save={SERVER_STORAGE ? "online" : "local"} ';
+assert.equal(restored.split(saveMarker).length, 2);
+restored = restored.replace(saveMarker, '');
+const loginChrome = '<avereo-account-menu signed-out="" app-name="Passeport Immo">';
+assert.equal(restored.split(loginChrome).length, 2);
+restored = restored.replace(loginChrome, '<avereo-account-menu signed-out="" app-name="CONNECT">');
 // Écart k : nom du client déjà associé au bien, repris dans le PDF.
 for (const [current, previous] of [
   [
@@ -70,7 +77,7 @@ for (const [current, previous] of [
 // correspondre à la source historique, notamment les calculs et les écritures.
 for (const [current, previous] of [
   ["import { useAppPreferences } from '../../../avereo-platform/shared/use-app-preferences.js';\n", ''],
-  ['<avereo-account-menu local-account="true" preferences-app="passeport-immo" preferences-label="Passeport Immo" preferences-fields={JSON.stringify(passeportPreferences)}>', '<avereo-account-menu local-account="true">'],
+  ['<avereo-account-menu local-account="true" preferences-app="passeport-immo" preferences-label="Passeport Immo" preferences-fields={JSON.stringify(passeportPreferences)}>', '<avereo-account-menu app-name="CONNECT" local-account="true">'],
   ['<button slot="items" type="button" onClick={goToDashboard}>Mes projets</button>', '<button slot="items" type="button" onClick={goToDashboard}>Mes biens</button>'],
   ['const passeportPreferences = [{"key": "sort", "label": "Ordre de mes biens", "type": "select", "default": "existing", "options": [{"value": "existing", "label": "Ordre habituel"}, {"value": "address", "label": "Adresse, de A à Z"}]}, {"key": "composition", "label": "Afficher la composition des biens dans la liste", "type": "checkbox", "default": true}];\n\n', ''],
   ["    const applicationPreferences = useAppPreferences('passeport-immo', passeportPreferences, { useState, useEffect });\n", ''],

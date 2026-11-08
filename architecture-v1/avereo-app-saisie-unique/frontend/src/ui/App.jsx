@@ -3,7 +3,7 @@ import { ConfirmationDialogue } from './Dialogue.jsx';
 import { useEffect } from 'react';
 import { useMissionDossier } from '../../../../avereo-platform/shared/mission-dossier.js';
 import { useActions, useStore } from './contexte.js';
-import { ListeDossiers, VueDossier, VueParametres, VueRatios } from './Vues.jsx';
+import { exporterDossiers, ListeDossiers, VueDossier, VueParametres, VueRatios } from './Vues.jsx';
 
 const NAV = [
   { id: 'liste', libelle: 'Dossiers' },
@@ -40,7 +40,8 @@ export function App() {
                 <button key={n.id} type="button" className="nav-lien" aria-current={vue === n.id || (n.id === 'liste' && vue === 'dossier') ? 'page' : undefined} onClick={() => actions.afficher(n.id)}>{n.libelle}</button>
               ))}
             </nav>
-            <avereo-account-menu>
+            <avereo-account-menu app-name="Saisie unique">
+              <button slot="local-copy" data-avereo-save="local" data-avereo-proxy="" onClick={() => exporterDossiers(actions)}>Exporter les dossiers</button>
               <button slot="items" type="button" onClick={() => actions.afficher('liste')}>Mes dossiers locaux</button>
               <button slot="items" type="button" onClick={() => actions.afficher('parametres')}>Préférences</button>
             </avereo-account-menu>

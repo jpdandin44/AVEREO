@@ -331,6 +331,28 @@ $logout = static function () use (&$logoutCalled): void {
 
 $tests = [];
 
+$tests['shared appearance authorization, CSRF and persistence'] = static function () use ($config, $repository, $authenticated, $anonymous, $logout): void {
+    $path = sys_get_temp_dir() . '/appearance-' . bin2hex(random_bytes(8)) . '.json';
+    $store = new \Avereo\Connect\Administration\Appearance($path, 7);
+    $app = new Application($config, $repository, appearance: $store);
+    $route = '/api/v1/admin/appearance';
+    $values = ['headerHeight'=>56, 'logoWidth'=>136, 'accountTone'=>'white'];
+    $headers = ['x-csrf-token'=>'fixture'];
+    try {
+        assertSameValue(401, $app->handle(request('GET',$route),$anonymous,'fixture',$logout)->status, 'anonymous');
+        assertSameValue(false, $store->canEdit([['id'=>7,'role'=>'member'],['id'=>8,'role'=>'admin']]), 'no cross-organization privilege');
+        assertSameValue(403, $app->handle(request('PUT',$route,$values),$authenticated,'fixture',$logout)->status, 'CSRF');
+        assertSameValue(422, $app->handle(request('PUT',$route,['headerHeight'=>999]+$values,$headers),$authenticated,'fixture',$logout)->status, 'invalid settings');
+        assertSameValue(false, is_file($path), 'no write after rejected requests');
+        assertSameValue(200, $app->handle(request('PUT',$route,$values,$headers),$authenticated,'fixture',$logout)->status, 'write');
+        assertSameValue($values, $store->read(), 'persisted settings');
+        $other = new Application($config,$repository,appearance:new \Avereo\Connect\Administration\Appearance($path, 8));
+        assertSameValue(403, $other->handle(request('PUT',$route,$values,$headers),$authenticated,'fixture',$logout)->status, 'foreign organization');
+    } finally {
+        if (is_file($path)) unlink($path);
+    }
+};
+
 $tests['health'] = static function () use ($application, $anonymous, $logout): void {
     $response = $application->handle(request('GET', '/api/v1/health'), $anonymous, 'csrf-test', $logout);
     assertSameValue(200, $response->status, 'health status');

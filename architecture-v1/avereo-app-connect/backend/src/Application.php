@@ -30,6 +30,7 @@ final class Application
         private readonly ?AccountPasswordResetNotifier $passwordReset = null,
         private readonly ?\Avereo\Connect\Administration\AccountLifecycle $accountLifecycle = null,
         private readonly ?\Avereo\Connect\Developments\AuthorizationBroker $developmentAuthorization = null,
+        private readonly ?\Avereo\Connect\Administration\Appearance $appearance = null,
     ) {
     }
 
@@ -230,6 +231,16 @@ final class Application
             throw new ApiException(503, 'CONNECT_ACCOUNT_NOT_PROVISIONED', 'Le compte CONNECT n’est pas encore provisionné.');
         }
         $userId = (int) $auth->userId;
+
+        if ($request->path === '/api/v1/admin/appearance') {
+            if ($accountStatus !== 'active' || !$this->appearance?->canEdit($this->repository->listOrganizations($userId))) {
+                throw new ApiException(403, 'APPEARANCE_FORBIDDEN', 'Administration du modèle réservée à AVEREO.');
+            }
+            if ($request->method === 'GET') return Response::success($this->appearance->read(), $request->requestId);
+            if ($request->method !== 'PUT') throw new ApiException(405, 'METHOD_NOT_ALLOWED', 'Méthode refusée.');
+            CsrfGuard::assertValid($request, $csrfToken);
+            return Response::success($this->appearance->save($request->body), $request->requestId);
+        }
 
         if (
             $request->method === 'GET'

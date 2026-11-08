@@ -33,7 +33,7 @@ test('l’ordre téléchargé depuis le cadre reprend le client, les étapes de 
   });
   await page.goto(base+'/');
   const editor = page.frameLocator('iframe');
-  const menuButton = editor.getByRole('button',{name:'Mon espace : ouvrir le menu du compte'});
+  const menuButton = editor.getByRole('button',{name:'Mon compte : ouvrir le menu du compte'});
   await menuButton.waitFor();
   const frame = page.frames().find(f=>f.url()===base+'/editeur');
   await frame.evaluate(initial => {

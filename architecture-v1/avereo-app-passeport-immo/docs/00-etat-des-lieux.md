@@ -5,7 +5,7 @@ title: Phase 0 — reprise et état des lieux
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-11-08
 owner: jpdandin
 tags: [passeport-immo, audit, local]
 ---
@@ -179,3 +179,7 @@ Le lot suivant est publié dans la PR nº71 en brouillon sur demande du responsa
 La [fiche d’itération](iteration-developpement.md) est la référence des observations
 actuelles. Les preuves initiales ci-dessus restent datées et les validations humaines
 ne sont pas déduites de la publication.
+
+## Complément P01/P02 — Modèle commun
+
+L’écran de connexion et l’espace authentifié affichent le bandeau. L’enregistrement du bien reprend la commande native de son formulaire. [Écart de présentation testé](source-audit.md).

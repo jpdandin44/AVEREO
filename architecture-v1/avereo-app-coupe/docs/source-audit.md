@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -88,3 +88,7 @@ Les contrôles actualisés sont dans la [qualification transversale](../../avere
 ## 7 novembre 2026 — Module Missions en recette locale
 
 Missions reprend le nom du dessin et l’adresse présents dans les champs de la coupe ouverte. La recette a vérifié les valeurs saisies sur un dessin fictif. Le raccordement est additif et indépendant du chargement du moteur CAO. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
+
+## 2026-11-08 — Modèle commun
+
+Les deux boutons exécutent la sauvegarde JSON et la sauvegarde en ligne de l’éditeur existant. La variante hébergée reste à qualifier. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).

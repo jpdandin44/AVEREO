@@ -289,7 +289,7 @@ const AppHeader = () => {
                        {user && <span className="text-sm text-gray-600">Bonjour, {user.name}</span>}
 
                         {user && user.plan === 'pro' && <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">PRO</span>}
-                        <avereo-account-menu local-account="true">
+                        <avereo-account-menu app-name="CONNECT" local-account="true">
                             <button slot="items" type="button" onClick={goToDashboard}>Mes biens</button>
                             {user && user.role === 'admin' && <button slot="administration" type="button" onClick={goToAdmin}>Administration de l’application</button>}
                             <button slot="logout" type="button" onClick={signOut}>Se déconnecter</button>
@@ -1225,7 +1225,7 @@ export default function App() {
           <AppContainer />
       ) : (
           <div className="min-h-screen flex flex-col justify-center items-center p-4">
-              <LoginPage />
+              <><avereo-account-menu signed-out="" app-name="CONNECT"></avereo-account-menu><LoginPage /></>
               <footer className="mt-8 text-center text-gray-500 text-sm">Application Web de démonstration.</footer>
           </div>
       )}

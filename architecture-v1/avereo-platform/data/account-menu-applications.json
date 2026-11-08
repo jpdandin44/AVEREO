@@ -7,7 +7,7 @@
         "architecture-v1/avereo-app-connect/backend/public",
         "architecture-v1/avereo-app-connect/frontend/public"
       ],
-      "surface": "Portail PHP actif ; frontend historique conservé",
+      "surface": "Bandeau et compte du portail PHP et du frontend historique",
       "capabilities": [
         "preferences",
         "account",
@@ -23,7 +23,7 @@
       "publicDirectories": [
         "architecture-v1/avereo-app-projet/frontend/public"
       ],
-      "surface": "Pied de barre latérale",
+      "surface": "Bandeau supérieur et compte en bas à gauche",
       "capabilities": [
         "projects",
         "preferences",
@@ -39,7 +39,7 @@
       "publicDirectories": [
         "architecture-v1/avereo-app-rapport/frontend/public"
       ],
-      "surface": "En-tête Rapport et barre latérale RGA",
+      "surface": "Bandeau Rapport et RGA, carte imbriquée sans deuxième bandeau",
       "capabilities": [
         "projects",
         "preferences",
@@ -59,7 +59,7 @@
       "publicDirectories": [
         "architecture-v1/avereo-app-coupe/frontend/public"
       ],
-      "surface": "Pied de barre latérale",
+      "surface": "Bandeau supérieur et compte en bas à gauche",
       "capabilities": [
         "preferences",
         "projects",
@@ -75,7 +75,7 @@
       "publicDirectories": [
         "architecture-v1/avereo-app-thermo/frontend/public"
       ],
-      "surface": "En-tête et pied du référentiel",
+      "surface": "Bandeau supérieur et compte en bas à gauche",
       "capabilities": [
         "projects",
         "preferences",
@@ -91,7 +91,7 @@
       "publicDirectories": [
         "architecture-v1/avereo-app-drone/frontend/public"
       ],
-      "surface": "En-tête accueil et pied de barre latérale de mission",
+      "surface": "Bandeau supérieur et compte en bas à gauche",
       "capabilities": [
         "projects",
         "preferences",
@@ -107,7 +107,7 @@
       "publicDirectories": [
         "architecture-v1/avereo-app-recherche/frontend/public"
       ],
-      "surface": "En-tête",
+      "surface": "Bandeau supérieur et compte en bas à gauche",
       "capabilities": [
         "backup",
         "account",
@@ -121,7 +121,7 @@
       "publicDirectories": [
         "architecture-v1/avereo-app-passeport-immo/frontend/public"
       ],
-      "surface": "En-tête",
+      "surface": "Bandeau supérieur et compte en bas à gauche",
       "capabilities": [
         "projects",
         "preferences",
@@ -138,7 +138,7 @@
       "id": "saisie-unique",
       "publicDirectories": [],
       "sourceBundled": true,
-      "surface": "En-tête de l’application autonome locale",
+      "surface": "Modèle embarqué dans le fichier HTML autonome",
       "capabilities": [
         "local-projects",
         "preferences",

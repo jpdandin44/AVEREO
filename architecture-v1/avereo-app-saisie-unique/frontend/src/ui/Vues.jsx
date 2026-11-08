@@ -14,11 +14,7 @@ import { useActions } from './contexte.js';
 
 const libType = (t) => TYPES.find((x) => x.id === t)?.libelle || t;
 
-// Sauvegarde dans un fichier du poste (téléchargement) et import, sans aucun échange réseau.
-function Sauvegarde({ message }) {
-  const actions = useActions();
-  const fichier = useRef(null);
-  const exporter = () => {
+export function exporterDossiers(actions) {
     const blob = new Blob([actions.exporter()], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -28,7 +24,12 @@ function Sauvegarde({ message }) {
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
+}
+
+// Sauvegarde dans un fichier du poste (téléchargement) et import, sans aucun échange réseau.
+function Sauvegarde({ message }) {
+  const actions = useActions();
+  const fichier = useRef(null);
   const importer = async (e) => {
     const f = e.target.files && e.target.files[0];
     e.target.value = '';
@@ -37,7 +38,7 @@ function Sauvegarde({ message }) {
   return (
     <div className="sauvegarde">
       <div className="toolbar">
-        <button type="button" className="btn" onClick={exporter}>Exporter les dossiers</button>
+        <button type="button" className="btn" onClick={() => exporterDossiers(actions)}>Exporter les dossiers</button>
         <button type="button" className="btn" onClick={() => fichier.current?.click()}>Importer une sauvegarde…</button>
         <input ref={fichier} type="file" accept=".json,application/json" className="sr-only" tabIndex={-1} aria-label="Fichier de sauvegarde à importer" onChange={importer} />
       </div>

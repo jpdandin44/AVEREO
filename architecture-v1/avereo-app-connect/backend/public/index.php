@@ -42,7 +42,7 @@ try {
     if (is_readable($privateConfigPath)) {
         $privateValues = require $privateConfigPath;
         $allowedPrivateKeys = [
-            'DEVELOPMENTS_PRIVATE_CONFIG',
+            'DEVELOPMENTS_PRIVATE_CONFIG', 'APPEARANCE_ADMIN_ORGANIZATION_ID',
             'APP_ENV', 'APP_DEBUG', 'DB_DSN', 'DB_USER', 'DB_PASSWORD',
             'SESSION_COOKIE_NAME', 'SESSION_IDLE_SECONDS', 'SESSION_ABSOLUTE_SECONDS',
             'OAUTH_ISSUER', 'OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL',
@@ -69,10 +69,24 @@ try {
         }
         foreach ($allowedPrivateKeys as $privateKey) {
             $privateValue = $privateValues[$privateKey] ?? null;
+            if ($privateKey === 'APPEARANCE_ADMIN_ORGANIZATION_ID' && is_int($privateValue)) {
+                $privateValue = (string) $privateValue;
+            }
             if (is_string($privateValue)) {
                 putenv($privateKey . '=' . $privateValue);
             }
         }
+    }
+
+    $appearance = new \Avereo\Connect\Administration\Appearance(
+        dirname($privateConfigPath) . '/appearance.json',
+        (int) getenv('APPEARANCE_ADMIN_ORGANIZATION_ID'),
+    );
+    // Public projection contains three display settings only. No account session or DB is needed.
+    if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET'
+        && parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) === '/api/v1/appearance') {
+        header('Access-Control-Allow-Origin: *');
+        Response::success($appearance->read(), $requestId)->emit();
     }
 
     $config = Config::fromEnvironment();
@@ -187,6 +201,7 @@ try {
         $accountActivation,
         $accountLifecycle,
         $developmentAuthorization,
+        $appearance,
     );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {

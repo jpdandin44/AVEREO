@@ -5,6 +5,7 @@ import { build } from 'esbuild';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { AVEREO_LOGO } from '../../../avereo-platform/shared/report-identity.js';
 import { buildMissionScript } from '../../../../.github/scripts/build-mission-script.mjs';
 
 const racine = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -31,12 +32,30 @@ const css = r.outputFiles.find((f) => f.path.endsWith('.css')).text;
 const sur = (s) => s.replace(/<\/(script|style)/gi, '<\\/$1');
 const injection = Object.keys(locales).length ? `<script>window.__AVEREO_UNI_LOCAL__=${sur(JSON.stringify({ listes: locales.listes || {}, parametres: locales.parametres || {} }))};</script>` : '';
 
+// Offline delivery uses the model exported by the CONNECT administrator.
+const appearanceIndex = process.argv.indexOf('--appearance');
+let appearanceMeta = '';
+if (appearanceIndex !== -1) {
+  const source = process.argv[appearanceIndex + 1];
+  if (!source) throw new Error('Indiquez le fichier du modèle après --appearance.');
+  const values = JSON.parse(readFileSync(source, 'utf8'));
+  if (!values || Object.keys(values).length !== 3 || ![56,68,84].includes(values.headerHeight)
+    || ![100,116,136].includes(values.logoWidth) || !['mist','white'].includes(values.accountTone)) {
+    throw new Error('Modèle d’apparence invalide.');
+  }
+  appearanceMeta = '<meta name="avereo-offline-appearance" content=\'' + JSON.stringify({
+    headerHeight:values.headerHeight, logoWidth:values.logoWidth, accountTone:values.accountTone
+  }) + '\'>';
+}
+
 const html = `<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; form-action 'none'; base-uri 'none'">
+${appearanceMeta}
+<meta name="avereo-shell-logo" content="${AVEREO_LOGO}">
 <meta name="generator" content="AVEREO UNI ${paquet.version}">
 <title>AVEREO UNI</title>
 <style>${sur(css)}</style>
