@@ -5,10 +5,14 @@ title: Historique des changements
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
+
+## 8 novembre 2026 — Vérification des options dans Projet et Coupe
+
+Les quatre offres ont été exercées dans les deux cadres en préproduction. Les Word ne contiennent que les options cochées, consignes et traces comprises. La rubrique facultative disparaît quand la sélection est vide. [Recette dans Chrome](docs/recette-options-ordres.md#vérification-dans-chrome-du-8-novembre-2026).
 
 ## 7 novembre 2026 — Préremplissage des ordres de mission
 

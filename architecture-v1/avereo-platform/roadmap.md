@@ -5,7 +5,7 @@ title: Feuille de route
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -23,7 +23,7 @@ tags: [avereo, acces, documentation]
 
 Les ordres détaillés des quatre offres sont disponibles en préproduction. Les tâches et coordonnées ont été vérifiées dans les huit fichiers issus des cadres Projet et Coupe. [Suivi de cette évolution](data/recette-missions/ordres-prestations.json).
 
-La prochaine vérification dans Chrome porte sur les sélections facultatives de Projet et les cas restants de Coupe. [Cas à reprendre par application](docs/recette-options-ordres.md#résultats-du-7-novembre-2026).
+La vérification des options dans Chrome est terminée pour les deux applications. La relecture métier de chaque ordre reste à faire avant de le remettre à un client. [Résultats des quatre offres](docs/recette-options-ordres.md#vérification-dans-chrome-du-8-novembre-2026).
 
 ## Itération Mon espace
 
