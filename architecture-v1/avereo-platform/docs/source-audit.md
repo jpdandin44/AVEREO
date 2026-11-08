@@ -50,4 +50,4 @@ calcul, ni données, ni habilitations. [Audit et qualification](identite-livrabl
 
 Le nouveau module commun produit des copies de travail à partir du dossier ouvert. Les modèles Word restent privés, le catalogue porte leur empreinte et les intégrations métier restent explicites. [Périmètre et preuves](preparation-missions.md).
 
-Les ordres Projet et Coupe de la livraison #125 comportaient la fiche d’intervention et aucune tâche métier. Le candidat suivant reprend les étapes des quatre offres, les options retenues et les coordonnées du client. [Constat initial et essais du candidat](../data/recette-missions/ordres-prestations.json).
+Les ordres Projet et Coupe de la livraison #125 comportaient la fiche d’intervention et aucune tâche métier. La version #127 installée en préproduction a livré les étapes des quatre offres et les coordonnées du client depuis les deux cadres. [Constat et suivi](../data/recette-missions/ordres-prestations.json) · [Preuve hébergée](../data/recette-missions/livraison-ordres-preproduction.json).

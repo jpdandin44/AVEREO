@@ -7,8 +7,8 @@
     "Préproduction",
     "Mise en production"
   ],
-  "phase": "Développement local",
-  "status": "local_verified",
+  "phase": "Préproduction",
+  "status": "preproduction_verified",
   "baseSha": "54af84e562d2b5dbfc32611341e386e4fee2c467",
   "branch": "feat/ordres-mission-prestations",
   "codeSourceSha": "d2efe53aa26c46f1220ac13ee8b974ba6a67e2e0",
@@ -24,7 +24,7 @@
     "servedByProjetAndCoupe": "cf93108a5468a35f47ca717b25d5a43bda7961b0fa91bcb84b42d77458e5d80c"
   },
   "preproduction": {
-    "installed": false,
+    "installed": true,
     "targets": [
       "connect",
       "projet",
@@ -33,6 +33,16 @@
       "thermo",
       "drone",
       "passeport-immo"
+    ],
+    "mergeSha": "2afbdcf065d7a9fee7c868e4e3bb6116e881e7b6",
+    "artifactSha256": "60a9e103de0c9ada0521209e2fe94c890b0e8782c5ea7e2a78a5bd0f39286acf",
+    "installedAt": "2026-11-07T21:42:52+00:00",
+    "hostedEvidence": "livraison-ordres-preproduction.json",
+    "optionEvidence": "options-ordres-preproduction.json",
+    "optionGuide": "../../docs/recette-options-ordres.md",
+    "verifiedApps": [
+      "projet",
+      "coupe"
     ]
   },
   "production": {
@@ -162,6 +172,6 @@
       "ancien e-mail Thermo et effacement explicite"
     ]
   },
-  "nextAction": "Relire les quatre ordres du candidat local. Après validation et fusion, préparer la livraison de cette version en préproduction.",
-  "updatedAt": "2026-11-07T21:02:23.465482+00:00"
+  "nextAction": "Compléter les essais avec options dans le cadre Chrome de Projet et les cas restants de Coupe indiqués dans le guide. La remise à un client relève de la validation métier du dossier.",
+  "updatedAt": "2026-11-07T22:44:33.379Z"
 }

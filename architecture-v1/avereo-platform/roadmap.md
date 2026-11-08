@@ -21,7 +21,9 @@ tags: [avereo, acces, documentation]
 
 ## Ordres de mission détaillés
 
-Le candidat local complète les ordres des quatre offres avec les tâches de terrain et les coordonnées du client. Les étapes suivantes sont la relecture métier des exemples et la qualification de la version retenue en préproduction. [Suivi de cette évolution](data/recette-missions/ordres-prestations.json).
+Les ordres détaillés des quatre offres sont disponibles en préproduction. Les tâches et coordonnées ont été vérifiées dans les huit fichiers issus des cadres Projet et Coupe. [Suivi de cette évolution](data/recette-missions/ordres-prestations.json).
+
+La prochaine vérification dans Chrome porte sur les sélections facultatives de Projet et les cas restants de Coupe. [Cas à reprendre par application](docs/recette-options-ordres.md#résultats-du-7-novembre-2026).
 
 ## Itération Mon espace
 
