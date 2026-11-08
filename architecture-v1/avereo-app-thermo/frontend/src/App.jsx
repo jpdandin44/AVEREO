@@ -1294,7 +1294,7 @@ const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel, onDraftChange 
 
             <footer className="fixed bottom-0 left-0 w-full bg-white border-t p-4 shadow z-20">
                 <div className="max-w-6xl mx-auto flex justify-between items-center">
-                    <button onClick={async () => { try { await persistReport(reportData); setToastMessage('Rapport enregistré dans Mes projets, dans ce navigateur.'); } catch { setToastMessage('Enregistrement impossible. Le rapport reste ouvert.'); } }} className="px-4 py-2 text-sm bg-gray-200 rounded-md">Sauver</button>
+                    <button data-avereo-save="local" onClick={async () => { try { await persistReport(reportData); setToastMessage('Rapport enregistré dans Mes projets, dans ce navigateur.'); } catch { setToastMessage('Enregistrement impossible. Le rapport reste ouvert.'); } }} className="px-4 py-2 text-sm bg-gray-200 rounded-md">Sauver</button>
                     <div className="flex gap-4">
                         {currentStep > 1 && <button onClick={() => setCurrentStep(s => s - 1)} className="px-6 py-2 bg-white border rounded-md">Précédent</button>}
                         {currentStep < 6 && <button onClick={() => setCurrentStep(s => s + 1)} className="px-6 py-2 bg-blue-600 text-white rounded-md">Suivant</button>}

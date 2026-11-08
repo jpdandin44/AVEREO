@@ -5,7 +5,7 @@ title: AVEREO — index du dépôt
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -132,3 +132,7 @@ le cockpit. La PR de préparation ne vaut pas bascule ni ouverture.
 ## Fonctionnalités communes
 
 [Règle Mon espace et fonctions communes](architecture-v1/avereo-platform/docs/fonctionnalites-communes.md) · [Suivi du candidat transversal](architecture-v1/avereo-platform/data/suivi-fonctions-communes.json).
+
+## Modèle d’affichage des applications
+
+Le [guide d’affichage et d’administration](architecture-v1/avereo-platform/docs/modele-affichage.md) décrit les commandes disponibles par application et la préparation de la livraison.

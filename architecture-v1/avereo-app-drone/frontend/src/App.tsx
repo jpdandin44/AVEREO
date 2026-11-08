@@ -328,7 +328,7 @@ const MissionEditor = ({ mission: initialData, onSave, onCancel, onProjects }: a
           </div>
           <div className="flex gap-3">
             <button onClick={onCancel} className="px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-lg">Fermer</button>
-            <button onClick={() => onSave(mission)} className="flex items-center gap-2 px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm font-medium">
+            <button data-avereo-save="local" onClick={() => onSave(mission)} className="flex items-center gap-2 px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm font-medium">
               <Save size={18} /> Sauvegarder
             </button>
           </div>

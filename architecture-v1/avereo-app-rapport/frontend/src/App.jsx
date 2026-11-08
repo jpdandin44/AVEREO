@@ -505,11 +505,10 @@ function SignaturePad({ value, onChange }) {
 
 const rapportPreferences = [{"key": "audience", "label": "Format proposé pour un nouveau rapport", "type": "select", "default": "expert", "options": [{"value": "expert", "label": "Rapport expert"}, {"value": "client", "label": "Synthèse client"}]}];
 
-function Header({ onHome, onLogout }) {
+function Header({ onHome, onLogout, onLocalCopy }) {
   return (
     <header className="app-header">
       <div className="brand-block">
-        <span className="brand-mark">A</span>
         <div>
           <h1>AVEREO Rapport</h1>
           <p>Production de rapports terrain</p>
@@ -524,6 +523,7 @@ function Header({ onHome, onLogout }) {
       )}
       <avereo-account-menu preferences-app="rapport" preferences-label="Rapport" preferences-fields={JSON.stringify(rapportPreferences)}>
         <button slot="items" type="button" onClick={onHome || (() => document.querySelector('main')?.scrollIntoView())}>Mes projets</button>
+        {onLocalCopy && <button slot="local-copy" data-avereo-save="local" data-avereo-proxy="" onClick={onLocalCopy}>Exporter le rapport JSON</button>}
         {ONLINE_SYNC_ENABLED ? <a slot="logout" href="/connect/logout.php" onClick={onLogout}>Se déconnecter</a> : <span slot="logout" hidden></span>}
       </avereo-account-menu>
       </nav>
@@ -1950,7 +1950,7 @@ function OnlineSyncPanel({
           </button>
         )}
         {authenticated && (
-          <button className="button primary" type="button" onClick={onSave} disabled={saving}>
+          <button className="button primary" data-avereo-save="online" type="button" onClick={onSave} disabled={saving}>
             <Save size={18} />
             {saving ? 'Sauvegarde...' : 'Sauver en ligne'}
           </button>
@@ -2077,7 +2077,7 @@ function ReportWizard({
 
   return (
     <div className="screen">
-      <Header onHome={async () => {
+      <Header onLocalCopy={handleExportJson} onHome={async () => {
         try { await saveDraft(report); await onHome(); }
         catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de quitter.'); }
       }} onLogout={async (event) => {

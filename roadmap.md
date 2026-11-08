@@ -5,7 +5,7 @@ title: Roadmap du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-06
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -81,3 +81,7 @@ préparations distinctes CONNECT, Recherche et Passeport restent nécessaires.
 ## Lot transverse Mon espace
 
 Le [suivi canonique](architecture-v1/avereo-platform/data/suivi-fonctions-communes.json) porte le candidat, sa revue et les étapes suivantes. Les autres lots conservent leur état et leurs accords.
+
+## Modèle commun
+
+Le candidat entre en revue locale. La prochaine étape porte sur l’organisation administratrice et les paquets réellement installés en préproduction. [Suivi](architecture-v1/avereo-platform/data/suivi-modele-affichage.json).

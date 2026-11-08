@@ -135,10 +135,6 @@
 
     <!-- Sidebar -->
     <aside class="w-20 lg:w-64 bg-[#0f172a] text-slate-300 flex flex-col transition-all duration-300 shrink-0 z-30">
-        <div class="h-16 flex items-center justify-center lg:justify-start lg:px-6 border-b border-slate-800">
-            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20">A</div>
-            <span class="hidden lg:block ml-3 font-bold text-white tracking-wide">AVEREO <span class="text-[10px] text-blue-300 font-normal align-top ml-1">v1.0</span></span>
-        </div>
         <nav class="flex-1 py-6 space-y-2 px-3">
             <button onclick="ProjectWorkspace.show()" id="nav-workspace" title="Mes projets" class="w-full flex items-center px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-800 hover:text-white transition-all">
                 <i data-lucide="folder-open" class="w-5 h-5 lg:mr-3"></i><span class="hidden lg:block">Mes projets</span>
@@ -156,7 +152,7 @@
                 <span class="hidden lg:block">Risques & Décisions</span>
             </button>
         </nav>
-        <avereo-account-menu id="account-menu" placement="sidebar" compact="sidebar">
+        <avereo-account-menu app-name="Projet" id="account-menu" placement="sidebar" compact="sidebar">
             <button slot="items" type="button" data-account-view="projects">Mes projets</button>
             <button slot="items" type="button" data-account-view="preferences">Préférences</button>
             <a slot="logout" id="account-logout" href="/connect/logout.php" target="_top">Se déconnecter</a>
@@ -239,7 +235,7 @@
                     <i data-lucide="upload" class="w-4 h-4 mr-2"></i>
                     Importer un planning
                 </button>
-                <button onclick="exportProject()" class="px-3 py-2 text-sm border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-50">Exporter JSON</button>
+                <button data-avereo-save="local" data-avereo-proxy onclick="exportProject()" class="px-3 py-2 text-sm border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-50">Exporter JSON</button>
                 <button onclick="exportCsv()" class="px-3 py-2 text-sm border border-slate-200 rounded-lg hover:bg-slate-50">Exporter CSV</button>
                 <button onclick="simulateSync()" class="p-2 text-slate-500 hover:text-blue-600 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 rounded-lg transition-all bg-white" title="Recalculer le planning">
                     <i data-lucide="refresh-cw" class="w-5 h-5"></i>
@@ -255,7 +251,7 @@
         <section id="planning-settings" class="border-b border-slate-200 bg-slate-50 px-6 py-3 shrink-0" aria-label="Paramètres et sauvegarde du projet">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
                 <p id="storage-status" role="status" class="text-sm text-slate-600">Chargement du planning local…</p>
-<button id="online-save" hidden onclick="ProjetOnline.save()" class="text-blue-700 underline">Enregistrer en ligne / Réessayer</button></div><details id="project-options"><summary>Paramètres et récupération</summary>                <div class="flex flex-wrap gap-3 text-xs">
+<button data-avereo-save="online" data-avereo-proxy id="online-save" hidden onclick="ProjetOnline.save()" class="text-blue-700 underline">Enregistrer en ligne / Réessayer</button></div><details id="project-options"><summary>Paramètres et récupération</summary>                <div class="flex flex-wrap gap-3 text-xs">
 
                     <button id="online-reload" hidden onclick="ProjetOnline.reload()" class="text-blue-700 underline">Charger la version en ligne</button>
                     <button id="online-previous" hidden onclick="ProjetOnline.previous()" class="text-slate-600 underline">Copie précédente en ligne</button>

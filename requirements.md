@@ -5,7 +5,7 @@ title: Exigences du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-06
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -38,3 +38,7 @@ La [preparation CONNECT et activation](outillage/acces-preproduction/preparer-co
 ## Cohérence des fonctions communes
 
 Réutiliser la [règle commune](architecture-v1/avereo-platform/docs/fonctionnalites-communes.md) pour les fonctionnalités transversales ; chaque application conserve ses capacités réelles et ses contrôles de droits.
+
+## Présentation commune
+
+Chaque application conserve les repères de compte, d’identité et de sauvegarde du [modèle partagé](architecture-v1/avereo-platform/docs/modele-affichage.md). Les actions reflètent les capacités et les droits réellement disponibles.

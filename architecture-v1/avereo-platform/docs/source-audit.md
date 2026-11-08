@@ -5,7 +5,7 @@ title: Audit source du socle
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -51,3 +51,7 @@ calcul, ni données, ni habilitations. [Audit et qualification](identite-livrabl
 Le nouveau module commun produit des copies de travail à partir du dossier ouvert. Les modèles Word restent privés, le catalogue porte leur empreinte et les intégrations métier restent explicites. [Périmètre et preuves](preparation-missions.md).
 
 Les ordres Projet et Coupe de la livraison #125 comportaient la fiche d’intervention et aucune tâche métier. La version #127 installée en préproduction a livré les étapes des quatre offres et les coordonnées du client depuis les deux cadres. [Constat et suivi](../data/recette-missions/ordres-prestations.json) · [Preuve hébergée](../data/recette-missions/livraison-ordres-preproduction.json).
+
+## 2026-11-08 — Affichage partagé
+
+Le composant participe à la construction des neuf applications et du module RGA. [Comportements et limites du candidat](modele-affichage.md).

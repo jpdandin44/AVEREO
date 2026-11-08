@@ -188,10 +188,10 @@
                 <button onclick="app.undo()" title="Annuler l'action précédente (Ctrl+Z)"><i class="fas fa-undo"></i></button>
                 <button onclick="app.redo()" title="Refaire l'action annulée (Ctrl+Y)"><i class="fas fa-redo"></i></button>
             </div>
-            <button onclick="app.saveProject()"><i class="fas fa-save"></i> Sauvegarder</button>
+            <button data-avereo-save="local" onclick="app.saveProject()"><i class="fas fa-save"></i> Sauvegarder</button>
             <input type="file" id="load-project-input" accept=".json" style="display:none" onchange="app.loadProject(event)">
             <button onclick="document.getElementById('load-project-input').click()"><i class="fas fa-folder-open"></i> Charger</button>
-            <button onclick="app.saveProjectOnline()"><i class="fas fa-cloud-upload-alt"></i> Sauver en ligne</button>
+            <button data-avereo-save="online" onclick="app.saveProjectOnline()"><i class="fas fa-cloud-upload-alt"></i> Sauver en ligne</button>
             <button onclick="app.openProjectOnline()"><i class="fas fa-cloud-download-alt"></i> Ouvrir en ligne</button>
             <button onclick="app.resetProject()"><i class="fas fa-trash-alt"></i> Nouveau</button>
             <button onclick="app.openSectionEditorStandalone()" title="Ouvrir l'éditeur CAO sans ligne de coupe pour charger ou modifier une coupe existante"><i class="fas fa-drafting-compass"></i> Éditeur CAO</button>

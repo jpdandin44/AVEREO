@@ -5,7 +5,7 @@ title: Architecture du socle AVEREO
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -42,3 +42,7 @@ CONNECT existantes ; il n’est pas fourni par ce candidat. [Contrat](docs/ident
 Le menu charge le module à la demande. L’application fournit les champs de son dossier et, lorsqu’elle le permet, une action de reprise dans son formulaire métier. Le navigateur produit les Word à partir du profil commun. La sauvegarde des dossiers reste assurée par chaque application. [Protocole des missions](docs/protocole-missions.md).
 
 La compilation intègre les consignes et les options autorisées du [catalogue](data/modeles-lettres-mission.json) dans le module Missions. Le formulaire affiche cette même liste. Le générateur combine le plan de la prestation avec les coordonnées du seul dossier ouvert. La sélection des options reste en mémoire pendant la préparation de cet ordre.
+
+## Présentation commune et stockage du modèle
+
+Le composant de compte fournit aussi le bandeau. Les réglages publics de CONNECT sont lus sans cookie et les valeurs par défaut s’appliquent hors connexion. [Contrat, portée et construction autonome](docs/modele-affichage.md).

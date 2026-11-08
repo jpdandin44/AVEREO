@@ -25,6 +25,40 @@ tags:
 security:
   - sessionCookie: []
 paths:
+  /appearance:
+    get:
+      tags: [System]
+      operationId: readPublicAppearance
+      summary: Modèle visuel public de cet environnement
+      security: []
+      responses:
+        "200": {$ref: "#/components/responses/Appearance"}
+  /admin/appearance:
+    get:
+      tags: [Administration]
+      operationId: readAdminAppearance
+      summary: Lire le modèle dans l’administration AVEREO
+      responses:
+        "200": {$ref: "#/components/responses/Appearance"}
+        "401": {$ref: "#/components/responses/AuthenticationRequired"}
+        "403": {$ref: "#/components/responses/OrganizationAccessDenied"}
+    put:
+      tags: [Administration]
+      operationId: updateAdminAppearance
+      summary: Appliquer le modèle commun à cet environnement
+      parameters:
+        - {$ref: "#/components/parameters/CsrfToken"}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/Appearance"}
+      responses:
+        "200": {$ref: "#/components/responses/Appearance"}
+        "401": {$ref: "#/components/responses/AuthenticationRequired"}
+        "403": {description: Autorisation ou jeton CSRF refusé}
+        "422": {description: Paramètres hors du modèle}
+        "503": {description: Stockage privé indisponible}
   /health:
     get:
       tags: [System]
@@ -781,6 +815,16 @@ components:
         minLength: 32
         maxLength: 128
   responses:
+    Appearance:
+      description: Réglages du bandeau et du menu de compte
+      content:
+        application/json:
+          schema:
+            type: object
+            required: [data, meta]
+            properties:
+              data: {$ref: "#/components/schemas/Appearance"}
+              meta: {$ref: "#/components/schemas/Meta"}
     AuthenticationRequired:
       description: Session absente ou expirée
       content:
@@ -812,6 +856,14 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorResponse"
   schemas:
+    Appearance:
+      type: object
+      additionalProperties: false
+      required: [headerHeight, logoWidth, accountTone]
+      properties:
+        headerHeight: {type: integer, enum: [56, 68, 84], default: 68}
+        logoWidth: {type: integer, enum: [100, 116, 136], default: 116}
+        accountTone: {type: string, enum: [mist, white], default: mist}
     Meta:
       type: object
       required: [requestId]

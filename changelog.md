@@ -5,7 +5,7 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -181,3 +181,7 @@ aucune base migrée et aucune production modifiée.
 ## 6 novembre 2026 — Mon espace partagé
 
 Candidat de présentation commune et règle transversale, raccordés aux applications existantes. [Qualification](architecture-v1/avereo-platform/docs/qualification-mon-espace.md). Aucun déploiement réalisé par ce lot.
+
+## 2026-11-08 — Candidat d’affichage commun
+
+Le bandeau et le menu Mon compte utilisent le même modèle dans les applications et RGA. L’administration CONNECT prépare le réglage commun. [Guide](architecture-v1/avereo-platform/docs/modele-affichage.md).
