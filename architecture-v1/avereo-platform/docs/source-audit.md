@@ -5,10 +5,14 @@ title: Audit source du socle
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
+
+## 8 novembre 2026 — Outils complémentaires
+
+La version livrée de #127 présentait Missions dans Coupe, RGA et Passeport Immo. Dans le candidat local, ces surfaces ne chargent ni le formulaire ni les modèles de mission. Rapport conserve son générateur sur le domaine partagé avec RGA. [Suivi et étendue des essais](../data/recette-missions/outils-complementaires.json).
 
 ## 2026-11-06 — Qualification hébergée du correctif RGA
 

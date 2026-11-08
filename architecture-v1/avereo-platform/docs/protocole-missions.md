@@ -5,14 +5,22 @@ title: Protocole des missions, des clients et des livrables
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, missions, clients, livrables, preproduction]
 ---
 
 # Protocole des missions et des livrables
 
-Le responsable souhaite préparer la lettre, l’ordre et le rapport depuis un même dossier et saisir les coordonnées du client une seule fois. **Mon espace → Missions** est disponible dans les sept applications cibles de préproduction. La partie sur le répertoire partagé entre applications est une proposition d’architecture à examiner. [Recette des documents et cas de Projet et Coupe](preparation-missions.md#installation-et-recette-hébergée-du-7-novembre-2026).
+Le responsable souhaite préparer la lettre, l’ordre et le rapport depuis un même dossier et saisir les coordonnées du client une seule fois. La partie sur le répertoire partagé entre applications est une proposition d’architecture à examiner. Les PR #125 et #127 avaient livré **Mon espace → Missions** sur sept sites de préproduction. [Recette de cette livraison](preparation-missions.md#installation-et-recette-hébergée-du-7-novembre-2026).
+
+## Applications qui génèrent des missions
+
+Rapport, Drone et Thermo préparent la lettre et l’ordre de mission. Coupe, RGA et Passeport Immo fournissent respectivement le dessin de coupe, la consultation des risques et le dossier du bien. Lors d’une prestation, l’intervenant utilise ces outils selon le besoin puis revient dans l’application qui porte la mission pour éditer ses documents. Ce parcours n’ajoute aucun transfert automatique entre dossiers. Projet conserve son parcours de génération pour le pilotage. Les entrées existantes de CONNECT, Recherche et Saisie unique conservent leur fonctionnement.
+
+Dans le candidat du 8 novembre, « Missions » est absent du menu de Coupe, du menu de Passeport Immo, de l’accueil RGA et de la carte RGA ouverte seule. Dans la carte intégrée, le menu visible appartient à l’accueil RGA. « Mes projets » y ouvre toujours la liste de points du cadre. Le menu de Rapport, sur le même domaine, donne accès aux lettres et aux ordres.
+
+Le paquet de préproduction porte sur trois sites. Avant installation, comparer les fichiers hébergés au manifeste, vérifier que les deux nouveaux noms de fichiers de Passeport Immo sont libres et sauvegarder les fichiers remplacés ou retirés. Après installation, actualiser les onglets, vérifier les menus de Coupe, Passeport Immo et des deux entrées RGA, puis générer une lettre et un ordre depuis Rapport. Le reçu du candidat distingue la répétition locale sur copies et la livraison hébergée. [Suivi du périmètre et des vérifications](../data/recette-missions/outils-complementaires.json).
 
 ## Parcours proposé
 
@@ -46,11 +54,11 @@ Les sections « Périmètre de la mission », « Méthodes et moyens » et « Li
 | Rapport | Client, e-mail, site d’intervention, date et référence | Reporter au dossier met à jour le formulaire. Les deux Word reprennent les coordonnées de mission. |
 | Thermo | Client, site, date et référence du rapport | Reporter au dossier alimente le rapport thermographique. Les coordonnées supplémentaires figurent en couverture. |
 | Drone | Client, adresse, date et identifiant de la mission | Reporter au dossier prépare la fiche de vol. Sauvegarder rend l’ordre accessible depuis la liste des missions. |
-| Passeport Immo | Bien ouvert et client déjà associé à ses documents | Lecture du lien existant. Le PDF d’estimation reprend le nom du client associé. |
+| Passeport Immo | Outil du bien, génération de mission désactivée | Les documents, le client associé et le PDF d’estimation se gèrent dans le bien. |
 | Projet | Référence du projet en ligne lorsque le catalogue et le projet actif concordent | Le champ « Client / référence » est présenté pour lecture. L’opérateur confirme l’identité du client dans la mission. |
-| Coupe | Nom et adresse renseignés dans la coupe ouverte | Reprise des informations disponibles sans écrire dans le dessin. |
+| Coupe | Outil de dessin, génération de mission désactivée | Le nom et l’adresse restent des champs du dessin. |
 | Saisie unique | Client et logement du dossier fictif ouvert | Lecture seule des champs de la fiche. L’application autonome conserve ses formulaires et son usage fictif. |
-| RGA | Module du menu parent sur la carte intégrée, formulaire autonome ailleurs | Une adresse de carte ou une parcelle ne suffit pas à identifier le client. |
+| RGA | Outil cartographique, génération de mission désactivée | La consultation, les projets locaux et le retour vers Rapport restent disponibles. |
 | CONNECT et Recherche | Formulaire autonome | Le portail et le corpus ne portent pas de dossier client métier. |
 
 Les coordonnées supplémentaires sont optionnelles dans les anciens dossiers. Rapport, Thermo et Drone gardent dans leur dossier un petit bloc de mission pour les données complémentaires. Leurs champs natifs font foi pour le client et le site. L’action de génération ne crée pas de base clients, de compte ou de projet. Le modèle d’entreprise reste fixe dans ce candidat. La sélection d’un fichier de modèle ne modifie aucun réglage d’organisation.

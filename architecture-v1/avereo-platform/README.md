@@ -5,7 +5,7 @@ title: README
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -45,7 +45,7 @@ futurs ont une [source JSON unique](data/report-organization.json).
 
 ## Missions et rapports
 
-Ouvrir **Mon espace → Missions** depuis un dossier. La lettre et l’ordre Word utilisent les coordonnées du formulaire. Le catalogue de clients entre applications figure dans le protocole proposé. [Protocole des missions](docs/protocole-missions.md).
+Ouvrir **Mon espace → Missions** depuis un dossier de Rapport, Drone, Thermo ou Projet. La lettre et l’ordre Word utilisent les coordonnées du formulaire. Le candidat du 8 novembre retire la génération dans Coupe, RGA et Passeport Immo. [Périmètre et recette](docs/protocole-missions.md#applications-qui-génèrent-des-missions).
 
 Pour préparer un ordre, choisir la prestation, vérifier l’adresse postale et le site d’intervention, puis ouvrir **Étapes de l’ordre de mission**. Le document reprend les tâches de l’offre et les options retenues. En préproduction, les huit ordres issus de Projet et Coupe ont été contrôlés dans Word. [Mode d’emploi](docs/protocole-missions.md#préparer-lordre-de-chaque-prestation) · [Résultats](docs/preparation-missions.md#ordres-détaillés-de-la-pr-127-en-préproduction).
 

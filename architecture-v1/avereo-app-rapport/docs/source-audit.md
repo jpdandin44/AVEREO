@@ -5,13 +5,17 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 8 novembre 2026 — Menus de Rapport et de RGA
+
+Le candidat désactive Missions sur l’accueil et la carte RGA. Dans la carte intégrée, « Mes projets » s’ouvre toujours depuis le menu parent. Rapport conserve son formulaire de mission sur la même origine et produit les lettres et les ordres des quatre prestations. [Recette du périmètre](../../avereo-platform/docs/protocole-missions.md#applications-qui-génèrent-des-missions).
 
 ## 2026-11-06 — Correctif RGA livré
 

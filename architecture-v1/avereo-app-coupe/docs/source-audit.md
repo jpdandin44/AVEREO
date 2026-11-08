@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -88,3 +88,7 @@ Les contrôles actualisés sont dans la [qualification transversale](../../avere
 ## 7 novembre 2026 — Module Missions en recette locale
 
 Missions reprend le nom du dessin et l’adresse présents dans les champs de la coupe ouverte. La recette a vérifié les valeurs saisies sur un dessin fictif. Le raccordement est additif et indépendant du chargement du moteur CAO. [Recette commune](../../avereo-platform/docs/preparation-missions.md).
+
+## 8 novembre 2026 — Coupe comme outil de mission
+
+Le candidat retire l’action Missions et la transmission du nom et de l’adresse du dessin à ce formulaire. Le menu conserve « Mes projets » et les réglages de grille et d’aimantation. Le moteur CAO et ses exports restent ceux de Coupe. [Candidat des outils complémentaires](../../avereo-platform/data/recette-missions/outils-complementaires.json).
