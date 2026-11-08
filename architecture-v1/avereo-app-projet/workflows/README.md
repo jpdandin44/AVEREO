@@ -5,7 +5,7 @@ title: Génération et reprise du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - projet
@@ -15,6 +15,8 @@ tags:
 # Génération et reprise du planning Projet
 
 ## CI Développements privée
+
+Le constructeur du paquet utilise aussi les modèles inactifs de `templates/` et le [plan structuré de préparation](development-preparation-plan.json). Le [guide de préproduction](../docs/preproduction-developpements.md) décrit publication privée et récupération ciblée, sans transport automatique, configuration active ou opération serveur.
 
 Le [workflow dédié](ci-developpements.md) décrit tests, fixtures, identité de source et preuves du paquet privé. Il ne génère pas le pilote, ne contacte aucun hébergement et ne déploie rien.
 

@@ -5,7 +5,7 @@ title: Contrôles CI du module Développements privé
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [projet, developpements, ci, prive, lecture-seule]
 ---
@@ -42,6 +42,8 @@ Le sas natif généré est préparé **avant** les tests qui l'utilisent, aussi 
 Sous POSIX, les fixtures utilisent des dossiers 0700 et fichiers 0600. Le test de configuration vérifie aussi le refus avec permissions volontairement trop ouvertes, puis la réadmission après rétablissement ; ces écritures concernent exclusivement les fichiers fictifs temporaires.
 
 ## Identité de source et sorties
+
+Le premier lot local du 8 novembre étend la liste fermée du paquet aux trois modèles inactifs Projet/CONNECT/Drupal et à `preparation/plan.json`. Le contrôle compare le hash du workflow public sans le lancer ou le modifier. Les quatre nouveaux tests de préparation/récupération sur copie font partie des suites existantes ; leur exécution locale ne vaut pas une nouvelle CI GitHub. Aucun changement du workflow CI ni de livraison n'est requis pour les découvrir.
 
 Le constructeur [prepare-development-preproduction.mjs](prepare-development-preproduction.mjs) relève HEAD et l'état Git avant/après construction. Si la source est propre et le HEAD inchangé, `sourceSha` vaut ce SHA et `localUncommitted:false`. Sinon `sourceSha:null` et `localUncommitted:true` ; aucune version propre n'est inventée.
 

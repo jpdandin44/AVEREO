@@ -14,7 +14,7 @@ export async function prepareDevelopmentPreproduction(output){
   try{await lstat(output);throw Error('Préserver le paquet existant : choisir un nouveau dossier.');}catch(e){if(e.code!=='ENOENT')throw e;}
   await mkdir(output,{mode:0o700});
   const packageRoot=join(output,'package'),buildDir=join(output,'build-private');
-  for(const name of ['public/developpements','private/runtime','private/assets','configuration','dependencies'])await mkdir(join(packageRoot,name),{recursive:true,mode:0o700});
+  for(const name of ['public/developpements','private/runtime','private/assets','configuration','dependencies','preparation'])await mkdir(join(packageRoot,name),{recursive:true,mode:0o700});
   const {build}=await import('../frontend/node_modules/vite/dist/node/index.js');
   await build({configFile:join(app,'workflows/development-hosted.config.mjs'),build:{outDir:buildDir,emptyOutDir:false}});
   const assets={};
@@ -30,18 +30,15 @@ export async function prepareDevelopmentPreproduction(output){
   for(const file of ['Failure.php','SessionAuthorization.php','SnapshotReader.php','Runtime.php','Factory.php'])await copyFile(join(app,'backend/developments',file),join(packageRoot,'private/runtime',file));
   await copyFile(resolve(app,'../avereo-app-connect/backend/src/Developments/SignedMessage.php'),join(packageRoot,'private/runtime/SignedMessage.php'));
   for(const file of ['index.php','api.php','bootstrap.php','module-link.js'])await copyFile(join(app,'backend/developments/public',file),join(packageRoot,'public/developpements',file));
-  await writeFile(join(packageRoot,'configuration/developments.example.php'),`<?php
-return [
- 'enabled'=>false,
- 'environment'=>'preproduction',
- 'planning_config_file'=>'/home/COMPTE/.avereo/projet-preprod/planning.php',
- 'runtime_directory'=>'/home/COMPTE/.avereo/projet-preprod/developpements-runtime',
- 'asset_directory'=>'/home/COMPTE/.avereo/projet-preprod/developpements-assets',
- 'storage_directory'=>'/home/COMPTE/.avereo/projet-preprod/developpements',
- 'project_channel_key'=>'A_RENSEIGNER_EN_PRIVE_APRES_QUALIFICATION',
- 'connect_authorization_url'=>'https://CONNECT_A_QUALIFIER/api/v1/developments/authorize',
-];
-`,{flag:'wx',mode:0o600});
+  const plan=JSON.parse(await readFile(join(app,'workflows/development-preparation-plan.json'),'utf8'));
+  for(const file of plan.configuration.templates){
+    if(!/^(?:developments|connect-developments|drupal-authority)\.example\.php$/.test(file))throw Error('Modèle privé inattendu.');
+    await writeFile(join(packageRoot,'configuration',file),await readFile(join(app,'workflows/templates',file)),{flag:'wx',mode:0o600});
+  }
+  const workflow=await readFile(join(repo,plan.delivery.workflow));
+  const preparation={...plan,deliveryObservation:{workflowSha256:sha(workflow),deleteOptionObserved:/--delete\b/.test(workflow.toString()),
+    observation:'source_only_not_a_remote_target_or_rsync_dry_run',protectionApplied:false}};
+  await writeFile(join(packageRoot,'preparation/plan.json'),JSON.stringify(preparation,null,2),{flag:'wx',mode:0o600});
   const upstreamPaths=[
     'architecture-v1/avereo-app-connect/backend/src/Developments/SignedMessage.php',
     'architecture-v1/avereo-app-connect/backend/src/Developments/AuthorizationBroker.php',
