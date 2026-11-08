@@ -25,6 +25,8 @@ Les ordres détaillés des quatre offres sont disponibles en préproduction. Les
 
 La vérification des options dans Chrome est terminée pour les deux applications. La relecture métier de chaque ordre reste à faire avant de le remettre à un client. [Résultats des quatre offres](docs/recette-options-ordres.md#vérification-dans-chrome-du-8-novembre-2026).
 
+Le retrait de la génération dans Coupe, RGA et Passeport Immo est en Développement local. La prochaine vérification de préproduction porte sur l’absence de Missions dans les trois outils et sur sa présence dans Rapport. [Candidat et paquet](data/recette-missions/outils-complementaires.json).
+
 ## Itération Mon espace
 
 PR #119 fusionnée ; sa préparation de 37 fichiers est conservée comme historique. PR #121 fusionnée et déployée sur les sept cibles : 40 fichiers vérifiés, conservation des configurations et des plannings prouvée. La [recette hébergée](docs/livraison-mon-espace.md) lève la réserve RGA après livraison PR #122. L’accès aux projets en ligne de Coupe reste à cadrer séparément. Recherche nécessite sa première cible ; Saisie unique reste autonome. [Suivi unique](data/suivi-fonctions-communes.json). Revue, préproduction autorisée puis production constituent des étapes distinctes.

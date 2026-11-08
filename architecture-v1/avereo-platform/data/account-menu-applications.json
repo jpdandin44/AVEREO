@@ -52,6 +52,9 @@
       "modules": [
         "rga"
       ],
+      "moduleCapabilities": {
+        "rga": ["projects", "preferences", "account", "applications", "logout"]
+      },
       "workspaceScope": "Rapports natifs ; préférences du navigateur. RGA : liste de points et préférences distinctes"
     },
     {
@@ -65,8 +68,7 @@
         "projects",
         "account",
         "applications",
-        "logout",
-        "missions"
+        "logout"
       ],
       "workspaceScope": "Projets en ligne natifs ; grille et aimantation du navigateur"
     },
@@ -129,8 +131,7 @@
         "account",
         "applications",
         "administration",
-        "logout",
-        "missions"
+        "logout"
       ],
       "workspaceScope": "Biens natifs ; préférences dans ce navigateur"
     },

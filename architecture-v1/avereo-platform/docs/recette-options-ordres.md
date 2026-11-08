@@ -14,6 +14,8 @@ tags: [missions, options, word, projet, coupe, preproduction]
 
 Une option cochée doit ajouter son intitulé, sa consigne et sa ligne « À consigner » à la fin de l’ordre Word. Une case décochée doit retirer ces trois éléments du prochain fichier. Si aucune case n’est cochée, le document se termine après les étapes obligatoires.
 
+Les résultats ci-dessous portent sur la version de la PR #127, avant la demande de retrait de Missions dans Coupe. Pour le candidat suivant, ce parcours reste applicable à Projet. La vérification attendue dans Coupe est désormais l’absence du générateur et la disponibilité du dessin, de « Mes projets » et des préférences. [Nouveau périmètre](protocole-missions.md#applications-qui-génèrent-des-missions).
+
 ## Vérification dans Chrome du 8 novembre 2026
 
 Les quatre offres ont été vérifiées dans Projet et Coupe sur les deux journées. Chaque offre a produit un ordre sans option, un ordre avec la sélection A puis un ordre où les cases de A ont été décochées et remplacées par celles de B. Dans les deux applications, le changement d’offre a retiré la sélection précédente. Après fermeture de 360 Premium avec deux cases cochées, le formulaire rouvert a également produit un ordre sans rubrique facultative.

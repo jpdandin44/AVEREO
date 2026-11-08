@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
 
+## 8 novembre 2026 — Outils complémentaires
+
+La version livrée de #127 présentait Missions dans Coupe, RGA et Passeport Immo. Dans le candidat local, ces surfaces ne chargent ni le formulaire ni les modèles de mission. Rapport conserve son générateur sur le domaine partagé avec RGA. [Suivi et étendue des essais](../data/recette-missions/outils-complementaires.json).
+
 ## 2026-11-06 — Qualification hébergée du correctif RGA
 
 PR #122 est fusionnée et son fichier RGA identique au candidat testé est installé. Le [reçu](livraison-mon-espace.md) confirme la navigation depuis la carte intégrée et la conservation de tous les autres fichiers, configurations et plannings. Les constats de correction locale ci-dessous deviennent historiques.

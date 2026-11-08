@@ -39,7 +39,7 @@ CONNECT existantes ; il n’est pas fourni par ce candidat. [Contrat](docs/ident
 
 ## Génération de mission dans l’application
 
-Le menu charge le module à la demande. L’application fournit les champs de son dossier et, lorsqu’elle le permet, une action de reprise dans son formulaire métier. Le navigateur produit les Word à partir du profil commun. La sauvegarde des dossiers reste assurée par chaque application. [Protocole des missions](docs/protocole-missions.md).
+Le menu charge le module à la demande sur les surfaces qui génèrent des missions. Le manifeste commande la présence de `assets/missions.js` dans le livrable. Sur le domaine partagé de Rapport, le menu marqué `no-missions` sur les pages RGA empêche aussi l’ouverture du module déjà chargé. Les applications de mission fournissent les champs de leur dossier et, lorsqu’elles le permettent, une action de reprise dans le formulaire métier. Le navigateur produit les Word à partir du profil commun. La sauvegarde des dossiers reste assurée par chaque application. [Protocole des missions](docs/protocole-missions.md).
 
 La compilation intègre les consignes et les options autorisées du [catalogue](data/modeles-lettres-mission.json) dans le module Missions. Le formulaire affiche cette même liste. Le générateur combine le plan de la prestation avec les coordonnées du seul dossier ouvert. La sélection des options reste en mémoire pendant la préparation de cet ordre.
 

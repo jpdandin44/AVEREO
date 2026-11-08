@@ -5,7 +5,7 @@ title: Exigences
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -40,6 +40,6 @@ ni valeur de remplacement. L’identité reste fixe jusqu’au service administr
 
 ## Coordonnées réutilisées dans les livrables
 
-Conserver séparément le client, son adresse postale, le site d’intervention, la référence du dossier et celle de la mission. Choisir explicitement l’offre. Réserver au seul administrateur de l’organisation la future publication des mentions et modèles communs. [Protocole des missions](docs/protocole-missions.md).
+Conserver séparément le client, son adresse postale, le site d’intervention, la référence du dossier et celle de la mission. Choisir explicitement l’offre. Réserver au seul administrateur de l’organisation la future publication des mentions et modèles communs. Coupe, RGA et Passeport Immo doivent rester disponibles comme outils complémentaires et ne doivent pas produire de lettres ou d’ordres de mission. [Protocole des missions](docs/protocole-missions.md#applications-qui-génèrent-des-missions).
 
 L’ordre doit fournir pour chacune des quatre prestations un déroulé exploitable, une consigne et une trace à consigner par étape. Y reprendre le nom, l’adresse postale, l’e-mail et le téléphone depuis le dossier ou la saisie de l’intervenant. Signaler les coordonnées manquantes et distinguer les options à sélectionner des tâches comprises dans l’offre. [Critères et périmètre](docs/protocole-missions.md#préparer-lordre-de-chaque-prestation).
