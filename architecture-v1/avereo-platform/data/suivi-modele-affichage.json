@@ -11,13 +11,14 @@
     "Mise en production"
   ],
   "phase": "Développement local",
-  "status": "pull_request_open",
+  "status": "follow_up_local_review",
   "base": "22ea7fae57fb21ef2b7220d0c68a87b85853b4d6",
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/modele-commun-applications",
     "base": "main",
-    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/131"
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/131",
+    "mergedAtCommit": "59e4edb5180a6c840863f028c9f4bb69ea75f86d"
   },
   "documentation": "../docs/modele-affichage.md",
   "reviewEnvironment": "local",
@@ -27,10 +28,20 @@
     "Tests du menu, parité Passeport et tests PHP CONNECT avec fixtures",
     "Chrome local 1200 et 320 px sur neuf applications et RGA, portail sur session fictive"
   ],
-  "nextAction": "Revue de la PR et qualification de la configuration administratrice, des variantes hébergées et du retour arrière avant installation.",
+  "nextAction": "Revue de la correction Rapport avant qualification sur cible hébergée.",
   "deployment": {
     "preproduction": false,
     "production": false
   },
-  "historique": "Les preuves historiques Passeport Immo restent identiques à main. Le nouvel écart figure dans l’annexe source-audit-mon-espace.md et le contrôle de parité."
+  "historique": "Les preuves historiques Passeport Immo restent identiques à main. Le nouvel écart figure dans l’annexe source-audit-mon-espace.md et le contrôle de parité.",
+  "ajustementRapport": {
+    "branch": "fix/rapport-bandeau-unique",
+    "objectif": "Afficher un seul bandeau. Placer Accueil dans la navigation des étapes.",
+    "revue": "https://github.com/jpdandin44/AVEREO/pulls?q=head%3Afix%2Frapport-bandeau-unique",
+    "preuves": [
+      "101 tests Rapport réussis et paquet vérifié",
+      "Chrome : 1180, 390 et 320 px ; retour via Accueil et Mes projets, reprise du brouillon après rechargement",
+      "Stockage indisponible simulé : l’éditeur conserve la saisie et propose l’export JSON."
+    ]
+  }
 }

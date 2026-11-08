@@ -173,3 +173,5 @@ Les champs client, adresse du logement, référence et date restent ceux du doss
 ## 2026-11-08 — Présentation commune
 
 Les actions communes réutilisent les handlers du rapport. Le point RGA reste distinct du dossier Rapport. [Matrice des actions](../../avereo-platform/docs/modele-affichage.md).
+
+Dans l’éditeur, **Accueil** et **Mon compte → Mes projets** utilisent le même retour avec sauvegarde préalable du brouillon.
