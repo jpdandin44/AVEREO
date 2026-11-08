@@ -47,3 +47,5 @@ Le contrôle de parité inverse explicitement les sept substitutions du menu et 
 ## 8 novembre 2026 — Modèle commun
 
 Le bouton Mon compte rejoint le bas gauche. Le bandeau supérieur indique la sauvegarde du bien selon son mode serveur ou démonstration. Le contrôle de parité vérifie les substitutions exactes, y compris sur l’écran de connexion. [Matrice des actions du candidat](../../avereo-platform/docs/modele-affichage.md).
+
+Le frontal PHP sert le seul PNG officiel après vérification de la session, y compris en requête HEAD. Le test Apache vérifie son contenu, son type MIME et le refus des autres PNG.
