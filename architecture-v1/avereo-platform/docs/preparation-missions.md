@@ -5,7 +5,7 @@ title: Recette des rapports et préparation des missions
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [avereo, missions, rapports, recette, preproduction]
 ---
@@ -91,7 +91,7 @@ Depuis **Mon espace → Missions** dans les cadres de Projet et de Coupe, Google
 
 La seconde page a été comparée au catalogue fusionné, dans l’ordre prévu, pour chaque titre, consigne et trace à conserver. Les huit ordres ont été émis avec les tâches de base. Les fichiers Word et les PDF correspondants sont conservés en privé. [Reçu des contrôles et empreintes des huit documents](../data/recette-missions/livraison-ordres-preproduction.json).
 
-La [recette des options dans Projet et Coupe](recette-options-ordres.md) décrit les sélections à reproduire, les cinq téléchargements supplémentaires dans Coupe et la vérification distincte des deux générateurs.
+Les quatre offres ont aussi été vérifiées avec des cases cochées puis retirées dans les cadres Chrome de Projet et Coupe. [Procédure et résultats des 7 et 8 novembre](recette-options-ordres.md).
 
 ## Mise en production
 

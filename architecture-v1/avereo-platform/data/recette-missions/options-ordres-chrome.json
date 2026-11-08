@@ -1,0 +1,305 @@
+{
+  "observedAt": "2026-11-08T10:29:49.309399+00:00",
+  "environment": "preproduction",
+  "browser": "Google Chrome sous Windows, session CONNECT autorisée et cadres intégrés",
+  "deployedSource": {
+    "pr": 127,
+    "mergeSha": "2afbdcf065d7a9fee7c868e4e3bb6116e881e7b6",
+    "receipt": "livraison-ordres-preproduction.json"
+  },
+  "previousCoverage": "options-ordres-preproduction.json",
+  "catalog": "../modeles-lettres-mission.json",
+  "scope": "Sélections SANS, A, B du guide. Après fermeture avec B cochée sur 360 Premium, réouverture, choix de la même offre et émission sans option. Coordonnées fictives et références distinctes. Aucun report au dossier.",
+  "checks": [
+    "toutes les étapes obligatoires, dans leur ordre, avec leurs consignes et traces",
+    "coordonnées et références fictives dans les tableaux du Word",
+    "rubrique facultative absente si aucune case cochée",
+    "comparaison exacte de toute la rubrique facultative dans le DOCX et dans le rendu PDF de Microsoft Word",
+    "consigne et trace de chaque option décochée absentes du rendu"
+  ],
+  "results": {
+    "projet": {
+      "entry": "https://projet-preprod.avereo.fr/",
+      "framePath": "/legacy-app.html",
+      "module": {
+        "url": "https://projet-preprod.avereo.fr/assets/missions.js",
+        "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7"
+      },
+      "orders": 13,
+      "pages": 27,
+      "afterCloseAndReopen": "no_options",
+      "checks": [
+        {
+          "offer": "habitat-confort",
+          "case": "SANS",
+          "file": "ordre-OPT08-PROJET-HABITAT-CONFORT-SANS.docx",
+          "selected": [],
+          "pages": 2,
+          "docxSha256": "b44ee48102bf6840196923133168f383efac04d24ed2f74f0c4258ae6e4b95aa",
+          "pdfSha256": "49ccd74ed306e3689f97ce66b8c0c683625d70b92027b532ebbfec1974a7bd15"
+        },
+        {
+          "offer": "habitat-confort",
+          "case": "A",
+          "file": "ordre-OPT08-PROJET-HABITAT-CONFORT-A.docx",
+          "selected": [
+            "thermographie-interieure",
+            "accompagnement"
+          ],
+          "pages": 2,
+          "docxSha256": "e055fe30cad58817dd4432b4be10999cb53bea40263962b78ec5a6b8920abb05",
+          "pdfSha256": "70d16fe213c288b65161073b3a9657c6275e052c3025229f2288f6b4fdc997dc"
+        },
+        {
+          "offer": "habitat-confort",
+          "case": "B",
+          "file": "ordre-OPT08-PROJET-HABITAT-CONFORT-B.docx",
+          "selected": [
+            "analyse-documentaire"
+          ],
+          "pages": 2,
+          "docxSha256": "fd9113782f439523ea55d7411d82fa746da643fb86612c1e4d0f8a977d889e01",
+          "pdfSha256": "d42265d44441cc494d4df75372d57c36f5911a82280aaacccc9d2a925823fd34"
+        },
+        {
+          "offer": "energie-travaux",
+          "case": "SANS",
+          "file": "ordre-OPT08-PROJET-ENERGIE-TRAVAUX-SANS.docx",
+          "selected": [],
+          "pages": 2,
+          "docxSha256": "340011dc2bf007dab81f95ee1cd8b29ec5c8e6648f99603dfea3ad5eef807067",
+          "pdfSha256": "c0670fe15991958066f012219c6ea0ed67eef7b29baa99cebcc3c38637ddb511"
+        },
+        {
+          "offer": "energie-travaux",
+          "case": "A",
+          "file": "ordre-OPT08-PROJET-ENERGIE-TRAVAUX-A.docx",
+          "selected": [
+            "relecture-devis",
+            "analyse-documentaire"
+          ],
+          "pages": 2,
+          "docxSha256": "2e82a48440712d947298016abe728f41a82a4c056e85f952f15305558d4f7f58",
+          "pdfSha256": "b64bdb98fb59d54b69f945066050a1da87a5bf21094458e3676662bc15482453"
+        },
+        {
+          "offer": "energie-travaux",
+          "case": "B",
+          "file": "ordre-OPT08-PROJET-ENERGIE-TRAVAUX-B.docx",
+          "selected": [
+            "thermographie-interieure",
+            "accompagnement"
+          ],
+          "pages": 2,
+          "docxSha256": "c1fc811daf9dd2e5c3a6ce333924cab3dd66993f7bd58032d2ec8b9c6816271c",
+          "pdfSha256": "fc6e72d3c8a8249a7bb9afbe7b7d8c69c86f820be182f6bc7ac11892ff1b893e"
+        },
+        {
+          "offer": "prevention-bati",
+          "case": "SANS",
+          "file": "ordre-OPT08-PROJET-PREVENTION-BATI-SANS.docx",
+          "selected": [],
+          "pages": 2,
+          "docxSha256": "8b7e664f5258cc476a1cebde5ba6ea7dbb6fc18f83072edf24800ab177a8edce",
+          "pdfSha256": "e86c20bf0dde71be79879814519a2ea0e17e0e28c8f24192401a5856b1c402b3"
+        },
+        {
+          "offer": "prevention-bati",
+          "case": "A",
+          "file": "ordre-OPT08-PROJET-PREVENTION-BATI-A.docx",
+          "selected": [
+            "inspection-drone",
+            "analyse-documentaire"
+          ],
+          "pages": 2,
+          "docxSha256": "0ab392f177493611de8196189596e01b77f27519b2a666ecc7f8f5a2cc81b439",
+          "pdfSha256": "6d2c2824c5ef2c80f237e50c3ad03fb5b1ff1fbee7ba650d6e3597a7195a8d28"
+        },
+        {
+          "offer": "prevention-bati",
+          "case": "B",
+          "file": "ordre-OPT08-PROJET-PREVENTION-BATI-B.docx",
+          "selected": [
+            "thermographie",
+            "accompagnement"
+          ],
+          "pages": 2,
+          "docxSha256": "d07bf36e15d18df3b6c72adc086cdc22da63af17aa1d54efe5a1875b8be27d9a",
+          "pdfSha256": "a44ad34895d4e584c14b745ffb4950c4c648a76282181739cc753c874134a925"
+        },
+        {
+          "offer": "360-premium",
+          "case": "SANS",
+          "file": "ordre-OPT08-PROJET-360-PREMIUM-SANS.docx",
+          "selected": [],
+          "pages": 2,
+          "docxSha256": "60935dbd5b217015098d73046002026c9fd2f3093c38d26af742e8fbe205a7dd",
+          "pdfSha256": "544d1e8a8f95d82c4cdc09828369a8e7517396bb41470d589c33da6e4a5bcf7a"
+        },
+        {
+          "offer": "360-premium",
+          "case": "A",
+          "file": "ordre-OPT08-PROJET-360-PREMIUM-A.docx",
+          "selected": [
+            "fissures-rga",
+            "analyse-documentaire"
+          ],
+          "pages": 3,
+          "docxSha256": "a6b4bfd8736b86307ae47f27c3860019218388bb619af826eec60b80763f753c",
+          "pdfSha256": "5706ac1505f8a0c73274ae484fc3f10672a121dfea671b1e2836f924677a1dad"
+        },
+        {
+          "offer": "360-premium",
+          "case": "B",
+          "file": "ordre-OPT08-PROJET-360-PREMIUM-B.docx",
+          "selected": [
+            "relecture-devis",
+            "accompagnement"
+          ],
+          "pages": 2,
+          "docxSha256": "1d041702e4c7aa8e15e046fafd6c5d5890c2e914bd0c2e689edffdf580c5937a",
+          "pdfSha256": "39cd3ca95faf1d44902bedaad56f4c0dc33f791f7e9d5aa3faaab2d3e3dc9a50"
+        },
+        {
+          "offer": "360-premium",
+          "case": "REOUVERT",
+          "file": "ordre-OPT08-PROJET-360-PREMIUM-REOUVERT.docx",
+          "selected": [],
+          "pages": 2,
+          "docxSha256": "5dde23fad9a757eed18961aea115e10298786e4da73cae3df7404d79b63253d2",
+          "pdfSha256": "7b362cf8fd76bca2b1e423ae02855e667824194f45b241b32c332f91114e14d5"
+        }
+      ]
+    },
+    "coupe": {
+      "entry": "https://coupe-preprod.avereo.fr/",
+      "framePath": "/legacy-app.html",
+      "module": {
+        "url": "https://coupe-preprod.avereo.fr/assets/missions.js",
+        "sha256": "71458f5843394dadd64443ac18578d14ca49a8f28de8553780b04b1ea106ebc7"
+      },
+      "orders": 10,
+      "pages": 21,
+      "afterCloseAndReopen": "no_options",
+      "checks": [
+        {
+          "offer": "energie-travaux",
+          "case": "SANS",
+          "file": "ordre-OPT08-COUPE-ENERGIE-TRAVAUX-SANS.docx",
+          "selected": [],
+          "pages": 2,
+          "docxSha256": "afb333412b65913157b6321cfa7c8604d530f72c967a0f0f203136416d193009",
+          "pdfSha256": "2e01eddf0ca4774f4561b5a4ca507283857e0bb621fa2d6fc931256f72265dc2"
+        },
+        {
+          "offer": "energie-travaux",
+          "case": "A",
+          "file": "ordre-OPT08-COUPE-ENERGIE-TRAVAUX-A.docx",
+          "selected": [
+            "relecture-devis",
+            "analyse-documentaire"
+          ],
+          "pages": 2,
+          "docxSha256": "3cc048f89e776351aef9f34369df20111d0b1b2b82ccff1940067410a6521292",
+          "pdfSha256": "a53d1175811f08f2af3589110da414b3b336c37a602a23d82be4e3cf73ab0809"
+        },
+        {
+          "offer": "energie-travaux",
+          "case": "B",
+          "file": "ordre-OPT08-COUPE-ENERGIE-TRAVAUX-B.docx",
+          "selected": [
+            "thermographie-interieure",
+            "accompagnement"
+          ],
+          "pages": 2,
+          "docxSha256": "9b20ae41cc1c04b32e21752091435ac855ba1095183c733b7dd7a871667399fb",
+          "pdfSha256": "295789320cfd8cc826f1f8ae2a94abff0dba6130925d20d4a6ff40a76b959a37"
+        },
+        {
+          "offer": "prevention-bati",
+          "case": "SANS",
+          "file": "ordre-OPT08-COUPE-PREVENTION-BATI-SANS.docx",
+          "selected": [],
+          "pages": 2,
+          "docxSha256": "c022d28193ec695ff27537aaa6671ae8b39c483f5c08f1e750df6bbe28099f60",
+          "pdfSha256": "64afbf744ae3ea035d90909660970568615e107becadc3b362a15cd662eb45b2"
+        },
+        {
+          "offer": "prevention-bati",
+          "case": "A",
+          "file": "ordre-OPT08-COUPE-PREVENTION-BATI-A.docx",
+          "selected": [
+            "inspection-drone",
+            "analyse-documentaire"
+          ],
+          "pages": 2,
+          "docxSha256": "0d774430a413cb04aba2cd98bbe4fc9f702d46c80c5ea63eb654df008d189d91",
+          "pdfSha256": "f7cc44f15ddf2f61aa3db95224bcea0cee498af3e1a33034002b23219a46d223"
+        },
+        {
+          "offer": "prevention-bati",
+          "case": "B",
+          "file": "ordre-OPT08-COUPE-PREVENTION-BATI-B.docx",
+          "selected": [
+            "thermographie",
+            "accompagnement"
+          ],
+          "pages": 2,
+          "docxSha256": "14e0d779cf9aef51df7bce18b9ce4874d265416489d4d004ea974d757c02131a",
+          "pdfSha256": "6a73ba2fe8f37ede6b8d33ec2fd8103e9a613b0d17a693eb76b38f24e9e4d09f"
+        },
+        {
+          "offer": "360-premium",
+          "case": "SANS",
+          "file": "ordre-OPT08-COUPE-360-PREMIUM-SANS.docx",
+          "selected": [],
+          "pages": 2,
+          "docxSha256": "d90347745de99b372ac1c38e83381da02fab936887d1281e7d468fd9622d038d",
+          "pdfSha256": "93af738370e0b0cb3a2859eff50345987e14078b9d607cccaaefb80caf34a5df"
+        },
+        {
+          "offer": "360-premium",
+          "case": "A",
+          "file": "ordre-OPT08-COUPE-360-PREMIUM-A.docx",
+          "selected": [
+            "fissures-rga",
+            "analyse-documentaire"
+          ],
+          "pages": 3,
+          "docxSha256": "88a9df5adfdb31fd3da64bec35485688aaf3ae9c848a08cc4672a5236cb8cd2a",
+          "pdfSha256": "abee8613fb23c9ead0528425c84072dc0a0539bbbbce9463b0b8dfb7ef3545db"
+        },
+        {
+          "offer": "360-premium",
+          "case": "B",
+          "file": "ordre-OPT08-COUPE-360-PREMIUM-B.docx",
+          "selected": [
+            "relecture-devis",
+            "accompagnement"
+          ],
+          "pages": 2,
+          "docxSha256": "038b0c79786ea72b1095a62017ca8c18a754528d1e6b2760f59aca924cdff2cc",
+          "pdfSha256": "9f1dbb8e8f9d7d0bec1989a6324914c93b9608a3f9605d1426b81901492f8283"
+        },
+        {
+          "offer": "360-premium",
+          "case": "REOUVERT",
+          "file": "ordre-OPT08-COUPE-360-PREMIUM-REOUVERT.docx",
+          "selected": [],
+          "pages": 2,
+          "docxSha256": "ec672e1e888f42d8b6b6dfaa934ce9b277636283e119ae73c765bb3a7c6e9d3a",
+          "pdfSha256": "a51ac55164f0f208b33350f921dd8a09307be62ad19733027ca65512a2c4ac15"
+        }
+      ]
+    }
+  },
+  "newOrders": 23,
+  "newWordPages": 48,
+  "previousChromeOrders": 5,
+  "distinctCasesAcrossBothDates": 26,
+  "remainingChromeCases": [],
+  "wordArchive": {
+    "caseCount": 26,
+    "sha256": "fa801abad11f26ed076d8ee247c85c6facd1856d8f175502ba26db619a3515c3"
+  }
+}
