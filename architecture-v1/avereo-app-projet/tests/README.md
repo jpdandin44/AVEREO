@@ -5,14 +5,46 @@ title: Recette du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
   - tests
 ---
 
+## CI dédiée et checkout neuf
+
+Le [workflow de qualification privé](../workflows/ci-developpements.md) référence les commandes exactes, fixtures, sorties et limites. Le sas natif est généré avant les tests ; `development-ci.test.mjs` refuse SHA différent, source non committée et prétention de livraison. Le contrôleur CI construit séparément le paquet, compare ses empreintes et vérifie que données et public ne sont pas modifiés. Aucun compte ni suivi réel utilisé.
+
+## Reprise — session Projet et préparation de préproduction
+
+Les tests `development-session.test.mjs` exercent cookie natif, broker/fournisseur, politique de période/révocation, HTTPS/Host, configurations/clé et copie PHP. `development-hosted-package.test.mjs` vérifie paquet/empreintes/défaut fermé, parcours HTTP et révocation des assets/pièces, ainsi que l'absence de menu sans capacité positive. Identités et données fictives uniquement ; pas de kernel Drupal/recette hébergée. Les suites restent incluses dans `test:developments` et `build`. [Guide](../docs/preproduction-developpements.md).
+
+## 7 novembre — pont et stockage, état local courant
+
+Depuis `frontend/` : `npm.cmd run test:developments` (**64 tests**) puis `npm.cmd run build` (**260**, 21 fichiers publics). Tests ajoutés : rôle/interopérabilité PHP, refus avant données, intégrité/séquence/restauration/quotas/preuves, ACL persistantes Windows réelles et isolation des cookies entre ports locaux. Chaque test de dossier possède sa fixture avec retrait sous garde de chemin ; aucun stockage réel supprimé. Côté CONNECT : suites 41/14/40, contrat et limites dans le [guide](../docs/pont-stockage-local.md). Aucun résultat hébergé ou humain déduit.
+
 # Recette du planning local Projet
+
+## Raccordement Recherche/RGA et fraîcheur locale
+
+`development-freshness.test.mjs` couvre isolation du sous-suivi RGA, refus d'écriture et de sélecteurs dangereux, phase française Missions, qualification documentaire sans candidat inventé, dates avec fuseaux, changement immédiat d'empreinte après modification et tableau/liste cohérents. Les tests modifient seulement leurs fixtures ; les vrais suivis restent consultatifs. Recette navigateur : Recherche, RGA, preuves déclarées, source exacte et retour après rechargement. La vérification des hôtes et de GitHub n'est pas réalisée.
+
+## Portefeuille du 7 novembre après reprise
+
+Les tests `development-portfolio.test.mjs` couvrent sources partagées, absence de suivi, Git local/dirty, environnement de livraison explicite, dates, mappings et base confinée des pièces. `development-private-directory.test.mjs` couvre la restriction Windows et le refus sans identité qualifiée ; `development-ui.test.mjs` reproduit la concurrence des effets du premier chargement. Le test HTTP supplémentaire refuse toute revue sur une source consultative. Les anciennes preuves restent distinctes.
+
+Recette sur vrais suivis autorisée en lecture seule : douze entrées, recherche, lecture de preuve, quatre phases, décisions désactivées et reprise après rechargement. Aucun vrai critère approuvé. [Guide du portefeuille](../docs/cockpit-portefeuille.md).
+
+## Relecture documentaire du 7 novembre — pas de nouvelle recette
+
+La [matrice de confidentialité préparatoire](../docs/raccordement-developpements-local.md#6-matrice-de-confidentialité-à-recetter-avant-les-données-réelles) relie les refus attendus aux contrôles du code et aux scénarios fictifs existants. Les 32/228 résultats ci-dessous datent du 6 novembre ; ils ne sont pas rejoués pour la clôture documentaire. Aucun compte réel ou profil CONNECT n'est recetté. Le code, les tests et la configuration restent inchangés ; les modifications de documentation sont vérifiées séparément. L'identité/rôle global réel est un blocage avant les sources réelles.
+
+## Module Développements local privé
+
+`npm.cmd run test:developments` depuis `frontend` exécute 32 tests : configuration fermée, propriétaire unique, autre administrateur global et autres profils refusés, données/ressources privées inaccessibles anonymement, origine, session, CSRF, deux adaptateurs, mappings historiques, critères et preuves, conflits, fraîcheur, écritures sur fixtures et sauvegarde/restauration octet pour octet.
+
+`npm.cmd run build` exécute 228 tests et le contrôle de l'artefact public (21 fichiers, absence des routes et données de développement). Les anciennes régressions du Gantt restent incluses. Une recette navigateur locale a ouvert les quatre phases, une preuve, enregistré une décision fictive puis retrouvé cette décision après rechargement ; une preuve en échec ne permet pas de valider et la seconde source reste consultative. Le redémarrage du lanceur refuse l'ancien cookie. Cela ne qualifie pas l'identité réelle CONNECT, le mobile, la CI distante ni un hébergement. [Guide et limites](../docs/developpements-local.md).
 
 ## Interface simple et vues longues
 

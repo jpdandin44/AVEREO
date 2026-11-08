@@ -5,7 +5,7 @@ title: Génération et reprise du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,10 @@ tags:
 ---
 
 # Génération et reprise du planning Projet
+
+## CI Développements privée
+
+Le [workflow dédié](ci-developpements.md) décrit tests, fixtures, identité de source et preuves du paquet privé. Il ne génère pas le pilote, ne contacte aucun hébergement et ne déploie rien.
 
 ## Import privé indépendant
 

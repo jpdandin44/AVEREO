@@ -40,7 +40,9 @@ final class Request
 
         $body = [];
         if (in_array($method, ['POST', 'PUT', 'PATCH', 'DELETE'], true)) {
-            $raw = file_get_contents('php://input');
+            $developmentRequest = $path === '/api/v1/developments/authorize';
+            $raw = $developmentRequest ? file_get_contents('php://input', false, null, 0, 16385) : file_get_contents('php://input');
+            if ($developmentRequest && is_string($raw) && strlen($raw) > 16384) throw new ApiException(413, 'PAYLOAD_TOO_LARGE', 'Requête trop volumineuse.');
             if ($raw !== false && trim($raw) !== '') {
                 if (!str_contains(strtolower($headers['content-type'] ?? ''), 'application/json')) {
                     throw new ApiException(415, 'UNSUPPORTED_MEDIA_TYPE', 'Le corps doit être en JSON.');

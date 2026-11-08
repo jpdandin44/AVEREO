@@ -5,10 +5,14 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 7 novembre — pont et stockage, état local courant
+
+Exiger propriétaire exact ET compte actif ET accès Projet ET session non révoquée ET rôle global actuel Drupal. Autre ID, rôle d'organisation, signature/rejeu/temps invalide ou panne = refus fermé, sans ancien accord. Lecture seule des comptes/suivis ; défaut désactivé. [Contrat](api/developments-authorization.md). Aucun déploiement.
 
 ## Enregistrement du mode permanent et attribution des applications
 

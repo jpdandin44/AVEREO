@@ -5,14 +5,47 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
 
+## Qualification du candidat et de la CI
+
+Conserver le propriétaire administrateur global exact et le mode consultatif pendant l'alignement Git. Tester explicitement les refus, les suites PHP du pont, les régressions Projet et la séparation public/privé sur fixtures sans secret réel. Relier le paquet au SHA propre réellement testé et ne pas confondre CI, recette du vrai compte et accord humain. [Contrôles exécutables](workflows/ci-developpements.md).
+
+## Reprise — session Projet et préparation de préproduction
+
+Raccorder le code à la vraie session Projet native sans recopier son cookie ni créer un second propriétaire. Exiger propriétaire exact et rôle global frais sur entrée/API/assets/preuves ; garder lecture seule, quatre phases et séparation du planning. Préparer la préproduction, pas la déployer. Configuration préproduction inactive par défaut, paquet sans données/secrets, conservation des suivis et refus d'écriture. [Réalisation et critères à qualifier](docs/preproduction-developpements.md).
+
+## 7 novembre — pont et stockage, état local courant
+
+Périmètre autorisé : développement local seulement, propriétaire exact ET rôle global courant, refus d'autres administrateurs/rôles, comptes bloqués, droit Projet absent, signature/nonce/durée incorrects, révocation et panne. Vrais suivis consultatifs, aucune approbation créée. Stockage persistant privé signé, séquence croissante, preuves sélectionnées, restauration explicite et dates de copie visibles. [Réalisation et limites](docs/pont-stockage-local.md). SSO réel, lecteur PHP/transport hébergés et qualifications de cible restent à faire ; aucun déploiement.
+
 # Exigences du planning local Projet
+
+## Développements en ligne — cible demandée le 7 novembre
+
+Préparer la consultation durable du cockpit dans un module Développements de Projet, privé au seul propriétaire administrateur global exact. Le mode local ci-dessous est l'état réalisé, non une limite de la cible future. Le [guide](docs/cockpit-portefeuille.md#cible-future-en-ligne--exigence-du-7-novembre) renvoie au cahier canonique du besoin : premier lot hébergé en lecture seule, protections serveur sur toutes les ressources, données disponibles sans le PC, publication traçable et ancienneté visible, quatre phases et conservation du Gantt/projets clients. Identité/rôle CONNECT et mécanisme hébergé restent non qualifiés ; aucun raccordement ni déploiement n'est effectué pour prendre cette exigence en compte.
+
+## Portefeuille demandé le 7 novembre
+
+Complément demandé : raccorder Recherche et RGA à leurs sources actuelles et vérifier la conformité des informations affichées aux JSON et Git du poste. Préserver une distinction explicite entre donnée datée, modification du fichier et lecture ; ne pas actualiser artificiellement une livraison historique. Les sources et accords des autres projets restent en lecture seule ; la projection d'un sous-suivi ne copie pas les accords de son parent.
+
+Donner une visibilité à toutes les applications sur leur version locale et les développements, en conservant les quatre phases. Le responsable confirme l'accès privé sur son poste, en lecture seule, sans connexion automatique à CONNECT. Distinguer code local/candidat/lot hébergé déclaré ; montrer les absences, les dates et les réserves sans inventer une version installée. Le registre ne copie pas les statuts ; les chantiers communs restent canoniques. Aucun autre profil, écriture métier ou déploiement autorisé. [Périmètre et limites](docs/cockpit-portefeuille.md).
+
+## Développements privés — demande autorisée le 6 novembre 2026
+
+- Réserver lecture, écriture et preuves au seul propriétaire administrateur global ; refuser les autres profils, y compris un autre administrateur global. Contrôle serveur obligatoire, fermé par défaut.
+- Afficher Cadrage, Développement local, Préproduction et Mise en production, avec critères identifiés, preuves reliées au candidat, décisions explicites et historique conservé.
+- Séparer résultat technique, disponibilité/fraîcheur de preuve et validation humaine ; ne pas fabriquer les critères ou les accords manquants.
+- Lire plusieurs schémas sans migration forcée ; n'écrire que dans une source qui accepte le contrat, avec contrôle de concurrence et récupération qualifiée sur fixtures.
+- Préserver le Gantt, les projets clients, les anciens accords et les travaux parallèles ; aucune action implicite de merge, phase suivante ou livraison.
+- Réalisation locale uniquement, sans déploiement. Identité réelle/rôle CONNECT et pont privé hébergé restent **TBD avant préproduction**. Le candidat actuel utilise un accès local privé et des données fictives, pas un droit acquis dans CONNECT.
+
+[Guide et périmètre réalisé](docs/developpements-local.md), [contrat](api/developpements-local.md).
 
 ## Demandes de simplification du 6 novembre — préproduction
 

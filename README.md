@@ -18,6 +18,8 @@ Ce depot contient la V1 en cours de developpement.
 
 ## Contenu actuel
 
+Le [workflow CI du module Développements](architecture-v1/avereo-app-projet/workflows/ci-developpements.md) ajoute une qualification séparée du code privé Projet/CONNECT/Drupal sur fixtures, sans donnée réelle ni livraison. L'accès au module reste propriétaire/global et consultatif ; le suivi réel du portefeuille n'est pas publié par cette CI.
+
 - `prototype-v1/`: prototype fonctionnel (HTML/CSS/JS) du tunnel metier
 - `AVEREO_CONNECT_V1_Maquette_Fonctionnelle.md`: cadrage produit V1
 - `.github/workflows/ci.yml`: verification automatique des fichiers de base

@@ -5,10 +5,14 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 7 novembre — pont et stockage, état local courant
+
+Candidat local : SignedMessage/AuthorizationBroker/PrivateFactory, route privée CONNECT et autorité Drupal, bornes d'entrée/transport/nonces et défaut désactivé. Tests 41 assertions broker/fournisseur, 14 contrôleur à doubles de services, régression 40/40. Aucun compte/rôle réel modifié, aucune installation. [Contrat](api/developments-authorization.md).
 
 
 ## 4 novembre 2026 — Applications en accès temporaire

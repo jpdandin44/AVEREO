@@ -42,6 +42,7 @@ try {
     if (is_readable($privateConfigPath)) {
         $privateValues = require $privateConfigPath;
         $allowedPrivateKeys = [
+            'DEVELOPMENTS_PRIVATE_CONFIG',
             'APP_ENV', 'APP_DEBUG', 'DB_DSN', 'DB_USER', 'DB_PASSWORD',
             'SESSION_COOKIE_NAME', 'SESSION_IDLE_SECONDS', 'SESSION_ABSOLUTE_SECONDS',
             'OAUTH_ISSUER', 'OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL',
@@ -167,6 +168,14 @@ try {
             );
         }
     }
+    $developmentAuthorization = null;
+    $developmentConfig = trim((string)getenv('DEVELOPMENTS_PRIVATE_CONFIG'));
+    if ($developmentConfig !== '') {
+        try { $developmentAuthorization = \Avereo\Connect\Developments\PrivateFactory::create($developmentConfig, $documentRoot, $repository,
+            [...array_values($config->appLaunchSecrets),$config->oauthClientSecret,$config->identityLogoutSecret,$config->identityAccountActivationSecret,
+                (string)getenv('IDENTITY_ACCOUNT_PROVISIONING_SECRET'),(string)getenv('IDENTITY_ACCOUNT_DELETION_SECRET')]); }
+        catch (Throwable) { error_log('{"event":"developments.configuration_unavailable"}'); }
+    }
     $application = new Application(
         $config,
         $repository,
@@ -177,6 +186,7 @@ try {
         $accountAdministration,
         $accountActivation,
         $accountLifecycle,
+        $developmentAuthorization,
     );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {

@@ -5,10 +5,18 @@ title: Contrôles CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-02
+updated: 2026-11-07
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## CI explicite du pont Développements
+
+Le job `developments-private` lance explicitement les deux suites d'autorisation ci-dessous, la régression CONNECT et les fixtures Projet, avec PHP 8.3/SQLite. [Contrat et limites du workflow](../../avereo-app-projet/workflows/ci-developpements.md). Sans compte réel, noyau Drupal ou déploiement ; la confidentialité hébergée reste à recetter séparément.
+
+## 7 novembre — pont et stockage, état local courant
+
+Depuis CONNECT : `php backend/tests/development-authorization.php` (41), `php integrations/drupal/avereo_identity_bridge/tests/development-authorization-controller.php` (14, doubles de services Drupal/Symfony), `php backend/tests/run.php` (40/40). Node/PHP interopérable testé côté Projet. Identités fictives seulement ; pas de kernel Drupal ou rôle réel modifié. [Contrat](../api/developments-authorization.md).
 
 ## Droits RGA
 

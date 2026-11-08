@@ -1,0 +1,95 @@
+import {useEffect,useRef,useState} from 'react';
+import './development.css';
+import DevelopmentPortfolio from './DevelopmentPortfolio.jsx';
+
+const labels={not_reported:'Non renseignée',not_started:'Non démarrée',in_progress:'En cours',awaiting_review:'À valider',awaiting_local_review:'À examiner localement',scope_accepted:'Périmètre accepté',complete:'Terminée dans la source',validated:'Validée',blocked:'Bloquée',mixed:'États historiques différents',approved:'Validé',not_reviewed:'À examiner',changes_requested:'Corrections demandées',stale:'À réexaminer',current:'Version courante',unverified:'Version à vérifier',passed:'Réussi',failed:'Échec',reviewable:'Pièce à examiner',not_run:'Non exécuté',available:'Disponible',unavailable:'Indisponible',reference:'Référence externe'};
+const label=v=>labels[v]||v||'Non renseigné';
+const proofVersion=p=>p.sourceSha?'Commit : '+p.sourceSha:p.artifactSha256?'Artefact : '+p.artifactSha256:'Version non renseignée';
+Object.assign(labels,{prepared_locally_pending_host_and_business_review:'Préparé localement — revue attendue',deployed_verified:'Livré et contrôlé (déclaré)',deployed_qualified_with_reservations:'Livré avec réserves (déclaré)',passed_with_reservations:'Réussi avec réserves',passed_with_reservation:'Réussi avec réserve'});
+const developmentEndpoint=(route,hosted)=>hosted?'/developpements/api.php?route='+route.replace('?','&'):'/local-developments/'+route;
+async function api(route,options,hosted=false){
+  const response=await fetch(developmentEndpoint(route,hosted),{cache:'no-store',credentials:'same-origin',...options});
+  const result=await response.json().catch(()=>({error:'Service privé indisponible.'}));
+  if(!response.ok){const error=new Error(result.error);error.status=response.status;throw error;}
+  return result;
+}
+export default function DevelopmentWorkspace({hosted=false}={}){
+  const request=(route,options)=>api(route,options,hosted);
+  const [state,setState]=useState(null),[selected,setSelected]=useState(''),[detail,setDetail]=useState(null),[phase,setPhase]=useState(1);
+  const [overview,setOverview]=useState(true),[applicationId,setApplicationId]=useState('');
+  const [error,setError]=useState(''),[notice,setNotice]=useState(''),[busy,setBusy]=useState(false),[criterionId,setCriterionId]=useState('');
+  const [comment,setComment]=useState(''),[confirmed,setConfirmed]=useState(false),[proof,setProof]=useState(null);
+  const sequence=useRef(0),revision=useRef(null),editing=useRef(false);
+  const selectedRef=useRef(selected);selectedRef.current=selected;
+  const applicationRef=useRef(applicationId);applicationRef.current=applicationId;
+  const discard=()=>{setDetail(null);setState(null);setProof(null);setComment('');setConfirmed(false);};
+  async function refresh(){
+    if(editing.current)return;const request=++sequence.current;
+    try{
+      const incoming=await api('state',undefined,hosted);if(request!==sequence.current)return;
+      setState(incoming);setError('');
+      const id=selectedRef.current||(!applicationRef.current?incoming.iterations.find(i=>!i.unavailable)?.id:'')||'';
+      if(selectedRef.current&&!incoming.iterations.some(i=>i.id===selectedRef.current&&!i.unavailable)){setDetail(null);setSelected('');setNotice('La source sélectionnée est indisponible ; aucun ancien état n’est présenté comme actuel.');return;}
+      if(!selectedRef.current&&id)setSelected(id);
+      if(id){const next=(await api('iteration?iteration='+encodeURIComponent(id),undefined,hosted)).iteration;if(request!==sequence.current||editing.current)return;
+        if(revision.current&&revision.current!==next.revision){setConfirmed(false);setNotice('Le suivi ou une pièce a changé. Relire les preuves ; ton commentaire est conservé.');}
+        revision.current=next.revision;setDetail(next);
+      }
+    }catch(failure){if(request!==sequence.current)return;if([401,403].includes(failure.status))discard();setError(failure.message);}
+  }
+  useEffect(()=>{
+    refresh();const visible=()=>{if(document.visibilityState==='visible')refresh();};
+    const timer=setInterval(visible,25000);window.addEventListener('focus',visible);document.addEventListener('visibilitychange',visible);
+    const hide=()=>{sequence.current++;discard();};window.addEventListener('pagehide',hide);window.addEventListener('pageshow',visible);
+    return()=>{sequence.current++;clearInterval(timer);window.removeEventListener('focus',visible);document.removeEventListener('visibilitychange',visible);window.removeEventListener('pagehide',hide);window.removeEventListener('pageshow',visible);};
+  },[]);
+  useEffect(()=>{if(selected||applicationRef.current)sequence.current++;revision.current=null;setDetail(null);setCriterionId('');setComment('');setConfirmed(false);setProof(null);if(selected)refresh();},[selected]);
+  useEffect(()=>()=>{if(proof?.url)URL.revokeObjectURL(proof.url);},[proof]);
+  const current=detail?.phases[phase];
+  const criterion=current?.criteria.find(c=>c.id===criterionId)||null;
+  async function openProof(p){
+    setError('');setProof(null);
+    try{const response=await fetch(developmentEndpoint('proof?iteration='+encodeURIComponent(selected)+'&proof='+encodeURIComponent(p.id),hosted),{cache:'no-store',credentials:'same-origin'});
+      if(!response.ok){const result=await response.json().catch(()=>({error:'Pièce indisponible.'}));const failure=new Error(result.error);failure.status=response.status;throw failure;}
+      const type=response.headers.get('content-type')||'';
+      if(type.startsWith('image/'))setProof({title:p.title,url:URL.createObjectURL(await response.blob())});
+      else if(type==='application/pdf'){const url=URL.createObjectURL(await response.blob());const link=document.createElement('a');link.href=url;link.download=p.id+'.pdf';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+      else setProof({title:p.title,text:await response.text()});
+    }catch(failure){if([401,403].includes(failure.status))discard();setError(failure.message);}
+  }
+  async function decide(action){
+    if(busy||!criterion)return;setBusy(true);editing.current=true;sequence.current++;setError('');setNotice('');
+    try{const result=await request('reviews?iteration='+encodeURIComponent(selected),{method:'POST',headers:{'Content-Type':'application/json','X-Development-Token':state.csrf},body:JSON.stringify({revision:detail.revision,criterionId:criterion.id,action,comment,reviewedProofs:confirmed?criterion.proofs.map(p=>({id:p.id,fingerprint:p.fingerprint})):[]})});
+      revision.current=result.iteration.revision;setDetail(result.iteration);setComment('');setConfirmed(false);setNotice('Décision enregistrée dans la source canonique. Aucune phase suivante ni livraison autorisée automatiquement.');
+    }catch(failure){if([401,403].includes(failure.status))discard();setError(failure.message+' Le commentaire reste affiché.');}
+    finally{editing.current=false;setBusy(false);}
+  }
+  async function logout(){try{await request('logout',{method:'POST',headers:{'X-Development-Token':state.csrf}});}finally{discard();location.replace('/');}}
+  function openApplication(app){setApplicationId(app.id);setOverview(false);const first=app.iterations.find(i=>!i.unavailable);setSelected(first?.id||'');setPhase(first?.currentPhase??1);setNotice('');}
+  const visibleIterations=state?.iterations.filter(i=>!applicationId||i.applicationIds?.includes(applicationId))||[];
+  return <main className="development-workspace">
+    <header className="development-heading"><div><span className="development-eyebrow">{hosted?'PROPRIÉTAIRE UNIQUE · MODULE PRIVÉ':'PROPRIÉTAIRE UNIQUE · LOCAL PRIVÉ'}</span><h1>Versions & développements</h1><p>Toutes les applications, leurs versions déclarées et leurs quatre phases.</p></div><div className="development-actions"><button onClick={()=>setOverview(true)}>Vue d’ensemble</button><button onClick={refresh} disabled={busy}>Actualiser</button>{hosted?<a href="/">Retour à mes projets</a>:state&&<button onClick={logout}>Fermer ma session</button>}</div></header>
+    {state&&<p className="development-boundary">{hosted?(state.identity.mode==='project_session_fixture'?'Recette locale du lecteur PHP — session et identité fictives, aucun compte réel raccordé.':'Session Projet signée et qualité d’administrateur global contrôlées côté serveur. Accès au seul propriétaire exact.'):state.identity.mode==='local_bridge_fixture'?'Recette fictive du pont Drupal/CONNECT — aucun compte réel attesté.':state.identity.mode==='local_fictitious'?'Démonstration — données et décisions fictives.':state.identity.connectRoleVerified?'Capacité privée locale et rôle contrôlé côté serveur — pas de SSO navigateur CONNECT.':'Accès privé du poste — aucun rôle CONNECT actif n’est revendiqué.'} {hosted?'Consultation seule ; aucun lancement de développement, validation ou déploiement depuis ce module.':'Aucun autre profil ni accès distant n’est autorisé. Aucun déploiement.'}</p>}
+    {state?.snapshot&&<p className="development-notice">Copie privée en lecture seule · publication {state.snapshot.sequence} · données exportées le {new Date(state.snapshot.generatedAt).toLocaleString('fr-FR')} · reçues le {new Date(state.snapshot.receivedAt).toLocaleString('fr-FR')}{state.snapshot.restored?' · copie précédente restaurée':''}. Actualiser cet écran ne relit pas les sources ni les hôtes ; les pièces non sélectionnées restent indisponibles.</p>}
+    {error&&<p role="alert" className="development-error">{error}</p>}{notice&&<p role="status" className="development-notice">{notice}</p>}
+    {!state&&<p>Accès privé requis ou lecture en cours. Aucun suivi n’est affiché sans session autorisée.</p>}
+    {state&&overview&&<DevelopmentPortfolio applications={state.portfolio||[]} onOpen={openApplication}/>}
+    {state&&!overview&&<div className="development-layout"><aside className="development-sources"><h2>Applications et itérations</h2><label>Application<select value={applicationId} onChange={e=>{const app=state.portfolio.find(a=>a.id===e.target.value);if(app)openApplication(app);else{setApplicationId('');setSelected('');}}}><option value="">Toutes les applications</option>{(state.portfolio||[]).map(app=><option key={app.id} value={app.id}>{app.name}</option>)}</select></label>{visibleIterations.map(item=><button key={item.id} disabled={busy||item.unavailable} aria-pressed={selected===item.id} onClick={()=>{setSelected(item.id);setPhase(item.currentPhase??1);}}><span>{item.application||'Source'}</span><strong>{item.title}</strong><small>{item.unavailable?'Source indisponible':item.currentPhase===null?'Phase à qualifier':item.phases[item.currentPhase]?.label}</small></button>)}{!visibleIterations.length&&<p>Aucun suivi qualifié pour cette application. Sa version locale reste visible dans la vue d’ensemble.</p>}</aside>
+      <section className="development-detail">{detail?<>
+        <div className="development-title"><h2>{detail.title}</h2><p>{detail.nextAction||'Prochaine action non renseignée.'}</p><small>Lu {new Date(detail.readAt).toLocaleString('fr-FR')} · Observation GitHub {detail.githubObservedAt?new Date(detail.githubObservedAt).toLocaleString('fr-FR'):'non renseignée'}</small><details><summary>Version du candidat</summary><code>Source : {detail.candidate.sourceSha||'Non renseignée'}<br/>Artefact : {detail.candidate.artifactSha256||'Non renseigné'}<br/>Commit déclaré dans le suivi de PR : {detail.versions?.github.headSha||'Non renseigné'}</code></details></div>
+        {detail.versions?.github.url&&<p><a href={detail.versions.github.url} target="_blank" rel="noopener noreferrer">PR déclarée dans le suivi</a> · {detail.versions.github.state||'État non renseigné'} · état distant non recontrôlé par le rafraîchissement local</p>}
+        {detail.blockers.length>0&&<section className="development-notice"><strong>Réserves déclarées</strong><ul>{detail.blockers.map((b,i)=><li key={i}>{typeof b==='string'?b:b.impact||b.reason||b.text||b.id||'Réserve à préciser'}</li>)}</ul></section>}
+        {detail.mapping&&<p className="development-notice">Ancien découpage projeté vers quatre phases ; décisions et journal d’origine conservés, sans modification de la source.</p>}
+        <nav className="development-phases" aria-label="Les quatre phases">{detail.phases.map(p=><button key={p.id} aria-pressed={phase===p.id} disabled={busy} onClick={()=>{setPhase(p.id);setCriterionId('');setConfirmed(false);setProof(null);setNotice('');}}><small>PHASE {p.id}</small><strong>{p.label}</strong><span>{label(p.status)}</span><small>{p.criteria.filter(c=>c.decision==='approved').length}/{p.criteria.length} critères validés</small></button>)}</nav>
+        {!detail.writable&&<p className="development-notice">{detail.writeReason}</p>}
+        {detail.unassignedCriteria.length>0&&<p className="development-notice">{detail.unassignedCriteria.length} critère(s) sans phase explicite dans la source : aucun rattachement inventé.</p>}
+        {detail.unassignedCriteria.length>0&&<section className="development-section"><h3>Critères à rattacher à une phase</h3><ul>{detail.unassignedCriteria.map(c=><li key={c.id}><strong>{c.title}</strong> — {label(c.decision)}</li>)}</ul></section>}
+        <section className="development-section"><h3>{current.label} — critères</h3>{current.criteria.length===0?<p>Critères à définir dans la source canonique. Aucun résultat n’est supposé conforme.</p>:<div className="development-table"><table><thead><tr><th>Critère attendu</th><th>Preuves associées</th><th>Validation humaine</th><th>Revue</th></tr></thead><tbody>{current.criteria.map(c=><tr key={c.id}><td><strong>{c.title}</strong><small>{c.id}{c.required?' · obligatoire':' · facultatif'}</small>{c.expected&&<p>{c.expected}</p>}</td><td>{c.proofs.length?c.proofs.map(p=><div className="development-proof-line" key={p.id}><span>{label(p.status)} · {label(p.availability)} · {label(p.freshness)}</span>{p.availability==='available'&&<button onClick={()=>openProof(p)}>Ouvrir la pièce</button>}{p.url&&<a href={p.url} target="_blank" rel="noopener noreferrer">Ouvrir la référence</a>}</div>):'Preuve à relier'}</td><td><span className={'development-verdict '+c.decision}>{label(c.decision)}</span>{c.review&&<small>{c.review.actor} · {new Date(c.review.recordedAt).toLocaleString('fr-FR')}</small>}</td><td><button disabled={!detail.writable||busy} onClick={()=>{setCriterionId(c.id);setConfirmed(false);setNotice('');}}>Examiner</button></td></tr>)}</tbody></table></div>}</section>
+        <section className="development-section"><h3>Contrôles et pièces de la phase</h3>{!current.proofs.length?<p>Aucune preuve déclarée pour cette phase.</p>:current.proofs.map(p=><article className="development-proof" key={p.id}><div><strong>{p.title}</strong><p>{label(p.status)} · {label(p.availability)} · {label(p.freshness)}</p><small>{p.target||'Cible non renseignée'} · {p.observedAt?new Date(p.observedAt).toLocaleString('fr-FR'):'Date non renseignée'}</small><code>{proofVersion(p)}</code></div><div>{p.availability==='available'&&<button onClick={()=>openProof(p)}>Ouvrir</button>}{p.url&&<a href={p.url} target="_blank" rel="noopener noreferrer">Référence externe</a>}</div></article>)}</section>
+        {proof&&<section className="development-section" aria-label="Pièce examinée"><div className="development-actions"><h3>{proof.title}</h3><button onClick={()=>setProof(null)}>Fermer</button></div>{proof.url?<img className="development-image" src={proof.url} alt={proof.title}/>:<pre>{proof.text}</pre>}</section>}
+        {criterion&&detail.writable&&<section className="development-section development-decision"><h3>Ta décision — {criterion.title}</h3><label>Commentaire explicite<textarea value={comment} maxLength={8000} onChange={e=>setComment(e.target.value)} rows={4}/></label><label className="development-confirm"><input type="checkbox" checked={confirmed} onChange={e=>setConfirmed(e.target.checked)}/>J’ai examiné toutes les preuves associées dans leur version courante.</label>{!criterion.canApprove&&<p className="development-error">Validation indisponible : preuves absentes, non concluantes ou à réexaminer.</p>}<div className="development-actions"><button disabled={busy||comment.trim().length<5||!confirmed||!criterion.canApprove} onClick={()=>decide('approve')}>Valider ce critère</button><button disabled={busy||comment.trim().length<5} onClick={()=>decide('request_changes')}>Demander des corrections</button><button disabled={busy||comment.trim().length<5} onClick={()=>decide('comment')}>Ajouter une observation</button></div></section>}
+        <section className="development-section"><h3>Historique des décisions sur critères</h3>{!detail.history.length?<p>Aucune décision individuelle enregistrée dans cette source.</p>:detail.history.slice().reverse().map(e=><article className="development-event" key={e.id}><strong>{e.criterionId} · {e.action==='approve'?'Validation':e.action==='request_changes'?'Corrections demandées':'Observation'}</strong><small>{e.actor} · {new Date(e.recordedAt).toLocaleString('fr-FR')}{e.demo?' · fictif':''}</small><p>{e.comment}</p></article>)}{detail.declaredApprovals.length>0&&<p>{detail.declaredApprovals.length} accord(s) de portée générale déclaré(s) dans la source, sans les convertir en validations individuelles.</p>}</section>
+        <footer className="development-source">Source canonique : <code>{detail.source}{detail.dataPath?' # '+detail.dataPath:''}</code><br/>Fichier modifié sur le disque : {new Date(detail.sourceModifiedAt).toLocaleString('fr-FR')} · empreinte {detail.sourceHash?.slice(0,12)}<br/>Révision {detail.revision.slice(0,12)} · {detail.iterationId}</footer>
+      </>:<p>{selected?'Lecture de l’itération…':'Choisis un suivi disponible ou retourne à la vue d’ensemble. Aucun statut n’est inventé.'}</p>}</section></div>}
+  </main>;
+}

@@ -1,3 +1,13 @@
+avereo_identity_bridge.development_authorization:
+  path: '/avereo/developments/authorization'
+  defaults:
+    _controller: '\Drupal\avereo_identity_bridge\Controller\DevelopmentAuthorizationController::authorize'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+  options:
+    no_cache: TRUE
+
 avereo_identity_bridge.account_provision:
   path: '/avereo/account/provision'
   defaults:

@@ -1,0 +1,23 @@
+import {useState} from 'react';
+const short=value=>value?value.slice(0,12):'Non renseignée';
+const date=value=>value&&!Number.isNaN(Date.parse(value))?new Date(value).toLocaleDateString('fr-FR'):'Date non renseignée';
+function Delivered({value}){
+  return value?<><code title={value.sourceSha||value.artifactSha256||''}>{short(value.sourceSha||value.artifactSha256)}</code><small>{value.title}</small><small>Déclaré le {date(value.observedAt)}</small></>:<span className="portfolio-unknown">Non renseignée</span>;
+}
+export default function DevelopmentPortfolio({applications,onOpen}){
+  const [query,setQuery]=useState('');
+  const filtered=applications.filter(app=>[app.name,app.category,...app.iterations.map(i=>i.title)].join(' ').toLocaleLowerCase('fr').includes(query.toLocaleLowerCase('fr')));
+  return <section className="portfolio-overview" aria-label="Vue d’ensemble des applications">
+    <div className="portfolio-metrics"><article><strong>{applications.length}</strong><span>applications et sites</span></article><article><strong>{applications.filter(a=>!a.missingTracking).length}</strong><span>avec suivi raccordé</span></article><article><strong>{applications.filter(a=>a.local.dirty).length}</strong><span>avec changements locaux</span></article><article><strong>{applications.filter(a=>a.missingTracking).length}</strong><span>sans suivi exploitable</span></article></div>
+    <label className="portfolio-search">Rechercher une application ou un développement<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Rapport, Projet, Drone…"/></label>
+    <p className="portfolio-explanation">La version locale est observée dans Git. Les versions hébergées ci-dessous sont les <strong>derniers lots déclarés dans les suivis</strong>, pas une vérification en ligne ni une version complète garantie de l’application. Une cellule inconnue reste inconnue.</p>
+    <div className="portfolio-table"><table><thead><tr><th>Application</th><th>Code local</th><th>Préproduction — lot déclaré</th><th>Production — lot déclaré</th><th>Développements suivis</th><th>Consulter</th></tr></thead><tbody>{filtered.map(app=><tr key={app.id}>
+      <td><strong>{app.name}</strong><small>{app.category}</small>{app.missingTracking&&<span className="portfolio-warning">Suivi à raccorder</span>}</td>
+      <td>{app.local.status==='observed'?<><code title={app.local.applicationCommit||app.local.headSha}>{short(app.local.applicationCommit||app.local.headSha)}</code><small>{app.local.branch}</small><span className={app.local.dirty?'portfolio-warning':'portfolio-neutral'}>{app.local.dirty?'Modifications non commitées':'Copie sans changement détecté'}</span><small>Git observé le {date(app.local.observedAt)}</small></>:<span className="portfolio-unknown">Version Git à qualifier</span>}</td>
+      <td><Delivered value={app.preproduction}/></td><td><Delivered value={app.production}/></td>
+      <td>{app.iterations.length?<><strong>{app.iterations.length} suivi(s)</strong>{app.iterations.slice(0,2).map(i=><small key={i.id}>{i.unavailable?'Indisponible — ':''}{i.title}<br/>Dernière donnée datée : {date(i.updatedAt)}</small>)}{app.blockerCount>0&&<span className="portfolio-warning">{app.blockerCount} réserve(s) déclarée(s)</span>}{app.unqualifiedDeliveries.length>0&&<small>Environnement de certaines livraisons à qualifier.</small>}</>:<span>Aucune source active qualifiée</span>}</td>
+      <td><button onClick={()=>onOpen(app)}>Voir le suivi de {app.name}</button></td>
+    </tr>)}</tbody></table>{!filtered.length&&<p>Aucun résultat pour cette recherche.</p>}</div>
+    <p className="portfolio-explanation">La lecture n’écrit pas dans les suivis. Un même chantier commun peut apparaître dans plusieurs applications, mais conserve un seul journal canonique. Les critères et preuves restent consultables dans les quatre phases.</p>
+  </section>;
+}

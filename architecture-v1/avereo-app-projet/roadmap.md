@@ -5,14 +5,45 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-06
+updated: 2026-11-07
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
 
+## Alignement et contrôles CI
+
+Le [workflow dédié](workflows/ci-developpements.md) complète la qualification sur le candidat aligné, sans déployer. Le lot reste en Développement local, revue humaine attendue. L'installation, la vraie autorité Drupal, l'exploitation et la restauration du module restent des étapes séparées à autoriser.
+
+## Reprise — session Projet et préparation de préproduction
+
+Lecteur PHP et interface dédiés réalisés/testés sur le contrat natif avec fixtures ; paquet de préproduction séparé préparé, pas installé. Étape actuelle : Développement local, revue attendue. Cadrage conservé, Préproduction et Mise en production non démarrées. Avant suite : alignement Git/CI, vraie configuration propriétaire/sas/pont, HTTPS/noyau Drupal, ACL/quota et sauvegarde/restauration/canal de publication, puis accord d'installation. [Plan](docs/preproduction-developpements.md).
+
+## 7 novembre — pont et stockage, état local courant
+
+Pont PHP Drupal/CONNECT, client Node et copie persistante implémentés après demande explicite. Recette fictive pour l'habilitation ; copie réelle sous accès privé du poste. Le sous-suivi `hostingRequirement.framing` du cockpit propriétaire est en Développement local, à examiner ; critères non approuvés. Cadrage conservé, Préproduction et Mise en production non démarrées/non autorisées. Suite : lecteur PHP/session réelle, vraie configuration, noyau Drupal/HTTPS, profils fictifs tiers et révocation, ACL/quotas, sauvegarde indépendante. [Guide](docs/pont-stockage-local.md). Ne pas exposer le serveur local.
+
 # Feuille de route de Projet
+
+## Reprise après clôture — portefeuille local du 7 novembre
+
+Le responsable reprend et autorise la consultation privée locale sans SSO. [Portefeuille](docs/cockpit-portefeuille.md) développé : les 12 applications/sites disposent d'un suivi lisible via 12 entrées sur 11 JSON, après raccordement Recherche/RGA. Phases, preuves et fraîcheur locale sont vérifiées sans écrire dans les sources. Phase **Développement local**, à examiner ; aucune validation humaine de critère ni phase suivante. Prochaines actions : compléter les informations insuffisamment renseignées avec les projets responsables et, dans un lot séparé, mesurer les versions réellement hébergées. Aucun déploiement.
+
+## Reprise après clôture documentaire du 7 novembre
+
+[Raccordement préparé, non exécuté](docs/raccordement-developpements-local.md). Sur nouvelle demande : qualifier la source d'autorité du compte administrateur global exact, confirmer les chemins canoniques, puis proposer un pilote local strictement consultatif avec matrice de refus. Le registre actuel ne vérifie pas le rôle réel ; aucune source réelle n'est raccordée. Le Développement local reste à examiner, sans changement de phase ni accord de préproduction/production. Les autres chats et services ne sont pas interrompus.
+
+## Développements — candidat local à examiner
+
+| Phase | État de ce lot, distinct des livraisons précédentes |
+| --- | --- |
+| Cadrage | Module demandé et développement local autorisé ; restriction au seul propriétaire administrateur global confirmée. |
+| Développement local | Module, garde d'accès, adaptateurs, critères/preuves et journal opt-in réalisés ; recette sur fixtures, tests et build locaux. Revue humaine du candidat attendue. |
+| Préproduction | Non démarrée, non autorisée. Qualifier d'abord identité/rôle CONNECT, pont privé et refus des autres profils. |
+| Mise en production | Non démarrée, non autorisée ; contrôles après livraison et préparation de l'itération suivante restent dans cette phase. |
+
+[Guide du candidat](docs/developpements-local.md). Aucun accord des anciens lots n'est transféré à cette itération.
 
 ## Itération en Préproduction — interface simple
 
