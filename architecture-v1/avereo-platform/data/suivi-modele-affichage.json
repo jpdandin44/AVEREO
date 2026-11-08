@@ -11,12 +11,13 @@
     "Mise en production"
   ],
   "phase": "Développement local",
-  "status": "candidate_local",
+  "status": "pull_request_open",
   "base": "22ea7fae57fb21ef2b7220d0c68a87b85853b4d6",
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/modele-commun-applications",
-    "base": "main"
+    "base": "main",
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/131"
   },
   "documentation": "../docs/modele-affichage.md",
   "reviewEnvironment": "local",
@@ -30,5 +31,6 @@
   "deployment": {
     "preproduction": false,
     "production": false
-  }
+  },
+  "historique": "La preuve historique Passeport Immo reste identique à main. Le nouvel écart figure dans son audit source et son contrôle de parité."
 }

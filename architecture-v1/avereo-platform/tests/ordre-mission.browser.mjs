@@ -28,7 +28,7 @@ test('l’ordre téléchargé depuis le cadre reprend le client, les étapes de 
       return route.fulfill({contentType:'text/javascript',body:path==='/account-menu.js'?menu:module});
     }
     if (path==='/') return route.fulfill({contentType:'text/html',body:'<iframe title="Application" src="/editeur"></iframe>'});
-    if (path==='/editeur') return route.fulfill({contentType:'text/html',body:'<!doctype html><meta charset="utf-8"><script defer src="/account-menu.js"></script><avereo-account-menu placement="sidebar"></avereo-account-menu>'});
+    if (path==='/editeur') return route.fulfill({contentType:'text/html',body:'<!doctype html><meta charset="utf-8"><script defer src="/account-menu.js"></script><div style="transform:translateY(25px)"><avereo-account-menu placement="sidebar"></avereo-account-menu></div>'});
     return route.abort();
   });
   await page.goto(base+'/');
@@ -36,6 +36,13 @@ test('l’ordre téléchargé depuis le cadre reprend le client, les étapes de 
   const menuButton = editor.getByRole('button',{name:'Mon compte : ouvrir le menu du compte'});
   await menuButton.waitFor();
   const frame = page.frames().find(f=>f.url()===base+'/editeur');
+  const landmarks = await frame.evaluate(() => {
+    const root = document.querySelector('avereo-account-menu').shadowRoot;
+    const account = root.querySelector('.trigger').getBoundingClientRect();
+    const header = root.querySelector('.shell').getBoundingClientRect();
+    return {top:header.top, left:account.left, bottomGap:innerHeight-account.bottom, rightGap:innerWidth-header.right};
+  });
+  assert.deepEqual(landmarks, {top:0, left:8, bottomGap:4, rightGap:0});
   await frame.evaluate(initial => {
     window.fictitiousMission = initial;
     document.addEventListener('avereo-mission-context',event=>event.detail.provide({fields:window.fictitiousMission}));

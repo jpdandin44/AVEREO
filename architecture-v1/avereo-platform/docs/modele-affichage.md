@@ -14,6 +14,8 @@ tags: [interface, administration, recette]
 
 Le logo horizontal officiel et le nom de l’application occupent le haut gauche. À droite, les commandes restent dans l’ordre **Enregistrer en ligne**, **Enregistrer en local**, **Se déconnecter**. Le bouton clair **Mon compte**, en bas à gauche, ouvre vers le haut le menu de profil, projets, préférences et missions. **Mes projets** continue d’ouvrir l’espace métier. Les commandes restent accessibles au clavier et disparaissent à l’impression. Un clic sur une action indisponible explique son état.
 
+[Aperçu sur ordinateur](illustrations/modele-bureau.png) · [Aperçu sur mobile](illustrations/modele-mobile.png). Les captures montrent un rapport fictif avec le menu ouvert.
+
 ## Administration CONNECT
 
 Dans **Mon compte → Apparence des applications**, choisir la hauteur du bandeau (56, 68 ou 84 px), la largeur du logo (100, 116 ou 136 px) et la couleur claire du compte (brume ou blanc). L’aperçu réagit à la sélection. Annuler ou fermer restaure les valeurs précédentes. **Appliquer à toutes les applications** publie le modèle dans cet environnement. Les applications utilisant ce portail le lisent au prochain chargement. Par défaut, le bandeau mesure 68 px, le logo 116 px et le compte utilise la teinte brume.
