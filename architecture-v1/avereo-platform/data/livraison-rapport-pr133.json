@@ -1,0 +1,53 @@
+{
+  "sourcePr": "https://github.com/jpdandin44/AVEREO/pull/133",
+  "target": "https://rapport-preprod.avereo.fr/",
+  "deployedAt": "2026-11-08T16:17:23+00:00",
+  "sourceSha": "5e79a9c9dea3df49f5690f85dbc954397fca3036",
+  "artifactSha256": "6779b929ef250f9d8c59d769d6593a1a25b3fc93085e104204ff0722bf7114f6",
+  "files": {
+    "assets/avereo-logo.png": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+    "assets/index-BQTJ2csy.css": "431fe07fad28e598e7961eff92d8768ee03f2026df25ea29a94fbfc3ad13ea23",
+    "assets/index-qsyo97TS.js": "ca0548ce4c16f8499cd44480697bd847cbfb562e726a3c70fac034bdc8373017",
+    "assets/reportDocx-DT6QGhkT.js": "62ac5c69f37721e9298429192f109e48ecc276033ff07979ea1cbda8845cc500",
+    "account-menu-c91b8d2d7786be.js": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067",
+    "index.html": "036a04e3c19001435b1c7d255ffde2d3d687d694abc3c8ca8329f33fe76db86f"
+  },
+  "previousIndexSha256": "0c1ea7a3cda7c050f57b52d7a5adccb0d2e4b7b9dac7034e101c0e676676c43d",
+  "rehearsal": "passed",
+  "https": {
+    "at": "2026-11-08T16:17:34.789197+00:00",
+    "results": {
+      "/": {
+        "http": 303,
+        "destination": "https://connect-preprod.avereo.fr/?app=rapport"
+      },
+      "index.html": {
+        "http": 303,
+        "destination": "https://connect-preprod.avereo.fr/?app=rapport"
+      },
+      "assets/avereo-logo.png": {
+        "http": 200,
+        "sha256": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329"
+      },
+      "assets/index-BQTJ2csy.css": {
+        "http": 200,
+        "sha256": "431fe07fad28e598e7961eff92d8768ee03f2026df25ea29a94fbfc3ad13ea23"
+      },
+      "assets/index-qsyo97TS.js": {
+        "http": 200,
+        "sha256": "ca0548ce4c16f8499cd44480697bd847cbfb562e726a3c70fac034bdc8373017"
+      },
+      "assets/reportDocx-DT6QGhkT.js": {
+        "http": 200,
+        "sha256": "62ac5c69f37721e9298429192f109e48ecc276033ff07979ea1cbda8845cc500"
+      },
+      "account-menu-c91b8d2d7786be.js": {
+        "http": 200,
+        "sha256": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067"
+      }
+    }
+  },
+  "scope": "Interface de Rapport uniquement. Copie du menu adressée par empreinte, ancienne version laissée à RGA.",
+  "browser": "Session Chrome authentifiée non vérifiée lors de cette installation.",
+  "rollback": "Dans le répertoire privé de livraison Rapport PR133, servir.py rollback restaure les fichiers précédents après contrôle des empreintes."
+}

@@ -274,25 +274,19 @@ const LoginPage = () => {
 };
 
 const AppHeader = () => {
-    const { user, signOut, goToAdmin, goToDashboard } = useAppStore();
+    const { user, currentView, signOut, goToAdmin, goToDashboard } = useAppStore();
     return (
-        <header className="bg-white shadow-sm">
-            <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-                <div className="flex h-16 items-center justify-between">
-                    <p onClick={goToDashboard} className="text-xl font-bold text-gray-900 cursor-pointer">AVEREO – Passeport Immo</p>
-                    <div className="flex items-center space-x-4">
-                       {user && <span className="text-sm text-gray-600">Bonjour, {user.name}</span>}
-
-                        {user && user.plan === 'pro' && <span className="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800">PRO</span>}
-                        <avereo-account-menu no-missions="" local-account="true" preferences-app="passeport-immo" preferences-label="Passeport Immo" preferences-fields={JSON.stringify(passeportPreferences)}>
-                            <button slot="items" type="button" onClick={goToDashboard}>Mes projets</button>
-                            {user && user.role === 'admin' && <button slot="administration" type="button" onClick={goToAdmin}>Administration de l’application</button>}
-                            <button slot="logout" type="button" onClick={signOut}>Se déconnecter</button>
-                        </avereo-account-menu>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <>
+            <avereo-account-menu no-missions="" local-account="true" preferences-app="passeport-immo" preferences-label="Passeport Immo" preferences-fields={JSON.stringify(passeportPreferences)}>
+                {user && <span slot="items">{user.name}{user.plan === 'pro' ? ' · Pro' : ''}</span>}
+                <button slot="items" type="button" onClick={goToDashboard}>Mes projets</button>
+                {user && user.role === 'admin' && <button slot="administration" type="button" onClick={goToAdmin}>Administration de l’application</button>}
+                <button slot="logout" type="button" onClick={signOut}>Se déconnecter</button>
+            </avereo-account-menu>
+            {currentView !== 'dashboard' && <nav aria-label="Navigation du dossier" className="mx-auto max-w-5xl px-4 pt-3">
+                <button type="button" onClick={goToDashboard} className="font-semibold text-indigo-700">← Accueil</button>
+            </nav>}
+        </>
     );
 };
 

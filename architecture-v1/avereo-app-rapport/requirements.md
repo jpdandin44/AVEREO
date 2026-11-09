@@ -5,7 +5,7 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-02
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - rapport
@@ -235,3 +235,7 @@ sans empecher le brouillon.
 L'enrichissement de `Observation/Analyse`, puis les phases `Explication` et
 `Pistes d'accompagnement`, ainsi que la machine d'etats proposee, restent en etude dans
 [`workflows/workflow-habitologie.md`](workflows/workflow-habitologie.md).
+
+## Consultation des rapports en ligne
+
+Afficher les cinq dernières sauvegardes accessibles et permettre de porter la limite à cinquante. La recherche s’applique avant cette limite. La confirmation doit être visible au-dessus des résultats avant de remplacer un brouillon. [Contrat](api/README.md#recherche-des-sauvegardes-en-ligne).

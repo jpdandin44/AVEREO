@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { listOnlineReports, loadOnlineReport } from './services/reportApi.js';
 
 export default function OnlineReports({ token, draft, onOpen, onBackup }) {
@@ -9,15 +9,36 @@ export default function OnlineReports({ token, draft, onOpen, onBackup }) {
   const [opening, setOpening] = useState(false);
   const [refresh, setRefresh] = useState(0);
 
+  const [query, setQuery] = useState('');
+  const [limit, setLimit] = useState(5);
+  const confirmation = useRef(null);
+  const trigger = useRef(null);
+
   useEffect(() => {
-    let active = true;
+    const controller = new AbortController();
     setLoading(true);
     setError('');
-    listOnlineReports(token).then((items) => { if (active) setReports(items); })
-      .catch((failure) => { if (active) setError(failure.message); })
-      .finally(() => { if (active) setLoading(false); });
-    return () => { active = false; };
-  }, [token, refresh]);
+    setSelected(null);
+    setReports([]);
+    const timer = setTimeout(async () => {
+      try {
+        const items = await listOnlineReports(token, { query, limit, signal: controller.signal });
+        if (!controller.signal.aborted) setReports(items);
+      } catch (failure) {
+        if (!controller.signal.aborted) setError(failure.message);
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    }, query.trim() ? 200 : 0);
+    return () => { clearTimeout(timer); controller.abort(); };
+  }, [token, refresh, query, limit]);
+
+  useEffect(() => {
+    if (selected) {
+      confirmation.current?.focus({ preventScroll: true });
+      confirmation.current?.scrollIntoView({ block: 'nearest' });
+    }
+  }, [selected]);
 
   const open = async (item) => {
     setOpening(true);
@@ -37,30 +58,42 @@ export default function OnlineReports({ token, draft, onOpen, onBackup }) {
 
   return <section className="panel online-reports" aria-labelledby="online-reports-title">
     <h3 id="online-reports-title">Rapports sauvegardés en ligne</h3>
-    <p>Les 50 derniers rapports auxquels votre compte a accès. Une sauvegarde en ligne est distincte du brouillon de ce navigateur.</p>
-    <button className="button secondary" type="button" disabled={loading || opening}
-      onClick={() => setRefresh((value) => value + 1)}>Actualiser la liste</button>
+    <div className="online-report-filters">
+      <label>Rechercher un rapport
+        <input type="search" value={query} maxLength={190} disabled={opening}
+          placeholder="Référence, titre ou adresse" onChange={event => setQuery(event.target.value)} />
+      </label>
+      <label>Afficher
+        <select value={limit} disabled={opening} onChange={event => setLimit(Number(event.target.value))}>
+          <option value={5}>5 derniers enregistrements</option>
+          <option value={50}>50 derniers enregistrements</option>
+        </select>
+      </label>
+      <button className="button secondary" type="button" disabled={loading || opening}
+        onClick={() => setRefresh(value => value + 1)}>Actualiser</button>
+    </div>
     {loading && <p role="status">Chargement des rapports…</p>}
     {error && <p className="status-line warning" role="alert">{error}</p>}
-    {!loading && !error && !reports.length && <p>Aucun rapport sauvegardé en ligne pour ce compte.</p>}
-    {!loading && <ul className="online-report-list">{reports.map((item) => <li key={item.id}>
-      <div><strong>{item.reference || item.title || 'Rapport sans titre'}</strong>
-        <p>{item.address || 'Adresse non renseignée'} · dernière sauvegarde : {item.updatedAt}</p></div>
-      <button className="button secondary" type="button" disabled={opening}
-        onClick={() => draft ? setSelected(item) : open(item)}>Ouvrir</button>
-    </li>)}</ul>}
-    {selected && <div className="preview-notice" role="region" aria-label="Confirmer la réouverture">
+    {selected && <div className="preview-notice" role="region" aria-label="Confirmer la réouverture" tabIndex={-1} ref={confirmation}>
       <div>
-        <p><strong>Ouvrir {selected.reference || selected.title} ?</strong></p>
+        <p><strong>Ouvrir {selected.reference || selected.title || 'Rapport sans titre'} ?</strong></p>
         <p>La copie en ligne remplacera le brouillon de ce navigateur. Exportez ce brouillon si vous souhaitez conserver ses dernières modifications.</p>
         <div className="home-actions">
           <button className="button secondary" type="button" onClick={onBackup}>Exporter le brouillon JSON</button>
-          <button className="button ghost" type="button" disabled={opening} onClick={() => setSelected(null)}>Annuler</button>
+          <button className="button ghost" type="button" disabled={opening} onClick={() => { setSelected(null); trigger.current?.focus(); }}>Annuler</button>
           <button className="button primary" type="button" disabled={opening} onClick={() => open(selected)}>
             {opening ? 'Ouverture…' : 'Ouvrir la copie en ligne'}
           </button>
         </div>
       </div>
     </div>}
+    {!loading && !error && !reports.length && <p>{query.trim() ? 'Aucun rapport ne correspond à cette recherche.' : 'Aucun rapport sauvegardé en ligne pour ce compte.'}</p>}
+    {!loading && <ul className="online-report-list">{reports.map((item) => <li key={item.id}>
+      <div><strong>{item.reference || item.title || 'Rapport sans titre'}</strong>
+        {item.reference && item.title && item.title !== item.reference && <p>{item.title}</p>}
+        <p>{item.address || 'Adresse non renseignée'} · dernière sauvegarde : {item.updatedAt}</p></div>
+      <button className="button secondary" type="button" disabled={opening}
+        onClick={event => { trigger.current = event.currentTarget; if (draft) setSelected(item); else open(item); }}>Ouvrir</button>
+    </li>)}</ul>}
   </section>;
 }

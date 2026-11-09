@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - rapport
@@ -332,3 +332,9 @@ La fiche ouverte fournit client, site, référence et date. Le reporter met à j
 L’éditeur raccorde sa copie JSON et sa sauvegarde en ligne. RGA garde sa sortie propre et son dialogue de sauvegarde du point. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).
 
 Rapport affiche directement l’accueil ou le contenu de l’étape sous le bandeau commun.
+
+## 9 novembre 2026 — Recherche et sélection
+
+Le contrôle HTTP utilise des comptes fictifs distincts, un dossier situé au-delà des cinquante derniers et des recherches littérales. Le contrôle Chrome vérifie le retour au panneau de confirmation, l’export, l’annulation et l’ouverture. [Parcours](../README.md#retrouver-un-rapport-en-ligne).
+
+Dans l’éditeur, le pied de page rassemble Mon compte, Précédent et Suivant sur une ligne. Les sauvegardes restent dans le bandeau supérieur.

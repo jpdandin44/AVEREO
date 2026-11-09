@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - rapport
@@ -269,3 +269,11 @@ Préparation locale, non déployée.
 ## 7 novembre 2026 — Missions depuis le dossier
 
 Le candidat local raccorde le dossier au module commun. [Adaptation et preuves](docs/source-audit.md).
+
+## 2026-11-09 — Rapports sauvegardés
+
+L’accueil propose la recherche, un choix de cinq ou cinquante dossiers et la confirmation d’ouverture en tête de liste. [Utilisation](README.md#retrouver-un-rapport-en-ligne).
+
+## 2026-11-09 — Pied de page de l’éditeur
+
+Mon compte, Précédent et Suivant occupent une seule ligne. Les commandes de sauvegarde se trouvent en haut à droite.

@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -89,3 +89,7 @@ Le rapport reprend les coordonnées du dossier en couverture. Le sommaire est li
 ## 2026-11-08 — Modèle commun
 
 Le rapport ouvert garde sa sauvegarde dans ce navigateur. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).
+
+## 9 novembre 2026 — Navigation commune
+
+Accueil et Référentiel occupent la navigation métier sous le bandeau partagé. [Modèle](../../avereo-platform/docs/modele-affichage.md).

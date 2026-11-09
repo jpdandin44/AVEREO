@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-06
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - rapport
@@ -259,3 +259,7 @@ L’en-tête Rapport réutilise le menu et conserve la sauvegarde avant déconne
 Mes projets revient à la liste native avec sauvegarde du brouillon avant sortie. Les préférences proposent le format expert/client pour les nouveaux rapports uniquement. RGA conserve ses points repérés et ses réglages dans des espaces de stockage locaux distincts de Rapport ; les résultats de risque sont consultés à nouveau à l’ouverture.
 
 [Règle et portée](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification](../avereo-platform/docs/qualification-mon-espace.md).
+
+## Retrouver un rapport en ligne
+
+Dans **Rapports sauvegardés en ligne**, les cinq derniers dossiers sont visibles. Le menu **Afficher** permet d’en voir jusqu’à cinquante. La recherche par référence, titre ou adresse porte aussi sur les dossiers plus anciens accessibles au compte. Si un brouillon existe, sélectionner **Ouvrir** place en haut de la liste la confirmation, l’export JSON et l’annulation. [Contrat de recherche](api/README.md#recherche-des-sauvegardes-en-ligne). [Aperçu sur données fictives](docs/illustrations/rapports-en-ligne.png).
