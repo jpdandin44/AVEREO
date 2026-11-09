@@ -13,6 +13,10 @@ tags:
   - recette
 ---
 
+## 9 novembre — correction du refus de navigation dans Chrome
+
+Reproduction du JSON « Origine refusée » avant connexion lors d'une navigation externe. Deux tests ajoutés échouent d'abord sur le candidat précédent ; correction limitée au sas HTML public de l'entrée, sans lecture de suivi ni session, puis tests de non-régression réussis. Les ressources privées restent strictement derrière le garde, y compris avec un cookie présenté depuis une origine tierce. Les en-têtes de navigation sont transmis par le client HTTP natif dans la fixture : node.fetch remplace `Sec-Fetch-Mode`, ce qui ne reproduisait pas correctement Chrome. [Parcours et limites](developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur). Sessions séparées par navigateur et bootstrap unique conservés, aucun SSO réel ou hébergement qualifié par cette correction.
+
 ## 9 novembre — qualification et préparation de PR
 
 Changements limités au module privé : qualification d’alias exacts et contextes non concluants, collecte GET manuelle, état des dernières fusions, projection signée et lecture Node/PHP des pièces sans phase. Tests de changement d’empreinte, source modifiée, confinement, non-copie implicite, échec/race GitHub, verrou, intervalle, origine/CSRF et compatibilité PHP ajoutés ; les suites antérieures restent requises. Un premier essai de fixture PHP avait un échappement de namespace incorrect : fixture corrigée et test rejoué sans affaiblir les assertions. [Contrat et limites](preuves-et-actualisation-github.md). Sources réelles en lecture seule, aucun accord humain ou contrôle hébergé déduit.

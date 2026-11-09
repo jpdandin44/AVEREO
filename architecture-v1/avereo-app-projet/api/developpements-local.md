@@ -10,6 +10,12 @@ owner: jpdandin
 tags: [api, local, autorisation, preuves, source-canonique]
 ---
 
+## Correction du 9 novembre — navigation extérieure vers l'entrée
+
+Une navigation utilisateur GET vers `/` ou `/index.html` peut recevoir uniquement un **sas public sans données**, HTTP 200, si Host/boucle locale exacts, Origin absent, `Sec-Fetch-Site: cross-site|same-site`, `Sec-Fetch-Mode: navigate`, `Sec-Fetch-Dest: document` et `Sec-Fetch-User: ?1`. Aucun cookie n'est posé ou interprété dans cette branche ; sa présence ne transforme pas le sas en application privée. Un lien fixe `/?developments` fait poursuivre le parcours dans la même origine. Sans session, l'entrée locale normale reste HTTP 401 avec sélection du fichier privé.
+
+La CSP du sas interdit chargements/scripts/encadrement ; seules ses règles de style sont intégrées. `checkTransport` reste strict pour toutes les ressources privées : aucune exception pour API, assets, pièce, iframe, fetch ou POST. Les contraintes d'origine et CSRF restent inchangées. [Parcours entre navigateurs](../docs/developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur).
+
 ## Extension du 9 novembre — qualification et collecte explicite
 
 Le [contrat complémentaire](../docs/preuves-et-actualisation-github.md) décrit `evidenceQualificationFile`, les références exactes épinglées, `contextProofs` non concluants et `githubSnapshot.latestMerges`. Nouvelle route locale `POST /local-developments/github-refresh` : session, origine et CSRF obligatoires, corps vide, cache dérivé seulement, configuration opérateur explicite. Le lecteur PHP hébergé reste GET sans collecteur ; il reçoit les observations par projection privée signée. Aucun jeton n’est transmis au frontend.

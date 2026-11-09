@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createServer} from 'node:http';
+import {createServer,request as httpRequest} from 'node:http';
 import {mkdtemp,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve,sep} from 'node:path';
@@ -39,3 +39,16 @@ test('actualisation GitHub : session, origine, CSRF et corps fermé avant tout a
 });
 
 test('collecteur non configuré : refus explicite, pas de succès simulé',async t=>{const {origin,login}=await setup(t,{readOnly:true}),Cookie=await login(),state=await(await fetch(origin+'/local-developments/state',{headers:{Cookie}})).json();assert.equal(state.githubRefreshAvailable,false);assert.equal((await fetch(origin+'/local-developments/github-refresh',{method:'POST',headers:{Cookie,Origin:origin,'Content-Type':'application/json','X-Development-Token':state.csrf},body:'{}'})).status,503);});
+
+test('lien extérieur dans Chrome : sas public puis connexion privée, jamais de données par navigation intersite',async t=>{
+ const {origin,login}=await setup(t,{readOnly:true}),navigation={'sec-fetch-site':'cross-site','sec-fetch-mode':'navigate','sec-fetch-dest':'document','sec-fetch-user':'?1'};
+ // node.fetch remplace Sec-Fetch-Mode ; le client HTTP conserve ici les en-têtes d'une vraie navigation.
+ const navigate=(path,headers=navigation,method='GET')=>new Promise((resolve,reject)=>{const request=httpRequest(origin+path,{headers,method},response=>{let text='';response.setEncoding('utf8');response.on('data',chunk=>text+=chunk);response.on('end',()=>resolve({status:response.statusCode,headers:response.headers,text}));});request.on('error',reject);request.end();});
+ for(const path of ['/?developments','/index.html?developments']){const response=await navigate(path);assert.equal(response.status,200);assert.match(response.headers['content-type'],/text\/html/);assert.equal(response.headers['cache-control'],'no-store, private');assert.equal(response.headers['set-cookie'],undefined);assert.match(response.text,/Continuer dans ce navigateur/);assert.match(response.text,/href="\/\?developments"/);assert(!/demo-formulaire|bootstrap|csrf|acces-administrateur/.test(response.text));}
+ const page=await fetch(origin+'/?developments');assert.equal(page.status,401);assert.match(await page.text(),/Fichier d’accès local privé/);
+ const Cookie=await login();assert.equal((await fetch(origin+'/local-developments/state',{headers:{Cookie}})).status,200);
+ const publicAgain=await navigate('/?developments',{...navigation,Cookie});assert.equal(publicAgain.status,200);assert.match(publicAgain.text,/Continuer dans ce navigateur/);
+ for(const site of ['cross-site','same-site'])for(const path of ['/local-developments/state','/local-developments/iteration?iteration=demo-formulaire','/local-developments/proof?iteration=demo-formulaire&proof=demo-parcours','/@vite/client'])assert.equal((await navigate(path,{...navigation,'sec-fetch-site':site,Cookie})).status,403);
+ for(const headers of [{...navigation,'sec-fetch-dest':'iframe'},{...navigation,'sec-fetch-mode':'cors'},{...navigation,Origin:'https://tiers.invalid'}])assert.equal((await navigate('/?developments',headers)).status,403);
+ assert.equal((await navigate('/?developments',navigation,'POST')).status,403);
+});

@@ -13,6 +13,10 @@ tags:
   - local
 ---
 
+## 9 novembre — ouvrir le cockpit local depuis Chrome
+
+Un lien extérieur vers le cockpit local affiche désormais un sas public **Continuer dans ce navigateur**, sans charger de données privées. La connexion reste propre au navigateur : sélectionner le fichier privé créé par le lanceur si aucune session active n'existe. Le fichier sert une fois ; un redémarrage fournit un nouvel accès et invalide les anciennes sessions. [Parcours et limites](docs/developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur). Aucun élargissement des droits/API, ni déploiement.
+
 ## 9 novembre — preuves qualifiées et actualisation explicite
 
 Le [complément courant](docs/preuves-et-actualisation-github.md) qualifie les références sans réécrire les suivis : fichiers exacts épinglés, pièces de contexte distinctes des preuves d’acceptation, validations conservées. Le bouton privé **Rafraîchir GitHub** collecte les dernières fusions/main/PR en GET ; **Actualiser la vue** reste local. Publication signée compatible Node/PHP préparée pour la préproduction, sans jeton sur l’hôte ni déploiement. La PR de préparation ne vaut pas accord d’installation.

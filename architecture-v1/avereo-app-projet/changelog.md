@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 2026-11-09 — correction du refus à l'ouverture dans Chrome
+
+Sas de navigation publique minimal pour un lien extérieur explicite vers l'entrée locale, sans donnée ni session : bouton **Continuer dans ce navigateur**. Le garde privé, Host/boucle locale, origine, CSRF, bootstrap à usage unique et rôle CONNECT non attesté restent inchangés. Tests de non-régression navigation réelle/intersite, API/assets/iframe/POST refusés et connexion privée après poursuite. [Guide](docs/developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur). Aucun déploiement.
+
 ## 2026-11-09 — preuves et critères qualifiés, fusions GitHub actualisables
 
 Lecteur consultatif de qualifications privées par empreintes, contexte documentaire distinct des proofIds et validations conservées. Collecteur GitHub GET à la demande, endpoint local session/origine/CSRF et corps fermé, cache atomique, dernières fusions et conservation sur échec. Export/lecteurs Node et PHP compatibles avec métadonnées et pièces sans phase explicitement sélectionnées. Aucun secret ou donnée réelle dans le paquet, aucune installation. [Guide](docs/preuves-et-actualisation-github.md).
