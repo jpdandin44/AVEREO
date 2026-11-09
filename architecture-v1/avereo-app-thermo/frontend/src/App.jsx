@@ -330,7 +330,7 @@ const ThermoReferentiel = ({ onClose, onProjects = onClose }) => {
             
             {/* Close Button Top Right */}
             {onClose && (
-                <button onClick={onClose} className="absolute top-4 right-4 z-50 bg-slate-800 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg">
+                <button type="button" aria-label="Fermer le référentiel" onClick={onClose} className="absolute top-4 right-4 z-50 bg-slate-800 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg">
                     <X size={20} />
                 </button>
             )}
@@ -1242,7 +1242,7 @@ const Step6_SignatureExport = ({ data, setData, onGenerateDocx, onPreview }) => 
 };
 
 // --- APP PRINCIPALE WIZARD ---
-const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel, onDraftChange }) => {
+const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel, onDraftChange, showNavigation }) => {
     const preferences = useAppPreferences('thermo', thermoPreferences, { useState, useEffect });
     const [currentStep, setCurrentStep] = useState(1);
     const [reportData, setReportData] = useState(initialData);
@@ -1264,7 +1264,7 @@ const ReportWizard = ({ initialData, onGoHome, onOpenReferentiel, onDraftChange 
 
     return (
         <div className="bg-gray-50 min-h-screen font-sans pb-28">
-            <Header onGoHome={() => onGoHome(reportData)} onOpenReferentiel={onOpenReferentiel} />
+            {showNavigation && <Header onGoHome={() => onGoHome(reportData)} onOpenReferentiel={onOpenReferentiel} />}
 
             <main className="max-w-4xl mx-auto p-4">
                 <div className="flex items-center justify-between mb-8 bg-white p-4 rounded-lg shadow-sm overflow-x-auto hide-scrollbar">
@@ -1407,10 +1407,10 @@ export default function App() {
     }
     return <>
         {errorBanner && <div className="fixed top-0 inset-x-0 z-[70]">{errorBanner}</div>}
-        <ReportWizard key={initialWizardData.avereoProjectId} initialData={initialWizardData}
+        <ReportWizard showNavigation={!showReferentielOverlay} key={initialWizardData.avereoProjectId} initialData={initialWizardData}
             onDraftChange={data => { currentDraft.current = data; }} onGoHome={goProjects}
             onOpenReferentiel={() => setShowReferentielOverlay(true)} />
-        {showReferentielOverlay && <div className="fixed inset-0 z-[60] bg-white overflow-y-auto">
+        {showReferentielOverlay && <div className="fixed inset-x-0 z-[60] bg-white overflow-y-auto" style={{ top: 'var(--av-header-used, 68px)', bottom: 52 }}>
             <ThermoReferentiel onClose={() => setShowReferentielOverlay(false)} onProjects={() => goProjects()} />
         </div>}
     </>;
