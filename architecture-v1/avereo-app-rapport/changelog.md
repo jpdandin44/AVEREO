@@ -273,3 +273,7 @@ Le candidat local raccorde le dossier au module commun. [Adaptation et preuves](
 ## 2026-11-09 — Rapports sauvegardés
 
 L’accueil propose la recherche, un choix de cinq ou cinquante dossiers et la confirmation d’ouverture en tête de liste. [Utilisation](README.md#retrouver-un-rapport-en-ligne).
+
+## 2026-11-09 — Pied de page de l’éditeur
+
+Mon compte, Précédent et Suivant occupent une seule ligne. Les commandes de sauvegarde se trouvent en haut à droite.

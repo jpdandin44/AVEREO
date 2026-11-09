@@ -15,7 +15,7 @@ const reports = Array.from({length:65}, (_, i) => ({
 test('recherche, limites et confirmation avant la liste sur ordinateur et mobile', async t => {
   const browser = await chromium.launch({executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH});
   t.after(() => browser.close());
-  for (const width of [1180,390]) {
+  for (const width of [1180,390,320]) {
     const page = await browser.newPage({viewport:{width,height:800}});
     const loaded = [];
     await page.route('**/*', async route => {
@@ -62,6 +62,22 @@ test('recherche, limites et confirmation avant la liste sur ordinateur et mobile
     await confirmation.getByText('Ouvrir la copie en ligne').click();
     await page.getByRole('heading',{name:'Dossier',exact:true}).waitFor();
     assert.deepEqual(loaded,['65']);
+    const footer = page.locator('footer.action-bar');
+    const account = footer.locator('avereo-account-menu .trigger');
+    const previous = footer.getByRole('button',{name:'Précédent',exact:true});
+    const next = footer.getByRole('button',{name:'Suivant',exact:true});
+    const [bar, left, middle, right] = await Promise.all([footer,account,previous,next].map(el => el.boundingBox()));
+    for (const item of [left,middle,right]) {
+      assert.ok(item.y >= bar.y && item.y + item.height <= bar.y + bar.height + 1);
+      assert.ok(Math.abs(item.y + item.height / 2 - left.y - left.height / 2) <= 1);
+    }
+    assert.ok(left.x + left.width <= middle.x && middle.x + middle.width <= right.x);
+    assert.equal(await footer.getByRole('button',{name:'Enregistrer',exact:true}).count(),0);
+    assert.ok(await previous.isDisabled());
+    await next.click();
+    await page.getByRole('heading',{name:'Site et contexte',exact:true}).waitFor();
+    await previous.click();
+    await page.getByRole('heading',{name:'Dossier',exact:true}).waitFor();
     await page.close();
   }
 });

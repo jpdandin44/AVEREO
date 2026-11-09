@@ -14,7 +14,7 @@ tags: [interface, administration, recette]
 
 Le logo horizontal officiel et le nom de l’application occupent le haut gauche. À droite, les commandes restent dans l’ordre **Enregistrer en ligne**, **Enregistrer en local**, **Se déconnecter**. Le bouton clair **Mon compte**, en bas à gauche, ouvre vers le haut le menu de profil, projets, préférences et missions. **Mes projets** continue d’ouvrir l’espace métier. Les commandes restent accessibles au clavier et disparaissent à l’impression. Un clic sur une action indisponible explique son état.
 
-[Aperçu sur ordinateur](illustrations/modele-bureau.png) · [Aperçu sur mobile](illustrations/modele-mobile.png). Les captures montrent un rapport fictif avec le menu ouvert.
+[Aperçu sur ordinateur](illustrations/modele-bureau.png) · [Aperçu sur mobile](illustrations/modele-mobile.png). Dans l’éditeur Rapport, Mon compte se trouve à gauche et Précédent et Suivant à droite, sur la même ligne. Les captures montrent ce pied de page avec le menu ouvert.
 
 ## Administration CONNECT
 

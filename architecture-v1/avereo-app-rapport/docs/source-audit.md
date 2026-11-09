@@ -336,3 +336,5 @@ Rapport affiche directement l’accueil ou le contenu de l’étape sous le band
 ## 9 novembre 2026 — Recherche et sélection
 
 Le contrôle HTTP utilise des comptes fictifs distincts, un dossier situé au-delà des cinquante derniers et des recherches littérales. Le contrôle Chrome vérifie le retour au panneau de confirmation, l’export, l’annulation et l’ouverture. [Parcours](../README.md#retrouver-un-rapport-en-ligne).
+
+Dans l’éditeur, le pied de page rassemble Mon compte, Précédent et Suivant sur une ligne. Les sauvegardes restent dans le bandeau supérieur.

@@ -2067,11 +2067,6 @@ function ReportWizard({
 
   return (
     <div className="screen">
-      <ReportAccountMenu onLocalCopy={handleExportJson} onHome={returnToHome} onLogout={async (event) => {
-        event.preventDefault();
-        try { await saveDraft(report); window.location.assign('/connect/logout.php'); }
-        catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de vous déconnecter.'); }
-      }} />
       <main className="wizard-layout">
         <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} onHome={returnToHome} />
         <div className="wizard-grid">
@@ -2114,20 +2109,19 @@ function ReportWizard({
       </main>
 
       <footer className="action-bar">
-        <button className="button ghost" type="button" onClick={handleSave}>
-          <Save size={18} />
-          Enregistrer
-        </button>
-        <div>
+        <ReportAccountMenu onLocalCopy={handleExportJson} onHome={returnToHome} onLogout={async (event) => {
+          event.preventDefault();
+          try { await saveDraft(report); window.location.assign('/connect/logout.php'); }
+          catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de vous déconnecter.'); }
+        }} />
+        <nav aria-label="Navigation entre les étapes">
           <button className="button ghost" type="button" onClick={goPrev} disabled={currentStep === 0}>
-            <ArrowLeft size={18} />
-            Precedent
+            <ArrowLeft size={18} aria-hidden="true" /> Précédent
           </button>
           <button className="button primary" type="button" onClick={goNext} disabled={currentStep === steps.length - 1}>
-            Suivant
-            <ArrowRight size={18} />
+            Suivant <ArrowRight size={18} aria-hidden="true" />
           </button>
-        </div>
+        </nav>
       </footer>
 
       <input ref={fileInputRef} type="file" accept="application/json" className="visually-hidden" onChange={onImportFile} />

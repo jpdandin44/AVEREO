@@ -181,3 +181,5 @@ Dans l’éditeur, **Accueil** et **Mon compte → Mes projets** utilisent le m�
 ## 9 novembre 2026 — Liste en ligne
 
 La liste et la recherche utilisent les mêmes règles de propriété que la lecture d’un dossier. La sélection conserve la confirmation avant remplacement du brouillon. [Parcours de recherche](../README.md#retrouver-un-rapport-en-ligne).
+
+Le pied de page regroupe le menu du compte et les commandes entre étapes. La sauvegarde automatique du brouillon, l’export JSON et la sauvegarde en ligne conservent leurs parcours.

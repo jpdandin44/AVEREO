@@ -1335,23 +1335,31 @@ img {
 
 .action-bar {
   position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 52px;
+  inset: auto 0 0;
   z-index: 30;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px clamp(16px, 4vw, 36px);
+  padding: 3px max(8px, env(safe-area-inset-right)) max(4px, env(safe-area-inset-bottom)) 8px;
   border-top: 1px solid #d9dee7;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(10px);
+  background: #fff;
 }
 
-.action-bar > div {
-  display: flex;
-  gap: 10px;
+.action-bar nav { display: flex; gap: 8px; }
+.action-bar .button { min-height: 44px; white-space: nowrap; }
+
+@media (max-width: 600px) {
+  .action-bar .button { min-height: 52px; }
+}
+
+@media (max-width: 440px) {
+  .action-bar nav { gap: 4px; }
+  .action-bar .button { padding-inline: 6px; }
+  .action-bar .button svg { display: none; }
+}
+
+@media print {
+  .action-bar { display: none; }
 }
 
 .modal-backdrop,
@@ -1617,22 +1625,19 @@ img {
   .cadastre-box,
   .online-panel,
   .risk-summary-header,
-  .observation-phase-heading,
-  .action-bar {
+  .observation-phase-heading {
     align-items: stretch;
     flex-direction: column;
   }
 
   .toolbar,
   .online-controls,
-  .action-bar > div,
   .export-actions,
   .home-actions {
     justify-content: stretch;
   }
 
   .toolbar .button,
-  .action-bar .button,
   .export-actions .button,
   .home-actions .button {
     width: 100%;
