@@ -5,12 +5,16 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## Premier lot local — 8 novembre
+
+Préparer seulement le code/paquet et les procédures : modèles des trois services inactifs, identifiants/secrets vides ; aucune publication de vraies sources, connexion serveur, modification de permissions/horloges ou livraison. Conserver propriétaire exact ET rôle global frais, refus de tous les autres profils et lecture seule. Tester la récupération sur copie fictive sans abaisser la séquence haute et signaler la livraison `--delete` comme non qualifiée, sans modifier le workflow public. [Guide](docs/preproduction-developpements.md).
 
 ## Qualification du candidat et de la CI
 

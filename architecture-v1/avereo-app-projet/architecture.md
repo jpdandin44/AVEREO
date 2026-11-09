@@ -5,13 +5,17 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## Préparation locale — 8 novembre
+
+Le constructeur copie les trois modèles PHP depuis `workflows/templates/` et le plan JSON depuis `workflows/development-preparation-plan.json`, puis ajoute le hash du workflow public observé dans `preparation/plan.json`. Ces fichiers ne sont ni chargés par le runtime ni publiés dans le build normal. Aucun flux d'autorisation, accès aux suivis réels ou transport distant n'est ajouté. [Procédures et frontières](docs/preproduction-developpements.md).
 
 ## Qualification CI séparée
 

@@ -8,6 +8,6 @@ test('CI privée : seul le SHA propre effectivement testé peut qualifier le paq
  assert.throws(()=>assertDevelopmentSource(good,'not-a-sha'));
 });
 test('CI privée : liste fermée de code, SnapshotReader admis mais jamais une vraie projection',()=>{
- for(const path of ['private/runtime/SnapshotReader.php','private/assets/developments-abc123.js','private/assets/assets.json','public/developpements/index.php'])assertDevelopmentPackagePath(path);
- for(const path of ['private/snapshot.json','private/publication-key','public/developpements/suivi-client.json','private/assets/real-proof.pdf','configuration/developments.php','private/assets/../snapshot.json'])assert.throws(()=>assertDevelopmentPackagePath(path));
+ for(const path of ['private/runtime/SnapshotReader.php','private/assets/developments-abc123.js','private/assets/assets.json','public/developpements/index.php','configuration/connect-developments.example.php','configuration/drupal-authority.example.php','preparation/plan.json'])assertDevelopmentPackagePath(path);
+ for(const path of ['private/snapshot.json','private/publication-key','public/developpements/suivi-client.json','private/assets/real-proof.pdf','configuration/developments.php','configuration/real-owner.json','preparation/real-backup.json','private/assets/../snapshot.json'])assert.throws(()=>assertDevelopmentPackagePath(path));
 });

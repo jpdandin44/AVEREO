@@ -13,6 +13,12 @@ tags:
   - recette
 ---
 
+## 8 novembre — premier lot de préparation locale
+
+Copie dédiée issue de main `5e79a9c` ; aucun changement au runtime d'habilitation, au pont CONNECT/Drupal, au Gantt ou aux vraies sources. Modèles des trois services exécutés/testés avec activation désactivée, secrets/identifiants vides ; plan structuré et empreinte du workflow public inclus au paquet. La restauration ne concerne qu'une copie fictive : seuil anti-rejeu conservé et original intact.
+
+Contrôles Windows locaux : **77 tests ciblés**, **273 tests complets**, aucun échec/ignoré ; build normal de 23 fichiers sans module privé. Broker PHP : 41 assertions ; contrôleur Drupal avec doubles : 14 ; régression CONNECT : 41/41, incluant l'apparence commune ajoutée sur main. Syntaxe de 27 fichiers PHP, dont les trois nouveaux modèles, vérifiée. Environnement constaté : Node 24.18.0, PHP CLI 8.4.23 ; le job CI existant reste Node 22/PHP 8.3, non relancé pour ce lot local. Les reçus du candidat exact restent dans le cockpit propriétaire ; ces résultats ne prouvent ni noyau Drupal réel, ni SSO hébergé, ni sauvegarde indépendante/restauration du serveur. [Procédures et réserves](preproduction-developpements.md).
+
 ## Alignement et contrôles CI — 7 novembre
 
 La première CI Linux a refusé une fixture dont le dossier assets utilisait le mode par défaut trop ouvert. La fixture crée désormais explicitement ses dossiers privés en 0700 et fichiers en 0600 ; le test POSIX élargit volontairement dossier/configuration pour vérifier les refus 503, puis rétablit les modes privés et exige 200. Aucun contrôle du runtime n'est affaibli et aucune permission réelle n'est modifiée.

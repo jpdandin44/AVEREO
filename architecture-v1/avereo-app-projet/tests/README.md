@@ -5,12 +5,16 @@ title: Recette du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - projet
   - tests
 ---
+
+## Préparation inactive et récupération sur copie — 8 novembre
+
+`development-preparation.test.mjs` exécute les trois modèles PHP pour vérifier activation désactivée, secrets/identifiants vides, relations des URLs fictives, plan consultatif, quatre phases, absence d'accord distant et risque `--delete`. Une copie isolée de stockage fictif est restaurée avec seuil anti-rejeu préservé ; l'original et ses sources restent identiques. Les tests de paquet/CI vérifient les nouveaux chemins autorisés et l'empreinte du workflow. Ils sont inclus dans `test:developments` et `build`, sans appel serveur ni vraie donnée. [Procédures](../docs/preproduction-developpements.md).
 
 ## CI dédiée et checkout neuf
 

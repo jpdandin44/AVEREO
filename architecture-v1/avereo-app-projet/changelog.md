@@ -5,12 +5,16 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 2026-11-08 — Premier lot de préparation locale
+
+Base main actualisée dans une copie isolée. Paquet enrichi des trois modèles inactifs (secrets/identifiants vides), plan de publication/récupération et empreinte du workflow public. Liste fermée du paquet étendue explicitement ; récupération signée testée sur copie fictive, anti-rejeu et conservation de l'original. Procédures et réserves de livraison `--delete`, moindre privilège et horloges documentées. Runtime d'autorisation, Gantt, données réelles et hébergement inchangés. [Guide](docs/preproduction-developpements.md).
 
 ## Alignement et CI du module privé
 
