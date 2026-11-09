@@ -54,3 +54,7 @@ La correction fusionnée de la PR #133 est installée pour Rapport. L’accueil 
 ## Généralisation et navigation métier — candidat du 9 novembre
 
 CONNECT utilise le bandeau commun sur le portail de connexion et dans l’espace connecté. Les applications conservent leurs outils sous ce bandeau. Coupe garde sa barre de commandes de dessin, Projet son planning, Thermo son accès au référentiel, Drone ses outils de mission, Saisie unique sa navigation et son avertissement sur les données fictives. Passeport Immo et le frontend historique CONNECT proposent le retour à l’accueil depuis les vues de dossier. Recherche conserve ses onglets et RGA son accès aux cartes. [Suivi du candidat](../data/suivi-navigation-rapports.json).
+
+## Préproduction commune — 9 novembre 2026
+
+La tête 7117216 de la PR #135 a été installée sur CONNECT, Rapport, Projet, Coupe, Thermo, Drone et Passeport Immo. Le pied de page de Rapport et la recherche sont disponibles pour revue. La bascule a été vérifiée sur 44 fichiers après répétition de la restauration sur copies. Le bandeau de CONNECT a été observé sur son portail hébergé. Les parcours de Rapport ont été exercés avec des dossiers fictifs ; la revue connectée des dossiers du responsable reste ouverte. Recherche conserve un candidat local et Saisie unique reste autonome. [Reçu et retour arrière](../data/livraison-navigation-pr135.json) · [Capture de CONNECT](illustrations/connect-preproduction-pr135.png).

@@ -8,7 +8,7 @@
     "Préproduction",
     "Mise en production"
   ],
-  "phase": "Développement local",
+  "phase": "Préproduction",
   "branch": "feat/navigation-commune-recherche-rapports",
   "rapportPrecedent": "livraison-rapport-pr133.json",
   "documentation": "../docs/modele-affichage.md",
@@ -21,7 +21,7 @@
     "Rapport : Mon compte et les boutons entre étapes restent sur une ligne à 320, 390, 440, 600, 768 et 1 180 px. Export JSON depuis le bandeau supérieur vérifié."
   ],
   "preproduction": {
-    "statut": "Paquet de sept cibles préparé et variante Coupe adaptée sur copie. Accès SSH indisponible au contrôle initial.",
+    "statut": "Installé sur les sept cibles ; revue humaine connectée à effectuer.",
     "ciblesExistantes": [
       "connect",
       "projet",
@@ -33,10 +33,12 @@
     ],
     "recherche": "Cible hébergée non identifiée.",
     "saisie-unique": "Fichier autonome local.",
-    "reprise": "Vérifier les répertoires cPanel et la variante de Coupe, sauvegarder et restaurer sur copie avant installation.",
-    "paquetPrepare": "9b971dca108c24ea8f71b924faa1b7f495f92d953dc1c86cd018e4461842a959"
+    "reprise": "Vérifier en session connectée le catalogue, le bandeau et les parcours Rapport.",
+    "paquetPrepare": "9b971dca108c24ea8f71b924faa1b7f495f92d953dc1c86cd018e4461842a959",
+    "paquetInstalle": "9b6af7e9cbba29df877843bb9fdd19f1f25532cfb21cdd6047a83a07fba89e34",
+    "recu": "livraison-navigation-pr135.json"
   },
   "pr": "https://github.com/jpdandin44/AVEREO/pull/135",
-  "reviewUrl": "http://127.0.0.1:5198/",
-  "reviewEnvironment": "local sur 65 dossiers fictifs"
+  "reviewUrl": "https://rapport-preprod.avereo.fr/",
+  "reviewEnvironment": "préproduction"
 }

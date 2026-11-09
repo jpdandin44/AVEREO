@@ -1,0 +1,564 @@
+{
+  "pr": "https://github.com/jpdandin44/AVEREO/pull/135",
+  "environment": "préproduction",
+  "sourceSha": "711721672b39552c2cdd752602498f4632fa8353",
+  "artifactSha256": "9b6af7e9cbba29df877843bb9fdd19f1f25532cfb21cdd6047a83a07fba89e34",
+  "preparedAt": "2026-11-09T12:52:10+00:00",
+  "installedAt": "2026-11-09T12:53:57+00:00",
+  "restorationOnCopies": "passed",
+  "targets": {
+    "connect": "https://connect-preprod.avereo.fr/",
+    "projet": "https://projet-preprod.avereo.fr/",
+    "rapport": "https://rapport-preprod.avereo.fr/",
+    "coupe": "https://coupe-preprod.avereo.fr/",
+    "thermo": "https://thermo-preprod.avereo.fr/",
+    "drone": "https://drone-preprod.avereo.fr/",
+    "passeport-immo": "https://passeport-immo-preprod.avereo.fr/"
+  },
+  "verified": 44,
+  "changed": [
+    "connect/account-menu.js",
+    "connect/assets/avereo-logo.png",
+    "connect-backend/src/Application.php",
+    "connect-backend/src/Administration/Appearance.php",
+    "projet/account-menu.js",
+    "projet/assets/avereo-logo.png",
+    "projet/assets/index-DqSDKYLR.js",
+    "coupe/account-menu.js",
+    "coupe/assets/avereo-logo.png",
+    "drone/account-menu.js",
+    "drone/assets/avereo-logo.png",
+    "drone/assets/index-Cyyw3xfd.js",
+    "passeport-immo/account-menu.js",
+    "passeport-immo/assets/avereo-logo.png",
+    "passeport-immo/assets/index-C3PXDMpS.js",
+    "passeport-immo/assets/index-Z9dMQl1H.css",
+    "passeport-immo/assets/index.es-DTuEgExF.js",
+    "thermo/account-menu.js",
+    "thermo/assets/avereo-logo.png",
+    "thermo/assets/index-B_J7_RQj.js",
+    "thermo/assets/index-DscvLzYN.css",
+    "rapport/account-menu.js",
+    "rapport/api/reports.php",
+    "rapport/rga/carte.php",
+    "rapport/assets/index-C7WISWhL.js",
+    "rapport/assets/index-DGIjyukh.css",
+    "rapport/assets/reportDocx-Daf5fIoB.js",
+    "projet/legacy-app.html",
+    "coupe/legacy-app.html",
+    "connect/index.php",
+    "passeport-immo/index.php",
+    "rapport/rga/index.php",
+    "connect/index.html",
+    "projet/index.html",
+    "drone/index.html",
+    "passeport-immo/index.html",
+    "thermo/index.html",
+    "rapport/index.html"
+  ],
+  "files": {
+    "connect/account-menu.js": {
+      "before": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+      "after": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067",
+      "mode": 420
+    },
+    "connect/assets/avereo-logo.png": {
+      "before": null,
+      "after": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "mode": 420
+    },
+    "connect/index.html": {
+      "before": "df618bf2545033a19bfabf009387288fa0401b52acb56592c4302e7bdef03256",
+      "after": "bb62592579f6389f0ad71e33c26d59739b5050a4b1abed20b31f8771f7674cda",
+      "mode": 436
+    },
+    "connect/index.php": {
+      "before": "e8f41d2efcec5baf694250c836d92c1aab6a92e0b2c1adebb6cb9f963c1042e3",
+      "after": "887dc97d2a268359b6097fdc9c510a8457dc7c305de2545e3815af49b22de2bc",
+      "mode": 420
+    },
+    "connect-backend/src/Application.php": {
+      "before": "5729f0816c6f1be59ae3881b509f53807af7b8bcd0f558554d7b0647cc93a3ff",
+      "after": "f52d6c2c2888a7e61f56f52b7fff4bcbc6472f36feebe041fe919d3fe01a0087",
+      "mode": 420
+    },
+    "connect-backend/src/Administration/Appearance.php": {
+      "before": null,
+      "after": "fa7c4905d9762c6a8d74a36a3dffb368921646d2c4f88fcf3bb3b383294a8466",
+      "mode": 420
+    },
+    "projet/account-menu.js": {
+      "before": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+      "after": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067",
+      "mode": 420
+    },
+    "projet/assets/avereo-logo.png": {
+      "before": null,
+      "after": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "mode": 420
+    },
+    "projet/legacy-app.html": {
+      "before": "14a0ed75903f1f0a98981ab609dd47ceb658b03126d0fbc3106420769e7b5a87",
+      "after": "496d66ebd698fe746030e61610c63e2864bfe3e43c65a4230937a293c33df3db",
+      "mode": 420
+    },
+    "projet/index.html": {
+      "before": "94803e0f308ac760a0587d49252ada174c642aaa04f066b6e07d408d0b726ba2",
+      "after": "028c44f277c3a3afeb6135923643e9bfcab9fb2965c8ae777d285858a3f65331",
+      "mode": 420
+    },
+    "projet/assets/index-BRgM2m8J.css": {
+      "before": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+      "after": "3e627af714ad7d8cfcefeaf265fc2f5c8c9a685917ad536b50872b9183724b8c",
+      "mode": 420
+    },
+    "projet/assets/index-DqSDKYLR.js": {
+      "before": null,
+      "after": "e91e835deb3325f1f7b82071d5b6beac16670a9cc3176c0fba59e1209cb6426f",
+      "mode": 420
+    },
+    "coupe/account-menu.js": {
+      "before": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+      "after": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067",
+      "mode": 420
+    },
+    "coupe/assets/avereo-logo.png": {
+      "before": null,
+      "after": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "mode": 420
+    },
+    "coupe/legacy-app.html": {
+      "before": "da87d0ab7fcf7346aa79fbb186a06157e826a12b9dbecd9098b36daa583b2735",
+      "after": "5955620b49245decefe2458ca2fa5ea4ac9c8b6780d2c1b5503112b23e51a5a2",
+      "mode": 436
+    },
+    "drone/account-menu.js": {
+      "before": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+      "after": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067",
+      "mode": 420
+    },
+    "drone/assets/avereo-logo.png": {
+      "before": null,
+      "after": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "mode": 420
+    },
+    "drone/index.html": {
+      "before": "8d83a68739ce703ffb69757bc35971afe46b0f0b9b13d5754809c0f364fa6f2d",
+      "after": "6f00f7d90712dbf8475125d9b5c29aca64bfd50c4e5c401cb8788cd4b2950068",
+      "mode": 436
+    },
+    "drone/assets/index-8Kik6olk.css": {
+      "before": "9be3f788b488143b616326d2d7db8a9e7c1185a4fd38a7e31f14f405511e2611",
+      "after": "9be3f788b488143b616326d2d7db8a9e7c1185a4fd38a7e31f14f405511e2611",
+      "mode": 420
+    },
+    "drone/assets/index-Cyyw3xfd.js": {
+      "before": null,
+      "after": "13051ae9494dee22fcb0e43804453aa3d9284e6566deb6c5c7e7f0972889dbc4",
+      "mode": 420
+    },
+    "passeport-immo/account-menu.js": {
+      "before": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+      "after": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067",
+      "mode": 420
+    },
+    "passeport-immo/assets/avereo-logo.png": {
+      "before": null,
+      "after": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "mode": 420
+    },
+    "passeport-immo/index.html": {
+      "before": "9223acaaf633e8ac62d731645fc06c37147b011027dc5fa42cbae763738c0f94",
+      "after": "97cb1b52747da52e50839bfbdb05074f5a4988299b631b5ed7a20ca7fa36bc2c",
+      "mode": 420
+    },
+    "passeport-immo/assets/index-C3PXDMpS.js": {
+      "before": null,
+      "after": "f6cd0d393716d93f399586d15cd01d4124f1e1cc7a6b68aeea62d69c3e82faa4",
+      "mode": 420
+    },
+    "passeport-immo/assets/index-Z9dMQl1H.css": {
+      "before": null,
+      "after": "7c42b5e6e659447eef1bd85a44012f000aff2b8205b9ff8c6e76b6e078d8a6ea",
+      "mode": 420
+    },
+    "passeport-immo/assets/index.es-DTuEgExF.js": {
+      "before": null,
+      "after": "c9634fdf5709b278e2de7cb0dd3c6fc29f0611c03cd8a4e180fe0dbc44fd5f80",
+      "mode": 420
+    },
+    "passeport-immo/assets/pdf-WgYdDwYK.js": {
+      "before": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+      "after": "763e793d39b4a718a69005d9862d12ea4b4a79aa787f53ba208ef678e25e8426",
+      "mode": 420
+    },
+    "passeport-immo/assets/pdf.worker.min-CjEcRF4W.mjs": {
+      "before": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+      "after": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18",
+      "mode": 420
+    },
+    "passeport-immo/assets/purify.es-BwoZCkIS.js": {
+      "before": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+      "after": "0917726fedf3b7ad791784f09f89d85a858d76a6ada18d24aefaeb3c5b94311a",
+      "mode": 420
+    },
+    "passeport-immo/index.php": {
+      "before": "29962ec20d36e10fe30d612493aca4b3da8ecee8934159ea6ae80f3a06c20c97",
+      "after": "fe0e9ed3f1086ec91d28fdc959a3aae03e25b5f73432339844c1637a4244646e",
+      "mode": 420
+    },
+    "thermo/index.html": {
+      "before": "664ba34548dff837eccff52e1bf56a75d26d80373ccff7c0b7f08bf394ccedeb",
+      "after": "8cbbd228c6e3116fb6ddc12014a05f62d91a2d5018a08fd4459149ab927bb6c6",
+      "mode": 436
+    },
+    "thermo/account-menu.js": {
+      "before": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+      "after": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067",
+      "mode": 420
+    },
+    "thermo/assets/avereo-logo.png": {
+      "before": null,
+      "after": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "mode": 420
+    },
+    "thermo/assets/index-B_J7_RQj.js": {
+      "before": null,
+      "after": "e4b5dab89a1d2e1c9790226522fa03aa091cbd10734cd6bf12df23fded5ef7a8",
+      "mode": 420
+    },
+    "thermo/assets/index-DscvLzYN.css": {
+      "before": null,
+      "after": "d2d95c92c45249cf0af57c7568787cdec25842883146f1a774529bf0d63f1d49",
+      "mode": 420
+    },
+    "rapport/index.html": {
+      "before": "036a04e3c19001435b1c7d255ffde2d3d687d694abc3c8ca8329f33fe76db86f",
+      "after": "7b4ee375aa9be78e703b934e0212b9bfee521b8b334e64143aeeb0d1cc8c3cc0",
+      "mode": 420
+    },
+    "rapport/account-menu.js": {
+      "before": "2b23c6a4492fada325e09e43ed1660ac49294b56f8ab85613efd64f0433bce0d",
+      "after": "c91b8d2d7786bee9917a94cc69ed1aeba251a3f6240d06e461e9cc7a96dcc067",
+      "mode": 420
+    },
+    "rapport/api/reports.php": {
+      "before": "0436872b588c58f235bb952325b3c417bd713d6c502ecee6d2274961549e939c",
+      "after": "93e07b8cc58756cea77c5b895cd2a2e871d9805b866ec0e83e205d1b4b803ed6",
+      "mode": 420
+    },
+    "rapport/rga/index.php": {
+      "before": "666eea5ccb6918bb356c2f6a4f9495c290e84158fefd964381febe6fa38b33d5",
+      "after": "012d64079f9baeb1ce3276f8160102934494d242eeb1a59e33fb9b98d5bc4dea",
+      "mode": 420
+    },
+    "rapport/rga/carte.php": {
+      "before": "184ec111d68791c48c11216c0aa8842fa8c86df7b876e14a100ced018d0ef80a",
+      "after": "fc6c2670d91a0e255a863800932432169ae5527a405d5b771719d7c94e264132",
+      "mode": 420
+    },
+    "rapport/assets/avereo-logo.png": {
+      "before": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "after": "3039d7298574404c6460b7556911152b62b5908fe9ddfcd5f4a6a7e733ec4329",
+      "mode": 420
+    },
+    "rapport/assets/index-C7WISWhL.js": {
+      "before": null,
+      "after": "bb14c2ac799f2d7ed7b194cdd8cb86c2b63c0519d664bf889e2110df259448b3",
+      "mode": 420
+    },
+    "rapport/assets/index-DGIjyukh.css": {
+      "before": null,
+      "after": "01856c1b9b1834f03fe8387cf649fcb8c9cf7a5082300ddeb2cc2393c7a3b296",
+      "mode": 420
+    },
+    "rapport/assets/reportDocx-Daf5fIoB.js": {
+      "before": null,
+      "after": "5675b12bd2084f4d6991b95ccfb3a0e1d78012d43637573d8a958790ed8ffa37",
+      "mode": 420
+    }
+  },
+  "https": {
+    "at": "2026-11-09T12:54:59.715234+00:00",
+    "rows": [
+      {
+        "app": "connect",
+        "path": "/",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "rapport",
+        "path": "/",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "projet",
+        "path": "/",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "coupe",
+        "path": "/",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "thermo",
+        "path": "/",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "drone",
+        "path": "/",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "connect",
+        "path": "/api/v1/appearance",
+        "http": 200,
+        "settingsOnly": true
+      },
+      {
+        "app": "rapport",
+        "path": "/api/reports.php?limit=5&q=test",
+        "http": 403
+      },
+      {
+        "app": "connect",
+        "path": "/account-menu.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "connect",
+        "path": "/assets/avereo-logo.png",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "projet",
+        "path": "/account-menu.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "projet",
+        "path": "/assets/avereo-logo.png",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "projet",
+        "path": "/legacy-app.html",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "projet",
+        "path": "/index.html",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "projet",
+        "path": "/assets/index-BRgM2m8J.css",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "projet",
+        "path": "/assets/index-DqSDKYLR.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "coupe",
+        "path": "/account-menu.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "coupe",
+        "path": "/assets/avereo-logo.png",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "coupe",
+        "path": "/legacy-app.html",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "drone",
+        "path": "/account-menu.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "drone",
+        "path": "/assets/avereo-logo.png",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "drone",
+        "path": "/index.html",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "drone",
+        "path": "/assets/index-8Kik6olk.css",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "drone",
+        "path": "/assets/index-Cyyw3xfd.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/account-menu.js",
+        "http": 403
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/assets/avereo-logo.png",
+        "http": 403
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/index.html",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/assets/index-C3PXDMpS.js",
+        "http": 403
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/assets/index-Z9dMQl1H.css",
+        "http": 403
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/assets/index.es-DTuEgExF.js",
+        "http": 403
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/assets/pdf-WgYdDwYK.js",
+        "http": 403
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/assets/pdf.worker.min-CjEcRF4W.mjs",
+        "http": 403
+      },
+      {
+        "app": "passeport-immo",
+        "path": "/assets/purify.es-BwoZCkIS.js",
+        "http": 403
+      },
+      {
+        "app": "thermo",
+        "path": "/index.html",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "thermo",
+        "path": "/account-menu.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "thermo",
+        "path": "/assets/avereo-logo.png",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "thermo",
+        "path": "/assets/index-B_J7_RQj.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "thermo",
+        "path": "/assets/index-DscvLzYN.css",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "rapport",
+        "path": "/index.html",
+        "http": 303,
+        "redirectHost": "connect-preprod.avereo.fr"
+      },
+      {
+        "app": "rapport",
+        "path": "/account-menu.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "rapport",
+        "path": "/assets/avereo-logo.png",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "rapport",
+        "path": "/assets/index-C7WISWhL.js",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "rapport",
+        "path": "/assets/index-DGIjyukh.css",
+        "http": 200,
+        "matched": true
+      },
+      {
+        "app": "rapport",
+        "path": "/assets/reportDocx-Daf5fIoB.js",
+        "http": 200,
+        "matched": true
+      }
+    ]
+  },
+  "browser": {
+    "connect": "Portail hébergé observé sans session, logo décodé (1 611 × 505), trois commandes et Mon compte.",
+    "rapport": "Fichiers de présentation identiques au paquet de recette. Recherche, 5/50, confirmation et pied de page testés en Chrome sur données fictives en environnement isolé. La revue avec un compte réel reste au responsable."
+  },
+  "adaptations": {
+    "connect": "Deux ajouts ciblés pour l’apparence sur les frontaux existants, issus des empreintes des versions 4d8a80d (index.php) et 12e17c1 (Application.php). 41 tests PHP réussis sur la variante.",
+    "coupe": "Variante hébergée contrôlée par empreinte avant écriture."
+  },
+  "rollback": {
+    "workspace": "private/navigation-rapports-pr135-7117216-1794228443648",
+    "command": "python3 livraison.py rollback",
+    "condition": "Vérifier les empreintes actives avant restauration ; les fichiers métier et les comptes sont hors sélection."
+  },
+  "exceptions": {
+    "recherche": "Aucune cible de préproduction identifiée.",
+    "saisie-unique": "Fichier HTML autonome."
+  }
+}
