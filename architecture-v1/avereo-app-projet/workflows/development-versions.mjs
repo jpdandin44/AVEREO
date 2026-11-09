@@ -31,6 +31,15 @@ export function projectDevelopmentVersions(data,source){
   if(source.deliveryEnvironment&&['delivered','delivered_verified'].includes(d.status))declarations.push({environment:source.deliveryEnvironment,sourceSha:sha(d.sourceSha),artifactSha256:sha(d.artifactSha256),observedAt:text(d.observedAt),target:text(d.target),evidence:text(d.evidence),scope:'declared_lot_not_full_application'});
   const m=data.preproduction?.deployment;
   if(source.deliveryAdapter==='missions-preproduction'&&source.deliveryEnvironment==='preproduction'&&m?.status==='installed_and_verified')declarations.push({environment:'preproduction',applicationIds:source.deliveryApplicationIds||[],sourceSha:sha(g.codeSourceSha),artifactSha256:sha(m.artifactSha256)||sha(data.preproduction.artifactSha256),observedAt:text(m.observedAt),target:'Lot Missions — cibles déclarées dans la source',evidence:text(m.evidence),scope:'declared_lot_not_full_application'});
+  for(const declaration of declarations){
+    // Same-version hosted evidence, not a green CI or a completed phase.
+    const check=(Array.isArray(data.checks)?data.checks:[]).find(x=>x.kind===declaration.environment&&x.status==='passed'
+      &&typeof x.evidence==='string'&&x.evidence.trim()&&typeof x.observedAt==='string'&&!Number.isNaN(Date.parse(x.observedAt))
+      &&(declaration.sourceSha||declaration.artifactSha256)
+      &&(!declaration.sourceSha||x.sourceSha===declaration.sourceSha)&&(!declaration.artifactSha256||x.artifactSha256===declaration.artifactSha256)
+      &&typeof declaration.target==='string'&&declaration.target!==''&&x.target===declaration.target);
+    declaration.verification=check?{status:'documented',evidence:check.evidence,observedAt:check.observedAt,meaning:'declared_hosted_check_not_live_monitoring'}:{status:'unqualified'};
+  }
   return{candidate:{sourceSha:sha(c.sourceSha)||sha(c.codeSourceSha),artifactSha256:sha(c.artifactSha256),basis:text(c.qualificationBasis)},github:{url:text(g.prUrl)||text(g.url)||text(data.pr),headSha:sha(g.headSha)||sha(g.sourceSha)||sha(g.codeSourceSha),branch:text(g.branch)||text(data.branch),state:text(g.state)||text(g.status)||(g.merged===true?'merged':g.draft===true?'draft':null),observedAt:text(g.observedAt)},declarations,updatedAt:latestDeclaredDate(data)};
 }
 export async function developmentPortfolio(applications,iterations,github=null){

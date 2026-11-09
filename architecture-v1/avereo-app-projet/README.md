@@ -13,6 +13,10 @@ tags:
   - local
 ---
 
+## 9 novembre — badges des environnements
+
+La vue d’ensemble ajoute des pastilles vertes/bleues, triangles orange, et états rouges/gris avec libellés, dates et explications. Une livraison sans contrôle hébergé documenté de la même version et cible reste grise. Les badges ne surveillent pas les serveurs, ne valident aucun critère et n’autorisent aucune livraison. [Règles et limites](docs/cockpit-portefeuille.md#badges-des-environnements). Accès propriétaire/global, lecture seule et quatre phases inchangés.
+
 ## 9 novembre — liens GitHub préservés dans la projection privée
 
 Le filtre d’export distingue désormais un lecteur Windows isolé de la fin d’un schéma HTTPS. Les liens GitHub PR, commit et CI restent intacts ; chemins locaux/serveur toujours masqués, sources et validations consultatives. [Contrat et tests](docs/preuves-et-actualisation-github.md#liens-https-et-confidentialité-de-lexport). Aucun changement du contrôle propriétaire/global, du runtime PHP ou du Gantt. La correction agit lors d’une nouvelle publication signée, pas par réécriture des anciennes projections.

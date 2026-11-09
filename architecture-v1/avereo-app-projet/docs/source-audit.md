@@ -13,6 +13,10 @@ tags:
   - recette
 ---
 
+## 9 novembre — badges des environnements
+
+Périmètre : présentation de la vue d’ensemble et qualification consultative des déclarations. Tests de version/cible discordantes, preuve/date absentes, CI ou phase seules, anciennes projections, blocage du suivi sans panne inférée, préparation/examen/accord distincts. Aucun secret, endpoint, rôle, critère, source métier, Gantt ou contrôle Drupal/CONNECT modifié. Le rendu réel et le candidat/CI/artefact sont qualifiés séparément dans le suivi privé du lot. [Sémantique](cockpit-portefeuille.md#badges-des-environnements).
+
 ## 9 novembre — correction du masquage des liens GitHub à l’export
 
 Le nouveau test reproduit d’abord `https://github.com/...` transformé en `http[chemin local masqué]` (1 échec/8). Ajout d’une borne de début au filtre Windows, puis 8/8 tests de projection réussis. PR, commit, CI avec requête/fragment et lien imbriqué préservés ; chemins Windows/POSIX toujours masqués, données réelles non écrites. La correction touche le seul export opérateur et son test, pas l’habilitation ni les lecteurs hébergés. Tests complets, CI et publication effective du candidat restent des preuves distinctes portées par le suivi canonique.

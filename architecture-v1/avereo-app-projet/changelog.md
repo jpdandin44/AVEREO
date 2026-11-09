@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 2026-11-09 — badges visuels dans la vue d’ensemble
+
+Ajout de badges texte/icône dans les deux colonnes d’environnement : préprod verte, production bleue, préparation/examen/autorisation orange, blocage de suivi rouge et état non qualifié gris. Un contrôle hébergé documenté est lié à la même version et cible ; aucune CI ou simple phase terminée ne crée une livraison. Projections anciennes compatibles (gris), légende et dates, sans action métier ni changement d’habilitation. [Guide](docs/cockpit-portefeuille.md#badges-des-environnements).
+
 ## 2026-11-09 — liens GitHub conservés par l’export privé
 
 Correction minimale du filtre de chemins Windows : ne plus prendre le dernier caractère de `https://` pour une lettre de lecteur. Test de non-régression PR/commit/actions avec paramètres et fragment, champs imbriqués, masquage Windows/POSIX, sources inchangées et aucune preuve copiée implicitement. Propriétaire/global, lecture seule et runtime hébergé inchangés. Une nouvelle publication signée est requise pour les copies déjà exportées.
