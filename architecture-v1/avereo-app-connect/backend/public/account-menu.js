@@ -49,15 +49,20 @@
   }
 
   let appearanceRequest;
+  let currentAppearance;
   function appearance(menu) {
     if (!menu.portal || location.protocol === 'file:') return;
     appearanceRequest ||= Promise.resolve().then(() => fetch(menu.portal + '/api/v1/appearance',
       {credentials:'omit', referrerPolicy:'no-referrer'}))
       .then(response => response.ok ? response.json() : null)
-      .then(result => applyAppearance(result?.data)).catch(() => {});
+      .then(result => { if (!currentAppearance) applyAppearance(result?.data); }).catch(() => {});
   }
   function applyAppearance(settings) {
     if (!settings) return;
+    currentAppearance = settings;
+    for (const menu of document.querySelectorAll('avereo-account-menu')) {
+      if (menu.shadowRoot) menu.shadowRoot.querySelector('.avatar').textContent = settings.accountBadge || 'MOI';
+    }
     const style = document.documentElement.style;
     if ([56,68,84].includes(settings.headerHeight)) style.setProperty('--av-header', settings.headerHeight + 'px');
     if ([100,116,136].includes(settings.logoWidth)) style.setProperty('--av-logo', settings.logoWidth + 'px');
@@ -137,7 +142,7 @@
           :host, :host([placement="sidebar"]) {position:fixed;left:8px;bottom:4px;width:max-content;margin:0;z-index:45}
           .trigger, :host([placement]) .trigger, :host([compact]) .trigger {min-height:44px;width:auto;padding:6px 14px;gap:8px;border:1px solid #bdccd5;border-radius:8px;background:var(--av-account,#eef3f6);color:#002b45}
           .trigger:hover {background:#e1eaf0}
-          .trigger .avatar {width:26px;height:26px;color:#002b45;background:#fff;border-color:#a8bcc7;font-size:10px}
+          .trigger .avatar {width:max-content;min-width:26px;padding:0 2px;height:26px;color:#002b45;background:#fff;border-color:#a8bcc7;font-size:10px}
           .trigger small {display:none}
           :host .trigger .label, :host([compact]) .trigger .label {display:grid}
           .shell {position:fixed;inset:0 0 auto;min-height:var(--av-header,68px);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px 14px;background:white;color:#002b45;border-bottom:1px solid #c8d6dd;font:14px/1.35 Inter,system-ui,sans-serif}
@@ -271,6 +276,7 @@
         this.header.hidden = true;
         this.trigger.hidden = true;
       }
+      this.shadowRoot.querySelector('.avatar').textContent = currentAppearance?.accountBadge || 'MOI';
       reserveSpace();
       this.header.querySelector('.brand img').src = document.querySelector('meta[name="avereo-shell-logo"]')?.content || '/assets/avereo-logo.png';
       this.header.querySelector('.brand strong').textContent = this.getAttribute('app-name') || this.getAttribute('preferences-label') || document.title;

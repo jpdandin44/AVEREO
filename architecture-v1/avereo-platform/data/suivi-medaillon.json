@@ -1,0 +1,32 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "texte-medaillon-20261109",
+  "project": "avereo-platform",
+  "owner": "jpdandin",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "phase": "Développement local",
+  "base": "e116c7343ff4bad5ea86644d69516a8307de33b4",
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/texte-medaillon-compte",
+    "base": "main"
+  },
+  "reviewUrl": "http://127.0.0.1:53045/",
+  "documentation": "../docs/modele-affichage.md#administration-connect",
+  "evidence": [
+    "41/41 tests du backend CONNECT et 25/25 tests du menu partagé.",
+    "CONNECT avec organisation fictive, Chrome 390 px : aperçu, annulation, validation, sauvegarde, rechargement et export.",
+    "Saisie unique sous Chrome hors ligne : ancien modèle, export personnalisé CONNECT et rejet du texte invalide.",
+    "Neuf builds, parité des menus distribués et intégration RGA dans le livrable Rapport."
+  ],
+  "nextAction": "Examiner la PR et essayer le champ dans le portail de revue locale.",
+  "deployment": {
+    "preproduction": false,
+    "production": false
+  }
+}

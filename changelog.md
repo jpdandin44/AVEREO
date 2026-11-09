@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
+## 2026-11-09 — Texte du médaillon « Mon compte »
+
+CONNECT permet de personnaliser le texte du médaillon partagé. [Réglage et compatibilité des modèles existants](architecture-v1/avereo-platform/docs/modele-affichage.md#administration-connect).
+
 ## 2026-11-07 — CI du module Développements privé
 
 Alignement du candidat sur main en préservant la copie antérieure ; contrôles PHP et Node explicites, ordre de préparation du sas adapté au checkout neuf, source propre et SHA du paquet vérifiés. Aucun compte, donnée réelle, accord humain ou déploiement. [Workflow de référence](architecture-v1/avereo-app-projet/workflows/ci-developpements.md).
