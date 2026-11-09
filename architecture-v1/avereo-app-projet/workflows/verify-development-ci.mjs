@@ -20,7 +20,7 @@ export function assertDevelopmentSource(manifest,expected){
  assert.equal(manifest.readyToDeploy,false);assert.equal(manifest.deployed,false);
 }
 export function assertDevelopmentPackagePath(path){
- const allowed=/^(?:public\/developpements\/(?:api\.php|bootstrap\.php|index\.php|module-link\.js)|private\/runtime\/(?:Failure|SessionAuthorization|SnapshotReader|Runtime|Factory|SignedMessage)\.php|private\/assets\/(?:assets\.json|index\.html|[A-Za-z0-9_-]+\.(?:js|css))|configuration\/developments\.example\.php|dependencies\/connect-drupal\.required\.json|installation\.md)$/;
+ const allowed=/^(?:public\/developpements\/(?:api\.php|bootstrap\.php|index\.php|module-link\.js)|private\/runtime\/(?:Failure|SessionAuthorization|SnapshotReader|Runtime|Factory|SignedMessage)\.php|private\/assets\/(?:assets\.json|index\.html|[A-Za-z0-9_-]+\.(?:js|css))|configuration\/(?:developments|connect-developments|drupal-authority)\.example\.php|dependencies\/connect-drupal\.required\.json|preparation\/plan\.json|installation\.md)$/;
  assert(allowed.test(path),'Unexpected private package file: '+path);
 }
 export async function verifyDevelopmentCi(output,expected){
@@ -34,7 +34,12 @@ export async function verifyDevelopmentCi(output,expected){
  for(const f of manifest.files){assert.equal(hash(await readFile(join(output,'package',f.path))),f.sha256);assertDevelopmentPackagePath(f.path);}
  const publicFiles=manifest.files.filter(f=>f.path.startsWith('public/')).map(f=>f.path).sort();
  assert.deepEqual(publicFiles,['public/developpements/api.php','public/developpements/bootstrap.php','public/developpements/index.php','public/developpements/module-link.js']);
- assert.match(await readFile(join(output,'package/configuration/developments.example.php'),'utf8'),/'enabled'=>false/);
+ for(const file of ['developments','connect-developments','drupal-authority'])assert.match(await readFile(join(output,'package/configuration',file+'.example.php'),'utf8'),/'enabled'=>false/);
+ const plan=JSON.parse(await readFile(join(output,'package/preparation/plan.json'),'utf8'));
+ assert.equal(plan.readyToDeploy,false);assert.equal(plan.serverChangesAuthorized,false);assert.equal(plan.activationAuthorized,false);
+ assert.equal(plan.publication.transportImplemented,false);assert.equal(plan.delivery.workflowModified,false);
+ assert.equal(plan.deliveryObservation.workflowSha256,hash(await readFile(join(repo,plan.delivery.workflow))));
+ assert.equal(plan.deliveryObservation.protectionApplied,false);
  const normal=await tree(join(app,'frontend/dist'));
  for(const f of normal){assert(!/developpements|developments|snapshot|publication-key/i.test(f.path));
   if(/\.(js|html)$/i.test(f.path)){const text=await readFile(join(repo,f.path),'utf8');assert(!text.includes('/local-developments/'));assert(!text.includes('developments:read'));assert(!text.includes('development-portfolio-registry'));}

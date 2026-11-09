@@ -5,12 +5,18 @@ title: Module Développements — session Projet et préparation de préproducti
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags: [projet, developpements, session, preproduction, prive]
 ---
 
 # Session Projet et préparation de préproduction
+
+## Premier lot de préparation locale — 8 novembre
+
+Le responsable autorise la préparation locale, pas une intervention sur le serveur. La branche dédiée reprend `main` à `5e79a9c9dea3df49f5690f85dbc954397fca3036`, incluant les apports d'interface et de missions des PR #131 à #133. Le code d'autorisation et le lecteur restent inchangés : propriétaire exact **et** rôle global courant, autres profils refusés, consultation sans écriture. Les suivis réels ne sont ni exportés à nouveau, ni migrés, ni publiés par ce lot.
+
+Le constructeur ajoute trois modèles PHP inactifs et un [plan structuré de préparation](../workflows/development-preparation-plan.json). Ce JSON est la référence exécutable du contenu de préparation ; il est copié dans le paquet avec l'empreinte du workflow public observé. Il ne pilote aucune opération distante, ne vérifie pas une cible et ne contient aucun accord d'installation. Les résultats locaux, SHA et empreinte définitifs restent dans le suivi canonique propriétaire du lot ; aucune CI distante n'est déduite des tests locaux.
 
 ## État réel
 
@@ -82,8 +88,9 @@ DOSSIER/
     public/developpements/      seuls points d'entrée et lien optionnel
     private/runtime/            classes PHP et SignedMessage depuis CONNECT
     private/assets/             HTML/JS/CSS et empreintes, jamais servis directement
-    configuration/              exemple PHP enabled=false, sans secret réel
+    configuration/              trois modèles PHP enabled=false, secrets vides
     dependencies/               empreintes du pont CONNECT/Drupal requis
+    preparation/plan.json        copie du plan + constat du workflow public
     installation.md             copie dérivée du présent guide
 ```
 
@@ -93,7 +100,19 @@ Le manifeste relève HEAD et l'état Git avant/après la construction : source p
 
 Le [workflow CI dédié](../workflows/ci-developpements.md) explicite lint, suites PHP, refus et lecture seule sur fixtures, build normal sans module privé et contrôle du paquet lié au SHA exact. Les empreintes de sorties Windows/Linux restent distinctes si leurs octets diffèrent ; le même SHA ne permet pas de les confondre.
 
-## Configuration future, non créée
+## Configuration future, non créée sur le serveur
+
+Les modèles de référence sont dans `workflows/templates/` et sont copiés sans interpolation par le constructeur :
+
+| Modèle | Destination future, à qualifier | Particularité |
+| --- | --- | --- |
+| `developments.example.php` | Configuration privée Projet `developments.php` | Propriétaire/origine relus depuis le planning existant ; aucun second ID |
+| `connect-developments.example.php` | Fichier privé sélectionné par `DEVELOPMENTS_PRIVATE_CONFIG` | ID CONNECT, deux clés et répertoire des nonces dédiés |
+| `drupal-authority.example.php` | Valeur privée de `$settings['avereo_developments_authority']` | Le modèle retourne un tableau ; il ne modifie pas Settings |
+
+Tous gardent `enabled:false`, secrets et identifiants vides, domaines `example.invalid`. Changer seulement `enabled` ne suffit pas à rendre ces modèles opérationnels. Ils ne sont pas chargés automatiquement et ne doivent jamais être copiés sous une racine web. L'ID CONNECT doit être celui du propriétaire du planning existant ; le sujet Drupal doit être celui effectivement lié à ce compte, sans privilège déduit du nom, e-mail, UID 1 ou rôle d'organisation.
+
+Relations à renseigner uniquement après accord : clé Projet = `CONNECT.project_key`, clé d'autorité `CONNECT.identity_key` = `Drupal.secret` ; ces deux clés doivent être distinctes entre elles, de la clé de publication et des secrets de lancement/session existants. Aucun secret réel n'est créé par la préparation.
 
 Le fichier privé `developments.php`, hors webroot, contient :
 
@@ -120,6 +139,33 @@ POSIX : propriétaire du processus qualifié, répertoires 0700, fichiers 0600 ;
 8. Obtenir l'accord ciblé d'installation, puis seulement réaliser la recette hébergée du même candidat : propriétaire réel en lecture seule, autres profils fictifs/refus, révocation sur fixtures, deux navigateurs et PC éteint.
 
 Retour arrière prévu : fermer le module (`enabled:false`), retirer son lien optionnel, restaurer uniquement ses points d'entrée/runtime/assets approuvés. Garder la projection et son historique privés ; ne pas remplacer le planning, la configuration CONNECT ou les données clients. La procédure reste à éprouver sur la cible avant usage.
+
+## Publication privée — procédure préparée, transport non installé
+
+1. Qualifier et autoriser source par source le stockage canonique privé ; ne pas déplacer les vrais suivis sans accord. L'historique déjà public reste un problème distinct, non résolu par un lecteur privé.
+2. Préparer le registre privé avec toutes ses entrées `writable:false`, la liste des preuves explicitement permises et les empreintes avant export. Ne joindre ni projection réelle, ni pièce, ni secret à une PR publique ou à un artefact CI.
+3. Exporter une projection signée avec une séquence strictement supérieure au `highWater` distant observé, en conservant génération, provenance et versions déclarées. Conserver les sources byte-for-byte ; la lecture multi-dépôts n'est pas transactionnelle.
+4. Après accord de transfert, employer un canal privé authentifié à qualifier. Aucun transfert, agent permanent ni endpoint d'import navigateur n'est implémenté par ce lot. L'API interne `importSnapshot()` n'est pas exposée sur Internet.
+5. Sur la cible qualifiée, vérifier signature, schéma, empreintes, taille, quota et séquence avant activation atomique de l'index. Conserver un reçu privé avec séquence/hash/date, jamais la clé.
+6. Relire le résultat avec le propriétaire réel en lecture seule ; comparer catalogue, versions, critères/preuves dans deux navigateurs puis avec le poste arrêté. « Actualiser » relit la copie publiée, pas les sources du poste. La première publication peut rester manuelle ; aucune synchronisation continue n'est annoncée.
+
+## Récupération ciblée — procédure préparée et copie fictive testée
+
+Avant toute écriture future : inventorier les chemins réels, versions/hash et permissions ; qualifier l'espace/quota et une sauvegarde fraîche indépendante. Séparer sauvegarde de code/configuration du module, copie privée de projection et garde témoin des plannings/dossiers clients. Les sauvegardes ne vont jamais sous une racine servie ou dans un dépôt public.
+
+Sur une copie isolée et non servie, restaurer les fichiers du module seulement, comparer chaque hash et tester le lecteur avec des fixtures. Le test local `development-preparation.test.mjs` copie un stockage fictif de séquence 2, restaure explicitement le précédent (séquence 1), vérifie `highWater:2`, refuse le rejeu de 2 puis accepte 3. L'original reste à 2 avec son index identique ; les sources fictives restent byte-for-byte identiques. Ce test ne prouve ni l'indépendance, ni la restauration d'une sauvegarde hébergée.
+
+Une récupération technique de projection utilise `restorePrevious()` et conserve le seuil anti-rejeu ; **ne jamais recopier un ancien `index.json` sur l'index actif**. Si l'index ou sa séquence haute sont perdus/corrompus, fermer le module, conserver l'incident et faire qualifier la reconstruction et le seuil depuis les reçus indépendants ; aucune réparation automatique n'est fournie. Un retour de code ne justifie pas une restauration complète d'identité, de base CONNECT ou de planning client.
+
+Après accord ciblé de retour arrière : désactiver le module, retirer uniquement son inclusion optionnelle, restaurer seulement ses points d'entrée/runtime/assets et les paramètres dédiés approuvés. Ne pas remplacer les configurations globales CONNECT/Drupal ni le Gantt par des copies anciennes. Garder privé l'historique des projections. Comparer ensuite plannings/configurations hors lot aux témoins ; compte, rôle et autres développements restent inchangés.
+
+## Livraison publique, moindre privilège et horloges — réserves explicites
+
+Le workflow public `deploy-projet-o2switch.yml` contient `rsync -az --delete` et cible la production, pas une installation privée du module. Le plan conserve l'empreinte exacte de ce fichier ; ce constat de source ne qualifie pas les secrets GitHub ni le chemin réel. Un module absent du build normal peut être supprimé par une telle livraison si les cibles se recouvrent. **Workflow inchangé et usage pour ce module bloqué.** Proposition à examiner séparément : protéger/exclure `/developpements/***`, contrôler les protections existantes du sas/API clients, inventorier la destination et examiner un dry-run sans suppression. Aucun ajout d'exclusion, dry-run distant ou remplacement de template hébergé n'est effectué ici.
+
+Moindre privilège proposé, non appliqué : fichiers dédiés 0600 et dossiers 0700, propriétaire effectif du processus web à qualifier, hors de toutes les racines servies et sans liens. Pour les paramètres Drupal partagés, qualifier d'abord les UID PHP/CLI et le mécanisme de sauvegarde ; ne pas appliquer aveuglément un chmod global. Un compte Unix partagé reste une limite de cloisonnement.
+
+L'écart relatif poste/serveur précédemment observé ne désigne pas l'horloge correcte. Préparer une comparaison UTC de chaque acteur avec une référence indépendante, puis une demande de correction ciblée sur l'acteur erroné. Aucun service d'heure, horloge ou permission n'est modifié ; tolérance d'avance de 5 s et durée maximale de 30 s inchangées. Les échanges entre services hébergés doivent être qualifiés séparément des messages émis depuis le poste.
 
 ## Phases et résultats de recette
 

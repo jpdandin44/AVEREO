@@ -5,13 +5,17 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 8 novembre — préparation locale du premier lot
+
+Le [guide du module privé](docs/preproduction-developpements.md) complète le paquet séparé : modèles Projet/CONNECT/Drupal désactivés avec secrets vides, plan structuré de publication/récupération et constat du risque `rsync --delete`. Base `main` actualisée dans une copie isolée ; code d'accès propriétaire/global et lecture seule inchangés. Aucune configuration active, vraie source exportée, intervention serveur ou livraison. La préparation reste en Développement local ; les constats suivants sont historiques.
 
 ## Alignement et CI du module Développements
 

@@ -24,6 +24,10 @@ test('paquet privé distinct : octets/empreintes, aucun secret/suivi, défaut fe
  assert(m.files.every(f=>!f.path.includes('planning')&&!f.path.includes('suivi-')&&!f.path.includes('publication-key')));
  assert.equal(await readFile(join(output,'package/private/runtime/SignedMessage.php'),'utf8'),await readFile(resolve(app,'../avereo-app-connect/backend/src/Developments/SignedMessage.php'),'utf8'));
  assert.match(await readFile(join(output,'package/configuration/developments.example.php'),'utf8'),/'enabled'=>false/);
+ for(const name of ['connect-developments','drupal-authority'])assert.match(await readFile(join(output,'package/configuration',name+'.example.php'),'utf8'),/'enabled'=>false/);
+ const plan=JSON.parse(await readFile(join(output,'package/preparation/plan.json'),'utf8'));
+ assert.equal(plan.readyToDeploy,false);assert.equal(plan.serverChangesAuthorized,false);assert.equal(plan.deliveryObservation.deleteOptionObserved,true);
+ assert.equal(plan.deliveryObservation.protectionApplied,false);assert.equal(plan.deliveryObservation.workflowSha256,hash(await readFile(resolve(app,'../..',plan.delivery.workflow))));
  const html=await readFile(join(output,'package/private/assets/index.html'),'utf8');assert(!html.includes('/assets/'));assert(html.includes('/developpements/api.php?route=asset&amp;name='));
  const entry=join(output,'package/public/developpements/index.php').replaceAll('\\','/');
  const p=spawnSync('php',['-d','display_errors=1','-r','include '+JSON.stringify(entry)+'; echo "\\nSTATUS:".http_response_code();'],{encoding:'utf8',windowsHide:true});

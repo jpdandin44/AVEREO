@@ -5,12 +5,16 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 8 novembre — premier lot de préparation locale
+
+Développement local autorisé et préparé depuis main `5e79a9c` : modèles inactifs, plan structuré, tests et récupération sur copie fictive. Le [guide](docs/preproduction-developpements.md) porte les opérations futures exactes et leurs réserves. Préproduction et Mise en production ne démarrent pas ; cible/horloges/permissions, secrets, sauvegarde indépendante/restauration, livraison privée et vraie chaîne d'identité restent à qualifier puis autoriser. Pas de nouveau critère ni accord humain déduit.
 
 ## Alignement et contrôles CI
 

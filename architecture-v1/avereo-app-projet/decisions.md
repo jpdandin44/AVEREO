@@ -5,12 +5,16 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-07
+updated: 2026-11-08
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 2026-11-08 — Préparation inactive sans automatiser l'installation
+
+Contexte : premier lot local autorisé, aucune modification du serveur. Décision : conserver le runtime d'accès, centraliser les trois modèles et le plan de préparation dans les sources du constructeur, avec secrets vides, configuration désactivée et blocage de livraison explicite. Raisons : ne pas confondre paquet de code, habilitation réelle et accord de livraison ; ne pas exposer de données par commodité de préparation. Conséquences : publication/restauration hébergées et protection contre suppression rsync restent à qualifier/autoriser ; aucune configuration privée réelle ni workflow public modifié. [Guide](docs/preproduction-developpements.md).
 
 ## Reprise — session Projet et préparation de préproduction
 
