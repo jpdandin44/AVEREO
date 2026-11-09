@@ -14,7 +14,9 @@
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/texte-medaillon-compte",
-    "base": "main"
+    "base": "main",
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/137",
+    "testedImplementation": "5066cb6f424a8447030cb7647ae2a8449cfc13c1"
   },
   "reviewUrl": "http://127.0.0.1:53045/",
   "documentation": "../docs/modele-affichage.md#administration-connect",
