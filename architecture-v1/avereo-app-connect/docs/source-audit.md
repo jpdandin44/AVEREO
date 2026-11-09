@@ -5,7 +5,7 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
@@ -292,3 +292,7 @@ Le portail expose la génération autonome de mission depuis Mon espace. Le cand
 ## 2026-11-08 — Modèle commun
 
 Le portail PHP porte le réglage administrateur et la confirmation de sortie. Le frontend historique conserve sa session de démonstration. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).
+
+## 9 novembre 2026 — Navigation commune
+
+Le portail PHP identifie la vue de connexion ou l’espace connecté sous le bandeau commun. Le frontend historique garde son retour au tableau de bord. [Modèle](../../avereo-platform/docs/modele-affichage.md).

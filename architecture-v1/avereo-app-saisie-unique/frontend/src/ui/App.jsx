@@ -27,27 +27,19 @@ export function App() {
     <>
       <p className="bandeau-fictif" role="note"><strong>Données fictives — ne saisir aucune donnée réelle.</strong></p>
       <div className="wrap">
-        <header className="top">
-          <div className="rule" aria-hidden="true" />
-          <div className="entete-ligne">
-            <div>
-              <p className="eyebrow"><span className="chip chip-v1">V1</span><span>AVEREO · outil complémentaire de l’interface actuelle</span></p>
-              <h1>AVEREO UNI</h1>
-              <p className="lead">Saisissez le dossier une seule fois : les documents se pré-remplissent et suivent chaque modification.</p>
-            </div>
-            <nav aria-label="Navigation principale" className="nav">
-              {NAV.map((n) => (
-                <button key={n.id} type="button" className="nav-lien" aria-current={vue === n.id || (n.id === 'liste' && vue === 'dossier') ? 'page' : undefined} onClick={() => actions.afficher(n.id)}>{n.libelle}</button>
-              ))}
-            </nav>
-            <avereo-account-menu app-name="Saisie unique">
-              <button slot="local-copy" data-avereo-save="local" data-avereo-proxy="" onClick={() => exporterDossiers(actions)}>Exporter les dossiers</button>
-              <button slot="items" type="button" onClick={() => actions.afficher('liste')}>Mes dossiers locaux</button>
-              <button slot="items" type="button" onClick={() => actions.afficher('parametres')}>Préférences</button>
-            </avereo-account-menu>
-          </div>
-          {ui.erreurStockage && <p className="alerte" role="alert">{ui.erreurStockage}</p>}
-        </header>
+        <div className="entete-ligne">
+          <nav aria-label="Navigation principale" className="nav">
+            {NAV.map((n) => (
+              <button key={n.id} type="button" className="nav-lien" aria-current={vue === n.id || (n.id === 'liste' && vue === 'dossier') ? 'page' : undefined} onClick={() => actions.afficher(n.id)}>{n.libelle}</button>
+            ))}
+          </nav>
+          <avereo-account-menu app-name="Saisie unique">
+            <button slot="local-copy" data-avereo-save="local" data-avereo-proxy="" onClick={() => exporterDossiers(actions)}>Exporter les dossiers</button>
+            <button slot="items" type="button" onClick={() => actions.afficher('liste')}>Mes dossiers locaux</button>
+            <button slot="items" type="button" onClick={() => actions.afficher('parametres')}>Préférences</button>
+          </avereo-account-menu>
+        </div>
+        {ui.erreurStockage && <p className="alerte" role="alert">{ui.erreurStockage}</p>}
         {vue === 'liste' && <ListeDossiers donnees={donnees} ui={ui} />}
         {vue === 'dossier' && dossier && <VueDossier dossier={dossier} donnees={donnees} ui={ui} />}
         {vue === 'ratios' && <VueRatios donnees={donnees} />}

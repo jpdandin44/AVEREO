@@ -80,6 +80,21 @@ try:
   check('Create private report '+title,r[0]==200)
  listing=json.loads(req('/api/reports.php',a)[2]);check('A list contains only A',[r['id'] for r in listing['reports']]==['a'*32])
  listing=json.loads(req('/api/reports.php',b)[2]);check('B list contains only B',[r['id'] for r in listing['reports']]==['b'*32])
+ # Place a matching report beyond the first 50 rows and verify scope before LIMIT.
+ with sqlite3.connect(db) as fixture:
+  fixture.execute("UPDATE rapport_reports SET address='Rue des Tests', updated_at='2020-01-01', reference_code='REF_100%' WHERE public_id=?", ('a'*32,))
+  fixture.executemany("""INSERT INTO rapport_reports (public_id,title,owner_provider,owner_id,updated_at)
+    SELECT ?,?,owner_provider,owner_id,'2026-01-01' FROM rapport_reports WHERE public_id=?""",
+    [(f'{n:032x}', 'Report '+str(n), 'a'*32) for n in range(52)])
+ def results(path):return json.loads(req('/api/reports.php?'+path,a)[2])['reports']
+ check('Five most recent in deterministic order',[r['id'] for r in results('limit=5')]==[f'{n:032x}' for n in range(51,46,-1)])
+ check('Expanded list capped at 50',len(results('limit=50'))==50)
+ for term in ['rue%20des%20tests','REF_100%25','Trial%20A']:
+  check('Search before limit: '+term,[r['id'] for r in results('limit=5&q='+term)]==['a'*32])
+ check('Wildcard remains literal',len(results('q=%25'))==1 and len(results('q=_'))==1)
+ check('Search cannot return another account',not results('q=Trial%20B'))
+ with sqlite3.connect(db) as fixture:
+  fixture.executemany("DELETE FROM rapport_reports WHERE public_id=?",[(f'{n:032x}',) for n in range(52)])
  check('A cannot read B by id',req('/api/reports.php?id='+'b'*32,a)[0]==404)
  check('A cannot overwrite B',req('/api/reports.php',a,'POST',{'id':'b'*32,'report':{'titre':'intrusion','observations':[]}})[0]==403)
  req('/api/reports.php?id='+'b'*32,a,'DELETE')

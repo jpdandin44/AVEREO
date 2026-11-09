@@ -842,27 +842,19 @@ const SelectField = React.memo(({ label, name, options, ...props }) => (
 
 const Header = ({ onGoHome, onOpenReferentiel }) => {
     return (
-        <header className="bg-white shadow-sm w-full p-4 mb-6 sticky top-0 z-20">
-            <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-                <div className="text-center sm:text-left">
-                    <h1 className="text-2xl font-bold text-gray-800">AVEREO</h1>
-                    <p className="text-sm text-gray-500 text-orange-600 font-semibold">Expertise Thermographique</p>
-                </div>
-                <div className="flex items-center gap-3">
-                    <ThermoAccountMenu onProjects={onGoHome || (() => document.getElementById('thermo-projects')?.focus())} />
-                    {onOpenReferentiel && (
-                        <button onClick={onOpenReferentiel} className="flex items-center gap-2 px-3 py-2 bg-orange-50 text-orange-700 border border-orange-200 rounded-md hover:bg-orange-100 transition shadow-sm text-sm font-semibold">
-                            <BookOpen size={16}/> <span className="hidden sm:inline">Référentiel</span>
-                        </button>
-                    )}
-                    {onGoHome && (
-                        <button onClick={onGoHome} className="flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 border border-gray-200 rounded-md hover:bg-gray-200 transition shadow-sm text-sm font-semibold">
-                            <Home size={16}/> <span className="hidden sm:inline">Accueil</span>
-                        </button>
-                    )}
-                </div>
-            </div>
-        </header>
+        <nav aria-label="Navigation du rapport thermique" className="w-full max-w-6xl mx-auto flex flex-wrap items-center justify-end gap-3 px-4 py-2">
+            <ThermoAccountMenu onProjects={onGoHome || (() => document.getElementById('thermo-projects')?.focus())} />
+            {onOpenReferentiel && (
+                <button onClick={onOpenReferentiel} className="flex items-center gap-2 px-3 py-2 bg-orange-50 text-orange-700 border border-orange-200 rounded-md hover:bg-orange-100 transition shadow-sm text-sm font-semibold">
+                    <BookOpen size={16}/> <span>Référentiel</span>
+                </button>
+            )}
+            {onGoHome && (
+                <button onClick={onGoHome} className="flex items-center gap-2 px-3 py-2 bg-gray-100 text-gray-700 border border-gray-200 rounded-md hover:bg-gray-200 transition shadow-sm text-sm font-semibold">
+                    <Home size={16}/> <span>Accueil</span>
+                </button>
+            )}
+        </nav>
     );
 };
 

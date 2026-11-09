@@ -5,7 +5,7 @@ title: Écart Mon espace dans Passeport Immo
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [passeport-immo, parite, mon-espace]
 ---
@@ -50,3 +50,7 @@ Le contrôle de parité inverse explicitement les sept substitutions du menu et 
 Le bouton Mon compte rejoint le bas gauche. Le bandeau supérieur indique la sauvegarde du bien selon son mode serveur ou démonstration. Le contrôle de parité vérifie les substitutions exactes, y compris sur l’écran de connexion. [Matrice des actions du candidat](../../avereo-platform/docs/modele-affichage.md).
 
 Le frontal PHP sert le seul PNG officiel après vérification de la session, y compris en requête HEAD. Le test Apache vérifie son contenu, son type MIME et le refus des autres PNG.
+
+## 9 novembre 2026 — Navigation commune
+
+Le tableau de bord revient par la navigation du dossier. Le compte, le rôle et les actions natives restent dans le menu partagé. [Modèle](../../avereo-platform/docs/modele-affichage.md).

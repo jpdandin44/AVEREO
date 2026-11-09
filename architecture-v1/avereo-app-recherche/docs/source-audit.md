@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -52,3 +52,7 @@ Le corpus ne contient pas de dossier client. Missions ouvre un formulaire autono
 ## 2026-11-08 — Modèle commun
 
 L’export du corpus chargé est accessible depuis les écrans de recherche. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).
+
+## 9 novembre 2026 — Navigation commune
+
+Les onglets métier et le retour vers CONNECT suivent le bandeau commun. [Modèle](../../avereo-platform/docs/modele-affichage.md).

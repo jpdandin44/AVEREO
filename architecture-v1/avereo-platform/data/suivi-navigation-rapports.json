@@ -1,0 +1,36 @@
+{
+  "iterationId": "navigation-commune-rapports-20261109",
+  "project": "avereo-platform",
+  "owner": "jpdandin",
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
+  "phase": "Développement local",
+  "branch": "feat/navigation-commune-recherche-rapports",
+  "rapportPrecedent": "livraison-rapport-pr133.json",
+  "documentation": "../docs/modele-affichage.md",
+  "qualification": [
+    "Neuf builds et contrôle des menus et logos des livrables.",
+    "Neuf applications et RGA en Chrome à 1 200 et 320 px sur fixtures.",
+    "API PHP sur SQLite sur données fictives : limite, recherche au-delà des 50 derniers, isolation et caractères littéraux.",
+    "Rapport en Chrome à 1 180 et 390 px : recherche, sélection en haut, export, annulation et ouverture."
+  ],
+  "preproduction": {
+    "statut": "en attente du transport vérifié",
+    "ciblesExistantes": [
+      "connect",
+      "projet",
+      "rapport",
+      "coupe",
+      "thermo",
+      "drone",
+      "passeport-immo"
+    ],
+    "recherche": "Cible hébergée non identifiée.",
+    "saisie-unique": "Fichier autonome local.",
+    "reprise": "Vérifier les répertoires cPanel et la variante de Coupe, sauvegarder et restaurer sur copie avant installation."
+  }
+}

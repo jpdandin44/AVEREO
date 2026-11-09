@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -86,3 +86,7 @@ Une mission enregistrée est accessible depuis la liste et possède une action O
 ## 2026-11-08 — Modèle commun
 
 Le bandeau réutilise la sauvegarde locale de la mission en cours. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).
+
+## 9 novembre 2026 — Navigation commune
+
+Le volet repliable identifie les outils de mission et expose son état au clavier. [Modèle](../../avereo-platform/docs/modele-affichage.md).

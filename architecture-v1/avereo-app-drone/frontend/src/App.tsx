@@ -281,8 +281,8 @@ const MissionEditor = ({ mission: initialData, onSave, onCancel, onProjects }: a
       {/* SIDEBAR TOOLS */}
       <div className={`${showLinks ? 'w-64' : 'w-16'} bg-slate-900 text-white transition-all duration-300 flex flex-col shadow-2xl z-20`}>
         <div className="p-4 flex items-center justify-between border-b border-slate-700">
-           {showLinks && <span className="font-bold tracking-wider text-sm">AVEREO TOOLS</span>}
-           <button onClick={() => setShowLinks(!showLinks)} className="p-1 hover:bg-slate-800 rounded">
+           {showLinks && <span className="font-bold tracking-wider text-sm">Outils de mission</span>}
+           <button aria-label={showLinks ? "Réduire les outils" : "Afficher les outils"} aria-expanded={showLinks} onClick={() => setShowLinks(!showLinks)} className="p-1 hover:bg-slate-800 rounded">
              <Menu size={20} />
            </button>
         </div>

@@ -5,7 +5,7 @@ title: Audit source de la maquette Saisie unique
 status: draft
 version: git
 created: 2026-10-21
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [avereo, audit, phase-0]
 ---
@@ -185,3 +185,7 @@ Adaptation transverse en lecture seule des coordonnées du dossier fictif ouvert
 ## 2026-11-08 — Modèle commun
 
 Le logo et les réglages du modèle sont embarqués dans le fichier autonome. Le bandeau utilise l’export des dossiers. [Modèle partagé](../../avereo-platform/docs/modele-affichage.md).
+
+## 9 novembre 2026 — Navigation commune
+
+Les onglets suivent l’avertissement sur les données fictives. Le fichier autonome conserve le modèle embarqué. [Modèle](../../avereo-platform/docs/modele-affichage.md).

@@ -1,7 +1,7 @@
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
 const OAUTH_ATTEMPT_KEY = 'avereo-rapport-oauth-attempt';
 
-async function request(path, { token = '', body, method = 'GET' } = {}) {
+async function request(path, { token = '', body, method = 'GET', signal } = {}) {
   const headers = { Accept: 'application/json' };
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -11,6 +11,7 @@ async function request(path, { token = '', body, method = 'GET' } = {}) {
     headers,
     body: body === undefined ? undefined : JSON.stringify(body),
     credentials: 'same-origin',
+    signal,
   });
   const payload = await response.json().catch(() => null);
   if (!response.ok || !payload?.ok) {
@@ -109,8 +110,10 @@ export async function saveOnlineReport(report, token, id = '') {
   return payload.report;
 }
 
-export async function listOnlineReports(token) {
-  const payload = await request('reports.php?limit=50', { token });
+export async function listOnlineReports(token, { limit = 50, query = '', signal } = {}) {
+  const params = new URLSearchParams({ limit: String(limit) });
+  if (query.trim()) params.set('q', query.trim());
+  const payload = await request('reports.php?' + params, { token, signal });
   return payload.reports || [];
 }
 

@@ -5,7 +5,7 @@ title: Modèle d’affichage commun des applications
 status: active
 version: git
 created: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [interface, administration, recette]
 ---
@@ -50,3 +50,7 @@ Avant installation, confirmer l’organisation administratrice et son répertoir
 ## Préproduction de Rapport — 8 novembre 2026
 
 La correction fusionnée de la PR #133 est installée pour Rapport. L’accueil affiche un bandeau unique. Dans l’éditeur, Accueil précède Dossier et conserve le parcours de sauvegarde du brouillon. Le serveur et les fichiers distribués ont été contrôlés. La revue visuelle connectée reste à effectuer. [Ouvrir Rapport](https://rapport-preprod.avereo.fr/) · [Reçu de livraison](../data/livraison-rapport-pr133.json).
+
+## Généralisation et navigation métier — candidat du 9 novembre
+
+CONNECT utilise le bandeau commun sur le portail de connexion et dans l’espace connecté. Les applications conservent leurs outils sous ce bandeau. Coupe garde sa barre de commandes de dessin, Projet son planning, Thermo son accès au référentiel, Drone ses outils de mission, Saisie unique sa navigation et son avertissement sur les données fictives. Passeport Immo et le frontend historique CONNECT proposent le retour à l’accueil depuis les vues de dossier. Recherche conserve ses onglets et RGA son accès aux cartes. [Suivi du candidat](../data/suivi-navigation-rapports.json).
