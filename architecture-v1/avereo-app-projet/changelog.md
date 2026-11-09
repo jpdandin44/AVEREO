@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 2026-11-09 — liens GitHub conservés par l’export privé
+
+Correction minimale du filtre de chemins Windows : ne plus prendre le dernier caractère de `https://` pour une lettre de lecteur. Test de non-régression PR/commit/actions avec paramètres et fragment, champs imbriqués, masquage Windows/POSIX, sources inchangées et aucune preuve copiée implicitement. Propriétaire/global, lecture seule et runtime hébergé inchangés. Une nouvelle publication signée est requise pour les copies déjà exportées.
+
 ## 2026-11-09 — correction du refus à l'ouverture dans Chrome
 
 Sas de navigation publique minimal pour un lien extérieur explicite vers l'entrée locale, sans donnée ni session : bouton **Continuer dans ce navigateur**. Le garde privé, Host/boucle locale, origine, CSRF, bootstrap à usage unique et rôle CONNECT non attesté restent inchangés. Tests de non-régression navigation réelle/intersite, API/assets/iframe/POST refusés et connexion privée après poursuite. [Guide](docs/developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur). Aucun déploiement.

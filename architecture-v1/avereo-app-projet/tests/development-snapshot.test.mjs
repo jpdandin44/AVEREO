@@ -8,6 +8,25 @@ import {createDevelopmentFixture} from '../workflows/development-fixture.mjs';
 import {exportDevelopmentSnapshot} from '../workflows/development-snapshot-export.mjs';
 import {openDevelopmentSnapshotStore,sealDevelopmentSnapshot} from '../workflows/development-snapshot-store.mjs';
 const key='k'.repeat(64);
+test('export : liens HTTPS GitHub intacts, chemins privés toujours masqués et sources consultatives',async t=>{
+ const {registry}=await setup(t);
+ const urls=['https://github.com/exemple/application/pull/136','https://github.com/exemple/application/commit/'+'a'.repeat(40),'https://github.com/exemple/application/actions/runs/123?check_suite_focus=true#jobs'];
+ registry.entries[0].githubPrUrls=[urls[0]];
+ for(const url of urls){
+  registry.entries[0].title=url;
+  const data=await exportDevelopmentSnapshot(registry,{sequence:1});
+  assert.equal(data.iterations[0].title,url);
+  assert.equal(data.iterations[0].githubObservation.pullRequests[0].url,urls[0]);
+  assert.ok(data.iterations.every(i=>i.writable===false));
+  assert.equal(data.proofs.length,0);
+ }
+ for(const path of ['C:/Users/fixture/prive/suivi.json','c:\\Users\\fixture\\prive\\suivi.json','/home/fixture/prive/suivi.json']){
+  registry.entries[0].title=path;
+  const data=await exportDevelopmentSnapshot(registry,{sequence:1});
+  assert.match(data.iterations[0].title,/\[chemin (?:local|serveur) masqué\]/);
+  assert.ok(!JSON.stringify(data).includes(path));
+ }
+});
 const sign=x=>{const payload=JSON.stringify(x);return{payload,signature:createHmac('sha256',key).update(payload).digest('hex')};};
 async function setup(t){
  const root=await mkdtemp(join(tmpdir(),'snapshot-fixture-'));const {mkdir}=await import('node:fs/promises');const storage=join(root,'private');await mkdir(storage);

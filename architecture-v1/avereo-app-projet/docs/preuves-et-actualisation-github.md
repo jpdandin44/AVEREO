@@ -12,6 +12,10 @@ tags: [preuves, criteres, github, preproduction, prive]
 
 # Qualification des références et rafraîchissement GitHub
 
+## Liens HTTPS et confidentialité de l’export
+
+Le filtre Windows exige une lettre de lecteur qui ne soit pas la fin d’un identifiant/schéma (`A-Za-z0-9+.-`). Il ne masque donc plus le `s:/` final de `https://`. Les liens GitHub PR, commits et CI gardent leurs octets, y compris requête et fragment ; les chemins physiques Windows et `/home/...` restent masqués. Le test `development-snapshot.test.mjs` passe par l’export complet avec des sources consultatives, vérifie aussi les liens imbriqués et la non-copie implicite des preuves. La signature, la séquence croissante, les permissions privées et le contrôle propriétaire/global restent inchangés. Une projection ancienne n’est pas réparée sur place : exporter/publier une nouvelle séquence après tests/CI et accord ciblé, en conservant l’historique pour retour arrière.
+
 ## Frontières
 
 Ce complément du [cockpit](coherence-github-locale.md) conserve les quatre phases et les validations d’origine. Les sources réelles restent consultatives ; ni le rapprochement d’un fichier ni une fusion GitHub ne constitue une acceptation humaine. Aucun code n’est installé par ce lot.

@@ -22,7 +22,7 @@ export async function exportDevelopmentSnapshot(registry,{sequence,publisherId='
   for(const view of views)if(hash(await readFile(view.source))!==view.sourceHash)throw Error('Source modifiée pendant la publication.');
   const selected=new Set(proofs.map(p=>p.iterationId+':'+p.proofId));
   const normalize=(value,iterationId)=>{
-    if(typeof value==='string')return value.replace(/[A-Za-z]:[\\/][^\n"<>]+/g,'[chemin local masqué]').replace(/\/home\/[A-Za-z0-9._-]+(?:\/[^\s"<>]*)?/g,'[chemin serveur masqué]');
+    if(typeof value==='string')return value.replace(/(?<![A-Za-z0-9+.-])[A-Za-z]:[\\/][^\n"<>]+/g,'[chemin local masqué]').replace(/\/home\/[A-Za-z0-9._-]+(?:\/[^\s"<>]*)?/g,'[chemin serveur masqué]');
     if(Array.isArray(value))return value.map(v=>normalize(v,iterationId));
     if(value&&typeof value==='object'){
       const result=Object.fromEntries(Object.entries(value).map(([k,v])=>[k,normalize(v,iterationId)]));

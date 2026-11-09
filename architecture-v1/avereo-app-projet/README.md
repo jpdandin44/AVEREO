@@ -13,6 +13,10 @@ tags:
   - local
 ---
 
+## 9 novembre — liens GitHub préservés dans la projection privée
+
+Le filtre d’export distingue désormais un lecteur Windows isolé de la fin d’un schéma HTTPS. Les liens GitHub PR, commit et CI restent intacts ; chemins locaux/serveur toujours masqués, sources et validations consultatives. [Contrat et tests](docs/preuves-et-actualisation-github.md#liens-https-et-confidentialité-de-lexport). Aucun changement du contrôle propriétaire/global, du runtime PHP ou du Gantt. La correction agit lors d’une nouvelle publication signée, pas par réécriture des anciennes projections.
+
 ## 9 novembre — ouvrir le cockpit local depuis Chrome
 
 Un lien extérieur vers le cockpit local affiche désormais un sas public **Continuer dans ce navigateur**, sans charger de données privées. La connexion reste propre au navigateur : sélectionner le fichier privé créé par le lanceur si aucune session active n'existe. Le fichier sert une fois ; un redémarrage fournit un nouvel accès et invalide les anciennes sessions. [Parcours et limites](docs/developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur). Aucun élargissement des droits/API, ni déploiement.

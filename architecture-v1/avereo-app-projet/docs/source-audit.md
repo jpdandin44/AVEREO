@@ -13,6 +13,10 @@ tags:
   - recette
 ---
 
+## 9 novembre — correction du masquage des liens GitHub à l’export
+
+Le nouveau test reproduit d’abord `https://github.com/...` transformé en `http[chemin local masqué]` (1 échec/8). Ajout d’une borne de début au filtre Windows, puis 8/8 tests de projection réussis. PR, commit, CI avec requête/fragment et lien imbriqué préservés ; chemins Windows/POSIX toujours masqués, données réelles non écrites. La correction touche le seul export opérateur et son test, pas l’habilitation ni les lecteurs hébergés. Tests complets, CI et publication effective du candidat restent des preuves distinctes portées par le suivi canonique.
+
 ## 9 novembre — correction du refus de navigation dans Chrome
 
 Reproduction du JSON « Origine refusée » avant connexion lors d'une navigation externe. Deux tests ajoutés échouent d'abord sur le candidat précédent ; correction limitée au sas HTML public de l'entrée, sans lecture de suivi ni session, puis tests de non-régression réussis. Les ressources privées restent strictement derrière le garde, y compris avec un cookie présenté depuis une origine tierce. Les en-têtes de navigation sont transmis par le client HTTP natif dans la fixture : node.fetch remplace `Sec-Fetch-Mode`, ce qui ne reproduisait pas correctement Chrome. [Parcours et limites](developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur). Sessions séparées par navigateur et bootstrap unique conservés, aucun SSO réel ou hébergement qualifié par cette correction.
