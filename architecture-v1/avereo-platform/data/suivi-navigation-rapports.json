@@ -16,7 +16,8 @@
     "Neuf builds et contrôle des menus et logos des livrables.",
     "Neuf applications et RGA en Chrome à 1 200 et 320 px sur fixtures.",
     "API PHP sur SQLite sur données fictives : limite, recherche au-delà des 50 derniers, isolation et caractères littéraux.",
-    "Rapport en Chrome à 1 180 et 390 px : recherche, sélection en haut, export, annulation et ouverture."
+    "Rapport en Chrome à 1 180 et 390 px : recherche, sélection en haut, export, annulation et ouverture.",
+    "Thermo : un seul bandeau dans le référentiel ouvert depuis le rapport et après fermeture."
   ],
   "preproduction": {
     "statut": "Paquet de sept cibles préparé et variante Coupe adaptée sur copie. Accès SSH indisponible au contrôle initial.",
@@ -32,7 +33,7 @@
     "recherche": "Cible hébergée non identifiée.",
     "saisie-unique": "Fichier autonome local.",
     "reprise": "Vérifier les répertoires cPanel et la variante de Coupe, sauvegarder et restaurer sur copie avant installation.",
-    "paquetPrepare": "4c1728cc00423d74cb37754ce7effbba673ed23b7b3e1bb5642f27dbd5ea04f5"
+    "paquetPrepare": "759b3d3eb9583726e542336f816f00d19ee33d10d1d8a6de29d581b10a9b877d"
   },
   "pr": "https://github.com/jpdandin44/AVEREO/pull/135",
   "reviewUrl": "http://127.0.0.1:5198/",
