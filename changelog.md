@@ -5,7 +5,7 @@ title: Changelog du dépôt AVEREO
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
@@ -185,3 +185,7 @@ Candidat de présentation commune et règle transversale, raccordés aux applica
 ## 2026-11-08 — Candidat d’affichage commun
 
 Le bandeau et le menu Mon compte utilisent le même modèle dans les applications et RGA. L’administration CONNECT prépare le réglage commun. [Guide](architecture-v1/avereo-platform/docs/modele-affichage.md).
+
+## 2026-11-09 — Candidat de navigation et recherche
+
+Le bandeau commun couvre le portail CONNECT et les applications. Rapport permet de rechercher les dossiers accessibles et de confirmer l’ouverture en tête de liste. [Suivi](architecture-v1/avereo-platform/data/suivi-navigation-rapports.json).

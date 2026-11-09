@@ -5,7 +5,7 @@ title: source-audit
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -96,3 +96,7 @@ Les deux boutons exécutent la sauvegarde JSON et la sauvegarde en ligne de l’
 ## 8 novembre 2026 — Coupe comme outil de mission
 
 Le candidat retire l’action Missions et la transmission du nom et de l’adresse du dessin à ce formulaire. Le menu conserve « Mes projets » et les réglages de grille et d’aimantation. Le moteur CAO et ses exports restent ceux de Coupe. [Candidat des outils complémentaires](../../avereo-platform/data/recette-missions/outils-complementaires.json).
+
+## 9 novembre 2026 — Navigation commune
+
+Les commandes de coupe restent dans une navigation dédiée, sans le cartouche de marque. Qualifier la variante hébergée avant remplacement. [Modèle](../../avereo-platform/docs/modele-affichage.md).

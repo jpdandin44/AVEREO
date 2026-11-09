@@ -46,12 +46,9 @@ export default function App() {
 
   return (
     <div className="wrap">
-      <header className="top">
-        <div className="brand">
-          <a className="back" href={CONNECT_URL} title="Retour à AVEREO CONNECT">← CONNECT</a>
-          <b>AVEREO Collector</b><span>Recherche &amp; citation</span>
-        </div>
+      <div className="section-navigation">
         <nav className="tabs" aria-label="Sections">
+          <a href={CONNECT_URL}>← CONNECT</a>
           {PAGES.map(p => (
             <a key={p.id} href={`#/${p.id}`} aria-current={route.page === p.id ? 'page' : undefined}>
               {p.label}{p.id === 'valider' && pendingCount > 0 && <span className="count-pill">{pendingCount}</span>}
@@ -59,8 +56,7 @@ export default function App() {
           ))}
         </nav>
         <avereo-account-menu app-name="Recherche"><button slot="local-copy" data-avereo-save="local" data-avereo-proxy="" onClick={exportResearchBackup} disabled={!canExport}>Exporter la sauvegarde JSON</button><a slot="items" href="#/amelioration">Sauvegardes</a></avereo-account-menu>
-      </header>
-      <div className="thermo" aria-hidden="true" />
+      </div>
       {loaded ? <Current key={`${route.page}-${JSON.stringify(route.params)}`} params={route.params} navigate={navigate} /> : <p className="loading">Chargement du corpus…</p>}
       <footer className="foot">V0 · données stockées dans ce navigateur · <a href="#/amelioration">sauvegarder</a></footer>
       <Toast />

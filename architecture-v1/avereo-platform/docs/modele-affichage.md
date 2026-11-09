@@ -5,7 +5,7 @@ title: Modèle d’affichage commun des applications
 status: active
 version: git
 created: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [interface, administration, recette]
 ---
@@ -14,7 +14,7 @@ tags: [interface, administration, recette]
 
 Le logo horizontal officiel et le nom de l’application occupent le haut gauche. À droite, les commandes restent dans l’ordre **Enregistrer en ligne**, **Enregistrer en local**, **Se déconnecter**. Le bouton clair **Mon compte**, en bas à gauche, ouvre vers le haut le menu de profil, projets, préférences et missions. **Mes projets** continue d’ouvrir l’espace métier. Les commandes restent accessibles au clavier et disparaissent à l’impression. Un clic sur une action indisponible explique son état.
 
-[Aperçu sur ordinateur](illustrations/modele-bureau.png) · [Aperçu sur mobile](illustrations/modele-mobile.png). Les captures montrent un rapport fictif avec le menu ouvert.
+[Aperçu sur ordinateur](illustrations/modele-bureau.png) · [Aperçu sur mobile](illustrations/modele-mobile.png). Dans l’éditeur Rapport, Mon compte se trouve à gauche et Précédent et Suivant à droite, sur la même ligne. Les captures montrent ce pied de page avec le menu ouvert.
 
 ## Administration CONNECT
 
@@ -46,3 +46,11 @@ La sortie réutilise la commande de session courante, y compris la confirmation 
 Construire chaque frontend depuis son répertoire avec `npm run build`. Depuis la racine, `node .github/scripts/check-account-menu.mjs APPLICATION` contrôle la présence du composant, du logo officiel et du module Missions dans le livrable. CONNECT PHP doit recevoir ensemble le portail, sa copie du composant, le logo et les modifications du backend. RGA provient du build Rapport. Le script de préparation des copies réutilise le logo de la [source d’identité](../shared/report-identity.js).
 
 Avant installation, confirmer l’organisation administratrice et son répertoire privé, vérifier les cibles disponibles (notamment Recherche), sauvegarder les versions installées et répéter leur restauration sur copie. Préserver la variante hébergée de Coupe et les fichiers privés de chaque application. Recetter les deux tailles d’écran, les modes hors ligne et connecté, les sorties sans perte de brouillon et les écritures autorisées avec des dossiers fictifs. Revenir au paquet précédent en conservant les dossiers et une copie du modèle. [Suivi de l’itération](../data/suivi-modele-affichage.json).
+
+## Préproduction de Rapport — 8 novembre 2026
+
+La correction fusionnée de la PR #133 est installée pour Rapport. L’accueil affiche un bandeau unique. Dans l’éditeur, Accueil précède Dossier et conserve le parcours de sauvegarde du brouillon. Le serveur et les fichiers distribués ont été contrôlés. La revue visuelle connectée reste à effectuer. [Ouvrir Rapport](https://rapport-preprod.avereo.fr/) · [Reçu de livraison](../data/livraison-rapport-pr133.json).
+
+## Généralisation et navigation métier — candidat du 9 novembre
+
+CONNECT utilise le bandeau commun sur le portail de connexion et dans l’espace connecté. Les applications conservent leurs outils sous ce bandeau. Coupe garde sa barre de commandes de dessin, Projet son planning, Thermo son accès au référentiel, Drone ses outils de mission, Saisie unique sa navigation et son avertissement sur les données fictives. Passeport Immo et le frontend historique CONNECT proposent le retour à l’accueil depuis les vues de dossier. Recherche conserve ses onglets et RGA son accès aux cartes. [Suivi du candidat](../data/suivi-navigation-rapports.json).

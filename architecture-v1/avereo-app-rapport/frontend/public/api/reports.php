@@ -136,15 +136,25 @@ if ($method === 'GET') {
     }
 
     $limit = max(1, min(100, (int)($_GET['limit'] ?? 50)));
+    if (isset($_GET['q']) && !is_string($_GET['q'])) {
+        api_json(422, ['ok' => false, 'message' => 'Recherche invalide.']);
+    }
+    $query = api_trim_text($_GET['q'] ?? '', 190);
     $sql = 'SELECT public_id, title, reference_code, address, payload_bytes, owner_provider, owner_id, owner_email, created_at, updated_at
          FROM rapport_reports
-         WHERE (:can_manage_all = 1 OR (owner_provider = :owner_provider AND owner_id = :owner_id))
-         ORDER BY updated_at DESC
-         LIMIT :limit';
+         WHERE (:can_manage_all = 1 OR (owner_provider = :owner_provider AND owner_id = :owner_id))';
+    if ($query !== '') {
+        $sql .= " AND (reference_code LIKE :ref ESCAPE '!' OR title LIKE :title ESCAPE '!' OR address LIKE :address ESCAPE '!')";
+    }
+    $sql .= ' ORDER BY updated_at DESC, public_id DESC LIMIT :limit';
     $statement = $pdo->prepare($sql);
     $statement->bindValue('can_manage_all', $canManageAll ? 1 : 0, PDO::PARAM_INT);
     $statement->bindValue('owner_provider', (string)$identity['provider']);
     $statement->bindValue('owner_id', (string)$identity['id']);
+    if ($query !== '') {
+        $match = '%' . strtr($query, ['!' => '!!', '%' => '!%', '_' => '!_']) . '%';
+        foreach (['ref', 'title', 'address'] as $field) $statement->bindValue($field, $match, PDO::PARAM_STR);
+    }
     $statement->bindValue('limit', $limit, PDO::PARAM_INT);
     $statement->execute();
 

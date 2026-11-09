@@ -37,7 +37,7 @@ p { margin: 0; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
 /* Bandeau permanent */
-.bandeau-fictif { position: sticky; top: 0; z-index: 20; margin: 0; padding: 10px 16px; text-align: center; background: var(--accent); color: var(--on-accent); font-size: 15px; letter-spacing: .02em; }
+.bandeau-fictif { position: sticky; top: var(--av-header-used, 68px); z-index: 20; margin: 0; padding: 10px 16px; text-align: center; background: var(--accent); color: var(--on-accent); font-size: 15px; letter-spacing: .02em; }
 
 /* En-tête */
 .top { display: flex; flex-direction: column; gap: 12px; }
@@ -226,7 +226,7 @@ details.journal summary { font-weight: 700; cursor: pointer; min-height: 32px; d
 /* Impression : seul l'aperçu du document actif ; la dernière page (signature) commence une nouvelle page (T20). */
 @media print {
   body { background: #fff; color: #000; font-size: 11pt; }
-  .bandeau-fictif, .top, .foot, .toolbar, .dossier-tete, .suggestion, .form-panel, .last, .onglets-docs, .journal, .sheet-actions, .voile { display: none !important; }
+  .bandeau-fictif, .entete-ligne, .foot, .toolbar, .dossier-tete, .suggestion, .form-panel, .last, .onglets-docs, .journal, .sheet-actions, .voile { display: none !important; }
   .wrap { padding: 0; display: block; max-width: none; }
   .grid { display: block; }
   .sheet { border: 0; padding: 0; }

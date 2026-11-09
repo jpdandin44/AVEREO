@@ -10,8 +10,8 @@
     "Préproduction",
     "Mise en production"
   ],
-  "phase": "Développement local",
-  "status": "follow_up_local_review",
+  "phase": "Préproduction",
+  "status": "rapport_deployed_awaiting_review",
   "base": "22ea7fae57fb21ef2b7220d0c68a87b85853b4d6",
   "github": {
     "repository": "jpdandin44/AVEREO",
@@ -21,17 +21,21 @@
     "mergedAtCommit": "59e4edb5180a6c840863f028c9f4bb69ea75f86d"
   },
   "documentation": "../docs/modele-affichage.md",
-  "reviewEnvironment": "local",
-  "reviewUrl": "http://127.0.0.1:5199/",
+  "reviewEnvironment": "préproduction Rapport",
+  "reviewUrl": "https://rapport-preprod.avereo.fr/",
   "evidence": [
     "9 builds et contrôle du contenu des livrables",
     "Tests du menu, parité Passeport et tests PHP CONNECT avec fixtures",
     "Chrome local 1200 et 320 px sur neuf applications et RGA, portail sur session fictive"
   ],
-  "nextAction": "Revue de la correction Rapport avant qualification sur cible hébergée.",
+  "nextAction": "Vérification par le responsable connecté à Rapport : accueil à bandeau unique et bouton Accueil avant Dossier dans l’éditeur.",
   "deployment": {
-    "preproduction": false,
-    "production": false
+    "preproduction": true,
+    "production": false,
+    "applications": [
+      "rapport"
+    ],
+    "receipt": "livraison-rapport-pr133.json"
   },
   "historique": "Les preuves historiques Passeport Immo restent identiques à main. Le nouvel écart figure dans l’annexe source-audit-mon-espace.md et le contrôle de parité.",
   "ajustementRapport": {

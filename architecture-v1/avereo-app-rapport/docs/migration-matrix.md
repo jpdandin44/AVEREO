@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - rapport
@@ -177,3 +177,9 @@ Les champs client, adresse du logement, référence et date restent ceux du doss
 Les actions communes réutilisent les handlers du rapport. Le point RGA reste distinct du dossier Rapport. [Matrice des actions](../../avereo-platform/docs/modele-affichage.md).
 
 Dans l’éditeur, **Accueil** et **Mon compte → Mes projets** utilisent le même retour avec sauvegarde préalable du brouillon.
+
+## 9 novembre 2026 — Liste en ligne
+
+La liste et la recherche utilisent les mêmes règles de propriété que la lecture d’un dossier. La sélection conserve la confirmation avant remplacement du brouillon. [Parcours de recherche](../README.md#retrouver-un-rapport-en-ligne).
+
+Le pied de page regroupe le menu du compte et les commandes entre étapes. La sauvegarde automatique du brouillon, l’export JSON et la sauvegarde en ligne conservent leurs parcours.

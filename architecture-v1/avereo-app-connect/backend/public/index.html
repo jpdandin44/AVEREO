@@ -22,16 +22,6 @@
       padding: clamp(1.25rem, 4vw, 2.5rem);
       box-shadow: 0 18px 60px #1e3a5f1f;
     }
-    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-    .topbar-actions { display: flex; align-items: center; gap: .65rem; }
-    .badge {
-      display: inline-block;
-      padding: .35rem .65rem;
-      border-radius: 999px;
-      background: #fff4d6;
-      color: #795600;
-      font-weight: 700;
-    }
     h1 { margin: 1.25rem 0 .5rem; font-size: clamp(2rem, 5vw, 3.25rem); }
     h2 { margin: 0; font-size: 1.5rem; }
     p { line-height: 1.55; }
@@ -181,8 +171,7 @@
     #logout-confirm { background: #b42318; color: white; }
     [hidden] { display: none !important; }
     @media (max-width: 560px) {
-      .topbar, .section-heading, .admin-heading { align-items: stretch; flex-direction: column; }
-      .topbar-actions { align-items: stretch; flex-direction: column; }
+      .section-heading, .admin-heading { align-items: stretch; flex-direction: column; }
       #logout, #admin-open { width: 100%; }
       .admin-card { grid-template-columns: 1fr; }
       .admin-actions { justify-content: start; }
@@ -207,20 +196,15 @@
     <script defer src="/account-menu.js"></script>
 </head>
 <body>
+  <avereo-account-menu id="connect-account-menu" portal="/" preferences-app="connect" preferences-label="CONNECT" preferences-fields="[{&quot;key&quot;: &quot;sort&quot;, &quot;label&quot;: &quot;Ordre des applications&quot;, &quot;type&quot;: &quot;select&quot;, &quot;default&quot;: &quot;catalogue&quot;, &quot;options&quot;: [{&quot;value&quot;: &quot;catalogue&quot;, &quot;label&quot;: &quot;Ordre du catalogue&quot;}, {&quot;value&quot;: &quot;name&quot;, &quot;label&quot;: &quot;Nom, de A à Z&quot;}]}, {&quot;key&quot;: &quot;unavailable&quot;, &quot;label&quot;: &quot;Afficher aussi les applications non accessibles&quot;, &quot;type&quot;: &quot;checkbox&quot;, &quot;default&quot;: true}]" signed-out>
+    <a slot="account" id="account-profile" href="#profile">Mon compte</a>
+    <a slot="applications" id="account-applications" href="#applications">Mes applications</a>
+    <button slot="administration" id="admin-open" type="button" hidden>Gérer les comptes</button>
+    <button slot="administration" id="appearance-open" type="button" hidden>Apparence des applications</button>
+    <button slot="logout" id="logout" type="button" hidden>Se déconnecter</button>
+  </avereo-account-menu>
   <main>
-    <div class="topbar">
-      <span class="badge">Accès sécurisé</span>
-      <div class="topbar-actions">
-        <avereo-account-menu id="connect-account-menu" portal="/" preferences-app="connect" preferences-label="CONNECT" preferences-fields="[{&quot;key&quot;: &quot;sort&quot;, &quot;label&quot;: &quot;Ordre des applications&quot;, &quot;type&quot;: &quot;select&quot;, &quot;default&quot;: &quot;catalogue&quot;, &quot;options&quot;: [{&quot;value&quot;: &quot;catalogue&quot;, &quot;label&quot;: &quot;Ordre du catalogue&quot;}, {&quot;value&quot;: &quot;name&quot;, &quot;label&quot;: &quot;Nom, de A à Z&quot;}]}, {&quot;key&quot;: &quot;unavailable&quot;, &quot;label&quot;: &quot;Afficher aussi les applications non accessibles&quot;, &quot;type&quot;: &quot;checkbox&quot;, &quot;default&quot;: true}]" signed-out>
-          <a slot="account" id="account-profile" href="#profile">Mon compte</a>
-          <a slot="applications" id="account-applications" href="#applications">Mes applications</a>
-          <button slot="administration" id="admin-open" type="button" hidden>Gérer les comptes</button>
-          <button slot="administration" id="appearance-open" type="button" hidden>Apparence des applications</button>
-          <button slot="logout" id="logout" type="button" hidden>Se déconnecter</button>
-        </avereo-account-menu>
-      </div>
-    </div>
-    <h1>AVEREO CONNECT</h1>
+    <h1 id="portal-heading">Connexion à votre espace</h1>
     <p id="lead">Identifiez-vous avec votre compte AVEREO pour accéder à vos applications.</p>
     <div id="login-panel">
       <label class="remember" for="remember">
@@ -1122,6 +1106,7 @@
         csrfToken = sessionPayload.data.csrfToken;
         const authenticated = sessionPayload.data.authenticated === true;
         const registrationUrl = sessionPayload.data.registrationUrl;
+        document.getElementById('portal-heading').textContent = authenticated ? 'Votre espace' : 'Connexion à votre espace';
         loginPanel.hidden = authenticated;
         registerNode.hidden = authenticated || !registrationUrl;
         if (registrationUrl) registerLink.href = registrationUrl;

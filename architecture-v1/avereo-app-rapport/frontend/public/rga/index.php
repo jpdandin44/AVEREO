@@ -19,7 +19,7 @@
 <body><main>
   <avereo-account-menu app-name="RGA" no-missions logout-path="/rga/logout.php" style="float:right"><a data-avereo-save="local" data-avereo-proxy slot="items" href="carte.php#projects" target="rga-map">Mes projets</a></avereo-account-menu>
   <a href="/">← Retour à Rapport</a>
-  <h1>RGA — Rechercher un bien</h1>
+  <h1>Rechercher un bien</h1>
   <p>Retrait-gonflement des argiles — préqualification territoriale.</p>
   <p class="notice">Cette carte décrit un contexte territorial. Elle ne permet pas de conclure au risque d’une parcelle, ne remplace pas une étude de sol et ne constitue pas un diagnostic. Le statut à l’adresse reste consultable dans la synthèse Géorisques du rapport.</p>
   <nav aria-label="Choisir une carte">
