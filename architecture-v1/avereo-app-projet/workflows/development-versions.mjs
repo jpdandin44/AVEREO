@@ -19,7 +19,8 @@ export async function inspectDevelopmentGit(directory){
     const [headSha,branch,applicationCommit,changes]=await Promise.all([
       git(['rev-parse','HEAD']),git(['branch','--show-current']),git(['log','-1','--format=%H','--','.']),git(['status','--porcelain','--untracked-files=normal','--','.'])
     ]);
-    return{status:'observed',headSha:sha(headSha),branch:branch||'Tête détachée',applicationCommit:sha(applicationCommit),dirty:changes.length>0,observedAt:new Date().toISOString()};
+    const committedTree=await git(['rev-parse',sub?'HEAD:'+sub.replaceAll('\\','/'):'HEAD^{tree}']);
+    return{status:'observed',headSha:sha(headSha),branch:branch||'Tête détachée',applicationCommit:sha(applicationCommit),committedTree,dirty:changes.length>0,observedAt:new Date().toISOString()};
   }catch{return{status:'unavailable',observedAt:new Date().toISOString(),message:'Version Git locale indisponible.'};}
 }
 export function projectDevelopmentVersions(data,source){
@@ -28,14 +29,17 @@ export function projectDevelopmentVersions(data,source){
   // Une phase/CI réussie ne prouve pas une livraison. L'environnement est
   // explicitement qualifié dans le registre, jamais déduit d'un nom de domaine.
   if(source.deliveryEnvironment&&['delivered','delivered_verified'].includes(d.status))declarations.push({environment:source.deliveryEnvironment,sourceSha:sha(d.sourceSha),artifactSha256:sha(d.artifactSha256),observedAt:text(d.observedAt),target:text(d.target),evidence:text(d.evidence),scope:'declared_lot_not_full_application'});
-  return{candidate:{sourceSha:sha(c.sourceSha)||sha(c.codeSourceSha),artifactSha256:sha(c.artifactSha256),basis:text(c.qualificationBasis)},github:{url:text(g.prUrl)||text(g.url),headSha:sha(g.headSha)||sha(g.sourceSha)||sha(g.codeSourceSha),branch:text(g.branch)||text(data.branch),state:text(g.state)||text(g.status)||(g.merged===true?'merged':g.draft===true?'draft':null),observedAt:text(g.observedAt)},declarations,updatedAt:latestDeclaredDate(data)};
+  const m=data.preproduction?.deployment;
+  if(source.deliveryAdapter==='missions-preproduction'&&source.deliveryEnvironment==='preproduction'&&m?.status==='installed_and_verified')declarations.push({environment:'preproduction',applicationIds:source.deliveryApplicationIds||[],sourceSha:sha(g.codeSourceSha),artifactSha256:sha(m.artifactSha256)||sha(data.preproduction.artifactSha256),observedAt:text(m.observedAt),target:'Lot Missions — cibles déclarées dans la source',evidence:text(m.evidence),scope:'declared_lot_not_full_application'});
+  return{candidate:{sourceSha:sha(c.sourceSha)||sha(c.codeSourceSha),artifactSha256:sha(c.artifactSha256),basis:text(c.qualificationBasis)},github:{url:text(g.prUrl)||text(g.url)||text(data.pr),headSha:sha(g.headSha)||sha(g.sourceSha)||sha(g.codeSourceSha),branch:text(g.branch)||text(data.branch),state:text(g.state)||text(g.status)||(g.merged===true?'merged':g.draft===true?'draft':null),observedAt:text(g.observedAt)},declarations,updatedAt:latestDeclaredDate(data)};
 }
-export async function developmentPortfolio(applications,iterations){
+export async function developmentPortfolio(applications,iterations,github=null){
   return Promise.all(applications.map(async app=>{
-    const items=iterations.filter(i=>i.applicationIds?.includes(app.id)).sort((a,b)=>(Date.parse(b.versions?.updatedAt)||0)-(Date.parse(a.versions?.updatedAt)||0));
-    const declarations=items.flatMap(i=>(i.versions?.declarations||[]).map(d=>({...d,iterationId:i.id,title:i.title})));
+    const items=iterations.filter(i=>i.applicationIds?.includes(app.id)).sort((a,b)=>Number((b.githubOpenPrCount||0)>0)-Number((a.githubOpenPrCount||0)>0)||(Date.parse(b.versions?.updatedAt)||0)-(Date.parse(a.versions?.updatedAt)||0));
+    const declarations=items.flatMap(i=>(i.versions?.declarations||[]).filter(d=>!d.applicationIds||d.applicationIds.includes(app.id)).map(d=>({...d,iterationId:i.id,title:i.title})));
     const latest=environment=>declarations.filter(d=>d.environment===environment).sort((a,b)=>(Date.parse(b.observedAt)||0)-(Date.parse(a.observedAt)||0))[0]||null;
     const active=items.filter(i=>!i.unavailable);
-    return{id:app.id,name:app.name,category:app.category||'Application',local:await inspectDevelopmentGit(app.directory),iterations:items.map(i=>({id:i.id,title:i.title,currentPhase:i.currentPhase,status:i.status,unavailable:i.unavailable||false,updatedAt:i.versions?.updatedAt||null,criteria:i.phases?.reduce((n,p)=>n+p.criteria,0)||0,approved:i.phases?.reduce((n,p)=>n+p.approved,0)||0})),preproduction:latest('preproduction'),production:latest('production'),unqualifiedDeliveries:items.filter(i=>i.hasUnqualifiedDelivery).map(i=>i.id),missingTracking:!active.length,blockerCount:active.reduce((n,i)=>n+(i.blockerCount||0),0)};
+    const local=await inspectDevelopmentGit(app.directory),remote=github?.status==='observed'?github.applications?.[app.id]:null;
+    return{id:app.id,name:app.name,category:app.category||'Application',local,github:remote?{...remote,status:'observed',observedAt:github.observedAt,committedContentMatches:local.committedTree?local.committedTree===remote.mainTree:null}:{status:github?.status||'not_configured'},iterations:items.map(i=>({id:i.id,title:i.title,currentPhase:i.currentPhase,status:i.status,unavailable:i.unavailable||false,updatedAt:i.versions?.updatedAt||null,criteria:i.phases?.reduce((n,p)=>n+p.criteria,0)||0,approved:i.phases?.reduce((n,p)=>n+p.approved,0)||0})),preproduction:latest('preproduction'),production:latest('production'),unqualifiedDeliveries:items.filter(i=>i.hasUnqualifiedDelivery).map(i=>i.id),missingTracking:!active.length,blockerCount:active.reduce((n,i)=>n+(i.blockerCount||0),0)};
   }));
 }

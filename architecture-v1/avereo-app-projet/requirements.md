@@ -5,12 +5,20 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 9 novembre — preuves, critères et versions fusionnées
+
+Conserver toutes les validations et sources ; refuser un rapprochement dont le JSON ou fichier a changé ; n’ouvrir que le fichier explicitement qualifié. Les critères documentés sans preuve directe restent non validés. Collecte GitHub explicite, bornée, réservée à l’administrateur local avec session/origine/CSRF ; aucun dépôt ou chemin du navigateur accepté. Panne/concurrence = observation précédente conservée. Préproduction : collecte opérateur puis projection privée signée, aucune clé GitHub installée par ce lot. [Contrat](docs/preuves-et-actualisation-github.md).
+
+## 9 novembre — cohérence locale sans altérer les validations
+
+Distinguer état GitHub observé/état déclaré, conserver dates et versions de chaque portée, rendre les sources manquantes lisibles sans copies manuelles de statuts. Tous les adaptateurs et suivis réels restent consultatifs ; sélecteurs absents/ambigus refusés, racines de preuves confinées, aucun accord ni passage de phase déduit. [Contrat réalisé et limites](docs/coherence-github-locale.md).
 
 ## Premier lot local — 8 novembre
 

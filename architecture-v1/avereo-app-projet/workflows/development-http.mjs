@@ -7,7 +7,7 @@ async function body(request){
   for await(const chunk of request){bytes+=chunk.length;if(bytes>65536)throw new DevelopmentError(413,'Requête trop volumineuse.');chunks.push(chunk);}
   try{return JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{throw new DevelopmentError(400,'JSON invalide.');}
 }
-export function createDevelopmentMiddleware({access,store,authorize=null}){
+export function createDevelopmentMiddleware({access,store,authorize=null,refreshGithub=null}){
   return async function developmentMiddleware(request,response,next){
     const url=new URL(request.url,'http://local.invalid');
     const json=(status,data)=>{response.statusCode=status;response.setHeader('Content-Type','application/json; charset=utf-8');response.end(JSON.stringify(data));};
@@ -33,7 +33,8 @@ export function createDevelopmentMiddleware({access,store,authorize=null}){
       const identity=authorize&&url.pathname!=='/local-developments/logout'?await authorize(actor):null;
       if(url.pathname.startsWith('/local-review')||url.pathname.startsWith('/local-planning'))throw new DevelopmentError(404,'Ressource indisponible.');
       if(!url.pathname.startsWith('/local-developments/'))return next();
-      if(url.pathname==='/local-developments/state'&&request.method==='GET'){const snapshot=store.dashboard?await store.dashboard():{iterations:await store.list(),portfolio:store.portfolio?await store.portfolio():[]};return json(200,{...snapshot,csrf:access.csrf(actor),identity:identity||{scope:'single_global_administrator',mode:actor.demo?'local_fictitious':'local_private_capability',connectRoleVerified:false}});}
+      if(url.pathname==='/local-developments/state'&&request.method==='GET'){const snapshot=store.dashboard?await store.dashboard():{iterations:await store.list(),portfolio:store.portfolio?await store.portfolio():[]};return json(200,{...snapshot,githubRefreshAvailable:typeof refreshGithub==='function',csrf:access.csrf(actor),identity:identity||{scope:'single_global_administrator',mode:actor.demo?'local_fictitious':'local_private_capability',connectRoleVerified:false}});}
+      if(url.pathname==='/local-developments/github-refresh'&&request.method==='POST'){access.checkOrigin(request);access.checkCsrf(request,actor);const input=await body(request);if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).length)throw new DevelopmentError(422,'Aucun paramètre GitHub fourni par le navigateur n’est accepté.');if(typeof refreshGithub!=='function')throw new DevelopmentError(503,'Collecte GitHub non configurée.');return json(200,{observation:await refreshGithub()});}
       const id=url.searchParams.get('iteration');
       if(url.pathname==='/local-developments/iteration'&&request.method==='GET')return json(200,{iteration:await store.get(id)});
       if(url.pathname==='/local-developments/proof'&&request.method==='GET'){

@@ -5,13 +5,21 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 9 novembre — preuves qualifiées et actualisation explicite
+
+Le [complément courant](docs/preuves-et-actualisation-github.md) qualifie les références sans réécrire les suivis : fichiers exacts épinglés, pièces de contexte distinctes des preuves d’acceptation, validations conservées. Le bouton privé **Rafraîchir GitHub** collecte les dernières fusions/main/PR en GET ; **Actualiser la vue** reste local. Publication signée compatible Node/PHP préparée pour la préproduction, sans jeton sur l’hôte ni déploiement. La PR de préparation ne vaut pas accord d’installation.
+
+## 9 novembre — cohérence GitHub locale
+
+Le [lecteur consultatif enrichi](docs/coherence-github-locale.md) distingue main/PR observés des déclarations métier, raccorde les itérations par identité et les reçus explicites, et conserve les copies locales/historiques. Candidat local distinct de la PR #134, sans modification de cette PR ni des sources métier. Accès privé du poste inchangé, aucun rôle CONNECT attesté ni déploiement. Les états suivants restent historiques.
 
 ## 8 novembre — préparation locale du premier lot
 

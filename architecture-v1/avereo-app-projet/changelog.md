@@ -5,12 +5,20 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 2026-11-09 — preuves et critères qualifiés, fusions GitHub actualisables
+
+Lecteur consultatif de qualifications privées par empreintes, contexte documentaire distinct des proofIds et validations conservées. Collecteur GitHub GET à la demande, endpoint local session/origine/CSRF et corps fermé, cache atomique, dernières fusions et conservation sur échec. Export/lecteurs Node et PHP compatibles avec métadonnées et pièces sans phase explicitement sélectionnées. Aucun secret ou donnée réelle dans le paquet, aucune installation. [Guide](docs/preuves-et-actualisation-github.md).
+
+## 2026-11-09 — cockpit local aligné sur des observations GitHub datées
+
+Ajout de la colonne main/PR, observations distinctes des déclarations et alertes d’écart, priorisation des PR ouvertes, sélecteurs stables des tableaux d’itérations, reçus et mapping Missions limité aux cibles qualifiées. Racines de preuves relatives corrigées par configuration, décisions/historiques conservés. [Guide](docs/coherence-github-locale.md). Aucun changement d’authentification, Gantt, source métier, PR ou hébergement.
 
 ## 2026-11-08 — Premier lot de préparation locale
 

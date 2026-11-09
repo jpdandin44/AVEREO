@@ -2,7 +2,12 @@
   "schema": "avereo-development-local-preparation-plan",
   "version": 1,
   "status": "local_preparation_only",
-  "phases": ["Cadrage", "Développement local", "Préproduction", "Mise en production"],
+  "phases": [
+    "Cadrage",
+    "Développement local",
+    "Préproduction",
+    "Mise en production"
+  ],
   "currentPhase": 1,
   "readyToDeploy": false,
   "serverChangesAuthorized": false,
@@ -18,7 +23,11 @@
     "realSessionQualifiedByThisPlan": false
   },
   "configuration": {
-    "templates": ["developments.example.php", "connect-developments.example.php", "drupal-authority.example.php"],
+    "templates": [
+      "developments.example.php",
+      "connect-developments.example.php",
+      "drupal-authority.example.php"
+    ],
     "enabled": false,
     "containsRealSecretsOrIds": false,
     "keyRelationships": [
@@ -39,7 +48,13 @@
     "sourceRegistryMustBeReadOnly": true,
     "sourceBySourcePrivateStorageReviewRequired": true,
     "proofSelection": "explicit_opt_in_only",
-    "provenanceRequired": ["generatedAt", "receivedAt", "sequence", "sourceHash", "candidate_versions"],
+    "provenanceRequired": [
+      "generatedAt",
+      "receivedAt",
+      "sequence",
+      "sourceHash",
+      "candidate_versions"
+    ],
     "admission": "verify_signature_schema_integrity_then_atomic_index",
     "sequenceMustExceedHighWater": true,
     "browserWriteOrImportEndpoint": false,
@@ -51,8 +66,20 @@
     "status": "procedure_to_qualify_on_exact_target",
     "freshIndependentBackupRequired": true,
     "restoreOnIsolatedCopyBeforeReplacement": true,
-    "restoreScope": ["module_entrypoints", "module_runtime", "module_assets", "dedicated_module_configuration", "private_projection_copy"],
-    "forbiddenRestoreScope": ["client_plannings", "client_workspaces", "connect_identity_database", "account_roles", "whole_webroot"],
+    "restoreScope": [
+      "module_entrypoints",
+      "module_runtime",
+      "module_assets",
+      "dedicated_module_configuration",
+      "private_projection_copy"
+    ],
+    "forbiddenRestoreScope": [
+      "client_plannings",
+      "client_workspaces",
+      "connect_identity_database",
+      "account_roles",
+      "whole_webroot"
+    ],
     "projectionRollback": "explicit_restorePrevious_keeps_highWater",
     "oldIndexMustNeverOverwriteLiveHighWater": true,
     "codeRollback": "disable_module_remove_optional_link_restore_only_module_files",
@@ -65,7 +92,9 @@
     "status": "blocked_pending_exact_target_and_delete_protection",
     "workflowModified": false,
     "publicBuildMustExcludePrivateModule": true,
-    "proposedRsyncProtectAndExclude": ["/developpements/***"],
+    "proposedRsyncProtectAndExclude": [
+      "/developpements/***"
+    ],
     "proposalApplied": false,
     "preserveExistingGateAndClientApis": true,
     "neverUploadWholePrivatePackageUnderWebroot": true,
@@ -95,5 +124,20 @@
     "install exact reviewed candidate with configuration disabled",
     "approve activation then verify real owner read-only and third-party refusals",
     "verify same projection in two browsers and with workstation off"
-  ]
+  ],
+  "githubObservations": {
+    "mode": "manual_operator_get_then_private_signed_projection",
+    "localBrowserRefreshPrepared": true,
+    "hostedCollectorInstalled": false,
+    "hostedGithubTokenInstalled": false,
+    "automaticCodePull": false,
+    "automaticDeployment": false
+  },
+  "evidenceQualifications": {
+    "mode": "private_exact_file_hash_allowlist",
+    "criterionContext": "not_acceptance_evidence",
+    "canonicalSourcesReadOnly": true,
+    "realQualificationsIncludedInPublicPackage": false,
+    "proofSelection": "explicit_opt_in_only"
+  }
 }

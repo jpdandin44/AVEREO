@@ -5,10 +5,18 @@ title: Cockpit des versions et développements de toutes les applications
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-07
+updated: 2026-11-09
 owner: jpdandin
 tags: [cockpit, portefeuille, versions, lecture-seule, local]
 ---
+
+## 9 novembre — complément courant
+
+Le [guide de qualification et rafraîchissement](preuves-et-actualisation-github.md) complète l’étape initiale ci-dessous. **Rafraîchir GitHub** est maintenant une action locale explicite ; elle ne modifie pas le code ou les sources métier. Les observations publiées restent consultatives en préproduction ; aucune collecte serveur, synchronisation continue ou livraison n’est installée.
+
+## 9 novembre — raccordement et cohérence GitHub locale
+
+Le [guide technique courant](coherence-github-locale.md) décrit la nouvelle colonne GitHub, les observations séparées, le raccordement des tableaux d’itérations et les reçus. Le registre privé porte maintenant les sources réelles et les observations datées ; les sections ci-dessous décrivent les étapes antérieures. Les sources métier et leurs validations ne sont pas modifiées ; le candidat est distinct de la PR #134, local seulement et consultatif.
 
 # Versions et développements — portefeuille local privé
 

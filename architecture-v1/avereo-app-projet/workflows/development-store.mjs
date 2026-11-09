@@ -3,27 +3,33 @@ import {resolve,relative,isAbsolute,dirname,extname,join} from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
 import {DevelopmentError} from './development-access.mjs';
 import {projectDevelopmentVersions,developmentPortfolio} from './development-versions.mjs';
+import {readGithubObservations,observeGithub} from './development-github-observations.mjs';
+import {readEvidenceQualification,qualifiedView,qualifiedEvidence} from './development-evidence-qualification.mjs';
 
 export const DEVELOPMENT_PHASES=['Cadrage','Développement local','Préproduction','Mise en production'];
 const hash=v=>createHash('sha256').update(typeof v==='string'||Buffer.isBuffer(v)?v:JSON.stringify(v)).digest('hex');
 const fail=(s,m)=>{throw new DevelopmentError(s,m);};
 const inside=(root,file)=>{const p=relative(root,file);return p!== '..'&&!p.startsWith('..\\')&&!p.startsWith('../')&&!isAbsolute(p);};
 const phaseKeys=['cadrage','developpement-local','preproduction','mise-en-production'];
-const stages={cadrage:0,'developpement-local':1,development:1,local:1,preproduction:2,production:3,'mise-en-production':3};
+const stages={cadrage:0,'developpement-local':1,developpement_local:1,development:1,local:1,preproduction:2,production:3,'mise-en-production':3};
 const checkPhase={local:1,ci:1,documentation:1,preproduction:2,production:3};
 const limit=2*1024*1024;
 const safeText=v=>typeof v==='string'?v:'';
 const sha=/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i;
 const withoutReviews=data=>{const copy={...data};delete copy.developmentReviews;return copy;};
 function workflow(raw){return raw.developmentWorkflow&&typeof raw.developmentWorkflow==='object'?raw.developmentWorkflow:raw;}
-function selectProjection(raw,path){
-  if(!path)return workflow(raw);
-  let value=raw;for(const key of path.split('.')){if(!value||typeof value!=='object'||!Object.hasOwn(value,key))fail(422,'Sous-suivi déclaré introuvable.');value=value[key];}return value;
+function selectProjection(raw,source){
+  let v=raw;if(source.dataPath){for(const key of source.dataPath.split('.')){if(!v||typeof v!=='object'||!Object.hasOwn(v,key))fail(422,'Sous-suivi déclaré introuvable.');v=v[key];}}else v=workflow(raw);
+  if(source.iterationKey){if(!Array.isArray(v))fail(422,'Liste d’itérations absente.');const matches=v.filter(x=>x?.iterationId===source.iterationKey);if(matches.length!==1)fail(422,'Itération absente ou ambiguë.');v=matches[0];}
+  if(source.recordKind==='receipt'){const phase=source.deliveryEnvironment==='production'?3:2;v={iterationId:source.id,stage:phase===3?'production':'preproduction',status:'delivery_receipt_declared',candidate:{sourceSha:v.sourceSha,artifactSha256:v.artifactSha256},github:{prUrl:v.sourcePr},delivery:{status:'delivered',sourceSha:v.sourceSha,artifactSha256:v.artifactSha256,target:v.target,observedAt:v.deployedAt,evidence:relative(source.root,source.file)},checks:[{id:'declared-receipt',phaseId:phase,kind:'document',status:'reviewable',evidence:relative(source.root,source.file),observedAt:v.deployedAt}],nextAction:'Reçu déclaré consultable ; état hébergé actuel et revue humaine non déduits.'};}
+  else if(source.recordKind==='declaration')v={...v,iterationId:v.iterationId||source.id};
+  if(source.includeRootPhases)v={...v,phases:raw.phases,currentPhase:raw.currentPhase};return v;
 }
 function safeLink(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;}catch{return null;}}
 
-export async function createDevelopmentStore(entries,{adminId=null,applications=[]}={}){
+export async function createDevelopmentStore(entries,{adminId=null,applications=[],githubObservationFile=null,evidenceQualificationFile=null}={}){
   if(!Array.isArray(entries)||!entries.length||entries.length>50)throw new Error('Registre privé absent ou invalide.');
+  if(evidenceQualificationFile&&entries.some(e=>e.writable!==false))throw Error('Qualifications réservées aux sources consultatives.');
   const sources=new Map();
   for(const entry of entries){
     if(!/^[a-z0-9_-]{1,80}$/.test(entry.id||'')||sources.has(entry.id))throw new Error('Identifiant du registre invalide.');
@@ -34,6 +40,12 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
     if(entry.deliveryEnvironment&&!['preproduction','production'].includes(entry.deliveryEnvironment))throw Error('Environnement de livraison invalide.');
     if(entry.evidenceBase&&(typeof entry.evidenceBase!=='string'||isAbsolute(entry.evidenceBase)||!inside(root,resolve(root,entry.evidenceBase))))throw Error('Base des pièces hors du dossier autorisé.');
     if(entry.dataPath&&(typeof entry.dataPath!=='string'||entry.dataPath.split('.').some(k=>!/^[a-zA-Z0-9_-]+$/.test(k)||['__proto__','prototype','constructor'].includes(k))||entry.writable===true))throw Error('Projection privée invalide ou demandée en écriture.');
+    if((entry.iterationKey||entry.recordKind||entry.includeRootPhases||entry.deliveryAdapter)&&entry.writable!==false)throw Error('Adaptateur strictement consultatif requis.');
+    if(entry.iterationKey&&(typeof entry.iterationKey!=='string'||!entry.dataPath||!/^[a-zA-Z0-9_-]{1,120}$/.test(entry.iterationKey)))throw Error('Sélecteur d’itération invalide.');
+    if(entry.recordKind&&!['receipt','declaration'].includes(entry.recordKind))throw Error('Adaptateur inconnu.');
+    if(entry.recordKind==='receipt'&&!entry.deliveryEnvironment)throw Error('Environnement du reçu requis.');
+    if(entry.deliveryAdapter&&!['missions-preproduction'].includes(entry.deliveryAdapter))throw Error('Adaptateur de livraison inconnu.');
+    if(entry.deliveryApplicationIds&&(!Array.isArray(entry.deliveryApplicationIds)||entry.deliveryApplicationIds.some(id=>!entry.applicationIds?.includes(id))))throw Error('Périmètre de livraison invalide.');
     sources.set(entry.id,{...entry,applicationIds:entry.applicationIds||[entry.id],root,file});
   }
   if(!applications.length)applications=[...sources.values()].map(s=>({id:s.applicationIds[0],name:s.application||s.id})).filter((a,i,list)=>list.findIndex(b=>b.id===a.id)===i);
@@ -44,7 +56,8 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
     if(await realpath(source.file)!==source.file)fail(403,'Source indisponible.');
     const bytes=await readFile(source.file);if(bytes.length>limit)fail(413,'Suivi trop volumineux.');
     let raw;try{raw=JSON.parse(bytes.toString('utf8').replace(/^\uFEFF/,''));}catch{fail(422,'Suivi illisible.');}
-    const data=selectProjection(raw,source.dataPath);
+    const data=selectProjection(raw,source);
+    const qualification=qualifiedView(await readEvidenceQualification(evidenceQualificationFile),id,hash(bytes));
     if(!data||typeof data!=='object'||Array.isArray(data))fail(422,'Schéma du suivi non reconnu.');
     const structured=Array.isArray(data.phases)&&data.phases.every(p=>p&&typeof p==='object');
     if(!structured&&!(typeof data.stage==='string'||typeof data.iterationId==='string'))fail(422,'Schéma du suivi non reconnu.');
@@ -87,6 +100,9 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
           }catch{/* Le chemin déclaré alternatif reste confiné à la même racine. */}}
         }catch{/* Pas de chemin physique révélé dans l'erreur d'une pièce indisponible. */}
       }
+      const qualified=qualification.proofs?.[id];
+      if(qualified?.declaredReference===evidence){const exact=await qualifiedEvidence(qualified,evidence);if(qualified.resource){if(exact){files.set(id,exact);proof.fileHash=exact.hash;proof.availability='available';}else{files.delete(id);proof.fileHash=null;proof.availability='unavailable';proof.freshness='stale';}}
+        proof.referenceQualification={status:qualified.resource?(exact?'resolved_exact_file':'file_changed_or_unavailable'):qualified.status,role:qualified.role,reason:qualified.reason,observedAt:qualification.observedAt};}
       proof.fingerprint=hash({...proof});proofs.push(proof);if(phase!==null)phases[phase].proofs.push(proof);
     }
     const allCriteria=[];const unassigned=[];
@@ -108,6 +124,7 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
       c.decision=last?(fresh?last.action==='approve'?'approved':'changes_requested':'stale'):'not_reviewed';
       c.review=last?{actor:last.actor,recordedAt:last.recordedAt,comment:last.comment}:null;
       c.canApprove=refs.length>0&&refs.length===c.proofs.length&&c.proofs.every(p=>['passed','reviewable'].includes(p.status)&&['available','reference'].includes(p.availability)&&p.freshness==='current');
+      const context=qualification.criteria?.[id];if(context&&refs.length===0){c.contextStatus=context.status;c.contextRole='context_not_acceptance_evidence';c.contextProofs=(context.contextProofIds||[]).map(id=>proofs.find(p=>p.id===id)).filter(Boolean);c.contextReason=context.reason;}
       allCriteria.push(c);if(phase===null)unassigned.push(c);else phases[phase].criteria.push(c);
     }
     if(structured)for(const p of data.phases)for(const c of p.criteria||p.exitCriteria||[])criterion(c,map(p.id),p.id);
@@ -116,13 +133,14 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
     const writable=!source.dataPath&&source.writable===true&&raw.developmentReviewSchema===1&&typeof adminId==='string'&&/^[1-9][0-9]{0,18}$/.test(adminId);
     const versions=projectDevelopmentVersions(data,source);
     const view={id,title:source.title||safeText(data.title)||safeText(data.objective)||safeText(data.iterationId)||id,application:source.application||safeText(data.project)||'Application',applicationIds:source.applicationIds,status:safeText(data.status)||safeText(data.state)||'not_reported',versions,sourceHash:hash(bytes),dataPath:source.dataPath||null,sourceModifiedAt:(await stat(source.file)).mtime.toISOString(),mapping:source.phaseMap||null,hasUnqualifiedDelivery:data.delivery?.status==='delivered'&&!source.deliveryEnvironment,iterationId:safeText(data.iterationId)||id,source:source.file,revision,readAt:new Date().toISOString(),currentPhase:current,candidate:{sourceSha:versions.candidate.sourceSha||'',artifactSha256:versions.candidate.artifactSha256||''},nextAction:safeText(data.nextAction),blockers:Array.isArray(data.blockers)?data.blockers:Array.isArray(data.openItems)?data.openItems:[],phases,unassignedCriteria:unassigned,writable,writeReason:writable?'':'Consultation seule : contrat d’écriture non activé dans cette source.',history:reviewHistory,declaredApprovals:Array.isArray(data.approvals)?data.approvals:[],githubObservedAt:data.github?.observedAt||null};
+    view.githubObservation=observeGithub(data,source,await readGithubObservations(githubObservationFile));view.iterationKey=source.iterationKey||null;view.unassignedProofs=proofs.filter(p=>p.phaseId===null);view.evidenceQualification={status:qualification.status,observedAt:qualification.observedAt||null};
     return {source,raw,bytes,data,view,proofs,files,criteria:allCriteria,candidateFingerprint};
   }
-  async function list(){return Promise.all([...sources.keys()].map(async id=>{try{const {view}=await snapshot(id);return {id,title:view.title,application:view.application,applicationIds:view.applicationIds,status:view.status,versions:view.versions,hasUnqualifiedDelivery:view.hasUnqualifiedDelivery,blockerCount:view.blockers.length,currentPhase:view.currentPhase,phases:view.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length})),nextAction:view.nextAction,readAt:view.readAt};}catch(error){return{id,title:sources.get(id).title||id,applicationIds:sources.get(id).applicationIds,unavailable:true,message:'Source indisponible ou incompatible.'};}}));}
+  async function list(){return Promise.all([...sources.keys()].map(async id=>{try{const {view}=await snapshot(id);return {id,title:view.title,application:view.application,applicationIds:view.applicationIds,status:view.status,versions:view.versions,githubPrUrls:view.githubObservation.pullRequests.map(p=>p.url),githubOpenPrCount:view.githubObservation.pullRequests.filter(p=>p.state==='open').length,hasUnqualifiedDelivery:view.hasUnqualifiedDelivery,blockerCount:view.blockers.length,currentPhase:view.currentPhase,phases:view.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length})),nextAction:view.nextAction,readAt:view.readAt};}catch(error){return{id,title:sources.get(id).title||id,applicationIds:sources.get(id).applicationIds,unavailable:true,message:'Source indisponible ou incompatible.'};}}));}
   return {
     list,
-    async portfolio(){return developmentPortfolio(applications,await list());},
-    async dashboard(){const iterations=await list();return{iterations,portfolio:await developmentPortfolio(applications,iterations),readAt:new Date().toISOString()};},
+    async portfolio(){return developmentPortfolio(applications,await list(),await readGithubObservations(githubObservationFile));},
+    async dashboard(){const iterations=await list(),github=await readGithubObservations(githubObservationFile);return{iterations,portfolio:await developmentPortfolio(applications,iterations,github),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{}},readAt:new Date().toISOString()};},
     async get(id){return (await snapshot(id)).view;},
     async proof(id,proofId){const state=await snapshot(id);const file=state.files.get(proofId);if(!file)fail(404,'Pièce non disponible.');const content=await readFile(file.path);if(hash(content)!==file.hash)fail(409,'La pièce a changé. Actualiser la revue.');return {content,ext:file.ext,name:proofId+file.ext};},
     async review(id,input,actor){

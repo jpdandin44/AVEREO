@@ -5,10 +5,14 @@ title: Module Développements — session Projet et préparation de préproducti
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags: [projet, developpements, session, preproduction, prive]
 ---
+
+## Préparation du 9 novembre — qualifications et observations GitHub
+
+Le [complément](preuves-et-actualisation-github.md) conserve le contrôle propriétaire exact/global, GET côté PHP et absence de mutation métier. Les qualifications et observations ne sont pas incluses en clair dans le paquet public : elles seront transmises par projection privée signée, après sélection explicite des pièces et autorisation du canal. La collecte GitHub se fait sur le poste opérateur, pas par un jeton installé sur O2Switch. PR/paquet préparés, aucune installation, activation ou recette du vrai compte effectuée par ce lot.
 
 # Session Projet et préparation de préproduction
 

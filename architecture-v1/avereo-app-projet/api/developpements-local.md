@@ -5,10 +5,18 @@ title: Contrat local privé du module Développements
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-07
+updated: 2026-11-09
 owner: jpdandin
 tags: [api, local, autorisation, preuves, source-canonique]
 ---
+
+## Extension du 9 novembre — qualification et collecte explicite
+
+Le [contrat complémentaire](../docs/preuves-et-actualisation-github.md) décrit `evidenceQualificationFile`, les références exactes épinglées, `contextProofs` non concluants et `githubSnapshot.latestMerges`. Nouvelle route locale `POST /local-developments/github-refresh` : session, origine et CSRF obligatoires, corps vide, cache dérivé seulement, configuration opérateur explicite. Le lecteur PHP hébergé reste GET sans collecteur ; il reçoit les observations par projection privée signée. Aucun jeton n’est transmis au frontend.
+
+## Extension locale du 9 novembre — observations et tableaux d’itérations
+
+Le [contrat des nouveaux champs](../docs/coherence-github-locale.md#configuration-privée) complète les réponses avec `githubSnapshot`, `githubObservation`, `portfolio[].github`, `unassignedProofs` et le sélecteur `iterationKey`. Les pièces sans phase explicite sont affichées à part. L’observation distante demeure distincte des déclarations métier ; aucune route de collecte GitHub ou d’écriture supplémentaire. Les adaptateurs documentés exigent `writable: false` et ne transmettent aucun accord du parent. Les API PHP hébergées ne sont pas raccordées à cette collecte locale.
 
 ## Reprise — session Projet et préparation de préproduction
 

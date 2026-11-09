@@ -5,13 +5,21 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 9 novembre — qualification et préparation de PR
+
+Changements limités au module privé : qualification d’alias exacts et contextes non concluants, collecte GET manuelle, état des dernières fusions, projection signée et lecture Node/PHP des pièces sans phase. Tests de changement d’empreinte, source modifiée, confinement, non-copie implicite, échec/race GitHub, verrou, intervalle, origine/CSRF et compatibilité PHP ajoutés ; les suites antérieures restent requises. Un premier essai de fixture PHP avait un échappement de namespace incorrect : fixture corrigée et test rejoué sans affaiblir les assertions. [Contrat et limites](preuves-et-actualisation-github.md). Sources réelles en lecture seule, aucun accord humain ou contrôle hébergé déduit.
+
+## 9 novembre — recette de cohérence locale
+
+Les changements sont limités au lecteur Node, aux projections, au lanceur de configuration et à l’affichage privé. L’authentification, le Gantt, le pont PHP/Drupal/CONNECT et les sources métier ne sont pas modifiés. Sept tests nouveaux vérifient sélection d’identité, refus et conservation, observation GitHub, reçus et cibles Missions ; la suite complète et le build normal sont rejoués. Les reçus exacts du candidat, de conservation et du navigateur restent dans le suivi privé du lot. [Guide](coherence-github-locale.md). Aucun résultat local ne qualifie une livraison hébergée.
 
 ## 8 novembre — premier lot de préparation locale
 

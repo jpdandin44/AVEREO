@@ -59,3 +59,13 @@ test('aucune preuve copiée implicitement et chemins physiques masqués',async t
  assert.ok(data.iterations.flatMap(i=>i.phases.flatMap(p=>p.proofs)).every(p=>p.availability!=='available'));
  assert.ok(data.iterations.every(i=>i.source.startsWith('source-privee:')));
 });
+
+test('publication privée : fusions GitHub conservées et pièce sans phase sélectionnée compatible Node/PHP',async t=>{
+ const {storage,make,store}=await setup(t),data=await make(1),iteration=data.iterations.find(v=>v.id==='demo-formulaire');
+ const phase=iteration.phases.find(p=>p.proofs.some(p=>p.id==='demo-parcours')),proof=phase.proofs.find(p=>p.id==='demo-parcours');phase.proofs=phase.proofs.filter(p=>p.id!=='demo-parcours');iteration.unassignedProofs=[proof];
+ data.githubSnapshot={status:'observed',observedAt:'2026-11-09T12:00:00Z',latestMerges:{fixture:{coverage:'fixture',items:[{number:1,title:'Fusion fictive'}]}}};
+ await store.importSnapshot(sealDevelopmentSnapshot(data,key));const state=await store.dashboard();assert.equal(state.githubRefreshAvailable,false);assert.equal(state.githubSnapshot.latestMerges.fixture.items[0].number,1);assert.match((await store.proof('demo-formulaire','demo-parcours')).content.toString(),/fictive/);
+ const {execFileSync}=await import('node:child_process');const runtime=resolve(new URL('../backend/developments/',import.meta.url).pathname.replace(/^\/([A-Za-z]:)/,'$1'));
+ const script=String.raw`require $argv[1].'/Failure.php';require $argv[1].'/SnapshotReader.php';$r=new \Avereo\Projet\Developments\SnapshotReader($argv[2],$argv[3]);echo json_encode(['state'=>$r->state()['githubSnapshot'],'proof'=>$r->proof('demo-formulaire','demo-parcours')['body']]);`;
+ const result=JSON.parse(execFileSync('php',['-r',script,runtime,storage,key],{encoding:'utf8',windowsHide:true}));assert.equal(result.state.latestMerges.fixture.items[0].number,1);assert.match(result.proof,/fictive/);
+});

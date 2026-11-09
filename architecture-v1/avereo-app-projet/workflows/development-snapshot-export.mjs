@@ -2,17 +2,18 @@ import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {createDevelopmentStore} from './development-store.mjs';
 import {developmentPortfolio} from './development-versions.mjs';
+import {readGithubObservations} from './development-github-observations.mjs';
 
 const hash=x=>createHash('sha256').update(x).digest('hex');
 export async function exportDevelopmentSnapshot(registry,{sequence,publisherId='local-owner',proofSelection=[]}={}){
   if(registry.schema!=='development-portfolio-registry'||!Array.isArray(registry.entries)||registry.entries.some(e=>e.writable!==false))throw Error('Sources strictement consultatives requises.');
   if(!Array.isArray(proofSelection)||proofSelection.length>500)throw Error('Sélection de pièces invalide.');
-  const startedAt=new Date().toISOString(),store=await createDevelopmentStore(registry.entries,{applications:registry.applications});
+  const startedAt=new Date().toISOString(),store=await createDevelopmentStore(registry.entries,{applications:registry.applications,githubObservationFile:registry.githubObservationFile,evidenceQualificationFile:registry.evidenceQualificationFile});
   const views=await Promise.all(registry.entries.map(e=>store.get(e.id)));
   const proofs=[];
   for(const pick of proofSelection){
     if(!pick||Object.keys(pick).sort().join(',')!=='iterationId,proofId')throw Error('Sélection de pièces invalide.');
-    const view=views.find(v=>v.id===pick.iterationId),proof=view?.phases.flatMap(p=>p.proofs).find(p=>p.id===pick.proofId);
+    const view=views.find(v=>v.id===pick.iterationId),proof=view?.phases.flatMap(p=>p.proofs).concat(view.unassignedProofs||[]).find(p=>p.id===pick.proofId);
     if(!proof||proof.availability!=='available')throw Error('Pièce sélectionnée indisponible.');
     const file=await store.proof(pick.iterationId,pick.proofId);
     if(hash(file.content)!==proof.fileHash)throw Error('Pièce modifiée pendant la publication.');
@@ -35,7 +36,8 @@ export async function exportDevelopmentSnapshot(registry,{sequence,publisherId='
   };
   const iterations=views.map(v=>({...normalize(v,v.id),source:'source-privee:'+v.id,writable:false,writeReason:'Copie de consultation ; aucune écriture dans la source canonique.'}));
   const summaries=iterations.map(v=>({...v,blockerCount:v.blockers.length,phases:v.phases.map(p=>({...p,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length}))}));
-  const portfolio=await developmentPortfolio(registry.applications,summaries);
+  const github=await readGithubObservations(registry.githubObservationFile);
+  const portfolio=await developmentPortfolio(registry.applications,summaries,github);
   return {schema:'avereo-private-development-snapshot',version:1,publisherId,sequence,generatedAt:new Date().toISOString(),readWindow:{startedAt,endedAt:new Date().toISOString()},
-    iterations,portfolio:normalize(portfolio,''),proofs};
+    iterations,portfolio:normalize(portfolio,''),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{},refreshSupported:false},proofs};
 }
