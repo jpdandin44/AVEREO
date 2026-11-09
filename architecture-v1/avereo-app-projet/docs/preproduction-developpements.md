@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [projet, developpements, session, preproduction, prive]
 ---
 
+## 9 novembre — contrôle global compatible Drupal 11
+
+Le contrôleur relit l’utilisateur, ses rôles réellement attribués et leur indicateur `isAdmin()`, après invalidation des caches d’entités. L’ancien champ `user.settings.admin_role` n’est plus consulté. L’identité propriétaire exacte, le contrôle frais, le refus des autres profils et la lecture seule sont conservés ; aucun rôle ou droit n’est modifié. Non-régression : absence de l’ancien champ acceptée seulement avec rôle global attribué, retrait du rôle et changement de définition refusés. Les essais de contrôleur passent sur doubles ; la recette du vrai noyau et l’installation restent des contrôles séparés.
+
+
 ## Préparation du 9 novembre — qualifications et observations GitHub
 
 Le [complément](preuves-et-actualisation-github.md) conserve le contrôle propriétaire exact/global, GET côté PHP et absence de mutation métier. Les qualifications et observations ne sont pas incluses en clair dans le paquet public : elles seront transmises par projection privée signée, après sélection explicite des pièces et autorisation du canal. La collecte GitHub se fait sur le poste opérateur, pas par un jeton installé sur O2Switch. PR/paquet préparés, aucune installation, activation ou recette du vrai compte effectuée par ce lot.

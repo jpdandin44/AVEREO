@@ -5,10 +5,15 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-07
+updated: 2026-11-09
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 9 novembre — contrôle global compatible Drupal 11
+
+Le contrôleur relit l’utilisateur, ses rôles réellement attribués et leur indicateur `isAdmin()`, après invalidation des caches d’entités. L’ancien champ `user.settings.admin_role` n’est plus consulté. L’identité propriétaire exacte, le contrôle frais, le refus des autres profils et la lecture seule sont conservés ; aucun rôle ou droit n’est modifié. Non-régression : absence de l’ancien champ acceptée seulement avec rôle global attribué, retrait du rôle et changement de définition refusés. Les essais de contrôleur passent sur doubles ; la recette du vrai noyau et l’installation restent des contrôles séparés.
+
 
 ## 7 novembre — pont et stockage, état local courant
 

@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 9 novembre — contrôle global compatible Drupal 11
+
+Le contrôleur relit l’utilisateur, ses rôles réellement attribués et leur indicateur `isAdmin()`, après invalidation des caches d’entités. L’ancien champ `user.settings.admin_role` n’est plus consulté. L’identité propriétaire exacte, le contrôle frais, le refus des autres profils et la lecture seule sont conservés ; aucun rôle ou droit n’est modifié. Non-régression : absence de l’ancien champ acceptée seulement avec rôle global attribué, retrait du rôle et changement de définition refusés. Les essais de contrôleur passent sur doubles ; la recette du vrai noyau et l’installation restent des contrôles séparés.
+
+
 ## 7 novembre — pont et stockage, état local courant
 
 Pont de cette copie isolée uniquement : propriétaire/autorité Drupal actuels, nonces, TLS/délais et défaut fermé. PHP : 41 assertions broker/fournisseur et 14 contrôleur avec doubles de services ; régression CONNECT 40/40. Interopérabilité Node/PHP couverte côté Projet sur fixtures. Pas de recette kernel Drupal/hébergée ni de raccordement réel. [Contrat](../api/developments-authorization.md).

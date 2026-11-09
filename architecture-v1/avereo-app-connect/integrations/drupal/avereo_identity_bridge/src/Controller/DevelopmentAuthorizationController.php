@@ -22,11 +22,14 @@ final class DevelopmentAuthorizationController extends ControllerBase
             if(strlen($request->getContent())>16384 || $request->getContentTypeFormat()!=='json')throw new \RuntimeException();
             $lookup=function(string $subject):array {
                 $users=$this->entities->getStorage('user');$users->resetCache([$subject]);$u=$users->load($subject);
-                $this->configs->reset('user.settings');$roleId=$this->configs->get('user.settings')->get('admin_role');
-                $roles=$this->entities->getStorage('user_role');if(is_string($roleId))$roles->resetCache([$roleId]);
-                $role=is_string($roleId)&&$roleId!==''?$roles->load($roleId):null;
-                return ['active'=>$u!==null && $u->isActive(),'adminRole'=>$roleId,'adminRoleIsGlobal'=>$role!==null && $role->isAdmin(),
-                    'hasAdminRole'=>$u!==null && $role!==null && $u->hasRole($roleId)];
+                $roleIds=$u!==null?$u->getRoles():[];
+                $roles=$this->entities->getStorage('user_role');$roles->resetCache($roleIds);
+                $roleId='';
+                foreach($roles->loadMultiple($roleIds) as $role) {
+                    if(in_array($role->id(),$roleIds,true)&&$role->isAdmin()&&$u->hasRole($role->id())){$roleId=$role->id();break;}
+                }
+                return ['active'=>$u!==null && $u->isActive(),'adminRole'=>$roleId,'adminRoleIsGlobal'=>$roleId!=='',
+                    'hasAdminRole'=>$roleId!==''];
             };
             $claim=function(string $nonce,int $expires):bool {
                 $id='avereo_developments:'.hash('sha256',$nonce);
