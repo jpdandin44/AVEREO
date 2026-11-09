@@ -5,12 +5,20 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 2026-11-09 — qualification annotative et collecte par opérateur
+
+Contexte : références hors copie de travail, critères non reliés et demande de dernières fusions. Décision : autoriser des fichiers exacts scellés dans une qualification privée, conserver les décisions originales et afficher les documents comme contexte non concluant. Collecter GitHub explicitement sur le poste avec l’identité CLI existante ; transmettre le résultat dans la projection privée plutôt qu’introduire un jeton serveur. Conséquences : pas d’écriture métier, source modifiée = qualification à revoir, données réelles exclues de Git/CI, exploitation hébergée à qualifier séparément. [Guide](docs/preuves-et-actualisation-github.md).
+
+## 2026-11-09 — observation distante distincte du journal métier
+
+Contexte : l’audit détecte des PR périmées et des itérations non projetées. Décision : afficher une observation GitHub datée en surcouche consultative, sans réécrire les JSON sources ; sélectionner les itérations par identité plutôt que position. Raisons : préserver les travaux et validations, ne pas transformer merge/CI en accord de phase. Conséquences : copies locales conservées, collecte ponctuelle distincte du rafraîchissement de page, contrôle hébergé non réalisé. [Guide](docs/coherence-github-locale.md).
 
 ## 2026-11-08 — Préparation inactive sans automatiser l'installation
 

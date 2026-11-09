@@ -8,6 +8,7 @@ const equal=(a,b)=>{if(typeof a!=='string'||typeof b!=='string')return false;con
 export function createDevelopmentAccess({adminId,origin,secret=randomBytes(48).toString('hex'),bootstrap=randomBytes(32).toString('hex'),now=()=>Date.now(),ttl=3600,demo=false,cookieName='avereo_developments_local'}) {
   if(typeof adminId!=='string'||!/^[1-9][0-9]{0,18}$/.test(adminId)||!/^http:\/\/127\.0\.0\.1:[0-9]+$/.test(origin||'')||secret.length<32||bootstrap.length<32) throw new Error('Configuration privée administrateur local invalide.');
   if(typeof cookieName!=='string'||!/^avereo_developments_local(?:_[0-9]{4,5})?$/.test(cookieName))throw new Error('Nom de session locale invalide.');
+  const localRequest=request=>request.headers.host===new URL(origin).host&&['127.0.0.1','::1','::ffff:127.0.0.1'].includes(request.socket.remoteAddress);
   let used=false;
   const revoked=new Set();
   const sign=payload=>{const data=Buffer.from(JSON.stringify(payload)).toString('base64url');return data+'.'+createHmac('sha256',secret).update(data).digest('base64url');};
@@ -22,8 +23,11 @@ export function createDevelopmentAccess({adminId,origin,secret=randomBytes(48).t
   }
   return {
     cookieName,origin,
+    isExternalEntryNavigation(request){
+      return localRequest(request)&&request.method==='GET'&&['/','/index.html'].includes(new URL(request.url,origin).pathname)&&!request.headers.origin&&['cross-site','same-site'].includes(request.headers['sec-fetch-site'])&&request.headers['sec-fetch-mode']==='navigate'&&request.headers['sec-fetch-dest']==='document'&&request.headers['sec-fetch-user']==='?1';
+    },
     checkTransport(request){
-      if(request.headers.host!==new URL(origin).host||!['127.0.0.1','::1','::ffff:127.0.0.1'].includes(request.socket.remoteAddress))fail(403,'Accès interdit.');
+      if(!localRequest(request))fail(403,'Accès interdit.');
       if(request.headers.origin&&request.headers.origin!==origin)fail(403,'Origine refusée.');
       if(['cross-site','same-site'].includes(request.headers['sec-fetch-site']))fail(403,'Origine refusée.');
     },

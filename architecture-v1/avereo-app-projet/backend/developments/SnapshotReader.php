@@ -62,7 +62,7 @@ final class SnapshotReader
             'status'=>$v['status'],'currentPhase'=>$v['currentPhase'],'versions'=>$v['versions'],'nextAction'=>$v['nextAction'],'blockerCount'=>count($v['blockers']),
             'phases'=>array_map(static fn($p)=>['id'=>$p['id'],'label'=>$p['label'],'status'=>$p['status'],'criteria'=>count($p['criteria']),
                 'approved'=>count(array_filter($p['criteria'],static fn($c)=>($c['decision']??'')==='approved'))],$v['phases'])],$d['iterations']),
-            'portfolio'=>$d['portfolio'],'snapshot'=>['sequence'=>$d['sequence'],'generatedAt'=>$d['generatedAt'],'receivedAt'=>$ix['receivedAt']??null,
+            'portfolio'=>$d['portfolio'],'githubSnapshot'=>$d['githubSnapshot']??null,'githubRefreshAvailable'=>false,'snapshot'=>['sequence'=>$d['sequence'],'generatedAt'=>$d['generatedAt'],'receivedAt'=>$ix['receivedAt']??null,
                 'restored'=>($ix['restored']??false)===true,'mode'=>'private_read_only_projection']];
     }
     public function iteration(string $id):array
@@ -78,7 +78,7 @@ final class SnapshotReader
             if(!isset($types[$ext])||!preg_match('/^[A-Za-z0-9_-]{1,100}$/D',$proofId)||!is_string($p['content']??null)||strlen($p['content'])>14*1024*1024)throw new Failure(503);
             $bytes=base64_decode($p['content'],true);
             if($bytes===false||base64_encode($bytes)!==$p['content']||strlen($bytes)>10*1024*1024||!hash_equals($p['sha256']??'',hash('sha256',$bytes)))throw new Failure(503);
-            $declared=false;foreach($d['iterations'] as $it)if($it['id']===$id)foreach($it['phases'] as $phase)foreach($phase['proofs'] as $ref)if(($ref['id']??null)===$proofId&&($ref['fileHash']??null)===($p['sha256']??null))$declared=true;
+            $declared=false;foreach($d['iterations'] as $it)if($it['id']===$id)foreach(array_merge(...array_merge(array_column($it['phases'],'proofs'),[$it['unassignedProofs']??[]])) as $ref)if(($ref['id']??null)===$proofId&&($ref['fileHash']??null)===($p['sha256']??null))$declared=true;
             if(!$declared||$ext==='.png'&&!str_starts_with($bytes,"\x89PNG\r\n\x1a\n")
                 ||in_array($ext,['.jpg','.jpeg'],true)&&!str_starts_with($bytes,"\xff\xd8")||$ext==='.pdf'&&!str_starts_with($bytes,'%PDF-'))throw new Failure(503);
             return ['body'=>$bytes,'type'=>$types[$ext],'name'=>$proofId.$ext,'attachment'=>$ext==='.pdf'];

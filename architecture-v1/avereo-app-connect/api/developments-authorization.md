@@ -5,10 +5,15 @@ title: Autorisation privée des développements — candidat local
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-07
+updated: 2026-11-09
 owner: jpdandin
 tags: [connect, drupal, developpements, autorisation, local]
 ---
+
+## 9 novembre — contrôle global compatible Drupal 11
+
+Le contrôleur relit l’utilisateur, ses rôles réellement attribués et leur indicateur `isAdmin()`, après invalidation des caches d’entités. L’ancien champ `user.settings.admin_role` n’est plus consulté. L’identité propriétaire exacte, le contrôle frais, le refus des autres profils et la lecture seule sont conservés ; aucun rôle ou droit n’est modifié. Non-régression : absence de l’ancien champ acceptée seulement avec rôle global attribué, retrait du rôle et changement de définition refusés. Les essais de contrôleur passent sur doubles ; la recette du vrai noyau et l’installation restent des contrôles séparés.
+
 
 # Autorisation privée des développements
 
@@ -69,9 +74,9 @@ $settings['avereo_developments_authority'] = [
 ];
 ```
 
-Le contrôleur relit utilisateur, `user.settings.admin_role` et définition du rôle après invalidation des caches locaux d'entités/configuration. L'utilisateur doit être actif, avoir le rôle configuré, et ce rôle doit satisfaire `isAdmin()`. Ni UID 1, ni nom/e-mail, ni rôle d'organisation ne donnent un accès implicite. Cache et verrou Drupal consomment le nonce avec exclusion mutuelle ; seules ces écritures techniques de fonctionnement sont nécessaires, aucun compte/rôle n'est enregistré ou modifié.
+Le contrôleur relit l’utilisateur et les entités de ses rôles attribués après invalidation des caches d’entités. L’utilisateur doit être actif et avoir un rôle satisfaisant `isAdmin()`. Ni UID 1, ni nom/e-mail, ni rôle d'organisation ne donnent un accès implicite. Cache et verrou Drupal consomment le nonce avec exclusion mutuelle ; seules ces écritures techniques de fonctionnement sont nécessaires, aucun compte/rôle n'est enregistré ou modifié.
 
-Sans activation explicite : 503. Paramètres invalides, entrée malformée, signature/rejeu/identité invalide : refus (403). Réponses `no-store, private`. La définition du rôle global doit être réellement renseignée : aucune attribution/migration automatique n'est exécutée.
+Sans activation explicite : 503. Paramètres invalides, entrée malformée, signature/rejeu/identité invalide : refus (403). Réponses `no-store, private`. Un rôle global doit être réellement attribué : aucune attribution/migration automatique n'est exécutée.
 
 ## Recette locale et limites
 

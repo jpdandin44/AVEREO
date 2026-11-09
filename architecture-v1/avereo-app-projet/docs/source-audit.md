@@ -13,6 +13,26 @@ tags:
   - recette
 ---
 
+## 9 novembre — badges des environnements
+
+Périmètre : présentation de la vue d’ensemble et qualification consultative des déclarations. Tests de version/cible discordantes, preuve/date absentes, CI ou phase seules, anciennes projections, blocage du suivi sans panne inférée, préparation/examen/accord distincts. Aucun secret, endpoint, rôle, critère, source métier, Gantt ou contrôle Drupal/CONNECT modifié. Le rendu réel et le candidat/CI/artefact sont qualifiés séparément dans le suivi privé du lot. [Sémantique](cockpit-portefeuille.md#badges-des-environnements).
+
+## 9 novembre — correction du masquage des liens GitHub à l’export
+
+Le nouveau test reproduit d’abord `https://github.com/...` transformé en `http[chemin local masqué]` (1 échec/8). Ajout d’une borne de début au filtre Windows, puis 8/8 tests de projection réussis. PR, commit, CI avec requête/fragment et lien imbriqué préservés ; chemins Windows/POSIX toujours masqués, données réelles non écrites. La correction touche le seul export opérateur et son test, pas l’habilitation ni les lecteurs hébergés. Tests complets, CI et publication effective du candidat restent des preuves distinctes portées par le suivi canonique.
+
+## 9 novembre — correction du refus de navigation dans Chrome
+
+Reproduction du JSON « Origine refusée » avant connexion lors d'une navigation externe. Deux tests ajoutés échouent d'abord sur le candidat précédent ; correction limitée au sas HTML public de l'entrée, sans lecture de suivi ni session, puis tests de non-régression réussis. Les ressources privées restent strictement derrière le garde, y compris avec un cookie présenté depuis une origine tierce. Les en-têtes de navigation sont transmis par le client HTTP natif dans la fixture : node.fetch remplace `Sec-Fetch-Mode`, ce qui ne reproduisait pas correctement Chrome. [Parcours et limites](developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur). Sessions séparées par navigateur et bootstrap unique conservés, aucun SSO réel ou hébergement qualifié par cette correction.
+
+## 9 novembre — qualification et préparation de PR
+
+Changements limités au module privé : qualification d’alias exacts et contextes non concluants, collecte GET manuelle, état des dernières fusions, projection signée et lecture Node/PHP des pièces sans phase. Tests de changement d’empreinte, source modifiée, confinement, non-copie implicite, échec/race GitHub, verrou, intervalle, origine/CSRF et compatibilité PHP ajoutés ; les suites antérieures restent requises. Un premier essai de fixture PHP avait un échappement de namespace incorrect : fixture corrigée et test rejoué sans affaiblir les assertions. [Contrat et limites](preuves-et-actualisation-github.md). Sources réelles en lecture seule, aucun accord humain ou contrôle hébergé déduit.
+
+## 9 novembre — recette de cohérence locale
+
+Les changements sont limités au lecteur Node, aux projections, au lanceur de configuration et à l’affichage privé. L’authentification, le Gantt, le pont PHP/Drupal/CONNECT et les sources métier ne sont pas modifiés. Sept tests nouveaux vérifient sélection d’identité, refus et conservation, observation GitHub, reçus et cibles Missions ; la suite complète et le build normal sont rejoués. Les reçus exacts du candidat, de conservation et du navigateur restent dans le suivi privé du lot. [Guide](coherence-github-locale.md). Aucun résultat local ne qualifie une livraison hébergée.
+
 ## 8 novembre — premier lot de préparation locale
 
 Copie dédiée issue de main `5e79a9c` ; aucun changement au runtime d'habilitation, au pont CONNECT/Drupal, au Gantt ou aux vraies sources. Modèles des trois services exécutés/testés avec activation désactivée, secrets/identifiants vides ; plan structuré et empreinte du workflow public inclus au paquet. La restauration ne concerne qu'une copie fictive : seuil anti-rejeu conservé et original intact.

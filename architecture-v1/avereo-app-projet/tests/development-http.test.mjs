@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createServer} from 'node:http';
+import {createServer,request as httpRequest} from 'node:http';
 import {mkdtemp,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve,sep} from 'node:path';
@@ -8,12 +8,12 @@ import {createDevelopmentAccess} from '../workflows/development-access.mjs';
 import {createDevelopmentStore} from '../workflows/development-store.mjs';
 import {createDevelopmentFixture} from '../workflows/development-fixture.mjs';
 import {createDevelopmentMiddleware} from '../workflows/development-http.mjs';
-async function setup(t,{readOnly=false}={}){
+async function setup(t,{readOnly=false,refreshGithub=null}={}){
   const root=await mkdtemp(join(tmpdir(),'development-http-'));const entries=await createDevelopmentFixture(root);if(readOnly)for(const e of entries)e.writable=false;let middleware;
   const server=createServer((q,s)=>middleware(q,s,()=>{s.statusCode=200;s.end('asset public générique');}));
   await new Promise(r=>server.listen(0,'127.0.0.1',r));const origin='http://127.0.0.1:'+server.address().port;
   const bootstrap='b'.repeat(64),access=createDevelopmentAccess({adminId:'101',origin,bootstrap,demo:true});
-  middleware=createDevelopmentMiddleware({access,store:await createDevelopmentStore(entries,{adminId:'101'})});
+  middleware=createDevelopmentMiddleware({access,store:await createDevelopmentStore(entries,{adminId:'101'}),refreshGithub});
   t.after(async()=>{server.closeAllConnections();await new Promise(r=>server.close(r));assert.ok(resolve(root).startsWith(resolve(tmpdir())+sep));await rm(root,{recursive:true,force:true});});
   async function login(){const r=await fetch(origin+'/local-developments/session',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify({token:bootstrap})});assert.equal(r.status,200);return r.headers.get('set-cookie').split(';')[0];}
   return {origin,login};
@@ -25,3 +25,30 @@ test('écriture CSRF, source et empreinte contrôlées puis session révoquée',
 test('requêtes d’origine tierce refusées même avec la session propriétaire',async t=>{const {origin,login}=await setup(t),Cookie=await login();assert.equal((await fetch(origin+'/local-developments/state',{headers:{Cookie,Origin:'https://tiers.invalid'}})).status,403);assert.equal((await fetch(origin+'/local-review/state',{headers:{Cookie}})).status,404);});
 
 test('portefeuille privé consultable mais revue refusée sur une source en lecture seule',async t=>{const {origin,login}=await setup(t,{readOnly:true}),Cookie=await login();const state=await(await fetch(origin+'/local-developments/state',{headers:{Cookie}})).json();assert.equal(state.portfolio.length,2);const view=(await(await fetch(origin+'/local-developments/iteration?iteration=demo-formulaire',{headers:{Cookie}})).json()).iteration;assert.equal(view.writable,false);const result=await fetch(origin+'/local-developments/reviews?iteration=demo-formulaire',{method:'POST',headers:{Cookie,Origin:origin,'Content-Type':'application/json','X-Development-Token':state.csrf},body:JSON.stringify({revision:view.revision,criterionId:'DEMO-01',action:'comment',comment:'Ne doit pas écrire.'})});assert.equal(result.status,403);const after=(await(await fetch(origin+'/local-developments/iteration?iteration=demo-formulaire',{headers:{Cookie}})).json()).iteration;assert.equal(after.history.length,0);assert.equal(after.revision,view.revision);});
+
+test('actualisation GitHub : session, origine, CSRF et corps fermé avant tout appel distant',async t=>{
+ let calls=0;const {origin,login}=await setup(t,{readOnly:true,refreshGithub:async()=>{calls++;return{observedAt:'2026-11-09T12:00:00Z'};}}),url=origin+'/local-developments/github-refresh';
+ assert.equal((await fetch(url,{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:'{}'})).status,401);assert.equal(calls,0);
+ const Cookie=await login(),state=await(await fetch(origin+'/local-developments/state',{headers:{Cookie}})).json();assert.equal(state.githubRefreshAvailable,true);
+ const headers={Cookie,Origin:origin,'Content-Type':'application/json','X-Development-Token':state.csrf};
+ assert.equal((await fetch(url,{method:'POST',headers:{Cookie,Origin:origin,'Content-Type':'application/json'},body:'{}'})).status,403);
+ assert.equal((await fetch(url,{method:'POST',headers:{...headers,Origin:'https://untrusted.invalid'},body:'{}'})).status,403);
+ assert.equal((await fetch(url,{method:'POST',headers,body:JSON.stringify({repository:'untrusted/repository'})})).status,422);assert.equal(calls,0);
+ assert.equal((await fetch(url,{method:'POST',headers,body:'{}'})).status,200);assert.equal(calls,1);
+ const view=(await(await fetch(origin+'/local-developments/iteration?iteration=demo-formulaire',{headers:{Cookie}})).json()).iteration;assert.equal(view.writable,false);assert.equal(view.history.length,0);
+});
+
+test('collecteur non configuré : refus explicite, pas de succès simulé',async t=>{const {origin,login}=await setup(t,{readOnly:true}),Cookie=await login(),state=await(await fetch(origin+'/local-developments/state',{headers:{Cookie}})).json();assert.equal(state.githubRefreshAvailable,false);assert.equal((await fetch(origin+'/local-developments/github-refresh',{method:'POST',headers:{Cookie,Origin:origin,'Content-Type':'application/json','X-Development-Token':state.csrf},body:'{}'})).status,503);});
+
+test('lien extérieur dans Chrome : sas public puis connexion privée, jamais de données par navigation intersite',async t=>{
+ const {origin,login}=await setup(t,{readOnly:true}),navigation={'sec-fetch-site':'cross-site','sec-fetch-mode':'navigate','sec-fetch-dest':'document','sec-fetch-user':'?1'};
+ // node.fetch remplace Sec-Fetch-Mode ; le client HTTP conserve ici les en-têtes d'une vraie navigation.
+ const navigate=(path,headers=navigation,method='GET')=>new Promise((resolve,reject)=>{const request=httpRequest(origin+path,{headers,method},response=>{let text='';response.setEncoding('utf8');response.on('data',chunk=>text+=chunk);response.on('end',()=>resolve({status:response.statusCode,headers:response.headers,text}));});request.on('error',reject);request.end();});
+ for(const path of ['/?developments','/index.html?developments']){const response=await navigate(path);assert.equal(response.status,200);assert.match(response.headers['content-type'],/text\/html/);assert.equal(response.headers['cache-control'],'no-store, private');assert.equal(response.headers['set-cookie'],undefined);assert.match(response.text,/Continuer dans ce navigateur/);assert.match(response.text,/href="\/\?developments"/);assert(!/demo-formulaire|bootstrap|csrf|acces-administrateur/.test(response.text));}
+ const page=await fetch(origin+'/?developments');assert.equal(page.status,401);assert.match(await page.text(),/Fichier d’accès local privé/);
+ const Cookie=await login();assert.equal((await fetch(origin+'/local-developments/state',{headers:{Cookie}})).status,200);
+ const publicAgain=await navigate('/?developments',{...navigation,Cookie});assert.equal(publicAgain.status,200);assert.match(publicAgain.text,/Continuer dans ce navigateur/);
+ for(const site of ['cross-site','same-site'])for(const path of ['/local-developments/state','/local-developments/iteration?iteration=demo-formulaire','/local-developments/proof?iteration=demo-formulaire&proof=demo-parcours','/@vite/client'])assert.equal((await navigate(path,{...navigation,'sec-fetch-site':site,Cookie})).status,403);
+ for(const headers of [{...navigation,'sec-fetch-dest':'iframe'},{...navigation,'sec-fetch-mode':'cors'},{...navigation,Origin:'https://tiers.invalid'}])assert.equal((await navigate('/?developments',headers)).status,403);
+ assert.equal((await navigate('/?developments',navigation,'POST')).status,403);
+});

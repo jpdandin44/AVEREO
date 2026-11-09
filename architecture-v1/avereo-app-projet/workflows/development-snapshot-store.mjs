@@ -25,6 +25,7 @@ function validate(data){
       ||!Array.isArray(item.applicationIds)||!item.applicationIds.every(id)||typeof item.source!=='string'||/^[A-Za-z]:[\\/]|^\//.test(item.source))fail(422,'Itération privée invalide.');
     if(!/^[a-f0-9]{64}$/.test(item.revision||'')||!/^[a-f0-9]{64}$/.test(item.sourceHash||'')||!Array.isArray(item.blockers)||!Array.isArray(item.history)
       ||!Array.isArray(item.declaredApprovals)||!Array.isArray(item.unassignedCriteria)||!item.candidate||!item.versions)fail(422,'Contrat de consultation incomplet.');
+    if(item.unassignedProofs!==undefined&&(!Array.isArray(item.unassignedProofs)||item.unassignedProofs.length>2000))fail(422,'Pièces sans phase invalides.');
     ids.add(item.id);
     for(const [number,phase] of item.phases.entries()){if(phase.id!==number||!Array.isArray(phase.criteria)||!Array.isArray(phase.proofs)||phase.criteria.length>2000||phase.proofs.length>2000)fail(422,'Phase invalide.');}
   }
@@ -42,11 +43,11 @@ function validate(data){
     if(p.ext==='.png'&&!bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10])))fail(422,'Image invalide.');
     if(['.jpg','.jpeg'].includes(p.ext)&&!bytes.subarray(0,2).equals(Buffer.from([255,216])))fail(422,'Image invalide.');
     if(p.ext==='.pdf'&&!bytes.subarray(0,5).equals(Buffer.from('%PDF-')))fail(422,'PDF invalide.');
-    const references=data.iterations.find(i=>i.id===p.iterationId).phases.flatMap(phase=>phase.proofs);
+    const iteration=data.iterations.find(i=>i.id===p.iterationId),references=iteration.phases.flatMap(phase=>phase.proofs).concat(iteration.unassignedProofs||[]);
     if(!references.some(proof=>proof.id===p.proofId&&proof.fileHash===p.sha256))fail(422,'Pièce non déclarée.');
     blobs.add(name);
   }
-  for(const item of data.iterations)for(const p of item.phases.flatMap(x=>x.proofs))if(p.availability==='available'&&!blobs.has(item.id+':'+p.id))fail(422,'Pièce déclarée absente.');
+  for(const item of data.iterations)for(const p of item.phases.flatMap(x=>x.proofs).concat(item.unassignedProofs||[]))if(p.availability==='available'&&!blobs.has(item.id+':'+p.id))fail(422,'Pièce déclarée absente.');
   return data;
 }
 export function sealDevelopmentSnapshot(data,key){
@@ -114,7 +115,7 @@ export async function openDevelopmentSnapshotStore({directory,key,publicRoots=[]
       });
     },
     async restorePrevious(){return locked(async()=>{const ix=await index();if(!ix?.previous)fail(409,'Aucune copie précédente.');const env=await safeRead(ix.previous.file);validate(unseal(env,key));if(hash(JSON.stringify(env))!==ix.previous.hash)fail(503,'Copie précédente altérée.');await atomicIndex({...ix,current:ix.previous,previous:ix.current,restored:true,restoredAt:new Date().toISOString()});});},
-    async dashboard(){const {data,index:ix}=await readCurrent();return {iterations:data.iterations.map(v=>({id:v.id,title:v.title,application:v.application,applicationIds:v.applicationIds,status:v.status,currentPhase:v.currentPhase,versions:v.versions,nextAction:v.nextAction,blockerCount:v.blockers.length,phases:v.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length}))})),portfolio:data.portfolio,
+    async dashboard(){const {data,index:ix}=await readCurrent();return {iterations:data.iterations.map(v=>({id:v.id,title:v.title,application:v.application,applicationIds:v.applicationIds,status:v.status,currentPhase:v.currentPhase,versions:v.versions,nextAction:v.nextAction,blockerCount:v.blockers.length,phases:v.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length}))})),portfolio:data.portfolio,githubSnapshot:data.githubSnapshot||null,githubRefreshAvailable:false,
       snapshot:{sequence:data.sequence,generatedAt:data.generatedAt,receivedAt:ix.receivedAt,restored:ix.restored===true,mode:'private_read_only_projection'}};},
     async get(id){const {data}=await readCurrent();const view=data.iterations.find(i=>i.id===id);if(!view)fail(404,'Itération indisponible.');return {...view,readAt:new Date().toISOString()};},
     async proof(iterationId,proofId){const {data}=await readCurrent();const blob=data.proofs.find(p=>p.iterationId===iterationId&&p.proofId===proofId);if(!blob)fail(404,'Pièce non publiée.');return {content:Buffer.from(blob.content,'base64'),ext:blob.ext,name:proofId+blob.ext};},

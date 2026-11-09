@@ -5,13 +5,33 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 9 novembre — badges des environnements
+
+La vue d’ensemble ajoute des pastilles vertes/bleues, triangles orange, et états rouges/gris avec libellés, dates et explications. Une livraison sans contrôle hébergé documenté de la même version et cible reste grise. Les badges ne surveillent pas les serveurs, ne valident aucun critère et n’autorisent aucune livraison. [Règles et limites](docs/cockpit-portefeuille.md#badges-des-environnements). Accès propriétaire/global, lecture seule et quatre phases inchangés.
+
+## 9 novembre — liens GitHub préservés dans la projection privée
+
+Le filtre d’export distingue désormais un lecteur Windows isolé de la fin d’un schéma HTTPS. Les liens GitHub PR, commit et CI restent intacts ; chemins locaux/serveur toujours masqués, sources et validations consultatives. [Contrat et tests](docs/preuves-et-actualisation-github.md#liens-https-et-confidentialité-de-lexport). Aucun changement du contrôle propriétaire/global, du runtime PHP ou du Gantt. La correction agit lors d’une nouvelle publication signée, pas par réécriture des anciennes projections.
+
+## 9 novembre — ouvrir le cockpit local depuis Chrome
+
+Un lien extérieur vers le cockpit local affiche désormais un sas public **Continuer dans ce navigateur**, sans charger de données privées. La connexion reste propre au navigateur : sélectionner le fichier privé créé par le lanceur si aucune session active n'existe. Le fichier sert une fois ; un redémarrage fournit un nouvel accès et invalide les anciennes sessions. [Parcours et limites](docs/developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur). Aucun élargissement des droits/API, ni déploiement.
+
+## 9 novembre — preuves qualifiées et actualisation explicite
+
+Le [complément courant](docs/preuves-et-actualisation-github.md) qualifie les références sans réécrire les suivis : fichiers exacts épinglés, pièces de contexte distinctes des preuves d’acceptation, validations conservées. Le bouton privé **Rafraîchir GitHub** collecte les dernières fusions/main/PR en GET ; **Actualiser la vue** reste local. Publication signée compatible Node/PHP préparée pour la préproduction, sans jeton sur l’hôte ni déploiement. La PR de préparation ne vaut pas accord d’installation.
+
+## 9 novembre — cohérence GitHub locale
+
+Le [lecteur consultatif enrichi](docs/coherence-github-locale.md) distingue main/PR observés des déclarations métier, raccorde les itérations par identité et les reçus explicites, et conserve les copies locales/historiques. Candidat local distinct de la PR #134, sans modification de cette PR ni des sources métier. Accès privé du poste inchangé, aucun rôle CONNECT attesté ni déploiement. Les états suivants restent historiques.
 
 ## 8 novembre — préparation locale du premier lot
 

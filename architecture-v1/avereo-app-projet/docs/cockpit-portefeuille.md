@@ -5,10 +5,32 @@ title: Cockpit des versions et développements de toutes les applications
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-07
+updated: 2026-11-09
 owner: jpdandin
 tags: [cockpit, portefeuille, versions, lecture-seule, local]
 ---
+
+## Badges des environnements
+
+Les colonnes Préproduction et Production conservent version, intitulé et date. Les badges ajoutent une forme et un libellé explicites ; la couleur seule ne porte jamais le sens.
+
+| Aspect | Signification |
+| --- | --- |
+| Pastille verte — Préprod disponible | Livraison déclarée avec contrôle hébergé réussi documenté pour la même version et cible ; recette humaine distincte. |
+| Pastille bleue — Production en service | Même qualification documentaire en production ; pas une surveillance actuelle de disponibilité. |
+| Triangle orange — Production à préparer / examiner / autoriser | Itération active de phase 3 respectivement `in_progress`, `awaiting_review` ou `awaiting_approval`, sans livraison connue. Aucun accord déduit. |
+| Pastille rouge — Bloqué — suivi | Suivi actif de la phase concernée marqué `blocked`, sans livraison connue ; ne signifie pas panne d’un service existant. |
+| Pastille grise — À qualifier / environnement déclaré | Information absente ou simple déclaration sans contrôle documenté de même version/cible. |
+
+Un contrôle admissible est `checks.kind` égal à l’environnement, `status:passed`, preuve non vide, date valide, correspondance de chaque SHA/empreinte déclarée et cible exacte. L’environnement doit déjà être qualifié par le registre ; aucune URL ou CI ne l’invente. `versions.declarations[].verification` conserve le statut documentaire et la référence/date du contrôle, sans lecture réseau ou nouvel accord. Les anciennes projections sans ce champ restent grises. Les contrôles ou dates dans les suivis restent des déclarations datées ; les pièces non publiées gardent leur accès privé existant. Les critères, validations, comptes et quatre phases restent inchangés.
+
+## 9 novembre — complément courant
+
+Le [guide de qualification et rafraîchissement](preuves-et-actualisation-github.md) complète l’étape initiale ci-dessous. **Rafraîchir GitHub** est maintenant une action locale explicite ; elle ne modifie pas le code ou les sources métier. Les observations publiées restent consultatives en préproduction ; aucune collecte serveur, synchronisation continue ou livraison n’est installée.
+
+## 9 novembre — raccordement et cohérence GitHub locale
+
+Le [guide technique courant](coherence-github-locale.md) décrit la nouvelle colonne GitHub, les observations séparées, le raccordement des tableaux d’itérations et les reçus. Le registre privé porte maintenant les sources réelles et les observations datées ; les sections ci-dessous décrivent les étapes antérieures. Les sources métier et leurs validations ne sont pas modifiées ; le candidat est distinct de la PR #134, local seulement et consultatif.
 
 # Versions et développements — portefeuille local privé
 

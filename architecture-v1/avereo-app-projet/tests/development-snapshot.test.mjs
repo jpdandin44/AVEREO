@@ -8,6 +8,25 @@ import {createDevelopmentFixture} from '../workflows/development-fixture.mjs';
 import {exportDevelopmentSnapshot} from '../workflows/development-snapshot-export.mjs';
 import {openDevelopmentSnapshotStore,sealDevelopmentSnapshot} from '../workflows/development-snapshot-store.mjs';
 const key='k'.repeat(64);
+test('export : liens HTTPS GitHub intacts, chemins privés toujours masqués et sources consultatives',async t=>{
+ const {registry}=await setup(t);
+ const urls=['https://github.com/exemple/application/pull/136','https://github.com/exemple/application/commit/'+'a'.repeat(40),'https://github.com/exemple/application/actions/runs/123?check_suite_focus=true#jobs'];
+ registry.entries[0].githubPrUrls=[urls[0]];
+ for(const url of urls){
+  registry.entries[0].title=url;
+  const data=await exportDevelopmentSnapshot(registry,{sequence:1});
+  assert.equal(data.iterations[0].title,url);
+  assert.equal(data.iterations[0].githubObservation.pullRequests[0].url,urls[0]);
+  assert.ok(data.iterations.every(i=>i.writable===false));
+  assert.equal(data.proofs.length,0);
+ }
+ for(const path of ['C:/Users/fixture/prive/suivi.json','c:\\Users\\fixture\\prive\\suivi.json','/home/fixture/prive/suivi.json']){
+  registry.entries[0].title=path;
+  const data=await exportDevelopmentSnapshot(registry,{sequence:1});
+  assert.match(data.iterations[0].title,/\[chemin (?:local|serveur) masqué\]/);
+  assert.ok(!JSON.stringify(data).includes(path));
+ }
+});
 const sign=x=>{const payload=JSON.stringify(x);return{payload,signature:createHmac('sha256',key).update(payload).digest('hex')};};
 async function setup(t){
  const root=await mkdtemp(join(tmpdir(),'snapshot-fixture-'));const {mkdir}=await import('node:fs/promises');const storage=join(root,'private');await mkdir(storage);
@@ -58,4 +77,14 @@ test('aucune preuve copiée implicitement et chemins physiques masqués',async t
  const {registry}=await setup(t);const data=await exportDevelopmentSnapshot(registry,{sequence:1});assert.equal(data.proofs.length,0);
  assert.ok(data.iterations.flatMap(i=>i.phases.flatMap(p=>p.proofs)).every(p=>p.availability!=='available'));
  assert.ok(data.iterations.every(i=>i.source.startsWith('source-privee:')));
+});
+
+test('publication privée : fusions GitHub conservées et pièce sans phase sélectionnée compatible Node/PHP',async t=>{
+ const {storage,make,store}=await setup(t),data=await make(1),iteration=data.iterations.find(v=>v.id==='demo-formulaire');
+ const phase=iteration.phases.find(p=>p.proofs.some(p=>p.id==='demo-parcours')),proof=phase.proofs.find(p=>p.id==='demo-parcours');phase.proofs=phase.proofs.filter(p=>p.id!=='demo-parcours');iteration.unassignedProofs=[proof];
+ data.githubSnapshot={status:'observed',observedAt:'2026-11-09T12:00:00Z',latestMerges:{fixture:{coverage:'fixture',items:[{number:1,title:'Fusion fictive'}]}}};
+ await store.importSnapshot(sealDevelopmentSnapshot(data,key));const state=await store.dashboard();assert.equal(state.githubRefreshAvailable,false);assert.equal(state.githubSnapshot.latestMerges.fixture.items[0].number,1);assert.match((await store.proof('demo-formulaire','demo-parcours')).content.toString(),/fictive/);
+ const {execFileSync}=await import('node:child_process');const runtime=resolve(new URL('../backend/developments/',import.meta.url).pathname.replace(/^\/([A-Za-z]:)/,'$1'));
+ const script=String.raw`require $argv[1].'/Failure.php';require $argv[1].'/SnapshotReader.php';$r=new \Avereo\Projet\Developments\SnapshotReader($argv[2],$argv[3]);echo json_encode(['state'=>$r->state()['githubSnapshot'],'proof'=>$r->proof('demo-formulaire','demo-parcours')['body']]);`;
+ const result=JSON.parse(execFileSync('php',['-r',script,runtime,storage,key],{encoding:'utf8',windowsHide:true}));assert.equal(result.state.latestMerges.fixture.items[0].number,1);assert.match(result.proof,/fictive/);
 });
