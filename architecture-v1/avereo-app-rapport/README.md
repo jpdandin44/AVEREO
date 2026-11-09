@@ -262,4 +262,4 @@ Mes projets revient à la liste native avec sauvegarde du brouillon avant sortie
 
 ## Retrouver un rapport en ligne
 
-Dans **Rapports sauvegardés en ligne**, les cinq derniers dossiers sont visibles. Le menu **Afficher** permet d’en voir jusqu’à cinquante. La recherche par référence, titre ou adresse porte aussi sur les dossiers plus anciens accessibles au compte. Si un brouillon existe, sélectionner **Ouvrir** place en haut de la liste la confirmation, l’export JSON et l’annulation. [Contrat de recherche](api/README.md#recherche-des-sauvegardes-en-ligne).
+Dans **Rapports sauvegardés en ligne**, les cinq derniers dossiers sont visibles. Le menu **Afficher** permet d’en voir jusqu’à cinquante. La recherche par référence, titre ou adresse porte aussi sur les dossiers plus anciens accessibles au compte. Si un brouillon existe, sélectionner **Ouvrir** place en haut de la liste la confirmation, l’export JSON et l’annulation. [Contrat de recherche](api/README.md#recherche-des-sauvegardes-en-ligne). [Aperçu sur données fictives](docs/illustrations/rapports-en-ligne.png).

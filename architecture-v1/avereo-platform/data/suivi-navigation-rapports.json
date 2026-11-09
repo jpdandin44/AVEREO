@@ -19,7 +19,7 @@
     "Rapport en Chrome à 1 180 et 390 px : recherche, sélection en haut, export, annulation et ouverture."
   ],
   "preproduction": {
-    "statut": "en attente du transport vérifié",
+    "statut": "Paquet de sept cibles préparé et variante Coupe adaptée sur copie. Accès SSH indisponible au contrôle initial.",
     "ciblesExistantes": [
       "connect",
       "projet",
@@ -31,6 +31,10 @@
     ],
     "recherche": "Cible hébergée non identifiée.",
     "saisie-unique": "Fichier autonome local.",
-    "reprise": "Vérifier les répertoires cPanel et la variante de Coupe, sauvegarder et restaurer sur copie avant installation."
-  }
+    "reprise": "Vérifier les répertoires cPanel et la variante de Coupe, sauvegarder et restaurer sur copie avant installation.",
+    "paquetPrepare": "4c1728cc00423d74cb37754ce7effbba673ed23b7b3e1bb5642f27dbd5ea04f5"
+  },
+  "pr": "https://github.com/jpdandin44/AVEREO/pull/135",
+  "reviewUrl": "http://127.0.0.1:5198/",
+  "reviewEnvironment": "local sur 65 dossiers fictifs"
 }
