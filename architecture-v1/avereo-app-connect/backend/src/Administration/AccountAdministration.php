@@ -75,10 +75,10 @@ final class AccountAdministration
         },fn()=>$this->authorize($actor,$organization,$id));
     }
 
-    /** Deny before mutation. On any failure leave the projection denied, never falsely open access. */
-    public function synchronize(int $id, callable $operation, ?callable $before = null, bool $lifecycle = false): mixed
+    /** Deny before mutation. Only an explicitly rejected application change can restore its exact prior rule. */
+    public function synchronize(int $id, callable $operation, ?callable $before = null, bool $lifecycle = false, bool $applicationChange = false): mixed
     {
-        return $this->policy->locked(function () use ($id, $operation, $before, $lifecycle) {
+        return $this->policy->locked(function () use ($id, $operation, $before, $lifecycle, $applicationChange) {
             $query = $this->pdo->prepare('SELECT application_access_mode, archived_from_status, sessions_revoked_at FROM users WHERE id=?');
             $query->execute([$id]);
             $user = $query->fetch(\PDO::FETCH_ASSOC);
@@ -88,8 +88,14 @@ final class AccountAdministration
             $explicit = ($user['application_access_mode'] ?? null) === 'explicit';
             $denyBefore = $lifecycle || $explicit;
             if ($denyBefore && $before !== null) $before();
+            $prior = $denyBefore && $applicationChange ? $this->policy->priorRule($id) : null;
             if ($denyBefore) $this->policy->deny($id);
-            $result = $operation();
+            try {
+                $result = $operation();
+            } catch (ApiException $rejection) {
+                if ($prior !== null && !$this->pdo->inTransaction()) $this->policy->set($id,$prior);
+                throw $rejection;
+            }
             // Legacy mutations authorize in the repository. An unauthorized call
             // must not revoke a previously restored inherited account.
             if ($denyBefore || (int) ($user['sessions_revoked_at'] ?? 0) > 0) $this->publish($id);

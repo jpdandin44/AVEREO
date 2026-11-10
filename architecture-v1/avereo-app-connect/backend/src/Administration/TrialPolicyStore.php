@@ -46,6 +46,15 @@ final class TrialPolicyStore
         } finally { if (is_file($temporary)) unlink($temporary); }
     }
 
+    /** Read under the same exclusive lock used to publish an application change. */
+    public function priorRule(int $id): ?array
+    {
+        if (!is_file($this->path) || filesize($this->path)>65536) throw new \RuntimeException('Politique indisponible.');
+        $policy = json_decode((string)file_get_contents($this->path),true,16,JSON_THROW_ON_ERROR);
+        if (($policy['version'] ?? null)!==1 || !is_array($policy['accounts'] ?? null)) throw new \RuntimeException('Politique invalide.');
+        return $policy['accounts'][(string)$id] ?? null;
+    }
+
     public function deny(int $id): void
     {
         $this->set($id,['status'=>'revoked','not_before'=>0,'not_after'=>PHP_INT_MAX,'applications'=>[]]);

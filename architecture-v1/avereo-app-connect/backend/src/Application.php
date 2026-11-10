@@ -614,7 +614,7 @@ final class Application
         }
         return $this->accountAdministration->synchronize($target,$operation,fn()=> $app===null
             ? $this->accountAdministration->authorize($actor,$organization,$target)
-            : $this->accountAdministration->authorizeApplication($actor,$organization,$target,$app[0],$app[1]));
+            : $this->accountAdministration->authorizeApplication($actor,$organization,$target,$app[0],$app[1]), applicationChange: $app !== null);
     }
 
     private function positiveInt(mixed $value, string $field): int
