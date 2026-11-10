@@ -5,13 +5,21 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## 9 novembre — qualification privée et collecte GitHub manuelle
+
+Le [complément du lecteur](docs/preuves-et-actualisation-github.md) ajoute une qualification dérivée liée aux empreintes source/fichier, sans écriture des journaux. Les liens de contexte ne deviennent pas des preuves d’acceptation. Le collecteur local emploie la session GitHub CLI stockée, des GET bornés, un verrou et un remplacement atomique du seul cache ; aucun git pull ou déploiement. Les projections signées transmettent observations et contextes au lecteur PHP, toujours GET et propriétaire/global.
+
+## 9 novembre — observations GitHub et projections consultatives
+
+Un fichier privé dérivé et daté complète les sources métier, sans leur écrire : [flux et adaptateurs](docs/coherence-github-locale.md). Le lecteur sélectionne les itérations par identité, sépare observation GitHub et déclaration, compare les arbres de code et garde les reçus de livraison de portée explicite. Aucun service réseau GitHub permanent, changement d’autorité, stockage métier ou lecteur PHP hébergé ajouté.
 
 ## Préparation locale — 8 novembre
 

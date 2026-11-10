@@ -16,9 +16,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Drupal\avereo_identity_bridge\Controller\DevelopmentAuthorizationController;
 use Avereo\Connect\Developments\SignedMessage;
 $checks=0;function verify($condition,$message){global $checks;if(!$condition)throw new RuntimeException($message);$checks++;}
-final class UserFixture {public bool $active=true,$assigned=true;public function isActive(){return $this->active;}public function hasRole($id){return $this->assigned&&$id==='administrator';}}
-final class RoleFixture {public bool $global=true;public function isAdmin(){return $this->global;}}
-final class StoreFixture {public int $resets=0;public function __construct(public object $entity){}public function resetCache($ids){$this->resets++;}public function load($id){return $this->entity;}}
+final class UserFixture {public bool $active=true,$assigned=true;public function isActive(){return $this->active;}public function getRoles(){return $this->assigned?['authenticated','administrator']:['authenticated'];}public function hasRole($id){return $this->assigned&&$id==='administrator';}}
+final class RoleFixture {public bool $global=true;public function id(){return 'administrator';}public function isAdmin(){return $this->global;}}
+final class StoreFixture {public int $resets=0;public function __construct(public object $entity){}public function resetCache($ids){$this->resets++;}public function load($id){return $this->entity;}public function loadMultiple($ids){return in_array('administrator',$ids,true)?['administrator'=>$this->entity]:[];}}
 final class EntitiesFixture {public function __construct(public object $users,public object $roles){}public function getStorage($type){return $type==='user'?$this->users:$this->roles;}}
 final class ConfigFixture {public string $role='administrator';public int $resets=0;public function reset($name){$this->resets++;}public function get($key){return $key==='user.settings'?$this:$this->role;}}
 final class CacheFixture {public array $data=[];public function get($id){return $this->data[$id]??false;}public function set($id,$value,$expires){$this->data[$id]=$value;}}
@@ -31,11 +31,12 @@ verify($controller->authorize($request())->status===503,'closed default');
 Settings::$value=['enabled'=>true,'secret'=>$key,'issuer'=>$issuer,'owner_subject'=>'701'];
 $r=$controller->authorize($request());verify($r->status===200,'controller valid');
 $decode=static fn($r)=>json_decode(base64_decode(strtr($r->data['payload'],'-_','+/')),true);
-verify($decode($r)['globalAdmin']===true,'real role sources consulted');verify($users->resets>0&&$roles->resets>0&&$config->resets>0,'persistent caches invalidated');
+verify($decode($r)['globalAdmin']===true,'real role sources consulted');verify($users->resets>0&&$roles->resets>0&&$config->resets===0,'entity caches invalidated without obsolete configuration');
 $user->assigned=false;verify($decode($controller->authorize($request()))['globalAdmin']===false,'role removal immediate');$user->assigned=true;
 $role->global=false;verify($decode($controller->authorize($request()))['globalAdmin']===false,'role definition changed');$role->global=true;
 $user->active=false;verify($decode($controller->authorize($request()))['active']===false,'blocked account');$user->active=true;
-$config->role='';verify($decode($controller->authorize($request()))['globalAdmin']===false,'missing admin setting');$config->role='administrator';
+$config->role='';verify($decode($controller->authorize($request()))['globalAdmin']===true,'Drupal 11 works without obsolete admin_role setting');
+$user->assigned=false;verify($decode($controller->authorize($request()))['globalAdmin']===false,'unassigned global role does not grant access');$user->assigned=true;
 verify($controller->authorize($request(['subject'=>'702']))->status===403,'other global administrator');
 $replay=$request();verify($controller->authorize($replay)->status===200,'first nonce');verify($controller->authorize($replay)->status===403,'replayed nonce');
 $lock->available=false;verify($controller->authorize($request())->status===403,'lock unavailable');

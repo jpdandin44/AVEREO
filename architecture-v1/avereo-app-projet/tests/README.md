@@ -5,12 +5,24 @@ title: Recette du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - tests
 ---
+
+## Ouverture locale depuis un lien extérieur — 9 novembre
+
+`development-access.test.mjs` vérifie le sas limité à une navigation utilisateur GET de document principal vers l'entrée exacte, sans affaiblir `checkTransport`. `development-http.test.mjs` reproduit les en-têtes de navigation avec le client HTTP natif (node.fetch réécrit `Sec-Fetch-Mode`) : page publique sans données/cookie, poursuite puis connexion privée ; API/pièces/assets, iframe, fetch, Origin tiers et POST restent refusés, même avec une session fournie. Les essais sont sur fixtures et préservent le bootstrap à usage unique.
+
+## Qualification et actualisation — contrôles de préparation
+
+`development-evidence-qualification.test.mjs` et `development-github-refresh.test.mjs` couvrent qualifications exactes/empreintes/source changée, contexte non concluant, export privé sans copie implicite, collecte GET bornée, échec, concurrence, troncature et confidentialité du fournisseur. `development-http.test.mjs` ajoute session/origine/CSRF/corps fermé et collecteur absent ; `development-snapshot.test.mjs` teste métadonnées GitHub et pièce sans phase dans Node/PHP. Tous sont inclus dans les suites ciblées et complètes, sur fixtures. [Guide](../docs/preuves-et-actualisation-github.md).
+
+## Cohérence GitHub locale — 9 novembre
+
+`development-coherence.test.mjs` ajoute sept tests : sélection par identité/réordonnancement, sélecteur absent ou ambigu, refus d’écriture, observation GitHub sans modifier phases/accords, disparition de l’observation sans ancien succès, références de PR des phases, reçu explicite et cibles Missions. Inclus dans `test:developments` et `build`. [Périmètre et limites](../docs/coherence-github-locale.md). Les tests de garde privé et non-régression restent requis ; aucune source réelle n’est approuvée par ces fixtures.
 
 ## Préparation inactive et récupération sur copie — 8 novembre
 

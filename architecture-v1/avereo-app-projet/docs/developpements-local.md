@@ -5,12 +5,24 @@ title: Développements — espace local privé
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-07
+updated: 2026-11-09
 owner: jpdandin
 tags: [developpements, local, administrateur-global, criteres, preuves]
 ---
 
 # Développements — espace local privé
+
+## Ouverture dans Chrome ou depuis un lien extérieur
+
+Le refus JSON « Origine refusée » pouvait apparaître lors d'un clic depuis une autre application/site : le filtre intersite bloquait la navigation avant la page de connexion. La correction ne rend pas les données publiques. Seule une navigation utilisateur GET vers `/` ou `/index.html`, en document principal, sur le Host et la boucle locale attendus, sans Origin tiers, reçoit un sas HTML public sans données ni cookie. **Continuer dans ce navigateur** ouvre ensuite l'entrée locale canonique ; les API, pièces, assets, iframes, requêtes programmatiques et POST intersites restent refusés.
+
+Pour tester :
+
+1. Ouvrir l'adresse exacte donnée par le lanceur (`127.0.0.1`, même port). Si le sas est affiché, cliquer **Continuer dans ce navigateur**. Coller directement l'adresse dans la barre de Chrome fonctionne aussi.
+2. Sans session dans ce navigateur, sélectionner le fichier `acces-administrateur.json` dont le lanceur indique le chemin local privé. Ne pas le joindre au chat ni copier son contenu.
+3. Vérifier la vue d'ensemble, puis les quatre phases d'un suivi. Le portefeuille réel reste consultatif.
+
+Une connexion dans le navigateur intégré ne connecte pas Chrome. Le bootstrap sert une seule fois au total, pas une fois par navigateur. Pour changer de navigateur quand ce fichier a déjà servi, relancer explicitement le lecteur concerné afin d'obtenir un nouveau fichier ; cela invalide aussi la précédente session. L'expiration reste d'une heure maximum. Cette correction n'installe ni SSO CONNECT, ni accès distant, ni nouveau profil autorisé. Le contexte courant du portefeuille est documenté dans le [guide](cockpit-portefeuille.md) ; les anciens ports et constats ci-dessous restent datés.
 
 ## Reprise du 7 novembre — vrais suivis en consultation privée
 

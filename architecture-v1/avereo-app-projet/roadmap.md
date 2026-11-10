@@ -5,12 +5,20 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 9 novembre — préparation de PR avec qualification et rafraîchissement
+
+Qualification consultative, collecte manuelle GET et projection Node/PHP sont préparées localement. Revue du lot en Développement local ; préproduction non installée. Suite : examiner la PR et ses preuves, qualifier les prérequis privés/sauvegarde/restauration et le canal de publication, puis autoriser une installation ciblée du candidat exact. Les critères de recette en ligne/PC éteint restent à vérifier sur la cible. [Plan et frontières](docs/preuves-et-actualisation-github.md).
+
+## 9 novembre — cohérence locale à examiner
+
+Raccordement des itérations et observations GitHub réalisé dans un candidat isolé, sans publication. Phase : Développement local ; revue humaine attendue. Suite distincte : qualifier les réserves de preuves/critères et les versions réellement installées, puis l’exploitation privée en ligne après accord exact. Préproduction et Mise en production non commencées. [Périmètre](docs/coherence-github-locale.md).
 
 ## 8 novembre — premier lot de préparation locale
 

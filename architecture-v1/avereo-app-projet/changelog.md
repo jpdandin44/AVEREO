@@ -5,12 +5,32 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-08
+updated: 2026-11-09
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 2026-11-09 — badges visuels dans la vue d’ensemble
+
+Ajout de badges texte/icône dans les deux colonnes d’environnement : préprod verte, production bleue, préparation/examen/autorisation orange, blocage de suivi rouge et état non qualifié gris. Un contrôle hébergé documenté est lié à la même version et cible ; aucune CI ou simple phase terminée ne crée une livraison. Projections anciennes compatibles (gris), légende et dates, sans action métier ni changement d’habilitation. [Guide](docs/cockpit-portefeuille.md#badges-des-environnements).
+
+## 2026-11-09 — liens GitHub conservés par l’export privé
+
+Correction minimale du filtre de chemins Windows : ne plus prendre le dernier caractère de `https://` pour une lettre de lecteur. Test de non-régression PR/commit/actions avec paramètres et fragment, champs imbriqués, masquage Windows/POSIX, sources inchangées et aucune preuve copiée implicitement. Propriétaire/global, lecture seule et runtime hébergé inchangés. Une nouvelle publication signée est requise pour les copies déjà exportées.
+
+## 2026-11-09 — correction du refus à l'ouverture dans Chrome
+
+Sas de navigation publique minimal pour un lien extérieur explicite vers l'entrée locale, sans donnée ni session : bouton **Continuer dans ce navigateur**. Le garde privé, Host/boucle locale, origine, CSRF, bootstrap à usage unique et rôle CONNECT non attesté restent inchangés. Tests de non-régression navigation réelle/intersite, API/assets/iframe/POST refusés et connexion privée après poursuite. [Guide](docs/developpements-local.md#ouverture-dans-chrome-ou-depuis-un-lien-extérieur). Aucun déploiement.
+
+## 2026-11-09 — preuves et critères qualifiés, fusions GitHub actualisables
+
+Lecteur consultatif de qualifications privées par empreintes, contexte documentaire distinct des proofIds et validations conservées. Collecteur GitHub GET à la demande, endpoint local session/origine/CSRF et corps fermé, cache atomique, dernières fusions et conservation sur échec. Export/lecteurs Node et PHP compatibles avec métadonnées et pièces sans phase explicitement sélectionnées. Aucun secret ou donnée réelle dans le paquet, aucune installation. [Guide](docs/preuves-et-actualisation-github.md).
+
+## 2026-11-09 — cockpit local aligné sur des observations GitHub datées
+
+Ajout de la colonne main/PR, observations distinctes des déclarations et alertes d’écart, priorisation des PR ouvertes, sélecteurs stables des tableaux d’itérations, reçus et mapping Missions limité aux cibles qualifiées. Racines de preuves relatives corrigées par configuration, décisions/historiques conservés. [Guide](docs/coherence-github-locale.md). Aucun changement d’authentification, Gantt, source métier, PR ou hébergement.
 
 ## 2026-11-08 — Premier lot de préparation locale
 
