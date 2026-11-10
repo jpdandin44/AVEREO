@@ -248,7 +248,7 @@ final class Application
         ) {
             $snapshot = $this->repository->getAccountAdministration($userId, (int) $matches[1]);
             $snapshot = $this->accountLifecycle?->describe($userId, $snapshot) ?? $snapshot;
-            $snapshot['accountCreationAvailable'] = $this->accountAdministration !== null;
+            $snapshot['accountCreationAvailable'] = $this->accountAdministration !== null && $snapshot['actorRole'] !== 'access_manager';
             return Response::success($snapshot, $request->requestId);
         }
 
@@ -614,7 +614,7 @@ final class Application
         }
         return $this->accountAdministration->synchronize($target,$operation,fn()=> $app===null
             ? $this->accountAdministration->authorize($actor,$organization,$target)
-            : $this->accountAdministration->authorizeApplication($actor,$organization,$target,$app[0],$app[1]));
+            : $this->accountAdministration->authorizeApplication($actor,$organization,$target,$app[0],$app[1]), applicationChange: $app !== null);
     }
 
     private function positiveInt(mixed $value, string $field): int

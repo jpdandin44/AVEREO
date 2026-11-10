@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Avereo\Connect\Repository;
 
 use Avereo\Connect\Http\ApiException;
+use Avereo\Connect\Administration\ApplicationAccessDelegations;
 
 final class PdoConnectRepository implements ConnectRepository
 {
-    public function __construct(private readonly \PDO $pdo)
+    public function __construct(private readonly \PDO $pdo, private readonly ?ApplicationAccessDelegations $delegations = null)
     {
     }
 
@@ -187,7 +188,15 @@ final class PdoConnectRepository implements ConnectRepository
             . 'ORDER BY o.name, o.id',
         );
         $statement->execute(['user_id' => $userId]);
-        return $statement->fetchAll();
+        $organizations = $statement->fetchAll();
+        if ($this->delegations !== null) {
+            $allowed = $this->delegations->organizations($userId);
+            foreach ($organizations as &$organization) {
+                $organization['canManageApplicationAccess'] = in_array((int) $organization['id'], $allowed, true);
+            }
+            unset($organization);
+        }
+        return $organizations;
     }
 
     public function listApplications(int $userId, int $organizationId): array
@@ -314,7 +323,8 @@ final class PdoConnectRepository implements ConnectRepository
 
     public function getAccountAdministration(int $actorUserId, int $organizationId): array
     {
-        $actorRole = $this->administrationRole($actorUserId, $organizationId);
+        $actorRole = $this->applicationAccessRole($actorUserId, $organizationId);
+        $delegate = $actorRole === 'access_manager';
         $organizationStatement = $this->pdo->prepare(
             'SELECT id, name, slug, status FROM organizations '
             . 'WHERE id = :organization_id AND status = \'active\'',
@@ -326,7 +336,7 @@ final class PdoConnectRepository implements ConnectRepository
         }
         $organization['role'] = $actorRole;
 
-        $pending = $this->pdo->query(
+        $pending = $delegate ? [] : $this->pdo->query(
             'SELECT id, email_normalized AS email, display_name AS displayName, '
             . 'first_seen_at AS firstSeenAt, last_seen_at AS lastSeenAt '
             . 'FROM pending_identities WHERE status = \'pending\' '
@@ -376,6 +386,10 @@ final class PdoConnectRepository implements ConnectRepository
             $accessByUser[(int) $access['userId']][(string) $access['code']] = (string) $access['status'];
         }
 
+        if ($delegate) {
+            $users = array_values(array_filter($users, static fn(array $user): bool =>
+                ApplicationAccessDelegations::eligibleTarget($actorUserId, (int) $user['id'], $user)));
+        }
         foreach ($users as &$user) {
             $targetRole = (string) ($user['role'] ?? '');
             $targetUserId = (int) ($user['id'] ?? 0);
@@ -410,13 +424,20 @@ final class PdoConnectRepository implements ConnectRepository
             );
         }
         unset($user);
+        if ($delegate) {
+            foreach ($users as &$user) {
+                $user = array_intersect_key($user, array_flip(['id','displayName','role','membershipStatus','status','applications']));
+                $user['canManageApplications'] = true;
+            }
+            unset($user);
+        }
 
         return [
             'organization' => $organization,
             'actorRole' => $actorRole,
-            'assignableRoles' => $actorRole === 'owner'
+            'assignableRoles' => $delegate ? [] : ($actorRole === 'owner'
                 ? ['owner', 'admin', 'member', 'viewer']
-                : ['member', 'viewer'],
+                : ['member', 'viewer']),
             'applications' => $applications,
             'pendingIdentities' => $pending,
             'users' => $users,
@@ -890,7 +911,7 @@ final class PdoConnectRepository implements ConnectRepository
         string $status,
         string $requestId,
     ): array {
-        $actorRole = $this->administrationRole($actorUserId, $organizationId);
+        $actorRole = $this->applicationAccessRole($actorUserId, $organizationId);
         $targetStatement = $this->pdo->prepare(
             'SELECT u.id, u.display_name AS displayName, u.status, m.role, m.status AS membershipStatus '
             . 'FROM memberships m INNER JOIN users u ON u.id = m.user_id '
@@ -905,8 +926,9 @@ final class PdoConnectRepository implements ConnectRepository
             throw new ApiException(404, 'USER_NOT_FOUND', 'Le compte est introuvable dans cette organisation.');
         }
         if (
-            $actorRole !== 'owner'
-            && !in_array((string) ($target['role'] ?? ''), ['member', 'viewer'], true)
+            ($actorRole === 'access_manager' && !ApplicationAccessDelegations::eligibleTarget($actorUserId, $targetUserId, $target))
+            || ($actorRole !== 'owner'
+            && !in_array((string) ($target['role'] ?? ''), ['member', 'viewer'], true))
         ) {
             $this->recordAudit(
                 $actorUserId,
@@ -948,6 +970,22 @@ final class PdoConnectRepository implements ConnectRepository
 
         try {
             $this->pdo->beginTransaction();
+            if ($actorRole === 'access_manager') {
+                $allowed = $this->delegations?->organizations($actorUserId, $organizationId) ?? [];
+                if (!in_array($organizationId,$allowed,true)) {
+                    throw new ApiException(403,'ACCOUNT_ADMINISTRATION_DENIED','Délégation retirée.');
+                }
+                $lock = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'mysql' ? ' FOR UPDATE' : '';
+                $targetCheck = $this->pdo->prepare($targetStatement->queryString . $lock);
+                $targetCheck->execute(['organization_id'=>$organizationId,'user_id'=>$targetUserId]);
+                $current = $targetCheck->fetch();
+                $appCheck = $this->pdo->prepare($applicationStatement->queryString . $lock);
+                $appCheck->execute(['organization_id'=>$organizationId,'application_code'=>$applicationCode]);
+                if (!$current || !ApplicationAccessDelegations::eligibleTarget($actorUserId,$targetUserId,$current)
+                    || !$appCheck->fetchColumn()) {
+                    throw new ApiException(403,'APPLICATION_ACCESS_DENIED','Accès hors du périmètre délégué.');
+                }
+            }
             $update = $this->pdo->prepare(
                 'INSERT INTO user_application_access '
                 . '(organization_id, user_id, application_id, status, granted_by_user_id) '
@@ -987,6 +1025,14 @@ final class PdoConnectRepository implements ConnectRepository
             'status' => $status,
             'inherited' => false,
         ];
+    }
+
+    private function applicationAccessRole(int $userId, int $organizationId): string
+    {
+        $role = $this->roleForOrganization($userId, $organizationId);
+        if (in_array($role, ['owner', 'admin'], true)) return $role;
+        if (in_array($organizationId, $this->delegations?->organizations($userId) ?? [], true)) return 'access_manager';
+        throw new ApiException(403, 'ACCOUNT_ADMINISTRATION_DENIED', 'Gestion des accès non autorisée.');
     }
 
     private function administrationRole(int $userId, int $organizationId): string

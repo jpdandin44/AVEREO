@@ -299,6 +299,9 @@ jobs:
           php tests/integration.php
           php tests/rga-registration.php
           php tests/account-administration-mysql.php
+          ACCOUNT_ADMIN_MYSQL_TEMPORARY=true php tests/application-access-delegations.php
+          php ../../avereo-app-rapport/tests/organization-exports.php
+          REPORT_EXPORT_MARIADB_FIXTURE=true php ../../avereo-app-rapport/tests/organization-exports.php
           php tests/account-lifecycle.php
           python3 tests/account-ui-lifecycle.py
           ACCOUNT_ADMIN_MYSQL_TEMPORARY=true php tests/password-reset.php
