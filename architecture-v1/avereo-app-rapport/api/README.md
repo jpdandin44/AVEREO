@@ -5,7 +5,7 @@ title: API de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - rapport
@@ -40,3 +40,7 @@ evolution d'API interne structurante le necessitera.
 ## Recherche des sauvegardes en ligne
 
 La liste authentifiée GET /api/reports.php accepte q (texte facultatif, 190 caractères maximum) et limit (1 à 100, 50 par défaut). Le serveur cherche une sous-chaîne dans la référence, le titre ou l’adresse **après restriction au périmètre autorisé et avant la limite**. Les caractères % et _ sont littéraux. Les résultats sont triés par dernière modification décroissante, puis par identifiant en cas d’égalité. Seules les métadonnées sont renvoyées. Le chargement du dossier complet réutilise la lecture protégée par identifiant.
+
+## Habilitations par organisation — candidat local
+
+Le candidat sert la liste autorisée via GET `exports.php` (filtre facultatif `reference`). POST `exports.php` reçoit `id` et `purpose`, exige l’en-tête `X-Avereo-Export: 1` et renvoie le JSON en pièce jointe. [Portée et erreurs de refus](../../../docs/administration-acces-exports.md).

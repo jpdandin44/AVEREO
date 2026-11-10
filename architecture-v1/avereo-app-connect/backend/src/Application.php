@@ -248,7 +248,7 @@ final class Application
         ) {
             $snapshot = $this->repository->getAccountAdministration($userId, (int) $matches[1]);
             $snapshot = $this->accountLifecycle?->describe($userId, $snapshot) ?? $snapshot;
-            $snapshot['accountCreationAvailable'] = $this->accountAdministration !== null;
+            $snapshot['accountCreationAvailable'] = $this->accountAdministration !== null && $snapshot['actorRole'] !== 'access_manager';
             return Response::success($snapshot, $request->requestId);
         }
 

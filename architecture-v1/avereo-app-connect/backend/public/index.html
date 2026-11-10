@@ -229,6 +229,9 @@
       <p id="profile-status"></p>
       <p id="profile-organization"></p>
       <p id="profile-applications"></p>
+      <label id="admin-organization-choice" hidden>Organisation à administrer
+        <select id="admin-organization-select"></select>
+      </label>
     </section>
 
     <section id="applications" aria-labelledby="applications-title" hidden>
@@ -278,7 +281,7 @@
         </form>
       </div>
 
-      <div class="admin-block">
+      <div class="admin-block" id="pending-requests-block">
         <h3>Demandes en attente</h3>
         <p class="admin-help">Approuvez le profil AVEREO et choisissez son rôle CONNECT, ou refusez la demande.</p>
         <div id="admin-pending-list" class="admin-list"></div>
@@ -399,14 +402,24 @@
     function renderProfile(profilePayload, applications) {
       const organizations = profilePayload.organizations || [];
       const administeredOrganizations = organizations.filter(
-        (organization) => organization.role === 'owner' || organization.role === 'admin'
+        (organization) => organization.role === 'owner' || organization.role === 'admin' || organization.canManageApplicationAccess === true
       );
       profileName.textContent = profilePayload.user.displayName || profilePayload.user.email || 'Compte AVEREO';
       profileStatus.textContent = 'Compte actif · Profil Client';
       profileOrganization.textContent = `Organisation : ${organizations.map((item) => item.name).join(', ') || 'Non rattachée'}`;
       profileApplications.textContent = `Applications autorisées : ${applications.map((item) => item.name).join(', ') || 'Aucune'}`;
       profileSection.hidden = false;
-      adminOrganizationId = administeredOrganizations[0]?.id || null;
+      const select = document.getElementById('admin-organization-select');
+      select.replaceChildren(...administeredOrganizations.map(org => new Option(org.name, String(org.id))));
+      document.getElementById('admin-organization-choice').hidden = administeredOrganizations.length < 2;
+      const currentUrl = new URL(window.location.href);
+      const requested = currentUrl.searchParams.get('admin_org');
+      if (administeredOrganizations.some(org => String(org.id) === requested)) select.value = requested;
+      adminOrganizationId = select.value || null;
+      select.onchange = () => {
+        currentUrl.searchParams.set('admin_org', select.value);
+        window.location.assign(currentUrl.href);
+      };
       adminOpenButton.hidden = adminOrganizationId === null;
     }
 
@@ -442,7 +455,8 @@
         owner: 'Propriétaire',
         admin: 'Administrateur',
         member: 'Client',
-        viewer: 'Lecteur'
+        viewer: 'Lecteur',
+        access_manager: 'Gestionnaire des accès applicatifs'
       }[role] || role;
     }
 
@@ -556,7 +570,9 @@
         sent: `Lien d’activation envoyé${user.activationEmailSentAt ? ` le ${formatAdminDate(user.activationEmailSentAt)}` : ''}`,
         completed: 'Mot de passe initialisé'
       }[user.onboardingStatus] || 'État d’activation indisponible';
-      information.append(name, details, membership, document.createElement('br'), onboarding);
+      information.append(name, membership);
+      if (user.email) information.append(details);
+      if (user.onboardingStatus) information.append(document.createElement('br'), onboarding);
 
       const actions = document.createElement('div');
       actions.className = 'admin-actions';
@@ -991,6 +1007,8 @@
     });
 
     function renderAdministration(snapshot, message = '') {
+      const limited = snapshot.actorRole === 'access_manager';
+      document.getElementById('pending-requests-block').hidden = limited;
       const pending = snapshot.pendingIdentities || [];
       const users = snapshot.users || [];
       const applications = snapshot.applications || [];

@@ -110,11 +110,31 @@ export async function saveOnlineReport(report, token, id = '') {
   return payload.report;
 }
 
-export async function listOnlineReports(token, { limit = 50, query = '', signal } = {}) {
+export async function listOnlineReports(token, options = {}) {
+  return (await onlineReportPage(token, options)).reports || [];
+}
+
+export async function onlineReportPage(token, { limit = 50, query = '', signal } = {}) {
   const params = new URLSearchParams({ limit: String(limit) });
   if (query.trim()) params.set('q', query.trim());
-  const payload = await request('reports.php?' + params, { token, signal });
-  return payload.reports || [];
+  return request('reports.php?' + params, { token, signal });
+}
+
+export async function listOrganizationExports(reference, signal) {
+  const result = await request('exports.php?' + new URLSearchParams({ reference }), { signal });
+  return result.reports;
+}
+
+export async function downloadOrganizationReport(id, purpose) {
+  const response = await fetch(`${API_BASE_URL}/exports.php`, {
+    method: 'POST', credentials: 'same-origin', redirect: 'error',
+    headers: { 'Content-Type': 'application/json', 'X-Avereo-Export': '1' },
+    body: JSON.stringify({ id, purpose }),
+  });
+  if (!response.ok || !response.headers.get('Content-Disposition')?.startsWith('attachment;')) {
+    throw new Error('Export refusé ou dossier indisponible.');
+  }
+  return response.blob();
 }
 
 export async function loadOnlineReport(id, token) {

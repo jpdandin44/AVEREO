@@ -9,7 +9,7 @@ use Avereo\Connect\Repository\PdoConnectRepository;
 final class AccountAdministration
 {
     public function __construct(private readonly \PDO $pdo, private readonly AccountIdentityProvisioner $identity,
-        private readonly TrialPolicyStore $policy) {}
+        private readonly TrialPolicyStore $policy, private readonly ?ApplicationAccessDelegations $delegations = null) {}
 
     public function create(int $actor, int $organization, array $input, string $requestId): array
     {
@@ -125,6 +125,14 @@ final class AccountAdministration
 
     public function authorizeApplication(int $actor,int $organization,int $id,string $app,string $status):void
     {
+        if ($this->delegations !== null && in_array($organization, $this->delegations->organizations($actor), true)) {
+            $query = $this->pdo->prepare("SELECT m.role, m.status AS membershipStatus, u.status
+                FROM memberships m JOIN users u ON u.id=m.user_id
+                WHERE m.organization_id=? AND u.id=? AND u.archived_from_status IS NULL");
+            $query->execute([$organization,$id]);
+            $user = $query->fetch(\PDO::FETCH_ASSOC);
+            if ($user && ApplicationAccessDelegations::eligibleTarget($actor,$id,$user)) return;
+        }
         $this->authorize($actor,$organization,$id);
     }
 

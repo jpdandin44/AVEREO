@@ -42,7 +42,7 @@ try {
     if (is_readable($privateConfigPath)) {
         $privateValues = require $privateConfigPath;
         $allowedPrivateKeys = [
-            'DEVELOPMENTS_PRIVATE_CONFIG', 'APPEARANCE_ADMIN_ORGANIZATION_ID',
+            'DEVELOPMENTS_PRIVATE_CONFIG', 'APPEARANCE_ADMIN_ORGANIZATION_ID', 'APPLICATION_ACCESS_DELEGATIONS_ENABLED',
             'APP_ENV', 'APP_DEBUG', 'DB_DSN', 'DB_USER', 'DB_PASSWORD',
             'SESSION_COOKIE_NAME', 'SESSION_IDLE_SECONDS', 'SESSION_ABSOLUTE_SECONDS',
             'OAUTH_ISSUER', 'OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL',
@@ -96,11 +96,15 @@ try {
     $requestId = $request->requestId;
 
     $pdo = null;
+    $delegations = null;
     try {
         $pdo = Database::connect($config);
+        if ($pdo !== null && getenv('APPLICATION_ACCESS_DELEGATIONS_ENABLED') === 'true') {
+            $delegations = new \Avereo\Connect\Administration\ApplicationAccessDelegations($pdo);
+        }
         $repository = $pdo === null
             ? new UnavailableRepository('not_configured')
-            : new PdoConnectRepository($pdo);
+            : new PdoConnectRepository($pdo, $delegations);
     } catch (Throwable) {
         $repository = new UnavailableRepository('unavailable');
     }
@@ -133,7 +137,7 @@ try {
         $policyStore = new \Avereo\Connect\Administration\TrialPolicyStore($trialPolicy);
         $accountAdministration = new \Avereo\Connect\Administration\AccountAdministration($pdo,
             new \Avereo\Connect\Identity\IdentityAccountProvisioningClient($provisionUrl,$provisionSecret),
-            $policyStore);
+            $policyStore, $delegations);
         if (getenv('ACCOUNT_LIFECYCLE_ENABLED') === 'true') {
             $deletionUrl = trim((string) getenv('IDENTITY_ACCOUNT_DELETION_URL'));
             $deletionSecret = trim((string) getenv('IDENTITY_ACCOUNT_DELETION_SECRET'));
