@@ -5,12 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-10 — Copie de test depuis Export
+
+Ajout du partage de fichier et du téléchargement d’une [copie de test](docs/partage-tests-et-stockage.md).
 
 ## 2026-11-08 — Navigation de Rapport
 
