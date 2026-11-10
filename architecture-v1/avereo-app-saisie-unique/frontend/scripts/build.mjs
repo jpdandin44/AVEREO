@@ -39,12 +39,16 @@ if (appearanceIndex !== -1) {
   const source = process.argv[appearanceIndex + 1];
   if (!source) throw new Error('Indiquez le fichier du modèle après --appearance.');
   const values = JSON.parse(readFileSync(source, 'utf8'));
-  if (!values || Object.keys(values).length !== 3 || ![56,68,84].includes(values.headerHeight)
+  if (!values || Object.keys(values).some(key => !['headerHeight','logoWidth','accountTone','accountBadge'].includes(key)) || ![56,68,84].includes(values.headerHeight)
     || ![100,116,136].includes(values.logoWidth) || !['mist','white'].includes(values.accountTone)) {
     throw new Error('Modèle d’apparence invalide.');
   }
+  const badge = Object.hasOwn(values, 'accountBadge') ? values.accountBadge : 'MOI';
+  if (typeof badge !== 'string' || !/^[\p{L}\p{Nd}]{1,3}$/u.test(badge)) {
+    throw new Error('Texte du médaillon invalide.');
+  }
   appearanceMeta = '<meta name="avereo-offline-appearance" content=\'' + JSON.stringify({
-    headerHeight:values.headerHeight, logoWidth:values.logoWidth, accountTone:values.accountTone
+    headerHeight:values.headerHeight, logoWidth:values.logoWidth, accountTone:values.accountTone, accountBadge:badge
   }) + '\'>';
 }
 

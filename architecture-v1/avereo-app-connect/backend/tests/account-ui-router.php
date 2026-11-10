@@ -13,6 +13,11 @@ if($path==='/') {
 if(!str_starts_with($path,'/api/'))return false;
 $db=(string)getenv('ACCOUNT_UI_DB');
 if($db==='' || !is_dir(dirname($db)))throw new RuntimeException('Private fixture database required.');
+if ($path === '/api/v1/appearance') {
+    putenv('AVEREO_PRIVATE_CONFIG='.dirname($db).'/config.php');
+    require dirname(__DIR__).'/public/index.php';
+    return true;
+}
 $pdo=accountTestDatabase($db);
 if(!is_file($db.'.policy.json') && (int)$pdo->query("SELECT COUNT(*) FROM users WHERE application_access_mode='explicit'")->fetchColumn()===0)
     file_put_contents($db.'.policy.json','{"version":1,"accounts":{}}');
@@ -53,5 +58,6 @@ $deletion = new \Avereo\Connect\Identity\IdentityAccountDeletionClient(
 );
 $lifecycle = new \Avereo\Connect\Administration\AccountLifecycle($pdo,$service,$policy,$deletion,static fn()=>$reports);
 $app=new \Avereo\Connect\Application(new \Avereo\Connect\Config('local',true,null,'','','ACCOUNT_UI',1800,43200),
-    $repo,null,null,$notifier,null,$service,$notifier,$lifecycle);
+    $repo,null,null,$notifier,null,$service,$notifier,$lifecycle,
+    appearance:new \Avereo\Connect\Administration\Appearance(dirname($db).'/appearance.json',7));
 $app->handle(\Avereo\Connect\Http\Request::fromGlobals(),new \Avereo\Connect\Security\AuthContext(1,time(),'owner'),'local-ui-csrf',static fn()=>null)->emit();
