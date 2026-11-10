@@ -5,12 +5,17 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-10
+updated: 2026-11-11
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 11 novembre — Correction du point de référence
+
+Cadrage : demande de référence Git avec historique. Développement local : catalogue, générateur et interface corrigés et testés. Préproduction : candidat et projection suivante préparés, installation à autoriser avec sauvegarde et retour. Mise en production : non commencée.
+
 
 ## 10 novembre — Référence locale des applications
 

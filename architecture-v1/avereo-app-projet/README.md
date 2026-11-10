@@ -5,13 +5,18 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-10
+updated: 2026-11-11
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 11 novembre — Référence Git des développements
+
+Les sources de référence sont un clone Git complet sur main, avec historique ; les exports figés sont des archives distinctes. La vue affiche le type de source et le commit observé. Générateur local versionné, catalogue et raccourcis alignés. [Contrat et usage](docs/reference-locale-applications.md).
+
 
 ## 10 novembre — Référence locale dans Développements
 

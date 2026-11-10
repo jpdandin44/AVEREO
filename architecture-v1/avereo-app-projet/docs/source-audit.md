@@ -5,7 +5,7 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-10
+updated: 2026-11-11
 owner: jpdandin
 tags:
   - projet
@@ -513,3 +513,7 @@ Le bandeau délègue au planning ouvert son export JSON et son enregistrement pr
 ## 9 novembre 2026 — Navigation commune
 
 La liste de projets conserve son titre métier sous le bandeau, sans seconde signature AVEREO. [Modèle](../../avereo-platform/docs/modele-affichage.md).
+
+## 11 novembre — Correction référence Git
+
+Le lot conserve le module privé déjà existant, ses droits et son runtime. Les changements concernent le type de métadonnées, leur confinement, les libellés et le générateur local versionné ; aucune API ou connexion d’identité ajoutée. Les exports figés ne sont plus présentés comme sources de développement.
