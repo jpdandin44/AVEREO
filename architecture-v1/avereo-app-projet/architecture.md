@@ -5,13 +5,18 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## 10 novembre — Métadonnées locales de référence
+
+Une extension explicite de la projection privée ajoute portfolio[].localReference aux dix applications du catalogue qualifié. Le lecteur PHP existant transporte ces données ; seule l’interface privée affiche les chemins sélectionnables. Le filtre d’export générique reste inchangé. [Contrat](docs/reference-locale-applications.md).
+
 
 ## 9 novembre — qualification privée et collecte GitHub manuelle
 

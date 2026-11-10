@@ -5,13 +5,18 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 10 novembre — Écart qualifié pour les chemins de référence
+
+Complément du module Développements existant : interface privée et métadonnées de publication seulement, sans nouvelle API, base, autorité ou accès au disque du PC. Sept tests couvrent qualification, confinement, conservation, séquences, copie, repli et ancienne publication. La suite complète de 309 tests et le build Projet passent. Un ancien test PHP utilisait un chemin URL non décodé ; il utilise désormais fileURLToPath pour les chemins Windows avec espaces, sans assertion supprimée. La livraison reste une preuve séparée.
+
 
 ## 9 novembre — badges des environnements
 
