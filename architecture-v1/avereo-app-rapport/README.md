@@ -5,13 +5,15 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+Depuis **Export**, le propriétaire peut transmettre une [copie pour les tests](docs/partage-tests-et-stockage.md) du dossier ouvert.
 
 ## Essais temporaires — candidat local
 

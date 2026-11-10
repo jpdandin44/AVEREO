@@ -5,13 +5,15 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+Le propriétaire doit pouvoir partager une copie indépendante du seul rapport ouvert avec les choix métier nécessaires aux tests. [Périmètre des champs et accès](docs/partage-tests-et-stockage.md).
 
 ## Essai temporaire — besoin du 2 novembre
 
