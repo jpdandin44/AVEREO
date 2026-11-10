@@ -344,12 +344,22 @@ $tests['shared appearance authorization, CSRF and persistence'] = static functio
         assertSameValue(403, $app->handle(request('PUT',$route,$values),$authenticated,'fixture',$logout)->status, 'CSRF');
         assertSameValue(422, $app->handle(request('PUT',$route,['headerHeight'=>999]+$values,$headers),$authenticated,'fixture',$logout)->status, 'invalid settings');
         assertSameValue(false, is_file($path), 'no write after rejected requests');
+        file_put_contents($path, json_encode($values, JSON_THROW_ON_ERROR));
+        assertSameValue($values + ['accountBadge'=>'MOI'], $store->read(), 'legacy file');
+        $custom = $values + ['accountBadge'=>'É2A'];
+        $store->save($custom);
+        foreach (['', 'ABCD', '<b>', [], null, "A\n"] as $invalid) {
+            $response = $app->handle(request('PUT',$route,['accountBadge'=>$invalid]+$values,$headers),$authenticated,'fixture',$logout);
+            assertSameValue(422, $response->status, 'invalid badge');
+            assertSameValue($custom, $store->read(), 'rejected change preserves model');
+        }
         assertSameValue(200, $app->handle(request('PUT',$route,$values,$headers),$authenticated,'fixture',$logout)->status, 'write');
-        assertSameValue($values, $store->read(), 'persisted settings');
+        assertSameValue($custom, $store->read(), 'legacy writer preserves badge');
         $other = new Application($config,$repository,appearance:new \Avereo\Connect\Administration\Appearance($path, 8));
         assertSameValue(403, $other->handle(request('PUT',$route,$values,$headers),$authenticated,'fixture',$logout)->status, 'foreign organization');
     } finally {
         if (is_file($path)) unlink($path);
+        if (is_file($path.'.lock')) unlink($path.'.lock');
     }
 };
 

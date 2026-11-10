@@ -49,17 +49,36 @@ test('RGA : accès direct conservé et changement de carte sans ouverture des pr
   dom.window.close();
 });
 
-function fixture({ portal = 'https://connect-preprod.avereo.fr', content = '', attributes = '' } = {}) {
+function fixture({ portal = 'https://connect-preprod.avereo.fr', content = '', attributes = '', badge } = {}) {
   const dom = new JSDOM(`<meta name="avereo-connect-portal" content="${portal}"><button id="outside">Extérieur</button><avereo-account-menu ${attributes}>${content}</avereo-account-menu>`, { url: 'https://projet-preprod.avereo.fr/', runScripts: 'outside-only', pretendToBeVisual: true });
   dom.window.fetch = async (url, options) => {
     assert.equal(url, portal + '/api/v1/appearance');
     assert.equal(options.credentials, 'omit');
-    return {ok:true, json:async () => ({data:{headerHeight:68, logoWidth:116, accountTone:'mist'}})};
+    return {ok:true, json:async () => ({data:{headerHeight:68, logoWidth:116, accountTone:'mist', accountBadge:badge}})};
   };
   dom.window.eval(source);
   const menu = dom.window.document.querySelector('avereo-account-menu');
   return { dom, menu, root: menu.shadowRoot };
 }
+
+test('médaillon commun chargé, prévisualisé et conservé au remontage', async () => {
+  const {dom, menu, root} = fixture({badge:'É2A'});
+  const {document, CustomEvent} = dom.window;
+  const badge = () => root.querySelector('.avatar').textContent;
+  assert.equal(badge(), 'MOI');
+  await new Promise(resolve => setTimeout(resolve, 0));
+  assert.equal(badge(), 'É2A');
+  document.dispatchEvent(new CustomEvent('avereo-appearance', {detail:{accountBadge:'JPD'}}));
+  menu.remove();
+  document.body.append(menu);
+  assert.equal(badge(), 'JPD');
+  const second = document.createElement('avereo-account-menu');
+  document.body.append(second);
+  assert.equal(second.shadowRoot.querySelector('.avatar').textContent, 'JPD');
+  document.dispatchEvent(new CustomEvent('avereo-appearance', {detail:{accountTone:'mist'}}));
+  assert.equal(badge(), 'MOI');
+  dom.window.close();
+});
 
 test('libellés partagés, nom accessible et état fermé initial', () => {
   const { dom, menu, root } = fixture();
