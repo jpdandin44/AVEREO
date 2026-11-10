@@ -864,6 +864,13 @@ components:
         headerHeight: {type: integer, enum: [56, 68, 84], default: 68}
         logoWidth: {type: integer, enum: [100, 116, 136], default: 116}
         accountTone: {type: string, enum: [mist, white], default: mist}
+        accountBadge:
+          type: string
+          minLength: 1
+          maxLength: 3
+          pattern: '^[\p{L}\p{Nd}]{1,3}$'
+          default: MOI
+          description: Texte du médaillon commun. Un ancien client qui omet ce champ conserve le texte enregistré.
     Meta:
       type: object
       required: [requestId]

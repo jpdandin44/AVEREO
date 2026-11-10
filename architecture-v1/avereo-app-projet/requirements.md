@@ -5,12 +5,17 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 10 novembre — Dossiers de référence dans le cockpit privé
+
+Afficher version commune, dix chemins applicatifs et quatre dossiers de classement. Permettre copie et sélection de secours, conserver les anciennes publications et toutes les validations. Refuser les traversées, versions divergentes, séquences concurrentes et doubles ajouts. Aucune nouvelle lecture de fichiers du PC depuis le serveur.
+
 
 ## 9 novembre — navigation locale depuis un lien extérieur
 

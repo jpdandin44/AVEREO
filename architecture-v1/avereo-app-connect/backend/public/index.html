@@ -301,6 +301,8 @@
       <p><label>Hauteur du bandeau <select name="headerHeight"><option value="56">Compact · 56 px</option><option value="68">Standard · 68 px</option><option value="84">Aéré · 84 px</option></select></label></p>
       <p><label>Largeur du logo <select name="logoWidth"><option value="100">Compact · 100 px</option><option value="116">Standard · 116 px</option><option value="136">Large · 136 px</option></select></label></p>
       <p><label>Fond de Mon compte <select name="accountTone"><option value="mist">Brume AVEREO</option><option value="white">Blanc</option></select></label></p>
+      <p><label>Texte du médaillon <input name="accountBadge" type="text" value="MOI" pattern="[\p{L}\p{Nd}]{1,3}" required aria-describedby="badge-hint"></label>
+        <small id="badge-hint">1 à 3 lettres ou chiffres, par exemple JPD. Ce texte est visible avant la connexion.</small></p>
       <p id="appearance-status" role="status"></p>
       <button type="button" id="appearance-export">Télécharger le modèle enregistré pour Saisie unique</button>
       <button type="button" id="appearance-cancel">Annuler</button>
@@ -1218,7 +1220,8 @@
     const previewAppearance = values => document.dispatchEvent(new CustomEvent('avereo-appearance', {detail:values}));
     function selectedAppearance() {
       const fields = appearanceForm.elements;
-      return {headerHeight:Number(fields.headerHeight.value), logoWidth:Number(fields.logoWidth.value), accountTone:fields.accountTone.value};
+      return {headerHeight:Number(fields.headerHeight.value), logoWidth:Number(fields.logoWidth.value), accountTone:fields.accountTone.value,
+        accountBadge:fields.accountBadge.value};
     }
     async function loadAppearance() {
       try {
@@ -1227,7 +1230,7 @@
       } catch { appearanceOpen.hidden = true; }
     }
     appearanceOpen.addEventListener('click', () => {
-      for (const [name,value] of Object.entries(savedAppearance)) appearanceForm.elements[name].value = String(value);
+      for (const [name,value] of Object.entries({accountBadge:'MOI', ...savedAppearance})) appearanceForm.elements[name].value = String(value);
       appearanceStatus.textContent = '';
       appearanceDialog.showModal();
     });
@@ -1239,7 +1242,9 @@
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     });
-    appearanceForm.addEventListener('change', () => previewAppearance(selectedAppearance()));
+    appearanceForm.addEventListener('input', () => {
+      if (appearanceForm.checkValidity()) previewAppearance(selectedAppearance());
+    });
     appearanceDialog.addEventListener('close', () => previewAppearance(savedAppearance));
     appearanceDialog.addEventListener('cancel', event => { if (applying) event.preventDefault(); });
     document.getElementById('appearance-cancel').addEventListener('click', () => appearanceDialog.close());
@@ -1247,7 +1252,7 @@
       event.preventDefault();
       if (applying) return;
       applying = true;
-      const controls = Array.from(appearanceForm.querySelectorAll('button,select'));
+      const controls = Array.from(appearanceForm.querySelectorAll('button,select,input'));
       controls.forEach(control => {control.disabled = true;});
       try {
         savedAppearance = (await getJson('/api/v1/admin/appearance', {

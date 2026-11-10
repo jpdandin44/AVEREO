@@ -82,7 +82,7 @@ try {
         dirname($privateConfigPath) . '/appearance.json',
         (int) getenv('APPEARANCE_ADMIN_ORGANIZATION_ID'),
     );
-    // Public projection contains three display settings only. No account session or DB is needed.
+    // Public projection contains only the shared appearance settings. No account session or DB is needed.
     if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET'
         && parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH) === '/api/v1/appearance') {
         header('Access-Control-Allow-Origin: *');

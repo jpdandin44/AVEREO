@@ -5,12 +5,16 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-02
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Copie pour les tests
+
+Le navigateur reconstruit un document indépendant à partir des choix du catalogue. L’import existant accepte cette copie. [Partage et supervision de la base](docs/partage-tests-et-stockage.md).
 
 ## Contrôle temporaire par identité — candidat local
 

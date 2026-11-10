@@ -13,6 +13,8 @@ tags:
   - connect
 ---
 
+Depuis **Export**, le propriétaire peut transmettre une [copie pour les tests](docs/partage-tests-et-stockage.md) du dossier ouvert.
+
 ## Essais temporaires — candidat local
 
 Contrôle de période et de révocation par identité préparé pour Rapport et RGA, testé localement, sans ouverture de compte. [Contrat, preuves et limites](docs/essais-temporaires.md).

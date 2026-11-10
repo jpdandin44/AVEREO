@@ -5,13 +5,18 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 10 novembre — Référence locale dans Développements
+
+La vue d’ensemble peut afficher les dix dossiers de référence et quatre raccourcis de classement sous forme de chemins à copier dans l’Explorateur Windows. Cette publication privée est explicite ; aucun fichier local n’est servi ni exécuté. Les décisions, badges et accès restent inchangés. [Fonctionnement et limites](docs/reference-locale-applications.md).
+
 
 ## 9 novembre — badges des environnements
 
