@@ -33,11 +33,15 @@ async function componentContext(clipboard){
  vm.createContext(ctx);vm.runInContext(built.code,ctx);return{ctx,nodes,writes};
 }
 test('le bouton copie le chemin seul sans navigation ni exécution',async()=>{
- let copied;const f=await componentContext({writeText:async value=>{copied=value;}});vm.runInContext(`LocalFolder({directory:'C:\\\\reference',label:'Sources'});`,f.ctx);const button=f.nodes.find(n=>n.type==='button');await button.props.onClick({});assert.equal(copied,'C:\\reference');assert(f.writes.includes('Chemin copié'));assert(f.nodes.find(n=>n.type==='input').props.readOnly);assert(!f.nodes.some(n=>n.type==='a'));
+ let copied;const f=await componentContext({writeText:async value=>{copied=value;}});vm.runInContext(`LocalFolder({directory:'C:\\\\reference',label:'Sources'});`,f.ctx);const button=f.nodes.find(n=>n.type==='button');await button.props.onClick({currentTarget:{parentElement:{querySelector:()=>null}}});assert.equal(copied,'C:\\reference');assert(f.writes.includes('Chemin copié'));assert(f.nodes.find(n=>n.type==='input').props.readOnly);assert(!f.nodes.some(n=>n.type==='a'));
 });
 test('sans presse papiers le chemin reste sélectionnable et le résultat est expliqué',async()=>{
  const f=await componentContext(undefined);vm.runInContext(`LocalFolder({directory:'C:\\\\reference',label:'Sources'});`,f.ctx);let focused=false,selected=false;await f.nodes.find(n=>n.type==='button').props.onClick({currentTarget:{parentElement:{querySelector:()=>({focus(){focused=true;},select(){selected=true;}})}}});assert(focused&&selected);assert(f.writes.some(v=>v.includes('Chemin sélectionné')));
 });
 test('une ancienne publication sans catalogue conserve la vue sans rubrique vide',async()=>{
  const f=await componentContext(undefined);vm.runInContext('DevelopmentPortfolio({applications:[],onOpen:()=>{}});',f.ctx);assert(!f.nodes.some(n=>n.props?.['aria-label']==='Référence locale des applications'));
+});
+test('un refus asynchrone conserve la sélection après libération de currentTarget par React',async()=>{
+ let selected=false;const event={currentTarget:{parentElement:{querySelector:()=>({focus(){},select(){selected=true;}})}}};
+ const f=await componentContext({writeText:async()=>{await Promise.resolve();event.currentTarget=null;throw Error('refused');}});vm.runInContext(`LocalFolder({directory:'C:\\\\reference',label:'Sources'});`,f.ctx);await f.nodes.find(n=>n.type==='button').props.onClick(event);assert(selected);assert(f.writes.some(v=>v.includes('Chemin sélectionné')));
 });

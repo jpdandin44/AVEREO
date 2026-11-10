@@ -13,8 +13,9 @@ function Delivered({value,environment,iterations}){
 export function LocalFolder({directory,label}){
   const [message,setMessage]=useState('');
   async function copy(event){
+    const field=event.currentTarget.parentElement.querySelector('input');
     try{await navigator.clipboard.writeText(directory);setMessage('Chemin copié');}
-    catch{const field=event.currentTarget.parentElement.querySelector('input');field?.focus();field?.select();setMessage('Chemin sélectionné — copier puis coller dans l’Explorateur');}
+    catch{field?.focus();field?.select();setMessage('Chemin sélectionné — copier puis coller dans l’Explorateur');}
   }
   return <div className="reference-folder"><label>{label}<input readOnly value={directory} onFocus={event=>event.target.select()}/></label><button type="button" onClick={copy}>Copier le chemin</button><span role="status">{message}</span></div>;
 }
