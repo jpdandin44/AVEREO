@@ -5,12 +5,17 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 10 novembre — Référence locale des applications
+
+Ajout conditionnel de la référence dans la vue d’ensemble et dans chaque application. Extension de publication explicite du seul catalogue qualifié ; copie des chemins avec sélection de secours. Les anciennes projections, badges, décisions et garde d’accès sont conservés. Installation hébergée non déduite du développement.
+
 
 ## 2026-11-09 — badges visuels dans la vue d’ensemble
 

@@ -5,12 +5,17 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 10 novembre — Référence locale des applications
+
+Développement local du catalogue explicite et des chemins à copier ; tests de conservation et rétrocompatibilité. Mise en préproduction autorisée par le responsable le 10 novembre avec sauvegarde et test de retour. Installation et recette hébergée à constater séparément ; aucune mise en production.
+
 
 ## 9 novembre — préparation de PR avec qualification et rafraîchissement
 
