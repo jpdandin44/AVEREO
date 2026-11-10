@@ -40,6 +40,7 @@ import {
   rgaRisk,
 } from './georisquesRiskSummary.js';
 import OnlineReports from './OnlineReports.jsx';
+import { createTestReportCopy, observationGravities } from './testReportCopy.js';
 import RgaMap from './RgaMap.jsx';
 import { readRgaTransfer, RGA_TRANSFER_KEY } from './rgaContext.js';
 import { latestDraft } from './draftRecovery.js';
@@ -120,7 +121,6 @@ const surfacesOptions = [
   'Autre',
 ];
 
-const gravities = ['Mineure', 'Moyenne', 'Severe', 'Critique'];
 
 const emptyObservation = () => ({
   id: createId(),
@@ -1546,7 +1546,7 @@ function ObservationStep({ report, setReport }) {
           </Field>
           <Field label="Gravite">
             <select value={obs.gravite} onChange={(event) => updateObservation(obs.id, { gravite: event.target.value })}>
-              {optionsWithCurrent(gravities, obs.gravite).map((option) => (
+              {optionsWithCurrent(observationGravities, obs.gravite).map((option) => (
                 <option key={option}>{option}</option>
               ))}
             </select>
@@ -1698,6 +1698,44 @@ function ObservationStep({ report, setReport }) {
   );
 }
 
+function ShareTestCopy({ report }) {
+  const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState('');
+  const [sharing, setSharing] = useState(false);
+  async function share(downloadOnly) {
+    setStatus('');
+    setSharing(true);
+    try {
+      const copy = createTestReportCopy(report);
+      const file = new File([JSON.stringify(copy, null, 2)], 'rapport-copie-test.json', {type: 'application/json'});
+      if (!downloadOnly && navigator.share && navigator.canShare?.({files: [file]})) {
+        await navigator.share({files: [file]});
+        setStatus('Copie remise au service de partage choisi.');
+      } else {
+        saveAs(file, file.name);
+        setStatus('Téléchargement lancé. Transmettez le fichier rapport-copie-test.json au destinataire de votre choix.');
+      }
+    } catch (error) {
+      setStatus(error.name === 'AbortError' ? 'Partage annulé.' : 'Partage indisponible. Vous pouvez télécharger la copie.');
+    } finally {
+      setSharing(false);
+    }
+  }
+  return <section aria-label="Copie pour les tests">
+    <button className="button secondary" type="button" aria-expanded={open} onClick={() => {setOpen(!open); setStatus('');}}>
+      Partager une copie pour les tests
+    </button>
+    {open && <div>
+      <p>La copie reprend le type de rapport, les protocoles et la structure des observations. Les coordonnées, textes libres, photos, plans et signatures sont exclus. Le destinataire pourra importer ce fichier dans Rapport.</p>
+      <div className="export-actions">
+        {typeof navigator.share === 'function' && <button className="button secondary" disabled={sharing} type="button" onClick={() => share(false)}>Choisir un destinataire</button>}
+        <button className="button secondary" disabled={sharing} type="button" onClick={() => share(true)}>Télécharger la copie de test</button>
+      </div>
+      <p role="status">{status}</p>
+    </div>}
+  </section>;
+}
+
 function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onImportJson, onSaveDraft }) {
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
   return (
@@ -1791,6 +1829,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
           Générer Word (.docx)
         </button>
       </div>
+      <ShareTestCopy report={report} />
     </section>
   );
 }
