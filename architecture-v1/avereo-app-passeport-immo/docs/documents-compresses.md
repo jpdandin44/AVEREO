@@ -84,3 +84,5 @@ du candidat et qualification de la cible.
 - [Spécification GZIP, RFC 1952](https://www.rfc-editor.org/info/rfc1952/).
 - [Annexe de conservation et parité](source-audit-documents-compresses.md).
 - [Suivi de l’itération](../data/suivi-documents-compresses.json).
+
+La [CI isolée qualifiée](https://github.com/jpdandin44/AVEREO/actions/runs/43213408562) réussit 68 contrôles API, 22 de sauvegarde et 35 de transfert sur ce nouveau candidat. Cette preuve complète la recette locale, sans remplacer la future recette sur le vrai hébergement.

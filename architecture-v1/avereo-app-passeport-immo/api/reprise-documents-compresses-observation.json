@@ -124,7 +124,7 @@
   "serverIntegration": {
     "localDockerStatus": "unavailable",
     "reason": "Docker Desktop startup failed; no local isolated HTTP/MariaDB recipe claimed.",
-    "ciStatus": "pending_after_exact_fixture_count_correction",
+    "ciStatus": "passed",
     "suite": "tests/check-storage-http.py",
     "scope": "Independent-session archive download, isolation, atomic refusal, backup restoration and existing transfer regression.",
     "initialCiFailureEvidence": {
@@ -132,14 +132,34 @@
       "status": "failed",
       "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43212636469",
       "reason": "The scheduled-backup fixture still expected one document after extending the dataset to one PDF and seven archive containers. Test now receives the exact expected count; backup implementation unchanged."
-    }
+    },
+    "testedHeadSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43213408562",
+    "apiAssertions": 68,
+    "scheduledBackupAssertions": 22,
+    "propertyTransferAssertions": 35,
+    "apacheEntryAssertions": 83,
+    "isolated": true,
+    "fictitiousDataOnly": true,
+    "realHostingRecipe": false
   },
   "candidate": {
-    "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
-    "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+    "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+    "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
     "fileCount": 18,
-    "runtimeFilesExact": true,
-    "archiveContainsOnlyBuiltRuntimeFiles": true
+    "artifactPath": ".local/ci-5c425c6/candidate.zip",
+    "manifestPath": ".local/ci-5c425c6/candidate.manifest.json",
+    "downloadedFromGitHub": true,
+    "artifactRun": "https://github.com/jpdandin44/AVEREO/actions/runs/43213408562",
+    "archiveReadback": "passed",
+    "localBuildDifference": {
+      "files": [
+        "account-menu.js",
+        "index.html"
+      ],
+      "reason": "CRLF versus LF only; CI archive selected as canonical.",
+      "functionalContentIdenticalAfterLineEndingNormalization": true
+    }
   },
   "newFeatureHostedDeployment": {
     "preproduction": false,
@@ -148,9 +168,10 @@
   "newFeaturePullRequest": {
     "url": "https://github.com/jpdandin44/AVEREO/pull/144",
     "number": 144,
-    "observedHeadSha": "b003c670bc4f00663e4125aa3e6cd1d6fe0f5144",
-    "observedAt": "2026-11-12T11:55:13.090+00:00",
-    "draft": true
+    "observedHeadSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+    "observedAt": "2026-11-12T12:03:21.008+00:00",
+    "draft": true,
+    "technicalQualification": "passed"
   },
   "documentationControl": {
     "documents": 14,
@@ -159,5 +180,13 @@
     "humanFieldsPreserved": true,
     "frozenGuideRestored": true,
     "novemberAdditionPreservedIn": "docs/integration-connect-cycle-vie.md"
-  }
+  },
+  "previousLocalCandidate": {
+    "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
+    "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+    "fileCount": 18,
+    "runtimeFilesExact": true,
+    "archiveContainsOnlyBuiltRuntimeFiles": true
+  },
+  "qualificationObservedAt": "2026-11-12T12:03:21.008+00:00"
 }

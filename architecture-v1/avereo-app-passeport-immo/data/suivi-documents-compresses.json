@@ -6,27 +6,29 @@
   "iterationId": "passeport-immo-documents-compresses",
   "kind": "evolution-documentaire",
   "stage": "developpement-local",
-  "status": "awaiting_local_review_ci_pending",
+  "status": "awaiting_local_human_review",
   "objective": "Centraliser les archives des clients dans le dossier du bien, avec restitution exacte et sans extraction.",
   "candidate": {
-    "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
-    "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
-    "artifactPath": ".local/candidate.zip",
-    "runtimeTreeSha": "4b1decc68702138d8105374f8f63836cda514603",
-    "documentationCommitsPreserveRuntime": true
+    "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+    "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
+    "artifactPath": ".local/ci-5c425c6/candidate.zip",
+    "manifestPath": ".local/ci-5c425c6/candidate.manifest.json",
+    "runtimeTreeSha": "4b1decc68702138d8105374f8f63836cda514603"
   },
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/passeport-immo-documents-compresses",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/144",
-    "observedHeadSha": "b003c670bc4f00663e4125aa3e6cd1d6fe0f5144",
+    "observedHeadSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
     "humanAcceptanceVerified": false,
-    "observedAt": "2026-11-12T11:55:13.090+00:00",
+    "observedAt": "2026-11-12T12:03:21.008+00:00",
     "number": 144,
     "state": "open",
     "draft": true,
     "baseSha": "16338e844912fade2a5e8b315b8313fe6f7e2dbd",
-    "mergeable": "MERGEABLE"
+    "mergeable": "MERGEABLE",
+    "technicalCiStatus": "passed",
+    "runtimeCandidateFrozen": true
   },
   "targets": {
     "preproduction": {
@@ -57,6 +59,25 @@
       "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
       "observedAt": "2026-11-12T11:45:27.316+00:00",
       "evidence": null
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
+      "observedAt": "2026-11-12T12:03:21.008+00:00",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43213408562",
+      "testedHeadSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "target": "isolated_apache_php_mariadb"
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
+      "observedAt": "2026-11-12T12:03:21.008+00:00",
+      "evidence": "api/reprise-documents-compresses-observation.json#candidate",
+      "target": "downloaded_closed_ci_artifact"
     }
   ],
   "approvals": [],
@@ -69,7 +90,6 @@
   },
   "blockers": [
     "Revue humaine du nouveau candidat local et acceptation GitHub non enregistrées.",
-    "CI et recette HTTP/MariaDB de la nouvelle version à vérifier.",
     "Cible, sauvegarde fraîche restaurée et retour arrière à requalifier avant installation."
   ],
   "nextAction": "Revoir la PR144 et le candidat local après la CI ; qualifier ensuite la préproduction du même artefact selon les contrôles et accords applicables.",
@@ -127,5 +147,12 @@
       "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43212636469",
       "reason": "The scheduled-backup fixture still expected one document after extending the dataset to one PDF and seven archive containers. Test now receives the exact expected count; backup implementation unchanged."
     }
-  ]
+  ],
+  "previousLocalCandidate": {
+    "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
+    "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+    "artifactPath": ".local/candidate.zip",
+    "runtimeTreeSha": "4b1decc68702138d8105374f8f63836cda514603",
+    "documentationCommitsPreserveRuntime": true
+  }
 }
