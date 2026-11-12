@@ -28,7 +28,7 @@
     "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
     "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
     "evidence": "api/preproduction-archives-observation.json#authorization",
-    "quote": "la PR#144 est mergée, peux-tu pousser en préprod stp?",
+    "quote": "la PR#144 est mergÃ©e, peux-tu pousser en prÃ©prod stp?",
     "doesNotApproveProduction": true
   },
   "qualification": {
@@ -254,15 +254,16 @@
     "productionPublicAndConfigPreserved": true
   },
   "reservations": [
-    "Human acceptance of A0–A6 remains pending; no successful new archive upload on the real hosting was performed.",
+    "Human acceptance of A0â€“A6 remains pending; no successful new archive upload on the real hosting was performed.",
     "The historical secondary account 2 is not currently eligible according to CONNECT; no access was added, removed or qualified for that account."
   ],
   "documentationControl": {
-    "observedAt": "2026-11-12T16:42:49.519767+00:00",
+    "observedAt": "2026-11-12T16:44:27.981321+00:00",
     "documents": 15,
     "localLinks": 245,
     "metadataAndScaffold": "passed",
     "oldWorkingCopyFilesUnchanged": 29,
     "approvedReferences": "Checked separately by tests/check-cockpit.mjs"
-  }
+  },
+  "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/145"
 }

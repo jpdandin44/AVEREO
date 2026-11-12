@@ -80,6 +80,9 @@ Son accès n’est ni modifié ni déclaré qualifié ; cette réserve se traite
 Le premier ajout réussi d’une nouvelle archive sur l’hébergement reste également
 à valider, sans le déduire des tests locaux/CI.
 
+La [PR145 de livraison et recette](https://github.com/jpdandin44/AVEREO/pull/145) rattache ces preuves à la phase Préproduction.
+Ses attestations humaines restent décochées.
+
 Pour la revue humaine : appliquer A0 à A6 du [guide documentaire](documents-compresses.md).
 Vérifier notamment l’association du client, l’ajout d’un ZIP fictif, sa confirmation
 d’enregistrement serveur, son téléchargement, puis les documents et aperçus déjà

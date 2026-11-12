@@ -271,5 +271,12 @@
     "The historical secondary account 2 is not currently eligible according to CONNECT; no access was added, removed or qualified for that account."
   ],
   "hostedEvidence": "api/preproduction-archives-observation.json",
-  "operatorBranch": "chore/passeport-immo-preproduction-archives"
+  "operatorBranch": "chore/passeport-immo-preproduction-archives",
+  "operatorReview": {
+    "number": 145,
+    "url": "https://github.com/jpdandin44/AVEREO/pull/145",
+    "phase": "Préproduction",
+    "reviewEnvironment": "https://connect-preprod.avereo.fr/?app=passeport-immo",
+    "humanReviewPending": true
+  }
 }

@@ -4096,7 +4096,8 @@
       "id": "passeport-immo-documents-compresses",
       "canonicalTracking": "../data/suivi-documents-compresses.json",
       "documentation": "documents-compresses.md",
-      "scope": "Archives PR144 livrées en préproduction privée ; recette technique réussie, revue humaine en attente, décisions de l’ancien lot conservées."
+      "scope": "Archives PR144 livrées en préproduction privée ; recette technique réussie, revue humaine en attente, décisions de l’ancien lot conservées.",
+      "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/145"
     }
   ],
   "currentStateObservation": "../api/preproduction-archives-observation.json",

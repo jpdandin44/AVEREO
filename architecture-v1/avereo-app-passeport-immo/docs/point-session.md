@@ -23,6 +23,7 @@ Aucune production, configuration privée ou tâche planifiée modifiée.
 Travail courant : `C:/Users/examg/Documents local/passeport-immo-archives`, branche
 `chore/passeport-immo-preproduction-archives`. Le [suivi du lot](../data/suivi-documents-compresses.json)
 et le [reçu hébergé](../api/preproduction-archives-observation.json) font foi.
+[PR145 — revue de préproduction](https://github.com/jpdandin44/AVEREO/pull/145).
 Prochaine action : recette humaine A0–A6, dont premier ajout de ZIP sur le vrai
 hébergement, puis accords applicables. Compte secondaire historique n°2 non
 éligible selon CONNECT : accès non modifié, réserve distincte.
