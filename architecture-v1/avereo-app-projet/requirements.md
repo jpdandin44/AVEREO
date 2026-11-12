@@ -5,12 +5,16 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-11
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 12 novembre — Session et reprise de navigation
+
+Expliquer une session Projet absente ou expirée sans la confondre avec la session CONNECT ni avec un refus de rôle. Effacer les données privées après refus et proposer le parcours normal de reconnexion, sans prolonger ou contourner les droits. Vue d’ensemble doit pouvoir relire un état absent ; une actualisation demandée doit donner un retour explicite, sans revendiquer une collecte distante ou une mise à jour Git.
 
 ## 11 novembre — Référence avec historique Git
 

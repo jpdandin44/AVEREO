@@ -5,13 +5,17 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-11
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 12 novembre — Expiration de la session et boutons de navigation
+
+Défaut observé en préproduction : une session Projet expirée efface le portefeuille, mais les boutons restent visibles sans parcours de reprise explicite. CONNECT peut être encore connecté. Le correctif local ajoute le message et le lien de reprise après 401, distingue le refus 403 et confirme une lecture demandée. Vue d’ensemble relit un état absent. Deux tests couvrent l’effacement des données privées, la reconnexion, le refus de rôle et la reprise par les deux boutons. Aucune API, durée de session, autorité ou configuration d’accès modifiée. Les contrôles locaux et la future installation du nouveau candidat restent des preuves distinctes.
 
 ## 10 novembre — Écart qualifié pour les chemins de référence
 

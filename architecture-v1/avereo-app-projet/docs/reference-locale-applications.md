@@ -5,12 +5,18 @@ title: Dossiers locaux de référence dans Développements
 status: active
 version: git
 created: 2026-11-10
-updated: 2026-11-11
+updated: 2026-11-12
 owner: jpdandin
 tags: [cockpit, reference, chemins-locaux]
 ---
 
 # Dossiers locaux de référence
+
+## Session et actualisation de la vue
+
+Une session CONNECT active ne garantit pas que la session courte de Projet soit encore valide. Après un refus 401, le module efface les données privées et explique comment relancer Projet depuis CONNECT puis ouvrir Mon compte → Développements ; un lien ramène à Projet. Un refus 403 indique un défaut de droit propriétaire/global, sans le présenter comme une expiration. Aucune reconnexion automatique ni augmentation de durée ou de droits n’est ajoutée.
+
+« Actualiser la vue » confirme la lecture réussie avec son heure ; les observations GitHub et les chemins restent ceux de la publication datée. « Vue d’ensemble » recharge le service quand aucun état n’est disponible, au lieu de ne changer qu’un écran vide. Sur une session valide, il revient au portefeuille sans écrire dans les suivis. Ces contrôles ne fusionnent pas une PR et ne mettent pas le clone Git du PC à jour.
 
 La vue d’ensemble peut afficher une rubrique Référence locale des applications et, dans chaque application concernée, son dossier de référence. Les chemins sont sélectionnables et un bouton les copie pour les coller dans l’Explorateur Windows. Une page hébergée ne peut pas ouvrir directement un dossier du PC ; aucun protocole système, agent local ou exécution de commande n’est ajouté.
 

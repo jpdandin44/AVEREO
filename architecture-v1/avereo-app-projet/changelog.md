@@ -5,12 +5,16 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-11
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 12 novembre — Reprise de la vue après expiration
+
+Message de session Projet expirée et lien de reconnexion ; refus propriétaire/global distinct. Actualiser confirme sa lecture sans prétendre synchroniser GitHub ou le clone du PC. Vue d’ensemble relit un état vide. Deux tests de non-régression, sans modification des droits ni du runtime PHP. Livraison du nouveau candidat à qualifier séparément.
 
 ## 11 novembre — Clone Git pour la référence
 

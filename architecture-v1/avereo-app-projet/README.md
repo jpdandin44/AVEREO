@@ -5,13 +5,17 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-11
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 12 novembre — Reprendre Développements après expiration
+
+Le correctif préparé distingue session Projet expirée et accès propriétaire/global refusé. Un lien explique la reconnexion ; Actualiser confirme la lecture et Vue d’ensemble recharge un état vide. CONNECT et Projet conservent leurs contrôles séparés. [Parcours et limites](docs/reference-locale-applications.md#session-et-actualisation-de-la-vue). Les preuves de recette hébergée restent distinctes des tests locaux.
 
 ## 11 novembre — Référence Git des développements
 
