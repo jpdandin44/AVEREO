@@ -12,6 +12,11 @@ tags:
   - changelog
 ---
 
+## 12 novembre 2026 — Habitologue, candidat local vérifié
+
+Profil de mission et explications entre constat et conseils ajoutés ; rubriques Export adaptées et deux Word fictifs contrôlés. [État et vérifications](docs/profil-habitologue.md). Aucun déploiement de cette évolution.
+
+
 ## 12 novembre 2026 — export délégué interrompu
 
 Le correctif local guide la relance d’un téléchargement interrompu. [Vérification dans Chrome](docs/source-audit.md#interruption-du-téléchargement-délégué).

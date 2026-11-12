@@ -1,5 +1,6 @@
 import { escapeHtml, textToHtml } from './reportHtml.js';
 import { isHabitologieReport } from './reportClassification.js';
+import { allowsDecisionProjections } from './reportProfiles.js';
 
 export const DECISION_CRITERIA = [
   ['energie', 'Énergie : type et quantité'], ['materiaux', 'Matériaux et compatibilité'],
@@ -38,11 +39,14 @@ export function normalizeDecision(value) {
   };
 }
 
-export function hasDecisionData(report) {
+// Sections 1 to 3 (habitants, attentes, projet, liens) are always counted. The projections of sections 4 to 6
+// (actions, options, arbitrage) are counted only when the profile exposes them; their stored data is never altered.
+export function hasDecisionData(report, includeProjections = true) {
   const d = normalizeDecision(report.decision);
-  return [...Object.values(d.habitants), ...Object.values(d.projet), ...Object.values(d.arbitrage),
-    ...Object.values(d.option_a.criteres), ...Object.values(d.option_b.criteres), d.option_a.objectif, d.option_b.objectif,
-  ].some(v => v.trim()) || d.attentes.length > 0 || d.liens.length > 0 || d.actions.length > 0
+  const foundations = [...Object.values(d.habitants), ...Object.values(d.projet)].some(v => v.trim()) || d.attentes.length > 0 || d.liens.length > 0;
+  if (!includeProjections) return foundations;
+  return foundations || [...Object.values(d.arbitrage), ...Object.values(d.option_a.criteres), ...Object.values(d.option_b.criteres),
+    d.option_a.objectif, d.option_b.objectif].some(v => v.trim()) || d.actions.length > 0
     || d.option_a.action_ids.length > 0 || d.option_b.action_ids.length > 0
     || d.option_a.nom !== 'Option A' || d.option_b.nom !== 'Option B';
 }
@@ -54,11 +58,13 @@ export function referenceLabel(collection, id, field) {
 }
 
 export function decisionWarnings(report) {
-  if (!hasDecisionData(report)) return [];
+  const projections = allowsDecisionProjections(report);
+  if (!hasDecisionData(report, projections)) return [];
   const d = normalizeDecision(report.decision), warnings = [];
   if (d.schema_version !== 1) warnings.push('Format d’aide à la décision non pris en charge ; conserver le JSON d’origine.');
   const obs = report.observations || [];
-  for (const [label, collection] of [['Attentes', d.attentes], ['Liens', d.liens], ['Actions', d.actions]]) {
+  const collections = [['Attentes', d.attentes], ['Liens', d.liens], ...(projections ? [['Actions', d.actions]] : [])];
+  for (const [label, collection] of collections) {
     const seen = new Set();
     for (const row of collection) {
       if (!row.id || seen.has(row.id)) warnings.push(`${label} : identifiant absent ou dupliqué.`);
@@ -72,18 +78,18 @@ export function decisionWarnings(report) {
     check(obs, [link.observation_id], 'Bilan'); check(d.attentes, link.attente_ids, 'Bilan / attente');
     if (!link.attente_ids.length || !link.effet.trim()) warnings.push('Bilan : préciser une attente et son effet pour les habitants.');
   }
-  for (const action of d.actions) {
+  for (const action of projections ? d.actions : []) {
     check(obs, action.observation_ids, 'Action / constat'); check(d.attentes, action.attente_ids, 'Action / attente');
     if (!action.intitule.trim() || !ACTION_CATEGORIES.includes(action.categorie)) warnings.push('Action : intitulé ou catégorie à compléter.');
     if (!action.observation_ids.length || !action.attente_ids.length) warnings.push(`Action « ${action.intitule || 'sans intitulé'} » : lien au constat ou à l’attente à préciser.`);
   }
-  for (const key of ['option_a', 'option_b']) {
+  for (const key of projections ? ['option_a', 'option_b'] : []) {
     const option = d[key]; check(d.actions, option.action_ids, `${option.nom} / action`);
     if (!option.objectif.trim() || !option.action_ids.length) warnings.push(`${option.nom} : objectif et actions à préciser.`);
     for (const action of d.actions.filter(a => a.incontournable)) if (!option.action_ids.includes(action.id)) warnings.push(`${option.nom} : l’action incontournable « ${action.intitule || action.id} » est omise.`);
   }
   if (!d.projet.budget.trim()) warnings.push('Budget des habitants non renseigné ; aucune faisabilité financière n’est établie.');
-  if (d.arbitrage.option_proposee && !['a', 'b'].includes(d.arbitrage.option_proposee)) warnings.push('Option proposée introuvable ; arbitrage à reprendre.');
+  if (projections && d.arbitrage.option_proposee && !['a', 'b'].includes(d.arbitrage.option_proposee)) warnings.push('Option proposée introuvable ; arbitrage à reprendre.');
   return [...new Set(warnings)];
 }
 
@@ -97,11 +103,12 @@ const cell = v => textToHtml(v || 'Non renseigné');
 const table = (headers, values) => `<table><thead><tr>${headers.map(h => `<th>${escapeHtml(h)}</th>`).join('')}</tr></thead><tbody>${values.map(row => `<tr>${row.map(v => `<td>${cell(v)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 
 export function buildDecisionHtml(report, client = false) {
-  if (!isHabitologieReport(report) || !hasDecisionData(report)) return '';
+  const projections = allowsDecisionProjections(report);
+  if (!isHabitologieReport(report) || !hasDecisionData(report, projections)) return '';
   if (report.decision?.schema_version != null && report.decision.schema_version !== 1) return '<section><h2>Aide à la décision</h2><p>Format non pris en charge ; conserver le JSON d’origine et vérifier la version de l’application.</p></section>';
   const d = normalizeDecision(report.decision), obs = report.observations || [];
   const names = (collection, selected, field) => selected.map(id => referenceLabel(collection, id, field)).join('\n') || 'À relier';
-  let content = `<section class="decision-report client-page"><h2>Aide à la décision</h2><p class="status">Options proposées à discuter et à relire avec les habitants. Aucun choix ni validation n’est déduit de ce tableau.</p>`;
+  let content = `<section class="decision-report client-page"><h2>Aide à la décision</h2><p class="status">${projections ? 'Options proposées' : 'Éléments proposés'} à discuter et à relire avec les habitants. Aucun choix ni validation n’est déduit de ce tableau.</p>`;
   content += `<h3>Attentes retenues</h3>${table(client ? ['Attente', 'Priorité'] : ['Attente', 'Priorité', 'Source'],
     d.attentes.map(a => client ? [a.libelle, a.priorite] : [a.libelle, a.priorite, a.source]))}`;
   if (!client) {
@@ -113,20 +120,27 @@ export function buildDecisionHtml(report, client = false) {
       ['Délégation', d.projet.delegation], ['DIY envisagé', d.projet.diy]])}`;
     content += `<h3>Du constat à son effet pour les habitants</h3>${table(['Constat / attentes', 'Effet, opportunité ou faiblesse', 'Vérifications'], d.liens.map(l => [
       `${referenceLabel(obs, l.observation_id, 'titre')}\nAttentes : ${names(d.attentes, l.attente_ids, 'libelle')}`, l.effet, l.verification]))}`;
+  }
+  if (projections && !client) {
     content += '<h3>Projection 1 · Organiser les actions</h3>';
     for (const a of d.actions) content += `<h4>${escapeHtml(a.intitule || 'Action à préciser')}</h4>${table(['Rubrique', 'Contenu'], [
       ['Mode et priorité', `${a.categorie || 'À classer'} · ${a.priorite || 'À discuter'}${a.incontournable ? ' · Incontournable proposé' : ''}`],
       ['Constats', names(obs, a.observation_ids, 'titre')], ['Attentes', names(d.attentes, a.attente_ids, 'libelle')],
       ['Horizon et préalables', `${a.horizon || 'Horizon à préciser'}\n${a.prealables || 'Préalables à préciser'}`], ['Explicatif', a.explication]])}`;
   }
-  content += '<h3>Projection 2 · Deux options de projet</h3>';
-  for (const key of ['option_a', 'option_b']) {
-    const o = d[key]; content += `<h4>${escapeHtml(o.nom)}</h4><p>${cell(o.objectif)}</p><p>Actions : ${cell(names(d.actions, o.action_ids, 'intitule'))}</p>`;
+  if (projections) {
+    content += '<h3>Projection 2 · Deux options de projet</h3>';
+    for (const key of ['option_a', 'option_b']) {
+      const o = d[key]; content += `<h4>${escapeHtml(o.nom)}</h4><p>${cell(o.objectif)}</p><p>Actions : ${cell(names(d.actions, o.action_ids, 'intitule'))}</p>`;
+    }
+    content += `<h3>Comparaison des conséquences</h3>${table(['Critère', d.option_a.nom, d.option_b.nom], decisionComparison(report).map(r => [r.label, r.a, r.b]))}`;
+    const proposed = ['a', 'b'].includes(d.arbitrage.option_proposee) ? d[`option_${d.arbitrage.option_proposee}`].nom : 'Aucune option retenue';
+    content += `<section${client ? '' : ' class="client-page"'}><h3>Arbitrage à discuter</h3><p>${cell(proposed)}</p><p>${cell(d.arbitrage.motif)}</p><p>Prochaine étape : ${cell(d.arbitrage.prochaine_etape)}</p>`;
   }
-  content += `<h3>Comparaison des conséquences</h3>${table(['Critère', d.option_a.nom, d.option_b.nom], decisionComparison(report).map(r => [r.label, r.a, r.b]))}`;
-  const proposed = ['a', 'b'].includes(d.arbitrage.option_proposee) ? d[`option_${d.arbitrage.option_proposee}`].nom : 'Aucune option retenue';
-  content += `<section${client ? '' : ' class="client-page"'}><h3>Arbitrage à discuter</h3><p>${cell(proposed)}</p><p>${cell(d.arbitrage.motif)}</p><p>Prochaine étape : ${cell(d.arbitrage.prochaine_etape)}</p>`;
   const warnings = decisionWarnings(report);
   if (warnings.length) content += `<h3>Points restant à compléter</h3><ul>${warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul>`;
-  return content + '<p class="muted">Les conséquences sont rédigées sous hypothèses par le professionnel. Une cellule non évaluée ne signifie ni absence d’effet ni absence de risque. Montants d’aides, économies et durées de vie ne sont pas calculés par ce module.</p></section></section>';
+  const limits = projections
+    ? 'Les conséquences sont rédigées sous hypothèses par le professionnel. Une cellule non évaluée ne signifie ni absence d’effet ni absence de risque. Montants d’aides, économies et durées de vie ne sont pas calculés par ce module.'
+    : 'Les effets sont rédigés sous hypothèses par le professionnel. Une information non renseignée ne signifie ni absence d’effet ni absence de risque. Montants d’aides, économies et durées de vie ne sont pas calculés par ce module.';
+  return content + `<p class="muted">${limits}</p></section>${projections ? '</section>' : ''}`;
 }

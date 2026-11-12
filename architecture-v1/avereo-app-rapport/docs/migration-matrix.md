@@ -13,6 +13,11 @@ tags:
   - fonctionnalites
 ---
 
+## 2026-11-12 — Profil et explications, sans SQL
+
+Champs optionnels `profil_metier` et `observations[].explications` dans le payload existant. Ancien `actions` inchangé, profil absent conservant le parcours historique ; données des projections non supprimées. [Contrat et qualification](profil-habitologue.md).
+
+
 ## 2026-11-06 — Correction de navigation RGA déployée
 
 Le fichier de navigation PR #122 est installé, sans migration SQL, changement de clé de stockage ni écriture de projet. La liste vide du navigateur de recette reste vide ; seul son déclenchement est testé. [Livraison et recette](../../avereo-platform/docs/livraison-mon-espace.md).

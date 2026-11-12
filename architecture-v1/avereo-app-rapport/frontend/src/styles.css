@@ -1706,3 +1706,4 @@ img {
 .online-report-filters label:first-child { flex: 1 1 240px; }
 .online-report-filters input, .online-report-filters select { width: 100%; min-height: 44px; }
 .online-reports .preview-notice { scroll-margin-top: calc(var(--av-header-used, 68px) + 12px); }
+.explanation-preview { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; background: #f3f6f9; border-radius: 8px; }

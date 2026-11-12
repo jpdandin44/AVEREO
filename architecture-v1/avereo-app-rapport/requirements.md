@@ -5,13 +5,18 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-10
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Lot Habitologue du 12 novembre
+
+Choix explicite et réversible du profil ; Observations avec Constat, Explications et Conseils d’habitologue ; URL sûres et persistantes ; rubriques 4–6 masquées pour Habitologue dans l’écran et les deux Word. Anciens dossiers et données de décision conservés. [Critères](docs/profil-habitologue.md).
+
 
 Le propriétaire doit pouvoir partager une copie indépendante du seul rapport ouvert avec les choix métier nécessaires aux tests. [Périmètre des champs et accès](docs/partage-tests-et-stockage.md).
 

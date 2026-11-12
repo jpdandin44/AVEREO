@@ -1,8 +1,9 @@
-import { buildExpertDocumentHtml, escapeHtml, textToHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml } from './reportHtml.js';
+import { buildExpertDocumentHtml, escapeHtml, textToHtml, explanationsHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml } from './reportHtml.js';
 import { observationPlanNames } from './observationPlans.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { buildDecisionHtml } from './decisionSupport.js';
+import { isHabitologueProfile, observationAdviceLabel } from './reportProfiles.js';
 
 export function deliveryOptions(report) {
   const value = report.livrable || {};
@@ -97,7 +98,9 @@ export function buildReportHtml(report) {
     const selected = (report.observations || []).filter(o => options.observations.includes(o.id));
     content = cover(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
       <p>${textToHtml(options.synthese || 'Synthèse client à rédiger par le professionnel.')}</p>
-      ${selected.map(o => `<h3>${observationPlanNames(report, o).length ? `Repère ${report.observations.indexOf(o) + 1} · ` : ''}${escapeHtml(o.titre || o.piece)}</h3><p>${textToHtml(o.observations)}</p>
+      ${selected.map(o => `<h3>${observationPlanNames(report, o).length ? `Repère ${report.observations.indexOf(o) + 1} · ` : ''}${escapeHtml(o.titre || o.piece)}</h3>${isHabitologueProfile(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
+        ${explanationsHtml(o)}
+        ${isHabitologueProfile(report) ? `<h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(o.actions)}</p>` : ''}
         ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(p.src) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(p.src)}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}`).join('')}
       <p class="muted">Le rapport expert conserve l’ensemble des constats et des sources.</p></section>`;
     content += buildObservationPlansHtml(report, options.observations);

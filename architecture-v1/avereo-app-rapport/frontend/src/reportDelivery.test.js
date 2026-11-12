@@ -48,3 +48,72 @@ test('imported select values remain selectable without reclassification', () => 
   assert.deepEqual(optionsWithCurrent(['Mineure','Moyenne'],'Non qualifiée'),['Non qualifiée','Mineure','Moyenne']);
   assert.deepEqual(optionsWithCurrent(['Mineure'],'Mineure'),['Mineure']);
 });
+
+const withExplanations = () => {
+  const report = dossier();
+  report.observations[0].explications = 'Principe expliqué : <b>x</b> & "y"\nVoir https://example.com/doc?a=1&b=2 (ou http://example.org/p_(q)).';
+  report.observations[1].explications = 'Explication privée du second constat https://example.net/prive';
+  return report;
+};
+
+test('explanations sit between the finding and the advice in the expert report, with safe links', () => {
+  const html = buildReportHtml(withExplanations());
+  const first = html.slice(html.indexOf('Constat retenu'), html.indexOf('Autre constat'));
+  assert.ok(first.indexOf('<h4>Constat</h4>') < first.indexOf('<h4>Explications</h4>'));
+  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Suites proposees</h4>'));
+  assert.match(first, /&lt;b&gt;x&lt;\/b&gt; &amp; &quot;y&quot;<br \/>/);
+  assert.match(first, /<a href="https:\/\/example\.com\/doc\?a=1&amp;b=2" rel="noopener noreferrer">https:\/\/example\.com\/doc\?a=1&amp;b=2<\/a> \(ou <a href="http:\/\/example\.org\/p_\(q\)"/);
+  assert.doesNotMatch(first, /<b>x<\/b>/);
+  assert.match(html, /Explication privée du second constat/);
+});
+
+test('reports without explanations keep exactly the historical observation markup', () => {
+  const html = buildReportHtml(dossier());
+  assert.doesNotMatch(html, /Explications/); assert.doesNotMatch(html, /Conseils d’habitologue/);
+  assert.equal((html.match(/<h4>Suites proposees<\/h4>/g) || []).length, 2);
+  const report = dossier(); report.observations[0].explications = '   ';
+  assert.doesNotMatch(buildReportHtml(report), /Explications/);
+});
+
+test('the Habitologue profile labels the advice, other or unknown profiles keep the historical label', () => {
+  const report = withExplanations(); report.profil_metier = 'habitologue';
+  const html = buildReportHtml(report);
+  assert.equal((html.match(/<h4>Conseils d’habitologue<\/h4>/g) || []).length, 2);
+  assert.doesNotMatch(html, /Suites proposees/);
+  const first = html.slice(html.indexOf('Constat retenu'), html.indexOf('Autre constat'));
+  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Conseils d’habitologue</h4>'));
+  for (const profil of ['', 'architecte', 'HABITOLOGUE', 42, null]) {
+    report.profil_metier = profil;
+    assert.match(buildReportHtml(report), /Suites proposees/); assert.doesNotMatch(buildReportHtml(report), /Conseils d’habitologue/);
+  }
+});
+
+test('the client synthesis shows explanations only for selected findings', () => {
+  const report = withExplanations(); report.livrable = { audience: 'client', observations: ['1'] };
+  const html = buildReportHtml(JSON.parse(JSON.stringify(report)));
+  assert.match(html, /Principe expliqué/); assert.match(html, /<a href="https:\/\/example\.com\/doc\?a=1&amp;b=2"/);
+  assert.doesNotMatch(html, /Explication privée|example\.net|Contenu expert uniquement/);
+  report.livrable.observations = [];
+  assert.doesNotMatch(buildReportHtml(report), /Principe expliqué|Explication privée/);
+});
+
+test('Habitologue client observations keep finding, explanation and advice in order without exposing excluded advice', () => {
+  const report = withExplanations();
+  report.profil_metier = 'habitologue';
+  report.observations[1].actions = 'CONSEIL-EXPERT-EXCLU';
+  report.livrable = { audience: 'client', observations: ['1'] };
+  const html = buildReportHtml(report);
+  assert.ok(html.indexOf('<h4>Constat</h4>') < html.indexOf('<h4>Explications</h4>'));
+  assert.ok(html.indexOf('<h4>Explications</h4>') < html.indexOf('<h4>Conseils d’habitologue</h4>'));
+  assert.match(html, /Examiner/);
+  assert.doesNotMatch(html, /CONSEIL-EXPERT-EXCLU|Explication privée|example\.net/);
+  delete report.profil_metier;
+  assert.doesNotMatch(buildReportHtml(report), /Conseils d’habitologue|Examiner/);
+});
+
+test('unsafe protocols in explanations are exported as plain text, never as links', () => {
+  const report = dossier(); report.observations[0].explications = 'javascript:alert(1) data:text/html,x file:///C:/a https://user:pw@example.com/';
+  const html = buildReportHtml(report);
+  assert.match(html, /javascript:alert\(1\) data:text\/html,x file:\/\/\/C:\/a https:\/\/user:pw@example\.com\//);
+  assert.doesNotMatch(html, /href="(?:javascript|data|file|https:\/\/user)/);
+});

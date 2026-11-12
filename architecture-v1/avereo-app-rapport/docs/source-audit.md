@@ -13,6 +13,11 @@ tags:
   - securite
 ---
 
+## 2026-11-12 — Lot Habitologue local
+
+Profil métier explicite, sans modification de sécurité ; ancien parcours conservé. Restitution échappée et liens HTTP/HTTPS intégrés ; filtrage client vérifié dans les deux Word fictifs et leurs rendus. 123 tests Node, 27 contrôles PHP, deux builds et recette navigateur locale réussis. Aucune qualification hébergée du candidat. [État réel et réserves](profil-habitologue.md).
+
+
 ## 8 novembre 2026 — Menus de Rapport et de RGA
 
 Le candidat désactive Missions sur l’accueil et la carte RGA. Dans la carte intégrée, « Mes projets » s’ouvre toujours depuis le menu parent. Rapport conserve son formulaire de mission sur la même origine et produit les lettres et les ordres des quatre prestations. [Recette du périmètre](../../avereo-platform/docs/protocole-missions.md#applications-qui-génèrent-des-missions).
