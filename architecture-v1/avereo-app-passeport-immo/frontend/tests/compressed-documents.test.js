@@ -48,8 +48,8 @@ describe('Conservation des archives du bien', () => {
   it('propose les archives sans autoriser tous les formats et conserve les limites existantes', () => {
     for (const ext of ['zip','7z','rar','tar','gz','tgz']) expect(DOCUMENT_ACCEPT.split(',')).toContain(`.${ext}`);
     expect(()=>validateFiles([{name:'script.exe',size:100}])).toThrow('Format non pris en charge');
-    expect(()=>validateFiles([{name:'gros.zip',size:MAX_FILE_SIZE+1}])).toThrow('25 Mo');
+    expect(()=>validateFiles([{name:'gros.zip',size:MAX_FILE_SIZE+1}])).toThrow('500 Mo');
     expect(()=>validateFiles([{name:'vide.zip',size:0}])).toThrow('vide');
-    expect(()=>validateFiles(Array.from({length:5},()=>({name:'lot.zip',size:MAX_FILE_SIZE})))).toThrow('100 Mo');
+    expect(()=>validateFiles(Array.from({length:5},()=>({name:'lot.zip',size:MAX_FILE_SIZE})))).toThrow('500 Mo');
   });
 });

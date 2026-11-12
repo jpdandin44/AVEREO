@@ -87,4 +87,30 @@ describe('Parcours documentaire', () => {
     expect(screen.queryByRole('button', { name: 'Consulter' })).toBeNull();
     vi.unstubAllGlobals();
   });
+  it('affiche la progression et les documents confirmés après l’échec d’un lot ultérieur', async () => {
+    let failSecond;
+    const repository = {
+      load: async () => ({ client, clients: [client], documents: repository.addFiles.mock.calls.length ? [document] : [] }),
+      addFiles: vi.fn().mockResolvedValueOnce({ added: 1, duplicates: 0 }).mockImplementationOnce(() => new Promise((resolve, reject) => { failSecond = () => reject(new Error('Connexion interrompue')); }))
+    };
+    const files = ['a.zip', 'b.zip', 'c.zip'].map(name => ({ name, size: 300 * 1024 * 1024 }));
+    render(<DocumentsPanel bien={bien} repository={repository} />);
+    fireEvent.change(await screen.findByLabelText('Fichiers à ajouter au dossier du bien'), { target: { files } });
+    await screen.findByText(/Envoi du lot 2 sur 3 · 1 fichier/);
+    expect(screen.getByRole('button', { name: 'Enregistrement…' }).disabled).toBe(true);
+    failSecond();
+    await screen.findByText('Envoi interrompu au lot 2 sur 3 : Connexion interrompue');
+    await screen.findByRole('heading', { name: 'Plan du bien' });
+    expect(screen.getByText(/1 document\(s\) ajouté\(s\).*avant l’interruption/)).toBeTruthy();
+    expect(repository.addFiles).toHaveBeenCalledTimes(2);
+    expect(screen.getByRole('button', { name: 'Ajouter des fichiers' }).disabled).toBe(false);
+  });
+  it('signale le fichier supérieur à 500 Mo avant d’enregistrer les autres', async () => {
+    const repository = { load: async () => ({ client, clients: [client], documents: [] }), addFiles: vi.fn() };
+    render(<DocumentsPanel bien={bien} repository={repository} />);
+    fireEvent.change(await screen.findByLabelText('Fichiers à ajouter au dossier du bien'), { target: { files: [{ name: 'rapport.pdf', size: 173*1024*1024 }, { name: 'trop-grand.zip', size: 501*1024*1024 }] } });
+    expect((await screen.findByRole('alert')).textContent).toContain('trop-grand.zip');
+    expect(screen.getByRole('alert').textContent).toContain('500 Mo');
+    expect(repository.addFiles).not.toHaveBeenCalled();
+  });
 });

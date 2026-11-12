@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CATEGORIES, DOCUMENT_ACCEPT, documentRepository, isCompressedArchive } from './document-store.js';
 import PdfPreview from './PdfPreview.jsx';
+import { importDocumentFiles } from './import-files.js';
 
 const formatSize = size => size < 1024*1024 ? `${Math.ceil(size/1024)} Ko` : `${(size/(1024*1024)).toFixed(1)} Mo`;
 const date = value => new Date(value).toLocaleDateString('fr-FR');
@@ -72,6 +73,7 @@ function DocumentCard({ document, bienId, repository, onSaved, onOpen, busy }) {
 export default function DocumentsPanel({ bien, repository = documentRepository, onClient }) {
   const [data, setData] = useState(initial), [loading, setLoading] = useState(true), [busy, setBusy] = useState(false), [error, setError] = useState(''), [notice, setNotice] = useState('');
   const [clientId, setClientId] = useState(''), [clientName, setClientName] = useState(''), [category, setCategory] = useState('autres');
+  const [importProgress, setImportProgress] = useState(null);
   const [search, setSearch] = useState(''), [filter, setFilter] = useState(''), [archived, setArchived] = useState(false), [selected, setSelected] = useState(null);
   const filesRef = useRef(), folderRef = useRef();
   const bienId = String(bien.id);
@@ -84,7 +86,14 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
   }, [bienId, repository]);
   async function run(operation) {
     setBusy(true); setError(''); setNotice('');
-    try { await operation(); await reload(); } catch(e) { setError(e.message); } finally { setBusy(false); }
+    try { await operation(); await reload(); } catch(e) {
+      setError(e.message);
+      if (e.importProgress?.completedBatches) {
+        const saved = e.importProgress;
+        setNotice(`${saved.added} document(s) ajouté(s) et ${saved.duplicates} doublon(s) confirmé(s) avant l’interruption. Relancez la même sélection pour reprendre : les doublons seront évités.`);
+        try { await reload(); } catch { setError(`${e.message} La liste n’a pas pu être actualisée. Rouvrez le bien pour retrouver les fichiers déjà enregistrés.`); }
+      }
+    } finally { setBusy(false); setImportProgress(null); }
   }
   async function importFiles(e) {
     const selectedFiles = Array.from(e.target.files || []);
@@ -93,7 +102,7 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
     e.target.value = '';
     if (!files.length) return;
     await run(async () => {
-      const result = await repository.addFiles(bienId, files, category);
+      const result = await importDocumentFiles(repository, bienId, files, category, setImportProgress);
       setNotice(`${result.added} document(s) ajouté(s)${result.duplicates ? ` · ${result.duplicates} doublon(s) déjà présent(s), conservé(s) une seule fois` : ''}.`);
     });
   }
@@ -105,7 +114,7 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
         const response = await fetch(item.url), blob = await response.blob();
         files.push(new File([blob], item.name, { type: blob.type }));
       }
-      const result = await repository.addFiles(bienId, files, 'autres');
+      const result = await importDocumentFiles(repository, bienId, files, 'autres', setImportProgress);
       setNotice(`${result.added} ancienne(s) pièce(s) jointe(s) ajoutée(s). Leur copie précédente reste conservée.`);
     });
   }
@@ -121,7 +130,7 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
         <button className="doc-primary" disabled={busy}>Associer le client</button>
       </form>}
       <div className="document-import">
-        <div><h3>2. Ajouter des documents</h3><p>PDF, images, documents bureautiques et archives ZIP, 7z, RAR, TAR, GZ ou TGZ · 25 Mo par fichier · 100 Mo par lot</p></div>
+        <div><h3>2. Ajouter des documents</h3><p>PDF, images, documents bureautiques et archives ZIP, 7z, RAR, TAR, GZ ou TGZ · 500 Mo par fichier · Envois répartis automatiquement en lots de 500 Mo et 100 fichiers maximum, sans découper les fichiers.</p></div>
         <label>Classer les nouveaux documents<select value={category} onChange={e => setCategory(e.target.value)} disabled={busy || !data.client}>{Object.entries(CATEGORIES).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</select></label>
         {!data.client && <p id="document-import-help" className="document-import-help">Associez d’abord le client ci-dessus pour activer ces boutons.</p>}
         <div className="document-import-actions"><button className="doc-primary" disabled={busy || !data.client} aria-describedby={!data.client ? 'document-import-help' : undefined} onClick={() => filesRef.current.click()}>{busy ? 'Enregistrement…' : 'Ajouter des fichiers'}</button><button className="doc-secondary" disabled={busy || !data.client} aria-describedby={!data.client ? 'document-import-help' : undefined} onClick={() => folderRef.current.click()}>Importer un dossier</button></div>
@@ -130,6 +139,7 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
         {(bien.dossier.attachments || []).length > 0 && <button className="doc-text" onClick={importLegacy} disabled={busy || !data.client}>Reprendre les {(bien.dossier.attachments || []).length} anciennes pièces jointes</button>}
         <div className="document-storage-note"><strong>Enregistrement automatique des fichiers</strong><p>Chaque fichier est enregistré dès son ajout. Aucun bouton « Enregistrer » supplémentaire n’est nécessaire pour l’import.</p><p>{repository.server ? 'Stockage : serveur privé. Retrouvez les documents depuis vos appareils avec votre compte CONNECT.' : 'Stockage : ce navigateur, sur ce PC uniquement. Téléchargez une copie pour la conserver ailleurs.'}</p></div>
       </div>
+      {importProgress && <p role="status" className="doc-notice">Envoi du lot {importProgress.currentBatch} sur {importProgress.totalBatches} · {importProgress.processedFiles} fichier(s) traité(s) sur {importProgress.totalFiles}. Les lots confirmés sont déjà enregistrés.</p>}
       <div className="document-toolbar"><label>Rechercher<input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Titre ou nom de fichier" /></label><label>Catégorie<select value={filter} onChange={e => setFilter(e.target.value)}><option value="">Toutes les catégories</option>{Object.entries(CATEGORIES).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</select></label><button className="doc-text" onClick={() => setArchived(value => !value)}>{archived ? 'Voir les documents actifs' : `Archives (${data.documents.length-active.length})`}</button></div>
       {notice && <p role="status" className="doc-notice">{notice}</p>}{error && <p role="alert" className="doc-error">{error}</p>}
       {shown.length ? <div className="document-list">{shown.map(document => <DocumentCard key={document.id} document={document} bienId={bienId} repository={repository} onSaved={reload} onOpen={setSelected} busy={busy} />)}</div> : <div className="document-empty"><h3>{search || filter ? 'Aucun document trouvé' : archived ? 'Aucun document archivé' : 'Votre dossier documentaire est prêt à être rempli'}</h3><p>{search || filter ? 'Essayez un autre titre ou une autre catégorie.' : 'Ajoutez vos diagnostics, plans, documents administratifs et pièces de travaux.'}</p></div>}

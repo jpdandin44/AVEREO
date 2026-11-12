@@ -4,6 +4,11 @@ import { Blob, File } from 'node:buffer';
 import { webcrypto } from 'node:crypto';
 import { createDocumentRepository, MAX_FILE_SIZE, validateFiles } from '../src/documents/document-store.js';
 
+it('accepte un rapport de 173 Mo et quatorze archives totalisant 203 Mo', () => {
+  expect(() => validateFiles([{ name: 'rapport-entier.pdf', size: 173 * 1024 * 1024 }])).not.toThrow();
+  expect(() => validateFiles(Array.from({ length: 14 }, (_, i) => ({ name: `archive-${i}.zip`, size: (i === 13 ? 8 : 15) * 1024 * 1024 })))).not.toThrow();
+});
+
 let factory, repository;
 const file = (name = 'diagnostic.pdf', content = '%PDF-1.7\nDiagnostic fictif') => new File([content], name, { type: 'application/pdf' });
 beforeEach(() => {
@@ -44,9 +49,9 @@ describe('Documents liés au client et au bien', () => {
     expect((await repository.load('bien-1')).documents).toHaveLength(0);
   });
   it('borne les volumes et refuse un fichier vide', () => {
-    expect(() => validateFiles([{ name: 'grand.pdf', size: MAX_FILE_SIZE+1 }])).toThrow('25 Mo');
+    expect(() => validateFiles([{ name: 'grand.pdf', size: MAX_FILE_SIZE+1 }])).toThrow('500 Mo');
     expect(() => validateFiles([{ name: 'vide.pdf', size: 0 }])).toThrow('vide');
-    expect(() => validateFiles(Array.from({ length: 5 }, () => ({ name: 'lot.pdf', size: MAX_FILE_SIZE })))).toThrow('100 Mo');
+    expect(() => validateFiles(Array.from({ length: 5 }, () => ({ name: 'lot.pdf', size: MAX_FILE_SIZE })))).toThrow('500 Mo');
   });
   it('conserve les fichiers et le client après fermeture et réouverture du stockage', async () => {
     await repository.linkClient('bien-1', { name: 'Client fictif' });

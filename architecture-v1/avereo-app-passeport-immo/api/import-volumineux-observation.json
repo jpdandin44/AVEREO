@@ -1,0 +1,56 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "observedAt": "2026-11-12T17:15:08.654029+00:00",
+  "scope": "Local candidate only; not installed on hosting.",
+  "reportedNeed": {
+    "source": "user_chat",
+    "recordedAt": "2026-11-12T17:15:08.654029+00:00",
+    "archives": 14,
+    "reportedTotalMb": 203,
+    "reportedLargestFileMb": 173,
+    "reportedUnits": "Mo",
+    "userRequiresWholeFiles": true,
+    "doesNotCreatePhaseApproval": true
+  },
+  "limits": {
+    "fileBytes": 524288000,
+    "batchBytes": 524288000,
+    "requestBytes": 536870912,
+    "filesPerBatch": 100,
+    "splitFileContents": false,
+    "extractArchives": false
+  },
+  "officialSources": [
+    {
+      "url": "https://faq.o2switch.fr/guides/php/comment-augmenter-taille-upload/",
+      "observedAt": "2026-11-12T17:15:08.654029+00:00",
+      "fact": "512 Mo maximum for a direct PHP upload according to o2switch."
+    },
+    {
+      "url": "https://faq.o2switch.fr/guides/php/changer-version-php-et-php-ini/",
+      "observedAt": "2026-11-12T17:15:08.654029+00:00",
+      "fact": "Per-directory settings depend on the PHP handler; user.ini is not proof of effective hosted configuration."
+    }
+  ],
+  "localChecks": {
+    "frontendTests": 60,
+    "phpFormatAssertions": 41,
+    "pythonTests": 25,
+    "parity": "passed",
+    "productionBuild": "passed",
+    "phpSyntax": "passed"
+  },
+  "serverIntegration": {
+    "status": "pending",
+    "target": "isolated_apache_mariadb",
+    "largeFixtureMiB": 173,
+    "hostedRecipe": false
+  },
+  "hostedDeployment": {
+    "preproduction": false,
+    "production": false
+  },
+  "realClientDataChanged": false,
+  "humanCriteriaValidated": false
+}

@@ -52,7 +52,8 @@ export function createServerStorage({ fetcher = (...args) => fetch(...args), not
     async addFiles(id, files, category) {
       await flush(); const body = new FormData(); body.append('category', category); body.append('expectedCount', String(files.length));
       for (const file of files) body.append('files[]', file, file.name);
-      return request(`${bienPath(id)}/documents`, { method: 'POST', body });
+      const result = await request(`${bienPath(id)}/documents`, { method: 'POST', body });
+      return { added: result.added.length, duplicates: result.duplicates.length };
     },
     async updateDocument(id, doc, patch) { await flush(); return request(`${bienPath(id)}/documents/${encodeURIComponent(doc)}`, { method: 'PATCH', body: JSON.stringify(patch) }); },
     async getFile(id, doc) { await flush(); return request(`${bienPath(id)}/documents/${encodeURIComponent(doc)}/file`, { blob: true }); },

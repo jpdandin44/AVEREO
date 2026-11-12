@@ -12,9 +12,19 @@ tags: [passeport-immo, local]
 
 # Vérification de la reprise
 
+## Imports volumineux
+
+Les tests frontend couvrent rapport de 173 Mo, quatorze archives de 203 Mo, limites
+des lots, envois successifs et résultats confirmés après erreur. Les grandes tailles
+sont des métadonnées File sans allocation importante. Le test HTTP/MariaDB ajoute
+séparément un vrai ZIP de 173 Mo, son téléchargement intersession et sa sauvegarde
+avec restitution temporaire, après les vingt-deux cas de rotation pour éviter sa
+réplication sur chaque essai. Le test PHP d’inspection comporte 41 assertions.
+Les résultats réellement exécutés sont dans le [suivi dédié](../data/suivi-import-volumineux.json).
+
 ## Documents compressés
 
-`npm test` couvre notamment quinze essais de conservation des archives et la consultation sans lecteur PDF. `php tests/compressed-documents.php` vérifie quarante assertions sur sept conteneurs fictifs, dont RAR4 et RAR5, les types, octets, faux fichiers et limites. Les mêmes fixtures étendent `tests/check-storage-http.py` : téléchargement exact depuis une deuxième session, refus du propriétaire étranger, lot invalide atomique et restauration du lot de sauvegarde avec archives. La CI doit qualifier ces contrôles HTTP/MariaDB ; le seul test PHP d’inspection n’en remplace pas l’exécution. [Recette](../docs/documents-compresses.md).
+`npm test` couvre notamment quinze essais de conservation des archives et la consultation sans lecteur PDF. `php tests/compressed-documents.php` vérifie quarante et une assertions sur sept conteneurs fictifs, dont RAR4 et RAR5, les types, octets, faux fichiers et limites. Les mêmes fixtures étendent `tests/check-storage-http.py` : téléchargement exact depuis une deuxième session, refus du propriétaire étranger, lot invalide atomique et restauration du lot de sauvegarde avec archives. La CI doit qualifier ces contrôles HTTP/MariaDB ; le seul test PHP d’inspection n’en remplace pas l’exécution. [Recette](../docs/documents-compresses.md).
 
 ## Recette réelle après activation privée
 

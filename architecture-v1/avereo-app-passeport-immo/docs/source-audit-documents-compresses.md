@@ -12,6 +12,11 @@ tags: [parite, documents, archives]
 
 # Annexe de parité — formats documentaires compressés
 
+La suite [imports volumineux](import-volumineux.md) relève d’un nouveau candidat :
+limites 500 Mo, planification des lots, progression et décomptes serveur. Elle est
+documentée séparément ; les constats PR144 ci-dessous et ses reçus ne lui
+attribuent aucune qualification hébergée.
+
 La demande du 12 novembre autorise l’évolution des types de fichiers pour
 centraliser les archives du client dans Passeport Immo. Le point de départ est
 `main` à `16338e844912fade2a5e8b315b8313fe6f7e2dbd`, dans une copie de travail

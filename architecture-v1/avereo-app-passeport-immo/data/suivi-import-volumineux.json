@@ -1,0 +1,99 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "version": "git",
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "passeport-immo-import-volumineux",
+  "stage": "developpement-local",
+  "status": "awaiting_local_human_review",
+  "objective": "Conserver entiers les archives et rapports volumineux, avec une limite utile de 500 Mo et répartition automatique des grandes sélections.",
+  "candidate": {
+    "status": "building",
+    "sourceSha": null,
+    "artifactSha256": null
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/passeport-immo-import-volumineux",
+    "baseBranch": "chore/passeport-immo-preproduction-archives",
+    "basePrUrl": "https://github.com/jpdandin44/AVEREO/pull/145",
+    "prUrl": null,
+    "humanAcceptanceVerified": false
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://passeport-immo-preprod.avereo.fr/",
+      "ready": false,
+      "detail": "PR144 active; new 500 MiB candidate and effective PHP limits not qualified on hosting."
+    },
+    "production": {
+      "id": "https://passeport-immo.avereo.fr/",
+      "ready": false
+    }
+  },
+  "reviewEnvironment": {
+    "phase": 1,
+    "environment": "local",
+    "url": "http://127.0.0.1:5178/",
+    "fictionalDataOnly": true
+  },
+  "checks": [],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested"
+  },
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "blockers": [
+    "Revue locale humaine du nouveau candidat non enregistrée.",
+    "Valeurs PHP effectives, sauvegarde fraîche et retour arrière à qualifier pour cette version."
+  ],
+  "nextAction": "Qualifier la CI et le paquet, puis revoir le correctif local ; intégrer PR145 avant le merge du correctif. Ne pas déduire une installation à 500 Mo de la livraison PR144.",
+  "phases": [
+    {
+      "id": 0,
+      "label": "Cadrage",
+      "status": "in_progress",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 1,
+      "label": "Développement local",
+      "status": "awaiting_review",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 2,
+      "label": "Préproduction",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 3,
+      "label": "Mise en production",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    }
+  ],
+  "nextIteration": [
+    {
+      "topic": "Fichiers supérieurs à 500 Mo",
+      "status": "not_implemented",
+      "detail": "Transfert par blocs et reconstitution privée à cadrer séparément."
+    }
+  ],
+  "evidence": "api/import-volumineux-observation.json",
+  "documentation": "docs/import-volumineux.md",
+  "sourceFeedback": {
+    "source": "user_chat",
+    "recordedAt": "2026-11-12T17:15:08.654029+00:00",
+    "archives": 14,
+    "reportedTotalMb": 203,
+    "reportedLargestFileMb": 173,
+    "reportedUnits": "Mo",
+    "userRequiresWholeFiles": true,
+    "doesNotCreatePhaseApproval": true
+  }
+}

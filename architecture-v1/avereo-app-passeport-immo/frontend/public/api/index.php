@@ -22,7 +22,7 @@ try {
             || !hash_equals(passeport_csrf($config,$session),(string)($_SERVER['HTTP_X_PASSEPORT_CSRF'] ?? ''))) {
             throw new PasseportError(403,'Origine ou autorisation d’écriture invalide.');
         }
-        if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0)>105*1024*1024) throw new PasseportError(413,'Requête trop volumineuse.');
+        if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0)>512*1024*1024) throw new PasseportError(413,'Cet envoi dépasse la limite de 500 Mo de fichiers. Réduisez le lot et réessayez.');
     }
     $path=(string)parse_url($_SERVER['REQUEST_URI'] ?? '',PHP_URL_PATH);
     if ($path==='/api/session' && $method==='GET') {

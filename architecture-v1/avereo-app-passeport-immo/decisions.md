@@ -12,6 +12,17 @@ tags: [avereo, documentation, local]
 
 # Décisions Passeport Immo
 
+## 2026-11-12 — Préparer 500 Mo en upload direct
+
+Contexte : quatorze archives de 203 Mo au total et un rapport de 173 Mo dépassent
+les limites initiales. Choix d’implémentation : 500 Mo par fichier et par lot, avec
+une enveloppe de 512 Mo, plafond documenté par o2switch. Les sélections importantes
+sont réparties entre requêtes sans fractionner les fichiers. Contrôle préalable,
+progression, reprise et qualification PHP réelle sont nécessaires. Au-delà de
+500 Mo par fichier, un transfert par blocs avec reconstitution relève d’une autre
+évolution. Ce choix ne crée aucun accord de phase ou de livraison.
+[Justification et sources](docs/import-volumineux.md).
+
 ## 2026-11-12 — Conserver les archives entières
 
 Contexte : centraliser les fichiers du client dans Passeport Immo. Décision fonctionnelle explicitement confirmée : « Conserver les archives entières, sans extraction ». Raison : conserver le conteneur original et réutiliser le dossier documentaire. Conséquences : téléchargement avec le logiciel habituel, reconnaissance de type sans analyse exhaustive, limites de taille conservées. Aucune dépendance d’extraction ou migration de données ajoutée ; ce choix ne crée aucun accord de phase, merge ou déploiement. [Guide du lot](docs/documents-compresses.md).

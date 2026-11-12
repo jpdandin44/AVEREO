@@ -3,6 +3,10 @@ import { createServerStorage } from '../src/documents/server-store.js';
 
 const response = (body, status = 200) => ({ ok: status < 400, status, json: async () => body });
 describe('Stockage serveur', () => {
+  it('renvoie les nombres confirmés de fichiers ajoutés et de doublons', async () => {
+    const store = createServerStorage({ fetcher: async () => response({ added: [{ id: 'a' }, { id: 'b' }], duplicates: ['copie.zip'] }) });
+    expect(await store.repository.addFiles('bien', [new File(['archive'], 'dossier.zip')], 'autres')).toEqual({ added: 2, duplicates: 1 });
+  });
   it('charge une session réelle puis sérialise les écritures avec leurs révisions', async () => {
     const calls = []; const statuses = [];
     let release;
