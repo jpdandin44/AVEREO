@@ -5,12 +5,16 @@ title: Feuille de route
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-08
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
 
 # Feuille de route
+
+## Médaillon personnel — 12 novembre
+
+Développement local et tests acquis ; nouvelle PR, CI et revue locale à qualifier. Préproduction sous accord distinct, avec paquet spécifique, sauvegarde/restauration et recette des sessions/interorigines. Production hors périmètre. [Suivi canonique](data/suivi-medaillon-personnel.json).
 
 - Existant : entrée CONNECT et cookies signés.
 - En cours : qualification locale des périodes pour toutes les applications sélectionnées.

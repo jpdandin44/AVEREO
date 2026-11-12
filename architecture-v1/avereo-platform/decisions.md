@@ -5,12 +5,16 @@ title: Décisions
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-07
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
 
 # Décisions
+
+## 12 novembre 2026 — Médaillon personnel centralisé dans CONNECT
+
+Contexte : le responsable précise que le médaillon se règle dans les préférences du compte et doit suivre ses applications. Décision : une préférence par identité CONNECT, stockée dans le répertoire privé de l'environnement, avec lecture authentifiée et non dans le modèle public #137. Raisons : isolation des comptes, fonctionnement interapplications et absence de migration des données métier. Conséquences : un nouveau candidat/PR, contrôles de session/CSRF/contexte et CORS strict pour les seules lectures habilitées. Les préférences applicatives locales et l'autorisation globale du module Développements restent inchangées. Saisie unique autonome ne devient pas un client connecté. [Contrat et limites](docs/medaillon-personnel.md).
 
 ## 4 novembre 2026 — Réutiliser la politique privée CONNECT
 

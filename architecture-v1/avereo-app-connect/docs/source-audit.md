@@ -5,10 +5,14 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-10
+updated: 2026-11-12
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 12 novembre — Médaillon personnel, candidat local
+
+Ajout d'une route de préférences du compte courant et d'un stockage privé, sans migration SQL ni modification des habilitations. Le formulaire utilise le composant partagé ; le champ commun #137 est retiré de l'administration visuelle mais son API reste compatible. Tests sur comptes fictifs et recette locale d'enregistrement/rechargement ; aucun déploiement ni identité réelle attestée. [Contrat et récupération](../../avereo-platform/docs/medaillon-personnel.md).
 
 ## 9 novembre — contrôle global compatible Drupal 11
 

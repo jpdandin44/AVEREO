@@ -5,7 +5,7 @@ title: Règle des fonctionnalités communes AVEREO
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-08
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, interface, fonctions-communes]
 ---
@@ -33,7 +33,7 @@ Une fonction annoncée doit exister : un menu ne crée ni droit ni stockage en l
 | Fonction | Règle commune |
 | --- | --- |
 | Mes projets | Même libellé dans les applications métier ; ouvrir exclusivement leur liste native. Le contenu et le stockage restent propres à l’application. CONNECT, portail sans projets métier, ne présente pas cette rubrique. |
-| Préférences | Réglages propres à l’application ; même dialogue partagé lorsque nécessaire. Ne jamais modifier les projets existants ni les préférences d’une autre application. Afficher leur portée de stockage. |
+| Préférences | Réglages propres à l’application ; même dialogue partagé lorsque nécessaire. Dans CONNECT, distinguer le médaillon personnel enregistré sur le compte des préférences applicatives locales. Ne jamais modifier les projets existants ni les préférences d'un autre compte. Afficher leur portée de stockage. |
 | Mon compte | Ouvrir le profil CONNECT du même environnement ; destination commune, y compris depuis Projet. |
 | Mes applications | Ouvrir le catalogue CONNECT du même environnement, dans un autre onglet pour préserver le travail courant. |
 | Gérer les comptes | Action native CONNECT visible aux administrateurs autorisés ; les autres applications ne dupliquent pas les habilitations. |
@@ -51,8 +51,7 @@ et les prototypes archivés ne deviennent pas des applications client par ce lot
 [account-menu.js](../shared/account-menu.js) définit le composant natif
 `avereo-account-menu`. Son style est isolé ; les actions des applications sont des
 boutons/liens existants dans les emplacements `items`, `account`, `applications`,
-`administration` et `logout`. Le composant ne fait aucun appel API métier ni authentification. Il enregistre
-uniquement les préférences définies par l’application dans une clé localStorage
+`administration` et `logout`. Le composant ne réalise pas l'authentification ni d'appel API de dossiers métier. Le candidat du 12 novembre lit la préférence personnelle par la session CONNECT et permet son édition dans CONNECT uniquement ; il ne crée aucun droit. [Contrat privé, CORS et limites](medaillon-personnel.md). Les autres préférences définies par l’application restent dans une clé localStorage
 `avereo.<application>.preferences.v1`. Les champs autorisés sont décrits par
 `preferences-fields` ; les événements `avereo-preferences-change` sont filtrés
 par identifiant applicatif. `shared/use-app-preferences.js` raccorde React sans
@@ -106,8 +105,8 @@ La production et l’ouverture publique conservent leurs accords distincts.
 | Passeport Immo | Liste native des biens, selon son mode serveur ou démonstration | Tri par adresse et composition visible dans la liste |
 | CONNECT | Sans rubrique de projets, conformément à la décision du responsable | Tri du catalogue et affichage des applications non accessibles ; aucun droit modifié |
 
-Les nouveaux réglages sont propres au navigateur. Ils ne se synchronisent pas par
-le compte CONNECT. Projet conserve sa portée native. Thermo, Drone et les points
+Les réglages de cette ancienne extension #121 sont propres au navigateur. Ils ne se synchronisent pas par
+le compte CONNECT ; le médaillon personnel du candidat du 12 novembre est une exception distincte. Projet conserve sa portée native. Thermo, Drone et les points
 RGA restent locaux : cette extension de menu ne crée pas leur synchronisation en
 ligne. Recherche n’a pas de cible préproduction déclarée et Saisie unique reste
 son application autonome ; leurs fonctions métier sont hors de cette extension.

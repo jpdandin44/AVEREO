@@ -50,6 +50,31 @@
 
   let appearanceRequest;
   let currentAppearance;
+  let personalBadge = 'MOI';
+  let preferenceGeneration = 0;
+  const validBadge = value => typeof value === 'string' && /^[\p{L}\p{Nd}]{1,3}$/u.test(value);
+  function showPersonalBadge(value) {
+    personalBadge = validBadge(value) ? value : 'MOI';
+    for (const menu of document.querySelectorAll('avereo-account-menu')) {
+      if (menu.shadowRoot && !document.querySelector('meta[name="avereo-offline-appearance"]')) menu.shadowRoot.querySelector('.avatar').textContent = personalBadge;
+    }
+  }
+  async function refreshPersonalBadge(menu) {
+    const generation = ++preferenceGeneration;
+    showPersonalBadge('MOI');
+    if (!menu.portal || menu.hasAttribute('signed-out') || location.protocol === 'file:' || document.querySelector('meta[name="avereo-offline-appearance"]')) return null;
+    try {
+      const code = menu.getAttribute('preferences-app') || '';
+      const response = await fetch(menu.portal + '/api/v1/me/preferences?application=' + encodeURIComponent(code),
+        {credentials:'include', cache:'no-store', referrerPolicy:'no-referrer'});
+      if (!response.ok) throw Error('Préférences indisponibles');
+      const result = await response.json();
+      if (!validBadge(result?.data?.accountBadge)) throw Error('Préférences invalides');
+      if (generation !== preferenceGeneration || menu.hasAttribute('signed-out')) return null;
+      showPersonalBadge(result.data.accountBadge);
+      return result.data;
+    } catch (_) { return null; } // No cached identity or public-model badge after a session failure.
+  }
   function appearance(menu) {
     if (!menu.portal || location.protocol === 'file:') return;
     appearanceRequest ||= Promise.resolve().then(() => fetch(menu.portal + '/api/v1/appearance',
@@ -61,7 +86,7 @@
     if (!settings) return;
     currentAppearance = settings;
     for (const menu of document.querySelectorAll('avereo-account-menu')) {
-      if (menu.shadowRoot) menu.shadowRoot.querySelector('.avatar').textContent = settings.accountBadge || 'MOI';
+      if (menu.shadowRoot) menu.shadowRoot.querySelector('.avatar').textContent = document.querySelector('meta[name="avereo-offline-appearance"]') ? (settings.accountBadge || 'MOI') : personalBadge;
     }
     const style = document.documentElement.style;
     if ([56,68,84].includes(settings.headerHeight)) style.setProperty('--av-header', settings.headerHeight + 'px');
@@ -83,7 +108,7 @@
   }
 
   class AvereoAccountMenu extends HTMLElement {
-    static observedAttributes = ['no-missions'];
+    static observedAttributes = ['no-missions', 'signed-out'];
     static readSettings(app, fields) {
       let saved = {};
       if (!/^[a-z][a-z0-9-]{0,31}$/.test(app)) return {};
@@ -129,7 +154,7 @@
           dialog h2 { margin:0 0 12px; font-size:21px; }
           dialog p { line-height:1.5; }
           dialog label { display:grid; gap:8px; margin:20px 0; }
-          dialog select { width:100%; padding:10px; border:1px solid #94a3b8; border-radius:7px; background:white; color:#142033; font:inherit; }
+          dialog select, dialog input[type=text] { width:100%; padding:10px; border:1px solid #94a3b8; border-radius:7px; background:white; color:#142033; font:inherit; }
           dialog input[type=checkbox] { width:20px; height:20px; }
           dialog footer { display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap; }
           dialog button { padding:10px 14px; border:1px solid #cbd5e1; border-radius:7px; background:#eef3f9; color:#142033; cursor:pointer; }
@@ -190,7 +215,11 @@
         <dialog aria-labelledby="settings-title"><form>
           <h2 id="settings-title">Préférences</h2>
           <p>Ces réglages concernent uniquement cette application, dans ce navigateur. Ils ne modifient pas vos projets ni votre compte AVEREO.</p>
-          <div class="settings-fields"></div><p class="settings-error" role="alert"></p>
+          <fieldset class="account-preferences" hidden><legend>Votre compte — toutes vos applications</legend>
+            <p>Le médaillon est enregistré sur votre compte CONNECT. Les autres réglages ci-dessous restent locaux.</p>
+            <label>Texte du médaillon<input type="text" name="personalAccountBadge" maxlength="6" autocomplete="off" disabled></label>
+            <p class="account-preferences-status" role="status"></p>
+          </fieldset><div class="settings-fields"></div><p class="settings-error" role="alert"></p>
           <footer><button type="button" class="settings-cancel">Annuler</button><button type="submit">Enregistrer</button></footer>
         </form></dialog>`;
       this.trigger = this.shadowRoot.querySelector('.trigger');
@@ -232,19 +261,44 @@
       });
       this.shadowRoot.querySelector('.settings-cancel').addEventListener('click', () => this.closePreferences());
       this.settingsDialog.addEventListener('close', () => this.trigger.focus());
-      this.settingsDialog.querySelector('form').addEventListener('submit', event => {
+      this.settingsDialog.querySelector('form').addEventListener('submit', async event => {
         event.preventDefault();
+        if (this.savingPreferences) return;
         const fields = this.preferenceFields, values = {};
         for (const field of fields) {
           const input = this.settingsDialog.querySelector(`[name="${field.key}"]`);
           values[field.key] = field.type === 'checkbox' ? input.checked : input.value;
         }
+        let badgeSaved = false;
         try {
+          this.savingPreferences = true;
+          const accountField = this.settingsDialog.querySelector('.account-preferences');
+          if (!accountField.hidden) {
+            const input = accountField.querySelector('input');
+            const submittedContext = this.accountPreferenceContext;
+            if (input.disabled || !validBadge(input.value)) throw Error('Le médaillon doit contenir de 1 à 3 lettres ou chiffres.');
+            const sessionResponse = await fetch(this.portal + '/api/v1/session', {credentials:'include', cache:'no-store'});
+            if (!sessionResponse.ok) throw Error('Reconnectez-vous à CONNECT pour enregistrer.');
+            const session = (await sessionResponse.json()).data;
+            if (!session?.approved || !session.csrfToken) throw Error('Reconnectez-vous à CONNECT pour enregistrer.');
+            const response = await fetch(this.portal + '/api/v1/me/preferences', {method:'PUT', credentials:'include', cache:'no-store',
+              headers:{'Content-Type':'application/json', 'X-CSRF-Token':session.csrfToken, 'X-Account-Context':submittedContext}, body:JSON.stringify({accountBadge:input.value})});
+            if (!response.ok) throw Error('Le médaillon n’a pas pu être enregistré sur votre compte.');
+            const saved = (await response.json()).data;
+            if (!validBadge(saved?.accountBadge)) throw Error('Réponse de préférences invalide.');
+            if (this.accountPreferenceContext !== submittedContext || this.hasAttribute('signed-out')) return;
+            ++preferenceGeneration;
+            showPersonalBadge(saved.accountBadge);
+            badgeSaved = true;
+          }
           localStorage.setItem(`avereo.${this.getAttribute('preferences-app')}.preferences.v1`, JSON.stringify(values));
           this.dispatchEvent(new CustomEvent('avereo-preferences-change', { bubbles:true, composed:true,
             detail:{ app:this.getAttribute('preferences-app'), values } }));
           this.closePreferences();
-        } catch (_) { this.shadowRoot.querySelector('.settings-error').textContent = 'Les préférences n’ont pas pu être enregistrées. Vérifiez le stockage de ce navigateur.'; }
+        } catch (error) { this.shadowRoot.querySelector('.settings-error').textContent =
+          (badgeSaved ? 'Le médaillon est enregistré sur votre compte, mais les préférences locales n’ont pas pu être enregistrées. ' : 'Les préférences n’ont pas pu être enregistrées. ')
+          + (error.message || 'Réessayez.'); }
+        finally { this.savingPreferences = false; }
       });
       this.panel.addEventListener('toggle', event => {
         this.trigger.setAttribute('aria-expanded', String(event.newState === 'open'));
@@ -259,7 +313,13 @@
       this.reposition = () => { if (this.open) this.positionPanel(); };
     }
 
-    attributeChangedCallback() {
+    attributeChangedCallback(name) {
+      if (name === 'signed-out') {
+        ++preferenceGeneration;
+        showPersonalBadge('MOI');
+        this.closePreferences();
+        if (this.isConnected && !this.hasAttribute('signed-out')) refreshPersonalBadge(this);
+      }
       const disabled = this.hasAttribute('no-missions');
       this.missionsButton.hidden = disabled;
       this.missionsButton.disabled = disabled;
@@ -276,7 +336,7 @@
         this.header.hidden = true;
         this.trigger.hidden = true;
       }
-      this.shadowRoot.querySelector('.avatar').textContent = currentAppearance?.accountBadge || 'MOI';
+      this.shadowRoot.querySelector('.avatar').textContent = personalBadge;
       reserveSpace();
       this.header.querySelector('.brand img').src = document.querySelector('meta[name="avereo-shell-logo"]')?.content || '/assets/avereo-logo.png';
       this.header.querySelector('.brand strong').textContent = this.getAttribute('app-name') || this.getAttribute('preferences-label') || document.title;
@@ -314,7 +374,11 @@
       const offlineModel = document.querySelector('meta[name="avereo-offline-appearance"]');
       if (offlineModel) {
         try { applyAppearance(JSON.parse(offlineModel.content)); } catch { /* Default model. */ }
-      } else appearance(this);
+      } else { appearance(this); refreshPersonalBadge(this); }
+      this.refreshPersonal = () => { if (!document.hidden) { this.closePreferences(); refreshPersonalBadge(this); } };
+      window.addEventListener('focus', this.refreshPersonal);
+      window.addEventListener('pageshow', this.refreshPersonal);
+      document.addEventListener('visibilitychange', this.refreshPersonal);
       document.addEventListener('pointerdown', this.outside);
       window.addEventListener('resize', this.reposition);
       // Capture scrolling containers too; the panel stays attached to its trigger.
@@ -325,6 +389,9 @@
       this.closePreferences();
       this.resizeObserver?.disconnect();
       this.controlsObserver?.disconnect();
+      window.removeEventListener('focus', this.refreshPersonal);
+      window.removeEventListener('pageshow', this.refreshPersonal);
+      document.removeEventListener('visibilitychange', this.refreshPersonal);
       if (!document.querySelector('avereo-account-menu:not([hidden])')) delete document.documentElement.dataset.avereoShell;
       document.removeEventListener('pointerdown', this.outside);
       window.removeEventListener('resize', this.reposition);
@@ -359,13 +426,23 @@
       } catch (_) { return []; }
     }
     get settings() { return AvereoAccountMenu.readSettings(this.getAttribute('preferences-app'), this.preferenceFields); }
-    openPreferences() {
+    async openPreferences() {
       if (!this.preferenceFields.length) return;
       this.open = false;
       const fields = this.shadowRoot.querySelector('.settings-fields'), values = this.settings;
       fields.replaceChildren();
       this.shadowRoot.querySelector('#settings-title').textContent = 'Préférences — ' + (this.getAttribute('preferences-label') || this.getAttribute('preferences-app'));
       this.shadowRoot.querySelector('.settings-error').textContent = '';
+      const accountField = this.settingsDialog.querySelector('.account-preferences');
+      accountField.hidden = !(this.getAttribute('preferences-app') === 'connect' && this.portal
+        && new URL(this.portal).origin === location.origin && !this.hasAttribute('signed-out'));
+      const badgeInput = accountField.querySelector('input');
+      badgeInput.disabled = true;
+      badgeInput.value = '';
+      this.accountPreferenceContext = '';
+      this.settingsDialog.querySelector('form > p').textContent = accountField.hidden
+        ? 'Ces réglages concernent uniquement cette application, dans ce navigateur. Ils ne modifient pas vos projets ni votre compte AVEREO.'
+        : 'Le médaillon suit votre compte dans les applications rattachées. Les autres préférences restent propres à ce navigateur.';
       for (const field of this.preferenceFields) {
         const label = document.createElement('label'); label.textContent = field.label;
         const input = document.createElement(field.type === 'checkbox' ? 'input' : 'select'); input.name = field.key;
@@ -374,8 +451,20 @@
         label.append(input); fields.append(label);
       }
       if (this.settingsDialog.showModal) this.settingsDialog.showModal(); else this.settingsDialog.setAttribute('open','');
+      if (!accountField.hidden) {
+        accountField.querySelector('[role=status]').textContent = 'Chargement du médaillon du compte…';
+        const preferences = await refreshPersonalBadge(this);
+        if (!this.settingsDialog.open) return;
+        if (preferences && typeof preferences.accountContext === 'string' && /^[a-f0-9]{64}$/.test(preferences.accountContext)) {
+          this.accountPreferenceContext = preferences.accountContext;
+          badgeInput.value = preferences.accountBadge;
+          badgeInput.disabled = false;
+          accountField.querySelector('[role=status]').textContent = 'De 1 à 3 lettres ou chiffres. Annuler ne modifie pas le compte.';
+        } else accountField.querySelector('[role=status]').textContent = 'Compte ou préférences indisponibles. Reconnectez-vous à CONNECT puis réessayez.';
+      }
     }
     closePreferences() {
+      this.accountPreferenceContext = '';
       if (!this.settingsDialog?.hasAttribute('open')) return;
       if (this.settingsDialog.close) this.settingsDialog.close(); else { this.settingsDialog.removeAttribute('open'); this.trigger.focus(); }
     }

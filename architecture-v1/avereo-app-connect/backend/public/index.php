@@ -206,6 +206,7 @@ try {
         $accountLifecycle,
         $developmentAuthorization,
         $appearance,
+        new \Avereo\Connect\Account\Preferences(dirname($privateConfigPath) . '/account-preferences'),
     );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {

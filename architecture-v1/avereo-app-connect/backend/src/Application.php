@@ -31,6 +31,7 @@ final class Application
         private readonly ?\Avereo\Connect\Administration\AccountLifecycle $accountLifecycle = null,
         private readonly ?\Avereo\Connect\Developments\AuthorizationBroker $developmentAuthorization = null,
         private readonly ?\Avereo\Connect\Administration\Appearance $appearance = null,
+        private readonly ?\Avereo\Connect\Account\Preferences $accountPreferences = null,
     ) {
     }
 
@@ -78,6 +79,17 @@ final class Application
             $details = $this->config->debug ? ['type' => $exception::class] : [];
             return Response::error(500, 'INTERNAL_ERROR', 'Une erreur interne est survenue.', $request->requestId, $details);
         }
+    }
+
+    private function urlOrigin(string $url): ?string
+    {
+        $parts = parse_url($url);
+        if (!is_array($parts) || !isset($parts['scheme'], $parts['host']) || isset($parts['user']) || isset($parts['pass'])) return null;
+        $scheme = strtolower($parts['scheme']);
+        $host = strtolower($parts['host']);
+        if ($scheme !== 'https' && !($this->config->environment === 'local' && $scheme === 'http' && in_array($host, ['127.0.0.1', 'localhost', '[::1]'], true))) return null;
+        $port = $parts['port'] ?? ($scheme === 'https' ? 443 : 80);
+        return $scheme . '://' . $host . (in_array([$scheme, $port], [['https',443], ['http',80]], true) ? '' : ':' . $port);
     }
 
     /** @param callable(): void $logout */
@@ -227,10 +239,45 @@ final class Application
             return Response::redirect($location, $request->requestId);
         }
 
+        if ($request->path === '/api/v1/me/preferences' && $accountStatus !== 'active') {
+            throw new ApiException(403, 'ACCOUNT_INACTIVE', 'Compte indisponible.');
+        }
         if ($auth->userId === null) {
             throw new ApiException(503, 'CONNECT_ACCOUNT_NOT_PROVISIONED', 'Le compte CONNECT n’est pas encore provisionné.');
         }
         $userId = (int) $auth->userId;
+
+        if ($request->path === '/api/v1/me/preferences') {
+            if ($this->accountPreferences === null) throw new ApiException(503, 'PREFERENCES_UNAVAILABLE', 'Préférences indisponibles.');
+            $context = hash_hmac('sha256', 'account-preferences:' . $userId, $csrfToken);
+            $headers = [];
+            $origin = $request->header('origin');
+            if ($origin !== null) {
+                $portalOrigin = $this->urlOrigin($this->config->oauthRedirectUri);
+                if ($portalOrigin === null && $this->config->environment === 'local') {
+                    $portalOrigin = $this->urlOrigin('http://' . ($request->header('host') ?? ''));
+                }
+                if ($origin !== $portalOrigin) {
+                    $code = $request->query['application'] ?? '';
+                    $entry = is_string($code) ? $this->config->appLaunchEntryUrl($code) : '';
+                    if ($request->method !== 'GET' || $origin !== $this->urlOrigin($entry)
+                        || !is_string($code) || !$this->repository->canLaunchApplication($userId, $code)) {
+                        throw new ApiException(403, 'PREFERENCES_ORIGIN_DENIED', 'Origine ou application refusée.');
+                    }
+                    $headers = ['Access-Control-Allow-Origin' => $origin, 'Access-Control-Allow-Credentials' => 'true', 'Vary' => 'Origin'];
+                }
+            }
+            if ($request->method === 'GET') {
+                $response = Response::success($this->accountPreferences->read($userId) + ['accountContext' => $context], $request->requestId);
+                return new Response($response->status, $response->payload, $response->requestId, $headers);
+            }
+            if ($request->method !== 'PUT') throw new ApiException(405, 'METHOD_NOT_ALLOWED', 'Méthode refusée.');
+            CsrfGuard::assertValid($request, $csrfToken);
+            if (!hash_equals($context, $request->header('x-account-context') ?? '')) {
+                throw new ApiException(409, 'ACCOUNT_CONTEXT_CHANGED', 'Le compte a changé. Rouvrez les préférences avant d’enregistrer.');
+            }
+            return Response::success($this->accountPreferences->save($userId, $request->body), $request->requestId);
+        }
 
         if ($request->path === '/api/v1/admin/appearance') {
             if ($accountStatus !== 'active' || !$this->appearance?->canEdit($this->repository->listOrganizations($userId))) {

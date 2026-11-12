@@ -5,10 +5,14 @@ title: Audit source du socle
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-08
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
+
+## 12 novembre 2026 — Préférence personnelle du médaillon
+
+Nouvelle source commune et stockage privé CONNECT, sans réimplémentation dans chaque application. Les copies sont générées, pas modifiées manuellement. Le modèle public #137 reste historique ; Saisie unique autonome est l'exception hors ligne explicitée. Les fonctions métier et contrôles privés restent inchangés. [Contrat et limites](medaillon-personnel.md).
 
 ## 8 novembre 2026 — Outils complémentaires
 
