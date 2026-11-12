@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - rapport
@@ -183,3 +183,7 @@ Dans l’éditeur, **Accueil** et **Mon compte → Mes projets** utilisent le m�
 La liste et la recherche utilisent les mêmes règles de propriété que la lecture d’un dossier. La sélection conserve la confirmation avant remplacement du brouillon. [Parcours de recherche](../README.md#retrouver-un-rapport-en-ligne).
 
 Le pied de page regroupe le menu du compte et les commandes entre étapes. La sauvegarde automatique du brouillon, l’export JSON et la sauvegarde en ligne conservent leurs parcours.
+
+## Habilitations par organisation — candidat local
+
+La migration des exports crée des tables de rattachement, de permission et de journal. Les dossiers existants conservent leur propriétaire. [Recette et retour arrière](../../../docs/administration-acces-exports.md).

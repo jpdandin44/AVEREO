@@ -974,7 +974,8 @@ components:
           $ref: "#/components/schemas/Organization"
         actorRole:
           type: string
-          enum: [owner, admin]
+          enum: [owner, admin, access_manager]
+          description: Le gestionnaire délégué peut seulement modifier les accès applicatifs dans cette organisation.
         assignableRoles:
           type: array
           items:
@@ -1019,7 +1020,7 @@ components:
     ManagedUser:
       type: object
       required:
-        [id, email, displayName, status, role, canManageApplications, applications]
+        [id, displayName, status, role, canManageApplications, applications]
       properties:
         id:
           type: integer
@@ -1171,7 +1172,10 @@ components:
           enum: [active]
         role:
           type: string
-          enum: [owner, admin, member, viewer]
+          enum: [owner, admin, member, viewer, access_manager]
+        canManageApplicationAccess:
+          type: boolean
+          description: Délégation applicative propre à cette adhésion.
     Application:
       type: object
       required: [code, name, launchUrl, entitlementStatus]

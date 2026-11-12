@@ -7,6 +7,7 @@ import ObservationPlans from './ObservationPlans.jsx';
 import { MAX_REPORT_BYTES, observationPlanNames, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
+import { saveAs } from './saveAs.js';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { del as idbDel, get as idbGet, set as idbSet } from 'idb-keyval';
 import {
@@ -306,16 +307,7 @@ function withTimeout(promise, timeoutMs) {
   ]);
 }
 
-function saveAs(blob, fileName) {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = fileName;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-}
+
 
 function formatDateTime(value) {
   if (!value) return '';

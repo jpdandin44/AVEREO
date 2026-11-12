@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { listOnlineReports, loadOnlineReport } from './services/reportApi.js';
+import OrganizationExports from './OrganizationExports.jsx';
+import { onlineReportPage, loadOnlineReport } from './services/reportApi.js';
 
 export default function OnlineReports({ token, draft, onOpen, onBackup }) {
   const [reports, setReports] = useState([]);
+  const [canExport, setCanExport] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [selected, setSelected] = useState(null);
@@ -20,10 +22,14 @@ export default function OnlineReports({ token, draft, onOpen, onBackup }) {
     setError('');
     setSelected(null);
     setReports([]);
+    setCanExport(false);
     const timer = setTimeout(async () => {
       try {
-        const items = await listOnlineReports(token, { query, limit, signal: controller.signal });
-        if (!controller.signal.aborted) setReports(items);
+        const page = await onlineReportPage(token, { query, limit, signal: controller.signal });
+        if (!controller.signal.aborted) {
+          setReports(page.reports || []);
+          setCanExport(page.organizationExportsAvailable === true);
+        }
       } catch (failure) {
         if (!controller.signal.aborted) setError(failure.message);
       } finally {
@@ -95,5 +101,6 @@ export default function OnlineReports({ token, draft, onOpen, onBackup }) {
       <button className="button secondary" type="button" disabled={opening}
         onClick={event => { trigger.current = event.currentTarget; if (draft) setSelected(item); else open(item); }}>Ouvrir</button>
     </li>)}</ul>}
+    {canExport && <OrganizationExports />}
   </section>;
 }

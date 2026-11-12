@@ -41,6 +41,8 @@ try {
     ok(file_get_contents($path)===$before,'unauthorized request cannot revoke projection');
     rejects(fn()=>$service->updatePeriod(1,7,$id,[],'missing-period'),422,'missing period fields cannot silently remove the trial deadline');
     ok(file_get_contents($path)===$before,'invalid period leaves the current projection intact');
+    rejects(fn()=>$service->synchronize($id,fn()=>throw new ApiException(403,'ACCESS_WITHDRAWN','Délégation retirée.'),applicationChange:true),403,'refused app change restores previous rule');
+    ok(file_get_contents($path)===$before,'all other application rights survive a refused change');
     $service->authorizeApplication(1,7,$id,'coupe','active');
     ok(file_get_contents($path)===$before,'temporary selection authorization preserves the recorded period and policy');
     $key=str_repeat('local-only-',5);$payload=avereo_gate_base64url_encode(json_encode(['v'=>2,'app'=>'rapport','iat'=>time(),'exp'=>time()+600,'nonce'=>str_repeat('a',32),'identity'=>['provider'=>'avereo_connect','id'=>(string)$id]]));

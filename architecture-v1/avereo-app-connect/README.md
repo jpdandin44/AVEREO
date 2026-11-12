@@ -5,7 +5,7 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags: [connect, documentation]
 ---
@@ -180,3 +180,7 @@ La PR #118 est installée en préproduction après accord. La confirmation ferme
 Le portail PHP ajoute ses préférences de tri et de visibilité du catalogue, enregistrées dans ce navigateur. Mon compte et Mes applications restent les destinations communes ; CONNECT ne possède pas de rubrique Mes projets. Aucun contrôle de droit ni parcours d’activation n’est modifié.
 
 [Règle et portée](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification](../avereo-platform/docs/qualification-mon-espace.md).
+
+## Habilitations par organisation — candidat local
+
+[Choisir une organisation et gérer les accès applicatifs délégués](../../docs/administration-acces-exports.md).

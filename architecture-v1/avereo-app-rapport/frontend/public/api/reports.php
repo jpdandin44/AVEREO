@@ -158,9 +158,20 @@ if ($method === 'GET') {
     $statement->bindValue('limit', $limit, PDO::PARAM_INT);
     $statement->execute();
 
+    $items = array_map('api_report_summary', $statement->fetchAll());
+    $canExport = false;
+    if (($config['organization_exports_enabled'] ?? false) === true && $identity['provider'] === 'avereo_connect') {
+        require_once __DIR__.'/organization-exports.php';
+        try {
+            $canExport = (new RapportOrganizationExports($pdo))->hasGrant((int)$identity['id']);
+        } catch (PDOException) {
+            error_log('Rapport: registre des exports indisponible.');
+        }
+    }
     api_json(200, [
         'ok' => true,
-        'reports' => array_map('api_report_summary', $statement->fetchAll()),
+        'organizationExportsAvailable' => $canExport,
+        'reports' => $items,
     ]);
 }
 

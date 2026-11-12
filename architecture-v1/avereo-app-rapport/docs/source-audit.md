@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-09
+updated: 2026-11-10
 owner: jpdandin
 tags:
   - rapport
@@ -338,3 +338,7 @@ Rapport affiche directement l’accueil ou le contenu de l’étape sous le band
 Le contrôle HTTP utilise des comptes fictifs distincts, un dossier situé au-delà des cinquante derniers et des recherches littérales. Le contrôle Chrome vérifie le retour au panneau de confirmation, l’export, l’annulation et l’ouverture. [Parcours](../README.md#retrouver-un-rapport-en-ligne).
 
 Dans l’éditeur, le pied de page rassemble Mon compte, Précédent et Suivant sur une ligne. Les sauvegardes restent dans le bandeau supérieur.
+
+## Habilitations par organisation — candidat local
+
+Le candidat ajoute un export délégué en lecture seule pour les dossiers dont le rattachement est vérifié. [Périmètre et recette](../../../docs/administration-acces-exports.md).
