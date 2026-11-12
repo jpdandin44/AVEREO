@@ -168,10 +168,13 @@
   "newFeaturePullRequest": {
     "url": "https://github.com/jpdandin44/AVEREO/pull/144",
     "number": 144,
-    "observedHeadSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
-    "observedAt": "2026-11-12T12:03:21.008+00:00",
-    "draft": true,
-    "technicalQualification": "passed"
+    "observedHeadSha": "aa67d49a95a846115b92af148e34e9308a7b90d1",
+    "observedAt": "2026-11-12T12:12:36.672+00:00",
+    "draft": false,
+    "technicalQualification": "passed",
+    "mergeable": "MERGEABLE",
+    "technicalChecksPassed": 24,
+    "scope": "Current local GitHub observation after publication."
   },
   "documentationControl": {
     "documents": 14,

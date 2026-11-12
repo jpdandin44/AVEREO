@@ -19,16 +19,18 @@
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/passeport-immo-documents-compresses",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/144",
-    "observedHeadSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+    "observedHeadSha": "aa67d49a95a846115b92af148e34e9308a7b90d1",
     "humanAcceptanceVerified": false,
-    "observedAt": "2026-11-12T12:03:21.008+00:00",
+    "observedAt": "2026-11-12T12:12:36.672+00:00",
     "number": 144,
     "state": "open",
-    "draft": true,
+    "draft": false,
     "baseSha": "16338e844912fade2a5e8b315b8313fe6f7e2dbd",
     "mergeable": "MERGEABLE",
     "technicalCiStatus": "passed",
-    "runtimeCandidateFrozen": true
+    "runtimeCandidateFrozen": true,
+    "technicalChecksPassed": 24,
+    "latestObservationScope": "Post-publication observation kept locally; runtime candidate remains the frozen CI artifact."
   },
   "targets": {
     "preproduction": {
@@ -78,6 +80,15 @@
       "observedAt": "2026-11-12T12:03:21.008+00:00",
       "evidence": "api/reprise-documents-compresses-observation.json#candidate",
       "target": "downloaded_closed_ci_artifact"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
+      "observedAt": "2026-11-12T12:12:36.672+00:00",
+      "documentedPrHead": "aa67d49a95a846115b92af148e34e9308a7b90d1",
+      "evidence": "api/reprise-documents-compresses-observation.json#documentationControl"
     }
   ],
   "approvals": [],

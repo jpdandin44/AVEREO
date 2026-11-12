@@ -319,7 +319,7 @@
         "Procédure, fumée et retour arrière vérifiés par le responsable.",
         "Contrôles réels après livraison et préparation de la prochaine itération consignés."
       ],
-      "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et la PR opératoire Drupal nº25 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés. La source OAuth nº22 est déjà fusionnée humainement dans la branche Gin ; cette acceptation est conservée, sans la convertir en revue du site.",
+      "nextAction": "Reprise du 12 novembre : conserver D06 et les revues GitHub acquises, dont PR85 et Drupal23 fusionnées. Avant toute intervention de production, requalifier version hébergée, parcours CONNECT/dandin/SCI, inventaire et sauvegarde fraîche restaurée. La nouvelle évolution archives PR144 est en revue locale dans son suivi distinct, sans extraction ni autorisation de déploiement déduite.",
       "legacyPhaseId": 4,
       "authorizedOn": "2026-10-16",
       "startEvidence": {
@@ -1659,9 +1659,10 @@
       "publicOpeningPerformed": false
     },
     "blockers": [
-      "Revue humaine du site de préproduction et acceptation GitHub encore requises avant livraison du fournisseur OAuth de production. La recette CONNECT/dandin/SCI de production reste ouverte ; aucun nouvel accord de déploiement générique à redemander."
+      "Version hébergée exacte, inventaire SCI et dernière sauvegarde non requalifiés dans cette reprise du 12 novembre.",
+      "Recette complète CONNECT/dandin/SCI de production non réexécutée dans cette reprise ; preuves antérieures conservées."
     ],
-    "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et la PR opératoire Drupal nº25 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés. La source OAuth nº22 est déjà fusionnée humainement dans la branche Gin ; cette acceptation est conservée, sans la convertir en revue du site.",
+    "nextAction": "Reprise du 12 novembre : conserver D06 et les revues GitHub acquises, dont PR85 et Drupal23 fusionnées. Avant toute intervention de production, requalifier version hébergée, parcours CONNECT/dandin/SCI, inventaire et sauvegarde fraîche restaurée. La nouvelle évolution archives PR144 est en revue locale dans son suivi distinct, sans extraction ni autorisation de déploiement déduite.",
     "nextIteration": [
       "À cadrer : service CIL complet selon docs/plan-action-cil.md ; quatorze actions et douze scénarios proposés, Word dérivé dans docs/livrables/plan-action-cil.docx. Périmètre distinct du candidat courant, aucune validation CIL créée.",
       "À prioriser : copie de sauvegarde hors hébergement, alertes et objectifs de récupération.",
@@ -1685,7 +1686,7 @@
       },
       "production": {
         "status": "in_progress",
-        "nextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et la PR opératoire Drupal nº25 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés. La source OAuth nº22 est déjà fusionnée humainement dans la branche Gin ; cette acceptation est conservée, sans la convertir en revue du site."
+        "nextAction": "Reprise du 12 novembre : conserver D06 et les revues GitHub acquises, dont PR85 et Drupal23 fusionnées. Avant toute intervention de production, requalifier version hébergée, parcours CONNECT/dandin/SCI, inventaire et sauvegarde fraîche restaurée. La nouvelle évolution archives PR144 est en revue locale dans son suivi distinct, sans extraction ni autorisation de déploiement déduite."
       }
     },
     "gates": [
@@ -2650,7 +2651,8 @@
       "rightsConfirmationEvidence": "https://github.com/jpdandin44/AVEREO/blob/chore/preprod-rapport-passeport-20261016/outillage/acces-preproduction/archives/livraison-rapport-passeport-20261016/rights-confirmation.json",
       "rightsReservationClosed": true,
       "rightsChanged": false
-    }
+    },
+    "currentStateObservation": "api/reprise-documents-compresses-observation.json"
   },
   "reviewFollowUps": [
     {
@@ -4097,5 +4099,16 @@
       "scope": "Nouvelle évolution en revue locale ; ne remplace ni les décisions ni la livraison de l’ancien candidat."
     }
   ],
-  "currentStateObservation": "../api/reprise-documents-compresses-observation.json"
+  "currentStateObservation": "../api/reprise-documents-compresses-observation.json",
+  "resumptionPlanningHistory": [
+    {
+      "recordedAt": "2026-11-12T12:17:58.906+00:00",
+      "previousObservationDate": "2026-10-16",
+      "previousNextAction": "Les quatre lots de sécurité et les deux fichiers OAuth du site sont livrés en préproduction : audit actif sans alerte, 887 routes comparées, 23 contrôles de rendu natif, trois réponses exactes sous maintenance et six sondes TLS/Basic401. Revoir le site de préproduction et la PR opératoire Drupal nº25 avant la production conditionnelle déjà autorisée, avec nouvelle sauvegarde restaurée. La nouvelle connexion CONNECT préproduction et l’accès aux deux applications sont confirmés dans le chat coordonné. La recette de production CONNECT/dandin/SCI reste à terminer ; activation, neuf documents SCI et sauvegarde Passeport sont conservés. La source OAuth nº22 est déjà fusionnée humainement dans la branche Gin ; cette acceptation est conservée, sans la convertir en revue du site.",
+      "previousBlockers": [
+        "Revue humaine du site de préproduction et acceptation GitHub encore requises avant livraison du fournisseur OAuth de production. La recette CONNECT/dandin/SCI de production reste ouverte ; aucun nouvel accord de déploiement générique à redemander."
+      ],
+      "reason": "PR85 and Drupal23 now verified merged; dated next action preserved without asking to repeat acquired reviews."
+    }
+  ]
 }
