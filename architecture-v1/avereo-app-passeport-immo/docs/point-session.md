@@ -18,6 +18,8 @@ Repartir du [nouvel état des lieux](reprise-documents-compresses.md), du [guide
 
 Prochaine action : revoir le nouveau candidat et sa PR, puis qualifier la préproduction de ce même artefact selon les contrôles et accords applicables. Ne pas rejouer activation, migration SCI ou sauvegarde existantes. Le CIL complet reste distinct.
 
+Retour d’utilisation traité : l’association du client masquait auparavant tous les boutons d’import. Les deux étapes sont désormais affichées, avec boutons désactivés avant association et explication de l’enregistrement automatique/cible. Le parcours est contrôlé avec un client et un ZIP fictifs ; le nouveau candidat remplace celui présenté avant cette correction. État et preuves dans le suivi du lot, sans nouvelle validation humaine créée.
+
 ## Historique — points du 16 octobre et antérieurs
 
 ## Contrôle complémentaire de préproduction — 16 octobre

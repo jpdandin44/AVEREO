@@ -16,6 +16,8 @@ tags: [passeport-immo, local]
 
 Ajout ZIP/7z/RAR/TAR/GZ/TGZ dans les validations et le sélecteur, consultation adaptée et téléchargement de l’original. Tests de conservation, faux conteneurs, doublons, limites, affichage et API/backup étendus avec données fictives. État des lieux et suivi du lot ajoutés sans réécrire les documents approuvés. [Recette](docs/documents-compresses.md) ; aucune installation hébergée de ce nouveau candidat.
 
+Après retour d’utilisation, les boutons d’import restent visibles avant l’association du client, avec l’étape nécessaire pour les activer. L’écran explique l’enregistrement automatique des fichiers et distingue le navigateur du serveur privé. Le client reste obligatoire ; les erreurs d’association n’activent pas l’import. Guide et tests de parcours complétés.
+
 ## 2026-10-16 — Accord OAuth et précontrôle du fournisseur
 
 Accord reçu pour les trois routes, intégrées dans la PR Drupal nº21 ; 66 contrôles

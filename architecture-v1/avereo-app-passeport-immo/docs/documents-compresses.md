@@ -31,11 +31,22 @@ candidat, de phase, de merge ou de déploiement.
 
 ## Utilisation
 
-1. Ouvrir le bien et associer son client si nécessaire.
-2. Dans **Documents du bien**, choisir la catégorie puis **Ajouter des fichiers**.
-3. Sélectionner les archives ; **Importer un dossier** peut aussi inclure ces fichiers.
+1. Ouvrir le bien. Dans **1. Associer le client**, saisir le nom du client ou de sa société, ou sélectionner un client existant, puis cliquer sur **Associer le client**.
+2. Dans **2. Ajouter des documents**, choisir la catégorie puis **Ajouter des fichiers**. Ces boutons sont visibles mais désactivés jusqu’à la confirmation de l’association ; l’écran indique l’étape nécessaire.
+3. Sélectionner les archives ; **Importer un dossier** peut aussi inclure ces fichiers. Attendre le message d’ajout et l’apparition du document : le fichier est alors enregistré, sans utiliser les boutons généraux **Enregistrer en ligne** ou **Enregistrer en local**.
 4. Utiliser **Consulter**, puis **Télécharger le document**, pour récupérer l’original.
 5. Au besoin, renommer le titre, classer, archiver ou restaurer le document.
+
+L’enregistrement automatique concerne l’import des fichiers. Lors d’un changement
+de titre ou de catégorie avec **Renommer ou classer**, confirmer le formulaire avec
+son bouton **Enregistrer**. Un échec d’association ou d’import est affiché ; il ne
+doit pas être interprété comme un enregistrement réussi.
+
+Sur **5178**, les fichiers sont conservés dans ce navigateur et sur ce PC
+uniquement. Sur la version hébergée, le stockage privé les rend accessibles depuis
+les appareils connectés au même compte CONNECT. Le texte près des boutons d’import
+indique la cible réellement utilisée ; l’ajout local ne transmet pas les fichiers
+au serveur.
 
 **25 Mo par fichier**, **100 Mo et 100 fichiers par lot** : les limites portent
 sur la taille des fichiers importés, sans décompression. Les noms et octets des
@@ -65,6 +76,7 @@ Leur exécution effective est à distinguer des seuls tests de reconnaissance PH
 
 | Critère | Action | Attendu |
 | --- | --- | --- |
+| A0 | Ouvrir un bien sans client, puis associer un client fictif. | Les deux étapes et les boutons d’import sont visibles ; l’import s’active uniquement après confirmation. L’enregistrement et sa cible sont expliqués. |
 | A1 | Ajouter `dossier.zip` fictif à un bien/client de test. | Un document apparaît avec son nom ZIP et sa catégorie. |
 | A2 | Consulter et télécharger. | Message d’archive conservée, aucun lecteur PDF ; octets téléchargés identiques. |
 | A3 | Réimporter le même ZIP renommé. | Doublon signalé, pas de deuxième copie du contenu. |
@@ -85,4 +97,4 @@ du candidat et qualification de la cible.
 - [Annexe de conservation et parité](source-audit-documents-compresses.md).
 - [Suivi de l’itération](../data/suivi-documents-compresses.json).
 
-La [CI isolée qualifiée](https://github.com/jpdandin44/AVEREO/actions/runs/43213408562) réussit 68 contrôles API, 22 de sauvegarde et 35 de transfert sur ce nouveau candidat. Cette preuve complète la recette locale, sans remplacer la future recette sur le vrai hébergement.
+La correction de guidage du 12 novembre fait l’objet d’un nouveau candidat et d’une nouvelle qualification, suivis dans le [suivi canonique](../data/suivi-documents-compresses.json). La précédente CI qualifiée reste une preuve datée de la version antérieure ; elle ne qualifie pas à elle seule l’écran corrigé ni le vrai hébergement.

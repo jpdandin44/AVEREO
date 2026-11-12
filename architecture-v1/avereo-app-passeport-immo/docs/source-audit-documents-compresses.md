@@ -23,7 +23,7 @@ octets, ni leur attribuer l’acceptation de la présente évolution.
 | Composant | Évolution autorisée | Conservation vérifiée |
 | --- | --- | --- |
 | `document-store.js` | Six extensions, types d’archive, signatures et filtre de sélection commun. | Association client/bien, Blob, empreinte, transaction et métadonnées existants ; aucun extracteur. |
-| `DocumentsPanel.jsx` | Formats annoncés, sélecteur élargi, texte de consultation adapté aux archives. | Catégories, recherche, nom d’origine, classement et archivage/restauration inchangés. |
+| `DocumentsPanel.jsx` et `documents.css` | Formats annoncés, sélecteur élargi, texte de consultation adapté aux archives ; étapes client/import visibles et explication de l’enregistrement automatique avec sa cible. | Association client toujours obligatoire : imports et sélecteur désactivés avant confirmation ; catégories, recherche, original, classement et archivage/restauration conservés. |
 | `api/storage.php` | Même liste d’extensions, signatures et MIME canoniques d’archive. | Droits, contrôles du lot, fichiers privés, base et règles de téléchargement inchangés. |
 | Tests et CI | Fixtures fictives, refus, restitution intersession, sauvegarde et tests PHP dédiés. | Pas de données client ni d’archives réelles dans Git ou le build. |
 | Application principale | Aucun changement de `App.jsx`. | Chiffrage, navigation, identité, PDF et CSV contrôlés par la parité et les tests de régression. |

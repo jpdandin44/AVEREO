@@ -104,7 +104,7 @@
     "maxFiles": 100
   },
   "localChecks": {
-    "frontendTests": 45,
+    "frontendTests": 49,
     "phpFileInspectionAssertions": 40,
     "pythonTests": 19,
     "parity": "passed",
@@ -119,7 +119,27 @@
       "noExtraction": true,
       "hostedWritePerformed": false
     },
-    "artifactReadback": "passed"
+    "artifactReadback": "passed",
+    "guidedImport": {
+      "observedAt": "2026-11-12T13:00:08.860529+00:00",
+      "status": "passed",
+      "target": "http://127.0.0.1:5178/",
+      "fictitiousDataOnly": true,
+      "beforeClient": "Both steps, disabled import controls and required action visible.",
+      "afterClient": "Import enabled only after confirmed association.",
+      "zipAddedWithoutSeparateSave": true,
+      "storageTargetExplained": "browser_only",
+      "hostedWritePerformed": false,
+      "screenshots": [
+        ".local/documents-guide-client.png",
+        ".local/documents-guide-import.png"
+      ],
+      "sourceFilesSha256": {
+        "frontend/src/documents/DocumentsPanel.jsx": "a9ea1eb99ea08d2efe70d67912170698e56b0dd8877e8b33d1985300050449e3",
+        "frontend/src/documents/documents.css": "9801c9b7fd2b7e11488e905862157388f7235fe89a93cbc79d1bf9882e6d39fa",
+        "frontend/tests/documents-panel.test.jsx": "75f852f8d2fa7d44cfc5e4b23d2b048a072dd7f0763ee406bbd57b68b39d5d55"
+      }
+    }
   },
   "serverIntegration": {
     "localDockerStatus": "unavailable",
@@ -144,22 +164,11 @@
     "realHostingRecipe": false
   },
   "candidate": {
-    "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
-    "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
-    "fileCount": 18,
-    "artifactPath": ".local/ci-5c425c6/candidate.zip",
-    "manifestPath": ".local/ci-5c425c6/candidate.manifest.json",
-    "downloadedFromGitHub": true,
-    "artifactRun": "https://github.com/jpdandin44/AVEREO/actions/runs/43213408562",
-    "archiveReadback": "passed",
-    "localBuildDifference": {
-      "files": [
-        "account-menu.js",
-        "index.html"
-      ],
-      "reason": "CRLF versus LF only; CI archive selected as canonical.",
-      "functionalContentIdenticalAfterLineEndingNormalization": true
-    }
+    "status": "qualification_in_progress",
+    "sourceSha": null,
+    "artifactSha256": null,
+    "artifactPath": null,
+    "manifestPath": null
   },
   "newFeatureHostedDeployment": {
     "preproduction": false,
@@ -168,12 +177,11 @@
   "newFeaturePullRequest": {
     "url": "https://github.com/jpdandin44/AVEREO/pull/144",
     "number": 144,
-    "observedHeadSha": "aa67d49a95a846115b92af148e34e9308a7b90d1",
-    "observedAt": "2026-11-12T12:12:36.672+00:00",
-    "draft": false,
-    "technicalQualification": "passed",
+    "observedHeadSha": "3af317d7448e7b609e39b8f4d476bb2efdd8136e",
+    "observedAt": "2026-11-12T13:00:08.860529+00:00",
+    "draft": true,
+    "technicalQualification": "pending_new_runtime",
     "mergeable": "MERGEABLE",
-    "technicalChecksPassed": 24,
     "scope": "Current local GitHub observation after publication."
   },
   "documentationControl": {
@@ -191,5 +199,45 @@
     "runtimeFilesExact": true,
     "archiveContainsOnlyBuiltRuntimeFiles": true
   },
-  "qualificationObservedAt": "2026-11-12T12:03:21.008+00:00"
+  "qualificationObservedAt": "2026-11-12T12:03:21.008+00:00",
+  "candidateHistory": [
+    {
+      "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
+      "fileCount": 18,
+      "artifactPath": ".local/ci-5c425c6/candidate.zip",
+      "manifestPath": ".local/ci-5c425c6/candidate.manifest.json",
+      "downloadedFromGitHub": true,
+      "artifactRun": "https://github.com/jpdandin44/AVEREO/actions/runs/43213408562",
+      "archiveReadback": "passed",
+      "localBuildDifference": {
+        "files": [
+          "account-menu.js",
+          "index.html"
+        ],
+        "reason": "CRLF versus LF only; CI archive selected as canonical.",
+        "functionalContentIdenticalAfterLineEndingNormalization": true
+      }
+    }
+  ],
+  "localChecksHistory": [
+    {
+      "frontendTests": 45,
+      "phpFileInspectionAssertions": 40,
+      "pythonTests": 19,
+      "parity": "passed",
+      "productionBuild": "passed",
+      "browserZipUploadDownload": {
+        "status": "passed",
+        "target": "http://127.0.0.1:5178/",
+        "fixtureOnly": true,
+        "uploadVisible": true,
+        "downloadExactBytes": true,
+        "sha256": "542bdf2eeff64f617e96f6c84929697533779ca9b169e8f9c5c1360917701599",
+        "noExtraction": true,
+        "hostedWritePerformed": false
+      },
+      "artifactReadback": "passed"
+    }
+  ]
 }

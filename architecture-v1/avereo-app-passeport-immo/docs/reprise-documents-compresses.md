@@ -22,7 +22,7 @@ tags: [reprise, etat-des-lieux, documents, archives]
 | Accès publics | Racines préproduction et production : redirection 303 vers leur CONNECT ; API workspace : refus 401 sans session. | Vérification HTTPS anonyme, sans cookie ni identifiant ; ne vaut pas recette métier ou nouvelle connexion de production. |
 | SCI et sauvegardes | Les reçus du 16 octobre décrivent le bien SCI, neuf documents, stockage privé et sauvegarde quotidienne. | Inventaire et dernier succès de sauvegarde à relire sur le serveur avant intervention ; aucun rejeu de migration, activation ou cron. |
 | Types de fichier | Le code courant excluait les archives dans l’interface et dans PHP. | Le nouveau lot ajoute ZIP/7z/RAR/TAR/GZ/TGZ ; limites 25 Mo/fichier et 100 Mo/lot conservées. |
-| Fonctionnement local | 45 tests frontend, 40 vérifications PHP, parité et 19 tests Python réussis ; build produit. | Docker local indisponible ; CI isolée réussie : 68 contrôles API, 22 sauvegardes, 35 transferts et 83 contrôles Apache. Aucune recette hébergée de cette évolution déduite. |
+| Fonctionnement local | 49 tests frontend réussis après correction du guidage client/import. La précédente qualification comprend 40 vérifications PHP et 19 tests Python. | Le nouvel écran demande une nouvelle qualification du candidat. Docker local indisponible ; les preuves CI restent attachées à leurs versions dans le suivi. Aucune recette hébergée de cette évolution déduite. |
 | CIL | Le plan d’action structuré et son Word restent une proposition distincte. | L’ajout d’archives n’implémente pas les fonctions réglementaires d’un CIL complet. |
 
 Les observations structurées sont dans la [preuve de reprise](../api/reprise-documents-compresses-observation.json).
@@ -52,8 +52,17 @@ antérieure ni ses décisions. La recette locale est décrite dans le
 Les copies du 16 octobre et leurs fichiers non commités sont préservés. Les
 documents réels, reçus privés, copies de bases et secrets restent hors Git.
 
-## Candidat de livraison retenu
+## Candidat après retour d’utilisation
 
-Source applicative qualifiée : `5c425c62ffcefb2e17781cdacc9f8183dbc3badb` ; archive CI de 18 fichiers, SHA-256 `6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d`. [CI de référence](https://github.com/jpdandin44/AVEREO/actions/runs/43213408562). L’archive a été téléchargée, relue et rapprochée de son manifeste. Les compléments documentaires conservent ce candidat ; relire la tête de PR et les contrôles courants avant livraison.
+Le retour du responsable sur l’impossibilité apparente de charger/enregistrer
+conduit à afficher les deux étapes client/import et la cible d’enregistrement.
+L’import reste conditionné à l’association du client. Le parcours fictif du
+navigateur confirme l’activation des boutons et l’ajout automatique d’un ZIP.
 
-La construction locale Windows diffère de celle de la CI seulement par CRLF/LF dans `account-menu.js` et `index.html`. Le candidat canonique est donc l’archive CI conservée dans `.local/ci-5c425c6/`, pas une reconstruction locale implicite. Les autres fichiers et contenus fonctionnels sont identiques ; les droits et les garde-fous ne changent pas.
+Cette correction change les fichiers applicatifs : l’ancienne archive CI
+`5c425c62`, SHA-256 `6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d`,
+reste historique. Le candidat courant, son empreinte et sa qualification sont
+conservés dans le [suivi canonique](../data/suivi-documents-compresses.json).
+Retenir l’archive CI téléchargée et vérifiée, sans lui substituer une construction
+Windows dont les fins de ligne peuvent différer. Aucun déploiement de cette
+correction n’est réalisé.
