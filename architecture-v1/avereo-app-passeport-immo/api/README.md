@@ -5,12 +5,16 @@ title: État des intégrations
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # État des intégrations
+
+## Observation de reprise du 12 novembre
+
+[Reprise et archives](reprise-documents-compresses-observation.json) distingue dépôt, observations HTTPS anonymes, lecture de Chrome et essais locaux fictifs. La version hébergée exacte, l’inventaire SCI courant et le dernier succès de sauvegarde ne sont pas prétendus vérifiés par ces seuls contrôles.
 
 Aucune API métier n'est implémentée dans le prototype local.
 Le service de revue est fourni par [AVEREO Projet](../../avereo-app-projet/api/revue-locale.md).

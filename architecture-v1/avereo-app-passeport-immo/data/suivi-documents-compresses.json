@@ -1,0 +1,212 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "version": "git",
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "passeport-immo-documents-compresses",
+  "kind": "evolution-documentaire",
+  "stage": "developpement-local",
+  "status": "awaiting_local_human_review",
+  "objective": "Centraliser les archives des clients dans le dossier du bien, avec restitution exacte et sans extraction.",
+  "candidate": {
+    "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+    "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+    "artifactPath": ".local/ci-0a3eacf/candidate.zip",
+    "manifestPath": ".local/ci-0a3eacf/candidate.manifest.json",
+    "runtimeTreeSha": "abea760e44230b711a2ee3dd963bdc4dc40fe768"
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/passeport-immo-documents-compresses",
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/144",
+    "observedHeadSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+    "humanAcceptanceVerified": false,
+    "observedAt": "2026-11-12T13:05:49.872666+00:00",
+    "number": 144,
+    "state": "open",
+    "draft": false,
+    "baseSha": "bc8c0b0750ddc854a01f7da70695afc5889ed009",
+    "mergeable": "MERGEABLE",
+    "technicalCiStatus": "passed",
+    "runtimeCandidateFrozen": true,
+    "latestObservationScope": "Qualified runtime head; subsequent documentation-only commits preserve the frozen CI artifact. Recheck latest PR head before delivery.",
+    "technicalChecksPassed": 24
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://passeport-immo-preprod.avereo.fr/",
+      "ready": false,
+      "detail": "Existing site accessible; this new artifact is not installed or qualified."
+    },
+    "production": {
+      "id": "https://passeport-immo.avereo.fr/",
+      "ready": false,
+      "detail": "No new artifact or current authenticated business recipe qualified."
+    }
+  },
+  "checks": [
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
+      "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+      "observedAt": "2026-11-12T11:45:27.316+00:00",
+      "evidence": "api/reprise-documents-compresses-observation.json",
+      "target": "http://127.0.0.1:5178/"
+    },
+    {
+      "kind": "ci",
+      "status": "pending",
+      "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
+      "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+      "observedAt": "2026-11-12T11:45:27.316+00:00",
+      "evidence": null
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
+      "observedAt": "2026-11-12T12:03:21.008+00:00",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43213408562",
+      "testedHeadSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "target": "isolated_apache_php_mariadb"
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
+      "observedAt": "2026-11-12T12:03:21.008+00:00",
+      "evidence": "api/reprise-documents-compresses-observation.json#candidate",
+      "target": "downloaded_closed_ci_artifact"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
+      "observedAt": "2026-11-12T12:12:36.672+00:00",
+      "documentedPrHead": "aa67d49a95a846115b92af148e34e9308a7b90d1",
+      "evidence": "api/reprise-documents-compresses-observation.json#documentationControl"
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+      "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+      "observedAt": "2026-11-12T13:05:49.872666+00:00",
+      "target": "http://127.0.0.1:5178/",
+      "evidence": "api/reprise-documents-compresses-observation.json#localChecks",
+      "scope": "Guided import tested from same UI sources; downloaded CI archive read back separately. Windows package differs only by line endings in index.html/account-menu.js."
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+      "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+      "observedAt": "2026-11-12T13:05:49.872666+00:00",
+      "target": "isolated_apache_php_mariadb",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43223460165"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+      "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+      "observedAt": "2026-11-12T13:05:49.872666+00:00",
+      "evidence": "api/reprise-documents-compresses-observation.json#documentationControl"
+    }
+  ],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested"
+  },
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "blockers": [
+    "Revue humaine du nouveau candidat local et acceptation GitHub non enregistrées.",
+    "Cible, sauvegarde fraîche restaurée et retour arrière à requalifier avant installation."
+  ],
+  "nextAction": "Revoir la PR144 et le parcours local guidé client/import ; qualifier ensuite la préproduction du même artefact selon les contrôles et accords applicables.",
+  "nextIteration": [],
+  "budget": {
+    "limit": null,
+    "unit": null
+  },
+  "phases": [
+    {
+      "id": 0,
+      "label": "Cadrage",
+      "status": "in_progress",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 1,
+      "label": "Développement local",
+      "status": "awaiting_review",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 2,
+      "label": "Préproduction",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 3,
+      "label": "Mise en production",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    }
+  ],
+  "scopeDecision": {
+    "date": "2026-11-12",
+    "source": "user_reply",
+    "quote": "Conserver les archives entières, sans extraction (recommandé)",
+    "createsPhaseOrDeploymentApproval": false
+  },
+  "reviewEnvironment": {
+    "phase": 1,
+    "environment": "local",
+    "url": "http://127.0.0.1:5178/",
+    "fictionalDataOnly": true
+  },
+  "evidence": "api/reprise-documents-compresses-observation.json",
+  "documentation": "docs/documents-compresses.md",
+  "historicParentTracking": "docs/suivi-chantier.json",
+  "existingApprovalsExtended": false,
+  "ciHistory": [
+    {
+      "headSha": "b003c670bc4f00663e4125aa3e6cd1d6fe0f5144",
+      "status": "failed",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43212636469",
+      "reason": "The scheduled-backup fixture still expected one document after extending the dataset to one PDF and seven archive containers. Test now receives the exact expected count; backup implementation unchanged."
+    }
+  ],
+  "previousLocalCandidate": {
+    "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
+    "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+    "artifactPath": ".local/candidate.zip",
+    "runtimeTreeSha": "4b1decc68702138d8105374f8f63836cda514603",
+    "documentationCommitsPreserveRuntime": true
+  },
+  "candidateHistory": [
+    {
+      "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
+      "artifactSha256": "6963ebddf00c88f13e50fe49156882364651de4449bca39b3b37b4ed333c147d",
+      "artifactPath": ".local/ci-5c425c6/candidate.zip",
+      "manifestPath": ".local/ci-5c425c6/candidate.manifest.json",
+      "runtimeTreeSha": "4b1decc68702138d8105374f8f63836cda514603",
+      "supersededReason": "Guidage client/import corrigé après retour utilisateur ; nouveau candidat à qualifier."
+    }
+  ],
+  "usabilityFeedback": {
+    "source": "user_message_2026-11-12",
+    "detail": "Boutons d’import masqués avant association du client et enregistrement des fichiers peu compréhensible.",
+    "correction": "Étapes visibles, import désactivé avant association confirmée, enregistrement automatique et cible explicités.",
+    "createsHumanApproval": false
+  }
+}

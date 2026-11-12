@@ -5,12 +5,16 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-12
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Architecture Passeport Immo
+
+## Conteneurs documentaires compressés
+
+Les [archives](docs/documents-compresses.md) utilisent les mêmes Blob IndexedDB ou fichiers privés et métadonnées MySQL que les autres documents. La reconnaissance bornée de l’en-tête et un MIME canonique d’archive sont appliqués avant écriture ; aucun membre n’est extrait ou exécuté. Le sélecteur et les validations locales partagent la liste du module documentaire ; le contrôle PHP indépendant est couvert par les mêmes sept fixtures. Ni nouvelle dépendance de décompression, ni nouvelle table, ni modification du sas CONNECT.
 
 ## Production privée — 16 octobre
 

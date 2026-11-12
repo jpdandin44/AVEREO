@@ -5,12 +5,16 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-06
+updated: 2026-11-12
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # AVEREO – Passeport Immo
+
+## Reprise du 12 novembre — état courant et archives
+
+La [reprise courante](docs/reprise-documents-compresses.md) rapproche le dépôt à jour, les accès hébergés et les preuves historiques. La PR85 est fusionnée, de même que Drupal23 ; les mentions du 16 octobre ci-dessous décrivent leur état à cette date. Le nouveau [lot archives](docs/documents-compresses.md) accepte ZIP, 7z, RAR, TAR, GZ et TGZ, conservés entiers selon le choix du responsable. Il est disponible en [revue locale sur 5178](http://127.0.0.1:5178/), pas encore installé en préproduction ou production. Les limites de 25 Mo par fichier et 100 Mo par lot sont conservées ; le schéma et les droits existants sont réutilisés.
 
 ## Étude du carnet d’information du logement
 

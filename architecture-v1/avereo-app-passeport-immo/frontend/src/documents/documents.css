@@ -16,12 +16,13 @@
 .doc-secondary { color:#304e5c; border:1px solid #cbd8dd; background:#fff; }
 .doc-secondary:hover { background:#f1f6f6; }
 .doc-text { color:#486573; font-size:12px; padding:8px; text-decoration:underline; text-underline-offset:3px; }
-.documents-panel button:disabled { opacity:.55; cursor:wait; }
+.documents-panel button:disabled { opacity:.55; cursor:not-allowed; }
 .document-client-form { display:flex; gap:12px; align-items:flex-end; margin-bottom:20px; }
 .document-client-form label { flex:1; }
 .document-import { display:grid; grid-template-columns:1fr 1fr; gap:16px; border:1px dashed #b8cdc8; border-radius:12px; padding:20px; margin-bottom:24px; background:#fafdfb; }
 .document-import h3 { font-weight:700; margin-bottom:4px; }
-.document-import-actions { display:flex; align-items:center; gap:8px; grid-column:1 / -1; }
+.document-import-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; grid-column:1 / -1; }
+.document-import-help { grid-column:1 / -1; }
 .document-toolbar { display:flex; gap:12px; align-items:flex-end; margin-bottom:18px; }
 .document-toolbar label:first-child { flex:1; }
 .document-toolbar select { max-width:200px; }
@@ -39,7 +40,9 @@
 .document-empty { text-align:center; padding:35px 20px; color:#6d828d; background:#f8fafb; border-radius:12px; border:1px solid #edf1f3; }
 .document-empty h3 { font-weight:600; color:#425d6b; margin-bottom:8px; }
 .document-empty p, .document-storage-note { font-size:12px; }
-.document-storage-note { color:#6f858f; border-top:1px solid #e8eef0; padding-top:16px; margin-top:24px; }
+.document-storage-note { grid-column:1 / -1; color:#536c77; border-top:1px solid #e8eef0; padding-top:12px; }
+.document-storage-note strong { display:block; font-size:13px; margin-bottom:5px; }
+.document-import .document-storage-note p { font-size:12px; margin-top:4px; }
 .doc-notice, .doc-error { padding:12px 14px; border-radius:8px; margin-bottom:16px; font-size:13px; }
 .doc-notice { color:#235c48; background:#eaf6ee; }
 .doc-error { color:#923e25; background:#fff0e9; }

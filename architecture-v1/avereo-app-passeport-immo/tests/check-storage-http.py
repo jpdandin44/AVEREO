@@ -121,10 +121,26 @@ def run():
             check(request('/api/workspace',cookie,'PUT',empty,csrf)[0]==200 and request(path+'/file',cookie)[0]==404,'deleted property hidden')
             workspace['revision']=2
             check(request('/api/workspace',cookie,'PUT',workspace,csrf)[0]==200 and request(path+'/file',cookie)[2]==content,'soft deleted property recoverable without file loss')
+            archive_fixtures=json.loads((APP/'tests/fixtures/archives.json').read_text(encoding='utf-8'))
+            for fixture in archive_fixtures:
+                bytes_=base64.b64decode(fixture['base64'])
+                uploaded=upload([(fixture['name'],bytes_)])
+                check(uploaded[0]==201,('archive upload accepted: '+fixture['name'],uploaded[0],uploaded[2]))
+                compressed=data(uploaded)['added'][0]
+                check(compressed['mime']==fixture['mime'],'canonical archive MIME: '+fixture['name'])
+                compressed_path='/api/biens/123/documents/'+compressed['id']+'/file'
+                downloaded=request(compressed_path,second)
+                check(downloaded[0]==200 and downloaded[2]==bytes_,'independent session exact archive download: '+fixture['name'])
+                check('attachment;' in downloaded[1]['Content-Disposition'] and 'sandbox' in downloaded[1]['Content-Security-Policy'],'archive inert attachment: '+fixture['name'])
+                check(request(compressed_path,foreign)[0]==404,'foreign archive download denied: '+fixture['name'])
+            expected_documents=1+len(archive_fixtures)
+            check(upload([('nouveau.pdf',content+b'new'),('faux.zip',b'not an archive')])[0]==422,'mixed batch with fake archive rejected atomically')
+            check(len(data(request('/api/biens/123/documents',second))['documents'])==expected_documents,'rejected archive batch leaves document count unchanged')
+            check(data(upload([('copie.zip',base64.b64decode(archive_fixtures[0]['base64']))]))['duplicates']==['copie.zip'],'archive deduplicated by actual bytes')
             check(request('/api/storage.php',cookie)[0]==404 and request('/connect/session.php',cookie)[0]==403,'implementation endpoints blocked')
             backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-test'))
-            check(backup['documents']==1 and backup['fileReadback']=='passed' and backup['temporaryRowRestore']=='passed','private snapshot row restoration and file readback')
-            scheduled=json.loads(command('docker','exec',web,'php','/fixture/scheduled-backup-test.php'))
+            check(backup['documents']==expected_documents and backup['fileReadback']=='passed' and backup['temporaryRowRestore']=='passed','private snapshot restores documents including compressed archives')
+            scheduled=json.loads(command('docker','exec',web,'php','/fixture/scheduled-backup-test.php',str(expected_documents)))
             check(scheduled['assertions']==22,'scheduled backup safety, rotation and environment isolation')
             command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
             check(request(path+'/file',cookie)[0]==503,'altered blob not returned')

@@ -5,12 +5,16 @@ title: Documentation Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-06
+updated: 2026-11-12
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Documentation Passeport Immo
+
+## Reprise courante et fichiers compressés
+
+[État des lieux et reprise](reprise-documents-compresses.md) · [Guide et recette des archives](documents-compresses.md) · [Annexe de parité](source-audit-documents-compresses.md) · [Suivi de l’évolution](../data/suivi-documents-compresses.json). Les dossiers datés et approuvés restent des références historiques ; le nouveau lot a sa propre revue.
 
 [Préparation de la mise en production après PR nº82 et D06](04-mise-en-production.md) ·
 [Validation récupérée et archives vérifiées](../api/production-readiness-observation.json).

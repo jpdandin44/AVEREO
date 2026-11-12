@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { CATEGORIES, documentRepository } from './document-store.js';
+import { CATEGORIES, DOCUMENT_ACCEPT, documentRepository, isCompressedArchive } from './document-store.js';
 import PdfPreview from './PdfPreview.jsx';
 
 const formatSize = size => size < 1024*1024 ? `${Math.ceil(size/1024)} Ko` : `${(size/(1024*1024)).toFixed(1)} Mo`;
@@ -38,6 +38,7 @@ function DocumentReader({ document, bienId, repository, onClose }) {
         <div className="document-reader-content">{document.mime === 'application/pdf'
           ? <PdfPreview url={url} title={document.title} />
           : document.mime.startsWith('image/') ? <img src={url} alt={document.title} />
+          : isCompressedArchive(document) ? <div className="document-no-preview"><h3>Archive compressée conservée dans le dossier du bien.</h3><p>Téléchargez-la pour l’ouvrir avec votre logiciel habituel. Son contenu n’est pas extrait dans l’application.</p></div>
           : <div className="document-no-preview"><h3>Ce document s’ouvre avec votre logiciel habituel.</h3><p>Téléchargez sa copie pour le consulter.</p></div>}</div>
         <footer><span>Le fichier d’origine reste conservé.</span><a className="doc-primary" href={url} download={document.name}>Télécharger le document</a></footer>
       </>}
@@ -113,24 +114,25 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
   return <section className="documents-panel" aria-labelledby="documents-title">
     <header className="documents-heading"><div><p className="doc-eyebrow">PASSEPORT DU BIEN</p><h2 id="documents-title">Documents du bien</h2><p>Réunissez les pièces du client et retrouvez l’historique de son bien.</p></div><span className="document-count">{active.length} document{active.length > 1 ? 's' : ''}</span></header>
     {loading ? <p role="status">Chargement du dossier…</p> : <>
-      <div className="document-client"><span className="client-avatar" aria-hidden="true">{data.client?.name.slice(0,1) || 'C'}</span><div><p className="doc-eyebrow">CLIENT DU DOSSIER</p>{data.client ? <><h3>{data.client.name}</h3><p>{bien.address}</p></> : <p>Associez un client pour commencer.</p>}</div></div>
-      {!data.client && <form className="document-client-form" onSubmit={e => { e.preventDefault(); run(async () => { await repository.linkClient(bienId, { clientId: clientId || undefined, name: clientName }); setNotice('Client associé au bien.'); }); }}>
+      <div className="document-client"><span className="client-avatar" aria-hidden="true">{data.client?.name.slice(0,1) || 'C'}</span><div><p className="doc-eyebrow">CLIENT DU DOSSIER</p>{data.client ? <><h3>{data.client.name}</h3><p>{bien.address}</p></> : <><h3>1. Associer le client</h3><p id="document-client-help">Cette première étape active l’ajout de fichiers pour ce bien.</p></>}</div></div>
+      {!data.client && <form className="document-client-form" aria-describedby="document-client-help" onSubmit={e => { e.preventDefault(); run(async () => { await repository.linkClient(bienId, { clientId: clientId || undefined, name: clientName }); setNotice('Client associé. Vous pouvez maintenant ajouter des fichiers.'); }); }}>
         {data.clients.length > 0 && <label>Client<select value={clientId} onChange={e => setClientId(e.target.value)}><option value="">Créer un nouveau client</option>{data.clients.map(client => <option key={client.id} value={client.id}>{client.name}</option>)}</select></label>}
         {!clientId && <label>Nom du client ou raison sociale<input required maxLength={160} value={clientName} onChange={e => setClientName(e.target.value)} placeholder="Ex. : Client du dossier" /></label>}
         <button className="doc-primary" disabled={busy}>Associer le client</button>
       </form>}
-      {data.client && <div className="document-import">
-        <div><h3>Ajouter au dossier</h3><p>PDF, images et documents bureautiques · 25 Mo par fichier</p></div>
-        <label>Classer les nouveaux documents<select value={category} onChange={e => setCategory(e.target.value)} disabled={busy}>{Object.entries(CATEGORIES).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</select></label>
-        <div className="document-import-actions"><button className="doc-primary" disabled={busy} onClick={() => filesRef.current.click()}>{busy ? 'Enregistrement…' : 'Ajouter des fichiers'}</button><button className="doc-secondary" disabled={busy} onClick={() => folderRef.current.click()}>Importer un dossier</button></div>
-        <input ref={filesRef} type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.webp,.txt,.csv,.doc,.docx,.xls,.xlsx,.odt" onChange={importFiles} aria-label="Fichiers à ajouter au dossier du bien" hidden />
-        <input ref={folderRef} type="file" webkitdirectory="" multiple onChange={importFiles} aria-label="Dossier à importer pour ce bien" hidden />
-        {(bien.dossier.attachments || []).length > 0 && <button className="doc-text" onClick={importLegacy} disabled={busy}>Reprendre les {(bien.dossier.attachments || []).length} anciennes pièces jointes</button>}
-      </div>}
+      <div className="document-import">
+        <div><h3>2. Ajouter des documents</h3><p>PDF, images, documents bureautiques et archives ZIP, 7z, RAR, TAR, GZ ou TGZ · 25 Mo par fichier · 100 Mo par lot</p></div>
+        <label>Classer les nouveaux documents<select value={category} onChange={e => setCategory(e.target.value)} disabled={busy || !data.client}>{Object.entries(CATEGORIES).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</select></label>
+        {!data.client && <p id="document-import-help" className="document-import-help">Associez d’abord le client ci-dessus pour activer ces boutons.</p>}
+        <div className="document-import-actions"><button className="doc-primary" disabled={busy || !data.client} aria-describedby={!data.client ? 'document-import-help' : undefined} onClick={() => filesRef.current.click()}>{busy ? 'Enregistrement…' : 'Ajouter des fichiers'}</button><button className="doc-secondary" disabled={busy || !data.client} aria-describedby={!data.client ? 'document-import-help' : undefined} onClick={() => folderRef.current.click()}>Importer un dossier</button></div>
+        <input ref={filesRef} type="file" multiple accept={DOCUMENT_ACCEPT} onChange={importFiles} disabled={busy || !data.client} aria-label="Fichiers à ajouter au dossier du bien" hidden />
+        <input ref={folderRef} type="file" webkitdirectory="" multiple onChange={importFiles} disabled={busy || !data.client} aria-label="Dossier à importer pour ce bien" hidden />
+        {(bien.dossier.attachments || []).length > 0 && <button className="doc-text" onClick={importLegacy} disabled={busy || !data.client}>Reprendre les {(bien.dossier.attachments || []).length} anciennes pièces jointes</button>}
+        <div className="document-storage-note"><strong>Enregistrement automatique des fichiers</strong><p>Chaque fichier est enregistré dès son ajout. Aucun bouton « Enregistrer » supplémentaire n’est nécessaire pour l’import.</p><p>{repository.server ? 'Stockage : serveur privé. Retrouvez les documents depuis vos appareils avec votre compte CONNECT.' : 'Stockage : ce navigateur, sur ce PC uniquement. Téléchargez une copie pour la conserver ailleurs.'}</p></div>
+      </div>
       <div className="document-toolbar"><label>Rechercher<input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Titre ou nom de fichier" /></label><label>Catégorie<select value={filter} onChange={e => setFilter(e.target.value)}><option value="">Toutes les catégories</option>{Object.entries(CATEGORIES).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</select></label><button className="doc-text" onClick={() => setArchived(value => !value)}>{archived ? 'Voir les documents actifs' : `Archives (${data.documents.length-active.length})`}</button></div>
       {notice && <p role="status" className="doc-notice">{notice}</p>}{error && <p role="alert" className="doc-error">{error}</p>}
       {shown.length ? <div className="document-list">{shown.map(document => <DocumentCard key={document.id} document={document} bienId={bienId} repository={repository} onSaved={reload} onOpen={setSelected} busy={busy} />)}</div> : <div className="document-empty"><h3>{search || filter ? 'Aucun document trouvé' : archived ? 'Aucun document archivé' : 'Votre dossier documentaire est prêt à être rempli'}</h3><p>{search || filter ? 'Essayez un autre titre ou une autre catégorie.' : 'Ajoutez vos diagnostics, plans, documents administratifs et pièces de travaux.'}</p></div>}
-      <p className="document-storage-note">{repository.server ? 'Documents enregistrés sur le serveur privé et accessibles depuis vos appareils avec votre compte CONNECT.' : 'Documents conservés dans ce navigateur, sur ce PC. Téléchargez une copie pour les retrouver sur un autre appareil.'}</p>
     </>}
     {selected && <DocumentReader document={selected} bienId={bienId} repository={repository} onClose={() => setSelected(null)} />}
   </section>;

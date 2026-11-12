@@ -5,16 +5,34 @@ export const CATEGORIES = {
 };
 export const MAX_FILE_SIZE = 25 * 1024 * 1024;
 export const MAX_BATCH_SIZE = 100 * 1024 * 1024;
+const archiveFormats = { zip: 'application/zip', '7z': 'application/x-7z-compressed', rar: 'application/vnd.rar',
+  tar: 'application/x-tar', gz: 'application/gzip', tgz: 'application/gzip' };
 const formats = { pdf: 'application/pdf', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', webp: 'image/webp',
   txt: 'text/plain', csv: 'text/csv', doc: 'application/msword', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  xls: 'application/vnd.ms-excel', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', odt: 'application/vnd.oasis.opendocument.text' };
+  xls: 'application/vnd.ms-excel', xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', odt: 'application/vnd.oasis.opendocument.text', ...archiveFormats };
+export const DOCUMENT_ACCEPT = Object.keys(formats).map(extension => `.${extension}`).join(',');
+export const isCompressedArchive = document => Object.values(archiveFormats).includes(document.mime);
+
+function checkArchiveSignature(file, buffer) {
+  const extension = file.name.split('.').pop().toLowerCase();
+  if (!archiveFormats[extension]) return;
+  const bytes = new Uint8Array(buffer);
+  const starts = signature => signature.every((value, index) => bytes[index] === value);
+  const valid = extension === 'zip' ? bytes.length >= 22 && [[0x50,0x4b,3,4],[0x50,0x4b,5,6],[0x50,0x4b,7,8]].some(starts)
+    : extension === '7z' ? bytes.length >= 32 && starts([0x37,0x7a,0xbc,0xaf,0x27,0x1c])
+    : extension === 'rar' ? bytes.length >= 14 && (starts([0x52,0x61,0x72,0x21,0x1a,7,0]) || starts([0x52,0x61,0x72,0x21,0x1a,7,1,0]))
+    : extension === 'tar' ? bytes.length >= 512 && String.fromCharCode(...bytes.slice(257,262)) === 'ustar'
+    : bytes.length >= 18 && starts([0x1f,0x8b,8]);
+  // Identify the container only. Never extract or execute uploaded content.
+  if (!valid) throw new Error(`Le fichier ${file.name} ne correspond pas au format d’archive annoncé.`);
+}
 
 export function validateFiles(files) {
   if (!files.length || files.length > 100) throw new Error('Choisir entre 1 et 100 fichiers.');
   if (files.reduce((sum, f) => sum + f.size, 0) > MAX_BATCH_SIZE) throw new Error('Ce lot dépasse 100 Mo. Importez les documents en plusieurs fois.');
   return files.map(file => {
     const extension = file.name.split('.').pop().toLowerCase();
-    if (!formats[extension]) throw new Error(`Format non pris en charge : ${file.name}. Choisissez un PDF, une image ou un document bureautique.`);
+    if (!formats[extension]) throw new Error(`Format non pris en charge : ${file.name}. Choisissez un PDF, une image, un document bureautique ou une archive ZIP, 7z, RAR, TAR, GZ ou TGZ.`);
     if (!file.size || file.size > MAX_FILE_SIZE) throw new Error(`Le fichier ${file.name} est vide ou dépasse 25 Mo.`);
     if (file.name.length > 255) throw new Error('Un nom de fichier dépasse 255 caractères.');
     return formats[extension];
@@ -119,6 +137,7 @@ export function createDocumentRepository({ indexedDB = globalThis.indexedDB, nam
     for (let i = 0; i < list.length; i++) {
       const file = list[i], bytes = await readBlob(file);
       if (types[i] === 'application/pdf' && String.fromCharCode(...new Uint8Array(bytes.slice(0, 5))) !== '%PDF-') throw new Error(`${file.name} n’est pas un PDF lisible.`);
+      checkArchiveSignature(file, bytes);
       prepared.push({ file: new Blob([bytes], { type: types[i] }), sha256: await hash(new Blob([bytes])), name: file.name, mime: types[i], size: file.size });
     }
     return transaction(['biens', 'documents', 'files'], 'readwrite', (tx, done, fail) => {

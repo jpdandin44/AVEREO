@@ -5,12 +5,22 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Exigences Passeport Immo
+
+## Formats compressés — demande du 12 novembre 2026
+
+- ARCH01 : accepter ZIP, 7z, RAR, TAR/USTAR, GZ et TGZ comme documents du bien.
+- ARCH02 : conserver nom et octets de l’archive entière ; ne pas extraire ses membres, conformément au choix humain.
+- ARCH03 : réutiliser client/bien, catégories, doublons, archivage réversible, droits, téléchargement privé et sauvegarde.
+- ARCH04 : conserver 25 Mo par fichier, 100 Mo et 100 fichiers par lot ; reconnaître le conteneur et refuser atomiquement les lots invalides.
+- ARCH05 : rendre visibles l’association du client, l’étape d’import et son enregistrement automatique ; désactiver l’import jusqu’à l’association confirmée et préciser si les fichiers sont conservés dans le navigateur ou sur le serveur privé.
+
+[Périmètre et recette](docs/documents-compresses.md). La reconnaissance n’est pas une analyse exhaustive ni une garantie du contenu des membres.
 
 ## Évolution CIL proposée — 16 octobre
 
