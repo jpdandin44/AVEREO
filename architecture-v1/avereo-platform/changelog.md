@@ -5,10 +5,14 @@ title: Historique des changements
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-08
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
+
+## 12 novembre 2026 — Médaillon individuel, candidat local
+
+Préférences CONNECT enregistrées par compte dans un stockage privé, affichage dans les menus connectés, droits de lecture interorigines bornés et protection contre un formulaire d'une ancienne session. Le modèle public ne remplace plus le médaillon personnel. Pas de migration, de changement d'accès privé ou de déploiement. [Contrat et preuves](docs/medaillon-personnel.md).
 
 ## 8 novembre 2026 — Périmètre de génération des missions
 

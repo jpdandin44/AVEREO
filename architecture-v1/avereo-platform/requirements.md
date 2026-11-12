@@ -5,7 +5,7 @@ title: Exigences
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-09
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -20,7 +20,7 @@ La qualification hébergée et les accords de livraison sont distincts des tests
 
 Appliquer les libellés, comportements accessibles et conditions d’affichage de la [règle commune](docs/fonctionnalites-communes.md). Préserver les données, les droits et le mécanisme de déconnexion de chaque application. Vérifier la parité de la source dans chaque livrable.
 
-Le texte du médaillon « Mon compte » doit être configurable pour toutes les applications d’un même environnement. Les valeurs acceptées et la compatibilité des modèles existants sont décrites dans le [guide d’administration](docs/modele-affichage.md#administration-connect).
+Le texte du médaillon « Mon compte » est une préférence personnelle du compte CONNECT, réglée dans ses préférences et relue dans les applications rattachées. Chaque compte actif ne modifie que sa valeur, conservée côté serveur, sans affecter les autres comptes. La préférence personnelle n'est pas publiée dans l'apparence commune. [Contrat, compatibilité et exception hors ligne](docs/medaillon-personnel.md). Le modèle commun #137 reste historique et ne réalise pas cette isolation.
 
 ## Espaces propres aux applications
 

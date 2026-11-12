@@ -25,6 +25,70 @@ tags:
 security:
   - sessionCookie: []
 paths:
+  /me/preferences:
+    get:
+      tags: [Session]
+      operationId: readOwnPreferences
+      summary: Lire le médaillon du seul compte actif de la session CONNECT
+      description: >-
+        Réponse privée no-store. Les lectures interorigines exigent l'origine exacte
+        d'une application de lancement configurée et une habilitation actuelle à cette application.
+        Aucun identifiant de compte cible n'est accepté. Aucun accès anonyme ou CORS joker.
+      parameters:
+        - name: application
+          in: query
+          required: false
+          schema: {type: string}
+          description: Code applicatif requis pour une lecture interorigine.
+      responses:
+        "200":
+          description: Préférence du compte courant et contexte opaque lié à la session.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [data, meta]
+                properties:
+                  data:
+                    type: object
+                    required: [accountBadge, accountContext]
+                    additionalProperties: false
+                    properties:
+                      accountBadge: {type: string, description: Une à trois lettres ou chiffres Unicode, default: MOI}
+                      accountContext: {type: string, pattern: '^[a-f0-9]{64}$'}
+                  meta: {type: object}
+        "401": {description: Session anonyme}
+        "403": {description: Compte inactif, origine ou application refusée}
+        "503": {description: Service non configuré}
+    put:
+      tags: [Session]
+      operationId: saveOwnPreferences
+      summary: Enregistrer le médaillon de son compte depuis CONNECT uniquement
+      parameters:
+        - {$ref: "#/components/parameters/CsrfToken"}
+        - name: X-Account-Context
+          in: header
+          required: true
+          schema: {type: string, pattern: '^[a-f0-9]{64}$'}
+          description: Contexte reçu lors de la lecture des préférences du même compte et de la même session.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [accountBadge]
+              properties:
+                accountBadge: {type: string, description: Une à trois lettres ou chiffres Unicode}
+      responses:
+        "200": {description: Valeur accountBadge enregistrée dans l'enveloppe data/meta}
+        "401": {description: Session anonyme}
+        "403": {description: CSRF, compte ou origine refusés}
+        "409": {description: Le formulaire appartient à un autre compte ou une ancienne session}
+        "413": {description: Corps supérieur à 512 octets}
+        "422": {description: Valeur ou champ inattendu}
+        "503": {description: Service non configuré}
   /appearance:
     get:
       tags: [System]
