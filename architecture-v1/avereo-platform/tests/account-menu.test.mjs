@@ -52,6 +52,11 @@ test('RGA : accès direct conservé et changement de carte sans ouverture des pr
 function fixture({ portal = 'https://connect-preprod.avereo.fr', content = '', attributes = '', badge } = {}) {
   const dom = new JSDOM(`<meta name="avereo-connect-portal" content="${portal}"><button id="outside">Extérieur</button><avereo-account-menu ${attributes}>${content}</avereo-account-menu>`, { url: 'https://projet-preprod.avereo.fr/', runScripts: 'outside-only', pretendToBeVisual: true });
   dom.window.fetch = async (url, options) => {
+    if (url.startsWith(portal + '/api/v1/me/preferences')) {
+      assert.equal(options.credentials, 'include');
+      assert.equal(options.cache, 'no-store');
+      return {ok:true,json:async()=>({data:{accountBadge:'MOI'}})};
+    }
     assert.equal(url, portal + '/api/v1/appearance');
     assert.equal(options.credentials, 'omit');
     return {ok:true, json:async () => ({data:{headerHeight:68, logoWidth:116, accountTone:'mist', accountBadge:badge}})};
@@ -61,23 +66,117 @@ function fixture({ portal = 'https://connect-preprod.avereo.fr', content = '', a
   return { dom, menu, root: menu.shadowRoot };
 }
 
-test('médaillon commun chargé, prévisualisé et conservé au remontage', async () => {
+test('le modèle public ne remplace jamais le médaillon personnel connecté', async () => {
   const {dom, menu, root} = fixture({badge:'É2A'});
   const {document, CustomEvent} = dom.window;
   const badge = () => root.querySelector('.avatar').textContent;
   assert.equal(badge(), 'MOI');
   await new Promise(resolve => setTimeout(resolve, 0));
-  assert.equal(badge(), 'É2A');
+  assert.equal(badge(), 'MOI');
   document.dispatchEvent(new CustomEvent('avereo-appearance', {detail:{accountBadge:'JPD'}}));
   menu.remove();
   document.body.append(menu);
-  assert.equal(badge(), 'JPD');
+  assert.equal(badge(), 'MOI');
   const second = document.createElement('avereo-account-menu');
   document.body.append(second);
-  assert.equal(second.shadowRoot.querySelector('.avatar').textContent, 'JPD');
+  assert.equal(second.shadowRoot.querySelector('.avatar').textContent, 'MOI');
   document.dispatchEvent(new CustomEvent('avereo-appearance', {detail:{accountTone:'mist'}}));
   assert.equal(badge(), 'MOI');
   dom.window.close();
+});
+
+const tick = () => new Promise(resolve => setTimeout(resolve, 0));
+function personalFixture(app = 'connect') {
+  const portal = 'https://connect-preprod.avereo.fr';
+  const dom = new JSDOM(`<avereo-account-menu portal="${portal}" preferences-app="${app}"></avereo-account-menu>`,
+    {url:app === 'connect' ? portal + '/' : 'https://projet-preprod.avereo.fr/', runScripts:'outside-only',pretendToBeVisual:true});
+  const state = {active:'A', values:{A:'JPD',B:'B'}, failRead:false, failWrite:false, writes:0, requests:[]};
+  const token = () => (state.active === 'A' ? 'a' : 'b').repeat(64);
+  dom.window.fetch = async (url, options = {}) => {
+    state.requests.push({url,options});
+    if (url.endsWith('/api/v1/appearance')) return {ok:true,json:async()=>({data:{accountBadge:'PUB',headerHeight:84}})};
+    if (url.endsWith('/api/v1/session')) return {ok:true,json:async()=>({data:{approved:true,csrfToken:'fixture'}})};
+    assert.match(url,/\/api\/v1\/me\/preferences/);
+    assert.equal(options.credentials,'include'); assert.equal(options.cache,'no-store');
+    if (options.method === 'PUT') {
+      assert.equal(options.headers['X-CSRF-Token'],'fixture');
+      if (state.failWrite || options.headers['X-Account-Context'] !== token()) return {ok:false};
+      state.writes++; state.values[state.active] = JSON.parse(options.body).accountBadge;
+    } else if (state.failRead) return {ok:false};
+    return {ok:true,json:async()=>({data:{accountBadge:state.values[state.active],accountContext:token()}})};
+  };
+  const menu=dom.window.document.querySelector('avereo-account-menu');
+  menu.setAttribute('preferences-fields',JSON.stringify(fields));
+  dom.window.eval(source);
+  return {dom,menu,root:menu.shadowRoot,state};
+}
+
+test('préférences CONNECT : sauvegarde serveur, annulation, isolation et aucun cache de médaillon', async () => {
+  const {dom,menu,root,state}=personalFixture();
+  await tick(); assert.equal(root.querySelector('.avatar').textContent,'JPD');
+  await menu.openPreferences();
+  const input=root.querySelector('[name=personalAccountBadge]');
+  assert.equal(input.disabled,false); assert.equal(input.value,'JPD');
+  input.value='NEW'; root.querySelector('.settings-cancel').click(); assert.equal(state.writes,0);
+  await menu.openPreferences(); input.value='É2A';
+  root.querySelector('form').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));
+  await tick();
+  assert.equal(state.writes,1); assert.equal(state.values.A,'É2A'); assert.equal(state.values.B,'B');
+  assert.equal(root.querySelector('.avatar').textContent,'É2A'); assert.equal(menu.settingsDialog.open,false);
+  assert.doesNotMatch(JSON.stringify({...dom.window.localStorage}),/accountBadge|É2A/);
+  menu.remove(); dom.window.document.body.append(menu); await tick();
+  assert.equal(root.querySelector('.avatar').textContent,'É2A');
+  dom.window.close();
+});
+
+test('échec serveur ou valeur invalide : formulaire conservé et aucun faux succès', async () => {
+  const {dom,menu,root,state}=personalFixture();
+  await menu.openPreferences(); const input=root.querySelector('[name=personalAccountBadge]');
+  for (const invalid of ['ABCD','<b>','']) {
+    input.value=invalid; root.querySelector('form').dispatchEvent(new dom.window.Event('submit',{cancelable:true})); await tick();
+    assert.equal(state.writes,0); assert.equal(menu.settingsDialog.open,true);
+  }
+  state.failWrite=true; input.value='OK'; root.querySelector('form').dispatchEvent(new dom.window.Event('submit',{cancelable:true})); await tick();
+  assert.equal(state.writes,0); assert.equal(state.values.A,'JPD'); assert.equal(menu.settingsDialog.open,true);
+  assert.match(root.querySelector('.settings-error').textContent,/pas pu être enregistrées/);
+  dom.window.close();
+});
+
+test('retour dans un onglet, compte changé et session refusée : aucun ancien médaillon conservé', async () => {
+  const {dom,menu,root,state}=personalFixture(); await menu.openPreferences();
+  state.active='B'; dom.window.dispatchEvent(new dom.window.Event('focus')); await tick();
+  assert.equal(menu.settingsDialog.open,false); assert.equal(root.querySelector('.avatar').textContent,'B');
+  state.failRead=true; dom.window.dispatchEvent(new dom.window.Event('focus'));
+  assert.equal(root.querySelector('.avatar').textContent,'MOI'); await tick();
+  assert.equal(root.querySelector('.avatar').textContent,'MOI');
+  menu.setAttribute('signed-out',''); assert.equal(root.querySelector('.avatar').textContent,'MOI');
+  dom.window.close();
+});
+
+test('un formulaire ouvert pour A ne peut pas enregistrer sur B après changement de session', async () => {
+  const {dom,menu,root,state}=personalFixture(); await menu.openPreferences(); state.active='B';
+  root.querySelector('[name=personalAccountBadge]').value='A';
+  root.querySelector('form').dispatchEvent(new dom.window.Event('submit',{cancelable:true})); await tick();
+  assert.equal(state.writes,0); assert.equal(state.values.B,'B'); assert.equal(menu.settingsDialog.open,true);
+  dom.window.close();
+});
+
+test('toutes les applications connectées lisent le même médaillon, sans pouvoir ouvrir son édition locale', async () => {
+  for (const app of ['rapport','rga','coupe','projet','thermo','drone','recherche','passeport-immo']) {
+    const {dom,menu,root,state}=personalFixture(app); await tick();
+    assert.equal(root.querySelector('.avatar').textContent,'JPD',app);
+    assert(state.requests.some(r=>r.url.endsWith('/preferences?application='+app)),app);
+    await menu.openPreferences(); assert.equal(root.querySelector('.account-preferences').hidden,true,app);
+    dom.window.close();
+  }
+});
+
+test('une réponse personnelle ancienne ne survit pas à la fermeture de session', async () => {
+  const {dom,menu,root}=personalFixture(); await tick(); let resolve;
+  dom.window.fetch=()=>new Promise(r=>{resolve=r;});
+  dom.window.dispatchEvent(new dom.window.Event('focus'));
+  menu.setAttribute('signed-out',''); resolve({ok:true,json:async()=>({data:{accountBadge:'OLD'}})}); await tick();
+  assert.equal(root.querySelector('.avatar').textContent,'MOI'); dom.window.close();
 });
 
 test('libellés partagés, nom accessible et état fermé initial', () => {

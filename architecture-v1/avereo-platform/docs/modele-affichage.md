@@ -5,7 +5,7 @@ title: Modèle d’affichage commun des applications
 status: active
 version: git
 created: 2026-11-08
-updated: 2026-11-09
+updated: 2026-11-12
 owner: jpdandin
 tags: [interface, administration, recette]
 ---
@@ -18,13 +18,17 @@ Le logo horizontal officiel et le nom de l’application occupent le haut gauche
 
 ## Administration CONNECT
 
+**Candidat du 12 novembre :** le médaillon devient une [préférence personnelle du compte](medaillon-personnel.md), modifiable dans **Mon compte → Préférences** et relue sous session dans les applications. L'administration commune conserve hauteur, largeur et teinte ; le champ de texte commun est retiré de ce formulaire pour éviter la confusion. L'ancienne donnée commune reste compatible côté API et dans les exports autonomes, mais ne remplace pas la préférence du compte connecté. Aucune préférence personnelle ne passe dans le modèle public ou l'export Saisie unique. Ce nouveau candidat n'est pas déployé.
+
+### Historique — fonctionnement du candidat #137
+
 Dans **Mon compte → Apparence des applications**, choisir la hauteur du bandeau (56, 68 ou 84 px), la largeur du logo (100, 116 ou 136 px), la couleur claire du compte (brume ou blanc) et le **Texte du médaillon**. Le texte accepte une à trois lettres ou chiffres, par exemple « JPD ». Il est commun à tous les utilisateurs de cet environnement. L’aperçu réagit à la sélection. Annuler ou fermer restaure les valeurs précédentes. **Appliquer à toutes les applications** publie le modèle dans cet environnement. Les applications utilisant ce portail le lisent au prochain chargement. Par défaut, le bandeau mesure 68 px, le logo 116 px et le compte utilise la teinte brume avec « MOI ». Un modèle enregistré avant l’ajout du champ conserve ces trois réglages et affiche « MOI ». Une écriture depuis une ancienne version du portail préserve le texte déjà configuré.
 
 Le portail utilise les routes de lecture publique et d’administration décrites dans le [contrat CONNECT](../../avereo-app-connect/backend/api/openapi.yaml). La lecture publique transmet uniquement les quatre réglages d’affichage. Le texte du médaillon est donc public. Les écritures exigent une session CONNECT active, un jeton CSRF et le rôle propriétaire ou administrateur de l’organisation AVEREO désignée par `APPEARANCE_ADMIN_ORGANIZATION_ID` dans la configuration privée de cet environnement. Une valeur absente désactive l’édition. Le fichier `appearance.json`, dans le même répertoire privé que la configuration CONNECT, est remplacé en une opération. Deux enregistrements complets successifs appliquent le dernier reçu. Les répertoires privés doivent être distincts entre environnements.
 
 Saisie unique conserve son fichier HTML autonome. Dans CONNECT, **Télécharger le modèle enregistré pour Saisie unique** exporte les réglages validés. Les anciens exports à trois réglages affichent « MOI ». Reconstruire depuis son frontend avec `npm run build -- --appearance CHEMIN_DU_JSON`. Sans ce paramètre, les valeurs par défaut s’appliquent. Le fichier autonome ne contacte aucun portail.
 
-[Suivi de la personnalisation du médaillon](../data/suivi-medaillon.json).
+[Suivi historique #137](../data/suivi-medaillon.json) · [Itération personnelle du 12 novembre](../data/suivi-medaillon-personnel.json).
 
 ## Actions par application
 

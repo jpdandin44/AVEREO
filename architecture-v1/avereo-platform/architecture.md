@@ -5,7 +5,7 @@ title: Architecture du socle AVEREO
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-08
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
@@ -23,6 +23,8 @@ Le [document initial](docs/architecture.md) conserve le cadrage historique des d
 Le Web Component `shared/account-menu.js` porte la présentation isolée et les interactions de Mon espace. Les applications lui fournissent leurs actions natives ; le portail vient de la page protégée. La génération copie la même source dans les livrables HTML/React. [Contrat complet](docs/fonctionnalites-communes.md).
 
 ## Préférences applicatives
+
+Le candidat de [médaillon personnel](docs/medaillon-personnel.md) ajoute une préférence transversale de compte : service PHP privé CONNECT, clé fondée sur l'identité de session et lecture par le menu commun. L'API d'apparence publique reste distincte. Les origines de lecture interapplications proviennent des lancements configurés et sont vérifiées avec les habilitations ; les mutations restent dans CONNECT. Aucun schéma SQL ou droit Développements modifié. Non déployé.
 
 Le composant commun rend un formulaire défini par chaque application, valide les valeurs lues et les conserve dans une clé localStorage distincte. Les adaptateurs appliquent uniquement leurs réglages. Les listes et leurs données restent dans les applications : aucune API transversale de projets n’est créée. [Matrice et contrat de stockage](docs/fonctionnalites-communes.md).
 

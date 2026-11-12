@@ -1210,6 +1210,63 @@ $tests['private config allows every application launch key'] = static function (
     }
 };
 
+$tests['personal badge: authenticated account isolation, defaults and persistence'] = static function () use ($config, $repository, $authenticated, $anonymous, $logout): void {
+    $directory = sys_get_temp_dir() . '/badge-' . bin2hex(random_bytes(8));
+    $store = new \Avereo\Connect\Account\Preferences($directory);
+    $app = new Application($config, $repository, accountPreferences:$store);
+    $route = '/api/v1/me/preferences';
+    try {
+        assertSameValue(401, $app->handle(request('GET',$route),$anonymous,'fixture',$logout)->status, 'anonymous denied');
+        assertSameValue(false, is_dir($directory), 'GET never creates storage');
+        $initial = $app->handle(request('GET',$route),$authenticated,'fixture',$logout)->payload['data'];
+        assertSameValue('MOI', $initial['accountBadge'], 'default');
+        $headers = ['x-csrf-token'=>'fixture', 'x-account-context'=>$initial['accountContext']];
+        assertSameValue(403, $app->handle(request('PUT',$route,['accountBadge'=>'JPD']),$authenticated,'fixture',$logout)->status, 'CSRF required');
+        assertSameValue(200, $app->handle(request('PUT',$route,['accountBadge'=>'É2A'],$headers),$authenticated,'fixture',$logout)->status, 'own preference saved');
+        $other = new \Avereo\Connect\Security\AuthContext(43,time(),'drupal-member');
+        $otherInitial=$app->handle(request('GET',$route),$other,'fixture',$logout)->payload['data'];
+        assertSameValue('MOI', $otherInitial['accountBadge'], 'other account unchanged');
+        assertSameValue(409, $app->handle(request('PUT',$route,['accountBadge'=>'B'],$headers),$other,'fixture',$logout)->status, 'stale account form refused');
+        $otherHeaders=['x-csrf-token'=>'fixture', 'x-account-context'=>$otherInitial['accountContext']];
+        assertSameValue(200, $app->handle(request('PUT',$route,['accountBadge'=>'B'],$otherHeaders),$other,'fixture',$logout)->status, 'ordinary member can edit own badge');
+        $fresh = new Application($config,$repository,accountPreferences:new \Avereo\Connect\Account\Preferences($directory));
+        assertSameValue('É2A', $fresh->handle(request('GET',$route),$authenticated,'fixture',$logout)->payload['data']['accountBadge'], 'persisted beyond instance');
+        foreach (['', 'ABCD', '<b>', 'A B', '🙂', 42, null, []] as $invalid) {
+            assertSameValue(422, $app->handle(request('PUT',$route,['accountBadge'=>$invalid],$headers),$authenticated,'fixture',$logout)->status, 'invalid badge');
+        }
+        assertSameValue(422, $app->handle(request('PUT',$route,['accountBadge'=>'X','userId'=>43],$headers),$authenticated,'fixture',$logout)->status, 'no target account accepted');
+        assertSameValue(['accountBadge'=>'B'], $store->read(43), 'foreign account still intact');
+        $inactive = new \Avereo\Connect\Security\AuthContext(52,time(),'drupal-suspended');
+        assertSameValue(403, $app->handle(request('GET',$route),$inactive,'fixture',$logout)->status, 'inactive denied');
+        assertSameValue(405, $app->handle(request('DELETE',$route),$authenticated,'fixture',$logout)->status, 'delete denied');
+    } finally {
+        foreach (glob($directory.'/*') ?: [] as $file) unlink($file);
+        if (is_dir($directory)) rmdir($directory);
+    }
+};
+
+$tests['personal badge: exact entitled CORS origin, no cross-origin mutations or public wildcard'] = static function () use ($repository,$authenticated,$logout): void {
+    $config = new Config('test',true,null,'','','TEST',1800,43200,
+        oauthRedirectUri:'https://connect-preprod.avereo.fr/api/v1/auth/callback',
+        appLaunchEntryUrls:['rapport'=>'https://rapport-preprod.avereo.fr/connect/callback.php', 'coupe'=>'https://coupe-preprod.avereo.fr/connect/callback.php']);
+    $directory=sys_get_temp_dir().'/badge-cors-'.bin2hex(random_bytes(8));
+    $app=new Application($config,$repository,accountPreferences:new \Avereo\Connect\Account\Preferences($directory));
+    $route='/api/v1/me/preferences';
+    $response=$app->handle(request('GET',$route,[],['origin'=>'https://rapport-preprod.avereo.fr'],['application'=>'rapport']),$authenticated,'fixture',$logout);
+    assertSameValue(200,$response->status,'entitled origin');
+    assertSameValue('https://rapport-preprod.avereo.fr',$response->headers['Access-Control-Allow-Origin'],'exact origin');
+    assertSameValue('true',$response->headers['Access-Control-Allow-Credentials'],'cookie required');
+    foreach ([['https://evil.example','rapport'],['https://rapport-preprod.avereo.fr.evil.example','rapport'],['null','rapport'],['https://rapport-preprod.avereo.fr','coupe'],['https://rapport-preprod.avereo.fr', ['rapport']]] as [$origin,$code]) {
+        $response=$app->handle(request('GET',$route,[],['origin'=>$origin],['application'=>$code]),$authenticated,'fixture',$logout);
+        assertSameValue(403,$response->status,'origin/code denied');
+        assertSameValue([], $response->headers,'no CORS on denial');
+    }
+    $other=new \Avereo\Connect\Security\AuthContext(43,time(),'drupal-member');
+    assertSameValue(403,$app->handle(request('GET',$route,[],['origin'=>'https://rapport-preprod.avereo.fr'],['application'=>'rapport']),$other,'fixture',$logout)->status,'unentitled account denied');
+    assertSameValue(403,$app->handle(request('PUT',$route,['accountBadge'=>'X'],['origin'=>'https://rapport-preprod.avereo.fr','x-csrf-token'=>'fixture'],['application'=>'rapport']),$authenticated,'fixture',$logout)->status,'cross-origin PUT denied even with CSRF');
+    assertSameValue(false,is_dir($directory),'no storage writes during CORS tests');
+};
+
 $passed = 0;
 foreach ($tests as $name => $test) {
     $test();

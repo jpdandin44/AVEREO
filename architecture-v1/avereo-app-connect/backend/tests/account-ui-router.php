@@ -59,5 +59,6 @@ $deletion = new \Avereo\Connect\Identity\IdentityAccountDeletionClient(
 $lifecycle = new \Avereo\Connect\Administration\AccountLifecycle($pdo,$service,$policy,$deletion,static fn()=>$reports);
 $app=new \Avereo\Connect\Application(new \Avereo\Connect\Config('local',true,null,'','','ACCOUNT_UI',1800,43200),
     $repo,null,null,$notifier,null,$service,$notifier,$lifecycle,
-    appearance:new \Avereo\Connect\Administration\Appearance(dirname($db).'/appearance.json',7));
+    appearance:new \Avereo\Connect\Administration\Appearance(dirname($db).'/appearance.json',7),
+    accountPreferences:new \Avereo\Connect\Account\Preferences(dirname($db).'/account-preferences'));
 $app->handle(\Avereo\Connect\Http\Request::fromGlobals(),new \Avereo\Connect\Security\AuthContext(1,time(),'owner'),'local-ui-csrf',static fn()=>null)->emit();

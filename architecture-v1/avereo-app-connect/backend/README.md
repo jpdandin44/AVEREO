@@ -5,7 +5,7 @@ title: Backend AVEREO CONNECT
 status: active
 version: git
 created: 2026-09-15
-updated: 2026-11-08
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, connect, api]
 ---
@@ -15,6 +15,8 @@ tags: [avereo, connect, api]
 Backend PHP 8.3 sans dépendance applicative externe, préparé pendant la gate C7.
 
 ## Modèle d’affichage
+
+Le candidat local du [médaillon personnel](../../avereo-platform/docs/medaillon-personnel.md) ajoute `GET/PUT /api/v1/me/preferences`, un sous-répertoire privé `account-preferences` et les contrôles de session/CSRF/contexte. Aucun réglage d'organisation n'est requis pour son propre médaillon. L'ancien modèle commun reste distinct. La recette utilise uniquement des comptes fictifs, aucun service hébergé n'est installé par ces sources.
 
 Le [guide d’administration](../../avereo-platform/docs/modele-affichage.md) décrit la configuration privée de l’organisation administratrice, les réglages publiés et le fichier de sauvegarde. Le contrat HTTP est dans [api/openapi.yaml](api/openapi.yaml).
 

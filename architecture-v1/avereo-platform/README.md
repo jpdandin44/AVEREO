@@ -5,13 +5,15 @@ title: README
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-08
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
 
 
 ## Références actuelles
+
+[Médaillon personnel CONNECT](docs/medaillon-personnel.md) : candidat local, préférences par compte et relecture dans les applications ; aucun déploiement. [Suivi](data/suivi-medaillon-personnel.json).
 
 [Architecture](architecture.md) · [Exigences](requirements.md) · [Feuille de route](roadmap.md) · [Décisions](decisions.md) · [Historique](changelog.md).
 
