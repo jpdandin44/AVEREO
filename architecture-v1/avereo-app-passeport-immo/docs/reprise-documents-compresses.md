@@ -12,7 +12,16 @@ tags: [reprise, etat-des-lieux, documents, archives]
 
 # Reprise de Passeport Immo et évolution des archives
 
-## État des lieux au 12 novembre 2026
+## État courant après livraison de PR144
+
+La PR144 est fusionnée, le paquet accepté est [livré en préproduction privée](preproduction-archives.md).
+Sauvegarde des quatre tables/treize documents et retour arrière sur copie vérifiés ;
+106 assertions HTTPS, conservation de la base et des fichiers, dossier SCI et PDF
+confirmés. La revue humaine, le premier ajout d’archive hébergé et la production
+de ce lot restent distincts. Le [reçu courant](../api/preproduction-archives-observation.json)
+remplace les constats antérieurs pour cette seule livraison.
+
+## Historique — état des lieux avant livraison, le 12 novembre 2026
 
 | Domaine | Fait établi | Limite et suite |
 | --- | --- | --- |

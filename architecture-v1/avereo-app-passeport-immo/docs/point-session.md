@@ -12,7 +12,23 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
-## Reprise active — 12 novembre 2026
+## Suite active — PR144 livrée en préproduction
+
+La [livraison privée](preproduction-archives.md) est effectuée le 12 novembre après
+accord explicite : paquet CI conservé, récupération fraîche, retour arrière sur copie,
+106 assertions HTTPS et contrôle navigateur. Les treize fichiers privés et les
+quatre tables sont inchangés ; le dossier SCI conserve six actifs et trois archives.
+Aucune production, configuration privée ou tâche planifiée modifiée.
+
+Travail courant : `C:/Users/examg/Documents local/passeport-immo-archives`, branche
+`chore/passeport-immo-preproduction-archives`. Le [suivi du lot](../data/suivi-documents-compresses.json)
+et le [reçu hébergé](../api/preproduction-archives-observation.json) font foi.
+[PR145 — revue de préproduction](https://github.com/jpdandin44/AVEREO/pull/145).
+Prochaine action : recette humaine A0–A6, dont premier ajout de ZIP sur le vrai
+hébergement, puis accords applicables. Compte secondaire historique n°2 non
+éligible selon CONNECT : accès non modifié, réserve distincte.
+
+## Historique — reprise locale du 12 novembre 2026
 
 Repartir du [nouvel état des lieux](reprise-documents-compresses.md), du [guide des archives](documents-compresses.md) et du [suivi de ce lot](../data/suivi-documents-compresses.json). Copie active : `C:/Users/examg/Documents local/passeport-immo-archives`, branche `feat/passeport-immo-documents-compresses`, revue locale sur [5178](http://127.0.0.1:5178/). Archives entières, sans extraction, confirmées par le responsable. PR85 et Drupal23 sont fusionnées ; les anciennes consignes PR21/25 et les constats d’octobre ci-dessous restent historiques. Aucun nouveau déploiement ni donnée client modifiée par cette reprise ; les 21 références approuvées et D06 sont conservées.
 
