@@ -15,8 +15,8 @@
   "documentation": "../docs/medaillon-personnel.md",
   "reviewUrl": "http://127.0.0.1:5327/",
   "reviewUsesFictitiousAccountsOnly": true,
-  "github": {"repository":"jpdandin44/AVEREO", "branch":"feat/medaillon-personnel", "prUrl":null, "humanAcceptanceVerified":false},
-  "candidate": {"sourceSha":null, "artifactSha256":null},
+  "github": {"repository":"jpdandin44/AVEREO", "branch":"feat/medaillon-personnel", "prUrl":"https://github.com/jpdandin44/AVEREO/pull/142", "humanAcceptanceVerified":false},
+  "candidate": {"sourceSha":null, "implementationSha":"1ad30987ddfa44b6dd2625d10c7c2b306cec3cf1", "artifactSha256":null, "note":"Candidat de livraison à figer après CI et préparation du paquet ; le SHA d'implémentation est distinct des métadonnées de suivi."},
   "checks": [
     {"kind":"local", "status":"passed", "observedAt":"2026-11-12", "command":"php architecture-v1/avereo-app-connect/backend/tests/run.php", "tests":43},
     {"kind":"local", "status":"passed", "observedAt":"2026-11-12", "command":"node --test architecture-v1/avereo-platform/tests/account-menu.test.mjs", "tests":31},
@@ -30,7 +30,7 @@
   "rollback": {"status":"not_tested_on_host", "preservePrivateAccountPreferences":true},
   "delivery": {"status":"not_delivered"},
   "blockers": ["CI et revue humaine à qualifier sur le candidat publié", "Paquet spécifique, raccordement index.php hébergé et permissions runtime à qualifier", "Sauvegarde/restauration, recette interorigines et accord exact avant livraison"],
-  "nextAction": "Préparer la nouvelle PR avec revue locale et contrôles CI ; ne pas déployer ni activer le modèle commun #137 à la place.",
+  "nextAction": "PR #142 en brouillon : qualifier les contrôles CI sur sa tête publiée, puis revue humaine locale. Paquet et accord de préproduction distincts ; ne pas déployer ni activer le modèle commun #137 à la place.",
   "nextIteration": [],
   "humanValidationsModified": false,
   "deployment": {"preproduction":false,"production":false}
