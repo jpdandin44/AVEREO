@@ -6,7 +6,7 @@
   "iterationId": "passeport-immo-documents-compresses",
   "kind": "evolution-documentaire",
   "stage": "preproduction",
-  "status": "prepared_for_authorized_preproduction_delivery",
+  "status": "awaiting_preproduction_human_review",
   "objective": "Centraliser les archives des clients dans le dossier du bien, avec restitution exacte et sans extraction.",
   "candidate": {
     "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
@@ -127,6 +127,16 @@
       "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
       "observedAt": "2026-11-12T13:05:49.872666+00:00",
       "evidence": "api/reprise-documents-compresses-observation.json#documentationControl"
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+      "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+      "observedAt": "2026-11-12T16:33:12+00:00",
+      "evidence": "api/preproduction-archives-observation.json#hostedRecipe",
+      "scope": "106 HTTPS assertions, existing bytes/rows preserved, browser display/PDF verified; successful new upload and human review not claimed."
     }
   ],
   "approvals": [
@@ -166,10 +176,18 @@
     "scope": "Candidate applied then restored on isolated copy; live files unchanged during rehearsal."
   },
   "delivery": {
-    "status": "not_delivered"
+    "status": "delivered",
+    "environment": "preproduction",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+    "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+    "observedAt": "2026-11-12T16:29:47+00:00",
+    "evidence": "api/preproduction-archives-observation.json#delivery"
   },
-  "blockers": [],
-  "nextAction": "Installer le paquet PR144 autorisé après contrôle de passage, puis vérifier HTTPS, SSO, documents existants et import guidé sur la cible privée.",
+  "blockers": [
+    "Recette humaine du candidat hébergé et critères A0–A6 non encore approuvés."
+  ],
+  "nextAction": "Revoir le parcours documentaire sur CONNECT préproduction, notamment un premier ajout de ZIP, puis enregistrer les critères et l’accord de phase applicables. Aucune production autorisée par cette livraison.",
   "nextIteration": [],
   "budget": {
     "limit": null,
@@ -191,7 +209,7 @@
     {
       "id": 2,
       "label": "Préproduction",
-      "status": "in_progress",
+      "status": "awaiting_review",
       "humanPhaseApprovalRecorded": false
     },
     {
@@ -247,5 +265,11 @@
     "detail": "Boutons d’import masqués avant association du client et enregistrement des fichiers peu compréhensible.",
     "correction": "Étapes visibles, import désactivé avant association confirmée, enregistrement automatique et cible explicités.",
     "createsHumanApproval": false
-  }
+  },
+  "reservations": [
+    "Human acceptance of A0–A6 remains pending; no successful new archive upload on the real hosting was performed.",
+    "The historical secondary account 2 is not currently eligible according to CONNECT; no access was added, removed or qualified for that account."
+  ],
+  "hostedEvidence": "api/preproduction-archives-observation.json",
+  "operatorBranch": "chore/passeport-immo-preproduction-archives"
 }

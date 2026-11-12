@@ -21,8 +21,9 @@ classement, titre, détection de doublons, archivage réversible et télécharge
 utilisent les mêmes fonctions que pour les autres documents.
 
 La version locale est consultable sur [5178](http://127.0.0.1:5178/).
-Le stockage y est celui du navigateur. Cette évolution n’est pas encore livrée
-sur les domaines hébergés. [État des lieux et réserves](reprise-documents-compresses.md).
+Le stockage y est celui du navigateur. Après PR144, cette évolution est
+[livrée en préproduction privée](preproduction-archives.md), avec stockage serveur.
+Elle n’est pas livrée en production. [État des lieux et réserves](reprise-documents-compresses.md).
 
 Le responsable a confirmé le 12 novembre : **« Conserver les archives entières,
 sans extraction »**. L’application conserve donc le conteneur original,
@@ -86,8 +87,11 @@ Leur exécution effective est à distinguer des seuls tests de reconnaissance PH
 
 Les fichiers de recette ne contiennent que des données fictives. Les tests
 réels du navigateur ont importé et téléchargé un ZIP à l’identique sur 5178.
-Les essais hébergés de cette évolution restent à effectuer après acceptation
-du candidat et qualification de la cible.
+La recette technique hébergée vérifie l’accès, les treize téléchargements existants
+et la conservation des données. Le navigateur confirme le dossier SCI, ses six
+documents actifs et trois archives, l’aperçu PDF et le guidage d’import.
+Un premier ajout d’archive sur le vrai hébergement et la revue humaine A0–A6
+restent à valider ; aucune réussite d’import hébergé n’est déduite des essais locaux.
 
 ## Références techniques
 
@@ -97,4 +101,4 @@ du candidat et qualification de la cible.
 - [Annexe de conservation et parité](source-audit-documents-compresses.md).
 - [Suivi de l’itération](../data/suivi-documents-compresses.json).
 
-Le guidage corrigé est qualifié avec 49 tests d’interface et un parcours client/import ZIP dans le navigateur. La [CI isolée du nouveau candidat](https://github.com/jpdandin44/AVEREO/actions/runs/43223460165) réussit aussi 40 vérifications de formats, 19 tests Python, 83 contrôles Apache, 68 API, 22 de sauvegarde et 35 de transfert. La recette du vrai hébergement reste à effectuer après acceptation et qualification de la cible ; voir le [suivi canonique](../data/suivi-documents-compresses.json).
+Le guidage corrigé est qualifié avec 49 tests d’interface et un parcours client/import ZIP dans le navigateur. La [CI isolée du nouveau candidat](https://github.com/jpdandin44/AVEREO/actions/runs/43223460165) réussit aussi 40 vérifications de formats, 19 tests Python, 83 contrôles Apache, 68 API, 22 de sauvegarde et 35 de transfert. La [recette technique du vrai hébergement](preproduction-archives.md) est effectuée après acceptation et récupération fraîche ; la revue humaine reste attendue dans le [suivi canonique](../data/suivi-documents-compresses.json).

@@ -62,6 +62,24 @@ partie de l’archive applicative. Les reçus non sensibles et l’état réel d
 sont conservés dans la [preuve courante](../api/preproduction-archives-observation.json)
 et le [suivi canonique](../data/suivi-documents-compresses.json).
 
+La livraison est effectuée à 16:29 UTC : sept écritures, dix-huit chemins
+contrôlés, onze fichiers conservés (normalisation LF prise en compte). À 16:33 UTC,
+106 assertions HTTPS réussissent : deux sessions normales du compte habituel,
+treize téléchargements exacts, refus anonymes et CSRF. Les quatre tables et les
+treize fichiers privés sont identiques à la sauvegarde fraîche. La vérification
+finale confirme fichiers, configuration, crontab et production inchangés.
+
+Le navigateur confirme le dossier SCI, six documents actifs et trois archives,
+l’aperçu d’un PDF de sept pages, les boutons d’import actifs, les formats et la
+mention du stockage serveur. Aucun nouveau document n’est ajouté pour ces contrôles.
+La nouvelle connexion Drupal n’est pas rejouée : l’ouverture utilise un ticket
+normal du composant CONNECT installé, après vérification de l’habilitation existante.
+
+Le compte secondaire historique n°2 n’est actuellement pas éligible selon CONNECT.
+Son accès n’est ni modifié ni déclaré qualifié ; cette réserve se traite séparément.
+Le premier ajout réussi d’une nouvelle archive sur l’hébergement reste également
+à valider, sans le déduire des tests locaux/CI.
+
 Pour la revue humaine : appliquer A0 à A6 du [guide documentaire](documents-compresses.md).
 Vérifier notamment l’association du client, l’ajout d’un ZIP fictif, sa confirmation
 d’enregistrement serveur, son téléchargement, puis les documents et aperçus déjà

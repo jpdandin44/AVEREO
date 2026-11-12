@@ -4096,10 +4096,10 @@
       "id": "passeport-immo-documents-compresses",
       "canonicalTracking": "../data/suivi-documents-compresses.json",
       "documentation": "documents-compresses.md",
-      "scope": "Nouvelle évolution en revue locale ; ne remplace ni les décisions ni la livraison de l’ancien candidat."
+      "scope": "Archives PR144 livrées en préproduction privée ; recette technique réussie, revue humaine en attente, décisions de l’ancien lot conservées."
     }
   ],
-  "currentStateObservation": "../api/reprise-documents-compresses-observation.json",
+  "currentStateObservation": "../api/preproduction-archives-observation.json",
   "resumptionPlanningHistory": [
     {
       "recordedAt": "2026-11-12T12:17:58.906+00:00",
@@ -4109,6 +4109,13 @@
         "Revue humaine du site de préproduction et acceptation GitHub encore requises avant livraison du fournisseur OAuth de production. La recette CONNECT/dandin/SCI de production reste ouverte ; aucun nouvel accord de déploiement générique à redemander."
       ],
       "reason": "PR85 and Drupal23 now verified merged; dated next action preserved without asking to repeat acquired reviews."
+    }
+  ],
+  "stateObservationHistory": [
+    {
+      "source": "../api/reprise-documents-compresses-observation.json",
+      "supersededBy": "../api/preproduction-archives-observation.json",
+      "observedAt": "2026-11-12T16:41:09.272201+00:00"
     }
   ]
 }
