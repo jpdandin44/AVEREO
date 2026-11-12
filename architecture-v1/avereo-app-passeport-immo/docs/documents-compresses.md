@@ -97,4 +97,4 @@ du candidat et qualification de la cible.
 - [Annexe de conservation et parité](source-audit-documents-compresses.md).
 - [Suivi de l’itération](../data/suivi-documents-compresses.json).
 
-La correction de guidage du 12 novembre fait l’objet d’un nouveau candidat et d’une nouvelle qualification, suivis dans le [suivi canonique](../data/suivi-documents-compresses.json). La précédente CI qualifiée reste une preuve datée de la version antérieure ; elle ne qualifie pas à elle seule l’écran corrigé ni le vrai hébergement.
+Le guidage corrigé est qualifié avec 49 tests d’interface et un parcours client/import ZIP dans le navigateur. La [CI isolée du nouveau candidat](https://github.com/jpdandin44/AVEREO/actions/runs/43223460165) réussit aussi 40 vérifications de formats, 19 tests Python, 83 contrôles Apache, 68 API, 22 de sauvegarde et 35 de transfert. La recette du vrai hébergement reste à effectuer après acceptation et qualification de la cible ; voir le [suivi canonique](../data/suivi-documents-compresses.json).

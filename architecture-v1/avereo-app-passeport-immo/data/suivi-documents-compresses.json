@@ -6,30 +6,31 @@
   "iterationId": "passeport-immo-documents-compresses",
   "kind": "evolution-documentaire",
   "stage": "developpement-local",
-  "status": "local_correction_in_progress",
+  "status": "awaiting_local_human_review",
   "objective": "Centraliser les archives des clients dans le dossier du bien, avec restitution exacte et sans extraction.",
   "candidate": {
-    "status": "qualification_in_progress",
-    "sourceSha": null,
-    "artifactSha256": null,
-    "artifactPath": null,
-    "manifestPath": null
+    "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+    "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+    "artifactPath": ".local/ci-0a3eacf/candidate.zip",
+    "manifestPath": ".local/ci-0a3eacf/candidate.manifest.json",
+    "runtimeTreeSha": "abea760e44230b711a2ee3dd963bdc4dc40fe768"
   },
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/passeport-immo-documents-compresses",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/144",
-    "observedHeadSha": "3af317d7448e7b609e39b8f4d476bb2efdd8136e",
+    "observedHeadSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
     "humanAcceptanceVerified": false,
-    "observedAt": "2026-11-12T13:00:08.860529+00:00",
+    "observedAt": "2026-11-12T13:05:49.872666+00:00",
     "number": 144,
     "state": "open",
-    "draft": true,
-    "baseSha": "16338e844912fade2a5e8b315b8313fe6f7e2dbd",
+    "draft": false,
+    "baseSha": "bc8c0b0750ddc854a01f7da70695afc5889ed009",
     "mergeable": "MERGEABLE",
-    "technicalCiStatus": "pending",
-    "runtimeCandidateFrozen": false,
-    "latestObservationScope": "Post-publication observation kept locally; runtime candidate remains the frozen CI artifact."
+    "technicalCiStatus": "passed",
+    "runtimeCandidateFrozen": true,
+    "latestObservationScope": "Qualified runtime head; subsequent documentation-only commits preserve the frozen CI artifact. Recheck latest PR head before delivery.",
+    "technicalChecksPassed": 24
   },
   "targets": {
     "preproduction": {
@@ -88,6 +89,33 @@
       "observedAt": "2026-11-12T12:12:36.672+00:00",
       "documentedPrHead": "aa67d49a95a846115b92af148e34e9308a7b90d1",
       "evidence": "api/reprise-documents-compresses-observation.json#documentationControl"
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+      "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+      "observedAt": "2026-11-12T13:05:49.872666+00:00",
+      "target": "http://127.0.0.1:5178/",
+      "evidence": "api/reprise-documents-compresses-observation.json#localChecks",
+      "scope": "Guided import tested from same UI sources; downloaded CI archive read back separately. Windows package differs only by line endings in index.html/account-menu.js."
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+      "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+      "observedAt": "2026-11-12T13:05:49.872666+00:00",
+      "target": "isolated_apache_php_mariadb",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43223460165"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+      "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+      "observedAt": "2026-11-12T13:05:49.872666+00:00",
+      "evidence": "api/reprise-documents-compresses-observation.json#documentationControl"
     }
   ],
   "approvals": [],
@@ -102,7 +130,7 @@
     "Revue humaine du nouveau candidat local et acceptation GitHub non enregistrées.",
     "Cible, sauvegarde fraîche restaurée et retour arrière à requalifier avant installation."
   ],
-  "nextAction": "Qualifier le nouveau candidat après clarification du parcours client/import, puis remettre la PR144 en revue locale ; aucune validation humaine ou livraison déduite.",
+  "nextAction": "Revoir la PR144 et le parcours local guidé client/import ; qualifier ensuite la préproduction du même artefact selon les contrôles et accords applicables.",
   "nextIteration": [],
   "budget": {
     "limit": null,
@@ -118,7 +146,7 @@
     {
       "id": 1,
       "label": "Développement local",
-      "status": "in_progress",
+      "status": "awaiting_review",
       "humanPhaseApprovalRecorded": false
     },
     {

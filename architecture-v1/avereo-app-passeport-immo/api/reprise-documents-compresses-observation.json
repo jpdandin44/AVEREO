@@ -138,7 +138,8 @@
         "frontend/src/documents/DocumentsPanel.jsx": "a9ea1eb99ea08d2efe70d67912170698e56b0dd8877e8b33d1985300050449e3",
         "frontend/src/documents/documents.css": "9801c9b7fd2b7e11488e905862157388f7235fe89a93cbc79d1bf9882e6d39fa",
         "frontend/tests/documents-panel.test.jsx": "75f852f8d2fa7d44cfc5e4b23d2b048a072dd7f0763ee406bbd57b68b39d5d55"
-      }
+      },
+      "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc"
     }
   },
   "serverIntegration": {
@@ -153,8 +154,8 @@
       "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43212636469",
       "reason": "The scheduled-backup fixture still expected one document after extending the dataset to one PDF and seven archive containers. Test now receives the exact expected count; backup implementation unchanged."
     },
-    "testedHeadSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
-    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43213408562",
+    "testedHeadSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43223460165",
     "apiAssertions": 68,
     "scheduledBackupAssertions": 22,
     "propertyTransferAssertions": 35,
@@ -164,11 +165,23 @@
     "realHostingRecipe": false
   },
   "candidate": {
-    "status": "qualification_in_progress",
-    "sourceSha": null,
-    "artifactSha256": null,
-    "artifactPath": null,
-    "manifestPath": null
+    "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+    "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+    "artifactPath": ".local/ci-0a3eacf/candidate.zip",
+    "manifestPath": ".local/ci-0a3eacf/candidate.manifest.json",
+    "runtimeTreeSha": "abea760e44230b711a2ee3dd963bdc4dc40fe768",
+    "fileCount": 18,
+    "downloadedFromGitHub": true,
+    "artifactRun": "https://github.com/jpdandin44/AVEREO/actions/runs/43223460165",
+    "archiveReadback": "passed",
+    "localBuildDifference": {
+      "files": [
+        "account-menu.js",
+        "index.html"
+      ],
+      "reason": "CRLF versus LF only; CI archive selected as canonical.",
+      "functionalContentIdenticalAfterLineEndingNormalization": true
+    }
   },
   "newFeatureHostedDeployment": {
     "preproduction": false,
@@ -177,20 +190,23 @@
   "newFeaturePullRequest": {
     "url": "https://github.com/jpdandin44/AVEREO/pull/144",
     "number": 144,
-    "observedHeadSha": "3af317d7448e7b609e39b8f4d476bb2efdd8136e",
-    "observedAt": "2026-11-12T13:00:08.860529+00:00",
-    "draft": true,
-    "technicalQualification": "pending_new_runtime",
+    "observedHeadSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+    "observedAt": "2026-11-12T13:05:49.872666+00:00",
+    "draft": false,
+    "technicalQualification": "passed",
     "mergeable": "MERGEABLE",
-    "scope": "Current local GitHub observation after publication."
+    "scope": "Dated observation of the qualified runtime head; documentation-only commits may follow.",
+    "technicalChecksPassed": 24
   },
   "documentationControl": {
     "documents": 14,
-    "localLinks": 229,
+    "localLinks": 231,
     "approvedReferencesUnchanged": 21,
     "humanFieldsPreserved": true,
     "frozenGuideRestored": true,
-    "novemberAdditionPreservedIn": "docs/integration-connect-cycle-vie.md"
+    "novemberAdditionPreservedIn": "docs/integration-connect-cycle-vie.md",
+    "observedAt": "2026-11-12T13:02:46.529666+00:00",
+    "preservedOldWorkingCopyFiles": 29
   },
   "previousLocalCandidate": {
     "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
@@ -199,7 +215,7 @@
     "runtimeFilesExact": true,
     "archiveContainsOnlyBuiltRuntimeFiles": true
   },
-  "qualificationObservedAt": "2026-11-12T12:03:21.008+00:00",
+  "qualificationObservedAt": "2026-11-12T13:05:49.872666+00:00",
   "candidateHistory": [
     {
       "sourceSha": "5c425c62ffcefb2e17781cdacc9f8183dbc3badb",
