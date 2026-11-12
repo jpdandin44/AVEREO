@@ -85,6 +85,8 @@ ultérieure de transfert par blocs. La réception complète à 500 Mo est contr�
 par HTTPS ; aucune modification globale des réglages PHP n’est réalisée. La seule
 présence de `.user.ini` ne prouve pas ses valeurs effectives sous LiteSpeed.
 
+La [PR147 de revue hébergée](https://github.com/jpdandin44/AVEREO/pull/147) regroupe ce reçu et ses outils. Ses quatre cases restent réservées au responsable, après la recette décrite ci-dessus.
+
 ## Mise en production
 
 Aucune livraison de ce lot en production. La recette humaine hébergée et un

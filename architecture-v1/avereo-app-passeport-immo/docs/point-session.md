@@ -16,7 +16,7 @@ tags: [passeport-immo, local, cockpit]
 
 Les PR145 et PR146 sont fusionnées et la [livraison privée à 500 Mo](preproduction-import-volumineux.md) est vérifiée après accord explicite du responsable. Même paquet CI, six écritures, récupération fraîche et retour arrière sur copie ; ZIP entiers de 173 et 500 Mo reçus et inspectés, 501 Mo refusé. Les quatre tables et treize documents sont inchangés ; le navigateur retrouve SCI et la limite 500 Mo. Le [suivi dédié](../data/suivi-import-volumineux.json) porte la recette humaine à effectuer sur les archives d’origine.
 
-Copie : `C:/Users/examg/Documents local/passeport-immo-archives`, branche `chore/passeport-immo-preproduction-500`. Prochaine action : revoir le dossier depuis CONNECT préproduction et la PR opératoire ; ne pas livrer en production sans accord distinct. Les fichiers individuels supérieurs à 500 Mo nécessiteront un autre protocole. Aucune migration, activation ou tâche planifiée à rejouer.
+Copie : `C:/Users/examg/Documents local/passeport-immo-archives`, branche `chore/passeport-immo-preproduction-500`. Prochaine action : revoir le dossier depuis CONNECT préproduction et la [PR147 opératoire](https://github.com/jpdandin44/AVEREO/pull/147) ; ne pas livrer en production sans accord distinct. Les fichiers individuels supérieurs à 500 Mo nécessiteront un autre protocole. Aucune migration, activation ou tâche planifiée à rejouer.
 
 ## Historique hébergé — PR144, avant relèvement à 500 Mo
 

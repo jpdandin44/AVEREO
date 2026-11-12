@@ -340,9 +340,9 @@
     "Files larger than 500 MiB require a separate future chunked-transfer evolution."
   ],
   "documentationControl": {
-    "observedAt": "2026-11-12T18:29:49.980296+00:00",
+    "observedAt": "2026-11-12T18:31:23.033876+00:00",
     "documents": 17,
-    "localLinks": 275,
+    "localLinks": 276,
     "metadataAndScaffold": "passed",
     "oldWorkingCopyFilesUnchanged": 29,
     "approvedReferences": "Checked separately by tests/check-cockpit.mjs"
@@ -369,5 +369,6 @@
     },
     "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
     "containsPrivateData": false
-  }
+  },
+  "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/147"
 }
