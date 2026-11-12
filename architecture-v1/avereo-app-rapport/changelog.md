@@ -5,12 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-10
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 12 novembre 2026 — export délégué interrompu
+
+Le correctif local guide la relance d’un téléchargement interrompu. [Vérification dans Chrome](docs/source-audit.md#interruption-du-téléchargement-délégué).
 
 ## 2026-11-10 — Copie de test depuis Export
 

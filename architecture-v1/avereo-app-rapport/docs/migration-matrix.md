@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-10
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - rapport
@@ -187,3 +187,5 @@ Le pied de page regroupe le menu du compte et les commandes entre étapes. La sa
 ## Habilitations par organisation — candidat local
 
 La migration des exports crée des tables de rattachement, de permission et de journal. Les dossiers existants conservent leur propriétaire. [Recette et retour arrière](../../../docs/administration-acces-exports.md).
+
+Le correctif local du message d’interruption concerne le panneau React. Les dossiers, les droits et le journal existants restent compatibles. [Vérification](source-audit.md#interruption-du-téléchargement-délégué).

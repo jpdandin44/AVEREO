@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-10
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - rapport
@@ -342,3 +342,7 @@ Dans l’éditeur, le pied de page rassemble Mon compte, Précédent et Suivant 
 ## Habilitations par organisation — candidat local
 
 Le candidat ajoute un export délégué en lecture seule pour les dossiers dont le rattachement est vérifié. [Périmètre et recette](../../../docs/administration-acces-exports.md).
+
+## Interruption du téléchargement délégué
+
+Dans la version de préproduction de la PR #140, une erreur de transport remonte directement dans le panneau d’export. Le correctif local affiche un message français qui invite à consulter les téléchargements puis à relancer manuellement si le fichier manque. Le [test Chrome](../tests/organization-exports.browser.mjs) simule une interruption, contrôle la réussite du clic suivant, le contenu du fichier, le refus après retrait du droit et la conservation du brouillon.
