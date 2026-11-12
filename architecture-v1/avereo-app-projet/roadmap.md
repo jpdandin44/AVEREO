@@ -5,12 +5,21 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-10
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 12 novembre — Reprise des boutons et rattachement du générateur
+
+Cadrage : session courte de Projet distincte de CONNECT, PR 141 non fusionnée. Développement local : retour explicite après actualisation, reprise d’une vue vide et message de reconnexion préparés et testés ; clone de référence avancé sur main en conservant les travaux et sauvegardes. Préproduction : version 11 disponible après renouvellement normal de session ; nouveau correctif à qualifier et livrer après accord applicable. Mise en production : non commencée. Le générateur ne peut être rattaché à main qu’après fusion autorisée de la PR ; ce rattachement ne doit pas salir le clone avec une copie manuelle.
+
+## 11 novembre — Correction du point de référence
+
+Cadrage : demande de référence Git avec historique. Développement local : catalogue, générateur et interface corrigés et testés. Préproduction : candidat et projection suivante préparés, installation à autoriser avec sauvegarde et retour. Mise en production : non commencée.
+
 
 ## 10 novembre — Référence locale des applications
 
