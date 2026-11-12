@@ -47,7 +47,7 @@ antérieure ni ses décisions. La recette locale est décrite dans le
 - Branche : `feat/passeport-immo-documents-compresses`.
 - Revue locale : [5178](http://127.0.0.1:5178/), données fictives et stockage du navigateur.
 - Sous-projet : `architecture-v1/avereo-app-passeport-immo` ; démarrer le frontend avec `npm.cmd run dev -- --port 5178 --strictPort`.
-- Relire la PR et ses contrôles sur la tête actuelle avant toute livraison. Les portes de préproduction et production restent distinctes.
+- [PR144 — archives du bien](https://github.com/jpdandin44/AVEREO/pull/144), avec sa tête et ses contrôles à relire avant toute livraison. Les portes de préproduction et production restent distinctes.
 
 Les copies du 16 octobre et leurs fichiers non commités sont préservés. Les
 documents réels, reçus privés, copies de bases et secrets restent hors Git.

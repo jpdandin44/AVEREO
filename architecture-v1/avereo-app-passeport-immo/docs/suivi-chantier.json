@@ -2743,12 +2743,13 @@
     "status": "resumed_on_user_request",
     "resumedAt": "2026-11-12T11:45:27.316+00:00",
     "resumeReference": "Reprise demandée le 12 novembre : état des lieux et fichiers compressés pour centraliser les dossiers.",
-    "nextAction": "Revoir le lot local et sa PR ; qualifier la préproduction du même artefact après les contrôles et accords applicables.",
+    "nextAction": "Revoir la PR144 et le candidat local après la CI ; qualifier ensuite la préproduction du même artefact selon les contrôles et accords applicables.",
     "currentStateDocument": "reprise-documents-compresses.md",
     "currentDevelopmentIteration": "../data/suivi-documents-compresses.json",
     "preserveExistingActivationMigrationAndCron": true,
     "automaticDeployment": false,
-    "destinationProject": "AVEREO_2"
+    "destinationProject": "AVEREO_2",
+    "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/144"
   },
   "legacyTracking": {
     "recordedAt": "2026-10-14T09:40:12.597261+00:00",

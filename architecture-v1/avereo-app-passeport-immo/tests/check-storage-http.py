@@ -140,7 +140,7 @@ def run():
             check(request('/api/storage.php',cookie)[0]==404 and request('/connect/session.php',cookie)[0]==403,'implementation endpoints blocked')
             backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-test'))
             check(backup['documents']==expected_documents and backup['fileReadback']=='passed' and backup['temporaryRowRestore']=='passed','private snapshot restores documents including compressed archives')
-            scheduled=json.loads(command('docker','exec',web,'php','/fixture/scheduled-backup-test.php'))
+            scheduled=json.loads(command('docker','exec',web,'php','/fixture/scheduled-backup-test.php',str(expected_documents)))
             check(scheduled['assertions']==22,'scheduled backup safety, rotation and environment isolation')
             command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
             check(request(path+'/file',cookie)[0]==503,'altered blob not returned')
