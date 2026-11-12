@@ -12,6 +12,16 @@ tags: [passeport-immo, local]
 
 # Architecture Passeport Immo
 
+## Import volumineux préparé le 12 novembre
+
+Le contrôleur documentaire planifie des lots successifs de 500 Mo/100 fichiers,
+après contrôle des métadonnées de la sélection. Le dépôt local ou serveur enregistre
+chaque lot atomiquement. L’interface conserve les résultats confirmés après erreur ;
+la reprise réutilise les empreintes de contenu. Les fichiers restent entiers,
+avec une limite par fichier de 500 Mo et une enveloppe HTTP/PHP de 512 Mo.
+Aucun nouveau stockage ou schéma. Les valeurs PHP effectives restent à qualifier
+avant livraison. [Flux et recette](docs/import-volumineux.md).
+
 ## Conteneurs documentaires compressés
 
 Les [archives](docs/documents-compresses.md) utilisent les mêmes Blob IndexedDB ou fichiers privés et métadonnées MySQL que les autres documents. La reconnaissance bornée de l’en-tête et un MIME canonique d’archive sont appliqués avant écriture ; aucun membre n’est extrait ou exécuté. Le sélecteur et les validations locales partagent la liste du module documentaire ; le contrôle PHP indépendant est couvert par les mêmes sept fixtures. Ni nouvelle dépendance de décompression, ni nouvelle table, ni modification du sas CONNECT.

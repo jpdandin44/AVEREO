@@ -4098,6 +4098,12 @@
       "documentation": "documents-compresses.md",
       "scope": "Archives PR144 livrées en préproduction privée ; recette technique réussie, revue humaine en attente, décisions de l’ancien lot conservées.",
       "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/145"
+    },
+    {
+      "id": "passeport-immo-import-volumineux",
+      "canonicalTracking": "../data/suivi-import-volumineux.json",
+      "documentation": "import-volumineux.md",
+      "scope": "Correctif 500 Mo en développement local ; ne modifie ni PR144 déployée ni ses validations."
     }
   ],
   "currentStateObservation": "../api/preproduction-archives-observation.json",

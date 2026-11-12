@@ -32,7 +32,9 @@ try {
     refused(fn()=>PasseportStorage::inspectFile($path,'../dossier.zip'),'Path in filename');
     file_put_contents($path,'');clearstatcache(true,$path);
     refused(fn()=>PasseportStorage::inspectFile($path,'vide.zip'),'Empty file');
-    file_put_contents($path,"PK\x03\x04");$handle=fopen($path,'r+b');ftruncate($handle,25*1024*1024+1);fclose($handle);clearstatcache(true,$path);
-    refused(fn()=>PasseportStorage::inspectFile($path,'grand.zip'),'25 MiB limit');
+    file_put_contents($path,"PK\x03\x04");$handle=fopen($path,'r+b');ftruncate($handle,173*1024*1024);fclose($handle);clearstatcache(true,$path);
+    verify(PasseportStorage::inspectFile($path,'rapport-entier.zip')['size']===173*1024*1024,'173 MiB container accepted without splitting');
+    $handle=fopen($path,'r+b');ftruncate($handle,500*1024*1024+1);fclose($handle);clearstatcache(true,$path);
+    refused(fn()=>PasseportStorage::inspectFile($path,'grand.zip'),'500 MiB limit');
     echo json_encode(['assertions'=>$assertions,'archiveFixtures'=>count($fixtures),'scope'=>'file-inspection-only','status'=>'passed'],JSON_THROW_ON_ERROR).PHP_EOL;
 } finally { unlink($path); }

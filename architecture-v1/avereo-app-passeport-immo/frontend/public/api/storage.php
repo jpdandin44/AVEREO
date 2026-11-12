@@ -132,8 +132,8 @@ final class PasseportStorage
             'tar'=>'application/x-tar','gz'=>'application/gzip','tgz'=>'application/gzip'];
         $allowed = array_merge(['pdf','jpg','jpeg','png','webp','txt','csv','doc','docx','xls','xlsx','odt'],array_keys($archiveTypes));
         $size = filesize($path);
-        if (!in_array($ext,$allowed,true) || $size === false || $size < 1 || $size > 25*1024*1024) {
-            throw new PasseportError(422,'Format ou taille de fichier non autorisé (25 Mo maximum).');
+        if (!in_array($ext,$allowed,true) || $size === false || $size < 1 || $size > 500*1024*1024) {
+            throw new PasseportError(422,'Format ou taille de fichier non autorisé (500 Mo maximum par fichier).');
         }
         $handle = fopen($path,'rb'); $header = fread($handle,512); fclose($handle);
         if ($ext === 'pdf' && substr($header,0,5) !== '%PDF-') throw new PasseportError(422,'Le fichier ne contient pas un PDF valide.');
@@ -159,7 +159,7 @@ final class PasseportStorage
         foreach ($files as $file) {
             if (!$migration && !is_uploaded_file($file['path'])) throw new PasseportError(422,'Téléversement invalide.');
             $meta = self::inspectFile($file['path'],$file['name']); $total += $meta['size'];
-            if ($total > 100*1024*1024) throw new PasseportError(413,'Lot supérieur à 100 Mo.');
+            if ($total > 500*1024*1024) throw new PasseportError(413,'Ce lot dépasse 500 Mo. Réduisez le lot et réessayez.');
             $validated[] = [$file,$meta];
         }
         $written=[]; $added=[]; $duplicates=[];

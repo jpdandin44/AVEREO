@@ -12,7 +12,17 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
-## Suite active — PR144 livrée en préproduction
+## Travail actif — imports volumineux
+
+Nouveau [correctif à 500 Mo](import-volumineux.md), branche
+`feat/passeport-immo-import-volumineux`, basée sur la branche de PR145.
+Le [suivi dédié](../data/suivi-import-volumineux.json) porte le candidat local,
+la CI et la revue. La préproduction reste sur PR144 avec ses limites 25/100 Mo ;
+aucun accord antérieur n’est étendu à cette nouvelle version. Prochaine action :
+qualifier le paquet puis sa revue locale, avant qualification PHP hébergée et
+accords applicables. Les fichiers de plus de 500 Mo nécessiteront un autre protocole.
+
+## État hébergé — PR144 livrée en préproduction
 
 La [livraison privée](preproduction-archives.md) est effectuée le 12 novembre après
 accord explicite : paquet CI conservé, récupération fraîche, retour arrière sur copie,

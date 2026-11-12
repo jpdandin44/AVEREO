@@ -14,6 +14,10 @@ tags: [documents, archives, recette, stockage]
 
 ## Résultat proposé
 
+**Suite en préparation :** le [correctif des imports volumineux](import-volumineux.md)
+porte les limites à 500 Mo dans un nouveau candidat local. Les valeurs 25/100 Mo
+ci-dessous restent celles de PR144 installée, jusqu’à sa livraison.
+
 Le dossier documentaire accepte **ZIP, 7z, RAR, TAR, GZ et TGZ**, en complément
 des PDF, images et documents bureautiques existants. Un `.tar.gz` utilise le
 format GZ. Le fichier reste entier, associé au client et au bien : recherche,

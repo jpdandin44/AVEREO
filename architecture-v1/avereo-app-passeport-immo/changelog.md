@@ -12,6 +12,14 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-11-12 — Imports volumineux en préparation locale
+
+Nouveau candidat à 500 Mo, enveloppe PHP de 512 Mo, répartition automatique des
+grandes sélections et progression par lot. Contrôle préalable, résultats confirmés
+après erreur et décomptes serveur corrigés. Rapport de 173 Mo et quatorze archives
+de 203 Mo ajoutés à la recette. [Limites et état](docs/import-volumineux.md) ;
+aucune installation du correctif n’est déduite de la livraison PR144.
+
 ## 2026-11-12 — Fichiers compressés en revue locale
 
 Ajout ZIP/7z/RAR/TAR/GZ/TGZ dans les validations et le sélecteur, consultation adaptée et téléchargement de l’original. Tests de conservation, faux conteneurs, doublons, limites, affichage et API/backup étendus avec données fictives. État des lieux et suivi du lot ajoutés sans réécrire les documents approuvés. [Recette](docs/documents-compresses.md) ; aucune installation hébergée de ce nouveau candidat.

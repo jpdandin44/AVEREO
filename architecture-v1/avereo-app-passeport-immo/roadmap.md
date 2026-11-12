@@ -14,7 +14,7 @@ tags: [avereo, documentation, local]
 
 ## Suite courante — reprise et fichiers compressés
 
-Le [point courant](docs/reprise-documents-compresses.md) remplace les anciennes prochaines actions du 16 octobre. L’évolution des archives est développée localement avec tests ; revue du candidat, CI, qualification puis recette en préproduction restent à obtenir. La version de production antérieure conserve ses reçus et limites : ne pas rejouer la migration SCI, l’activation ou le cron. Le plan CIL reste une évolution distincte ; l’ajout de conteneurs n’en vaut pas réalisation.
+Les archives PR144 sont [livrées en préproduction](docs/preproduction-archives.md) ; leur revue reste à terminer dans PR145. Le retour sur les quatorze archives et le rapport de 173 Mo conduit au [correctif à 500 Mo](docs/import-volumineux.md), préparé séparément. Configuration PHP réelle et recette du nouveau candidat restent à qualifier avant livraison. La production antérieure garde ses reçus et limites : ne pas rejouer migration SCI, activation ou cron. Le CIL reste distinct.
 
 ## Évolution CIL proposée le 16 octobre
 

@@ -11,6 +11,7 @@ import sys
 import tempfile
 import time
 import uuid
+import zipfile
 from http.cookies import SimpleCookie
 from pathlib import Path
 
@@ -59,7 +60,7 @@ def run():
                 if origin: headers['Origin']=origin
                 if isinstance(body,(dict,list)): body=json.dumps(body).encode()
                 if body is not None: headers['Content-Type']=content_type
-                connection=http.client.HTTPConnection('127.0.0.1',port,timeout=15)
+                connection=http.client.HTTPConnection('127.0.0.1',port,timeout=60)
                 connection.request(method,path,body=body,headers=headers)
                 response=connection.getresponse(); result=response.status,dict(response.getheaders()),response.read(); connection.close()
                 return result
@@ -142,6 +143,21 @@ def run():
             check(backup['documents']==expected_documents and backup['fileReadback']=='passed' and backup['temporaryRowRestore']=='passed','private snapshot restores documents including compressed archives')
             scheduled=json.loads(command('docker','exec',web,'php','/fixture/scheduled-backup-test.php',str(expected_documents)))
             check(scheduled['assertions']==22,'scheduled backup safety, rotation and environment isolation')
+            # Real 173 MiB archive, after the rotation suite to avoid copying it on every rotation case.
+            large_archive=root/'rapport-entier.zip'
+            with zipfile.ZipFile(large_archive,'w',compression=zipfile.ZIP_STORED) as archive:
+                with archive.open('rapport-fictif.txt','w') as member:
+                    block=b'0'*(1024*1024)
+                    for _ in range(173): member.write(block)
+            large_bytes=large_archive.read_bytes()
+            large_uploaded=upload([('rapport-entier.zip',large_bytes)])
+            check(large_uploaded[0]==201,('173 MiB archive uploaded whole',large_uploaded[0],large_uploaded[2]))
+            large_doc=data(large_uploaded)['added'][0]
+            check(large_doc['size']==len(large_bytes),'large archive original size retained')
+            large_download=request('/api/biens/123/documents/'+large_doc['id']+'/file',second)
+            check(large_download[0]==200 and hashlib.sha256(large_download[2]).digest()==hashlib.sha256(large_bytes).digest(),'173 MiB archive exact in independent session')
+            large_backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-large-test'))
+            check(large_backup['documents']==expected_documents+1 and large_backup['fileReadback']=='passed' and large_backup['temporaryRowRestore']=='passed','large archive backup and temporary restoration passed')
             command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
             check(request(path+'/file',cookie)[0]==503,'altered blob not returned')
             print(json.dumps({'assertions':len(checks),'checks':checks,'scheduledBackup':scheduled,'database':'MariaDB 11.4','isolated':True},ensure_ascii=False))
