@@ -42,15 +42,54 @@
     "phpSyntax": "passed"
   },
   "serverIntegration": {
-    "status": "pending",
+    "status": "passed",
     "target": "isolated_apache_mariadb",
     "largeFixtureMiB": 173,
-    "hostedRecipe": false
+    "hostedRecipe": false,
+    "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43267900807",
+    "apiAssertions": 72,
+    "scheduledBackupAssertions": 22,
+    "propertyTransferAssertions": 35,
+    "apacheAssertions": 83,
+    "real173MiBArchiveUploadDownloadBackupPassed": true,
+    "syntheticDataOnly": true
   },
   "hostedDeployment": {
     "preproduction": false,
     "production": false
   },
   "realClientDataChanged": false,
-  "humanCriteriaValidated": false
+  "humanCriteriaValidated": false,
+  "candidate": {
+    "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+    "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+    "artifactPath": ".local/ci-large-580e4da/candidate.zip",
+    "manifestPath": ".local/ci-large-580e4da/candidate.manifest.json",
+    "fileCount": 18,
+    "archiveReadback": "passed",
+    "artifactRun": "https://github.com/jpdandin44/AVEREO/actions/runs/43267900807"
+  },
+  "browserRecipe": {
+    "target": "http://127.0.0.1:5178/",
+    "fictionalDataOnly": true,
+    "smallZipFixtures": 14,
+    "addedDocuments": 14,
+    "existingDocumentPreserved": true,
+    "downloadExactBytes": true,
+    "downloadSha256": "9e19de70400bbdd05b2ddb24a0749de89edb3d52eb63bc41f0eaa3921c5ad967",
+    "largeSizesTestedHere": false,
+    "largeSizesCoveredBy": "unit metadata cases and isolated CI HTTP fixture",
+    "hostedWritePerformed": false,
+    "screenshot": ".local/import-500-preview.png"
+  },
+  "documentationControl": {
+    "observedAt": "2026-11-12T17:17:51.905736+00:00",
+    "documents": 16,
+    "localLinks": 262,
+    "metadataAndScaffold": "passed",
+    "oldWorkingCopyFilesUnchanged": 29,
+    "approvedReferences": "Checked separately by tests/check-cockpit.mjs"
+  },
+  "qualificationObservedAt": "2026-11-12T17:22:50.996407+00:00"
 }

@@ -6,19 +6,28 @@
   "iterationId": "passeport-immo-import-volumineux",
   "stage": "developpement-local",
   "status": "awaiting_local_human_review",
-  "objective": "Conserver entiers les archives et rapports volumineux, avec une limite utile de 500 Mo et répartition automatique des grandes sélections.",
+  "objective": "Conserver entiers les archives et rapports volumineux, avec une limite utile de 500 Mo et rÃ©partition automatique des grandes sÃ©lections.",
   "candidate": {
-    "status": "building",
-    "sourceSha": null,
-    "artifactSha256": null
+    "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+    "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+    "artifactPath": ".local/ci-large-580e4da/candidate.zip",
+    "manifestPath": ".local/ci-large-580e4da/candidate.manifest.json"
   },
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/passeport-immo-import-volumineux",
     "baseBranch": "chore/passeport-immo-preproduction-archives",
     "basePrUrl": "https://github.com/jpdandin44/AVEREO/pull/145",
-    "prUrl": null,
-    "humanAcceptanceVerified": false
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/146",
+    "humanAcceptanceVerified": false,
+    "number": 146,
+    "observedHeadSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+    "observedAt": "2026-11-12T17:22:50.996407+00:00",
+    "draft": false,
+    "mergeable": "MERGEABLE",
+    "technicalChecksPassed": 24,
+    "runtimeCandidateFrozen": true,
+    "observationScope": "Qualified runtime head; later documentation-only commits preserve the frozen candidate."
   },
   "targets": {
     "preproduction": {
@@ -37,7 +46,35 @@
     "url": "http://127.0.0.1:5178/",
     "fictionalDataOnly": true
   },
-  "checks": [],
+  "checks": [
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+      "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+      "observedAt": "2026-11-12T17:22:50.996407+00:00",
+      "target": "http://127.0.0.1:5178/",
+      "evidence": "api/import-volumineux-observation.json#localChecks"
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+      "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+      "observedAt": "2026-11-12T17:22:50.996407+00:00",
+      "target": "isolated_apache_mariadb",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43267900807"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+      "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+      "observedAt": "2026-11-12T17:22:50.996407+00:00",
+      "target": null,
+      "evidence": "api/import-volumineux-observation.json#documentationControl"
+    }
+  ],
   "approvals": [],
   "backups": [],
   "rollback": {
@@ -47,10 +84,10 @@
     "status": "not_delivered"
   },
   "blockers": [
-    "Revue locale humaine du nouveau candidat non enregistrée.",
-    "Valeurs PHP effectives, sauvegarde fraîche et retour arrière à qualifier pour cette version."
+    "Revue locale humaine du nouveau candidat non enregistrÃ©e.",
+    "Valeurs PHP effectives, sauvegarde fraÃ®che et retour arriÃ¨re Ã  qualifier pour cette version."
   ],
-  "nextAction": "Qualifier la CI et le paquet, puis revoir le correctif local ; intégrer PR145 avant le merge du correctif. Ne pas déduire une installation à 500 Mo de la livraison PR144.",
+  "nextAction": "Qualifier la CI et le paquet, puis revoir le correctif local ; intÃ©grer PR145 avant le merge du correctif. Ne pas dÃ©duire une installation Ã  500 Mo de la livraison PR144.",
   "phases": [
     {
       "id": 0,
@@ -60,13 +97,13 @@
     },
     {
       "id": 1,
-      "label": "Développement local",
+      "label": "DÃ©veloppement local",
       "status": "awaiting_review",
       "humanPhaseApprovalRecorded": false
     },
     {
       "id": 2,
-      "label": "Préproduction",
+      "label": "PrÃ©production",
       "status": "not_started",
       "humanPhaseApprovalRecorded": false
     },
@@ -79,9 +116,9 @@
   ],
   "nextIteration": [
     {
-      "topic": "Fichiers supérieurs à 500 Mo",
+      "topic": "Fichiers supÃ©rieurs Ã  500 Mo",
       "status": "not_implemented",
-      "detail": "Transfert par blocs et reconstitution privée à cadrer séparément."
+      "detail": "Transfert par blocs et reconstitution privÃ©e Ã  cadrer sÃ©parÃ©ment."
     }
   ],
   "evidence": "api/import-volumineux-observation.json",

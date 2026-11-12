@@ -72,7 +72,14 @@ Réglages proposés : `upload_max_filesize=500M`, `post_max_size=512M`,
 | V5 | Interrompre le deuxième lot. | Premier lot conservé ; suite arrêtée ; reprise dédoublonnée. |
 | V6 | Télécharger dans une seconde session puis vérifier une sauvegarde. | Octets exacts, restauration temporaire réussie. |
 
-Les tests locaux ne cochent pas la recette humaine hébergée. Le [suivi dédié](../data/suivi-import-volumineux.json)
+La [CI isolée qualifiée](https://github.com/jpdandin44/AVEREO/actions/runs/43267900807) réussit 72 assertions API, dont envoi
+entier, téléchargement exact et sauvegarde/restauration d’un vrai ZIP de 173 Mo ;
+22 assertions de sauvegarde planifiée, 35 de transfert et 83 Apache restent réussies.
+Les 60 tests frontend, 41 inspections PHP, 25 tests Python et le build réussissent.
+Le navigateur local importe quatorze petites archives fictives et en télécharge
+une à l’identique ; les 203 Mo sont couverts par les tests de métadonnées.
+La [PR146](https://github.com/jpdandin44/AVEREO/pull/146) remet ce candidat en revue locale.
+Ces tests ne cochent pas la recette humaine hébergée. Le [suivi dédié](../data/suivi-import-volumineux.json)
 porte les preuves et le candidat. La [PR145 de livraison](preproduction-archives.md)
 reste distincte. La nouvelle PR est empilée sur sa branche pour limiter le diff
 au correctif ; intégrer PR145 avant le merge de celui-ci.
