@@ -15,7 +15,7 @@ tags:
 
 ## 2026-11-12 — Lot 0 Observations, intégration locale
 
-Ordre commun sans identifiant remplacé, numéro stocké ni migration ; vues et client filtrés après tri. Les 135 tests Node et le build complet passent après corrections, déplacement réel et aller-retour JSON contrôlés ; DOCX expert/client inspectés en OOXML sans fuite constatée dans la fixture. Le rendu visuel est encore en cours. [Preuves, périmètre et limites](lot-0-observations.md#qualification-réalisée-par-codex). La PR #148 et sa qualification antérieure restent distinctes.
+Ordre commun sans identifiant remplacé, numéro stocké ni migration ; vues et client filtrés après tri. Les 135 tests Node et les deux builds complets passent après corrections, déplacement réel et aller-retour JSON contrôlés ; DOCX expert/client inspectés en OOXML sans fuite constatée dans la fixture. Les rendus Microsoft Word (15 pages expert, 5 client) et la reprise dans un nouvel onglet sont contrôlés. [Preuves, périmètre et limites](lot-0-observations.md#qualification-réalisée-par-codex). La PR #148 et sa qualification antérieure restent distinctes.
 
 ## 2026-11-12 — Lot Habitologue local
 
