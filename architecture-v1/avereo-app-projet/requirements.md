@@ -5,12 +5,21 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-10
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 12 novembre — Session et reprise de navigation
+
+Expliquer une session Projet absente ou expirée sans la confondre avec la session CONNECT ni avec un refus de rôle. Effacer les données privées après refus et proposer le parcours normal de reconnexion, sans prolonger ou contourner les droits. Vue d’ensemble doit pouvoir relire un état absent ; une actualisation demandée doit donner un retour explicite, sans revendiquer une collecte distante ou une mise à jour Git.
+
+## 11 novembre — Référence avec historique Git
+
+Utiliser un clone complet propre de jpdandin44/AVEREO sur main ; séparer les archives sans historique des sources de développement. Refuser les autres dépôts, clones superficiels, mauvaises branches et chemins hors référence. Conserver les métadonnées métier et décisions lors du remplacement des chemins ; aucune synchronisation Git automatique ni changement de droit.
+
 
 ## 10 novembre — Dossiers de référence dans le cockpit privé
 

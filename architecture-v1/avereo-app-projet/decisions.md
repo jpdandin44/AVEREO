@@ -5,12 +5,17 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-09
+updated: 2026-11-11
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 11 novembre — Git fait autorité pour les développements
+
+Contexte : l’export sans répertoire Git a été utilisé comme point de référence. Décision du responsable : utiliser un clone complet sur main avec historique et conserver l’export comme archive. Conséquences : chemins du clone explicitement qualifiés, libellés distincts, générateur versionné et conservation des suivis/livraisons. L’interface ne lance aucun fetch ni opération locale.
+
 
 ## 2026-11-09 — qualification annotative et collecte par opérateur
 

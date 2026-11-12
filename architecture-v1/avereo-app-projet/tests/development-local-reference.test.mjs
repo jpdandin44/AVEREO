@@ -3,13 +3,24 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import {transformWithEsbuild} from '../frontend/node_modules/vite/dist/node/index.js';
-import {qualifyLocalReference,extendReferenceSnapshot} from '../workflows/development-local-reference.mjs';
+import {qualifyLocalReference,extendReferenceSnapshot,updateReferenceSnapshot} from '../workflows/development-local-reference.mjs';
 const ids=['connect','rapport','rga','projet','coupe','thermo','drone','passeport-immo','recherche','saisie-unique'];
 const root='C:/Users/fixture/Documents local/AVEREO-reference',sha='a'.repeat(40),date='2026-11-10T12:00:00Z';
 const catalogue=()=>({schema:'avereo-local-reference-catalog',observedAt:date,reference:{sha,privateData:'must not be published'},referenceArchive:{path:root+'/sauvegardes/source.zip'},applications:ids.map(id=>({id,referenceSha:sha,referenceDirectory:root+'/versions/'+sha.slice(0,12)+'/architecture-v1/'+(id==='rga'?'avereo-app-rapport/frontend/public/rga':'avereo-app-'+id),extra:'not published'}))});
 const phase=()=>[0,1,2,3].map(id=>({id,label:['Cadrage','Développement local','Préproduction','Mise en production'][id],criteria:[{id:'kept-'+id,decision:'not_reviewed',canApprove:false}],proofs:[]}));
 const previous=()=>({schema:'avereo-private-development-snapshot',version:1,sequence:9,generatedAt:date,iterations:[{id:'existing',writable:false,history:[{decision:'approved',recordedAt:date}],phases:phase()}],portfolio:[...ids,'site-avereo','tc-longages'].map(id=>({id,iterations:[{id:'existing'}],preproduction:{sourceSha:'b'.repeat(40),verification:{status:'documented'}},production:null})),proofs:[],deliveryReceiptQualification:{preserved:true},githubSnapshot:{observedAt:date}});
 const iteration=()=>({id:'reference-applications',title:'Référence locale',writable:false,currentPhase:2,status:'awaiting_review',versions:{updatedAt:date},phases:phase()});
+const gitCatalogue=()=>{const c=catalogue();c.reference={...c.reference,mode:'git-clone',repository:'jpdandin44/AVEREO',branch:'main',sourceRepository:root+'/depot',git:{shallow:false,clean:true,headSha:sha}};c.applications.forEach(a=>{a.referenceDirectory=a.referenceDirectory.replace('/versions/'+sha.slice(0,12),'/depot');});return c;};
+
+test('le clone complet publié utilise le dépôt et non le dossier des archives',()=>{
+ const refs=qualifyLocalReference(gitCatalogue());assert.equal(refs.size,10);for(const ref of refs.values()){assert.equal(ref.sourceKind,'git-clone');assert.equal(ref.historyAvailable,true);assert.equal(ref.branch,'main');assert.match(ref.directory,/\\depot\\architecture-v1\\/);assert(!ref.directory.includes('versions'));assert.equal(ref.roots[0].label,'Clone Git de référence');}
+ for(const change of [c=>c.reference.sourceRepository=root+'/another-clone',c=>c.reference.git.shallow=true,c=>c.reference.branch='feature',c=>c.reference.repository='external/repo',c=>c.reference.git.clean=false,c=>c.reference.git.headSha='b'.repeat(40),c=>c.applications[0].referenceDirectory=root+'/depot/../private',c=>c.reference.mode='arbitrary']){const c=gitCatalogue();change(c);assert.throws(()=>qualifyLocalReference(c));}
+});
+
+test('la correction de la publication conserve tous les suivis et ne change que les références',()=>{
+ const old=extendReferenceSnapshot(previous(),iteration(),catalogue(),{sequence:10}),before=structuredClone(old);const next=updateReferenceSnapshot(old,gitCatalogue(),{sequence:11});assert.deepEqual(old,before);assert.deepEqual(next.iterations,before.iterations);assert.deepEqual(next.githubSnapshot,before.githubSnapshot);assert.deepEqual(next.deliveryReceiptQualification,before.deliveryReceiptQualification);
+ next.portfolio.forEach((app,i)=>{const {localReference,...rest}=app;const {localReference:oldReference,...oldRest}=before.portfolio[i];assert.deepEqual(rest,oldRest);});assert.equal(next.sequence,11);assert.equal(next.portfolio.filter(a=>a.localReference?.sourceKind==='git-clone').length,10);assert.throws(()=>updateReferenceSnapshot(old,gitCatalogue(),{sequence:12}));assert.throws(()=>updateReferenceSnapshot(old,catalogue(),{sequence:11}));
+});
 test('publication explicite des dix dossiers et quatre racines sans données annexes',()=>{
  const refs=qualifyLocalReference(catalogue());assert.equal(refs.size,10);assert.equal(refs.get('rga').roots.length,4);assert.match(refs.get('rga').directory,/avereo-app-rapport\\frontend\\public\\rga$/);assert(!JSON.stringify([...refs]).includes('must not be published'));assert(!JSON.stringify([...refs]).includes('not published'));
 });
@@ -40,6 +51,10 @@ test('sans presse papiers le chemin reste sélectionnable et le résultat est ex
 });
 test('une ancienne publication sans catalogue conserve la vue sans rubrique vide',async()=>{
  const f=await componentContext(undefined);vm.runInContext('DevelopmentPortfolio({applications:[],onOpen:()=>{}});',f.ctx);assert(!f.nodes.some(n=>n.props?.['aria-label']==='Référence locale des applications'));
+});
+
+test('le clone et l’ancienne archive ont des libellés distincts dans l’interface',async()=>{
+ for(const git of [true,false]){const f=await componentContext(undefined);f.ctx.apps=[{id:'connect',name:'CONNECT',category:'Application',iterations:[],local:{status:'unknown'},github:null,localReference:qualifyLocalReference(git?gitCatalogue():catalogue()).get('connect'),unqualifiedDeliveries:[]}];vm.runInContext('DevelopmentPortfolio({applications:apps,onOpen:()=>{}});',f.ctx);const text=JSON.stringify(f.nodes);assert(text.includes(git?'Clone Git avec historique complet':'Archive de code sans historique Git'));if(!git)assert(!text.includes('Clone Git avec historique complet'));}
 });
 test('un refus asynchrone conserve la sélection après libération de currentTarget par React',async()=>{
  let selected=false;const event={currentTarget:{parentElement:{querySelector:()=>({focus(){},select(){selected=true;}})}}};

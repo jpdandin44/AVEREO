@@ -5,13 +5,18 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-10
+updated: 2026-11-11
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## 11 novembre — Clone Git distinct de l’archive
+
+La projection qualifie explicitement les chemins du clone sous AVEREO-reference/depot et transporte seulement les métadonnées whitelistees. Un remplacement du catalogue conserve tous les suivis et badges. Le générateur Python versionné observe le dépôt sans le modifier, puis produit catalogue et vues ; le serveur ne lit aucun fichier Git local. [Détails](docs/reference-locale-applications.md).
+
 
 ## 10 novembre — Métadonnées locales de référence
 
