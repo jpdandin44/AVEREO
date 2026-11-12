@@ -85,7 +85,7 @@ La configuration de test hérite d'une page d'erreur 403 qui repasse par la SPA,
 comme sur la cible o2switch ; la politique applicative doit imposer le refus 403
 standard même dans ce contexte.
 
-`python -m unittest discover -s tests -p 'test_*.py'` exécute actuellement 19 tests.
+`python -m unittest discover -s tests -p 'test_*.py'` exécute actuellement 25 tests, dont six protections du livreur PR144 limité à Passeport Immo ; aucun hébergement réel n’est utilisé par ces tests.
 Les quatre cas du delta compatible vérifient l'ajout limité au lancement et le
 refus d'une observation périmée, d'un contexte différent ou d'un runtime déjà intégré.
 Le 15 octobre, le runtime historique des deux fichiers observés a aussi été repris
@@ -141,7 +141,7 @@ dans `legacyTracking` et les empreintes des documents approuvés.
 
 ## Documents approuvés et packaging
 
-`python -m unittest discover -s tests -p 'test_*.py'` exécute dix-neuf tests : huit
+Le sous-ensemble documentaire et packaging conserve dix-neuf tests : huit
 cas de préparation, quatre protections des vues approuvées, trois contrôles du
 packaging et quatre contrôles du delta compatible. Le packaging couvre notamment
 l’ordre reproductible des assets avec noms mêlant majuscules/minuscules. Ce cas

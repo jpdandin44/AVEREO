@@ -1,0 +1,64 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "observedAt": "2026-11-12T16:29:06.300245+00:00",
+  "status": "prepared_not_installed",
+  "target": "https://passeport-immo-preprod.avereo.fr/",
+  "candidate": {
+    "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+    "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+    "artifactPath": ".local/ci-0a3eacf/candidate.zip",
+    "manifestPath": ".local/ci-0a3eacf/candidate.manifest.json",
+    "runtimeTreeSha": "abea760e44230b711a2ee3dd963bdc4dc40fe768"
+  },
+  "github": {
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/144",
+    "headSha": "df6eadc3795f89b71b915562d937fe90aec22342",
+    "mergeSha": "28f24cdd475f6b4989eee41eeb0576d86b7a5f62",
+    "mergedAt": "2026-11-12T16:06:07Z",
+    "strictChecklist": "passed"
+  },
+  "authorization": {
+    "scope": "preproduction",
+    "status": "approved",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "actor": "jpdandin",
+    "source": "user_chat",
+    "recordedAt": "2026-11-12T16:29:06.300245+00:00",
+    "sourceSha": "0a3eacf04b3cbdcaa756980a86e58ba3630237dc",
+    "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+    "evidence": "api/preproduction-archives-observation.json#authorization",
+    "quote": "la PR#144 est mergée, peux-tu pousser en préprod stp?",
+    "doesNotApproveProduction": true
+  },
+  "qualification": {
+    "observedAt": "2026-11-12T16:26:13+00:00",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "artifactSha256": "7baca4c4be6fa3cac93444714aff9c50b41681c7b850f4362192df2a53fd1352",
+    "dataRecovery": {
+      "snapshotSha256": "7b47317f7043ec6f8b3919d358113159ffa1bcc42347f9c9d93bb1929a281f3d",
+      "tables": 4,
+      "documents": 13,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false
+    },
+    "rollbackRehearsal": {
+      "candidateOnCopy": "passed",
+      "restoredOnCopy": "passed",
+      "liveFilesChanged": false
+    },
+    "externalGuardsPreserved": true,
+    "operations": {
+      "preserve": 11,
+      "replace": 4,
+      "create": 3
+    }
+  },
+  "delivery": null,
+  "hostedRecipe": null,
+  "productionChanged": false,
+  "documentsOrWorkspaceMigrated": false,
+  "privateConfigurationChanged": false,
+  "cronChanged": false
+}
