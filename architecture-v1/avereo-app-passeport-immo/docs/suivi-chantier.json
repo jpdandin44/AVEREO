@@ -4096,17 +4096,17 @@
       "id": "passeport-immo-documents-compresses",
       "canonicalTracking": "../data/suivi-documents-compresses.json",
       "documentation": "documents-compresses.md",
-      "scope": "Archives PR144 livrées en préproduction privée ; recette technique réussie, revue humaine en attente, décisions de l’ancien lot conservées.",
+      "scope": "Archives PR144 livrées ; revue PR145 fusionnée. Anciennes décisions conservées ; limites relevées dans le lot distinct import-volumineux.",
       "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/145"
     },
     {
       "id": "passeport-immo-import-volumineux",
       "canonicalTracking": "../data/suivi-import-volumineux.json",
       "documentation": "import-volumineux.md",
-      "scope": "Correctif 500 Mo en développement local ; ne modifie ni PR144 déployée ni ses validations."
+      "scope": "PR146 fusionnée ; candidat gelé à 500 Mo installé et techniquement vérifié en préproduction privée ; recette humaine des archives réelles en attente."
     }
   ],
-  "currentStateObservation": "../api/preproduction-archives-observation.json",
+  "currentStateObservation": "../api/preproduction-import-volumineux-observation.json",
   "resumptionPlanningHistory": [
     {
       "recordedAt": "2026-11-12T12:17:58.906+00:00",

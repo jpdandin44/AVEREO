@@ -4,8 +4,8 @@
   "version": "git",
   "protocol": "developpement-github-cockpit",
   "iterationId": "passeport-immo-import-volumineux",
-  "stage": "developpement-local",
-  "status": "awaiting_local_human_review",
+  "stage": "preproduction",
+  "status": "awaiting_hosted_human_review",
   "objective": "Conserver entiers les archives et rapports volumineux, avec une limite utile de 500 Mo et rÃ©partition automatique des grandes sÃ©lections.",
   "candidate": {
     "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
@@ -19,21 +19,30 @@
     "baseBranch": "chore/passeport-immo-preproduction-archives",
     "basePrUrl": "https://github.com/jpdandin44/AVEREO/pull/145",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/146",
-    "humanAcceptanceVerified": false,
+    "humanAcceptanceVerified": true,
     "number": 146,
-    "observedHeadSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
-    "observedAt": "2026-11-12T17:22:50.996407+00:00",
+    "observedHeadSha": "a091654138e1f58cf416e7d47969a5439128ba40",
+    "observedAt": "2026-11-12T18:25:07.442081+00:00",
     "draft": false,
     "mergeable": "MERGEABLE",
     "technicalChecksPassed": 24,
     "runtimeCandidateFrozen": true,
-    "observationScope": "Qualified runtime head; later documentation-only commits preserve the frozen candidate."
+    "observationScope": "Four human checklist boxes checked on merged PR146; runtime directories identical between frozen source, final PR head and merge. Hosted acceptance remains separate.",
+    "state": "MERGED",
+    "mergeCommitSha": "831dda19deb3d5c70d1307b42ac5d8abac22422f",
+    "mergedAt": "2026-11-12T18:15:26Z",
+    "evidence": "https://github.com/jpdandin44/AVEREO/pull/146",
+    "acceptedSourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+    "acceptedArtifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13"
   },
   "targets": {
     "preproduction": {
       "id": "https://passeport-immo-preprod.avereo.fr/",
-      "ready": false,
-      "detail": "PR144 active; new 500 MiB candidate and effective PHP limits not qualified on hosting."
+      "ready": true,
+      "detail": "Frozen CI artifact installed; actual HTTPS multipart receipt and full validation passed at 173 and 500 MiB, 501 MiB refused; 106 preservation/access assertions and hosted browser passed. No global PHP change.",
+      "isolated": true,
+      "observedAt": "2026-11-12T18:29:23.518799+00:00",
+      "evidence": "api/preproduction-import-volumineux-observation.json"
     },
     "production": {
       "id": "https://passeport-immo.avereo.fr/",
@@ -41,10 +50,10 @@
     }
   },
   "reviewEnvironment": {
-    "phase": 1,
-    "environment": "local",
-    "url": "http://127.0.0.1:5178/",
-    "fictionalDataOnly": true
+    "phase": 2,
+    "environment": "preproduction",
+    "url": "https://connect-preprod.avereo.fr/?app=passeport-immo",
+    "fictionalDataOnly": false
   },
   "checks": [
     {
@@ -73,38 +82,80 @@
       "observedAt": "2026-11-12T17:22:50.996407+00:00",
       "target": null,
       "evidence": "api/import-volumineux-observation.json#documentationControl"
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed",
+      "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+      "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "observedAt": "2026-11-12T18:29:23.518799+00:00",
+      "evidence": "api/preproduction-import-volumineux-observation.json",
+      "scope": "Actual file reception/validation, existing document downloads, data preservation and browser; positive persistence of new large files is isolated-CI evidence and remains in human hosted acceptance."
     }
   ],
-  "approvals": [],
-  "backups": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+      "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "recordedAt": "2026-11-12T18:25:07.442081+00:00",
+      "evidence": "api/preproduction-import-volumineux-observation.json#sourceAuthorization"
+    }
+  ],
+  "backups": [
+    {
+      "id": "preprod-archives-500-pr146-20261112",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-12T18:23:57+00:00",
+      "evidence": "api/preproduction-import-volumineux-observation.json#qualification",
+      "snapshotSha256": "ff88fd8f14d601a804be5d68b492259054aa5ee035db46ef1cd4c98e6577abb7",
+      "tables": 4,
+      "documents": 13
+    }
+  ],
   "rollback": {
-    "status": "not_tested"
+    "status": "tested",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+    "observedAt": "2026-11-12T18:23:57+00:00",
+    "evidence": "api/preproduction-import-volumineux-observation.json#qualification",
+    "scope": "Candidate and old code restored on a private copy, never by overwriting live data."
   },
   "delivery": {
-    "status": "not_delivered"
+    "status": "delivered",
+    "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+    "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "observedAt": "2026-11-12T18:25:03+00:00",
+    "evidence": "api/preproduction-import-volumineux-observation.json#delivery",
+    "writtenFiles": 6
   },
-  "blockers": [
-    "Revue locale humaine du nouveau candidat non enregistrÃ©e.",
-    "Valeurs PHP effectives, sauvegarde fraÃ®che et retour arriÃ¨re Ã  qualifier pour cette version."
-  ],
-  "nextAction": "Qualifier la CI et le paquet, puis revoir le correctif local ; intÃ©grer PR145 avant le merge du correctif. Ne pas dÃ©duire une installation Ã  500 Mo de la livraison PR144.",
+  "blockers": [],
+  "nextAction": "Depuis CONNECT préproduction, ajouter les archives d’origine et vérifier leur persistance et leur téléchargement ; revoir la PR opératoire. Aucune production de ce lot sans accord distinct.",
   "phases": [
     {
       "id": 0,
       "label": "Cadrage",
-      "status": "in_progress",
+      "status": "completed",
       "humanPhaseApprovalRecorded": false
     },
     {
       "id": 1,
       "label": "DÃ©veloppement local",
-      "status": "awaiting_review",
+      "status": "completed",
       "humanPhaseApprovalRecorded": false
     },
     {
       "id": 2,
       "label": "PrÃ©production",
-      "status": "not_started",
+      "status": "awaiting_review",
       "humanPhaseApprovalRecorded": false
     },
     {
@@ -122,7 +173,7 @@
     }
   ],
   "evidence": "api/import-volumineux-observation.json",
-  "documentation": "docs/import-volumineux.md",
+  "documentation": "docs/preproduction-import-volumineux.md",
   "sourceFeedback": {
     "source": "user_chat",
     "recordedAt": "2026-11-12T17:15:08.654029+00:00",
@@ -132,5 +183,11 @@
     "reportedUnits": "Mo",
     "userRequiresWholeFiles": true,
     "doesNotCreatePhaseApproval": true
+  },
+  "operatorReview": {
+    "branch": "chore/passeport-immo-preproduction-500",
+    "phase": "Préproduction",
+    "reviewEnvironment": "https://connect-preprod.avereo.fr/?app=passeport-immo",
+    "humanReviewPending": true
   }
 }

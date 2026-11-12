@@ -12,15 +12,14 @@ tags: [passeport-immo, local]
 
 # Architecture Passeport Immo
 
-## Import volumineux préparé le 12 novembre
+## Import volumineux livré en préproduction le 12 novembre
 
 Le contrôleur documentaire planifie des lots successifs de 500 Mo/100 fichiers,
 après contrôle des métadonnées de la sélection. Le dépôt local ou serveur enregistre
 chaque lot atomiquement. L’interface conserve les résultats confirmés après erreur ;
 la reprise réutilise les empreintes de contenu. Les fichiers restent entiers,
 avec une limite par fichier de 500 Mo et une enveloppe HTTP/PHP de 512 Mo.
-Aucun nouveau stockage ou schéma. Les valeurs PHP effectives restent à qualifier
-avant livraison. [Flux et recette](docs/import-volumineux.md).
+Aucun nouveau stockage ou schéma. La réception et l’inspection de ZIP entiers de 173 et 500 Mo sont vérifiées par HTTPS sur la cible ; 501 Mo est refusé. Les valeurs ini ne sont pas déduites de leur fichier et aucun réglage PHP global n’est changé. [Flux et recette](docs/import-volumineux.md), [livraison hébergée](docs/preproduction-import-volumineux.md).
 
 ## Conteneurs documentaires compressés
 

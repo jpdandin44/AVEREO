@@ -14,7 +14,7 @@ tags: [passeport-immo, local]
 
 ## Reprise courante et fichiers compressés
 
-[Import de rapports et archives volumineux](import-volumineux.md) : nouveau candidat à 500 Mo en préparation locale, distinct de PR144 installée.
+[Import de rapports et archives volumineux](import-volumineux.md) : candidat PR146 à 500 Mo livré en préproduction privée ; [livraison, preuves et recette humaine](preproduction-import-volumineux.md).
 
 [État des lieux et reprise](reprise-documents-compresses.md) · [Guide et recette des archives](documents-compresses.md) · [Annexe de parité](source-audit-documents-compresses.md) · [Suivi de l’évolution](../data/suivi-documents-compresses.json). Les dossiers datés et approuvés restent des références historiques ; le nouveau lot a sa propre revue.
 

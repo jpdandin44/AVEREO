@@ -17,7 +17,7 @@ tags: [avereo, documentation, local]
 - ARCH01 : accepter ZIP, 7z, RAR, TAR/USTAR, GZ et TGZ comme documents du bien.
 - ARCH02 : conserver nom et octets de l’archive entière ; ne pas extraire ses membres, conformément au choix humain.
 - ARCH03 : réutiliser client/bien, catégories, doublons, archivage réversible, droits, téléchargement privé et sauvegarde.
-- ARCH04 : préparer 500 Mo par fichier et par lot, cent fichiers par requête ; reconnaître le conteneur et refuser atomiquement chaque lot invalide. La préproduction PR144 conserve 25/100 Mo tant que ce nouveau candidat n’est pas livré.
+- ARCH04 : accepter 500 Mo par fichier et par lot, cent fichiers par requête ; reconnaître le conteneur et refuser atomiquement chaque lot invalide. Candidat PR146 livré en préproduction ; réception réelle jusqu’à 500 Mo vérifiée, recette humaine des archives d’origine en attente.
 - ARCH05 : rendre visibles l’association du client, l’étape d’import et son enregistrement automatique ; désactiver l’import jusqu’à l’association confirmée et préciser si les fichiers sont conservés dans le navigateur ou sur le serveur privé.
 - ARCH06 : répartir automatiquement les grandes sélections en lots successifs, sans découper ou extraire les fichiers ; conserver progression, résultats confirmés et dédoublonnage lors d’une reprise.
 - ARCH07 : nommer le fichier trop gros avant envoi et distinguer l’enregistrement partiel confirmé du succès global. [Guide et limites](docs/import-volumineux.md).
