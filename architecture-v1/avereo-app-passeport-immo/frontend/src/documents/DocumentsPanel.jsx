@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { CATEGORIES, documentRepository } from './document-store.js';
+import { CATEGORIES, DOCUMENT_ACCEPT, documentRepository, isCompressedArchive } from './document-store.js';
 import PdfPreview from './PdfPreview.jsx';
 
 const formatSize = size => size < 1024*1024 ? `${Math.ceil(size/1024)} Ko` : `${(size/(1024*1024)).toFixed(1)} Mo`;
@@ -38,6 +38,7 @@ function DocumentReader({ document, bienId, repository, onClose }) {
         <div className="document-reader-content">{document.mime === 'application/pdf'
           ? <PdfPreview url={url} title={document.title} />
           : document.mime.startsWith('image/') ? <img src={url} alt={document.title} />
+          : isCompressedArchive(document) ? <div className="document-no-preview"><h3>Archive compressée conservée dans le dossier du bien.</h3><p>Téléchargez-la pour l’ouvrir avec votre logiciel habituel. Son contenu n’est pas extrait dans l’application.</p></div>
           : <div className="document-no-preview"><h3>Ce document s’ouvre avec votre logiciel habituel.</h3><p>Téléchargez sa copie pour le consulter.</p></div>}</div>
         <footer><span>Le fichier d’origine reste conservé.</span><a className="doc-primary" href={url} download={document.name}>Télécharger le document</a></footer>
       </>}
@@ -120,10 +121,10 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
         <button className="doc-primary" disabled={busy}>Associer le client</button>
       </form>}
       {data.client && <div className="document-import">
-        <div><h3>Ajouter au dossier</h3><p>PDF, images et documents bureautiques · 25 Mo par fichier</p></div>
+        <div><h3>Ajouter au dossier</h3><p>PDF, images, documents bureautiques et archives ZIP, 7z, RAR, TAR, GZ ou TGZ · 25 Mo par fichier · 100 Mo par lot</p></div>
         <label>Classer les nouveaux documents<select value={category} onChange={e => setCategory(e.target.value)} disabled={busy}>{Object.entries(CATEGORIES).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</select></label>
         <div className="document-import-actions"><button className="doc-primary" disabled={busy} onClick={() => filesRef.current.click()}>{busy ? 'Enregistrement…' : 'Ajouter des fichiers'}</button><button className="doc-secondary" disabled={busy} onClick={() => folderRef.current.click()}>Importer un dossier</button></div>
-        <input ref={filesRef} type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.webp,.txt,.csv,.doc,.docx,.xls,.xlsx,.odt" onChange={importFiles} aria-label="Fichiers à ajouter au dossier du bien" hidden />
+        <input ref={filesRef} type="file" multiple accept={DOCUMENT_ACCEPT} onChange={importFiles} aria-label="Fichiers à ajouter au dossier du bien" hidden />
         <input ref={folderRef} type="file" webkitdirectory="" multiple onChange={importFiles} aria-label="Dossier à importer pour ce bien" hidden />
         {(bien.dossier.attachments || []).length > 0 && <button className="doc-text" onClick={importLegacy} disabled={busy}>Reprendre les {(bien.dossier.attachments || []).length} anciennes pièces jointes</button>}
       </div>}

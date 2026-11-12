@@ -50,6 +50,8 @@ jobs:
           php-version: '8.3'
       - name: Verify CONNECT launch contract
         run: php architecture-v1/avereo-app-passeport-immo/tests/connect-gate.php
+      - name: Verify compressed document formats without extraction
+        run: php architecture-v1/avereo-app-passeport-immo/tests/compressed-documents.php
       - name: Verify hosted entry under isolated Apache
         run: |
           docker build -f architecture-v1/avereo-app-passeport-immo/docker/connect-test.Dockerfile -t avereo-passeport-connect-test:local architecture-v1/avereo-app-passeport-immo

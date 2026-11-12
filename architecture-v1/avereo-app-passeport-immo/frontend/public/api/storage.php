@@ -128,14 +128,27 @@ final class PasseportStorage
         self::text($name,255);
         if (basename(str_replace('\\','/',$name)) !== $name) throw new PasseportError(422,'Nom de fichier invalide.');
         $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
-        $allowed = ['pdf','jpg','jpeg','png','webp','txt','csv','doc','docx','xls','xlsx','odt'];
+        $archiveTypes = ['zip'=>'application/zip','7z'=>'application/x-7z-compressed','rar'=>'application/vnd.rar',
+            'tar'=>'application/x-tar','gz'=>'application/gzip','tgz'=>'application/gzip'];
+        $allowed = array_merge(['pdf','jpg','jpeg','png','webp','txt','csv','doc','docx','xls','xlsx','odt'],array_keys($archiveTypes));
         $size = filesize($path);
         if (!in_array($ext,$allowed,true) || $size === false || $size < 1 || $size > 25*1024*1024) {
             throw new PasseportError(422,'Format ou taille de fichier non autorisé (25 Mo maximum).');
         }
-        $handle = fopen($path,'rb'); $magic = fread($handle,5); fclose($handle);
-        if ($ext === 'pdf' && $magic !== '%PDF-') throw new PasseportError(422,'Le fichier ne contient pas un PDF valide.');
-        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($path) ?: 'application/octet-stream';
+        $handle = fopen($path,'rb'); $header = fread($handle,512); fclose($handle);
+        if ($ext === 'pdf' && substr($header,0,5) !== '%PDF-') throw new PasseportError(422,'Le fichier ne contient pas un PDF valide.');
+        if (isset($archiveTypes[$ext])) {
+            $valid = match ($ext) {
+                'zip' => $size >= 22 && in_array(substr($header,0,4),["PK\x03\x04","PK\x05\x06","PK\x07\x08"],true),
+                '7z' => $size >= 32 && str_starts_with($header,"7z\xbc\xaf\x27\x1c"),
+                'rar' => $size >= 14 && (str_starts_with($header,"Rar!\x1a\x07\x00") || str_starts_with($header,"Rar!\x1a\x07\x01\x00")),
+                'tar' => $size >= 512 && substr($header,257,5) === 'ustar',
+                'gz','tgz' => $size >= 18 && str_starts_with($header,"\x1f\x8b\x08"),
+            };
+            if (!$valid) throw new PasseportError(422,'Le fichier ne correspond pas au format d’archive annoncé.');
+        }
+        // Canonical archive types keep compressed containers out of image/PDF previews.
+        $mime = $archiveTypes[$ext] ?? ((new finfo(FILEINFO_MIME_TYPE))->file($path) ?: 'application/octet-stream');
         // Every download is an attachment. No uploaded file is ever executed or served as HTML.
         return ['name'=>$name,'size'=>$size,'mime'=>$ext === 'pdf' ? 'application/pdf' : $mime,'sha256'=>hash_file('sha256',$path)];
     }

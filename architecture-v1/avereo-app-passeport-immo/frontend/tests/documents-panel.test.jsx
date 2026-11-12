@@ -8,6 +8,19 @@ const bien = { id: 1, address: 'Bien fictif', dossier: { attachments: [] } };
 const client = { id: 'client-1', name: 'Client fictif' };
 const document = { id: 'doc-1', title: 'Plan du bien', name: 'plan.pdf', category: 'plans', mime: 'application/pdf', size: 2500, addedAt: '2026-10-14T10:00:00Z', archivedAt: null };
 describe('Parcours documentaire', () => {
+  it('propose une archive en téléchargement sans lecteur PDF ni extraction', async () => {
+    vi.stubGlobal('URL',{createObjectURL:vi.fn(()=>'blob:archive-fictive'),revokeObjectURL:vi.fn()});
+    const compressed={...document,name:'dossier.zip',title:'Dossier complet',mime:'application/zip'};
+    const repository={load:async()=>({client,clients:[client],documents:[compressed]}),getFile:async()=>new Blob(['archive fictive'])};
+    render(<DocumentsPanel bien={bien} repository={repository}/>);
+    fireEvent.click(await screen.findByRole('button',{name:'Consulter'}));
+    await screen.findByText('Archive compressée conservée dans le dossier du bien.');
+    expect(screen.getByRole('link',{name:'Télécharger le document'}).getAttribute('download')).toBe('dossier.zip');
+    expect(screen.queryByTitle('PDF : Dossier complet')).toBeNull();
+    expect(screen.getByLabelText('Fichiers à ajouter au dossier du bien').getAttribute('accept').split(',')).toContain('.zip');
+    fireEvent.click(screen.getByRole('button',{name:'Fermer'}));
+    vi.unstubAllGlobals();
+  });
   it('demande le client avant l’import et conserve l’association confirmée', async () => {
     let linked = false;
     const repository = { load: vi.fn(async () => ({ client: linked ? client : null, clients: [], documents: [] })), linkClient: vi.fn(async () => { linked = true; }) };
