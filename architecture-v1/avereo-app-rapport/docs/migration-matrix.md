@@ -130,6 +130,8 @@ Les deux types de rapport, leur sauvegarde/relecture en ligne, reprise du brouil
 | Assistant multi-etapes | `Rapport_AVEREO_Pro.txt`, `frontend/src/App.jsx` | Donnees du rapport | Frontend Vite; navigation et reprise manuelles | conservee |
 | Brouillon hors ligne | `App.jsx` | IndexedDB, `localStorage` | Mode local conserve; test de rechargement | conservee |
 | Photos et camera | `App.jsx` | Fichiers, MediaDevices, data URLs | Frontend; taille bornee avant sauvegarde serveur | adaptee |
+| Originaux prives des photos et versions annotees | demande du 12 novembre | Espace prive du dossier en ligne, acces CONNECT | Aucune implementation ; [cadrage en quatre phases](photos-originales-et-annotations.md) | prevue, a decider |
+| Compression des nouvelles photos importees | demande du 12 novembre | Canvas du navigateur, data URLs JPEG | `photoCompression.js` isole et teste, non branche ; import inchange tant que les originaux prives ne sont pas conserves ; [regles et essais](compression-photos.md) | candidat isole, non active |
 | Dictee vocale | `App.jsx` | Web Speech API | Frontend avec degradation gracieuse | conservee |
 | Adresse et cadastre | `App.jsx` | BAN, API Carto IGN | Appels publics conserves; erreurs reseau gerees | conservee |
 | Urbanisme et Geoportail | `App.jsx` | API Carto, Geoportail | Frontend; verification des liens | conservee |

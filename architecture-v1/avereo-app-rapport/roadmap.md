@@ -19,6 +19,10 @@ tags:
 Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement ; sa revue visuelle Word reste en cours. Le travail photo est préparé en parallèle dans un autre lot, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
 
 
+## Photos originales privées — à décider puis développer
+
+Prochain lot fonctionnel après le lot 0, [cadré en quatre phases](docs/photos-originales-et-annotations.md) : originaux privés en ligne, version rapport recadrée/annotée. La compression locale n'y sera activée qu'après confirmation de l'original ; son [module est isolé](docs/compression-photos.md). Le PDF natif reste un chantier distinct, seulement [cadré](docs/compression-photos.md#cadrage-distinct--pdf-natif).
+
 ## Essais temporaires — à qualifier
 
 Candidat local testé ; création et activation du compte, administration CONNECT, sauvegarde/restauration et qualification hébergée restent à réaliser. Aucun envoi d’invitation effectué. [Périmètre](docs/essais-temporaires.md).

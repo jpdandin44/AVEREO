@@ -137,7 +137,10 @@ attentes, besoin reformule, criteres de reussite, contraintes et accords pour
 les photos et la dictee. Ces donnees suivent le
 meme brouillon, la meme sauvegarde JSON et les memes exports que le reste du
 rapport. Les photos et la dictee sont desactivees tant que l'accord
-correspondant n'est pas enregistre.
+correspondant n'est pas enregistre. L'import de photos reste inchange : aucune
+compression n'est active. La conservation des originaux dans un espace prive du
+dossier en ligne est cadree dans
+[photos et annotations](docs/photos-originales-et-annotations.md).
 
 Les accords de Visite Globale sont places juste sous « Informations de base,
 client et mission », avant l'entretien, pour autoriser la dictee des le debut.

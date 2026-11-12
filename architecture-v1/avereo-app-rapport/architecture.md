@@ -21,6 +21,10 @@ tags:
 `profil_metier` et `observations[].explications` étendent le payload JSON existant, sans migration SQL. Le profil adapte les formulaires et les restitutions, sans changer les rôles CONNECT ni la propriété. [Contrat et composants](docs/profil-habitologue.md).
 
 
+## Photos originales et compression
+
+Les photos restent des data URL dans `observations[].photos[]` ; l'import est inchangé. Le stockage d'originaux privés, lié au dossier et à son propriétaire CONNECT, est seulement cadré : aucune API, table ni migration n'existe. `photoCompression.js` (sans dépendance) est un [module isolé non branché](docs/compression-photos.md). [Cadrage des originaux et annotations](docs/photos-originales-et-annotations.md).
+
 ## Copie pour les tests
 
 Le navigateur reconstruit un document indépendant à partir des choix du catalogue. L’import existant accepte cette copie. [Partage et supervision de la base](docs/partage-tests-et-stockage.md).

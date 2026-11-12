@@ -24,6 +24,10 @@ Choix explicite et réversible du profil ; Observations avec Constat, Explicatio
 
 Le propriétaire doit pouvoir partager une copie indépendante du seul rapport ouvert avec les choix métier nécessaires aux tests. [Périmètre des champs et accès](docs/partage-tests-et-stockage.md).
 
+## Photos originales et versions annotées — besoin du 12 novembre
+
+Conserver les originaux dans un espace privé du dossier en ligne, accessible avec CONNECT, puis proposer recadrage, commentaires et formes sur une version dérivée du rapport. Aucune optimisation ne supprime le seul exemplaire d'un original : la compression de nouvelles photos (2400 px, JPEG 0,88, réglage proposé) reste un [module isolé non activé](docs/compression-photos.md) tant que les originaux ne sont pas conservés et qualifiés. Les 500 Mo concernent le chargement dans Passeport Immo, pas un quota de Rapport (JSON par défaut : 50 Mio). [Critères, phases et décisions à prendre](docs/photos-originales-et-annotations.md).
+
 ## Essai temporaire — besoin du 2 novembre
 
 Limiter un compte personnel à Rapport et RGA pendant une période explicite de sept jours, avec refus des appels serveur après échéance, y compris depuis une session déjà ouverte. Vérifier la propriété des dossiers et distinguer brouillon de navigateur et dossier serveur. [État et critères](docs/essais-temporaires.md).

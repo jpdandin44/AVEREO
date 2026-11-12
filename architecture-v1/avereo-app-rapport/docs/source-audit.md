@@ -22,6 +22,10 @@ Ordre commun sans identifiant remplacé, numéro stocké ni migration ; vues et 
 Profil métier explicite, sans modification de sécurité ; ancien parcours conservé. Restitution échappée et liens HTTP/HTTPS intégrés ; filtrage client vérifié dans les deux Word fictifs et leurs rendus. 123 tests Node, 27 contrôles PHP, deux builds et recette navigateur locale réussis. Aucune qualification hébergée du candidat. [État réel et réserves](profil-habitologue.md).
 
 
+## 2026-11-12 — Photos : originaux privés et compression non activée
+
+Aucune compression destructive n'est active : l'import garde `src` octet-identique tant que les originaux privés du dossier en ligne ne sont pas implémentés et qualifiés. Le module de compression est testé (12 tests) mais isolé ; ses essais sur images synthétiques sont ceux du candidat initial, sans conservation d'original. Aucun changement de consentement photo, de sécurité, d'authentification, de propriété, d'API ou de limite. Le [cadrage des originaux et annotations](photos-originales-et-annotations.md) relève les risques (accès inter-comptes, administrateur, sauvegarde des fichiers hors SQL, copie vers un autre propriétaire) ; les besoins d'originaux privés et d'annotations sont confirmés, leur implémentation et leurs paramètres restent à préparer. [Module isolé](compression-photos.md).
+
 ## 8 novembre 2026 — Menus de Rapport et de RGA
 
 Le candidat désactive Missions sur l’accueil et la carte RGA. Dans la carte intégrée, « Mes projets » s’ouvre toujours depuis le menu parent. Rapport conserve son formulaire de mission sur la même origine et produit les lettres et les ordres des quatre prestations. [Recette du périmètre](../../avereo-platform/docs/protocole-missions.md#applications-qui-génèrent-des-missions).

@@ -21,6 +21,10 @@ Ordre commun des fiches, plans et Word, déplacement dans une même phase et vue
 Profil de mission et explications entre constat et conseils ajoutés ; rubriques Export adaptées et deux Word fictifs contrôlés. [État et vérifications](docs/profil-habitologue.md). Aucun déploiement de cette évolution.
 
 
+## 12 novembre 2026 — Photos : originaux privés cadrés, compression non activée
+
+Le responsable demande de conserver les originaux dans un espace privé du dossier en ligne (CONNECT) avant toute version recadrée ou annotée. Le [cadrage](docs/photos-originales-et-annotations.md) est préparé ; le module de compression reste isolé et testé, [non branché](docs/compression-photos.md). L'import de photos est inchangé. Aucun déploiement.
+
 ## 12 novembre 2026 — export délégué interrompu
 
 Le correctif local guide la relance d’un téléchargement interrompu. [Vérification dans Chrome](docs/source-audit.md#interruption-du-téléchargement-délégué).
