@@ -13,7 +13,11 @@ tags:
   - connect
 ---
 
-## Profil Habitologue — candidat local vérifié
+## Lot 0 — observations, candidat local vérifié
+
+Les fiches, plans et Word suivent désormais le même ordre ; les observations se déplacent dans leur phase, avec une vue compacte. Le libellé « Conseils habitologue » s'applique à tous les profils et les nouvelles créations commencent en Visite Globale. [Usage, critères et limites de qualification](docs/lot-0-observations.md). La PR #148 reste distincte de ce complément, sans nouvelle livraison.
+
+## Profil Habitologue — candidat local précédent
 
 Le premier lot ajoute le profil explicite de mission et les explications des observations. Le parcours historique reste disponible. [Périmètre, critères et état](docs/profil-habitologue.md).
 

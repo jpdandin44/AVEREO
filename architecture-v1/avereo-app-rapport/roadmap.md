@@ -16,7 +16,7 @@ tags:
 
 ## Priorités du 12 novembre
 
-Premier lot implémenté et vérifié localement, à examiner : parcours Habitologue et clarté des observations. Puis organisation des constats, photos et documents, diagnostic/interventions/planning, identité des organisations. [Cadrage et préparation des lots](docs/profil-habitologue.md). Les sections antérieures restent historiques et n’établissent pas la livraison du nouveau candidat.
+Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement ; sa revue visuelle Word reste en cours. Le travail photo est préparé en parallèle dans un autre lot, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
 
 
 ## Essais temporaires — à qualifier

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import VoiceField from './VoiceField.jsx';
 import { allowsDecisionProjections } from './reportProfiles.js';
+import { orderedObservations } from './observationOrder.js';
 import { normalizeDecision, decisionComparison, decisionWarnings, DECISION_CRITERIA, ACTION_CATEGORIES } from './decisionSupport.js';
 
 const newId = () => crypto.randomUUID();
@@ -46,7 +47,7 @@ function Remove({ label, onClick }) {
 
 export default function DecisionSupportPanel({ report, setReport, dictationAllowed = false, onSaveDraft }) {
   const projections = allowsDecisionProjections(report);
-  const d = normalizeDecision(report.decision), observations = report.observations || [];
+  const d = normalizeDecision(report.decision), observations = orderedObservations(report);
   const update = transform => setReport(prev => ({ ...prev, decision: transform(normalizeDecision(prev.decision)) }));
   const group = (key, field, value) => update(prev => ({ ...prev, [key]: { ...prev[key], [field]: typeof value === 'function' ? value(prev[key][field]) : value } }));
   const row = (key, index, field, value) => update(prev => ({ ...prev, [key]: prev[key].map((r, i) => i === index ? { ...r, [field]: typeof value === 'function' ? value(r[field]) : value } : r) }));

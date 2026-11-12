@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { MAX_PLANS, MAX_REPORT_BYTES, markersForPlan, planPayloadError, readPlanFile, setObservationPoint } from './observationPlans.js';
+import { orderedObservations } from './observationOrder.js';
 import './observationPlans.css';
 
 export default function ObservationPlans({ report, setReport, selectedId, onSelect }) {
@@ -14,8 +15,9 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
   latestReport.current = report;
   const plans = report.plans || [];
   const plan = plans.find(p => p.id === viewId) || plans[0];
-  const observation = report.observations.find(o => o.id === selectedId) || report.observations[0];
-  const number = report.observations.indexOf(observation) + 1;
+  const ordered = orderedObservations(report);
+  const observation = ordered.find(o => o.id === selectedId) || ordered[0];
+  const number = ordered.indexOf(observation) + 1;
   const markers = plan ? markersForPlan(report, plan.id) : [];
   const current = markers.find(p => p.observationId === observation?.id);
   const chooseObservation = id => { onSelect(id); setPlacing(false); setMessage(''); };
@@ -61,7 +63,7 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
           {plans.map(p => <option key={p.id} value={p.id}>{p.title} · {p.kind === 'coupe' ? 'Coupe' : 'Niveau'}</option>)}
         </select></label>
         <label>Observation à repérer<select value={observation?.id || ''} onChange={e => chooseObservation(e.target.value)}>
-          {report.observations.map((o, i) => <option key={o.id} value={o.id}>{i + 1}. {o.titre || o.piece || 'Sans titre'}</option>)}
+          {ordered.map((o, i) => <option key={o.id} value={o.id}>{i + 1}. {o.titre || o.piece || 'Sans titre'}</option>)}
         </select></label>
         <label>Zoom {zoom} %<input type="range" min="100" max="300" step="25" value={zoom} onChange={e => setZoom(Number(e.target.value))} /></label>
       </div>

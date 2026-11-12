@@ -22,10 +22,16 @@ import {
   recommendedProtocols,
 } from './reportClassification.js';
 
-test('seules les deux categories prioritaires sont visibles pour une nouvelle creation', () => {
+test('seule Visite Globale est proposée, le type technique reste conservé pour les dossiers internes', () => {
   const selectable = getSelectableReportCategories();
 
-  assert.deepEqual(selectable.map(([name]) => name), [DEFAULT_CATEGORY, HABITOLOGIE_CATEGORY]);
+  assert.deepEqual(selectable.map(([name]) => name), [HABITOLOGIE_CATEGORY]);
+  assert.equal(REPORT_CATEGORIES[DEFAULT_CATEGORY].selectable, false);
+  const internal = { categorie: DEFAULT_CATEGORY, sous_categorie: 'pathologies', titre: 'Dossier interne', observations: [{id:'keep'}] };
+  const restored = normalizeReportClassification(internal);
+  assert.equal(restored.categorie, DEFAULT_CATEGORY);
+  assert.equal(restored.sous_categorie, 'pathologies');
+  assert.equal(restored.observations, internal.observations);
   assert.equal(REPORT_CATEGORIES['Assistance avant-projet'].selectable, false);
   assert.equal(REPORT_CATEGORIES['Diagnostic specifique'].selectable, false);
   assert.equal(REPORT_CATEGORIES[LEGACY_RECEPTION_CATEGORY].selectable, false);

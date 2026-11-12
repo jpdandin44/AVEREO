@@ -12,6 +12,10 @@ tags:
   - architecture
 ---
 
+## Ordre commun des observations — lot 0 local
+
+`observationOrder.js` fournit aux fiches, sélections, plans et restitutions un ordre commun et des numéros dérivés, tout en conservant les identifiants du payload. Aucun nouveau stockage ni migration. La création est initialisée en Visite Globale ; les catégories techniques existantes restent lisibles. [Composants et règles](docs/lot-0-observations.md#composants-et-stockage).
+
 ## Profil de mission et explications
 
 `profil_metier` et `observations[].explications` étendent le payload JSON existant, sans migration SQL. Le profil adapte les formulaires et les restitutions, sans changer les rôles CONNECT ni la propriété. [Contrat et composants](docs/profil-habitologue.md).
@@ -66,8 +70,8 @@ La description technique detaillee et les flux restent maintenus dans
 dans [`docs/authentication.md`](docs/authentication.md) et les donnees dans
 [`database/README.md`](database/README.md).
 
-La classification des nouveaux dossiers expose uniquement
-`Expertise & Visite technique` et `Visite Globale`. Les categories
+Depuis le lot 0 local, la classification des nouveaux dossiers expose uniquement
+`Visite Globale`. `Expertise & Visite technique` demeure lisible pour les dossiers existants, avec ses sous-catégories, mais n'est plus proposée à la création. Les catégories
 `Assistance avant-projet`, `Diagnostic specifique` et
 `Reception de travaux` restent dans le catalogue du frontend avec le statut
 masque. Elles demeurent chargeables pour assurer la compatibilite des dossiers
