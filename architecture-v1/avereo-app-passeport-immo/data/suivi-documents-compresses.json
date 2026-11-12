@@ -1,0 +1,116 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "version": "git",
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "passeport-immo-documents-compresses",
+  "kind": "evolution-documentaire",
+  "stage": "developpement-local",
+  "status": "awaiting_local_review_ci_pending",
+  "objective": "Centraliser les archives des clients dans le dossier du bien, avec restitution exacte et sans extraction.",
+  "candidate": {
+    "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
+    "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+    "artifactPath": ".local/candidate.zip"
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/passeport-immo-documents-compresses",
+    "prUrl": null,
+    "observedHeadSha": null,
+    "humanAcceptanceVerified": false,
+    "observedAt": "2026-11-12T11:45:27.316+00:00"
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://passeport-immo-preprod.avereo.fr/",
+      "ready": false,
+      "detail": "Existing site accessible; this new artifact is not installed or qualified."
+    },
+    "production": {
+      "id": "https://passeport-immo.avereo.fr/",
+      "ready": false,
+      "detail": "No new artifact or current authenticated business recipe qualified."
+    }
+  },
+  "checks": [
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
+      "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+      "observedAt": "2026-11-12T11:45:27.316+00:00",
+      "evidence": "api/reprise-documents-compresses-observation.json",
+      "target": "http://127.0.0.1:5178/"
+    },
+    {
+      "kind": "ci",
+      "status": "pending",
+      "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
+      "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+      "observedAt": "2026-11-12T11:45:27.316+00:00",
+      "evidence": null
+    }
+  ],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested"
+  },
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "blockers": [
+    "Revue humaine du nouveau candidat local et acceptation GitHub non enregistrées.",
+    "CI et recette HTTP/MariaDB de la nouvelle version à vérifier.",
+    "Cible, sauvegarde fraîche restaurée et retour arrière à requalifier avant installation."
+  ],
+  "nextAction": "Revoir le lot local et sa PR ; qualifier la préproduction du même artefact après les contrôles et accords applicables.",
+  "nextIteration": [],
+  "budget": {
+    "limit": null,
+    "unit": null
+  },
+  "phases": [
+    {
+      "id": 0,
+      "label": "Cadrage",
+      "status": "in_progress",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 1,
+      "label": "Développement local",
+      "status": "awaiting_review",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 2,
+      "label": "Préproduction",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 3,
+      "label": "Mise en production",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    }
+  ],
+  "scopeDecision": {
+    "date": "2026-11-12",
+    "source": "user_reply",
+    "quote": "Conserver les archives entières, sans extraction (recommandé)",
+    "createsPhaseOrDeploymentApproval": false
+  },
+  "reviewEnvironment": {
+    "phase": 1,
+    "environment": "local",
+    "url": "http://127.0.0.1:5178/",
+    "fictionalDataOnly": true
+  },
+  "evidence": "api/reprise-documents-compresses-observation.json",
+  "documentation": "docs/documents-compresses.md",
+  "historicParentTracking": "docs/suivi-chantier.json",
+  "existingApprovalsExtended": false
+}

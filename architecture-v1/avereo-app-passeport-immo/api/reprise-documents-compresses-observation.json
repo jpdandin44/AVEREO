@@ -1,0 +1,142 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "observedAt": "2026-11-12T11:45:27.316+00:00",
+  "repository": {
+    "name": "jpdandin44/AVEREO",
+    "baseline": "16338e844912fade2a5e8b315b8313fe6f7e2dbd",
+    "isolatedBranch": "feat/passeport-immo-documents-compresses"
+  },
+  "github": [
+    {
+      "number": 85,
+      "url": "https://github.com/jpdandin44/AVEREO/pull/85",
+      "state": "merged",
+      "headSha": "6434787bb3bcd5a715ff8d0b6935b4e263d82e00",
+      "mergedAt": "2026-10-16T20:16:37Z",
+      "mergeSha": "9702c7e9997b4dae1e9187441137d7f02310a163",
+      "mergedBy": "jpdandinavereo-design",
+      "scope": "Integration evidence only; no new hosted delivery inferred."
+    },
+    {
+      "number": 23,
+      "url": "https://github.com/jpdandin44/avereo-site-drupal/pull/23",
+      "state": "merged",
+      "headSha": "0f246525cb5b16a71b47fdf1cf865d6265d58549",
+      "mergedAt": "2026-10-16T20:34:34Z",
+      "mergeSha": "fc9c840c66c8e0647a8add28a47a943dd1e2112a",
+      "mergedBy": "jpdandinavereo-design",
+      "scope": "Integration evidence only; no new hosted delivery inferred."
+    }
+  ],
+  "publicAccess": {
+    "observedAt": "2026-11-12T11:35:49.009352+00:00",
+    "checks": [
+      {
+        "target": "https://passeport-immo-preprod.avereo.fr/",
+        "status": 303,
+        "redirectHost": "connect-preprod.avereo.fr",
+        "redirectPath": "/",
+        "contentType": "text/html; charset=UTF-8",
+        "redirectsFollowed": false,
+        "authenticatedBusinessRecipe": false
+      },
+      {
+        "target": "https://passeport-immo-preprod.avereo.fr/api/workspace",
+        "status": 401,
+        "redirectHost": null,
+        "redirectPath": "",
+        "contentType": "application/json; charset=utf-8",
+        "redirectsFollowed": false,
+        "authenticatedBusinessRecipe": false
+      },
+      {
+        "target": "https://passeport-immo.avereo.fr/",
+        "status": 303,
+        "redirectHost": "connect.avereo.fr",
+        "redirectPath": "/",
+        "contentType": "text/html; charset=UTF-8",
+        "redirectsFollowed": false,
+        "authenticatedBusinessRecipe": false
+      },
+      {
+        "target": "https://passeport-immo.avereo.fr/api/workspace",
+        "status": 401,
+        "redirectHost": null,
+        "redirectPath": "",
+        "contentType": "application/json; charset=utf-8",
+        "redirectsFollowed": false,
+        "authenticatedBusinessRecipe": false
+      }
+    ],
+    "credentialsSubmitted": false
+  },
+  "preproductionUi": {
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "observation": "Existing Chrome session, read-only; four documents visible on the open property, private server storage indicated.",
+    "currentVersionHashVerified": false,
+    "newLoginRecipePerformed": false,
+    "businessWritePerformed": false,
+    "clientNamesOrDocumentsExported": false
+  },
+  "historicProduction": {
+    "source": "api/production-verification-observation.json",
+    "sourceDate": "2026-10-16",
+    "propertyMigrationOrActivationReplayed": false,
+    "currentPropertyInventoryVerified": false,
+    "currentNightlyBackupVerified": false
+  },
+  "featureScope": {
+    "extensions": [
+      "zip",
+      "7z",
+      "rar",
+      "tar",
+      "gz",
+      "tgz"
+    ],
+    "storeContainerIntact": true,
+    "extractMembers": false,
+    "source": "user_reply_2026-11-12",
+    "quote": "Conserver les archives entières, sans extraction (recommandé)",
+    "maxFileBytes": 26214400,
+    "maxBatchBytes": 104857600,
+    "maxFiles": 100
+  },
+  "localChecks": {
+    "frontendTests": 45,
+    "phpFileInspectionAssertions": 40,
+    "pythonTests": 19,
+    "parity": "passed",
+    "productionBuild": "passed",
+    "browserZipUploadDownload": {
+      "status": "passed",
+      "target": "http://127.0.0.1:5178/",
+      "fixtureOnly": true,
+      "uploadVisible": true,
+      "downloadExactBytes": true,
+      "sha256": "542bdf2eeff64f617e96f6c84929697533779ca9b169e8f9c5c1360917701599",
+      "noExtraction": true,
+      "hostedWritePerformed": false
+    },
+    "artifactReadback": "passed"
+  },
+  "serverIntegration": {
+    "localDockerStatus": "unavailable",
+    "reason": "Docker Desktop startup failed; no local isolated HTTP/MariaDB recipe claimed.",
+    "ciStatus": "pending",
+    "suite": "tests/check-storage-http.py",
+    "scope": "Independent-session archive download, isolation, atomic refusal, backup restoration and existing transfer regression."
+  },
+  "candidate": {
+    "sourceSha": "3a3d6e2286747c56ed4a4965fc8fcb93f621a5d8",
+    "artifactSha256": "053ef5b138540f1507c7a5dd75bfa31532f782417273c06abf8e9d686531f301",
+    "fileCount": 18,
+    "runtimeFilesExact": true,
+    "archiveContainsOnlyBuiltRuntimeFiles": true
+  },
+  "newFeatureHostedDeployment": {
+    "preproduction": false,
+    "production": false
+  }
+}

@@ -5,12 +5,16 @@ title: Vérification de la reprise
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-12
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Vérification de la reprise
+
+## Documents compressés
+
+`npm test` couvre notamment quinze essais de conservation des archives et la consultation sans lecteur PDF. `php tests/compressed-documents.php` vérifie quarante assertions sur sept conteneurs fictifs, dont RAR4 et RAR5, les types, octets, faux fichiers et limites. Les mêmes fixtures étendent `tests/check-storage-http.py` : téléchargement exact depuis une deuxième session, refus du propriétaire étranger, lot invalide atomique et restauration du lot de sauvegarde avec archives. La CI doit qualifier ces contrôles HTTP/MariaDB ; le seul test PHP d’inspection n’en remplace pas l’exécution. [Recette](../docs/documents-compresses.md).
 
 ## Recette réelle après activation privée
 

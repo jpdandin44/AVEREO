@@ -5,12 +5,16 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-15
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Décisions Passeport Immo
+
+## 2026-11-12 — Conserver les archives entières
+
+Contexte : centraliser les fichiers du client dans Passeport Immo. Décision fonctionnelle explicitement confirmée : « Conserver les archives entières, sans extraction ». Raison : conserver le conteneur original et réutiliser le dossier documentaire. Conséquences : téléchargement avec le logiciel habituel, reconnaissance de type sans analyse exhaustive, limites de taille conservées. Aucune dépendance d’extraction ou migration de données ajoutée ; ce choix ne crée aucun accord de phase, merge ou déploiement. [Guide du lot](docs/documents-compresses.md).
 
 ## 2026-10-15 — Sauvegarde quotidienne de préproduction
 

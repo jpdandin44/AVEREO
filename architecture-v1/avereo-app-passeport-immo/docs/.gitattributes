@@ -1,0 +1,2 @@
+# Reviewed Markdown evidence must keep identical bytes on Windows and in CI.
+*.md text eol=lf

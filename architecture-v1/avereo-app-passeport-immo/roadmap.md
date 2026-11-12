@@ -5,12 +5,16 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-12
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Roadmap Passeport Immo
+
+## Suite courante — reprise et fichiers compressés
+
+Le [point courant](docs/reprise-documents-compresses.md) remplace les anciennes prochaines actions du 16 octobre. L’évolution des archives est développée localement avec tests ; revue du candidat, CI, qualification puis recette en préproduction restent à obtenir. La version de production antérieure conserve ses reçus et limites : ne pas rejouer la migration SCI, l’activation ou le cron. Le plan CIL reste une évolution distincte ; l’ajout de conteneurs n’en vaut pas réalisation.
 
 ## Évolution CIL proposée le 16 octobre
 

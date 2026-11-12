@@ -5,12 +5,16 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-07
+updated: 2026-11-12
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Changelog Passeport Immo
+
+## 2026-11-12 — Fichiers compressés en revue locale
+
+Ajout ZIP/7z/RAR/TAR/GZ/TGZ dans les validations et le sélecteur, consultation adaptée et téléchargement de l’original. Tests de conservation, faux conteneurs, doublons, limites, affichage et API/backup étendus avec données fictives. État des lieux et suivi du lot ajoutés sans réécrire les documents approuvés. [Recette](docs/documents-compresses.md) ; aucune installation hébergée de ce nouveau candidat.
 
 ## 2026-10-16 — Accord OAuth et précontrôle du fournisseur
 

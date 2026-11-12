@@ -5,7 +5,7 @@ title: Raccordement Passeport Immo à CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-04
+updated: 2026-10-15
 owner: jpdandin
 tags: [connect, passeport-immo, preproduction]
 ---
@@ -117,7 +117,3 @@ Aucune intervention incluse. Le prototype conserve Admin Démo/Pro interne,
 stockage navigateur et partage d'URL sans dossier. Le sas protège son entrée ;
 il ne crée pas de permission métier et ne révoque pas instantanément un cookie
 déjà émis. La connexion réelle et les habilitations dépendent de CONNECT.
-
-## Cycle de vie CONNECT — candidat local
-
-Lorsque `connect_trial_access_file` pointe vers la politique privée de la même cible, Passeport Immo contrôle l’identité signée et la date d’émission sur les tickets et les sessions. Un compte archivé ou un ancien ticket après restauration est refusé. Les anciens cookies anonymes doivent être renouvelés à l’activation. Les comptes absents de la politique gardent leur accès par ticket signé, sous réserve des contrôles du portail. L’archivage et la suppression CONNECT ne suppriment pas les dossiers Passeport Immo. [Règles de gestion et préparation](../../avereo-app-connect/docs/administration-comptes.md#alignement-des-comptes-non-propriétaires--candidat-local).

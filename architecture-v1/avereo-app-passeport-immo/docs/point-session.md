@@ -5,12 +5,20 @@ title: Point de reprise de session
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-16
+updated: 2026-11-12
 owner: jpdandin
 tags: [passeport-immo, local, cockpit]
 ---
 
 # Point de reprise de session
+
+## Reprise active — 12 novembre 2026
+
+Repartir du [nouvel état des lieux](reprise-documents-compresses.md), du [guide des archives](documents-compresses.md) et du [suivi de ce lot](../data/suivi-documents-compresses.json). Copie active : `C:/Users/examg/Documents local/passeport-immo-archives`, branche `feat/passeport-immo-documents-compresses`, revue locale sur [5178](http://127.0.0.1:5178/). Archives entières, sans extraction, confirmées par le responsable. PR85 et Drupal23 sont fusionnées ; les anciennes consignes PR21/25 et les constats d’octobre ci-dessous restent historiques. Aucun nouveau déploiement ni donnée client modifiée par cette reprise ; les 21 références approuvées et D06 sont conservées.
+
+Prochaine action : revoir le nouveau candidat et sa PR, puis qualifier la préproduction de ce même artefact selon les contrôles et accords applicables. Ne pas rejouer activation, migration SCI ou sauvegarde existantes. Le CIL complet reste distinct.
+
+## Historique — points du 16 octobre et antérieurs
 
 ## Contrôle complémentaire de préproduction — 16 octobre
 
