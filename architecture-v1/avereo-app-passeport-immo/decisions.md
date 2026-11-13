@@ -12,6 +12,11 @@ tags: [avereo, documentation, local]
 
 # Décisions Passeport Immo
 
+## 2026-11-13 — Autorisations documentaires distinctes des comptes
+
+Le responsable confirme la lecture seule révocable. Le droit CONNECT permet d’ouvrir l’application ; une autorisation supplémentaire du propriétaire est nécessaire pour les documents d’un bien. Les comptes en attente ne reçoivent pas d’accès avant activation normale. Les droits sont sauvegardés sur la même cible et exclus des transferts interenvironnements. [Détails](docs/partage-documents.md).
+
+
 ## 2026-11-13 — Corbeille et organisation par bien
 
 Contexte : besoin de suppression réversible, regroupement visuel et classement manuel. Choix d’implémentation : conserver l’archivage distinct, ajouter deux colonnes nullables aux tables existantes et enregistrer les réglages par bien avec une révision. La purge est manuelle et confirmée ; aucune expiration automatique. Les icônes sont une liste SVG fixe, les couleurs sont validées, les références d’ordre sont limitées au bien et à la catégorie. Ce choix évite de concurrencer l’autosauvegarde du modèle et conserve les liens client/document. La livraison exigera une sauvegarde fraîche, la qualification de migration et un accord portant sur le nouveau candidat.

@@ -84,6 +84,8 @@ function pi_transfer_export(array $config, array $plan, string $destination): ar
             if (!copy($config['storage_directory'].'/'.$document['id'].'.blob',$target)) throw new RuntimeException('Document copy failed.');
             chmod($target,0600); pi_transfer_file($target,$document);
         }
+        // CONNECT identities are environment-specific; transferring documents never grants access.
+        unset($bien['document_shares']);
         $manifest=['format'=>'avereo-passeport-property-transfer','version'=>1,'sourceDatabaseId'=>pi_transfer_database_id($db),'plan'=>$plan,'property'=>$bien,'client'=>$client,'documents'=>$documents];
         pi_transfer_json($destination.'/manifest.json',$manifest); $db->commit();
         return ['status'=>'exported','manifestSha256'=>hash_file('sha256',$destination.'/manifest.json'),'properties'=>1,'clients'=>1,

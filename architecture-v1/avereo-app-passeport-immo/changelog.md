@@ -12,6 +12,11 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-11-13 — Partage nominatif en développement
+
+Diagnostic confirmé : le partage historique envoyait seulement l’URL du site. Nouveau parcours nominatif et routes de consultation en développement, huit tests d’interface ajoutés ; aucun partage réel ouvert à ce stade. [Périmètre et recette](docs/partage-documents.md).
+
+
 ## 2026-11-13 — Corbeille et classement livrés en préproduction
 
 Après fusion PR153 et accord explicite, même paquet CI installé : six écritures, deux colonnes additives via administration existante, aucune extension des droits SQL. Sauvegarde et restauration temporaire avant/après, 28 documents et leurs téléchargements exacts conservés, 247 assertions HTTPS, dossiers/commandes de l’écran SCI vérifiés. Trente-deux tests Python réussissent. [Livraison et recette humaine](docs/preproduction-organisation.md) ; aucune production modifiée.

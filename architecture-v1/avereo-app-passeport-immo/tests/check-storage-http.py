@@ -31,11 +31,16 @@ def run():
     with tempfile.TemporaryDirectory(prefix='passeport-storage-') as temporary:
         root=Path(temporary).resolve(); shutil.copytree(APP/'frontend/dist',root/'public')
         password=secrets.token_hex(24); secret=secrets.token_hex(32)
+        directory_path=root/'share-directory.json'
+        accounts={f'avereo_connect:{i}':{'label':f'Compte fictif {i}','aliases':[hashlib.sha256(f'fixture-{i}'.encode()).hexdigest()],'eligible':i not in [45,46],'invitable':i!=46}for i in [42,43,44,45,46]}
+        def directory(age=0):
+            directory_path.write_text(json.dumps({'version':1,'environment':'local','generatedAt':int(time.time())-age,'accounts':accounts}))
+        directory()
         (root/'config.php').write_text("<?php return "+"["+
             f"'environment'=>'local','connect_portal_url'=>'https://connect-preprod.avereo.fr/','connect_launch_secret'=>'{secret}',"+
             "'connect_launch_nonce_directory'=>'/tmp/nonces','connect_gate_cookie'=>'PI_TEST','connect_gate_session_seconds'=>1800,"+
             f"'storage_enabled'=>true,'storage_dsn'=>'mysql:host={database};dbname=passeport;charset=utf8mb4','storage_user'=>'passeport','storage_password'=>'{password}',"+
-            "'storage_directory'=>'/private-documents','storage_origin'=>'https://passeport-immo.test'];",encoding='utf-8')
+            "'document_share_directory'=>'/fixture/share-directory.json','storage_directory'=>'/private-documents','storage_origin'=>'https://passeport-immo.test'];",encoding='utf-8')
         try:
             command('docker','network','create',network)
             command('docker','run','-d','--rm','--name',database,'--network',network,
@@ -44,15 +49,17 @@ def run():
             command('docker','run','-d','--rm','--name',web,'--network',network,'-p','127.0.0.1::80',
                 '--mount',f'type=bind,source={root}/public,target=/var/www/html,readonly',
                 '--mount',f'type=bind,source={root}/config.php,target=/fixture/config.php,readonly',
+                '--mount',f'type=bind,source={directory_path},target=/fixture/share-directory.json,readonly',
                 '--mount',f'type=bind,source={APP}/database/storage.sql,target=/fixture/storage.sql,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/backup-storage.php,target=/fixture/backup-storage.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/migrate-document-organisation.php,target=/fixture/migrate-document-organisation.php,readonly',
+                '--mount',f'type=bind,source={APP}/workflows/migrate-document-sharing.php,target=/fixture/migrate-document-sharing.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/scheduled-backup.php,target=/fixture/scheduled-backup.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/backup-cron.php,target=/fixture/backup-cron.php,readonly',
                 '--mount',f'type=bind,source={APP}/tests/scheduled-backup.php,target=/fixture/scheduled-backup-test.php,readonly',
                 '-e','AVEREO_CONFIG_FILE=/fixture/config.php',IMAGE); created.append(web)
             port=int(command('docker','port',web,'80/tcp').rsplit(':',1)[1])
-            bootstrap="mkdir('/private-documents',0700); chmod('/private-documents',0700); chown('/private-documents','www-data'); $c=require '/fixture/config.php'; for($i=0;$i<60;$i++){try{$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);break;}catch(Throwable){usleep(500000);}} $p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); $p->exec(preg_replace('/^ *(trashed_at|document_settings) [^\\n]*\\n/m','',file_get_contents('/fixture/storage.sql'))); $p->exec(\"INSERT INTO pi_workspaces(owner_id,settings) VALUES ('migration-fixture','{}')\");"
+            bootstrap="mkdir('/private-documents',0700); chmod('/private-documents',0700); chown('/private-documents','www-data'); $c=require '/fixture/config.php'; for($i=0;$i<60;$i++){try{$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);break;}catch(Throwable){usleep(500000);}} $p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); $p->exec(preg_replace('/^ *(trashed_at|document_settings|document_shares) [^\\n]*\\n/m','',file_get_contents('/fixture/storage.sql'))); $p->exec(\"INSERT INTO pi_workspaces(owner_id,settings) VALUES ('migration-fixture','{}')\");"
             command('docker','exec',web,'php','-r',bootstrap)
             dry=json.loads(command('docker','exec',web,'php','/fixture/migrate-document-organisation.php','/fixture/config.php','passeport'))
             check(dry['status']=='dry_run' and set(dry['requiredColumns'])=={'trashed_at','document_settings'},'organisation migration defaults to dry run on historical schema')
@@ -62,6 +69,8 @@ def run():
             check(migrated['existingRowsPreserved'] and len(migrated['addedColumns'])==2,'historical schema migration preserves all original rows')
             repeated=json.loads(command('docker','exec',web,'php','/fixture/migrate-document-organisation.php','/fixture/config.php','passeport','--apply'))
             check(repeated['addedColumns']==[] and repeated['existingRowsPreserved'],'organisation migration safely idempotent')
+            sharing_migration=json.loads(command('docker','exec',web,'php','/fixture/migrate-document-sharing.php','/fixture/config.php','passeport','--apply'))
+            check(sharing_migration['status']=='verified','sharing nullable schema installed or verified')
             def request(path,cookie=None,method='GET',body=None,csrf=None,origin='https://passeport-immo.test',content_type='application/json'):
                 headers={}
                 if cookie: headers['Cookie']=cookie
@@ -212,6 +221,55 @@ def run():
             check(large_download[0]==200 and hashlib.sha256(large_download[2]).digest()==hashlib.sha256(large_bytes).digest(),'173 MiB archive exact in independent session')
             large_backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-large-test'))
             check(large_backup['documents']==expected_documents+1 and large_backup['fileReadback']=='passed' and large_backup['temporaryRowRestore']=='passed','large archive backup and temporary restoration passed')
+            # Real HTTP sharing: fixtures only, no public URL grants, all mutations scoped to the owner.
+            directory()
+            check(request('/api/biens/123/shares',foreign)[0]==404,'foreign account cannot list or manage owner shares')
+            check(request('/api/share-recipient',cookie,'POST',{'bienId':'123','recipient':'fixture-43'})[0]==403,'recipient lookup requires CSRF')
+            resolved=data(request('/api/share-recipient',cookie,'POST',{'bienId':'123','recipient':'fixture-43'},csrf))
+            check(resolved['recipient']=='avereo_connect:43' and resolved['ready'],'exact eligible CONNECT recipient resolved')
+            grant_body={'recipient':'fixture-43','expectedRecipient':resolved['recipient'],'revision':0,'confirm':True}
+            check(request('/api/biens/123/shares',cookie,'POST',{**grant_body,'expectedRecipient':'avereo_connect:44'},csrf)[0]==409,'recipient rebind between review and confirmation denied')
+            check(request('/api/biens/123/shares',cookie,'POST',{**grant_body,'confirm':False},csrf)[0]==422,'sharing requires explicit confirmation')
+            granted=request('/api/biens/123/shares',cookie,'POST',grant_body,csrf)
+            check(granted[0]==201,'owner grants confirmed read-only access')
+            grant=data(granted)['grants'][0]['id'];shared='/api/shared/'+grant
+            check(request('/api/biens/123/shares',cookie,'POST',grant_body,csrf)[0]==409,'stale share update cannot overwrite a concurrent change')
+            check(data(request('/api/shared',foreign))['shares'][0]['id']==grant,'recipient discovers property in own shared-document list')
+            received=data(request(shared,foreign));visible=[d for d in data(request('/api/biens/123/documents',cookie))['documents']if not d['archivedAt'] and not d['trashedAt']]
+            check(received['readOnly'] and len(received['documents'])==len(visible),'recipient receives only active document list')
+            check('clientId'not in received['documents'][0] and 'dossier'not in received['bien'],'shared payload excludes client references and private property model')
+            file_id=visible[0]['id'];shared_file=shared+'/documents/'+file_id+'/file'
+            original=request('/api/biens/123/documents/'+file_id+'/file',cookie)
+            check(request(shared_file,foreign)[2]==original[2],'shared attachment retains original bytes')
+            stranger=launch(44);stranger_csrf=data(request('/api/session',stranger))['csrf']
+            check(request(shared,stranger)[0]==404 and request(shared_file,stranger)[0]==404,'another CONNECT account cannot use copied share reference')
+            for method in ['PUT','POST','PATCH','DELETE']:
+                check(request(shared,foreign,method,{},foreign_csrf)[0]==405,'read-only share denies '+method)
+            check(request('/api/biens/123/documents/'+file_id,foreign,'PATCH',{'title':'Forbidden'},foreign_csrf)[0]==404,'share never grants original owner mutation routes')
+            document_path='/api/biens/123/documents/'+file_id
+            check(request(document_path,cookie,'PATCH',{'archived':True},csrf)[0]==200,'fixture archived by owner')
+            check(request(shared_file,foreign)[0]==404,'archived file is no longer shared')
+            check(request(document_path,cookie,'PATCH',{'archived':False,'trashed':True},csrf)[0]==200,'fixture trashed by owner')
+            check(request(shared_file,foreign)[0]==404,'trashed file is no longer shared')
+            check(request(document_path,cookie,'PATCH',{'trashed':False},csrf)[0]==200,'fixture restored after sharing boundary test')
+            accounts['avereo_connect:43']['eligible']=False;directory()
+            check(request(shared,foreign)[0]==404,'revoked CONNECT entitlement closes existing share')
+            accounts['avereo_connect:43']['eligible']=True;directory(181)
+            check(request(shared,foreign)[0]==503,'stale CONNECT projection fails closed')
+            directory();revoke=request('/api/biens/123/shares/'+grant,cookie,'DELETE',{'revision':1},csrf)
+            check(revoke[0]==200,'owner revokes share')
+            check(request(shared,foreign)[0]==404 and request(shared_file,foreign)[0]==404,'revocation denies next list and download')
+            pending=launch(45);pending_csrf=data(request('/api/session',pending))['csrf']
+            pending_body={'recipient':'fixture-45','expectedRecipient':'avereo_connect:45','revision':2,'confirm':True}
+            prepared=request('/api/biens/123/shares',cookie,'POST',pending_body,csrf)
+            check(prepared[0]==201 and not data(prepared)['grants'][-1]['ready'],'pending activation share is explicitly prepared but not open')
+            pending_share='/api/shared/'+data(prepared)['grants'][-1]['id']
+            check(request(pending_share,pending)[0]==404,'pending activation cannot read documents despite a prepared grant')
+            accounts['avereo_connect:45']['eligible']=True;directory()
+            check(request(pending_share,pending)[0]==200,'normal CONNECT activation can enable the prepared named share')
+            check(request('/api/share-recipient',cookie,'POST',{'bienId':'123','recipient':'fixture-46'},csrf)[0]==422,'account without Passeport entitlement cannot be invited')
+            sharing_backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-sharing'))
+            check(sharing_backup['temporaryRowRestore']=='passed','grants and revocation retained by four-table backup restore')
             command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
             check(request(path+'/file',cookie)[0]==503,'altered blob not returned')
             print(json.dumps({'assertions':len(checks),'checks':checks,'scheduledBackup':scheduled,'database':'MariaDB 11.4','isolated':True},ensure_ascii=False))

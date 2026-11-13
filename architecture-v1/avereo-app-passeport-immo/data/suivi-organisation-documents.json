@@ -5,7 +5,7 @@
   "protocol": "developpement-github-cockpit",
   "iterationId": "passeport-immo-organisation-documents",
   "stage": "preproduction",
-  "status": "awaiting_preproduction_human_review",
+  "status": "preproduction_human_review_accepted_merge_pending",
   "objective": "Corbeille restaurable, suppression définitive confirmée, dossiers par catégorie avec icône/couleur et ordre manuel conservés par bien.",
   "candidate": {
     "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
@@ -104,6 +104,18 @@
       "recordedAt": "2026-11-13T15:35:48.972433+00:00",
       "evidence": "Demande directe : La PR #153 est mergée, peux-tu déployer la corbeille et le nouveau classement des documents en préproduction stp ?",
       "scopeLimit": "Préproduction privée uniquement ; aucun accord de production ou de recette humaine hébergée."
+    },
+    {
+      "scope": "review",
+      "status": "approved",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-13T17:29:12.462772+00:00",
+      "evidence": "Le responsable indique : la recette en préproduction est validée mais la PR #155 n’est pas mergée.",
+      "scopeLimit": "Recette corbeille/classement uniquement ; aucun cochage GitHub, merge ou accord de production."
     }
   ],
   "backups": [
@@ -142,7 +154,7 @@
     "productionChanged": false
   },
   "blockers": [],
-  "nextAction": "Depuis CONNECT préproduction, vérifier dossiers, icônes/couleurs, ordre persistant et cycle corbeille sur un petit document fictif ; revoir la PR opératoire. Aucun accord de production créé.",
+  "nextAction": "Traiter le partage nominatif en priorité ; PR155 reste ouverte, aucune préparation de production poursuivie.",
   "phases": [
     {
       "id": 0,

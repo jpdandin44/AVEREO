@@ -4113,6 +4113,12 @@
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/153",
       "hostedDocumentation": "preproduction-organisation.md",
       "hostedEvidence": "../api/preproduction-organisation-observation.json"
+    },
+    {
+      "id": "passeport-immo-partage-documents",
+      "canonicalTracking": "../data/suivi-partage-documents.json",
+      "documentation": "partage-documents.md",
+      "scope": "Incident critique : URL générale sans autorisation ; partage nominatif en développement, activation du destinataire en attente."
     }
   ],
   "currentStateObservation": "../api/preproduction-organisation-observation.json",

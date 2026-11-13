@@ -12,6 +12,11 @@ tags: [avereo, documentation, local]
 
 # Exigences Passeport Immo
 
+## Partage nominatif demandé
+
+PART01 : accès nominatif, lecture seule à la liste et au téléchargement des documents actifs ; révocation possible. PART02 : éligibilité CONNECT et activation normales, confirmation exacte du destinataire. PART03 : archives/corbeille/autres biens exclus, aucune écriture accordée au destinataire. PART04 : échec fermé si annuaire périmé, sauvegarde des droits et exclusion des transferts entre environnements. [Recette](docs/partage-documents.md).
+
+
 ## Organisation documentaire demandée le 13 novembre
 
 - DOC01 : corbeille sans délai automatique, restauration conservant catégorie, contenu, client et état archivé.

@@ -12,6 +12,11 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
+## Partage des documents — incident prioritaire
+
+Le [partage nominatif](docs/partage-documents.md) remplace le simple partage d’URL historique. Nouveau candidat en développement, lecture seule/révocation confirmées ; l’activation normale du destinataire reste nécessaire. Recette corbeille/classement acceptée dans le chat, PR155 non fusionnée ; production en attente.
+
+
 ## Organisation des documents — préproduction du 13 novembre
 
 Le [nouveau lot](docs/organisation-documents.md) ajoute une corbeille restaurable, la suppression définitive confirmée, des dossiers parents par catégorie, leurs icônes/couleurs et l’ordre manuel par bien. Le paquet PR153 est [installé et techniquement vérifié en préproduction privée](docs/preproduction-organisation.md) après fusion et accord explicite : migration additive, 28 documents conservés, 247 assertions HTTPS et écran SCI contrôlés. La recette humaine hébergée reste à réaliser ; la limite de 500 Mo est conservée.

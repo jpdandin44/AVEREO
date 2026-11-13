@@ -1,0 +1,74 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "version": "git",
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "passeport-immo-partage-documents",
+  "stage": "developpement-local",
+  "status": "implementation_and_isolated_qualification",
+  "objective": "Partager les documents actifs d’un bien avec un compte CONNECT précis, en lecture seule et avec révocation.",
+  "branch": "fix/passeport-immo-partage-documents",
+  "candidate": {},
+  "reviewEnvironment": {
+    "phase": 1,
+    "environment": "local",
+    "url": "http://127.0.0.1:5178/"
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://passeport-immo-preprod.avereo.fr/",
+      "ready": false
+    },
+    "production": {
+      "id": "https://passeport-immo.avereo.fr/",
+      "ready": false
+    }
+  },
+  "checks": [],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested"
+  },
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "blockers": [
+    "Compte destinataire : activation CONNECT normale encore en attente."
+  ],
+  "nextAction": "Qualifier le candidat et les frontières d’accès, puis préparer la préproduction et la confirmation nominative du partage réel.",
+  "phases": [
+    {
+      "id": 0,
+      "label": "Cadrage",
+      "status": "completed",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 1,
+      "label": "Développement local",
+      "status": "in_progress",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 2,
+      "label": "Préproduction",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 3,
+      "label": "Mise en production",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    }
+  ],
+  "documentation": "docs/partage-documents.md",
+  "nextIteration": [],
+  "sourceFeedback": {
+    "observedAt": "2026-11-13T17:29:12.462772+00:00",
+    "source": "user_chat",
+    "confirmedAccess": "lecture seule, révocable",
+    "productionAuthorized": false
+  }
+}

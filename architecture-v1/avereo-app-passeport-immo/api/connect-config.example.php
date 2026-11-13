@@ -19,4 +19,5 @@ return [
     'storage_directory' => '/home/CPANEL_USERNAME/.avereo/passeport-immo-preprod/documents',
     'storage_origin' => 'https://passeport-immo-preprod.avereo.fr',
     'storage_profiles' => [], // Map signed avereo_connect:<id> to app display profile only.
+    'document_share_directory' => '', // Private metadata projection refreshed by CLI; no CONNECT credentials here.
 ];

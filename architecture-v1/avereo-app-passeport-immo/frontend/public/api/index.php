@@ -3,6 +3,7 @@ declare(strict_types=1);
 const AVEREO_GATE_APP = 'passeport-immo';
 require dirname(__DIR__) . '/connect/session.php';
 require __DIR__ . '/storage.php';
+require __DIR__ . '/sharing.php';
 header('Cache-Control: private, no-store');
 header('X-Content-Type-Options: nosniff');
 header('Content-Type: application/json; charset=utf-8');
@@ -41,6 +42,26 @@ try {
     if ($path==='/api/workspace') {
         if ($method==='GET') passeport_json($store->workspace());
         if ($method==='PUT') passeport_json($store->saveWorkspace($body));
+    }
+    if ($path==='/api/share-recipient' && $method==='POST') {
+        $store->bien((string)($body['bienId']??''));
+        passeport_json((new PasseportSharing($store,$config))->resolve((string)($body['recipient']??'')));
+    }
+    if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/shares(?:/([a-f0-9]{32}))?$#D',$path,$m)) {
+        $sharing=new PasseportSharing($store,$config);
+        if($method==='GET' && !isset($m[2]))passeport_json($sharing->outgoing($m[1]));
+        if($method==='POST' && !isset($m[2]))passeport_json($sharing->change($m[1],$body),201);
+        if($method==='DELETE' && isset($m[2]))passeport_json($sharing->change($m[1],$body,$m[2]));
+    }
+    if (preg_match('#^/api/shared(?:/([a-f0-9]{32})(?:/documents/([a-f0-9]{32})/file)?)?$#D',$path,$m)) {
+        if($method!=='GET')throw new PasseportError(405,'Ce partage est en lecture seule.');
+        $sharing=new PasseportSharing($store,$config);
+        if(!isset($m[1]))passeport_json(['shares'=>$sharing->incoming()]);
+        if(!isset($m[2]))passeport_json($sharing->load($m[1]));
+        $row=$sharing->document($m[1],$m[2]);$file=$store->filePath($row);
+        header('Content-Type: '.$row['mime']);header('Content-Length: '.$row['size']);
+        header("Content-Disposition: attachment; filename=\"document\"; filename*=UTF-8''".rawurlencode($row['name']));
+        header("Content-Security-Policy: sandbox; default-src 'none'");readfile($file);exit;
     }
     if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/(documents|client|document-settings)(?:/([a-f0-9]{32})(/file)?)?$#D',$path,$m)) {
         [, $bien, $kind]=$m; $document=$m[3] ?? null; $file=isset($m[4]);

@@ -34,6 +34,7 @@ for ($i=1;$i<=4;$i++) {
 }
 $organisation=['revision'=>1,'categories'=>['plans'=>['icon'=>'leaf','color'=>'#123456']],'order'=>['plans'=>array_reverse(array_column($sourceDocuments,'id'))]];
 pi_transfer_query($src,'UPDATE pi_biens SET document_settings=? WHERE owner_id=? AND bien_id=?',[json_encode($organisation),$owner,'fixture-selected']);
+pi_transfer_query($src,'UPDATE pi_biens SET document_shares=? WHERE owner_id=? AND bien_id=?',['{"revision":1,"grants":[{"recipient":"avereo_connect:333"}]}',$owner,'fixture-selected']);
 pi_transfer_insert($dst,'pi_workspaces',['owner_id'=>$destinationOwner,'revision'=>11,'settings'=>'{"existingTariff":77}']);
 // The source's client ID already belongs to a different target tenant: deterministic remapping must preserve it.
 pi_transfer_insert($dst,'pi_clients',['id'=>$clientId,'owner_id'=>'foreign-target','name'=>'Autre client cible','created_at'=>'2020-01-01']);
@@ -41,6 +42,7 @@ pi_transfer_insert($dst,'pi_biens',['owner_id'=>$destinationOwner,'bien_id'=>'ex
 $sourceBefore=rows($src); $targetBefore=rows($dst);
 $export=pi_transfer_export($source,$plan,'/tmp/export-selected'); $hash=$export['manifestSha256'];
 $manifest=json_decode(file_get_contents('/tmp/export-selected/manifest.json'),true,64,JSON_THROW_ON_ERROR);
+check(!array_key_exists('document_shares',$manifest['property']),'cross-environment export never carries CONNECT sharing grants');
 check($export['documents']===3 && $export['activeDocuments']===1 && $export['archivedDocuments']===1 && $export['trashedDocuments']===1,'export selects active, archived and trashed documents');
 check(count($manifest['documents'])===3 && $manifest['property']['bien_id']==='fixture-selected' && $manifest['client']['id']===$clientId,'export contains only selected property and linked client');
 check(!str_contains(file_get_contents('/tmp/export-selected/manifest.json'),'privateTariff') && !str_contains(file_get_contents('/tmp/export-selected/manifest.json'),'foreign-property')
