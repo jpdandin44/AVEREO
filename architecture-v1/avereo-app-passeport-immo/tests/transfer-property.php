@@ -108,7 +108,7 @@ pi_transfer_export($source,$legacyPlan,'/tmp/legacy-export');
 $legacy=json_decode(file_get_contents('/tmp/legacy-export/manifest.json'),true,64,JSON_THROW_ON_ERROR);
 unset($legacy['property']['document_settings']);
 foreach($legacy['documents'] as &$legacyDoc)unset($legacyDoc['trashed_at']);unset($legacyDoc);
-pi_transfer_json('/tmp/legacy-export/manifest.json',$legacy);
+file_put_contents('/tmp/legacy-export/manifest.json',json_encode($legacy,JSON_THROW_ON_ERROR|JSON_PRETTY_PRINT));
 $legacyResult=pi_transfer_import($target,$legacyPlan,'/tmp/legacy-export',hash_file('sha256','/tmp/legacy-export/manifest.json'),true);
 check($legacyResult['status']==='imported','historical transfer manifests remain importable with nullable organisation defaults');
 echo json_encode(['assertions'=>count($checks),'checks'=>$checks,'database'=>'MariaDB 11.4','data'=>'fictitious only','remoteMutation'=>false],JSON_THROW_ON_ERROR)."\n";

@@ -38,10 +38,8 @@ it('regroupe, replie, personnalise et réordonne les fichiers dans leur dossier'
   const second = { ...document, id: 'second', title: 'Autre plan', name: 'autre.pdf' };
   const repository = {
     load: async () => ({ client, clients: [client], documents: [document, second], settings }),
-    saveDocumentSettings: vi.fn(async value => { settings = { ...value, revision: value.revision + 1 }; })
+    saveDocumentSettings: vi.fn(async (id, value) => { settings = { ...value, revision: value.revision + 1 }; })
   };
-  // The repository signature carries the bien before its settings.
-  repository.saveDocumentSettings = vi.fn(async (id, value) => { settings = { ...value, revision: value.revision + 1 }; });
   render(<DocumentsPanel bien={bien} repository={repository} />);
   const folder = await screen.findByRole('region', { name: 'Dossier Plans et façades' });
   expect(within(folder).getAllByRole('heading', { level: 4 })).toHaveLength(2);
