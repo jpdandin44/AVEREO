@@ -109,6 +109,8 @@ Résultat : **247 assertions HTTPS réussies**, 28 téléchargements exacts, 17 
 7. Vérifier que l’import des archives entières reste limité à **500 Mo par fichier**
    et que les documents existants restent consultables et téléchargeables.
 
+La [PR155 de revue hébergée](https://github.com/jpdandin44/AVEREO/pull/155) réunit ce reçu et les outils opératoires. Ses quatre cases sont réservées au responsable après les vérifications ci-dessus.
+
 ### Retour arrière
 
 Le code antérieur est restaurable sous contrôle de ses empreintes et de celles

@@ -16,7 +16,7 @@ tags: [passeport-immo, local, cockpit]
 
 Branche `chore/passeport-immo-preproduction-corbeille`, copie `C:/Users/examg/Documents local/passeport-immo-archives`. [Suivi canonique](../data/suivi-organisation-documents.json), [livraison et recette hébergée](preproduction-organisation.md). PR153 fusionnée ; le paquet CI gelé est installé dans la seule préproduction privée. Deux colonnes additives, six écritures de code, 28 documents conservés, 247 assertions HTTPS et écran SCI vérifiés. Aucune extension des droits, production ou tâche planifiée modifiée.
 
-Prochaine action : le responsable vérifie les dossiers, icônes/couleurs, ordre et cycle corbeille sur un petit document fictif depuis CONNECT. Les cases de recette humaine hébergée et la production restent distinctes. Ne pas rejouer la migration SCI, l’activation ou les cron. Retour à l’ancien code interdit dès utilisation des nouveaux champs.
+Prochaine action : le responsable vérifie les dossiers, icônes/couleurs, ordre et cycle corbeille sur un petit document fictif depuis CONNECT. La [PR155](https://github.com/jpdandin44/AVEREO/pull/155) porte cette recette ; ses cases humaines et la production restent distinctes. Ne pas rejouer la migration SCI, l’activation ou les cron. Retour à l’ancien code interdit dès utilisation des nouveaux champs.
 
 ## Historique — imports à 500 Mo livrés en préproduction
 

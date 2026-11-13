@@ -182,5 +182,18 @@
   "documentation": "docs/organisation-documents.md",
   "nextIteration": [],
   "hostedEvidence": "api/preproduction-organisation-observation.json",
-  "operatorDocumentation": "docs/preproduction-organisation.md"
+  "operatorDocumentation": "docs/preproduction-organisation.md",
+  "operatorReview": {
+    "repository": "jpdandin44/AVEREO",
+    "number": 155,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/155",
+    "branch": "chore/passeport-immo-preproduction-corbeille",
+    "reviewEnvironment": "preproduction",
+    "humanAcceptanceVerified": false,
+    "observedAt": "2026-11-13T16:46:29.387239+00:00",
+    "observedBaseSha": "e7302bc5b1fe18b02a51d9df5702ed00b1358871",
+    "mergeable": "MERGEABLE",
+    "evidence": "https://github.com/jpdandin44/AVEREO/pull/155",
+    "note": "Base main actualisée pendant la publication ; changements Rapport distincts, fusion à trois voies sans conflit. Quatre cases humaines laissées décochées."
+  }
 }
