@@ -138,9 +138,10 @@ export function buildDecisionHtml(report, client = false) {
     content += `<section${client ? '' : ' class="client-page"'}><h3>Arbitrage à discuter</h3><p>${cell(proposed)}</p><p>${cell(d.arbitrage.motif)}</p><p>Prochaine étape : ${cell(d.arbitrage.prochaine_etape)}</p>`;
   }
   const warnings = decisionWarnings(report);
+  content += '<div class="decision-conclusion keep-together">';
   if (warnings.length) content += `<h3>Points restant à compléter</h3><ul>${warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul>`;
   const limits = projections
     ? 'Les conséquences sont rédigées sous hypothèses par le professionnel. Une cellule non évaluée ne signifie ni absence d’effet ni absence de risque. Montants d’aides, économies et durées de vie ne sont pas calculés par ce module.'
     : 'Les effets sont rédigés sous hypothèses par le professionnel. Une information non renseignée ne signifie ni absence d’effet ni absence de risque. Montants d’aides, économies et durées de vie ne sont pas calculés par ce module.';
-  return content + `<p class="muted">${limits}</p></section>${projections ? '</section>' : ''}`;
+  return content + `<p class="muted">${limits}</p></div></section>${projections ? '</section>' : ''}`;
 }

@@ -13,6 +13,16 @@ tags:
   - connect
 ---
 
+## Correction de pagination — qualification du 13 novembre
+
+Les deux réserves Word/PDF font l’objet d’un correctif isolé, contrôlé sur les 176 tests applicatifs et le rapport expert local. La vérification client et la recette de préproduction restent en cours. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## PR152 en préproduction — 13 novembre 2026
+
+[Entrer par CONNECT préproduction](https://connect-preprod.avereo.fr/?app=rapport). Le paquet qualifié du correctif dossiers complets est installé ; les 18 dossiers existants, leurs propriétaires et contenus sont conservés. Sauvegarde et retour arrière applicatif vérifiés ; aucun changement de production ni activation des originaux privés. La recette technique entre deux comptes fictifs est ensuite réussie : sauvegarde complète, réouverture dans une nouvelle session sans brouillon local, copie indépendante et source conservé. [Contrôles réalisés et limites](docs/partage-tests-et-stockage.md#préproduction). Les exports Word et leur conversion PDF dans Word conservent les contenus vérifiés ; deux réserves de pagination restent à traiter. [Résultats et limites](docs/partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre). Les mentions locales ci-dessous conservent la chronologie de préparation.
+
+
 ## Dossiers complets — correctif local du 13 novembre
 
 Depuis l’accueil, **Charger un dossier JSON** affiche les observations, photos, plans et la présence d’une signature avant confirmation. Dans la liste serveur, **Télécharger JSON complet** récupère les octets du dossier sauvegardé, vérifiés par empreinte. Dans Export, **Télécharger le dossier complet (JSON)** conserve le dossier ouvert ; **Créer une structure de test sans textes ni photos** reste une action distincte, explicitement expurgée.

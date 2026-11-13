@@ -130,6 +130,20 @@ const protocolReport = () => {
 };
 const titlesInOrder = html => [...html.matchAll(/<h3>(\d+)\. Titre (\w+)<\/h3>/g)].map(m => `${m[1]}:${m[2]}`);
 
+test('each selected client finding groups its own complete text, advice and photo for pagination', () => {
+  const report = protocolReport();
+  report.livrable = { audience: 'client', observations: ['feu', 'eau2'] };
+  report.observations.find(o => o.id === 'eau2').photos = [{ name: 'Photo retenue', src: 'data:image/png;base64,AAAA' }];
+  const html = buildReportHtml(report);
+  const groups = [...html.matchAll(/<article class="client-observation keep-together">([\s\S]*?)<\/article>/g)].map(m => m[1]);
+  assert.equal(groups.length, 2);
+  for (const [i, id] of ['eau2', 'feu'].entries()) {
+    for (const field of ['Texte', 'Explication', 'Conseil']) assert.ok(groups[i].includes(`${field} ${id}`));
+  }
+  assert.match(groups[0], /Photo retenue/);
+  assert.doesNotMatch(groups[1], /Photo retenue|Texte eau2/);
+});
+
 test('the expert Word numbers observations in protocol order and leaves the stored array and JSON untouched', () => {
   const report = protocolReport(), before = JSON.stringify(report);
   assert.deepEqual(titlesInOrder(buildReportHtml(report)), ['1:eau1', '2:eau2', '3:air', '4:terre', '5:feu', '6:vrac']);

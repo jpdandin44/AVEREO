@@ -14,6 +14,16 @@ tags:
   - fonctionnalites
 ---
 
+## Correction de pagination — qualification du 13 novembre
+
+Les deux réserves Word/PDF font l’objet d’un correctif isolé, contrôlé sur les 176 tests applicatifs et le rapport expert local. La vérification client et la recette de préproduction restent en cours. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## État de livraison du 13 novembre — PR152
+
+PR152 est fusionnée puis installée en préproduction avec son paquet qualifié, sans modification des dossiers réels. Accès CONNECT, préservation des données et contrôles de lecture/aperçu/téléchargement réussis ; la recette technique complète de sauvegarde, import entre deux comptes fictifs et réouverture serveur dans une nouvelle session sans brouillon local est réussie. Le propriétaire et toutes les colonnes du source, ainsi que les 18 dossiers antérieurs, sont conservés. La revue métier reste distincte. Les deux Word et leurs PDF convertis dans Word sont vérifiés (21 pages expert, 6 pages client) ; deux réserves de pagination restent à corriger puis à requalifier avant remise finale. [État et preuves](docs/partage-tests-et-stockage.md#préproduction). Aucune production ni activation d’original privé ; les autres évolutions gardent leurs périmètres. Les états de revue locale ci-dessous restent historiques.
+
+
 ## Priorité du 13 novembre — enregistrement et dossier complet
 
 Le responsable donne priorité au chargement et à la récupération du contenu complet après réception d’une copie de test expurgée. Le correctif local traite accueil/import, téléchargement vérifié, confirmation de sauvegarde et clarté des copies ; qualification initiale locale et navigateur réussies, puis contrôles d’intégration rejoués après réalignement sur PR150. Les validations humaines existantes restent attachées à leur candidat ; elles ne sont pas recréées par la résolution des conflits. La récupération du vrai contenu de Philippe est distincte : absent du fichier reçu et des sources serveur contrôlées. [État et critères](docs/partage-tests-et-stockage.md).

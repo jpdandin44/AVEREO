@@ -60,7 +60,57 @@ Le téléchargement serveur conserve un grand entier JSON exact ; le chargement/
 
 ## Préproduction
 
+**Livraison du 13 novembre 2026 :** PR152 fusionnée (`d8dad46`), même paquet que le candidat qualifié `cea3177`, installée sur [Rapport par CONNECT préproduction](https://connect-preprod.avereo.fr/?app=rapport). Huit fichiers de code sont livrés ; 188 fichiers existants restent intacts. Le contrôle de passage a été exécuté après sauvegarde fraîche des fichiers, de la configuration privée et du JSON des 18 dossiers. Le retour arrière applicatif a été répété sur une copie séparée ; la sauvegarde JSON est relue, sans restauration SQL sur la cible.
+
+Les 18 lignes de dossiers, propriétaires, contenus et autres colonnes ont une empreinte identique avant/après livraison, puis après les contrôles de navigateur. Configuration privée et fichiers de production inchangés. Aucune migration SQL ni activation des originaux privés. Les deux composants partagés déjà hébergés (`account-menu.js`, `assets/missions.js`) sont conservés à leurs empreintes vérifiées ; huit autres différences de représentation LF/CRLF sont conservées sur place après comparaison normalisée. Le paquet n’a pas été reconstruit.
+
+Contrôles initiaux après livraison : lancement CONNECT, présence des nouveaux boutons, téléchargement vérifié du dossier fictif de structure, aperçu d’un fichier fictif complet (12 observations, 2 photos, 1 plan, signature), puis annulation ; menu du compte et préférences ouverts puis annulés. Le brouillon existant est resté à sa référence et date antérieures, sans remplacement. API anonyme refusée ; assets JavaScript/CSS servis aux empreintes attendues ; capacité des originaux `enabled: false` sous session authentifiée. La recette complète a ensuite été exécutée : voir ci-dessous. Les essais locaux antérieurs restent distincts ; aucun dossier réel écrit pour ces contrôles.
+
+[Suivi et reçus de livraison](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>), bloc `rapportDossiersComplets20261113.preproduction20261113` ; [preuve serveur](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr152-preproduction-20261113/delivery.json>). Les paragraphes « correctif local » décrivent la qualification initiale. Pour une prochaine livraison :
+
 Après accord pour le candidat exact : sauvegarder et répéter le retour arrière sur copie privée, installer ensemble interface et API puis recetter deux comptes fictifs, téléchargement/empreinte, import indépendant, sauvegarde/réouverture dans une nouvelle session et propriétaire source conservé. Vérifier les anciens dossiers, Word et refus d’accès. Le diagnostic hébergé en lecture seule ne vaut pas recette hébergée de ce nouveau candidat.
+
+
+### Recette complète entre deux comptes fictifs — 13 novembre
+
+**Recette technique réussie sur le candidat installé**, distincte de la revue métier. Les deux utilisateurs fictifs CONNECT déjà existants sont réutilisés dans leurs seules organisations et avec leurs droits ordinaires ; aucun droit global ni accès à un dossier réel ajouté. Les sessions réelles sont émises par le `SessionManager` installé ; le lancement signé CONNECT, les API et l’interface hébergés sont utilisés sans simulation. Le parcours de mot de passe/OAuth Drupal n’est pas rejoué.
+
+Depuis le compte A, le dossier fictif complet est ouvert puis sauvé dans l’interface : accusé serveur de **12 observations, 2 photos et 1 plan**, signature présente dans le contenu. Son JSON complet est téléchargé, puis importé sous le compte B après aperçu et confirmation. La sauvegarde B crée un autre identifiant, appartenant à B. Le propriétaire source reste A ; toutes les colonnes du dossier source sont strictement inchangées après copie, réouverture et essais d’accès croisés.
+
+L’ancienne session B est invalidée (HTTP 401) et remplacée par une session distincte. Les seules clés de brouillon utilisées par la recette sont vidées après sauvegarde privée du brouillon d’origine. Dans un nouvel onglet, **Reprendre est désactivé** ; **Ouvrir le dossier** depuis la liste serveur charge la copie complète. Le réexport conserve textes, identifiants internes, champs inconnus, photos, plan et signature. Quatre collections de contrôles de protocoles vides sont normalisées de `[]` vers `{}` à la réouverture ; elles ne contenaient aucun contrôle et aucun champ renseigné n’est exclu de la comparaison.
+
+Lectures et téléchargements croisés refusés (404), écritures croisées refusées (403), dans les deux sens. Les **18 dossiers antérieurs restent identiques sur toutes leurs colonnes** ; seuls les deux nouveaux dossiers fictifs sont ajoutés et conservés pour la traçabilité. Utilisateurs, organisations et politiques fictifs retrouvent leur état antérieur ; sessions de recette invalidées, accès B refusé après retrait (403). Les deux valeurs IndexedDB et les valeurs localStorage du brouillon d’origine sont restaurées et comparées par empreintes individuelles ; sessions CONNECT/Rapport d’origine restaurées, référence et date du brouillon vérifiées dans l’Accueil.
+
+Preuves et identifiants exacts : bloc canonique `rapportDossiersComplets20261113.fullHostedFunctionalRecipe20261113` ; [contrôle serveur](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr152-recette-20261113/recette-serveur.json>), [parcours navigateur](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr152-recette-20261113/recette-navigateur.json>) et [comparaison du contenu](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr152-recette-20261113/verification-contenu.json>). Aucune nouvelle qualification Word/PDF ou mobile, activation des originaux privés, récupération du texte absent de Philippe, ni livraison en production déduite de cette recette.
+
+
+### Contrôle des exports Word et PDF — 13 novembre
+
+**Contenu vérifié, deux réserves de pagination ouvertes.** Le même JSON complet réexporté après la réouverture serveur sous B est chargé dans l’interface hébergée de PR152. Les Word expert et client sont générés par **Générer Word (.docx)** ; aucun nouveau dossier n’est sauvé en ligne et les comptes fictifs restent dans leur état final de la recette précédente. Le brouillon original est sauvegardé puis restauré à l’identique, avec contrôle SHA-256 individuel des clés IndexedDB/localStorage et référence/date vérifiées dans l’Accueil.
+
+L’application ne propose actuellement **aucun export PDF direct**. Les deux PDF contrôlés sont obtenus dans **Microsoft Word installé → Enregistrer sous → PDF, qualité Standard**, à partir des fichiers générés en préproduction. Le moteur de rendu empaqueté `render_docx.py` est essayé mais LibreOffice est absent ; la conversion Word native réussit, puis les PDF sont rendus en images avec le runtime fourni. Les **27 pages** sont inspectées visuellement, en complément de l’extraction des textes et des contrôles d’images.
+
+| Restitution | Word et PDF contrôlés | Contenu vérifié |
+| --- | --- | --- |
+| Rapport expert détaillé | 21 pages | 12 constats, explications et URL, conseils, écoute, analyse/recommandations, lien de décision, 2 occurrences photo, plan et signature. Photos aux pages 7–8, signature à la page 21 du PDF. |
+| Synthèse client illustrée | 6 pages | Les deux constats sélectionnés dans le dossier (`e2`, `f`), leurs textes et conseils, une occurrence photo et le plan filtré. La présentation actuelle n’inclut pas de signature. |
+
+Les deux occurrences photo de la fixture utilisent la même mire : deux placements sont vérifiés dans le rapport expert, même si le fichier image n’est stocké qu’une fois dans le DOCX. Les pixels des photos et de la signature sont identiques après conversion PDF. Le plan, les légendes, les repères et l’ordre Eau → Air → Terre → Feu → À classer sont relus. Les coordonnées clonées de la fixture superposent les repères 1/3 et 2/4 sur le plan expert ; les quatre observations restent dans la légende. Ce contrôle ne qualifie ni toutes les photos de terrain, ni le rendu de repères à coordonnées distinctes.
+
+Réserves consignées, sans correction de code ni modification des exports générés : **RAPPORT-EXPORT-CLIENT-PAGINATION**, observation coupée entre pages 2–3 et conseil isolé ; **RAPPORT-EXPORT-EXPERT-PAGINATION**, mention finale de l’aide à la décision rejetée seule page 20. Aucun texte perdu ou tronqué détecté. La prochaine action est d’améliorer les règles de saut et de maintien des blocs, puis de régénérer et revoir les fichiers avant remise finale.
+
+Preuves : bloc canonique `rapportDossiersComplets20261113.exportsWordPdf20261113` ; [contrôle des quatre fichiers et réserves](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr152-recette-20261113/exports-word-pdf/verification-exports.json>). La recette antérieure sauvegarde/réouverture/propriétaire reste réussie et distincte. Aucun nouvel accord métier, déploiement, accès réel ou stockage d’original activé.
+
+
+
+### Correction de pagination — 13 novembre
+
+Le correctif en cours traite les deux réserves ci-dessus dans une copie isolée `avereo-rapport-pagination`, branche `fix/rapport-pagination-exports`. Chaque constat sélectionné client est regroupé avec ses explications, conseils et photo ; la conclusion de décision lie les avertissements à leurs limites. Le convertisseur applique `keepNext` et `keepLines` en arrêtant la chaîne à la fin de chaque groupe, afin de ne pas attacher tous les constats entre eux. Photo et légende restent ensemble. Le resserrement des espacements et marges verticales est limité à l’aide à la décision ; aucune police ni contenu métier supprimé ou réduit.
+
+Les trois nouveaux contrôles OOXML sont d’abord en échec sur le code antérieur, puis réussissent avec le correctif ; les deux contrôles HTML garantissent le regroupement des contenus attendus. **176 tests Node réussis**, compilation locale réussie. Premier contrôle Word/PDF local expert : 20 pages au lieu de 21, avertissement et limites ensemble page 19, signature page 20 ; textes et médias identiques à l’ancien export. La synthèse client et les régénérations hébergées sont encore à vérifier ; aucune réserve ne sera close sur ce seul résultat local.
+
+Source opérationnelle : `rapportDossiersComplets20261113.paginationCorrection20261113` dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>). La demande actuelle autorise cette correction et sa préproduction ; aucune fusion ni production n’en est déduite. La validation porte sur le même dossier fictif complet et sur les deux restitutions, sans sauvegarde de dossier réel. Le PDF reste obtenu par conversion native Word.
+
 
 ## Mise en production
 
