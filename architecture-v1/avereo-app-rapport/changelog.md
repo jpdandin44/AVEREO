@@ -12,14 +12,14 @@ tags:
   - changelog
 ---
 
-## 13 novembre 2026 — Correctif de pagination en qualification
+## 13 novembre 2026 — Correctif de pagination vérifié en préproduction
 
-Maintien des constats client avec conseils et photo, conclusion de décision regroupée et espacement des tableaux de décision ajusté. Tests de la structure OOXML et du contenu HTML ; aucune modification des données du dossier. [Qualification et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+Maintien des constats client avec conseils et photo, conclusion de décision regroupée et espacement des tableaux de décision ajusté. Tests de la structure OOXML et du contenu HTML ; 176 tests et deux compilations réussis. Les deux Word hébergés sont convertis en PDF dans Word : expert 20 pages, synthèse 6 pages, 26 pages relues et deux réserves résolues. Livraison bornée à trois fichiers ; 20 dossiers, propriétaires et contenus préservés. PR154 en brouillon pour revue, sans fusion ni production. [Qualification et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
 
 
 ## 13 novembre 2026 — Exports Word et conversion PDF contrôlés
 
-Rapport expert complet et synthèse client générés depuis l’interface de préproduction, puis convertis en PDF dans Word : textes et médias attendus conservés sur les 27 pages inspectées. Deux réserves de pagination sont ouvertes ; aucune correction de code ni qualification d’un export PDF direct. [Méthode, sélection client et résultats](docs/partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre).
+Rapport expert complet et synthèse client générés depuis l’interface de préproduction, puis convertis en PDF dans Word : textes et médias attendus conservés sur les 27 pages inspectées. Deux réserves de pagination sont alors ouvertes et corrigées ensuite par le correctif ci-dessus ; aucun export PDF direct qualifié. [Méthode, sélection client et résultats](docs/partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre).
 
 
 ## 13 novembre 2026 — Recette complète PR152 en préproduction

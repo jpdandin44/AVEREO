@@ -13,14 +13,14 @@ tags:
   - fonctionnalites
 ---
 
-## 2026-11-13 — Pagination Word, candidat de correction
+## 2026-11-13 — Pagination Word, préproduction vérifiée
 
-Regroupement explicite de chaque constat client et de la conclusion de décision ; conversion en propriétés Word `keepNext`/`keepLines`, sans nouvelle rupture obligatoire entre constats. Les marges verticales des cellules sont resserrées uniquement dans l’aide à la décision. Données, identifiants, médias, propriétaires, API et schéma inchangés. [Critères de recette et état](partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+Regroupement explicite de chaque constat client et de la conclusion de décision ; conversion en propriétés Word `keepNext`/`keepLines`, sans nouvelle rupture obligatoire entre constats. Les marges verticales des cellules sont resserrées uniquement dans l’aide à la décision. Les deux réserves sont résolues sur les 26 pages contrôlées en préproduction (expert 20 pages, synthèse 6 pages). Données, identifiants, médias, propriétaires, API et schéma inchangés. [Critères de recette et état](partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
 
 
 ## 2026-11-13 — Fidélité des exports, pagination à améliorer
 
-Le rapport expert reprend les 12 constats, deux placements photo, plan et signature ; la synthèse reprend les deux constats sélectionnés, une photo et un plan, sans signature dans son format actuel. Conversion PDF native Word vérifiée, aucun bouton PDF direct. Deux réserves de pagination restent dans le suivi ; aucune migration ou correction applicative effectuée. [Résultats et limites](partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre).
+Le rapport expert reprend les 12 constats, deux placements photo, plan et signature ; la synthèse reprend les deux constats sélectionnés, une photo et un plan, sans signature dans son format actuel. Conversion PDF native Word vérifiée, aucun bouton PDF direct. Deux réserves de pagination sont ouvertes lors de ce contrôle initial, puis résolues par le correctif ci-dessus ; aucune migration effectuée. [Résultats et limites](partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre).
 
 
 ## 2026-11-13 — Recette du stockage existant après PR152

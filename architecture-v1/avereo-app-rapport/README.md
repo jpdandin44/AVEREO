@@ -13,14 +13,14 @@ tags:
   - connect
 ---
 
-## Correction de pagination — qualification du 13 novembre
+## Correction de pagination — préproduction vérifiée le 13 novembre
 
-Les deux réserves Word/PDF font l’objet d’un correctif isolé, contrôlé sur les 176 tests applicatifs et le rapport expert local. La vérification client et la recette de préproduction restent en cours. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+Les deux réserves Word/PDF sont corrigées et vérifiées en préproduction : 26 pages relues, expert 20 pages et synthèse 6 pages, textes et médias conservés. Les 176 tests et les deux compilations réussissent ; PR154 ouverte en brouillon pour revue humaine, sans fusion ni production. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
 
 
 ## PR152 en préproduction — 13 novembre 2026
 
-[Entrer par CONNECT préproduction](https://connect-preprod.avereo.fr/?app=rapport). Le paquet qualifié du correctif dossiers complets est installé ; les 18 dossiers existants, leurs propriétaires et contenus sont conservés. Sauvegarde et retour arrière applicatif vérifiés ; aucun changement de production ni activation des originaux privés. La recette technique entre deux comptes fictifs est ensuite réussie : sauvegarde complète, réouverture dans une nouvelle session sans brouillon local, copie indépendante et source conservé. [Contrôles réalisés et limites](docs/partage-tests-et-stockage.md#préproduction). Les exports Word et leur conversion PDF dans Word conservent les contenus vérifiés ; deux réserves de pagination restent à traiter. [Résultats et limites](docs/partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre). Les mentions locales ci-dessous conservent la chronologie de préparation.
+[Entrer par CONNECT préproduction](https://connect-preprod.avereo.fr/?app=rapport). Le paquet qualifié du correctif dossiers complets est installé ; les 18 dossiers existants, leurs propriétaires et contenus sont conservés. Sauvegarde et retour arrière applicatif vérifiés ; aucun changement de production ni activation des originaux privés. La recette technique entre deux comptes fictifs est ensuite réussie : sauvegarde complète, réouverture dans une nouvelle session sans brouillon local, copie indépendante et source conservé. [Contrôles réalisés et limites](docs/partage-tests-et-stockage.md#préproduction). Les exports Word et leur conversion PDF dans Word conservent les contenus vérifiés ; deux réserves de pagination sont alors ouvertes, puis résolues par le correctif décrit ci-dessus. [Résultats et limites](docs/partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre). Les mentions locales ci-dessous conservent la chronologie de préparation.
 
 
 ## Dossiers complets — correctif local du 13 novembre
@@ -29,7 +29,7 @@ Depuis l’accueil, **Charger un dossier JSON** affiche les observations, photos
 
 La sauvegarde en ligne relit le contenu écrit et affiche ses compteurs. L’import crée une copie locale indépendante : une sauvegarde en ligne crée un autre dossier sous le compte destinataire, sans remplacer le source. Les changements de saisie survenus pendant l’envoi restent dans le brouillon et doivent être sauvés à nouveau. [Usage, preuve et limites](docs/partage-tests-et-stockage.md).
 
-Ce correctif est local. La branche intègre les originaux privés de PR150, fusionnée dans `main` ; les deux fonctionnalités sont conservées et le stockage privé reste désactivé par défaut. Le lot 0 PR149 a été livré en préproduction le 13 novembre ; ses paragraphes « candidat local » ci-dessous restent historiques. Aucune nouvelle installation n’est effectuée pour ce correctif.
+Ce paragraphe décrit la préparation locale initiale, suivie de la livraison PR152 documentée ci-dessus. La branche intègre les originaux privés de PR150, fusionnée dans `main` ; les deux fonctionnalités sont conservées et le stockage privé reste désactivé par défaut. Le lot 0 PR149 a été livré en préproduction le 13 novembre ; ses paragraphes « candidat local » ci-dessous restent historiques.
 
 ## Photos originales — première tranche locale du 13 novembre
 
@@ -37,7 +37,7 @@ Dans Observations, **Voir la photo** ouvre une vue agrandie avec zoom. Lorsque l
 
 La fonction serveur est désactivée par défaut. La photo du rapport et les exports existants restent inchangés : ce premier incrément n’allège pas encore le JSON ni le Word. Recadrage et annotations restent à développer. [Usage, contrat, recette locale et prérequis d’activation](docs/photos-originales-et-annotations.md) ; [commandes de vérification](tests/README.md).
 
-Le lot 0 a entre-temps été fusionné en PR149 puis livré en préproduction le 13 novembre ; sa recette fonctionnelle hébergée reste ouverte. Les mentions « candidat local » antérieures ci-dessous décrivent leur étape historique. Le suivi opérationnel canonique distingue cette livraison du nouveau lot photo, qui demeure local.
+Au premier contrôle de cette tranche photo, le lot 0 était fusionné en PR149 et livré en préproduction, sa recette fonctionnelle hébergée encore ouverte. Les mentions « candidat local » antérieures ci-dessous décrivent leur étape historique. La recette complète PR152 et les contrôles d’exports ultérieurs sont décrits plus haut ; le stockage des originaux reste désactivé.
 
 
 ## Lot 0 — observations, candidat local vérifié

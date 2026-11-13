@@ -14,14 +14,14 @@ tags:
   - fonctionnalites
 ---
 
-## Correction de pagination — qualification du 13 novembre
+## Correction de pagination — préproduction vérifiée le 13 novembre
 
-Les deux réserves Word/PDF font l’objet d’un correctif isolé, contrôlé sur les 176 tests applicatifs et le rapport expert local. La vérification client et la recette de préproduction restent en cours. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+Les deux réserves Word/PDF sont corrigées et vérifiées en préproduction : 26 pages relues, expert 20 pages et synthèse 6 pages, textes et médias conservés. Les 176 tests et les deux compilations réussissent ; PR154 ouverte en brouillon pour revue humaine, sans fusion ni production. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
 
 
 ## État de livraison du 13 novembre — PR152
 
-PR152 est fusionnée puis installée en préproduction avec son paquet qualifié, sans modification des dossiers réels. Accès CONNECT, préservation des données et contrôles de lecture/aperçu/téléchargement réussis ; la recette technique complète de sauvegarde, import entre deux comptes fictifs et réouverture serveur dans une nouvelle session sans brouillon local est réussie. Le propriétaire et toutes les colonnes du source, ainsi que les 18 dossiers antérieurs, sont conservés. La revue métier reste distincte. Les deux Word et leurs PDF convertis dans Word sont vérifiés (21 pages expert, 6 pages client) ; deux réserves de pagination restent à corriger puis à requalifier avant remise finale. [État et preuves](docs/partage-tests-et-stockage.md#préproduction). Aucune production ni activation d’original privé ; les autres évolutions gardent leurs périmètres. Les états de revue locale ci-dessous restent historiques.
+PR152 est fusionnée puis installée en préproduction avec son paquet qualifié, sans modification des dossiers réels. Accès CONNECT, préservation des données et contrôles de lecture/aperçu/téléchargement réussis ; la recette technique complète de sauvegarde, import entre deux comptes fictifs et réouverture serveur dans une nouvelle session sans brouillon local est réussie. Le propriétaire et toutes les colonnes du source, ainsi que les 18 dossiers antérieurs, sont conservés. La revue métier reste distincte. Le contrôle initial des deux Word et de leur conversion PDF porte sur 21 pages expert et 6 pages client ; ses deux réserves sont ensuite résolues par PR154, comme indiqué ci-dessus. [État et preuves](docs/partage-tests-et-stockage.md#préproduction). Aucune production ni activation d’original privé ; les autres évolutions gardent leurs périmètres. Les états de revue locale ci-dessous restent historiques.
 
 
 ## Priorité du 13 novembre — enregistrement et dossier complet
