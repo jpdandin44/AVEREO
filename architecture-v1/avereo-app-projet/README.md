@@ -5,13 +5,17 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 13 novembre — PQ-01 proposé en revue locale, PR #151
+
+[PR #151](https://github.com/jpdandin44/AVEREO/pull/151) : revue du lot local Patrimoine & qualité, main récent intégré sans conflit, 326 tests et compilation requalifiés. [Parcours de revue et réserves](docs/patrimoine-qualite.md#13-novembre--pr-de-revue-locale), [suivi canonique](data/suivi-patrimoine-pq01.json). Cases humaines laissées décochées ; aucune installation en préproduction ou production et quatre alertes de dépendances conservées avant livraison.
 
 ## 12 novembre — Patrimoine & qualité, PQ-01 local
 

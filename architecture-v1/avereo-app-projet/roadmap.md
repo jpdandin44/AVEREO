@@ -5,14 +5,18 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
 
-## 12 novembre — PQ-01 local, revue à préparer
+## 13 novembre — PQ-01 en PR de revue locale
+
+[PR #151](https://github.com/jpdandin44/AVEREO/pull/151) ouverte, candidat code requalifié après intégration de main. Revue du responsable sur la vue privée locale, puis qualification des alertes de dépendances avant proposition de livraison. Cases humaines et phase conservées sans approbation automatique ; préproduction et production non commencées pour PQ-01. [Preuves actuelles](data/qualification-patrimoine-pq01-pr.json). Les contrôles GitHub doivent être lus sur la dernière tête publiée ; la policy humaine reste distincte.
+
+## 12 novembre — historique : PQ-01 local, revue à préparer
 
 Cadrage documenté, développement local du collecteur et de la vue Patrimoine & qualité. [Suivi et critères proposés](data/suivi-patrimoine-pq01.json). Terminer preuves, revue visuelle et non-régression, puis qualifier les alertes de dépendances et préparer la PR sous le protocole habituel. Préproduction et Mise en production non commencées/non autorisées pour ce candidat. PQ-02 à PQ-06 restent des lots séparés. L'ancien constat de PR #141 non fusionnée ci-dessous est historique ; il n'est pas la base d'autorisation de PQ-01.
 

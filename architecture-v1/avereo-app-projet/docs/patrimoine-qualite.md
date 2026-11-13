@@ -5,12 +5,22 @@ title: Patrimoine et qualité — inventaire privé PQ-01
 status: active
 version: git
 created: 2026-11-12
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [cockpit, patrimoine, inventaire, local, lecture-seule]
 ---
 
 # État réalisé
+
+## 13 novembre — PR de revue locale
+
+[PR #151](https://github.com/jpdandin44/AVEREO/pull/151) ouverte sur demande du responsable, phase **Développement local**. Candidat code `148a21bbc9682380c6333e208b94744da2cf5b42`, main `be54aa7d945ead50f4c3ee1a4edb18372b32e3e6` intégré sans conflit dans la seule branche de travail. Les commits suivants de traçabilité ne changent pas le code de l'application ; l'ancien reçu ci-dessous reste historique.
+
+326 tests, compilation publique, séparation des 23 fichiers, contrôle de base du dépôt et syntaxe PHP réussis à nouveau. Paquet privé reconstruit depuis un arbre propre : même empreinte `7b6194bafecdcb7326004ebf6b53ff4425224bd39922e9a7b05edbc453bd8c0a`, non livré. [Reçu de requalification](../data/qualification-patrimoine-pq01-pr.json) ; [contrôles GitHub de la tête publiée](https://github.com/jpdandin44/AVEREO/pull/151/checks) à distinguer des tests locaux et de la policy humaine.
+
+Revue : ouvrir `http://127.0.0.1:5241/?developments` dans le navigateur intégré déjà réauthentifié localement ; consulter **Patrimoine & qualité**, ouvrir un compteur et sa liste, filtrer Rapport, puis examiner les dossiers, les sources et le retour à la vue d'ensemble. La session temporaire peut expirer ; relancer avec le registre privé opérateur documenté, sans exposer le serveur. Les inventaires affichés gardent leurs dates du 12 novembre, pas une nouvelle observation globale. Aucun rôle CONNECT réel attesté par cet accès local. Les quatre cases de la PR restent au responsable et ne sont pas cochées par l'agent. Les quatre alertes de dépendances sont reconfirmées et restent une réserve avant livraison.
+
+## Périmètre de l'implémentation
 
 PQ-01 est développé localement sur une branche dédiée ; aucune installation en préproduction ou production. Les lots suivants (rapprochement de versions/preuves, récupération, résultats de tests, bugs/améliorations, qualité documentaire) restent distincts.
 
@@ -50,7 +60,7 @@ Les phases, critères, preuves et validations ne sont pas calculés depuis l'inv
 
 Le 12 novembre 2026 : **326 tests Projet réussis**, dont dix nouveaux tests ciblés, compilation et contrôle de séparation des 23 fichiers publics réussis, syntaxe PHP vérifiée. Recette visuelle locale : synthèse, filtre Rapport et fichiers suivis, retour vers Rapport V1.2 et ses quatre phases, listes de dossiers/recherche et sources/limites. Pas de débordement horizontal observé à 1265 pixels. [Reçu de qualification](../data/qualification-patrimoine-pq01.json) et [capture locale](illustrations/patrimoine-pq01-local.png). Ces résultats ne valent ni CI distante, ni qualification CONNECT réelle, ni validation humaine.
 
-Le registre local contient 47 suivis avec PQ-01 ; les 46 vues de la publication 12 en préproduction ne sont pas modifiées. Le candidat et son paquet sont locaux et non committés ; `sourceSha` reste nul, base main `831dda19deb3d5c70d1307b42ac5d8abac22422f`. Un manifeste de paquet n'est pas une preuve d'installation.
+Au relevé initial du 12 novembre, le registre local contient 47 suivis avec PQ-01 ; les 46 vues de la publication 12 en préproduction ne sont pas modifiées. Le candidat initial et son paquet sont alors locaux et non committés ; `sourceSha` reste nul dans ce reçu historique, base main `831dda19deb3d5c70d1307b42ac5d8abac22422f`. Le candidat committé et requalifié du 13 est décrit plus haut. Un manifeste de paquet n'est pas une preuve d'installation.
 
 Tests : déduplication, source absente/malformée, zéro distinct d'inconnu, exclusions/liens/quota, contrat fermé, aller-retour Node/PHP, projection historique et refus anonyme/autre compte/rôle perdu/POST avant lecture. Tests d'interface : cartes, listes justificatives, recherche, inventaire absent et partialité ; suite Projet et séparation du build public.
 
