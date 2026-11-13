@@ -12,6 +12,10 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
+## 2026-11-12 — Imports à 500 Mo livrés en préproduction
+
+Après fusion des PR145/146 et demande explicite, installation du même paquet CI : six écritures, dix-huit chemins vérifiés, récupération de quatre tables et treize documents, retour arrière testé sur copie. Réception HTTPS réelle de 173 et 500 Mo, refus de 501 Mo, 106 contrôles de préservation et écran SCI à 500 Mo vérifiés. [Reçu et recette humaine](docs/preproduction-import-volumineux.md). Aucun document fictif ajouté aux biens, aucune production modifiée.
+
 ## 2026-11-12 — Imports volumineux en préparation locale
 
 Nouveau candidat à 500 Mo, enveloppe PHP de 512 Mo, répartition automatique des

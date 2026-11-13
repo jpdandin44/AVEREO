@@ -14,12 +14,9 @@ tags: [passeport-immo, local]
 
 ## Reprise du 12 novembre — état courant et archives
 
-Un [correctif à 500 Mo](docs/import-volumineux.md) est préparé pour conserver entier
-le rapport de 173 Mo et les quatorze archives de 203 Mo, avec envois automatiques
-par lots. Il n’est pas installé sur l’hébergement à ce stade ; PR144 reste la
-version livrée décrite ci-dessous.
+Le [correctif à 500 Mo](docs/import-volumineux.md) est [installé en préproduction privée](docs/preproduction-import-volumineux.md) après fusion des PR145/146 et accord explicite. Le rapport de 173 Mo et les quatorze archives de 203 Mo peuvent rester entiers, avec envois automatiques par lots. Réception réelle de 173 et 500 Mo, refus de 501 Mo, sauvegarde et conservation des treize documents vérifiés. La recette humaine des archives d’origine reste à réaliser depuis CONNECT.
 
-La [reprise courante](docs/reprise-documents-compresses.md) rapproche le dépôt à jour, les accès hébergés et les preuves historiques. La PR85 est fusionnée, de même que Drupal23 ; les mentions du 16 octobre ci-dessous décrivent leur état à cette date. Le nouveau [lot archives](docs/documents-compresses.md) accepte ZIP, 7z, RAR, TAR, GZ et TGZ, conservés entiers selon le choix du responsable. Après fusion de la PR144 et accord explicite, il est [installé en préproduction privée](docs/preproduction-archives.md). La recette technique et les documents existants sont vérifiés ; la revue humaine et la production de ce lot restent distinctes. La [copie locale sur 5178](http://127.0.0.1:5178/) reste disponible. Les limites de 25 Mo par fichier et 100 Mo par lot sont conservées ; le schéma et les droits existants sont réutilisés.
+La [reprise courante](docs/reprise-documents-compresses.md) rapproche le dépôt à jour, les accès hébergés et les preuves historiques. La PR85 est fusionnée, de même que Drupal23 ; les mentions du 16 octobre ci-dessous décrivent leur état à cette date. Le nouveau [lot archives](docs/documents-compresses.md) accepte ZIP, 7z, RAR, TAR, GZ et TGZ, conservés entiers selon le choix du responsable. Après fusion de la PR144 et accord explicite, il est [installé en préproduction privée](docs/preproduction-archives.md). La recette technique et les documents existants sont vérifiés ; la revue humaine et la production de ce lot restent distinctes. La [copie locale sur 5178](http://127.0.0.1:5178/) reste disponible. Les anciennes limites PR144 de 25/100 Mo sont remplacées en préproduction par 500 Mo par fichier et par lot ; le schéma et les droits existants sont réutilisés.
 
 ## Étude du carnet d’information du logement
 
