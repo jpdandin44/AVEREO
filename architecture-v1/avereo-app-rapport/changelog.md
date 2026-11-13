@@ -12,9 +12,17 @@ tags:
   - changelog
 ---
 
+## 13 novembre 2026 — Réconciliation de PR152
+
+Intégration de `main` après PR150 : conservation des deux fonctionnalités, imports photo et protections de sauvegarde réunis, documentation des deux lots conservée. Aucun déploiement ni nouvelle activation. [Périmètre de résolution](docs/source-audit.md).
+
 ## 13 novembre 2026 — Dossier complet, candidat local
 
 Chargement JSON depuis l’accueil et Export avec contrôle du contenu et confirmation ; téléchargement complet et vérifié depuis la liste serveur ; structure de test renommée et signalée, nouvelles copies marquées. Import indépendant, brouillon protégé avant remplacement, sauvegarde en ligne relue avec compteurs et saisies récentes préservées. API additive sans migration et sans changement de droit ou propriétaire. [Parcours et qualification](docs/partage-tests-et-stockage.md). Aucun déploiement de ce correctif.
+
+## 13 novembre 2026 — Première tranche locale des originaux privés
+
+Vue agrandie et zoom des photos, conservation individuelle volontaire et réouverture de l’original privé vérifié par empreinte. API et migration additives, contrôle du propriétaire courant, stockage hors racine web, configuration désactivée par défaut. Tests locaux PHP/SQLite et HTTP/MariaDB, restauration sur copie séparée et parcours navigateur avec mire fictive. Les photos du rapport et les exports restent conservés ; compression, recadrage et annotations ne sont pas activés. [Détail et limites](docs/photos-originales-et-annotations.md). Aucun hébergement modifié pour ce lot.
 
 
 ## 12 novembre 2026 — Lot 0 Observations, complément local
@@ -25,6 +33,10 @@ Ordre commun des fiches, plans et Word, déplacement dans une même phase et vue
 
 Profil de mission et explications entre constat et conseils ajoutés ; rubriques Export adaptées et deux Word fictifs contrôlés. [État et vérifications](docs/profil-habitologue.md). Aucun déploiement de cette évolution.
 
+
+## 12 novembre 2026 — Photos : originaux privés cadrés, compression non activée
+
+Le responsable demande de conserver les originaux dans un espace privé du dossier en ligne (CONNECT) avant toute version recadrée ou annotée. Le [cadrage](docs/photos-originales-et-annotations.md) est préparé ; le module de compression reste isolé et testé, [non branché](docs/compression-photos.md). L'import de photos est inchangé. Aucun déploiement.
 
 ## 12 novembre 2026 — export délégué interrompu
 

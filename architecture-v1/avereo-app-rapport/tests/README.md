@@ -16,6 +16,19 @@ tags: [connect, rga, tests]
 
 PHP et Docker doivent être déjà installés, Docker démarré et `mariadb:11.4` disponible ; aucun téléchargement d’image ou de dépendance. Sous Windows le processus utilise la DLL `pdo_mysql` fournie avec PHP, sans modifier `php.ini`. `--serve --port 5186` conserve la revue sur `http://127.0.0.1:5186/fixture/`, uniquement sur cet ordinateur. Ctrl+C nettoie les processus et le conteneur propres au script. La fixture JSON est synthétique ; aucun dossier réel. [Portée et limites](../docs/partage-tests-et-stockage.md).
 
+## Originaux privés — recette locale
+
+Depuis `frontend/`, `npm.cmd test` exécute les règles client, notamment accusé d’envoi, contrôle des octets et résultat tardif. `npm.cmd run build` vérifie l’assemblage. Sous Windows avec PHP déjà installé :
+
+```powershell
+php -d extension_dir="C:\Users\examg\AppData\Local\Programs\PHP\ext" -d extension=pdo_sqlite -d extension=sqlite3 tests/photo-originals.php
+python -X utf8 tests/photo-originals-http.py --receipt CHEMIN_RECU_JSON
+```
+
+Le premier test utilise SQLite et des fichiers temporaires ; il couvre propriétaire, intégrité, limites/quota, concurrence, panne et restauration à blanc. Le second requiert Docker déjà démarré, l’image **déjà disponible** `mariadb:11.4` et `pdo_mysql` ; il ne télécharge rien. Il crée uniquement un conteneur éphémère local dédié, applique les vraies migrations et vérifie HTTP multipart, deux identités fictives, lecture dans une nouvelle session et sauvegarde/restauration indépendante. Il arrête son conteneur à la fin.
+
+Pour la revue navigateur : `python -X utf8 tests/photo-originals-http.py --serve --port 5185`. Entrée : `http://127.0.0.1:5185/fixture/`. Le service doit rester actif ; Ctrl+C termine ses seuls processus et son conteneur. La base de recette est temporaire, sans lien avec les données hébergées. Les limites fictives de 1 Mio/photo et 2 Mio/compte ne sont pas des réglages d’hébergement. Le sas réel de Rapport consomme des tickets locaux fictifs ; ce test ne vérifie pas le fournisseur CONNECT/OAuth hébergé. Test PHP non ajouté à la CI dans cette tranche (périmètre local).
+
 
 # Tests Rapport
 

@@ -19,6 +19,12 @@ Contexte : un fichier « copie de test » expurgé a été compris comme une sau
 
 Un import retire uniquement le lien au dossier serveur et conserve les identifiants métier : sa sauvegarde crée un autre dossier sous le compte destinataire. L’ouverture depuis la liste continue à viser la sauvegarde d’origine selon les droits existants. Le téléchargement serveur diffuse les octets conservés ; les entiers hors précision JavaScript restent téléchargeables, mais l’édition/import est refusé avec explication pour éviter un arrondi silencieux. Ni nouveau droit, transfert de propriété, historique de versions ou synchronisation automatique ajouté. [Contrat et limites](docs/partage-tests-et-stockage.md).
 
+## 2026-11-13 — Conserver les originaux privés sans transformer les dossiers
+
+Contexte : rouvrir un détail après une visite tout en conservant les dossiers existants. Décision de cette tranche locale : fichiers immuables hors racine web, métadonnées dans une table additive, référence optionnelle dans la photo ; lecture et envoi sous le seul propriétaire courant, sans exception administrateur ni partage implicite. Raisons : préserver les octets, éviter une URL publique, vérifier les refus sans changer les droits CONNECT.
+
+Conséquences : activation désactivée par défaut, taille et quota obligatoires à choisir sur la cible ; sauvegarde SQL et fichiers indissociables. Le JSON conserve encore son image complète et le Word continue à l’utiliser. Pas de clé étrangère vers le rapport pour préserver sa suppression existante : fichiers et métadonnées restent conservés et comptés, mais inaccessibles après suppression ; rétention/effacement à définir avant activation. Un changement de propriétaire ne transfère aucun original. [Contrat et réserves](docs/photos-originales-et-annotations.md).
+
 
 ## 2026-11-12 — Numéros dérivés de l'ordre commun, références stables
 
