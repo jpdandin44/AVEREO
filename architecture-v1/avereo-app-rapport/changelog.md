@@ -5,12 +5,17 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 13 novembre 2026 — Dossier complet, candidat local
+
+Chargement JSON depuis l’accueil et Export avec contrôle du contenu et confirmation ; téléchargement complet et vérifié depuis la liste serveur ; structure de test renommée et signalée, nouvelles copies marquées. Import indépendant, brouillon protégé avant remplacement, sauvegarde en ligne relue avec compteurs et saisies récentes préservées. API additive sans migration et sans changement de droit ou propriétaire. [Parcours et qualification](docs/partage-tests-et-stockage.md). Aucun déploiement de ce correctif.
+
 
 ## 12 novembre 2026 — Lot 0 Observations, complément local
 

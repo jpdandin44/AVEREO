@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,13 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Priorité du 13 novembre — enregistrement et dossier complet
+
+Le responsable donne priorité au chargement et à la récupération du contenu complet après réception d’une copie de test expurgée. Le correctif local traite accueil/import, téléchargement vérifié, confirmation de sauvegarde et clarté des copies ; qualification locale et navigateur réussies ; revue du candidat à effectuer. La récupération du vrai contenu de Philippe est distincte : absent du fichier reçu et des sources serveur contrôlées. [État et critères](docs/partage-tests-et-stockage.md).
+
+Le lot photo PR150 demeure un candidat distinct, sans nouvelle activation ni modification de sa branche. Le lot 0 PR149 est déjà livré en préproduction ; la recette hébergée complète et les autres demandes restent dans leurs suivis respectifs.
+
 
 ## Priorités du 12 novembre
 

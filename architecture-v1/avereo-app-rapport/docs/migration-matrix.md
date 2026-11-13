@@ -5,13 +5,27 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 2026-11-13 — Dossier complet, sans migration SQL
+
+| Élément | Effet |
+| --- | --- |
+| `reports.php` GET `download=1` | Octets exacts du payload sous les mêmes droits de lecture, pièce jointe et SHA-256. |
+| POST existant | Même stockage ; relecture du contenu écrit puis accusé avec compteurs. |
+| JSON complet importé | Champs conservés et seul `onlineReportId` retiré ; prochaine sauvegarde indépendante du source. |
+| Structure de test | Nouveau marqueur facultatif `copie_test: true` ; ancienne forme reçue reconnue sans convertir son contenu fictif en contenu réel. |
+| Anciennes sauvegardes | Ouvrables si contenu valide ; résumé seul refusé, brouillon préservé. |
+| Retour applicatif | Ancienne interface ignore le marqueur ; aucun schéma à supprimer. Déployer interface et API cohérentes. |
+
+Les exports organisationnels et leurs grants restent inchangés. [Procédure et limites](partage-tests-et-stockage.md).
+
 
 ## 2026-11-12 — Lot 0 Observations, sans migration
 

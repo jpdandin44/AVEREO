@@ -1,4 +1,6 @@
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
+import { requireReportContent, requireEditableNumbers, verifyCompleteDownload } from '../reportFiles.js';
+
+const API_BASE_URL = (import.meta.env?.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
 const OAUTH_ATTEMPT_KEY = 'avereo-rapport-oauth-attempt';
 
 async function request(path, { token = '', body, method = 'GET', signal } = {}) {
@@ -18,6 +20,7 @@ async function request(path, { token = '', body, method = 'GET', signal } = {}) 
     const error = new Error(payload?.message || `Erreur API (${response.status}).`);
     error.status = response.status;
     error.code = payload?.error || 'api_error';
+    if (/^[a-f0-9]{32}$/.test(payload?.reportId || '')) error.reportId = payload.reportId;
     throw error;
   }
   return payload;
@@ -101,11 +104,12 @@ export async function getCurrentUser(token) {
   return payload.user;
 }
 
-export async function saveOnlineReport(report, token, id = '') {
+export async function saveOnlineReport(report, token, id = '', { signal } = {}) {
   const payload = await request('reports.php', {
     method: 'POST',
     token,
     body: { id, report },
+    signal,
   });
   return payload.report;
 }
@@ -137,7 +141,18 @@ export async function downloadOrganizationReport(id, purpose) {
   return response.blob();
 }
 
-export async function loadOnlineReport(id, token) {
-  const payload = await request(`reports.php?id=${encodeURIComponent(id)}`, { token });
+export async function loadOnlineReport(id, token, { signal } = {}) {
+  const payload = await request(`reports.php?id=${encodeURIComponent(id)}`, { token, signal });
+  requireReportContent(payload.report?.payload);
+  requireEditableNumbers(payload.report.payload);
   return payload.report;
+}
+
+export async function downloadOnlineReport(id, token, { signal } = {}) {
+  const headers = { Accept: 'application/json' };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const response = await fetch(`${API_BASE_URL}/reports.php?${new URLSearchParams({ id, download: '1' })}`, {
+    credentials: 'same-origin', redirect: 'error', signal, headers,
+  });
+  return verifyCompleteDownload(response);
 }

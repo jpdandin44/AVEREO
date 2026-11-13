@@ -5,12 +5,19 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Dossier complet — correctif local du 13 novembre
+
+`reportFiles.js` valide le contenu reçu, identifie les structures fictives et prépare une copie d’import sans `onlineReportId`, en conservant les identifiants métier et leurs références. `ReportImport.jsx` confirme le remplacement du seul brouillon ; l’accueil et Export partagent ce composant. `OnlineReports.jsx` charge le payload complet pour ouvrir et propose le téléchargement de la sauvegarde sans changer le brouillon.
+
+`reports.php?id=…&download=1` réutilise les contrôles existants de lecture puis diffuse `payload_json` en pièce jointe privée, sans décodage/réencodage. `report-download.php` valide et compte ce contenu ; son empreinte est contrôlée par le client. Après POST, une relecture SQL confirme les octets enregistrés avant l’accusé avec compteurs. Stockage, table, identité et propriétaire inchangés. [Contrat](api/dossiers-complets.json), [procédure](docs/partage-tests-et-stockage.md).
+
 
 ## Ordre commun des observations — lot 0 local
 

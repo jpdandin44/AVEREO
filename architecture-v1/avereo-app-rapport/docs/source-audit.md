@@ -5,13 +5,20 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 2026-11-13 — Dossier complet et copies de structure
+
+Le fichier signalé correspond au générateur de structure fictive, qui retire volontairement les textes et médias. Diagnostic réel en lecture seule : aucun contenu complet retrouvé pour ce compte dans la base actuelle et la sauvegarde privée PR149 contrôlée ; aucune prétention de récupération depuis d’autres sources.
+
+Le correctif réutilise les permissions de lecture de `reports.php` pour la pièce jointe complète ; l’export délégué par habilitation reste distinct. Aucun droit, configuration hébergée ou migration modifié. Import confirmé sans `onlineReportId` afin de ne pas viser le source ; références métier et images conservées. Rejet d’un résumé seul et d’entiers non éditables sans perte ; octets du téléchargement jamais réencodés. Après écriture, relecture et empreinte avant accusé ; une saisie pendant l’envoi reste locale et est signalée. [Contrat et preuves](partage-tests-et-stockage.md).
+
 
 ## 2026-11-12 — Lot 0 Observations, intégration locale
 

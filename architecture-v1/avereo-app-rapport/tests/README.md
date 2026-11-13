@@ -5,10 +5,17 @@ title: Tests Rapport
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-02
+updated: 2026-11-13
 owner: jpdandin
 tags: [connect, rga, tests]
 ---
+
+## Dossiers complets — recette du 13 novembre
+
+`npm.cmd test` dans `frontend` couvre contenu vs métadonnées, copies de structure actuelles/historiques, import indépendant, octets vérifiés et requêtes API. `php tests/report-download.php` vérifie validation, compteurs et conservation des octets. `python -X utf8 tests/report-files-http.py --receipt CHEMIN_JSON` exerce le vrai PHP et la migration 001 dans MariaDB éphémère locale, avec comptes fictifs, refus inter-comptes, téléchargement exact et réouverture.
+
+PHP et Docker doivent être déjà installés, Docker démarré et `mariadb:11.4` disponible ; aucun téléchargement d’image ou de dépendance. Sous Windows le processus utilise la DLL `pdo_mysql` fournie avec PHP, sans modifier `php.ini`. `--serve --port 5186` conserve la revue sur `http://127.0.0.1:5186/fixture/`, uniquement sur cet ordinateur. Ctrl+C nettoie les processus et le conteneur propres au script. La fixture JSON est synthétique ; aucun dossier réel. [Portée et limites](../docs/partage-tests-et-stockage.md).
+
 
 # Tests Rapport
 

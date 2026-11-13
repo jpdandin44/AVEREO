@@ -7,7 +7,7 @@ import { observationAdviceLabel } from './reportProfiles.js';
 import { textLinks } from './textLinks.js';
 import { orderedObservations, observationPhase, moveObservation } from './observationOrder.js';
 import ObservationPlans from './ObservationPlans.jsx';
-import { MAX_REPORT_BYTES, observationPlanNames, planPayloadError } from './observationPlans.js';
+import { observationPlanNames, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
 import { saveAs } from './saveAs.js';
@@ -46,6 +46,8 @@ import {
   rgaRisk,
 } from './georisquesRiskSummary.js';
 import OnlineReports from './OnlineReports.jsx';
+import ReportImport from './ReportImport.jsx';
+import { requireReportContent } from './reportFiles.js';
 import { createTestReportCopy, observationGravities } from './testReportCopy.js';
 import RgaMap from './RgaMap.jsx';
 import { readRgaTransfer, RGA_TRANSFER_KEY } from './rgaContext.js';
@@ -654,7 +656,7 @@ function CompletionPanel({ report, validation }) {
   );
 }
 
-function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onBackup }) {
+function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onLoadFile, onBackup }) {
   const hasDraft = Boolean(draft);
   return (
     <div className="screen">
@@ -685,6 +687,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
               <RotateCcw size={18} />
               Reprendre
             </button>
+            <ReportImport draft={draft} onLoad={onLoadFile} onBackup={onBackup} />
           </div>
           {hasDraft && (
             <p className="draft-line">
@@ -1802,13 +1805,13 @@ function ShareTestCopy({ report }) {
     setSharing(true);
     try {
       const copy = createTestReportCopy(report);
-      const file = new File([JSON.stringify(copy, null, 2)], 'rapport-copie-test.json', {type: 'application/json'});
+      const file = new File([JSON.stringify(copy, null, 2)], 'rapport-structure-test-sans-contenu.json', {type: 'application/json'});
       if (!downloadOnly && navigator.share && navigator.canShare?.({files: [file]})) {
         await navigator.share({files: [file]});
         setStatus('Copie remise au service de partage choisi.');
       } else {
         saveAs(file, file.name);
-        setStatus('Téléchargement lancé. Transmettez le fichier rapport-copie-test.json au destinataire de votre choix.');
+        setStatus('Téléchargement lancé. Cette structure contient des constats fictifs, sans les textes et photos du dossier.');
       }
     } catch (error) {
       setStatus(error.name === 'AbortError' ? 'Partage annulé.' : 'Partage indisponible. Vous pouvez télécharger la copie.');
@@ -1818,20 +1821,20 @@ function ShareTestCopy({ report }) {
   }
   return <section aria-label="Copie pour les tests">
     <button className="button secondary" type="button" aria-expanded={open} onClick={() => {setOpen(!open); setStatus('');}}>
-      Partager une copie pour les tests
+      Créer une structure de test sans textes ni photos
     </button>
     {open && <div>
-      <p>La copie reprend le type de rapport, les protocoles et la structure des observations. Les coordonnées, textes libres, photos, plans et signatures sont exclus. Le destinataire pourra importer ce fichier dans Rapport.</p>
+      <p>Cette structure ne contient pas le dossier complet : les textes sont remplacés par des constats fictifs ; coordonnées, photos, plans et signature sont retirés. Pour transmettre le contenu du dossier, utilisez « Télécharger le dossier complet (JSON) » au-dessus.</p>
       <div className="export-actions">
         {typeof navigator.share === 'function' && <button className="button secondary" disabled={sharing} type="button" onClick={() => share(false)}>Choisir un destinataire</button>}
-        <button className="button secondary" disabled={sharing} type="button" onClick={() => share(true)}>Télécharger la copie de test</button>
+        <button className="button secondary" disabled={sharing} type="button" onClick={() => share(true)}>Télécharger la structure seule</button>
       </div>
       <p role="status">{status}</p>
     </div>}
   </section>;
 }
 
-function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onImportJson, onSaveDraft }) {
+function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onLoadFile, onlineSaving, onSaveDraft }) {
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
   return (
     <section className="panel">
@@ -1907,13 +1910,10 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
       <ReportDeliveryOptions report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
 
       <div className="export-actions">
-        <button className="button ghost" type="button" onClick={onImportJson}>
-          <FileJson size={18} />
-          Import JSON
-        </button>
+        <ReportImport draft={report} onBackup={onExportJson} onLoad={onLoadFile} disabled={onlineSaving} />
         <button className="button ghost" type="button" onClick={onExportJson}>
           <FileJson size={18} />
-          Export JSON
+          Télécharger le dossier complet (JSON)
         </button>
         <button className="button secondary" type="button" onClick={onPreview}>
           <Eye size={18} />
@@ -1924,6 +1924,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
           Générer Word (.docx)
         </button>
       </div>
+      <p>Le JSON complet contient les textes, explications, conseils, photos, plans et la signature présents dans ce dossier. Transmettez-le uniquement aux personnes autorisées.</p>
       <ShareTestCopy report={report} />
     </section>
   );
@@ -2107,7 +2108,11 @@ function ReportWizard({
   const [previewOpen, setPreviewOpen] = useState(false);
   const [onlineSaving, setOnlineSaving] = useState(false);
   const [onlineStatus, setOnlineStatus] = useState('');
-  const fileInputRef = useRef(null);
+  const onlineRequest = useRef(null);
+  const reportGeneration = useRef(0);
+  const currentReport = useRef(report);
+  currentReport.current = report;
+  useEffect(() => () => { reportGeneration.current += 1; onlineRequest.current?.abort(); }, []);
   const validation = useMemo(() => validateReport(report), [report]);
 
   useEffect(() => {
@@ -2131,23 +2136,36 @@ function ReportWizard({
   };
 
   const handleOnlineSave = async () => {
+    if (onlineSaving) return;
     if (!authenticated) {
       setOnlineStatus('Connexion requise pour la sauvegarde en ligne.');
       return;
     }
-
+    const generation = reportGeneration.current;
+    const snapshot = report;
+    const controller = new AbortController();
+    onlineRequest.current = controller;
     setOnlineSaving(true);
     setOnlineStatus('');
     try {
-      const saved = await saveOnlineReport(report, accessToken, report.onlineReportId || '');
-      const updated = { ...report, onlineReportId: saved.id };
+      const saved = await saveOnlineReport(snapshot, accessToken, snapshot.onlineReportId || '', { signal: controller.signal });
+      if (controller.signal.aborted || reportGeneration.current !== generation) return;
+      const edited = currentReport.current !== snapshot;
+      const updated = { ...currentReport.current, onlineReportId: saved.id };
+      currentReport.current = updated;
       setReport(updated);
       await saveDraft(updated);
-      setOnlineStatus('Rapport sauvegarde en ligne.');
+      const content = saved.content;
+      setOnlineStatus(content
+        ? `${content.observations} observation(s), ${content.photos} photo(s), ${content.plans} plan(s) sauvegardés en ligne et relus sur le serveur.${edited ? ' Des modifications plus récentes restent dans le brouillon : sauvez de nouveau pour les envoyer.' : ''}`
+        : 'Dossier envoyé en ligne. Rouvrez la copie serveur pour vérifier son contenu.');
     } catch (error) {
-      setOnlineStatus(error.message || 'Sauvegarde en ligne impossible.');
+      if (error.name !== 'AbortError' && reportGeneration.current === generation) {
+        if (error.reportId) setReport(current => ({ ...current, onlineReportId: error.reportId }));
+        setOnlineStatus(error.message || 'Sauvegarde en ligne impossible. Le brouillon est conservé.');
+      }
     } finally {
-      setOnlineSaving(false);
+      if (reportGeneration.current === generation) setOnlineSaving(false);
     }
   };
 
@@ -2167,28 +2185,16 @@ function ReportWizard({
     saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}.json`);
   };
 
-  const handleImportJson = () => fileInputRef.current?.click();
-
-  const onImportFile = (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    if (file.size > MAX_REPORT_BYTES) {
-      notify('Import JSON refuse : taille maximale 50 Mio.');
-      event.target.value = '';
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const parsed = JSON.parse(reader.result);
-        setReport(deepMergeReport(initialReport, parsed));
-        notify('Brouillon importe.');
-      } catch (error) {
-        notify(`Import JSON impossible : ${error.message}`);
-      }
-    };
-    reader.readAsText(file);
-    event.target.value = '';
+  const loadFile = async loaded => {
+    const normalized = deepMergeReport(initialReport, loaded);
+    await saveDraft(normalized);
+    reportGeneration.current += 1;
+    onlineRequest.current?.abort();
+    setOnlineSaving(false);
+    setOnlineStatus('Copie locale chargée. Une sauvegarde en ligne créera un nouveau dossier sous votre compte.');
+    currentReport.current = normalized;
+    setReport(normalized);
+    notify('Dossier chargé avec son contenu.');
   };
 
   const returnToHome = async () => {
@@ -2220,7 +2226,8 @@ function ReportWizard({
                 onPreview={() => setPreviewOpen(true)}
                 onExport={handleExport}
                 onExportJson={handleExportJson}
-                onImportJson={handleImportJson}
+                onLoadFile={loadFile}
+                onlineSaving={onlineSaving}
                 onSaveDraft={handleSave}
               />
             )}
@@ -2258,7 +2265,6 @@ function ReportWizard({
         </nav>
       </footer>
 
-      <input ref={fileInputRef} type="file" accept="application/json" className="visually-hidden" onChange={onImportFile} />
       {previewOpen && <ReportPreview report={report} onClose={() => setPreviewOpen(false)} />}
       {toast && <div className="toast">{toast}</div>}
     </div>
@@ -2483,14 +2489,22 @@ export default function App() {
           onResume={resume}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
           accessToken={accessToken}
-          onOpenOnline={async (loaded) => {
+          onLoadFile={async loaded => {
             const normalized = deepMergeReport(initialReport, loaded);
             await saveDraft(normalized);
             setDraft(normalized);
             setInitialWizardData(normalized);
             setAppState('wizard');
           }}
-          onBackup={() => saveAs(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json;charset=utf-8' }),
+          onOpenOnline={async (loaded) => {
+            requireReportContent(loaded);
+            const normalized = deepMergeReport(initialReport, loaded);
+            await saveDraft(normalized);
+            setDraft(normalized);
+            setInitialWizardData(normalized);
+            setAppState('wizard');
+          }}
+          onBackup={() => draft && saveAs(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json;charset=utf-8' }),
             `${toFileName(draft.reference_dossier || draft.titre)}-brouillon.json`)}
         />
       )}

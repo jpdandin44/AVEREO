@@ -27,7 +27,7 @@ test('recherche, limites et confirmation avant la liste sur ordinateur et mobile
         const id = url.searchParams.get('id');
         if (id) {
           loaded.push(id);
-          return ok({report:{id,payload:{reference_dossier:'TEST-' + id}}});
+          return ok({report:{id,payload:{reference_dossier:'TEST-' + id, observations:[]}}});
         }
         const query = (url.searchParams.get('q') || '').toLowerCase();
         return ok({reports:reports.filter(r => [r.title,r.address,r.reference].some(v => v.toLowerCase().includes(query)))
@@ -45,7 +45,7 @@ test('recherche, limites et confirmation avant la liste sur ordinateur et mobile
     assert.equal(await rows.count(),5);
     await panel.getByLabel('Afficher').selectOption('50');
     await rows.nth(49).waitFor();
-    await rows.last().getByRole('button',{name:'Ouvrir'}).click();
+    await rows.last().getByRole('button',{name:'Ouvrir le dossier',exact:true}).click();
     const confirmation = panel.getByRole('region',{name:'Confirmer la réouverture'});
     await confirmation.waitFor();
     assert.equal(await confirmation.evaluate(node => document.activeElement === node &&
@@ -58,7 +58,7 @@ test('recherche, limites et confirmation avant la liste sur ordinateur et mobile
     await panel.getByRole('searchbox').fill('inconnu');
     await panel.getByText('Aucun rapport ne correspond à cette recherche.').waitFor();
     await panel.getByRole('searchbox').fill('tilleuls');
-    await rows.filter({hasText:'TEST-65'}).getByRole('button',{name:'Ouvrir'}).click();
+    await rows.filter({hasText:'TEST-65'}).getByRole('button',{name:'Ouvrir le dossier',exact:true}).click();
     await confirmation.getByText('Ouvrir la copie en ligne').click();
     await page.getByRole('heading',{name:'Dossier',exact:true}).waitFor();
     assert.deepEqual(loaded,['65']);

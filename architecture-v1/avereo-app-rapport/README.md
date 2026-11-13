@@ -5,13 +5,22 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Dossiers complets — correctif local du 13 novembre
+
+Depuis l’accueil, **Charger un dossier JSON** affiche les observations, photos, plans et la présence d’une signature avant confirmation. Dans la liste serveur, **Télécharger JSON complet** récupère les octets du dossier sauvegardé, vérifiés par empreinte. Dans Export, **Télécharger le dossier complet (JSON)** conserve le dossier ouvert ; **Créer une structure de test sans textes ni photos** reste une action distincte, explicitement expurgée.
+
+La sauvegarde en ligne relit le contenu écrit et affiche ses compteurs. L’import crée une copie locale indépendante : une sauvegarde en ligne crée un autre dossier sous le compte destinataire, sans remplacer le source. Les changements de saisie survenus pendant l’envoi restent dans le brouillon et doivent être sauvés à nouveau. [Usage, preuve et limites](docs/partage-tests-et-stockage.md).
+
+Ce correctif est local, séparé de la PR150 photo. Le lot 0 PR149 a été livré en préproduction le 13 novembre ; ses paragraphes « candidat local » ci-dessous restent historiques. Aucune nouvelle installation n’est effectuée pour ce correctif.
+
 
 ## Lot 0 — observations, candidat local vérifié
 

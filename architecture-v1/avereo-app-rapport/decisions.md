@@ -5,13 +5,20 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 2026-11-13 — Export complet distinct de la structure de test
+
+Contexte : un fichier « copie de test » expurgé a été compris comme une sauvegarde du dossier. Décision : conserver cette fonction de test, la renommer explicitement et marquer les nouvelles copies `copie_test: true` ; reconnaître les anciennes copies correspondantes. Mettre en avant l’export complet et confirmer le contenu à l’import. Raisons : empêcher une confusion sans divulguer silencieusement des données par une action auparavant expurgée.
+
+Un import retire uniquement le lien au dossier serveur et conserve les identifiants métier : sa sauvegarde crée un autre dossier sous le compte destinataire. L’ouverture depuis la liste continue à viser la sauvegarde d’origine selon les droits existants. Le téléchargement serveur diffuse les octets conservés ; les entiers hors précision JavaScript restent téléchargeables, mais l’édition/import est refusé avec explication pour éviter un arrondi silencieux. Ni nouveau droit, transfert de propriété, historique de versions ou synchronisation automatique ajouté. [Contrat et limites](docs/partage-tests-et-stockage.md).
+
 
 ## 2026-11-12 — Numéros dérivés de l'ordre commun, références stables
 
