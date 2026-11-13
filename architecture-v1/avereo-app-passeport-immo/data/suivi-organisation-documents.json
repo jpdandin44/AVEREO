@@ -20,7 +20,11 @@
     "observedAt": "2026-11-13T15:04:22.254662+00:00",
     "observedHeadSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
     "runtimeCandidateFrozen": true,
-    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43448211761"
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43448211761",
+    "number": 153,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/153",
+    "draft": false,
+    "observationScope": "Qualified frozen runtime; later documentation-only commits do not change this candidate. Refresh current GitHub head/checks before merge."
   },
   "reviewEnvironment": {
     "phase": 1,

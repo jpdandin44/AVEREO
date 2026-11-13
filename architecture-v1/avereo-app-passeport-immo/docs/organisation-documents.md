@@ -25,6 +25,8 @@ Le [suivi canonique](../data/suivi-organisation-documents.json) et le
 itération. Les décisions et preuves approuvées antérieures restent intactes.
 La PR147 de livraison 500 Mo est fusionnée ; elle ne livre pas ce nouveau candidat.
 
+[PR153 — revue locale de la corbeille et du classement](https://github.com/jpdandin44/AVEREO/pull/153). Les quatre cases de revue restent réservées au responsable ; leur validation ne vaut pas livraison.
+
 ## Développement local
 
 ### Utilisation

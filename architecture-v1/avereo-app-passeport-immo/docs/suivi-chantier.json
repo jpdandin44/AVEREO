@@ -4109,7 +4109,8 @@
       "id": "passeport-immo-organisation-documents",
       "canonicalTracking": "../data/suivi-organisation-documents.json",
       "documentation": "organisation-documents.md",
-      "scope": "Corbeille et dossiers personnalisés qualifiés en local et CI ; revue humaine locale en attente, aucun nouveau candidat hébergé."
+      "scope": "Corbeille et dossiers personnalisés qualifiés en local et CI ; revue humaine locale en attente, aucun nouveau candidat hébergé.",
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/153"
     }
   ],
   "currentStateObservation": "../api/preproduction-import-volumineux-observation.json",
