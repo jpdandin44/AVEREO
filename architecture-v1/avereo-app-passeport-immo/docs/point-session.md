@@ -16,7 +16,7 @@ tags: [passeport-immo, local, cockpit]
 
 Branche `feat/passeport-immo-corbeille-documents`, copie `C:/Users/examg/Documents local/passeport-immo-archives`. [Suivi canonique](../data/suivi-organisation-documents.json), [guide et recette](organisation-documents.md). Préparer et qualifier ce nouveau candidat sans modifier l’installation 500 Mo, les données réelles, les décisions et les références approuvées. Migration additive à exécuter seulement lors d’une future livraison autorisée.
 
-## Travail actif — imports à 500 Mo livrés en préproduction
+## Historique — imports à 500 Mo livrés en préproduction
 
 Les PR145 et PR146 sont fusionnées et la [livraison privée à 500 Mo](preproduction-import-volumineux.md) est vérifiée après accord explicite du responsable. Même paquet CI, six écritures, récupération fraîche et retour arrière sur copie ; ZIP entiers de 173 et 500 Mo reçus et inspectés, 501 Mo refusé. Les quatre tables et treize documents sont inchangés ; le navigateur retrouve SCI et la limite 500 Mo. Le [suivi dédié](../data/suivi-import-volumineux.json) porte la recette humaine à effectuer sur les archives d’origine.
 

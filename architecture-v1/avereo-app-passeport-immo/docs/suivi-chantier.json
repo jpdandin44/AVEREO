@@ -4109,7 +4109,7 @@
       "id": "passeport-immo-organisation-documents",
       "canonicalTracking": "../data/suivi-organisation-documents.json",
       "documentation": "organisation-documents.md",
-      "scope": "Corbeille et organisation en développement local ; ancien candidat hébergé et validations conservés."
+      "scope": "Corbeille et dossiers personnalisés qualifiés en local et CI ; revue humaine locale en attente, aucun nouveau candidat hébergé."
     }
   ],
   "currentStateObservation": "../api/preproduction-import-volumineux-observation.json",

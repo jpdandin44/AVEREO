@@ -96,9 +96,17 @@ Les scripts historiques de reprise et leurs empreintes ne sont pas réécrits.
 | O9 | Écriture étrangère, sans CSRF ou sur ancienne révision. | Refus sans perte de données. |
 | O10 | Sauvegarde/restauration, transfert, migration et échec SQL pendant purge. | États, réglages et octets conservés ou rollback explicite. |
 
-État initial : **67 tests frontend, 28 tests Python, parité, cockpit et build
-réussis**. PHP est vérifié localement. Les nouveaux scénarios HTTP/MariaDB et de
-transfert sont préparés ; leur exécution CI reste à qualifier dans le reçu.
+Qualification réussie : **67 tests frontend, 28 tests Python, 101 assertions API/MariaDB, 22 de sauvegarde planifiée, 37 de transfert et 83 Apache**. Parité, cockpit, PHP, build et ZIP fermé passent. La [CI du candidat](https://github.com/jpdandin44/AVEREO/actions/runs/43448211761) est réussie. Le navigateur local vérifie les dossiers, la personnalisation et l’ordre après réouverture, la corbeille et la restauration d’un document archivé ; la confirmation de purge y est annulée. Les purges effectives sont testées uniquement sur fixtures automatisées isolées.
+
+### Matrice des écarts et contrôles
+
+| Source | Évolution | Conservation vérifiée |
+| --- | --- | --- |
+| `DocumentsPanel.jsx`, `DocumentOrganisation.jsx` | Trois vues, dossiers parents, apparence, confirmation et déplacement. | Recherche, catégories, consultation, import et client obligatoires. |
+| `document-store.js`, `document-settings.js` | Métadonnées IndexedDB, transactions corbeille/blob, révision et ordre. | Base existante, archives entières, doublons et anciens fichiers fictifs. |
+| `server-store.js`, `api/index.php`, `api/storage.php` | API propriétaire/CSRF et suppression confirmée avec rollback. | Sessions CONNECT, accès privé, atomicité des lots et 500 Mo. |
+| Schéma et migration | Deux colonnes nullables, simulation et vérification des données. | Quatre tables, modèle du bien et lignes historiques. |
+| Sauvegarde et transfert ciblé | Champs sauvegardés, ordre remappé ; anciens manifestes acceptés. | Clients, états, dates, octets, autres comptes et autres biens. |
 
 ## Préproduction
 

@@ -5,13 +5,22 @@
   "protocol": "developpement-github-cockpit",
   "iterationId": "passeport-immo-organisation-documents",
   "stage": "developpement-local",
-  "status": "in_progress",
+  "status": "awaiting_local_human_review",
   "objective": "Corbeille restaurable, suppression définitive confirmée, dossiers par catégorie avec icône/couleur et ordre manuel conservés par bien.",
-  "candidate": {},
+  "candidate": {
+    "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+    "artifactPath": ".local/ci-organisation-fb0/candidate.zip",
+    "manifestPath": ".local/ci-organisation-fb0/candidate.manifest.json"
+  },
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/passeport-immo-corbeille-documents",
-    "humanAcceptanceVerified": false
+    "humanAcceptanceVerified": false,
+    "observedAt": "2026-11-13T15:04:22.254662+00:00",
+    "observedHeadSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "runtimeCandidateFrozen": true,
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43448211761"
   },
   "reviewEnvironment": {
     "phase": 1,
@@ -30,7 +39,35 @@
       "ready": false
     }
   },
-  "checks": [],
+  "checks": [
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T15:04:22.254662+00:00",
+      "target": "http://127.0.0.1:5178/",
+      "evidence": "api/organisation-documents-observation.json#localChecks"
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T15:04:22.254662+00:00",
+      "target": "isolated_apache_mariadb",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43448211761"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T15:04:22.254662+00:00",
+      "target": null,
+      "evidence": "api/organisation-documents-observation.json#documentationControl"
+    }
+  ],
   "approvals": [],
   "backups": [],
   "rollback": {
@@ -40,7 +77,7 @@
     "status": "not_delivered"
   },
   "blockers": [],
-  "nextAction": "Qualifier le nouveau candidat, sa migration additive et son parcours local, puis remettre la PR en revue.",
+  "nextAction": "Revoir le candidat local et sa PR, puis qualifier la récupération et la migration sur la cible de préproduction avant une livraison autorisée.",
   "phases": [
     {
       "id": 0,
@@ -51,7 +88,7 @@
     {
       "id": 1,
       "label": "Développement local",
-      "status": "in_progress",
+      "status": "awaiting_review",
       "humanPhaseApprovalRecorded": false
     },
     {
