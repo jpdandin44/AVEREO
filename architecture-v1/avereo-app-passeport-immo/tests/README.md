@@ -162,3 +162,7 @@ les deux systèmes.
 `node workflows/generer-progression-examin.mjs --check` vérifie la projection
 Markdown du JSON de progression. `python docs/actualiser-tableau-de-bord.py --check`
 contrôle les vues courantes et conserve les preuves historiques approuvées.
+
+## Livraison privée à 500 Mo
+
+`python -m unittest discover -s tests -p "test*.py"` réussit vingt-huit tests. Les trois nouveaux tests de `test_large_import_release.py` bloquent les cibles supplémentaires, un changement inconnu des limites et toute modification de l’authentification. La [sonde HTTPS](../workflows/verify-large-import-preproduction.php) reçoit et inspecte des ZIP entiers de 173/500 Mo sur un bien inexistant, sans ajout réel ; 501 Mo est refusé. [Périmètres et recette humaine](../docs/preproduction-import-volumineux.md).

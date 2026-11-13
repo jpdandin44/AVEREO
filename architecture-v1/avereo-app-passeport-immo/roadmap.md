@@ -14,7 +14,7 @@ tags: [avereo, documentation, local]
 
 ## Suite courante — reprise et fichiers compressés
 
-Les archives PR144 sont [livrées en préproduction](docs/preproduction-archives.md) ; leur revue reste à terminer dans PR145. Le retour sur les quatorze archives et le rapport de 173 Mo conduit au [correctif à 500 Mo](docs/import-volumineux.md), préparé séparément. Configuration PHP réelle et recette du nouveau candidat restent à qualifier avant livraison. La production antérieure garde ses reçus et limites : ne pas rejouer migration SCI, activation ou cron. Le CIL reste distinct.
+Les PR145 et PR146 sont fusionnées. Le [correctif à 500 Mo](docs/preproduction-import-volumineux.md) est livré en préproduction privée : réception réelle, préservation et écran d’import contrôlés. Prochaine action : ajouter les archives d’origine, vérifier persistance et téléchargement, puis valider la revue hébergée du lot. La production antérieure garde ses reçus et limites : ne pas rejouer migration SCI, activation ou cron. Le CIL reste distinct.
 
 ## Évolution CIL proposée le 16 octobre
 
