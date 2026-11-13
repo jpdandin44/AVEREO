@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-02
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,11 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Priorités du 12 novembre
+
+Premier lot implémenté et vérifié localement, à examiner : parcours Habitologue et clarté des observations. Puis organisation des constats, photos et documents, diagnostic/interventions/planning, identité des organisations. [Cadrage et préparation des lots](docs/profil-habitologue.md). Les sections antérieures restent historiques et n’établissent pas la livraison du nouveau candidat.
+
 
 ## Essais temporaires — à qualifier
 

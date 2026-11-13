@@ -5,12 +5,17 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-10
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Profil de mission et explications
+
+`profil_metier` et `observations[].explications` étendent le payload JSON existant, sans migration SQL. Le profil adapte les formulaires et les restitutions, sans changer les rôles CONNECT ni la propriété. [Contrat et composants](docs/profil-habitologue.md).
+
 
 ## Copie pour les tests
 

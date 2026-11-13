@@ -4,6 +4,8 @@ import { LISTENING_SECTIONS } from './clientListening.js';
 import { rgaRisk, isRgaRisk } from './georisquesRiskSummary.js';
 import { normalizeRgaCartography, rgaLevelLabel } from './rgaContext.js';
 import { markersForPlan, observationPlanNames, planPayloadError } from './observationPlans.js';
+import { observationAdviceLabel } from './reportProfiles.js';
+import { textToLinkedHtml } from './textLinks.js';
 
 export function buildObservationPlansHtml(report, selectedIds = null) {
   const error = planPayloadError(report);
@@ -73,6 +75,13 @@ export function escapeHtml(value = '') {
 export function textToHtml(value = '') {
   const safe = escapeHtml(value.trim());
   return safe ? safe.replace(/\n/g, '<br />') : '<span class="muted">Non renseigne.</span>';
+}
+
+// Optional explanations: nothing is rendered when empty, so existing reports keep their layout.
+// Text is escaped; only valid HTTP/HTTPS addresses become links.
+export function explanationsHtml(observation) {
+  const html = textToLinkedHtml(observation?.explications);
+  return html ? `<h4>Explications</h4><p>${html}</p>` : '';
 }
 
 // Legacy imported expert notes contain pipe-separated tables and uppercase subheadings.
@@ -250,7 +259,8 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
           </table>
           <h4>Constat</h4>
           <p>${textToHtml(obs.observations)}</p>
-          <h4>Suites proposees</h4>
+          ${explanationsHtml(obs)}
+          <h4>${escapeHtml(observationAdviceLabel(report))}</h4>
           <p>${textToHtml(obs.actions)}</p>
           ${photos}
         </section>

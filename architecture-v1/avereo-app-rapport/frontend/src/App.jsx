@@ -3,6 +3,8 @@ import { protocolOptions, escapeHtml } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
+import { observationAdviceLabel } from './reportProfiles.js';
+import { textLinks } from './textLinks.js';
 import ObservationPlans from './ObservationPlans.jsx';
 import { MAX_REPORT_BYTES, observationPlanNames, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
@@ -132,11 +134,13 @@ const emptyObservation = () => ({
   gravite: 'Mineure',
   titre: '',
   observations: '',
+  explications: '',
   actions: '',
   photos: [],
 });
 
 const initialReport = normalizeReportClassification({
+  profil_metier: '',
   categorie: DEFAULT_CATEGORY,
   sous_categorie: DEFAULT_SUBCATEGORY,
   titre: "Rapport d'expertise technique",
@@ -205,6 +209,7 @@ function deepMergeReport(base, incoming) {
   const merged = {
     ...base,
     ...classifiedIncoming,
+    profil_metier: typeof classifiedIncoming.profil_metier === 'string' ? classifiedIncoming.profil_metier : '',
     meteo: { ...base.meteo, ...(classifiedIncoming.meteo || {}) },
     cadastre: { ...base.cadastre, ...(classifiedIncoming.cadastre || {}) },
     urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
@@ -255,6 +260,7 @@ function normalizeObservation(obs) {
     ...obs,
     id: obs?.id || createId(),
     titre: obs?.titre || '',
+    explications: typeof obs?.explications === 'string' ? obs.explications : '',
     photos: Array.isArray(obs?.photos) ? obs.photos : [],
   };
 }
@@ -805,6 +811,13 @@ function DossierStep({ report, setReport }) {
       </div>
 
       <div className="form-grid two">
+        <Field label="Profil de la mission" hint="Le profil adapte les conseils et les étapes de l’export pour ce dossier.">
+          <select value={report.profil_metier || ''} onChange={(event) => updateField('profil_metier', event.target.value)}>
+            <option value="">Parcours actuel</option>
+            <option value="habitologue">Habitologue</option>
+            {report.profil_metier && report.profil_metier !== 'habitologue' && <option value={report.profil_metier}>{report.profil_metier} (parcours actuel)</option>}
+          </select>
+        </Field>
         <Field label={habitologie ? "Type d'habitation" : 'Sous-categorie'}>
           <select value={report.sous_categorie} onChange={(event) => selectSubcategory(event.target.value)}>
             {subcategories.map((option) => (
@@ -1559,11 +1572,26 @@ function ObservationStep({ report, setReport }) {
           micDisabledReason={consentReason}
         />
         <TextAreaWithMic
-          label="Suites proposees"
+          label="Explications"
+          value={obs.explications || ''}
+          onChange={(value) => updateObservation(obs.id, { explications: value })}
+          onAppend={(text) => updateObservation(obs.id, { explications: `${obs.explications || ''}${text}` })}
+          placeholder="Expliquer le constat et ajouter, si utile, des liens http:// ou https://..."
+          rows={3}
+          micDisabled={!dictationAllowed}
+          micDisabledReason={consentReason}
+        />
+        {textLinks(obs.explications || '').some(part => part.href) && <p className="explanation-preview" aria-label="Aperçu des explications">
+          {textLinks(obs.explications || '').map((part, index) => part.href
+            ? <a key={index} href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a>
+            : <React.Fragment key={index}>{part.text}</React.Fragment>)}
+        </p>}
+        <TextAreaWithMic
+          label={observationAdviceLabel(report)}
           value={obs.actions}
           onChange={(value) => updateObservation(obs.id, { actions: value })}
           onAppend={(text) => updateObservation(obs.id, { actions: `${obs.actions || ''}${text}` })}
-          placeholder="Mesures conservatoires, controle complementaire, travaux recommandes..."
+          placeholder="Conseils, mesures conservatoires, vérifications complémentaires..."
           rows={3}
           micDisabled={!dictationAllowed}
           micDisabledReason={consentReason}
@@ -1616,7 +1644,7 @@ function ObservationStep({ report, setReport }) {
         <Camera size={22} />
         <div>
           <h1>Observations</h1>
-          <p>Constats localises, niveau de gravite, photos et suites proposees.</p>
+          <p>Constats localisés, explications, photos et {observationAdviceLabel(report).toLocaleLowerCase('fr-FR')}.</p>
         </div>
       </div>
 

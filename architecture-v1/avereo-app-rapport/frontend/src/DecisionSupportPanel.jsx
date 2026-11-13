@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import VoiceField from './VoiceField.jsx';
+import { allowsDecisionProjections } from './reportProfiles.js';
 import { normalizeDecision, decisionComparison, decisionWarnings, DECISION_CRITERIA, ACTION_CATEGORIES } from './decisionSupport.js';
 
 const newId = () => crypto.randomUUID();
@@ -44,6 +45,7 @@ function Remove({ label, onClick }) {
 }
 
 export default function DecisionSupportPanel({ report, setReport, dictationAllowed = false, onSaveDraft }) {
+  const projections = allowsDecisionProjections(report);
   const d = normalizeDecision(report.decision), observations = report.observations || [];
   const update = transform => setReport(prev => ({ ...prev, decision: transform(normalizeDecision(prev.decision)) }));
   const group = (key, field, value) => update(prev => ({ ...prev, [key]: { ...prev[key], [field]: typeof value === 'function' ? value(prev[key][field]) : value } }));
@@ -53,7 +55,7 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
   const warnings = decisionWarnings(report);
   if (d.schema_version !== 1) return <p className="issue-list warning">Format d’aide à la décision non pris en charge. Conservez le JSON d’origine et vérifiez la version de l’application avant modification.</p>;
   return <fieldset className="decision-support"><legend>Aide à la décision · Visite Globale</legend>
-    <p>Reliez ce qui est observé à ce qui compte pour les habitants. Organisez les actions, puis comparez deux options. Les contenus sont proposés par le professionnel et restent à discuter.</p>
+    <p>Reliez ce qui est observé à ce qui compte pour les habitants. {projections ? 'Organisez les actions, puis comparez deux options. ' : 'Précisez les effets et les vérifications nécessaires. '}Les contenus sont proposés par le professionnel et restent à discuter.</p>
     <details><summary>Relire les notes de l’entretien</summary><p><strong>Attentes exprimées :</strong> {report.ecoute?.attentes_client || 'Non renseignées'}</p>
       <p><strong>Contraintes et horizon évoqués :</strong> {report.ecoute?.contraintes_projet || 'Non renseignés'}</p>
       <p>Ces notes restent le verbatim. Renseignez ci-dessous une structuration explicite, sans déduire automatiquement de nouveaux besoins.</p></details>
@@ -90,6 +92,7 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
       <button type="button" className="button secondary" disabled={d.liens.length >= 100} onClick={() => add('liens', { observation_id: '', attente_ids: [], effet: '', verification: '' })}>Ajouter un lien constat / attentes</button>
     </details>
 
+    {projections && <>
     <details><summary>4 · Projection 1 : organiser les actions</summary>
       {d.actions.map((a, i) => <article className="decision-card" key={`${a.id}-${i}`} aria-label={`Action ${i + 1}`}><h4>Action {i + 1}</h4>
         <Text micDisabled={!dictationAllowed} label="Intitulé de l’action" value={a.intitule} onChange={v => row('actions', i, 'intitule', v)} />
@@ -124,5 +127,7 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
       <p className="muted">Cette proposition ne vaut pas accord des habitants, validation technique ou autorisation de travaux.</p>
       {warnings.length > 0 && <div className="issue-list warning"><strong>Points restant à compléter</strong><ul>{warnings.map(w => <li key={w}>{w}</li>)}</ul></div>}
     </details>
+    </>}
+    {!projections && warnings.length > 0 && <div className="issue-list warning"><strong>Points restant à compléter</strong><ul>{warnings.map(w => <li key={w}>{w}</li>)}</ul></div>}
   </fieldset>;
 }

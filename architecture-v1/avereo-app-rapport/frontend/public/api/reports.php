@@ -19,7 +19,7 @@ function api_validate_report_payload(array $payload): void
             api_json(422, ['ok' => false, 'error' => 'report_decision_invalid', 'message' => $decisionError]);
         }
     }
-    foreach (['titre', 'reference_dossier', 'adresse_logement', 'signature'] as $key) {
+    foreach (['titre', 'reference_dossier', 'adresse_logement', 'signature', 'profil_metier'] as $key) {
         if (array_key_exists($key, $payload) && !is_string($payload[$key])) {
             api_json(422, [
                 'ok' => false,
@@ -45,7 +45,7 @@ function api_validate_report_payload(array $payload): void
                 'message' => 'Une observation est invalide.',
             ]);
         }
-        foreach (['id', 'titre', 'piece', 'surface', 'gravite', 'observations', 'actions'] as $key) {
+        foreach (['id', 'titre', 'piece', 'surface', 'gravite', 'observations', 'actions', 'explications'] as $key) {
             if (array_key_exists($key, $observation) && !is_string($observation[$key])) {
                 api_json(422, [
                     'ok' => false,
