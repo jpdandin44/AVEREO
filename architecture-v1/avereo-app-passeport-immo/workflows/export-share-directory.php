@@ -25,6 +25,12 @@ try {
         $aliases=array_values(array_unique(array_map(static fn($value)=>hash('sha256',strtolower(trim($value))),array_filter($aliases,static fn($v)=>trim($v)!==''))));
         $accounts['avereo_connect:'.$id]=['label'=>$label,'aliases'=>$aliases,'eligible'=>$repository->canLaunchApplication($id,'passeport-immo'),'invitable'=>$allowed];
     }
+    // Optional aliases are explicit operator-confirmed mappings, never inferred identities.
+    foreach(($app['document_share_aliases']??[])as$alias=>$id){
+        if(!is_string($alias)||trim($alias)===''||strlen($alias)>254||!is_string($id)||!isset($accounts[$id]))throw new RuntimeException('Confirmed alias mismatch');
+        $accounts[$id]['aliases'][]=hash('sha256',strtolower(trim($alias)));
+        $accounts[$id]['aliases']=array_values(array_unique($accounts[$id]['aliases']));
+    }
     $output=['version'=>1,'environment'=>$app['environment'],'generatedAt'=>time(),'accounts'=>$accounts];
     $bytes=json_encode($output,JSON_THROW_ON_ERROR|JSON_UNESCAPED_UNICODE);$temporary=$destination.'.'.bin2hex(random_bytes(8)).'.tmp';
     $file=fopen($temporary,'x');if(!$file)throw new RuntimeException('Private write failed');

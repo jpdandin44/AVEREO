@@ -111,14 +111,14 @@ def run():
             check(request('/api/biens/123/documents',foreign)[0]==404,'foreign property denied')
             client=data(request('/api/biens/123/client',cookie,'POST',{'name':'Client fictif'},csrf))
             content=b'%PDF-1.4\nThis is a test document.\n%%EOF\n'
-            def upload(files,expected=None):
+            def upload(files,expected=None,bien='123'):
                 boundary='test'+uuid.uuid4().hex; body=b''
                 for key,value in [('category','plans'),('expectedCount',str(expected if expected is not None else len(files)))]:
                     body+=f'--{boundary}\r\nContent-Disposition: form-data; name="{key}"\r\n\r\n{value}\r\n'.encode()
                 for filename,bytes_ in files:
                     body+=f'--{boundary}\r\nContent-Disposition: form-data; name="files[]"; filename="{filename}"\r\nContent-Type: application/pdf\r\n\r\n'.encode()+bytes_+b'\r\n'
                 body+=f'--{boundary}--\r\n'.encode()
-                return request('/api/biens/123/documents',cookie,'POST',body,csrf,content_type='multipart/form-data; boundary='+boundary)
+                return request('/api/biens/'+bien+'/documents',cookie,'POST',body,csrf,content_type='multipart/form-data; boundary='+boundary)
             result=upload([('plan.pdf',content)]); check(result[0]==201,('upload accepted',result[0],result[2]))
             doc=data(result)['added'][0]; path='/api/biens/123/documents/'+doc['id']
             check(data(upload([('copie.pdf',content)]))['duplicates']==['copie.pdf'],'SHA duplicate prevented')
@@ -246,6 +246,14 @@ def run():
             for method in ['PUT','POST','PATCH','DELETE']:
                 check(request(shared,foreign,method,{},foreign_csrf)[0]==405,'read-only share denies '+method)
             check(request('/api/biens/123/documents/'+file_id,foreign,'PATCH',{'title':'Forbidden'},foreign_csrf)[0]==404,'share never grants original owner mutation routes')
+            current_workspace=data(request('/api/workspace',cookie))
+            current_workspace['biens'].append({'id':'excluded-property','address':'Autre bien fictif privé','dossier':{}})
+            check(request('/api/workspace',cookie,'PUT',current_workspace,csrf)[0]==200,'second owner property fixture created independently')
+            check(request('/api/biens/excluded-property/client',cookie,'POST',{'name':'Client fictif privé'},csrf)[0]==200,'second property keeps its own client')
+            excluded=data(upload([('autre-bien.pdf',content+b'excluded-property')],bien='excluded-property'))['added'][0]['id']
+            check(request(shared+'/documents/'+excluded+'/file',foreign)[0]==404,'same share cannot download another property of the same owner')
+            check(request('/api/biens/excluded-property/documents',foreign)[0]==404,'recipient cannot list the other property of the same owner')
+            check(len(data(request('/api/shared',foreign))['shares'])==1,'only the explicitly shared property appears for recipient')
             document_path='/api/biens/123/documents/'+file_id
             check(request(document_path,cookie,'PATCH',{'archived':True},csrf)[0]==200,'fixture archived by owner')
             check(request(shared_file,foreign)[0]==404,'archived file is no longer shared')
