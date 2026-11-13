@@ -185,5 +185,21 @@
     "fileReadback": "passed",
     "temporaryRowRestore": "passed",
     "liveRowsChanged": false
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "number": 157,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/157",
+    "state": "open",
+    "draft": true,
+    "branch": "fix/passeport-immo-partage-documents",
+    "baseBranch": "chore/passeport-immo-preproduction-corbeille",
+    "observedHeadSha": "ca4a44192da6a91b40a02db29334835590787b57",
+    "observedBaseSha": "fa7bf81971d8b341353d7933f6d861fa88d96876",
+    "mergeable": "MERGEABLE",
+    "humanAcceptanceVerified": false,
+    "observedAt": "2026-11-13T18:01:45.249580+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/pull/157",
+    "humanChecklistCheckedByAgent": false
   }
 }

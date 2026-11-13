@@ -123,6 +123,8 @@ CONNECT ; son accueil doit montrer **Documents partagés avec moi**. Vérifier l
 commandes de modification, puis la révocation sur un partage de recette convenu.
 Ne jamais tester une purge ou modifier un document réel pour la démonstration.
 
+[PR157 du correctif](https://github.com/jpdandin44/AVEREO/pull/157), en brouillon, empilée sur PR155 ouverte ; fusion sans conflit au contrôle, quatre attestations humaines décochées.
+
 ## Mise en production
 
 Suspendue pour ce lot. La validation corbeille/classement et le merge PR155 restent

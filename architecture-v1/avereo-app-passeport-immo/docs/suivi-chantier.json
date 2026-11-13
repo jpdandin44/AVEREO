@@ -4119,7 +4119,8 @@
       "canonicalTracking": "../data/suivi-partage-documents.json",
       "documentation": "partage-documents.md",
       "scope": "Partage nominatif installé en préproduction privée, 210 assertions HTTPS et conservation de 26 documents ; confirmation du nouvel accès et activation du destinataire en attente.",
-      "hostedEvidence": "../api/preproduction-partage-observation.json"
+      "hostedEvidence": "../api/preproduction-partage-observation.json",
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/157"
     }
   ],
   "currentStateObservation": "../api/preproduction-partage-observation.json",

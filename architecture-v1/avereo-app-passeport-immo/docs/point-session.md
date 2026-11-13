@@ -18,6 +18,8 @@ Copie `C:/Users/examg/Documents local/passeport-immo-archives`, branche `fix/pas
 
 Prochaine action : confirmation nominative du nouvel accès dans le dialogue préparé, limitée au seul bien demandé et à ses 11 documents actifs actuels/futurs. Le destinataire confirmé doit encore terminer son activation CONNECT ; aucune activation fictive, aucun e-mail automatique et aucune connexion positive de ce destinataire ne sont revendiqués. Conserver l’autre bien privé. Vérifier ensuite le droit créé et sa sauvegarde, puis la recette réelle du destinataire. La production corbeille/classement est différée.
 
+[PR157 du correctif](https://github.com/jpdandin44/AVEREO/pull/157), en brouillon, empilée sur PR155 ouverte ; fusion sans conflit au contrôle, quatre attestations humaines décochées.
+
 ## Lot précédent — corbeille et organisation des documents
 
 Branche `chore/passeport-immo-preproduction-corbeille`, copie `C:/Users/examg/Documents local/passeport-immo-archives`. [Suivi canonique](../data/suivi-organisation-documents.json), [livraison et recette hébergée](preproduction-organisation.md). PR153 fusionnée ; le paquet CI gelé est installé dans la seule préproduction privée. Deux colonnes additives, six écritures de code, 28 documents conservés, 247 assertions HTTPS et écran SCI vérifiés. Aucune extension des droits, production ou tâche planifiée modifiée.
