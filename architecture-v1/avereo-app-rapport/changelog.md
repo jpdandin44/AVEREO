@@ -12,6 +12,26 @@ tags:
   - changelog
 ---
 
+## 13 novembre 2026 — Correctif de pagination vérifié en préproduction
+
+Maintien des constats client avec conseils et photo, conclusion de décision regroupée et espacement des tableaux de décision ajusté. Tests de la structure OOXML et du contenu HTML ; 176 tests et deux compilations réussis. Les deux Word hébergés sont convertis en PDF dans Word : expert 20 pages, synthèse 6 pages, 26 pages relues et deux réserves résolues. Livraison bornée à trois fichiers ; 20 dossiers, propriétaires et contenus préservés. PR154 en brouillon pour revue, sans fusion ni production. [Qualification et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## 13 novembre 2026 — Exports Word et conversion PDF contrôlés
+
+Rapport expert complet et synthèse client générés depuis l’interface de préproduction, puis convertis en PDF dans Word : textes et médias attendus conservés sur les 27 pages inspectées. Deux réserves de pagination sont alors ouvertes et corrigées ensuite par le correctif ci-dessus ; aucun export PDF direct qualifié. [Méthode, sélection client et résultats](docs/partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre).
+
+
+## 13 novembre 2026 — Recette complète PR152 en préproduction
+
+Sauvegarde et copie indépendantes entre deux comptes fictifs CONNECT, puis réouverture depuis le serveur dans une nouvelle session sans brouillon local : contenu et médias conservés. Propriétaire et toutes les colonnes source inchangés ; refus d’accès croisés, 18 dossiers antérieurs préservés et état initial des comptes/brouillon restauré. [Preuves, normalisation des collections vides et limites](docs/partage-tests-et-stockage.md#recette-complète-entre-deux-comptes-fictifs--13-novembre). Aucun code applicatif ni production modifié.
+
+
+## 13 novembre 2026 — PR152 installée en préproduction
+
+Chargement et téléchargement de dossiers complets livrés avec le paquet qualifié, huit fichiers vérifiés, données et propriétaires des 18 dossiers conservés. Sauvegarde fraîche et répétition du retour arrière applicatif sur copie privée. Accès CONNECT, interface et téléchargement fictif contrôlés ; recette complète d’écriture/réouverture sur cible à poursuivre. Aucun changement de production ni activation des originaux privés. [Détail et réserves](docs/partage-tests-et-stockage.md#préproduction).
+
+
 ## 13 novembre 2026 — Réconciliation de PR152
 
 Intégration de `main` après PR150 : conservation des deux fonctionnalités, imports photo et protections de sauvegarde réunis, documentation des deux lots conservée. Aucun déploiement ni nouvelle activation. [Périmètre de résolution](docs/source-audit.md).
