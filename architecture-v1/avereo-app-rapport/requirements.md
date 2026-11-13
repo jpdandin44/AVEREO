@@ -5,13 +5,20 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Photos — état vérifié le 13 novembre
+
+La première tranche locale conserve et rouvre les octets originaux JPEG/PNG/WebP sous le propriétaire courant du dossier, avec empreinte contrôlée, refus des autres propriétaires et sauvegarde/restauration locale conjointe. Le lien facultatif ne doit altérer aucun champ existant ni `photo.src`. Une opération tardive ne doit pas rattacher un résultat à une photo ou un dossier remplacé ; l’enregistrement en ligne attend la fin d’un envoi.
+
+L’allègement du JSON, la version recadrée/annotée, le choix avant export et la qualification hébergée restent des exigences à réaliser. Les limites d’hébergement, la rétention et les transferts de propriété sont encore à décider. [État par critère](docs/photos-originales-et-annotations.md).
+
 
 ## Lot 0 du 12 novembre — observations
 
@@ -23,6 +30,10 @@ Choix explicite et réversible du profil ; Observations avec Constat, Explicatio
 
 
 Le propriétaire doit pouvoir partager une copie indépendante du seul rapport ouvert avec les choix métier nécessaires aux tests. [Périmètre des champs et accès](docs/partage-tests-et-stockage.md).
+
+## Photos originales et versions annotées — besoin du 12 novembre
+
+Conserver les originaux dans un espace privé du dossier en ligne, accessible avec CONNECT, puis proposer recadrage, commentaires et formes sur une version dérivée du rapport. Aucune optimisation ne supprime le seul exemplaire d'un original : la compression de nouvelles photos (2400 px, JPEG 0,88, réglage proposé) reste un [module isolé non activé](docs/compression-photos.md) tant que les originaux ne sont pas conservés et qualifiés. Les 500 Mo concernent le chargement dans Passeport Immo, pas un quota de Rapport (JSON par défaut : 50 Mio). [Critères, phases et décisions à prendre](docs/photos-originales-et-annotations.md).
 
 ## Essai temporaire — besoin du 2 novembre
 

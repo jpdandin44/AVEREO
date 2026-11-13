@@ -38,5 +38,14 @@ return [
     // IDs CONNECT autorises a administrer tous les rapports. Vide = aucun admin.
     'connect_admin_user_ids' => [],
 
+    // Originaux privés : désactivés par défaut. Avant toute activation, qualifier
+    // la migration 003, la restauration SQL + fichiers et les limites sur la cible.
+    // Racine absolue préexistante hors document root, sans lien symbolique.
+    'photo_originals_enabled' => false,
+    'photo_originals_directory' => '',
+    // 0 = non configuré : l'activation est refusée. Choisir des octets positifs.
+    'photo_originals_max_bytes' => 0,
+    'photo_originals_owner_quota_bytes' => 0,
+
     'max_payload_bytes' => 50 * 1024 * 1024,
 ];

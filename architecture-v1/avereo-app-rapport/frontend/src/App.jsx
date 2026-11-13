@@ -7,6 +7,8 @@ import { observationAdviceLabel } from './reportProfiles.js';
 import { textLinks } from './textLinks.js';
 import { orderedObservations, observationPhase, moveObservation } from './observationOrder.js';
 import ObservationPlans from './ObservationPlans.jsx';
+import { PhotoOriginalControls } from './PhotoOriginals.jsx';
+import { attachOriginal, photoOriginalCapabilities } from './photoOriginals.js';
 import { MAX_REPORT_BYTES, observationPlanNames, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
@@ -1408,13 +1410,24 @@ function ProtocolStep({ report, setReport }) {
   );
 }
 
-function ObservationStep({ report, setReport }) {
+function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, onlineSaving, onPhotoTransfer }) {
   const [cameraFor, setCameraFor] = useState(null);
   const [planObservationId, setPlanObservationId] = useState('');
   const [compact, setCompact] = useState(false);
   const [draggedId, setDraggedId] = useState('');
   const [dropId, setDropId] = useState('');
   const [orderMessage, setOrderMessage] = useState('');
+  const [photoCapabilities, setPhotoCapabilities] = useState(null);
+  const canUseOnlinePhotos = Boolean(onlineSyncEnabled && authenticated);
+  useEffect(() => {
+    setPhotoCapabilities(null);
+    if (!canUseOnlinePhotos || !/^[a-f0-9]{32}$/.test(report.onlineReportId || '')) return undefined;
+    const controller = new AbortController();
+    photoOriginalCapabilities({ signal: controller.signal })
+      .then(value => { if (!controller.signal.aborted) setPhotoCapabilities(value); })
+      .catch(() => { if (!controller.signal.aborted) setPhotoCapabilities({ enabled: false }); });
+    return () => controller.abort();
+  }, [canUseOnlinePhotos, report.onlineReportId]);
   const dragSource = useRef(null);
   const observationsInOrder = orderedObservations(report);
   const observationNumbers = new Map(observationsInOrder.map((observation, index) => [observation, index + 1]));
@@ -1667,7 +1680,8 @@ function ObservationStep({ report, setReport }) {
 
         <div className="photo-grid">
           {obs.photos.map((photo) => (
-            <figure key={photo.id}>
+            <figure className="photo-with-original" key={photo.id}>
+              <div className="photo-thumb">
               <img src={photo.src} alt={photo.name} loading="lazy" />
               <figcaption>{formatDateTime(photo.horodatageISO)}</figcaption>
               <button
@@ -1678,6 +1692,13 @@ function ObservationStep({ report, setReport }) {
               >
                 <Trash2 size={15} />
               </button>
+              </div>
+              <PhotoOriginalControls photo={photo} reportId={report.onlineReportId}
+                canUseOnline={canUseOnlinePhotos} capabilities={photoCapabilities}
+                disabled={onlineSaving} onTransfer={onPhotoTransfer}
+                onPreserved={original => setReport(current => attachOriginal(current, {
+                  reportId: report.onlineReportId, observationId: obs.id, photoId: photo.id, src: photo.src,
+                }, original))} />
             </figure>
           ))}
           <label className={`photo-action ${photoAllowed ? '' : 'disabled'}`} title={photoAllowed ? 'Importer des photos' : consentReason}>
@@ -1702,6 +1723,15 @@ function ObservationStep({ report, setReport }) {
             Camera
           </button>
         </div>
+        {obs.photos.length > 0 && <p className="muted photo-original-notice">
+          {!canUseOnlinePhotos
+            ? 'Vos photos restent dans le brouillon. La conservation privée des originaux nécessite une connexion CONNECT.'
+            : !report.onlineReportId
+              ? 'Sauvez d’abord le dossier en ligne pour conserver ses originaux dans son espace privé.'
+              : photoCapabilities && !photoCapabilities.enabled
+                ? 'La conservation privée des originaux est indisponible pour le moment. Les photos du dossier restent utilisables.'
+                : 'La conservation d’un original est volontaire. La photo du rapport reste inchangée.'}
+        </p>}
         </div>
       </article>
     );
@@ -1996,6 +2026,7 @@ function OnlineSyncPanel({
   onSave,
   onTokenSubmit,
   saving,
+  photoTransfers,
   status,
 }) {
   const [tokenInput, setTokenInput] = useState('');
@@ -2069,9 +2100,9 @@ function OnlineSyncPanel({
           </button>
         )}
         {authenticated && (
-          <button className="button primary" data-avereo-save="online" type="button" onClick={onSave} disabled={saving}>
+          <button className="button primary" data-avereo-save="online" type="button" onClick={onSave} disabled={saving || photoTransfers > 0}>
             <Save size={18} />
-            {saving ? 'Sauvegarde...' : 'Sauver en ligne'}
+            {photoTransfers > 0 ? 'Envoi photo en cours…' : saving ? 'Sauvegarde...' : 'Sauver en ligne'}
           </button>
         )}
       </div>
@@ -2106,6 +2137,8 @@ function ReportWizard({
   const [toast, setToast] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
   const [onlineSaving, setOnlineSaving] = useState(false);
+  const [photoTransfers, setPhotoTransfers] = useState(0);
+  const onPhotoTransfer = useCallback(delta => setPhotoTransfers(count => Math.max(0, count + delta)), []);
   const [onlineStatus, setOnlineStatus] = useState('');
   const fileInputRef = useRef(null);
   const validation = useMemo(() => validateReport(report), [report]);
@@ -2131,6 +2164,10 @@ function ReportWizard({
   };
 
   const handleOnlineSave = async () => {
+    if (photoTransfers > 0) {
+      setOnlineStatus('Attendez la fin de l’envoi des originaux avant de sauvegarder le dossier en ligne.');
+      return;
+    }
     if (!authenticated) {
       setOnlineStatus('Connexion requise pour la sauvegarde en ligne.');
       return;
@@ -2211,7 +2248,7 @@ function ReportWizard({
               requestAnimationFrame(() => document.getElementById('adresse-logement')?.focus());
             }} />}
             {currentStep === 2 && <ProtocolStep report={report} setReport={setReport} />}
-            {currentStep === 3 && <ObservationStep report={report} setReport={setReport} />}
+            {currentStep === 3 && <ObservationStep report={report} setReport={setReport} onlineSyncEnabled={onlineSyncEnabled} authenticated={authenticated} onlineSaving={onlineSaving} onPhotoTransfer={onPhotoTransfer} />}
             {currentStep === 4 && (
               <ValidationStep
                 report={report}
@@ -2238,6 +2275,7 @@ function ReportWizard({
           onSave={handleOnlineSave}
           onTokenSubmit={onTokenSubmit}
           saving={onlineSaving}
+          photoTransfers={photoTransfers}
           status={onlineStatus}
         />
       </main>

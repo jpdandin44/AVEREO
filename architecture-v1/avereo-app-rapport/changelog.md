@@ -5,12 +5,17 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 13 novembre 2026 — Première tranche locale des originaux privés
+
+Vue agrandie et zoom des photos, conservation individuelle volontaire et réouverture de l’original privé vérifié par empreinte. API et migration additives, contrôle du propriétaire courant, stockage hors racine web, configuration désactivée par défaut. Tests locaux PHP/SQLite et HTTP/MariaDB, restauration sur copie séparée et parcours navigateur avec mire fictive. Les photos du rapport et les exports restent conservés ; compression, recadrage et annotations ne sont pas activés. [Détail et limites](docs/photos-originales-et-annotations.md). Aucun hébergement modifié pour ce lot.
+
 
 ## 12 novembre 2026 — Lot 0 Observations, complément local
 
@@ -20,6 +25,10 @@ Ordre commun des fiches, plans et Word, déplacement dans une même phase et vue
 
 Profil de mission et explications entre constat et conseils ajoutés ; rubriques Export adaptées et deux Word fictifs contrôlés. [État et vérifications](docs/profil-habitologue.md). Aucun déploiement de cette évolution.
 
+
+## 12 novembre 2026 — Photos : originaux privés cadrés, compression non activée
+
+Le responsable demande de conserver les originaux dans un espace privé du dossier en ligne (CONNECT) avant toute version recadrée ou annotée. Le [cadrage](docs/photos-originales-et-annotations.md) est préparé ; le module de compression reste isolé et testé, [non branché](docs/compression-photos.md). L'import de photos est inchangé. Aucun déploiement.
 
 ## 12 novembre 2026 — export délégué interrompu
 

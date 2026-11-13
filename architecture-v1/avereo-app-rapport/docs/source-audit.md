@@ -5,13 +5,20 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 2026-11-13 — Originaux privés, candidat local
+
+Nouvelle route `photo-originals.php`, service indépendant `photo-original-store.php` et migration 003 additive. Le client conserve les données existantes ; le navigateur ne reçoit aucun chemin privé. Le propriétaire courant est vérifié avant traitement, sous le verrou puis dans la transaction d’insertion ; les autres comptes et l’administrateur non propriétaire sont refusés. Le sas et la révocation existants sont réutilisés sans modification. Aucun accès organisationnel ou transfert ajouté.
+
+Les tests PHP/SQLite et HTTP/MariaDB isolés couvrent immutabilité, contrôle des octets, refus inter-comptes, quota concurrent, sauvegarde/restauration et conservation des propriétaires. La recette du navigateur utilise une mire fictive et des tickets locaux ; elle ne vaut pas recette OAuth/CONNECT hébergée. Le proxy de démonstration conserve le Host initial afin de respecter le contrôle Origin ; le serveur produit n’a pas été assoupli. [Preuves et réserves](photos-originales-et-annotations.md#développement-local).
+
 
 ## 2026-11-12 — Lot 0 Observations, intégration locale
 
@@ -21,6 +28,10 @@ Ordre commun sans identifiant remplacé, numéro stocké ni migration ; vues et 
 
 Profil métier explicite, sans modification de sécurité ; ancien parcours conservé. Restitution échappée et liens HTTP/HTTPS intégrés ; filtrage client vérifié dans les deux Word fictifs et leurs rendus. 123 tests Node, 27 contrôles PHP, deux builds et recette navigateur locale réussis. Aucune qualification hébergée du candidat. [État réel et réserves](profil-habitologue.md).
 
+
+## 2026-11-12 — Photos : originaux privés et compression non activée
+
+Aucune compression destructive n'est active : l'import garde `src` octet-identique tant que les originaux privés du dossier en ligne ne sont pas implémentés et qualifiés. Le module de compression est testé (12 tests) mais isolé ; ses essais sur images synthétiques sont ceux du candidat initial, sans conservation d'original. Aucun changement de consentement photo, de sécurité, d'authentification, de propriété, d'API ou de limite. Le [cadrage des originaux et annotations](photos-originales-et-annotations.md) relève les risques (accès inter-comptes, administrateur, sauvegarde des fichiers hors SQL, copie vers un autre propriétaire) ; les besoins d'originaux privés et d'annotations sont confirmés, leur implémentation et leurs paramètres restent à préparer. [Module isolé](compression-photos.md).
 
 ## 8 novembre 2026 — Menus de Rapport et de RGA
 

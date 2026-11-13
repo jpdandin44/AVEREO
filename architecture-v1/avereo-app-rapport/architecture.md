@@ -5,7 +5,7 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
@@ -20,6 +20,12 @@ tags:
 
 `profil_metier` et `observations[].explications` étendent le payload JSON existant, sans migration SQL. Le profil adapte les formulaires et les restitutions, sans changer les rôles CONNECT ni la propriété. [Contrat et composants](docs/profil-habitologue.md).
 
+
+## Photos originales et compression
+
+L’import conserve la data URL dans `observations[].photos[]`. La première tranche locale ajoute une référence optionnelle `original`, un client `photoOriginals.js`, une vue `PhotoOriginals.jsx` et l’API `photo-originals.php`. `RapportPhotoOriginalStore` garde les octets dans un répertoire privé hors racine web et leurs métadonnées dans la table additive `rapport_photo_originals` (migration 003). Chaque opération vérifie le propriétaire courant du rapport et celui de l’original ; aucune exception administrateur. Le serveur réutilise le sas, l’identité et le verrou de révocation existants.
+
+L’activation exige une configuration privée explicite et des limites positives ; elle reste désactivée par défaut. Fichiers et base doivent être sauvegardés ensemble. `photo.src`, Word et JSON restent inchangés, hormis la référence facultative. `photoCompression.js` est toujours un [module isolé non branché](docs/compression-photos.md). L’éditeur et la version rapport dérivée restent prévus. [Contrat et limites](docs/photos-originales-et-annotations.md), [API](api/photos-originales.json).
 
 ## Copie pour les tests
 
