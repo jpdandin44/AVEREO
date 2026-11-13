@@ -5,12 +5,16 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Architecture Passeport Immo
+
+## Corbeille et dossiers personnalisés — candidat local
+
+`pi_documents.trashed_at` conserve le statut de corbeille, distinct de l’archivage. `pi_biens.document_settings` porte apparence et ordre avec révision optimiste, séparés du modèle autosauvegardé du bien. Les mêmes fonctions existent dans IndexedDB. La purge exige propriété, CSRF, confirmation et passage préalable en corbeille ; elle verrouille le bien, déplace provisoirement le blob dans le stockage privé, supprime la ligne puis efface le blob après commit. Un rollback SQL confirmé restaure le blob ; un commit incertain conserve la copie privée pour contrôle opérateur. Les quatre tables et sauvegardes existantes sont réutilisées. [Contrat, migration et limites](docs/organisation-documents.md).
 
 ## Import volumineux livré en préproduction le 12 novembre
 

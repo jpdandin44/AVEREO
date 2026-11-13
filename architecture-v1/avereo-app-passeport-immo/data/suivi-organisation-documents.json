@@ -1,0 +1,123 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "version": "git",
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "passeport-immo-organisation-documents",
+  "stage": "developpement-local",
+  "status": "awaiting_local_human_review",
+  "objective": "Corbeille restaurable, suppression définitive confirmée, dossiers par catégorie avec icône/couleur et ordre manuel conservés par bien.",
+  "candidate": {
+    "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+    "artifactPath": ".local/ci-organisation-fb0/candidate.zip",
+    "manifestPath": ".local/ci-organisation-fb0/candidate.manifest.json"
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/passeport-immo-corbeille-documents",
+    "humanAcceptanceVerified": false,
+    "observedAt": "2026-11-13T15:04:22.254662+00:00",
+    "observedHeadSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "runtimeCandidateFrozen": true,
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43448211761",
+    "number": 153,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/153",
+    "draft": false,
+    "observationScope": "Qualified frozen runtime; later documentation-only commits do not change this candidate. Refresh current GitHub head/checks before merge."
+  },
+  "reviewEnvironment": {
+    "phase": 1,
+    "environment": "local",
+    "url": "http://127.0.0.1:5178/",
+    "fictionalDataOnly": true
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://passeport-immo-preprod.avereo.fr/",
+      "ready": false,
+      "detail": "Candidat 500 Mo antérieur conservé ; nouvelle migration et nouveau candidat non livrés."
+    },
+    "production": {
+      "id": "https://passeport-immo.avereo.fr/",
+      "ready": false
+    }
+  },
+  "checks": [
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T15:04:22.254662+00:00",
+      "target": "http://127.0.0.1:5178/",
+      "evidence": "api/organisation-documents-observation.json#localChecks"
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T15:04:22.254662+00:00",
+      "target": "isolated_apache_mariadb",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43448211761"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T15:04:22.254662+00:00",
+      "target": null,
+      "evidence": "api/organisation-documents-observation.json#documentationControl"
+    }
+  ],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested"
+  },
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "blockers": [],
+  "nextAction": "Revoir le candidat local et sa PR, puis qualifier la récupération et la migration sur la cible de préproduction avant une livraison autorisée.",
+  "phases": [
+    {
+      "id": 0,
+      "label": "Cadrage",
+      "status": "completed",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 1,
+      "label": "Développement local",
+      "status": "awaiting_review",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 2,
+      "label": "Préproduction",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 3,
+      "label": "Mise en production",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    }
+  ],
+  "sourceFeedback": {
+    "source": "user_chat",
+    "observedAt": "2026-11-13T14:47:48.458099+00:00",
+    "requirements": [
+      "Suppression via corbeille avec restauration avant purge définitive.",
+      "Dossiers parents par catégorie, choix des icônes et couleurs, ordre des fichiers modifiable."
+    ],
+    "doesNotCreateDeploymentApproval": true
+  },
+  "evidence": "api/organisation-documents-observation.json",
+  "documentation": "docs/organisation-documents.md",
+  "nextIteration": []
+}

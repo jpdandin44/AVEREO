@@ -188,8 +188,13 @@
     "branch": "chore/passeport-immo-preproduction-500",
     "phase": "Préproduction",
     "reviewEnvironment": "https://connect-preprod.avereo.fr/?app=passeport-immo",
-    "humanReviewPending": true,
+    "humanReviewPending": false,
     "number": 147,
-    "url": "https://github.com/jpdandin44/AVEREO/pull/147"
+    "url": "https://github.com/jpdandin44/AVEREO/pull/147",
+    "state": "MERGED",
+    "mergedAt": "2026-11-13T06:31:51Z",
+    "observedAt": "2026-11-13T15:04:22.254662+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/pull/147",
+    "strictHumanChecklist": "passed"
   }
 }

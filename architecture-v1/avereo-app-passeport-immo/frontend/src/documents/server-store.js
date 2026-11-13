@@ -56,6 +56,10 @@ export function createServerStorage({ fetcher = (...args) => fetch(...args), not
       return { added: result.added.length, duplicates: result.duplicates.length };
     },
     async updateDocument(id, doc, patch) { await flush(); return request(`${bienPath(id)}/documents/${encodeURIComponent(doc)}`, { method: 'PATCH', body: JSON.stringify(patch) }); },
+    async trashDocument(id, doc) { return repository.updateDocument(id, doc, { trashed: true }); },
+    async restoreDocument(id, doc) { return repository.updateDocument(id, doc, { trashed: false }); },
+    async deleteDocument(id, doc) { await flush(); return request(`${bienPath(id)}/documents/${encodeURIComponent(doc)}`, { method: 'DELETE', body: JSON.stringify({ confirm: true }) }); },
+    async saveDocumentSettings(id, settings) { await flush(); return request(`${bienPath(id)}/document-settings`, { method: 'PUT', body: JSON.stringify(settings) }); },
     async getFile(id, doc) { await flush(); return request(`${bienPath(id)}/documents/${encodeURIComponent(doc)}/file`, { blob: true }); },
     close() {},
   };

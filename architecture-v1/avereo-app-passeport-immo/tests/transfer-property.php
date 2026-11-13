@@ -29,9 +29,11 @@ for ($i=1;$i<=4;$i++) {
     file_put_contents($source['storage_directory'].'/'.$id.'.blob',$bytes);
     $document=['id'=>$id,'owner_id'=>$selected?$owner:'foreign','bien_id'=>$selected?'fixture-selected':'foreign-property','client_id'=>$selected?$clientId:$otherId,
         'name'=>'piece-'.$i.'.pdf','title'=>'Titre fictif '.$i,'category'=>'plans','mime'=>'application/pdf','size'=>strlen($bytes),'sha256'=>hash('sha256',$bytes),
-        'added_at'=>'2026-02-01T10:00:00Z','updated_at'=>'2026-02-02T11:00:00Z','archived_at'=>$i===3?'2026-02-03T12:00:00Z':null];
+        'added_at'=>'2026-02-01T10:00:00Z','updated_at'=>'2026-02-02T11:00:00Z','archived_at'=>$i===3?'2026-02-03T12:00:00Z':null,'trashed_at'=>$i===2?'2026-11-13T10:00:00Z':null];
     pi_transfer_insert($src,'pi_documents',$document); if ($selected) $sourceDocuments[]=$document;
 }
+$organisation=['revision'=>1,'categories'=>['plans'=>['icon'=>'leaf','color'=>'#123456']],'order'=>['plans'=>array_reverse(array_column($sourceDocuments,'id'))]];
+pi_transfer_query($src,'UPDATE pi_biens SET document_settings=? WHERE owner_id=? AND bien_id=?',[json_encode($organisation),$owner,'fixture-selected']);
 pi_transfer_insert($dst,'pi_workspaces',['owner_id'=>$destinationOwner,'revision'=>11,'settings'=>'{"existingTariff":77}']);
 // The source's client ID already belongs to a different target tenant: deterministic remapping must preserve it.
 pi_transfer_insert($dst,'pi_clients',['id'=>$clientId,'owner_id'=>'foreign-target','name'=>'Autre client cible','created_at'=>'2020-01-01']);
@@ -39,7 +41,7 @@ pi_transfer_insert($dst,'pi_biens',['owner_id'=>$destinationOwner,'bien_id'=>'ex
 $sourceBefore=rows($src); $targetBefore=rows($dst);
 $export=pi_transfer_export($source,$plan,'/tmp/export-selected'); $hash=$export['manifestSha256'];
 $manifest=json_decode(file_get_contents('/tmp/export-selected/manifest.json'),true,64,JSON_THROW_ON_ERROR);
-check($export['documents']===3 && $export['activeDocuments']===2 && $export['archivedDocuments']===1,'export selects active and archived documents');
+check($export['documents']===3 && $export['activeDocuments']===1 && $export['archivedDocuments']===1 && $export['trashedDocuments']===1,'export selects active, archived and trashed documents');
 check(count($manifest['documents'])===3 && $manifest['property']['bien_id']==='fixture-selected' && $manifest['client']['id']===$clientId,'export contains only selected property and linked client');
 check(!str_contains(file_get_contents('/tmp/export-selected/manifest.json'),'privateTariff') && !str_contains(file_get_contents('/tmp/export-selected/manifest.json'),'foreign-property')
     && !str_contains(file_get_contents('/tmp/export-selected/manifest.json'),$source['storage_password']),'export excludes settings, other property, accounts and secrets');
@@ -78,6 +80,8 @@ foreach ($documents as $i=>$document) {
         && file_get_contents($source['storage_directory'].'/'.$oldId.'.blob')===file_get_contents($target['storage_directory'].'/'.$document['id'].'.blob');
 }
 check($exact,'all active/archive metadata, dates, bytes and links retained');
+$targetOrganisation=json_decode($property['document_settings'],true,64,JSON_THROW_ON_ERROR);
+check($targetOrganisation['categories']===$organisation['categories'] && $targetOrganisation['order']['plans']===array_reverse(array_column($documents,'id')),'document appearance and remapped order retained during transfer');
 check(count(pi_transfer_query($dst,'SELECT * FROM pi_documents WHERE owner_id=?',['foreign-target'])->fetchAll())===0
     && pi_transfer_query($dst,'SELECT name FROM pi_clients WHERE id=?',[$clientId])->fetchColumn()==='Autre client cible','foreign target account and colliding source client ID isolated');
 $workspace=pi_transfer_query($dst,'SELECT * FROM pi_workspaces WHERE owner_id=?',[$destinationOwner])->fetch();
@@ -99,4 +103,12 @@ $arguments[4]=str_repeat('0',64); [$code,$result,$error]=cli([...$arguments,'--a
 check(rows($src)===$sourceBefore,'source rows unchanged after all tests');
 foreach ($sourceDocuments as $document) pi_transfer_file($source['storage_directory'].'/'.$document['id'].'.blob',$document);
 check(true,'source document bytes unchanged');
+$legacyPlan=$plan;$legacyPlan['target']['ownerId']='legacy-target-owner';
+pi_transfer_export($source,$legacyPlan,'/tmp/legacy-export');
+$legacy=json_decode(file_get_contents('/tmp/legacy-export/manifest.json'),true,64,JSON_THROW_ON_ERROR);
+unset($legacy['property']['document_settings']);
+foreach($legacy['documents'] as &$legacyDoc)unset($legacyDoc['trashed_at']);unset($legacyDoc);
+file_put_contents('/tmp/legacy-export/manifest.json',json_encode($legacy,JSON_THROW_ON_ERROR|JSON_PRETTY_PRINT));
+$legacyResult=pi_transfer_import($target,$legacyPlan,'/tmp/legacy-export',hash_file('sha256','/tmp/legacy-export/manifest.json'),true);
+check($legacyResult['status']==='imported','historical transfer manifests remain importable with nullable organisation defaults');
 echo json_encode(['assertions'=>count($checks),'checks'=>$checks,'database'=>'MariaDB 11.4','data'=>'fictitious only','remoteMutation'=>false],JSON_THROW_ON_ERROR)."\n";

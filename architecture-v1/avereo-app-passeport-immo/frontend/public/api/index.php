@@ -15,7 +15,7 @@ try {
     try { $session=passeport_session($config); } catch (Throwable) { throw new PasseportError(401,'Votre session a expiré. Rouvrez Passeport Immo depuis CONNECT.'); }
     $owner=passeport_identity($session);
     $method=$_SERVER['REQUEST_METHOD'] ?? 'GET';
-    if (!in_array($method,['GET','PUT','POST','PATCH'],true)) throw new PasseportError(405,'Méthode non autorisée.');
+    if (!in_array($method,['GET','PUT','POST','PATCH','DELETE'],true)) throw new PasseportError(405,'Méthode non autorisée.');
     if ($method !== 'GET') {
         $origin=(string)($config['storage_origin'] ?? '');
         if ($origin === '' || ($_SERVER['HTTP_ORIGIN'] ?? '') !== $origin
@@ -42,9 +42,10 @@ try {
         if ($method==='GET') passeport_json($store->workspace());
         if ($method==='PUT') passeport_json($store->saveWorkspace($body));
     }
-    if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/(documents|client)(?:/([a-f0-9]{32})(/file)?)?$#D',$path,$m)) {
+    if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/(documents|client|document-settings)(?:/([a-f0-9]{32})(/file)?)?$#D',$path,$m)) {
         [, $bien, $kind]=$m; $document=$m[3] ?? null; $file=isset($m[4]);
         if ($kind==='client' && !$document && $method==='POST') passeport_json($store->linkClient($bien,$body));
+        if ($kind==='document-settings' && !$document && $method==='PUT') passeport_json($store->saveDocumentSettings($bien,$body));
         if ($kind==='documents') {
             if (!$document && $method==='GET') passeport_json($store->load($bien));
             if (!$document && $method==='POST') {
@@ -58,6 +59,10 @@ try {
                 passeport_json($store->addFiles($bien,$files,(string)($_POST['category'] ?? 'autres')),201);
             }
             if ($document && !$file && $method==='PATCH') passeport_json($store->updateDocument($bien,$document,$body));
+            if ($document && !$file && $method==='DELETE') {
+                if (($body['confirm'] ?? null)!==true) throw new PasseportError(422,'Confirmation de suppression définitive requise.');
+                passeport_json($store->deleteDocument($bien,$document));
+            }
             if ($document && $file && $method==='GET') {
                 $row=$store->findDocument($bien,$document); $file=$store->filePath($row);
                 header('Content-Type: '.$row['mime']); header('Content-Length: '.$row['size']);

@@ -1,4 +1,5 @@
 import { SERVER_STORAGE, serverStorage } from './server-store.js';
+import { documentSettings, validateDocumentSettings } from './document-settings.js';
 export const CATEGORIES = {
   diagnostics: 'Diagnostics', plans: 'Plans et façades', urbanisme: 'Urbanisme',
   travaux: 'Devis et factures', juridique: 'Propriété et contrats', autres: 'Autres documents',
@@ -103,11 +104,14 @@ export function createDocumentRepository({ indexedDB = globalThis.indexedDB, nam
   function load(bienId) {
     const bien = key(bienId);
     return transaction(['biens', 'clients', 'documents'], 'readonly', (tx, done) => {
-      const result = { client: null, clients: [], documents: [] }; done(result);
+      const result = { client: null, clients: [], documents: [], settings: documentSettings() }; done(result);
       tx.objectStore('clients').getAll().onsuccess = e => { result.clients = e.target.result; };
       tx.objectStore('documents').index('bien').getAll(bien).onsuccess = e => { result.documents = e.target.result.sort((a,b) => b.addedAt.localeCompare(a.addedAt)); };
       tx.objectStore('biens').get(bien).onsuccess = e => {
-        if (e.target.result) tx.objectStore('clients').get(e.target.result.clientId).onsuccess = event => { result.client = event.target.result || null; };
+        if (e.target.result) {
+          result.settings = documentSettings(e.target.result.settings);
+          tx.objectStore('clients').get(e.target.result.clientId).onsuccess = event => { result.client = event.target.result || null; };
+        }
       };
     });
   }
@@ -124,7 +128,7 @@ export function createDocumentRepository({ indexedDB = globalThis.indexedDB, nam
           const previous = event.target.result;
           tx.objectStore('documents').index('bien').count(bien).onsuccess = count => {
             if (previous && previous.clientId !== e.target.result.id && count.target.result) return fail(new Error('Ce dossier contient des documents. Son client ne peut pas être remplacé.'));
-            tx.objectStore('biens').put({ bienId: bien, clientId: e.target.result.id }); done(e.target.result);
+            tx.objectStore('biens').put({ ...previous, bienId: bien, clientId: e.target.result.id }); done(e.target.result);
           };
         };
       };
@@ -151,7 +155,8 @@ export function createDocumentRepository({ indexedDB = globalThis.indexedDB, nam
         function next(index) {
           if (index === prepared.length) return;
           const item = prepared[index];
-          content.getKey([bien, item.sha256]).onsuccess = event => {
+          content.get([bien, item.sha256]).onsuccess = event => {
+            if (event.target.result?.trashedAt) return fail(new Error(`${item.name} est dans la corbeille. Restaurez-le ou supprimez-le définitivement avant de le réimporter.`));
             if (event.target.result) { result.duplicates++; next(index+1); return; }
             const documentId = id(), now = new Date().toISOString();
             documents.add({ id: documentId, bienId: bien, clientId, name: item.name, title: item.name.replace(/\.[^.]+$/, '').slice(0, 200), category, mime: item.mime, size: item.size, sha256: item.sha256, addedAt: now, updatedAt: now, archivedAt: null });
@@ -165,14 +170,21 @@ export function createDocumentRepository({ indexedDB = globalThis.indexedDB, nam
   function updateDocument(bienId, documentId, { title, category, archived }) {
     const bien = key(bienId), titleValue = text(title, 200, 'Titre');
     if (!CATEGORIES[category]) return Promise.reject(new Error('Catégorie inconnue.'));
-    return transaction(['documents'], 'readwrite', (tx, done, fail) => {
+    return transaction(['documents', 'biens'], 'readwrite', (tx, done, fail) => {
       const store = tx.objectStore('documents');
       store.get(documentId).onsuccess = e => {
         const doc = e.target.result;
         if (!doc || doc.bienId !== bien) return fail(new Error('Document introuvable dans ce bien.'));
+        if (doc.trashedAt) return fail(new Error('Restaurez le document avant de le modifier.'));
         const now = new Date().toISOString();
         const updated = { ...doc, title: titleValue, category, updatedAt: now, archivedAt: archived ? (doc.archivedAt || now) : null };
-        store.put(updated); done(updated);
+        store.put(updated);
+        if (doc.category !== category) tx.objectStore('biens').get(bien).onsuccess = event => {
+          const property = event.target.result, settings = documentSettings(property.settings);
+          settings.order = Object.fromEntries(Object.entries(settings.order).map(([key, ids]) => [key, ids.filter(id => id !== documentId)]));
+          settings.revision++; tx.objectStore('biens').put({ ...property, settings });
+        };
+        done(updated);
       };
     });
   }
@@ -188,7 +200,54 @@ export function createDocumentRepository({ indexedDB = globalThis.indexedDB, nam
       };
     });
   }
-  return { load, linkClient, addFiles, updateDocument, getFile, close: async () => { if (connection) (await connection).close(); connection = null; } };
+  function trashState(bienId, documentId, trashed) {
+    const bien = key(bienId);
+    return transaction(['documents'], 'readwrite', (tx, done, fail) => {
+      const store = tx.objectStore('documents');
+      store.get(documentId).onsuccess = e => {
+        const doc = e.target.result;
+        if (!doc || doc.bienId !== bien) return fail(new Error('Document introuvable dans ce bien.'));
+        const now = new Date().toISOString();
+        const updated = { ...doc, trashedAt: trashed ? (doc.trashedAt || now) : null, updatedAt: now };
+        store.put(updated); done(updated);
+      };
+    });
+  }
+  function deleteDocument(bienId, documentId) {
+    const bien = key(bienId);
+    return transaction(['documents', 'files', 'biens'], 'readwrite', (tx, done, fail) => {
+      tx.objectStore('documents').get(documentId).onsuccess = e => {
+        const doc = e.target.result;
+        if (!doc || doc.bienId !== bien) return fail(new Error('Document introuvable dans ce bien.'));
+        if (!doc.trashedAt) return fail(new Error('Placez le document dans la corbeille avant de le supprimer définitivement.'));
+        tx.objectStore('documents').delete(documentId); tx.objectStore('files').delete(documentId);
+        tx.objectStore('biens').get(bien).onsuccess = event => {
+          const property = event.target.result, settings = documentSettings(property.settings);
+          settings.order = Object.fromEntries(Object.entries(settings.order).map(([category, ids]) => [category, ids.filter(id => id !== documentId)]));
+          settings.revision++; tx.objectStore('biens').put({ ...property, settings }); done({ deleted: true, id: documentId });
+        };
+      };
+    });
+  }
+  function saveDocumentSettings(bienId, value) {
+    const bien = key(bienId);
+    return transaction(['biens', 'documents'], 'readwrite', (tx, done, fail) => {
+      tx.objectStore('biens').get(bien).onsuccess = e => {
+        const property = e.target.result;
+        if (!property) return fail(new Error('Associez d’abord le client à ce bien.'));
+        if (documentSettings(property.settings).revision !== value.revision) return fail(new Error('L’organisation a changé dans une autre fenêtre. Rouvrez le bien avant de poursuivre.'));
+        tx.objectStore('documents').index('bien').getAll(bien).onsuccess = event => {
+          try {
+            const settings = validateDocumentSettings(value, event.target.result);
+            settings.revision++; tx.objectStore('biens').put({ ...property, settings }); done(settings);
+          } catch (error) { fail(error); }
+        };
+      };
+    });
+  }
+  return { load, linkClient, addFiles, updateDocument, getFile, trashDocument: (bien, doc) => trashState(bien, doc, true),
+    restoreDocument: (bien, doc) => trashState(bien, doc, false), deleteDocument, saveDocumentSettings,
+    close: async () => { if (connection) (await connection).close(); connection = null; } };
 }
 
 export const documentRepository = SERVER_STORAGE ? serverStorage.repository : createDocumentRepository();

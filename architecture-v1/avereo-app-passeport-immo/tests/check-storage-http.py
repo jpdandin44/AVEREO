@@ -46,13 +46,22 @@ def run():
                 '--mount',f'type=bind,source={root}/config.php,target=/fixture/config.php,readonly',
                 '--mount',f'type=bind,source={APP}/database/storage.sql,target=/fixture/storage.sql,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/backup-storage.php,target=/fixture/backup-storage.php,readonly',
+                '--mount',f'type=bind,source={APP}/workflows/migrate-document-organisation.php,target=/fixture/migrate-document-organisation.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/scheduled-backup.php,target=/fixture/scheduled-backup.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/backup-cron.php,target=/fixture/backup-cron.php,readonly',
                 '--mount',f'type=bind,source={APP}/tests/scheduled-backup.php,target=/fixture/scheduled-backup-test.php,readonly',
                 '-e','AVEREO_CONFIG_FILE=/fixture/config.php',IMAGE); created.append(web)
             port=int(command('docker','port',web,'80/tcp').rsplit(':',1)[1])
-            bootstrap="mkdir('/private-documents',0700); chmod('/private-documents',0700); chown('/private-documents','www-data'); $c=require '/fixture/config.php'; for($i=0;$i<60;$i++){try{$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);break;}catch(Throwable){usleep(500000);}} $p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); $p->exec(file_get_contents('/fixture/storage.sql'));"
+            bootstrap="mkdir('/private-documents',0700); chmod('/private-documents',0700); chown('/private-documents','www-data'); $c=require '/fixture/config.php'; for($i=0;$i<60;$i++){try{$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);break;}catch(Throwable){usleep(500000);}} $p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); $p->exec(preg_replace('/^ *(trashed_at|document_settings) [^\\n]*\\n/m','',file_get_contents('/fixture/storage.sql'))); $p->exec(\"INSERT INTO pi_workspaces(owner_id,settings) VALUES ('migration-fixture','{}')\");"
             command('docker','exec',web,'php','-r',bootstrap)
+            dry=json.loads(command('docker','exec',web,'php','/fixture/migrate-document-organisation.php','/fixture/config.php','passeport'))
+            check(dry['status']=='dry_run' and set(dry['requiredColumns'])=={'trashed_at','document_settings'},'organisation migration defaults to dry run on historical schema')
+            wrong=subprocess.run(['docker','exec',web,'php','/fixture/migrate-document-organisation.php','/fixture/config.php','wrong-database','--apply'],capture_output=True)
+            check(wrong.returncode!=0,'organisation migration refuses wrong database')
+            migrated=json.loads(command('docker','exec',web,'php','/fixture/migrate-document-organisation.php','/fixture/config.php','passeport','--apply'))
+            check(migrated['existingRowsPreserved'] and len(migrated['addedColumns'])==2,'historical schema migration preserves all original rows')
+            repeated=json.loads(command('docker','exec',web,'php','/fixture/migrate-document-organisation.php','/fixture/config.php','passeport','--apply'))
+            check(repeated['addedColumns']==[] and repeated['existingRowsPreserved'],'organisation migration safely idempotent')
             def request(path,cookie=None,method='GET',body=None,csrf=None,origin='https://passeport-immo.test',content_type='application/json'):
                 headers={}
                 if cookie: headers['Cookie']=cookie
@@ -117,6 +126,51 @@ def run():
             check(result[0]==200 and data(result)['archivedAt'] is not None,'archive persisted')
             check(data(request('/api/biens/123/documents',second))['documents'][0]['title']=='Plan conservé','metadata shared across sessions')
             check(request(path,second,'PATCH',{'archived':False},csrf2)[0]==200,'archive reversible')
+            settings={'revision':0,'categories':{'plans':{'icon':'leaf','color':'#123456'}},'order':{'plans':[doc['id']]}}
+            check(request('/api/biens/123/document-settings',cookie,'PUT',settings)[0]==403,'organisation requires CSRF')
+            check(request('/api/biens/123/document-settings',foreign,'PUT',settings,foreign_csrf)[0]==404,'foreign organisation refused')
+            result=request('/api/biens/123/document-settings',cookie,'PUT',settings,csrf)
+            check(result[0]==200 and data(result)['revision']==1,'appearance and order persisted')
+            check(data(request('/api/biens/123/documents',second))['settings']['categories']['plans']==settings['categories']['plans'],'appearance shared across independent sessions')
+            check(request('/api/biens/123/document-settings',second,'PUT',settings,csrf2)[0]==409,'stale organisation cannot overwrite newer settings')
+            invalid={**settings,'revision':1,'order':{'plans':['a'*32]}}
+            check(request('/api/biens/123/document-settings',cookie,'PUT',invalid,csrf)[0]==422,'foreign document order reference refused')
+            invalid={**settings,'revision':1,'categories':{'plans':{'icon':'script','color':'url(evil)'}}}
+            check(request('/api/biens/123/document-settings',cookie,'PUT',invalid,csrf)[0]==422,'unsafe appearance values refused')
+            check(request(path,cookie,'DELETE',{'confirm':True})[0]==403,'permanent deletion requires CSRF')
+            check(request(path,cookie,'DELETE',{},csrf)[0]==422,'permanent deletion requires explicit confirmation')
+            check(request(path,cookie,'DELETE',{'confirm':True},csrf)[0]==409,'active document cannot be permanently deleted')
+            archived_doc=data(request(path,cookie,'PATCH',{'archived':True},csrf))
+            trashed_doc=data(request(path,cookie,'PATCH',{'trashed':True},csrf))
+            check(trashed_doc['trashedAt'] and trashed_doc['archivedAt']==archived_doc['archivedAt'],'trash preserves archive state and metadata')
+            check(data(request('/api/biens/123/documents',second))['documents'][0]['trashedAt']==trashed_doc['trashedAt'],'trash state shared across independent sessions')
+            check(request(path,cookie,'PATCH',{'title':'not allowed'},csrf)[0]==409,'trashed document cannot be edited silently')
+            check(upload([('new.pdf',content+b'new'),('trash-copy.pdf',content)])[0]==409,'reimport of trash duplicate refuses entire batch with actionable error')
+            check(len(data(request('/api/biens/123/documents',second))['documents'])==1,'trash duplicate leaves no partial import')
+            trash_backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-trash'))
+            check(trash_backup['documents']==1 and trash_backup['temporaryRowRestore']=='passed','trash and organisation included in backup and temporary restore')
+            restored=data(request(path,second,'PATCH',{'trashed':False},csrf2))
+            check(restored['trashedAt'] is None and restored['archivedAt']==archived_doc['archivedAt'] and request(path+'/file',second)[2]==content,'restore keeps original archive state and exact bytes')
+            request(path,cookie,'PATCH',{'archived':False},csrf)
+            temporary=data(upload([('purge.pdf',content+b'purge')]))['added'][0]
+            purge_path='/api/biens/123/documents/'+temporary['id']
+            request(purge_path,cookie,'PATCH',{'trashed':True},csrf)
+            check(request(purge_path,foreign,'DELETE',{'confirm':True},foreign_csrf)[0]==404,'foreign purge refused')
+            def sql(statement):
+                code="$c=require '/fixture/config.php';$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);$p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);$p->exec("+json.dumps(statement)+");"
+                return command('docker','exec',web,'php','-r',code)
+            sql("CREATE TRIGGER fixture_fail_purge BEFORE DELETE ON pi_documents FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Fixture purge failure'")
+            check(request(purge_path,cookie,'DELETE',{'confirm':True},csrf)[0]==503,'failed SQL purge reports failure')
+            check(request(purge_path+'/file',second)[2]==content+b'purge','failed SQL purge restores original private blob')
+            sql('DROP TRIGGER fixture_fail_purge')
+            check(request(purge_path,cookie,'DELETE',{'confirm':True},csrf)[0]==200,'confirmed trash purge succeeds')
+            check(request(purge_path+'/file',second)[0]==404 and request(purge_path,second,'PATCH',{'trashed':False},csrf2)[0]==404,'purged document is neither downloadable nor restorable')
+            absent=command('docker','exec',web,'php','-r',f"echo is_file('/private-documents/{temporary['id']}.blob')?'exists':'absent';")
+            check(absent=='absent','permanent purge removes original blob')
+            reimported=data(upload([('again.pdf',content+b'purge')]))['added'][0]
+            check(reimported['id']!=temporary['id'],'purged content can be imported as a new document')
+            again='/api/biens/123/documents/'+reimported['id'];request(again,cookie,'PATCH',{'trashed':True},csrf);request(again,cookie,'DELETE',{'confirm':True},csrf)
+            check(request(path+'/file',second)[2]==content,'purge preserves unrelated document')
             # Soft deletion keeps every private blob and document record for recovery.
             empty={'revision':1,'biens':[],'tarifs':{}}
             check(request('/api/workspace',cookie,'PUT',empty,csrf)[0]==200 and request(path+'/file',cookie)[0]==404,'deleted property hidden')

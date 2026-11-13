@@ -5,12 +5,16 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Changelog Passeport Immo
+
+## 2026-11-13 — Corbeille et classement en développement local
+
+Ajout en cours du cycle corbeille/restauration/purge confirmée et des dossiers par catégorie avec apparence et ordre persistants. Contrôles locaux et tests d’intégration complétés ; pas encore livré. [État et recette](docs/organisation-documents.md).
 
 ## 2026-11-12 — Imports à 500 Mo livrés en préproduction
 
