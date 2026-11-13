@@ -87,8 +87,9 @@ function pi_transfer_export(array $config, array $plan, string $destination): ar
         $manifest=['format'=>'avereo-passeport-property-transfer','version'=>1,'sourceDatabaseId'=>pi_transfer_database_id($db),'plan'=>$plan,'property'=>$bien,'client'=>$client,'documents'=>$documents];
         pi_transfer_json($destination.'/manifest.json',$manifest); $db->commit();
         return ['status'=>'exported','manifestSha256'=>hash_file('sha256',$destination.'/manifest.json'),'properties'=>1,'clients'=>1,
-            'documents'=>count($documents),'activeDocuments'=>count(array_filter($documents,fn($d)=>$d['archived_at']===null)),
-            'archivedDocuments'=>count(array_filter($documents,fn($d)=>$d['archived_at']!==null)),'sourceRowsChanged'=>false];
+            'documents'=>count($documents),'activeDocuments'=>count(array_filter($documents,fn($d)=>$d['archived_at']===null && empty($d['trashed_at']))),
+            'archivedDocuments'=>count(array_filter($documents,fn($d)=>$d['archived_at']!==null && empty($d['trashed_at']))),
+            'trashedDocuments'=>count(array_filter($documents,fn($d)=>!empty($d['trashed_at']))),'sourceRowsChanged'=>false];
     } catch (Throwable $error) { if ($db->inTransaction()) $db->rollBack(); throw $error; }
 }
 
@@ -123,7 +124,8 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
         || ($manifest['plan'] ?? null)!==$plan || !is_array($manifest['documents'] ?? null) || !array_is_list($manifest['documents'])
         || pi_transfer_database_id($db)===$manifest['sourceDatabaseId']) throw new RuntimeException('Transfer selection or database separation mismatch.');
     $bien=$manifest['property']; $client=$manifest['client'];
-    pi_transfer_columns($bien,['owner_id','bien_id','model','client_id','deleted_at']);
+    if(!array_key_exists('document_settings',$bien))$bien['document_settings']=null;
+    pi_transfer_columns($bien,['owner_id','bien_id','model','client_id','deleted_at','document_settings']);
     pi_transfer_columns($client,['id','owner_id','name','created_at']);
     $source=$plan['source']; $owner=$plan['target']['ownerId'];
     if ($bien['owner_id']!==$source['ownerId'] || $bien['bien_id']!==$source['bienId'] || $bien['deleted_at']!==null
@@ -136,7 +138,8 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
     $client['id']=$map('client',$client['id']); $client['owner_id']=$owner;
     $bien['owner_id']=$owner; $bien['client_id']=$client['id']; $documents=[]; $sourceFiles=[]; $hashes=[];
     foreach ($manifest['documents'] as $document) {
-        pi_transfer_columns($document,['id','owner_id','bien_id','client_id','name','title','category','mime','size','sha256','added_at','updated_at','archived_at']);
+        if(!array_key_exists('trashed_at',$document))$document['trashed_at']=null;
+        pi_transfer_columns($document,['id','owner_id','bien_id','client_id','name','title','category','mime','size','sha256','added_at','updated_at','archived_at','trashed_at']);
         if (!preg_match('/^[a-f0-9]{32}$/D',$document['id']) || $document['owner_id']!==$source['ownerId']
             || $document['bien_id']!==$source['bienId'] || $document['client_id']!==$manifest['client']['id']
             || !preg_match('/^[a-f0-9]{64}$/D',$document['sha256']) || !ctype_digit((string)$document['size'])
@@ -146,6 +149,21 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
         $document['owner_id']=$owner; $document['client_id']=$client['id'];
         if (isset($documents[$document['id']])) throw new RuntimeException('Repeated document identifier.');
         $documents[$document['id']]=$document; $sourceFiles[$document['id']]=$sourcePath;
+    }
+    if ($bien['document_settings']!==null) {
+        $settings=json_decode($bien['document_settings'],true,64,JSON_THROW_ON_ERROR);
+        if (!is_array($settings) || !is_array($settings['order'] ?? null)) throw new RuntimeException('Document organisation invalid.');
+        foreach ($settings['order'] as $category=>&$ids) {
+            if(!is_array($ids)||!array_is_list($ids))throw new RuntimeException('Document order invalid.');
+            $ids=array_map(static function($id)use($map,$documents,$category){
+                if(!is_string($id))throw new RuntimeException('Document order identifier invalid.');
+                $mapped=$map('document',$id);
+                if(($documents[$mapped]['category']??null)!==$category)throw new RuntimeException('Document order outside selected property.');
+                return $mapped;
+            },$ids);
+        }
+        unset($ids);$settings['categories']=(object)($settings['categories']??[]);$settings['order']=(object)$settings['order'];
+        $bien['document_settings']=json_encode($settings,JSON_THROW_ON_ERROR);
     }
     $entries=array_values(array_diff(scandir($directory),['.','..'])); sort($entries);
     $files=array_values(array_diff(scandir($directory.'/documents'),['.','..'])); sort($files);

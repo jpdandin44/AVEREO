@@ -5,12 +5,16 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Décisions Passeport Immo
+
+## 2026-11-13 — Corbeille et organisation par bien
+
+Contexte : besoin de suppression réversible, regroupement visuel et classement manuel. Choix d’implémentation : conserver l’archivage distinct, ajouter deux colonnes nullables aux tables existantes et enregistrer les réglages par bien avec une révision. La purge est manuelle et confirmée ; aucune expiration automatique. Les icônes sont une liste SVG fixe, les couleurs sont validées, les références d’ordre sont limitées au bien et à la catégorie. Ce choix évite de concurrencer l’autosauvegarde du modèle et conserve les liens client/document. La livraison exigera une sauvegarde fraîche, la qualification de migration et un accord portant sur le nouveau candidat.
 
 ## 2026-11-12 — Préparer 500 Mo en upload direct
 

@@ -4104,6 +4104,12 @@
       "canonicalTracking": "../data/suivi-import-volumineux.json",
       "documentation": "import-volumineux.md",
       "scope": "PR146 fusionnée ; candidat gelé à 500 Mo installé et techniquement vérifié en préproduction privée ; recette humaine des archives réelles en attente."
+    },
+    {
+      "id": "passeport-immo-organisation-documents",
+      "canonicalTracking": "../data/suivi-organisation-documents.json",
+      "documentation": "organisation-documents.md",
+      "scope": "Corbeille et organisation en développement local ; ancien candidat hébergé et validations conservés."
     }
   ],
   "currentStateObservation": "../api/preproduction-import-volumineux-observation.json",

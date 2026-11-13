@@ -92,7 +92,7 @@ final class PasseportStorage
     {
         return ['id'=>$d['id'], 'bienId'=>$d['bien_id'], 'clientId'=>$d['client_id'], 'name'=>$d['name'],
             'title'=>$d['title'], 'category'=>$d['category'], 'mime'=>$d['mime'], 'size'=>(int)$d['size'],
-            'sha256'=>$d['sha256'], 'addedAt'=>$d['added_at'], 'updatedAt'=>$d['updated_at'], 'archivedAt'=>$d['archived_at']];
+            'sha256'=>$d['sha256'], 'addedAt'=>$d['added_at'], 'updatedAt'=>$d['updated_at'], 'archivedAt'=>$d['archived_at'], 'trashedAt'=>$d['trashed_at'] ?? null];
     }
     public static function client(array $row): array { return ['id'=>$row['id'], 'name'=>$row['name'], 'createdAt'=>$row['created_at']]; }
     public function load(string $id): array
@@ -102,7 +102,8 @@ final class PasseportStorage
         $client = null;
         foreach ($clients as $c) if ($c['id'] === $bien['client_id']) $client = $c;
         $documents = array_map([self::class,'document'], $this->query('SELECT * FROM pi_documents WHERE owner_id=? AND bien_id=? ORDER BY added_at DESC,id', [$this->owner,$id])->fetchAll());
-        return compact('client','clients','documents');
+        $settings=self::settings($bien['document_settings'] ?? null);
+        return compact('client','clients','documents','settings');
     }
     public function linkClient(string $id, array $body): array
     {
@@ -168,7 +169,9 @@ final class PasseportStorage
             $bien=$this->bien($id,true);
             if (!$bien['client_id']) throw new PasseportError(422,'Reliez d’abord le bien à son client.');
             foreach ($validated as [$file,$meta]) {
-                if ($this->query('SELECT id FROM pi_documents WHERE owner_id=? AND bien_id=? AND sha256=?',[$this->owner,$id,$meta['sha256']])->fetch()) { $duplicates[]=$meta['name']; continue; }
+                $duplicate=$this->query('SELECT * FROM pi_documents WHERE owner_id=? AND bien_id=? AND sha256=?',[$this->owner,$id,$meta['sha256']])->fetch();
+                if ($duplicate['trashed_at'] ?? null) throw new PasseportError(409,$meta['name'].' est dans la corbeille. Restaurez-le ou supprimez-le définitivement avant de le réimporter.');
+                if ($duplicate) { $duplicates[]=$meta['name']; continue; }
                 $docId=self::id(); $destination=$this->directory.'/'.$docId.'.blob';
                 $out=@fopen($destination,'x+b');
                 if (!$out) throw new RuntimeException('Écriture du document impossible.');
@@ -198,14 +201,91 @@ final class PasseportStorage
     {
         $this->db->beginTransaction();
         try {
-            $this->bien($bien,true); $row=$this->findDocument($bien,$id);
+            $property=$this->bien($bien,true); $row=$this->findDocument($bien,$id);
+            if (array_key_exists('trashed',$body)) {
+                $this->requireOrganisationSchema();
+                if (!is_bool($body['trashed']) || count($body)!==1) throw new PasseportError(422,'Action de corbeille invalide.');
+                $this->query('UPDATE pi_documents SET trashed_at=?,updated_at=? WHERE id=? AND owner_id=?',[$body['trashed'] ? ($row['trashed_at'] ?? self::now()) : null,self::now(),$id,$this->owner]);
+                $result=self::document($this->findDocument($bien,$id)); $this->db->commit(); return $result;
+            }
+            if ($row['trashed_at'] ?? null) throw new PasseportError(409,'Restaurez le document avant de le modifier.');
             $title=array_key_exists('title',$body) ? self::text($body['title'],255) : $row['title'];
             $category=$body['category'] ?? $row['category'];
             if (!in_array($category,self::CATEGORIES,true) || (array_key_exists('archived',$body) && !is_bool($body['archived']))) throw new PasseportError(422,'Catégorie ou archive invalide.');
             $archive=array_key_exists('archived',$body) ? ($body['archived'] ? ($row['archived_at'] ?? self::now()) : null) : $row['archived_at'];
             $this->query('UPDATE pi_documents SET title=?,category=?,archived_at=?,updated_at=? WHERE id=? AND owner_id=?',[$title,$category,$archive,self::now(),$id,$this->owner]);
+            if ($category!==$row['category']) $this->removeDocumentOrder($property,$id);
             $result=self::document($this->findDocument($bien,$id)); $this->db->commit(); return $result;
         } catch (Throwable $error) { $this->db->rollBack(); throw $error; }
+    }
+    private function requireOrganisationSchema(): void
+    {
+        if (!$this->query("SHOW COLUMNS FROM pi_documents LIKE 'trashed_at'")->fetch()
+            || !$this->query("SHOW COLUMNS FROM pi_biens LIKE 'document_settings'")->fetch()) {
+            throw new PasseportError(503,'Corbeille et organisation indisponibles : mise à jour de la base requise.');
+        }
+    }
+    public static function settings(?string $json): array
+    {
+        return $json ? json_decode($json,true,64,JSON_THROW_ON_ERROR) : ['revision'=>0,'categories'=>(object)[],'order'=>(object)[]];
+    }
+    public function saveDocumentSettings(string $bien,array $body): array
+    {
+        $this->db->beginTransaction();
+        try {
+            $row=$this->bien($bien,true); $this->requireOrganisationSchema();
+            if (!is_int($body['revision'] ?? null) || $body['revision']<0 || !is_array($body['categories'] ?? null) || !is_array($body['order'] ?? null)
+                || array_diff(array_keys($body),['revision','categories','order'])) throw new PasseportError(422,'Organisation des documents invalide.');
+            $current=self::settings($row['document_settings']);
+            if ($current['revision']!==$body['revision']) throw new PasseportError(409,'L’organisation a changé dans une autre fenêtre. Rouvrez le bien avant de poursuivre.');
+            foreach ($body['categories'] as $category=>$appearance) {
+                if (!in_array($category,self::CATEGORIES,true) || !is_array($appearance) || array_diff(array_keys($appearance),['icon','color'])
+                    || !in_array($appearance['icon'] ?? null,['folder','file','home','ruler','hammer','shield','key','leaf'],true)
+                    || !is_string($appearance['color'] ?? null) || !preg_match('/^#[0-9a-f]{6}$/iD',$appearance['color'])) throw new PasseportError(422,'Icône ou couleur de catégorie invalide.');
+            }
+            $documents=$this->query('SELECT id,category FROM pi_documents WHERE owner_id=? AND bien_id=?',[$this->owner,$bien])->fetchAll();
+            $allowed=[]; foreach ($documents as $document) $allowed[$document['id']]=$document['category'];
+            foreach ($body['order'] as $category=>$ids) {
+                if (!in_array($category,self::CATEGORIES,true) || !is_array($ids) || !array_is_list($ids) || count($ids)>10000) throw new PasseportError(422,'Ordre des documents invalide pour ce bien.');
+                $seen=[]; foreach ($ids as $id) {
+                    if (!is_string($id) || isset($seen[$id]) || ($allowed[$id] ?? null)!==$category) throw new PasseportError(422,'Ordre des documents invalide pour ce bien.');
+                    $seen[$id]=true;
+                }
+            }
+            $body['revision']++;
+            $body['categories']=(object)$body['categories']; $body['order']=(object)$body['order'];
+            $this->query('UPDATE pi_biens SET document_settings=? WHERE owner_id=? AND bien_id=?',[json_encode($body,JSON_THROW_ON_ERROR),$this->owner,$bien]);
+            $this->db->commit(); return $body;
+        } catch (Throwable $error) { if ($this->db->inTransaction()) $this->db->rollBack(); throw $error; }
+    }
+    private function removeDocumentOrder(array $property,string $id): void
+    {
+        if (!array_key_exists('document_settings',$property)) return;
+        $settings=self::settings($property['document_settings']);
+        $settings['order']=(array)$settings['order'];
+        foreach ($settings['order'] as &$ids) $ids=array_values(array_filter($ids,fn($value)=>$value!==$id));
+        unset($ids); $settings['revision']++; $settings['order']=(object)$settings['order'];
+        $this->query('UPDATE pi_biens SET document_settings=? WHERE owner_id=? AND bien_id=?',[json_encode($settings,JSON_THROW_ON_ERROR),$this->owner,$property['bien_id']]);
+    }
+    public function deleteDocument(string $bien,string $id): array
+    {
+        $this->db->beginTransaction(); $held=null; $source=null;
+        try {
+            $property=$this->bien($bien,true); $this->requireOrganisationSchema(); $row=$this->findDocument($bien,$id);
+            if (!$row['trashed_at']) throw new PasseportError(409,'Placez le document dans la corbeille avant de le supprimer définitivement.');
+            $source=$this->filePath($row); $held=$this->directory.'/.purge-'.$id.'-'.bin2hex(random_bytes(12));
+            if (!rename($source,$held)) throw new RuntimeException('Mise en attente privée impossible.');
+            $this->query('DELETE FROM pi_documents WHERE owner_id=? AND bien_id=? AND id=?',[$this->owner,$bien,$id]);
+            $this->removeDocumentOrder($property,$id);
+            $this->db->commit();
+        } catch (Throwable $error) {
+            // Restore bytes only after a confirmed SQL rollback. An uncertain commit keeps
+            // the private held file for operator recovery instead of risking data loss.
+            if ($this->db->inTransaction() && $this->db->rollBack() && $held && is_file($held) && !is_file($source)) rename($held,$source);
+            throw $error;
+        }
+        if (!unlink($held)) throw new RuntimeException('Nettoyage privé de la suppression à terminer.');
+        return ['deleted'=>true,'id'=>$id];
     }
     public function filePath(array $document): string
     {

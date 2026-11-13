@@ -1,9 +1,63 @@
 import React from 'react';
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { documentSettings } from '../src/documents/document-settings.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import DocumentsPanel from '../src/documents/DocumentsPanel.jsx';
 vi.mock('../src/documents/PdfPreview.jsx', () => ({ default: ({ url, title }) => <div title={`PDF : ${title}`} data-url={url}>Lecteur de test</div> }));
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
+
+it('sépare corbeille et archives, restaure et exige une confirmation avant la purge', async () => {
+  let trashed = false, deleted = false;
+  const repository = {
+    load: async () => ({ client, clients: [client], documents: deleted ? [] : [{ ...document, trashedAt: trashed ? '2026-11-13' : null }] }),
+    trashDocument: vi.fn(async () => { trashed = true; }), restoreDocument: vi.fn(async () => { trashed = false; }), deleteDocument: vi.fn(async () => { deleted = true; })
+  };
+  render(<DocumentsPanel bien={bien} repository={repository} />);
+  fireEvent.click(await screen.findByRole('button', { name: 'Mettre à la corbeille' }));
+  await screen.findByRole('button', { name: 'Corbeille (1)' });
+  expect(screen.queryByRole('heading', { name: document.title })).toBeNull();
+  fireEvent.click(screen.getByRole('button', { name: 'Corbeille (1)' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Restaurer le document' }));
+  await screen.findByRole('button', { name: 'Corbeille (0)' });
+  fireEvent.click(screen.getByRole('button', { name: 'Documents (1)' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Mettre à la corbeille' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Corbeille (1)' }));
+  fireEvent.click(await screen.findByRole('button', { name: 'Supprimer définitivement', exact: true }));
+  const dialog = screen.getByRole('dialog', { name: 'Supprimer définitivement ce document ?' });
+  expect(repository.deleteDocument).not.toHaveBeenCalled();
+  fireEvent.click(within(dialog).getByRole('button', { name: 'Annuler' }));
+  expect(repository.deleteDocument).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: 'Supprimer définitivement', exact: true }));
+  fireEvent.click(screen.getByRole('button', { name: 'Confirmer la suppression définitive' }));
+  await screen.findByRole('heading', { name: 'La corbeille est vide' });
+  expect(repository.deleteDocument).toHaveBeenCalledWith('1', document.id);
+});
+
+it('regroupe, replie, personnalise et réordonne les fichiers dans leur dossier', async () => {
+  let settings = documentSettings();
+  const second = { ...document, id: 'second', title: 'Autre plan', name: 'autre.pdf' };
+  const repository = {
+    load: async () => ({ client, clients: [client], documents: [document, second], settings }),
+    saveDocumentSettings: vi.fn(async value => { settings = { ...value, revision: value.revision + 1 }; })
+  };
+  // The repository signature carries the bien before its settings.
+  repository.saveDocumentSettings = vi.fn(async (id, value) => { settings = { ...value, revision: value.revision + 1 }; });
+  render(<DocumentsPanel bien={bien} repository={repository} />);
+  const folder = await screen.findByRole('region', { name: 'Dossier Plans et façades' });
+  expect(within(folder).getAllByRole('heading', { level: 4 })).toHaveLength(2);
+  fireEvent.click(within(folder).getByRole('button', { name: /Plans et façades/ }));
+  expect(within(folder).queryByRole('heading', { level: 4 })).toBeNull();
+  fireEvent.click(within(folder).getByRole('button', { name: /Plans et façades/ }));
+  fireEvent.click(within(folder).getByRole('button', { name: 'Monter : Autre plan' }));
+  await waitFor(() => expect(within(folder).getAllByRole('heading', { level: 4 })[0].textContent).toBe('Autre plan'));
+  fireEvent.click(screen.getByRole('button', { name: 'Personnaliser les catégories' }));
+  fireEvent.change(screen.getByLabelText('Icône : Plans et façades'), { target: { value: 'leaf' } });
+  fireEvent.change(screen.getByLabelText('Couleur : Plans et façades'), { target: { value: '#123456' } });
+  fireEvent.click(screen.getByRole('button', { name: 'Enregistrer les catégories' }));
+  await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+  expect(settings.categories.plans).toEqual({ icon: 'leaf', color: '#123456' });
+  expect(repository.saveDocumentSettings).toHaveBeenCalledTimes(2);
+});
 const bien = { id: 1, address: 'Bien fictif', dossier: { attachments: [] } };
 const client = { id: 'client-1', name: 'Client fictif' };
 const document = { id: 'doc-1', title: 'Plan du bien', name: 'plan.pdf', category: 'plans', mime: 'application/pdf', size: 2500, addedAt: '2026-10-14T10:00:00Z', archivedAt: null };

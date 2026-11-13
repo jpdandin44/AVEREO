@@ -1,0 +1,82 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "version": "git",
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "passeport-immo-organisation-documents",
+  "stage": "developpement-local",
+  "status": "in_progress",
+  "objective": "Corbeille restaurable, suppression définitive confirmée, dossiers par catégorie avec icône/couleur et ordre manuel conservés par bien.",
+  "candidate": {},
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/passeport-immo-corbeille-documents",
+    "humanAcceptanceVerified": false
+  },
+  "reviewEnvironment": {
+    "phase": 1,
+    "environment": "local",
+    "url": "http://127.0.0.1:5178/",
+    "fictionalDataOnly": true
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://passeport-immo-preprod.avereo.fr/",
+      "ready": false,
+      "detail": "Candidat 500 Mo antérieur conservé ; nouvelle migration et nouveau candidat non livrés."
+    },
+    "production": {
+      "id": "https://passeport-immo.avereo.fr/",
+      "ready": false
+    }
+  },
+  "checks": [],
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested"
+  },
+  "delivery": {
+    "status": "not_delivered"
+  },
+  "blockers": [],
+  "nextAction": "Qualifier le nouveau candidat, sa migration additive et son parcours local, puis remettre la PR en revue.",
+  "phases": [
+    {
+      "id": 0,
+      "label": "Cadrage",
+      "status": "completed",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 1,
+      "label": "Développement local",
+      "status": "in_progress",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 2,
+      "label": "Préproduction",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 3,
+      "label": "Mise en production",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    }
+  ],
+  "sourceFeedback": {
+    "source": "user_chat",
+    "observedAt": "2026-11-13T14:47:48.458099+00:00",
+    "requirements": [
+      "Suppression via corbeille avec restauration avant purge définitive.",
+      "Dossiers parents par catégorie, choix des icônes et couleurs, ordre des fichiers modifiable."
+    ],
+    "doesNotCreateDeploymentApproval": true
+  },
+  "evidence": "api/organisation-documents-observation.json",
+  "documentation": "docs/organisation-documents.md",
+  "nextIteration": []
+}

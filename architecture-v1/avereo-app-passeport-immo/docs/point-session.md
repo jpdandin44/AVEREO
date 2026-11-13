@@ -5,12 +5,16 @@ title: Point de reprise de session
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [passeport-immo, local, cockpit]
 ---
 
 # Point de reprise de session
+
+## Lot actif — corbeille et organisation des documents
+
+Branche `feat/passeport-immo-corbeille-documents`, copie `C:/Users/examg/Documents local/passeport-immo-archives`. [Suivi canonique](../data/suivi-organisation-documents.json), [guide et recette](organisation-documents.md). Préparer et qualifier ce nouveau candidat sans modifier l’installation 500 Mo, les données réelles, les décisions et les références approuvées. Migration additive à exécuter seulement lors d’une future livraison autorisée.
 
 ## Travail actif — imports à 500 Mo livrés en préproduction
 

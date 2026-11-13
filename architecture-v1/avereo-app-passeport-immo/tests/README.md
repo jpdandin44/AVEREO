@@ -5,12 +5,16 @@ title: Vérification de la reprise
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Vérification de la reprise
+
+## Corbeille et organisation
+
+Les tests frontend couvrent restauration intersession, purge locale, doublon en corbeille, personnalisation et déplacement. La CI HTTP MariaDB qualifie migration depuis l’ancien schéma, restrictions d’accès/CSRF, confirmations, sauvegarde et rollback d’une purge SQL refusée. Le transfert vérifie les états et le remappage des références d’ordre. [Résultats réels et recette](../docs/organisation-documents.md).
 
 ## Imports volumineux
 

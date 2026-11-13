@@ -5,12 +5,16 @@ title: État des intégrations
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # État des intégrations
+
+## Contrat du candidat organisation
+
+Le [reçu de qualification](organisation-documents-observation.json) porte le nouveau candidat local. `PATCH /api/biens/:bien/documents/:id` avec `trashed` met à la corbeille/restaure ; `DELETE` avec `confirm: true` purge uniquement un document en corbeille. `PUT /api/biens/:bien/document-settings` écrit les réglages avec révision attendue. Les sessions, propriétaires, origine et CSRF restent obligatoires. `GET .../documents` inclut `trashedAt` et `settings`. [Migration et contrat détaillé](../docs/organisation-documents.md).
 
 Le [reçu à 500 Mo](preproduction-import-volumineux-observation.json) décrit l’état installé ; la [livraison PR144](preproduction-archives-observation.json) reste historique.
 Le [candidat volumineux](../docs/import-volumineux.md) conserve les routes et corps

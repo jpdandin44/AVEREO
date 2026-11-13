@@ -5,12 +5,16 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Roadmap Passeport Immo
+
+## Travail courant — organisation documentaire
+
+Développer et qualifier [corbeille, dossiers, apparence et ordre](docs/organisation-documents.md). Revue locale, puis nouvelle qualification de préproduction avec migration et récupération, avant toute livraison autorisée. La version 500 Mo reste celle hébergée ; la production et le CIL restent distincts.
 
 ## Suite courante — reprise et fichiers compressés
 

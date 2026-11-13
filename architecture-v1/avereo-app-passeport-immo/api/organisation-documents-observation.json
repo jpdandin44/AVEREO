@@ -1,0 +1,16 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "observedAt": "2026-11-13T14:47:48.458099+00:00",
+  "status": "in_progress",
+  "localFrontendTests": {
+    "passed": 67
+  },
+  "serverIntegration": "pending_isolated_CI",
+  "hostedDeployment": {
+    "preproduction": false,
+    "production": false
+  },
+  "realClientDataChanged": false,
+  "humanCriteriaValidated": false
+}

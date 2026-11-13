@@ -5,12 +5,23 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # Exigences Passeport Immo
+
+## Organisation documentaire demandée le 13 novembre
+
+- DOC01 : corbeille sans délai automatique, restauration conservant catégorie, contenu, client et état archivé.
+- DOC02 : purge unitaire confirmée, refus hors corbeille ou hors propriétaire, suppression de la ligne et du fichier actif. Les sauvegardes antérieures suivent leur rétention existante.
+- DOC03 : dossiers parents repliables par catégorie, recherche et filtres conservés.
+- DOC04 : icône choisie dans huit symboles et couleur hexadécimale personnalisables pour chaque catégorie de chaque bien.
+- DOC05 : ordre manuel par dossier, partagé entre sessions serveur ; conflits de réglages refusés.
+- DOC06 : corbeille et organisation incluses dans sauvegarde/restauration et transfert ciblé ; anciens transferts compatibles.
+- DOC07 : importer un doublon dans la corbeille doit expliquer la restauration ou la purge, sans import partiel.
+- DOC08 : migration additive simulable, idempotente et réservée à la base explicitement nommée. Aucune migration distante par cette préparation.
 
 ## Formats compressés — demande du 12 novembre 2026
 

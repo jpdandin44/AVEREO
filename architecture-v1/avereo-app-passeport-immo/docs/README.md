@@ -5,12 +5,16 @@ title: Documentation Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Documentation Passeport Immo
+
+## Organisation documentaire
+
+[Corbeille, dossiers par catégorie, icônes, couleurs et ordre manuel](organisation-documents.md) : nouveau candidat local, avec sa migration et sa recette distinctes du candidat 500 Mo installé.
 
 ## Reprise courante et fichiers compressés
 
