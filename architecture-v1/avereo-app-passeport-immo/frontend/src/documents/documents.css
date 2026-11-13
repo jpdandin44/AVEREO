@@ -91,8 +91,8 @@
 .document-share-list {list-style:none;padding:0;display:grid;gap:12px}
 .document-share-list li,.document-share-entry {display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;border:1px solid #d5e5e1;border-radius:12px}
 .document-share-entry {flex-wrap:wrap;margin:12px 0}
-.document-modal form {display:grid;gap:12px;margin:16px 0}
-.document-modal form label {display:grid;gap:8px}
-.document-modal form input {padding:10px;border:1px solid #bdccd5;border-radius:8px}
+.document-share-form {display:grid;gap:12px;margin:16px 0}
+.document-share-form label {display:grid;gap:8px}
+.document-share-form input {padding:10px;border:1px solid #bdccd5;border-radius:8px}
 .shared-documents {margin-bottom:28px}
 @media(max-width:640px){.document-share-list li{align-items:stretch;flex-direction:column}}

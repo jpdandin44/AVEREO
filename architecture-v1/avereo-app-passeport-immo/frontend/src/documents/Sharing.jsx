@@ -11,7 +11,7 @@ export function SharingDialog({ bien, onClose, repository=serverStorage.reposito
     <p><strong>{bien.address}</strong></p>
     {!online ? <p>Le partage entre comptes est disponible dans Passeport Immo avec le stockage serveur, depuis CONNECT. Un lien vers cette version locale ne transmet pas vos documents.</p> : <>
       <p>Accès nominatif en lecture seule aux documents actifs : liste, consultation et téléchargement. Les archives et la corbeille restent privées. Les futurs documents actifs seront également accessibles jusqu’à révocation.</p>
-      <form onSubmit={e=>{e.preventDefault();run(async()=>setVerified(await repository.resolveRecipient(bien.id,recipient)));}}>
+      <form className="document-share-form" onSubmit={e=>{e.preventDefault();run(async()=>setVerified(await repository.resolveRecipient(bien.id,recipient)));}}>
         <label>Compte CONNECT du destinataire<input required maxLength={254} value={recipient} onChange={e=>{setRecipient(e.target.value);setVerified(null);}} placeholder="Identifiant ou adresse e-mail exacte" disabled={busy}/></label>
         <button className="doc-secondary" disabled={busy || !recipient.trim()}>Vérifier le destinataire</button>
       </form>

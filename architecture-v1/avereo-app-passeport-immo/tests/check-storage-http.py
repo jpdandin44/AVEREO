@@ -249,9 +249,11 @@ def run():
             document_path='/api/biens/123/documents/'+file_id
             check(request(document_path,cookie,'PATCH',{'archived':True},csrf)[0]==200,'fixture archived by owner')
             check(request(shared_file,foreign)[0]==404,'archived file is no longer shared')
-            check(request(document_path,cookie,'PATCH',{'archived':False,'trashed':True},csrf)[0]==200,'fixture trashed by owner')
+            check(request(document_path,cookie,'PATCH',{'trashed':True},csrf)[0]==200,'fixture trashed by owner')
             check(request(shared_file,foreign)[0]==404,'trashed file is no longer shared')
             check(request(document_path,cookie,'PATCH',{'trashed':False},csrf)[0]==200,'fixture restored after sharing boundary test')
+            check(request(shared_file,foreign)[0]==404,'restoring an archived fixture keeps it outside the active share')
+            check(request(document_path,cookie,'PATCH',{'archived':False},csrf)[0]==200,'fixture returns to original active state')
             accounts['avereo_connect:43']['eligible']=False;directory()
             check(request(shared,foreign)[0]==404,'revoked CONNECT entitlement closes existing share')
             accounts['avereo_connect:43']['eligible']=True;directory(181)
