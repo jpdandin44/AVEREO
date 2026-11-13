@@ -13,16 +13,18 @@ function passeport_migrate_document_organisation(array $config,string $expectedD
     try {
         $missing=[];
         foreach (['pi_documents'=>['trashed_at','VARCHAR(32) NULL'],'pi_biens'=>['document_settings','LONGTEXT NULL']] as $table=>[$column,$definition]) {
-            if (!$db->query("SHOW COLUMNS FROM $table LIKE '$column'")->fetch()) $missing[]=compact('table','column','definition');
+            $current=$db->query("SHOW COLUMNS FROM $table LIKE '$column'")->fetch();
+            if (!$current) $missing[]=compact('table','column','definition');
+            elseif (strtolower($current['Type'])!==strtolower(explode(' ',$definition)[0]) || $current['Null']!=='YES') throw new RuntimeException('Colonne existante incompatible ; aucune modification automatique.');
         }
         if (!$apply) return ['status'=>'dry_run','requiredColumns'=>array_column($missing,'column'),'liveRowsChanged'=>false];
-        $snapshot=static function()use($db,$tables):array {
+        $added=array_column($missing,'column','table');
+        $snapshot=static function()use($db,$tables,$added):array {
             $result=[];
             foreach ($tables as $table) {
                 $rows=$db->query('SELECT * FROM '.$table)->fetchAll();
                 $encoded=[]; foreach ($rows as $row) {
-                    if($table==='pi_documents')unset($row['trashed_at']);
-                    if($table==='pi_biens')unset($row['document_settings']);
+                    if(isset($added[$table]))unset($row[$added[$table]]);
                     $encoded[]=json_encode($row,JSON_THROW_ON_ERROR);
                 }
                 sort($encoded);$result[$table]=hash('sha256',json_encode($encoded,JSON_THROW_ON_ERROR));
