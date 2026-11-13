@@ -5,13 +5,17 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-11
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## 12 novembre — Inventaire privé optionnel PQ-01
+
+Un collecteur opérateur borné lit les inventaires explicitement désignés et les noms/métadonnées de sept dossiers du parent de depot, sans parcourir ses copies Git ou archives et sans lire les contenus scannés. Il produit une observation privée neuve, consommée via `patrimonyObservationFile` ou exportée sous le champ signé optionnel `patrimony`. La réponse state existante Node/PHP transporte ce champ après ses contrôles d'accès habituels ; aucune route de parcours de disque ou de mutation. Contrat fermé, listes bornées, noms relatifs et références externes pseudonymisées. La vue reste indépendante des décisions/phases ; un champ absent conserve la compatibilité historique. [Détails et limites](docs/patrimoine-qualite.md).
 
 ## 11 novembre — Clone Git distinct de l’archive
 

@@ -1,0 +1,50 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "iterationId": "cockpit-patrimoine-pq01",
+  "stage": "developpement-local",
+  "currentPhase": 1,
+  "status": "pr_open_local_review_requested",
+  "objective": "Inventaire consultatif et premiere vue Patrimoine & qualite, sans modifier les suivis, droits, donnees clients ou hebergement.",
+  "sourceDocument": "docs/patrimoine-qualite.md",
+  "phases": [
+    {"id": 0, "label": "Cadrage", "status": "documented", "criteria": []},
+    {"id": 1, "label": "Développement local", "status": "in_progress", "criteria": [
+      {"id": "PQ01-01", "title": "Les compteurs se justifient par des listes, sources et dates, sans doubles comptes ni zero invente.", "proofIds": ["pq01-tests", "pq01-pr-local"]},
+      {"id": "PQ01-02", "title": "La vue reste privee, consultative, bornee et sans contenu sensible ; les anciennes projections restent lisibles.", "proofIds": ["pq01-tests", "pq01-pr-local"]},
+      {"id": "PQ01-03", "title": "Les parcours de la vue et le retour aux developpements sont verifies localement ; les tests existants du Gantt restent verts.", "proofIds": ["pq01-tests", "pq01-ui", "pq01-pr-local"]}
+    ]},
+    {"id": 2, "label": "Préproduction", "status": "not_started", "criteria": []},
+    {"id": 3, "label": "Mise en production", "status": "not_started", "criteria": []}
+  ],
+  "candidate": {"sourceSha": "148a21bbc9682380c6333e208b94744da2cf5b42", "artifactSha256": "7b6194bafecdcb7326004ebf6b53ff4425224bd39922e9a7b05edbc453bd8c0a", "baseSha": "be54aa7d945ead50f4c3ee1a4edb18372b32e3e6", "kind": "committed_code_candidate_before_traceability_only_commit"},
+  "github": {"repository": "jpdandin44/AVEREO", "branch": "feat/projet-patrimoine-pq01", "prUrl": "https://github.com/jpdandin44/AVEREO/pull/151", "checksUrl": "https://github.com/jpdandin44/AVEREO/pull/151/checks", "humanChecklist": "unchecked", "reviewEnvironment": "local"},
+  "checks": [{"id": "pq01-local", "phaseId": 1, "kind": "local", "scope": "local", "status": "passed", "observedAt": "2026-11-12T21:11:54Z", "evidence": "data/qualification-patrimoine-pq01.json", "meaning": "326 tests et compilation ; ne vaut ni CI distante, ni recette CONNECT, ni validation humaine"}],
+  "proofs": [
+    {"id": "pq01-tests", "phaseId": 1, "title": "Qualification locale : 326 tests, contrats, refus et projection Node/PHP", "kind": "document", "status": "reviewable", "evidence": "data/qualification-patrimoine-pq01.json"},
+    {"id": "pq01-ui", "phaseId": 1, "title": "Capture de la synthese privee locale, sans attestation CONNECT", "kind": "image", "status": "reviewable", "evidence": "docs/illustrations/patrimoine-pq01-local.png"},
+    {"id": "pq01-pr-local", "phaseId": 1, "title": "Requalification locale du 13 novembre pour la PR151", "kind": "document", "status": "reviewable", "evidence": "data/qualification-patrimoine-pq01-pr.json"}
+  ],
+  "approvals": [],
+  "developmentReviews": [],
+  "authorizationContext": "Demande directe de commencer les developpements apres proposition des lots : PQ-01 local retenu et annonce, aucun accord de livraison ni validation humaine deduit.",
+  "delivery": {"status": "not_delivered"},
+  "blockers": ["Revue humaine locale et qualification de dependances avant toute livraison ; quatre alertes npm existantes"],
+  "nextAction": "Revue locale du responsable dans la PR151 ; conserver les cases humaines decochees jusqu'a sa decision. Qualifier les alertes avant livraison ; aucun merge, passage de phase ou deploiement automatique.",
+  "resumption": {"recordedOn": "2026-11-13", "request": "Creer une PR pour valider PQ-01", "scope": "local_review_and_PR_only", "previousClosureRetainedAsHistory": true},
+  "sessionClosure": {
+    "recordedOn": "2026-11-13",
+    "timezone": "Europe/Paris",
+    "reason": "Cloture pour aujourd'hui demandee par le responsable",
+    "status": "closed_on_user_request_awaiting_explicit_resumption",
+    "iterationClosed": false,
+    "phaseChanged": false,
+    "humanApprovalsChanged": false,
+    "sourceChangesPreserved": true,
+    "qualificationReceipt": "data/qualification-patrimoine-pq01.json",
+    "checksRerunAtClosure": false
+  },
+  "productionAuthorized": false
+}

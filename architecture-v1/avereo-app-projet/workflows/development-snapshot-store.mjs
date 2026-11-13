@@ -2,6 +2,7 @@ import {readFile,writeFile,open,rename,unlink,readdir,lstat,realpath} from 'node
 import {resolve,join,relative,isAbsolute} from 'node:path';
 import {createHash,createHmac,timingSafeEqual,randomUUID} from 'node:crypto';
 import {DevelopmentError} from './development-access.mjs';
+import {validatePatrimony} from './development-patrimony.mjs';
 
 const MAX=32*1024*1024;
 const hash=b=>createHash('sha256').update(b).digest('hex');
@@ -19,6 +20,7 @@ function validate(data){
     || !id(data.publisherId)||Number.isNaN(Date.parse(data.generatedAt))||!Array.isArray(data.iterations)||!data.iterations.length||data.iterations.length>50
     ||!Array.isArray(data.portfolio)||data.portfolio.length>50||!Array.isArray(data.proofs)||data.proofs.length>500)fail(422,'Projection invalide.');
   inspect(data);
+  if(data.patrimony!==undefined&&data.patrimony!==null){try{validatePatrimony(data.patrimony);}catch{fail(422,'Patrimoine privé invalide.');}}
   const ids=new Set();
   for(const item of data.iterations){
     if(!id(item.id)||ids.has(item.id)||item.writable!==false||!Array.isArray(item.phases)||JSON.stringify(item.phases.map(p=>p.label))!==JSON.stringify(phases)
@@ -116,7 +118,7 @@ export async function openDevelopmentSnapshotStore({directory,key,publicRoots=[]
     },
     async restorePrevious(){return locked(async()=>{const ix=await index();if(!ix?.previous)fail(409,'Aucune copie précédente.');const env=await safeRead(ix.previous.file);validate(unseal(env,key));if(hash(JSON.stringify(env))!==ix.previous.hash)fail(503,'Copie précédente altérée.');await atomicIndex({...ix,current:ix.previous,previous:ix.current,restored:true,restoredAt:new Date().toISOString()});});},
     async dashboard(){const {data,index:ix}=await readCurrent();return {iterations:data.iterations.map(v=>({id:v.id,title:v.title,application:v.application,applicationIds:v.applicationIds,status:v.status,currentPhase:v.currentPhase,versions:v.versions,nextAction:v.nextAction,blockerCount:v.blockers.length,phases:v.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length}))})),portfolio:data.portfolio,githubSnapshot:data.githubSnapshot||null,githubRefreshAvailable:false,
-      snapshot:{sequence:data.sequence,generatedAt:data.generatedAt,receivedAt:ix.receivedAt,restored:ix.restored===true,mode:'private_read_only_projection'}};},
+      patrimony:data.patrimony||null,snapshot:{sequence:data.sequence,generatedAt:data.generatedAt,receivedAt:ix.receivedAt,restored:ix.restored===true,mode:'private_read_only_projection'}};},
     async get(id){const {data}=await readCurrent();const view=data.iterations.find(i=>i.id===id);if(!view)fail(404,'Itération indisponible.');return {...view,readAt:new Date().toISOString()};},
     async proof(iterationId,proofId){const {data}=await readCurrent();const blob=data.proofs.find(p=>p.iterationId===iterationId&&p.proofId===proofId);if(!blob)fail(404,'Pièce non publiée.');return {content:Buffer.from(blob.content,'base64'),ext:blob.ext,name:proofId+blob.ext};},
     async review(){fail(403,'Projection strictement consultative.');},

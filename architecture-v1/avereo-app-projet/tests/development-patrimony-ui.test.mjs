@@ -1,0 +1,18 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+import {transformWithEsbuild} from '../frontend/node_modules/vite/dist/node/index.js';
+async function fixture(data){
+  const source=(await readFile(new URL('../frontend/src/developments/DevelopmentPatrimony.jsx',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'').replace('export default function DevelopmentPatrimony','function DevelopmentPatrimony');
+  const built=await transformWithEsbuild(source,'DevelopmentPatrimony.jsx',{loader:'jsx',jsxFactory:'h',jsxFragment:'Fragment'}),states=[],nodes=[];let index=0;
+  const context={data,useState:initial=>{const i=index++;if(!(i in states))states[i]=initial;return[states[i],v=>{states[i]=v;}]},h:(type,props,...children)=>{const node={type,props,children};nodes.push(node);return node},Fragment:'fragment'};
+  vm.createContext(context);vm.runInContext(built.code,context);
+  const render=()=>{index=0;nodes.length=0;vm.runInContext('DevelopmentPatrimony({data});',context);};render();return{nodes,states,render};
+}
+const metric=(id,label,value,status='observed',items=[])=>({id,label,value,status,items,unit:'éléments',meaning:'Métadonnées seulement',sourceId:'source',asOf:'2026-11-01T12:00:00Z'});
+const data=()=>({collectedAt:'2026-11-12T10:00:00Z',sources:[{id:'source',label:'Inventaire daté',status:'observed',asOf:'2026-11-01T12:00:00Z'}],metrics:[metric('applications','Applications',1,'observed',[{id:'rapport',label:'Rapport',kind:'application',applicationIds:['rapport']}]),metric('iterations','Suivis',0),metric('bugs','Bugs ouverts',null,'not_configured'),metric('folder-docs','docs/',1,'partial',[{id:'file-1',label:'docs/guide.md',kind:'fichier .md',applicationIds:[]}])],exclusions:['Archives exclues'],limitations:['Pas de synchronisation continue']});
+test('patrimoine absent : aucune valeur ni zero implicite',async()=>{const f=await fixture(null),text=JSON.stringify(f.nodes);assert.match(text,/Inventaire non disponible/);assert(!f.nodes.some(n=>n.type==='button'));});
+test('cartes : inconnu distinct de zero, clic justifie le comptage',async()=>{const f=await fixture(data());const card=f.nodes.find(n=>n.type==='button'&&JSON.stringify(n.children).includes('Bugs ouverts'));assert(card);await card.props.onClick();f.render();assert.match(JSON.stringify(f.nodes),/Inconnu/);assert.match(JSON.stringify(f.nodes),/Aucune valeur vérifiée disponible/);assert(!f.nodes.some(n=>n.type==='a'));});
+test('dossiers : comptage partiel explique et recherche en lecture seule',async()=>{const f=await fixture(data());f.nodes.find(n=>n.type==='button'&&n.children.includes('Dossiers & ressources')).props.onClick();f.render();const button=f.nodes.find(n=>n.type==='button'&&JSON.stringify(n.children).includes('Lister'));button.props.onClick();f.render();assert.match(JSON.stringify(f.nodes),/comptage borné/);assert.match(JSON.stringify(f.nodes),/docs\/guide.md/);const input=f.nodes.find(n=>n.type==='input');input.props.onChange({target:{value:'absent'}});f.render();assert.match(JSON.stringify(f.nodes),/Aucun élément admissible correspondant/);});
+test('navigation privée : refus efface aussi la vue patrimoine et bouton absent sans session',async()=>{const source=await readFile(new URL('../frontend/src/developments/DevelopmentWorkspace.jsx',import.meta.url),'utf8');assert.match(source,/state&&patrimonyOpen&&<DevelopmentPatrimony/);assert.match(source,/setDetail\(null\);setState\(null\)/);assert.match(source,/state&&<nav.*Navigation du cockpit/);assert(!source.includes('/local-developments/patrimony?path='));});
