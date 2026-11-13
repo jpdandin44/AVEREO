@@ -179,6 +179,8 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
         $existingClient=pi_transfer_query($db,'SELECT * FROM pi_clients WHERE id=?',[$client['id']])->fetch();
         $existingDocuments=pi_transfer_query($db,'SELECT * FROM pi_documents WHERE owner_id=? AND bien_id=? ORDER BY id',[$owner,$source['bienId']])->fetchAll();
         if ($existing) {
+            // A newly added, unused sharing field is not transferred content.
+            if (array_key_exists('document_shares',$existing) && $existing['document_shares']===null) unset($existing['document_shares']);
             if (!pi_transfer_same($existing,$bien) || !$existingClient || !pi_transfer_same($existingClient,$client)
                 || count($existingDocuments)!==count($documents)) throw new RuntimeException('Existing target differs; no overwrite.');
             foreach ($existingDocuments as $document) {

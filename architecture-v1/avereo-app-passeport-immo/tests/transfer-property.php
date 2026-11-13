@@ -90,6 +90,7 @@ $workspace=pi_transfer_query($dst,'SELECT * FROM pi_workspaces WHERE owner_id=?'
 check($workspace['settings']==='{"existingTariff":77}' && (int)$workspace['revision']===12
     && pi_transfer_query($dst,'SELECT model FROM pi_biens WHERE owner_id=? AND bien_id=?',[$destinationOwner,'existing-property'])->fetchColumn()==='{"id":"existing-property"}','target settings and unrelated property unchanged; revision advanced once');
 $after=rows($dst); $files=glob($target['storage_directory'].'/*');
+check(pi_transfer_query($dst,'SELECT document_shares FROM pi_biens WHERE owner_id=? AND bien_id=?',[$destinationOwner,'fixture-selected'])->fetchColumn()===null,'import creates no sharing access in the target environment');
 check(pi_transfer_import($target,$plan,'/tmp/export-selected',$hash,true)['status']==='already_imported' && rows($dst)===$after && glob($target['storage_directory'].'/*')===$files,'exact replay creates no duplicate or revision change');
 pi_transfer_query($dst,'UPDATE pi_documents SET title=? WHERE id=?',['Changed after import',$documents[0]['id']]); $changed=rows($dst);
 refused(fn()=>pi_transfer_import($target,$plan,'/tmp/export-selected',$hash,true),'target write after import prevents silent replay overwrite'); check(rows($dst)===$changed,'post-import target changes preserved');
