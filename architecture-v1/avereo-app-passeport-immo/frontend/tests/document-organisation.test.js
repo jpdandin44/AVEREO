@@ -55,6 +55,7 @@ it('partage apparence et ordre par bien, refuse une écriture périmée et des r
   await repo.linkClient('bien', { clientId: client.id }); expect((await repo.load('bien')).settings).toEqual(stored.settings);
   await expect(repo.saveDocumentSettings('bien', { ...stored.settings, order: { plans: ['document-etranger'] } })).rejects.toThrow('Ordre');
   await expect(repo.saveDocumentSettings('bien', { ...stored.settings, categories: { plans: { icon: 'script', color: 'url(evil)' } } })).rejects.toThrow('Icône');
+  await expect(repo.saveDocumentSettings('bien', { ...stored.settings, categories: { toString: { icon: 'leaf', color: '#123456' } } })).rejects.toThrow('Icône');
   const doc = stored.documents[0]; await repo.updateDocument('bien', doc.id, { title: doc.title, category: 'autres', archived: false });
   const changed = await repo.load('bien'); expect(changed.settings.order.plans).not.toContain(doc.id);
   await repo.saveDocumentSettings('bien', changed.settings);

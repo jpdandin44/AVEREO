@@ -22,11 +22,11 @@ export function validateDocumentSettings(value, documents) {
     || Array.isArray(value.categories) || Array.isArray(value.order)
     || Object.keys(value).some(key => !['revision', 'categories', 'order'].includes(key))) throw new Error('Organisation des documents invalide.');
   for (const [category, appearance] of Object.entries(value.categories)) {
-    if (!DEFAULT_DOCUMENT_SETTINGS[category] || !appearance || Object.keys(appearance).some(key => !['icon', 'color'].includes(key))
+    if (!Object.hasOwn(DEFAULT_DOCUMENT_SETTINGS, category) || !appearance || Object.keys(appearance).some(key => !['icon', 'color'].includes(key))
       || !CATEGORY_ICONS.includes(appearance.icon) || !/^#[0-9a-f]{6}$/i.test(appearance.color)) throw new Error('Icône ou couleur de catégorie invalide.');
   }
   for (const [category, ids] of Object.entries(value.order)) {
-    if (!DEFAULT_DOCUMENT_SETTINGS[category] || !Array.isArray(ids) || ids.length > 10000 || new Set(ids).size !== ids.length
+    if (!Object.hasOwn(DEFAULT_DOCUMENT_SETTINGS, category) || !Array.isArray(ids) || ids.length > 10000 || new Set(ids).size !== ids.length
       || ids.some(id => !documents.some(doc => doc.id === id && doc.category === category))) throw new Error('Ordre des documents invalide pour ce bien.');
   }
   return documentSettings(value);
