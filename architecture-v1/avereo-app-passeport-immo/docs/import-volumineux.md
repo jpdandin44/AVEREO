@@ -26,8 +26,8 @@ une marge aux champs et en-têtes. Les compteurs de l’application utilisent
 
 | Version | Fichier | Lot | Situation |
 | --- | --- | --- | --- |
-| PR144 | 25 Mo | 100 Mo, 100 fichiers | Installée en préproduction ; reçu et données conservés. |
-| Nouveau candidat | 500 Mo | 500 Mo, 100 fichiers par requête | Développement local ; pas installé sur l’hébergement. |
+| PR144 historique | 25 Mo | 100 Mo, 100 fichiers | Ancienne livraison conservée pour récupération. |
+| PR146 | 500 Mo | 500 Mo, 100 fichiers par requête | Livrée et techniquement vérifiée en préproduction privée. |
 
 Sources : [plafond o2switch](https://faq.o2switch.fr/guides/php/comment-augmenter-taille-upload/)
 et [configuration PHP par dossier](https://faq.o2switch.fr/guides/php/changer-version-php-et-php-ini/).
@@ -54,8 +54,7 @@ Stockage privé, propriétaires, sessions, CSRF, schéma et sauvegarde sont réu
 
 ## Préproduction
 
-Avant installation, qualifier les valeurs PHP effectives sur cette seule cible,
-la sauvegarde fraîche et le retour arrière. Le `.user.ini` proposé ne prouve pas
+La [livraison à 500 Mo](preproduction-import-volumineux.md) est réalisée après fusion des PR145/146 et accord explicite, avec sauvegarde fraîche et retour arrière sur copie. La réception réelle par PHP et l’inspection complète de ZIP de 173 et 500 Mo réussissent ; 501 Mo est refusé, sans écrire dans les biens. Les treize documents et les quatre tables restent inchangés. Le `.user.ini` proposé ne prouve pas
 sa prise en compte : o2switch indique qu’il est ignoré avec le handler `___lsphp`
 forcé. Ne pas modifier globalement PHP pour les autres applications.
 
@@ -78,11 +77,7 @@ entier, téléchargement exact et sauvegarde/restauration d’un vrai ZIP de 173
 Les 60 tests frontend, 41 inspections PHP, 25 tests Python et le build réussissent.
 Le navigateur local importe quatorze petites archives fictives et en télécharge
 une à l’identique ; les 203 Mo sont couverts par les tests de métadonnées.
-La [PR146](https://github.com/jpdandin44/AVEREO/pull/146) remet ce candidat en revue locale.
-Ces tests ne cochent pas la recette humaine hébergée. Le [suivi dédié](../data/suivi-import-volumineux.json)
-porte les preuves et le candidat. La [PR145 de livraison](preproduction-archives.md)
-reste distincte. La nouvelle PR est empilée sur sa branche pour limiter le diff
-au correctif ; intégrer PR145 avant le merge de celui-ci.
+Les [PR145](https://github.com/jpdandin44/AVEREO/pull/145) et [PR146](https://github.com/jpdandin44/AVEREO/pull/146) sont fusionnées ; leur checklist humaine est vérifiée. Ces tests ne cochent pas la recette humaine du nouveau candidat hébergé. Le [suivi dédié](../data/suivi-import-volumineux.json) porte les preuves et le candidat ; le [reçu hébergé](preproduction-import-volumineux.md) donne les instructions pour les archives d’origine.
 
 ## Mise en production
 

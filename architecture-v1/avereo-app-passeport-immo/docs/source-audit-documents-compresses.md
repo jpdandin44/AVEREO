@@ -51,3 +51,7 @@ après sa validation : son information est conservée dans
 [l’annexe du cycle de vie CONNECT](integration-connect-cycle-vie.md), puis le
 guide historique est restauré exactement. Aucune empreinte ni décision n’est recalculée
 pour faire accepter un document modifié.
+
+## Livraison privée à 500 Mo après PR146
+
+Le nouveau livreur réutilise le moteur existant, fixe le paquet CI et ajoute seulement les deux limites `.user.ini` et `api/index.php` sur leurs empreintes antérieures exactes. `.htaccess`, CONNECT et le menu sont préservés. Les sondes privées qualifient la réception réelle sans document fictif ajouté ; [reçu et limites de preuve](preproduction-import-volumineux.md). Les 21 références approuvées restent identiques.
