@@ -92,11 +92,36 @@ les données et ne nécessite aucun nouveau privilège permanent pour l’applic
 
 ## Préproduction
 
-État initial : candidat de partage non livré. Le contrôle en lecture seule trouve
-le compte expert avec droit Passeport existant mais activation CONNECT en attente.
-Ce prérequis reste à terminer par son titulaire. La cible reste privée ; qualifier
-le nouveau candidat, la migration sur copie et la récupération fraîche avant
-installation. Aucun partage réel ni activation fictive ne sert de test.
+Le même paquet CI gelé est installé le 13 novembre dans la seule préproduction
+privée après récupération fraîche et retour arrière testé sur copie : 19 chemins
+vérifiés, six écritures publiques, une colonne nullable ajoutée par l’administration
+existante, sans nouveau privilège permanent pour l’application. Le schéma archivé
+de sauvegarde, resté ancien, est réaligné avec les colonnes actuelles ; sa copie
+antérieure est conservée. La projection privée est renouvelée chaque minute,
+avec conservation des tâches de sauvegarde existantes. Aucun code CONNECT ou
+autre application, aucune production ni ligne métier n’est modifié par l’installation.
+
+Les [preuves hébergées](../api/preproduction-partage-observation.json) distinguent
+140 assertions HTTP/API en CI, 13 assertions positives/négatives sur tables
+temporaires hébergées et 210 assertions HTTPS sur les données existantes. Les
+26 documents du relevé frais sont téléchargés à l’identique dans deux sessions
+normales indépendantes du compte usuel. Le relevé antérieur corbeille en comptait
+28 ; aucune restauration de cette ancienne photographie ne remplace les données
+courantes. Les tests incluent l’autre bien du même propriétaire, exclu du partage.
+
+Le navigateur affiche le bon destinataire et le seul bien désigné : 11 documents
+actifs, six archives exclues. La confirmation nominative du nouvel accès reste
+en attente. Le contrôle trouve le droit Passeport existant du destinataire mais
+son activation CONNECT inachevée : ce prérequis reste à terminer par son titulaire.
+Aucune activation fictive ni connexion positive du destinataire n’est revendiquée.
+
+Pour la recette P1–P10 : depuis CONNECT, ouvrir le bien autorisé, choisir
+**Partager les documents**, vérifier le compte exact puis confirmer le périmètre.
+Le destinataire active son compte normalement et ouvre Passeport depuis son
+CONNECT ; son accueil doit montrer **Documents partagés avec moi**. Vérifier les
+11 documents actifs et leur téléchargement, l’absence de l’autre bien et des
+commandes de modification, puis la révocation sur un partage de recette convenu.
+Ne jamais tester une purge ou modifier un document réel pour la démonstration.
 
 ## Mise en production
 

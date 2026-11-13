@@ -90,7 +90,7 @@ documents réels ne sont ni mis à la corbeille ni purgés pour une démonstrati
 Cette recette ne prétend pas vérifier une nouvelle saisie de mot de passe Drupal.
 Les droits du compte secondaire restent ceux réellement fournis par CONNECT : il n’est pas éligible au lancement lors de ce contrôle, donc aucun accès ne lui est ajouté.
 
-Résultat : **247 assertions HTTPS réussies**, 28 téléchargements exacts, 17 documents actifs et 11 archivés répartis sur deux biens. Le navigateur retrouve le bien SCI avec six actifs et trois archives, les dossiers repliables, les commandes Monter/Descendre, huit icônes et les couleurs, ainsi qu’une corbeille vide. Les deux sauvegardes restaurées comprennent les 28 documents ; celle réalisée après migration contient le nouveau schéma. La recette humaine reste ouverte.
+Résultat : **247 assertions HTTPS réussies**, 28 téléchargements exacts, 17 documents actifs et 11 archivés répartis sur deux biens. Le navigateur retrouve le bien SCI avec six actifs et trois archives, les dossiers repliables, les commandes Monter/Descendre, huit icônes et les couleurs, ainsi qu’une corbeille vide. Les deux sauvegardes restaurées comprennent les 28 documents ; celle réalisée après migration contient le nouveau schéma. Le responsable déclare ensuite la recette en préproduction validée dans le chat. Cette décision est conservée dans le suivi canonique sans cocher les attestations GitHub ; PR155 reste ouverte et la préparation de production est différée pour le partage urgent.
 
 ### Vérification par le responsable
 

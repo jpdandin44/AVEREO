@@ -5,7 +5,7 @@
   "owner": "jpdandin",
   "version": "git",
   "created": "2026-10-03",
-  "updated": "2026-11-12",
+  "updated": "2026-11-13",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -4109,7 +4109,7 @@
       "id": "passeport-immo-organisation-documents",
       "canonicalTracking": "../data/suivi-organisation-documents.json",
       "documentation": "organisation-documents.md",
-      "scope": "PR153 fusionnée ; corbeille, dossiers personnalisés et ordre installés et techniquement vérifiés en préproduction privée. Recette humaine hébergée en attente.",
+      "scope": "Recette corbeille et classement acceptée dans le chat ; PR155 ouverte, préparation de production différée pendant le correctif partage.",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/153",
       "hostedDocumentation": "preproduction-organisation.md",
       "hostedEvidence": "../api/preproduction-organisation-observation.json"
@@ -4118,10 +4118,11 @@
       "id": "passeport-immo-partage-documents",
       "canonicalTracking": "../data/suivi-partage-documents.json",
       "documentation": "partage-documents.md",
-      "scope": "Incident critique : URL générale sans autorisation ; partage nominatif en développement, activation du destinataire en attente."
+      "scope": "Partage nominatif installé en préproduction privée, 210 assertions HTTPS et conservation de 26 documents ; confirmation du nouvel accès et activation du destinataire en attente.",
+      "hostedEvidence": "../api/preproduction-partage-observation.json"
     }
   ],
-  "currentStateObservation": "../api/preproduction-organisation-observation.json",
+  "currentStateObservation": "../api/preproduction-partage-observation.json",
   "resumptionPlanningHistory": [
     {
       "recordedAt": "2026-11-12T12:17:58.906+00:00",
@@ -4143,6 +4144,11 @@
       "source": "../api/preproduction-import-volumineux-observation.json",
       "supersededBy": "../api/preproduction-organisation-observation.json",
       "observedAt": "2026-11-13T16:43:51.310473+00:00"
+    },
+    {
+      "source": "../api/preproduction-organisation-observation.json",
+      "supersededBy": "../api/preproduction-partage-observation.json",
+      "observedAt": "2026-11-13T17:58:18.634794+00:00"
     }
   ]
 }

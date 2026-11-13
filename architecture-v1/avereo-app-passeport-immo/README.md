@@ -14,12 +14,12 @@ tags: [passeport-immo, local]
 
 ## Partage des documents — incident prioritaire
 
-Le [partage nominatif](docs/partage-documents.md) remplace le simple partage d’URL historique. Nouveau candidat en développement, lecture seule/révocation confirmées ; l’activation normale du destinataire reste nécessaire. Recette corbeille/classement acceptée dans le chat, PR155 non fusionnée ; production en attente.
+Le [partage nominatif](docs/partage-documents.md) remplace le simple partage d’URL historique. Correctif installé et techniquement vérifié en préproduction privée : 210 assertions HTTPS, 26 documents conservés, écran interne nominatif. Confirmation du nouvel accès et activation normale du destinataire encore requises. Recette corbeille/classement acceptée dans le chat, PR155 non fusionnée ; production en attente.
 
 
 ## Organisation des documents — préproduction du 13 novembre
 
-Le [nouveau lot](docs/organisation-documents.md) ajoute une corbeille restaurable, la suppression définitive confirmée, des dossiers parents par catégorie, leurs icônes/couleurs et l’ordre manuel par bien. Le paquet PR153 est [installé et techniquement vérifié en préproduction privée](docs/preproduction-organisation.md) après fusion et accord explicite : migration additive, 28 documents conservés, 247 assertions HTTPS et écran SCI contrôlés. La recette humaine hébergée reste à réaliser ; la limite de 500 Mo est conservée.
+Le [nouveau lot](docs/organisation-documents.md) ajoute une corbeille restaurable, la suppression définitive confirmée, des dossiers parents par catégorie, leurs icônes/couleurs et l’ordre manuel par bien. Le paquet PR153 est [installé et techniquement vérifié en préproduction privée](docs/preproduction-organisation.md) après fusion et accord explicite : migration additive, 28 documents conservés, 247 assertions HTTPS et écran SCI contrôlés. La recette humaine est déclarée validée dans le chat ; PR155 reste ouverte, sans accord de production pour ce lot. La limite de 500 Mo est conservée. Les 28 documents décrivent le relevé de cette livraison ; le contrôle frais du partage constate ensuite 26 documents sans perte pendant son installation.
 
 ## Reprise du 12 novembre — état courant et archives
 
@@ -170,9 +170,10 @@ le chemin du poste est dans `.local/review-settings.json`, hors Git.
   [contrôles et recette](docs/01-reprise-identique.md), [point de reprise](docs/point-session.md).
 
 ## Limites connues
-Le partage transmet l'URL, sans transférer le dossier à un autre poste. Les données
-et images du dossier de travaux sont dans `localStorage`, les documents dans
-IndexedDB, sans synchronisation entre navigateurs ni stockage partagé par compte CONNECT.
+En mode local, les données et images du dossier de travaux restent dans
+`localStorage`, les documents dans IndexedDB ; le partage nominatif exige le
+stockage serveur et CONNECT. En préproduction privée, les documents sont centralisés
+et le partage ouvre seulement les documents actifs du bien désigné, après confirmation.
 Les unités h/ml restent à zéro selon le calcul historique ; deux pièces homonymes
 peuvent mélanger leurs lignes dans le PDF. La page blanche finale de l'export court
 a été corrigée et recettée techniquement. Les autres limites restent dans le suivi.

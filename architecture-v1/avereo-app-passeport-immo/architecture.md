@@ -12,7 +12,7 @@ tags: [passeport-immo, local]
 
 # Architecture Passeport Immo
 
-## Partage nominatif en préparation
+## Partage nominatif — préproduction privée
 
 [Contrat et frontières](docs/partage-documents.md) : autorisations par bien dans une colonne nullable, projection privée fraîche des éligibilités CONNECT, routes dédiées en lecture seule ; les routes propriétaires restent isolées. Les transferts entre environnements excluent ces accès.
 
@@ -134,10 +134,10 @@ Les paramètres du poste restent dans `.local/review-settings.json`, ignoré par
 Les vues HTML/Markdown sont générées et contrôlées, sans modification manuelle.
 
 ## Limites du mode local et inconnues initiales
-Partage d'URL sans dossier ; stockage lié au navigateur ; session interne de
-démonstration et absence de facturation. L'identité CONNECT protège l'entrée
-hébergée, sans synchroniser les dossiers. Le futur stockage centralisé est TBD. Questions canoniques dans
-le suivi, résultats techniques dans le livrable local ; aucun statut humain inféré.
+Le mode local reste lié au navigateur, avec session de démonstration et absence
+de facturation. L’hébergement privé utilise maintenant le stockage serveur dédié
+et CONNECT ; le partage nominatif est une autorisation distincte par bien.
+Les observations initiales restent historiques ; aucun statut humain n’est inféré.
 
 ## Candidat et contrôles
 Le bloc `developmentWorkflow` complète le suivi actif à quatre phases ; les six phases historiques sont archivées. Le générateur Python
