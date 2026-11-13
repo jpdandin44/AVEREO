@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 12 novembre — PQ-01 Patrimoine & qualité local
+
+Collecte de métadonnées d'inventaire, listes dédupliquées et datées, compteurs inconnus explicites, détail par application/dossier et exclusions visibles. Transport optionnel dans l'état/projection signée Node/PHP, contrat fermé et compatibilité historique. Interface privée consultative sans changement d'authentification, du Gantt ou des décisions métier. [Guide, tests et réserves](docs/patrimoine-qualite.md). Aucun déploiement.
+
 ## 12 novembre — Reprise de la vue après expiration
 
 Message de session Projet expirée et lien de reconnexion ; refus propriétaire/global distinct. Actualiser confirme sa lecture sans prétendre synchroniser GitHub ou le clone du PC. Vue d’ensemble relit un état vide. Deux tests de non-régression, sans modification des droits ni du runtime PHP. Livraison du nouveau candidat à qualifier séparément.

@@ -12,7 +12,11 @@ tags:
   - roadmap
 ---
 
-## 12 novembre — Reprise des boutons et rattachement du générateur
+## 12 novembre — PQ-01 local, revue à préparer
+
+Cadrage documenté, développement local du collecteur et de la vue Patrimoine & qualité. [Suivi et critères proposés](data/suivi-patrimoine-pq01.json). Terminer preuves, revue visuelle et non-régression, puis qualifier les alertes de dépendances et préparer la PR sous le protocole habituel. Préproduction et Mise en production non commencées/non autorisées pour ce candidat. PQ-02 à PQ-06 restent des lots séparés. L'ancien constat de PR #141 non fusionnée ci-dessous est historique ; il n'est pas la base d'autorisation de PQ-01.
+
+## 12 novembre — Historique : reprise des boutons et rattachement du générateur
 
 Cadrage : session courte de Projet distincte de CONNECT, PR 141 non fusionnée. Développement local : retour explicite après actualisation, reprise d’une vue vide et message de reconnexion préparés et testés ; clone de référence avancé sur main en conservant les travaux et sauvegardes. Préproduction : version 11 disponible après renouvellement normal de session ; nouveau correctif à qualifier et livrer après accord applicable. Mise en production : non commencée. Le générateur ne peut être rattaché à main qu’après fusion autorisée de la PR ; ce rattachement ne doit pas salir le clone avec une copie manuelle.
 

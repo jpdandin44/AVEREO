@@ -1,0 +1,48 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "iterationId": "cockpit-patrimoine-pq01",
+  "stage": "developpement-local",
+  "currentPhase": 1,
+  "status": "locally_qualified_awaiting_human_review",
+  "objective": "Inventaire consultatif et premiere vue Patrimoine & qualite, sans modifier les suivis, droits, donnees clients ou hebergement.",
+  "sourceDocument": "docs/patrimoine-qualite.md",
+  "phases": [
+    {"id": 0, "label": "Cadrage", "status": "documented", "criteria": []},
+    {"id": 1, "label": "Développement local", "status": "in_progress", "criteria": [
+      {"id": "PQ01-01", "title": "Les compteurs se justifient par des listes, sources et dates, sans doubles comptes ni zero invente.", "proofIds": ["pq01-tests"]},
+      {"id": "PQ01-02", "title": "La vue reste privee, consultative, bornee et sans contenu sensible ; les anciennes projections restent lisibles.", "proofIds": ["pq01-tests"]},
+      {"id": "PQ01-03", "title": "Les parcours de la vue et le retour aux developpements sont verifies localement ; les tests existants du Gantt restent verts.", "proofIds": ["pq01-tests", "pq01-ui"]}
+    ]},
+    {"id": 2, "label": "Préproduction", "status": "not_started", "criteria": []},
+    {"id": 3, "label": "Mise en production", "status": "not_started", "criteria": []}
+  ],
+  "candidate": {"sourceSha": null, "artifactSha256": "7b6194bafecdcb7326004ebf6b53ff4425224bd39922e9a7b05edbc453bd8c0a", "baseSha": "831dda19deb3d5c70d1307b42ac5d8abac22422f", "kind": "local_uncommitted"},
+  "github": {"repository": "jpdandin44/AVEREO", "branch": "feat/projet-patrimoine-pq01", "prUrl": null},
+  "checks": [{"id": "pq01-local", "phaseId": 1, "kind": "local", "scope": "local", "status": "passed", "observedAt": "2026-11-12T21:11:54Z", "evidence": "data/qualification-patrimoine-pq01.json", "meaning": "326 tests et compilation ; ne vaut ni CI distante, ni recette CONNECT, ni validation humaine"}],
+  "proofs": [
+    {"id": "pq01-tests", "phaseId": 1, "title": "Qualification locale : 326 tests, contrats, refus et projection Node/PHP", "kind": "document", "status": "reviewable", "evidence": "data/qualification-patrimoine-pq01.json"},
+    {"id": "pq01-ui", "phaseId": 1, "title": "Capture de la synthese privee locale, sans attestation CONNECT", "kind": "image", "status": "reviewable", "evidence": "docs/illustrations/patrimoine-pq01-local.png"}
+  ],
+  "approvals": [],
+  "developmentReviews": [],
+  "authorizationContext": "Demande directe de commencer les developpements apres proposition des lots : PQ-01 local retenu et annonce, aucun accord de livraison ni validation humaine deduit.",
+  "delivery": {"status": "not_delivered"},
+  "blockers": ["Revue humaine locale et qualification de dependances avant toute livraison ; quatre alertes npm existantes"],
+  "nextAction": "Attendre la reprise explicite ; verifier le checkout et l'acces local, revue humaine PQ-01, qualification des alertes puis preparation de PR sur demande. Aucun passage de phase ou deploiement automatique.",
+  "sessionClosure": {
+    "recordedOn": "2026-11-13",
+    "timezone": "Europe/Paris",
+    "reason": "Cloture pour aujourd'hui demandee par le responsable",
+    "status": "closed_on_user_request_awaiting_explicit_resumption",
+    "iterationClosed": false,
+    "phaseChanged": false,
+    "humanApprovalsChanged": false,
+    "sourceChangesPreserved": true,
+    "qualificationReceipt": "data/qualification-patrimoine-pq01.json",
+    "checksRerunAtClosure": false
+  },
+  "productionAuthorized": false
+}

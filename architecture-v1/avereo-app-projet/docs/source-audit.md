@@ -13,6 +13,10 @@ tags:
   - recette
 ---
 
+## 12 novembre — PQ-01 patrimoine, écart local documenté
+
+Extension du seul module privé existant : collecteur opérateur de métadonnées et vue React, champ optionnel de state/projection signé compatible Node/PHP. Ni backend métier, ni migration MySQL, ni modification de l'application planning source. Les anciennes copies sans patrimoine restent compatibles et le build public doit continuer à exclure le module privé. Les tests de collecte/projection/refus et la régression complète sont requis sur le candidat ; les contrôles locaux ne prouvent aucune installation ou identité CONNECT réelle. [Guide de recette et réserves](patrimoine-qualite.md).
+
 ## 12 novembre — Expiration de la session et boutons de navigation
 
 Défaut observé en préproduction : une session Projet expirée efface le portefeuille, mais les boutons restent visibles sans parcours de reprise explicite. CONNECT peut être encore connecté. Le correctif local ajoute le message et le lien de reprise après 401, distingue le refus 403 et confirme une lecture demandée. Vue d’ensemble relit un état absent. Deux tests couvrent l’effacement des données privées, la reconnexion, le refus de rôle et la reprise par les deux boutons. Aucune API, durée de session, autorité ou configuration d’accès modifiée. Les contrôles locaux et la future installation du nouveau candidat restent des preuves distinctes.

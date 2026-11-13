@@ -15,7 +15,7 @@ if(args.some(a=>a.startsWith('--')&&!['--demo','--config','--port'].includes(a))
 const demo=args.includes('--demo');if(demo&&option('--config'))throw new Error('Choisir démonstration ou configuration privée, pas les deux.');
 const port=Number(option('--port')||5196);if(!Number.isInteger(port)||port<1024||port>65535)throw new Error('Port invalide.');
 const privateRoot=await createPrivateDirectory('avereo-developments-private-');
-let entries,adminId,applications=[],githubObservationFile=null,evidenceQualificationFile=null,githubRefresh=null;
+let entries,adminId,applications=[],githubObservationFile=null,evidenceQualificationFile=null,githubRefresh=null,patrimonyObservationFile=null;
 if(demo){entries=await createDevelopmentFixture(join(privateRoot,'fixtures'));adminId='101';}
 else{
   if(!option('--config'))throw new Error('Accès fermé : --demo ou --config privé explicite requis.');
@@ -25,6 +25,8 @@ else{
   const config=JSON.parse(await readFile(configPath,'utf8'));
   if(config.localAdministratorConfirmed!==true)throw new Error('Compte administrateur local non confirmé. Aucun raccordement CONNECT implicite.');
   adminId=config.globalAdminConnectId;entries=config.entries;applications=config.applications||[];githubObservationFile=config.githubObservationFile||null;evidenceQualificationFile=config.evidenceQualificationFile||null;githubRefresh=config.githubRefresh||null;
+  patrimonyObservationFile=config.patrimonyObservationFile||null;
+  if(patrimonyObservationFile){const rel=relative(frontend,await realpath(patrimonyObservationFile));if(rel!=='..'&&!rel.startsWith('..\\')&&!rel.startsWith('../')&&!isAbsolute(rel))throw Error('Inventaire interdit dans le frontend.');}
   if(evidenceQualificationFile){const rel=relative(frontend,await realpath(evidenceQualificationFile));if(rel!=='..'&&!rel.startsWith('..\\')&&!rel.startsWith('../')&&!isAbsolute(rel))throw Error('Qualification interdite dans le frontend.');}
   if(githubObservationFile){const rel=relative(frontend,await realpath(githubObservationFile));if(rel!=='..'&&!rel.startsWith('..\\')&&!rel.startsWith('../')&&!isAbsolute(rel))throw Error('Observation GitHub interdite dans le frontend.');}
 }
@@ -35,7 +37,7 @@ const {randomBytes}=await import('node:crypto');const token=randomBytes(32).toSt
 const actualAccess=createDevelopmentAccess({adminId,origin,bootstrap:token,demo});
 const accessFile=join(privateRoot,'acces-administrateur.json');
 await writeFile(accessFile,JSON.stringify({version:1,token})+'\n',{mode:0o600});
-const store=await createDevelopmentStore(entries,{adminId,applications,githubObservationFile,evidenceQualificationFile});
+const store=await createDevelopmentStore(entries,{adminId,applications,githubObservationFile,evidenceQualificationFile,patrimonyObservationFile});
 if(githubRefresh?.enabled&&githubRefresh.provider!=='gh_stored')throw Error('Fournisseur GitHub local non qualifié.');
 const refreshGithub=!demo&&githubRefresh?.enabled===true?createGithubRefresh({file:githubObservationFile,repositories:githubRefresh.repositories,minimumIntervalMs:Math.max(30000,githubRefresh.minimumIntervalMs||30000),getTrackedPrUrls:async()=>(await store.list()).flatMap(v=>v.githubPrUrls||[])}):null;
 delete process.env.AVEREO_REVIEW_ROOT;

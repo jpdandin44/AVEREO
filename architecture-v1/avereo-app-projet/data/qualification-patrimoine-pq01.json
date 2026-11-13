@@ -1,0 +1,62 @@
+{
+  "schema": "avereo-local-qualification-receipt",
+  "version": 1,
+  "iterationId": "cockpit-patrimoine-pq01",
+  "observedAt": "2026-11-12T21:11:54Z",
+  "scope": "local_only",
+  "branch": "feat/projet-patrimoine-pq01",
+  "baseSha": "831dda19deb3d5c70d1307b42ac5d8abac22422f",
+  "sourceSha": null,
+  "localUncommitted": true,
+  "checks": {
+    "projectBuild": {"command": "npm.cmd run build", "passed": 326, "failed": 0, "skipped": 0, "result": "passed"},
+    "newTargetedTests": {"passed": 10, "meaning": "Included in the 326 project tests, not additional tests"},
+    "publicReleaseSeparation": {"files": 23, "privateDataOrReviewApi": false, "result": "passed"},
+    "phpSyntax": {"file": "backend/developments/SnapshotReader.php", "result": "passed"},
+    "documentation": {"documentsChecked": 17, "mandatoryRootsChecked": 3, "newGuideLinks": "resolved", "canonicalProofFiles": "available", "result": "passed_with_documented_security_reserve"},
+    "signedProjection": {"nodePhpRoundTrip": "passed", "legacyWithoutPatrimony": "passed", "malformedPatrimony": "refused"},
+    "accessFixture": {"owner": 200, "anonymous": 401, "otherAccount": 403, "lostGlobalRole": 403, "writeMethod": 405, "readerCallsOnRefusal": 0},
+    "browser": {
+      "mode": "private_local_capability_not_CONNECT",
+      "synthesisAndUnknownStates": "observed",
+      "rapportFilterAndTrackedFiles": "observed",
+      "returnToRapportV12FourPhases": "observed",
+      "folderListsAndSearch": "observed",
+      "sourcesAndLimits": "observed",
+      "documentWidth": 1265,
+      "viewportWidth": 1265,
+      "screenshot": "docs/illustrations/patrimoine-pq01-local.png",
+      "humanAcceptance": "not_requested_or_inferred"
+    }
+  },
+  "observation": {
+    "collectedAt": "2026-11-12T21:07:46.913Z",
+    "applications": 12,
+    "localRegistryEntries": 47,
+    "applicationReferences": 10,
+    "workingCopiesInDatedInventory": 65,
+    "canonicalFilesInDatedInventory": 34,
+    "backupLocationsInDatedInventory": 20,
+    "rapportEligibleTrackedFiles": 258,
+    "rapportMarkdownFiles": 40,
+    "rapportFilesUnderTests": 17,
+    "rapportFilesUnderPrompts": 1,
+    "testResultsBugsAndImprovements": null,
+    "meaning": "Inventory metadata, not quality certification, executed-test totals or recovery proof"
+  },
+  "privatePackage": {
+    "generatedAt": "2026-11-12T21:09:02.792Z",
+    "artifactSha256": "7b6194bafecdcb7326004ebf6b53ff4425224bd39922e9a7b05edbc453bd8c0a",
+    "meaning": "SHA-256 of the sorted package manifest file list; local review package, not a hosted release",
+    "filesVerifiedAgainstManifest": 20,
+    "readyToDeploy": false,
+    "deployed": false
+  },
+  "reserves": [
+    "Four pre-existing npm alerts: one moderate and three high (esbuild, nanoid, source-map-js, Vite); dependencies and lockfile unchanged. Qualify remediation before delivery.",
+    "No live CONNECT identity qualification in this local review; existing hosted authorization code is unchanged.",
+    "No human phase approval, Git commit, remote CI, PR, deployment or production operation in this lot."
+  ],
+  "preproduction": {"publication": 12, "entries": 46, "changedByThisLot": false},
+  "productionChanged": false
+}

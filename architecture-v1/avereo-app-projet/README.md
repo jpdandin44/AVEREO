@@ -13,6 +13,10 @@ tags:
   - local
 ---
 
+## 12 novembre — Patrimoine & qualité, PQ-01 local
+
+Le module privé propose une synthèse d'inventaire, des listes justificatives, un détail par application/dossier et les sources/exclusions. Collecte explicite de métadonnées locales, champ optionnel de projection signée, même contrôle propriétaire/global et lecture seule ; anciennes projections compatibles. Aucun résultat de test, bug ou sauvegarde restaurable inventé depuis des fichiers. [Usage et commande](docs/patrimoine-qualite.md), [contrat](api/patrimoine.md), [suivi local](data/suivi-patrimoine-pq01.json). Aucun déploiement ; dépendances verrouillées inchangées, alertes de sécurité à qualifier avant livraison.
+
 ## 12 novembre — Reprendre Développements après expiration
 
 Le correctif préparé distingue session Projet expirée et accès propriétaire/global refusé. Un lien explique la reconnexion ; Actualiser confirme la lecture et Vue d’ensemble recharge un état vide. CONNECT et Projet conservent leurs contrôles séparés. [Parcours et limites](docs/reference-locale-applications.md#session-et-actualisation-de-la-vue). Les preuves de recette hébergée restent distinctes des tests locaux.

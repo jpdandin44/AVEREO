@@ -11,7 +11,7 @@ if(registry.schema!=='development-portfolio-registry'||registry.policy!=='local_
 const directory=await createPrivateDirectory('avereo-portfolio-private-');
 // ID interne de la capacité privée, PAS un ID de compte CONNECT.
 const config=join(directory,'registre-prive.json');
-await writeFile(config,JSON.stringify({localAdministratorConfirmed:true,globalAdminConnectId:'1',applications:registry.applications,entries:registry.entries,evidenceQualificationFile:registry.evidenceQualificationFile?resolve(registry.evidenceQualificationFile):null,githubRefresh:registry.githubRefresh||null,githubObservationFile:registry.githubObservationFile?resolve(registry.githubObservationFile):null}),{mode:0o600});
+await writeFile(config,JSON.stringify({localAdministratorConfirmed:true,globalAdminConnectId:'1',applications:registry.applications,entries:registry.entries,patrimonyObservationFile:registry.patrimonyObservationFile?resolve(registry.patrimonyObservationFile):null,evidenceQualificationFile:registry.evidenceQualificationFile?resolve(registry.evidenceQualificationFile):null,githubRefresh:registry.githubRefresh||null,githubObservationFile:registry.githubObservationFile?resolve(registry.githubObservationFile):null}),{mode:0o600});
 console.log('Cockpit privé du propriétaire du poste — lecture seule. Aucun rôle ni compte CONNECT réel attesté.');
 const child=spawn(process.execPath,[fileURLToPath(new URL('./start-developments.mjs',import.meta.url)),'--config',config,'--port',option('--port')||'5197'],{stdio:'inherit',windowsHide:true});
 for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>child.kill(signal));
