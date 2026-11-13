@@ -5,6 +5,7 @@ import { rgaRisk, isRgaRisk } from './georisquesRiskSummary.js';
 import { normalizeRgaCartography, rgaLevelLabel } from './rgaContext.js';
 import { markersForPlan, observationPlanNames, planPayloadError } from './observationPlans.js';
 import { observationAdviceLabel } from './reportProfiles.js';
+import { orderedObservations } from './observationOrder.js';
 import { textToLinkedHtml } from './textLinks.js';
 
 export function buildObservationPlansHtml(report, selectedIds = null) {
@@ -222,7 +223,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
       }`
     : '';
 
-  const observationsHtml = report.observations
+  const observationsHtml = orderedObservations(report)
     .map((obs, index) => {
       const photos = obs.photos
         .map((photo) => {

@@ -1707,3 +1707,13 @@ img {
 .online-report-filters input, .online-report-filters select { width: 100%; min-height: 44px; }
 .online-reports .preview-notice { scroll-margin-top: calc(var(--av-header-used, 68px) + 12px); }
 .explanation-preview { white-space: pre-wrap; overflow-wrap: anywhere; padding: 12px; background: #f3f6f9; border-radius: 8px; }
+.observation-order-toolbar { display: flex; align-items: center; gap: 14px; justify-content: space-between; flex-wrap: wrap; margin: 20px 0; }
+.observation-order-toolbar p { flex: 1 1 300px; margin: 0; }
+.observation-order-controls { display: flex; gap: 8px; align-items: end; flex-wrap: wrap; margin: 12px 0 20px; }
+.observation-order-controls .field { margin: 0; flex: 0 1 180px; }
+.observation-drag-handle { display: inline-flex; align-items: center; align-self: stretch; padding: 8px; cursor: grab; color: #506573; touch-action: none; user-select: none; }
+.observation-drag-handle[data-can-drag="false"] { opacity: .4; cursor: default; }
+.observation-header h3 { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.observation-card.is-drop-target { outline: 3px solid #2354d5; outline-offset: 3px; }
+.observation-card.is-dragged { opacity: .6; }
+.observation-order-status { color: #173b77; }

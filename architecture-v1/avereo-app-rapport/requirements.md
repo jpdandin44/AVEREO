@@ -13,7 +13,11 @@ tags:
   - habitologie
 ---
 
-## Lot Habitologue du 12 novembre
+## Lot 0 du 12 novembre — observations
+
+Ordre, numérotation et sélection cohérents entre saisie, plans et Word ; réorganisation dans une même phase sans perdre les données ; libellé partagé « Conseils habitologue » et nouvelle création en Visite Globale. Les [critères du lot 0](docs/lot-0-observations.md#critères-fonctionnels) sont la référence de ce complément et précisent les évolutions par rapport au candidat Habitologue ci-dessous.
+
+## Lot Habitologue du 12 novembre — premier candidat
 
 Choix explicite et réversible du profil ; Observations avec Constat, Explications et Conseils d’habitologue ; URL sûres et persistantes ; rubriques 4–6 masquées pour Habitologue dans l’écran et les deux Word. Anciens dossiers et données de décision conservés. [Critères](docs/profil-habitologue.md).
 
@@ -99,10 +103,9 @@ Ces critères ne sont pas encore tous exécutés : voir le [point de reprise](do
 
 - Le moteur de rapport technique, ses brouillons, photos, dictee, signature et
   exports restent disponibles sans regression volontaire.
-- Une nouvelle creation propose uniquement les categories
-  `Expertise & Visite technique` et `Visite Globale`.
-- `Expertise & Visite technique` propose uniquement `Evaluation Energétique`,
-  `Mesures`, `cartographie` et `pathologies`.
+- Une nouvelle création propose uniquement `Visite Globale` et commence dans
+  cette catégorie. Les dossiers techniques existants conservent leur catégorie
+  et leurs sous-catégories ; ce type est masqué à la création depuis le lot 0 local.
 - `Visite Globale` demande un type d'habitation parmi `Maison`, `Appartement`,
   `Immeuble collectif` et `Autre habitation`, avec `A preciser` comme valeur
   transitoire non validante.

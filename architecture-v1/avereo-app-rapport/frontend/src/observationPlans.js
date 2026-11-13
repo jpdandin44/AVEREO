@@ -1,3 +1,5 @@
+import { orderedObservations } from './observationOrder.js';
+
 // Plans belong to the report payload. Never fetch a remote image or share case assets.
 export const MAX_REPORT_BYTES = 50 * 1024 * 1024;
 export const MAX_PLAN_BYTES = 4 * 1024 * 1024;
@@ -37,8 +39,9 @@ export function planPayloadError(report) {
   return null;
 }
 
+// Numbers come from the shared protocol order, never from the stored array position.
 export function markersForPlan(report, planId, selectedIds = null) {
-  return (report.observations || []).flatMap((observation, index) => {
+  return orderedObservations(report).flatMap((observation, index) => {
     if (selectedIds && !selectedIds.includes(observation.id)) return [];
     const point = (observation.reperes || []).find(p => p.planId === planId);
     return point ? [{ ...point, observationId: observation.id, number: index + 1,

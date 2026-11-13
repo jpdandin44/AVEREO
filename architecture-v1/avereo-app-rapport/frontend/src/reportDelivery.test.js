@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { buildReportHtml, deliveryOptions, optionsWithCurrent } from './reportDelivery.js';
 import { normalizeDecision } from './decisionSupport.js';
+import { moveObservation } from './observationOrder.js';
 
 const dossier = () => ({titre:'Exemple <script>', reference_dossier:'TEST-1', proprietaire:'Client', adresse_logement:'Adresse test',
   intervenant:'Test', categorie:'Expertise & Visite technique', sous_categorie:'Humidite', date_visite:'',
@@ -60,31 +61,32 @@ test('explanations sit between the finding and the advice in the expert report, 
   const html = buildReportHtml(withExplanations());
   const first = html.slice(html.indexOf('Constat retenu'), html.indexOf('Autre constat'));
   assert.ok(first.indexOf('<h4>Constat</h4>') < first.indexOf('<h4>Explications</h4>'));
-  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Suites proposees</h4>'));
+  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Conseils habitologue</h4>'));
   assert.match(first, /&lt;b&gt;x&lt;\/b&gt; &amp; &quot;y&quot;<br \/>/);
   assert.match(first, /<a href="https:\/\/example\.com\/doc\?a=1&amp;b=2" rel="noopener noreferrer">https:\/\/example\.com\/doc\?a=1&amp;b=2<\/a> \(ou <a href="http:\/\/example\.org\/p_\(q\)"/);
   assert.doesNotMatch(first, /<b>x<\/b>/);
   assert.match(html, /Explication privée du second constat/);
 });
 
-test('reports without explanations keep exactly the historical observation markup', () => {
+test('reports without explanations render no explanation block and the common advice label', () => {
   const html = buildReportHtml(dossier());
-  assert.doesNotMatch(html, /Explications/); assert.doesNotMatch(html, /Conseils d’habitologue/);
-  assert.equal((html.match(/<h4>Suites proposees<\/h4>/g) || []).length, 2);
+  assert.doesNotMatch(html, /Explications/); assert.doesNotMatch(html, /Suites proposees/);
+  assert.equal((html.match(/<h4>Conseils habitologue<\/h4>/g) || []).length, 2);
   const report = dossier(); report.observations[0].explications = '   ';
   assert.doesNotMatch(buildReportHtml(report), /Explications/);
 });
 
-test('the Habitologue profile labels the advice, other or unknown profiles keep the historical label', () => {
+test('the advice label is « Conseils habitologue » for the Habitologue profile and for every other or unknown profile', () => {
   const report = withExplanations(); report.profil_metier = 'habitologue';
   const html = buildReportHtml(report);
-  assert.equal((html.match(/<h4>Conseils d’habitologue<\/h4>/g) || []).length, 2);
+  assert.equal((html.match(/<h4>Conseils habitologue<\/h4>/g) || []).length, 2);
   assert.doesNotMatch(html, /Suites proposees/);
   const first = html.slice(html.indexOf('Constat retenu'), html.indexOf('Autre constat'));
-  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Conseils d’habitologue</h4>'));
+  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Conseils habitologue</h4>'));
   for (const profil of ['', 'architecte', 'HABITOLOGUE', 42, null]) {
     report.profil_metier = profil;
-    assert.match(buildReportHtml(report), /Suites proposees/); assert.doesNotMatch(buildReportHtml(report), /Conseils d’habitologue/);
+    const other = buildReportHtml(report);
+    assert.equal((other.match(/<h4>Conseils habitologue<\/h4>/g) || []).length, 2); assert.doesNotMatch(other, /Suites proposees/);
   }
 });
 
@@ -104,11 +106,11 @@ test('Habitologue client observations keep finding, explanation and advice in or
   report.livrable = { audience: 'client', observations: ['1'] };
   const html = buildReportHtml(report);
   assert.ok(html.indexOf('<h4>Constat</h4>') < html.indexOf('<h4>Explications</h4>'));
-  assert.ok(html.indexOf('<h4>Explications</h4>') < html.indexOf('<h4>Conseils d’habitologue</h4>'));
+  assert.ok(html.indexOf('<h4>Explications</h4>') < html.indexOf('<h4>Conseils habitologue</h4>'));
   assert.match(html, /Examiner/);
   assert.doesNotMatch(html, /CONSEIL-EXPERT-EXCLU|Explication privée|example\.net/);
   delete report.profil_metier;
-  assert.doesNotMatch(buildReportHtml(report), /Conseils d’habitologue|Examiner/);
+  assert.doesNotMatch(buildReportHtml(report), /Conseils habitologue|Examiner/);
 });
 
 test('unsafe protocols in explanations are exported as plain text, never as links', () => {
@@ -116,4 +118,55 @@ test('unsafe protocols in explanations are exported as plain text, never as link
   const html = buildReportHtml(report);
   assert.match(html, /javascript:alert\(1\) data:text\/html,x file:\/\/\/C:\/a https:\/\/user:pw@example\.com\//);
   assert.doesNotMatch(html, /href="(?:javascript|data|file|https:\/\/user)/);
+});
+
+// Feu captured first: the restitution follows Eau -> Air -> Terre -> Feu -> À classer.
+const protocolReport = () => {
+  const report = dossier(); report.categorie = 'Visite Globale'; report.profil_metier = 'habitologue';
+  const o = (id, phase, extra = {}) => ({ id, titre: `Titre ${id}`, observations: `Texte ${id}`, actions: `Conseil ${id}`, explications: `Explication ${id}`,
+    piece: '', surface: '', gravite: '', photos: [], ...(phase ? { phase_habitologie: phase } : {}), ...extra });
+  report.observations = [o('feu', 'feu'), o('eau1', 'eau'), o('air', 'air'), o('eau2', 'eau'), o('terre', 'terre'), o('vrac')];
+  return report;
+};
+const titlesInOrder = html => [...html.matchAll(/<h3>(\d+)\. Titre (\w+)<\/h3>/g)].map(m => `${m[1]}:${m[2]}`);
+
+test('the expert Word numbers observations in protocol order and leaves the stored array and JSON untouched', () => {
+  const report = protocolReport(), before = JSON.stringify(report);
+  assert.deepEqual(titlesInOrder(buildReportHtml(report)), ['1:eau1', '2:eau2', '3:air', '4:terre', '5:feu', '6:vrac']);
+  assert.equal(JSON.stringify(report), before);
+  const moved = moveObservation(report, 'eau2', 'eau1');
+  assert.deepEqual(titlesInOrder(buildReportHtml(JSON.parse(JSON.stringify(moved)))), ['1:eau2', '2:eau1', '3:air', '4:terre', '5:feu', '6:vrac']);
+});
+
+test('each expert observation keeps its own finding, explanation and advice after reordering', () => {
+  const html = buildReportHtml(protocolReport());
+  const feu = html.slice(html.indexOf('5. Titre feu'), html.indexOf('6. Titre vrac'));
+  assert.match(feu, /Texte feu/); assert.match(feu, /Explication feu/); assert.match(feu, /Conseil feu/);
+  assert.doesNotMatch(feu, /Texte eau1|Conseil air/);
+});
+
+test('client findings are filtered after the global sort, keep their global number without any plan, and leak nothing else', () => {
+  const report = protocolReport();
+  report.livrable = { audience: 'client', observations: ['feu', 'eau2', 'vrac'] };
+  const html = buildReportHtml(JSON.parse(JSON.stringify(report)));
+  assert.deepEqual([...html.matchAll(/<h3>Observation (\d+) · Titre (\w+)<\/h3>/g)].map(m => `${m[1]}:${m[2]}`), ['2:eau2', '5:feu', '6:vrac']);
+  assert.doesNotMatch(html, /Titre (eau1|air|terre)|Texte (eau1|air|terre)|Conseil (eau1|air|terre)|Explication (eau1|air|terre)/);
+  assert.doesNotMatch(html, /<h3>Observation 1 /);
+  assert.deepEqual(report.livrable.observations, ['feu', 'eau2', 'vrac']);
+});
+
+test('the client selection stays attached to identifiers when findings of a phase are moved', () => {
+  const report = protocolReport(); report.livrable = { audience: 'client', observations: ['eau2'] };
+  assert.match(buildReportHtml(report), /Observation 2 · Titre eau2/);
+  const moved = moveObservation(report, 'eau2', 'eau1');
+  assert.deepEqual(moved.livrable.observations, ['eau2']);
+  const html = buildReportHtml(moved);
+  assert.match(html, /Observation 1 · Titre eau2/); assert.doesNotMatch(html, /Titre eau1/);
+});
+
+test('technical reports keep the stored order for numbering and client selection', () => {
+  const report = protocolReport(); report.categorie = 'Expertise & Visite technique';
+  assert.deepEqual(titlesInOrder(buildReportHtml(report)), ['1:feu', '2:eau1', '3:air', '4:eau2', '5:terre', '6:vrac']);
+  report.livrable = { audience: 'client', observations: ['eau2'] };
+  assert.match(buildReportHtml(report), /Observation 4 · Titre eau2/);
 });

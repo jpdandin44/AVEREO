@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 12 novembre 2026 — Lot 0 Observations, complément local
+
+Ordre commun des fiches, plans et Word, déplacement dans une même phase et vue compacte ; libellé « Conseils habitologue » pour tous les profils ; nouvelles créations en Visite Globale, anciens dossiers techniques conservés. Tests et structure des DOCX contrôlés ; revue visuelle en cours. [État exact du lot 0](docs/lot-0-observations.md). Aucun déploiement de ce complément.
+
 ## 12 novembre 2026 — Habitologue, candidat local vérifié
 
 Profil de mission et explications entre constat et conseils ajoutés ; rubriques Export adaptées et deux Word fictifs contrôlés. [État et vérifications](docs/profil-habitologue.md). Aucun déploiement de cette évolution.

@@ -13,6 +13,10 @@ tags:
   - fonctionnalites
 ---
 
+## 2026-11-12 — Lot 0 Observations, sans migration
+
+Tri de présentation non destructif, déplacement explicite limité à la même phase et numéros dérivés ; les références restent les identifiants existants. Les anciens types techniques restent lisibles malgré leur masquage à la création. Aucun champ de numéro, table ou route ajouté. [Compatibilité et recette](lot-0-observations.md).
+
 ## 2026-11-12 — Profil et explications, sans SQL
 
 Champs optionnels `profil_metier` et `observations[].explications` dans le payload existant. Ancien `actions` inchangé, profil absent conservant le parcours historique ; données des projections non supprimées. [Contrat et qualification](profil-habitologue.md).
