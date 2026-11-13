@@ -1,0 +1,63 @@
+{
+  "project": "avereo-app-rapport",
+  "version": "git",
+  "status": "local_candidate",
+  "endpoint": "/api/reports.php",
+  "authentication": "Existing CONNECT gate and report identity/ownership checks, no extra permission",
+  "get": {
+    "parameters": {
+      "id": "existing report public_id",
+      "download": "1 for raw complete attachment; any other supplied value rejected (422)"
+    },
+    "success": {
+      "status": 200,
+      "body": "Exact stored payload_json bytes, no re-encoding",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Disposition": "attachment; filename=\"rapport-<id>.json\"",
+        "Cache-Control": "private, no-store",
+        "X-Content-Type-Options": "nosniff",
+        "X-Avereo-Payload-Sha256": "lowercase SHA-256 of exact bytes",
+        "Content-Length": "stored byte count"
+      }
+    },
+    "errors": {
+      "403": "existing gate or identity denial",
+      "404": "missing report or other owner without existing global read permission",
+      "503": "stored payload not a report object with observations array"
+    }
+  },
+  "post": {
+    "request": "Existing { id, report } unchanged",
+    "success": {
+      "report": {
+        "id": "existing/new id",
+        "payloadBytes": "UTF-8 bytes",
+        "content": {
+          "sha256": "hash re-read from database",
+          "bytes": "byte count",
+          "observations": "number of observations",
+          "photos": "sum of observation photos",
+          "plans": "number of plans",
+          "signature": "boolean"
+        }
+      }
+    },
+    "unconfirmed": {
+      "status": 409,
+      "error": "report_write_unconfirmed",
+      "reportId": "known saved id",
+      "message": "Keep draft; verify stored copy before retry"
+    }
+  },
+  "import": {
+    "required": "Report object with observations array, or API envelope report.payload",
+    "independence": "Remove onlineReportId only; preserve internal business ids and references",
+    "structureMarker": "copie_test === true; strict historical test copy also detected",
+    "editingLimit": "Unsafe JavaScript integers rejected before editing; raw download remains exact",
+    "maxFileBytes": 52428800
+  },
+  "migration": null,
+  "hostingChanged": false,
+  "sourceGuide": "../docs/partage-tests-et-stockage.md"
+}

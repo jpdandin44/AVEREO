@@ -13,6 +13,14 @@ tags:
   - connect
 ---
 
+## Dossiers complets — correctif local du 13 novembre
+
+Depuis l’accueil, **Charger un dossier JSON** affiche les observations, photos, plans et la présence d’une signature avant confirmation. Dans la liste serveur, **Télécharger JSON complet** récupère les octets du dossier sauvegardé, vérifiés par empreinte. Dans Export, **Télécharger le dossier complet (JSON)** conserve le dossier ouvert ; **Créer une structure de test sans textes ni photos** reste une action distincte, explicitement expurgée.
+
+La sauvegarde en ligne relit le contenu écrit et affiche ses compteurs. L’import crée une copie locale indépendante : une sauvegarde en ligne crée un autre dossier sous le compte destinataire, sans remplacer le source. Les changements de saisie survenus pendant l’envoi restent dans le brouillon et doivent être sauvés à nouveau. [Usage, preuve et limites](docs/partage-tests-et-stockage.md).
+
+Ce correctif est local. La branche intègre les originaux privés de PR150, fusionnée dans `main` ; les deux fonctionnalités sont conservées et le stockage privé reste désactivé par défaut. Le lot 0 PR149 a été livré en préproduction le 13 novembre ; ses paragraphes « candidat local » ci-dessous restent historiques. Aucune nouvelle installation n’est effectuée pour ce correctif.
+
 ## Photos originales — première tranche locale du 13 novembre
 
 Dans Observations, **Voir la photo** ouvre une vue agrandie avec zoom. Lorsque le stockage privé est configuré et le dossier sauvé en ligne, **Conserver l’original en ligne** envoie le fichier sans le modifier ; sauver ensuite le dossier conserve son lien. **Ouvrir l’original privé** vérifie et rouvre ce fichier à la demande, avec téléchargement possible.

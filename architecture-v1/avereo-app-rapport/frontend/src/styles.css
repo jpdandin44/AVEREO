@@ -1691,6 +1691,19 @@ img {
 .online-report-list { list-style: none; padding: 0; }
 .online-report-list li { display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid #d9e2e5; padding: 16px 0; }
 .online-report-list p { margin: 4px 0; overflow-wrap: anywhere; }
+.online-report-list li > div:first-child { min-width: 0; }
+.online-report-actions { display: flex; flex-wrap: wrap; gap: 8px; flex-shrink: 0; }
+.report-import { display: inline-block; }
+.report-import-dialog { border: 0; border-radius: 12px; padding: 24px; width: min(700px, 94vw); max-height: 90dvh; overflow: auto; color: #172033; }
+.report-import-dialog::backdrop { background: rgba(15, 23, 42, 0.65); }
+.report-import-dialog h2 { margin-top: 0; }
+.report-import-dialog p { overflow-wrap: anywhere; line-height: 1.5; }
+@media (max-width: 700px) {
+  .online-report-list li { align-items: flex-start; flex-direction: column; }
+  .online-report-actions { width: 100%; }
+  .online-report-actions .button { flex: 1; white-space: normal; }
+  .report-import-dialog { padding: 16px; }
+}
 .delivery-options { border: 1px solid #d6e2e8; border-radius: 12px; padding: 20px; margin: 24px 0; }
 .delivery-options legend { font-weight: 700; color: #002b45; padding: 0 8px; }
 .delivery-options label { display: grid; gap: 8px; margin: 12px 0; }

@@ -23,6 +23,7 @@ export function createTestReportCopy(report) {
     }];
   });
   return {
+    copie_test: true,
     ...(isHabitologueProfile(report) ? { profil_metier: 'habitologue' } : {}),
     categorie: classification.categorie,
     sous_categorie: classification.sous_categorie,

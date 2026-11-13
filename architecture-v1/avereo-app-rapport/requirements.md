@@ -13,6 +13,12 @@ tags:
   - habitologie
 ---
 
+## Dossier complet — demande du 13 novembre
+
+Le responsable doit pouvoir charger et récupérer le contenu complet présent dans le dossier : écoute, textes, explications, conseils, photos, plans, signature et champs inconnus compatibles. Une ligne de résumé ou un horodatage seul ne constitue pas un dossier. Une copie de structure fictive doit être identifiée avant chargement ; elle ne peut reconstituer ce qui a été retiré.
+
+Le téléchargement serveur conserve les octets et les droits existants. Avant remplacement d’un brouillon, présenter les compteurs et permettre son export ou l’annulation. Un import est indépendant du source ; une confirmation de sauvegarde en ligne doit correspondre au contenu relu, sans effacer les saisies intervenues pendant l’envoi. [Critères et réserves](docs/partage-tests-et-stockage.md).
+
 ## Photos — état vérifié le 13 novembre
 
 La première tranche locale conserve et rouvre les octets originaux JPEG/PNG/WebP sous le propriétaire courant du dossier, avec empreinte contrôlée, refus des autres propriétaires et sauvegarde/restauration locale conjointe. Le lien facultatif ne doit altérer aucun champ existant ni `photo.src`. Une opération tardive ne doit pas rattacher un résultat à une photo ou un dossier remplacé ; l’enregistrement en ligne attend la fin d’un envoi.

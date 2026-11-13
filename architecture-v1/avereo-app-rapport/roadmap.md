@@ -14,6 +14,13 @@ tags:
   - fonctionnalites
 ---
 
+## Priorité du 13 novembre — enregistrement et dossier complet
+
+Le responsable donne priorité au chargement et à la récupération du contenu complet après réception d’une copie de test expurgée. Le correctif local traite accueil/import, téléchargement vérifié, confirmation de sauvegarde et clarté des copies ; qualification initiale locale et navigateur réussies, puis contrôles d’intégration rejoués après réalignement sur PR150. Les validations humaines existantes restent attachées à leur candidat ; elles ne sont pas recréées par la résolution des conflits. La récupération du vrai contenu de Philippe est distincte : absent du fichier reçu et des sources serveur contrôlées. [État et critères](docs/partage-tests-et-stockage.md).
+
+PR150 est désormais fusionnée dans `main` ; PR152 est réalignée pour conserver les originaux privés et le chargement complet ensemble, sans nouvelle activation. Le lot 0 PR149 est déjà livré en préproduction ; la recette hébergée complète et les autres demandes restent dans leurs suivis respectifs.
+
+
 ## Priorités du 12 novembre
 
 Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement ; ses rendus Word de 15 pages expert et 5 client sont contrôlés ; la revue humaine de PR149 reste distincte. Le travail photo est désormais repris dans un lot isolé, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
@@ -21,7 +28,7 @@ Le premier candidat Habitologue de la PR #148 reste distinct. Le complément act
 
 ## Photos originales privées — développement local actif
 
-Reprise explicitement demandée le 13 novembre après la livraison du lot 0 (PR149) en préproduction. La première tranche locale conserve et rouvre les originaux privés ; elle est soumise à revue dans la PR150. La version rapport recadrée/annotée reste la tranche suivante du [lot en quatre phases](docs/photos-originales-et-annotations.md). La recette fonctionnelle hébergée de PR149 reste distincte et ouverte. La compression locale n'y sera activée qu'après confirmation de l'original ; son [module est isolé](docs/compression-photos.md). Le PDF natif reste un chantier distinct, seulement [cadré](docs/compression-photos.md#cadrage-distinct--pdf-natif).
+Reprise explicitement demandée le 13 novembre après la livraison du lot 0 (PR149) en préproduction. La première tranche locale conserve et rouvre les originaux privés ; son code est fusionné via PR150. L’activation et la qualification hébergées restent distinctes. La version rapport recadrée/annotée reste la tranche suivante du [lot en quatre phases](docs/photos-originales-et-annotations.md). La recette fonctionnelle hébergée de PR149 reste distincte et ouverte. La compression locale n'y sera activée qu'après confirmation de l'original ; son [module est isolé](docs/compression-photos.md). Le PDF natif reste un chantier distinct, seulement [cadré](docs/compression-photos.md#cadrage-distinct--pdf-natif).
 
 ## Essais temporaires — à qualifier
 

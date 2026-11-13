@@ -4,6 +4,7 @@ declare(strict_types=1);
 require __DIR__ . '/bootstrap.php';
 require __DIR__ . '/decision-validation.php';
 require __DIR__ . '/observation-plans-validation.php';
+require __DIR__ . '/report-download.php';
 
 api_no_options_response();
 
@@ -125,6 +126,25 @@ if ($method === 'GET') {
                 'error' => 'report_not_found',
                 'message' => 'Rapport introuvable.',
             ]);
+        }
+
+        if (isset($_GET['download'])) {
+            if ($_GET['download'] !== '1') {
+                api_json(422, ['ok' => false, 'error' => 'invalid_download', 'message' => 'Téléchargement invalide.']);
+            }
+            $json = (string) $row['payload_json'];
+            $download = api_complete_report_download($json);
+            if ($download === null) {
+                api_json(503, ['ok' => false, 'error' => 'report_content_missing', 'message' => 'Le contenu complet du dossier est indisponible. Aucun fichier partiel téléchargé.']);
+            }
+            header('Content-Type: application/json; charset=utf-8');
+            header('Content-Disposition: attachment; filename="rapport-' . $row['public_id'] . '.json"');
+            header('Content-Length: ' . $download['bytes']);
+            header('X-Avereo-Payload-Sha256: ' . $download['sha256']);
+            header('Cache-Control: private, no-store');
+            header('X-Content-Type-Options: nosniff');
+            echo $json;
+            exit;
         }
 
         api_json(200, [
@@ -298,12 +318,18 @@ if ($method === 'POST') {
         }
     }
 
+    // Re-read the actual saved document before confirming a complete save.
+    $verify = $pdo->prepare('SELECT payload_json FROM rapport_reports WHERE public_id = ?');
+    $verify->execute([$id]);
+    $stored = $verify->fetchColumn();
+    $content = is_string($stored) ? api_complete_report_download($stored) : null;
+    if ($content === null || !hash_equals(hash('sha256', $json), $content['sha256'])) {
+        api_json(409, ['ok' => false, 'error' => 'report_write_unconfirmed', 'reportId' => $id,
+            'message' => 'Le contenu envoyé n’a pas pu être confirmé sur le serveur. Le brouillon est conservé ; vérifiez la copie en ligne avant de recommencer.']);
+    }
     api_json(200, [
         'ok' => true,
-        'report' => [
-            'id' => $id,
-            'payloadBytes' => $payloadBytes,
-        ],
+        'report' => ['id' => $id, 'payloadBytes' => $payloadBytes, 'content' => $content],
     ]);
 }
 
