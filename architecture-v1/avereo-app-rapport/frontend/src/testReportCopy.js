@@ -1,6 +1,7 @@
 import { normalizeReportClassification } from './reportClassification.js';
 import { findHabitologieStage, findHabitologieControl, HABITOLOGIE_PROTOCOL_STAGES, LISTENING_TOPICS } from './habitologieProtocol.js';
 import { protocolOptions } from './reportHtml.js';
+import { isHabitologueProfile } from './reportProfiles.js';
 
 export const observationGravities = ['Mineure', 'Moyenne', 'Severe', 'Critique'];
 
@@ -22,6 +23,7 @@ export function createTestReportCopy(report) {
     }];
   });
   return {
+    ...(isHabitologueProfile(report) ? { profil_metier: 'habitologue' } : {}),
     categorie: classification.categorie,
     sous_categorie: classification.sous_categorie,
     titre: 'Copie pour les tests',

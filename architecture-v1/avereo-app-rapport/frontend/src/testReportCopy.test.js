@@ -5,14 +5,14 @@ import { createTestReportCopy } from './testReportCopy.js';
 test('only catalogue choices survive in an independent, importable test copy', () => {
   const privateValue = 'PRIVATE-SENTINEL';
   const input = {
-    titre: privateValue, proprietaire: privateValue, onlineReportId: privateValue,
+    titre: privateValue, proprietaire: privateValue, onlineReportId: privateValue, profil_metier: privateValue,
     signature: privateValue, unknownFutureField: privateValue,
     categorie: 'Visite Globale', sous_categorie: 'Maison',
     cadastre: { lon: privateValue }, ecoute: { sujets_identifies: ['air', privateValue] },
     protocoles: { standard: true, extra: privateValue },
     habitologie_protocoles: { air: { enabled: false, controls: {presence_ventilation: true, installation_entretien: privateValue} } },
     observations: [
-      { id: privateValue, titre: privateValue, photos: [{src: privateValue}], reperes: [privateValue],
+      { id: privateValue, titre: privateValue, explications: privateValue, actions: privateValue, photos: [{src: privateValue}], reperes: [privateValue],
         phase_habitologie: 'air', controle_habitologie: 'presence_ventilation', gravite: 'Critique' },
       { phase_habitologie: privateValue, controle_habitologie: privateValue, gravite: privateValue },
     ],
@@ -31,4 +31,10 @@ test('only catalogue choices survive in an independent, importable test copy', (
   assert.deepEqual(copy.observations[0].photos, []);
   assert.equal(copy.observations[1].phase_habitologie, '');
   assert.equal(createTestReportCopy({report_type:'habitologie'}).categorie, 'Visite Globale');
+});
+
+test('the explicit Habitologue catalogue choice is retained without free text', () => {
+  const copy = createTestReportCopy({ profil_metier: 'habitologue', observations: [{ explications: 'PRIVATE-URL https://example.test/private' }] });
+  assert.equal(copy.profil_metier, 'habitologue');
+  assert.equal(JSON.stringify(copy).includes('PRIVATE-URL'), false);
 });

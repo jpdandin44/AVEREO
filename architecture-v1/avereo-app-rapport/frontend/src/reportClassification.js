@@ -20,6 +20,7 @@ export const REPORT_CATEGORIES = Object.freeze({
     description: 'Constat terrain, recherche de pathologies et synthese technique.',
     subcategories: [DEFAULT_SUBCATEGORY, 'Mesures', 'cartographie', 'pathologies'],
     legacySubcategories: ['Constat general', 'Fissures', 'Humidite', 'Toiture'],
+    selectable: false,
   },
   [HABITOLOGIE_CATEGORY]: {
     description: 'Lecture globale et ordonnee du bien : Eau, Air, Terre puis Feu.',

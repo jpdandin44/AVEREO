@@ -45,7 +45,7 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
       if (node.tagName === 'IMG') { const image = await imageRun(node); if(image) result.push(image); continue; }
       const children = await runs(node, { ...inherited, ...(['STRONG','B'].includes(node.tagName) ? {bold:true} : {}), ...(['EM','I'].includes(node.tagName) ? {italics:true} : {}) });
       const href = node.getAttribute('href') || '';
-      result.push(...(node.tagName === 'A' && /^https:\/\//i.test(href) ? [new ExternalHyperlink({ link:href, children })] : children));
+      result.push(...(node.tagName === 'A' && /^https?:\/\//i.test(href) ? [new ExternalHyperlink({ link:href, children })] : children));
     }
     return result;
   }

@@ -12,13 +12,12 @@ tags: [avereo, documentation, local]
 
 # État des intégrations
 
-La [livraison PR144](preproduction-archives-observation.json) décrit l’état installé.
+Le [reçu à 500 Mo](preproduction-import-volumineux-observation.json) décrit l’état installé ; la [livraison PR144](preproduction-archives-observation.json) reste historique.
 Le [candidat volumineux](../docs/import-volumineux.md) conserve les routes et corps
 multipart : 500 Mo utiles par fichier/lot, enveloppe HTTP/PHP proposée de 512 Mo,
 cent fichiers par requête. L’atomicité reste celle de chaque requête ; l’interface
 pilote les lots successifs, sans extraction ni transfert de fragments.
-Ses [preuves locales et CI](import-volumineux-observation.json) ne valent pas
-installation de cette nouvelle version.
+Ses [preuves locales et CI](import-volumineux-observation.json) et sa réception réelle hébergée gardent des périmètres distincts, explicités dans le reçu.
 
 ## Observation de reprise du 12 novembre
 

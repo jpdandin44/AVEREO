@@ -3,6 +3,9 @@ import { protocolOptions, escapeHtml } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
+import { observationAdviceLabel } from './reportProfiles.js';
+import { textLinks } from './textLinks.js';
+import { orderedObservations, observationPhase, moveObservation } from './observationOrder.js';
 import ObservationPlans from './ObservationPlans.jsx';
 import { MAX_REPORT_BYTES, observationPlanNames, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
@@ -21,9 +24,11 @@ import {
   DEFAULT_CATEGORY,
   DEFAULT_SUBCATEGORY,
   HABITOLOGIE_DEFAULT_HOUSING_TYPE,
+  HABITOLOGIE_CATEGORY,
   REPORT_CATEGORIES,
   getReportSubcategories,
   getSelectableReportCategories,
+  defaultReportTitle,
   isHabitologieReport,
   nextReportTitle,
   normalizeReportClassification,
@@ -70,6 +75,9 @@ import {
   AlertTriangle,
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  GripVertical,
   Camera,
   CheckCircle2,
   ClipboardList,
@@ -132,11 +140,13 @@ const emptyObservation = () => ({
   gravite: 'Mineure',
   titre: '',
   observations: '',
+  explications: '',
   actions: '',
   photos: [],
 });
 
 const initialReport = normalizeReportClassification({
+  profil_metier: '',
   categorie: DEFAULT_CATEGORY,
   sous_categorie: DEFAULT_SUBCATEGORY,
   titre: "Rapport d'expertise technique",
@@ -205,6 +215,7 @@ function deepMergeReport(base, incoming) {
   const merged = {
     ...base,
     ...classifiedIncoming,
+    profil_metier: typeof classifiedIncoming.profil_metier === 'string' ? classifiedIncoming.profil_metier : '',
     meteo: { ...base.meteo, ...(classifiedIncoming.meteo || {}) },
     cadastre: { ...base.cadastre, ...(classifiedIncoming.cadastre || {}) },
     urbanisme: { ...base.urbanisme, ...(classifiedIncoming.urbanisme || {}) },
@@ -246,7 +257,8 @@ function normalizeStoredDraft(incoming) {
 }
 
 function createNewReport() {
-  return normalizeReportClassification({ ...initialReport, observations: [emptyObservation()] });
+  return normalizeReportClassification({ ...initialReport, categorie: HABITOLOGIE_CATEGORY,
+    sous_categorie: HABITOLOGIE_DEFAULT_HOUSING_TYPE, titre: defaultReportTitle(HABITOLOGIE_CATEGORY), observations: [emptyObservation()] });
 }
 
 function normalizeObservation(obs) {
@@ -255,6 +267,7 @@ function normalizeObservation(obs) {
     ...obs,
     id: obs?.id || createId(),
     titre: obs?.titre || '',
+    explications: typeof obs?.explications === 'string' ? obs.explications : '',
     photos: Array.isArray(obs?.photos) ? obs.photos : [],
   };
 }
@@ -792,7 +805,8 @@ function DossierStep({ report, setReport }) {
         </fieldset>
       )}
 
-      <div className="choice-grid two">
+      {!habitologie && REPORT_CATEGORIES[report.categorie]?.selectable === false && <p className="muted">Type du dossier conservé : {report.categorie}.</p>}
+      <div className="choice-grid">
         {getSelectableReportCategories().map(([name, item]) => (
           <ButtonCard
             key={name}
@@ -805,6 +819,13 @@ function DossierStep({ report, setReport }) {
       </div>
 
       <div className="form-grid two">
+        <Field label="Profil de la mission" hint="Le profil adapte les conseils et les étapes de l’export pour ce dossier.">
+          <select value={report.profil_metier || ''} onChange={(event) => updateField('profil_metier', event.target.value)}>
+            <option value="">Parcours actuel</option>
+            <option value="habitologue">Habitologue</option>
+            {report.profil_metier && report.profil_metier !== 'habitologue' && <option value={report.profil_metier}>{report.profil_metier} (parcours actuel)</option>}
+          </select>
+        </Field>
         <Field label={habitologie ? "Type d'habitation" : 'Sous-categorie'}>
           <select value={report.sous_categorie} onChange={(event) => selectSubcategory(event.target.value)}>
             {subcategories.map((option) => (
@@ -1390,6 +1411,28 @@ function ProtocolStep({ report, setReport }) {
 function ObservationStep({ report, setReport }) {
   const [cameraFor, setCameraFor] = useState(null);
   const [planObservationId, setPlanObservationId] = useState('');
+  const [compact, setCompact] = useState(false);
+  const [draggedId, setDraggedId] = useState('');
+  const [dropId, setDropId] = useState('');
+  const [orderMessage, setOrderMessage] = useState('');
+  const dragSource = useRef(null);
+  const observationsInOrder = orderedObservations(report);
+  const observationNumbers = new Map(observationsInOrder.map((observation, index) => [observation, index + 1]));
+  const phaseObservations = new Map();
+  for (const observation of observationsInOrder) {
+    const phase = observationPhase(report, observation);
+    if (!phaseObservations.has(phase)) phaseObservations.set(phase, []);
+    phaseObservations.get(phase).push(observation);
+  }
+  const clearDrag = () => { dragSource.current = null; setDraggedId(''); setDropId(''); };
+  const pointerTarget = event => {
+    const card = document.elementFromPoint(event.clientX, event.clientY)?.closest('.observation-card');
+    return card ? report.observations.find(observation => card.id === `observation-${observation.id}`) : null;
+  };
+  const reorder = (sourceId, targetId) => {
+    setReport(previous => moveObservation(previous, sourceId, targetId));
+    setOrderMessage('Ordre mis à jour. Les numéros du rapport et des repères sont recalculés.');
+  };
   const localize = id => {
     setPlanObservationId(id);
     document.getElementById('observation-plans')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1464,14 +1507,41 @@ function ObservationStep({ report, setReport }) {
   };
 
   const renderObservationCard = (obs) => {
-    const observationIndex = report.observations.findIndex((item) => item.id === obs.id);
+    const number = observationNumbers.get(obs);
+    const phase = observationPhase(report, obs);
+    const siblings = phaseObservations.get(phase);
+    const position = siblings.indexOf(obs);
     const selectedStage = findHabitologieStage(obs.phase_habitologie);
     const controls = selectedStage?.controls || [];
 
     return (
-      <article className="observation-card" key={obs.id} id={`observation-${obs.id}`}>
+      <article className={`observation-card${draggedId === obs.id ? ' is-dragged' : ''}${dropId === obs.id ? ' is-drop-target' : ''}`} key={obs.id} id={`observation-${obs.id}`}>
         <div className="observation-header">
-          <h3>Observation {observationIndex + 1}</h3>
+          <span className="observation-drag-handle" draggable={false} data-can-drag={siblings.length > 1} aria-hidden="true" title="Glisser pour déplacer dans cette phase"
+            onPointerDown={event => {
+              if (event.button !== 0 || siblings.length < 2) return;
+              event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId);
+              dragSource.current = { id: obs.id, x: event.clientX, y: event.clientY, moved: false };
+            }}
+            onPointerMove={event => {
+              const drag = dragSource.current;
+              if (!drag) return;
+              if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) > 5) drag.moved = true;
+              if (!drag.moved) return;
+              event.preventDefault(); setDraggedId(drag.id);
+              const target = pointerTarget(event);
+              setDropId(target && target.id !== drag.id && observationPhase(report, target) === phase ? target.id : '');
+            }}
+            onPointerUp={event => {
+              const drag = dragSource.current;
+              if (drag?.moved) {
+                const target = pointerTarget(event);
+                if (target && target.id !== drag.id && observationPhase(report, target) === phase) reorder(drag.id, target.id);
+                else if (target && observationPhase(report, target) !== phase) setOrderMessage('Le déplacement reste limité à la même phase.');
+              }
+              clearDrag();
+            }} onPointerCancel={clearDrag}><GripVertical size={20} /></span>
+          <h3>Observation {number}{compact && obs.titre ? ` · ${obs.titre}` : ''}</h3>
           <button
             className="icon-button danger"
             type="button"
@@ -1481,6 +1551,17 @@ function ObservationStep({ report, setReport }) {
             <Trash2 size={17} />
           </button>
         </div>
+
+        <div className="observation-order-controls">
+          <Field label="Numéro dans le rapport">
+            <select aria-label={`Numéro de l’observation ${number}`} value={obs.id} disabled={siblings.length < 2} onChange={event => reorder(obs.id, event.target.value)}>
+              {siblings.map(item => <option key={item.id} value={item.id}>{observationNumbers.get(item)}</option>)}
+            </select>
+          </Field>
+          <button type="button" className="button secondary" aria-label={`Monter l’observation ${number}`} disabled={position === 0} onClick={() => reorder(obs.id, siblings[position - 1].id)}><ArrowUp size={16} />Monter</button>
+          <button type="button" className="button secondary" aria-label={`Descendre l’observation ${number}`} disabled={position === siblings.length - 1} onClick={() => reorder(obs.id, siblings[position + 1].id)}><ArrowDown size={16} />Descendre</button>
+        </div>
+        <div className="observation-body" hidden={compact}>
 
         {habitologie && (
           <div className="form-grid two protocol-link-fields">
@@ -1559,11 +1640,26 @@ function ObservationStep({ report, setReport }) {
           micDisabledReason={consentReason}
         />
         <TextAreaWithMic
-          label="Suites proposees"
+          label="Explications"
+          value={obs.explications || ''}
+          onChange={(value) => updateObservation(obs.id, { explications: value })}
+          onAppend={(text) => updateObservation(obs.id, { explications: `${obs.explications || ''}${text}` })}
+          placeholder="Expliquer le constat et ajouter, si utile, des liens http:// ou https://..."
+          rows={3}
+          micDisabled={!dictationAllowed}
+          micDisabledReason={consentReason}
+        />
+        {textLinks(obs.explications || '').some(part => part.href) && <p className="explanation-preview" aria-label="Aperçu des explications">
+          {textLinks(obs.explications || '').map((part, index) => part.href
+            ? <a key={index} href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a>
+            : <React.Fragment key={index}>{part.text}</React.Fragment>)}
+        </p>}
+        <TextAreaWithMic
+          label={observationAdviceLabel(report)}
           value={obs.actions}
           onChange={(value) => updateObservation(obs.id, { actions: value })}
           onAppend={(text) => updateObservation(obs.id, { actions: `${obs.actions || ''}${text}` })}
-          placeholder="Mesures conservatoires, controle complementaire, travaux recommandes..."
+          placeholder="Conseils, mesures conservatoires, vérifications complémentaires..."
           rows={3}
           micDisabled={!dictationAllowed}
           micDisabledReason={consentReason}
@@ -1606,6 +1702,7 @@ function ObservationStep({ report, setReport }) {
             Camera
           </button>
         </div>
+        </div>
       </article>
     );
   };
@@ -1616,11 +1713,17 @@ function ObservationStep({ report, setReport }) {
         <Camera size={22} />
         <div>
           <h1>Observations</h1>
-          <p>Constats localises, niveau de gravite, photos et suites proposees.</p>
+          <p>Constats localisés, explications, photos et {observationAdviceLabel(report).toLocaleLowerCase('fr-FR')}.</p>
         </div>
       </div>
 
       <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId} onSelect={setPlanObservationId} />
+
+      <div className="observation-order-toolbar">
+        <p>{habitologie ? 'Les numéros suivent Eau, Air, Terre, Feu, puis les constats à classer. ' : ''}Changez le numéro ou glissez une fiche pour choisir sa place{habitologie ? ' dans sa phase' : ''}.</p>
+        <button type="button" className="button secondary" aria-pressed={compact} onClick={() => setCompact(value => !value)}>{compact ? 'Afficher les fiches complètes' : 'Vue compacte pour réorganiser'}</button>
+      </div>
+      {orderMessage && <p role="status" className="observation-order-status">{orderMessage}</p>}
 
       {habitologie && (!photoAllowed || !dictationAllowed) && (
         <div className="notice warning consent-warning" role="status">
@@ -1636,7 +1739,7 @@ function ObservationStep({ report, setReport }) {
       {habitologie ? (
         <div className="observation-phases">
           {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => {
-            const stageObservations = report.observations.filter((obs) => obs.phase_habitologie === stage.key);
+            const stageObservations = observationsInOrder.filter((obs) => obs.phase_habitologie === stage.key);
             return (
               <section className={`observation-phase phase-${stage.key}${isHabitologieStageEnabled(report, stage.key) ? '' : ' is-inactive'}`} key={stage.key}>
                 <div className="observation-phase-heading">
@@ -1670,14 +1773,14 @@ function ObservationStep({ report, setReport }) {
                 </div>
               </div>
               <div className="observation-list">
-                {report.observations.filter((obs) => !findHabitologieStage(obs.phase_habitologie)).map(renderObservationCard)}
+                {observationsInOrder.filter((obs) => !findHabitologieStage(obs.phase_habitologie)).map(renderObservationCard)}
               </div>
             </section>
           )}
         </div>
       ) : (
         <>
-          <div className="observation-list">{report.observations.map(renderObservationCard)}</div>
+          <div className="observation-list">{observationsInOrder.map(renderObservationCard)}</div>
           <button className="button secondary" type="button" onClick={() => addObservation()}>
             <Plus size={18} />
             Ajouter une observation
@@ -2314,13 +2417,15 @@ export default function App() {
       setConfirmReset(true);
       return;
     }
-    setInitialWizardData(deepMergeReport(newReport(), context || {}));
+    const fresh = newReport();
+    setInitialWizardData(deepMergeReport(fresh, { ...fresh, ...(context || {}) }));
     setAppState('wizard');
   };
 
   const confirmNew = async () => {
     await removeDraft();
-    const fresh = deepMergeReport(newReport(), newContext || {});
+    const initial = newReport();
+    const fresh = deepMergeReport(initial, { ...initial, ...(newContext || {}) });
     setDraft(null);
     setInitialWizardData(fresh);
     setConfirmReset(false);

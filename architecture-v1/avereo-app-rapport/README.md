@@ -5,13 +5,22 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-10
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Lot 0 — observations, candidat local vérifié
+
+Les fiches, plans et Word suivent désormais le même ordre ; les observations se déplacent dans leur phase, avec une vue compacte. Le libellé « Conseils habitologue » s'applique à tous les profils et les nouvelles créations commencent en Visite Globale. [Usage, critères et limites de qualification](docs/lot-0-observations.md). La PR #148 reste distincte de ce complément, sans nouvelle livraison.
+
+## Profil Habitologue — candidat local précédent
+
+Le premier lot ajoute le profil explicite de mission et les explications des observations. Le parcours historique reste disponible. [Périmètre, critères et état](docs/profil-habitologue.md).
+
 
 Depuis **Export**, le propriétaire peut transmettre une [copie pour les tests](docs/partage-tests-et-stockage.md) du dossier ouvert.
 

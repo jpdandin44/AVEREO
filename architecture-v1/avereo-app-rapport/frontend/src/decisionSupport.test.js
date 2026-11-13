@@ -71,3 +71,70 @@ test('future schemas are identified without silently downgrading stored data', (
   assert.match(buildDecisionHtml(report), /Format non pris en charge/);
   assert.match(decisionWarnings(report).join('\n'), /non pris en charge/);
 });
+
+const habitologue = () => ({ ...dossier(), profil_metier: 'habitologue', categorie: 'Visite Globale' });
+const projectionTexts = ['Vérifier le parcours d’air', 'Principe général', 'Accès à convenir', 'Avant travaux', 'Améliorer le confort', 'Comparaison des conséquences',
+  'Arbitrage à discuter', 'Projection 1', 'Projection 2', 'Option A', 'Option B', 'Aucune option retenue'];
+
+test('Habitologue exports sections 1 to 3 and none of the projections, in both deliverables', () => {
+  const report = habitologue(); report.decision.arbitrage = { option_proposee: 'a', motif: 'Motif d’arbitrage', prochaine_etape: 'Étape secrète' };
+  report.decision.option_a.criteres.budget = 'Critère caché';
+  for (const client of [false, true]) {
+    const html = buildDecisionHtml(report, client);
+    for (const text of ['Confort de chambre', 'Aide à la décision']) assert.ok(html.includes(text));
+    for (const text of [...projectionTexts, 'Motif d’arbitrage', 'Étape secrète', 'Critère caché']) assert.ok(!html.includes(text), text);
+    assert.equal((html.match(/<section/g) || []).length, (html.match(/<\/section>/g) || []).length);
+  }
+  const expert = buildDecisionHtml(report);
+  for (const text of ['Cadre permanent des habitants', 'Une chambre disponible', 'Du constat à son effet', 'Usage de la chambre perturbé', 'Traces au mur', 'Non communiqué']) assert.ok(expert.includes(text), text);
+  assert.doesNotMatch(buildDecisionHtml(report, true), /Usage de la chambre perturbé|Note experte/);
+});
+
+test('the Habitologue profile never alters the stored decision data and leaves other profiles untouched', () => {
+  const report = habitologue(), before = JSON.stringify(report);
+  buildDecisionHtml(report); decisionWarnings(report); hasDecisionData(report);
+  assert.equal(JSON.stringify(report), before);
+  assert.equal(report.decision.actions.length, 1); assert.deepEqual(report.decision.option_a.action_ids, ['a1']);
+  for (const profil of [undefined, '', 'architecte', 'inconnu']) {
+    const legacy = { ...dossier(), categorie: 'Visite Globale', profil_metier: profil };
+    const html = buildDecisionHtml(legacy);
+    for (const text of ['Projection 1', 'Projection 2', 'Comparaison des conséquences', 'Arbitrage à discuter', 'Vérifier le parcours d’air']) assert.ok(html.includes(text), `${profil} ${text}`);
+  }
+});
+
+test('Habitologue keeps the useful warnings of sections 1 to 3 and drops those of the projections', () => {
+  const report = habitologue(); report.decision.projet.budget = '';
+  report.decision.attentes.push({ ...report.decision.attentes[0] });
+  report.decision.liens.push({ id: 'l2', observation_id: 'absente', attente_ids: [], effet: '', verification: '' });
+  report.decision.actions.push({ id: 'a1', intitule: '', categorie: '', observation_ids: ['absente'], attente_ids: [], incontournable: true });
+  report.decision.option_a.action_ids = []; report.decision.option_b.objectif = ''; report.decision.arbitrage.option_proposee = 'z';
+  const warnings = decisionWarnings(report).join('\n');
+  for (const expected of [/Attentes : identifiant absent ou dupliqué/, /introuvable.*absente/, /préciser une attente et son effet/, /Budget.*non renseigné/]) assert.match(warnings, expected);
+  for (const unexpected of [/Actions/, /Action/, /Option/, /incontournable/, /arbitrage/, /objectif et actions/]) assert.doesNotMatch(warnings, unexpected);
+  const html = buildDecisionHtml(report);
+  assert.match(html, /Points restant à compléter/); assert.match(html, /Budget des habitants/); assert.doesNotMatch(html, /Action|Option/);
+  // The same data keeps every projection warning for the historical parcours.
+  report.profil_metier = undefined;
+  const historical = decisionWarnings(report).join('\n');
+  for (const expected of [/Actions : identifiant absent ou dupliqué/, /Option A : objectif et actions à préciser/, /Option proposée introuvable/]) assert.match(historical, expected);
+});
+
+test('hidden projection data alone neither creates a Word section nor a warning for Habitologue', () => {
+  const report = { categorie: 'Visite Globale', profil_metier: 'habitologue', observations: [], decision: normalizeDecision() };
+  report.decision.actions = [{ id: 'a1', intitule: 'Conservée', categorie: '', observation_ids: [], attente_ids: [] }];
+  report.decision.option_a.objectif = 'Conservé'; report.decision.arbitrage.motif = 'Conservé';
+  assert.equal(hasDecisionData(report, false), false); assert.equal(hasDecisionData(report), true);
+  assert.equal(buildDecisionHtml(report), ''); assert.equal(buildDecisionHtml(report, true), ''); assert.deepEqual(decisionWarnings(report), []);
+  assert.equal(report.decision.actions.length, 1);
+  report.profil_metier = undefined;
+  assert.notEqual(buildDecisionHtml(report), ''); assert.ok(decisionWarnings(report).length > 0);
+});
+
+test('the references kept in sections 1 to 3 stay controlled for Habitologue', () => {
+  const report = habitologue(); report.observations = [];
+  assert.match(buildDecisionHtml(report), /Référence introuvable \(o1\)/); assert.match(decisionWarnings(report).join('\n'), /introuvable.*o1/);
+  report.observations = [{ id: 'o1', titre: 'A' }, { id: 'o1', titre: 'B' }];
+  assert.match(buildDecisionHtml(report), /ambiguë/);
+  report.decision.schema_version = 2;
+  assert.match(buildDecisionHtml(report), /Format non pris en charge/); assert.match(decisionWarnings(report).join('\n'), /non pris en charge/);
+});

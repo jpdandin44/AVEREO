@@ -5,13 +5,22 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-02
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 2026-11-12 — Numéros dérivés de l'ordre commun, références stables
+
+Contexte : une saisie hors protocole produisait des numéros différents de l'ordre attendu dans la lecture du dossier. Décision : utiliser une fonction d'ordre commune pour la présentation et les restitutions, conserver l'identifiant comme référence persistante et ne réordonner le tableau que sur action explicite dans une même phase. Raisons : maintenir plans, données et sélection client cohérents sans migration ni reclassement automatique. Conséquences : les numéros peuvent changer après déplacement ; le client garde les numéros globaux, avec des trous. La création est restreinte à Visite Globale, les dossiers techniques restent conservés. [Contrat du lot 0](docs/lot-0-observations.md).
+
+## 2026-11-12 — Métier du dossier distinct des droits
+
+Contexte : adapter le parcours Habitologue sans transformer les anciens dossiers. Décision : profil explicite dans le payload du dossier, absence de valeur conservant le parcours historique ; présentation des projections réversible, données inchangées. Raisons : préserver les archives et séparer métier, catégorie de visite et droits CONNECT. Conséquences : aucun rôle ni défaut de compte modifié dans ce lot. [Contrat](docs/profil-habitologue.md).
+
 
 ## 2026-11-02 — Repères séparés des fonds et revue expert reportée
 
