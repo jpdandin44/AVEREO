@@ -51,9 +51,10 @@ it('regroupe, replie, personnalise et réordonne les fichiers dans leur dossier'
   fireEvent.click(screen.getByRole('button', { name: 'Personnaliser les catégories' }));
   fireEvent.change(screen.getByLabelText('Icône : Plans et façades'), { target: { value: 'leaf' } });
   fireEvent.change(screen.getByLabelText('Couleur : Plans et façades'), { target: { value: '#123456' } });
+  fireEvent.change(screen.getByLabelText('Code couleur : Plans et façades'), { target: { value: '#74539d' } });
   fireEvent.click(screen.getByRole('button', { name: 'Enregistrer les catégories' }));
   await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
-  expect(settings.categories.plans).toEqual({ icon: 'leaf', color: '#123456' });
+  expect(settings.categories.plans).toEqual({ icon: 'leaf', color: '#74539d' });
   expect(repository.saveDocumentSettings).toHaveBeenCalledTimes(2);
 });
 const bien = { id: 1, address: 'Bien fictif', dossier: { attachments: [] } };

@@ -33,13 +33,18 @@ export function DocumentModal({ title, onClose, busy, children }) {
 }
 export function CategorySettings({ settings, busy, onSave, onClose }) {
   const [value, setValue] = useState(settings);
+  const [colors, setColors] = useState(() => Object.fromEntries(Object.entries(settings.categories).map(([key, appearance]) => [key, appearance.color])));
   function appearance(category, patch) { setValue(current => ({ ...current, categories: { ...current.categories, [category]: { ...current.categories[category], ...patch } } })); }
+  function color(category, next) {
+    setColors(current => ({ ...current, [category]: next }));
+    if (/^#[0-9a-f]{6}$/i.test(next)) appearance(category, { color: next });
+  }
   return <DocumentModal title="Personnaliser les catégories" onClose={onClose} busy={busy}><form onSubmit={e => { e.preventDefault(); onSave(value); }}>
     <p>Choisissez l’apparence des dossiers de ce bien. Les documents conservent leur catégorie.</p>
     <div className="category-settings">{Object.entries(CATEGORIES).map(([category, name]) => <div className="category-setting" key={category}>
       <CategoryIcon appearance={value.categories[category]} /><strong>{name}</strong>
       <label>Icône<select aria-label={`Icône : ${name}`} value={value.categories[category].icon} disabled={busy} onChange={e => appearance(category, { icon: e.target.value })}>{CATEGORY_ICONS.map(icon => <option key={icon} value={icon}>{ICON_NAMES[icon]}</option>)}</select></label>
-      <label>Couleur<input type="color" aria-label={`Couleur : ${name}`} value={value.categories[category].color} disabled={busy} onChange={e => appearance(category, { color: e.target.value })} /></label>
+      <label>Couleur<input type="color" aria-label={`Couleur : ${name}`} value={value.categories[category].color} disabled={busy} onInput={e => color(category, e.target.value)} onChange={e => color(category, e.target.value)} /><input className="category-color-code" aria-label={`Code couleur : ${name}`} value={colors[category]} pattern="#[0-9a-fA-F]{6}" title="Code couleur, par exemple #31756A" required disabled={busy} onChange={e => color(category, e.target.value)} /></label>
     </div>)}</div>
     <footer><button type="button" className="doc-secondary" disabled={busy} onClick={onClose}>Annuler</button><button type="submit" className="doc-primary" disabled={busy}>{busy ? 'Enregistrement…' : 'Enregistrer les catégories'}</button></footer>
   </form></DocumentModal>;
