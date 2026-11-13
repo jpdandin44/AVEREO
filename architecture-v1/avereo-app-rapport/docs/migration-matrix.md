@@ -5,13 +5,27 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 2026-11-13 — Originaux privés, migration additive locale
+
+| Élément | Compatibilité / état |
+| --- | --- |
+| Migration `003_photo_originals.sql` | Ajoute uniquement `rapport_photo_originals`, exécutée sur MariaDB temporaire ; aucun schéma hébergé modifié. |
+| Photos historiques | `id`, `name`, `src`, `horodatageISO` et autres champs conservés ; `original` facultatif, aucun transfert automatique. |
+| Export/import et Word | Image complète toujours conservée ; référence facultative ne confère aucun droit. Aucun allègement annoncé. |
+| Propriété | Celle du rapport et celle de l’original doivent correspondre ; aucun changement du propriétaire source. |
+| Suppression / réattribution | Aucune suppression automatique d’original ; accès refusé lorsque le rapport disparaît ou change de propriétaire. Politique future à définir. |
+| Retour applicatif | Désactiver la fonction, conserver table et fichiers privés ; les anciennes interfaces ignorent la référence. Retour avec données à préparer avant livraison. |
+
+[Contrat, configuration et restauration](photos-originales-et-annotations.md), [API](../api/photos-originales.json).
+
 
 ## 2026-11-12 — Lot 0 Observations, sans migration
 

@@ -55,6 +55,39 @@ final class SnapshotReader
         foreach($d['iterations'] as $it)foreach($it['applicationIds']??[] as $id)if(!isset($apps[$id]))throw new Failure(503);
         return ['data'=>$d,'index'=>$ix];
     }
+    /** Optional bounded metadata, never a filesystem traversal on the host. */
+    private function patrimony(mixed $p):?array
+    {
+        if($p===null)return null;
+        $keys=static fn($v,$ks)=>is_array($v)&&count($v)===count($ks)&&!array_diff(array_keys($v),$ks);
+        $id=static fn($v)=>is_string($v)&&preg_match('/^[a-z0-9_-]{1,100}$/D',$v);
+        $text=static fn($v)=>is_string($v)&&preg_match('/^.{0,600}$/usD',$v)&&!preg_match('/[\x00-\x1f<>]|[a-z]:[\\\\\/]|\/home\//i',$v);
+        $date=static fn($v)=>is_string($v)&&str_contains($v,'T')&&strtotime($v)!==false;
+        $list=static fn($v,$max)=>is_array($v)&&array_is_list($v)&&count($v)<=$max;
+        $states=['observed','partial','unavailable','not_configured'];
+        if(!$keys($p,['schema','version','collectedAt','scope','mode','sources','metrics','exclusions','limitations'])
+            ||$p['schema']!=='avereo-development-patrimony'||$p['version']!==1||!$date($p['collectedAt'])||$p['scope']!=='AVEREO-reference'||$p['mode']!=='metadata_only_read_only'
+            ||!$list($p['sources'],20)||!$list($p['metrics'],30)||!$list($p['exclusions'],30)||!$list($p['limitations'],30))throw new Failure(503);
+        foreach(array_merge($p['exclusions'],$p['limitations']) as $value)if(!$text($value))throw new Failure(503);
+        $sources=[];$metrics=[];
+        foreach($p['sources'] as $s){
+            if(!$keys($s,['id','label','status','asOf','sha256'])||!$id($s['id'])||isset($sources[$s['id']])||!$text($s['label'])||!in_array($s['status'],$states,true)
+                ||$s['asOf']!==null&&!$date($s['asOf'])||$s['sha256']!==null&&(!is_string($s['sha256'])||!preg_match('/^[a-f0-9]{64}$/D',$s['sha256'])))throw new Failure(503);
+            $sources[$s['id']]=true;
+        }
+        foreach($p['metrics'] as $m){
+            if(!$keys($m,['id','label','value','unit','status','sourceId','asOf','meaning','items'])||!$id($m['id'])||isset($metrics[$m['id']])||!$text($m['label'])||!$text($m['unit'])||!$text($m['meaning'])
+                ||!is_string($m['sourceId'])||!isset($sources[$m['sourceId']])||!in_array($m['status'],$states,true)||$m['asOf']!==null&&!$date($m['asOf'])||!$list($m['items'],5000))throw new Failure(503);
+            if($m['value']!==null&&(!is_int($m['value'])||$m['value']<0||$m['value']>9007199254740991)||in_array($m['status'],['unavailable','not_configured'],true)&&$m['value']!==null
+                ||$m['status']==='observed'&&$m['value']!==count($m['items'])||$m['status']==='partial'&&($m['value']===null||$m['value']<count($m['items'])))throw new Failure(503);
+            $ids=[];foreach($m['items'] as $i){
+                if(!$keys($i,['id','label','kind','applicationIds'])||!$id($i['id'])||isset($ids[$i['id']])||!$text($i['label'])||!$text($i['kind'])||!$list($i['applicationIds'],50))throw new Failure(503);
+                foreach($i['applicationIds'] as $app)if(!$id($app))throw new Failure(503);$ids[$i['id']]=true;
+            }$metrics[$m['id']]=true;
+        }
+        if(strlen(json_encode($p,JSON_THROW_ON_ERROR|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE))>2*1024*1024)throw new Failure(503);
+        return $p;
+    }
     public function state():array
     {
         ['data'=>$d,'index'=>$ix]=$this->read();
@@ -62,7 +95,7 @@ final class SnapshotReader
             'status'=>$v['status'],'currentPhase'=>$v['currentPhase'],'versions'=>$v['versions'],'nextAction'=>$v['nextAction'],'blockerCount'=>count($v['blockers']),
             'phases'=>array_map(static fn($p)=>['id'=>$p['id'],'label'=>$p['label'],'status'=>$p['status'],'criteria'=>count($p['criteria']),
                 'approved'=>count(array_filter($p['criteria'],static fn($c)=>($c['decision']??'')==='approved'))],$v['phases'])],$d['iterations']),
-            'portfolio'=>$d['portfolio'],'githubSnapshot'=>$d['githubSnapshot']??null,'githubRefreshAvailable'=>false,'snapshot'=>['sequence'=>$d['sequence'],'generatedAt'=>$d['generatedAt'],'receivedAt'=>$ix['receivedAt']??null,
+            'portfolio'=>$d['portfolio'],'patrimony'=>$this->patrimony($d['patrimony']??null),'githubSnapshot'=>$d['githubSnapshot']??null,'githubRefreshAvailable'=>false,'snapshot'=>['sequence'=>$d['sequence'],'generatedAt'=>$d['generatedAt'],'receivedAt'=>$ix['receivedAt']??null,
                 'restored'=>($ix['restored']??false)===true,'mode'=>'private_read_only_projection']];
     }
     public function iteration(string $id):array

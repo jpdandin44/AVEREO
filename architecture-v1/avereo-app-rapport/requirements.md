@@ -5,13 +5,20 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Photos — état vérifié le 13 novembre
+
+La première tranche locale conserve et rouvre les octets originaux JPEG/PNG/WebP sous le propriétaire courant du dossier, avec empreinte contrôlée, refus des autres propriétaires et sauvegarde/restauration locale conjointe. Le lien facultatif ne doit altérer aucun champ existant ni `photo.src`. Une opération tardive ne doit pas rattacher un résultat à une photo ou un dossier remplacé ; l’enregistrement en ligne attend la fin d’un envoi.
+
+L’allègement du JSON, la version recadrée/annotée, le choix avant export et la qualification hébergée restent des exigences à réaliser. Les limites d’hébergement, la rétention et les transferts de propriété sont encore à décider. [État par critère](docs/photos-originales-et-annotations.md).
+
 
 ## Lot 0 du 12 novembre — observations
 

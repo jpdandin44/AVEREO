@@ -1018,7 +1018,7 @@ img {
 
 .photo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 10px;
 }
 
@@ -1062,6 +1062,28 @@ img {
   width: 30px;
   height: 30px;
 }
+
+.photo-grid figure.photo-with-original {
+  aspect-ratio: auto;
+  overflow: visible;
+  background: #fff;
+}
+
+.photo-thumb { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 7px; }
+.photo-original-controls { display: grid; gap: 6px; padding: 8px; }
+.photo-original-controls > .button { width: 100%; font-size: 0.78rem; padding: 7px; white-space: normal; }
+.photo-original-controls > p { margin: 0; font-size: 0.78rem; overflow-wrap: anywhere; }
+.photo-original-notice { font-size: 0.86rem; }
+.photo-viewer { position: fixed; inset: 0; margin: auto; padding: 0; border: 0; border-radius: 8px; width: min(1100px, 96vw); max-height: 94dvh; overflow: hidden; }
+.photo-viewer::backdrop { background: rgba(15, 23, 42, 0.68); }
+.photo-viewer .modal-card { width: 100%; max-height: 94dvh; display: flex; flex-direction: column; }
+.photo-viewer .modal-header { flex-shrink: 0; }
+.photo-viewer h2 { overflow-wrap: anywhere; }
+.photo-viewer-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 18px; }
+.photo-viewer-tools label { display: flex; align-items: center; gap: 8px; }
+.photo-viewer-tools input { width: 150px; }
+.photo-viewer-image { overflow: auto; padding: 12px; min-height: 150px; height: calc(94dvh - 160px); background: #172033; }
+.photo-grid .photo-viewer-image img { display: block; max-width: none; height: auto; object-fit: contain; }
 
 .photo-action {
   display: grid;

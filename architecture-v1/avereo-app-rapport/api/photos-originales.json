@@ -1,0 +1,422 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Rapport — photos originales privées",
+    "version": "git",
+    "description": "Première tranche locale, désactivée par défaut. Propriétaire courant du rapport et de l’original exigé à chaque opération ; aucune exception administrateur, partage, suppression ou remplacement. Configuration privée : racine hors webroot, taille maximale et quota obligatoires. État de qualification : docs/photos-originales-et-annotations.md."
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ],
+  "security": [
+    {
+      "connectGate": []
+    }
+  ],
+  "paths": {
+    "/photo-originals.php": {
+      "get": {
+        "summary": "Capacités, liste ou lecture d’un original",
+        "description": "action=capabilities retourne l’activation et les formats/limites sans reportId. Sinon reportId est requis : sans id, liste ; avec id, octets après contrôle de taille et SHA-256. La liste ne garantit pas la présence de tous les fichiers : leur lecture les vérifie. Méthodes autres que GET/POST refusées en 405.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "action",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "capabilities"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "reportId",
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "schema": {
+              "$ref": "#/components/schemas/Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Capacités, métadonnées ou fichier privé exact",
+            "headers": {
+              "Cache-Control": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "private, no-store pour le fichier"
+              },
+              "Content-Disposition": {
+                "schema": {
+                  "type": "string"
+                },
+                "description": "attachment, nom nettoyé et extension du type vérifié"
+              },
+              "X-Content-Type-Options": {
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "nosniff"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Capabilities"
+                    },
+                    {
+                      "type": "object",
+                      "required": [
+                        "ok",
+                        "originals"
+                      ],
+                      "properties": {
+                        "ok": {
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "originals": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Original"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/webp": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/AuthError"
+          },
+          "403": {
+            "$ref": "#/components/responses/AuthError"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      },
+      "post": {
+        "summary": "Conserver un original immuable du dossier",
+        "description": "Même origine, X-Avereo-Photo: 1 obligatoire. Taille/empreinte recalculées ; JPEG/PNG/WebP reconnus par signature et en-tête, sans décodage complet. Même contenu dans le même dossier : même id après vérification du fichier existant, sans quota supplémentaire. L’accusé ne sauvegarde pas le lien dans le JSON : le client doit rattacher original puis sauver le rapport via l’API existante.",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Avereo-Photo",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "reportId",
+                  "sha256",
+                  "file"
+                ],
+                "properties": {
+                  "reportId": {
+                    "$ref": "#/components/schemas/Id"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-fA-F0-9]{64}$"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Original conservé et vérifié, neuf ou déjà présent",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "ok",
+                    "original"
+                  ],
+                  "properties": {
+                    "ok": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "original": {
+                      "$ref": "#/components/schemas/Original"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/AuthError"
+          },
+          "403": {
+            "description": "Sas/identité refusée, origin_refused ou photo_header_required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "quota_exceeded : tous rapports du propriétaire compris",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "file_too_large : limite applicative ou PHP atteinte",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "invalid_request, invalid_image ou hash_mismatch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "$ref": "#/components/responses/Unavailable"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "connectGate": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "AVEREO_RAPPORT_GATE",
+        "description": "Sas existant, nom configurable côté serveur, identité obligatoire"
+      }
+    },
+    "schemas": {
+      "Id": {
+        "type": "string",
+        "pattern": "^[a-f0-9]{32}$"
+      },
+      "Original": {
+        "type": "object",
+        "required": [
+          "id",
+          "reportId",
+          "sha256",
+          "bytes",
+          "mime",
+          "width",
+          "height",
+          "name",
+          "createdAt"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "reportId": {
+            "$ref": "#/components/schemas/Id"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "bytes": {
+            "type": "integer",
+            "minimum": 1,
+            "format": "int64"
+          },
+          "mime": {
+            "type": "string",
+            "enum": [
+              "image/jpeg",
+              "image/png",
+              "image/webp"
+            ]
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32767
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 32767
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Capabilities": {
+        "type": "object",
+        "required": [
+          "ok",
+          "enabled"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "enum": [
+              true
+            ]
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "maxOriginalBytes": {
+            "type": "integer",
+            "minimum": 1,
+            "format": "int64"
+          },
+          "allowedMimeTypes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+              ]
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "ok",
+          "error"
+        ],
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "enum": [
+              false
+            ]
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "responses": {
+      "AuthError": {
+        "description": "Sas ou identité absent, expiré ou révoqué ; relancer depuis CONNECT",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "not_found : absent ou autre propriétaire, même réponse",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unavailable": {
+        "description": "storage_unavailable : désactivé, configuration, base ou fichier indisponible/altéré",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

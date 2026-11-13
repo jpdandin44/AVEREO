@@ -1,0 +1,12 @@
+import {writeFile,lstat,realpath} from 'node:fs/promises';
+import {resolve,dirname,relative,isAbsolute} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {collectPatrimony} from './development-patrimony.mjs';
+const args=process.argv.slice(2),get=k=>args[args.indexOf(k)+1];
+if(args.length!==6||!['--root','--registry','--output'].every(k=>args.includes(k)))throw Error('--root RACINE --registry REGISTRE --output FICHIER_PRIVE_NEUF');
+const out=resolve(get('--output')),parent=dirname(out),frontend=resolve(fileURLToPath(new URL('../frontend',import.meta.url)));
+if(await realpath(parent)!==parent||(await lstat(parent)).isSymbolicLink())throw Error('Sortie privée non canonique.');
+const rel=relative(frontend,out);if(!rel||rel!=='..'&&!rel.startsWith('..\\')&&!rel.startsWith('../')&&!isAbsolute(rel))throw Error('Sortie interdite dans le frontend.');
+const data=await collectPatrimony({root:get('--root'),registryFile:get('--registry')});
+await writeFile(out,JSON.stringify(data,null,2)+'\n',{flag:'wx',mode:0o600});
+console.log(JSON.stringify({status:'collected',metrics:data.metrics.length,collectedAt:data.collectedAt,output:out,readOnly:true}));

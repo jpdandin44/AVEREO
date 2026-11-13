@@ -5,13 +5,20 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 2026-11-13 — Originaux privés, candidat local
+
+Nouvelle route `photo-originals.php`, service indépendant `photo-original-store.php` et migration 003 additive. Le client conserve les données existantes ; le navigateur ne reçoit aucun chemin privé. Le propriétaire courant est vérifié avant traitement, sous le verrou puis dans la transaction d’insertion ; les autres comptes et l’administrateur non propriétaire sont refusés. Le sas et la révocation existants sont réutilisés sans modification. Aucun accès organisationnel ou transfert ajouté.
+
+Les tests PHP/SQLite et HTTP/MariaDB isolés couvrent immutabilité, contrôle des octets, refus inter-comptes, quota concurrent, sauvegarde/restauration et conservation des propriétaires. La recette du navigateur utilise une mire fictive et des tickets locaux ; elle ne vaut pas recette OAuth/CONNECT hébergée. Le proxy de démonstration conserve le Host initial afin de respecter le contrôle Origin ; le serveur produit n’a pas été assoupli. [Preuves et réserves](photos-originales-et-annotations.md#développement-local).
+
 
 ## 2026-11-12 — Lot 0 Observations, intégration locale
 

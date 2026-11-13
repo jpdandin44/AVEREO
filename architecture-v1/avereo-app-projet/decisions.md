@@ -5,12 +5,16 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-11
+updated: 2026-11-12
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 12 novembre — Collecte opérateur et champ signé optionnel pour PQ-01
+
+Contexte : ajouter la visibilité sur le parent du clone sans copier le patrimoine sur le serveur ni introduire un deuxième suivi. Décision technique locale : réutiliser les inventaires et le registre consultatif ; collecter explicitement des métadonnées bornées et transporter un champ `patrimony` optionnel dans la projection existante. Raisons : préserver droits, compatibilité et sources ; distinguer absence, inconnue et résultat vérifié. Conséquences : aucune collecte distante/continue et aucun total de tests ou de sauvegardes restaurables sans preuve ; nouvelle observation puis publication explicite nécessaires. Ce choix d'implémentation ne vaut pas validation humaine ni autorisation de livraison.
 
 ## 11 novembre — Git fait autorité pour les développements
 

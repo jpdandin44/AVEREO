@@ -5,12 +5,20 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 13 novembre — Revue PQ-01, PR #151
+
+Lot committé sur sa branche puis main intégré sans conflit, sans modifier la branche cible. 326 tests Projet, compilation, séparation publique, contrôle de base et syntaxe PHP requalifiés ; paquet privé identique. Vue locale privée rouverte, réserves de dépendances reconfirmées, suivi et preuve datée ajoutés. [PR #151](https://github.com/jpdandin44/AVEREO/pull/151), quatre cases humaines décochées ; aucun déploiement ni nouvelle donnée publiée en préproduction.
+
+## 12 novembre — PQ-01 Patrimoine & qualité local
+
+Collecte de métadonnées d'inventaire, listes dédupliquées et datées, compteurs inconnus explicites, détail par application/dossier et exclusions visibles. Transport optionnel dans l'état/projection signée Node/PHP, contrat fermé et compatibilité historique. Interface privée consultative sans changement d'authentification, du Gantt ou des décisions métier. [Guide, tests et réserves](docs/patrimoine-qualite.md). Aucun déploiement.
 
 ## 12 novembre — Reprise de la vue après expiration
 

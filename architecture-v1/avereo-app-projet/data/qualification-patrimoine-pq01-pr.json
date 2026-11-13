@@ -1,0 +1,37 @@
+{
+  "schema": "avereo-local-pr-qualification-receipt",
+  "version": 1,
+  "iterationId": "cockpit-patrimoine-pq01",
+  "observedOn": "2026-11-13",
+  "codeCandidateSha": "148a21bbc9682380c6333e208b94744da2cf5b42",
+  "mainComparedSha": "be54aa7d945ead50f4c3ee1a4edb18372b32e3e6",
+  "mergeIntoWorkingBranch": "without_conflict_main_unchanged",
+  "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/151",
+  "review": {"phase": 1, "environment": "local", "url": "http://127.0.0.1:5241/?developments", "authentication": "private_local_capability_not_CONNECT", "humanApprovals": 0},
+  "checks": {
+    "projectTests": {"passed": 326, "failed": 0, "skipped": 0, "newTargetedTestsIncluded": 10},
+    "projectBuild": "passed",
+    "publicReleaseSeparation": {"files": 23, "result": "passed"},
+    "repositoryBaseline": "passed",
+    "phpSyntax": "passed",
+    "browserLocal": ["private_page_loaded", "patrimony_synthesis", "unknown_values_preserved", "rapport_filter_and_dated_files"],
+    "npmAudit": {"moderate": 1, "high": 3, "critical": 0, "dependenciesChanged": false, "deliveryReserveRetained": true},
+    "privatePackage": {
+      "generatedAt": "2026-11-13T07:59:41.990Z",
+      "sourceSha": "148a21bbc9682380c6333e208b94744da2cf5b42",
+      "artifactSha256": "7b6194bafecdcb7326004ebf6b53ff4425224bd39922e9a7b05edbc453bd8c0a",
+      "cleanSourceAtBuild": true,
+      "matchesPreviousPackage": true,
+      "readyToDeploy": false,
+      "deployed": false
+    }
+  },
+  "remoteCi": {"status": "consult_latest_published_head", "url": "https://github.com/jpdandin44/AVEREO/pull/151/checks", "humanPolicy": "four_unchecked_boxes_owned_by_responsible"},
+  "historicalReceipt": "data/qualification-patrimoine-pq01.json",
+  "limits": [
+    "The reviewed inventory remains dated 12 November, not a new global GitHub or disk inventory.",
+    "Later traceability-only commits do not extend this local proof to changed application code.",
+    "Existing dependency alerts require qualification before delivery.",
+    "No real CONNECT session or hosted review qualified for PQ-01. No deployment or production operation."
+  ]
+}

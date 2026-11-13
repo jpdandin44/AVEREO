@@ -5,13 +5,22 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Photos originales — première tranche locale du 13 novembre
+
+Dans Observations, **Voir la photo** ouvre une vue agrandie avec zoom. Lorsque le stockage privé est configuré et le dossier sauvé en ligne, **Conserver l’original en ligne** envoie le fichier sans le modifier ; sauver ensuite le dossier conserve son lien. **Ouvrir l’original privé** vérifie et rouvre ce fichier à la demande, avec téléchargement possible.
+
+La fonction serveur est désactivée par défaut. La photo du rapport et les exports existants restent inchangés : ce premier incrément n’allège pas encore le JSON ni le Word. Recadrage et annotations restent à développer. [Usage, contrat, recette locale et prérequis d’activation](docs/photos-originales-et-annotations.md) ; [commandes de vérification](tests/README.md).
+
+Le lot 0 a entre-temps été fusionné en PR149 puis livré en préproduction le 13 novembre ; sa recette fonctionnelle hébergée reste ouverte. Les mentions « candidat local » antérieures ci-dessous décrivent leur étape historique. Le suivi opérationnel canonique distingue cette livraison du nouveau lot photo, qui demeure local.
+
 
 ## Lot 0 — observations, candidat local vérifié
 

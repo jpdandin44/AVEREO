@@ -5,6 +5,7 @@ import {DevelopmentError} from './development-access.mjs';
 import {projectDevelopmentVersions,developmentPortfolio} from './development-versions.mjs';
 import {readGithubObservations,observeGithub} from './development-github-observations.mjs';
 import {readEvidenceQualification,qualifiedView,qualifiedEvidence} from './development-evidence-qualification.mjs';
+import {readPatrimonyObservation} from './development-patrimony.mjs';
 
 export const DEVELOPMENT_PHASES=['Cadrage','Développement local','Préproduction','Mise en production'];
 const hash=v=>createHash('sha256').update(typeof v==='string'||Buffer.isBuffer(v)?v:JSON.stringify(v)).digest('hex');
@@ -27,7 +28,7 @@ function selectProjection(raw,source){
 }
 function safeLink(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;}catch{return null;}}
 
-export async function createDevelopmentStore(entries,{adminId=null,applications=[],githubObservationFile=null,evidenceQualificationFile=null}={}){
+export async function createDevelopmentStore(entries,{adminId=null,applications=[],githubObservationFile=null,evidenceQualificationFile=null,patrimonyObservationFile=null}={}){
   if(!Array.isArray(entries)||!entries.length||entries.length>50)throw new Error('Registre privé absent ou invalide.');
   if(evidenceQualificationFile&&entries.some(e=>e.writable!==false))throw Error('Qualifications réservées aux sources consultatives.');
   const sources=new Map();
@@ -140,7 +141,7 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
   return {
     list,
     async portfolio(){return developmentPortfolio(applications,await list(),await readGithubObservations(githubObservationFile));},
-    async dashboard(){const iterations=await list(),github=await readGithubObservations(githubObservationFile);return{iterations,portfolio:await developmentPortfolio(applications,iterations,github),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{}},readAt:new Date().toISOString()};},
+    async dashboard(){const iterations=await list(),github=await readGithubObservations(githubObservationFile);return{iterations,portfolio:await developmentPortfolio(applications,iterations,github),patrimony:await readPatrimonyObservation(patrimonyObservationFile),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{}},readAt:new Date().toISOString()};},
     async get(id){return (await snapshot(id)).view;},
     async proof(id,proofId){const state=await snapshot(id);const file=state.files.get(proofId);if(!file)fail(404,'Pièce non disponible.');const content=await readFile(file.path);if(hash(content)!==file.hash)fail(409,'La pièce a changé. Actualiser la revue.');return {content,ext:file.ext,name:proofId+file.ext};},
     async review(id,input,actor){

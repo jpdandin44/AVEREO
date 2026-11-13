@@ -12,6 +12,10 @@ tags:
   - exigences
 ---
 
+## 12 novembre — PQ-01, inventaire privé
+
+Afficher les volumes et listes justificatives du patrimoine avec source, date et portée ; dédupliquer les objets logiques et séparer fichiers de tests/cas exécutés, emplacements de sauvegarde/restauration et lecture/qualification. Métadonnées bornées, pas de contenu client ou secret, ni suivi de lien externe. Consultation seule et même contrôle serveur du propriétaire exact/global. Les anciennes projections sans patrimoine restent lisibles. La collecte n'est ni un rafraîchissement Git ni une publication automatique. [Contrat](api/patrimoine.md) et [suivi du premier lot](data/suivi-patrimoine-pq01.json).
+
 ## 12 novembre — Session et reprise de navigation
 
 Expliquer une session Projet absente ou expirée sans la confondre avec la session CONNECT ni avec un refus de rôle. Effacer les données privées après refus et proposer le parcours normal de reconnexion, sans prolonger ou contourner les droits. Vue d’ensemble doit pouvoir relire un état absent ; une actualisation demandée doit donner un retour explicite, sans revendiquer une collecte distante ou une mise à jour Git.

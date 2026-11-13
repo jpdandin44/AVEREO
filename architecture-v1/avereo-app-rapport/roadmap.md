@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
@@ -16,12 +16,12 @@ tags:
 
 ## Priorités du 12 novembre
 
-Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement ; sa revue visuelle Word reste en cours. Le travail photo est préparé en parallèle dans un autre lot, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
+Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement ; ses rendus Word de 15 pages expert et 5 client sont contrôlés ; la revue humaine de PR149 reste distincte. Le travail photo est désormais repris dans un lot isolé, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
 
 
-## Photos originales privées — à décider puis développer
+## Photos originales privées — développement local actif
 
-Prochain lot fonctionnel après le lot 0, [cadré en quatre phases](docs/photos-originales-et-annotations.md) : originaux privés en ligne, version rapport recadrée/annotée. La compression locale n'y sera activée qu'après confirmation de l'original ; son [module est isolé](docs/compression-photos.md). Le PDF natif reste un chantier distinct, seulement [cadré](docs/compression-photos.md#cadrage-distinct--pdf-natif).
+Reprise explicitement demandée le 13 novembre après la livraison du lot 0 (PR149) en préproduction. La première tranche locale conserve et rouvre les originaux privés ; elle est soumise à revue dans la PR150. La version rapport recadrée/annotée reste la tranche suivante du [lot en quatre phases](docs/photos-originales-et-annotations.md). La recette fonctionnelle hébergée de PR149 reste distincte et ouverte. La compression locale n'y sera activée qu'après confirmation de l'original ; son [module est isolé](docs/compression-photos.md). Le PDF natif reste un chantier distinct, seulement [cadré](docs/compression-photos.md#cadrage-distinct--pdf-natif).
 
 ## Essais temporaires — à qualifier
 
