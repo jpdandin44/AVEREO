@@ -13,6 +13,14 @@ tags:
   - connect
 ---
 
+## Photos du rapport — candidat local du 13 novembre
+
+Dans Observations, **Préparer la photo du rapport** permet de recadrer, tracer un rectangle ou une flèche et placer un commentaire. Annuler/rétablir, fermer sans appliquer et revenir à l’original restent possibles. Le choix de la copie préparée est repris dans les deux restitutions ; l’original reste dans le dossier et continue à servir à la conservation privée. [Parcours de revue, contrat et limites](docs/photos-rapport-edition.md).
+
+186 tests Node et les contrôles PHP passent ; les deux compilations sont réussies. Recette locale sur mire synthétique : annulation, trois annotations, choix réversible, reprise du brouillon et réimport JSON, images exactes dans les deux DOCX. La recette HTTP/MariaDB ne redémarre pas : Docker Desktop échoue avant lancement de la base. Aucune qualification serveur de ce nouveau candidat ou PDF déduite de la recette locale. Le stockage hébergé des originaux reste désactivé.
+
+PR154 est depuis validée, fusionnée et alignée en préproduction ; les mentions de brouillon ci-dessous conservent leur état historique de préparation. Ce nouveau lot photo n’est pas livré.
+
 ## Correction de pagination — préproduction vérifiée le 13 novembre
 
 Les deux réserves Word/PDF sont corrigées et vérifiées en préproduction : 26 pages relues, expert 20 pages et synthèse 6 pages, textes et médias conservés. Les 176 tests et les deux compilations réussissent ; PR154 ouverte en brouillon pour revue humaine, sans fusion ni production. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).

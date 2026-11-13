@@ -1752,3 +1752,17 @@ img {
 .observation-card.is-drop-target { outline: 3px solid #2354d5; outline-offset: 3px; }
 .observation-card.is-dragged { opacity: .6; }
 .observation-order-status { color: #173b77; }
+
+.photo-report-editor { width: min(1120px, 96vw); max-height: 94dvh; overflow: auto; padding: 22px; border: 0; border-radius: 14px; color: #172033; }
+.photo-report-editor::backdrop { background: #102138b8; }
+.photo-report-editor .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.photo-report-editor h2 { margin: 0; }
+.photo-editor-toolbar { display: flex; align-items: end; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+.photo-editor-toolbar label { display: grid; gap: 6px; }
+.photo-editor-comment { display: grid; gap: 6px; margin: 12px 0; }
+.photo-editor-comment textarea { min-height: 65px; }
+.photo-editor-canvas { display: grid; place-items: center; padding: 14px; background: #e9eef3; border-radius: 10px; min-height: 120px; }
+.photo-editor-canvas canvas { display: block; max-width: 100%; max-height: 42dvh; width: auto; height: auto; cursor: crosshair; touch-action: none; }
+.photo-report-editor footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.photo-report-editor button, .photo-report-editor select { min-height: 42px; }
+@media (max-width: 700px) { .photo-report-editor { padding: 14px; } .photo-report-editor .modal-header { align-items: start; flex-direction: column; } .photo-editor-toolbar > button { flex: 1 1 140px; } }

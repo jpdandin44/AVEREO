@@ -374,6 +374,28 @@ check(row_count($q['pdo']) === 3, 'Aucune ligne ajoutée après refus de quota')
 $other = $q['store']->store($B[0], $B[1], $R['b1'], upload($q, $f4), hash('sha256', $f4), 'b.jpg');
 check($other['bytes'] === strlen($f4), 'Le quota d\'un propriétaire n\'affecte pas l\'autre');
 
+// Crash after file publication or while writing: bytes without an SQL row still consume quota.
+$orphan = new_env($base, 5000, 900, $R, $A, $B);
+$orphanDir = $orphan['root'] . '/o-' . hash('sha256', $A[0] . "\0" . $A[1]) . '/' . $R['a1'];
+mkdir($orphanDir, 0700, true);
+file_put_contents($orphanDir . '/' . str_repeat('a', 32) . '.bin', str_repeat('o', 300));
+file_put_contents($orphanDir . '/.tmp-interrupted', str_repeat('t', 300));
+$orphanBefore = stored_files($orphan['root']);
+$incoming = jpeg(8, 8, 380, 71);
+fail_with(fn () => $orphan['store']->store($A[0], $A[1], $R['a2'], upload($orphan, $incoming), hash('sha256', $incoming), 'crash.jpg'), 409, 'quota_exceeded', 'Orphelin publié et temporaire interrompu comptés dans le quota');
+check(stored_files($orphan['root']) === $orphanBefore && row_count($orphan['pdo']) === 0, 'Refus conservateur : aucun orphelin supprimé ou nouvelle ligne');
+check($orphan['store']->store($B[0], $B[1], $R['b1'], upload($orphan, $incoming), hash('sha256', $incoming), 'b.jpg')['bytes'] === strlen($incoming), 'Les orphelins de A ne consomment pas le quota de B');
+
+// SQL reservations for missing files cannot be cancelled out by unrelated orphan bytes.
+$missing = new_env($base, 5000, 1800, $R, $A, $B);
+$reserved = jpeg(8, 8, 970, 72);
+$missing['store']->store($A[0], $A[1], $R['a1'], upload($missing, $reserved), hash('sha256', $reserved), 'reserved.jpg');
+$reservedPath = $missing['root'] . array_key_first(stored_files($missing['root']));
+unlink($reservedPath);
+file_put_contents(dirname($reservedPath) . '/.tmp-crashed', str_repeat('o', 750));
+$next = jpeg(8, 8, 250, 73);
+fail_with(fn () => $missing['store']->store($A[0], $A[1], $R['a2'], upload($missing, $next), hash('sha256', $next), 'next.jpg'), 409, 'quota_exceeded', 'Réservation SQL sans fichier plus orphelin additionnés, sans compensation');
+
 // ---------------------------------------------------------------- 5. exemplaire existant altéré ou absent
 $a = new_env($base, 5000, 20000, $R, $A, $B);
 $orig = jpeg(9, 9, 700, 21);
@@ -720,6 +742,7 @@ try {
 // Libère les connexions SQLite (Windows verrouille les fichiers ouverts) puis supprime les données fictives.
 $e = $q = $a = $s = $p = $gone = $d = $k = $probe = $fresh = $viaConfig = $opened = null;
 $g = $interfering = $neutral = $store = $long = $m = $bk = $restoredPdo = $restored = $partialPdo = $partial = $noSql = null;
+$orphan = $missing = null;
 gc_collect_cycles();
 rrmdir($base);
 check(!file_exists($base), 'Données temporaires supprimées');

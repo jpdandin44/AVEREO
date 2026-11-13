@@ -4,6 +4,7 @@ import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { buildDecisionHtml } from './decisionSupport.js';
 import { isHabitologueProfile, observationAdviceLabel } from './reportProfiles.js';
+import { reportPhotoSource } from './photoReportVersion.js';
 
 export function deliveryOptions(report) {
   const value = report.livrable || {};
@@ -103,7 +104,7 @@ export function buildReportHtml(report) {
       ${selected.map(o => `<article class="client-observation keep-together"><h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${isHabitologueProfile(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
         ${explanationsHtml(o)}
         ${isHabitologueProfile(report) ? `<h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(o.actions)}</p>` : ''}
-        ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(p.src) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(p.src)}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}</article>`).join('')}
+        ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(reportPhotoSource(p)) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(reportPhotoSource(p))}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}</article>`).join('')}
       <p class="muted">Le rapport expert conserve l’ensemble des constats et des sources.</p></section>`;
     content += buildObservationPlansHtml(report, options.observations);
     content += visuals.map(v => `<section class="client-page">${illustration(v, true)}</section>`).join('');

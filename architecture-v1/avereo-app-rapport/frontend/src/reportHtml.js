@@ -7,6 +7,7 @@ import { markersForPlan, observationPlanNames, planPayloadError } from './observ
 import { observationAdviceLabel } from './reportProfiles.js';
 import { orderedObservations } from './observationOrder.js';
 import { textToLinkedHtml } from './textLinks.js';
+import { reportPhotoSource } from './photoReportVersion.js';
 
 export function buildObservationPlansHtml(report, selectedIds = null) {
   const error = planPayloadError(report);
@@ -227,7 +228,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
     .map((obs, index) => {
       const photos = obs.photos
         .map((photo) => {
-          const source = safeEmbeddedImageSource(photo.src);
+          const source = safeEmbeddedImageSource(reportPhotoSource(photo));
           if (!source) return '';
           return `
           <div class="photo-block">
