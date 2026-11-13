@@ -170,3 +170,7 @@ contrôle les vues courantes et conserve les preuves historiques approuvées.
 ## Livraison privée à 500 Mo
 
 `python -m unittest discover -s tests -p "test*.py"` réussit vingt-huit tests. Les trois nouveaux tests de `test_large_import_release.py` bloquent les cibles supplémentaires, un changement inconnu des limites et toute modification de l’authentification. La [sonde HTTPS](../workflows/verify-large-import-preproduction.php) reçoit et inspecte des ZIP entiers de 173/500 Mo sur un bien inexistant, sans ajout réel ; 501 Mo est refusé. [Périmètres et recette humaine](../docs/preproduction-import-volumineux.md).
+
+## Livraison privée corbeille et classement
+
+Trente-deux tests Python, dont quatre protections du livreur organisation, réussissent. La [recette hébergée](../docs/preproduction-organisation.md) distingue 247 assertions HTTPS, conservation des 28 documents, répétition positive sur copies temporaires et contrôle visuel en lecture seule ; les mutations de documents réels ne sont pas utilisées comme tests.

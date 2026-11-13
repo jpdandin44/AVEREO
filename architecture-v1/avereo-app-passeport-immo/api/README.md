@@ -14,9 +14,9 @@ tags: [avereo, documentation, local]
 
 ## Contrat du candidat organisation
 
-Le [reçu de qualification](organisation-documents-observation.json) porte le nouveau candidat local. `PATCH /api/biens/:bien/documents/:id` avec `trashed` met à la corbeille/restaure ; `DELETE` avec `confirm: true` purge uniquement un document en corbeille. `PUT /api/biens/:bien/document-settings` écrit les réglages avec révision attendue. Les sessions, propriétaires, origine et CSRF restent obligatoires. `GET .../documents` inclut `trashedAt` et `settings`. [Migration et contrat détaillé](../docs/organisation-documents.md).
+Le [reçu de qualification](organisation-documents-observation.json) porte les preuves locales et CI du candidat, complétées par le reçu hébergé ci-dessous. `PATCH /api/biens/:bien/documents/:id` avec `trashed` met à la corbeille/restaure ; `DELETE` avec `confirm: true` purge uniquement un document en corbeille. `PUT /api/biens/:bien/document-settings` écrit les réglages avec révision attendue. Les sessions, propriétaires, origine et CSRF restent obligatoires. `GET .../documents` inclut `trashedAt` et `settings`. [Migration et contrat détaillé](../docs/organisation-documents.md).
 
-Le [reçu à 500 Mo](preproduction-import-volumineux-observation.json) décrit l’état installé ; la [livraison PR144](preproduction-archives-observation.json) reste historique.
+Le [reçu organisation](preproduction-organisation-observation.json) décrit l’état installé après PR153 ; le [reçu à 500 Mo](preproduction-import-volumineux-observation.json) reste daté ; la [livraison PR144](preproduction-archives-observation.json) reste historique.
 Le [candidat volumineux](../docs/import-volumineux.md) conserve les routes et corps
 multipart : 500 Mo utiles par fichier/lot, enveloppe HTTP/PHP proposée de 512 Mo,
 cent fichiers par requête. L’atomicité reste celle de chaque requête ; l’interface

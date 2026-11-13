@@ -12,9 +12,9 @@ tags: [passeport-immo, local]
 
 # AVEREO – Passeport Immo
 
-## Organisation des documents — développement local du 13 novembre
+## Organisation des documents — préproduction du 13 novembre
 
-Le [nouveau lot](docs/organisation-documents.md) ajoute une corbeille restaurable, la suppression définitive confirmée, des dossiers parents par catégorie, leurs icônes/couleurs et l’ordre manuel par bien. Les sources locales évoluent ; le candidat 500 Mo installé reste inchangé. La migration additive est préparée séparément, sans écriture dans les données réelles.
+Le [nouveau lot](docs/organisation-documents.md) ajoute une corbeille restaurable, la suppression définitive confirmée, des dossiers parents par catégorie, leurs icônes/couleurs et l’ordre manuel par bien. Le paquet PR153 est [installé et techniquement vérifié en préproduction privée](docs/preproduction-organisation.md) après fusion et accord explicite : migration additive, 28 documents conservés, 247 assertions HTTPS et écran SCI contrôlés. La recette humaine hébergée reste à réaliser ; la limite de 500 Mo est conservée.
 
 ## Reprise du 12 novembre — état courant et archives
 

@@ -21,7 +21,7 @@ tags: [avereo, documentation, local]
 - DOC05 : ordre manuel par dossier, partagé entre sessions serveur ; conflits de réglages refusés.
 - DOC06 : corbeille et organisation incluses dans sauvegarde/restauration et transfert ciblé ; anciens transferts compatibles.
 - DOC07 : importer un doublon dans la corbeille doit expliquer la restauration ou la purge, sans import partiel.
-- DOC08 : migration additive simulable, idempotente et réservée à la base explicitement nommée. Aucune migration distante par cette préparation.
+- DOC08 : migration additive simulable, idempotente et réservée à la base explicitement nommée. Installation privée PR153 autorisée séparément, sans extension des privilèges applicatifs ; recette humaine hébergée distincte.
 
 ## Formats compressés — demande du 12 novembre 2026
 

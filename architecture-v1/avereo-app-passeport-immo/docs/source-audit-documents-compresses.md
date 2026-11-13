@@ -59,3 +59,5 @@ Le nouveau livreur réutilise le moteur existant, fixe le paquet CI et ajoute se
 ## Corbeille et dossiers personnalisés
 
 Le [lot organisation](organisation-documents.md#matrice-des-écarts-et-contrôles) porte la matrice du nouveau candidat. L’ancien guide approuvé reste inchangé ; parité, tests métier et références documentaires sont vérifiés séparément.
+
+La [livraison PR153](preproduction-organisation.md) installe le même candidat CI en préproduction privée : six écritures, douze chemins préservés, deux colonnes additives sans extension des droits applicatifs. Les 28 documents et les valeurs métier initiales sont comparés à la sauvegarde ; les 21 références approuvées restent identiques.
