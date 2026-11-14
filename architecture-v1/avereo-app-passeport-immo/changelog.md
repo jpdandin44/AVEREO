@@ -12,9 +12,9 @@ tags: [passeport-immo, local]
 
 # Changelog Passeport Immo
 
-## 2026-11-13 — Corbeille et classement en développement local
+## 2026-11-13 — Corbeille et classement livrés en préproduction
 
-Ajout en cours du cycle corbeille/restauration/purge confirmée et des dossiers par catégorie avec apparence et ordre persistants. Contrôles locaux et tests d’intégration complétés ; pas encore livré. [État et recette](docs/organisation-documents.md).
+Après fusion PR153 et accord explicite, même paquet CI installé : six écritures, deux colonnes additives via administration existante, aucune extension des droits SQL. Sauvegarde et restauration temporaire avant/après, 28 documents et leurs téléchargements exacts conservés, 247 assertions HTTPS, dossiers/commandes de l’écran SCI vérifiés. Trente-deux tests Python réussissent. [Livraison et recette humaine](docs/preproduction-organisation.md) ; aucune production modifiée.
 
 ## 2026-11-12 — Imports à 500 Mo livrés en préproduction
 

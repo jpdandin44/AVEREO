@@ -4,8 +4,8 @@
   "version": "git",
   "protocol": "developpement-github-cockpit",
   "iterationId": "passeport-immo-organisation-documents",
-  "stage": "developpement-local",
-  "status": "awaiting_local_human_review",
+  "stage": "preproduction",
+  "status": "awaiting_preproduction_human_review",
   "objective": "Corbeille restaurable, suppression définitive confirmée, dossiers par catégorie avec icône/couleur et ordre manuel conservés par bien.",
   "candidate": {
     "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
@@ -16,27 +16,38 @@
   "github": {
     "repository": "jpdandin44/AVEREO",
     "branch": "feat/passeport-immo-corbeille-documents",
-    "humanAcceptanceVerified": false,
-    "observedAt": "2026-11-13T15:04:22.254662+00:00",
-    "observedHeadSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "humanAcceptanceVerified": true,
+    "observedAt": "2026-11-13T15:35:48.972433+00:00",
+    "observedHeadSha": "39c52496f806ce2e25148d8bfe40c55935c7fa2a",
     "runtimeCandidateFrozen": true,
     "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43448211761",
     "number": 153,
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/153",
     "draft": false,
-    "observationScope": "Qualified frozen runtime; later documentation-only commits do not change this candidate. Refresh current GitHub head/checks before merge."
+    "observationScope": "PR153 fusionnée, policy stricte et quatre cases humaines réellement vérifiées ; code exécuté identique au candidat gelé. Cette acceptation locale ne valide pas la recette hébergée.",
+    "state": "merged",
+    "mergedAt": "2026-11-13T15:18:09Z",
+    "mergeCommitSha": "fb2dcafbff6d9eeb408b47f9243b6b4482f7908f",
+    "successfulChecks": 27,
+    "acceptedSourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "acceptedArtifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e"
   },
   "reviewEnvironment": {
-    "phase": 1,
-    "environment": "local",
-    "url": "http://127.0.0.1:5178/",
-    "fictionalDataOnly": true
+    "phase": 2,
+    "environment": "preproduction",
+    "url": "https://connect-preprod.avereo.fr/?app=passeport-immo",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "fictionalDataOnly": false,
+    "mutationRecipeRequiresFictionalDocument": true
   },
   "targets": {
     "preproduction": {
       "id": "https://passeport-immo-preprod.avereo.fr/",
-      "ready": false,
-      "detail": "Candidat 500 Mo antérieur conservé ; nouvelle migration et nouveau candidat non livrés."
+      "ready": true,
+      "detail": "Même paquet CI installé : 18 chemins vérifiés, migration additive relue, 28 documents conservés, 247 assertions HTTPS et écran SCI contrôlés.",
+      "isolated": true,
+      "observedAt": "2026-11-13T15:35:48.972433+00:00",
+      "evidence": "api/preproduction-organisation-observation.json#preparation"
     },
     "production": {
       "id": "https://passeport-immo.avereo.fr/",
@@ -70,18 +81,68 @@
       "observedAt": "2026-11-13T15:04:22.254662+00:00",
       "target": null,
       "evidence": "api/organisation-documents-observation.json#documentationControl"
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T16:43:51.310473+00:00",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "evidence": "api/preproduction-organisation-observation.json"
     }
   ],
-  "approvals": [],
-  "backups": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-13T15:35:48.972433+00:00",
+      "evidence": "Demande directe : La PR #153 est mergée, peux-tu déployer la corbeille et le nouveau classement des documents en préproduction stp ?",
+      "scopeLimit": "Préproduction privée uniquement ; aucun accord de production ou de recette humaine hébergée."
+    }
+  ],
+  "backups": [
+    {
+      "id": "organisation-pr153-20261113",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-13T15:29:02+00:00",
+      "evidence": "api/preproduction-organisation-observation.json#preparation",
+      "snapshotSha256": "a44e32875d4bf05cc05c0609e17378ed657663c6de33c11e765d6d0fcb792b8a",
+      "tables": 4,
+      "documents": 28,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false
+    }
+  ],
   "rollback": {
-    "status": "not_tested"
+    "status": "tested_on_private_copy",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+    "observedAt": "2026-11-13T15:29:02+00:00",
+    "evidence": "api/preproduction-organisation-observation.json#preparation",
+    "businessDataOverwrite": false,
+    "limitation": "Colonnes additives conservées ; retour à l’ancien code refusé dès utilisation des nouveaux champs. Aucun retour arrière de données client."
   },
   "delivery": {
-    "status": "not_delivered"
+    "status": "delivered",
+    "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "observedAt": "2026-11-13T15:36:39+00:00",
+    "evidence": "api/preproduction-organisation-observation.json#delivery",
+    "writtenFiles": 6,
+    "productionChanged": false
   },
   "blockers": [],
-  "nextAction": "Revoir le candidat local et sa PR, puis qualifier la récupération et la migration sur la cible de préproduction avant une livraison autorisée.",
+  "nextAction": "Depuis CONNECT préproduction, vérifier dossiers, icônes/couleurs, ordre persistant et cycle corbeille sur un petit document fictif ; revoir la PR opératoire. Aucun accord de production créé.",
   "phases": [
     {
       "id": 0,
@@ -92,13 +153,13 @@
     {
       "id": 1,
       "label": "Développement local",
-      "status": "awaiting_review",
+      "status": "merged_after_human_review",
       "humanPhaseApprovalRecorded": false
     },
     {
       "id": 2,
       "label": "Préproduction",
-      "status": "not_started",
+      "status": "awaiting_human_review",
       "humanPhaseApprovalRecorded": false
     },
     {
@@ -119,5 +180,20 @@
   },
   "evidence": "api/organisation-documents-observation.json",
   "documentation": "docs/organisation-documents.md",
-  "nextIteration": []
+  "nextIteration": [],
+  "hostedEvidence": "api/preproduction-organisation-observation.json",
+  "operatorDocumentation": "docs/preproduction-organisation.md",
+  "operatorReview": {
+    "repository": "jpdandin44/AVEREO",
+    "number": 155,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/155",
+    "branch": "chore/passeport-immo-preproduction-corbeille",
+    "reviewEnvironment": "preproduction",
+    "humanAcceptanceVerified": false,
+    "observedAt": "2026-11-13T16:46:29.387239+00:00",
+    "observedBaseSha": "e7302bc5b1fe18b02a51d9df5702ed00b1358871",
+    "mergeable": "MERGEABLE",
+    "evidence": "https://github.com/jpdandin44/AVEREO/pull/155",
+    "note": "Base main actualisée pendant la publication ; changements Rapport distincts, fusion à trois voies sans conflit. Quatre cases humaines laissées décochées."
+  }
 }

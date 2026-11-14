@@ -14,7 +14,7 @@ tags: [avereo, documentation, local]
 
 ## Travail courant — organisation documentaire
 
-Développer et qualifier [corbeille, dossiers, apparence et ordre](docs/organisation-documents.md). Revue locale, puis nouvelle qualification de préproduction avec migration et récupération, avant toute livraison autorisée. La version 500 Mo reste celle hébergée ; la production et le CIL restent distincts.
+La PR153 est fusionnée et [corbeille, dossiers, apparence et ordre](docs/preproduction-organisation.md) sont livrés en préproduction privée. Prochaine action : recette humaine hébergée sur un document fictif, puis revue opératoire. Sauvegardes et conservation des 28 documents vérifiées ; production et CIL restent distincts.
 
 ## Suite courante — reprise et fichiers compressés
 

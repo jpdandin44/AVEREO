@@ -25,7 +25,7 @@ Le [suivi canonique](../data/suivi-organisation-documents.json) et le
 itération. Les décisions et preuves approuvées antérieures restent intactes.
 La PR147 de livraison 500 Mo est fusionnée ; elle ne livre pas ce nouveau candidat.
 
-[PR153 — revue locale de la corbeille et du classement](https://github.com/jpdandin44/AVEREO/pull/153). Les quatre cases de revue restent réservées au responsable ; leur validation ne vaut pas livraison.
+[PR153 — revue locale fusionnée](https://github.com/jpdandin44/AVEREO/pull/153). Le responsable autorise ensuite la livraison privée ; la recette hébergée est distincte de cette acceptation locale.
 
 ## Développement local
 
@@ -112,9 +112,7 @@ Qualification réussie : **67 tests frontend, 28 tests Python, 101 assertions AP
 
 ## Préproduction
 
-Ce candidat n’est pas installé. Le site privé conserve le candidat 500 Mo précédent.
-Préparer une sauvegarde fraîche des quatre tables, documents et code, puis tester
-sa restauration sur une copie avant toute future livraison autorisée.
+Ce candidat est [installé et techniquement vérifié en préproduction privée](preproduction-organisation.md). Les deux colonnes sont ajoutées via l’administration existante, la sauvegarde comprend 28 documents, et 247 assertions HTTPS réussissent. Les vérifications visuelles retrouvent six actifs et trois archives SCI, dossiers, commandes d’ordre, personnalisation et corbeille vide. Les critères O1–O10 restent à valider humainement selon la recette liée.
 
 La [migration additive](../workflows/migrate-document-organisation.php) doit être
 qualifiée sur cette copie. Utiliser le vrai fichier de configuration privé et le
@@ -141,7 +139,5 @@ simulation, puis ajout du champ restant ; ne pas masquer un échec de comparaiso
 
 ## Mise en production
 
-Aucune modification distante ni purge d’un document réel n’est réalisée dans cette
-préparation. Revue locale, migration/recette de préproduction, acceptation et accord
-de production restent distincts. Ne pas rejouer migration SCI, activation CONNECT
+La livraison décrite concerne la seule préproduction privée ; aucun document réel n’est mis à la corbeille ou purgé par les essais. Revue locale acquise, recette humaine hébergée et accord de production restent distincts. Ne pas rejouer migration SCI, activation CONNECT
 ou cron pour ce lot.

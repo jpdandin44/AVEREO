@@ -12,9 +12,9 @@ tags: [passeport-immo, local]
 
 # Architecture Passeport Immo
 
-## Corbeille et dossiers personnalisés — candidat local
+## Corbeille et dossiers personnalisés — préproduction privée
 
-`pi_documents.trashed_at` conserve le statut de corbeille, distinct de l’archivage. `pi_biens.document_settings` porte apparence et ordre avec révision optimiste, séparés du modèle autosauvegardé du bien. Les mêmes fonctions existent dans IndexedDB. La purge exige propriété, CSRF, confirmation et passage préalable en corbeille ; elle verrouille le bien, déplace provisoirement le blob dans le stockage privé, supprime la ligne puis efface le blob après commit. Un rollback SQL confirmé restaure le blob ; un commit incertain conserve la copie privée pour contrôle opérateur. Les quatre tables et sauvegardes existantes sont réutilisées. [Contrat, migration et limites](docs/organisation-documents.md).
+`pi_documents.trashed_at` conserve le statut de corbeille, distinct de l’archivage. `pi_biens.document_settings` porte apparence et ordre avec révision optimiste, séparés du modèle autosauvegardé du bien. Les mêmes fonctions existent dans IndexedDB. La purge exige propriété, CSRF, confirmation et passage préalable en corbeille ; elle verrouille le bien, déplace provisoirement le blob dans le stockage privé, supprime la ligne puis efface le blob après commit. Un rollback SQL confirmé restaure le blob ; un commit incertain conserve la copie privée pour contrôle opérateur. Les quatre tables et sauvegardes existantes sont réutilisées. [Contrat, migration et limites](docs/organisation-documents.md). Les deux colonnes sont installées le 13 novembre via l’administration existante, sans droit ALTER ajouté à l’application ; [livraison et qualification sur copies](docs/preproduction-organisation.md).
 
 ## Import volumineux livré en préproduction le 12 novembre
 

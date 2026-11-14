@@ -14,7 +14,7 @@ tags: [passeport-immo, local]
 
 ## Organisation documentaire
 
-[Corbeille, dossiers par catégorie, icônes, couleurs et ordre manuel](organisation-documents.md) : nouveau candidat local, avec sa migration et sa recette distinctes du candidat 500 Mo installé.
+[Corbeille, dossiers par catégorie, icônes, couleurs et ordre manuel](organisation-documents.md) : PR153 fusionnée, [livraison privée et recette humaine](preproduction-organisation.md). Les preuves locales/CI et la qualification hébergée restent distinctes.
 
 ## Reprise courante et fichiers compressés
 
