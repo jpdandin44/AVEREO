@@ -1,3 +1,5 @@
+import { environmentContextError, environmentContext } from './environmentContext.js';
+
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 
 export function requireReportContent(value) {
@@ -6,6 +8,8 @@ export function requireReportContent(value) {
       || (observation.photos != null && !Array.isArray(observation.photos)))) {
     throw new Error('Ce fichier ne contient pas le dossier complet. Un résumé ou un horodatage ne suffit pas. Le brouillon actuel est conservé.');
   }
+  const contextError = environmentContextError(value);
+  if (contextError) throw new Error(contextError + ' Le brouillon actuel est conservé.');
   return value;
 }
 
@@ -20,7 +24,7 @@ export function reportContentSummary(report) {
   requireReportContent(report);
   return {
     observations: report.observations.length,
-    photos: report.observations.reduce((count, observation) => count + (observation.photos?.length || 0), 0),
+    photos: report.observations.reduce((count, observation) => count + (observation.photos?.length || 0), 0) + (environmentContext(report)?.photo ? 1 : 0),
     plans: Array.isArray(report.plans) ? report.plans.length : 0,
     signature: Boolean(report.signature),
     structureOnly: isTestStructure(report),

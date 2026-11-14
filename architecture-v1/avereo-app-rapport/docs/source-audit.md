@@ -5,13 +5,28 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 2026-11-14 — Terrain horizontal, révision locale de PR158
+
+Les constats utilisent les mêmes validations, textes échappés, liens HTTP/HTTPS, accord de dictée, outils photo et permissions du dossier. Seul le type de vue cadastre est ajouté à la validation PHP ; bornes et références inchangées. Capture de tuiles IGN à URL prédéfinies, sans cookies/referrer ni données du dossier dans les requêtes, lots bornés et délai 25 secondes ; image/date/source conservées dans le JSON privé. Changement de dossier/référence/lieu : résultat tardif ignoré. Les anciens fonds et repères restent fixes. La copie de structure exclut médias, lieux, textes et notes historiques. L’ancienne rubrique reste accessible dans Observations sans conversion ni nouvelle création.
+
+202 tests client, 13 cas PHP, téléchargement, deux builds et 38 contrôles HTTP/MariaDB locaux réussis. Reprise navigateur sans brouillon, capture réelle et source/propriétaire conservés ; brouillon initial restauré avec empreintes identiques. Word natif lu sans réparation, 25 pages expert / 10 client en vue d’ensemble ; équivalence expert final et image finale vérifiées. Lecture protégée conservée, aucune nouvelle conversion PDF. Les preuves antérieures ci-dessous restent historiques. Aucune donnée réelle, identité, droit, hébergement ou activation privée modifiés. [Contrat et preuves](environnement-terrain.md).
+
+## 2026-11-14 — Contexte extérieur, candidat local
+
+Champ facultatif séparé, sans modification du tri, des identifiants ou repères des observations. Validation client des types/images, textes échappés, liens HTTP/HTTPS et photo PNG/JPEG bornée ; l'import refuse une structure invalide en conservant le brouillon. La lecture photo attend l'accord existant et un résultat tardif ne recrée pas un contexte supprimé ni ne rejoint un dossier remplacé. Le verrou existant bloque la sauvegarde pendant la lecture. La copie de structure retire tous les textes, lieux, liens, photos et références du contexte ; l'import complet conserve les champs inconnus compatibles et retire seulement le lien serveur.
+
+38 contrôles HTTP/PHP/MariaDB locaux : stockage et téléchargement exacts, nouvelle session signée, copie indépendante, refus croisés et propriétaire source inchangé. Le navigateur local confirme sauvegarde/réouverture sans brouillon, sélection 2/9, suppression ciblée et largeur simulée de 390 px ; aucune erreur console observée. Quatre DOCX ouverts sans réparation, PDF convertis dans Word et 57 pages inspectées ; empreintes DOCX inchangées. Le premier contrôle de texte PDF a signalé les en-têtes répétés et le caractère de coupure d'URL de PDFium ; contrôle adapté à l'extraction, textes et pages rendues vérifiés sans perte.
+
+Aucune écriture hébergée, configuration, identité, droit, migration, photothèque privée ou production modifiée. Une photo simple de contexte n'utilise pas encore l'éditeur ni l'API d'originaux privés ; ces fonctions existantes restent attachées aux photos d'observation. [Contrat, limites et preuves](environnement-terrain.md).
+
 
 ## 2026-11-13 — Édition des photos et quota des originaux, candidat local
 

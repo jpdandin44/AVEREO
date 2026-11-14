@@ -1,11 +1,12 @@
 import { isHabitologieReport } from './reportClassification.js';
-import { HABITOLOGIE_PROTOCOL_STAGES, LISTENING_TOPICS, isHabitologieControlSelected, isHabitologieStageEnabled, findHabitologieControl, findHabitologieStage } from './habitologieProtocol.js';
+import { visitProtocolStages, protocolStageNumber, LISTENING_TOPICS, isHabitologieControlSelected, isHabitologieStageEnabled, findHabitologieControl, findHabitologieStage } from './habitologieProtocol.js';
 import { LISTENING_SECTIONS } from './clientListening.js';
 import { rgaRisk, isRgaRisk } from './georisquesRiskSummary.js';
 import { normalizeRgaCartography, rgaLevelLabel } from './rgaContext.js';
 import { markersForPlan, observationPlanNames, planPayloadError } from './observationPlans.js';
-import { observationAdviceLabel } from './reportProfiles.js';
-import { orderedObservations } from './observationOrder.js';
+import { observationAdviceLabel, isHabitologueProfile } from './reportProfiles.js';
+import { environmentContext, contextText, environmentContextError } from './environmentContext.js';
+import { orderedObservations, observationNumber } from './observationOrder.js';
 import { textToLinkedHtml } from './textLinks.js';
 import { reportPhotoSource } from './photoReportVersion.js';
 
@@ -16,7 +17,7 @@ export function buildObservationPlansHtml(report, selectedIds = null) {
     const markers = markersForPlan(report, plan.id, selectedIds);
     if (selectedIds && !markers.length) return '';
     return `<section class="plan-sheet"><h2>Repérage des observations — ${escapeHtml(plan.title)}</h2>
-      <p>${plan.kind === 'coupe' ? 'Coupe' : 'Plan de niveau'} · Repérage indicatif, sans mesure automatique.</p>
+      <p>${plan.kind === 'cadastre' ? 'Fond cadastral du terrain' : plan.kind === 'coupe' ? 'Coupe' : 'Plan de niveau'} · Repérage indicatif, sans mesure automatique.</p>
       <div class="plan-picture"><img src="${plan.src}" data-plan-id="${escapeHtml(plan.id)}" alt="${escapeHtml(plan.title)} — repères des observations" />
         ${markers.map(marker => `<span class="plan-dot" style="left:${marker.x * 100}%;top:${marker.y * 100}%">${marker.number}</span>`).join('')}</div>
       <p class="source">Source : ${escapeHtml(plan.source || 'À renseigner')}.</p>
@@ -112,6 +113,30 @@ export function safeEmbeddedImageSource(value = '') {
   return /^data:image\/(?:png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=\s]+$/i.test(source) ? source : '';
 }
 
+// Unnumbered context: no observation or plan marker is created or renumbered.
+export function buildEnvironmentContextHtml(report, client = false) {
+  if (!isHabitologueProfile(report)) return '';
+  const value = environmentContext(report);
+  if (!value || (client && value.includeInClient !== true)) return '';
+  const error = environmentContextError(report);
+  if (error) throw new Error(error);
+  if (!['titre', 'zone', 'constat', 'explications', 'conseils', 'planId'].some(field => contextText(value, field).trim()) && !value.photo) return '';
+  const plan = (report.plans || []).find(item => item.id === value.planId);
+  const picture = (image, title, caption, source) => safeEmbeddedImageSource(image)
+    ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(image)}" alt="${escapeHtml(title)}" /><p>${escapeHtml(caption || title)}</p><p>Source : ${escapeHtml(source || 'À renseigner')}.</p></div>` : '';
+  return `<section class="environment-context-report${client ? ' client-page' : ''}"><h2>Contexte Environnement / Terrain</h2>
+    ${value.titre ? `<h3>${escapeHtml(value.titre)}</h3>` : ''}
+    ${value.zone ? `<p>Zone : ${escapeHtml(value.zone)}</p>` : ''}
+    <h4>Constat</h4><p>${textToHtml(contextText(value, 'constat'))}</p>
+    ${explanationsHtml(value)}
+    <h4>Conseils habitologue</h4><p>${textToHtml(contextText(value, 'conseils'))}</p>
+    ${value.photo ? picture(value.photo.src, value.photo.name, value.photo.caption, value.photo.source) : ''}
+    ${plan ? `<h3>Vue associée — ${escapeHtml(plan.title)}</h3>${picture(plan.src, plan.title, plan.title, plan.source)}`
+      : value.planId ? '<p>Vue associée indisponible ; référence conservée dans le dossier.</p>' : ''}
+    ${!value.photo && !plan ? '<p>Aucun visuel extérieur associé.</p>' : ''}
+  </section>`;
+}
+
 function formatDate(value) {
   if (!value) return '';
   return new Date(value).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -124,13 +149,13 @@ function formatDateTime(value) {
 
 function buildProtocolHtml(report) {
   if (isHabitologieReport(report)) {
-    return HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => {
+    return visitProtocolStages(report).map(stage => {
       const selectedControls = stage.controls.filter(
         (control) => isHabitologieControlSelected(report, stage.key, control.key),
       );
       return `
         <section class="protocol-phase-export">
-          <h3>Phase ${index + 1} - ${escapeHtml(stage.label)}</h3>
+          <h3>${stage.key === 'terrain' ? 'Bloc 0' : `Phase ${protocolStageNumber(stage)}`} - ${escapeHtml(stage.label)}</h3>
           <p>${escapeHtml(stage.summary)}</p>
           ${
             !isHabitologieStageEnabled(report, stage.key)
@@ -241,7 +266,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
 
       return `
         <section class="observation">
-          <h3>${index + 1}. ${escapeHtml(obs.titre || `${obs.piece || 'Zone'} - ${obs.surface || 'Surface'}`)}</h3>
+          <h3>${observationNumber(report, obs)}. ${escapeHtml(obs.titre || `${obs.piece || 'Zone'} - ${obs.surface || 'Surface'}`)}</h3>
           <table>
             ${
               habitologie
@@ -257,7 +282,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
             <tr><td>Piece / zone</td><td>${escapeHtml(obs.piece)}</td></tr>
             <tr><td>Element observe</td><td>${escapeHtml(obs.surface)}</td></tr>
             <tr><td>Gravite</td><td>${escapeHtml(obs.gravite)}</td></tr>
-            ${observationPlanNames(report, obs).length ? `<tr><td>Repère ${index + 1}</td><td>${escapeHtml(observationPlanNames(report, obs).join(' · '))}</td></tr>` : ''}
+            ${observationPlanNames(report, obs).length ? `<tr><td>Repère ${observationNumber(report, obs)}</td><td>${escapeHtml(observationPlanNames(report, obs).join(' · '))}</td></tr>` : ''}
           </table>
           <h4>Constat</h4>
           <p>${textToHtml(obs.observations)}</p>
@@ -372,6 +397,8 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
   ${buildingResourcesHtml(report, escapeHtml)}
 
   ${ecouteHtml}
+
+  ${buildEnvironmentContextHtml(report)}
 
   <h2>${sectionNumbers.protocoles}. Protocole de recherche</h2>
   ${buildProtocolHtml(report)}

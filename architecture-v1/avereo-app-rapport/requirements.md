@@ -5,13 +5,17 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Terrain et bâti — décision confirmée du 14 novembre
+
+Fil conducteur horizontal : 0 Le terrain de la propriété dans un cadre vert, Bâti contenant les quatre phases dans un cadre rouge. Saisie Terrain dans Observations avec les mêmes fonctions que les constats existants ; repères T1/T2… sans consommer de numéro Eau/Air/Terre/Feu. Réorganisation uniquement dans son groupe ; identifiants et liens stables. Retirer la nouvelle rubrique de Site, préserver et rendre accessibles les anciennes notes sans conversion automatique. Cadrer un fond cadastral puis conserver une image fixe avec source/date et repères ; un autre cadrage ajoute une vue. Import manuel et saisie sans carte disponibles. Sauvegarde complète et reprise serveur, sélection client commune de trois constats au plus, Word cohérents. [Contrat détaillé et limites](docs/environnement-terrain.md).
 
 ## Photos préparées — reprise du 13 novembre
 

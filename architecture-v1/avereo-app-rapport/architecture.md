@@ -5,12 +5,16 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Terrain dans Protocoles et Observations — révision locale du 14 novembre
+
+VisitGuide.jsx présente le bloc 0 et le Bâti à l’horizontale. Les constats terrain utilisent le tableau observations avec phase_habitologie=terrain ; observationOrder.js dérive Tn et les numéros du bâti séparément, utilisés aussi dans plans, choix client, aide à la décision et Word. CadastralCapture.jsx utilise la carte existante, capture les seules tuiles publiques dans un PNG fixe et l’ajoute à plans avec kind=cadastre, cadrage et localisation. Les résultats tardifs sont écartés après changement de cible. PHP accepte ce type dans sa validation existante. EnvironmentContext.jsx demeure uniquement pour reprendre l’ancien contexte dans Observations ; Site ne le rend plus. Aucun nouveau stockage, endpoint, droit ou migration SQL. [Flux, bornes et composants](docs/environnement-terrain.md#données-et-composants).
 
 ## Copie photo du rapport — 13 novembre
 

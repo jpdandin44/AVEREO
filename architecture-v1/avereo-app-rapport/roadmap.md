@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,10 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## 14 novembre — Terrain horizontal, revue locale de PR158
+
+Organisation confirmée par le responsable et implémentée : Protocoles horizontal, bloc 0 Terrain, Bâti regroupé ; Observations Terrain et fond cadastral, Site allégé. [Parcours et qualification de la révision](docs/environnement-terrain.md). Développement local vérifié ; prochaine action : revue humaine de cette même PR158. Préproduction et Mise en production non engagées pour la révision. Les notes et preuves du précédent candidat sont conservées dans les archives et décisions historiques.
 
 ## Suite du lot photos — développement local du 13 novembre
 

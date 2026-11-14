@@ -5,10 +5,23 @@ title: Tests Rapport
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags: [connect, rga, tests]
 ---
+
+## Terrain horizontal — révision locale du 14 novembre
+
+frontend/src/terrainObservations.test.js ajoute huit tests métier : Tn sans décaler le bâti, déplacement dans son groupe, Word/client, suspension du protocole, copie expurgée, cadrage des tuiles/zoom 20 natif 19, bornes et rattachement tardif. Total Node : 202 réussis. php tests/observation-plans-validation.php : 13 cas, dont cadastre ; php tests/report-download.php : octets et compteurs réussis. Deux builds sync=false/true, 150 fichiers.
+
+Le script HTTP accepte --fixture CHEMIN_JSON_FICTIF et rejoue 38 contrôles PHP/MariaDB avec comptes signés fictifs. La fixture de révision comporte 14 constats/4 photos/2 plans ; la recette navigateur ajoute une troisième vue cadastrale réelle, vérifie reprise serveur et source, puis deux Word. Service de revue --serve --port 5191 ; préconditions ci-dessous. [Scénario, lecture native et limites](../docs/environnement-terrain.md#qualification-effectuée). Les preuves Site suivantes sont historiques.
+
+## Contexte extérieur — recette locale du 14 novembre
+
+Les huit cas de `frontend/src/environmentContext.test.js` vérifient compatibilité, numérotation/repères, choix client indépendant, persistance, résultat tardif, vue retirée, confidentialité de la structure de test et entrées invalides. `php tests/report-download.php` inclut le compteur photo du contexte et l'empreinte des octets.
+
+Le script HTTP existant accepte `--fixture CHEMIN_JSON_FICTIF` : il rejoue le dossier complet avec le contexte, ses compteurs et trois vérifications complémentaires de réouverture/propriété (38 contrôles). Avec `--serve --port 5190`, il conserve la revue locale ; les prérequis PHP/Docker et limites ci-dessous s'appliquent. [Scénario navigateur, Word et preuves](../docs/environnement-terrain.md#qualification-effectuée).
+
 
 ## Dossiers complets — recette du 13 novembre
 

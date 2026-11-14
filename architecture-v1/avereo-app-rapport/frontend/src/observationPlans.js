@@ -1,4 +1,4 @@
-import { orderedObservations } from './observationOrder.js';
+import { orderedObservations, observationNumber } from './observationOrder.js';
 
 // Plans belong to the report payload. Never fetch a remote image or share case assets.
 export const MAX_REPORT_BYTES = 50 * 1024 * 1024;
@@ -15,7 +15,7 @@ export function planPayloadError(report) {
     if (!plan || !identifier(plan.id) || ids.has(plan.id)) return 'Chaque plan doit avoir un identifiant unique.';
     ids.add(plan.id);
     if (typeof plan.title !== 'string' || !plan.title.trim() || plan.title.length > 200
-      || !['niveau', 'coupe'].includes(plan.kind)
+      || !['niveau', 'coupe', 'cadastre'].includes(plan.kind)
       || typeof plan.source !== 'string' || plan.source.length > 1000) return 'Le titre, le type ou la source du plan est invalide.';
     if (typeof plan.src !== 'string' || !imagePattern.test(plan.src)
       || plan.src.length > Math.ceil(MAX_PLAN_BYTES / 3) * 4 + 32) return 'Chaque plan doit être une image PNG ou JPEG de 4 Mio maximum.';
@@ -41,10 +41,10 @@ export function planPayloadError(report) {
 
 // Numbers come from the shared protocol order, never from the stored array position.
 export function markersForPlan(report, planId, selectedIds = null) {
-  return orderedObservations(report).flatMap((observation, index) => {
+  return orderedObservations(report).flatMap((observation) => {
     if (selectedIds && !selectedIds.includes(observation.id)) return [];
     const point = (observation.reperes || []).find(p => p.planId === planId);
-    return point ? [{ ...point, observationId: observation.id, number: index + 1,
+    return point ? [{ ...point, observationId: observation.id, number: observationNumber(report, observation),
       title: observation.titre || observation.piece || 'Observation sans titre' }] : [];
   });
 }

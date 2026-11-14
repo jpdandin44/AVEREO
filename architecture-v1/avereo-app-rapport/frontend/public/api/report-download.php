@@ -19,6 +19,10 @@ function api_complete_report_download(string $json): ?array
         }
         $photos += count($observation->photos ?? []);
     }
+    if (($report->contexte_exterieur ?? null) instanceof stdClass
+        && ($report->contexte_exterieur->photo ?? null) instanceof stdClass) {
+        $photos++;
+    }
     return ['sha256' => hash('sha256', $json), 'bytes' => strlen($json),
         'observations' => count($report->observations), 'photos' => $photos,
         'plans' => isset($report->plans) && is_array($report->plans) ? count($report->plans) : 0,

@@ -5,8 +5,11 @@ import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
 import { observationAdviceLabel } from './reportProfiles.js';
 import { textLinks } from './textLinks.js';
-import { orderedObservations, observationPhase, moveObservation } from './observationOrder.js';
+import { orderedObservations, observationNumber, observationPhase, moveObservation } from './observationOrder.js';
 import ObservationPlans from './ObservationPlans.jsx';
+import EnvironmentContext from './EnvironmentContext.jsx';
+import VisitGuide from './VisitGuide.jsx';
+import { environmentContextError, environmentContext } from './environmentContext.js';
 import { PhotoOriginalControls } from './PhotoOriginals.jsx';
 import { applyPhotoReportVersion, reportPhotoSource } from './photoReportVersion.js';
 import { attachOriginal, photoOriginalCapabilities } from './photoOriginals.js';
@@ -57,6 +60,8 @@ import { readRgaTransfer, RGA_TRANSFER_KEY } from './rgaContext.js';
 import { latestDraft } from './draftRecovery.js';
 import {
   HABITOLOGIE_PROTOCOL_STAGES,
+  visitProtocolStages,
+  protocolStageNumber,
   LISTENING_TOPICS,
   createHabitologieProtocolState,
   isHabitologieControlSelected,
@@ -589,7 +594,7 @@ function StepNav({ steps, currentStep, setStep, onHome }) {
 }
 
 function CompletionPanel({ report, validation }) {
-  const photoCount = report.observations.reduce((count, obs) => count + obs.photos.length, 0);
+  const photoCount = report.observations.reduce((count, obs) => count + obs.photos.length, 0) + (environmentContext(report)?.photo ? 1 : 0);
   const required = [
     report.reference_dossier,
     report.proprietaire,
@@ -1295,7 +1300,7 @@ function ProtocolStep({ report, setReport }) {
         [stageKey]: {
           ...prev.habitologie_protocoles[stageKey],
           controls: {
-            ...prev.habitologie_protocoles[stageKey].controls,
+            ...prev.habitologie_protocoles[stageKey]?.controls,
             [controlKey]: checked,
           },
         },
@@ -1311,33 +1316,14 @@ function ProtocolStep({ report, setReport }) {
           <h1>Protocoles</h1>
           <p>
             {habitologie
-              ? "Retenir les phases utiles à la visite, puis les suivre dans l'ordre Eau, Air, Terre, Feu."
+              ? "Préparer la visite du terrain, puis suivre le bâti dans l’ordre Eau, Air, Terre, Feu."
               : 'Selectionner les controles qui seront repris dans le rapport.'}
           </p>
         </div>
       </div>
       {habitologie ? (
         <div className="habitologie-protocol" aria-label="Protocole de visite globale">
-          <div className="analysis-sequence" aria-label="Ordre de l'analyse globale">
-            <div>
-              <strong>Fil conducteur de l'analyse</strong>
-              <small>Cliquer sur le numéro ou le nom pour activer ou désactiver une phase avec le client.</small>
-            </div>
-            <ol>
-              {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
-                <li key={stage.key}>
-                  <button type="button" className="phase-toggle"
-                    aria-label={`Phase ${index + 1} ${stage.label}`}
-                    aria-pressed={isHabitologieStageEnabled(report, stage.key)}
-                    onClick={() => setReport((prev) => setHabitologieStageEnabled(prev, stage.key, !isHabitologieStageEnabled(prev, stage.key)))}>
-                    <span aria-hidden="true">{index + 1}</span>
-                    <strong>{stage.label}<small>{isHabitologieStageEnabled(report, stage.key) ? 'Retenue' : 'Non retenue'}</small></strong>
-                  </button>
-                  {index < HABITOLOGIE_PROTOCOL_STAGES.length - 1 && <ArrowRight size={16} aria-hidden="true" />}
-                </li>
-              ))}
-            </ol>
-          </div>
+          <VisitGuide report={report} setReport={setReport} />
           <div className="listening-review">
             <strong>Besoin reformulé : {report.ecoute.besoin_reformule || 'À préciser avec le client'}</strong>
             <p>{report.ecoute.besoin_confirme ? 'Reformulation confirmée avec le client.' : 'Reformulation à confirmer avec le client.'}</p>
@@ -1345,10 +1331,10 @@ function ProtocolStep({ report, setReport }) {
             <p>Désactiver une phase suspend ses contrôles sans effacer les observations. La réactiver restaure les choix présents au moment de sa désactivation.</p>
             <small>Un point non retenu n'est ni vérifié ni déclaré sans risque. Complétez le périmètre selon votre expertise et les conditions de visite.</small>
           </div>
-          {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
+          {visitProtocolStages(report).map((stage) => (
             <article className={`protocol-phase phase-${stage.key}${isHabitologieStageEnabled(report, stage.key) ? '' : ' is-inactive'}`} key={stage.key}>
               <div className="protocol-phase-heading">
-                <span>Phase {index + 1}</span>
+                <span>{stage.key === 'terrain' ? 'Bloc 0 · Terrain' : `Phase ${protocolStageNumber(stage)}`}</span>
                 <div>
                   <h3>{stage.label}</h3>
                   <p>{stage.summary}</p>
@@ -1434,7 +1420,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
   }, [canUseOnlinePhotos, report.onlineReportId]);
   const dragSource = useRef(null);
   const observationsInOrder = orderedObservations(report);
-  const observationNumbers = new Map(observationsInOrder.map((observation, index) => [observation, index + 1]));
+  const observationNumbers = new Map(observationsInOrder.map(observation => [observation, observationNumber(report, observation)]));
   const phaseObservations = new Map();
   for (const observation of observationsInOrder) {
     const phase = observationPhase(report, observation);
@@ -1590,9 +1576,9 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
                 }
               >
                 <option value="">A classer</option>
-                {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
+                {visitProtocolStages(report).map(stage => (
                   <option key={stage.key} value={stage.key} disabled={!isHabitologieStageEnabled(report, stage.key) && stage.key !== obs.phase_habitologie}>
-                    Phase {index + 1} · {stage.label}{!isHabitologieStageEnabled(report, stage.key) ? ' — non retenue' : ''}
+                    {stage.key === 'terrain' ? 'Bloc 0' : `Phase ${protocolStageNumber(stage)}`} · {stage.label}{!isHabitologieStageEnabled(report, stage.key) ? ' — non retenue' : ''}
                   </option>
                 ))}
               </select>
@@ -1744,6 +1730,25 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
     );
   };
 
+  const renderObservationPhase = stage => {
+    const items = observationsInOrder.filter(obs => obs.phase_habitologie === stage.key);
+    return <section className={`observation-phase phase-${stage.key}${isHabitologieStageEnabled(report, stage.key) ? '' : ' is-inactive'}`} key={stage.key}>
+      <div className="observation-phase-heading"><div>
+        <span>{stage.key === 'terrain' ? 'TERRAIN · T1, T2…' : `Phase ${protocolStageNumber(stage)}`}</span>
+        <h3>{stage.label}</h3><p>{stage.summary}</p>
+      </div><button className="button secondary" type="button" disabled={!isHabitologieStageEnabled(report, stage.key)}
+        aria-label={`Ajouter une observation ${stage.key === 'terrain' ? 'terrain' : stage.label}`}
+        onClick={() => addObservation(stage.key)}><Plus size={18} />Ajouter</button></div>
+      {stage.key === 'terrain' && environmentContext(report) && <details className="legacy-terrain-context">
+        <summary>Notes de terrain déjà saisies — conservées dans le dossier</summary>
+        <EnvironmentContext report={report} setReport={setReport} onPhotoTransfer={onPhotoTransfer} />
+      </details>}
+      {!isHabitologieStageEnabled(report, stage.key) && <p className="phase-status"><strong>Non retenue pour cette visite.</strong> Les observations et photos restent conservées et exportées. Réactivez le bloc dans Protocoles pour ajouter un constat.</p>}
+      {items.length ? <div className="observation-list">{items.map(renderObservationCard)}</div>
+        : <p className="empty-phase">Aucune observation enregistrée pour ce groupe.</p>}
+    </section>;
+  };
+
   return (
     <section className="panel">
       <div className="section-title">
@@ -1754,10 +1759,10 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
         </div>
       </div>
 
-      <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId} onSelect={setPlanObservationId} />
+      <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId} onSelect={setPlanObservationId} onPhotoTransfer={onPhotoTransfer} />
 
       <div className="observation-order-toolbar">
-        <p>{habitologie ? 'Les numéros suivent Eau, Air, Terre, Feu, puis les constats à classer. ' : ''}Changez le numéro ou glissez une fiche pour choisir sa place{habitologie ? ' dans sa phase' : ''}.</p>
+        <p>{habitologie ? 'Terrain : T1, T2… Bâti : Eau, Air, Terre, Feu, puis les constats à classer ; leurs numéros restent indépendants du terrain. ' : ''}Changez le numéro ou glissez une fiche pour choisir sa place{habitologie ? ' dans sa phase' : ''}.</p>
         <button type="button" className="button secondary" aria-pressed={compact} onClick={() => setCompact(value => !value)}>{compact ? 'Afficher les fiches complètes' : 'Vue compacte pour réorganiser'}</button>
       </div>
       {orderMessage && <p role="status" className="observation-order-status">{orderMessage}</p>}
@@ -1775,30 +1780,10 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
 
       {habitologie ? (
         <div className="observation-phases">
-          {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => {
-            const stageObservations = observationsInOrder.filter((obs) => obs.phase_habitologie === stage.key);
-            return (
-              <section className={`observation-phase phase-${stage.key}${isHabitologieStageEnabled(report, stage.key) ? '' : ' is-inactive'}`} key={stage.key}>
-                <div className="observation-phase-heading">
-                  <div>
-                    <span>Phase {index + 1}</span>
-                    <h3>{stage.label}</h3>
-                    <p>{stage.summary}</p>
-                  </div>
-                  <button className="button secondary" type="button" disabled={!isHabitologieStageEnabled(report, stage.key)} onClick={() => addObservation(stage.key)}>
-                    <Plus size={18} />
-                    Ajouter
-                  </button>
-                </div>
-                {!isHabitologieStageEnabled(report, stage.key) && <p className="phase-status"><strong>Non retenue pour cette visite.</strong> Les observations et photos existantes restent conservées et exportées. Réactivez la phase dans Protocoles pour ajouter un constat.</p>}
-                {stageObservations.length > 0 ? (
-                  <div className="observation-list">{stageObservations.map(renderObservationCard)}</div>
-                ) : (
-                  <p className="empty-phase">Aucune observation enregistree pour cette phase.</p>
-                )}
-              </section>
-            );
-          })}
+          {visitProtocolStages(report).filter(stage => stage.key === 'terrain').map(renderObservationPhase)}
+          <div className="observations-bati"><h2>Le bâti</h2>
+            {HABITOLOGIE_PROTOCOL_STAGES.map(renderObservationPhase)}
+          </div>
 
           {report.observations.some((obs) => !findHabitologieStage(obs.phase_habitologie)) && (
             <section className="observation-phase unassigned">
@@ -1969,6 +1954,8 @@ function validateReport(report) {
   const warnings = [];
   const planError = planPayloadError(report);
   if (planError) errors.push(planError);
+  const contextError = environmentContextError(report);
+  if (contextError) errors.push(contextError);
 
   if (!report.reference_dossier.trim()) errors.push('Reference dossier requise.');
   if (!report.proprietaire.trim()) errors.push('Nom du proprietaire requis.');
@@ -2107,7 +2094,7 @@ function OnlineSyncPanel({
         {authenticated && (
           <button className="button primary" data-avereo-save="online" type="button" onClick={onSave} disabled={saving || photoTransfers > 0}>
             <Save size={18} />
-            {photoTransfers > 0 ? 'Envoi photo en cours…' : saving ? 'Sauvegarde...' : 'Sauver en ligne'}
+            {photoTransfers > 0 ? 'Traitement photo en cours…' : saving ? 'Sauvegarde...' : 'Sauver en ligne'}
           </button>
         )}
       </div>
@@ -2175,7 +2162,7 @@ function ReportWizard({
   const handleOnlineSave = async () => {
     if (onlineSaving) return;
     if (photoTransfers > 0) {
-      setOnlineStatus('Attendez la fin de l’envoi des originaux avant de sauvegarder le dossier en ligne.');
+      setOnlineStatus('Attendez la fin du traitement des photos avant de sauvegarder le dossier en ligne.');
       return;
     }
     if (!authenticated) {

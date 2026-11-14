@@ -5,13 +5,17 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## 14 novembre — Terrain horizontal, candidat local PR158
+
+Protocoles présente 0 Terrain et le Bâti Eau/Air/Terre/Feu à l’horizontale. Observations contient les constats T1/T2… et le fond cadastral cadré/enregistré, sans décaler les numéros du bâti. Site est allégé ; les anciennes notes restent dans un volet de reprise. 202 tests, PHP, deux compilations et 38 contrôles HTTP/MariaDB locaux réussis ; réouverture serveur et Word contrôlés. [Parcours, preuves, limites et revue locale](docs/environnement-terrain.md). Revue humaine en attente ; aucune livraison de cette révision. Les états datés suivants restent historiques.
 
 ## Photos du rapport — candidat local du 13 novembre
 

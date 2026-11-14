@@ -1,4 +1,4 @@
-import { buildExpertDocumentHtml, escapeHtml, textToHtml, explanationsHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml } from './reportHtml.js';
+import { buildExpertDocumentHtml, escapeHtml, textToHtml, explanationsHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml, buildEnvironmentContextHtml } from './reportHtml.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
@@ -99,7 +99,7 @@ export function buildReportHtml(report) {
   } else {
     // Sort globally first, then filter: selected findings keep their global number (gaps allowed).
     const selected = orderedObservations(report).filter(o => options.observations.includes(o.id));
-    content = cover(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
+    content = cover(report, true) + buildEnvironmentContextHtml(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
       <p>${textToHtml(options.synthese || 'Synthèse client à rédiger par le professionnel.')}</p>
       ${selected.map(o => `<article class="client-observation keep-together"><h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${isHabitologueProfile(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
         ${explanationsHtml(o)}

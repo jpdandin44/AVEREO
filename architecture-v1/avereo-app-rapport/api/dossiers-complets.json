@@ -37,7 +37,7 @@
           "sha256": "hash re-read from database",
           "bytes": "byte count",
           "observations": "number of observations",
-          "photos": "sum of observation photos",
+          "photos": "sum of observation photos plus one when contexte_exterieur.photo is an object",
           "plans": "number of plans",
           "signature": "boolean"
         }
