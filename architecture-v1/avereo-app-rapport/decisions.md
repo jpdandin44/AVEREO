@@ -5,13 +5,18 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 2026-11-14 — Terrain comme contexte indépendant des observations
+
+Contexte : décrire les abords du bien sans décaler les observations et leurs repères. Le responsable choisit explicitement une rubrique de contexte séparée, sans modifier les numéros Eau/Air/Terre/Feu. Décision : champ facultatif `contexte_exterieur` hors de `observations`, lié à une vue existante sans repère numéroté ; ajout à la synthèse client sur un choix distinct. Raisons : stabilité du protocole, compatibilité des dossiers et distinction contexte/constat numéroté. Conséquences : aucune cinquième phase, aucun tri/déplacement terrain parmi les observations, pas de migration SQL ; un contexte et une photo facultative dans cette tranche. [Contrat et qualification](docs/environnement-terrain.md).
+
 
 ## 2026-11-13 — Version photo du rapport séparée de l’original
 

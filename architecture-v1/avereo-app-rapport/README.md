@@ -5,13 +5,17 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## 14 novembre — Contexte Environnement/Terrain, candidat local
+
+Le profil Habitologue dispose dans **Site** d'une rubrique séparée : constat, explications/liens, conseils, zone, photo et vue facultatives. La décision du responsable conserve les numéros Eau/Air/Terre/Feu ; l'ajout à la synthèse client se choisit séparément. Brouillon, JSON, serveur et Word vérifiés sur deux dossiers fictifs ; 194 tests et deux builds réussis. [Parcours, limites, preuves et revue locale](docs/environnement-terrain.md). Préproduction de ce candidat et revue humaine non engagées ; les états datés suivants restent historiques. La recette photo PR156 terminée reste dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>).
 
 ## Photos du rapport — candidat local du 13 novembre
 

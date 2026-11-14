@@ -5,13 +5,22 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 2026-11-14 — Contexte extérieur, candidat local
+
+Champ facultatif séparé, sans modification du tri, des identifiants ou repères des observations. Validation client des types/images, textes échappés, liens HTTP/HTTPS et photo PNG/JPEG bornée ; l'import refuse une structure invalide en conservant le brouillon. La lecture photo attend l'accord existant et un résultat tardif ne recrée pas un contexte supprimé ni ne rejoint un dossier remplacé. Le verrou existant bloque la sauvegarde pendant la lecture. La copie de structure retire tous les textes, lieux, liens, photos et références du contexte ; l'import complet conserve les champs inconnus compatibles et retire seulement le lien serveur.
+
+38 contrôles HTTP/PHP/MariaDB locaux : stockage et téléchargement exacts, nouvelle session signée, copie indépendante, refus croisés et propriétaire source inchangé. Le navigateur local confirme sauvegarde/réouverture sans brouillon, sélection 2/9, suppression ciblée et largeur simulée de 390 px ; aucune erreur console observée. Quatre DOCX ouverts sans réparation, PDF convertis dans Word et 57 pages inspectées ; empreintes DOCX inchangées. Le premier contrôle de texte PDF a signalé les en-têtes répétés et le caractère de coupure d'URL de PDFium ; contrôle adapté à l'extraction, textes et pages rendues vérifiés sans perte.
+
+Aucune écriture hébergée, configuration, identité, droit, migration, photothèque privée ou production modifiée. Une photo simple de contexte n'utilise pas encore l'éditeur ni l'API d'originaux privés ; ces fonctions existantes restent attachées aux photos d'observation. [Contrat, limites et preuves](environnement-terrain.md).
+
 
 ## 2026-11-13 — Édition des photos et quota des originaux, candidat local
 

@@ -5,12 +5,17 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Contexte extérieur séparé — candidat local du 14 novembre
+
+`EnvironmentContext.jsx` édite dans Site le champ racine facultatif `contexte_exterieur` pour Habitologue. `environmentContext.js` valide les données côté client et applique les modifications par identifiant stable ; les résultats photo tardifs sont ignorés après remplacement/suppression. Le verrou photo existant diffère la sauvegarde en ligne pendant la lecture. `reportFiles.js` conserve ce champ à l'import indépendant ; `report-download.php` ajoute sa photo au compteur sans réencoder les octets stockés. `reportHtml.js` et `reportDelivery.js` composent une section non numérotée, ajoutée au client sur choix explicite. Aucun changement de l'ordre des observations, de route, de table ou de propriété. [Modèle, flux et limites](docs/environnement-terrain.md#données-et-composants).
+
 
 ## Copie photo du rapport — 13 novembre
 

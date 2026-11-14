@@ -668,6 +668,9 @@ img {
 .site-insight input, .site-insight select, .site-insight textarea { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #172033; font: inherit; }
 .site-insight input:focus, .site-insight select:focus, .site-insight textarea:focus { outline: 2px solid #2563eb; outline-offset: 1px; }
 .site-insight textarea { resize: vertical; }
+.environment-context > label { margin: 16px 0; }
+.environment-context .context-client-choice { display: flex; align-items: center; gap: 10px; }
+.environment-context input[type="checkbox"] { width: auto; flex: none; }
 .orientation-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px; align-items: center; }
 .site-compass { width: 150px; height: 150px; }
 .terrain-metrics { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin: 16px 0; }

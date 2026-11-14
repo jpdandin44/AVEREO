@@ -5,13 +5,20 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 2026-11-14 — Contexte extérieur facultatif, sans migration SQL
+
+`contexte_exterieur` étend le payload brut existant ; son absence n'ajoute aucun contenu aux anciens dossiers. Ses champs inconnus compatibles, son identifiant et ses octets photo sont conservés par le JSON complet et l'import indépendant. Le compteur `photos` ajoute la photo du contexte si elle existe. La copie expurgée l'omet entièrement. L'édition/suppression ne réécrit ni observations, ni terrain mesuré, ni sélection client ou repères. Changement de profil : données conservées, section masquée hors Habitologue.
+
+La vue associée reste une référence vers un fond existant, sans nouveau numéro ; référence absente signalée. Le stockage SQL et les permissions ne changent pas. Une ancienne interface conserve ce champ inconnu mais ne l'édite ni ne l'exporte en Word. Pas de migration ni restauration de base à prévoir pour le code de ce lot ; aucun déploiement effectué. [Contrat et qualification locale](environnement-terrain.md).
+
 
 ## 2026-11-13 — Copie photo préparée et comptage conservateur
 

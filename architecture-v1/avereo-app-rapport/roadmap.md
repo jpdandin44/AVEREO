@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,12 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## 14 novembre — Environnement/Terrain prêt pour la revue locale
+
+Décision du responsable : rubrique de contexte séparée sans renuméroter Eau/Air/Terre/Feu. Saisie dans Site, média/vue facultatifs, choix client indépendant et persistance implémentés. 194 tests Node, PHP, deux builds, 38 contrôles HTTP/MariaDB locaux et recette navigateur réussis ; quatre Word natifs/PDF contrôlés sur deux dossiers fictifs (57 pages). [Parcours, critères et limites](docs/environnement-terrain.md). Prochaine action : revue humaine du candidat et de ses libellés, puis décision distincte sur merge/livraison en préproduction.
+
+Les états datés ci-dessous décrivent leur période ; le suivi canonique porte les livraisons et recettes ultérieures de PR152/154/156. Attentes, interventions/planning et activation privée gardent leurs lots propres.
 
 ## Suite du lot photos — développement local du 13 novembre
 

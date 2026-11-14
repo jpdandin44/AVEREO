@@ -5,12 +5,17 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 14 novembre 2026 — Contexte Environnement/Terrain, candidat local
+
+Rubrique Site pour Habitologue : textes et liens, zone, photo avec source/légende et vue existante facultatives. Contexte non numéroté, choix client séparé, anciens JSON préservés, compteur photo intégré et sauvegarde protégée pendant la lecture. 194 tests Node, PHP, deux builds et 38 contrôles HTTP/MariaDB locaux réussis ; nouvelle session sans brouillon et quatre Word/PDF natifs vérifiés sur deux cas fictifs, 57 pages inspectées. La couverture client est isolée du contexte. Aucun déploiement de ce candidat ; [parcours, limites et preuves](docs/environnement-terrain.md).
+
 
 ## 13 novembre 2026 — Photos préparées pour le rapport, candidat local
 

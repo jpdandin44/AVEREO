@@ -4,7 +4,8 @@ import { LISTENING_SECTIONS } from './clientListening.js';
 import { rgaRisk, isRgaRisk } from './georisquesRiskSummary.js';
 import { normalizeRgaCartography, rgaLevelLabel } from './rgaContext.js';
 import { markersForPlan, observationPlanNames, planPayloadError } from './observationPlans.js';
-import { observationAdviceLabel } from './reportProfiles.js';
+import { observationAdviceLabel, isHabitologueProfile } from './reportProfiles.js';
+import { environmentContext, contextText, environmentContextError } from './environmentContext.js';
 import { orderedObservations } from './observationOrder.js';
 import { textToLinkedHtml } from './textLinks.js';
 import { reportPhotoSource } from './photoReportVersion.js';
@@ -110,6 +111,30 @@ export function narrativeHtml(value = '') {
 export function safeEmbeddedImageSource(value = '') {
   const source = String(value).trim();
   return /^data:image\/(?:png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=\s]+$/i.test(source) ? source : '';
+}
+
+// Unnumbered context: no observation or plan marker is created or renumbered.
+export function buildEnvironmentContextHtml(report, client = false) {
+  if (!isHabitologueProfile(report)) return '';
+  const value = environmentContext(report);
+  if (!value || (client && value.includeInClient !== true)) return '';
+  const error = environmentContextError(report);
+  if (error) throw new Error(error);
+  if (!['titre', 'zone', 'constat', 'explications', 'conseils', 'planId'].some(field => contextText(value, field).trim()) && !value.photo) return '';
+  const plan = (report.plans || []).find(item => item.id === value.planId);
+  const picture = (image, title, caption, source) => safeEmbeddedImageSource(image)
+    ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(image)}" alt="${escapeHtml(title)}" /><p>${escapeHtml(caption || title)}</p><p>Source : ${escapeHtml(source || 'À renseigner')}.</p></div>` : '';
+  return `<section class="environment-context-report${client ? ' client-page' : ''}"><h2>Contexte Environnement / Terrain</h2>
+    ${value.titre ? `<h3>${escapeHtml(value.titre)}</h3>` : ''}
+    ${value.zone ? `<p>Zone : ${escapeHtml(value.zone)}</p>` : ''}
+    <h4>Constat</h4><p>${textToHtml(contextText(value, 'constat'))}</p>
+    ${explanationsHtml(value)}
+    <h4>Conseils habitologue</h4><p>${textToHtml(contextText(value, 'conseils'))}</p>
+    ${value.photo ? picture(value.photo.src, value.photo.name, value.photo.caption, value.photo.source) : ''}
+    ${plan ? `<h3>Vue associée — ${escapeHtml(plan.title)}</h3>${picture(plan.src, plan.title, plan.title, plan.source)}`
+      : value.planId ? '<p>Vue associée indisponible ; référence conservée dans le dossier.</p>' : ''}
+    ${!value.photo && !plan ? '<p>Aucun visuel extérieur associé.</p>' : ''}
+  </section>`;
 }
 
 function formatDate(value) {
@@ -372,6 +397,8 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
   ${buildingResourcesHtml(report, escapeHtml)}
 
   ${ecouteHtml}
+
+  ${buildEnvironmentContextHtml(report)}
 
   <h2>${sectionNumbers.protocoles}. Protocole de recherche</h2>
   ${buildProtocolHtml(report)}

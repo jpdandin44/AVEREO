@@ -7,6 +7,8 @@ import { observationAdviceLabel } from './reportProfiles.js';
 import { textLinks } from './textLinks.js';
 import { orderedObservations, observationPhase, moveObservation } from './observationOrder.js';
 import ObservationPlans from './ObservationPlans.jsx';
+import EnvironmentContext from './EnvironmentContext.jsx';
+import { environmentContextError, environmentContext } from './environmentContext.js';
 import { PhotoOriginalControls } from './PhotoOriginals.jsx';
 import { applyPhotoReportVersion, reportPhotoSource } from './photoReportVersion.js';
 import { attachOriginal, photoOriginalCapabilities } from './photoOriginals.js';
@@ -589,7 +591,7 @@ function StepNav({ steps, currentStep, setStep, onHome }) {
 }
 
 function CompletionPanel({ report, validation }) {
-  const photoCount = report.observations.reduce((count, obs) => count + obs.photos.length, 0);
+  const photoCount = report.observations.reduce((count, obs) => count + obs.photos.length, 0) + (environmentContext(report)?.photo ? 1 : 0);
   const required = [
     report.reference_dossier,
     report.proprietaire,
@@ -1024,7 +1026,7 @@ function RiskSummary({ summary, fallbackReportUrl, hasCoordinates, report, setRe
   );
 }
 
-function SiteStep({ report, setReport, onCorrectAddress }) {
+function SiteStep({ report, setReport, onCorrectAddress, onPhotoTransfer }) {
   const [lookupStatus, setLookupStatus] = useState({ state: 'idle', message: '' });
   const [view, setView] = useState('cadastre');
   const lookupSequence = useRef(0);
@@ -1216,6 +1218,8 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
           <input value={report.meteo.vent} onChange={(event) => updateNested('meteo', 'vent', event.target.value)} />
         </Field>
       </div>
+
+      <EnvironmentContext report={report} setReport={setReport} onPhotoTransfer={onPhotoTransfer} />
 
       <div className="cadastre-box">
         <div>
@@ -1969,6 +1973,8 @@ function validateReport(report) {
   const warnings = [];
   const planError = planPayloadError(report);
   if (planError) errors.push(planError);
+  const contextError = environmentContextError(report);
+  if (contextError) errors.push(contextError);
 
   if (!report.reference_dossier.trim()) errors.push('Reference dossier requise.');
   if (!report.proprietaire.trim()) errors.push('Nom du proprietaire requis.');
@@ -2107,7 +2113,7 @@ function OnlineSyncPanel({
         {authenticated && (
           <button className="button primary" data-avereo-save="online" type="button" onClick={onSave} disabled={saving || photoTransfers > 0}>
             <Save size={18} />
-            {photoTransfers > 0 ? 'Envoi photo en cours…' : saving ? 'Sauvegarde...' : 'Sauver en ligne'}
+            {photoTransfers > 0 ? 'Traitement photo en cours…' : saving ? 'Sauvegarde...' : 'Sauver en ligne'}
           </button>
         )}
       </div>
@@ -2175,7 +2181,7 @@ function ReportWizard({
   const handleOnlineSave = async () => {
     if (onlineSaving) return;
     if (photoTransfers > 0) {
-      setOnlineStatus('Attendez la fin de l’envoi des originaux avant de sauvegarder le dossier en ligne.');
+      setOnlineStatus('Attendez la fin du traitement des photos avant de sauvegarder le dossier en ligne.');
       return;
     }
     if (!authenticated) {
@@ -2253,7 +2259,7 @@ function ReportWizard({
         <div className="wizard-grid">
           <div className="wizard-main">
             {currentStep === 0 && <DossierStep report={report} setReport={setReport} />}
-            {currentStep === 1 && <SiteStep report={report} setReport={setReport} onCorrectAddress={() => {
+            {currentStep === 1 && <SiteStep report={report} setReport={setReport} onPhotoTransfer={onPhotoTransfer} onCorrectAddress={() => {
               setCurrentStep(0);
               requestAnimationFrame(() => document.getElementById('adresse-logement')?.focus());
             }} />}

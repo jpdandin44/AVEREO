@@ -5,10 +5,17 @@ title: Tests Rapport
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags: [connect, rga, tests]
 ---
+
+## Contexte extérieur — recette locale du 14 novembre
+
+Les huit cas de `frontend/src/environmentContext.test.js` vérifient compatibilité, numérotation/repères, choix client indépendant, persistance, résultat tardif, vue retirée, confidentialité de la structure de test et entrées invalides. `php tests/report-download.php` inclut le compteur photo du contexte et l'empreinte des octets.
+
+Le script HTTP existant accepte `--fixture CHEMIN_JSON_FICTIF` : il rejoue le dossier complet avec le contexte, ses compteurs et trois vérifications complémentaires de réouverture/propriété (38 contrôles). Avec `--serve --port 5190`, il conserve la revue locale ; les prérequis PHP/Docker et limites ci-dessous s'appliquent. [Scénario navigateur, Word et preuves](../docs/environnement-terrain.md#qualification-effectuée).
+
 
 ## Dossiers complets — recette du 13 novembre
 

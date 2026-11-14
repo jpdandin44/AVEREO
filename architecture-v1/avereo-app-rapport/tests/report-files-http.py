@@ -25,6 +25,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--receipt', type=Path)
 parser.add_argument('--serve', action='store_true', help='Keep a local fictitious two-account review environment running after the checks')
 parser.add_argument('--port', type=int, default=5186, help='Local Vite review port with --serve')
+parser.add_argument('--fixture', type=Path, help='Optional complete fictitious dossier for the existing round-trip recipe')
 args = parser.parse_args()
 PHP = shutil.which('php')
 assert PHP and shutil.which('docker'), 'Existing PHP and Docker required'
@@ -149,14 +150,15 @@ try:
               (web / 'api' / name).read_bytes() == (APP / 'frontend/public/api' / name).read_bytes())
     a, b, admin = enter(101), enter(102), enter(1)
     A = 'a' * 32
-    fixture = json.loads((APP / 'tests/fixtures/dossier-complet.json').read_text(encoding='utf-8'))
+    fixture = json.loads((args.fixture or APP / 'tests/fixtures/dossier-complet.json').read_text(encoding='utf-8'))
     # This JSON integer must also survive the server's RAW download, without JS re-encoding.
     def save(cookie, payload, rid=''):
         return req('/api/reports.php', cookie, 'POST', json.dumps({'id': rid, 'report': payload}, ensure_ascii=False).encode('utf-8'), {'Content-Type': 'application/json'})
     result = save(a, fixture, A)
     check('Full source save accepted', result[0] == 200)
     ack = json.loads(result[2])['report']
-    check('Save acknowledgement counts re-read content', ack['content']['observations'] == 12 and ack['content']['photos'] == 2 and ack['content']['plans'] == 1)
+    expected_photos = sum(len(observation.get('photos', [])) for observation in fixture['observations']) + int(bool(fixture.get('contexte_exterieur', {}).get('photo')))
+    check('Save acknowledgement counts re-read content', ack['content']['observations'] == len(fixture['observations']) and ack['content']['photos'] == expected_photos and ack['content']['plans'] == len(fixture.get('plans', [])))
     source = mysql("SELECT * FROM rapport_reports WHERE public_id='" + A + "';", db_name)
     stored = bytes.fromhex(mysql("SELECT HEX(payload_json) FROM rapport_reports WHERE public_id='" + A + "';", db_name).decode().strip())
     check('Stored full data matches submitted fields', json.loads(stored) == fixture)
@@ -172,6 +174,9 @@ try:
     fresh = enter(101)
     reopened = req('/api/reports.php?id=' + A, fresh)
     check('New local signed session loads full content', reopened[0] == 200 and json.loads(reopened[2])['report']['payload'] == fixture)
+    if 'contexte_exterieur' in fixture:
+        check('Separate exterior context survives a new signed session exactly', json.loads(reopened[2])['report']['payload']['contexte_exterieur'] == fixture['contexte_exterieur'])
+        check('Exterior context does not alter observation IDs or order', json.loads(reopened[2])['report']['payload']['observations'] == fixture['observations'])
     for suffix in ['', '&download=1']:
         check('Other owner denied ' + ('download' if suffix else 'read'), req('/api/reports.php?id=' + A + suffix, b)[0] == 404)
     check('Other owner cannot overwrite source', save(b, fixture, A)[0] == 403)
@@ -186,6 +191,8 @@ try:
     check('Recipient owns the copy only', mysql("SELECT owner_id FROM rapport_reports WHERE public_id='" + B + "';", db_name).strip() == b'102')
     fresh_b = enter(102)
     check('Recipient reopens all business fields', json.loads(req('/api/reports.php?id=' + B, fresh_b)[2])['report']['payload'] == copied)
+    if 'contexte_exterieur' in fixture:
+        check('Independent recipient retains exterior context and source owner unchanged', json.loads(req('/api/reports.php?id=' + B, fresh_b)[2])['report']['payload']['contexte_exterieur'] == fixture['contexte_exterieur'])
     check('Source rows and owner unchanged', mysql("SELECT * FROM rapport_reports WHERE public_id='" + A + "';", db_name) == source)
     check('Recipient cannot access source after import', req('/api/reports.php?id=' + A + '&download=1', fresh_b)[0] == 404)
     bad_id = 'c' * 32
@@ -209,6 +216,7 @@ try:
     receipt = {'status': 'passed', 'count': len(checks), 'checks': checks, 'hostingChanged': False,
                'scope': 'Actual PHP, real SQL migration in disposable local MariaDB, existing application gate with fictitious signed identities; not hosted CONNECT/OAuth',
                'sourceRowsAndOwnerPreserved': True, 'copyOwnerSeparate': True}
+    receipt['exteriorContextTested'] = 'contexte_exterieur' in fixture
     if args.receipt:
         args.receipt.parent.mkdir(parents=True, exist_ok=True)
         args.receipt.write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')

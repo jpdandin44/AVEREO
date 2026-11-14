@@ -5,13 +5,17 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Environnement/Terrain — décision du 14 novembre
+
+Décrire le contexte extérieur dans une rubrique séparée pour Habitologue, avec constat, explications/liens, conseils, zone et photo facultative. Conserver les identifiants, numéros Eau/Air/Terre/Feu, repères et sélection client ; aucun numéro consommé par le contexte. L'inclusion dans la synthèse client doit être explicite et indépendante des trois observations sélectionnées. Préserver le contenu dans brouillon/JSON/serveur et Word ; fonctionner sans coordonnées, fond distant ou média. Une vue retirée doit rester signalée, sans substitution. [Contrat, critères et qualification locale](docs/environnement-terrain.md).
 
 ## Photos préparées — reprise du 13 novembre
 
