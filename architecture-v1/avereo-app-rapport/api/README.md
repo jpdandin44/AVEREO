@@ -5,7 +5,7 @@ title: API de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-10
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,8 @@ tags:
 ---
 
 ## Plans et repères
+
+Révision Terrain du 14 novembre : plans[].kind admet cadastre en plus de niveau/coupe ; métadonnées cadrage/localisation facultatives conservées. observations[].phase_habitologie peut valoir terrain ; Tn est un label dérivé, jamais une référence serveur. Frontend et validation PHP correspondante doivent être livrés ensemble. [Contrat de la révision](../docs/environnement-terrain.md#données-et-composants).
 
 Les opérations de sauvegarde existantes transportent les champs optionnels `plans` et `observations[].reperes`. `observation-plans-validation.php` vérifie images, dimensions, listes et références et retourne une erreur `report_plans_invalid` (422) sans sauvegarde en cas d’invalidité. Les permissions et la propriété existantes restent inchangées. [Données, bornes et compatibilité](../docs/reperage-observations.md#données-de-référence).
 

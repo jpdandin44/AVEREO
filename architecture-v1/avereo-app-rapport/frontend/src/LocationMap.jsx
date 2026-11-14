@@ -7,7 +7,7 @@ import { terrainMapSamples } from './terrainContext.js';
 import { createRgaLayer, createRgaPanes } from './rgaOverlay.js';
 import useRgaAccess from './useRgaAccess.js';
 
-export function CadastralMap({ lon, lat, mode, revision, editing = false, draft = null, onPointChange, terrainAnalysis = null, rga = false, rgaOpacity = .4 }) {
+export function CadastralMap({ lon, lat, mode, revision, editing = false, draft = null, onPointChange, terrainAnalysis = null, rga = false, rgaOpacity = .4, onCapture, captureBusy = false }) {
   const container = useRef(null);
   const mapRef = useRef(null);
   const rgaRef = useRef(null);
@@ -126,6 +126,14 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
         : loading ? <p className="property-map-status" role="status"><Loader2 size={16} className="spin" /> Chargement du fond et des parcelles…</p> : null}
       {rga && <p className={`property-map-status${rgaStatus === 'error' ? ' warning' : ''}`} role="status">
         {rgaStatus === 'error' ? 'La couche RGA est indisponible. Utilisez Recentrer pour réessayer.' : rgaStatus === 'loading' ? 'Chargement de la couche RGA…' : `RGA 2026 · Contours simplifiés à ${mapZoom >= 11 ? '20' : '250'} m à cette échelle : précision parcellaire non garantie.`}</p>}
+      {onCapture && <button type="button" className="button secondary" disabled={captureBusy || loading || failed}
+        onClick={() => {
+          const map = mapRef.current;
+          if (!map) return;
+          const origin = map.getPixelBounds().min, size = map.getSize(), center = map.getCenter(), bounds = map.getBounds();
+          onCapture({ pixelOrigin: { x: origin.x, y: origin.y }, width: size.x, height: size.y, zoom: map.getZoom(),
+            center: { lon: center.lng, lat: center.lat }, bounds: { west: bounds.getWest(), south: bounds.getSouth(), east: bounds.getEast(), north: bounds.getNorth() } });
+        }}>Utiliser cette vue pour les observations du terrain</button>}
     </>
   );
 }

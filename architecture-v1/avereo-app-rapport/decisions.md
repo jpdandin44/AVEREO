@@ -13,6 +13,10 @@ tags:
   - architecture
 ---
 
+## 2026-11-14 — Terrain horizontal et numérotation indépendante confirmés
+
+Contexte : Site jugé trop chargé ; le responsable accepte T1/T2… et impose le fil horizontal. Décision : bloc 0 Terrain contenant visuellement le Bâti ; constats dans le tableau existant avec phase terrain, labels Tn dérivés et numéros du bâti inchangés ; trois constats client au total. Capture cadastrale figée comme nouvelle vue, sans déplacement des anciens repères. Raisons : continuité du parcours, mêmes outils de saisie/photo, stabilité des références et du bâti. Conséquences : nouvelle valeur cadastre admise par le frontend et PHP, sans migration SQL ; conserver contexte_exterieur dans un volet de reprise, sans conversion. Cette décision remplace l’interface Site et le modèle de nouvelle saisie du premier candidat décrit ci-dessous ; son ancien choix client reste uniquement pour ses notes conservées. [Contrat](docs/environnement-terrain.md).
+
 ## 2026-11-14 — Terrain comme contexte indépendant des observations
 
 Contexte : décrire les abords du bien sans décaler les observations et leurs repères. Le responsable choisit explicitement une rubrique de contexte séparée, sans modifier les numéros Eau/Air/Terre/Feu. Décision : champ facultatif `contexte_exterieur` hors de `observations`, lié à une vue existante sans repère numéroté ; ajout à la synthèse client sur un choix distinct. Raisons : stabilité du protocole, compatibilité des dossiers et distinction contexte/constat numéroté. Conséquences : aucune cinquième phase, aucun tri/déplacement terrain parmi les observations, pas de migration SQL ; un contexte et une photo facultative dans cette tranche. [Contrat et qualification](docs/environnement-terrain.md).

@@ -13,9 +13,9 @@ tags:
   - habitologie
 ---
 
-## Environnement/Terrain — décision du 14 novembre
+## Terrain et bâti — décision confirmée du 14 novembre
 
-Décrire le contexte extérieur dans une rubrique séparée pour Habitologue, avec constat, explications/liens, conseils, zone et photo facultative. Conserver les identifiants, numéros Eau/Air/Terre/Feu, repères et sélection client ; aucun numéro consommé par le contexte. L'inclusion dans la synthèse client doit être explicite et indépendante des trois observations sélectionnées. Préserver le contenu dans brouillon/JSON/serveur et Word ; fonctionner sans coordonnées, fond distant ou média. Une vue retirée doit rester signalée, sans substitution. [Contrat, critères et qualification locale](docs/environnement-terrain.md).
+Fil conducteur horizontal : 0 Le terrain de la propriété dans un cadre vert, Bâti contenant les quatre phases dans un cadre rouge. Saisie Terrain dans Observations avec les mêmes fonctions que les constats existants ; repères T1/T2… sans consommer de numéro Eau/Air/Terre/Feu. Réorganisation uniquement dans son groupe ; identifiants et liens stables. Retirer la nouvelle rubrique de Site, préserver et rendre accessibles les anciennes notes sans conversion automatique. Cadrer un fond cadastral puis conserver une image fixe avec source/date et repères ; un autre cadrage ajoute une vue. Import manuel et saisie sans carte disponibles. Sauvegarde complète et reprise serveur, sélection client commune de trois constats au plus, Word cohérents. [Contrat détaillé et limites](docs/environnement-terrain.md).
 
 ## Photos préparées — reprise du 13 novembre
 

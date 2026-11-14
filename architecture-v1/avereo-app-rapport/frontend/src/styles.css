@@ -637,6 +637,22 @@ img {
   color: #93a4bd;
 }
 
+.analysis-sequence > .visit-guide-scroll { display: block; overflow-x: auto; max-width: 100%; padding: 3px; }
+.visit-guide-track { display: flex; flex-flow: row nowrap; align-items: center; gap: 12px; width: max-content; min-width: 100%; padding: 12px; border-radius: 10px; }
+.visit-guide-terrain { border: 2px solid #268345; background: #f1faf3; }
+.visit-guide-bati { padding: 10px; border: 2px solid #c4473a; border-radius: 8px; background: #fffafa; }
+.visit-guide-bati > strong { display: block; margin-bottom: 8px; }
+.analysis-sequence .visit-guide-bati ol { flex-flow: row nowrap; }
+.visit-guide-track .phase-toggle { flex: none; white-space: nowrap; }
+.terrain-toggle { max-width: 190px; white-space: normal !important; border-color: #268345; background: #e4f5e9; }
+.terrain-toggle > span { flex: none; background: #268345; }
+.observations-bati { border: 2px solid #c4473a; border-radius: 12px; padding: 14px; min-width: 0; }
+.observations-bati > h2 { margin-top: 0; }
+.phase-terrain { border-color: #268345; background: #f5fbf6; }
+.terrain-capture { margin: 16px 0; padding: 12px; border: 1px solid #88b897; border-radius: 8px; background: #fff; }
+.terrain-capture summary, .legacy-terrain-context summary { font-weight: 700; cursor: pointer; }
+.legacy-terrain-context { margin: 12px 0; }
+
 .consent-list {
   display: grid;
   gap: 10px;

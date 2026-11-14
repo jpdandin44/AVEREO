@@ -14,11 +14,9 @@ tags:
   - fonctionnalites
 ---
 
-## 14 novembre — Environnement/Terrain prêt pour la revue locale
+## 14 novembre — Terrain horizontal, revue locale de PR158
 
-Décision du responsable : rubrique de contexte séparée sans renuméroter Eau/Air/Terre/Feu. Saisie dans Site, média/vue facultatifs, choix client indépendant et persistance implémentés. 194 tests Node, PHP, deux builds, 38 contrôles HTTP/MariaDB locaux et recette navigateur réussis ; quatre Word natifs/PDF contrôlés sur deux dossiers fictifs (57 pages). [Parcours, critères et limites](docs/environnement-terrain.md). Prochaine action : revue humaine du candidat et de ses libellés, puis décision distincte sur merge/livraison en préproduction.
-
-Les états datés ci-dessous décrivent leur période ; le suivi canonique porte les livraisons et recettes ultérieures de PR152/154/156. Attentes, interventions/planning et activation privée gardent leurs lots propres.
+Organisation confirmée par le responsable et implémentée : Protocoles horizontal, bloc 0 Terrain, Bâti regroupé ; Observations Terrain et fond cadastral, Site allégé. [Parcours et qualification de la révision](docs/environnement-terrain.md). Développement local vérifié ; prochaine action : revue humaine de cette même PR158. Préproduction et Mise en production non engagées pour la révision. Les notes et preuves du précédent candidat sont conservées dans les archives et décisions historiques.
 
 ## Suite du lot photos — développement local du 13 novembre
 

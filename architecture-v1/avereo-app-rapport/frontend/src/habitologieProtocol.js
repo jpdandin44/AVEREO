@@ -1,3 +1,16 @@
+import { isHabitologueProfile } from './reportProfiles.js';
+
+export const TERRAIN_PROTOCOL_STAGE = Object.freeze({
+  key: 'terrain', label: 'Le terrain de la propriété',
+  summary: 'Observer les abords et l’implantation du bâti sur le terrain.',
+  controls: Object.freeze([
+    { key: 'acces_abords', label: 'Accès et abords de la propriété' },
+    { key: 'relief_ecoulements', label: 'Relief apparent et cheminement des eaux' },
+    { key: 'vegetation_ouvrages', label: 'Végétation et ouvrages extérieurs visibles' },
+    { key: 'implantation_bati', label: 'Implantation du bâti et relation avec ses abords' },
+  ]),
+});
+
 export const HABITOLOGIE_PROTOCOL_STAGES = Object.freeze([
   {
     key: 'eau',
@@ -62,14 +75,14 @@ export function createHabitologieProtocolState() {
 export function mergeHabitologieProtocolState(value = {}) {
   const defaults = createHabitologieProtocolState();
   return Object.fromEntries(
-    HABITOLOGIE_PROTOCOL_STAGES.map((stage) => [
+    (value?.terrain ? [TERRAIN_PROTOCOL_STAGE, ...HABITOLOGIE_PROTOCOL_STAGES] : HABITOLOGIE_PROTOCOL_STAGES).map((stage) => [
       stage.key,
       {
         ...defaults[stage.key],
         ...(value?.[stage.key] || {}),
         enabled: value?.[stage.key]?.enabled !== false,
         controls: {
-          ...defaults[stage.key].controls,
+          ...defaults[stage.key]?.controls,
           ...(value?.[stage.key]?.controls || {}),
         },
       },
@@ -78,8 +91,16 @@ export function mergeHabitologieProtocolState(value = {}) {
 }
 
 export function findHabitologieStage(stageKey) {
-  return HABITOLOGIE_PROTOCOL_STAGES.find((stage) => stage.key === stageKey) || null;
+  return stageKey === 'terrain' ? TERRAIN_PROTOCOL_STAGE : HABITOLOGIE_PROTOCOL_STAGES.find((stage) => stage.key === stageKey) || null;
 }
+
+export function visitProtocolStages(report) {
+  return isHabitologueProfile(report) || report.habitologie_protocoles?.terrain
+    || report.observations?.some(observation => observation.phase_habitologie === 'terrain')
+    ? [TERRAIN_PROTOCOL_STAGE, ...HABITOLOGIE_PROTOCOL_STAGES] : HABITOLOGIE_PROTOCOL_STAGES;
+}
+
+export const protocolStageNumber = stage => stage.key === 'terrain' ? 0 : HABITOLOGIE_PROTOCOL_STAGES.indexOf(stage) + 1;
 
 export function findHabitologieControl(stageKey, controlKey) {
   return findHabitologieStage(stageKey)?.controls.find((control) => control.key === controlKey) || null;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import VoiceField from './VoiceField.jsx';
 import { allowsDecisionProjections } from './reportProfiles.js';
-import { orderedObservations } from './observationOrder.js';
+import { orderedObservations, observationNumber } from './observationOrder.js';
 import { normalizeDecision, decisionComparison, decisionWarnings, DECISION_CRITERIA, ACTION_CATEGORIES } from './decisionSupport.js';
 
 const newId = () => crypto.randomUUID();
@@ -85,7 +85,7 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
       {d.liens.map((l, i) => <article className="decision-card" key={`${l.id}-${i}`} aria-label={`Lien ${i + 1}`}><h4>Lien {i + 1}</h4>
         <label>Constat du bilan<select value={l.observation_id} onChange={e => row('liens', i, 'observation_id', e.target.value)}><option value="">Choisir un constat</option>
           {l.observation_id && !observations.some(o => o.id === l.observation_id) && <option value={l.observation_id}>Référence introuvable ({l.observation_id})</option>}
-          {observations.map((o, n) => <option key={`${o.id}-${n}`} value={o.id}>{o.titre || `Constat ${n + 1}`}</option>)}</select></label>
+          {observations.map((o, n) => <option key={`${o.id}-${n}`} value={o.id}>{observationNumber(report, o)} · {o.titre || 'Constat sans titre'}</option>)}</select></label>
         <Refs label="Attentes concernées par ce constat" collection={d.attentes} field="libelle" selected={l.attente_ids} onChange={v => row('liens', i, 'attente_ids', v)} />
         <Text micDisabled={!dictationAllowed} label="Effet, opportunité ou faiblesse pour les habitants" value={l.effet} onChange={v => row('liens', i, 'effet', v)} />
         <Text micDisabled={!dictationAllowed} label="Hypothèses et vérifications nécessaires" value={l.verification} onChange={v => row('liens', i, 'verification', v)} />

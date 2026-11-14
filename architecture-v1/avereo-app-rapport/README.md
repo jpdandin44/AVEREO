@@ -13,9 +13,9 @@ tags:
   - connect
 ---
 
-## 14 novembre — Contexte Environnement/Terrain, candidat local
+## 14 novembre — Terrain horizontal, candidat local PR158
 
-Le profil Habitologue dispose dans **Site** d'une rubrique séparée : constat, explications/liens, conseils, zone, photo et vue facultatives. La décision du responsable conserve les numéros Eau/Air/Terre/Feu ; l'ajout à la synthèse client se choisit séparément. Brouillon, JSON, serveur et Word vérifiés sur deux dossiers fictifs ; 194 tests et deux builds réussis. [Parcours, limites, preuves et revue locale](docs/environnement-terrain.md). Préproduction de ce candidat et revue humaine non engagées ; les états datés suivants restent historiques. La recette photo PR156 terminée reste dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>).
+Protocoles présente 0 Terrain et le Bâti Eau/Air/Terre/Feu à l’horizontale. Observations contient les constats T1/T2… et le fond cadastral cadré/enregistré, sans décaler les numéros du bâti. Site est allégé ; les anciennes notes restent dans un volet de reprise. 202 tests, PHP, deux compilations et 38 contrôles HTTP/MariaDB locaux réussis ; réouverture serveur et Word contrôlés. [Parcours, preuves, limites et revue locale](docs/environnement-terrain.md). Revue humaine en attente ; aucune livraison de cette révision. Les états datés suivants restent historiques.
 
 ## Photos du rapport — candidat local du 13 novembre
 

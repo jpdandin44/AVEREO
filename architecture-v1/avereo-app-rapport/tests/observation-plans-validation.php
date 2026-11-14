@@ -5,6 +5,11 @@ $plan = ['id' => 'p1', 'title' => 'RDC', 'kind' => 'niveau', 'source' => 'Recett
     'src' => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII='];
 $valid = ['plans' => [$plan], 'observations' => [['id' => 'o1', 'reperes' => [['planId' => 'p1', 'x' => 0, 'y' => 1]]]]];
 $cases = [[[], true], [$valid, true]];
+$cadastre = $valid;
+$cadastre['plans'][0]['kind'] = 'cadastre';
+$cadastre['plans'][0]['cadrage'] = ['zoom' => 19, 'capturedAt' => '2026-11-14T19:00:00Z'];
+$cadastre['observations'][0]['phase_habitologie'] = 'terrain';
+$cases[] = [$cadastre, true];
 foreach (['url', 'fake', 'dimensions', 'duplicate_plan', 'missing_view', 'outside', 'string', 'duplicate_point', 'duplicate_observation', 'object'] as $case) {
     $value = $valid;
     switch ($case) {

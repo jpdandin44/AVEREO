@@ -13,6 +13,12 @@ tags:
   - fonctionnalites
 ---
 
+## 2026-11-14 — Terrain horizontal : compatibilité et retour arrière
+
+Constats terrain dans observations avec phase_habitologie=terrain ; Tn dérivés séparément des numéros du bâti. Anciens objets, plans, signature, photos et références conservés ; copie complète indépendante et source/propriétaire inchangés vérifiés. Ancien contexte facultatif repris dans un volet d’Observations, sans conversion. Nouveau kind=cadastre et métadonnées cadrage/localisation dans plans ; validation PHP et frontend à livrer ensemble. Aucun changement SQL.
+
+Une ancienne interface peut classer les constats terrain dans À classer et produire une numérotation différente ; un ancien PHP refuse le type cadastre. Ne pas utiliser un ancien client pour éditer/exporter ces nouveaux dossiers. Un retour arrière du code ne retire pas les champs JSON ; conserver la sauvegarde complète et qualifier les versions ensemble avant livraison. Aucun déploiement effectué. [Contrat et recette actuelle](environnement-terrain.md). Les résultats Site ci-dessous décrivent le premier candidat.
+
 ## 2026-11-14 — Contexte extérieur facultatif, sans migration SQL
 
 `contexte_exterieur` étend le payload brut existant ; son absence n'ajoute aucun contenu aux anciens dossiers. Ses champs inconnus compatibles, son identifiant et ses octets photo sont conservés par le JSON complet et l'import indépendant. Le compteur `photos` ajoute la photo du contexte si elle existe. La copie expurgée l'omet entièrement. L'édition/suppression ne réécrit ni observations, ni terrain mesuré, ni sélection client ou repères. Changement de profil : données conservées, section masquée hors Habitologue.

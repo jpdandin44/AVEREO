@@ -5,7 +5,7 @@ title: Carte cadastrale IGN et confirmation du lieu
 status: active
 version: git
 created: 2026-09-12
-updated: 2026-09-15
+updated: 2026-11-14
 owner: jpdandin
 tags:
   - rapport
@@ -14,6 +14,10 @@ tags:
 ---
 
 # Carte cadastrale IGN et confirmation du lieu
+
+## Capture du fond cadastral — candidat local du 14 novembre
+
+La même carte Leaflet expose facultativement son cadrage à CadastralCapture.jsx dans Observations. cadastralCapture.js lit seulement les tuiles IGN/DGFiP existantes sans identifiants ni cookies, puis crée un PNG fixe avec source/date/nord. Le dossier conserve cadrage, localisation et type cadastre dans plans, via les opérations de sauvegarde existantes. Import manuel si indisponibilité ; aucune nouvelle API ou clé. [Bornes, modèle et qualification](../docs/environnement-terrain.md#données-et-composants).
 
 ## Fonctionnement implemente
 

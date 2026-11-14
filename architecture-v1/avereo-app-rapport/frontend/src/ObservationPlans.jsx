@@ -1,9 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { MAX_PLANS, MAX_REPORT_BYTES, markersForPlan, planPayloadError, readPlanFile, setObservationPoint } from './observationPlans.js';
-import { orderedObservations } from './observationOrder.js';
+import { orderedObservations, observationNumber } from './observationOrder.js';
+import CadastralCapture from './CadastralCapture.jsx';
+import { visitProtocolStages } from './habitologieProtocol.js';
 import './observationPlans.css';
 
-export default function ObservationPlans({ report, setReport, selectedId, onSelect }) {
+export default function ObservationPlans({ report, setReport, selectedId, onSelect, onPhotoTransfer }) {
   const [viewId, setViewId] = useState('');
   const [zoom, setZoom] = useState(100);
   const [placing, setPlacing] = useState(false);
@@ -17,7 +19,7 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
   const plan = plans.find(p => p.id === viewId) || plans[0];
   const ordered = orderedObservations(report);
   const observation = ordered.find(o => o.id === selectedId) || ordered[0];
-  const number = ordered.indexOf(observation) + 1;
+  const number = observationNumber(report, observation);
   const markers = plan ? markersForPlan(report, plan.id) : [];
   const current = markers.find(p => p.observationId === observation?.id);
   const chooseObservation = id => { onSelect(id); setPlacing(false); setMessage(''); };
@@ -51,6 +53,7 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
   return <section className="observation-plans" id="observation-plans" tabIndex={-1} aria-label="Repérage sur plans et coupes">
     <h3>Repérage sur plans et coupes</h3>
     <p>Choisissez une observation et une vue, puis placez son repère. Le même numéro suit le constat sur chaque vue et dans le Word.</p>
+    {visitProtocolStages(report).some(stage => stage.key === 'terrain') && <CadastralCapture report={report} setReport={setReport} onPhotoTransfer={onPhotoTransfer} />}
     <label className="plan-import">Ajouter des plans ou des coupes
       <input type="file" multiple accept="image/png,image/jpeg" onChange={importPlans} disabled={busy} />
     </label>
@@ -60,10 +63,10 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
     {!plan ? <p>Aucune vue ajoutée. Vous pouvez continuer à décrire la pièce ou la zone dans chaque observation.</p> : <>
       <div className="plan-toolbar">
         <label>Vue affichée<select value={plan.id} onChange={e => { setViewId(e.target.value); setZoom(100); setPlacing(false); }}>
-          {plans.map(p => <option key={p.id} value={p.id}>{p.title} · {p.kind === 'coupe' ? 'Coupe' : 'Niveau'}</option>)}
+          {plans.map(p => <option key={p.id} value={p.id}>{p.title} · {p.kind === 'cadastre' ? 'Cadastre' : p.kind === 'coupe' ? 'Coupe' : 'Niveau'}</option>)}
         </select></label>
         <label>Observation à repérer<select value={observation?.id || ''} onChange={e => chooseObservation(e.target.value)}>
-          {ordered.map((o, i) => <option key={o.id} value={o.id}>{i + 1}. {o.titre || o.piece || 'Sans titre'}</option>)}
+          {ordered.map(o => <option key={o.id} value={o.id}>{observationNumber(report, o)}. {o.titre || o.piece || 'Sans titre'}</option>)}
         </select></label>
         <label>Zoom {zoom} %<input type="range" min="100" max="300" step="25" value={zoom} onChange={e => setZoom(Number(e.target.value))} /></label>
       </div>
@@ -111,7 +114,7 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
       <details><summary>Informations sur la vue</summary>
         <div className="plan-toolbar">
           <label>Titre de la vue<input value={plan.title} maxLength={200} onChange={e => updatePlan({ title: e.target.value })} /></label>
-          <label>Type de vue<select value={plan.kind} onChange={e => updatePlan({ kind: e.target.value })}><option value="niveau">Plan de niveau</option><option value="coupe">Coupe</option></select></label>
+          <label>Type de vue<select value={plan.kind} onChange={e => updatePlan({ kind: e.target.value })}><option value="niveau">Plan de niveau</option><option value="coupe">Coupe</option><option value="cadastre">Fond cadastral du terrain</option></select></label>
           <label>Source de la vue<input value={plan.source} maxLength={1000} onChange={e => updatePlan({ source: e.target.value })} /></label>
         </div>
         <p>Le fond est conservé à l’identique pour que les repères ne changent pas d’emplacement.</p>

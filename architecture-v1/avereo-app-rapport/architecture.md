@@ -12,10 +12,9 @@ tags:
   - architecture
 ---
 
-## Contexte extérieur séparé — candidat local du 14 novembre
+## Terrain dans Protocoles et Observations — révision locale du 14 novembre
 
-`EnvironmentContext.jsx` édite dans Site le champ racine facultatif `contexte_exterieur` pour Habitologue. `environmentContext.js` valide les données côté client et applique les modifications par identifiant stable ; les résultats photo tardifs sont ignorés après remplacement/suppression. Le verrou photo existant diffère la sauvegarde en ligne pendant la lecture. `reportFiles.js` conserve ce champ à l'import indépendant ; `report-download.php` ajoute sa photo au compteur sans réencoder les octets stockés. `reportHtml.js` et `reportDelivery.js` composent une section non numérotée, ajoutée au client sur choix explicite. Aucun changement de l'ordre des observations, de route, de table ou de propriété. [Modèle, flux et limites](docs/environnement-terrain.md#données-et-composants).
-
+VisitGuide.jsx présente le bloc 0 et le Bâti à l’horizontale. Les constats terrain utilisent le tableau observations avec phase_habitologie=terrain ; observationOrder.js dérive Tn et les numéros du bâti séparément, utilisés aussi dans plans, choix client, aide à la décision et Word. CadastralCapture.jsx utilise la carte existante, capture les seules tuiles publiques dans un PNG fixe et l’ajoute à plans avec kind=cadastre, cadrage et localisation. Les résultats tardifs sont écartés après changement de cible. PHP accepte ce type dans sa validation existante. EnvironmentContext.jsx demeure uniquement pour reprendre l’ancien contexte dans Observations ; Site ne le rend plus. Aucun nouveau stockage, endpoint, droit ou migration SQL. [Flux, bornes et composants](docs/environnement-terrain.md#données-et-composants).
 
 ## Copie photo du rapport — 13 novembre
 

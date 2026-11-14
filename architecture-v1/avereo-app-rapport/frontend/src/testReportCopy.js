@@ -1,5 +1,5 @@
 import { normalizeReportClassification } from './reportClassification.js';
-import { findHabitologieStage, findHabitologieControl, HABITOLOGIE_PROTOCOL_STAGES, LISTENING_TOPICS } from './habitologieProtocol.js';
+import { findHabitologieStage, findHabitologieControl, visitProtocolStages, LISTENING_TOPICS } from './habitologieProtocol.js';
 import { protocolOptions } from './reportHtml.js';
 import { isHabitologueProfile } from './reportProfiles.js';
 
@@ -13,7 +13,7 @@ export function createTestReportCopy(report) {
     report_type: report.report_type === 'habitologie' ? 'habitologie' : '',
   });
   const topics = report.ecoute?.sujets_identifies;
-  const stages = HABITOLOGIE_PROTOCOL_STAGES.map(({key, controls}) => {
+  const stages = visitProtocolStages(report).map(({key, controls}) => {
     const source = report.habitologie_protocoles?.[key];
     return [key, {
       enabled: source?.enabled !== false,

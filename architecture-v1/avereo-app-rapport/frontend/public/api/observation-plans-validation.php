@@ -11,7 +11,7 @@ function api_observation_plans_error(array $payload): ?string
         if (!is_array($plan) || !isset($plan['id']) || !is_string($plan['id']) || $plan['id'] === '' || strlen($plan['id']) > 190 || isset($ids[$plan['id']])) return 'Identifiant de plan invalide ou dupliqué.';
         $ids[$plan['id']] = true;
         if (!isset($plan['title'], $plan['kind'], $plan['source']) || !is_string($plan['title']) || trim($plan['title']) === '' || strlen($plan['title']) > 800
-            || !in_array($plan['kind'], ['niveau', 'coupe'], true) || !is_string($plan['source']) || strlen($plan['source']) > 4000) return 'Informations de plan invalides.';
+            || !in_array($plan['kind'], ['niveau', 'coupe', 'cadastre'], true) || !is_string($plan['source']) || strlen($plan['source']) > 4000) return 'Informations de plan invalides.';
         $src = $plan['src'] ?? null;
         if (!is_string($src) || strlen($src) > (int) ceil(4 * 1024 * 1024 / 3) * 4 + 32 || !preg_match('#^data:image/(png|jpeg);base64,([A-Za-z0-9+/]+={0,2})$#D', $src, $parts)) return 'Image de plan invalide.';
         $bytes = base64_decode($parts[2], true);

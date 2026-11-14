@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 14 novembre 2026 — Révision horizontale Terrain de PR158
+
+Fil horizontal 0 Terrain/Bâti, fiches Terrain T1/T2… dans Observations, numéros du bâti préservés ; capture cadastrale fixe avec source/date/nord, repères conservés et import manuel. Site allégé, notes antérieures accessibles dans un volet. 202 tests Node, 13 contrôles PHP plans, téléchargement complet, deux builds et 38 contrôles HTTP/MariaDB locaux réussis. Reprise serveur dans une nouvelle session, source/propriétaire conservés. Lecture d’ensemble Word native 25 pages expert / 10 client ; après déplacement final de T2, expert équivalent en texte/mise en page et image inspectée, client final relu. Aucune nouvelle conversion PDF ni livraison. [Portée exacte des preuves](docs/environnement-terrain.md#qualification-effectuée). Les résultats du premier candidat ci-dessous sont historiques.
+
 ## 14 novembre 2026 — Contexte Environnement/Terrain, candidat local
 
 Rubrique Site pour Habitologue : textes et liens, zone, photo avec source/légende et vue existante facultatives. Contexte non numéroté, choix client séparé, anciens JSON préservés, compteur photo intégré et sauvegarde protégée pendant la lecture. 194 tests Node, PHP, deux builds et 38 contrôles HTTP/MariaDB locaux réussis ; nouvelle session sans brouillon et quatre Word/PDF natifs vérifiés sur deux cas fictifs, 57 pages inspectées. La couverture client est isolée du contexte. Aucun déploiement de ce candidat ; [parcours, limites et preuves](docs/environnement-terrain.md).

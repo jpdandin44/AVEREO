@@ -10,6 +10,12 @@ owner: jpdandin
 tags: [connect, rga, tests]
 ---
 
+## Terrain horizontal — révision locale du 14 novembre
+
+frontend/src/terrainObservations.test.js ajoute huit tests métier : Tn sans décaler le bâti, déplacement dans son groupe, Word/client, suspension du protocole, copie expurgée, cadrage des tuiles/zoom 20 natif 19, bornes et rattachement tardif. Total Node : 202 réussis. php tests/observation-plans-validation.php : 13 cas, dont cadastre ; php tests/report-download.php : octets et compteurs réussis. Deux builds sync=false/true, 150 fichiers.
+
+Le script HTTP accepte --fixture CHEMIN_JSON_FICTIF et rejoue 38 contrôles PHP/MariaDB avec comptes signés fictifs. La fixture de révision comporte 14 constats/4 photos/2 plans ; la recette navigateur ajoute une troisième vue cadastrale réelle, vérifie reprise serveur et source, puis deux Word. Service de revue --serve --port 5191 ; préconditions ci-dessous. [Scénario, lecture native et limites](../docs/environnement-terrain.md#qualification-effectuée). Les preuves Site suivantes sont historiques.
+
 ## Contexte extérieur — recette locale du 14 novembre
 
 Les huit cas de `frontend/src/environmentContext.test.js` vérifient compatibilité, numérotation/repères, choix client indépendant, persistance, résultat tardif, vue retirée, confidentialité de la structure de test et entrées invalides. `php tests/report-download.php` inclut le compteur photo du contexte et l'empreinte des octets.

@@ -13,6 +13,12 @@ tags:
   - securite
 ---
 
+## 2026-11-14 — Terrain horizontal, révision locale de PR158
+
+Les constats utilisent les mêmes validations, textes échappés, liens HTTP/HTTPS, accord de dictée, outils photo et permissions du dossier. Seul le type de vue cadastre est ajouté à la validation PHP ; bornes et références inchangées. Capture de tuiles IGN à URL prédéfinies, sans cookies/referrer ni données du dossier dans les requêtes, lots bornés et délai 25 secondes ; image/date/source conservées dans le JSON privé. Changement de dossier/référence/lieu : résultat tardif ignoré. Les anciens fonds et repères restent fixes. La copie de structure exclut médias, lieux, textes et notes historiques. L’ancienne rubrique reste accessible dans Observations sans conversion ni nouvelle création.
+
+202 tests client, 13 cas PHP, téléchargement, deux builds et 38 contrôles HTTP/MariaDB locaux réussis. Reprise navigateur sans brouillon, capture réelle et source/propriétaire conservés ; brouillon initial restauré avec empreintes identiques. Word natif lu sans réparation, 25 pages expert / 10 client en vue d’ensemble ; équivalence expert final et image finale vérifiées. Lecture protégée conservée, aucune nouvelle conversion PDF. Les preuves antérieures ci-dessous restent historiques. Aucune donnée réelle, identité, droit, hébergement ou activation privée modifiés. [Contrat et preuves](environnement-terrain.md).
+
 ## 2026-11-14 — Contexte extérieur, candidat local
 
 Champ facultatif séparé, sans modification du tri, des identifiants ou repères des observations. Validation client des types/images, textes échappés, liens HTTP/HTTPS et photo PNG/JPEG bornée ; l'import refuse une structure invalide en conservant le brouillon. La lecture photo attend l'accord existant et un résultat tardif ne recrée pas un contexte supprimé ni ne rejoint un dossier remplacé. Le verrou existant bloque la sauvegarde pendant la lecture. La copie de structure retire tous les textes, lieux, liens, photos et références du contexte ; l'import complet conserve les champs inconnus compatibles et retire seulement le lien serveur.
