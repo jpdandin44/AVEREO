@@ -13,6 +13,28 @@ tags:
   - fonctionnalites
 ---
 
+## 2026-11-13 — Pagination Word, préproduction vérifiée
+
+Regroupement explicite de chaque constat client et de la conclusion de décision ; conversion en propriétés Word `keepNext`/`keepLines`, sans nouvelle rupture obligatoire entre constats. Les marges verticales des cellules sont resserrées uniquement dans l’aide à la décision. Les deux réserves sont résolues sur les 26 pages contrôlées en préproduction (expert 20 pages, synthèse 6 pages). Données, identifiants, médias, propriétaires, API et schéma inchangés. [Critères de recette et état](partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## 2026-11-13 — Fidélité des exports, pagination à améliorer
+
+Le rapport expert reprend les 12 constats, deux placements photo, plan et signature ; la synthèse reprend les deux constats sélectionnés, une photo et un plan, sans signature dans son format actuel. Conversion PDF native Word vérifiée, aucun bouton PDF direct. Deux réserves de pagination sont ouvertes lors de ce contrôle initial, puis résolues par le correctif ci-dessus ; aucune migration effectuée. [Résultats et limites](partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre).
+
+
+## 2026-11-13 — Recette du stockage existant après PR152
+
+Le stockage actuel est qualifié par sauvegarde, copie sous un autre compte fictif et nouvelle session sans brouillon local. Les 18 lignes existantes et le propriétaire source restent inchangés ; deux nouvelles lignes fictives sont conservées. Collections de contrôles vides normalisées de `[]` à `{}` au rechargement, sans perte de saisie. Comptes et navigateur restaurés. [Portée et preuves](partage-tests-et-stockage.md#recette-complète-entre-deux-comptes-fictifs--13-novembre). Aucune migration, activation des originaux ou production effectuée.
+
+
+## 2026-11-13 — Livraison préproduction PR152
+
+Les huit fichiers applicatifs sont installés depuis le paquet qualifié, sans migration SQL. Les routes d’originaux privés sont présentes mais la capacité reste désactivée : aucune configuration ou table 003 activée par cette livraison. Tous les dossiers, propriétaires, colonnes et la configuration privée sont conservés. Les composants communs déjà hébergés et les variantes LF/CRLF restent inchangés.
+
+Le retour arrière des fichiers a été répété sur une copie privée ; il ne réécrit pas la base et ne restaure pas des dossiers par-dessus des saisies récentes. Sauvegarde JSON lue et vérifiée, sans restauration SQL sur cible. [Reçus et portée des contrôles](partage-tests-et-stockage.md#préproduction).
+
+
 ## 2026-11-13 — Dossier complet, sans migration SQL
 
 | Élément | Effet |

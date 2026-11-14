@@ -1,7 +1,7 @@
 {
   "project": "avereo-app-rapport",
   "version": "git",
-  "status": "local_candidate",
+  "status": "active",
   "endpoint": "/api/reports.php",
   "authentication": "Existing CONNECT gate and report identity/ownership checks, no extra permission",
   "get": {
@@ -58,6 +58,9 @@
     "maxFileBytes": 52428800
   },
   "migration": null,
-  "hostingChanged": false,
-  "sourceGuide": "../docs/partage-tests-et-stockage.md"
+  "sourceGuide": "../docs/partage-tests-et-stockage.md",
+  "deploymentTracking": {
+    "source": "C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json",
+    "block": "rapportDossiersComplets20261113.preproduction20261113"
+  }
 }

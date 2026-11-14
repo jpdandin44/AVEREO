@@ -14,6 +14,16 @@ tags:
   - fonctionnalites
 ---
 
+## Correction de pagination — préproduction vérifiée le 13 novembre
+
+Les deux réserves Word/PDF sont corrigées et vérifiées en préproduction : 26 pages relues, expert 20 pages et synthèse 6 pages, textes et médias conservés. Les 176 tests et les deux compilations réussissent ; PR154 ouverte en brouillon pour revue humaine, sans fusion ni production. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## État de livraison du 13 novembre — PR152
+
+PR152 est fusionnée puis installée en préproduction avec son paquet qualifié, sans modification des dossiers réels. Accès CONNECT, préservation des données et contrôles de lecture/aperçu/téléchargement réussis ; la recette technique complète de sauvegarde, import entre deux comptes fictifs et réouverture serveur dans une nouvelle session sans brouillon local est réussie. Le propriétaire et toutes les colonnes du source, ainsi que les 18 dossiers antérieurs, sont conservés. La revue métier reste distincte. Le contrôle initial des deux Word et de leur conversion PDF porte sur 21 pages expert et 6 pages client ; ses deux réserves sont ensuite résolues par PR154, comme indiqué ci-dessus. [État et preuves](docs/partage-tests-et-stockage.md#préproduction). Aucune production ni activation d’original privé ; les autres évolutions gardent leurs périmètres. Les états de revue locale ci-dessous restent historiques.
+
+
 ## Priorité du 13 novembre — enregistrement et dossier complet
 
 Le responsable donne priorité au chargement et à la récupération du contenu complet après réception d’une copie de test expurgée. Le correctif local traite accueil/import, téléchargement vérifié, confirmation de sauvegarde et clarté des copies ; qualification initiale locale et navigateur réussies, puis contrôles d’intégration rejoués après réalignement sur PR150. Les validations humaines existantes restent attachées à leur candidat ; elles ne sont pas recréées par la résolution des conflits. La récupération du vrai contenu de Philippe est distincte : absent du fichier reçu et des sources serveur contrôlées. [État et critères](docs/partage-tests-et-stockage.md).
