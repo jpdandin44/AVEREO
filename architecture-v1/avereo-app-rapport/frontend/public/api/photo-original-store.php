@@ -195,13 +195,8 @@ final class RapportPhotoOriginalStore
                 return self::metadata($existing);
             }
 
-            $used = $this->pdo->prepare(
-                'SELECT COALESCE(SUM(bytes), 0) FROM rapport_photo_originals WHERE owner_provider = ? AND owner_id = ?'
-            );
-            $used->execute([$ownerProvider, $ownerId]);
-            $usedBytes = (int) $used->fetchColumn();
-            $used->closeCursor();
-            if ($usedBytes + $size > $this->ownerQuotaBytes) {
+            $usedBytes = $this->accountedOwnerBytes($ownerProvider, $ownerId, $ownerKey);
+            if ($size > $this->ownerQuotaBytes || $usedBytes > $this->ownerQuotaBytes - $size) {
                 throw new RapportPhotoOriginalException(409, 'quota_exceeded', 'Espace de stockage des originaux insuffisant.');
             }
 
@@ -291,6 +286,59 @@ final class RapportPhotoOriginalStore
     }
 
     // ---------------------------------------------------------------- interne
+
+    /**
+     * Under the owner lock, count SQL reservations plus unregistered bytes left by a crash.
+     * Missing registered files retain their reservation; registered bytes are not counted twice.
+     * This method never deletes or repairs files. Unknown entries are counted or fail closed.
+     */
+    private function accountedOwnerBytes(string $ownerProvider, string $ownerId, string $ownerKey): int
+    {
+        $query = $this->pdo->prepare('SELECT report_public_id, public_id, bytes FROM rapport_photo_originals WHERE owner_provider = ? AND owner_id = ?');
+        $query->execute([$ownerProvider, $ownerId]);
+        $registered = [];
+        $used = 0;
+        foreach ($query->fetchAll(PDO::FETCH_ASSOC) as $row) {
+            if (!preg_match('/^[a-f0-9]{32}$/D', (string) $row['report_public_id']) || !preg_match('/^[a-f0-9]{32}$/D', (string) $row['public_id']) || (int) $row['bytes'] < 1) {
+                throw self::unavailable('Inventaire privé non conforme.');
+            }
+            $bytes = (int) $row['bytes'];
+            $registered[$row['report_public_id'] . '/' . $row['public_id'] . '.bin'] = $bytes;
+            $used = $bytes > PHP_INT_MAX - $used ? PHP_INT_MAX : $used + $bytes;
+        }
+        $query->closeCursor();
+        $ownerRoot = $this->root . '/o-' . $ownerKey;
+        if (is_link($ownerRoot)) {
+            throw self::unavailable('Lien symbolique refusé dans le stockage.');
+        }
+        if (!file_exists($ownerRoot)) {
+            return $used;
+        }
+        $this->ensureDirectory($ownerRoot, false);
+        try {
+            $entries = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($ownerRoot, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+            foreach ($entries as $entry) {
+                $path = str_replace('\\', '/', $entry->getPathname());
+                $real = realpath($path);
+                if ($entry->isLink() || $real === false || self::normalize($real) !== self::normalize($path)) {
+                    throw self::unavailable('Lien ou chemin non conforme dans le stockage.');
+                }
+                if ($entry->isDir()) {
+                    continue;
+                }
+                if (!$entry->isFile()) {
+                    throw self::unavailable('Inventaire privé inaccessible.');
+                }
+                $bytes = $entry->getSize();
+                $relative = substr($path, strlen($ownerRoot) + 1);
+                $extra = max(0, $bytes - ($registered[$relative] ?? 0));
+                $used = $extra > PHP_INT_MAX - $used ? PHP_INT_MAX : $used + $extra;
+            }
+        } catch (UnexpectedValueException $failure) {
+            throw self::unavailable('Inventaire privé inaccessible.');
+        }
+        return $used;
+    }
 
     private static function notFound(): RapportPhotoOriginalException
     {

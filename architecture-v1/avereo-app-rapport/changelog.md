@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 13 novembre 2026 — Photos préparées pour le rapport, candidat local
+
+Recadrage, rectangle, flèche et commentaire sur copie JPEG, annuler/rétablir et choix explicite original/préparée. Original et référence privée intacts ; opérations et choix conservés dans le JSON, même source choisie dans les deux livrables avec filtrage client. Le quota privé compte les résidus après interruption et conserve les réservations SQL des fichiers manquants. 186 tests Node, contrôles PHP et deux builds réussis ; recette navigateur locale et contenu image des deux Word vérifiés. Recette MariaDB bloquée par Docker Desktop, aucun déploiement ni PDF nouveau. [Guide et preuves](docs/photos-rapport-edition.md).
+
 ## 13 novembre 2026 — Correctif de pagination vérifié en préproduction
 
 Maintien des constats client avec conseils et photo, conclusion de décision regroupée et espacement des tableaux de décision ajusté. Tests de la structure OOXML et du contenu HTML ; 176 tests et deux compilations réussis. Les deux Word hébergés sont convertis en PDF dans Word : expert 20 pages, synthèse 6 pages, 26 pages relues et deux réserves résolues. Livraison bornée à trois fichiers ; 20 dossiers, propriétaires et contenus préservés. PR154 en brouillon pour revue, sans fusion ni production. [Qualification et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).

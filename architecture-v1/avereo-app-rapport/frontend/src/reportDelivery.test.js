@@ -12,6 +12,26 @@ const dossier = () => ({titre:'Exemple <script>', reference_dossier:'TEST-1', pr
     {id:'2',titre:'Autre constat',observations:'Contenu expert uniquement',actions:'',piece:'',surface:'',gravite:'',photos:[]}],
 });
 
+test('both deliveries use the explicitly selected prepared photo and never leak an excluded client photo', () => {
+  const report = dossier();
+  const p = { id: 'photo-kept', name: 'Photo choisie', src: 'data:image/png;base64,b3JpZ2luYWw=', reportPhotoChoice: 'prepared',
+    reportVersion: { version: 1, sourcePhotoId: 'photo-kept', sourceSha256: 'a'.repeat(64), src: 'data:image/jpeg;base64,cHJlcGFyZWQ=', operations: { crop: { x: 0, y: 0, width: 1, height: 1 }, annotations: [] } } };
+  report.observations[0].photos = [p];
+  report.observations[1].photos = [{ id: 'excluded', name: 'EXCLUDED', src: 'data:image/png;base64,ZXhjbHVkZWQ=' }];
+  const before = JSON.stringify(report);
+  const expert = buildReportHtml(report);
+  assert.match(expert, /data:image\/jpeg;base64,cHJlcGFyZWQ=/);
+  assert.doesNotMatch(expert, /data:image\/png;base64,b3JpZ2luYWw=/);
+  assert.equal(JSON.stringify(report), before);
+  report.livrable = { audience: 'client', observations: ['1'] };
+  const client = buildReportHtml(report);
+  assert.match(client, /data:image\/jpeg;base64,cHJlcGFyZWQ=/);
+  assert.doesNotMatch(client, /ZXhjbHVkZWQ=|EXCLUDED|b3JpZ2luYWw=/);
+  p.reportPhotoChoice = 'original';
+  assert.match(buildReportHtml(report), /data:image\/png;base64,b3JpZ2luYWw=/);
+  assert.doesNotMatch(buildReportHtml(report), /cHJlcGFyZWQ=/);
+});
+
 test('decision section and matching comparison are generated before the expert signature', () => {
   const report = dossier(); report.categorie = 'Visite Globale'; report.sous_categorie = 'Maison';
   report.decision = normalizeDecision(); report.decision.attentes = [{id:'w1',libelle:'Besoin relié',priorite:'À discuter',source:'Entretien'}];

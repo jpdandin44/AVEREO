@@ -13,6 +13,12 @@ tags:
   - fonctionnalites
 ---
 
+## 2026-11-13 — Copie photo préparée et comptage conservateur
+
+Le payload conserve les anciennes photos telles quelles et ajoute facultativement `reportVersion` et `reportPhotoChoice`. Les champs inconnus et références existantes sont préservés. L’éditeur ne remplace pas l’original ; une copie dont la version ou les opérations sont invalides n’est pas choisie pour l’export. Le serveur continue à stocker le JSON existant ; aucune migration ni nouvelle table pour les annotations.
+
+Le quota d’originaux utilise la table 003 existante plus l’inventaire privé du propriétaire sous verrou : réservations SQL, résidus orphelins/temporaires et surplus physique, sans double comptage des octets enregistrés ni suppression automatique. Le périmètre d’identité reste inchangé. [Contrat et réserves](photos-rapport-edition.md).
+
 ## 2026-11-13 — Pagination Word, préproduction vérifiée
 
 Regroupement explicite de chaque constat client et de la conclusion de décision ; conversion en propriétés Word `keepNext`/`keepLines`, sans nouvelle rupture obligatoire entre constats. Les marges verticales des cellules sont resserrées uniquement dans l’aide à la décision. Les deux réserves sont résolues sur les 26 pages contrôlées en préproduction (expert 20 pages, synthèse 6 pages). Données, identifiants, médias, propriétaires, API et schéma inchangés. [Critères de recette et état](partage-tests-et-stockage.md#correction-de-pagination--13-novembre).

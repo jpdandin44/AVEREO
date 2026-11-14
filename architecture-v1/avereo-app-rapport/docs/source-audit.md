@@ -13,6 +13,14 @@ tags:
   - securite
 ---
 
+## 2026-11-13 — Édition des photos et quota des originaux, candidat local
+
+Travail isolé sur `feat/rapport-photos-edition`, base PR154 fusionnée `e7302bc`. Copie JPEG avec recadrage/rectangle/flèche/texte et choix explicite, original et référence privée préservés. Application à la photo d’origine recontrôlée ; formats limités aux data URL JPEG/PNG/WebP, rendu canvas sans HTML de commentaire, source distante refusée. Bornes de l’éditeur et limites de preuve dans le [guide](photos-rapport-edition.md).
+
+La réserve du quota est reproduite avec des résidus de crash synthétiques : l’ancien code accepte l’envoi à tort, le code corrigé le refuse. Le comptage réserve aussi les lignes sans fichier et le surplus physique d’un fichier altéré, refuse les liens et ne supprime rien. Tests PHP complets réussis (SQLite, concurrence, restauration, refus, routes HTTP hors base), ainsi que 186 tests Node et deux builds. Le test HTTP/MariaDB est arrêté avant lancement de la base : Docker Desktop ne démarre pas (socket local inaccessible). Une relance et une tentative de mise à l’écart de ce seul socket échouent sans le modifier ; aucun reset, purge ou configuration de Docker changé. Ce point ne vaut pas réussite de la recette MariaDB.
+
+Navigateur local : annuler/rétablir, fermer sans appliquer, trois annotations, retour à l’original, reprise du brouillon dans un autre onglet et réimport JSON réussis ; origine des octets et présence exacte de la copie dans les deux Word vérifiées. Aucun Word natif/PDF, appareil physique, écriture hébergée, rôle ou transfert de propriétaire qualifié par ce lot. Stockage hébergé toujours désactivé, PR et revue humaines distinctes.
+
 ## 2026-11-13 — Correction des deux réserves de pagination vérifiée
 
 PR154 sur `fix/rapport-pagination-exports`, source livrée `5bf8efe` : regroupement borné des constats client, photo/légende et conclusion de décision ; espacements resserrés uniquement dans la décision. Trois tests OOXML rouges avant correction, puis 176 tests et deux compilations réussis ; CI source réussie. Livraison de trois fichiers statiques avec sauvegarde et répétition du retour arrière sur copie privée. Les 20 dossiers (toutes colonnes et propriétaires), la configuration et les fichiers de production restent inchangés. Aucun SQL écrit, compte modifié, schéma migré ou original privé activé.

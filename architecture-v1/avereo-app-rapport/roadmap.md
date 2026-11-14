@@ -14,6 +14,12 @@ tags:
   - fonctionnalites
 ---
 
+## Suite du lot photos — développement local du 13 novembre
+
+Version rapport recadrée/annotée et choix réversible implémentés ; original conservé, données persistantes et deux restitutions contrôlées sur image synthétique. Le quota privé compte désormais les octets orphelins et temporaires, sans suppression automatique. [Recette et limites](docs/photos-rapport-edition.md). Prochaine action : revue locale du candidat et reprise HTTP/MariaDB quand Docker Desktop redémarre, puis décision distincte de préproduction. Quotas, rétention, restauration sur cible et vrais appareils restent à qualifier avant activation. Le préremplissage des attentes, les autres profils et Projet gardent leurs lots propres.
+
+Le lot pagination PR154 est validé et fusionné ; la préproduction est alignée sur son code. Les états de revue antérieurs ci-dessous sont historiques.
+
 ## Correction de pagination — préproduction vérifiée le 13 novembre
 
 Les deux réserves Word/PDF sont corrigées et vérifiées en préproduction : 26 pages relues, expert 20 pages et synthèse 6 pages, textes et médias conservés. Les 176 tests et les deux compilations réussissent ; PR154 ouverte en brouillon pour revue humaine, sans fusion ni production. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).

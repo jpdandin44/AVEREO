@@ -13,6 +13,12 @@ tags:
   - habitologie
 ---
 
+## Photos préparées — reprise du 13 novembre
+
+Proposer recadrage, rectangle, flèche, commentaire, annuler/rétablir et choix explicite de la copie utilisée dans le rapport, sans réécrire `photo.src` ou le lien privé. Conserver les opérations et le choix après reprise du brouillon et export/import JSON. Les restitutions expert/client suivent le même choix tout en respectant le filtrage client. La copie peut retirer des métadonnées EXIF ; les octets d’origine restent conservés. Aucun gain de poids total du dossier n’est garanti : l’original et la copie restent dans le JSON, limité à 50 Mio.
+
+Avant activation du stockage privé, les fichiers sans ligne SQL et les temporaires abandonnés doivent consommer le quota. Les réservations SQL restent comptées si le fichier manque ; aucun effacement automatique. [Critères, bornes et vérifications](docs/photos-rapport-edition.md). La recette MariaDB et les paramètres hébergés restent à qualifier.
+
 ## Dossier complet — demande du 13 novembre
 
 Le responsable doit pouvoir charger et récupérer le contenu complet présent dans le dossier : écoute, textes, explications, conseils, photos, plans, signature et champs inconnus compatibles. Une ligne de résumé ou un horodatage seul ne constitue pas un dossier. Une copie de structure fictive doit être identifiée avant chargement ; elle ne peut reconstituer ce qui a été retiré.
