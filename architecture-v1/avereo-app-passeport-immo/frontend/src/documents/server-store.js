@@ -61,6 +61,13 @@ export function createServerStorage({ fetcher = (...args) => fetch(...args), not
     async deleteDocument(id, doc) { await flush(); return request(`${bienPath(id)}/documents/${encodeURIComponent(doc)}`, { method: 'DELETE', body: JSON.stringify({ confirm: true }) }); },
     async saveDocumentSettings(id, settings) { await flush(); return request(`${bienPath(id)}/document-settings`, { method: 'PUT', body: JSON.stringify(settings) }); },
     async getFile(id, doc) { await flush(); return request(`${bienPath(id)}/documents/${encodeURIComponent(doc)}/file`, { blob: true }); },
+    async shares(id) { await flush(); return request(`${bienPath(id)}/shares`); },
+    async resolveRecipient(id, recipient) { await flush(); return request('/share-recipient', { method:'POST', body:JSON.stringify({bienId:String(id),recipient}) }); },
+    async grantShare(id, recipient, revision, expectedRecipient) { await flush(); return request(`${bienPath(id)}/shares`, { method:'POST', body:JSON.stringify({recipient,revision,expectedRecipient,confirm:true}) }); },
+    async revokeShare(id, share, revision) { return request(`${bienPath(id)}/shares/${encodeURIComponent(share)}`, { method:'DELETE', body:JSON.stringify({revision}) }); },
+    async incomingShares() { return request('/shared'); },
+    async sharedDocuments(share) { return request(`/shared/${encodeURIComponent(share)}`); },
+    async sharedFile(share, document) { return request(`/shared/${encodeURIComponent(share)}/documents/${encodeURIComponent(document)}/file`, { blob:true }); },
     close() {},
   };
   return { load, save, flush, repository };

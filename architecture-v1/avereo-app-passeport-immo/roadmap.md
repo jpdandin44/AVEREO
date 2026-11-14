@@ -12,9 +12,14 @@ tags: [avereo, documentation, local]
 
 # Roadmap Passeport Immo
 
+## Priorité — incident de partage
+
+Le [partage nominatif](docs/partage-documents.md) est installé et techniquement vérifié en préproduction. Confirmer le seul accès demandé, puis l’expert termine son activation CONNECT et vérifie sa consultation réelle. La préparation de production corbeille/classement est différée ; sa recette est acceptée, PR155 reste ouverte.
+
+
 ## Travail courant — organisation documentaire
 
-La PR153 est fusionnée et [corbeille, dossiers, apparence et ordre](docs/preproduction-organisation.md) sont livrés en préproduction privée. Prochaine action : recette humaine hébergée sur un document fictif, puis revue opératoire. Sauvegardes et conservation des 28 documents vérifiées ; production et CIL restent distincts.
+La PR153 est fusionnée et [corbeille, dossiers, apparence et ordre](docs/preproduction-organisation.md) sont livrés en préproduction privée. Recette humaine déclarée validée dans le chat ; PR155 opératoire encore ouverte. Sauvegardes et conservation des 28 documents vérifiées ; production et CIL restent distincts.
 
 ## Suite courante — reprise et fichiers compressés
 

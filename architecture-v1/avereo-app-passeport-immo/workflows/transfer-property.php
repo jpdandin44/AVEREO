@@ -84,6 +84,8 @@ function pi_transfer_export(array $config, array $plan, string $destination): ar
             if (!copy($config['storage_directory'].'/'.$document['id'].'.blob',$target)) throw new RuntimeException('Document copy failed.');
             chmod($target,0600); pi_transfer_file($target,$document);
         }
+        // CONNECT identities are environment-specific; transferring documents never grants access.
+        unset($bien['document_shares']);
         $manifest=['format'=>'avereo-passeport-property-transfer','version'=>1,'sourceDatabaseId'=>pi_transfer_database_id($db),'plan'=>$plan,'property'=>$bien,'client'=>$client,'documents'=>$documents];
         pi_transfer_json($destination.'/manifest.json',$manifest); $db->commit();
         return ['status'=>'exported','manifestSha256'=>hash_file('sha256',$destination.'/manifest.json'),'properties'=>1,'clients'=>1,
@@ -177,6 +179,8 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
         $existingClient=pi_transfer_query($db,'SELECT * FROM pi_clients WHERE id=?',[$client['id']])->fetch();
         $existingDocuments=pi_transfer_query($db,'SELECT * FROM pi_documents WHERE owner_id=? AND bien_id=? ORDER BY id',[$owner,$source['bienId']])->fetchAll();
         if ($existing) {
+            // A newly added, unused sharing field is not transferred content.
+            if (array_key_exists('document_shares',$existing) && $existing['document_shares']===null) unset($existing['document_shares']);
             if (!pi_transfer_same($existing,$bien) || !$existingClient || !pi_transfer_same($existingClient,$client)
                 || count($existingDocuments)!==count($documents)) throw new RuntimeException('Existing target differs; no overwrite.');
             foreach ($existingDocuments as $document) {

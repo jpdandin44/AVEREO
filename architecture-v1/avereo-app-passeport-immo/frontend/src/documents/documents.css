@@ -87,3 +87,12 @@
 .document-no-preview { text-align:center; padding:30px; color:#4c6675; }
 .document-reader footer { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 22px; font-size:12px; color:#64808d; }
 @media(max-width:640px) { .documents-panel { padding:18px; } .documents-heading h2 { font-size:21px; } .documents-heading { flex-direction:column; gap:8px; } .document-import { grid-template-columns:1fr; padding:15px; } .document-toolbar { flex-wrap:wrap; } .document-toolbar label:first-child { width:100%; flex:auto; } .document-client-form { flex-direction:column; align-items:stretch; } .document-card { padding:14px; gap:10px; } .document-format { min-width:36px; height:44px; } .document-reader-backdrop { padding:5px; } .document-reader { height:98vh; } .document-reader header { padding:14px; } .document-reader footer { padding:12px; flex-direction:column; align-items:stretch; } }
+
+.document-share-list {list-style:none;padding:0;display:grid;gap:12px}
+.document-share-list li,.document-share-entry {display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;border:1px solid #d5e5e1;border-radius:12px}
+.document-share-entry {flex-wrap:wrap;margin:12px 0}
+.document-share-form {display:grid;gap:12px;margin:16px 0}
+.document-share-form label {display:grid;gap:8px}
+.document-share-form input {padding:10px;border:1px solid #bdccd5;border-radius:8px}
+.shared-documents {margin-bottom:28px}
+@media(max-width:640px){.document-share-list li{align-items:stretch;flex-direction:column}}

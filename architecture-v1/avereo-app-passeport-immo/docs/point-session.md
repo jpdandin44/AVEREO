@@ -12,11 +12,19 @@ tags: [passeport-immo, local, cockpit]
 
 # Point de reprise de session
 
-## Lot actif — corbeille et organisation des documents
+## Lot actif — partage nominatif des documents
+
+Copie `C:/Users/examg/Documents local/passeport-immo-archives`, branche `fix/passeport-immo-partage-documents`, issue de la tête PR155 encore ouverte. Le [suivi du partage](../data/suivi-partage-documents.json) et les [preuves](../api/preproduction-partage-observation.json) font foi. Correctif installé dans la seule préproduction privée : dialogue interne, lecture seule révocable par bien, projection CONNECT privée fraîche, archives/corbeille/autres biens exclus. 140 assertions HTTP/API en CI, 13 assertions sur copie temporaire hébergée, 210 assertions HTTPS ; 26 documents du relevé frais inchangés. Aucune production ni donnée métier modifiée pendant l’installation.
+
+Prochaine action : confirmation nominative du nouvel accès dans le dialogue préparé, limitée au seul bien demandé et à ses 11 documents actifs actuels/futurs. Le destinataire confirmé doit encore terminer son activation CONNECT ; aucune activation fictive, aucun e-mail automatique et aucune connexion positive de ce destinataire ne sont revendiqués. Conserver l’autre bien privé. Vérifier ensuite le droit créé et sa sauvegarde, puis la recette réelle du destinataire. La production corbeille/classement est différée.
+
+[PR157 du correctif](https://github.com/jpdandin44/AVEREO/pull/157), en brouillon, empilée sur PR155 ouverte ; fusion sans conflit au contrôle, quatre attestations humaines décochées.
+
+## Lot précédent — corbeille et organisation des documents
 
 Branche `chore/passeport-immo-preproduction-corbeille`, copie `C:/Users/examg/Documents local/passeport-immo-archives`. [Suivi canonique](../data/suivi-organisation-documents.json), [livraison et recette hébergée](preproduction-organisation.md). PR153 fusionnée ; le paquet CI gelé est installé dans la seule préproduction privée. Deux colonnes additives, six écritures de code, 28 documents conservés, 247 assertions HTTPS et écran SCI vérifiés. Aucune extension des droits, production ou tâche planifiée modifiée.
 
-Prochaine action : le responsable vérifie les dossiers, icônes/couleurs, ordre et cycle corbeille sur un petit document fictif depuis CONNECT. La [PR155](https://github.com/jpdandin44/AVEREO/pull/155) porte cette recette ; ses cases humaines et la production restent distinctes. Ne pas rejouer la migration SCI, l’activation ou les cron. Retour à l’ancien code interdit dès utilisation des nouveaux champs.
+Le responsable déclare cette recette en préproduction validée dans le chat ; la [PR155](https://github.com/jpdandin44/AVEREO/pull/155) reste ouverte et ses cases humaines distinctes. Le partage urgent devient prioritaire avant préparation de production. Les 28 documents sont le relevé historique de livraison ; le relevé frais de partage en compte 26, tous conservés. Ne pas rejouer la migration SCI, l’activation ou les cron. Retour à l’ancien code interdit dès utilisation des nouveaux champs.
 
 ## Historique — imports à 500 Mo livrés en préproduction
 

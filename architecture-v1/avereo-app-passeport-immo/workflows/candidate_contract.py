@@ -2,7 +2,7 @@
 from pathlib import PurePosixPath
 
 GATE_FILES = {'.htaccess', 'index.php', 'connect/entry.php', 'connect/logout.php', 'connect/gate.php'}
-STORAGE_FILES = {'connect/session.php', 'api/index.php', 'api/storage.php', '.user.ini'}
+STORAGE_FILES = {'connect/session.php', 'api/index.php', 'api/storage.php', 'api/sharing.php', '.user.ini'}
 
 
 def valid_name(name):

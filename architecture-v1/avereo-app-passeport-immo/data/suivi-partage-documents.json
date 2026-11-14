@@ -1,0 +1,205 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "version": "git",
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "passeport-immo-partage-documents",
+  "stage": "preproduction",
+  "status": "preproduction_installed_named_grant_pending",
+  "objective": "Partager les documents actifs d’un bien avec un compte CONNECT précis, en lecture seule et avec révocation.",
+  "branch": "fix/passeport-immo-partage-documents",
+  "candidate": {
+    "sourceSha": "cde2a11c9bf48c3231441b2bd274baad267bc91f",
+    "artifactSha256": "a406058fc6986814c1f087159480891c2307cbcba637b727b45f8723384b4f7f",
+    "artifactPath": ".local/ci-sharing-cde2/candidate.zip",
+    "manifestPath": ".local/ci-sharing-cde2/candidate.manifest.json"
+  },
+  "reviewEnvironment": {
+    "phase": 2,
+    "environment": "preproduction",
+    "url": "https://connect-preprod.avereo.fr/?app=passeport-immo"
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://passeport-immo-preprod.avereo.fr/",
+      "ready": true,
+      "isolated": true,
+      "observedAt": "2026-11-13T17:54:03.022917+00:00",
+      "evidence": "api/preproduction-partage-observation.json#preparation"
+    },
+    "production": {
+      "id": "https://passeport-immo.avereo.fr/",
+      "ready": false
+    }
+  },
+  "checks": [
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "cde2a11c9bf48c3231441b2bd274baad267bc91f",
+      "artifactSha256": "a406058fc6986814c1f087159480891c2307cbcba637b727b45f8723384b4f7f",
+      "observedAt": "2026-11-13T17:54:03.022917+00:00",
+      "target": null,
+      "evidence": "api/preproduction-partage-observation.json#localChecks"
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "cde2a11c9bf48c3231441b2bd274baad267bc91f",
+      "artifactSha256": "a406058fc6986814c1f087159480891c2307cbcba637b727b45f8723384b4f7f",
+      "observedAt": "2026-11-13T17:54:03.022917+00:00",
+      "target": null,
+      "evidence": "api/preproduction-partage-observation.json#ci"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "cde2a11c9bf48c3231441b2bd274baad267bc91f",
+      "artifactSha256": "a406058fc6986814c1f087159480891c2307cbcba637b727b45f8723384b4f7f",
+      "observedAt": "2026-11-13T17:54:03.022917+00:00",
+      "target": null,
+      "evidence": "api/preproduction-partage-observation.json#documentationControl"
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "sourceSha": "cde2a11c9bf48c3231441b2bd274baad267bc91f",
+      "artifactSha256": "a406058fc6986814c1f087159480891c2307cbcba637b727b45f8723384b4f7f",
+      "observedAt": "2026-11-13T17:55:02+00:00",
+      "evidence": "api/preproduction-partage-observation.json#httpsRecipe",
+      "scope": "Conservation, téléchargements, session usuelle et refus ; partage positif sur copie temporaire, recette du destinataire réel en attente."
+    }
+  ],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "sourceSha": "cde2a11c9bf48c3231441b2bd274baad267bc91f",
+      "artifactSha256": "a406058fc6986814c1f087159480891c2307cbcba637b727b45f8723384b4f7f",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-13T17:54:03.022917+00:00",
+      "evidence": "Demande de déblocage urgent sur la préproduction et objectif explicite : mettre en place le partage des documents à l’expert confirmé. Lecture seule révocable, un seul bien ; aucun accord de production ou de merge.",
+      "scopeLimit": "Correctif en préproduction privée ; confirmation nominative requise avant création du nouvel accès."
+    }
+  ],
+  "backups": [
+    {
+      "id": "sharing-preproduction-20261113",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-13T17:46:46+00:00",
+      "evidence": "api/preproduction-partage-observation.json#preparation",
+      "snapshotSha256": "3a9dcc044da065e7936edcd462b5295e200e5e74781aa740a316ba7ba42ddca5",
+      "tables": 4,
+      "documents": 26,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false
+    }
+  ],
+  "rollback": {
+    "status": "tested_on_private_copy",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "artifactSha256": "a406058fc6986814c1f087159480891c2307cbcba637b727b45f8723384b4f7f",
+    "observedAt": "2026-11-13T17:46:46+00:00",
+    "evidence": "api/preproduction-partage-observation.json#preparation",
+    "businessDataOverwrite": false
+  },
+  "delivery": {
+    "status": "delivered",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "sourceSha": "cde2a11c9bf48c3231441b2bd274baad267bc91f",
+    "artifactSha256": "a406058fc6986814c1f087159480891c2307cbcba637b727b45f8723384b4f7f",
+    "observedAt": "2026-11-13T17:54:15+00:00",
+    "evidence": "api/preproduction-partage-observation.json#delivery"
+  },
+  "blockers": [],
+  "nextAction": "Confirmer le nouvel accès nominatif au seul bien demandé dans le dialogue préparé, puis vérifier la conservation et la sauvegarde du droit. Le destinataire termine son activation CONNECT avant sa recette réelle. Production différée.",
+  "phases": [
+    {
+      "id": 0,
+      "label": "Cadrage",
+      "status": "completed",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 1,
+      "label": "Développement local",
+      "status": "technically_qualified",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 2,
+      "label": "Préproduction",
+      "status": "installed_awaiting_recipient_recipe",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 3,
+      "label": "Mise en production",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    }
+  ],
+  "documentation": "docs/partage-documents.md",
+  "nextIteration": [],
+  "sourceFeedback": {
+    "observedAt": "2026-11-13T17:29:12.462772+00:00",
+    "source": "user_chat",
+    "confirmedAccess": "lecture seule, révocable",
+    "productionAuthorized": false,
+    "onePropertyOnly": true,
+    "otherPropertyExcluded": true,
+    "recipientAccountCorrespondenceConfirmed": true
+  },
+  "functionalReservations": [
+    {
+      "kind": "recipient_activation_pending",
+      "blocks": "effective_recipient_consultation",
+      "blocksPrivateInstallation": false,
+      "source": "read_only_hosted_CONNECT_observation",
+      "observedAt": "2026-11-13T17:54:03.022917+00:00"
+    }
+  ],
+  "hostedEvidence": "api/preproduction-partage-observation.json",
+  "namedGrant": {
+    "status": "prepared_not_created",
+    "scope": "one_designated_property_active_documents_only",
+    "activeDocuments": 11,
+    "otherPropertyExcluded": true,
+    "confirmation": "pending",
+    "recipientActivation": "pending"
+  },
+  "postMigrationRecovery": {
+    "status": "verified",
+    "restoreStatus": "passed",
+    "evidence": "api/preproduction-partage-observation.json#postMigrationRecovery",
+    "observedAt": "2026-11-13T17:59:30.880245+00:00",
+    "snapshotSha256": "585f2936008467fbcc598e0800108bcae71b3b4ce6d9aee365182551e6774e39",
+    "tables": 4,
+    "documents": 26,
+    "fileReadback": "passed",
+    "temporaryRowRestore": "passed",
+    "liveRowsChanged": false
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "number": 157,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/157",
+    "state": "open",
+    "draft": true,
+    "branch": "fix/passeport-immo-partage-documents",
+    "baseBranch": "chore/passeport-immo-preproduction-corbeille",
+    "observedHeadSha": "ca4a44192da6a91b40a02db29334835590787b57",
+    "observedBaseSha": "fa7bf81971d8b341353d7933f6d861fa88d96876",
+    "mergeable": "MERGEABLE",
+    "humanAcceptanceVerified": false,
+    "observedAt": "2026-11-13T18:01:45.249580+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/pull/157",
+    "humanChecklistCheckedByAgent": false
+  }
+}

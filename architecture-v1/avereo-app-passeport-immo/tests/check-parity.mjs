@@ -4,6 +4,25 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Écart l : le partage de documents remplace le lien de devis sans autorisation.
+for (const addition of [
+  "import { SharingDialog, SharedDocuments } from './documents/Sharing.jsx';\n",
+  "    const [sharingOpen, setSharingOpen] = useState(false);\n",
+  "            {sharingOpen && <SharingDialog bien={bien} onClose={() => setSharingOpen(false)} />}\n",
+  "            <SharedDocuments />\n",
+]) {
+  assert.equal(restored.split(addition).length - 1, 1, 'Chaque raccordement de partage l est explicite');
+  restored = restored.replace(addition, '');
+}
+const shareStart = original.indexOf('    const handleShare = async () => {');
+const shareEnd = original.indexOf('\n    if (!bien) return null;', shareStart);
+assert.ok(shareStart >= 0 && shareEnd > shareStart);
+assert.equal(restored.split('    const handleShare = () => setSharingOpen(true);\n').length, 2);
+restored = restored.replace('    const handleShare = () => setSharingOpen(true);\n', original.slice(shareStart, shareEnd));
+const sharedPanel = '<DocumentsPanel key={bien.id} bien={bien} onClient={setEstimateClient} onShare={handleShare} />';
+assert.equal(restored.split(sharedPanel).length, 2);
+restored = restored.replace(sharedPanel, '<DocumentsPanel key={bien.id} bien={bien} onClient={setEstimateClient} />');
+
 // Le bouton métier reste identique. Seul le mode de sauvegarde annoncé au bandeau varie.
 const saveMarker = 'data-avereo-save={SERVER_STORAGE ? "online" : "local"} ';
 assert.equal(restored.split(saveMarker).length, 2);

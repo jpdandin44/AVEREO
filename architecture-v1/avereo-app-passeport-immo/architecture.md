@@ -12,6 +12,11 @@ tags: [passeport-immo, local]
 
 # Architecture Passeport Immo
 
+## Partage nominatif — préproduction privée
+
+[Contrat et frontières](docs/partage-documents.md) : autorisations par bien dans une colonne nullable, projection privée fraîche des éligibilités CONNECT, routes dédiées en lecture seule ; les routes propriétaires restent isolées. Les transferts entre environnements excluent ces accès.
+
+
 ## Corbeille et dossiers personnalisés — préproduction privée
 
 `pi_documents.trashed_at` conserve le statut de corbeille, distinct de l’archivage. `pi_biens.document_settings` porte apparence et ordre avec révision optimiste, séparés du modèle autosauvegardé du bien. Les mêmes fonctions existent dans IndexedDB. La purge exige propriété, CSRF, confirmation et passage préalable en corbeille ; elle verrouille le bien, déplace provisoirement le blob dans le stockage privé, supprime la ligne puis efface le blob après commit. Un rollback SQL confirmé restaure le blob ; un commit incertain conserve la copie privée pour contrôle opérateur. Les quatre tables et sauvegardes existantes sont réutilisées. [Contrat, migration et limites](docs/organisation-documents.md). Les deux colonnes sont installées le 13 novembre via l’administration existante, sans droit ALTER ajouté à l’application ; [livraison et qualification sur copies](docs/preproduction-organisation.md).
@@ -129,10 +134,10 @@ Les paramètres du poste restent dans `.local/review-settings.json`, ignoré par
 Les vues HTML/Markdown sont générées et contrôlées, sans modification manuelle.
 
 ## Limites du mode local et inconnues initiales
-Partage d'URL sans dossier ; stockage lié au navigateur ; session interne de
-démonstration et absence de facturation. L'identité CONNECT protège l'entrée
-hébergée, sans synchroniser les dossiers. Le futur stockage centralisé est TBD. Questions canoniques dans
-le suivi, résultats techniques dans le livrable local ; aucun statut humain inféré.
+Le mode local reste lié au navigateur, avec session de démonstration et absence
+de facturation. L’hébergement privé utilise maintenant le stockage serveur dédié
+et CONNECT ; le partage nominatif est une autorisation distincte par bien.
+Les observations initiales restent historiques ; aucun statut humain n’est inféré.
 
 ## Candidat et contrôles
 Le bloc `developmentWorkflow` complète le suivi actif à quatre phases ; les six phases historiques sont archivées. Le générateur Python

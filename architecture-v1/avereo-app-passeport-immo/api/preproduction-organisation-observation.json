@@ -1,7 +1,7 @@
 {
   "project": "avereo-app-passeport-immo",
   "observedAt": "2026-11-13T16:43:51.310473+00:00",
-  "status": "delivered_technically_verified_awaiting_human_review",
+  "status": "human_recipe_accepted_operator_merge_pending",
   "candidate": {
     "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
     "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
@@ -399,7 +399,7 @@
     "freshDrupalLoginTested": false,
     "credentialsExported": false
   },
-  "humanHostedAcceptanceRecorded": false,
+  "humanHostedAcceptanceRecorded": true,
   "productionDeployment": false,
   "migration": {
     "status": "verified",
@@ -464,7 +464,6 @@
     "backup-storage.php": "7d12721d86ec502e293753f32d3cdc87aa14290a29451b9211f5acdab25ff892"
   },
   "limitations": [
-    "Recette humaine hébergée O1–O10 en attente.",
     "Mutations positives de corbeille et réglages testées sur copies temporaires et en CI, sans modifier de document réel.",
     "Compte secondaire historique non éligible selon CONNECT ; droits conservés, refus interpropriétaire positif non exercé sur cette cible.",
     "Retour ancien code refusé dès utilisation des nouveaux champs ; préserver les données récentes et privilégier un correctif compatible."
@@ -483,5 +482,14 @@
     },
     "operatorPullRequest": "https://github.com/jpdandin44/AVEREO/pull/155",
     "humanChecklistCheckedByAgent": false
+  },
+  "humanHostedAcceptance": {
+    "source": "user_chat",
+    "recordedAt": "2026-11-13T17:58:18.634794+00:00",
+    "candidateSourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+    "scope": "Recette en préproduction corbeille et nouveau classement déclarée validée par le responsable. PR155 explicitement non fusionnée ; partage urgent à traiter avant préparation production.",
+    "githubCheckboxesChangedByAgent": false,
+    "productionAuthorized": false
   }
 }

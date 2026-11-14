@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { create } from 'zustand';
 import { calculateDevis, calculateDevisForPdf } from './lib/chiffrage.js';
 import DocumentsPanel from './documents/DocumentsPanel.jsx';
+import { SharingDialog, SharedDocuments } from './documents/Sharing.jsx';
 import './documents/documents.css';
 import { SERVER_STORAGE, persistLocal, attachServerStorage, hydrateServer } from './documents/server-store.js';
 
@@ -675,6 +676,7 @@ const PdfLayout = React.forwardRef(({ bien, devis, clientName }, ref) => {
 const BienPage = () => {
     const { selectedBienId, biens, goToDashboard, addPiece, user, tarifs, addAttachment, deleteAttachment, priceTier, setPriceTier } = useAppStore();
     const [estimateClient, setEstimateClient] = useState(null);
+    const [sharingOpen, setSharingOpen] = useState(false);
     const bien = biens.find(b => b.id === selectedBienId);
 
     const [nomPiece, setNomPiece] = useState('');
@@ -774,30 +776,7 @@ const BienPage = () => {
         });
     };
 
-    const handleShare = async () => {
-        const shareUrl = `${window.location.href}`;
-        const shareData = {
-            title: `Devis pour le bien: ${bien.address}`,
-            text: `Consultez le devis détaillé pour le bien situé au ${bien.address}.`,
-            url: shareUrl,
-        };
-
-        if (navigator.share) {
-            try { await navigator.share(shareData); } catch (err) { console.error('Erreur de partage:', err); }
-        } else {
-            try {
-                const textArea = document.createElement("textarea");
-                textArea.value = shareUrl;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('Lien de partage copié dans le presse-papiers !');
-            } catch (err) {
-                alert('Impossible de copier le lien.');
-            }
-        }
-    };
+    const handleShare = () => setSharingOpen(true);
 
     if (!bien) return null;
 
@@ -814,7 +793,8 @@ const BienPage = () => {
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900">{bien.address}</h1>
             </header>
 
-            <DocumentsPanel key={bien.id} bien={bien} onClient={setEstimateClient} />
+            <DocumentsPanel key={bien.id} bien={bien} onClient={setEstimateClient} onShare={handleShare} />
+            {sharingOpen && <SharingDialog bien={bien} onClose={() => setSharingOpen(false)} />}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-8">
                     <div className="bg-white p-6 rounded-xl shadow-sm border">
@@ -1064,6 +1044,7 @@ const Dashboard = () => {
                     <button onClick={handleOpenCreateModal} className="inline-flex items-center font-semibold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 px-4 py-2 text-sm"><PlusIcon className="mr-2 h-4 w-4"/>Créer un bien</button>
                 </div>
             </header>
+            <SharedDocuments />
             <div className="space-y-4">
                 {(applicationPreferences.sort === 'address' ? [...biens].sort((a,b) => a.address.localeCompare(b.address, 'fr')) : biens).map((bien) => (
                     <div key={bien.id} className="block rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md">
