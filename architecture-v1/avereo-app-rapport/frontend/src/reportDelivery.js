@@ -4,6 +4,7 @@ import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { buildDecisionHtml } from './decisionSupport.js';
 import { isHabitologueProfile, observationAdviceLabel } from './reportProfiles.js';
+import { reportPhotoSource } from './photoReportVersion.js';
 
 export function deliveryOptions(report) {
   const value = report.livrable || {};
@@ -70,6 +71,7 @@ const style = `
   .muted,.source,.caption { color: #506573; } .source { font-size: 9pt; }
   .observation { margin: 26px 0; page-break-before: always; page-break-inside: auto; }
   .photo-block { page-break-inside: avoid; margin: 20px 0; }
+  .keep-together { break-inside: avoid; page-break-inside: avoid; }
   .photo-block img { max-height: 350px; width: auto; max-width: 100%; }
   .photo-block p { font-size: 9pt; }
   .illustration { page-break-before: always; } .illustration img { display: block; margin: 20px auto; max-height: 610px; }
@@ -99,10 +101,10 @@ export function buildReportHtml(report) {
     const selected = orderedObservations(report).filter(o => options.observations.includes(o.id));
     content = cover(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
       <p>${textToHtml(options.synthese || 'Synthèse client à rédiger par le professionnel.')}</p>
-      ${selected.map(o => `<h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${isHabitologueProfile(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
+      ${selected.map(o => `<article class="client-observation keep-together"><h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${isHabitologueProfile(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
         ${explanationsHtml(o)}
         ${isHabitologueProfile(report) ? `<h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(o.actions)}</p>` : ''}
-        ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(p.src) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(p.src)}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}`).join('')}
+        ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(reportPhotoSource(p)) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(reportPhotoSource(p))}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}</article>`).join('')}
       <p class="muted">Le rapport expert conserve l’ensemble des constats et des sources.</p></section>`;
     content += buildObservationPlansHtml(report, options.observations);
     content += visuals.map(v => `<section class="client-page">${illustration(v, true)}</section>`).join('');

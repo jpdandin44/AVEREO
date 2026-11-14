@@ -19,6 +19,20 @@ test('legacy or untouched reports acquire no invented decision content', () => {
   assert.equal(buildDecisionHtml({ decision: normalizeDecision() }), '');
   assert.deepEqual(decisionWarnings({}), []);
 });
+
+test('decision warnings and the complete limits stay in the same closing block in both deliveries', () => {
+  for (const client of [false, true]) {
+    const report = dossier();
+    report.decision.projet.budget = '';
+    const html = buildDecisionHtml(report, client);
+    const closing = html.match(/<div class="decision-conclusion keep-together">([\s\S]*?)<\/div>/)?.[1];
+    assert.ok(closing);
+    assert.match(closing, /Points restant à compléter/);
+    for (const warning of decisionWarnings(report)) assert.ok(closing.includes(warning));
+    assert.match(closing, /Les conséquences sont rédigées sous hypothèses/);
+    assert.match(closing, /ne sont pas calculés par ce module/);
+  }
+});
 test('both options use exactly the same criteria and unknowns are explicit', () => {
   const report = dossier(); report.decision.option_a.criteres.budget = 'À chiffrer après visite';
   const comparison = decisionComparison(report);

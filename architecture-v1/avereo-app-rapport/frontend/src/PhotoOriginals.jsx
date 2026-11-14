@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { originalDownloadName, originalReference, preservePhotoOriginal, readPhotoOriginal } from './photoOriginals.js';
 import { saveAs } from './saveAs.js';
+import PhotoReportEditor from './PhotoReportEditor.jsx';
+import { photoReportVersion } from './photoReportVersion.js';
 
-export function PhotoOriginalControls({ photo, reportId, canUseOnline, capabilities, onPreserved, disabled, onTransfer }) {
+export function PhotoOriginalControls({ photo, reportId, canUseOnline, capabilities, onPreserved, onReportVersion, disabled, onTransfer }) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [view, setView] = useState(null);
+  const [editing, setEditing] = useState(false);
   const request = useRef(null);
   const reference = originalReference(photo, reportId);
 
@@ -13,6 +16,7 @@ export function PhotoOriginalControls({ photo, reportId, canUseOnline, capabilit
     setMessage('');
     setBusy(false);
     setView(null);
+    setEditing(false);
     return () => request.current?.abort();
   }, [reportId, photo.id, photo.src]);
   useEffect(() => () => { if (view?.objectUrl) URL.revokeObjectURL(view.src); }, [view]);
@@ -56,12 +60,20 @@ export function PhotoOriginalControls({ photo, reportId, canUseOnline, capabilit
   const uploadAvailable = canUseOnline && /^[a-f0-9]{32}$/.test(reportId || '') && capabilities?.enabled;
   return <div className="photo-original-controls">
     <button type="button" className="button secondary" onClick={() => setView({ src: photo.src, name: photo.name })}>Voir la photo</button>
+    <button type="button" className="button secondary" disabled={busy || disabled} onClick={() => setEditing(true)}>Préparer la photo du rapport</button>
+    {photoReportVersion(photo) && <>
+      <p>{photo.reportPhotoChoice === 'prepared' ? 'La version préparée est utilisée dans le rapport.' : 'L’original est utilisé dans le rapport. La version préparée reste disponible.'}</p>
+      <button type="button" className="button secondary" disabled={busy || disabled} onClick={() => onReportVersion(photo.reportVersion, photo.reportPhotoChoice === 'prepared' ? 'original' : 'prepared')}>
+        {photo.reportPhotoChoice === 'prepared' ? 'Utiliser l’original dans le rapport' : 'Utiliser la version préparée dans le rapport'}
+      </button>
+    </>}
     {uploadAvailable && !reference && <button type="button" className="button secondary" disabled={busy || disabled} onClick={preserve}>
       Conserver l’original en ligne
     </button>}
     {reference && canUseOnline && <button type="button" className="button secondary" disabled={busy} onClick={openPrivate}>Ouvrir l’original privé</button>}
     {message && <p role="status">{message}</p>}
     {view && <PhotoViewer view={view} onClose={() => setView(null)} />}
+    {editing && <PhotoReportEditor photo={photo} onClose={() => setEditing(false)} onApply={version => { onReportVersion(version, 'prepared'); setEditing(false); }} />}
   </div>;
 }
 

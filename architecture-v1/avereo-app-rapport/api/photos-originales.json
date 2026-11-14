@@ -3,7 +3,7 @@
   "info": {
     "title": "Rapport — photos originales privées",
     "version": "git",
-    "description": "Première tranche locale, désactivée par défaut. Propriétaire courant du rapport et de l’original exigé à chaque opération ; aucune exception administrateur, partage, suppression ou remplacement. Configuration privée : racine hors webroot, taille maximale et quota obligatoires. État de qualification : docs/photos-originales-et-annotations.md."
+    "description": "Première tranche locale, désactivée par défaut. Propriétaire courant du rapport et de l’original exigé à chaque opération ; aucune exception administrateur, partage, suppression ou remplacement. Configuration privée : racine hors webroot, taille maximale et quota obligatoires. État de qualification : docs/photos-originales-et-annotations.md. Le quota réserve les octets SQL même sans fichier, et compte en plus les orphelins/temporaires et surplus physiques sous le verrou du propriétaire ; aucun effacement ou récupération automatique."
   },
   "servers": [
     {

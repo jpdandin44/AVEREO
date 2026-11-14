@@ -16,6 +16,11 @@ tags: [rapport, photos, originaux, annotations, connect, passeport]
 
 La [délégation initiale](../prompts/delegation-compression-photos.md) et le cadrage ci-dessous restent conservés. Les tableaux de propositions décrivent la cible du lot complet, pas ce qui est déjà livré. Le suivi canonique est `rapportV12CadrageProfils20261112.photosOriginales20261112` dans [suivi-chantier.json](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>) ; ce guide en décrit le contrat.
 
+## Suite locale du 13 novembre — édition et quota
+
+PR150 est fusionnée ; son API a été incluse dans les livraisons suivantes, mais la capacité des originaux reste désactivée en préproduction. Les statuts de première tranche ci-dessous sont historiques. Le [nouveau candidat d’édition](photos-rapport-edition.md) ajoute recadrage, formes, commentaire et choix de la version rapport ; original et lien privé inchangés. Il traite localement le comptage des fichiers orphelins après crash, sans suppression automatique. Recette MariaDB bloquée par le démarrage de Docker ; aucune activation hébergée déduite de ces contrôles.
+
+
 ## Statuts utilisés
 
 | Statut | Sens |

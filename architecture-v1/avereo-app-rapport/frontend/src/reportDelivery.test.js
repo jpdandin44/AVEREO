@@ -12,6 +12,26 @@ const dossier = () => ({titre:'Exemple <script>', reference_dossier:'TEST-1', pr
     {id:'2',titre:'Autre constat',observations:'Contenu expert uniquement',actions:'',piece:'',surface:'',gravite:'',photos:[]}],
 });
 
+test('both deliveries use the explicitly selected prepared photo and never leak an excluded client photo', () => {
+  const report = dossier();
+  const p = { id: 'photo-kept', name: 'Photo choisie', src: 'data:image/png;base64,b3JpZ2luYWw=', reportPhotoChoice: 'prepared',
+    reportVersion: { version: 1, sourcePhotoId: 'photo-kept', sourceSha256: 'a'.repeat(64), src: 'data:image/jpeg;base64,cHJlcGFyZWQ=', operations: { crop: { x: 0, y: 0, width: 1, height: 1 }, annotations: [] } } };
+  report.observations[0].photos = [p];
+  report.observations[1].photos = [{ id: 'excluded', name: 'EXCLUDED', src: 'data:image/png;base64,ZXhjbHVkZWQ=' }];
+  const before = JSON.stringify(report);
+  const expert = buildReportHtml(report);
+  assert.match(expert, /data:image\/jpeg;base64,cHJlcGFyZWQ=/);
+  assert.doesNotMatch(expert, /data:image\/png;base64,b3JpZ2luYWw=/);
+  assert.equal(JSON.stringify(report), before);
+  report.livrable = { audience: 'client', observations: ['1'] };
+  const client = buildReportHtml(report);
+  assert.match(client, /data:image\/jpeg;base64,cHJlcGFyZWQ=/);
+  assert.doesNotMatch(client, /ZXhjbHVkZWQ=|EXCLUDED|b3JpZ2luYWw=/);
+  p.reportPhotoChoice = 'original';
+  assert.match(buildReportHtml(report), /data:image\/png;base64,b3JpZ2luYWw=/);
+  assert.doesNotMatch(buildReportHtml(report), /cHJlcGFyZWQ=/);
+});
+
 test('decision section and matching comparison are generated before the expert signature', () => {
   const report = dossier(); report.categorie = 'Visite Globale'; report.sous_categorie = 'Maison';
   report.decision = normalizeDecision(); report.decision.attentes = [{id:'w1',libelle:'Besoin relié',priorite:'À discuter',source:'Entretien'}];
@@ -129,6 +149,20 @@ const protocolReport = () => {
   return report;
 };
 const titlesInOrder = html => [...html.matchAll(/<h3>(\d+)\. Titre (\w+)<\/h3>/g)].map(m => `${m[1]}:${m[2]}`);
+
+test('each selected client finding groups its own complete text, advice and photo for pagination', () => {
+  const report = protocolReport();
+  report.livrable = { audience: 'client', observations: ['feu', 'eau2'] };
+  report.observations.find(o => o.id === 'eau2').photos = [{ name: 'Photo retenue', src: 'data:image/png;base64,AAAA' }];
+  const html = buildReportHtml(report);
+  const groups = [...html.matchAll(/<article class="client-observation keep-together">([\s\S]*?)<\/article>/g)].map(m => m[1]);
+  assert.equal(groups.length, 2);
+  for (const [i, id] of ['eau2', 'feu'].entries()) {
+    for (const field of ['Texte', 'Explication', 'Conseil']) assert.ok(groups[i].includes(`${field} ${id}`));
+  }
+  assert.match(groups[0], /Photo retenue/);
+  assert.doesNotMatch(groups[1], /Photo retenue|Texte eau2/);
+});
 
 test('the expert Word numbers observations in protocol order and leaves the stored array and JSON untouched', () => {
   const report = protocolReport(), before = JSON.stringify(report);

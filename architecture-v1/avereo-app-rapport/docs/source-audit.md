@@ -13,6 +13,38 @@ tags:
   - securite
 ---
 
+## 2026-11-13 — Édition des photos et quota des originaux, candidat local
+
+Travail isolé sur `feat/rapport-photos-edition`, base PR154 fusionnée `e7302bc`. Copie JPEG avec recadrage/rectangle/flèche/texte et choix explicite, original et référence privée préservés. Application à la photo d’origine recontrôlée ; formats limités aux data URL JPEG/PNG/WebP, rendu canvas sans HTML de commentaire, source distante refusée. Bornes de l’éditeur et limites de preuve dans le [guide](photos-rapport-edition.md).
+
+La réserve du quota est reproduite avec des résidus de crash synthétiques : l’ancien code accepte l’envoi à tort, le code corrigé le refuse. Le comptage réserve aussi les lignes sans fichier et le surplus physique d’un fichier altéré, refuse les liens et ne supprime rien. Tests PHP complets réussis (SQLite, concurrence, restauration, refus, routes HTTP hors base), ainsi que 186 tests Node et deux builds. Le test HTTP/MariaDB est arrêté avant lancement de la base : Docker Desktop ne démarre pas (socket local inaccessible). Une relance et une tentative de mise à l’écart de ce seul socket échouent sans le modifier ; aucun reset, purge ou configuration de Docker changé. Ce point ne vaut pas réussite de la recette MariaDB.
+
+Navigateur local : annuler/rétablir, fermer sans appliquer, trois annotations, retour à l’original, reprise du brouillon dans un autre onglet et réimport JSON réussis ; origine des octets et présence exacte de la copie dans les deux Word vérifiées. Aucun Word natif/PDF, appareil physique, écriture hébergée, rôle ou transfert de propriétaire qualifié par ce lot. Stockage hébergé toujours désactivé, PR et revue humaines distinctes.
+
+## 2026-11-13 — Correction des deux réserves de pagination vérifiée
+
+PR154 sur `fix/rapport-pagination-exports`, source livrée `5bf8efe` : regroupement borné des constats client, photo/légende et conclusion de décision ; espacements resserrés uniquement dans la décision. Trois tests OOXML rouges avant correction, puis 176 tests et deux compilations réussis ; CI source réussie. Livraison de trois fichiers statiques avec sauvegarde et répétition du retour arrière sur copie privée. Les 20 dossiers (toutes colonnes et propriétaires), la configuration et les fichiers de production restent inchangés. Aucun SQL écrit, compte modifié, schéma migré ou original privé activé.
+
+Word générés depuis la préproduction puis convertis en PDF par Word natif : 26 pages relues, expert 20 pages et client 6 pages. Les deux réserves sont résolues ; contenu et médias identiques à l’export antérieur, brouillon initial restauré par empreintes. Les textes et blocs dépassant une page restent soumis à la pagination Word. PR ouverte en brouillon, aucune acceptation humaine ni fusion créée. [Preuves et limites](partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## 2026-11-13 — Contrôle Word/PDF et réserves de pagination
+
+Les deux DOCX générés en préproduction conservent les champs attendus ; les PDF sont obtenus par conversion native Microsoft Word, sans export PDF direct proposé par l’application. Le rendu empaqueté échoue faute de LibreOffice, puis le parcours Word et le rendu PDF fourni permettent l’inspection des 27 pages. Deux réserves restent ouvertes : conseil client isolé page 3, mention de décision expert isolée page 20. La synthèse actuelle ne comporte pas de signature et ne reprend que les deux constats sélectionnés. [Preuves, limites de la fixture et suite](partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre). Aucun code ou accord humain modifié.
+
+
+## 2026-11-13 — Recette hébergée complète PR152
+
+La recette entre les deux comptes fictifs existants utilise le `SessionManager` installé, le broker CONNECT et les API réels ; OAuth Drupal non rejoué. Import/sauvegarde puis réouverture sans brouillon local dans une nouvelle session réussis, source et dossiers antérieurs inchangés, refus symétriques lecture/téléchargement/écriture, comptes et navigateur restaurés. Écart documentaire relevé et expliqué : quatre collections de contrôles vides passent de `[]` à `{}` au rechargement ; contenu renseigné et médias identiques. [Détail, preuves et limites](partage-tests-et-stockage.md#recette-complète-entre-deux-comptes-fictifs--13-novembre). Aucun correctif de code ou de schéma nécessaire pour ce contrôle ciblé.
+
+
+## 2026-11-13 — PR152 livrée en préproduction
+
+Fusion `d8dad46`, artefact qualifié de `cea3177` promu sans reconstruction : huit fichiers installés et vérifiés, 188 préexistants préservés. Les 18 dossiers, toutes leurs colonnes et propriétaires sont identiques avant/après ; configuration privée et fichiers de production inchangés. Sauvegarde fraîche des fichiers/configuration/JSON relue et retour arrière applicatif répété sur copie séparée, sans restauration SQL. Aucune migration, compte, droit, donnée réelle ou activation d’original modifié. [Livraison, vérifications et réserves](partage-tests-et-stockage.md#préproduction).
+
+Le script privé de déploiement a été adapté à Python 3.6 (`stdout/stderr=PIPE`) ; aucun code de l’artefact modifié. Le contrôle a d’abord arrêté la livraison pour des écarts existants : deux composants partagés antérieurs, relus et conservés à leurs empreintes exactes, plus huit variantes LF/CRLF normalisées sans réécriture. Les opérations restent bornées aux huit fichiers prévus. Menu/préférences, accès CONNECT, aperçu sans confirmation et téléchargement fictif sont contrôlés sur cible. La recette hébergée complète avec écriture et deux comptes était encore ouverte lors de ce contrôle initial ; elle est ensuite réussie dans la recette décrite plus haut.
+
+
 ## 2026-11-13 — Réconciliation de PR152 avec les originaux privés
 
 Après fusion de PR150 dans `main` (`1978ab8`), résolution des conflits dans les imports et le verrou de sauvegarde de `App.jsx`, ainsi que sept documents. Les imports photo sont conservés ; l’enregistrement refuse à la fois un second envoi de dossier et une sauvegarde pendant un transfert d’original. Le maintien des saisies récentes et la relecture du contenu enregistré de PR152 restent intacts. Les autres fichiers de code des deux branches sont conservés sans réécriture. Le réalignement ne modifie ni donnée, droit, configuration hébergée ni statut d’activation des originaux. [Parcours et limites](partage-tests-et-stockage.md).

@@ -12,6 +12,12 @@ tags:
   - architecture
 ---
 
+## Copie photo du rapport — 13 novembre
+
+`PhotoReportEditor.jsx` édite en mémoire un recadrage normalisé et une liste de rectangles/flèches/commentaires, avec historique local. `photoReportVersion.js` valide les opérations, peint une copie JPEG et choisit la source à afficher/exporter. `photo.src` reste l’original ; `photo.reportVersion` et `photo.reportPhotoChoice` sont facultatifs dans le payload existant. `reportHtml.js` et `reportDelivery.js` réutilisent le choix commun, sans modifier le convertisseur DOCX. L’attachement refuse une cible dont le dossier, la photo ou la source ont changé ; la conservation privée continue à lire l’original.
+
+Sous le verrou existant par propriétaire, le service privé additionne réservations SQL et octets non enregistrés sur disque (ou surplus d’un fichier enregistré). Les fichiers manquants conservent leur réservation, les liens/chemins non conformes sont refusés ; aucune suppression ou réparation automatique. Aucune migration ni nouvelle route. [Contrat et limites](docs/photos-rapport-edition.md). La description « éditeur prévu » de la tranche initiale ci-dessous reste historique.
+
 ## Dossier complet — correctif local du 13 novembre
 
 `reportFiles.js` valide le contenu reçu, identifie les structures fictives et prépare une copie d’import sans `onlineReportId`, en conservant les identifiants métier et leurs références. `ReportImport.jsx` confirme le remplacement du seul brouillon ; l’accueil et Export partagent ce composant. `OnlineReports.jsx` charge le payload complet pour ouvrir et propose le téléchargement de la sauvegarde sans changer le brouillon.

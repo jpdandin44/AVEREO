@@ -13,6 +13,12 @@ tags:
   - architecture
 ---
 
+## 2026-11-13 — Version photo du rapport séparée de l’original
+
+Contexte : annoter et recadrer une photo sans perdre la possibilité de revoir son détail. Décision : conserver `photo.src` intact ; ajouter une copie JPEG avec les opérations normalisées et un choix explicite, sans migration du dossier. Les coordonnées restent relatives à l’image complète pour permettre le retour au cadrage entier ; l’historique de travail permet annuler/rétablir avant application, et les opérations enregistrées restent modifiables à la réouverture. Raisons : compatibilité des anciens JSON, original encore exportable et même choix dans les deux restitutions. Conséquences : le JSON porte encore les deux images, son plafond n’est pas augmenté et aucun allègement global n’est annoncé.
+
+Pour le quota, additionner les réservations SQL et les octets non enregistrés sur disque sous le verrou existant. Un crash entre publication et insertion SQL ne doit pas permettre de contourner le quota ; aucun fichier orphelin n’est supprimé automatiquement. Paramètres réels et politique d’effacement restent distincts et non activés. [Contrat et qualification](docs/photos-rapport-edition.md).
+
 ## 2026-11-13 — Export complet distinct de la structure de test
 
 Contexte : un fichier « copie de test » expurgé a été compris comme une sauvegarde du dossier. Décision : conserver cette fonction de test, la renommer explicitement et marquer les nouvelles copies `copie_test: true` ; reconnaître les anciennes copies correspondantes. Mettre en avant l’export complet et confirmer le contenu à l’import. Raisons : empêcher une confusion sans divulguer silencieusement des données par une action auparavant expurgée.

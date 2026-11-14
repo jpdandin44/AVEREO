@@ -8,6 +8,7 @@ import { textLinks } from './textLinks.js';
 import { orderedObservations, observationPhase, moveObservation } from './observationOrder.js';
 import ObservationPlans from './ObservationPlans.jsx';
 import { PhotoOriginalControls } from './PhotoOriginals.jsx';
+import { applyPhotoReportVersion, reportPhotoSource } from './photoReportVersion.js';
 import { attachOriginal, photoOriginalCapabilities } from './photoOriginals.js';
 import { observationPlanNames, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
@@ -1685,7 +1686,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
           {obs.photos.map((photo) => (
             <figure className="photo-with-original" key={photo.id}>
               <div className="photo-thumb">
-              <img src={photo.src} alt={photo.name} loading="lazy" />
+              <img src={reportPhotoSource(photo)} alt={photo.name} loading="lazy" />
               <figcaption>{formatDateTime(photo.horodatageISO)}</figcaption>
               <button
                 className="icon-button danger"
@@ -1699,6 +1700,9 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
               <PhotoOriginalControls photo={photo} reportId={report.onlineReportId}
                 canUseOnline={canUseOnlinePhotos} capabilities={photoCapabilities}
                 disabled={onlineSaving} onTransfer={onPhotoTransfer}
+                onReportVersion={(version, choice) => setReport(current => applyPhotoReportVersion(current, {
+                  reportId: report.onlineReportId, observationId: obs.id, photoId: photo.id, src: photo.src,
+                }, version, choice))}
                 onPreserved={original => setReport(current => attachOriginal(current, {
                   reportId: report.onlineReportId, observationId: obs.id, photoId: photo.id, src: photo.src,
                 }, original))} />
