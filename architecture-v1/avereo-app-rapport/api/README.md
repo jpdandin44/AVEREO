@@ -5,13 +5,18 @@ title: API de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-14
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
   - api
   - php
 ---
+
+## Attentes et notes — champs facultatifs du 16 novembre
+
+Les routes de rapports existantes transportent notes_attentes et attentes[].provenance_ecoute dans decision. Le validateur PHP contrôle les types, les deux champs d’écoute autorisés et la borne textuelle existante, sans nouveau droit ni endpoint. [Contrat détaillé](../docs/attentes-ecoute-client.md#données-et-compatibilité).
+
 
 ## Plans et repères
 

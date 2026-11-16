@@ -5,13 +5,18 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-14
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 16 novembre — Reprise explicite de l’écoute dans les attentes
+
+Contexte : le responsable demande un préremplissage depuis Écoute client et des notes dans Export. Décision : proposer les deux textes source entiers, puis une copie explicite identifiée avec un instantané du verbatim ; conserver une seule liste d’attentes liée aux constats. Cela évite l’extraction arbitraire et l’écrasement après une nouvelle saisie d’écoute. La provenance reste facultative pour les anciens dossiers ; notes libres et dictée réutilisent les stockages et accords existants. [Conséquences et contrat](docs/attentes-ecoute-client.md).
+
 
 ## 2026-11-14 — Terrain horizontal et numérotation indépendante confirmés
 

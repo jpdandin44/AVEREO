@@ -5,13 +5,18 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-14
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Attentes et écoute client — 16 novembre
+
+Complément local : reprise explicite de deux textes de Dossier dans Export, attentes modifiables avec provenance et notes complémentaires dictables. Liens stables et données historiques conservés ; notes dans le Word expert, exclues du client. [Parcours, revue locale et limites](docs/attentes-ecoute-client.md). Préproduction non engagée pour ce candidat ; les états datés suivants restent historiques, le suivi canonique porte les livraisons et recettes Terrain/photo du 14.
+
 
 ## 14 novembre — Terrain horizontal, candidat local PR158
 

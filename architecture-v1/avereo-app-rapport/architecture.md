@@ -5,12 +5,17 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-14
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Attentes et provenance — complément du 16 novembre
+
+Le bloc decision porte notes_attentes et attentes[].provenance_ecoute (champ et texte_original), facultatifs, sans nouveau stockage ou schéma SQL. expectationListening.js fournit la copie explicite et les états de provenance ; DecisionSupportPanel utilise les attentes existantes pour la matrice de constats. VoiceField reste le composant de dictée ; decisionSupport produit les rendus expert/client. [Modèle et limites](docs/attentes-ecoute-client.md#données-et-compatibilité).
+
 
 ## Terrain dans Protocoles et Observations — révision locale du 14 novembre
 

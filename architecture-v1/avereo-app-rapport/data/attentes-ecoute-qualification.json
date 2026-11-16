@@ -1,0 +1,84 @@
+{
+  "project": "avereo-app-rapport",
+  "owner": "jpdandin",
+  "date": "2026-11-16",
+  "status": "local_checks_passed_human_review_pending",
+  "baseSha": "fc77690862ac234f42b8676316f6472279bc40d9",
+  "sourceOfTruth": "docs/attentes-ecoute-client.md",
+  "canonicalTracking": "C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json#/rapportV12CadrageProfils20261112/attentesEcoute20261116",
+  "reviewUrl": "http://127.0.0.1:5192/",
+  "reference": "RECETTE-ATTENTES-ECOUTE-20261116",
+  "checks": {
+    "node": {
+      "passed": 209,
+      "failed": 0,
+      "focused": 7
+    },
+    "phpDecision": 24,
+    "phpDownload": "passed",
+    "httpSql": {
+      "passed": 38,
+      "realPhp": true,
+      "disposableMariaDb": true,
+      "sourceRowsAndOwnerPreserved": true,
+      "copyOwnerSeparate": true,
+      "hostedConnect": false
+    },
+    "builds": [
+      {
+        "onlineSync": false,
+        "files": 150
+      },
+      {
+        "onlineSync": true,
+        "files": 150
+      }
+    ],
+    "browser": {
+      "twoSourcesCopied": true,
+      "sourceChangeReported": true,
+      "manualChangesKept": true,
+      "referencesStable": true,
+      "draftReloadPassed": true,
+      "initialDraftRestored": true,
+      "completeJsonAdjacentContentPreserved": true,
+      "realDictation": false
+    },
+    "word": {
+      "expert": {
+        "sha256": "ad4676ff7af0635b6f7703ff565751a6e0719fcdcd209decc621d78bb85b44df",
+        "media": 9,
+        "notesPresent": true,
+        "zipXmlValid": true,
+        "nativeVisualRead": false
+      },
+      "client": {
+        "sha256": "26938d9f187f6e08a3593566d398e05d3768217835dce55223e38341cc08da6d",
+        "media": 8,
+        "notesPresent": false,
+        "zipXmlValid": true,
+        "nativeVisualRead": false
+      }
+    }
+  },
+  "sourceFilesSha256": {
+    "frontend/src/DecisionSupportPanel.jsx": "00e706b447add9b6d8a04e25394557285deeb8c0a6e316425e71426d42830900",
+    "frontend/src/expectationListening.js": "d739d6caea383184bc7f88f6027ef0d48068bc66c2550fa74ea67d1f45532c7e",
+    "frontend/src/expectationListening.test.js": "0e552a6721354ff90264dbed68bf7e7f75056b01e6e0402357d5c865fff6de99",
+    "frontend/src/decisionSupport.js": "be64fc7da04722d46cc4163bc59fbe888802265208676d5e0d21c783c8ad115b",
+    "frontend/src/styles.css": "92fe5b422ba3febe680e7ded8b2f898549cb59dc8e36781b04801e939e1358cc",
+    "frontend/public/api/decision-validation.php": "8ff60fd23ea1872345f44f662973d4641cde8efa98c6b147fe25f20d82c61e5a",
+    "tests/decision-validation.php": "bf93b55f9d173e0e62f946be33edbc48f203803b7e5d29816b3c462afc5c2d63",
+    "tests/report-files-http.py": "bd3fdd337b3c4cba392805b0ed94b3be5a1c12e2996be01b7f96f622eaea4124"
+  },
+  "limitations": [
+    "Human local review pending; no new hosted delivery or human hosted acceptance",
+    "Actual microphone/speech service not tested",
+    "Word downloads checked for structure/text/media only, no new native pagination/PDF inspection",
+    "Existing PHP JSON normalization of four empty protocol control objects recorded separately; HTTP fixture uses already stored representation"
+  ],
+  "approvalsCreated": [],
+  "mergePerformed": false,
+  "preproductionChanged": false,
+  "productionChanged": false
+}

@@ -183,7 +183,7 @@ try:
     check('Unauthenticated full download denied', req('/api/reports.php?id=' + A + '&download=1')[0] == 403)
     check('Existing administrator can read without transfer', req('/api/reports.php?id=' + A + '&download=1', admin)[2] == stored)
     copied = dict(fixture)
-    copied.pop('onlineReportId')
+    copied.pop('onlineReportId', None)
     result = save(b, copied)
     check('Independent recipient save accepted', result[0] == 200)
     B = json.loads(result[2])['report']['id']

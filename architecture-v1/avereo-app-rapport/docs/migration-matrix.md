@@ -5,13 +5,18 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-14
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 16 novembre — Compatibilité des attentes et notes
+
+decision.notes_attentes et attentes[].provenance_ecoute sont facultatifs ; schema_version 1 maintenu. Anciennes attentes et liens ne sont ni réidentifiés ni reclassés. Aucun nouveau schéma SQL. Une ancienne interface qui conserve les propriétés inconnues peut garder ces valeurs sans les afficher ; qualifier la version avant d’annoncer leur édition/restauration. Type objet/liste des contrôles de protocole vides : normalisation PHP préexistante, distincte de ce lot. [Contrat, limites et recette](attentes-ecoute-client.md).
+
 
 ## 2026-11-14 — Terrain horizontal : compatibilité et retour arrière
 

@@ -5,12 +5,17 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-14
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 16 novembre — Attentes reprises de l’écoute, candidat local
+
+Export propose de reprendre les attentes et le besoin reformulé, sans doublon ni écrasement des corrections. Ajout de notes complémentaires avec dictée existante, conservées dans les sauvegardes et la restitution expert. Provenance facultative validée côté PHP ; liens et client préservés. [Contrat et limites](docs/attentes-ecoute-client.md). Aucun déploiement dans ce lot à cette date.
+
 
 ## 14 novembre 2026 — Révision horizontale Terrain de PR158
 

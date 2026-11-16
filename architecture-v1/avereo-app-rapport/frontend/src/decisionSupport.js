@@ -27,7 +27,7 @@ export function normalizeDecision(value) {
     return { ...o, nom: string(o.nom) || name, objectif: string(o.objectif), action_ids: ids(o.action_ids),
       criteres: fields(object(o.criteres), DECISION_CRITERIA.map(([key]) => key)) };
   };
-  return { ...d, schema_version: d.schema_version ?? 1,
+  return { ...d, schema_version: d.schema_version ?? 1, notes_attentes: string(d.notes_attentes),
     habitants: fields(object(d.habitants), ['occupation', 'sensibilites', 'non_negociables', 'tolerances']),
     projet: fields(object(d.projet), ['objectif', 'budget', 'calendrier', 'delegation', 'diy']),
     attentes: rows(d.attentes).map(a => ({ ...a, ...fields(a, ['id', 'libelle', 'priorite', 'source']) })),
@@ -41,9 +41,9 @@ export function normalizeDecision(value) {
 
 // Sections 1 to 3 (habitants, attentes, projet, liens) are always counted. The projections of sections 4 to 6
 // (actions, options, arbitrage) are counted only when the profile exposes them; their stored data is never altered.
-export function hasDecisionData(report, includeProjections = true) {
+export function hasDecisionData(report, includeProjections = true, includeNotes = true) {
   const d = normalizeDecision(report.decision);
-  const foundations = [...Object.values(d.habitants), ...Object.values(d.projet)].some(v => v.trim()) || d.attentes.length > 0 || d.liens.length > 0;
+  const foundations = (includeNotes && Boolean(d.notes_attentes.trim())) || [...Object.values(d.habitants), ...Object.values(d.projet)].some(v => v.trim()) || d.attentes.length > 0 || d.liens.length > 0;
   if (!includeProjections) return foundations;
   return foundations || [...Object.values(d.arbitrage), ...Object.values(d.option_a.criteres), ...Object.values(d.option_b.criteres),
     d.option_a.objectif, d.option_b.objectif].some(v => v.trim()) || d.actions.length > 0
@@ -104,7 +104,7 @@ const table = (headers, values) => `<table><thead><tr>${headers.map(h => `<th>${
 
 export function buildDecisionHtml(report, client = false) {
   const projections = allowsDecisionProjections(report);
-  if (!isHabitologieReport(report) || !hasDecisionData(report, projections)) return '';
+  if (!isHabitologieReport(report) || !hasDecisionData(report, projections, !client)) return '';
   if (report.decision?.schema_version != null && report.decision.schema_version !== 1) return '<section><h2>Aide à la décision</h2><p>Format non pris en charge ; conserver le JSON d’origine et vérifier la version de l’application.</p></section>';
   const d = normalizeDecision(report.decision), obs = report.observations || [];
   const names = (collection, selected, field) => selected.map(id => referenceLabel(collection, id, field)).join('\n') || 'À relier';
@@ -112,6 +112,7 @@ export function buildDecisionHtml(report, client = false) {
   content += `<h3>Attentes retenues</h3>${table(client ? ['Attente', 'Priorité'] : ['Attente', 'Priorité', 'Source'],
     d.attentes.map(a => client ? [a.libelle, a.priorite] : [a.libelle, a.priorite, a.source]))}`;
   if (!client) {
+    if (d.notes_attentes.trim()) content += `<h3>Notes complémentaires sur les attentes</h3><p>${cell(d.notes_attentes)}</p>`;
     content += `<h3>Cadre permanent des habitants</h3>${table(['Rubrique', 'Déclaration'], [
       ['Occupation', d.habitants.occupation], ['Sensibilités', d.habitants.sensibilites],
       ['Non négociables', d.habitants.non_negociables], ['Tolérances déclarées', d.habitants.tolerances]])}`;

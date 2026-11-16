@@ -5,7 +5,7 @@ title: Deploiement Rapport sur O2Switch
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-10-16
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,11 @@ tags:
   - o2switch
   - mysql
 ---
+
+## 16 novembre — Préparation du complément Attentes
+
+Candidat local uniquement. Une future livraison autorisée doit aligner l’interface et api/decision-validation.php, préserver les données existantes, qualifier sauvegarde/retour arrière et effectuer la recette CONNECT sur dossier fictif. Aucun endpoint, secret ou schéma SQL nouveau. Les vérifications HTTP/MariaDB de ce lot sont locales, elles ne remplacent pas la recette hébergée. [Parcours et critères de passage](attentes-ecoute-client.md#préproduction).
+
 
 # Deploiement Rapport sur O2Switch
 
