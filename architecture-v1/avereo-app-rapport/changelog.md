@@ -12,6 +12,14 @@ tags:
   - changelog
 ---
 
+## 16 novembre — Candidat profils Architecte/Maître d’œuvre avec CONNECT
+
+Sélecteur et résumés de mission, vocabulaire des étapes 4–6 et restitutions adaptés ; contexte Terrain, conseils client et modalités de réalisation conservés. Profil déclaré dans CONNECT et défaut limité aux créations, sans modification des dossiers ouverts. Copie fictive gardant les métiers reconnus. [Qualification et revue](docs/profils-professionnels.md). Aucun déploiement de ce candidat.
+
+## 16 novembre — Planning Projet PR163 installé
+
+Même artefact promu : validation PHP facultative, JS, CSS, module Word et index HTML en dernier. Sauvegarde relue et retour arrière sur copie vérifiés ; 24 dossiers/toutes colonnes/propriétaires inchangés. Aperçu, refus d’une capacité invalide, téléchargement Projet et Word expert/client contrôlés ; brouillon initial restauré. [Portée](docs/interventions-projet.md#préproduction).
+
 ## 16 novembre — Préparation d’un planning Projet depuis les interventions
 
 Volet repliable avec estimations, aperçu dérivé et téléchargement d’une projection native Projet. Paramètres optionnels sauvegardés, validation client/PHP et refus sans perte ; import indépendant et réexport exact vérifiés localement. Aucun changement de Projet, des propriétaires ou des restitutions Word. [Qualification et limites](docs/interventions-projet.md#qualification-locale). Aucun déploiement de ce candidat.

@@ -4,7 +4,7 @@ import { LISTENING_SECTIONS } from './clientListening.js';
 import { rgaRisk, isRgaRisk } from './georisquesRiskSummary.js';
 import { normalizeRgaCartography, rgaLevelLabel } from './rgaContext.js';
 import { markersForPlan, observationPlanNames, planPayloadError } from './observationPlans.js';
-import { observationAdviceLabel, isHabitologueProfile } from './reportProfiles.js';
+import { observationAdviceLabel, usesMissionContext } from './reportProfiles.js';
 import { environmentContext, contextText, environmentContextError } from './environmentContext.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
 import { textToLinkedHtml } from './textLinks.js';
@@ -115,7 +115,7 @@ export function safeEmbeddedImageSource(value = '') {
 
 // Unnumbered context: no observation or plan marker is created or renumbered.
 export function buildEnvironmentContextHtml(report, client = false) {
-  if (!isHabitologueProfile(report)) return '';
+  if (!usesMissionContext(report)) return '';
   const value = environmentContext(report);
   if (!value || (client && value.includeInClient !== true)) return '';
   const error = environmentContextError(report);

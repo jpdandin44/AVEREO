@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import VoiceField from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
-import { isHabitologueProfile } from './reportProfiles.js';
+import { usesMissionContext } from './reportProfiles.js';
 import { readPlanFile } from './observationPlans.js';
 import { safeEmbeddedImageSource } from './reportHtml.js';
 import { environmentContext, contextText, newEnvironmentContext, changeEnvironmentContext, removeEnvironmentContext } from './environmentContext.js';
@@ -11,7 +11,7 @@ export default function EnvironmentContext({ report, setReport, onPhotoTransfer 
   const [message, setMessage] = useState(''), [reading, setReading] = useState(false);
   const id = value?.id;
   useEffect(() => { setReading(false); return () => { readGeneration.current++; }; }, [id, report.reference_dossier, report.onlineReportId]);
-  if (!isHabitologueProfile(report)) return null;
+  if (!usesMissionContext(report)) return null;
   const update = patch => setReport(previous => changeEnvironmentContext(previous, id, patch));
   const photoAllowed = report.ecoute?.consentement_photos === true;
   const dictationAllowed = report.ecoute?.consentement_dictee === true;

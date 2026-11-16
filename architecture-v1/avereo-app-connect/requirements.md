@@ -5,10 +5,14 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-07
+updated: 2026-11-16
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Profil de connexion et nouvelles missions — 16 novembre
+
+Défaut personnel déclaré et optionnel, jamais une habilitation ou une qualification. Édition du seul compte actif, session/CSRF/contexte actuels et PUT de même origine ; lecture applicative sur origine exacte et droit actuel. Choix du dossier conservé après modification du défaut. Une préférence modifiée à la fois, autre préférence intacte ; retour arrière du lecteur sans altération du médaillon. [Critères](../avereo-app-rapport/docs/profils-professionnels.md).
 
 ## 7 novembre — pont et stockage, état local courant
 

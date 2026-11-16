@@ -17,6 +17,21 @@ const dossier = () => ({ profil_metier: 'habitologue', categorie: 'Visite Global
 const context = () => ({ ...newEnvironmentContext('ctx-stable'), titre: 'Abords fictifs', zone: 'Jardin', constat: 'Contexte à conserver', explications: 'Source https://example.org/terrain?a=1&b=2', conseils: 'Vérifier sur place',
   photo: { id: 'ph-ctx', name: 'Photo extérieure', src: image, width: 30, height: 20, source: 'Visite fictive', caption: 'Vue extérieure' } });
 
+test('recognized global mission profiles retain context, its media and selected client advice without renumbering', () => {
+  const reference = { ...dossier(), contexte_exterieur: { ...context(), includeInClient: true } };
+  for (const profil_metier of ['architecte', 'maitre_oeuvre']) {
+    const report = { ...reference, profil_metier }, before = structuredClone(report);
+    assert.equal(buildEnvironmentContextHtml(report), buildEnvironmentContextHtml(reference));
+    const expert = buildReportHtml(report);
+    assert.match(expert, /Contexte à conserver/); assert.ok(expert.includes(image));
+    const client = buildReportHtml({ ...report, livrable: { ...report.livrable, audience: 'client' } });
+    assert.match(client, /Contexte à conserver/); assert.match(client, /Conseil chauffage/); assert.doesNotMatch(client, /Conseil eau/);
+    assert.equal(observationNumber(report, report.observations[0]), 2);
+    assert.deepEqual(report, before);
+  }
+  assert.equal(buildEnvironmentContextHtml({ ...reference, profil_metier: 'ancien-inconnu' }), '');
+});
+
 test('old reports acquire no context or changed layout through reading and export', () => {
   const r = dossier(), before = structuredClone(r);
   assert.equal(environmentContext(r), null); assert.equal(environmentContextError(r), null);

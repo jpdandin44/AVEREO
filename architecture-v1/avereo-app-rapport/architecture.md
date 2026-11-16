@@ -12,6 +12,10 @@ tags:
   - architecture
 ---
 
+## Profils de mission et défaut du compte — 16 novembre
+
+Rapport lit les préférences privées du compte courant via le portail validé par Mon compte, puis vérifie la correspondance avec sa propre identité CONNECT. Lecture à l’ouverture/au retour de focus, 2,5 secondes maximum, choix manuel si indisponible ; aucun cache d’identité persistant. Le défaut est copié uniquement dans un nouveau `profil_metier`. Aucune application du défaut à une reprise/import/ouverture serveur. Une matrice de présentation commune aligne écrans et deux Word ; mêmes données/identifiants, médias et filtres. [Contrat et conservation](docs/profils-professionnels.md).
+
 ## 16 novembre — Projection des interventions vers Projet
 
 InterventionProjectPanel lit les mêmes decision.actions, sauvegarde les seuls paramètres optionnels et affiche un aperçu dérivé. interventionProject.js importe le moteur Projet canonique pour normaliser/encoder/calculer le fichier, sans copie du calendrier ni nouvelle API interapplications. Le fichier est chargé par l’import privé existant de Projet, qui crée un projet indépendant sous ses droits habituels. [Flux, données et limites](api/interventions-projet.md). Les moteurs Word et les contrôles de propriétaire restent inchangés.

@@ -26,7 +26,11 @@ parser.add_argument('--receipt', type=Path)
 parser.add_argument('--serve', action='store_true', help='Keep a local fictitious two-account review environment running after the checks')
 parser.add_argument('--port', type=int, default=5186, help='Local Vite review port with --serve')
 parser.add_argument('--fixture', type=Path, help='Optional complete fictitious dossier for the existing round-trip recipe')
+parser.add_argument('--connect-profile-db', type=Path, help='Optional disposable CONNECT account fixture database shared with the local profile portal')
 args = parser.parse_args()
+if args.connect_profile_db:
+    profile_parent = args.connect_profile_db.resolve().parent
+    assert args.serve and profile_parent.name.startswith('profils-connect-') and Path(tempfile.gettempdir()).resolve() in profile_parent.parents, 'Dedicated local profile fixture required'
 PHP = shutil.which('php')
 assert PHP and shutil.which('docker'), 'Existing PHP and Docker required'
 parent = Path(tempfile.gettempdir()).resolve()
@@ -236,6 +240,10 @@ try:
         # for this temporary database only; no new real account or access is created.
         router = scratch / 'router.php'
         router.write_text('''<?php
+if (getenv('REPORT_PROFILES_FIXTURE') === 'true' && str_starts_with(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/fixture/connect/api/')) {
+    $_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], strlen('/fixture/connect'));
+    require getenv('REPORT_PROFILES_CONNECT_ROUTER'); return true;
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) === '/api/reports.php' && is_file(__DIR__.'/delay-next-save')) {
     unlink(__DIR__.'/delay-next-save'); usleep(2000000); // Fictitious local latency test only.
 }
@@ -250,7 +258,7 @@ if (str_starts_with(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/fixture/
     };
     header('Content-Type: text/html; charset=utf-8'); header('Cache-Control: no-store');
     echo '<!doctype html><html lang="fr"><meta name="viewport" content="width=device-width"><title>Recette locale des dossiers complets</title><style>body{font:18px system-ui;max-width:760px;margin:60px auto;padding:24px;color:#142033}a{display:block;padding:18px;margin:20px 0;background:#1655d8;color:white;border-radius:8px;text-decoration:none}</style><h1>Dossiers complets — recette locale</h1><p>Deux comptes fictifs et une base temporaire sur cet ordinateur. Aucune donnée de préproduction.</p><p>Le compte A possède un dossier complet fictif, disponible dans la liste des rapports. Téléchargez son JSON complet, passez au compte B, chargez le fichier puis sauvez une copie indépendante. Le brouillon local reste propre à ce navigateur.</p>';
-    foreach ([101=>'Compte fictif A',102=>'Compte fictif B'] as $id=>$name) echo '<a href="/connect/entry.php?ticket='.htmlspecialchars($ticket($id),ENT_QUOTES).'">'.$name.'</a>';
+    foreach ((getenv('REPORT_PROFILES_FIXTURE') === 'true' ? [1=>'Compte professionnel fictif',101=>'Compte fictif A',102=>'Compte fictif B'] : [101=>'Compte fictif A',102=>'Compte fictif B']) as $id=>$name) echo '<a href="/connect/entry.php?ticket='.htmlspecialchars($ticket($id),ENT_QUOTES).'">'.$name.'</a>';
     echo '<p>La fermeture du service local efface cette base de recette temporaire.</p></html>'; exit;
 }
 return false;
@@ -260,15 +268,27 @@ return false;
         config.update(db_name=db_name,
                       connect_portal_url=f'http://127.0.0.1:{args.port}/fixture/')
         write_config()
-        server = subprocess.Popen(command + [str(router)], env=dict(os.environ, AVEREO_CONFIG_FILE=str(config_path)), stdout=log, stderr=log)
+        review_env = dict(os.environ, AVEREO_CONFIG_FILE=str(config_path))
+        if args.connect_profile_db:
+            connect_router = APP.parent / 'avereo-app-connect/backend/tests/account-ui-router.php'
+            assert connect_router.is_file()
+            review_env.update(APP_ENV='local', ACCOUNT_UI_FIXTURE='true', ACCOUNT_UI_DB=str(args.connect_profile_db.resolve()),
+                              REPORT_PROFILES_FIXTURE='true', REPORT_PROFILES_CONNECT_ROUTER=str(connect_router))
+            if os.name == 'nt' and b'pdo_sqlite' not in subprocess.check_output([PHP, '-m']):
+                command[1:1] = ['-d', 'extension=' + str(Path(PHP).parent / 'ext/php_pdo_sqlite.dll')]
+        server = subprocess.Popen(command + [str(router)], env=review_env, stdout=log, stderr=log)
         module = (APP / 'frontend/node_modules/vite/dist/node/index.js').resolve().as_uri()
         frontend = APP / 'frontend'
         settings = {'root': str(frontend), 'cacheDir': str(scratch / 'vite-cache'),
                     'server': {'host': '127.0.0.1', 'port': args.port, 'strictPort': True,
                                'proxy': {path: {'target': origin, 'changeOrigin': False}
                                          for path in ('/api', '/connect', '/fixture')}}}
+        profile_plugin = ''
+        if args.connect_profile_db:
+            meta = '<meta name="avereo-connect-portal" content="http://127.0.0.1:' + str(args.port) + '/fixture/connect">'
+            profile_plugin = 'settings.plugins=[{name:"fictitious-connect-profile",transformIndexHtml:html=>html.replace("<head>","<head>"+' + json.dumps(meta) + ')}];'
         script = (f'import {{createServer}} from {json.dumps(module)}; '
-                  + 'const server=await createServer(' + json.dumps(settings) + '); '
+                  + 'const settings=' + json.dumps(settings) + ';' + profile_plugin + 'const server=await createServer(settings); '
                   + 'await server.listen();server.printUrls();')
         vite = subprocess.Popen(['node', '--input-type=module', '-e', script], cwd=frontend,
                                 env=dict(os.environ, VITE_ENABLE_ONLINE_SYNC='true'))

@@ -14,6 +14,14 @@ tags:
   - mysql
 ---
 
+## Candidat Profils et CONNECT — non livré
+
+Installation coordonnée future : CONNECT puis Rapport après revue et autorisation du candidat exact. Sauvegarder code/configuration et préférences privées des deux cibles, vérifier restauration et retour arrière. Le fichier compagnon du métier conserve le format de médaillon compatible avec l’ancien lecteur ; Rapport garde un choix manuel avec un ancien CONNECT. [Périmètre et contrôles](profils-professionnels.md#préproduction). La livraison PR163 ci-dessous reste historique et effective.
+
+## 16 novembre — Livraison PR163 et alignement confirmés
+
+Candidat validé de0edf3, fusion 9f8645b866ae4fc5e9927070b31b8d4fc9f26897 et arbre complet 85e3171 identiques. Archive eb6d1258 promue sans reconstruction : cinq fichiers, index en dernier. L’installation du candidat explicitement autorisé a précédé l’observation de la fusion ; reçu initial conservé comme historique, preuve d’alignement distincte après fusion. Sauvegarde application/configuration relue, restauration/rollback sur copie, sauvegarde privée des dossiers relue sans restauration SQL. [Cible et reçus](interventions-projet.md#préproduction).
+
 ## 16 novembre — Livraison PR162 attestée
 
 Tests déclarés OK, quatre cases humaines cochées et fusion f4017be vérifiés ; même arbre que b04ea2b qualifié. Archive f7c8a973 promue sans reconstruction : JS principal, CSS, module Word et index HTML en dernier. Sauvegarde fraîche application/configuration relue, restauration et rollback code vérifiés sur copie ; sauvegarde privée des dossiers relue sans restauration SQL. 208 fichiers préexistants conservés, 24 dossiers/toutes colonnes/propriétaires exacts après navigation ; configuration/production et journal intacts. Composants partagés et différences de fins de ligne déjà qualifiés conservés. [Cible, reçus et limites](organisation-ecrans.md#préproduction).

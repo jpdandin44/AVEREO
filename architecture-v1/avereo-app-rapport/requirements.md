@@ -13,6 +13,10 @@ tags:
   - habitologie
 ---
 
+## Profils et CONNECT — périmètre confirmé le 16 novembre
+
+CONNECT est explicitement inclus dans ce lot. Un défaut personnel déclaré, sans rôle/droit nouveau, préremplit uniquement les nouvelles missions après correspondance exacte du compte. Chaque dossier reste modifiable et indépendant du défaut du compte. Architecte et Maître d’œuvre adaptent les étapes 4–6, les deux Word et gardent Terrain/contexte/photos/plans/conseils/modalités ; ancien profil absent/non reconnu conservant le parcours historique. Bascule réversible, JSON et sauvegarde/réouverture conservés, choix manuel en cas d’indisponibilité. [Matrice et critères](docs/profils-professionnels.md).
+
 ## 16 novembre — Planning Projet des interventions
 
 Sélection volontaire distincte du client, date/capacité/charges explicites, horizon libre non interprété ; aperçu informatif cohérent avec le moteur Projet. Sauvegarde/réouverture des estimations, fichier borné sans troncature, références valides, nouveau projet indépendant et conservation de l’existant. Aucune réalisation/validation déduite, API/droits nouveaux ou synchronisation automatique. [Contrat et critères](docs/interventions-projet.md). Le parcours par fichier de cette première tranche est explicitement confirmé par le responsable le 16 novembre ; revue humaine du candidat à effectuer.

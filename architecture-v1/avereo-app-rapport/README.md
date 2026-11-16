@@ -13,6 +13,14 @@ tags:
   - connect
 ---
 
+## 16 novembre — Profils et CONNECT, candidat local
+
+Profils Architecte et Maître d’œuvre disponibles dans Dossier, étapes 4–6 et deux restitutions adaptées. Défaut déclaré sur le compte CONNECT proposé uniquement à la création ; dossiers existants et données conservés. Terrain/contexte, conseils et modalités gardés. [Revue, contrat et limites](docs/profils-professionnels.md). PR163 reste la version de préproduction ; ce nouveau lot est soumis à revue locale.
+
+## 16 novembre — PR163 livrée et alignée en préproduction
+
+Planning informatif et fichier Projet livrés après validation humaine. Candidat de0edf3 et fusion 9f8645b de contenu identique ; même archive qualifiée, cinq fichiers installés. Interface, fichier Projet et deux Word contrôlés ; 24 dossiers/propriétaires et brouillon initial conservés. [Preuves et limites](docs/interventions-projet.md#préproduction).
+
 ## 16 novembre — Planning informatif vers Projet, candidat local
 
 Sous les interventions Habitologue, sélection Projet distincte, estimations explicites, aperçu du calendrier et fichier pour « Importer un projet » indépendant. Paramètres conservés dans le dossier ; aucun changement de Projet ou des Word. [Contrat, revue et preuves](docs/interventions-projet.md). PR162 reste la version hébergée ; les états datés suivants sont historiques.

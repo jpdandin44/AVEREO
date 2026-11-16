@@ -109,7 +109,7 @@ test('the Habitologue profile never alters the stored decision data and leaves o
   buildDecisionHtml(report); decisionWarnings(report); hasDecisionData(report);
   assert.equal(JSON.stringify(report), before);
   assert.equal(report.decision.actions.length, 1); assert.deepEqual(report.decision.option_a.action_ids, ['a1']);
-  for (const profil of [undefined, '', 'architecte', 'inconnu']) {
+  for (const profil of [undefined, '', 'inconnu']) {
     const legacy = { ...dossier(), categorie: 'Visite Globale', profil_metier: profil };
     const html = buildDecisionHtml(legacy);
     for (const text of ['Projection 1', 'Projection 2', 'Comparaison des conséquences', 'Arbitrage à discuter', 'Vérifier le parcours d’air']) assert.ok(html.includes(text), `${profil} ${text}`);
@@ -151,4 +151,21 @@ test('the references kept in sections 1 to 3 stay controlled for Habitologue', (
   assert.match(buildDecisionHtml(report), /ambiguë/);
   report.decision.schema_version = 2;
   assert.match(buildDecisionHtml(report), /Format non pris en charge/); assert.match(decisionWarnings(report).join('\n'), /non pris en charge/);
+});
+
+
+test('Architecte and Maître d’œuvre adapt both deliverables without changing decisions or client filtering', () => {
+  for (const [profile, headings] of [['architecte', ['Actions du projet', 'Deux variantes du projet', 'Comparaison des variantes']],
+    ['maitre_oeuvre', ['Interventions et phasage', 'Deux options de réalisation', 'Comparaison des conditions de réalisation']]]) {
+    const report = { ...dossier(), profil_metier: profile, categorie: 'Visite Globale' };
+    const before = structuredClone(report);
+    const expert = buildDecisionHtml(report), client = buildDecisionHtml(report, true);
+    for (const text of headings) assert.ok(expert.includes(text), profile + text);
+    for (const text of headings.slice(1)) assert.ok(client.includes(text), profile + text);
+    assert.ok(!client.includes(headings[0]));
+    for (const text of ['Vérifier le parcours d’air', 'Principe général', 'Accès à convenir', 'Avant travaux']) assert.ok(expert.includes(text));
+    assert.deepEqual(report, before);
+    report.categorie = 'Expertise & Visite technique';
+    assert.equal(buildDecisionHtml(report), '');
+  }
 });

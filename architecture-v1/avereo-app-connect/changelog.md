@@ -5,10 +5,14 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-09
+updated: 2026-11-16
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 16 novembre — Défaut professionnel du compte
+
+Champ déclaré dans Mon profil et extension privée des préférences ; GET avec identité du compte courant, PUT d’une seule préférence, fichier compagnon protégeant le format du médaillon et sa restauration. Ancien badge conservé lors des modifications de métier et réciproquement ; refus de compte cible/origine/contexte invalides contrôlés. [Qualification](../avereo-app-rapport/docs/profils-professionnels.md).
 
 ## 9 novembre — contrôle global compatible Drupal 11
 

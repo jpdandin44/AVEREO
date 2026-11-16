@@ -3,7 +3,7 @@ import { orderedObservations, observationNumber } from './observationOrder.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { buildDecisionHtml } from './decisionSupport.js';
-import { isHabitologueProfile, observationAdviceLabel } from './reportProfiles.js';
+import { usesMissionContext, observationAdviceLabel } from './reportProfiles.js';
 import { reportPhotoSource } from './photoReportVersion.js';
 import { buildInterventionsHtml } from './interventions.js';
 
@@ -102,9 +102,9 @@ export function buildReportHtml(report) {
     const selected = orderedObservations(report).filter(o => options.observations.includes(o.id));
     content = cover(report, true) + buildEnvironmentContextHtml(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
       <p>${textToHtml(options.synthese || 'Synthèse client à rédiger par le professionnel.')}</p>
-      ${selected.map(o => `<article class="client-observation keep-together"><h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${isHabitologueProfile(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
+      ${selected.map(o => `<article class="client-observation keep-together"><h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${usesMissionContext(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
         ${explanationsHtml(o)}
-        ${isHabitologueProfile(report) ? `<h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(o.actions)}</p>` : ''}
+        ${usesMissionContext(report) ? `<h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(o.actions)}</p>` : ''}
         ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(reportPhotoSource(p)) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(reportPhotoSource(p))}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}</article>`).join('')}
       <p class="muted">Le rapport expert conserve l’ensemble des constats et des sources.</p></section>`;
     content += buildObservationPlansHtml(report, options.observations);

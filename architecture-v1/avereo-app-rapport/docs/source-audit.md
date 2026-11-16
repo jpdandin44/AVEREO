@@ -13,6 +13,14 @@ tags:
   - securite
 ---
 
+## 16 novembre — Profils CONNECT et conservation des missions
+
+Aucun droit accordé par le métier déclaré. Lecture du portail validé par le composant commun, correspondance obligatoire entre compte retourné et identité Rapport ; absence/inconnu/autre compte/délai donnent un choix manuel. Le défaut ne modifie jamais un dossier courant ou chargé. Contrôles de session/CSRF/contexte/origine CONNECT conservés, aucun compte cible accepté. Le fichier compagnon du métier garde l’ancien format du médaillon et permet un retour arrière du lecteur. Candidats testés sur identités/données fictives ; ancien propriétaire et toutes les colonnes conservés. [Matrice, nouvelles fonctions et réserves](profils-professionnels.md).
+
+## 16 novembre — Conservation après livraison PR163
+
+Cinq fichiers qualifiés installés sur la cible isolée : aucune nouvelle API, permission, migration ou activation privée. Les 24 dossiers/toutes colonnes/propriétaires, configuration et production sont exacts avant/après installation puis navigation. CONNECT renouvelé normalement ; import fictif complet, aperçu et fichier Projet conformes au moteur canonique, refus de capacité 0, aucune erreur console observée. Deux Word : mêmes textes/liens et neuf/huit médias. Brouillon initial exact dans quatre emplacements après restauration/rechargement. Réserve antérieure des quatre contrôles de protocole vides explicitée, sans modification du serveur. [Preuves et limites](interventions-projet.md#préproduction).
+
 ## 16 novembre — Sécurité du fichier Interventions vers Projet
 
 Projection sur liste blanche, sélection explicite et indépendante du rapport client, sans session/secret, média ou identité/adresse dédiée. Modalités/préalables et références lisibles présents : relire ce contenu professionnel avant transmission. Aucun transfert réseau automatique, point d’entrée, permission ou rôle nouveau. Bornes/types/dates/charges validés, blocs vides refusés pour ces nouvelles données. Ancien dossier intact à la lecture ; fichier refusé si références ambiguës/volume incompatible. HTTP fictif : sauvegarde et nouvelles sessions, erreurs conservant colonnes/propriétaire, Projet existant intact et projet importé exact. Word existants inchangés. [Portée et réserves](interventions-projet.md#qualification-locale).
