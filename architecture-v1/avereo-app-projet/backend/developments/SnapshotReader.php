@@ -92,7 +92,7 @@ final class SnapshotReader
     {
         ['data'=>$d,'index'=>$ix]=$this->read();
         return ['iterations'=>array_map(static fn($v)=>['id'=>$v['id'],'title'=>$v['title'],'application'=>$v['application'],'applicationIds'=>$v['applicationIds'],
-            'status'=>$v['status'],'currentPhase'=>$v['currentPhase'],'versions'=>$v['versions'],'nextAction'=>$v['nextAction'],'blockerCount'=>count($v['blockers']),
+            'revision'=>$v['revision']??null,'status'=>$v['status'],'currentPhase'=>$v['currentPhase'],'versions'=>$v['versions'],'nextAction'=>$v['nextAction'],'blockerCount'=>count($v['blockers']),
             'phases'=>array_map(static fn($p)=>['id'=>$p['id'],'label'=>$p['label'],'status'=>$p['status'],'criteria'=>count($p['criteria']),
                 'approved'=>count(array_filter($p['criteria'],static fn($c)=>($c['decision']??'')==='approved'))],$v['phases'])],$d['iterations']),
             'portfolio'=>$d['portfolio'],'patrimony'=>$this->patrimony($d['patrimony']??null),'githubSnapshot'=>$d['githubSnapshot']??null,'githubRefreshAvailable'=>false,'snapshot'=>['sequence'=>$d['sequence'],'generatedAt'=>$d['generatedAt'],'receivedAt'=>$ix['receivedAt']??null,

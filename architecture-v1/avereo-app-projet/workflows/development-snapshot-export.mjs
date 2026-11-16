@@ -29,6 +29,7 @@ export async function exportDevelopmentSnapshot(registry,{sequence,publisherId='
       const result=Object.fromEntries(Object.entries(value).map(([k,v])=>[k,normalize(v,iterationId)]));
       if(Object.hasOwn(result,'canApprove'))result.canApprove=false;
       if(Object.hasOwn(result,'availability')&&result.availability==='available'&&!selected.has(iterationId+':'+result.id)){
+        result.sourceAvailability='available';
         result.availability='unavailable';result.description='Pièce non publiée dans cette copie privée. '+(result.description||'');
       }
       return result;

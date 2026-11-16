@@ -5,12 +5,20 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-13
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 16 novembre — Gantt et progression calculée
+
+Cadrage : besoin de visibilité automatique confirmé, quatre phases et accords préservés. Développement local : vue Gantt, projection technique, sources actives raccordées et collecteur périodique opt-in ; qualification à consigner dans le [suivi](data/suivi-gantt-developpements.json). Préproduction : à préparer après revue/CI et accord ciblé, avec service de publication automatique privé, sauvegarde/retour et vraie recette. Mise en production : non commencée/non autorisée. Les entrées antérieures sont historiques ; PQ-01 a son reçu distinct de publication et ne doit pas être revalidé par ce lot.
+
+Préparation de la PR demandée par le responsable : contrat de publicateur désactivé, tests des primitives et [qualification opérationnelle](docs/publicateur-prive.md). L'activation reste bloquée sur service/sources privés, transport/admission, état hébergé actuel et conservation à capacité pleine. Aucun déploiement de la PR.
+
+[PR160](https://github.com/jpdandin44/AVEREO/pull/160) ouverte en brouillon, main PR159 intégré sans conflit et 354 tests locaux sur source propre qualifiés. Prochaine action : revue locale du Gantt/dossier de qualification et lecture de la CI finale, puis cadrage du raccordement privé ; cases humaines et phases hébergées inchangées.
 
 ## 13 novembre — PQ-01 en PR de revue locale
 

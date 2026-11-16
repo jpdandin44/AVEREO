@@ -5,12 +5,18 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 16 novembre — Avancement sans saisie manuelle de phases
+
+Afficher le réalisé et le reste à faire sur quatre phases, depuis les suivis/preuves et observations GitHub, sans pourcentage inventé. Séparer les prévisions explicites, dates de preuves, inconnues, progression technique et accords humains. Garder le module consultatif et privé au seul propriétaire global. Reprendre automatiquement les nouvelles publications ; prévoir une collecte/publication en ligne autonome, dont l'installation et le fonctionnement poste éteint restent à qualifier. [Règles, critères et limites](docs/gantt-developpements.md), [suivi](data/suivi-gantt-developpements.json).
+
+Préparation du publicateur : aucune donnée réelle de suivi dans le dépôt public/CI ; aucun canal de déploiement de code. Exiger identité exacte/global pour la lecture, service séparé et droits minimaux, admission de données seule, signature, anti-rejeu, conservation de l'historique et reprise idempotente. Ne pas déclarer les prérequis hébergés satisfaits à partir des fixtures. [Qualification](docs/publicateur-prive.md).
 
 ## 12 novembre — PQ-01, inventaire privé
 

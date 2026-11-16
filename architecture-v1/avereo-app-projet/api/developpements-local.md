@@ -5,10 +5,20 @@ title: Contrat local privé du module Développements
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-09
+updated: 2026-11-16
 owner: jpdandin
 tags: [api, local, autorisation, preuves, source-canonique]
 ---
+
+## 16 novembre — Gantt consultatif et adaptateurs explicites
+
+Les résumés de `state` exposent désormais `revision` pour éviter de relire les détails inchangés. Les anciennes réponses sans ce champ restent compatibles. Le Gantt utilise les routes privées `state`/`iteration` existantes ; aucune route de données publique ou de publication navigateur.
+
+Adaptateurs consultatifs supplémentaires : `followActiveIteration: true` avec `dataPath` suit l'enfant exact nommé par `activeIteration` (clé propre bornée, aucun héritage de candidat/accords du parent, refus si absent) ; `phaseMap` peut mapper les quatre phases nommées ou leurs identifiants textuels vers 0 à 3 ; `checkKindMap` peut mapper explicitement des types historiques vers `local`, `ci`, `documentation`, `preproduction`, `production`, en conservant le type sous `declaredKind`. Ces nouveaux adaptateurs n'activent aucune écriture.
+
+Une phase peut exposer `plan: {start, end}` seulement avec dates ISO calendaires valides, ordre croissant et valeurs explicitement déclarées. Ce sont des prévisions, pas des dates d'exécution déduites. À l'export signé, `sourceAvailability: available` peut conserver le fait qu'une pièce a été vérifiée chez l'éditeur sans la copier ; `availability` reste indisponible et `canApprove` faux dans la projection consultative.
+
+[Règles du calcul et limites](../docs/gantt-developpements.md), [qualification du publicateur données seules](../docs/publicateur-prive.md). Les rubriques de préparation datées ci-dessous restent historiques ; elles ne prouvent pas l'état hébergé actuel. Le publicateur permanent n'est ni raccordé ni activé par ce contrat.
 
 ## Correction du 9 novembre — navigation extérieure vers l'entrée
 

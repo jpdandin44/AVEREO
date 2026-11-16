@@ -1,0 +1,33 @@
+{
+  "schema": "avereo-gantt-pr-local-qualification",
+  "version": 1,
+  "observedAt": "2026-11-16T08:05:55.901Z",
+  "status": "local_passed_remote_ci_to_observe_on_final_head",
+  "codeSourceSha": "72ea2efa5f93d469b6dee5812004033491c2f4b2",
+  "baseSha": "58d6aab4469e8ec973a9e32f85e254c10124058f",
+  "sourceCleanWhenQualified": true,
+  "artifactSha256": "420c52b82621a872a015045d867cc7fe1a40f9bbc100d4530b40287ef3962184",
+  "packageFiles": 20,
+  "publicBuildFiles": 23,
+  "projectTests": {"passed": 354, "failed": 0, "mode": "full_suite_serial_no_test_disabled"},
+  "connectAuthorizationAssertions": 41,
+  "drupalControllerDoubleAssertions": 15,
+  "connectBackendTests": {"passed": 43, "total": 43},
+  "privatePackage": {"exactSourceVerified": true, "allFileHashesVerified": true, "publicBundleExcludesModule": true, "canonicalDataUnchanged": true, "realDataOrSecretsIncluded": false},
+  "readOnlyPreserved": true,
+  "humanApprovalsChanged": false,
+  "realConnectSessionVerified": false,
+  "hostedConfigurationVerified": false,
+  "publisherOperational": false,
+  "readyToDeploy": false,
+  "deployed": false,
+  "productionWrites": 0,
+  "pullRequest": "https://github.com/jpdandin44/AVEREO/pull/160",
+  "reviewEnvironment": "local",
+  "limitations": [
+    "The code source was qualified before the traceability-only commit; final PR head and remote checks must be read on GitHub.",
+    "These local authorization tests use fixtures and service doubles, not a real Drupal kernel or a hosted identity test.",
+    "Permanent private publisher remains blocked by the prerequisites documented separately.",
+    "Initial 350-test receipt and parallel Windows worker incident are retained as history."
+  ]
+}

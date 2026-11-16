@@ -5,13 +5,19 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 16 novembre — Gantt privé et qualification du publicateur
+
+Écart limité au module Développements : calcul consultatif sur versions/preuves, Gantt repliable, adaptations explicites de sources et métadonnées de révision. Le planning client, ses brouillons/imports/exports, les identités CONNECT/Drupal et leurs droits ne sont pas modifiés. Les API restent derrière le garde existant et le build public exclut le module privé.
+
+Le publicateur n'est pas un service ajouté : plan de qualification désactivé et tests de primitives sur copies fictives seulement. Dépôt public constaté, sources/projections privées exclues de Git/CI ; opérateur historique et workflow de production non réutilisés. Les tests Node/PHP et la revue locale ne sont ni une identité CONNECT réelle ni une qualification serveur actuelle. [Qualification et blocages](publicateur-prive.md), [guide de revue](gantt-developpements.md).
 
 ## 12 novembre — PQ-01 patrimoine, écart local documenté
 
