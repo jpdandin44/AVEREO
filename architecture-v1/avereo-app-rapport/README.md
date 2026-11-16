@@ -13,6 +13,18 @@ tags:
   - connect
 ---
 
+## Interventions proposées — candidat local du 16 novembre
+
+Habitologue dispose sous Recommandations d’une liste unique d’interventions reliées aux constats et attentes, avec nature, priorité, horizon et modalités de réalisation. Sélection client explicite et filtrage des constats conservés. [Parcours local, contrat et preuves](docs/interventions-proposees.md). La préproduction reste la version PR159 ; les sections datées suivantes sont historiques.
+
+## 16 novembre — Recette Attentes réussie
+
+Le complément Attentes de PR159 a passé la recette serveur en préproduction : trois attentes, notes et deux liens conservés après deux sauvegardes puis réouverture dans une nouvelle session sans brouillon. Les dossiers/propriétaires antérieurs et le brouillon initial sont préservés. [Recette, dossier de revue et limites](docs/attentes-ecoute-client.md#recette-complète-du-16-novembre). La revue métier humaine reste distincte ; les états datés suivants conservent l’historique.
+
+## 16 novembre — PR159 livrée en préproduction
+
+Le complément Attentes est livré et aligné après validation et merge humains. Interface, validation PHP active et deux Word hébergés vérifiés ; 22 dossiers/colonnes/propriétaires et brouillon initial conservés. [Preuves et limites](docs/attentes-ecoute-client.md#préproduction). Les paragraphes locaux datés suivants conservent l’historique du candidat ; le suivi canonique porte l’état courant.
+
 ## Attentes et écoute client — 16 novembre
 
 Complément local : reprise explicite de deux textes de Dossier dans Export, attentes modifiables avec provenance et notes complémentaires dictables. Liens stables et données historiques conservés ; notes dans le Word expert, exclues du client. [Parcours, revue locale et limites](docs/attentes-ecoute-client.md). Préproduction non engagée pour ce candidat ; les états datés suivants restent historiques, le suivi canonique porte les livraisons et recettes Terrain/photo du 14.

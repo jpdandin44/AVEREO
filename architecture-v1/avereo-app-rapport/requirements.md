@@ -13,6 +13,10 @@ tags:
   - habitologie
 ---
 
+## Interventions après Recommandations — 16 novembre
+
+Une seule liste decision.actions pour Habitologue, liée explicitement aux constats et attentes ; Correctif confirmé, Préventif et Évolutif conservés. Modalités libres, priorité et horizon sans dates inventées. Sélection explicite pour la synthèse ; exclusion entière dès qu’un constat lié est absent, ambigu ou non retenu. Préalables/justification dans l’expert ; aucun rétablissement des projections 4–6. Brouillon, JSON, serveur et deux restitutions cohérents. [Critères et limites](docs/interventions-proposees.md). Raccordement Projet/Gantt dans un sous-lot séparé.
+
 ## Complément Attentes — 16 novembre
 
 Reprendre explicitement les deux textes de l’écoute sans extraction ni attente inventée ; conserver verbatim/provenance, corrections et identifiants ; signaler les sources modifiées sans écraser les liens. Ajouter des notes dictables, soumises à l’accord existant, conservées dans le dossier et l’expert, exclues du client. Anciens dossiers et données adjacentes préservés. [Critères et preuves](docs/attentes-ecoute-client.md). Audio enregistré, Projet, autres profils et activation privée gardent leurs lots distincts.

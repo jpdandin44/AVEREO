@@ -12,6 +12,10 @@ tags:
   - architecture
 ---
 
+## Interventions — complément du 16 novembre
+
+InterventionsPanel réutilise decision.actions et les composants de dictée existants. interventions.js fournit le périmètre Habitologue/Visite Globale, les avertissements et le rendu partagé aperçu/Word. Champs facultatifs realisation et inclure_client validés dans decision-validation.php ; stockage JSON et rôles/propriété inchangés. reportHtml accepte un contenu additionnel après les recommandations ; reportDelivery insère le bloc expert et le bloc client filtré. [Données et flux](docs/interventions-proposees.md#données-et-compatibilité).
+
 ## Attentes et provenance — complément du 16 novembre
 
 Le bloc decision porte notes_attentes et attentes[].provenance_ecoute (champ et texte_original), facultatifs, sans nouveau stockage ou schéma SQL. expectationListening.js fournit la copie explicite et les états de provenance ; DecisionSupportPanel utilise les attentes existantes pour la matrice de constats. VoiceField reste le composant de dictée ; decisionSupport produit les rendus expert/client. [Modèle et limites](docs/attentes-ecoute-client.md#données-et-compatibilité).

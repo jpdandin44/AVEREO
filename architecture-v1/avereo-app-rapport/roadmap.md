@@ -14,6 +14,18 @@ tags:
   - fonctionnalites
 ---
 
+## 16 novembre — Interventions proposées, première tranche locale
+
+Cadrage défini après la recette Attentes ; Développement local : panneau, validation facultative et restitutions implémentés et contrôlés. Prochaine action : revue locale de cette tranche, puis décisions distinctes de merge et de Préproduction. Mise en production non engagée. Le sous-lot suivant qualifiera l’échange volontaire avec Projet et le Gantt sans dates inventées. [Accès, preuves et limites](docs/interventions-proposees.md). Les anciens états Attentes/Terrain/photo restent historiques.
+
+## 16 novembre — Recette Attentes terminée, revue métier suivante
+
+Cadrage autorisé, Développement local fusionné, Préproduction : recette technique de sauvegarde et réouverture en nouvelle session réussie. Prochaine action : revue métier du dossier fictif RECETTE-ATTENTES-PR159-20261116 depuis la liste serveur. [Résultats et limites](docs/attentes-ecoute-client.md#recette-complète-du-16-novembre). Mise en production non engagée ; aucun prochain lot déduit de ce résultat. Les demandes d’étapes dans les paragraphes datés suivants sont historiques.
+
+## 16 novembre — Livraison du complément Attentes
+
+Cadrage confirmé, Développement local validé et PR159 fusionnée ; Préproduction livrée, alignement/interface/Word contrôlés. Prochaine étape distincte : recette du complément Attentes avec sauvegarde en ligne et réouverture dans une nouvelle session, puis revue métier. [Périmètre et preuves](docs/attentes-ecoute-client.md#préproduction). Mise en production non engagée ; autres lots conservés.
+
 ## Suite engagée le 16 novembre — attentes
 
 Le responsable demande la reprise et le lancement de la suite. Le complément demandé sur les attentes est développé localement : préremplissage explicite depuis l’écoute et notes dictables, avec provenance et liens conservés. [Périmètre et revue](docs/attentes-ecoute-client.md). Prochaine action : revue locale de ce candidat puis décision distincte de préproduction. La revue métier hébergée Terrain reste distincte ; interventions/planning avec Projet, autres profils et identité des organisations gardent leurs cadrages. Les paragraphes datés suivants conservent les états antérieurs.

@@ -5,6 +5,7 @@ import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shar
 import { buildDecisionHtml } from './decisionSupport.js';
 import { isHabitologueProfile, observationAdviceLabel } from './reportProfiles.js';
 import { reportPhotoSource } from './photoReportVersion.js';
+import { buildInterventionsHtml } from './interventions.js';
 
 export function deliveryOptions(report) {
   const value = report.livrable || {};
@@ -91,7 +92,7 @@ export function buildReportHtml(report) {
   let content;
   if (!client) {
     // Keep every existing expert field, observation, photo and contextual source.
-    const original = buildExpertDocumentHtml(report, buildDecisionHtml(report));
+    const original = buildExpertDocumentHtml(report, buildDecisionHtml(report), buildInterventionsHtml(report));
     content = original.split('<body>')[1].split('</body>')[0];
     content = content.replace(/<div class="cover">[\s\S]*?<\/div>\s*<br style="page-break-before: always;" \/>/, cover(report, false));
     content += visuals.map(v => illustration(v)).join('');
@@ -110,6 +111,7 @@ export function buildReportHtml(report) {
     content += visuals.map(v => `<section class="client-page">${illustration(v, true)}</section>`).join('');
     content += buildRgaCartographyHtml(report);
     content += buildDecisionHtml(report, true);
+    content += buildInterventionsHtml(report, true);
     content += `<section class="client-page"><h2>02 · Les priorités</h2><p>${textToHtml(options.priorites || 'Priorités à préciser avec le professionnel.')}</p>
       <h2>03 · La prochaine étape</h2><p>${textToHtml(options.suite || 'Prochaine étape à convenir.')}</p>
       <h3>Limites et points à confirmer</h3><p>${textToHtml(options.limites_client || report.reserves)}</p>

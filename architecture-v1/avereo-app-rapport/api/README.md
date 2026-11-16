@@ -13,6 +13,10 @@ tags:
   - php
 ---
 
+## Interventions — champs facultatifs du 16 novembre
+
+Le payload existant decision.actions accepte realisation (chaîne, au plus 32 000 octets) et inclure_client (booléen strict). Champs absents acceptés ; type incorrect, null explicite pour le choix client et texte excessif rejetés. Les limites existantes de 100 actions/références s’appliquent. Aucun endpoint, schéma ou contrôle d’autorisation supplémentaire. [Contrat métier et persistance](../docs/interventions-proposees.md#données-et-compatibilité).
+
 ## Attentes et notes — champs facultatifs du 16 novembre
 
 Les routes de rapports existantes transportent notes_attentes et attentes[].provenance_ecoute dans decision. Le validateur PHP contrôle les types, les deux champs d’écoute autorisés et la borne textuelle existante, sans nouveau droit ni endpoint. [Contrat détaillé](../docs/attentes-ecoute-client.md#données-et-compatibilité).

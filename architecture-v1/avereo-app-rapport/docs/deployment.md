@@ -14,6 +14,14 @@ tags:
   - mysql
 ---
 
+## 16 novembre — Recette serveur Attentes achevée
+
+Après la livraison de PR159, recette fonctionnelle réalisée sur un dossier fictif indépendant, sans nouveau déploiement : deux sauvegardes sur le même identifiant et réouverture serveur dans une nouvelle session, sans brouillon. Les 22 dossiers/colonnes/propriétaires antérieurs restent exacts, 23 au total ; code/configuration/production préservés. Brouillon initial restauré. [Reçus, accès de revue et limites](attentes-ecoute-client.md#recette-complète-du-16-novembre). Les comptes de dossiers de la section de livraison suivante décrivent l’état avant cette recette.
+
+## 16 novembre — Livraison PR159 attestée
+
+Demande explicite après tests/merge humains : source 73c4447, merge 58d6aab, même arbre. Paquet 150 fichiers qualifié, sans rebuild ; cinq fichiers livrés ensemble (api/decision-validation.php, JS/CSS/module Word/index). Contrôle de passage réussi, sauvegarde fraîche relue, restauration/rollback code répétés sur copie ; sauvegarde privée des dossiers relue, sans restauration SQL. 202 fichiers préservés, 22 dossiers et propriétaires exacts. [Cible, reçus et périmètre hébergé](attentes-ecoute-client.md#préproduction).
+
 ## 16 novembre — Préparation du complément Attentes
 
 Candidat local uniquement. Une future livraison autorisée doit aligner l’interface et api/decision-validation.php, préserver les données existantes, qualifier sauvegarde/retour arrière et effectuer la recette CONNECT sur dossier fictif. Aucun endpoint, secret ou schéma SQL nouveau. Les vérifications HTTP/MariaDB de ce lot sont locales, elles ne remplacent pas la recette hébergée. [Parcours et critères de passage](attentes-ecoute-client.md#préproduction).

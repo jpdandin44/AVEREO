@@ -226,7 +226,7 @@ function buildRiskSummaryHtml(summary) {
   `;
 }
 
-export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
+export function buildExpertDocumentHtml(report, beforeSignatureHtml = '', afterRecommendationsHtml = '') {
   const habitologie = isHabitologieReport(report);
   const sectionNumbers = habitologie
     ? { ecoute: 2, protocoles: 3, observations: 4, analyse: 5, signature: 6 }
@@ -412,6 +412,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '') {
   ${narrativeHtml(report.analyse_expert)}
   <h3>Recommandations</h3>
   ${narrativeHtml(report.recommandations)}
+  ${afterRecommendationsHtml}
   <h3>Reserves</h3>
   ${narrativeHtml(report.reserves)}
 

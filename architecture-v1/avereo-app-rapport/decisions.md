@@ -13,6 +13,10 @@ tags:
   - architecture
 ---
 
+## 16 novembre — Réutiliser les actions pour les interventions Habitologue
+
+Contexte : le responsable demande la suite de la priorité 4 après Attentes. Décision : rendre la liste existante decision.actions accessible sous Recommandations pour Habitologue, ajouter les modalités et une inclusion client explicite, sans réactiver les projections. Une liste unique évite la divergence avec les constats, attentes et options historiques. Le responsable confirme Correctif ; aucune reclassification des valeurs anciennes. Conséquences : données historiques et identifiants conservés, client filtré selon ses constats, contrat Projet/dates/Gantt à qualifier dans le sous-lot suivant. [Contrat](docs/interventions-proposees.md).
+
 ## 16 novembre — Reprise explicite de l’écoute dans les attentes
 
 Contexte : le responsable demande un préremplissage depuis Écoute client et des notes dans Export. Décision : proposer les deux textes source entiers, puis une copie explicite identifiée avec un instantané du verbatim ; conserver une seule liste d’attentes liée aux constats. Cela évite l’extraction arbitraire et l’écrasement après une nouvelle saisie d’écoute. La provenance reste facultative pour les anciens dossiers ; notes libres et dictée réutilisent les stockages et accords existants. [Conséquences et contrat](docs/attentes-ecoute-client.md).

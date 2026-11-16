@@ -13,6 +13,18 @@ tags:
   - securite
 ---
 
+## 16 novembre — Périmètre et sécurité des interventions
+
+Panneau limité au profil Habitologue en Visite Globale ; champs facultatifs bornés, texte échappé, aucune nouvelle route/table ou modification de reports.php/contrôles de propriétaire. Inclusion client strictement booléenne et explicite ; tous les constats reliés doivent être uniques et retenus, sinon l’intervention entière reste exclue. Les préalables, justification et notes d’attentes restent dans l’expert. Réutilisation de VoiceField avec accord existant ; aucun accès Projet ou microphone réel. [Tests, preuves et réserves](interventions-proposees.md#qualification-locale).
+
+## 16 novembre — Conservation après recette Attentes
+
+Deux audits serveur en lecture seule confirment les 22 lignes/colonnes/propriétaires antérieurs exacts et un seul dossier fictif ajouté. La ligne source Terrain est intacte ; nouvelle ligne et propriétaire inchangés entre sauvegarde et réouverture. Code, ressources, journal, configuration et production exacts à ces relevés ; schéma inchangé hors avance normale du compteur. Déconnexion normale, accès serveur sans brouillon et restauration exacte du brouillon initial vérifiés. [Preuves et portée](attentes-ecoute-client.md#recette-complète-du-16-novembre). Aucun compte/droit ou stockage privé activé ; les constats datés suivants restent historiques.
+
+## 16 novembre — Alignement hébergé de PR159
+
+Fusion 58d6aab identique au candidat 73c4447 ; cinq fichiers exacts et ressources HTTPS comparées. Cible, base distincte, sas et configuration qualifiés ; autorisation directe consignée, aucune production. Contrôle après navigation : 22 dossiers/toutes colonnes/propriétaires exacts, configuration/production et 202 fichiers préservés ; une seule ligne de refus attendue au journal CONNECT, préfixe intact. SSO normal, interface et deux Word contrôlés ; ancien brouillon restauré. [Preuves et réserves](attentes-ecoute-client.md#préproduction). Difficultés de navigation cPanel, dossier déjà créé et encodage du contrôleur résolues avant livraison ; aucune donnée de dossier modifiée.
+
 ## 16 novembre — Portée du complément Attentes
 
 Copie locale isolée fondée sur main fc77690, PR158 constatée fusionnée ; fichiers Terrain déjà modifiés dans l’ancienne copie conservés. Nouveau périmètre : panneau et aide à la décision, helper de reprise, styles limités, validation PHP facultative et tests. Aucun changement de reports.php, autorisation/propriétaire, secret, table ou migration. Les textes rendus utilisent les échappements existants ; aucune extraction IA ni conservation audio. Réserve préexistante des objets vides PHP consignée, sans affaiblir les assertions HTTP. [Revue sécurité/données et limites](attentes-ecoute-client.md#données-et-compatibilité).
