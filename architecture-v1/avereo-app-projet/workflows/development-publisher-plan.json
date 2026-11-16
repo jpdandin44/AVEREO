@@ -1,0 +1,72 @@
+{
+  "schema": "avereo-private-development-publisher-plan",
+  "version": 1,
+  "mode": "qualification_only",
+  "enabled": false,
+  "installed": false,
+  "activationAuthorized": false,
+  "productionAuthorized": false,
+  "environment": "preproduction",
+  "target": "https://projet-preprod.avereo.fr/developpements/",
+  "access": {
+    "exactOwnerRequired": true,
+    "freshGlobalRoleRequired": true,
+    "otherGlobalAdministratorsAllowed": false,
+    "browserReadOnly": true,
+    "publicReadAccess": false,
+    "newBrowserWriteRoute": false
+  },
+  "sources": {
+    "canonicalRegistryLocation": "operator_private_configuration_outside_public_repository",
+    "readOnly": true,
+    "followExplicitActiveIterationOnly": true,
+    "proofSelection": "explicit_allowlist_only",
+    "maximumViews": 50,
+    "publicRepositoryMayContainRealSnapshots": false,
+    "publicCiMayReceiveRealTrackersOrProofs": false
+  },
+  "collector": {
+    "existingImplementation": "watch-development-github.mjs",
+    "githubMethod": "GET",
+    "minimumIntervalSeconds": 300,
+    "maximumIntervalSeconds": 3600,
+    "backgroundJobInstalled": false,
+    "serviceIdentityQualified": false,
+    "runsWithWorkstationOff": "not_qualified",
+    "gitPullAllowed": false,
+    "mergeAllowed": false,
+    "humanApprovalWritesAllowed": false
+  },
+  "publication": {
+    "transportImplemented": false,
+    "remoteAdmissionCommandInstalled": false,
+    "scope": "private_signed_snapshot_only",
+    "codeDeploymentAllowed": false,
+    "accountOrRoleChangesAllowed": false,
+    "productionWritesAllowed": false,
+    "lockRequired": true,
+    "signatureRequired": true,
+    "sequenceSource": "verified_remote_high_water_plus_one",
+    "expectedCurrentIndexHashRequired": true,
+    "backupRequired": true,
+    "restoreTrialOnCopyRequired": true,
+    "atomicAdmissionRequired": true,
+    "acknowledgementIdentity": "publication_id_payload_hash_sequence",
+    "retryPolicy": "reconcile_acknowledgement_before_any_new_sequence",
+    "preserveHumanEvents": "append_only_by_iteration_identity",
+    "activeIterationChange": "preserve_or_archive_previous_iteration_never_inherit_its_approvals",
+    "preserveClientData": true,
+    "onFailure": "keep_last_valid_snapshot_and_report_failure_without_advancing_observation_date",
+    "rollback": "restore_previous_snapshot_keep_high_water_never_restore_business_database"
+  },
+  "activationPrerequisites": [
+    "current_exact_owner_global_role_and_refusals_verified_on_target",
+    "private_source_location_and_unattended_service_identity_qualified",
+    "data_only_transport_and_remote_admission_implemented_and_tested",
+    "private_storage_permissions_signature_key_and_host_identity_verified_without_disclosure",
+    "fresh_backup_restore_on_copy_and_compare_and_swap_qualified",
+    "history_preservation_capacity_and_active_iteration_policy_qualified",
+    "network_failure_duplicate_acknowledgement_and_crash_recovery_tested",
+    "specific_preproduction_activation_authorization_recorded"
+  ]
+}

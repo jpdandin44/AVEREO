@@ -5,12 +5,18 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-13
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 16 novembre — Gantt privé et progression technique, local non livré
+
+Ajout d'une projection calculée en lecture seule, Gantt repliable/filtrable, ligne du jour, fenêtres de preuves et prévisions explicites ; distinctions phase déclarée/technique, reste inconnu et revue humaine. Cache et lectures bornées, perte d'accès effaçant les données, reprise des publications nouvelles ; collecteur GitHub périodique local à démarrage explicite. Mappings historiques explicites et métadonnées de pièces vérifiées/non copiées, sans modification des décisions. [Guide](docs/gantt-developpements.md). Aucun déploiement ni publicateur permanent installé.
+
+Préparation de PR : qualification du publicateur privé, plan JSON désactivé et chaîne locale fictive testant deux publications, panne, signature, conservation et retour anti-rejeu. Distinction dépôt public/sources privées et opérateur historique/publicateur données seules. Aucun transport, compte, tâche ou droit installé/modifié.
 
 ## 13 novembre — Revue PQ-01, PR #151
 

@@ -1,0 +1,54 @@
+{
+  "schema": "development-gantt-local-qualification",
+  "observedAt": "2026-11-16T07:53:58.817Z",
+  "status": "local_tests_build_and_sources_verified",
+  "testsPassed": 350,
+  "failed": 0,
+  "testExecution": {
+    "mode": "all_tests_serial_no_tests_disabled",
+    "earlierParallelWorkerIncident": "planning-local.test.mjs process failed without assertion detail; 40 tests passed in isolation, then full 350 passed serially; no application cause asserted"
+  },
+  "localOnly": true,
+  "remoteWrites": 0,
+  "productionWrites": 0,
+  "githubObservedAt": "2026-11-16T07:49:21.673Z",
+  "githubPullRequests": 99,
+  "iterations": 50,
+  "applications": 12,
+  "distinctCanonicalFiles": 35,
+  "canonicalHashesUnchangedDuringRead": true,
+  "documentation": {
+    "files": [
+      "README.md",
+      "architecture.md",
+      "requirements.md",
+      "roadmap.md",
+      "decisions.md",
+      "changelog.md",
+      "docs/gantt-developpements.md"
+    ],
+    "localLinksVerified": 181,
+    "socleVerified": true
+  },
+  "automaticOnlinePublicationInstalled": false,
+  "securityDependencies": {
+    "knownDevelopmentAlerts": 4,
+    "resolution": "not_modified_in_this_lot"
+  },
+  "limitations": [
+    "No deployment, hosted identity test or CI run for this uncommitted candidate.",
+    "Human approvals preserved, not inferred from the computed progress.",
+    "The registry currently uses the full bounded capacity of 50 views.",
+    "Several phase scopes, dates and proof version/target bindings remain unqualified."
+  ],
+  "privatePackage": {
+    "artifactSha256": "420c52b82621a872a015045d867cc7fe1a40f9bbc100d4530b40287ef3962184",
+    "files": 20,
+    "allFileHashesVerified": true,
+    "sourceSha": null,
+    "localUncommitted": true,
+    "readyToDeploy": false,
+    "deployed": false
+  },
+  "sourceAudit": "Conservé dans le pilotage privé hors dépôt ; non inclus dans le paquet applicatif."
+}

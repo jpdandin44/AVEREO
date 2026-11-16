@@ -5,13 +5,19 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-13
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 16 novembre — Gantt des développements, candidat local
+
+Nouvelle vue privée **Gantt des développements** : quatre phases, réalisé étayé, reste à qualifier, prévisions explicites et validations humaines séparées. Reprise automatique des nouvelles publications et collecteur GitHub périodique local opt-in ; le publicateur permanent en ligne reste à raccorder. [Guide et limites](docs/gantt-developpements.md), [suivi canonique](data/suivi-gantt-developpements.json). Aucun déploiement de ce lot. Les rubriques datées ci-dessous décrivent leurs étapes historiques ; l'état hébergé courant nécessite son reçu de livraison.
+
+Préparation de PR : [qualification du publicateur privé](docs/publicateur-prive.md), contrat désactivé et tests sur copies fictives. Le dépôt GitHub est public : aucune vraie projection, preuve privée, configuration ou clé n'y est ajoutée. Identité de service, transport de données et état serveur actuel non qualifiés ; activation bloquée, pas de service installé.
 
 ## 13 novembre — PQ-01 proposé en revue locale, PR #151
 

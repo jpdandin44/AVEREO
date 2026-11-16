@@ -1,0 +1,48 @@
+{
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "version": "git",
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "projet-gantt-developpements-20261116",
+  "title": "Gantt des développements et avancement technique calculé",
+  "stage": "developpement-local",
+  "currentPhase": 1,
+  "status": "pr_preparation_local_publisher_design_qualified_activation_blocked",
+  "objective": "Lire les suivis canoniques et GitHub pour montrer le réalisé, le reste à faire et les inconnues sans saisie manuelle de phases ni approbation automatique.",
+  "updatedAt": "2026-11-16",
+  "branch": "feat/projet-gantt-developpements",
+  "baseSha": "fc77690862ac234f42b8676316f6472279bc40d9",
+  "sourceDocument": "docs/gantt-developpements.md",
+  "candidate": {"sourceSha": null, "artifactSha256": "420c52b82621a872a015045d867cc7fe1a40f9bbc100d4530b40287ef3962184", "status": "qualified_private_package_from_uncommitted_local_work"},
+  "phases": [
+    {"id": 0, "label": "Cadrage", "status": "documented", "criteria": []},
+    {"id": 1, "label": "Développement local", "status": "awaiting_local_review", "criteria": [
+      {"id": "GD-01", "title": "Quatre phases, dates réelles, prévisions explicites et reste sans date visible ; aucun pourcentage arbitraire", "proofIds": ["gantt-local-tests"]},
+      {"id": "GD-02", "title": "Calcul lié aux versions et aux preuves ; validations et sources historiques inchangées", "proofIds": ["gantt-local-tests"]},
+      {"id": "GD-03", "title": "Actualisation, erreurs, changement de publication et refus d’accès sans fuite ni réutilisation d’un ancien résultat", "proofIds": ["gantt-local-tests"]}
+    ]},
+    {"id": 2, "label": "Préproduction", "status": "not_started", "criteria": [
+      {"id": "GD-04", "title": "Recette réelle du Gantt via CONNECT sur le seul compte propriétaire global, données récentes et autres profils refusés", "proofIds": []},
+      {"id": "GD-05", "title": "Collecte et publication automatiques en ligne qualifiées, panne et reprise contrôlées, fonctionnement poste éteint explicité", "proofIds": []}
+    ]},
+    {"id": 3, "label": "Mise en production", "status": "not_started", "criteria": []}
+  ],
+  "checks": [{"id": "gantt-suite", "phaseId": 1, "kind": "local", "status": "passed", "artifactSha256": "420c52b82621a872a015045d867cc7fe1a40f9bbc100d4530b40287ef3962184", "observedAt": "2026-11-16T07:50:36Z", "target": "local_private_review", "evidence": "data/qualification-gantt-developpements.json", "scope": "350 tests, public/private builds, PHP syntax, source preservation, private local browser review; no hosted CI or deployment"}],
+  "proofs": [
+    {"id": "gantt-local-tests", "phaseId": 1, "kind": "document", "status": "reviewable", "evidence": "data/qualification-gantt-developpements.json", "title": "Qualification locale initiale du Gantt : 350 tests, historique avant préparation de PR"},
+    {"id": "publisher-qualification", "phaseId": 1, "kind": "document", "status": "reviewable", "evidence": "data/qualification-publicateur-prive.json", "title": "Publicateur privé : conception/primitives locales, activation bloquée"}
+  ],
+  "approvals": [],
+  "developmentReviews": [],
+  "delivery": {"status": "not_delivered"},
+  "blockers": ["Activation automatique non prête : service/sources privés, transport/admission données seules et état hébergé actuel non qualifiés. Le contrat désactivé n'est pas un service installé."],
+  "reserves": [
+    "Développement local non committé : aucun SHA candidat inventé.",
+    "Les prévisions sans dates ou critères structurés restent inconnues ; le calcul ne fabrique pas de données.",
+    "Le lecteur hébergé reste GET et utilise des publications signées ; le canal automatique collecteur-publication reste à qualifier et installer séparément.",
+    "Aucun accord de merge, de déploiement ni de production déduit de la demande."
+  ],
+  "authorization": {"localWork": "Demande du responsable le 16 novembre et confirmation de prévoir une actualisation automatique en ligne", "prPreparation": "Demande directe de préparer la PR et qualifier le publicateur privé en lecture seule, sans déployer ni toucher à la production", "automaticOnlineRefreshRequired": true, "deploymentAuthorized": false, "productionAuthorized": false},
+  "publisherQualification": {"plan": "workflows/development-publisher-plan.json", "receipt": "data/qualification-publicateur-prive.json", "status": "operational_activation_blocked", "installed": false, "enabled": false},
+  "nextAction": "Créer la PR de revue locale, lire la CI sur sa tête publiée et présenter les prérequis d'activation encore bloquants. Aucun merge ni déploiement autorisé par cette préparation."
+}

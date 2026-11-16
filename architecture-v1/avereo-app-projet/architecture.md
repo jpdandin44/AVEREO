@@ -5,13 +5,19 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## 16 novembre — Projection technique et Gantt privé
+
+La [projection consultative](docs/gantt-developpements.md) calcule les éléments étayés/restants dans le navigateur à partir des détails privés normalisés. Aucun statut canonique n'est réécrit. Quatre lectures simultanées maximum, cache par révision/observation ou publication, refus 401/403 effaçant les résultats et rejet des publications mélangées. Les phases/contrôles historiques sont adaptés seulement par mappings explicites ; les validations sont intactes. Le collecteur périodique opt-in du poste réutilise le cache GitHub atomique, sans publication distante ; le service permanent en ligne reste à qualifier. Même chaîne propriétaire/global et séparation du build public.
+
+Le [plan de publicateur privé](workflows/development-publisher-plan.json) est un contrat de qualification non chargé par le runtime, désactivé. Il impose projection signée seule, verrou, index attendu, sauvegarde/essai de retour, conservation des événements et rapprochement des accusés avant reprise. Aucun transport/admission ni ordonnanceur installé ; [preuves locales et inconnues hébergées](docs/publicateur-prive.md). La CI du dépôt public reste exclusivement fictive.
 
 ## 12 novembre — Inventaire privé optionnel PQ-01
 

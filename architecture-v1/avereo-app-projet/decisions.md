@@ -5,12 +5,18 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 16 novembre — Calcul dérivé, pas d'approbation ni d'écriture automatique
+
+Contexte : le responsable ne veut plus saisir manuellement les phases et demande une actualisation automatique en ligne. Décision d'implémentation locale : calculer une progression technique à partir des versions/preuves, distincte de la phase déclarée et de la revue humaine, puis reprendre automatiquement les nouvelles publications signées. Raisons : préserver les validations, traiter les suivis hétérogènes et ne pas confondre fusion/CI/livraison. Conséquences : un suivi sans preuve ou date reste à qualifier ; le publicateur permanent doit être raccordé aux sources privées avant d'annoncer une synchronisation autonome. Aucun nouveau droit ni déploiement autorisé par ce choix. [Détails](docs/gantt-developpements.md).
+
+Préparation de PR autorisée : retenir une chaîne privée de données séparée de la CI publique et du workflow de livraison du code. Le dépôt est public et l'opérateur historique sait écrire code/configuration : aucun des deux ne constitue un publicateur automatique à droits minimaux. Conséquence : contrat désactivé, qualification sur fixtures et blocages explicites ; emplacement du service/source et transport futur restent à décider, sans installer ni déléguer d'accès. [Qualification](docs/publicateur-prive.md).
 
 ## 12 novembre — Collecte opérateur et champ signé optionnel pour PQ-01
 
