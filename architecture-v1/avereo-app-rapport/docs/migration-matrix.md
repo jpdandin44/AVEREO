@@ -13,6 +13,18 @@ tags:
   - fonctionnalites
 ---
 
+## 16 novembre — Compatibilité des interventions Habitologue
+
+decision.actions et ses identifiants restent la source unique ; realisation (texte) et inclure_client (booléen) sont facultatifs et validés côté PHP. Absence de sélection client = exclusion. Les anciennes actions deviennent consultables dans le panneau Habitologue ; les options/références historiques restent en mémoire et dans le JSON. Les autres profils conservent leurs projections ; ces nouveaux champs n’y ont pas encore d’éditeur dédié. Version future non prise en charge : panneau et rendu refusent une interprétation silencieuse. [Contrat et limites](interventions-proposees.md#données-et-compatibilité). Aucun changement SQL, droit ou migration ; interface/validation à promouvoir ensemble si autorisées.
+
+## 16 novembre — Persistance Attentes qualifiée sur la cible
+
+La recette hébergée retrouve les trois attentes, notes, provenance et deux liens après sauvegardes puis ouverture serveur en nouvelle session sans brouillon. Une correction du libellé reste associée au même lien ; le changement de l’écoute conserve le verbatim initial. Les dossiers historiques et la source Terrain restent exacts. [Reçus et limites](attentes-ecoute-client.md#recette-complète-du-16-novembre). Aucun changement de schéma ou de version ; la normalisation PHP préexistante objet/liste des contrôles vides reste distincte.
+
+## 16 novembre — Compatibilité confirmée sur la cible de préproduction
+
+Interface et validation PHP facultative livrées ensemble. Nouvelles validations réellement actives via deux refus HTTP sans écriture ; 22 dossiers existants, colonnes, propriétaires et schéma préservés. Variantes communes et octets préexistants hors des cinq fichiers retenus conservés, seul le journal de refus reçoit sa ligne attendue. Aucun changement d’authentification, de droit, de table ou d’activation privée. [Recette de livraison et limites](attentes-ecoute-client.md#préproduction). La normalisation préexistante des objets vides reste un suivi distinct, non corrigé ici.
+
 ## 16 novembre — Compatibilité des attentes et notes
 
 decision.notes_attentes et attentes[].provenance_ecoute sont facultatifs ; schema_version 1 maintenu. Anciennes attentes et liens ne sont ni réidentifiés ni reclassés. Aucun nouveau schéma SQL. Une ancienne interface qui conserve les propriétés inconnues peut garder ces valeurs sans les afficher ; qualifier la version avant d’annoncer leur édition/restauration. Type objet/liste des contrôles de protocole vides : normalisation PHP préexistante, distincte de ce lot. [Contrat, limites et recette](attentes-ecoute-client.md).

@@ -12,6 +12,18 @@ tags:
   - changelog
 ---
 
+## 16 novembre — Interventions Habitologue sous Recommandations
+
+Première tranche locale : réutilisation des actions, modalités de réalisation et inclusion client explicite ; liens aux constats/attentes, priorité/horizon/préalables et identifiants conservés. Bloc expert après Recommandations, bloc client limité aux constats retenus sans notes internes. Validation PHP facultative et contrôles de persistance/exports. [Qualification et limites](docs/interventions-proposees.md). Aucune livraison hébergée de ce candidat.
+
+## 16 novembre — Sauvegarde et réouverture Attentes vérifiées
+
+Recette fictive de PR159 en préproduction réussie : deux enregistrements sur un identifiant, attentes/notes/provenance/liens et contenu complet relus ; déconnexion complète, connexion normale et ouverture serveur sans brouillon, JSON identique octet pour octet. Dossiers/propriétaires antérieurs et brouillon initial préservés. Aucun code ou paquet modifié dans cette recette. [Preuves et limites](docs/attentes-ecoute-client.md#recette-complète-du-16-novembre).
+
+## 16 novembre — PR159 installée et vérifiée en préproduction
+
+Cinq fichiers du paquet qualifié promus sans reconstruction sur Rapport préproduction, index remplacé en dernier. Sauvegarde et retour arrière code sur copie vérifiés ; données/propriétaires/configuration/production conservés. Interface et validation PHP hébergées actives ; deux Word identiques en textes/liens/images aux références locales. [Livraison et limites](docs/attentes-ecoute-client.md#préproduction).
+
 ## 16 novembre — Attentes reprises de l’écoute, candidat local
 
 Export propose de reprendre les attentes et le besoin reformulé, sans doublon ni écrasement des corrections. Ajout de notes complémentaires avec dictée existante, conservées dans les sauvegardes et la restitution expert. Provenance facultative validée côté PHP ; liens et client préservés. [Contrat et limites](docs/attentes-ecoute-client.md). Aucun déploiement dans ce lot à cette date.

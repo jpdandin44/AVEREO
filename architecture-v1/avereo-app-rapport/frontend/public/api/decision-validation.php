@@ -35,7 +35,7 @@ function api_decision_payload_error(mixed $value): ?string
     $collections = [
         'attentes' => ['id', 'libelle', 'priorite', 'source'],
         'liens' => ['id', 'observation_id', 'effet', 'verification'],
-        'actions' => ['id', 'intitule', 'categorie', 'priorite', 'horizon', 'prealables', 'explication'],
+        'actions' => ['id', 'intitule', 'categorie', 'priorite', 'horizon', 'prealables', 'explication', 'realisation'],
     ];
     foreach ($collections as $key => $keys) {
         if (!array_key_exists($key, $value)) continue;
@@ -55,6 +55,7 @@ function api_decision_payload_error(mixed $value): ?string
                 if (array_key_exists($referenceKey, $row) && !$references($row[$referenceKey])) return "Références {$key} invalides.";
             }
             if (array_key_exists('incontournable', $row) && !is_bool($row['incontournable'])) return 'Indicateur incontournable invalide.';
+            if ($key === 'actions' && array_key_exists('inclure_client', $row) && !is_bool($row['inclure_client'])) return 'Choix client de l’intervention invalide.';
         }
     }
     foreach (['option_a', 'option_b'] as $key) {

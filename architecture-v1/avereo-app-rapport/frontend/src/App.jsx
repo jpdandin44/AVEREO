@@ -3,6 +3,7 @@ import { protocolOptions, escapeHtml } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
+import InterventionsPanel from './InterventionsPanel.jsx';
 import { observationAdviceLabel } from './reportProfiles.js';
 import { textLinks } from './textLinks.js';
 import { orderedObservations, observationNumber, observationPhase, moveObservation } from './observationOrder.js';
@@ -1926,6 +1927,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         placeholder="Actions recommandees, priorites, controles complementaires..."
       />
 
+      <InterventionsPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
       <ReportDeliveryOptions report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
 
       <div className="export-actions">
