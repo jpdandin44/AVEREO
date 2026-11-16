@@ -13,6 +13,20 @@ tags:
   - fonctionnalites
 ---
 
+## 16 novembre — Compatibilité des ouvertures de fiches
+
+Les ouvertures ne créent aucun champ dans le dossier, aucun schéma ou nouvelle migration. Champs, identifiants, numéros, photos/plans/signature et données inconnues restent dans le payload courant. Replis seuls : JSON exact et contenu Word équivalent ; copie indépendante puis nouvelle session : payload UI entier exact. Les projections des autres profils gardent leurs données et règles. [Preuves et accès de revue](organisation-ecrans.md#revue-locale). La réserve PHP objet/liste reste séparée.
+
+
+## 16 novembre — Persistance Interventions qualifiée sur la cible
+
+Trois interventions retrouvent nature, priorité/horizon, modalités/préalables/justification, sélections client et références T1/9/T2 et attentes après deux sauvegardes puis ouverture serveur dans une nouvelle session normale sans brouillon. Identifiants préexistants conservés et JSON identique octet pour octet ; attentes/notes/liens et contenus du dossier préservés. Les 23 lignes historiques restent exactes. [Reçus et limites](interventions-proposees.md#recette-complète-du-16-novembre). Aucun changement de version ou schéma ; la normalisation PHP préexistante des objets vides reste distincte.
+
+
+## 16 novembre — Compatibilité Interventions confirmée sur la cible
+
+Interface et validation PHP facultative promues ensemble. Types realisation et inclure_client contrôlés sur la cible par deux refus sans écriture. Les 23 dossiers existants, colonnes/propriétaires et schéma sont inchangés ; variantes communes et fins de ligne déjà revues conservées hors des quatre fichiers, autres octets exacts hors ligne de refus prévue. Aucun changement de droit, compte ou activation privée. [Périmètre et preuves](interventions-proposees.md#préproduction). La normalisation PHP préexistante des objets vides reste distincte.
+
 ## 16 novembre — Compatibilité des interventions Habitologue
 
 decision.actions et ses identifiants restent la source unique ; realisation (texte) et inclure_client (booléen) sont facultatifs et validés côté PHP. Absence de sélection client = exclusion. Les anciennes actions deviennent consultables dans le panneau Habitologue ; les options/références historiques restent en mémoire et dans le JSON. Les autres profils conservent leurs projections ; ces nouveaux champs n’y ont pas encore d’éditeur dédié. Version future non prise en charge : panneau et rendu refusent une interprétation silencieuse. [Contrat et limites](interventions-proposees.md#données-et-compatibilité). Aucun changement SQL, droit ou migration ; interface/validation à promouvoir ensemble si autorisées.

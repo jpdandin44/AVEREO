@@ -4,8 +4,10 @@ import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
 import InterventionsPanel from './InterventionsPanel.jsx';
+import ScreenDisclosure, { ScreenPresentation, DisclosureControls, useScreenPresentation, excerpt, revealScreenField } from './ScreenDisclosure.jsx';
 import { observationAdviceLabel } from './reportProfiles.js';
 import { textLinks } from './textLinks.js';
+import { normalizeDecision, decisionWarnings } from './decisionSupport.js';
 import { orderedObservations, observationNumber, observationPhase, moveObservation } from './observationOrder.js';
 import ObservationPlans from './ObservationPlans.jsx';
 import EnvironmentContext from './EnvironmentContext.jsx';
@@ -451,22 +453,24 @@ function SignaturePad({ value, onChange }) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = rect.width * ratio;
-    canvas.height = rect.height * ratio;
-    const ctx = canvas.getContext('2d');
-    ctx.scale(ratio, ratio);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.lineWidth = 2.4;
-    ctx.strokeStyle = '#111827';
-
-    if (value?.startsWith('data:image')) {
-      const img = new Image();
-      img.onload = () => ctx.drawImage(img, 0, 0, rect.width, rect.height);
-      img.src = value;
-    }
+    let active = true;
+    const draw = () => {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = rect.width * ratio; canvas.height = rect.height * ratio;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(ratio, ratio);
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 2.4; ctx.strokeStyle = '#111827';
+      if (value?.startsWith('data:image')) {
+        const img = new Image();
+        img.onload = () => { if (active) ctx.drawImage(img, 0, 0, rect.width, rect.height); };
+        img.src = value;
+      }
+    };
+    draw();
+    const observer = new ResizeObserver(draw); observer.observe(canvas);
+    return () => { active = false; observer.disconnect(); };
   }, [value]);
 
   const point = (event) => {
@@ -734,6 +738,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
 }
 
 function DossierStep({ report, setReport }) {
+  const presentation = useScreenPresentation();
   const subcategories = getReportSubcategories(report.categorie, report.sous_categorie);
   const habitologie = isHabitologieReport(report);
   const housingTypeSelected = report.sous_categorie !== HABITOLOGIE_DEFAULT_HOUSING_TYPE;
@@ -764,7 +769,7 @@ function DossierStep({ report, setReport }) {
     setReport((prev) => ({
       ...prev,
       ecoute: {
-        ...prev.ecoute, [field]: `${prev.ecoute?.[field] || ''}${text}`,
+        ...prev.ecoute, [field]: appendDictation(prev.ecoute?.[field], text),
         ...(field === 'besoin_reformule' ? { besoin_confirme: false } : {}),
       },
     }));
@@ -799,24 +804,10 @@ function DossierStep({ report, setReport }) {
         </div>
       </div>
 
-      {habitologie && (
-        <fieldset className="consent-list consent-first">
-          <legend>Accords recueillis</legend>
-          <label className={report.ecoute.consentement_photos ? 'selected' : ''}>
-            <input type="checkbox" checked={Boolean(report.ecoute.consentement_photos)}
-              onChange={(event) => updateEcoute('consentement_photos', event.target.checked)} />
-            <span><strong>Photos dans le dossier</strong>
-              <small>Le client autorise l'utilisation des photos prises pendant la visite dans ce dossier.</small></span>
-          </label>
-          <label className={report.ecoute.consentement_dictee ? 'selected' : ''}>
-            <input type="checkbox" checked={Boolean(report.ecoute.consentement_dictee)}
-              onChange={(event) => updateEcoute('consentement_dictee', event.target.checked)} />
-            <span><strong>Dictee vocale pendant la visite</strong>
-              <small>Le client accepte la transcription vocale en texte. Aucun fichier audio n'est conserve.</small></span>
-          </label>
-        </fieldset>
-      )}
 
+
+      <ScreenDisclosure name="dossier-mission" title="Mission et coordonnées" defaultOpen={presentation.initiallyNew}
+        summary={[report.reference_dossier || 'Référence à renseigner', report.profil_metier === 'habitologue' ? 'Habitologue' : 'Parcours actuel', report.sous_categorie, report.date_visite, report.adresse_logement].filter(Boolean).join(' · ')}>
       {!habitologie && REPORT_CATEGORIES[report.categorie]?.selectable === false && <p className="muted">Type du dossier conservé : {report.categorie}.</p>}
       <div className="choice-grid">
         {getSelectableReportCategories().map(([name, item]) => (
@@ -871,7 +862,24 @@ function DossierStep({ report, setReport }) {
           <input value={report.intervenant} onChange={(event) => updateField('intervenant', event.target.value)} />
         </Field>
       </div>
-
+      </ScreenDisclosure>
+      {habitologie && (
+        <fieldset className="consent-list consent-first">
+          <legend>Accords recueillis</legend>
+          <label className={report.ecoute.consentement_photos ? 'selected' : ''}>
+            <input type="checkbox" checked={Boolean(report.ecoute.consentement_photos)}
+              onChange={(event) => updateEcoute('consentement_photos', event.target.checked)} />
+            <span><strong>Photos dans le dossier</strong>
+              <small>Le client autorise l'utilisation des photos prises pendant la visite dans ce dossier.</small></span>
+          </label>
+          <label className={report.ecoute.consentement_dictee ? 'selected' : ''}>
+            <input type="checkbox" checked={Boolean(report.ecoute.consentement_dictee)}
+              onChange={(event) => updateEcoute('consentement_dictee', event.target.checked)} />
+            <span><strong>Dictee vocale pendant la visite</strong>
+              <small>Le client accepte la transcription vocale en texte. Aucun fichier audio n'est conserve.</small></span>
+          </label>
+        </fieldset>
+      )}
       {habitologie && (
         <section className="habitologie-block" aria-labelledby="ecoute-title">
           <div className="habitologie-heading">
@@ -882,9 +890,13 @@ function DossierStep({ report, setReport }) {
             </p>
           </div>
 
-          {LISTENING_SECTIONS.map((section) => (
-            <section className="listening-section" key={section.title}>
-              <h4>{section.title}</h4>
+          <DisclosureControls label="Affichage de l’écoute client" ids={['listening-0', 'listening-1', 'listening-2', 'dossier-topics']} />
+          <div className="listening-disclosures">
+          {LISTENING_SECTIONS.map((section, index) => (
+            <ScreenDisclosure key={section.title} name={`listening-${index}`} title={section.title}
+              defaultOpen={presentation.initiallyNew && index === 0}
+              summary={`${section.fields.filter(field => typeof report.ecoute[field.key] === 'string' && report.ecoute[field.key].trim()).length} / ${section.fields.length} réponses renseignées${excerpt(report.ecoute[section.fields[0].key]) ? ` · ${excerpt(report.ecoute[section.fields[0].key])}` : ''}`}
+              status={index === 2 ? report.ecoute.besoin_confirme ? 'Besoin confirmé avec le client' : 'Confirmation du besoin à recueillir' : ''}>
               <p>{section.help}</p>
               <div className="form-grid two">
                 {section.fields.map((field) => (
@@ -901,14 +913,16 @@ function DossierStep({ report, setReport }) {
                   />
                 ))}
               </div>
-            </section>
-          ))}
-          <label className="inline-confirmation">
+              {index === 2 && (<label className="inline-confirmation">
             <input type="checkbox" checked={Boolean(report.ecoute.besoin_confirme)}
               disabled={!report.ecoute.besoin_reformule?.trim()}
               onChange={(event) => updateEcoute('besoin_confirme', event.target.checked)} />
             J'ai reformulé le besoin et le client confirme que cela correspond à ses attentes.
-          </label>
+          </label>)}
+            </ScreenDisclosure>
+          ))}
+          <ScreenDisclosure name="dossier-topics" title="Sujets identifiés ensemble pendant l’écoute"
+            summary={LISTENING_TOPICS.filter(topic => Array.isArray(report.ecoute.sujets_identifies) && report.ecoute.sujets_identifies.includes(topic.key)).map(topic => topic.label).join(' · ') || 'Aucun sujet coché'}>
           <fieldset className="listening-topics">
             <legend>Sujets identifiés ensemble pendant l'écoute</legend>
             <p>Cochez uniquement les sujets évoqués. Ils suggèrent des contrôles à discuter à l'étape 3, sans établir de diagnostic. Les notes libres ne cochent rien automatiquement.</p>
@@ -927,7 +941,8 @@ function DossierStep({ report, setReport }) {
               })}
             </div>
           </fieldset>
-
+          </ScreenDisclosure>
+          </div>
         </section>
       )}
     </section>
@@ -1401,10 +1416,11 @@ function ProtocolStep({ report, setReport }) {
   );
 }
 
-function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, onlineSaving, onPhotoTransfer }) {
+function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, onlineSaving, onPhotoTransfer, photoTransfers }) {
+  const presentation = useScreenPresentation();
   const [cameraFor, setCameraFor] = useState(null);
   const [planObservationId, setPlanObservationId] = useState('');
-  const [compact, setCompact] = useState(false);
+  const [planFocus, setPlanFocus] = useState(0);
   const [draggedId, setDraggedId] = useState('');
   const [dropId, setDropId] = useState('');
   const [orderMessage, setOrderMessage] = useState('');
@@ -1437,10 +1453,20 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
     setReport(previous => moveObservation(previous, sourceId, targetId));
     setOrderMessage('Ordre mis à jour. Les numéros du rapport et des repères sont recalculés.');
   };
+  const showObservation = id => {
+    presentation.setOpen(`observation-${id}`, true);
+    requestAnimationFrame(() => document.getElementById(`observation-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
   const localize = id => {
+    presentation.setOpen('observation-plans', true);
+    presentation.setOpen(`observation-${id}`, true);
     setPlanObservationId(id);
-    document.getElementById('observation-plans')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    document.getElementById('observation-plans')?.focus({ preventScroll: true });
+    setPlanFocus(value => value + 1);
+    requestAnimationFrame(() => {
+      const plans = document.getElementById('observation-plans');
+      plans?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      plans?.focus({ preventScroll: true });
+    });
   };
   const habitologie = isHabitologieReport(report);
   const photoAllowed = !habitologie || Boolean(report.ecoute?.consentement_photos);
@@ -1448,10 +1474,10 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
   const consentReason = "Enregistrer d'abord l'accord du client dans l'etape Dossier.";
 
   const addObservation = (phaseKey = '') => {
-    setReport((prev) => isHabitologieReport(prev) && phaseKey && !isHabitologieStageEnabled(prev, phaseKey) ? prev : ({
-      ...prev,
-      observations: [...prev.observations, { ...emptyObservation(), phase_habitologie: phaseKey }],
-    }));
+    if (habitologie && phaseKey && !isHabitologieStageEnabled(report, phaseKey)) return;
+    const observation = { ...emptyObservation(), phase_habitologie: phaseKey };
+    setReport(prev => ({ ...prev, observations: [...prev.observations, observation] }));
+    presentation.setOpen(`observation-${observation.id}`, true);
   };
 
   const updateObservation = (id, patch) => {
@@ -1462,9 +1488,11 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
   };
 
   const removeObservation = (id) => {
+    const replacement = emptyObservation();
+    if (report.observations.length === 1) presentation.setOpen(`observation-${replacement.id}`, true);
     setReport((prev) => {
       const next = prev.observations.filter((obs) => obs.id !== id);
-      return { ...prev, observations: next.length > 0 ? next : [emptyObservation()] };
+      return { ...prev, observations: next.length > 0 ? next : [replacement] };
     });
   };
 
@@ -1519,9 +1547,12 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
     const controls = selectedStage?.controls || [];
 
     return (
-      <article className={`observation-card${draggedId === obs.id ? ' is-dragged' : ''}${dropId === obs.id ? ' is-drop-target' : ''}`} key={obs.id} id={`observation-${obs.id}`}>
-        <div className="observation-header">
-          <span className="observation-drag-handle" draggable={false} data-can-drag={siblings.length > 1} aria-hidden="true" title="Glisser pour déplacer dans cette phase"
+      <article className={`observation-card progressive-observation${draggedId === obs.id ? ' is-dragged' : ''}${dropId === obs.id ? ' is-drop-target' : ''}`} key={obs.id} id={`observation-${obs.id}`}>
+        <ScreenDisclosure name={`observation-${obs.id}`} title={`Observation ${number} · ${excerpt(obs.titre, 180) || 'Sans titre'}`}
+          defaultOpen={presentation.initiallyNew && report.observations.length === 1}
+          summary={[obs.piece, `${obs.photos.length} photo(s)`, observationPlanNames(report, obs).length ? `${observationPlanNames(report, obs).length} vue(s) repérée(s)` : 'Sans repère'].filter(Boolean).join(' · ')}
+          status={`Gravité : ${obs.gravite || 'à préciser'}`} busy={cameraFor === obs.id || photoTransfers > 0}
+          leading={<span className="observation-drag-handle" draggable={false} data-can-drag={siblings.length > 1} aria-hidden="true" title="Glisser pour déplacer dans cette phase"
             onPointerDown={event => {
               if (event.button !== 0 || siblings.length < 2) return;
               event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId);
@@ -1544,18 +1575,14 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
                 else if (target && observationPhase(report, target) !== phase) setOrderMessage('Le déplacement reste limité à la même phase.');
               }
               clearDrag();
-            }} onPointerCancel={clearDrag}><GripVertical size={20} /></span>
-          <h3>Observation {number}{compact && obs.titre ? ` · ${obs.titre}` : ''}</h3>
-          <button
+            }} onPointerCancel={clearDrag}><GripVertical size={20} /></span>} actions={<button
             className="icon-button danger"
             type="button"
             aria-label="Supprimer cette observation"
             onClick={() => removeObservation(obs.id)}
           >
             <Trash2 size={17} />
-          </button>
-        </div>
-
+          </button>} toolbar={
         <div className="observation-order-controls">
           <Field label="Numéro dans le rapport">
             <select aria-label={`Numéro de l’observation ${number}`} value={obs.id} disabled={siblings.length < 2} onChange={event => reorder(obs.id, event.target.value)}>
@@ -1564,8 +1591,8 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
           </Field>
           <button type="button" className="button secondary" aria-label={`Monter l’observation ${number}`} disabled={position === 0} onClick={() => reorder(obs.id, siblings[position - 1].id)}><ArrowUp size={16} />Monter</button>
           <button type="button" className="button secondary" aria-label={`Descendre l’observation ${number}`} disabled={position === siblings.length - 1} onClick={() => reorder(obs.id, siblings[position + 1].id)}><ArrowDown size={16} />Descendre</button>
-        </div>
-        <div className="observation-body" hidden={compact}>
+        </div>}>
+        <div className="observation-body">
 
         {habitologie && (
           <div className="form-grid two protocol-link-fields">
@@ -1727,6 +1754,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
                 : 'La conservation d’un original est volontaire. La photo du rapport reste inchangée.'}
         </p>}
         </div>
+        </ScreenDisclosure>
       </article>
     );
   };
@@ -1760,11 +1788,16 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
         </div>
       </div>
 
-      <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId} onSelect={setPlanObservationId} onPhotoTransfer={onPhotoTransfer} />
+      <ScreenDisclosure name="observation-plans" title="Plans et repérage" busy={photoTransfers > 0}
+        summary={`${(report.plans || []).length} vue(s) · ${report.observations.reduce((count, obs) => count + (obs.reperes || []).length, 0)} repère(s)`}>
+        <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId}
+          onSelect={id => { setPlanObservationId(id); presentation.setOpen(`observation-${id}`, true); }}
+          onShowObservation={showObservation} focusRequest={planFocus} onPhotoTransfer={onPhotoTransfer} />
+      </ScreenDisclosure>
 
       <div className="observation-order-toolbar">
         <p>{habitologie ? 'Terrain : T1, T2… Bâti : Eau, Air, Terre, Feu, puis les constats à classer ; leurs numéros restent indépendants du terrain. ' : ''}Changez le numéro ou glissez une fiche pour choisir sa place{habitologie ? ' dans sa phase' : ''}.</p>
-        <button type="button" className="button secondary" aria-pressed={compact} onClick={() => setCompact(value => !value)}>{compact ? 'Afficher les fiches complètes' : 'Vue compacte pour réorganiser'}</button>
+        <DisclosureControls label="Affichage des observations" ids={report.observations.map(obs => `observation-${obs.id}`)} />
       </div>
       {orderMessage && <p role="status" className="observation-order-status">{orderMessage}</p>}
 
@@ -1854,60 +1887,51 @@ function ShareTestCopy({ report }) {
   </section>;
 }
 
-function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onLoadFile, onlineSaving, onSaveDraft }) {
+function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep }) {
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
+  const presentation = useScreenPresentation();
+  const decision = normalizeDecision(report.decision);
+  const warnings = isHabitologieReport(report) ? decisionWarnings(report) : [];
+  const openIssue = item => {
+    const text = item.toLocaleLowerCase('fr');
+    let step = 4, name = 'export-analysis';
+    if (text.includes('signat')) name = 'export-final';
+    else if (text.includes('motif')) { step = 0; name = 'listening-0'; }
+    else if (text.includes('attentes du client') || text.includes('reformulation')) { step = 0; name = 'listening-2'; }
+    else if (['Reference dossier requise.', 'Nom du proprietaire requis.', 'Adresse du logement requise.', 'Intervenant requis.'].includes(item) || text.includes("type d'habitation")) { step = 0; name = 'dossier-mission'; }
+    else if (validation.errors.includes(item)) { step = 3; name = item.startsWith('Au moins une observation') ? `observation-${report.observations[0]?.id}` : 'observation-plans'; }
+    presentation.setOpen(name, true);
+    onEditStep(step);
+    requestAnimationFrame(() => document.querySelector(`[data-screen-disclosure="${CSS.escape(name)}"] .disclosure-toggle`)?.focus());
+  };
   return (
     <section className="panel">
-      <div className="section-title">
-        <FileText size={22} />
-        <div>
-          <h1>Validation et export</h1>
-          <p>Verifier les points bloquants, signer et generer le document Word.</p>
-        </div>
+      <div className="section-title"><FileText size={22} /><div>
+        <h1>Validation et export</h1><p>Vérifier le contenu, signer et générer le document Word.</p>
+      </div></div>
+
+      <div className="validation-box export-review-status">
+        <h3>Contrôle avant export</h3>
+        {validation.errors.length === 0 && validation.warnings.length === 0 && <p className="success-line"><CheckCircle2 size={18} />Rapport prêt à être exporté.</p>}
+        {validation.errors.length > 0 && <div className="issue-list danger"><strong>Points bloquants</strong><ul>
+          {validation.errors.map(item => <li key={item}><button type="button" className="text-button" onClick={() => openIssue(item)}>{item}</button></li>)}
+        </ul></div>}
+        {validation.warnings.length > 0 && <div className="issue-list warning"><strong>Alertes métier</strong><ul>
+          {validation.warnings.map(item => <li key={item}><button type="button" className="text-button" onClick={() => openIssue(item)}>{item}</button></li>)}
+        </ul></div>}
       </div>
 
-      {isHabitologieReport(report) && <DecisionSupportPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} onSaveDraft={onSaveDraft} />}
+      {isHabitologieReport(report) && <>
+        {warnings.length > 0 && <p className="issue-list warning">Aide à la décision : {warnings.length} point(s) à relire. {warnings[0]}</p>}
+        <ScreenDisclosure name="export-decision" title="Attentes et aide à la décision"
+          summary={`${decision.attentes.length} attente(s) · ${decision.liens.length} lien(s) constat / attentes`}
+          status={warnings.length ? `${warnings.length} point(s) à relire` : 'Contenus à relire avec les habitants'}>
+          <DecisionSupportPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} onSaveDraft={onSaveDraft} />
+        </ScreenDisclosure>
+      </>}
 
-      <div className="validation-grid">
-        <div className="validation-box">
-          <h3>Controle avant export</h3>
-          {validation.errors.length === 0 && validation.warnings.length === 0 && (
-            <p className="success-line">
-              <CheckCircle2 size={18} />
-              Rapport pret a etre exporte.
-            </p>
-          )}
-          {validation.errors.length > 0 && (
-            <div className="issue-list danger">
-              <strong>Points bloquants</strong>
-              <ul>
-                {validation.errors.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {validation.warnings.length > 0 && (
-            <div className="issue-list warning">
-              <strong>Alertes metier</strong>
-              <ul>
-                {validation.warnings.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        <div className="signature-block">
-          <VoiceField label="Nom du signataire" multiline={false} micDisabled={!dictationAllowed}
-            value={report.nom_signataire}
-            onChange={value => setReport(prev => ({ ...prev, nom_signataire: value }))}
-            onAppend={text => setReport(prev => ({ ...prev, nom_signataire: appendDictation(prev.nom_signataire, text) }))} />
-          <SignaturePad value={report.signature} onChange={(signature) => setReport((prev) => ({ ...prev, signature }))} />
-        </div>
-      </div>
-
+      <ScreenDisclosure name="export-analysis" title="Analyse de l’expert et recommandations"
+        summary={[report.analyse_expert.trim() ? 'Analyse renseignée' : 'Analyse à renseigner', report.recommandations.trim() ? 'Recommandations renseignées' : 'Recommandations à renseigner'].join(' · ')}>
       <TextAreaWithMic
         label="Analyse de l'expert"
         micDisabled={!dictationAllowed}
@@ -1927,26 +1951,37 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         placeholder="Actions recommandees, priorites, controles complementaires..."
       />
 
+      </ScreenDisclosure>
+
       <InterventionsPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
-      <ReportDeliveryOptions report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
+
+      <ScreenDisclosure name="export-final" title="Contrôle final et signature"
+        summary={`${report.nom_signataire || 'Signataire à renseigner'} · ${report.signature ? 'Signature présente' : 'Signature à recueillir'}`}>
+        <div className="signature-block">
+          <VoiceField label="Nom du signataire" multiline={false} micDisabled={!dictationAllowed}
+            value={report.nom_signataire}
+            onChange={value => setReport(prev => ({ ...prev, nom_signataire: value }))}
+            onAppend={text => setReport(prev => ({ ...prev, nom_signataire: appendDictation(prev.nom_signataire, text) }))} />
+          <SignaturePad value={report.signature} onChange={(signature) => setReport((prev) => ({ ...prev, signature }))} />
+        </div>
+      </ScreenDisclosure>
+
+      <ScreenDisclosure name="export-delivery" title="Options du livrable"
+        summary={report.livrable?.audience === 'client' ? 'Synthèse client illustrée' : 'Rapport expert détaillé'}>
+        <ReportDeliveryOptions report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
+      </ScreenDisclosure>
 
       <div className="export-actions">
-        <ReportImport draft={report} onBackup={onExportJson} onLoad={onLoadFile} disabled={onlineSaving} />
-        <button className="button ghost" type="button" onClick={onExportJson}>
-          <FileJson size={18} />
-          Télécharger le dossier complet (JSON)
-        </button>
-        <button className="button secondary" type="button" onClick={onPreview}>
-          <Eye size={18} />
-          Apercu
-        </button>
-        <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0}>
-          <Download size={18} />
-          Générer Word (.docx)
-        </button>
+        <button className="button ghost" type="button" onClick={onExportJson}><FileJson size={18} />Télécharger le dossier complet (JSON)</button>
+        <button className="button secondary" type="button" onClick={onPreview}><Eye size={18} />Apercu</button>
+        <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0}><Download size={18} />Générer Word (.docx)</button>
       </div>
       <p>Le JSON complet contient les textes, explications, conseils, photos, plans et la signature présents dans ce dossier. Transmettez-le uniquement aux personnes autorisées.</p>
-      <ShareTestCopy report={report} />
+      <ScreenDisclosure name="export-exchange" title="Importer un dossier ou préparer une copie de test" className="export-secondary-actions"
+        summary="Chargement du JSON complet · structure de test sans textes ni photos">
+        <ReportImport draft={report} onBackup={onExportJson} onLoad={onLoadFile} disabled={onlineSaving} />
+        <ShareTestCopy report={report} />
+      </ScreenDisclosure>
     </section>
   );
 }
@@ -2119,6 +2154,7 @@ function ReportWizard({
   authError,
   authUser,
   initialData,
+  initiallyNew,
   onlineSyncEnabled,
   onHome,
   onOAuthLogin,
@@ -2126,6 +2162,7 @@ function ReportWizard({
 }) {
   const steps = ['Dossier', 'Site', 'Protocoles', 'Observations', 'Export'];
   const [currentStep, setCurrentStep] = useState(0);
+  const [presentationVersion, setPresentationVersion] = useState(0);
   const [report, setReport] = useState(() => deepMergeReport(initialReport, initialData));
   useMissionDossier(useEffect, reportMissionDossier(report, setReport, true));
   const [toast, setToast] = useState('');
@@ -2224,6 +2261,7 @@ function ReportWizard({
     setOnlineStatus('Copie locale chargée. Une sauvegarde en ligne créera un nouveau dossier sous votre compte.');
     currentReport.current = normalized;
     setReport(normalized);
+    setPresentationVersion(version => version + 1);
     notify('Dossier chargé avec son contenu.');
   };
 
@@ -2236,6 +2274,7 @@ function ReportWizard({
   const goPrev = () => setCurrentStep((step) => Math.max(step - 1, 0));
 
   return (
+    <ScreenPresentation key={presentationVersion} initiallyNew={presentationVersion === 0 && initiallyNew}>
     <div className="screen">
       <main className="wizard-layout">
         <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} onHome={returnToHome} />
@@ -2244,10 +2283,10 @@ function ReportWizard({
             {currentStep === 0 && <DossierStep report={report} setReport={setReport} />}
             {currentStep === 1 && <SiteStep report={report} setReport={setReport} onCorrectAddress={() => {
               setCurrentStep(0);
-              requestAnimationFrame(() => document.getElementById('adresse-logement')?.focus());
+              requestAnimationFrame(() => revealScreenField('adresse-logement'));
             }} />}
             {currentStep === 2 && <ProtocolStep report={report} setReport={setReport} />}
-            {currentStep === 3 && <ObservationStep report={report} setReport={setReport} onlineSyncEnabled={onlineSyncEnabled} authenticated={authenticated} onlineSaving={onlineSaving} onPhotoTransfer={onPhotoTransfer} />}
+            {currentStep === 3 && <ObservationStep report={report} setReport={setReport} onlineSyncEnabled={onlineSyncEnabled} authenticated={authenticated} onlineSaving={onlineSaving} onPhotoTransfer={onPhotoTransfer} photoTransfers={photoTransfers} />}
             {currentStep === 4 && (
               <ValidationStep
                 report={report}
@@ -2259,6 +2298,7 @@ function ReportWizard({
                 onLoadFile={loadFile}
                 onlineSaving={onlineSaving}
                 onSaveDraft={handleSave}
+                onEditStep={setCurrentStep}
               />
             )}
           </div>
@@ -2299,6 +2339,7 @@ function ReportWizard({
       {previewOpen && <ReportPreview report={report} onClose={() => setPreviewOpen(false)} />}
       {toast && <div className="toast">{toast}</div>}
     </div>
+    </ScreenPresentation>
   );
 }
 
@@ -2371,6 +2412,7 @@ export default function App() {
   const [appState, setAppState] = useState('loading');
   const [draft, setDraft] = useState(null);
   const [initialWizardData, setInitialWizardData] = useState(initialReport);
+  const [newWizard, setNewWizard] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const [authConfig, setAuthConfig] = useState(null);
   const [accessToken, setAccessToken] = useState('');
@@ -2456,6 +2498,7 @@ export default function App() {
     }
     const fresh = newReport();
     setInitialWizardData(deepMergeReport(fresh, { ...fresh, ...(context || {}) }));
+    setNewWizard(true);
     setAppState('wizard');
   };
 
@@ -2465,11 +2508,13 @@ export default function App() {
     const fresh = deepMergeReport(initial, { ...initial, ...(newContext || {}) });
     setDraft(null);
     setInitialWizardData(fresh);
+    setNewWizard(true);
     setConfirmReset(false);
     setAppState('wizard');
   };
 
   const resume = () => {
+    setNewWizard(false);
     setInitialWizardData(draft || initialReport);
     setAppState('wizard');
   };
@@ -2525,6 +2570,7 @@ export default function App() {
             await saveDraft(normalized);
             setDraft(normalized);
             setInitialWizardData(normalized);
+            setNewWizard(false);
             setAppState('wizard');
           }}
           onOpenOnline={async (loaded) => {
@@ -2533,6 +2579,7 @@ export default function App() {
             await saveDraft(normalized);
             setDraft(normalized);
             setInitialWizardData(normalized);
+            setNewWizard(false);
             setAppState('wizard');
           }}
           onBackup={() => draft && saveAs(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json;charset=utf-8' }),
@@ -2547,6 +2594,7 @@ export default function App() {
           authError={authError}
           authUser={authUser}
           initialData={initialWizardData}
+          initiallyNew={newWizard}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
           onHome={goHome}
           onOAuthLogin={beginOAuthLogin}

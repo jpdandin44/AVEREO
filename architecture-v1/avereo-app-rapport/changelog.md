@@ -12,6 +12,20 @@ tags:
   - changelog
 ---
 
+## 16 novembre — Affichage progressif de Dossier, Observations et Export
+
+Organisation validée puis réalisée localement : sections d’écoute, fiches d’observations et interventions repliables, résumés utiles, ouvertures par défaut et accès clavier. États de présentation séparés des données, réorganisation et repères conservés ; Export réordonné avec alertes visibles et signature redessinée à l’ouverture. Séparation de la dictée Dossier corrigée avec le helper commun. Sauvegarde/réouverture et Word contrôlés, sans changement hébergé. [Qualification](docs/organisation-ecrans.md#qualification-effectuée).
+
+
+## 16 novembre — Sauvegarde et réouverture Interventions vérifiées
+
+Recette PR161 réussie sur un dossier fictif complet : deux sauvegardes sur le même identifiant, trois natures, modalités multilignes/URL et liens conservés ; déconnexion complète puis ouverture serveur sans brouillon dans une nouvelle session normale. JSON identique octet pour octet, dossiers/propriétaires antérieurs et brouillon initial préservés. Aucun code ou paquet modifié. [Résultats et limites](docs/interventions-proposees.md#recette-complète-du-16-novembre).
+
+
+## 16 novembre — PR161 installée et vérifiée en préproduction
+
+Quatre fichiers du paquet qualifié promus sans reconstruction : validation PHP, interface, module Word et index en dernier. Sauvegarde relue et retour arrière code répété sur copie ; 23 dossiers/propriétaires et configuration/production conservés. Interface et validation PHP actives, deux Word identiques en textes/liens/images aux références locales ; brouillon initial restauré. [Livraison et limites](docs/interventions-proposees.md#préproduction).
+
 ## 16 novembre — Interventions Habitologue sous Recommandations
 
 Première tranche locale : réutilisation des actions, modalités de réalisation et inclusion client explicite ; liens aux constats/attentes, priorité/horizon/préalables et identifiants conservés. Bloc expert après Recommandations, bloc client limité aux constats retenus sans notes internes. Validation PHP facultative et contrôles de persistance/exports. [Qualification et limites](docs/interventions-proposees.md). Aucune livraison hébergée de ce candidat.

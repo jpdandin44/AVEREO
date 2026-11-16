@@ -13,6 +13,11 @@ tags:
   - habitologie
 ---
 
+## Allègement des écrans — organisation acceptée le 16 novembre
+
+Dossier, Observations et Export doivent proposer des résumés et des ouvertures individuelles/globales, conserver les choix entre onglets et ouvrir les nouveaux éléments. Aucun repli ne modifie données, champs techniques, numéros, repères, photos, dictée, signature, sauvegardes ou restitutions. Alertes et statut client réel restent accessibles ; clavier et écran étroit pris en compte. [Contrat et critères](docs/organisation-ecrans.md). La revue du candidat reste distincte de l’accord de cadrage.
+
+
 ## Interventions après Recommandations — 16 novembre
 
 Une seule liste decision.actions pour Habitologue, liée explicitement aux constats et attentes ; Correctif confirmé, Préventif et Évolutif conservés. Modalités libres, priorité et horizon sans dates inventées. Sélection explicite pour la synthèse ; exclusion entière dès qu’un constat lié est absent, ambigu ou non retenu. Préalables/justification dans l’expert ; aucun rétablissement des projections 4–6. Brouillon, JSON, serveur et deux restitutions cohérents. [Critères et limites](docs/interventions-proposees.md). Raccordement Projet/Gantt dans un sous-lot séparé.

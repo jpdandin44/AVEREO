@@ -13,6 +13,11 @@ tags:
   - architecture
 ---
 
+## 16 novembre — Séparer les ouvertures de fiche des données métier
+
+Contexte : les écrans sont jugés trop chargés ; le responsable valide l’organisation et les ouvertures par défaut avant réalisation. Décision : sections/fiches repliables avec résumés, état de présentation en mémoire du wizard et enfants conservés montés. Raisons : navigation plus légère, conservation des saisies/outils et absence de modification du payload ou des restitutions. Conséquences : reprise dans une nouvelle session avec les valeurs par défaut, contexte remis à zéro à l’import, API et droits inchangés ; revue locale puis décisions de livraison distinctes. [Organisation et qualification](docs/organisation-ecrans.md).
+
+
 ## 16 novembre — Réutiliser les actions pour les interventions Habitologue
 
 Contexte : le responsable demande la suite de la priorité 4 après Attentes. Décision : rendre la liste existante decision.actions accessible sous Recommandations pour Habitologue, ajouter les modalités et une inclusion client explicite, sans réactiver les projections. Une liste unique évite la divergence avec les constats, attentes et options historiques. Le responsable confirme Correctif ; aucune reclassification des valeurs anciennes. Conséquences : données historiques et identifiants conservés, client filtré selon ses constats, contrat Projet/dates/Gantt à qualifier dans le sous-lot suivant. [Contrat](docs/interventions-proposees.md).

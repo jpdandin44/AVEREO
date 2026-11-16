@@ -14,6 +14,33 @@ tags:
   - fonctionnalites
 ---
 
+## 16 novembre — Organisation validée, candidat local d’affichage
+
+Cadrage validé ; Développement local réalisé et qualifié sur les trois écrans. Prochaine action : revue humaine du candidat et de la PR depuis [les comptes fictifs locaux](http://127.0.0.1:5197/fixture/), dossier RECETTE-AFFICHAGE-INTERFACE-20261116. [Périmètre et critères](docs/organisation-ecrans.md). Préproduction et Mise en production non engagées pour ce lot ; les autres évolutions gardent leur ordre à confirmer. Les étapes datées ci-dessous conservent l’historique.
+
+
+## 16 novembre — Prochaine priorité : contenu et disposition des écrans
+
+Le responsable demande une proposition avant de modifier l’application. Le [cadrage disponible](docs/organisation-ecrans.md) recommande Dossier, Observations et Export : sections et fiches repliables, résumés utiles, ordre de lecture Export et conservation des fonctions/données. Organisation et ouvertures par défaut en attente de validation ; aucun code ou écran applicatif changé. Site/Protocoles restent à harmoniser séparément, navigation et fil horizontal conservés.
+
+La source de pilotage est `rapportV12CadrageProfils20261112.affichageEcrans20261116` dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>). Ordre proposé ensuite, à confirmer :
+
+| Lot restant | Travail à cadrer |
+| --- | --- |
+| Interventions vers Projet / Gantt informatif | Transmission volontaire vers un projet distinct, droits existants et calendrier explicite, sans écrasement. |
+| Autres profils professionnels | Architecte/Maître d’œuvre, valeurs de connexion et matrice métier × mission × destinataire. |
+| Identité des organisations | Nom/logo/coordonnées/mentions, administration et isolement ; identité figée ou courante à arbitrer. |
+| Originaux privés / dossiers photo lourds | Recadrage et annotation déjà livrés ; activation privée, quotas/rétention/restauration, vrais appareils et optimisation à qualifier. |
+| PDF direct / rapports volumineux | Choix d’un moteur et qualification distincts du parcours Word puis PDF existant. |
+| Continuité et propriété | Délégation/transfert à cadrer, priorité encore non classée ; la conservation du propriétaire source est déjà vérifiée. |
+
+La [recette serveur Interventions est terminée](docs/interventions-proposees.md#recette-complète-du-16-novembre) : sauvegardes et réouverture dans une nouvelle session réussies, données/propriétaires et brouillon initial conservés. La prochaine action est la revue de la proposition d’affichage, avant développement ; les états et propositions datés ci-dessous conservent l’historique.
+
+
+## 16 novembre — Livraison Interventions PR161
+
+Cadrage confirmé, Développement local validé et PR161 fusionnée ; Préproduction livrée, alignement/interface/Word vérifiés. Prochaine étape distincte : recette Interventions avec nouvel enregistrement serveur et réouverture dans une nouvelle session, puis revue métier hébergée. [Résultats et limites](docs/interventions-proposees.md#préproduction). Mise en production non engagée ; Projet/Gantt conserve son sous-lot.
+
 ## 16 novembre — Interventions proposées, première tranche locale
 
 Cadrage défini après la recette Attentes ; Développement local : panneau, validation facultative et restitutions implémentés et contrôlés. Prochaine action : revue locale de cette tranche, puis décisions distinctes de merge et de Préproduction. Mise en production non engagée. Le sous-lot suivant qualifiera l’échange volontaire avec Projet et le Gantt sans dates inventées. [Accès, preuves et limites](docs/interventions-proposees.md). Les anciens états Attentes/Terrain/photo restent historiques.

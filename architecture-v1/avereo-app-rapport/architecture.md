@@ -12,6 +12,11 @@ tags:
   - architecture
 ---
 
+## Présentation progressive — 16 novembre
+
+ScreenPresentation conserve les ouvertures uniquement en mémoire du wizard, par identifiant stable ; ScreenDisclosure garde les champs montés et contrôle leur visibilité. La création explicite initialise les ouvertures ; un import réinitialise le contexte, sans champ de présentation dans le JSON/API. App, InterventionsPanel et ObservationPlans réutilisent leurs données et commandes ; signature redessinée à dimension visible et dictée active protégée du repli. [Responsabilités et limites](docs/organisation-ecrans.md#composants-et-conservation).
+
+
 ## Interventions — complément du 16 novembre
 
 InterventionsPanel réutilise decision.actions et les composants de dictée existants. interventions.js fournit le périmètre Habitologue/Visite Globale, les avertissements et le rendu partagé aperçu/Word. Champs facultatifs realisation et inclure_client validés dans decision-validation.php ; stockage JSON et rôles/propriété inchangés. reportHtml accepte un contenu additionnel après les recommandations ; reportDelivery insère le bloc expert et le bloc client filtré. [Données et flux](docs/interventions-proposees.md#données-et-compatibilité).
