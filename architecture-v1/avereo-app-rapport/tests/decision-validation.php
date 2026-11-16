@@ -1,11 +1,21 @@
 <?php
 declare(strict_types=1);
 require __DIR__ . '/../frontend/public/api/decision-validation.php';
+$expectation = static fn ($provenance) => ['attentes' => [['id' => 'w2', 'provenance_ecoute' => $provenance]]];
 $cases = [
     [[], true],
     [['schema_version' => 1, 'projet' => ['budget' => 'Non communiqué']], true],
     [['attentes' => [['id' => 'w1', 'libelle' => 'Confort']]], true],
     [['option_a' => ['action_ids' => ['a1'], 'criteres' => ['energie' => 'À évaluer']]], true],
+    [['notes_attentes' => 'Notes dictées'], true],
+    [$expectation(['champ' => 'attentes_client', 'texte_original' => 'Du calme']), true],
+    [$expectation(['champ' => 'besoin_reformule', 'texte_original' => 'Mieux dormir']), true],
+    [['notes_attentes' => ['bad']], false],
+    [['notes_attentes' => str_repeat('é', 16001)], false],
+    [$expectation(['champ' => 'attentes_client', 'texte_original' => []]), false],
+    [$expectation(['champ' => 'attentes_client']), false],
+    [$expectation(['champ' => 'inconnu', 'texte_original' => 'Texte']), false],
+    [$expectation(null), false],
     ['invalid', false], [null, false], [['schema_version' => 2], false],
     [['projet' => ['budget' => 35000]], false],
     [['option_b' => ['criteres' => ['budget' => ['unexpected']]]], false],

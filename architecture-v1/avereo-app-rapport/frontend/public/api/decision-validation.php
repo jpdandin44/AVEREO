@@ -19,6 +19,7 @@ function api_decision_payload_error(mixed $value): ?string
         }
         return true;
     };
+    if (!$texts($value, ['notes_attentes'])) return 'Notes des attentes invalides.';
     $references = static function (mixed $ids): bool {
         if (!is_array($ids) || !array_is_list($ids) || count($ids) > 100) return false;
         foreach ($ids as $id) if (!is_string($id) || $id === '' || strlen($id) > 190) return false;
@@ -41,6 +42,14 @@ function api_decision_payload_error(mixed $value): ?string
         if (!is_array($value[$key]) || !array_is_list($value[$key]) || count($value[$key]) > 100) return "Liste {$key} invalide ou trop longue.";
         foreach ($value[$key] as $row) {
             if (!is_array($row) || !$texts($row, $keys)) return "Entrée {$key} invalide.";
+            if ($key === 'attentes' && array_key_exists('provenance_ecoute', $row)) {
+                $provenance = $row['provenance_ecoute'];
+                if (!is_array($provenance) || !$texts($provenance, ['champ', 'texte_original'])
+                    || !in_array($provenance['champ'] ?? null, ['attentes_client', 'besoin_reformule'], true)
+                    || !isset($provenance['texte_original']) || trim($provenance['texte_original']) === '') {
+                    return 'Provenance de l’attente invalide.';
+                }
+            }
             if (isset($row['id']) && strlen($row['id']) > 190) return "Identifiant {$key} trop long.";
             foreach (['attente_ids', 'observation_ids'] as $referenceKey) {
                 if (array_key_exists($referenceKey, $row) && !$references($row[$referenceKey])) return "Références {$key} invalides.";

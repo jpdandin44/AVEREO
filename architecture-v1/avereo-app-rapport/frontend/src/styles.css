@@ -1785,3 +1785,5 @@ img {
 .photo-report-editor footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
 .photo-report-editor button, .photo-report-editor select { min-height: 42px; }
 @media (max-width: 700px) { .photo-report-editor { padding: 14px; } .photo-report-editor .modal-header { align-items: start; flex-direction: column; } .photo-editor-toolbar > button { flex: 1 1 140px; } }
+
+.decision-support .preserve-lines { white-space: pre-wrap; overflow-wrap: anywhere; }

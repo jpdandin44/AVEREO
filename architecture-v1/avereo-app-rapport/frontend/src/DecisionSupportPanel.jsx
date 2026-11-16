@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import VoiceField from './VoiceField.jsx';
 import { allowsDecisionProjections } from './reportProfiles.js';
+import { copyListeningExpectation, listeningExpectationSources } from './expectationListening.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
 import { normalizeDecision, decisionComparison, decisionWarnings, DECISION_CRITERIA, ACTION_CATEGORIES } from './decisionSupport.js';
 
@@ -54,12 +55,13 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
   const add = (key, value) => update(prev => ({ ...prev, [key]: [...prev[key], { id: newId(), ...value }] }));
   const remove = (key, index) => update(prev => ({ ...prev, [key]: prev[key].filter((r, i) => i !== index) }));
   const warnings = decisionWarnings(report);
+  const listeningSources = listeningExpectationSources(d, report.ecoute);
   if (d.schema_version !== 1) return <p className="issue-list warning">Format d’aide à la décision non pris en charge. Conservez le JSON d’origine et vérifiez la version de l’application avant modification.</p>;
   return <fieldset className="decision-support"><legend>Aide à la décision · Visite Globale</legend>
     <p>Reliez ce qui est observé à ce qui compte pour les habitants. {projections ? 'Organisez les actions, puis comparez deux options. ' : 'Précisez les effets et les vérifications nécessaires. '}Les contenus sont proposés par le professionnel et restent à discuter.</p>
     <details><summary>Relire les notes de l’entretien</summary><p><strong>Attentes exprimées :</strong> {report.ecoute?.attentes_client || 'Non renseignées'}</p>
       <p><strong>Contraintes et horizon évoqués :</strong> {report.ecoute?.contraintes_projet || 'Non renseignés'}</p>
-      <p>Ces notes restent le verbatim. Renseignez ci-dessous une structuration explicite, sans déduire automatiquement de nouveaux besoins.</p></details>
+      <p>Ces notes restent le verbatim. Les attentes peuvent être reprises ci-dessous, puis reformulées avec les habitants.</p></details>
 
     <p className="muted">Les modifications alimentent le brouillon de ce navigateur. « Enregistrer cette attente » confirme sa sauvegarde locale ; « Sauver en ligne » conserve le dossier sur le serveur.</p>
     {!dictationAllowed && <p className="muted">Pour activer la dictée, enregistrez d’abord l’accord correspondant dans Dossier.</p>}
@@ -67,12 +69,39 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
       <div className="decision-grid">{[['occupation', 'Occupation et usages permanents'], ['sensibilites', 'Sensibilités déclarées'],
         ['non_negociables', 'Non négociables déclarés'], ['tolerances', 'Tolérances et ressentis déclarés']].map(([key, label]) =>
         <Text micDisabled={!dictationAllowed} key={key} label={label} value={d.habitants[key]} onChange={value => group('habitants', key, value)} />)}</div>
+      <section aria-labelledby="listening-expectations-title">
+        <h4 id="listening-expectations-title">Attentes reprises de l’écoute client</h4>
+        <p>Les textes saisis dans Dossier sont proposés ci-dessous. Reprenez le texte utile, puis reformulez-le si nécessaire. Une reprise ne vaut pas confirmation des habitants.</p>
+        {listeningSources.map(s => {
+          const sameText = d.attentes.some(a => a.libelle.trim() === s.text.trim());
+          return <article className="decision-card" key={s.field}>
+            <h5>{s.label}</h5><p className="preserve-lines">{s.text || 'À renseigner dans Dossier → Écoute client.'}</p>
+            {s.imported ? <p className="muted">{s.changed
+              ? 'Le texte de l’écoute a changé. L’attente reprise et ses liens sont conservés ; relisez-la ci-dessous avant de la modifier.'
+              : 'Texte déjà repris dans une attente ci-dessous ; les reformulations restent conservées.'}</p>
+              : <><button type="button" className="button secondary"
+                disabled={!s.text.trim() || sameText || d.attentes.length >= 100}
+                onClick={() => setReport(prev => ({ ...prev, decision: copyListeningExpectation(prev.decision, prev.ecoute, s.field, newId()) }))}>Reprendre cette attente</button>
+                {sameText && s.text.trim() && <p className="muted">Ce texte est déjà présent dans les attentes. Modifiez l’attente existante pour éviter un doublon.</p>}</>}
+          </article>;
+        })}
+      </section>
+      <section aria-labelledby="expectations-title"><h4 id="expectations-title">Attentes à relier aux constats</h4>
+      <p>Relisez les attentes reprises ou ajoutez-en une. Les mêmes attentes sont proposées dans « Attentes concernées par ce constat ».</p>
       {d.attentes.map((a, i) => <article className="decision-card" key={`${a.id}-${i}`} aria-label={`Attente ${i + 1}`}>
         <h4>Attente {i + 1}</h4><Text micDisabled={!dictationAllowed} label="Attente formulée" value={a.libelle} onChange={v => row('attentes', i, 'libelle', v)} />
         <Text micDisabled={!dictationAllowed} label="Priorité déclarée" value={a.priorite} onChange={v => row('attentes', i, 'priorite', v)} />
         <Text micDisabled={!dictationAllowed} label="Source et confirmation à recueillir" value={a.source} onChange={v => row('attentes', i, 'source', v)} />
+        {typeof a.provenance_ecoute?.texte_original === 'string' && <details><summary>Texte d’origine dans l’écoute client</summary>
+          <p className="preserve-lines">{a.provenance_ecoute.texte_original}</p></details>}
         <ExpectationActions expectation={a} onSaveDraft={onSaveDraft} onRemove={() => remove('attentes', i)} /></article>)}
       <button type="button" className="button secondary" disabled={d.attentes.length >= 100} onClick={() => add('attentes', { libelle: '', priorite: '', source: '' })}>Ajouter une attente</button>
+      </section>
+      <section aria-labelledby="expectation-notes-title"><h4 id="expectation-notes-title">Notes complémentaires et dictée</h4>
+        <Text micDisabled={!dictationAllowed} label="Notes sur les attentes" value={d.notes_attentes}
+          onChange={v => update(prev => ({ ...prev, notes_attentes: typeof v === 'function' ? v(prev.notes_attentes) : v }))} />
+        <p className="muted">Ces notes complètent l’entretien et figurent dans le rapport expert. Pour relier un besoin à un constat, ajoutez une attente ci-dessus. La dictée ajoute du texte ; aucun fichier audio n’est conservé.</p>
+      </section>
     </details>
 
     <details><summary>2 · Projet des habitants</summary><p>Le budget est une déclaration ou une hypothèse sourcée. Un champ vide reste inconnu.</p>
