@@ -13,6 +13,14 @@ tags:
   - fonctionnalites
 ---
 
+## 16 novembre — Paramètres facultatifs de planning Projet
+
+decision.schema_version=1 conservée ; ajout facultatif de decision.planning_projet et decision.actions[].planning_projet, sans seconde liste, modification d’ID source ou migration SQL. Aucun défaut ajouté à la lecture ; modifications conservant les clés inconnues. API reports.php, téléchargement, autorisations et schéma inchangés ; validation optionnelle dans decision-validation.php. Export dérivé schemaVersion=1 natif Projet, nouveau projet sous son contrôle existant ; aucune synchronisation/écriture directe. [Champs et compatibilité](../api/interventions-projet.md). Réserve antérieure des contrôles de protocole vides distincte.
+
+## 16 novembre — Livraison PR162 sans migration
+
+Fusion f4017be identique au candidat b04ea2b ; promotion du même artefact de présentation. Aucun schéma/table, champ JSON, API, rôle/propriétaire ou moteur de restitution changé. Sauvegarde privée de la table relue ; 24 dossiers/colonnes/propriétaires exacts après navigation, aucune restauration SQL ou écriture. Import complet fictif conservant les champs métier, lien serveur source retiré normalement ; choix expert/client et filtres conservés. [Reçus et limites](organisation-ecrans.md#préproduction).
+
 ## 16 novembre — Compatibilité des ouvertures de fiches
 
 Les ouvertures ne créent aucun champ dans le dossier, aucun schéma ou nouvelle migration. Champs, identifiants, numéros, photos/plans/signature et données inconnues restent dans le payload courant. Replis seuls : JSON exact et contenu Word équivalent ; copie indépendante puis nouvelle session : payload UI entier exact. Les projections des autres profils gardent leurs données et règles. [Preuves et accès de revue](organisation-ecrans.md#revue-locale). La réserve PHP objet/liste reste séparée.

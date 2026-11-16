@@ -14,6 +14,14 @@ tags:
   - fonctionnalites
 ---
 
+## 16 novembre — Interventions vers Projet en revue locale
+
+Cadrage du prochain lot puis Développement local réalisé/qualifié : aperçu et fichier Projet, sauvegarde des estimations et import indépendant vérifiés sur données fictives. Prochaine action : revue locale de cette première tranche, choix de parcours à confirmer, puis décision distincte de merge. Préproduction PR162 conservée ; aucune Mise en production. [Revue et limites](docs/interventions-projet.md). Création directe CONNECT, lien automatique vers un dossier serveur et insertion du Gantt dans Word/PDF restent des compléments à cadrer ; autres lots inchangés.
+
+## 16 novembre — PR162 livrée, revue hébergée distincte
+
+Cadrage validé, Développement local testé puis fusionné ; Préproduction livrée et alignée, interface/JSON/Word contrôlés. Mise en production non engagée. Prochaine action : revue de l’affichage hébergé via CONNECT, puis recette dédiée de sauvegarde/réouverture si demandée. [Preuves et limites](docs/organisation-ecrans.md#préproduction). Interventions → Projet/Gantt, profils, identité, photos privées, PDF direct et continuité restent à cadrer/ordonner ; aucun nouveau lot lancé. Site/Protocoles peuvent faire l’objet d’un cadrage d’affichage séparé.
+
 ## 16 novembre — Organisation validée, candidat local d’affichage
 
 Cadrage validé ; Développement local réalisé et qualifié sur les trois écrans. Prochaine action : revue humaine du candidat et de la PR depuis [les comptes fictifs locaux](http://127.0.0.1:5197/fixture/), dossier RECETTE-AFFICHAGE-INTERFACE-20261116. [Périmètre et critères](docs/organisation-ecrans.md). Préproduction et Mise en production non engagées pour ce lot ; les autres évolutions gardent leur ordre à confirmer. Les étapes datées ci-dessous conservent l’historique.

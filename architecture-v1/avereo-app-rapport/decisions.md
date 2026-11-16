@@ -13,6 +13,10 @@ tags:
   - architecture
 ---
 
+## 16 novembre — Réutiliser le moteur et l’import natifs Projet
+
+Contexte : prochain lot demandé après PR162, transmission volontaire et projets existants à conserver. Choix de réalisation annoncé : aperçu Rapport avec planning-core.js canonique, puis fichier natif importé comme projet indépendant. Raisons : même calendrier/validations, pas de deuxième moteur ni nouveau droit/API. Conséquences : paramètres optionnels sur les interventions existantes, sélection distincte du client, projections indépendantes après téléchargement ; dates/charges explicites. La création directe CONNECT reste un choix facultatif soumis au responsable, sans acceptation humaine déduite. [Contrat](api/interventions-projet.md).
+
 ## 16 novembre — Séparer les ouvertures de fiche des données métier
 
 Contexte : les écrans sont jugés trop chargés ; le responsable valide l’organisation et les ouvertures par défaut avant réalisation. Décision : sections/fiches repliables avec résumés, état de présentation en mémoire du wizard et enfants conservés montés. Raisons : navigation plus légère, conservation des saisies/outils et absence de modification du payload ou des restitutions. Conséquences : reprise dans une nouvelle session avec les valeurs par défaut, contexte remis à zéro à l’import, API et droits inchangés ; revue locale puis décisions de livraison distinctes. [Organisation et qualification](docs/organisation-ecrans.md).

@@ -12,6 +12,14 @@ tags:
   - changelog
 ---
 
+## 16 novembre — Préparation d’un planning Projet depuis les interventions
+
+Volet repliable avec estimations, aperçu dérivé et téléchargement d’une projection native Projet. Paramètres optionnels sauvegardés, validation client/PHP et refus sans perte ; import indépendant et réexport exact vérifiés localement. Aucun changement de Projet, des propriétaires ou des restitutions Word. [Qualification et limites](docs/interventions-projet.md#qualification-locale). Aucun déploiement de ce candidat.
+
+## 16 novembre — PR162 installée en préproduction
+
+Quatre fichiers d’interface promus depuis l’archive testée, sans reconstruction, index en dernier. Sauvegarde relue et restauration/rollback code répétés sur copie ; 24 dossiers/colonnes/propriétaires, configuration et production exacts. Trois écrans repliables, signature et deux Word hébergés contrôlés, brouillon initial restauré et relu. [Qualification et limites](docs/organisation-ecrans.md#préproduction). Aucun nouvel enregistrement serveur.
+
 ## 16 novembre — Affichage progressif de Dossier, Observations et Export
 
 Organisation validée puis réalisée localement : sections d’écoute, fiches d’observations et interventions repliables, résumés utiles, ouvertures par défaut et accès clavier. États de présentation séparés des données, réorganisation et repères conservés ; Export réordonné avec alertes visibles et signature redessinée à l’ouverture. Séparation de la dictée Dossier corrigée avec le helper commun. Sauvegarde/réouverture et Word contrôlés, sans changement hébergé. [Qualification](docs/organisation-ecrans.md#qualification-effectuée).
