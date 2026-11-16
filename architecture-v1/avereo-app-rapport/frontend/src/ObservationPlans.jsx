@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MAX_PLANS, MAX_REPORT_BYTES, markersForPlan, planPayloadError, readPlanFile, setObservationPoint } from './observationPlans.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
 import CadastralCapture from './CadastralCapture.jsx';
 import { visitProtocolStages } from './habitologieProtocol.js';
 import './observationPlans.css';
 
-export default function ObservationPlans({ report, setReport, selectedId, onSelect, onPhotoTransfer }) {
+export default function ObservationPlans({ report, setReport, selectedId, onSelect, onShowObservation, focusRequest, onPhotoTransfer }) {
   const [viewId, setViewId] = useState('');
   const [zoom, setZoom] = useState(100);
   const [placing, setPlacing] = useState(false);
@@ -22,6 +22,13 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
   const number = observationNumber(report, observation);
   const markers = plan ? markersForPlan(report, plan.id) : [];
   const current = markers.find(p => p.observationId === observation?.id);
+  useEffect(() => {
+    if (!focusRequest) return;
+    const selected = report.observations.find(o => o.id === selectedId);
+    if (selected?.reperes?.some(p => p.planId === plan?.id)) return;
+    const point = selected?.reperes?.find(p => plans.some(view => view.id === p.planId));
+    if (point) { setViewId(point.planId); setZoom(100); setPlacing(false); }
+  }, [focusRequest]);
   const chooseObservation = id => { onSelect(id); setPlacing(false); setMessage(''); };
   const pointAt = event => {
     const rect = stageRef.current.getBoundingClientRect();
@@ -50,7 +57,7 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
     finally { setBusy(false); }
   };
   const updatePlan = patch => setReport(previous => ({ ...previous, plans: previous.plans.map(p => p.id === plan.id ? { ...p, ...patch } : p) }));
-  return <section className="observation-plans" id="observation-plans" tabIndex={-1} aria-label="Repérage sur plans et coupes">
+  return <section className="observation-plans" id="observation-plans" data-disclosure-busy={busy || Boolean(dragPoint)} tabIndex={-1} aria-label="Repérage sur plans et coupes">
     <h3>Repérage sur plans et coupes</h3>
     <p>Choisissez une observation et une vue, puis placez son repère. Le même numéro suit le constat sur chaque vue et dans le Word.</p>
     {visitProtocolStages(report).some(stage => stage.key === 'terrain') && <CadastralCapture report={report} setReport={setReport} onPhotoTransfer={onPhotoTransfer} />}
@@ -74,7 +81,7 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
         <button type="button" className={`button ${placing ? 'primary' : 'secondary'}`} aria-pressed={placing}
           onClick={() => setPlacing(!placing)}>{placing ? 'Annuler le placement' : current ? 'Déplacer le repère' : 'Placer le repère'}</button>
         {current && <button type="button" className="button ghost" onClick={() => place(observation.id, null)}>Retirer ce repère</button>}
-        <button type="button" className="button ghost" onClick={() => document.getElementById(`observation-${observation.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>Voir la fiche {number}</button>
+        <button type="button" className="button ghost" onClick={() => onShowObservation(observation.id)}>Voir la fiche {number}</button>
       </div>
       <p className="plan-instruction" role="status">{placing ? `Cliquez ou touchez la vue pour placer le repère ${number}.` : 'Sélectionnez un repère pour retrouver sa fiche. Déplacez-le par glissement ou avec les flèches du clavier.'}</p>
       <div className="plan-scroll">

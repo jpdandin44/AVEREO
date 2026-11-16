@@ -13,6 +13,20 @@ tags:
   - securite
 ---
 
+## 16 novembre — Sécurité et conservation des écrans repliables
+
+Nouvel état client de présentation, absent du payload et réinitialisé à l’import. Aucun code API, rôle, propriété, schéma, secret ou permission changé ; références et textes rendus par React et mêmes filtres client. Dictée active protégée, accords conservés ; simulation sans accès au microphone. Tests locaux de refus/propriété et sauvegarde/réouverture du dossier fictif réussis ; brouillon initial restauré et relu. [Preuves et limites](organisation-ecrans.md#qualification-effectuée). Normalisation PHP préexistante distincte ; aucune validation hébergée déduite.
+
+
+## 16 novembre — Conservation après recette Interventions
+
+Deux audits serveur en lecture seule confirment les 23 dossiers/colonnes/propriétaires antérieurs exacts et un seul dossier fictif ajouté. Nouvelle ligne et propriétaire inchangés entre sauvegarde et réouverture ; code/assets, configuration, production et journal exacts, schéma inchangé hors compteur normal. Connexion normale, ouverture serveur sans brouillon et restauration exacte des quatre emplacements initiaux vérifiées. [Preuves et limites](interventions-proposees.md#recette-complète-du-16-novembre). Sauvegarde SQL privée conservée côté serveur ; aucun compte/droit ou original privé activé.
+
+
+## 16 novembre — Alignement hébergé de PR161
+
+Quatre fichiers exacts et trois ressources HTTPS comparées ; cible/base isolées et configuration qualifiées, autorisation directe consignée. Deux refus sur les nouveaux champs prouvent la validation PHP active, identifiant volontairement invalide empêchant toute écriture même avec une ancienne validation. Après navigation : 23 dossiers/toutes colonnes/propriétaires exacts, 205 fichiers préservés à l’installation, configuration/production intactes ; une seule ligne de refus attendue au journal, préfixe conservé. CONNECT normal, interface et deux Word contrôlés ; ancien brouillon restauré. [Preuves et réserves](interventions-proposees.md#préproduction).
+
 ## 16 novembre — Périmètre et sécurité des interventions
 
 Panneau limité au profil Habitologue en Visite Globale ; champs facultatifs bornés, texte échappé, aucune nouvelle route/table ou modification de reports.php/contrôles de propriétaire. Inclusion client strictement booléenne et explicite ; tous les constats reliés doivent être uniques et retenus, sinon l’intervention entière reste exclue. Les préalables, justification et notes d’attentes restent dans l’expert. Réutilisation de VoiceField avec accord existant ; aucun accès Projet ou microphone réel. [Tests, preuves et réserves](interventions-proposees.md#qualification-locale).

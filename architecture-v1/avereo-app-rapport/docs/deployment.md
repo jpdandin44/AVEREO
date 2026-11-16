@@ -14,6 +14,15 @@ tags:
   - mysql
 ---
 
+## 16 novembre — Recette serveur Interventions achevée
+
+Recette autorisée après livraison PR161, sans nouveau déploiement : deux sauvegardes du même dossier fictif, connexion normale après déconnexion complète et réouverture serveur sans brouillon. Les 23 dossiers/colonnes/propriétaires antérieurs sont exacts, 24 au total ; code/configuration/production et journal conservés. Brouillon initial restauré et relu. [Reçus, accès et limites](interventions-proposees.md#recette-complète-du-16-novembre). Les comptes de la livraison ci-dessous décrivent l’état avant cette recette.
+
+
+## 16 novembre — Livraison PR161 attestée
+
+Après tests et merge humains, source 1d8b103 et fusion 97a902c, arbre identique. Paquet 080b8213 qualifié, sans reconstruction ; quatre fichiers installés, index en dernier. Sauvegarde fraîche application/configuration relue et restauration/retour arrière code répétés sur copie, sauvegarde privée des dossiers relue sans restauration SQL. 205 fichiers préexistants conservés, 23 dossiers/colonnes/propriétaires exacts. [Cible, preuves et périmètre](interventions-proposees.md#préproduction).
+
 ## 16 novembre — Recette serveur Attentes achevée
 
 Après la livraison de PR159, recette fonctionnelle réalisée sur un dossier fictif indépendant, sans nouveau déploiement : deux sauvegardes sur le même identifiant et réouverture serveur dans une nouvelle session, sans brouillon. Les 22 dossiers/colonnes/propriétaires antérieurs restent exacts, 23 au total ; code/configuration/production préservés. Brouillon initial restauré. [Reçus, accès de revue et limites](attentes-ecoute-client.md#recette-complète-du-16-novembre). Les comptes de dossiers de la section de livraison suivante décrivent l’état avant cette recette.

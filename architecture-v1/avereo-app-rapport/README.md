@@ -13,6 +13,25 @@ tags:
   - connect
 ---
 
+## 16 novembre — Écrans repliables prêts à tester localement
+
+Dossier, Observations et Export suivent l’organisation validée : résumés, ouverture individuelle/globale, nouvelles fiches ouvertes et champs conservés. Qualification locale de saisie, photos/plans/signature, sauvegarde/réouverture et deux Word réussie ; préproduction inchangée. [Revue locale, preuves et limites](docs/organisation-ecrans.md#revue-locale). Les états de proposition ci-dessous sont historiques.
+
+
+## 16 novembre — Proposition pour alléger les écrans
+
+Le [cadrage de l’organisation des écrans](docs/organisation-ecrans.md) propose des sections d’écoute et des fiches d’observations/interventions repliables avec résumés utiles. Proposition à examiner avant toute modification : aucun code ou écran applicatif changé. La recette Interventions terminée et les états datés suivants restent conservés.
+
+
+## 16 novembre — Recette Interventions réussie
+
+Trois interventions, modalités et liens conservés après deux sauvegardes puis ouverture serveur dans une nouvelle session CONNECT sans brouillon. Les 23 dossiers antérieurs et leurs propriétaires restent exacts ; brouillon initial restauré et relu après rechargement. [Preuves et accès de revue](docs/interventions-proposees.md#recette-complète-du-16-novembre). La prochaine priorité choisie porte sur le [contenu et la disposition des écrans](roadmap.md#16-novembre--prochaine-priorité--contenu-et-disposition-des-écrans). Les états datés suivants conservent l’historique.
+
+
+## 16 novembre — PR161 livrée en préproduction
+
+Le lot Interventions est livré sur le même contenu qualifié, après tests et merge humains. Interface, validation PHP active et deux Word hébergés contrôlés ; 23 dossiers/colonnes/propriétaires et brouillon initial conservés. [Preuves et limites](docs/interventions-proposees.md#préproduction). Les états datés suivants restent historiques ; le suivi canonique porte l’état courant.
+
 ## Interventions proposées — candidat local du 16 novembre
 
 Habitologue dispose sous Recommandations d’une liste unique d’interventions reliées aux constats et attentes, avec nature, priorité, horizon et modalités de réalisation. Sélection client explicite et filtrage des constats conservés. [Parcours local, contrat et preuves](docs/interventions-proposees.md). La préproduction reste la version PR159 ; les sections datées suivantes sont historiques.
