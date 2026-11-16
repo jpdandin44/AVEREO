@@ -5,13 +5,18 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-14
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 16 novembre — Portée du complément Attentes
+
+Copie locale isolée fondée sur main fc77690, PR158 constatée fusionnée ; fichiers Terrain déjà modifiés dans l’ancienne copie conservés. Nouveau périmètre : panneau et aide à la décision, helper de reprise, styles limités, validation PHP facultative et tests. Aucun changement de reports.php, autorisation/propriétaire, secret, table ou migration. Les textes rendus utilisent les échappements existants ; aucune extraction IA ni conservation audio. Réserve préexistante des objets vides PHP consignée, sans affaiblir les assertions HTTP. [Revue sécurité/données et limites](attentes-ecoute-client.md#données-et-compatibilité).
+
 
 ## 2026-11-14 — Terrain horizontal, révision locale de PR158
 

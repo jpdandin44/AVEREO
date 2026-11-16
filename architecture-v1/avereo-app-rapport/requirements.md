@@ -5,13 +5,18 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-14
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Complément Attentes — 16 novembre
+
+Reprendre explicitement les deux textes de l’écoute sans extraction ni attente inventée ; conserver verbatim/provenance, corrections et identifiants ; signaler les sources modifiées sans écraser les liens. Ajouter des notes dictables, soumises à l’accord existant, conservées dans le dossier et l’expert, exclues du client. Anciens dossiers et données adjacentes préservés. [Critères et preuves](docs/attentes-ecoute-client.md). Audio enregistré, Projet, autres profils et activation privée gardent leurs lots distincts.
+
 
 ## Terrain et bâti — décision confirmée du 14 novembre
 

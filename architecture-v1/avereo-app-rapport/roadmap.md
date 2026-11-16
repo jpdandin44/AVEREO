@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-14
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,11 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Suite engagée le 16 novembre — attentes
+
+Le responsable demande la reprise et le lancement de la suite. Le complément demandé sur les attentes est développé localement : préremplissage explicite depuis l’écoute et notes dictables, avec provenance et liens conservés. [Périmètre et revue](docs/attentes-ecoute-client.md). Prochaine action : revue locale de ce candidat puis décision distincte de préproduction. La revue métier hébergée Terrain reste distincte ; interventions/planning avec Projet, autres profils et identité des organisations gardent leurs cadrages. Les paragraphes datés suivants conservent les états antérieurs.
+
 
 ## 14 novembre — Terrain horizontal, revue locale de PR158
 
