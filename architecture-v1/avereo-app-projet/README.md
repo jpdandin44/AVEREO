@@ -19,6 +19,8 @@ Nouvelle vue privée **Gantt des développements** : quatre phases, réalisé é
 
 Préparation de PR : [qualification du publicateur privé](docs/publicateur-prive.md), contrat désactivé et tests sur copies fictives. Le dépôt GitHub est public : aucune vraie projection, preuve privée, configuration ou clé n'y est ajoutée. Identité de service, transport de données et état serveur actuel non qualifiés ; activation bloquée, pas de service installé.
 
+[PR160 en brouillon](https://github.com/jpdandin44/AVEREO/pull/160) : revue locale, main PR159 intégré, 354 tests et paquet privé sur source propre vérifiés. [Candidat et parcours](docs/gantt-developpements.md#préparation-de-la-pr160), [reçu PR](data/qualification-gantt-pr.json). CI à relire sur la tête finale, cases humaines décochées ; aucun déploiement.
+
 ## 13 novembre — PQ-01 proposé en revue locale, PR #151
 
 [PR #151](https://github.com/jpdandin44/AVEREO/pull/151) : revue du lot local Patrimoine & qualité, main récent intégré sans conflit, 326 tests et compilation requalifiés. [Parcours de revue et réserves](docs/patrimoine-qualite.md#13-novembre--pr-de-revue-locale), [suivi canonique](data/suivi-patrimoine-pq01.json). Cases humaines laissées décochées ; aucune installation en préproduction ou production et quatre alertes de dépendances conservées avant livraison.

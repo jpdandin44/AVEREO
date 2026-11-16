@@ -18,6 +18,8 @@ Ajout d'une projection calculée en lecture seule, Gantt repliable/filtrable, li
 
 Préparation de PR : qualification du publicateur privé, plan JSON désactivé et chaîne locale fictive testant deux publications, panne, signature, conservation et retour anti-rejeu. Distinction dépôt public/sources privées et opérateur historique/publicateur données seules. Aucun transport, compte, tâche ou droit installé/modifié.
 
+[PR160](https://github.com/jpdandin44/AVEREO/pull/160) créée en brouillon après intégration de main PR159 ; 354 tests locaux, compilations publique/privée et identité de source propre qualifiées. Reçus initiaux conservés, traçabilité du candidat et nouvelle qualification ajoutées, cases humaines décochées. Aucun merge ou déploiement de ce lot.
+
 ## 13 novembre — Revue PQ-01, PR #151
 
 Lot committé sur sa branche puis main intégré sans conflit, sans modifier la branche cible. 326 tests Projet, compilation, séparation publique, contrôle de base et syntaxe PHP requalifiés ; paquet privé identique. Vue locale privée rouverte, réserves de dépendances reconfirmées, suivi et preuve datée ajoutés. [PR #151](https://github.com/jpdandin44/AVEREO/pull/151), quatre cases humaines décochées ; aucun déploiement ni nouvelle donnée publiée en préproduction.

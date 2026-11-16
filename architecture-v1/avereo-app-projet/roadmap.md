@@ -18,6 +18,8 @@ Cadrage : besoin de visibilité automatique confirmé, quatre phases et accords 
 
 Préparation de la PR demandée par le responsable : contrat de publicateur désactivé, tests des primitives et [qualification opérationnelle](docs/publicateur-prive.md). L'activation reste bloquée sur service/sources privés, transport/admission, état hébergé actuel et conservation à capacité pleine. Aucun déploiement de la PR.
 
+[PR160](https://github.com/jpdandin44/AVEREO/pull/160) ouverte en brouillon, main PR159 intégré sans conflit et 354 tests locaux sur source propre qualifiés. Prochaine action : revue locale du Gantt/dossier de qualification et lecture de la CI finale, puis cadrage du raccordement privé ; cases humaines et phases hébergées inchangées.
+
 ## 13 novembre — PQ-01 en PR de revue locale
 
 [PR #151](https://github.com/jpdandin44/AVEREO/pull/151) ouverte, candidat code requalifié après intégration de main. Revue du responsable sur la vue privée locale, puis qualification des alertes de dépendances avant proposition de livraison. Cases humaines et phase conservées sans approbation automatique ; préproduction et production non commencées pour PQ-01. [Preuves actuelles](data/qualification-patrimoine-pq01-pr.json). Les contrôles GitHub doivent être lus sur la dernière tête publiée ; la policy humaine reste distincte.

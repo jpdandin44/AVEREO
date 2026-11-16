@@ -82,10 +82,18 @@ Le Gantt utilise seulement `state` et `iteration` des API privées existantes. A
 
 Les sources et décisions sont en lecture seule. Le code privé reste absent du build public ; la qualification couvre les lecteurs Node/PHP, la confidentialité des preuves non copiées, les droits existants, la projection et le rendu local. Les alertes de dépendances antérieures restent à traiter dans leur lot, sans mise à jour aveugle.
 
-## Qualification locale du 16 novembre
+## Qualification locale initiale du 16 novembre, avant PR
 
 350 tests réussis sur le candidat local, compilation publique et contrôle d'exclusion du module privé réussis, paquet privé séparé construit et syntaxe PHP vérifiée. Revue navigateur sur les vrais suivis du poste : filtrage, recherche, quatre phases, ligne du jour, lien vers la bonne itération et absence de bouton de validation ; après redémarrage, Rapport suit bien son enfant actif et les CI récentes. Cet accès de test est une capacité privée du poste, pas une attestation CONNECT réelle.
 
 Un lancement parallèle des tests a perdu le processus `planning-local.test.mjs` sans détail d'assertion ; les 40 tests de cette suite réussissent isolément, puis la suite intégrale de 350 tests réussit en exécution séquentielle, sans désactiver ni modifier ces tests. L'incident d'exécution est conservé dans le journal privé, sans cause applicative prétendue ni suppression d'échec.
 
-[Reçu technique local](../data/qualification-gantt-developpements.json). Les témoins des 35 JSON canoniques et les projections réelles restent dans le pilotage privé hors dépôt, non inclus dans le paquet. Candidat non committé, aucune CI distante de ce lot ni recette hébergée ; quatre alertes de dépendances de développement connues, audit des seules dépendances d'exécution à zéro. La synchronisation/publication permanente en ligne reste le raccordement à terminer.
+[Reçu technique local initial](../data/qualification-gantt-developpements.json). Les témoins des 35 JSON canoniques et les projections réelles restent dans le pilotage privé hors dépôt, non inclus dans le paquet. Ce premier reçu portait sur un candidat non committé, avant CI distante ; aucune recette hébergée. Quatre alertes de dépendances de développement connues, audit des seules dépendances d'exécution à zéro. La synchronisation/publication permanente en ligne reste le raccordement à terminer.
+
+## Préparation de la PR160
+
+[PR160 en brouillon](https://github.com/jpdandin44/AVEREO/pull/160), revue en **Développement local**, point d'entrée `http://127.0.0.1:5270/?developments` → Gantt des développements. L'onglet intégré utilise la capacité privée du poste ; une session Chrome différente n'est pas CONNECT et ne reprend pas implicitement cette capacité.
+
+Main PR159 intégré sans conflit dans la branche ; source propre `72ea2efa5f93d469b6dee5812004033491c2f4b2` qualifiée par 354 tests, compilation publique et préparation privée contrôlant le SHA exact, 20 fichiers et empreinte Windows `420c52b82621a872a015045d867cc7fe1a40f9bbc100d4530b40287ef3962184`. 41 assertions CONNECT, 15 assertions Drupal sur doubles et 43/43 tests backend CONNECT réussis. [Reçu PR](../data/qualification-gantt-pr.json). La tête finale peut ajouter uniquement la traçabilité ; lire sa CI GitHub séparément, ne pas réattribuer un artefact Linux à celui de Windows.
+
+Le publicateur reste **bloqué opérationnellement**, mais sa [qualification](publicateur-prive.md) peut être revue avec le Gantt. Le contrat est désactivé et non chargé par le runtime ; aucune authentification modifiée, transport activé, clé ajoutée, publication serveur ou production. Les quatre cases de PR et les validations individuelles restent au responsable humain.
