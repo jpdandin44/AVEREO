@@ -16,7 +16,7 @@ tags:
 
 ## 16 novembre — Interventions vers Projet en revue locale
 
-Cadrage du prochain lot puis Développement local réalisé/qualifié : aperçu et fichier Projet, sauvegarde des estimations et import indépendant vérifiés sur données fictives. Prochaine action : revue locale de cette première tranche, choix de parcours à confirmer, puis décision distincte de merge. Préproduction PR162 conservée ; aucune Mise en production. [Revue et limites](docs/interventions-projet.md). Création directe CONNECT, lien automatique vers un dossier serveur et insertion du Gantt dans Word/PDF restent des compléments à cadrer ; autres lots inchangés.
+Cadrage du prochain lot puis Développement local réalisé/qualifié : aperçu et fichier Projet, sauvegarde des estimations et import indépendant vérifiés sur données fictives. Prochaine action : revue locale de cette première tranche, parcours par fichier confirmé par le responsable le 16 novembre, puis décision distincte de merge. Préproduction PR162 conservée ; aucune Mise en production. [Revue et limites](docs/interventions-projet.md). Création directe CONNECT, lien automatique vers un dossier serveur et insertion du Gantt dans Word/PDF restent des compléments à cadrer ; autres lots inchangés.
 
 ## 16 novembre — PR162 livrée, revue hébergée distincte
 

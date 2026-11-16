@@ -15,7 +15,7 @@ tags:
 
 ## 16 novembre — Planning Projet des interventions
 
-Sélection volontaire distincte du client, date/capacité/charges explicites, horizon libre non interprété ; aperçu informatif cohérent avec le moteur Projet. Sauvegarde/réouverture des estimations, fichier borné sans troncature, références valides, nouveau projet indépendant et conservation de l’existant. Aucune réalisation/validation déduite, API/droits nouveaux ou synchronisation automatique. [Contrat et critères](docs/interventions-projet.md). Le parcours par fichier est l’hypothèse annoncée de cette première tranche ; revue humaine à effectuer.
+Sélection volontaire distincte du client, date/capacité/charges explicites, horizon libre non interprété ; aperçu informatif cohérent avec le moteur Projet. Sauvegarde/réouverture des estimations, fichier borné sans troncature, références valides, nouveau projet indépendant et conservation de l’existant. Aucune réalisation/validation déduite, API/droits nouveaux ou synchronisation automatique. [Contrat et critères](docs/interventions-projet.md). Le parcours par fichier de cette première tranche est explicitement confirmé par le responsable le 16 novembre ; revue humaine du candidat à effectuer.
 
 ## Allègement des écrans — organisation acceptée le 16 novembre
 

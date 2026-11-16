@@ -15,11 +15,11 @@ tags: [rapport, interventions, projet, planning]
 ## Cadrage
 
 Le responsable demande d’enchaîner le prochain lot après la livraison PR162.
-Le suivi désigne Interventions vers Projet/Gantt informatif. Première tranche
-locale retenue comme hypothèse annoncée : un fichier Projet chargé volontairement
-par « Importer un projet » dans Mes projets, créant un projet indépendant.
-Une question facultative distingue ce parcours d’une création directe CONNECT ;
-aucun accord de nouvelle API, droit, connexion ou livraison n’est déduit.
+Le suivi désigne Interventions vers Projet/Gantt informatif. Le responsable
+confirme explicitement le 16 novembre : « Oui, commencer par le fichier Projet ».
+Cette première tranche prépare un fichier chargé volontairement par « Importer
+un projet » dans Mes projets, créant un projet indépendant. Ce choix de parcours
+est distinct de la revue des tests, du merge et des autorisations de livraison.
 
 Réutiliser decision.actions, sans deuxième liste d’interventions. Sélection
 Projet distincte de la sélection client. Début, capacité hebdomadaire et charges
@@ -142,9 +142,10 @@ local ; ces éléments de recette ne sont pas publiés. PHP, Docker/MariaDB déj
 présents, dépendances Node et dossier fictif local requis. Les liens cessent
 de répondre si les services sont arrêtés.
 
-Revue humaine et cases PR à effectuer ; question facultative du mode de transfert
-sans réponse enregistrée au moment de cette qualification. Le fichier annoncé
-reste l’hypothèse de cette première version, pas un accord humain inventé.
+Le responsable confirme ensuite explicitement le parcours par fichier Projet.
+Le choix de transfert est enregistré ; revue humaine du candidat et cases PR
+restent à effectuer. Cette réponse n’est pas reportée comme validation des tests
+ou autorisation de merge/livraison.
 
 ## Préproduction
 
