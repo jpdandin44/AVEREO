@@ -13,6 +13,10 @@ tags:
   - habitologie
 ---
 
+## 16 novembre — Planning Projet des interventions
+
+Sélection volontaire distincte du client, date/capacité/charges explicites, horizon libre non interprété ; aperçu informatif cohérent avec le moteur Projet. Sauvegarde/réouverture des estimations, fichier borné sans troncature, références valides, nouveau projet indépendant et conservation de l’existant. Aucune réalisation/validation déduite, API/droits nouveaux ou synchronisation automatique. [Contrat et critères](docs/interventions-projet.md). Le parcours par fichier de cette première tranche est explicitement confirmé par le responsable le 16 novembre ; revue humaine du candidat à effectuer.
+
 ## Allègement des écrans — organisation acceptée le 16 novembre
 
 Dossier, Observations et Export doivent proposer des résumés et des ouvertures individuelles/globales, conserver les choix entre onglets et ouvrir les nouveaux éléments. Aucun repli ne modifie données, champs techniques, numéros, repères, photos, dictée, signature, sauvegardes ou restitutions. Alertes et statut client réel restent accessibles ; clavier et écran étroit pris en compte. [Contrat et critères](docs/organisation-ecrans.md). La revue du candidat reste distincte de l’accord de cadrage.

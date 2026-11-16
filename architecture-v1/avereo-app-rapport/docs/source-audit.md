@@ -13,6 +13,14 @@ tags:
   - securite
 ---
 
+## 16 novembre — Sécurité du fichier Interventions vers Projet
+
+Projection sur liste blanche, sélection explicite et indépendante du rapport client, sans session/secret, média ou identité/adresse dédiée. Modalités/préalables et références lisibles présents : relire ce contenu professionnel avant transmission. Aucun transfert réseau automatique, point d’entrée, permission ou rôle nouveau. Bornes/types/dates/charges validés, blocs vides refusés pour ces nouvelles données. Ancien dossier intact à la lecture ; fichier refusé si références ambiguës/volume incompatible. HTTP fictif : sauvegarde et nouvelles sessions, erreurs conservant colonnes/propriétaire, Projet existant intact et projet importé exact. Word existants inchangés. [Portée et réserves](interventions-projet.md#qualification-locale).
+
+## 16 novembre — Conservation après livraison des écrans PR162
+
+Cible préproduction et base distincte vérifiées ; quatre ressources de l’archive qualifiée installées, sauvegarde/restauration sur copie contrôlées. Les 24 dossiers/toutes colonnes/propriétaires restent exacts, ainsi que configuration, production, journal et autres fichiers ; aucune migration, écriture de dossier ou activation d’originaux privés. CONNECT normal et import fictif local : JSON métier exact, seul le lien serveur source est retiré conformément au contrat d’import. Deux Word identiques aux références en textes/liens/images. Brouillon initial restauré dans les quatre emplacements et relu après rechargement. [Preuves et portée](organisation-ecrans.md#préproduction). Réserve PHP objet vide/liste séparée.
+
 ## 16 novembre — Sécurité et conservation des écrans repliables
 
 Nouvel état client de présentation, absent du payload et réinitialisé à l’import. Aucun code API, rôle, propriété, schéma, secret ou permission changé ; références et textes rendus par React et mêmes filtres client. Dictée active protégée, accords conservés ; simulation sans accès au microphone. Tests locaux de refus/propriété et sauvegarde/réouverture du dossier fictif réussis ; brouillon initial restauré et relu. [Preuves et limites](organisation-ecrans.md#qualification-effectuée). Normalisation PHP préexistante distincte ; aucune validation hébergée déduite.

@@ -13,6 +13,14 @@ tags:
   - connect
 ---
 
+## 16 novembre — Planning informatif vers Projet, candidat local
+
+Sous les interventions Habitologue, sélection Projet distincte, estimations explicites, aperçu du calendrier et fichier pour « Importer un projet » indépendant. Paramètres conservés dans le dossier ; aucun changement de Projet ou des Word. [Contrat, revue et preuves](docs/interventions-projet.md). PR162 reste la version hébergée ; les états datés suivants sont historiques.
+
+## 16 novembre — PR162 livrée et alignée en préproduction
+
+Après tests et merge humains, Dossier, Observations et Export repliables sont livrés sur le même artefact qualifié. Trois écrans, signature et deux Word contrôlés ; 24 dossiers/propriétaires, configuration, production et brouillon initial conservés. [Livraison, preuves et limites](docs/organisation-ecrans.md#préproduction). Les étapes datées suivantes sont historiques ; le suivi canonique porte l’état courant.
+
 ## 16 novembre — Écrans repliables prêts à tester localement
 
 Dossier, Observations et Export suivent l’organisation validée : résumés, ouverture individuelle/globale, nouvelles fiches ouvertes et champs conservés. Qualification locale de saisie, photos/plans/signature, sauvegarde/réouverture et deux Word réussie ; préproduction inchangée. [Revue locale, preuves et limites](docs/organisation-ecrans.md#revue-locale). Les états de proposition ci-dessous sont historiques.

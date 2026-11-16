@@ -1,0 +1,10 @@
+.project-estimates { display: grid; gap: 14px; margin: 16px 0; }
+.project-estimates fieldset { min-width: 0; border: 1px solid #d9e2ee; border-radius: 8px; padding: 12px; }
+.project-estimates legend { max-width: 100%; overflow-wrap: anywhere; font-weight: 650; }
+.intervention-gantt { padding: 12px; border: 1px solid #d9e2ee; border-radius: 8px; margin: 16px 0; }
+.intervention-gantt-row { display: grid; grid-template-columns: minmax(160px, 1fr) minmax(160px, 1fr); gap: 12px; align-items: center; margin: 14px 0; }
+.intervention-gantt-row > span { min-width: 0; overflow-wrap: anywhere; }
+.intervention-gantt-row small { display: block; color: #52637b; margin-top: 4px; }
+.intervention-gantt-track { min-width: 0; height: 16px; background: #edf3f8; border-radius: 4px; overflow: hidden; }
+.intervention-gantt-track > span { display: block; min-width: 2px; height: 100%; background: #247ba0; border-radius: 4px; }
+@media (max-width: 650px) { .intervention-gantt-row { grid-template-columns: 1fr; gap: 7px; } }

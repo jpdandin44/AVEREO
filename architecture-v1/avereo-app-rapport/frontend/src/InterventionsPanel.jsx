@@ -3,6 +3,7 @@ import VoiceField from './VoiceField.jsx';
 import { normalizeDecision, ACTION_CATEGORIES } from './decisionSupport.js';
 import { allowsInterventions, interventionWarnings, clientInterventions } from './interventions.js';
 import ScreenDisclosure, { DisclosureControls, useScreenPresentation, excerpt } from './ScreenDisclosure.jsx';
+import InterventionProjectPanel from './InterventionProjectPanel.jsx';
 import { orderedObservations, observationNumber } from './observationOrder.js';
 
 function References({ label, collection, selected, onChange }) {
@@ -48,5 +49,6 @@ export default function InterventionsPanel({ report, setReport, dictationAllowed
     </article>)}
     <button type="button" className="button secondary" disabled={d.actions.length >= 100} onClick={() => { const action = { id: crypto.randomUUID(), intitule: '', categorie: '', incontournable: false, observation_ids: [], attente_ids: [], priorite: '', horizon: '', realisation: '', prealables: '', explication: '', inclure_client: false }; update(prev => ({ ...prev, actions: [...prev.actions, action] })); presentation.setOpen(`intervention-${action.id}`, true); }}>Ajouter une intervention</button>
     {warnings.length > 0 && <div className="issue-list warning"><strong>Interventions à relire</strong><ul>{warnings.map(warning => <li key={warning}>{warning}</li>)}</ul></div>}
+    <InterventionProjectPanel report={report} setReport={setReport} />
   </fieldset>;
 }

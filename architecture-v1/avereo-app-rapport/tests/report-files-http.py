@@ -162,6 +162,16 @@ try:
     source = mysql("SELECT * FROM rapport_reports WHERE public_id='" + A + "';", db_name)
     stored = bytes.fromhex(mysql("SELECT HEX(payload_json) FROM rapport_reports WHERE public_id='" + A + "';", db_name).decode().strip())
     check('Stored full data matches submitted fields', json.loads(stored) == fixture)
+    if 'planning_projet' in fixture.get('decision', {}):
+        for label, invalid in [('impossible start', '2026-02-30'), ('numeric charge type', 2), ('non boolean selection', 'true'), ('empty settings', []), ('empty estimate', [])]:
+            bad_planning = json.loads(json.dumps(fixture))
+            if label == 'impossible start': bad_planning['decision']['planning_projet']['date_debut'] = invalid
+            elif label == 'empty settings': bad_planning['decision']['planning_projet'] = invalid
+            elif label == 'empty estimate': bad_planning['decision']['actions'][0]['planning_projet'] = invalid
+            else: bad_planning['decision']['actions'][0]['planning_projet']['charge' if label == 'numeric charge type' else 'inclure'] = invalid
+            check('Invalid intervention planning refused: ' + label, save(a, bad_planning, A)[0] == 422)
+            check('Rejected planning preserves every source column and owner: ' + label,
+                  mysql("SELECT * FROM rapport_reports WHERE public_id='" + A + "';", db_name) == source)
     result = req('/api/reports.php?id=' + A + '&download=1', a)
     check('Full download byte-identical to database', result[0] == 200 and result[2] == stored)
     check('Download hash and byte count exact', result[1].get('X-Avereo-Payload-Sha256') == hashlib.sha256(stored).hexdigest() and int(result[1].get('Content-Length', -1)) == len(stored))

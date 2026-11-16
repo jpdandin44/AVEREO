@@ -23,9 +23,9 @@ constituent pas des instructions supplémentaires.
 
 **Organisation et ouvertures par défaut validées par le responsable le 16 novembre.**
 Il demande explicitement le développement de Dossier, Observations et Export en
-conservant toutes les fonctions existantes. Le candidat local est réalisé et
-qualifié ci-dessous ; sa revue humaine reste distincte de cet accord de cadrage.
-Aucun nouveau déploiement n’est autorisé par cette demande. Source de pilotage :
+conservant toutes les fonctions existantes. Le candidat local a ensuite été testé
+et fusionné par le responsable ; sa demande distincte de livraison préproduction
+est exécutée et vérifiée ci-dessous. Aucun accord de production. Source de pilotage :
 `rapportV12CadrageProfils20261112.affichageEcrans20261116` dans le
 [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>).
 
@@ -162,8 +162,8 @@ ci-dessus. Site et Protocoles restent disponibles avec leur organisation actuell
 Une harmonisation de leurs détails secondaires pourra être cadrée ensuite.
 
 Organisation, ordre dans Export et ouvertures par défaut acceptés explicitement.
-Les résumés exacts et petits ajustements de densité sont désormais à examiner sur
-le candidat local, avant les décisions distinctes de merge et de livraison. Les nouveaux profils,
+Les résumés et la disposition ont été testés localement par le responsable avant
+fusion ; la revue de l’affichage hébergé reste distincte. Les nouveaux profils,
 Projet/Gantt, originaux privés et PDF direct restent leurs lots propres.
 
 Critères proposés pour la future recette : conservation exacte des champs/liaisons,
@@ -259,6 +259,9 @@ dans les quatre emplacements et relu à l’identique après rechargement.
 
 ### Revue locale
 
+Référence de la revue acceptée avant fusion ; la version courante est maintenant
+livrée en préproduction dans la section suivante.
+
 [Ouvrir les comptes fictifs](http://127.0.0.1:5197/fixture/) → Compte fictif A →
 rechercher **RECETTE-AFFICHAGE-INTERFACE-20261116** dans la liste serveur → Ouvrir
 le dossier → Dossier, Observations, Export. Ne pas utiliser Reprendre pour cette
@@ -268,15 +271,60 @@ temporaires ; ils doivent rester actifs. Pour relancer depuis la racine applicat
 PHP, Docker/MariaDB et dépendances Node déjà installés sont requis ; la fixture
 fictive de revue reste locale et n’est pas publiée.
 
-La revue humaine et les quatre cases PR sont en attente. Réserve préexistante
+La revue locale et les quatre cases PR ont ensuite été validées par le responsable. Réserve préexistante
 PHP des objets vides/listes distincte ; aucun nouveau droit, compte, schéma, secret,
 activation d’originaux privés, autre lot ou changement hébergé.
 
 ## Préproduction
 
-Aucun changement. La version PR161 et sa recette Interventions terminée restent
-décrites dans le [dossier du lot](interventions-proposees.md#recette-complète-du-16-novembre).
+**PR162 livrée et alignée le 16 novembre**, après tests déclarés OK et demande
+explicite du responsable. Quatre cases humaines relues cochées, policy stricte et
+CI réussies. Fusion f4017bec7ee448e7de71edf0b03d9cdada9e93af et candidat
+b04ea2bbfda79f091b3a6685ee6871ee83ee4806 : arbre f36b2e2 identique.
+Archive qualifiée de 150 fichiers promue sans reconstruction, SHA-256
+f7c8a9734055aedba65bd435f4cc6fc381baf964e81d59ef0e4fdb2928a4a007.
+
+Cible [Rapport préproduction](https://rapport-preprod.avereo.fr/) via CONNECT ;
+racine réelle et base isolée vérifiées. Quatre fichiers installés : CSS
+index-4HiXtcYQ, JS index-JfJGoweD, module Word reportDocx-B7-bOQwq et index HTML en
+dernier. Sauvegarde fraîche application/configuration relue, restauration et
+rollback code répétés sur copie indépendante ; sauvegarde privée de la table
+relue sans restauration SQL. Les variantes partagées préexistantes et les seules
+différences de fins de ligne sont conservées hors de ce périmètre.
+
+208 fichiers préexistants conservés ; **24 dossiers/toutes colonnes/propriétaires
+exacts** à l’installation puis après navigation. Configuration, production,
+journal et schéma inchangés ; aucun compte/droit, original privé ou dossier
+serveur créé/modifié. Trois ressources HTTPS exactes et refus anonymes racine/API
+attendus. Connexion normale CONNECT renouvelée sans intervention utilisateur.
+
+Dossier fictif complet importé localement : Dossier, Observations et Export,
+replis individuels/globaux, accès Localiser et fiche, signature redessinée sans
+perte, trois interventions et statut client réel contrôlés. JSON métier exact :
+14 observations, quatre photos (trois d’observations et une de contexte), quatre
+plans, signature et trois interventions. Seul le lien serveur source est retiré
+normalement par l’import ; ce n’est pas une perte de contenu. Word expert/client
+hébergés identiques aux références en textes, cibles de liens et octets des
+images : neuf médias expert, huit client. Filtres client inchangés.
+Brouillon initial restauré dans les quatre emplacements, relu après rechargement
+et comparé à sa sauvegarde privée indépendante.
+
+[Reçu final](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr162-preprod-20261116/verification-finale.json>) ·
+[Livraison](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr162-preprod-20261116/delivery.json>) ·
+[Récupération](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr162-preprod-20261116/recovery.json>) ·
+[Conservation après navigation](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr162-preprod-20261116/verification.json>) ·
+[Word](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr162-preprod-20261116/verification-word-preproduction.json>) ·
+[Brouillon restauré](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr162-preprod-20261116/restauration-brouillon.json>).
+
+Recette dédiée de nouvelle sauvegarde et réouverture serveur dans une nouvelle
+session **non effectuée lors de cette livraison** ; les recettes antérieures
+gardent leur portée. Revue métier hébergée distincte. Pas de nouvelle lecture
+native/pagination Word/PDF, microphone/caméra réels ou appareil mobile physique.
+Réserve PHP objet vide/liste préexistante séparée. Aucun obstacle restant dans le
+périmètre livré. Les preuves de PR161 et sa recette Interventions sont conservées
+dans le [dossier précédent](interventions-proposees.md#recette-complète-du-16-novembre).
 
 ## Mise en production
 
-Non engagée. Le cadrage ne crée aucune autorisation de merge ou de livraison.
+Non engagée et non autorisée. Prochaine action : revue de l’affichage en
+préproduction ; tout prochain lot et sa portée restent à confirmer.

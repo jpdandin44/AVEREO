@@ -1,0 +1,157 @@
+---
+project: avereo-app-rapport
+document_type: functional-specification
+title: Interventions Rapport vers Projet et planning informatif
+status: active
+version: git
+created: 2026-11-16
+updated: 2026-11-16
+owner: jpdandin
+tags: [rapport, interventions, projet, planning]
+---
+
+# Interventions Rapport vers Projet et planning informatif
+
+## Cadrage
+
+Le responsable demande d’enchaîner le prochain lot après la livraison PR162.
+Le suivi désigne Interventions vers Projet/Gantt informatif. Le responsable
+confirme explicitement le 16 novembre : « Oui, commencer par le fichier Projet ».
+Cette première tranche prépare un fichier chargé volontairement par « Importer
+un projet » dans Mes projets, créant un projet indépendant. Ce choix de parcours
+est distinct de la revue des tests, du merge et des autorisations de livraison.
+
+Réutiliser decision.actions, sans deuxième liste d’interventions. Sélection
+Projet distincte de la sélection client. Début, capacité hebdomadaire et charges
+explicitement renseignés ; horizon libre non converti en dates. Aperçu informatif
+dans Rapport calculé par le moteur Projet existant. Ordre séquentiel annoncé,
+lundi–vendredi, jours fériés non intégrés. Aucune validation ou réalisation déduite.
+
+Les paramètres et estimations optionnels restent dans le dossier Rapport, avec
+brouillon/JSON/serveur. Le fichier dérivé contient seulement les interventions
+sélectionnées, leurs modalités/préalables et références utiles ; aucune photo,
+plan, signature, identité de connexion ou autre contenu du rapport. Avant le
+téléchargement, le contenu et les limites sont affichés. Le JSON complet Rapport
+et les restitutions expert/client actuelles restent disponibles et inchangés.
+
+## Développement local
+
+Copie isolée C:/Users/examg/Documents local/avereo-rapport-projet, branche
+feat/rapport-projet-interventions, base PR162 fusionnée f4017be. Sept documents
+de livraison précédents repris à l’identique, copie source préservée.
+
+Fichiers prévus : nouveau panneau et adaptateur de projection dans frontend/src,
+raccord InterventionsPanel, validation PHP des champs optionnels, tests ciblés et
+documentation. Lecture/import du moteur planning-core.js existant de Projet,
+sans modification de l’application Projet, de ses routes/droits ou des composants
+communs. Tableau/Gantt de vérification et création indépendante via son import
+existant à qualifier.
+
+Critères : données hors planning et identifiants Rapport intacts ; ancien dossier
+inchangé à la lecture ; refus des dates/charges/références invalides ; export
+normalisé sans perte par Projet ; contenu explicite et borné, réimport et projet
+courant conservé ; sauvegarde/réouverture des estimations ; Word expert/client
+identiques hors données d’édition ; replis PR162 et profil Habitologue préservés.
+
+### Contrat et conservation
+
+Le [contrat d’échange](../api/interventions-projet.md) fixe les blocs optionnels,
+la sélection, les données exportées, les bornes et le calendrier. Aucun champ
+ajouté à la lecture. Paramètres dans decision.planning_projet et estimations dans
+les actions existantes, ouverture repliable cohérente avec PR162. Import du moteur
+Projet existant, sans dépendance nouvelle ni modification de Projet.
+
+Le fichier Projet est une projection professionnelle des interventions cochées,
+indépendante du filtrage client. Il contient modalités/préalables et références
+lisibles, aucune identité de connexion, donnée photo/plan/signature ou note
+d’écoute. Il n’est pas le JSON complet Rapport. Les textes trop longs et références
+ambiguës sont refusés sans troncature. Le fichier est créé avant toute décision
+de l’importer ; Mes projets propose le nom et crée une nouvelle ligne.
+
+Un nombre intermédiaire invalide reste éditable ; export et sauvegarde serveur
+refusés tant qu’il est incorrect. Les blocs vides/listes sont refusés pour ces
+nouvelles propriétés, sans modifier la réserve des protocoles antérieurs.
+Les moteurs de restitution existants restent identiques : aucun planning ajouté
+aux Word expert/client dans cette première tranche.
+
+### Qualification locale
+
+**226 tests Node Rapport**, dont dix nouveaux ; **34 tests du moteur Projet
+inchangé**, dont week-ends/capacité/changement d’heure ; **47 contrôles PHP décision**,
+13 plans et téléchargement complet. Deux builds de 150 fichiers, dépendances
+verrouillées inchangées. 48 contrôles HTTP/PHP/MariaDB : sauvegarde, invalides
+refusés en conservant toutes les colonnes/propriétaire, nouvelles sessions,
+copies et refus croisés. 74 contrôles HTTP natifs Projet existants : identité,
+CSRF/origine, révisions, projets indépendants et conservation. Tous réussis.
+
+Navigateur natif sur compte fictif A : zéro sélection et capacité 0 empêchent le
+téléchargement sans masquer les champs ; sélection/désélection conserve les
+estimations. Aperçu de deux interventions, 3,5 jours-personne, du 23 novembre
+au 1er décembre sous les hypothèses saisies. Fichier réellement téléchargé dans
+Rapport puis sélectionné par le sélecteur de fichiers de Projet. « Importer un
+projet » crée une ligne indépendante ; Gantt, deux tâches et dates concordants.
+Réexport UI du projet entier identique au fichier reçu. Rechargement : nouveau
+projet et projet préexistant tous deux présents ; ancien current.json exactement
+identique, révision conservée. Les identités signées sont fictives et séparées
+pour les deux bancs locaux, pas un SSO CONNECT réel qualifié.
+
+Sauvegarde Rapport, déconnexion normale, retrait du seul brouillon de l’origine
+de recette et nouvel onglet/compte A ; Reprendre désactivé. Téléchargement serveur
+avant/après identique octet pour octet, et décision complète relue dans l’interface
+à l’identique ; 14 observations, quatre photos, quatre plans et signature conservés.
+Aucune origine/brouillon préproduction ou d’un autre service touché.
+
+Word expert/client générés depuis l’interface : mêmes textes après substitution
+des seuls titre/référence fictifs volontairement changés, mêmes cibles de liens
+et mêmes octets des neuf/huit médias que les références PR162. HTML exact avec
+et sans métadonnées planning pour les deux restitutions. Pas de nouvelle lecture
+native/pagination Word/PDF. Écran ouvert à 390 pixels : largeur/scroll de page
+375/375, pas de débordement observé ; ce n’est pas un appareil physique.
+
+La fixture synthétique reprend la représentation serveur des quatre contrôles
+de protocole vides (listes plutôt qu’objets) : réserve PHP préexistante explicitée
+dans fixture-compatibilite-php.json, assertions de conservation non affaiblies.
+Le montage du banc Projet a été corrigé pour préparer le sas commun et une session
+fictive conforme ; code Projet inchangé. Aucun blocage technique restant localement.
+
+[Qualification](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-interventions-projet-20261116/verification-locale.json>) ·
+[Nouvelle session](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-interventions-projet-20261116/recette-reouverture.json>) ·
+[Import Projet](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-interventions-projet-20261116/projet-integration.json>) ·
+[Word](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-interventions-projet-20261116/verification-word.json>).
+
+### Revue locale
+
+[Rapport fictif](http://127.0.0.1:5198/fixture/) → Compte fictif A →
+RECETTE-PROJET-20261116 dans la liste serveur → Export → Planning informatif et
+Projet. Les estimations de recette sont déjà disponibles ; champs et sélection
+peuvent être modifiés sur ce dossier fictif. Télécharger pour Projet.
+
+[Projet fictif](http://127.0.0.1:5200/fixture) → Importer un projet → choisir le
+fichier → Créer et ouvrir. Le projet préexistant et un exemple déjà importé
+permettent de vérifier la conservation. Services temporaires actifs, sans vraie
+identité CONNECT. La fenêtre Projet de recette utilise le HTML métier inchangé
+et l’API privée locale ; le cadre React/SSO hébergé n’est pas qualifié par ce banc.
+
+Relance Rapport depuis la racine application :
+
+```powershell
+python -X utf8 tests/report-files-http.py --fixture .local/projet-recette.json --receipt .local/verification-http.json --serve --port 5198
+```
+Le banc Projet est décrit par .local/start-projet-fixture.py et son état privé
+local ; ces éléments de recette ne sont pas publiés. PHP, Docker/MariaDB déjà
+présents, dépendances Node et dossier fictif local requis. Les liens cessent
+de répondre si les services sont arrêtés.
+
+Le responsable confirme ensuite explicitement le parcours par fichier Projet.
+Le choix de transfert est enregistré ; revue humaine du candidat et cases PR
+restent à effectuer. Cette réponse n’est pas reportée comme validation des tests
+ou autorisation de merge/livraison.
+
+## Préproduction
+
+Non engagée pour ce lot, aucune nouvelle autorisation. PR162 livrée conservée.
+
+## Mise en production
+
+Non engagée et non autorisée. Revue locale et décision de merge distinctes.
+

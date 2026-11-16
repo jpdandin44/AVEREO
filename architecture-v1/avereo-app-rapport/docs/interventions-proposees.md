@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [rapport, interventions, habitologue, export, planning]
 ---
 
+## 16 novembre — Raccordement Projet réalisé localement
+
+Le sous-lot suivant est désormais préparé et qualifié dans [Interventions vers Projet](interventions-projet.md) : sélection/estimations, aperçu et fichier pour import indépendant. Le [contrat courant](../api/interventions-projet.md) remplace les inconnues de cette première tranche ; création directe et planning Word/PDF restent à cadrer. Les paragraphes suivants conservent l’historique du premier lot d’interventions et ses recettes hébergées, sans nouvel accord de livraison.
+
 # Interventions proposées
 
 ## Cadrage

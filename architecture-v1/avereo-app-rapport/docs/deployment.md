@@ -14,6 +14,10 @@ tags:
   - mysql
 ---
 
+## 16 novembre — Livraison PR162 attestée
+
+Tests déclarés OK, quatre cases humaines cochées et fusion f4017be vérifiés ; même arbre que b04ea2b qualifié. Archive f7c8a973 promue sans reconstruction : JS principal, CSS, module Word et index HTML en dernier. Sauvegarde fraîche application/configuration relue, restauration et rollback code vérifiés sur copie ; sauvegarde privée des dossiers relue sans restauration SQL. 208 fichiers préexistants conservés, 24 dossiers/toutes colonnes/propriétaires exacts après navigation ; configuration/production et journal intacts. Composants partagés et différences de fins de ligne déjà qualifiés conservés. [Cible, reçus et limites](organisation-ecrans.md#préproduction).
+
 ## 16 novembre — Recette serveur Interventions achevée
 
 Recette autorisée après livraison PR161, sans nouveau déploiement : deux sauvegardes du même dossier fictif, connexion normale après déconnexion complète et réouverture serveur sans brouillon. Les 23 dossiers/colonnes/propriétaires antérieurs sont exacts, 24 au total ; code/configuration/production et journal conservés. Brouillon initial restauré et relu. [Reçus, accès et limites](interventions-proposees.md#recette-complète-du-16-novembre). Les comptes de la livraison ci-dessous décrivent l’état avant cette recette.

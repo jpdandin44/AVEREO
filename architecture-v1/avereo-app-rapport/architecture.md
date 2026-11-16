@@ -12,6 +12,10 @@ tags:
   - architecture
 ---
 
+## 16 novembre — Projection des interventions vers Projet
+
+InterventionProjectPanel lit les mêmes decision.actions, sauvegarde les seuls paramètres optionnels et affiche un aperçu dérivé. interventionProject.js importe le moteur Projet canonique pour normaliser/encoder/calculer le fichier, sans copie du calendrier ni nouvelle API interapplications. Le fichier est chargé par l’import privé existant de Projet, qui crée un projet indépendant sous ses droits habituels. [Flux, données et limites](api/interventions-projet.md). Les moteurs Word et les contrôles de propriétaire restent inchangés.
+
 ## Présentation progressive — 16 novembre
 
 ScreenPresentation conserve les ouvertures uniquement en mémoire du wizard, par identifiant stable ; ScreenDisclosure garde les champs montés et contrôle leur visibilité. La création explicite initialise les ouvertures ; un import réinitialise le contexte, sans champ de présentation dans le JSON/API. App, InterventionsPanel et ObservationPlans réutilisent leurs données et commandes ; signature redessinée à dimension visible et dictée active protégée du repli. [Responsabilités et limites](docs/organisation-ecrans.md#composants-et-conservation).
