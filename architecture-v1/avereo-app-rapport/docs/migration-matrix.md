@@ -13,6 +13,10 @@ tags:
   - fonctionnalites
 ---
 
+## 17 novembre — Libellé Analyse globale sans migration
+
+La valeur profil_metier=habitologue, les catégories historiques dont Rapport Habitologue et les préférences de compte restent exactes. Seule la présentation de la prestation change ; aucun remplacement dans les textes utilisateurs ou médias. Profils absent/inconnu et parcours Architecte/Maître d’œuvre conservés. [Contrat](profils-professionnels.md#libellé-de-prestation--17-novembre).
+
 ## 17 novembre — Plans multiples sans migration SQL
 
 Les huit valeurs de plans[].kind sont acceptées par le client et la validation PHP ; anciennes valeurs niveau/coupe/cadastre inchangées. cadrage.mode est facultatif et borné aux trois fonds. Vues figées, IDs et coordonnées conservés ; aucune migration, copie d’identité ou modification de droit. [Règles de conservation](reperage-observations.md).

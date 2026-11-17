@@ -3,7 +3,7 @@ import { orderedObservations, observationNumber } from './observationOrder.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { buildDecisionHtml } from './decisionSupport.js';
-import { usesMissionContext, observationAdviceLabel } from './reportProfiles.js';
+import { usesMissionContext, observationAdviceLabel, isHabitologueProfile, missionProfileLabel } from './reportProfiles.js';
 import { reportPhotoSource } from './photoReportVersion.js';
 import { buildInterventionsHtml } from './interventions.js';
 
@@ -39,7 +39,7 @@ function cover(report, client) {
     <img class="brand-logo" src="${AVEREO_LOGO}" alt="${escapeHtml(AVEREO_NAME)}" />
     <div class="company-identity">${AVEREO_COMPANY_LINES.map(line => `<p>${escapeHtml(line)}</p>`).join('')}</div>
     <p class="eyebrow">HABITAT · COMPRENDRE · DÉCIDER</p>
-    <h1>${client ? 'Votre habitat, l’essentiel' : 'Rapport expert détaillé'}</h1>
+    <h1>${isHabitologueProfile(report) ? `${escapeHtml(missionProfileLabel(report))} — ` : ''}${client ? 'Votre habitat, l’essentiel' : 'Rapport expert détaillé'}</h1>
     <h2>${escapeHtml(report.titre)}</h2>
     <p class="address">${escapeHtml(report.adresse_logement)}</p>
     <table><tr><td>Dossier</td><td>${escapeHtml(report.reference_dossier)}</td></tr>

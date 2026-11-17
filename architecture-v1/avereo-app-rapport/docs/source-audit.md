@@ -13,6 +13,10 @@ tags:
   - securite
 ---
 
+## 17 novembre — Libellé Analyse globale, candidat local
+
+Trois fichiers de présentation : reportProfiles, reportDelivery et le message de reprise du métier dans connectedMissionProfile. Aucune API, préférence, permission ou donnée modifiée ; le nom de profession CONNECT reste Habitologue. Les titres libres et archives ne sont pas réécrits, les conseils restent inchangés. [Périmètre et contrôles](profils-professionnels.md#libellé-de-prestation--17-novembre).
+
 ## 17 novembre — Plans et vues multiples, candidat local
 
 Périmètre : ObservationPlans, App pour navigation des fiches, capture/carte IGN, validation de plan et libellés des vues dans les restitutions. Modèle de stockage, moteur Word, règles client et droits/propriété conservés. Fonds publics IGN uniquement ; aucun dossier réel, secret ou rôle natif changé. [Contrat et limites de preuve](reperage-observations.md). Les nouveaux types doivent être livrés côté validation avant qu’un client puisse les enregistrer. Sauvegarde/restauration et alignement de version à qualifier lors d’une future livraison autorisée.
