@@ -12,6 +12,14 @@ tags:
   - architecture
 ---
 
+## 17 novembre — Actions issues de la politique CONNECT
+
+La projection privée existante porte report_actions et access_profile pour les
+seuls comptes affectés. Contrôles serveur à chaque requête, verrou des écritures
+et propriété conservés ; contrôle frais pour les téléchargements officiels du
+navigateur. Actualisation d'interface au focus/30 secondes et consultation
+repliable utilisable sans modification. [Flux et frontières de garantie](../avereo-app-connect/docs/profils-et-droits.md).
+
 ## Titulaire des rapports et des originaux
 
 Le titulaire courant, le rattachement vérifié, les métadonnées des originaux et le reçu évoluent dans une transaction Rapport. Le dépôt physique des photos reste stable. [Schéma et procédure](../../docs/administration-acces-exports.md#transférer-un-rapport-avant-fermeture).

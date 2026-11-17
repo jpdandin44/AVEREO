@@ -78,3 +78,13 @@ avereo_identity_bridge.account_deletion:
   methods: [POST]
   options:
     no_cache: TRUE
+
+avereo_identity_bridge.profile_authorization:
+  path: '/avereo/profiles/authorization'
+  defaults:
+    _controller: '\Drupal\avereo_identity_bridge\Controller\ProfileAuthorizationController::authorize'
+  requirements:
+    _access: 'TRUE'
+  methods: [POST]
+  options:
+    no_cache: TRUE

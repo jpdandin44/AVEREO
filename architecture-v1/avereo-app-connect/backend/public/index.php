@@ -42,7 +42,7 @@ try {
     if (is_readable($privateConfigPath)) {
         $privateValues = require $privateConfigPath;
         $allowedPrivateKeys = [
-            'DEVELOPMENTS_PRIVATE_CONFIG', 'APPEARANCE_ADMIN_ORGANIZATION_ID', 'APPLICATION_ACCESS_DELEGATIONS_ENABLED',
+            'PROFILES_PRIVATE_CONFIG', 'DEVELOPMENTS_PRIVATE_CONFIG', 'APPEARANCE_ADMIN_ORGANIZATION_ID', 'APPLICATION_ACCESS_DELEGATIONS_ENABLED',
             'APP_ENV', 'APP_DEBUG', 'DB_DSN', 'DB_USER', 'DB_PASSWORD',
             'SESSION_COOKIE_NAME', 'SESSION_IDLE_SECONDS', 'SESSION_ABSOLUTE_SECONDS',
             'OAUTH_ISSUER', 'OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL',
@@ -128,6 +128,18 @@ try {
             $config->identityAccountActivationSecret,
         )
         : null;
+    $profileCatalog=null;
+    $profileAdministration=null;
+    $profilePolicy=null;
+    $profileConfig=trim((string)getenv('PROFILES_PRIVATE_CONFIG'));
+    if ($profileConfig!=='') {
+        if ($pdo===null || !$repository instanceof PdoConnectRepository) throw new RuntimeException('Gestion des profils indisponible.');
+        [$profileCatalog,$profilePolicy,$profileAdministration]=\Avereo\Connect\Administration\ProfileFactory::create(
+            $profileConfig,$documentRoot,$pdo,$repository,$session->context(),trim((string)getenv('TRIAL_ACCESS_POLICY_FILE')),$config->oauthIssuer,
+            [...array_values($config->appLaunchSecrets),$config->oauthClientSecret,$config->identityLogoutSecret,$config->identityAccountActivationSecret,
+                (string)getenv('IDENTITY_ACCOUNT_PROVISIONING_SECRET'),(string)getenv('IDENTITY_ACCOUNT_DELETION_SECRET')]);
+        $repository=new PdoConnectRepository($pdo,$delegations,$profileCatalog);
+    }
     $accountAdministration = null;
     $accountLifecycle = null;
     $reportTransfers = null;
@@ -135,7 +147,7 @@ try {
     $provisionSecret = trim((string)getenv('IDENTITY_ACCOUNT_PROVISIONING_SECRET'));
     $trialPolicy = trim((string)getenv('TRIAL_ACCESS_POLICY_FILE'));
     if ($pdo !== null && $repository instanceof PdoConnectRepository && $provisionUrl!=='' && $provisionSecret!=='' && $trialPolicy!=='') {
-        $policyStore = new \Avereo\Connect\Administration\TrialPolicyStore($trialPolicy);
+        $policyStore = $profilePolicy ?? new \Avereo\Connect\Administration\TrialPolicyStore($trialPolicy);
         $accountAdministration = new \Avereo\Connect\Administration\AccountAdministration($pdo,
             new \Avereo\Connect\Identity\IdentityAccountProvisioningClient($provisionUrl,$provisionSecret),
             $policyStore, $delegations);
@@ -213,6 +225,8 @@ try {
         $appearance,
         new \Avereo\Connect\Account\Preferences(dirname($privateConfigPath) . '/account-preferences'),
         $reportTransfers,
+        $profileAdministration,
+        $profileCatalog,
     );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {

@@ -56,6 +56,7 @@ paths:
                     properties:
                       accountBadge: {type: string, description: Une à trois lettres ou chiffres Unicode, default: MOI}
                       professionalProfile: {type: string, enum: ['', habitologue, architecte, maitre_oeuvre], default: '', description: Défaut métier déclaré sans effet sur les droits}
+                      accessProfile: {description: 'Type administré du compte ou null, distinct de la préférence personnelle'}
                       accountContext: {type: string, pattern: '^[a-f0-9]{64}$'}
                       accountId: {type: integer, minimum: 1, description: Compte courant généré côté serveur pour vérifier la correspondance avec la session applicative}
                   meta: {type: object}
@@ -880,6 +881,94 @@ paths:
         "403": {description: 'Compte protégé, autorisation ou CSRF refusé'}
         "422": {description: Deux dates requises ou deux valeurs nulles pour accès permanent}
         "503": {description: Service non configuré}
+  /profile-types:
+    get:
+      tags: [Session]
+      operationId: listActiveProfileTypes
+      summary: Lire les noms et parcours des types actifs sans attribuer de droits
+      responses:
+        "200": {description: Liste privée des choix id/name/template dans data}
+        "401": {$ref: "#/components/responses/AuthenticationRequired"}
+        "503": {description: Catalogue non configuré}
+  /admin/profiles:
+    get:
+      tags: [Administration]
+      operationId: readGlobalProfileCatalogue
+      summary: Lire le catalogue commun et son historique avec le seul compte global habilité
+      responses:
+        "200":
+          description: Catalogue privé et droits administrés
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: {$ref: "#/components/schemas/ProfileCatalogue"}
+                  meta: {$ref: "#/components/schemas/Meta"}
+        "401": {$ref: "#/components/responses/AuthenticationRequired"}
+        "403": {description: Compte propriétaire exact et rôle global Drupal actuel requis}
+        "503": {description: Autorité ou catalogue non configuré}
+    post:
+      tags: [Administration]
+      operationId: createGlobalProfileType
+      summary: Créer un type sans affecter de compte automatiquement
+      parameters:
+        - {$ref: "#/components/parameters/CsrfToken"}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/ProfileTypeInput"}
+      responses:
+        "200": {description: Identifiant généré côté serveur et nouvelle révision dans data}
+        "403": {description: Autorité globale ou origine ou CSRF refusé}
+        "409": {description: Nom déjà utilisé ou révision périmée}
+        "422": {$ref: "#/components/responses/ValidationError"}
+  /admin/profiles/{profileId}:
+    put:
+      tags: [Administration]
+      operationId: updateGlobalProfileType
+      summary: Modifier ou désactiver un type et recalculer les accès de ses comptes
+      parameters:
+        - {name: profileId, in: path, required: true, schema: {type: string, pattern: '^[a-z][a-z0-9_-]{1,63}$'}}
+        - {$ref: "#/components/parameters/CsrfToken"}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/ProfileTypeInput"}
+      responses:
+        "200": {description: Révision et nombre de comptes concernés dans data}
+        "403": {description: Autorité globale ou origine ou CSRF refusé}
+        "404": {description: Type introuvable}
+        "409": {description: Nom déjà utilisé ou révision périmée}
+        "422": {$ref: "#/components/responses/ValidationError"}
+  /admin/organizations/{organizationId}/users/{userId}/profile:
+    put:
+      tags: [Administration]
+      operationId: assignGlobalProfileToAccount
+      summary: Affecter un type actif au compte éligible sans modifier ses droits de base ou ses dates
+      description: Un profileId null retire explicitement le profil et rétablit le fonctionnement antérieur. Auto-affectation du compte administrateur global protégée.
+      parameters:
+        - {$ref: "#/components/parameters/OrganizationId"}
+        - {$ref: "#/components/parameters/UserId"}
+        - {$ref: "#/components/parameters/CsrfToken"}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [revision, profileId]
+              properties:
+                revision: {type: integer, minimum: 0}
+                profileId: {type: [string, "null"]}
+      responses:
+        "200": {description: Affectation enregistrée et projection privée actualisée}
+        "403": {description: Autorité ou origine ou CSRF ou compte protégé}
+        "409": {description: Révision périmée}
+        "422": {description: Type absent ou inactif ou entrée invalide}
 components:
   securitySchemes:
     sessionCookie:
@@ -1370,3 +1459,43 @@ components:
               additionalProperties: true
         meta:
           $ref: "#/components/schemas/Meta"
+    ProfileTypeInput:
+      type: object
+      additionalProperties: false
+      required: [revision, name, description, template, active, applications, reportActions]
+      properties:
+        revision: {type: integer, minimum: 0}
+        name: {type: string, minLength: 1, maxLength: 160, description: Limite de 160 octets UTF-8}
+        description: {type: string, maxLength: 1000, description: Limite de 1000 octets UTF-8}
+        template: {type: string, enum: [habitologue, architecte, maitre_oeuvre]}
+        active: {type: boolean}
+        applications:
+          type: array
+          maxItems: 32
+          uniqueItems: true
+          items: {type: string, pattern: '^[a-z][a-z0-9_-]{1,63}$'}
+        reportActions:
+          type: array
+          uniqueItems: true
+          maxItems: 5
+          items: {type: string, enum: [read, create, update, delete, export]}
+    ProfileCatalogue:
+      type: object
+      properties:
+        version: {type: integer, const: 1}
+        revision: {type: integer, minimum: 0}
+        actorId: {type: integer, minimum: 1}
+        profiles:
+          type: array
+          maxItems: 100
+          items: {type: object, description: Définition ProfileTypeInput sans revision avec id serveur stable}
+        assignments:
+          type: object
+          additionalProperties: {type: string}
+        applications:
+          type: array
+          items: {type: object, description: Code et nom des applications actives}
+        audit:
+          type: array
+          maxItems: 50
+          items: {type: object, description: Événement privé avec date et auteur et état avant/après}

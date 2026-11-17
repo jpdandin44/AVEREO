@@ -5,10 +5,20 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 17 novembre — PR164 fusionnée ; catalogue et droits à cadrer
+
+**Cadrage** du lot confirmé : catalogue commun de profils dans Gérer
+les comptes, accès applications et actions dans Rapport. **Développement local** réalisé et soumis à revue humaine : catalogue sans droit
+initial, propriétaire global seul, périmètre d'export officiel documenté.
+**Préproduction** : différée explicitement par le responsable après le nouveau
+lot ; candidat PR164 et paquets conservés, sans installation. **Mise en production** non engagée.
+[Plan, critères et inconnues](docs/profils-et-droits.md). Les états datés suivants
+conservent l'historique.
 
 ## 16 novembre — Profils CONNECT/Rapport en revue locale
 

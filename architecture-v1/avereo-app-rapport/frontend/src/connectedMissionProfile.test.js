@@ -7,6 +7,16 @@ import { createTestReportCopy } from './testReportCopy.js';
 const user = { provider: 'avereo_connect', id: '42' };
 const portal = 'https://connect-preprod.avereo.fr';
 
+test('an administered custom type supplies a supported default without changing any permission', async () => {
+  const accessProfile = { id: 'p_custom', name: 'Conseiller rénovation', template: 'habitologue', active: true, reportActions: ['read'] };
+  const read = professionalProfile => readConnectedMissionProfile({ portal, user, fetchImpl: async () => ({ ok: true,
+    json: async () => ({ data: { accountId: 42, professionalProfile, accessProfile } }) }) });
+  const fallback = await read('');
+  assert.equal(fallback.profile, 'habitologue'); assert.match(fallback.notice, /Conseiller rénovation/);
+  assert.equal((await read('architecte')).profile, 'architecte');
+  assert.deepEqual(accessProfile.reportActions, ['read']);
+});
+
 test('the connected default is read freshly, with credentials, for the same authenticated account only', async () => {
   for (const profile of ['habitologue', 'architecte', 'maitre_oeuvre', '']) {
     const result = await readConnectedMissionProfile({ portal, user, fetchImpl: async (url, options) => {

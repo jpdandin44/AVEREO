@@ -79,7 +79,7 @@ export default function OnlineReports({ token, draft, onOpen, onBackup }) {
     try {
       const { blob, summary } = await downloadOnlineReport(item.id, token, { signal: controller.signal });
       if (controller.signal.aborted) return;
-      saveAs(blob, `rapport-${item.id}.json`);
+      if (!await saveAs(blob, `rapport-${item.id}.json`)) return;
       setDownloadStatus(summary.structureOnly
         ? 'Ce dossier sauvegardé est une structure de test : les textes et photos d’origine ne sont pas présents.'
         : `Dossier complet téléchargé et vérifié : ${summary.observations} observation(s), ${summary.photos} photo(s), ${summary.plans} plan(s). Le brouillon est conservé.`);

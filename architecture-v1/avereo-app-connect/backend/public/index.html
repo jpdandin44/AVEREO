@@ -573,6 +573,7 @@
       card.className = 'admin-card';
 
       card.dataset.accountId = user.id;
+      card.dataset.accountRole = user.role;
       card.tabIndex = -1;
 
       const information = document.createElement('div');
@@ -776,7 +777,14 @@
       const applicationAccess = document.createElement('div');
       applicationAccess.className = 'admin-app-access';
       const applicationTitle = document.createElement('strong');
-      applicationTitle.textContent = 'Applications autorisées';
+      applicationTitle.textContent = user.accessProfile ? 'Applications attribuées, limitées par le profil' : 'Applications autorisées';
+      if (user.accessProfile) {
+        const profileLimit = document.createElement('p');
+        profileLimit.textContent = user.accessProfile.active
+          ? `Profil administré : ${user.accessProfile.name}. Applications permises par ce profil : ${user.accessProfile.applications.join(', ') || 'aucune'}. Les dates et les cases du compte restent applicables.`
+          : `Profil administré désactivé : ${user.accessProfile.name}. Ses accès sont retirés, ses dossiers sont conservés.`;
+        information.append(profileLimit);
+      }
       const applicationList = document.createElement('div');
       applicationList.className = 'app-access-list';
       const applications = user.applications || [];
@@ -1131,7 +1139,7 @@
       adminAppsCount.textContent = String(applications.length);
       adminStatus.textContent = message || (
         applications.length > 0
-          ? `Catalogue de l’organisation : ${applications.map((application) => application.name).join(', ')}. Les cases ci-dessous définissent les accès effectifs par compte.`
+          ? `Catalogue de l’organisation : ${applications.map((application) => application.name).join(', ')}. Les accès dépendent des cases du compte, de sa période et de son éventuel profil administré.`
           : 'Aucune application active n’est disponible pour cette organisation.'
       );
 
@@ -1160,6 +1168,11 @@
       adminStatus.textContent = 'Chargement de l’administration…';
       const payload = await getJson(`/api/v1/admin/organizations/${adminOrganizationId}/accounts`);
       renderAdministration(payload.data, message);
+      try {
+        const { mountProfileAdministration } = await import('./assets/profiles-administration.js');
+        await mountProfileAdministration({ panel: adminPanel, usersList: adminUsersList, organizationId: adminOrganizationId,
+          getJson, mutation, confirm: confirmAccountAction, refresh: loadAdministration });
+      } catch { /* Existing account administration remains usable if the optional module is unavailable. */ }
       if (accountId !== null) {
         adminUsersList.querySelector(`[data-account-id="${accountId}"]`)?.focus();
       }

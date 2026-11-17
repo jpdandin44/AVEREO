@@ -39,6 +39,7 @@ if ($method === 'POST' && $policyPath !== '') {
     api_require_connect_gate($config);
 }
 $identity = api_require_auth($config);
+api_require_profile_action($config,$identity,$method==='POST'?'update':'read');
 $ownerProvider = (string) ($identity['provider'] ?? '');
 $ownerId = (string) ($identity['id'] ?? '');
 

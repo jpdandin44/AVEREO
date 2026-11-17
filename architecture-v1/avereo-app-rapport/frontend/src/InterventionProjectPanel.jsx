@@ -1,4 +1,5 @@
 import React from 'react';
+import { saveAs } from './saveAs.js';
 import ScreenDisclosure from './ScreenDisclosure.jsx';
 import { normalizeDecision } from './decisionSupport.js';
 import { buildInterventionProject, interventionPlanningError, projectSettings, projectSelection } from './interventionProject.js';
@@ -17,9 +18,7 @@ export default function InterventionProjectPanel({ report, setReport }) {
     actions: previous.decision.actions.map((action, i) => i === index ? { ...action, planning_projet: { ...action.planning_projet, [key]: value } } : action) } }));
   const download = () => {
     const current = buildInterventionProject(report);
-    const url = URL.createObjectURL(new Blob([current.json], { type: 'application/json;charset=utf-8' }));
-    const link = document.createElement('a'); link.href = url; link.download = 'avereo-projet-interventions.json';
-    link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+    saveAs(new Blob([current.json], { type: 'application/json;charset=utf-8' }), 'avereo-projet-interventions.json');
   };
   return <ScreenDisclosure name="interventions-project" title="Planning informatif et Projet"
     summary={`${selected.length} intervention(s) sélectionnée(s) pour Projet · ${result ? 'Aperçu disponible' : 'Estimations à compléter'}`}>
@@ -52,7 +51,7 @@ export default function InterventionProjectPanel({ report, setReport }) {
         <p className="muted">Barres en jours ouvrés. Dates calculées sous ces hypothèses, à discuter ; aucun engagement ni avancement n’est déduit.</p>
       </div>}
       <p>Le fichier contient les interventions cochées, leurs modalités et préalables, les références des constats/attentes et les estimations affichées. Il est destiné à votre espace professionnel ; la sélection client du rapport reste indépendante. Photos, plans, signature, coordonnées des habitants et notes d’écoute restent dans Rapport.</p>
-      <button type="button" className="button secondary" disabled={!result} onClick={download}>Télécharger pour Projet</button>
+      <button type="button" className="button secondary" disabled={!result} data-readonly-view onClick={download}>Télécharger pour Projet</button>
       <p>Dans Projet : <strong>Mes projets → Importer un projet</strong>, puis choisissez ce fichier pour créer un projet indépendant. Cette opération ne remplace pas votre projet existant. Les modifications ultérieures dans Projet et Rapport restent indépendantes.</p>
     </>}
   </ScreenDisclosure>;

@@ -9,7 +9,8 @@ use Avereo\Connect\Administration\ApplicationAccessDelegations;
 
 final class PdoConnectRepository implements ConnectRepository
 {
-    public function __construct(private readonly \PDO $pdo, private readonly ?ApplicationAccessDelegations $delegations = null)
+    public function __construct(private readonly \PDO $pdo, private readonly ?ApplicationAccessDelegations $delegations = null,
+        private readonly ?\Avereo\Connect\Administration\ProfileCatalog $profiles = null)
     {
     }
 
@@ -128,7 +129,7 @@ final class PdoConnectRepository implements ConnectRepository
         $parameters = ['user_id' => $userId, 'application_code' => $applicationCode];
         if ($organizationId !== null) $parameters['organization_id'] = $organizationId;
         $statement->execute($parameters);
-        return $statement->fetchColumn() !== false;
+        return $statement->fetchColumn() !== false && ($this->profiles===null || $this->profiles->allowsApplication($userId,$applicationCode));
     }
 
     public function listCatalog(int $userId): array
@@ -164,7 +165,8 @@ final class PdoConnectRepository implements ConnectRepository
             . 'ORDER BY a.display_order, a.name, a.code',
         );
         $statement->execute(['user_id' => $userId]);
-        return $statement->fetchAll();
+        $applications=$statement->fetchAll();
+        return $this->profiles===null ? $applications : $this->profiles->filterApplications($userId,$applications);
     }
 
     public function findUserProfile(int $userId): array
@@ -225,7 +227,8 @@ final class PdoConnectRepository implements ConnectRepository
             . 'ORDER BY a.name, a.id',
         );
         $statement->execute(['organization_id' => $organizationId, 'user_id' => $userId, 'access_user_id'=>$userId]);
-        return $statement->fetchAll();
+        $applications=$statement->fetchAll();
+        return $this->profiles===null ? $applications : $this->profiles->filterApplications($userId,$applications);
     }
 
     public function listEntitlements(int $userId, int $organizationId): array
@@ -395,9 +398,12 @@ final class PdoConnectRepository implements ConnectRepository
             $users = array_values(array_filter($users, static fn(array $user): bool =>
                 ApplicationAccessDelegations::eligibleTarget($actorUserId, (int) $user['id'], $user)));
         }
+        $profileSnapshot=$this->profiles?->read();
         foreach ($users as &$user) {
             $targetRole = (string) ($user['role'] ?? '');
             $targetUserId = (int) ($user['id'] ?? 0);
+            $profileId=$profileSnapshot['assignments'][(string)$targetUserId]??null;
+            $user['accessProfile']=$profileId===null?null:$profileSnapshot['profiles'][$profileId];
             $user['canChangeStatus'] = $actorRole === 'owner'
                 && $targetUserId !== $actorUserId
                 && ($targetRole !== 'owner' || $activeOwnerCount > 1);

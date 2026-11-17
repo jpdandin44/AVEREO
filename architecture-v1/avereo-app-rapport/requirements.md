@@ -5,7 +5,7 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,13 @@ tags:
   - habitologie
 ---
 
+## 17 novembre — Actions autorisées par le profil administré
+
+Exiger les droits de consultation/création/modification/suppression/export,
+en plus de la propriété et des habilitations existantes. Le métier déclaré ne
+donne aucun droit. Les sections doivent rester consultables en lecture seule ;
+les options de restitution permises ne donnent pas de droit de sauvegarde.
+[Critères et limites des exports navigateur](../avereo-app-connect/docs/profils-et-droits.md).
 ## Profils et CONNECT — périmètre confirmé le 16 novembre
 
 CONNECT est explicitement inclus dans ce lot. Un défaut personnel déclaré, sans rôle/droit nouveau, préremplit uniquement les nouvelles missions après correspondance exacte du compte. Chaque dossier reste modifiable et indépendant du défaut du compte. Architecte et Maître d’œuvre adaptent les étapes 4–6, les deux Word et gardent Terrain/contexte/photos/plans/conseils/modalités ; ancien profil absent/non reconnu conservant le parcours historique. Bascule réversible, JSON et sauvegarde/réouverture conservés, choix manuel en cas d’indisponibilité. [Matrice et critères](docs/profils-professionnels.md).

@@ -103,6 +103,8 @@ $canManageAll = api_identity_can_manage_all($identity, $config);
 $pdo = api_pdo($config);
 
 if ($method === 'GET') {
+    api_require_profile_action($config,$identity,'read');
+    if (isset($_GET['download'])) api_require_profile_action($config,$identity,'export');
     $id = api_trim_text($_GET['id'] ?? '', 32);
 
     if ($id !== '') {
@@ -228,6 +230,7 @@ if ($method === 'POST') {
     $existingStatement = $pdo->prepare('SELECT owner_provider, owner_id FROM rapport_reports WHERE public_id = :id');
     $existingStatement->execute(['id' => $id]);
     $existing = $existingStatement->fetch();
+    api_require_profile_action($config,$identity,$existing?'update':'create');
     if ($existing && !$canManageAll) {
         $sameOwner = hash_equals((string)$existing['owner_provider'], $ownerProvider)
             && hash_equals((string)$existing['owner_id'], $ownerId);
@@ -340,6 +343,7 @@ if ($method === 'POST') {
 }
 
 if ($method === 'DELETE') {
+    api_require_profile_action($config,$identity,'delete');
     $id = api_trim_text($_GET['id'] ?? '', 32);
     if ($id === '') {
         api_json(400, [

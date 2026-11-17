@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,16 @@ tags:
   - securite
 ---
 
+## 17 novembre — Droits administrés et parcours de restitution
+
+Les droits viennent de la projection privée de l'identité authentifiée, jamais
+du JSON du dossier ou du métier déclaré. GET/POST/DELETE et téléchargement
+vérifient leur action ; originaux conservent leur contrôle de propriétaire.
+Génération/téléchargements/partage officiels vérifiés fraîchement et liés au
+même compte ; cela ne rappelle pas les fichiers déjà lus. Interface de
+consultation corrigée pour conserver les sections et vues ouvrables.
+[Preuves, garanties et réserves](../../avereo-app-connect/docs/profils-et-droits.md).
+Aucune donnée hébergée ni permission native modifiée.
 ## 16 novembre — Profils CONNECT et conservation des missions
 
 Aucun droit accordé par le métier déclaré. Lecture du portail validé par le composant commun, correspondance obligatoire entre compte retourné et identité Rapport ; absence/inconnu/autre compte/délai donnent un choix manuel. Le défaut ne modifie jamais un dossier courant ou chargé. Contrôles de session/CSRF/contexte/origine CONNECT conservés, aucun compte cible accepté. Le fichier compagnon du métier garde l’ancien format du médaillon et permet un retour arrière du lecteur. Candidats testés sur identités/données fictives ; ancien propriétaire et toutes les colonnes conservés. [Matrice, nouvelles fonctions et réserves](profils-professionnels.md).

@@ -24,7 +24,7 @@ export default function OrganizationExports() {
     setBusy(true); setError('');
     try {
       const blob = await downloadOrganizationReport(id, purpose);
-      saveAs(blob, `rapport-${id}.json`);
+      await saveAs(blob, `rapport-${id}.json`);
     } catch (failure) {
       setError(failure instanceof TypeError
         ? 'Téléchargement interrompu. Vérifiez vos téléchargements. Si le fichier est absent, cliquez à nouveau sur « Télécharger le JSON complet ».'

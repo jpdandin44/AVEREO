@@ -20,13 +20,16 @@ import { attachOriginal, photoOriginalCapabilities } from './photoOriginals.js';
 import { observationPlanNames, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
-import { saveAs } from './saveAs.js';
+import { saveAs, setDownloadAuthorization, checkDownloadAuthorization } from './saveAs.js';
+import { canReportAction, sameAccount, administeredMissionDefault } from './profileAccess.js';
+import ReadOnlyFields from './ReadOnlyFields.jsx';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { del as idbDel, get as idbGet, set as idbSet } from 'idb-keyval';
 import {
   completeOAuthLogin,
   getAuthConfig,
   getCurrentUser,
+  authorizeReportExport,
   saveOnlineReport,
   startOAuthLogin,
 } from './services/reportApi.js';
@@ -670,7 +673,7 @@ function CompletionPanel({ report, validation }) {
   );
 }
 
-function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onLoadFile, onBackup, profileLoading }) {
+function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onLoadFile, onBackup, profileLoading, canCreate = true }) {
   const hasDraft = Boolean(draft);
   return (
     <div className="screen">
@@ -693,7 +696,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
             </div>
           )}
           <div className="home-actions">
-            <button className="button primary" type="button" onClick={onNew} disabled={profileLoading}>
+            <button className="button primary" type="button" onClick={onNew} disabled={profileLoading || !canCreate}>
               <Plus size={18} />
               Nouveau rapport
             </button>
@@ -1858,14 +1861,14 @@ function ShareTestCopy({ report }) {
     setStatus('');
     setSharing(true);
     try {
+      if (!await checkDownloadAuthorization()) { setStatus('Partage non autorisé par votre profil.'); return; }
       const copy = createTestReportCopy(report);
       const file = new File([JSON.stringify(copy, null, 2)], 'rapport-structure-test-sans-contenu.json', {type: 'application/json'});
       if (!downloadOnly && navigator.share && navigator.canShare?.({files: [file]})) {
         await navigator.share({files: [file]});
         setStatus('Copie remise au service de partage choisi.');
       } else {
-        saveAs(file, file.name);
-        setStatus('Téléchargement lancé. Cette structure contient des constats fictifs, sans les textes et photos du dossier.');
+        if (await saveAs(file, file.name)) setStatus('Téléchargement lancé. Cette structure contient des constats fictifs, sans les textes et photos du dossier.');
       }
     } catch (error) {
       setStatus(error.name === 'AbortError' ? 'Partage annulé.' : 'Partage indisponible. Vous pouvez télécharger la copie.');
@@ -1888,7 +1891,7 @@ function ShareTestCopy({ report }) {
   </section>;
 }
 
-function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep }) {
+function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep, readOnly = false, canExport = true, setDeliveryOptions }) {
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
   const presentation = useScreenPresentation();
   const decision = normalizeDecision(report.decision);
@@ -1913,7 +1916,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
 
       <div className="validation-box export-review-status">
         <h3>Contrôle avant export</h3>
-        {validation.errors.length === 0 && validation.warnings.length === 0 && <p className="success-line"><CheckCircle2 size={18} />Rapport prêt à être exporté.</p>}
+        {validation.errors.length === 0 && validation.warnings.length === 0 && <p className="success-line"><CheckCircle2 size={18} />{canExport ? 'Rapport prêt à être exporté.' : 'Contenu contrôlé ; l’export n’est pas autorisé par votre profil.'}</p>}
         {validation.errors.length > 0 && <div className="issue-list danger"><strong>Points bloquants</strong><ul>
           {validation.errors.map(item => <li key={item}><button type="button" className="text-button" onClick={() => openIssue(item)}>{item}</button></li>)}
         </ul></div>}
@@ -1922,6 +1925,9 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         </ul></div>}
       </div>
 
+      {!canExport && <p role="status" className="notice">Votre profil autorise la consultation du dossier. Le téléchargement JSON et la génération Word sont désactivés.</p>}
+
+      <ReadOnlyFields readOnly={readOnly}>
       {isHabitologieReport(report) && <>
         {warnings.length > 0 && <p className="issue-list warning">Aide à la décision : {warnings.length} point(s) à relire. {warnings[0]}</p>}
         <ScreenDisclosure name="export-decision" title="Attentes et aide à la décision"
@@ -1967,15 +1973,18 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         </div>
       </ScreenDisclosure>
 
+      </ReadOnlyFields>
       <ScreenDisclosure name="export-delivery" title="Options du livrable"
         summary={report.livrable?.audience === 'client' ? 'Synthèse client illustrée' : 'Rapport expert détaillé'}>
-        <ReportDeliveryOptions report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
+        <ReadOnlyFields readOnly={!canExport}>
+          <ReportDeliveryOptions report={report} setReport={readOnly ? setDeliveryOptions : setReport} dictationAllowed={dictationAllowed} />
+        </ReadOnlyFields>
       </ScreenDisclosure>
 
       <div className="export-actions">
-        <button className="button ghost" type="button" onClick={onExportJson}><FileJson size={18} />Télécharger le dossier complet (JSON)</button>
+        <button className="button ghost" type="button" onClick={onExportJson} disabled={!canExport}><FileJson size={18} />Télécharger le dossier complet (JSON)</button>
         <button className="button secondary" type="button" onClick={onPreview}><Eye size={18} />Apercu</button>
-        <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0}><Download size={18} />Générer Word (.docx)</button>
+        <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0 || !canExport}><Download size={18} />Générer Word (.docx)</button>
       </div>
       <p>Le JSON complet contient les textes, explications, conseils, photos, plans et la signature présents dans ce dossier. Transmettez-le uniquement aux personnes autorisées.</p>
       <ScreenDisclosure name="export-exchange" title="Importer un dossier ou préparer une copie de test" className="export-secondary-actions"
@@ -2058,6 +2067,7 @@ function OnlineSyncPanel({
   saving,
   photoTransfers,
   status,
+  canSave = true,
 }) {
   const [tokenInput, setTokenInput] = useState('');
   const [tokenPending, setTokenPending] = useState(false);
@@ -2130,7 +2140,7 @@ function OnlineSyncPanel({
           </button>
         )}
         {authenticated && (
-          <button className="button primary" data-avereo-save="online" type="button" onClick={onSave} disabled={saving || photoTransfers > 0}>
+          <button className="button primary" data-avereo-save="online" type="button" onClick={onSave} disabled={saving || photoTransfers > 0 || !canSave}>
             <Save size={18} />
             {photoTransfers > 0 ? 'Traitement photo en cours…' : saving ? 'Sauvegarde...' : 'Sauver en ligne'}
           </button>
@@ -2172,6 +2182,15 @@ function ReportWizard({
   const [photoTransfers, setPhotoTransfers] = useState(0);
   const onPhotoTransfer = useCallback(delta => setPhotoTransfers(count => Math.max(0, count + delta)), []);
   const [onlineStatus, setOnlineStatus] = useState('');
+  const editable = !onlineSyncEnabled || canReportAction(authUser, report.onlineReportId ? 'update' : 'create');
+  const setEditableReport = useCallback(value => { if (editable) setReport(value); }, [editable]);
+  const setDeliveryOptions = value => {
+    if (!canReportAction(authUser, 'export')) return;
+    setReport(current => {
+      const next = typeof value === 'function' ? value(current) : value;
+      return { ...current, livrable: next.livrable };
+    });
+  };
   const onlineRequest = useRef(null);
   const reportGeneration = useRef(0);
   const currentReport = useRef(report);
@@ -2200,7 +2219,7 @@ function ReportWizard({
   };
 
   const handleOnlineSave = async () => {
-    if (onlineSaving) return;
+    if (onlineSaving || !editable) return;
     if (photoTransfers > 0) {
       setOnlineStatus('Attendez la fin du traitement des photos avant de sauvegarder le dossier en ligne.');
       return;
@@ -2239,10 +2258,10 @@ function ReportWizard({
 
   const handleExport = async () => {
     try {
+      if (onlineSyncEnabled) await authorizeReportExport(accessToken, authUser);
       const { createWordBlob } = await import('./reportDocx.js');
       const blob = await createWordBlob(buildReportHtml(report), report);
-      saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}-${report.livrable?.audience === 'client' ? 'client' : 'expert'}.docx`);
-      notify('Document Word généré.');
+      if (await saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}-${report.livrable?.audience === 'client' ? 'client' : 'expert'}.docx`)) notify('Document Word généré.');
     } catch (error) {
       notify(`Export Word impossible : ${error.message}`);
     }
@@ -2281,17 +2300,23 @@ function ReportWizard({
         <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} onHome={returnToHome} />
         <div className="wizard-grid">
           <div className="wizard-main">
-            {currentStep === 0 && <DossierStep report={report} setReport={setReport} />}
-            {currentStep === 1 && <SiteStep report={report} setReport={setReport} onCorrectAddress={() => {
+            {authUser?.profileAccess?.managed && <p role="status" className="notice">Profil d’accès : {authUser.profileAccess.profile?.name}. {!editable && 'Consultation seule : les modifications ne sont pas autorisées.'}</p>}
+            <ReadOnlyFields readOnly={!editable}>
+            {currentStep === 0 && <DossierStep report={report} setReport={setEditableReport} />}
+            {currentStep === 1 && <SiteStep report={report} setReport={setEditableReport} onCorrectAddress={() => {
               setCurrentStep(0);
               requestAnimationFrame(() => revealScreenField('adresse-logement'));
             }} />}
-            {currentStep === 2 && <ProtocolStep report={report} setReport={setReport} />}
-            {currentStep === 3 && <ObservationStep report={report} setReport={setReport} onlineSyncEnabled={onlineSyncEnabled} authenticated={authenticated} onlineSaving={onlineSaving} onPhotoTransfer={onPhotoTransfer} photoTransfers={photoTransfers} />}
+            {currentStep === 2 && <ProtocolStep report={report} setReport={setEditableReport} />}
+            {currentStep === 3 && <ObservationStep report={report} setReport={setEditableReport} onlineSyncEnabled={onlineSyncEnabled} authenticated={authenticated} onlineSaving={onlineSaving} onPhotoTransfer={onPhotoTransfer} photoTransfers={photoTransfers} />}
+            </ReadOnlyFields>
             {currentStep === 4 && (
               <ValidationStep
                 report={report}
-                setReport={setReport}
+                setReport={setEditableReport}
+                readOnly={!editable}
+                canExport={canReportAction(authUser, 'export')}
+                setDeliveryOptions={setDeliveryOptions}
                 validation={validation}
                 onPreview={() => setPreviewOpen(true)}
                 onExport={handleExport}
@@ -2316,6 +2341,7 @@ function ReportWizard({
           onSave={handleOnlineSave}
           onTokenSubmit={onTokenSubmit}
           saving={onlineSaving}
+          canSave={editable}
           photoTransfers={photoTransfers}
           status={onlineStatus}
         />
@@ -2426,6 +2452,33 @@ export default function App() {
   const [authError, setAuthError] = useState('');
 
   useEffect(() => {
+    if (!ONLINE_SYNC_ENABLED) return;
+    return setDownloadAuthorization(async () => {
+      try { return await authorizeReportExport(accessToken, authUser); }
+      catch (error) { setAuthError(error.message || 'Téléchargement non autorisé par votre profil.'); return false; }
+    });
+  }, [accessToken, authUser?.id, authUser?.provider]);
+
+  useEffect(() => {
+    if (!ONLINE_SYNC_ENABLED || !authUser) return;
+    let alive = true;
+    const refresh = async () => {
+      try {
+        const next = await getCurrentUser(accessToken);
+        if (!alive) return;
+        setAuthUser(current => sameAccount(current, next) ? next : current);
+      } catch {
+        if (alive) setAuthUser(current => current?.profileAccess?.managed
+          ? { ...current, profileAccess: { ...current.profileAccess, actions: [] } } : current);
+      }
+    };
+    const interval = window.setInterval(refresh, 30000);
+    window.addEventListener('focus', refresh);
+    return () => { alive = false; window.clearInterval(interval); window.removeEventListener('focus', refresh); };
+  }, [accessToken, authUser?.id, authUser?.provider]);
+
+
+  useEffect(() => {
     loadDraft()
       .then((loaded) => {
         setDraft(loaded);
@@ -2506,15 +2559,15 @@ export default function App() {
       const current = ++generation;
       setConnectedDefault({ profile: '', notice: '', loading: true });
       const value = await readConnectedMissionProfile({ user: authUser, portal: document.querySelector('avereo-account-menu')?.portal });
-      if (active && current === generation) setConnectedDefault({ ...value, loading: false });
+      if (active && current === generation) setConnectedDefault({ ...(!value.profile ? administeredMissionDefault(authUser) || value : value), loading: false });
     };
     refresh();
     window.addEventListener('focus', refresh);
     return () => { active = false; generation += 1; window.removeEventListener('focus', refresh); };
-  }, [authUser?.provider, authUser?.id]);
+  }, [authUser?.provider, authUser?.id, authUser?.profileAccess?.profile?.id, authUser?.profileAccess?.profile?.name, authUser?.profileAccess?.profile?.template]);
 
   const startNew = async (context = null) => {
-    if (connectedDefault.loading) return;
+    if (connectedDefault.loading || !canReportAction(authUser, 'create')) return;
     setNewContext(context);
     if (draft) {
       setConfirmReset(true);
@@ -2528,7 +2581,7 @@ export default function App() {
   };
 
   const confirmNew = async () => {
-    if (connectedDefault.loading) return;
+    if (connectedDefault.loading || !canReportAction(authUser, 'create')) return;
     await removeDraft();
     setCreationProfileNotice(connectedDefault.notice);
     const initial = newReport();
@@ -2590,6 +2643,7 @@ export default function App() {
           draft={draft}
           onNew={() => startNew()}
           profileLoading={connectedDefault.loading}
+          canCreate={canReportAction(authUser, 'create')}
           onResume={resume}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
           accessToken={accessToken}

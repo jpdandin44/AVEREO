@@ -20,6 +20,9 @@ export async function setupProfessionalProfile({ form, accountId, getJson, sessi
     if (String(data?.accountId) !== String(accountId) || !profiles.includes(data?.professionalProfile)
         || !/^[a-f0-9]{64}$/.test(data?.accountContext || '')) throw Error('Compte ou préférences indisponibles. Rouvrez Mon compte.');
     saved = select.value = data.professionalProfile;
+    let assigned = form.querySelector('[data-admin-profile]');
+    if (!assigned) { assigned = document.createElement('p'); assigned.dataset.adminProfile = ''; form.append(assigned); }
+    assigned.textContent = data.accessProfile ? `Profil d’accès administré : ${data.accessProfile.name}. Ses droits se gèrent dans Gérer les comptes.` : 'Aucun profil d’accès administré affecté à ce compte.';
     context = data.accountContext;
     enable(true);
     status.textContent = 'Ce défaut est enregistré sur votre compte CONNECT. Vos dossiers existants restent inchangés.';

@@ -59,7 +59,7 @@ export function PhotoOriginalControls({ photo, reportId, canUseOnline, capabilit
   };
   const uploadAvailable = canUseOnline && /^[a-f0-9]{32}$/.test(reportId || '') && capabilities?.enabled;
   return <div className="photo-original-controls">
-    <button type="button" className="button secondary" onClick={() => setView({ src: photo.src, name: photo.name })}>Voir la photo</button>
+    <button type="button" className="button secondary" data-readonly-view onClick={() => setView({ src: photo.src, name: photo.name })}>Voir la photo</button>
     <button type="button" className="button secondary" disabled={busy || disabled} onClick={() => setEditing(true)}>Préparer la photo du rapport</button>
     {photoReportVersion(photo) && <>
       <p>{photo.reportPhotoChoice === 'prepared' ? 'La version préparée est utilisée dans le rapport.' : 'L’original est utilisé dans le rapport. La version préparée reste disponible.'}</p>
@@ -70,7 +70,7 @@ export function PhotoOriginalControls({ photo, reportId, canUseOnline, capabilit
     {uploadAvailable && !reference && <button type="button" className="button secondary" disabled={busy || disabled} onClick={preserve}>
       Conserver l’original en ligne
     </button>}
-    {reference && canUseOnline && <button type="button" className="button secondary" disabled={busy} onClick={openPrivate}>Ouvrir l’original privé</button>}
+    {reference && canUseOnline && <button data-readonly-view type="button" className="button secondary" disabled={busy} onClick={openPrivate}>Ouvrir l’original privé</button>}
     {message && <p role="status">{message}</p>}
     {view && <PhotoViewer view={view} onClose={() => setView(null)} />}
     {editing && <PhotoReportEditor photo={photo} onClose={() => setEditing(false)} onApply={version => { onReportVersion(version, 'prepared'); setEditing(false); }} />}
@@ -97,11 +97,11 @@ function PhotoViewer({ view, onClose }) {
   const fit = imageSize && box ? Math.min(box.width / imageSize.width, box.height / imageSize.height, 1) : null;
   return <dialog ref={dialog} className="photo-viewer" aria-label="Détail de la photo" onCancel={event => { event.preventDefault(); onClose(); }}>
     <div className="modal-card">
-      <div className="modal-header"><h2>{view.name || 'Détail de la photo'}</h2><button ref={closeButton} type="button" className="button secondary" onClick={onClose}>Fermer la photo</button></div>
+      <div className="modal-header"><h2>{view.name || 'Détail de la photo'}</h2><button data-readonly-view ref={closeButton} type="button" className="button secondary" onClick={onClose}>Fermer la photo</button></div>
       <div className="photo-viewer-tools">
-        <label>Zoom <input aria-label="Zoom de la photo" type="range" min="25" max="400" step="25" value={zoom} onChange={event => setZoom(Number(event.target.value))} /> {zoom} %</label>
-        <button type="button" className="button secondary" onClick={() => setZoom(100)}>Ajuster à la fenêtre</button>
-        {view.blob && <button type="button" className="button secondary" onClick={() => saveAs(view.blob, view.name || 'photo-originale')}>Télécharger l’original</button>}
+        <label>Zoom <input data-readonly-view aria-label="Zoom de la photo" type="range" min="25" max="400" step="25" value={zoom} onChange={event => setZoom(Number(event.target.value))} /> {zoom} %</label>
+        <button type="button" className="button secondary" data-readonly-view onClick={() => setZoom(100)}>Ajuster à la fenêtre</button>
+        {view.blob && <button type="button" className="button secondary" data-readonly-view onClick={() => saveAs(view.blob, view.name || 'photo-originale')}>Télécharger l’original</button>}
       </div>
       <div ref={viewport} className="photo-viewer-image">
         {imageError && <p role="alert">Cette photo ne peut pas être affichée dans ce navigateur. Le fichier du dossier est conservé.</p>}
