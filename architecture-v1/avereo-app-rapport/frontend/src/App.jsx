@@ -5,7 +5,8 @@ import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
 import InterventionsPanel from './InterventionsPanel.jsx';
 import ScreenDisclosure, { ScreenPresentation, DisclosureControls, useScreenPresentation, excerpt, revealScreenField } from './ScreenDisclosure.jsx';
-import { observationAdviceLabel } from './reportProfiles.js';
+import { observationAdviceLabel, MISSION_PROFILES, recognizedMissionProfile, missionProfileLabel, withMissionDefault } from './reportProfiles.js';
+import { readConnectedMissionProfile } from './connectedMissionProfile.js';
 import { textLinks } from './textLinks.js';
 import { normalizeDecision, decisionWarnings } from './decisionSupport.js';
 import { orderedObservations, observationNumber, observationPhase, moveObservation } from './observationOrder.js';
@@ -669,7 +670,7 @@ function CompletionPanel({ report, validation }) {
   );
 }
 
-function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onLoadFile, onBackup }) {
+function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onLoadFile, onBackup, profileLoading }) {
   const hasDraft = Boolean(draft);
   return (
     <div className="screen">
@@ -692,7 +693,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
             </div>
           )}
           <div className="home-actions">
-            <button className="button primary" type="button" onClick={onNew}>
+            <button className="button primary" type="button" onClick={onNew} disabled={profileLoading}>
               <Plus size={18} />
               Nouveau rapport
             </button>
@@ -702,6 +703,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
             </button>
             <ReportImport draft={draft} onLoad={onLoadFile} onBackup={onBackup} />
           </div>
+          {profileLoading && <p role="status">Lecture du profil CONNECT pour un nouveau dossier… La reprise et le chargement de vos dossiers restent disponibles.</p>}
           {hasDraft && (
             <p className="draft-line">
               Dernier brouillon{isHabitologieReport(draft) ? " d'habitologie" : ''} :{' '}
@@ -807,7 +809,7 @@ function DossierStep({ report, setReport }) {
 
 
       <ScreenDisclosure name="dossier-mission" title="Mission et coordonnées" defaultOpen={presentation.initiallyNew}
-        summary={[report.reference_dossier || 'Référence à renseigner', report.profil_metier === 'habitologue' ? 'Habitologue' : 'Parcours actuel', report.sous_categorie, report.date_visite, report.adresse_logement].filter(Boolean).join(' · ')}>
+        summary={[report.reference_dossier || 'Référence à renseigner', missionProfileLabel(report), report.sous_categorie, report.date_visite, report.adresse_logement].filter(Boolean).join(' · ')}>
       {!habitologie && REPORT_CATEGORIES[report.categorie]?.selectable === false && <p className="muted">Type du dossier conservé : {report.categorie}.</p>}
       <div className="choice-grid">
         {getSelectableReportCategories().map(([name, item]) => (
@@ -822,11 +824,10 @@ function DossierStep({ report, setReport }) {
       </div>
 
       <div className="form-grid two">
-        <Field label="Profil de la mission" hint="Le profil adapte les conseils et les étapes de l’export pour ce dossier.">
+        <Field label="Profil de la mission" hint="Le profil adapte les étapes de l’export pour ce dossier. CONNECT peut le proposer à la création ; vous gardez le choix de la mission.">
           <select value={report.profil_metier || ''} onChange={(event) => updateField('profil_metier', event.target.value)}>
-            <option value="">Parcours actuel</option>
-            <option value="habitologue">Habitologue</option>
-            {report.profil_metier && report.profil_metier !== 'habitologue' && <option value={report.profil_metier}>{report.profil_metier} (parcours actuel)</option>}
+            {MISSION_PROFILES.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+            {report.profil_metier && !recognizedMissionProfile(report.profil_metier) && <option value={report.profil_metier}>{report.profil_metier} (parcours actuel)</option>}
           </select>
         </Field>
         <Field label={habitologie ? "Type d'habitation" : 'Sous-categorie'}>
@@ -2403,7 +2404,12 @@ function AccessGate({ authConfig, authError, onOAuthLogin }) {
 
 export default function App() {
   const applicationPreferences = useAppPreferences('rapport', rapportPreferences, { useState, useEffect });
-  const newReport = () => { const report = createNewReport(); return { ...report, livrable: { ...report.livrable, audience: applicationPreferences.audience } }; };
+  const [connectedDefault, setConnectedDefault] = useState({ profile: '', notice: '', loading: false });
+  const [creationProfileNotice, setCreationProfileNotice] = useState('');
+  const newReport = () => {
+    const report = withMissionDefault(createNewReport(), connectedDefault.profile);
+    return { ...report, livrable: { ...report.livrable, audience: applicationPreferences.audience } };
+  };
   const [rgaImport, setRgaImport] = useState(() => {
     try { return window.location.hash === '#rga-import' ? readRgaTransfer(sessionStorage.getItem(RGA_TRANSFER_KEY)) : null; }
     catch { return null; }
@@ -2490,20 +2496,41 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    let active = true, generation = 0;
+    if (!ONLINE_SYNC_ENABLED || authUser?.provider !== 'avereo_connect') {
+      setConnectedDefault({ profile: '', notice: '', loading: false });
+      return undefined;
+    }
+    const refresh = async () => {
+      const current = ++generation;
+      setConnectedDefault({ profile: '', notice: '', loading: true });
+      const value = await readConnectedMissionProfile({ user: authUser, portal: document.querySelector('avereo-account-menu')?.portal });
+      if (active && current === generation) setConnectedDefault({ ...value, loading: false });
+    };
+    refresh();
+    window.addEventListener('focus', refresh);
+    return () => { active = false; generation += 1; window.removeEventListener('focus', refresh); };
+  }, [authUser?.provider, authUser?.id]);
+
   const startNew = async (context = null) => {
+    if (connectedDefault.loading) return;
     setNewContext(context);
     if (draft) {
       setConfirmReset(true);
       return;
     }
     const fresh = newReport();
+    setCreationProfileNotice(connectedDefault.notice);
     setInitialWizardData(deepMergeReport(fresh, { ...fresh, ...(context || {}) }));
     setNewWizard(true);
     setAppState('wizard');
   };
 
   const confirmNew = async () => {
+    if (connectedDefault.loading) return;
     await removeDraft();
+    setCreationProfileNotice(connectedDefault.notice);
     const initial = newReport();
     const fresh = deepMergeReport(initial, { ...initial, ...(newContext || {}) });
     setDraft(null);
@@ -2548,7 +2575,7 @@ export default function App() {
         <h2>Recherche RGA prête à reprendre</h2>
         <p>{rgaImport.adresse_logement}</p>
         <p>Créer un nouveau dossier avec cette adresse et les risques consultés. Le point du bien restera à confirmer dans Site.</p>
-        <button className="button primary" type="button" onClick={() => {
+        <button className="button primary" type="button" disabled={connectedDefault.loading} onClick={() => {
           startNew(rgaImport); setRgaImport(null);
           sessionStorage.removeItem(RGA_TRANSFER_KEY);
           history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -2562,6 +2589,7 @@ export default function App() {
         <HomePage
           draft={draft}
           onNew={() => startNew()}
+          profileLoading={connectedDefault.loading}
           onResume={resume}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
           accessToken={accessToken}
@@ -2586,6 +2614,7 @@ export default function App() {
             `${toFileName(draft.reference_dossier || draft.titre)}-brouillon.json`)}
         />
       )}
+      {appState === 'wizard' && newWizard && creationProfileNotice && <p role="status" className="notice" style={{ maxWidth: '960px', margin: '16px auto' }}>{creationProfileNotice}</p>}
       {appState === 'wizard' && (
         <ReportWizard
           accessToken={accessToken}
@@ -2610,7 +2639,7 @@ export default function App() {
               <button className="button ghost" type="button" onClick={() => setConfirmReset(false)}>
                 Annuler
               </button>
-              <button className="button primary" type="button" onClick={confirmNew}>
+              <button className="button primary" type="button" onClick={confirmNew} disabled={connectedDefault.loading}>
                 Demarrer
               </button>
             </>

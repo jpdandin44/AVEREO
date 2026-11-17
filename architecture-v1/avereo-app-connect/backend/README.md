@@ -5,10 +5,14 @@ title: Backend AVEREO CONNECT
 status: active
 version: git
 created: 2026-09-15
-updated: 2026-11-12
+updated: 2026-11-16
 owner: jpdandin
 tags: [avereo, connect, api]
 ---
+
+## Profil professionnel déclaré — candidat du 16 novembre
+
+Les préférences privées comprennent aussi le défaut personnel `professionalProfile`, édité dans Mon profil CONNECT et repris uniquement par une nouvelle mission Rapport du même compte. Une préférence par PUT, fichier compagnon privé, ancien format du médaillon conservé. [Contrat, revue et limites](../../avereo-app-rapport/docs/profils-professionnels.md). Aucun déploiement de ce lot.
 
 # Backend - AVEREO CONNECT
 

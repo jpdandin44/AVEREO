@@ -40,7 +40,7 @@ Copie isolée C:/Users/examg/Documents local/avereo-rapport-projet, branche
 feat/rapport-projet-interventions, base PR162 fusionnée f4017be. Sept documents
 de livraison précédents repris à l’identique, copie source préservée.
 
-Fichiers prévus : nouveau panneau et adaptateur de projection dans frontend/src,
+Fichiers réalisés : nouveau panneau et adaptateur de projection dans frontend/src,
 raccord InterventionsPanel, validation PHP des champs optionnels, tests ciblés et
 documentation. Lecture/import du moteur planning-core.js existant de Projet,
 sans modification de l’application Projet, de ses routes/droits ou des composants
@@ -142,16 +142,45 @@ local ; ces éléments de recette ne sont pas publiés. PHP, Docker/MariaDB déj
 présents, dépendances Node et dossier fictif local requis. Les liens cessent
 de répondre si les services sont arrêtés.
 
-Le responsable confirme ensuite explicitement le parcours par fichier Projet.
-Le choix de transfert est enregistré ; revue humaine du candidat et cases PR
-restent à effectuer. Cette réponse n’est pas reportée comme validation des tests
-ou autorisation de merge/livraison.
+Le responsable confirme le parcours par fichier Projet, puis déclare les tests
+OK et demande la livraison préproduction. Les quatre cases humaines et la fusion
+sont vérifiées séparément ; la livraison et ses limites sont décrites ci-dessous.
 
 ## Préproduction
 
-Non engagée pour ce lot, aucune nouvelle autorisation. PR162 livrée conservée.
+**PR163 livrée et alignée le 16 novembre.** Candidat accepté de0edf3, fusion
+9f8645b866ae4fc5e9927070b31b8d4fc9f26897, arbre complet 85e3171 identique.
+L’archive qualifiée eb6d125858b51b7a49cc20d27156d34bfdfc5689a34df2194e39937f6f016334
+est promue sans reconstruction. Cinq fichiers : validation PHP, trois ressources
+statiques et index HTML en dernier. La fusion annoncée a d’abord été absente de
+GitHub ; le candidat explicitement autorisé a été installé, puis l’arbre fusionné
+identique et main ont été vérifiés. Le reçu initial reste une preuve datée.
+
+Sauvegarde fraîche application/configuration relue et restauration/retour arrière
+répétés sur copie ; sauvegarde privée des dossiers relue sans restauration SQL.
+201 fichiers préexistants hors installation, configuration et production préservés.
+**24 dossiers, toutes leurs colonnes et propriétaires exacts** après installation
+puis navigation ; aucune écriture de dossier, migration ou activation d’originaux.
+
+CONNECT renouvelé normalement. Import fictif complet, panneau repliable, dates du
+23 novembre au 1er décembre pour 3,5 jours-personne, capacité 0 refusée puis
+corrigée ; fichier Projet entier identique à la projection canonique de la fixture.
+Le nom de projet de cette fixture diffère du précédent téléchargement local, qui
+utilisait un titre explicitement modifié ; aucune autre divergence du fichier.
+JSON métier exact après la seule normalisation connue de quatre contrôles vides
+[] en {} ; Terrain et autres champs exacts. Deux Word : textes et liens exacts,
+neuf médias expert et huit client identiques aux références. Aucune erreur console
+observée. Brouillon initial restauré dans les quatre emplacements et relu après
+rechargement, identique à la sauvegarde privée indépendante.
+
+[Reçu final](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr163-preprod-20261116/verification-finale.json>) ·
+[Alignement main](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr163-preprod-20261116/alignement-main.json>).
+Nouvelle sauvegarde/réouverture serveur et import dans Projet hébergé non effectués
+pendant cette livraison ; leurs preuves locales restent distinctes. Pas de nouvelle
+pagination native Word/PDF, microphone/caméra ou appareil physique. Revue métier
+hébergée distincte ; lot Profils avec CONNECT engagé dans sa propre itération.
 
 ## Mise en production
 
-Non engagée et non autorisée. Revue locale et décision de merge distinctes.
+Non engagée et non autorisée. Aucun déploiement ni ouverture de production.
 

@@ -5,10 +5,14 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-12
+updated: 2026-11-16
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 16 novembre — Profil déclaré et compte courant
+
+Le métier n’est pas un rôle. Les contrôles de session active, contexte de compte, CSRF, origine et habilitation de lecture restent dans la route de préférences existante. Compte courant retourné par le serveur ; aucun identifiant cible accepté en écriture. Trois descriptions OpenAPI préexistantes contenant des virgules ont été mises entre guillemets pour rendre le contrat YAML entièrement analysable, sans changement fonctionnel des autres routes. Enum borné, une préférence par PUT, fichier privé compagnon écrit sous le verrou existant ; anciens fichiers/clients de médaillon compatibles. Formulaire propre à Mon profil, composant commun inchangé. [Flux, tests et réserves](../../avereo-app-rapport/docs/profils-professionnels.md). Aucun hébergement, compte réel, e-mail, migration ou permission modifiés par cette qualification.
 
 ## 12 novembre — Médaillon personnel, candidat local
 

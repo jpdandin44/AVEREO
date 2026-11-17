@@ -81,6 +81,11 @@
       background: #f8fafc;
     }
     .profile h2 { margin-bottom: .75rem; }
+    #professional-profile-form { margin-top:1rem; padding-top:1rem; border-top:1px solid #dce4ef; }
+    #professional-profile-form label { display:block; font-weight:700; margin-bottom:.5rem; }
+    #professional-profile-form select { max-width:100%; padding:.7rem; font:inherit; border:1px solid #b9c5d5; border-radius:9px; }
+    #professional-profile-form button { margin:.5rem .5rem 0 0; }
+    #professional-profile-form [type=submit] { background:#155eef; color:white; }
     .profile p { margin: .35rem 0; }
     .admin-panel { margin-top: 1.5rem; border-top: 1px solid #dce4ef; padding-top: 1.5rem; }
     .admin-heading {
@@ -229,6 +234,17 @@
       <p id="profile-status"></p>
       <p id="profile-organization"></p>
       <p id="profile-applications"></p>
+      <form id="professional-profile-form">
+        <label for="professional-profile">Profil professionnel par défaut</label>
+        <select id="professional-profile" disabled>
+          <option value="">À choisir dans chaque dossier</option><option value="habitologue">Habitologue</option>
+          <option value="architecte">Architecte</option><option value="maitre_oeuvre">Maître d’œuvre</option>
+        </select>
+        <p>Profil déclaré utilisé pour proposer le parcours d’un nouveau dossier Rapport. Ce choix ne modifie ni vos droits d’accès ni vos dossiers existants.</p>
+        <button type="submit" disabled>Enregistrer mon profil professionnel</button>
+        <button type="button" disabled>Annuler la modification du profil</button>
+        <p role="status" aria-live="polite"></p>
+      </form>
       <label id="admin-organization-choice" hidden>Organisation à administrer
         <select id="admin-organization-select"></select>
       </label>
@@ -406,10 +422,13 @@
         (organization) => organization.role === 'owner' || organization.role === 'admin' || organization.canManageApplicationAccess === true
       );
       profileName.textContent = profilePayload.user.displayName || profilePayload.user.email || 'Compte AVEREO';
-      profileStatus.textContent = 'Compte actif · Profil Client';
+      profileStatus.textContent = 'Compte CONNECT actif';
       profileOrganization.textContent = `Organisation : ${organizations.map((item) => item.name).join(', ') || 'Non rattachée'}`;
       profileApplications.textContent = `Applications autorisées : ${applications.map((item) => item.name).join(', ') || 'Aucune'}`;
       profileSection.hidden = false;
+      import('./assets/professional-profile.js').then(({ setupProfessionalProfile }) =>
+        setupProfessionalProfile({ form: document.getElementById('professional-profile-form'), accountId: profilePayload.user.id, getJson, session })
+      ).catch(() => { document.querySelector('#professional-profile-form [role=status]').textContent = 'Profil professionnel indisponible. Réessayez en rouvrant Mon compte.'; });
       const select = document.getElementById('admin-organization-select');
       select.replaceChildren(...administeredOrganizations.map(org => new Option(org.name, String(org.id))));
       document.getElementById('admin-organization-choice').hidden = administeredOrganizations.length < 2;

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import VoiceField from './VoiceField.jsx';
-import { allowsDecisionProjections } from './reportProfiles.js';
+import { allowsDecisionProjections, decisionProjectionLabels, recognizedMissionProfile } from './reportProfiles.js';
 import { copyListeningExpectation, listeningExpectationSources } from './expectationListening.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
 import { normalizeDecision, decisionComparison, decisionWarnings, DECISION_CRITERIA, ACTION_CATEGORIES } from './decisionSupport.js';
@@ -47,7 +47,7 @@ function Remove({ label, onClick }) {
 }
 
 export default function DecisionSupportPanel({ report, setReport, dictationAllowed = false, onSaveDraft }) {
-  const projections = allowsDecisionProjections(report);
+  const projections = allowsDecisionProjections(report), labels = decisionProjectionLabels(report);
   const d = normalizeDecision(report.decision), observations = orderedObservations(report);
   const update = transform => setReport(prev => ({ ...prev, decision: transform(normalizeDecision(prev.decision)) }));
   const group = (key, field, value) => update(prev => ({ ...prev, [key]: { ...prev[key], [field]: typeof value === 'function' ? value(prev[key][field]) : value } }));
@@ -58,7 +58,7 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
   const listeningSources = listeningExpectationSources(d, report.ecoute);
   if (d.schema_version !== 1) return <p className="issue-list warning">Format d’aide à la décision non pris en charge. Conservez le JSON d’origine et vérifiez la version de l’application avant modification.</p>;
   return <fieldset className="decision-support"><legend>Aide à la décision · Visite Globale</legend>
-    <p>Reliez ce qui est observé à ce qui compte pour les habitants. {projections ? 'Organisez les actions, puis comparez deux options. ' : 'Précisez les effets et les vérifications nécessaires. '}Les contenus sont proposés par le professionnel et restent à discuter.</p>
+    <p>Reliez ce qui est observé à ce qui compte pour les habitants. {projections ? labels.intro : 'Précisez les effets et les vérifications nécessaires. '}Les contenus sont proposés par le professionnel et restent à discuter.</p>
     <details><summary>Relire les notes de l’entretien</summary><p><strong>Attentes exprimées :</strong> {report.ecoute?.attentes_client || 'Non renseignées'}</p>
       <p><strong>Contraintes et horizon évoqués :</strong> {report.ecoute?.contraintes_projet || 'Non renseignés'}</p>
       <p>Ces notes restent le verbatim. Les attentes peuvent être reprises ci-dessous, puis reformulées avec les habitants.</p></details>
@@ -123,11 +123,12 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
     </details>
 
     {projections && <>
-    <details><summary>4 · Projection 1 : organiser les actions</summary>
+    <details><summary>{labels.step4}</summary>
       {d.actions.map((a, i) => <article className="decision-card" key={`${a.id}-${i}`} aria-label={`Action ${i + 1}`}><h4>Action {i + 1}</h4>
         <Text micDisabled={!dictationAllowed} label="Intitulé de l’action" value={a.intitule} onChange={v => row('actions', i, 'intitule', v)} />
         <label>Mode d’intervention<select value={a.categorie} onChange={e => row('actions', i, 'categorie', e.target.value)}><option value="">À classer</option>
           {a.categorie && !ACTION_CATEGORIES.includes(a.categorie) && <option>{a.categorie}</option>}{ACTION_CATEGORIES.map(c => <option key={c}>{c}</option>)}</select></label>
+        {recognizedMissionProfile(report.profil_metier) && <Text micDisabled={!dictationAllowed} label="Modalités de réalisation" value={typeof a.realisation === 'string' ? a.realisation : ''} onChange={v => row('actions', i, 'realisation', v)} />}
         <label className="decision-check"><input type="checkbox" checked={a.incontournable} onChange={e => row('actions', i, 'incontournable', e.target.checked)} />Incontournable proposé dans les deux options</label>
         <Refs label="Constats à l’origine de l’action" collection={observations} field="titre" selected={a.observation_ids} onChange={v => row('actions', i, 'observation_ids', v)} />
         <Refs label="Attentes servies par l’action" collection={d.attentes} field="libelle" selected={a.attente_ids} onChange={v => row('actions', i, 'attente_ids', v)} />
@@ -137,7 +138,7 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
       <button type="button" className="button secondary" disabled={d.actions.length >= 100} onClick={() => add('actions', { intitule: '', categorie: '', incontournable: false, observation_ids: [], attente_ids: [], priorite: '', horizon: '', prealables: '', explication: '' })}>Ajouter une action</button>
     </details>
 
-    <details><summary>5 · Projection 2 : préparer deux options comparables</summary><p>Les critères sont identiques. Décrivez les conséquences, leurs sources et leurs inconnues. Aucun score ni montant n’est calculé.</p>
+    <details><summary>{labels.step5}</summary><p>Les critères sont identiques. Décrivez les conséquences, leurs sources et leurs inconnues. Aucun score ni montant n’est calculé.</p>
       <div className="decision-grid">{['option_a', 'option_b'].map((key, i) => <article className="decision-card" key={key} aria-label={`Option ${i ? 'B' : 'A'}`}>
         <h4>Option {i ? 'B' : 'A'}</h4><Text micDisabled={!dictationAllowed} label={`Nom de l’option ${i ? 'B' : 'A'}`} value={d[key].nom} onChange={v => group(key, 'nom', v)} />
         <Text micDisabled={!dictationAllowed} label={`Objectif de l’option ${i ? 'B' : 'A'}`} value={d[key].objectif} onChange={v => group(key, 'objectif', v)} />
@@ -146,7 +147,7 @@ export default function DecisionSupportPanel({ report, setReport, dictationAllow
           onChange={v => update(prev => ({ ...prev, [key]: { ...prev[key], criteres: { ...prev[key].criteres, [criterion]: typeof v === 'function' ? v(prev[key].criteres[criterion]) : v } } }))} />)}</article>)}</div>
     </details>
 
-    <details open><summary>6 · Comparer les conséquences et préparer l’arbitrage</summary>
+    <details open><summary>{labels.step6}</summary>
       <div className="decision-table"><table><caption>Comparaison sur les mêmes critères</caption><thead><tr><th>Critère</th><th>{d.option_a.nom}</th><th>{d.option_b.nom}</th></tr></thead>
         <tbody>{decisionComparison(report).map(r => <tr key={r.key}><th scope="row">{r.label}</th><td>{r.a}</td><td>{r.b}</td></tr>)}</tbody></table></div>
       <label>Option proposée à la discussion<select value={d.arbitrage.option_proposee} onChange={e => group('arbitrage', 'option_proposee', e.target.value)}>

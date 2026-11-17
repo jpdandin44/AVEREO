@@ -1,4 +1,4 @@
-import { isHabitologueProfile } from './reportProfiles.js';
+import { usesMissionContext } from './reportProfiles.js';
 
 export const TERRAIN_PROTOCOL_STAGE = Object.freeze({
   key: 'terrain', label: 'Le terrain de la propriété',
@@ -95,7 +95,7 @@ export function findHabitologieStage(stageKey) {
 }
 
 export function visitProtocolStages(report) {
-  return isHabitologueProfile(report) || report.habitologie_protocoles?.terrain
+  return usesMissionContext(report) || report.habitologie_protocoles?.terrain
     || report.observations?.some(observation => observation.phase_habitologie === 'terrain')
     ? [TERRAIN_PROTOCOL_STAGE, ...HABITOLOGIE_PROTOCOL_STAGES] : HABITOLOGIE_PROTOCOL_STAGES;
 }

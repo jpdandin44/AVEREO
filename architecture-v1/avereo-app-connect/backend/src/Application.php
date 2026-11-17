@@ -268,7 +268,7 @@ final class Application
                 }
             }
             if ($request->method === 'GET') {
-                $response = Response::success($this->accountPreferences->read($userId) + ['accountContext' => $context], $request->requestId);
+                $response = Response::success($this->accountPreferences->read($userId) + ['accountContext' => $context, 'accountId' => $userId], $request->requestId);
                 return new Response($response->status, $response->payload, $response->requestId, $headers);
             }
             if ($request->method !== 'PUT') throw new ApiException(405, 'METHOD_NOT_ALLOWED', 'Méthode refusée.');

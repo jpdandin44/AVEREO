@@ -13,6 +13,10 @@ tags:
   - architecture
 ---
 
+## 16 novembre — Défaut de compte et profil de mission distincts
+
+Contexte : le responsable demande les autres métiers et inclut explicitement CONNECT dès le lot. Décision : défaut personnel privé dans les préférences CONNECT existantes, contrôlé par son compte/session, puis copie à la création d’une mission seulement. Raisons : plusieurs missions possibles, conservation des dossiers, aucun métier déduit d’une habilitation. Conséquences : compte courant vérifié côté Rapport, sélection manuelle conservée, pas de profil d’organisation ou d’accréditation automatique ; mêmes actions/options et médias dans les parcours reconnus. [Contrat](docs/profils-professionnels.md).
+
 ## 16 novembre — Réutiliser le moteur et l’import natifs Projet
 
 Contexte : prochain lot demandé après PR162, transmission volontaire et projets existants à conserver. Choix de réalisation annoncé : aperçu Rapport avec planning-core.js canonique, puis fichier natif importé comme projet indépendant. Raisons : même calendrier/validations, pas de deuxième moteur ni nouveau droit/API. Conséquences : paramètres optionnels sur les interventions existantes, sélection distincte du client, projections indépendantes après téléchargement ; dates/charges explicites. Le responsable confirme ensuite le 16 novembre « Oui, commencer par le fichier Projet » : ce choix de parcours est accepté explicitement. Revue du candidat, tests, merge et livraison gardent leurs validations distinctes. [Contrat](api/interventions-projet.md).

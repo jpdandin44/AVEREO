@@ -5,10 +5,14 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-07
+updated: 2026-11-16
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 16 novembre — Profils CONNECT/Rapport en revue locale
+
+**Cadrage** explicitement confirmé, **Développement local** réalisé/qualifié sur comptes fictifs et changement de défaut sans modification de dossier existant. Prochaine action : revue du candidat commun puis décision distincte de **Préproduction** coordonnée. **Mise en production** non engagée. [Revue et preuves](../avereo-app-rapport/docs/profils-professionnels.md).
 
 ## 7 novembre — pont et stockage, état local courant
 

@@ -13,6 +13,14 @@ tags:
   - fonctionnalites
 ---
 
+## 16 novembre — Profils professionnels et défaut CONNECT
+
+Pas de migration SQL ni nouveau champ Rapport : `profil_metier` existant conserve les codes reconnus, les autres valeurs restent stockées. Même `decision`, actions/options/liens/IDs, nouveaux libellés communs UI/Word. Défaut CONNECT personnel dans un fichier compagnon privé indépendant du médaillon, aucun identifiant de compte ajouté au dossier. Terrain/contexte et médias accessibles aux parcours professionnels reconnus de Visite Globale ; filtres client et masquage Habitologue conservés. [Compatibilité, tests et limites](profils-professionnels.md).
+
+## 16 novembre — PR163 déployée sans migration
+
+Seuls les champs facultatifs de planning existants dans le candidat qualifié sont pris en charge par la nouvelle validation PHP. Aucune table, configuration, identité ou propriété changée ; 24 dossiers et toutes leurs colonnes sont exacts après livraison et navigation, aucun enregistrement serveur effectué. Import de la fixture : seule normalisation attendue des quatre contrôles de protocole vides [] vers {}, déjà documentée ; toutes les autres données métier exactes. Le fichier Projet entier correspond à la projection canonique de la fixture importée. [Reçus](interventions-projet.md#préproduction).
+
 ## 16 novembre — Paramètres facultatifs de planning Projet
 
 decision.schema_version=1 conservée ; ajout facultatif de decision.planning_projet et decision.actions[].planning_projet, sans seconde liste, modification d’ID source ou migration SQL. Aucun défaut ajouté à la lecture ; modifications conservant les clés inconnues. API reports.php, téléchargement, autorisations et schéma inchangés ; validation optionnelle dans decision-validation.php. Export dérivé schemaVersion=1 natif Projet, nouveau projet sous son contrôle existant ; aucune synchronisation/écriture directe. [Champs et compatibilité](../api/interventions-projet.md). Réserve antérieure des contrôles de protocole vides distincte.

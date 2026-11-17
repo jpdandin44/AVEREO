@@ -14,6 +14,10 @@ tags:
   - fonctionnalites
 ---
 
+## 16 novembre — Profils avec CONNECT, candidat à relire
+
+**Cadrage** confirmé : le responsable inclut CONNECT. **Développement local** réalisé : profil déclaré du compte, préremplissage des nouvelles missions, étapes 4–6 et deux restitutions adaptés ; dossier existant conservé après changement du défaut et nouvelle session. Terrain/contexte et modalités conservés. Prochaine action : revue locale du candidat et de ses preuves, puis décisions distinctes de merge et de **Préproduction** coordonnée CONNECT/Rapport. **Mise en production** non engagée. [Parcours et critères](docs/profils-professionnels.md). PR163 reste livrée en préproduction sur 9f8645b. Les étapes datées suivantes sont historiques.
+
 ## 16 novembre — Interventions vers Projet en revue locale
 
 Cadrage du prochain lot puis Développement local réalisé/qualifié : aperçu et fichier Projet, sauvegarde des estimations et import indépendant vérifiés sur données fictives. Prochaine action : revue locale de cette première tranche, parcours par fichier confirmé par le responsable le 16 novembre, puis décision distincte de merge. Préproduction PR162 conservée ; aucune Mise en production. [Revue et limites](docs/interventions-projet.md). Création directe CONNECT, lien automatique vers un dossier serveur et insertion du Gantt dans Word/PDF restent des compléments à cadrer ; autres lots inchangés.

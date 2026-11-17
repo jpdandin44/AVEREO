@@ -5,10 +5,14 @@ title: Décisions techniques CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-07
+updated: 2026-11-16
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 16 novembre — Fichier compagnon pour le métier déclaré
+
+Contexte : ajout du profil de connexion demandé dans le même lot que les profils Rapport. Décision : réutiliser la route privée des préférences et conserver le métier dans un fichier compagnon par compte. Raisons : aucune migration de compte/SQL, ancien lecteur de médaillon compatible après rollback, une mutation atomique indépendante par préférence. Conséquences : défaut unique personnel, pas par organisation ; aucun droit acquis ; une nouvelle mission copie ensuite le choix. [Contrat et limites](../avereo-app-rapport/docs/profils-professionnels.md).
 
 ## 7 novembre — pont et stockage, état local courant
 

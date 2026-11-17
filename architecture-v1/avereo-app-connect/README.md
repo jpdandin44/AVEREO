@@ -5,10 +5,14 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-10
+updated: 2026-11-16
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## 16 novembre — Profil professionnel déclaré, candidat local
+
+Mon compte → Mon profil propose un défaut Habitologue/Architecte/Maître d’œuvre, stocké sur le seul compte connecté. Il préremplit les nouvelles missions Rapport sans modifier les droits ni les anciens dossiers. Médaillon et lecteur antérieur conservés. [Parcours, qualification et limites](../avereo-app-rapport/docs/profils-professionnels.md). Aucun déploiement de ce nouveau lot.
 
 ## 9 novembre — contrôle global compatible Drupal 11
 

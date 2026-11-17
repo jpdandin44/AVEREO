@@ -29,7 +29,7 @@ paths:
     get:
       tags: [Session]
       operationId: readOwnPreferences
-      summary: Lire le médaillon du seul compte actif de la session CONNECT
+      summary: Lire les préférences du seul compte actif de la session CONNECT
       description: >-
         Réponse privée no-store. Les lectures interorigines exigent l'origine exacte
         d'une application de lancement configurée et une habilitation actuelle à cette application.
@@ -51,19 +51,21 @@ paths:
                 properties:
                   data:
                     type: object
-                    required: [accountBadge, accountContext]
+                    required: [accountBadge, professionalProfile, accountContext, accountId]
                     additionalProperties: false
                     properties:
                       accountBadge: {type: string, description: Une à trois lettres ou chiffres Unicode, default: MOI}
+                      professionalProfile: {type: string, enum: ['', habitologue, architecte, maitre_oeuvre], default: '', description: Défaut métier déclaré sans effet sur les droits}
                       accountContext: {type: string, pattern: '^[a-f0-9]{64}$'}
+                      accountId: {type: integer, minimum: 1, description: Compte courant généré côté serveur pour vérifier la correspondance avec la session applicative}
                   meta: {type: object}
         "401": {description: Session anonyme}
-        "403": {description: Compte inactif, origine ou application refusée}
+        "403": {description: "Compte inactif, origine ou application refusée"}
         "503": {description: Service non configuré}
     put:
       tags: [Session]
       operationId: saveOwnPreferences
-      summary: Enregistrer le médaillon de son compte depuis CONNECT uniquement
+      summary: Modifier une préférence depuis CONNECT uniquement, en conservant l'autre
       parameters:
         - {$ref: "#/components/parameters/CsrfToken"}
         - name: X-Account-Context
@@ -78,13 +80,15 @@ paths:
             schema:
               type: object
               additionalProperties: false
-              required: [accountBadge]
+              minProperties: 1
+              maxProperties: 1
               properties:
                 accountBadge: {type: string, description: Une à trois lettres ou chiffres Unicode}
+                professionalProfile: {type: string, enum: ['', habitologue, architecte, maitre_oeuvre]}
       responses:
-        "200": {description: Valeur accountBadge enregistrée dans l'enveloppe data/meta}
+        "200": {description: Préférences accountBadge et professionalProfile complètes enregistrées dans l'enveloppe data/meta}
         "401": {description: Session anonyme}
-        "403": {description: CSRF, compte ou origine refusés}
+        "403": {description: "CSRF, compte ou origine refusés"}
         "409": {description: Le formulaire appartient à un autre compte ou une ancienne session}
         "413": {description: Corps supérieur à 512 octets}
         "422": {description: Valeur ou champ inattendu}
@@ -779,7 +783,7 @@ paths:
       responses:
         '200': { description: État du compte appliqué }
         '403': { description: Compte protégé ou droits insuffisants }
-        '409': { description: Suppression en cours, compte partagé ou application à qualifier }
+        '409': { description: "Suppression en cours, compte partagé ou application à qualifier" }
         '422': { description: Corps de demande invalide }
         '503': { description: Gestion du cycle de vie indisponible }
     delete:
