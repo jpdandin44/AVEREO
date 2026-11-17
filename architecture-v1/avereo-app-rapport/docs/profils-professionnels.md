@@ -29,17 +29,27 @@ créé ; le titre saisi dans le dossier reste affiché tel quel.
 
 Le défaut personnel CONNECT et son message continuent de nommer le métier
 Habitologue. Architecte, Maître d’œuvre, profils absents/inconnus, habilitations,
-catégories historiques et contenus libres sont conservés. Les conseils restent
-« Conseils habitologue » : leurs variantes secondaires n’étaient pas comprises
-dans la décision sur la prestation. Aucun remplacement global ni migration.
+catégories historiques et contenus libres sont conservés. Avant validation de
+PR168, le responsable demande aussi de corriger le libellé des conseils et
+autorise une proposition alternative à Conseils Expert Global. Le choix annoncé
+est **Conseils de l’expert** : même intitulé dans les observations et les deux
+restitutions, ainsi que Conseils de l’expert pour le contexte extérieur dans sa
+saisie. Le champ actions des observations et le champ conseils du contexte
+gardent leurs valeurs. L’ordre Constat → Explications → Conseils est conservé,
+ainsi que les règles d’affichage/filtrage des différents profils. Ce complément
+remplace la réserve initiale sur cet intitulé, sans renommer le métier personnel
+CONNECT. Aucun remplacement global ni migration.
 
 **Développement local** sur une copie distincte, base fusion PR167 12095d5.
-245 tests Node et 48 contrôles HTTP/PHP/MariaDB réussis ; comparaison de douze
-restitutions : seul le titre de couverture habitologue varie, autres parcours,
-champs et quatre messages de métier CONNECT exacts. Sauvegarde/réouverture en
+245 tests Node réussis après le complément des conseils ; 48 contrôles
+HTTP/PHP/MariaDB du socle serveur inchangé conservés. Comparaison de douze
+restitutions : seuls les intitulés de prestation et de conseils attendus varient ;
+autres textes/règles, champs et quatre messages de métier CONNECT exacts. Sauvegarde/réouverture en
 nouvelle session sans brouillon : champs métier, clé habitologue, neuf plans,
 quinze repères et propriétaire conservés. Deux Word réels : titres, contenus,
-médias et filtrage client contrôlés ; fichier Projet exact et décodable par son
+médias et filtrage client contrôlés ; régénération des deux Word après le
+complément avec seuls les intitulés des conseils modifiés, autres paragraphes et
+images strictement identiques. Fichier Projet exact et décodable par son
 moteur natif. Portée du rendu Word natif dans le suivi du candidat, distincte des
 contrôles de contenu. Aucune connexion Drupal hébergée déduite du banc local.
 **Préproduction** et **Mise en production** non engagées ; report des profils

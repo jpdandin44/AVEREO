@@ -15,7 +15,7 @@ tags:
 
 ## Nom de prestation — 17 novembre
 
-Appliquer la décision Analyse globale au seul parcours de mission correspondant à la clé habitologue, dans Dossier et les deux restitutions. Préserver métier CONNECT, autres parcours, conseils, valeurs historiques, contenus, médias et permissions. Les six critères LIB-01 à LIB-06 restent dans leur source de cadrage liée au [contrat](docs/profils-professionnels.md#libellé-de-prestation--17-novembre), sans copie concurrente.
+Appliquer la décision Analyse globale au seul parcours de mission correspondant à la clé habitologue, dans Dossier et les deux restitutions. Le complément demandé avant revue applique Conseils de l’expert aux intitulés des conseils, y compris au contexte extérieur et aux deux Word. Préserver métier CONNECT, règles des autres parcours, textes des conseils, valeurs historiques, contenus, médias et permissions. Les six critères LIB-01 à LIB-06 restent dans leur source de cadrage liée au [contrat](docs/profils-professionnels.md#libellé-de-prestation--17-novembre), qui documente ce complément direct sans copie concurrente.
 
 ## Plans et vues multiples — 17 novembre
 

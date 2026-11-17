@@ -35,7 +35,7 @@ test('a selected client finding stays with its advice and nested photo caption, 
   try {
     const body = element('body', [element('article', [
       element('h3', 'Constat sélectionné'), element('p', 'Constat conservé'),
-      element('h4', 'Conseils habitologue'), element('p', 'Conseil conservé'),
+      element('h4', 'Conseils de l’expert'), element('p', 'Conseil conservé'),
       element('div', [element('img'), element('p', 'Légende conservée')], 'photo-block'),
     ], 'client-observation keep-together'), element('p', 'Bloc suivant')]);
     const document = await xml(body);

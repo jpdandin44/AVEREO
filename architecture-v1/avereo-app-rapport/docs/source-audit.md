@@ -15,7 +15,7 @@ tags:
 
 ## 17 novembre — Libellé Analyse globale, candidat local
 
-Trois fichiers de présentation : reportProfiles, reportDelivery et le message de reprise du métier dans connectedMissionProfile. Aucune API, préférence, permission ou donnée modifiée ; le nom de profession CONNECT reste Habitologue. Les titres libres et archives ne sont pas réécrits, les conseils restent inchangés. [Périmètre et contrôles](profils-professionnels.md#libellé-de-prestation--17-novembre).
+Cinq fichiers de présentation : reportProfiles, reportDelivery, reportHtml, EnvironmentContext et le message de reprise du métier dans connectedMissionProfile. Le complément Conseils de l’expert reste un changement d’intitulé ; les tests existants d’ordre/filtrage sont alignés. Aucune API, préférence, permission ou donnée modifiée ; le nom de profession CONNECT reste Habitologue. Les titres libres, textes des conseils et archives ne sont pas réécrits. [Périmètre et contrôles](profils-professionnels.md#libellé-de-prestation--17-novembre).
 
 ## 17 novembre — Plans et vues multiples, candidat local
 

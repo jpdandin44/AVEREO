@@ -81,7 +81,7 @@ test('explanations sit between the finding and the advice in the expert report, 
   const html = buildReportHtml(withExplanations());
   const first = html.slice(html.indexOf('Constat retenu'), html.indexOf('Autre constat'));
   assert.ok(first.indexOf('<h4>Constat</h4>') < first.indexOf('<h4>Explications</h4>'));
-  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Conseils habitologue</h4>'));
+  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Conseils de l’expert</h4>'));
   assert.match(first, /&lt;b&gt;x&lt;\/b&gt; &amp; &quot;y&quot;<br \/>/);
   assert.match(first, /<a href="https:\/\/example\.com\/doc\?a=1&amp;b=2" rel="noopener noreferrer">https:\/\/example\.com\/doc\?a=1&amp;b=2<\/a> \(ou <a href="http:\/\/example\.org\/p_\(q\)"/);
   assert.doesNotMatch(first, /<b>x<\/b>/);
@@ -91,22 +91,22 @@ test('explanations sit between the finding and the advice in the expert report, 
 test('reports without explanations render no explanation block and the common advice label', () => {
   const html = buildReportHtml(dossier());
   assert.doesNotMatch(html, /Explications/); assert.doesNotMatch(html, /Suites proposees/);
-  assert.equal((html.match(/<h4>Conseils habitologue<\/h4>/g) || []).length, 2);
+  assert.equal((html.match(/<h4>Conseils de l’expert<\/h4>/g) || []).length, 2);
   const report = dossier(); report.observations[0].explications = '   ';
   assert.doesNotMatch(buildReportHtml(report), /Explications/);
 });
 
-test('the advice label is « Conseils habitologue » for the Habitologue profile and for every other or unknown profile', () => {
+test('the advice label is « Conseils de l’expert » for the Habitologue profile and for every other or unknown profile', () => {
   const report = withExplanations(); report.profil_metier = 'habitologue';
   const html = buildReportHtml(report);
-  assert.equal((html.match(/<h4>Conseils habitologue<\/h4>/g) || []).length, 2);
+  assert.equal((html.match(/<h4>Conseils de l’expert<\/h4>/g) || []).length, 2);
   assert.doesNotMatch(html, /Suites proposees/);
   const first = html.slice(html.indexOf('Constat retenu'), html.indexOf('Autre constat'));
-  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Conseils habitologue</h4>'));
+  assert.ok(first.indexOf('<h4>Explications</h4>') < first.indexOf('<h4>Conseils de l’expert</h4>'));
   for (const profil of ['', 'architecte', 'HABITOLOGUE', 42, null]) {
     report.profil_metier = profil;
     const other = buildReportHtml(report);
-    assert.equal((other.match(/<h4>Conseils habitologue<\/h4>/g) || []).length, 2); assert.doesNotMatch(other, /Suites proposees/);
+    assert.equal((other.match(/<h4>Conseils de l’expert<\/h4>/g) || []).length, 2); assert.doesNotMatch(other, /Suites proposees/);
   }
 });
 
@@ -126,11 +126,11 @@ test('Habitologue client observations keep finding, explanation and advice in or
   report.livrable = { audience: 'client', observations: ['1'] };
   const html = buildReportHtml(report);
   assert.ok(html.indexOf('<h4>Constat</h4>') < html.indexOf('<h4>Explications</h4>'));
-  assert.ok(html.indexOf('<h4>Explications</h4>') < html.indexOf('<h4>Conseils habitologue</h4>'));
+  assert.ok(html.indexOf('<h4>Explications</h4>') < html.indexOf('<h4>Conseils de l’expert</h4>'));
   assert.match(html, /Examiner/);
   assert.doesNotMatch(html, /CONSEIL-EXPERT-EXCLU|Explication privée|example\.net/);
   delete report.profil_metier;
-  assert.doesNotMatch(buildReportHtml(report), /Conseils habitologue|Examiner/);
+  assert.doesNotMatch(buildReportHtml(report), /Conseils de l’expert|Examiner/);
 });
 
 test('unsafe protocols in explanations are exported as plain text, never as links', () => {

@@ -14,7 +14,7 @@ tags:
 
 ## 17 novembre — Candidat libellé Analyse globale
 
-Option et résumé de mission, titres des couvertures expert/client : Analyse globale pour la clé habitologue. Métier CONNECT Habitologue, conseils, données et autres parcours inchangés. [Périmètre](docs/profils-professionnels.md#libellé-de-prestation--17-novembre). Aucun déploiement.
+Option et résumé de mission, titres des couvertures expert/client : Analyse globale pour la clé habitologue. Complément avant revue : Conseils de l’expert dans les observations, le contexte extérieur et les deux Word. Métier CONNECT Habitologue, textes saisis, données et règles des autres parcours inchangés. [Périmètre](docs/profils-professionnels.md#libellé-de-prestation--17-novembre). Aucun déploiement.
 
 ## 17 novembre — Candidat Plans et vues du dossier
 

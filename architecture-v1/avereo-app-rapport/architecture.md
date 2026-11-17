@@ -14,7 +14,7 @@ tags:
 
 ## Libellé de prestation et métier — 17 novembre
 
-reportProfiles porte le libellé de mission Analyse globale pour la clé habitologue ; reportDelivery le reprend dans les titres de couverture existants. connectedMissionProfile conserve Habitologue pour le métier déclaré du compte. Aucun flux, stockage ou contrôle d’accès changé. [Contrat](docs/profils-professionnels.md#libellé-de-prestation--17-novembre).
+reportProfiles porte le libellé de mission Analyse globale pour la clé habitologue ; reportDelivery le reprend dans les titres de couverture existants. Le même module fournit Conseils de l’expert à App, EnvironmentContext, reportHtml et reportDelivery. connectedMissionProfile conserve Habitologue pour le métier déclaré du compte. Aucun flux, stockage ou contrôle d’accès changé. [Contrat](docs/profils-professionnels.md#libellé-de-prestation--17-novembre).
 
 ## Plans et captures multiples — 17 novembre
 

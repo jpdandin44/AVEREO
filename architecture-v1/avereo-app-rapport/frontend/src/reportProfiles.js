@@ -58,5 +58,5 @@ export function allowsDecisionProjections(report) {
 }
 
 export function observationAdviceLabel() {
-  return 'Conseils habitologue';
+  return 'Conseils de l’expert';
 }

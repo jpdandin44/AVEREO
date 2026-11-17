@@ -15,7 +15,7 @@ tags:
 
 ## 17 novembre — Libellé Analyse globale sans migration
 
-La valeur profil_metier=habitologue, les catégories historiques dont Rapport Habitologue et les préférences de compte restent exactes. Seule la présentation de la prestation change ; aucun remplacement dans les textes utilisateurs ou médias. Profils absent/inconnu et parcours Architecte/Maître d’œuvre conservés. [Contrat](profils-professionnels.md#libellé-de-prestation--17-novembre).
+La valeur profil_metier=habitologue, les catégories historiques dont Rapport Habitologue et les préférences de compte restent exactes. Seuls les intitulés de prestation et de conseils changent ; aucun remplacement dans les textes utilisateurs, champs actions/conseils ou médias. Profils absent/inconnu et règles des parcours Architecte/Maître d’œuvre conservés. [Contrat](profils-professionnels.md#libellé-de-prestation--17-novembre).
 
 ## 17 novembre — Plans multiples sans migration SQL
 

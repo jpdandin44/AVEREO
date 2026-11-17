@@ -15,7 +15,7 @@ tags:
 
 ## Analyse globale — libellé de prestation, 17 novembre
 
-Le parcours de mission de clé habitologue est présenté comme **Analyse globale** dans Dossier et les couvertures expert/client. Le métier personnel CONNECT et les conseils gardent leurs libellés ; aucune donnée n’est renommée. [Périmètre et revue](docs/profils-professionnels.md#libellé-de-prestation--17-novembre). Développement local ; livraison des profils toujours différée.
+Le parcours de mission de clé habitologue est présenté comme **Analyse globale** dans Dossier et les couvertures expert/client. Le complément demandé avant revue remplace le libellé des conseils par **Conseils de l’expert**, dans les observations, le contexte extérieur et les deux restitutions. Métier personnel CONNECT et textes saisis conservés. [Périmètre et revue](docs/profils-professionnels.md#libellé-de-prestation--17-novembre). Développement local ; livraison des profils toujours différée.
 
 ## Plans et vues du dossier — 17 novembre
 

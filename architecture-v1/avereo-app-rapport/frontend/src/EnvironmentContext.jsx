@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import VoiceField from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
-import { usesMissionContext } from './reportProfiles.js';
+import { usesMissionContext, observationAdviceLabel } from './reportProfiles.js';
 import { readPlanFile } from './observationPlans.js';
 import { safeEmbeddedImageSource } from './reportHtml.js';
 import { environmentContext, contextText, newEnvironmentContext, changeEnvironmentContext, removeEnvironmentContext } from './environmentContext.js';
@@ -45,7 +45,7 @@ export default function EnvironmentContext({ report, setReport, onPhotoTransfer 
       </div>
       {voice('constat', 'Constat du contexte extérieur')}
       {voice('explications', 'Explications du contexte extérieur (liens et URL possibles)')}
-      {voice('conseils', 'Conseils habitologue pour le contexte extérieur')}
+      {voice('conseils', `${observationAdviceLabel(report)} pour le contexte extérieur`)}
       <label>Vue associée au contexte (facultative)<select value={contextText(value, 'planId')} onChange={event => update({ planId: event.target.value })}>
         <option value="">Aucune vue associée</option>
         {value.planId && !plan && <option value={value.planId}>Vue indisponible — référence conservée</option>}
