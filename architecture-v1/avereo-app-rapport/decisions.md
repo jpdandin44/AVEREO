@@ -13,6 +13,12 @@ tags:
   - architecture
 ---
 
+## 17 novembre — Renommer la prestation sans migrer les dossiers
+
+Complément demandé avant validation de PR168 : remplacer aussi l’intitulé Conseils habitologue, avec proposition alternative autorisée par le responsable. Choix de rédaction annoncé : **Conseils de l’expert**, commun aux observations, au contexte extérieur et aux deux restitutions. Raisons : vocabulaire compréhensible et applicable aux différents profils. Conséquences : libellé partagé, aucun nouveau métier, titre de qualification ou droit ; les valeurs des champs actions/conseils restent intactes. Ce complément remplace la réserve initiale sur ce seul libellé, conservée dans le contexte ci-dessous.
+
+Contexte : le responsable confirme Analyse globale et demande de continuer après la fusion de PR167. Décision : changer la présentation de la mission et préfixer les titres de couverture existants des deux Word, tout en conservant la clé habitologue et le métier CONNECT Habitologue. Raisons : distinguer prestation, profession et droits, préserver les dossiers. Conséquences : aucune migration, aucun titre utilisateur écrasé ; conseils et autres formulations secondaires conservés jusqu’à une décision distincte. [Périmètre](docs/profils-professionnels.md#libellé-de-prestation--17-novembre).
+
 ## 17 novembre — Des fonds figés et des repères propres à chaque vue
 
 Contexte : bibliothèque et fonds Terrain approuvés ; incident de sélection à qualifier. Décision : garder le modèle plans/reperes, ajouter les types sans migration, figer chaque capture et son cadrage, ne copier aucun point entre deux fonds. Raisons : stabilité des anciens dossiers et des exports, sans recalage arbitraire. Conséquences : nouveau cadrage = nouvelle vue ; retrait confirmé d’une vue = retrait de ses seuls points. [Contrat](docs/reperage-observations.md).

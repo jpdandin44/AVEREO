@@ -14,6 +14,14 @@ tags:
   - fonctionnalites
 ---
 
+## 17 novembre — Plans fusionnés, libellé Analyse globale en développement
+
+Complément avant revue de PR168 : harmoniser les intitulés des conseils en
+**Conseils de l’expert**, sans modifier leur contenu ; nouvelle version à tester
+dans la même PR et mêmes quatre phases.
+
+PR167 fusionnée en 12095d5, arbre identique au candidat qualifié ; aucune livraison déduite. **Cadrage** du nom Analyse globale confirmé ; **Développement local** limité aux libellés, sur cette fusion : contrôles locaux réussis, candidat soumis à revue humaine. **Préproduction** non engagée ; report des profils PR164/166 conservé. **Mise en production** non engagée. [Parcours et preuves](docs/profils-professionnels.md#libellé-de-prestation--17-novembre). Les états datés suivants sont historiques.
+
 ## 17 novembre — Plans et vues du dossier en développement local
 
 **Cadrage** approuvé : trois fonds, bibliothèque et liens aux constats. **Développement local** en qualification, avec l’incident R12-12 et les contrôles de conservation ; PR à préparer. **Préproduction** non engagée pour ce candidat. **Mise en production** non engagée. [Parcours](docs/reperage-observations.md). Le lot de libellés Analyse globale est préparé séparément ; les états datés suivants sont historiques.

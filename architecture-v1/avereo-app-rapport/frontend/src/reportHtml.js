@@ -129,7 +129,7 @@ export function buildEnvironmentContextHtml(report, client = false) {
     ${value.zone ? `<p>Zone : ${escapeHtml(value.zone)}</p>` : ''}
     <h4>Constat</h4><p>${textToHtml(contextText(value, 'constat'))}</p>
     ${explanationsHtml(value)}
-    <h4>Conseils habitologue</h4><p>${textToHtml(contextText(value, 'conseils'))}</p>
+    <h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(contextText(value, 'conseils'))}</p>
     ${value.photo ? picture(value.photo.src, value.photo.name, value.photo.caption, value.photo.source) : ''}
     ${plan ? `<h3>Vue associée — ${escapeHtml(plan.title)}</h3>${picture(plan.src, plan.title, plan.title, plan.source)}`
       : value.planId ? '<p>Vue associée indisponible ; référence conservée dans le dossier.</p>' : ''}

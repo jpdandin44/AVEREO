@@ -2,7 +2,7 @@
 // Missing or unknown values retain the historical projection behaviour.
 // The observation advice label is shared by all profiles, as requested in lot 0.
 export const MISSION_PROFILES = [
-  ['', 'Parcours actuel'], ['habitologue', 'Habitologue'],
+  ['', 'Parcours actuel'], ['habitologue', 'Analyse globale'],
   ['architecte', 'Architecte'], ['maitre_oeuvre', 'Maître d’œuvre'],
 ];
 
@@ -58,5 +58,5 @@ export function allowsDecisionProjections(report) {
 }
 
 export function observationAdviceLabel() {
-  return 'Conseils habitologue';
+  return 'Conseils de l’expert';
 }

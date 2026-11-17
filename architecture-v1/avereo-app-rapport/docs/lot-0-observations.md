@@ -5,12 +5,17 @@ title: Lot 0 — ordre et présentation des observations
 status: active
 version: git
 created: 2026-11-12
-updated: 2026-11-12
+updated: 2026-11-17
 owner: jpdandin
 tags: [rapport, observations, protocole, word]
 ---
 
 # Lot 0 — ordre et présentation des observations
+
+Le complément du 17 novembre à PR168 présente désormais le libellé partagé
+**Conseils de l’expert**. [Décision et périmètre actuels](profils-professionnels.md#libellé-de-prestation--17-novembre).
+Les critères et preuves ci-dessous conservent leur état du 12 novembre pour le
+vocabulaire ; le contenu des conseils et les règles d’ordre restent conservés.
 
 ## Cadrage
 

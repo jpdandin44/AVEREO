@@ -18,7 +18,10 @@ export async function readConnectedMissionProfile({ portal, user, fetchImpl = fe
     }
     const assigned = data.accessProfile?.active === true && recognizedMissionProfile(data.accessProfile?.template) ? data.accessProfile : null;
     const profile = data.professionalProfile || assigned?.template || '';
-    const label = data.professionalProfile ? missionProfileLabel({ profil_metier: profile }) : assigned?.name;
+    // CONNECT names the declared profession; the mission names the service separately.
+    const label = data.professionalProfile
+      ? profile === 'habitologue' ? 'Habitologue' : missionProfileLabel({ profil_metier: profile })
+      : assigned?.name;
     return { profile, notice: profile
       ? `Le profil ${label} de votre compte CONNECT a été proposé à la création. Vous pouvez adapter le profil de cette mission dans Dossier.`
       : 'Aucun profil professionnel par défaut dans CONNECT. Choisissez le profil de cette mission dans Dossier.' };

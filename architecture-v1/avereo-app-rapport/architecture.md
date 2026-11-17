@@ -12,6 +12,10 @@ tags:
   - architecture
 ---
 
+## Libellé de prestation et métier — 17 novembre
+
+reportProfiles porte le libellé de mission Analyse globale pour la clé habitologue ; reportDelivery le reprend dans les titres de couverture existants. Le même module fournit Conseils de l’expert à App, EnvironmentContext, reportHtml et reportDelivery. connectedMissionProfile conserve Habitologue pour le métier déclaré du compte. Aucun flux, stockage ou contrôle d’accès changé. [Contrat](docs/profils-professionnels.md#libellé-de-prestation--17-novembre).
+
 ## Plans et captures multiples — 17 novembre
 
 ObservationPlans réutilise plans/reperes et les identifiants existants ; registry PLAN_KINDS partagée avec les libellés de restitution, validation PHP alignée. CadastralCapture et LocationMap utilisent les mêmes trois modes de tuiles publiques, image figée avec source/cadrage et ajout atomique d’un couple. Consultation conservée sous les droits existants. [Contrat](docs/reperage-observations.md). Aucun changement SQL ou d’authentification.

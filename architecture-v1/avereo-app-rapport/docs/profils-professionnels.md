@@ -5,7 +5,7 @@ title: Profils de mission et défaut professionnel CONNECT
 status: active
 version: git
 created: 2026-11-16
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags: [rapport, connect, profils, architecte, maitre-oeuvre]
 ---
@@ -13,6 +13,48 @@ tags: [rapport, connect, profils, architecte, maitre-oeuvre]
 # Profils de mission et défaut professionnel CONNECT
 
 ## Cadrage
+
+### Libellé de prestation — 17 novembre
+
+Après la fusion de PR167, le responsable demande de poursuivre le lot préparé
+RAP-LIBELLES-ANALYSE-GLOBALE-20261117. Le [cadrage source et ses six critères LIB](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/docs/rapport-v1-2/cadrage-retours-philippe.md#lot-libelles-analyse-globale>)
+restent l’autorité du besoin. Le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>)
+porte le candidat et les preuves, bloc libellesAnalyseGlobale20261117.
+
+Le parcours enregistré avec profil_metier=habitologue affiche **Analyse globale**
+dans l’option et le résumé de Dossier. Les titres de couverture déjà présents
+deviennent « Analyse globale — Rapport expert détaillé » et
+« Analyse globale — Votre habitat, l’essentiel ». Aucun nouveau chapitre n’est
+créé ; le titre saisi dans le dossier reste affiché tel quel.
+
+Le défaut personnel CONNECT et son message continuent de nommer le métier
+Habitologue. Architecte, Maître d’œuvre, profils absents/inconnus, habilitations,
+catégories historiques et contenus libres sont conservés. Avant validation de
+PR168, le responsable demande aussi de corriger le libellé des conseils et
+autorise une proposition alternative à Conseils Expert Global. Le choix annoncé
+est **Conseils de l’expert** : même intitulé dans les observations et les deux
+restitutions, ainsi que Conseils de l’expert pour le contexte extérieur dans sa
+saisie. Le champ actions des observations et le champ conseils du contexte
+gardent leurs valeurs. L’ordre Constat → Explications → Conseils est conservé,
+ainsi que les règles d’affichage/filtrage des différents profils. Ce complément
+remplace la réserve initiale sur cet intitulé, sans renommer le métier personnel
+CONNECT. Aucun remplacement global ni migration.
+
+**Développement local** sur une copie distincte, base fusion PR167 12095d5.
+245 tests Node réussis après le complément des conseils ; 48 contrôles
+HTTP/PHP/MariaDB du socle serveur inchangé conservés. Comparaison de douze
+restitutions : seuls les intitulés de prestation et de conseils attendus varient ;
+autres textes/règles, champs et quatre messages de métier CONNECT exacts. Sauvegarde/réouverture en
+nouvelle session sans brouillon : champs métier, clé habitologue, neuf plans,
+quinze repères et propriétaire conservés. Deux Word réels : titres, contenus,
+médias et filtrage client contrôlés ; régénération des deux Word après le
+complément avec seuls les intitulés des conseils modifiés, autres paragraphes et
+images strictement identiques. Fichier Projet exact et décodable par son
+moteur natif. Portée du rendu Word natif dans le suivi du candidat, distincte des
+contrôles de contenu. Aucune connexion Drupal hébergée déduite du banc local.
+**Préproduction** et **Mise en production** non engagées ; report des profils
+conservé. Les paragraphes datés du 16 novembre ci-dessous sont historiques
+pour les libellés de mission, et restent valides pour les règles et professions.
 
 Après les tests, la fusion et la livraison de PR163, le responsable demande de
 passer au lot suivant. Il confirme explicitement « Intégrer aussi le profil de
@@ -30,7 +72,7 @@ réécrit les missions déjà créées, importées, reprises ou ouvertes depuis 
 | Profil de la mission | Étape 4 | Étape 5 | Étape 6 |
 | --- | --- | --- | --- |
 | Parcours actuel, profil absent ou non reconnu | Projection 1 : organiser les actions | Projection 2 : préparer deux options comparables | Comparer les conséquences et préparer l’arbitrage |
-| Habitologue | Projections masquées ; interventions existantes conservées | Projections masquées | Projections masquées |
+| Analyse globale (clé habitologue) | Projections masquées ; interventions existantes conservées | Projections masquées | Projections masquées |
 | Architecte | Organiser les actions du projet | Préparer deux variantes du projet | Comparer les variantes et préparer l’arbitrage |
 | Maître d’œuvre | Organiser les interventions et leur phasage | Préparer deux options de réalisation | Comparer les conditions de réalisation et préparer l’arbitrage |
 
