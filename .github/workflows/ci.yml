@@ -233,6 +233,9 @@ jobs:
           set -euo pipefail
           php architecture-v1/avereo-app-connect/backend/tests/development-authorization.php
           php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/development-authorization-controller.php
+          php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/profile-authorization-controller.php
+          php architecture-v1/avereo-app-connect/backend/tests/profile-administration.php
+          python3 architecture-v1/avereo-app-connect/backend/tests/profiles-http.py
           php architecture-v1/avereo-app-connect/backend/tests/run.php
 
       - name: Test private access and read-only fixtures

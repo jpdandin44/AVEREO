@@ -10,6 +10,14 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 17 novembre — Catalogue de profils et droits administrables
+
+Demande confirmée : créer et gérer des types de profils depuis Gérer les comptes,
+les affecter et configurer leurs applications et actions Rapport. Distinguer le
+métier déclaré d'une affectation administrative qui donne des droits ; conserver
+les contrôles d'organisation, période, propriétaire et refus explicites. Le catalogue commun est réservé au propriétaire global ; types initiaux sans droit
+ni affectation automatique, exports officiels contrôlés et copies déjà lues hors garantie. [Exigences détaillées et limites réelles](docs/profils-et-droits.md).
+
 ## Transfert avant fermeture
 
 Un administrateur habilité doit pouvoir transférer un dossier identifié à un autre compte disposant de Rapport dans la même organisation. [Parcours, habilitation et critères](../../docs/administration-acces-exports.md#transférer-un-rapport-avant-fermeture).

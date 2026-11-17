@@ -5,7 +5,7 @@ namespace Avereo\Connect\Administration;
 /** Private projection; the file lock serializes database changes and projection publication. */
 final class TrialPolicyStore
 {
-    public function __construct(private readonly string $path)
+    public function __construct(private readonly string $path, private readonly ?ProfileCatalog $profiles = null)
     {
         if (!preg_match('~^(?:/|[A-Za-z]:[\\\\/])~', $path) || str_contains($path,'://')
             || !is_dir(dirname($path)) || is_link($path)) throw new \InvalidArgumentException('Chemin de politique privée invalide.');
@@ -28,6 +28,7 @@ final class TrialPolicyStore
 
     public function set(int $id, array $rule): void
     {
+        if ($this->profiles !== null) $rule = $this->profiles->project($id, $rule);
         if (!is_file($this->path)) throw new \RuntimeException('Politique absente ; restauration requise avant modification.');
         $policy = null;
         if (is_file($this->path)) {

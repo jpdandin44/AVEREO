@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,14 @@ tags:
   - fonctionnalites
 ---
 
+## 17 novembre — Profils administrés, compatibilité
+
+Pas de migration des dossiers ou comptes, pas de changement d'identifiant ou
+propriétaire. Sans affectation administrative : fonctionnement historique.
+Profil affecté : applications et actions bornées par la politique existante.
+Un parcours administré reconnu peut servir de défaut à une création seulement.
+La réserve historique {} / [] des quatre contrôles vides est documentée ; aucune
+assertion de contenu complet retirée. [Compatibilité et récupération](../../avereo-app-connect/docs/profils-et-droits.md).
 ## 16 novembre — Profils professionnels et défaut CONNECT
 
 Pas de migration SQL ni nouveau champ Rapport : `profil_metier` existant conserve les codes reconnus, les autres valeurs restent stockées. Même `decision`, actions/options/liens/IDs, nouveaux libellés communs UI/Word. Défaut CONNECT personnel dans un fichier compagnon privé indépendant du médaillon, aucun identifiant de compte ajouté au dossier. Terrain/contexte et médias accessibles aux parcours professionnels reconnus de Visite Globale ; filtres client et masquage Habitologue conservés. [Compatibilité, tests et limites](profils-professionnels.md).

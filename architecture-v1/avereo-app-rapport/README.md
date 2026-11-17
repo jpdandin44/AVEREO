@@ -5,7 +5,7 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,12 @@ tags:
   - connect
 ---
 
+## 17 novembre — Droits du compte administrés dans CONNECT, candidat local
+
+Lecture/création/modification/suppression/export selon le profil administré ;
+consultation détaillée et options de restitution conservées. Dossiers sans
+affectation inchangés. [Organisation, revue locale et limites](../avereo-app-connect/docs/profils-et-droits.md).
+Préproduction différée à la demande du responsable.
 ## 16 novembre — Profils et CONNECT, candidat local
 
 Profils Architecte et Maître d’œuvre disponibles dans Dossier, étapes 4–6 et deux restitutions adaptées. Défaut déclaré sur le compte CONNECT proposé uniquement à la création ; dossiers existants et données conservés. Terrain/contexte, conseils et modalités gardés. [Revue, contrat et limites](docs/profils-professionnels.md). PR163 reste la version de préproduction ; ce nouveau lot est soumis à revue locale.

@@ -104,6 +104,12 @@ export async function getCurrentUser(token) {
   return payload.user;
 }
 
+export async function authorizeReportExport(token, user) {
+  const payload = await request('auth.php?action=authorize-export', { method: 'POST', token, body: {} });
+  if (payload.provider !== user?.provider || String(payload.accountId) !== String(user?.id)) throw new Error('Le compte a changé. Rechargez Rapport avant de télécharger ce dossier.');
+  return true;
+}
+
 export async function saveOnlineReport(report, token, id = '', { signal } = {}) {
   const payload = await request('reports.php', {
     method: 'POST',

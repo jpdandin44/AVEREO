@@ -33,6 +33,8 @@ final class Application
         private readonly ?\Avereo\Connect\Administration\Appearance $appearance = null,
         private readonly ?\Avereo\Connect\Account\Preferences $accountPreferences = null,
         private readonly ?\Avereo\Connect\Administration\ReportTransfers $reportTransfers = null,
+        private readonly ?\Avereo\Connect\Administration\ProfileAdministration $profileAdministration = null,
+        private readonly ?\Avereo\Connect\Administration\ProfileCatalog $profileCatalog = null,
     ) {
     }
 
@@ -248,6 +250,24 @@ final class Application
         }
         $userId = (int) $auth->userId;
 
+        if ($request->path==='/api/v1/profile-types' || str_starts_with($request->path,'/api/v1/admin/profiles')
+            || preg_match('#^/api/v1/admin/organizations/[1-9]\d*/users/[1-9]\d*/profile$#',$request->path)) {
+            if ($accountStatus!=='active') throw new ApiException(403,'ACCOUNT_INACTIVE','Compte indisponible.');
+            if ($this->profileCatalog===null || $this->profileAdministration===null) throw new ApiException(503,'PROFILES_NOT_CONFIGURED','La gestion des profils n’est pas configurée.');
+            if ($request->method==='GET' && $request->path==='/api/v1/profile-types') return Response::success($this->profileCatalog->choices(),$request->requestId);
+            if ($request->method==='GET' && $request->path==='/api/v1/admin/profiles') return Response::success($this->profileAdministration->listing($userId),$request->requestId);
+            CsrfGuard::assertValid($request,$csrfToken);
+            if ($request->header('origin')!==null) {
+                $origin=$this->urlOrigin($this->config->oauthRedirectUri);
+                if ($origin===null && $this->config->environment==='local') $origin=$this->urlOrigin('http://'.($request->header('host')??''));
+                if ($origin===null || $request->header('origin')!==$origin) throw new ApiException(403,'PROFILE_ORIGIN_REFUSED','Origine de modification refusée.');
+            }
+            if ($request->method==='POST' && $request->path==='/api/v1/admin/profiles') return Response::success($this->profileAdministration->update($userId,null,$request->body,$request->requestId),$request->requestId);
+            if ($request->method==='PUT' && preg_match('#^/api/v1/admin/profiles/([a-z][a-z0-9_-]{1,63})$#',$request->path,$matches)) return Response::success($this->profileAdministration->update($userId,$matches[1],$request->body,$request->requestId),$request->requestId);
+            if ($request->method==='PUT' && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/profile$#',$request->path,$matches)) return Response::success($this->profileAdministration->assign($userId,(int)$matches[1],(int)$matches[2],$request->body,$request->requestId),$request->requestId);
+            throw new ApiException(405,'METHOD_NOT_ALLOWED','Méthode refusée.');
+        }
+
         if ($request->path === '/api/v1/me/preferences') {
             if ($this->accountPreferences === null) throw new ApiException(503, 'PREFERENCES_UNAVAILABLE', 'Préférences indisponibles.');
             $context = hash_hmac('sha256', 'account-preferences:' . $userId, $csrfToken);
@@ -269,7 +289,8 @@ final class Application
                 }
             }
             if ($request->method === 'GET') {
-                $response = Response::success($this->accountPreferences->read($userId) + ['accountContext' => $context, 'accountId' => $userId], $request->requestId);
+                $response = Response::success($this->accountPreferences->read($userId) + ['accountContext' => $context, 'accountId' => $userId,
+                    'accessProfile'=>$this->profileCatalog?->profileFor($userId)], $request->requestId);
                 return new Response($response->status, $response->payload, $response->requestId, $headers);
             }
             if ($request->method !== 'PUT') throw new ApiException(405, 'METHOD_NOT_ALLOWED', 'Méthode refusée.');

@@ -14,6 +14,15 @@ tags:
   - fonctionnalites
 ---
 
+## 17 novembre — Catalogue et droits communs, priorité locale
+
+**Cadrage** confirmé : catalogue commun géré par le compte global, applications
+et actions Rapport. **Développement local** réalisé et en fin de qualification,
+revue humaine à recueillir. **Préproduction** différée explicitement après ce
+nouveau lot ; PR164 fusionnée mais non livrée. **Mise en production** non engagée.
+[Parcours de revue](../avereo-app-connect/docs/profils-et-droits.md). Les sections
+datées suivantes sont historiques.
+
 ## Priorité du 17 novembre — Continuité avant fermeture
 
 Le transfert dans une même organisation est prioritaire pour la V1.2. La recette porte sur deux comptes fictifs et sur la réouverture du dossier par le nouveau titulaire. [Critères et ordre de livraison](../../docs/administration-acces-exports.md#livraison-et-recette-du-transfert).

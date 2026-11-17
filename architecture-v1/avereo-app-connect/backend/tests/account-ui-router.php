@@ -10,6 +10,12 @@ if($path==='/') {
     header('Cache-Control: no-store');
     echo str_replace('<body>','<body><div style="padding:12px;background:#fff1be;color:#372f00">Recette locale — identités fictives uniquement ; aucun e-mail réel. Mot de passe et réception du mail non qualifiés ici.</div>',file_get_contents(dirname(__DIR__).'/public/index.html'));return true;
 }
+if (getenv('PROFILES_UI_FIXTURE')==='true' && $path==='/fixture/profiles-account') {
+    $actor=$_GET['actor']??'1';
+    if(!in_array($actor,['1','2'],true)){http_response_code(400);exit;}
+    setcookie('profiles_fixture_actor',$actor,['path'=>'/','httponly'=>true,'samesite'=>'Strict']);
+    header('Location: /');exit;
+}
 if(!str_starts_with($path,'/api/'))return false;
 $db=(string)getenv('ACCOUNT_UI_DB');
 if($db==='' || !is_dir(dirname($db)))throw new RuntimeException('Private fixture database required.');
@@ -42,8 +48,24 @@ $notifier=new class implements \Avereo\Connect\Identity\AccountActivationNotifie
         return $this->send($id,$subject,$email,$name,$request);
     }
 };
-$repo=new \Avereo\Connect\Repository\PdoConnectRepository($pdo);
-$policy=new \Avereo\Connect\Administration\TrialPolicyStore($db.'.policy.json');
+$profileCatalog=null;$profileAdministration=null;$fixtureActor=1;$fixtureSubject='owner';
+if(getenv('PROFILES_UI_FIXTURE')==='true') {
+    $pdo->exec("UPDATE users SET drupal_subject='10' WHERE id=1 AND drupal_subject='owner'; UPDATE users SET drupal_subject='20' WHERE id=2 AND drupal_subject='member'");
+    $fixtureActor=($_COOKIE['profiles_fixture_actor']??'1')==='2'?2:1;$fixtureSubject=$fixtureActor===1?'10':'20';
+    $profileCatalog=new \Avereo\Connect\Administration\ProfileCatalog($db.'.profiles.json');
+    if(!is_file($db.'.profiles.json'))$profileCatalog->save(\Avereo\Connect\Administration\ProfileCatalog::initial());
+    require dirname(__DIR__,2).'/integrations/drupal/avereo_identity_bridge/src/Security/ProfileRoleAssertion.php';
+    $authority=new \Drupal\avereo_identity_bridge\Security\ProfileRoleAssertion(str_repeat('local-profile-key-',4),'https://identity.example.invalid','10',
+        static function(string $subject)use($db):array {
+            $flags=is_file($db.'.role.json')?json_decode(file_get_contents($db.'.role.json'),true):['active'=>true,'global'=>true];
+            return ['active'=>$flags['active']===true,'adminRole'=>'administrator','adminRoleIsGlobal'=>$flags['global']===true,'hasAdminRole'=>$flags['global']===true];
+        },static fn(string $nonce,int $exp):bool=>true);
+    $profileGuard=new \Avereo\Connect\Administration\GlobalProfileAdministrator(1,str_repeat('local-profile-key-',4),'https://identity.example.invalid',
+        static fn(int $id):array=>['active'=>true,'subject'=>'10'],$authority->decide(...));
+}
+$repo=new \Avereo\Connect\Repository\PdoConnectRepository($pdo,null,$profileCatalog);
+$policy=new \Avereo\Connect\Administration\TrialPolicyStore($db.'.policy.json',$profileCatalog);
+if($profileCatalog!==null)$profileAdministration=new \Avereo\Connect\Administration\ProfileAdministration($pdo,$profileCatalog,$policy,$profileGuard->assert(...));
 $service=new \Avereo\Connect\Administration\AccountAdministration($pdo,$identity,$policy);
 $reports = new PDO('sqlite:'.$db.'.reports', null, null, [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
 $transfers = null;
@@ -70,5 +92,6 @@ $lifecycle = new \Avereo\Connect\Administration\AccountLifecycle($pdo,$service,$
 $app=new \Avereo\Connect\Application(new \Avereo\Connect\Config('local',true,null,'','','ACCOUNT_UI',1800,43200),
     $repo,null,null,$notifier,null,$service,$notifier,$lifecycle,
     appearance:new \Avereo\Connect\Administration\Appearance(dirname($db).'/appearance.json',7),
-    accountPreferences:new \Avereo\Connect\Account\Preferences(dirname($db).'/account-preferences'), reportTransfers:$transfers);
-$app->handle(\Avereo\Connect\Http\Request::fromGlobals(),new \Avereo\Connect\Security\AuthContext(1,time(),'owner'),'local-ui-csrf',static fn()=>null)->emit();
+    accountPreferences:new \Avereo\Connect\Account\Preferences(dirname($db).'/account-preferences'),
+    reportTransfers:$transfers,profileAdministration:$profileAdministration,profileCatalog:$profileCatalog);
+$app->handle(\Avereo\Connect\Http\Request::fromGlobals(),new \Avereo\Connect\Security\AuthContext($fixtureActor,time(),$fixtureSubject),'local-ui-csrf',static fn()=>null)->emit();

@@ -5,10 +5,18 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## 17 novembre — Administration des profils et droits : cadrage
+
+PR164 est fusionnée et conserve son périmètre : défaut personnel dans Mon profil,
+trois métiers fixes, sans habilitation associée. Le responsable demande maintenant
+un catalogue administrable dans Gérer les comptes, avec accès aux applications et
+actions dans Rapport. [Cadrage, critères et arbitrages](docs/profils-et-droits.md).
+Le candidat est implémenté et qualifié localement ; la préproduction reste différée.
 
 ## 16 novembre — Profil professionnel déclaré, candidat local
 

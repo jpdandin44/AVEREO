@@ -3,7 +3,7 @@
   "version": "git",
   "status": "active",
   "endpoint": "/api/reports.php",
-  "authentication": "Existing CONNECT gate and report identity/ownership checks, no extra permission",
+  "authentication": "Existing CONNECT gate and report identity/ownership checks; assigned administrative profiles additionally restrict report actions",
   "get": {
     "parameters": {
       "id": "existing report public_id",
@@ -62,5 +62,21 @@
   "deploymentTracking": {
     "source": "C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json",
     "block": "rapportDossiersComplets20261113.preproduction20261113"
+  },
+  "profileActions": {
+    "read": "GET list/content",
+    "create": "POST a new report",
+    "update": "POST an existing report",
+    "delete": "DELETE a report",
+    "export": "GET complete download=1; POST auth.php?action=authorize-export for official browser downloads/sharing",
+    "source": "private CONNECT policy for authenticated account, never submitted report JSON",
+    "unassigned": "legacy behavior",
+    "deniedStatus": 403,
+    "clientExportResponse": {
+      "ok": true,
+      "provider": "authenticated provider",
+      "accountId": "authenticated id"
+    },
+    "limits": "Official UI paths only; already-read data and downloaded files cannot be recalled"
   }
 }

@@ -12,6 +12,14 @@ tags:
   - changelog
 ---
 
+## 17 novembre — Candidat droits d'action et consultation détaillée
+
+API et téléchargements officiels raccordés au profil administré CONNECT.
+Consultation sans édition avec sections, photos et vues accessibles ; options
+expert/client permises pour l'export local. Défaut du parcours administré pour
+une création, sans réécriture d'un dossier existant. [Qualification et limites](../avereo-app-connect/docs/profils-et-droits.md).
+Aucun déploiement.
+
 ## 17 novembre — Candidat de transfert de propriété
 
 Le candidat ajoute à CONNECT la confirmation du changement de titulaire d’un rapport et adapte la lecture des photos originales. [Procédure et retour arrière](../../docs/administration-acces-exports.md#transférer-un-rapport-avant-fermeture).

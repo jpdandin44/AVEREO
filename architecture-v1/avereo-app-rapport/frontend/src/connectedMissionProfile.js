@@ -16,8 +16,11 @@ export async function readConnectedMissionProfile({ portal, user, fetchImpl = fe
     if (String(data?.accountId) !== String(user.id) || (data?.professionalProfile !== '' && !recognizedMissionProfile(data?.professionalProfile))) {
       throw Error('Different account or unsupported profile');
     }
-    return { profile: data.professionalProfile, notice: data.professionalProfile
-      ? `Le profil ${missionProfileLabel({ profil_metier: data.professionalProfile })} de votre compte CONNECT a été proposé à la création. Vous pouvez adapter le profil de cette mission dans Dossier.`
+    const assigned = data.accessProfile?.active === true && recognizedMissionProfile(data.accessProfile?.template) ? data.accessProfile : null;
+    const profile = data.professionalProfile || assigned?.template || '';
+    const label = data.professionalProfile ? missionProfileLabel({ profil_metier: profile }) : assigned?.name;
+    return { profile, notice: profile
+      ? `Le profil ${label} de votre compte CONNECT a été proposé à la création. Vous pouvez adapter le profil de cette mission dans Dossier.`
       : 'Aucun profil professionnel par défaut dans CONNECT. Choisissez le profil de cette mission dans Dossier.' };
   } catch {
     return { profile: '', notice: 'Le profil CONNECT n’a pas pu être repris. Choisissez le profil de cette mission dans Dossier ; vos autres dossiers sont conservés.' };

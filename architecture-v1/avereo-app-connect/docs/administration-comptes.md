@@ -5,10 +5,18 @@ title: Administration des comptes CONNECT
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-04
+updated: 2026-11-17
 owner: jpdandin
 tags: [connect, comptes, essai]
 ---
+
+## 17 novembre — Profil métier et gestion administrative des droits
+
+PR164 ajoute le défaut personnel dans Mon compte → Mon profil ; elle n'ajoute pas
+d'éditeur de types ni de droits par métier dans Gérer les comptes. Les applications
+et périodes déjà administrables restent distinctes. Le responsable confirme un
+prochain lot couvrant catalogue de profils, affectations, accès aux applications
+et actions Rapport. [Organisation et arbitrages](profils-et-droits.md) : candidat local réalisé, avec affectation administrative distincte du métier déclaré.
 
 ## Passer un compte en permanent et ajouter une application
 

@@ -27,10 +27,13 @@ parser.add_argument('--serve', action='store_true', help='Keep a local fictitiou
 parser.add_argument('--port', type=int, default=5186, help='Local Vite review port with --serve')
 parser.add_argument('--fixture', type=Path, help='Optional complete fictitious dossier for the existing round-trip recipe')
 parser.add_argument('--connect-profile-db', type=Path, help='Optional disposable CONNECT account fixture database shared with the local profile portal')
+parser.add_argument('--profile-admin-url', help='Optional localhost-only native profile administration fixture')
 args = parser.parse_args()
 if args.connect_profile_db:
     profile_parent = args.connect_profile_db.resolve().parent
-    assert args.serve and profile_parent.name.startswith('profils-connect-') and Path(tempfile.gettempdir()).resolve() in profile_parent.parents, 'Dedicated local profile fixture required'
+    assert profile_parent.name.startswith('profils-connect-') and Path(tempfile.gettempdir()).resolve() in profile_parent.parents, 'Dedicated local profile fixture required'
+if args.profile_admin_url:
+    assert args.connect_profile_db, 'Profile permission recipe requires dedicated local CONNECT fixture'
 PHP = shutil.which('php')
 assert PHP and shutil.which('docker'), 'Existing PHP and Docker required'
 parent = Path(tempfile.gettempdir()).resolve()
@@ -227,9 +230,18 @@ try:
         mysql('DROP TRIGGER report_fixture_drop_content;', db_name)
         req('/api/reports.php?id=' + fault_id, a, 'DELETE')  # Disposable fault fixture only.
     check('Source still exact after refusal cases', mysql("SELECT * FROM rapport_reports WHERE public_id='" + A + "';", db_name) == source)
+    profile_recipe = None
+    if args.profile_admin_url:
+        from profile_permissions_http import qualify_profile_permissions
+        config['connect_trial_access_file'] = str(args.connect_profile_db.resolve()) + '.policy.json'
+        assert Path(config['connect_trial_access_file']).is_file()
+        write_config()
+        profile_recipe = qualify_profile_permissions(admin_url=args.profile_admin_url, req=req, enter=enter,
+            mysql=mysql, database=db_name, fixture=fixture, check=check)
     receipt = {'status': 'passed', 'count': len(checks), 'checks': checks, 'hostingChanged': False,
                'scope': 'Actual PHP, real SQL migration in disposable local MariaDB, existing application gate with fictitious signed identities; not hosted CONNECT/OAuth',
                'sourceRowsAndOwnerPreserved': True, 'copyOwnerSeparate': True}
+    receipt['profilePermissions'] = profile_recipe
     receipt['exteriorContextTested'] = 'contexte_exterieur' in fixture
     if args.receipt:
         args.receipt.parent.mkdir(parents=True, exist_ok=True)
@@ -258,7 +270,7 @@ if (str_starts_with(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/fixture/
     };
     header('Content-Type: text/html; charset=utf-8'); header('Cache-Control: no-store');
     echo '<!doctype html><html lang="fr"><meta name="viewport" content="width=device-width"><title>Recette locale des dossiers complets</title><style>body{font:18px system-ui;max-width:760px;margin:60px auto;padding:24px;color:#142033}a{display:block;padding:18px;margin:20px 0;background:#1655d8;color:white;border-radius:8px;text-decoration:none}</style><h1>Dossiers complets — recette locale</h1><p>Deux comptes fictifs et une base temporaire sur cet ordinateur. Aucune donnée de préproduction.</p><p>Le compte A possède un dossier complet fictif, disponible dans la liste des rapports. Téléchargez son JSON complet, passez au compte B, chargez le fichier puis sauvez une copie indépendante. Le brouillon local reste propre à ce navigateur.</p>';
-    foreach ((getenv('REPORT_PROFILES_FIXTURE') === 'true' ? [1=>'Compte professionnel fictif',101=>'Compte fictif A',102=>'Compte fictif B'] : [101=>'Compte fictif A',102=>'Compte fictif B']) as $id=>$name) echo '<a href="/connect/entry.php?ticket='.htmlspecialchars($ticket($id),ENT_QUOTES).'">'.$name.'</a>';
+    foreach ((getenv('REPORT_PROFILES_FIXTURE') === 'true' ? [1=>'Compte propriétaire fictif',2=>'Compte au profil administré',101=>'Compte fictif A',102=>'Compte fictif B'] : [101=>'Compte fictif A',102=>'Compte fictif B']) as $id=>$name) echo '<a href="/connect/entry.php?ticket='.htmlspecialchars($ticket($id),ENT_QUOTES).'">'.$name.'</a>';
     echo '<p>La fermeture du service local efface cette base de recette temporaire.</p></html>'; exit;
 }
 return false;
@@ -274,6 +286,8 @@ return false;
             assert connect_router.is_file()
             review_env.update(APP_ENV='local', ACCOUNT_UI_FIXTURE='true', ACCOUNT_UI_DB=str(args.connect_profile_db.resolve()),
                               REPORT_PROFILES_FIXTURE='true', REPORT_PROFILES_CONNECT_ROUTER=str(connect_router))
+            if args.profile_admin_url:
+                review_env['PROFILES_UI_FIXTURE'] = 'true'
             if os.name == 'nt' and b'pdo_sqlite' not in subprocess.check_output([PHP, '-m']):
                 command[1:1] = ['-d', 'extension=' + str(Path(PHP).parent / 'ext/php_pdo_sqlite.dll')]
         server = subprocess.Popen(command + [str(router)], env=review_env, stdout=log, stderr=log)

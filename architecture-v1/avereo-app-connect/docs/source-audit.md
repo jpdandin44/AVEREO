@@ -5,10 +5,21 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 17 novembre — Cadrage des profils administrés et droits
+
+Analyse du portail, des préférences, de l'administration et des téléchargements
+Rapport. Trois métiers fixes et préférence personnelle, sans affectation
+administrative de type dynamique. Les Word/JSON locaux sont générés dans le
+navigateur : le contrat d'autorisation d'export demande un cadrage explicite.
+[Cadrage](profils-et-droits.md) ajouté après confirmation de l'accès applications
+et des actions Rapport. Candidat exécutable local et contrôles natifs/HTTP/navigateur qualifiés ; aucune
+migration SQL ou modification de compte réel. Les preuves restent distinctes d'une
+recette du vrai SSO hébergé.
 
 ## 16 novembre — Profil déclaré et compte courant
 

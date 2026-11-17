@@ -1,3 +1,4 @@
+import { useReadOnlyMode } from './ReadOnlyFields.jsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { MAX_PLANS, MAX_REPORT_BYTES, markersForPlan, planPayloadError, readPlanFile, setObservationPoint } from './observationPlans.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
@@ -6,6 +7,7 @@ import { visitProtocolStages } from './habitologieProtocol.js';
 import './observationPlans.css';
 
 export default function ObservationPlans({ report, setReport, selectedId, onSelect, onShowObservation, focusRequest, onPhotoTransfer }) {
+  const readOnly = useReadOnlyMode();
   const [viewId, setViewId] = useState('');
   const [zoom, setZoom] = useState(100);
   const [placing, setPlacing] = useState(false);
@@ -69,19 +71,19 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
     {error && <p role="alert" className="error-text">{error}</p>}
     {!plan ? <p>Aucune vue ajoutée. Vous pouvez continuer à décrire la pièce ou la zone dans chaque observation.</p> : <>
       <div className="plan-toolbar">
-        <label>Vue affichée<select value={plan.id} onChange={e => { setViewId(e.target.value); setZoom(100); setPlacing(false); }}>
+        <label>Vue affichée<select data-readonly-view value={plan.id} onChange={e => { setViewId(e.target.value); setZoom(100); setPlacing(false); }}>
           {plans.map(p => <option key={p.id} value={p.id}>{p.title} · {p.kind === 'cadastre' ? 'Cadastre' : p.kind === 'coupe' ? 'Coupe' : 'Niveau'}</option>)}
         </select></label>
         <label>Observation à repérer<select value={observation?.id || ''} onChange={e => chooseObservation(e.target.value)}>
           {ordered.map(o => <option key={o.id} value={o.id}>{observationNumber(report, o)}. {o.titre || o.piece || 'Sans titre'}</option>)}
         </select></label>
-        <label>Zoom {zoom} %<input type="range" min="100" max="300" step="25" value={zoom} onChange={e => setZoom(Number(e.target.value))} /></label>
+        <label>Zoom {zoom} %<input data-readonly-view type="range" min="100" max="300" step="25" value={zoom} onChange={e => setZoom(Number(e.target.value))} /></label>
       </div>
       <div className="plan-actions">
         <button type="button" className={`button ${placing ? 'primary' : 'secondary'}`} aria-pressed={placing}
           onClick={() => setPlacing(!placing)}>{placing ? 'Annuler le placement' : current ? 'Déplacer le repère' : 'Placer le repère'}</button>
         {current && <button type="button" className="button ghost" onClick={() => place(observation.id, null)}>Retirer ce repère</button>}
-        <button type="button" className="button ghost" onClick={() => onShowObservation(observation.id)}>Voir la fiche {number}</button>
+        <button type="button" className="button ghost" data-readonly-view onClick={() => onShowObservation(observation.id)}>Voir la fiche {number}</button>
       </div>
       <p className="plan-instruction" role="status">{placing ? `Cliquez ou touchez la vue pour placer le repère ${number}.` : 'Sélectionnez un repère pour retrouver sa fiche. Déplacez-le par glissement ou avec les flèches du clavier.'}</p>
       <div className="plan-scroll">
@@ -93,12 +95,12 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
           <img src={plan.src} alt={plan.title} width={plan.width} height={plan.height} draggable={false} />
           {markers.map(marker => {
             const point = dragPoint?.observationId === marker.observationId ? dragPoint : marker;
-            return <button key={marker.observationId} type="button"
+            return <button data-readonly-view key={marker.observationId} type="button"
               className={`plan-marker${marker.observationId === observation.id ? ' selected' : ''}`}
               style={{ left: `${point.x * 100}%`, top: `${point.y * 100}%` }}
               aria-label={`Repère ${marker.number} — ${marker.title}`} title={`${marker.number}. ${marker.title}`}
               onClick={e => { e.stopPropagation(); suppressClick.current = false; chooseObservation(marker.observationId); }}
-              onPointerDown={e => { e.stopPropagation(); if (e.button !== 0) return; e.currentTarget.setPointerCapture(e.pointerId);
+              onPointerDown={e => { if (readOnly) return; e.stopPropagation(); if (e.button !== 0) return; e.currentTarget.setPointerCapture(e.pointerId);
                 chooseObservation(marker.observationId); dragRef.current = { id: marker.observationId, x: e.clientX, y: e.clientY, moved: false }; }}
               onPointerMove={e => { const drag = dragRef.current; if (!drag || drag.id !== marker.observationId) return;
                 if (Math.hypot(e.clientX - drag.x, e.clientY - drag.y) > 3) drag.moved = true;
@@ -116,7 +118,7 @@ export default function ObservationPlans({ report, setReport, selectedId, onSele
         </div>
       </div>
       <p role="status">{message || `${markers.length} repère(s) sur cette vue.`}</p>
-      <ul className="plan-legend">{markers.map(marker => <li key={marker.observationId}><button type="button" onClick={() => chooseObservation(marker.observationId)}>
+      <ul className="plan-legend">{markers.map(marker => <li key={marker.observationId}><button data-readonly-view type="button" onClick={() => chooseObservation(marker.observationId)}>
         <strong>{marker.number}.</strong> {marker.title}</button></li>)}</ul>
       <details><summary>Informations sur la vue</summary>
         <div className="plan-toolbar">
