@@ -12,6 +12,10 @@ tags:
   - architecture
 ---
 
+## Plans et captures multiples — 17 novembre
+
+ObservationPlans réutilise plans/reperes et les identifiants existants ; registry PLAN_KINDS partagée avec les libellés de restitution, validation PHP alignée. CadastralCapture et LocationMap utilisent les mêmes trois modes de tuiles publiques, image figée avec source/cadrage et ajout atomique d’un couple. Consultation conservée sous les droits existants. [Contrat](docs/reperage-observations.md). Aucun changement SQL ou d’authentification.
+
 ## 17 novembre — Actions issues de la politique CONNECT
 
 La projection privée existante porte report_actions et access_profile pour les

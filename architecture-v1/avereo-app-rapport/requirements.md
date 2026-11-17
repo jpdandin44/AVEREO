@@ -13,6 +13,10 @@ tags:
   - habitologie
 ---
 
+## Plans et vues multiples — 17 novembre
+
+Importer plusieurs images, choisir leur type, récupérer cadastre/satellite/satellite + parcelles et rattacher un constat à plusieurs vues. Conserver les repères, numéros Terrain/bâti, anciens JSON, propriétaires et filtrage client ; erreurs explicites et limites existantes. [Exigences et qualification](docs/reperage-observations.md). PDF multipage séparé.
+
 ## 17 novembre — Actions autorisées par le profil administré
 
 Exiger les droits de consultation/création/modification/suppression/export,

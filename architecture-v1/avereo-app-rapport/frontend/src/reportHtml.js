@@ -3,7 +3,7 @@ import { visitProtocolStages, protocolStageNumber, LISTENING_TOPICS, isHabitolog
 import { LISTENING_SECTIONS } from './clientListening.js';
 import { rgaRisk, isRgaRisk } from './georisquesRiskSummary.js';
 import { normalizeRgaCartography, rgaLevelLabel } from './rgaContext.js';
-import { markersForPlan, observationPlanNames, planPayloadError } from './observationPlans.js';
+import { markersForPlan, observationPlanNames, planPayloadError, planKindLabel } from './observationPlans.js';
 import { observationAdviceLabel, usesMissionContext } from './reportProfiles.js';
 import { environmentContext, contextText, environmentContextError } from './environmentContext.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
@@ -17,7 +17,7 @@ export function buildObservationPlansHtml(report, selectedIds = null) {
     const markers = markersForPlan(report, plan.id, selectedIds);
     if (selectedIds && !markers.length) return '';
     return `<section class="plan-sheet"><h2>Repérage des observations — ${escapeHtml(plan.title)}</h2>
-      <p>${plan.kind === 'cadastre' ? 'Fond cadastral du terrain' : plan.kind === 'coupe' ? 'Coupe' : 'Plan de niveau'} · Repérage indicatif, sans mesure automatique.</p>
+      <p>${escapeHtml(planKindLabel(plan.kind))} · Repérage indicatif, sans mesure automatique.</p>
       <div class="plan-picture"><img src="${plan.src}" data-plan-id="${escapeHtml(plan.id)}" alt="${escapeHtml(plan.title)} — repères des observations" />
         ${markers.map(marker => `<span class="plan-dot" style="left:${marker.x * 100}%;top:${marker.y * 100}%">${marker.number}</span>`).join('')}</div>
       <p class="source">Source : ${escapeHtml(plan.source || 'À renseigner')}.</p>

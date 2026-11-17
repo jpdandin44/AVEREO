@@ -18,4 +18,19 @@
 .plan-legend button { background: transparent; color: #002b45; border: none; text-align: left; padding: 6px; cursor: pointer; }
 .observation-card { scroll-margin-top: 110px; }
 .observation-location { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.plan-import-panel, .terrain-capture { margin: 14px 0; }
+.plan-import-panel > summary, .terrain-capture > summary { cursor: pointer; color: #003d68; font-weight: 600; }
+.plan-workspace { display: grid; grid-template-columns: minmax(150px, .65fr) minmax(0, 1.65fr); gap: 18px; margin-top: 20px; }
+.plan-library { display: grid; align-content: start; gap: 14px; }
+.plan-library h4 { margin: 0 0 8px; }
+.plan-library button { display: flex; flex-direction: column; gap: 5px; width: 100%; margin: 5px 0; padding: 10px; text-align: left; overflow-wrap: anywhere; border: 1px solid #cbd9e0; border-radius: 8px; background: #fff; color: #002b45; cursor: pointer; font: inherit; }
+.plan-library button[aria-pressed=true] { background: #eaf2ff; border-color: #1d4ed8; box-shadow: inset 3px 0 #1d4ed8; }
+.plan-library button span { font-size: .85em; }
+.plan-library button:focus-visible { outline: 3px solid #1259a1; outline-offset: 2px; }
+.plan-view { min-width: 0; }
+.plan-view-title { margin: 0; overflow-wrap: anywhere; }
+.observation-view-link { overflow-wrap: anywhere; max-width: 100%; text-align: left; }
+.plan-remove-confirm { padding: 12px; border: 1px solid #bdcdd6; border-radius: 8px; background: #fff; }
+@media(max-width: 850px) { .plan-workspace { grid-template-columns: 1fr; } .plan-library { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width: 420px) { .plan-library { grid-template-columns: 1fr; } }
 @media(max-width: 650px) { .observation-plans { padding: 12px; } .plan-toolbar { grid-template-columns: 1fr; } .plan-scroll { padding: 18px; max-height: 60vh; } }

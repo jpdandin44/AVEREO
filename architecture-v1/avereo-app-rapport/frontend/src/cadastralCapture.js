@@ -1,7 +1,12 @@
-import { buildIgnTileUrl, validLocation } from './locationMap.js';
+import { buildIgnTileUrl, validLocation, terrainViewLayers } from './locationMap.js';
 import { MAX_PLANS, MAX_REPORT_BYTES, planPayloadError } from './observationPlans.js';
 
 export const CADASTRAL_SOURCE = '© IGN / DGFiP — Plan IGN et Parcellaire Express (PCI)';
+const CAPTURE_INFO = {
+  cadastre: { title: 'Terrain — fond cadastral', source: CADASTRAL_SOURCE },
+  satellite: { title: 'Terrain — vue satellite', source: '© IGN — Photographies aériennes' },
+  satellite_parcelles: { title: 'Terrain — vue satellite + parcelles', source: '© IGN / DGFiP — Photographies aériennes et Parcellaire Express (PCI)' },
+};
 export const captureTarget = report => JSON.stringify([report.onlineReportId || '', report.reference_dossier,
   report.adresse_logement, report.cadastre?.lon, report.cadastre?.lat]);
 
@@ -14,7 +19,7 @@ export function cadastralTiles(view) {
   }
   const nativeZoom = Math.min(19, zoom), scale = 2 ** (zoom - nativeZoom), size = 256 * scale;
   const jobs = [];
-  for (const layer of ['plan', 'cadastre']) {
+  for (const layer of terrainViewLayers(view.mode)) {
     for (let y = Math.floor(pixelOrigin.y / size); y <= Math.floor((pixelOrigin.y + height - 1) / size); y++) {
       for (let x = Math.floor(pixelOrigin.x / size); x <= Math.floor((pixelOrigin.x + width - 1) / size); x++) {
         if (x < 0 || y < 0 || x >= 2 ** nativeZoom || y >= 2 ** nativeZoom) throw new Error('Ce cadrage sort des limites du fond cadastral.');
@@ -28,9 +33,14 @@ export function cadastralTiles(view) {
 }
 
 export function attachCadastralPlan(report, plan, target) {
-  if (captureTarget(report) !== target || (report.plans || []).some(item => item.id === plan.id)) return report;
-  if ((report.plans || []).length >= MAX_PLANS) throw new Error('20 vues maximum par dossier.');
-  const next = { ...report, plans: [...(report.plans || []), plan] };
+  return attachPlanViews(report, [plan], target);
+}
+
+export function attachPlanViews(report, plans, target) {
+  if (captureTarget(report) !== target) return report;
+  if (plans.every(plan => (report.plans || []).some(item => item.id === plan.id))) return report;
+  if ((report.plans || []).length + plans.length > MAX_PLANS) throw new Error('20 vues maximum par dossier.');
+  const next = { ...report, plans: [...(report.plans || []), ...plans] };
   const error = planPayloadError(next);
   if (error) throw new Error(error);
   if (new Blob([JSON.stringify(next)]).size > MAX_REPORT_BYTES) throw new Error('Le dossier dépasse 50 Mio. La vue n’a pas été ajoutée.');
@@ -40,19 +50,29 @@ export function attachCadastralPlan(report, plan, target) {
 export async function captureCadastralView(view, signal) {
   if (!validLocation(view.center?.lon, view.center?.lat)) throw new Error('Centre du cadrage invalide.');
   const jobs = cadastralTiles(view), canvas = document.createElement('canvas');
+  const mode = view.mode ?? 'cadastre', info = CAPTURE_INFO[mode];
   canvas.width = view.width; canvas.height = view.height + 40;
   const ctx = canvas.getContext('2d');
   if (!ctx) throw new Error('Le navigateur ne peut pas enregistrer cette vue.');
   ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const loadTile = async job => {
+    // IGN can return an intermittent XML error for an otherwise valid tile.
+    // Retry once, bypassing that cached response; a second failure remains explicit.
+    for (let attempt = 0; attempt < 2; attempt++) {
+      signal.throwIfAborted();
+      try {
+        const response = await fetch(job.url, { signal, mode: 'cors', credentials: 'omit', referrerPolicy: 'no-referrer',
+          cache: attempt ? 'reload' : 'default' });
+        if (!response.ok || !response.headers.get('Content-Type')?.startsWith('image/')) throw new Error('Une tuile du terrain est indisponible.');
+        return await createImageBitmap(await response.blob());
+      } catch (error) { if (signal.aborted || attempt === 1) throw error; }
+    }
+  };
   // Bounded batches preserve the layer order and release every decoded bitmap on failure.
   for (let offset = 0; offset < jobs.length; offset += 4) {
     signal.throwIfAborted();
     const batch = jobs.slice(offset, offset + 4);
-    const images = await Promise.allSettled(batch.map(async job => {
-      const response = await fetch(job.url, { signal, mode: 'cors', credentials: 'omit', referrerPolicy: 'no-referrer' });
-      if (!response.ok || !response.headers.get('Content-Type')?.startsWith('image/')) throw new Error('Une tuile cadastrale est indisponible.');
-      return createImageBitmap(await response.blob());
-    }));
+    const images = await Promise.allSettled(batch.map(loadTile));
     try {
       const failed = images.find(item => item.status === 'rejected');
       if (failed) throw failed.reason;
@@ -62,11 +82,11 @@ export async function captureCadastralView(view, signal) {
   signal.throwIfAborted();
   ctx.fillStyle = '#fff'; ctx.fillRect(0, view.height, view.width, 40); ctx.fillRect(view.width - 42, 5, 36, 28);
   ctx.fillStyle = '#002b45'; ctx.font = 'bold 15px Arial'; ctx.fillText('N ↑', view.width - 38, 25);
-  ctx.font = '11px Arial'; ctx.fillText(CADASTRAL_SOURCE, 8, view.height + 16, view.width - 16);
+  ctx.font = '11px Arial'; ctx.fillText(info.source, 8, view.height + 16, view.width - 16);
   const capturedAt = new Date().toISOString();
   ctx.fillText(`Vue enregistrée le ${capturedAt.slice(0, 10)} · repérage indicatif`, 8, view.height + 32, view.width - 16);
-  return { id: crypto.randomUUID(), title: 'Terrain — fond cadastral', kind: 'cadastre',
-    source: `${CADASTRAL_SOURCE} · vue enregistrée le ${capturedAt}`, src: canvas.toDataURL('image/png'),
+  return { id: crypto.randomUUID(), title: info.title, kind: mode,
+    source: `${info.source} · vue enregistrée le ${capturedAt}`, src: canvas.toDataURL('image/png'),
     width: canvas.width, height: canvas.height,
-    cadrage: { capturedAt, center: view.center, zoom: view.zoom, bounds: view.bounds } };
+    cadrage: { capturedAt, mode, center: view.center, zoom: view.zoom, bounds: view.bounds } };
 }

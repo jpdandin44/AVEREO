@@ -10,6 +10,11 @@ $cadastre['plans'][0]['kind'] = 'cadastre';
 $cadastre['plans'][0]['cadrage'] = ['zoom' => 19, 'capturedAt' => '2026-11-14T19:00:00Z'];
 $cadastre['observations'][0]['phase_habitologie'] = 'terrain';
 $cases[] = [$cadastre, true];
+foreach (['coupe','satellite','satellite_parcelles','masse','facade','autre'] as $kind) {
+    $value = $valid; $value['plans'][0]['kind'] = $kind; $cases[] = [$value, true];
+}
+$value = $valid; $value['plans'][0]['kind'] = 'unknown'; $cases[] = [$value, false];
+$value = $cadastre; $value['plans'][0]['cadrage']['mode'] = 'private-url'; $cases[] = [$value, false];
 foreach (['url', 'fake', 'dimensions', 'duplicate_plan', 'missing_view', 'outside', 'string', 'duplicate_point', 'duplicate_observation', 'object'] as $case) {
     $value = $valid;
     switch ($case) {

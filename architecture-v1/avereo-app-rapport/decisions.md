@@ -5,13 +5,17 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 17 novembre — Des fonds figés et des repères propres à chaque vue
+
+Contexte : bibliothèque et fonds Terrain approuvés ; incident de sélection à qualifier. Décision : garder le modèle plans/reperes, ajouter les types sans migration, figer chaque capture et son cadrage, ne copier aucun point entre deux fonds. Raisons : stabilité des anciens dossiers et des exports, sans recalage arbitraire. Conséquences : nouveau cadrage = nouvelle vue ; retrait confirmé d’une vue = retrait de ses seuls points. [Contrat](docs/reperage-observations.md).
 
 ## 16 novembre — Défaut de compte et profil de mission distincts
 

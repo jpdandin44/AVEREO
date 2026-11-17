@@ -21,6 +21,17 @@ const IGN_LAYERS = {
   cadastre: ['CADASTRALPARCELS.PARCELLAIRE_EXPRESS', 'image/png'],
 };
 
+export const TERRAIN_VIEW_LAYERS = Object.freeze({
+  cadastre: ['plan', 'cadastre'],
+  satellite: ['aerial'],
+  satellite_parcelles: ['aerial', 'cadastre'],
+});
+
+export function terrainViewLayers(mode = 'cadastre') {
+  if (!Object.hasOwn(TERRAIN_VIEW_LAYERS, mode)) throw new Error('Fond du terrain inconnu.');
+  return [...TERRAIN_VIEW_LAYERS[mode]];
+}
+
 export function buildIgnTileUrl(layer) {
   if (!Object.hasOwn(IGN_LAYERS, layer)) return null;
   const [identifier, format] = IGN_LAYERS[layer];
