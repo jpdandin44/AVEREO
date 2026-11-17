@@ -17,7 +17,7 @@ import { environmentContextError, environmentContext } from './environmentContex
 import { PhotoOriginalControls } from './PhotoOriginals.jsx';
 import { applyPhotoReportVersion, reportPhotoSource } from './photoReportVersion.js';
 import { attachOriginal, photoOriginalCapabilities } from './photoOriginals.js';
-import { observationPlanNames, planPayloadError } from './observationPlans.js';
+import { observationPlanNames, observationPlanViews, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
 import { saveAs, setDownloadAuthorization, checkDownloadAuthorization } from './saveAs.js';
@@ -1461,11 +1461,11 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
     presentation.setOpen(`observation-${id}`, true);
     requestAnimationFrame(() => document.getElementById(`observation-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
-  const localize = id => {
+  const localize = (id, planId = '') => {
     presentation.setOpen('observation-plans', true);
     presentation.setOpen(`observation-${id}`, true);
     setPlanObservationId(id);
-    setPlanFocus(value => value + 1);
+    setPlanFocus(value => ({ tick: (value?.tick || 0) + 1, planId }));
     requestAnimationFrame(() => {
       const plans = document.getElementById('observation-plans');
       plans?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1662,8 +1662,10 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
         </div>
 
         <div className="observation-location">
-          <button type="button" className="button secondary" onClick={() => localize(obs.id)}><MapPin size={18} />Localiser sur un plan</button>
-          <span>{observationPlanNames(report, obs).join(' · ') || 'Aucun repère placé'}</span>
+          <button type="button" className="button secondary" data-readonly-view onClick={() => localize(obs.id)}><MapPin size={18} />Localiser sur un plan</button>
+          {observationPlanViews(report, obs).map(view => <button type="button" className="button ghost observation-view-link" data-readonly-view key={view.id}
+            onClick={() => localize(obs.id, view.id)}>Voir {view.title}</button>)}
+          {!observationPlanNames(report, obs).length && <span>Aucun repère placé</span>}
         </div>
         <TextAreaWithMic
           label="Constat"
@@ -1792,7 +1794,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
         </div>
       </div>
 
-      <ScreenDisclosure name="observation-plans" title="Plans et repérage" busy={photoTransfers > 0}
+      <ScreenDisclosure name="observation-plans" title="Plans et vues du dossier" busy={photoTransfers > 0}
         summary={`${(report.plans || []).length} vue(s) · ${report.observations.reduce((count, obs) => count + (obs.reperes || []).length, 0)} repère(s)`}>
         <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId}
           onSelect={id => { setPlanObservationId(id); presentation.setOpen(`observation-${id}`, true); }}

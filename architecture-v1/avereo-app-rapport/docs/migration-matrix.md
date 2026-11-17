@@ -13,6 +13,10 @@ tags:
   - fonctionnalites
 ---
 
+## 17 novembre — Plans multiples sans migration SQL
+
+Les huit valeurs de plans[].kind sont acceptées par le client et la validation PHP ; anciennes valeurs niveau/coupe/cadastre inchangées. cadrage.mode est facultatif et borné aux trois fonds. Vues figées, IDs et coordonnées conservés ; aucune migration, copie d’identité ou modification de droit. [Règles de conservation](reperage-observations.md).
+
 ## 17 novembre — Profils administrés, compatibilité
 
 Pas de migration des dossiers ou comptes, pas de changement d'identifiant ou

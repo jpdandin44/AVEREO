@@ -14,6 +14,10 @@ tags:
   - fonctionnalites
 ---
 
+## 17 novembre — Plans et vues du dossier en développement local
+
+**Cadrage** approuvé : trois fonds, bibliothèque et liens aux constats. **Développement local** en qualification, avec l’incident R12-12 et les contrôles de conservation ; PR à préparer. **Préproduction** non engagée pour ce candidat. **Mise en production** non engagée. [Parcours](docs/reperage-observations.md). Le lot de libellés Analyse globale est préparé séparément ; les états datés suivants sont historiques.
+
 ## 17 novembre — Catalogue et droits communs, priorité locale
 
 **Cadrage** confirmé : catalogue commun géré par le compte global, applications

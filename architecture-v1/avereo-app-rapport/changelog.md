@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 17 novembre — Candidat Plans et vues du dossier
+
+Bibliothèque de vues, huit types, fonds cadastre/satellite/satellite + parcelles et couple au même cadrage. Liens directs fiche/vue, retrait confirmé sans supprimer le constat, anciens repères et Word conservés. Carte chargée à l’ouverture du volet et reprise bornée d’erreur de tuile. [Parcours](docs/reperage-observations.md). Aucun déploiement.
+
 ## 17 novembre — Candidat droits d'action et consultation détaillée
 
 API et téléchargements officiels raccordés au profil administré CONNECT.

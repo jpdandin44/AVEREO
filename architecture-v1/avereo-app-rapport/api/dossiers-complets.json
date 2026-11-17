@@ -78,5 +78,28 @@
       "accountId": "authenticated id"
     },
     "limits": "Official UI paths only; already-read data and downloaded files cannot be recalled"
+  },
+  "observationPlans": {
+    "kinds": [
+      "niveau",
+      "coupe",
+      "cadastre",
+      "satellite",
+      "satellite_parcelles",
+      "masse",
+      "facade",
+      "autre"
+    ],
+    "images": "Embedded PNG/JPEG only; existing size/dimension limits unchanged",
+    "captureModes": [
+      "cadastre",
+      "satellite",
+      "satellite_parcelles"
+    ],
+    "captureMetadata": "Optional cadrage.mode, capturedAt, center, zoom, bounds; source and date embedded in capture",
+    "markers": "Stable observation id and planId, normalized x/y per view; no automatic copying",
+    "removeView": "Explicit confirmation; remove that view and its markers only",
+    "migration": null,
+    "sourceGuide": "../docs/reperage-observations.md"
   }
 }

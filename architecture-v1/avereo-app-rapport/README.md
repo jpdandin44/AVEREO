@@ -13,6 +13,10 @@ tags:
   - connect
 ---
 
+## Plans et vues du dossier — 17 novembre
+
+Bibliothèque compacte et trois fonds Terrain : cadastre, satellite et satellite + parcelles. Plusieurs images et types de plans, liens directs depuis les constats et repères stables. [Parcours et limites](docs/reperage-observations.md). Candidat local, PDF multipage séparé ; aucune livraison de ce lot.
+
 ## 17 novembre — Droits du compte administrés dans CONNECT, candidat local
 
 Lecture/création/modification/suppression/export selon le profil administré ;
