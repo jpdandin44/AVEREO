@@ -82,9 +82,9 @@ try {
     denied(fn()=>$service->transfer(1,7,2,['recipientId'=>2]+$input),'TRANSFER_INPUT_INVALID');
     $connect->exec("UPDATE users SET status='disabled' WHERE id=2");
     denied(fn()=>$service->transfer(1,7,1,['recipientId'=>2]+$input),'RECIPIENT_UNAVAILABLE');
-    $connect->exec("UPDATE users SET status='active',access_ends_at='2020-01-01 00:00:00' WHERE id=2");
+    $connect->exec("UPDATE users SET status='active',access_starts_at='2019-12-31 00:00:00',access_ends_at='2020-01-01 00:00:00' WHERE id=2");
     denied(fn()=>$service->transfer(1,7,1,['recipientId'=>2]+$input),'RECIPIENT_UNAVAILABLE');
-    $connect->exec('UPDATE users SET access_ends_at=NULL WHERE id=2');
+    $connect->exec('UPDATE users SET access_starts_at=NULL,access_ends_at=NULL WHERE id=2');
     // A second organization exists only to distinguish access granted elsewhere from access in the dossier's organization.
     $connect->exec("INSERT INTO organizations (id,status,name,slug) VALUES (8,'active','Test externe','test-externe');
         INSERT INTO memberships(id,organization_id,user_id,role,status) VALUES(3,8,1,'member','active');

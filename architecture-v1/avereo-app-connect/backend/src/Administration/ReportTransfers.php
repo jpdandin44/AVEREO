@@ -91,7 +91,9 @@ final class ReportTransfers
             if (!$this->repository->hasApplicationAccess($destination, 'rapport', $organization, true)) {
                 throw new ApiException(409, 'RECIPIENT_UNAVAILABLE', 'Le destinataire doit disposer de Rapport dans cette organisation.');
             }
-            $email = self::query($this->connect, 'SELECT email_normalized FROM users WHERE id=?', [$destination])->fetchColumn();
+            $email = (string)self::query($this->connect, 'SELECT email_normalized FROM users WHERE id=?', [$destination])->fetchColumn();
+            // Rapport's optional display address is limited to 190 characters. The authoritative key is the CONNECT ID.
+            if (preg_match('/^.{1,190}$/uD', $email) !== 1) $email = '';
             $reports = ($this->reportDatabase)();
             $reports->beginTransaction();
             $report = self::query($reports, 'SELECT r.id,r.owner_id' . self::VERIFIED . ' AND r.public_id=?' . self::lock($reports),
