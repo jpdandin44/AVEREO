@@ -294,7 +294,7 @@ final class RapportPhotoOriginalStore
      */
     private function accountedOwnerBytes(string $ownerProvider, string $ownerId, string $ownerKey): int
     {
-        $query = $this->pdo->prepare('SELECT report_public_id, public_id, bytes FROM rapport_photo_originals WHERE owner_provider = ? AND owner_id = ?');
+        $query = $this->pdo->prepare('SELECT * FROM rapport_photo_originals WHERE owner_provider = ? AND owner_id = ?');
         $query->execute([$ownerProvider, $ownerId]);
         $registered = [];
         $used = 0;
@@ -303,7 +303,9 @@ final class RapportPhotoOriginalStore
                 throw self::unavailable('Inventaire privé non conforme.');
             }
             $bytes = (int) $row['bytes'];
-            $registered[$row['report_public_id'] . '/' . $row['public_id'] . '.bin'] = $bytes;
+            if (($row['storage_owner_key'] ?? $ownerKey) === $ownerKey) {
+                $registered[$row['report_public_id'] . '/' . $row['public_id'] . '.bin'] = $bytes;
+            }
             $used = $bytes > PHP_INT_MAX - $used ? PHP_INT_MAX : $used + $bytes;
         }
         $query->closeCursor();
@@ -317,6 +319,7 @@ final class RapportPhotoOriginalStore
         $this->ensureDirectory($ownerRoot, false);
         try {
             $entries = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($ownerRoot, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+            $checkedReports = [];
             foreach ($entries as $entry) {
                 $path = str_replace('\\', '/', $entry->getPathname());
                 $real = realpath($path);
@@ -331,6 +334,18 @@ final class RapportPhotoOriginalStore
                 }
                 $bytes = $entry->getSize();
                 $relative = substr($path, strlen($ownerRoot) + 1);
+                if (!isset($registered[$relative]) && preg_match('~^([a-f0-9]{32})/[a-f0-9]{32}\.bin$~D', $relative, $parts)
+                    && !isset($checkedReports[$parts[1]])) {
+                    // Transferred originals stay in their private directory. Their new owner carries the reservation.
+                    $lookup = $this->pdo->prepare('SELECT * FROM rapport_photo_originals WHERE report_public_id=?');
+                    $lookup->execute([$parts[1]]);
+                    foreach ($lookup->fetchAll(PDO::FETCH_ASSOC) as $original) {
+                        if (($original['storage_owner_key'] ?? null) === $ownerKey) {
+                            $registered[$parts[1] . '/' . $original['public_id'] . '.bin'] = (int)$original['bytes'];
+                        }
+                    }
+                    $checkedReports[$parts[1]] = true;
+                }
                 $extra = max(0, $bytes - ($registered[$relative] ?? 0));
                 $used = $extra > PHP_INT_MAX - $used ? PHP_INT_MAX : $used + $extra;
             }
@@ -413,7 +428,7 @@ final class RapportPhotoOriginalStore
     private function existingFilePath(array $row, string $ownerProvider, string $ownerId): string
     {
         $ownerKey = hash('sha256', $ownerProvider . "\0" . $ownerId);
-        $directory = $this->reportDirectory($ownerKey, (string) $row['report_public_id'], false);
+        $directory = $this->reportDirectory($row['storage_owner_key'] ?? $ownerKey, (string) $row['report_public_id'], false);
         $path = $directory . '/' . $row['public_id'] . '.bin';
         clearstatcache(true, $path);
         if (!is_file($path) || is_link($path) || filesize($path) !== (int) $row['bytes']) {

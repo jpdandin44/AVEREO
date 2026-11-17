@@ -5,12 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 17 novembre — Candidat de transfert de propriété
+
+Le candidat ajoute à CONNECT la confirmation du changement de titulaire d’un rapport et adapte la lecture des photos originales. [Procédure et retour arrière](../../docs/administration-acces-exports.md#transférer-un-rapport-avant-fermeture).
 
 ## 16 novembre — Candidat profils Architecte/Maître d’œuvre avec CONNECT
 

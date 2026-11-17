@@ -319,8 +319,14 @@ if ($method === 'POST') {
     }
 
     // Re-read the actual saved document before confirming a complete save.
-    $verify = $pdo->prepare('SELECT payload_json FROM rapport_reports WHERE public_id = ?');
-    $verify->execute([$id]);
+    $verifySql = 'SELECT payload_json FROM rapport_reports WHERE public_id = ?';
+    $verifyArgs = [$id];
+    if (!$canManageAll) {
+        $verifySql .= ' AND owner_provider=? AND owner_id=?';
+        $verifyArgs = [$id, $ownerProvider, $ownerId];
+    }
+    $verify = $pdo->prepare($verifySql);
+    $verify->execute($verifyArgs);
     $stored = $verify->fetchColumn();
     $content = is_string($stored) ? api_complete_report_download($stored) : null;
     if ($content === null || !hash_equals(hash('sha256', $json), $content['sha256'])) {

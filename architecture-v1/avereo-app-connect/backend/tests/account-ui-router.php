@@ -46,7 +46,17 @@ $repo=new \Avereo\Connect\Repository\PdoConnectRepository($pdo);
 $policy=new \Avereo\Connect\Administration\TrialPolicyStore($db.'.policy.json');
 $service=new \Avereo\Connect\Administration\AccountAdministration($pdo,$identity,$policy);
 $reports = new PDO('sqlite:'.$db.'.reports', null, null, [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
-$reports->exec('CREATE TABLE IF NOT EXISTS rapport_reports (owner_provider TEXT, owner_id TEXT, title TEXT)');
+$transfers = null;
+if (getenv('ACCOUNT_UI_TRANSFER_FIXTURE') === 'true') {
+    require __DIR__.'/report-transfer-fixture.php';
+    if (!$reports->query("SELECT name FROM sqlite_master WHERE type='table' AND name='rapport_reports'")->fetchColumn()) {
+        createReportTransferSqliteSchema($reports);
+        seedReportTransferFixture($reports);
+    }
+    $transfers = new \Avereo\Connect\Administration\ReportTransfers($pdo,$repo,static fn()=>$reports,[7=>[1]]);
+} else {
+    $reports->exec('CREATE TABLE IF NOT EXISTS rapport_reports (owner_provider TEXT, owner_id TEXT, title TEXT)');
+}
 $deletion = new \Avereo\Connect\Identity\IdentityAccountDeletionClient(
     'https://identity.example.invalid/delete', str_repeat('fixture-only-',4),
     static function (string $body): array {
@@ -60,5 +70,5 @@ $lifecycle = new \Avereo\Connect\Administration\AccountLifecycle($pdo,$service,$
 $app=new \Avereo\Connect\Application(new \Avereo\Connect\Config('local',true,null,'','','ACCOUNT_UI',1800,43200),
     $repo,null,null,$notifier,null,$service,$notifier,$lifecycle,
     appearance:new \Avereo\Connect\Administration\Appearance(dirname($db).'/appearance.json',7),
-    accountPreferences:new \Avereo\Connect\Account\Preferences(dirname($db).'/account-preferences'));
+    accountPreferences:new \Avereo\Connect\Account\Preferences(dirname($db).'/account-preferences'), reportTransfers:$transfers);
 $app->handle(\Avereo\Connect\Http\Request::fromGlobals(),new \Avereo\Connect\Security\AuthContext(1,time(),'owner'),'local-ui-csrf',static fn()=>null)->emit();
