@@ -32,6 +32,7 @@ final class Application
         private readonly ?\Avereo\Connect\Developments\AuthorizationBroker $developmentAuthorization = null,
         private readonly ?\Avereo\Connect\Administration\Appearance $appearance = null,
         private readonly ?\Avereo\Connect\Account\Preferences $accountPreferences = null,
+        private readonly ?\Avereo\Connect\Administration\ReportTransfers $reportTransfers = null,
     ) {
     }
 
@@ -295,8 +296,22 @@ final class Application
         ) {
             $snapshot = $this->repository->getAccountAdministration($userId, (int) $matches[1]);
             $snapshot = $this->accountLifecycle?->describe($userId, $snapshot) ?? $snapshot;
+            $snapshot['reportTransferAvailable'] = $this->reportTransfers?->enabledFor($userId, (int)$matches[1], $snapshot['actorRole']) ?? false;
             $snapshot['accountCreationAvailable'] = $this->accountAdministration !== null && $snapshot['actorRole'] !== 'access_manager';
             return Response::success($snapshot, $request->requestId);
+        }
+
+        if (preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/report-transfers$#', $request->path, $matches)) {
+            if ($this->reportTransfers === null) throw new ApiException(403, 'TRANSFER_FORBIDDEN', 'Transfert indisponible.');
+            $organization = (int)$matches[1];
+            $source = (int)$matches[2];
+            if ($request->method === 'GET') {
+                return Response::success($this->reportTransfers->listing($userId, $organization, $source), $request->requestId);
+            }
+            if ($request->method !== 'POST') throw new ApiException(405, 'METHOD_NOT_ALLOWED', 'Méthode refusée.');
+            CsrfGuard::assertValid($request, $csrfToken);
+            $this->assertKnownFields($request->body, ['reportId','operationId','recipientId','reason']);
+            return Response::success($this->reportTransfers->transfer($userId, $organization, $source, $request->body), $request->requestId);
         }
 
         if ($request->method === 'POST' && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/accounts$#',$request->path,$matches)) {

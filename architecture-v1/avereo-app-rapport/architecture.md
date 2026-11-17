@@ -5,12 +5,16 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Titulaire des rapports et des originaux
+
+Le titulaire courant, le rattachement vérifié, les métadonnées des originaux et le reçu évoluent dans une transaction Rapport. Le dépôt physique des photos reste stable. [Schéma et procédure](../../docs/administration-acces-exports.md#transférer-un-rapport-avant-fermeture).
 
 ## Profils de mission et défaut du compte — 16 novembre
 

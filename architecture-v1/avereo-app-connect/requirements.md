@@ -5,10 +5,14 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Transfert avant fermeture
+
+Un administrateur habilité doit pouvoir transférer un dossier identifié à un autre compte disposant de Rapport dans la même organisation. [Parcours, habilitation et critères](../../docs/administration-acces-exports.md#transférer-un-rapport-avant-fermeture).
 
 ## Profil de connexion et nouvelles missions — 16 novembre
 

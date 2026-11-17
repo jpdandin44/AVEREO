@@ -753,6 +753,40 @@ paths:
           description: Compte ou application indisponible
         "422":
           $ref: "#/components/responses/ValidationError"
+  /admin/organizations/{organizationId}/users/{userId}/report-transfers:
+    parameters:
+      - { name: organizationId, in: path, required: true, schema: { type: integer, minimum: 1 } }
+      - { name: userId, in: path, required: true, description: Titulaire source, schema: { type: integer, minimum: 1 } }
+    get:
+      operationId: listVerifiedReportsForTransfer
+      summary: Lister les dossiers vérifiés du titulaire et les destinataires éligibles
+      responses:
+        '200': { description: "data.reports, data.recipients et data.remaining pour cette organisation" }
+        '403': { description: Habilitation de transfert requise }
+        '409': { description: Source indisponible }
+    post:
+      operationId: transferVerifiedReport
+      summary: Transférer le dossier et journaliser le changement de titulaire
+      parameters:
+        - { name: X-CSRF-Token, in: header, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [reportId, operationId, recipientId, reason]
+              properties:
+                reportId: { type: string, pattern: '^[a-f0-9]{32}$' }
+                operationId: { type: string, pattern: '^[a-f0-9]{32}$' }
+                recipientId: { type: integer, minimum: 1 }
+                reason: { type: string, minLength: 1, maxLength: 190 }
+      responses:
+        '200': { description: Reçu du transfert ou de la confirmation déjà traitée }
+        '403': { description: Habilitation ou protection de confirmation manquante }
+        '409': { description: Titulaire ou périmètre modifié ou destinataire indisponible }
+        '422': { description: Confirmation invalide }
   /admin/organizations/{organizationId}/users/{userId}/lifecycle:
     parameters:
       - name: organizationId

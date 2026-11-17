@@ -568,7 +568,7 @@
       return card;
     }
 
-    function adminUserCard(user) {
+    function adminUserCard(user, canTransferReports = false) {
       const card = document.createElement('article');
       card.className = 'admin-card';
 
@@ -616,6 +616,13 @@
         });
         actions.append(button);
       };
+      const transferUrl = '/api/v1/admin/organizations/' + adminOrganizationId + '/users/' + user.id + '/report-transfers';
+      if (canTransferReports && typeof user.pendingDeletionKeepsReports !== 'boolean') {
+        lifecycleButton('Transférer un rapport', async () => {
+          const {data} = await getJson(transferUrl);
+          openReportTransfer(user, transferUrl, data);
+        });
+      }
       if (user.canArchive || user.canRestore) {
         const archive = user.canArchive;
         lifecycleButton(archive ? 'Archiver le compte' : 'Restaurer le compte', async () => {
@@ -628,7 +635,16 @@
       if (user.canDelete) {
         const resuming = typeof user.pendingDeletionKeepsReports === 'boolean';
         lifecycleButton(resuming ? 'Reprendre la suppression' : 'Supprimer définitivement', async () => {
-          const confirmation = await confirmAccountDeletion(user);
+          let remaining = '';
+          if (canTransferReports && !resuming) {
+            try {
+              const {data} = await getJson(transferUrl);
+              remaining = data.remaining + ' dossier(s) rattaché(s) à cette organisation restent sur ce compte.';
+            } catch {
+              remaining = 'Le nombre de dossiers rattachés reste à vérifier.';
+            }
+          }
+          const confirmation = await confirmAccountDeletion(user, remaining);
           if (confirmation === null) return;
           const result = await mutation(lifecycleUrl, 'DELETE', confirmation);
           const dossiers = result.data?.reportsPreserved ? 'Dossiers Rapport conservés.' : 'Dossiers Rapport liés supprimés.';
@@ -844,7 +860,77 @@
         dialog.append(text,cancel,accept);document.body.append(dialog);dialog.showModal();
       });
     }
-    function confirmAccountDeletion(user) {
+    function openReportTransfer(user, url, data) {
+      const dialog = document.createElement('dialog');
+      dialog.setAttribute('aria-label', 'Transférer un rapport');
+      const form = document.createElement('form');
+      form.className = 'dialog-content';
+      const heading = document.createElement('h3');
+      heading.textContent = 'Transférer un rapport';
+      const summary = document.createElement('p');
+      summary.textContent = user.displayName + ' · ' + data.remaining + ' dossier(s) rattaché(s) à cette organisation.';
+      form.append(heading, summary);
+      const status = document.createElement('p');
+      status.setAttribute('role', 'status');
+      const label = (title, field) => {
+        const element = document.createElement('label');
+        element.append(document.createTextNode(title), field);
+        form.append(element);
+      };
+      const report = document.createElement('select');
+      const recipient = document.createElement('select');
+      const reason = document.createElement('input');
+      reason.required = true;
+      reason.maxLength = 190;
+      reason.value = 'Continuité avant fermeture du compte';
+      const available = data.remaining > 0 && data.recipients.length > 0;
+      if (available) {
+        for (const item of data.reports) report.add(new Option([item.reference, item.title].filter(Boolean).join(' · ') || item.id, item.id));
+        recipient.add(new Option('Choisir le nouveau titulaire', ''));
+        recipient.required = true;
+        for (const member of data.recipients) recipient.add(new Option([member.name,member.email].filter(Boolean).join(' · '), member.id));
+        label('Dossier à transférer', report);
+        label('Nouveau titulaire', recipient);
+        label('Motif', reason);
+      } else if (data.remaining) {
+        status.textContent = 'Aucun autre membre actif ne dispose de Rapport dans cette organisation.';
+      }
+      const cancel = document.createElement('button');
+      cancel.type = 'button';
+      cancel.textContent = 'Fermer';
+      cancel.addEventListener('click', () => dialog.close());
+      dialog.addEventListener('close', () => dialog.remove());
+      const submit = document.createElement('button');
+      submit.type = 'submit';
+      submit.textContent = 'Transférer le dossier';
+      form.append(status, cancel);
+      if (available) form.append(submit);
+      let operationId;
+      form.addEventListener('input', () => { operationId = null; });
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (submit.disabled || !available) return;
+        submit.disabled = true;
+        const payload = {reportId:report.value, recipientId:Number(recipient.value), reason:reason.value.trim(),
+          operationId:operationId ||= crypto.randomUUID().replaceAll('-', '')};
+        const selection = report.selectedOptions[0].text + ' → ' + recipient.selectedOptions[0].text;
+        try {
+          if (!await confirmAccountAction('Confirmer le changement de titulaire pour ' + selection + ' ?')) return;
+          const result = await mutation(url, 'POST', payload);
+          dialog.close();
+          await loadAdministration(result.data.alreadyProcessed ? 'Ce transfert a déjà été enregistré.' : 'Dossier transféré. ' + selection);
+        } catch (error) {
+          status.textContent = error.userMessage || 'Résultat à vérifier. Vous pouvez relancer la même confirmation.';
+        } finally {
+          submit.disabled = false;
+        }
+      });
+      dialog.append(form);
+      document.body.append(dialog);
+      dialog.showModal();
+    }
+
+    function confirmAccountDeletion(user, remaining = '') {
       return new Promise((resolve) => {
         const dialog = document.createElement('dialog');
         dialog.setAttribute('aria-label', 'Supprimer définitivement le compte');
@@ -852,7 +938,7 @@
         form.className = 'dialog-content';
         const intro = document.createElement('p');
         intro.textContent = 'Supprimer définitivement le compte CONNECT ' + user.email
-          + '. Une identité AVEREO préexistante ou dotée de rôles propres est conservée. Cette action est irréversible.';
+          + '. Une identité AVEREO préexistante ou dotée de rôles propres est conservée. Cette action est irréversible. ' + remaining;
         const keepReports = document.createElement('input');
         keepReports.type = 'checkbox';
         const fixedChoice = typeof user.pendingDeletionKeepsReports === 'boolean';
@@ -1062,7 +1148,7 @@
       if (users.length === 0) {
         adminUsersList.append(emptyAdminList('Aucun compte n’est rattaché à cette organisation.'));
       } else {
-        for (const user of users) adminUsersList.append(adminUserCard(user));
+        for (const user of users) adminUsersList.append(adminUserCard(user, snapshot.reportTransferAvailable));
       }
     }
 

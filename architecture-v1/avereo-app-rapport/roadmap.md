@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-16
+updated: 2026-11-17
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,10 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Priorité du 17 novembre — Continuité avant fermeture
+
+Le transfert dans une même organisation est prioritaire pour la V1.2. La recette porte sur deux comptes fictifs et sur la réouverture du dossier par le nouveau titulaire. [Critères et ordre de livraison](../../docs/administration-acces-exports.md#livraison-et-recette-du-transfert).
 
 ## 16 novembre — Profils avec CONNECT, candidat à relire
 

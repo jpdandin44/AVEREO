@@ -101,6 +101,11 @@ final class PdoConnectRepository implements ConnectRepository
 
     public function canLaunchApplication(int $userId, string $applicationCode): bool
     {
+        return $this->hasApplicationAccess($userId, $applicationCode);
+    }
+
+    public function hasApplicationAccess(int $userId, string $applicationCode, ?int $organizationId = null, bool $lock = false): bool
+    {
         $statement = $this->pdo->prepare(
             'SELECT 1 '
             . 'FROM users u '
@@ -117,12 +122,12 @@ final class PdoConnectRepository implements ConnectRepository
             . 'AND (u.access_ends_at IS NULL OR u.access_ends_at > UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_from IS NULL OR e.valid_from <= UTC_TIMESTAMP(6)) '
             . 'AND (e.valid_to IS NULL OR e.valid_to > UTC_TIMESTAMP(6)) '
-            . 'LIMIT 1',
+            . ($organizationId !== null ? 'AND o.id = :organization_id ' : '')
+            . 'LIMIT 1' . ($lock && $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'mysql' ? ' FOR UPDATE' : ''),
         );
-        $statement->execute([
-            'user_id' => $userId,
-            'application_code' => $applicationCode,
-        ]);
+        $parameters = ['user_id' => $userId, 'application_code' => $applicationCode];
+        if ($organizationId !== null) $parameters['organization_id'] = $organizationId;
+        $statement->execute($parameters);
         return $statement->fetchColumn() !== false;
     }
 
