@@ -5,13 +5,23 @@ title: Catalogue de profils et droits depuis la gestion des comptes
 status: active
 version: git
 created: 2026-11-17
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags: [connect, profils, comptes, droits, rapport, cadrage]
 ---
 
 
 # Catalogue commun de profils et droits
+
+## Libellé Analyse globale — 18 novembre
+
+Le responsable confirme l’extension du libellé **Analyse globale** à CONNECT dans la PR170. Le choix **Mon profil → Profil professionnel par défaut** et le **Parcours Rapport de référence** des formulaires d’administration affichent ce nom pour la valeur historique `habitologue`. Les choix Architecte, Maître d’œuvre et « À choisir dans chaque dossier » sont conservés.
+
+Les noms libres des types administrés sont des données : un type existant nommé « Habitologue » reste nommé ainsi et peut être renommé par son administrateur. Le catalogue privé, ses identifiants, affectations, applications et droits ne sont pas modifiés. Aucun profil n’est choisi automatiquement sur un compte existant. Les dossiers antérieurs conservent leur choix et leurs contenus.
+
+La correction porte sur deux libellés fixes dans `backend/public/index.html` et `backend/public/assets/profiles-administration.js`. Le vrai serveur PHP/SQLite local réussit 21 contrôles HTTP de profils et 35 contrôles natifs. Sept contrôles navigateur réussissent : liste/valeurs exactes, sauvegarde, annulation, rechargement, nouvelle session locale, parcours de référence et noms existants/personnalisés conservés. Le SSO hébergé n’est pas exercé par cette fixture. [Revue CONNECT fictive](http://127.0.0.1:5215/) ; [recette humaine de la PR170](../../avereo-app-rapport/docs/source-audit.md#recette-humaine-de-la-pr170).
+
+**Cadrage** approuvé ; **Développement local** vérifié ; **Préproduction** du nouveau candidat non livrée ; **Mise en production** non autorisée. Les preuves et l’état GitHub sont rattachés à `rapportV12CadrageProfils20261112.apercuFermeture20261118` dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>).
 
 ## Cadrage
 
@@ -35,7 +45,7 @@ canonique du cockpit privé. Les accords et états des anciens lots sont conserv
 Dans **Gérer les comptes → Types de profils et droits — catalogue commun AVEREO** :
 
 1. Créer un type, saisir son nom et sa description.
-2. Choisir un parcours Rapport de référence : Habitologue, Architecte ou Maître
+2. Choisir un parcours Rapport de référence : Analyse globale, Architecte ou Maître
    d'œuvre. Un nom libre ne crée pas un nouveau moteur métier.
 3. Cocher les applications permises et les actions Rapport.
 4. Enregistrer après lecture du récapitulatif. Renommer ou désactiver un type

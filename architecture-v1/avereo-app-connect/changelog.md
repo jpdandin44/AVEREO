@@ -5,7 +5,7 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
@@ -122,3 +122,7 @@ Le correctif ferme l’ancienne session après confirmation et rejoint la connex
 ## 2026-11-06 — Projets et préférences propres
 
 Le portail PHP ajoute ses préférences de tri et de visibilité du catalogue, enregistrées dans ce navigateur. Mon compte et Mes applications restent les destinations communes ; CONNECT ne possède pas de rubrique Mes projets. Aucun contrôle de droit ni parcours d’activation n’est modifié. Candidat local PR #121 ; installation hébergée distincte.
+
+## 18 novembre — Analyse globale dans les choix de profil
+
+Libellé personnel et parcours de référence alignés après confirmation du responsable, dans PR170. Valeurs historiques et données des profils conservées. [Périmètre et recette locale](docs/profils-et-droits.md#libellé-analyse-globale--18-novembre). Candidat non livré, revue humaine à effectuer.

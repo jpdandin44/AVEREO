@@ -5,13 +5,17 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Aperçu du rapport — correction locale du 18 novembre
+
+Le [correctif de fermeture de l’aperçu](docs/source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) est prêt pour revue locale : bouton visible au-dessus du bandeau AVEREO, retour au dossier et clavier vérifiés. Il n’est pas encore déployé ; les états datés ci-dessous sont historiques et le suivi canonique porte les livraisons courantes.
 
 ## Analyse globale — libellé de prestation, 17 novembre
 

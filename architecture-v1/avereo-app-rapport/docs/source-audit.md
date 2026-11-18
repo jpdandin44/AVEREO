@@ -492,3 +492,26 @@ Dans la version de préproduction de la PR #140, une erreur de transport remonte
 ## 18 novembre — Correction de pagination des interventions
 
 Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.
+
+## Fermeture de l’aperçu — candidat local du 18 novembre
+
+Le bandeau commun utilise des popovers dans la couche supérieure du navigateur. Il peut masquer la croix de l’aperçu, qui était une simple superposition. Le test navigateur reproduit l’interception du clic avec le bandeau réel sur quatre tailles d’écran, de 320 à 1280 pixels. La correction de Rapport reprend le dialogue natif déjà utilisé pour les photos ; le bandeau commun reste inchangé.
+
+Le bouton visible **Fermer l’aperçu** ferme la fenêtre et replace le focus sur **Aperçu**. Échap ferme depuis les commandes de l’aperçu. Après un clic dans le document intégré, **Maj+Tab** revient au bouton de fermeture puis **Entrée** ferme. Le document conserve son `sandbox=""` : aucun script ni accès supplémentaire n’est accordé pour transmettre ses événements clavier. La taille suit la fenêtre, la barre se replie sur écran étroit et le document défile dans son propre cadre.
+
+Le test [report-preview.browser.mjs](../tests/report-preview.browser.mjs) vérifie les deux restitutions expert/client sur 1280×820, 640×450, 390×844 et 320×640 : clic accessible, Échap depuis les commandes, sortie clavier depuis le document, retour du focus, brouillon exact et absence de requête d’écriture. Les huit parcours passent ; 246 tests Node et compilation connectée réussis. Le HTML du rapport, les Word, données, API et droits ne changent pas. Ces preuves sont locales ; le correctif n’est pas installé en préproduction.
+
+Revue locale sur [le dossier fictif complet](http://127.0.0.1:5214/fixture/) : Reprendre → Export → Aperçu. Ce service de revue écoute uniquement sur cet ordinateur et refuse les écritures serveur. Les données hébergées ne sont pas utilisées par ce service. La PR169 est fusionnée en `b9c9efb` ; son frontend est identique au candidat qualifié installé. La PR170 est réalignée sur main sans conflit et ajoute le [libellé professionnel CONNECT approuvé](../../avereo-app-connect/docs/profils-et-droits.md#libellé-analyse-globale--18-novembre).
+
+**Cadrage** terminé, extension CONNECT confirmée ; **Développement local** qualifié ; **Préproduction** du nouveau correctif non livrée ; **Mise en production** non autorisée. Le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>) porte `rapportV12CadrageProfils20261112.apercuFermeture20261118`.
+
+### Recette humaine de la PR170
+
+Sur les deux points locaux fictifs ci-dessus, sans connexion à un compte réel :
+
+1. CONNECT → Mon profil : **Analyse globale**, Architecte, Maître d’œuvre et « À choisir dans chaque dossier » sont disponibles ; le choix fixe Habitologue n’est plus proposé.
+2. Enregistrer **Analyse globale**, recharger puis rouvrir CONNECT dans une nouvelle fenêtre privée : retrouver ce choix. Sélectionner Architecte puis **Annuler la modification du profil** : le choix enregistré reste Analyse globale.
+3. Mon compte → Gérer les comptes → Types de profils et droits → Créer un type : le **Parcours Rapport de référence** propose Analyse globale. Les noms des types déjà créés et leurs droits restent identiques ; un ancien nom libre Habitologue peut donc encore apparaître dans le catalogue.
+4. Rapport → Reprendre → Export → Aperçu : le bouton **Fermer l’aperçu** reste visible, sur grand écran puis dans une fenêtre étroite. Fermer, rouvrir et vérifier le maintien du dossier et des textes.
+5. Vérifier **Échap** depuis les commandes de l’aperçu ; après clic dans le document, **Maj+Tab puis Entrée** revient au dossier. Le focus revient sur Aperçu.
+6. Options du livrable : répéter avec **Rapport expert détaillé**, puis **Synthèse client** ; parcourir le document et vérifier que le bouton reste accessible. Le service Rapport local refuse les écritures serveur ; ces tests ne remplacent pas la future recette CONNECT/Rapport hébergée.

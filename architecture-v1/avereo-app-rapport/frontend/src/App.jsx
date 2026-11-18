@@ -2037,22 +2037,32 @@ function validateReport(report) {
 }
 
 function ReportPreview({ report, onClose }) {
+  const dialog = useRef(null);
+  const closeButton = useRef(null);
+  useEffect(() => {
+    const previous = document.activeElement;
+    const element = dialog.current;
+    element.showModal();
+    closeButton.current?.focus();
+    return () => { element.close(); previous?.focus(); };
+  }, []);
   const html = useMemo(() => {
     try { return buildReportHtml(report); }
     catch (error) { return `<!doctype html><html lang="fr"><body><h1>Aperçu indisponible</h1><p>${escapeHtml(error.message)}</p><p>Fermez l’aperçu et corrigez les informations de la vue.</p></body></html>`; }
   }, [report]);
   return (
-    <div className="preview-backdrop">
+    <dialog ref={dialog} className="report-preview" aria-label="Aperçu du rapport"
+      onCancel={event => { event.preventDefault(); onClose(); }}>
       <div className="preview-shell">
         <div className="preview-bar">
-          <h2>Apercu du rapport</h2>
-          <button className="icon-button" type="button" onClick={onClose} aria-label="Fermer l'apercu">
-            <X size={18} />
+          <h2>Aperçu du rapport</h2>
+          <button ref={closeButton} className="button secondary" type="button" onClick={onClose}>
+            <X size={18} aria-hidden="true" /> Fermer l’aperçu
           </button>
         </div>
         <iframe title="Apercu du rapport" srcDoc={html} sandbox="" referrerPolicy="no-referrer" />
       </div>
-    </div>
+    </dialog>
   );
 }
 

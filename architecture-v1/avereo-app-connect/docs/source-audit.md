@@ -5,10 +5,14 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 18 novembre — Libellé de profil dans la PR170
+
+Deux libellés fixes sont alignés sur **Analyse globale** après confirmation du responsable. Valeurs historiques, catalogue privé, noms libres, affectations et droits conservés ; aucune migration. [Périmètre et vérifications](profils-et-droits.md#libellé-analyse-globale--18-novembre). Candidat local distinct de la PR169 déjà fusionnée, sans nouvelle livraison hébergée.
 
 ## 17 novembre — Cadrage des profils administrés et droits
 
