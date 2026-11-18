@@ -126,3 +126,7 @@ Le portail PHP ajoute ses préférences de tri et de visibilité du catalogue, e
 ## 18 novembre — Analyse globale dans les choix de profil
 
 Libellé personnel et parcours de référence alignés après confirmation du responsable, dans PR170. Valeurs historiques et données des profils conservées. [Périmètre et recette locale](docs/profils-et-droits.md#libellé-analyse-globale--18-novembre). Candidat non livré, revue humaine à effectuer.
+
+## 18 novembre — PR170 en préproduction
+
+CONNECT et Rapport livrés après fusion et accord humains ; six fichiers exacts, dossier fictif complet et propriétaire conservés, aperçus client/expert refermables. [Résultat et preuves](../avereo-app-rapport/docs/source-audit.md#livraison-en-pr%C3%A9production-de-la-pr170). Cette mise à jour documentaire ne change pas les applications.

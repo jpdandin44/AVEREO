@@ -323,3 +323,7 @@ Correction ciblée livrée et qualifiée en préproduction : voir [le périmètr
 ## 18 novembre — Priorité de fermeture de l’aperçu
 
 Le [correctif local de fermeture](docs/source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) et le libellé CONNECT **Analyse globale** confirmé par le responsable sont prêts à relire dans PR170. La PR169 est fusionnée en b9c9efb et son candidat installé est recontrôlé. La nouvelle PR170 cible main ; revue humaine et livraison distincte restent à effectuer.
+
+## 18 novembre — PR170 en préproduction
+
+CONNECT et Rapport livrés après fusion et accord humains ; six fichiers exacts, dossier fictif complet et propriétaire conservés, aperçus client/expert refermables. [Résultat et preuves](docs/source-audit.md#livraison-en-pr%C3%A9production-de-la-pr170). Cette mise à jour documentaire ne change pas les applications.

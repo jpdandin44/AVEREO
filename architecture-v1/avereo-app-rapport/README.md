@@ -13,6 +13,10 @@ tags:
   - connect
 ---
 
+## 18 novembre — PR170 livrée en préproduction
+
+CONNECT et Rapport sont alignés sur la PR170 fusionnée : Analyse globale dans les choix CONNECT, fermeture des aperçus client/expert contrôlée après réouverture serveur d’un dossier fictif complet. Données, propriétaire et droits conservés. [Livraison, preuves et limites](docs/source-audit.md#livraison-en-préproduction-de-la-pr170). Les sections suivantes conservent les étapes antérieures ; le suivi canonique porte l’état courant.
+
 ## Aperçu du rapport — correction locale du 18 novembre
 
 Le [correctif de fermeture de l’aperçu](docs/source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) est prêt pour revue locale : bouton visible au-dessus du bandeau AVEREO, retour au dossier et clavier vérifiés. Il n’est pas encore déployé ; les états datés ci-dessous sont historiques et le suivi canonique porte les livraisons courantes.
