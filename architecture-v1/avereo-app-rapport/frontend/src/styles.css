@@ -1403,8 +1403,7 @@ img {
   .action-bar { display: none; }
 }
 
-.modal-backdrop,
-.preview-backdrop {
+.modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 60;
@@ -1473,14 +1472,25 @@ img {
   text-align: center;
 }
 
-.preview-backdrop {
-  align-items: start;
-  overflow: auto;
+.report-preview {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(980px, calc(100% - 36px));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
+.report-preview::backdrop { background: rgba(15, 23, 42, 0.68); }
+
 .preview-shell {
-  width: min(980px, 100%);
+  width: 100%;
   height: min(880px, calc(100vh - 36px));
+  height: min(880px, calc(100dvh - 36px));
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   border-radius: 8px;
@@ -1491,12 +1501,15 @@ img {
 
 .preview-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 12px 14px;
   border-bottom: 1px solid #d9dee7;
 }
+
+.preview-bar .button { flex-shrink: 0; }
 
 .listening-section h4 { margin: 0 0 8px; font-size: 1rem; }
 .listening-section > p, .listening-topics > p { color: #52637b; margin: 0 0 14px; line-height: 1.5; }

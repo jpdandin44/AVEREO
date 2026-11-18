@@ -319,3 +319,7 @@ Le cadrage, les hypotheses, les lots et le chiffrage sont decrits dans
 ## 18 novembre — Correction de pagination des interventions
 
 Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](docs/interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.
+
+## 18 novembre — Priorité de fermeture de l’aperçu
+
+Le [correctif local de fermeture](docs/source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) est qualifié et doit être relu avant livraison distincte. Recontrôle PR169 réussi sur les fichiers installés ; fusion encore à confirmer dans GitHub. Le remplacement du libellé professionnel CONNECT est en clarification.

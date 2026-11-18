@@ -415,3 +415,7 @@ Mon compte, Précédent et Suivant occupent une seule ligne. Les commandes de sa
 ## 18 novembre — Correction de pagination des interventions
 
 Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](docs/interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.
+
+## 18 novembre — Aperçu refermable, candidat local
+
+[Correction de la fermeture de l’aperçu](docs/source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) : bouton visible au-dessus du bandeau commun, retour au dossier et parcours clavier vérifiés sur ordinateur/mobile. Aucun changement de contenu ni de sauvegarde ; nouveau correctif non déployé.

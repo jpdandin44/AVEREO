@@ -5,10 +5,14 @@ title: Tests Rapport
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-14
+updated: 2026-11-18
 owner: jpdandin
 tags: [connect, rga, tests]
 ---
+
+## Fermeture de l’aperçu — 18 novembre
+
+Après une compilation connectée (`VITE_ENABLE_ONLINE_SYNC=true`), `node --test tests/report-preview.browser.mjs` depuis la racine de l’application vérifie huit parcours expert/client sur quatre tailles d’écran. Playwright déjà installé doit être résolvable depuis le paquet Saisie unique ou `NODE_PATH` ; `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` permet d’utiliser le navigateur déjà installé. Aucun téléchargement de dépendance n’est requis par le test. `RAPPORT_TEST_DIST` permet de contrôler une compilation antérieure, notamment celle qui reproduit le défaut. Toutes les données sont fictives, les appels externes sont bloqués et aucune écriture hébergée n’est faite. [Résultats, clavier et portée](../docs/source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre).
 
 ## Terrain horizontal — révision locale du 14 novembre
 
