@@ -419,3 +419,7 @@ Correction ciblée livrée et qualifiée en préproduction : voir [le périmètr
 ## 18 novembre — Aperçu refermable, candidat local
 
 [Correction de la fermeture de l’aperçu](docs/source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) : bouton visible au-dessus du bandeau commun, retour au dossier et parcours clavier vérifiés sur ordinateur/mobile. Aucun changement de contenu ni de sauvegarde ; nouveau correctif non déployé.
+
+## 18 novembre — PR170 en préproduction
+
+CONNECT et Rapport livrés après fusion et accord humains ; six fichiers exacts, dossier fictif complet et propriétaire conservés, aperçus client/expert refermables. [Résultat et preuves](docs/source-audit.md#livraison-en-pr%C3%A9production-de-la-pr170). Cette mise à jour documentaire ne change pas les applications.

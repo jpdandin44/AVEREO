@@ -13,6 +13,10 @@ tags: [connect, profils, comptes, droits, rapport, cadrage]
 
 # Catalogue commun de profils et droits
 
+## Livraison coordonnée du 18 novembre
+
+Après fusion de PR170 et accord explicite, les deux libellés fixes CONNECT et le correctif d’aperçu Rapport sont installés en préproduction. Noms libres, identifiants, affectations, droits et préférence professionnelle existante conservés ; nouvelle connexion native et réouverture serveur du dossier fictif contrôlées. [Recette, sauvegarde et limites](../../avereo-app-rapport/docs/source-audit.md#livraison-en-préproduction-de-la-pr170). Les sections suivantes conservent la qualification locale antérieure. Cette livraison n’actualise aucun nom libre du catalogue privé.
+
 ## Libellé Analyse globale — 18 novembre
 
 Le responsable confirme l’extension du libellé **Analyse globale** à CONNECT dans la PR170. Le choix **Mon profil → Profil professionnel par défaut** et le **Parcours Rapport de référence** des formulaires d’administration affichent ce nom pour la valeur historique `habitologue`. Les choix Architecte, Maître d’œuvre et « À choisir dans chaque dossier » sont conservés.

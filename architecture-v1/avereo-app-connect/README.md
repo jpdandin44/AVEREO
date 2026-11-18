@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, documentation]
 ---
 
+## 18 novembre — PR170 livrée en préproduction
+
+Les choix fixes de profil affichent **Analyse globale** et les deux aperçus Rapport sont refermables. Le dossier fictif complet, son propriétaire, les noms libres et les droits sont conservés. [Livraison coordonnée et preuves](../avereo-app-rapport/docs/source-audit.md#livraison-en-préproduction-de-la-pr170). Les états de préparation ci-dessous restent historiques.
+
 ## 18 novembre — Analyse globale, candidat PR170
 
 Le choix professionnel et le parcours Rapport de référence utilisent désormais **Analyse globale**. La clé historique et les noms libres des types administrés sont conservés. [Périmètre, compatibilité et recette locale](docs/profils-et-droits.md#libellé-analyse-globale--18-novembre). Cette extension est prête pour revue locale, sans nouvelle livraison hébergée ; les états datés suivants sont historiques.
