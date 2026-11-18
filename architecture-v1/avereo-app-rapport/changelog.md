@@ -5,7 +5,7 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - rapport
@@ -411,3 +411,7 @@ L’accueil propose la recherche, un choix de cinq ou cinquante dossiers et la c
 ## 2026-11-09 — Pied de page de l’éditeur
 
 Mon compte, Précédent et Suivant occupent une seule ligne. Les commandes de sauvegarde se trouvent en haut à droite.
+
+## 18 novembre — Correction de pagination des interventions
+
+Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](docs/interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.

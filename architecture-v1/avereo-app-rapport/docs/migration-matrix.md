@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - rapport
@@ -331,3 +331,7 @@ Le pied de page regroupe le menu du compte et les commandes entre étapes. La sa
 La migration des exports crée des tables de rattachement, de permission et de journal. Les dossiers existants conservent leur propriétaire. [Recette et retour arrière](../../../docs/administration-acces-exports.md).
 
 Le correctif local du message d’interruption concerne le panneau React. Les dossiers, les droits et le journal existants restent compatibles. [Vérification](source-audit.md#interruption-du-téléchargement-délégué).
+
+## 18 novembre — Correction de pagination des interventions
+
+Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.

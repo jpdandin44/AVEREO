@@ -5,7 +5,7 @@ title: Interventions proposées après les recommandations
 status: active
 version: git
 created: 2026-11-16
-updated: 2026-11-16
+updated: 2026-11-18
 owner: jpdandin
 tags: [rapport, interventions, habitologue, export, planning]
 ---
@@ -96,3 +96,11 @@ La prochaine priorité choisie est le contenu et la disposition des écrans ; on
 Non engagée et non autorisée. Après le lot de contenu/disposition des écrans priorisé par le responsable, un sous-lot distinct doit qualifier le contrat Rapport → Projet sur la seule liste existante : sélection explicite, projet indépendant, lien au dossier, droits et absence d'écrasement ; les horizons libres ne fournissent aucune date/durée calculable. TBD — règles de calendrier et contrat Projet non arrêtés.
 
 Le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>) porte `rapportV12CadrageProfils20261112.interventions20261116`. Les preuves des lots Attentes, Terrain et photo restent distinctes.
+
+## 18 novembre — Correction de pagination des interventions
+
+La réserve `WORD-TABLE-CONTINUATION-20261118` concerne le Word expert de la recette coordonnée : la dernière ligne de la deuxième intervention est seule sur la page suivante. Le convertisseur Word conserve désormais les deux dernières lignes d’une intervention ensemble. La liaison s’arrête à sa dernière ligne ; les autres lignes et les tableaux ordinaires gardent leur pagination. La lecture native d’un tableau long a écarté une première variante qui liait toutes ses lignes et créait une page presque vide. Cette variante n’a pas été déployée. Aucun texte, donnée, média, droit ou format de sauvegarde ne change.
+
+Un contrôle OOXML couvre une intervention courte, une longue et un tableau ordinaire, la dernière ligne et la libération du bloc suivant. 246 tests et la compilation connectée sont réussis. La recette native en préproduction lève la réserve après ouverture des deux Word, conversion PDF dans Microsoft Word et lecture des 51 pages : 36 expert, 15 client. Les 635 paragraphes non vides sont retrouvés dans les PDF ; les Word et médias antérieurs restent identiques. Les deux dernières lignes sont ensemble pp32–33 de l’expert ; tableau client entier p14, signature fictive expert p36. Les trois vues IGN ajoutées dans le dossier complet expliquent les trois pages expert supplémentaires par rapport au premier reçu. [Preuve hébergée](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pagination-word-20261118/word-pdf-preproduction.json>). L’autorisation du responsable porte sur cette correction et sa livraison en préproduction ; revue humaine, merge et production restent distincts.
+
+Source de suivi : `rapportV12CadrageProfils20261112.paginationWordExpert20261118` dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>). Les preuves historiques restent conservées.

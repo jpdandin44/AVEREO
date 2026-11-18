@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - rapport
@@ -315,3 +315,7 @@ metier de chaque phase, puis a cadrer `Explication` et
 
 Le cadrage, les hypotheses, les lots et le chiffrage sont decrits dans
 `docs/habitologie-light-plan.md`.
+
+## 18 novembre — Correction de pagination des interventions
+
+Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](docs/interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.

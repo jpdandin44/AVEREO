@@ -5,7 +5,7 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - rapport
@@ -488,3 +488,7 @@ Le candidat ajoute un export délégué en lecture seule pour les dossiers dont 
 ## Interruption du téléchargement délégué
 
 Dans la version de préproduction de la PR #140, une erreur de transport remonte directement dans le panneau d’export. Le correctif local affiche un message français qui invite à consulter les téléchargements puis à relancer manuellement si le fichier manque. Le [test Chrome](../tests/organization-exports.browser.mjs) simule une interruption, contrôle la réussite du clic suivant, le contenu du fichier, le refus après retrait du droit et la conservation du brouillon.
+
+## 18 novembre — Correction de pagination des interventions
+
+Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.
