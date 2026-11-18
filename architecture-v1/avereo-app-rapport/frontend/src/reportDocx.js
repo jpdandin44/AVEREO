@@ -65,9 +65,9 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
         for(const [index, row] of tableRows.entries()) {
           const cells = [];
           const header = row.parentElement.tagName === 'THEAD';
-          // Keep an intervention table together when it fits, without linking the next block.
-          // Word can still paginate a group taller than one page.
-          const keepRow = header || (intervention && index < tableRows.length - 1);
+          // Prevent a lone final intervention row without chaining a whole long table.
+          // Other rows remain free to paginate; the last row releases the next block.
+          const keepRow = header || (intervention && index === tableRows.length - 2);
           for(const cell of row.children) cells.push(new TableCell({ children:[new Paragraph({children:await runs(cell),keepNext:keepRow})],
             shading: cells.length === 0 ? {fill:'EEF4F6'} : undefined,
             margins:{top:compactDecision?70:100,bottom:compactDecision?70:100,left:100,right:100} }));

@@ -99,7 +99,7 @@ Le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-l
 
 ## 18 novembre — Correction de pagination des interventions
 
-La réserve `WORD-TABLE-CONTINUATION-20261118` concerne le Word expert de la recette coordonnée : la dernière ligne de la deuxième intervention est seule sur la page suivante. Le convertisseur Word conserve désormais les lignes d’une même intervention ensemble lorsqu’elles tiennent sur une page. La liaison s’arrête à sa dernière ligne ; les tableaux ordinaires ne changent pas. Les tableaux plus longs qu’une page restent paginables. Aucun texte, donnée, média, droit ou format de sauvegarde ne change.
+La réserve `WORD-TABLE-CONTINUATION-20261118` concerne le Word expert de la recette coordonnée : la dernière ligne de la deuxième intervention est seule sur la page suivante. Le convertisseur Word conserve désormais les deux dernières lignes d’une intervention ensemble. La liaison s’arrête à sa dernière ligne ; les autres lignes et les tableaux ordinaires gardent leur pagination. La lecture native d’un tableau long a écarté une première variante qui liait toutes ses lignes et créait une page presque vide. Cette variante n’a pas été déployée. Aucun texte, donnée, média, droit ou format de sauvegarde ne change.
 
 Un contrôle OOXML couvre une intervention courte, une longue et un tableau ordinaire, la dernière ligne et la libération du bloc suivant. La qualification native Word/PDF en préproduction reste à réaliser avant de lever la réserve. L’autorisation du responsable porte sur cette correction et sa livraison en préproduction ; merge et production restent distincts.
 

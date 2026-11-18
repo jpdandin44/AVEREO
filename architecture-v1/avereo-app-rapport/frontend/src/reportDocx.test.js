@@ -90,8 +90,9 @@ test('intervention tables keep their final row with the preceding rows and relea
   assert.equal(tables.length, 3);
   assert.ok(!kept(paragraph(tables[0], 'Ordinaire Accès à confirmer')));
   for (const [tableXml, prefix] of [[tables[1], 'Courte'], [tables[2], 'Longue']]) {
-    for (const text of [`${prefix} Rubrique`, `${prefix} Proposition`, `${prefix} Modalités`,
+    for (const text of [`${prefix} Rubrique`, `${prefix} Proposition`,
       `${prefix} Préalables`, `${prefix} Accès à confirmer`]) assert.ok(kept(paragraph(tableXml, text)), text);
+    assert.ok(!kept(paragraph(tableXml, `${prefix} Modalités`)));
     for (const text of [`${prefix} Justification`, `${prefix} Vérifications conservées`]) {
       assert.ok(!kept(paragraph(tableXml, text)), text);
     }
