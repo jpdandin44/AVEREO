@@ -60,10 +60,15 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
       const breakBefore = (node.classList.contains('plan-sheet') && node.previousElementSibling?.tagName !== 'H2') || node.classList.contains('client-page') || (node.classList.contains('observation') && node.previousElementSibling?.tagName !== 'H2') || (node.classList.contains('illustration') && !node.classList.contains('client-illustration'));
       if (tag === 'TABLE') {
         const rows = [];
-        for(const row of node.querySelectorAll('tr')) {
+        const tableRows = [...node.querySelectorAll('tr')];
+        const intervention = parent.classList.contains('interventions-report');
+        for(const [index, row] of tableRows.entries()) {
           const cells = [];
           const header = row.parentElement.tagName === 'THEAD';
-          for(const cell of row.children) cells.push(new TableCell({ children:[new Paragraph({children:await runs(cell),keepNext:header})],
+          // Keep an intervention table together when it fits, without linking the next block.
+          // Word can still paginate a group taller than one page.
+          const keepRow = header || (intervention && index < tableRows.length - 1);
+          for(const cell of row.children) cells.push(new TableCell({ children:[new Paragraph({children:await runs(cell),keepNext:keepRow})],
             shading: cells.length === 0 ? {fill:'EEF4F6'} : undefined,
             margins:{top:compactDecision?70:100,bottom:compactDecision?70:100,left:100,right:100} }));
           rows.push(new TableRow({children:cells, cantSplit:true,tableHeader:header}));

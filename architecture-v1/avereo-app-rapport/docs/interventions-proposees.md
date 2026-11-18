@@ -5,7 +5,7 @@ title: Interventions proposées après les recommandations
 status: active
 version: git
 created: 2026-11-16
-updated: 2026-11-16
+updated: 2026-11-18
 owner: jpdandin
 tags: [rapport, interventions, habitologue, export, planning]
 ---
@@ -96,3 +96,11 @@ La prochaine priorité choisie est le contenu et la disposition des écrans ; on
 Non engagée et non autorisée. Après le lot de contenu/disposition des écrans priorisé par le responsable, un sous-lot distinct doit qualifier le contrat Rapport → Projet sur la seule liste existante : sélection explicite, projet indépendant, lien au dossier, droits et absence d'écrasement ; les horizons libres ne fournissent aucune date/durée calculable. TBD — règles de calendrier et contrat Projet non arrêtés.
 
 Le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>) porte `rapportV12CadrageProfils20261112.interventions20261116`. Les preuves des lots Attentes, Terrain et photo restent distinctes.
+
+## 18 novembre — Correction de pagination des interventions
+
+La réserve `WORD-TABLE-CONTINUATION-20261118` concerne le Word expert de la recette coordonnée : la dernière ligne de la deuxième intervention est seule sur la page suivante. Le convertisseur Word conserve désormais les lignes d’une même intervention ensemble lorsqu’elles tiennent sur une page. La liaison s’arrête à sa dernière ligne ; les tableaux ordinaires ne changent pas. Les tableaux plus longs qu’une page restent paginables. Aucun texte, donnée, média, droit ou format de sauvegarde ne change.
+
+Un contrôle OOXML couvre une intervention courte, une longue et un tableau ordinaire, la dernière ligne et la libération du bloc suivant. La qualification native Word/PDF en préproduction reste à réaliser avant de lever la réserve. L’autorisation du responsable porte sur cette correction et sa livraison en préproduction ; merge et production restent distincts.
+
+Source de suivi : `rapportV12CadrageProfils20261112.paginationWordExpert20261118` dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>). Les preuves historiques restent conservées.
