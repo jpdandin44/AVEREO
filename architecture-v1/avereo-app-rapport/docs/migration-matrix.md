@@ -334,4 +334,4 @@ Le correctif local du message d’interruption concerne le panneau React. Les do
 
 ## 18 novembre — Correction de pagination des interventions
 
-Correction ciblée en cours : voir [le périmètre et la qualification](interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). La réserve native reste ouverte jusqu’à la régénération et au contrôle en préproduction.
+Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.
