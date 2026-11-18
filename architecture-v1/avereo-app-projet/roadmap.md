@@ -5,7 +5,7 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-16
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,8 @@ tags:
 ---
 
 ## 16 novembre — Gantt et progression calculée
+
+Reprise du 18 novembre : correction du lecteur et raccordements TC/Rapport/CONNECT, avec conservation des anciennes projections comme historique. Qualification locale et PR/CI, puis sauvegarde/retour sur copie et publication ponctuelle du seul lecteur PHP borné et des données privées en préproduction ; recette des trois lignes requise avant de déclarer l'affichage à jour. Aucun publicateur permanent ni production dans ce lot. [Contrat](docs/suivis-courants-et-historique.md).
 
 Cadrage : besoin de visibilité automatique confirmé, quatre phases et accords préservés. Développement local : vue Gantt, projection technique, sources actives raccordées et collecteur périodique opt-in ; qualification à consigner dans le [suivi](data/suivi-gantt-developpements.json). Préproduction : à préparer après revue/CI et accord ciblé, avec service de publication automatique privé, sauvegarde/retour et vraie recette. Mise en production : non commencée/non autorisée. Les entrées antérieures sont historiques ; PQ-01 a son reçu distinct de publication et ne doit pas être revalidé par ce lot.
 

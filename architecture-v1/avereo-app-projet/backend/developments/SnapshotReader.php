@@ -33,7 +33,7 @@ final class SnapshotReader
         $d=$this->decode($raw,32*1024*1024);$labels=['Cadrage','Développement local','Préproduction','Mise en production'];
         if(($d['schema']??null)!=='avereo-private-development-snapshot'||($d['version']??null)!==1||!is_int($d['sequence']??null)
             ||$d['sequence']<1||$d['sequence']>$ix['highWater']||!is_string($d['generatedAt']??null)||strtotime($d['generatedAt'])===false
-            ||!is_array($d['iterations']??null)||!array_is_list($d['iterations'])||count($d['iterations'])<1||count($d['iterations'])>50
+            ||!is_array($d['iterations']??null)||!array_is_list($d['iterations'])||count($d['iterations'])<1||count($d['iterations'])>100
             ||!is_array($d['portfolio']??null)||count($d['portfolio'])>50||!is_array($d['proofs']??null)||count($d['proofs'])>500)throw new Failure(503);
         $ids=[];
         foreach($d['iterations'] as &$item){

@@ -5,7 +5,7 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-16
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - projet
@@ -14,6 +14,8 @@ tags:
 ---
 
 ## 16 novembre — Projection technique et Gantt privé
+
+Complément du 18 novembre : [lecture des workflows imbriqués et historique](docs/suivis-courants-et-historique.md), mappings explicites des phases sans identifiant et capacité bornée à 100 vues. Le correctif de données reste séparé du déploiement des assets et du publicateur permanent ; une publication conserve les anciens lots, accords et pièces.
 
 La [projection consultative](docs/gantt-developpements.md) calcule les éléments étayés/restants dans le navigateur à partir des détails privés normalisés. Aucun statut canonique n'est réécrit. Quatre lectures simultanées maximum, cache par révision/observation ou publication, refus 401/403 effaçant les résultats et rejet des publications mélangées. Les phases/contrôles historiques sont adaptés seulement par mappings explicites ; les validations sont intactes. Le collecteur périodique opt-in du poste réutilise le cache GitHub atomique, sans publication distante ; le service permanent en ligne reste à qualifier. Même chaîne propriétaire/global et séparation du build public.
 

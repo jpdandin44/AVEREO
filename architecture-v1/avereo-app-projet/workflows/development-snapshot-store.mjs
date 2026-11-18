@@ -17,7 +17,7 @@ function inspect(value,depth=0){
 }
 function validate(data){
   if(!data||data.schema!=='avereo-private-development-snapshot'||data.version!==1||!Number.isSafeInteger(data.sequence)||data.sequence<1
-    || !id(data.publisherId)||Number.isNaN(Date.parse(data.generatedAt))||!Array.isArray(data.iterations)||!data.iterations.length||data.iterations.length>50
+    || !id(data.publisherId)||Number.isNaN(Date.parse(data.generatedAt))||!Array.isArray(data.iterations)||!data.iterations.length||data.iterations.length>100
     ||!Array.isArray(data.portfolio)||data.portfolio.length>50||!Array.isArray(data.proofs)||data.proofs.length>500)fail(422,'Projection invalide.');
   inspect(data);
   if(data.patrimony!==undefined&&data.patrimony!==null){try{validatePatrimony(data.patrimony);}catch{fail(422,'Patrimoine privé invalide.');}}

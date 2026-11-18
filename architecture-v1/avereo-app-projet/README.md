@@ -5,13 +5,18 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-16
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 18 novembre — Lecture du cockpit et historique
+
+Suivis courants : déroulement du workflow actif et capacité de 100 vues, avec conservation des projections historiques. [Portée et contrôles](docs/suivis-courants-et-historique.md).
+
 
 ## 16 novembre — Gantt des développements, candidat local
 

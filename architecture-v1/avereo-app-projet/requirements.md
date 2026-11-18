@@ -5,7 +5,7 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-16
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - projet
@@ -13,6 +13,8 @@ tags:
 ---
 
 ## 16 novembre — Avancement sans saisie manuelle de phases
+
+Complément du 18 novembre : lire le workflow propre d'un conteneur actif ou figé sans hériter des accords parent. Mapper les phases sans id seulement sur déclaration explicite du registre, conserver critères/pièces et tous les historiques ; capacité de 100 vues sans changer les autres quotas. La publication ponctuelle ciblée ne doit modifier ni assets, ni comptes, ni fichiers clients. [Portée](docs/suivis-courants-et-historique.md).
 
 Afficher le réalisé et le reste à faire sur quatre phases, depuis les suivis/preuves et observations GitHub, sans pourcentage inventé. Séparer les prévisions explicites, dates de preuves, inconnues, progression technique et accords humains. Garder le module consultatif et privé au seul propriétaire global. Reprendre automatiquement les nouvelles publications ; prévoir une collecte/publication en ligne autonome, dont l'installation et le fonctionnement poste éteint restent à qualifier. [Règles, critères et limites](docs/gantt-developpements.md), [suivi](data/suivi-gantt-developpements.json).
 

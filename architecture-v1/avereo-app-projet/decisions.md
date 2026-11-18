@@ -5,12 +5,17 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-16
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 18 novembre — Lecture du cockpit et historique
+
+Décision du 18 novembre : borner les vues de suivi à 100 pour raccorder les lots récents tout en gardant l’historique. Les bornes d’applications, de taille, de pièces et de publications sont conservées. [Contexte et tests](docs/suivis-courants-et-historique.md).
+
 
 ## 16 novembre — Calcul dérivé, pas d'approbation ni d'écriture automatique
 

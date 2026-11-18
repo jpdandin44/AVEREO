@@ -5,12 +5,17 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-16
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 18 novembre — Lecture du cockpit et historique
+
+Correction de la lecture des workflows imbriqués après sélection et capacité de 100 vues dans les lecteurs local/Node/PHP. [Conservation et publication bornée](docs/suivis-courants-et-historique.md).
+
 
 ## 16 novembre — Gantt privé et progression technique, local non livré
 
