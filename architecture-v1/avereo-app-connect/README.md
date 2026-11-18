@@ -5,10 +5,14 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## 18 novembre — Analyse globale, candidat PR170
+
+Le choix professionnel et le parcours Rapport de référence utilisent désormais **Analyse globale**. La clé historique et les noms libres des types administrés sont conservés. [Périmètre, compatibilité et recette locale](docs/profils-et-droits.md#libellé-analyse-globale--18-novembre). Cette extension est prête pour revue locale, sans nouvelle livraison hébergée ; les états datés suivants sont historiques.
 
 ## 17 novembre — Administration des profils et droits : cadrage
 

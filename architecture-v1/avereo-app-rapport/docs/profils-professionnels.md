@@ -5,7 +5,7 @@ title: Profils de mission et défaut professionnel CONNECT
 status: active
 version: git
 created: 2026-11-16
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags: [rapport, connect, profils, architecte, maitre-oeuvre]
 ---
@@ -199,3 +199,7 @@ originaux privés/dossiers lourds, PDF direct, continuité/propriété) gardent 
 périmètre distinct. Suivi canonique :
 `rapportV12CadrageProfils20261112.profilsProfessionnels20261116` dans
 [le cockpit](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>).
+
+## 18 novembre — Extension du libellé à CONNECT
+
+Le responsable confirme **Analyse globale** aussi dans les choix de CONNECT. Ce complément à PR170 remplace les libellés fixes du défaut personnel et du parcours de référence, sans changer la clé habitologue ni les noms libres des types, les droits ou les dossiers. [Périmètre CONNECT et qualification](../../avereo-app-connect/docs/profils-et-droits.md#libellé-analyse-globale--18-novembre). Le périmètre historique du 17 novembre reste daté ; cette extension est locale, non livrée.

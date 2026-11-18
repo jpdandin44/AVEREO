@@ -1,5 +1,5 @@
 const actionLabels = { read: 'Consulter les dossiers', create: 'Créer un dossier', update: 'Modifier les dossiers', delete: 'Supprimer un dossier', export: 'Exporter les livrables' };
-const templateLabels = { habitologue: 'Habitologue', architecte: 'Architecte', maitre_oeuvre: 'Maître d’œuvre' };
+const templateLabels = { habitologue: 'Analyse globale', architecte: 'Architecte', maitre_oeuvre: 'Maître d’œuvre' };
 const element = (tag, text, parent) => { const node = document.createElement(tag); if (text) node.textContent = text; parent?.append(node); return node; };
 
 export async function mountProfileAdministration({ panel, usersList, organizationId, getJson, mutation, confirm, refresh }) {

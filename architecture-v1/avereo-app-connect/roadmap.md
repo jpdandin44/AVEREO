@@ -5,7 +5,7 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-17
+updated: 2026-11-18
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
@@ -108,3 +108,7 @@ Qualifier le candidat local en préproduction avec des profils hérités et expl
 ## Retour d’activation — 6 novembre
 
 PR #118 validée, fusionnée et installée en préproduction après accord. Contrôles techniques et première connexion du compte fictif avec une ancienne session administrateur réussis ; même mot de passe et bonne identité confirmés, fixture archivée. Conserver ces preuves et le retour arrière pour la revue globale V1. [Suivi canonique](data/suivi-retour-activation.json). La production et la PR #119 restent distinctes ; la recette ne vaut pas accord d’ouverture publique.
+
+## 18 novembre — Analyse globale dans les choix de profil
+
+Libellé personnel et parcours de référence alignés après confirmation du responsable, dans PR170. Valeurs historiques et données des profils conservées. [Périmètre et recette locale](docs/profils-et-droits.md#libellé-analyse-globale--18-novembre). Candidat non livré, revue humaine à effectuer.
