@@ -5,7 +5,7 @@
   "owner": "jpdandin",
   "version": "git",
   "created": "2026-10-03",
-  "updated": "2026-11-13",
+  "updated": "2026-11-19",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -4151,5 +4151,12 @@
       "supersededBy": "../api/preproduction-partage-observation.json",
       "observedAt": "2026-11-13T17:58:18.634794+00:00"
     }
-  ]
+  ],
+  "rapportPublication20261119": {
+    "canonicalTracker": "C:\\Users\\examg\\OneDrive\\Documents\\AVEREO_2\\preprod-acces-local\\outillage\\acces-preproduction\\suivi-chantier.json",
+    "canonicalPointer": "rapportV12CadrageProfils20261112.publicationPasseport20261119",
+    "observation": "../api/report-publication-observation.json",
+    "guide": "../../avereo-app-rapport/docs/publication-passeport-immo.md",
+    "meaning": "Nouveau lot indépendant ; décisions et phases historiques conservées. Les statuts courants sont lus dans le suivi Rapport canonique, sans redéclarer une validation humaine."
+  }
 }

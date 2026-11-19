@@ -12,7 +12,7 @@ tags: [avereo, documentation, local]
 
 ## Lot actif du 19 novembre — Publication Rapport
 
-Cadrage confirmé ; développement et qualification du paquet finalisé, de son import propriétaire, de la conservation privée et du partage de la restitution. La préproduction est autorisée dans la discussion Rapport V1.2 ; sauvegarde/restauration et qualification du candidat restent nécessaires avant livraison. Recette métier et production demeurent distinctes.
+Lot installé en préproduction après CI, sauvegarde/restauration et accord du responsable. Dépôt fictif, copie privée, partage du Word client, idempotence, nouvelle connexion, récupération serveur et réouverture indépendante dans Rapport vérifiés. Les accès temporaires sont rétablis. Suite : revue humaine PR173 ; merge et production distincts. [Reçu](api/report-publication-observation.json). Les sections antérieures ci-dessous conservent leurs constats historiques.
 # Roadmap Passeport Immo
 
 ## Priorité — incident de partage

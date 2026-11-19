@@ -81,7 +81,29 @@ Même identifiant et même archive : réponse idempotente ; même identifiant et
 
 Transfert fictif réel terminé le 19 novembre : copie complète de 14 observations transférée de 37 à 38, sauvegarde destinataire et réouverture serveur après déconnexion complète/nouvelle connexion natives réussies. Original complet et témoin restent au compte source ; 29 dossiers préexistants exacts, périodes et configuration rétablies. Le suivi opérationnel garde les reçus. Le parcours visuel privé Chrome n’est pas validé.
 
-Le lot de publication n’est pas encore livré : contrôles locaux et CI, sauvegarde/restauration de la cible, installation du même artefact et recette fictive restent à enregistrer. Aucun accès à un document réel ni destinataire réel créé.
+Le candidat `4b6696ca24fc678465327bb31a3eeb0777365029` est installé en préproduction privée dans la PR173. [Reçu figé et périmètre](../../avereo-app-passeport-immo/api/report-publication-observation.json). Sélection livrée : SHA-256 `7040b2b08ee7c85e0b2e926948f5b8ae380e53e4b1b82ca6744958d1eeab1c78`. Les deux paquets sont des deltas des écrans et API nécessaires ; compagnons de menu, RGA, règles d’accès et chemins non concernés conservés.
+
+Le compte applicatif n’avait pas le droit ALTER. Après refus avant remplacement public, le responsable autorise explicitement l’ajout temporaire de ce seul droit sur la base Passeport de préproduction. Migration réussie, cinq droits initiaux remis exactement après neuf secondes ; aucun droit de production modifié. Le retour arrière préparé reste privé et la colonne nullable est compatible avec l’ancien lecteur.
+
+Recette **native HTTPS authentifiée**, par les connexions Drupal → CONNECT → applications ordinaires des comptes fictifs 37/38 :
+
+- Publication propriétaire 38 sur un bien/client fictifs ; Word client exact partagé vers le compte 37, copie complète inaccessible à ce destinataire (liste, route privée et route de document partagé).
+- Envoi identique idempotent, une version seulement ; source Rapport et propriétaire inchangés.
+- Déconnexion complète et nouvelle connexion native 38 ; même version listée et paquet privé récupéré octet pour octet. Partage ensuite révoqué : accès destinataire fermé, copie privée propriétaire conservée.
+- Téléchargement réimporté par l’UI locale Rapport et le codec natif : 14 observations, 4 photos dont contexte, 12 plans et signature ; marqueur de la sauvegarde destinataire conservé. Nouvelle sauvegarde serveur indépendante `7e3343ac2d14a54fc4244d543382d9c2`, propriétaire 38, refus de lecture par 37.
+- Les 26 documents Passeport et 30 dossiers Rapport préexistants sont exacts. Après recette : sauvegarde et restauration temporaire des quatre tables Passeport et 28 fichiers (27 documents ordinaires et une copie privée). Périodes, habilitation Passport fictive, politique et configuration restaurées ; aucun mot de passe ni rôle changé.
+
+La normalisation historique des quatre cartes de contrôles protocolaires vides `{} / []` est explicitement contrôlée ; les contenus métier sont égaux. Le paquet privé ne subit aucune modification de ses octets stockés. Les originaux photo séparés sont couverts par les tests locaux du codec ; ce jeu hébergé complet n’a pas de référence externe d’original photo.
+
+**Limite visuelle :** préparation/réimport contrôlés dans le navigateur local ; recette hébergée et reconnexion contrôlées par les services natifs. La fenêtre privée Chrome n’a pas été pilotée. La revue métier humaine de la PR173 reste à faire ; ces preuves ne cochent aucune attestation.
+
+## Revue métier à effectuer
+
+1. Depuis CONNECT de préproduction, créer/charger un dossier fictif dans Rapport ; vérifier les options et l’aperçu client, confirmer sa finalisation et préparer le paquet.
+2. Dans Passeport de préproduction, créer un bien fictif et son client ; importer le paquet par « Versions finalisées de Rapport ». Vérifier la confirmation de partage, le Word dans les documents et la copie privée dans la section dédiée. Le dépôt par l’ajout ordinaire de ZIP est refusé pour protéger les notes privées.
+3. Réimporter le même paquet : une seule version. Télécharger la copie privée et la charger dans Rapport après lecture de son résumé ; contrôler textes, photos, repères, plans et signature. Sauver en ligne comme nouveau dossier puis vérifier que le source reste conservé.
+4. Les contrôles natifs des deux comptes et de révocation sont consignés au reçu. Les comptes fictifs ont retrouvé leurs périodes et droits initiaux après recette ; leur remise en service éventuelle doit rester bornée.
+
 
 # Mise en production
 
