@@ -35,10 +35,21 @@ export function retainPublishedHistory(next,previous){
   if(old&&old.sourceHash===current.sourceHash&&old.iterationId===current.iterationId&&old.dataPath===current.dataPath)next.iterations[n]={...structuredClone(old),githubObservation:current.githubObservation};
  }
  const ids=new Set(next.iterations.map(v=>v.id));for(const old of previous.iterations)if(!ids.has(old.id))next.iterations.push(structuredClone(old));
+ // A changed source must not attach old evidence to new criteria or silently discard it.
+ const archives=new Map();
+ for(const p of previous.proofs){
+  const current=next.iterations.find(v=>v.id===p.iterationId),refs=current?.phases.flatMap(x=>x.proofs).concat(current.unassignedProofs||[])||[];
+  if(refs.some(r=>r.id===p.proofId&&r.fileHash===p.sha256))continue;
+  const old=previous.iterations.find(v=>v.id===p.iterationId);if(!old)continue;
+  const archiveId='pub'+previous.sequence+'-'+old.id.slice(0,65)+'-'+hash(old.id).slice(0,8);
+  if(!next.iterations.some(v=>v.id===archiveId))next.iterations.push({...structuredClone(old),id:archiveId,title:old.title+' — Archive publication '+previous.sequence,archivedFrom:{id:old.id,sequence:previous.sequence,generatedAt:previous.generatedAt}});
+  archives.set(old.id,archiveId);
+ }
  for(const p of previous.proofs){const view=next.iterations.find(v=>v.id===p.iterationId),refs=view?.phases.flatMap(x=>x.proofs).concat(view.unassignedProofs||[])||[];
   if(refs.some(r=>r.id===p.proofId&&r.fileHash===p.sha256)&&!next.proofs.some(q=>q.iterationId===p.iterationId&&q.proofId===p.proofId)){
    next.proofs.push(structuredClone(p));const r=refs.find(r=>r.id===p.proofId);r.availability='available';
   }
+  const archiveId=archives.get(p.iterationId);if(archiveId&&!next.proofs.some(q=>q.iterationId===archiveId&&q.proofId===p.proofId))next.proofs.push({...structuredClone(p),iterationId:archiveId});
  }
  // A hosted source mirror is not a new inspection of the owner's Windows clones.
  for(const row of next.portfolio){const old=previous.portfolio.find(x=>x.id===row.id);if(old?.local)row.local=old.local;if(old?.localReference)row.localReference=old.localReference;

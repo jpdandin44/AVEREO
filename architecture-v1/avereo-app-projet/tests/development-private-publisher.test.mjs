@@ -102,3 +102,10 @@ test('la collecte GitHub conserve l’inventaire privé daté sans nouvelle obse
  const next=retainPublishedHistory({iterations:[],proofs:[],portfolio:[],patrimony:null},old);
  assert.deepEqual(next.patrimony,old.patrimony);assert.notEqual(next.patrimony,old.patrimony);
 });
+test('une preuve ancienne non rattachable reste dans une vue archivée, sans qualifier le nouveau critère',()=>{
+ const p={iterationId:'app',proofId:'proof',sha256:'a'.repeat(64),content:'eA==',ext:'.txt'};
+ const old={id:'app',title:'Lot',sourceHash:'b'.repeat(64),iterationId:'lot',dataPath:null,phases:[{proofs:[{id:'proof',fileHash:p.sha256,availability:'available'}]}],unassignedProofs:[]};
+ const current={...structuredClone(old),sourceHash:'c'.repeat(64),phases:[{proofs:[{id:'proof',fileHash:null,availability:'unavailable'}]}]};
+ const next=retainPublishedHistory({iterations:[current],proofs:[],portfolio:[]},{sequence:14,generatedAt:'2026-11-18T10:00:00Z',iterations:[old],proofs:[p],portfolio:[]});
+ const archive=next.iterations.find(v=>v.archivedFrom?.id==='app');assert(archive);assert.equal(next.proofs[0].iterationId,archive.id);assert.equal(next.iterations[0].phases[0].proofs[0].fileHash,null);assert.equal(next.proofs[0].sha256,p.sha256);
+});

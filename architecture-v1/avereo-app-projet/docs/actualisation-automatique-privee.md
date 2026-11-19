@@ -35,6 +35,8 @@ Le stockage conserve les copies courante et précédente pour le retour immédia
 
 ## Configuration et identité
 
+Lorsqu'une source a changé et qu'une pièce précédemment publiée n'est plus rattachable par son empreinte, l'ancienne vue et ses pièces sont conservées dans une archive nommée par la publication d'origine. Elles ne sont pas utilisées pour qualifier les nouveaux critères. Un inventaire du poste déjà publié conserve sa date ; une collecte GitHub ne constitue pas une nouvelle inspection du disque.
+
 Le [modèle désactivé](../workflows/templates/development-private-publisher.example.json) n'est jamais une preuve d'installation. Les chemins réels, registre, sources, cache, pièces et secrets restent hors Git et hors des racines web. Le jeton GitHub est dédié aux seuls dépôts retenus, avec Contents, Pull requests, Actions et Metadata en lecture seule, aucun droit de compte. Il n'est ni copié depuis le navigateur par l'agent, ni placé dans la CI, un argument de commande ou un journal. Son expiration impose un renouvellement ; une erreur d'authentification rend le statut en défaut sans effacer les données.
 
 La tâche utilise le compte d'hébergement existant : les restrictions du programme et les permissions de fichiers ne constituent pas une isolation Unix indépendante entre applications de ce compte. Aucun nouvel utilisateur système, rôle CONNECT ou droit d'autre profil n'est créé. L'accès web reste contrôlé par le compte propriétaire exact et le rôle global frais du pont existant. Aucun service WSGI ou nouveau point d'entrée public n'est nécessaire pour cette tâche planifiée.
