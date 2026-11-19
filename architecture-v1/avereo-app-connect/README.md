@@ -5,10 +5,14 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## 19 novembre — Rapprochement documentaire PR98
+
+La connexion par identifiant ou e-mail a été livrée et recettée en préproduction le 3 novembre. Le [contrat](docs/connexion-identifiant-email.md) identifie la version, l’empreinte et les preuves historiques en remplacement de l’ancien état « non installé ». Actualisation documentaire seulement : aucun nouveau déploiement, changement de compte ou de validation.
 
 ## 18 novembre — PR170 livrée en préproduction
 

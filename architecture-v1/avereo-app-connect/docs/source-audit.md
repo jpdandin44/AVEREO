@@ -5,10 +5,14 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 19 novembre — Rapprochement documentaire PR98
+
+Le [contrat de connexion](connexion-identifiant-email.md) est réaligné sur les reçus privés du 3 novembre : candidat `3c8059fc00df2f596afac889a63e55486b755256`, patch `57d3bd7ad0a9e735c89bd0f038973f9ae2c7d688f05645a4e142d1ddf4660774`, deux identifiants vers le même profil puis OIDC et applications contrôlés. L’ancien état « non installé » reste un contexte historique, pas l’état de cette livraison. Pas de connexion fraîche ni de nouvelle attestation du runtime courant, de modification de compte, de validation ou de production.
 
 ## 18 novembre — Libellé de profil dans la PR170
 
