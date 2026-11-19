@@ -404,4 +404,4 @@ Dans **Rapports sauvegardés en ligne**, les cinq derniers dossiers sont visible
 
 ## 19 novembre — Planning indicatif par périodes
 
-[Planning Rapport vers Projet](docs/interventions-projet.md) : mode sans dates P1/P2, positionnement explicite, échange JSON et création indépendante. Candidat local ; recette hébergée à consigner séparément.
+[Planning Rapport vers Projet](docs/interventions-projet.md) : mode sans dates P1/P2, positionnement explicite, échange JSON et création indépendante. Implémenté et qualifié en préproduction dans la PR175 ; revue humaine et fusion restent distinctes. Le contrat lié porte les preuves et réserves courantes.

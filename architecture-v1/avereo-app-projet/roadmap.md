@@ -284,4 +284,4 @@ lot distinct ; les inscrire dans le planning ne prouve pas leur réalisation.
 
 ## Planning par périodes — 19 novembre
 
-Mode relatif implémenté localement, qualification et recette préproduction sur nouveau projet demandées. État exact dans le suivi canonique et ses reçus ; aucun passage en production. [Planning par périodes](docs/planning-periodes.md).
+Mode relatif livré en préproduction ; création indépendante, sauvegarde et réouverture après reconnexion qualifiées techniquement dans la PR175. Revue humaine de la PR à effectuer. État exact dans le suivi canonique et ses reçus ; aucun passage en production. [Planning par périodes](docs/planning-periodes.md).
