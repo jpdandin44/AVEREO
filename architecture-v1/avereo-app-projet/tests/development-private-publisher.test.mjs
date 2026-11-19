@@ -97,3 +97,8 @@ test('expiration dédiée : métadonnée visible, avertissement sans modifier le
  const state={snapshot:{sequence:1},publisherStatus:{status:'ok',sequence:1,lastSuccessAt:observed,githubObservedAt:observed,sourcesReceivedAt:observed,intervalSeconds:300,credentialExpiresAt:'2026-11-20T10:00:00Z'}};
  assert.equal(developmentFreshness(state,{now:Date.parse(observed)}).level,'warning');assert.match(developmentFreshness(state,{now:Date.parse(observed)}).title,/renouveler/);
 });
+test('la collecte GitHub conserve l’inventaire privé daté sans nouvelle observation du poste',()=>{
+ const old={iterations:[],proofs:[],portfolio:[],patrimony:{asOf:'2026-11-12',metrics:[{value:4}]}};
+ const next=retainPublishedHistory({iterations:[],proofs:[],portfolio:[],patrimony:null},old);
+ assert.deepEqual(next.patrimony,old.patrimony);assert.notEqual(next.patrimony,old.patrimony);
+});

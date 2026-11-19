@@ -29,6 +29,7 @@ export function semanticSnapshot(data){
  return hash(JSON.stringify(walk(data)));
 }
 export function retainPublishedHistory(next,previous){
+ if(next.patrimony==null&&previous.patrimony!=null)next.patrimony=structuredClone(previous.patrimony);
  for(let n=0;n<next.iterations.length;n++){
   const current=next.iterations[n],old=previous.iterations.find(v=>v.id===current.id);
   if(old&&old.sourceHash===current.sourceHash&&old.iterationId===current.iterationId&&old.dataPath===current.dataPath)next.iterations[n]={...structuredClone(old),githubObservation:current.githubObservation};
