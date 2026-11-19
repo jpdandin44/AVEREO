@@ -18,11 +18,18 @@ const limit=2*1024*1024;
 const safeText=v=>typeof v==='string'?v:'';
 const sha=/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i;
 const withoutReviews=data=>{const copy={...data};delete copy.developmentReviews;return copy;};
-function workflow(raw){return raw.developmentWorkflow&&typeof raw.developmentWorkflow==='object'?raw.developmentWorkflow:raw;}
+function workflow(raw){
+  if(!raw||typeof raw!=='object'||Array.isArray(raw))fail(422,'Workflow du suivi invalide.');
+  if(!Object.hasOwn(raw,'developmentWorkflow'))return raw;
+  const value=raw.developmentWorkflow;
+  if(!value||typeof value!=='object'||Array.isArray(value))fail(422,'Workflow du suivi invalide.');
+  return value;
+}
 function selectProjection(raw,source){
   let v=raw;if(source.dataPath){for(const key of source.dataPath.split('.')){if(!v||typeof v!=='object'||!Object.hasOwn(v,key))fail(422,'Sous-suivi déclaré introuvable.');v=v[key];}}else v=workflow(raw);
   if(source.iterationKey){if(!Array.isArray(v))fail(422,'Liste d’itérations absente.');const matches=v.filter(x=>x?.iterationId===source.iterationKey);if(matches.length!==1)fail(422,'Itération absente ou ambiguë.');v=matches[0];}
-  if(source.followActiveIteration){const key=v?.activeIteration;if(typeof key!=='string'||!/^[a-zA-Z0-9_-]{1,120}$/.test(key)||['__proto__','prototype','constructor'].includes(key)||!Object.hasOwn(v,key)||!v[key]||typeof v[key]!=='object'||Array.isArray(v[key]))fail(422,'Itération active absente ou invalide.');v={...v[key],iterationId:v[key].iterationId||key,_activeIterationKey:key};}
+  if(source.followActiveIteration){const key=v?.activeIteration;if(typeof key!=='string'||!/^[a-zA-Z0-9_-]{1,120}$/.test(key)||['__proto__','prototype','constructor'].includes(key)||!Object.hasOwn(v,key)||!v[key]||typeof v[key]!=='object'||Array.isArray(v[key]))fail(422,'Itération active absente ou invalide.');const child=workflow(v[key]);v={...child,iterationId:child.iterationId||key,_activeIterationKey:key};}
+  else v=workflow(v);
   if(source.recordKind==='receipt'){const phase=source.deliveryEnvironment==='production'?3:2;v={iterationId:source.id,stage:phase===3?'production':'preproduction',status:'delivery_receipt_declared',candidate:{sourceSha:v.sourceSha,artifactSha256:v.artifactSha256},github:{prUrl:v.sourcePr},delivery:{status:'delivered',sourceSha:v.sourceSha,artifactSha256:v.artifactSha256,target:v.target,observedAt:v.deployedAt,evidence:relative(source.root,source.file)},checks:[{id:'declared-receipt',phaseId:phase,kind:'document',status:'reviewable',evidence:relative(source.root,source.file),observedAt:v.deployedAt}],nextAction:'Reçu déclaré consultable ; état hébergé actuel et revue humaine non déduits.'};}
   else if(source.recordKind==='declaration')v={...v,iterationId:v.iterationId||source.id};
   if(source.includeRootPhases)v={...v,phases:raw.phases,currentPhase:raw.currentPhase};return v;
@@ -30,7 +37,7 @@ function selectProjection(raw,source){
 function safeLink(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;}catch{return null;}}
 
 export async function createDevelopmentStore(entries,{adminId=null,applications=[],githubObservationFile=null,evidenceQualificationFile=null,patrimonyObservationFile=null}={}){
-  if(!Array.isArray(entries)||!entries.length||entries.length>50)throw new Error('Registre privé absent ou invalide.');
+  if(!Array.isArray(entries)||!entries.length||entries.length>100)throw new Error('Registre privé absent ou invalide.');
   if(evidenceQualificationFile&&entries.some(e=>e.writable!==false))throw Error('Qualifications réservées aux sources consultatives.');
   const sources=new Map();
   for(const entry of entries){
@@ -76,6 +83,8 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
       if(source.phaseMap&&Object.hasOwn(source.phaseMap,String(p)))return source.phaseMap[String(p)];
       return Number.isInteger(p)&&p>=0&&p<4?p:null;
     };
+    // A missing id may use its declared label, but only the registry's explicit map can resolve it.
+    const phaseIdentity=p=>p.id??p.label;
     if(structured&&data.phases.length!==4&&!source.phaseMap)fail(422,'Mapping historique vers quatre phases requis.');
     const candidate=data.candidate||{};
     const candidateFingerprint=hash(Object.keys(candidate).length?candidate:withoutReviews(raw));
@@ -83,7 +92,7 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
     const current=structured&&Number.isInteger(data.currentPhase)?map(data.currentPhase):stages[data.stage]??(namedPhase>=0?namedPhase:null);
     const phases=DEVELOPMENT_PHASES.map((label,id)=>({id,key:phaseKeys[id],label,status:'not_reported',criteria:[],proofs:[]}));
     if(structured){
-      for(const p of data.phases){const target=map(p.id);if(target===null||!phases[target])fail(422,'Phase non mappée.');const phase=phases[target];phase.status=phase.status==='not_reported'?safeText(p.status)||'not_reported':phase.status===p.status?phase.status:'mixed';}
+      for(const p of data.phases){const target=map(phaseIdentity(p));if(target===null||!phases[target])fail(422,'Phase non mappée.');const phase=phases[target];phase.status=phase.status==='not_reported'?safeText(p.status)||'not_reported':phase.status===p.status?phase.status:'mixed';}
     }else if(current!==null){phases[current].status=safeText(data.status)||'in_progress';}
     const proofs=[],files=new Map();
     const definitions=[...(Array.isArray(data.proofs)?data.proofs:[]),...(Array.isArray(data.checks)?data.checks:[])].map(item=>{
@@ -92,7 +101,7 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
       return{item:mapped?{...item,kind,declaredKind:item.kind}:item,phase:Number.isInteger(item.phaseId)?map(item.phaseId):checkPhase[kind]??checkPhase[item.environment]??null};
     });
     if(typeof data.evidence==='string')definitions.push({item:{id:'declared-evidence',title:'Dossier de qualification déclaré',kind:'reference_document',status:'reviewable',evidence:data.evidence},phase:current});
-    if(structured)for(const p of data.phases)for(const d of p.deliverables||[])definitions.push({item:{...d,id:d.id||'document-'+hash([p.id,d.path||d]).slice(0,16),kind:'document',evidence:d.path,status:d.status||'reviewable'},phase:map(p.id)});
+    if(structured)for(const p of data.phases)for(const d of p.deliverables||[])definitions.push({item:{...d,id:d.id||'document-'+hash([phaseIdentity(p),d.path||d]).slice(0,16),kind:'document',evidence:d.path,status:d.status||'reviewable'},phase:map(phaseIdentity(p))});
     for(const {item,phase} of definitions){
       const id=safeText(item.id)||'proof-'+hash(item).slice(0,20);
       if(proofs.some(p=>p.id===id))fail(422,'Identifiant de preuve dupliqué.');
@@ -143,10 +152,10 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
       const context=qualification.criteria?.[id];if(context&&refs.length===0){c.contextStatus=context.status;c.contextRole='context_not_acceptance_evidence';c.contextProofs=(context.contextProofIds||[]).map(id=>proofs.find(p=>p.id===id)).filter(Boolean);c.contextReason=context.reason;}
       allCriteria.push(c);if(phase===null)unassigned.push(c);else phases[phase].criteria.push(c);
     }
-    if(structured)for(const p of data.phases)for(const c of p.criteria||p.exitCriteria||[])criterion(c,map(p.id),p.id);
+    if(structured)for(const p of data.phases)for(const c of p.criteria||p.exitCriteria||[])criterion(c,map(phaseIdentity(p)),phaseIdentity(p));
     for(const c of data.developmentCriteria||data.criteria||data.requirements||[])criterion(c,Number.isInteger(c.phaseId)?map(c.phaseId):null);
     if(structured)for(const p of data.phases){
-      const target=map(p.id),start=p.plan?.start,end=p.plan?.end;
+      const target=map(phaseIdentity(p)),start=p.plan?.start,end=p.plan?.end;
       const valid=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v;
       if(target!==null&&valid(start)&&valid(end)&&end>=start)phases[target].plan={start,end};
     }
