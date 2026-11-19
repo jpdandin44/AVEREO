@@ -40,7 +40,7 @@ def guard():
         if name == 'passeport-immo': root = root / 'public'
         result[name] = engine.digest(json.dumps(engine.tree(root), sort_keys=True).encode())
         result[name + 'Config'] = engine.record(engine.HOME / '.avereo' / name / 'config.php')
-    cron = subprocess.run(['crontab', '-l'], capture_output=True)
+    cron = subprocess.run(['crontab', '-l'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     engine.require(cron.returncode == 0, 'Scheduler unreadable')
     result['cron'] = engine.digest(cron.stdout)
     result['connectConfig'] = engine.record(engine.HOME / 'private/connect-preprod/config.php')
@@ -110,7 +110,7 @@ def perform(action, work):
         try:
             for name in PRIVATE_FILES:
                 engine.atomic_write(BIN / name, (work / name).read_bytes(), plan['privateTools'][name]['mode']); private_writes.append(name)
-            migrate = subprocess.run([engine.PHP, str(work / 'migrate-report-publications.php'), str(engine.HOME / '.avereo/passeport-immo-preprod/config.php'), 'daje3540_pimpreprod', '--apply'], capture_output=True)
+            migrate = subprocess.run([engine.PHP, str(work / 'migrate-report-publications.php'), str(engine.HOME / '.avereo/passeport-immo-preprod/config.php'), 'daje3540_pimpreprod', '--apply'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             engine.require(migrate.returncode == 0, 'Nullable publication migration failed')
             migration = json.loads(migrate.stdout)
             engine.require(migration['existingRowsPreserved'], 'Migration preservation missing')
