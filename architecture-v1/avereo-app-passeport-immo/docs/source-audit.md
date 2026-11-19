@@ -5,11 +5,14 @@ title: Audit source Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-10-03
+updated: 2026-11-19
 owner: jpdandin
 tags: [passeport-immo, audit, local]
 ---
 
+## 19 novembre — Raccordement Rapport autorisé
+
+Le responsable autorise le lot Rapport → Passeport et sa préproduction. Les évolutions restent dans le dossier documentaire : import d’un paquet validé, stockage source privé distinct, migration additive nullable et adaptation des sauvegardes. Calculs de chiffrage, rôles, identité, partages nominatifs existants et pièces antérieures conservés. [Contrat commun](../../avereo-app-rapport/docs/publication-passeport-immo.md).
 # Audit source Passeport Immo
 
 ## Sources et hiérarchie

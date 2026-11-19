@@ -7,6 +7,11 @@ import { usesMissionContext, observationAdviceLabel, isHabitologueProfile, missi
 import { reportPhotoSource } from './photoReportVersion.js';
 import { buildInterventionsHtml } from './interventions.js';
 
+export function documentStatus(report) {
+  return report.publication?.validatedByProfessional === true && /^[a-f0-9]{32}$/.test(report.publication.id || '')
+    ? `Version finalisée${/^\d{4}-\d{2}-\d{2}T/.test(report.publication.createdAt || '') ? ` du ${report.publication.createdAt.slice(0, 10)}` : ''} · ${report.publication.id.slice(0, 8)}` : 'Document de travail';
+}
+
 export function deliveryOptions(report) {
   const value = report.livrable || {};
   return {
@@ -47,7 +52,7 @@ function cover(report, client) {
       ${report.missionBrief ? missionContactLines({...report.missionBrief, email:report.email}).map(([label,value]) => `<tr><td>${escapeHtml(label)}</td><td>${escapeHtml(value)}</td></tr>`).join('') : ''}
       <tr><td>Intervenant</td><td>${escapeHtml(report.intervenant)}</td></tr>
       <tr><td>Visite</td><td>${escapeHtml(report.date_visite || 'Date non renseignée')}</td></tr></table>
-    <p class="status">Document de travail · ${client ? 'Restitution à relire avant remise au client' : 'Soumis à validation professionnelle'}</p>
+    <p class="status">${escapeHtml(documentStatus(report))}${report.publication?.validatedByProfessional ? '' : ` · ${client ? 'Restitution à relire avant remise au client' : 'Soumis à validation professionnelle'}`}</p>
     <p class="muted">Les illustrations pédagogiques expliquent des mécanismes. Elles ne constituent pas des mesures du bâtiment.</p>
   </section>`;
 }
@@ -117,6 +122,6 @@ export function buildReportHtml(report) {
       <h3>Limites et points à confirmer</h3><p>${textToHtml(options.limites_client || report.reserves)}</p>
       <p class="status">Cette synthèse accompagne le rapport expert. Elle ne remplace pas les vérifications techniques nécessaires.</p></section>`;
   }
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8" /><title>${escapeHtml(report.titre)} — ${client ? 'Synthèse client' : 'Rapport expert'}</title><style>${style}</style></head><body>${content}<p class="report-footer">${escapeHtml(AVEREO_NAME)} · ${escapeHtml(report.reference_dossier)} · Document de travail</p></body></html>`;
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8" /><title>${escapeHtml(report.titre)} — ${client ? 'Synthèse client' : 'Rapport expert'}</title><style>${style}</style></head><body>${content}<p class="report-footer">${escapeHtml(AVEREO_NAME)} · ${escapeHtml(report.reference_dossier)} · ${escapeHtml(documentStatus(report))}</p></body></html>`;
 }
 import { missionContactLines } from '../../../avereo-platform/shared/mission-dossier.js';

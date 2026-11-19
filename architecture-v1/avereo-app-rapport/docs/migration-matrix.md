@@ -5,7 +5,7 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,9 @@ tags:
   - fonctionnalites
 ---
 
+## 19 novembre — Publication et réimport sans mutation de la source
+
+Aucune migration Rapport. Le paquet conserve tous les champs du JSON et les originaux référencés. Le réimport retire seulement le rattachement `onlineReportId` et remplace les anciennes références privées photo par leurs octets intégrés ; versions annotées et repères conservés. Les JSON historiques continuent d’être importables. Les exports ordinaires gardent le statut de travail. La finalisation s’applique à un instantané explicitement confirmé. [Contrat](publication-passeport-immo.md).
 ## 17 novembre — Libellé Analyse globale sans migration
 
 La valeur profil_metier=habitologue, les catégories historiques dont Rapport Habitologue et les préférences de compte restent exactes. Seuls les intitulés de prestation et de conseils changent ; aucun remplacement dans les textes utilisateurs, champs actions/conseils ou médias. Profils absent/inconnu et règles des parcours Architecte/Maître d’œuvre conservés. [Contrat](profils-professionnels.md#libellé-de-prestation--17-novembre).

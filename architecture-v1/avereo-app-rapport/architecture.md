@@ -5,13 +5,16 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-17
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
 
+## 19 novembre — Publication privée dans Passeport Immo
+
+Le [lot de publication](docs/publication-passeport-immo.md) prépare un paquet `.avereo.zip` dans Rapport, puis le propriétaire l’importe dans le bien/client choisi dans Passeport. La restitution client Word utilise le moteur existant ; le JSON complet et les originaux photo restent dans la copie privée. La réouverture importe une copie indépendante dans Rapport, sans réutiliser la ligne serveur ou les références photo du propriétaire source. Aucun service à secret partagé supplémentaire ni transfert de propriété implicite.
 ## Libellé de prestation et métier — 17 novembre
 
 reportProfiles porte le libellé de mission Analyse globale pour la clé habitologue ; reportDelivery le reprend dans les titres de couverture existants. Le même module fournit Conseils de l’expert à App, EnvironmentContext, reportHtml et reportDelivery. connectedMissionProfile conserve Habitologue pour le métier déclaré du compte. Aucun flux, stockage ou contrôle d’accès changé. [Contrat](docs/profils-professionnels.md#libellé-de-prestation--17-novembre).

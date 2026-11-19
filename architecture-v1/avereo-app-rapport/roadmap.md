@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,10 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## 19 novembre — Dossiers finalisés vers Passeport Immo
+
+[Cadrage du parcours](docs/publication-passeport-immo.md) demandé : stockage d’une restitution finalisée, partage nominatif et conservation du dossier source. Contenu confirmé : rapport final et copie complète privée, réouverture métier dans Rapport ; poursuite en préproduction autorisée. Le partage actuel des documents actifs futurs du bien impose de distinguer la restitution partageable d’une éventuelle copie complète privée. Candidat de publication implémenté et contrôles locaux en cours ; aucune livraison de ce lot déclarée à ce stade.
 
 ## 17 novembre — Plans fusionnés, libellé Analyse globale en développement
 

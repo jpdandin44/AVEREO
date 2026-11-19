@@ -5,11 +5,14 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-13
+updated: 2026-11-19
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
+## 2026-11-19 — La copie complète n’est pas un document partagé
+
+Contexte : un partage nominatif existant inclut les futurs documents actifs d’un bien. Décision : conserver le paquet source hors de `pi_documents`, dans un blob privé et une colonne nullable dédiée ; seuls les documents de restitution suivent le partage existant. Raisons : protéger les notes et originaux même avec un ancien lecteur ou un retour arrière du runtime. Conséquences : migration additive, route propriétaire dédiée, inclusion explicite dans les sauvegardes. La copie est réouvrable dans Rapport ; son téléchargement reste techniquement lisible et n’est pas un dispositif DRM.
 # Décisions Passeport Immo
 
 ## 2026-11-13 — Autorisations documentaires distinctes des comptes

@@ -39,6 +39,10 @@ pi_transfer_insert($dst,'pi_workspaces',['owner_id'=>$destinationOwner,'revision
 // The source's client ID already belongs to a different target tenant: deterministic remapping must preserve it.
 pi_transfer_insert($dst,'pi_clients',['id'=>$clientId,'owner_id'=>'foreign-target','name'=>'Autre client cible','created_at'=>'2020-01-01']);
 pi_transfer_insert($dst,'pi_biens',['owner_id'=>$destinationOwner,'bien_id'=>'existing-property','model'=>'{"id":"existing-property"}','client_id'=>null,'deleted_at'=>null]);
+pi_transfer_query($src,'UPDATE pi_biens SET report_publications=? WHERE owner_id=? AND bien_id=?',['{"fixture":"private"}',$owner,'fixture-selected']);
+refused(fn()=>pi_transfer_export($source,$plan,'/tmp/export-incomplete'),'legacy transfer refuses published sources instead of silently omitting private copies');
+check(!is_dir('/tmp/export-incomplete'),'private publication refusal occurs before any partial export');
+pi_transfer_query($src,'UPDATE pi_biens SET report_publications=NULL WHERE owner_id=? AND bien_id=?',[$owner,'fixture-selected']);
 $sourceBefore=rows($src); $targetBefore=rows($dst);
 $export=pi_transfer_export($source,$plan,'/tmp/export-selected'); $hash=$export['manifestSha256'];
 $manifest=json_decode(file_get_contents('/tmp/export-selected/manifest.json'),true,64,JSON_THROW_ON_ERROR);

@@ -5,13 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
 
+## 2026-11-19 — Candidat de publication Passeport
+
+Préparation d’une restitution client Word identifiée et d’une copie complète privée ; vérification des empreintes et des originaux photo. Réimport de la copie dans Rapport comme dossier indépendant. Confirmation de relecture professionnelle et distinction explicite entre fichier préparé et conservation serveur. Qualification en cours ; aucune livraison de ce lot déclarée par cette entrée.
 ## 17 novembre — Candidat libellé Analyse globale
 
 Option et résumé de mission, titres des couvertures expert/client : Analyse globale pour la clé habitologue. Complément avant revue : Conseils de l’expert dans les observations, le contexte extérieur et les deux Word. Métier CONNECT Habitologue, textes saisis, données et règles des autres parcours inchangés. [Périmètre](docs/profils-professionnels.md#libellé-de-prestation--17-novembre). Aucun déploiement.

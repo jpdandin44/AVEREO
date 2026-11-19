@@ -24,13 +24,14 @@ export default function ReportImport({ draft, onBackup, onLoad, disabled = false
     if (!file) return;
     const current = ++generation.current;
     setError('');
-    if (file.size > MAX_REPORT_BYTES) {
-      setError('Import JSON refusé : taille maximale 50 Mio. Le brouillon actuel est conservé.');
+    if (file.size > (/\.avereo\.zip$/i.test(file.name) ? 500 * 1024 * 1024 : MAX_REPORT_BYTES)) {
+      setError(/\.avereo\.zip$/i.test(file.name) ? 'Import Passeport refusé : taille maximale 500 Mo. Le brouillon actuel est conservé.' : 'Import JSON refusé : taille maximale 50 Mio. Le brouillon actuel est conservé.');
       return;
     }
     setBusy(true);
     try {
-      const report = readReportFile(await file.text());
+      const report = /\.avereo\.zip$/i.test(file.name)
+        ? await (await import('./reportPublication.js')).readPublication(file) : readReportFile(await file.text());
       requireEditableNumbers(report);
       const summary = reportContentSummary(report);
       if (generation.current === current) setCandidate({ report, summary, name: file.name });
@@ -51,9 +52,9 @@ export default function ReportImport({ draft, onBackup, onLoad, disabled = false
   };
   return <div className="report-import">
     <button type="button" className="button secondary" disabled={busy || disabled} onClick={() => input.current?.click()}>
-      {busy && !candidate ? 'Lecture du fichier…' : 'Charger un dossier JSON'}
+      {busy && !candidate ? 'Lecture du fichier…' : 'Charger un dossier JSON ou Passeport'}
     </button>
-    <input ref={input} type="file" accept=".json,application/json" className="visually-hidden" onChange={choose} aria-label="Choisir un dossier JSON" />
+    <input ref={input} type="file" accept=".json,.avereo.zip,application/json,application/zip" className="visually-hidden" onChange={choose} aria-label="Choisir un dossier JSON ou une copie privée Passeport" />
     {!candidate && error && <p role="alert" className="error-text">{error}</p>}
     {candidate && <dialog ref={dialog} className="report-import-dialog" aria-labelledby="report-import-title"
       onCancel={event => { event.preventDefault(); if (!busy) setCandidate(null); }}>
