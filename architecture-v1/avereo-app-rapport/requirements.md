@@ -317,3 +317,8 @@ L'enrichissement de `Observation/Analyse`, puis les phases `Explication` et
 ## Consultation des rapports en ligne
 
 Afficher les cinq dernières sauvegardes accessibles et permettre de porter la limite à cinquante. La recherche s’applique avant cette limite. La confirmation doit être visible au-dessus des résultats avant de remplacer un brouillon. [Contrat](api/README.md#recherche-des-sauvegardes-en-ligne).
+
+
+## Planning par périodes demandé le 19 novembre
+
+Le parcours Rapport vers Projet doit accepter des périodes relatives explicitement renseignées sans inventer de dates, préserver les projets datés et vérifier sauvegarde/réouverture serveur. Périmètre et limites : [Planning Rapport vers Projet](docs/interventions-projet.md).

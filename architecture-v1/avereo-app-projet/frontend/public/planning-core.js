@@ -248,7 +248,7 @@
         if (ordered.length !== tasks.length) fail('Cycle de dépendances : ' + tasks.filter(task => remaining.get(task.id) > 0).map(task => task.id).slice(0, 10).join(', '));
         return ordered;
     }
-    function validateTasks(input) {
+    function validateTasks(input, periods = false) {
         if (!Array.isArray(input) || input.length > MAX_TASKS) fail('La liste doit contenir au maximum ' + MAX_TASKS + ' tâches.');
         const seen = new Set();
         const tasks = input.map((entry, index) => {
@@ -257,12 +257,21 @@
             if (seen.has(id)) fail('ID dupliqué : ' + id);
             seen.add(id);
             const duration = parseNumber(entry.duration, 'Durée de ' + id, { min: 0, max: 3650 });
-            if (entry.isMilestone === true && duration !== 0) fail('Le jalon ' + id + ' doit avoir une durée nulle.');
+            if (!periods && entry.isMilestone === true && duration !== 0) fail('Le jalon ' + id + ' doit avoir une durée nulle.');
             if (entry.dependencies !== undefined && !Array.isArray(entry.dependencies)) fail('Les dépendances de ' + id + ' doivent être une liste.');
             const dependencies = [...new Set((entry.dependencies || []).map(dep => identifier(dep, 'Dépendance de ' + id)))];
             if (dependencies.includes(id)) fail('Une tâche ne peut pas dépendre d’elle-même : ' + id);
             const manualStart = entry.manualStart === undefined || entry.manualStart === null || entry.manualStart === '' ? null : isoDate(dateValue(entry.manualStart, 'Début manuel de ' + id));
+            let periodFields = {};
+            if (periods) {
+                const periodStart = parseNumber(entry.periodStart, 'Période de début de ' + id, {min:1,max:120});
+                const periodDuration = parseNumber(entry.periodDuration, 'Durée en périodes de ' + id, {min:0,max:120});
+                if (!Number.isInteger(periodStart) || !Number.isInteger(periodDuration) || periodStart - 1 + periodDuration > 120) fail('Périodes entières entre P1 et P120 requises.');
+                if (manualStart) fail('Un planning par périodes ne contient pas de dates de début manuelles.');
+                periodFields = {periodStart, periodDuration};
+            } else if (entry.periodStart !== undefined || entry.periodDuration !== undefined) fail('Les périodes nécessitent le mode périodes sans dates.');
             return {
+                ...periodFields,
                 id,
                 name: text(entry.name, 'Nom de ' + id, 1000, true),
                 ...(entry.subject === undefined ? {} : { subject: text(entry.subject, 'Sujet de ' + id, 80, true) }),
@@ -278,7 +287,7 @@
                 progress: parseNumber(entry.progress === undefined || entry.progress === '' ? 0 : entry.progress, 'Avancement de ' + id, { min: 0, max: 100 }),
                 riskWeight: choice(entry.riskWeight === undefined || entry.riskWeight === '' ? 'Mineur' : entry.riskWeight, RISK_WEIGHTS, 'Criticité de ' + id),
                 riskStatus: choice(entry.riskStatus === undefined || entry.riskStatus === '' ? 'Aucun' : entry.riskStatus, RISK_STATUSES, 'État du risque de ' + id),
-                isMilestone: duration === 0,
+                isMilestone: periods ? periodFields.periodDuration === 0 : duration === 0,
                 manualStart
             };
         });
@@ -288,13 +297,16 @@
     function normalizeProject(input) {
         object(input, 'Projet');
         if (input.schemaVersion !== 1) fail('Version de sauvegarde non prise en charge.');
-        const startDate = isoDate(dateValue(input.startDate, 'Début du projet'));
+        const periods = input.timelineMode === 'periods';
+        if (input.timelineMode !== undefined && !['calendar','periods'].includes(input.timelineMode)) fail('Mode de calendrier invalide.');
+        if (periods && (input.startDate || input.targetDate)) fail('Un planning par périodes ne contient pas de dates.');
+        const startDate = periods ? null : isoDate(dateValue(input.startDate, 'Début du projet'));
         const targetDate = input.targetDate === undefined || input.targetDate === null || input.targetDate === '' ? null : isoDate(dateValue(input.targetDate, 'Objectif du projet'));
         if (targetDate && targetDate < startDate) fail('L’objectif du projet précède son début.');
         const capacityPerWeek = parseNumber(input.capacityPerWeek, 'Capacité par semaine');
         if (capacityPerWeek <= 0) fail('La capacité par semaine doit être strictement positive.');
         const schedulingMode = choice(input.schedulingMode, ['sequential', 'dependencies'], 'Mode de planification');
-        const tasks = validateTasks(input.tasks);
+        const tasks = validateTasks(input.tasks, periods);
         if (schedulingMode === 'sequential') {
             const positions = new Map(tasks.map((task, index) => [task.id, index]));
             tasks.forEach((task, index) => task.dependencies.forEach(id => {
@@ -303,6 +315,7 @@
         }
         const project = {
             schemaVersion: 1,
+            ...(periods ? {timelineMode:'periods'} : {}),
             name: text(input.name, 'Nom du projet', 200, true),
             startDate,
             targetDate,
@@ -315,6 +328,16 @@
     }
     function schedule(input, todayISO) {
         const project = normalizeProject(input);
+        if (project.timelineMode === 'periods') {
+            const byId = new Map(project.tasks.map(task => [task.id,task]));
+            for (const task of project.tasks) for (const dep of task.dependencies) {
+                const previous = byId.get(dep);
+                if (task.periodStart < previous.periodStart + previous.periodDuration) fail('Une dépendance se termine après le début de ' + task.id + '.');
+            }
+            const totalPeriods = Math.max(1,...project.tasks.map(task => task.periodStart - 1 + Math.max(1,task.periodDuration)));
+            return {tasks:project.tasks.map(task => ({...task,calcStart:null,calcEnd:null,isLate:false,startOffset:task.periodStart-1,endOffset:task.periodStart-1+task.periodDuration})),
+                projectStart:null,projectEnd:null,totalDays:totalPeriods,totalPeriods,totalWorkDays:null,totalDuration:roundOffset(project.tasks.reduce((sum,task)=>sum+task.duration,0))};
+        }
         const start = workingDate(dateValue(project.startDate));
         const today = todayISO ? dateValue(todayISO, 'Date courante') : dateValue(new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0'));
         const order = project.schedulingMode === 'sequential' ? project.tasks : topologicalOrder(project.tasks);
@@ -529,7 +552,7 @@
         if (/_emploi\b|recherche d.emploi|candidatur|entretien|offres d.emploi/.test(hint)) suggested = 'Emploi';
         else if (/_club\b|tc\s*longages|tennis|rtennis|rtcsite|site tc\b/.test(hint)) suggested = 'TC Longages';
         else if (/ressources|continuité|_cockpit\b|pilotage/.test(hint)) suggested = 'Transversal';
-        else if (/_creation\b|_site\b|_revenus\b|avereo|création|rapport|passeport|thermo|drone|plans automatiques|coupe|partenariat|saisie unique/.test(hint)) suggested = 'AVEREO';
+        else if (/_creation\b|_site\b|_revenus\b|avereo|création|rapport|passeport|thermo|drone|plans automatiques|coupe|partenariat|saisie unique|erim/.test(hint)) suggested = 'AVEREO';
         if (suggested === 'À classer' && (task.duration === 0 || task.isMilestone) && !seen.has(task.id)) {
             const nextSeen = new Set(seen); nextSeen.add(task.id);
             const predecessors = (task.dependencies || []).map(id => allTasks.find(item => item.id === id)).filter(Boolean);

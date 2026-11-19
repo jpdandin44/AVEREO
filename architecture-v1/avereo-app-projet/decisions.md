@@ -256,3 +256,8 @@ ou une décision qui n'a pas été consigné.
 
 **Conséquences.** Les risques initiaux restent à qualifier ; le suivi et sa
 validation restent humains, sans authentification propre du vérificateur.
+
+
+## 2026-11-19 — Distinguer périodes et calendrier
+
+Contexte : le responsable demande un Gantt non daté pour les interventions Rapport. Décision de conception : mode optionnel P1/P2, dates nulles et coordonnées saisies ; charge de travail distincte. Les anciens projets conservent leur mode daté. Conséquence : JSON complet pour préserver les périodes, sans conversion automatique en semaines. [Planning par périodes](docs/planning-periodes.md).

@@ -28,11 +28,16 @@ function api_decision_payload_error(mixed $value): ?string
     $planning = static function (mixed $block, bool $row = false): bool {
         // New planning blocks must carry at least one named property; absence means unset.
         if (!is_array($block) || array_is_list($block)) return false;
-        $fields = $row ? ['charge', 'debut_minimal', 'responsable'] : ['titre', 'date_debut', 'date_cible', 'capacite_semaine'];
+        $fields = $row ? ['charge', 'debut_minimal', 'responsable', 'periode_debut', 'duree_periodes'] : ['titre', 'date_debut', 'date_cible', 'capacite_semaine', 'mode'];
         foreach ($fields as $key) {
             if (array_key_exists($key, $block) && (!is_string($block[$key]) || strlen($block[$key]) > (in_array($key, ['titre', 'responsable'], true) ? 800 : 20))) return false;
         }
         if ($row && array_key_exists('inclure', $block) && !is_bool($block['inclure'])) return false;
+        if (!$row && isset($block['mode']) && !in_array($block['mode'], ['date','periodes'], true)) return false;
+        foreach ($row ? ['periode_debut','duree_periodes'] : [] as $key) {
+            $v=$block[$key] ?? '';
+            if ($v !== '' && (!preg_match('/^\d+$/D',$v) || (int)$v<1 || (int)$v>120)) return false;
+        }
         foreach ($row ? ['debut_minimal'] : ['date_debut', 'date_cible'] as $key) {
             $date = $block[$key] ?? '';
             if ($date !== '' && (!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/D', $date, $m) || !checkdate((int)$m[2], (int)$m[3], (int)$m[1]))) return false;

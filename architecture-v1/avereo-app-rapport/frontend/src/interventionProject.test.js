@@ -13,6 +13,24 @@ const fixture = () => ({ categorie: 'Visite Globale', profil_metier: 'habitologu
       explication: 'JUSTIFICATION INTERNE NON TRANSMISE', observation_ids: ['o1'], attente_ids: ['a1'], inclure_client: false,
       planning_projet: { inclure: true, charge: i===1 ? '1,5' : '0.5', debut_minimal: '', responsable: '' }, unknown: 'conservé' })) } });
 
+test('relative intervention export preserves source and contains periods without invented dates', () => {
+  const report=fixture();report.decision.planning_projet={mode:'periodes',titre:'FICTIF périodes'};
+  report.decision.actions.forEach((action,i)=>Object.assign(action.planning_projet,{periode_debut:i===0?'1':'3',duree_periodes:i===0?'2':'3'}));
+  const before=JSON.stringify(report),result=buildInterventionProject(report);
+  assert.equal(result.project.timelineMode,'periods');assert.equal(result.project.startDate,null);assert.equal(result.project.targetDate,null);
+  assert.deepEqual(result.project.tasks.map(t=>[t.periodStart,t.periodDuration]),[[1,2],[3,3]]);
+  assert.equal(result.schedule.totalPeriods,5);assert.equal(result.schedule.projectStart,null);assert.equal(JSON.stringify(report),before);
+  assert.equal(result.json.includes('NOTE INTERNE PRIVEE'),false);assert.equal(result.json.includes('2026-'),false);
+});
+
+test('relative intervention export requires explicit whole periods and keeps effort optional',()=>{
+  const report=fixture();report.decision.planning_projet={mode:'periodes',titre:'Périodes'};
+  assert.throws(()=>buildInterventionProject(report),/périodes/);
+  report.decision.actions.forEach(action=>Object.assign(action.planning_projet,{periode_debut:'1',duree_periodes:'1',charge:''}));
+  assert.equal(buildInterventionProject(report).project.tasks[0].isMilestone,false);
+  report.decision.actions[0].planning_projet.periode_debut='1.5';assert.match(interventionPlanningError(report),/entiers/);
+});
+
 test('selected interventions form a lossless native Projet file with unique source-position IDs', () => {
   const report = fixture(), original = JSON.stringify(report), result = buildInterventionProject(report);
   assert.equal(result.project.tasks.length, 2);
