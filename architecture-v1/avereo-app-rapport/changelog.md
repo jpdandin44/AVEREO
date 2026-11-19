@@ -430,4 +430,4 @@ CONNECT et Rapport livrés après fusion et accord humains ; six fichiers exacts
 
 ## 2026-11-19 — Planning relatif sans dates
 
-Mode P1/P2 ajouté au contrat de projection et aux validations concernées ; aperçu Rapport, import indépendant et Gantt simplifié Projet. Candidat local en cours de qualification hébergée. [Planning Rapport vers Projet](docs/interventions-projet.md).
+Mode P1/P2 ajouté au contrat de projection et aux validations concernées ; aperçu Rapport, import indépendant et Gantt simplifié Projet. Livré en préproduction et recette technique réussie, avec réserves distinctes documentées dans la PR175 ; revue humaine en attente. [Planning Rapport vers Projet](docs/interventions-projet.md).
