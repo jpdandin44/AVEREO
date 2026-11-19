@@ -101,10 +101,29 @@ final class SnapshotReader
             return $p;
         }catch(\Throwable){return null;}
     }
+    private static function quality(array $v):array
+    {
+        $criteria=$v['unassignedCriteria']??[];$proofs=[];
+        foreach($v['phases'] as $p){$criteria=array_merge($criteria,$p['criteria']);foreach($p['proofs'] as $proof)$proofs[$proof['id']]=$proof;}
+        foreach($v['unassignedProofs']??[] as $proof)$proofs[$proof['id']]=$proof;
+        $c=['total'=>count($criteria),'approved'=>0,'unlinked'=>0,'brokenLinks'=>0,'stale'=>0,'changesRequested'=>0,'unassigned'=>count($v['unassignedCriteria']??[])];
+        foreach($criteria as $item){$decision=$item['decision']??'';if($decision==='approved')$c['approved']++;if($decision==='stale')$c['stale']++;if($decision==='changes_requested')$c['changesRequested']++;
+            if(empty($item['proofIds']))$c['unlinked']++;
+            if(array_diff($item['proofIds']??[],array_column($item['proofs']??[],'id')))$c['brokenLinks']++;
+        }
+        $p=['total'=>count($proofs),'available'=>0,'external'=>0,'unpublished'=>0,'missing'=>0,'stale'=>0,'unversioned'=>0,'undated'=>0];
+        foreach($proofs as $item){$availability=$item['availability']??'';
+            if($availability==='available')$p['available']++;elseif($availability==='reference')$p['external']++;elseif(($item['sourceAvailability']??'')==='available')$p['unpublished']++;else $p['missing']++;
+            if(($item['freshness']??'')==='stale')$p['stale']++;
+            if(empty($item['sourceSha'])&&empty($item['artifactSha256']))$p['unversioned']++;
+            if(empty($item['observedAt'])||strtotime($item['observedAt'])===false)$p['undated']++;
+        }
+        return ['criteria'=>$c,'proofs'=>$p];
+    }
     public function state():array
     {
         ['data'=>$d,'index'=>$ix]=$this->read();
-        return ['publisherStatus'=>$this->publisherStatus(),'iterations'=>array_map(static fn($v)=>['id'=>$v['id'],'title'=>$v['title'],'application'=>$v['application'],'applicationIds'=>$v['applicationIds'],
+        return ['publisherStatus'=>$this->publisherStatus(),'iterations'=>array_map(static fn($v)=>['id'=>$v['id'],'quality'=>self::quality($v),'title'=>$v['title'],'application'=>$v['application'],'applicationIds'=>$v['applicationIds'],
             'revision'=>$v['revision']??null,'status'=>$v['status'],'currentPhase'=>$v['currentPhase'],'versions'=>$v['versions'],'nextAction'=>$v['nextAction'],'blockerCount'=>count($v['blockers']),
             'phases'=>array_map(static fn($p)=>['id'=>$p['id'],'label'=>$p['label'],'status'=>$p['status'],'criteria'=>count($p['criteria']),
                 'approved'=>count(array_filter($p['criteria'],static fn($c)=>($c['decision']??'')==='approved'))],$v['phases'])],$d['iterations']),

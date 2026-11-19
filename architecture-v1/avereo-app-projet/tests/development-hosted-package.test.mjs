@@ -50,7 +50,7 @@ test('paquet privé distinct : octets/empreintes, aucun secret/suivi, défaut fe
  const get=path=>fetch(origin+path,{headers:{Cookie:cookie}});
  const page=await get('/developpements/');assert.equal(page.status,200);const pageHtml=await page.text();
  const assets=[...pageHtml.matchAll(/(?:src|href)="([^"]+route=asset[^"]+)"/g)].map(x=>x[1].replaceAll('&amp;','&'));assert(assets.length>=2);
- for(const path of assets){const r=await get(path);assert.equal(r.status,200);assert.equal(r.headers.get('cache-control'),'no-store, private');}
+ for(const path of assets){const r=await get(path);assert.equal(r.status,200);assert.equal(r.headers.get('cache-control'),'no-store, private');assert((await r.arrayBuffer()).byteLength>0);}
  const state=await get('/developpements/api.php?route=state');assert.equal((await state.json()).portfolio.length,2);
  const proofPath='/developpements/api.php?route=proof&iteration=demo-formulaire&proof=demo-parcours';
  assert.match(await(await get(proofPath)).text(),/fictive/);

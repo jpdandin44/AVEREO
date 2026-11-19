@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
+import {applicationQuality} from '../workflows/development-quality.mjs';
 import {transformWithEsbuild} from '../frontend/node_modules/vite/dist/node/index.js';
 import {qualifyLocalReference,extendReferenceSnapshot,updateReferenceSnapshot} from '../workflows/development-local-reference.mjs';
 const ids=['connect','rapport','rga','projet','coupe','thermo','drone','passeport-immo','recherche','saisie-unique'];
@@ -40,7 +41,7 @@ test('refus d’une séquence concurrente ou d’un second ajout du même suivi'
 async function componentContext(clipboard){
  const source=(await readFile(new URL('../frontend/src/developments/DevelopmentPortfolio.jsx',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'').replace('export function LocalFolder','function LocalFolder').replace('export default function DevelopmentPortfolio','function DevelopmentPortfolio');
  const built=await transformWithEsbuild(source,'DevelopmentPortfolio.jsx',{loader:'jsx',jsxFactory:'h',jsxFragment:'Fragment'}),nodes=[],writes=[];
- const ctx={useState:initial=>[initial,v=>writes.push(v)],h:(type,props,...children)=>{const node={type,props,children};nodes.push(node);return node;},Fragment:'fragment',navigator:{clipboard},environmentBadge:()=>({}),console};
+ const ctx={useState:initial=>[initial,v=>writes.push(v)],h:(type,props,...children)=>{const node={type,props,children};nodes.push(node);return node;},Fragment:'fragment',navigator:{clipboard},environmentBadge:()=>({}),applicationQuality,console};
  vm.createContext(ctx);vm.runInContext(built.code,ctx);return{ctx,nodes,writes};
 }
 test('le bouton copie le chemin seul sans navigation ni exécution',async()=>{

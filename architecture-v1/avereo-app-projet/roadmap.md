@@ -12,6 +12,16 @@ tags:
   - roadmap
 ---
 
+## 19 novembre — Synthèse, critères et preuves
+
+**Cadrage** : indicateurs factuels, critères absents et historique explicites.
+**Développement local** : cartes, filtres, détail et résumés Node/PHP préparés.
+**Préproduction** : installation autorisée par le responsable après tests/CI,
+sauvegarde et retour arrière ; le reçu reste distinct de cette intention.
+**Mise en production** : hors périmètre, non autorisée.
+[Suivi canonique](data/suivi-cockpit-qualite-synthese.json),
+[contrat et limites](docs/cockpit-qualite-synthese.md).
+
 ## 19 novembre — Actualisation automatique autorisée en préproduction
 
 **Cadrage** : GitHub automatique seulement, refus du relais PC ; accords existants préservés. **Développement local** : opérateur et état signé implémentés, qualification du candidat exact et CI à terminer. **Préproduction** : installation autorisée avec sauvegarde/retour, accès du seul propriétaire global ; exécution indépendante du planificateur et recette à constater avant annonce opérationnelle. **Mise en production** : non autorisée. [Suivi de ce lot](data/suivi-actualisation-automatique.json). Les limitations et blocages antérieurs ci-dessous restent historiques, pas un état d'installation actuel.

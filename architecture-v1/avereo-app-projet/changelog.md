@@ -12,6 +12,13 @@ tags:
   - changelog
 ---
 
+## 19 novembre — Synthèse UX des critères et preuves
+
+Cartes par application, filtres et détails progressifs, sans perte du Gantt,
+des quatre phases ni des versions. Résumé consultatif calculé depuis les vues
+signées, parité Node/PHP, pas d'écriture de validation ou changement d'accès.
+[Guide et limites](docs/cockpit-qualite-synthese.md).
+
 ## 19 novembre — Collecte privée et état de fraîcheur
 
 Ajout du publicateur GitHub données seules, contrôles d'admission/permissions, sauvegarde, verrou et retour gardé, archivage vérifié des copies inactives et état opérateur signé. L'interface distingue contrôle GitHub, réception des sources, publication et simple relecture, signale les pannes et l'expiration du jeton. Conservation des projections métier inchangées et des pièces historiques. Aucun relais PC, nouvelle API d'écriture navigateur ou changement de validation. Tests et reçu de livraison restent des preuves distinctes ; ce code seul ne prouve pas l'installation. [Guide](docs/actualisation-automatique-privee.md).
