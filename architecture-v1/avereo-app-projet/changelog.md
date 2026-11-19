@@ -314,3 +314,8 @@ Mes projets et Préférences conservent les actions natives de ProjectWorkspace.
 ## 7 novembre 2026 — Missions depuis le dossier
 
 Le candidat local raccorde le dossier au module commun. [Adaptation et preuves](docs/source-audit.md).
+
+
+## 2026-11-19 — Planning relatif sans dates
+
+Mode P1/P2 ajouté au contrat de projection et aux validations concernées ; aperçu Rapport, import indépendant et Gantt simplifié Projet. Candidat local en cours de qualification hébergée. [Planning par périodes](docs/planning-periodes.md).

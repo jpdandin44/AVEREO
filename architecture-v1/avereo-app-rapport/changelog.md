@@ -426,3 +426,8 @@ Correction ciblée livrée et qualifiée en préproduction : voir [le périmètr
 ## 18 novembre — PR170 en préproduction
 
 CONNECT et Rapport livrés après fusion et accord humains ; six fichiers exacts, dossier fictif complet et propriétaire conservés, aperçus client/expert refermables. [Résultat et preuves](docs/source-audit.md#livraison-en-pr%C3%A9production-de-la-pr170). Cette mise à jour documentaire ne change pas les applications.
+
+
+## 2026-11-19 — Planning relatif sans dates
+
+Mode P1/P2 ajouté au contrat de projection et aux validations concernées ; aperçu Rapport, import indépendant et Gantt simplifié Projet. Candidat local en cours de qualification hébergée. [Planning Rapport vers Projet](docs/interventions-projet.md).

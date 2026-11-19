@@ -531,3 +531,8 @@ Les fichiers publics sont servis à l’identique. Nouvelle connexion native du 
 Les 248 autres fichiers préexistants et configurations sont exacts. Les données des 19 tables CONNECT/Rapport sont comparées à l’instantané frais, hors comptes fictifs37/38 et nouveaux événements de recette ajoutés ensuite. Expiration et règle prolongées pour le seul compte fictif37 puis rétablies ; politique complète identique, catalogue et préférences conservés. La fenêtre privée créée pour le test est refermée. Le contrôle hébergé est réalisé sur ordinateur ; les scénarios mobiles locaux restent des preuves distinctes. Le focus n’est pas déterminable par l’accessibilité Windows et conserve sa preuve automatique locale. Les Word/PDF précédemment qualifiés restent suivis séparément, sans nouvelle génération par ce lot.
 
 **Cadrage** approuvé ; **Développement local** validé et fusionné ; **Préproduction** livrée et recette technique réussie ; **Mise en production** non autorisée. Le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>) porte le résultat courant. Cette mise à jour documentaire ne change aucun fichier applicatif et ne demande aucun redéploiement.
+
+
+## 19 novembre — Planning par périodes
+
+Mode optionnel sans dates, sans migration SQL, avec coordonnées explicites et import comme nouveau projet privé. Le calendrier existant, les droits et les données antérieures sont conservés. [Contrat, compatibilité, limites et recette](interventions-projet.md). Le contrôle hébergé reste distinct des tests locaux ; son résultat est enregistré dans le suivi canonique.

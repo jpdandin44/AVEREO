@@ -400,3 +400,8 @@ Dans **Rapports sauvegardés en ligne**, les cinq derniers dossiers sont visible
 ## Habilitations par organisation — candidat local
 
 [Exporter un rapport en JSON depuis les dossiers autorisés](../../docs/administration-acces-exports.md).
+
+
+## 19 novembre — Planning indicatif par périodes
+
+[Planning Rapport vers Projet](docs/interventions-projet.md) : mode sans dates P1/P2, positionnement explicite, échange JSON et création indépendante. Candidat local ; recette hébergée à consigner séparément.

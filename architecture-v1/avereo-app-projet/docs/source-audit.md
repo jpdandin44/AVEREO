@@ -545,3 +545,8 @@ La liste de projets conserve son titre métier sous le bandeau, sans seconde sig
 ## 11 novembre — Correction référence Git
 
 Le lot conserve le module privé déjà existant, ses droits et son runtime. Les changements concernent le type de métadonnées, leur confinement, les libellés et le générateur local versionné ; aucune API ou connexion d’identité ajoutée. Les exports figés ne sont plus présentés comme sources de développement.
+
+
+## 19 novembre — Planning par périodes
+
+Mode optionnel sans dates, sans migration SQL, avec coordonnées explicites et import comme nouveau projet privé. Le calendrier existant, les droits et les données antérieures sont conservés. [Contrat, compatibilité, limites et recette](planning-periodes.md). Le contrôle hébergé reste distinct des tests locaux ; son résultat est enregistré dans le suivi canonique.

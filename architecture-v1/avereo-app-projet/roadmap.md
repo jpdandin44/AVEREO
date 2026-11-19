@@ -280,3 +280,8 @@ Sauvegarde distante, collaboration, absences/jours fériés et nivellement
 multiressource ne sont pas engagés. Une activation backend/MySQL exigerait un
 nouveau périmètre. Les corrections du sas et de sa publication demeurent un
 lot distinct ; les inscrire dans le planning ne prouve pas leur réalisation.
+
+
+## Planning par périodes — 19 novembre
+
+Mode relatif implémenté localement, qualification et recette préproduction sur nouveau projet demandées. État exact dans le suivi canonique et ses reçus ; aucun passage en production. [Planning par périodes](docs/planning-periodes.md).

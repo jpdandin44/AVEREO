@@ -382,3 +382,8 @@ Le pied de barre latérale réutilise le composant commun ; Mes projets et Préf
 Mes projets et Préférences conservent les actions natives de ProjectWorkspace. Mon compte ouvre désormais directement le profil CONNECT, comme dans les autres applications ; les plannings, sauvegardes et préférences natives restent inchangés.
 
 [Règle et portée](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification](../avereo-platform/docs/qualification-mon-espace.md).
+
+
+## 19 novembre — Planning indicatif par périodes
+
+[Planning par périodes](docs/planning-periodes.md) : mode sans dates P1/P2, positionnement explicite, échange JSON et création indépendante. Candidat local ; recette hébergée à consigner séparément.
