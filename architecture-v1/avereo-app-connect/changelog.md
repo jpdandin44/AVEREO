@@ -5,10 +5,14 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 19 novembre — Rapprochement documentaire PR98
+
+Le [contrat de connexion](docs/connexion-identifiant-email.md), les exigences et l’index reflètent la livraison historique du 3 novembre. Les reçus privés sont référencés sans être publiés. Aucun code, compte, rôle ou validation modifié ; aucune nouvelle installation de CONNECT.
 
 ## 17 novembre — Candidat catalogue commun et droits Rapport
 

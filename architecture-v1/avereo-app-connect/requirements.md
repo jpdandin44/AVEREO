@@ -5,7 +5,7 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-17
+updated: 2026-11-19
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
@@ -51,11 +51,11 @@ La création doit enregistrer le sujet natif que le fournisseur OIDC renverra à
 
 ## Connexion par login lisible ou adresse e-mail — attente confirmée
 
-Un libellé « login ou adresse mail » engage les deux possibilités. Le nom de profil CONNECT ne doit pas être présenté comme un login utilisable s’il ne correspond pas à l’identité. Le reset conserve les identifiants et l’identité existants. État hébergé : service natif limité au nom technique. Candidat local : résolution de l’e-mail par le formulaire, login natif lisible préparé pour le compte demandé, collisions refusées et validation native conservée. [Contrat et preuves](docs/connexion-identifiant-email.md). Aucun déploiement de ce candidat.
+Un libellé « login ou adresse mail » engage les deux possibilités. Le nom de profil CONNECT ne doit pas être présenté comme un login utilisable s’il ne correspond pas à l’identité. Le reset conserve les identifiants et l’identité existants. La résolution de l’e-mail par le formulaire, le refus des collisions et la validation native conservée appartiennent à la PR #98, livrée et recettée en préproduction le 3 novembre. [Contrat, version et preuves historiques](docs/connexion-identifiant-email.md). Le rapprochement documentaire du 19 novembre n’est pas une nouvelle recette ou une attestation du runtime courant.
 
 ## 2026-11-03 — Retour de recette et langue des comptes
 
-La langue de toute identité créée doit appartenir aux langues configurées dans Drupal. Utiliser la langue par défaut du site ; ne pas imposer une langue indisponible. Correction préparée localement le 3 novembre, non installée.
+La langue de toute identité créée doit appartenir aux langues configurées dans Drupal. Utiliser la langue par défaut du site ; ne pas imposer une langue indisponible. Correction livrée dans la PR #98 le 3 novembre, sans correction automatique des profils existants. [Périmètre et preuves](docs/connexion-identifiant-email.md).
 
 ## Envoi administratif du reset
 
