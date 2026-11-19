@@ -5,11 +5,14 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-13
+updated: 2026-11-19
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
+## 19 novembre — Copies complètes Rapport privées
+
+La colonne nullable `pi_biens.report_publications` identifie les versions conservées. Les paquets sources sont des blobs privés distincts, absents de `pi_documents`, des charges utiles partagées et des routes de téléchargement des destinataires. Seule la restitution client est un document ordinaire. Contrôles propriétaire/bien, CSRF/origine, empreintes et transaction couvrent la conservation. Les sauvegardes incluent les copies privées. [Contrat](../avereo-app-rapport/docs/publication-passeport-immo.md).
 # Architecture Passeport Immo
 
 ## Partage nominatif — préproduction privée

@@ -61,6 +61,12 @@ export function createServerStorage({ fetcher = (...args) => fetch(...args), not
     async deleteDocument(id, doc) { await flush(); return request(`${bienPath(id)}/documents/${encodeURIComponent(doc)}`, { method: 'DELETE', body: JSON.stringify({ confirm: true }) }); },
     async saveDocumentSettings(id, settings) { await flush(); return request(`${bienPath(id)}/document-settings`, { method: 'PUT', body: JSON.stringify(settings) }); },
     async getFile(id, doc) { await flush(); return request(`${bienPath(id)}/documents/${encodeURIComponent(doc)}/file`, { blob: true }); },
+    async publications(id) { await flush(); return request(`${bienPath(id)}/report-publications`); },
+    async publishReport(id, file) {
+      await flush(); const body = new FormData(); body.append('publication', file, file.name); body.append('confirm', 'true');
+      return request(`${bienPath(id)}/report-publications`, { method: 'POST', body });
+    },
+    async publicationSource(id, publication) { await flush(); return request(`${bienPath(id)}/report-publications/${encodeURIComponent(publication)}/source`, { blob: true }); },
     async shares(id) { await flush(); return request(`${bienPath(id)}/shares`); },
     async resolveRecipient(id, recipient) { await flush(); return request('/share-recipient', { method:'POST', body:JSON.stringify({bienId:String(id),recipient}) }); },
     async grantShare(id, recipient, revision, expectedRecipient) { await flush(); return request(`${bienPath(id)}/shares`, { method:'POST', body:JSON.stringify({recipient,revision,expectedRecipient,confirm:true}) }); },

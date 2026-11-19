@@ -1,3 +1,4 @@
+import ReportPublications from './ReportPublications.jsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { CATEGORIES, DOCUMENT_ACCEPT, documentRepository, isCompressedArchive } from './document-store.js';
 import PdfPreview from './PdfPreview.jsx';
@@ -172,6 +173,7 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
       })}</div> : <div className="document-empty"><h3>{search || filter ? 'Aucun document trouvé' : view === 'trash' ? 'La corbeille est vide' : view === 'archived' ? 'Aucun document archivé' : 'Votre dossier documentaire est prêt à être rempli'}</h3><p>{search || filter ? 'Essayez un autre titre ou une autre catégorie.' : view === 'trash' ? 'Les documents mis à la corbeille apparaîtront ici.' : 'Ajoutez vos diagnostics, plans, documents administratifs et pièces de travaux.'}</p></div>}
       {categoryEditor && <CategorySettings settings={settings} busy={busy} onClose={() => setCategoryEditor(false)} onSave={async value => { if (await saveSettings(value)) setCategoryEditor(false); }} />}
     </>}
+    {!readOnly && data.client && <ReportPublications key={bienId} bienId={bienId} repository={repository} onSaved={reload} />}
     {selected && <DocumentReader document={selected} bienId={bienId} repository={repository} onClose={() => setSelected(null)} />}
   </section>;
 }

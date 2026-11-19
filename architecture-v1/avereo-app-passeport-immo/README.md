@@ -5,11 +5,14 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-13
+updated: 2026-11-19
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
+## Publication des dossiers Rapport — préproduction du 19 novembre
+
+Le [nouveau lot](../avereo-app-rapport/docs/publication-passeport-immo.md) ajoute l’import explicite d’un paquet finalisé préparé dans Rapport. La restitution client rejoint les documents du bien ; la copie complète reste hors de leurs partages et se télécharge uniquement par son propriétaire pour une réouverture dans Rapport. Livré et techniquement vérifié en préproduction sur un bien fictif ; [reçu daté](api/report-publication-observation.json), réouverture après nouvelle connexion et droits privés contrôlés. Source et documents préexistants conservés, droits temporaires rétablis. Revue humaine de la PR173 encore attendue ; aucune production. L’[annexe de parité](docs/source-audit-publication-rapport.md) conserve les audits historiques figés.
 # AVEREO – Passeport Immo
 
 ## Partage des documents — incident prioritaire

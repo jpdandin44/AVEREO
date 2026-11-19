@@ -5,11 +5,14 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-13
+updated: 2026-11-19
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
+## 2026-11-19 — Publications Rapport en préproduction
+
+Import propriétaire confirmé, copie complète privée et restitution client Word attachée au bien. Versions idempotentes vérifiées, téléchargement privé avec empreinte et sauvegarde des paquets. Livraison et recette native fictive réussies après sauvegarde/restauration ; copie récupérée dans une nouvelle session et réouverte dans Rapport comme dossier indépendant. 26 documents historiques conservés, droits ALTER temporaires et accès fictifs rétablis. Revue humaine PR173 attendue ; production inchangée.
 # Changelog Passeport Immo
 
 ## 2026-11-13 — Partage nominatif livré en préproduction privée

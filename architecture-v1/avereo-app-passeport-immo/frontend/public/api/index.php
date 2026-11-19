@@ -4,6 +4,7 @@ const AVEREO_GATE_APP = 'passeport-immo';
 require dirname(__DIR__) . '/connect/session.php';
 require __DIR__ . '/storage.php';
 require __DIR__ . '/sharing.php';
+require __DIR__ . '/publications.php';
 header('Cache-Control: private, no-store');
 header('X-Content-Type-Options: nosniff');
 header('Content-Type: application/json; charset=utf-8');
@@ -46,6 +47,23 @@ try {
     if ($path==='/api/share-recipient' && $method==='POST') {
         $store->bien((string)($body['bienId']??''));
         passeport_json((new PasseportSharing($store,$config))->resolve((string)($body['recipient']??'')));
+    }
+    if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/report-publications(?:/([a-f0-9]{32})/source)?$#D',$path,$m)) {
+        $publications=new PasseportPublications($store);
+        if ($method==='GET' && !isset($m[2])) passeport_json($publications->listing($m[1]));
+        if ($method==='POST' && !isset($m[2])) {
+            if (($_POST['confirm']??'')!=='true') throw new PasseportError(422,'Confirmez le dépôt de la restitution partageable et de la copie privée.');
+            $file=$_FILES['publication']??null;
+            if (!is_array($file) || ($file['error']??-1)!==UPLOAD_ERR_OK || !is_string($file['tmp_name']??null)) throw new PasseportError(422,'Fichier absent ou limite serveur dépassée.');
+            passeport_json($publications->publish($m[1],$file['tmp_name']),201);
+        }
+        if ($method==='GET' && isset($m[2])) {
+            $source=$publications->source($m[1],$m[2]); $record=$source['record'];
+            header('Content-Type: application/zip'); header('Content-Length: '.$record['size']);
+            header('X-Avereo-Publication-Sha256: '.$record['sha256']);
+            header('Content-Disposition: attachment; filename="rapport-'.$record['id'].'.avereo.zip"');
+            header("Content-Security-Policy: sandbox; default-src 'none'"); readfile($source['path']); exit;
+        }
     }
     if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/shares(?:/([a-f0-9]{32}))?$#D',$path,$m)) {
         $sharing=new PasseportSharing($store,$config);
