@@ -54,12 +54,13 @@ def run():
                 '--mount',f'type=bind,source={APP}/workflows/backup-storage.php,target=/fixture/backup-storage.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/migrate-document-organisation.php,target=/fixture/migrate-document-organisation.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/migrate-document-sharing.php,target=/fixture/migrate-document-sharing.php,readonly',
+                '--mount',f'type=bind,source={APP}/workflows/migrate-report-publications.php,target=/fixture/migrate-report-publications.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/scheduled-backup.php,target=/fixture/scheduled-backup.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/backup-cron.php,target=/fixture/backup-cron.php,readonly',
                 '--mount',f'type=bind,source={APP}/tests/scheduled-backup.php,target=/fixture/scheduled-backup-test.php,readonly',
                 '-e','AVEREO_CONFIG_FILE=/fixture/config.php',IMAGE); created.append(web)
             port=int(command('docker','port',web,'80/tcp').rsplit(':',1)[1])
-            bootstrap="mkdir('/private-documents',0700); chmod('/private-documents',0700); chown('/private-documents','www-data'); $c=require '/fixture/config.php'; for($i=0;$i<60;$i++){try{$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);break;}catch(Throwable){usleep(500000);}} $p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); $p->exec(preg_replace('/^ *(trashed_at|document_settings|document_shares) [^\\n]*\\n/m','',file_get_contents('/fixture/storage.sql'))); $p->exec(\"INSERT INTO pi_workspaces(owner_id,settings) VALUES ('migration-fixture','{}')\");"
+            bootstrap="mkdir('/private-documents',0700); chmod('/private-documents',0700); chown('/private-documents','www-data'); $c=require '/fixture/config.php'; for($i=0;$i<60;$i++){try{$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);break;}catch(Throwable){usleep(500000);}} $p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); $p->exec(preg_replace('/^ *(trashed_at|document_settings|document_shares|report_publications) [^\\n]*\\n/m','',file_get_contents('/fixture/storage.sql'))); $p->exec(\"INSERT INTO pi_workspaces(owner_id,settings) VALUES ('migration-fixture','{}')\");"
             command('docker','exec',web,'php','-r',bootstrap)
             dry=json.loads(command('docker','exec',web,'php','/fixture/migrate-document-organisation.php','/fixture/config.php','passeport'))
             check(dry['status']=='dry_run' and set(dry['requiredColumns'])=={'trashed_at','document_settings'},'organisation migration defaults to dry run on historical schema')
@@ -71,6 +72,10 @@ def run():
             check(repeated['addedColumns']==[] and repeated['existingRowsPreserved'],'organisation migration safely idempotent')
             sharing_migration=json.loads(command('docker','exec',web,'php','/fixture/migrate-document-sharing.php','/fixture/config.php','passeport','--apply'))
             check(sharing_migration['status']=='verified','sharing nullable schema installed or verified')
+            publication_migration=json.loads(command('docker','exec',web,'php','/fixture/migrate-report-publications.php','/fixture/config.php','passeport','--apply'))
+            check(publication_migration['addedColumns']==['report_publications'] and publication_migration['existingRowsPreserved'],'publication migration preserves historical rows')
+            publication_repeat=json.loads(command('docker','exec',web,'php','/fixture/migrate-report-publications.php','/fixture/config.php','passeport','--apply'))
+            check(publication_repeat['addedColumns']==[],'publication migration is idempotent')
             def request(path,cookie=None,method='GET',body=None,csrf=None,origin='https://passeport-immo.test',content_type='application/json'):
                 headers={}
                 if cookie: headers['Cookie']=cookie
@@ -280,6 +285,9 @@ def run():
             check(request('/api/share-recipient',cookie,'POST',{'bienId':'123','recipient':'fixture-46'},csrf)[0]==422,'account without Passeport entitlement cannot be invited')
             sharing_backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-sharing'))
             check(sharing_backup['temporaryRowRestore']=='passed','grants and revocation retained by four-table backup restore')
+            from publication_http import run as check_publications
+            check_publications(request,check,cookie,second,foreign,csrf,foreign_csrf,sql,
+                lambda:json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-publications')))
             command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
             check(request(path+'/file',cookie)[0]==503,'altered blob not returned')
             print(json.dumps({'assertions':len(checks),'checks':checks,'scheduledBackup':scheduled,'database':'MariaDB 11.4','isolated':True},ensure_ascii=False))

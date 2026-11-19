@@ -1,3 +1,4 @@
+import { documentStatus } from './reportDelivery.js';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, ImageRun,
   Header, Footer, PageNumber, ExternalHyperlink, WidthType, BorderStyle } from 'docx';
 import { AVEREO_NAME } from '../../../avereo-platform/shared/report-identity.js';
@@ -98,10 +99,10 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
   }
   const children = await blocks(dom.body);
   const label = report.livrable?.audience === 'client' ? 'Synthèse client' : 'Rapport expert';
-  return Packer.toBlob(new Document({ creator:AVEREO_NAME,title:`${report.titre} — ${label}`,description:'Document de travail soumis à validation professionnelle',
+  return Packer.toBlob(new Document({ creator:AVEREO_NAME,title:`${report.titre} — ${label}`,description:documentStatus(report),
     styles:{default:{document:{run:{font:'Calibri',size:22,color:'002B45'},paragraph:{spacing:{line:285}}}}},
     sections:[{properties:{page:{size:{width:11906,height:16838},margin:{top:1134,bottom:1134,left:1134,right:1134}}},
       headers:{default:new Header({children:[new Paragraph({children:[new TextRun({text:`${AVEREO_NAME}  |  ${label}`,size:18,color:'506573'})]})]})},
-      footers:{default:new Footer({children:[new Paragraph({children:[new TextRun({text:`${AVEREO_NAME} · ${report.reference_dossier || ''} · Document de travail · `,size:16}),new TextRun({children:[PageNumber.CURRENT],size:16})]})]})},
+      footers:{default:new Footer({children:[new Paragraph({children:[new TextRun({text:`${AVEREO_NAME} · ${report.reference_dossier || ''} · ${documentStatus(report)} · `,size:16}),new TextRun({children:[PageNumber.CURRENT],size:16})]})]})},
       children}]}));
 }

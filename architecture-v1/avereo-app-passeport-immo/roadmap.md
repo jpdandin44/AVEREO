@@ -5,11 +5,14 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-13
+updated: 2026-11-19
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
+## Lot actif du 19 novembre — Publication Rapport
+
+Lot installé en préproduction après CI, sauvegarde/restauration et accord du responsable. Dépôt fictif, copie privée, partage du Word client, idempotence, nouvelle connexion, récupération serveur et réouverture indépendante dans Rapport vérifiés. Les accès temporaires sont rétablis. Suite : revue humaine PR173 ; merge et production distincts. [Reçu](api/report-publication-observation.json). Les sections antérieures ci-dessous conservent leurs constats historiques.
 # Roadmap Passeport Immo
 
 ## Priorité — incident de partage

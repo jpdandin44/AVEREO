@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,12 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## 19 novembre — Publication Passeport livrée en préproduction
+
+[PR173](https://github.com/jpdandin44/AVEREO/pull/173), runtime `4b6696ca24fc678465327bb31a3eeb0777365029` : restitution client Word partageable et copie complète privée. Recette fictive hébergée via les services natifs authentifiés : dépôt, idempotence, exclusion de la copie privée du partage, nouvelle connexion, téléchargement exact et révocation réussis. La copie se réouvre dans Rapport et se sauvegarde comme dossier indépendant, source et propriétaire conservés. 26 documents Passeport et 30 dossiers Rapport préexistants exacts ; accès temporaires rétablis.
+
+[Parcours, preuves et limites](docs/publication-passeport-immo.md). Revue humaine encore attendue ; aucun merge ni production. Les étapes datées suivantes conservent l’historique, sans redéclarer une nouvelle validation.
 
 ## 17 novembre — Plans fusionnés, libellé Analyse globale en développement
 

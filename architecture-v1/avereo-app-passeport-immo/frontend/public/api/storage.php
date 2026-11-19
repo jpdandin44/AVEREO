@@ -117,7 +117,7 @@ final class PasseportStorage
                 $client = ['id'=>self::id(), 'name'=>self::text($body['name'] ?? null,200), 'created_at'=>self::now()];
                 $this->query('INSERT INTO pi_clients(id,owner_id,name,created_at) VALUES (?,?,?,?)',[$client['id'],$this->owner,$client['name'],$client['created_at']]);
             }
-            if ($bien['client_id'] !== $client['id'] && $this->query('SELECT id FROM pi_documents WHERE owner_id=? AND bien_id=? LIMIT 1',[$this->owner,$id])->fetch()) {
+            if ($bien['client_id'] !== $client['id'] && (!empty($bien['report_publications']) || $this->query('SELECT id FROM pi_documents WHERE owner_id=? AND bien_id=? LIMIT 1',[$this->owner,$id])->fetch())) {
                 throw new PasseportError(409, 'Un bien contenant des documents conserve son client.');
             }
             $this->query('UPDATE pi_biens SET client_id=? WHERE owner_id=? AND bien_id=?',[$client['id'],$this->owner,$id]);
@@ -148,6 +148,20 @@ final class PasseportStorage
             };
             if (!$valid) throw new PasseportError(422,'Le fichier ne correspond pas au format d’archive annoncé.');
         }
+        if ($ext === 'zip' && class_exists(ZipArchive::class)) {
+            $archive = new ZipArchive();
+            if ($archive->open($path, ZipArchive::RDONLY) === true) {
+                try {
+                    $entry = $archive->statName('manifest.json');
+                    if ($entry && $entry['size'] <= 65536) {
+                        $manifest = json_decode($archive->getFromName('manifest.json'),true);
+                        if (($manifest['schema'] ?? null) === 'avereo-rapport-publication') {
+                            throw new PasseportError(422,'Utilisez « Importer un dossier Rapport finalisé » pour conserver la copie complète en privé.');
+                        }
+                    }
+                } finally { $archive->close(); }
+            }
+        }
         // Canonical archive types keep compressed containers out of image/PDF previews.
         $mime = $archiveTypes[$ext] ?? ((new finfo(FILEINFO_MIME_TYPE))->file($path) ?: 'application/octet-stream');
         // Every download is an attachment. No uploaded file is ever executed or served as HTML.
@@ -164,7 +178,8 @@ final class PasseportStorage
             $validated[] = [$file,$meta];
         }
         $written=[]; $added=[]; $duplicates=[];
-        $this->db->beginTransaction();
+        $ownsTransaction = !$this->db->inTransaction();
+        if ($ownsTransaction) $this->db->beginTransaction();
         try {
             $bien=$this->bien($id,true);
             if (!$bien['client_id']) throw new PasseportError(422,'Reliez d’abord le bien à son client.');
@@ -183,9 +198,9 @@ final class PasseportStorage
                     [$docId,$this->owner,$id,$bien['client_id'],$meta['name'],$meta['name'],$category,$meta['mime'],$meta['size'],$meta['sha256'],$now,$now]);
                 $added[]=self::document($this->query('SELECT * FROM pi_documents WHERE id=?',[$docId])->fetch());
             }
-            $this->db->commit(); return compact('added','duplicates');
+            if ($ownsTransaction) $this->db->commit(); return compact('added','duplicates');
         } catch (Throwable $error) {
-            if ($this->db->inTransaction()) $this->db->rollBack();
+            if ($ownsTransaction && $this->db->inTransaction()) $this->db->rollBack();
             foreach ($written as $path) @unlink($path);
             throw $error;
         }
@@ -286,6 +301,11 @@ final class PasseportStorage
         }
         if (!unlink($held)) throw new RuntimeException('Nettoyage privé de la suppression à terminer.');
         return ['deleted'=>true,'id'=>$id];
+    }
+    public function publicationPath(string $bien, string $id): string
+    {
+        if (!preg_match('/^[a-f0-9]{32}$/D',$id)) throw new PasseportError(404,'Copie privée introuvable.');
+        return $this->directory.'/publication-'.hash('sha256',$this->owner."\0".$bien."\0".$id).'.blob';
     }
     public function filePath(array $document): string
     {

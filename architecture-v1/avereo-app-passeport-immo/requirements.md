@@ -5,11 +5,14 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-13
+updated: 2026-11-19
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
+## 19 novembre — Versions finalisées provenant de Rapport
+
+Importer un paquet préparé dans Rapport, confirmer son rattachement au bien/client et l’effet sur les destinataires existants. Conserver séparément la restitution partageable et la copie complète privée avec originaux. Réouverture du travail dans Rapport ; refus de tout accès source par un destinataire partagé ou compte étranger. Envoi identique idempotent ; aucune version ni document antérieur écrasé. Maximum 500 Mo, entrées stockées sans expansion de ZIP, hashes vérifiés avant écriture. Sauvegarde/restauration couvrant métadonnées et octets privés.
 # Exigences Passeport Immo
 
 ## Partage nominatif demandé

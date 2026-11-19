@@ -5,7 +5,7 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-17
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,9 @@ tags:
   - architecture
 ---
 
+## 2026-11-19 — Conservation d’une version complète privée
+
+Le responsable demande une restitution finalisée partageable et une copie complète privée réouvrable dans Rapport. Le premier raccordement utilise un paquet vérifié, importé explicitement dans Passeport. Raisons : réutiliser les accès et contrôles propres à chaque application, embarquer les originaux, laisser choisir le bien/client et éviter de confondre préparation locale et publication serveur. Conséquences : le fichier préparé n’est pas encore publié ; Passeport ne devient pas éditeur de visite. [Contrat et limites](docs/publication-passeport-immo.md).
 ## 17 novembre — Renommer la prestation sans migrer les dossiers
 
 Complément demandé avant validation de PR168 : remplacer aussi l’intitulé Conseils habitologue, avec proposition alternative autorisée par le responsable. Choix de rédaction annoncé : **Conseils de l’expert**, commun aux observations, au contexte extérieur et aux deux restitutions. Raisons : vocabulaire compréhensible et applicable aux différents profils. Conséquences : libellé partagé, aucun nouveau métier, titre de qualification ou droit ; les valeurs des champs actions/conseils restent intactes. Ce complément remplace la réserve initiale sur ce seul libellé, conservée dans le contexte ci-dessous.

@@ -2,6 +2,7 @@ import { useAppPreferences } from '../../../avereo-platform/shared/use-app-prefe
 import { protocolOptions, escapeHtml } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
+import PublicationPanel from './PublicationPanel.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
 import InterventionsPanel from './InterventionsPanel.jsx';
 import ScreenDisclosure, { ScreenPresentation, DisclosureControls, useScreenPresentation, excerpt, revealScreenField } from './ScreenDisclosure.jsx';
@@ -1893,7 +1894,7 @@ function ShareTestCopy({ report }) {
   </section>;
 }
 
-function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep, readOnly = false, canExport = true, setDeliveryOptions }) {
+function ValidationStep({ report, setReport, validation, onPreview, onExport, onPreparePublication, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep, readOnly = false, canExport = true, setDeliveryOptions }) {
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
   const presentation = useScreenPresentation();
   const decision = normalizeDecision(report.decision);
@@ -1988,6 +1989,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         <button className="button secondary" type="button" onClick={onPreview}><Eye size={18} />Apercu</button>
         <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0 || !canExport}><Download size={18} />Générer Word (.docx)</button>
       </div>
+      <PublicationPanel disabled={validation.errors.length > 0 || !canExport || onlineSaving} onPrepare={onPreparePublication} />
       <p>Le JSON complet contient les textes, explications, conseils, photos, plans et la signature présents dans ce dossier. Transmettez-le uniquement aux personnes autorisées.</p>
       <ScreenDisclosure name="export-exchange" title="Importer un dossier ou préparer une copie de test" className="export-secondary-actions"
         summary="Chargement du JSON complet · structure de test sans textes ni photos">
@@ -2279,6 +2281,17 @@ function ReportWizard({
     }
   };
 
+  const handlePreparePublication = async () => {
+    if (onlineSyncEnabled) await authorizeReportExport(accessToken, authUser);
+    const snapshot = structuredClone(report);
+    const id = crypto.randomUUID().replaceAll('-', ''), createdAt = new Date().toISOString();
+    const client = { ...snapshot, livrable: { ...snapshot.livrable, audience: 'client' }, publication: { id, createdAt, validatedByProfessional: true } };
+    const [{ createWordBlob }, { createPublication }] = await Promise.all([import('./reportDocx.js'), import('./reportPublication.js')]);
+    const word = await createWordBlob(buildReportHtml(client), client);
+    const { blob } = await createPublication(snapshot, word, { validated: true, id, now: createdAt });
+    return saveAs(blob, `${toFileName(snapshot.reference_dossier || snapshot.titre)}-${id.slice(0, 8)}.avereo.zip`);
+  };
+
   const handleExportJson = () => {
     const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json;charset=utf-8' });
     saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}.json`);
@@ -2332,6 +2345,7 @@ function ReportWizard({
                 validation={validation}
                 onPreview={() => setPreviewOpen(true)}
                 onExport={handleExport}
+                onPreparePublication={handlePreparePublication}
                 onExportJson={handleExportJson}
                 onLoadFile={loadFile}
                 onlineSaving={onlineSaving}

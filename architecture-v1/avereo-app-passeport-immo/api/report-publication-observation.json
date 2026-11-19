@@ -1,0 +1,42 @@
+{
+  "observedAt": "2026-11-19T10:11:36.824550+01:00",
+  "sourceSha": "4b6696ca24fc678465327bb31a3eeb0777365029",
+  "selectionSha256": "7040b2b08ee7c85e0b2e926948f5b8ae380e53e4b1b82ca6744958d1eeab1c78",
+  "applications": {
+    "rapport": {
+      "artifactSha256": "b7bc328ac14321a98083b71d589ca48eabd384aa43721b068ea1ef0806043b82",
+      "files": 5
+    },
+    "passeport-immo": {
+      "artifactSha256": "77785da40db733969c08b660cb21f45d561441adbc6115101eb5c940c3bcb163",
+      "files": 10
+    }
+  },
+  "targets": [
+    "https://rapport-preprod.avereo.fr/",
+    "https://passeport-immo-preprod.avereo.fr/"
+  ],
+  "status": "preproduction_delivered_native_recipe_passed_human_review_pending",
+  "nativeHostedRecipePassed": true,
+  "freshNativeReconnectionPassed": true,
+  "privateSourceExcludedFromShares": true,
+  "shareRevokedAfterRecipe": true,
+  "privateCopyReopenedAndIndependentlySavedInRapport": true,
+  "observations": 14,
+  "photosIncludingContext": 4,
+  "plans": 12,
+  "signature": true,
+  "existingPassportDocumentsPreserved": 26,
+  "existingReportRowsPreserved": 30,
+  "originalCompleteSourceOwnerPreserved": 37,
+  "transferredCopyOwnerPreserved": 38,
+  "temporaryDatabaseAlterRestoredExactly": true,
+  "temporaryFixtureAccessRestored": true,
+  "postRecipeBackupFiles": 28,
+  "publicBrowserRecipe": "not_performed",
+  "localBrowserPrivateImportPassed": true,
+  "humanAcceptance": false,
+  "productionChanged": false,
+  "canonicalTracker": "C:\\Users\\examg\\OneDrive\\Documents\\AVEREO_2\\preprod-acces-local\\outillage\\acces-preproduction\\suivi-chantier.json",
+  "canonicalPointer": "rapportV12CadrageProfils20261112.publicationPasseport20261119"
+}
