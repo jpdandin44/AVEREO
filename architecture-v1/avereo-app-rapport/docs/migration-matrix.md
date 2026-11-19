@@ -342,3 +342,8 @@ Correction ciblée livrée et qualifiée en préproduction : voir [le périmètr
 ## 18 novembre — Fermeture de l’aperçu
 
 Le [candidat local de fermeture](source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) utilise un dialogue natif au-dessus du bandeau commun. Aucun changement de données, sauvegarde, API ou restitution ; huit parcours expert/client et 246 tests réussis. Livraison hébergée distincte et non effectuée.
+
+
+## 19 novembre — Planning par périodes
+
+Mode optionnel sans dates, sans migration SQL, avec coordonnées explicites et import comme nouveau projet privé. Le calendrier existant, les droits et les données antérieures sont conservés. [Contrat, compatibilité, limites et recette](interventions-projet.md). Le contrôle hébergé reste distinct des tests locaux ; son résultat est enregistré dans le suivi canonique.

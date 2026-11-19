@@ -320,3 +320,8 @@ les échanges de fichiers et autres cas restant ouverts y sont explicités.
   fichier modifié même si le JSON est inchangé.
 - Ignorer une ancienne réponse de lecture qui termine après le début d'une
   écriture ; garder les contrôles de concurrence existants côté service.
+
+
+## Planning par périodes demandé le 19 novembre
+
+Le parcours Rapport vers Projet doit accepter des périodes relatives explicitement renseignées sans inventer de dates, préserver les projets datés et vérifier sauvegarde/réouverture serveur. Périmètre et limites : [Planning par périodes](docs/planning-periodes.md).

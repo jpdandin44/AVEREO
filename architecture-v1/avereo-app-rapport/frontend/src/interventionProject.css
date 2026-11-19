@@ -8,3 +8,7 @@
 .intervention-gantt-track { min-width: 0; height: 16px; background: #edf3f8; border-radius: 4px; overflow: hidden; }
 .intervention-gantt-track > span { display: block; min-width: 2px; height: 100%; background: #247ba0; border-radius: 4px; }
 @media (max-width: 650px) { .intervention-gantt-row { grid-template-columns: 1fr; gap: 7px; } }
+
+.period-preview { overflow-x:auto; }
+.period-preview-header { display:grid; margin-bottom:12px; }
+.period-preview-header span { text-align:center; border-left:1px solid #b8cadb; padding:8px; color:#15395a; }

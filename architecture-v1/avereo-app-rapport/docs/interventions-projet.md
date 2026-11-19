@@ -5,7 +5,7 @@ title: Interventions Rapport vers Projet et planning informatif
 status: active
 version: git
 created: 2026-11-16
-updated: 2026-11-16
+updated: 2026-11-19
 owner: jpdandin
 tags: [rapport, interventions, projet, planning]
 ---
@@ -184,3 +184,10 @@ hébergée distincte ; lot Profils avec CONNECT engagé dans sa propre itératio
 
 Non engagée et non autorisée. Aucun déploiement ni ouverture de production.
 
+
+
+## 19 novembre — Mode périodes sans dates
+
+Le panneau propose un choix daté/périodes. En mode périodes, chaque intervention retenue renseigne `periode_debut` et `duree_periodes`, entiers de 1 à 120 ; la charge est facultative et indépendante. Les paramètres et coordonnées suivent le dossier complet et ses sauvegardes. Le fichier Projet retire les contraintes calendaires, conserve références et modalités, et porte `timelineMode: "periods"`. Le [contrat Projet](../../avereo-app-projet/docs/planning-periodes.md) définit les bornes, validations et limites. Aucun planning ajouté aux Word dans ce lot.
+
+La [qualification hébergée du 19 novembre](../../avereo-app-projet/docs/planning-periodes.md#qualification-du-19-novembre) termine l’import indépendant puis la sauvegarde et la réouverture après reconnexion : dossier fictif de 14 constats, 4 photos, 12 vues et signature, deux interventions choisies. Le JSON Rapport téléchargé après réouverture est identique à celui d’avant déconnexion. Les périodes de Rapport restent indépendantes de la modification sauvegardée dans Projet. Les preuves antérieures datées ci-dessus restent historiques ; la PR175 et le suivi privé portent ce nouveau résultat.

@@ -142,6 +142,8 @@
         el('workspace-client').value = '';
         el('workspace-start').value = project ? project.startDate : localIso();
         el('workspace-start').readOnly = Boolean(project);
+        const periods = project?.timelineMode === 'periods';
+        el('workspace-start').required = !periods; el('workspace-start').disabled = periods; el('workspace-start-field').hidden = periods;
         el('workspace-create-error').textContent = '';
         el('workspace-create').showModal(); el('workspace-name').focus();
     }

@@ -416,3 +416,8 @@ reconnu en lecture mais disparait des choix de creation. Les prototypes
 Habitologie precedents sont normalises vers `Rapport Habitologue`. Les
 adaptations Habitologie sont ajoutees progressivement dans les etapes
 existantes en fonction de la categorie.
+
+
+## 2026-11-19 — Distinguer périodes et calendrier
+
+Contexte : le responsable demande un Gantt non daté pour les interventions Rapport. Décision de conception : mode optionnel P1/P2, dates nulles et coordonnées saisies ; charge de travail distincte. Les anciens projets conservent leur mode daté. Conséquence : JSON complet pour préserver les périodes, sans conversion automatique en semaines. [Planning Rapport vers Projet](docs/interventions-projet.md).

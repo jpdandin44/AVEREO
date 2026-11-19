@@ -175,3 +175,8 @@ altimetriques, l'orientation et les notes. Voir
 L'evolution 2 ajoute les liens externes et notes `ressources_batiment` au meme
 payload. Aucun raccordement automatique aux fournisseurs : voir
 [`api/ressources-batiment.md`](api/ressources-batiment.md).
+
+
+## Mode relatif du planning
+
+Le moteur Projet et sa validation PHP acceptent un mode optionnel sans ancrage calendaire ; Rapport utilise ce même contrat pour sa projection. Stockage privé et identité CONNECT conservés. [Planning Rapport vers Projet](docs/interventions-projet.md).

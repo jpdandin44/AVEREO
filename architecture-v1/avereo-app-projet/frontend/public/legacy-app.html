@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AVEREO - Pilotage Pro</title>
-    <script src="./planning-core.js?v=interface-20261106"></script>
+    <script src="./planning-core.js?v=periods-20261119"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -128,7 +128,7 @@
         @keyframes slideUpFade { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .toast-show { animation: slideUpFade 0.3s forwards; }
     </style>
-    <link rel="stylesheet" href="/project-workspace.css?v=interface-20261106">
+    <link rel="stylesheet" href="/project-workspace.css?v=periods-20261119">
     <script defer src="/account-menu.js"></script>
 </head>
 <body class="flex h-screen text-slate-800">
@@ -211,7 +211,7 @@
             <form id="workspace-create-form">
                 <label>Nom du projet<input id="workspace-name" required maxlength="200" autocomplete="off"></label>
                 <label>Client ou référence (facultatif)<input id="workspace-client" maxlength="200" autocomplete="off"></label>
-                <label>Date de début<input id="workspace-start" type="date" required></label>
+                <label id="workspace-start-field">Date de début<input id="workspace-start" type="date" required></label>
                 <p id="workspace-create-error" role="alert" class="text-sm text-red-700 mb-4"></p>
                 <div class="ws-actions"><button type="button" id="workspace-create-cancel">Annuler</button><button type="submit" class="primary">Créer et ouvrir le projet</button></div>
             </form>
@@ -264,14 +264,14 @@
                 </div>
             <form id="project-settings-form" onsubmit="saveProjectSettings(event)" class="flex flex-wrap items-end gap-3">
                 <label class="text-xs text-slate-600 flex flex-col gap-1">Projet<input id="project-name" required maxlength="200" class="border rounded px-2 py-1.5 text-sm w-60" aria-label="Nom du projet"></label>
-                <label class="text-xs text-slate-600 flex flex-col gap-1">Démarrage<input id="project-start" type="date" required class="border rounded px-2 py-1.5 text-sm" aria-label="Démarrage du projet"></label>
-                <label class="text-xs text-slate-600 flex flex-col gap-1">Cible<input id="project-target" type="date" class="border rounded px-2 py-1.5 text-sm" aria-label="Date cible"></label>
-                <label class="text-xs text-slate-600 flex flex-col gap-1">Jours productifs / semaine<input id="project-capacity" type="number" min="0.1" max="5" step="0.1" required class="border rounded px-2 py-1.5 text-sm w-32" aria-label="Capacité hebdomadaire"></label>
-                <label class="text-xs text-slate-600 flex flex-col gap-1">Organisation<select id="project-mode" class="border rounded px-2 py-1.5 text-sm" aria-label="Organisation des tâches"><option value="sequential">Séquentiel — capacité partagée</option><option value="dependencies">Selon dépendances — parallèle possible</option></select></label>
+                <label id="project-start-field" class="text-xs text-slate-600 flex flex-col gap-1">Démarrage<input id="project-start" type="date" required class="border rounded px-2 py-1.5 text-sm" aria-label="Démarrage du projet"></label>
+                <label id="project-target-field" class="text-xs text-slate-600 flex flex-col gap-1">Cible<input id="project-target" type="date" class="border rounded px-2 py-1.5 text-sm" aria-label="Date cible"></label>
+                <label id="project-capacity-field" class="text-xs text-slate-600 flex flex-col gap-1">Jours productifs / semaine<input id="project-capacity" type="number" min="0.1" max="5" step="0.1" required class="border rounded px-2 py-1.5 text-sm w-32" aria-label="Capacité hebdomadaire"></label>
+                <label id="project-mode-field" class="text-xs text-slate-600 flex flex-col gap-1">Organisation<select id="project-mode" class="border rounded px-2 py-1.5 text-sm" aria-label="Organisation des tâches"><option value="sequential">Séquentiel — capacité partagée</option><option value="dependencies">Selon dépendances — parallèle possible</option></select></label>
                 <button class="bg-blue-600 text-white rounded px-3 py-1.5 text-sm" type="submit">Appliquer les paramètres</button>
             </form>
             <p id="project-summary" class="mt-2 text-sm font-medium text-slate-700"></p>
-            <p class="mt-1 text-xs text-slate-500">Lundi à vendredi, sans jours fériés ni absences. Les dates sont des prévisions ; aucune validation métier n’est automatique. Le mode parallèle ne contrôle pas la disponibilité des responsables.</p>
+            <p id="project-calendar-help" class="mt-1 text-xs text-slate-500">Lundi à vendredi, sans jours fériés ni absences. Les dates sont des prévisions ; aucune validation métier n’est automatique. Le mode parallèle ne contrôle pas la disponibilité des responsables.</p>
         </details></section>
 
         <!-- View: Dashboard -->
@@ -523,7 +523,8 @@
                     </div>
                 </div>
 
-<p id="task-date-summary" class="text-sm text-slate-600"></p><p id="task-constraint-note" class="text-sm text-blue-700" hidden></p>                <div>
+<div id="task-period-fields" hidden class="grid grid-cols-2 gap-3 my-3"><label>Période de début<input id="task-period-start" type="number" min="1" max="120" step="1" required disabled class="border rounded p-2 w-full"></label><label>Durée en périodes<input id="task-period-duration" type="number" min="0" max="120" step="1" required disabled class="border rounded p-2 w-full"></label></div>
+                    <p id="task-date-summary" class="text-sm text-slate-600"></p><p id="task-constraint-note" class="text-sm text-blue-700" hidden></p>                <div>
                     <label for="task-description" class="block text-sm font-semibold text-slate-700 mb-1">Objectif et contenu de la tâche</label>
                     <textarea id="task-description" maxlength="12000" rows="2" class="w-full border rounded-lg p-3 text-sm"></textarea>
                 </div>
@@ -559,7 +560,7 @@
                         <label for="task-is-milestone" class="ml-2 block text-sm font-semibold text-slate-800">Cette tâche est un Jalon (Durée 0)</label>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-1">Durée (Jours ouvrés)</label>
+                        <label id="task-duration-caption" for="task-duration" class="block text-sm font-medium text-slate-700 mb-1">Durée (Jours ouvrés)</label>
                         <input type="number" step="any" id="task-duration" min="0" max="3650" required value="1" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
@@ -641,7 +642,7 @@
             renderPlanningView();
         }
         function taskDraftValue() {
-            const fields = ['name','subject','priority','description','lot','owner','duration','manual-start','status','progress','risk-weight','risk-status','new-result'];
+            const fields = ['name','subject','priority','description','lot','owner','duration','manual-start','status','progress','risk-weight','risk-status','new-result','period-start','period-duration'];
             return JSON.stringify([fields.map(id => document.getElementById('task-' + id).value), document.getElementById('task-is-milestone').checked, Array.from(document.getElementById('task-dependencies').selectedOptions).map(option => option.value), editingChecklist, editingRisks]);
         }
         function taskDraftDirty() { return taskDraftSnapshot !== null && taskDraftSnapshot !== taskDraftValue(); }
@@ -691,6 +692,10 @@
                 (state.groupedTasks[task.lot] ??= []).push(task);
             });
             const charge = tasks.reduce((sum, task) => sum + task.duration, 0).toLocaleString('fr-FR', { maximumFractionDigits: 3 });
+            if (projectSettings.timelineMode === 'periods') {
+                document.getElementById('project-summary').textContent = `${tasks.length} interventions · P1 à P${result.totalPeriods} · Planning indicatif sans dates`;
+                return;
+            }
             const finish = state.projectEnd.toLocaleDateString('fr-FR');
             const target = projectSettings.targetDate ? new Date(projectSettings.targetDate + 'T00:00:00') : null;
             const late = target && state.projectEnd > target;
@@ -768,7 +773,7 @@
                 healthIcon.className = "p-2 bg-orange-50 text-orange-600 rounded-lg";
             } else {
                 healthEl.textContent = 'Bonne'; healthEl.className = 'text-lg font-bold text-emerald-600';
-                healthDetailEl.textContent = 'Délais respectés';
+                healthDetailEl.textContent = projectSettings.timelineMode === 'periods' ? 'Planning sans engagement calendaire' : 'Délais respectés';
                 healthIcon.className = "p-2 bg-emerald-50 text-emerald-600 rounded-lg";
             }
 
@@ -864,6 +869,8 @@
             }
         });
         function renderPlanningView() {
+            if (typeof renderPeriodPlanning === 'function' && renderPeriodPlanning()) return;
+            if (projectSettings.timelineMode === 'periods') throw new Error('La vue par périodes est indisponible. Rechargez Projet avant de continuer.');
             const tableBody = document.getElementById('planning-table-body');
             const ganttHeader = document.getElementById('gantt-timeline-header');
             const ganttBgGrid = document.getElementById('gantt-bg-grid');
@@ -1486,6 +1493,14 @@
             constraint.hidden = !manualStart || interfacePreferences.manualStart;
             constraint.textContent = manualStart ? 'Date contrainte active : ' + new Date(manualStart + 'T12:00:00').toLocaleDateString('fr-FR') + ' · réglage dans Mon espace → Préférences.' : '';
             const task = state.tasksDict[taskId];
+            const relativePeriods = projectSettings.timelineMode === 'periods';
+            document.getElementById('task-duration-caption').textContent = relativePeriods ? 'Charge de travail (jours-personne)' : 'Durée (Jours ouvrés)';
+            document.getElementById('task-period-fields').hidden = !relativePeriods;
+            document.getElementById('task-period-start').disabled = !relativePeriods;
+            document.getElementById('task-period-duration').disabled = !relativePeriods;
+            document.getElementById('task-period-start').value = task?.periodStart || 1;
+            document.getElementById('task-period-duration').value = task?.periodDuration ?? 1;
+            if (relativePeriods) document.getElementById('task-manual-start-field').hidden = true;
             document.getElementById('task-date-summary').textContent = task?.calcStart ? 'Calendrier : ' + task.calcStart.toLocaleDateString('fr-FR') + ' → ' + task.calcEnd.toLocaleDateString('fr-FR') : '';
             document.getElementById('task-risk-count').textContent = editingRisks.length ? '(' + editingRisks.length + (task && riskAttention(task) ? ' · attention requise' : '') + ')' : '';
             document.getElementById('task-risk-section').open = false;
@@ -1538,7 +1553,8 @@
                 dependencies: Array.from(document.getElementById('task-dependencies').selectedOptions).map(option => option.value),
                 riskWeight: document.getElementById('task-risk-weight').value,
                 riskStatus: document.getElementById('task-risk-status').value,
-                manualStart: document.getElementById('task-manual-start').value || null,
+                manualStart: projectSettings.timelineMode === 'periods' ? null : document.getElementById('task-manual-start').value || null,
+                ...(projectSettings.timelineMode === 'periods' ? {periodStart:Number(document.getElementById('task-period-start').value),periodDuration:document.getElementById('task-is-milestone').checked ? 0 : Number(document.getElementById('task-period-duration').value)} : {}),
             };
             const candidate = state.editingTaskId ? tasks.map(task => task.id === state.editingTaskId ? taskData : task) : [...tasks, taskData];
             if (commitProject({ ...currentProject(), tasks: candidate }, { message: 'Tâche enregistrée' })) closeTaskModal(true);
@@ -1584,9 +1600,10 @@
         });
 
     </script>
-    <script src="./planning-local.js?v=interface-20261106"></script>
+    <script src="./planning-periods.js?v=20261119"></script>
+    <script src="./planning-local.js?v=periods-20261119"></script>
     <script src="./task-details.js?v=interface-20261106"></script>
     <script src="./planning-online.js?v=interface-20261106"></script>
-    <script src="/project-workspace.js?v=interface-20261106"></script>
+    <script src="/project-workspace.js?v=periods-20261119"></script>
 </body>
 </html>

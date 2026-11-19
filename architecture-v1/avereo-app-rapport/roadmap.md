@@ -333,3 +333,8 @@ Le [correctif local de fermeture](docs/source-audit.md#fermeture-de-laperçu--ca
 ## 18 novembre — PR170 en préproduction
 
 CONNECT et Rapport livrés après fusion et accord humains ; six fichiers exacts, dossier fictif complet et propriétaire conservés, aperçus client/expert refermables. [Résultat et preuves](docs/source-audit.md#livraison-en-pr%C3%A9production-de-la-pr170). Cette mise à jour documentaire ne change pas les applications.
+
+
+## Planning par périodes — 19 novembre
+
+Mode relatif livré en préproduction ; création indépendante, sauvegarde et réouverture après reconnexion qualifiées techniquement dans la PR175. Revue humaine de la PR à effectuer. État exact dans le suivi canonique et ses reçus ; aucun passage en production. [Planning Rapport vers Projet](docs/interventions-projet.md).

@@ -368,3 +368,8 @@ pas remplacer celle du POST. Les handlers de minuterie/focus/visibilité sont
 retirés au démontage. Cette coordination ne modifie pas le protocole serveur.
 Les métadonnées facultatives de livrable sont décrites dans
 [le contrat local](api/revue-locale.md#description-des-livrables-prévus).
+
+
+## Mode relatif du planning
+
+Le moteur Projet et sa validation PHP acceptent un mode optionnel sans ancrage calendaire ; Rapport utilise ce même contrat pour sa projection. Stockage privé et identité CONNECT conservés. [Planning par périodes](docs/planning-periodes.md).
