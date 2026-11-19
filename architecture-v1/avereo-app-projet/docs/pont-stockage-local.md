@@ -5,7 +5,7 @@ title: Pont Drupal CONNECT et stockage privé — candidat local
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-07
+updated: 2026-11-18
 owner: jpdandin
 tags: [developpements, local, prive, stockage, connect]
 ---
@@ -83,7 +83,7 @@ Aucune preuve n'est copiée implicitement. Une preuve non sélectionnée reste i
 
 `development-snapshot-store.mjs` définit l'enveloppe signée : `schema:avereo-private-development-snapshot`, `version:1`, séquence positive, date/fenêtre de lecture, catalogue, vues normalisées, provenance et preuves sélectionnées. HMAC SHA-256 avec une clé de publication privée indépendante. Les chemins physiques sont remplacés par des alias ; les états Git sont figés à la date d'export, pas mesurés au rafraîchissement.
 
-Limites du candidat : paquet 32 Mio, 50 suivis/applications, 500 pièces au maximum, 10 Mio par pièce, 20 instantanés conservés. Un quota atteint refuse la publication (507), sans suppression automatique de l'historique. Ce ne sont pas des quotas d'hébergement mesurés.
+Limites du candidat : paquet 32 Mio, 100 suivis et 50 applications, 500 pièces au maximum, 10 Mio par pièce, 20 instantanés conservés. Un quota atteint refuse la publication (507), sans suppression automatique de l'historique. Ce ne sont pas des quotas d'hébergement mesurés. [Conservation des suivis historiques](suivis-courants-et-historique.md).
 
 Organisation réelle :
 

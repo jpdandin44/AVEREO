@@ -5,7 +5,7 @@ title: API et frontières de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-05
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - projet
@@ -15,6 +15,8 @@ tags:
 # API et frontières de Projet
 
 ## Service V2 de sauvegarde privée
+
+Le lecteur Développements transporte aussi l'état facultatif signé du [publicateur GitHub privé](../docs/actualisation-automatique-privee.md). Il ne crée pas de route d'écriture : le bouton et la consultation restent en lecture seule, réservés au propriétaire exact/global. Un état absent ou invalide n'invalide pas la dernière publication lisible, mais ne permet pas d'attester une collecte automatique réussie.
 
 Le [contrat de planning privé](planning-prive.md) décrit les deux méthodes
 du nouvel endpoint PHP et leurs garanties. Le backend V1 statique est conservé

@@ -5,13 +5,18 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-16
+updated: 2026-11-18
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 18 novembre — Lecture du cockpit et historique
+
+Reproduction du conteneur actif possédant un developmentWorkflow : phase et candidat absents avant correction, test en échec puis réussi. Même correction pour une sous-itération figée ; aucun accord parent hérité. Capacité vérifiée sur 100 vues et refus de 101. [Portée](suivis-courants-et-historique.md).
+
 
 ## 16 novembre — Gantt privé et qualification du publicateur
 

@@ -1,12 +1,13 @@
 import {useEffect,useRef,useState} from 'react';
 import {projectDevelopmentProgress,timelineBounds,observationFreshness} from './development-progress.mjs';
-import {loadDevelopmentTimeline} from './development-timeline-loader.mjs';
+import {loadDevelopmentTimeline,developmentTimelineRevision} from './development-timeline-loader.mjs';
 
 const format=v=>v?new Date(v).toLocaleDateString('fr-FR'):'Non daté';
 const statusLabel={evidenced:'Étayé techniquement',partial:'Partiellement étayé',blocked:'Échec technique',not_evidenced:'À réaliser / à documenter'};
 export default function DevelopmentGantt({state,request,onAccessFailure,onOpen}){
   const [views,setViews]=useState([]),[loading,setLoading]=useState(true),[error,setError]=useState(''),[filter,setFilter]=useState(''),[search,setSearch]=useState('');
   const cache=useRef(new Map()),callbacks=useRef({request,onAccessFailure});callbacks.current={request,onAccessFailure};
+  const timelineRevision=developmentTimelineRevision(state);
   useEffect(()=>{
     let cancelled=false;setLoading(true);setError('');
     loadDevelopmentTimeline(state,callbacks.current.request,cache.current,()=>cancelled).then(async incoming=>{
@@ -16,14 +17,14 @@ export default function DevelopmentGantt({state,request,onAccessFailure,onOpen})
       setViews(incoming);
     }).catch(failure=>{if(cancelled)return;cache.current.clear();setViews([]);setError(failure.message);if([401,403].includes(failure.status))callbacks.current.onAccessFailure(failure);}).finally(()=>{if(!cancelled)setLoading(false);});
     return()=>{cancelled=true;};
-  },[state]);
+  },[timelineRevision]);
   const items=views.filter(v=>(!filter||v.applicationIds?.includes(filter))&&(!search||(v.title+' '+v.application).toLocaleLowerCase('fr').includes(search.toLocaleLowerCase('fr')))).map(view=>({view,progress:projectDevelopmentProgress(view)}));
   const bounds=timelineBounds(items.map(i=>i.progress)),today=new Date().toISOString(),freshness=observationFreshness(state.githubSnapshot?.observedAt);
   const ticks=Array.from({length:6},(_,i)=>new Date(bounds.start+(bounds.end-bounds.start)*i/5).toISOString());
   const open=view=>{const app=state.portfolio?.find(a=>view.applicationIds?.includes(a.id));if(app)onOpen(app,view.id);};
   return <section className="development-gantt" aria-label="Gantt des développements">
     <div className="gantt-intro"><div><span className="development-eyebrow">AVANCEMENT CALCULÉ · LECTURE SEULE</span><h2>Réalisé, preuves et reste à faire</h2><p>Quatre phases par itération. Le calcul ne remplace ni tes validations ni les autorisations de livraison.</p></div><span className={'gantt-freshness '+freshness}>GitHub : {freshness==='current'?'observation récente':freshness==='stale'?'observation ancienne':freshness==='invalid'?'horloge à vérifier':'date inconnue'}</span></div>
-    <p className="development-notice">Lecture automatique de la vue toutes les 25 secondes lorsque l’onglet est visible. {state.snapshot?'Les nouvelles publications privées sont reprises automatiquement ; la collecte GitHub et leur publication continue restent à raccorder côté opérateur.':'Les suivis locaux sont relus ; une nouvelle observation GitHub nécessite le collecteur configuré.'} Dernière observation GitHub : {format(state.githubSnapshot?.observedAt)}. Aucun pourcentage estimé.</p>
+    <p className="development-notice">Lecture automatique de la vue toutes les 25 secondes lorsque l’onglet est visible. {state.snapshot?'Les nouvelles publications privées sont reprises automatiquement. Le cartouche Fraîcheur de l’alimentation indique l’état réel du service GitHub et la réception distincte des suivis.':'Les suivis locaux sont relus ; une nouvelle observation GitHub nécessite le collecteur configuré.'} Dernière observation GitHub : {format(state.githubSnapshot?.observedAt)}. Aucun pourcentage estimé.</p>
     <div className="gantt-filters"><label>Application<select aria-label="Application du Gantt" value={filter} onChange={e=>setFilter(e.target.value)}><option value="">Toutes les applications</option>{state.portfolio?.map(a=><option key={a.id} value={a.id}>{a.name}</option>)}</select></label><label>Rechercher<input type="search" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Application ou itération"/></label></div>
     <p className="gantt-legend"><span>● Étayé par un contrôle réussi de la même version</span><span>◐ Partiel</span><span>■ Échec</span><span>▱ Prévision déclarée</span><span>│ Rouge : aujourd’hui</span></p>
     <p>Les barres pleines représentent la fenêtre des preuves datées, pas le temps réellement passé. Le reste sans dates apparaît « À planifier » ; aucune échéance n’est inventée. Un élément technique étayé n’est pas un critère accepté humainement.</p>

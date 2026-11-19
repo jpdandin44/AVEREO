@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {fileURLToPath} from 'node:url';
 import assert from 'node:assert/strict';
 import {mkdtemp,mkdir,writeFile,readFile,rm,symlink} from 'node:fs/promises';
 import {join,resolve,sep} from 'node:path';
@@ -57,11 +58,11 @@ test('projection Node et PHP : inventaire optionnel prive, ancienne copie lisibl
   const f=await setup(t),p=await f.collect(),file=join(f.root,'observation.json');await writeFile(file,JSON.stringify(p));f.registry.patrimonyObservationFile=file;
   const data=await exportDevelopmentSnapshot(f.registry,{sequence:1});assert.deepEqual(data.patrimony,p);
   const storage=join(f.root,'snapshot');await mkdir(storage);const key='k'.repeat(64),store=await openDevelopmentSnapshotStore({directory:storage,key});await store.importSnapshot(sealDevelopmentSnapshot(data,key));assert.deepEqual((await store.dashboard()).patrimony,p);
-  const runtime=resolve(new URL('../backend/developments',import.meta.url).pathname.replace(/^\/([A-Z]:)/i,'$1'));
+  const runtime=fileURLToPath(new URL('../backend/developments',import.meta.url));
   const invoke=()=>spawnSync('php',['-r',"require $argv[1].'/Failure.php';require $argv[1].'/SnapshotReader.php';$r=new Avereo\\Projet\\Developments\\SnapshotReader($argv[2],$argv[3]);echo json_encode($r->state());",runtime,storage,key],{encoding:'utf8',windowsHide:true});
   const result=invoke();assert.equal(result.status,0,result.stderr);assert.deepEqual(JSON.parse(result.stdout).patrimony,p);
   const assets=join(f.root,'assets');await mkdir(assets);
-  const runtimeFixture=resolve(new URL('./development-session-fixture.php',import.meta.url).pathname.replace(/^\/([A-Z]:)/i,'$1'));
+  const runtimeFixture=fileURLToPath(new URL('./development-session-fixture.php',import.meta.url));
   const authorized=input=>JSON.parse(spawnSync('php',[runtimeFixture],{input:JSON.stringify({storage,assets,publicationKey:key,route:'state',...input}),encoding:'utf8',windowsHide:true}).stdout);
   const owner=authorized({});assert.equal(owner.status,200);assert.deepEqual(JSON.parse(owner.result.body).patrimony,p);
   for(const [input,status] of [[{anonymous:true},401],[{payload:{identity:{provider:'avereo_connect',id:'102'}}},403],[{hasGlobalRole:false},403],[{server:{REQUEST_METHOD:'POST'}},405]]){const refused=authorized(input);assert.equal(refused.status,status);assert.equal(refused.readerCalls,0);assert(!JSON.stringify(refused).includes('patrimony'));}
