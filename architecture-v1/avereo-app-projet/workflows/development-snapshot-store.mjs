@@ -3,6 +3,7 @@ import {resolve,join,relative,isAbsolute} from 'node:path';
 import {createHash,createHmac,timingSafeEqual,randomUUID} from 'node:crypto';
 import {DevelopmentError} from './development-access.mjs';
 import {validatePatrimony} from './development-patrimony.mjs';
+import {readPublisherStatus} from './development-publisher-status.mjs';
 
 const MAX=32*1024*1024;
 const hash=b=>createHash('sha256').update(b).digest('hex');
@@ -91,7 +92,7 @@ export async function openDevelopmentSnapshotStore({directory,key,publicRoots=[]
   }
   async function locked(action){
     let lock;try{lock=await open(join(root,'publish.lock'),'wx',0o600);}catch{fail(409,'Publication privée déjà en cours.');}
-    try{return await action();}finally{await lock.close();await unlink(join(root,'publish.lock'));}
+    try{return await action();}finally{const own=await lock.stat(),actual=await lstat(join(root,'publish.lock'));await lock.close();if(own.ino!==actual.ino||own.dev!==actual.dev)fail(409,'Verrou remplacé ; aucun retrait.');await unlink(join(root,'publish.lock'));}
   }
   async function readCurrent(){
     const ix=await index();if(!ix)fail(503,'Aucune projection privée publiée.');
@@ -101,6 +102,20 @@ export async function openDevelopmentSnapshotStore({directory,key,publicRoots=[]
     return {data,index:ix};
   }
   return {
+    async archiveInactive(directory){return locked(async()=>{
+      const archive=await realpath(directory);if(resolve(directory)!==archive||(await lstat(archive)).isSymbolicLink())fail(503,'Archive privée invalide.');
+      const rel=relative(root,archive);if(!rel||rel!=='..'&&!rel.startsWith('..\\')&&!rel.startsWith('../')&&!isAbsolute(rel))fail(503,'Archive distincte requise.');
+      for(const pub of publicRoots){const p=relative(resolve(pub),archive);if(!p||p!=='..'&&!p.startsWith('..\\')&&!p.startsWith('../')&&!isAbsolute(p))fail(503,'Archive publique refusée.');}
+      const ix=await index();if(!ix)return 0;const baseline=JSON.stringify(ix),keep=new Set([ix.current.file,ix.previous?.file]);let archived=0;
+      for(const name of await readdir(root))if(/^[a-f0-9-]{36}\.snapshot\.json$/.test(name)&&!keep.has(name)){
+        const envelope=await safeRead(name);validate(unseal(envelope,key));const bytes=await readFile(join(root,name)),destination=join(archive,name);
+        try{const out=await open(destination,'wx',0o600);try{await out.writeFile(bytes);await out.sync();}finally{await out.close();}}
+        catch(e){if(e.code!=='EEXIST')throw e;const s=await lstat(destination);if(!s.isFile()||s.isSymbolicLink()||await realpath(destination)!==destination)fail(503,'Archive altérée.');}
+        if(!(await readFile(destination)).equals(bytes)||JSON.stringify(await index())!==baseline)fail(409,'Archive ou index modifié ; original conservé.');
+        if(!(await readFile(join(root,name))).equals(bytes))fail(409,'Original modifié ; aucune suppression.');
+        await unlink(join(root,name));archived++;
+      }return archived;
+    });},
     async importSnapshot(envelope){
       // Complete validation before creating any file or taking the publication lock.
       const data=validate(unseal(envelope,key));
@@ -116,8 +131,8 @@ export async function openDevelopmentSnapshotStore({directory,key,publicRoots=[]
         return {sequence:data.sequence,generatedAt:data.generatedAt};
       });
     },
-    async restorePrevious(){return locked(async()=>{const ix=await index();if(!ix?.previous)fail(409,'Aucune copie précédente.');const env=await safeRead(ix.previous.file);validate(unseal(env,key));if(hash(JSON.stringify(env))!==ix.previous.hash)fail(503,'Copie précédente altérée.');await atomicIndex({...ix,current:ix.previous,previous:ix.current,restored:true,restoredAt:new Date().toISOString()});});},
-    async dashboard(){const {data,index:ix}=await readCurrent();return {iterations:data.iterations.map(v=>({id:v.id,revision:v.revision,title:v.title,application:v.application,applicationIds:v.applicationIds,status:v.status,currentPhase:v.currentPhase,versions:v.versions,nextAction:v.nextAction,blockerCount:v.blockers.length,phases:v.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length}))})),portfolio:data.portfolio,githubSnapshot:data.githubSnapshot||null,githubRefreshAvailable:false,
+    async restorePrevious({expectedCurrentHash=null,expectedPreviousHash=null}={}){return locked(async()=>{const ix=await index();if(!ix?.previous)fail(409,'Aucune copie précédente.');if(expectedCurrentHash&&ix.current.hash!==expectedCurrentHash||expectedPreviousHash&&ix.previous.hash!==expectedPreviousHash)fail(409,'Publication concurrente ; retour refusé.');const env=await safeRead(ix.previous.file);validate(unseal(env,key));if(hash(JSON.stringify(env))!==ix.previous.hash)fail(503,'Copie précédente altérée.');await atomicIndex({...ix,current:ix.previous,previous:ix.current,restored:true,restoredAt:new Date().toISOString()});});},
+    async dashboard(){const {data,index:ix}=await readCurrent();let publisherStatus=null;try{const file=join(root,'publisher-status.json'),s=await lstat(file);if(!s.isFile()||s.isSymbolicLink()||s.size>16384||await realpath(file)!==file)throw Error();publisherStatus=readPublisherStatus(await readFile(file,'utf8'),key);}catch{}return {publisherStatus,iterations:data.iterations.map(v=>({id:v.id,revision:v.revision,title:v.title,application:v.application,applicationIds:v.applicationIds,status:v.status,currentPhase:v.currentPhase,versions:v.versions,nextAction:v.nextAction,blockerCount:v.blockers.length,phases:v.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length}))})),portfolio:data.portfolio,githubSnapshot:data.githubSnapshot||null,githubRefreshAvailable:false,
       patrimony:data.patrimony||null,snapshot:{sequence:data.sequence,generatedAt:data.generatedAt,receivedAt:ix.receivedAt,restored:ix.restored===true,mode:'private_read_only_projection'}};},
     async get(id){const {data}=await readCurrent();const view=data.iterations.find(i=>i.id===id);if(!view)fail(404,'Itération indisponible.');return {...view,readAt:new Date().toISOString()};},
     async proof(iterationId,proofId){const {data}=await readCurrent();const blob=data.proofs.find(p=>p.iterationId===iterationId&&p.proofId===proofId);if(!blob)fail(404,'Pièce non publiée.');return {content:Buffer.from(blob.content,'base64'),ext:blob.ext,name:proofId+blob.ext};},

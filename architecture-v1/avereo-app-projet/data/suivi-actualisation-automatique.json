@@ -1,0 +1,24 @@
+{
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "version": "git",
+  "iterationId": "projet-actualisation-privee-20261119",
+  "title": "Actualisation automatique privée du cockpit",
+  "currentPhase": 1,
+  "stage": "developpement-local",
+  "status": "local_375_tests_passed_preproduction_authorized_not_installed",
+  "sourceDocument": "docs/actualisation-automatique-privee.md",
+  "phases": [
+    {"id": 0, "label": "Cadrage", "status": "documented", "criteria": []},
+    {"id": 1, "label": "Développement local", "status": "in_progress", "criteria": []},
+    {"id": 2, "label": "Préproduction", "status": "not_installed", "criteria": []},
+    {"id": 3, "label": "Mise en production", "status": "not_authorized", "criteria": []}
+  ],
+  "approvals": [],
+  "developmentReviews": [],
+  "history": [],
+  "boundaries": {"businessSourcesReadOnly": true, "exactGlobalOwnerOnly": true, "humanValidationsPreserved": true, "automaticPcRelayAuthorized": false, "productionAuthorized": false},
+  "preproductionRequest": {"source": "user_chat", "date": "2026-11-19", "scope": "Terminer les tests puis installer l'actualisation automatique en préproduction avec sauvegarde et retour arrière, sans modifier les validations ni toucher à la production."},
+  "technicalEvidence": {"observedOn": "2026-11-19", "regressionTestsPassed": 375, "publicBuildPassed": true, "baselineCheckPassed": true, "humanAcceptanceInferred": false},
+  "nextAction": "Qualifier le paquet sur source propre et la CI exacte, puis sauvegarde/retour sur copie et installation préproduction ; le dépôt du jeton et ses 12 lectures sont vérifiés sans retour du secret."
+}

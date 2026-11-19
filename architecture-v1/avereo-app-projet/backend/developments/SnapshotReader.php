@@ -11,7 +11,7 @@ final class SnapshotReader
     }
     private function bytes(string $name,int $limit):string
     {
-        if(!preg_match('/^(?:index\\.json|[a-f0-9-]{36}\\.snapshot\\.json)$/D',$name))throw new Failure(503);
+        if(!preg_match('/^(?:index\\.json|publisher-status\\.json|[a-f0-9-]{36}\\.snapshot\\.json)$/D',$name))throw new Failure(503);
         $p=$this->directory.DIRECTORY_SEPARATOR.$name;
         if(!is_file($p)||is_link($p)||realpath($p)!==$p||filesize($p)>$limit)throw new Failure(503);
         $b=file_get_contents($p,false,null,0,$limit+1);if($b===false||strlen($b)>$limit)throw new Failure(503);return $b;
@@ -88,10 +88,23 @@ final class SnapshotReader
         if(strlen(json_encode($p,JSON_THROW_ON_ERROR|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE))>2*1024*1024)throw new Failure(503);
         return $p;
     }
+    private function publisherStatus():?array
+    {
+        try{
+            $p=$this->decode($this->bytes('publisher-status.json',16384),8192);
+            $keys=['schema','version','mode','status','startedAt','finishedAt','lastSuccessAt','githubObservedAt','sourcesReceivedAt','sourceDigest','sequence','intervalSeconds','errorCode','credentialExpiresAt'];
+            if(count($p)!==count($keys)||array_diff(array_keys($p),$keys)||($p['schema']??null)!=='avereo-private-publisher-status'||($p['version']??null)!==1||($p['mode']??null)!=='scheduled'
+                ||!in_array($p['status']??null,['ok','failed'],true)||!is_int($p['sequence']??null)||$p['sequence']<1||!is_int($p['intervalSeconds']??null)||$p['intervalSeconds']<60||$p['intervalSeconds']>3600
+                ||!preg_match('/^[a-f0-9]{64}$/D',$p['sourceDigest']??'')||!in_array($p['errorCode']??null,['','publication_failed'],true))return null;
+            foreach(['startedAt','finishedAt','lastSuccessAt','githubObservedAt','sourcesReceivedAt','credentialExpiresAt'] as $k)if($p[$k]!==null&&(!is_string($p[$k])||strtotime($p[$k])===false))return null;
+            if($p['startedAt']===null||$p['finishedAt']===null)return null;
+            return $p;
+        }catch(\Throwable){return null;}
+    }
     public function state():array
     {
         ['data'=>$d,'index'=>$ix]=$this->read();
-        return ['iterations'=>array_map(static fn($v)=>['id'=>$v['id'],'title'=>$v['title'],'application'=>$v['application'],'applicationIds'=>$v['applicationIds'],
+        return ['publisherStatus'=>$this->publisherStatus(),'iterations'=>array_map(static fn($v)=>['id'=>$v['id'],'title'=>$v['title'],'application'=>$v['application'],'applicationIds'=>$v['applicationIds'],
             'revision'=>$v['revision']??null,'status'=>$v['status'],'currentPhase'=>$v['currentPhase'],'versions'=>$v['versions'],'nextAction'=>$v['nextAction'],'blockerCount'=>count($v['blockers']),
             'phases'=>array_map(static fn($p)=>['id'=>$p['id'],'label'=>$p['label'],'status'=>$p['status'],'criteria'=>count($p['criteria']),
                 'approved'=>count(array_filter($p['criteria'],static fn($c)=>($c['decision']??'')==='approved'))],$v['phases'])],$d['iterations']),

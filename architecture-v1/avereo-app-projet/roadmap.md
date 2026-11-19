@@ -5,12 +5,16 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 19 novembre — Actualisation automatique autorisée en préproduction
+
+**Cadrage** : GitHub automatique seulement, refus du relais PC ; accords existants préservés. **Développement local** : opérateur et état signé implémentés, qualification du candidat exact et CI à terminer. **Préproduction** : installation autorisée avec sauvegarde/retour, accès du seul propriétaire global ; exécution indépendante du planificateur et recette à constater avant annonce opérationnelle. **Mise en production** : non autorisée. [Suivi de ce lot](data/suivi-actualisation-automatique.json). Les limitations et blocages antérieurs ci-dessous restent historiques, pas un état d'installation actuel.
 
 ## 16 novembre — Gantt et progression calculée
 

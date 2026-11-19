@@ -5,12 +5,16 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 19 novembre — Actualisation GitHub, sans relais PC
+
+Sur autorisation du responsable, installer uniquement en préproduction la collecte GitHub permanente, PC éteint compris. Aucun suivi privé du poste n'est automatiquement transmis : afficher sa réception initiale sans prétendre sa synchronisation. Distinguer contrôle GitHub, publication, réception des sources et relecture d'écran ; alerter sur panne, ancienneté, séquence incohérente et expiration du jeton. Sauvegarder avant remplacement, éprouver le retour sur copie, conserver historiques, critères et accords humains. Maintenir le seul propriétaire exact/global et la consultation web seule. Le [contrat opérationnel](docs/actualisation-automatique-privee.md) ne vaut pas reçu d'installation.
 
 ## 16 novembre — Avancement sans saisie manuelle de phases
 

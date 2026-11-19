@@ -5,12 +5,16 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 19 novembre — GitHub automatique seulement
+
+Contexte : le bouton de relecture d'une publication du 18 novembre ne collectait pas GitHub. Le responsable autorise une installation privée permanente sur la seule préproduction et refuse le relais PC. Décision : tâche planifiée données seules, jeton GitHub restreint en lecture aux trois dépôts, stockage privé hébergé et copies de suivis reçues explicitement. Conséquences : les versions/PR/CI GitHub sont collectables PC éteint ; les changements privés non transmis restent inconnus. Aucun récepteur public ni synchronisation des validations. Le compte Unix d'hébergement existant n'est pas une identité système isolée. [Architecture et retour arrière](docs/actualisation-automatique-privee.md).
 
 ## 18 novembre — Lecture du cockpit et historique
 

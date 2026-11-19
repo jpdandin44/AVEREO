@@ -5,12 +5,16 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 19 novembre — Collecte privée et état de fraîcheur
+
+Ajout du publicateur GitHub données seules, contrôles d'admission/permissions, sauvegarde, verrou et retour gardé, archivage vérifié des copies inactives et état opérateur signé. L'interface distingue contrôle GitHub, réception des sources, publication et simple relecture, signale les pannes et l'expiration du jeton. Conservation des projections métier inchangées et des pièces historiques. Aucun relais PC, nouvelle API d'écriture navigateur ou changement de validation. Tests et reçu de livraison restent des preuves distinctes ; ce code seul ne prouve pas l'installation. [Guide](docs/actualisation-automatique-privee.md).
 
 ## 18 novembre — Lecture du cockpit et historique
 

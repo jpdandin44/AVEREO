@@ -5,13 +5,17 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 19 novembre — Actualisation privée en préparation
+
+[Opérateur permanent, fraîcheur et limites](docs/actualisation-automatique-privee.md) : collecte GitHub hébergée prévue toutes les cinq minutes, état signé, sauvegardes et conservation des archives. Les suivis privés restent une réception datée ; aucun relais automatique PC n'est autorisé. Le navigateur reste consultatif, propriétaire exact/global. Installation non attestée tant que son reçu ne l'établit pas ; aucune production.
 
 ## 18 novembre — Lecture du cockpit et historique
 
