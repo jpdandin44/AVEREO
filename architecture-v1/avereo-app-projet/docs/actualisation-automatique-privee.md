@@ -35,6 +35,8 @@ Le stockage conserve les copies courante et précédente pour le retour immédia
 
 ## Configuration et identité
 
+Le Gantt ne recommence pas ses lectures de détails lorsque seul l'état de contrôle du service change : son chargement est lié à la publication, ou aux révisions locales et à l'observation GitHub. La relecture automatique de 25 secondes ne doit pas annuler un chargement long de 87 vues. Ses libellés renvoient au cartouche de fraîcheur, sans annoncer à tort que le service installé reste à raccorder.
+
 Lorsqu'une source a changé et qu'une pièce précédemment publiée n'est plus rattachable par son empreinte, l'ancienne vue et ses pièces sont conservées dans une archive nommée par la publication d'origine. Elles ne sont pas utilisées pour qualifier les nouveaux critères. Un inventaire du poste déjà publié conserve sa date ; une collecte GitHub ne constitue pas une nouvelle inspection du disque.
 
 Le [modèle désactivé](../workflows/templates/development-private-publisher.example.json) n'est jamais une preuve d'installation. Les chemins réels, registre, sources, cache, pièces et secrets restent hors Git et hors des racines web. Le jeton GitHub est dédié aux seuls dépôts retenus, avec Contents, Pull requests, Actions et Metadata en lecture seule, aucun droit de compte. Il n'est ni copié depuis le navigateur par l'agent, ni placé dans la CI, un argument de commande ou un journal. Son expiration impose un renouvellement ; une erreur d'authentification rend le statut en défaut sans effacer les données.

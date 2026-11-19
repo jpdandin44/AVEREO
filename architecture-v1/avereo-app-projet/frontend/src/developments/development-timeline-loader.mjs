@@ -1,4 +1,7 @@
 // Réutilise exclusivement les API privées existantes ; aucune nouvelle route publique.
+export function developmentTimelineRevision(state){
+ return JSON.stringify(state.snapshot?[state.snapshot.sequence,state.snapshot.generatedAt] : [state.githubSnapshot?.observedAt,(state.iterations||[]).map(v=>[v.id,v.revision,v.unavailable])]);
+}
 export async function loadDevelopmentTimeline(state,request,cache=new Map(),cancelled=()=>false){
   const key=state.snapshot?String(state.snapshot.sequence)+':'+state.snapshot.generatedAt:null;
   const github=state.githubSnapshot?.observedAt||'unknown',items=state.iterations||[],result=new Array(items.length);
