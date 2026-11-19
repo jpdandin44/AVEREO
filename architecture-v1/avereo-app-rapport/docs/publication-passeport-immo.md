@@ -77,6 +77,8 @@ Même identifiant et même archive : réponse idempotente ; même identifiant et
 
 # Préproduction
 
+`avereo-app-passeport-immo/workflows/release-report-publications.py` réutilise le moteur de livraison sélectionnée des deux applications. `prepare` vérifie les cibles déclarées, sauvegarde et restaure les fichiers sur copie et les données en tables temporaires. Les empreintes hébergées attendues sont figées dans la sélection du candidat. `apply --authorized-selection SHA256` exige le même couple de paquets, protège les chemins non concernés, installe l’ajout nullable et aligne les outils privés de sauvegarde sous leur verrou existant. Les dépendances API précèdent le routeur et les index. Un échec restaure uniquement les octets encore identiques à cette livraison ; la colonne nullable peut rester présente sans exposer de source. `verify` contrôle les fichiers effectivement installés. Production, configuration, portes d’accès et calendrier des tâches restent gardés par empreintes.
+
 Transfert fictif réel terminé le 19 novembre : copie complète de 14 observations transférée de 37 à 38, sauvegarde destinataire et réouverture serveur après déconnexion complète/nouvelle connexion natives réussies. Original complet et témoin restent au compte source ; 29 dossiers préexistants exacts, périodes et configuration rétablies. Le suivi opérationnel garde les reçus. Le parcours visuel privé Chrome n’est pas validé.
 
 Le lot de publication n’est pas encore livré : contrôles locaux et CI, sauvegarde/restauration de la cible, installation du même artefact et recette fictive restent à enregistrer. Aucun accès à un document réel ni destinataire réel créé.
