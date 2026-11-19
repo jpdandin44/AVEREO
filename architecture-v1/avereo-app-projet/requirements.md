@@ -12,6 +12,15 @@ tags:
   - exigences
 ---
 
+## 19 novembre — Pilotage lisible et preuve explicite
+
+Présenter une synthèse par application, des filtres et un détail dépliable.
+Distinguer critères humains, liens manquants, pièces consultables, externes,
+non publiées et absentes. Conserver quatre phases et inconnues ; ne pas produire
+de validation ou progression depuis la simple présence d'un fichier.
+Conserver le seul propriétaire/global et la lecture seule en préproduction.
+[Guide](docs/cockpit-qualite-synthese.md).
+
 ## 19 novembre — Actualisation GitHub, sans relais PC
 
 Sur autorisation du responsable, installer uniquement en préproduction la collecte GitHub permanente, PC éteint compris. Aucun suivi privé du poste n'est automatiquement transmis : afficher sa réception initiale sans prétendre sa synchronisation. Distinguer contrôle GitHub, publication, réception des sources et relecture d'écran ; alerter sur panne, ancienneté, séquence incohérente et expiration du jeton. Sauvegarder avant remplacement, éprouver le retour sur copie, conserver historiques, critères et accords humains. Maintenir le seul propriétaire exact/global et la consultation web seule. Le [contrat opérationnel](docs/actualisation-automatique-privee.md) ne vaut pas reçu d'installation.

@@ -13,6 +13,14 @@ tags:
   - local
 ---
 
+## 19 novembre — Vue synthétique et qualité des preuves
+
+[Cartes applications et détails à la demande](docs/cockpit-qualite-synthese.md) :
+critères humains distincts des pièces, références externes/non publiées/manquantes,
+quatre phases conservées et résumés identiques dans les lecteurs Node/PHP.
+[Suivi du lot](data/suivi-cockpit-qualite-synthese.json). Candidat à qualifier ; aucun
+état hébergé ou accord humain n’est déduit du développement local.
+
 ## 19 novembre — Actualisation privée en préparation
 
 [Opérateur permanent, fraîcheur et limites](docs/actualisation-automatique-privee.md) : collecte GitHub hébergée prévue toutes les cinq minutes, état signé, sauvegardes et conservation des archives. Les suivis privés restent une réception datée ; aucun relais automatique PC n'est autorisé. Le navigateur reste consultatif, propriétaire exact/global. Installation non attestée tant que son reçu ne l'établit pas ; aucune production.

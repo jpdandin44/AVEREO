@@ -6,6 +6,7 @@ import {projectDevelopmentVersions,developmentPortfolio} from './development-ver
 import {readGithubObservations,observeGithub} from './development-github-observations.mjs';
 import {readEvidenceQualification,qualifiedView,qualifiedEvidence} from './development-evidence-qualification.mjs';
 import {readPatrimonyObservation} from './development-patrimony.mjs';
+import {developmentQuality} from './development-quality.mjs';
 
 export const DEVELOPMENT_PHASES=['Cadrage','Développement local','Préproduction','Mise en production'];
 const hash=v=>createHash('sha256').update(typeof v==='string'||Buffer.isBuffer(v)?v:JSON.stringify(v)).digest('hex');
@@ -167,7 +168,7 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
     if(data._activeIterationKey)view.dataPath=source.dataPath+'.'+data._activeIterationKey;
     return {source,raw,bytes,data,view,proofs,files,criteria:allCriteria,candidateFingerprint};
   }
-  async function list(){return Promise.all([...sources.keys()].map(async id=>{try{const {view}=await snapshot(id);return {id,revision:view.revision,title:view.title,application:view.application,applicationIds:view.applicationIds,status:view.status,versions:view.versions,githubPrUrls:view.githubObservation.pullRequests.map(p=>p.url),githubOpenPrCount:view.githubObservation.pullRequests.filter(p=>p.state==='open').length,hasUnqualifiedDelivery:view.hasUnqualifiedDelivery,blockerCount:view.blockers.length,currentPhase:view.currentPhase,phases:view.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length})),nextAction:view.nextAction,readAt:view.readAt};}catch(error){return{id,title:sources.get(id).title||id,applicationIds:sources.get(id).applicationIds,unavailable:true,message:'Source indisponible ou incompatible.'};}}));}
+  async function list(){return Promise.all([...sources.keys()].map(async id=>{try{const {view}=await snapshot(id);return {id,quality:developmentQuality(view),revision:view.revision,title:view.title,application:view.application,applicationIds:view.applicationIds,status:view.status,versions:view.versions,githubPrUrls:view.githubObservation.pullRequests.map(p=>p.url),githubOpenPrCount:view.githubObservation.pullRequests.filter(p=>p.state==='open').length,hasUnqualifiedDelivery:view.hasUnqualifiedDelivery,blockerCount:view.blockers.length,currentPhase:view.currentPhase,phases:view.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length})),nextAction:view.nextAction,readAt:view.readAt};}catch(error){return{id,title:sources.get(id).title||id,applicationIds:sources.get(id).applicationIds,unavailable:true,message:'Source indisponible ou incompatible.'};}}));}
   return {
     list,
     async portfolio(){return developmentPortfolio(applications,await list(),await readGithubObservations(githubObservationFile));},

@@ -5,10 +5,22 @@ title: Contrat local privé du module Développements
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-16
+updated: 2026-11-19
 owner: jpdandin
 tags: [api, local, autorisation, preuves, source-canonique]
 ---
+
+## 19 novembre — Résumé facultatif de qualité
+
+`state.iterations[].quality` expose des comptes `criteria` (total, approved,
+unlinked, brokenLinks, stale, changesRequested, unassigned) et `proofs` (total,
+available, external, unpublished, missing, stale, unversioned, undated).
+Calcul depuis la vue autorisée réellement servie, sans chemin ni contenu de pièce
+supplémentaire. Un même identifiant de preuve n'est compté qu'une fois dans une
+itération. Les catégories date/version ne sont pas exclusives de la disponibilité.
+Absence de résumé = information inconnue, pas zéro. Aucun pourcentage ni accord.
+Même réponse en lecteur local et lecteur PHP signé ; anciennes copies compatibles.
+[Définition et limites](../docs/cockpit-qualite-synthese.md).
 
 ## 16 novembre — Gantt consultatif et adaptateurs explicites
 

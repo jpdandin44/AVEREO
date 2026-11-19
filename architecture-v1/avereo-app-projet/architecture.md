@@ -13,6 +13,14 @@ tags:
   - stockage
 ---
 
+## 19 novembre — Résumés de qualité en lecture seule
+
+`development-quality.mjs` calcule les comptes depuis la vue servie ; le lecteur
+PHP calcule la même structure après autorisation. Le résumé n'est pas stocké
+comme seconde vérité et ne change pas le schéma signé. La vue d'ensemble ouvre
+les détails à la demande ; aucune lecture massive supplémentaire d'itérations.
+[Contrat des comptes](docs/cockpit-qualite-synthese.md).
+
 ## 19 novembre — Opérateur GitHub privé permanent
 
 Le [publicateur privé](docs/actualisation-automatique-privee.md) collecte GitHub par GET avec un jeton dédié, sous tâche planifiée sur l'hébergement de préproduction. Les copies de suivis admises, les clés, les états signés et les archives restent hors des racines web. Aucun relais PC ni récepteur WSGI n'est installé par ce lot. La réception des suivis est datée séparément du contrôle GitHub ; les validations et preuves ne sont pas rajeunies par une collecte. Le lecteur PHP expose seulement l'état signé facultatif, après les contrôles propriétaire/global existants. Une panne conserve la dernière copie lisible et produit une alerte de fraîcheur. L'installation réelle reste à confirmer par un reçu, distinct du code et du modèle désactivé.

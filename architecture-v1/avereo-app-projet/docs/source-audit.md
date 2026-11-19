@@ -5,13 +5,22 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-18
+updated: 2026-11-19
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 19 novembre — Synthèse des applications
+
+Écart intentionnel : remplacement du grand tableau de versions par des cartes,
+versions/sources dépliables, mêmes badges et mêmes suivis. Résumé de qualité
+calculé dans Node/PHP, historique explicitement inclus ; accès et validations
+inchangés. [Contrat et tests](cockpit-qualite-synthese.md). Résultats de tests et
+recette hébergée à consigner dans le reçu du candidat, sans les assimiler à une
+validation humaine.
 
 ## 18 novembre — Lecture du cockpit et historique
 
