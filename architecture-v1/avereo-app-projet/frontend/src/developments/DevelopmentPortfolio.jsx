@@ -22,16 +22,16 @@ export default function DevelopmentPortfolio({applications,iterations=[],onOpen}
   const reference=applications.find(app=>app.localReference)?.localReference;
   const rows=applications.map(app=>({app,q:applicationQuality(app,iterations)}));
   const matches=({q})=>filter==='all'||filter==='blocked'&&q.blockers>0||filter==='proofs'&&(q.proofs.missing+q.proofs.unpublished+q.criteria.unlinked+q.criteria.brokenLinks>0)||filter==='criteria'&&(q.criteria.total===0||q.unknown>0);
-  const filtered=rows.filter(row=>matches(row)&&[row.app.name,row.app.category,...row.app.iterations.map(i=>i.title)].join(' ').toLocaleLowerCase('fr').includes(query.toLocaleLowerCase('fr')));
-  return <section className="portfolio-overview" aria-label="Vue d’ensemble des applications">
-    <div className="portfolio-intro"><div><h2>Où en sont mes applications ?</h2><p>Repérer les points d’attention, puis ouvrir le suivi pour examiner les quatre phases.</p></div><span className="portfolio-private">Consultation privée · aucune validation automatique</span></div>
+  const filtered=rows.filter(row=>matches(row)&&[row.app.name,row.app.category,row.app.github?.repository,row.app.github?.path,...row.app.iterations.map(i=>i.title)].join(' ').toLocaleLowerCase('fr').includes(query.toLocaleLowerCase('fr')));
+  return <section className="portfolio-overview" aria-label="Vue d’ensemble des projets">
+    <div className="portfolio-intro"><div><h2>Où en sont mes projets ?</h2><p>Repérer les points d’attention, puis ouvrir le suivi pour examiner les quatre phases.</p></div><span className="portfolio-private">Consultation privée · aucune validation automatique</span></div>
     <div className="portfolio-metrics">
-      <article><strong>{applications.length}</strong><span>applications et sites</span></article>
+      <article><strong>{applications.length}</strong><span>projets recensés</span></article>
       <article><strong>{rows.filter(r=>r.q.blockers>0).length}</strong><span>avec des réserves déclarées</span></article>
       <article><strong>{rows.filter(r=>r.q.criteria.unlinked+r.q.criteria.brokenLinks>0).length}</strong><span>avec des critères à relier</span></article>
       <article><strong>{rows.filter(r=>r.q.criteria.total===0||r.q.unknown>0).length}</strong><span>avec des critères à compléter</span></article>
     </div>
-    <div className="portfolio-controls"><label className="portfolio-search">Rechercher<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Application ou développement…"/></label><label>Afficher<select value={filter} onChange={e=>setFilter(e.target.value)}><option value="all">Toutes les applications</option><option value="blocked">Réserves déclarées</option><option value="proofs">Critères ou pièces à relier</option><option value="criteria">Critères à compléter</option></select></label><span role="status">{filtered.length} / {applications.length} applications</span></div>
+    <div className="portfolio-controls"><label className="portfolio-search">Rechercher<input type="search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Application ou développement…"/></label><label>Afficher<select value={filter} onChange={e=>setFilter(e.target.value)}><option value="all">Tous les projets</option><option value="blocked">Réserves déclarées</option><option value="proofs">Critères ou pièces à relier</option><option value="criteria">Critères à compléter</option></select></label><span role="status">{filtered.length} / {applications.length} projets</span></div>
     <p className="portfolio-explanation">Indicateurs calculés sur les suivis consultables, <strong>historique inclus</strong>. Un chantier commun peut apparaître dans plusieurs applications : ces nombres ne s’additionnent pas entre applications. Une pièce disponible ou une CI réussie n’est pas une validation humaine.</p>
     <div className="portfolio-cards">{filtered.map(({app,q})=>{
       const lead=q.views.find(v=>v.nextAction);
@@ -49,12 +49,12 @@ export default function DevelopmentPortfolio({applications,iterations=[],onOpen}
           <p>Ces badges qualifient un reçu daté de même version et cible, pas l’état actuel d’un serveur. Aucun accord de livraison n’en est déduit.</p>
           <p>Pièces : {q.proofs.stale} d’une autre version · {q.proofs.unversioned} sans version déclarée · {q.proofs.undated} sans date de contrôle. Ces catégories peuvent se recouper.</p>
           <p>Critères : {q.criteria.stale} à réexaminer · {q.criteria.changesRequested} avec corrections demandées · {q.criteria.unassigned} sans phase explicite.</p>
-          <section><h4>GitHub</h4>{app.github?.status==='observed'?<><a href={app.github.url} target="_blank" rel="noopener noreferrer">Main : <code>{short(app.github.mainSha)}</code></a><p>Observé le {date(app.github.observedAt)} · commit du périmètre {short(app.github.applicationCommit)}.</p>{app.github.openPrs?.map(p=><p key={p.url}><a href={p.url} target="_blank" rel="noopener noreferrer">PR #{p.number}{p.draft?' · brouillon':''}</a>{p.policyStatus==='failure'?' · PR Policy en échec':''}</p>)}</>:<p>Observation GitHub à qualifier.</p>}</section>
+          <section><h4>GitHub</h4>{app.github?.status==='observed'?<><a href={app.github.url} target="_blank" rel="noopener noreferrer">{app.github.inDefaultBranch===false?'Autre branche':app.github.defaultBranch||'Branche par défaut'} : <code>{short(app.github.inDefaultBranch===false?app.github.applicationCommit:app.github.mainSha)}</code></a><p>Observé le {date(app.github.observedAt)} · commit du périmètre {short(app.github.applicationCommit)}.</p>{app.github.openPrs?.map(p=><p key={p.url}><a href={p.url} target="_blank" rel="noopener noreferrer">PR #{p.number}{p.draft?' · brouillon':''}</a>{p.policyStatus==='failure'?' · PR Policy en échec':''}</p>)}</>:<p>{app.github?.status==='not_present'?'Périmètre connu non retrouvé avec les accès GitHub actuels. Les suivis antérieurs sont conservés.':'Observation GitHub à qualifier.'}</p>}</section>
           <section><h4>Copie locale datée — distincte du code installé</h4><p>{app.local?.status==='observed'?`${short(app.local.applicationCommit||app.local.headSha)} · ${app.local.branch} · ${app.local.dirty?'modifications locales conservées':'sans changement détecté'} · observation du ${date(app.local.observedAt)}`:'Version locale à qualifier.'}</p>{app.localReference&&<LocalFolder directory={app.localReference.directory} label={'Sources de '+app.name}/>}</section>
         </details>
       </article>;
     })}</div>
-    {!filtered.length&&<p>Aucune application pour cette recherche et ce filtre.</p>}
+    {!filtered.length&&<p>Aucun projet pour cette recherche et ce filtre.</p>}
     {reference&&<details className="portfolio-reference"><summary>Référence locale et dossiers de travail</summary><p>{reference.sourceKind==='git-clone'?'Clone Git avec historique complet':'Archive de code sans historique Git'} · commit {short(reference.sourceSha)} · observation du {date(reference.observedAt)}. Ces chemins se trouvent sur ton PC, pas sur l’hébergement.</p><div className="reference-roots">{reference.roots.map(root=><LocalFolder key={root.id} directory={root.directory} label={root.label}/>)}</div></details>}
   </section>;
 }

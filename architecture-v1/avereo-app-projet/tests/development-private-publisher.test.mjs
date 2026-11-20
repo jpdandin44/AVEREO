@@ -109,3 +109,29 @@ test('une preuve ancienne non rattachable reste dans une vue archivée, sans qua
  const next=retainPublishedHistory({iterations:[current],proofs:[],portfolio:[]},{sequence:14,generatedAt:'2026-11-18T10:00:00Z',iterations:[old],proofs:[p],portfolio:[]});
  const archive=next.iterations.find(v=>v.archivedFrom?.id==='app');assert(archive);assert.equal(next.proofs[0].iterationId,archive.id);assert.equal(next.iterations[0].phases[0].proofs[0].fileHash,null);assert.equal(next.proofs[0].sha256,p.sha256);
 });
+
+
+test('inventaire du compte : plus de cinquante composants transmis à Node/PHP et cycle autonome stable',async t=>{
+ const f=await fixture(t);f.config.githubDiscovery={enabled:true,owner:'fixture'};
+ const requestInventory=async endpoint=>{
+  const u=new URL('https://api.github.com/'+endpoint);
+  if(u.pathname==='/user/repos'||u.pathname==='/users/fixture/repos')return[{full_name:'fixture/app',owner:{login:'fixture'}}];
+  if(u.pathname==='/repos/fixture/app')return{full_name:'fixture/app',default_branch:'main',private:true,archived:false};
+  if(u.pathname.endsWith('/branches/main'))return{commit:{sha:a}};
+  if(u.pathname.endsWith('/branches'))return[{name:'main',commit:{sha:a}}];
+  if(u.pathname.endsWith('/pulls'))return[];
+  if(u.pathname.includes('/git/trees/'))return{sha:b,truncated:false,tree:[{path:'apps',type:'tree',sha:b},...Array.from({length:60},(_,i)=>[{path:'apps/project-'+i,type:'tree',sha:b},{path:'apps/project-'+i+'/package.json',type:'blob',sha:a}]).flat()]};
+  if(u.pathname.endsWith('/commits'))return[{sha:a}];
+  throw Error('Unexpected fixture endpoint');
+ };
+ const first=await runPrivatePublisher(f.config,{requestGithub:requestInventory,now:()=>observed});assert(first.published);
+ const current=await f.store.readCurrent();assert.equal(current.data.portfolio.length,61);
+ const inventory=current.data.githubSnapshot.inventory;assert.equal(inventory.projects.length,61);assert.equal(inventory.treeSnapshots,undefined);
+ assert.equal(await readFile(f.file,'utf8'),f.source);assert.deepEqual(current.data.iterations[0].declaredApprovals,[{id:'existing-human',status:'approved'}]);
+ assert(current.data.portfolio.filter(p=>p.id!=='one').every(p=>p.missingTracking&&p.iterations.length===0&&p.preproduction===null&&p.production===null));
+ const php=resolve(import.meta.dirname,'../backend/developments').replaceAll('\\','/');
+ const script=String.raw`require $argv[1].'/Failure.php';require $argv[1].'/SnapshotReader.php';$r=new \Avereo\Projet\Developments\SnapshotReader($argv[2],trim(file_get_contents($argv[3])));echo json_encode($r->state());`;
+ const result=spawnSync('php',['-r',script,php,f.config.storageDirectory,f.config.publicationKeyFile],{encoding:'utf8',windowsHide:true});assert.equal(result.status,0,result.stderr);
+ const state=JSON.parse(result.stdout);assert.equal(state.portfolio.length,61);assert.deepEqual(state.githubSnapshot.inventory,inventory);
+ const second=await runPrivatePublisher(f.config,{requestGithub:requestInventory,now:()=> '2026-11-19T10:05:00Z'});assert.equal(second.published,false);assert.equal(second.sequence,first.sequence);
+});

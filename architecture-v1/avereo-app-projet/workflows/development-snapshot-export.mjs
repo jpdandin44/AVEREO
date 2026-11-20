@@ -4,6 +4,7 @@ import {createDevelopmentStore} from './development-store.mjs';
 import {developmentPortfolio} from './development-versions.mjs';
 import {readGithubObservations} from './development-github-observations.mjs';
 import {readPatrimonyObservation} from './development-patrimony.mjs';
+import {githubInventoryView} from './development-github-inventory.mjs';
 
 const hash=x=>createHash('sha256').update(x).digest('hex');
 export async function exportDevelopmentSnapshot(registry,{sequence,publisherId='local-owner',proofSelection=[]}={}){
@@ -41,5 +42,5 @@ export async function exportDevelopmentSnapshot(registry,{sequence,publisherId='
   const github=await readGithubObservations(registry.githubObservationFile);
   const portfolio=await developmentPortfolio(registry.applications,summaries,github);
   return {schema:'avereo-private-development-snapshot',version:1,publisherId,sequence,generatedAt:new Date().toISOString(),readWindow:{startedAt,endedAt:new Date().toISOString()},
-    iterations,portfolio:normalize(portfolio,''),patrimony:await readPatrimonyObservation(registry.patrimonyObservationFile),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{},refreshSupported:false},proofs};
+    iterations,portfolio:normalize(portfolio,''),patrimony:await readPatrimonyObservation(registry.patrimonyObservationFile),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{},refreshSupported:false,...(github.inventory?{inventory:githubInventoryView(github)}:{})},proofs};
 }

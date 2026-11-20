@@ -5,6 +5,7 @@ import {DevelopmentError} from './development-access.mjs';
 import {validatePatrimony} from './development-patrimony.mjs';
 import {readPublisherStatus} from './development-publisher-status.mjs';
 import {developmentQuality} from './development-quality.mjs';
+import {validateGithubInventoryView} from './development-github-inventory.mjs';
 
 const MAX=32*1024*1024;
 const hash=b=>createHash('sha256').update(b).digest('hex');
@@ -20,8 +21,9 @@ function inspect(value,depth=0){
 function validate(data){
   if(!data||data.schema!=='avereo-private-development-snapshot'||data.version!==1||!Number.isSafeInteger(data.sequence)||data.sequence<1
     || !id(data.publisherId)||Number.isNaN(Date.parse(data.generatedAt))||!Array.isArray(data.iterations)||!data.iterations.length||data.iterations.length>100
-    ||!Array.isArray(data.portfolio)||data.portfolio.length>50||!Array.isArray(data.proofs)||data.proofs.length>500)fail(422,'Projection invalide.');
+    ||!Array.isArray(data.portfolio)||data.portfolio.length>5000||!Array.isArray(data.proofs)||data.proofs.length>500)fail(422,'Projection invalide.');
   inspect(data);
+  if(data.githubSnapshot?.inventory!=null){try{validateGithubInventoryView(data.githubSnapshot.inventory);}catch{fail(422,'Inventaire GitHub privé invalide.');}}
   if(data.patrimony!==undefined&&data.patrimony!==null){try{validatePatrimony(data.patrimony);}catch{fail(422,'Patrimoine privé invalide.');}}
   const ids=new Set();
   for(const item of data.iterations){
