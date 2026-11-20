@@ -39,7 +39,7 @@ const accessFile=join(privateRoot,'acces-administrateur.json');
 await writeFile(accessFile,JSON.stringify({version:1,token})+'\n',{mode:0o600});
 const store=await createDevelopmentStore(entries,{adminId,applications,githubObservationFile,evidenceQualificationFile,patrimonyObservationFile});
 if(githubRefresh?.enabled&&githubRefresh.provider!=='gh_stored')throw Error('Fournisseur GitHub local non qualifié.');
-const refreshGithub=!demo&&githubRefresh?.enabled===true?createGithubRefresh({file:githubObservationFile,repositories:githubRefresh.repositories,minimumIntervalMs:Math.max(30000,githubRefresh.minimumIntervalMs||30000),getTrackedPrUrls:async()=>(await store.list()).flatMap(v=>v.githubPrUrls||[])}):null;
+const refreshGithub=!demo&&githubRefresh?.enabled===true?createGithubRefresh({file:githubObservationFile,repositories:githubRefresh.repositories,discovery:githubRefresh.discovery,minimumIntervalMs:Math.max(30000,githubRefresh.minimumIntervalMs||30000),getTrackedPrUrls:async()=>(await store.list()).flatMap(v=>v.githubPrUrls||[])}):null;
 delete process.env.AVEREO_REVIEW_ROOT;
 process.env.VITE_DEVELOPMENTS_LOCAL='1';
 const {createServer}=await import('../frontend/node_modules/vite/dist/node/index.js');

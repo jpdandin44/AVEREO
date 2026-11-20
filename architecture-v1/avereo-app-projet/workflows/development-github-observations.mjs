@@ -3,7 +3,7 @@ const valid=v=>typeof v==='string'&&/^https:\/\/github\.com\/[A-Za-z0-9_.-]+\/[A
 const state=v=>typeof v==='string'?({open:'open',draft:'open',closed:'closed',merged:'merged'}[v.toLowerCase()]||null):null;
 export async function readGithubObservations(file){
   if(!file)return {status:'not_configured'};
-  try{const b=await readFile(file);if(b.length>2*1024*1024)throw Error();const d=JSON.parse(b);if(d.schema!=='development-github-observations'||Number.isNaN(Date.parse(d.observedAt))||!d.pullRequests||!d.applications)throw Error();return {...d,status:'observed'};}catch{return {status:'unavailable'};}
+  try{const b=await readFile(file);if(b.length>16*1024*1024)throw Error();const d=JSON.parse(b);if(d.schema!=='development-github-observations'||Number.isNaN(Date.parse(d.observedAt))||!d.pullRequests||!d.applications)throw Error();return {...d,status:'observed'};}catch{return {status:'unavailable'};}
 }
 export function observeGithub(data,source,snapshot){
   const g=data.github||{},urls=new Set(),declared=new Map(),add=v=>{if(valid(v))urls.add(v);};

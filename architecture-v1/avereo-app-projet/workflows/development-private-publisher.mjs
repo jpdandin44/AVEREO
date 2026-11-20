@@ -14,14 +14,18 @@ async function privatePath(file,root,{directory=false,limit=32*1024*1024}={}){
  if(process.platform!=='win32'&&((s.mode&0o077)!==0||typeof process.geteuid==='function'&&s.uid!==process.geteuid()))throw Error('private_permissions_refused');return p;
 }
 async function atomic(file,bytes){const temp=file+'.'+randomUUID()+'.tmp';let created=false;try{const f=await open(temp,'wx',0o600);created=true;try{await f.writeFile(bytes);await f.sync();}finally{await f.close();}await rename(temp,file);created=false;}finally{if(created)await unlink(temp).catch(()=>{});}}
-export function githubReadRequest(token,{repositories,fetcher=fetch,onExpiry=()=>{}}={}){
+export function githubReadRequest(token,{repositories,owner=null,fetcher=fetch,onExpiry=()=>{}}={}){
  if(typeof token!=='string'||!/^github_pat_[A-Za-z0-9_]+$/.test(token)||!Array.isArray(repositories)||!repositories.length)throw Error('dedicated_read_token_required');
- const allowed=new Set(repositories);
+ if(owner!==null&&!/^[A-Za-z0-9][A-Za-z0-9-]{0,38}$/.test(owner))throw Error('github_owner_invalid');
+ const allowed=new Set(repositories.map(r=>r.toLowerCase()));
  return async endpoint=>{
-  const m=endpoint.match(/^repos\/([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)\//);if(!m||!allowed.has(m[1])||endpoint.includes('..')||/[\r\n#\\]/.test(endpoint))throw Error('github_endpoint_refused');
-  const url=new URL('https://api.github.com/'+endpoint);if(!url.pathname.startsWith('/repos/'+m[1]+'/'))throw Error('github_endpoint_refused');
+  const listing=owner&&(new RegExp('^(?:user/repos\\?affiliation=owner|users/'+owner+'/repos\\?type=owner)&per_page=100&page=[1-9][0-9]*$')).test(endpoint);
+  const m=endpoint.match(/^repos\/([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)(?:\/|$)/);if((!listing&&(!m||!allowed.has(m[1].toLowerCase())))||endpoint.includes('..')||/[\r\n#\\]/.test(endpoint))throw Error('github_endpoint_refused');
+  const url=new URL('https://api.github.com/'+endpoint);if(!listing&&url.pathname!=='/repos/'+m[1]&&!url.pathname.startsWith('/repos/'+m[1]+'/'))throw Error('github_endpoint_refused');
   const r=await fetcher(url.href,{method:'GET',redirect:'error',signal:AbortSignal.timeout(20000),headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','User-Agent':'AVEREO-private-cockpit','X-GitHub-Api-Version':'2022-11-28'}});
-  if(!r.ok)throw Error('github_read_failed');const expiry=r.headers?.get('GitHub-Authentication-Token-Expiration');if(expiry&&Number.isFinite(Date.parse(expiry)))onExpiry(new Date(expiry).toISOString());const text=await r.text();if(Buffer.byteLength(text)>8*1024*1024)throw Error('github_response_too_large');return JSON.parse(text);
+  if(!r.ok)throw Error('github_read_failed');const expiry=r.headers?.get('GitHub-Authentication-Token-Expiration');if(expiry&&Number.isFinite(Date.parse(expiry)))onExpiry(new Date(expiry).toISOString());const text=await r.text();if(Buffer.byteLength(text)>8*1024*1024)throw Error('github_response_too_large');const result=JSON.parse(text);
+  if(listing&&Array.isArray(result))for(const repo of result)if(repo.owner?.login?.toLowerCase()===owner.toLowerCase()&&/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo.full_name||'')&&repo.full_name.split('/')[0].toLowerCase()===owner.toLowerCase())allowed.add(repo.full_name.toLowerCase());
+  return result;
  };
 }
 export function semanticSnapshot(data){
@@ -81,10 +85,12 @@ export async function runPrivatePublisher(config,{requestGithub,exportSnapshot=e
   for(const k of ['evidenceQualificationFile','patrimonyObservationFile'])if(registry[k]){const p=await privatePath(registry[k],root);input.set(p,hash(await readFile(p)));}
   sourceDigest=hash(JSON.stringify([...input].sort()));
   const cacheBytes=await readFile(paths.githubCacheFile),cache=JSON.parse(cacheBytes);
-  const request=requestGithub||githubReadRequest(token,{repositories:config.repositories,onExpiry:value=>{credentialExpiresAt=value;}});
-  const github=await collectGithubSnapshot(cache,{repositories:config.repositories,request,now});githubObservedAt=github.observedAt;
+  const discovery=config.githubDiscovery||registry.githubRefresh?.discovery||null;
+  const request=requestGithub||githubReadRequest(token,{repositories:config.repositories,owner:discovery?.enabled?discovery.owner:null,onExpiry:value=>{credentialExpiresAt=value;}});
+  const github=await collectGithubSnapshot(cache,{repositories:config.repositories,discovery,request,now});githubObservedAt=github.observedAt;
   github.method='scheduled_private_host_read_only_github_get';github.refresh.mode='scheduled_private_host';
-  const staged=join(paths.workDirectory,randomUUID()+'.github.json');const f=await open(staged,'wx',0o600);try{await f.writeFile(JSON.stringify(github));await f.sync();}finally{await f.close();}
+  const githubBytes=JSON.stringify(github);if(Buffer.byteLength(githubBytes)>16*1024*1024)throw Error('github_cache_capacity_exceeded');
+  const staged=join(paths.workDirectory,randomUUID()+'.github.json');const f=await open(staged,'wx',0o600);try{await f.writeFile(githubBytes);await f.sync();}finally{await f.close();}
   let next;try{
    next=retainPublishedHistory(await exportSnapshot({...registry,githubObservationFile:staged},{sequence:previous.index.highWater+1,publisherId:'private-host-operator',proofSelection:[]}),previous.data);
    const summaries=next.iterations.map(v=>({...v,blockerCount:v.blockers.length,phases:v.phases.map(p=>({...p,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length}))}));
@@ -106,7 +112,7 @@ export async function runPrivatePublisher(config,{requestGithub,exportSnapshot=e
    transaction={store,previous,hash:hash(JSON.stringify(envelope))};await store.importSnapshot(envelope);const installed=await store.readCurrent();if(installed.data.sequence!==next.sequence)throw Error('publication_verification_failed');
    sequence=next.sequence;published=true;
   }
-  await atomic(paths.githubCacheFile,JSON.stringify(github));await status(true);
+  await atomic(paths.githubCacheFile,githubBytes);await status(true);
   return{status:'ok',published,sequence,githubObservedAt,sourcesReceivedAt,sourceDigest};
  }catch{if(transaction){try{await transaction.store.restorePrevious({expectedCurrentHash:transaction.hash,expectedPreviousHash:transaction.previous.index.current.hash});sequence=transaction.previous.data.sequence;}catch{}}
   await status(false);throw Error('private_publication_failed_check_signed_state');}

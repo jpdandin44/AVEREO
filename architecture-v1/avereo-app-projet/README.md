@@ -5,13 +5,23 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-19
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 20 novembre — Inventaire du compte GitHub, candidat local
+
+Le cockpit découvre les dépôts du propriétaire, leurs composants, toutes les PR
+et branches retournées. La vue **Inventaire GitHub** est consultable et filtrable ;
+les composants sans suivi sont visibles sans créer de phase ou de validation.
+[Portée et qualification](docs/inventaire-github.md),
+[contrat de collecte](api/inventaire-github.md),
+[suivi du lot](data/suivi-inventaire-github.json). Installation de ce candidat
+non attestée ; les observations réelles privées restent hors du dépôt public.
 
 ## 19 novembre — Vue synthétique et qualité des preuves
 

@@ -5,12 +5,23 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-19
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 20 novembre — Inventaire complet du compte
+
+**Cadrage** : objectif et critères du recensement consignés ; phases et accords
+antérieurs conservés. **Développement local** : découverte, catalogue dérivé,
+recherche et filtres implémentés ; qualification complète et PR en préparation.
+**Préproduction** : candidat de ce lot non installé ; qualifier sauvegarde,
+retour sur copie, inventaire affiché et cycle autonome avant acceptation.
+**Mise en production** : non autorisée dans ce lot.
+[Suivi canonique](data/suivi-inventaire-github.json),
+[qualification](docs/inventaire-github.md).
 
 ## 19 novembre — Synthèse, critères et preuves
 
