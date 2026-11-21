@@ -16,7 +16,7 @@ tags:
 
 ## Priorité du 21 novembre — R12-18, volume sans perte
 
-Candidat local sur `fix/rapport-publication-volume` : reproduction complète au-delà de 50 Mio, contrôles cohérents à 100 Mo et conservation des médias. Tests unitaires et HTTP locaux réussis ; [qualification et réserves](docs/volume-sans-perte.md). Prochaine étape : revue locale, génération réelle des deux Word et mesure du cas réel si disponible. Préproduction et production non autorisées pour ce lot. Les états datés suivants restent historiques.
+Candidat local sur `fix/rapport-publication-volume` : reproduction complète au-delà de 50 Mio, contrôles cohérents à 100 Mo et conservation des médias. Les vrais Word et le parcours navigateur complet, sauvegarde et nouvelle session, sont maintenant vérifiés ; PDF relus avec LibreOffice, réserve de rendu Microsoft Word distincte. [Qualification et réserves](docs/volume-sans-perte.md). Suite : revue locale, rendu Microsoft Word, mesure du cas réel si disponible et capacité hébergée. Préproduction et production non autorisées pour ce lot. Les états datés suivants restent historiques.
 
 
 ## 19 novembre — Publication Passeport livrée en préproduction

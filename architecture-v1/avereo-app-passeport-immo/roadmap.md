@@ -12,7 +12,7 @@ tags: [avereo, documentation, local]
 
 ## Lot local du 21 novembre — R12-18
 
-[Volume Rapport sans perte](../avereo-app-rapport/docs/volume-sans-perte.md) : paquet fictif complet de 61 Mo importé, récupéré dans une nouvelle session, sauvegardé et restauré à l’identique. Contrôles de partage/révocation conservés. Suite : revue, Word réels et capacité de l’hébergement avant autorisation de préproduction. Les lots historiques ci-dessous gardent leurs preuves et décisions.
+[Volume Rapport sans perte](../avereo-app-rapport/docs/volume-sans-perte.md) : paquet réel de 63 Mo avec le Word client natif généré dans Rapport, import UI, nouvelle session propriétaire, copie privée et reprise dans Rapport vérifiés. Sauvegarde/restauration temporaire réussie, 37 médias et source/propriétaires exacts. PDF de contrôle relus sous LibreOffice ; rendu Microsoft Word et capacité hébergée restent réservés avant autorisation de préproduction. Les lots historiques ci-dessous gardent leurs preuves et décisions.
 
 
 ## Lot actif du 19 novembre — Publication Rapport

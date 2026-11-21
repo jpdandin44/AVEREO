@@ -15,7 +15,9 @@ tags:
 
 ## 21 novembre — Capacité et fidélité JSON, sans migration
 
-Aucune migration SQL ni conversion des dossiers existants. Le candidat [volume sans perte](volume-sans-perte.md) accepte les anciens JSON/paquets, garde STORE schéma 1 et retire seulement les liens techniques de la copie indépendante. Les sauvegardes nouvelles conservent les types objet/liste natifs au lieu de normaliser les objets vides. Les copies privées et les propriétaires source sont vérifiés en HTTP local ; qualification navigateur/Word/hébergée encore à compléter.
+La chaîne navigateur complète est désormais contrôlée : l'ouverture source ajoute seulement son identifiant serveur dans le navigateur ; la copie réimportée le retire, puis reçoit celui de sa nouvelle ligne au compte B. Champs métier, 37 médias décodés, plans et repères exacts après nouvelle session. Source et lignes antérieures conservées. [Reçu et limites du rendu Word](volume-sans-perte.md#reprise-du-21-novembre-et-parcours-réel-dans-le-navigateur-local).
+
+Aucune migration SQL ni conversion des dossiers existants. Le candidat [volume sans perte](volume-sans-perte.md) accepte les anciens JSON/paquets, garde STORE schéma 1 et retire seulement les liens techniques de la copie indépendante. Les sauvegardes nouvelles conservent les types objet/liste natifs au lieu de normaliser les objets vides. La première qualification HTTP est complétée par la recette navigateur et génération Word décrite ci-dessus ; le rendu Microsoft Word et la recette hébergée restent distincts.
 
 
 ## 19 novembre — Publication et réimport sans mutation de la source
