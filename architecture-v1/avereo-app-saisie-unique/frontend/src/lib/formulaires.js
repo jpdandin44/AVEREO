@@ -70,7 +70,11 @@ export async function genererFormulaire({pack,docId,dossier,parametres={},planId
    if(font.widthOfTextAtSize(text,size)>max)throw Error('Texte trop long pour le modèle : '+p.key);
    page.drawText(text,{x:w*p.x,y:h*(1-p.y),size,font,color:rgb(.04,.18,.27)});
   }
-  for(const page of pdf.getPages())page.drawText('DEMONSTRATION - DONNEES FICTIVES - NON SIGNE',{x:20,y:page.getHeight()-13,size:7,font,color:rgb(.75,.15,.08)});
+  // Bande ajoutée au-dessus de la page : ne recouvre ni logo ni texte source.
+  for(const page of pdf.getPages()){
+   const height=page.getHeight();page.setSize(page.getWidth(),height+20);
+   page.drawText('DEMONSTRATION - DONNEES FICTIVES - NON SIGNE',{x:20,y:height+7,size:7,font,color:rgb(.75,.15,.08)});
+  }
   output=await pdf.save();
  }else{
   const zip=await JSZip.loadAsync(bytes);
