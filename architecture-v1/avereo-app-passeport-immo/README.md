@@ -5,10 +5,15 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 21 novembre — Volume des copies Rapport, candidat local
+
+Le [lot sans perte](../avereo-app-rapport/docs/volume-sans-perte.md) porte le JSON privé à 100 Mo sans modifier les octets autorisés par paquet/fichier/lot. Les limites Mo/Mio sont explicites et les copies API générées depuis une source unique. [Annexe de parité](docs/source-audit-volumes.md). Aucun déploiement ni nouvelle validation humaine.
+
 
 ## Publication des dossiers Rapport — préproduction du 19 novembre
 

@@ -5,10 +5,15 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 21 novembre — Volume et contrôle avant dépôt
+
+Le candidat utilise le contrat commun JSON/PHP généré depuis `avereo-platform/shared/report-volumes.json`. L’inspection privée vérifie le budget mémoire et la taille réouverte avec originaux avant toute publication. Pas de changement de stockage, de schéma ou de droits. [Contrat et mesures](../avereo-app-rapport/docs/volume-sans-perte.md).
+
 
 ## 19 novembre — Copies complètes Rapport privées
 

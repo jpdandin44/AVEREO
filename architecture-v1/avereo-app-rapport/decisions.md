@@ -5,13 +5,18 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 2026-11-21 — Proposition bornée et conservation des types JSON
+
+Contexte : refus à 50 Mio reproduit sur 61 Mo de dossier complet ; le JSON réel de Philippe manque. Choix du candidat local : plafond commun explicite de 100 000 000 octets, paquet STORE inchangé et contrôle de la reconstitution avant traitement. Ce choix couvre le cas mesuré sans imposer de nouveau format ni dégrader les médias ; son adéquation au dossier réel et à l’hébergement reste à valider. Conserver séparément l’arbre JSON natif et sa vue de validation évite la conversion historique des objets vides en listes. Aucune migration ni réécriture rétroactive. [Mesures et conséquences](docs/volume-sans-perte.md).
+
 
 ## 2026-11-19 — Conservation d’une version complète privée
 

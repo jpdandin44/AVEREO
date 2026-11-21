@@ -61,7 +61,7 @@ import {
 } from './georisquesRiskSummary.js';
 import OnlineReports from './OnlineReports.jsx';
 import ReportImport from './ReportImport.jsx';
-import { requireReportContent } from './reportFiles.js';
+import { requireReportContent, reportExportBlob } from './reportFiles.js';
 import { createTestReportCopy, observationGravities } from './testReportCopy.js';
 import RgaMap from './RgaMap.jsx';
 import { readRgaTransfer, RGA_TRANSFER_KEY } from './rgaContext.js';
@@ -2286,14 +2286,15 @@ function ReportWizard({
     const snapshot = structuredClone(report);
     const id = crypto.randomUUID().replaceAll('-', ''), createdAt = new Date().toISOString();
     const client = { ...snapshot, livrable: { ...snapshot.livrable, audience: 'client' }, publication: { id, createdAt, validatedByProfessional: true } };
-    const [{ createWordBlob }, { createPublication }] = await Promise.all([import('./reportDocx.js'), import('./reportPublication.js')]);
+    const [{ createWordBlob }, { createPublication, publicationReportBlob }] = await Promise.all([import('./reportDocx.js'), import('./reportPublication.js')]);
+    publicationReportBlob(snapshot); // Refuse an unreopenable copy before Word generation.
     const word = await createWordBlob(buildReportHtml(client), client);
     const { blob } = await createPublication(snapshot, word, { validated: true, id, now: createdAt });
     return saveAs(blob, `${toFileName(snapshot.reference_dossier || snapshot.titre)}-${id.slice(0, 8)}.avereo.zip`);
   };
 
   const handleExportJson = () => {
-    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json;charset=utf-8' });
+    const blob = reportExportBlob(report);
     saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}.json`);
   };
 

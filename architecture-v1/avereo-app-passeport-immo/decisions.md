@@ -5,10 +5,15 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 2026-11-21 — Même contrat de limites que Rapport
+
+Contexte : la copie complète est créée puis réouverte dans Rapport mais contrôlée aussi par Passeport. Le candidat consomme une source commune de limites et refuse avant dépôt si les originaux reconstitués dépassent 100 Mo ou si le budget PHP est insuffisant. Raisons : éviter un paquet accepté mais non réouvrable ; conserver les garde-fous et la confidentialité. Conséquences : deux fichiers de contrat générés à inclure avant l’API dans une livraison future, plafonds documentaires inchangés. [Contrat, proposition et réserves](../avereo-app-rapport/docs/volume-sans-perte.md).
+
 
 ## 2026-11-19 — La copie complète n’est pas un document partagé
 

@@ -286,8 +286,13 @@ def run():
             sharing_backup=json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-sharing'))
             check(sharing_backup['temporaryRowRestore']=='passed','grants and revocation retained by four-table backup restore')
             from publication_http import run as check_publications
+            publication_backup_count=0
+            def publication_backup():
+                nonlocal publication_backup_count
+                publication_backup_count+=1
+                return json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-publications-'+str(publication_backup_count)))
             check_publications(request,check,cookie,second,foreign,csrf,foreign_csrf,sql,
-                lambda:json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-publications')))
+                publication_backup)
             command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
             check(request(path+'/file',cookie)[0]==503,'altered blob not returned')
             print(json.dumps({'assertions':len(checks),'checks':checks,'scheduledBackup':scheduled,'database':'MariaDB 11.4','isolated':True},ensure_ascii=False))

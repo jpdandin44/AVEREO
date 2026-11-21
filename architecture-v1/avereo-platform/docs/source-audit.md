@@ -5,10 +5,15 @@ title: Audit source du socle
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
+
+## 21 novembre — Contrat commun de volumes
+
+Ajout générique limité aux nombres d’octets, unités décimales/binaires et budget mémoire PHP. Les validations métier et droits restent dans les applications. Copies API dérivées contrôlées à l’octet, sans source concurrente ni modification de configuration privée. [Qualification locale et réserves](../../avereo-app-rapport/docs/volume-sans-perte.md).
+
 
 ## 12 novembre 2026 — Préférence personnelle du médaillon
 

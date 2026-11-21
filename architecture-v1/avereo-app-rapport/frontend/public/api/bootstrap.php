@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require_once __DIR__.'/profile-access.php';
+require_once __DIR__.'/report-volumes.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
@@ -128,7 +129,7 @@ function api_config(): array
         'drupal_required_roles' => ['utilisateur_rapport', 'administrateur_rapport'],
         'drupal_admin_roles' => ['administrateur_rapport'],
         'connect_admin_user_ids' => [],
-        'max_payload_bytes' => 50 * 1024 * 1024,
+        'max_payload_bytes' => avereo_volume_limits()['reportJsonBytes'],
     ], $fileConfig);
 }
 
@@ -694,7 +695,23 @@ function api_pdo(array $config): PDO
     }
 }
 
-function api_read_json_body(?int $maxBytes = null): array
+function api_require_volume_memory(int $additionalBytes): void
+{
+    if (!avereo_volume_has_memory($additionalBytes)) api_json(503, [
+        'ok'=>false, 'error'=>'report_memory_capacity',
+        'message'=>'Le serveur ne dispose pas de la mémoire nécessaire pour ce volume. Le dossier reste dans votre navigateur : conservez son JSON complet avant de réessayer.',
+    ]);
+}
+
+/** Validation view shares scalar values with the native JSON tree, without changing object/list types for storage. */
+function api_json_array_view(mixed $value): mixed
+{
+    if ($value instanceof stdClass) $value = get_object_vars($value);
+    if (!is_array($value)) return $value;
+    return array_map('api_json_array_view', $value);
+}
+
+function api_read_json_body(?int $maxBytes = null, mixed &$nativeBody = null): array
 {
     $contentLength = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
     if ($maxBytes !== null && $contentLength > $maxBytes) {
@@ -705,7 +722,8 @@ function api_read_json_body(?int $maxBytes = null): array
         ]);
     }
 
-    $raw = file_get_contents('php://input');
+    if ($contentLength > 0) api_require_volume_memory($contentLength * 3 + 16 * 1024 * 1024);
+    $raw = $maxBytes === null ? file_get_contents('php://input') : file_get_contents('php://input', false, null, 0, $maxBytes + 1);
     if ($raw === false || trim($raw) === '') {
         return [];
     }
@@ -718,7 +736,11 @@ function api_read_json_body(?int $maxBytes = null): array
         ]);
     }
 
-    $decoded = json_decode($raw, true);
+    api_require_volume_memory(strlen($raw) * 2 + 16 * 1024 * 1024);
+    if (func_num_args() > 1) {
+        $nativeBody = json_decode($raw);
+        $decoded = api_json_array_view($nativeBody);
+    } else $decoded = json_decode($raw, true);
     if (!is_array($decoded)) {
         api_json(400, [
             'ok' => false,
