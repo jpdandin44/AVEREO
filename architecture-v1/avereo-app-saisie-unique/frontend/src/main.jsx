@@ -5,6 +5,7 @@ import { StoreContext } from './ui/contexte.js';
 import { createStore } from './lib/store.js';
 import { valeursLocales } from './config/listes.js';
 import './styles.css';
+import './pilotage.css';
 
 function stockageNavigateur() {
   try {
@@ -28,3 +29,4 @@ createRoot(document.getElementById('app')).render(
     <App />
   </StoreContext.Provider>,
 );
+
