@@ -1,0 +1,11 @@
+import { mkdir, readFile, writeFile, copyFile, cp } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+const root=resolve(import.meta.dirname,'..');const out=resolve(root,'.local','release');
+await mkdir(resolve(out,'private'),{recursive:true});
+await cp(resolve(root,'hosting/public'),resolve(out,'public'),{recursive:true});
+await copyFile(resolve(root,'frontend/dist/index.html'),resolve(out,'private/app.html'));
+await copyFile(resolve(root,'../avereo-platform/shared/connect-gate.php'),resolve(out,'private/gate.php'));
+const hash=createHash('sha256').update(await readFile(resolve(out,'private/app.html'))).digest('hex');
+await writeFile(resolve(out,'manifest.json'),JSON.stringify({application:'uni',environment:'preproduction',artifactSha256:hash,documentRoot:'public',templates:'private/app.html',productionAuthorized:false,createdAt:new Date().toISOString()},null,2));
+console.log('Candidat préparé : .local/release ; SHA256 '+hash);
