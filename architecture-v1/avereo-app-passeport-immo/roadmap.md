@@ -5,10 +5,15 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## Lot local du 21 novembre — R12-18
+
+[Volume Rapport sans perte](../avereo-app-rapport/docs/volume-sans-perte.md) : paquet fictif complet de 61 Mo importé, récupéré dans une nouvelle session, sauvegardé et restauré à l’identique. Contrôles de partage/révocation conservés. Suite : revue, Word réels et capacité de l’hébergement avant autorisation de préproduction. Les lots historiques ci-dessous gardent leurs preuves et décisions.
+
 
 ## Lot actif du 19 novembre — Publication Rapport
 

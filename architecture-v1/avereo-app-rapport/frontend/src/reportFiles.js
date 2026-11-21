@@ -1,6 +1,14 @@
 import { environmentContextError, environmentContext } from './environmentContext.js';
+import { REPORT_JSON_LIMIT } from '../../../avereo-platform/shared/report-volumes.js';
 
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+
+// Keep recovery possible even for a dossier exceeding the editable limit.
+// At the boundary, whitespace must not make an otherwise reopenable export too large.
+export function reportExportBlob(report) {
+  const pretty = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json;charset=utf-8' });
+  return pretty.size <= REPORT_JSON_LIMIT ? pretty : new Blob([JSON.stringify(report)], { type: 'application/json;charset=utf-8' });
+}
 
 export function requireReportContent(value) {
   if (!object(value) || !Array.isArray(value.observations)

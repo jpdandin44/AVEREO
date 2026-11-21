@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,11 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Priorité du 21 novembre — R12-18, volume sans perte
+
+Candidat local sur `fix/rapport-publication-volume` : reproduction complète au-delà de 50 Mio, contrôles cohérents à 100 Mo et conservation des médias. Tests unitaires et HTTP locaux réussis ; [qualification et réserves](docs/volume-sans-perte.md). Prochaine étape : revue locale, génération réelle des deux Word et mesure du cas réel si disponible. Préproduction et production non autorisées pour ce lot. Les états datés suivants restent historiques.
+
 
 ## 19 novembre — Publication Passeport livrée en préproduction
 

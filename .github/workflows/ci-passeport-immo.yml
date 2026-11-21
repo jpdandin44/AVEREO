@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'architecture-v1/avereo-app-passeport-immo/**'
+      - 'architecture-v1/avereo-platform/shared/report-volumes.*'
+      - '.github/scripts/prepare-report-volumes.mjs'
       - '.github/workflows/ci-passeport-immo.yml'
       - 'architecture-v1/avereo-platform/shared/connect-gate.php'
       - 'architecture-v1/avereo-app-connect/backend/src/Config.php'
@@ -11,6 +13,8 @@ on:
   pull_request:
     paths:
       - 'architecture-v1/avereo-app-passeport-immo/**'
+      - 'architecture-v1/avereo-platform/shared/report-volumes.*'
+      - '.github/scripts/prepare-report-volumes.mjs'
       - '.github/workflows/ci-passeport-immo.yml'
       - 'architecture-v1/avereo-platform/shared/connect-gate.php'
       - 'architecture-v1/avereo-app-connect/backend/src/Config.php'

@@ -152,7 +152,7 @@ if ($method === 'GET') {
         api_json(200, [
             'ok' => true,
             'report' => array_merge(api_report_summary($row), [
-                'payload' => json_decode((string)$row['payload_json'], true),
+                'payload' => json_decode((string)$row['payload_json']),
             ]),
         ]);
     }
@@ -198,8 +198,9 @@ if ($method === 'GET') {
 }
 
 if ($method === 'POST') {
-    $maxBytes = (int)($config['max_payload_bytes'] ?? (50 * 1024 * 1024));
-    $body = api_read_json_body($maxBytes);
+    $maxBytes = min(avereo_volume_limits()['reportJsonBytes'], max(1, (int)($config['max_payload_bytes'] ?? avereo_volume_limits()['reportJsonBytes'])));
+    $nativeBody = null;
+    $body = api_read_json_body($maxBytes + avereo_volume_limits()['reportEnvelopeBytes'], $nativeBody);
     $payload = $body['report'] ?? $body['payload'] ?? null;
 
     if (!is_array($payload)) {
@@ -243,7 +244,7 @@ if ($method === 'POST') {
         }
     }
 
-    $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $json = json_encode($nativeBody->report ?? $nativeBody->payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     if (!is_string($json)) {
         api_json(400, [
             'ok' => false,
@@ -257,12 +258,21 @@ if ($method === 'POST') {
         api_json(413, [
             'ok' => false,
             'error' => 'report_payload_too_large',
-            'message' => 'Rapport trop volumineux pour la configuration serveur.',
+            'message' => 'Rapport trop volumineux pour la configuration serveur ('.avereo_volume_label($maxBytes).'). Le dossier local est conservé.',
             'payloadBytes' => $payloadBytes,
             'maxPayloadBytes' => $maxBytes,
         ]);
     }
 
+    api_require_volume_memory($payloadBytes * 2 + 16 * 1024 * 1024);
+    if ($pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+        $packet = (int)$pdo->query('SELECT @@max_allowed_packet')->fetchColumn();
+        if ($payloadBytes + 65536 > $packet) api_json(413, [
+            'ok'=>false, 'error'=>'report_database_capacity',
+            'message'=>'La base ne peut pas enregistrer ce volume dans sa configuration actuelle. Le dossier local est conservé : téléchargez son JSON complet.',
+            'payloadBytes'=>$payloadBytes,
+        ]);
+    }
     $writeValues = [
         'public_id' => $id,
         'title' => api_trim_text($payload['titre'] ?? 'Rapport sans titre', 190),

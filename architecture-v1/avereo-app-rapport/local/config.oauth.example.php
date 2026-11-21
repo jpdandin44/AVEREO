@@ -19,5 +19,5 @@ return [
     'drupal_required_roles' => ['utilisateur_rapport'],
     'drupal_admin_roles' => ['administrateur_rapport'],
 
-    'max_payload_bytes' => 50 * 1024 * 1024,
+    'max_payload_bytes' => 100_000_000,
 ];

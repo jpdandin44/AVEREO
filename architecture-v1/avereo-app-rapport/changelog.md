@@ -5,12 +5,17 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-21 — Candidat local de volume sans perte
+
+Limites Rapport/Passeport reliées à une source unique, gardes à 100 Mo pour le JSON, unités Mo/Mio corrigées, contrôles de mémoire et de paquet MySQL, export de récupération préservé. Reconstitution avec originaux mesurée avant génération et import. Types JSON natifs conservés lors de la sauvegarde et de la lecture. Tests de contenu, empreintes et nouvelles sessions locales réussis ; [périmètre exact et réserves](docs/volume-sans-perte.md). Aucun déploiement de ce candidat.
+
 
 ## 2026-11-19 — Publication Passeport en préproduction
 

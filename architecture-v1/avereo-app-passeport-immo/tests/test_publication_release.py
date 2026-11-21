@@ -20,6 +20,15 @@ class PublicationReleaseTests(unittest.TestCase):
         names=['index.html','api/index.php','api/publications.php','assets/new.js','api/storage.php']
         self.assertEqual(sorted(names,key=lambda name:release.order((name,None))),['api/publications.php','api/storage.php','assets/new.js','api/index.php','index.html'])
 
+    def test_volume_dependencies_are_paired_and_precede_their_consumers(self):
+        for app in ['rapport','passeport-immo']:
+            for name in ['api/report-volumes.json','api/report-volumes.php']:
+                self.assertTrue(release.allowed(app,name))
+                for consumer in ['api/bootstrap.php','api/publications.php','api/reports.php','api/storage.php','index.html']:
+                    self.assertLess(release.order((name,None)),release.order((consumer,None)))
+        self.assertTrue(release.allowed('rapport','api/bootstrap.php'))
+        self.assertTrue(release.allowed('rapport','api/reports.php'))
+
     def test_unexpected_hosted_baseline_is_refused(self):
         manifest={'applications':{'rapport':{'sourceSha':'a'*40,'files':{'index.html':{'expectedHostedSha256':'old'}}}}}
         plan={'applications':{'rapport':{'operations':{'index.html':{'action':'replace','before':{'sha256':'changed'}}}}}}

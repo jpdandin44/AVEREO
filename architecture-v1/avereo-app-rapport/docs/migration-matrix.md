@@ -5,13 +5,18 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 21 novembre — Capacité et fidélité JSON, sans migration
+
+Aucune migration SQL ni conversion des dossiers existants. Le candidat [volume sans perte](volume-sans-perte.md) accepte les anciens JSON/paquets, garde STORE schéma 1 et retire seulement les liens techniques de la copie indépendante. Les sauvegardes nouvelles conservent les types objet/liste natifs au lieu de normaliser les objets vides. Les copies privées et les propriétaires source sont vérifiés en HTTP local ; qualification navigateur/Word/hébergée encore à compléter.
+
 
 ## 19 novembre — Publication et réimport sans mutation de la source
 

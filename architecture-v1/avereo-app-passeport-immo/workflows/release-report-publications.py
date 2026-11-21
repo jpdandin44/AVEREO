@@ -24,12 +24,14 @@ PRIVATE_FILES = {'backup-storage.php': 'backup-storage.php', 'storage.sql': 'sto
 
 def allowed(app, name):
     return name == 'index.html' or name.startswith('assets/') or (
+        app in ('rapport','passeport-immo') and name in ('api/report-volumes.php','api/report-volumes.json')) or (
+        app == 'rapport' and name in ('api/bootstrap.php','api/reports.php')) or (
         app == 'passeport-immo' and name in ('api/index.php', 'api/storage.php', 'api/publications.php'))
 
 
 def order(item):
     name = item[0]
-    return (0 if name == 'api/publications.php' else 1 if name == 'api/storage.php'
+    return (-1 if name in ('api/report-volumes.php','api/report-volumes.json') else 0 if name in ('api/publications.php','api/bootstrap.php') else 1 if name == 'api/storage.php'
             else 3 if name == 'api/index.php' else 4 if name == 'index.html' else 2, name)
 
 

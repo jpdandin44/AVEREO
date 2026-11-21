@@ -5,10 +5,15 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 2026-11-21 — Préparation locale des volumes Rapport
+
+JSON privé à 100 Mo, contrôle préalable de mémoire et de taille réouverte, libellés Mo/Mio cohérents. Les plafonds documentaires restent identiques en octets. Tests PHP/HTTP sur le gros paquet, nouvelle session, sauvegarde/restauration, partage et révocation réussis. [Annexe de parité et limites](docs/source-audit-volumes.md). Aucun déploiement.
+
 
 ## 2026-11-19 — Publications Rapport en préproduction
 
