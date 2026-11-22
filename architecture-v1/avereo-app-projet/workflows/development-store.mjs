@@ -6,6 +6,7 @@ import {projectDevelopmentVersions,developmentPortfolio} from './development-ver
 import {readGithubObservations,observeGithub} from './development-github-observations.mjs';
 import {readEvidenceQualification,qualifiedView,qualifiedEvidence} from './development-evidence-qualification.mjs';
 import {readPatrimonyObservation} from './development-patrimony.mjs';
+import {githubInventoryView} from './development-github-inventory.mjs';
 import {developmentQuality} from './development-quality.mjs';
 
 export const DEVELOPMENT_PHASES=['Cadrage','Développement local','Préproduction','Mise en production'];
@@ -172,7 +173,7 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
   return {
     list,
     async portfolio(){return developmentPortfolio(applications,await list(),await readGithubObservations(githubObservationFile));},
-    async dashboard(){const iterations=await list(),github=await readGithubObservations(githubObservationFile);return{iterations,portfolio:await developmentPortfolio(applications,iterations,github),patrimony:await readPatrimonyObservation(patrimonyObservationFile),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{}},readAt:new Date().toISOString()};},
+    async dashboard(){const iterations=await list(),github=await readGithubObservations(githubObservationFile);return{iterations,portfolio:await developmentPortfolio(applications,iterations,github),patrimony:await readPatrimonyObservation(patrimonyObservationFile),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{},...(github.inventory?{inventory:githubInventoryView(github)}:{})},readAt:new Date().toISOString()};},
     async get(id){return (await snapshot(id)).view;},
     async proof(id,proofId){const state=await snapshot(id);const file=state.files.get(proofId);if(!file)fail(404,'Pièce non disponible.');const content=await readFile(file.path);if(hash(content)!==file.hash)fail(409,'La pièce a changé. Actualiser la revue.');return {content,ext:file.ext,name:proofId+file.ext};},
     async review(id,input,actor){

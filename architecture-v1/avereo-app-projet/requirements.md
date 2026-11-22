@@ -5,12 +5,25 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-19
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 20 novembre — Couverture du compte GitHub
+
+Recenser les applications, sites et développements du propriétaire au-delà du
+catalogue manuel : dépôts publics et privés accessibles, branche par défaut
+réelle, branches présentes, toutes les PR ouvertes, fermées et fusionnées.
+Un nouveau dépôt ou composant ne doit pas nécessiter une inscription manuelle
+pour apparaître. Distinguer les composants sur une autre branche, les anciens
+chemins non retrouvés et l'absence de suivi métier. Une détection ne prouve aucune
+installation ou validation. Une collecte partielle ne remplace pas la dernière
+observation valide. Les limites d'accès et de capacité sont visibles et décrites
+dans le [contrat](api/inventaire-github.md). Les travaux non poussés du PC restent
+hors de GitHub et ne sont pas inventés par le collecteur.
 
 ## 19 novembre — Pilotage lisible et preuve explicite
 

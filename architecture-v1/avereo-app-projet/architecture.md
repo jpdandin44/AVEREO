@@ -5,13 +5,25 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-19
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## 20 novembre — Inventaire GitHub dérivé et privé
+
+`development-github-inventory.mjs` complète le collecteur existant en mode
+optionnel de découverte d'un propriétaire. Les dépôts, PR et branches sont paginés ;
+les arbres Git immuables servent à découvrir des périmètres de code. Un cache
+par dépôt, commit et version du détecteur évite les relectures inutiles.
+La projection signée contient les métadonnées utiles à l'écran, sans cache
+d'arbres ni contenu des dépôts. Node et PHP vérifient cette extension optionnelle.
+Le catalogue dérivé conserve les identifiants connus et ajoute les périmètres
+sans suivi. Les sources métier, autorisations et déclarations de livraison restent
+indépendantes. [Flux et limites](api/inventaire-github.md).
 
 ## 19 novembre — Résumés de qualité en lecture seule
 
