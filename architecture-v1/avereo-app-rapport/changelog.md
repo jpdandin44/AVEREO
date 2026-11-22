@@ -5,12 +5,18 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-21
+updated: 2026-11-22
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-22 — PR178 livrée en préproduction
+
+PR178 fusionnée et installée en préproduction, source `15f537a05b06a0ba589885b0945109c978afbc24`. Le plafond JSON est appliqué à **100 000 000 octets (100 Mo)** dans Rapport et Passeport, sans réduire les médias ni changer les 524 288 000 octets autorisés par paquet. Sauvegardes et restauration temporaire réussies ; 32 dossiers Rapport et leurs propriétaires, quatre tables Passeport et 30 fichiers privés exacts après livraison. [Reçu de conservation](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-volume-sans-perte-20261120/preproduction-20261122/final-verification.json>).
+
+Alignement du seul plafond privé Rapport à 100 Mo ; droits, règles d’accès et données existantes conservés. [Vérifications et limites](docs/volume-sans-perte.md#préproduction).
 
 ## 2026-11-21 — Candidat local de volume sans perte
 

@@ -5,14 +5,22 @@ title: Annexe de parité des volumes Rapport
 status: active
 version: git
 created: 2026-11-21
-updated: 2026-11-21
+updated: 2026-11-22
 owner: jpdandin
 tags: [parite, volume, rapport, integrite]
 ---
 
+## 22 novembre — Livraison coordonnée vérifiée
+
+PR178 fusionnée et installée en préproduction, source `15f537a05b06a0ba589885b0945109c978afbc24`. Le plafond JSON est appliqué à **100 000 000 octets (100 Mo)** dans Rapport et Passeport, sans réduire les médias ni changer les 524 288 000 octets autorisés par paquet. Sauvegardes et restauration temporaire réussies ; 32 dossiers Rapport et leurs propriétaires, quatre tables Passeport et 30 fichiers privés exacts après livraison. [Reçu de conservation](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-volume-sans-perte-20261120/preproduction-20261122/final-verification.json>).
+
+La configuration privée Passeport, les quatre tables et les 30 fichiers privés sont exacts ; aucun nouveau droit ni champ SQL. Le plafond privé Rapport est aligné séparément sur le contrat. Les règles du sas protègent toujours les assets et les API contre une session anonyme ; leur refus HTTP ne constitue pas un échec de livraison.
+
+La recette authentifiée du dossier fictif volumineux après reconnexion CONNECT, les durées et ressources HTTP réelles à 100 Mo, la pagination/PDF Microsoft Word, le cas réel complet de Philippe (non fourni) et les performances mobiles restent à qualifier. Les preuves locales du 21 novembre conservent leur portée. Production non autorisée ; les états datés antérieurs restent historiques.
+
 # Annexe de parité des volumes Rapport
 
-Lot local `RAP-PUBLICATION-VOLUME-SANS-PERTE-20261120`, transmis après la réunion Philippe. Cette annexe complète les matrices et audits historiquement validés sans modifier leurs octets ni leurs décisions. Le [contrat et la qualification du lot](../../avereo-app-rapport/docs/volume-sans-perte.md) portent les limites, résultats et réserves courants. Le suivi opérationnel reste le suivi canonique Rapport qui y est relié.
+Lot `RAP-PUBLICATION-VOLUME-SANS-PERTE-20261120`, transmis après la réunion Philippe. Cette annexe complète les matrices et audits historiquement validés sans modifier leurs octets ni leurs décisions. Le [contrat et la qualification du lot](../../avereo-app-rapport/docs/volume-sans-perte.md) portent les limites, résultats et réserves courants. Le suivi opérationnel reste le suivi canonique Rapport qui y est relié.
 
 | Composant | Écart local | Conservation vérifiée |
 | --- | --- | --- |
