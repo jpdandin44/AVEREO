@@ -5,10 +5,17 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 2026-11-21 — Préparation locale des volumes Rapport
+
+Complément PR178 : import par navigateur du paquet avec Word client réel, copie privée retrouvée dans une session neuve et réimportée dans Rapport, source et propriétaires conservés. Word finalisé exactement égal au paquet ; sauvegarde/restauration du paquet réel réussie. Rendu PDF indépendant relu, réserve Microsoft Word explicite. Aucun déploiement ni changement applicatif supplémentaire. [Qualification](../avereo-app-rapport/docs/volume-sans-perte.md#reprise-du-21-novembre-et-parcours-réel-dans-le-navigateur-local).
+
+JSON privé à 100 Mo, contrôle préalable de mémoire et de taille réouverte, libellés Mo/Mio cohérents. Les plafonds documentaires restent identiques en octets. Tests PHP/HTTP sur le gros paquet, nouvelle session, sauvegarde/restauration, partage et révocation réussis. [Annexe de parité et limites](docs/source-audit-volumes.md). Aucun déploiement.
+
 
 ## 2026-11-19 — Publications Rapport en préproduction
 

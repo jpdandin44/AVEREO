@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MAX_REPORT_BYTES } from './observationPlans.js';
 import { independentReport, readReportFile, reportContentSummary, requireEditableNumbers } from './reportFiles.js';
+import { PUBLICATION_LIMIT, PUBLICATION_LIMIT_LABEL, REPORT_LIMIT_LABEL } from '../../../avereo-platform/shared/report-volumes.js';
 
 export default function ReportImport({ draft, onBackup, onLoad, disabled = false }) {
   const [candidate, setCandidate] = useState(null);
@@ -24,8 +25,8 @@ export default function ReportImport({ draft, onBackup, onLoad, disabled = false
     if (!file) return;
     const current = ++generation.current;
     setError('');
-    if (file.size > (/\.avereo\.zip$/i.test(file.name) ? 500 * 1024 * 1024 : MAX_REPORT_BYTES)) {
-      setError(/\.avereo\.zip$/i.test(file.name) ? 'Import Passeport refusé : taille maximale 500 Mo. Le brouillon actuel est conservé.' : 'Import JSON refusé : taille maximale 50 Mio. Le brouillon actuel est conservé.');
+    if (file.size > (/\.avereo\.zip$/i.test(file.name) ? PUBLICATION_LIMIT : MAX_REPORT_BYTES)) {
+      setError(`Import refusé : taille maximale ${/\.avereo\.zip$/i.test(file.name) ? PUBLICATION_LIMIT_LABEL : REPORT_LIMIT_LABEL}. Le brouillon actuel est conservé.`);
       return;
     }
     setBusy(true);

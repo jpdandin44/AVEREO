@@ -15,5 +15,6 @@
   "archiveDirectory": null,
   "backupDirectory": null,
   "workDirectory": null,
-  "repositories": []
+  "repositories": [],
+  "githubDiscovery": {"enabled": false, "owner": null}
 }

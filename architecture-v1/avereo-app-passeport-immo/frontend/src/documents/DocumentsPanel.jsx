@@ -1,12 +1,13 @@
 import ReportPublications from './ReportPublications.jsx';
 import React, { useEffect, useRef, useState } from 'react';
-import { CATEGORIES, DOCUMENT_ACCEPT, documentRepository, isCompressedArchive } from './document-store.js';
+import { CATEGORIES, DOCUMENT_ACCEPT, documentRepository, isCompressedArchive, MAX_FILE_SIZE, MAX_BATCH_SIZE } from './document-store.js';
+import { volumeLabel } from '../../../../avereo-platform/shared/report-volumes.js';
 import PdfPreview from './PdfPreview.jsx';
 import { importDocumentFiles } from './import-files.js';
 import { documentSettings, orderedDocuments, movedDocumentSettings } from './document-settings.js';
 import { CategoryIcon, CategorySettings, DocumentModal } from './DocumentOrganisation.jsx';
 
-const formatSize = size => size < 1024*1024 ? `${Math.ceil(size/1024)} Ko` : `${(size/(1024*1024)).toFixed(1)} Mo`;
+const formatSize = size => size < 1000000 ? `${Math.ceil(size/1000)} Ko` : `${(size/1000000).toFixed(1)} Mo`;
 const date = value => new Date(value).toLocaleDateString('fr-FR');
 const initial = { client: null, clients: [], documents: [] };
 
@@ -152,7 +153,7 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
         <button className="doc-primary" disabled={busy}>Associer le client</button>
       </form>}
       <div className="document-import">
-        <div><h3>2. Ajouter des documents</h3><p>PDF, images, documents bureautiques et archives ZIP, 7z, RAR, TAR, GZ ou TGZ · 500 Mo par fichier · Envois répartis automatiquement en lots de 500 Mo et 100 fichiers maximum, sans découper les fichiers.</p></div>
+        <div><h3>2. Ajouter des documents</h3><p>PDF, images, documents bureautiques et archives ZIP, 7z, RAR, TAR, GZ ou TGZ · {volumeLabel(MAX_FILE_SIZE)} par fichier · Envois répartis automatiquement en lots de {volumeLabel(MAX_BATCH_SIZE)} et 100 fichiers maximum, sans découper les fichiers.</p></div>
         <label>Classer les nouveaux documents<select value={category} onChange={e => setCategory(e.target.value)} disabled={busy || !data.client}>{Object.entries(CATEGORIES).map(([key,label]) => <option key={key} value={key}>{label}</option>)}</select></label>
         {!data.client && <p id="document-import-help" className="document-import-help">Associez d’abord le client ci-dessus pour activer ces boutons.</p>}
         <div className="document-import-actions"><button className="doc-primary" disabled={busy || !data.client} aria-describedby={!data.client ? 'document-import-help' : undefined} onClick={() => filesRef.current.click()}>{busy ? 'Enregistrement…' : 'Ajouter des fichiers'}</button><button className="doc-secondary" disabled={busy || !data.client} aria-describedby={!data.client ? 'document-import-help' : undefined} onClick={() => folderRef.current.click()}>Importer un dossier</button></div>

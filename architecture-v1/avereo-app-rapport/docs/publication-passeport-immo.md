@@ -5,10 +5,15 @@ title: Publication des dossiers finalisés dans Passeport Immo
 status: active
 version: git
 created: 2026-11-19
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags: [rapport, passeport-immo, publication, partage]
 ---
+
+## 21 novembre — Correction de volume en préparation locale
+
+Le [lot sans perte](volume-sans-perte.md) remplace dans le candidat les gardes JSON de 50 Mio décrits ci-dessous par 100 Mo avant et après reconstitution. Le plafond de paquet historiquement libellé « 500 Mo » est exactement 524 288 000 octets, soit 500 Mio, sans augmentation dans ce lot. Les observations datées de la PR173 restent historiques ; leurs autorisations et preuves ne valent pas livraison du nouveau candidat. Le stockage des types JSON vides est aussi corrigé pour les futures sauvegardes. Aucune donnée ancienne réécrite.
+
 
 # Cadrage
 

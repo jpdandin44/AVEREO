@@ -5,13 +5,22 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-19
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 20 novembre — Écart du catalogue manuel et de la couverture GitHub
+
+L'ancien collecteur ne découvrait ni dépôt ni composant, supposait `main`,
+parcourait une page ouverte et les trente dernières PR fermées. Le mode optionnel
+de ce lot découvre le propriétaire et parcourt les listes paginées. La vue
+complémentaire reste privée et consultative ; les anciennes projections sont
+compatibles. Les versions d'autres branches et les périmètres non retrouvés
+sont explicités. [Contrat, tests et réserves](inventaire-github.md).
 
 ## 19 novembre — Synthèse des applications
 

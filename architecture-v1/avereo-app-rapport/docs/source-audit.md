@@ -5,13 +5,20 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 21 novembre — Lot volume sans perte, préparation locale
+
+Complément PR178 : [recette du navigateur et des vrais Word](volume-sans-perte.md#reprise-du-21-novembre-et-parcours-réel-dans-le-navigateur-local) réussie sur les services natifs locaux ; contenu, confidentialité et propriétaires exacts. Aucun changement applicatif supplémentaire. Le rendu indépendant LibreOffice est vérifié ; il ne valide pas l'export PDF Microsoft Word qui n'a pas abouti.
+
+[Audit du candidat](volume-sans-perte.md) : contrat de limites partagé et copies API, contrôles sur le JSON reconstitué, garde de ressources, récupération JSON et préservation objet/liste. Les moteurs Word, champs métier, images, SQL et droits restent conservés. Les preuves du codec et des services locaux ne constituent pas une génération Word native ou une recette hébergée.
+
 
 ## 19 novembre — Publication Passeport livrée en préproduction
 

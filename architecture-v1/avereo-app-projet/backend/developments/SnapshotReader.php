@@ -34,7 +34,7 @@ final class SnapshotReader
         if(($d['schema']??null)!=='avereo-private-development-snapshot'||($d['version']??null)!==1||!is_int($d['sequence']??null)
             ||$d['sequence']<1||$d['sequence']>$ix['highWater']||!is_string($d['generatedAt']??null)||strtotime($d['generatedAt'])===false
             ||!is_array($d['iterations']??null)||!array_is_list($d['iterations'])||count($d['iterations'])<1||count($d['iterations'])>100
-            ||!is_array($d['portfolio']??null)||count($d['portfolio'])>50||!is_array($d['proofs']??null)||count($d['proofs'])>500)throw new Failure(503);
+            ||!is_array($d['portfolio']??null)||count($d['portfolio'])>5000||!is_array($d['proofs']??null)||count($d['proofs'])>500)throw new Failure(503);
         $ids=[];
         foreach($d['iterations'] as &$item){
             if(!is_array($item)||!preg_match('/^[A-Za-z0-9_-]{1,100}$/D',$item['id']??'')||isset($ids[$item['id']])
@@ -53,7 +53,43 @@ final class SnapshotReader
             $apps[$app['id']]=true;foreach($app['iterations'] as $it)if(!isset($ids[$it['id']??'']))throw new Failure(503);
         }
         foreach($d['iterations'] as $it)foreach($it['applicationIds']??[] as $id)if(!isset($apps[$id]))throw new Failure(503);
+        $this->inventory($d['githubSnapshot']['inventory']??null);
         return ['data'=>$d,'index'=>$ix];
+    }
+    /** GitHub metadata in the signed projection; never repository contents or credentials. */
+    private function inventory(mixed $v):void
+    {
+        if($v===null)return;
+        $ok=static function(bool $valid):void{if(!$valid)throw new Failure(503);};
+        $list=static fn($x,$max)=>is_array($x)&&array_is_list($x)&&count($x)<=$max;
+        $text=static fn($x,$max=600)=>is_string($x)&&preg_match('/^[^\x00-\x1f\x7f]{0,'.$max.'}$/uD',$x);
+        $sha=static fn($x)=>is_string($x)&&preg_match('/^[a-f0-9]{40,64}$/D',$x);
+        $ok(is_array($v)&&($v['schema']??null)==='avereo-github-inventory'&&($v['version']??null)===1&&preg_match('/^[A-Za-z0-9][A-Za-z0-9-]{0,38}$/D',$v['owner']??'')
+            &&is_string($v['observedAt']??null)&&strtotime($v['observedAt'])!==false&&($v['coverage']??null)==='public_and_accessible_private_repositories_all_returned_pages'
+            &&$list($v['repositories']??null,1000)&&$list($v['projects']??null,5000)&&$list($v['pullRequests']??null,10000)&&$list($v['limitations']??null,30));
+        foreach($v['limitations'] as $s)$ok((bool)$text($s));
+        $repos=[];$prs=[];$projects=[];$branchNames=[];
+        foreach($v['repositories'] as $r){
+            $name=$r['repository']??'';$url='https://github.com/'.$name;
+            $ok(is_array($r)&&preg_match('/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/D',$name)&&strtolower(explode('/',$name)[0])===strtolower($v['owner'])&&!isset($repos[$name])&&($r['url']??null)===$url
+                &&in_array($r['visibility']??null,['public','private'],true)&&is_bool($r['archived']??null)&&$text($r['defaultBranch']??null,255)&&$r['defaultBranch']!==''&&is_bool($r['empty']??null)
+                &&($r['empty']?($r['headSha']??null)===null:$sha($r['headSha']??null))&&$list($r['branches']??null,10000)&&$list($r['pullRequestUrls']??null,10000));
+            $repos[$name]=true;$names=[];
+            foreach($r['branches'] as $b){$ok(is_array($b)&&$text($b['name']??null,255)&&$b['name']!==''&&!isset($names[$b['name']])&&$sha($b['headSha']??null)&&($b['url']??null)===$url.'/tree/'.$b['headSha']&&is_bool($b['isDefault']??null)&&$list($b['openPrs']??null,10000));$names[$b['name']]=true;}
+            $branchNames[$name]=$names;$defaults=array_filter($r['branches'],static fn($b)=>$b['isDefault']);
+            $ok($r['empty']?count($r['branches'])===0:count($defaults)===1&&count(array_filter($defaults,static fn($b)=>$b['name']===$r['defaultBranch']&&$b['headSha']===$r['headSha']))===1);
+        }
+        foreach($v['pullRequests'] as $p){$repo=$p['repository']??'';$number=$p['number']??null;$url='https://github.com/'.$repo.'/pull/'.$number;
+            $ok(is_array($p)&&isset($repos[$repo])&&is_int($number)&&$number>0&&($p['url']??null)===$url&&!isset($prs[$url])&&$text($p['title']??null)&&in_array($p['state']??null,['open','closed','merged'],true)&&is_bool($p['draft']??null)&&$sha($p['headSha']??null)&&$sha($p['baseSha']??null));$prs[$url]=$repo;
+        }
+        foreach($v['repositories'] as $r){foreach($r['pullRequestUrls'] as $url)$ok(is_string($url)&&($prs[$url]??null)===$r['repository']);foreach($r['branches'] as $b)foreach($b['openPrs'] as $url)$ok(is_string($url)&&($prs[$url]??null)===$r['repository']);}
+        foreach($v['projects'] as $p){
+            $id=$p['id']??'';$path=$p['path']??null;$repo=$p['repository']??'';
+            $ok(is_array($p)&&preg_match('/^[a-z0-9_-]{1,100}$/D',$id)&&!isset($projects[$id])&&isset($repos[$repo])&&$text($path,1000)&&!str_starts_with($path,'/')&&!str_contains($path,'\\')
+                &&($path===''||!array_intersect(explode('/',$path),['','..','.']))&&$text($p['name']??null)&&$text($p['kind']??null)&&is_bool($p['inDefaultBranch']??null)&&is_bool($p['historical']??null)&&$sha($p['headSha']??null)&&$sha($p['treeSha']??null)
+                &&($p['url']??null)==='https://github.com/'.$repo.'/tree/'.$p['headSha'].($path!==''?'/'.implode('/',array_map('rawurlencode',explode('/',$path))):'')&&$list($p['branches']??null,10000)&&$list($p['markers']??null,30));
+             $ok(count($p['branches'])>0&&count(array_unique($p['branches']))===count($p['branches']));foreach($p['branches'] as $b)$ok($text($b,255)&&isset($branchNames[$repo][$b]));foreach($p['markers'] as $m)$ok((bool)$text($m));$projects[$id]=true;
+        }
     }
     /** Optional bounded metadata, never a filesystem traversal on the host. */
     private function patrimony(mixed $p):?array

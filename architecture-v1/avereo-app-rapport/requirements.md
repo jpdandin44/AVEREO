@@ -5,13 +5,18 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## 21 novembre — Volume sans perte demandé
+
+Conserver intégralement les contenus, originaux et versions préparées, légendes, annotations et repères. La proposition locale est un JSON de 100 000 000 octets avant/après reconstitution ; le paquet reste limité à 524 288 000 octets. Refus explicite et récupération complète, sans réduction destructive. [Critères source, preuves et réserves](docs/volume-sans-perte.md). Taille et qualification du dossier réel de Philippe : TBD.
+
 
 ## 19 novembre — Dossiers finalisés vers Passeport Immo
 

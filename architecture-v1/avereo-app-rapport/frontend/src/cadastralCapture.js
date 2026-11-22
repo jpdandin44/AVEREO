@@ -1,5 +1,6 @@
 import { buildIgnTileUrl, validLocation, terrainViewLayers } from './locationMap.js';
 import { MAX_PLANS, MAX_REPORT_BYTES, planPayloadError } from './observationPlans.js';
+import { REPORT_LIMIT_LABEL } from '../../../avereo-platform/shared/report-volumes.js';
 
 export const CADASTRAL_SOURCE = '© IGN / DGFiP — Plan IGN et Parcellaire Express (PCI)';
 const CAPTURE_INFO = {
@@ -43,7 +44,7 @@ export function attachPlanViews(report, plans, target) {
   const next = { ...report, plans: [...(report.plans || []), ...plans] };
   const error = planPayloadError(next);
   if (error) throw new Error(error);
-  if (new Blob([JSON.stringify(next)]).size > MAX_REPORT_BYTES) throw new Error('Le dossier dépasse 50 Mio. La vue n’a pas été ajoutée.');
+  if (new Blob([JSON.stringify(next)]).size > MAX_REPORT_BYTES) throw new Error(`Le dossier dépasse ${REPORT_LIMIT_LABEL}. La vue n’a pas été ajoutée.`);
   return next;
 }
 

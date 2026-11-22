@@ -1,11 +1,12 @@
 import { SERVER_STORAGE, serverStorage } from './server-store.js';
 import { documentSettings, validateDocumentSettings } from './document-settings.js';
+import { DOCUMENT_FILE_LIMIT, DOCUMENT_BATCH_LIMIT, volumeLabel } from '../../../../avereo-platform/shared/report-volumes.js';
 export const CATEGORIES = {
   diagnostics: 'Diagnostics', plans: 'Plans et façades', urbanisme: 'Urbanisme',
   travaux: 'Devis et factures', juridique: 'Propriété et contrats', autres: 'Autres documents',
 };
-export const MAX_FILE_SIZE = 500 * 1024 * 1024;
-export const MAX_BATCH_SIZE = 500 * 1024 * 1024;
+export const MAX_FILE_SIZE = DOCUMENT_FILE_LIMIT;
+export const MAX_BATCH_SIZE = DOCUMENT_BATCH_LIMIT;
 export const MAX_FILES_PER_BATCH = 100;
 const archiveFormats = { zip: 'application/zip', '7z': 'application/x-7z-compressed', rar: 'application/vnd.rar',
   tar: 'application/x-tar', gz: 'application/gzip', tgz: 'application/gzip' };
@@ -34,11 +35,11 @@ export function validateFiles(files) {
   const types = files.map(file => {
     const extension = file.name.split('.').pop().toLowerCase();
     if (!formats[extension]) throw new Error(`Format non pris en charge : ${file.name}. Choisissez un PDF, une image, un document bureautique ou une archive ZIP, 7z, RAR, TAR, GZ ou TGZ.`);
-    if (!file.size || file.size > MAX_FILE_SIZE) throw new Error(`Le fichier ${file.name} est vide ou dépasse 500 Mo. Chaque fichier doit rester entier et inférieur à cette limite.`);
+    if (!file.size || file.size > MAX_FILE_SIZE) throw new Error(`Le fichier ${file.name} est vide ou dépasse ${volumeLabel(MAX_FILE_SIZE)}. Chaque fichier doit rester entier et inférieur à cette limite.`);
     if (file.name.length > 255) throw new Error('Un nom de fichier dépasse 255 caractères.');
     return formats[extension];
   });
-  if (files.reduce((sum, f) => sum + f.size, 0) > MAX_BATCH_SIZE) throw new Error('Ce lot dépasse 500 Mo. Les documents doivent être répartis en plusieurs lots.');
+  if (files.reduce((sum, f) => sum + f.size, 0) > MAX_BATCH_SIZE) throw new Error(`Ce lot dépasse ${volumeLabel(MAX_BATCH_SIZE)}. Les documents doivent être répartis en plusieurs lots.`);
   return types;
 }
 

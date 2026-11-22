@@ -5,12 +5,25 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-19
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 20 novembre — Découverte GitHub sans création de validations
+
+Contexte : un catalogue manuel et des listes de PR bornées ne peuvent recenser
+tous les développements du compte. Décision d'implémentation : ajouter un mode de
+découverte optionnel du propriétaire, une liste séparée des PR et branches, et un
+catalogue de composants dérivé des arbres Git. Raisons : couvrir les nouveaux
+périmètres sans fabriquer de chantier humain ni dépasser la borne des suivis.
+Conséquences : identifiants existants conservés, nouveaux périmètres marqués sans
+suivi, catégories issues de marqueurs explicites, refus des collectes partielles.
+Les autorisations de lecture existantes bornent les dépôts privés visibles ; ce
+choix ne les élargit pas et n'installe pas le candidat sur l'hébergement.
+[Contrat](api/inventaire-github.md).
 
 ## 19 novembre — GitHub automatique seulement
 

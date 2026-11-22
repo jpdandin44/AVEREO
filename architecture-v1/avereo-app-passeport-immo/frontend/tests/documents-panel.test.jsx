@@ -158,12 +158,12 @@ describe('Parcours documentaire', () => {
     expect(repository.addFiles).toHaveBeenCalledTimes(2);
     expect(screen.getByRole('button', { name: 'Ajouter des fichiers' }).disabled).toBe(false);
   });
-  it('signale le fichier supérieur à 500 Mo avant d’enregistrer les autres', async () => {
+  it('signale le fichier supérieur à 500 Mio avant d’enregistrer les autres', async () => {
     const repository = { load: async () => ({ client, clients: [client], documents: [] }), addFiles: vi.fn() };
     render(<DocumentsPanel bien={bien} repository={repository} />);
     fireEvent.change(await screen.findByLabelText('Fichiers à ajouter au dossier du bien'), { target: { files: [{ name: 'rapport.pdf', size: 173*1024*1024 }, { name: 'trop-grand.zip', size: 501*1024*1024 }] } });
     expect((await screen.findByRole('alert')).textContent).toContain('trop-grand.zip');
-    expect(screen.getByRole('alert').textContent).toContain('500 Mo');
+    expect(screen.getByRole('alert').textContent).toContain('524,288 Mo (500 Mio)');
     expect(repository.addFiles).not.toHaveBeenCalled();
   });
 });
