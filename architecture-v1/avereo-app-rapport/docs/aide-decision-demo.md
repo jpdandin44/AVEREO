@@ -16,7 +16,7 @@ Clarification demandée à la clôture de la journée du 12 novembre, après min
 
 ### Pourquoi la liste peut être vide
 
-Dans **Export → Aide à la décision → 3 · Du constat à son effet pour les habitants**, l'encadré **Attentes concernées par ce constat** affiche les attentes structurées du dossier. Le message **Ajoutez d'abord un élément à relier** signifie que cette liste est vide et qu'aucune référence ancienne sélectionnée n'est présente. Choisir un constat ne crée pas les attentes.
+Dans **Export → Aide à la décision → 3 · Du constat à son effet pour les habitants**, l'encadré **Attentes concernées par ce constat** affiche les attentes structurées du dossier. Le message **Ajoutez d'abord un élément à relier** signifie que cette liste est vide et qu'aucune référence ancienne sélectionnée n'est présente. Choisir un constat ne crée pas les attentes. Depuis la PR159, Export propose aussi **Reprendre cette attente** pour créer explicitement une attente à partir des deux textes de l'écoute client ([détail](attentes-ecoute-client.md)) ; sans cette action, rien n'est créé.
 
 Les textes de l'entretien, visibles dans **Relire les notes de l'entretien**, restent des notes libres : ils ne sont pas transformés automatiquement en attentes. L'encadré n'est pas un catalogue général ou une création de compte ; sa liste appartient au seul dossier courant.
 
@@ -52,14 +52,14 @@ Les changements alimentent le brouillon local ; conserver aussi une copie en lig
 
 ### Évolution demandée à la clôture — reprendre l'écoute client
 
-Le responsable demande d'éviter la ressaisie des attentes mentionnées dans **Dossier → Écoute client**, avec une section préremplie et une section de notes/audio dans Export. Cette demande est consignée le 13 novembre pendant la clôture de la journée du 12 ; **elle n'est pas implémentée par la présente documentation**. Le parcours manuel décrit ci-dessus demeure le fonctionnement actuel.
+Le responsable demande d'éviter la ressaisie des attentes mentionnées dans **Dossier → Écoute client**, avec une section préremplie et une section de notes/audio dans Export. Cette demande est consignée le 13 novembre pendant la clôture de la journée du 12, puis **réalisée** : la PR159 est fusionnée et installée en préproduction le 16 novembre (voir [Attentes reprises de l'écoute client](attentes-ecoute-client.md)). Dans Export, **Reprendre cette attente** copie le texte entier de « Attentes et priorités du client » ou de « Besoin reformulé avec le client » en une attente modifiable, et **Notes complémentaires et dictée** est une zone libre séparée. La suite de cette section conserve le cadrage d'origine ; le parcours manuel décrit plus haut reste utilisable.
 
-Parcours proposé pour la prochaine tranche :
+Parcours demandé (cadrage d'origine) :
 
 1. **Attentes reprises de l'écoute client** : afficher le texte source et proposer sa reprise dans les attentes structurées. Le professionnel relit, choisit, complète et modifie les attentes avant de les associer aux constats. Aucune priorité, interprétation ou attente nouvelle n'est déduite silencieusement du verbatim.
 2. **Notes complémentaires et dictée** : compléter les informations dans Export pendant la visite, au clavier ou par la dictée en texte déjà disponible selon l'accord existant. Les notes libres restent distinguées des attentes sélectionnables et ne deviennent une attente qu'après une action explicite.
 
-Critères à respecter lors du développement : conserver les notes initiales et leur provenance ; rendre une attente reprise modifiable ; éviter les doublons lors d'une deuxième reprise ; préserver les corrections faites dans Export si l'écoute client est modifiée ; conserver les liens aux constats par identifiant ; inclure les nouvelles données dans le brouillon, le JSON et la sauvegarde en ligne sans modifier les anciens dossiers. La manière de séparer un texte libre contenant plusieurs attentes (lignes, sélection ou création guidée) reste à préciser avant implémentation.
+Critères du cadrage d'origine : conserver les notes initiales et leur provenance ; rendre une attente reprise modifiable ; éviter les doublons lors d'une deuxième reprise ; préserver les corrections faites dans Export si l'écoute client est modifiée ; conserver les liens aux constats par identifiant ; inclure les nouvelles données dans le brouillon, le JSON et la sauvegarde en ligne sans modifier les anciens dossiers. Le découpage d'un texte libre en plusieurs attentes n'a pas été retenu : la reprise copie le texte entier.
 
 **Audio** : le périmètre retenu pour ce cadrage est la dictée transcrite en texte, sans fichier audio enregistré. La conservation et la réécoute d'un enregistrement sonore sont un besoin distinct non confirmé ; durée, accords, accès et stockage resteraient à définir si le responsable le demande. Aucun nouvel usage du microphone, aucune transcription ni aucun traitement externe n'est exécuté à la clôture.
 
