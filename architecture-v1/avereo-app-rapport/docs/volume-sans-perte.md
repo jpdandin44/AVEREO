@@ -20,7 +20,7 @@ Lot `RAP-PUBLICATION-VOLUME-SANS-PERTE-20261120`, priorité R12-18. **PR178 fusi
 
 Le message « La copie JSON dépasse 50 Mio » est reproduit sur un **dossier fictif complet de 61 081 494 octets**, comprenant 14 observations, 22 photos dont une de contexte, 12 plans, une signature, des légendes, repères et versions préparées. L'ancien seuil est **52 428 800 octets**. Le JSON réel complet de Philippe n'est pas disponible : sa taille, sa répartition et sa compatibilité avec le candidat restent **TBD**. Le partage manuel d'un document final observé en réunion ne prouve pas la préparation du paquet qui avait échoué.
 
-La proposition bornée est **100 000 000 octets de JSON, soit 100 Mo**, avant et après reconstitution avec les originaux. Ce doublement couvre le cas reproduit ; il ne constitue pas une capacité illimitée ni une confirmation du cas réel de Philippe. L'acceptation de ce plafond et des ressources sur l'hébergement reste à qualifier avant livraison autorisée.
+Le plafond borné est **100 000 000 octets de JSON, soit 100 Mo**, avant et après reconstitution avec les originaux. Ce doublement couvre le cas reproduit ; il ne constitue pas une capacité illimitée ni une confirmation du cas réel de Philippe. Il est appliqué en préproduction depuis le 22 novembre ; les paramètres observés et les limites de qualification HTTP restent distingués dans la section [Préproduction](#préproduction).
 
 ## Développement local
 
