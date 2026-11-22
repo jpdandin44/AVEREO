@@ -81,6 +81,9 @@ La première tranche locale conserve et rouvre les octets originaux JPEG/PNG/Web
 
 L’allègement du JSON, la version recadrée/annotée, le choix avant export et la qualification hébergée restent des exigences à réaliser. Les limites d’hébergement, la rétention et les transferts de propriété sont encore à décider. [État par critère](docs/photos-originales-et-annotations.md).
 
+## Reprise des attentes de l'écoute client — demande de clôture, réalisée
+
+Éviter la ressaisie des attentes de Dossier dans Export : proposer des attentes reprises de l'écoute, relisibles et modifiables, avec un espace de notes complémentaires et de dictée en texte. Préserver le verbatim, les corrections et les liens existants ; éviter les doublons à la reprise. Ce besoin est **réalisé** par la PR159 (fusionnée et installée en préproduction le 16 novembre ; revue métier hébergée à recueillir) : le texte entier est repris, sans découpage en plusieurs attentes, et aucun fichier audio n'est conservé. [Spécification et état](docs/attentes-ecoute-client.md) ; le [cadrage d'origine](docs/aide-decision-demo.md#évolution-demandée-à-la-clôture--reprendre-lécoute-client) reste consigné.
 
 ## Lot 0 du 12 novembre — observations
 

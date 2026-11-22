@@ -134,6 +134,9 @@ Chargement JSON depuis l’accueil et Export avec contrôle du contenu et confir
 
 Vue agrandie et zoom des photos, conservation individuelle volontaire et réouverture de l’original privé vérifié par empreinte. API et migration additives, contrôle du propriétaire courant, stockage hors racine web, configuration désactivée par défaut. Tests locaux PHP/SQLite et HTTP/MariaDB, restauration sur copie séparée et parcours navigateur avec mire fictive. Les photos du rapport et les exports restent conservés ; compression, recadrage et annotations ne sont pas activés. [Détail et limites](docs/photos-originales-et-annotations.md). Aucun hébergement modifié pour ce lot.
 
+## 13 novembre 2026 — PR149 en préproduction
+
+Lot 0 Observations installé après demande explicite, avec le même paquet qualifié et quatre fichiers statiques remplacés ou ajoutés. Sauvegarde et retour arrière des fichiers testés ; 17 dossiers et propriétaires préservés. Accès authentifié, reprise du brouillon et nouveaux contrôles d'observation vérifiés. Recette fonctionnelle complète hébergée à poursuivre. [État et preuves](docs/lot-0-observations.md#livraison-du-13-novembre-2026).
 
 ## 12 novembre 2026 — Lot 0 Observations, complément local
 

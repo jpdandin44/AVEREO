@@ -153,6 +153,9 @@ Les exports organisationnels et leurs grants restent inchangés. [Procédure et 
 
 [Contrat, configuration et restauration](photos-originales-et-annotations.md), [API](../api/photos-originales.json).
 
+## 2026-11-13 — Promotion PR149 sans migration
+
+Quatre fichiers statiques installés ; aucune route, table, clé de stockage, règle d'accès ou configuration privée remplacée. Les 17 lignes de dossiers, leurs propriétaires et leurs payloads sont identiques avant/après installation. La sauvegarde privée des données est relue ; le retour arrière testé concerne les fichiers et ne réécrit pas la base. [Livraison et vérifications](lot-0-observations.md#livraison-du-13-novembre-2026).
 
 ## 2026-11-12 — Lot 0 Observations, sans migration
 

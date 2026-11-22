@@ -135,7 +135,9 @@ PR150 est désormais fusionnée dans `main` ; PR152 est réalignée pour conserv
 
 ## Priorités du 12 novembre
 
-Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement ; ses rendus Word de 15 pages expert et 5 client sont contrôlés ; la revue humaine de PR149 reste distincte. Le travail photo est désormais repris dans un lot isolé, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
+Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement, y compris les rendus Word de 15 pages expert et 5 client ; PR149 fusionnée et installée en préproduction le 13 novembre, avec contrôles de disponibilité, de reprise du brouillon et de conservation des données réussis. La recette fonctionnelle complète hébergée et la revue métier restent à effectuer. Le travail photo est désormais repris dans un lot isolé, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
+
+À la clôture, le responsable a aussi demandé le [préremplissage des attentes depuis l'écoute client et des notes complémentaires dictables](docs/aide-decision-demo.md#évolution-demandée-à-la-clôture--reprendre-lécoute-client). Cette demande a été réalisée ensuite : la PR159 est fusionnée et installée en préproduction le 16 novembre ([état](docs/attentes-ecoute-client.md)) ; la revue métier hébergée reste à recueillir.
 
 
 ## Photos originales privées — développement local actif

@@ -154,6 +154,9 @@ Nouvelle route `photo-originals.php`, service indépendant `photo-original-store
 
 Les tests PHP/SQLite et HTTP/MariaDB isolés couvrent immutabilité, contrôle des octets, refus inter-comptes, quota concurrent, sauvegarde/restauration et conservation des propriétaires. La recette du navigateur utilise une mire fictive et des tickets locaux ; elle ne vaut pas recette OAuth/CONNECT hébergée. Le proxy de démonstration conserve le Host initial afin de respecter le contrôle Origin ; le serveur produit n’a pas été assoupli. [Preuves et réserves](photos-originales-et-annotations.md#développement-local).
 
+## 2026-11-13 — PR149 installée en préproduction
+
+Promotion de quatre fichiers statiques du paquet qualifié, après fusion dont les arbres Rapport/partagés sont identiques. Sauvegarde des fichiers/configuration et retour arrière répété en copie privée ; sauvegarde des 17 dossiers relue. Empreintes hébergées contrôlées, lignes intégrales et propriétaires conservés ; configuration privée et fichiers de production inchangés. Entrée CONNECT et reprise du brouillon existant contrôlées, sans modification de ses champs. Recette fonctionnelle complète hébergée encore ouverte. [Livraison, preuves et limites](lot-0-observations.md#livraison-du-13-novembre-2026).
 
 ## 2026-11-12 — Lot 0 Observations, intégration locale
 

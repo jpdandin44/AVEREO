@@ -5,10 +5,63 @@ title: Aide à la décision pour la démonstration du 3 novembre
 status: active
 version: git
 created: 2026-10-30
-updated: 2026-11-02
+updated: 2026-11-13
 owner: jpdandin
 tags: [rapport, demonstration, habitants, decision]
 ---
+
+## Mode d'emploi — créer, modifier et relier les attentes
+
+Clarification demandée à la clôture de la journée du 12 novembre, après minuit le 13. Fonctionnement vérifié dans `DecisionSupportPanel.jsx` et `decisionSupport.js`, sans modification de l'application ni de dossier utilisateur.
+
+### Pourquoi la liste peut être vide
+
+Dans **Export → Aide à la décision → 3 · Du constat à son effet pour les habitants**, l'encadré **Attentes concernées par ce constat** affiche les attentes structurées du dossier. Le message **Ajoutez d'abord un élément à relier** signifie que cette liste est vide et qu'aucune référence ancienne sélectionnée n'est présente. Choisir un constat ne crée pas les attentes. Depuis la PR159, Export propose aussi **Reprendre cette attente** pour créer explicitement une attente à partir des deux textes de l'écoute client ([détail](attentes-ecoute-client.md)) ; sans cette action, rien n'est créé.
+
+Les textes de l'entretien, visibles dans **Relire les notes de l'entretien**, restent des notes libres : ils ne sont pas transformés automatiquement en attentes. L'encadré n'est pas un catalogue général ou une création de compte ; sa liste appartient au seul dossier courant.
+
+### Créer une attente
+
+1. Dans le même bloc d'aide à la décision, ouvrir **1 · Cadre permanent et attentes des habitants**.
+2. Cliquer sur **Ajouter une attente**.
+3. Renseigner **Attente formulée**, puis si connus **Priorité déclarée** et **Source et confirmation à recueillir**. Ce sont des textes saisis par le professionnel, sans priorité calculée automatiquement.
+4. Cliquer sur **Enregistrer cette attente** pour confirmer l'enregistrement du dossier dans le brouillon de ce navigateur. Pour la copie serveur accessible après reconnexion ou sur un autre ordinateur, utiliser aussi **Sauver en ligne** lorsque la session CONNECT le permet.
+
+La nouvelle attente apparaît immédiatement parmi les cases de la rubrique 3. Le bouton d'enregistrement confirme la sauvegarde locale ; il ne publie pas une attente dans un catalogue partagé. Une attente sans intitulé apparaît avec un libellé de repli « Sans intitulé » : revenir remplir son texte.
+
+### Choisir les attentes concernées par un constat
+
+1. Ouvrir **3 · Du constat à son effet pour les habitants**.
+2. Utiliser le lien déjà créé ou cliquer sur **Ajouter un lien constat / attentes**.
+3. Choisir **Constat du bilan** parmi les observations du dossier.
+4. Cocher une ou plusieurs **Attentes concernées par ce constat**.
+5. Décrire **Effet, opportunité ou faiblesse pour les habitants**, puis **Hypothèses et vérifications nécessaires**. L'application ne déduit pas ces textes du lien.
+
+Un constat peut répondre à plusieurs attentes et la même attente peut concerner plusieurs constats. Les cases servent à expliquer la relation ; elles ne classent pas automatiquement les travaux et ne valident pas la conclusion.
+
+Exemple fictif : pour le constat « Traces d'humidité sur un mur », cocher « Comprendre l'origine de l'humidité » et « Prioriser les vérifications ». Décrire ensuite ce que ce constat change pour les habitants et conserver l'origine du phénomène comme hypothèse tant qu'elle n'est pas vérifiée.
+
+### Modifier une attente ou son association
+
+- Pour changer **le texte, la priorité ou la source** d'une attente, revenir sur sa fiche dans la rubrique 1. Son identifiant reste le même ; les liens déjà cochés restent associés à cette attente et son nouveau libellé est repris dans les listes.
+- Pour changer **les attentes reliées à un constat**, cocher ou décocher les cases dans la rubrique 3. Cette opération ne modifie pas le texte des attentes.
+- **Supprimer ce lien** retire uniquement cette relation constat / attentes ; ni l'observation ni les attentes ne sont supprimées.
+- **Supprimer cette attente** retire sa fiche, sans supprimer automatiquement les références déjà utilisées. Elles deviennent « Référence introuvable » : décocher l'ancienne référence et sélectionner l'attente de remplacement dans chaque lien concerné. L'application signale les références manquantes.
+
+Les changements alimentent le brouillon local ; conserver aussi une copie en ligne ou un export JSON selon le besoin. Pour le profil Habitologue, les rubriques 1 à 3 restent disponibles lorsque les projections 4 à 6 sont masquées. La restitution expert détaille les relations constat / attentes ; la synthèse client reprend les attentes et priorités, sans reproduire toute cette matrice détaillée.
+
+### Évolution demandée à la clôture — reprendre l'écoute client
+
+Le responsable demande d'éviter la ressaisie des attentes mentionnées dans **Dossier → Écoute client**, avec une section préremplie et une section de notes/audio dans Export. Cette demande est consignée le 13 novembre pendant la clôture de la journée du 12, puis **réalisée** : la PR159 est fusionnée et installée en préproduction le 16 novembre (voir [Attentes reprises de l'écoute client](attentes-ecoute-client.md)). Dans Export, **Reprendre cette attente** copie le texte entier de « Attentes et priorités du client » ou de « Besoin reformulé avec le client » en une attente modifiable, et **Notes complémentaires et dictée** est une zone libre séparée. La suite de cette section conserve le cadrage d'origine ; le parcours manuel décrit plus haut reste utilisable.
+
+Parcours demandé (cadrage d'origine) :
+
+1. **Attentes reprises de l'écoute client** : afficher le texte source et proposer sa reprise dans les attentes structurées. Le professionnel relit, choisit, complète et modifie les attentes avant de les associer aux constats. Aucune priorité, interprétation ou attente nouvelle n'est déduite silencieusement du verbatim.
+2. **Notes complémentaires et dictée** : compléter les informations dans Export pendant la visite, au clavier ou par la dictée en texte déjà disponible selon l'accord existant. Les notes libres restent distinguées des attentes sélectionnables et ne deviennent une attente qu'après une action explicite.
+
+Critères du cadrage d'origine : conserver les notes initiales et leur provenance ; rendre une attente reprise modifiable ; éviter les doublons lors d'une deuxième reprise ; préserver les corrections faites dans Export si l'écoute client est modifiée ; conserver les liens aux constats par identifiant ; inclure les nouvelles données dans le brouillon, le JSON et la sauvegarde en ligne sans modifier les anciens dossiers. Le découpage d'un texte libre en plusieurs attentes n'a pas été retenu : la reprise copie le texte entier.
+
+**Audio** : le périmètre retenu pour ce cadrage est la dictée transcrite en texte, sans fichier audio enregistré. La conservation et la réécoute d'un enregistrement sonore sont un besoin distinct non confirmé ; durée, accords, accès et stockage resteraient à définir si le responsable le demande. Aucun nouvel usage du microphone, aucune transcription ni aucun traitement externe n'est exécuté à la clôture.
 
 ## Saisie vocale et enregistrement explicite des attentes
 
@@ -69,7 +122,7 @@ Sources de référence privées : `Habitologue/Opportunité_Connect/data/decisio
 
 75 tests Node, build authentifié et CI réussis ; matrice locale des quatre accords et rappel à 100 % contrôlés. Le candidat `9ce22fd` est livré en préproduction après sauvegarde de 31 fichiers et de la configuration, puis installation/restauration répétée sur copie privée. Deux fichiers frontend sont livrés, 30 autres conservés ; l'arbre de 32 fichiers, la configuration et les trois ressources publiques sont vérifiés. Aucun changement d'API ou de schéma.
 
-Après export serveur frais, les deux copies DEMO reçoivent les seuls compléments prévus, puis sont sauvées et rouvertes depuis la liste. Leurs JSON sont exactement ceux préparés, écoute, accords, observations, photos et annexes compris. Les quatre Word sont téléchargés directement du générateur hébergé : 17/5 pages Tilleuls et 27/7 Cricq. Leurs 56 pages sont rendues et identiques pixel à pixel aux préparations déjà relues ; les fichiers restent sans retouche DOCX. [Registre et livrables](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/cas-demonstration-maisons.md>) · [Recette du candidat](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/demo-corrections-20261101/hosted-recipe.json>).
+Après export serveur frais, les deux copies DEMO reçoivent les seuls compléments prévus, puis sont sauvées et rouvertes depuis la liste. Leurs JSON sont exactement ceux préparés, écoute, accords, observations, photos et annexes compris. Les quatre Word sont téléchargés directement du générateur hébergé : 17/5 pages Tilleuls et 27/7 Cricq. Leurs 56 pages sont rendues et identiques pixel à pixel aux préparations déjà relues ; les fichiers restent sans retouche DOCX. [Registre et livrables](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/Démo_prototype_V1/cas-demonstration-maisons.md>) · [Recette du candidat](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/demo-corrections-20261101/hosted-recipe.json>).
 
 La session applicative dure 30 minutes. Une relance depuis CONNECT est contrôlée pendant les essais ; la prévoir avant chaque maison pour la séance de 90 minutes. Aucun réglage d'authentification n'est modifié. La revue métier, DELTA, l'horaire et l'isolation entre deux comptes restent à qualifier.
 
