@@ -5,7 +5,7 @@ title: Lot 0 — ordre et présentation des observations
 status: active
 version: git
 created: 2026-11-12
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [rapport, observations, protocole, word]
 ---
@@ -61,7 +61,17 @@ La sauvegarde en ligne et la nouvelle session CONNECT ne sont pas rejouées sur 
 
 ## Préproduction
 
-Aucune livraison de ce lot. Le point d'entrée existant demeure [CONNECT préproduction → Rapport](https://connect-preprod.avereo.fr/?app=rapport). Après constitution et revue du candidat exact, restent la sauvegarde fraîche, la préparation du retour arrière et la recette authentifiée autorisée : sauvegarde, réouverture, ordre des observations, Word et conservation du propriétaire source. Aucun nouveau droit, compte ou transfert de propriété n'est créé.
+### Livraison du 13 novembre 2026
+
+La PR149 est fusionnée sous `be54aa7d945ead50f4c3ee1a4edb18372b32e3e6` ; ses arbres Rapport et composants partagés sont identiques au candidat qualifié `17ed70698d0d322658f666f4679cead4cf4b15bc`. CI et policy réussies sur la tête acceptée `7c8067f`. Sur demande explicite du responsable, le paquet authentifié déjà vérifié est promu sans reconstruction : quatre fichiers statiques seulement (entrée HTML, JavaScript et CSS principaux, module Word). L'API, les sas CONNECT, RGA, le catalogue Missions, le menu du compte et la configuration privée existants sont conservés.
+
+Sauvegarde fraîche des 187 fichiers hébergés et de la configuration privée ; installation et restauration répétées sur copie privée. Les 17 dossiers en base disposent d'une sauvegarde privée relue à l'identique ; aucune restauration de base n'est exécutée. Après installation, les quatre empreintes sont vérifiées, les 186 fichiers préexistants hors remplacement restent identiques, ainsi que les 17 lignes intégrales (propriétaires inclus), la configuration et les fichiers de production. Aucune écriture SQL de livraison.
+
+[Entrée de revue : CONNECT préproduction → Rapport](https://connect-preprod.avereo.fr/?app=rapport). Sans authentification, la racine redirige vers CONNECT (303) et l'API des dossiers refuse l'accès (403). Le lancement authentifié, la liste en ligne et la reprise du brouillon local existant fonctionnent. Les champs Explications / Conseils habitologue, les commandes de numérotation et la vue compacte sont observés sans erreur console. Aucun champ de dossier n'est modifié, aucun JSON importé et aucune nouvelle sauvegarde en ligne effectuée pendant ces contrôles.
+
+Le suivi canonique `rapportV12CadrageProfils20261112.lot0Observations20261112.preproduction20261113` conserve les preuves, le retour arrière et la prochaine action. [Reçu de livraison](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr149-preproduction-20261113/delivery.json>) · [Contrôles navigateur et limites](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-pr149-preproduction-20261113/browser-verification.json>).
+
+Ces contrôles de disponibilité ne remplacent pas la recette fonctionnelle complète hébergée : réorganisation, Word, sauvegarde/réouverture serveur et scénario à deux comptes restent à recetter sur ce candidat avant de lui attribuer ces résultats. Aucun avis métier ou accord de production ajouté.
 
 ## Mise en production
 

@@ -5,13 +5,17 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Reprise des attentes de l'écoute client — demande de clôture
+
+Éviter la ressaisie des attentes de Dossier dans Export : proposer des attentes reprises de l'écoute, relisibles et modifiables, avec un espace de notes complémentaires et de dictée en texte. Préserver le verbatim, les corrections et les liens existants ; éviter les doublons à la reprise. Ce besoin est demandé, **non implémenté**. La séparation d'un texte libre en plusieurs attentes reste à préciser ; conserver un fichier audio n'est pas confirmé. Le [cadrage et les critères](docs/aide-decision-demo.md#évolution-demandée-à-la-clôture--reprendre-lécoute-client) restent la source de référence.
 
 ## Lot 0 du 12 novembre — observations
 

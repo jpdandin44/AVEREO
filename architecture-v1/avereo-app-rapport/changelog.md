@@ -5,12 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 13 novembre 2026 — PR149 en préproduction
+
+Lot 0 Observations installé après demande explicite, avec le même paquet qualifié et quatre fichiers statiques remplacés ou ajoutés. Sauvegarde et retour arrière des fichiers testés ; 17 dossiers et propriétaires préservés. Accès authentifié, reprise du brouillon et nouveaux contrôles d'observation vérifiés. Recette fonctionnelle complète hébergée à poursuivre. [État et preuves](docs/lot-0-observations.md#livraison-du-13-novembre-2026).
 
 ## 12 novembre 2026 — Lot 0 Observations, complément local
 

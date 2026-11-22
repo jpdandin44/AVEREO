@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
@@ -16,7 +16,9 @@ tags:
 
 ## Priorités du 12 novembre
 
-Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement ; sa revue visuelle Word reste en cours. Le travail photo est préparé en parallèle dans un autre lot, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
+Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement, y compris les rendus Word de 15 pages expert et 5 client ; PR149 fusionnée et installée en préproduction le 13 novembre, avec contrôles de disponibilité, de reprise du brouillon et de conservation des données réussis. La recette fonctionnelle complète hébergée et la revue métier restent à effectuer. Le travail photo est préparé en parallèle dans un autre lot, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
+
+À la clôture, le responsable demande aussi le [préremplissage des attentes depuis l'écoute client et des notes complémentaires dictables](docs/aide-decision-demo.md#évolution-demandée-à-la-clôture--reprendre-lécoute-client). Cadrage consigné pour une prochaine tranche après reprise explicite ; aucune nouvelle implémentation, modification de priorité des autres lots ou activation audio n'est déduite de cette note.
 
 
 ## Essais temporaires — à qualifier

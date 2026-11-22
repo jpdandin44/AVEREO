@@ -5,13 +5,17 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 2026-11-13 — PR149 installée en préproduction
+
+Promotion de quatre fichiers statiques du paquet qualifié, après fusion dont les arbres Rapport/partagés sont identiques. Sauvegarde des fichiers/configuration et retour arrière répété en copie privée ; sauvegarde des 17 dossiers relue. Empreintes hébergées contrôlées, lignes intégrales et propriétaires conservés ; configuration privée et fichiers de production inchangés. Entrée CONNECT et reprise du brouillon existant contrôlées, sans modification de ses champs. Recette fonctionnelle complète hébergée encore ouverte. [Livraison, preuves et limites](lot-0-observations.md#livraison-du-13-novembre-2026).
 
 ## 2026-11-12 — Lot 0 Observations, intégration locale
 
