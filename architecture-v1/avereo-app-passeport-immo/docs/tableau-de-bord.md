@@ -5,7 +5,7 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [suivi, passeport-immo, genere]
 ---
@@ -16,7 +16,7 @@ Vue générée depuis `suivi-chantier.json`. Ne pas modifier manuellement.
 La revue et les décisions se font dans [Projet local](http://127.0.0.1:5193/).
 
 <!-- BEGIN GENERATED: suivi-chantier.json -->
-Mise à jour : **2026-11-12**. **3 phases livrées sur 4 ; 3 phases validées par le responsable.**
+Mise à jour : **2026-11-13**. **3 phases livrées sur 4 ; 3 phases validées par le responsable.**
 
 | Phase | Statut | Livrables | Livraison | Validation humaine |
 |---|---|---|---|---|

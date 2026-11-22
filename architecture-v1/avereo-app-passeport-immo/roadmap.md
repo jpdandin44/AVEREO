@@ -5,16 +5,33 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
+## Lot local du 21 novembre — R12-18
+
+[Volume Rapport sans perte](../avereo-app-rapport/docs/volume-sans-perte.md) : paquet réel de 63 Mo avec le Word client natif généré dans Rapport, import UI, nouvelle session propriétaire, copie privée et reprise dans Rapport vérifiés. Sauvegarde/restauration temporaire réussie, 37 médias et source/propriétaires exacts. PDF de contrôle relus sous LibreOffice ; rendu Microsoft Word et capacité hébergée restent réservés avant autorisation de préproduction. Les lots historiques ci-dessous gardent leurs preuves et décisions.
+
+
+## Lot actif du 19 novembre — Publication Rapport
+
+Lot installé en préproduction après CI, sauvegarde/restauration et accord du responsable. Dépôt fictif, copie privée, partage du Word client, idempotence, nouvelle connexion, récupération serveur et réouverture indépendante dans Rapport vérifiés. Les accès temporaires sont rétablis. Suite : revue humaine PR173 ; merge et production distincts. [Reçu](api/report-publication-observation.json). Les sections antérieures ci-dessous conservent leurs constats historiques.
 # Roadmap Passeport Immo
+
+## Priorité — incident de partage
+
+Le [partage nominatif](docs/partage-documents.md) est installé et techniquement vérifié en préproduction. Confirmer le seul accès demandé, puis l’expert termine son activation CONNECT et vérifie sa consultation réelle. La préparation de production corbeille/classement est différée ; sa recette est acceptée, PR155 reste ouverte.
+
+
+## Travail courant — organisation documentaire
+
+La PR153 est fusionnée et [corbeille, dossiers, apparence et ordre](docs/preproduction-organisation.md) sont livrés en préproduction privée. Recette humaine déclarée validée dans le chat ; PR155 opératoire encore ouverte. Sauvegardes et conservation des 28 documents vérifiées ; production et CIL restent distincts.
 
 ## Suite courante — reprise et fichiers compressés
 
-Les archives PR144 sont [livrées en préproduction](docs/preproduction-archives.md) ; leur revue reste à terminer dans PR145. Le retour sur les quatorze archives et le rapport de 173 Mo conduit au [correctif à 500 Mo](docs/import-volumineux.md), préparé séparément. Configuration PHP réelle et recette du nouveau candidat restent à qualifier avant livraison. La production antérieure garde ses reçus et limites : ne pas rejouer migration SCI, activation ou cron. Le CIL reste distinct.
+Les PR145 et PR146 sont fusionnées. Le [correctif à 500 Mo](docs/preproduction-import-volumineux.md) est livré en préproduction privée : réception réelle, préservation et écran d’import contrôlés. Prochaine action : ajouter les archives d’origine, vérifier persistance et téléchargement, puis valider la revue hébergée du lot. La production antérieure garde ses reçus et limites : ne pas rejouer migration SCI, activation ou cron. Le CIL reste distinct.
 
 ## Évolution CIL proposée le 16 octobre
 

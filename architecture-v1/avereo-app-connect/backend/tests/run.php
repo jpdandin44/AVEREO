@@ -1235,7 +1235,7 @@ $tests['personal badge: authenticated account isolation, defaults and persistenc
             assertSameValue(422, $app->handle(request('PUT',$route,['accountBadge'=>$invalid],$headers),$authenticated,'fixture',$logout)->status, 'invalid badge');
         }
         assertSameValue(422, $app->handle(request('PUT',$route,['accountBadge'=>'X','userId'=>43],$headers),$authenticated,'fixture',$logout)->status, 'no target account accepted');
-        assertSameValue(['accountBadge'=>'B'], $store->read(43), 'foreign account still intact');
+        assertSameValue(['accountBadge'=>'B','professionalProfile'=>''], $store->read(43), 'foreign account still intact');
         $inactive = new \Avereo\Connect\Security\AuthContext(52,time(),'drupal-suspended');
         assertSameValue(403, $app->handle(request('GET',$route),$inactive,'fixture',$logout)->status, 'inactive denied');
         assertSameValue(405, $app->handle(request('DELETE',$route),$authenticated,'fixture',$logout)->status, 'delete denied');
@@ -1265,6 +1265,51 @@ $tests['personal badge: exact entitled CORS origin, no cross-origin mutations or
     assertSameValue(403,$app->handle(request('GET',$route,[],['origin'=>'https://rapport-preprod.avereo.fr'],['application'=>'rapport']),$other,'fixture',$logout)->status,'unentitled account denied');
     assertSameValue(403,$app->handle(request('PUT',$route,['accountBadge'=>'X'],['origin'=>'https://rapport-preprod.avereo.fr','x-csrf-token'=>'fixture'],['application'=>'rapport']),$authenticated,'fixture',$logout)->status,'cross-origin PUT denied even with CSRF');
     assertSameValue(false,is_dir($directory),'no storage writes during CORS tests');
+};
+
+$tests['professional default: legacy badge compatibility, account binding, isolation and no lost partial update'] = static function () use ($config,$repository,$authenticated,$logout): void {
+    $directory=sys_get_temp_dir().'/professional-profile-'.bin2hex(random_bytes(8));
+    $store=new \Avereo\Connect\Account\Preferences($directory);
+    $app=new Application($config,$repository,accountPreferences:$store);
+    $route='/api/v1/me/preferences';
+    try {
+        $initial=$app->handle(request('GET',$route),$authenticated,'fixture',$logout)->payload['data'];
+        assertSameValue(42,$initial['accountId'],'only authenticated account ID is returned');
+        assertSameValue('',$initial['professionalProfile'],'no profession inferred from role');
+        assertSameValue(false,is_dir($directory),'reading a default does not create a file');
+        $headers=['x-csrf-token'=>'fixture','x-account-context'=>$initial['accountContext']];
+        $store->save(42,['accountBadge'=>'OLD']);
+        file_put_contents($directory.'/42.json','{"accountBadge":"OLD"}');
+        assertSameValue(['accountBadge'=>'OLD','professionalProfile'=>''],$store->read(42),'legacy badge-only file stays readable');
+        assertSameValue(403,$app->handle(request('PUT',$route,['professionalProfile'=>'architecte']),$authenticated,'fixture',$logout)->status,'profile CSRF required');
+        assertSameValue(200,$app->handle(request('PUT',$route,['professionalProfile'=>'architecte'],$headers),$authenticated,'fixture',$logout)->status,'own declared default saved');
+        assertSameValue(['accountBadge'=>'OLD','professionalProfile'=>'architecte'],$store->read(42),'profession does not replace badge');
+        $store->save(42,['accountBadge'=>'NEW']);
+        assertSameValue(['accountBadge'=>'NEW','professionalProfile'=>'architecte'],$store->read(42),'old badge-only client retains profession');
+        $other=new \Avereo\Connect\Security\AuthContext(43,time(),'drupal-member');
+        $otherInitial=$app->handle(request('GET',$route),$other,'fixture',$logout)->payload['data'];
+        assertSameValue(43,$otherInitial['accountId'],'second account is bound independently');
+        assertSameValue(409,$app->handle(request('PUT',$route,['professionalProfile'=>'maitre_oeuvre'],$headers),$other,'fixture',$logout)->status,'previous-account form rejected');
+        $otherHeaders=['x-csrf-token'=>'fixture','x-account-context'=>$otherInitial['accountContext']];
+        assertSameValue(200,$app->handle(request('PUT',$route,['professionalProfile'=>'maitre_oeuvre'],$otherHeaders),$other,'fixture',$logout)->status,'ordinary account can edit its own declared default');
+        $before=file_get_contents($directory.'/42.json');
+        $beforeProfile=file_get_contents($directory.'/42.professional-profile.json');
+        assertSameValue(['accountBadge'=>'NEW'],json_decode($before,true),'previous CONNECT release can still read the badge file');
+        foreach ([null,42,[],true,'Architecte','admin','<script>'] as $invalid)
+            assertSameValue(422,$app->handle(request('PUT',$route,['professionalProfile'=>$invalid],$headers),$authenticated,'fixture',$logout)->status,'invalid profession refused');
+        foreach ([[],['professionalProfile'=>'habitologue','accountBadge'=>'X'],['professionalProfile'=>'habitologue','userId'=>43],['professionalProfile'=>'habitologue','role'=>'owner']] as $invalid)
+            assertSameValue(422,$app->handle(request('PUT',$route,$invalid,$headers),$authenticated,'fixture',$logout)->status,'no target ID or access role accepted');
+        assertSameValue($before,file_get_contents($directory.'/42.json'),'invalid requests leave all bytes unchanged');
+        assertSameValue($beforeProfile,file_get_contents($directory.'/42.professional-profile.json'),'invalid requests leave profile bytes unchanged');
+        $fresh=new \Avereo\Connect\Account\Preferences($directory);
+        assertSameValue('architecte',$fresh->read(42)['professionalProfile'],'new instance reads persisted first default');
+        assertSameValue('maitre_oeuvre',$fresh->read(43)['professionalProfile'],'second persisted default stays isolated');
+        $store->save(42,['professionalProfile'=>'']);
+        assertSameValue(['accountBadge'=>'NEW','professionalProfile'=>''],$store->read(42),'explicit reset keeps badge');
+    } finally {
+        foreach (glob($directory.'/*') ?: [] as $file) unlink($file);
+        if(is_dir($directory))rmdir($directory);
+    }
 };
 
 $passed = 0;

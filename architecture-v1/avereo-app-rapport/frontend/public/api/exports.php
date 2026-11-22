@@ -10,6 +10,7 @@ if (($config['organization_exports_enabled'] ?? false) !== true || api_auth_mode
 }
 api_require_connect_gate($config);
 $identity = api_require_auth($config);
+api_require_profile_action($config,$identity,'export');
 $id = filter_var($identity['id'],FILTER_VALIDATE_INT,['options'=>['min_range'=>1]]);
 if ($identity['provider'] !== 'avereo_connect' || $id === false) api_json(403,['ok'=>false,'error'=>'export_denied']);
 $method = $_SERVER['REQUEST_METHOD'];

@@ -5,7 +5,7 @@ title: Connexion par identifiant ou adresse e-mail
 status: active
 version: git
 created: 2026-11-03
-updated: 2026-11-03
+updated: 2026-11-19
 owner: jpdandin
 tags: [connect, identite, connexion, preproduction]
 ---
@@ -14,7 +14,13 @@ tags: [connect, identite, connexion, preproduction]
 
 ## État et périmètre
 
-Candidat local sur `fix/connect-login-email-language`, à partir de la tête documentaire `3909fbf` de la PR #97. Aucune installation de ce lot en préproduction. Le runtime antérieur et les preuves du reset restent distincts. Le cockpit privé porte le candidat, la PR, l’artefact et les résultats exacts de qualification.
+La PR #98 a été livrée et recettée en préproduction le 3 novembre 2026. Candidat livré : `3c8059fc00df2f596afac889a63e55486b755256` ; empreinte du patch : `57d3bd7ad0a9e735c89bd0f038973f9ae2c7d688f05645a4e142d1ddf4660774`. L’ancien état « candidat local, non installé » est historique. Les preuves du reset restent distinctes.
+
+### Rapprochement documentaire du 19 novembre
+
+Les reçus privés `identity-state-final.json`, `browser-recipe.json` et `bilan-preproduction.md`, archivés dans `preproduction-evolutions-20261103`, attestent la livraison du 3 novembre à 19:16:44 UTC : connexions par identifiant et e-mail avec le mot de passe saisi par le titulaire, même profil natif, puis connexion OIDC et ouverture de Rapport et RGA depuis CONNECT. La sauvegarde et la réouverture serveur d’un rapport ont été contrôlées. La revue complète Word et la validation métier des repères restent hors de cette recette.
+
+Pointeur canonique privé : `demo_v1_preparation_20261023.decisionSupport20261030.finalisation20261102.accountLoginAndLanguage20261103.developmentWorkflow`. Les reçus et identités privés ne sont pas incorporés au dépôt public. Cette relecture ne constitue ni une connexion fraîche, ni une nouvelle installation, ni une attestation de la version actuellement hébergée. Aucune validation humaine, identité, permission ou donnée de production n’est modifiée.
 
 Le formulaire natif Drupal affiche « Identifiant ou adresse e-mail ». Un identifiant natif existant continue de fonctionner ; une adresse e-mail unique est résolue vers le nom natif du même compte avant validation. Le mot de passe, le compte bloqué et les limites de tentatives restent vérifiés par les validateurs Drupal existants, dans leur ordre initial. Les tentatives par login et par e-mail utilisent ainsi le même identifiant de contrôle natif.
 
@@ -54,7 +60,7 @@ Pour la recette native, utiliser un conteneur Drupal jetable lié à `127.0.0.1:
 
 Les scripts `login-native-fixtures.php`, `login-native-reconcile.php` et `login-native-http.py` refusent une recette hors de la base SQLite ou de l’URL locale explicitement attendue. La recette utilise un conteneur jetable, des comptes synthétiques et aucun envoi de mail. Le manifeste de livraison ne contient pas ces fixtures.
 
-## Préparation de la préproduction
+## Préparation historique et récupération de la préproduction
 
 Patch limité à trois fichiers de module : `.module`, `AccountProvisioningController.php` et le nouveau `LoginIdentifierResolver.php`. Les scripts de réconciliation et d’installation restent dans le dossier privé d’opérations. L’installateur vérifie l’empreinte de l’archive et sa propre empreinte, contrôle le baseline avant écriture, sauvegarde et restaure sur copie, puis propose une installation ou un retour arrière explicites. Il refuse une autre racine que la préproduction et le mode Python optimisé. Le plan cible un seul compte existant ; il n’applique pas le nom affiché comme login à tous les utilisateurs.
 
@@ -64,7 +70,7 @@ Après accord sur le candidat : revalider cible et empreintes, sauvegarder les d
 | --- | --- |
 | Cadrage | Login lisible ou e-mail, compte et secret conservés |
 | Développement local | Implémenté, contrôles ciblés et recette native ; candidat/CI reliés au cockpit |
-| Préproduction | Préparée, non installée ; sauvegarde fraîche et accord exact requis |
+| Préproduction | Livraison et recette historiques du 3 novembre attestées ; aucune nouvelle installation le 19 novembre |
 | Mise en production | Non autorisée |
 
 ## Références natives

@@ -1,0 +1,29 @@
+{
+  "schema": "avereo-private-publisher-qualification",
+  "version": 1,
+  "qualifiedOn": "2026-11-16",
+  "scope": "design_and_local_primitives_only",
+  "status": "operational_activation_blocked",
+  "target": "https://projet-preprod.avereo.fr/developpements/",
+  "enabled": false,
+  "installed": false,
+  "readyToActivate": false,
+  "serverInspectedThisSession": false,
+  "serverWrites": 0,
+  "productionWrites": 0,
+  "sourceRepository": {"name": "jpdandin44/AVEREO", "visibilityObserved": "public", "observedOn": "2026-11-16", "realPrivateSnapshotsAllowed": false},
+  "checks": [
+    {"id": "PP-01", "level": "design", "status": "documented", "subject": "Exact owner AND fresh global role, browser GET only", "evidence": "../docs/publicateur-prive.md"},
+    {"id": "PP-02", "level": "local_fixture", "status": "covered_by_tests", "subject": "Signed import, anti-replay, copy restore and private read-only projection", "evidence": "../tests/development-snapshot.test.mjs"},
+    {"id": "PP-03", "level": "local_fixture", "status": "covered_by_tests", "subject": "Disabled data-only plan and source/approval preservation through two publications", "evidence": "../tests/development-publisher-plan.test.mjs"},
+    {"id": "PP-04", "level": "hosted", "status": "unverified", "subject": "Current owner identity, role authority, private configuration and host permissions", "evidence": null},
+    {"id": "PP-05", "level": "operational", "status": "blocked", "subject": "Permanent private source location and unattended service identity not qualified", "evidence": null},
+    {"id": "PP-06", "level": "operational", "status": "blocked", "subject": "No generic data-only transport/admission installed; historical operator also deploys code", "evidence": null},
+    {"id": "PP-07", "level": "hosted", "status": "unverified", "subject": "Current sequence/index, fresh backup and copy restore; dated receipts are not current proof", "evidence": null},
+    {"id": "PP-08", "level": "operational", "status": "blocked", "subject": "Acknowledgement reconciliation, crash recovery, full-capacity history preservation and failure receipt not implemented end-to-end", "evidence": null}
+  ],
+  "automaticJobInstalled": false,
+  "credentialsCreatedOrChanged": false,
+  "humanValidationChanged": false,
+  "nextAction": "Review the local Gantt PR; qualify the private operator/source location and implement/test the data-only channel before requesting a separate preproduction activation authorization."
+}

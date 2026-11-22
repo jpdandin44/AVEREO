@@ -2,14 +2,16 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { MapPin, Map, Image, Check, Pencil, LocateFixed, ExternalLink, Loader2 } from 'lucide-react';
-import { buildIgnMapUrl, buildIgnTileUrl, locationConfirmed, validLocation } from './locationMap.js';
+import { buildIgnMapUrl, buildIgnTileUrl, locationConfirmed, validLocation, terrainViewLayers } from './locationMap.js';
 import { terrainMapSamples } from './terrainContext.js';
 import { createRgaLayer, createRgaPanes } from './rgaOverlay.js';
 import useRgaAccess from './useRgaAccess.js';
 
-export function CadastralMap({ lon, lat, mode, revision, editing = false, draft = null, onPointChange, terrainAnalysis = null, rga = false, rgaOpacity = .4 }) {
+export function CadastralMap({ lon, lat, mode, revision, editing = false, draft = null, onPointChange, terrainAnalysis = null, rga = false, rgaOpacity = .4, onCapture, captureBusy = false }) {
   const container = useRef(null);
   const mapRef = useRef(null);
+  const captureViewport = useRef(null);
+  const capturing = Boolean(onCapture);
   const rgaRef = useRef(null);
   const [rgaStatus, setRgaStatus] = useState('loading');
   const [mapZoom, setMapZoom] = useState(18);
@@ -21,11 +23,15 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
 
   useEffect(() => {
     let active = true;
-    setTiles({ base: 'loading', cadastre: 'loading' });
+    // The legacy Site aerial view keeps its parcel overlay. Capture modes are explicit.
+    const layers = mode === 'aerial' ? ['aerial', 'cadastre'] : terrainViewLayers(mode);
+    setTiles(Object.fromEntries(layers.map(layer => [layer === 'cadastre' ? 'cadastre' : 'base', 'loading'])));
+    const key = `${Number(lon)},${Number(lat)}`;
+    const previous = capturing && captureViewport.current?.key === key ? captureViewport.current : null;
     const map = L.map(container.current, { scrollWheelZoom: false, minZoom: 3, maxZoom: 20, zoomControl: false })
-      .setView([Number(lat), Number(lon)], 18);
+      .setView(previous?.center || [Number(lat), Number(lon)], previous?.zoom || 18);
     mapRef.current = map;
-    setMapZoom(18);
+    setMapZoom(map.getZoom());
     map.on('zoomend', () => { if (active) setMapZoom(map.getZoom()); });
     createRgaPanes(map);
     L.control.zoom({ zoomInTitle: 'Zoomer', zoomOutTitle: 'Dézoomer' }).addTo(map);
@@ -42,8 +48,9 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
         if (active && !failed) setTiles((prev) => ({ ...prev, [name]: 'ready' }));
       }).addTo(map);
     };
-    addTiles(mode === 'aerial' ? 'aerial' : 'plan', 'base', '<a href="https://cartes.gouv.fr/" target="_blank" rel="noopener noreferrer">© IGN</a>');
-    addTiles('cadastre', 'cadastre', 'Parcellaire Express (PCI) © IGN / DGFiP');
+    for (const layer of layers) addTiles(layer, layer === 'cadastre' ? 'cadastre' : 'base', layer === 'cadastre'
+      ? 'Parcellaire Express (PCI) © IGN / DGFiP'
+      : '<a href="https://cartes.gouv.fr/" target="_blank" rel="noopener noreferrer">© IGN</a>');
     const marker = samples.length ? null : L.marker([Number(lat), Number(lon)], {
       icon: L.divIcon({ className: 'property-map-marker', html: '<span></span>', iconSize: [30, 38], iconAnchor: [15, 38] }),
       title: 'Bien à vérifier', alt: 'Repère du bien recherché', draggable: false,
@@ -81,6 +88,7 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
       if (active) setTiles((prev) => Object.fromEntries(Object.entries(prev).map(([key, value]) => [key, value === 'loading' ? 'error' : value])));
     }, 15000);
     return () => {
+      if (capturing) { const center = map.getCenter(); captureViewport.current = { key, center: [center.lat, center.lng], zoom: map.getZoom() }; }
       active = false;
       clearTimeout(timeout);
       resize.disconnect();
@@ -89,7 +97,7 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
       rgaRef.current = null;
       map.remove();
     };
-  }, [lon, lat, mode, revision, samples]);
+  }, [lon, lat, mode, revision, samples, capturing]);
 
   useEffect(() => {
     const map = mapRef.current;
@@ -119,13 +127,21 @@ export function CadastralMap({ lon, lat, mode, revision, editing = false, draft 
   return (
     <>
       <div className="property-map-frame">
-        <div ref={container} className="property-map-canvas" role="region" aria-label="Carte cadastrale du bien" />
+        <div ref={container} className="property-map-canvas" role="region" aria-label="Carte du bien" />
         <span className="map-north" title="Nord géographique en haut">N<br />↑</span>
       </div>
       {failed ? <p className="property-map-status warning" role="status">Une partie de la carte est indisponible. Réessayez ou ouvrez le plan IGN.</p>
-        : loading ? <p className="property-map-status" role="status"><Loader2 size={16} className="spin" /> Chargement du fond et des parcelles…</p> : null}
+        : loading ? <p className="property-map-status" role="status"><Loader2 size={16} className="spin" /> Chargement du fond{Object.hasOwn(tiles, 'cadastre') ? ' et des parcelles' : ''}…</p> : null}
       {rga && <p className={`property-map-status${rgaStatus === 'error' ? ' warning' : ''}`} role="status">
         {rgaStatus === 'error' ? 'La couche RGA est indisponible. Utilisez Recentrer pour réessayer.' : rgaStatus === 'loading' ? 'Chargement de la couche RGA…' : `RGA 2026 · Contours simplifiés à ${mapZoom >= 11 ? '20' : '250'} m à cette échelle : précision parcellaire non garantie.`}</p>}
+      {onCapture && <button type="button" className="button secondary" disabled={captureBusy || loading || failed}
+        onClick={() => {
+          const map = mapRef.current;
+          if (!map) return;
+          const origin = map.getPixelBounds().min, size = map.getSize(), center = map.getCenter(), bounds = map.getBounds();
+          onCapture({ mode, pixelOrigin: { x: origin.x, y: origin.y }, width: size.x, height: size.y, zoom: map.getZoom(),
+            center: { lon: center.lng, lat: center.lat }, bounds: { west: bounds.getWest(), south: bounds.getSouth(), east: bounds.getEast(), north: bounds.getNorth() } });
+        }}>Utiliser cette vue pour les observations du terrain</button>}
     </>
   );
 }

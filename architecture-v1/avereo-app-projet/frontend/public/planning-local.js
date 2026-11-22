@@ -44,6 +44,13 @@ function applyProject(project) {
 function fillProjectSettings() {
     const fields = { 'project-name': 'name', 'project-start': 'startDate', 'project-target': 'targetDate', 'project-capacity': 'capacityPerWeek', 'project-mode': 'schedulingMode' };
     for (const [id, field] of Object.entries(fields)) document.getElementById(id).value = projectSettings[field] ?? '';
+    const periods = projectSettings.timelineMode === 'periods';
+    for (const id of ['project-start','project-target','project-capacity','project-mode']) {
+        const input=document.getElementById(id); input.disabled=periods; document.getElementById(id+'-field').hidden=periods;
+    }
+    document.getElementById('project-start').required=!periods;
+    document.getElementById('project-calendar-help').hidden=periods;
+
 }
 
 function persistProject(project, replacing = false) {
@@ -96,8 +103,8 @@ function saveProjectSettings(event) {
     commitProject({
         ...currentProject(),
         name: document.getElementById('project-name').value.trim(),
-        startDate: document.getElementById('project-start').value,
-        targetDate: document.getElementById('project-target').value,
+        startDate: projectSettings.timelineMode === 'periods' ? null : document.getElementById('project-start').value,
+        targetDate: projectSettings.timelineMode === 'periods' ? null : document.getElementById('project-target').value,
         capacityPerWeek: Number(document.getElementById('project-capacity').value),
         schedulingMode: document.getElementById('project-mode').value,
     });
@@ -120,6 +127,7 @@ function exportProject() {
 }
 
 function exportCsv() {
+    if (projectSettings.timelineMode === 'periods') { window.alert('Utilisez Exporter le projet JSON pour conserver les périodes et les fiches.'); return; }
     try { downloadFile('avereo-projet-taches.csv', ProjetPlanning.tasksToCsv(tasks), 'text/csv;charset=utf-8'); }
     catch (error) { window.alert(error.message); }
 }

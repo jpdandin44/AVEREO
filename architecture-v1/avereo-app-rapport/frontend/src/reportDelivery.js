@@ -1,9 +1,16 @@
-import { buildExpertDocumentHtml, escapeHtml, textToHtml, explanationsHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml } from './reportHtml.js';
+import { buildExpertDocumentHtml, escapeHtml, textToHtml, explanationsHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml, buildEnvironmentContextHtml } from './reportHtml.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
 import { buildDecisionHtml } from './decisionSupport.js';
-import { isHabitologueProfile, observationAdviceLabel } from './reportProfiles.js';
+import { usesMissionContext, observationAdviceLabel, isHabitologueProfile, missionProfileLabel } from './reportProfiles.js';
+import { reportPhotoSource } from './photoReportVersion.js';
+import { buildInterventionsHtml } from './interventions.js';
+
+export function documentStatus(report) {
+  return report.publication?.validatedByProfessional === true && /^[a-f0-9]{32}$/.test(report.publication.id || '')
+    ? `Version finalisée${/^\d{4}-\d{2}-\d{2}T/.test(report.publication.createdAt || '') ? ` du ${report.publication.createdAt.slice(0, 10)}` : ''} · ${report.publication.id.slice(0, 8)}` : 'Document de travail';
+}
 
 export function deliveryOptions(report) {
   const value = report.livrable || {};
@@ -37,7 +44,7 @@ function cover(report, client) {
     <img class="brand-logo" src="${AVEREO_LOGO}" alt="${escapeHtml(AVEREO_NAME)}" />
     <div class="company-identity">${AVEREO_COMPANY_LINES.map(line => `<p>${escapeHtml(line)}</p>`).join('')}</div>
     <p class="eyebrow">HABITAT · COMPRENDRE · DÉCIDER</p>
-    <h1>${client ? 'Votre habitat, l’essentiel' : 'Rapport expert détaillé'}</h1>
+    <h1>${isHabitologueProfile(report) ? `${escapeHtml(missionProfileLabel(report))} — ` : ''}${client ? 'Votre habitat, l’essentiel' : 'Rapport expert détaillé'}</h1>
     <h2>${escapeHtml(report.titre)}</h2>
     <p class="address">${escapeHtml(report.adresse_logement)}</p>
     <table><tr><td>Dossier</td><td>${escapeHtml(report.reference_dossier)}</td></tr>
@@ -45,7 +52,7 @@ function cover(report, client) {
       ${report.missionBrief ? missionContactLines({...report.missionBrief, email:report.email}).map(([label,value]) => `<tr><td>${escapeHtml(label)}</td><td>${escapeHtml(value)}</td></tr>`).join('') : ''}
       <tr><td>Intervenant</td><td>${escapeHtml(report.intervenant)}</td></tr>
       <tr><td>Visite</td><td>${escapeHtml(report.date_visite || 'Date non renseignée')}</td></tr></table>
-    <p class="status">Document de travail · ${client ? 'Restitution à relire avant remise au client' : 'Soumis à validation professionnelle'}</p>
+    <p class="status">${escapeHtml(documentStatus(report))}${report.publication?.validatedByProfessional ? '' : ` · ${client ? 'Restitution à relire avant remise au client' : 'Soumis à validation professionnelle'}`}</p>
     <p class="muted">Les illustrations pédagogiques expliquent des mécanismes. Elles ne constituent pas des mesures du bâtiment.</p>
   </section>`;
 }
@@ -70,6 +77,7 @@ const style = `
   .muted,.source,.caption { color: #506573; } .source { font-size: 9pt; }
   .observation { margin: 26px 0; page-break-before: always; page-break-inside: auto; }
   .photo-block { page-break-inside: avoid; margin: 20px 0; }
+  .keep-together { break-inside: avoid; page-break-inside: avoid; }
   .photo-block img { max-height: 350px; width: auto; max-width: 100%; }
   .photo-block p { font-size: 9pt; }
   .illustration { page-break-before: always; } .illustration img { display: block; margin: 20px auto; max-height: 610px; }
@@ -89,7 +97,7 @@ export function buildReportHtml(report) {
   let content;
   if (!client) {
     // Keep every existing expert field, observation, photo and contextual source.
-    const original = buildExpertDocumentHtml(report, buildDecisionHtml(report));
+    const original = buildExpertDocumentHtml(report, buildDecisionHtml(report), buildInterventionsHtml(report));
     content = original.split('<body>')[1].split('</body>')[0];
     content = content.replace(/<div class="cover">[\s\S]*?<\/div>\s*<br style="page-break-before: always;" \/>/, cover(report, false));
     content += visuals.map(v => illustration(v)).join('');
@@ -97,22 +105,23 @@ export function buildReportHtml(report) {
   } else {
     // Sort globally first, then filter: selected findings keep their global number (gaps allowed).
     const selected = orderedObservations(report).filter(o => options.observations.includes(o.id));
-    content = cover(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
+    content = cover(report, true) + buildEnvironmentContextHtml(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
       <p>${textToHtml(options.synthese || 'Synthèse client à rédiger par le professionnel.')}</p>
-      ${selected.map(o => `<h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${isHabitologueProfile(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
+      ${selected.map(o => `<article class="client-observation keep-together"><h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${usesMissionContext(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
         ${explanationsHtml(o)}
-        ${isHabitologueProfile(report) ? `<h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(o.actions)}</p>` : ''}
-        ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(p.src) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(p.src)}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}`).join('')}
+        ${usesMissionContext(report) ? `<h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(o.actions)}</p>` : ''}
+        ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(reportPhotoSource(p)) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(reportPhotoSource(p))}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}</article>`).join('')}
       <p class="muted">Le rapport expert conserve l’ensemble des constats et des sources.</p></section>`;
     content += buildObservationPlansHtml(report, options.observations);
     content += visuals.map(v => `<section class="client-page">${illustration(v, true)}</section>`).join('');
     content += buildRgaCartographyHtml(report);
     content += buildDecisionHtml(report, true);
+    content += buildInterventionsHtml(report, true);
     content += `<section class="client-page"><h2>02 · Les priorités</h2><p>${textToHtml(options.priorites || 'Priorités à préciser avec le professionnel.')}</p>
       <h2>03 · La prochaine étape</h2><p>${textToHtml(options.suite || 'Prochaine étape à convenir.')}</p>
       <h3>Limites et points à confirmer</h3><p>${textToHtml(options.limites_client || report.reserves)}</p>
       <p class="status">Cette synthèse accompagne le rapport expert. Elle ne remplace pas les vérifications techniques nécessaires.</p></section>`;
   }
-  return `<!doctype html><html lang="fr"><head><meta charset="utf-8" /><title>${escapeHtml(report.titre)} — ${client ? 'Synthèse client' : 'Rapport expert'}</title><style>${style}</style></head><body>${content}<p class="report-footer">${escapeHtml(AVEREO_NAME)} · ${escapeHtml(report.reference_dossier)} · Document de travail</p></body></html>`;
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8" /><title>${escapeHtml(report.titre)} — ${client ? 'Synthèse client' : 'Rapport expert'}</title><style>${style}</style></head><body>${content}<p class="report-footer">${escapeHtml(AVEREO_NAME)} · ${escapeHtml(report.reference_dossier)} · ${escapeHtml(documentStatus(report))}</p></body></html>`;
 }
 import { missionContactLines } from '../../../avereo-platform/shared/mission-dossier.js';

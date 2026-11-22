@@ -42,7 +42,7 @@ try {
     if (is_readable($privateConfigPath)) {
         $privateValues = require $privateConfigPath;
         $allowedPrivateKeys = [
-            'DEVELOPMENTS_PRIVATE_CONFIG', 'APPEARANCE_ADMIN_ORGANIZATION_ID', 'APPLICATION_ACCESS_DELEGATIONS_ENABLED',
+            'PROFILES_PRIVATE_CONFIG', 'DEVELOPMENTS_PRIVATE_CONFIG', 'APPEARANCE_ADMIN_ORGANIZATION_ID', 'APPLICATION_ACCESS_DELEGATIONS_ENABLED',
             'APP_ENV', 'APP_DEBUG', 'DB_DSN', 'DB_USER', 'DB_PASSWORD',
             'SESSION_COOKIE_NAME', 'SESSION_IDLE_SECONDS', 'SESSION_ABSOLUTE_SECONDS',
             'OAUTH_ISSUER', 'OAUTH_AUTHORIZE_URL', 'OAUTH_TOKEN_URL', 'OAUTH_USERINFO_URL',
@@ -53,8 +53,9 @@ try {
             'SUPPORT_EMAIL',
             'IDENTITY_ACCOUNT_PROVISIONING_URL', 'IDENTITY_ACCOUNT_PROVISIONING_SECRET', 'TRIAL_ACCESS_POLICY_FILE',
             'ACCOUNT_LIFECYCLE_ENABLED', 'IDENTITY_ACCOUNT_DELETION_URL', 'IDENTITY_ACCOUNT_DELETION_SECRET',
-            'ACCOUNT_LIFECYCLE_REPORT_CONFIG', 'ACCOUNT_LIFECYCLE_PASSEPORT_CONFIG',
+            'ACCOUNT_LIFECYCLE_REPORT_CONFIG', 'ACCOUNT_LIFECYCLE_PASSEPORT_CONFIG', 'REPORT_TRANSFER_ADMINISTRATORS',
             'APP_LAUNCH_RAPPORT_URL', 'APP_LAUNCH_RAPPORT_SECRET',
+            'APP_LAUNCH_UNI_URL', 'APP_LAUNCH_UNI_SECRET',
             'APP_LAUNCH_RGA_URL', 'APP_LAUNCH_RGA_SECRET',
             'APP_LAUNCH_COUPE_URL', 'APP_LAUNCH_COUPE_SECRET',
             'APP_LAUNCH_PROJET_URL', 'APP_LAUNCH_PROJET_SECRET',
@@ -128,16 +129,54 @@ try {
             $config->identityAccountActivationSecret,
         )
         : null;
+    $profileCatalog=null;
+    $profileAdministration=null;
+    $profilePolicy=null;
+    $profileConfig=trim((string)getenv('PROFILES_PRIVATE_CONFIG'));
+    if ($profileConfig!=='') {
+        if ($pdo===null || !$repository instanceof PdoConnectRepository) throw new RuntimeException('Gestion des profils indisponible.');
+        [$profileCatalog,$profilePolicy,$profileAdministration]=\Avereo\Connect\Administration\ProfileFactory::create(
+            $profileConfig,$documentRoot,$pdo,$repository,$session->context(),trim((string)getenv('TRIAL_ACCESS_POLICY_FILE')),$config->oauthIssuer,
+            [...array_values($config->appLaunchSecrets),$config->oauthClientSecret,$config->identityLogoutSecret,$config->identityAccountActivationSecret,
+                (string)getenv('IDENTITY_ACCOUNT_PROVISIONING_SECRET'),(string)getenv('IDENTITY_ACCOUNT_DELETION_SECRET')]);
+        $repository=new PdoConnectRepository($pdo,$delegations,$profileCatalog);
+    }
     $accountAdministration = null;
     $accountLifecycle = null;
+    $reportTransfers = null;
     $provisionUrl = trim((string)getenv('IDENTITY_ACCOUNT_PROVISIONING_URL'));
     $provisionSecret = trim((string)getenv('IDENTITY_ACCOUNT_PROVISIONING_SECRET'));
     $trialPolicy = trim((string)getenv('TRIAL_ACCESS_POLICY_FILE'));
     if ($pdo !== null && $repository instanceof PdoConnectRepository && $provisionUrl!=='' && $provisionSecret!=='' && $trialPolicy!=='') {
-        $policyStore = new \Avereo\Connect\Administration\TrialPolicyStore($trialPolicy);
+        $policyStore = $profilePolicy ?? new \Avereo\Connect\Administration\TrialPolicyStore($trialPolicy);
         $accountAdministration = new \Avereo\Connect\Administration\AccountAdministration($pdo,
             new \Avereo\Connect\Identity\IdentityAccountProvisioningClient($provisionUrl,$provisionSecret),
             $policyStore, $delegations);
+        $reportConfigPath = trim((string) getenv('ACCOUNT_LIFECYCLE_REPORT_CONFIG'));
+        $reports = $reportConfigPath === '' ? null : static function () use ($reportConfigPath, $trialPolicy, $documentRoot, $config): PDO {
+            $path = realpath($reportConfigPath);
+            $root = realpath($documentRoot);
+            if ($path === false || !is_file($path) || $root === false
+                || str_starts_with($path, $root . DIRECTORY_SEPARATOR)) {
+                throw new RuntimeException('Configuration Rapport privée requise.');
+            }
+            $rapport = require $path;
+            $expected = $config->environment === 'preprod' ? ['preprod', 'preproduction'] : [$config->environment];
+            if (!is_array($rapport) || !in_array($rapport['environment'] ?? null, $expected, true)
+                || ($rapport['connect_trial_access_file'] ?? null) !== $trialPolicy
+                || ($rapport['auth_mode'] ?? null) !== 'connect_gateway') {
+                throw new RuntimeException('Rapport ne correspond pas à cet environnement CONNECT.');
+            }
+            return new PDO(
+                'mysql:host=' . $rapport['db_host'] . ';port=' . (int) ($rapport['db_port'] ?? 3306)
+                    . ';dbname=' . $rapport['db_name'] . ';charset=utf8mb4',
+                $rapport['db_user'], $rapport['db_password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION],
+            );
+        };
+        $transferAdmins = json_decode((string) getenv('REPORT_TRANSFER_ADMINISTRATORS'), true);
+        if ($reports !== null && is_array($transferAdmins) && $transferAdmins !== []) {
+            $reportTransfers = new \Avereo\Connect\Administration\ReportTransfers($pdo, $repository, $reports, $transferAdmins);
+        }
         if (getenv('ACCOUNT_LIFECYCLE_ENABLED') === 'true') {
             $deletionUrl = trim((string) getenv('IDENTITY_ACCOUNT_DELETION_URL'));
             $deletionSecret = trim((string) getenv('IDENTITY_ACCOUNT_DELETION_SECRET'));
@@ -148,27 +187,6 @@ try {
             $identityDeletion = $deletionUrl !== '' && $deletionSecret !== ''
                 ? new \Avereo\Connect\Identity\IdentityAccountDeletionClient($deletionUrl, $deletionSecret)
                 : null;
-            $reportConfigPath = trim((string) getenv('ACCOUNT_LIFECYCLE_REPORT_CONFIG'));
-            $reports = $reportConfigPath === '' ? null : static function () use ($reportConfigPath, $trialPolicy, $documentRoot, $config): PDO {
-                $path = realpath($reportConfigPath);
-                $root = realpath($documentRoot);
-                if ($path === false || !is_file($path) || $root === false
-                    || str_starts_with($path, $root . DIRECTORY_SEPARATOR)) {
-                    throw new RuntimeException('Configuration Rapport privée requise.');
-                }
-                $rapport = require $path;
-                $expected = $config->environment === 'preprod' ? ['preprod', 'preproduction'] : [$config->environment];
-                if (!is_array($rapport) || !in_array($rapport['environment'] ?? null, $expected, true)
-                    || ($rapport['connect_trial_access_file'] ?? null) !== $trialPolicy
-                    || ($rapport['auth_mode'] ?? null) !== 'connect_gateway') {
-                    throw new RuntimeException('Rapport ne correspond pas à cet environnement CONNECT.');
-                }
-                return new PDO(
-                    'mysql:host=' . $rapport['db_host'] . ';port=' . (int) ($rapport['db_port'] ?? 3306)
-                        . ';dbname=' . $rapport['db_name'] . ';charset=utf8mb4',
-                    $rapport['db_user'], $rapport['db_password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION],
-                );
-            };
             $passeportReady = false;
             $passeportPath = trim((string) getenv('ACCOUNT_LIFECYCLE_PASSEPORT_CONFIG'));
             if ($passeportPath !== '' && is_file($passeportPath) && realpath($passeportPath) === $passeportPath
@@ -207,6 +225,9 @@ try {
         $developmentAuthorization,
         $appearance,
         new \Avereo\Connect\Account\Preferences(dirname($privateConfigPath) . '/account-preferences'),
+        $reportTransfers,
+        $profileAdministration,
+        $profileCatalog,
     );
     $oauth = null;
     if ($config->isIdentityProviderConfigured()) {

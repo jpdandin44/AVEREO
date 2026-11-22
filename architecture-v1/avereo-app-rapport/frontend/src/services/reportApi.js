@@ -1,15 +1,18 @@
-const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
+import { requireReportContent, requireEditableNumbers, verifyCompleteDownload } from '../reportFiles.js';
+import { REPORT_JSON_LIMIT, REPORT_LIMIT_LABEL } from '../../../../avereo-platform/shared/report-volumes.js';
+
+const API_BASE_URL = (import.meta.env?.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
 const OAUTH_ATTEMPT_KEY = 'avereo-rapport-oauth-attempt';
 
-async function request(path, { token = '', body, method = 'GET', signal } = {}) {
+async function request(path, { token = '', body, serializedBody, method = 'GET', signal } = {}) {
   const headers = { Accept: 'application/json' };
-  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  if (body !== undefined || serializedBody !== undefined) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const response = await fetch(`${API_BASE_URL}/${path}`, {
     method,
     headers,
-    body: body === undefined ? undefined : JSON.stringify(body),
+    body: serializedBody ?? (body === undefined ? undefined : JSON.stringify(body)),
     credentials: 'same-origin',
     signal,
   });
@@ -18,6 +21,7 @@ async function request(path, { token = '', body, method = 'GET', signal } = {}) 
     const error = new Error(payload?.message || `Erreur API (${response.status}).`);
     error.status = response.status;
     error.code = payload?.error || 'api_error';
+    if (/^[a-f0-9]{32}$/.test(payload?.reportId || '')) error.reportId = payload.reportId;
     throw error;
   }
   return payload;
@@ -101,11 +105,21 @@ export async function getCurrentUser(token) {
   return payload.user;
 }
 
-export async function saveOnlineReport(report, token, id = '') {
+export async function authorizeReportExport(token, user) {
+  const payload = await request('auth.php?action=authorize-export', { method: 'POST', token, body: {} });
+  if (payload.provider !== user?.provider || String(payload.accountId) !== String(user?.id)) throw new Error('Le compte a changé. Rechargez Rapport avant de télécharger ce dossier.');
+  return true;
+}
+
+export async function saveOnlineReport(report, token, id = '', { signal } = {}) {
+  const serializedBody = JSON.stringify({id, report});
+  const envelopeBytes = new Blob([JSON.stringify({id, report:null})]).size - 4;
+  if (new Blob([serializedBody]).size - envelopeBytes > REPORT_JSON_LIMIT) throw new Error(`Le dossier dépasse ${REPORT_LIMIT_LABEL}. Son contenu et ses photos restent dans le navigateur ; téléchargez son JSON complet.`);
   const payload = await request('reports.php', {
     method: 'POST',
     token,
-    body: { id, report },
+    serializedBody,
+    signal,
   });
   return payload.report;
 }
@@ -137,7 +151,18 @@ export async function downloadOrganizationReport(id, purpose) {
   return response.blob();
 }
 
-export async function loadOnlineReport(id, token) {
-  const payload = await request(`reports.php?id=${encodeURIComponent(id)}`, { token });
+export async function loadOnlineReport(id, token, { signal } = {}) {
+  const payload = await request(`reports.php?id=${encodeURIComponent(id)}`, { token, signal });
+  requireReportContent(payload.report?.payload);
+  requireEditableNumbers(payload.report.payload);
   return payload.report;
+}
+
+export async function downloadOnlineReport(id, token, { signal } = {}) {
+  const headers = { Accept: 'application/json' };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  const response = await fetch(`${API_BASE_URL}/reports.php?${new URLSearchParams({ id, download: '1' })}`, {
+    credentials: 'same-origin', redirect: 'error', signal, headers,
+  });
+  return verifyCompleteDownload(response);
 }

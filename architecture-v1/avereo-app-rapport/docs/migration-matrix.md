@@ -5,13 +5,153 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-13
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 21 novembre — Capacité et fidélité JSON, sans migration
+
+La chaîne navigateur complète est désormais contrôlée : l'ouverture source ajoute seulement son identifiant serveur dans le navigateur ; la copie réimportée le retire, puis reçoit celui de sa nouvelle ligne au compte B. Champs métier, 37 médias décodés, plans et repères exacts après nouvelle session. Source et lignes antérieures conservées. [Reçu et limites du rendu Word](volume-sans-perte.md#reprise-du-21-novembre-et-parcours-réel-dans-le-navigateur-local).
+
+Aucune migration SQL ni conversion des dossiers existants. Le candidat [volume sans perte](volume-sans-perte.md) accepte les anciens JSON/paquets, garde STORE schéma 1 et retire seulement les liens techniques de la copie indépendante. Les sauvegardes nouvelles conservent les types objet/liste natifs au lieu de normaliser les objets vides. La première qualification HTTP est complétée par la recette navigateur et génération Word décrite ci-dessus ; le rendu Microsoft Word et la recette hébergée restent distincts.
+
+
+## 19 novembre — Publication et réimport sans mutation de la source
+
+Aucune migration Rapport. Le paquet conserve tous les champs du JSON et les originaux référencés. Le réimport retire seulement le rattachement `onlineReportId` et remplace les anciennes références privées photo par leurs octets intégrés ; versions annotées et repères conservés. Les JSON historiques continuent d’être importables. Les exports ordinaires gardent le statut de travail. La finalisation s’applique à un instantané explicitement confirmé. [Contrat](publication-passeport-immo.md).
+## 17 novembre — Libellé Analyse globale sans migration
+
+La valeur profil_metier=habitologue, les catégories historiques dont Rapport Habitologue et les préférences de compte restent exactes. Seuls les intitulés de prestation et de conseils changent ; aucun remplacement dans les textes utilisateurs, champs actions/conseils ou médias. Profils absent/inconnu et règles des parcours Architecte/Maître d’œuvre conservés. [Contrat](profils-professionnels.md#libellé-de-prestation--17-novembre).
+
+## 17 novembre — Plans multiples sans migration SQL
+
+Les huit valeurs de plans[].kind sont acceptées par le client et la validation PHP ; anciennes valeurs niveau/coupe/cadastre inchangées. cadrage.mode est facultatif et borné aux trois fonds. Vues figées, IDs et coordonnées conservés ; aucune migration, copie d’identité ou modification de droit. [Règles de conservation](reperage-observations.md).
+
+## 17 novembre — Profils administrés, compatibilité
+
+Pas de migration des dossiers ou comptes, pas de changement d'identifiant ou
+propriétaire. Sans affectation administrative : fonctionnement historique.
+Profil affecté : applications et actions bornées par la politique existante.
+Un parcours administré reconnu peut servir de défaut à une création seulement.
+La réserve historique {} / [] des quatre contrôles vides est documentée ; aucune
+assertion de contenu complet retirée. [Compatibilité et récupération](../../avereo-app-connect/docs/profils-et-droits.md).
+## 16 novembre — Profils professionnels et défaut CONNECT
+
+Pas de migration SQL ni nouveau champ Rapport : `profil_metier` existant conserve les codes reconnus, les autres valeurs restent stockées. Même `decision`, actions/options/liens/IDs, nouveaux libellés communs UI/Word. Défaut CONNECT personnel dans un fichier compagnon privé indépendant du médaillon, aucun identifiant de compte ajouté au dossier. Terrain/contexte et médias accessibles aux parcours professionnels reconnus de Visite Globale ; filtres client et masquage Habitologue conservés. [Compatibilité, tests et limites](profils-professionnels.md).
+
+## 16 novembre — PR163 déployée sans migration
+
+Seuls les champs facultatifs de planning existants dans le candidat qualifié sont pris en charge par la nouvelle validation PHP. Aucune table, configuration, identité ou propriété changée ; 24 dossiers et toutes leurs colonnes sont exacts après livraison et navigation, aucun enregistrement serveur effectué. Import de la fixture : seule normalisation attendue des quatre contrôles de protocole vides [] vers {}, déjà documentée ; toutes les autres données métier exactes. Le fichier Projet entier correspond à la projection canonique de la fixture importée. [Reçus](interventions-projet.md#préproduction).
+
+## 16 novembre — Paramètres facultatifs de planning Projet
+
+decision.schema_version=1 conservée ; ajout facultatif de decision.planning_projet et decision.actions[].planning_projet, sans seconde liste, modification d’ID source ou migration SQL. Aucun défaut ajouté à la lecture ; modifications conservant les clés inconnues. API reports.php, téléchargement, autorisations et schéma inchangés ; validation optionnelle dans decision-validation.php. Export dérivé schemaVersion=1 natif Projet, nouveau projet sous son contrôle existant ; aucune synchronisation/écriture directe. [Champs et compatibilité](../api/interventions-projet.md). Réserve antérieure des contrôles de protocole vides distincte.
+
+## 16 novembre — Livraison PR162 sans migration
+
+Fusion f4017be identique au candidat b04ea2b ; promotion du même artefact de présentation. Aucun schéma/table, champ JSON, API, rôle/propriétaire ou moteur de restitution changé. Sauvegarde privée de la table relue ; 24 dossiers/colonnes/propriétaires exacts après navigation, aucune restauration SQL ou écriture. Import complet fictif conservant les champs métier, lien serveur source retiré normalement ; choix expert/client et filtres conservés. [Reçus et limites](organisation-ecrans.md#préproduction).
+
+## 16 novembre — Compatibilité des ouvertures de fiches
+
+Les ouvertures ne créent aucun champ dans le dossier, aucun schéma ou nouvelle migration. Champs, identifiants, numéros, photos/plans/signature et données inconnues restent dans le payload courant. Replis seuls : JSON exact et contenu Word équivalent ; copie indépendante puis nouvelle session : payload UI entier exact. Les projections des autres profils gardent leurs données et règles. [Preuves et accès de revue](organisation-ecrans.md#revue-locale). La réserve PHP objet/liste reste séparée.
+
+
+## 16 novembre — Persistance Interventions qualifiée sur la cible
+
+Trois interventions retrouvent nature, priorité/horizon, modalités/préalables/justification, sélections client et références T1/9/T2 et attentes après deux sauvegardes puis ouverture serveur dans une nouvelle session normale sans brouillon. Identifiants préexistants conservés et JSON identique octet pour octet ; attentes/notes/liens et contenus du dossier préservés. Les 23 lignes historiques restent exactes. [Reçus et limites](interventions-proposees.md#recette-complète-du-16-novembre). Aucun changement de version ou schéma ; la normalisation PHP préexistante des objets vides reste distincte.
+
+
+## 16 novembre — Compatibilité Interventions confirmée sur la cible
+
+Interface et validation PHP facultative promues ensemble. Types realisation et inclure_client contrôlés sur la cible par deux refus sans écriture. Les 23 dossiers existants, colonnes/propriétaires et schéma sont inchangés ; variantes communes et fins de ligne déjà revues conservées hors des quatre fichiers, autres octets exacts hors ligne de refus prévue. Aucun changement de droit, compte ou activation privée. [Périmètre et preuves](interventions-proposees.md#préproduction). La normalisation PHP préexistante des objets vides reste distincte.
+
+## 16 novembre — Compatibilité des interventions Habitologue
+
+decision.actions et ses identifiants restent la source unique ; realisation (texte) et inclure_client (booléen) sont facultatifs et validés côté PHP. Absence de sélection client = exclusion. Les anciennes actions deviennent consultables dans le panneau Habitologue ; les options/références historiques restent en mémoire et dans le JSON. Les autres profils conservent leurs projections ; ces nouveaux champs n’y ont pas encore d’éditeur dédié. Version future non prise en charge : panneau et rendu refusent une interprétation silencieuse. [Contrat et limites](interventions-proposees.md#données-et-compatibilité). Aucun changement SQL, droit ou migration ; interface/validation à promouvoir ensemble si autorisées.
+
+## 16 novembre — Persistance Attentes qualifiée sur la cible
+
+La recette hébergée retrouve les trois attentes, notes, provenance et deux liens après sauvegardes puis ouverture serveur en nouvelle session sans brouillon. Une correction du libellé reste associée au même lien ; le changement de l’écoute conserve le verbatim initial. Les dossiers historiques et la source Terrain restent exacts. [Reçus et limites](attentes-ecoute-client.md#recette-complète-du-16-novembre). Aucun changement de schéma ou de version ; la normalisation PHP préexistante objet/liste des contrôles vides reste distincte.
+
+## 16 novembre — Compatibilité confirmée sur la cible de préproduction
+
+Interface et validation PHP facultative livrées ensemble. Nouvelles validations réellement actives via deux refus HTTP sans écriture ; 22 dossiers existants, colonnes, propriétaires et schéma préservés. Variantes communes et octets préexistants hors des cinq fichiers retenus conservés, seul le journal de refus reçoit sa ligne attendue. Aucun changement d’authentification, de droit, de table ou d’activation privée. [Recette de livraison et limites](attentes-ecoute-client.md#préproduction). La normalisation préexistante des objets vides reste un suivi distinct, non corrigé ici.
+
+## 16 novembre — Compatibilité des attentes et notes
+
+decision.notes_attentes et attentes[].provenance_ecoute sont facultatifs ; schema_version 1 maintenu. Anciennes attentes et liens ne sont ni réidentifiés ni reclassés. Aucun nouveau schéma SQL. Une ancienne interface qui conserve les propriétés inconnues peut garder ces valeurs sans les afficher ; qualifier la version avant d’annoncer leur édition/restauration. Type objet/liste des contrôles de protocole vides : normalisation PHP préexistante, distincte de ce lot. [Contrat, limites et recette](attentes-ecoute-client.md).
+
+
+## 2026-11-14 — Terrain horizontal : compatibilité et retour arrière
+
+Constats terrain dans observations avec phase_habitologie=terrain ; Tn dérivés séparément des numéros du bâti. Anciens objets, plans, signature, photos et références conservés ; copie complète indépendante et source/propriétaire inchangés vérifiés. Ancien contexte facultatif repris dans un volet d’Observations, sans conversion. Nouveau kind=cadastre et métadonnées cadrage/localisation dans plans ; validation PHP et frontend à livrer ensemble. Aucun changement SQL.
+
+Une ancienne interface peut classer les constats terrain dans À classer et produire une numérotation différente ; un ancien PHP refuse le type cadastre. Ne pas utiliser un ancien client pour éditer/exporter ces nouveaux dossiers. Un retour arrière du code ne retire pas les champs JSON ; conserver la sauvegarde complète et qualifier les versions ensemble avant livraison. Aucun déploiement effectué. [Contrat et recette actuelle](environnement-terrain.md). Les résultats Site ci-dessous décrivent le premier candidat.
+
+## 2026-11-14 — Contexte extérieur facultatif, sans migration SQL
+
+`contexte_exterieur` étend le payload brut existant ; son absence n'ajoute aucun contenu aux anciens dossiers. Ses champs inconnus compatibles, son identifiant et ses octets photo sont conservés par le JSON complet et l'import indépendant. Le compteur `photos` ajoute la photo du contexte si elle existe. La copie expurgée l'omet entièrement. L'édition/suppression ne réécrit ni observations, ni terrain mesuré, ni sélection client ou repères. Changement de profil : données conservées, section masquée hors Habitologue.
+
+La vue associée reste une référence vers un fond existant, sans nouveau numéro ; référence absente signalée. Le stockage SQL et les permissions ne changent pas. Une ancienne interface conserve ce champ inconnu mais ne l'édite ni ne l'exporte en Word. Pas de migration ni restauration de base à prévoir pour le code de ce lot ; aucun déploiement effectué. [Contrat et qualification locale](environnement-terrain.md).
+
+
+## 2026-11-13 — Copie photo préparée et comptage conservateur
+
+Le payload conserve les anciennes photos telles quelles et ajoute facultativement `reportVersion` et `reportPhotoChoice`. Les champs inconnus et références existantes sont préservés. L’éditeur ne remplace pas l’original ; une copie dont la version ou les opérations sont invalides n’est pas choisie pour l’export. Le serveur continue à stocker le JSON existant ; aucune migration ni nouvelle table pour les annotations.
+
+Le quota d’originaux utilise la table 003 existante plus l’inventaire privé du propriétaire sous verrou : réservations SQL, résidus orphelins/temporaires et surplus physique, sans double comptage des octets enregistrés ni suppression automatique. Le périmètre d’identité reste inchangé. [Contrat et réserves](photos-rapport-edition.md).
+
+## 2026-11-13 — Pagination Word, préproduction vérifiée
+
+Regroupement explicite de chaque constat client et de la conclusion de décision ; conversion en propriétés Word `keepNext`/`keepLines`, sans nouvelle rupture obligatoire entre constats. Les marges verticales des cellules sont resserrées uniquement dans l’aide à la décision. Les deux réserves sont résolues sur les 26 pages contrôlées en préproduction (expert 20 pages, synthèse 6 pages). Données, identifiants, médias, propriétaires, API et schéma inchangés. [Critères de recette et état](partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## 2026-11-13 — Fidélité des exports, pagination à améliorer
+
+Le rapport expert reprend les 12 constats, deux placements photo, plan et signature ; la synthèse reprend les deux constats sélectionnés, une photo et un plan, sans signature dans son format actuel. Conversion PDF native Word vérifiée, aucun bouton PDF direct. Deux réserves de pagination sont ouvertes lors de ce contrôle initial, puis résolues par le correctif ci-dessus ; aucune migration effectuée. [Résultats et limites](partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre).
+
+
+## 2026-11-13 — Recette du stockage existant après PR152
+
+Le stockage actuel est qualifié par sauvegarde, copie sous un autre compte fictif et nouvelle session sans brouillon local. Les 18 lignes existantes et le propriétaire source restent inchangés ; deux nouvelles lignes fictives sont conservées. Collections de contrôles vides normalisées de `[]` à `{}` au rechargement, sans perte de saisie. Comptes et navigateur restaurés. [Portée et preuves](partage-tests-et-stockage.md#recette-complète-entre-deux-comptes-fictifs--13-novembre). Aucune migration, activation des originaux ou production effectuée.
+
+
+## 2026-11-13 — Livraison préproduction PR152
+
+Les huit fichiers applicatifs sont installés depuis le paquet qualifié, sans migration SQL. Les routes d’originaux privés sont présentes mais la capacité reste désactivée : aucune configuration ou table 003 activée par cette livraison. Tous les dossiers, propriétaires, colonnes et la configuration privée sont conservés. Les composants communs déjà hébergés et les variantes LF/CRLF restent inchangés.
+
+Le retour arrière des fichiers a été répété sur une copie privée ; il ne réécrit pas la base et ne restaure pas des dossiers par-dessus des saisies récentes. Sauvegarde JSON lue et vérifiée, sans restauration SQL sur cible. [Reçus et portée des contrôles](partage-tests-et-stockage.md#préproduction).
+
+
+## 2026-11-13 — Dossier complet, sans migration SQL
+
+| Élément | Effet |
+| --- | --- |
+| `reports.php` GET `download=1` | Octets exacts du payload sous les mêmes droits de lecture, pièce jointe et SHA-256. |
+| POST existant | Même stockage ; relecture du contenu écrit puis accusé avec compteurs. |
+| JSON complet importé | Champs conservés et seul `onlineReportId` retiré ; prochaine sauvegarde indépendante du source. |
+| Structure de test | Nouveau marqueur facultatif `copie_test: true` ; ancienne forme reçue reconnue sans convertir son contenu fictif en contenu réel. |
+| Anciennes sauvegardes | Ouvrables si contenu valide ; résumé seul refusé, brouillon préservé. |
+| Retour applicatif | Ancienne interface ignore le marqueur ; aucun schéma à supprimer. Déployer interface et API cohérentes. |
+
+Les exports organisationnels et leurs grants restent inchangés. [Procédure et limites](partage-tests-et-stockage.md).
+
+## 2026-11-13 — Originaux privés, migration additive locale
+
+| Élément | Compatibilité / état |
+| --- | --- |
+| Migration `003_photo_originals.sql` | Ajoute uniquement `rapport_photo_originals`, exécutée sur MariaDB temporaire ; aucun schéma hébergé modifié. |
+| Photos historiques | `id`, `name`, `src`, `horodatageISO` et autres champs conservés ; `original` facultatif, aucun transfert automatique. |
+| Export/import et Word | Image complète toujours conservée ; référence facultative ne confère aucun droit. Aucun allègement annoncé. |
+| Propriété | Celle du rapport et celle de l’original doivent correspondre ; aucun changement du propriétaire source. |
+| Suppression / réattribution | Aucune suppression automatique d’original ; accès refusé lorsque le rapport disparaît ou change de propriétaire. Politique future à définir. |
+| Retour applicatif | Désactiver la fonction, conserver table et fichiers privés ; les anciennes interfaces ignorent la référence. Retour avec données à préparer avant livraison. |
+
+[Contrat, configuration et restauration](photos-originales-et-annotations.md), [API](../api/photos-originales.json).
 
 ## 2026-11-13 — Promotion PR149 sans migration
 
@@ -134,6 +274,8 @@ Les deux types de rapport, leur sauvegarde/relecture en ligne, reprise du brouil
 | Assistant multi-etapes | `Rapport_AVEREO_Pro.txt`, `frontend/src/App.jsx` | Donnees du rapport | Frontend Vite; navigation et reprise manuelles | conservee |
 | Brouillon hors ligne | `App.jsx` | IndexedDB, `localStorage` | Mode local conserve; test de rechargement | conservee |
 | Photos et camera | `App.jsx` | Fichiers, MediaDevices, data URLs | Frontend; taille bornee avant sauvegarde serveur | adaptee |
+| Originaux prives des photos et versions annotees | demande du 12 novembre | Espace prive du dossier en ligne, acces CONNECT | Aucune implementation ; [cadrage en quatre phases](photos-originales-et-annotations.md) | prevue, a decider |
+| Compression des nouvelles photos importees | demande du 12 novembre | Canvas du navigateur, data URLs JPEG | `photoCompression.js` isole et teste, non branche ; import inchange tant que les originaux prives ne sont pas conserves ; [regles et essais](compression-photos.md) | candidat isole, non active |
 | Dictee vocale | `App.jsx` | Web Speech API | Frontend avec degradation gracieuse | conservee |
 | Adresse et cadastre | `App.jsx` | BAN, API Carto IGN | Appels publics conserves; erreurs reseau gerees | conservee |
 | Urbanisme et Geoportail | `App.jsx` | API Carto, Geoportail | Frontend; verification des liens | conservee |
@@ -202,3 +344,16 @@ Le pied de page regroupe le menu du compte et les commandes entre étapes. La sa
 La migration des exports crée des tables de rattachement, de permission et de journal. Les dossiers existants conservent leur propriétaire. [Recette et retour arrière](../../../docs/administration-acces-exports.md).
 
 Le correctif local du message d’interruption concerne le panneau React. Les dossiers, les droits et le journal existants restent compatibles. [Vérification](source-audit.md#interruption-du-téléchargement-délégué).
+
+## 18 novembre — Correction de pagination des interventions
+
+Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.
+
+## 18 novembre — Fermeture de l’aperçu
+
+Le [candidat local de fermeture](source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) utilise un dialogue natif au-dessus du bandeau commun. Aucun changement de données, sauvegarde, API ou restitution ; huit parcours expert/client et 246 tests réussis. Livraison hébergée distincte et non effectuée.
+
+
+## 19 novembre — Planning par périodes
+
+Mode optionnel sans dates, sans migration SQL, avec coordonnées explicites et import comme nouveau projet privé. Le calendrier existant, les droits et les données antérieures sont conservés. [Contrat, compatibilité, limites et recette](interventions-projet.md). Le contrôle hébergé reste distinct des tests locaux ; son résultat est enregistré dans le suivi canonique.

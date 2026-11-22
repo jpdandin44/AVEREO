@@ -5,10 +5,15 @@ title: README
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
+
+## 21 novembre — Contrat de volumes du candidat local
+
+`shared/report-volumes.json` est la source machine des limites de Rapport/Passeport ; les helpers JS/PHP assurent les unités et le budget mémoire, sans logique métier. Les copies API sont générées par `.github/scripts/prepare-report-volumes.mjs` et vérifiées à l’octet. [Contrat et qualification](../avereo-app-rapport/docs/volume-sans-perte.md). Aucun service ni déploiement ajouté.
+
 
 
 ## Références actuelles

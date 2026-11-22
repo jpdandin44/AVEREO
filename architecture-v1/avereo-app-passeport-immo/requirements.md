@@ -5,19 +5,43 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
+## 21 novembre — Copies complètes volumineuses
+
+JSON privé proposé à 100 000 000 octets avant et après reconstitution. Plafonds fichier/lot/paquet conservés à 524 288 000 octets, soit 524,288 Mo (500 Mio) : les anciens libellés « 500 Mo » ci-dessous décrivent ce même plafond binaire. Refus sans dépôt partiel, contenus et médias intacts, copie privée inaccessible au destinataire. [Qualification et limites](../avereo-app-rapport/docs/volume-sans-perte.md).
+
+
+## 19 novembre — Versions finalisées provenant de Rapport
+
+Importer un paquet préparé dans Rapport, confirmer son rattachement au bien/client et l’effet sur les destinataires existants. Conserver séparément la restitution partageable et la copie complète privée avec originaux. Réouverture du travail dans Rapport ; refus de tout accès source par un destinataire partagé ou compte étranger. Envoi identique idempotent ; aucune version ni document antérieur écrasé. Maximum 500 Mo, entrées stockées sans expansion de ZIP, hashes vérifiés avant écriture. Sauvegarde/restauration couvrant métadonnées et octets privés.
 # Exigences Passeport Immo
+
+## Partage nominatif demandé
+
+PART01 : accès nominatif, lecture seule à la liste et au téléchargement des documents actifs ; révocation possible. PART02 : éligibilité CONNECT et activation normales, confirmation exacte du destinataire. PART03 : archives/corbeille/autres biens exclus, aucune écriture accordée au destinataire. PART04 : échec fermé si annuaire périmé, sauvegarde des droits et exclusion des transferts entre environnements. [Recette](docs/partage-documents.md).
+
+
+## Organisation documentaire demandée le 13 novembre
+
+- DOC01 : corbeille sans délai automatique, restauration conservant catégorie, contenu, client et état archivé.
+- DOC02 : purge unitaire confirmée, refus hors corbeille ou hors propriétaire, suppression de la ligne et du fichier actif. Les sauvegardes antérieures suivent leur rétention existante.
+- DOC03 : dossiers parents repliables par catégorie, recherche et filtres conservés.
+- DOC04 : icône choisie dans huit symboles et couleur hexadécimale personnalisables pour chaque catégorie de chaque bien.
+- DOC05 : ordre manuel par dossier, partagé entre sessions serveur ; conflits de réglages refusés.
+- DOC06 : corbeille et organisation incluses dans sauvegarde/restauration et transfert ciblé ; anciens transferts compatibles.
+- DOC07 : importer un doublon dans la corbeille doit expliquer la restauration ou la purge, sans import partiel.
+- DOC08 : migration additive simulable, idempotente et réservée à la base explicitement nommée. Installation privée PR153 autorisée séparément, sans extension des privilèges applicatifs ; recette humaine hébergée distincte.
 
 ## Formats compressés — demande du 12 novembre 2026
 
 - ARCH01 : accepter ZIP, 7z, RAR, TAR/USTAR, GZ et TGZ comme documents du bien.
 - ARCH02 : conserver nom et octets de l’archive entière ; ne pas extraire ses membres, conformément au choix humain.
 - ARCH03 : réutiliser client/bien, catégories, doublons, archivage réversible, droits, téléchargement privé et sauvegarde.
-- ARCH04 : préparer 500 Mo par fichier et par lot, cent fichiers par requête ; reconnaître le conteneur et refuser atomiquement chaque lot invalide. La préproduction PR144 conserve 25/100 Mo tant que ce nouveau candidat n’est pas livré.
+- ARCH04 : accepter 500 Mo par fichier et par lot, cent fichiers par requête ; reconnaître le conteneur et refuser atomiquement chaque lot invalide. Candidat PR146 livré en préproduction ; réception réelle jusqu’à 500 Mo vérifiée, recette humaine des archives d’origine en attente.
 - ARCH05 : rendre visibles l’association du client, l’étape d’import et son enregistrement automatique ; désactiver l’import jusqu’à l’association confirmée et préciser si les fichiers sont conservés dans le navigateur ou sur le serveur privé.
 - ARCH06 : répartir automatiquement les grandes sélections en lots successifs, sans découper ou extraire les fichiers ; conserver progression, résultats confirmés et dédoublonnage lors d’une reprise.
 - ARCH07 : nommer le fichier trop gros avant envoi et distinguer l’enregistrement partiel confirmé du succès global. [Guide et limites](docs/import-volumineux.md).

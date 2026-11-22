@@ -31,6 +31,15 @@ const js = r.outputFiles.find((f) => f.path.endsWith('.js')).text;
 const css = r.outputFiles.find((f) => f.path.endsWith('.css')).text;
 const sur = (s) => s.replace(/<\/(script|style)/gi, '<\\/$1');
 const injection = Object.keys(locales).length ? `<script>window.__AVEREO_UNI_LOCAL__=${sur(JSON.stringify({ listes: locales.listes || {}, parametres: locales.parametres || {} }))};</script>` : '';
+const templatesIndex = process.argv.indexOf('--templates');
+let templates = '';
+if (templatesIndex !== -1) {
+  const source = process.argv[templatesIndex + 1];
+  if (!source) throw new Error('Indiquez le pack de modèles après --templates.');
+  const pack = JSON.parse(readFileSync(source, 'utf8'));
+  if (pack.format !== 'avereo-uni-modeles' || pack.version !== 1) throw new Error('Pack de modèles invalide.');
+  templates = `<script>window.__AVEREO_UNI_TEMPLATES__=${sur(JSON.stringify(pack))};</script>`;
+}
 
 // Offline delivery uses the model exported by the CONNECT administrator.
 const appearanceIndex = process.argv.indexOf('--appearance');
@@ -66,7 +75,7 @@ ${appearanceMeta}
 </head>
 <body>
 <div id="app"></div>
-${injection}<script>${sur((await buildMissionScript()).toString('utf8'))}</script><script>${sur(js)}</script>
+${injection}${templates}<script>${sur((await buildMissionScript()).toString('utf8'))}</script><script>${sur(js)}</script>
 </body>
 </html>
 `;
@@ -77,3 +86,4 @@ if (process.argv.includes('--livrer')) {
   copyFileSync(join(racine, 'dist/index.html'), join(racine, '..', 'AVEREO UNI.html'));
   console.log('Copie : ../AVEREO UNI.html');
 }
+

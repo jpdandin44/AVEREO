@@ -1,0 +1,374 @@
+{
+  "observedAt": "2026-11-12T18:29:23.518799+00:00",
+  "target": "https://passeport-immo-preprod.avereo.fr/",
+  "candidate": {
+    "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+    "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+    "artifactPath": ".local/ci-large-580e4da/candidate.zip",
+    "manifestPath": ".local/ci-large-580e4da/candidate.manifest.json"
+  },
+  "status": "delivered_and_technically_verified",
+  "github": {
+    "pr145": {
+      "headRefOid": "d5a41854f4065e6d5b8cac3a72016fbdb09888c4",
+      "mergeCommit": {
+        "oid": "022f23260d2225ee21afdbe5af3e59715400d6f5"
+      },
+      "mergedAt": "2026-11-12T18:11:37Z",
+      "number": 145,
+      "state": "MERGED"
+    },
+    "pr146": {
+      "number": 146,
+      "state": "MERGED",
+      "headRefOid": "a091654138e1f58cf416e7d47969a5439128ba40",
+      "mergeCommit": {
+        "oid": "831dda19deb3d5c70d1307b42ac5d8abac22422f"
+      },
+      "mergedAt": "2026-11-12T18:15:26Z"
+    },
+    "checksPassed": 24,
+    "strictPolicies": "passed",
+    "runtimeDiffFrozenToMerge": []
+  },
+  "qualification": {
+    "observedAt": "2026-11-12T18:23:57+00:00",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+    "dataRecovery": {
+      "snapshotSha256": "ff88fd8f14d601a804be5d68b492259054aa5ee035db46ef1cd4c98e6577abb7",
+      "tables": 4,
+      "documents": 13,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false
+    },
+    "rollbackRehearsal": {
+      "candidateOnCopy": "passed",
+      "restoredOnCopy": "passed",
+      "liveFilesChanged": false
+    },
+    "externalGuardsPreserved": true,
+    "operations": {
+      "preserve": 12,
+      "replace": 4,
+      "create": 2
+    }
+  },
+  "sourceAuthorization": {
+    "source": "user_chat",
+    "text": "Les PR #145 et #146 sont mergées, peux-tu pousser la mise à jour à 500 Mo en préprod pour que je puisse charger mes archives stp ?"
+  },
+  "delivery": {
+    "applications": {
+      "passeport-immo": {
+        "root": "/home/daje3540/passeport-immo-preprod.avereo.fr/public",
+        "sourceSha": "580e4da1d74a469bda3fb88c5ebd497e38072f1c",
+        "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+        "verifiedCandidatePaths": 18,
+        "operations": {
+          "preserve": 12,
+          "replace": 4,
+          "create": 2
+        },
+        "hostedAccessPolicyPreserved": true,
+        "unlistedPathsPreserved": true,
+        "rollbackDirectory": "/home/daje3540/private/preprod-rapport-passeport-archives-500-pr146-20261112/recovery/passeport-immo/public"
+      }
+    },
+    "productionChanged": false,
+    "privateConfigurationChanged": false,
+    "databaseMigration": false,
+    "status": "delivered_verified",
+    "observedAt": "2026-11-12T18:25:03+00:00",
+    "writes": [
+      {
+        "app": "passeport-immo",
+        "path": ".user.ini"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "api/index.php"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "api/storage.php"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/index-DtI49yJP.js"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "assets/index.es-FzIIHQfI.js"
+      },
+      {
+        "app": "passeport-immo",
+        "path": "index.html"
+      }
+    ]
+  },
+  "largeHttp": {
+    "before": {
+      "observedAt": "2026-11-12T18:23:36+00:00",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "phase": "before",
+      "status": "passed",
+      "checks": [
+        "usual account remains entitled",
+        "HTTPS restricted to private preproduction",
+        "real HTTPS transfer completed",
+        "normal CONNECT launch accepted",
+        "HTTPS restricted to private preproduction",
+        "real HTTPS transfer completed",
+        "normal storage session established",
+        "random property is absent for every owner",
+        "exact full-size ZIP fixture",
+        "HTTPS restricted to private preproduction",
+        "real HTTPS transfer completed",
+        "oversize file refused"
+      ],
+      "requests": [
+        {
+          "sizeBytes": 27262976,
+          "httpStatus": 422,
+          "result": "refused"
+        }
+      ],
+      "liveRowsChanged": false,
+      "documentsCreated": 0,
+      "phpIniValuesRead": false,
+      "effective500MiBReceiptVerified": false,
+      "scope": "Actual HTTPS multipart receipt and file validation; no positive document persistence on hosting. Persistence and backup of a whole 173 MiB ZIP are separately qualified in isolated CI."
+    },
+    "after": {
+      "observedAt": "2026-11-12T18:25:57+00:00",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "phase": "after",
+      "status": "passed",
+      "checks": [
+        "usual account remains entitled",
+        "HTTPS restricted to private preproduction",
+        "real HTTPS transfer completed",
+        "normal CONNECT launch accepted",
+        "HTTPS restricted to private preproduction",
+        "real HTTPS transfer completed",
+        "normal storage session established",
+        "random property is absent for every owner",
+        "exact full-size ZIP fixture",
+        "HTTPS restricted to private preproduction",
+        "real HTTPS transfer completed",
+        "whole 173 MiB parsed and validated before absent-property guard",
+        "exact full-size ZIP fixture",
+        "HTTPS restricted to private preproduction",
+        "real HTTPS transfer completed",
+        "whole 500 MiB parsed and validated before absent-property guard",
+        "exact full-size ZIP fixture",
+        "HTTPS restricted to private preproduction",
+        "real HTTPS transfer completed",
+        "oversize file refused"
+      ],
+      "requests": [
+        {
+          "sizeBytes": 181403648,
+          "httpStatus": 404,
+          "result": "complete_file_validated_no_write"
+        },
+        {
+          "sizeBytes": 524288000,
+          "httpStatus": 404,
+          "result": "complete_file_validated_no_write"
+        },
+        {
+          "sizeBytes": 525336576,
+          "httpStatus": 422,
+          "result": "refused"
+        }
+      ],
+      "liveRowsChanged": false,
+      "documentsCreated": 0,
+      "phpIniValuesRead": false,
+      "effective500MiBReceiptVerified": true,
+      "scope": "Actual HTTPS multipart receipt and file validation; no positive document persistence on hosting. Persistence and backup of a whole 173 MiB ZIP are separately qualified in isolated CI."
+    }
+  },
+  "httpsRecipe": {
+    "observedAt": "2026-11-12T18:26:04+00:00",
+    "status": "passed",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "assertions": 106,
+    "checks": [
+      "usual account has existing entitlement",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "anonymous root redirects without duplicate Basic",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "anonymous workspace denied",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "invalid ticket denied",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "authorized CONNECT ticket accepted",
+      "private session established",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "authorized CONNECT ticket accepted",
+      "private session established",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "server storage active",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing property workspace loaded",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document list loaded",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document list loaded",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "existing document exact in independent session",
+      "download remains inert attachment",
+      "request restricted to preproduction",
+      "HTTPS transport verified",
+      "write without CSRF denied",
+      "snapshot table allowed",
+      "live table identical to fresh backup",
+      "snapshot table allowed",
+      "live table identical to fresh backup",
+      "snapshot table allowed",
+      "live table identical to fresh backup",
+      "snapshot table allowed",
+      "live table identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup",
+      "private document identical to fresh backup"
+    ],
+    "account": 1,
+    "independentSessions": 2,
+    "properties": 2,
+    "accountDocuments": 13,
+    "activeDocuments": 10,
+    "archivedDocuments": 3,
+    "allPrivateDocumentsPreserved": 13,
+    "familyStillEntitled": false,
+    "liveRowsChanged": false,
+    "successfulNewArchiveUploadTested": false,
+    "freshDrupalLoginTested": false,
+    "credentialsExported": false
+  },
+  "humanHostedAcceptanceRecorded": false,
+  "productionChanged": false,
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "browser": {
+    "observedAt": "2026-11-12T18:29:23.518799+00:00",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "new500MiBLabelVisible": true,
+    "importButtonsEnabled": true,
+    "serverStorageNoteVisible": true,
+    "sciActiveDocuments": 6,
+    "sciArchivedDocuments": 3,
+    "localScreenshot": ".local/preproduction-import-500.png",
+    "liveRowsChanged": false
+  },
+  "externalGuardsVerifiedAfterDelivery": true,
+  "remaining": [
+    "Human hosted acceptance of original archives is pending.",
+    "The historical secondary account #2 remains ineligible according to CONNECT; no access is changed in this lot.",
+    "Files larger than 500 MiB require a separate future chunked-transfer evolution."
+  ],
+  "documentationControl": {
+    "observedAt": "2026-11-12T18:31:23.033876+00:00",
+    "documents": 17,
+    "localLinks": 276,
+    "metadataAndScaffold": "passed",
+    "oldWorkingCopyFilesUnchanged": 29,
+    "approvedReferences": "Checked separately by tests/check-cockpit.mjs"
+  },
+  "localDeliveryChecks": {
+    "pythonTests": 28,
+    "approvedReferenceChecks": "passed",
+    "sourceRuntimeUnchangedSinceAcceptedMerge": true
+  },
+  "deliveryToolPackage": {
+    "sha256": "6ad324bd42209505711123cc8eaa179fa8ac992e893a23b1bfa13f7e860a2b2a",
+    "files": {
+      "passeport-immo.zip": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+      "candidate.manifest.json": "526d12f19ddf28aca491f2c7af8a9c7443a738b931e6ddf74fea1e28dd816081",
+      "selection.json": "f77ccaa6f68d4609ede35916085d0212cba0a0ffc63af14b2aee8f104fe8227a",
+      "release_selected_preprod.py": "b28cbf58e2e971bc8117a48f2d8d6a91e243ae28426e951adfef6e939bbb5f27",
+      "release-archives-preproduction.py": "65441ef8d80d7d2d8faec914329c749ad7ed0eed95707263d778a68f832d7169",
+      "release-large-import-preproduction.py": "54bcdc8070d1527082cdd9d8809c2ceadc15d6dcba801bc11a6bd3c6763cdd19",
+      "backup_selected.php": "dc3371845cfac305e1f2d11c3db22e47d922557323aa68090c00cc886749fd7a",
+      "backup-storage.php": "7d12721d86ec502e293753f32d3cdc87aa14290a29451b9211f5acdab25ff892",
+      "verify-archives-preproduction.php": "7b5dc0da8b4ed2c28499894e960bd22c4b92db7dd4e70a20f41d690bf93491c0",
+      "verify-large-import-preproduction.php": "e55d324c047e972ff39569a82c2a77c7e84a5ee2b2d73d85ed93c42efbc64657",
+      "prepare-large-fixtures.py": "0a3fd011023f3c246273c1704108f07b5aefdb3b70cbe10d80cc104015e86ed6"
+    },
+    "artifactSha256": "5f096131d1181389e50a69b59802d3d33f3dda0cefb4db17307cde951b4e0a13",
+    "containsPrivateData": false
+  },
+  "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/147"
+}

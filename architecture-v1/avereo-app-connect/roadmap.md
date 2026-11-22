@@ -5,10 +5,24 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-07
+updated: 2026-11-18
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 17 novembre — PR164 fusionnée ; catalogue et droits à cadrer
+
+**Cadrage** du lot confirmé : catalogue commun de profils dans Gérer
+les comptes, accès applications et actions dans Rapport. **Développement local** réalisé et soumis à revue humaine : catalogue sans droit
+initial, propriétaire global seul, périmètre d'export officiel documenté.
+**Préproduction** : différée explicitement par le responsable après le nouveau
+lot ; candidat PR164 et paquets conservés, sans installation. **Mise en production** non engagée.
+[Plan, critères et inconnues](docs/profils-et-droits.md). Les états datés suivants
+conservent l'historique.
+
+## 16 novembre — Profils CONNECT/Rapport en revue locale
+
+**Cadrage** explicitement confirmé, **Développement local** réalisé/qualifié sur comptes fictifs et changement de défaut sans modification de dossier existant. Prochaine action : revue du candidat commun puis décision distincte de **Préproduction** coordonnée. **Mise en production** non engagée. [Revue et preuves](../avereo-app-rapport/docs/profils-professionnels.md).
 
 ## 7 novembre — pont et stockage, état local courant
 
@@ -94,3 +108,11 @@ Qualifier le candidat local en préproduction avec des profils hérités et expl
 ## Retour d’activation — 6 novembre
 
 PR #118 validée, fusionnée et installée en préproduction après accord. Contrôles techniques et première connexion du compte fictif avec une ancienne session administrateur réussis ; même mot de passe et bonne identité confirmés, fixture archivée. Conserver ces preuves et le retour arrière pour la revue globale V1. [Suivi canonique](data/suivi-retour-activation.json). La production et la PR #119 restent distinctes ; la recette ne vaut pas accord d’ouverture publique.
+
+## 18 novembre — Analyse globale dans les choix de profil
+
+Libellé personnel et parcours de référence alignés après confirmation du responsable, dans PR170. Valeurs historiques et données des profils conservées. [Périmètre et recette locale](docs/profils-et-droits.md#libellé-analyse-globale--18-novembre). Candidat non livré, revue humaine à effectuer.
+
+## 18 novembre — PR170 en préproduction
+
+CONNECT et Rapport livrés après fusion et accord humains ; six fichiers exacts, dossier fictif complet et propriétaire conservés, aperçus client/expert refermables. [Résultat et preuves](../avereo-app-rapport/docs/source-audit.md#livraison-en-pr%C3%A9production-de-la-pr170). Cette mise à jour documentaire ne change pas les applications.

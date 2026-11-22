@@ -5,7 +5,7 @@ title: API de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-10
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
@@ -13,7 +13,18 @@ tags:
   - php
 ---
 
+## Interventions — champs facultatifs du 16 novembre
+
+Le payload existant decision.actions accepte realisation (chaîne, au plus 32 000 octets) et inclure_client (booléen strict). Champs absents acceptés ; type incorrect, null explicite pour le choix client et texte excessif rejetés. Les limites existantes de 100 actions/références s’appliquent. Aucun endpoint, schéma ou contrôle d’autorisation supplémentaire. [Contrat métier et persistance](../docs/interventions-proposees.md#données-et-compatibilité).
+
+## Attentes et notes — champs facultatifs du 16 novembre
+
+Les routes de rapports existantes transportent notes_attentes et attentes[].provenance_ecoute dans decision. Le validateur PHP contrôle les types, les deux champs d’écoute autorisés et la borne textuelle existante, sans nouveau droit ni endpoint. [Contrat détaillé](../docs/attentes-ecoute-client.md#données-et-compatibilité).
+
+
 ## Plans et repères
+
+Révision Terrain du 14 novembre : plans[].kind admet cadastre en plus de niveau/coupe ; métadonnées cadrage/localisation facultatives conservées. observations[].phase_habitologie peut valoir terrain ; Tn est un label dérivé, jamais une référence serveur. Frontend et validation PHP correspondante doivent être livrés ensemble. [Contrat de la révision](../docs/environnement-terrain.md#données-et-composants).
 
 Les opérations de sauvegarde existantes transportent les champs optionnels `plans` et `observations[].reperes`. `observation-plans-validation.php` vérifie images, dimensions, listes et références et retourne une erreur `report_plans_invalid` (422) sans sauvegarde en cas d’invalidité. Les permissions et la propriété existantes restent inchangées. [Données, bornes et compatibilité](../docs/reperage-observations.md#données-de-référence).
 

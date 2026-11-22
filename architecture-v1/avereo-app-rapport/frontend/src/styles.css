@@ -637,6 +637,22 @@ img {
   color: #93a4bd;
 }
 
+.analysis-sequence > .visit-guide-scroll { display: block; overflow-x: auto; max-width: 100%; padding: 3px; }
+.visit-guide-track { display: flex; flex-flow: row nowrap; align-items: center; gap: 12px; width: max-content; min-width: 100%; padding: 12px; border-radius: 10px; }
+.visit-guide-terrain { border: 2px solid #268345; background: #f1faf3; }
+.visit-guide-bati { padding: 10px; border: 2px solid #c4473a; border-radius: 8px; background: #fffafa; }
+.visit-guide-bati > strong { display: block; margin-bottom: 8px; }
+.analysis-sequence .visit-guide-bati ol { flex-flow: row nowrap; }
+.visit-guide-track .phase-toggle { flex: none; white-space: nowrap; }
+.terrain-toggle { max-width: 190px; white-space: normal !important; border-color: #268345; background: #e4f5e9; }
+.terrain-toggle > span { flex: none; background: #268345; }
+.observations-bati { border: 2px solid #c4473a; border-radius: 12px; padding: 14px; min-width: 0; }
+.observations-bati > h2 { margin-top: 0; }
+.phase-terrain { border-color: #268345; background: #f5fbf6; }
+.terrain-capture { margin: 16px 0; padding: 12px; border: 1px solid #88b897; border-radius: 8px; background: #fff; }
+.terrain-capture summary, .legacy-terrain-context summary { font-weight: 700; cursor: pointer; }
+.legacy-terrain-context { margin: 12px 0; }
+
 .consent-list {
   display: grid;
   gap: 10px;
@@ -668,6 +684,9 @@ img {
 .site-insight input, .site-insight select, .site-insight textarea { width: 100%; min-width: 0; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: #fff; color: #172033; font: inherit; }
 .site-insight input:focus, .site-insight select:focus, .site-insight textarea:focus { outline: 2px solid #2563eb; outline-offset: 1px; }
 .site-insight textarea { resize: vertical; }
+.environment-context > label { margin: 16px 0; }
+.environment-context .context-client-choice { display: flex; align-items: center; gap: 10px; }
+.environment-context input[type="checkbox"] { width: auto; flex: none; }
 .orientation-row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px; align-items: center; }
 .site-compass { width: 150px; height: 150px; }
 .terrain-metrics { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; margin: 16px 0; }
@@ -1018,7 +1037,7 @@ img {
 
 .photo-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 10px;
 }
 
@@ -1062,6 +1081,28 @@ img {
   width: 30px;
   height: 30px;
 }
+
+.photo-grid figure.photo-with-original {
+  aspect-ratio: auto;
+  overflow: visible;
+  background: #fff;
+}
+
+.photo-thumb { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 7px; }
+.photo-original-controls { display: grid; gap: 6px; padding: 8px; }
+.photo-original-controls > .button { width: 100%; font-size: 0.78rem; padding: 7px; white-space: normal; }
+.photo-original-controls > p { margin: 0; font-size: 0.78rem; overflow-wrap: anywhere; }
+.photo-original-notice { font-size: 0.86rem; }
+.photo-viewer { position: fixed; inset: 0; margin: auto; padding: 0; border: 0; border-radius: 8px; width: min(1100px, 96vw); max-height: 94dvh; overflow: hidden; }
+.photo-viewer::backdrop { background: rgba(15, 23, 42, 0.68); }
+.photo-viewer .modal-card { width: 100%; max-height: 94dvh; display: flex; flex-direction: column; }
+.photo-viewer .modal-header { flex-shrink: 0; }
+.photo-viewer h2 { overflow-wrap: anywhere; }
+.photo-viewer-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 18px; }
+.photo-viewer-tools label { display: flex; align-items: center; gap: 8px; }
+.photo-viewer-tools input { width: 150px; }
+.photo-viewer-image { overflow: auto; padding: 12px; min-height: 150px; height: calc(94dvh - 160px); background: #172033; }
+.photo-grid .photo-viewer-image img { display: block; max-width: none; height: auto; object-fit: contain; }
 
 .photo-action {
   display: grid;
@@ -1362,8 +1403,7 @@ img {
   .action-bar { display: none; }
 }
 
-.modal-backdrop,
-.preview-backdrop {
+.modal-backdrop {
   position: fixed;
   inset: 0;
   z-index: 60;
@@ -1432,14 +1472,25 @@ img {
   text-align: center;
 }
 
-.preview-backdrop {
-  align-items: start;
-  overflow: auto;
+.report-preview {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(980px, calc(100% - 36px));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
+.report-preview::backdrop { background: rgba(15, 23, 42, 0.68); }
+
 .preview-shell {
-  width: min(980px, 100%);
+  width: 100%;
   height: min(880px, calc(100vh - 36px));
+  height: min(880px, calc(100dvh - 36px));
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
   border-radius: 8px;
@@ -1450,12 +1501,15 @@ img {
 
 .preview-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   padding: 12px 14px;
   border-bottom: 1px solid #d9dee7;
 }
+
+.preview-bar .button { flex-shrink: 0; }
 
 .listening-section h4 { margin: 0 0 8px; font-size: 1rem; }
 .listening-section > p, .listening-topics > p { color: #52637b; margin: 0 0 14px; line-height: 1.5; }
@@ -1669,6 +1723,19 @@ img {
 .online-report-list { list-style: none; padding: 0; }
 .online-report-list li { display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid #d9e2e5; padding: 16px 0; }
 .online-report-list p { margin: 4px 0; overflow-wrap: anywhere; }
+.online-report-list li > div:first-child { min-width: 0; }
+.online-report-actions { display: flex; flex-wrap: wrap; gap: 8px; flex-shrink: 0; }
+.report-import { display: inline-block; }
+.report-import-dialog { border: 0; border-radius: 12px; padding: 24px; width: min(700px, 94vw); max-height: 90dvh; overflow: auto; color: #172033; }
+.report-import-dialog::backdrop { background: rgba(15, 23, 42, 0.65); }
+.report-import-dialog h2 { margin-top: 0; }
+.report-import-dialog p { overflow-wrap: anywhere; line-height: 1.5; }
+@media (max-width: 700px) {
+  .online-report-list li { align-items: flex-start; flex-direction: column; }
+  .online-report-actions { width: 100%; }
+  .online-report-actions .button { flex: 1; white-space: normal; }
+  .report-import-dialog { padding: 16px; }
+}
 .delivery-options { border: 1px solid #d6e2e8; border-radius: 12px; padding: 20px; margin: 24px 0; }
 .delivery-options legend { font-weight: 700; color: #002b45; padding: 0 8px; }
 .delivery-options label { display: grid; gap: 8px; margin: 12px 0; }
@@ -1717,3 +1784,19 @@ img {
 .observation-card.is-drop-target { outline: 3px solid #2354d5; outline-offset: 3px; }
 .observation-card.is-dragged { opacity: .6; }
 .observation-order-status { color: #173b77; }
+
+.photo-report-editor { width: min(1120px, 96vw); max-height: 94dvh; overflow: auto; padding: 22px; border: 0; border-radius: 14px; color: #172033; }
+.photo-report-editor::backdrop { background: #102138b8; }
+.photo-report-editor .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.photo-report-editor h2 { margin: 0; }
+.photo-editor-toolbar { display: flex; align-items: end; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
+.photo-editor-toolbar label { display: grid; gap: 6px; }
+.photo-editor-comment { display: grid; gap: 6px; margin: 12px 0; }
+.photo-editor-comment textarea { min-height: 65px; }
+.photo-editor-canvas { display: grid; place-items: center; padding: 14px; background: #e9eef3; border-radius: 10px; min-height: 120px; }
+.photo-editor-canvas canvas { display: block; max-width: 100%; max-height: 42dvh; width: auto; height: auto; cursor: crosshair; touch-action: none; }
+.photo-report-editor footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.photo-report-editor button, .photo-report-editor select { min-height: 42px; }
+@media (max-width: 700px) { .photo-report-editor { padding: 14px; } .photo-report-editor .modal-header { align-items: start; flex-direction: column; } .photo-editor-toolbar > button { flex: 1 1 140px; } }
+
+.decision-support .preserve-lines { white-space: pre-wrap; overflow-wrap: anywhere; }

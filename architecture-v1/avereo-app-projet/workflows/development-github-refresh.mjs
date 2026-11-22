@@ -3,14 +3,17 @@ import {randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
 import {DevelopmentError} from './development-access.mjs';
+import {collectGithubInventory} from './development-github-inventory.mjs';
 const exec=promisify(execFile),repoPattern=/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/,shaPattern=/^[a-f0-9]{40,64}$/;
-export function storedGhRequest(executor=exec){return async path=>{
- if(!/^repos\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+\//.test(path)||path.includes('..')||/[\r\n]/.test(path))throw Error('Endpoint refusé.');
+export function storedGhRequest(executor=exec,{owner=null}={}){return async path=>{
+ const listing=owner&&(/^[A-Za-z0-9][A-Za-z0-9-]{0,38}$/.test(owner))&&new RegExp('^(?:user/repos\\?affiliation=owner|users/'+owner+'/repos\\?type=owner)&per_page=100&page=[1-9][0-9]*$').test(path);
+ if((!/^repos\/[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+(?:\/|$)/.test(path)&&!listing)||path.includes('..')||/[\r\n#\\]/.test(path))throw Error('Endpoint refusé.');
  const env={...process.env,GH_HOST:'github.com',GH_PROMPT_DISABLED:'1'};delete env.GH_TOKEN;delete env.GITHUB_TOKEN;
  try{const r=await executor('gh',['api','--hostname','github.com','--method','GET',path,'-H','Accept: application/vnd.github+json'],{env,windowsHide:true,timeout:20000,maxBuffer:8*1024*1024});return JSON.parse(r.stdout);}catch{throw new DevelopmentError(502,'Lecture GitHub impossible. Vérifier la connexion GitHub CLI du poste ; l’ancienne observation est conservée.');}
 };}
 const compact=p=>({url:p.html_url,repository:p.base.repo.full_name,number:p.number,title:p.title,status:'observed',state:p.merged_at?'merged':p.state,draft:p.draft,headSha:p.head.sha,baseSha:p.base.sha,merged:!!p.merged_at,mergedAt:p.merged_at,mergeCommitSha:p.merge_commit_sha,updatedAt:p.updated_at});
-export async function collectGithubSnapshot(previous,{repositories,request,trackedPrUrls=null,now=()=>new Date().toISOString()}){
+export async function collectGithubSnapshot(previous,{repositories,request,discovery=null,trackedPrUrls=null,now=()=>new Date().toISOString()}){
+ if(discovery?.enabled===true)return collectGithubInventory(previous,{owner:discovery.owner,request,trackedPrUrls,now});
  if(previous.schema!=='development-github-observations'||!previous.applications||!Array.isArray(repositories)||!repositories.length||repositories.some(r=>!repoPattern.test(r)))throw new DevelopmentError(503,'Configuration GitHub privée invalide.');
  const allowed=new Set(repositories),apps=Object.entries(previous.applications);
  if(apps.some(([id,a])=>!/^[a-z0-9_-]{1,80}$/.test(id)||!allowed.has(a.repository)||typeof a.path!=='string'||a.path.split('/').some(x=>x==='..')||a.path.startsWith('/')))throw new DevelopmentError(503,'Périmètres GitHub non qualifiés.');
@@ -35,11 +38,11 @@ export async function collectGithubSnapshot(previous,{repositories,request,track
  const untrackedPullRequests=structuredClone(previous.untrackedPullRequests||{});for(const item of Object.values(untrackedPullRequests))if(pullRequests[item.github?.url]){item.github=pullRequests[item.github.url];item.observedAt=observedAt;}
  return{...previous,observedAt,trackedPrUrls:[...new Set(trackedPrUrls||previous.trackedPrUrls||Object.keys(previous.pullRequests||{}))],method:'manual_read_only_github_get',repositories:Object.fromEntries(repositories.map(r=>[r,{mainSha:main[r],branch:'main'}])),applications,pullRequests,latestMerges,untrackedPullRequests,refresh:{mode:'explicit_owner_request',startedAt,completedAt:observedAt,businessSourcesWritten:false,codePulled:false,deployed:false}};
 }
-export function createGithubRefresh({file,repositories,request=storedGhRequest(),minimumIntervalMs=30000,getTrackedPrUrls=null,now=()=>new Date().toISOString()}){
+export function createGithubRefresh({file,repositories,discovery=null,request=storedGhRequest(exec,{owner:discovery?.owner}),minimumIntervalMs=30000,getTrackedPrUrls=null,now=()=>new Date().toISOString()}){
  return async()=>{let lock,temporary;try{try{lock=await open(file+'.refresh.lock','wx',0o600);}catch{throw new DevelopmentError(409,'Une actualisation GitHub est déjà en cours.');}
  const old=await readFile(file),previous=JSON.parse(old);if(Date.parse(now())-Date.parse(previous.observedAt)<minimumIntervalMs)throw new DevelopmentError(429,'Observation récente ; patienter avant une nouvelle collecte.');
  const trackedPrUrls=getTrackedPrUrls?await getTrackedPrUrls():null;
- const next=await collectGithubSnapshot(previous,{repositories,request,trackedPrUrls,now});temporary=file+'.'+randomUUID()+'.tmp';const out=await open(temporary,'wx',0o600);try{await out.writeFile(JSON.stringify(next,null,2)+'\n');await out.sync();}finally{await out.close();}
- if(!(await readFile(file)).equals(old))throw new DevelopmentError(409,'Observation modifiée en parallèle ; aucun écrasement.');await rename(temporary,file);temporary=null;return{observedAt:next.observedAt,repositories:repositories.length,pullRequests:Object.keys(next.pullRequests).length,mergedPullRequests:Object.values(next.latestMerges).reduce((n,r)=>n+r.items.length,0)};
+ const next=await collectGithubSnapshot(previous,{repositories,discovery,request,trackedPrUrls,now});const bytes=JSON.stringify(next,null,2)+'\n';if(Buffer.byteLength(bytes)>16*1024*1024)throw new DevelopmentError(502,'Observation GitHub trop grande ; ancienne observation conservée.');temporary=file+'.'+randomUUID()+'.tmp';const out=await open(temporary,'wx',0o600);try{await out.writeFile(bytes);await out.sync();}finally{await out.close();}
+ if(!(await readFile(file)).equals(old))throw new DevelopmentError(409,'Observation modifiée en parallèle ; aucun écrasement.');await rename(temporary,file);temporary=null;return{observedAt:next.observedAt,repositories:Object.keys(next.repositories).length,pullRequests:Object.keys(next.pullRequests).length,mergedPullRequests:Object.values(next.latestMerges).reduce((n,r)=>n+r.items.length,0)};
  }catch(e){if(e instanceof DevelopmentError)throw e;throw new DevelopmentError(502,'Collecte incomplète ; observation précédente conservée.');}finally{if(temporary)await unlink(temporary).catch(()=>{});if(lock){await lock.close();await unlink(file+'.refresh.lock').catch(()=>{});}}};
 }

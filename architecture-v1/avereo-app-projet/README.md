@@ -5,13 +5,56 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 20 novembre — Inventaire du compte GitHub, candidat local
+
+Le cockpit découvre les dépôts du propriétaire, leurs composants, toutes les PR
+et branches retournées. La vue **Inventaire GitHub** est consultable et filtrable ;
+les composants sans suivi sont visibles sans créer de phase ou de validation.
+[Portée et qualification](docs/inventaire-github.md),
+[contrat de collecte](api/inventaire-github.md),
+[suivi du lot](data/suivi-inventaire-github.json). Installation de ce candidat
+non attestée ; les observations réelles privées restent hors du dépôt public.
+
+## 19 novembre — Vue synthétique et qualité des preuves
+
+[Cartes applications et détails à la demande](docs/cockpit-qualite-synthese.md) :
+critères humains distincts des pièces, références externes/non publiées/manquantes,
+quatre phases conservées et résumés identiques dans les lecteurs Node/PHP.
+[Suivi du lot](data/suivi-cockpit-qualite-synthese.json). Candidat à qualifier ; aucun
+état hébergé ou accord humain n’est déduit du développement local.
+
+## 19 novembre — Actualisation privée en préparation
+
+[Opérateur permanent, fraîcheur et limites](docs/actualisation-automatique-privee.md) : collecte GitHub hébergée prévue toutes les cinq minutes, état signé, sauvegardes et conservation des archives. Les suivis privés restent une réception datée ; aucun relais automatique PC n'est autorisé. Le navigateur reste consultatif, propriétaire exact/global. Installation non attestée tant que son reçu ne l'établit pas ; aucune production.
+
+## 18 novembre — Lecture du cockpit et historique
+
+Suivis courants : déroulement du workflow actif et capacité de 100 vues, avec conservation des projections historiques. [Portée et contrôles](docs/suivis-courants-et-historique.md).
+
+
+## 16 novembre — Gantt des développements, candidat local
+
+Nouvelle vue privée **Gantt des développements** : quatre phases, réalisé étayé, reste à qualifier, prévisions explicites et validations humaines séparées. Reprise automatique des nouvelles publications et collecteur GitHub périodique local opt-in ; le publicateur permanent en ligne reste à raccorder. [Guide et limites](docs/gantt-developpements.md), [suivi canonique](data/suivi-gantt-developpements.json). Aucun déploiement de ce lot. Les rubriques datées ci-dessous décrivent leurs étapes historiques ; l'état hébergé courant nécessite son reçu de livraison.
+
+Préparation de PR : [qualification du publicateur privé](docs/publicateur-prive.md), contrat désactivé et tests sur copies fictives. Le dépôt GitHub est public : aucune vraie projection, preuve privée, configuration ou clé n'y est ajoutée. Identité de service, transport de données et état serveur actuel non qualifiés ; activation bloquée, pas de service installé.
+
+[PR160 en brouillon](https://github.com/jpdandin44/AVEREO/pull/160) : revue locale, main PR159 intégré, 354 tests et paquet privé sur source propre vérifiés. [Candidat et parcours](docs/gantt-developpements.md#préparation-de-la-pr160), [reçu PR](data/qualification-gantt-pr.json). CI à relire sur la tête finale, cases humaines décochées ; aucun déploiement.
+
+## 13 novembre — PQ-01 proposé en revue locale, PR #151
+
+[PR #151](https://github.com/jpdandin44/AVEREO/pull/151) : revue du lot local Patrimoine & qualité, main récent intégré sans conflit, 326 tests et compilation requalifiés. [Parcours de revue et réserves](docs/patrimoine-qualite.md#13-novembre--pr-de-revue-locale), [suivi canonique](data/suivi-patrimoine-pq01.json). Cases humaines laissées décochées ; aucune installation en préproduction ou production et quatre alertes de dépendances conservées avant livraison.
+
+## 12 novembre — Patrimoine & qualité, PQ-01 local
+
+Le module privé propose une synthèse d'inventaire, des listes justificatives, un détail par application/dossier et les sources/exclusions. Collecte explicite de métadonnées locales, champ optionnel de projection signée, même contrôle propriétaire/global et lecture seule ; anciennes projections compatibles. Aucun résultat de test, bug ou sauvegarde restaurable inventé depuis des fichiers. [Usage et commande](docs/patrimoine-qualite.md), [contrat](api/patrimoine.md), [suivi local](data/suivi-patrimoine-pq01.json). Aucun déploiement ; dépendances verrouillées inchangées, alertes de sécurité à qualifier avant livraison.
 
 ## 12 novembre — Reprendre Développements après expiration
 
@@ -349,3 +392,8 @@ Le pied de barre latérale réutilise le composant commun ; Mes projets et Préf
 Mes projets et Préférences conservent les actions natives de ProjectWorkspace. Mon compte ouvre désormais directement le profil CONNECT, comme dans les autres applications ; les plannings, sauvegardes et préférences natives restent inchangés.
 
 [Règle et portée](../avereo-platform/docs/fonctionnalites-communes.md) · [Qualification](../avereo-platform/docs/qualification-mon-espace.md).
+
+
+## 19 novembre — Planning indicatif par périodes
+
+[Planning par périodes](docs/planning-periodes.md) : mode sans dates P1/P2, positionnement explicite, échange JSON et création indépendante. Implémenté et qualifié en préproduction dans la PR175 ; revue humaine et fusion restent distinctes. Le contrat lié porte les preuves et réserves courantes.

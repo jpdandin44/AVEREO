@@ -5,7 +5,7 @@ title: Deploiement Rapport sur O2Switch
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-10-16
+updated: 2026-11-16
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,40 @@ tags:
   - o2switch
   - mysql
 ---
+
+## Candidat Profils et CONNECT — non livré
+
+Installation coordonnée future : CONNECT puis Rapport après revue et autorisation du candidat exact. Sauvegarder code/configuration et préférences privées des deux cibles, vérifier restauration et retour arrière. Le fichier compagnon du métier conserve le format de médaillon compatible avec l’ancien lecteur ; Rapport garde un choix manuel avec un ancien CONNECT. [Périmètre et contrôles](profils-professionnels.md#préproduction). La livraison PR163 ci-dessous reste historique et effective.
+
+## 16 novembre — Livraison PR163 et alignement confirmés
+
+Candidat validé de0edf3, fusion 9f8645b866ae4fc5e9927070b31b8d4fc9f26897 et arbre complet 85e3171 identiques. Archive eb6d1258 promue sans reconstruction : cinq fichiers, index en dernier. L’installation du candidat explicitement autorisé a précédé l’observation de la fusion ; reçu initial conservé comme historique, preuve d’alignement distincte après fusion. Sauvegarde application/configuration relue, restauration/rollback sur copie, sauvegarde privée des dossiers relue sans restauration SQL. [Cible et reçus](interventions-projet.md#préproduction).
+
+## 16 novembre — Livraison PR162 attestée
+
+Tests déclarés OK, quatre cases humaines cochées et fusion f4017be vérifiés ; même arbre que b04ea2b qualifié. Archive f7c8a973 promue sans reconstruction : JS principal, CSS, module Word et index HTML en dernier. Sauvegarde fraîche application/configuration relue, restauration et rollback code vérifiés sur copie ; sauvegarde privée des dossiers relue sans restauration SQL. 208 fichiers préexistants conservés, 24 dossiers/toutes colonnes/propriétaires exacts après navigation ; configuration/production et journal intacts. Composants partagés et différences de fins de ligne déjà qualifiés conservés. [Cible, reçus et limites](organisation-ecrans.md#préproduction).
+
+## 16 novembre — Recette serveur Interventions achevée
+
+Recette autorisée après livraison PR161, sans nouveau déploiement : deux sauvegardes du même dossier fictif, connexion normale après déconnexion complète et réouverture serveur sans brouillon. Les 23 dossiers/colonnes/propriétaires antérieurs sont exacts, 24 au total ; code/configuration/production et journal conservés. Brouillon initial restauré et relu. [Reçus, accès et limites](interventions-proposees.md#recette-complète-du-16-novembre). Les comptes de la livraison ci-dessous décrivent l’état avant cette recette.
+
+
+## 16 novembre — Livraison PR161 attestée
+
+Après tests et merge humains, source 1d8b103 et fusion 97a902c, arbre identique. Paquet 080b8213 qualifié, sans reconstruction ; quatre fichiers installés, index en dernier. Sauvegarde fraîche application/configuration relue et restauration/retour arrière code répétés sur copie, sauvegarde privée des dossiers relue sans restauration SQL. 205 fichiers préexistants conservés, 23 dossiers/colonnes/propriétaires exacts. [Cible, preuves et périmètre](interventions-proposees.md#préproduction).
+
+## 16 novembre — Recette serveur Attentes achevée
+
+Après la livraison de PR159, recette fonctionnelle réalisée sur un dossier fictif indépendant, sans nouveau déploiement : deux sauvegardes sur le même identifiant et réouverture serveur dans une nouvelle session, sans brouillon. Les 22 dossiers/colonnes/propriétaires antérieurs restent exacts, 23 au total ; code/configuration/production préservés. Brouillon initial restauré. [Reçus, accès de revue et limites](attentes-ecoute-client.md#recette-complète-du-16-novembre). Les comptes de dossiers de la section de livraison suivante décrivent l’état avant cette recette.
+
+## 16 novembre — Livraison PR159 attestée
+
+Demande explicite après tests/merge humains : source 73c4447, merge 58d6aab, même arbre. Paquet 150 fichiers qualifié, sans rebuild ; cinq fichiers livrés ensemble (api/decision-validation.php, JS/CSS/module Word/index). Contrôle de passage réussi, sauvegarde fraîche relue, restauration/rollback code répétés sur copie ; sauvegarde privée des dossiers relue, sans restauration SQL. 202 fichiers préservés, 22 dossiers et propriétaires exacts. [Cible, reçus et périmètre hébergé](attentes-ecoute-client.md#préproduction).
+
+## 16 novembre — Préparation du complément Attentes
+
+Candidat local uniquement. Une future livraison autorisée doit aligner l’interface et api/decision-validation.php, préserver les données existantes, qualifier sauvegarde/retour arrière et effectuer la recette CONNECT sur dossier fictif. Aucun endpoint, secret ou schéma SQL nouveau. Les vérifications HTTP/MariaDB de ce lot sont locales, elles ne remplacent pas la recette hébergée. [Parcours et critères de passage](attentes-ecoute-client.md#préproduction).
+
 
 # Deploiement Rapport sur O2Switch
 

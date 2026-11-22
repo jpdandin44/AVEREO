@@ -1,3 +1,4 @@
+import { documentStatus } from './reportDelivery.js';
 import { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, ImageRun,
   Header, Footer, PageNumber, ExternalHyperlink, WidthType, BorderStyle } from 'docx';
 import { AVEREO_NAME } from '../../../avereo-platform/shared/report-identity.js';
@@ -49,37 +50,47 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
     }
     return result;
   }
-  async function blocks(parent) {
+  async function blocks(parent, keepWithNext = false, compactDecision = false) {
     const output = [];
+    compactDecision ||= parent.classList.contains('decision-report');
+    const keepTogether = parent.classList.contains('keep-together') || parent.classList.contains('photo-block');
     for (const node of parent.children) {
       const tag = node.tagName;
+      // End the chain at the final child so separate findings can flow normally.
+      const keepNext = keepWithNext || (keepTogether && node !== parent.lastElementChild);
       const breakBefore = (node.classList.contains('plan-sheet') && node.previousElementSibling?.tagName !== 'H2') || node.classList.contains('client-page') || (node.classList.contains('observation') && node.previousElementSibling?.tagName !== 'H2') || (node.classList.contains('illustration') && !node.classList.contains('client-illustration'));
       if (tag === 'TABLE') {
         const rows = [];
-        for(const row of node.querySelectorAll('tr')) {
+        const tableRows = [...node.querySelectorAll('tr')];
+        const intervention = parent.classList.contains('interventions-report');
+        for(const [index, row] of tableRows.entries()) {
           const cells = [];
           const header = row.parentElement.tagName === 'THEAD';
-          for(const cell of row.children) cells.push(new TableCell({ children:[new Paragraph({children:await runs(cell),keepNext:header})],
+          // Prevent a lone final intervention row without chaining a whole long table.
+          // Other rows remain free to paginate; the last row releases the next block.
+          const keepRow = header || (intervention && index === tableRows.length - 2);
+          for(const cell of row.children) cells.push(new TableCell({ children:[new Paragraph({children:await runs(cell),keepNext:keepRow})],
             shading: cells.length === 0 ? {fill:'EEF4F6'} : undefined,
-            margins:{top:100,bottom:100,left:100,right:100} }));
+            margins:{top:compactDecision?70:100,bottom:compactDecision?70:100,left:100,right:100} }));
           rows.push(new TableRow({children:cells, cantSplit:true,tableHeader:header}));
         }
         if(rows.length) output.push(new Table({ rows, width:{size:100,type:WidthType.PERCENTAGE} }));
       } else if (/^H[1-4]$/.test(tag)) {
         const size = {H1:52,H2:34,H3:26,H4:23}[tag];
         output.push(new Paragraph({ children:await runs(node, {bold:true,color:'002B45',size}),
-          keepNext:true, pageBreakBefore:tag==='H2' && /^\d+\.\s/.test(node.textContent), spacing:{before:tag==='H1'?500:240,after:160},
+          keepNext:true, pageBreakBefore:tag==='H2' && /^\d+\.\s/.test(node.textContent), spacing:{before:tag==='H1'?500:compactDecision && tag==='H3'?180:240,after:160},
           border:tag==='H2'?{bottom:{color:'FF6600',space:6,style:BorderStyle.SINGLE,size:12}}:undefined }));
       } else if (tag === 'IMG') {
-        const image = await imageRun(node); if(image) output.push(new Paragraph({children:[image], spacing:{before:140,after:140}}));
+        const image = await imageRun(node); if(image) output.push(new Paragraph({children:[image], keepNext, spacing:{before:140,after:140}}));
       } else if (tag === 'P' || tag === 'LI') {
         const companyIdentity = node.parentElement?.classList.contains('company-identity');
         output.push(new Paragraph({children:await runs(node, companyIdentity ? {size:18,color:'506573'} : {}), bullet:tag==='LI'?{level:0}:undefined,
-          keepNext:companyIdentity, spacing:{after:companyIdentity?40:160}, shading:node.classList.contains('status')?{fill:'FFF1E7'}:undefined }));
+          keepNext:companyIdentity || keepNext, keepLines:keepTogether || keepWithNext,
+          spacing:{after:companyIdentity?40:compactDecision?120:160}, shading:node.classList.contains('status')?{fill:'FFF1E7'}:undefined }));
       } else if(tag === 'BR') {
         if(node.getAttribute('style')?.includes('page-break')) output.push(new Paragraph({pageBreakBefore:true}));
       } else {
-        const children = await blocks(node);
+        const children = await blocks(node, keepNext, compactDecision);
         if(breakBefore && children.length) output.push(new Paragraph({pageBreakBefore:true,spacing:{after:0,before:0}}));
         output.push(...children);
       }
@@ -88,10 +99,10 @@ export async function createWordBlob(html, report, parse = text => new DOMParser
   }
   const children = await blocks(dom.body);
   const label = report.livrable?.audience === 'client' ? 'Synthèse client' : 'Rapport expert';
-  return Packer.toBlob(new Document({ creator:AVEREO_NAME,title:`${report.titre} — ${label}`,description:'Document de travail soumis à validation professionnelle',
+  return Packer.toBlob(new Document({ creator:AVEREO_NAME,title:`${report.titre} — ${label}`,description:documentStatus(report),
     styles:{default:{document:{run:{font:'Calibri',size:22,color:'002B45'},paragraph:{spacing:{line:285}}}}},
     sections:[{properties:{page:{size:{width:11906,height:16838},margin:{top:1134,bottom:1134,left:1134,right:1134}}},
       headers:{default:new Header({children:[new Paragraph({children:[new TextRun({text:`${AVEREO_NAME}  |  ${label}`,size:18,color:'506573'})]})]})},
-      footers:{default:new Footer({children:[new Paragraph({children:[new TextRun({text:`${AVEREO_NAME} · ${report.reference_dossier || ''} · Document de travail · `,size:16}),new TextRun({children:[PageNumber.CURRENT],size:16})]})]})},
+      footers:{default:new Footer({children:[new Paragraph({children:[new TextRun({text:`${AVEREO_NAME} · ${report.reference_dossier || ''} · ${documentStatus(report)} · `,size:16}),new TextRun({children:[PageNumber.CURRENT],size:16})]})]})},
       children}]}));
 }

@@ -5,12 +5,16 @@ title: Vérification de la reprise
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
 # Vérification de la reprise
+
+## Corbeille et organisation
+
+Les tests frontend couvrent restauration intersession, purge locale, doublon en corbeille, personnalisation et déplacement. La CI HTTP MariaDB qualifie migration depuis l’ancien schéma, restrictions d’accès/CSRF, confirmations, sauvegarde et rollback d’une purge SQL refusée. Le transfert vérifie les états et le remappage des références d’ordre. [Résultats réels et recette](../docs/organisation-documents.md).
 
 ## Imports volumineux
 
@@ -162,3 +166,11 @@ les deux systèmes.
 `node workflows/generer-progression-examin.mjs --check` vérifie la projection
 Markdown du JSON de progression. `python docs/actualiser-tableau-de-bord.py --check`
 contrôle les vues courantes et conserve les preuves historiques approuvées.
+
+## Livraison privée à 500 Mo
+
+`python -m unittest discover -s tests -p "test*.py"` réussit vingt-huit tests. Les trois nouveaux tests de `test_large_import_release.py` bloquent les cibles supplémentaires, un changement inconnu des limites et toute modification de l’authentification. La [sonde HTTPS](../workflows/verify-large-import-preproduction.php) reçoit et inspecte des ZIP entiers de 173/500 Mo sur un bien inexistant, sans ajout réel ; 501 Mo est refusé. [Périmètres et recette humaine](../docs/preproduction-import-volumineux.md).
+
+## Livraison privée corbeille et classement
+
+Trente-deux tests Python, dont quatre protections du livreur organisation, réussissent. La [recette hébergée](../docs/preproduction-organisation.md) distingue 247 assertions HTTPS, conservation des 28 documents, répétition positive sur copies temporaires et contrôle visuel en lecture seule ; les mutations de documents réels ne sont pas utilisées comme tests.

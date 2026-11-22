@@ -1,0 +1,20 @@
+{
+  "schema": "avereo-private-publisher",
+  "version": 1,
+  "enabled": false,
+  "environment": "preproduction",
+  "intervalSeconds": 300,
+  "privateRoot": null,
+  "publicRoots": [],
+  "registryFile": null,
+  "sourceReceiptFile": null,
+  "githubCacheFile": null,
+  "publicationKeyFile": null,
+  "githubTokenFile": null,
+  "storageDirectory": null,
+  "archiveDirectory": null,
+  "backupDirectory": null,
+  "workDirectory": null,
+  "repositories": [],
+  "githubDiscovery": {"enabled": false, "owner": null}
+}

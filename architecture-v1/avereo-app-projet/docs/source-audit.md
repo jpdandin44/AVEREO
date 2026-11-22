@@ -5,13 +5,46 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 20 novembre — Écart du catalogue manuel et de la couverture GitHub
+
+L'ancien collecteur ne découvrait ni dépôt ni composant, supposait `main`,
+parcourait une page ouverte et les trente dernières PR fermées. Le mode optionnel
+de ce lot découvre le propriétaire et parcourt les listes paginées. La vue
+complémentaire reste privée et consultative ; les anciennes projections sont
+compatibles. Les versions d'autres branches et les périmètres non retrouvés
+sont explicités. [Contrat, tests et réserves](inventaire-github.md).
+
+## 19 novembre — Synthèse des applications
+
+Écart intentionnel : remplacement du grand tableau de versions par des cartes,
+versions/sources dépliables, mêmes badges et mêmes suivis. Résumé de qualité
+calculé dans Node/PHP, historique explicitement inclus ; accès et validations
+inchangés. [Contrat et tests](cockpit-qualite-synthese.md). Résultats de tests et
+recette hébergée à consigner dans le reçu du candidat, sans les assimiler à une
+validation humaine.
+
+## 18 novembre — Lecture du cockpit et historique
+
+Reproduction du conteneur actif possédant un developmentWorkflow : phase et candidat absents avant correction, test en échec puis réussi. Même correction pour une sous-itération figée ; aucun accord parent hérité. Capacité vérifiée sur 100 vues et refus de 101. [Portée](suivis-courants-et-historique.md).
+
+
+## 16 novembre — Gantt privé et qualification du publicateur
+
+Écart limité au module Développements : calcul consultatif sur versions/preuves, Gantt repliable, adaptations explicites de sources et métadonnées de révision. Le planning client, ses brouillons/imports/exports, les identités CONNECT/Drupal et leurs droits ne sont pas modifiés. Les API restent derrière le garde existant et le build public exclut le module privé.
+
+Le publicateur n'est pas un service ajouté : plan de qualification désactivé et tests de primitives sur copies fictives seulement. Dépôt public constaté, sources/projections privées exclues de Git/CI ; opérateur historique et workflow de production non réutilisés. Les tests Node/PHP et la revue locale ne sont ni une identité CONNECT réelle ni une qualification serveur actuelle. [Qualification et blocages](publicateur-prive.md), [guide de revue](gantt-developpements.md).
+
+## 12 novembre — PQ-01 patrimoine, écart local documenté
+
+Extension du seul module privé existant : collecteur opérateur de métadonnées et vue React, champ optionnel de state/projection signé compatible Node/PHP. Ni backend métier, ni migration MySQL, ni modification de l'application planning source. Les anciennes copies sans patrimoine restent compatibles et le build public doit continuer à exclure le module privé. Les tests de collecte/projection/refus et la régression complète sont requis sur le candidat ; les contrôles locaux ne prouvent aucune installation ou identité CONNECT réelle. [Guide de recette et réserves](patrimoine-qualite.md).
 
 ## 12 novembre — Expiration de la session et boutons de navigation
 
@@ -521,3 +554,8 @@ La liste de projets conserve son titre métier sous le bandeau, sans seconde sig
 ## 11 novembre — Correction référence Git
 
 Le lot conserve le module privé déjà existant, ses droits et son runtime. Les changements concernent le type de métadonnées, leur confinement, les libellés et le générateur local versionné ; aucune API ou connexion d’identité ajoutée. Les exports figés ne sont plus présentés comme sources de développement.
+
+
+## 19 novembre — Planning par périodes
+
+Mode optionnel sans dates, sans migration SQL, avec coordonnées explicites et import comme nouveau projet privé. Le calendrier existant, les droits et les données antérieures sont conservés. [Contrat, compatibilité, limites et recette](planning-periodes.md). Le contrôle hébergé reste distinct des tests locaux ; son résultat est enregistré dans le suivi canonique.

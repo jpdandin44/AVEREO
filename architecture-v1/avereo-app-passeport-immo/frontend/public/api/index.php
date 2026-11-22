@@ -3,6 +3,8 @@ declare(strict_types=1);
 const AVEREO_GATE_APP = 'passeport-immo';
 require dirname(__DIR__) . '/connect/session.php';
 require __DIR__ . '/storage.php';
+require __DIR__ . '/sharing.php';
+require __DIR__ . '/publications.php';
 header('Cache-Control: private, no-store');
 header('X-Content-Type-Options: nosniff');
 header('Content-Type: application/json; charset=utf-8');
@@ -15,14 +17,14 @@ try {
     try { $session=passeport_session($config); } catch (Throwable) { throw new PasseportError(401,'Votre session a expiré. Rouvrez Passeport Immo depuis CONNECT.'); }
     $owner=passeport_identity($session);
     $method=$_SERVER['REQUEST_METHOD'] ?? 'GET';
-    if (!in_array($method,['GET','PUT','POST','PATCH'],true)) throw new PasseportError(405,'Méthode non autorisée.');
+    if (!in_array($method,['GET','PUT','POST','PATCH','DELETE'],true)) throw new PasseportError(405,'Méthode non autorisée.');
     if ($method !== 'GET') {
         $origin=(string)($config['storage_origin'] ?? '');
         if ($origin === '' || ($_SERVER['HTTP_ORIGIN'] ?? '') !== $origin
             || !hash_equals(passeport_csrf($config,$session),(string)($_SERVER['HTTP_X_PASSEPORT_CSRF'] ?? ''))) {
             throw new PasseportError(403,'Origine ou autorisation d’écriture invalide.');
         }
-        if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0)>512*1024*1024) throw new PasseportError(413,'Cet envoi dépasse la limite de 500 Mo de fichiers. Réduisez le lot et réessayez.');
+        if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0)>avereo_volume_limits()['uploadRequestBytes']) throw new PasseportError(413,'Cet envoi dépasse la limite de '.avereo_volume_label(avereo_volume_limits()['documentBatchBytes']).' de fichiers. Répartissez les documents entiers en plusieurs lots.');
     }
     $path=(string)parse_url($_SERVER['REQUEST_URI'] ?? '',PHP_URL_PATH);
     if ($path==='/api/session' && $method==='GET') {
@@ -42,9 +44,47 @@ try {
         if ($method==='GET') passeport_json($store->workspace());
         if ($method==='PUT') passeport_json($store->saveWorkspace($body));
     }
-    if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/(documents|client)(?:/([a-f0-9]{32})(/file)?)?$#D',$path,$m)) {
+    if ($path==='/api/share-recipient' && $method==='POST') {
+        $store->bien((string)($body['bienId']??''));
+        passeport_json((new PasseportSharing($store,$config))->resolve((string)($body['recipient']??'')));
+    }
+    if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/report-publications(?:/([a-f0-9]{32})/source)?$#D',$path,$m)) {
+        $publications=new PasseportPublications($store);
+        if ($method==='GET' && !isset($m[2])) passeport_json($publications->listing($m[1]));
+        if ($method==='POST' && !isset($m[2])) {
+            if (($_POST['confirm']??'')!=='true') throw new PasseportError(422,'Confirmez le dépôt de la restitution partageable et de la copie privée.');
+            $file=$_FILES['publication']??null;
+            if (!is_array($file) || ($file['error']??-1)!==UPLOAD_ERR_OK || !is_string($file['tmp_name']??null)) throw new PasseportError(422,'Fichier absent ou limite serveur dépassée.');
+            passeport_json($publications->publish($m[1],$file['tmp_name']),201);
+        }
+        if ($method==='GET' && isset($m[2])) {
+            $source=$publications->source($m[1],$m[2]); $record=$source['record'];
+            header('Content-Type: application/zip'); header('Content-Length: '.$record['size']);
+            header('X-Avereo-Publication-Sha256: '.$record['sha256']);
+            header('Content-Disposition: attachment; filename="rapport-'.$record['id'].'.avereo.zip"');
+            header("Content-Security-Policy: sandbox; default-src 'none'"); readfile($source['path']); exit;
+        }
+    }
+    if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/shares(?:/([a-f0-9]{32}))?$#D',$path,$m)) {
+        $sharing=new PasseportSharing($store,$config);
+        if($method==='GET' && !isset($m[2]))passeport_json($sharing->outgoing($m[1]));
+        if($method==='POST' && !isset($m[2]))passeport_json($sharing->change($m[1],$body),201);
+        if($method==='DELETE' && isset($m[2]))passeport_json($sharing->change($m[1],$body,$m[2]));
+    }
+    if (preg_match('#^/api/shared(?:/([a-f0-9]{32})(?:/documents/([a-f0-9]{32})/file)?)?$#D',$path,$m)) {
+        if($method!=='GET')throw new PasseportError(405,'Ce partage est en lecture seule.');
+        $sharing=new PasseportSharing($store,$config);
+        if(!isset($m[1]))passeport_json(['shares'=>$sharing->incoming()]);
+        if(!isset($m[2]))passeport_json($sharing->load($m[1]));
+        $row=$sharing->document($m[1],$m[2]);$file=$store->filePath($row);
+        header('Content-Type: '.$row['mime']);header('Content-Length: '.$row['size']);
+        header("Content-Disposition: attachment; filename=\"document\"; filename*=UTF-8''".rawurlencode($row['name']));
+        header("Content-Security-Policy: sandbox; default-src 'none'");readfile($file);exit;
+    }
+    if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/(documents|client|document-settings)(?:/([a-f0-9]{32})(/file)?)?$#D',$path,$m)) {
         [, $bien, $kind]=$m; $document=$m[3] ?? null; $file=isset($m[4]);
         if ($kind==='client' && !$document && $method==='POST') passeport_json($store->linkClient($bien,$body));
+        if ($kind==='document-settings' && !$document && $method==='PUT') passeport_json($store->saveDocumentSettings($bien,$body));
         if ($kind==='documents') {
             if (!$document && $method==='GET') passeport_json($store->load($bien));
             if (!$document && $method==='POST') {
@@ -58,6 +98,10 @@ try {
                 passeport_json($store->addFiles($bien,$files,(string)($_POST['category'] ?? 'autres')),201);
             }
             if ($document && !$file && $method==='PATCH') passeport_json($store->updateDocument($bien,$document,$body));
+            if ($document && !$file && $method==='DELETE') {
+                if (($body['confirm'] ?? null)!==true) throw new PasseportError(422,'Confirmation de suppression définitive requise.');
+                passeport_json($store->deleteDocument($bien,$document));
+            }
             if ($document && $file && $method==='GET') {
                 $row=$store->findDocument($bien,$document); $file=$store->filePath($row);
                 header('Content-Type: '.$row['mime']); header('Content-Length: '.$row['size']);

@@ -29,7 +29,7 @@ paths:
     get:
       tags: [Session]
       operationId: readOwnPreferences
-      summary: Lire le médaillon du seul compte actif de la session CONNECT
+      summary: Lire les préférences du seul compte actif de la session CONNECT
       description: >-
         Réponse privée no-store. Les lectures interorigines exigent l'origine exacte
         d'une application de lancement configurée et une habilitation actuelle à cette application.
@@ -51,19 +51,22 @@ paths:
                 properties:
                   data:
                     type: object
-                    required: [accountBadge, accountContext]
+                    required: [accountBadge, professionalProfile, accountContext, accountId]
                     additionalProperties: false
                     properties:
                       accountBadge: {type: string, description: Une à trois lettres ou chiffres Unicode, default: MOI}
+                      professionalProfile: {type: string, enum: ['', habitologue, architecte, maitre_oeuvre], default: '', description: Défaut métier déclaré sans effet sur les droits}
+                      accessProfile: {description: 'Type administré du compte ou null, distinct de la préférence personnelle'}
                       accountContext: {type: string, pattern: '^[a-f0-9]{64}$'}
+                      accountId: {type: integer, minimum: 1, description: Compte courant généré côté serveur pour vérifier la correspondance avec la session applicative}
                   meta: {type: object}
         "401": {description: Session anonyme}
-        "403": {description: Compte inactif, origine ou application refusée}
+        "403": {description: "Compte inactif, origine ou application refusée"}
         "503": {description: Service non configuré}
     put:
       tags: [Session]
       operationId: saveOwnPreferences
-      summary: Enregistrer le médaillon de son compte depuis CONNECT uniquement
+      summary: Modifier une préférence depuis CONNECT uniquement, en conservant l'autre
       parameters:
         - {$ref: "#/components/parameters/CsrfToken"}
         - name: X-Account-Context
@@ -78,13 +81,15 @@ paths:
             schema:
               type: object
               additionalProperties: false
-              required: [accountBadge]
+              minProperties: 1
+              maxProperties: 1
               properties:
                 accountBadge: {type: string, description: Une à trois lettres ou chiffres Unicode}
+                professionalProfile: {type: string, enum: ['', habitologue, architecte, maitre_oeuvre]}
       responses:
-        "200": {description: Valeur accountBadge enregistrée dans l'enveloppe data/meta}
+        "200": {description: Préférences accountBadge et professionalProfile complètes enregistrées dans l'enveloppe data/meta}
         "401": {description: Session anonyme}
-        "403": {description: CSRF, compte ou origine refusés}
+        "403": {description: "CSRF, compte ou origine refusés"}
         "409": {description: Le formulaire appartient à un autre compte ou une ancienne session}
         "413": {description: Corps supérieur à 512 octets}
         "422": {description: Valeur ou champ inattendu}
@@ -749,6 +754,40 @@ paths:
           description: Compte ou application indisponible
         "422":
           $ref: "#/components/responses/ValidationError"
+  /admin/organizations/{organizationId}/users/{userId}/report-transfers:
+    parameters:
+      - { name: organizationId, in: path, required: true, schema: { type: integer, minimum: 1 } }
+      - { name: userId, in: path, required: true, description: Titulaire source, schema: { type: integer, minimum: 1 } }
+    get:
+      operationId: listVerifiedReportsForTransfer
+      summary: Lister les dossiers vérifiés du titulaire et les destinataires éligibles
+      responses:
+        '200': { description: "data.reports, data.recipients et data.remaining pour cette organisation" }
+        '403': { description: Habilitation de transfert requise }
+        '409': { description: Source indisponible }
+    post:
+      operationId: transferVerifiedReport
+      summary: Transférer le dossier et journaliser le changement de titulaire
+      parameters:
+        - { name: X-CSRF-Token, in: header, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [reportId, operationId, recipientId, reason]
+              properties:
+                reportId: { type: string, pattern: '^[a-f0-9]{32}$' }
+                operationId: { type: string, pattern: '^[a-f0-9]{32}$' }
+                recipientId: { type: integer, minimum: 1 }
+                reason: { type: string, minLength: 1, maxLength: 190 }
+      responses:
+        '200': { description: Reçu du transfert ou de la confirmation déjà traitée }
+        '403': { description: Habilitation ou protection de confirmation manquante }
+        '409': { description: Titulaire ou périmètre modifié ou destinataire indisponible }
+        '422': { description: Confirmation invalide }
   /admin/organizations/{organizationId}/users/{userId}/lifecycle:
     parameters:
       - name: organizationId
@@ -779,7 +818,7 @@ paths:
       responses:
         '200': { description: État du compte appliqué }
         '403': { description: Compte protégé ou droits insuffisants }
-        '409': { description: Suppression en cours, compte partagé ou application à qualifier }
+        '409': { description: "Suppression en cours, compte partagé ou application à qualifier" }
         '422': { description: Corps de demande invalide }
         '503': { description: Gestion du cycle de vie indisponible }
     delete:
@@ -842,6 +881,94 @@ paths:
         "403": {description: 'Compte protégé, autorisation ou CSRF refusé'}
         "422": {description: Deux dates requises ou deux valeurs nulles pour accès permanent}
         "503": {description: Service non configuré}
+  /profile-types:
+    get:
+      tags: [Session]
+      operationId: listActiveProfileTypes
+      summary: Lire les noms et parcours des types actifs sans attribuer de droits
+      responses:
+        "200": {description: Liste privée des choix id/name/template dans data}
+        "401": {$ref: "#/components/responses/AuthenticationRequired"}
+        "503": {description: Catalogue non configuré}
+  /admin/profiles:
+    get:
+      tags: [Administration]
+      operationId: readGlobalProfileCatalogue
+      summary: Lire le catalogue commun et son historique avec le seul compte global habilité
+      responses:
+        "200":
+          description: Catalogue privé et droits administrés
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data: {$ref: "#/components/schemas/ProfileCatalogue"}
+                  meta: {$ref: "#/components/schemas/Meta"}
+        "401": {$ref: "#/components/responses/AuthenticationRequired"}
+        "403": {description: Compte propriétaire exact et rôle global Drupal actuel requis}
+        "503": {description: Autorité ou catalogue non configuré}
+    post:
+      tags: [Administration]
+      operationId: createGlobalProfileType
+      summary: Créer un type sans affecter de compte automatiquement
+      parameters:
+        - {$ref: "#/components/parameters/CsrfToken"}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/ProfileTypeInput"}
+      responses:
+        "200": {description: Identifiant généré côté serveur et nouvelle révision dans data}
+        "403": {description: Autorité globale ou origine ou CSRF refusé}
+        "409": {description: Nom déjà utilisé ou révision périmée}
+        "422": {$ref: "#/components/responses/ValidationError"}
+  /admin/profiles/{profileId}:
+    put:
+      tags: [Administration]
+      operationId: updateGlobalProfileType
+      summary: Modifier ou désactiver un type et recalculer les accès de ses comptes
+      parameters:
+        - {name: profileId, in: path, required: true, schema: {type: string, pattern: '^[a-z][a-z0-9_-]{1,63}$'}}
+        - {$ref: "#/components/parameters/CsrfToken"}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: {$ref: "#/components/schemas/ProfileTypeInput"}
+      responses:
+        "200": {description: Révision et nombre de comptes concernés dans data}
+        "403": {description: Autorité globale ou origine ou CSRF refusé}
+        "404": {description: Type introuvable}
+        "409": {description: Nom déjà utilisé ou révision périmée}
+        "422": {$ref: "#/components/responses/ValidationError"}
+  /admin/organizations/{organizationId}/users/{userId}/profile:
+    put:
+      tags: [Administration]
+      operationId: assignGlobalProfileToAccount
+      summary: Affecter un type actif au compte éligible sans modifier ses droits de base ou ses dates
+      description: Un profileId null retire explicitement le profil et rétablit le fonctionnement antérieur. Auto-affectation du compte administrateur global protégée.
+      parameters:
+        - {$ref: "#/components/parameters/OrganizationId"}
+        - {$ref: "#/components/parameters/UserId"}
+        - {$ref: "#/components/parameters/CsrfToken"}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [revision, profileId]
+              properties:
+                revision: {type: integer, minimum: 0}
+                profileId: {type: [string, "null"]}
+      responses:
+        "200": {description: Affectation enregistrée et projection privée actualisée}
+        "403": {description: Autorité ou origine ou CSRF ou compte protégé}
+        "409": {description: Révision périmée}
+        "422": {description: Type absent ou inactif ou entrée invalide}
 components:
   securitySchemes:
     sessionCookie:
@@ -1332,3 +1459,43 @@ components:
               additionalProperties: true
         meta:
           $ref: "#/components/schemas/Meta"
+    ProfileTypeInput:
+      type: object
+      additionalProperties: false
+      required: [revision, name, description, template, active, applications, reportActions]
+      properties:
+        revision: {type: integer, minimum: 0}
+        name: {type: string, minLength: 1, maxLength: 160, description: Limite de 160 octets UTF-8}
+        description: {type: string, maxLength: 1000, description: Limite de 1000 octets UTF-8}
+        template: {type: string, enum: [habitologue, architecte, maitre_oeuvre]}
+        active: {type: boolean}
+        applications:
+          type: array
+          maxItems: 32
+          uniqueItems: true
+          items: {type: string, pattern: '^[a-z][a-z0-9_-]{1,63}$'}
+        reportActions:
+          type: array
+          uniqueItems: true
+          maxItems: 5
+          items: {type: string, enum: [read, create, update, delete, export]}
+    ProfileCatalogue:
+      type: object
+      properties:
+        version: {type: integer, const: 1}
+        revision: {type: integer, minimum: 0}
+        actorId: {type: integer, minimum: 1}
+        profiles:
+          type: array
+          maxItems: 100
+          items: {type: object, description: Définition ProfileTypeInput sans revision avec id serveur stable}
+        assignments:
+          type: object
+          additionalProperties: {type: string}
+        applications:
+          type: array
+          items: {type: object, description: Code et nom des applications actives}
+        audit:
+          type: array
+          maxItems: 50
+          items: {type: object, description: Événement privé avec date et auteur et état avant/après}

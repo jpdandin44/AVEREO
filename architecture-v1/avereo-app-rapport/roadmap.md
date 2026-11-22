@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
@@ -14,12 +14,135 @@ tags:
   - fonctionnalites
 ---
 
+## Priorité du 21 novembre — R12-18, volume sans perte
+
+Candidat local sur `fix/rapport-publication-volume` : reproduction complète au-delà de 50 Mio, contrôles cohérents à 100 Mo et conservation des médias. Les vrais Word et le parcours navigateur complet, sauvegarde et nouvelle session, sont maintenant vérifiés ; PDF relus avec LibreOffice, réserve de rendu Microsoft Word distincte. [Qualification et réserves](docs/volume-sans-perte.md). Suite : revue locale, rendu Microsoft Word, mesure du cas réel si disponible et capacité hébergée. Préproduction et production non autorisées pour ce lot. Les états datés suivants restent historiques.
+
+
+## 19 novembre — Publication Passeport livrée en préproduction
+
+[PR173](https://github.com/jpdandin44/AVEREO/pull/173), runtime `4b6696ca24fc678465327bb31a3eeb0777365029` : restitution client Word partageable et copie complète privée. Recette fictive hébergée via les services natifs authentifiés : dépôt, idempotence, exclusion de la copie privée du partage, nouvelle connexion, téléchargement exact et révocation réussis. La copie se réouvre dans Rapport et se sauvegarde comme dossier indépendant, source et propriétaire conservés. 26 documents Passeport et 30 dossiers Rapport préexistants exacts ; accès temporaires rétablis.
+
+[Parcours, preuves et limites](docs/publication-passeport-immo.md). Revue humaine encore attendue ; aucun merge ni production. Les étapes datées suivantes conservent l’historique, sans redéclarer une nouvelle validation.
+
+## 17 novembre — Plans fusionnés, libellé Analyse globale en développement
+
+Complément avant revue de PR168 : harmoniser les intitulés des conseils en
+**Conseils de l’expert**, sans modifier leur contenu ; nouvelle version à tester
+dans la même PR et mêmes quatre phases.
+
+PR167 fusionnée en 12095d5, arbre identique au candidat qualifié ; aucune livraison déduite. **Cadrage** du nom Analyse globale confirmé ; **Développement local** limité aux libellés, sur cette fusion : contrôles locaux réussis, candidat soumis à revue humaine. **Préproduction** non engagée ; report des profils PR164/166 conservé. **Mise en production** non engagée. [Parcours et preuves](docs/profils-professionnels.md#libellé-de-prestation--17-novembre). Les états datés suivants sont historiques.
+
+## 17 novembre — Plans et vues du dossier en développement local
+
+**Cadrage** approuvé : trois fonds, bibliothèque et liens aux constats. **Développement local** en qualification, avec l’incident R12-12 et les contrôles de conservation ; PR à préparer. **Préproduction** non engagée pour ce candidat. **Mise en production** non engagée. [Parcours](docs/reperage-observations.md). Le lot de libellés Analyse globale est préparé séparément ; les états datés suivants sont historiques.
+
+## 17 novembre — Catalogue et droits communs, priorité locale
+
+**Cadrage** confirmé : catalogue commun géré par le compte global, applications
+et actions Rapport. **Développement local** réalisé et en fin de qualification,
+revue humaine à recueillir. **Préproduction** différée explicitement après ce
+nouveau lot ; PR164 fusionnée mais non livrée. **Mise en production** non engagée.
+[Parcours de revue](../avereo-app-connect/docs/profils-et-droits.md). Les sections
+datées suivantes sont historiques.
+
+## Priorité du 17 novembre — Continuité avant fermeture
+
+Le transfert dans une même organisation est prioritaire pour la V1.2. La recette porte sur deux comptes fictifs et sur la réouverture du dossier par le nouveau titulaire. [Critères et ordre de livraison](../../docs/administration-acces-exports.md#livraison-et-recette-du-transfert).
+
+## 16 novembre — Profils avec CONNECT, candidat à relire
+
+**Cadrage** confirmé : le responsable inclut CONNECT. **Développement local** réalisé : profil déclaré du compte, préremplissage des nouvelles missions, étapes 4–6 et deux restitutions adaptés ; dossier existant conservé après changement du défaut et nouvelle session. Terrain/contexte et modalités conservés. Prochaine action : revue locale du candidat et de ses preuves, puis décisions distinctes de merge et de **Préproduction** coordonnée CONNECT/Rapport. **Mise en production** non engagée. [Parcours et critères](docs/profils-professionnels.md). PR163 reste livrée en préproduction sur 9f8645b. Les étapes datées suivantes sont historiques.
+
+## 16 novembre — Interventions vers Projet en revue locale
+
+Cadrage du prochain lot puis Développement local réalisé/qualifié : aperçu et fichier Projet, sauvegarde des estimations et import indépendant vérifiés sur données fictives. Prochaine action : revue locale de cette première tranche, parcours par fichier confirmé par le responsable le 16 novembre, puis décision distincte de merge. Préproduction PR162 conservée ; aucune Mise en production. [Revue et limites](docs/interventions-projet.md). Création directe CONNECT, lien automatique vers un dossier serveur et insertion du Gantt dans Word/PDF restent des compléments à cadrer ; autres lots inchangés.
+
+## 16 novembre — PR162 livrée, revue hébergée distincte
+
+Cadrage validé, Développement local testé puis fusionné ; Préproduction livrée et alignée, interface/JSON/Word contrôlés. Mise en production non engagée. Prochaine action : revue de l’affichage hébergé via CONNECT, puis recette dédiée de sauvegarde/réouverture si demandée. [Preuves et limites](docs/organisation-ecrans.md#préproduction). Interventions → Projet/Gantt, profils, identité, photos privées, PDF direct et continuité restent à cadrer/ordonner ; aucun nouveau lot lancé. Site/Protocoles peuvent faire l’objet d’un cadrage d’affichage séparé.
+
+## 16 novembre — Organisation validée, candidat local d’affichage
+
+Cadrage validé ; Développement local réalisé et qualifié sur les trois écrans. Prochaine action : revue humaine du candidat et de la PR depuis [les comptes fictifs locaux](http://127.0.0.1:5197/fixture/), dossier RECETTE-AFFICHAGE-INTERFACE-20261116. [Périmètre et critères](docs/organisation-ecrans.md). Préproduction et Mise en production non engagées pour ce lot ; les autres évolutions gardent leur ordre à confirmer. Les étapes datées ci-dessous conservent l’historique.
+
+
+## 16 novembre — Prochaine priorité : contenu et disposition des écrans
+
+Le responsable demande une proposition avant de modifier l’application. Le [cadrage disponible](docs/organisation-ecrans.md) recommande Dossier, Observations et Export : sections et fiches repliables, résumés utiles, ordre de lecture Export et conservation des fonctions/données. Organisation et ouvertures par défaut en attente de validation ; aucun code ou écran applicatif changé. Site/Protocoles restent à harmoniser séparément, navigation et fil horizontal conservés.
+
+La source de pilotage est `rapportV12CadrageProfils20261112.affichageEcrans20261116` dans le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>). Ordre proposé ensuite, à confirmer :
+
+| Lot restant | Travail à cadrer |
+| --- | --- |
+| Interventions vers Projet / Gantt informatif | Transmission volontaire vers un projet distinct, droits existants et calendrier explicite, sans écrasement. |
+| Autres profils professionnels | Architecte/Maître d’œuvre, valeurs de connexion et matrice métier × mission × destinataire. |
+| Identité des organisations | Nom/logo/coordonnées/mentions, administration et isolement ; identité figée ou courante à arbitrer. |
+| Originaux privés / dossiers photo lourds | Recadrage et annotation déjà livrés ; activation privée, quotas/rétention/restauration, vrais appareils et optimisation à qualifier. |
+| PDF direct / rapports volumineux | Choix d’un moteur et qualification distincts du parcours Word puis PDF existant. |
+| Continuité et propriété | Délégation/transfert à cadrer, priorité encore non classée ; la conservation du propriétaire source est déjà vérifiée. |
+
+La [recette serveur Interventions est terminée](docs/interventions-proposees.md#recette-complète-du-16-novembre) : sauvegardes et réouverture dans une nouvelle session réussies, données/propriétaires et brouillon initial conservés. La prochaine action est la revue de la proposition d’affichage, avant développement ; les états et propositions datés ci-dessous conservent l’historique.
+
+
+## 16 novembre — Livraison Interventions PR161
+
+Cadrage confirmé, Développement local validé et PR161 fusionnée ; Préproduction livrée, alignement/interface/Word vérifiés. Prochaine étape distincte : recette Interventions avec nouvel enregistrement serveur et réouverture dans une nouvelle session, puis revue métier hébergée. [Résultats et limites](docs/interventions-proposees.md#préproduction). Mise en production non engagée ; Projet/Gantt conserve son sous-lot.
+
+## 16 novembre — Interventions proposées, première tranche locale
+
+Cadrage défini après la recette Attentes ; Développement local : panneau, validation facultative et restitutions implémentés et contrôlés. Prochaine action : revue locale de cette tranche, puis décisions distinctes de merge et de Préproduction. Mise en production non engagée. Le sous-lot suivant qualifiera l’échange volontaire avec Projet et le Gantt sans dates inventées. [Accès, preuves et limites](docs/interventions-proposees.md). Les anciens états Attentes/Terrain/photo restent historiques.
+
+## 16 novembre — Recette Attentes terminée, revue métier suivante
+
+Cadrage autorisé, Développement local fusionné, Préproduction : recette technique de sauvegarde et réouverture en nouvelle session réussie. Prochaine action : revue métier du dossier fictif RECETTE-ATTENTES-PR159-20261116 depuis la liste serveur. [Résultats et limites](docs/attentes-ecoute-client.md#recette-complète-du-16-novembre). Mise en production non engagée ; aucun prochain lot déduit de ce résultat. Les demandes d’étapes dans les paragraphes datés suivants sont historiques.
+
+## 16 novembre — Livraison du complément Attentes
+
+Cadrage confirmé, Développement local validé et PR159 fusionnée ; Préproduction livrée, alignement/interface/Word contrôlés. Prochaine étape distincte : recette du complément Attentes avec sauvegarde en ligne et réouverture dans une nouvelle session, puis revue métier. [Périmètre et preuves](docs/attentes-ecoute-client.md#préproduction). Mise en production non engagée ; autres lots conservés.
+
+## Suite engagée le 16 novembre — attentes
+
+Le responsable demande la reprise et le lancement de la suite. Le complément demandé sur les attentes est développé localement : préremplissage explicite depuis l’écoute et notes dictables, avec provenance et liens conservés. [Périmètre et revue](docs/attentes-ecoute-client.md). Prochaine action : revue locale de ce candidat puis décision distincte de préproduction. La revue métier hébergée Terrain reste distincte ; interventions/planning avec Projet, autres profils et identité des organisations gardent leurs cadrages. Les paragraphes datés suivants conservent les états antérieurs.
+
+
+## 14 novembre — Terrain horizontal, revue locale de PR158
+
+Organisation confirmée par le responsable et implémentée : Protocoles horizontal, bloc 0 Terrain, Bâti regroupé ; Observations Terrain et fond cadastral, Site allégé. [Parcours et qualification de la révision](docs/environnement-terrain.md). Développement local vérifié ; prochaine action : revue humaine de cette même PR158. Préproduction et Mise en production non engagées pour la révision. Les notes et preuves du précédent candidat sont conservées dans les archives et décisions historiques.
+
+## Suite du lot photos — développement local du 13 novembre
+
+Version rapport recadrée/annotée et choix réversible implémentés ; original conservé, données persistantes et deux restitutions contrôlées sur image synthétique. Le quota privé compte désormais les octets orphelins et temporaires, sans suppression automatique. [Recette et limites](docs/photos-rapport-edition.md). Prochaine action : revue locale du candidat et reprise HTTP/MariaDB quand Docker Desktop redémarre, puis décision distincte de préproduction. Quotas, rétention, restauration sur cible et vrais appareils restent à qualifier avant activation. Le préremplissage des attentes, les autres profils et Projet gardent leurs lots propres.
+
+Le lot pagination PR154 est validé et fusionné ; la préproduction est alignée sur son code. Les états de revue antérieurs ci-dessous sont historiques.
+
+## Correction de pagination — préproduction vérifiée le 13 novembre
+
+Les deux réserves Word/PDF sont corrigées et vérifiées en préproduction : 26 pages relues, expert 20 pages et synthèse 6 pages, textes et médias conservés. Les 176 tests et les deux compilations réussissent ; PR154 ouverte en brouillon pour revue humaine, sans fusion ni production. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## État de livraison du 13 novembre — PR152
+
+PR152 est fusionnée puis installée en préproduction avec son paquet qualifié, sans modification des dossiers réels. Accès CONNECT, préservation des données et contrôles de lecture/aperçu/téléchargement réussis ; la recette technique complète de sauvegarde, import entre deux comptes fictifs et réouverture serveur dans une nouvelle session sans brouillon local est réussie. Le propriétaire et toutes les colonnes du source, ainsi que les 18 dossiers antérieurs, sont conservés. La revue métier reste distincte. Le contrôle initial des deux Word et de leur conversion PDF porte sur 21 pages expert et 6 pages client ; ses deux réserves sont ensuite résolues par PR154, comme indiqué ci-dessus. [État et preuves](docs/partage-tests-et-stockage.md#préproduction). Aucune production ni activation d’original privé ; les autres évolutions gardent leurs périmètres. Les états de revue locale ci-dessous restent historiques.
+
+
+## Priorité du 13 novembre — enregistrement et dossier complet
+
+Le responsable donne priorité au chargement et à la récupération du contenu complet après réception d’une copie de test expurgée. Le correctif local traite accueil/import, téléchargement vérifié, confirmation de sauvegarde et clarté des copies ; qualification initiale locale et navigateur réussies, puis contrôles d’intégration rejoués après réalignement sur PR150. Les validations humaines existantes restent attachées à leur candidat ; elles ne sont pas recréées par la résolution des conflits. La récupération du vrai contenu de Philippe est distincte : absent du fichier reçu et des sources serveur contrôlées. [État et critères](docs/partage-tests-et-stockage.md).
+
+PR150 est désormais fusionnée dans `main` ; PR152 est réalignée pour conserver les originaux privés et le chargement complet ensemble, sans nouvelle activation. Le lot 0 PR149 est déjà livré en préproduction ; la recette hébergée complète et les autres demandes restent dans leurs suivis respectifs.
+
+
 ## Priorités du 12 novembre
 
-Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement, y compris les rendus Word de 15 pages expert et 5 client ; PR149 fusionnée et installée en préproduction le 13 novembre, avec contrôles de disponibilité, de reprise du brouillon et de conservation des données réussis. La recette fonctionnelle complète hébergée et la revue métier restent à effectuer. Le travail photo est préparé en parallèle dans un autre lot, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
+Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement, y compris les rendus Word de 15 pages expert et 5 client ; PR149 fusionnée et installée en préproduction le 13 novembre, avec contrôles de disponibilité, de reprise du brouillon et de conservation des données réussis. La recette fonctionnelle complète hébergée et la revue métier restent à effectuer. Le travail photo est désormais repris dans un lot isolé, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
 
 À la clôture, le responsable demande aussi le [préremplissage des attentes depuis l'écoute client et des notes complémentaires dictables](docs/aide-decision-demo.md#évolution-demandée-à-la-clôture--reprendre-lécoute-client). Cadrage consigné pour une prochaine tranche après reprise explicite ; aucune nouvelle implémentation, modification de priorité des autres lots ou activation audio n'est déduite de cette note.
 
+
+## Photos originales privées — développement local actif
+
+Reprise explicitement demandée le 13 novembre après la livraison du lot 0 (PR149) en préproduction. La première tranche locale conserve et rouvre les originaux privés ; son code est fusionné via PR150. L’activation et la qualification hébergées restent distinctes. La version rapport recadrée/annotée reste la tranche suivante du [lot en quatre phases](docs/photos-originales-et-annotations.md). La recette fonctionnelle hébergée de PR149 reste distincte et ouverte. La compression locale n'y sera activée qu'après confirmation de l'original ; son [module est isolé](docs/compression-photos.md). Le PDF natif reste un chantier distinct, seulement [cadré](docs/compression-photos.md#cadrage-distinct--pdf-natif).
 
 ## Essais temporaires — à qualifier
 
@@ -205,3 +328,20 @@ metier de chaque phase, puis a cadrer `Explication` et
 
 Le cadrage, les hypotheses, les lots et le chiffrage sont decrits dans
 `docs/habitologie-light-plan.md`.
+
+## 18 novembre — Correction de pagination des interventions
+
+Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](docs/interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.
+
+## 18 novembre — Priorité de fermeture de l’aperçu
+
+Le [correctif local de fermeture](docs/source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) et le libellé CONNECT **Analyse globale** confirmé par le responsable sont prêts à relire dans PR170. La PR169 est fusionnée en b9c9efb et son candidat installé est recontrôlé. La nouvelle PR170 cible main ; revue humaine et livraison distincte restent à effectuer.
+
+## 18 novembre — PR170 en préproduction
+
+CONNECT et Rapport livrés après fusion et accord humains ; six fichiers exacts, dossier fictif complet et propriétaire conservés, aperçus client/expert refermables. [Résultat et preuves](docs/source-audit.md#livraison-en-pr%C3%A9production-de-la-pr170). Cette mise à jour documentaire ne change pas les applications.
+
+
+## Planning par périodes — 19 novembre
+
+Mode relatif livré en préproduction ; création indépendante, sauvegarde et réouverture après reconnexion qualifiées techniquement dans la PR175. Revue humaine de la PR à effectuer. État exact dans le suivi canonique et ses reçus ; aucun passage en production. [Planning Rapport vers Projet](docs/interventions-projet.md).

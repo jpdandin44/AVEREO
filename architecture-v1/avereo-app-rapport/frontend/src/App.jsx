@@ -2,21 +2,35 @@ import { useAppPreferences } from '../../../avereo-platform/shared/use-app-prefe
 import { protocolOptions, escapeHtml } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
+import PublicationPanel from './PublicationPanel.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
-import { observationAdviceLabel } from './reportProfiles.js';
+import InterventionsPanel from './InterventionsPanel.jsx';
+import ScreenDisclosure, { ScreenPresentation, DisclosureControls, useScreenPresentation, excerpt, revealScreenField } from './ScreenDisclosure.jsx';
+import { observationAdviceLabel, MISSION_PROFILES, recognizedMissionProfile, missionProfileLabel, withMissionDefault } from './reportProfiles.js';
+import { readConnectedMissionProfile } from './connectedMissionProfile.js';
 import { textLinks } from './textLinks.js';
-import { orderedObservations, observationPhase, moveObservation } from './observationOrder.js';
+import { normalizeDecision, decisionWarnings } from './decisionSupport.js';
+import { orderedObservations, observationNumber, observationPhase, moveObservation } from './observationOrder.js';
 import ObservationPlans from './ObservationPlans.jsx';
-import { MAX_REPORT_BYTES, observationPlanNames, planPayloadError } from './observationPlans.js';
+import EnvironmentContext from './EnvironmentContext.jsx';
+import VisitGuide from './VisitGuide.jsx';
+import { environmentContextError, environmentContext } from './environmentContext.js';
+import { PhotoOriginalControls } from './PhotoOriginals.jsx';
+import { applyPhotoReportVersion, reportPhotoSource } from './photoReportVersion.js';
+import { attachOriginal, photoOriginalCapabilities } from './photoOriginals.js';
+import { observationPlanNames, observationPlanViews, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
-import { saveAs } from './saveAs.js';
+import { saveAs, setDownloadAuthorization, checkDownloadAuthorization } from './saveAs.js';
+import { canReportAction, sameAccount, administeredMissionDefault } from './profileAccess.js';
+import ReadOnlyFields from './ReadOnlyFields.jsx';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { del as idbDel, get as idbGet, set as idbSet } from 'idb-keyval';
 import {
   completeOAuthLogin,
   getAuthConfig,
   getCurrentUser,
+  authorizeReportExport,
   saveOnlineReport,
   startOAuthLogin,
 } from './services/reportApi.js';
@@ -46,12 +60,16 @@ import {
   rgaRisk,
 } from './georisquesRiskSummary.js';
 import OnlineReports from './OnlineReports.jsx';
+import ReportImport from './ReportImport.jsx';
+import { requireReportContent, reportExportBlob } from './reportFiles.js';
 import { createTestReportCopy, observationGravities } from './testReportCopy.js';
 import RgaMap from './RgaMap.jsx';
 import { readRgaTransfer, RGA_TRANSFER_KEY } from './rgaContext.js';
 import { latestDraft } from './draftRecovery.js';
 import {
   HABITOLOGIE_PROTOCOL_STAGES,
+  visitProtocolStages,
+  protocolStageNumber,
   LISTENING_TOPICS,
   createHabitologieProtocolState,
   isHabitologieControlSelected,
@@ -440,22 +458,24 @@ function SignaturePad({ value, onChange }) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const ratio = window.devicePixelRatio || 1;
-    canvas.width = rect.width * ratio;
-    canvas.height = rect.height * ratio;
-    const ctx = canvas.getContext('2d');
-    ctx.scale(ratio, ratio);
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.lineWidth = 2.4;
-    ctx.strokeStyle = '#111827';
-
-    if (value?.startsWith('data:image')) {
-      const img = new Image();
-      img.onload = () => ctx.drawImage(img, 0, 0, rect.width, rect.height);
-      img.src = value;
-    }
+    let active = true;
+    const draw = () => {
+      const rect = canvas.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = rect.width * ratio; canvas.height = rect.height * ratio;
+      const ctx = canvas.getContext('2d');
+      ctx.scale(ratio, ratio);
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.lineWidth = 2.4; ctx.strokeStyle = '#111827';
+      if (value?.startsWith('data:image')) {
+        const img = new Image();
+        img.onload = () => { if (active) ctx.drawImage(img, 0, 0, rect.width, rect.height); };
+        img.src = value;
+      }
+    };
+    draw();
+    const observer = new ResizeObserver(draw); observer.observe(canvas);
+    return () => { active = false; observer.disconnect(); };
   }, [value]);
 
   const point = (event) => {
@@ -584,7 +604,7 @@ function StepNav({ steps, currentStep, setStep, onHome }) {
 }
 
 function CompletionPanel({ report, validation }) {
-  const photoCount = report.observations.reduce((count, obs) => count + obs.photos.length, 0);
+  const photoCount = report.observations.reduce((count, obs) => count + obs.photos.length, 0) + (environmentContext(report)?.photo ? 1 : 0);
   const required = [
     report.reference_dossier,
     report.proprietaire,
@@ -654,7 +674,7 @@ function CompletionPanel({ report, validation }) {
   );
 }
 
-function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onBackup }) {
+function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onLoadFile, onBackup, profileLoading, canCreate = true }) {
   const hasDraft = Boolean(draft);
   return (
     <div className="screen">
@@ -677,7 +697,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
             </div>
           )}
           <div className="home-actions">
-            <button className="button primary" type="button" onClick={onNew}>
+            <button className="button primary" type="button" onClick={onNew} disabled={profileLoading || !canCreate}>
               <Plus size={18} />
               Nouveau rapport
             </button>
@@ -685,7 +705,9 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
               <RotateCcw size={18} />
               Reprendre
             </button>
+            <ReportImport draft={draft} onLoad={onLoadFile} onBackup={onBackup} />
           </div>
+          {profileLoading && <p role="status">Lecture du profil CONNECT pour un nouveau dossier… La reprise et le chargement de vos dossiers restent disponibles.</p>}
           {hasDraft && (
             <p className="draft-line">
               Dernier brouillon{isHabitologieReport(draft) ? " d'habitologie" : ''} :{' '}
@@ -722,6 +744,7 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
 }
 
 function DossierStep({ report, setReport }) {
+  const presentation = useScreenPresentation();
   const subcategories = getReportSubcategories(report.categorie, report.sous_categorie);
   const habitologie = isHabitologieReport(report);
   const housingTypeSelected = report.sous_categorie !== HABITOLOGIE_DEFAULT_HOUSING_TYPE;
@@ -752,7 +775,7 @@ function DossierStep({ report, setReport }) {
     setReport((prev) => ({
       ...prev,
       ecoute: {
-        ...prev.ecoute, [field]: `${prev.ecoute?.[field] || ''}${text}`,
+        ...prev.ecoute, [field]: appendDictation(prev.ecoute?.[field], text),
         ...(field === 'besoin_reformule' ? { besoin_confirme: false } : {}),
       },
     }));
@@ -787,24 +810,10 @@ function DossierStep({ report, setReport }) {
         </div>
       </div>
 
-      {habitologie && (
-        <fieldset className="consent-list consent-first">
-          <legend>Accords recueillis</legend>
-          <label className={report.ecoute.consentement_photos ? 'selected' : ''}>
-            <input type="checkbox" checked={Boolean(report.ecoute.consentement_photos)}
-              onChange={(event) => updateEcoute('consentement_photos', event.target.checked)} />
-            <span><strong>Photos dans le dossier</strong>
-              <small>Le client autorise l'utilisation des photos prises pendant la visite dans ce dossier.</small></span>
-          </label>
-          <label className={report.ecoute.consentement_dictee ? 'selected' : ''}>
-            <input type="checkbox" checked={Boolean(report.ecoute.consentement_dictee)}
-              onChange={(event) => updateEcoute('consentement_dictee', event.target.checked)} />
-            <span><strong>Dictee vocale pendant la visite</strong>
-              <small>Le client accepte la transcription vocale en texte. Aucun fichier audio n'est conserve.</small></span>
-          </label>
-        </fieldset>
-      )}
 
+
+      <ScreenDisclosure name="dossier-mission" title="Mission et coordonnées" defaultOpen={presentation.initiallyNew}
+        summary={[report.reference_dossier || 'Référence à renseigner', missionProfileLabel(report), report.sous_categorie, report.date_visite, report.adresse_logement].filter(Boolean).join(' · ')}>
       {!habitologie && REPORT_CATEGORIES[report.categorie]?.selectable === false && <p className="muted">Type du dossier conservé : {report.categorie}.</p>}
       <div className="choice-grid">
         {getSelectableReportCategories().map(([name, item]) => (
@@ -819,11 +828,10 @@ function DossierStep({ report, setReport }) {
       </div>
 
       <div className="form-grid two">
-        <Field label="Profil de la mission" hint="Le profil adapte les conseils et les étapes de l’export pour ce dossier.">
+        <Field label="Profil de la mission" hint="Le profil adapte les étapes de l’export pour ce dossier. CONNECT peut le proposer à la création ; vous gardez le choix de la mission.">
           <select value={report.profil_metier || ''} onChange={(event) => updateField('profil_metier', event.target.value)}>
-            <option value="">Parcours actuel</option>
-            <option value="habitologue">Habitologue</option>
-            {report.profil_metier && report.profil_metier !== 'habitologue' && <option value={report.profil_metier}>{report.profil_metier} (parcours actuel)</option>}
+            {MISSION_PROFILES.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+            {report.profil_metier && !recognizedMissionProfile(report.profil_metier) && <option value={report.profil_metier}>{report.profil_metier} (parcours actuel)</option>}
           </select>
         </Field>
         <Field label={habitologie ? "Type d'habitation" : 'Sous-categorie'}>
@@ -859,7 +867,24 @@ function DossierStep({ report, setReport }) {
           <input value={report.intervenant} onChange={(event) => updateField('intervenant', event.target.value)} />
         </Field>
       </div>
-
+      </ScreenDisclosure>
+      {habitologie && (
+        <fieldset className="consent-list consent-first">
+          <legend>Accords recueillis</legend>
+          <label className={report.ecoute.consentement_photos ? 'selected' : ''}>
+            <input type="checkbox" checked={Boolean(report.ecoute.consentement_photos)}
+              onChange={(event) => updateEcoute('consentement_photos', event.target.checked)} />
+            <span><strong>Photos dans le dossier</strong>
+              <small>Le client autorise l'utilisation des photos prises pendant la visite dans ce dossier.</small></span>
+          </label>
+          <label className={report.ecoute.consentement_dictee ? 'selected' : ''}>
+            <input type="checkbox" checked={Boolean(report.ecoute.consentement_dictee)}
+              onChange={(event) => updateEcoute('consentement_dictee', event.target.checked)} />
+            <span><strong>Dictee vocale pendant la visite</strong>
+              <small>Le client accepte la transcription vocale en texte. Aucun fichier audio n'est conserve.</small></span>
+          </label>
+        </fieldset>
+      )}
       {habitologie && (
         <section className="habitologie-block" aria-labelledby="ecoute-title">
           <div className="habitologie-heading">
@@ -870,9 +895,13 @@ function DossierStep({ report, setReport }) {
             </p>
           </div>
 
-          {LISTENING_SECTIONS.map((section) => (
-            <section className="listening-section" key={section.title}>
-              <h4>{section.title}</h4>
+          <DisclosureControls label="Affichage de l’écoute client" ids={['listening-0', 'listening-1', 'listening-2', 'dossier-topics']} />
+          <div className="listening-disclosures">
+          {LISTENING_SECTIONS.map((section, index) => (
+            <ScreenDisclosure key={section.title} name={`listening-${index}`} title={section.title}
+              defaultOpen={presentation.initiallyNew && index === 0}
+              summary={`${section.fields.filter(field => typeof report.ecoute[field.key] === 'string' && report.ecoute[field.key].trim()).length} / ${section.fields.length} réponses renseignées${excerpt(report.ecoute[section.fields[0].key]) ? ` · ${excerpt(report.ecoute[section.fields[0].key])}` : ''}`}
+              status={index === 2 ? report.ecoute.besoin_confirme ? 'Besoin confirmé avec le client' : 'Confirmation du besoin à recueillir' : ''}>
               <p>{section.help}</p>
               <div className="form-grid two">
                 {section.fields.map((field) => (
@@ -889,14 +918,16 @@ function DossierStep({ report, setReport }) {
                   />
                 ))}
               </div>
-            </section>
-          ))}
-          <label className="inline-confirmation">
+              {index === 2 && (<label className="inline-confirmation">
             <input type="checkbox" checked={Boolean(report.ecoute.besoin_confirme)}
               disabled={!report.ecoute.besoin_reformule?.trim()}
               onChange={(event) => updateEcoute('besoin_confirme', event.target.checked)} />
             J'ai reformulé le besoin et le client confirme que cela correspond à ses attentes.
-          </label>
+          </label>)}
+            </ScreenDisclosure>
+          ))}
+          <ScreenDisclosure name="dossier-topics" title="Sujets identifiés ensemble pendant l’écoute"
+            summary={LISTENING_TOPICS.filter(topic => Array.isArray(report.ecoute.sujets_identifies) && report.ecoute.sujets_identifies.includes(topic.key)).map(topic => topic.label).join(' · ') || 'Aucun sujet coché'}>
           <fieldset className="listening-topics">
             <legend>Sujets identifiés ensemble pendant l'écoute</legend>
             <p>Cochez uniquement les sujets évoqués. Ils suggèrent des contrôles à discuter à l'étape 3, sans établir de diagnostic. Les notes libres ne cochent rien automatiquement.</p>
@@ -915,7 +946,8 @@ function DossierStep({ report, setReport }) {
               })}
             </div>
           </fieldset>
-
+          </ScreenDisclosure>
+          </div>
         </section>
       )}
     </section>
@@ -1289,7 +1321,7 @@ function ProtocolStep({ report, setReport }) {
         [stageKey]: {
           ...prev.habitologie_protocoles[stageKey],
           controls: {
-            ...prev.habitologie_protocoles[stageKey].controls,
+            ...prev.habitologie_protocoles[stageKey]?.controls,
             [controlKey]: checked,
           },
         },
@@ -1305,33 +1337,14 @@ function ProtocolStep({ report, setReport }) {
           <h1>Protocoles</h1>
           <p>
             {habitologie
-              ? "Retenir les phases utiles à la visite, puis les suivre dans l'ordre Eau, Air, Terre, Feu."
+              ? "Préparer la visite du terrain, puis suivre le bâti dans l’ordre Eau, Air, Terre, Feu."
               : 'Selectionner les controles qui seront repris dans le rapport.'}
           </p>
         </div>
       </div>
       {habitologie ? (
         <div className="habitologie-protocol" aria-label="Protocole de visite globale">
-          <div className="analysis-sequence" aria-label="Ordre de l'analyse globale">
-            <div>
-              <strong>Fil conducteur de l'analyse</strong>
-              <small>Cliquer sur le numéro ou le nom pour activer ou désactiver une phase avec le client.</small>
-            </div>
-            <ol>
-              {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
-                <li key={stage.key}>
-                  <button type="button" className="phase-toggle"
-                    aria-label={`Phase ${index + 1} ${stage.label}`}
-                    aria-pressed={isHabitologieStageEnabled(report, stage.key)}
-                    onClick={() => setReport((prev) => setHabitologieStageEnabled(prev, stage.key, !isHabitologieStageEnabled(prev, stage.key)))}>
-                    <span aria-hidden="true">{index + 1}</span>
-                    <strong>{stage.label}<small>{isHabitologieStageEnabled(report, stage.key) ? 'Retenue' : 'Non retenue'}</small></strong>
-                  </button>
-                  {index < HABITOLOGIE_PROTOCOL_STAGES.length - 1 && <ArrowRight size={16} aria-hidden="true" />}
-                </li>
-              ))}
-            </ol>
-          </div>
+          <VisitGuide report={report} setReport={setReport} />
           <div className="listening-review">
             <strong>Besoin reformulé : {report.ecoute.besoin_reformule || 'À préciser avec le client'}</strong>
             <p>{report.ecoute.besoin_confirme ? 'Reformulation confirmée avec le client.' : 'Reformulation à confirmer avec le client.'}</p>
@@ -1339,10 +1352,10 @@ function ProtocolStep({ report, setReport }) {
             <p>Désactiver une phase suspend ses contrôles sans effacer les observations. La réactiver restaure les choix présents au moment de sa désactivation.</p>
             <small>Un point non retenu n'est ni vérifié ni déclaré sans risque. Complétez le périmètre selon votre expertise et les conditions de visite.</small>
           </div>
-          {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
+          {visitProtocolStages(report).map((stage) => (
             <article className={`protocol-phase phase-${stage.key}${isHabitologieStageEnabled(report, stage.key) ? '' : ' is-inactive'}`} key={stage.key}>
               <div className="protocol-phase-heading">
-                <span>Phase {index + 1}</span>
+                <span>{stage.key === 'terrain' ? 'Bloc 0 · Terrain' : `Phase ${protocolStageNumber(stage)}`}</span>
                 <div>
                   <h3>{stage.label}</h3>
                   <p>{stage.summary}</p>
@@ -1408,16 +1421,28 @@ function ProtocolStep({ report, setReport }) {
   );
 }
 
-function ObservationStep({ report, setReport }) {
+function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, onlineSaving, onPhotoTransfer, photoTransfers }) {
+  const presentation = useScreenPresentation();
   const [cameraFor, setCameraFor] = useState(null);
   const [planObservationId, setPlanObservationId] = useState('');
-  const [compact, setCompact] = useState(false);
+  const [planFocus, setPlanFocus] = useState(0);
   const [draggedId, setDraggedId] = useState('');
   const [dropId, setDropId] = useState('');
   const [orderMessage, setOrderMessage] = useState('');
+  const [photoCapabilities, setPhotoCapabilities] = useState(null);
+  const canUseOnlinePhotos = Boolean(onlineSyncEnabled && authenticated);
+  useEffect(() => {
+    setPhotoCapabilities(null);
+    if (!canUseOnlinePhotos || !/^[a-f0-9]{32}$/.test(report.onlineReportId || '')) return undefined;
+    const controller = new AbortController();
+    photoOriginalCapabilities({ signal: controller.signal })
+      .then(value => { if (!controller.signal.aborted) setPhotoCapabilities(value); })
+      .catch(() => { if (!controller.signal.aborted) setPhotoCapabilities({ enabled: false }); });
+    return () => controller.abort();
+  }, [canUseOnlinePhotos, report.onlineReportId]);
   const dragSource = useRef(null);
   const observationsInOrder = orderedObservations(report);
-  const observationNumbers = new Map(observationsInOrder.map((observation, index) => [observation, index + 1]));
+  const observationNumbers = new Map(observationsInOrder.map(observation => [observation, observationNumber(report, observation)]));
   const phaseObservations = new Map();
   for (const observation of observationsInOrder) {
     const phase = observationPhase(report, observation);
@@ -1433,10 +1458,20 @@ function ObservationStep({ report, setReport }) {
     setReport(previous => moveObservation(previous, sourceId, targetId));
     setOrderMessage('Ordre mis à jour. Les numéros du rapport et des repères sont recalculés.');
   };
-  const localize = id => {
+  const showObservation = id => {
+    presentation.setOpen(`observation-${id}`, true);
+    requestAnimationFrame(() => document.getElementById(`observation-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  };
+  const localize = (id, planId = '') => {
+    presentation.setOpen('observation-plans', true);
+    presentation.setOpen(`observation-${id}`, true);
     setPlanObservationId(id);
-    document.getElementById('observation-plans')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    document.getElementById('observation-plans')?.focus({ preventScroll: true });
+    setPlanFocus(value => ({ tick: (value?.tick || 0) + 1, planId }));
+    requestAnimationFrame(() => {
+      const plans = document.getElementById('observation-plans');
+      plans?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      plans?.focus({ preventScroll: true });
+    });
   };
   const habitologie = isHabitologieReport(report);
   const photoAllowed = !habitologie || Boolean(report.ecoute?.consentement_photos);
@@ -1444,10 +1479,10 @@ function ObservationStep({ report, setReport }) {
   const consentReason = "Enregistrer d'abord l'accord du client dans l'etape Dossier.";
 
   const addObservation = (phaseKey = '') => {
-    setReport((prev) => isHabitologieReport(prev) && phaseKey && !isHabitologieStageEnabled(prev, phaseKey) ? prev : ({
-      ...prev,
-      observations: [...prev.observations, { ...emptyObservation(), phase_habitologie: phaseKey }],
-    }));
+    if (habitologie && phaseKey && !isHabitologieStageEnabled(report, phaseKey)) return;
+    const observation = { ...emptyObservation(), phase_habitologie: phaseKey };
+    setReport(prev => ({ ...prev, observations: [...prev.observations, observation] }));
+    presentation.setOpen(`observation-${observation.id}`, true);
   };
 
   const updateObservation = (id, patch) => {
@@ -1458,9 +1493,11 @@ function ObservationStep({ report, setReport }) {
   };
 
   const removeObservation = (id) => {
+    const replacement = emptyObservation();
+    if (report.observations.length === 1) presentation.setOpen(`observation-${replacement.id}`, true);
     setReport((prev) => {
       const next = prev.observations.filter((obs) => obs.id !== id);
-      return { ...prev, observations: next.length > 0 ? next : [emptyObservation()] };
+      return { ...prev, observations: next.length > 0 ? next : [replacement] };
     });
   };
 
@@ -1515,9 +1552,12 @@ function ObservationStep({ report, setReport }) {
     const controls = selectedStage?.controls || [];
 
     return (
-      <article className={`observation-card${draggedId === obs.id ? ' is-dragged' : ''}${dropId === obs.id ? ' is-drop-target' : ''}`} key={obs.id} id={`observation-${obs.id}`}>
-        <div className="observation-header">
-          <span className="observation-drag-handle" draggable={false} data-can-drag={siblings.length > 1} aria-hidden="true" title="Glisser pour déplacer dans cette phase"
+      <article className={`observation-card progressive-observation${draggedId === obs.id ? ' is-dragged' : ''}${dropId === obs.id ? ' is-drop-target' : ''}`} key={obs.id} id={`observation-${obs.id}`}>
+        <ScreenDisclosure name={`observation-${obs.id}`} title={`Observation ${number} · ${excerpt(obs.titre, 180) || 'Sans titre'}`}
+          defaultOpen={presentation.initiallyNew && report.observations.length === 1}
+          summary={[obs.piece, `${obs.photos.length} photo(s)`, observationPlanNames(report, obs).length ? `${observationPlanNames(report, obs).length} vue(s) repérée(s)` : 'Sans repère'].filter(Boolean).join(' · ')}
+          status={`Gravité : ${obs.gravite || 'à préciser'}`} busy={cameraFor === obs.id || photoTransfers > 0}
+          leading={<span className="observation-drag-handle" draggable={false} data-can-drag={siblings.length > 1} aria-hidden="true" title="Glisser pour déplacer dans cette phase"
             onPointerDown={event => {
               if (event.button !== 0 || siblings.length < 2) return;
               event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId);
@@ -1540,18 +1580,14 @@ function ObservationStep({ report, setReport }) {
                 else if (target && observationPhase(report, target) !== phase) setOrderMessage('Le déplacement reste limité à la même phase.');
               }
               clearDrag();
-            }} onPointerCancel={clearDrag}><GripVertical size={20} /></span>
-          <h3>Observation {number}{compact && obs.titre ? ` · ${obs.titre}` : ''}</h3>
-          <button
+            }} onPointerCancel={clearDrag}><GripVertical size={20} /></span>} actions={<button
             className="icon-button danger"
             type="button"
             aria-label="Supprimer cette observation"
             onClick={() => removeObservation(obs.id)}
           >
             <Trash2 size={17} />
-          </button>
-        </div>
-
+          </button>} toolbar={
         <div className="observation-order-controls">
           <Field label="Numéro dans le rapport">
             <select aria-label={`Numéro de l’observation ${number}`} value={obs.id} disabled={siblings.length < 2} onChange={event => reorder(obs.id, event.target.value)}>
@@ -1560,8 +1596,8 @@ function ObservationStep({ report, setReport }) {
           </Field>
           <button type="button" className="button secondary" aria-label={`Monter l’observation ${number}`} disabled={position === 0} onClick={() => reorder(obs.id, siblings[position - 1].id)}><ArrowUp size={16} />Monter</button>
           <button type="button" className="button secondary" aria-label={`Descendre l’observation ${number}`} disabled={position === siblings.length - 1} onClick={() => reorder(obs.id, siblings[position + 1].id)}><ArrowDown size={16} />Descendre</button>
-        </div>
-        <div className="observation-body" hidden={compact}>
+        </div>}>
+        <div className="observation-body">
 
         {habitologie && (
           <div className="form-grid two protocol-link-fields">
@@ -1573,9 +1609,9 @@ function ObservationStep({ report, setReport }) {
                 }
               >
                 <option value="">A classer</option>
-                {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => (
+                {visitProtocolStages(report).map(stage => (
                   <option key={stage.key} value={stage.key} disabled={!isHabitologieStageEnabled(report, stage.key) && stage.key !== obs.phase_habitologie}>
-                    Phase {index + 1} · {stage.label}{!isHabitologieStageEnabled(report, stage.key) ? ' — non retenue' : ''}
+                    {stage.key === 'terrain' ? 'Bloc 0' : `Phase ${protocolStageNumber(stage)}`} · {stage.label}{!isHabitologieStageEnabled(report, stage.key) ? ' — non retenue' : ''}
                   </option>
                 ))}
               </select>
@@ -1627,8 +1663,10 @@ function ObservationStep({ report, setReport }) {
         </div>
 
         <div className="observation-location">
-          <button type="button" className="button secondary" onClick={() => localize(obs.id)}><MapPin size={18} />Localiser sur un plan</button>
-          <span>{observationPlanNames(report, obs).join(' · ') || 'Aucun repère placé'}</span>
+          <button type="button" className="button secondary" data-readonly-view onClick={() => localize(obs.id)}><MapPin size={18} />Localiser sur un plan</button>
+          {observationPlanViews(report, obs).map(view => <button type="button" className="button ghost observation-view-link" data-readonly-view key={view.id}
+            onClick={() => localize(obs.id, view.id)}>Voir {view.title}</button>)}
+          {!observationPlanNames(report, obs).length && <span>Aucun repère placé</span>}
         </div>
         <TextAreaWithMic
           label="Constat"
@@ -1667,8 +1705,9 @@ function ObservationStep({ report, setReport }) {
 
         <div className="photo-grid">
           {obs.photos.map((photo) => (
-            <figure key={photo.id}>
-              <img src={photo.src} alt={photo.name} loading="lazy" />
+            <figure className="photo-with-original" key={photo.id}>
+              <div className="photo-thumb">
+              <img src={reportPhotoSource(photo)} alt={photo.name} loading="lazy" />
               <figcaption>{formatDateTime(photo.horodatageISO)}</figcaption>
               <button
                 className="icon-button danger"
@@ -1678,6 +1717,16 @@ function ObservationStep({ report, setReport }) {
               >
                 <Trash2 size={15} />
               </button>
+              </div>
+              <PhotoOriginalControls photo={photo} reportId={report.onlineReportId}
+                canUseOnline={canUseOnlinePhotos} capabilities={photoCapabilities}
+                disabled={onlineSaving} onTransfer={onPhotoTransfer}
+                onReportVersion={(version, choice) => setReport(current => applyPhotoReportVersion(current, {
+                  reportId: report.onlineReportId, observationId: obs.id, photoId: photo.id, src: photo.src,
+                }, version, choice))}
+                onPreserved={original => setReport(current => attachOriginal(current, {
+                  reportId: report.onlineReportId, observationId: obs.id, photoId: photo.id, src: photo.src,
+                }, original))} />
             </figure>
           ))}
           <label className={`photo-action ${photoAllowed ? '' : 'disabled'}`} title={photoAllowed ? 'Importer des photos' : consentReason}>
@@ -1702,9 +1751,38 @@ function ObservationStep({ report, setReport }) {
             Camera
           </button>
         </div>
+        {obs.photos.length > 0 && <p className="muted photo-original-notice">
+          {!canUseOnlinePhotos
+            ? 'Vos photos restent dans le brouillon. La conservation privée des originaux nécessite une connexion CONNECT.'
+            : !report.onlineReportId
+              ? 'Sauvez d’abord le dossier en ligne pour conserver ses originaux dans son espace privé.'
+              : photoCapabilities && !photoCapabilities.enabled
+                ? 'La conservation privée des originaux est indisponible pour le moment. Les photos du dossier restent utilisables.'
+                : 'La conservation d’un original est volontaire. La photo du rapport reste inchangée.'}
+        </p>}
         </div>
+        </ScreenDisclosure>
       </article>
     );
+  };
+
+  const renderObservationPhase = stage => {
+    const items = observationsInOrder.filter(obs => obs.phase_habitologie === stage.key);
+    return <section className={`observation-phase phase-${stage.key}${isHabitologieStageEnabled(report, stage.key) ? '' : ' is-inactive'}`} key={stage.key}>
+      <div className="observation-phase-heading"><div>
+        <span>{stage.key === 'terrain' ? 'TERRAIN · T1, T2…' : `Phase ${protocolStageNumber(stage)}`}</span>
+        <h3>{stage.label}</h3><p>{stage.summary}</p>
+      </div><button className="button secondary" type="button" disabled={!isHabitologieStageEnabled(report, stage.key)}
+        aria-label={`Ajouter une observation ${stage.key === 'terrain' ? 'terrain' : stage.label}`}
+        onClick={() => addObservation(stage.key)}><Plus size={18} />Ajouter</button></div>
+      {stage.key === 'terrain' && environmentContext(report) && <details className="legacy-terrain-context">
+        <summary>Notes de terrain déjà saisies — conservées dans le dossier</summary>
+        <EnvironmentContext report={report} setReport={setReport} onPhotoTransfer={onPhotoTransfer} />
+      </details>}
+      {!isHabitologieStageEnabled(report, stage.key) && <p className="phase-status"><strong>Non retenue pour cette visite.</strong> Les observations et photos restent conservées et exportées. Réactivez le bloc dans Protocoles pour ajouter un constat.</p>}
+      {items.length ? <div className="observation-list">{items.map(renderObservationCard)}</div>
+        : <p className="empty-phase">Aucune observation enregistrée pour ce groupe.</p>}
+    </section>;
   };
 
   return (
@@ -1717,11 +1795,16 @@ function ObservationStep({ report, setReport }) {
         </div>
       </div>
 
-      <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId} onSelect={setPlanObservationId} />
+      <ScreenDisclosure name="observation-plans" title="Plans et vues du dossier" busy={photoTransfers > 0}
+        summary={`${(report.plans || []).length} vue(s) · ${report.observations.reduce((count, obs) => count + (obs.reperes || []).length, 0)} repère(s)`}>
+        <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId}
+          onSelect={id => { setPlanObservationId(id); presentation.setOpen(`observation-${id}`, true); }}
+          onShowObservation={showObservation} focusRequest={planFocus} onPhotoTransfer={onPhotoTransfer} />
+      </ScreenDisclosure>
 
       <div className="observation-order-toolbar">
-        <p>{habitologie ? 'Les numéros suivent Eau, Air, Terre, Feu, puis les constats à classer. ' : ''}Changez le numéro ou glissez une fiche pour choisir sa place{habitologie ? ' dans sa phase' : ''}.</p>
-        <button type="button" className="button secondary" aria-pressed={compact} onClick={() => setCompact(value => !value)}>{compact ? 'Afficher les fiches complètes' : 'Vue compacte pour réorganiser'}</button>
+        <p>{habitologie ? 'Terrain : T1, T2… Bâti : Eau, Air, Terre, Feu, puis les constats à classer ; leurs numéros restent indépendants du terrain. ' : ''}Changez le numéro ou glissez une fiche pour choisir sa place{habitologie ? ' dans sa phase' : ''}.</p>
+        <DisclosureControls label="Affichage des observations" ids={report.observations.map(obs => `observation-${obs.id}`)} />
       </div>
       {orderMessage && <p role="status" className="observation-order-status">{orderMessage}</p>}
 
@@ -1738,30 +1821,10 @@ function ObservationStep({ report, setReport }) {
 
       {habitologie ? (
         <div className="observation-phases">
-          {HABITOLOGIE_PROTOCOL_STAGES.map((stage, index) => {
-            const stageObservations = observationsInOrder.filter((obs) => obs.phase_habitologie === stage.key);
-            return (
-              <section className={`observation-phase phase-${stage.key}${isHabitologieStageEnabled(report, stage.key) ? '' : ' is-inactive'}`} key={stage.key}>
-                <div className="observation-phase-heading">
-                  <div>
-                    <span>Phase {index + 1}</span>
-                    <h3>{stage.label}</h3>
-                    <p>{stage.summary}</p>
-                  </div>
-                  <button className="button secondary" type="button" disabled={!isHabitologieStageEnabled(report, stage.key)} onClick={() => addObservation(stage.key)}>
-                    <Plus size={18} />
-                    Ajouter
-                  </button>
-                </div>
-                {!isHabitologieStageEnabled(report, stage.key) && <p className="phase-status"><strong>Non retenue pour cette visite.</strong> Les observations et photos existantes restent conservées et exportées. Réactivez la phase dans Protocoles pour ajouter un constat.</p>}
-                {stageObservations.length > 0 ? (
-                  <div className="observation-list">{stageObservations.map(renderObservationCard)}</div>
-                ) : (
-                  <p className="empty-phase">Aucune observation enregistree pour cette phase.</p>
-                )}
-              </section>
-            );
-          })}
+          {visitProtocolStages(report).filter(stage => stage.key === 'terrain').map(renderObservationPhase)}
+          <div className="observations-bati"><h2>Le bâti</h2>
+            {HABITOLOGIE_PROTOCOL_STAGES.map(renderObservationPhase)}
+          </div>
 
           {report.observations.some((obs) => !findHabitologieStage(obs.phase_habitologie)) && (
             <section className="observation-phase unassigned">
@@ -1801,14 +1864,14 @@ function ShareTestCopy({ report }) {
     setStatus('');
     setSharing(true);
     try {
+      if (!await checkDownloadAuthorization()) { setStatus('Partage non autorisé par votre profil.'); return; }
       const copy = createTestReportCopy(report);
-      const file = new File([JSON.stringify(copy, null, 2)], 'rapport-copie-test.json', {type: 'application/json'});
+      const file = new File([JSON.stringify(copy, null, 2)], 'rapport-structure-test-sans-contenu.json', {type: 'application/json'});
       if (!downloadOnly && navigator.share && navigator.canShare?.({files: [file]})) {
         await navigator.share({files: [file]});
         setStatus('Copie remise au service de partage choisi.');
       } else {
-        saveAs(file, file.name);
-        setStatus('Téléchargement lancé. Transmettez le fichier rapport-copie-test.json au destinataire de votre choix.');
+        if (await saveAs(file, file.name)) setStatus('Téléchargement lancé. Cette structure contient des constats fictifs, sans les textes et photos du dossier.');
       }
     } catch (error) {
       setStatus(error.name === 'AbortError' ? 'Partage annulé.' : 'Partage indisponible. Vous pouvez télécharger la copie.');
@@ -1818,73 +1881,67 @@ function ShareTestCopy({ report }) {
   }
   return <section aria-label="Copie pour les tests">
     <button className="button secondary" type="button" aria-expanded={open} onClick={() => {setOpen(!open); setStatus('');}}>
-      Partager une copie pour les tests
+      Créer une structure de test sans textes ni photos
     </button>
     {open && <div>
-      <p>La copie reprend le type de rapport, les protocoles et la structure des observations. Les coordonnées, textes libres, photos, plans et signatures sont exclus. Le destinataire pourra importer ce fichier dans Rapport.</p>
+      <p>Cette structure ne contient pas le dossier complet : les textes sont remplacés par des constats fictifs ; coordonnées, photos, plans et signature sont retirés. Pour transmettre le contenu du dossier, utilisez « Télécharger le dossier complet (JSON) » au-dessus.</p>
       <div className="export-actions">
         {typeof navigator.share === 'function' && <button className="button secondary" disabled={sharing} type="button" onClick={() => share(false)}>Choisir un destinataire</button>}
-        <button className="button secondary" disabled={sharing} type="button" onClick={() => share(true)}>Télécharger la copie de test</button>
+        <button className="button secondary" disabled={sharing} type="button" onClick={() => share(true)}>Télécharger la structure seule</button>
       </div>
       <p role="status">{status}</p>
     </div>}
   </section>;
 }
 
-function ValidationStep({ report, setReport, validation, onPreview, onExport, onExportJson, onImportJson, onSaveDraft }) {
+function ValidationStep({ report, setReport, validation, onPreview, onExport, onPreparePublication, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep, readOnly = false, canExport = true, setDeliveryOptions }) {
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
+  const presentation = useScreenPresentation();
+  const decision = normalizeDecision(report.decision);
+  const warnings = isHabitologieReport(report) ? decisionWarnings(report) : [];
+  const openIssue = item => {
+    const text = item.toLocaleLowerCase('fr');
+    let step = 4, name = 'export-analysis';
+    if (text.includes('signat')) name = 'export-final';
+    else if (text.includes('motif')) { step = 0; name = 'listening-0'; }
+    else if (text.includes('attentes du client') || text.includes('reformulation')) { step = 0; name = 'listening-2'; }
+    else if (['Reference dossier requise.', 'Nom du proprietaire requis.', 'Adresse du logement requise.', 'Intervenant requis.'].includes(item) || text.includes("type d'habitation")) { step = 0; name = 'dossier-mission'; }
+    else if (validation.errors.includes(item)) { step = 3; name = item.startsWith('Au moins une observation') ? `observation-${report.observations[0]?.id}` : 'observation-plans'; }
+    presentation.setOpen(name, true);
+    onEditStep(step);
+    requestAnimationFrame(() => document.querySelector(`[data-screen-disclosure="${CSS.escape(name)}"] .disclosure-toggle`)?.focus());
+  };
   return (
     <section className="panel">
-      <div className="section-title">
-        <FileText size={22} />
-        <div>
-          <h1>Validation et export</h1>
-          <p>Verifier les points bloquants, signer et generer le document Word.</p>
-        </div>
+      <div className="section-title"><FileText size={22} /><div>
+        <h1>Validation et export</h1><p>Vérifier le contenu, signer et générer le document Word.</p>
+      </div></div>
+
+      <div className="validation-box export-review-status">
+        <h3>Contrôle avant export</h3>
+        {validation.errors.length === 0 && validation.warnings.length === 0 && <p className="success-line"><CheckCircle2 size={18} />{canExport ? 'Rapport prêt à être exporté.' : 'Contenu contrôlé ; l’export n’est pas autorisé par votre profil.'}</p>}
+        {validation.errors.length > 0 && <div className="issue-list danger"><strong>Points bloquants</strong><ul>
+          {validation.errors.map(item => <li key={item}><button type="button" className="text-button" onClick={() => openIssue(item)}>{item}</button></li>)}
+        </ul></div>}
+        {validation.warnings.length > 0 && <div className="issue-list warning"><strong>Alertes métier</strong><ul>
+          {validation.warnings.map(item => <li key={item}><button type="button" className="text-button" onClick={() => openIssue(item)}>{item}</button></li>)}
+        </ul></div>}
       </div>
 
-      {isHabitologieReport(report) && <DecisionSupportPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} onSaveDraft={onSaveDraft} />}
+      {!canExport && <p role="status" className="notice">Votre profil autorise la consultation du dossier. Le téléchargement JSON et la génération Word sont désactivés.</p>}
 
-      <div className="validation-grid">
-        <div className="validation-box">
-          <h3>Controle avant export</h3>
-          {validation.errors.length === 0 && validation.warnings.length === 0 && (
-            <p className="success-line">
-              <CheckCircle2 size={18} />
-              Rapport pret a etre exporte.
-            </p>
-          )}
-          {validation.errors.length > 0 && (
-            <div className="issue-list danger">
-              <strong>Points bloquants</strong>
-              <ul>
-                {validation.errors.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {validation.warnings.length > 0 && (
-            <div className="issue-list warning">
-              <strong>Alertes metier</strong>
-              <ul>
-                {validation.warnings.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+      <ReadOnlyFields readOnly={readOnly}>
+      {isHabitologieReport(report) && <>
+        {warnings.length > 0 && <p className="issue-list warning">Aide à la décision : {warnings.length} point(s) à relire. {warnings[0]}</p>}
+        <ScreenDisclosure name="export-decision" title="Attentes et aide à la décision"
+          summary={`${decision.attentes.length} attente(s) · ${decision.liens.length} lien(s) constat / attentes`}
+          status={warnings.length ? `${warnings.length} point(s) à relire` : 'Contenus à relire avec les habitants'}>
+          <DecisionSupportPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} onSaveDraft={onSaveDraft} />
+        </ScreenDisclosure>
+      </>}
 
-        <div className="signature-block">
-          <VoiceField label="Nom du signataire" multiline={false} micDisabled={!dictationAllowed}
-            value={report.nom_signataire}
-            onChange={value => setReport(prev => ({ ...prev, nom_signataire: value }))}
-            onAppend={text => setReport(prev => ({ ...prev, nom_signataire: appendDictation(prev.nom_signataire, text) }))} />
-          <SignaturePad value={report.signature} onChange={(signature) => setReport((prev) => ({ ...prev, signature }))} />
-        </div>
-      </div>
-
+      <ScreenDisclosure name="export-analysis" title="Analyse de l’expert et recommandations"
+        summary={[report.analyse_expert.trim() ? 'Analyse renseignée' : 'Analyse à renseigner', report.recommandations.trim() ? 'Recommandations renseignées' : 'Recommandations à renseigner'].join(' · ')}>
       <TextAreaWithMic
         label="Analyse de l'expert"
         micDisabled={!dictationAllowed}
@@ -1904,27 +1961,41 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         placeholder="Actions recommandees, priorites, controles complementaires..."
       />
 
-      <ReportDeliveryOptions report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
+      </ScreenDisclosure>
+
+      <InterventionsPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
+
+      <ScreenDisclosure name="export-final" title="Contrôle final et signature"
+        summary={`${report.nom_signataire || 'Signataire à renseigner'} · ${report.signature ? 'Signature présente' : 'Signature à recueillir'}`}>
+        <div className="signature-block">
+          <VoiceField label="Nom du signataire" multiline={false} micDisabled={!dictationAllowed}
+            value={report.nom_signataire}
+            onChange={value => setReport(prev => ({ ...prev, nom_signataire: value }))}
+            onAppend={text => setReport(prev => ({ ...prev, nom_signataire: appendDictation(prev.nom_signataire, text) }))} />
+          <SignaturePad value={report.signature} onChange={(signature) => setReport((prev) => ({ ...prev, signature }))} />
+        </div>
+      </ScreenDisclosure>
+
+      </ReadOnlyFields>
+      <ScreenDisclosure name="export-delivery" title="Options du livrable"
+        summary={report.livrable?.audience === 'client' ? 'Synthèse client illustrée' : 'Rapport expert détaillé'}>
+        <ReadOnlyFields readOnly={!canExport}>
+          <ReportDeliveryOptions report={report} setReport={readOnly ? setDeliveryOptions : setReport} dictationAllowed={dictationAllowed} />
+        </ReadOnlyFields>
+      </ScreenDisclosure>
 
       <div className="export-actions">
-        <button className="button ghost" type="button" onClick={onImportJson}>
-          <FileJson size={18} />
-          Import JSON
-        </button>
-        <button className="button ghost" type="button" onClick={onExportJson}>
-          <FileJson size={18} />
-          Export JSON
-        </button>
-        <button className="button secondary" type="button" onClick={onPreview}>
-          <Eye size={18} />
-          Apercu
-        </button>
-        <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0}>
-          <Download size={18} />
-          Générer Word (.docx)
-        </button>
+        <button className="button ghost" type="button" onClick={onExportJson} disabled={!canExport}><FileJson size={18} />Télécharger le dossier complet (JSON)</button>
+        <button className="button secondary" type="button" onClick={onPreview}><Eye size={18} />Apercu</button>
+        <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0 || !canExport}><Download size={18} />Générer Word (.docx)</button>
       </div>
-      <ShareTestCopy report={report} />
+      <PublicationPanel disabled={validation.errors.length > 0 || !canExport || onlineSaving} onPrepare={onPreparePublication} />
+      <p>Le JSON complet contient les textes, explications, conseils, photos, plans et la signature présents dans ce dossier. Transmettez-le uniquement aux personnes autorisées.</p>
+      <ScreenDisclosure name="export-exchange" title="Importer un dossier ou préparer une copie de test" className="export-secondary-actions"
+        summary="Chargement du JSON complet · structure de test sans textes ni photos">
+        <ReportImport draft={report} onBackup={onExportJson} onLoad={onLoadFile} disabled={onlineSaving} />
+        <ShareTestCopy report={report} />
+      </ScreenDisclosure>
     </section>
   );
 }
@@ -1934,6 +2005,8 @@ function validateReport(report) {
   const warnings = [];
   const planError = planPayloadError(report);
   if (planError) errors.push(planError);
+  const contextError = environmentContextError(report);
+  if (contextError) errors.push(contextError);
 
   if (!report.reference_dossier.trim()) errors.push('Reference dossier requise.');
   if (!report.proprietaire.trim()) errors.push('Nom du proprietaire requis.');
@@ -1966,22 +2039,32 @@ function validateReport(report) {
 }
 
 function ReportPreview({ report, onClose }) {
+  const dialog = useRef(null);
+  const closeButton = useRef(null);
+  useEffect(() => {
+    const previous = document.activeElement;
+    const element = dialog.current;
+    element.showModal();
+    closeButton.current?.focus();
+    return () => { element.close(); previous?.focus(); };
+  }, []);
   const html = useMemo(() => {
     try { return buildReportHtml(report); }
     catch (error) { return `<!doctype html><html lang="fr"><body><h1>Aperçu indisponible</h1><p>${escapeHtml(error.message)}</p><p>Fermez l’aperçu et corrigez les informations de la vue.</p></body></html>`; }
   }, [report]);
   return (
-    <div className="preview-backdrop">
+    <dialog ref={dialog} className="report-preview" aria-label="Aperçu du rapport"
+      onCancel={event => { event.preventDefault(); onClose(); }}>
       <div className="preview-shell">
         <div className="preview-bar">
-          <h2>Apercu du rapport</h2>
-          <button className="icon-button" type="button" onClick={onClose} aria-label="Fermer l'apercu">
-            <X size={18} />
+          <h2>Aperçu du rapport</h2>
+          <button ref={closeButton} className="button secondary" type="button" onClick={onClose}>
+            <X size={18} aria-hidden="true" /> Fermer l’aperçu
           </button>
         </div>
         <iframe title="Apercu du rapport" srcDoc={html} sandbox="" referrerPolicy="no-referrer" />
       </div>
-    </div>
+    </dialog>
   );
 }
 
@@ -1996,7 +2079,9 @@ function OnlineSyncPanel({
   onSave,
   onTokenSubmit,
   saving,
+  photoTransfers,
   status,
+  canSave = true,
 }) {
   const [tokenInput, setTokenInput] = useState('');
   const [tokenPending, setTokenPending] = useState(false);
@@ -2069,9 +2154,9 @@ function OnlineSyncPanel({
           </button>
         )}
         {authenticated && (
-          <button className="button primary" data-avereo-save="online" type="button" onClick={onSave} disabled={saving}>
+          <button className="button primary" data-avereo-save="online" type="button" onClick={onSave} disabled={saving || photoTransfers > 0 || !canSave}>
             <Save size={18} />
-            {saving ? 'Sauvegarde...' : 'Sauver en ligne'}
+            {photoTransfers > 0 ? 'Traitement photo en cours…' : saving ? 'Sauvegarde...' : 'Sauver en ligne'}
           </button>
         )}
       </div>
@@ -2094,6 +2179,7 @@ function ReportWizard({
   authError,
   authUser,
   initialData,
+  initiallyNew,
   onlineSyncEnabled,
   onHome,
   onOAuthLogin,
@@ -2101,13 +2187,29 @@ function ReportWizard({
 }) {
   const steps = ['Dossier', 'Site', 'Protocoles', 'Observations', 'Export'];
   const [currentStep, setCurrentStep] = useState(0);
+  const [presentationVersion, setPresentationVersion] = useState(0);
   const [report, setReport] = useState(() => deepMergeReport(initialReport, initialData));
   useMissionDossier(useEffect, reportMissionDossier(report, setReport, true));
   const [toast, setToast] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
   const [onlineSaving, setOnlineSaving] = useState(false);
+  const [photoTransfers, setPhotoTransfers] = useState(0);
+  const onPhotoTransfer = useCallback(delta => setPhotoTransfers(count => Math.max(0, count + delta)), []);
   const [onlineStatus, setOnlineStatus] = useState('');
-  const fileInputRef = useRef(null);
+  const editable = !onlineSyncEnabled || canReportAction(authUser, report.onlineReportId ? 'update' : 'create');
+  const setEditableReport = useCallback(value => { if (editable) setReport(value); }, [editable]);
+  const setDeliveryOptions = value => {
+    if (!canReportAction(authUser, 'export')) return;
+    setReport(current => {
+      const next = typeof value === 'function' ? value(current) : value;
+      return { ...current, livrable: next.livrable };
+    });
+  };
+  const onlineRequest = useRef(null);
+  const reportGeneration = useRef(0);
+  const currentReport = useRef(report);
+  currentReport.current = report;
+  useEffect(() => () => { reportGeneration.current += 1; onlineRequest.current?.abort(); }, []);
   const validation = useMemo(() => validateReport(report), [report]);
 
   useEffect(() => {
@@ -2131,64 +2233,82 @@ function ReportWizard({
   };
 
   const handleOnlineSave = async () => {
+    if (onlineSaving || !editable) return;
+    if (photoTransfers > 0) {
+      setOnlineStatus('Attendez la fin du traitement des photos avant de sauvegarder le dossier en ligne.');
+      return;
+    }
     if (!authenticated) {
       setOnlineStatus('Connexion requise pour la sauvegarde en ligne.');
       return;
     }
-
+    const generation = reportGeneration.current;
+    const snapshot = report;
+    const controller = new AbortController();
+    onlineRequest.current = controller;
     setOnlineSaving(true);
     setOnlineStatus('');
     try {
-      const saved = await saveOnlineReport(report, accessToken, report.onlineReportId || '');
-      const updated = { ...report, onlineReportId: saved.id };
+      const saved = await saveOnlineReport(snapshot, accessToken, snapshot.onlineReportId || '', { signal: controller.signal });
+      if (controller.signal.aborted || reportGeneration.current !== generation) return;
+      const edited = currentReport.current !== snapshot;
+      const updated = { ...currentReport.current, onlineReportId: saved.id };
+      currentReport.current = updated;
       setReport(updated);
       await saveDraft(updated);
-      setOnlineStatus('Rapport sauvegarde en ligne.');
+      const content = saved.content;
+      setOnlineStatus(content
+        ? `${content.observations} observation(s), ${content.photos} photo(s), ${content.plans} plan(s) sauvegardés en ligne et relus sur le serveur.${edited ? ' Des modifications plus récentes restent dans le brouillon : sauvez de nouveau pour les envoyer.' : ''}`
+        : 'Dossier envoyé en ligne. Rouvrez la copie serveur pour vérifier son contenu.');
     } catch (error) {
-      setOnlineStatus(error.message || 'Sauvegarde en ligne impossible.');
+      if (error.name !== 'AbortError' && reportGeneration.current === generation) {
+        if (error.reportId) setReport(current => ({ ...current, onlineReportId: error.reportId }));
+        setOnlineStatus(error.message || 'Sauvegarde en ligne impossible. Le brouillon est conservé.');
+      }
     } finally {
-      setOnlineSaving(false);
+      if (reportGeneration.current === generation) setOnlineSaving(false);
     }
   };
 
   const handleExport = async () => {
     try {
+      if (onlineSyncEnabled) await authorizeReportExport(accessToken, authUser);
       const { createWordBlob } = await import('./reportDocx.js');
       const blob = await createWordBlob(buildReportHtml(report), report);
-      saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}-${report.livrable?.audience === 'client' ? 'client' : 'expert'}.docx`);
-      notify('Document Word généré.');
+      if (await saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}-${report.livrable?.audience === 'client' ? 'client' : 'expert'}.docx`)) notify('Document Word généré.');
     } catch (error) {
       notify(`Export Word impossible : ${error.message}`);
     }
   };
 
+  const handlePreparePublication = async () => {
+    if (onlineSyncEnabled) await authorizeReportExport(accessToken, authUser);
+    const snapshot = structuredClone(report);
+    const id = crypto.randomUUID().replaceAll('-', ''), createdAt = new Date().toISOString();
+    const client = { ...snapshot, livrable: { ...snapshot.livrable, audience: 'client' }, publication: { id, createdAt, validatedByProfessional: true } };
+    const [{ createWordBlob }, { createPublication, publicationReportBlob }] = await Promise.all([import('./reportDocx.js'), import('./reportPublication.js')]);
+    publicationReportBlob(snapshot); // Refuse an unreopenable copy before Word generation.
+    const word = await createWordBlob(buildReportHtml(client), client);
+    const { blob } = await createPublication(snapshot, word, { validated: true, id, now: createdAt });
+    return saveAs(blob, `${toFileName(snapshot.reference_dossier || snapshot.titre)}-${id.slice(0, 8)}.avereo.zip`);
+  };
+
   const handleExportJson = () => {
-    const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json;charset=utf-8' });
+    const blob = reportExportBlob(report);
     saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}.json`);
   };
 
-  const handleImportJson = () => fileInputRef.current?.click();
-
-  const onImportFile = (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    if (file.size > MAX_REPORT_BYTES) {
-      notify('Import JSON refuse : taille maximale 50 Mio.');
-      event.target.value = '';
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const parsed = JSON.parse(reader.result);
-        setReport(deepMergeReport(initialReport, parsed));
-        notify('Brouillon importe.');
-      } catch (error) {
-        notify(`Import JSON impossible : ${error.message}`);
-      }
-    };
-    reader.readAsText(file);
-    event.target.value = '';
+  const loadFile = async loaded => {
+    const normalized = deepMergeReport(initialReport, loaded);
+    await saveDraft(normalized);
+    reportGeneration.current += 1;
+    onlineRequest.current?.abort();
+    setOnlineSaving(false);
+    setOnlineStatus('Copie locale chargée. Une sauvegarde en ligne créera un nouveau dossier sous votre compte.');
+    currentReport.current = normalized;
+    setReport(normalized);
+    setPresentationVersion(version => version + 1);
+    notify('Dossier chargé avec son contenu.');
   };
 
   const returnToHome = async () => {
@@ -2200,28 +2320,38 @@ function ReportWizard({
   const goPrev = () => setCurrentStep((step) => Math.max(step - 1, 0));
 
   return (
+    <ScreenPresentation key={presentationVersion} initiallyNew={presentationVersion === 0 && initiallyNew}>
     <div className="screen">
       <main className="wizard-layout">
         <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} onHome={returnToHome} />
         <div className="wizard-grid">
           <div className="wizard-main">
-            {currentStep === 0 && <DossierStep report={report} setReport={setReport} />}
-            {currentStep === 1 && <SiteStep report={report} setReport={setReport} onCorrectAddress={() => {
+            {authUser?.profileAccess?.managed && <p role="status" className="notice">Profil d’accès : {authUser.profileAccess.profile?.name}. {!editable && 'Consultation seule : les modifications ne sont pas autorisées.'}</p>}
+            <ReadOnlyFields readOnly={!editable}>
+            {currentStep === 0 && <DossierStep report={report} setReport={setEditableReport} />}
+            {currentStep === 1 && <SiteStep report={report} setReport={setEditableReport} onCorrectAddress={() => {
               setCurrentStep(0);
-              requestAnimationFrame(() => document.getElementById('adresse-logement')?.focus());
+              requestAnimationFrame(() => revealScreenField('adresse-logement'));
             }} />}
-            {currentStep === 2 && <ProtocolStep report={report} setReport={setReport} />}
-            {currentStep === 3 && <ObservationStep report={report} setReport={setReport} />}
+            {currentStep === 2 && <ProtocolStep report={report} setReport={setEditableReport} />}
+            {currentStep === 3 && <ObservationStep report={report} setReport={setEditableReport} onlineSyncEnabled={onlineSyncEnabled} authenticated={authenticated} onlineSaving={onlineSaving} onPhotoTransfer={onPhotoTransfer} photoTransfers={photoTransfers} />}
+            </ReadOnlyFields>
             {currentStep === 4 && (
               <ValidationStep
                 report={report}
-                setReport={setReport}
+                setReport={setEditableReport}
+                readOnly={!editable}
+                canExport={canReportAction(authUser, 'export')}
+                setDeliveryOptions={setDeliveryOptions}
                 validation={validation}
                 onPreview={() => setPreviewOpen(true)}
                 onExport={handleExport}
+                onPreparePublication={handlePreparePublication}
                 onExportJson={handleExportJson}
-                onImportJson={handleImportJson}
+                onLoadFile={loadFile}
+                onlineSaving={onlineSaving}
                 onSaveDraft={handleSave}
+                onEditStep={setCurrentStep}
               />
             )}
           </div>
@@ -2238,6 +2368,8 @@ function ReportWizard({
           onSave={handleOnlineSave}
           onTokenSubmit={onTokenSubmit}
           saving={onlineSaving}
+          canSave={editable}
+          photoTransfers={photoTransfers}
           status={onlineStatus}
         />
       </main>
@@ -2258,10 +2390,10 @@ function ReportWizard({
         </nav>
       </footer>
 
-      <input ref={fileInputRef} type="file" accept="application/json" className="visually-hidden" onChange={onImportFile} />
       {previewOpen && <ReportPreview report={report} onClose={() => setPreviewOpen(false)} />}
       {toast && <div className="toast">{toast}</div>}
     </div>
+    </ScreenPresentation>
   );
 }
 
@@ -2325,7 +2457,12 @@ function AccessGate({ authConfig, authError, onOAuthLogin }) {
 
 export default function App() {
   const applicationPreferences = useAppPreferences('rapport', rapportPreferences, { useState, useEffect });
-  const newReport = () => { const report = createNewReport(); return { ...report, livrable: { ...report.livrable, audience: applicationPreferences.audience } }; };
+  const [connectedDefault, setConnectedDefault] = useState({ profile: '', notice: '', loading: false });
+  const [creationProfileNotice, setCreationProfileNotice] = useState('');
+  const newReport = () => {
+    const report = withMissionDefault(createNewReport(), connectedDefault.profile);
+    return { ...report, livrable: { ...report.livrable, audience: applicationPreferences.audience } };
+  };
   const [rgaImport, setRgaImport] = useState(() => {
     try { return window.location.hash === '#rga-import' ? readRgaTransfer(sessionStorage.getItem(RGA_TRANSFER_KEY)) : null; }
     catch { return null; }
@@ -2334,11 +2471,39 @@ export default function App() {
   const [appState, setAppState] = useState('loading');
   const [draft, setDraft] = useState(null);
   const [initialWizardData, setInitialWizardData] = useState(initialReport);
+  const [newWizard, setNewWizard] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
   const [authConfig, setAuthConfig] = useState(null);
   const [accessToken, setAccessToken] = useState('');
   const [authUser, setAuthUser] = useState(null);
   const [authError, setAuthError] = useState('');
+
+  useEffect(() => {
+    if (!ONLINE_SYNC_ENABLED) return;
+    return setDownloadAuthorization(async () => {
+      try { return await authorizeReportExport(accessToken, authUser); }
+      catch (error) { setAuthError(error.message || 'Téléchargement non autorisé par votre profil.'); return false; }
+    });
+  }, [accessToken, authUser?.id, authUser?.provider]);
+
+  useEffect(() => {
+    if (!ONLINE_SYNC_ENABLED || !authUser) return;
+    let alive = true;
+    const refresh = async () => {
+      try {
+        const next = await getCurrentUser(accessToken);
+        if (!alive) return;
+        setAuthUser(current => sameAccount(current, next) ? next : current);
+      } catch {
+        if (alive) setAuthUser(current => current?.profileAccess?.managed
+          ? { ...current, profileAccess: { ...current.profileAccess, actions: [] } } : current);
+      }
+    };
+    const interval = window.setInterval(refresh, 30000);
+    window.addEventListener('focus', refresh);
+    return () => { alive = false; window.clearInterval(interval); window.removeEventListener('focus', refresh); };
+  }, [accessToken, authUser?.id, authUser?.provider]);
+
 
   useEffect(() => {
     loadDraft()
@@ -2411,28 +2576,52 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    let active = true, generation = 0;
+    if (!ONLINE_SYNC_ENABLED || authUser?.provider !== 'avereo_connect') {
+      setConnectedDefault({ profile: '', notice: '', loading: false });
+      return undefined;
+    }
+    const refresh = async () => {
+      const current = ++generation;
+      setConnectedDefault({ profile: '', notice: '', loading: true });
+      const value = await readConnectedMissionProfile({ user: authUser, portal: document.querySelector('avereo-account-menu')?.portal });
+      if (active && current === generation) setConnectedDefault({ ...(!value.profile ? administeredMissionDefault(authUser) || value : value), loading: false });
+    };
+    refresh();
+    window.addEventListener('focus', refresh);
+    return () => { active = false; generation += 1; window.removeEventListener('focus', refresh); };
+  }, [authUser?.provider, authUser?.id, authUser?.profileAccess?.profile?.id, authUser?.profileAccess?.profile?.name, authUser?.profileAccess?.profile?.template]);
+
   const startNew = async (context = null) => {
+    if (connectedDefault.loading || !canReportAction(authUser, 'create')) return;
     setNewContext(context);
     if (draft) {
       setConfirmReset(true);
       return;
     }
     const fresh = newReport();
+    setCreationProfileNotice(connectedDefault.notice);
     setInitialWizardData(deepMergeReport(fresh, { ...fresh, ...(context || {}) }));
+    setNewWizard(true);
     setAppState('wizard');
   };
 
   const confirmNew = async () => {
+    if (connectedDefault.loading || !canReportAction(authUser, 'create')) return;
     await removeDraft();
+    setCreationProfileNotice(connectedDefault.notice);
     const initial = newReport();
     const fresh = deepMergeReport(initial, { ...initial, ...(newContext || {}) });
     setDraft(null);
     setInitialWizardData(fresh);
+    setNewWizard(true);
     setConfirmReset(false);
     setAppState('wizard');
   };
 
   const resume = () => {
+    setNewWizard(false);
     setInitialWizardData(draft || initialReport);
     setAppState('wizard');
   };
@@ -2466,7 +2655,7 @@ export default function App() {
         <h2>Recherche RGA prête à reprendre</h2>
         <p>{rgaImport.adresse_logement}</p>
         <p>Créer un nouveau dossier avec cette adresse et les risques consultés. Le point du bien restera à confirmer dans Site.</p>
-        <button className="button primary" type="button" onClick={() => {
+        <button className="button primary" type="button" disabled={connectedDefault.loading} onClick={() => {
           startNew(rgaImport); setRgaImport(null);
           sessionStorage.removeItem(RGA_TRANSFER_KEY);
           history.replaceState(null, '', window.location.pathname + window.location.search);
@@ -2480,20 +2669,33 @@ export default function App() {
         <HomePage
           draft={draft}
           onNew={() => startNew()}
+          profileLoading={connectedDefault.loading}
+          canCreate={canReportAction(authUser, 'create')}
           onResume={resume}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
           accessToken={accessToken}
-          onOpenOnline={async (loaded) => {
+          onLoadFile={async loaded => {
             const normalized = deepMergeReport(initialReport, loaded);
             await saveDraft(normalized);
             setDraft(normalized);
             setInitialWizardData(normalized);
+            setNewWizard(false);
             setAppState('wizard');
           }}
-          onBackup={() => saveAs(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json;charset=utf-8' }),
+          onOpenOnline={async (loaded) => {
+            requireReportContent(loaded);
+            const normalized = deepMergeReport(initialReport, loaded);
+            await saveDraft(normalized);
+            setDraft(normalized);
+            setInitialWizardData(normalized);
+            setNewWizard(false);
+            setAppState('wizard');
+          }}
+          onBackup={() => draft && saveAs(new Blob([JSON.stringify(draft, null, 2)], { type: 'application/json;charset=utf-8' }),
             `${toFileName(draft.reference_dossier || draft.titre)}-brouillon.json`)}
         />
       )}
+      {appState === 'wizard' && newWizard && creationProfileNotice && <p role="status" className="notice" style={{ maxWidth: '960px', margin: '16px auto' }}>{creationProfileNotice}</p>}
       {appState === 'wizard' && (
         <ReportWizard
           accessToken={accessToken}
@@ -2502,6 +2704,7 @@ export default function App() {
           authError={authError}
           authUser={authUser}
           initialData={initialWizardData}
+          initiallyNew={newWizard}
           onlineSyncEnabled={ONLINE_SYNC_ENABLED}
           onHome={goHome}
           onOAuthLogin={beginOAuthLogin}
@@ -2517,7 +2720,7 @@ export default function App() {
               <button className="button ghost" type="button" onClick={() => setConfirmReset(false)}>
                 Annuler
               </button>
-              <button className="button primary" type="button" onClick={confirmNew}>
+              <button className="button primary" type="button" onClick={confirmNew} disabled={connectedDefault.loading}>
                 Demarrer
               </button>
             </>

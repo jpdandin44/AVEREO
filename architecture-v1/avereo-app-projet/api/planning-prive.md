@@ -5,7 +5,7 @@ title: Sauvegarde privee du planning
 status: active
 version: git
 created: 2026-11-05
-updated: 2026-11-06
+updated: 2026-11-19
 owner: jpdandin
 tags: [projet, api, stockage]
 ---
@@ -90,3 +90,8 @@ Stockage : `current.json`, `previous.json`, vingt `history-N.json`, verrou exclu
 Le remplacement est atomique après écriture et synchronisation du fichier.
 Le répertoire est privé (0700), les documents 0600. Récupérer une copie et la
 réimporter produit une nouvelle révision. Pas de suppression ni de fusion API.
+
+
+## Mode relatif optionnel
+
+Le schéma 1 accepte `timelineMode: "periods"`, dates de projet et démarrage manuel nuls, coordonnées entières `periodStart` / `periodDuration` bornées à P120. Validation avant écriture, même propriétaire et mêmes révisions. [Contrat et compatibilité](../docs/planning-periodes.md).

@@ -277,6 +277,11 @@
     "url": "https://github.com/jpdandin44/AVEREO/pull/145",
     "phase": "Préproduction",
     "reviewEnvironment": "https://connect-preprod.avereo.fr/?app=passeport-immo",
-    "humanReviewPending": true
+    "humanReviewPending": false,
+    "state": "MERGED",
+    "mergedAt": "2026-11-12T18:11:37Z",
+    "observedAt": "2026-11-12T18:29:23.518799+00:00",
+    "evidence": "https://github.com/jpdandin44/AVEREO/pull/145",
+    "strictHumanChecklist": "passed"
   }
 }

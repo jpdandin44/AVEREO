@@ -5,13 +5,49 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-11
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## 20 novembre — Inventaire GitHub dérivé et privé
+
+`development-github-inventory.mjs` complète le collecteur existant en mode
+optionnel de découverte d'un propriétaire. Les dépôts, PR et branches sont paginés ;
+les arbres Git immuables servent à découvrir des périmètres de code. Un cache
+par dépôt, commit et version du détecteur évite les relectures inutiles.
+La projection signée contient les métadonnées utiles à l'écran, sans cache
+d'arbres ni contenu des dépôts. Node et PHP vérifient cette extension optionnelle.
+Le catalogue dérivé conserve les identifiants connus et ajoute les périmètres
+sans suivi. Les sources métier, autorisations et déclarations de livraison restent
+indépendantes. [Flux et limites](api/inventaire-github.md).
+
+## 19 novembre — Résumés de qualité en lecture seule
+
+`development-quality.mjs` calcule les comptes depuis la vue servie ; le lecteur
+PHP calcule la même structure après autorisation. Le résumé n'est pas stocké
+comme seconde vérité et ne change pas le schéma signé. La vue d'ensemble ouvre
+les détails à la demande ; aucune lecture massive supplémentaire d'itérations.
+[Contrat des comptes](docs/cockpit-qualite-synthese.md).
+
+## 19 novembre — Opérateur GitHub privé permanent
+
+Le [publicateur privé](docs/actualisation-automatique-privee.md) collecte GitHub par GET avec un jeton dédié, sous tâche planifiée sur l'hébergement de préproduction. Les copies de suivis admises, les clés, les états signés et les archives restent hors des racines web. Aucun relais PC ni récepteur WSGI n'est installé par ce lot. La réception des suivis est datée séparément du contrôle GitHub ; les validations et preuves ne sont pas rajeunies par une collecte. Le lecteur PHP expose seulement l'état signé facultatif, après les contrôles propriétaire/global existants. Une panne conserve la dernière copie lisible et produit une alerte de fraîcheur. L'installation réelle reste à confirmer par un reçu, distinct du code et du modèle désactivé.
+
+## 16 novembre — Projection technique et Gantt privé
+
+Complément du 18 novembre : [lecture des workflows imbriqués et historique](docs/suivis-courants-et-historique.md), mappings explicites des phases sans identifiant et capacité bornée à 100 vues. Le correctif de données reste séparé du déploiement des assets et du publicateur permanent ; une publication conserve les anciens lots, accords et pièces.
+
+La [projection consultative](docs/gantt-developpements.md) calcule les éléments étayés/restants dans le navigateur à partir des détails privés normalisés. Aucun statut canonique n'est réécrit. Quatre lectures simultanées maximum, cache par révision/observation ou publication, refus 401/403 effaçant les résultats et rejet des publications mélangées. Les phases/contrôles historiques sont adaptés seulement par mappings explicites ; les validations sont intactes. Le collecteur périodique opt-in du poste réutilise le cache GitHub atomique, sans publication distante ; le service permanent en ligne reste à qualifier. Même chaîne propriétaire/global et séparation du build public.
+
+Le [plan de publicateur privé](workflows/development-publisher-plan.json) est un contrat de qualification non chargé par le runtime, désactivé. Il impose projection signée seule, verrou, index attendu, sauvegarde/essai de retour, conservation des événements et rapprochement des accusés avant reprise. Aucun transport/admission ni ordonnanceur installé ; [preuves locales et inconnues hébergées](docs/publicateur-prive.md). La CI du dépôt public reste exclusivement fictive.
+
+## 12 novembre — Inventaire privé optionnel PQ-01
+
+Un collecteur opérateur borné lit les inventaires explicitement désignés et les noms/métadonnées de sept dossiers du parent de depot, sans parcourir ses copies Git ou archives et sans lire les contenus scannés. Il produit une observation privée neuve, consommée via `patrimonyObservationFile` ou exportée sous le champ signé optionnel `patrimony`. La réponse state existante Node/PHP transporte ce champ après ses contrôles d'accès habituels ; aucune route de parcours de disque ou de mutation. Contrat fermé, listes bornées, noms relatifs et références externes pseudonymisées. La vue reste indépendante des décisions/phases ; un champ absent conserve la compatibilité historique. [Détails et limites](docs/patrimoine-qualite.md).
 
 ## 11 novembre — Clone Git distinct de l’archive
 
@@ -344,3 +380,8 @@ pas remplacer celle du POST. Les handlers de minuterie/focus/visibilité sont
 retirés au démontage. Cette coordination ne modifie pas le protocole serveur.
 Les métadonnées facultatives de livrable sont décrites dans
 [le contrat local](api/revue-locale.md#description-des-livrables-prévus).
+
+
+## Mode relatif du planning
+
+Le moteur Projet et sa validation PHP acceptent un mode optionnel sans ancrage calendaire ; Rapport utilise ce même contrat pour sa projection. Stockage privé et identité CONNECT conservés. [Planning par périodes](docs/planning-periodes.md).

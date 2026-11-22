@@ -5,20 +5,23 @@ title: État des intégrations
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
 # État des intégrations
 
-La [livraison PR144](preproduction-archives-observation.json) décrit l’état installé.
+## Contrat du candidat organisation
+
+Le [reçu de qualification](organisation-documents-observation.json) porte les preuves locales et CI du candidat, complétées par le reçu hébergé ci-dessous. `PATCH /api/biens/:bien/documents/:id` avec `trashed` met à la corbeille/restaure ; `DELETE` avec `confirm: true` purge uniquement un document en corbeille. `PUT /api/biens/:bien/document-settings` écrit les réglages avec révision attendue. Les sessions, propriétaires, origine et CSRF restent obligatoires. `GET .../documents` inclut `trashedAt` et `settings`. [Migration et contrat détaillé](../docs/organisation-documents.md).
+
+Le [reçu organisation](preproduction-organisation-observation.json) décrit l’état installé après PR153 ; le [reçu à 500 Mo](preproduction-import-volumineux-observation.json) reste daté ; la [livraison PR144](preproduction-archives-observation.json) reste historique.
 Le [candidat volumineux](../docs/import-volumineux.md) conserve les routes et corps
 multipart : 500 Mo utiles par fichier/lot, enveloppe HTTP/PHP proposée de 512 Mo,
 cent fichiers par requête. L’atomicité reste celle de chaque requête ; l’interface
 pilote les lots successifs, sans extraction ni transfert de fragments.
-Ses [preuves locales et CI](import-volumineux-observation.json) ne valent pas
-installation de cette nouvelle version.
+Ses [preuves locales et CI](import-volumineux-observation.json) et sa réception réelle hébergée gardent des périmètres distincts, explicités dans le reçu.
 
 ## Observation de reprise du 12 novembre
 

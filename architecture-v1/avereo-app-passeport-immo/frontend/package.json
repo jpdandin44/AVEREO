@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node ../../../.github/scripts/prepare-account-menu.mjs passeport-immo && vite",
-    "build": "node ../../../.github/scripts/prepare-account-menu.mjs passeport-immo && node ../workflows/prepare-connect-gate.mjs && vite build",
+    "dev": "node ../../../.github/scripts/prepare-report-volumes.mjs passeport-immo && node ../../../.github/scripts/prepare-account-menu.mjs passeport-immo && vite",
+    "build": "node ../../../.github/scripts/prepare-report-volumes.mjs passeport-immo && node ../../../.github/scripts/prepare-account-menu.mjs passeport-immo && node ../workflows/prepare-connect-gate.mjs && vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "node ../../../.github/scripts/prepare-report-volumes.mjs passeport-immo --check && vitest run"
   },
   "dependencies": {
     "html2canvas": "1.4.1",

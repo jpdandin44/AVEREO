@@ -1,0 +1,37 @@
+.screen-disclosure { min-width: 0; margin: 14px 0; border: 1px solid #d9e2ee; border-radius: 10px; background: #fff; }
+.disclosure-header { display: flex; align-items: center; gap: 8px; padding: 4px 12px; }
+.disclosure-heading { margin: 0; min-width: 0; flex: 1; font-size: 1rem; }
+.disclosure-toggle { display: flex; align-items: flex-start; gap: 10px; width: 100%; min-height: 48px; padding: 12px 0; text-align: left; border: 0; background: transparent; color: #17375b; font: inherit; cursor: pointer; }
+.disclosure-toggle > svg { flex: 0 0 18px; margin-top: 2px; }
+.disclosure-labels { display: grid; gap: 5px; min-width: 0; overflow-wrap: anywhere; }
+.disclosure-title { font-weight: 750; }
+.disclosure-summary { font-weight: 400; color: #52637b; font-size: .9rem; }
+.disclosure-status { font-weight: 600; color: #4c5a6e; font-size: .9rem; }
+.screen-disclosure-body { padding: 8px 18px 18px; min-width: 0; }
+.screen-disclosure-body[hidden] { display: none !important; }
+.screen-disclosure-body > :first-child { margin-top: 0; }
+.screen-disclosure-body > :last-child { margin-bottom: 0; }
+.disclosure-tools { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+.disclosure-tools .button { min-height: 42px; }
+.disclosure-notice { padding: 10px 16px; margin: 0; color: #854d0e; background: #fffbeb; }
+.progressive-observation .screen-disclosure { border: 0; margin: 0; }
+.progressive-observation .screen-disclosure-body { padding: 12px 0 0; }
+.progressive-observation .disclosure-header { padding: 0; }
+.progressive-observation .form-grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.progressive-observation .observation-order-controls { flex-wrap: wrap; padding: 8px 0; margin: 0; gap: 8px; }
+.progressive-observation .observation-order-controls .field { max-width: 185px; }
+.progressive-intervention .screen-disclosure { border: 0; background: transparent; margin: 0; }
+.progressive-intervention .disclosure-header { padding: 0; }
+.progressive-intervention .screen-disclosure-body { padding: 12px 0 0; }
+.export-review-status { margin-bottom: 16px; }
+.export-review-status .issue-list a { color: inherit; }
+.export-secondary-actions { margin-top: 16px; }
+.listening-disclosures > .screen-disclosure { margin-top: 12px; }
+.dossier-consent-summary { display: flex; flex-wrap: wrap; gap: 8px 18px; color: #52637b; margin: 10px 0; }
+@media (max-width: 650px) {
+  .progressive-observation .form-grid.four { grid-template-columns: 1fr; }
+  .screen-disclosure-body { padding: 8px 12px 14px; }
+  .disclosure-header { padding: 4px 10px; }
+  .progressive-observation .observation-order-controls .field { max-width: none; flex: 1 1 100%; }
+  .disclosure-tools .button { flex: 1 1 130px; }
+}

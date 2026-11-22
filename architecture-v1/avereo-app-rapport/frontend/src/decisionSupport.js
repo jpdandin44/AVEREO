@@ -1,6 +1,6 @@
 import { escapeHtml, textToHtml } from './reportHtml.js';
 import { isHabitologieReport } from './reportClassification.js';
-import { allowsDecisionProjections } from './reportProfiles.js';
+import { allowsDecisionProjections, decisionProjectionLabels, recognizedMissionProfile } from './reportProfiles.js';
 
 export const DECISION_CRITERIA = [
   ['energie', 'Énergie : type et quantité'], ['materiaux', 'Matériaux et compatibilité'],
@@ -27,7 +27,7 @@ export function normalizeDecision(value) {
     return { ...o, nom: string(o.nom) || name, objectif: string(o.objectif), action_ids: ids(o.action_ids),
       criteres: fields(object(o.criteres), DECISION_CRITERIA.map(([key]) => key)) };
   };
-  return { ...d, schema_version: d.schema_version ?? 1,
+  return { ...d, schema_version: d.schema_version ?? 1, notes_attentes: string(d.notes_attentes),
     habitants: fields(object(d.habitants), ['occupation', 'sensibilites', 'non_negociables', 'tolerances']),
     projet: fields(object(d.projet), ['objectif', 'budget', 'calendrier', 'delegation', 'diy']),
     attentes: rows(d.attentes).map(a => ({ ...a, ...fields(a, ['id', 'libelle', 'priorite', 'source']) })),
@@ -41,9 +41,9 @@ export function normalizeDecision(value) {
 
 // Sections 1 to 3 (habitants, attentes, projet, liens) are always counted. The projections of sections 4 to 6
 // (actions, options, arbitrage) are counted only when the profile exposes them; their stored data is never altered.
-export function hasDecisionData(report, includeProjections = true) {
+export function hasDecisionData(report, includeProjections = true, includeNotes = true) {
   const d = normalizeDecision(report.decision);
-  const foundations = [...Object.values(d.habitants), ...Object.values(d.projet)].some(v => v.trim()) || d.attentes.length > 0 || d.liens.length > 0;
+  const foundations = (includeNotes && Boolean(d.notes_attentes.trim())) || [...Object.values(d.habitants), ...Object.values(d.projet)].some(v => v.trim()) || d.attentes.length > 0 || d.liens.length > 0;
   if (!includeProjections) return foundations;
   return foundations || [...Object.values(d.arbitrage), ...Object.values(d.option_a.criteres), ...Object.values(d.option_b.criteres),
     d.option_a.objectif, d.option_b.objectif].some(v => v.trim()) || d.actions.length > 0
@@ -104,7 +104,8 @@ const table = (headers, values) => `<table><thead><tr>${headers.map(h => `<th>${
 
 export function buildDecisionHtml(report, client = false) {
   const projections = allowsDecisionProjections(report);
-  if (!isHabitologieReport(report) || !hasDecisionData(report, projections)) return '';
+  const labels = decisionProjectionLabels(report);
+  if (!isHabitologieReport(report) || !hasDecisionData(report, projections, !client)) return '';
   if (report.decision?.schema_version != null && report.decision.schema_version !== 1) return '<section><h2>Aide à la décision</h2><p>Format non pris en charge ; conserver le JSON d’origine et vérifier la version de l’application.</p></section>';
   const d = normalizeDecision(report.decision), obs = report.observations || [];
   const names = (collection, selected, field) => selected.map(id => referenceLabel(collection, id, field)).join('\n') || 'À relier';
@@ -112,6 +113,7 @@ export function buildDecisionHtml(report, client = false) {
   content += `<h3>Attentes retenues</h3>${table(client ? ['Attente', 'Priorité'] : ['Attente', 'Priorité', 'Source'],
     d.attentes.map(a => client ? [a.libelle, a.priorite] : [a.libelle, a.priorite, a.source]))}`;
   if (!client) {
+    if (d.notes_attentes.trim()) content += `<h3>Notes complémentaires sur les attentes</h3><p>${cell(d.notes_attentes)}</p>`;
     content += `<h3>Cadre permanent des habitants</h3>${table(['Rubrique', 'Déclaration'], [
       ['Occupation', d.habitants.occupation], ['Sensibilités', d.habitants.sensibilites],
       ['Non négociables', d.habitants.non_negociables], ['Tolérances déclarées', d.habitants.tolerances]])}`;
@@ -122,25 +124,27 @@ export function buildDecisionHtml(report, client = false) {
       `${referenceLabel(obs, l.observation_id, 'titre')}\nAttentes : ${names(d.attentes, l.attente_ids, 'libelle')}`, l.effet, l.verification]))}`;
   }
   if (projections && !client) {
-    content += '<h3>Projection 1 · Organiser les actions</h3>';
+    content += `<h3>${escapeHtml(labels.actions)}</h3>`;
     for (const a of d.actions) content += `<h4>${escapeHtml(a.intitule || 'Action à préciser')}</h4>${table(['Rubrique', 'Contenu'], [
       ['Mode et priorité', `${a.categorie || 'À classer'} · ${a.priorite || 'À discuter'}${a.incontournable ? ' · Incontournable proposé' : ''}`],
+      ...(recognizedMissionProfile(report.profil_metier) && typeof a.realisation === 'string' && a.realisation.trim() ? [['Modalités de réalisation', a.realisation]] : []),
       ['Constats', names(obs, a.observation_ids, 'titre')], ['Attentes', names(d.attentes, a.attente_ids, 'libelle')],
       ['Horizon et préalables', `${a.horizon || 'Horizon à préciser'}\n${a.prealables || 'Préalables à préciser'}`], ['Explicatif', a.explication]])}`;
   }
   if (projections) {
-    content += '<h3>Projection 2 · Deux options de projet</h3>';
+    content += `<h3>${escapeHtml(labels.options)}</h3>`;
     for (const key of ['option_a', 'option_b']) {
       const o = d[key]; content += `<h4>${escapeHtml(o.nom)}</h4><p>${cell(o.objectif)}</p><p>Actions : ${cell(names(d.actions, o.action_ids, 'intitule'))}</p>`;
     }
-    content += `<h3>Comparaison des conséquences</h3>${table(['Critère', d.option_a.nom, d.option_b.nom], decisionComparison(report).map(r => [r.label, r.a, r.b]))}`;
+    content += `<h3>${escapeHtml(labels.comparison)}</h3>${table(['Critère', d.option_a.nom, d.option_b.nom], decisionComparison(report).map(r => [r.label, r.a, r.b]))}`;
     const proposed = ['a', 'b'].includes(d.arbitrage.option_proposee) ? d[`option_${d.arbitrage.option_proposee}`].nom : 'Aucune option retenue';
-    content += `<section${client ? '' : ' class="client-page"'}><h3>Arbitrage à discuter</h3><p>${cell(proposed)}</p><p>${cell(d.arbitrage.motif)}</p><p>Prochaine étape : ${cell(d.arbitrage.prochaine_etape)}</p>`;
+    content += `<section${client ? '' : ' class="client-page"'}><h3>${escapeHtml(labels.arbitration)}</h3><p>${cell(proposed)}</p><p>${cell(d.arbitrage.motif)}</p><p>Prochaine étape : ${cell(d.arbitrage.prochaine_etape)}</p>`;
   }
   const warnings = decisionWarnings(report);
+  content += '<div class="decision-conclusion keep-together">';
   if (warnings.length) content += `<h3>Points restant à compléter</h3><ul>${warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul>`;
   const limits = projections
     ? 'Les conséquences sont rédigées sous hypothèses par le professionnel. Une cellule non évaluée ne signifie ni absence d’effet ni absence de risque. Montants d’aides, économies et durées de vie ne sont pas calculés par ce module.'
     : 'Les effets sont rédigés sous hypothèses par le professionnel. Une information non renseignée ne signifie ni absence d’effet ni absence de risque. Montants d’aides, économies et durées de vie ne sont pas calculés par ce module.';
-  return content + `<p class="muted">${limits}</p></section>${projections ? '</section>' : ''}`;
+  return content + `<p class="muted">${limits}</p></div></section>${projections ? '</section>' : ''}`;
 }

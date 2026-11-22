@@ -5,10 +5,14 @@ title: Médaillon personnel du compte CONNECT
 status: active
 version: git
 created: 2026-11-12
-updated: 2026-11-12
+updated: 2026-11-16
 owner: jpdandin
 tags: [connect, compte, preferences, interface, securite]
 ---
+
+## 16 novembre — Extension compatible du profil déclaré
+
+Le [lot Profils CONNECT/Rapport](../../avereo-app-rapport/docs/profils-professionnels.md) étend la route privée existante avec `professionalProfile` et l’identité du compte courant en lecture. L’édition du métier se fait dans Mon profil CONNECT ; le dialogue partagé du médaillon garde son comportement. Un PUT modifie exactement une préférence et conserve l’autre. Fichier compagnon indépendant : le format du médaillon reste lisible par la version précédente. Contrôles de session/CSRF/contexte/CORS inchangés ; aucun droit supplémentaire.
 
 # Médaillon personnel — candidat local
 

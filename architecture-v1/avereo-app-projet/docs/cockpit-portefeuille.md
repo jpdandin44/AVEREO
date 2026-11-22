@@ -5,10 +5,17 @@ title: Cockpit des versions et développements de toutes les applications
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-09
+updated: 2026-11-19
 owner: jpdandin
 tags: [cockpit, portefeuille, versions, lecture-seule, local]
 ---
+
+## 19 novembre — Vue d’ensemble simplifiée
+
+Le tableau large décrit ci-dessous est remplacé par des cartes, filtres et volets
+de détail. Les mêmes badges et informations de version restent consultables.
+[Fonctionnement, comptages et inconnues](cockpit-qualite-synthese.md). Les sections
+datées ci-dessous restent historiques ; elles ne prouvent pas l'état hébergé actuel.
 
 ## Badges des environnements
 

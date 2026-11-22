@@ -5,12 +5,44 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-11
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 20 novembre — Découverte GitHub sans création de validations
+
+Contexte : un catalogue manuel et des listes de PR bornées ne peuvent recenser
+tous les développements du compte. Décision d'implémentation : ajouter un mode de
+découverte optionnel du propriétaire, une liste séparée des PR et branches, et un
+catalogue de composants dérivé des arbres Git. Raisons : couvrir les nouveaux
+périmètres sans fabriquer de chantier humain ni dépasser la borne des suivis.
+Conséquences : identifiants existants conservés, nouveaux périmètres marqués sans
+suivi, catégories issues de marqueurs explicites, refus des collectes partielles.
+Les autorisations de lecture existantes bornent les dépôts privés visibles ; ce
+choix ne les élargit pas et n'installe pas le candidat sur l'hébergement.
+[Contrat](api/inventaire-github.md).
+
+## 19 novembre — GitHub automatique seulement
+
+Contexte : le bouton de relecture d'une publication du 18 novembre ne collectait pas GitHub. Le responsable autorise une installation privée permanente sur la seule préproduction et refuse le relais PC. Décision : tâche planifiée données seules, jeton GitHub restreint en lecture aux trois dépôts, stockage privé hébergé et copies de suivis reçues explicitement. Conséquences : les versions/PR/CI GitHub sont collectables PC éteint ; les changements privés non transmis restent inconnus. Aucun récepteur public ni synchronisation des validations. Le compte Unix d'hébergement existant n'est pas une identité système isolée. [Architecture et retour arrière](docs/actualisation-automatique-privee.md).
+
+## 18 novembre — Lecture du cockpit et historique
+
+Décision du 18 novembre : borner les vues de suivi à 100 pour raccorder les lots récents tout en gardant l’historique. Les bornes d’applications, de taille, de pièces et de publications sont conservées. [Contexte et tests](docs/suivis-courants-et-historique.md).
+
+
+## 16 novembre — Calcul dérivé, pas d'approbation ni d'écriture automatique
+
+Contexte : le responsable ne veut plus saisir manuellement les phases et demande une actualisation automatique en ligne. Décision d'implémentation locale : calculer une progression technique à partir des versions/preuves, distincte de la phase déclarée et de la revue humaine, puis reprendre automatiquement les nouvelles publications signées. Raisons : préserver les validations, traiter les suivis hétérogènes et ne pas confondre fusion/CI/livraison. Conséquences : un suivi sans preuve ou date reste à qualifier ; le publicateur permanent doit être raccordé aux sources privées avant d'annoncer une synchronisation autonome. Aucun nouveau droit ni déploiement autorisé par ce choix. [Détails](docs/gantt-developpements.md).
+
+Préparation de PR autorisée : retenir une chaîne privée de données séparée de la CI publique et du workflow de livraison du code. Le dépôt est public et l'opérateur historique sait écrire code/configuration : aucun des deux ne constitue un publicateur automatique à droits minimaux. Conséquence : contrat désactivé, qualification sur fixtures et blocages explicites ; emplacement du service/source et transport futur restent à décider, sans installer ni déléguer d'accès. [Qualification](docs/publicateur-prive.md).
+
+## 12 novembre — Collecte opérateur et champ signé optionnel pour PQ-01
+
+Contexte : ajouter la visibilité sur le parent du clone sans copier le patrimoine sur le serveur ni introduire un deuxième suivi. Décision technique locale : réutiliser les inventaires et le registre consultatif ; collecter explicitement des métadonnées bornées et transporter un champ `patrimony` optionnel dans la projection existante. Raisons : préserver droits, compatibilité et sources ; distinguer absence, inconnue et résultat vérifié. Conséquences : aucune collecte distante/continue et aucun total de tests ou de sauvegardes restaurables sans preuve ; nouvelle observation puis publication explicite nécessaires. Ce choix d'implémentation ne vaut pas validation humaine ni autorisation de livraison.
 
 ## 11 novembre — Git fait autorité pour les développements
 
@@ -237,3 +269,8 @@ ou une décision qui n'a pas été consigné.
 
 **Conséquences.** Les risques initiaux restent à qualifier ; le suivi et sa
 validation restent humains, sans authentification propre du vérificateur.
+
+
+## 2026-11-19 — Distinguer périodes et calendrier
+
+Contexte : le responsable demande un Gantt non daté pour les interventions Rapport. Décision de conception : mode optionnel P1/P2, dates nulles et coordonnées saisies ; charge de travail distincte. Les anciens projets conservent leur mode daté. Conséquence : JSON complet pour préserver les périodes, sans conversion automatique en semaines. [Planning par périodes](docs/planning-periodes.md).

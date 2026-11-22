@@ -5,13 +5,154 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-13
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 21 novembre — Lot volume sans perte, préparation locale
+
+Complément PR178 : [recette du navigateur et des vrais Word](volume-sans-perte.md#reprise-du-21-novembre-et-parcours-réel-dans-le-navigateur-local) réussie sur les services natifs locaux ; contenu, confidentialité et propriétaires exacts. Aucun changement applicatif supplémentaire. Le rendu indépendant LibreOffice est vérifié ; il ne valide pas l'export PDF Microsoft Word qui n'a pas abouti.
+
+[Audit du candidat](volume-sans-perte.md) : contrat de limites partagé et copies API, contrôles sur le JSON reconstitué, garde de ressources, récupération JSON et préservation objet/liste. Les moteurs Word, champs métier, images, SQL et droits restent conservés. Les preuves du codec et des services locaux ne constituent pas une génération Word native ou une recette hébergée.
+
+
+## 19 novembre — Publication Passeport livrée en préproduction
+
+[PR173](https://github.com/jpdandin44/AVEREO/pull/173), runtime `4b6696ca24fc678465327bb31a3eeb0777365029` : restitution client Word partageable et copie complète privée. Recette fictive hébergée via les services natifs authentifiés : dépôt, idempotence, exclusion de la copie privée du partage, nouvelle connexion, téléchargement exact et révocation réussis. La copie se réouvre dans Rapport et se sauvegarde comme dossier indépendant, source et propriétaire conservés. 26 documents Passeport et 30 dossiers Rapport préexistants exacts ; accès temporaires rétablis.
+
+[Parcours, preuves et limites](publication-passeport-immo.md). Revue humaine encore attendue ; aucun merge ni production. Les étapes datées suivantes conservent l’historique, sans redéclarer une nouvelle validation.
+
+## 17 novembre — Libellé Analyse globale, candidat local
+
+Cinq fichiers de présentation : reportProfiles, reportDelivery, reportHtml, EnvironmentContext et le message de reprise du métier dans connectedMissionProfile. Le complément Conseils de l’expert reste un changement d’intitulé ; les tests existants d’ordre/filtrage sont alignés. Aucune API, préférence, permission ou donnée modifiée ; le nom de profession CONNECT reste Habitologue. Les titres libres, textes des conseils et archives ne sont pas réécrits. [Périmètre et contrôles](profils-professionnels.md#libellé-de-prestation--17-novembre).
+
+## 17 novembre — Plans et vues multiples, candidat local
+
+Périmètre : ObservationPlans, App pour navigation des fiches, capture/carte IGN, validation de plan et libellés des vues dans les restitutions. Modèle de stockage, moteur Word, règles client et droits/propriété conservés. Fonds publics IGN uniquement ; aucun dossier réel, secret ou rôle natif changé. [Contrat et limites de preuve](reperage-observations.md). Les nouveaux types doivent être livrés côté validation avant qu’un client puisse les enregistrer. Sauvegarde/restauration et alignement de version à qualifier lors d’une future livraison autorisée.
+
+## 17 novembre — Droits administrés et parcours de restitution
+
+Les droits viennent de la projection privée de l'identité authentifiée, jamais
+du JSON du dossier ou du métier déclaré. GET/POST/DELETE et téléchargement
+vérifient leur action ; originaux conservent leur contrôle de propriétaire.
+Génération/téléchargements/partage officiels vérifiés fraîchement et liés au
+même compte ; cela ne rappelle pas les fichiers déjà lus. Interface de
+consultation corrigée pour conserver les sections et vues ouvrables.
+[Preuves, garanties et réserves](../../avereo-app-connect/docs/profils-et-droits.md).
+Aucune donnée hébergée ni permission native modifiée.
+## 16 novembre — Profils CONNECT et conservation des missions
+
+Aucun droit accordé par le métier déclaré. Lecture du portail validé par le composant commun, correspondance obligatoire entre compte retourné et identité Rapport ; absence/inconnu/autre compte/délai donnent un choix manuel. Le défaut ne modifie jamais un dossier courant ou chargé. Contrôles de session/CSRF/contexte/origine CONNECT conservés, aucun compte cible accepté. Le fichier compagnon du métier garde l’ancien format du médaillon et permet un retour arrière du lecteur. Candidats testés sur identités/données fictives ; ancien propriétaire et toutes les colonnes conservés. [Matrice, nouvelles fonctions et réserves](profils-professionnels.md).
+
+## 16 novembre — Conservation après livraison PR163
+
+Cinq fichiers qualifiés installés sur la cible isolée : aucune nouvelle API, permission, migration ou activation privée. Les 24 dossiers/toutes colonnes/propriétaires, configuration et production sont exacts avant/après installation puis navigation. CONNECT renouvelé normalement ; import fictif complet, aperçu et fichier Projet conformes au moteur canonique, refus de capacité 0, aucune erreur console observée. Deux Word : mêmes textes/liens et neuf/huit médias. Brouillon initial exact dans quatre emplacements après restauration/rechargement. Réserve antérieure des quatre contrôles de protocole vides explicitée, sans modification du serveur. [Preuves et limites](interventions-projet.md#préproduction).
+
+## 16 novembre — Sécurité du fichier Interventions vers Projet
+
+Projection sur liste blanche, sélection explicite et indépendante du rapport client, sans session/secret, média ou identité/adresse dédiée. Modalités/préalables et références lisibles présents : relire ce contenu professionnel avant transmission. Aucun transfert réseau automatique, point d’entrée, permission ou rôle nouveau. Bornes/types/dates/charges validés, blocs vides refusés pour ces nouvelles données. Ancien dossier intact à la lecture ; fichier refusé si références ambiguës/volume incompatible. HTTP fictif : sauvegarde et nouvelles sessions, erreurs conservant colonnes/propriétaire, Projet existant intact et projet importé exact. Word existants inchangés. [Portée et réserves](interventions-projet.md#qualification-locale).
+
+## 16 novembre — Conservation après livraison des écrans PR162
+
+Cible préproduction et base distincte vérifiées ; quatre ressources de l’archive qualifiée installées, sauvegarde/restauration sur copie contrôlées. Les 24 dossiers/toutes colonnes/propriétaires restent exacts, ainsi que configuration, production, journal et autres fichiers ; aucune migration, écriture de dossier ou activation d’originaux privés. CONNECT normal et import fictif local : JSON métier exact, seul le lien serveur source est retiré conformément au contrat d’import. Deux Word identiques aux références en textes/liens/images. Brouillon initial restauré dans les quatre emplacements et relu après rechargement. [Preuves et portée](organisation-ecrans.md#préproduction). Réserve PHP objet vide/liste séparée.
+
+## 16 novembre — Sécurité et conservation des écrans repliables
+
+Nouvel état client de présentation, absent du payload et réinitialisé à l’import. Aucun code API, rôle, propriété, schéma, secret ou permission changé ; références et textes rendus par React et mêmes filtres client. Dictée active protégée, accords conservés ; simulation sans accès au microphone. Tests locaux de refus/propriété et sauvegarde/réouverture du dossier fictif réussis ; brouillon initial restauré et relu. [Preuves et limites](organisation-ecrans.md#qualification-effectuée). Normalisation PHP préexistante distincte ; aucune validation hébergée déduite.
+
+
+## 16 novembre — Conservation après recette Interventions
+
+Deux audits serveur en lecture seule confirment les 23 dossiers/colonnes/propriétaires antérieurs exacts et un seul dossier fictif ajouté. Nouvelle ligne et propriétaire inchangés entre sauvegarde et réouverture ; code/assets, configuration, production et journal exacts, schéma inchangé hors compteur normal. Connexion normale, ouverture serveur sans brouillon et restauration exacte des quatre emplacements initiaux vérifiées. [Preuves et limites](interventions-proposees.md#recette-complète-du-16-novembre). Sauvegarde SQL privée conservée côté serveur ; aucun compte/droit ou original privé activé.
+
+
+## 16 novembre — Alignement hébergé de PR161
+
+Quatre fichiers exacts et trois ressources HTTPS comparées ; cible/base isolées et configuration qualifiées, autorisation directe consignée. Deux refus sur les nouveaux champs prouvent la validation PHP active, identifiant volontairement invalide empêchant toute écriture même avec une ancienne validation. Après navigation : 23 dossiers/toutes colonnes/propriétaires exacts, 205 fichiers préservés à l’installation, configuration/production intactes ; une seule ligne de refus attendue au journal, préfixe conservé. CONNECT normal, interface et deux Word contrôlés ; ancien brouillon restauré. [Preuves et réserves](interventions-proposees.md#préproduction).
+
+## 16 novembre — Périmètre et sécurité des interventions
+
+Panneau limité au profil Habitologue en Visite Globale ; champs facultatifs bornés, texte échappé, aucune nouvelle route/table ou modification de reports.php/contrôles de propriétaire. Inclusion client strictement booléenne et explicite ; tous les constats reliés doivent être uniques et retenus, sinon l’intervention entière reste exclue. Les préalables, justification et notes d’attentes restent dans l’expert. Réutilisation de VoiceField avec accord existant ; aucun accès Projet ou microphone réel. [Tests, preuves et réserves](interventions-proposees.md#qualification-locale).
+
+## 16 novembre — Conservation après recette Attentes
+
+Deux audits serveur en lecture seule confirment les 22 lignes/colonnes/propriétaires antérieurs exacts et un seul dossier fictif ajouté. La ligne source Terrain est intacte ; nouvelle ligne et propriétaire inchangés entre sauvegarde et réouverture. Code, ressources, journal, configuration et production exacts à ces relevés ; schéma inchangé hors avance normale du compteur. Déconnexion normale, accès serveur sans brouillon et restauration exacte du brouillon initial vérifiés. [Preuves et portée](attentes-ecoute-client.md#recette-complète-du-16-novembre). Aucun compte/droit ou stockage privé activé ; les constats datés suivants restent historiques.
+
+## 16 novembre — Alignement hébergé de PR159
+
+Fusion 58d6aab identique au candidat 73c4447 ; cinq fichiers exacts et ressources HTTPS comparées. Cible, base distincte, sas et configuration qualifiés ; autorisation directe consignée, aucune production. Contrôle après navigation : 22 dossiers/toutes colonnes/propriétaires exacts, configuration/production et 202 fichiers préservés ; une seule ligne de refus attendue au journal CONNECT, préfixe intact. SSO normal, interface et deux Word contrôlés ; ancien brouillon restauré. [Preuves et réserves](attentes-ecoute-client.md#préproduction). Difficultés de navigation cPanel, dossier déjà créé et encodage du contrôleur résolues avant livraison ; aucune donnée de dossier modifiée.
+
+## 16 novembre — Portée du complément Attentes
+
+Copie locale isolée fondée sur main fc77690, PR158 constatée fusionnée ; fichiers Terrain déjà modifiés dans l’ancienne copie conservés. Nouveau périmètre : panneau et aide à la décision, helper de reprise, styles limités, validation PHP facultative et tests. Aucun changement de reports.php, autorisation/propriétaire, secret, table ou migration. Les textes rendus utilisent les échappements existants ; aucune extraction IA ni conservation audio. Réserve préexistante des objets vides PHP consignée, sans affaiblir les assertions HTTP. [Revue sécurité/données et limites](attentes-ecoute-client.md#données-et-compatibilité).
+
+
+## 2026-11-14 — Terrain horizontal, révision locale de PR158
+
+Les constats utilisent les mêmes validations, textes échappés, liens HTTP/HTTPS, accord de dictée, outils photo et permissions du dossier. Seul le type de vue cadastre est ajouté à la validation PHP ; bornes et références inchangées. Capture de tuiles IGN à URL prédéfinies, sans cookies/referrer ni données du dossier dans les requêtes, lots bornés et délai 25 secondes ; image/date/source conservées dans le JSON privé. Changement de dossier/référence/lieu : résultat tardif ignoré. Les anciens fonds et repères restent fixes. La copie de structure exclut médias, lieux, textes et notes historiques. L’ancienne rubrique reste accessible dans Observations sans conversion ni nouvelle création.
+
+202 tests client, 13 cas PHP, téléchargement, deux builds et 38 contrôles HTTP/MariaDB locaux réussis. Reprise navigateur sans brouillon, capture réelle et source/propriétaire conservés ; brouillon initial restauré avec empreintes identiques. Word natif lu sans réparation, 25 pages expert / 10 client en vue d’ensemble ; équivalence expert final et image finale vérifiées. Lecture protégée conservée, aucune nouvelle conversion PDF. Les preuves antérieures ci-dessous restent historiques. Aucune donnée réelle, identité, droit, hébergement ou activation privée modifiés. [Contrat et preuves](environnement-terrain.md).
+
+## 2026-11-14 — Contexte extérieur, candidat local
+
+Champ facultatif séparé, sans modification du tri, des identifiants ou repères des observations. Validation client des types/images, textes échappés, liens HTTP/HTTPS et photo PNG/JPEG bornée ; l'import refuse une structure invalide en conservant le brouillon. La lecture photo attend l'accord existant et un résultat tardif ne recrée pas un contexte supprimé ni ne rejoint un dossier remplacé. Le verrou existant bloque la sauvegarde pendant la lecture. La copie de structure retire tous les textes, lieux, liens, photos et références du contexte ; l'import complet conserve les champs inconnus compatibles et retire seulement le lien serveur.
+
+38 contrôles HTTP/PHP/MariaDB locaux : stockage et téléchargement exacts, nouvelle session signée, copie indépendante, refus croisés et propriétaire source inchangé. Le navigateur local confirme sauvegarde/réouverture sans brouillon, sélection 2/9, suppression ciblée et largeur simulée de 390 px ; aucune erreur console observée. Quatre DOCX ouverts sans réparation, PDF convertis dans Word et 57 pages inspectées ; empreintes DOCX inchangées. Le premier contrôle de texte PDF a signalé les en-têtes répétés et le caractère de coupure d'URL de PDFium ; contrôle adapté à l'extraction, textes et pages rendues vérifiés sans perte.
+
+Aucune écriture hébergée, configuration, identité, droit, migration, photothèque privée ou production modifiée. Une photo simple de contexte n'utilise pas encore l'éditeur ni l'API d'originaux privés ; ces fonctions existantes restent attachées aux photos d'observation. [Contrat, limites et preuves](environnement-terrain.md).
+
+
+## 2026-11-13 — Édition des photos et quota des originaux, candidat local
+
+Travail isolé sur `feat/rapport-photos-edition`, base PR154 fusionnée `e7302bc`. Copie JPEG avec recadrage/rectangle/flèche/texte et choix explicite, original et référence privée préservés. Application à la photo d’origine recontrôlée ; formats limités aux data URL JPEG/PNG/WebP, rendu canvas sans HTML de commentaire, source distante refusée. Bornes de l’éditeur et limites de preuve dans le [guide](photos-rapport-edition.md).
+
+La réserve du quota est reproduite avec des résidus de crash synthétiques : l’ancien code accepte l’envoi à tort, le code corrigé le refuse. Le comptage réserve aussi les lignes sans fichier et le surplus physique d’un fichier altéré, refuse les liens et ne supprime rien. Tests PHP complets réussis (SQLite, concurrence, restauration, refus, routes HTTP hors base), ainsi que 186 tests Node et deux builds. Le test HTTP/MariaDB est arrêté avant lancement de la base : Docker Desktop ne démarre pas (socket local inaccessible). Une relance et une tentative de mise à l’écart de ce seul socket échouent sans le modifier ; aucun reset, purge ou configuration de Docker changé. Ce point ne vaut pas réussite de la recette MariaDB.
+
+Navigateur local : annuler/rétablir, fermer sans appliquer, trois annotations, retour à l’original, reprise du brouillon dans un autre onglet et réimport JSON réussis ; origine des octets et présence exacte de la copie dans les deux Word vérifiées. Aucun Word natif/PDF, appareil physique, écriture hébergée, rôle ou transfert de propriétaire qualifié par ce lot. Stockage hébergé toujours désactivé, PR et revue humaines distinctes.
+
+## 2026-11-13 — Correction des deux réserves de pagination vérifiée
+
+PR154 sur `fix/rapport-pagination-exports`, source livrée `5bf8efe` : regroupement borné des constats client, photo/légende et conclusion de décision ; espacements resserrés uniquement dans la décision. Trois tests OOXML rouges avant correction, puis 176 tests et deux compilations réussis ; CI source réussie. Livraison de trois fichiers statiques avec sauvegarde et répétition du retour arrière sur copie privée. Les 20 dossiers (toutes colonnes et propriétaires), la configuration et les fichiers de production restent inchangés. Aucun SQL écrit, compte modifié, schéma migré ou original privé activé.
+
+Word générés depuis la préproduction puis convertis en PDF par Word natif : 26 pages relues, expert 20 pages et client 6 pages. Les deux réserves sont résolues ; contenu et médias identiques à l’export antérieur, brouillon initial restauré par empreintes. Les textes et blocs dépassant une page restent soumis à la pagination Word. PR ouverte en brouillon, aucune acceptation humaine ni fusion créée. [Preuves et limites](partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## 2026-11-13 — Contrôle Word/PDF et réserves de pagination
+
+Les deux DOCX générés en préproduction conservent les champs attendus ; les PDF sont obtenus par conversion native Microsoft Word, sans export PDF direct proposé par l’application. Le rendu empaqueté échoue faute de LibreOffice, puis le parcours Word et le rendu PDF fourni permettent l’inspection des 27 pages. Deux réserves restent ouvertes : conseil client isolé page 3, mention de décision expert isolée page 20. La synthèse actuelle ne comporte pas de signature et ne reprend que les deux constats sélectionnés. [Preuves, limites de la fixture et suite](partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre). Aucun code ou accord humain modifié.
+
+
+## 2026-11-13 — Recette hébergée complète PR152
+
+La recette entre les deux comptes fictifs existants utilise le `SessionManager` installé, le broker CONNECT et les API réels ; OAuth Drupal non rejoué. Import/sauvegarde puis réouverture sans brouillon local dans une nouvelle session réussis, source et dossiers antérieurs inchangés, refus symétriques lecture/téléchargement/écriture, comptes et navigateur restaurés. Écart documentaire relevé et expliqué : quatre collections de contrôles vides passent de `[]` à `{}` au rechargement ; contenu renseigné et médias identiques. [Détail, preuves et limites](partage-tests-et-stockage.md#recette-complète-entre-deux-comptes-fictifs--13-novembre). Aucun correctif de code ou de schéma nécessaire pour ce contrôle ciblé.
+
+
+## 2026-11-13 — PR152 livrée en préproduction
+
+Fusion `d8dad46`, artefact qualifié de `cea3177` promu sans reconstruction : huit fichiers installés et vérifiés, 188 préexistants préservés. Les 18 dossiers, toutes leurs colonnes et propriétaires sont identiques avant/après ; configuration privée et fichiers de production inchangés. Sauvegarde fraîche des fichiers/configuration/JSON relue et retour arrière applicatif répété sur copie séparée, sans restauration SQL. Aucune migration, compte, droit, donnée réelle ou activation d’original modifié. [Livraison, vérifications et réserves](partage-tests-et-stockage.md#préproduction).
+
+Le script privé de déploiement a été adapté à Python 3.6 (`stdout/stderr=PIPE`) ; aucun code de l’artefact modifié. Le contrôle a d’abord arrêté la livraison pour des écarts existants : deux composants partagés antérieurs, relus et conservés à leurs empreintes exactes, plus huit variantes LF/CRLF normalisées sans réécriture. Les opérations restent bornées aux huit fichiers prévus. Menu/préférences, accès CONNECT, aperçu sans confirmation et téléchargement fictif sont contrôlés sur cible. La recette hébergée complète avec écriture et deux comptes était encore ouverte lors de ce contrôle initial ; elle est ensuite réussie dans la recette décrite plus haut.
+
+
+## 2026-11-13 — Réconciliation de PR152 avec les originaux privés
+
+Après fusion de PR150 dans `main` (`1978ab8`), résolution des conflits dans les imports et le verrou de sauvegarde de `App.jsx`, ainsi que sept documents. Les imports photo sont conservés ; l’enregistrement refuse à la fois un second envoi de dossier et une sauvegarde pendant un transfert d’original. Le maintien des saisies récentes et la relecture du contenu enregistré de PR152 restent intacts. Les autres fichiers de code des deux branches sont conservés sans réécriture. Le réalignement ne modifie ni donnée, droit, configuration hébergée ni statut d’activation des originaux. [Parcours et limites](partage-tests-et-stockage.md).
+
+## 2026-11-13 — Dossier complet et copies de structure
+
+Le fichier signalé correspond au générateur de structure fictive, qui retire volontairement les textes et médias. Diagnostic réel en lecture seule : aucun contenu complet retrouvé pour ce compte dans la base actuelle et la sauvegarde privée PR149 contrôlée ; aucune prétention de récupération depuis d’autres sources.
+
+Le correctif réutilise les permissions de lecture de `reports.php` pour la pièce jointe complète ; l’export délégué par habilitation reste distinct. Aucun droit, configuration hébergée ou migration modifié. Import confirmé sans `onlineReportId` afin de ne pas viser le source ; références métier et images conservées. Rejet d’un résumé seul et d’entiers non éditables sans perte ; octets du téléchargement jamais réencodés. Après écriture, relecture et empreinte avant accusé ; une saisie pendant l’envoi reste locale et est signalée. [Contrat et preuves](partage-tests-et-stockage.md).
+
+## 2026-11-13 — Originaux privés, candidat local
+
+Nouvelle route `photo-originals.php`, service indépendant `photo-original-store.php` et migration 003 additive. Le client conserve les données existantes ; le navigateur ne reçoit aucun chemin privé. Le propriétaire courant est vérifié avant traitement, sous le verrou puis dans la transaction d’insertion ; les autres comptes et l’administrateur non propriétaire sont refusés. Le sas et la révocation existants sont réutilisés sans modification. Aucun accès organisationnel ou transfert ajouté.
+
+Les tests PHP/SQLite et HTTP/MariaDB isolés couvrent immutabilité, contrôle des octets, refus inter-comptes, quota concurrent, sauvegarde/restauration et conservation des propriétaires. La recette du navigateur utilise une mire fictive et des tickets locaux ; elle ne vaut pas recette OAuth/CONNECT hébergée. Le proxy de démonstration conserve le Host initial afin de respecter le contrôle Origin ; le serveur produit n’a pas été assoupli. [Preuves et réserves](photos-originales-et-annotations.md#développement-local).
 
 ## 2026-11-13 — PR149 installée en préproduction
 
@@ -25,6 +166,10 @@ Ordre commun sans identifiant remplacé, numéro stocké ni migration ; vues et 
 
 Profil métier explicite, sans modification de sécurité ; ancien parcours conservé. Restitution échappée et liens HTTP/HTTPS intégrés ; filtrage client vérifié dans les deux Word fictifs et leurs rendus. 123 tests Node, 27 contrôles PHP, deux builds et recette navigateur locale réussis. Aucune qualification hébergée du candidat. [État réel et réserves](profil-habitologue.md).
 
+
+## 2026-11-12 — Photos : originaux privés et compression non activée
+
+Aucune compression destructive n'est active : l'import garde `src` octet-identique tant que les originaux privés du dossier en ligne ne sont pas implémentés et qualifiés. Le module de compression est testé (12 tests) mais isolé ; ses essais sur images synthétiques sont ceux du candidat initial, sans conservation d'original. Aucun changement de consentement photo, de sécurité, d'authentification, de propriété, d'API ou de limite. Le [cadrage des originaux et annotations](photos-originales-et-annotations.md) relève les risques (accès inter-comptes, administrateur, sauvegarde des fichiers hors SQL, copie vers un autre propriétaire) ; les besoins d'originaux privés et d'annotations sont confirmés, leur implémentation et leurs paramètres restent à préparer. [Module isolé](compression-photos.md).
 
 ## 8 novembre 2026 — Menus de Rapport et de RGA
 
@@ -359,3 +504,45 @@ Le candidat ajoute un export délégué en lecture seule pour les dossiers dont 
 ## Interruption du téléchargement délégué
 
 Dans la version de préproduction de la PR #140, une erreur de transport remonte directement dans le panneau d’export. Le correctif local affiche un message français qui invite à consulter les téléchargements puis à relancer manuellement si le fichier manque. Le [test Chrome](../tests/organization-exports.browser.mjs) simule une interruption, contrôle la réussite du clic suivant, le contenu du fichier, le refus après retrait du droit et la conservation du brouillon.
+
+## 18 novembre — Correction de pagination des interventions
+
+Correction ciblée livrée et qualifiée en préproduction : voir [le périmètre et la qualification](interventions-proposees.md#18-novembre--correction-de-pagination-des-interventions). Réserve levée après lecture native des deux Word et des 51 pages PDF ; textes, médias et propriétaire conservés. Revue humaine de la PR169 et production restent distinctes.
+
+## Fermeture de l’aperçu — candidat local du 18 novembre
+
+Le bandeau commun utilise des popovers dans la couche supérieure du navigateur. Il peut masquer la croix de l’aperçu, qui était une simple superposition. Le test navigateur reproduit l’interception du clic avec le bandeau réel sur quatre tailles d’écran, de 320 à 1280 pixels. La correction de Rapport reprend le dialogue natif déjà utilisé pour les photos ; le bandeau commun reste inchangé.
+
+Le bouton visible **Fermer l’aperçu** ferme la fenêtre et replace le focus sur **Aperçu**. Échap ferme depuis les commandes de l’aperçu. Après un clic dans le document intégré, **Maj+Tab** revient au bouton de fermeture puis **Entrée** ferme. Le document conserve son `sandbox=""` : aucun script ni accès supplémentaire n’est accordé pour transmettre ses événements clavier. La taille suit la fenêtre, la barre se replie sur écran étroit et le document défile dans son propre cadre.
+
+Le test [report-preview.browser.mjs](../tests/report-preview.browser.mjs) vérifie les deux restitutions expert/client sur 1280×820, 640×450, 390×844 et 320×640 : clic accessible, Échap depuis les commandes, sortie clavier depuis le document, retour du focus, brouillon exact et absence de requête d’écriture. Les huit parcours passent ; 246 tests Node et compilation connectée réussis. Le HTML du rapport, les Word, données, API et droits ne changent pas. Ces preuves sont locales ; le correctif n’est pas installé en préproduction.
+
+Revue locale sur [le dossier fictif complet](http://127.0.0.1:5214/fixture/) : Reprendre → Export → Aperçu. Ce service de revue écoute uniquement sur cet ordinateur et refuse les écritures serveur. Les données hébergées ne sont pas utilisées par ce service. La PR169 est fusionnée en `b9c9efb` ; son frontend est identique au candidat qualifié installé. La PR170 est réalignée sur main sans conflit et ajoute le [libellé professionnel CONNECT approuvé](../../avereo-app-connect/docs/profils-et-droits.md#libellé-analyse-globale--18-novembre).
+
+**Cadrage** terminé, extension CONNECT confirmée ; **Développement local** qualifié ; **Préproduction** du nouveau correctif non livrée ; **Mise en production** non autorisée. Le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>) porte `rapportV12CadrageProfils20261112.apercuFermeture20261118`.
+
+### Recette humaine de la PR170
+
+Sur les deux points locaux fictifs ci-dessus, sans connexion à un compte réel :
+
+1. CONNECT → Mon profil : **Analyse globale**, Architecte, Maître d’œuvre et « À choisir dans chaque dossier » sont disponibles ; le choix fixe Habitologue n’est plus proposé.
+2. Enregistrer **Analyse globale**, recharger puis rouvrir CONNECT dans une nouvelle fenêtre privée : retrouver ce choix. Sélectionner Architecte puis **Annuler la modification du profil** : le choix enregistré reste Analyse globale.
+3. Mon compte → Gérer les comptes → Types de profils et droits → Créer un type : le **Parcours Rapport de référence** propose Analyse globale. Les noms des types déjà créés et leurs droits restent identiques ; un ancien nom libre Habitologue peut donc encore apparaître dans le catalogue.
+4. Rapport → Reprendre → Export → Aperçu : le bouton **Fermer l’aperçu** reste visible, sur grand écran puis dans une fenêtre étroite. Fermer, rouvrir et vérifier le maintien du dossier et des textes.
+5. Vérifier **Échap** depuis les commandes de l’aperçu ; après clic dans le document, **Maj+Tab puis Entrée** revient au dossier. Le focus revient sur Aperçu.
+6. Options du livrable : répéter avec **Rapport expert détaillé**, puis **Synthèse client** ; parcourir le document et vérifier que le bouton reste accessible. Le service Rapport local refuse les écritures serveur ; ces tests ne remplacent pas la future recette CONNECT/Rapport hébergée.
+
+## Livraison en préproduction de la PR170
+
+Le 18 novembre, après tests et fusion humains, le responsable autorise CONNECT et Rapport en préproduction. La source qualifiée `9dfb105` et la fusion `d81ad24` ont le même arbre. Six fichiers sont installés : deux libellés CONNECT, trois assets et index Rapport. L’artefact Rapport qualifié est conservé sans reconstruction. Sauvegarde fraîche des interfaces et configurations vérifiée et restaurée sur copie privée ; anciens assets conservés. [Reçu de livraison](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-apercu-fermeture-20261118/livraison-preproduction/livraison.json>).
+
+Les fichiers publics sont servis à l’identique. Nouvelle connexion native du compte fictif37 ; dans une nouvelle fenêtre privée sans brouillon initial, le dossier complet est rouvert depuis la liste serveur. Son JSON de 4 416 622 octets est exact et son propriétaire37 conservé. Les deux aperçus affichent la fermeture au-dessus du bandeau ; fermeture client au clic et expert par Échap réussies, retour au dossier observé. Aucun dossier serveur enregistré pendant ce contrôle. La préférence CONNECT existante, Architecte, reste inchangée ; Analyse globale est servi comme choix et parcours de référence. [Recette technique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-apercu-fermeture-20261118/livraison-preproduction/recette-finale.json>).
+
+Les 248 autres fichiers préexistants et configurations sont exacts. Les données des 19 tables CONNECT/Rapport sont comparées à l’instantané frais, hors comptes fictifs37/38 et nouveaux événements de recette ajoutés ensuite. Expiration et règle prolongées pour le seul compte fictif37 puis rétablies ; politique complète identique, catalogue et préférences conservés. La fenêtre privée créée pour le test est refermée. Le contrôle hébergé est réalisé sur ordinateur ; les scénarios mobiles locaux restent des preuves distinctes. Le focus n’est pas déterminable par l’accessibilité Windows et conserve sa preuve automatique locale. Les Word/PDF précédemment qualifiés restent suivis séparément, sans nouvelle génération par ce lot.
+
+**Cadrage** approuvé ; **Développement local** validé et fusionné ; **Préproduction** livrée et recette technique réussie ; **Mise en production** non autorisée. Le [suivi canonique](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>) porte le résultat courant. Cette mise à jour documentaire ne change aucun fichier applicatif et ne demande aucun redéploiement.
+
+
+## 19 novembre — Planning par périodes
+
+Mode optionnel sans dates, sans migration SQL, avec coordonnées explicites et import comme nouveau projet privé. Le calendrier existant, les droits et les données antérieures sont conservés. [Contrat, compatibilité, limites et recette](interventions-projet.md). Le contrôle hébergé reste distinct des tests locaux ; son résultat est enregistré dans le suivi canonique.

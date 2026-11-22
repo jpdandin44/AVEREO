@@ -5,10 +5,34 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-10
+updated: 2026-11-19
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## 19 novembre — Rapprochement documentaire PR98
+
+La connexion par identifiant ou e-mail a été livrée et recettée en préproduction le 3 novembre. Le [contrat](docs/connexion-identifiant-email.md) identifie la version, l’empreinte et les preuves historiques en remplacement de l’ancien état « non installé ». Actualisation documentaire seulement : aucun nouveau déploiement, changement de compte ou de validation.
+
+## 18 novembre — PR170 livrée en préproduction
+
+Les choix fixes de profil affichent **Analyse globale** et les deux aperçus Rapport sont refermables. Le dossier fictif complet, son propriétaire, les noms libres et les droits sont conservés. [Livraison coordonnée et preuves](../avereo-app-rapport/docs/source-audit.md#livraison-en-préproduction-de-la-pr170). Les états de préparation ci-dessous restent historiques.
+
+## 18 novembre — Analyse globale, candidat PR170
+
+Le choix professionnel et le parcours Rapport de référence utilisent désormais **Analyse globale**. La clé historique et les noms libres des types administrés sont conservés. [Périmètre, compatibilité et recette locale](docs/profils-et-droits.md#libellé-analyse-globale--18-novembre). Cette extension est prête pour revue locale, sans nouvelle livraison hébergée ; les états datés suivants sont historiques.
+
+## 17 novembre — Administration des profils et droits : cadrage
+
+PR164 est fusionnée et conserve son périmètre : défaut personnel dans Mon profil,
+trois métiers fixes, sans habilitation associée. Le responsable demande maintenant
+un catalogue administrable dans Gérer les comptes, avec accès aux applications et
+actions dans Rapport. [Cadrage, critères et arbitrages](docs/profils-et-droits.md).
+Le candidat est implémenté et qualifié localement ; la préproduction reste différée.
+
+## 16 novembre — Profil professionnel déclaré, candidat local
+
+Mon compte → Mon profil propose un défaut Habitologue/Architecte/Maître d’œuvre, stocké sur le seul compte connecté. Il préremplit les nouvelles missions Rapport sans modifier les droits ni les anciens dossiers. Médaillon et lecteur antérieur conservés. [Parcours, qualification et limites](../avereo-app-rapport/docs/profils-professionnels.md). Aucun déploiement de ce nouveau lot.
 
 ## 9 novembre — contrôle global compatible Drupal 11
 

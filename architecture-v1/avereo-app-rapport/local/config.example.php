@@ -10,5 +10,5 @@ return [
     'auth_mode' => 'api_token',
     'api_token' => 'CHANGE_ME_API_TOKEN',
 
-    'max_payload_bytes' => 50 * 1024 * 1024,
+    'max_payload_bytes' => 100_000_000,
 ];

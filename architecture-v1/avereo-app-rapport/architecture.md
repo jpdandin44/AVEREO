@@ -5,12 +5,79 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## 21 novembre — Contrat commun de volumes
+
+[Contrat et flux du candidat](docs/volume-sans-perte.md). Les limites proviennent de `avereo-platform/shared/report-volumes.json`, utilisées en JS et copiées avec leur helper PHP dans chaque API par le build. Contrôle du JSON stocké et reconstitué, enveloppe API distincte, budget mémoire et capacité du paquet MySQL vérifiés avant écriture. Le stockage et la lecture gardent les types JSON natifs ; la vue de validation reste séparée. Aucun changement SQL, identité ou droits.
+
+
+## 19 novembre — Publication privée dans Passeport Immo
+
+Le [lot de publication](docs/publication-passeport-immo.md) prépare un paquet `.avereo.zip` dans Rapport, puis le propriétaire l’importe dans le bien/client choisi dans Passeport. La restitution client Word utilise le moteur existant ; le JSON complet et les originaux photo restent dans la copie privée. La réouverture importe une copie indépendante dans Rapport, sans réutiliser la ligne serveur ou les références photo du propriétaire source. Aucun service à secret partagé supplémentaire ni transfert de propriété implicite.
+## Libellé de prestation et métier — 17 novembre
+
+reportProfiles porte le libellé de mission Analyse globale pour la clé habitologue ; reportDelivery le reprend dans les titres de couverture existants. Le même module fournit Conseils de l’expert à App, EnvironmentContext, reportHtml et reportDelivery. connectedMissionProfile conserve Habitologue pour le métier déclaré du compte. Aucun flux, stockage ou contrôle d’accès changé. [Contrat](docs/profils-professionnels.md#libellé-de-prestation--17-novembre).
+
+## Plans et captures multiples — 17 novembre
+
+ObservationPlans réutilise plans/reperes et les identifiants existants ; registry PLAN_KINDS partagée avec les libellés de restitution, validation PHP alignée. CadastralCapture et LocationMap utilisent les mêmes trois modes de tuiles publiques, image figée avec source/cadrage et ajout atomique d’un couple. Consultation conservée sous les droits existants. [Contrat](docs/reperage-observations.md). Aucun changement SQL ou d’authentification.
+
+## 17 novembre — Actions issues de la politique CONNECT
+
+La projection privée existante porte report_actions et access_profile pour les
+seuls comptes affectés. Contrôles serveur à chaque requête, verrou des écritures
+et propriété conservés ; contrôle frais pour les téléchargements officiels du
+navigateur. Actualisation d'interface au focus/30 secondes et consultation
+repliable utilisable sans modification. [Flux et frontières de garantie](../avereo-app-connect/docs/profils-et-droits.md).
+
+## Titulaire des rapports et des originaux
+
+Le titulaire courant, le rattachement vérifié, les métadonnées des originaux et le reçu évoluent dans une transaction Rapport. Le dépôt physique des photos reste stable. [Schéma et procédure](../../docs/administration-acces-exports.md#transférer-un-rapport-avant-fermeture).
+
+## Profils de mission et défaut du compte — 16 novembre
+
+Rapport lit les préférences privées du compte courant via le portail validé par Mon compte, puis vérifie la correspondance avec sa propre identité CONNECT. Lecture à l’ouverture/au retour de focus, 2,5 secondes maximum, choix manuel si indisponible ; aucun cache d’identité persistant. Le défaut est copié uniquement dans un nouveau `profil_metier`. Aucune application du défaut à une reprise/import/ouverture serveur. Une matrice de présentation commune aligne écrans et deux Word ; mêmes données/identifiants, médias et filtres. [Contrat et conservation](docs/profils-professionnels.md).
+
+## 16 novembre — Projection des interventions vers Projet
+
+InterventionProjectPanel lit les mêmes decision.actions, sauvegarde les seuls paramètres optionnels et affiche un aperçu dérivé. interventionProject.js importe le moteur Projet canonique pour normaliser/encoder/calculer le fichier, sans copie du calendrier ni nouvelle API interapplications. Le fichier est chargé par l’import privé existant de Projet, qui crée un projet indépendant sous ses droits habituels. [Flux, données et limites](api/interventions-projet.md). Les moteurs Word et les contrôles de propriétaire restent inchangés.
+
+## Présentation progressive — 16 novembre
+
+ScreenPresentation conserve les ouvertures uniquement en mémoire du wizard, par identifiant stable ; ScreenDisclosure garde les champs montés et contrôle leur visibilité. La création explicite initialise les ouvertures ; un import réinitialise le contexte, sans champ de présentation dans le JSON/API. App, InterventionsPanel et ObservationPlans réutilisent leurs données et commandes ; signature redessinée à dimension visible et dictée active protégée du repli. [Responsabilités et limites](docs/organisation-ecrans.md#composants-et-conservation).
+
+
+## Interventions — complément du 16 novembre
+
+InterventionsPanel réutilise decision.actions et les composants de dictée existants. interventions.js fournit le périmètre Habitologue/Visite Globale, les avertissements et le rendu partagé aperçu/Word. Champs facultatifs realisation et inclure_client validés dans decision-validation.php ; stockage JSON et rôles/propriété inchangés. reportHtml accepte un contenu additionnel après les recommandations ; reportDelivery insère le bloc expert et le bloc client filtré. [Données et flux](docs/interventions-proposees.md#données-et-compatibilité).
+
+## Attentes et provenance — complément du 16 novembre
+
+Le bloc decision porte notes_attentes et attentes[].provenance_ecoute (champ et texte_original), facultatifs, sans nouveau stockage ou schéma SQL. expectationListening.js fournit la copie explicite et les états de provenance ; DecisionSupportPanel utilise les attentes existantes pour la matrice de constats. VoiceField reste le composant de dictée ; decisionSupport produit les rendus expert/client. [Modèle et limites](docs/attentes-ecoute-client.md#données-et-compatibilité).
+
+
+## Terrain dans Protocoles et Observations — révision locale du 14 novembre
+
+VisitGuide.jsx présente le bloc 0 et le Bâti à l’horizontale. Les constats terrain utilisent le tableau observations avec phase_habitologie=terrain ; observationOrder.js dérive Tn et les numéros du bâti séparément, utilisés aussi dans plans, choix client, aide à la décision et Word. CadastralCapture.jsx utilise la carte existante, capture les seules tuiles publiques dans un PNG fixe et l’ajoute à plans avec kind=cadastre, cadrage et localisation. Les résultats tardifs sont écartés après changement de cible. PHP accepte ce type dans sa validation existante. EnvironmentContext.jsx demeure uniquement pour reprendre l’ancien contexte dans Observations ; Site ne le rend plus. Aucun nouveau stockage, endpoint, droit ou migration SQL. [Flux, bornes et composants](docs/environnement-terrain.md#données-et-composants).
+
+## Copie photo du rapport — 13 novembre
+
+`PhotoReportEditor.jsx` édite en mémoire un recadrage normalisé et une liste de rectangles/flèches/commentaires, avec historique local. `photoReportVersion.js` valide les opérations, peint une copie JPEG et choisit la source à afficher/exporter. `photo.src` reste l’original ; `photo.reportVersion` et `photo.reportPhotoChoice` sont facultatifs dans le payload existant. `reportHtml.js` et `reportDelivery.js` réutilisent le choix commun, sans modifier le convertisseur DOCX. L’attachement refuse une cible dont le dossier, la photo ou la source ont changé ; la conservation privée continue à lire l’original.
+
+Sous le verrou existant par propriétaire, le service privé additionne réservations SQL et octets non enregistrés sur disque (ou surplus d’un fichier enregistré). Les fichiers manquants conservent leur réservation, les liens/chemins non conformes sont refusés ; aucune suppression ou réparation automatique. Aucune migration ni nouvelle route. [Contrat et limites](docs/photos-rapport-edition.md). La description « éditeur prévu » de la tranche initiale ci-dessous reste historique.
+
+## Dossier complet — correctif local du 13 novembre
+
+`reportFiles.js` valide le contenu reçu, identifie les structures fictives et prépare une copie d’import sans `onlineReportId`, en conservant les identifiants métier et leurs références. `ReportImport.jsx` confirme le remplacement du seul brouillon ; l’accueil et Export partagent ce composant. `OnlineReports.jsx` charge le payload complet pour ouvrir et propose le téléchargement de la sauvegarde sans changer le brouillon.
+
+`reports.php?id=…&download=1` réutilise les contrôles existants de lecture puis diffuse `payload_json` en pièce jointe privée, sans décodage/réencodage. `report-download.php` valide et compte ce contenu ; son empreinte est contrôlée par le client. Après POST, une relecture SQL confirme les octets enregistrés avant l’accusé avec compteurs. Stockage, table, identité et propriétaire inchangés. [Contrat](api/dossiers-complets.json), [procédure](docs/partage-tests-et-stockage.md).
+
 
 ## Ordre commun des observations — lot 0 local
 
@@ -20,6 +87,12 @@ tags:
 
 `profil_metier` et `observations[].explications` étendent le payload JSON existant, sans migration SQL. Le profil adapte les formulaires et les restitutions, sans changer les rôles CONNECT ni la propriété. [Contrat et composants](docs/profil-habitologue.md).
 
+
+## Photos originales et compression
+
+L’import conserve la data URL dans `observations[].photos[]`. La première tranche locale ajoute une référence optionnelle `original`, un client `photoOriginals.js`, une vue `PhotoOriginals.jsx` et l’API `photo-originals.php`. `RapportPhotoOriginalStore` garde les octets dans un répertoire privé hors racine web et leurs métadonnées dans la table additive `rapport_photo_originals` (migration 003). Chaque opération vérifie le propriétaire courant du rapport et celui de l’original ; aucune exception administrateur. Le serveur réutilise le sas, l’identité et le verrou de révocation existants.
+
+L’activation exige une configuration privée explicite et des limites positives ; elle reste désactivée par défaut. Fichiers et base doivent être sauvegardés ensemble. `photo.src`, Word et JSON restent inchangés, hormis la référence facultative. `photoCompression.js` est toujours un [module isolé non branché](docs/compression-photos.md). L’éditeur et la version rapport dérivée restent prévus. [Contrat et limites](docs/photos-originales-et-annotations.md), [API](api/photos-originales.json).
 
 ## Copie pour les tests
 
@@ -107,3 +180,8 @@ altimetriques, l'orientation et les notes. Voir
 L'evolution 2 ajoute les liens externes et notes `ressources_batiment` au meme
 payload. Aucun raccordement automatique aux fournisseurs : voir
 [`api/ressources-batiment.md`](api/ressources-batiment.md).
+
+
+## Mode relatif du planning
+
+Le moteur Projet et sa validation PHP acceptent un mode optionnel sans ancrage calendaire ; Rapport utilise ce même contrat pour sa projection. Stockage privé et identité CONNECT conservés. [Planning Rapport vers Projet](docs/interventions-projet.md).

@@ -1,0 +1,23 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "cockpit-qualite-synthese-20261119",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "title": "Cockpit — critères, preuves et synthèse lisible",
+  "stage": "developpement-local",
+  "status": "in_progress",
+  "currentPhase": 1,
+  "objective": "Qualifier les sources sans modifier les validations et présenter des indicateurs simples avec détails à la demande.",
+  "phases": [
+    {"id": 0, "label": "Cadrage", "status": "awaiting_review", "criteria": [{"id":"UXQ-01","title":"Différencier décisions humaines, preuves, versions et fraîcheur"}]},
+    {"id": 1, "label": "Développement local", "status": "in_progress", "criteria": [{"id":"UXQ-02","title":"Synthèse par application, filtres et détails repliables"},{"id":"UXQ-03","title":"Comptages Node/PHP identiques et lecture seule"},{"id":"UXQ-04","title":"Préserver les quatre phases, décisions, preuves et fonctions voisines"}]},
+    {"id": 2, "label": "Préproduction", "status": "not_started", "criteria": [{"id":"UXQ-05","title":"Candidat CI vérifié, sauvegarde et retour arrière sur copie"},{"id":"UXQ-06","title":"Recette propriétaire/global en lecture seule ; autres accès refusés"}]},
+    {"id": 3, "label": "Mise en production", "status": "not_started", "criteria": [{"id":"UXQ-07","title":"Livraison uniquement après autorisation distincte, hors du présent lot"}]}
+  ],
+  "approvals": [],
+  "developmentReviews": [],
+  "checks": [],
+  "blockers": [],
+  "nextAction": "Qualifier les contrôles et la préproduction autorisée ; aucune validation humaine ni production déduite.",
+  "documentation": "docs/cockpit-qualite-synthese.md"
+}

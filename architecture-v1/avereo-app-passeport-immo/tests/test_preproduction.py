@@ -14,6 +14,20 @@ spec.loader.exec_module(module)
 
 
 class PreproductionTests(unittest.TestCase):
+    def test_volume_contract_is_atomic_without_rejecting_older_candidates(self):
+        files={name:b'Fixture\n' for name in module.GATE_FILES | module.STORAGE_FILES | module.VOLUME_FILES}
+        self.build_fixture(files)
+        proof=module.prepare(self.archive,self.manifest,self.candidate,self.root/'complete')
+        self.assertEqual(proof['restoreRehearsal'],'passed_local_files_only')
+        del files['api/report-volumes.json']
+        self.build_fixture(files)
+        with self.assertRaisesRegex(ValueError,'Contrat des volumes incomplet'):
+            module.prepare(self.archive,self.manifest,self.candidate,self.root/'partial')
+        self.assertFalse((self.root/'partial').exists())
+        del files['api/report-volumes.php']
+        self.build_fixture(files)
+        module.prepare(self.archive,self.manifest,self.candidate,self.root/'historical')
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix='passeport-preproduction-test-')
         self.addCleanup(self.temporary.cleanup)

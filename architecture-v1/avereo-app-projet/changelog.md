@@ -5,12 +5,55 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 2026-11-20 — Inventaire GitHub en développement local
+
+- Découverte optionnelle des dépôts du propriétaire, des branches et de toutes
+  les PR retournées, avec traitement des arbres tronqués et cache immuable.
+- Projets et composants sans inscription préalable visibles dans le catalogue
+  et dans la vue filtrable **Inventaire GitHub**.
+- Projection privée optionnelle vérifiée par les lecteurs Node/PHP ; les suivis,
+  validations humaines et déclarations de livraison restent conservés.
+- [Qualification et réserves](docs/inventaire-github.md). Ce journal ne prouve
+  aucune installation ou livraison de ce candidat.
+
+## 19 novembre — Synthèse UX des critères et preuves
+
+Cartes par application, filtres et détails progressifs, sans perte du Gantt,
+des quatre phases ni des versions. Résumé consultatif calculé depuis les vues
+signées, parité Node/PHP, pas d'écriture de validation ou changement d'accès.
+[Guide et limites](docs/cockpit-qualite-synthese.md).
+
+## 19 novembre — Collecte privée et état de fraîcheur
+
+Ajout du publicateur GitHub données seules, contrôles d'admission/permissions, sauvegarde, verrou et retour gardé, archivage vérifié des copies inactives et état opérateur signé. L'interface distingue contrôle GitHub, réception des sources, publication et simple relecture, signale les pannes et l'expiration du jeton. Conservation des projections métier inchangées et des pièces historiques. Aucun relais PC, nouvelle API d'écriture navigateur ou changement de validation. Tests et reçu de livraison restent des preuves distinctes ; ce code seul ne prouve pas l'installation. [Guide](docs/actualisation-automatique-privee.md).
+
+## 18 novembre — Lecture du cockpit et historique
+
+Correction de la lecture des workflows imbriqués après sélection et capacité de 100 vues dans les lecteurs local/Node/PHP. [Conservation et publication bornée](docs/suivis-courants-et-historique.md).
+
+
+## 16 novembre — Gantt privé et progression technique, local non livré
+
+Ajout d'une projection calculée en lecture seule, Gantt repliable/filtrable, ligne du jour, fenêtres de preuves et prévisions explicites ; distinctions phase déclarée/technique, reste inconnu et revue humaine. Cache et lectures bornées, perte d'accès effaçant les données, reprise des publications nouvelles ; collecteur GitHub périodique local à démarrage explicite. Mappings historiques explicites et métadonnées de pièces vérifiées/non copiées, sans modification des décisions. [Guide](docs/gantt-developpements.md). Aucun déploiement ni publicateur permanent installé.
+
+Préparation de PR : qualification du publicateur privé, plan JSON désactivé et chaîne locale fictive testant deux publications, panne, signature, conservation et retour anti-rejeu. Distinction dépôt public/sources privées et opérateur historique/publicateur données seules. Aucun transport, compte, tâche ou droit installé/modifié.
+
+[PR160](https://github.com/jpdandin44/AVEREO/pull/160) créée en brouillon après intégration de main PR159 ; 354 tests locaux, compilations publique/privée et identité de source propre qualifiées. Reçus initiaux conservés, traçabilité du candidat et nouvelle qualification ajoutées, cases humaines décochées. Aucun merge ou déploiement de ce lot.
+
+## 13 novembre — Revue PQ-01, PR #151
+
+Lot committé sur sa branche puis main intégré sans conflit, sans modifier la branche cible. 326 tests Projet, compilation, séparation publique, contrôle de base et syntaxe PHP requalifiés ; paquet privé identique. Vue locale privée rouverte, réserves de dépendances reconfirmées, suivi et preuve datée ajoutés. [PR #151](https://github.com/jpdandin44/AVEREO/pull/151), quatre cases humaines décochées ; aucun déploiement ni nouvelle donnée publiée en préproduction.
+
+## 12 novembre — PQ-01 Patrimoine & qualité local
+
+Collecte de métadonnées d'inventaire, listes dédupliquées et datées, compteurs inconnus explicites, détail par application/dossier et exclusions visibles. Transport optionnel dans l'état/projection signée Node/PHP, contrat fermé et compatibilité historique. Interface privée consultative sans changement d'authentification, du Gantt ou des décisions métier. [Guide, tests et réserves](docs/patrimoine-qualite.md). Aucun déploiement.
 
 ## 12 novembre — Reprise de la vue après expiration
 
@@ -282,3 +325,8 @@ Mes projets et Préférences conservent les actions natives de ProjectWorkspace.
 ## 7 novembre 2026 — Missions depuis le dossier
 
 Le candidat local raccorde le dossier au module commun. [Adaptation et preuves](docs/source-audit.md).
+
+
+## 2026-11-19 — Planning relatif sans dates
+
+Mode P1/P2 ajouté au contrat de projection et aux validations concernées ; aperçu Rapport, import indépendant et Gantt simplifié Projet. Livré en préproduction et recette technique réussie, avec réserves distinctes documentées dans la PR175 ; revue humaine en attente. [Planning par périodes](docs/planning-periodes.md).

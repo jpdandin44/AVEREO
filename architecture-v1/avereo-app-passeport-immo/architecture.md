@@ -5,22 +5,38 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
+## 21 novembre — Volume et contrôle avant dépôt
+
+Le candidat utilise le contrat commun JSON/PHP généré depuis `avereo-platform/shared/report-volumes.json`. L’inspection privée vérifie le budget mémoire et la taille réouverte avec originaux avant toute publication. Pas de changement de stockage, de schéma ou de droits. [Contrat et mesures](../avereo-app-rapport/docs/volume-sans-perte.md).
+
+
+## 19 novembre — Copies complètes Rapport privées
+
+La colonne nullable `pi_biens.report_publications` identifie les versions conservées. Les paquets sources sont des blobs privés distincts, absents de `pi_documents`, des charges utiles partagées et des routes de téléchargement des destinataires. Seule la restitution client est un document ordinaire. Contrôles propriétaire/bien, CSRF/origine, empreintes et transaction couvrent la conservation. Les sauvegardes incluent les copies privées. [Contrat](../avereo-app-rapport/docs/publication-passeport-immo.md).
 # Architecture Passeport Immo
 
-## Import volumineux préparé le 12 novembre
+## Partage nominatif — préproduction privée
+
+[Contrat et frontières](docs/partage-documents.md) : autorisations par bien dans une colonne nullable, projection privée fraîche des éligibilités CONNECT, routes dédiées en lecture seule ; les routes propriétaires restent isolées. Les transferts entre environnements excluent ces accès.
+
+
+## Corbeille et dossiers personnalisés — préproduction privée
+
+`pi_documents.trashed_at` conserve le statut de corbeille, distinct de l’archivage. `pi_biens.document_settings` porte apparence et ordre avec révision optimiste, séparés du modèle autosauvegardé du bien. Les mêmes fonctions existent dans IndexedDB. La purge exige propriété, CSRF, confirmation et passage préalable en corbeille ; elle verrouille le bien, déplace provisoirement le blob dans le stockage privé, supprime la ligne puis efface le blob après commit. Un rollback SQL confirmé restaure le blob ; un commit incertain conserve la copie privée pour contrôle opérateur. Les quatre tables et sauvegardes existantes sont réutilisées. [Contrat, migration et limites](docs/organisation-documents.md). Les deux colonnes sont installées le 13 novembre via l’administration existante, sans droit ALTER ajouté à l’application ; [livraison et qualification sur copies](docs/preproduction-organisation.md).
+
+## Import volumineux livré en préproduction le 12 novembre
 
 Le contrôleur documentaire planifie des lots successifs de 500 Mo/100 fichiers,
 après contrôle des métadonnées de la sélection. Le dépôt local ou serveur enregistre
 chaque lot atomiquement. L’interface conserve les résultats confirmés après erreur ;
 la reprise réutilise les empreintes de contenu. Les fichiers restent entiers,
 avec une limite par fichier de 500 Mo et une enveloppe HTTP/PHP de 512 Mo.
-Aucun nouveau stockage ou schéma. Les valeurs PHP effectives restent à qualifier
-avant livraison. [Flux et recette](docs/import-volumineux.md).
+Aucun nouveau stockage ou schéma. La réception et l’inspection de ZIP entiers de 173 et 500 Mo sont vérifiées par HTTPS sur la cible ; 501 Mo est refusé. Les valeurs ini ne sont pas déduites de leur fichier et aucun réglage PHP global n’est changé. [Flux et recette](docs/import-volumineux.md), [livraison hébergée](docs/preproduction-import-volumineux.md).
 
 ## Conteneurs documentaires compressés
 
@@ -126,10 +142,10 @@ Les paramètres du poste restent dans `.local/review-settings.json`, ignoré par
 Les vues HTML/Markdown sont générées et contrôlées, sans modification manuelle.
 
 ## Limites du mode local et inconnues initiales
-Partage d'URL sans dossier ; stockage lié au navigateur ; session interne de
-démonstration et absence de facturation. L'identité CONNECT protège l'entrée
-hébergée, sans synchroniser les dossiers. Le futur stockage centralisé est TBD. Questions canoniques dans
-le suivi, résultats techniques dans le livrable local ; aucun statut humain inféré.
+Le mode local reste lié au navigateur, avec session de démonstration et absence
+de facturation. L’hébergement privé utilise maintenant le stockage serveur dédié
+et CONNECT ; le partage nominatif est une autorisation distincte par bien.
+Les observations initiales restent historiques ; aucun statut humain n’est inféré.
 
 ## Candidat et contrôles
 Le bloc `developmentWorkflow` complète le suivi actif à quatre phases ; les six phases historiques sont archivées. Le générateur Python

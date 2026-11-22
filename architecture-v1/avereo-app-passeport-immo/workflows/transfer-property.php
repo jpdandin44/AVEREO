@@ -71,6 +71,8 @@ function pi_transfer_export(array $config, array $plan, string $destination): ar
         if (!pi_transfer_query($db,'SELECT owner_id FROM pi_workspaces WHERE owner_id=? FOR UPDATE',[$owner])->fetch()) throw new RuntimeException('Source workspace absent.');
         $bien=pi_transfer_query($db,'SELECT * FROM pi_biens WHERE owner_id=? AND bien_id=? AND deleted_at IS NULL FOR UPDATE',[$owner,$bienId])->fetch();
         if (!$bien || !$bien['client_id']) throw new RuntimeException('Selected property and client required.');
+        if (!empty($bien['report_publications'])) throw new RuntimeException('Private Rapport publications require a qualified complete transfer; no partial export.');
+        unset($bien['report_publications']);
         $client=pi_transfer_query($db,'SELECT * FROM pi_clients WHERE id=? AND owner_id=?',[$bien['client_id'],$owner])->fetch();
         if (!$client) throw new RuntimeException('Source client owner mismatch.');
         $documents=pi_transfer_query($db,'SELECT * FROM pi_documents WHERE owner_id=? AND bien_id=? ORDER BY id',[$owner,$bienId])->fetchAll();
@@ -84,11 +86,14 @@ function pi_transfer_export(array $config, array $plan, string $destination): ar
             if (!copy($config['storage_directory'].'/'.$document['id'].'.blob',$target)) throw new RuntimeException('Document copy failed.');
             chmod($target,0600); pi_transfer_file($target,$document);
         }
+        // CONNECT identities are environment-specific; transferring documents never grants access.
+        unset($bien['document_shares']);
         $manifest=['format'=>'avereo-passeport-property-transfer','version'=>1,'sourceDatabaseId'=>pi_transfer_database_id($db),'plan'=>$plan,'property'=>$bien,'client'=>$client,'documents'=>$documents];
         pi_transfer_json($destination.'/manifest.json',$manifest); $db->commit();
         return ['status'=>'exported','manifestSha256'=>hash_file('sha256',$destination.'/manifest.json'),'properties'=>1,'clients'=>1,
-            'documents'=>count($documents),'activeDocuments'=>count(array_filter($documents,fn($d)=>$d['archived_at']===null)),
-            'archivedDocuments'=>count(array_filter($documents,fn($d)=>$d['archived_at']!==null)),'sourceRowsChanged'=>false];
+            'documents'=>count($documents),'activeDocuments'=>count(array_filter($documents,fn($d)=>$d['archived_at']===null && empty($d['trashed_at']))),
+            'archivedDocuments'=>count(array_filter($documents,fn($d)=>$d['archived_at']!==null && empty($d['trashed_at']))),
+            'trashedDocuments'=>count(array_filter($documents,fn($d)=>!empty($d['trashed_at']))),'sourceRowsChanged'=>false];
     } catch (Throwable $error) { if ($db->inTransaction()) $db->rollBack(); throw $error; }
 }
 
@@ -123,7 +128,8 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
         || ($manifest['plan'] ?? null)!==$plan || !is_array($manifest['documents'] ?? null) || !array_is_list($manifest['documents'])
         || pi_transfer_database_id($db)===$manifest['sourceDatabaseId']) throw new RuntimeException('Transfer selection or database separation mismatch.');
     $bien=$manifest['property']; $client=$manifest['client'];
-    pi_transfer_columns($bien,['owner_id','bien_id','model','client_id','deleted_at']);
+    if(!array_key_exists('document_settings',$bien))$bien['document_settings']=null;
+    pi_transfer_columns($bien,['owner_id','bien_id','model','client_id','deleted_at','document_settings']);
     pi_transfer_columns($client,['id','owner_id','name','created_at']);
     $source=$plan['source']; $owner=$plan['target']['ownerId'];
     if ($bien['owner_id']!==$source['ownerId'] || $bien['bien_id']!==$source['bienId'] || $bien['deleted_at']!==null
@@ -136,7 +142,8 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
     $client['id']=$map('client',$client['id']); $client['owner_id']=$owner;
     $bien['owner_id']=$owner; $bien['client_id']=$client['id']; $documents=[]; $sourceFiles=[]; $hashes=[];
     foreach ($manifest['documents'] as $document) {
-        pi_transfer_columns($document,['id','owner_id','bien_id','client_id','name','title','category','mime','size','sha256','added_at','updated_at','archived_at']);
+        if(!array_key_exists('trashed_at',$document))$document['trashed_at']=null;
+        pi_transfer_columns($document,['id','owner_id','bien_id','client_id','name','title','category','mime','size','sha256','added_at','updated_at','archived_at','trashed_at']);
         if (!preg_match('/^[a-f0-9]{32}$/D',$document['id']) || $document['owner_id']!==$source['ownerId']
             || $document['bien_id']!==$source['bienId'] || $document['client_id']!==$manifest['client']['id']
             || !preg_match('/^[a-f0-9]{64}$/D',$document['sha256']) || !ctype_digit((string)$document['size'])
@@ -146,6 +153,21 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
         $document['owner_id']=$owner; $document['client_id']=$client['id'];
         if (isset($documents[$document['id']])) throw new RuntimeException('Repeated document identifier.');
         $documents[$document['id']]=$document; $sourceFiles[$document['id']]=$sourcePath;
+    }
+    if ($bien['document_settings']!==null) {
+        $settings=json_decode($bien['document_settings'],true,64,JSON_THROW_ON_ERROR);
+        if (!is_array($settings) || !is_array($settings['order'] ?? null)) throw new RuntimeException('Document organisation invalid.');
+        foreach ($settings['order'] as $category=>&$ids) {
+            if(!is_array($ids)||!array_is_list($ids))throw new RuntimeException('Document order invalid.');
+            $ids=array_map(static function($id)use($map,$documents,$category){
+                if(!is_string($id))throw new RuntimeException('Document order identifier invalid.');
+                $mapped=$map('document',$id);
+                if(($documents[$mapped]['category']??null)!==$category)throw new RuntimeException('Document order outside selected property.');
+                return $mapped;
+            },$ids);
+        }
+        unset($ids);$settings['categories']=(object)($settings['categories']??[]);$settings['order']=(object)$settings['order'];
+        $bien['document_settings']=json_encode($settings,JSON_THROW_ON_ERROR);
     }
     $entries=array_values(array_diff(scandir($directory),['.','..'])); sort($entries);
     $files=array_values(array_diff(scandir($directory.'/documents'),['.','..'])); sort($files);
@@ -159,6 +181,9 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
         $existingClient=pi_transfer_query($db,'SELECT * FROM pi_clients WHERE id=?',[$client['id']])->fetch();
         $existingDocuments=pi_transfer_query($db,'SELECT * FROM pi_documents WHERE owner_id=? AND bien_id=? ORDER BY id',[$owner,$source['bienId']])->fetchAll();
         if ($existing) {
+            // A newly added, unused sharing field is not transferred content.
+            if (array_key_exists('document_shares',$existing) && $existing['document_shares']===null) unset($existing['document_shares']);
+            if (array_key_exists('report_publications',$existing) && $existing['report_publications']===null) unset($existing['report_publications']);
             if (!pi_transfer_same($existing,$bien) || !$existingClient || !pi_transfer_same($existingClient,$client)
                 || count($existingDocuments)!==count($documents)) throw new RuntimeException('Existing target differs; no overwrite.');
             foreach ($existingDocuments as $document) {

@@ -20,7 +20,10 @@ function planning_validate(mixed $project): array
     };
     if (!is_array($project) || ($project['schemaVersion'] ?? null) !== 1) $fail();
     $text($project['name'] ?? null, 200, true);
-    $date($project['startDate'] ?? null);
+    $periods = ($project['timelineMode'] ?? 'calendar') === 'periods';
+    if (isset($project['timelineMode']) && !in_array($project['timelineMode'], ['calendar','periods'],true)) $fail();
+    if ($periods && (!empty($project['startDate']) || !empty($project['targetDate']))) $fail();
+    $date($project['startDate'] ?? null, $periods);
     $date($project['targetDate'] ?? null, true);
     if (($project['targetDate'] ?? null) !== null && $project['targetDate'] < $project['startDate']) $fail();
     if (!is_numeric($project['capacityPerWeek'] ?? null) || $project['capacityPerWeek'] <= 0
@@ -37,10 +40,16 @@ function planning_validate(mixed $project): array
         foreach (['duration' => 3650, 'progress' => 100] as $field => $limit) {
             if (!is_numeric($task[$field] ?? null) || $task[$field] < 0 || $task[$field] > $limit) $fail();
         }
-        if (!is_bool($task['isMilestone'] ?? null) || ($task['isMilestone'] && $task['duration'] != 0)
+        if (!is_bool($task['isMilestone'] ?? null) || (!$periods && $task['isMilestone'] && $task['duration'] != 0)
             || !in_array($task['status'] ?? null, ['À faire', 'En cours', 'En attente', 'Bloqué', 'Terminé', 'Validé'], true)
             || !is_array($task['dependencies'] ?? null) || !array_is_list($task['dependencies']) || count($task['dependencies']) > 1000) $fail();
         $date($task['manualStart'] ?? null, true);
+        if ($periods) {
+            if (!is_int($task['periodStart'] ?? null) || !is_int($task['periodDuration'] ?? null)
+                || $task['periodStart'] < 1 || $task['periodStart'] > 120 || $task['periodDuration'] < 0
+                || $task['periodStart'] - 1 + $task['periodDuration'] > 120 || !empty($task['manualStart'])
+                || $task['isMilestone'] !== ($task['periodDuration'] === 0)) $fail();
+        } elseif (isset($task['periodStart']) || isset($task['periodDuration'])) $fail();
         if (array_key_exists('subject', $task)) {
             $text($task['subject'], 80, true);
             if (!preg_match('/\A.{1,80}\z/us', $task['subject'])) $fail();
@@ -72,6 +81,7 @@ function planning_validate(mixed $project): array
             foreach ($task['dependencies'] as $dependency) {
                 if (!is_string($dependency) || !isset($ids[$dependency]) || $dependency === $task['id']
                     || ($project['schedulingMode'] === 'sequential' && $ids[$dependency] >= $position)) $fail();
+                if ($periods && $task['periodStart'] < $project['tasks'][$ids[$dependency]]['periodStart'] + $project['tasks'][$ids[$dependency]]['periodDuration']) $fail();
                 if (!isset($done[$dependency])) $ready = false;
             }
             if ($ready) { $done[$task['id']] = true; $changed = true; }

@@ -5,7 +5,7 @@
   "owner": "jpdandin",
   "version": "git",
   "created": "2026-10-03",
-  "updated": "2026-11-12",
+  "updated": "2026-11-19",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -4096,17 +4096,34 @@
       "id": "passeport-immo-documents-compresses",
       "canonicalTracking": "../data/suivi-documents-compresses.json",
       "documentation": "documents-compresses.md",
-      "scope": "Archives PR144 livrées en préproduction privée ; recette technique réussie, revue humaine en attente, décisions de l’ancien lot conservées.",
+      "scope": "Archives PR144 livrées ; revue PR145 fusionnée. Anciennes décisions conservées ; limites relevées dans le lot distinct import-volumineux.",
       "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/145"
     },
     {
       "id": "passeport-immo-import-volumineux",
       "canonicalTracking": "../data/suivi-import-volumineux.json",
       "documentation": "import-volumineux.md",
-      "scope": "Correctif 500 Mo en développement local ; ne modifie ni PR144 déployée ni ses validations."
+      "scope": "PR146 fusionnée ; candidat gelé à 500 Mo installé et techniquement vérifié en préproduction privée ; recette humaine des archives réelles en attente."
+    },
+    {
+      "id": "passeport-immo-organisation-documents",
+      "canonicalTracking": "../data/suivi-organisation-documents.json",
+      "documentation": "organisation-documents.md",
+      "scope": "Recette corbeille et classement acceptée dans le chat ; PR155 ouverte, préparation de production différée pendant le correctif partage.",
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/153",
+      "hostedDocumentation": "preproduction-organisation.md",
+      "hostedEvidence": "../api/preproduction-organisation-observation.json"
+    },
+    {
+      "id": "passeport-immo-partage-documents",
+      "canonicalTracking": "../data/suivi-partage-documents.json",
+      "documentation": "partage-documents.md",
+      "scope": "Partage nominatif installé en préproduction privée, 210 assertions HTTPS et conservation de 26 documents ; confirmation du nouvel accès et activation du destinataire en attente.",
+      "hostedEvidence": "../api/preproduction-partage-observation.json",
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/157"
     }
   ],
-  "currentStateObservation": "../api/preproduction-archives-observation.json",
+  "currentStateObservation": "../api/preproduction-partage-observation.json",
   "resumptionPlanningHistory": [
     {
       "recordedAt": "2026-11-12T12:17:58.906+00:00",
@@ -4123,6 +4140,23 @@
       "source": "../api/reprise-documents-compresses-observation.json",
       "supersededBy": "../api/preproduction-archives-observation.json",
       "observedAt": "2026-11-12T16:41:09.272201+00:00"
+    },
+    {
+      "source": "../api/preproduction-import-volumineux-observation.json",
+      "supersededBy": "../api/preproduction-organisation-observation.json",
+      "observedAt": "2026-11-13T16:43:51.310473+00:00"
+    },
+    {
+      "source": "../api/preproduction-organisation-observation.json",
+      "supersededBy": "../api/preproduction-partage-observation.json",
+      "observedAt": "2026-11-13T17:58:18.634794+00:00"
     }
-  ]
+  ],
+  "rapportPublication20261119": {
+    "canonicalTracker": "C:\\Users\\examg\\OneDrive\\Documents\\AVEREO_2\\preprod-acces-local\\outillage\\acces-preproduction\\suivi-chantier.json",
+    "canonicalPointer": "rapportV12CadrageProfils20261112.publicationPasseport20261119",
+    "observation": "../api/report-publication-observation.json",
+    "guide": "../../avereo-app-rapport/docs/publication-passeport-immo.md",
+    "meaning": "Nouveau lot indépendant ; décisions et phases historiques conservées. Les statuts courants sont lus dans le suivi Rapport canonique, sans redéclarer une validation humaine."
+  }
 }

@@ -5,13 +5,81 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-13
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## 21 novembre — Volume sans perte demandé
+
+Conserver intégralement les contenus, originaux et versions préparées, légendes, annotations et repères. La proposition locale est un JSON de 100 000 000 octets avant/après reconstitution ; le paquet reste limité à 524 288 000 octets. Refus explicite et récupération complète, sans réduction destructive. [Critères source, preuves et réserves](docs/volume-sans-perte.md). Taille et qualification du dossier réel de Philippe : TBD.
+
+
+## 19 novembre — Dossiers finalisés vers Passeport Immo
+
+[Cadrage du parcours](docs/publication-passeport-immo.md) demandé : stockage d’une restitution finalisée, partage nominatif et conservation du dossier source. Contenu confirmé : rapport final et copie complète privée, réouverture métier dans Rapport ; poursuite en préproduction autorisée. Le partage actuel des documents actifs futurs du bien impose de distinguer la restitution partageable d’une éventuelle copie complète privée. Candidat de publication implémenté et contrôles locaux en cours ; aucune livraison de ce lot déclarée à ce stade.
+
+## Nom de prestation — 17 novembre
+
+Appliquer la décision Analyse globale au seul parcours de mission correspondant à la clé habitologue, dans Dossier et les deux restitutions. Le complément demandé avant revue applique Conseils de l’expert aux intitulés des conseils, y compris au contexte extérieur et aux deux Word. Préserver métier CONNECT, règles des autres parcours, textes des conseils, valeurs historiques, contenus, médias et permissions. Les six critères LIB-01 à LIB-06 restent dans leur source de cadrage liée au [contrat](docs/profils-professionnels.md#libellé-de-prestation--17-novembre), qui documente ce complément direct sans copie concurrente.
+
+## Plans et vues multiples — 17 novembre
+
+Importer plusieurs images, choisir leur type, récupérer cadastre/satellite/satellite + parcelles et rattacher un constat à plusieurs vues. Conserver les repères, numéros Terrain/bâti, anciens JSON, propriétaires et filtrage client ; erreurs explicites et limites existantes. [Exigences et qualification](docs/reperage-observations.md). PDF multipage séparé.
+
+## 17 novembre — Actions autorisées par le profil administré
+
+Exiger les droits de consultation/création/modification/suppression/export,
+en plus de la propriété et des habilitations existantes. Le métier déclaré ne
+donne aucun droit. Les sections doivent rester consultables en lecture seule ;
+les options de restitution permises ne donnent pas de droit de sauvegarde.
+[Critères et limites des exports navigateur](../avereo-app-connect/docs/profils-et-droits.md).
+## Profils et CONNECT — périmètre confirmé le 16 novembre
+
+CONNECT est explicitement inclus dans ce lot. Un défaut personnel déclaré, sans rôle/droit nouveau, préremplit uniquement les nouvelles missions après correspondance exacte du compte. Chaque dossier reste modifiable et indépendant du défaut du compte. Architecte et Maître d’œuvre adaptent les étapes 4–6, les deux Word et gardent Terrain/contexte/photos/plans/conseils/modalités ; ancien profil absent/non reconnu conservant le parcours historique. Bascule réversible, JSON et sauvegarde/réouverture conservés, choix manuel en cas d’indisponibilité. [Matrice et critères](docs/profils-professionnels.md).
+
+## 16 novembre — Planning Projet des interventions
+
+Sélection volontaire distincte du client, date/capacité/charges explicites, horizon libre non interprété ; aperçu informatif cohérent avec le moteur Projet. Sauvegarde/réouverture des estimations, fichier borné sans troncature, références valides, nouveau projet indépendant et conservation de l’existant. Aucune réalisation/validation déduite, API/droits nouveaux ou synchronisation automatique. [Contrat et critères](docs/interventions-projet.md). Le parcours par fichier de cette première tranche est explicitement confirmé par le responsable le 16 novembre ; revue humaine du candidat à effectuer.
+
+## Allègement des écrans — organisation acceptée le 16 novembre
+
+Dossier, Observations et Export doivent proposer des résumés et des ouvertures individuelles/globales, conserver les choix entre onglets et ouvrir les nouveaux éléments. Aucun repli ne modifie données, champs techniques, numéros, repères, photos, dictée, signature, sauvegardes ou restitutions. Alertes et statut client réel restent accessibles ; clavier et écran étroit pris en compte. [Contrat et critères](docs/organisation-ecrans.md). La revue du candidat reste distincte de l’accord de cadrage.
+
+
+## Interventions après Recommandations — 16 novembre
+
+Une seule liste decision.actions pour Habitologue, liée explicitement aux constats et attentes ; Correctif confirmé, Préventif et Évolutif conservés. Modalités libres, priorité et horizon sans dates inventées. Sélection explicite pour la synthèse ; exclusion entière dès qu’un constat lié est absent, ambigu ou non retenu. Préalables/justification dans l’expert ; aucun rétablissement des projections 4–6. Brouillon, JSON, serveur et deux restitutions cohérents. [Critères et limites](docs/interventions-proposees.md). Raccordement Projet/Gantt dans un sous-lot séparé.
+
+## Complément Attentes — 16 novembre
+
+Reprendre explicitement les deux textes de l’écoute sans extraction ni attente inventée ; conserver verbatim/provenance, corrections et identifiants ; signaler les sources modifiées sans écraser les liens. Ajouter des notes dictables, soumises à l’accord existant, conservées dans le dossier et l’expert, exclues du client. Anciens dossiers et données adjacentes préservés. [Critères et preuves](docs/attentes-ecoute-client.md). Audio enregistré, Projet, autres profils et activation privée gardent leurs lots distincts.
+
+
+## Terrain et bâti — décision confirmée du 14 novembre
+
+Fil conducteur horizontal : 0 Le terrain de la propriété dans un cadre vert, Bâti contenant les quatre phases dans un cadre rouge. Saisie Terrain dans Observations avec les mêmes fonctions que les constats existants ; repères T1/T2… sans consommer de numéro Eau/Air/Terre/Feu. Réorganisation uniquement dans son groupe ; identifiants et liens stables. Retirer la nouvelle rubrique de Site, préserver et rendre accessibles les anciennes notes sans conversion automatique. Cadrer un fond cadastral puis conserver une image fixe avec source/date et repères ; un autre cadrage ajoute une vue. Import manuel et saisie sans carte disponibles. Sauvegarde complète et reprise serveur, sélection client commune de trois constats au plus, Word cohérents. [Contrat détaillé et limites](docs/environnement-terrain.md).
+
+## Photos préparées — reprise du 13 novembre
+
+Proposer recadrage, rectangle, flèche, commentaire, annuler/rétablir et choix explicite de la copie utilisée dans le rapport, sans réécrire `photo.src` ou le lien privé. Conserver les opérations et le choix après reprise du brouillon et export/import JSON. Les restitutions expert/client suivent le même choix tout en respectant le filtrage client. La copie peut retirer des métadonnées EXIF ; les octets d’origine restent conservés. Aucun gain de poids total du dossier n’est garanti : l’original et la copie restent dans le JSON, limité à 50 Mio.
+
+Avant activation du stockage privé, les fichiers sans ligne SQL et les temporaires abandonnés doivent consommer le quota. Les réservations SQL restent comptées si le fichier manque ; aucun effacement automatique. [Critères, bornes et vérifications](docs/photos-rapport-edition.md). La recette MariaDB et les paramètres hébergés restent à qualifier.
+
+## Dossier complet — demande du 13 novembre
+
+Le responsable doit pouvoir charger et récupérer le contenu complet présent dans le dossier : écoute, textes, explications, conseils, photos, plans, signature et champs inconnus compatibles. Une ligne de résumé ou un horodatage seul ne constitue pas un dossier. Une copie de structure fictive doit être identifiée avant chargement ; elle ne peut reconstituer ce qui a été retiré.
+
+Le téléchargement serveur conserve les octets et les droits existants. Avant remplacement d’un brouillon, présenter les compteurs et permettre son export ou l’annulation. Un import est indépendant du source ; une confirmation de sauvegarde en ligne doit correspondre au contenu relu, sans effacer les saisies intervenues pendant l’envoi. [Critères et réserves](docs/partage-tests-et-stockage.md).
+
+## Photos — état vérifié le 13 novembre
+
+La première tranche locale conserve et rouvre les octets originaux JPEG/PNG/WebP sous le propriétaire courant du dossier, avec empreinte contrôlée, refus des autres propriétaires et sauvegarde/restauration locale conjointe. Le lien facultatif ne doit altérer aucun champ existant ni `photo.src`. Une opération tardive ne doit pas rattacher un résultat à une photo ou un dossier remplacé ; l’enregistrement en ligne attend la fin d’un envoi.
+
+L’allègement du JSON, la version recadrée/annotée, le choix avant export et la qualification hébergée restent des exigences à réaliser. Les limites d’hébergement, la rétention et les transferts de propriété sont encore à décider. [État par critère](docs/photos-originales-et-annotations.md).
 
 ## Reprise des attentes de l'écoute client — demande de clôture
 
@@ -27,6 +95,10 @@ Choix explicite et réversible du profil ; Observations avec Constat, Explicatio
 
 
 Le propriétaire doit pouvoir partager une copie indépendante du seul rapport ouvert avec les choix métier nécessaires aux tests. [Périmètre des champs et accès](docs/partage-tests-et-stockage.md).
+
+## Photos originales et versions annotées — besoin du 12 novembre
+
+Conserver les originaux dans un espace privé du dossier en ligne, accessible avec CONNECT, puis proposer recadrage, commentaires et formes sur une version dérivée du rapport. Aucune optimisation ne supprime le seul exemplaire d'un original : la compression de nouvelles photos (2400 px, JPEG 0,88, réglage proposé) reste un [module isolé non activé](docs/compression-photos.md) tant que les originaux ne sont pas conservés et qualifiés. Les 500 Mo concernent le chargement dans Passeport Immo, pas un quota de Rapport (JSON par défaut : 50 Mio). [Critères, phases et décisions à prendre](docs/photos-originales-et-annotations.md).
 
 ## Essai temporaire — besoin du 2 novembre
 
@@ -253,3 +325,8 @@ L'enrichissement de `Observation/Analyse`, puis les phases `Explication` et
 ## Consultation des rapports en ligne
 
 Afficher les cinq dernières sauvegardes accessibles et permettre de porter la limite à cinquante. La recherche s’applique avant cette limite. La confirmation doit être visible au-dessus des résultats avant de remplacer un brouillon. [Contrat](api/README.md#recherche-des-sauvegardes-en-ligne).
+
+
+## Planning par périodes demandé le 19 novembre
+
+Le parcours Rapport vers Projet doit accepter des périodes relatives explicitement renseignées sans inventer de dates, préserver les projets datés et vérifier sauvegarde/réouverture serveur. Périmètre et limites : [Planning Rapport vers Projet](docs/interventions-projet.md).

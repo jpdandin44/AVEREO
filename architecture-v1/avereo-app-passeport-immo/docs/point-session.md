@@ -5,24 +5,34 @@ title: Point de reprise de session
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [passeport-immo, local, cockpit]
 ---
 
 # Point de reprise de session
 
-## Travail actif — imports volumineux
+## Lot actif — partage nominatif des documents
 
-Nouveau [correctif à 500 Mo](import-volumineux.md), branche
-`feat/passeport-immo-import-volumineux`, basée sur la branche de PR145.
-Le [suivi dédié](../data/suivi-import-volumineux.json) porte le candidat local,
-la CI et la revue. La préproduction reste sur PR144 avec ses limites 25/100 Mo ;
-aucun accord antérieur n’est étendu à cette nouvelle version. Prochaine action :
-qualifier le paquet puis sa revue locale, avant qualification PHP hébergée et
-accords applicables. Les fichiers de plus de 500 Mo nécessiteront un autre protocole.
+Copie `C:/Users/examg/Documents local/passeport-immo-archives`, branche `fix/passeport-immo-partage-documents`, issue de la tête PR155 encore ouverte. Le [suivi du partage](../data/suivi-partage-documents.json) et les [preuves](../api/preproduction-partage-observation.json) font foi. Correctif installé dans la seule préproduction privée : dialogue interne, lecture seule révocable par bien, projection CONNECT privée fraîche, archives/corbeille/autres biens exclus. 140 assertions HTTP/API en CI, 13 assertions sur copie temporaire hébergée, 210 assertions HTTPS ; 26 documents du relevé frais inchangés. Aucune production ni donnée métier modifiée pendant l’installation.
 
-## État hébergé — PR144 livrée en préproduction
+Prochaine action : confirmation nominative du nouvel accès dans le dialogue préparé, limitée au seul bien demandé et à ses 11 documents actifs actuels/futurs. Le destinataire confirmé doit encore terminer son activation CONNECT ; aucune activation fictive, aucun e-mail automatique et aucune connexion positive de ce destinataire ne sont revendiqués. Conserver l’autre bien privé. Vérifier ensuite le droit créé et sa sauvegarde, puis la recette réelle du destinataire. La production corbeille/classement est différée.
+
+[PR157 du correctif](https://github.com/jpdandin44/AVEREO/pull/157), en brouillon, empilée sur PR155 ouverte ; fusion sans conflit au contrôle, quatre attestations humaines décochées.
+
+## Lot précédent — corbeille et organisation des documents
+
+Branche `chore/passeport-immo-preproduction-corbeille`, copie `C:/Users/examg/Documents local/passeport-immo-archives`. [Suivi canonique](../data/suivi-organisation-documents.json), [livraison et recette hébergée](preproduction-organisation.md). PR153 fusionnée ; le paquet CI gelé est installé dans la seule préproduction privée. Deux colonnes additives, six écritures de code, 28 documents conservés, 247 assertions HTTPS et écran SCI vérifiés. Aucune extension des droits, production ou tâche planifiée modifiée.
+
+Le responsable déclare cette recette en préproduction validée dans le chat ; la [PR155](https://github.com/jpdandin44/AVEREO/pull/155) reste ouverte et ses cases humaines distinctes. Le partage urgent devient prioritaire avant préparation de production. Les 28 documents sont le relevé historique de livraison ; le relevé frais de partage en compte 26, tous conservés. Ne pas rejouer la migration SCI, l’activation ou les cron. Retour à l’ancien code interdit dès utilisation des nouveaux champs.
+
+## Historique — imports à 500 Mo livrés en préproduction
+
+Les PR145 et PR146 sont fusionnées et la [livraison privée à 500 Mo](preproduction-import-volumineux.md) est vérifiée après accord explicite du responsable. Même paquet CI, six écritures, récupération fraîche et retour arrière sur copie ; ZIP entiers de 173 et 500 Mo reçus et inspectés, 501 Mo refusé. Les quatre tables et treize documents sont inchangés ; le navigateur retrouve SCI et la limite 500 Mo. Le [suivi dédié](../data/suivi-import-volumineux.json) porte la recette humaine à effectuer sur les archives d’origine.
+
+Copie : `C:/Users/examg/Documents local/passeport-immo-archives`, branche `chore/passeport-immo-preproduction-500`. Prochaine action : revoir le dossier depuis CONNECT préproduction et la [PR147 opératoire](https://github.com/jpdandin44/AVEREO/pull/147) ; ne pas livrer en production sans accord distinct. Les fichiers individuels supérieurs à 500 Mo nécessiteront un autre protocole. Aucune migration, activation ou tâche planifiée à rejouer.
+
+## Historique hébergé — PR144, avant relèvement à 500 Mo
 
 La [livraison privée](preproduction-archives.md) est effectuée le 12 novembre après
 accord explicite : paquet CI conservé, récupération fraîche, retour arrière sur copie,

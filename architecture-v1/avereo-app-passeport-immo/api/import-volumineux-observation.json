@@ -56,8 +56,11 @@
     "syntheticDataOnly": true
   },
   "hostedDeployment": {
-    "preproduction": false,
-    "production": false
+    "preproduction": true,
+    "production": false,
+    "observedAt": "2026-11-12T18:29:23.518799+00:00",
+    "evidence": "preproduction-import-volumineux-observation.json",
+    "historicalLocalQualificationPreserved": true
   },
   "realClientDataChanged": false,
   "humanCriteriaValidated": false,

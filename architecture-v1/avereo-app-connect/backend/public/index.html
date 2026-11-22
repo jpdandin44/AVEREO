@@ -81,6 +81,11 @@
       background: #f8fafc;
     }
     .profile h2 { margin-bottom: .75rem; }
+    #professional-profile-form { margin-top:1rem; padding-top:1rem; border-top:1px solid #dce4ef; }
+    #professional-profile-form label { display:block; font-weight:700; margin-bottom:.5rem; }
+    #professional-profile-form select { max-width:100%; padding:.7rem; font:inherit; border:1px solid #b9c5d5; border-radius:9px; }
+    #professional-profile-form button { margin:.5rem .5rem 0 0; }
+    #professional-profile-form [type=submit] { background:#155eef; color:white; }
     .profile p { margin: .35rem 0; }
     .admin-panel { margin-top: 1.5rem; border-top: 1px solid #dce4ef; padding-top: 1.5rem; }
     .admin-heading {
@@ -229,6 +234,17 @@
       <p id="profile-status"></p>
       <p id="profile-organization"></p>
       <p id="profile-applications"></p>
+      <form id="professional-profile-form">
+        <label for="professional-profile">Profil professionnel par défaut</label>
+        <select id="professional-profile" disabled>
+          <option value="">À choisir dans chaque dossier</option><option value="habitologue">Analyse globale</option>
+          <option value="architecte">Architecte</option><option value="maitre_oeuvre">Maître d’œuvre</option>
+        </select>
+        <p>Profil déclaré utilisé pour proposer le parcours d’un nouveau dossier Rapport. Ce choix ne modifie ni vos droits d’accès ni vos dossiers existants.</p>
+        <button type="submit" disabled>Enregistrer mon profil professionnel</button>
+        <button type="button" disabled>Annuler la modification du profil</button>
+        <p role="status" aria-live="polite"></p>
+      </form>
       <label id="admin-organization-choice" hidden>Organisation à administrer
         <select id="admin-organization-select"></select>
       </label>
@@ -406,10 +422,13 @@
         (organization) => organization.role === 'owner' || organization.role === 'admin' || organization.canManageApplicationAccess === true
       );
       profileName.textContent = profilePayload.user.displayName || profilePayload.user.email || 'Compte AVEREO';
-      profileStatus.textContent = 'Compte actif · Profil Client';
+      profileStatus.textContent = 'Compte CONNECT actif';
       profileOrganization.textContent = `Organisation : ${organizations.map((item) => item.name).join(', ') || 'Non rattachée'}`;
       profileApplications.textContent = `Applications autorisées : ${applications.map((item) => item.name).join(', ') || 'Aucune'}`;
       profileSection.hidden = false;
+      import('./assets/professional-profile.js').then(({ setupProfessionalProfile }) =>
+        setupProfessionalProfile({ form: document.getElementById('professional-profile-form'), accountId: profilePayload.user.id, getJson, session })
+      ).catch(() => { document.querySelector('#professional-profile-form [role=status]').textContent = 'Profil professionnel indisponible. Réessayez en rouvrant Mon compte.'; });
       const select = document.getElementById('admin-organization-select');
       select.replaceChildren(...administeredOrganizations.map(org => new Option(org.name, String(org.id))));
       document.getElementById('admin-organization-choice').hidden = administeredOrganizations.length < 2;
@@ -549,11 +568,12 @@
       return card;
     }
 
-    function adminUserCard(user) {
+    function adminUserCard(user, canTransferReports = false) {
       const card = document.createElement('article');
       card.className = 'admin-card';
 
       card.dataset.accountId = user.id;
+      card.dataset.accountRole = user.role;
       card.tabIndex = -1;
 
       const information = document.createElement('div');
@@ -597,6 +617,13 @@
         });
         actions.append(button);
       };
+      const transferUrl = '/api/v1/admin/organizations/' + adminOrganizationId + '/users/' + user.id + '/report-transfers';
+      if (canTransferReports && typeof user.pendingDeletionKeepsReports !== 'boolean') {
+        lifecycleButton('Transférer un rapport', async () => {
+          const {data} = await getJson(transferUrl);
+          openReportTransfer(user, transferUrl, data);
+        });
+      }
       if (user.canArchive || user.canRestore) {
         const archive = user.canArchive;
         lifecycleButton(archive ? 'Archiver le compte' : 'Restaurer le compte', async () => {
@@ -609,7 +636,16 @@
       if (user.canDelete) {
         const resuming = typeof user.pendingDeletionKeepsReports === 'boolean';
         lifecycleButton(resuming ? 'Reprendre la suppression' : 'Supprimer définitivement', async () => {
-          const confirmation = await confirmAccountDeletion(user);
+          let remaining = '';
+          if (canTransferReports && !resuming) {
+            try {
+              const {data} = await getJson(transferUrl);
+              remaining = data.remaining + ' dossier(s) rattaché(s) à cette organisation restent sur ce compte.';
+            } catch {
+              remaining = 'Le nombre de dossiers rattachés reste à vérifier.';
+            }
+          }
+          const confirmation = await confirmAccountDeletion(user, remaining);
           if (confirmation === null) return;
           const result = await mutation(lifecycleUrl, 'DELETE', confirmation);
           const dossiers = result.data?.reportsPreserved ? 'Dossiers Rapport conservés.' : 'Dossiers Rapport liés supprimés.';
@@ -741,7 +777,14 @@
       const applicationAccess = document.createElement('div');
       applicationAccess.className = 'admin-app-access';
       const applicationTitle = document.createElement('strong');
-      applicationTitle.textContent = 'Applications autorisées';
+      applicationTitle.textContent = user.accessProfile ? 'Applications attribuées, limitées par le profil' : 'Applications autorisées';
+      if (user.accessProfile) {
+        const profileLimit = document.createElement('p');
+        profileLimit.textContent = user.accessProfile.active
+          ? `Profil administré : ${user.accessProfile.name}. Applications permises par ce profil : ${user.accessProfile.applications.join(', ') || 'aucune'}. Les dates et les cases du compte restent applicables.`
+          : `Profil administré désactivé : ${user.accessProfile.name}. Ses accès sont retirés, ses dossiers sont conservés.`;
+        information.append(profileLimit);
+      }
       const applicationList = document.createElement('div');
       applicationList.className = 'app-access-list';
       const applications = user.applications || [];
@@ -825,7 +868,77 @@
         dialog.append(text,cancel,accept);document.body.append(dialog);dialog.showModal();
       });
     }
-    function confirmAccountDeletion(user) {
+    function openReportTransfer(user, url, data) {
+      const dialog = document.createElement('dialog');
+      dialog.setAttribute('aria-label', 'Transférer un rapport');
+      const form = document.createElement('form');
+      form.className = 'dialog-content';
+      const heading = document.createElement('h3');
+      heading.textContent = 'Transférer un rapport';
+      const summary = document.createElement('p');
+      summary.textContent = user.displayName + ' · ' + data.remaining + ' dossier(s) rattaché(s) à cette organisation.';
+      form.append(heading, summary);
+      const status = document.createElement('p');
+      status.setAttribute('role', 'status');
+      const label = (title, field) => {
+        const element = document.createElement('label');
+        element.append(document.createTextNode(title), field);
+        form.append(element);
+      };
+      const report = document.createElement('select');
+      const recipient = document.createElement('select');
+      const reason = document.createElement('input');
+      reason.required = true;
+      reason.maxLength = 190;
+      reason.value = 'Continuité avant fermeture du compte';
+      const available = data.remaining > 0 && data.recipients.length > 0;
+      if (available) {
+        for (const item of data.reports) report.add(new Option([item.reference, item.title].filter(Boolean).join(' · ') || item.id, item.id));
+        recipient.add(new Option('Choisir le nouveau titulaire', ''));
+        recipient.required = true;
+        for (const member of data.recipients) recipient.add(new Option([member.name,member.email].filter(Boolean).join(' · '), member.id));
+        label('Dossier à transférer', report);
+        label('Nouveau titulaire', recipient);
+        label('Motif', reason);
+      } else if (data.remaining) {
+        status.textContent = 'Aucun autre membre actif ne dispose de Rapport dans cette organisation.';
+      }
+      const cancel = document.createElement('button');
+      cancel.type = 'button';
+      cancel.textContent = 'Fermer';
+      cancel.addEventListener('click', () => dialog.close());
+      dialog.addEventListener('close', () => dialog.remove());
+      const submit = document.createElement('button');
+      submit.type = 'submit';
+      submit.textContent = 'Transférer le dossier';
+      form.append(status, cancel);
+      if (available) form.append(submit);
+      let operationId;
+      form.addEventListener('input', () => { operationId = null; });
+      form.addEventListener('submit', async event => {
+        event.preventDefault();
+        if (submit.disabled || !available) return;
+        submit.disabled = true;
+        const payload = {reportId:report.value, recipientId:Number(recipient.value), reason:reason.value.trim(),
+          operationId:operationId ||= crypto.randomUUID().replaceAll('-', '')};
+        const selection = report.selectedOptions[0].text + ' → ' + recipient.selectedOptions[0].text;
+        try {
+          if (!await confirmAccountAction('Confirmer le changement de titulaire pour ' + selection + ' ?')) return;
+          const result = await mutation(url, 'POST', payload);
+          dialog.close();
+          await loadAdministration(result.data.alreadyProcessed ? 'Ce transfert a déjà été enregistré.' : 'Dossier transféré. ' + selection);
+        } catch (error) {
+          status.textContent = error.userMessage || 'Résultat à vérifier. Vous pouvez relancer la même confirmation.';
+        } finally {
+          submit.disabled = false;
+        }
+      });
+      dialog.append(form);
+      document.body.append(dialog);
+      dialog.showModal();
+    }
+
+    function confirmAccountDeletion(user, remaining = '') {
       return new Promise((resolve) => {
         const dialog = document.createElement('dialog');
         dialog.setAttribute('aria-label', 'Supprimer définitivement le compte');
@@ -833,7 +946,7 @@
         form.className = 'dialog-content';
         const intro = document.createElement('p');
         intro.textContent = 'Supprimer définitivement le compte CONNECT ' + user.email
-          + '. Une identité AVEREO préexistante ou dotée de rôles propres est conservée. Cette action est irréversible.';
+          + '. Une identité AVEREO préexistante ou dotée de rôles propres est conservée. Cette action est irréversible. ' + remaining;
         const keepReports = document.createElement('input');
         keepReports.type = 'checkbox';
         const fixedChoice = typeof user.pendingDeletionKeepsReports === 'boolean';
@@ -1026,7 +1139,7 @@
       adminAppsCount.textContent = String(applications.length);
       adminStatus.textContent = message || (
         applications.length > 0
-          ? `Catalogue de l’organisation : ${applications.map((application) => application.name).join(', ')}. Les cases ci-dessous définissent les accès effectifs par compte.`
+          ? `Catalogue de l’organisation : ${applications.map((application) => application.name).join(', ')}. Les accès dépendent des cases du compte, de sa période et de son éventuel profil administré.`
           : 'Aucune application active n’est disponible pour cette organisation.'
       );
 
@@ -1043,7 +1156,7 @@
       if (users.length === 0) {
         adminUsersList.append(emptyAdminList('Aucun compte n’est rattaché à cette organisation.'));
       } else {
-        for (const user of users) adminUsersList.append(adminUserCard(user));
+        for (const user of users) adminUsersList.append(adminUserCard(user, snapshot.reportTransferAvailable));
       }
     }
 
@@ -1055,6 +1168,11 @@
       adminStatus.textContent = 'Chargement de l’administration…';
       const payload = await getJson(`/api/v1/admin/organizations/${adminOrganizationId}/accounts`);
       renderAdministration(payload.data, message);
+      try {
+        const { mountProfileAdministration } = await import('./assets/profiles-administration.js');
+        await mountProfileAdministration({ panel: adminPanel, usersList: adminUsersList, organizationId: adminOrganizationId,
+          getJson, mutation, confirm: confirmAccountAction, refresh: loadAdministration });
+      } catch { /* Existing account administration remains usable if the optional module is unavailable. */ }
       if (accountId !== null) {
         adminUsersList.querySelector(`[data-account-id="${accountId}"]`)?.focus();
       }

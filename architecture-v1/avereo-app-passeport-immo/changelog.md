@@ -5,12 +5,35 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
+## 2026-11-21 — Préparation locale des volumes Rapport
+
+Complément PR178 : import par navigateur du paquet avec Word client réel, copie privée retrouvée dans une session neuve et réimportée dans Rapport, source et propriétaires conservés. Word finalisé exactement égal au paquet ; sauvegarde/restauration du paquet réel réussie. Rendu PDF indépendant relu, réserve Microsoft Word explicite. Aucun déploiement ni changement applicatif supplémentaire. [Qualification](../avereo-app-rapport/docs/volume-sans-perte.md#reprise-du-21-novembre-et-parcours-réel-dans-le-navigateur-local).
+
+JSON privé à 100 Mo, contrôle préalable de mémoire et de taille réouverte, libellés Mo/Mio cohérents. Les plafonds documentaires restent identiques en octets. Tests PHP/HTTP sur le gros paquet, nouvelle session, sauvegarde/restauration, partage et révocation réussis. [Annexe de parité et limites](docs/source-audit-volumes.md). Aucun déploiement.
+
+
+## 2026-11-19 — Publications Rapport en préproduction
+
+Import propriétaire confirmé, copie complète privée et restitution client Word attachée au bien. Versions idempotentes vérifiées, téléchargement privé avec empreinte et sauvegarde des paquets. Livraison et recette native fictive réussies après sauvegarde/restauration ; copie récupérée dans une nouvelle session et réouverte dans Rapport comme dossier indépendant. 26 documents historiques conservés, droits ALTER temporaires et accès fictifs rétablis. Revue humaine PR173 attendue ; production inchangée.
 # Changelog Passeport Immo
+
+## 2026-11-13 — Partage nominatif livré en préproduction privée
+
+Diagnostic confirmé : le partage historique envoyait seulement l’URL du site. Parcours nominatif et routes de consultation installés, huit tests d’interface ajoutés, 140 assertions HTTP/API en CI et 210 assertions HTTPS sur le site ; 26 documents préservés. Projection CONNECT privée renouvelée chaque minute ; schéma de sauvegarde préproduction réaligné. Confirmation du nouvel accès et activation du destinataire encore en attente, aucun partage réel ouvert à ce stade. [Périmètre et recette](docs/partage-documents.md).
+
+
+## 2026-11-13 — Corbeille et classement livrés en préproduction
+
+Après fusion PR153 et accord explicite, même paquet CI installé : six écritures, deux colonnes additives via administration existante, aucune extension des droits SQL. Sauvegarde et restauration temporaire avant/après, 28 documents et leurs téléchargements exacts conservés, 247 assertions HTTPS, dossiers/commandes de l’écran SCI vérifiés. Trente-deux tests Python réussissent. [Livraison et recette humaine](docs/preproduction-organisation.md) ; aucune production modifiée.
+
+## 2026-11-12 — Imports à 500 Mo livrés en préproduction
+
+Après fusion des PR145/146 et demande explicite, installation du même paquet CI : six écritures, dix-huit chemins vérifiés, récupération de quatre tables et treize documents, retour arrière testé sur copie. Réception HTTPS réelle de 173 et 500 Mo, refus de 501 Mo, 106 contrôles de préservation et écran SCI à 500 Mo vérifiés. [Reçu et recette humaine](docs/preproduction-import-volumineux.md). Aucun document fictif ajouté aux biens, aucune production modifiée.
 
 ## 2026-11-12 — Imports volumineux en préparation locale
 

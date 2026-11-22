@@ -5,12 +5,50 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 20 novembre — Couverture du compte GitHub
+
+Recenser les applications, sites et développements du propriétaire au-delà du
+catalogue manuel : dépôts publics et privés accessibles, branche par défaut
+réelle, branches présentes, toutes les PR ouvertes, fermées et fusionnées.
+Un nouveau dépôt ou composant ne doit pas nécessiter une inscription manuelle
+pour apparaître. Distinguer les composants sur une autre branche, les anciens
+chemins non retrouvés et l'absence de suivi métier. Une détection ne prouve aucune
+installation ou validation. Une collecte partielle ne remplace pas la dernière
+observation valide. Les limites d'accès et de capacité sont visibles et décrites
+dans le [contrat](api/inventaire-github.md). Les travaux non poussés du PC restent
+hors de GitHub et ne sont pas inventés par le collecteur.
+
+## 19 novembre — Pilotage lisible et preuve explicite
+
+Présenter une synthèse par application, des filtres et un détail dépliable.
+Distinguer critères humains, liens manquants, pièces consultables, externes,
+non publiées et absentes. Conserver quatre phases et inconnues ; ne pas produire
+de validation ou progression depuis la simple présence d'un fichier.
+Conserver le seul propriétaire/global et la lecture seule en préproduction.
+[Guide](docs/cockpit-qualite-synthese.md).
+
+## 19 novembre — Actualisation GitHub, sans relais PC
+
+Sur autorisation du responsable, installer uniquement en préproduction la collecte GitHub permanente, PC éteint compris. Aucun suivi privé du poste n'est automatiquement transmis : afficher sa réception initiale sans prétendre sa synchronisation. Distinguer contrôle GitHub, publication, réception des sources et relecture d'écran ; alerter sur panne, ancienneté, séquence incohérente et expiration du jeton. Sauvegarder avant remplacement, éprouver le retour sur copie, conserver historiques, critères et accords humains. Maintenir le seul propriétaire exact/global et la consultation web seule. Le [contrat opérationnel](docs/actualisation-automatique-privee.md) ne vaut pas reçu d'installation.
+
+## 16 novembre — Avancement sans saisie manuelle de phases
+
+Complément du 18 novembre : lire le workflow propre d'un conteneur actif ou figé sans hériter des accords parent. Mapper les phases sans id seulement sur déclaration explicite du registre, conserver critères/pièces et tous les historiques ; capacité de 100 vues sans changer les autres quotas. La publication ponctuelle ciblée ne doit modifier ni assets, ni comptes, ni fichiers clients. [Portée](docs/suivis-courants-et-historique.md).
+
+Afficher le réalisé et le reste à faire sur quatre phases, depuis les suivis/preuves et observations GitHub, sans pourcentage inventé. Séparer les prévisions explicites, dates de preuves, inconnues, progression technique et accords humains. Garder le module consultatif et privé au seul propriétaire global. Reprendre automatiquement les nouvelles publications ; prévoir une collecte/publication en ligne autonome, dont l'installation et le fonctionnement poste éteint restent à qualifier. [Règles, critères et limites](docs/gantt-developpements.md), [suivi](data/suivi-gantt-developpements.json).
+
+Préparation du publicateur : aucune donnée réelle de suivi dans le dépôt public/CI ; aucun canal de déploiement de code. Exiger identité exacte/global pour la lecture, service séparé et droits minimaux, admission de données seule, signature, anti-rejeu, conservation de l'historique et reprise idempotente. Ne pas déclarer les prérequis hébergés satisfaits à partir des fixtures. [Qualification](docs/publicateur-prive.md).
+
+## 12 novembre — PQ-01, inventaire privé
+
+Afficher les volumes et listes justificatives du patrimoine avec source, date et portée ; dédupliquer les objets logiques et séparer fichiers de tests/cas exécutés, emplacements de sauvegarde/restauration et lecture/qualification. Métadonnées bornées, pas de contenu client ou secret, ni suivi de lien externe. Consultation seule et même contrôle serveur du propriétaire exact/global. Les anciennes projections sans patrimoine restent lisibles. La collecte n'est ni un rafraîchissement Git ni une publication automatique. [Contrat](api/patrimoine.md) et [suivi du premier lot](data/suivi-patrimoine-pq01.json).
 
 ## 12 novembre — Session et reprise de navigation
 
@@ -295,3 +333,8 @@ les échanges de fichiers et autres cas restant ouverts y sont explicités.
   fichier modifié même si le JSON est inchangé.
 - Ignorer une ancienne réponse de lecture qui termine après le début d'une
   écriture ; garder les contrôles de concurrence existants côté service.
+
+
+## Planning par périodes demandé le 19 novembre
+
+Le parcours Rapport vers Projet doit accepter des périodes relatives explicitement renseignées sans inventer de dates, préserver les projets datés et vérifier sauvegarde/réouverture serveur. Périmètre et limites : [Planning par périodes](docs/planning-periodes.md).

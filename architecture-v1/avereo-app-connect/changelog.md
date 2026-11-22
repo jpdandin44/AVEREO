@@ -5,10 +5,24 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-09
+updated: 2026-11-19
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 19 novembre — Rapprochement documentaire PR98
+
+Le [contrat de connexion](docs/connexion-identifiant-email.md), les exigences et l’index reflètent la livraison historique du 3 novembre. Les reçus privés sont référencés sans être publiés. Aucun code, compte, rôle ou validation modifié ; aucune nouvelle installation de CONNECT.
+
+## 17 novembre — Candidat catalogue commun et droits Rapport
+
+Types créables/renommables/désactivables dans Gérer les comptes, affectations,
+applications et cinq actions Rapport. Autorité globale native fraîche, audit et
+révision ; dossier/propriétaire/période conservés. [Recette locale et réserves](docs/profils-et-droits.md).
+Aucun déploiement.
+## 16 novembre — Défaut professionnel du compte
+
+Champ déclaré dans Mon profil et extension privée des préférences ; GET avec identité du compte courant, PUT d’une seule préférence, fichier compagnon protégeant le format du médaillon et sa restauration. Ancien badge conservé lors des modifications de métier et réciproquement ; refus de compte cible/origine/contexte invalides contrôlés. [Qualification](../avereo-app-rapport/docs/profils-professionnels.md).
 
 ## 9 novembre — contrôle global compatible Drupal 11
 
@@ -112,3 +126,11 @@ Le correctif ferme l’ancienne session après confirmation et rejoint la connex
 ## 2026-11-06 — Projets et préférences propres
 
 Le portail PHP ajoute ses préférences de tri et de visibilité du catalogue, enregistrées dans ce navigateur. Mon compte et Mes applications restent les destinations communes ; CONNECT ne possède pas de rubrique Mes projets. Aucun contrôle de droit ni parcours d’activation n’est modifié. Candidat local PR #121 ; installation hébergée distincte.
+
+## 18 novembre — Analyse globale dans les choix de profil
+
+Libellé personnel et parcours de référence alignés après confirmation du responsable, dans PR170. Valeurs historiques et données des profils conservées. [Périmètre et recette locale](docs/profils-et-droits.md#libellé-analyse-globale--18-novembre). Candidat non livré, revue humaine à effectuer.
+
+## 18 novembre — PR170 en préproduction
+
+CONNECT et Rapport livrés après fusion et accord humains ; six fichiers exacts, dossier fictif complet et propriétaire conservés, aperçus client/expert refermables. [Résultat et preuves](../avereo-app-rapport/docs/source-audit.md#livraison-en-pr%C3%A9production-de-la-pr170). Cette mise à jour documentaire ne change pas les applications.

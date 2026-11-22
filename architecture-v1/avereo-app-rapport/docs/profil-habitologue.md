@@ -5,12 +5,16 @@ title: Profil Habitologue et explications des observations
 status: active
 version: git
 created: 2026-11-12
-updated: 2026-11-12
+updated: 2026-11-17
 owner: jpdandin
 tags: [rapport, habitologue, observations, livrables]
 ---
 
 # Profil Habitologue et explications des observations
+
+Pour les libellés courants, voir le [complément Analyse globale et Conseils de l’expert](profils-professionnels.md#libellé-de-prestation--17-novembre)
+du 17 novembre. Le présent document conserve le cadrage et les preuves historiques
+du 12 novembre ; les champs et contenus saisis ne sont pas renommés.
 
 ## Cadrage
 

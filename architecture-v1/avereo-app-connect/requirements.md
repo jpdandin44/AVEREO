@@ -5,10 +5,26 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-07
+updated: 2026-11-19
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 17 novembre — Catalogue de profils et droits administrables
+
+Demande confirmée : créer et gérer des types de profils depuis Gérer les comptes,
+les affecter et configurer leurs applications et actions Rapport. Distinguer le
+métier déclaré d'une affectation administrative qui donne des droits ; conserver
+les contrôles d'organisation, période, propriétaire et refus explicites. Le catalogue commun est réservé au propriétaire global ; types initiaux sans droit
+ni affectation automatique, exports officiels contrôlés et copies déjà lues hors garantie. [Exigences détaillées et limites réelles](docs/profils-et-droits.md).
+
+## Transfert avant fermeture
+
+Un administrateur habilité doit pouvoir transférer un dossier identifié à un autre compte disposant de Rapport dans la même organisation. [Parcours, habilitation et critères](../../docs/administration-acces-exports.md#transférer-un-rapport-avant-fermeture).
+
+## Profil de connexion et nouvelles missions — 16 novembre
+
+Défaut personnel déclaré et optionnel, jamais une habilitation ou une qualification. Édition du seul compte actif, session/CSRF/contexte actuels et PUT de même origine ; lecture applicative sur origine exacte et droit actuel. Choix du dossier conservé après modification du défaut. Une préférence modifiée à la fois, autre préférence intacte ; retour arrière du lecteur sans altération du médaillon. [Critères](../avereo-app-rapport/docs/profils-professionnels.md).
 
 ## 7 novembre — pont et stockage, état local courant
 
@@ -35,11 +51,11 @@ La création doit enregistrer le sujet natif que le fournisseur OIDC renverra à
 
 ## Connexion par login lisible ou adresse e-mail — attente confirmée
 
-Un libellé « login ou adresse mail » engage les deux possibilités. Le nom de profil CONNECT ne doit pas être présenté comme un login utilisable s’il ne correspond pas à l’identité. Le reset conserve les identifiants et l’identité existants. État hébergé : service natif limité au nom technique. Candidat local : résolution de l’e-mail par le formulaire, login natif lisible préparé pour le compte demandé, collisions refusées et validation native conservée. [Contrat et preuves](docs/connexion-identifiant-email.md). Aucun déploiement de ce candidat.
+Un libellé « login ou adresse mail » engage les deux possibilités. Le nom de profil CONNECT ne doit pas être présenté comme un login utilisable s’il ne correspond pas à l’identité. Le reset conserve les identifiants et l’identité existants. La résolution de l’e-mail par le formulaire, le refus des collisions et la validation native conservée appartiennent à la PR #98, livrée et recettée en préproduction le 3 novembre. [Contrat, version et preuves historiques](docs/connexion-identifiant-email.md). Le rapprochement documentaire du 19 novembre n’est pas une nouvelle recette ou une attestation du runtime courant.
 
 ## 2026-11-03 — Retour de recette et langue des comptes
 
-La langue de toute identité créée doit appartenir aux langues configurées dans Drupal. Utiliser la langue par défaut du site ; ne pas imposer une langue indisponible. Correction préparée localement le 3 novembre, non installée.
+La langue de toute identité créée doit appartenir aux langues configurées dans Drupal. Utiliser la langue par défaut du site ; ne pas imposer une langue indisponible. Correction livrée dans la PR #98 le 3 novembre, sans correction automatique des profils existants. [Périmètre et preuves](docs/connexion-identifiant-email.md).
 
 ## Envoi administratif du reset
 

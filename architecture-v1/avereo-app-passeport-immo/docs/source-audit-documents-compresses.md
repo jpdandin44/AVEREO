@@ -5,7 +5,7 @@ title: Annexe de parité — formats documentaires compressés
 status: active
 version: git
 created: 2026-11-12
-updated: 2026-11-12
+updated: 2026-11-13
 owner: jpdandin
 tags: [parite, documents, archives]
 ---
@@ -51,3 +51,17 @@ après sa validation : son information est conservée dans
 [l’annexe du cycle de vie CONNECT](integration-connect-cycle-vie.md), puis le
 guide historique est restauré exactement. Aucune empreinte ni décision n’est recalculée
 pour faire accepter un document modifié.
+
+## Livraison privée à 500 Mo après PR146
+
+Le nouveau livreur réutilise le moteur existant, fixe le paquet CI et ajoute seulement les deux limites `.user.ini` et `api/index.php` sur leurs empreintes antérieures exactes. `.htaccess`, CONNECT et le menu sont préservés. Les sondes privées qualifient la réception réelle sans document fictif ajouté ; [reçu et limites de preuve](preproduction-import-volumineux.md). Les 21 références approuvées restent identiques.
+
+## Corbeille et dossiers personnalisés
+
+Le [lot organisation](organisation-documents.md#matrice-des-écarts-et-contrôles) porte la matrice du nouveau candidat. L’ancien guide approuvé reste inchangé ; parité, tests métier et références documentaires sont vérifiés séparément.
+
+La [livraison PR153](preproduction-organisation.md) installe le même candidat CI en préproduction privée : six écritures, douze chemins préservés, deux colonnes additives sans extension des droits applicatifs. Les 28 documents et les valeurs métier initiales sont comparés à la sauvegarde ; les 21 références approuvées restent identiques.
+
+## Partage nominatif
+
+Écart l : le [partage nominatif](partage-documents.md) remplace uniquement l’ancien bouton de partage d’URL. La parité inverse ces raccordements précis puis vérifie les autres comportements. Les 21 références approuvées sont conservées.

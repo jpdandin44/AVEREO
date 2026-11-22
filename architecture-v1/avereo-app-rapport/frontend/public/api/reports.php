@@ -4,6 +4,7 @@ declare(strict_types=1);
 require __DIR__ . '/bootstrap.php';
 require __DIR__ . '/decision-validation.php';
 require __DIR__ . '/observation-plans-validation.php';
+require __DIR__ . '/report-download.php';
 
 api_no_options_response();
 
@@ -102,6 +103,8 @@ $canManageAll = api_identity_can_manage_all($identity, $config);
 $pdo = api_pdo($config);
 
 if ($method === 'GET') {
+    api_require_profile_action($config,$identity,'read');
+    if (isset($_GET['download'])) api_require_profile_action($config,$identity,'export');
     $id = api_trim_text($_GET['id'] ?? '', 32);
 
     if ($id !== '') {
@@ -127,10 +130,29 @@ if ($method === 'GET') {
             ]);
         }
 
+        if (isset($_GET['download'])) {
+            if ($_GET['download'] !== '1') {
+                api_json(422, ['ok' => false, 'error' => 'invalid_download', 'message' => 'Téléchargement invalide.']);
+            }
+            $json = (string) $row['payload_json'];
+            $download = api_complete_report_download($json);
+            if ($download === null) {
+                api_json(503, ['ok' => false, 'error' => 'report_content_missing', 'message' => 'Le contenu complet du dossier est indisponible. Aucun fichier partiel téléchargé.']);
+            }
+            header('Content-Type: application/json; charset=utf-8');
+            header('Content-Disposition: attachment; filename="rapport-' . $row['public_id'] . '.json"');
+            header('Content-Length: ' . $download['bytes']);
+            header('X-Avereo-Payload-Sha256: ' . $download['sha256']);
+            header('Cache-Control: private, no-store');
+            header('X-Content-Type-Options: nosniff');
+            echo $json;
+            exit;
+        }
+
         api_json(200, [
             'ok' => true,
             'report' => array_merge(api_report_summary($row), [
-                'payload' => json_decode((string)$row['payload_json'], true),
+                'payload' => json_decode((string)$row['payload_json']),
             ]),
         ]);
     }
@@ -176,8 +198,9 @@ if ($method === 'GET') {
 }
 
 if ($method === 'POST') {
-    $maxBytes = (int)($config['max_payload_bytes'] ?? (50 * 1024 * 1024));
-    $body = api_read_json_body($maxBytes);
+    $maxBytes = min(avereo_volume_limits()['reportJsonBytes'], max(1, (int)($config['max_payload_bytes'] ?? avereo_volume_limits()['reportJsonBytes'])));
+    $nativeBody = null;
+    $body = api_read_json_body($maxBytes + avereo_volume_limits()['reportEnvelopeBytes'], $nativeBody);
     $payload = $body['report'] ?? $body['payload'] ?? null;
 
     if (!is_array($payload)) {
@@ -208,6 +231,7 @@ if ($method === 'POST') {
     $existingStatement = $pdo->prepare('SELECT owner_provider, owner_id FROM rapport_reports WHERE public_id = :id');
     $existingStatement->execute(['id' => $id]);
     $existing = $existingStatement->fetch();
+    api_require_profile_action($config,$identity,$existing?'update':'create');
     if ($existing && !$canManageAll) {
         $sameOwner = hash_equals((string)$existing['owner_provider'], $ownerProvider)
             && hash_equals((string)$existing['owner_id'], $ownerId);
@@ -220,7 +244,7 @@ if ($method === 'POST') {
         }
     }
 
-    $json = json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    $json = json_encode($nativeBody->report ?? $nativeBody->payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     if (!is_string($json)) {
         api_json(400, [
             'ok' => false,
@@ -234,12 +258,21 @@ if ($method === 'POST') {
         api_json(413, [
             'ok' => false,
             'error' => 'report_payload_too_large',
-            'message' => 'Rapport trop volumineux pour la configuration serveur.',
+            'message' => 'Rapport trop volumineux pour la configuration serveur ('.avereo_volume_label($maxBytes).'). Le dossier local est conservé.',
             'payloadBytes' => $payloadBytes,
             'maxPayloadBytes' => $maxBytes,
         ]);
     }
 
+    api_require_volume_memory($payloadBytes * 2 + 16 * 1024 * 1024);
+    if ($pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+        $packet = (int)$pdo->query('SELECT @@max_allowed_packet')->fetchColumn();
+        if ($payloadBytes + 65536 > $packet) api_json(413, [
+            'ok'=>false, 'error'=>'report_database_capacity',
+            'message'=>'La base ne peut pas enregistrer ce volume dans sa configuration actuelle. Le dossier local est conservé : téléchargez son JSON complet.',
+            'payloadBytes'=>$payloadBytes,
+        ]);
+    }
     $writeValues = [
         'public_id' => $id,
         'title' => api_trim_text($payload['titre'] ?? 'Rapport sans titre', 190),
@@ -298,16 +331,29 @@ if ($method === 'POST') {
         }
     }
 
+    // Re-read the actual saved document before confirming a complete save.
+    $verifySql = 'SELECT payload_json FROM rapport_reports WHERE public_id = ?';
+    $verifyArgs = [$id];
+    if (!$canManageAll) {
+        $verifySql .= ' AND owner_provider=? AND owner_id=?';
+        $verifyArgs = [$id, $ownerProvider, $ownerId];
+    }
+    $verify = $pdo->prepare($verifySql);
+    $verify->execute($verifyArgs);
+    $stored = $verify->fetchColumn();
+    $content = is_string($stored) ? api_complete_report_download($stored) : null;
+    if ($content === null || !hash_equals(hash('sha256', $json), $content['sha256'])) {
+        api_json(409, ['ok' => false, 'error' => 'report_write_unconfirmed', 'reportId' => $id,
+            'message' => 'Le contenu envoyé n’a pas pu être confirmé sur le serveur. Le brouillon est conservé ; vérifiez la copie en ligne avant de recommencer.']);
+    }
     api_json(200, [
         'ok' => true,
-        'report' => [
-            'id' => $id,
-            'payloadBytes' => $payloadBytes,
-        ],
+        'report' => ['id' => $id, 'payloadBytes' => $payloadBytes, 'content' => $content],
     ]);
 }
 
 if ($method === 'DELETE') {
+    api_require_profile_action($config,$identity,'delete');
     $id = api_trim_text($_GET['id'] ?? '', 32);
     if ($id === '') {
         api_json(400, [

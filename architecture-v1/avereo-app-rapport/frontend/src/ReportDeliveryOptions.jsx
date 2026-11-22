@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { deliveryOptions } from './reportDelivery.js';
-import { orderedObservations } from './observationOrder.js';
+import { orderedObservations, observationNumber } from './observationOrder.js';
 import { REPORT_VISUALS } from './reportVisuals.js';
 import VoiceField from './VoiceField.jsx';
 
@@ -47,9 +47,9 @@ export default function ReportDeliveryOptions({ report, setReport, dictationAllo
       { [['synthese','L’essentiel pour le client'], ['priorites','Actions prioritaires'], ['suite','Prochaine étape'], ['limites_client','Limites essentielles à rappeler au client']].map(([key,label]) =>
         <VoiceField key={key} label={label} rows={3} maxLength={1600} value={value[key]}
           micDisabled={!dictationAllowed} onChange={text => updateText(key, text)} />)}
-      <div className="delivery-choices">{orderedObservations(report).map((o, index) => <label key={o.id}>
+      <div className="delivery-choices">{orderedObservations(report).map(o => <label key={o.id}>
         <input type="checkbox" checked={value.observations.includes(o.id)} disabled={!value.observations.includes(o.id) && value.observations.length >= 3}
-          onChange={e => toggle('observations', o.id, e.target.checked)} />{index + 1}. {o.titre || o.piece || 'Constat sans titre'}
+          onChange={e => toggle('observations', o.id, e.target.checked)} />{observationNumber(report, o)}. {o.titre || o.piece || 'Constat sans titre'}
       </label>)}</div>
     </>}
     <h3>Illustrations pédagogiques</h3>

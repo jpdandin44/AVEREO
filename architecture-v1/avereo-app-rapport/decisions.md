@@ -5,13 +5,81 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 2026-11-21 — Proposition bornée et conservation des types JSON
+
+Contexte : refus à 50 Mio reproduit sur 61 Mo de dossier complet ; le JSON réel de Philippe manque. Choix du candidat local : plafond commun explicite de 100 000 000 octets, paquet STORE inchangé et contrôle de la reconstitution avant traitement. Ce choix couvre le cas mesuré sans imposer de nouveau format ni dégrader les médias ; son adéquation au dossier réel et à l’hébergement reste à valider. Conserver séparément l’arbre JSON natif et sa vue de validation évite la conversion historique des objets vides en listes. Aucune migration ni réécriture rétroactive. [Mesures et conséquences](docs/volume-sans-perte.md).
+
+
+## 2026-11-19 — Conservation d’une version complète privée
+
+Le responsable demande une restitution finalisée partageable et une copie complète privée réouvrable dans Rapport. Le premier raccordement utilise un paquet vérifié, importé explicitement dans Passeport. Raisons : réutiliser les accès et contrôles propres à chaque application, embarquer les originaux, laisser choisir le bien/client et éviter de confondre préparation locale et publication serveur. Conséquences : le fichier préparé n’est pas encore publié ; Passeport ne devient pas éditeur de visite. [Contrat et limites](docs/publication-passeport-immo.md).
+## 17 novembre — Renommer la prestation sans migrer les dossiers
+
+Complément demandé avant validation de PR168 : remplacer aussi l’intitulé Conseils habitologue, avec proposition alternative autorisée par le responsable. Choix de rédaction annoncé : **Conseils de l’expert**, commun aux observations, au contexte extérieur et aux deux restitutions. Raisons : vocabulaire compréhensible et applicable aux différents profils. Conséquences : libellé partagé, aucun nouveau métier, titre de qualification ou droit ; les valeurs des champs actions/conseils restent intactes. Ce complément remplace la réserve initiale sur ce seul libellé, conservée dans le contexte ci-dessous.
+
+Contexte : le responsable confirme Analyse globale et demande de continuer après la fusion de PR167. Décision : changer la présentation de la mission et préfixer les titres de couverture existants des deux Word, tout en conservant la clé habitologue et le métier CONNECT Habitologue. Raisons : distinguer prestation, profession et droits, préserver les dossiers. Conséquences : aucune migration, aucun titre utilisateur écrasé ; conseils et autres formulations secondaires conservés jusqu’à une décision distincte. [Périmètre](docs/profils-professionnels.md#libellé-de-prestation--17-novembre).
+
+## 17 novembre — Des fonds figés et des repères propres à chaque vue
+
+Contexte : bibliothèque et fonds Terrain approuvés ; incident de sélection à qualifier. Décision : garder le modèle plans/reperes, ajouter les types sans migration, figer chaque capture et son cadrage, ne copier aucun point entre deux fonds. Raisons : stabilité des anciens dossiers et des exports, sans recalage arbitraire. Conséquences : nouveau cadrage = nouvelle vue ; retrait confirmé d’une vue = retrait de ses seuls points. [Contrat](docs/reperage-observations.md).
+
+## 16 novembre — Défaut de compte et profil de mission distincts
+
+Contexte : le responsable demande les autres métiers et inclut explicitement CONNECT dès le lot. Décision : défaut personnel privé dans les préférences CONNECT existantes, contrôlé par son compte/session, puis copie à la création d’une mission seulement. Raisons : plusieurs missions possibles, conservation des dossiers, aucun métier déduit d’une habilitation. Conséquences : compte courant vérifié côté Rapport, sélection manuelle conservée, pas de profil d’organisation ou d’accréditation automatique ; mêmes actions/options et médias dans les parcours reconnus. [Contrat](docs/profils-professionnels.md).
+
+## 16 novembre — Réutiliser le moteur et l’import natifs Projet
+
+Contexte : prochain lot demandé après PR162, transmission volontaire et projets existants à conserver. Choix de réalisation annoncé : aperçu Rapport avec planning-core.js canonique, puis fichier natif importé comme projet indépendant. Raisons : même calendrier/validations, pas de deuxième moteur ni nouveau droit/API. Conséquences : paramètres optionnels sur les interventions existantes, sélection distincte du client, projections indépendantes après téléchargement ; dates/charges explicites. Le responsable confirme ensuite le 16 novembre « Oui, commencer par le fichier Projet » : ce choix de parcours est accepté explicitement. Revue du candidat, tests, merge et livraison gardent leurs validations distinctes. [Contrat](api/interventions-projet.md).
+
+## 16 novembre — Séparer les ouvertures de fiche des données métier
+
+Contexte : les écrans sont jugés trop chargés ; le responsable valide l’organisation et les ouvertures par défaut avant réalisation. Décision : sections/fiches repliables avec résumés, état de présentation en mémoire du wizard et enfants conservés montés. Raisons : navigation plus légère, conservation des saisies/outils et absence de modification du payload ou des restitutions. Conséquences : reprise dans une nouvelle session avec les valeurs par défaut, contexte remis à zéro à l’import, API et droits inchangés ; revue locale puis décisions de livraison distinctes. [Organisation et qualification](docs/organisation-ecrans.md).
+
+
+## 16 novembre — Réutiliser les actions pour les interventions Habitologue
+
+Contexte : le responsable demande la suite de la priorité 4 après Attentes. Décision : rendre la liste existante decision.actions accessible sous Recommandations pour Habitologue, ajouter les modalités et une inclusion client explicite, sans réactiver les projections. Une liste unique évite la divergence avec les constats, attentes et options historiques. Le responsable confirme Correctif ; aucune reclassification des valeurs anciennes. Conséquences : données historiques et identifiants conservés, client filtré selon ses constats, contrat Projet/dates/Gantt à qualifier dans le sous-lot suivant. [Contrat](docs/interventions-proposees.md).
+
+## 16 novembre — Reprise explicite de l’écoute dans les attentes
+
+Contexte : le responsable demande un préremplissage depuis Écoute client et des notes dans Export. Décision : proposer les deux textes source entiers, puis une copie explicite identifiée avec un instantané du verbatim ; conserver une seule liste d’attentes liée aux constats. Cela évite l’extraction arbitraire et l’écrasement après une nouvelle saisie d’écoute. La provenance reste facultative pour les anciens dossiers ; notes libres et dictée réutilisent les stockages et accords existants. [Conséquences et contrat](docs/attentes-ecoute-client.md).
+
+
+## 2026-11-14 — Terrain horizontal et numérotation indépendante confirmés
+
+Contexte : Site jugé trop chargé ; le responsable accepte T1/T2… et impose le fil horizontal. Décision : bloc 0 Terrain contenant visuellement le Bâti ; constats dans le tableau existant avec phase terrain, labels Tn dérivés et numéros du bâti inchangés ; trois constats client au total. Capture cadastrale figée comme nouvelle vue, sans déplacement des anciens repères. Raisons : continuité du parcours, mêmes outils de saisie/photo, stabilité des références et du bâti. Conséquences : nouvelle valeur cadastre admise par le frontend et PHP, sans migration SQL ; conserver contexte_exterieur dans un volet de reprise, sans conversion. Cette décision remplace l’interface Site et le modèle de nouvelle saisie du premier candidat décrit ci-dessous ; son ancien choix client reste uniquement pour ses notes conservées. [Contrat](docs/environnement-terrain.md).
+
+## 2026-11-14 — Terrain comme contexte indépendant des observations
+
+Contexte : décrire les abords du bien sans décaler les observations et leurs repères. Le responsable choisit explicitement une rubrique de contexte séparée, sans modifier les numéros Eau/Air/Terre/Feu. Décision : champ facultatif `contexte_exterieur` hors de `observations`, lié à une vue existante sans repère numéroté ; ajout à la synthèse client sur un choix distinct. Raisons : stabilité du protocole, compatibilité des dossiers et distinction contexte/constat numéroté. Conséquences : aucune cinquième phase, aucun tri/déplacement terrain parmi les observations, pas de migration SQL ; un contexte et une photo facultative dans cette tranche. [Contrat et qualification](docs/environnement-terrain.md).
+
+
+## 2026-11-13 — Version photo du rapport séparée de l’original
+
+Contexte : annoter et recadrer une photo sans perdre la possibilité de revoir son détail. Décision : conserver `photo.src` intact ; ajouter une copie JPEG avec les opérations normalisées et un choix explicite, sans migration du dossier. Les coordonnées restent relatives à l’image complète pour permettre le retour au cadrage entier ; l’historique de travail permet annuler/rétablir avant application, et les opérations enregistrées restent modifiables à la réouverture. Raisons : compatibilité des anciens JSON, original encore exportable et même choix dans les deux restitutions. Conséquences : le JSON porte encore les deux images, son plafond n’est pas augmenté et aucun allègement global n’est annoncé.
+
+Pour le quota, additionner les réservations SQL et les octets non enregistrés sur disque sous le verrou existant. Un crash entre publication et insertion SQL ne doit pas permettre de contourner le quota ; aucun fichier orphelin n’est supprimé automatiquement. Paramètres réels et politique d’effacement restent distincts et non activés. [Contrat et qualification](docs/photos-rapport-edition.md).
+
+## 2026-11-13 — Export complet distinct de la structure de test
+
+Contexte : un fichier « copie de test » expurgé a été compris comme une sauvegarde du dossier. Décision : conserver cette fonction de test, la renommer explicitement et marquer les nouvelles copies `copie_test: true` ; reconnaître les anciennes copies correspondantes. Mettre en avant l’export complet et confirmer le contenu à l’import. Raisons : empêcher une confusion sans divulguer silencieusement des données par une action auparavant expurgée.
+
+Un import retire uniquement le lien au dossier serveur et conserve les identifiants métier : sa sauvegarde crée un autre dossier sous le compte destinataire. L’ouverture depuis la liste continue à viser la sauvegarde d’origine selon les droits existants. Le téléchargement serveur diffuse les octets conservés ; les entiers hors précision JavaScript restent téléchargeables, mais l’édition/import est refusé avec explication pour éviter un arrondi silencieux. Ni nouveau droit, transfert de propriété, historique de versions ou synchronisation automatique ajouté. [Contrat et limites](docs/partage-tests-et-stockage.md).
+
+## 2026-11-13 — Conserver les originaux privés sans transformer les dossiers
+
+Contexte : rouvrir un détail après une visite tout en conservant les dossiers existants. Décision de cette tranche locale : fichiers immuables hors racine web, métadonnées dans une table additive, référence optionnelle dans la photo ; lecture et envoi sous le seul propriétaire courant, sans exception administrateur ni partage implicite. Raisons : préserver les octets, éviter une URL publique, vérifier les refus sans changer les droits CONNECT.
+
+Conséquences : activation désactivée par défaut, taille et quota obligatoires à choisir sur la cible ; sauvegarde SQL et fichiers indissociables. Le JSON conserve encore son image complète et le Word continue à l’utiliser. Pas de clé étrangère vers le rapport pour préserver sa suppression existante : fichiers et métadonnées restent conservés et comptés, mais inaccessibles après suppression ; rétention/effacement à définir avant activation. Un changement de propriétaire ne transfère aucun original. [Contrat et réserves](docs/photos-originales-et-annotations.md).
+
 
 ## 2026-11-12 — Numéros dérivés de l'ordre commun, références stables
 
@@ -353,3 +421,8 @@ reconnu en lecture mais disparait des choix de creation. Les prototypes
 Habitologie precedents sont normalises vers `Rapport Habitologue`. Les
 adaptations Habitologie sont ajoutees progressivement dans les etapes
 existantes en fonction de la categorie.
+
+
+## 2026-11-19 — Distinguer périodes et calendrier
+
+Contexte : le responsable demande un Gantt non daté pour les interventions Rapport. Décision de conception : mode optionnel P1/P2, dates nulles et coordonnées saisies ; charge de travail distincte. Les anciens projets conservent leur mode daté. Conséquence : JSON complet pour préserver les périodes, sans conversion automatique en semaines. [Planning Rapport vers Projet](docs/interventions-projet.md).

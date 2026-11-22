@@ -5,10 +5,22 @@ title: Architecture CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-07
+updated: 2026-11-17
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 17 novembre — Catalogue commun et projection des droits
+
+Catalogue JSON privé distinct des préférences personnelles et des tables de
+comptes. Autorité dédiée : propriétaire exact et rôle global Drupal relu.
+Projection filtrée sous verrou vers la politique existante ; Rapport consomme
+les cinq actions à chaque requête. Pas de migration SQL. [Architecture, panne,
+compatibilité et limites](docs/profils-et-droits.md). Nouveau lot local,
+préproduction différée.
+## Défaut professionnel privé — 16 novembre
+
+Les préférences personnelles existantes portent `professionalProfile` via GET/PUT privés ; compte retourné côté serveur pour rapprochement avec la session Rapport. Fichier compagnon privé par UID, renommage atomique et verrou du compte ; format historique du médaillon inchangé. Aucun rôle, champ Drupal, table ou configuration nouvelle. [Flux et compatibilité](../avereo-app-rapport/docs/profils-professionnels.md).
 
 ## 7 novembre — pont et stockage, état local courant
 

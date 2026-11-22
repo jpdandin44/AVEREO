@@ -1,0 +1,211 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "version": "git",
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "passeport-immo-organisation-documents",
+  "stage": "preproduction",
+  "status": "preproduction_human_review_accepted_merge_pending",
+  "objective": "Corbeille restaurable, suppression définitive confirmée, dossiers par catégorie avec icône/couleur et ordre manuel conservés par bien.",
+  "candidate": {
+    "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+    "artifactPath": ".local/ci-organisation-fb0/candidate.zip",
+    "manifestPath": ".local/ci-organisation-fb0/candidate.manifest.json"
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "branch": "feat/passeport-immo-corbeille-documents",
+    "humanAcceptanceVerified": true,
+    "observedAt": "2026-11-13T15:35:48.972433+00:00",
+    "observedHeadSha": "39c52496f806ce2e25148d8bfe40c55935c7fa2a",
+    "runtimeCandidateFrozen": true,
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43448211761",
+    "number": 153,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/153",
+    "draft": false,
+    "observationScope": "PR153 fusionnée, policy stricte et quatre cases humaines réellement vérifiées ; code exécuté identique au candidat gelé. Cette acceptation locale ne valide pas la recette hébergée.",
+    "state": "merged",
+    "mergedAt": "2026-11-13T15:18:09Z",
+    "mergeCommitSha": "fb2dcafbff6d9eeb408b47f9243b6b4482f7908f",
+    "successfulChecks": 27,
+    "acceptedSourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "acceptedArtifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e"
+  },
+  "reviewEnvironment": {
+    "phase": 2,
+    "environment": "preproduction",
+    "url": "https://connect-preprod.avereo.fr/?app=passeport-immo",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "fictionalDataOnly": false,
+    "mutationRecipeRequiresFictionalDocument": true
+  },
+  "targets": {
+    "preproduction": {
+      "id": "https://passeport-immo-preprod.avereo.fr/",
+      "ready": true,
+      "detail": "Même paquet CI installé : 18 chemins vérifiés, migration additive relue, 28 documents conservés, 247 assertions HTTPS et écran SCI contrôlés.",
+      "isolated": true,
+      "observedAt": "2026-11-13T15:35:48.972433+00:00",
+      "evidence": "api/preproduction-organisation-observation.json#preparation"
+    },
+    "production": {
+      "id": "https://passeport-immo.avereo.fr/",
+      "ready": false
+    }
+  },
+  "checks": [
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T15:04:22.254662+00:00",
+      "target": "http://127.0.0.1:5178/",
+      "evidence": "api/organisation-documents-observation.json#localChecks"
+    },
+    {
+      "kind": "ci",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T15:04:22.254662+00:00",
+      "target": "isolated_apache_mariadb",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/43448211761"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T15:04:22.254662+00:00",
+      "target": null,
+      "evidence": "api/organisation-documents-observation.json#documentationControl"
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "observedAt": "2026-11-13T16:43:51.310473+00:00",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "evidence": "api/preproduction-organisation-observation.json"
+    }
+  ],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-13T15:35:48.972433+00:00",
+      "evidence": "Demande directe : La PR #153 est mergée, peux-tu déployer la corbeille et le nouveau classement des documents en préproduction stp ?",
+      "scopeLimit": "Préproduction privée uniquement ; aucun accord de production ou de recette humaine hébergée."
+    },
+    {
+      "scope": "review",
+      "status": "approved",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+      "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+      "actor": "jpdandin",
+      "source": "user_chat",
+      "recordedAt": "2026-11-13T17:29:12.462772+00:00",
+      "evidence": "Le responsable indique : la recette en préproduction est validée mais la PR #155 n’est pas mergée.",
+      "scopeLimit": "Recette corbeille/classement uniquement ; aucun cochage GitHub, merge ou accord de production."
+    }
+  ],
+  "backups": [
+    {
+      "id": "organisation-pr153-20261113",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "observedAt": "2026-11-13T15:29:02+00:00",
+      "evidence": "api/preproduction-organisation-observation.json#preparation",
+      "snapshotSha256": "a44e32875d4bf05cc05c0609e17378ed657663c6de33c11e765d6d0fcb792b8a",
+      "tables": 4,
+      "documents": 28,
+      "fileReadback": "passed",
+      "temporaryRowRestore": "passed",
+      "liveRowsChanged": false
+    }
+  ],
+  "rollback": {
+    "status": "tested_on_private_copy",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+    "observedAt": "2026-11-13T15:29:02+00:00",
+    "evidence": "api/preproduction-organisation-observation.json#preparation",
+    "businessDataOverwrite": false,
+    "limitation": "Colonnes additives conservées ; retour à l’ancien code refusé dès utilisation des nouveaux champs. Aucun retour arrière de données client."
+  },
+  "delivery": {
+    "status": "delivered",
+    "sourceSha": "fb0c259b8f6e7cff68b27576c242527be5ddaa4b",
+    "artifactSha256": "ad0b3f1ae198f51aa253af74be8941e6407228d8899b1de7dd47d411adc48a3e",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "observedAt": "2026-11-13T15:36:39+00:00",
+    "evidence": "api/preproduction-organisation-observation.json#delivery",
+    "writtenFiles": 6,
+    "productionChanged": false
+  },
+  "blockers": [],
+  "nextAction": "Traiter le partage nominatif en priorité ; PR155 reste ouverte, aucune préparation de production poursuivie.",
+  "phases": [
+    {
+      "id": 0,
+      "label": "Cadrage",
+      "status": "completed",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 1,
+      "label": "Développement local",
+      "status": "merged_after_human_review",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 2,
+      "label": "Préproduction",
+      "status": "human_recipe_accepted_operator_merge_pending",
+      "humanPhaseApprovalRecorded": false
+    },
+    {
+      "id": 3,
+      "label": "Mise en production",
+      "status": "not_started",
+      "humanPhaseApprovalRecorded": false
+    }
+  ],
+  "sourceFeedback": {
+    "source": "user_chat",
+    "observedAt": "2026-11-13T14:47:48.458099+00:00",
+    "requirements": [
+      "Suppression via corbeille avec restauration avant purge définitive.",
+      "Dossiers parents par catégorie, choix des icônes et couleurs, ordre des fichiers modifiable."
+    ],
+    "doesNotCreateDeploymentApproval": true
+  },
+  "evidence": "api/organisation-documents-observation.json",
+  "documentation": "docs/organisation-documents.md",
+  "nextIteration": [],
+  "hostedEvidence": "api/preproduction-organisation-observation.json",
+  "operatorDocumentation": "docs/preproduction-organisation.md",
+  "operatorReview": {
+    "repository": "jpdandin44/AVEREO",
+    "number": 155,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/155",
+    "branch": "chore/passeport-immo-preproduction-corbeille",
+    "reviewEnvironment": "preproduction",
+    "humanAcceptanceVerified": false,
+    "observedAt": "2026-11-13T16:46:29.387239+00:00",
+    "observedBaseSha": "e7302bc5b1fe18b02a51d9df5702ed00b1358871",
+    "mergeable": "MERGEABLE",
+    "evidence": "https://github.com/jpdandin44/AVEREO/pull/155",
+    "note": "Base main actualisée pendant la publication ; changements Rapport distincts, fusion à trois voies sans conflit. Quatre cases humaines laissées décochées."
+  }
+}

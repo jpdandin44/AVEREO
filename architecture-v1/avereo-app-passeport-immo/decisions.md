@@ -5,12 +5,29 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
+## 2026-11-21 — Même contrat de limites que Rapport
+
+Contexte : la copie complète est créée puis réouverte dans Rapport mais contrôlée aussi par Passeport. Le candidat consomme une source commune de limites et refuse avant dépôt si les originaux reconstitués dépassent 100 Mo ou si le budget PHP est insuffisant. Raisons : éviter un paquet accepté mais non réouvrable ; conserver les garde-fous et la confidentialité. Conséquences : deux fichiers de contrat générés à inclure avant l’API dans une livraison future, plafonds documentaires inchangés. [Contrat, proposition et réserves](../avereo-app-rapport/docs/volume-sans-perte.md).
+
+
+## 2026-11-19 — La copie complète n’est pas un document partagé
+
+Contexte : un partage nominatif existant inclut les futurs documents actifs d’un bien. Décision : conserver le paquet source hors de `pi_documents`, dans un blob privé et une colonne nullable dédiée ; seuls les documents de restitution suivent le partage existant. Raisons : protéger les notes et originaux même avec un ancien lecteur ou un retour arrière du runtime. Conséquences : migration additive, route propriétaire dédiée, inclusion explicite dans les sauvegardes. La copie est réouvrable dans Rapport ; son téléchargement reste techniquement lisible et n’est pas un dispositif DRM.
 # Décisions Passeport Immo
+
+## 2026-11-13 — Autorisations documentaires distinctes des comptes
+
+Le responsable confirme la lecture seule révocable. Le droit CONNECT permet d’ouvrir l’application ; une autorisation supplémentaire du propriétaire est nécessaire pour les documents d’un bien. Les comptes en attente ne reçoivent pas d’accès avant activation normale. Les droits sont sauvegardés sur la même cible et exclus des transferts interenvironnements. [Détails](docs/partage-documents.md).
+
+
+## 2026-11-13 — Corbeille et organisation par bien
+
+Contexte : besoin de suppression réversible, regroupement visuel et classement manuel. Choix d’implémentation : conserver l’archivage distinct, ajouter deux colonnes nullables aux tables existantes et enregistrer les réglages par bien avec une révision. La purge est manuelle et confirmée ; aucune expiration automatique. Les icônes sont une liste SVG fixe, les couleurs sont validées, les références d’ordre sont limitées au bien et à la catégorie. Ce choix évite de concurrencer l’autosauvegarde du modèle et conserve les liens client/document. La livraison exigera une sauvegarde fraîche, la qualification de migration et un accord portant sur le nouveau candidat.
 
 ## 2026-11-12 — Préparer 500 Mo en upload direct
 

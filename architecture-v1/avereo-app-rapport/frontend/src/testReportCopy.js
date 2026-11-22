@@ -1,7 +1,7 @@
 import { normalizeReportClassification } from './reportClassification.js';
-import { findHabitologieStage, findHabitologieControl, HABITOLOGIE_PROTOCOL_STAGES, LISTENING_TOPICS } from './habitologieProtocol.js';
+import { findHabitologieStage, findHabitologieControl, visitProtocolStages, LISTENING_TOPICS } from './habitologieProtocol.js';
 import { protocolOptions } from './reportHtml.js';
-import { isHabitologueProfile } from './reportProfiles.js';
+import { recognizedMissionProfile } from './reportProfiles.js';
 
 export const observationGravities = ['Mineure', 'Moyenne', 'Severe', 'Critique'];
 
@@ -13,7 +13,7 @@ export function createTestReportCopy(report) {
     report_type: report.report_type === 'habitologie' ? 'habitologie' : '',
   });
   const topics = report.ecoute?.sujets_identifies;
-  const stages = HABITOLOGIE_PROTOCOL_STAGES.map(({key, controls}) => {
+  const stages = visitProtocolStages(report).map(({key, controls}) => {
     const source = report.habitologie_protocoles?.[key];
     return [key, {
       enabled: source?.enabled !== false,
@@ -23,7 +23,8 @@ export function createTestReportCopy(report) {
     }];
   });
   return {
-    ...(isHabitologueProfile(report) ? { profil_metier: 'habitologue' } : {}),
+    copie_test: true,
+    ...(recognizedMissionProfile(report.profil_metier) ? { profil_metier: report.profil_metier } : {}),
     categorie: classification.categorie,
     sous_categorie: classification.sous_categorie,
     titre: 'Copie pour les tests',

@@ -5,13 +5,137 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## 21 novembre — Dossiers volumineux, candidat local
+
+Le [lot sans perte](docs/volume-sans-perte.md) reproduit le refus à 50 Mio et propose un JSON de 100 Mo dans toute la chaîne Rapport/Passeport, sans dégrader les médias. Source commune de limites, API et copies générées contrôlées. Revue locale en préparation ; aucune livraison de ce lot. Les réserves de génération Word, de capacité réelle et de performance sont explicites.
+
+
+## 19 novembre — Publication Passeport livrée en préproduction
+
+[PR173](https://github.com/jpdandin44/AVEREO/pull/173), runtime `4b6696ca24fc678465327bb31a3eeb0777365029` : restitution client Word partageable et copie complète privée. Recette fictive hébergée via les services natifs authentifiés : dépôt, idempotence, exclusion de la copie privée du partage, nouvelle connexion, téléchargement exact et révocation réussis. La copie se réouvre dans Rapport et se sauvegarde comme dossier indépendant, source et propriétaire conservés. 26 documents Passeport et 30 dossiers Rapport préexistants exacts ; accès temporaires rétablis.
+
+[Parcours, preuves et limites](docs/publication-passeport-immo.md). Revue humaine encore attendue ; aucun merge ni production. Les étapes datées suivantes conservent l’historique, sans redéclarer une nouvelle validation.
+
+## 18 novembre — PR170 livrée en préproduction
+
+CONNECT et Rapport sont alignés sur la PR170 fusionnée : Analyse globale dans les choix CONNECT, fermeture des aperçus client/expert contrôlée après réouverture serveur d’un dossier fictif complet. Données, propriétaire et droits conservés. [Livraison, preuves et limites](docs/source-audit.md#livraison-en-préproduction-de-la-pr170). Les sections suivantes conservent les étapes antérieures ; le suivi canonique porte l’état courant.
+
+## Aperçu du rapport — correction locale du 18 novembre
+
+Le [correctif de fermeture de l’aperçu](docs/source-audit.md#fermeture-de-laperçu--candidat-local-du-18-novembre) est prêt pour revue locale : bouton visible au-dessus du bandeau AVEREO, retour au dossier et clavier vérifiés. Il n’est pas encore déployé ; les états datés ci-dessous sont historiques et le suivi canonique porte les livraisons courantes.
+
+## Analyse globale — libellé de prestation, 17 novembre
+
+Le parcours de mission de clé habitologue est présenté comme **Analyse globale** dans Dossier et les couvertures expert/client. Le complément demandé avant revue remplace le libellé des conseils par **Conseils de l’expert**, dans les observations, le contexte extérieur et les deux restitutions. Métier personnel CONNECT et textes saisis conservés. [Périmètre et revue](docs/profils-professionnels.md#libellé-de-prestation--17-novembre). Développement local ; livraison des profils toujours différée.
+
+## Plans et vues du dossier — 17 novembre
+
+Bibliothèque compacte et trois fonds Terrain : cadastre, satellite et satellite + parcelles. Plusieurs images et types de plans, liens directs depuis les constats et repères stables. [Parcours et limites](docs/reperage-observations.md). Candidat local, PDF multipage séparé ; aucune livraison de ce lot.
+
+## 17 novembre — Droits du compte administrés dans CONNECT, candidat local
+
+Lecture/création/modification/suppression/export selon le profil administré ;
+consultation détaillée et options de restitution conservées. Dossiers sans
+affectation inchangés. [Organisation, revue locale et limites](../avereo-app-connect/docs/profils-et-droits.md).
+Préproduction différée à la demande du responsable.
+## 16 novembre — Profils et CONNECT, candidat local
+
+Profils Architecte et Maître d’œuvre disponibles dans Dossier, étapes 4–6 et deux restitutions adaptées. Défaut déclaré sur le compte CONNECT proposé uniquement à la création ; dossiers existants et données conservés. Terrain/contexte, conseils et modalités gardés. [Revue, contrat et limites](docs/profils-professionnels.md). PR163 reste la version de préproduction ; ce nouveau lot est soumis à revue locale.
+
+## 16 novembre — PR163 livrée et alignée en préproduction
+
+Planning informatif et fichier Projet livrés après validation humaine. Candidat de0edf3 et fusion 9f8645b de contenu identique ; même archive qualifiée, cinq fichiers installés. Interface, fichier Projet et deux Word contrôlés ; 24 dossiers/propriétaires et brouillon initial conservés. [Preuves et limites](docs/interventions-projet.md#préproduction).
+
+## 16 novembre — Planning informatif vers Projet, candidat local
+
+Sous les interventions Habitologue, sélection Projet distincte, estimations explicites, aperçu du calendrier et fichier pour « Importer un projet » indépendant. Paramètres conservés dans le dossier ; aucun changement de Projet ou des Word. [Contrat, revue et preuves](docs/interventions-projet.md). PR162 reste la version hébergée ; les états datés suivants sont historiques.
+
+## 16 novembre — PR162 livrée et alignée en préproduction
+
+Après tests et merge humains, Dossier, Observations et Export repliables sont livrés sur le même artefact qualifié. Trois écrans, signature et deux Word contrôlés ; 24 dossiers/propriétaires, configuration, production et brouillon initial conservés. [Livraison, preuves et limites](docs/organisation-ecrans.md#préproduction). Les étapes datées suivantes sont historiques ; le suivi canonique porte l’état courant.
+
+## 16 novembre — Écrans repliables prêts à tester localement
+
+Dossier, Observations et Export suivent l’organisation validée : résumés, ouverture individuelle/globale, nouvelles fiches ouvertes et champs conservés. Qualification locale de saisie, photos/plans/signature, sauvegarde/réouverture et deux Word réussie ; préproduction inchangée. [Revue locale, preuves et limites](docs/organisation-ecrans.md#revue-locale). Les états de proposition ci-dessous sont historiques.
+
+
+## 16 novembre — Proposition pour alléger les écrans
+
+Le [cadrage de l’organisation des écrans](docs/organisation-ecrans.md) propose des sections d’écoute et des fiches d’observations/interventions repliables avec résumés utiles. Proposition à examiner avant toute modification : aucun code ou écran applicatif changé. La recette Interventions terminée et les états datés suivants restent conservés.
+
+
+## 16 novembre — Recette Interventions réussie
+
+Trois interventions, modalités et liens conservés après deux sauvegardes puis ouverture serveur dans une nouvelle session CONNECT sans brouillon. Les 23 dossiers antérieurs et leurs propriétaires restent exacts ; brouillon initial restauré et relu après rechargement. [Preuves et accès de revue](docs/interventions-proposees.md#recette-complète-du-16-novembre). La prochaine priorité choisie porte sur le [contenu et la disposition des écrans](roadmap.md#16-novembre--prochaine-priorité--contenu-et-disposition-des-écrans). Les états datés suivants conservent l’historique.
+
+
+## 16 novembre — PR161 livrée en préproduction
+
+Le lot Interventions est livré sur le même contenu qualifié, après tests et merge humains. Interface, validation PHP active et deux Word hébergés contrôlés ; 23 dossiers/colonnes/propriétaires et brouillon initial conservés. [Preuves et limites](docs/interventions-proposees.md#préproduction). Les états datés suivants restent historiques ; le suivi canonique porte l’état courant.
+
+## Interventions proposées — candidat local du 16 novembre
+
+Habitologue dispose sous Recommandations d’une liste unique d’interventions reliées aux constats et attentes, avec nature, priorité, horizon et modalités de réalisation. Sélection client explicite et filtrage des constats conservés. [Parcours local, contrat et preuves](docs/interventions-proposees.md). La préproduction reste la version PR159 ; les sections datées suivantes sont historiques.
+
+## 16 novembre — Recette Attentes réussie
+
+Le complément Attentes de PR159 a passé la recette serveur en préproduction : trois attentes, notes et deux liens conservés après deux sauvegardes puis réouverture dans une nouvelle session sans brouillon. Les dossiers/propriétaires antérieurs et le brouillon initial sont préservés. [Recette, dossier de revue et limites](docs/attentes-ecoute-client.md#recette-complète-du-16-novembre). La revue métier humaine reste distincte ; les états datés suivants conservent l’historique.
+
+## 16 novembre — PR159 livrée en préproduction
+
+Le complément Attentes est livré et aligné après validation et merge humains. Interface, validation PHP active et deux Word hébergés vérifiés ; 22 dossiers/colonnes/propriétaires et brouillon initial conservés. [Preuves et limites](docs/attentes-ecoute-client.md#préproduction). Les paragraphes locaux datés suivants conservent l’historique du candidat ; le suivi canonique porte l’état courant.
+
+## Attentes et écoute client — 16 novembre
+
+Complément local : reprise explicite de deux textes de Dossier dans Export, attentes modifiables avec provenance et notes complémentaires dictables. Liens stables et données historiques conservés ; notes dans le Word expert, exclues du client. [Parcours, revue locale et limites](docs/attentes-ecoute-client.md). Préproduction non engagée pour ce candidat ; les états datés suivants restent historiques, le suivi canonique porte les livraisons et recettes Terrain/photo du 14.
+
+
+## 14 novembre — Terrain horizontal, candidat local PR158
+
+Protocoles présente 0 Terrain et le Bâti Eau/Air/Terre/Feu à l’horizontale. Observations contient les constats T1/T2… et le fond cadastral cadré/enregistré, sans décaler les numéros du bâti. Site est allégé ; les anciennes notes restent dans un volet de reprise. 202 tests, PHP, deux compilations et 38 contrôles HTTP/MariaDB locaux réussis ; réouverture serveur et Word contrôlés. [Parcours, preuves, limites et revue locale](docs/environnement-terrain.md). Revue humaine en attente ; aucune livraison de cette révision. Les états datés suivants restent historiques.
+
+## Photos du rapport — candidat local du 13 novembre
+
+Dans Observations, **Préparer la photo du rapport** permet de recadrer, tracer un rectangle ou une flèche et placer un commentaire. Annuler/rétablir, fermer sans appliquer et revenir à l’original restent possibles. Le choix de la copie préparée est repris dans les deux restitutions ; l’original reste dans le dossier et continue à servir à la conservation privée. [Parcours de revue, contrat et limites](docs/photos-rapport-edition.md).
+
+186 tests Node et les contrôles PHP passent ; les deux compilations sont réussies. Recette locale sur mire synthétique : annulation, trois annotations, choix réversible, reprise du brouillon et réimport JSON, images exactes dans les deux DOCX. La recette HTTP/MariaDB ne redémarre pas : Docker Desktop échoue avant lancement de la base. Aucune qualification serveur de ce nouveau candidat ou PDF déduite de la recette locale. Le stockage hébergé des originaux reste désactivé.
+
+PR154 est depuis validée, fusionnée et alignée en préproduction ; les mentions de brouillon ci-dessous conservent leur état historique de préparation. Ce nouveau lot photo n’est pas livré.
+
+## Correction de pagination — préproduction vérifiée le 13 novembre
+
+Les deux réserves Word/PDF sont corrigées et vérifiées en préproduction : 26 pages relues, expert 20 pages et synthèse 6 pages, textes et médias conservés. Les 176 tests et les deux compilations réussissent ; PR154 ouverte en brouillon pour revue humaine, sans fusion ni production. [Critères, suivi et limites](docs/partage-tests-et-stockage.md#correction-de-pagination--13-novembre).
+
+
+## PR152 en préproduction — 13 novembre 2026
+
+[Entrer par CONNECT préproduction](https://connect-preprod.avereo.fr/?app=rapport). Le paquet qualifié du correctif dossiers complets est installé ; les 18 dossiers existants, leurs propriétaires et contenus sont conservés. Sauvegarde et retour arrière applicatif vérifiés ; aucun changement de production ni activation des originaux privés. La recette technique entre deux comptes fictifs est ensuite réussie : sauvegarde complète, réouverture dans une nouvelle session sans brouillon local, copie indépendante et source conservé. [Contrôles réalisés et limites](docs/partage-tests-et-stockage.md#préproduction). Les exports Word et leur conversion PDF dans Word conservent les contenus vérifiés ; deux réserves de pagination sont alors ouvertes, puis résolues par le correctif décrit ci-dessus. [Résultats et limites](docs/partage-tests-et-stockage.md#contrôle-des-exports-word-et-pdf--13-novembre). Les mentions locales ci-dessous conservent la chronologie de préparation.
+
+
+## Dossiers complets — correctif local du 13 novembre
+
+Depuis l’accueil, **Charger un dossier JSON** affiche les observations, photos, plans et la présence d’une signature avant confirmation. Dans la liste serveur, **Télécharger JSON complet** récupère les octets du dossier sauvegardé, vérifiés par empreinte. Dans Export, **Télécharger le dossier complet (JSON)** conserve le dossier ouvert ; **Créer une structure de test sans textes ni photos** reste une action distincte, explicitement expurgée.
+
+La sauvegarde en ligne relit le contenu écrit et affiche ses compteurs. L’import crée une copie locale indépendante : une sauvegarde en ligne crée un autre dossier sous le compte destinataire, sans remplacer le source. Les changements de saisie survenus pendant l’envoi restent dans le brouillon et doivent être sauvés à nouveau. [Usage, preuve et limites](docs/partage-tests-et-stockage.md).
+
+Ce paragraphe décrit la préparation locale initiale, suivie de la livraison PR152 documentée ci-dessus. La branche intègre les originaux privés de PR150, fusionnée dans `main` ; les deux fonctionnalités sont conservées et le stockage privé reste désactivé par défaut. Le lot 0 PR149 a été livré en préproduction le 13 novembre ; ses paragraphes « candidat local » ci-dessous restent historiques.
+
+## Photos originales — première tranche locale du 13 novembre
+
+Dans Observations, **Voir la photo** ouvre une vue agrandie avec zoom. Lorsque le stockage privé est configuré et le dossier sauvé en ligne, **Conserver l’original en ligne** envoie le fichier sans le modifier ; sauver ensuite le dossier conserve son lien. **Ouvrir l’original privé** vérifie et rouvre ce fichier à la demande, avec téléchargement possible.
+
+La fonction serveur est désactivée par défaut. La photo du rapport et les exports existants restent inchangés : ce premier incrément n’allège pas encore le JSON ni le Word. Recadrage et annotations restent à développer. [Usage, contrat, recette locale et prérequis d’activation](docs/photos-originales-et-annotations.md) ; [commandes de vérification](tests/README.md).
+
+Au premier contrôle de cette tranche photo, le lot 0 était fusionné en PR149 et livré en préproduction, sa recette fonctionnelle hébergée encore ouverte. Les mentions « candidat local » antérieures ci-dessous décrivent leur étape historique. La recette complète PR152 et les contrôles d’exports ultérieurs sont décrits plus haut ; le stockage des originaux reste désactivé.
+
 
 ## Lot 0 — observations, candidat local vérifié
 
@@ -137,7 +261,10 @@ attentes, besoin reformule, criteres de reussite, contraintes et accords pour
 les photos et la dictee. Ces donnees suivent le
 meme brouillon, la meme sauvegarde JSON et les memes exports que le reste du
 rapport. Les photos et la dictee sont desactivees tant que l'accord
-correspondant n'est pas enregistre.
+correspondant n'est pas enregistre. L'import de photos reste inchange : aucune
+compression n'est active. La conservation des originaux dans un espace prive du
+dossier en ligne est cadree dans
+[photos et annotations](docs/photos-originales-et-annotations.md).
 
 Les accords de Visite Globale sont places juste sous « Informations de base,
 client et mission », avant l'entretien, pour autoriser la dictee des le debut.
@@ -278,3 +405,8 @@ Dans **Rapports sauvegardés en ligne**, les cinq derniers dossiers sont visible
 ## Habilitations par organisation — candidat local
 
 [Exporter un rapport en JSON depuis les dossiers autorisés](../../docs/administration-acces-exports.md).
+
+
+## 19 novembre — Planning indicatif par périodes
+
+[Planning Rapport vers Projet](docs/interventions-projet.md) : mode sans dates P1/P2, positionnement explicite, échange JSON et création indépendante. Implémenté et qualifié en préproduction dans la PR175 ; revue humaine et fusion restent distinctes. Le contrat lié porte les preuves et réserves courantes.

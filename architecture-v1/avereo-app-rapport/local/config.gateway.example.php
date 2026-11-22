@@ -16,5 +16,5 @@ return [
     'connect_gate_session_seconds' => 1800,
     'connect_admin_user_ids' => [],
 
-    'max_payload_bytes' => 50 * 1024 * 1024,
+    'max_payload_bytes' => 100_000_000,
 ];

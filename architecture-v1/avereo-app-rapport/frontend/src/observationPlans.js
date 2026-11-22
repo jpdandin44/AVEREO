@@ -1,9 +1,16 @@
-import { orderedObservations } from './observationOrder.js';
+import { orderedObservations, observationNumber } from './observationOrder.js';
+import { REPORT_JSON_LIMIT } from '../../../avereo-platform/shared/report-volumes.js';
 
 // Plans belong to the report payload. Never fetch a remote image or share case assets.
-export const MAX_REPORT_BYTES = 50 * 1024 * 1024;
+export const MAX_REPORT_BYTES = REPORT_JSON_LIMIT;
 export const MAX_PLAN_BYTES = 4 * 1024 * 1024;
 export const MAX_PLANS = 20;
+export const PLAN_KINDS = Object.freeze({
+  cadastre: 'Fond cadastral du terrain', satellite: 'Vue satellite — photographie aérienne',
+  satellite_parcelles: 'Vue satellite + parcelles', masse: 'Plan de masse',
+  niveau: 'Plan de niveau', coupe: 'Coupe', facade: 'Façade', autre: 'Autre vue',
+});
+export const planKindLabel = kind => PLAN_KINDS[kind] || 'Plan';
 const imagePattern = /^data:image\/(?:png|jpeg);base64,[A-Za-z0-9+/]+={0,2}$/;
 const identifier = value => typeof value === 'string' && value.length > 0 && value.length <= 190;
 
@@ -15,7 +22,7 @@ export function planPayloadError(report) {
     if (!plan || !identifier(plan.id) || ids.has(plan.id)) return 'Chaque plan doit avoir un identifiant unique.';
     ids.add(plan.id);
     if (typeof plan.title !== 'string' || !plan.title.trim() || plan.title.length > 200
-      || !['niveau', 'coupe'].includes(plan.kind)
+      || !Object.hasOwn(PLAN_KINDS, plan.kind)
       || typeof plan.source !== 'string' || plan.source.length > 1000) return 'Le titre, le type ou la source du plan est invalide.';
     if (typeof plan.src !== 'string' || !imagePattern.test(plan.src)
       || plan.src.length > Math.ceil(MAX_PLAN_BYTES / 3) * 4 + 32) return 'Chaque plan doit être une image PNG ou JPEG de 4 Mio maximum.';
@@ -41,10 +48,10 @@ export function planPayloadError(report) {
 
 // Numbers come from the shared protocol order, never from the stored array position.
 export function markersForPlan(report, planId, selectedIds = null) {
-  return orderedObservations(report).flatMap((observation, index) => {
+  return orderedObservations(report).flatMap((observation) => {
     if (selectedIds && !selectedIds.includes(observation.id)) return [];
     const point = (observation.reperes || []).find(p => p.planId === planId);
-    return point ? [{ ...point, observationId: observation.id, number: index + 1,
+    return point ? [{ ...point, observationId: observation.id, number: observationNumber(report, observation),
       title: observation.titre || observation.piece || 'Observation sans titre' }] : [];
   });
 }
@@ -59,10 +66,21 @@ export function setObservationPoint(report, observationId, planId, point) {
 }
 
 export function observationPlanNames(report, observation) {
-  return (observation.reperes || []).map(point => (report.plans || []).find(plan => plan.id === point.planId)?.title).filter(Boolean);
+  return observationPlanViews(report, observation).map(plan => plan.title);
 }
 
-export async function readPlanFile(file) {
+export function observationPlanViews(report, observation) {
+  return (observation.reperes || []).map(point => (report.plans || []).find(plan => plan.id === point.planId)).filter(Boolean);
+}
+
+export function removePlan(report, planId) {
+  if (!(report.plans || []).some(plan => plan.id === planId)) return report;
+  return { ...report, plans: report.plans.filter(plan => plan.id !== planId),
+    observations: report.observations.map(observation => !observation.reperes?.some(point => point.planId === planId) ? observation
+      : { ...observation, reperes: observation.reperes.filter(point => point.planId !== planId) }) };
+}
+
+export async function readPlanFile(file, kind = 'auto') {
   if (!['image/png', 'image/jpeg'].includes(file.type) || file.size > MAX_PLAN_BYTES) {
     throw new Error('Choisir des images PNG ou JPEG de 4 Mio maximum chacune.');
   }
@@ -73,11 +91,21 @@ export async function readPlanFile(file) {
   const image = new Image(); image.src = src;
   try { await image.decode(); } catch { throw new Error('Cette image ne peut pas être décodée.'); }
   const plan = { id: crypto.randomUUID(), title: file.name.replace(/\.[^.]+$/, ''),
-    kind: /coupe/i.test(file.name) ? 'coupe' : 'niveau', source: file.name, src,
+    kind: kind === 'auto' ? inferPlanKind(file.name) : kind, source: file.name, src,
     width: image.naturalWidth, height: image.naturalHeight };
   const error = planPayloadError({ plans: [plan] });
   if (error) throw new Error(error);
   return plan;
+}
+
+export function inferPlanKind(name) {
+  const value = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  if (/satellite|aerien|orthophoto/.test(value)) return /parcell/.test(value) ? 'satellite_parcelles' : 'satellite';
+  if (/cadastr/.test(value)) return 'cadastre';
+  if (/coupe/.test(value)) return 'coupe';
+  if (/facade|elevation/.test(value)) return 'facade';
+  if (/masse/.test(value)) return 'masse';
+  return 'niveau';
 }
 
 // Bake the same coordinates and observation numbers into a PNG for native Word.

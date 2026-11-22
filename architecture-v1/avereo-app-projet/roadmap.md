@@ -5,14 +5,57 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-12
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
 
-## 12 novembre — Reprise des boutons et rattachement du générateur
+## 20 novembre — Inventaire complet du compte
+
+**Cadrage** : objectif et critères du recensement consignés ; phases et accords
+antérieurs conservés. **Développement local** : découverte, catalogue dérivé,
+recherche et filtres implémentés ; qualification complète et PR en préparation.
+**Préproduction** : candidat de ce lot non installé ; qualifier sauvegarde,
+retour sur copie, inventaire affiché et cycle autonome avant acceptation.
+**Mise en production** : non autorisée dans ce lot.
+[Suivi canonique](data/suivi-inventaire-github.json),
+[qualification](docs/inventaire-github.md).
+
+## 19 novembre — Synthèse, critères et preuves
+
+**Cadrage** : indicateurs factuels, critères absents et historique explicites.
+**Développement local** : cartes, filtres, détail et résumés Node/PHP préparés.
+**Préproduction** : installation autorisée par le responsable après tests/CI,
+sauvegarde et retour arrière ; le reçu reste distinct de cette intention.
+**Mise en production** : hors périmètre, non autorisée.
+[Suivi canonique](data/suivi-cockpit-qualite-synthese.json),
+[contrat et limites](docs/cockpit-qualite-synthese.md).
+
+## 19 novembre — Actualisation automatique autorisée en préproduction
+
+**Cadrage** : GitHub automatique seulement, refus du relais PC ; accords existants préservés. **Développement local** : opérateur et état signé implémentés, qualification du candidat exact et CI à terminer. **Préproduction** : installation autorisée avec sauvegarde/retour, accès du seul propriétaire global ; exécution indépendante du planificateur et recette à constater avant annonce opérationnelle. **Mise en production** : non autorisée. [Suivi de ce lot](data/suivi-actualisation-automatique.json). Les limitations et blocages antérieurs ci-dessous restent historiques, pas un état d'installation actuel.
+
+## 16 novembre — Gantt et progression calculée
+
+Reprise du 18 novembre : correction du lecteur et raccordements TC/Rapport/CONNECT, avec conservation des anciennes projections comme historique. Qualification locale et PR/CI, puis sauvegarde/retour sur copie et publication ponctuelle du seul lecteur PHP borné et des données privées en préproduction ; recette des trois lignes requise avant de déclarer l'affichage à jour. Aucun publicateur permanent ni production dans ce lot. [Contrat](docs/suivis-courants-et-historique.md).
+
+Cadrage : besoin de visibilité automatique confirmé, quatre phases et accords préservés. Développement local : vue Gantt, projection technique, sources actives raccordées et collecteur périodique opt-in ; qualification à consigner dans le [suivi](data/suivi-gantt-developpements.json). Préproduction : à préparer après revue/CI et accord ciblé, avec service de publication automatique privé, sauvegarde/retour et vraie recette. Mise en production : non commencée/non autorisée. Les entrées antérieures sont historiques ; PQ-01 a son reçu distinct de publication et ne doit pas être revalidé par ce lot.
+
+Préparation de la PR demandée par le responsable : contrat de publicateur désactivé, tests des primitives et [qualification opérationnelle](docs/publicateur-prive.md). L'activation reste bloquée sur service/sources privés, transport/admission, état hébergé actuel et conservation à capacité pleine. Aucun déploiement de la PR.
+
+[PR160](https://github.com/jpdandin44/AVEREO/pull/160) ouverte en brouillon, main PR159 intégré sans conflit et 354 tests locaux sur source propre qualifiés. Prochaine action : revue locale du Gantt/dossier de qualification et lecture de la CI finale, puis cadrage du raccordement privé ; cases humaines et phases hébergées inchangées.
+
+## 13 novembre — PQ-01 en PR de revue locale
+
+[PR #151](https://github.com/jpdandin44/AVEREO/pull/151) ouverte, candidat code requalifié après intégration de main. Revue du responsable sur la vue privée locale, puis qualification des alertes de dépendances avant proposition de livraison. Cases humaines et phase conservées sans approbation automatique ; préproduction et production non commencées pour PQ-01. [Preuves actuelles](data/qualification-patrimoine-pq01-pr.json). Les contrôles GitHub doivent être lus sur la dernière tête publiée ; la policy humaine reste distincte.
+
+## 12 novembre — historique : PQ-01 local, revue à préparer
+
+Cadrage documenté, développement local du collecteur et de la vue Patrimoine & qualité. [Suivi et critères proposés](data/suivi-patrimoine-pq01.json). Terminer preuves, revue visuelle et non-régression, puis qualifier les alertes de dépendances et préparer la PR sous le protocole habituel. Préproduction et Mise en production non commencées/non autorisées pour ce candidat. PQ-02 à PQ-06 restent des lots séparés. L'ancien constat de PR #141 non fusionnée ci-dessous est historique ; il n'est pas la base d'autorisation de PQ-01.
+
+## 12 novembre — Historique : reprise des boutons et rattachement du générateur
 
 Cadrage : session courte de Projet distincte de CONNECT, PR 141 non fusionnée. Développement local : retour explicite après actualisation, reprise d’une vue vide et message de reconnexion préparés et testés ; clone de référence avancé sur main en conservant les travaux et sauvegardes. Préproduction : version 11 disponible après renouvellement normal de session ; nouveau correctif à qualifier et livrer après accord applicable. Mise en production : non commencée. Le générateur ne peut être rattaché à main qu’après fusion autorisée de la PR ; ce rattachement ne doit pas salir le clone avec une copie manuelle.
 
@@ -248,3 +291,8 @@ Sauvegarde distante, collaboration, absences/jours fériés et nivellement
 multiressource ne sont pas engagés. Une activation backend/MySQL exigerait un
 nouveau périmètre. Les corrections du sas et de sa publication demeurent un
 lot distinct ; les inscrire dans le planning ne prouve pas leur réalisation.
+
+
+## Planning par périodes — 19 novembre
+
+Mode relatif livré en préproduction ; création indépendante, sauvegarde et réouverture après reconnexion qualifiées techniquement dans la PR175. Revue humaine de la PR à effectuer. État exact dans le suivi canonique et ses reçus ; aucun passage en production. [Planning par périodes](docs/planning-periodes.md).

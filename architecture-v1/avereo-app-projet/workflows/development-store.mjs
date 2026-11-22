@@ -5,6 +5,9 @@ import {DevelopmentError} from './development-access.mjs';
 import {projectDevelopmentVersions,developmentPortfolio} from './development-versions.mjs';
 import {readGithubObservations,observeGithub} from './development-github-observations.mjs';
 import {readEvidenceQualification,qualifiedView,qualifiedEvidence} from './development-evidence-qualification.mjs';
+import {readPatrimonyObservation} from './development-patrimony.mjs';
+import {githubInventoryView} from './development-github-inventory.mjs';
+import {developmentQuality} from './development-quality.mjs';
 
 export const DEVELOPMENT_PHASES=['Cadrage','Développement local','Préproduction','Mise en production'];
 const hash=v=>createHash('sha256').update(typeof v==='string'||Buffer.isBuffer(v)?v:JSON.stringify(v)).digest('hex');
@@ -17,18 +20,26 @@ const limit=2*1024*1024;
 const safeText=v=>typeof v==='string'?v:'';
 const sha=/^(?:[a-f0-9]{40}|[a-f0-9]{64})$/i;
 const withoutReviews=data=>{const copy={...data};delete copy.developmentReviews;return copy;};
-function workflow(raw){return raw.developmentWorkflow&&typeof raw.developmentWorkflow==='object'?raw.developmentWorkflow:raw;}
+function workflow(raw){
+  if(!raw||typeof raw!=='object'||Array.isArray(raw))fail(422,'Workflow du suivi invalide.');
+  if(!Object.hasOwn(raw,'developmentWorkflow'))return raw;
+  const value=raw.developmentWorkflow;
+  if(!value||typeof value!=='object'||Array.isArray(value))fail(422,'Workflow du suivi invalide.');
+  return value;
+}
 function selectProjection(raw,source){
   let v=raw;if(source.dataPath){for(const key of source.dataPath.split('.')){if(!v||typeof v!=='object'||!Object.hasOwn(v,key))fail(422,'Sous-suivi déclaré introuvable.');v=v[key];}}else v=workflow(raw);
   if(source.iterationKey){if(!Array.isArray(v))fail(422,'Liste d’itérations absente.');const matches=v.filter(x=>x?.iterationId===source.iterationKey);if(matches.length!==1)fail(422,'Itération absente ou ambiguë.');v=matches[0];}
+  if(source.followActiveIteration){const key=v?.activeIteration;if(typeof key!=='string'||!/^[a-zA-Z0-9_-]{1,120}$/.test(key)||['__proto__','prototype','constructor'].includes(key)||!Object.hasOwn(v,key)||!v[key]||typeof v[key]!=='object'||Array.isArray(v[key]))fail(422,'Itération active absente ou invalide.');const child=workflow(v[key]);v={...child,iterationId:child.iterationId||key,_activeIterationKey:key};}
+  else v=workflow(v);
   if(source.recordKind==='receipt'){const phase=source.deliveryEnvironment==='production'?3:2;v={iterationId:source.id,stage:phase===3?'production':'preproduction',status:'delivery_receipt_declared',candidate:{sourceSha:v.sourceSha,artifactSha256:v.artifactSha256},github:{prUrl:v.sourcePr},delivery:{status:'delivered',sourceSha:v.sourceSha,artifactSha256:v.artifactSha256,target:v.target,observedAt:v.deployedAt,evidence:relative(source.root,source.file)},checks:[{id:'declared-receipt',phaseId:phase,kind:'document',status:'reviewable',evidence:relative(source.root,source.file),observedAt:v.deployedAt}],nextAction:'Reçu déclaré consultable ; état hébergé actuel et revue humaine non déduits.'};}
   else if(source.recordKind==='declaration')v={...v,iterationId:v.iterationId||source.id};
   if(source.includeRootPhases)v={...v,phases:raw.phases,currentPhase:raw.currentPhase};return v;
 }
 function safeLink(value){try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;}catch{return null;}}
 
-export async function createDevelopmentStore(entries,{adminId=null,applications=[],githubObservationFile=null,evidenceQualificationFile=null}={}){
-  if(!Array.isArray(entries)||!entries.length||entries.length>50)throw new Error('Registre privé absent ou invalide.');
+export async function createDevelopmentStore(entries,{adminId=null,applications=[],githubObservationFile=null,evidenceQualificationFile=null,patrimonyObservationFile=null}={}){
+  if(!Array.isArray(entries)||!entries.length||entries.length>100)throw new Error('Registre privé absent ou invalide.');
   if(evidenceQualificationFile&&entries.some(e=>e.writable!==false))throw Error('Qualifications réservées aux sources consultatives.');
   const sources=new Map();
   for(const entry of entries){
@@ -41,9 +52,11 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
     if(entry.evidenceBase&&(typeof entry.evidenceBase!=='string'||isAbsolute(entry.evidenceBase)||!inside(root,resolve(root,entry.evidenceBase))))throw Error('Base des pièces hors du dossier autorisé.');
     if(entry.dataPath&&(typeof entry.dataPath!=='string'||entry.dataPath.split('.').some(k=>!/^[a-zA-Z0-9_-]+$/.test(k)||['__proto__','prototype','constructor'].includes(k))||entry.writable===true))throw Error('Projection privée invalide ou demandée en écriture.');
     if((entry.iterationKey||entry.recordKind||entry.includeRootPhases||entry.deliveryAdapter)&&entry.writable!==false)throw Error('Adaptateur strictement consultatif requis.');
+    if(entry.followActiveIteration&&(entry.followActiveIteration!==true||entry.writable!==false||!entry.dataPath||entry.iterationKey))throw Error('Pointeur d’itération active consultatif invalide.');
     if(entry.iterationKey&&(typeof entry.iterationKey!=='string'||!entry.dataPath||!/^[a-zA-Z0-9_-]{1,120}$/.test(entry.iterationKey)))throw Error('Sélecteur d’itération invalide.');
     if(entry.recordKind&&!['receipt','declaration'].includes(entry.recordKind))throw Error('Adaptateur inconnu.');
     if(entry.recordKind==='receipt'&&!entry.deliveryEnvironment)throw Error('Environnement du reçu requis.');
+    if(entry.checkKindMap&&(entry.writable!==false||typeof entry.checkKindMap!=='object'||Array.isArray(entry.checkKindMap)||Object.values(entry.checkKindMap).some(k=>!Object.hasOwn(checkPhase,k))))throw Error('Mapping de contrôles consultatif invalide.');
     if(entry.deliveryAdapter&&!['missions-preproduction'].includes(entry.deliveryAdapter))throw Error('Adaptateur de livraison inconnu.');
     if(entry.deliveryApplicationIds&&(!Array.isArray(entry.deliveryApplicationIds)||entry.deliveryApplicationIds.some(id=>!entry.applicationIds?.includes(id))))throw Error('Périmètre de livraison invalide.');
     sources.set(entry.id,{...entry,applicationIds:entry.applicationIds||[entry.id],root,file});
@@ -56,7 +69,14 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
     if(await realpath(source.file)!==source.file)fail(403,'Source indisponible.');
     const bytes=await readFile(source.file);if(bytes.length>limit)fail(413,'Suivi trop volumineux.');
     let raw;try{raw=JSON.parse(bytes.toString('utf8').replace(/^\uFEFF/,''));}catch{fail(422,'Suivi illisible.');}
-    const data=selectProjection(raw,source);
+    let data=selectProjection(raw,source);
+    // Certains suivis canoniques nomment les quatre phases au lieu de les numéroter.
+    // Seul le mapping explicite du registre autorise cette projection historique.
+    if(data?.phases&&!Array.isArray(data.phases)&&source.phaseMap&&typeof data.phases==='object'){
+      const entries=Object.entries(data.phases);
+      if(entries.length!==4||entries.some(([key,value])=>!Object.hasOwn(source.phaseMap,key)||typeof value!=='string')||new Set(entries.map(([key])=>source.phaseMap[key])).size!==4)fail(422,'Mapping des phases nommées incomplet.');
+      data={...data,phases:entries.map(([key,status])=>({id:key,status,criteria:[]}))};
+    }
     const qualification=qualifiedView(await readEvidenceQualification(evidenceQualificationFile),id,hash(bytes));
     if(!data||typeof data!=='object'||Array.isArray(data))fail(422,'Schéma du suivi non reconnu.');
     const structured=Array.isArray(data.phases)&&data.phases.every(p=>p&&typeof p==='object');
@@ -65,6 +85,8 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
       if(source.phaseMap&&Object.hasOwn(source.phaseMap,String(p)))return source.phaseMap[String(p)];
       return Number.isInteger(p)&&p>=0&&p<4?p:null;
     };
+    // A missing id may use its declared label, but only the registry's explicit map can resolve it.
+    const phaseIdentity=p=>p.id??p.label;
     if(structured&&data.phases.length!==4&&!source.phaseMap)fail(422,'Mapping historique vers quatre phases requis.');
     const candidate=data.candidate||{};
     const candidateFingerprint=hash(Object.keys(candidate).length?candidate:withoutReviews(raw));
@@ -72,17 +94,22 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
     const current=structured&&Number.isInteger(data.currentPhase)?map(data.currentPhase):stages[data.stage]??(namedPhase>=0?namedPhase:null);
     const phases=DEVELOPMENT_PHASES.map((label,id)=>({id,key:phaseKeys[id],label,status:'not_reported',criteria:[],proofs:[]}));
     if(structured){
-      for(const p of data.phases){const target=map(p.id);if(target===null||!phases[target])fail(422,'Phase non mappée.');const phase=phases[target];phase.status=phase.status==='not_reported'?safeText(p.status)||'not_reported':phase.status===p.status?phase.status:'mixed';}
+      for(const p of data.phases){const target=map(phaseIdentity(p));if(target===null||!phases[target])fail(422,'Phase non mappée.');const phase=phases[target];phase.status=phase.status==='not_reported'?safeText(p.status)||'not_reported':phase.status===p.status?phase.status:'mixed';}
     }else if(current!==null){phases[current].status=safeText(data.status)||'in_progress';}
     const proofs=[],files=new Map();
-    const definitions=[...(Array.isArray(data.proofs)?data.proofs:[]),...(Array.isArray(data.checks)?data.checks:[])].map(item=>({item,phase:Number.isInteger(item.phaseId)?map(item.phaseId):checkPhase[item.kind]??checkPhase[item.environment]??null}));
+    const definitions=[...(Array.isArray(data.proofs)?data.proofs:[]),...(Array.isArray(data.checks)?data.checks:[])].map(item=>{
+      const mapped=source.checkKindMap?.[item.kind],kind=mapped||item.kind;
+      if(mapped&&!Object.hasOwn(checkPhase,mapped))fail(422,'Type de contrôle non qualifié.');
+      return{item:mapped?{...item,kind,declaredKind:item.kind}:item,phase:Number.isInteger(item.phaseId)?map(item.phaseId):checkPhase[kind]??checkPhase[item.environment]??null};
+    });
     if(typeof data.evidence==='string')definitions.push({item:{id:'declared-evidence',title:'Dossier de qualification déclaré',kind:'reference_document',status:'reviewable',evidence:data.evidence},phase:current});
-    if(structured)for(const p of data.phases)for(const d of p.deliverables||[])definitions.push({item:{...d,id:d.id||'document-'+hash([p.id,d.path||d]).slice(0,16),kind:'document',evidence:d.path,status:d.status||'reviewable'},phase:map(p.id)});
+    if(structured)for(const p of data.phases)for(const d of p.deliverables||[])definitions.push({item:{...d,id:d.id||'document-'+hash([phaseIdentity(p),d.path||d]).slice(0,16),kind:'document',evidence:d.path,status:d.status||'reviewable'},phase:map(phaseIdentity(p))});
     for(const {item,phase} of definitions){
       const id=safeText(item.id)||'proof-'+hash(item).slice(0,20);
       if(proofs.some(p=>p.id===id))fail(422,'Identifiant de preuve dupliqué.');
       const evidence=safeText(item.path)||safeText(item.evidence),url=safeLink(evidence);
       const proof={id,phaseId:phase,title:safeText(item.title)||safeText(item.label)||safeText(item.id)||safeText(item.kind)||'Preuve',kind:safeText(item.kind),status:safeText(item.status)||'not_reported',sourceSha:safeText(item.sourceSha),artifactSha256:safeText(item.artifactSha256),target:safeText(item.target),observedAt:safeText(item.observedAt),description:evidence,url,availability:url?'reference':'unverified',fileHash:null};
+      if(item.declaredKind)proof.declaredKind=item.declaredKind;
       proof.freshness=sha.test(candidate.sourceSha||'')&&sha.test(proof.sourceSha)?candidate.sourceSha===proof.sourceSha?'current':'stale':/^[a-f0-9]{64}$/i.test(candidate.artifactSha256||'')&&/^[a-f0-9]{64}$/i.test(proof.artifactSha256)?candidate.artifactSha256===proof.artifactSha256?'current':'stale':proof.kind==='document'?'current':'unverified';
       if(candidate.artifactSha256&&proof.artifactSha256&&candidate.artifactSha256!==proof.artifactSha256)proof.freshness='stale';
       // Un chemin doit être relatif, déclaré et résolu dans la racine autorisée.
@@ -127,20 +154,26 @@ export async function createDevelopmentStore(entries,{adminId=null,applications=
       const context=qualification.criteria?.[id];if(context&&refs.length===0){c.contextStatus=context.status;c.contextRole='context_not_acceptance_evidence';c.contextProofs=(context.contextProofIds||[]).map(id=>proofs.find(p=>p.id===id)).filter(Boolean);c.contextReason=context.reason;}
       allCriteria.push(c);if(phase===null)unassigned.push(c);else phases[phase].criteria.push(c);
     }
-    if(structured)for(const p of data.phases)for(const c of p.criteria||p.exitCriteria||[])criterion(c,map(p.id),p.id);
+    if(structured)for(const p of data.phases)for(const c of p.criteria||p.exitCriteria||[])criterion(c,map(phaseIdentity(p)),phaseIdentity(p));
     for(const c of data.developmentCriteria||data.criteria||data.requirements||[])criterion(c,Number.isInteger(c.phaseId)?map(c.phaseId):null);
+    if(structured)for(const p of data.phases){
+      const target=map(phaseIdentity(p)),start=p.plan?.start,end=p.plan?.end;
+      const valid=v=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString().slice(0,10)===v;
+      if(target!==null&&valid(start)&&valid(end)&&end>=start)phases[target].plan={start,end};
+    }
     const revision=hash(Buffer.concat([bytes,Buffer.from(JSON.stringify(proofs.map(p=>({id:p.id,fingerprint:p.fingerprint}))))]));
     const writable=!source.dataPath&&source.writable===true&&raw.developmentReviewSchema===1&&typeof adminId==='string'&&/^[1-9][0-9]{0,18}$/.test(adminId);
     const versions=projectDevelopmentVersions(data,source);
     const view={id,title:source.title||safeText(data.title)||safeText(data.objective)||safeText(data.iterationId)||id,application:source.application||safeText(data.project)||'Application',applicationIds:source.applicationIds,status:safeText(data.status)||safeText(data.state)||'not_reported',versions,sourceHash:hash(bytes),dataPath:source.dataPath||null,sourceModifiedAt:(await stat(source.file)).mtime.toISOString(),mapping:source.phaseMap||null,hasUnqualifiedDelivery:data.delivery?.status==='delivered'&&!source.deliveryEnvironment,iterationId:safeText(data.iterationId)||id,source:source.file,revision,readAt:new Date().toISOString(),currentPhase:current,candidate:{sourceSha:versions.candidate.sourceSha||'',artifactSha256:versions.candidate.artifactSha256||''},nextAction:safeText(data.nextAction),blockers:Array.isArray(data.blockers)?data.blockers:Array.isArray(data.openItems)?data.openItems:[],phases,unassignedCriteria:unassigned,writable,writeReason:writable?'':'Consultation seule : contrat d’écriture non activé dans cette source.',history:reviewHistory,declaredApprovals:Array.isArray(data.approvals)?data.approvals:[],githubObservedAt:data.github?.observedAt||null};
     view.githubObservation=observeGithub(data,source,await readGithubObservations(githubObservationFile));view.iterationKey=source.iterationKey||null;view.unassignedProofs=proofs.filter(p=>p.phaseId===null);view.evidenceQualification={status:qualification.status,observedAt:qualification.observedAt||null};
+    if(data._activeIterationKey)view.dataPath=source.dataPath+'.'+data._activeIterationKey;
     return {source,raw,bytes,data,view,proofs,files,criteria:allCriteria,candidateFingerprint};
   }
-  async function list(){return Promise.all([...sources.keys()].map(async id=>{try{const {view}=await snapshot(id);return {id,title:view.title,application:view.application,applicationIds:view.applicationIds,status:view.status,versions:view.versions,githubPrUrls:view.githubObservation.pullRequests.map(p=>p.url),githubOpenPrCount:view.githubObservation.pullRequests.filter(p=>p.state==='open').length,hasUnqualifiedDelivery:view.hasUnqualifiedDelivery,blockerCount:view.blockers.length,currentPhase:view.currentPhase,phases:view.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length})),nextAction:view.nextAction,readAt:view.readAt};}catch(error){return{id,title:sources.get(id).title||id,applicationIds:sources.get(id).applicationIds,unavailable:true,message:'Source indisponible ou incompatible.'};}}));}
+  async function list(){return Promise.all([...sources.keys()].map(async id=>{try{const {view}=await snapshot(id);return {id,quality:developmentQuality(view),revision:view.revision,title:view.title,application:view.application,applicationIds:view.applicationIds,status:view.status,versions:view.versions,githubPrUrls:view.githubObservation.pullRequests.map(p=>p.url),githubOpenPrCount:view.githubObservation.pullRequests.filter(p=>p.state==='open').length,hasUnqualifiedDelivery:view.hasUnqualifiedDelivery,blockerCount:view.blockers.length,currentPhase:view.currentPhase,phases:view.phases.map(p=>({id:p.id,label:p.label,status:p.status,criteria:p.criteria.length,approved:p.criteria.filter(c=>c.decision==='approved').length})),nextAction:view.nextAction,readAt:view.readAt};}catch(error){return{id,title:sources.get(id).title||id,applicationIds:sources.get(id).applicationIds,unavailable:true,message:'Source indisponible ou incompatible.'};}}));}
   return {
     list,
     async portfolio(){return developmentPortfolio(applications,await list(),await readGithubObservations(githubObservationFile));},
-    async dashboard(){const iterations=await list(),github=await readGithubObservations(githubObservationFile);return{iterations,portfolio:await developmentPortfolio(applications,iterations,github),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{}},readAt:new Date().toISOString()};},
+    async dashboard(){const iterations=await list(),github=await readGithubObservations(githubObservationFile);return{iterations,portfolio:await developmentPortfolio(applications,iterations,github),patrimony:await readPatrimonyObservation(patrimonyObservationFile),githubSnapshot:{status:github.status,observedAt:github.observedAt||null,latestMerges:github.latestMerges||{},...(github.inventory?{inventory:githubInventoryView(github)}:{})},readAt:new Date().toISOString()};},
     async get(id){return (await snapshot(id)).view;},
     async proof(id,proofId){const state=await snapshot(id);const file=state.files.get(proofId);if(!file)fail(404,'Pièce non disponible.');const content=await readFile(file.path);if(hash(content)!==file.hash)fail(409,'La pièce a changé. Actualiser la revue.');return {content,ext:file.ext,name:proofId+file.ext};},
     async review(id,input,actor){

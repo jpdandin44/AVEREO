@@ -1,0 +1,48 @@
+{
+  "observedAt": "2026-11-16T14:50:42.473978+00:00",
+  "status": "local_passed",
+  "baseSha": "d5ae90eb1e9f634a8bd6f91ca0ad065d7a7718c6",
+  "nodeTests": 216,
+  "phpDecisionChecks": 29,
+  "httpMariaDbChecks": 38,
+  "buildFileCounts": [
+    150,
+    150
+  ],
+  "onlineArtifactSha256": "080b8213ab59fb653c1b18c2544dfb2cf4e0baeab8cda186162c81451329f197",
+  "browser": {
+    "initialDraftEmptyOnDedicatedOrigin": true,
+    "uiSaveAndServerReopen": true,
+    "stableActionIds": true,
+    "addRemoveTested": true,
+    "projections4To6Hidden": true,
+    "wordTextAndMediaFiltering": "passed"
+  },
+  "word": {
+    "expertImageFiles": 9,
+    "clientImageFiles": 8,
+    "nativePaginationRead": false
+  },
+  "review": {
+    "url": "http://127.0.0.1:5195/fixture/",
+    "entry": "Compte fictif A → RECETTE-INTERVENTIONS-20261116 depuis la liste serveur → Export → Interventions proposées",
+    "fictitious": true,
+    "ephemeralDatabase": true,
+    "requiresRunningLocalProcess": true
+  },
+  "scope": "Première tranche Rapport, liste unique des interventions ; échange Projet/Gantt dans un sous-lot distinct",
+  "hostingChanged": false,
+  "realMicrophoneTested": false,
+  "humanApproval": false,
+  "evidenceRoot": "C:\\Users\\examg\\OneDrive\\Documents\\AVEREO_2\\preprod-acces-local\\outillage\\acces-preproduction\\archives\\rapport-interventions-20261116",
+  "evidence": [
+    "tests-node.txt",
+    "validation-php.txt",
+    "build-offline.json",
+    "build-online.json",
+    "verification-http-finale.json",
+    "verification-navigateur.json",
+    "verification-word.json"
+  ],
+  "canonicalTracking": "C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json#rapportV12CadrageProfils20261112.interventions20261116"
+}

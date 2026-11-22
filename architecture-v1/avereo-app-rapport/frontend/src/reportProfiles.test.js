@@ -6,7 +6,7 @@ test('the category alone never converts an existing report into a Habitologue mi
   for (const report of [{}, { categorie: 'Visite Globale' }, { profil_metier: 'architecte' }, { profil_metier: 'unknown' }]) {
     assert.equal(isHabitologueProfile(report), false);
     assert.equal(allowsDecisionProjections(report), true);
-    assert.equal(observationAdviceLabel(report), 'Conseils habitologue');
+    assert.equal(observationAdviceLabel(report), 'Conseils de l’expert');
   }
 });
 
@@ -15,6 +15,6 @@ test('Habitologue changes the presentation without modifying historical decision
   const before = JSON.stringify(report);
   assert.equal(isHabitologueProfile(report), true);
   assert.equal(allowsDecisionProjections(report), false);
-  assert.equal(observationAdviceLabel(report), 'Conseils habitologue');
+  assert.equal(observationAdviceLabel(report), 'Conseils de l’expert');
   assert.equal(JSON.stringify(report), before);
 });

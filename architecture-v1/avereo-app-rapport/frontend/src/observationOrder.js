@@ -1,23 +1,26 @@
 import { isHabitologieReport } from './reportClassification.js';
-import { HABITOLOGIE_PROTOCOL_STAGES } from './habitologieProtocol.js';
+import { HABITOLOGIE_PROTOCOL_STAGES, findHabitologieStage } from './habitologieProtocol.js';
 
 // The array preserves the user's order within a phase. Numbers are a derived
 // presentation value, never an identifier used by photos, plans or decisions.
 export function observationPhase(report, observation) {
   if (!isHabitologieReport(report)) return '';
-  return HABITOLOGIE_PROTOCOL_STAGES.some(stage => stage.key === observation?.phase_habitologie)
+  return findHabitologieStage(observation?.phase_habitologie)
     ? observation.phase_habitologie : '';
 }
 
 export function orderedObservations(report) {
   const observations = Array.isArray(report?.observations) ? report.observations : [];
   if (!isHabitologieReport(report)) return [...observations];
-  const phases = [...HABITOLOGIE_PROTOCOL_STAGES.map(stage => stage.key), ''];
+  const phases = ['terrain', ...HABITOLOGIE_PROTOCOL_STAGES.map(stage => stage.key), ''];
   return phases.flatMap(phase => observations.filter(observation => observationPhase(report, observation) === phase));
 }
 
 export function observationNumber(report, observation) {
-  return orderedObservations(report).indexOf(observation) + 1;
+  const terrain = observationPhase(report, observation) === 'terrain';
+  const group = orderedObservations(report).filter(item => (observationPhase(report, item) === 'terrain') === terrain);
+  const number = group.indexOf(observation) + 1;
+  return terrain ? `T${number}` : number;
 }
 
 // Reorder only the slots of the source phase; every other phase and all objects

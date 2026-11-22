@@ -27,8 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'me') {
             'name' => $identity['name'],
             'roles' => $identity['roles'],
             'canManageAll' => api_identity_can_manage_all($identity, $config),
+            'profileAccess' => api_profile_access($config,$identity),
         ],
     ]);
+}
+
+if ($_SERVER['REQUEST_METHOD']==='POST' && $action==='authorize-export') {
+    $identity=api_require_auth($config);
+    if (isset($_SERVER['HTTP_ORIGIN']) && !hash_equals(api_current_origin(),(string)$_SERVER['HTTP_ORIGIN'])) api_json(403,['ok'=>false,'error'=>'origin_refused']);
+    api_require_profile_action($config,$identity,'export');
+    api_json(200,['ok'=>true,'provider'=>$identity['provider'],'accountId'=>$identity['id']]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'token') {
