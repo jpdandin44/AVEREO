@@ -5,13 +5,18 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## 21 novembre — Dossiers volumineux, candidat local
+
+Le [lot sans perte](docs/volume-sans-perte.md) reproduit le refus à 50 Mio et propose un JSON de 100 Mo dans toute la chaîne Rapport/Passeport, sans dégrader les médias. Source commune de limites, API et copies générées contrôlées. Revue locale en préparation ; aucune livraison de ce lot. Les réserves de génération Word, de capacité réelle et de performance sont explicites.
+
 
 ## 19 novembre — Publication Passeport livrée en préproduction
 

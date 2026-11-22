@@ -5,10 +5,15 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 21 novembre — Copies complètes volumineuses
+
+JSON privé proposé à 100 000 000 octets avant et après reconstitution. Plafonds fichier/lot/paquet conservés à 524 288 000 octets, soit 524,288 Mo (500 Mio) : les anciens libellés « 500 Mo » ci-dessous décrivent ce même plafond binaire. Refus sans dépôt partiel, contenus et médias intacts, copie privée inaccessible au destinataire. [Qualification et limites](../avereo-app-rapport/docs/volume-sans-perte.md).
+
 
 ## 19 novembre — Versions finalisées provenant de Rapport
 

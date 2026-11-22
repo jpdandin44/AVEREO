@@ -11,7 +11,8 @@ final class PasseportPublications
     public static function inspect(string $path): array
     {
         if (!class_exists(ZipArchive::class)) throw new PasseportError(503, 'Import Rapport indisponible sur ce serveur.');
-        if (!is_file($path) || filesize($path) < 22 || filesize($path) > 500*1024*1024) self::invalid();
+        $limits=avereo_volume_limits();
+        if (!is_file($path) || filesize($path) < 22 || filesize($path) > $limits['publicationBytes']) self::invalid();
         $zip = new ZipArchive();
         if ($zip->open($path, ZipArchive::RDONLY) !== true) self::invalid();
         try {
@@ -22,8 +23,8 @@ final class PasseportPublications
                 $name=$s['name']; $total+=$s['size'];
                 if (isset($files[$name]) || !preg_match('#^(manifest\.json|dossier-rapport\.json|rapport-client\.docx|originaux/[a-f0-9]{32}\.(jpg|png|webp))$#D',$name)
                     || $s['comp_method']!==ZipArchive::CM_STORE || $s['size']!==$s['comp_size'] || ($s['encryption_method'] ?? 0)!==0
-                    || $s['size']<1 || $total>500*1024*1024 || ($name==='manifest.json' && $s['size']>65536)
-                    || ($name==='dossier-rapport.json' && $s['size']>50*1024*1024)) self::invalid();
+                    || $s['size']<1 || $total>$limits['publicationBytes'] || ($name==='manifest.json' && $s['size']>65536)
+                    || ($name==='dossier-rapport.json' && $s['size']>$limits['reportJsonBytes'])) self::invalid();
                 if ($zip->getExternalAttributesIndex($i,$opsys,$attributes) && (($attributes>>16)&0170000)===0120000) self::invalid();
                 $stream=$zip->getStream($name); if (!$stream) self::invalid();
                 $hash=hash_init('sha256'); $read=hash_update_stream($hash,$stream); fclose($stream);
@@ -47,10 +48,13 @@ final class PasseportPublications
                 $seen[$name]=true;
             }
             if (!isset($seen['dossier-rapport.json'],$seen['rapport-client.docx'])) self::invalid();
+            if (!avereo_volume_has_memory($files['dossier-rapport.json']['bytes'] * 3 + 16 * 1024 * 1024)) throw new PasseportError(503,'Le serveur ne dispose pas de la mémoire nécessaire pour ce dossier. Le paquet complet est conservé sur votre poste.');
             try { $report=json_decode($zip->getFromName('dossier-rapport.json'),true,512,JSON_THROW_ON_ERROR); }
             catch (Throwable) { self::invalid(); }
             if (!is_array($report) || !is_array($report['observations']??null) || !array_is_list($report['observations'])) self::invalid();
-            $mapped=[]; $referenced=[];
+            $mapped=[]; $referenced=[]; $reopenedBytes=$files['dossier-rapport.json']['bytes'];
+            $jsonFlags=JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_LINE_TERMINATORS;
+            if (array_key_exists('onlineReportId',$report)) $reopenedBytes-=strlen(json_encode(['onlineReportId'=>$report['onlineReportId']],$jsonFlags|JSON_THROW_ON_ERROR))-1;
             foreach ($manifest['originals'] as $item) {
                 $oi=$item['observationIndex']??null; $pi=$item['photoIndex']??null;
                 if (!is_int($oi) || $oi<0 || !is_int($pi) || $pi<0 || isset($mapped[$oi.':'.$pi])) self::invalid();
@@ -58,8 +62,12 @@ final class PasseportPublications
                 $name=$item['path']??''; $ext=['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp'][$item['mime']??'']??null;
                 if (!$ext || !is_array($original) || $name!=='originaux/'.($original['id']??'').'.'.$ext || ($original['mime']??null)!==$item['mime']
                     || !isset($files[$name]) || ($original['bytes']??null)!==$files[$name]['bytes'] || ($original['sha256']??null)!==$files[$name]['sha256']) self::invalid();
+                $photo=$report['observations'][$oi]['photos'][$pi];$replacement=$photo;
+                unset($replacement['original']);$replacement['src']='data:'.$item['mime'].';base64,';
+                $reopenedBytes+=strlen(json_encode($replacement,$jsonFlags|JSON_THROW_ON_ERROR))+intdiv($original['bytes']+2,3)*4-strlen(json_encode($photo,$jsonFlags|JSON_THROW_ON_ERROR));
                 $mapped[$oi.':'.$pi]=true; $referenced[$name]=true;
             }
+            if ($reopenedBytes>$limits['reportJsonBytes']) throw new PasseportError(422,'Cette copie dépasserait '.avereo_volume_label($limits['reportJsonBytes']).' après réouverture avec ses originaux. Le paquet complet est conservé.');
             foreach ($report['observations'] as $oi=>$observation) {
                 if (!is_array($observation) || (isset($observation['photos']) && (!is_array($observation['photos']) || !array_is_list($observation['photos'])))) self::invalid();
                 foreach ($observation['photos']??[] as $pi=>$photo) if (isset($photo['original']) && !isset($mapped[$oi.':'.$pi])) self::invalid();

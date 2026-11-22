@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { DocumentModal } from './DocumentOrganisation.jsx';
+import { PUBLICATION_LIMIT, PUBLICATION_LIMIT_LABEL } from '../../../../avereo-platform/shared/report-volumes.js';
 
 export default function ReportPublications({ bienId, repository, onSaved }) {
   const [items, setItems] = useState([]), [candidate, setCandidate] = useState(null), [busy, setBusy] = useState(false), [message, setMessage] = useState(''), [error, setError] = useState('');
@@ -42,7 +43,7 @@ export default function ReportPublications({ bienId, repository, onSaved }) {
       <input ref={input} type="file" accept=".avereo.zip" hidden aria-label="Choisir un dossier Rapport finalisé" onChange={e => {
         const file = e.target.files?.[0]; e.target.value = ''; setError('');
         if (!file) return;
-        if (!/\.avereo\.zip$/i.test(file.name) || file.size > 500 * 1024 * 1024) { setError('Choisissez un fichier .avereo.zip de 500 Mo maximum, préparé dans Rapport.'); return; }
+        if (!/\.avereo\.zip$/i.test(file.name) || file.size > PUBLICATION_LIMIT) { setError(`Choisissez un fichier .avereo.zip de ${PUBLICATION_LIMIT_LABEL} maximum, préparé dans Rapport.`); return; }
         setCandidate(file);
       }} />
       {items.length === 0 ? <p>Aucune version Rapport conservée pour ce bien.</p> : <ul>{items.map(item => <li key={item.id}>

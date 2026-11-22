@@ -5,10 +5,15 @@ title: Architecture du socle AVEREO
 status: active
 version: git
 created: 2026-11-04
-updated: 2026-11-12
+updated: 2026-11-21
 owner: jpdandin
 tags: [avereo, acces, documentation]
 ---
+
+## 21 novembre — Limites distribuées sans duplication manuelle
+
+Source JSON, adaptation JS et helper PHP génériques dans `shared/report-volumes.*`. Les API autonomes reçoivent des copies générées et versionnées du JSON/helper PHP ; test de parité et construction depuis la source commune. Aucun contrôle métier ou démarrage applicatif dans le socle. [Flux et contraintes](../avereo-app-rapport/docs/volume-sans-perte.md).
+
 
 # Architecture du socle AVEREO
 

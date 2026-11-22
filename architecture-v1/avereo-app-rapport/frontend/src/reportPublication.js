@@ -1,23 +1,43 @@
 import JSZip from 'jszip';
-import { independentReport, readReportFile, requireEditableNumbers } from './reportFiles.js';
+import { readReportFile, requireReportContent, requireEditableNumbers } from './reportFiles.js';
 import { blobSha256, originalReference, readPhotoOriginal } from './photoOriginals.js';
+import { REPORT_JSON_LIMIT, PUBLICATION_LIMIT, REPORT_LIMIT_LABEL, PUBLICATION_LIMIT_LABEL } from '../../../avereo-platform/shared/report-volumes.js';
 
-export const PUBLICATION_LIMIT = 500 * 1024 * 1024;
-const JSON_LIMIT = 50 * 1024 * 1024;
+export { PUBLICATION_LIMIT };
 const SCHEMA = 'avereo-rapport-publication';
 const PATH = /^(?:dossier-rapport\.json|rapport-client\.docx|originaux\/[a-f0-9]{32}\.(?:jpg|png|webp))$/;
 const fail = () => { throw new Error('Copie Rapport incomplète ou altérée. Le brouillon actuel est conservé.'); };
 
+// Calculate the reconstructed copy before downloading originals or generating a ZIP.
+// Base64 length is exact; neither media bytes nor the source report are modified.
+export function publicationReportBlob(report) {
+  requireReportContent(report);
+  requireEditableNumbers(report);
+  const blob = new Blob([JSON.stringify(report)], { type: 'application/json' });
+  if (blob.size > REPORT_JSON_LIMIT) throw new Error(`La copie JSON dépasse ${REPORT_LIMIT_LABEL}. Le dossier et ses photos sont conservés.`);
+  let reopenedBytes = blob.size;
+  const accountField = JSON.stringify({onlineReportId:report.onlineReportId});
+  if (accountField !== '{}') reopenedBytes -= new Blob([accountField]).size - 1;
+  for (const observation of report.observations) for (const photo of observation.photos || []) {
+    if (!photo.original) continue;
+    const original = originalReference(photo, report.onlineReportId);
+    if (!original) throw new Error('Un original photo est rattaché à un autre dossier. Rouvrez le dossier source autorisé pour préparer sa copie complète.');
+    const replacement = {...photo, src:`data:${original.mime};base64,`};
+    delete replacement.original;
+    reopenedBytes += new Blob([JSON.stringify(replacement)]).size + Math.ceil(original.bytes / 3) * 4 - new Blob([JSON.stringify(photo)]).size;
+  }
+  if (!Number.isSafeInteger(reopenedBytes) || reopenedBytes > REPORT_JSON_LIMIT) throw new Error(`La copie réouverte avec ses originaux dépasse ${REPORT_LIMIT_LABEL}. Le dossier et ses photos sont conservés.`);
+  return blob;
+}
+
 export async function createPublication(report, clientWord, { validated, readOriginal = readPhotoOriginal, id = crypto.randomUUID().replaceAll('-', ''), now = new Date().toISOString() } = {}) {
   if (validated !== true) throw new Error('Confirmez la relecture professionnelle avant de préparer la publication.');
-  requireEditableNumbers(report);
-  readReportFile(JSON.stringify(report));
+  const reportBlob = publicationReportBlob(report);
   if (!(clientWord instanceof Blob) || !clientWord.size) throw new Error('La restitution client est absente.');
   const files = new Map([
-    ['dossier-rapport.json', new Blob([JSON.stringify(report)], { type: 'application/json' })],
+    ['dossier-rapport.json', reportBlob],
     ['rapport-client.docx', clientWord],
   ]);
-  if (files.get('dossier-rapport.json').size > JSON_LIMIT) throw new Error('La copie JSON dépasse 50 Mio.');
   const originals = [];
   for (const [observationIndex, observation] of report.observations.entries()) {
     for (const [photoIndex, photo] of (observation.photos || []).entries()) {
@@ -31,7 +51,7 @@ export async function createPublication(report, clientWord, { validated, readOri
       originals.push({ observationIndex, photoIndex, path, mime: original.mime });
     }
   }
-  if (files.size > 2000 || [...files.values()].reduce((n, b) => n + b.size, 0) > PUBLICATION_LIMIT - 1024 * 1024) throw new Error('Cette publication dépasse 500 Mo.');
+  if (files.size > 2000 || [...files.values()].reduce((n, b) => n + b.size, 0) > PUBLICATION_LIMIT - 1024 * 1024) throw new Error(`Cette publication dépasse ${PUBLICATION_LIMIT_LABEL}.`);
   const entries = [];
   const zip = new JSZip();
   for (const [path, blob] of files) {
@@ -41,7 +61,7 @@ export async function createPublication(report, clientWord, { validated, readOri
   const manifest = { schema: SCHEMA, version: 1, id, createdAt: now, title: String(report.titre || 'Rapport finalisé').slice(0, 200), reference: String(report.reference_dossier || '').slice(0, 200), validatedByProfessional: true, entries, originals };
   zip.file('manifest.json', JSON.stringify(manifest));
   const bytes = await zip.generateAsync({ type: 'uint8array', compression: 'STORE' });
-  if (bytes.length > PUBLICATION_LIMIT) throw new Error('Cette publication dépasse 500 Mo.');
+  if (bytes.length > PUBLICATION_LIMIT) throw new Error(`Cette publication dépasse ${PUBLICATION_LIMIT_LABEL}.`);
   return { blob: new Blob([bytes], { type: 'application/zip' }), manifest };
 }
 
@@ -63,7 +83,7 @@ function inspectDirectory(bytes) {
     const next = cursor + 46 + length + view.getUint16(cursor + 30, true) + view.getUint16(cursor + 32, true);
     if (next > end || view.getUint16(cursor + 8, true) & 1 || view.getUint16(cursor + 10, true) !== 0 || view.getUint32(cursor + 20, true) !== size) fail();
     const name = new TextDecoder('utf-8', { fatal: true }).decode(bytes.subarray(cursor + 46, cursor + 46 + length));
-    if (names.has(name) || (name !== 'manifest.json' && !PATH.test(name)) || (name === 'manifest.json' && size > 65536) || (name === 'dossier-rapport.json' && size > JSON_LIMIT)) fail();
+    if (names.has(name) || (name !== 'manifest.json' && !PATH.test(name)) || (name === 'manifest.json' && size > 65536) || (name === 'dossier-rapport.json' && size > REPORT_JSON_LIMIT)) fail();
     names.add(name); total += size; cursor = next;
   }
   if (cursor !== end || total > PUBLICATION_LIMIT) fail();
@@ -88,7 +108,10 @@ export async function readPublication(file) {
     content.set(entry.path, blob);
   }
   if (!content.has('dossier-rapport.json') || !content.has('rapport-client.docx')) fail();
-  const report = independentReport(readReportFile(await content.get('dossier-rapport.json').text()));
+  // This parsed object is private to the reader: avoid cloning a large JSON a second time.
+  const report = readReportFile(await content.get('dossier-rapport.json').text());
+  requireEditableNumbers(report);
+  delete report.onlineReportId;
   const mapped = new Set(), referenced = new Set();
   for (const item of manifest.originals) {
     const key = `${item.observationIndex}:${item.photoIndex}`;
@@ -106,6 +129,6 @@ export async function readPublication(file) {
     mapped.add(key); referenced.add(item.path);
   }
   if (report.observations.some(o => (o.photos || []).some(p => p.original)) || [...content.keys()].some(p => p.startsWith('originaux/') && !referenced.has(p))) fail();
-  if (new Blob([JSON.stringify(report)]).size > JSON_LIMIT) throw new Error('La copie réouverte dépasse la limite de 50 Mio de Rapport. Le brouillon est conservé.');
+  if (new Blob([JSON.stringify(report)]).size > REPORT_JSON_LIMIT) throw new Error(`La copie réouverte dépasse ${REPORT_LIMIT_LABEL}. Le brouillon est conservé.`);
   return report;
 }

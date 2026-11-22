@@ -1,7 +1,8 @@
 import { orderedObservations, observationNumber } from './observationOrder.js';
+import { REPORT_JSON_LIMIT } from '../../../avereo-platform/shared/report-volumes.js';
 
 // Plans belong to the report payload. Never fetch a remote image or share case assets.
-export const MAX_REPORT_BYTES = 50 * 1024 * 1024;
+export const MAX_REPORT_BYTES = REPORT_JSON_LIMIT;
 export const MAX_PLAN_BYTES = 4 * 1024 * 1024;
 export const MAX_PLANS = 20;
 export const PLAN_KINDS = Object.freeze({

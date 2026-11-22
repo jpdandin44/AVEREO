@@ -3,6 +3,7 @@ from pathlib import PurePosixPath
 
 GATE_FILES = {'.htaccess', 'index.php', 'connect/entry.php', 'connect/logout.php', 'connect/gate.php'}
 STORAGE_FILES = {'connect/session.php', 'api/index.php', 'api/storage.php', 'api/sharing.php', 'api/publications.php', '.user.ini'}
+VOLUME_FILES = {'api/report-volumes.json', 'api/report-volumes.php'}
 
 
 def valid_name(name):
@@ -12,6 +13,6 @@ def valid_name(name):
     return (not path.is_absolute() and '\\' not in name and ':' not in name
             and name == path.as_posix() and not any(part in ('.', '..') for part in path.parts)
             and (name in {'.htaccess', '.user.ini'} or not any(part.startswith('.') for part in path.parts))
-            and (name in {'index.html', 'account-menu.js'} or name in GATE_FILES or name in STORAGE_FILES
+            and (name in {'index.html', 'account-menu.js'} or name in GATE_FILES or name in STORAGE_FILES or name in VOLUME_FILES
                  or len(path.parts) > 1 and path.parts[0] == 'assets'
                  and path.suffix.lower() not in {'.php', '.phtml', '.phar', '.ini'}))

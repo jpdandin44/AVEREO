@@ -26,6 +26,7 @@ parser.add_argument('--receipt', type=Path)
 parser.add_argument('--serve', action='store_true', help='Keep a local fictitious two-account review environment running after the checks')
 parser.add_argument('--port', type=int, default=5186, help='Local Vite review port with --serve')
 parser.add_argument('--fixture', type=Path, help='Optional complete fictitious dossier for the existing round-trip recipe')
+parser.add_argument('--volume', action='store_true', help='Use bounded local resources for a large fictitious dossier: PHP 768M, MariaDB 1536m, packet 128M')
 parser.add_argument('--connect-profile-db', type=Path, help='Optional disposable CONNECT account fixture database shared with the local profile portal')
 parser.add_argument('--profile-admin-url', help='Optional localhost-only native profile administration fixture')
 args = parser.parse_args()
@@ -44,6 +45,7 @@ web = scratch / 'web'
 for name in ('api', 'connect'):
     shutil.copytree(APP / 'frontend/public' / name, web / name)
 checks = []
+requests = []
 
 
 def check(name, value):
@@ -86,19 +88,23 @@ def write_config():
 def mysql(sql, database=None):
     result = subprocess.run(['docker', 'exec', '-e', 'MYSQL_PWD=' + password, '-i', container,
                              'mariadb', '-uroot', '--batch', '--skip-column-names',
+                             *(['--max-allowed-packet=134217728'] if args.volume else []),
                              *( [database] if database else [])], input=sql.encode(), capture_output=True)
     assert result.returncode == 0, 'Fictitious database operation failed'
     return result.stdout
 
 
 def req(path, cookie='', method='GET', body=None, headers=None):
-    connection = http.client.HTTPConnection('127.0.0.1', php_port, timeout=15)
+    connection = http.client.HTTPConnection('127.0.0.1', php_port, timeout=120 if args.volume else 15)
     request_headers = {'Cookie': cookie, 'Origin': origin, 'Sec-Fetch-Site': 'same-origin'}
     request_headers.update(headers or {})
+    started = time.monotonic()
     connection.request(method, path, body=body, headers=request_headers)
     response = connection.getresponse()
     result = response.status, dict(response.getheaders()), response.read()
     connection.close()
+    if args.volume:
+        requests.append({'method':method,'path':path.split('?',1)[0],'status':result[0],'requestBytes':len(body) if isinstance(body,bytes) else 0,'seconds':round(time.monotonic()-started,3)})
     return result
 
 
@@ -119,10 +125,10 @@ def enter(user):
 
 try:
     launched = subprocess.run(['docker', 'run', '--pull=never', '--rm', '-d', '--name', container_name,
-                              '--memory=512m', '--cpus=1', '--tmpfs', '/var/lib/mysql:rw,size=256m',
+                              '--memory=' + ('1536m' if args.volume else '512m'), '--cpus=1', '--tmpfs', '/var/lib/mysql:rw,size=' + ('1024m' if args.volume else '256m'),
                               '-p', f'127.0.0.1:{db_port}:3306',
                               '-e', 'MARIADB_ROOT_PASSWORD=' + password, '-e', 'MARIADB_DATABASE=' + db_name,
-                              'mariadb:11.4'], capture_output=True, text=True)
+                              'mariadb:11.4'] + (['--max-allowed-packet=134217728'] if args.volume else []), capture_output=True, text=True)
     assert launched.returncode == 0, 'Dedicated existing MariaDB image could not start'
     container = launched.stdout.strip()
     assert len(container) == 64 and all(c in '0123456789abcdef' for c in container)
@@ -140,6 +146,8 @@ try:
     write_config()
     ext = Path(PHP).parent / 'ext'
     command = [PHP]
+    if args.volume:
+        command += ['-d', 'memory_limit=768M', '-d', 'post_max_size=128M']
     if os.name == 'nt':
         command += ['-d', 'extension_dir=' + str(ext), '-d', 'extension=pdo_mysql']
     command += ['-S', f'127.0.0.1:{php_port}', '-t', str(web)]
@@ -243,6 +251,9 @@ try:
                'sourceRowsAndOwnerPreserved': True, 'copyOwnerSeparate': True}
     receipt['profilePermissions'] = profile_recipe
     receipt['exteriorContextTested'] = 'contexte_exterieur' in fixture
+    if args.volume:
+        receipt['volumeResources'] = {'phpMemoryLimit':'768M','mariaDbMemory':'1536m','databaseMaxPacketBytes':134217728,'fixtureJsonBytes':len(json.dumps(fixture,ensure_ascii=False,separators=(',',':')).encode('utf-8'))}
+        receipt['requests'] = requests
     if args.receipt:
         args.receipt.parent.mkdir(parents=True, exist_ok=True)
         args.receipt.write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
