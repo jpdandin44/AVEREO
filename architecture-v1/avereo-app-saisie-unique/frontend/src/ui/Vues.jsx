@@ -11,6 +11,7 @@ import { Champ } from './Champ.jsx';
 import { OngletsFiche, PanneauFiche } from './Fiche.jsx';
 import { PanneauDocuments } from './Documents.jsx';
 import { useActions } from './contexte.js';
+import { filtrerDossiers } from '../lib/pilotage.js';
 
 const libType = (t) => TYPES.find((x) => x.id === t)?.libelle || t;
 
@@ -52,8 +53,10 @@ export function ListeDossiers({ donnees, ui }) {
   const actions = useActions();
   const [nom, setNom] = useState('');
   const [type, setType] = useState('energie');
+  const [recherche, setRecherche] = useState('');
+  const [alertes, setAlertes] = useState(false);
   const dossiers = donnees.ordre.map((id) => donnees.dossiers[id]).filter(Boolean);
-  const filtres = ui.filtreStatut ? dossiers.filter((d) => (d.valeurs.dos_statut || '') === ui.filtreStatut) : dossiers;
+  const filtres = filtrerDossiers(dossiers, { recherche, statut: ui.filtreStatut, alertes });
   const aExemple = dossiers.some((d) => d.exemple);
   return (
     <section className="panneau" aria-labelledby="h-liste">
@@ -75,12 +78,15 @@ export function ListeDossiers({ donnees, ui }) {
       </form>
       <Sauvegarde message={ui.messageSauvegarde} />
       <div className="filtre">
+        <label className="lbl" htmlFor="recherche-dossiers">Rechercher</label>
+        <input id="recherche-dossiers" type="search" value={recherche} onChange={e=>setRecherche(e.target.value)} placeholder="Nom, commune, programme, n° Anah…" />
         <label className="lbl" htmlFor="filtre-statut">Filtrer par statut</label>
         <select id="filtre-statut" value={ui.filtreStatut} onChange={(e) => actions.setFiltreStatut(e.target.value)}>
           <option value="">Tous les statuts</option>
           {liste('dos_statut').valeurs.map((s) => <option key={s} value={s}>{s}</option>)}
         </select>
         <span className="muted" aria-live="polite">{filtres.length} affiché{filtres.length > 1 ? 's' : ''}</span>
+        <label className="uni-check"><input type="checkbox" checked={alertes} onChange={e=>setAlertes(e.target.checked)} /> Alertes et relances</label>
       </div>
       {!filtres.length ? (
         <p className="muted">Aucun dossier{ui.filtreStatut ? ' pour ce statut' : ''}.</p>
@@ -278,3 +284,4 @@ export function Confirmation({ confirmation, donnees }) {
     </div>
   );
 }
+

@@ -4,6 +4,7 @@ import { DOCUMENTS } from '../config/documents.js';
 import { documentsConcernes, planDuDocument, signalements, statutDocument } from '../lib/documents.js';
 import { ENTREES_AFFICHEES } from '../lib/journal.js';
 import { Apercu } from './Apercu.jsx';
+import { FormulaireOriginal } from './FormulaireOriginal.jsx';
 import { formaterJournal, useActions } from './contexte.js';
 
 function Modification({ item }) {
@@ -121,9 +122,11 @@ export function PanneauDocuments({ ctx, ui }) {
             <button type="button" className="btn btn-petit" onClick={() => window.print()}>Imprimer</button>
           </div>
         </div>
+        <FormulaireOriginal doc={actif} ctx={ctx} planId={pd.planId} />
         <Apercu doc={actif} ctx={ctx} planId={pd.planId} derniere={derniere} signalement={etats[actif.id].s} />
       </article>
       <Journal journal={dossier.journal} />
     </section>
   );
 }
+

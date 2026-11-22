@@ -4,9 +4,14 @@ import { useEffect } from 'react';
 import { useMissionDossier } from '../../../../avereo-platform/shared/mission-dossier.js';
 import { useActions, useStore } from './contexte.js';
 import { exporterDossiers, ListeDossiers, VueDossier, VueParametres, VueRatios } from './Vues.jsx';
+import { VuePilotage } from './Pilotage.jsx';
 
 const NAV = [
+  { id: 'pilotage', libelle: 'Tableau de bord' },
   { id: 'liste', libelle: 'Dossiers' },
+  { id: 'travaux', libelle: 'Travaux' },
+  { id: 'programmes', libelle: 'Programmes' },
+  { id: 'territoires', libelle: 'Territoires / EPCI' },
   { id: 'ratios', libelle: 'Ratios' },
   { id: 'parametres', libelle: 'Paramètres' },
 ];
@@ -40,6 +45,7 @@ export function App() {
           </avereo-account-menu>
         </div>
         {ui.erreurStockage && <p className="alerte" role="alert">{ui.erreurStockage}</p>}
+        {['pilotage','travaux','programmes','territoires'].includes(vue) && <VuePilotage donnees={donnees} vue={vue} />}
         {vue === 'liste' && <ListeDossiers donnees={donnees} ui={ui} />}
         {vue === 'dossier' && dossier && <VueDossier dossier={dossier} donnees={donnees} ui={ui} />}
         {vue === 'ratios' && <VueRatios donnees={donnees} />}
@@ -50,3 +56,4 @@ export function App() {
     </>
   );
 }
+
