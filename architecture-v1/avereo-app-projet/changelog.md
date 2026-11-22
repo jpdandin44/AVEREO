@@ -5,12 +5,23 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-19
+updated: 2026-11-20
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 2026-11-20 — Inventaire GitHub en développement local
+
+- Découverte optionnelle des dépôts du propriétaire, des branches et de toutes
+  les PR retournées, avec traitement des arbres tronqués et cache immuable.
+- Projets et composants sans inscription préalable visibles dans le catalogue
+  et dans la vue filtrable **Inventaire GitHub**.
+- Projection privée optionnelle vérifiée par les lecteurs Node/PHP ; les suivis,
+  validations humaines et déclarations de livraison restent conservés.
+- [Qualification et réserves](docs/inventaire-github.md). Ce journal ne prouve
+  aucune installation ou livraison de ce candidat.
 
 ## 19 novembre — Synthèse UX des critères et preuves
 

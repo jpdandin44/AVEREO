@@ -1,0 +1,122 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "iterationId": "cockpit-inventaire-github-20261120",
+  "project": "avereo-app-projet",
+  "owner": "jpdandin",
+  "title": "Recenser les applications, sites et développements du compte GitHub",
+  "objective": "Le cockpit doit recenser toutes les applications, sites web et développements issus du compte GitHub jpdandin44, au-delà des seules applications et sources inscrites manuellement.",
+  "stage": "developpement-local",
+  "status": "awaiting_local_review",
+  "currentPhase": 1,
+  "phases": [
+    {
+      "id": 0,
+      "label": "Cadrage",
+      "status": "awaiting_review",
+      "criteria": [
+        {
+          "id": "INV-01",
+          "title": "Couverture explicite des dépôts du compte, y compris privés accessibles et archivés"
+        },
+        {
+          "id": "INV-02",
+          "title": "Applications et composants découverts dans les versions GitHub ; suivis et validations préexistants conservés"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "label": "Développement local",
+      "status": "awaiting_review",
+      "criteria": [
+        {
+          "id": "INV-03",
+          "title": "Listes paginées de toutes les PR et branches ; défauts de couverture visibles"
+        },
+        {
+          "id": "INV-04",
+          "title": "Découverte des composants de la branche par défaut et des branches présentes, sans dépendre d'une liste fixe d'applications"
+        },
+        {
+          "id": "INV-05",
+          "title": "Inventaire consultable et recherchable ; absence de suivi distincte d'une absence de code ou d'une validation"
+        },
+        {
+          "id": "INV-06",
+          "title": "Échecs, pagination et arbres tronqués traités sans remplacer une publication par un inventaire partiel"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "label": "Préproduction",
+      "status": "not_started",
+      "criteria": [
+        {
+          "id": "INV-07",
+          "title": "Candidat exact contrôlé, sauvegarde et retour sur copie, identité propriétaire/global et données clients conservées"
+        },
+        {
+          "id": "INV-08",
+          "title": "Collecte réelle comparée au compte GitHub, rendu consulté et cycle autonome vérifié"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "label": "Mise en production",
+      "status": "not_started",
+      "criteria": [
+        {
+          "id": "INV-09",
+          "title": "Aucune livraison ou ouverture de production sans accord distinct ; bilan et suite préparés"
+        }
+      ]
+    }
+  ],
+  "approvals": [],
+  "developmentReviews": [],
+  "checks": [
+    {
+      "id": "INV-tests-collecte",
+      "status": "passed",
+      "command": "node --test tests/development-github-inventory.test.mjs tests/development-private-publisher.test.mjs",
+      "result": "31 tests réussis, dont 61 composants traversant Node/PHP et deux cycles sans fausse publication",
+      "observedAt": "2026-11-20"
+    },
+    {
+      "id": "INV-tests-module",
+      "status": "passed",
+      "command": "node --test --test-concurrency=1 ../tests/*.test.mjs",
+      "result": "400 tests réussis sur le candidat corrigé, en exécution séquentielle",
+      "observedAt": "2026-11-20"
+    },
+    {
+      "id": "INV-build",
+      "status": "passed",
+      "command": "vite build puis npm run check:release",
+      "result": "Compilation réussie et 24 fichiers publics vérifiés ; aucun inventaire privé dans cet artefact",
+      "observedAt": "2026-11-20"
+    },
+    {
+      "id": "INV-lecture-php",
+      "status": "passed",
+      "command": "php -l backend/developments/SnapshotReader.php",
+      "result": "Syntaxe valide et lecture de la projection vérifiée par intégration",
+      "observedAt": "2026-11-20"
+    },
+    {
+      "id": "INV-navigateur-fictif",
+      "status": "passed",
+      "result": "61 composants, 101 PR ; recherche, pagination 50/11 et 50/50/1, brouillons, branches, dépôts et ouverture du suivi vérifiés dans la recette locale fictive ; aucune erreur console relevée",
+      "observedAt": "2026-11-20"
+    }
+  ],
+  "blockers": [],
+  "nextAction": "Qualifier le candidat Git propre, préparer sa PR et son paquet privé ; installation en préproduction et cycle autonome hébergé restent à réaliser selon accord applicable.",
+  "documentation": "docs/inventaire-github.md",
+  "candidate": {
+    "branch": "feat/cockpit-inventaire-github",
+    "qualification": "Version exacte et empreinte du paquet à conserver dans le reçu privé de préparation ; aucune installation attestée par ce suivi."
+  }
+}
