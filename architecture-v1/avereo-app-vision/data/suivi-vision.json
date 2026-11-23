@@ -5,7 +5,7 @@
   "version": "git",
   "iterationId": "vision-v1",
   "title": "AVEREO Vision V1 — relevé, métré et modélisation 2D/3D (équivalent Visuary)",
-  "status": "scoping_lot0_in_progress",
+  "status": "scoping_lot0_awaiting_human_review",
   "stage": "cadrage",
   "updatedAt": "2026-11-23",
   "objective": "Construire lot par lot une PWA AVEREO de relevé de l'existant (vidéo, métrés ±2 cm, plan 2D, maquette 3D, exports PDF/DXF/IFC/glTF/OBJ/CSV) sur des moteurs open source sous licence MIT, BSD ou Apache 2.0.",
@@ -14,10 +14,10 @@
     "status": "produced_in_lot0_awaiting_validation",
     "meaning": "Lots fonctionnels distincts des quatre phases ; le détail des lots et des tâches (statut, pourquoi, Claude Code ou Codex, modèle, effort, job Codex) est tenu uniquement dans la source Markdown."
   },
-  "activeLot": {"id": "LOT-0", "title": "Cadrage technique, sans code", "branch": "vision/lot-0-cadrage", "scope": "documentation_only", "status": "en cours"},
+  "activeLot": {"id": "LOT-0", "title": "Cadrage technique, sans code", "branch": "vision/lot-0-cadrage", "scope": "documentation_only", "status": "fait"},
   "candidate": {"sourceSha": null, "artifactSha256": null},
   "phases": [
-    {"id": 0, "label": "Cadrage", "status": "in_progress", "criteria": []},
+    {"id": 0, "label": "Cadrage", "status": "technically_verified_awaiting_human_review", "criteria": []},
     {"id": 1, "label": "Développement local", "status": "not_started", "criteria": []},
     {"id": 2, "label": "Préproduction", "status": "not_started", "criteria": []},
     {"id": 3, "label": "Mise en production", "status": "not_started", "criteria": []}
@@ -30,6 +30,7 @@
     {"id": "lot0-adr-moteurs-20261123", "phaseId": 0, "title": "Lot 0 — ADR 0001 — choix des moteurs", "kind": "reference_document", "status": "reviewable", "evidence": "docs/adr/0001-moteurs.md", "observedAt": "2026-11-23"},
     {"id": "lot0-architecture-20261123", "phaseId": 0, "title": "Lot 0 — Architecture", "kind": "reference_document", "status": "reviewable", "evidence": "docs/architecture.md", "observedAt": "2026-11-23"},
     {"id": "lot0-plan-lots-20261123", "phaseId": 0, "title": "Lot 0 — Plan des lots", "kind": "reference_document", "status": "reviewable", "evidence": "docs/plan-lots.md", "observedAt": "2026-11-23"},
+    {"id": "lot0-pr-188-20261123", "phaseId": 0, "title": "PR Lot 0 ouverte vers main, en attente de relecture humaine (état observé sur GitHub, aucun merge)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/188", "observedAt": "2026-11-23"},
     {"id": "lot0-licences-20261123", "phaseId": 0, "title": "Lot 0 — Licences des dépendances", "kind": "reference_document", "status": "reviewable", "evidence": "docs/licences.md", "observedAt": "2026-11-23"}
   ],
   "decisions": [
@@ -60,7 +61,7 @@
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
   "nextAction": "Relire et valider l'ADR 0001, docs/plan-lots.md et l'inscription au cockpit ; trancher D1, D2, D4, D5, D6 ; fournir la pièce de référence ; puis lancer le Lot 1.",
-  "github": {"prUrl": null},
+  "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/188"},
   "registryIntegration": "proposed_not_registered",
   "documentation": "docs/plan-lots.md"
 }

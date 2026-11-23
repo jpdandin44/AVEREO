@@ -14,7 +14,7 @@ Version : Lot 0, 23/11/2026. Tenu par Claude Code (sous-agent scribe-cockpit). L
 ## Tableau des lots
 | Lot | Titre | Statut | Taille | Exigences couvertes | Portes (à franchir avant ou pendant) |
 |---|---|---|---|---|---|
-| 0 | Cadrage technique, sans code | en cours | M | cadre toutes les exigences | validation par le responsable de l'ADR 0001, du plan de lots et de l'inscription au cockpit ; décisions D1, D2, D4, D5, D6 |
+| 0 | Cadrage technique, sans code | fait (PR [#188](https://github.com/jpdandin44/AVEREO/pull/188) ouverte le 23/11/2026, en attente de validation) | M | cadre toutes les exigences | validation par le responsable de l'ADR 0001, du plan de lots et de l'inscription au cockpit ; décisions D1, D2, D4, D5, D6 |
 | 1 | Fondations, plan 2D manuel, métrés, charte | à faire | L | R10, R11, R12, R23 à R35 | pièce de référence et cotes laser fournies par le responsable (R29) ; commandes de lancement inscrites dans AGENTS.md |
 | 2 | Projets, comptes, hors ligne, synchronisation, PWA | à faire | L | R01 à R06, R08, R09 | choix de la méthode d'authentification (À VÉRIFIER) |
 | 3 | Capture terrain : cotes laser, photos, commentaires, vidéo jointe | à faire | L | R13 à R17, R36 à R38 | essais sur 1 Android et 1 iPhone fournis par le responsable |
@@ -36,11 +36,11 @@ Ordre voulu : la reconstruction 3D (lots 7 et 8) vient **après** les exports PD
 | T0-02 Rédiger `docs/exigences.md` | fait | — | Claude | Opus (plan) | high | — |
 | T0-03 Rédiger `docs/adr/0001-moteurs.md` | fait | — | Claude | Opus (plan) | high | — |
 | T0-04 Rédiger `docs/architecture.md` | fait | — | Claude | Opus (plan) | high | — |
-| T0-05 Rédiger `docs/plan-lots.md` | en cours | — | Claude | Opus (plan) | high | — |
+| T0-05 Rédiger `docs/plan-lots.md` | fait | — | Claude | Opus (plan) | high | — |
 | T0-06 Initialiser `docs/licences.md` (aucune dépendance installée ; dépendances prévues listées) | fait | — | Claude | Sonnet | medium | — |
 | T0-07 Relecture adversariale de l'ADR et du plan (15 remarques : 13 traitées, 1 traitée en partie, 1 réfutée) | fait | — | Codex (`/codex:adversarial-review --base main`) | défaut Codex | — | — |
-| T0-08 Relecture de toute la PR | à faire | — | Codex (`/codex:review --base main`) | défaut Codex | — | — |
-| T0-09 Traiter les remarques, mettre à jour le suivi, ouvrir la PR | à faire | — | Claude + scribe-cockpit | Sonnet / Haiku | medium / low | — |
+| T0-08 Relecture de toute la PR (1 remarque P2 traitée) | fait | — | Codex (`/codex:review --base main`) | défaut Codex | — | — |
+| T0-09 Traiter les remarques, mettre à jour le suivi, ouvrir la PR | fait | — | Claude + scribe-cockpit | Sonnet / Haiku | medium / low | — |
 
 ### Lot 1 — Fondations, plan 2D manuel, métrés, charte
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
