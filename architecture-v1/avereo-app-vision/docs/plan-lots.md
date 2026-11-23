@@ -14,7 +14,7 @@ Version : Lot 0, 23/11/2026. Tenu par Claude Code (sous-agent scribe-cockpit). L
 ## Tableau des lots
 | Lot | Titre | Statut | Taille | Exigences couvertes | Portes (à franchir avant ou pendant) |
 |---|---|---|---|---|---|
-| 0 | Cadrage technique, sans code | fait (PR [#188](https://github.com/jpdandin44/AVEREO/pull/188) ouverte le 23/11/2026, en attente de validation) | M | cadre toutes les exigences | ADR 0001 et décisions D1, D2, D4, D5, D6 acceptés le 23/11/2026 ; restent à valider : le plan de lots (la PR) et l'inscription au cockpit (après le merge) |
+| 0 | Cadrage technique, sans code | fait (PR [#188](https://github.com/jpdandin44/AVEREO/pull/188) mergée le 23/11/2026, commit 54d3fba) | M | cadre toutes les exigences | ADR 0001 et décisions D1, D2, D4, D5, D6 acceptés le 23/11/2026 ; PR mergée ; inscription au cockpit appliquée le 23/11/2026 (source sur le worktree avereo-vision-lot0) |
 | 1 | Fondations, plan 2D manuel, métrés, charte | à faire | L | R10, R11, R12, R23 à R35 | pièce de référence et cotes laser fournies par le responsable (R29) ; commandes de lancement inscrites dans AGENTS.md |
 | 2 | Projets, comptes, hors ligne, synchronisation, PWA | à faire | L | R01 à R06, R08, R09 | choix de la méthode d'authentification (À VÉRIFIER) |
 | 3 | Capture terrain : cotes laser, photos, commentaires, vidéo jointe | à faire | L | R13 à R17, R36 à R38 | essais sur 1 Android et 1 iPhone fournis par le responsable |

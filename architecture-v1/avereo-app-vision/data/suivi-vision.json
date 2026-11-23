@@ -30,7 +30,7 @@
     {"id": "lot0-adr-moteurs-20261123", "phaseId": 0, "title": "Lot 0 — ADR 0001 — choix des moteurs", "kind": "reference_document", "status": "reviewable", "evidence": "docs/adr/0001-moteurs.md", "observedAt": "2026-11-23"},
     {"id": "lot0-architecture-20261123", "phaseId": 0, "title": "Lot 0 — Architecture", "kind": "reference_document", "status": "reviewable", "evidence": "docs/architecture.md", "observedAt": "2026-11-23"},
     {"id": "lot0-plan-lots-20261123", "phaseId": 0, "title": "Lot 0 — Plan des lots", "kind": "reference_document", "status": "reviewable", "evidence": "docs/plan-lots.md", "observedAt": "2026-11-23"},
-    {"id": "lot0-pr-188-20261123", "phaseId": 0, "title": "PR Lot 0 ouverte vers main, en attente de relecture humaine (état observé sur GitHub, aucun merge)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/188", "observedAt": "2026-11-23"},
+    {"id": "lot0-pr-188-20261123", "phaseId": 0, "title": "PR Lot 0 mergée dans main par le responsable le 23/11/2026 à 21:29 UTC, commit 54d3fba (état observé sur GitHub)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/188", "observedAt": "2026-11-23"},
     {"id": "lot0-licences-20261123", "phaseId": 0, "title": "Lot 0 — Licences des dépendances", "kind": "reference_document", "status": "reviewable", "evidence": "docs/licences.md", "observedAt": "2026-11-23"}
   ],
   "decisions": [
@@ -60,8 +60,9 @@
     "À VÉRIFIER : dépôt actuel d'OpenSfM et son chemin CPU, licences de Boost, Eigen, FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR (alertes de licence signalées par la relecture Codex, non revérifiées sur les sources amont).",
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
-  "nextAction": "Valider docs/plan-lots.md, fournir la pièce de référence et ses cotes laser, puis lancer le Lot 1 ; appliquer l'inscription au cockpit après le merge de la PR #188, sur accord explicite.",
+  "nextAction": "Lancer le Lot 1 (message « Lot 1 selon docs/plan-lots.md… », mode plan, accord du responsable) ; fournir plus tard les caractéristiques du serveur OVH (avant le lot 7) et la pièce de référence avec ses cotes laser (R29) ; mettre le clone principal à jour puis repointer le registre ; ce suivi sera aligné sur main avec la PR du Lot 1.",
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/188"},
-  "registryIntegration": "proposed_not_registered",
+  "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; la source pointe vers le worktree C:/Users/examg/Documents local/avereo-vision-lot0, à repointer vers le clone principal une fois mis à jour.",
+  "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},
   "documentation": "docs/plan-lots.md"
 }
