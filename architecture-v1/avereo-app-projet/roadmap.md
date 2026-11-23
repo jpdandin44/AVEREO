@@ -5,12 +5,22 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-20
+updated: 2026-11-22
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+
+## 22 novembre — Répétition de la collecte à corriger avant installation
+
+**Cadrage** : écart de rattachement aux branches reproduit sur données fictives.
+**Développement local** : correction isolée et tests de répétition préparés.
+**Préproduction** : bascule du candidat initial suspendue après l’échec sur copie ;
+qualification et accord du nouveau candidat à établir avant son installation.
+**Mise en production** : non autorisée dans ce lot.
+[Qualification et réserves](docs/inventaire-github.md).
 
 ## 20 novembre — Inventaire complet du compte
 

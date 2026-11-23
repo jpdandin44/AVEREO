@@ -5,12 +5,21 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-20
+updated: 2026-11-22
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+
+## 2026-11-22 — Correction de la répétition de l’inventaire GitHub
+
+Les identifiants automatiquement dérivés ne sont plus réinterprétés comme des
+rattachements manuels. Un répertoire sans marqueur ne gagne donc pas de branche
+au second passage. Tests de trois collectes et de conservation des identifiants
+manuels ; correction préparée après un essai hébergé sur copie en échec.
+[Qualification et limites](docs/inventaire-github.md). Aucun déploiement de ce correctif.
 
 ## 2026-11-20 — Inventaire GitHub en développement local
 

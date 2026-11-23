@@ -5,13 +5,19 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-21
+updated: 2026-11-22
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 22 novembre — Livraison du contrat de volume sans migration
+
+PR178 fusionnée et installée en préproduction, source `15f537a05b06a0ba589885b0945109c978afbc24`. Le plafond JSON est appliqué à **100 000 000 octets (100 Mo)** dans Rapport et Passeport, sans réduire les médias ni changer les 524 288 000 octets autorisés par paquet. Sauvegardes et restauration temporaire réussies ; 32 dossiers Rapport et leurs propriétaires, quatre tables Passeport et 30 fichiers privés exacts après livraison. [Reçu de conservation](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-volume-sans-perte-20261120/preproduction-20261122/final-verification.json>).
+
+Aucune réécriture des anciens JSON et aucune nouvelle colonne. Le plafond privé Rapport est seul aligné ; les comparaisons après livraison portent sur les lignes brutes et les propriétaires, ainsi que sur les blobs privés Passeport. La recette authentifiée du gros dossier et le rendu Microsoft Word restent distincts. [Contrat](volume-sans-perte.md#préproduction).
 
 ## 21 novembre — Capacité et fidélité JSON, sans migration
 
