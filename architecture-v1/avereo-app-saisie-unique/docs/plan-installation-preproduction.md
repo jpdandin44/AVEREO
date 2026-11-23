@@ -21,6 +21,14 @@ recette, ni autorisation de merge. Il complète la section « Publication prépa
 Mettre le candidat local UNI à disposition des comptes de démonstration autorisés sur une
 cible de préproduction, derrière AVEREO CONNECT, avec retour arrière possible.
 
+**Correction du 23 novembre.** La première version de ce plan supposait la cible absente. Un
+contrôle externe sans compte montre l'inverse : `https://uni-preprod.avereo.fr/` répond 303
+vers `https://connect-preprod.avereo.fr/?app=uni` et `connect/entry.php` sans ticket répond 403,
+ce qui est le comportement du garde partagé. UNI est donc déjà installé derrière CONNECT. La
+version installée, la date et la recette ne sont pas documentées dans le dépôt. Les étapes 3 à 5
+valent alors comme **requalification** de la cible (comparer l'empreinte, relire la
+configuration et la ligne de catalogue) avant tout remplacement du candidat.
+
 Hors périmètre : production, persistance serveur des dossiers, synchronisation
 multiutilisateur, dépôt Anah, changement des droits CONNECT existants, publication des
 modèles ou des fichiers générés dans le dépôt.
@@ -29,13 +37,16 @@ modèles ou des fichiers générés dans le dépôt.
 
 | # | Hypothèse | Source | À confirmer par |
 |---|---|---|---|
-| H1 | URL cible `https://uni-preprod.avereo.fr`, racine web `public` | schéma des autres applications (`<app>-preprod.avereo.fr`) ; accord de principe du 23/11 | responsable |
-| H2 | Portail CONNECT de préproduction `https://connect-preprod.avereo.fr` | `.env.example` CONNECT et docs des autres applications | responsable |
+| H1 | URL cible `https://uni-preprod.avereo.fr`, racine web `public` | **constatée** le 23/11 : le sous-domaine répond ; racine `public` à confirmer sur la cible | responsable |
+| H2 | Portail CONNECT de préproduction `https://connect-preprod.avereo.fr` | **constaté** le 23/11 : redirection `?app=uni` vers ce portail | responsable |
 | H3 | Fichier de configuration privé `~/.avereo/uni-preprod/config.php` | `connect-gate.php` : chemin cherché dès que la racine web contient `preprod` | à contrôler sur la cible |
-| H4 | Le sous-domaine, son certificat HTTPS et sa racine `public` n'existent pas encore | aucune trace dans le dépôt | responsable |
+| H4 | ~~Le sous-domaine n'existe pas encore~~ **Infirmée** : sous-domaine et HTTPS existent ; version installée et présence de la ligne de catalogue `uni` à confirmer | contrôle externe du 23/11 ; la base CONNECT n'est pas lisible depuis le dépôt | responsable |
 | H5 | Le pack privé de modèles est disponible sur le poste de build | `preparer-modeles.py` en a besoin ; absent de ce checkout | responsable |
 
 ## 3. Décisions et accords humains requis avant l'étape 3
+
+Le secret, l'accès et la ligne de catalogue existent peut-être déjà (voir la correction du §1) :
+les points 3 à 5 ci-dessous se limitent alors à les vérifier, sans les recréer.
 
 1. Confirmer H1 à H5.
 2. Accord exact d'installation en préproduction de ce candidat (empreinte de l'étape 2).
