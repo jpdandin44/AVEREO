@@ -12,9 +12,9 @@ tags: [avereo, uni, preproduction, recette, connect]
 
 # Fiche de recette de UNI en préproduction
 
-Fiche à dérouler par le responsable sur `https://uni-preprod.avereo.fr/`. Elle reprend les contrôles R1 à R12 du
-[plan d'installation](plan-installation-preproduction.md). Les résultats ci-dessous sont **vides** : seul le responsable
-les renseigne. Cette fiche ne vaut ni recette acquise, ni autorisation de merge.
+Fiche à dérouler sur `https://uni-preprod.avereo.fr/`. Elle reprend les contrôles R1 à R12 du
+[plan d'installation](plan-installation-preproduction.md). Les résultats sont ceux d'une première passe partielle (voir plus bas) ; la validation reste humaine.
+Cette fiche ne vaut ni recette acquise, ni autorisation de merge.
 
 ## Avant de commencer
 
@@ -44,22 +44,29 @@ les renseigne. Cette fiche ne vaut ni recette acquise, ni autorisation de merge.
 | R11 | Mobile | Mode appareil du navigateur, largeur 375 px, parcourir le tableau de bord et une fiche | Pas de débordement horizontal ; actions utilisables | Local seulement |
 | R12 | Cible réservée | Vérifier avec CONNECT que seuls les comptes de démonstration ont le droit `uni:use` | Aucun compte réel dans le périmètre | Non |
 
-## Résultats (à remplir par le responsable)
+## Résultats
 
-| # | Résultat (OK / KO / non fait) | Date et heure | Navigateur | Remarque ou écart |
-|---|---|---|---|---|
-| R1 |  |  |  |  |
-| R2 |  |  |  |  |
-| R3 |  |  |  |  |
-| R4 |  |  |  |  |
-| R5 |  |  |  |  |
-| R6 |  |  |  |  |
-| R7 |  |  |  |  |
-| R8 |  |  |  |  |
-| R9 |  |  |  |  |
-| R10 |  |  |  |  |
-| R11 |  |  |  |  |
-| R12 |  |  |  |  |
+Passe du 23 novembre 2026, réalisée par Claude dans le navigateur intégré, sur le compte CONNECT `avereo_admin`
+(organisation AVEREO, compte administrateur : ce n'est pas un compte de démonstration dédié), Chrome embarqué.
+Heure détaillée non relevée. Résultats constatés, **pas une recette validée** : la validation reste humaine.
+
+| # | Résultat | Navigateur | Remarque ou écart |
+|---|---|---|---|
+| R1 | OK (hors navigateur) | curl, sans session | `https://uni-preprod.avereo.fr/` répond 303 vers `https://connect-preprod.avereo.fr/?app=uni` ; refait en fenêtre privée navigateur : non fait |
+| R2 | OK | Chrome intégré | La tuile « AVEREO UNI » est dans les applications autorisées de CONNECT ; son lancement ouvre UNI (« Saisie unique », bandeau « Données fictives ») |
+| R3 | Non fait | — | Le ticket de lancement est consommé par la redirection et n'est pas lisible dans cet environnement. Contrôle partiel : `connect/entry.php` avec un ticket invalide ou sans ticket répond 403 « L'autorisation AVEREO CONNECT est invalide ou expirée. » |
+| R4 | Non fait | — | Même limite que R3 |
+| R5 | Non fait | — | Pas de second compte sans droit |
+| R6 | Non fait | — | Déconnecterait la session CONNECT du responsable ; à faire avec son accord |
+| R7 | Partiel | Chrome intégré | Dossier de démonstration ajouté, fiche ouverte (5 onglets, 13 aperçus, « Plan équilibré » 12 400 €), 2 dossiers dans la liste. Recherche, alertes, gel du devis (« Figer au dépôt ») et rechargement non vérifiés ; l'action « Figer au dépôt » n'a pas été trouvée dans les onglets de la fiche |
+| R8 | Non fait | — | Téléchargements des 12 modèles et impression : accord de téléchargement à donner |
+| R9 | Non fait | — | Export et réimport : accord de téléchargement à donner |
+| R10 | OK avec réserve | Chrome intégré | Aucune erreur dans la console ; aucune ressource externe chargée ; politique de sécurité `connect-src 'none'` en place ; clé `avereo-uni-dossiers` utilisée. Réserve : la console n'était observée que depuis le chargement de la page |
+| R11 | **KO** | Émulation 375 px | Le tableau de bord tient dans 375 px, mais la liste « Dossiers » déborde : la page s'élargit à 536 px et les colonnes Statut et Programme sont coupées |
+| R12 | Non fait | — | À confirmer dans CONNECT par le responsable |
+
+Effets de la passe : un dossier de démonstration fictif a été ajouté dans le stockage du navigateur intégré
+(`avereo-uni-dossiers`) ; aucune donnée réelle, aucune modification de la cible ni de CONNECT.
 
 ## Preuves
 

@@ -16,7 +16,7 @@ tags: [avereo, saisie-unique, documentation]
 
 Un brouillon de [plan d'installation en préproduction](docs/plan-installation-preproduction.md) est ajouté. Il n'est pas exécuté et ne vaut pas accord d'installation. Il part d'une hypothèse corrigée le jour même : UNI est déjà présent en préproduction ; l'empreinte du fichier installé est relevée et rapprochée du manifeste d'origine dans le plan (réponse déclarative du chat de fabrication). La tuile UNI est visible dans le catalogue de préproduction selon le responsable ; la recette hébergée reste à faire. Les 46 tests unitaires et le build ont été relancés localement sans changement de code.
 
-Une [fiche de recette](docs/recette-preproduction.md) de la préproduction est ajoutée, résultats vides à renseigner par le responsable.
+Une [fiche de recette](docs/recette-preproduction.md) de la préproduction est ajoutée, avec les résultats d'une première passe partielle du 23 novembre (R11 en échec : la liste des dossiers déborde à 375 px).
 
 ## 2026-11-22
 
