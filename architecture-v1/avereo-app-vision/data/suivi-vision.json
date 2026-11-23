@@ -26,7 +26,11 @@
   "checks": [],
   "proofs": [
     {"id": "etude-outils-20261120", "phaseId": 0, "title": "Étude des outils open source du 20/11/2026", "kind": "reference_document", "status": "reviewable", "evidence": "docs/etude-outils-resume.md", "observedAt": "2026-11-20"},
-    {"id": "lot0-dossier-conception-20261123", "phaseId": 0, "title": "Dossier de conception du Lot 0 : exigences, ADR 0001, architecture, plan de lots, licences", "kind": "reference_document", "status": "reviewable", "evidence": "docs/exigences.md, docs/adr/0001-moteurs.md, docs/architecture.md, docs/plan-lots.md, docs/licences.md", "observedAt": "2026-11-23"}
+    {"id": "lot0-exigences-20261123", "phaseId": 0, "title": "Lot 0 — Exigences R01 à R48", "kind": "reference_document", "status": "reviewable", "evidence": "docs/exigences.md", "observedAt": "2026-11-23"},
+    {"id": "lot0-adr-moteurs-20261123", "phaseId": 0, "title": "Lot 0 — ADR 0001 — choix des moteurs", "kind": "reference_document", "status": "reviewable", "evidence": "docs/adr/0001-moteurs.md", "observedAt": "2026-11-23"},
+    {"id": "lot0-architecture-20261123", "phaseId": 0, "title": "Lot 0 — Architecture", "kind": "reference_document", "status": "reviewable", "evidence": "docs/architecture.md", "observedAt": "2026-11-23"},
+    {"id": "lot0-plan-lots-20261123", "phaseId": 0, "title": "Lot 0 — Plan des lots", "kind": "reference_document", "status": "reviewable", "evidence": "docs/plan-lots.md", "observedAt": "2026-11-23"},
+    {"id": "lot0-licences-20261123", "phaseId": 0, "title": "Lot 0 — Licences des dépendances", "kind": "reference_document", "status": "reviewable", "evidence": "docs/licences.md", "observedAt": "2026-11-23"}
   ],
   "decisions": [
     {"id": "D1", "title": "IFC : accepter web-ifc (MPL-2.0) ou générateur IFC4 STEP maison", "status": "to_decide"},
