@@ -5,12 +5,20 @@ title: Évolutions de Saisie unique
 status: active
 version: git
 created: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-23
 owner: jpdandin
 tags: [avereo, saisie-unique, documentation]
 ---
 
 # Évolutions de Saisie unique
+
+## 2026-11-23
+
+Un brouillon de [plan d'installation en préproduction](docs/plan-installation-preproduction.md) est ajouté. Il n'est pas exécuté et ne vaut pas accord d'installation. Les 46 tests unitaires et le build ont été relancés localement sans changement de code.
+
+## 2026-11-22
+
+La PR #179 est fusionnée : tableau de bord, recherche, alertes, programmes et territoires, préremplissage des modèles PDF/Word privés, entrée UNI dans CONNECT et candidat PHP protégé. [Candidat de démonstration](docs/demo-2026-11-23.md). Aucune publication hébergée n'est effectuée.
 
 ## 2026-11-06
 
