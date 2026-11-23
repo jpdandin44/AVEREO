@@ -59,14 +59,15 @@ Heure détaillée non relevée. Résultats constatés, **pas une recette validé
 | R5 | Non fait | — | Pas de second compte sans droit |
 | R6 | Non fait | — | Déconnecterait la session CONNECT du responsable ; à faire avec son accord |
 | R7 | Partiel | Chrome intégré | Dossier de démonstration ajouté, fiche ouverte (5 onglets, 13 aperçus, « Plan équilibré » 12 400 €), 2 dossiers dans la liste. Recherche, alertes, gel du devis (« Figer au dépôt ») et rechargement non vérifiés ; l'action « Figer au dépôt » n'a pas été trouvée dans les onglets de la fiche |
-| R8 | Non fait | — | Téléchargements des 12 modèles et impression : accord de téléchargement à donner |
-| R9 | Non fait | — | Export et réimport : accord de téléchargement à donner |
+| R8 | Partiel | Chrome intégré | Sur le dossier de démonstration, 9 modèles remplis téléchargés (7 PDF, 2 Word ; fichiers `UNI-DEMO-*-devis`, de 49 Ko à 3,3 Mo) et bien enregistrés sur le poste ; les 2 Word sont des archives valides. Deux boutons désactivés : « Synthèse du logement » (pas de formulaire officiel, utiliser Imprimer, comportement attendu) et « Procuration (fonds) » (« Modèle original non embarqué dans cette édition »). « Attestation (factures) » et « Rapport de fin » restent indisponibles tant que le devis n'est pas figé. **Écart** avec la documentation, qui annonce 12 modèles. Impression de la synthèse, ouverture des Word, mise en page, en-têtes PDF, cases et signatures : non vérifiés |
+| R9 | OK avec réserve | Chrome intégré | Export `avereo-uni-sauvegarde-2026-11-23.json` (7 695 octets, format `avereo-uni-sauvegarde` version 1, 2 dossiers). Réimport : 2 dossiers ajoutés, 4 au total, les existants conservés. Réserve : le fichier a été fourni à l'application par script (le sélecteur de fichiers natif n'est pas pilotable), pas par le sélecteur du navigateur |
 | R10 | OK avec réserve | Chrome intégré | Aucune erreur dans la console ; aucune ressource externe chargée ; politique de sécurité `connect-src 'none'` en place ; clé `avereo-uni-dossiers` utilisée. Réserve : la console n'était observée que depuis le chargement de la page |
 | R11 | **KO** | Émulation 375 px | Le tableau de bord tient dans 375 px, mais la liste « Dossiers » déborde : la page s'élargit à 536 px et les colonnes Statut et Programme sont coupées |
 | R12 | Non fait | — | À confirmer dans CONNECT par le responsable |
 
-Effets de la passe : un dossier de démonstration fictif a été ajouté dans le stockage du navigateur intégré
-(`avereo-uni-dossiers`) ; aucune donnée réelle, aucune modification de la cible ni de CONNECT.
+Effets de la passe : le stockage du navigateur intégré contient maintenant 4 dossiers fictifs (`avereo-uni-dossiers`, dont 2 doublons issus du réimport) ;
+10 fichiers fictifs ont été enregistrés dans le dossier Téléchargements du poste (9 modèles et 1 sauvegarde) ;
+aucune donnée réelle, aucune modification de la cible ni de CONNECT.
 
 ## Preuves
 
