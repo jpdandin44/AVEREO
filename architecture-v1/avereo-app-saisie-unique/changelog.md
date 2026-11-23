@@ -18,7 +18,7 @@ Un brouillon de [plan d'installation en préproduction](docs/plan-installation-p
 
 Une [fiche de recette](docs/recette-preproduction.md) de la préproduction est ajoutée, avec les résultats d'une première passe partielle du 23 novembre (R11 en échec : la liste des dossiers déborde à 375 px ; R7 : gel du devis OK ; R8 partiel : 11 modèles sur 12 utilisables, « Procuration (fonds) » bloquée par un écart d'identifiant PRP/PRF ; R9 OK).
 
-Le candidat corrigé (PR #184 et #185) est installé en préproduction le 23 novembre : empreinte `dcb934db…`, ancien fichier conservé, [procédure et reçu](docs/procedure-remplacement-preproduction.md). Seconde passe de recette partielle : ouverture depuis CONNECT, procuration (fonds) générable et liste mobile sans débordement OK.
+Le candidat corrigé (PR #184 et #185) est installé en préproduction le 23 novembre : empreinte `dcb934db…`, ancien fichier conservé, [procédure et reçu](docs/procedure-remplacement-preproduction.md). Seconde passe de recette partielle : ouverture depuis CONNECT, procuration (fonds) générable et liste mobile sans débordement, 12 modèles sur 12 générés et parcours R7 OK ; la déconnexion UNI laisse la session CONNECT active (à trancher).
 
 ## 2026-11-22
 
