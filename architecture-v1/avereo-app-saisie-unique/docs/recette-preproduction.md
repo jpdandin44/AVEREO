@@ -79,11 +79,13 @@ Constats, **pas une recette validée**.
 |---|---|---|
 | R1 | OK (hors navigateur) | curl sans session : 303 vers `https://connect-preprod.avereo.fr/?app=uni` ; `connect/entry.php` sans ticket : 403 |
 | R2 | OK | CONNECT rouvert, lancement depuis la tuile « AVEREO UNI » (le lien s'ouvre dans un nouvel onglet que le panneau bloque : adresse de lancement ouverte dans l'onglet courant) ; la page servie contient le pack à 12 codes dont `PRP` |
-| R8 | Partiel, écart levé | « Procuration (fonds) » : bouton actif, génération de `UNI-DEMO-PRP-devis.pdf` (téléchargement intercepté, aucun fichier écrit). Impression de la synthèse, Word, mise en page, cases, signatures : non vérifiés |
+| R6 | Partiel, à trancher | `connect/logout.php` efface le cookie UNI (en-tête `Set-Cookie` vérifié par curl) et renvoie vers `https://connect-preprod.avereo.fr/?logout=1`, où la session CONNECT reste active. Rouvrir `https://uni-preprod.avereo.fr/` repasse par CONNECT puis rouvre UNI sans nouvelle authentification (entrée automatique par la session CONNECT). L'attendu « UNI inaccessible sans nouvelle connexion » n'est donc vrai que si la session CONNECT est elle aussi fermée, non testé ; à décider par le responsable (déconnexion UNI seule ou déconnexion CONNECT) |
+| R7 | OK | Recherche sur la liste (nom, commune, programme, propriétaire : 2 résultats sur 4 pour chacun, 0 pour un terme absent), filtre « Alertes et relances » (2), vues Programmes, Territoires / EPCI, Ratios, Travaux, Paramètres et tableau de bord affichées ; après rechargement, 4 dossiers dont 1 figé et bandeau « Données fictives » toujours présents |
+| R8 | OK avec réserve | Les 12 modèles se génèrent sur la cible avec le dossier de démonstration figé : 8 PDF (PF 3,3 Mo, AVA, ACO, DAP, CEE, EXC, PRS, PRP) et 4 Word (ATD, ATF, RFA, DPE), signatures de fichier PDF et Word vérifiées ; « Procuration (fonds) » (PRP) n'est plus désactivée. Téléchargements interceptés, aucun fichier écrit. Impression de la synthèse, ouverture dans Word, mise en page, en-têtes, cases et signatures : non vérifiés |
 | R10 | OK avec réserve | aucune erreur dans la console, aucune ressource externe, `connect-src 'none'` présent ; la console n'était observée que depuis le chargement de la page |
 | R11 | OK | à 375 px la page tient dans 375 px ; la liste des dossiers défile dans son cadre (293 px visibles pour 589 px de contenu) |
 
-Non refaits dans cette passe : R3 à R7 (hors ouverture et rechargement), R9, R12.
+Non refaits dans cette passe : R3 à R5, R9, R12.
 
 ## Preuves
 
