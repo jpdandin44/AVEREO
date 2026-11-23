@@ -34,19 +34,19 @@
     {"id": "lot0-licences-20261123", "phaseId": 0, "title": "Lot 0 — Licences des dépendances", "kind": "reference_document", "status": "reviewable", "evidence": "docs/licences.md", "observedAt": "2026-11-23"}
   ],
   "decisions": [
-    {"id": "D1", "title": "IFC : accepter web-ifc (MPL-2.0) ou générateur IFC4 STEP maison", "status": "to_decide"},
-    {"id": "D2", "title": "Serveur OVH : GPU ou CPU seul (reconstruction dense, MapAnything)", "status": "to_decide"},
+    {"id": "D1", "title": "IFC : accepter web-ifc (MPL-2.0) ou générateur IFC4 STEP maison", "status": "decided", "decidedOn": "2026-11-23", "choice": "Générateur IFC4 STEP maison ; réexamen possible par nouvel ADR si le lot 6 s'avère trop long (web-ifc, MPL-2.0, resterait alors une option)"},
+    {"id": "D2", "title": "Serveur OVH : GPU ou CPU seul (reconstruction dense, MapAnything)", "status": "decided", "decidedOn": "2026-11-23", "choice": "CPU seul au départ ; D2 rouvert si l'essai du lot 7 montre une qualité insuffisante (un GPU serait un service payant, soumis à accord)"},
     {"id": "D3", "title": "Mise à l'échelle des relevés vidéo", "status": "decided", "decidedOn": "2026-11-23", "choice": "2 cotes laser pour l'échelle + 1 cote de contrôle (écart > 2 cm = hors tolérance), mire ArUco en secours"},
-    {"id": "D4", "title": "Licences permissives hors liste : BSL-1.0 (Clipper2), FPDF, EDL-1.0 (JSTS)", "status": "to_decide"},
-    {"id": "D5", "title": "Outil de validation IFC pendant les tests : IfcOpenShell (LGPL-3.0), hors application livrée", "status": "to_decide"},
-    {"id": "D6", "title": "Dépendances système hors liste des moteurs retenus : Boost (BSL-1.0) et Eigen (MPL-2.0) pour COLMAP, FFmpeg, Pango (WeasyPrint), LibreOffice et Chromium (Gotenberg)", "status": "to_decide"}
+    {"id": "D4", "title": "Licences permissives hors liste : BSL-1.0 (Clipper2), FPDF, EDL-1.0 (JSTS)", "status": "decided", "decidedOn": "2026-11-23", "choice": "Refus de Clipper2 (BSL-1.0), FPDF et EDL-1.0 (JSTS) : inutiles, flatten-js et Gotenberg couvrent les besoins"},
+    {"id": "D5", "title": "Outil de validation IFC pendant les tests : IfcOpenShell (LGPL-3.0), hors application livrée", "status": "decided", "decidedOn": "2026-11-23", "choice": "IfcOpenShell (LGPL-3.0) accepté comme outil de test seulement : ni dans les dépendances de l'application, ni dans les conteneurs, ni en production"},
+    {"id": "D6", "title": "Dépendances système hors liste des moteurs retenus : Boost (BSL-1.0) et Eigen (MPL-2.0) pour COLMAP, FFmpeg, Pango (WeasyPrint), LibreOffice et Chromium (Gotenberg)", "status": "decided", "decidedOn": "2026-11-23", "choice": "Règle étroite acceptée : un programme exécuté côté serveur, non modifié, non redistribué et inscrit dans docs/licences.md peut être sous BSL-1.0, MPL-2.0 ou LGPL ; AGPL, GPL, non commercial et propriétaire restent exclus. Boost, Eigen, FFmpeg (build sans composants GPL, à vérifier au lot 7) et l'image Gotenberg non modifiée (audit au lot 4, image sans LibreOffice à étudier) acceptés sous cette règle ; Pango (repli WeasyPrint) non décidé"}
   ],
   "developmentReviews": [],
   "approvals": [],
   "delivery": {"status": "not_delivered"},
   "blockers": [
-    "Décisions D1, D2, D4, D5 et D6 à prendre par le responsable avant de figer les moteurs concernés.",
-    "Mise en place du service de traitement sur le serveur OVH : accord explicite du responsable requis après validation de l'ADR 0001.",
+    "Service de traitement : essai en conteneur local autorisé (décision du 23/11/2026) ; mise en place sur le serveur OVH = accord séparé du responsable, après l'essai de précision du lot 7.",
+    "Caractéristiques du serveur OVH (processeur, mémoire, disque, GPU éventuel) à fournir par le responsable avant le lot 7.",
     "Pièce de référence et ses cotes laser à fournir par le responsable (exigence R29, lot 1)."
   ],
   "reserves": [
@@ -60,7 +60,7 @@
     "À VÉRIFIER : dépôt actuel d'OpenSfM et son chemin CPU, licences de Boost, Eigen, FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR (alertes de licence signalées par la relecture Codex, non revérifiées sur les sources amont).",
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
-  "nextAction": "Relire et valider l'ADR 0001, docs/plan-lots.md et l'inscription au cockpit ; trancher D1, D2, D4, D5, D6 ; fournir la pièce de référence ; puis lancer le Lot 1.",
+  "nextAction": "Valider docs/plan-lots.md, fournir la pièce de référence et ses cotes laser, puis lancer le Lot 1 ; appliquer l'inscription au cockpit après le merge de la PR #188, sur accord explicite.",
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/188"},
   "registryIntegration": "proposed_not_registered",
   "documentation": "docs/plan-lots.md"

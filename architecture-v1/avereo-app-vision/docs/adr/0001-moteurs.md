@@ -1,6 +1,6 @@
 # ADR 0001 — Choix des moteurs open source d'AVEREO Vision
 
-- **Statut : proposé (Lot 0), en attente de validation par le responsable.** Tout changement de moteur passe ensuite par un nouvel ADR.
+- **Statut : accepté par le responsable le 23/11/2026** (ADR et décisions D1, D2, D4, D5, D6 donnés en session ; le merge de la PR sur GitHub reste sa validation formelle). Tout changement de moteur passe par un nouvel ADR.
 - Date : 23/11/2026 — Rédigé par Claude Code.
 - Source des données : étude du 20/11/2026 (dépôts officiels clonés ce jour-là), reprise via `docs/etude-outils-resume.md` et la version complète de l'étude pour les versions et dates. Aucune nouvelle recherche web n'a été faite pour ce lot.
 - Politique de licences (AGENTS.md) : MIT, BSD 2 ou 3 clauses, Apache 2.0 ; polices SIL OFL. Toute autre licence = décision du responsable.
@@ -36,6 +36,16 @@ AVEREO Vision est une PWA (React + Vite) avec une API PHP + MySQL et un service 
 | D5 | **Nouvelle** : outil de validation des fichiers IFC pendant les tests, hors application livrée. IfcOpenShell est la référence mais sous LGPL-3.0. | Utiliser IfcOpenShell uniquement comme outil de test local, non distribué ni installé en production, **si tu l'acceptes** ; sinon valider avec un lecteur IFC ouvert à la main. | Test automatisé de conformité IFC. | Trouver un autre validateur de schéma disponible et autorisé ; l'ouverture manuelle dans un lecteur ne suffit pas à clore le lot 6 (R44). |
 | D6 | **Nouvelle** (relecture adversariale Codex, à confirmer sur les sources amont) : dépendances système des moteurs retenus, hors liste MIT/BSD/Apache : Boost (BSL-1.0) et Eigen (MPL-2.0) requis par COLMAP ; FFmpeg (LGPL ou GPL selon la compilation) pour extraire les images de la vidéo ; Pango (LGPL) pour WeasyPrint ; LibreOffice (MPL-2.0 et autres licences) et Chromium dans l'image Gotenberg. | Instruire chacune avant son lot (Lot 4 pour Gotenberg, Lot 7 pour COLMAP et FFmpeg), avec l'inventaire des composants et licences réellement livrés ; étudier une image Gotenberg limitée à Chromium. Aucune adoption avant ta décision. | Les lots 4 et 7 peuvent démarrer. | Chercher des alternatives (pdfmake pour le PDF, autre extraction d'images) ; COLMAP ne se passe pas de Boost ni d'Eigen : la reconstruction vidéo serait alors à reconsidérer par un nouvel ADR. |
 | — | **Mise en place du service de traitement sur le serveur OVH** (conteneur dédié) : à ne faire qu'après validation de cet ADR et accord explicite. | Faire un essai CPU sur ton poste ou un conteneur local d'abord (Lot 7). | — | — |
+
+### Décisions du responsable (23/11/2026)
+Le tableau ci-dessus donne les recommandations de Claude Code ; le responsable les a toutes acceptées en session.
+- **D1** : générateur IFC4 STEP maison. Réexamen possible par nouvel ADR si le lot 6 est trop long.
+- **D2** : CPU seul au départ ; D2 est rouvert si l'essai du lot 7 montre une qualité insuffisante.
+- **D4** : Clipper2, FPDF et JSTS refusés.
+- **D5** : IfcOpenShell accepté **comme outil de test seulement** (ni dans l'application, ni dans les conteneurs, ni en production).
+- **D6** : règle acceptée : un programme exécuté côté serveur, non modifié, non redistribué et inscrit dans `docs/licences.md` peut être sous BSL-1.0, MPL-2.0 ou LGPL ; AGPL, GPL, non commercial et propriétaire restent exclus. Boost, Eigen, FFmpeg (build sans composants GPL, à vérifier au lot 7) et l'image Gotenberg non modifiée (audit au lot 4) sont acceptés sous cette règle ; Pango (repli WeasyPrint) n'est pas décidé. Ces lectures de licence ne sont pas un avis juridique.
+- **Service de traitement** : essai en conteneur local autorisé ; mise en place sur le serveur OVH seulement après un accord séparé, une fois l'essai de précision fait et les caractéristiques du serveur fournies.
+- L'inscription au cockpit s'appliquera après le merge de la PR, sur accord explicite.
 
 ## 4. Comparatifs par besoin
 Lecture : « Android » et « iOS » désignent le navigateur du téléphone (Chrome Android ; Safari iOS) ; « service » = s'exécute dans le conteneur de traitement, pas sur le téléphone. « Dernière publication » = dernier tag stable observé le 20/11/2026. Les liens sont les dépôts ou pages officiels habituels de chaque projet ; **À VÉRIFIER** : leur exactitude est à contrôler par le sous-agent verif-licences au lot 1, avant d'inscrire la dépendance dans `docs/licences.md`.

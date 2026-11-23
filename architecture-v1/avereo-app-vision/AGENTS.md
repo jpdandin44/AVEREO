@@ -26,7 +26,7 @@ Le document complet est dans docs/charte/Charte_graphique_AVEREO_V2.0.pdf. Les r
 
 ## Propriété intellectuelle et licences
 - Reproduis les fonctions de Visuary, jamais ses éléments : ni son nom, son logo, ses textes, ses icônes ou ses maquettes d'écran, ni aucun code ou fichier tiré de son application. AVEREO commercialise l'outil sous sa propre marque et sa propre charte.
-- Licences acceptées pour toute dépendance de code : MIT, BSD (2 ou 3 clauses), Apache 2.0. Les polices de la charte sous SIL Open Font License sont aussi acceptées. Si une dépendance a une autre licence (GPL, LGPL, AGPL, MPL, licence non commerciale, licence absente), arrête-toi et pose-moi la question : une licence copyleft peut obliger à publier le code d'AVEREO.
+- Licences acceptées pour toute dépendance de code : MIT, BSD (2 ou 3 clauses), Apache 2.0. Les polices de la charte sous SIL Open Font License sont aussi acceptées. Exception décidée le 23/11/2026 (ADR 0001, D6) : un programme exécuté côté serveur, non modifié, non redistribué et inscrit dans docs/licences.md peut être sous BSL-1.0, MPL-2.0 ou LGPL ; AGPL, GPL, licence non commerciale et licence propriétaire restent exclues. Si une dépendance a une autre licence (GPL, LGPL, AGPL, MPL, licence non commerciale, licence absente), arrête-toi et pose-moi la question : une licence copyleft peut obliger à publier le code d'AVEREO.
 - Chaque dépendance ajoutée est inscrite dans docs/licences.md : nom, version, licence, usage.
 
 ## Stack et hébergement

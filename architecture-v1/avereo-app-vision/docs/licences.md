@@ -49,16 +49,16 @@ Version observée = dernier tag stable relevé le 20/11/2026 ; la version fixée
 | MapAnything (modèle « apache ») | 1.1.3 | Apache 2.0 | reconstruction par apprentissage, **seulement si GPU (D2)** | 8 | option |
 
 ## Dépendances système à instruire (décision D6)
-Signalées par la relecture adversariale Codex du Lot 0 ; non revérifiées sur les sources amont à ce stade. Aucune n'est adoptée avant la décision du responsable.
+Signalées par la relecture adversariale Codex du Lot 0 ; non revérifiées sur les sources amont à ce stade. **Décision D6 du responsable (23/11/2026)** : un programme exécuté côté serveur, non modifié, non redistribué et inscrit ici peut être sous BSL-1.0, MPL-2.0 ou LGPL ; AGPL, GPL, non commercial et propriétaire restent exclus. Ces lectures de licence ne sont pas un avis juridique.
 
 | Composant | Requis par | Licence signalée | Lot | Statut |
 |---|---|---|---|---|
-| Boost | COLMAP | BSL-1.0 (hors liste) | 7 | à décider |
-| Eigen | COLMAP | MPL-2.0 | 7 | à décider |
-| FFmpeg | extraction d'images (OpenCV, service) | LGPL ou GPL selon la compilation | 7 | à décider |
-| Pango | WeasyPrint (repli PDF) | LGPL | — | à décider si le repli est utilisé |
-| LibreOffice | image Gotenberg | MPL-2.0 et autres | 4 | à décider ; étudier une image limitée à Chromium |
-| Chromium | image Gotenberg | licences multiples | 4 | à instruire |
+| Boost | COLMAP | BSL-1.0 (hors liste) | 7 | accepté (règle D6) |
+| Eigen | COLMAP | MPL-2.0 | 7 | accepté (règle D6), version non modifiée, dans le conteneur de traitement |
+| FFmpeg | extraction d'images (OpenCV, service) | LGPL ou GPL selon la compilation | 7 | accepté sous règle D6 si le build n'a aucun composant GPL : **À VÉRIFIER au lot 7** |
+| Pango | WeasyPrint (repli PDF) | LGPL | — | non décidé : à trancher seulement si le repli WeasyPrint est utilisé |
+| LibreOffice | image Gotenberg | MPL-2.0 et autres | 4 | accepté en principe (règle D6, image amont non modifiée) ; audit au lot 4 ; étudier une image sans LibreOffice |
+| Chromium | image Gotenberg | licences multiples | 4 | accepté en principe (règle D6) ; à instruire au lot 4 |
 
 ## Code réutilisé d'autres projets
 Aucun à ce jour. Si des extraits de house-planner (MIT, structure murs/pièces, exports DXF/PDF/CSV) sont repris, chaque emprunt est inscrit ici avec le projet, le fichier d'origine, l'auteur et le texte de copyright de sa licence MIT.
@@ -74,7 +74,7 @@ Aucun à ce jour. Si des extraits de house-planner (MIT, structure murs/pièces,
 | LSD (dans COLMAP) | AGPL-3.0 | actif par défaut | désactivé à la compilation |
 | SiftGPU (dans COLMAP) | non lucratif seulement | compilé dès que le GPU est activé | COLMAP sans GPU |
 | Meshroom / AliceVision, OpenMVG, web-ifc, IFClite | MPL-2.0 | copyleft par fichier | COLMAP, OpenSfM ; web-ifc = décision D1 |
-| IfcOpenShell | LGPL-3.0 | LGPL | générateur maison ; outil de test = décision D5 |
+| IfcOpenShell | LGPL-3.0 | LGPL | générateur maison ; accepté **comme outil de test seulement** (D5, 23/11/2026) |
 | Dompdf, TCPDF | LGPL | LGPL | Gotenberg |
 | mPDF | GPL-2.0 | GPL | Gotenberg |
 | Sweet Home 3D | GPL | GPL, outil de bureau | — |
@@ -83,9 +83,9 @@ Aucun à ce jour. Si des extraits de house-planner (MIT, structure murs/pièces,
 | 3D Gaussian Splatting (Inria) | non commercial | usage commercial interdit | gsplat, Brush (Apache 2.0) |
 | VGGT | licence propre Meta | licence non standard | MapAnything (modèle Apache) |
 | tldraw | propriétaire | clé payante en production | Konva |
-| Clipper2 | Boost Software License 1.0 | hors liste, décision D4 | flatten-js |
-| JSTS | EPL-1.0 / EDL-1.0 | hors liste, décision D4 | flatten-js |
-| FPDF | permissive propre | hors liste, décision D4 | Gotenberg |
+| Clipper2 | Boost Software License 1.0 | refusé (D4, 23/11/2026) | flatten-js |
+| JSTS | EPL-1.0 / EDL-1.0 | refusé (D4, 23/11/2026) | flatten-js |
+| FPDF | permissive propre | refusé (D4, 23/11/2026) | Gotenberg |
 
 ## À VÉRIFIER
 - Licence réelle de chaque dépendance à la date d'installation (lecture du fichier LICENSE du dépôt officiel par verif-licences) et dépendances transitives de l'arbre npm et Composer.
