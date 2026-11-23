@@ -38,12 +38,34 @@ catalogue) avant tout remplacement du candidat.
 
 L'empreinte de `app.html` a été revérifiée par une seconde commande. Elle est celle du fichier
 construit avec le pack privé de modèles : un build local sans ce pack donne un fichier
-beaucoup plus petit (environ 1,8 Mo) et ne peut pas la reproduire. Le manifeste d'origine
-(`artifactSha256`) n'est pas disponible sur ce poste : rapprocher l'empreinte relevée de
-celui du chat qui a fabriqué le candidat reste à faire. Le `gate.php` installé diffère de
+beaucoup plus petit (environ 1,8 Mo) et ne peut pas la reproduire. Le `gate.php` installé diffère de
 `connect-gate.php` du dépôt (11 231 octets contre 11 230) ; la cause (étape de préparation du
 garde ou écart) n'est pas établie. Contrôle web : `/private/app.html`, `/private/gate.php` et
 `/public/index.php` répondent 404, et `/` redirige vers CONNECT.
+
+**Rapprochement avec le chat qui a fabriqué le candidat (réponse déclarative du 23 novembre).**
+Ces éléments viennent du compte rendu du chat UNI, non de contrôles faits dans cette session :
+
+- `artifactSha256` du manifeste (`.local/release/manifest.json`) : identique à l'empreinte de
+  `app.html` relevée ci-dessus ; `gate.php` identique aussi. Limite : les deux empreintes figuraient
+  dans la question posée au chat, donc la concordance est rapportée, pas recalculée ici.
+- Commit source désigné par le pack : `af1f7b853779d1e280208dc07f58b1f9c1d01637` (dernier
+  commit de code UNI sur `main`). Le manifeste ne contient aucun SHA Git et a été généré
+  37 secondes avant l'horodatage de ce commit : l'empreinte ne prouve donc pas à elle seule un
+  build exécuté depuis ce commit. La tête ultérieure de la PR #179, `180b3fa`, concerne le
+  chargement de la configuration privée dans CONNECT.
+- Installation le 21/11/2026 : téléversement terminé à 11 h 51, extraction cPanel confirmée à
+  11 h 54, réponse HTTPS constatée à 12 h 07 (heure de Paris). L'heure de 11 h 05 du fichier
+  correspond à la génération du bundle.
+- Catalogue CONNECT : au dernier contrôle authentifié du chat, la tuile UNI était **absente**
+  pour l'organisation de démonstration (7 membres actifs, droit `uni:use`, statut proposé `active`).
+  La simulation a renvoyé `write: false` et aucune exécution avec confirmation n'est prouvée.
+  L'état actuel de la ligne en base est à vérifier : le responsable indique l'avoir vue présente
+  dans le catalogue de préproduction depuis, ce qui n'est pas documenté.
+- Recette : seul « accès direct sans session → redirection vers CONNECT » est vérifié sur la
+  cible. Ticket valide, expiré ou rejoué, déconnexion, parcours métier hébergé et téléchargements
+  hébergés n'ont aucun résultat documenté ; les essais métier et de téléchargement sont locaux
+  (46 tests unitaires ; test de téléchargement et réimport échoué en Chrome local, réussi en CI).
 
 Hors périmètre : production, persistance serveur des dossiers, synchronisation
 multiutilisateur, dépôt Anah, changement des droits CONNECT existants, publication des
