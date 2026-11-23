@@ -1,0 +1,5 @@
+# Défauts des tâches que Claude Code délègue à Codex (/codex:rescue sans --model ni --effort).
+# À VÉRIFIER : noms de modèles proposés sur ton compte (commande /model dans Codex) ; adapte la ligne model.
+# Ce fichier de projet n'est lu que si le projet est marqué « de confiance » dans Codex.
+model = "gpt-5.4-mini"
+model_reasoning_effort = "medium"

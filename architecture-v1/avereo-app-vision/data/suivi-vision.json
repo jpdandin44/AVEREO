@@ -1,0 +1,61 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "project": "avereo-app-vision",
+  "owner": "jpdandin",
+  "version": "git",
+  "iterationId": "vision-v1",
+  "title": "AVEREO Vision V1 — relevé, métré et modélisation 2D/3D (équivalent Visuary)",
+  "status": "scoping_lot0_in_progress",
+  "stage": "cadrage",
+  "updatedAt": "2026-11-23",
+  "objective": "Construire lot par lot une PWA AVEREO de relevé de l'existant (vidéo, métrés ±2 cm, plan 2D, maquette 3D, exports PDF/DXF/IFC/glTF/OBJ/CSV) sur des moteurs open source sous licence MIT, BSD ou Apache 2.0.",
+  "lotPlan": {
+    "source": "docs/plan-lots.md",
+    "status": "produced_in_lot0_awaiting_validation",
+    "meaning": "Lots fonctionnels distincts des quatre phases ; le détail des lots et des tâches (statut, pourquoi, Claude Code ou Codex, modèle, effort, job Codex) est tenu uniquement dans la source Markdown."
+  },
+  "activeLot": {"id": "LOT-0", "title": "Cadrage technique, sans code", "branch": "vision/lot-0-cadrage", "scope": "documentation_only", "status": "en cours"},
+  "candidate": {"sourceSha": null, "artifactSha256": null},
+  "phases": [
+    {"id": 0, "label": "Cadrage", "status": "in_progress", "criteria": []},
+    {"id": 1, "label": "Développement local", "status": "not_started", "criteria": []},
+    {"id": 2, "label": "Préproduction", "status": "not_started", "criteria": []},
+    {"id": 3, "label": "Mise en production", "status": "not_started", "criteria": []}
+  ],
+  "currentPhase": 0,
+  "checks": [],
+  "proofs": [
+    {"id": "etude-outils-20261120", "phaseId": 0, "title": "Étude des outils open source du 20/11/2026", "kind": "reference_document", "status": "reviewable", "evidence": "docs/etude-outils-resume.md", "observedAt": "2026-11-20"},
+    {"id": "lot0-dossier-conception-20261123", "phaseId": 0, "title": "Dossier de conception du Lot 0 : exigences, ADR 0001, architecture, plan de lots, licences", "kind": "reference_document", "status": "reviewable", "evidence": "docs/exigences.md, docs/adr/0001-moteurs.md, docs/architecture.md, docs/plan-lots.md, docs/licences.md", "observedAt": "2026-11-23"}
+  ],
+  "decisions": [
+    {"id": "D1", "title": "IFC : accepter web-ifc (MPL-2.0) ou générateur IFC4 STEP maison", "status": "to_decide"},
+    {"id": "D2", "title": "Serveur OVH : GPU ou CPU seul (reconstruction dense, MapAnything)", "status": "to_decide"},
+    {"id": "D3", "title": "Mise à l'échelle des relevés vidéo", "status": "decided", "decidedOn": "2026-11-23", "choice": "2 cotes laser pour l'échelle + 1 cote de contrôle (écart > 2 cm = hors tolérance), mire ArUco en secours"},
+    {"id": "D4", "title": "Licences permissives hors liste : BSL-1.0 (Clipper2), FPDF, EDL-1.0 (JSTS)", "status": "to_decide"},
+    {"id": "D5", "title": "Outil de validation IFC pendant les tests : IfcOpenShell (LGPL-3.0), hors application livrée", "status": "to_decide"}
+  ],
+  "developmentReviews": [],
+  "approvals": [],
+  "delivery": {"status": "not_delivered"},
+  "blockers": [
+    "Décisions D1, D2, D4 et D5 à prendre par le responsable avant de figer les moteurs concernés.",
+    "Mise en place du service de traitement sur le serveur OVH : accord explicite du responsable requis après validation de l'ADR 0001.",
+    "Pièce de référence et ses cotes laser à fournir par le responsable (exigence R29, lot 1)."
+  ],
+  "reserves": [
+    "À VÉRIFIER : précision réelle de chaque mode de capture (±2 cm) sur la pièce de référence.",
+    "À VÉRIFIER : ressources du service de reconstruction face au serveur OVH.",
+    "À VÉRIFIER : options de compilation COLMAP (LSD, SiftGPU, CGAL) dans l'image Docker.",
+    "À VÉRIFIER : MediaRecorder iOS/Android, caméra en PWA installée sur iOS, quota hors ligne iOS.",
+    "À VÉRIFIER : licences des programmes embarqués par Gotenberg (Chromium, LibreOffice) et FFmpeg.",
+    "À VÉRIFIER : saisie directe depuis un télémètre Bluetooth (Web Bluetooth sur Safari iOS).",
+    "À VÉRIFIER : méthode d'authentification (reprendre celle de l'app Rapport ?), décision au lot 2.",
+    "À VÉRIFIER : dépôt actuel d'OpenSfM, licences de FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR.",
+    "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
+  ],
+  "nextAction": "Relire et valider l'ADR 0001, docs/plan-lots.md et l'inscription au cockpit ; trancher D1, D2, D4, D5 ; fournir la pièce de référence ; puis lancer le Lot 1.",
+  "github": {"prUrl": null},
+  "registryIntegration": "proposed_not_registered",
+  "documentation": "docs/plan-lots.md"
+}
