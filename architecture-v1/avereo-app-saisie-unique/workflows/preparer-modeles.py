@@ -90,10 +90,10 @@ def prep_pdf(root):
       'CEE':('Engagements*.pdf',{'M. Mme':'IDENTITE','numéro du dossier':'dos_num_anah','Adresse du logement':'ADRESSE_BIEN','Fait à':'doc_lieu','Jour':'JOUR','Mois':'MOIS','Année':'ANNEE'},[]),
       'ACO':('*ACOMPTE PO.pdf',{},[('dos_delegation',458,174,235),('dos_num_anah',459,202,135),('dos_date_depot',458,230,135),('log_adresse',378,343,343),('log_cp',203,385,65),('log_commune',357,385,362),('IDENTITE',435,421,300),('ADRESSE',140,441,580),('prop_telephone',140,461,210),('acp_contact_verification',140,541,580),('doc_lieu',157,605,93),('DATE',270,605,116),('ent_nom',127,736,163),('ent_siren',307,752,90),('ent_devis_ht',411,752,78),('ent_travaux_executes_ht',499,752,80),('ent_pct_executes',591,752,32)]),
       'EXC':('*EXCLUSIVITE*.pdf',{},[('dos_delegation',488,264,200),('dos_num_anah',500,282,110),('ent_representant',156,624,560),('ent_nom',221,647,495),('ent_siren',128,670,109),('IDENTITE',94,746,620),('ADRESSE_BIEN',94,793,620),('doc_lieu',116,958,460),('DATE',599,958,117)]),
-      'PRS':('*13462*.pdf',{},[]),'PRF':('*13463*.pdf',{},[]),
+      'PRS':('*13462*.pdf',{},[]),'PRP':('*13463*.pdf',{},[]),
       'DAP':('FORMULAIRE_PO.pdf',{},[('dos_delegation',468,68,240),('dos_num_anah',469,94,140),('dos_date_depot',474,120,130)])
     }
-    for code,ys in [('PRS',[425,446,465,484,583,622,807]),('PRF',[444,464,484,502,599,640,766])]:
+    for code,ys in [('PRS',[425,446,465,484,583,622,807]),('PRP',[444,464,484,502,599,640,766])]:
         specs[code][2].extend([('dos_delegation',457,157,240),('dos_num_anah',457,185,130),('dos_date_depot',457,215,133),('prop_nom',170,ys[0],560),('prop_prenom',180,ys[1],550),('ADRESSE',185,ys[2],545),('log_cp',195,ys[3],65),('log_commune',438,ys[3],290),('ADRESSE_BIEN',140,ys[4]+20,580),('mand_identite',140,ys[5]+20,580),('mand_lieu',158,ys[6],85),('mand_date',267,ys[6],115),('doc_lieu',483,ys[6],85),('DATE',591,ys[6],116)])
     specs['DAP'][2].extend([(key,x,y,width,1) for key,x,y,width in [
         ('prop_nom',90,97,278),('prop_prenom',420,97,280),('log_adresse',205,136,510),('log_cp',114,173,70),('log_commune',253,173,150),('prop_telephone',82,193,141),('prop_email',450,193,260),('foy_personnes_toit',533,219,26),('foy_rfr',130,574,64),('foy_rfr_annee',390,574,43),('log_annee',445,865,53),('ene_prim_avant',130,937,53),('ene_prim_apres',290,937,54)]])
