@@ -24,7 +24,7 @@ Cette fiche ne vaut ni recette acquise, ni autorisation de merge.
 - Données : **uniquement fictives**. Aucune donnée de dossier réel, aucune capture montrant des données réelles.
 - Un ticket de lancement CONNECT est un justificatif de connexion valable quelques dizaines de secondes. Ne le
   collez ni dans le chat, ni dans une PR, ni dans un fichier.
-- Version attendue : fichier installé le 21/11/2026, SHA-256 `private/app.html` commençant par `fadd2649…` (voir le plan).
+- Version attendue : première passe sur le fichier installé le 21/11/2026 (SHA-256 `private/app.html` `fadd2649…`) ; seconde passe sur le candidat installé le 23/11/2026 (`dcb934db…`, voir la procédure de remplacement).
 - Durée : environ 15 minutes pour R1 à R2 et R6 à R12 ; R3 à R5 demandent les outils de développement du navigateur.
 
 ## Déroulé
@@ -68,6 +68,22 @@ Heure détaillée non relevée. Résultats constatés, **pas une recette validé
 Effets de la passe : le stockage du navigateur intégré contient maintenant 4 dossiers fictifs (`avereo-uni-dossiers`, dont 2 doublons issus du réimport ; le dossier de démonstration utilisé a son devis figé) ;
 12 fichiers fictifs sont dans le dossier Téléchargements du poste (9 modèles, 1 sauvegarde, 2 Word en fichiers temporaires `.tmp`) ;
 aucune donnée réelle, aucune modification de la cible ni de CONNECT.
+
+## Seconde passe : après remplacement du candidat
+
+Passe du 23 novembre 2026, même compte `avereo_admin`, Chrome intégré, après installation du candidat
+`dcb934dbcd36b969687e04529edb42d4d57e9126f3b312bfb4912d4b4721504a` (commit source `171f711`, PR #184 et #185 fusionnées).
+Constats, **pas une recette validée**.
+
+| # | Résultat | Remarque |
+|---|---|---|
+| R1 | OK (hors navigateur) | curl sans session : 303 vers `https://connect-preprod.avereo.fr/?app=uni` ; `connect/entry.php` sans ticket : 403 |
+| R2 | OK | CONNECT rouvert, lancement depuis la tuile « AVEREO UNI » (le lien s'ouvre dans un nouvel onglet que le panneau bloque : adresse de lancement ouverte dans l'onglet courant) ; la page servie contient le pack à 12 codes dont `PRP` |
+| R8 | Partiel, écart levé | « Procuration (fonds) » : bouton actif, génération de `UNI-DEMO-PRP-devis.pdf` (téléchargement intercepté, aucun fichier écrit). Impression de la synthèse, Word, mise en page, cases, signatures : non vérifiés |
+| R10 | OK avec réserve | aucune erreur dans la console, aucune ressource externe, `connect-src 'none'` présent ; la console n'était observée que depuis le chargement de la page |
+| R11 | OK | à 375 px la page tient dans 375 px ; la liste des dossiers défile dans son cadre (293 px visibles pour 589 px de contenu) |
+
+Non refaits dans cette passe : R3 à R7 (hors ouverture et rechargement), R9, R12.
 
 ## Preuves
 
