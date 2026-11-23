@@ -25,9 +25,25 @@ cible de préproduction, derrière AVEREO CONNECT, avec retour arrière possible
 contrôle externe sans compte montre l'inverse : `https://uni-preprod.avereo.fr/` répond 303
 vers `https://connect-preprod.avereo.fr/?app=uni` et `connect/entry.php` sans ticket répond 403,
 ce qui est le comportement du garde partagé. UNI est donc déjà installé derrière CONNECT. La
-version installée, la date et la recette ne sont pas documentées dans le dépôt. Les étapes 3 à 5
-valent alors comme **requalification** de la cible (comparer l'empreinte, relire la
-configuration et la ligne de catalogue) avant tout remplacement du candidat.
+recette n'est pas documentée dans le dépôt. Les étapes 3 à 5 valent alors comme
+**requalification** de la cible (comparer l'empreinte, relire la configuration et la ligne de
+catalogue) avant tout remplacement du candidat.
+
+**Empreinte relevée le 23 novembre 2026** (Terminal cPanel, lecture seule, aucun fichier modifié) :
+
+| Fichier installé | SHA-256 | Taille | Date du fichier |
+|---|---|---|---|
+| `~/uni-preprod.avereo.fr/private/app.html` | `fadd264951b170db413c635dbb803d2653c27bd55aab5227256b8f48d1d415a0` | 7 816 058 octets | 2026-11-21 11:05 |
+| `~/uni-preprod.avereo.fr/private/gate.php` | `895abf0230651dcc43e43acb691ac3aef4449e6b47b58824f2a495d9ad8c99d7` | 11 231 octets | 2026-11-21 10:37 |
+
+L'empreinte de `app.html` a été revérifiée par une seconde commande. Elle est celle du fichier
+construit avec le pack privé de modèles : un build local sans ce pack donne un fichier
+beaucoup plus petit (environ 1,8 Mo) et ne peut pas la reproduire. Le manifeste d'origine
+(`artifactSha256`) n'est pas disponible sur ce poste : rapprocher l'empreinte relevée de
+celui du chat qui a fabriqué le candidat reste à faire. Le `gate.php` installé diffère de
+`connect-gate.php` du dépôt (11 231 octets contre 11 230) ; la cause (étape de préparation du
+garde ou écart) n'est pas établie. Contrôle web : `/private/app.html`, `/private/gate.php` et
+`/public/index.php` répondent 404, et `/` redirige vers CONNECT.
 
 Hors périmètre : production, persistance serveur des dossiers, synchronisation
 multiutilisateur, dépôt Anah, changement des droits CONNECT existants, publication des
