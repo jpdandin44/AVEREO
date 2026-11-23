@@ -1,17 +1,18 @@
 import { requireReportContent, requireEditableNumbers, verifyCompleteDownload } from '../reportFiles.js';
+import { REPORT_JSON_LIMIT, REPORT_LIMIT_LABEL } from '../../../../avereo-platform/shared/report-volumes.js';
 
 const API_BASE_URL = (import.meta.env?.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
 const OAUTH_ATTEMPT_KEY = 'avereo-rapport-oauth-attempt';
 
-async function request(path, { token = '', body, method = 'GET', signal } = {}) {
+async function request(path, { token = '', body, serializedBody, method = 'GET', signal } = {}) {
   const headers = { Accept: 'application/json' };
-  if (body !== undefined) headers['Content-Type'] = 'application/json';
+  if (body !== undefined || serializedBody !== undefined) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const response = await fetch(`${API_BASE_URL}/${path}`, {
     method,
     headers,
-    body: body === undefined ? undefined : JSON.stringify(body),
+    body: serializedBody ?? (body === undefined ? undefined : JSON.stringify(body)),
     credentials: 'same-origin',
     signal,
   });
@@ -111,10 +112,13 @@ export async function authorizeReportExport(token, user) {
 }
 
 export async function saveOnlineReport(report, token, id = '', { signal } = {}) {
+  const serializedBody = JSON.stringify({id, report});
+  const envelopeBytes = new Blob([JSON.stringify({id, report:null})]).size - 4;
+  if (new Blob([serializedBody]).size - envelopeBytes > REPORT_JSON_LIMIT) throw new Error(`Le dossier dépasse ${REPORT_LIMIT_LABEL}. Son contenu et ses photos restent dans le navigateur ; téléchargez son JSON complet.`);
   const payload = await request('reports.php', {
     method: 'POST',
     token,
-    body: { id, report },
+    serializedBody,
     signal,
   });
   return payload.report;

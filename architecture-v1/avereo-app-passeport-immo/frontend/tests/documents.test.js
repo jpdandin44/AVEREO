@@ -49,9 +49,9 @@ describe('Documents liés au client et au bien', () => {
     expect((await repository.load('bien-1')).documents).toHaveLength(0);
   });
   it('borne les volumes et refuse un fichier vide', () => {
-    expect(() => validateFiles([{ name: 'grand.pdf', size: MAX_FILE_SIZE+1 }])).toThrow('500 Mo');
+    expect(() => validateFiles([{ name: 'grand.pdf', size: MAX_FILE_SIZE+1 }])).toThrow('524,288 Mo (500 Mio)');
     expect(() => validateFiles([{ name: 'vide.pdf', size: 0 }])).toThrow('vide');
-    expect(() => validateFiles(Array.from({ length: 5 }, () => ({ name: 'lot.pdf', size: MAX_FILE_SIZE })))).toThrow('500 Mo');
+    expect(() => validateFiles(Array.from({ length: 5 }, () => ({ name: 'lot.pdf', size: MAX_FILE_SIZE })))).toThrow('524,288 Mo (500 Mio)');
   });
   it('conserve les fichiers et le client après fermeture et réouverture du stockage', async () => {
     await repository.linkClient('bien-1', { name: 'Client fictif' });

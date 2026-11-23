@@ -2,16 +2,23 @@
 // T02 à T04, T07, T08, T16, T18, T20, T21, T23 ; clavier, affichage mobile, aucune requête réseau.
 import { test, before, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { chromium } from 'playwright';
+import { chromium, firefox } from 'playwright';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-const URL_APP = new URL('../../dist/index.html', import.meta.url).href;
+const URL_APP = process.env.UNI_TEST_URL || new URL('../../dist/index.html', import.meta.url).href;
 let navigateur;
 
-before(async () => { navigateur = await chromium.launch(); });
-after(async () => { await navigateur.close(); });
+before(async () => {
+  const type = process.env.UNI_BROWSER === 'firefox' ? firefox : chromium;
+  navigateur = await type.launch({
+    downloadsPath: process.env.UNI_DOWNLOADS_PATH,
+    ...(process.env.UNI_BROWSER === 'edge' ? { channel: 'msedge' } : {}),
+    ...(process.env.UNI_BROWSER_EXECUTABLE ? { executablePath: process.env.UNI_BROWSER_EXECUTABLE } : {}),
+  });
+});
+after(async () => { await navigateur?.close(); });
 
 async function ouvrir({ largeur = 1440 } = {}) {
   const contexte = await navigateur.newContext({ viewport: { width: largeur, height: 1000 }, locale: 'fr-FR' });
@@ -165,4 +172,5 @@ test('affichage mobile : une colonne, sans défilement horizontal', async () => 
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
   await contexte.close();
 });
+
 

@@ -5,12 +5,17 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## 21 novembre — Contrat commun de volumes
+
+[Contrat et flux du candidat](docs/volume-sans-perte.md). Les limites proviennent de `avereo-platform/shared/report-volumes.json`, utilisées en JS et copiées avec leur helper PHP dans chaque API par le build. Contrôle du JSON stocké et reconstitué, enveloppe API distincte, budget mémoire et capacité du paquet MySQL vérifiés avant écriture. Le stockage et la lecture gardent les types JSON natifs ; la vue de validation reste séparée. Aucun changement SQL, identité ou droits.
+
 
 ## 19 novembre — Publication privée dans Passeport Immo
 

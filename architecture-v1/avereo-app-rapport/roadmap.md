@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,11 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## Priorité du 21 novembre — R12-18, volume sans perte
+
+Candidat local sur `fix/rapport-publication-volume` : reproduction complète au-delà de 50 Mio, contrôles cohérents à 100 Mo et conservation des médias. Les vrais Word et le parcours navigateur complet, sauvegarde et nouvelle session, sont maintenant vérifiés ; PDF relus avec LibreOffice, réserve de rendu Microsoft Word distincte. [Qualification et réserves](docs/volume-sans-perte.md). Suite : revue locale, rendu Microsoft Word, mesure du cas réel si disponible et capacité hébergée. Préproduction et production non autorisées pour ce lot. Les états datés suivants restent historiques.
+
 
 ## 19 novembre — Publication Passeport livrée en préproduction
 
@@ -130,7 +135,9 @@ PR150 est désormais fusionnée dans `main` ; PR152 est réalignée pour conserv
 
 ## Priorités du 12 novembre
 
-Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement ; ses rendus Word de 15 pages expert et 5 client sont contrôlés ; la revue humaine de PR149 reste distincte. Le travail photo est désormais repris dans un lot isolé, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
+Le premier candidat Habitologue de la PR #148 reste distinct. Le complément actif est le [lot 0 Observations](docs/lot-0-observations.md), implémenté et vérifié localement, y compris les rendus Word de 15 pages expert et 5 client ; PR149 fusionnée et installée en préproduction le 13 novembre, avec contrôles de disponibilité, de reprise du brouillon et de conservation des données réussis. La recette fonctionnelle complète hébergée et la revue métier restent à effectuer. Le travail photo est désormais repris dans un lot isolé, puis restent documents/PDF, diagnostic/interventions/planning et identité des organisations. Le [cadrage précédent](docs/profil-habitologue.md) et les sections antérieures restent historiques et n'établissent pas la livraison de ce complément.
+
+À la clôture, le responsable a aussi demandé le [préremplissage des attentes depuis l'écoute client et des notes complémentaires dictables](docs/aide-decision-demo.md#évolution-demandée-à-la-clôture--reprendre-lécoute-client). Cette demande a été réalisée ensuite : la PR159 est fusionnée et installée en préproduction le 16 novembre ([état](docs/attentes-ecoute-client.md)) ; la revue métier hébergée reste à recueillir.
 
 
 ## Photos originales privées — développement local actif

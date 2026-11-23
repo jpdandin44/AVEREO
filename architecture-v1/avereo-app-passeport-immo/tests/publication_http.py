@@ -4,6 +4,8 @@ import io
 import json
 import secrets
 import zipfile
+import os
+from pathlib import Path
 
 
 def run(request, check, owner, second, recipient, csrf, recipient_csrf, sql, backup):
@@ -86,3 +88,23 @@ def run(request, check, owner, second, recipient, csrf, recipient_csrf, sql, bac
     check(proof['fileReadback']=='passed' and proof['temporaryRowRestore']=='passed','backup includes private publication bytes and restores source metadata')
     check(request(base+'/shares/'+grant,owner,'DELETE',{'revision':1},csrf)[0]==200,'publication share revoked normally')
     check(request(shared,recipient)[0]==404 and request(source,second)[2]==content,'revocation closes final restitution but preserves owner private copy')
+    volume_path=os.environ.get('PASSEPORT_VOLUME_ARCHIVE')
+    if volume_path:
+        large=Path(volume_path).read_bytes()
+        z=zipfile.ZipFile(io.BytesIO(large));payload=z.read('dossier-rapport.json');large_word=z.read('rapport-client.docx')
+        check(50*1024*1024<len(payload)<=100000000,'large fictitious JSON crosses old limit and respects the bounded candidate limit')
+        response=upload(large)
+        check(response[0]==201,('large fictitious package imported through actual API',response[0],response[2][:300]))
+        item=data(response)['publication'];large_source=path+'/'+item['id']+'/source'
+        check(request(large_source,second)[2]==large,'large private package exact after independent authenticated session')
+        check(data(upload(large))['alreadyPublished'],'large retry is idempotent')
+        check(request(large_source,recipient)[0]==404,'large complete source remains private from recipient')
+        grant_result=data(request(base+'/shares',owner,'POST',{'recipient':'fixture-43','expectedRecipient':'avereo_connect:43','revision':2,'confirm':True},csrf))
+        new_grant=next(g['id'] for g in grant_result['grants'] if g['revokedAt'] is None)
+        new_shared='/api/shared/'+new_grant
+        check(request(new_shared+'/documents/'+item['documentId']+'/file',recipient)[2]==large_word,'large publication shares exact client restitution only')
+        check(request(new_shared+'/documents/'+item['id']+'/file',recipient)[0]==404,'large private publication is inaccessible through shared attachment route')
+        check(request(base+'/shares/'+new_grant,owner,'DELETE',{'revision':3},csrf)[0]==200,'large publication share revoked explicitly')
+        check(request(new_shared,recipient)[0]==404 and request(large_source,second)[2]==large,'large revocation preserves exact owner source')
+        proof=backup()
+        check(proof['fileReadback']=='passed' and proof['temporaryRowRestore']=='passed','backup and temporary restoration include complete large publication')

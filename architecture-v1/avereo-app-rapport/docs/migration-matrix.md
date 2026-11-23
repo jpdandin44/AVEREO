@@ -5,13 +5,20 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 21 novembre — Capacité et fidélité JSON, sans migration
+
+La chaîne navigateur complète est désormais contrôlée : l'ouverture source ajoute seulement son identifiant serveur dans le navigateur ; la copie réimportée le retire, puis reçoit celui de sa nouvelle ligne au compte B. Champs métier, 37 médias décodés, plans et repères exacts après nouvelle session. Source et lignes antérieures conservées. [Reçu et limites du rendu Word](volume-sans-perte.md#reprise-du-21-novembre-et-parcours-réel-dans-le-navigateur-local).
+
+Aucune migration SQL ni conversion des dossiers existants. Le candidat [volume sans perte](volume-sans-perte.md) accepte les anciens JSON/paquets, garde STORE schéma 1 et retire seulement les liens techniques de la copie indépendante. Les sauvegardes nouvelles conservent les types objet/liste natifs au lieu de normaliser les objets vides. La première qualification HTTP est complétée par la recette navigateur et génération Word décrite ci-dessus ; le rendu Microsoft Word et la recette hébergée restent distincts.
+
 
 ## 19 novembre — Publication et réimport sans mutation de la source
 
@@ -146,6 +153,9 @@ Les exports organisationnels et leurs grants restent inchangés. [Procédure et 
 
 [Contrat, configuration et restauration](photos-originales-et-annotations.md), [API](../api/photos-originales.json).
 
+## 2026-11-13 — Promotion PR149 sans migration
+
+Quatre fichiers statiques installés ; aucune route, table, clé de stockage, règle d'accès ou configuration privée remplacée. Les 17 lignes de dossiers, leurs propriétaires et leurs payloads sont identiques avant/après installation. La sauvegarde privée des données est relue ; le retour arrière testé concerne les fichiers et ne réécrit pas la base. [Livraison et vérifications](lot-0-observations.md#livraison-du-13-novembre-2026).
 
 ## 2026-11-12 — Lot 0 Observations, sans migration
 

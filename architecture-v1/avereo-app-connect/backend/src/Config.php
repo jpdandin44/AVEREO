@@ -96,6 +96,7 @@ final class Config
             self::env('OAUTH_PUBLIC_KEY_PATH'),
             [
                 'rapport' => self::env('APP_LAUNCH_RAPPORT_URL'),
+                'uni' => self::env('APP_LAUNCH_UNI_URL'),
                 'rga' => self::env('APP_LAUNCH_RGA_URL'),
                 'coupe' => self::env('APP_LAUNCH_COUPE_URL'),
                 'projet' => self::env('APP_LAUNCH_PROJET_URL'),
@@ -106,6 +107,7 @@ final class Config
             ],
             [
                 'rapport' => self::env('APP_LAUNCH_RAPPORT_SECRET'),
+                'uni' => self::env('APP_LAUNCH_UNI_SECRET'),
                 'rga' => self::env('APP_LAUNCH_RGA_SECRET'),
                 'coupe' => self::env('APP_LAUNCH_COUPE_SECRET'),
                 'projet' => self::env('APP_LAUNCH_PROJET_SECRET'),
@@ -208,3 +210,4 @@ final class Config
         return (int) $value;
     }
 }
+

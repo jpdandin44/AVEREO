@@ -5,12 +5,19 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-19
+updated: 2026-11-21
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-21 — Candidat local de volume sans perte
+
+Complément de recette : vrais Word expert/client, paquet final réel de 63 Mo, import Passeport, copie privée exacte après nouvelle session, reprise et sauvegarde indépendante dans Rapport puis nouvelle session serveur ; source et propriétaire conservés. 37 médias décodés identiques. PDF issus des DOCX relus sous LibreOffice (42/15 pages), export PDF Microsoft Word restant réservé. Aucun changement de moteur ni déploiement ; [preuves et portée](docs/volume-sans-perte.md#reprise-du-21-novembre-et-parcours-réel-dans-le-navigateur-local).
+
+Limites Rapport/Passeport reliées à une source unique, gardes à 100 Mo pour le JSON, unités Mo/Mio corrigées, contrôles de mémoire et de paquet MySQL, export de récupération préservé. Reconstitution avec originaux mesurée avant génération et import. Types JSON natifs conservés lors de la sauvegarde et de la lecture. Tests de contenu, empreintes et nouvelles sessions locales réussis ; [périmètre exact et réserves](docs/volume-sans-perte.md). Aucun déploiement de ce candidat.
+
 
 ## 2026-11-19 — Publication Passeport en préproduction
 
@@ -127,6 +134,9 @@ Chargement JSON depuis l’accueil et Export avec contrôle du contenu et confir
 
 Vue agrandie et zoom des photos, conservation individuelle volontaire et réouverture de l’original privé vérifié par empreinte. API et migration additives, contrôle du propriétaire courant, stockage hors racine web, configuration désactivée par défaut. Tests locaux PHP/SQLite et HTTP/MariaDB, restauration sur copie séparée et parcours navigateur avec mire fictive. Les photos du rapport et les exports restent conservés ; compression, recadrage et annotations ne sont pas activés. [Détail et limites](docs/photos-originales-et-annotations.md). Aucun hébergement modifié pour ce lot.
 
+## 13 novembre 2026 — PR149 en préproduction
+
+Lot 0 Observations installé après demande explicite, avec le même paquet qualifié et quatre fichiers statiques remplacés ou ajoutés. Sauvegarde et retour arrière des fichiers testés ; 17 dossiers et propriétaires préservés. Accès authentifié, reprise du brouillon et nouveaux contrôles d'observation vérifiés. Recette fonctionnelle complète hébergée à poursuivre. [État et preuves](docs/lot-0-observations.md#livraison-du-13-novembre-2026).
 
 ## 12 novembre 2026 — Lot 0 Observations, complément local
 

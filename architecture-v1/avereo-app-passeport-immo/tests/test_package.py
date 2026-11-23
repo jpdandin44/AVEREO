@@ -12,6 +12,23 @@ module=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 
 class CandidatePackageTests(unittest.TestCase):
+    def test_volume_files_are_exactly_allowed_and_required_together(self):
+        with tempfile.TemporaryDirectory(prefix='passeport-package-volume-') as temporary:
+            root=Path(temporary)
+            dist=root/'frontend/dist'
+            fixtures={'index.html':b'<html>Fictif</html>',**{name:b'Fixture\n' for name in module.GATE_FILES | module.STORAGE_FILES | module.VOLUME_FILES}}
+            for name,content in fixtures.items():
+                (dist/name).parent.mkdir(parents=True,exist_ok=True)
+                (dist/name).write_bytes(content)
+            with patch.object(module,'ROOT',root):
+                _,manifest=module.build(root/'complete.zip')
+                self.assertTrue(module.VOLUME_FILES.issubset({item['path'] for item in manifest}))
+                self.assertFalse(module.valid_name('api/report-volumes-private.php'))
+                (dist/'api/report-volumes.json').unlink()
+                with self.assertRaisesRegex(ValueError,'Contrat des volumes incomplet'):
+                    module.build(root/'partial.zip')
+                self.assertFalse((root/'partial.zip').exists())
+
     def test_cross_platform_archive_order_and_bytes(self):
         with tempfile.TemporaryDirectory(prefix='passeport-package-') as temporary:
             root=Path(temporary)

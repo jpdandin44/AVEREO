@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__.'/report-volumes.php';
 
 final class PasseportError extends RuntimeException
 {
@@ -133,8 +134,8 @@ final class PasseportStorage
             'tar'=>'application/x-tar','gz'=>'application/gzip','tgz'=>'application/gzip'];
         $allowed = array_merge(['pdf','jpg','jpeg','png','webp','txt','csv','doc','docx','xls','xlsx','odt'],array_keys($archiveTypes));
         $size = filesize($path);
-        if (!in_array($ext,$allowed,true) || $size === false || $size < 1 || $size > 500*1024*1024) {
-            throw new PasseportError(422,'Format ou taille de fichier non autorisé (500 Mo maximum par fichier).');
+        if (!in_array($ext,$allowed,true) || $size === false || $size < 1 || $size > avereo_volume_limits()['documentFileBytes']) {
+            throw new PasseportError(422,'Format ou taille de fichier non autorisé ('.avereo_volume_label(avereo_volume_limits()['documentFileBytes']).' maximum par fichier).');
         }
         $handle = fopen($path,'rb'); $header = fread($handle,512); fclose($handle);
         if ($ext === 'pdf' && substr($header,0,5) !== '%PDF-') throw new PasseportError(422,'Le fichier ne contient pas un PDF valide.');
@@ -174,7 +175,7 @@ final class PasseportStorage
         foreach ($files as $file) {
             if (!$migration && !is_uploaded_file($file['path'])) throw new PasseportError(422,'Téléversement invalide.');
             $meta = self::inspectFile($file['path'],$file['name']); $total += $meta['size'];
-            if ($total > 500*1024*1024) throw new PasseportError(413,'Ce lot dépasse 500 Mo. Réduisez le lot et réessayez.');
+            if ($total > avereo_volume_limits()['documentBatchBytes']) throw new PasseportError(413,'Ce lot dépasse '.avereo_volume_label(avereo_volume_limits()['documentBatchBytes']).'. Répartissez les documents entiers en plusieurs lots.');
             $validated[] = [$file,$meta];
         }
         $written=[]; $added=[]; $duplicates=[];
