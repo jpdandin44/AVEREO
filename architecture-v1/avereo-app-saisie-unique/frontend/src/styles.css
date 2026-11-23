@@ -179,7 +179,7 @@ fieldset.cases legend, fieldset.serie legend { font-family: var(--font-body); fo
 .kv dt { font-size: 14px; font-weight: 600; color: var(--ink-2); }
 .kv dd { margin: 0; overflow-wrap: anywhere; }
 @media (max-width: 560px) { .kv { grid-template-columns: minmax(0, 1fr); gap: 2px; } .kv dt { margin-top: 8px; } }
-.scroll { overflow-x: auto; margin-top: 8px; }
+.scroll { position: relative; overflow-x: auto; margin-top: 8px; }
 .lines { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .lines th { text-align: left; font-size: 13px; letter-spacing: .04em; color: var(--ink-2); padding: 6px 8px 6px 0; border-bottom: 2px solid var(--line-strong); vertical-align: bottom; }
 .lines td { padding: 8px 8px 8px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
