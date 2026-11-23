@@ -141,6 +141,8 @@ Résultat attendu : `.local/release/public`, `.local/release/private/app.html`,
 
 ### Étape 4 — Installer le candidat
 
+Pour remplacer un candidat déjà installé (cas du 23 novembre), suivre la [procédure de remplacement](procedure-remplacement-preproduction.md).
+
 1. Déposer `public/` dans la racine web et `private/` hors racine web.
 2. Recalculer l'empreinte de `private/app.html` sur la cible : elle doit égaler celle du manifeste.
 3. Contrôler la syntaxe PHP des trois entrées (`index.php`, `connect/entry.php`, `connect/logout.php`).
