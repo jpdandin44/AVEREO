@@ -13,7 +13,7 @@ const url=n=>'https://github.com/'+repository+'/pull/'+n;
 const prior=()=>({schema:'development-github-observations',observedAt:'2026-11-19T10:00:00Z',applications:{known:{repository,path:'apps/known'}},pullRequests:{},trackedPrUrls:[],untrackedPullRequests:{}});
 const row=(type,path,sha=c)=>({type,path,sha});
 const tree=extra=>[row('tree','apps'),row('tree','apps/known'),row('blob','apps/known/package.json'),row('blob','apps/known/index.html'),...extra];
-function fixture({prCount=101,repositoryName=repository,featureSha=b}={}){
+function fixture({prCount=101,repositoryName=repository,featureSha=b,markerlessDefaultDirectory=false}={}){
   const repository=repositoryName,url=n=>'https://github.com/'+repository+'/pull/'+n;
   const calls=[];
   const prs=Array.from({length:prCount},(_,i)=>({number:i+1,html_url:url(i+1),title:'Développement '+(i+1),state:i===prCount-1?'open':'closed',draft:i===prCount-1,merged_at:i%2===0?'2026-11-18T10:00:00Z':null,merge_commit_sha:c,updated_at:'2026-11-20T10:00:00Z',head:{sha:featureSha,ref:'feature',repo:{full_name:repository}},base:{sha:a,ref:'stable',repo:{full_name:repository}}}));
@@ -25,8 +25,8 @@ function fixture({prCount=101,repositoryName=repository,featureSha=b}={}){
     if(u.pathname==='/repos/'+repository)return{full_name:repository,default_branch:'stable',private:true,archived:false};
     if(u.pathname.endsWith('/branches/stable'))return{commit:{sha:a}};
     if(u.pathname.endsWith('/branches'))return page===1?[{name:'stable',commit:{sha:a}},{name:'feature',commit:{sha:featureSha}}]:[];
-    if(u.pathname.endsWith('/git/trees/'+a))return{sha:c,truncated:false,tree:tree([])};
-    if(u.pathname.endsWith('/git/trees/'+featureSha))return{sha:d,truncated:false,tree:tree([row('tree','tools'),row('tree','tools/new-agent'),row('blob','tools/new-agent/main.py')])};
+    if(u.pathname.endsWith('/git/trees/'+a))return{sha:c,truncated:false,tree:tree(markerlessDefaultDirectory?[row('tree','scratch-agent')]:[])};
+    if(u.pathname.endsWith('/git/trees/'+featureSha))return{sha:d,truncated:false,tree:tree([row('tree','tools'),row('tree','tools/new-agent'),row('blob','tools/new-agent/main.py'),...(markerlessDefaultDirectory?[row('tree','scratch-agent'),row('blob','scratch-agent/main.py')]:[])])};
     if(u.pathname.endsWith('/pulls'))return prs.slice((page-1)*100,page*100);
     if(u.pathname.endsWith('/pulls/'+prCount))return{...prs.at(-1),changed_files:1};
     if(u.pathname.endsWith('/pulls/'+prCount+'/files'))return[{filename:'tools/new-agent/main.py'}];
@@ -51,6 +51,32 @@ test('reproduction du périmètre initial : le nouveau composant sans inscriptio
   const card=portfolio.find(p=>p.id===discovered.id);assert(card);assert.equal(card.missingTracking,true);
   assert.deepEqual(card.iterations,[]);assert.equal(card.preproduction,null);assert.equal(card.production,null);
   assert.equal(next.refresh.businessSourcesWritten,false);assert.equal(next.refresh.deployed,false);
+});
+
+test('une recollecte ne transforme pas un composant découvert en rattachement manuel',async()=>{
+  const f=fixture({markerlessDefaultDirectory:true});
+  const first=await collectGithubInventory(prior(),{owner,request:f.request});
+  const firstProject=first.inventory.projects.find(p=>p.path==='scratch-agent');
+  assert.deepEqual(firstProject.branches,['feature']);
+  const second=await collectGithubInventory(first,{owner,request:f.request});
+  const secondProject=second.inventory.projects.find(p=>p.id===firstProject.id);
+  assert.deepEqual(secondProject.branches,['feature']);
+  assert.equal(secondProject.inDefaultBranch,false);
+  assert.equal(secondProject.id,firstProject.id);
+  assert.deepEqual(second.inventory.projects,first.inventory.projects);
+  assert.deepEqual(second.applications.known,first.applications.known);
+  const third=await collectGithubInventory(second,{owner,request:f.request});
+  assert.deepEqual(third.inventory.projects,second.inventory.projects);
+});
+
+test('un identifiant manuel commençant par github reste rattaché',async()=>{
+  const f=fixture({markerlessDefaultDirectory:true});
+  const initial=prior();initial.applications['github-manual-id']={repository,path:'scratch-agent'};
+  const first=await collectGithubInventory(initial,{owner,request:f.request});
+  assert.equal(first.applications['github-manual-id'].path,'scratch-agent');
+  assert.deepEqual(first.inventory.projects.find(p=>p.id==='github-manual-id').branches,['stable','feature']);
+  const second=await collectGithubInventory(first,{owner,request:f.request});
+  assert.deepEqual(second.inventory.projects,first.inventory.projects);
 });
 
 test('toutes les PR sont parcourues au-delà de cent ; brouillons et fermetures sans fusion restent distincts',async()=>{

@@ -5,12 +5,21 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-20
+updated: 2026-11-22
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+
+## 22 novembre — Stabilité des rattachements découverts
+
+À réponses GitHub identiques, répéter une collecte ne doit ni élargir les branches
+d’un composant, ni créer une publication différente. Une entrée issue de la
+découverte automatique ne devient pas un rattachement manuel au passage suivant.
+Les déclarations manuelles existantes et les identifiants dérivés restent stables.
+[Reproduction et limites](docs/inventaire-github.md).
 
 ## 20 novembre — Couverture du compte GitHub
 

@@ -96,7 +96,8 @@ export async function collectGithubInventory(previous,{owner,request,trackedPrUr
     }
   }
   if(!observedRepositories.size)error('Aucun dépôt GitHub visible ; ancienne observation conservée.');
-  const registered=Object.entries(previous.applications||{}),repositories={},applications={},pullRequests={},latestMerges={},treeSnapshots={},repoInventory=[],projects=[];
+  // Derived inventory entries are not declarations that the path is an application on every branch.
+  const registered=Object.entries(previous.applications||{}).filter(([id,p])=>id!=='github-'+key(p.repository,p.path)),repositories={},applications={},pullRequests={},latestMerges={},treeSnapshots={},repoInventory=[],projects=[];
   const oldTrees=previous.inventory?.detectorVersion===3?previous.inventory.treeSnapshots||{}:{};
   for(const summary of [...observedRepositories.values()].sort((a,b)=>a.full_name.localeCompare(b.full_name))){
     const repository=summary.full_name,metadata=await request('repos/'+repository);
