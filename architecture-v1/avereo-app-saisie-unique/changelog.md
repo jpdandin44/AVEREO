@@ -18,6 +18,8 @@ Un brouillon de [plan d'installation en préproduction](docs/plan-installation-p
 
 Une [fiche de recette](docs/recette-preproduction.md) de la préproduction est ajoutée, avec les résultats d'une première passe partielle du 23 novembre (R11 en échec : la liste des dossiers déborde à 375 px ; R7 : gel du devis OK ; R8 partiel : 11 modèles sur 12 utilisables, « Procuration (fonds) » bloquée par un écart d'identifiant PRP/PRF ; R9 OK).
 
+Le candidat corrigé (PR #184 et #185) est installé en préproduction le 23 novembre : empreinte `dcb934db…`, ancien fichier conservé, [procédure et reçu](docs/procedure-remplacement-preproduction.md). Seconde passe de recette partielle : ouverture depuis CONNECT, procuration (fonds) générable et liste mobile sans débordement OK.
+
 ## 2026-11-22
 
 La PR #179 est fusionnée : tableau de bord, recherche, alertes, programmes et territoires, préremplissage des modèles PDF/Word privés, entrée UNI dans CONNECT et candidat PHP protégé. [Candidat de démonstration](docs/demo-2026-11-23.md). La mention « publication en préproduction non effectuée » de ce candidat date du 21 novembre ; le 23 novembre, la cible `uni-preprod.avereo.fr` répond derrière CONNECT (empreinte du fichier installé relevée dans le plan).
