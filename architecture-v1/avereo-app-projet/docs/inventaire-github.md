@@ -5,10 +5,34 @@ title: Inventaire des applications, sites et développements GitHub
 status: active
 version: git
 created: 2026-11-20
-updated: 2026-11-20
+updated: 2026-11-22
 owner: jpdandin
 tags: [cockpit, github, inventaire, couverture]
 ---
+
+
+## Correction du 22 novembre — stabilité entre deux collectes
+
+L’essai hébergé sur copie du candidat initial `7ea8269` a détecté une seconde
+publication malgré la répétition des mêmes réponses GitHub. Les composants
+issus de la découverte étaient réutilisés comme des rattachements manuels au
+passage suivant : un simple répertoire pouvait alors être ajouté aux branches
+d’un composant sans y posséder de marqueur de code.
+
+La correction exclut de ces déclarations les identifiants dérivés réservés
+`github-<empreinte du dépôt et du chemin>`. Elle conserve les identifiants manuels,
+y compris ceux qui commencent par `github-` sans être l’identifiant dérivé exact.
+Le cache des arbres reste immuable ; les marqueurs présents dans chaque branche
+restent l’autorité de découverte. Les essais couvrent trois passages, une branche
+avec marqueur, un répertoire sans marqueur et la conservation du rattachement manuel.
+
+Contrôles du correctif : reproduction en échec sur la source initiale, puis
+33 tests ciblés et 402 tests applicatifs réussis après préparation des composants
+communs et des dépendances locales existantes.
+
+Cette correction constitue un nouveau candidat. Elle ne modifie pas l’accord
+limité à `7ea8269` et n’est pas installée en préproduction. Les reçus et relevés
+hébergés restent dans le dossier opérationnel privé, hors de ce dépôt public.
 
 # Inventaire GitHub
 
