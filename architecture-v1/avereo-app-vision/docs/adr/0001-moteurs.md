@@ -14,14 +14,14 @@ AVEREO Vision est une PWA (React + Vite) avec une API PHP + MySQL et un service 
 | Capture vidéo et photos | API navigateur getUserMedia + MediaRecorder | norme W3C | retenu |
 | Envoi reprenable | tus-js-client (+ serveur tus PHP, repli : envoi par morceaux maison) | MIT | retenu, essai au lot 3 |
 | Hors ligne et PWA | Dexie + vite-plugin-pwa (Workbox) | Apache 2.0 ; MIT | retenu |
-| Photogrammétrie (service) | COLMAP compilé sans GPU, sans LSD ni CGAL ; maillage Open3D ; échelle OpenCV (ArUco) | BSD-3 ; MIT ; Apache 2.0 | retenu **sous réserve des décisions D2 et D5** et d'un essai de précision |
+| Photogrammétrie (service) | COLMAP compilé sans GPU, sans LSD ni CGAL ; densification CPU OpenSfM (dépôt et chemin CPU à vérifier) ; maillage Open3D ; échelle OpenCV (ArUco) | BSD-3 ; BSD-2 ; MIT ; Apache 2.0 | retenu **sous réserve des décisions D2 et D6** et d'un essai de précision |
 | Plan 2D | Konva + react-konva | MIT | retenu |
 | Rendu 3D | three.js + React Three Fiber + drei | MIT | retenu |
 | Géométrie et métrés | logique pure maison + flatten-js ; three-bvh-csg pour percer les murs | MIT | retenu |
 | IFC | générateur IFC4 STEP maison | code AVEREO | **recommandé, décision D1** (alternative web-ifc, MPL-2.0) |
 | DXF | @tarikjabiri/dxf (navigateur) ; repli ezdxf (service) | MIT | retenu |
 | glTF / OBJ | exporteurs three.js + glTF-Transform ; glTF-Validator en test | MIT ; Apache 2.0 | retenu |
-| PDF | Gotenberg (conteneur HTML → PDF) ; repli WeasyPrint | MIT ; BSD-3 | retenu, contrôle des programmes embarqués à faire |
+| PDF | Gotenberg (conteneur HTML → PDF) ; repli WeasyPrint | MIT ; BSD-3 | retenu **sous réserve de la décision D6** (programmes embarqués) |
 | CSV | fputcsv natif PHP ; league/csv si besoin | PHP ; MIT | retenu |
 | Service de traitement | Python 3, worker en conteneur dédié | — | retenu, mise en place après validation (AGENTS.md) |
 | Polices | Inter ; JetBrains Mono (auto-hébergées) | SIL OFL | retenu |
@@ -29,11 +29,12 @@ AVEREO Vision est une PWA (React + Vite) avec une API PHP + MySQL et un service 
 ## 3. Décisions à prendre par le responsable
 | ID | Décision | Recommandation de Claude Code | Conséquence si accepté | Conséquence si refusé |
 |---|---|---|---|---|
-| D1 | IFC : accepter une dépendance **MPL-2.0** (web-ifc) ou écrire un générateur IFC4 STEP maison. | Générateur maison : modèle simple (site, bâtiment, niveaux, espaces, murs, dalles, portes, fenêtres), validé par un outil externe. Aucune licence à accepter. | web-ifc : moins de code à écrire ; copyleft limité aux fichiers MPL (toute modification de leurs fichiers doit être publiée). | Lot 6 plus long (tâche Codex à fort effort) ; contrôle de conformité nécessaire (D5). |
+| D1 | IFC : accepter une dépendance **MPL-2.0** (web-ifc) ou écrire un générateur IFC4 STEP maison. | Générateur maison : modèle simple (site, bâtiment, niveaux, espaces, murs, dalles, portes, fenêtres), validé par un outil externe. Aucune licence à accepter. | Option B (web-ifc accepté) : moins de code à écrire ; copyleft limité aux fichiers MPL (toute modification de leurs fichiers doit être publiée). | Option A (générateur maison) : lot 6 plus long (tâche Codex à fort effort) ; validation de conformité nécessaire (D5). |
 | D2 | Serveur OVH : **GPU ou CPU seul** pour la reconstruction. Caractéristiques du serveur : inconnues de Claude Code, à fournir. | Partir CPU seul. | GPU : reconstruction dense COLMAP (CUDA) et essai de MapAnything possibles, mais SiftGPU (usage non lucratif) est compilé dès que le GPU est activé : désactivation ciblée à vérifier. | CPU : densification par OpenSfM (CPU), qualité en intérieur peu texturé à mesurer. |
 | D3 | Mise à l'échelle : **prise le 23/11/2026** — 2 cotes laser pour l'échelle + 1 cote de contrôle (écart > 2 cm = hors tolérance), mire ArUco en secours. | — | Exigences R17, R18, R21. | — |
-| D4 | Accepter explicitement des licences permissives **hors liste** : BSL-1.0 (Clipper2), FPDF, EDL-1.0 (JSTS). | Refuser : aucune n'est nécessaire (flatten-js, Gotenberg et WeasyPrint couvrent les besoins). | Éviterait un peu de code ; non nécessaire. | Aucun impact. |
-| D5 | **Nouvelle** : outil de validation des fichiers IFC pendant les tests, hors application livrée. IfcOpenShell est la référence mais sous LGPL-3.0. | Utiliser IfcOpenShell uniquement comme outil de test local, non distribué ni installé en production, **si tu l'acceptes** ; sinon valider avec un lecteur IFC ouvert à la main. | Test automatisé de conformité IFC. | Contrôle manuel dans un lecteur IFC ; plus lent. |
+| D4 | Accepter explicitement des licences permissives **hors liste** : BSL-1.0 (Clipper2), FPDF, EDL-1.0 (JSTS). | Refuser pour Clipper2, FPDF et JSTS (inutiles : flatten-js et Gotenberg couvrent les besoins). **Réserve** : COLMAP exige Boost, sous BSL-1.0 : voir D6. | Éviterait un peu de code ; non nécessaire. | Aucun impact. |
+| D5 | **Nouvelle** : outil de validation des fichiers IFC pendant les tests, hors application livrée. IfcOpenShell est la référence mais sous LGPL-3.0. | Utiliser IfcOpenShell uniquement comme outil de test local, non distribué ni installé en production, **si tu l'acceptes** ; sinon valider avec un lecteur IFC ouvert à la main. | Test automatisé de conformité IFC. | Trouver un autre validateur de schéma disponible et autorisé ; l'ouverture manuelle dans un lecteur ne suffit pas à clore le lot 6 (R44). |
+| D6 | **Nouvelle** (relecture adversariale Codex, à confirmer sur les sources amont) : dépendances système des moteurs retenus, hors liste MIT/BSD/Apache : Boost (BSL-1.0) et Eigen (MPL-2.0) requis par COLMAP ; FFmpeg (LGPL ou GPL selon la compilation) pour extraire les images de la vidéo ; Pango (LGPL) pour WeasyPrint ; LibreOffice (MPL-2.0 et autres licences) et Chromium dans l'image Gotenberg. | Instruire chacune avant son lot (Lot 4 pour Gotenberg, Lot 7 pour COLMAP et FFmpeg), avec l'inventaire des composants et licences réellement livrés ; étudier une image Gotenberg limitée à Chromium. Aucune adoption avant ta décision. | Les lots 4 et 7 peuvent démarrer. | Chercher des alternatives (pdfmake pour le PDF, autre extraction d'images) ; COLMAP ne se passe pas de Boost ni d'Eigen : la reconstruction vidéo serait alors à reconsidérer par un nouvel ADR. |
 | — | **Mise en place du service de traitement sur le serveur OVH** (conteneur dédié) : à ne faire qu'après validation de cet ADR et accord explicite. | Faire un essai CPU sur ton poste ou un conteneur local d'abord (Lot 7). | — | — |
 
 ## 4. Comparatifs par besoin
@@ -62,8 +63,8 @@ Lecture : « Android » et « iOS » désignent le navigateur du téléphone (Ch
 ### 4.3 Photogrammétrie et mise à l'échelle (service de traitement)
 | Moteur | Version | Licence | Dernière publication | Android | iOS | Compatibilité stack | Recommandation | Lien officiel |
 |---|---|---|---|---|---|---|---|---|
-| COLMAP | 4.2.1 | BSD-3 ; **embarque LSD (AGPL-3.0, actif par défaut) et SiftGPU (non lucratif seulement)** | 29/09/2026 | service | service | service (CLI, pycolmap) | **Retenu**, compilé avec `LSD_ENABLED=OFF`, `CGAL_ENABLED=OFF`, sans GPU. L'image Docker officielle ne doit pas être utilisée sans vérifier ces options : À VÉRIFIER | https://github.com/colmap/colmap |
-| OpenSfM | 1.1 | BSD-2 | 14/08/2026 | service | service | service (Python/C++) | **Retenu** pour la densification CPU ; qualité en intérieur peu texturé : À VÉRIFIER. L'ancien dépôt mapillary/OpenSfM n'est plus développé : dépôt à confirmer | https://github.com/mapillary/OpenSfM (ancien ; actuel : À VÉRIFIER) |
+| COLMAP | 4.2.1 | BSD-3 ; **embarque LSD (AGPL-3.0, actif par défaut) et SiftGPU (non lucratif seulement)** | 29/09/2026 | service | service | service (CLI, pycolmap) | **Retenu**, compilé avec `LSD_ENABLED=OFF`, `CGAL_ENABLED=OFF`, sans GPU. Le support GPU s'active aussi par OpenGL, pas seulement par CUDA : désactiver les deux et vérifier à l'inspection de la compilation que SiftGPU n'est pas construit (options exactes à relever dans le CMake du tag retenu). L'image Docker officielle ne doit pas être utilisée sans vérifier ces options. Dépendances Boost (BSL-1.0) et Eigen (MPL-2.0) : décision D6. À VÉRIFIER | https://github.com/colmap/colmap |
+| OpenSfM | 1.1 | BSD-2 | 14/08/2026 | service | service | service (Python/C++) | **Retenu sous réserve** : la documentation courante décrit une densification accélérée par GPU ; le chemin CPU et le contrat COLMAP → OpenSfM → Open3D (caméras, poses, distorsions) sont à démontrer au Lot 7 ; qualité en intérieur peu texturé : À VÉRIFIER. L'ancien dépôt mapillary/OpenSfM n'est plus développé | https://github.com/OpenSfM/OpenSfM (dépôt continuateur signalé par la relecture Codex ; à confirmer) |
 | Open3D | 0.20.0 | MIT | 16/09/2026 | service | service | service (Python/C++) | **Retenu** (nettoyage, maillage Poisson ou TSDF, mesures) | https://github.com/isl-org/Open3D |
 | OpenCV (ArUco) | 5.1.0 | Apache 2.0 | 05/11/2026 | service | service | service ; opencv.js possible | **Retenu** (mire ArUco en secours, extraction d'images) ; FFmpeg (LGPL) sous-jacent : À VÉRIFIER | https://github.com/opencv/opencv |
 | MapAnything (modèle « apache ») | 1.1.3 | Apache 2.0 (code et modèle Apache) | 17/07/2026 | service | service | service (PyTorch) | **Option si GPU (D2)**, essai à faire ; précision ±2 cm non démontrée ; ne pas utiliser le modèle par défaut | https://github.com/facebookresearch/map-anything |
@@ -109,7 +110,7 @@ Contrainte : rester en WebGL (WebGPU n'existe sur iOS qu'à partir d'iOS 26).
 | Moteur | Version | Licence | Dernière publication | Android | iOS | Compatibilité stack | Recommandation | Lien officiel |
 |---|---|---|---|---|---|---|---|---|
 | Générateur IFC4 STEP maison | — | code AVEREO | — | oui | oui | front ou PHP | **Recommandé (D1)** : modèle simple, validation externe (D5) | norme IFC4 : https://standards.buildingsmart.org/IFC/RELEASE/IFC4/ADD2_TC1/HTML/ |
-| web-ifc | 0.80 | **MPL-2.0** | 19/11/2026 | oui (WASM) | oui (WASM) | front | **Décision D1** : lit et écrit l'IFC ; copyleft par fichier | https://github.com/ThatOpen/engine_web-ifc |
+| web-ifc | 0.80 selon l'étude (0.0.80 dans le manifeste lu par la relecture Codex : À VÉRIFIER) | **MPL-2.0** | 19/11/2026 | oui (WASM) | oui (WASM) | front | **Décision D1** : lit et écrit l'IFC ; copyleft par fichier | https://github.com/ThatOpen/engine_web-ifc |
 | @thatopen/components | 3.6.0 | MIT, mais dépend de web-ifc (MPL-2.0) | 22/10/2026 | oui | oui | front | Écarté (licence effective MPL-2.0) | https://github.com/ThatOpen/engine_components |
 | IFClite | 12.3.0 | **MPL-2.0** | 16/11/2026 | oui | oui | front (WASM) | Écarté (licence) | À VÉRIFIER (dépôt officiel) |
 | IfcOpenShell | 0.9.0 | **LGPL-3.0** | 01/10/2026 | service | service | service (Python/C++) | Écarté comme dépendance ; **outil de test seulement, décision D5** | https://github.com/IfcOpenShell/IfcOpenShell |
@@ -130,13 +131,13 @@ Contrainte : rester en WebGL (WebGPU n'existe sur iOS qu'à partir d'iOS 26).
 | glTF-Transform | 4.5.1 | MIT | 28/09/2026 | oui | oui | front, service | **Retenu** pour optimiser les fichiers partagés ; licences des encodeurs Draco et Meshopt : À VÉRIFIER avant usage | https://github.com/donmccurdy/glTF-Transform |
 | trimesh | 5.2.1 | MIT | 12/11/2026 | service | service | service (Python) | **Retenu** pour exporter le maillage de la photogrammétrie | https://github.com/mikedh/trimesh |
 | Assimp | 6.0.6 | BSD-3 | 09/11/2026 | service | service | service (C++) | Écarté : plus lourd à intégrer | https://github.com/assimp/assimp |
-| glTF-Validator | 2.0.0-dev.3.10 | Apache 2.0 | 22/10/2024 | — | — | tests | **Retenu en test** (R45) | https://github.com/KhronosGroup/glTF-Validator |
+| glTF-Validator | 2.0.0-dev.3.10 (version de développement : fixer le tag exact au Lot 5) | Apache 2.0 | 22/10/2024 | — | — | tests | **Retenu en test** (R45) | https://github.com/KhronosGroup/glTF-Validator |
 
 ### 4.10 PDF
 | Moteur | Version | Licence | Dernière publication | Android | iOS | Compatibilité stack | Recommandation | Lien officiel |
 |---|---|---|---|---|---|---|---|---|
 | Gotenberg | 9.9.1 | MIT ; embarque Chromium et LibreOffice (programmes séparés) | 20/11/2026 | service | service | service (API HTTP appelée par PHP) | **Retenu.** Impact des licences de Chromium et LibreOffice : À VÉRIFIER avant le Lot 4 | https://github.com/gotenberg/gotenberg |
-| WeasyPrint | 70.0 | BSD-3 | 08/09/2026 | service | service | service (Python) | **Repli** : pas de JavaScript dans la page | https://github.com/Kozea/WeasyPrint |
+| WeasyPrint | 70.0 | BSD-3 | 08/09/2026 | service | service | service (Python) | **Repli** : pas de JavaScript dans la page ; dépend de Pango (LGPL) : décision D6 | https://github.com/Kozea/WeasyPrint |
 | pdfmake | 0.3.14 | MIT | 08/11/2026 | oui | oui | front | Alternative : export hors ligne possible | https://github.com/bpampuch/pdfmake |
 | @react-pdf/renderer | 4.9.0 | MIT | 27/08/2026 | oui | oui | front (React) | Alternative : rendu par composants React | https://github.com/diegomura/react-pdf |
 | Puppeteer / Playwright | 25.18.1 / 1.65.1 | Apache 2.0 | 17/11/2026 / 13/11/2026 | service | service | service (Node) | Écarté : exige Node dans le conteneur ; Playwright utile pour les tests de bout en bout | https://github.com/puppeteer/puppeteer |
@@ -167,9 +168,9 @@ Contrainte : rester en WebGL (WebGPU n'existe sur iOS qu'à partir d'iOS 26).
 - **Précision** : ±2 cm non garanti en mode vidéo ; il sera mesuré sur la pièce de référence (R22) avant d'être promis.
 
 ## 6. Conséquences
-- Les licences de toutes les dépendances retenues sont MIT, BSD, Apache 2.0 ou SIL OFL ; les exceptions possibles sont posées en décisions D1, D4 et D5.
+- Les licences de toutes les dépendances retenues sont MIT, BSD, Apache 2.0 ou SIL OFL ; hors dépendances système à instruire (D6), les exceptions possibles sont posées en décisions D1, D4, D5 et D6.
 - Le calcul de métré reste de la logique pure sans dépendance de rendu, ce qui rend les exports cohérents (R48) et testables (R31).
-- Le mode « cotes saisies au mètre laser » est le seul à tenir ±2 cm de façon certaine aujourd'hui : il structure les premiers lots ; la vidéo vient après les exports PDF et DXF.
+- Le mode « cotes saisies au mètre laser » est le seul dont la tenue de ±2 cm est attendue ; elle reste à démontrer par R29 sur la pièce de référence : il structure les premiers lots ; la vidéo vient après les exports PDF et DXF.
 - Le générateur IFC maison est du code à écrire et à valider (risque assumé de D1).
 
 ## 7. À VÉRIFIER
@@ -177,7 +178,8 @@ Contrainte : rester en WebGL (WebGPU n'existe sur iOS qu'à partir d'iOS 26).
 - Dépôt actuel d'OpenSfM (l'ancien n'est plus développé).
 - Format vidéo MediaRecorder iOS/Android, caméra en PWA sur iOS, quota hors ligne iOS.
 - Licence des poids des extracteurs liés à LightGlue/hloc (non retenus ici).
-- Programmes embarqués par Gotenberg (Chromium, LibreOffice) et FFmpeg (LGPL, extraction d'images de la vidéo) : à instruire avant les Lots 4 et 7.
+- Programmes embarqués par Gotenberg (Chromium, LibreOffice), FFmpeg (extraction d'images de la vidéo), Boost et Eigen (COLMAP), Pango (WeasyPrint) : à instruire avant les Lots 4 et 7 (décision D6).
+- Chemin CPU d'OpenSfM dans le tag retenu et dépôt de référence.
 - Licences des encodeurs Draco et Meshopt de glTF-Transform.
 - Licence du schéma IFC5 (hors périmètre : IFC4 retenu).
 - Ressources, durée et précision de la reconstruction sur la pièce de référence.

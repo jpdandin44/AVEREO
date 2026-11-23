@@ -41,7 +41,7 @@ flowchart LR
 | `saisie-cotes` / `capture` | `frontend/src/features/` | Écrans terrain : pièce rapide, cotes, photos, commentaires, vidéo, cotes laser. Cibles tactiles larges. | `domain`, `sync` |
 | `metres-panneau` | `frontend/src/features/` | Affichage des métrés en temps réel. | `domain` |
 | `maquette3d` | `frontend/src/features/` | Maquette 3D générée depuis le modèle (three.js, R3F). | `domain` |
-| `exports` | `frontend/src/exports/` | DXF, IFC, glTF, OBJ générés dans le navigateur depuis le modèle. | `domain`, `maquette3d` |
+| `exports` | `frontend/src/exports/` | DXF, IFC, glTF, OBJ générés dans le navigateur depuis le modèle. Le DXF ne dépend que de `domain` (livrable avant la 3D, lot 4) ; IFC, glTF et OBJ dépendent aussi de `maquette3d` (lots 5 et 6). | `domain` ; `maquette3d` pour IFC, glTF, OBJ |
 | `sync` | `frontend/src/sync/` | Stockage local (Dexie), file d'envoi, enregistrement automatique, conflits, envoi reprenable des médias. | `domain` |
 | `styles` | `frontend/src/styles/` | Jetons de la charte (voir §7), polices, composants de base. | — |
 | API PHP | `frontend/public/api/` (copiée dans `dist/api` au build, comme Rapport) | Authentification, projets, synchro, envois, CSV, PDF (via Gotenberg), partage par lien, dépôt de tâches de traitement. PDO et requêtes préparées. | MySQL, Gotenberg |
@@ -55,7 +55,7 @@ Dans `docs/exigences.md`, les chemins `api/…` désignent `frontend/public/api/
 1. **Capture (téléphone).** Le conseiller crée un projet, une pièce, saisit les cotes (R23), prend des photos (R38), pose des commentaires (R37), filme la pièce (R14) et saisit 2 cotes laser plus 1 cote de contrôle (R17). Tout est écrit d'abord dans Dexie (R03, R04).
 2. **Synchronisation.** Les modifications partent vers l'API dès que le réseau le permet ; les médias lourds passent par l'envoi reprenable (R15).
 3. **Modèle.** Le modèle (bâtiment → niveaux → pièces → murs → ouvertures, plus photos, vidéos, cotes laser, annotations) est la seule vérité. Les écrans de plan et de maquette ne font que le montrer.
-4. **Métrés.** La fonction pure `calculerMetres(modele)` calcule surfaces, murs, volumes à chaque modification (R27). À chaque enregistrement, l'application joint au serveur un **instantané des métrés** (`metres_snapshot`) marqué par une version de l'algorithme (`metres_version`) : le serveur n'a donc pas à refaire les calculs pour le CSV et le PDF (une seule implémentation des calculs, côté navigateur).
+4. **Métrés.** La fonction pure `calculerMetres(modele)` calcule surfaces, murs, volumes à chaque modification (R27). À chaque enregistrement, l'application joint au serveur un **instantané des métrés** (`metres_snapshot`) marqué par une version de l'algorithme (`metres_version`) : le serveur n'a donc pas à refaire les calculs pour le CSV et le PDF (une seule implémentation des calculs, côté navigateur). Le serveur enregistre **dans une même transaction** la géométrie de la pièce, son instantané et `geometry_rev` (la révision de géométrie que l'instantané décrit) ; un instantané dont `geometry_rev` ne correspond pas à la géométrie reçue est rejeté et recalculé par le client, ce qui évite d'exporter des métrés d'une ancienne géométrie après un conflit.
 5. **Exports.**
    - Navigateur, depuis le modèle : DXF (R43), IFC (R44), glTF (R45), OBJ (R46).
    - Serveur PHP, depuis le modèle et l'instantané : CSV (R47) ; PDF (R42) en rendant un gabarit HTML aux couleurs de la charte puis en l'envoyant à Gotenberg.
@@ -63,14 +63,14 @@ Dans `docs/exigences.md`, les chemins `api/…` désignent `frontend/public/api/
 6. **Vidéo → reconstruction (lot ultérieur).** L'API crée une tâche ; le service lit la vidéo, reconstruit le maillage, applique l'échelle des cotes laser, contrôle la 3e cote, écrit un glTF et le statut ; l'interface propose alors le maillage (R20, R21, R41).
 
 ## 4. Modèle de données
-Identifiants : UUID générés côté client (utile hors ligne). Longueurs en **millimètres entiers** (R28). Chaque objet synchronisé porte `id`, `projet_id`, `rev` (compteur croissant), `updated_at`, `updated_by`, `deleted_at` (suppression logique pour la synchronisation). Un objet est supprimé pour de bon par une purge serveur, pas par le client.
+Identifiants : UUID générés côté client (utile hors ligne). Longueurs en **millimètres entiers** (R28). Chaque objet synchronisé porte `id`, `projet_id`, `rev` (compteur propre à l'objet, pour détecter un écrasement), `updated_at`, `updated_by`, `deleted_at` (suppression logique pour la synchronisation). Un objet est supprimé pour de bon par une purge serveur, pas par le client. Le serveur attribue en plus à chaque changement reçu un `seq` croissant **par projet** : c'est le curseur de la réception (§6), distinct du `rev` de chaque objet.
 
 | Objet | Champs principaux | Liens |
 |---|---|---|
 | Projet | nom, adresse (texte), client (texte libre), statut (actif, archivé), propriétaire | contient 1 bâtiment (ou plusieurs plus tard) |
 | Bâtiment | nom | contient des niveaux |
 | Niveau | nom, altitude_mm, ordre | contient des pièces |
-| Pièce | nom, hauteur_mm, polygone (liste ordonnée de sommets x, y en mm), `metres_snapshot` (JSON), `metres_version`, mode_capture (cotes, video, webxr) | contient murs, ouvertures, photos, vidéos, cotes laser, annotations |
+| Pièce | nom, hauteur_mm, polygone (liste ordonnée de sommets x, y en mm), `metres_snapshot` (JSON), `metres_version`, `geometry_rev`, mode_capture (cotes, video, webxr) | contient murs, ouvertures, photos, vidéos, cotes laser, annotations |
 | Mur | pièce, sommet_début, sommet_fin, épaisseur_mm (optionnelle, À VÉRIFIER), longueur_mm (cote saisie ou calculée), source_cote (laser, saisie, calculée) | porte des ouvertures |
 | Ouverture | mur, type (porte, fenêtre), position_mm (le long du mur), largeur_mm, hauteur_mm, allège_mm (hauteur du bas) | — |
 | Photo | pièce, fichier, x, y (position sur le plan, mm), date, légende | — |
@@ -100,8 +100,8 @@ Identifiants : UUID générés côté client (utile hors ligne). Longueurs en **
 ## 6. Hors ligne et synchronisation
 - **Stockage local** : Dexie (IndexedDB). Tables locales : les objets du §4, une **file d'envoi** (modifications non envoyées) et une **file de médias** (photos, vidéos à envoyer).
 - **Enregistrement automatique** (R03) : toute modification s'écrit dans Dexie immédiatement, puis dans la file d'envoi. L'interface montre l'état « enregistré » ou « en attente d'envoi ».
-- **Envoi (push)** : par lots, avec le `rev` connu de l'objet. **Réception (pull)** : « donne-moi tout ce qui a changé depuis le rev N », par projet.
-- **Conflits** (R06) : dernière modification gagnante, objet par objet ; l'écrasement est inscrit dans un journal `sync_log` visible. Choix volontairement simple ; une fusion plus fine n'est pas prévue.
+- **Envoi (push)** : par lots, avec le `rev` connu de chaque objet ; le serveur attribue à chaque changement accepté un `seq` croissant du projet. **Réception (pull)** : « donne-moi tout ce qui a changé depuis le `seq` N », par projet ; le client garde le dernier `seq` reçu.
+- **Conflits** (R06) : dernière modification gagnante, objet par objet, « dernière » désignant l'ordre de réception par le serveur (`seq`) et non l'horloge de l'appareil ; l'écrasement est inscrit dans un journal `sync_log` visible. Choix volontairement simple ; une fusion plus fine n'est pas prévue.
 - **Suppressions** : logiques (`deleted_at`) pour qu'elles se propagent.
 - **Médias** : envoyés à part, en morceaux reprenables ; le modèle référence le média par son identifiant ; tant que le média n'est pas arrivé, l'objet affiche une vignette locale.
 - **Limites à vérifier** : quota de stockage et éviction du stockage sur iOS Safari et PWA installée (R04) ; une vidéo de 200 Mo peut dépasser les quotas : prévoir l'envoi immédiat dès que le réseau revient et un avertissement avant de filmer si l'espace manque.

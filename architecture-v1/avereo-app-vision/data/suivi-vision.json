@@ -33,13 +33,14 @@
     {"id": "D2", "title": "Serveur OVH : GPU ou CPU seul (reconstruction dense, MapAnything)", "status": "to_decide"},
     {"id": "D3", "title": "Mise à l'échelle des relevés vidéo", "status": "decided", "decidedOn": "2026-11-23", "choice": "2 cotes laser pour l'échelle + 1 cote de contrôle (écart > 2 cm = hors tolérance), mire ArUco en secours"},
     {"id": "D4", "title": "Licences permissives hors liste : BSL-1.0 (Clipper2), FPDF, EDL-1.0 (JSTS)", "status": "to_decide"},
-    {"id": "D5", "title": "Outil de validation IFC pendant les tests : IfcOpenShell (LGPL-3.0), hors application livrée", "status": "to_decide"}
+    {"id": "D5", "title": "Outil de validation IFC pendant les tests : IfcOpenShell (LGPL-3.0), hors application livrée", "status": "to_decide"},
+    {"id": "D6", "title": "Dépendances système hors liste des moteurs retenus : Boost (BSL-1.0) et Eigen (MPL-2.0) pour COLMAP, FFmpeg, Pango (WeasyPrint), LibreOffice et Chromium (Gotenberg)", "status": "to_decide"}
   ],
   "developmentReviews": [],
   "approvals": [],
   "delivery": {"status": "not_delivered"},
   "blockers": [
-    "Décisions D1, D2, D4 et D5 à prendre par le responsable avant de figer les moteurs concernés.",
+    "Décisions D1, D2, D4, D5 et D6 à prendre par le responsable avant de figer les moteurs concernés.",
     "Mise en place du service de traitement sur le serveur OVH : accord explicite du responsable requis après validation de l'ADR 0001.",
     "Pièce de référence et ses cotes laser à fournir par le responsable (exigence R29, lot 1)."
   ],
@@ -51,10 +52,10 @@
     "À VÉRIFIER : licences des programmes embarqués par Gotenberg (Chromium, LibreOffice) et FFmpeg.",
     "À VÉRIFIER : saisie directe depuis un télémètre Bluetooth (Web Bluetooth sur Safari iOS).",
     "À VÉRIFIER : méthode d'authentification (reprendre celle de l'app Rapport ?), décision au lot 2.",
-    "À VÉRIFIER : dépôt actuel d'OpenSfM, licences de FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR.",
+    "À VÉRIFIER : dépôt actuel d'OpenSfM et son chemin CPU, licences de Boost, Eigen, FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR (alertes de licence signalées par la relecture Codex, non revérifiées sur les sources amont).",
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
-  "nextAction": "Relire et valider l'ADR 0001, docs/plan-lots.md et l'inscription au cockpit ; trancher D1, D2, D4, D5 ; fournir la pièce de référence ; puis lancer le Lot 1.",
+  "nextAction": "Relire et valider l'ADR 0001, docs/plan-lots.md et l'inscription au cockpit ; trancher D1, D2, D4, D5, D6 ; fournir la pièce de référence ; puis lancer le Lot 1.",
   "github": {"prUrl": null},
   "registryIntegration": "proposed_not_registered",
   "documentation": "docs/plan-lots.md"
