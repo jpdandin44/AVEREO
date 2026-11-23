@@ -5,13 +5,21 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-21
+updated: 2026-11-22
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 22 novembre — Livraison préproduction du volume sans perte
+
+PR178 fusionnée et installée en préproduction, source `15f537a05b06a0ba589885b0945109c978afbc24`. Le plafond JSON est appliqué à **100 000 000 octets (100 Mo)** dans Rapport et Passeport, sans réduire les médias ni changer les 524 288 000 octets autorisés par paquet. Sauvegardes et restauration temporaire réussies ; 32 dossiers Rapport et leurs propriétaires, quatre tables Passeport et 30 fichiers privés exacts après livraison. [Reçu de conservation](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-volume-sans-perte-20261120/preproduction-20261122/final-verification.json>).
+
+La configuration privée Rapport a été alignée de 52 428 800 à 100 000 000 octets ; tous ses autres paramètres et la configuration Passeport restent exacts. Aucun ajout de colonne, droit, compte ou règle d’accès. Sept fichiers publics Rapport sont aussi vérifiés par HTTPS ; le sas Passeport refuse toujours les fichiers et API aux sessions anonymes. Les 24 chemins des deux candidats sont vérifiés sur le serveur, avec 16 écritures publiques au total. Les 227 autres fichiers Rapport et 33 autres fichiers Passeport restent exacts.
+
+[Réserves et prochaine recette](volume-sans-perte.md#préproduction).
 
 ## 21 novembre — Lot volume sans perte, préparation locale
 

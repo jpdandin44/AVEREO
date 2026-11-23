@@ -5,10 +5,16 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-21
+updated: 2026-11-22
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 22 novembre — R12-18 livré, recette hébergée volumineuse suivante
+
+PR178 fusionnée et installée en préproduction, source `15f537a05b06a0ba589885b0945109c978afbc24`. Le plafond JSON est appliqué à **100 000 000 octets (100 Mo)** dans Rapport et Passeport, sans réduire les médias ni changer les 524 288 000 octets autorisés par paquet. Sauvegardes et restauration temporaire réussies ; 32 dossiers Rapport et leurs propriétaires, quatre tables Passeport et 30 fichiers privés exacts après livraison. [Reçu de conservation](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-volume-sans-perte-20261120/preproduction-20261122/final-verification.json>).
+
+Suite prioritaire : [recette authentifiée volumineuse](../avereo-app-rapport/docs/volume-sans-perte.md#préproduction), sauvegarde et réouverture serveur dans une nouvelle session ; garder séparés le rendu Microsoft Word et le cas réel de Philippe. Ne pas rejouer le lot Projet par périodes déjà acquis. Production non autorisée.
 
 ## Lot local du 21 novembre — R12-18
 

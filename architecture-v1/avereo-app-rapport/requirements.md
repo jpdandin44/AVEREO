@@ -5,13 +5,17 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-21
+updated: 2026-11-22
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## 22 novembre — Plafond de préproduction appliqué
+
+Le contrat à 100 000 000 octets avant et après reconstitution est livré en préproduction. Rapport conserve les garde-fous mémoire/MySQL et la récupération complète, Passeport les contrôles de paquet et de confidentialité. Aucun changement des octets autorisés par paquet, fichier ou lot. La capacité réelle du dossier complet de Philippe reste TBD. [Portée du contrôle hébergé](docs/volume-sans-perte.md#préproduction).
 
 ## 21 novembre — Volume sans perte demandé
 

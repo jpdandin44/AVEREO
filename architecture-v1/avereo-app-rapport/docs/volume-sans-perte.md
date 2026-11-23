@@ -5,14 +5,14 @@ title: Volume des dossiers complets sans perte
 status: active
 version: git
 created: 2026-11-21
-updated: 2026-11-21
+updated: 2026-11-22
 owner: jpdandin
 tags: [rapport, passeport, volume, integrite, local]
 ---
 
 # Volume des dossiers complets sans perte
 
-Lot `RAP-PUBLICATION-VOLUME-SANS-PERTE-20261120`, priorité R12-18. **Candidat local en préparation de revue ; aucune livraison hébergée.** Le [cadrage métier et les critères VOL-01 à VOL-07](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/docs/rapport-v1-2/cadrage-retours-philippe.md#lot-volume-sans-perte>) restent la référence des retours Philippe. Le suivi opérationnel canonique est `rapportV12CadrageProfils20261112.volumeSansPerte20261120` dans le [suivi de chantier](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>) ; les reçus y sont rattachés. Ce document décrit le contrat et la qualification du candidat, sans réattribuer les validations des lots précédents.
+Lot `RAP-PUBLICATION-VOLUME-SANS-PERTE-20261120`, priorité R12-18. **PR178 fusionnée ; préproduction livrée et contrôlée le 22 novembre, recette authentifiée volumineuse à effectuer.** Le [cadrage métier et les critères VOL-01 à VOL-07](<C:/Users/examg/Documents local/Habitologue/Opportunité_Connect/docs/rapport-v1-2/cadrage-retours-philippe.md#lot-volume-sans-perte>) restent la référence des retours Philippe. Le suivi opérationnel canonique est `rapportV12CadrageProfils20261112.volumeSansPerte20261120` dans le [suivi de chantier](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>) ; les reçus y sont rattachés. Ce document décrit le contrat et la qualification du candidat, sans réattribuer les validations des lots précédents.
 
 **Reprise du 21 novembre, PR178 :** les vrais Word expert/client ont maintenant été générés par l'interface, puis le paquet complet a suivi le parcours navigateur Passeport → copie privée → Rapport → sauvegarde indépendante → nouvelle session serveur. Contenu et propriétaires exacts. Les PDF de contrôle issus des DOCX ont été relus sous LibreOffice avec la police Calibri du PC : 42 pages expert et 15 pages client, y compris la restitution finalisée. L'export PDF automatisé par Microsoft Word n'a pas abouti ; il reste une réserve distincte. Les essais initiaux avec un petit Word de transport ci-dessous gardent leur portée historique.
 
@@ -20,7 +20,7 @@ Lot `RAP-PUBLICATION-VOLUME-SANS-PERTE-20261120`, priorité R12-18. **Candidat l
 
 Le message « La copie JSON dépasse 50 Mio » est reproduit sur un **dossier fictif complet de 61 081 494 octets**, comprenant 14 observations, 22 photos dont une de contexte, 12 plans, une signature, des légendes, repères et versions préparées. L'ancien seuil est **52 428 800 octets**. Le JSON réel complet de Philippe n'est pas disponible : sa taille, sa répartition et sa compatibilité avec le candidat restent **TBD**. Le partage manuel d'un document final observé en réunion ne prouve pas la préparation du paquet qui avait échoué.
 
-La proposition bornée est **100 000 000 octets de JSON, soit 100 Mo**, avant et après reconstitution avec les originaux. Ce doublement couvre le cas reproduit ; il ne constitue pas une capacité illimitée ni une confirmation du cas réel de Philippe. L'acceptation de ce plafond et des ressources sur l'hébergement reste à qualifier avant livraison autorisée.
+Le plafond borné est **100 000 000 octets de JSON, soit 100 Mo**, avant et après reconstitution avec les originaux. Ce doublement couvre le cas reproduit ; il ne constitue pas une capacité illimitée ni une confirmation du cas réel de Philippe. Il est appliqué en préproduction depuis le 22 novembre ; les paramètres observés et les limites de qualification HTTP restent distingués dans la section [Préproduction](#préproduction).
 
 ## Développement local
 
@@ -93,10 +93,16 @@ Le second test HTTP dépend du serveur jetable lancé par le précédent ; ses m
 
 ## Préproduction
 
-**Non autorisée pour ce lot.** Génération réelle des Word et chaîne navigateur locale désormais vérifiées avec la limite de rendu Microsoft Word ci-dessus. À préparer après revue : pagination/PDF Microsoft Word, reconnexion hébergée, vérification des capacités et durées, sauvegarde/restauration fraîche et comparaison des dossiers/propriétaires existants. Le plan de livraison doit inclure les deux API et leurs deux fichiers de contrat avant leurs consommateurs ; les configurations, droits, règles d'accès et applications étrangères restent protégés. Une augmentation privée de plafond ou de ressource demande son propre accord applicable.
+PR178 fusionnée et installée en préproduction, source `15f537a05b06a0ba589885b0945109c978afbc24`. Le plafond JSON est appliqué à **100 000 000 octets (100 Mo)** dans Rapport et Passeport, sans réduire les médias ni changer les 524 288 000 octets autorisés par paquet. Sauvegardes et restauration temporaire réussies ; 32 dossiers Rapport et leurs propriétaires, quatre tables Passeport et 30 fichiers privés exacts après livraison. [Reçu de conservation](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/archives/rapport-volume-sans-perte-20261120/preproduction-20261122/final-verification.json>).
 
-Retour arrière : restaurer les seuls fichiers du delta vérifié, conserver toutes les données/paquets créés. Les anciennes limites peuvent rendre un gros dossier non éditable par l'ancien runtime ; préserver la possibilité de récupérer sa copie complète et ne jamais supprimer ses données pour satisfaire le retour arrière.
+La configuration privée Rapport a été alignée de 52 428 800 à 100 000 000 octets ; tous ses autres paramètres et la configuration Passeport restent exacts. Aucun ajout de colonne, droit, compte ou règle d’accès. Sept fichiers publics Rapport sont aussi vérifiés par HTTPS ; le sas Passeport refuse toujours les fichiers et API aux sessions anonymes. Les 24 chemins des deux candidats sont vérifiés sur le serveur, avec 16 écritures publiques au total. Les 227 autres fichiers Rapport et 33 autres fichiers Passeport restent exacts.
+
+Capacités observées : PHP CLI 8.3.37, mémoire et requête 512 Mio ; paquet MySQL 512 Mio. Le fichier `.user.ini` Passeport conserve 512 Mio de mémoire/requête, 500 Mio par fichier, 600 s d’entrée et 300 s d’exécution. Ces paramètres ne remplacent pas un essai HTTP authentifié au plafond. Les fichiers, configurations, cron et cibles de production protégés par l’outil sont comparés après livraison. Le sas CONNECT et les contrôles de propriété restent actifs. Aucune recette authentifiée ni export supplémentaire n’est déduit des seuls contrôles de livraison.
+
+La recette authentifiée du dossier fictif volumineux après reconnexion CONNECT, les durées et ressources HTTP réelles à 100 Mo, la pagination/PDF Microsoft Word, le cas réel complet de Philippe (non fourni) et les performances mobiles restent à qualifier. Les preuves locales du 21 novembre conservent leur portée. Production non autorisée ; les états datés antérieurs restent historiques.
+
+Retour arrière : fichiers précédents et configuration privée originale sont conservés dans le dossier privé de livraison. Restaurer uniquement le delta vérifié et, si nécessaire, le plafond privé d’origine. Ne pas restaurer une base entière ni supprimer les gros dossiers/paquets créés après livraison ; les anciennes limites peuvent empêcher leur édition et leur récupération complète doit rester possible.
 
 ## Mise en production
 
-**Non autorisée.** Aucun merge, déploiement, droit temporaire ni ouverture publique réalisé. La prochaine reprise reste la revue du candidat local et la levée des réserves ; les autres retours Philippe conservent leur priorité dans le cadrage source.
+**Non autorisée.** La fusion de PR178 et l’accord de préproduction ne valent ni livraison en production ni ouverture publique. La prochaine reprise reste la recette hébergée et la levée des réserves ; les autres retours Philippe conservent leur priorité dans le cadrage source.
