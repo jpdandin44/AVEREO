@@ -16,6 +16,8 @@ tags: [avereo, saisie-unique, documentation]
 
 Un brouillon de [plan d'installation en préproduction](docs/plan-installation-preproduction.md) est ajouté. Il n'est pas exécuté et ne vaut pas accord d'installation. Il part d'une hypothèse corrigée le jour même : UNI est déjà présent en préproduction ; l'empreinte du fichier installé est relevée et rapprochée du manifeste d'origine dans le plan (réponse déclarative du chat de fabrication). La tuile UNI est visible dans le catalogue de préproduction selon le responsable ; la recette hébergée reste à faire. Les 46 tests unitaires et le build ont été relancés localement sans changement de code.
 
+Une [fiche de recette](docs/recette-preproduction.md) de la préproduction est ajoutée, résultats vides à renseigner par le responsable.
+
 ## 2026-11-22
 
 La PR #179 est fusionnée : tableau de bord, recherche, alertes, programmes et territoires, préremplissage des modèles PDF/Word privés, entrée UNI dans CONNECT et candidat PHP protégé. [Candidat de démonstration](docs/demo-2026-11-23.md). La mention « publication en préproduction non effectuée » de ce candidat date du 21 novembre ; le 23 novembre, la cible `uni-preprod.avereo.fr` répond derrière CONNECT (empreinte du fichier installé relevée dans le plan).

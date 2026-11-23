@@ -162,6 +162,8 @@ php backend/bin/manage-catalog.php --code uni --name "AVEREO UNI" \
 
 ### Étape 6 — Recette de la cible
 
+Le déroulé pas à pas et le tableau des résultats sont dans la [fiche de recette](recette-preproduction.md).
+
 | # | Contrôle | Attendu |
 |---|---|---|
 | R1 | Accès direct à `https://uni-preprod.avereo.fr/` sans session | redirigé vers CONNECT, aucune page UNI |
