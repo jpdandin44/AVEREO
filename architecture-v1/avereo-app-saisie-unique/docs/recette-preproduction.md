@@ -24,7 +24,7 @@ Cette fiche ne vaut ni recette acquise, ni autorisation de merge.
 - Données : **uniquement fictives**. Aucune donnée de dossier réel, aucune capture montrant des données réelles.
 - Un ticket de lancement CONNECT est un justificatif de connexion valable quelques dizaines de secondes. Ne le
   collez ni dans le chat, ni dans une PR, ni dans un fichier.
-- Version attendue : fichier installé le 21/11/2026, SHA-256 `private/app.html` commençant par `fadd2649…` (voir le plan).
+- Version attendue : première passe sur le fichier installé le 21/11/2026 (SHA-256 `private/app.html` `fadd2649…`) ; seconde passe sur le candidat installé le 23/11/2026 (`dcb934db…`, voir la procédure de remplacement).
 - Durée : environ 15 minutes pour R1 à R2 et R6 à R12 ; R3 à R5 demandent les outils de développement du navigateur.
 
 ## Déroulé
@@ -68,6 +68,24 @@ Heure détaillée non relevée. Résultats constatés, **pas une recette validé
 Effets de la passe : le stockage du navigateur intégré contient maintenant 4 dossiers fictifs (`avereo-uni-dossiers`, dont 2 doublons issus du réimport ; le dossier de démonstration utilisé a son devis figé) ;
 12 fichiers fictifs sont dans le dossier Téléchargements du poste (9 modèles, 1 sauvegarde, 2 Word en fichiers temporaires `.tmp`) ;
 aucune donnée réelle, aucune modification de la cible ni de CONNECT.
+
+## Seconde passe : après remplacement du candidat
+
+Passe du 23 novembre 2026, même compte `avereo_admin`, Chrome intégré, après installation du candidat
+`dcb934dbcd36b969687e04529edb42d4d57e9126f3b312bfb4912d4b4721504a` (commit source `171f711`, PR #184 et #185 fusionnées).
+Constats, **pas une recette validée**.
+
+| # | Résultat | Remarque |
+|---|---|---|
+| R1 | OK (hors navigateur) | curl sans session : 303 vers `https://connect-preprod.avereo.fr/?app=uni` ; `connect/entry.php` sans ticket : 403 |
+| R2 | OK | CONNECT rouvert, lancement depuis la tuile « AVEREO UNI » (le lien s'ouvre dans un nouvel onglet que le panneau bloque : adresse de lancement ouverte dans l'onglet courant) ; la page servie contient le pack à 12 codes dont `PRP` |
+| R6 | Constaté, comportement voulu | `connect/logout.php` efface le cookie UNI (en-tête `Set-Cookie` vérifié par curl) et renvoie vers `https://connect-preprod.avereo.fr/?logout=1`, où la session CONNECT reste active. Rouvrir `https://uni-preprod.avereo.fr/` repasse par CONNECT puis rouvre UNI sans nouvelle authentification (entrée automatique par la session CONNECT). L'attendu « UNI inaccessible sans nouvelle connexion » n'est vrai que si la session CONNECT est elle aussi fermée, non testé. Le responsable a indiqué le 23 novembre que la déconnexion UNI seule, qui laisse la session CONNECT active, est le comportement voulu ; la ligne R6 du déroulé est à lire dans ce sens |
+| R7 | OK | Recherche sur la liste (nom, commune, programme, propriétaire : 2 résultats sur 4 pour chacun, 0 pour un terme absent), filtre « Alertes et relances » (2), vues Programmes, Territoires / EPCI, Ratios, Travaux, Paramètres et tableau de bord affichées ; après rechargement, 4 dossiers dont 1 figé et bandeau « Données fictives » toujours présents |
+| R8 | OK avec réserve | Les 12 modèles se génèrent sur la cible avec le dossier de démonstration figé : 8 PDF (PF 3,3 Mo, AVA, ACO, DAP, CEE, EXC, PRS, PRP) et 4 Word (ATD, ATF, RFA, DPE), signatures de fichier PDF et Word vérifiées ; « Procuration (fonds) » (PRP) n'est plus désactivée. Téléchargements interceptés, aucun fichier écrit. Impression de la synthèse, ouverture dans Word, mise en page, en-têtes, cases et signatures : non vérifiés |
+| R10 | OK avec réserve | aucune erreur dans la console, aucune ressource externe, `connect-src 'none'` présent ; la console n'était observée que depuis le chargement de la page |
+| R11 | OK | à 375 px la page tient dans 375 px ; la liste des dossiers défile dans son cadre (293 px visibles pour 589 px de contenu) |
+
+Non refaits dans cette passe : R3 à R5, R9, R12.
 
 ## Preuves
 

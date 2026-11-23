@@ -2,7 +2,7 @@
 project: avereo-app-saisie-unique
 document_type: procedure
 title: Procédure de remplacement du candidat UNI en préproduction
-status: draft
+status: executed
 version: git
 created: 2026-11-23
 updated: 2026-11-23
@@ -12,7 +12,7 @@ tags: [avereo, uni, preproduction, installation, connect]
 
 # Procédure de remplacement du candidat UNI en préproduction
 
-**Brouillon, non exécuté.** Cette procédure ne vaut ni accord d'installation ni autorisation de merge. Elle
+**Exécutée le 23 novembre 2026** après accord exact du responsable sur l'empreinte (voir le reçu au §8). Elle ne vaut pas autorisation de merge. Elle
 complète le [plan d'installation](plan-installation-preproduction.md) pour le cas réel du 23 novembre :
 UNI est déjà installé derrière CONNECT, et seul le fichier de l'application doit être remplacé.
 
@@ -108,19 +108,30 @@ rechargement forcé du navigateur si l'ancienne version s'affiche. Les résultat
 
 ## 7. Retour arrière
 
+Noms réels de l'exécution du 23 novembre (le terminal cPanel n'accepte pas les points : `?` les remplace) :
+
 ```sh
 cd RACINE/private
-mv app.html app.html.rejete
-mv app.html.avant-20261123 app.html
-sha256sum app.html                       # doit redonner fadd2649…415a0
+mv app?html app_html_rejete
+mv app_html_avant_20261123 app?html
+sha256sum app?html                       # doit redonner fadd2649…415a0
 ```
 
-Le retour arrière ne concerne que `app.html`. Supprimer `app.html.rejete` et la sauvegarde seulement après accord.
+Le retour arrière ne concerne que `app.html`. Supprimer `app_html_rejete` et la sauvegarde seulement après accord.
 
-## 8. Reçu à consigner
+## 8. Reçu
 
-URL, commit source (`git rev-parse HEAD`), empreintes avant et après, date et heure, noms des sauvegardes,
-résultats de la recette, écarts. Aucun secret ni ticket CONNECT.
+- Cible : `https://uni-preprod.avereo.fr`, fichier `~/uni-preprod.avereo.fr/private/app.html`.
+- Commit source : `171f711a1c86c98f66496d56c6bb7f298a1818ed` (`main`, avec les PR #184 et #185).
+- Dépendances de fabrication : `python-docx` 1.2.0, `pypdf` 7.1.1 (environnement virtuel hors dépôt), modèles sources fournis par le responsable.
+- Avant : 7 816 058 octets, `fadd264951b170db413c635dbb803d2653c27bd55aab5227256b8f48d1d415a0`.
+- Après : 7 865 166 octets, `dcb934dbcd36b969687e04529edb42d4d57e9126f3b312bfb4912d4b4721504a` (empreinte du manifeste, comparée sur le fichier déposé puis sur `app.html`).
+- Remplacement le 23 novembre 2026 à 18:43 (heure du serveur).
+- Sauvegarde : `app_html_avant_20261123` dans le même dossier privé, empreinte `fadd2649…415a0`.
+- Écarts avec la procédure : noms sans points (le terminal cPanel n'accepte pas les touches point et barre oblique) ; le fichier a été déposé à la main par le responsable dans le gestionnaire de fichiers (le panneau navigateur n'atteint pas un serveur local) ; droits du nouveau fichier `rw-r--r--` (l'ancien était `rw-rw-rw-`).
+- Recette : voir la seconde passe de la [fiche de recette](recette-preproduction.md).
+- Non modifiés : `gate.php`, `public/`, configuration, secret, CONNECT, catalogue.
+- Aucun secret ni ticket CONNECT consigné.
 
 ## 9. Risques et limites
 
