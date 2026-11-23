@@ -173,4 +173,13 @@ test('affichage mobile : une colonne, sans défilement horizontal', async () => 
   await contexte.close();
 });
 
+test('affichage mobile : la liste des dossiers ne déborde pas de la page', async () => {
+  const { page, contexte } = await ouvrir({ largeur: 375 });
+  await exemple(page);
+  await page.getByRole('button', { name: 'Dossiers', exact: true }).click();
+  assert.ok(await page.locator('.liste-dossiers tbody tr').count() > 0);
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1));
+  await contexte.close();
+});
+
 
