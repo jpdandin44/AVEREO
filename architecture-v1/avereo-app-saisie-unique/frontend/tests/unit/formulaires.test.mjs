@@ -4,6 +4,8 @@ import JSZip from 'jszip';
 import { PDFDocument } from 'pdf-lib';
 import { genererFormulaire, remplirXml, valeursFormulaire, verifierPack } from '../../src/lib/formulaires.js';
 import { dossierDemonstration } from '../../src/lib/demonstration.js';
+import { DOCUMENTS } from '../../src/config/documents.js';
+import { readFileSync } from 'node:fs';
 test('la correspondance lit le bon plan et sépare les aides publiques des autres aides',()=>{
  const d=dossierDemonstration('demo');d.plans.factures=structuredClone(d.plans.devis);d.plans.factures.postes[0].valeurs.pst_ttc='4000';
  assert.equal(valeursFormulaire(d,{},'devis').fin_travaux_ttc,'13 082,00');
@@ -29,4 +31,11 @@ test('le Word exporté échappe les valeurs et ne perd pas ses fichiers internes
  const d=dossierDemonstration('a');const result=await genererFormulaire({pack,docId:'ATD',dossier:d});const out=await JSZip.loadAsync(result.bytes);
  assert.equal(await out.file('word/document.xml').async('string'),'<w:t>EXEMPLE Camille</w:t>');assert.equal(await out.file('word/styles.xml').async('string'),'styles-preserves');
  d.plans.devis.postes.push(structuredClone(d.plans.devis.postes[0]));await assert.rejects(()=>genererFormulaire({pack,docId:'ATD',dossier:d}),/maximum/);
+});
+test('les codes du pack de modèles correspondent aux identifiants des documents',()=>{
+ const source=readFileSync(new URL('../../../workflows/preparer-modeles.py',import.meta.url),'utf8');
+ const codes=new Set([...source.matchAll(/output\['([A-Z]+)'\]=|'([A-Z]+)':\('|\('([A-Z]+)',\[/g)].map((m)=>m[1]||m[2]||m[3]));
+ const ids=new Set(DOCUMENTS.map((d)=>d.id));
+ assert.ok(codes.size>=12,'codes du pack relevés : '+[...codes]);
+ for(const code of codes)assert.ok(ids.has(code),'code de pack sans document : '+code);
 });
