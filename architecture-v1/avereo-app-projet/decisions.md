@@ -5,12 +5,25 @@ title: Décisions de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-20
+updated: 2026-11-23
 owner: jpdandin
 tags:
   - projet
   - decisions
 ---
+
+## 23 novembre — catalogue de projets et admission par reçu
+
+Contexte : la découverte des composants rend la vue d’ensemble trop volumineuse.
+Décision acceptée : conserver le visuel et les douze fiches proposées ; RGA sous
+Rapport, anciens prototypes regroupés dans l’historique. La règle d’ajout futur
+exige un premier passage attesté en préproduction. Implémentation : projection
+de présentation depuis un catalogue JSON et les reçus qualifiés existants.
+Raisons : réduire le nombre de fiches tout en conservant la couverture technique.
+Conséquences : aucun changement du contrat signé ni des validations, compteurs
+dédupliqués et inventaire complet conservé. Les douze choix initiaux ne sont pas
+présentés comme déjà passés en préproduction. [Portée](docs/cockpit-projets.md).
+
 
 ## 20 novembre — Découverte GitHub sans création de validations
 

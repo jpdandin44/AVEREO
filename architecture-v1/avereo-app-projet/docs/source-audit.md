@@ -5,13 +5,25 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-20
+updated: 2026-11-23
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 23 novembre — écart de classement des composants corrigé dans la vue
+
+Écart intentionnel : la vue principale affiche les projets, tandis que
+l’inventaire conserve tous les composants. RGA et ses suivis sont rattachés à
+Rapport par présentation ; l’historique AVEREO V1 est regroupé sans archivage Git.
+Le catalogue initial ne prétend pas attester une préproduction de Vision.
+L’admission future exige un reçu qualifié de même version/cible ; les critères
+et décisions ne sont jamais créés ou modifiés par ce classement. Les styles,
+API, données clients et règles d’accès restent ceux du candidat source.
+[Comportement et contrôles](cockpit-projets.md).
+
 
 ## 20 novembre — Écart du catalogue manuel et de la couverture GitHub
 

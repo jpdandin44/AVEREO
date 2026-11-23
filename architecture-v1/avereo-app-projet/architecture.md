@@ -5,13 +5,24 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-20
+updated: 2026-11-23
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## 23 novembre — sélection de projets calculée dans la vue
+
+Le catalogue `data/cockpit-projects.json` déclare les douze projets initiaux,
+les alias RGA/Rapport et le prototype historique. Le module pur
+`frontend/src/developments/project-portfolio.mjs` regroupe les périmètres et les
+itérations par identifiant, puis admet les nouveaux produits avec leur premier
+reçu de préproduction qualifié. Les vues cartes, Gantt et navigation partagent
+ce rattachement. Les données source, le contrat signé, les lecteurs Node/PHP et
+le publicateur ne changent pas. [Contrat de vue](docs/cockpit-projets.md).
+
 
 ## 20 novembre — Inventaire GitHub dérivé et privé
 

@@ -5,13 +5,24 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-20
+updated: 2026-11-23
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 23 novembre — vue par projet et admission après préproduction
+
+La vue d’ensemble conserve douze fiches initiales, les mêmes cartes et les mêmes
+badges. RGA est regroupé dans Rapport ; les anciens prototypes AVEREO V1 sont
+accessibles dans « Historique des prototypes ». De nouvelles applications peuvent
+rejoindre les fiches après un premier passage documenté en préproduction, dès que
+ce reçu est publié dans le cockpit. La sélection initiale, dont Vision en cadrage,
+ne constitue pas une preuve d’installation. [Usage, règles et limites](docs/cockpit-projets.md).
+Candidat local de préparation, recette humaine différée ; aucune installation de ce lot attestée.
+
 
 ## 20 novembre — Inventaire du compte GitHub, candidat local
 

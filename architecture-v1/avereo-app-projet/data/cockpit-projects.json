@@ -1,0 +1,22 @@
+{
+  "schema": "avereo-cockpit-project-catalogue",
+  "version": 1,
+  "futureAdmission": "first_documented_preproduction",
+  "projects": [
+    {"id":"connect","name":"CONNECT","category":"Application","applicationIds":["connect"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-connect"]},
+    {"id":"rapport","name":"Rapport","category":"Application","applicationIds":["rapport","rga"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-rapport"]},
+    {"id":"passeport-immo","name":"Passeport Immo","category":"Application","applicationIds":["passeport-immo"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-passeport-immo"]},
+    {"id":"projet","name":"Projet","category":"Application","applicationIds":["projet"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-projet"]},
+    {"id":"coupe","name":"Coupe","category":"Application","applicationIds":["coupe"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-coupe"]},
+    {"id":"thermo","name":"Thermo","category":"Application","applicationIds":["thermo"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-thermo"]},
+    {"id":"drone","name":"Drone","category":"Application","applicationIds":["drone"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-drone"]},
+    {"id":"recherche","name":"Recherche web","category":"Application","applicationIds":["recherche"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-recherche"]},
+    {"id":"saisie-unique","name":"Saisie unique / dossier Erim","category":"Application","applicationIds":["saisie-unique"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-saisie-unique"]},
+    {"id":"site-avereo","name":"Site AVEREO","category":"Site internet","applicationIds":["site-avereo"],"repository":"jpdandin44/avereo-site-drupal","paths":[""]},
+    {"id":"tc-longages","name":"TC Longages","category":"Site et espace club","applicationIds":["tc-longages"],"repository":"jpdandin44/TC_Longages","paths":[""]},
+    {"id":"vision","name":"Vision","category":"Projet d’application — cadrage","applicationIds":["vision"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-vision"]}
+  ],
+  "history": [
+    {"id":"avereo-v1-historique","name":"Prototype AVEREO V1","category":"Prototype d’application — historique","applicationIds":[],"repository":"jpdandin44/AVEREO","paths":["prototype-v1","avereo-v1-base"]}
+  ]
+}
