@@ -60,8 +60,9 @@ Ces éléments viennent du compte rendu du chat UNI, non de contrôles faits dan
 - Catalogue CONNECT : au dernier contrôle authentifié du chat, la tuile UNI était **absente**
   pour l'organisation de démonstration (7 membres actifs, droit `uni:use`, statut proposé `active`).
   La simulation a renvoyé `write: false` et aucune exécution avec confirmation n'est prouvée.
-  L'état actuel de la ligne en base est à vérifier : le responsable indique l'avoir vue présente
-  dans le catalogue de préproduction depuis, ce qui n'est pas documenté.
+  Le 23 novembre, le responsable confirme dans cette session que la tuile UNI est visible dans
+  le catalogue de préproduction (constat humain, organisation non précisée) ; la date
+  d'activation, le statut en base et les droits ne sont pas documentés.
 - Recette : seul « accès direct sans session → redirection vers CONNECT » est vérifié sur la
   cible. Ticket valide, expiré ou rejoué, déconnexion, parcours métier hébergé et téléchargements
   hébergés n'ont aucun résultat documenté ; les essais métier et de téléchargement sont locaux
