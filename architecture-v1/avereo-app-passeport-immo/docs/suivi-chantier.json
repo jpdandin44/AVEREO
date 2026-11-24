@@ -4126,7 +4126,8 @@
       "id": "passeport-immo-ux-ui",
       "canonicalTracking": "../data/suivi-ux-ui.json",
       "documentation": "ux-ui-bibliotheque.md",
-      "scope": "Bibliothèque et navigation du bien : candidat local, validations historiques conservées, aucune livraison."
+      "scope": "Bibliothèque et navigation : candidat CI qualifié techniquement, revue humaine locale PR191 en attente ; aucune livraison.",
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/191"
     }
   ],
   "currentStateObservation": "../api/preproduction-partage-observation.json",

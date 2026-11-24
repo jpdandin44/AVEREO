@@ -6,19 +6,22 @@
   "owner": "jpdandin",
   "kind": "application_iteration",
   "stage": "local",
-  "status": "local_verified_awaiting_review",
+  "status": "local_verified_awaiting_human_review",
   "objective": "Développer la bibliothèque documentaire AVEREO et la navigation du bien, préserver les contenus, droits et parcours existants.",
   "candidate": {
-    "sourceSha": "9b4ccc9814f14a3a9f8881d6184f29b6d58a1b76",
-    "artifactSha256": "623e3aaa249d65d78e8364e0a66400e4acdeeb95637a2aafa8a15ffd583a36c9",
+    "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
     "mockupSha256": "4b008e3215e9b63fa02739c0b9a9adee64b500bfab578bcbdd6f06b09533304e",
     "mockupPath": "C:\\Users\\examg\\.codex\\visualizations\\2026\\10\\03\\01a102c7-978e-78b1-8fb1-5845aa45e2ea\\passeport-immo-ux-ui.html",
     "type": "application_runtime",
     "baseSha": "5f59740",
-    "artifactPath": ".local/candidate.zip",
-    "manifestPath": ".local/candidate.manifest.json",
+    "artifactPath": ".local/ci-f91/candidate.zip",
+    "manifestPath": ".local/ci-f91/candidate.manifest.json",
     "files": 22,
-    "archiveReadback": "passed"
+    "archiveReadback": "passed",
+    "runtimeSourceSha": "9b4ccc9814f14a3a9f8881d6184f29b6d58a1b76",
+    "localWindowsArtifactSha256": "623e3aaa249d65d78e8364e0a66400e4acdeeb95637a2aafa8a15ffd583a36c9",
+    "artifactComparisonEvidence": "api/ux-ui-local-observation.json#artifactComparison"
   },
   "targets": {
     "preproduction": {
@@ -38,12 +41,20 @@
   },
   "github": {
     "repository": "jpdandin44/AVEREO",
-    "prUrl": null,
+    "prUrl": "https://github.com/jpdandin44/AVEREO/pull/191",
     "acceptedSourceSha": null,
     "acceptedArtifactSha256": null,
     "humanAcceptanceVerified": false,
-    "evidence": null,
-    "observedAt": null
+    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/45354624103",
+    "observedAt": "2026-11-24T08:20:54.916309+00:00",
+    "observedHeadSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "mergeable": true,
+    "policy": {
+      "status": "awaiting_human_checklist",
+      "observedAt": "2026-11-24T08:20:54.916309+00:00",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/45354624100",
+      "reason": "Quatre cases humaines non cochées ; structure prépublication validée."
+    }
   },
   "approvals": [],
   "backups": [],
@@ -62,7 +73,9 @@
     "evidence": null,
     "observedAt": null
   },
-  "blockers": [],
+  "blockers": [
+    "Recette humaine UX01–UX06 et quatre cases PR Policy requises avant merge."
+  ],
   "nextAction": "Revoir le candidat local et la PR ; compléter la recette UX01–UX06. Merge et livraison en préproduction restent distincts.",
   "nextIteration": [],
   "budget": {
@@ -214,8 +227,21 @@
     },
     {
       "kind": "ci",
-      "status": "pending",
-      "evidence": null
+      "status": "passed",
+      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/45354624103",
+      "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+      "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+      "observedAt": "2026-11-24T08:20:54.916309+00:00",
+      "scope": "Frontend, parité, cockpit, PHP, HTTP Apache isolé, stockage MariaDB, packaging et archive CI relue."
+    },
+    {
+      "kind": "local",
+      "status": "passed",
+      "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+      "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+      "observedAt": "2026-11-24T08:20:54.916309+00:00",
+      "scope": "Qualification locale et rapprochement du paquet CI : assets applicatifs identiques ; index et menu diffèrent uniquement par CRLF/LF.",
+      "evidence": "api/ux-ui-local-observation.json#artifactComparison"
     }
   ],
   "reviewEnvironment": {

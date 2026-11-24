@@ -79,9 +79,57 @@
     "Aucune livraison ni validation humaine créée."
   ],
   "candidate": {
+    "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+    "files": 22,
+    "archiveReadback": "passed"
+  },
+  "localWindowsBuild": {
     "sourceSha": "9b4ccc9814f14a3a9f8881d6184f29b6d58a1b76",
     "artifactSha256": "623e3aaa249d65d78e8364e0a66400e4acdeeb95637a2aafa8a15ffd583a36c9",
     "files": 22,
     "archiveReadback": "passed"
+  },
+  "artifactComparison": {
+    "ciSource": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "ciSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+    "localSha256": "623e3aaa249d65d78e8364e0a66400e4acdeeb95637a2aafa8a15ffd583a36c9",
+    "differences": [
+      "account-menu.js",
+      "index.html"
+    ],
+    "zipReadback": "passed",
+    "differencesDetail": [
+      {
+        "path": "account-menu.js",
+        "kind": "CRLF_LF_only",
+        "windowsBytes": 33938,
+        "ciBytes": 33445
+      },
+      {
+        "path": "index.html",
+        "kind": "CRLF_LF_only",
+        "windowsBytes": 556,
+        "ciBytes": 550
+      }
+    ],
+    "runtimeAssetsByteIdentical": true
+  },
+  "ci": {
+    "status": "passed",
+    "observedAt": "2026-11-24T08:20:54.916309+00:00",
+    "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "url": "https://github.com/jpdandin44/AVEREO/actions/runs/45354624103",
+    "scope": "Tests frontend, parité, cockpit et preuves, PHP, Apache isolé, stockage MariaDB et packaging ; hébergement réel non accédé.",
+    "generalCiUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/45354624135",
+    "generalCiStatus": "passed"
+  },
+  "pullRequest": {
+    "url": "https://github.com/jpdandin44/AVEREO/pull/191",
+    "state": "open",
+    "mergeable": true,
+    "humanChecklistChecked": false,
+    "policyStatus": "awaiting_human_checklist",
+    "observedAt": "2026-11-24T08:20:54.916309+00:00"
   }
 }
