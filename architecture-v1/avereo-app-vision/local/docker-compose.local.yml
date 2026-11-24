@@ -30,6 +30,7 @@ services:
     environment:
       # La configuration (secrets) vit hors du dossier publié.
       AVEREO_CONFIG_FILE: /opt/vision/local/config.php
+    command: ["php", "-S", "0.0.0.0:80", "-t", "/opt/vision/frontend/public", "/opt/vision/local/router.php"]
     ports:
       - "127.0.0.1:8110:80"
     volumes:

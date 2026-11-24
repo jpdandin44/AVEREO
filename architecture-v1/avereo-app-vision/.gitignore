@@ -1,6 +1,6 @@
 # Secrets et fichiers locaux : jamais commités.
 local/.env
 local/config.php
-frontend/.env.local
+frontend/.env*.local
 frontend/dist/
 frontend/node_modules/

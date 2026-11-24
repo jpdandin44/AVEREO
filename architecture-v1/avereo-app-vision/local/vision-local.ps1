@@ -1,4 +1,4 @@
-# Pile locale AVEREO Vision (Docker Desktop requis). Développement seulement.
+﻿# Pile locale AVEREO Vision (Docker Desktop requis). Développement seulement.
 #   powershell -ExecutionPolicy Bypass -File .\local\vision-local.ps1 <action>
 # Actions : up | down | health | migrate | test | logs | ps | reset
 param(
@@ -34,6 +34,12 @@ function Initialize-LocalSecrets {
         $config = $config.Replace('__VISION_LAUNCH_SECRET__', (New-Secret 32))
         [System.IO.File]::WriteAllText($ConfigFile, $config, (New-Object System.Text.UTF8Encoding($false)))
         Write-Host 'local/config.php créé (secrets aléatoires, ignoré par git).'
+    }
+    $FrontendEnv = Join-Path (Split-Path $LocalDir -Parent) 'frontend\.env.development.local'
+    if (-not (Test-Path $FrontendEnv)) {
+        $token = ([regex]::Match((Get-Content $ConfigFile -Raw), "'api_token' => '([^']+)'")).Groups[1].Value
+        [System.IO.File]::WriteAllText($FrontendEnv, "VITE_LOCAL_API_TOKEN=$token`nVITE_LOCAL_USER=1`n", (New-Object System.Text.UTF8Encoding($false)))
+        Write-Host 'frontend/.env.development.local créé (lu seulement par npm run dev, ignoré par git).'
     }
 }
 
