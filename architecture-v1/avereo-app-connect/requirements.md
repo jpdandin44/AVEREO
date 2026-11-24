@@ -5,10 +5,14 @@ title: Exigences CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-19
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 24 novembre — Création technique, indépendante du métier
+
+Le droit doit être modifiable depuis Gérer les comptes par le seul propriétaire global, avec confirmation, contrôle de révision, CSRF et rôle frais. Valeur absente = refus. Le retrait garde les droits actuels sur les dossiers existants ; les trois profils métier et les accès ordinaires restent inchangés. [Exigences et qualification](docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre).
 
 ## 17 novembre — Catalogue de profils et droits administrables
 

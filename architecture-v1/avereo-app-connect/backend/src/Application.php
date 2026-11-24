@@ -251,7 +251,7 @@ final class Application
         $userId = (int) $auth->userId;
 
         if ($request->path==='/api/v1/profile-types' || str_starts_with($request->path,'/api/v1/admin/profiles')
-            || preg_match('#^/api/v1/admin/organizations/[1-9]\d*/users/[1-9]\d*/profile$#',$request->path)) {
+            || preg_match('#^/api/v1/admin/organizations/[1-9]\d*/users/[1-9]\d*/(?:profile|technical-report-creation)$#',$request->path)) {
             if ($accountStatus!=='active') throw new ApiException(403,'ACCOUNT_INACTIVE','Compte indisponible.');
             if ($this->profileCatalog===null || $this->profileAdministration===null) throw new ApiException(503,'PROFILES_NOT_CONFIGURED','La gestion des profils n’est pas configurée.');
             if ($request->method==='GET' && $request->path==='/api/v1/profile-types') return Response::success($this->profileCatalog->choices(),$request->requestId);
@@ -265,6 +265,7 @@ final class Application
             if ($request->method==='POST' && $request->path==='/api/v1/admin/profiles') return Response::success($this->profileAdministration->update($userId,null,$request->body,$request->requestId),$request->requestId);
             if ($request->method==='PUT' && preg_match('#^/api/v1/admin/profiles/([a-z][a-z0-9_-]{1,63})$#',$request->path,$matches)) return Response::success($this->profileAdministration->update($userId,$matches[1],$request->body,$request->requestId),$request->requestId);
             if ($request->method==='PUT' && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/profile$#',$request->path,$matches)) return Response::success($this->profileAdministration->assign($userId,(int)$matches[1],(int)$matches[2],$request->body,$request->requestId),$request->requestId);
+            if ($request->method==='PUT' && preg_match('#^/api/v1/admin/organizations/([1-9]\d*)/users/([1-9]\d*)/technical-report-creation$#',$request->path,$matches)) return Response::success($this->profileAdministration->setTechnicalCreation($userId,(int)$matches[1],(int)$matches[2],$request->body,$request->requestId),$request->requestId);
             throw new ApiException(405,'METHOD_NOT_ALLOWED','Méthode refusée.');
         }
 

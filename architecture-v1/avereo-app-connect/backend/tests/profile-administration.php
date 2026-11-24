@@ -5,6 +5,7 @@ require __DIR__.'/account-administration-fixture.php';
 require __DIR__.'/report-transfer-fixture.php';
 require dirname(__DIR__,2).'/integrations/drupal/avereo_identity_bridge/src/Security/ProfileRoleAssertion.php';
 require dirname(__DIR__,3).'/avereo-app-rapport/frontend/public/api/profile-access.php';
+require dirname(__DIR__,3).'/avereo-app-rapport/frontend/public/api/technical-report.php';
 
 use Avereo\Connect\Administration\{ProfileCatalog,ProfileAdministration,TrialPolicyStore,GlobalProfileAdministrator};
 use Avereo\Connect\Http\ApiException;
@@ -76,6 +77,27 @@ try {
     $service->assign(1,7,3,['revision'=>6,'profileId'=>null],'restore-other-owner');
     check($catalog->profileFor(3)===null,'other owner restored explicitly without changing memberships');
     check(in_array(3,array_column($transfers->listing(1,7,2)['recipients'],'id')),'removing profile restores eligible transfer recipient');
+    $snapshot=$catalog->read();unset($snapshot['technicalReportCreation']);$catalog->save($snapshot);
+    $bytes=file_get_contents($dir.'/catalogue.json');
+    check($catalog->read()['technicalReportCreation']===[] && file_get_contents($dir.'/catalogue.json')===$bytes,'old catalogue has no implicit technical grant and is not rewritten on read');
+    $revision=$catalog->read()['revision'];
+    refused(fn()=>$service->setTechnicalCreation(2,7,2,['revision'=>$revision,'technicalReport'=>true],'ordinary'),403,'ordinary account cannot grant technical access to itself');
+    refused(fn()=>$service->setTechnicalCreation(1,7,2,['revision'=>$revision,'technicalReport'=>'true'],'bad-boolean'),422,'technical permission requires strict boolean');
+    refused(fn()=>$service->setTechnicalCreation(1,8,2,['revision'=>$revision,'technicalReport'=>true],'wrong-organization'),403,'technical permission target must belong to the organization');
+    $prior=json_decode(file_get_contents($policyPath),true)['accounts'][2];
+    $service->setTechnicalCreation(1,7,2,['revision'=>$revision,'technicalReport'=>true],'technical-grant');
+    $technicalRule=json_decode(file_get_contents($policyPath),true)['accounts'][2];
+    check($technicalRule['report_technical_create']===true,'explicit account technical permission projected to Rapport');
+    check(api_can_create_technical_report(['connect_trial_access_file'=>$policyPath],['provider'=>'avereo_connect','id'=>'2']),'Rapport derives its capability from the actual CONNECT projection');
+    check($technicalRule['applications']===$prior['applications'] && ($technicalRule['report_actions']??null)===($prior['report_actions']??null),'technical permission does not alter application or action grants');
+    check($catalog->profileFor(2)===null && ProfileCatalog::TEMPLATES===['habitologue','architecte','maitre_oeuvre'],'technical permission creates no fourth professional profile or assignment');
+    refused(fn()=>$service->setTechnicalCreation(1,7,2,['revision'=>$revision,'technicalReport'=>false],'stale'),409,'stale technical permission revision rejected');
+    $service->setTechnicalCreation(1,7,2,['revision'=>$revision+1,'technicalReport'=>false],'technical-revoke');
+    check(json_decode(file_get_contents($policyPath),true)['accounts'][2]['report_technical_create']===false,'technical permission withdrawal published immediately');
+    check(!api_can_create_technical_report(['connect_trial_access_file'=>$policyPath,'technical_report_connect_user_ids'=>['2']],['provider'=>'avereo_connect','id'=>'2','roles'=>['administrateur_rapport']]),'neither administrator nor retired private allowlist bypasses withdrawn permission');
+    $service->setTechnicalCreation(1,7,1,['revision'=>$revision+2,'technicalReport'=>true],'technical-owner');
+    check($catalog->read()['technicalReportCreation'][1]===true,'global owner can explicitly grant its own technical permission without changing its protected profile');
+    foreach($before as $table=>$rows)check($rows===$pdo->query('SELECT * FROM '.$table)->fetchAll(),'technical permission preserves database table '.$table);
     $old=$catalog->read();unlink($dir.'/catalogue.json');
     try{$catalog->profileFor(2);throw new LogicException('Missing catalogue accepted');}catch(RuntimeException $e){check(!$e instanceof LogicException,'missing catalogue fails closed');}
     $catalog->save($old);

@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 24 novembre — Droit de création technique, complément PR197
+
+L’extension réutilise ProfileCatalog, ProfileAdministration, le verrou TrialPolicyStore et la frontière globale existante. Paramètres stricts, cible éligible, révision, origine et CSRF contrôlés ; aucun élargissement d’application ou d’action. Carte facultative par compte, aucune migration SQL. [Implémentation, native UI et preuves](profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre). Le SSO et le déploiement hébergés restent distincts de la fixture locale.
+
 ## 24 novembre — Raccordement d'AVEREO Vision
 
 Les clés URL/SECRET de `vision` sont ajoutées à `Config.php` et au chargeur privé de `public/index.php` ; `.env.example` les documente. Le catalogue natif et les autorisations restent inchangés : aucune ligne `applications` n'est créée par ce lot et aucun accès n'est accordé. Le contrat du ticket est vérifié par un test de `backend/tests/run.php` ; l'application côté Vision le décrit dans `architecture-v1/avereo-app-vision/docs/authentication.md`. Essai de bout en bout, catalogue, secret hébergé et habilitation : à faire séparément, avec accord.

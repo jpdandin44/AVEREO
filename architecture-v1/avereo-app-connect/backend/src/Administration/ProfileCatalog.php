@@ -26,7 +26,7 @@ final class ProfileCatalog
         foreach (['habitologue'=>'Habitologue', 'architecte'=>'Architecte', 'maitre_oeuvre'=>'Maître d’œuvre'] as $id=>$name) {
             $profiles[$id] = ['id'=>$id, 'name'=>$name, 'description'=>'', 'template'=>$id, 'active'=>true, 'applications'=>[], 'reportActions'=>[]];
         }
-        return ['version'=>1, 'revision'=>0, 'profiles'=>$profiles, 'assignments'=>[], 'audit'=>[]];
+        return ['version'=>1, 'revision'=>0, 'profiles'=>$profiles, 'assignments'=>[], 'technicalReportCreation'=>[], 'audit'=>[]];
     }
 
     public function read(): array
@@ -42,6 +42,11 @@ final class ProfileCatalog
         }
         foreach ($data['assignments'] as $id=>$profile) {
             if (!preg_match('/^[1-9][0-9]*$/D', (string)$id) || !is_string($profile) || !isset($data['profiles'][$profile])) throw new \RuntimeException('Affectation privée invalide.');
+        }
+        $data['technicalReportCreation'] ??= [];
+        if (!is_array($data['technicalReportCreation'])) throw new \RuntimeException('Droits techniques invalides.');
+        foreach ($data['technicalReportCreation'] as $id=>$allowed) {
+            if (!preg_match('/^[1-9][0-9]*$/D', (string)$id) || !is_bool($allowed)) throw new \RuntimeException('Droit technique invalide.');
         }
         return $data;
     }
@@ -108,7 +113,10 @@ final class ProfileCatalog
 
     public function project(int $id, array $rule): array
     {
-        $profile=$this->profileFor($id);
+        $data=$this->read();
+        $key=$data['assignments'][(string)$id]??null;
+        $profile=$key===null?null:$data['profiles'][$key];
+        $rule['report_technical_create']=($data['technicalReportCreation'][(string)$id]??false)===true;
         if ($profile===null) return $rule;
         $rule['applications']= $profile['active'] ? array_values(array_intersect($rule['applications']??[], $profile['applications'])) : [];
         $rule['report_actions']=$profile['active'] ? $profile['reportActions'] : [];

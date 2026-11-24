@@ -5,10 +5,14 @@ title: Suite CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-18
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 24 novembre — Complément CONNECT de PR197 en revue locale
+
+Droit par compte préparé et contrôlé avec Rapport : attribution native, création, révocation et maintien des anciens dossiers. Cadrage confirmé ; Développement local à valider ; Préproduction et Mise en production non engagées pour ce complément. [Revue et preuves](docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre).
 
 ## 17 novembre — PR164 fusionnée ; catalogue et droits à cadrer
 

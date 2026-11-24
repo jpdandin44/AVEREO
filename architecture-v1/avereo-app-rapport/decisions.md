@@ -13,6 +13,10 @@ tags:
   - architecture
 ---
 
+## 2026-11-24 — Remplacer la liste privée par un droit administré de création
+
+Sur demande du responsable avant merge, le droit est désormais piloté par compte dans CONNECT. La portée confirmée est la création seulement, en conservant l’accès ordinaire aux anciens dossiers. Les administrateurs Rapport et anciens identifiants configurés ne contournent pas ce droit. Les décisions initiales ci-dessous sont historiques et remplacées pour ce point. [Source de la nouvelle règle](../avereo-app-connect/docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre).
+
 ## 2026-11-24 — Premier mécanisme d’habilitation technique
 
 Le serveur Rapport accorde la création technique aux administrateurs Rapport existants et aux identifiants CONNECT explicitement listés dans sa configuration privée. Cette capacité ne découle ni du métier déclaré, ni du modèle de profil, ni du nom d’organisation. Les actions du profil restent requises. Raisons : conserver le catalogue et l’authentification CONNECT, borner cette tranche à Rapport et vérifier le refus côté serveur. Les anciens dossiers restent soumis à leurs droits habituels ; une copie nouvelle ou une conversion globale → technique exige l’habilitation. [Contrat et limites administratives](docs/rapport-technique.md#contrat-de-la-première-tranche-locale).
