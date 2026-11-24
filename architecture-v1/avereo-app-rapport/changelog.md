@@ -5,12 +5,20 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-24 — Parcours technique minimaliste, candidat local
+
+Première tranche Mission → Constats → Rapport, habilitation de création contrôlée côté serveur, mission/mesures/références facultatives, un constat ouvert et fonctions photo/plans/ordre/sauvegarde/Word réutilisées. Les nouveaux détails techniques restent dans l’expert ; le client respecte la sélection existante. Anciens dossiers et Analyse globale conservés. [Résultats et limites](docs/rapport-technique.md). Aucune livraison hébergée.
+
+## 2026-11-24 — Préparation de Rapport Technique
+
+Ajout du [cadrage de Rapport Technique](docs/rapport-technique.md) et d’un aperçu fictif : proposition Mission → Constats → Rapport, fonctions communes et Analyse globale à préserver. Audience confirmée, critères de recette définis ; aucune évolution applicative ni livraison V2.
 
 ## 2026-11-22 — PR178 livrée en préproduction
 

@@ -5,13 +5,21 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## 24 novembre — Rapport Technique en revue locale
+
+Le [parcours technique](docs/rapport-technique.md) propose Mission → Constats → Rapport, avec détails à la demande et fonctions communes conservées. Candidat local à tester depuis [les deux comptes fictifs](http://127.0.0.1:5240/fixture/) : A habilité, B sans création technique. Les étapes suivantes datées conservent l’historique ; aucune livraison V2 en préproduction.
+
+## 24 novembre — Préparation de Rapport Technique
+
+Le [cadrage de Rapport Technique](docs/rapport-technique.md) propose trois écrans minimalistes sur le socle commun, en conservant Analyse globale. Audience confirmée : AVEREO et experts habilités. Proposition en revue ; aucun code V2 ni droit modifié. Les réserves V1.2 ci-dessous restent distinctes.
 
 ## 22 novembre — Volume sans perte en préproduction
 

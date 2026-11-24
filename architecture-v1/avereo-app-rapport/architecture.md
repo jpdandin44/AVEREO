@@ -5,12 +5,16 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-21
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## 24 novembre — Deux présentations sur le même dossier
+
+[Contrat du parcours technique](docs/rapport-technique.md#contrat-de-la-première-tranche-locale). La catégorie du dossier pilote les trois écrans techniques ou les cinq écrans globaux ; le profil de mission reste indépendant. Le nouveau composant de mission réutilise les champs client/bien et ajoute un objet JSON facultatif. Photos/plans/brouillons/API/Word restent partagés. auth/me expose une capacité calculée côté serveur ; reports POST contrôle création et conversion technique. Pas de table ni migration SQL supplémentaire.
 
 ## 21 novembre — Contrat commun de volumes
 

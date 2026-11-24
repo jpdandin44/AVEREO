@@ -211,6 +211,8 @@ if ($method === 'POST') {
         ]);
     }
     api_validate_report_payload($payload);
+    require_once __DIR__ . '/technical-report.php';
+    api_validate_technical_fields($payload);
 
     $id = api_trim_text($body['id'] ?? $body['public_id'] ?? '', 32);
     if ($id === '') {
@@ -242,6 +244,19 @@ if ($method === 'POST') {
                 'message' => 'Vous ne pouvez pas modifier ce rapport.',
             ]);
         }
+    }
+
+    if (api_is_technical_report($payload) && !api_can_create_technical_report($config, $identity)) {
+        $previous = null;
+        if ($existing) {
+            // Read only classification scalars, never a second full media payload into PHP memory.
+            $classification = $pdo->prepare("SELECT JSON_UNQUOTE(JSON_EXTRACT(payload_json, '$.categorie')) AS categorie,
+                JSON_UNQUOTE(JSON_EXTRACT(payload_json, '$.sous_categorie')) AS sous_categorie,
+                JSON_UNQUOTE(JSON_EXTRACT(payload_json, '$.report_type')) AS report_type FROM rapport_reports WHERE public_id = :id");
+            $classification->execute(['id' => $id]);
+            $previous = $classification->fetch() ?: null;
+        }
+        api_require_technical_creation($config, $identity, $payload, $previous);
     }
 
     $json = json_encode($nativeBody->report ?? $nativeBody->payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

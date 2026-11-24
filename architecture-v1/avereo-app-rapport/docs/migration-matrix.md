@@ -5,13 +5,17 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 24 novembre — Champs techniques facultatifs, sans migration SQL
+
+[Contrat de compatibilité](rapport-technique.md#contrat-de-la-première-tranche-locale). mission_technique et quatre textes techniques par constat sont embarqués dans le JSON complet existant ; champs absents acceptés, données inconnues et catégories historiques conservées. Le sous-type vide est conservé pour une nouvelle mission technique explicite. Aucun classement Eau/Air/Terre/Feu imposé ni remplacement d’identifiants. Les anciens Word conservent leur présentation ; les nouveaux Word techniques reprennent périmètre et limites, et gardent les détails internes hors client.
 
 ## 22 novembre — Livraison du contrat de volume sans migration
 

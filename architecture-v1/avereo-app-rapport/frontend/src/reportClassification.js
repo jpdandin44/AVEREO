@@ -120,7 +120,8 @@ export function normalizeReportClassification(incoming = {}) {
     ...(categoryDefinition.legacySubcategories || []),
   ];
   const requestedSubcategory = report.sous_categorie;
-  const sousCategorie = categorie === HABITOLOGIE_CATEGORY
+  const emptyTechnicalSubcategory = categorie === DEFAULT_CATEGORY && report.sous_categorie === '' && isRecord(report.mission_technique);
+  const sousCategorie = emptyTechnicalSubcategory ? '' : categorie === HABITOLOGIE_CATEGORY
     ? HABITOLOGIE_HOUSING_TYPES.includes(requestedSubcategory)
       ? requestedSubcategory
       : HABITOLOGIE_DEFAULT_HOUSING_TYPE

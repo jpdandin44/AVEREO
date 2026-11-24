@@ -5,13 +5,21 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## 24 novembre — Première tranche Rapport Technique
+
+Les critères RT-01 à RT-08, les champs indispensables réutilisés et les limites de la première tranche sont définis dans le [contrat technique](docs/rapport-technique.md#contrat-de-la-première-tranche-locale). Habilitation serveur explicite, un constat ouvert, détails facultatifs, continuité JSON/serveur et confidentialité expert/client. Analyse globale et anciens dossiers conservés ; pas de conversion automatique.
+
+## 24 novembre — Exigence de simplicité pour Rapport Technique
+
+Préparer un second parcours expert du bâtiment, avec constats/observations, détails techniques à la demande et fonctions communes conservées. Audience confirmée : AVEREO et experts habilités dans CONNECT ; le métier déclaré ne suffit pas. [Exigences proposées, décisions acquises et critères RT-01 à RT-08](docs/rapport-technique.md). Le parcours en trois écrans et les champs minimaux restent à valider avant développement.
 
 ## 22 novembre — Plafond de préproduction appliqué
 

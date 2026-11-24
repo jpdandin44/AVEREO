@@ -1,4 +1,5 @@
-import { buildExpertDocumentHtml, escapeHtml, textToHtml, explanationsHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml, buildEnvironmentContextHtml } from './reportHtml.js';
+import { buildExpertDocumentHtml, escapeHtml, textToHtml, explanationsHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml, buildEnvironmentContextHtml, technicalMissionHtml } from './reportHtml.js';
+import { hasTechnicalMission } from './technicalReport.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
@@ -44,7 +45,7 @@ function cover(report, client) {
     <img class="brand-logo" src="${AVEREO_LOGO}" alt="${escapeHtml(AVEREO_NAME)}" />
     <div class="company-identity">${AVEREO_COMPANY_LINES.map(line => `<p>${escapeHtml(line)}</p>`).join('')}</div>
     <p class="eyebrow">HABITAT · COMPRENDRE · DÉCIDER</p>
-    <h1>${isHabitologueProfile(report) ? `${escapeHtml(missionProfileLabel(report))} — ` : ''}${client ? 'Votre habitat, l’essentiel' : 'Rapport expert détaillé'}</h1>
+    <h1>${hasTechnicalMission(report) ? `Rapport Technique — ${client ? 'Synthèse client' : 'Rapport expert'}` : `${isHabitologueProfile(report) ? `${escapeHtml(missionProfileLabel(report))} — ` : ''}${client ? 'Votre habitat, l’essentiel' : 'Rapport expert détaillé'}`}</h1>
     <h2>${escapeHtml(report.titre)}</h2>
     <p class="address">${escapeHtml(report.adresse_logement)}</p>
     <table><tr><td>Dossier</td><td>${escapeHtml(report.reference_dossier)}</td></tr>
@@ -105,11 +106,11 @@ export function buildReportHtml(report) {
   } else {
     // Sort globally first, then filter: selected findings keep their global number (gaps allowed).
     const selected = orderedObservations(report).filter(o => options.observations.includes(o.id));
-    content = cover(report, true) + buildEnvironmentContextHtml(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
+    content = cover(report, true) + technicalMissionHtml(report) + buildEnvironmentContextHtml(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
       <p>${textToHtml(options.synthese || 'Synthèse client à rédiger par le professionnel.')}</p>
-      ${selected.map(o => `<article class="client-observation keep-together"><h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${usesMissionContext(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
+      ${selected.map(o => `<article class="client-observation keep-together"><h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${usesMissionContext(report) || hasTechnicalMission(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
         ${explanationsHtml(o)}
-        ${usesMissionContext(report) ? `<h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(o.actions)}</p>` : ''}
+        ${usesMissionContext(report) || hasTechnicalMission(report) ? `<h4>${escapeHtml(observationAdviceLabel(report))}</h4><p>${textToHtml(o.actions)}</p>` : ''}
         ${(o.photos || []).slice(0, 1).map(p => safeEmbeddedImageSource(reportPhotoSource(p)) ? `<div class="photo-block"><img src="${safeEmbeddedImageSource(reportPhotoSource(p))}" alt="${escapeHtml(p.name)}" /><p>${escapeHtml(p.name)}</p></div>` : '').join('')}</article>`).join('')}
       <p class="muted">Le rapport expert conserve l’ensemble des constats et des sources.</p></section>`;
     content += buildObservationPlansHtml(report, options.observations);

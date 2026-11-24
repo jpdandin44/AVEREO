@@ -24,6 +24,7 @@ APP = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--receipt', type=Path)
 parser.add_argument('--serve', action='store_true', help='Keep a local fictitious two-account review environment running after the checks')
+parser.add_argument('--technical', action='store_true', help='Also qualify the technical pathway and grant fictitious account A for local review')
 parser.add_argument('--port', type=int, default=5186, help='Local Vite review port with --serve')
 parser.add_argument('--fixture', type=Path, help='Optional complete fictitious dossier for the existing round-trip recipe')
 parser.add_argument('--volume', action='store_true', help='Use bounded local resources for a large fictitious dossier: PHP 768M, MariaDB 1536m, packet 128M')
@@ -246,10 +247,16 @@ try:
         write_config()
         profile_recipe = qualify_profile_permissions(admin_url=args.profile_admin_url, req=req, enter=enter,
             mysql=mysql, database=db_name, fixture=fixture, check=check)
+    technical_recipe = None
+    if args.technical:
+        from technical_report_http import qualify_technical_reports
+        technical_recipe = qualify_technical_reports(req=req, enter=enter, save=save, mysql=mysql, database=db_name,
+            fixture=fixture, check=check, config=config, write_config=write_config)
     receipt = {'status': 'passed', 'count': len(checks), 'checks': checks, 'hostingChanged': False,
                'scope': 'Actual PHP, real SQL migration in disposable local MariaDB, existing application gate with fictitious signed identities; not hosted CONNECT/OAuth',
                'sourceRowsAndOwnerPreserved': True, 'copyOwnerSeparate': True}
     receipt['profilePermissions'] = profile_recipe
+    receipt['technicalReports'] = technical_recipe
     receipt['exteriorContextTested'] = 'contexte_exterieur' in fixture
     if args.volume:
         receipt['volumeResources'] = {'phpMemoryLimit':'768M','mariaDbMemory':'1536m','databaseMaxPacketBytes':134217728,'fixtureJsonBytes':len(json.dumps(fixture,ensure_ascii=False,separators=(',',':')).encode('utf-8'))}
@@ -259,6 +266,8 @@ try:
         args.receipt.write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(receipt, ensure_ascii=False, indent=2), flush=True)
     if args.serve:
+        if args.technical:
+            config['technical_report_connect_user_ids'] = ['101']; write_config()
         # Test-only portal, outside product/public sources. Generates fictitious launch tickets
         # for this temporary database only; no new real account or access is created.
         router = scratch / 'router.php'
