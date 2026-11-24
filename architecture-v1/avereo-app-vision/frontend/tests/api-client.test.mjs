@@ -65,5 +65,34 @@ test("erreurs : 401, validation 422 avec champs, réseau coupé, réponse sans J
   await assert.rejects(client.identite(), (e) => e instanceof ErreurApi && e.statut === 401 && e.code === "unauthenticated");
   await assert.rejects(client.creerProjet({}), (e) => e.statut === 422 && e.champs.name === "Champ obligatoire.");
   await assert.rejects(client.listerProjets(), (e) => e.statut === 0 && e.code === "reseau" && /injoignable/.test(e.message));
-  await assert.rejects(client.listerProjets(), (e) => e.statut === 500 && e.message.length > 0);
+  // Un 5xx sans JSON vient d'une passerelle ou d'un proxy : c'est une coupure (voir le test suivant), pas une erreur de l'API.
+  await assert.rejects(client.listerProjets(), (e) => e.statut === 0 && e.code === "reseau");
+});
+
+test("coupure : un 5xx sans JSON (proxy, passerelle, maintenance) compte comme un serveur injoignable ; un 5xx JSON de l'API reste une erreur", async () => {
+  const sansJson = { ok: false, status: 502, json: async () => { throw new SyntaxError("pas du JSON"); } };
+  const client = creerClient({ fetchImpl: async () => sansJson });
+  await assert.rejects(client.identite(), (e) => e instanceof ErreurApi && e.statut === 0 && e.code === "reseau");
+  const { fetchImpl } = faussesReponses({ status: 503, corps: { ok: false, error: "database_unavailable", message: "La base de données est indisponible." } });
+  await assert.rejects(creerClient({ fetchImpl }).identite(), (e) => e.statut === 503 && e.code === "database_unavailable");
+});
+
+test("synchronisation : envoi, réception et journal appellent sync.php avec les bons paramètres", async () => {
+  const { appels, fetchImpl } = faussesReponses(
+    { status: 200, corps: { ok: true, applied: [], changes: [], seq: 3, has_more: false } },
+    { status: 200, corps: { ok: true, changes: [], seq: 3, has_more: false } },
+    { status: 200, corps: { ok: true, entries: [{ id: 5 }] } },
+    { status: 201, corps: { ok: true, project: { id: "a".repeat(32), name: "N" } } },
+  );
+  const client = creerClient({ fetchImpl });
+  await client.synchroniser("p1", { deviceId: "telephone-01", since: 2, changes: [{ object_id: "x" }] });
+  assert.equal(appels[0].url, "/api/sync.php?project=p1");
+  assert.equal(appels[0].options.method, "POST");
+  assert.deepEqual(JSON.parse(appels[0].options.body), { device_id: "telephone-01", since: 2, changes: [{ object_id: "x" }] });
+  await client.recevoir("p1", 0);
+  assert.equal(appels[1].url, "/api/sync.php?project=p1&since=0");
+  assert.deepEqual(await client.journal("p1", 4), [{ id: 5 }]);
+  assert.equal(appels[2].url, "/api/sync.php?project=p1&journal=1&after=4");
+  await client.creerProjet({ id: "a".repeat(32), name: "N" });
+  assert.deepEqual(JSON.parse(appels[3].options.body), { id: "a".repeat(32), name: "N" });
 });

@@ -3,6 +3,11 @@
 // En développement local seulement, un jeton de test peut être lu dans frontend/.env.development.local (jamais embarqué
 // dans un build : ce fichier n'est lu que par `npm run dev`).
 
+/** Le serveur est injoignable : coupure réseau (statut 0) ou passerelle sans réponse (502, 504). @param {{statut: number}} erreur */
+export function estCoupure(erreur) {
+  return erreur.statut === 0 || erreur.statut === 502 || erreur.statut === 504;
+}
+
 /** Erreur renvoyée par l'API : code court stable, message en français, champs invalides éventuels. */
 export class ErreurApi extends Error {
   /**
@@ -51,6 +56,11 @@ export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base
       donnees = await reponse.json();
     } catch {
       donnees = null;
+    }
+    // Notre API répond toujours en JSON : une erreur 5xx sans JSON vient d'une passerelle ou d'un proxy (serveur arrêté,
+    // page de maintenance). Pour l'utilisateur c'est une coupure : les modifications restent sur l'appareil et partiront plus tard.
+    if (donnees === null && reponse.status >= 500) {
+      throw new ErreurApi(0, "reseau", "Le serveur est injoignable. Vérifiez votre connexion.");
     }
     if (!reponse.ok || !donnees || donnees.ok === false) {
       throw new ErreurApi(

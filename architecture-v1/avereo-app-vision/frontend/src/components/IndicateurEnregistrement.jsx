@@ -27,7 +27,12 @@ export function decrireEnregistrement({ reseau, enAttente, durable = true }) {
     };
   }
   if (reseau === "erreur") {
-    return { icone: "alerte", libelle: "Envoi impossible pour le moment", aide: "Nouvelle tentative automatique. Vos modifications sont enregistrées sur cet appareil.", alerte: true };
+    return {
+      icone: "alerte",
+      libelle: enAttente > 0 ? `Envoi impossible : ${enAttente} modification${pluriel} en attente` : "Envoi impossible pour le moment",
+      aide: "Nouvelle tentative automatique. Vos modifications sont enregistrées sur cet appareil.",
+      alerte: true,
+    };
   }
   if (enAttente > 0) {
     return { icone: "attente", libelle: `En attente d'envoi (${enAttente})`, aide: "Enregistré sur cet appareil, envoi en cours.", alerte: false };

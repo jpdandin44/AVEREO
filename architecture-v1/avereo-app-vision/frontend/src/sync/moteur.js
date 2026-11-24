@@ -2,7 +2,7 @@
 // Contrat : docs/synchronisation.md. Le moteur ne connaît ni React ni le DOM : le stockage, l'API et l'horloge sont injectés,
 // ce qui permet de le tester sans navigateur. Les déclencheurs (minuterie de 30 s, retour du réseau, retour d'onglet) sont dans useSynchro.js.
 import { creerBatiment, creerNiveau } from "../domain/modele.js";
-import { ErreurApi } from "../services/api.js";
+import { ErreurApi, estCoupure } from "../services/api.js";
 import { assemblerBatiment } from "./assembler.js";
 import { diffBatiment } from "./diff.js";
 import { acquitter, empiler, prendreLot, retirer } from "./file-envoi.js";
@@ -151,7 +151,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       definirReseau("erreur");
       return "arret";
     }
-    if (erreur.statut === 0) {
+    if (estCoupure(erreur)) {
       definirReseau("hors-ligne");
       return "arret";
     }
@@ -325,7 +325,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
           definirReseau("erreur");
           return false;
         }
-        if (erreur.statut === 0) {
+        if (estCoupure(erreur)) {
           definirReseau("hors-ligne");
           return false;
         }
@@ -366,7 +366,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
     try {
       serveur = await api.listerProjets({ statut: "all", limite: PROJETS_EN_CACHE });
     } catch (erreur) {
-      if (erreur instanceof ErreurApi && erreur.statut === 0) definirReseau("hors-ligne");
+      if (erreur instanceof ErreurApi && estCoupure(erreur)) definirReseau("hors-ligne");
       else if (erreur instanceof ErreurApi && erreur.statut === 401) definirReseau("reconnexion");
       return false;
     }

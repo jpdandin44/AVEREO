@@ -2,7 +2,7 @@
 // Local d'abord (Lot 2B) : la liste vient du stockage de l'appareil et reste utilisable sans réseau ; créations, renommages et
 // archivages sont enregistrés tout de suite puis envoyés au serveur par le moteur de synchronisation.
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { ErreurApi } from "../../services/api.js";
+import { ErreurApi, estCoupure } from "../../services/api.js";
 import { lireIdentiteConnue, memoriserIdentite, oublierIdentite } from "../../sync/identite-locale.js";
 import { validerChampsProjet } from "../../sync/operations-projets.js";
 import { useMoteur } from "../../sync/useMoteur.js";
@@ -14,7 +14,7 @@ const LIMITE_MAX = 200;
 export function decrireErreur(erreur) {
   if (erreur instanceof ErreurApi) {
     if (erreur.statut === 401) return { type: "non-connecte", message: erreur.message };
-    if (erreur.statut === 0) return { type: "reseau", message: erreur.message };
+    if (estCoupure(erreur)) return { type: "reseau", message: erreur.message };
     return { type: "erreur", message: erreur.message, champs: erreur.champs };
   }
   return { type: "erreur", message: "Une erreur inattendue est survenue.", champs: {} };
