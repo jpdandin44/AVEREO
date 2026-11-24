@@ -21,7 +21,7 @@ Version : Lot 0, 23/11/2026. Tenu par Claude Code (sous-agent scribe-cockpit). L
 | 4 | Exports CSV, PDF, DXF | à faire | M | R42, R43, R47, R48 | contrôle des licences de Gotenberg (Chromium, LibreOffice) ; décision D6 prise (règle serveur), audit de l'image Gotenberg à faire ; accord avant tout conteneur sur le serveur OVH |
 | 5 | Maquette 3D, vue 3D, exports glTF et OBJ, partage par lien | à faire | L | R07, R39, R40, R45, R46 | — |
 | 6 | Export IFC | à faire | M | R44 | décisions D1 et D5 prises le 23/11/2026 ; maquette 3D du lot 5 |
-| 7 | Service de traitement, prototype de pipeline et essai de précision vidéo | à faire | L | R19, R22 | ADR validé ; accord explicite pour le serveur OVH ; décisions D2 et D6 prises le 23/11/2026 (essai en conteneur local autorisé ; mise en place sur OVH = accord séparé) ; caractéristiques du serveur OVH, vidéo et cotes de la pièce de référence |
+| 7 | Service de traitement, prototype de pipeline et essai de précision vidéo | à faire | L | R19, R22 | ADR validé ; accord explicite pour le serveur OVH ; décisions D2 et D6 prises le 23/11/2026 (essai en conteneur local autorisé ; mise en place sur OVH = accord séparé) ; serveur OVH relevé le 24/11/2026 (VPS-1, insuffisant : choix d'offre = accord séparé), vidéo et cotes de la pièce de référence |
 | 8 | Reconstruction 3D depuis la vidéo (intégration au service) | à faire | L | R18, R20, R21, R41 | résultat de l'essai du lot 7 (précision, ressources) ; maquette 3D du lot 5 pour R41 |
 | 9 | Finition et préparation de la livraison | à faire | M | revue de toutes les exigences, R30 final | toute livraison en préproduction ou production = décision séparée du responsable |
 
@@ -145,7 +145,7 @@ Ordre voulu : la reconstruction 3D (lots 7 et 8) vient **après** les exports PD
 - Lot 7 avant le lot 8 (le prototype et l'essai de précision du lot 7 précèdent l'intégration du lot 8).
 - Lot 5 avant les lots 6 et 8 (la maquette 3D sert à l'IFC et à la superposition R41). Le DXF (lot 4) ne dépend que du modèle, pas de la 3D.
 - R04 (hors ligne, lot 2) ne recette que la saisie de cotes ; la photo hors ligne est recettée avec R38 au lot 3.
-- Décisions D1, D2, D4, D5 et D6 prises le 23/11/2026. Avant le lot 7 : caractéristiques du serveur OVH et accord séparé pour toute mise en place sur OVH ; audit de l'image Gotenberg au lot 4.
+- Décisions D1, D2, D4, D5 et D6 prises le 23/11/2026. Avant le lot 7 : choix de l'offre OVH (le VPS-1 relevé le 24/11/2026 est insuffisant) et accord séparé pour toute mise en place sur OVH ; audit de l'image Gotenberg au lot 4.
 
 ## Remarques de découpage (relecture Codex du Lot 0)
 - Les lots 1, 2 et 5 regroupent plusieurs capacités. Le contenu du lot 1 (plan 2D manuel, métrés, charte) est imposé par le message du Lot 0 ; ses tâches sont ordonnées pour que chacune soit démontrable seule. Au début de chaque lot, Claude Code propose, avec l'accord du responsable, de le couper en deux PR si un blocage (matériel, authentification) menace de bloquer des fonctions déjà vérifiables. Coupes envisagées : lot 2 en 2A (API, authentification, projets) et 2B (hors ligne, synchronisation, PWA) ; lot 5 en 5A (maquette 3D, glTF, OBJ) et 5B (partage par lien).

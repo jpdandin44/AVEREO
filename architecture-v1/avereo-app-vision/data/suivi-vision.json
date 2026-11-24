@@ -7,7 +7,7 @@
   "title": "AVEREO Vision V1 — relevé, métré et modélisation 2D/3D (équivalent Visuary)",
   "status": "scoping_lot0_awaiting_human_review",
   "stage": "cadrage",
-  "updatedAt": "2026-11-23",
+  "updatedAt": "2026-11-24",
   "objective": "Construire lot par lot une PWA AVEREO de relevé de l'existant (vidéo, métrés ±2 cm, plan 2D, maquette 3D, exports PDF/DXF/IFC/glTF/OBJ/CSV) sur des moteurs open source sous licence MIT, BSD ou Apache 2.0.",
   "lotPlan": {
     "source": "docs/plan-lots.md",
@@ -30,6 +30,7 @@
     {"id": "lot0-adr-moteurs-20261123", "phaseId": 0, "title": "Lot 0 — ADR 0001 — choix des moteurs", "kind": "reference_document", "status": "reviewable", "evidence": "docs/adr/0001-moteurs.md", "observedAt": "2026-11-23"},
     {"id": "lot0-architecture-20261123", "phaseId": 0, "title": "Lot 0 — Architecture", "kind": "reference_document", "status": "reviewable", "evidence": "docs/architecture.md", "observedAt": "2026-11-23"},
     {"id": "lot0-plan-lots-20261123", "phaseId": 0, "title": "Lot 0 — Plan des lots", "kind": "reference_document", "status": "reviewable", "evidence": "docs/plan-lots.md", "observedAt": "2026-11-23"},
+    {"id": "ovh-serveur-20261124", "phaseId": 0, "title": "Caractéristiques du serveur OVH relevées en lecture seule le 24/11/2026 (VPS-1, insuffisant pour la reconstruction)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/serveur-ovh.md", "observedAt": "2026-11-24"},
     {"id": "lot0-pr-188-20261123", "phaseId": 0, "title": "PR Lot 0 mergée dans main par le responsable le 23/11/2026 à 21:29 UTC, commit 54d3fba (état observé sur GitHub)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/188", "observedAt": "2026-11-23"},
     {"id": "lot0-licences-20261123", "phaseId": 0, "title": "Lot 0 — Licences des dépendances", "kind": "reference_document", "status": "reviewable", "evidence": "docs/licences.md", "observedAt": "2026-11-23"}
   ],
@@ -46,12 +47,12 @@
   "delivery": {"status": "not_delivered"},
   "blockers": [
     "Service de traitement : essai en conteneur local autorisé (décision du 23/11/2026) ; mise en place sur le serveur OVH = accord séparé du responsable, après l'essai de précision du lot 7.",
-    "Caractéristiques du serveur OVH (processeur, mémoire, disque, GPU éventuel) à fournir par le responsable avant le lot 7.",
+    "Serveur OVH relevé le 24/11/2026 : VPS-1, 2 vCores, 4 Go, 40 Go, sans GPU ; insuffisant pour la reconstruction 3D. Choix de l'offre (achat) = accord du responsable, avant le lot 7.",
     "Pièce de référence et ses cotes laser à fournir par le responsable (exigence R29, lot 1)."
   ],
   "reserves": [
     "À VÉRIFIER : précision réelle de chaque mode de capture (±2 cm) sur la pièce de référence.",
-    "À VÉRIFIER : ressources du service de reconstruction face au serveur OVH.",
+    "À VÉRIFIER : ressources du service de reconstruction ; le VPS-1 relevé le 24/11/2026 est insuffisant ; reste à vérifier Docker, SSH et droits root, PHP et MySQL, débit, contenu actuel du VPS.",
     "À VÉRIFIER : options de compilation COLMAP (LSD, SiftGPU, CGAL) dans l'image Docker.",
     "À VÉRIFIER : MediaRecorder iOS/Android, caméra en PWA installée sur iOS, quota hors ligne iOS.",
     "À VÉRIFIER : licences des programmes embarqués par Gotenberg (Chromium, LibreOffice) et FFmpeg.",
@@ -60,7 +61,7 @@
     "À VÉRIFIER : dépôt actuel d'OpenSfM et son chemin CPU, licences de Boost, Eigen, FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR (alertes de licence signalées par la relecture Codex, non revérifiées sur les sources amont).",
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
-  "nextAction": "Lancer le Lot 1 (message « Lot 1 selon docs/plan-lots.md… », mode plan, accord du responsable) ; fournir plus tard les caractéristiques du serveur OVH (avant le lot 7) et la pièce de référence avec ses cotes laser (R29) ; mettre le clone principal à jour puis repointer le registre ; ce suivi sera aligné sur main avec la PR du Lot 1.",
+  "nextAction": "Lancer le Lot 1 (message « Lot 1 selon docs/plan-lots.md… », mode plan, accord du responsable) ; fournir plus tard la pièce de référence avec ses cotes laser (R29) ; décider avant le lot 7 de l'offre OVH (essai local d'abord) ; mettre le clone principal à jour puis repointer le registre ; ce suivi sera aligné sur main avec la PR du Lot 1.",
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/188"},
   "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; la source pointe vers le worktree C:/Users/examg/Documents local/avereo-vision-lot0, à repointer vers le clone principal une fois mis à jour.",
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},
