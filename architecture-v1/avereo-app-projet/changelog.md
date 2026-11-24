@@ -5,12 +5,16 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-23
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 2026-11-24 — Correctif accès et environnements des sites
+
+Ajout des liens et constats HTTP datés des deux sites dans les fiches. Distinction entre maintenance, accès protégé et accueil en ligne ; les reçus de livraison restent dans les détails. Dépendance CONNECT étendue au nettoyage prudent des jetons expirés. [Qualification](docs/cockpit-acces-et-sites.md). Nouveau candidat local, aucune installation attestée.
 
 ## 2026-11-23 — Fiches de projets et première préproduction
 

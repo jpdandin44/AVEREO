@@ -225,6 +225,7 @@ jobs:
             architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/src \
             -type f -name '*.php' -print0 | xargs -0 -n1 php -l
           php -l architecture-v1/avereo-app-connect/backend/tests/development-authorization.php
+          php -l architecture-v1/avereo-app-connect/backend/tests/development-nonce-store.php
           php -l architecture-v1/avereo-app-connect/backend/tests/development-bridge-fixture.php
           php -l architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/development-authorization-controller.php
 
@@ -232,6 +233,7 @@ jobs:
         run: |
           set -euo pipefail
           php architecture-v1/avereo-app-connect/backend/tests/development-authorization.php
+          php architecture-v1/avereo-app-connect/backend/tests/development-nonce-store.php
           php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/development-authorization-controller.php
           php architecture-v1/avereo-app-connect/integrations/drupal/avereo_identity_bridge/tests/profile-authorization-controller.php
           php architecture-v1/avereo-app-connect/backend/tests/profile-administration.php
