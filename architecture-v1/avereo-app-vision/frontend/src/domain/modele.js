@@ -157,9 +157,12 @@ export function deplacerSommet(piece, i, point) {
 
 /**
  * Fixe la longueur du mur i en déplaçant son extrémité (sommet suivant) le long du mur.
+ * Les coordonnées sont arrondies au millimètre : sur un mur biais, la longueur obtenue peut s'écarter
+ * de la longueur demandée de moins d'un millimètre (largement dans la tolérance de ±2 cm).
  * @param {Piece} piece @param {number} i @param {number} longueurMm @returns {ResultatPiece}
  */
 export function definirLongueurMur(piece, i, longueurMm) {
+  if (!Number.isFinite(longueurMm) || longueurMm <= 0) return { ok: false, message: "La longueur doit être supérieure à zéro." };
   const n = piece.sommets.length;
   const debut = piece.sommets[i];
   const fin = piece.sommets[(i + 1) % n];
@@ -195,7 +198,7 @@ export function insererSommet(piece, i, t = 0.5) {
     } else if (o.positionMm + o.largeurMm <= longueurPremierePartie) {
       ouvertures.push(o);
     } else if (o.positionMm >= longueurPremierePartie) {
-      ouvertures.push({ ...o, murIndex: i + 1, positionMm: o.positionMm - longueurPremierePartie });
+      ouvertures.push({ ...o, murIndex: i + 1, positionMm: Math.round(o.positionMm - longueurPremierePartie) });
     } else {
       return { ok: false, message: "Une ouverture se trouve à cheval sur ce point : déplacez-la avant d'ajouter un sommet." };
     }

@@ -41,11 +41,18 @@ function metresVides() {
 export function calculerMetres(piece) {
   const metres = metresVides();
   const surfaceMm2 = aireMm2(piece.sommets);
+  const longueursMm = piece.sommets.map((_, index) => longueurMurMm(piece.sommets, index));
+  const sommetEnDouble = piece.sommets.length >= 3 && longueursMm.some((longueur) => longueur === 0);
   if (piece.sommets.length < 3 || surfaceMm2 === 0) {
-    metres.erreurs.push({ code: "POLYGONE_DEGENERE", message: ALERTES.POLYGONE_DEGENERE.libelle });
+    metres.erreurs.push({ code: "POLYGONE_DEGENERE", message: ALERTES.POLYGONE_DEGENERE.libelle, pieceId: piece.id });
   }
-  if (estAutoSecant(piece.sommets)) {
-    metres.erreurs.push({ code: "POLYGONE_AUTO_SECANT", message: ALERTES.POLYGONE_AUTO_SECANT.libelle });
+  if (sommetEnDouble) {
+    metres.erreurs.push({ code: "SOMMET_EN_DOUBLE", message: ALERTES.SOMMET_EN_DOUBLE.libelle, pieceId: piece.id });
+  } else if (estAutoSecant(piece.sommets)) {
+    metres.erreurs.push({ code: "POLYGONE_AUTO_SECANT", message: ALERTES.POLYGONE_AUTO_SECANT.libelle, pieceId: piece.id });
+  }
+  if (!Number.isFinite(piece.hauteurMm) || piece.hauteurMm <= 0) {
+    metres.erreurs.push({ code: "HAUTEUR_INVALIDE", message: ALERTES.HAUTEUR_INVALIDE.libelle, pieceId: piece.id });
   }
   if (metres.erreurs.length > 0) {
     metres.valide = false;
@@ -53,15 +60,21 @@ export function calculerMetres(piece) {
     return metres;
   }
 
-  const longueursMm = piece.sommets.map((_, index) => longueurMurMm(piece.sommets, index));
   const ouverturesParMurMm2 = Array(longueursMm.length).fill(0);
   let ouverturesMm2 = 0;
   let portesMm = 0;
 
   for (const [index, ouverture] of piece.ouvertures.entries()) {
     const { murIndex, positionMm, largeurMm, hauteurMm, alleMm } = ouverture;
+    const contexte = { murIndex, ouvertureId: ouverture.id, pieceId: piece.id };
+    const dimensionsValides =
+      [positionMm, largeurMm, hauteurMm, alleMm].every(Number.isFinite) && largeurMm > 0 && hauteurMm > 0 && alleMm >= 0;
+    if (!dimensionsValides) {
+      // Une ouverture aux dimensions absentes ou négatives n'est pas comptée : elle gonflerait les murs nets.
+      metres.erreurs.push({ code: "OUVERTURE_DIMENSION_INVALIDE", message: ALERTES.OUVERTURE_DIMENSION_INVALIDE.libelle, ...contexte });
+      continue;
+    }
     const surfaceOuvertureMm2 = largeurMm * hauteurMm;
-    const contexte = { murIndex, ouvertureId: ouverture.id };
     ouverturesMm2 += surfaceOuvertureMm2;
     if (ouverture.type === "porte") portesMm += largeurMm;
 
@@ -73,10 +86,12 @@ export function calculerMetres(piece) {
     if (alleMm + hauteurMm > piece.hauteurMm) {
       metres.erreurs.push({ code: "OUVERTURE_TROP_HAUTE", message: ALERTES.OUVERTURE_TROP_HAUTE.libelle, ...contexte });
     }
-    for (let precedent = 0; precedent < index; precedent += 1) {
+    for (let precedent = 0; murExiste && precedent < index; precedent += 1) {
       const autre = piece.ouvertures[precedent];
       if (
         autre.murIndex === murIndex &&
+        [autre.positionMm, autre.largeurMm].every(Number.isFinite) &&
+        autre.largeurMm > 0 &&
         Math.max(positionMm, autre.positionMm) < Math.min(positionMm + largeurMm, autre.positionMm + autre.largeurMm)
       ) {
         metres.erreurs.push({ code: "OUVERTURE_CHEVAUCHEMENT", message: ALERTES.OUVERTURE_CHEVAUCHEMENT.libelle, ...contexte });
@@ -100,17 +115,19 @@ export function calculerMetres(piece) {
         code: "OUVERTURES_SUPERIEURES_MUR",
         message: ALERTES.OUVERTURES_SUPERIEURES_MUR.libelle,
         murIndex: index,
+        pieceId: piece.id,
       });
     }
     const brutM2 = brutMm2 / 1_000_000;
     const ouverturesM2 = ouverturesParMurMm2[index] / 1_000_000;
-    return { index, longueurM: longueurMm / 1000, brutM2, ouverturesM2, netM2: brutM2 - ouverturesM2 };
+    return { index, pieceId: piece.id, longueurM: longueurMm / 1000, brutM2, ouverturesM2, netM2: brutM2 - ouverturesM2 };
   });
   return metres;
 }
 
 /**
- * Somme tous les champs numériques, y compris hauteurM, et concatène murs et erreurs.
+ * Somme les champs numériques et concatène murs et erreurs (chaque mur et chaque erreur porte l'id de sa pièce).
+ * La hauteur n'a pas de sens pour un niveau (somme de hauteurs) : hauteurM vaut toujours null.
  * Si une pièce est invalide, le niveau est invalide et tous ses totaux sont null.
  * Un niveau vide est valide avec des totaux nuls (0).
  * @param {Niveau} niveau
@@ -124,10 +141,12 @@ export function calculerMetresNiveau(niveau) {
     total.murs.push(...metres.murs);
     total.valide = total.valide && metres.valide;
     for (const champ of CHAMPS_NUMERIQUES) {
+      if (champ === "hauteurM") continue;
       const valeur = metres[champ];
       const cumul = total[champ];
       total[champ] = cumul === null || valeur === null ? null : cumul + valeur;
     }
   }
+  total.hauteurM = null;
   return total;
 }

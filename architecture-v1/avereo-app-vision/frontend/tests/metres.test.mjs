@@ -236,21 +236,23 @@ test("aire nulle avec trois sommets alignés : contour dégénéré", () => {
   verifierContourInvalide([{ x: 0, y: 0 }, { x: 2000, y: 0 }, { x: 4000, y: 0 }], "POLYGONE_DEGENERE");
 });
 
-test("niveau REF-1 + REF-3 : tous les champs numériques sont additionnés", () => {
+test("niveau REF-1 + REF-3 : les champs numériques sont additionnés ; la hauteur n'a pas de sens et vaut null", () => {
   const metres = calculerMetresNiveau(creerNiveau({ pieces: [reference1(), reference3()] }));
   assert.equal(metres.valide, true);
   assert.deepEqual(metres.erreurs, []);
   verifierValeurs(metres, {
-    solM2: 28, perimetreM: 32, hauteurM: 5, plafondM2: 28,
+    solM2: 28, perimetreM: 32, plafondM2: 28,
     mursBrutsM2: 80, volumeM3: 70, ouverturesM2: 0, mursNetsM2: 80, plinthesM: 32,
   });
+  assert.equal(metres.hauteurM, null);
   assert.equal(metres.murs.length, 10);
 });
 
 test("niveau vide : valide et toutes les valeurs à zéro", () => {
   const metres = calculerMetresNiveau(creerNiveau());
   assert.equal(metres.valide, true);
-  for (const champ of CHAMPS_NUMERIQUES) assert.equal(metres[champ], 0, champ);
+  for (const champ of CHAMPS_NUMERIQUES.filter((c) => c !== "hauteurM")) assert.equal(metres[champ], 0, champ);
+  assert.equal(metres.hauteurM, null);
   assert.deepEqual(metres.murs, []);
   assert.deepEqual(metres.erreurs, []);
 });

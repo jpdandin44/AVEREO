@@ -84,6 +84,10 @@ export function analyserLongueur(texte, unite = "m", { autoriserZero = false } =
 
 /** Texte de saisie d'une longueur en millimètres, dans l'unité choisie. @param {number} mm @param {"mm"|"cm"|"m"} [unite] */
 export function texteDepuisMm(mm, unite = "m") {
-  const valeur = mm / FACTEUR_MM[unite];
-  return unite === "mm" ? String(Math.round(valeur)) : formaterNombre(valeur, unite === "m" ? 2 : 1);
+  const entier = Math.round(mm);
+  const valeur = entier / FACTEUR_MM[unite];
+  if (unite === "mm") return String(entier);
+  // Trois décimales en mètres quand le millimètre compte (2,045 m), sinon deux : 2,045 → saisi → 2045 mm.
+  const decimales = unite === "m" ? (entier % 10 === 0 ? 2 : 3) : entier % 10 === 0 ? 1 : 2;
+  return formaterNombre(valeur, decimales);
 }

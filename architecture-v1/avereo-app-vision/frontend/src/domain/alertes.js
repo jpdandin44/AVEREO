@@ -30,7 +30,22 @@ export const ALERTES = {
   OUVERTURE_CHEVAUCHEMENT: {
     icone: "alerte",
     titre: "Ouvertures qui se chevauchent",
-    libelle: "Deux ouvertures se superposent sur le même mur.",
+    libelle: "Deux ouvertures se superposent sur le même mur : leur surface est déduite deux fois, le métré net est sous-estimé.",
+  },
+  OUVERTURE_DIMENSION_INVALIDE: {
+    icone: "alerte",
+    titre: "Dimension d'ouverture non valide",
+    libelle: "Une ouverture a une largeur, une hauteur ou une allège absente ou négative : elle n'est pas comptée.",
+  },
+  SOMMET_EN_DOUBLE: {
+    icone: "alerte",
+    titre: "Sommet en double",
+    libelle: "Deux sommets consécutifs sont au même endroit (mur de longueur nulle) : les métrés ne sont pas calculés.",
+  },
+  HAUTEUR_INVALIDE: {
+    icone: "alerte",
+    titre: "Hauteur sous plafond non valide",
+    libelle: "La hauteur sous plafond doit être supérieure à zéro : les métrés ne sont pas calculés.",
   },
   OUVERTURES_SUPERIEURES_MUR: {
     icone: "alerte",
