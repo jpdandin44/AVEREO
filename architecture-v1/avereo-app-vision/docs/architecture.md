@@ -121,7 +121,8 @@ Identifiants : UUID générés côté client (utile hors ligne). Longueurs en **
 - Validation de toutes les entrées de l'API ; requêtes préparées.
 
 ## 9. Environnements et commandes
-- Les commandes d'installation, de test, de build et de lancement local sont **définies au Lot 1** et inscrites dans `AGENTS.md` dans la PR du Lot 1 (consigne d'AGENTS.md). Point de départ : celles de Rapport (`npm ci`, `npm run build` dans `frontend/`).
+- Commandes définies au Lot 1 et inscrites dans `AGENTS.md` : `npm ci`, `npm test`, `npm run build`, `npm run dev`, dans `frontend/`.
+- **Langage (décision du 24/11/2026, Lot 1)** : JavaScript (modules ES) avec types JSDoc, tests au lanceur natif `node --test`, comme Rapport ; React 19 (compatible avec react-konva 19.x de l'ADR 0001) et Vite 7. Les chemins en `.ts` des documents du Lot 0 se lisent `.js` ; aucun TypeScript ni Vitest n'est installé.
 - Aucune livraison en préproduction ni production avant décision séparée du responsable.
 
 ## 10. Points ouverts

@@ -33,7 +33,9 @@ Le document complet est dans docs/charte/Charte_graphique_AVEREO_V2.0.pdf. Les r
 - Front-end : React + Vite. API et stockage : PHP + MySQL. C'est la stack de l'application Rapport du même dépôt (architecture-v1/avereo-app-rapport/) : lis son AGENTS.md et reprends ses conventions de structure et de configuration.
 - Les traitements lourds (reconstruction 3D à partir d'une vidéo) tournent dans un service de traitement séparé, en conteneur dédié sur le serveur OVH d'AVEREO. Tu ne connais pas les caractéristiques de ce serveur : indique les ressources nécessaires (CPU, GPU, mémoire, disque) et marque « À VÉRIFIER » leur adéquation. Ce service n'est mis en place qu'après ma validation de l'ADR.
 - Moteurs open source retenus : voir docs/adr/. Tout changement de moteur passe par un nouvel ADR que je valide.
-- Commandes d'installation, de test, de build et de lancement local : tu les définis au lot 1 et tu les inscris dans cette section, dans la PR du lot 1.
+- Commandes (définies au lot 1), à lancer dans `frontend/` : installation `npm ci` ; tests `npm test` (lanceur natif de Node, `node --test`, aucun outil de test à installer) ; build `npm run build` ; lancement local `npm run dev` (Vite, http://localhost:5173 par défaut). Un seul test : `npm test -- tests/metres.test.mjs`. Prérequis : Node 20.19 ou plus, ou 22.12 ou plus.
+- Langage et versions (lot 1) : JavaScript (modules ES) avec types JSDoc, comme l'application Rapport ; React 19, Vite 7, Konva et react-konva pour le plan 2D. La logique pure (métrés, géométrie, modèle) est dans `frontend/src/domain/`, sans React ni DOM, et testée dans `frontend/tests/`.
+- La CI du dépôt (`.github/workflows/ci.yml`) ne contient pas encore AVEREO Vision : à ajouter par une PR séparée, avec l'accord du responsable.
 
 ## Exports attendus
 - PDF : dossier unique (plan, métrés, photos, commentaires), mis en page selon la charte.

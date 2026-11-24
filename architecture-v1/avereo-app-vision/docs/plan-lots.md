@@ -14,14 +14,14 @@ Version : Lot 0, 23/11/2026. Tenu par Claude Code (sous-agent scribe-cockpit). L
 ## Tableau des lots
 | Lot | Titre | Statut | Taille | Exigences couvertes | Portes (à franchir avant ou pendant) |
 |---|---|---|---|---|---|
-| 0 | Cadrage technique, sans code | fait (PR [#188](https://github.com/jpdandin44/AVEREO/pull/188) ouverte le 23/11/2026, en attente de validation) | M | cadre toutes les exigences | ADR 0001 et décisions D1, D2, D4, D5, D6 acceptés le 23/11/2026 ; restent à valider : le plan de lots (la PR) et l'inscription au cockpit (après le merge) |
-| 1 | Fondations, plan 2D manuel, métrés, charte | à faire | L | R10, R11, R12, R23 à R35 | pièce de référence et cotes laser fournies par le responsable (R29) ; commandes de lancement inscrites dans AGENTS.md |
+| 0 | Cadrage technique, sans code | fait (PR [#188](https://github.com/jpdandin44/AVEREO/pull/188) mergée le 23/11/2026, commit 54d3fba) | M | cadre toutes les exigences | ADR 0001 et décisions D1, D2, D4, D5, D6 acceptés le 23/11/2026 ; PR mergée ; inscription au cockpit appliquée le 23/11/2026 (source sur le worktree avereo-vision-lot0) |
+| 1 | Fondations, plan 2D manuel, métrés, charte | fait côté code et tests, PR [#190](https://github.com/jpdandin44/AVEREO/pull/190) ouverte le 24/11/2026, en attente de validation | L | R10, R11, R12, R23 à R35 (R27, R29, R32 en cours : essais smartphone et vraie pièce de référence) | pièce de référence et cotes laser fournies par le responsable (R29) ; décision sur caniuse-lite (CC-BY-4.0) |
 | 2 | Projets, comptes, hors ligne, synchronisation, PWA | à faire | L | R01 à R06, R08, R09 | choix de la méthode d'authentification (À VÉRIFIER) |
 | 3 | Capture terrain : cotes laser, photos, commentaires, vidéo jointe | à faire | L | R13 à R17, R36 à R38 | essais sur 1 Android et 1 iPhone fournis par le responsable |
 | 4 | Exports CSV, PDF, DXF | à faire | M | R42, R43, R47, R48 | contrôle des licences de Gotenberg (Chromium, LibreOffice) ; décision D6 prise (règle serveur), audit de l'image Gotenberg à faire ; accord avant tout conteneur sur le serveur OVH |
 | 5 | Maquette 3D, vue 3D, exports glTF et OBJ, partage par lien | à faire | L | R07, R39, R40, R45, R46 | — |
 | 6 | Export IFC | à faire | M | R44 | décisions D1 et D5 prises le 23/11/2026 ; maquette 3D du lot 5 |
-| 7 | Service de traitement, prototype de pipeline et essai de précision vidéo | à faire | L | R19, R22 | ADR validé ; accord explicite pour le serveur OVH ; décisions D2 et D6 prises le 23/11/2026 (essai en conteneur local autorisé ; mise en place sur OVH = accord séparé) ; caractéristiques du serveur OVH, vidéo et cotes de la pièce de référence |
+| 7 | Service de traitement, prototype de pipeline et essai de précision vidéo | à faire | L | R19, R22 | ADR validé ; accord explicite pour le serveur OVH ; décisions D2 et D6 prises le 23/11/2026 (essai en conteneur local autorisé ; mise en place sur OVH = accord séparé) ; serveur OVH relevé le 24/11/2026 (VPS-1, insuffisant : choix d'offre = accord séparé), vidéo et cotes de la pièce de référence |
 | 8 | Reconstruction 3D depuis la vidéo (intégration au service) | à faire | L | R18, R20, R21, R41 | résultat de l'essai du lot 7 (précision, ressources) ; maquette 3D du lot 5 pour R41 |
 | 9 | Finition et préparation de la livraison | à faire | M | revue de toutes les exigences, R30 final | toute livraison en préproduction ou production = décision séparée du responsable |
 
@@ -45,17 +45,17 @@ Ordre voulu : la reconstruction 3D (lots 7 et 8) vient **après** les exports PD
 ### Lot 1 — Fondations, plan 2D manuel, métrés, charte
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
 |---|---|---|---|---|---|---|
-| T1-01 Squelette `frontend/` (Vite + React + TypeScript + outil de test), définir et inscrire les commandes dans AGENTS.md | à faire | — | Claude | Sonnet | medium | — |
-| T1-02 Jetons de la charte, polices, logo, composants de base, tests R10, R11, R12 | à faire | — | Claude | Sonnet | medium | — |
-| T1-03 Modèle de données (bâtiment, niveau, pièce, mur, ouverture) et unités en millimètres | à faire | — | Claude | Sonnet | medium | — |
-| T1-04 Brief et logique pure des métrés : REF-1, REF-2, REF-3, cas limites (R24 à R26, R28, R31) | à faire | — | Codex | défaut Codex | medium | — |
-| T1-05 Relecture des calculs de métré et de la précision | à faire | — | sous-agent relecteur-metres | Opus | high | — |
-| T1-06 Plan 2D Konva : murs, sommets, ouvertures, cotes, aimantation, annuler/rétablir (R32 à R35) | à faire | — | Claude | Sonnet | medium | — |
-| T1-07 Saisie rapide des cotes et panneau de métrés en temps réel (R23, R27) | à faire | — | Claude | Sonnet | medium | — |
-| T1-08 État de précision par mode (R30) et test d'écart sur la pièce de référence (R29) | à faire | Dépend du fichier de la pièce de référence | Codex | défaut Codex | medium | — |
-| T1-09 Contrôle des licences des dépendances, `docs/licences.md` | à faire | — | sous-agent verif-licences | Haiku | medium | — |
-| T1-10 Lancer tests et build, rapporter les échecs | à faire | — | sous-agent testeur | Haiku | low | — |
-| T1-11 Relecture de la PR par Codex, suivi et plan à jour | à faire | — | Codex / scribe-cockpit | défaut Codex / Haiku | — / low | — |
+| T1-01 Squelette Vite + React, `package.json`, commandes dans AGENTS.md | fait | — | Claude | Sonnet | medium | — |
+| T1-02 Jetons, polices, logo, composants de base, tests R10, R11, R12 | fait | — | Claude | Sonnet | medium | — |
+| T1-03 Modèle de données et unités en millimètres (R28, R35) | fait | — | Claude | Sonnet | medium | — |
+| T1-04 Brief puis logique de métrés pure : REF-1, REF-2, REF-3, cas limites (R24 à R26, R31) | fait | — | Codex | défaut Codex | medium | task-mwudd6yr-q967pt |
+| T1-05 Relecture des calculs de métré | fait | 10 remarques : 9 traitées (dimensions d'ouverture, hauteur nulle, sommet en double, hauteur de niveau, id de pièce, position entière, aller-retour des champs, chevauchement signalé, tests), 1 traitée dans la documentation (R31) | sous-agent relecteur-metres (Opus, lancé comme sous-agent général) | Opus | high | — |
+| T1-06 Plan 2D Konva : murs, sommets, ouvertures, cotes, aimantation, annuler/rétablir (R32 à R34) | fait | — | Claude | Sonnet | medium | — |
+| T1-07 Saisie rapide des cotes (moins de 6 champs) et panneau de métrés en temps réel (R23, R27) | fait | — | Claude | Sonnet | medium | — |
+| T1-08 État de précision par mode (R30) et banc d'essai d'écart ≤ 20 mm avec cas limites 19/20/21 mm (R29) | fait | Banc d'essai livré avec un jeu provisoire : R29 reste en cours | Codex | défaut Codex | medium | task-mwudokoy-cwlkzv |
+| T1-09 Contrôle des licences, `docs/licences.md` | fait | Seul point hors liste : caniuse-lite (CC-BY-4.0, transitive de développement), décision du responsable | sous-agent verif-licences (Haiku, lancé comme sous-agent général) | Haiku | medium | — |
+| T1-10 Tests et build, rapport des échecs | fait | — | Claude (tests lancés directement : 114 réussis, build réussi) | — | — | — |
+| T1-11 Relecture `/codex:review` de la PR, suivi et plan de lots à jour, relecture du diff | fait (6 remarques de /codex:review traitées) | — | Codex ; Claude | défaut Codex | — | — |
 
 ### Lot 2 — Projets, comptes, hors ligne, synchronisation, PWA
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
@@ -145,7 +145,7 @@ Ordre voulu : la reconstruction 3D (lots 7 et 8) vient **après** les exports PD
 - Lot 7 avant le lot 8 (le prototype et l'essai de précision du lot 7 précèdent l'intégration du lot 8).
 - Lot 5 avant les lots 6 et 8 (la maquette 3D sert à l'IFC et à la superposition R41). Le DXF (lot 4) ne dépend que du modèle, pas de la 3D.
 - R04 (hors ligne, lot 2) ne recette que la saisie de cotes ; la photo hors ligne est recettée avec R38 au lot 3.
-- Décisions D1, D2, D4, D5 et D6 prises le 23/11/2026. Avant le lot 7 : caractéristiques du serveur OVH et accord séparé pour toute mise en place sur OVH ; audit de l'image Gotenberg au lot 4.
+- Décisions D1, D2, D4, D5 et D6 prises le 23/11/2026. Avant le lot 7 : choix de l'offre OVH (le VPS-1 relevé le 24/11/2026 est insuffisant) et accord séparé pour toute mise en place sur OVH ; audit de l'image Gotenberg au lot 4.
 
 ## Remarques de découpage (relecture Codex du Lot 0)
 - Les lots 1, 2 et 5 regroupent plusieurs capacités. Le contenu du lot 1 (plan 2D manuel, métrés, charte) est imposé par le message du Lot 0 ; ses tâches sont ordonnées pour que chacune soit démontrable seule. Au début de chaque lot, Claude Code propose, avec l'accord du responsable, de le couper en deux PR si un blocage (matériel, authentification) menace de bloquer des fonctions déjà vérifiables. Coupes envisagées : lot 2 en 2A (API, authentification, projets) et 2B (hors ligne, synchronisation, PWA) ; lot 5 en 5A (maquette 3D, glTF, OBJ) et 5B (partage par lien).
