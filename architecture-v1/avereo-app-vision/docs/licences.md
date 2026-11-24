@@ -23,7 +23,8 @@ Version observée = dernier tag stable relevé le 20/11/2026 ; la version fixée
 | flatten-js (`@flatten-js/core`) | 1.6.15 | MIT | géométrie plane des pièces | — | non installée : la surface (formule de Gauss) et l'auto-intersection sont codées dans `frontend/src/domain/geometrie.js` |
 | Inter (`@fontsource/inter`) | 5.3.0 | SIL OFL 1.1 | police de l'interface, auto-hébergée | 1 | **installée** |
 | JetBrains Mono (`@fontsource/jetbrains-mono`) | 5.3.0 | SIL OFL 1.1 | cotes et données techniques, auto-hébergée | 1 | **installée** |
-| Dexie | 4.4.7 | Apache 2.0 | stockage hors ligne | 2 | prévue |
+| Dexie | 4.4.7 | Apache 2.0 | stockage hors ligne (IndexedDB) | 2 | **installée** (aucune dépendance transitive) |
+| fake-indexeddb | 6.2.8 | Apache 2.0 | simulation d'IndexedDB pour tester le stockage Dexie sous Node | 2 | **installée, dépendance de développement seulement** (jamais dans le build) |
 | vite-plugin-pwa | 2.0.0 | MIT | manifeste et service worker | 2 | prévue |
 | Workbox | 7.4.1 | MIT | service worker (via vite-plugin-pwa) | 2 | prévue |
 | tus-js-client | 4.3.1 | MIT | envoi reprenable des vidéos | 3 | prévue (repli : envoi par morceaux maison) |

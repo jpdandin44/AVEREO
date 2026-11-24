@@ -84,11 +84,13 @@ Visible par quiconque peut lire le projet (propriétaire, fondateur).
 
 ## 6. Client
 - **Stockage local** (Dexie, base `avereo-vision`, **cloisonnée par identité** `provider:id`) : `projets`, `objets` (`{projectId, id, kind, parentId, data, rev, deleted}`), `file` (modifications non envoyées), `journal`, `meta` (`device_id`, dernier `seq` par projet, identité connue).
-- **Enregistrement automatique** (R03) : à chaque état validé du relevé, comparaison avec l'état persisté (`diff`), écriture locale (délai 400 ms après le dernier changement), mise en file, puis envoi. Un état reçu du serveur n'est jamais renvoyé (le diff se fait contre l'état persisté).
+- **Enregistrement automatique** (R03) : à chaque état validé du relevé, comparaison avec l'état persisté (`diff`), écriture locale **immédiate** (aucun délai : une page rechargée aussitôt retrouve la modification) et mise en file ; seul l'envoi est différé de 1,5 s après le dernier enregistrement. Un état reçu du serveur n'est jamais renvoyé (le diff se fait contre l'état persisté).
 - **File d'envoi** : les modifications successives d'un même objet sont regroupées (dernière valeur, **premier** `base_rev`) ; création puis suppression avant tout envoi s'annulent ; supprimer un parent supprime ses enfants.
 - **Réception sur modification locale en attente** : l'objet local est conservé et son `base_rev` **n'est pas relevé** ; au prochain envoi, le serveur voit l'écart et journalise l'écrasement (R06).
 - **Cohérence** : une ouverture dont le mur n'existe plus (un appareil a supprimé un sommet) est **signalée « hors plan »**, jamais supprimée.
 - **Indicateur** (libellé et icône, jamais la couleur seule) : « Enregistré », « En attente d'envoi (n) », « Hors ligne », « Reconnexion nécessaire ».
+- **Hors ligne** : une coupure réseau, ou une erreur 5xx **sans JSON** (proxy, passerelle, maintenance : notre API répond toujours en JSON), est traitée comme « Hors ligne » ; une erreur 5xx JSON de l'API est « Envoi impossible ». Dans les deux cas rien n'est perdu et l'envoi est retenté.
+- **Sans réseau au démarrage** : l'application rouvre avec la dernière identité connue de l'appareil (`localStorage`, sans secret) et la base locale de ce compte ; le serveur reverifie la session à chaque envoi. « Se déconnecter » oublie cette identité mais garde les données locales, cloisonnées par compte.
 - **401** (cookie CONNECT expiré) : la file n'est **jamais** vidée ; l'indicateur demande de relancer l'application depuis CONNECT ; l'envoi reprend ensuite.
 - Après un `409 id_conflict` ou un `422`, l'élément de la file en cause passe en « refusé » (visible), sans bloquer les suivants.
 - Limites : historique annuler/rétablir non persisté ; 200 projets actifs au plus gardés en local ; stockage local non chiffré (protection = verrouillage de l'appareil) ; quota et éviction iOS à vérifier (R04, Lot 2C).

@@ -391,3 +391,22 @@ vision_test('R01 : création de projet avec un identifiant choisi par le navigat
     // Un projet créé hors ligne se synchronise comme les autres :
     vision_assert_same(200, vision_api('POST', '/api/sync.php?project=' . $id, $user, ['device_id' => 'telephone-0001', 'since' => 0, 'changes' => vision_t_releve()])['status']);
 });
+
+vision_test('contrat : l\'envoi réel du client (REF-2, fichier partagé avec les tests JS) est valide et se rejoue sans doublon', function () {
+    $envoi = json_decode((string) file_get_contents(__DIR__ . '/../fixtures/sync/ref2-envoi.json'), true, 16, JSON_THROW_ON_ERROR);
+    $validation = vision_sync_validate_request($envoi);
+    vision_assert_same([], $validation['errors']);
+    vision_assert_same(5, count($validation['changes']));
+
+    $projet = vision_t_projet();
+    $premier = vision_api('POST', '/api/sync.php?project=' . $projet['id'], $projet['user'], $envoi);
+    vision_assert_same(200, $premier['status']);
+    vision_assert_same(['applied', 'applied', 'applied', 'applied', 'applied'], array_column($premier['json']['applied'], 'status'));
+    $rejeu = vision_api('POST', '/api/sync.php?project=' . $projet['id'], $projet['user'], $envoi);
+    vision_assert_same(['unchanged', 'unchanged', 'unchanged', 'unchanged', 'unchanged'], array_column($rejeu['json']['applied'], 'status'));
+    vision_assert_same(5, $rejeu['json']['seq'], 'un rejeu ne consomme aucun seq');
+    $recu = vision_api('GET', '/api/sync.php?project=' . $projet['id'] . '&since=0', $projet['user']);
+    $fenetre = array_values(array_filter($recu['json']['changes'], static fn (array $o): bool => $o['object_id'] === 'ouv-2-fenetre'))[0];
+    vision_assert_same(900, $fenetre['data']['alleMm']);
+    vision_assert_same(1200, $fenetre['data']['largeurMm']);
+});
