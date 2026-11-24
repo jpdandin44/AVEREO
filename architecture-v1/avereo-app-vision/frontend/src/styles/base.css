@@ -1,0 +1,344 @@
+/* Styles de base AVEREO Vision. Aucune couleur en dur : tout vient de tokens.css. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--text-primary);
+  background: var(--surface);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 1.35rem;
+}
+
+h2 {
+  font-size: 1.05rem;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Mise en page ---------- */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.entete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  padding: 12px 24px;
+  background: var(--surface);
+  border-bottom: var(--filet-orange) solid var(--brand-accent);
+}
+
+/* Logo : 220 px de large au minimum, marge d'au moins 10 % de sa hauteur (≈ 7 px) tout autour. */
+.logo {
+  display: block;
+  width: 220px;
+  min-width: 220px;
+  height: auto;
+  margin: 8px 0;
+}
+
+.entete__type {
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.contenu {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr) minmax(260px, 320px);
+  gap: 16px;
+  flex: 1;
+  padding: 16px 24px 24px;
+  background: var(--surface-muted);
+}
+
+.colonne {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+@media (max-width: 1100px) {
+  .contenu {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Smartphone : l'en-tête passe sur deux lignes (le logo garde ses 220 px de large minimum), marges réduites. */
+@media (max-width: 640px) {
+  .entete {
+    padding: 8px 16px;
+  }
+
+  .entete__type {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .contenu {
+    padding: 12px 16px 16px;
+  }
+
+  .grille-champs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Cartes ---------- */
+.carte {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: var(--ombre-carte);
+}
+
+.carte > h2 {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: var(--filet-orange) solid var(--brand-accent);
+}
+
+/* ---------- Boutons ---------- */
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--cible-min);
+  min-width: var(--cible-min);
+  padding: 0 16px;
+  border: 2px solid var(--brand-primary);
+  border-radius: var(--radius);
+  background: var(--brand-primary);
+  color: var(--surface);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bouton--secondaire {
+  background: var(--surface);
+  color: var(--brand-primary);
+}
+
+/* Bouton orange : toujours un texte bleu nuit (charte, accessibilité). */
+.bouton--accent {
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+  color: var(--brand-primary);
+}
+
+.bouton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bouton:focus-visible,
+.champ__saisie:focus-visible {
+  outline: 3px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+.barre-boutons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ---------- Champs ---------- */
+.champ {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.champ__libelle {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.champ__saisie {
+  min-height: var(--cible-min);
+  padding: 0 12px;
+  border: 2px solid var(--gris-mineral);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+
+.champ__saisie[aria-invalid="true"] {
+  border-color: var(--brand-accent);
+}
+
+.champ__aide {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.grille-champs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* ---------- Encadrés : information et alerte ---------- */
+.encadre {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  color: var(--text-primary);
+}
+
+.encadre--alerte {
+  background: var(--alerte-fond);
+  border-left: 4px solid var(--brand-accent);
+}
+
+.encadre__icone {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: var(--brand-primary);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.encadre__titre {
+  font-weight: 600;
+  color: var(--brand-primary);
+}
+
+.liste-encadres {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---------- Tableaux de métrés ---------- */
+.tableau {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableau th {
+  padding: 8px;
+  background: var(--brand-primary);
+  color: var(--surface);
+  text-align: left;
+  font-weight: 600;
+}
+
+.tableau td {
+  padding: 8px;
+}
+
+.tableau tbody tr:nth-child(even) {
+  background: var(--surface-muted);
+}
+
+.tableau td.valeur {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Plan ---------- */
+.plan {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--ombre-carte);
+  overflow: hidden;
+}
+
+.plan__barre {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid var(--gris-mineral);
+}
+
+.plan__zone {
+  position: relative;
+  height: 520px;
+  touch-action: none;
+}
+
+/* ---------- Listes de pièces et de murs ---------- */
+.liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.liste__element {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.liste__element .champ {
+  margin: 0;
+  flex: 1;
+}
+
+.pastille {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  color: var(--brand-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sr-seulement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

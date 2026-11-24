@@ -5,10 +5,15 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 24 novembre — Bibliothèque en développement local
+
+Nouvelle navigation du bien, bibliothèque avec aperçu et import guidé, palette AVEREO. [Guide et recette locale](docs/ux-ui-bibliotheque.md) · [Suivi du lot](data/suivi-ux-ui.json). Les parcours serveur existants et les données sont conservés ; aucune livraison de ce candidat.
+
 
 ## 22 novembre — Volume sans perte en préproduction
 
