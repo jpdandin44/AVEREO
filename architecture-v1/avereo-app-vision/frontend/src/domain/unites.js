@@ -61,9 +61,10 @@ const FACTEUR_MM = { mm: 1, cm: 10, m: MM_PAR_M };
  * Lit une longueur saisie ("4,00", "4.00", " 400 ") dans l'unité choisie et la convertit en millimètres entiers.
  * @param {string} texte
  * @param {"mm"|"cm"|"m"} [unite]
+ * @param {{autoriserZero?: boolean}} [options] zéro accepté pour une position ou une allège
  * @returns {{ok: true, mm: number} | {ok: false, message: string}}
  */
-export function analyserLongueur(texte, unite = "m") {
+export function analyserLongueur(texte, unite = "m", { autoriserZero = false } = {}) {
   const nettoye = String(texte ?? "").trim().replace(/\s+/g, "").replace(",", ".");
   if (nettoye === "") {
     return { ok: false, message: "Saisissez une longueur." };
@@ -72,7 +73,7 @@ export function analyserLongueur(texte, unite = "m") {
     return { ok: false, message: "Longueur non valide : utilisez des chiffres, par exemple 4,00." };
   }
   const mm = Math.round(Number(nettoye) * FACTEUR_MM[unite]);
-  if (mm <= 0) {
+  if (mm === 0 && !autoriserZero) {
     return { ok: false, message: "La longueur doit être supérieure à zéro." };
   }
   if (mm > LONGUEUR_MAX_MM) {

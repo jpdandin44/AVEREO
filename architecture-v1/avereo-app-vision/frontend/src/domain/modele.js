@@ -138,6 +138,14 @@ export function estRectangleAxes(piece) {
 }
 
 /**
+ * Déplace toute la pièce sans la déformer (les ouvertures suivent leurs murs).
+ * @param {Piece} piece @param {number} dx @param {number} dy en mm @returns {Piece}
+ */
+export function translaterPiece(piece, dx, dy) {
+  return { ...piece, sommets: piece.sommets.map((s) => ({ x: s.x + Math.round(dx), y: s.y + Math.round(dy) })) };
+}
+
+/**
  * Déplace un sommet. Les ouvertures restent attachées à leur mur ; si le mur raccourcit,
  * le calcul des métrés signale l'ouverture qui ne tient plus.
  * @param {Piece} piece @param {number} i @param {Point} point @returns {Piece}
