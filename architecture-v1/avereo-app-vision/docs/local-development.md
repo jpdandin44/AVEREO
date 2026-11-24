@@ -32,10 +32,12 @@ Adresses : API `http://127.0.0.1:8110/api/…`, MySQL `127.0.0.1:3311` (utilisat
 ## Travailler avec l'API depuis le frontend
 `npm run dev` envoie `/api` et `/connect` vers `http://127.0.0.1:8110` (proxy de `vite.config.js`). Le fichier `frontend/.env.development.local` (créé par `up`, **ignoré par git**) contient `VITE_LOCAL_API_TOKEN` et `VITE_LOCAL_USER` : seul `npm run dev` le lit, jamais `npm run build`. Changer `VITE_LOCAL_USER` change d'identité de test ; l'identité listée dans `admin_user_ids` de `local/config.php` (« 1 » par défaut) est fondateur.
 
+Test sur un smartphone : `npm run dev -- --host` sert les pages au réseau local, mais le plugin `vite-plugins/boucle-locale.js` refuse à ces appareils tout appel vers `/api` : le jeton de test n'est utilisable que depuis ce poste. N'enregistrez jamais de vrais relevés dans la base locale.
+
 ## Les tests PHP
 Sans dépendance (aucun Composer) : `tests/api/run.php [filtre]`.
 - Dans le conteneur (tout, y compris la base et HTTP) : `vision-local.ps1 test`, ou, pour un seul fichier : `docker compose -f local/docker-compose.local.yml --env-file local/.env exec -T api php /opt/vision/tests/api/run.php droits` (dans Git Bash, préfixer par `MSYS_NO_PATHCONV=1`).
-- Sur le poste, sans base (droits, passerelle, configuration, validation, authentification) : `php tests/api/run.php connect_gate`. Les tests qui ont besoin de la base ou du serveur sont ignorés avec un message.
+- Sur le poste, sans base (droits, passerelle, configuration, validation, authentification, sécurité) : `php tests/api/run.php connect_gate`. Les tests qui ont besoin de la base ou du serveur sont ignorés avec un message ; `--strict` (utilisé par `vision-local.ps1 test`) fait échouer l'exécution si un test a été ignoré, pour qu'un test non exécuté ne passe pas pour réussi.
 - Les tests de migrations utilisent des tables d'essai `zz_mig_*` et les nettoient.
 
 ## Dépannage

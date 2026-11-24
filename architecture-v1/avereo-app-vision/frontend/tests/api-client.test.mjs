@@ -47,6 +47,13 @@ test("création et modification : JSON, bonne méthode, identifiant en paramètr
   assert.equal(appels[1].url, "/api/projects.php?id=x");
 });
 
+test("déconnexion : POST vers logout.php", async () => {
+  const { appels, fetchImpl } = faussesReponses({ status: 200, corps: { ok: true } });
+  await creerClient({ fetchImpl }).deconnecter();
+  assert.equal(appels[0].url, "/api/logout.php");
+  assert.equal(appels[0].options.method, "POST");
+});
+
 test("erreurs : 401, validation 422 avec champs, réseau coupé, réponse sans JSON", async () => {
   const { fetchImpl } = faussesReponses(
     { status: 401, corps: { ok: false, error: "unauthenticated", message: "Authentification requise." } },

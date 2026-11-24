@@ -27,7 +27,9 @@ function vision_bootstrap(): array
             error_log('Vision : configuration invalide : ' . $exception->getMessage());
             vision_error(503, 'misconfigured', "L'application n'est pas configurée correctement.");
         }
-        error_log('Vision : erreur interne : ' . $exception::class . ' ' . $exception->getMessage());
+        // Un message de MySQL peut contenir des valeurs (« Duplicate entry '…' ») : pour la base, on ne journalise que le type et le code.
+        $detail = $exception instanceof PDOException ? 'code ' . $exception->getCode() : $exception->getMessage();
+        error_log('Vision : erreur interne : ' . $exception::class . ' ' . $detail);
         vision_error(500, 'internal_error', 'Erreur interne.');
     });
     return vision_config();

@@ -170,3 +170,28 @@ function vision_gate_cookie_options(array $config, int $expires): array
         'secure' => ($config['environment'] ?? null) !== 'local', 'expires' => $expires,
     ];
 }
+
+/**
+ * Clé de signature du cookie : dérivée du secret ET de l'environnement, distincte de la clé des tickets.
+ * Un cookie de préproduction n'est donc pas valable en production, même si le secret est partagé par erreur.
+ */
+function vision_gate_cookie_key(string $secret, string $environment): string
+{
+    return hash_hmac('sha256', 'vision-gate-cookie|' . $environment, $secret);
+}
+
+/** Nom du cookie : hors local, préfixe __Host- (Secure, path=/, sans Domain : non écrasable depuis un sous-domaine). */
+function vision_gate_cookie_name(array $config): string
+{
+    $base = (string) ($config['connect_gate_cookie'] ?? 'AVEREO_VISION_GATE');
+    if (($config['environment'] ?? null) === 'local') {
+        return $base;
+    }
+    return str_starts_with($base, '__Host-') ? $base : '__Host-' . $base;
+}
+
+/** Durée de vie du cookie selon la configuration, bornée de 300 s à 12 h. */
+function vision_gate_cookie_lifetime(array $config): int
+{
+    return max(300, min(43200, (int) ($config['connect_gate_session_seconds'] ?? 1800)));
+}

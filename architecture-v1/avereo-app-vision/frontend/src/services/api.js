@@ -66,6 +66,8 @@ export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base
   return {
     /** Identité, rôle et droits de la session. */
     identite: () => appeler("GET", "auth.php"),
+    /** Efface le cookie de passerelle (mode CONNECT). */
+    deconnecter: () => appeler("POST", "logout.php", { corps: {} }),
     /** @param {{statut?: "active"|"archived"|"all", q?: string, limite?: number, decalage?: number}} [filtres] */
     listerProjets: async ({ statut = "active", q = "", limite = 50, decalage = 0 } = {}) =>
       (await appeler("GET", "projects.php", { requete: { status: statut, q, limit: limite, offset: decalage } })).projects,

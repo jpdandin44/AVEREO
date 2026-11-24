@@ -17,7 +17,5 @@ try {
 vision_json_response($database === 'up' ? 200 : 503, [
     'ok' => $database === 'up',
     'app' => 'vision',
-    'environment' => $config['environment'],
-    'auth_mode' => $config['auth_mode'],
     'database' => $database,
 ]);

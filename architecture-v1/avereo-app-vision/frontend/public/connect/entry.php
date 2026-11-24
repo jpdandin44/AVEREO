@@ -29,10 +29,15 @@ if ($config['auth_mode'] !== 'connect') {
 
 try {
     $now = time();
-    $identity = vision_gate_exchange_ticket($config, (string) ($_GET['ticket'] ?? ''), $now);
-    $lifetime = max(300, min(43200, (int) $config['connect_gate_session_seconds']));
-    $value = vision_gate_build_cookie_value($identity, (bool) $identity['remembered'], (string) $config['connect_launch_secret'], $now, $lifetime);
-    setcookie((string) $config['connect_gate_cookie'], $value, vision_gate_cookie_options($config, $now + $lifetime));
+    $ticket = $_GET['ticket'] ?? '';
+    if (!is_string($ticket)) {
+        throw new InvalidArgumentException('Ticket non textuel.');
+    }
+    $identity = vision_gate_exchange_ticket($config, $ticket, $now);
+    $lifetime = vision_gate_cookie_lifetime($config);
+    $key = vision_gate_cookie_key((string) $config['connect_launch_secret'], (string) $config['environment']);
+    $value = vision_gate_build_cookie_value($identity, (bool) $identity['remembered'], $key, $now, $lifetime);
+    setcookie(vision_gate_cookie_name($config), $value, vision_gate_cookie_options($config, $now + $lifetime));
 } catch (Throwable $exception) {
     error_log('Vision CONNECT : ticket refusé : ' . $exception->getMessage());
     vision_entry_refuse(403, "L'autorisation AVEREO CONNECT est invalide ou expirée.");

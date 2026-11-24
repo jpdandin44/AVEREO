@@ -72,7 +72,7 @@ function vision_assert_throws(callable $fn, string $class = Throwable::class, ?s
 }
 
 /** Exécute tous les tests enregistrés ; renvoie le code de sortie (0 si tout passe). */
-function vision_run_all(): int
+function vision_run_all(bool $strict = false): int
 {
     $passed = 0;
     $failed = 0;
@@ -91,5 +91,12 @@ function vision_run_all(): int
         }
     }
     echo PHP_EOL . "tests : $passed réussis, $failed en échec, $skipped ignorés" . PHP_EOL;
-    return $failed === 0 ? 0 : 1;
+    if ($failed > 0) {
+        return 1;
+    }
+    if ($strict && $skipped > 0) {
+        echo 'Mode --strict : des tests ont été ignorés, donc non exécutés (base ou serveur absents).' . PHP_EOL;
+        return 3;
+    }
+    return 0;
 }

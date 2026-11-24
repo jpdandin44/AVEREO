@@ -32,6 +32,7 @@ function Initialize-LocalSecrets {
         $config = $config.Replace('__VISION_DB_PASSWORD__', $dbPassword)
         $config = $config.Replace('__VISION_API_TOKEN__', (New-Secret 32))
         $config = $config.Replace('__VISION_LAUNCH_SECRET__', (New-Secret 32))
+        $config = $config.Replace("'admin_user_ids' => [],", "'admin_user_ids' => ['1'],")
         [System.IO.File]::WriteAllText($ConfigFile, $config, (New-Object System.Text.UTF8Encoding($false)))
         Write-Host 'local/config.php créé (secrets aléatoires, ignoré par git).'
     }
@@ -61,7 +62,7 @@ switch ($Action) {
         Write-Host 'Pile et volumes supprimés (base de développement effacée).'
     }
     'migrate' { Invoke-Compose exec -T api php /opt/vision/database/migrate.php }
-    'test' { Invoke-Compose exec -T api php /opt/vision/tests/api/run.php }
+    'test' { Invoke-Compose exec -T api php /opt/vision/tests/api/run.php --strict }
     'logs' { Invoke-Compose logs --tail 100 api db }
     'ps' { Invoke-Compose ps }
     'health' {

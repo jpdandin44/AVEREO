@@ -26,7 +26,7 @@ export function useProjets(client) {
     setSession({ etat: "chargement" });
     try {
       const identite = await client.identite();
-      setSession({ etat: "ok", identite: identite.identity, role: identite.role, droits: identite.droits });
+      setSession({ etat: "ok", identite: identite.identity, role: identite.role, droits: identite.droits, modeAuth: identite.auth_mode });
     } catch (e) {
       const d = decrireErreur(e);
       setSession({ etat: d.type === "non-connecte" ? "non-connecte" : d.type === "reseau" ? "reseau" : "erreur", message: d.message });
@@ -80,6 +80,14 @@ export function useProjets(client) {
     changerFiltres: (suite) => setFiltres((actuels) => ({ ...actuels, ...suite })),
     recharger: charger,
     reessayer: verifierSession,
+    deconnecter: async () => {
+      try {
+        await client.deconnecter();
+      } finally {
+        setProjets([]);
+        verifierSession();
+      }
+    },
     creer: (donnees) => ecrire(() => client.creerProjet(donnees)),
     modifier: (id, changements) => ecrire(() => client.modifierProjet(id, changements)),
   };

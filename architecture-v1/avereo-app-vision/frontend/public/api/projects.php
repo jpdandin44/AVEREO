@@ -33,10 +33,10 @@ if ($method === 'GET') {
         vision_error(403, 'forbidden', 'Action non autorisée.');
     }
     $rows = vision_projects_list($pdo, $identity, vision_can($role, 'project.read_any'), [
-        'status' => (string) ($_GET['status'] ?? 'active'),
-        'q' => (string) ($_GET['q'] ?? ''),
-        'limit' => (int) ($_GET['limit'] ?? 50),
-        'offset' => (int) ($_GET['offset'] ?? 0),
+        'status' => vision_query_param('status', 'active'),
+        'q' => vision_query_param('q'),
+        'limit' => (int) vision_query_param('limit', '50'),
+        'offset' => (int) vision_query_param('offset', '0'),
     ]);
     vision_json_response(200, ['ok' => true, 'projects' => array_map('vision_project_public', $rows)]);
 }

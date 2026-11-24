@@ -22,7 +22,8 @@ return [
     'api_token' => '__VISION_API_TOKEN__',
 
     // Identités « fondateur » (identifiants CONNECT ou identifiants de test locaux), chaînes.
-    'admin_user_ids' => ['1'],
+    // Vide dans le modèle : vision-local.ps1 y met « 1 » pour le développement. Ne jamais copier cette valeur en production.
+    'admin_user_ids' => [],
 
     // Mode « connect » : secret partagé avec CONNECT (au moins 32 caractères) et dossier des nonces à usage unique.
     'connect_launch_secret' => '__VISION_LAUNCH_SECRET__',

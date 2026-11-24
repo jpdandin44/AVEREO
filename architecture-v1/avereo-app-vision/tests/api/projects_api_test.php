@@ -10,6 +10,8 @@ vision_test('api : santé et en-têtes de sécurité', function () {
     $r = vision_http('GET', '/api/health.php');
     vision_assert_same(200, $r['status']);
     vision_assert_same('up', $r['json']['database']);
+    vision_assert_false(array_key_exists('environment', $r['json']), 'la santé ne révèle ni l\'environnement…');
+    vision_assert_false(array_key_exists('auth_mode', $r['json']), '… ni le mode d\'authentification');
     vision_assert_same('nosniff', $r['headers']['x-content-type-options']);
     vision_assert_same('no-store', $r['headers']['cache-control']);
 });
@@ -18,6 +20,9 @@ vision_test('api : bibliothèques et bootstrap jamais servis directement', funct
     vision_assert_same(403, vision_http('GET', '/api/lib/config.php')['status']);
     vision_assert_same(403, vision_http('GET', '/api/lib/droits.php')['status']);
     vision_assert_same(403, vision_http('GET', '/api/bootstrap.php')['status']);
+    foreach (['//api/lib/config.php', '/API/lib/config.php', '/api//lib/droits.php', '/api/%6Cib/config.php', '/api/lib/../lib/auth.php', '/API/BOOTSTRAP.PHP'] as $variante) {
+        vision_assert_same(403, vision_http('GET', $variante)['status'], $variante);
+    }
 });
 
 vision_test('R08 : 401 sans session, avec un mauvais jeton, avec une identité non numérique ou un hôte public', function () {
@@ -140,8 +145,16 @@ vision_test('api : recherche, limites et injection SQL', function () {
     vision_assert_same(['Appartement Rivoli'], $names('q=rivoli'));
     vision_assert_same(['Pavillon'], $names('q=' . rawurlencode('50%')), 'le caractère % est cherché tel quel');
     vision_assert_same(['Pavillon'], $names('q=' . rawurlencode('remise_x')), 'le caractère _ est cherché tel quel');
-    vision_assert_same([], $names('q=' . rawurlencode("' OR '1'='1")), 'aucune injection SQL');
+    $injection = vision_api('GET', '/api/projects.php?q=' . rawurlencode("' OR '1'='1"), $user);
+    vision_assert_same(200, $injection['status'], 'la requête réussit (pas de plantage)');
+    vision_assert_same([], $injection['json']['projects'], 'aucune injection SQL');
     vision_assert_same(1, count($names('limit=1')));
     vision_assert_same(2, count($names('limit=0')) + 1, 'une limite nulle est ramenée à 1');
     vision_assert_same(200, vision_api('GET', '/api/projects.php?status=all&offset=abc', $user)['status']);
+    vision_assert_same(200, vision_api('GET', '/api/projects.php?offset=99999999999999999999', $user)['status'], 'offset borné');
+    foreach (['q[]=x', 'status[]=active', 'limit[]=1', 'offset[a]=1'] as $tableau) {
+        $r = vision_api('GET', '/api/projects.php?' . $tableau, $user);
+        vision_assert_same(400, $r['status'], $tableau);
+        vision_assert_same('invalid_parameter', $r['json']['error'], $tableau);
+    }
 });

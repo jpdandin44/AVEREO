@@ -11,14 +11,10 @@ declare(strict_types=1);
 /** Hôte local de développement : localhost, 127.0.0.1, ::1 ou *.localhost (port ignoré). */
 function vision_host_is_local(string $hostHeader): bool
 {
-    $host = strtolower(trim($hostHeader));
-    if (str_starts_with($host, '[')) {
-        $end = strpos($host, ']');
-        $host = $end === false ? $host : substr($host, 1, $end - 1);
-    } elseif (substr_count($host, ':') === 1) {
-        $host = explode(':', $host, 2)[0];
-    }
-    return $host === 'localhost' || $host === '127.0.0.1' || $host === '::1' || str_ends_with($host, '.localhost');
+    // Forme stricte : nom de domaine local, ou IPv4 locale, ou IPv6 locale entre crochets, puis un port facultatif.
+    // Rien d'autre n'est toléré après l'hôte (« [::1]evil.com » est refusé). Ce contrôle ne remplace pas la
+    // configuration (jeton refusé hors « local ») : l'en-tête Host peut être falsifié par un client distant.
+    return preg_match('/^(localhost|127\.0\.0\.1|\[::1\]|[a-z0-9-]+(\.[a-z0-9-]+)*\.localhost)(:[0-9]{1,5})?\z/', strtolower($hostHeader)) === 1;
 }
 
 /** Valeur du jeton « Bearer » de la requête, ou null. */
@@ -59,12 +55,13 @@ function vision_authenticate_token(array $config, array $server): ?array
 function vision_authenticate_connect(array $config, array $cookies, ?int $now = null): ?array
 {
     require_once __DIR__ . '/connect_gate.php';
-    $value = (string) ($cookies[(string) $config['connect_gate_cookie']] ?? '');
-    if ($value === '') {
+    $value = $cookies[vision_gate_cookie_name($config)] ?? '';
+    if (!is_string($value) || $value === '') {
         return null;
     }
     try {
-        $gate = vision_gate_read_cookie_value($value, (string) $config['connect_launch_secret'], $now ?? time());
+        $key = vision_gate_cookie_key((string) $config['connect_launch_secret'], (string) $config['environment']);
+        $gate = vision_gate_read_cookie_value($value, $key, $now ?? time(), vision_gate_cookie_lifetime($config));
     } catch (InvalidArgumentException) {
         return null;
     }

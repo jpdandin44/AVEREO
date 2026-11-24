@@ -35,6 +35,16 @@ function vision_error(int $status, string $code, string $message, array $extra =
     vision_json_response($status, ['ok' => false, 'error' => $code, 'message' => $message] + $extra);
 }
 
+/** Paramètre de requête textuel : un tableau (?q[]=x) est refusé (400) au lieu de produire « Array » et un avertissement. */
+function vision_query_param(string $key, string $default = ''): string
+{
+    $value = $_GET[$key] ?? $default;
+    if (!is_string($value)) {
+        vision_error(400, 'invalid_parameter', "Paramètre « $key » invalide.");
+    }
+    return $value;
+}
+
 /** Exige l'une des méthodes données ; sinon 405 avec l'en-tête Allow. */
 function vision_require_method(array $allowed): string
 {

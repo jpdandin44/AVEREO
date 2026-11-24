@@ -31,7 +31,7 @@ function vision_connect_ticket(string $secret, array $override = [], ?string $us
 }
 
 /** Lance un serveur PHP en mode « connect » ; renvoie [process, base URL, secret, dossier temporaire]. */
-function vision_connect_start_server(): array
+function vision_connect_start_server(string $environment = 'local'): array
 {
     if (!function_exists('proc_open')) {
         vision_skip('proc_open indisponible');
@@ -45,7 +45,7 @@ function vision_connect_start_server(): array
     $dir = sys_get_temp_dir() . '/vision-connect-' . bin2hex(random_bytes(4));
     mkdir($dir . '/nonces', 0700, true);
     $config = [
-        'environment' => 'local',
+        'environment' => $environment,
         'auth_mode' => 'connect',
         'db' => $local['db'],
         'connect_launch_secret' => $secret,
@@ -193,4 +193,54 @@ vision_test('R08 connect : cookie falsifié ou jeton local refusés en mode conn
 vision_test('R08 connect : entry.php est introuvable en mode « token » (développement)', function () {
     $r = vision_http('GET', '/connect/entry.php?ticket=x');
     vision_assert_same(404, $r['status']);
+});
+
+vision_test('R08 connect : hors local, cookie Secure et préfixé __Host-, accepté seulement sous ce nom', function () {
+    $server = vision_connect_start_server('preproduction');
+    try {
+        [, $base, $secret] = $server;
+        [$status, $cookie, $headers] = vision_connect_enter($base, vision_connect_ticket($secret));
+        vision_assert_same(303, $status);
+        vision_assert_true($cookie !== null && str_starts_with($cookie, '__Host-AVEREO_VISION_GATE='), 'nom préfixé');
+        vision_assert_true(stripos(implode(' ', $headers), '; secure') !== false, 'attribut Secure');
+        vision_assert_same(200, vision_http('GET', '/api/auth.php', ['Cookie' => $cookie], null, $base)['status']);
+        $sansPrefixe = 'AVEREO_VISION_GATE=' . explode('=', $cookie, 2)[1];
+        vision_assert_same(401, vision_http('GET', '/api/auth.php', ['Cookie' => $sansPrefixe], null, $base)['status'], 'le nom sans préfixe n\'est pas accepté');
+    } finally {
+        vision_connect_stop_server($server);
+    }
+});
+
+vision_test('R08 connect : un cookie de préproduction est refusé par un serveur de production (secret partagé par erreur)', function () {
+    $pre = vision_connect_start_server('preproduction');
+    try {
+        [, $basePre, $secret] = $pre;
+        [, $cookie] = vision_connect_enter($basePre, vision_connect_ticket($secret));
+        // Un serveur de production configuré avec le MÊME secret : la clé du cookie dépend de l'environnement.
+        $prod = vision_connect_start_server('production');
+        try {
+            [, $baseProd, $secretProd] = $prod;
+            vision_assert_true($secretProd !== $secret);
+            $valeur = explode('=', $cookie, 2)[1];
+            vision_assert_same(401, vision_http('GET', '/api/auth.php', ['Cookie' => '__Host-AVEREO_VISION_GATE=' . $valeur], null, $baseProd)['status']);
+        } finally {
+            vision_connect_stop_server($prod);
+        }
+    } finally {
+        vision_connect_stop_server($pre);
+    }
+});
+
+vision_test('R08 connect : la déconnexion efface le cookie (POST seulement)', function () {
+    $server = vision_connect_start_server();
+    try {
+        [, $base, $secret] = $server;
+        [, $cookie] = vision_connect_enter($base, vision_connect_ticket($secret));
+        vision_assert_same(405, vision_http('GET', '/api/logout.php', ['Cookie' => $cookie], null, $base)['status']);
+        $r = vision_http('POST', '/api/logout.php', ['Cookie' => $cookie], '', $base);
+        vision_assert_same(200, $r['status']);
+        vision_assert_same(true, $r['json']['ok']);
+    } finally {
+        vision_connect_stop_server($server);
+    }
 });

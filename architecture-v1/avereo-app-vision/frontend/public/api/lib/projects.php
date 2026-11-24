@@ -133,7 +133,7 @@ function vision_projects_list(PDO $pdo, array $identity, bool $readAny, array $f
         array_push($params, $like, $like, $like);
     }
     $limit = max(1, min(200, (int) ($filters['limit'] ?? 50)));
-    $offset = max(0, (int) ($filters['offset'] ?? 0));
+    $offset = max(0, min(10000, (int) ($filters['offset'] ?? 0)));
     $sql = 'SELECT * FROM vision_projects'
         . ($where === [] ? '' : ' WHERE ' . implode(' AND ', $where))
         . " ORDER BY updated_at DESC, id DESC LIMIT $limit OFFSET $offset";

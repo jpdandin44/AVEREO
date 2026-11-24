@@ -13,6 +13,7 @@ export default function App() {
   const projets = useProjets(client);
   const [projetOuvert, setProjetOuvert] = useState(null);
   const { session } = projets;
+  const deconnexionPossible = session.etat === "ok" && session.modeAuth === "connect";
 
   return (
     <div className="app">
@@ -22,6 +23,18 @@ export default function App() {
         {projetOuvert ? (
           <button type="button" className="bouton bouton--secondaire" onClick={() => setProjetOuvert(null)}>
             <Icone nom="annuler" /> Tous les projets
+          </button>
+        ) : null}
+        {deconnexionPossible ? (
+          <button
+            type="button"
+            className="bouton bouton--secondaire"
+            onClick={() => {
+              setProjetOuvert(null);
+              projets.deconnecter();
+            }}
+          >
+            Se déconnecter
           </button>
         ) : null}
         <span className="entete__type">
