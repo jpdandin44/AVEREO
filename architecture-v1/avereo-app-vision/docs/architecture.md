@@ -128,7 +128,7 @@ Identifiants : UUID générés côté client (utile hors ligne). Longueurs en **
 ## 10. Points ouverts
 | Point | Sort |
 |---|---|
-| Méthode d'authentification (reprendre celle de Rapport ou un mode plus simple) | À VÉRIFIER, à trancher au Lot 2 |
+| Méthode d'authentification | **Décidée le 24/11/2026 (Lot 2A)** : ticket CONNECT échangé contre un cookie de passerelle, jeton local réservé au développement : voir `docs/authentication.md` |
 | Épaisseur des murs | valeur par défaut au Lot 1, à confirmer |
 | Réutilisation de code de house-planner (MIT) | Au cas par cas, avec mention du copyright dans `docs/licences.md` |
 | Décisions D1, D2, D4, D5 de l'ADR 0001 | Responsable |
