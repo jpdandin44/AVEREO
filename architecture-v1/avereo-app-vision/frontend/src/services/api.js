@@ -72,11 +72,24 @@ export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base
     listerProjets: async ({ statut = "active", q = "", limite = 50, decalage = 0 } = {}) =>
       (await appeler("GET", "projects.php", { requete: { status: statut, q, limit: limite, offset: decalage } })).projects,
     lireProjet: async (id) => (await appeler("GET", "projects.php", { requete: { id } })).project,
-    /** @param {{name: string, address?: string, client_label?: string}} donnees */
+    /** @param {{id?: string, name: string, address?: string, client_label?: string}} donnees  « id » : identifiant choisi par le navigateur (création hors ligne) */
     creerProjet: async (donnees) => (await appeler("POST", "projects.php", { corps: donnees })).project,
     /** @param {string} id @param {{name?: string, address?: string, client_label?: string, status?: "active"|"archived"}} changements */
     modifierProjet: async (id, changements) =>
       (await appeler("PATCH", "projects.php", { requete: { id }, corps: changements })).project,
+    /**
+     * Synchronisation d'un projet (docs/synchronisation.md) : envoie les modifications puis reçoit ce qui a changé.
+     * @param {string} projetId
+     * @param {{deviceId: string, since: number, changes: object[]}} envoi
+     * @returns {Promise<{applied: any[], changes: any[], seq: number, has_more: boolean}>}
+     */
+    synchroniser: async (projetId, { deviceId, since, changes }) =>
+      appeler("POST", "sync.php", { requete: { project: projetId }, corps: { device_id: deviceId, since, changes } }),
+    /** Réception seule des objets modifiés depuis `since`. @returns {Promise<{changes: any[], seq: number, has_more: boolean}>} */
+    recevoir: async (projetId, since) => appeler("GET", "sync.php", { requete: { project: projetId, since } }),
+    /** Journal des écrasements d'un projet, après l'entrée `apres`. */
+    journal: async (projetId, apres = 0) =>
+      (await appeler("GET", "sync.php", { requete: { project: projetId, journal: 1, after: apres || undefined } })).entries,
   };
 }
 
