@@ -14,6 +14,10 @@ tags:
   - fonctionnalites
 ---
 
+## 24 novembre — Revue locale PR197 corrigée
+
+Retour utilisateur pris en compte : choix des deux parcours, spécialités techniques et Terrain indépendant du profil dans le global. Nouvelle qualification locale et nouvelle version dans PR197 ; la revue du candidat précédent ne vaut pas acceptation de cette correction. [Preuves](docs/rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain). Préproduction et Mise en production V2 non engagées.
+
 ## 24 novembre — Parcours technique développé localement
 
 Cadrage validé par « OK, lance la mise en place ». Première tranche développée et en qualification : trois écrans, mission courte, constats sélectionnables et ordonnés, détails techniques, sauvegardes et Word communs. [Contrat, revue et preuves](docs/rapport-technique.md). Prochaine action : revue humaine locale de la PR. Préproduction et Mise en production non engagées pour V2 ; réserves volumineuses V1.2 conservées.

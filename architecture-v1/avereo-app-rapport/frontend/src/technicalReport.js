@@ -1,6 +1,15 @@
-import { DEFAULT_CATEGORY, LEGACY_DEFAULT_CATEGORY, defaultReportTitle } from './reportClassification.js';
+import { DEFAULT_CATEGORY, LEGACY_DEFAULT_CATEGORY, REPORT_CATEGORIES, defaultReportTitle } from './reportClassification.js';
 
 export const TECHNICAL_STEPS = ['Mission', 'Constats', 'Rapport'];
+export function technicalTypeLabel(value) {
+  return ({ '': 'À préciser', 'Constat general': 'Constat général', Humidite: 'Humidité',
+    'Evaluation Energétique': 'Évaluation énergétique', cartographie: 'Cartographie', pathologies: 'Pathologies' })[value] || value;
+}
+export function technicalReportTypes(current = '') {
+  const definition = REPORT_CATEGORIES[DEFAULT_CATEGORY];
+  return [...new Set(['', ...definition.legacySubcategories, ...definition.subcategories, ...(current ? [current] : [])])]
+    .map(value => ({ value, label: technicalTypeLabel(value) }));
+}
 export function isTechnicalReport(report) {
   return [DEFAULT_CATEGORY, LEGACY_DEFAULT_CATEGORY].includes(report?.categorie);
 }

@@ -1,5 +1,5 @@
 import { buildExpertDocumentHtml, escapeHtml, textToHtml, explanationsHtml, safeEmbeddedImageSource, buildRgaCartographyHtml, buildObservationPlansHtml, buildEnvironmentContextHtml, technicalMissionHtml } from './reportHtml.js';
-import { hasTechnicalMission } from './technicalReport.js';
+import { hasTechnicalMission, technicalTypeLabel } from './technicalReport.js';
 import { orderedObservations, observationNumber } from './observationOrder.js';
 import { REPORT_VISUALS, AVEREO_LOGO } from './reportVisuals.js';
 import { AVEREO_NAME, AVEREO_COMPANY_LINES } from '../../../avereo-platform/shared/report-identity.js';
@@ -49,6 +49,7 @@ function cover(report, client) {
     <h2>${escapeHtml(report.titre)}</h2>
     <p class="address">${escapeHtml(report.adresse_logement)}</p>
     <table><tr><td>Dossier</td><td>${escapeHtml(report.reference_dossier)}</td></tr>
+      ${hasTechnicalMission(report) && report.sous_categorie ? `<tr><td>Type de rapport technique</td><td>${escapeHtml(technicalTypeLabel(report.sous_categorie))}</td></tr>` : ''}
       <tr><td>Destinataire</td><td>${escapeHtml(report.proprietaire)}</td></tr>
       ${report.missionBrief ? missionContactLines({...report.missionBrief, email:report.email}).map(([label,value]) => `<tr><td>${escapeHtml(label)}</td><td>${escapeHtml(value)}</td></tr>`).join('') : ''}
       <tr><td>Intervenant</td><td>${escapeHtml(report.intervenant)}</td></tr>

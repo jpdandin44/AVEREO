@@ -25,6 +25,7 @@ import { saveAs, setDownloadAuthorization, checkDownloadAuthorization } from './
 import { canReportAction, sameAccount, administeredMissionDefault } from './profileAccess.js';
 import ReadOnlyFields, { useReadOnlyMode } from './ReadOnlyFields.jsx';
 import TechnicalMissionStep from './TechnicalMissionStep.jsx';
+import ReportTypeChooser from './ReportTypeChooser.jsx';
 import { TECHNICAL_STEPS, isTechnicalReport, canCreateTechnicalReport, newTechnicalReport } from './technicalReport.js';
 import './technicalReport.css';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -677,7 +678,7 @@ function CompletionPanel({ report, validation }) {
   );
 }
 
-function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onLoadFile, onBackup, profileLoading, canCreate = true, canCreateTechnical = false }) {
+function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOpenOnline, onLoadFile, onBackup, profileLoading, canCreate = true }) {
   const hasDraft = Boolean(draft);
   return (
     <div className="screen">
@@ -700,13 +701,10 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
             </div>
           )}
           <div className="home-actions">
-            <button className="button primary" type="button" onClick={() => onNew(HABITOLOGIE_CATEGORY)} disabled={profileLoading || !canCreate}>
+            <button className="button primary" type="button" onClick={onNew} disabled={profileLoading || !canCreate}>
               <Plus size={18} />
               Nouveau rapport
             </button>
-            {canCreateTechnical && <button className="button secondary" type="button" onClick={() => onNew(DEFAULT_CATEGORY)} disabled={profileLoading || !canCreate}>
-              <Plus size={18} />Nouveau Rapport Technique
-            </button>}
             <button className="button secondary" type="button" onClick={onResume} disabled={!hasDraft}>
               <RotateCcw size={18} />
               Reprendre
@@ -2386,7 +2384,7 @@ function ReportWizard({
     <ScreenPresentation key={presentationVersion} initiallyNew={presentationVersion === 0 && initiallyNew}>
     <div className="screen">
       <main className={`wizard-layout${technical ? ' technical-wizard' : ''}`}>
-        {technical && <p className="technical-mode-label">Rapport Technique</p>}
+        <p className="technical-mode-label">{technical ? 'Rapport Technique' : isHabitologieReport(report) ? 'Analyse globale' : report.categorie}</p>
         <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} onHome={returnToHome} />
         <div className="wizard-grid">
           <div className="wizard-main">
@@ -2541,6 +2539,7 @@ export default function App() {
   const [initialWizardData, setInitialWizardData] = useState(initialReport);
   const [newWizard, setNewWizard] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [chooseReportType, setChooseReportType] = useState(false);
   const [authConfig, setAuthConfig] = useState(null);
   const [accessToken, setAccessToken] = useState('');
   const [authUser, setAuthUser] = useState(null);
@@ -2740,8 +2739,7 @@ export default function App() {
       {appState === 'home' && (
         <HomePage
           draft={draft}
-          onNew={category => startNew({ categorie: category })}
-          canCreateTechnical={canCreateTechnicalReport(authUser)}
+          onNew={() => setChooseReportType(true)}
           profileLoading={connectedDefault.loading}
           canCreate={canReportAction(authUser, 'create')}
           onResume={resume}
@@ -2784,6 +2782,8 @@ export default function App() {
           onTokenSubmit={activateLocalToken}
         />
       )}
+      {chooseReportType && <ReportTypeChooser canChooseTechnical={canCreateTechnicalReport(authUser)}
+        onClose={() => setChooseReportType(false)} onChoose={category => { setChooseReportType(false); startNew({ categorie: category }); }} />}
       {confirmReset && (
         <Modal
           title="Creer un nouveau rapport ?"

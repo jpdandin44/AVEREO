@@ -13,6 +13,10 @@ tags:
   - fonctionnalites
 ---
 
+## 24 novembre — Choix explicites sans conversion des dossiers
+
+Les spécialités réutilisent les valeurs sous_categorie existantes ; les libellés accentués sont d’affichage. Le titre reste dans titre. Le Terrain global dépend du type global, y compris ancien, sans imposer un profil et sans créer/supprimer de constat. Aucun changement SQL ou quota. [Compatibilité et recette](rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain).
+
 ## 24 novembre — Champs techniques facultatifs, sans migration SQL
 
 [Contrat de compatibilité](rapport-technique.md#contrat-de-la-première-tranche-locale). mission_technique et quatre textes techniques par constat sont embarqués dans le JSON complet existant ; champs absents acceptés, données inconnues et catégories historiques conservées. Le sous-type vide est conservé pour une nouvelle mission technique explicite. Aucun classement Eau/Air/Terre/Feu imposé ni remplacement d’identifiants. Les anciens Word conservent leur présentation ; les nouveaux Word techniques reprennent périmètre et limites, et gardent les détails internes hors client.

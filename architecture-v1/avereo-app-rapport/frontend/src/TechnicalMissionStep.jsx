@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import VoiceField from './VoiceField.jsx';
-import { technicalMission } from './technicalReport.js';
+import { technicalMission, technicalReportTypes } from './technicalReport.js';
 import { appendDictation } from './dictationText.js';
 
 export default function TechnicalMissionStep({ report, setReport, site, protocols }) {
@@ -15,6 +15,12 @@ export default function TechnicalMissionStep({ report, setReport, site, protocol
   return <section className="panel technical-mission">
     <div className="section-title"><div><h1>Mission</h1><p>Le client, le bien et le périmètre de la visite technique.</p></div></div>
     <div className="form-grid two">
+      <label className="field"><span>Type de rapport technique</span>
+        <select value={report.sous_categorie || ''} onChange={event => setReport(current => ({ ...current, sous_categorie: event.target.value }))}>
+          {technicalReportTypes(report.sous_categorie).map(type => <option key={type.value} value={type.value}>{type.label}</option>)}
+        </select>
+      </label>
+      {field('titre', 'Titre du rapport')}
       {field('reference_dossier', 'Référence du dossier')}{field('date_visite', 'Date de visite', 'date')}
       {field('proprietaire', 'Nom du propriétaire')}{field('email', 'Email', 'email')}
       {field('adresse_logement', 'Adresse du logement')}{field('intervenant', 'Intervenant')}

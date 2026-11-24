@@ -13,6 +13,10 @@ tags:
   - habitologie
 ---
 
+## 24 novembre — Deux choix distincts et Terrain complet
+
+La création doit présenter les deux familles et expliquer un éventuel refus d’accès. La spécialité technique est choisie dans Mission et conservée dans les deux Word et le JSON. Un global sans profil doit conserver le bloc Terrain, son fil horizontal et les Tn ; aucun défaut CONNECT ne conditionne sa présence. [Critères et correction](docs/rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain).
+
 ## 24 novembre — Première tranche Rapport Technique
 
 Les critères RT-01 à RT-08, les champs indispensables réutilisés et les limites de la première tranche sont définis dans le [contrat technique](docs/rapport-technique.md#contrat-de-la-première-tranche-locale). Habilitation serveur explicite, un constat ouvert, détails facultatifs, continuité JSON/serveur et confidentialité expert/client. Analyse globale et anciens dossiers conservés ; pas de conversion automatique.

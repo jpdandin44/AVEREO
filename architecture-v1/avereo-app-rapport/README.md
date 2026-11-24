@@ -13,6 +13,10 @@ tags:
   - connect
 ---
 
+## 24 novembre — Choix des parcours et Terrain corrigés
+
+[Complément à PR197](docs/rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain) : Nouveau rapport propose explicitement Analyse globale et Rapport Technique ; spécialité et titre sont modifiables dans Mission. Toute Analyse globale conserve Terrain, indépendamment du profil. Revue locale sur le même service fictif, sans conversion des dossiers existants.
+
 ## 24 novembre — Rapport Technique en revue locale
 
 Le [parcours technique](docs/rapport-technique.md) propose Mission → Constats → Rapport, avec détails à la demande et fonctions communes conservées. Candidat local à tester depuis [les deux comptes fictifs](http://127.0.0.1:5240/fixture/) : A habilité, B sans création technique. Les étapes suivantes datées conservent l’historique ; aucune livraison V2 en préproduction.

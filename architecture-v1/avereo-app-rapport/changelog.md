@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 2026-11-24 — Clarification des types et rétablissement de Terrain
+
+La création propose les deux parcours dans une fenêtre explicite, sans perdre le brouillon en cas d’annulation. Ajout du type technique et du titre dans Mission, type repris dans les Word. Correction du Terrain masqué en global sans profil : présence et Tn vérifiés après réouverture serveur. [Retour utilisateur et contrôles](docs/rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain).
+
 ## 2026-11-24 — Parcours technique minimaliste, candidat local
 
 Première tranche Mission → Constats → Rapport, habilitation de création contrôlée côté serveur, mission/mesures/références facultatives, un constat ouvert et fonctions photo/plans/ordre/sauvegarde/Word réutilisées. Les nouveaux détails techniques restent dans l’expert ; le client respecte la sélection existante. Anciens dossiers et Analyse globale conservés. [Résultats et limites](docs/rapport-technique.md). Aucune livraison hébergée.

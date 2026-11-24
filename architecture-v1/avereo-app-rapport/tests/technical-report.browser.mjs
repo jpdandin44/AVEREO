@@ -36,17 +36,30 @@ async function downloadWord(page,audience){
 }
 try{
   const page=await enter(context);
-  await page.getByRole('button',{name:'Nouveau Rapport Technique',exact:true}).click();
+  await page.getByRole('button',{name:'Nouveau rapport',exact:true}).click();
+  const chooser=page.getByRole('dialog',{name:'Choisir le type de rapport',exact:true});
+  await chooser.getByRole('button',{name:/^Analyse globale/}).waitFor();
+  for (const width of [390,320]) {
+    await page.setViewportSize({width,height:900});
+    for (const button of await chooser.getByRole('button').all()) {
+      const bounds=await button.boundingBox();assert.ok(bounds.x>=0 && bounds.x+bounds.width<=width,'Type chooser fits '+width);
+    }
+  }
+  await page.setViewportSize({width:1280,height:900});
+  await chooser.screenshot({path:resolve(output,'choix-parcours.png')});
+  await chooser.getByRole('button',{name:/^Rapport Technique/}).click();
   await page.getByRole('heading',{name:'Mission',exact:true}).waitFor();
   assert.equal(await page.getByRole('navigation',{name:'Navigation du rapport',exact:true}).getByRole('button').count(),4);
   await page.getByLabel('Référence du dossier',{exact:true}).fill(ref);
   await page.getByLabel('Nom du propriétaire',{exact:true}).fill('Propriétaire fictif');
   await page.getByLabel('Adresse du logement',{exact:true}).fill('10 rue Exemple fictif');
   await page.getByLabel('Intervenant',{exact:true}).fill('Expert fictif');
+  await page.getByLabel('Type de rapport technique',{exact:false}).selectOption('Fissures');
+  await page.getByLabel('Titre du rapport',{exact:true}).fill('Expertise technique fictive');
   await page.getByLabel('Objet de la mission',{exact:true}).fill('Examen fictif façade et humidité');
   await page.getByLabel('Périmètre de la visite',{exact:true}).fill('Parties accessibles, visite visuelle');
   await page.getByLabel('Limites et parties non accessibles',{exact:true}).fill('Aucun sondage destructif');
-  checks.push('Mission courte sans écoute client ni projections');
+  checks.push('Choix explicite des deux parcours et spécialité technique dans Mission');
   await step(page,'Constats');
   const card=()=>page.locator('.technical-workspace .observation-card');
   async function finding(title,text){await card().getByLabel('Titre',{exact:true}).fill(title);await card().getByLabel('Piece / zone',{exact:true}).fill('Façade sud');await card().getByLabel('Constat',{exact:true}).fill(text);await card().getByLabel('Conseils de l’expert',{exact:true}).fill('Conseil '+title);}
@@ -70,6 +83,10 @@ try{
   checks.push('Ordre au clavier et import de plan avec repère natif');
   await page.getByRole('button',{name:/Plans et vues du dossier/}).first().click();
   await card().getByRole('button',{name:/Détails techniques/}).click();
+  const beforeTypeChange=await draft(page);
+  await step(page,'Mission');await page.getByLabel('Type de rapport technique',{exact:false}).selectOption('Humidite');
+  await step(page,'Constats');assert.deepEqual((await draft(page)).observations,beforeTypeChange.observations);
+  checks.push('Spécialité modifiable sans changer constats, photos, repères ni ordre');
   await page.screenshot({path:resolve(output,'technical-desktop.png'),fullPage:true});
   for(const width of [736,390,320]){
     await page.setViewportSize({width,height:900});
@@ -91,7 +108,7 @@ try{
   await page.getByRole('button',{name:'Apercu',exact:true}).click();await page.getByRole('button',{name:'Fermer l’aperçu',exact:true}).click();
   await page.getByRole('button',{name:'Apercu',exact:true}).click();await page.keyboard.press('Escape');
   assert.equal(await page.getByRole('dialog',{name:'Aperçu du rapport',exact:true}).count(),0);checks.push('Aperçu refermable au bouton et par Échap');
-  const expert=await downloadWord(page,'expert');assert.match(expert.xml,/MESURE-INTERNE-12/);assert.match(expert.xml,/Examen fictif façade/);assert.ok(expert.images>=2);
+  const expert=await downloadWord(page,'expert');assert.match(expert.xml,/MESURE-INTERNE-12/);assert.match(expert.xml,/Examen fictif façade/);assert.match(expert.xml,/Type de rapport technique/);assert.match(expert.xml,/Humidité/);assert.ok(expert.images>=2);
   await page.getByRole('button',{name:/Options du livrable/}).click();await page.getByLabel(/Destinataire du document/).selectOption('client');
   await page.getByLabel('L’essentiel pour le client',{exact:true}).fill('Synthèse client fictive');
   await page.getByRole('checkbox',{name:/Fissure fictive/}).check();
@@ -106,16 +123,44 @@ try{
   assert.equal(await draft(fresh),null);
   await fresh.locator('li').filter({hasText:ref}).getByRole('button',{name:'Ouvrir le dossier',exact:true}).click();
   await fresh.getByRole('heading',{name:'Mission',exact:true}).waitFor();
+  assert.equal(await fresh.getByLabel('Type de rapport technique',{exact:false}).inputValue(),'Humidite');
   const reopened=await draft(fresh);const clean=value=>{const result=structuredClone(value);delete result.updatedAt;return result;};
   assert.deepEqual(clean(reopened),clean(saved));assert.deepEqual(reopened.observations,expected.observations);
   await step(fresh,'Constats');assert.equal(await fresh.locator('.technical-workspace .observation-card').count(),1);
   checks.push('Nouvelle session CONNECT fictive sans brouillon : réouverture serveur exacte, photos/plan/repère/signature inclus');
+  await step(fresh,'Mission');await fresh.getByRole('navigation',{name:'Navigation du rapport',exact:true}).getByRole('button',{name:'Accueil',exact:true}).click();
+  const beforeCancel=await draft(fresh);await fresh.getByRole('button',{name:'Nouveau rapport',exact:true}).click();
+  await fresh.getByRole('dialog',{name:'Choisir le type de rapport',exact:true}).getByRole('button',{name:'Annuler',exact:true}).click();
+  assert.deepEqual(clean(await draft(fresh)),clean(beforeCancel));checks.push('Annulation du choix de parcours sans modifier le brouillon existant');
   const deniedContext=await browser.newContext();const denied=await enter(deniedContext,'B');
-  assert.equal(await denied.getByRole('button',{name:'Nouveau Rapport Technique',exact:true}).count(),0);checks.push('Compte B non habilité : création technique masquée');
   await denied.getByRole('button',{name:'Nouveau rapport',exact:true}).click();
+  const deniedChooser=denied.getByRole('dialog',{name:'Choisir le type de rapport',exact:true});
+  assert.equal(await deniedChooser.getByRole('button',{name:/^Rapport Technique/}).isDisabled(),true);
+  await deniedChooser.getByText(/nécessite une habilitation/).waitFor();checks.push('Compte B : choix technique visible mais refus explicite sans habilitation');
+  await deniedChooser.getByRole('button',{name:/^Analyse globale/}).click();
   await denied.getByRole('heading',{name:'Dossier',exact:true}).waitFor();
+  await denied.getByLabel(/R[eé]f[eé]rence dossier/).fill(ref+'-GLOBAL');
   assert.equal(await denied.getByRole('navigation',{name:'Navigation du rapport',exact:true}).getByRole('button').count(),6);
   const globalDraft=await draft(denied);assert.equal(globalDraft.categorie,'Visite Globale');assert.equal(globalDraft.mission_technique,undefined);
+  assert.equal(globalDraft.profil_metier,'');
+  await step(denied,'Protocoles');
+  const terrain=denied.getByRole('button',{name:'Bloc 0 Le terrain de la propriété',exact:true});await terrain.waitFor();
+  assert.equal(await terrain.getAttribute('aria-pressed'),'true');await terrain.click();assert.equal(await terrain.getAttribute('aria-pressed'),'false');await terrain.click();
+  await denied.locator('.analysis-sequence').screenshot({path:resolve(output,'global-terrain.png')});
+  await step(denied,'Observations');await denied.getByRole('heading',{name:'Le terrain de la propriété',exact:true}).waitFor();
+  await denied.getByRole('button',{name:'Ajouter une observation terrain',exact:true}).click();
+  await denied.locator('.phase-terrain .observation-card').getByLabel('Titre',{exact:true}).fill('Terrain global sans profil');
+  await denied.locator('.phase-terrain .observation-card').getByLabel('Constat',{exact:true}).fill('Abords fictifs conservés');
+  const withTerrain=await draft(denied);assert.equal(withTerrain.observations.filter(item=>item.phase_habitologie==='terrain').length,1);
+  await denied.getByRole('button',{name:/Sauver en ligne/}).click();await denied.getByText(/sauvegardés en ligne et relus sur le serveur/).waitFor();
+  const globalSaved=await draft(denied), globalFreshContext=await browser.newContext(), globalFresh=await enter(globalFreshContext,'B');
+  assert.equal(await draft(globalFresh),null);
+  await globalFresh.locator('li').filter({hasText:ref+'-GLOBAL'}).getByRole('button',{name:'Ouvrir le dossier',exact:true}).click();
+  await globalFresh.getByRole('heading',{name:'Dossier',exact:true}).waitFor();assert.deepEqual(clean(await draft(globalFresh)),clean(globalSaved));
+  await step(globalFresh,'Protocoles');await globalFresh.getByRole('button',{name:'Bloc 0 Le terrain de la propriété',exact:true}).waitFor();
+  await step(globalFresh,'Observations');await globalFresh.locator('.phase-terrain .disclosure-toggle').filter({hasText:'Observation T1'}).waitFor();
+  checks.push('Global sans profil : bloc Terrain dans Protocoles et constat T1 dans Observations');
+  checks.push('Global sans profil : sauvegarde et nouvelle session conservent Terrain, T1, données et parcours complet');
   checks.push('Analyse globale conserve ses cinq étapes et son dossier sans conversion technique');
   assert.deepEqual(errors,[]);
   await writeFile(resolve(output,'technical-browser-receipt.json'),JSON.stringify({status:'passed',observedAt:new Date().toISOString(),reference:ref,checks,errors,expertWord:expert.file,clientWord:client.file,wordRendering:'Contenu et médias DOCX contrôlés ; relecture native Microsoft Word non réalisée.',serverReopenExact:true,scope:'Local fictif uniquement ; aucune préproduction modifiée.'},null,2)+'\n');
