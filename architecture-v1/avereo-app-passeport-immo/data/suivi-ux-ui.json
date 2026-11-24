@@ -5,8 +5,8 @@
   "project": "avereo-app-passeport-immo",
   "owner": "jpdandin",
   "kind": "application_iteration",
-  "stage": "local",
-  "status": "local_verified_awaiting_human_review",
+  "stage": "preproduction",
+  "status": "preproduction_installed_awaiting_human_review",
   "objective": "Développer la bibliothèque documentaire AVEREO et la navigation du bien, préserver les contenus, droits et parcours existants.",
   "candidate": {
     "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
@@ -25,12 +25,12 @@
   },
   "targets": {
     "preproduction": {
-      "id": null,
-      "ready": false,
-      "isolated": false,
+      "id": "https://passeport-immo-preprod.avereo.fr/",
+      "ready": true,
+      "isolated": true,
       "empty": false,
-      "evidence": null,
-      "observedAt": null
+      "evidence": "api/preproduction-ux-ui-observation.json#preparation",
+      "observedAt": "2026-11-24T08:50:20+00:00"
     },
     "production": {
       "id": null,
@@ -42,41 +42,65 @@
   "github": {
     "repository": "jpdandin44/AVEREO",
     "prUrl": "https://github.com/jpdandin44/AVEREO/pull/191",
-    "acceptedSourceSha": null,
-    "acceptedArtifactSha256": null,
-    "humanAcceptanceVerified": false,
-    "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/45354624103",
-    "observedAt": "2026-11-24T08:20:54.916309+00:00",
-    "observedHeadSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
-    "mergeable": true,
+    "acceptedSourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "acceptedArtifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+    "humanAcceptanceVerified": true,
+    "evidence": "api/preproduction-ux-ui-observation.json#github",
+    "observedAt": "2026-11-24T08:53:07.118926+00:00",
+    "observedHeadSha": "aeeda82e3afe24767ab5080ec4586ac67fc3c224",
     "policy": {
-      "status": "awaiting_human_checklist",
-      "observedAt": "2026-11-24T08:20:54.916309+00:00",
-      "evidence": "https://github.com/jpdandin44/AVEREO/actions/runs/45354624100",
-      "reason": "Quatre cases humaines non cochées ; structure prépublication validée."
-    }
+      "status": "passed",
+      "evidence": "api/preproduction-ux-ui-observation.json#github",
+      "observedAt": "2026-11-24T08:53:07.118926+00:00"
+    },
+    "acceptedHeadSha": "aeeda82e3afe24767ab5080ec4586ac67fc3c224",
+    "mergeSha": "2f5a15f65195f8a9934fdb57deffba246669c509",
+    "preMergeObservationEvidence": "api/ux-ui-local-observation.json#pullRequest",
+    "state": "merged",
+    "mergedAt": "2026-11-24T08:39:57Z",
+    "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/194"
   },
-  "approvals": [],
-  "backups": [],
+  "approvals": [
+    {
+      "scope": "preproduction",
+      "status": "approved",
+      "source": "user_chat",
+      "actor": "jpdandin",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+      "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+      "evidence": "api/preproduction-ux-ui-observation.json#authorization",
+      "observedAt": "2026-11-24T08:53:07.118926+00:00"
+    }
+  ],
+  "backups": [
+    {
+      "id": "ui-20261124-fc985021ed68",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "status": "verified",
+      "restoreStatus": "passed",
+      "evidence": "api/preproduction-ux-ui-observation.json#preparation/dataRecovery",
+      "observedAt": "2026-11-24T08:50:20+00:00"
+    }
+  ],
   "rollback": {
-    "status": "not_tested",
-    "target": null,
-    "artifactSha256": null,
-    "evidence": null,
-    "observedAt": null
+    "status": "tested",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+    "evidence": "api/preproduction-ux-ui-observation.json#preparation/rollbackRehearsal",
+    "observedAt": "2026-11-24T08:50:20+00:00"
   },
   "delivery": {
-    "status": "not_delivered",
-    "sourceSha": null,
-    "artifactSha256": null,
-    "target": null,
-    "evidence": null,
-    "observedAt": null
+    "status": "delivered",
+    "environment": "preproduction",
+    "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+    "target": "https://passeport-immo-preprod.avereo.fr/",
+    "evidence": "api/preproduction-ux-ui-observation.json#delivery",
+    "observedAt": "2026-11-24T08:53:18+00:00"
   },
-  "blockers": [
-    "Recette humaine UX01–UX06 et quatre cases PR Policy requises avant merge."
-  ],
-  "nextAction": "Revoir le candidat local et la PR ; compléter la recette UX01–UX06. Merge et livraison en préproduction restent distincts.",
+  "blockers": [],
+  "nextAction": "Effectuer la recette humaine hébergée UX01–UX06 et revoir PR194 ; la production conserve son accord distinct.",
   "nextIteration": [],
   "budget": {
     "limit": null,
@@ -95,12 +119,12 @@
     {
       "id": 1,
       "title": "Développement local",
-      "status": "awaiting_review"
+      "status": "accepted_in_merged_pr"
     },
     {
       "id": 2,
       "title": "Préproduction",
-      "status": "not_started"
+      "status": "awaiting_review"
     },
     {
       "id": 3,
@@ -111,8 +135,8 @@
   "scope": {
     "proposalOnly": false,
     "applicationCodeChanged": true,
-    "liveHostingChecked": false,
-    "privateCustomerDataUsed": false,
+    "liveHostingChecked": true,
+    "privateCustomerDataUsed": true,
     "reviewDate": "2026-11-24",
     "runtimeInspected": {
       "path": "C:/Users/examg/Documents local/passeport-immo-ux-ui",
@@ -121,7 +145,8 @@
     "historicalInvitationOperationResumed": false,
     "sharedAccountMenuReused": true,
     "backendChanged": false,
-    "migrationRequired": false
+    "migrationRequired": false,
+    "privateCustomerDataMode": "Read-only hosted qualification; no business rows or private document content committed."
   },
   "recommendation": {
     "variant": "Bibliothèque",
@@ -138,11 +163,12 @@
     ]
   },
   "remainingVerification": [
-    "Recette humaine du candidat local et checklist PR.",
-    "Qualification authentifiée en préproduction après accord pour ce candidat.",
-    "Contrôle tactile réel et audit accessibilité complet non réalisés."
+    "Recette humaine de préproduction UX01–UX06 sur ce candidat.",
+    "Nouveaux imports volumineux, mutations documentaires positives et génération PDF à contrôler humainement selon le guide ; aucune donnée réelle modifiée pour la démonstration.",
+    "Nouvelle authentification du destinataire partagé et contrôle tactile réel non exécutés dans ce lot.",
+    "Mise en production non réalisée ; préparation et accord distincts."
   ],
-  "branch": "feat/passeport-immo-bibliotheque",
+  "branch": "chore/passeport-immo-bibliotheque-preproduction",
   "proposalChecks": [
     {
       "kind": "prototype_syntax",
@@ -242,12 +268,41 @@
       "observedAt": "2026-11-24T08:20:54.916309+00:00",
       "scope": "Qualification locale et rapprochement du paquet CI : assets applicatifs identiques ; index et menu diffèrent uniquement par CRLF/LF.",
       "evidence": "api/ux-ui-local-observation.json#artifactComparison"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+      "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+      "observedAt": "2026-11-24T08:53:07.118926+00:00",
+      "scope": "Reprise de la PR fusionnée, périmètre, sauvegarde/retour arrière et plan d’écriture explicités.",
+      "evidence": "docs/preproduction-ux-ui.md"
+    },
+    {
+      "kind": "preproduction",
+      "status": "passed",
+      "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+      "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+      "target": "https://passeport-immo-preprod.avereo.fr/",
+      "scope": "212 assertions HTTPS, lecteur PDF et navigation réels, intégrité des quatre tables et trente fichiers après navigateur ; recette humaine et mutations positives distinctes.",
+      "evidence": "api/preproduction-ux-ui-observation.json",
+      "observedAt": "2026-11-24T09:03:20.855943+00:00"
     }
   ],
   "reviewEnvironment": {
-    "phase": 1,
-    "environment": "local",
-    "url": "http://127.0.0.1:5186/",
-    "scope": "Dossier fictif Bibliothèque ; données réelles et hébergement non utilisés."
-  }
+    "phase": 2,
+    "environment": "preproduction",
+    "url": "https://connect-preprod.avereo.fr/?app=passeport-immo",
+    "scope": "Recette humaine de la bibliothèque installée, distincte de la revue locale PR191 déjà fusionnée."
+  },
+  "gates": [
+    {
+      "gate": "preproduction",
+      "declaredEvidenceConsistent": true,
+      "errors": [],
+      "limitation": "Déclarations à vérifier aux sources ; ce résultat ne déploie pas et ne donne aucun accord.",
+      "observedAt": "2026-11-24T09:03:20.855943+00:00",
+      "evidence": "api/preproduction-ux-ui-observation.json#gatePreproduction"
+    }
+  ]
 }

@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
+## 24 novembre — Bibliothèque livrée en préproduction
+
+Livraison privée de la PR191 : navigation du bien et bibliothèque avec aperçu, import guidé et actions regroupées. Sauvegarde/restauration et retour arrière vérifiés sur copie, 212 assertions HTTPS et contrôle navigateur. Biens, documents, partages, API, accès, configuration et production conservés. [Reçu et limites](docs/preproduction-ux-ui.md).
+
+
 ## 24 novembre — Candidat UX/UI local
 
 Navigation du bien, liste documentaire avec aperçu, actions secondaires repliables, import guidé et reprise des lots non confirmés, palette AVEREO, focus sur petit écran et conservation des filtres au rafraîchissement du dossier partagé. [Qualification](docs/ux-ui-bibliotheque.md). Aucun déploiement.

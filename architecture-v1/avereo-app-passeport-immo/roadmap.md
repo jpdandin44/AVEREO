@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [avereo, documentation, local]
 ---
 
+## 24 novembre — Revue de la bibliothèque hébergée
+
+Le candidat UX/UI est installé et techniquement vérifié en préproduction privée. Prochaine action : recette humaine UX01–UX06 dans le [guide de livraison](docs/preproduction-ux-ui.md), puis préparation de production et accord applicables. Les lots CIL et mutations en masse restent distincts.
+
+
 ## 24 novembre — Priorité UX/UI locale
 
 Premier lot Bibliothèque en développement et qualification locaux. Suite : revue humaine du candidat et de sa PR, puis préproduction de cette version après accord et préparation réelle de la cible. Le CIL complet, les opérations en masse et les vérifications hébergées antérieures restent distincts. [Suivi canonique](data/suivi-ux-ui.json).
