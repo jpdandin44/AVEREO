@@ -5,10 +5,15 @@ title: Point de reprise de session
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-13
+updated: 2026-11-24
 owner: jpdandin
 tags: [passeport-immo, local, cockpit]
 ---
+
+## Reprise courante — 24 novembre 2026, Bibliothèque
+
+Travail dans `C:/Users/examg/Documents local/passeport-immo-ux-ui`, branche `feat/passeport-immo-bibliotheque`, base main `5f59740`. [Guide/recette](ux-ui-bibliotheque.md) · [Suivi canonique](../data/suivi-ux-ui.json). Revoir [PR191](https://github.com/jpdandin44/AVEREO/pull/191) et les critères UX01–UX06 avant toute demande de livraison. CI technique réussie, PR Policy en attente de la checklist humaine ; paquet CI conservé dans le suivi. Les sections suivantes sont historiques : ne pas rejouer activation, migration SCI, sauvegardes ou invitation CONNECT. Le résultat du renvoi planifié du 15 novembre n’est pas requalifié par cette tâche UX/UI.
+
 
 # Point de reprise de session
 

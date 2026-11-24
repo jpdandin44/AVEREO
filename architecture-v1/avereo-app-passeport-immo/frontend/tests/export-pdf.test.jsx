@@ -25,6 +25,7 @@ describe('pagination PDF du parcours réel', () => {
     render(<App />);
     fireEvent.click(screen.getByRole('button', { name: 'Se connecter', exact: true }));
     fireEvent.click(screen.getByRole('heading', { name: '123 Rue de la République, 75001 Paris', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: 'Travaux et devis', exact: true }));
     fireEvent.click(screen.getByRole('button', { name: 'Exporter en PDF', exact: true }));
     await waitFor(() => expect(save).toHaveBeenCalledOnce());
     return { addPage, addImage };

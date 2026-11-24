@@ -5,12 +5,16 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-23
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 24 novembre — accès et lisibilité des environnements
+
+Les développements doivent rester accessibles au seul propriétaire avec rôle global courant. La saturation par des jetons expirés ne doit pas empêcher durablement le contrôle. Conserver les refus de rejeu et la limite des entrées actives. Afficher les quatre adresses des deux sites, leur dernier constat daté et la maintenance AVEREO, sans convertir une réponse HTTP en version qualifiée, recette humaine ou autorisation. [Critères et limites](docs/cockpit-acces-et-sites.md).
 
 ## 23 novembre — un projet par fiche, nouveaux produits après préproduction
 

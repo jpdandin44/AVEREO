@@ -5,6 +5,12 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import DocumentsPanel from '../src/documents/DocumentsPanel.jsx';
 vi.mock('../src/documents/PdfPreview.jsx', () => ({ default: ({ url, title }) => <div title={`PDF : ${title}`} data-url={url}>Lecteur de test</div> }));
 afterEach(() => { cleanup(); vi.restoreAllMocks(); });
+async function documentAction(name) {
+  const toggle = await screen.findByRole('button', { name: `Actions : ${document.title}` });
+  if (toggle.getAttribute('aria-expanded') !== 'true') fireEvent.click(toggle);
+  fireEvent.click(screen.getByRole('button', { name, exact: true }));
+}
+
 
 it('sépare corbeille et archives, restaure et exige une confirmation avant la purge', async () => {
   let trashed = false, deleted = false;
@@ -13,21 +19,21 @@ it('sépare corbeille et archives, restaure et exige une confirmation avant la p
     trashDocument: vi.fn(async () => { trashed = true; }), restoreDocument: vi.fn(async () => { trashed = false; }), deleteDocument: vi.fn(async () => { deleted = true; })
   };
   render(<DocumentsPanel bien={bien} repository={repository} />);
-  fireEvent.click(await screen.findByRole('button', { name: 'Mettre à la corbeille' }));
+  await documentAction('Mettre à la corbeille');
   await screen.findByRole('button', { name: 'Corbeille (1)' });
   expect(screen.queryByRole('heading', { name: document.title })).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: 'Corbeille (1)' }));
-  fireEvent.click(await screen.findByRole('button', { name: 'Restaurer le document' }));
+  await documentAction('Restaurer le document');
   await screen.findByRole('button', { name: 'Corbeille (0)' });
   fireEvent.click(screen.getByRole('button', { name: 'Documents (1)' }));
-  fireEvent.click(await screen.findByRole('button', { name: 'Mettre à la corbeille' }));
+  await documentAction('Mettre à la corbeille');
   fireEvent.click(await screen.findByRole('button', { name: 'Corbeille (1)' }));
-  fireEvent.click(await screen.findByRole('button', { name: 'Supprimer définitivement', exact: true }));
+  await documentAction('Supprimer définitivement');
   const dialog = screen.getByRole('dialog', { name: 'Supprimer définitivement ce document ?' });
   expect(repository.deleteDocument).not.toHaveBeenCalled();
   fireEvent.click(within(dialog).getByRole('button', { name: 'Annuler' }));
   expect(repository.deleteDocument).not.toHaveBeenCalled();
-  fireEvent.click(screen.getByRole('button', { name: 'Supprimer définitivement', exact: true }));
+  await documentAction('Supprimer définitivement');
   fireEvent.click(screen.getByRole('button', { name: 'Confirmer la suppression définitive' }));
   await screen.findByRole('heading', { name: 'La corbeille est vide' });
   expect(repository.deleteDocument).toHaveBeenCalledWith('1', document.id);
@@ -46,6 +52,7 @@ it('regroupe, replie, personnalise et réordonne les fichiers dans leur dossier'
   fireEvent.click(within(folder).getByRole('button', { name: /Plans et façades/ }));
   expect(within(folder).queryByRole('heading', { level: 4 })).toBeNull();
   fireEvent.click(within(folder).getByRole('button', { name: /Plans et façades/ }));
+  fireEvent.click(within(folder).getByRole('button', { name: 'Actions : Autre plan' }));
   fireEvent.click(within(folder).getByRole('button', { name: 'Monter : Autre plan' }));
   await waitFor(() => expect(within(folder).getAllByRole('heading', { level: 4 })[0].textContent).toBe('Autre plan'));
   fireEvent.click(screen.getByRole('button', { name: 'Personnaliser les catégories' }));

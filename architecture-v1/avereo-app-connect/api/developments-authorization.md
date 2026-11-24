@@ -5,7 +5,7 @@ title: Autorisation privée des développements — candidat local
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-09
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, drupal, developpements, autorisation, local]
 ---
@@ -59,7 +59,7 @@ Configuration active seulement si `enabled===true`, repository PDO réel et para
 
 HTTPS obligatoire, origine/port de l'autorité identiques à l'issuer, chemin exact, sans query/fragment/identifiants ; certificat vérifié, aucun redirect, délais connexion 3 s/total 5 s, réponse bornée à 16 Kio. Épinglage certificat spécifique non implémenté ; validation TLS standard. Dépendance cURL à vérifier sur la cible.
 
-Les nonces sont consommés par création exclusive d'un fichier privé sous un dossier existant hors webroot (0700 sur POSIX). Limite 4096 fichiers : refus quand pleine, pas de purge automatique. Qualifier une maintenance privée des nonces expirés et les protections des fichiers de configuration avant installation. Aucun fichier ne doit être publié ou synchronisé par le frontend.
+Les nonces sont consommés par création exclusive d’un fichier privé sous un dossier existant hors webroot (0700 sur POSIX). Le correctif local du 24 novembre utilise `NonceStore` et un verrou privé 0600 : avant chaque admission, seules les empreintes régulières de nom hexadécimal et d’expiration entière valides expirées depuis plus de cinq secondes sont supprimées. Entrées actives, marge de sécurité, fichiers malformés et liens symboliques sont conservés ; la limite 4096 reste bloquante après récupération. Création exclusive, écriture vérifiée et permissions 0600 protègent la nouvelle empreinte. Une erreur reste un refus. Les signatures expirées sont déjà rejetées par `SignedMessage` avant cet appel. Aucun compte, rôle, secret ou suivi n’est modifié. La configuration et l’installation réelles restent à qualifier ; aucun fichier technique n’est publié par le frontend.
 
 ## Configuration Drupal — privée et inactive ici
 
@@ -82,6 +82,7 @@ Sans activation explicite : 503. Paramètres invalides, entrée malformée, sign
 
 ```powershell
 php backend/tests/development-authorization.php
+php backend/tests/development-nonce-store.php
 php integrations/drupal/avereo_identity_bridge/tests/development-authorization-controller.php
 php backend/tests/run.php
 ```

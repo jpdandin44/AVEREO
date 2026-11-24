@@ -5,10 +5,15 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-21
+updated: 2026-11-24
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 24 novembre — Présentation Bibliothèque
+
+App.jsx garde le magasin métier et le composant de compte commun ; ses quatre rubriques conservent les panneaux montés. DocumentsPanel orchestre le dépôt existant et DocumentPreview charge/libère les copies PDF/images à la sélection. Le partage reçu actualise son instantané sans effacer les filtres. Aucun modèle de stockage ni contrat serveur changé. [Annexe de parité](docs/source-audit-ux-ui.md).
+
 
 ## 21 novembre — Volume et contrôle avant dépôt
 

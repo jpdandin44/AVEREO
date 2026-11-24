@@ -6,6 +6,7 @@ import { calculateDevis, calculateDevisForPdf } from './lib/chiffrage.js';
 import DocumentsPanel from './documents/DocumentsPanel.jsx';
 import { SharingDialog, SharedDocuments } from './documents/Sharing.jsx';
 import './documents/documents.css';
+import './passeport.css';
 import { SERVER_STORAGE, persistLocal, attachServerStorage, hydrateServer } from './documents/server-store.js';
 
 // --- MOCK DATA & CONFIGURATION ---
@@ -284,7 +285,8 @@ const AppHeader = () => {
                 {user && user.role === 'admin' && <button slot="administration" type="button" onClick={goToAdmin}>Administration de l’application</button>}
                 <button slot="logout" type="button" onClick={signOut}>Se déconnecter</button>
             </avereo-account-menu>
-            {currentView !== 'dashboard' && <nav aria-label="Navigation du dossier" className="mx-auto max-w-5xl px-4 pt-3">
+            <p className="passeport-storage-help">{SERVER_STORAGE ? 'Biens et travaux : enregistrement automatique sur le serveur.' : 'Version locale · Biens, travaux et documents conservés dans ce navigateur uniquement.'} Les imports de documents ont leur propre confirmation d’enregistrement.</p>
+            {!['dashboard', 'bien'].includes(currentView) && <nav aria-label="Navigation du dossier" className="mx-auto max-w-5xl px-4 pt-3">
                 <button type="button" onClick={goToDashboard} className="font-semibold text-indigo-700">← Accueil</button>
             </nav>}
         </>
@@ -677,6 +679,7 @@ const BienPage = () => {
     const { selectedBienId, biens, goToDashboard, addPiece, user, tarifs, addAttachment, deleteAttachment, priceTier, setPriceTier } = useAppStore();
     const [estimateClient, setEstimateClient] = useState(null);
     const [sharingOpen, setSharingOpen] = useState(false);
+    const [section, setSection] = useState('documents');
     const bien = biens.find(b => b.id === selectedBienId);
 
     const [nomPiece, setNomPiece] = useState('');
@@ -782,20 +785,24 @@ const BienPage = () => {
 
     return (
         <>
-            <div style={{ position: 'absolute', left: '-9999px', top: 0 }}>
+            <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', top: 0 }}>
                 <PdfLayout ref={pdfRef} bien={bien} devis={devisForPdf} clientName={estimateClient?.bienId === String(bien.id) ? estimateClient.name : ''} />
             </div>
 
             {pieceEnEdition && <InterventionModal piece={pieceEnEdition} bienId={bien.id} onClose={() => setPieceEnEdition(null)} />}
 
-            <header className="mb-8">
+            <header className="property-heading">
                 <button onClick={goToDashboard} className="inline-flex items-center mb-4 text-sm font-medium text-indigo-600 hover:text-indigo-800"><ArrowLeftIcon/>Retour à mes biens</button>
+                <p className="doc-eyebrow">PASSEPORT DU BIEN</p>
                 <h1 className="text-3xl font-bold tracking-tight text-gray-900">{bien.address}</h1>
+                <p className="property-summary">{bien.type} · {bien.size} m²{estimateClient?.bienId === String(bien.id) && estimateClient.name ? ` · ${estimateClient.name}` : ''}</p>
             </header>
+            <nav className="property-navigation" aria-label="Rubriques du bien">{[['overview', 'Vue d’ensemble'], ['documents', 'Documents'], ['rapports', 'Rapports privés'], ['travaux', 'Travaux et devis']].map(([id, label]) => <button key={id} aria-current={section === id ? 'page' : undefined} onClick={() => setSection(id)}>{label}</button>)}</nav>
+            <section className="property-overview" hidden={section !== 'overview'} aria-label="Vue d’ensemble du bien"><div><p className="doc-eyebrow">LE BIEN</p><h2>{bien.type} · {bien.size} m²</h2><p>{bien.address}</p></div><div><p className="doc-eyebrow">CLIENT DU DOSSIER</p><h2>{estimateClient?.bienId === String(bien.id) && estimateClient.name || 'À associer'}</h2><p>Le client et les fichiers se gèrent dans Documents.</p><button className="doc-secondary" onClick={() => setSection('documents')}>Ouvrir la bibliothèque</button></div><div><p className="doc-eyebrow">TRAVAUX</p><h2>{(bien.dossier.pieces || []).length} pièce(s) renseignée(s)</h2><p>Retrouvez les interventions et l’estimation dans Travaux et devis.</p><button className="doc-secondary" onClick={() => setSection('travaux')}>Ouvrir les travaux</button></div></section>
 
-            <DocumentsPanel key={bien.id} bien={bien} onClient={setEstimateClient} onShare={handleShare} />
+            <div hidden={!['documents', 'rapports'].includes(section)}><DocumentsPanel key={bien.id} bien={bien} onClient={setEstimateClient} onShare={handleShare} section={section} /></div>
             {sharingOpen && <SharingDialog bien={bien} onClose={() => setSharingOpen(false)} />}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div hidden={section !== 'travaux'} className="property-work grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="space-y-8">
                     <div className="bg-white p-6 rounded-xl shadow-sm border">
                         <h2 className="text-xl font-semibold mb-4">Dossier du bien</h2>
@@ -803,7 +810,7 @@ const BienPage = () => {
                            {(bien.dossier.pieces || []).map(p => (
                                 <div key={p.id} className="flex justify-between items-center p-2 bg-gray-50 rounded-md">
                                    <div><span>{p.nom}</span><span className="text-gray-600 ml-2">({p.surface} m²)</span></div>
-                                    <button onClick={() => setPieceEnEdition(p)} className="p-2 rounded-md hover:bg-gray-200 text-gray-600"><EditIcon/></button>
+                                    <button aria-label={`Modifier les interventions : ${p.nom}`} onClick={() => setPieceEnEdition(p)} className="p-2 rounded-md hover:bg-gray-200 text-gray-600"><EditIcon/></button>
                                 </div>
                             ))}
                         </div>
@@ -812,7 +819,7 @@ const BienPage = () => {
                             <div className="flex space-x-2">
                                 <input type="text" placeholder="Nom (ex: Cuisine)" value={nomPiece} onChange={e => setNomPiece(e.target.value)} className="flex-grow rounded-md border-gray-300 shadow-sm px-3 py-2"/>
                                 <input type="number" placeholder="Surface (m²)" value={surfacePiece} onChange={e => setSurfacePiece(e.target.value)} className="w-28 rounded-md border-gray-300 shadow-sm px-3 py-2"/>
-                                <button type="submit" className="p-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"><PlusIcon className="w-4 h-4"/></button>
+                                <button type="submit" aria-label="Ajouter une pièce" className="p-3 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"><PlusIcon className="w-4 h-4"/></button>
                             </div>
                         </form>
                     </div>
@@ -857,13 +864,13 @@ const BienPage = () => {
                                     <DownloadIcon/>{isExporting ? 'Génération...' : 'Exporter en PDF'}
                                 </button>
                                 <button onClick={handleShare} className="flex-1 inline-flex items-center justify-center px-4 py-2 font-semibold text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300">
-                                    <ShareIcon/>Partager
+                                    <ShareIcon/>Partager les documents
                                 </button>
                             </div>
                         ) : (
                             <div className="text-center p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
                                 <p className="text-sm text-yellow-800">
-                                    Passez au <a href="#" onClick={(e) => { e.preventDefault(); useAppStore.getState().goToSubscribe(); }} className="font-bold underline">Plan Pro</a> pour exporter et partager vos devis.
+                                    Passez au <a href="#" onClick={(e) => { e.preventDefault(); useAppStore.getState().goToSubscribe(); }} className="font-bold underline">Plan Pro</a> pour exporter vos devis.
                                 </p>
                             </div>
                         )}
@@ -875,7 +882,6 @@ const BienPage = () => {
 };
 
 const BienModal = ({ isOpen, onClose, onSave, bienToEdit }) => {
-    if (!isOpen) return null;
 
     const [address, setAddress] = useState('');
     const [type, setType] = useState('Maison');
@@ -918,6 +924,8 @@ const BienModal = ({ isOpen, onClose, onSave, bienToEdit }) => {
         onClose();
     };
 
+    if (!isOpen) return null;
+
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4">
             <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-2xl">
@@ -928,19 +936,19 @@ const BienModal = ({ isOpen, onClose, onSave, bienToEdit }) => {
                 <div className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Adresse</label>
-                        <input type="text" value={address} onChange={e => setAddress(e.target.value)} placeholder="123 Rue de l'Exemple, 75001 Paris" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 border"/>
+                        <input aria-label="Adresse" type="text" value={address} onChange={e => setAddress(e.target.value)} placeholder="123 Rue de l'Exemple, 75001 Paris" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 border"/>
                     </div>
                      <div className="grid grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Type de bien</label>
-                            <select value={type} onChange={e => setType(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 border">
+                            <select aria-label="Type de bien" value={type} onChange={e => setType(e.target.value)} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 border">
                                <option>Maison</option>
                                <option>Appartement</option>
                             </select>
                         </div>
                         <div>
                            <label className="block text-sm font-medium text-gray-700">Surface (m²)</label>
-                           <input type="number" min="1" value={size} onChange={e => setSize(e.target.value)} placeholder="120" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 border"/>
+                           <input aria-label="Surface (m²)" type="number" min="1" value={size} onChange={e => setSize(e.target.value)} placeholder="120" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 px-3 py-2 border"/>
                         </div>
                     </div>
                     <div className="border-t pt-4">
@@ -948,23 +956,23 @@ const BienModal = ({ isOpen, onClose, onSave, bienToEdit }) => {
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                            <div>
                                 <label className="block text-sm font-medium text-gray-700">Chambres</label>
-                                <input type="number" min="0" value={composition.chambres} onChange={e => handleCompositionChange('chambres', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                                <input aria-label="Chambres" type="number" min="0" value={composition.chambres} onChange={e => handleCompositionChange('chambres', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
                             </div>
                            <div>
                                 <label className="block text-sm font-medium text-gray-700">Sdb</label>
-                                <input type="number" min="0" value={composition.sdb} onChange={e => handleCompositionChange('sdb', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                                <input aria-label="Salles de bain" type="number" min="0" value={composition.sdb} onChange={e => handleCompositionChange('sdb', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
                             </div>
                            <div>
                                 <label className="block text-sm font-medium text-gray-700">Séjour</label>
-                                <input type="number" min="0" value={composition.sejour} onChange={e => handleCompositionChange('sejour', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                                <input aria-label="Séjour" type="number" min="0" value={composition.sejour} onChange={e => handleCompositionChange('sejour', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
                             </div>
                            <div>
                                 <label className="block text-sm font-medium text-gray-700">Cuisine</label>
-                                <input type="number" min="0" value={composition.cuisine} onChange={e => handleCompositionChange('cuisine', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                                <input aria-label="Cuisine" type="number" min="0" value={composition.cuisine} onChange={e => handleCompositionChange('cuisine', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
                             </div>
                            <div>
                                 <label className="block text-sm font-medium text-gray-700">Garage</label>
-                                <input type="number" min="0" value={composition.garage} onChange={e => handleCompositionChange('garage', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
+                                <input aria-label="Garage" type="number" min="0" value={composition.garage} onChange={e => handleCompositionChange('garage', e.target.value)} className="mt-1 w-full rounded-md border-gray-300 px-3 py-2 border"/>
                             </div>
                         </div>
                     </div>
@@ -1084,7 +1092,7 @@ const AppContainer = () => {
         <div className="min-h-screen bg-gray-50 pb-20">
             <AppHeader />
             <main className="py-10">
-                <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+                <div className="passeport-workspace mx-auto px-4 sm:px-6 lg:px-8">
                     {renderContent()}
                 </div>
             </main>
@@ -1100,7 +1108,7 @@ export default function App() {
  }, [hydrate]);
 
  return (
-    <div className="bg-gray-100 font-sans min-h-screen">
+    <div className="passeport-app bg-gray-100 font-sans min-h-screen">
       {SERVER_STORAGE && storageSaving && <p role="status" className="bg-blue-50 p-3 text-center">Enregistrement sur le serveur…</p>}
       {SERVER_STORAGE && storageError && <div role="alert" className="fixed inset-0 z-50 flex items-center justify-center bg-white/95 p-6"><div className="max-w-xl"><h1 className="text-xl font-bold">Enregistrement interrompu</h1><p className="my-4">{storageError}</p><p className="my-4">Les dernières modifications peuvent ne pas être enregistrées. Copiez-les avant de recharger le dossier conservé sur le serveur.</p><button className="rounded bg-indigo-600 px-4 py-2 text-white" onClick={() => window.location.reload()}>Recharger le dossier du serveur</button><a className="ml-4 underline" href="/connect/logout.php">Revenir à CONNECT</a></div></div>}
       {isLoading ? (

@@ -5,13 +5,17 @@ title: Audit et recette du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-23
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - projet
   - audit
   - recette
 ---
+
+## 24 novembre — correction accès et références des sites
+
+Écart limité au cockpit : nouvelles références du catalogue et affichage dédié pour les deux sites. Le planning, les données clients, les lecteurs et les décisions sont conservés. La dépendance CONNECT `NonceStore` garde le propriétaire exact, le rôle frais, les signatures et le refus des nonces actifs ; elle récupère uniquement les fichiers expirés valides sous verrou. [Analyse, tests et limites](cockpit-acces-et-sites.md).
 
 ## 23 novembre — écart de classement des composants corrigé dans la vue
 

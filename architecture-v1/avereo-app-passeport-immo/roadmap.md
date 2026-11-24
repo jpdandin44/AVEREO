@@ -5,10 +5,15 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 24 novembre — Priorité UX/UI locale
+
+Premier lot Bibliothèque en développement et qualification locaux. Suite : revue humaine du candidat et de sa PR, puis préproduction de cette version après accord et préparation réelle de la cible. Le CIL complet, les opérations en masse et les vérifications hébergées antérieures restent distincts. [Suivi canonique](data/suivi-ux-ui.json).
+
 
 ## 22 novembre — R12-18 livré, recette hébergée volumineuse suivante
 

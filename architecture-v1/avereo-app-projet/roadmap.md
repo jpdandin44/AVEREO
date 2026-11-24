@@ -5,12 +5,16 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-23
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 24 novembre — correctif accès et références des sites
+
+**Cadrage** : correction demandée par le responsable. **Développement local** : références visibles et récupération sûre des jetons expirés préparées ; 418 tests Projet réussis ; revue locale à examiner. **Préproduction** : diagnostic serveur puis sauvegarde, restauration sur copie et installation du nouveau candidat à autoriser. **Mise en production** : non engagée pour ce lot. [Suivi du correctif](docs/cockpit-acces-et-sites.md).
 
 ## 23 novembre — fiches de projets en préparation locale
 

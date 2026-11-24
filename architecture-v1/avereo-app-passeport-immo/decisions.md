@@ -5,10 +5,15 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-21
+updated: 2026-11-24
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 24 novembre — Navigation et confidentialité
+
+Contexte : améliorer l’accès aux documents sans mélanger devis et copies privées. Le premier lot demandé utilise la disposition Bibliothèque et les quatre rubriques métier ; il réutilise Mon compte et les dépôts existants. Conséquence : les écrans sont conservés pendant la navigation, le partage ne reçoit pas les publications privées, aucun changement de schéma ni de droits. Cette décision d’implémentation ne vaut pas validation de phase ou de livraison. [Portée](docs/ux-ui-bibliotheque.md).
+
 
 ## 2026-11-21 — Même contrat de limites que Rapport
 
