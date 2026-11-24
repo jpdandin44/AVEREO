@@ -53,7 +53,26 @@ if ($method === 'POST') {
     if ($errors !== []) {
         vision_error(422, 'validation_failed', 'Données invalides.', ['fields' => $errors]);
     }
-    $project = vision_project_create($pdo, $identity, $clean);
+    // Création hors ligne : l'identifiant vient du navigateur. Rejeu par le même propriétaire (réponse perdue) : 200 avec
+    // le projet existant, sans doublon (le client compare les champs et renvoie une modification si besoin). Autre propriétaire : 409.
+    if (isset($clean['id'])) {
+        $existing = vision_project_find($pdo, $clean['id']);
+        if ($existing !== null) {
+            if ($existing['owner_provider'] !== $identity['provider'] || $existing['owner_id'] !== $identity['id']) {
+                vision_error(409, 'id_conflict', 'Cet identifiant est déjà utilisé.');
+            }
+            vision_json_response(200, ['ok' => true, 'project' => vision_project_public($existing)]);
+        }
+    }
+    try {
+        $project = vision_project_create($pdo, $identity, $clean);
+    } catch (PDOException $exception) {
+        // Deux créations simultanées du même identifiant : la seconde est un doublon (code SQLSTATE 23000).
+        if ($exception->getCode() === '23000' && isset($clean['id'])) {
+            vision_error(409, 'id_conflict', 'Cet identifiant est déjà utilisé.');
+        }
+        throw $exception;
+    }
     vision_json_response(201, ['ok' => true, 'project' => vision_project_public($project)]);
 }
 

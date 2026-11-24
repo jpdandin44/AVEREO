@@ -23,7 +23,7 @@ Un objet synchronisé : `{object_id, kind, parent_id, data, rev, deleted}` (plus
 | `piece` | id du niveau | `{nom: texte 1–160, hauteurMm: entier 1–100000, ordre: entier 0–9999, sommets: 3 à 64 points {x, y}, entiers −100 000 000 à 100 000 000}` |
 | `ouverture` | id de la pièce | `{type: "porte"\|"fenetre", murIndex: entier 0–63, positionMm: entier 0–100 000 000, largeurMm: entier 1–100 000, hauteurMm: entier 1–100 000, alleMm: entier 0–100 000}` |
 
-Limites : `data` ≤ 8 192 octets en JSON ; 64 ouvertures par pièce (appliqué par le client) ; 5 000 objets par projet (413 `project_too_large` au-delà) ; 100 changements par envoi ; corps ≤ 262 144 octets. L'ordre des niveaux et des pièces vient de `ordre` puis de l'identifiant.
+Les entiers sont des entiers JSON stricts (`2500.0` est refusé). Limites : `data` ≤ 8 192 octets en JSON ; 64 ouvertures par pièce (appliqué par le client) ; 5 000 objets par projet (413 `project_too_large` au-delà) ; 100 changements par envoi ; corps ≤ 262 144 octets. L'ordre des niveaux et des pièces vient de `ordre` puis de l'identifiant.
 
 ## 3. Envoi et réception
 `POST /api/sync.php?project=<id du projet>` — `Content-Type: application/json`.
@@ -64,7 +64,7 @@ Pour chaque changement reçu, dans l'ordre :
 1. objet inconnu : création (`rev` 1) ; `base_rev` attendu 0 mais non exigé (un envoi rejoué après création reste `unchanged`) ;
 2. valeur identique (même `parent_id`, même `deleted`, même `data`) : `unchanged` ;
 3. `base_rev` = `rev` du serveur : `applied`, `rev + 1` ;
-4. sinon (`base_rev` ≠ `rev`) : le changement est **quand même appliqué** (`rev + 1`, `status: conflict`), et l'état précédent du serveur est inscrit au journal : valeur écrasée, `rev` écrasé, appareil et auteur de cette valeur, appareil et auteur du gagnant.
+4. sinon (`base_rev` ≠ `rev`) : le changement est **quand même appliqué** (`rev + 1`). Si la valeur écrasée vient d'**un autre appareil**, le statut est `conflict` et l'état précédent du serveur est inscrit au journal : valeur écrasée, `rev` écrasé, appareil et auteur de cette valeur, appareil et auteur du gagnant. Si elle vient du **même appareil** (réponse perdue, rejeu avec un `base_rev` périmé), c'est un simple `applied` : un appareil ne s'écrase pas lui-même, rien n'est journalisé.
 
 Conséquence : un appareil ne perd jamais une modification sans trace ; celui dont la valeur est écrasée la retrouve au journal (filtrer sur son `device_id`).
 
@@ -78,7 +78,7 @@ Conséquence : un appareil ne perd jamais une modification sans trace ; celui do
 Visible par quiconque peut lire le projet (propriétaire, fondateur).
 
 ## 5. Projets et création hors ligne
-- `POST /api/projects.php` accepte un champ optionnel **`id`** (32 caractères hexadécimaux minuscules, généré par le navigateur avec `crypto.getRandomValues`). Sans `id`, le serveur en choisit un (comportement du Lot 2A). Création avec un `id` : `201` ; **rejeu** d'une création par le même propriétaire avec les mêmes champs : `200` avec le projet existant, sans doublon ; `id` pris par un autre propriétaire ou champs différents : `409 id_conflict`.
+- `POST /api/projects.php` accepte un champ optionnel **`id`** (32 caractères hexadécimaux minuscules, généré par le navigateur avec `crypto.getRandomValues`). Sans `id`, le serveur en choisit un (comportement du Lot 2A). Création avec un `id` : `201` ; **rejeu** d'une création par le même propriétaire : `200` avec le projet **existant** (jamais modifié par le rejeu : le client compare les champs et envoie une modification si besoin), sans doublon ; `id` déjà pris par un autre propriétaire : `409 id_conflict`. Un `id` mal formé est refusé (`422`) ; il ne se modifie jamais (`PATCH` : champ inconnu).
 - Le client met en file ses créations (`projet.creer`), renommages et archivages ; il les envoie **avant** les objets du projet.
 - Un projet archivé refuse l'envoi d'objets (`409 project_archived`) et reste lisible.
 
