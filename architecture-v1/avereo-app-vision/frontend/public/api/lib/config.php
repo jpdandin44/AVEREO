@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 // Configuration de l'API. Les secrets (mot de passe MySQL, jeton local, secret CONNECT) vivent dans un fichier PHP
-// HORS du dossier publié : AVEREO_CONFIG_FILE, sinon $HOME/.avereo/vision/config.php. Jamais dans le navigateur.
+// HORS du dossier publié : AVEREO_CONFIG_FILE, sinon ~/.avereo/vision/config.php (~/.avereo/vision-preprod/config.php pour
+// un site « preprod »), dossier personnel déduit de $HOME ou de la racine web. Jamais dans le navigateur.
 
 final class VisionConfigException extends RuntimeException
 {
@@ -29,18 +30,62 @@ function vision_default_config(): array
     ];
 }
 
-/** Chemin du fichier de configuration, ou null s'il n'existe pas. */
+/** Dossier personnel (« /home/COMPTE ») déduit d'un chemin, ou chaîne vide. Sert quand $HOME n'est pas défini (hébergement mutualisé). */
+function vision_home_from_path(string $path): string
+{
+    $path = str_replace('\\', '/', $path);
+    return preg_match('#^(/home/[^/]+)(?:/|$)#', $path, $matches) === 1 ? $matches[1] : '';
+}
+
+/**
+ * Chemins possibles du fichier de configuration, du plus probable au moins probable, tous hors du dossier publié.
+ * Un site dont la racine web contient « preprod » cherche d'abord « vision-preprod », puis « vision » : une préproduction
+ * ne lit donc jamais par erreur la configuration de production, et inversement.
+ * @param array<string, mixed> $server contenu de $_SERVER (injecté pour les tests)
+ * @return string[]
+ */
+function vision_config_candidates(array $server, string $home, string $apiDirectory): array
+{
+    $documentRoot = strtolower(str_replace('\\', '/', (string) ($server['CONTEXT_DOCUMENT_ROOT'] ?? $server['DOCUMENT_ROOT'] ?? '')));
+    $names = str_contains($documentRoot, 'preprod') ? ['vision-preprod'] : ['vision'];
+    $roots = [];
+    foreach ([$home, (string) ($server['HOME'] ?? '')] as $path) {
+        $roots[] = rtrim($path, '/\\');
+    }
+    foreach ([(string) ($server['DOCUMENT_ROOT'] ?? ''), (string) ($server['CONTEXT_DOCUMENT_ROOT'] ?? ''), $apiDirectory] as $path) {
+        $roots[] = vision_home_from_path($path);
+    }
+    $roots = array_values(array_unique(array_filter($roots, static fn (string $root): bool => $root !== '')));
+    $candidates = [];
+    foreach ($roots as $root) {
+        foreach ($names as $name) {
+            $candidates[] = $root . '/.avereo/' . $name . '/config.php';
+        }
+    }
+    return $candidates;
+}
+
+/**
+ * Chemin du fichier de configuration, ou null s'il n'y a aucun candidat.
+ * Ordre : AVEREO_CONFIG_FILE (variable d'environnement), puis le premier candidat existant, sinon le premier candidat.
+ */
 function vision_config_path(): ?string
 {
     $explicit = getenv('AVEREO_CONFIG_FILE');
-    if (is_string($explicit) && $explicit !== '') {
+    if (!is_string($explicit) || $explicit === '') {
+        $explicit = (string) ($_SERVER['AVEREO_CONFIG_FILE'] ?? $_SERVER['REDIRECT_AVEREO_CONFIG_FILE'] ?? '');
+    }
+    if ($explicit !== '') {
         return $explicit;
     }
     $home = getenv('HOME');
-    if (!is_string($home) || $home === '') {
-        $home = (string) ($_SERVER['HOME'] ?? '');
+    $candidates = vision_config_candidates($_SERVER, is_string($home) ? $home : '', __DIR__);
+    foreach ($candidates as $candidate) {
+        if (is_file($candidate)) {
+            return $candidate;
+        }
     }
-    return $home !== '' ? rtrim($home, '/\\') . '/.avereo/vision/config.php' : null;
+    return $candidates[0] ?? null;
 }
 
 /**

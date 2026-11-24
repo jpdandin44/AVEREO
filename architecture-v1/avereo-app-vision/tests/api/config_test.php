@@ -31,6 +31,22 @@ vision_test('config : le jeton local est interdit en préproduction et en produc
     }
 });
 
+vision_test('config : chemin du fichier de configuration sur un hébergement mutualisé sans $HOME', function () {
+    $api = '/home/compte/vision-preprod.avereo.fr/api/lib';
+    $server = ['DOCUMENT_ROOT' => '/home/compte/vision-preprod.avereo.fr'];
+    vision_assert_same(['/home/compte/.avereo/vision-preprod/config.php'], vision_config_candidates($server, '', $api), 'préproduction');
+    $production = ['DOCUMENT_ROOT' => '/home/compte/vision.avereo.fr'];
+    vision_assert_same(['/home/compte/.avereo/vision/config.php'], vision_config_candidates($production, '', '/home/compte/vision.avereo.fr/api/lib'), 'production');
+    vision_assert_same(['/home/autre/.avereo/vision/config.php', '/home/compte/.avereo/vision/config.php'], vision_config_candidates($production, '/home/autre/', $api . '/..'), 'HOME prioritaire');
+    vision_assert_same([], vision_config_candidates([], '', '/srv/app/api/lib'), 'aucun dossier personnel déductible');
+});
+
+vision_test('config : une préproduction ne lit jamais la configuration de production', function () {
+    foreach (vision_config_candidates(['DOCUMENT_ROOT' => '/home/compte/vision-preprod.avereo.fr'], '/home/compte', '/home/compte/vision-preprod.avereo.fr/api/lib') as $chemin) {
+        vision_assert_true(!str_ends_with($chemin, '/.avereo/vision/config.php'), $chemin);
+    }
+});
+
 vision_test('config : jeton local trop court refusé', function () {
     vision_assert_throws(fn () => vision_test_config(['api_token' => 'court']), VisionConfigException::class, '32');
 });

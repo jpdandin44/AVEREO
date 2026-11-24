@@ -5,7 +5,7 @@
   "version": "git",
   "iterationId": "vision-v1",
   "title": "AVEREO Vision V1 — relevé, métré et modélisation 2D/3D (équivalent Visuary)",
-  "status": "lot2a_awaiting_human_review",
+  "status": "lot2a_merged_preprod_procedure_prepared",
   "stage": "cadrage",
   "updatedAt": "2026-11-24",
   "objective": "Construire lot par lot une PWA AVEREO de relevé de l'existant (vidéo, métrés ±2 cm, plan 2D, maquette 3D, exports PDF/DXF/IFC/glTF/OBJ/CSV) sur des moteurs open source sous licence MIT, BSD ou Apache 2.0.",
@@ -14,7 +14,7 @@
     "status": "produced_in_lot0_awaiting_validation",
     "meaning": "Lots fonctionnels distincts des quatre phases ; le détail des lots et des tâches (statut, pourquoi, Claude Code ou Codex, modèle, effort, job Codex) est tenu uniquement dans la source Markdown."
   },
-  "activeLot": {"id": "LOT-2A", "title": "API PHP, base MySQL, authentification, projets", "branch": "vision/lot-2a-api-projets", "scope": "code_local_development", "status": "en cours (PR à relire)"},
+  "activeLot": {"id": "PREPROD-VISION", "title": "Procédure de mise en ligne en préproduction (hébergement mutualisé)", "branch": "docs/vision-deploiement-mutualise", "scope": "documentation_and_local_code", "status": "en cours (PR à relire)"},
   "candidate": {"sourceSha": null, "artifactSha256": null},
   "phases": [
     {"id": 0, "label": "Cadrage", "status": "technically_verified_awaiting_human_review", "criteria": []},
@@ -33,6 +33,8 @@
     {"id": "ovh-serveur-20261124", "phaseId": 0, "title": "Caractéristiques du serveur OVH relevées en lecture seule le 24/11/2026 (VPS-1, insuffisant pour la reconstruction)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/serveur-ovh.md", "observedAt": "2026-11-24"},
     {"id": "lot2a-pr-195-20261124", "phaseId": 1, "title": "PR Lot 2A ouverte vers main, en attente de relecture humaine (état observé sur GitHub, aucun merge)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/195", "observedAt": "2026-11-24"},
     {"id": "lot2a-authentification-20261124", "phaseId": 1, "title": "Lot 2A : authentification et droits (CONNECT + jeton local, parcours testé avec des tickets forgés)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/authentication.md", "observedAt": "2026-11-24"},
+    {"id": "preprod-procedure-20261124", "phaseId": 2, "title": "Procédure de mise en ligne en préproduction (hébergement mutualisé O2Switch) : préparée, non exécutée", "kind": "reference_document", "status": "reviewable", "evidence": "docs/deploiement-mutualise.md", "observedAt": "2026-11-24"},
+    {"id": "contrat-connect-vision-20261124", "phaseId": 1, "title": "Contrat CONNECT/Vision : un ticket émis par le code de CONNECT (PR #196) est accepté par la passerelle de Vision, son rejeu est refusé (essai local, sans serveur hébergé)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/authentication.md", "observedAt": "2026-11-24"},
     {"id": "lot2a-developpement-local-20261124", "phaseId": 1, "title": "Lot 2A : développement local (pile Docker PHP et MySQL, tests)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/local-development.md", "observedAt": "2026-11-24"},
     {"id": "lot1-pr-190-20261124", "phaseId": 1, "title": "PR Lot 1 mergée dans main par le responsable le 24/11/2026 à 08:36 UTC, commit 6ca2822 (état observé sur GitHub)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/190", "observedAt": "2026-11-24"},
     {"id": "lot0-pr-188-20261123", "phaseId": 0, "title": "PR Lot 0 mergée dans main par le responsable le 23/11/2026 à 21:29 UTC, commit 54d3fba (état observé sur GitHub)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/188", "observedAt": "2026-11-23"},
@@ -71,7 +73,7 @@
     "À VÉRIFIER : dépôt actuel d'OpenSfM et son chemin CPU, licences de Boost, Eigen, FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR (alertes de licence signalées par la relecture Codex, non revérifiées sur les sources amont).",
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
-  "nextAction": "Relire la PR du Lot 2A, cocher la checklist si elle te convient ; autoriser (ou non) la PR séparée qui enregistre l'application « vision » dans CONNECT ; fournir la pièce de référence (R29) ; puis lancer le Lot 2B (message « Lot 2B selon docs/plan-lots.md… »).",
+  "nextAction": "Relire la PR de la procédure de mise en ligne, puis (avec ton accord à chaque étape) suivre docs/deploiement-mutualise.md : sous-domaine, base MySQL, configuration privée, dépôt, catalogue et habilitation CONNECT, essai de bout en bout ; fournir la pièce de référence (R29) ; puis lancer le Lot 2B.",
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/195"},
   "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; repointé le 24/11/2026 vers le worktree C:/Users/examg/Documents local/avereo-vision-lot1 (branche de suivi vision/lot-1-suivi-caniuse), à repointer vers le clone principal une fois à jour.",
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},
