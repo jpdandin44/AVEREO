@@ -41,6 +41,7 @@
     {"id": "D3", "title": "Mise à l'échelle des relevés vidéo", "status": "decided", "decidedOn": "2026-11-23", "choice": "2 cotes laser pour l'échelle + 1 cote de contrôle (écart > 2 cm = hors tolérance), mire ArUco en secours"},
     {"id": "D4", "title": "Licences permissives hors liste : BSL-1.0 (Clipper2), FPDF, EDL-1.0 (JSTS)", "status": "decided", "decidedOn": "2026-11-23", "choice": "Refus de Clipper2 (BSL-1.0), FPDF et EDL-1.0 (JSTS) : inutiles, flatten-js et Gotenberg couvrent les besoins"},
     {"id": "D5", "title": "Outil de validation IFC pendant les tests : IfcOpenShell (LGPL-3.0), hors application livrée", "status": "decided", "decidedOn": "2026-11-23", "choice": "IfcOpenShell (LGPL-3.0) accepté comme outil de test seulement : ni dans les dépendances de l'application, ni dans les conteneurs, ni en production"},
+    {"id": "D7", "title": "Licence CC-BY-4.0 de caniuse-lite (dépendance transitive de développement : données de compatibilité des navigateurs, non livrées dans l'application)", "status": "decided", "decidedOn": "2026-11-24", "choice": "Acceptée, exception limitée à cette dépendance de développement (données, pas du code)"},
     {"id": "D6", "title": "Dépendances système hors liste des moteurs retenus : Boost (BSL-1.0) et Eigen (MPL-2.0) pour COLMAP, FFmpeg, Pango (WeasyPrint), LibreOffice et Chromium (Gotenberg)", "status": "decided", "decidedOn": "2026-11-23", "choice": "Règle étroite acceptée : un programme exécuté côté serveur, non modifié, non redistribué et inscrit dans docs/licences.md peut être sous BSL-1.0, MPL-2.0 ou LGPL ; AGPL, GPL, non commercial et propriétaire restent exclus. Boost, Eigen, FFmpeg (build sans composants GPL, à vérifier au lot 7) et l'image Gotenberg non modifiée (audit au lot 4, image sans LibreOffice à étudier) acceptés sous cette règle ; Pango (repli WeasyPrint) non décidé"}
   ],
   "developmentReviews": [],
@@ -49,8 +50,7 @@
   "blockers": [
     "Service de traitement : essai en conteneur local autorisé (décision du 23/11/2026) ; mise en place sur le serveur OVH = accord séparé du responsable, après l'essai de précision du lot 7.",
     "Serveur OVH relevé le 24/11/2026 : VPS-1, 2 vCores, 4 Go, 40 Go, sans GPU ; insuffisant pour la reconstruction 3D. Choix de l'offre (achat) = accord du responsable, avant le lot 7.",
-    "Pièce de référence et ses cotes laser à fournir par le responsable (exigence R29, lot 1).",
-    "Décision du responsable : licence CC-BY-4.0 de caniuse-lite (dépendance transitive de développement, données non livrées), hors de la liste MIT, BSD, Apache 2.0 de AGENTS.md."
+    "Pièce de référence et ses cotes laser à fournir par le responsable (exigence R29, lot 1)."
   ],
   "reserves": [
     "À VÉRIFIER : précision réelle de chaque mode de capture (±2 cm) sur la pièce de référence.",
@@ -65,7 +65,7 @@
     "À VÉRIFIER : dépôt actuel d'OpenSfM et son chemin CPU, licences de Boost, Eigen, FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR (alertes de licence signalées par la relecture Codex, non revérifiées sur les sources amont).",
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
-  "nextAction": "Relire la PR du Lot 1 (#190), cocher la checklist si elle te convient, décider de la licence CC-BY-4.0 de caniuse-lite, fournir la pièce de référence et ses cotes laser (R29) ; après le merge, repointer le registre du cockpit vers le clone mis à jour et lancer le Lot 2.",
+  "nextAction": "Relire la PR du Lot 1 (#190) et cocher la checklist si elle te convient ; fournir la pièce de référence et ses cotes laser (R29) ; après le merge, repointer le registre du cockpit vers le clone mis à jour et lancer le Lot 2.",
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/190"},
   "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; la source pointe vers le worktree C:/Users/examg/Documents local/avereo-vision-lot0, à repointer vers le clone principal une fois mis à jour.",
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},
