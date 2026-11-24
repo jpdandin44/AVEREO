@@ -1,0 +1,25 @@
+{
+  "provisoire": true,
+  "avertissement": "À VÉRIFIER : jeu fictif de démonstration. La vraie pièce de référence et ses cotes au mètre laser restent à fournir par le responsable.",
+  "piece": {
+    "id": "reference",
+    "nom": "Pièce de référence (provisoire)",
+    "hauteurMm": 2500,
+    "sommets": [
+      { "x": 0, "y": 0 },
+      { "x": 4000, "y": 0 },
+      { "x": 4000, "y": 3000 },
+      { "x": 0, "y": 3000 }
+    ],
+    "ouvertures": []
+  },
+  "laserMm": {
+    "mur 1": 4005,
+    "mur 2": 2996,
+    "mur 3": 4002,
+    "mur 4": 3003,
+    "hauteur": 2498,
+    "diagonale 1": 4999,
+    "diagonale 2": 5003
+  }
+}

@@ -10,6 +10,7 @@ import FormulairePiece from "./features/saisie-cotes/FormulairePiece.jsx";
 import ListeMurs from "./features/saisie-cotes/ListeMurs.jsx";
 import ListeOuvertures from "./features/saisie-cotes/ListeOuvertures.jsx";
 import PanneauMetres from "./features/metres-panneau/PanneauMetres.jsx";
+import PanneauPrecision from "./features/metres-panneau/PanneauPrecision.jsx";
 import Plan2D from "./features/plan2d/Plan2D.jsx";
 import { useReleve } from "./features/releve/useReleve.js";
 
@@ -146,6 +147,7 @@ export default function App() {
             nomNiveau={niveau.nom}
             metresNiveau={releve.metresNiveau}
           />
+          <PanneauPrecision />
         </div>
       </main>
     </div>

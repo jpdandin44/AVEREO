@@ -3,8 +3,11 @@ import { useState } from "react";
 import { analyserLongueur, texteDepuisMm } from "../../domain/unites.js";
 import Champ from "./Champ.jsx";
 
-/** @param {{libelle: string, valeurMm: number, onValider: (mm: number) => void, autoriserZero?: boolean}} props */
-export default function ChampLongueur({ libelle, valeurMm, onValider, autoriserZero = false }) {
+/**
+ * @param {{libelle: string, valeurMm: number, onValider: (mm: number) => void, autoriserZero?: boolean,
+ *   verifier?: (mm: number) => string | null}} props verifier : renvoie un message pour refuser la valeur
+ */
+export default function ChampLongueur({ libelle, valeurMm, onValider, autoriserZero = false, verifier }) {
   const [texte, setTexte] = useState(texteDepuisMm(valeurMm));
   const [erreur, setErreur] = useState();
   const [precedent, setPrecedent] = useState(valeurMm);
@@ -18,6 +21,11 @@ export default function ChampLongueur({ libelle, valeurMm, onValider, autoriserZ
     const lecture = analyserLongueur(texte, "m", { autoriserZero });
     if (!lecture.ok) {
       setErreur(lecture.message);
+      return;
+    }
+    const refus = verifier?.(lecture.mm);
+    if (refus) {
+      setErreur(refus);
       return;
     }
     setErreur(undefined);

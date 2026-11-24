@@ -3,6 +3,7 @@
 // Le mur i va du sommet i au sommet suivant. Logique pure : aucune dépendance au DOM ni à React.
 
 import { distance, estAutoSecant, longueurMurMm } from "./geometrie.js";
+import { formaterLongueurMm } from "./unites.js";
 
 /**
  * @typedef {{x: number, y: number}} Point  // millimètres
@@ -223,6 +224,45 @@ export function supprimerSommet(piece, i) {
   if (estAutoSecant(sommets)) return { ok: false, message: "Retirer ce sommet ferait se croiser les murs." };
   const ouvertures = piece.ouvertures.map((o) => (o.murIndex > i ? { ...o, murIndex: o.murIndex - 1 } : o));
   return { ok: true, piece: { ...piece, sommets, ouvertures } };
+}
+
+/**
+ * Contrôle d'une ouverture avant de l'enregistrer (R33) : elle doit rester dans son mur, sous le plafond
+ * et ne pas chevaucher une autre ouverture. Renvoie le message d'erreur, ou null si tout va bien.
+ * @param {Piece} piece @param {Ouverture} ouverture @returns {string | null}
+ */
+export function validerOuverture(piece, ouverture) {
+  if (!Number.isInteger(ouverture.murIndex) || ouverture.murIndex < 0 || ouverture.murIndex >= piece.sommets.length) {
+    return "Ce mur n'existe pas.";
+  }
+  const longueur = Math.round(longueurMur(piece, ouverture.murIndex));
+  if (ouverture.positionMm < 0 || ouverture.positionMm + ouverture.largeurMm > longueur) {
+    return `L'ouverture dépasserait du mur (longueur ${formaterLongueurMm(longueur)}).`;
+  }
+  if (ouverture.alleMm + ouverture.hauteurMm > piece.hauteurMm) {
+    return `L'ouverture dépasserait le plafond (hauteur ${formaterLongueurMm(piece.hauteurMm)}).`;
+  }
+  const chevauche = piece.ouvertures.some(
+    (autre) =>
+      autre.id !== ouverture.id &&
+      autre.murIndex === ouverture.murIndex &&
+      Math.max(ouverture.positionMm, autre.positionMm) < Math.min(ouverture.positionMm + ouverture.largeurMm, autre.positionMm + autre.largeurMm),
+  );
+  return chevauche ? "L'ouverture chevaucherait une autre ouverture de ce mur." : null;
+}
+
+/**
+ * Première position libre (par pas de 100 mm, en partant de 500 mm) pour une nouvelle ouverture sur un mur,
+ * ou null s'il n'y a pas de place.
+ * @param {Piece} piece @param {Ouverture} ouverture @returns {number | null}
+ */
+export function trouverPositionLibre(piece, ouverture) {
+  const longueur = Math.round(longueurMur(piece, ouverture.murIndex));
+  const candidats = [500, ...Array.from({ length: Math.floor(longueur / 100) + 1 }, (_, k) => k * 100)];
+  for (const positionMm of candidats) {
+    if (validerOuverture(piece, { ...ouverture, positionMm }) === null) return positionMm;
+  }
+  return null;
 }
 
 /** @param {Piece} piece @param {Ouverture} ouverture @returns {Piece} */

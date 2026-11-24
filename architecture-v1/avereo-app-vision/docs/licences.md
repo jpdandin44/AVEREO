@@ -10,18 +10,19 @@ Initialisé au Lot 0 (23/11/2026). **Aucune dépendance n'est installée à ce s
 - Reproduire les fonctions de Visuary, jamais ses éléments : aucun nom, logo, texte, icône, maquette, code ou fichier de Visuary ne figure dans le projet.
 
 ## Dépendances prévues
-Version observée = dernier tag stable relevé le 20/11/2026 ; la version fixée sera celle du lot d'installation. Statut : **prévue** (non installée).
+Version observée = dernier tag stable relevé le 20/11/2026 ; la version fixée est celle du lot d'installation. Statut : **prévue** (non installée) ou **installée** (lot 1, contrôle du 24/11/2026 : fichier LICENSE lu dans `node_modules` par le sous-agent verif-licences, concordant avec le champ `license`).
 
 | Nom | Version observée | Licence | Usage | Lot | Statut |
 |---|---|---|---|---|---|
-| React, React DOM | à relever au Lot 1 | MIT (à confirmer par verif-licences) | interface (stack de l'application Rapport) | 1 | prévue |
-| Vite | à relever au Lot 1 | MIT (à confirmer) | outil de build | 1 | prévue |
-| Outil de test (proposé : Vitest) | à relever au Lot 1 | MIT (à confirmer) | tests unitaires de la logique de métré | 1 | prévue |
-| Konva | 10.10.0 | MIT | plan 2D | 1 | prévue |
-| react-konva | 19.3.2 | MIT | plan 2D (liaison React) | 1 | prévue |
-| flatten-js (`@flatten-js/core`) | 1.6.15 | MIT | géométrie plane des pièces | 1 | prévue |
-| Inter | à relever au Lot 1 | SIL OFL 1.1 | police de l'interface | 1 | prévue |
-| JetBrains Mono | à relever au Lot 1 | SIL OFL 1.1 | cotes et données techniques | 1 | prévue |
+| React, React DOM | 19.3.1 | MIT | interface | 1 | **installée** |
+| Vite | 7.3.8 | MIT | outil de build | 1 | **installée** (développement) |
+| @vitejs/plugin-react | 5.2.0 | MIT | plugin React de Vite | 1 | **installée** (développement) |
+| Outil de test | — | lanceur natif de Node (`node --test`) | tests unitaires de la logique de métré | 1 | aucune dépendance ajoutée (Vitest abandonné, décision du 24/11/2026) |
+| Konva | 10.11.0 | MIT | plan 2D | 1 | **installée** |
+| react-konva | 19.3.2 | MIT | plan 2D (liaison React) | 1 | **installée** (exige React 19) |
+| flatten-js (`@flatten-js/core`) | 1.6.15 | MIT | géométrie plane des pièces | — | non installée : la surface (formule de Gauss) et l'auto-intersection sont codées dans `frontend/src/domain/geometrie.js` |
+| Inter (`@fontsource/inter`) | 5.3.0 | SIL OFL 1.1 | police de l'interface, auto-hébergée | 1 | **installée** |
+| JetBrains Mono (`@fontsource/jetbrains-mono`) | 5.3.0 | SIL OFL 1.1 | cotes et données techniques, auto-hébergée | 1 | **installée** |
 | Dexie | 4.4.7 | Apache 2.0 | stockage hors ligne | 2 | prévue |
 | vite-plugin-pwa | 2.0.0 | MIT | manifeste et service worker | 2 | prévue |
 | Workbox | 7.4.1 | MIT | service worker (via vite-plugin-pwa) | 2 | prévue |
@@ -47,6 +48,13 @@ Version observée = dernier tag stable relevé le 20/11/2026 ; la version fixée
 | league/csv | 9.29.0 | MIT | repli CSV | — | option |
 | Manifold | 3.5.5 | Apache 2.0 | repli booléens 3D | — | option |
 | MapAnything (modèle « apache ») | 1.1.3 | Apache 2.0 | reconstruction par apprentissage, **seulement si GPU (D2)** | 8 | option |
+
+## Dépendances transitives du Lot 1 (contrôle du 24/11/2026)
+125 paquets transitifs (`package-lock.json`), tous avec une licence renseignée : MIT 115, ISC 5, OFL-1.1 2 (les polices), Apache-2.0 1, BSD-3-Clause 1, CC-BY-4.0 1. Aucune licence GPL, LGPL, AGPL, MPL, non commerciale ou absente. Les paquets livrés dans le build (react, react-dom, konva, react-konva et leurs dépendances directes) sont tous MIT.
+
+| Paquet | Licence | Usage | Statut |
+|---|---|---|---|
+| caniuse-lite 1.0.30001827 | **CC-BY-4.0** (données de compatibilité des navigateurs, licence non logicielle) | dépendance transitive de développement des outils de build ; non livrée dans l'application | **À DÉCIDER par le responsable** : hors de la liste MIT, BSD, Apache 2.0 de `AGENTS.md` |
 
 ## Dépendances système à instruire (décision D6)
 Signalées par la relecture adversariale Codex du Lot 0 ; non revérifiées sur les sources amont à ce stade. **Décision D6 du responsable (23/11/2026)** : un programme exécuté côté serveur, non modifié, non redistribué et inscrit ici peut être sous BSL-1.0, MPL-2.0 ou LGPL ; AGPL, GPL, non commercial et propriétaire restent exclus. Ces lectures de licence ne sont pas un avis juridique.

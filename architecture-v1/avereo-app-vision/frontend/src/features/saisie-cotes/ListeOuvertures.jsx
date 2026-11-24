@@ -1,7 +1,8 @@
 // Portes et fenêtres : ajout avec dimensions par défaut, puis réglage de la position et des dimensions (R23, R33).
 import { useState } from "react";
+import Encadre from "../../components/Encadre.jsx";
 import Icone from "../../components/Icone.jsx";
-import { ajouterOuverture, creerOuverture, modifierOuverture, nombreMurs, supprimerOuverture } from "../../domain/modele.js";
+import { ajouterOuverture, creerOuverture, modifierOuverture, supprimerOuverture, trouverPositionLibre, validerOuverture } from "../../domain/modele.js";
 import ChampLongueur from "./ChampLongueur.jsx";
 
 const NOMS_TYPE = { porte: "Porte", fenetre: "Fenêtre" };
@@ -10,12 +11,22 @@ const NOMS_TYPE = { porte: "Porte", fenetre: "Fenêtre" };
 export default function ListeOuvertures({ piece, onChange }) {
   const [type, setType] = useState("porte");
   const [mur, setMur] = useState(1);
-  const murs = nombreMurs(piece);
+  const [refus, setRefus] = useState(null);
 
   function ajouter() {
-    const murIndex = Math.min(Math.max(mur, 1), murs) - 1;
-    onChange(ajouterOuverture(piece, creerOuverture({ type, murIndex, positionMm: 500 })));
+    const murIndex = Math.min(Math.max(mur, 1), piece.sommets.length) - 1;
+    const modele = creerOuverture({ type, murIndex, positionMm: 500 });
+    const position = trouverPositionLibre(piece, modele);
+    if (position === null) {
+      setRefus("Pas de place sur ce mur pour cette ouverture : choisissez un autre mur ou réduisez les ouvertures existantes.");
+      return;
+    }
+    setRefus(null);
+    onChange(ajouterOuverture(piece, { ...modele, positionMm: position }));
   }
+
+  // Un réglage qui ferait dépasser l'ouverture du mur ou du plafond, ou la superposerait à une autre, est refusé avec un message.
+  const verifierChangement = (o, changement) => (mm) => validerOuverture(piece, { ...o, [changement]: mm });
 
   return (
     <>
@@ -39,6 +50,13 @@ export default function ListeOuvertures({ piece, onChange }) {
           <Icone nom="plus" /> Ajouter
         </button>
       </div>
+      {refus ? (
+        <div style={{ marginBottom: 12 }}>
+          <Encadre type="alerte" titre="Ouverture non ajoutée">
+            {refus}
+          </Encadre>
+        </div>
+      ) : null}
 
       {piece.ouvertures.length === 0 ? (
         <p className="champ__aide">Aucune ouverture. Ajoutez une porte ou une fenêtre sur un mur.</p>
@@ -60,11 +78,11 @@ export default function ListeOuvertures({ piece, onChange }) {
                 </button>
               </div>
               <div className="grille-champs">
-                <ChampLongueur libelle="Position (m)" valeurMm={o.positionMm} autoriserZero onValider={(v) => onChange(modifierOuverture(piece, o.id, { positionMm: v }))} />
-                <ChampLongueur libelle="Largeur (m)" valeurMm={o.largeurMm} onValider={(v) => onChange(modifierOuverture(piece, o.id, { largeurMm: v }))} />
-                <ChampLongueur libelle="Hauteur (m)" valeurMm={o.hauteurMm} onValider={(v) => onChange(modifierOuverture(piece, o.id, { hauteurMm: v }))} />
+                <ChampLongueur libelle="Position (m)" valeurMm={o.positionMm} autoriserZero verifier={verifierChangement(o, "positionMm")} onValider={(v) => onChange(modifierOuverture(piece, o.id, { positionMm: v }))} />
+                <ChampLongueur libelle="Largeur (m)" valeurMm={o.largeurMm} verifier={verifierChangement(o, "largeurMm")} onValider={(v) => onChange(modifierOuverture(piece, o.id, { largeurMm: v }))} />
+                <ChampLongueur libelle="Hauteur (m)" valeurMm={o.hauteurMm} verifier={verifierChangement(o, "hauteurMm")} onValider={(v) => onChange(modifierOuverture(piece, o.id, { hauteurMm: v }))} />
               </div>
-              <ChampLongueur libelle="Allège : hauteur du bas (m)" valeurMm={o.alleMm} autoriserZero onValider={(v) => onChange(modifierOuverture(piece, o.id, { alleMm: v }))} />
+              <ChampLongueur libelle="Allège : hauteur du bas (m)" valeurMm={o.alleMm} autoriserZero verifier={verifierChangement(o, "alleMm")} onValider={(v) => onChange(modifierOuverture(piece, o.id, { alleMm: v }))} />
             </li>
           ))}
         </ul>
