@@ -5,13 +5,17 @@ title: Projet AVEREO — planning local
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-23
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - projet
   - planning
   - local
 ---
+
+## 24 novembre — accès au cockpit et environnements des sites
+
+Le correctif local ajoute les adresses de préproduction et de production de Site AVEREO et TC Longages, avec un constat HTTP daté, distinct des reçus de livraison. Le contrôle d’accès reste strict ; le registre anti-rejeu CONNECT récupère les seules entrées expirées. [Périmètre, qualification et limites](docs/cockpit-acces-et-sites.md). Nouveau candidat non déployé ; diagnostic hébergé en attente du Terminal cPanel.
 
 ## 23 novembre — vue par projet et admission après préproduction
 
