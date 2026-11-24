@@ -61,7 +61,7 @@ function aggregate(definition,members,iterations,admission){
     sourceApplicationIds,iterations:summaries,preproduction:latest('preproduction'),production:latest('production'),
     missingTracking:!summaries.some(item=>!item.unavailable),
     blockerCount:iterations.filter(item=>ids.has(item.id)&&!item.unavailable).reduce((sum,item)=>sum+(item.blockerCount||0),0),
-    projectAdmission:admission,
+    projectAdmission:admission,environmentReferences:definition.environmentReferences||null,
     projectSources:members.map(app=>({id:app.id,name:app.name,path:app.github?.path||null,url:app.github?.url||null})),
     unqualifiedDeliveries:[...new Set(members.flatMap(app=>app.unqualifiedDeliveries||[]))]};
 }

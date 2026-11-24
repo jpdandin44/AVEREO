@@ -5,13 +5,17 @@ title: Architecture du planning Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-23
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - projet
   - architecture
   - stockage
 ---
+
+## 24 novembre — références des sites et registre anti-rejeu
+
+Le catalogue JSON porte les quatre références HTTPS et leurs observations ponctuelles. La projection ajoute `environmentReferences` sans modifier les versions, la sélection, les suivis ni le stockage signé. Aucun appel réseau n’est ajouté au navigateur. Côté CONNECT, `NonceStore` sérialise la récupération des entrées expirées et la création exclusive de la nouvelle empreinte ; les contrôles de compte et Drupal restent exécutés. [Contrat du correctif](docs/cockpit-acces-et-sites.md).
 
 ## 23 novembre — sélection de projets calculée dans la vue
 

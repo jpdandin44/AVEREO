@@ -14,6 +14,17 @@ function qualified(id,extra={}){
 function freeze(value){if(value&&typeof value==='object'){Object.freeze(value);for(const child of Object.values(value))freeze(child);}return value;}
 function baseline(){return catalogue.projects.map(p=>app(p.id,{name:p.name,category:p.category,github:{status:'observed',repository:p.repository,path:p.paths[0],url:'https://github.com/'+p.repository+'/tree/'+sha+'/'+p.paths[0]}}));}
 
+test('les deux sites exposent leurs quatre adresses même sans reçu qualifié, sans changer les versions ni admettre un projet',()=>{
+ const apps=baseline(),before=structuredClone(apps),result=projectPortfolio(apps);
+ assert.equal(result.main.length,12);
+ for(const id of ['site-avereo','tc-longages']){
+  const project=result.main.find(p=>p.id===id);assert(project.environmentReferences.preproduction.url.startsWith('https://preprod.'));
+  assert(project.environmentReferences.production.url.startsWith('https://'));assert.equal(project.preproduction,null);assert.equal(project.production,null);
+  assert.equal(firstPreproductionReceipt(project),null);
+ }
+ assert.equal(result.main.find(p=>p.id==='rapport').environmentReferences,null);assert.deepEqual(apps,before);
+});
+
 test('58 éléments donnent les 12 fiches acceptées et un prototype historique, sans modifier les sources',()=>{
   const apps=[...baseline(),app('rga'),...['prototype-v1','prototype-v1/v1','avereo-v1-base'].map((path,i)=>app('old-'+i,{category:'Prototype',github:{repository:'jpdandin44/AVEREO',path}})),...Array.from({length:42},(_,i)=>app('technical-'+i,{category:'Composant'}))];
   assert.equal(apps.length,58);const original=structuredClone(apps);freeze(apps);

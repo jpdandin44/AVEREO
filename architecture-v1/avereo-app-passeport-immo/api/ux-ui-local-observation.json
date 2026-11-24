@@ -1,0 +1,135 @@
+{
+  "project": "avereo-app-passeport-immo",
+  "kind": "local_qualification",
+  "observedAt": "2026-11-24T08:13:21.679530+00:00",
+  "reviewEnvironment": "http://127.0.0.1:5186/",
+  "baseSha": "5f59740",
+  "privateCustomerDataUsed": false,
+  "hostingAccessed": false,
+  "backendChanged": false,
+  "databaseMigration": false,
+  "checks": {
+    "frontend": {
+      "status": "passed",
+      "tests": 85,
+      "files": 12,
+      "command": "npm test",
+      "scope": "UI, stockage local/adaptateur serveur simulé, classement, partage simulé, publications et export PDF ; ouverture/validation des interventions de travaux et création/fermeture du formulaire de bien"
+    },
+    "python": {
+      "status": "passed",
+      "tests": 42,
+      "command": "python -m unittest discover -s tests -p 'test_*.py'",
+      "scope": "Packaging, documents de revue et procédures, sans hébergement réel"
+    },
+    "parity": {
+      "status": "passed",
+      "command": "node tests/check-parity.mjs",
+      "scope": "8 substitutions UI exactes puis contrôle historique intégral"
+    },
+    "cockpit": {
+      "status": "passed",
+      "command": "node tests/check-cockpit.mjs",
+      "scope": "Quatre phases, décisions archivées et empreintes approuvées intactes"
+    },
+    "documentation": {
+      "status": "passed",
+      "documents": 10,
+      "localLinks": 242,
+      "issues": []
+    },
+    "build": {
+      "status": "passed",
+      "command": "npm run build",
+      "warning": "Vite signale des bundles supérieurs à 500 ko ; optimisation de découpage hors de ce lot."
+    }
+  },
+  "browser": {
+    "status": "passed",
+    "runtime": "Application React réelle via Vite, navigateur intégré, stockage local séparé sur le port 5186",
+    "fixture": "Bien de démonstration · Bibliothèque ; Client fictif · Recette UX ; trois fichiers fictifs",
+    "scenarios": [
+      "Création du bien et association du client ; boutons d’import explicites avant association.",
+      "Import PDF dans Plans et façades, aperçu PDF réellement rendu sur canvas.",
+      "Import ZIP entier et TXT dans Autres documents ; fichiers retrouvés après réouverture du bien.",
+      "Consultation/téléchargement ZIP ; empreinte de la copie identique à l’original.",
+      "Recherche plan conservée entre Documents et Travaux et devis.",
+      "Brouillon Pièce en cours conservé entre rubriques.",
+      "Mise à la corbeille puis restauration de la notice fictive.",
+      "Dialogue de partage local : seul bien, lecture seule/révocable, besoin du stockage serveur explicite.",
+      "Disposition bureau 1440 × 1000 ; petit écran 390 × 844, aucun débordement horizontal, focus sur l’aperçu sélectionné."
+    ],
+    "archiveOriginalSha256": "4afa4587d6300149cd2758ee53af4fd55bf49a162f2d4585b45bd097a6bd8b65",
+    "archiveDownloadedSha256": "4afa4587d6300149cd2758ee53af4fd55bf49a162f2d4585b45bd097a6bd8b65",
+    "screenshots": [
+      {
+        "path": ".local/bibliotheque-bureau.jpg",
+        "sha256": "6a26ec968f22ad36e34ec4d3621664700826c8ccddb328fc904410f7bb1e7345"
+      },
+      {
+        "path": ".local/bibliotheque-mobile.jpg",
+        "sha256": "d36f4b23e313fd954b1a7b923ee390c0e0af15cbafa9e018e0a3bee9ff5a9a4d"
+      }
+    ]
+  },
+  "limitations": [
+    "Aucun accès réel CONNECT ni partage réel modifié.",
+    "Révocation, reprise multi-lots et publication couverts localement par tests simulés ; qualification hébergée encore requise pour ce candidat.",
+    "Contrôle tactile réel et audit accessibilité complet non réalisés.",
+    "Aucune livraison ni validation humaine créée."
+  ],
+  "candidate": {
+    "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "artifactSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+    "files": 22,
+    "archiveReadback": "passed"
+  },
+  "localWindowsBuild": {
+    "sourceSha": "9b4ccc9814f14a3a9f8881d6184f29b6d58a1b76",
+    "artifactSha256": "623e3aaa249d65d78e8364e0a66400e4acdeeb95637a2aafa8a15ffd583a36c9",
+    "files": 22,
+    "archiveReadback": "passed"
+  },
+  "artifactComparison": {
+    "ciSource": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "ciSha256": "967407e1b86e346907ae997363b438809c8aae3f76321fe86413fe75f22771f9",
+    "localSha256": "623e3aaa249d65d78e8364e0a66400e4acdeeb95637a2aafa8a15ffd583a36c9",
+    "differences": [
+      "account-menu.js",
+      "index.html"
+    ],
+    "zipReadback": "passed",
+    "differencesDetail": [
+      {
+        "path": "account-menu.js",
+        "kind": "CRLF_LF_only",
+        "windowsBytes": 33938,
+        "ciBytes": 33445
+      },
+      {
+        "path": "index.html",
+        "kind": "CRLF_LF_only",
+        "windowsBytes": 556,
+        "ciBytes": 550
+      }
+    ],
+    "runtimeAssetsByteIdentical": true
+  },
+  "ci": {
+    "status": "passed",
+    "observedAt": "2026-11-24T08:20:54.916309+00:00",
+    "sourceSha": "f91e98cc25a7f4f906f3201286ade7f3611db7be",
+    "url": "https://github.com/jpdandin44/AVEREO/actions/runs/45354624103",
+    "scope": "Tests frontend, parité, cockpit et preuves, PHP, Apache isolé, stockage MariaDB et packaging ; hébergement réel non accédé.",
+    "generalCiUrl": "https://github.com/jpdandin44/AVEREO/actions/runs/45354624135",
+    "generalCiStatus": "passed"
+  },
+  "pullRequest": {
+    "url": "https://github.com/jpdandin44/AVEREO/pull/191",
+    "state": "open",
+    "mergeable": true,
+    "humanChecklistChecked": false,
+    "policyStatus": "awaiting_human_checklist",
+    "observedAt": "2026-11-24T08:20:54.916309+00:00"
+  }
+}

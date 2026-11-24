@@ -5,7 +5,7 @@
   "owner": "jpdandin",
   "version": "git",
   "created": "2026-10-03",
-  "updated": "2026-11-19",
+  "updated": "2026-11-24",
   "statusLabels": {
     "not_started": "Non commencée",
     "in_progress": "En cours",
@@ -4121,6 +4121,13 @@
       "scope": "Partage nominatif installé en préproduction privée, 210 assertions HTTPS et conservation de 26 documents ; confirmation du nouvel accès et activation du destinataire en attente.",
       "hostedEvidence": "../api/preproduction-partage-observation.json",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/157"
+    },
+    {
+      "id": "passeport-immo-ux-ui",
+      "canonicalTracking": "../data/suivi-ux-ui.json",
+      "documentation": "ux-ui-bibliotheque.md",
+      "scope": "Bibliothèque et navigation : candidat CI qualifié techniquement, revue humaine locale PR191 en attente ; aucune livraison.",
+      "prUrl": "https://github.com/jpdandin44/AVEREO/pull/191"
     }
   ],
   "currentStateObservation": "../api/preproduction-partage-observation.json",

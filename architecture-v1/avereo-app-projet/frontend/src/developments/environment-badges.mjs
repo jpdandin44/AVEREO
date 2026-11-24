@@ -1,4 +1,16 @@
 /** Presentation only: never grants access, approves a criterion or launches delivery. */
+export function siteObservationBadge(reference){
+  let url=null;
+  try{const parsed=new URL(reference?.url);if(parsed.protocol==='https:'&&!parsed.username&&!parsed.password&&!parsed.search&&!parsed.hash)url=parsed.href;}catch{}
+  const observation=reference?.observation;
+  const known=url&&observation?.method==='anonymous_https_get'&&typeof observation.observedAt==='string'&&Number.isFinite(Date.parse(observation.observedAt));
+  const states={protected:{label:'Accès protégé',tone:'blue',codes:[401,403]},maintenance:{label:'Maintenance constatée',tone:'orange',codes:[503]},online:{label:'En ligne au dernier constat',tone:'green',codes:[200]}};
+  const state=known&&Object.hasOwn(states,observation.state)?states[observation.state]:null;
+  const result=state&&state.codes.includes(observation.httpStatus)?state:{label:'État à vérifier',tone:'gray'};
+  return{label:result.label,tone:result.tone,shape:'dot',url,observedAt:result===state?observation.observedAt:null,
+    explanation:'Constat HTTP daté, sans surveillance continue ni validation de la version installée ou des fonctions du site.'};
+}
+
 export function environmentBadge(environment,value,iterations=[]){
   if(!['preproduction','production'].includes(environment))throw Error('Environnement inconnu.');
   const preprod=environment==='preproduction',name=preprod?'Préprod':'Production';
