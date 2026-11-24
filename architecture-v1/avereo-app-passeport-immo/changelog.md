@@ -5,10 +5,15 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 24 novembre — Candidat UX/UI local
+
+Navigation du bien, liste documentaire avec aperçu, actions secondaires repliables, import guidé et reprise des lots non confirmés, palette AVEREO, focus sur petit écran et conservation des filtres au rafraîchissement du dossier partagé. [Qualification](docs/ux-ui-bibliotheque.md). Aucun déploiement.
+
 
 ## 2026-11-22 — PR178 livrée en préproduction
 

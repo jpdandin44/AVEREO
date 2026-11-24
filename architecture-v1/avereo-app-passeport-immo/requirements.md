@@ -5,10 +5,15 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 24 novembre — UX/UI Bibliothèque
+
+UX01 : repères bien/client et quatre rubriques. UX02 : dossiers, liste et aperçu/téléchargement. UX03 : import guidé, progression des lots confirmés, reprise sans renvoyer les lots confirmés. UX04 : classement/personnalisation/ordre et corbeille conservés. UX05 : filtres et brouillons maintenus, clavier et adaptation petit écran. UX06 : partage du seul bien en lecture seule, copies privées exclues. [Critères de recette](docs/ux-ui-bibliotheque.md#recette-locale-à-effectuer-par-le-responsable).
+
 
 ## 22 novembre — Plafond de préproduction appliqué
 

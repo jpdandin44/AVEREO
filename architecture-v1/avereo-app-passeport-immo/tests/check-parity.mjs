@@ -4,6 +4,13 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Écart m : seules les substitutions UX déclarées sont inversées. Le contrôle
+// historique intégral ci-dessous continue de protéger calculs et écritures.
+const ux = JSON.parse(readFileSync(new URL('tests/ux-ui-parity.json', app), 'utf8'));
+for (const { current, previous } of ux.changes) {
+  assert.equal(restored.split(current).length - 1, 1, 'Substitution UX explicite et unique');
+  restored = restored.replace(current, previous);
+}
 // Écart l : le partage de documents remplace le lien de devis sans autorisation.
 for (const addition of [
   "import { SharingDialog, SharedDocuments } from './documents/Sharing.jsx';\n",

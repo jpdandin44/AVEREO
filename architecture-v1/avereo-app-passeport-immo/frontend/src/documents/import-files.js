@@ -21,13 +21,14 @@ export async function importDocumentFiles(repository, bienId, files, category, o
   const batches = planDocumentImport(files);
   const progress = { added: 0, duplicates: 0, processedFiles: 0, totalFiles: files.length, completedBatches: 0, totalBatches: batches.length };
   for (const [index, batch] of batches.entries()) {
-    onProgress({ ...progress, currentBatch: index + 1 });
+    onProgress({ ...progress, currentBatch: index + 1, phase: 'sending' });
     try {
       const result = await repository.addFiles(bienId, batch, category);
       progress.added += result.added;
       progress.duplicates += result.duplicates;
       progress.processedFiles += batch.length;
       progress.completedBatches++;
+      onProgress({ ...progress, currentBatch: index + 1, phase: 'confirmed' });
     } catch (cause) {
       const error = new Error(`Envoi interrompu au lot ${index + 1} sur ${batches.length} : ${cause.message}`);
       error.status = cause.status;
