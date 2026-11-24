@@ -56,6 +56,9 @@ Version observée = dernier tag stable relevé le 20/11/2026 ; la version fixée
 |---|---|---|---|
 | caniuse-lite 1.0.30001827 | **CC-BY-4.0** (données de compatibilité des navigateurs, licence non logicielle) | dépendance transitive de développement des outils de build ; non livrée dans l'application | **Accepté par le responsable le 24/11/2026** (exception limitée : données, dépendance de développement, non livrée dans l'application ; hors de la liste MIT, BSD, Apache 2.0 de `AGENTS.md`) |
 
+## Lot 2A : aucune nouvelle dépendance de code
+Ni npm ni Composer : l'API PHP, les tests PHP, l'exécuteur de migrations et la passerelle CONNECT sont écrits dans le dépôt, sans bibliothèque tierce. Environnement de développement local (non livré, non redistribué) : image Docker `php:8.4-cli` (PHP License 3.01) avec l'extension `pdo_mysql` compilée depuis les sources de l'image, et image `mysql:8.4` (MySQL, GPL-2.0 avec exception pour les logiciels libres) utilisée uniquement comme service local ; la pile MySQL est imposée par `AGENTS.md`. Rien n'est ajouté à l'application livrée.
+
 ## Dépendances système à instruire (décision D6)
 Signalées par la relecture adversariale Codex du Lot 0 ; non revérifiées sur les sources amont à ce stade. **Décision D6 du responsable (23/11/2026)** : un programme exécuté côté serveur, non modifié, non redistribué et inscrit ici peut être sous BSL-1.0, MPL-2.0 ou LGPL ; AGPL, GPL, non commercial et propriétaire restent exclus. Ces lectures de licence ne sont pas un avis juridique.
 
