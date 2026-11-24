@@ -67,7 +67,7 @@
   ],
   "nextAction": "Fournir la pièce de référence et ses cotes laser (R29) et faire les essais tactiles (R27, R32) ; repointer le registre du cockpit vers un clone à jour ; lancer le Lot 2 (message « Lot 2 selon docs/plan-lots.md… »).",
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/190"},
-  "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; la source pointe vers le worktree C:/Users/examg/Documents local/avereo-vision-lot0, à repointer vers le clone principal une fois mis à jour.",
+  "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; repointé le 24/11/2026 vers le worktree C:/Users/examg/Documents local/avereo-vision-lot1 (branche de suivi vision/lot-1-suivi-caniuse), à repointer vers le clone principal une fois à jour.",
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},
   "documentation": "docs/plan-lots.md"
 }
