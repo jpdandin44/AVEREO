@@ -620,6 +620,51 @@ $tests['Passeport Immo catalog and launch keep explicit authorization'] = static
     }
 };
 
+$tests['Vision catalog and launch keep explicit authorization and the Vision ticket contract'] = static function () use ($repository, $authenticated, $anonymous, $logout): void {
+    $original = $repository->allowedApps;
+    $secret = str_repeat('fixture-vision-', 3);
+    $settings = new Config(
+        environment: 'preprod', debug: false, databaseDsn: null, databaseUser: '', databasePassword: '',
+        sessionCookieName: 'VISION_TEST', sessionIdleSeconds: 1800, sessionAbsoluteSeconds: 43200,
+        appLaunchEntryUrls: ['vision' => 'https://vision-preprod.avereo.fr/connect/entry.php'],
+        appLaunchSecrets: ['vision' => $secret],
+    );
+    $portal = new Application($settings, $repository, new AppLaunchTicketIssuer($settings));
+    try {
+        $route = request('GET', '/api/v1/apps/vision/launch');
+        assertSameValue(401, $portal->handle($route, $anonymous, 'csrf-test', $logout)->status, 'anonymous launch denied');
+        $repository->allowedApps = [];
+        assertSameValue(403, $portal->handle($route, $authenticated, 'csrf-test', $logout)->status, 'ungranted launch denied');
+        assertSameValue([], $portal->handle(request('GET', '/api/v1/catalog'), $authenticated, 'csrf-test', $logout)->payload['data'], 'ungranted application absent');
+        $repository->allowedApps = ['vision'];
+        $catalog = $portal->handle(request('GET', '/api/v1/catalog'), $authenticated, 'csrf-test', $logout)->payload['data'];
+        assertSameValue('vision', $catalog[0]['code'], 'granted catalog entry');
+        assertSameValue(true, $catalog[0]['available'], 'configured launch available');
+        $launch = $portal->handle($route, $authenticated, 'csrf-test', $logout);
+        assertSameValue(303, $launch->status, 'granted launch redirect');
+        $location = (string) $launch->headers['Location'];
+        assertSameValue(true, str_starts_with($location, 'https://vision-preprod.avereo.fr/connect/entry.php?ticket='), 'dedicated entry');
+
+        // Contrat avec AVEREO Vision (docs/authentication.md de l'application) : charge signée en HMAC-SHA256
+        // avec le secret de l'application, destinée à « vision », identité CONNECT numérique, courte durée, nonce.
+        $ticket = rawurldecode((string) substr($location, strpos($location, 'ticket=') + 7));
+        [$encoded, $signature] = explode('.', $ticket, 2);
+        $decode = static fn (string $v): string => (string) base64_decode(strtr($v, '-_', '+/') . str_repeat('=', (4 - strlen($v) % 4) % 4), true);
+        assertSameValue(true, hash_equals(hash_hmac('sha256', $encoded, $secret, true), $decode($signature)), 'ticket signed with the Vision secret');
+        $payload = json_decode($decode($encoded), true, 8, JSON_THROW_ON_ERROR);
+        assertSameValue(1, $payload['v'], 'ticket version');
+        assertSameValue('vision', $payload['app'], 'ticket bound to Vision');
+        assertSameValue('avereo_connect', $payload['identity']['provider'], 'ticket identity provider');
+        assertSameValue(true, ctype_digit((string) $payload['identity']['id']) && strlen((string) $payload['identity']['id']) <= 20, 'ticket identity is a numeric CONNECT id');
+        assertSameValue(true, $payload['exp'] > $payload['iat'] && $payload['exp'] - $payload['iat'] <= 600, 'ticket is short lived');
+        assertSameValue(true, is_bool($payload['remembered']) && preg_match('/^[A-Za-z0-9_-]{24,128}$/', (string) $payload['nonce']) === 1, 'ticket nonce and flag');
+        $wrongSecret = hash_hmac('sha256', $encoded, str_repeat('another-secret-', 3), true);
+        assertSameValue(false, hash_equals($wrongSecret, $decode($signature)), 'ticket is not valid with another secret');
+    } finally {
+        $repository->allowedApps = $original;
+    }
+};
+
 $tests['identity disabled'] = static function () use ($application, $anonymous, $logout): void {
     $response = $application->handle(request('GET', '/api/v1/auth/login'), $anonymous, 'csrf-test', $logout);
     assertSameValue(503, $response->status, 'identity status');
