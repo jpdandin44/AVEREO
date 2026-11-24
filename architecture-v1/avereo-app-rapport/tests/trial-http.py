@@ -4,6 +4,7 @@ No hosted credentials, browser session, external service or client data is used.
 The deployed API SQL and ownership checks are preserved byte for byte.
 """
 from pathlib import Path
+from contextlib import closing
 import base64,hashlib,hmac,http.client,json,os,secrets,shutil,socket,sqlite3,subprocess,tempfile,time
 
 APP=Path(__file__).resolve().parents[1]
@@ -18,7 +19,7 @@ payload_json TEXT,payload_bytes INTEGER,owner_provider TEXT,owner_id TEXT,owner_
 updated_by_id TEXT,created_at TEXT DEFAULT CURRENT_TIMESTAMP,updated_at TEXT DEFAULT CURRENT_TIMESTAMP)''')
 cx.commit();cx.close()
 original=(root/'api/bootstrap.php').read_text(encoding='utf-8')
-start=original.index('function api_pdo(array $config): PDO');end=original.index('function api_read_json_body',start)
+start=original.index('function api_pdo(array $config): PDO');end=original.index('\nfunction ',start+1)+1
 connector='''function api_pdo(array $config): PDO {
     $pdo = new PDO('sqlite:' . $config['test_sqlite_file'], null, null, [
         PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION, PDO::ATTR_DEFAULT_FETCH_MODE=>PDO::FETCH_ASSOC]);
@@ -76,12 +77,12 @@ try:
    assert server.poll() is None,'PHP fixture failed';time.sleep(.05)
  window();a=enter('rapport',42);b=enter('rapport',43);rga=enter('rga',42)
  for id,cookie,title in [('a'*32,a,'Trial A'),('b'*32,b,'Trial B')]:
-  r=req('/api/reports.php',cookie,'POST',{'id':id,'report':{'titre':title,'observations':[]}})
+  r=req('/api/reports.php',cookie,'POST',{'id':id,'report':{'titre':title,'categorie':'Visite Globale','observations':[]}})
   check('Create private report '+title,r[0]==200)
  listing=json.loads(req('/api/reports.php',a)[2]);check('A list contains only A',[r['id'] for r in listing['reports']]==['a'*32])
  listing=json.loads(req('/api/reports.php',b)[2]);check('B list contains only B',[r['id'] for r in listing['reports']]==['b'*32])
  # Place a matching report beyond the first 50 rows and verify scope before LIMIT.
- with sqlite3.connect(db) as fixture:
+ with closing(sqlite3.connect(db)) as fixture, fixture:
   fixture.execute("UPDATE rapport_reports SET address='Rue des Tests', updated_at='2020-01-01', reference_code='REF_100%' WHERE public_id=?", ('a'*32,))
   fixture.executemany("""INSERT INTO rapport_reports (public_id,title,owner_provider,owner_id,updated_at)
     SELECT ?,?,owner_provider,owner_id,'2026-01-01' FROM rapport_reports WHERE public_id=?""",
@@ -93,7 +94,7 @@ try:
   check('Search before limit: '+term,[r['id'] for r in results('limit=5&q='+term)]==['a'*32])
  check('Wildcard remains literal',len(results('q=%25'))==1 and len(results('q=_'))==1)
  check('Search cannot return another account',not results('q=Trial%20B'))
- with sqlite3.connect(db) as fixture:
+ with closing(sqlite3.connect(db)) as fixture, fixture:
   fixture.executemany("DELETE FROM rapport_reports WHERE public_id=?",[(f'{n:032x}',) for n in range(52)])
  check('A cannot read B by id',req('/api/reports.php?id='+'b'*32,a)[0]==404)
  check('A cannot overwrite B',req('/api/reports.php',a,'POST',{'id':'b'*32,'report':{'titre':'intrusion','observations':[]}})[0]==403)

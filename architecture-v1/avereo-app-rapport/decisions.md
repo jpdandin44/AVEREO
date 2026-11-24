@@ -5,13 +5,21 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-21
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 2026-11-24 — Premier mécanisme d’habilitation technique
+
+Le serveur Rapport accorde la création technique aux administrateurs Rapport existants et aux identifiants CONNECT explicitement listés dans sa configuration privée. Cette capacité ne découle ni du métier déclaré, ni du modèle de profil, ni du nom d’organisation. Les actions du profil restent requises. Raisons : conserver le catalogue et l’authentification CONNECT, borner cette tranche à Rapport et vérifier le refus côté serveur. Les anciens dossiers restent soumis à leurs droits habituels ; une copie nouvelle ou une conversion globale → technique exige l’habilitation. [Contrat et limites administratives](docs/rapport-technique.md#contrat-de-la-première-tranche-locale).
+
+## 2026-11-24 — Audience du futur Rapport Technique
+
+Contexte : le responsable demande de rétablir le parcours technique en privilégiant une interface simple. Décision confirmée : AVEREO et experts explicitement habilités dans CONNECT, avec choix du parcours à la création. Conséquence : ne pas déduire une autorisation d’un profil personnel et conserver le type des anciens dossiers. Le mécanisme d’habilitation et l’interface restent à valider/implémenter ; aucun droit changé. [Cadrage et périmètre](docs/rapport-technique.md).
 
 ## 2026-11-21 — Proposition bornée et conservation des types JSON
 

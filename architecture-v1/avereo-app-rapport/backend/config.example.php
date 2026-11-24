@@ -37,6 +37,9 @@ return [
     'connect_gate_session_seconds' => 1800,
     // IDs CONNECT autorises a administrer tous les rapports. Vide = aucun admin.
     'connect_admin_user_ids' => [],
+    // Comptes experts CONNECT explicitement habilites a creer des Rapports Techniques.
+    // Les administrateurs Rapport conservent cette capacite. Aucun metier declare ne l'accorde.
+    'technical_report_connect_user_ids' => [],
 
     // Originaux privés : désactivés par défaut. Avant toute activation, qualifier
     // la migration 003, la restauration SQL + fichiers et les limites sur la cible.

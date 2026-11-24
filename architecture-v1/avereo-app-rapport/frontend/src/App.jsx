@@ -23,7 +23,11 @@ import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
 import { saveAs, setDownloadAuthorization, checkDownloadAuthorization } from './saveAs.js';
 import { canReportAction, sameAccount, administeredMissionDefault } from './profileAccess.js';
-import ReadOnlyFields from './ReadOnlyFields.jsx';
+import ReadOnlyFields, { useReadOnlyMode } from './ReadOnlyFields.jsx';
+import TechnicalMissionStep from './TechnicalMissionStep.jsx';
+import ReportTypeChooser from './ReportTypeChooser.jsx';
+import { TECHNICAL_STEPS, isTechnicalReport, canCreateTechnicalReport, newTechnicalReport } from './technicalReport.js';
+import './technicalReport.css';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { del as idbDel, get as idbGet, set as idbSet } from 'idb-keyval';
 import {
@@ -684,8 +688,8 @@ function HomePage({ draft, onNew, onResume, onlineSyncEnabled, accessToken, onOp
           <span className="eyebrow">Rapport AVEREO Pro</span>
           <h1>Créer ou reprendre un rapport</h1>
           <p>
-            Un seul parcours conserve les fonctions existantes. Le type de dossier, dont Visite Globale,
-            se choisit dans l'etape Dossier et pourra adapter le workflow a la mission.
+            Analyse globale accompagne la lecture complète du bien. Rapport Technique propose une saisie courte
+            des constats pour les comptes habilités. Chaque dossier conserve son parcours à la réouverture.
           </p>
           {!onlineSyncEnabled && (
             <div className="preview-notice" role="status">
@@ -1421,8 +1425,11 @@ function ProtocolStep({ report, setReport }) {
   );
 }
 
-function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, onlineSaving, onPhotoTransfer, photoTransfers }) {
+function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, onlineSaving, onPhotoTransfer, photoTransfers, selectedObservationId, onSelectObservation }) {
   const presentation = useScreenPresentation();
+  const technical = isTechnicalReport(report);
+  const readOnly = useReadOnlyMode();
+  const activeObservation = report.observations.find(obs => obs.id === selectedObservationId) || report.observations[0];
   const [cameraFor, setCameraFor] = useState(null);
   const [planObservationId, setPlanObservationId] = useState('');
   const [planFocus, setPlanFocus] = useState(0);
@@ -1430,6 +1437,16 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
   const [dropId, setDropId] = useState('');
   const [orderMessage, setOrderMessage] = useState('');
   const [photoCapabilities, setPhotoCapabilities] = useState(null);
+  const selectTechnicalObservation = id => {
+    const current = document.getElementById(`observation-${activeObservation?.id}`);
+    if (cameraFor || photoTransfers > 0 || current?.querySelector('dialog[open], [role="dialog"], [aria-label="Arreter la dictee"][aria-pressed="true"]')) {
+      setOrderMessage('Terminez la dictée ou le traitement de la photo avant de changer de constat.');
+      return false;
+    }
+    onSelectObservation(id);
+    presentation.setOpen(`observation-${id}`, true);
+    return true;
+  };
   const canUseOnlinePhotos = Boolean(onlineSyncEnabled && authenticated);
   useEffect(() => {
     setPhotoCapabilities(null);
@@ -1459,10 +1476,12 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
     setOrderMessage('Ordre mis à jour. Les numéros du rapport et des repères sont recalculés.');
   };
   const showObservation = id => {
+    if (technical && !selectTechnicalObservation(id)) return;
     presentation.setOpen(`observation-${id}`, true);
     requestAnimationFrame(() => document.getElementById(`observation-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
   const localize = (id, planId = '') => {
+    if (technical && !selectTechnicalObservation(id)) return;
     presentation.setOpen('observation-plans', true);
     presentation.setOpen(`observation-${id}`, true);
     setPlanObservationId(id);
@@ -1481,6 +1500,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
   const addObservation = (phaseKey = '') => {
     if (habitologie && phaseKey && !isHabitologieStageEnabled(report, phaseKey)) return;
     const observation = { ...emptyObservation(), phase_habitologie: phaseKey };
+    if (technical && !selectTechnicalObservation(observation.id)) return;
     setReport(prev => ({ ...prev, observations: [...prev.observations, observation] }));
     presentation.setOpen(`observation-${observation.id}`, true);
   };
@@ -1554,7 +1574,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
     return (
       <article className={`observation-card progressive-observation${draggedId === obs.id ? ' is-dragged' : ''}${dropId === obs.id ? ' is-drop-target' : ''}`} key={obs.id} id={`observation-${obs.id}`}>
         <ScreenDisclosure name={`observation-${obs.id}`} title={`Observation ${number} · ${excerpt(obs.titre, 180) || 'Sans titre'}`}
-          defaultOpen={presentation.initiallyNew && report.observations.length === 1}
+          defaultOpen={technical || (presentation.initiallyNew && report.observations.length === 1)}
           summary={[obs.piece, `${obs.photos.length} photo(s)`, observationPlanNames(report, obs).length ? `${observationPlanNames(report, obs).length} vue(s) repérée(s)` : 'Sans repère'].filter(Boolean).join(' · ')}
           status={`Gravité : ${obs.gravite || 'à préciser'}`} busy={cameraFor === obs.id || photoTransfers > 0}
           leading={<span className="observation-drag-handle" draggable={false} data-can-drag={siblings.length > 1} aria-hidden="true" title="Glisser pour déplacer dans cette phase"
@@ -1633,33 +1653,33 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
           </div>
         )}
 
-        <div className="form-grid four">
+        <div className={`form-grid ${technical ? 'two' : 'four'}`}>
           <Field label="Titre">
             <input value={obs.titre} onChange={(event) => updateObservation(obs.id, { titre: event.target.value })} />
           </Field>
           <Field label="Piece / zone">
-            <select value={obs.piece} onChange={(event) => updateObservation(obs.id, { piece: event.target.value })}>
+            {technical ? <input value={obs.piece} onChange={event => updateObservation(obs.id, { piece: event.target.value })} /> : <select value={obs.piece} onChange={(event) => updateObservation(obs.id, { piece: event.target.value })}>
               <option value="">Selectionner</option>
               {optionsWithCurrent(piecesOptions, obs.piece).map((option) => (
                 <option key={option}>{option}</option>
               ))}
-            </select>
+            </select>}
           </Field>
-          <Field label="Element">
+          {!technical && <Field label="Element">
             <select value={obs.surface} onChange={(event) => updateObservation(obs.id, { surface: event.target.value })}>
               <option value="">Selectionner</option>
               {optionsWithCurrent(surfacesOptions, obs.surface).map((option) => (
                 <option key={option}>{option}</option>
               ))}
             </select>
-          </Field>
-          <Field label="Gravite">
+          </Field>}
+          {!technical && <Field label="Gravite">
             <select value={obs.gravite} onChange={(event) => updateObservation(obs.id, { gravite: event.target.value })}>
               {optionsWithCurrent(observationGravities, obs.gravite).map((option) => (
                 <option key={option}>{option}</option>
               ))}
             </select>
-          </Field>
+          </Field>}
         </div>
 
         <div className="observation-location">
@@ -1670,6 +1690,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
         </div>
         <TextAreaWithMic
           label="Constat"
+          rows={technical ? 3 : 5}
           value={obs.observations}
           onChange={(value) => updateObservation(obs.id, { observations: value })}
           onAppend={(text) => updateObservation(obs.id, { observations: `${obs.observations || ''}${text}` })}
@@ -1677,7 +1698,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
           micDisabled={!dictationAllowed}
           micDisabledReason={consentReason}
         />
-        <TextAreaWithMic
+        {!technical && <TextAreaWithMic
           label="Explications"
           value={obs.explications || ''}
           onChange={(value) => updateObservation(obs.id, { explications: value })}
@@ -1686,8 +1707,8 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
           rows={3}
           micDisabled={!dictationAllowed}
           micDisabledReason={consentReason}
-        />
-        {textLinks(obs.explications || '').some(part => part.href) && <p className="explanation-preview" aria-label="Aperçu des explications">
+        />}
+        {!technical && textLinks(obs.explications || '').some(part => part.href) && <p className="explanation-preview" aria-label="Aperçu des explications">
           {textLinks(obs.explications || '').map((part, index) => part.href
             ? <a key={index} href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a>
             : <React.Fragment key={index}>{part.text}</React.Fragment>)}
@@ -1760,6 +1781,24 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
                 ? 'La conservation privée des originaux est indisponible pour le moment. Les photos du dossier restent utilisables.'
                 : 'La conservation d’un original est volontaire. La photo du rapport reste inchangée.'}
         </p>}
+        {technical && <ScreenDisclosure name={`technical-details-${obs.id}`} title="Détails techniques · explications, mesures et références"
+          summary={obs.explications || obs.mesures_techniques ? 'Détails renseignés' : 'Facultatif'}>
+          <div className="form-grid two">
+            <Field label="Élément"><select value={obs.surface} onChange={event => updateObservation(obs.id, { surface: event.target.value })}>
+              <option value="">Sélectionner</option>{optionsWithCurrent(surfacesOptions, obs.surface).map(option => <option key={option}>{option}</option>)}
+            </select></Field>
+            <Field label="Gravité"><select value={obs.gravite} onChange={event => updateObservation(obs.id, { gravite: event.target.value })}>
+              {optionsWithCurrent(observationGravities, obs.gravite).map(option => <option key={option}>{option}</option>)}
+            </select></Field>
+          </div>
+          {Object.entries({ explications: 'Explications et hypothèses', mesures_techniques: 'Mesures, unités et conditions',
+            references_techniques: 'Références et liens', verifications_techniques: 'Vérifications nécessaires', limites_techniques: 'Limites du constat' }).map(([key, label]) =>
+            <TextAreaWithMic key={key} label={label} value={obs[key] || ''} rows={3}
+              onChange={value => updateObservation(obs.id, { [key]: value })}
+              onAppend={text => updateObservation(obs.id, { [key]: appendDictation(obs[key], text) })} />)}
+          {textLinks(`${obs.explications || ''}\n${obs.references_techniques || ''}`).filter(part => part.href).map((part, index) =>
+            <p key={index}><a href={part.href} target="_blank" rel="noopener noreferrer">{part.text}</a></p>)}
+        </ScreenDisclosure>}
         </div>
         </ScreenDisclosure>
       </article>
@@ -1790,7 +1829,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
       <div className="section-title">
         <Camera size={22} />
         <div>
-          <h1>Observations</h1>
+          <h1>{technical ? 'Constats' : 'Observations'}</h1>
           <p>Constats localisés, explications, photos et {observationAdviceLabel(report).toLocaleLowerCase('fr-FR')}.</p>
         </div>
       </div>
@@ -1798,13 +1837,13 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
       <ScreenDisclosure name="observation-plans" title="Plans et vues du dossier" busy={photoTransfers > 0}
         summary={`${(report.plans || []).length} vue(s) · ${report.observations.reduce((count, obs) => count + (obs.reperes || []).length, 0)} repère(s)`}>
         <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId}
-          onSelect={id => { setPlanObservationId(id); presentation.setOpen(`observation-${id}`, true); }}
+          onSelect={id => { if (technical && !selectTechnicalObservation(id)) return; setPlanObservationId(id); presentation.setOpen(`observation-${id}`, true); }}
           onShowObservation={showObservation} focusRequest={planFocus} onPhotoTransfer={onPhotoTransfer} />
       </ScreenDisclosure>
 
       <div className="observation-order-toolbar">
         <p>{habitologie ? 'Terrain : T1, T2… Bâti : Eau, Air, Terre, Feu, puis les constats à classer ; leurs numéros restent indépendants du terrain. ' : ''}Changez le numéro ou glissez une fiche pour choisir sa place{habitologie ? ' dans sa phase' : ''}.</p>
-        <DisclosureControls label="Affichage des observations" ids={report.observations.map(obs => `observation-${obs.id}`)} />
+        {!technical && <DisclosureControls label="Affichage des observations" ids={report.observations.map(obs => `observation-${obs.id}`)} />}
       </div>
       {orderMessage && <p role="status" className="observation-order-status">{orderMessage}</p>}
 
@@ -1819,7 +1858,22 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
         </div>
       )}
 
-      {habitologie ? (
+      {technical ? <>
+        <button className="button secondary" type="button" onClick={() => addObservation()} disabled={Boolean(cameraFor) || photoTransfers > 0}><Plus size={18} />Ajouter un constat</button>
+        <div className="technical-workspace">
+          <nav className="technical-constat-list" aria-label="Choisir un constat">
+            {observationsInOrder.map(obs => <button key={obs.id} type="button" className="button secondary" data-readonly-view
+              draggable={!readOnly} onDragStart={event => { dragSource.current = { id: obs.id }; event.dataTransfer.setData('text/plain', obs.id); }}
+              onDragOver={event => { if (!readOnly && dragSource.current) event.preventDefault(); }}
+              onDrop={event => { event.preventDefault(); if (!readOnly && dragSource.current && selectTechnicalObservation(dragSource.current.id)) reorder(dragSource.current.id, obs.id); clearDrag(); }} onDragEnd={clearDrag}
+              aria-pressed={activeObservation?.id === obs.id} onClick={() => selectTechnicalObservation(obs.id)}>
+              <strong>{observationNumbers.get(obs)}</strong>{obs.photos[0] && <img src={reportPhotoSource(obs.photos[0])} alt="" />}
+              <span>{excerpt(obs.titre, 80) || 'Sans titre'}<small>{obs.piece || 'Zone à préciser'} · {obs.photos.length} photo(s)</small></span>
+            </button>)}
+          </nav>
+          <div>{activeObservation && renderObservationCard(activeObservation)}</div>
+        </div>
+      </> : habitologie ? (
         <div className="observation-phases">
           {visitProtocolStages(report).filter(stage => stage.key === 'terrain').map(renderObservationPhase)}
           <div className="observations-bati"><h2>Le bâti</h2>
@@ -1895,6 +1949,7 @@ function ShareTestCopy({ report }) {
 }
 
 function ValidationStep({ report, setReport, validation, onPreview, onExport, onPreparePublication, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep, readOnly = false, canExport = true, setDeliveryOptions }) {
+  const technical = isTechnicalReport(report);
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
   const presentation = useScreenPresentation();
   const decision = normalizeDecision(report.decision);
@@ -1914,7 +1969,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
   return (
     <section className="panel">
       <div className="section-title"><FileText size={22} /><div>
-        <h1>Validation et export</h1><p>Vérifier le contenu, signer et générer le document Word.</p>
+        <h1>{technical ? 'Rapport' : 'Validation et export'}</h1><p>Vérifier le contenu, signer et générer le document Word.</p>
       </div></div>
 
       <div className="validation-box export-review-status">
@@ -1940,7 +1995,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         </ScreenDisclosure>
       </>}
 
-      <ScreenDisclosure name="export-analysis" title="Analyse de l’expert et recommandations"
+      <ScreenDisclosure name="export-analysis" title={technical ? 'Synthèse de l’expert et recommandations' : 'Analyse de l’expert et recommandations'} defaultOpen={technical}
         summary={[report.analyse_expert.trim() ? 'Analyse renseignée' : 'Analyse à renseigner', report.recommandations.trim() ? 'Recommandations renseignées' : 'Recommandations à renseigner'].join(' · ')}>
       <TextAreaWithMic
         label="Analyse de l'expert"
@@ -1963,7 +2018,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
 
       </ScreenDisclosure>
 
-      <InterventionsPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} />
+      {!technical && <InterventionsPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} />}
 
       <ScreenDisclosure name="export-final" title="Contrôle final et signature"
         summary={`${report.nom_signataire || 'Signataire à renseigner'} · ${report.signature ? 'Signature présente' : 'Signature à recueillir'}`}>
@@ -2185,10 +2240,14 @@ function ReportWizard({
   onOAuthLogin,
   onTokenSubmit,
 }) {
-  const steps = ['Dossier', 'Site', 'Protocoles', 'Observations', 'Export'];
   const [currentStep, setCurrentStep] = useState(0);
+  const [technicalObservationId, setTechnicalObservationId] = useState('');
   const [presentationVersion, setPresentationVersion] = useState(0);
   const [report, setReport] = useState(() => deepMergeReport(initialReport, initialData));
+  const technical = isTechnicalReport(report);
+  const steps = technical ? TECHNICAL_STEPS : ['Dossier', 'Site', 'Protocoles', 'Observations', 'Export'];
+  const screenStep = technical ? [0, 3, 4][Math.min(currentStep, 2)] : currentStep;
+  const editStep = index => setCurrentStep(technical ? index === 3 ? 1 : index === 4 ? 2 : 0 : index);
   useMissionDossier(useEffect, reportMissionDossier(report, setReport, true));
   const [toast, setToast] = useState('');
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -2196,7 +2255,8 @@ function ReportWizard({
   const [photoTransfers, setPhotoTransfers] = useState(0);
   const onPhotoTransfer = useCallback(delta => setPhotoTransfers(count => Math.max(0, count + delta)), []);
   const [onlineStatus, setOnlineStatus] = useState('');
-  const editable = !onlineSyncEnabled || canReportAction(authUser, report.onlineReportId ? 'update' : 'create');
+  const editable = !onlineSyncEnabled || (canReportAction(authUser, report.onlineReportId ? 'update' : 'create')
+    && (!technical || report.onlineReportId || canCreateTechnicalReport(authUser)));
   const setEditableReport = useCallback(value => { if (editable) setReport(value); }, [editable]);
   const setDeliveryOptions = value => {
     if (!canReportAction(authUser, 'export')) return;
@@ -2307,6 +2367,7 @@ function ReportWizard({
     setOnlineStatus('Copie locale chargée. Une sauvegarde en ligne créera un nouveau dossier sous votre compte.');
     currentReport.current = normalized;
     setReport(normalized);
+    setCurrentStep(0);
     setPresentationVersion(version => version + 1);
     notify('Dossier chargé avec son contenu.');
   };
@@ -2322,21 +2383,26 @@ function ReportWizard({
   return (
     <ScreenPresentation key={presentationVersion} initiallyNew={presentationVersion === 0 && initiallyNew}>
     <div className="screen">
-      <main className="wizard-layout">
+      <main className={`wizard-layout${technical ? ' technical-wizard' : ''}`}>
+        <p className="technical-mode-label">{technical ? 'Rapport Technique' : isHabitologieReport(report) ? 'Analyse globale' : report.categorie}</p>
         <StepNav steps={steps} currentStep={currentStep} setStep={setCurrentStep} onHome={returnToHome} />
         <div className="wizard-grid">
           <div className="wizard-main">
             {authUser?.profileAccess?.managed && <p role="status" className="notice">Profil d’accès : {authUser.profileAccess.profile?.name}. {!editable && 'Consultation seule : les modifications ne sont pas autorisées.'}</p>}
+            {technical && onlineSyncEnabled && !report.onlineReportId && !canCreateTechnicalReport(authUser) && <p role="status" className="notice">Dossier technique consultable. La création d’une nouvelle copie en ligne nécessite une habilitation de votre compte CONNECT.</p>}
             <ReadOnlyFields readOnly={!editable}>
-            {currentStep === 0 && <DossierStep report={report} setReport={setEditableReport} />}
-            {currentStep === 1 && <SiteStep report={report} setReport={setEditableReport} onCorrectAddress={() => {
+            {screenStep === 0 && (technical ? <TechnicalMissionStep report={report} setReport={setEditableReport}
+              site={<SiteStep report={report} setReport={setEditableReport} onCorrectAddress={() => revealScreenField('adresse-logement')} />}
+              protocols={<ProtocolStep report={report} setReport={setEditableReport} />} />
+              : <DossierStep report={report} setReport={setEditableReport} />)}
+            {screenStep === 1 && <SiteStep report={report} setReport={setEditableReport} onCorrectAddress={() => {
               setCurrentStep(0);
               requestAnimationFrame(() => revealScreenField('adresse-logement'));
             }} />}
-            {currentStep === 2 && <ProtocolStep report={report} setReport={setEditableReport} />}
-            {currentStep === 3 && <ObservationStep report={report} setReport={setEditableReport} onlineSyncEnabled={onlineSyncEnabled} authenticated={authenticated} onlineSaving={onlineSaving} onPhotoTransfer={onPhotoTransfer} photoTransfers={photoTransfers} />}
+            {screenStep === 2 && <ProtocolStep report={report} setReport={setEditableReport} />}
+            {screenStep === 3 && <ObservationStep report={report} setReport={setEditableReport} onlineSyncEnabled={onlineSyncEnabled} authenticated={authenticated} onlineSaving={onlineSaving} onPhotoTransfer={onPhotoTransfer} photoTransfers={photoTransfers} selectedObservationId={technicalObservationId} onSelectObservation={setTechnicalObservationId} />}
             </ReadOnlyFields>
-            {currentStep === 4 && (
+            {screenStep === 4 && (
               <ValidationStep
                 report={report}
                 setReport={setEditableReport}
@@ -2351,11 +2417,11 @@ function ReportWizard({
                 onLoadFile={loadFile}
                 onlineSaving={onlineSaving}
                 onSaveDraft={handleSave}
-                onEditStep={setCurrentStep}
+                onEditStep={editStep}
               />
             )}
           </div>
-          <CompletionPanel report={report} validation={validation} />
+          {!technical && <CompletionPanel report={report} validation={validation} />}
         </div>
         <OnlineSyncPanel
           accessToken={accessToken}
@@ -2459,8 +2525,8 @@ export default function App() {
   const applicationPreferences = useAppPreferences('rapport', rapportPreferences, { useState, useEffect });
   const [connectedDefault, setConnectedDefault] = useState({ profile: '', notice: '', loading: false });
   const [creationProfileNotice, setCreationProfileNotice] = useState('');
-  const newReport = () => {
-    const report = withMissionDefault(createNewReport(), connectedDefault.profile);
+  const newReport = (category = HABITOLOGIE_CATEGORY) => {
+    const report = category === DEFAULT_CATEGORY ? newTechnicalReport(createNewReport()) : withMissionDefault(createNewReport(), connectedDefault.profile);
     return { ...report, livrable: { ...report.livrable, audience: applicationPreferences.audience } };
   };
   const [rgaImport, setRgaImport] = useState(() => {
@@ -2473,6 +2539,7 @@ export default function App() {
   const [initialWizardData, setInitialWizardData] = useState(initialReport);
   const [newWizard, setNewWizard] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [chooseReportType, setChooseReportType] = useState(false);
   const [authConfig, setAuthConfig] = useState(null);
   const [accessToken, setAccessToken] = useState('');
   const [authUser, setAuthUser] = useState(null);
@@ -2495,8 +2562,10 @@ export default function App() {
         if (!alive) return;
         setAuthUser(current => sameAccount(current, next) ? next : current);
       } catch {
-        if (alive) setAuthUser(current => current?.profileAccess?.managed
-          ? { ...current, profileAccess: { ...current.profileAccess, actions: [] } } : current);
+        if (alive) setAuthUser(current => current ? { ...current,
+          reportCapabilities: { technicalReport: false },
+          ...(current.profileAccess?.managed ? { profileAccess: { ...current.profileAccess, actions: [] } } : {}),
+        } : current);
       }
     };
     const interval = window.setInterval(refresh, 30000);
@@ -2595,13 +2664,14 @@ export default function App() {
 
   const startNew = async (context = null) => {
     if (connectedDefault.loading || !canReportAction(authUser, 'create')) return;
+    if (context?.categorie === DEFAULT_CATEGORY && !canCreateTechnicalReport(authUser)) return;
     setNewContext(context);
     if (draft) {
       setConfirmReset(true);
       return;
     }
-    const fresh = newReport();
-    setCreationProfileNotice(connectedDefault.notice);
+    const fresh = newReport(context?.categorie);
+    setCreationProfileNotice(isTechnicalReport(fresh) ? '' : connectedDefault.notice);
     setInitialWizardData(deepMergeReport(fresh, { ...fresh, ...(context || {}) }));
     setNewWizard(true);
     setAppState('wizard');
@@ -2609,9 +2679,10 @@ export default function App() {
 
   const confirmNew = async () => {
     if (connectedDefault.loading || !canReportAction(authUser, 'create')) return;
+    if (newContext?.categorie === DEFAULT_CATEGORY && !canCreateTechnicalReport(authUser)) return;
     await removeDraft();
-    setCreationProfileNotice(connectedDefault.notice);
-    const initial = newReport();
+    const initial = newReport(newContext?.categorie);
+    setCreationProfileNotice(isTechnicalReport(initial) ? '' : connectedDefault.notice);
     const fresh = deepMergeReport(initial, { ...initial, ...(newContext || {}) });
     setDraft(null);
     setInitialWizardData(fresh);
@@ -2668,7 +2739,7 @@ export default function App() {
       {appState === 'home' && (
         <HomePage
           draft={draft}
-          onNew={() => startNew()}
+          onNew={() => setChooseReportType(true)}
           profileLoading={connectedDefault.loading}
           canCreate={canReportAction(authUser, 'create')}
           onResume={resume}
@@ -2711,6 +2782,8 @@ export default function App() {
           onTokenSubmit={activateLocalToken}
         />
       )}
+      {chooseReportType && <ReportTypeChooser canChooseTechnical={canCreateTechnicalReport(authUser)}
+        onClose={() => setChooseReportType(false)} onChoose={category => { setChooseReportType(false); startNew({ categorie: category }); }} />}
       {confirmReset && (
         <Modal
           title="Creer un nouveau rapport ?"

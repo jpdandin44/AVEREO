@@ -5,13 +5,21 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 24 novembre — Terrain global et choix des types, correction de PR197
+
+Le test de non-régression reproduit l’absence de Terrain avec profil vide ; la catégorie globale pilote maintenant sa présence, sans modifier les données. Nouveau choix de famille explicite, spécialité technique sans privilège nouveau, annulation et deux réouvertures serveur qualifiées. [Cause, périmètre et preuves](rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain). Aucun changement d’authentification, API ou quota pour ce complément.
+
+## 24 novembre — Première tranche technique locale
+
+[Contrat, contrôles et réserves du candidat](rapport-technique.md#qualification-locale). Nouveaux composants de présentation bornés à Rapport ; réutilisation des outils photo/plans/dictée et des garde-fous de récupération. Capacité de création vérifiée par PHP, identités CONNECT explicites et propriétés/actions existantes conservées. Les restitutions historiques ne sont pas converties automatiquement ; les nouveaux détails internes sont exclus de la synthèse client. Aucune modification CONNECT, compte réel, secret, table ou préproduction.
 
 ## 22 novembre — Livraison préproduction du volume sans perte
 

@@ -5,10 +5,18 @@ title: Tests Rapport
 status: active
 version: git
 created: 2026-11-02
-updated: 2026-11-18
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, rga, tests]
 ---
+
+## Rapport Technique — 24 novembre
+
+Depuis `frontend/`, `npm test` inclut les tests de création, compatibilité et confidentialité techniques ; `npm run build` prépare la compilation. Depuis la racine de l’application, `python tests/report-files-http.py --technical --serve --port 5240 --receipt CHEMIN_RECU_JSON` rejoue les contrôles PHP/MariaDB puis conserve la revue sur `http://127.0.0.1:5240/fixture/`. PHP avec PDO MySQL, Docker actif et l’image existante `mariadb:11.4` sont requis. Les comptes A/B et la base sont fictifs ; aucun accès hébergé n’est utilisé. Fermer le service supprime la base temporaire.
+
+Sur ce service, `node tests/technical-report.browser.mjs` teste mission/constats/photo/plan/repère/signature/Word, sauvegarde et réouverture dans un nouveau contexte sans brouillon. `RAPPORT_RECIPE_ORIGIN` doit rester sur 127.0.0.1 ; `RAPPORT_RECIPE_OUTPUT` choisit le dossier des preuves. Playwright doit être disponible via le paquet Saisie unique, `NODE_PATH` ou `RAPPORT_PLAYWRIGHT_PACKAGE` pointant son package.json ; `PLAYWRIGHT_CHANNEL` vaut chrome par défaut. Les fichiers DOCX sont contrôlés par leur contenu et leurs médias, sans prétendre à une revue native Word. [Contrat et limites](../docs/rapport-technique.md#qualification-locale).
+
+`python tests/trial-http.py` contrôle aussi 30 cas d’accès, d’essai, d’expiration et de révocation. Sa substitution SQLite ne retire que le connecteur PDO, conserve le garde-fou mémoire et ferme les connexions avant nettoyage Windows. Les nouveaux dossiers des recettes génériques et de seuil choisissent explicitement Visite Globale.
 
 ## Fermeture de l’aperçu — 18 novembre
 

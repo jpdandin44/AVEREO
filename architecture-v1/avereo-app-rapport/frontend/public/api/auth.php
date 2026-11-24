@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 require __DIR__ . '/bootstrap.php';
+require_once __DIR__ . '/technical-report.php';
 
 api_no_options_response();
 
@@ -28,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'me') {
             'roles' => $identity['roles'],
             'canManageAll' => api_identity_can_manage_all($identity, $config),
             'profileAccess' => api_profile_access($config,$identity),
+            'reportCapabilities' => ['technicalReport' => api_can_create_technical_report($config, $identity)],
         ],
     ]);
 }
