@@ -5,10 +5,14 @@ title: AVEREO CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-19
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, documentation]
 ---
+
+## 24 novembre — registre anti-rejeu des développements
+
+Un correctif local récupère les seules empreintes expirées sous verrou, tout en conservant la limite 4096 et la création exclusive. Le rôle global, l’identité exacte et les contrôles frais sont inchangés. [Contrat et qualification](api/developments-authorization.md). Aucun déploiement de ce correctif attesté.
 
 ## 19 novembre — Rapprochement documentaire PR98
 

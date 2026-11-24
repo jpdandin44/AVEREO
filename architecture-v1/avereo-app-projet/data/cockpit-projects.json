@@ -12,8 +12,14 @@
     {"id":"drone","name":"Drone","category":"Application","applicationIds":["drone"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-drone"]},
     {"id":"recherche","name":"Recherche web","category":"Application","applicationIds":["recherche"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-recherche"]},
     {"id":"saisie-unique","name":"Saisie unique / dossier Erim","category":"Application","applicationIds":["saisie-unique"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-saisie-unique"]},
-    {"id":"site-avereo","name":"Site AVEREO","category":"Site internet","applicationIds":["site-avereo"],"repository":"jpdandin44/avereo-site-drupal","paths":[""]},
-    {"id":"tc-longages","name":"TC Longages","category":"Site et espace club","applicationIds":["tc-longages"],"repository":"jpdandin44/TC_Longages","paths":[""]},
+    {"id":"site-avereo","name":"Site AVEREO","category":"Site internet","applicationIds":["site-avereo"],"repository":"jpdandin44/avereo-site-drupal","paths":[""],"environmentReferences":{
+      "preproduction":{"url":"https://preprod.avereo.fr/","observation":{"state":"protected","httpStatus":401,"observedAt":"2026-11-24T08:04:12Z","method":"anonymous_https_get"}},
+      "production":{"url":"https://avereo.fr/","observation":{"state":"maintenance","httpStatus":503,"observedAt":"2026-11-24T08:04:12Z","method":"anonymous_https_get"}}
+    }},
+    {"id":"tc-longages","name":"TC Longages","category":"Site et espace club","applicationIds":["tc-longages"],"repository":"jpdandin44/TC_Longages","paths":[""],"environmentReferences":{
+      "preproduction":{"url":"https://preprod.tclongages.fr/","observation":{"state":"protected","httpStatus":401,"observedAt":"2026-11-24T08:04:13Z","method":"anonymous_https_get"}},
+      "production":{"url":"https://tclongages.fr/","observation":{"state":"online","httpStatus":200,"observedAt":"2026-11-24T08:04:12Z","method":"anonymous_https_get"}}
+    }},
     {"id":"vision","name":"Vision","category":"Projet d’application — cadrage","applicationIds":["vision"],"repository":"jpdandin44/AVEREO","paths":["architecture-v1/avereo-app-vision"]}
   ],
   "history": [

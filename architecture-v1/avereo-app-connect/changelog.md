@@ -5,10 +5,14 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-19
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 2026-11-24 — Registre anti-rejeu des développements
+
+Correctif local : récupération prudente des jetons expirés sous verrou avant admission d’une nouvelle empreinte. Les contrôles d’habilitation restent inchangés. [Contrat](api/developments-authorization.md). Installation non attestée.
 
 ## 19 novembre — Rapprochement documentaire PR98
 

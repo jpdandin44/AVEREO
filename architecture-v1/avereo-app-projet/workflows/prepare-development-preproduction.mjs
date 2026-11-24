@@ -43,6 +43,7 @@ export async function prepareDevelopmentPreproduction(output){
     'architecture-v1/avereo-app-connect/backend/src/Developments/SignedMessage.php',
     'architecture-v1/avereo-app-connect/backend/src/Developments/AuthorizationBroker.php',
     'architecture-v1/avereo-app-connect/backend/src/Developments/PrivateFactory.php',
+    'architecture-v1/avereo-app-connect/backend/src/Developments/NonceStore.php',
     'architecture-v1/avereo-app-connect/backend/src/Application.php',
     'architecture-v1/avereo-app-connect/backend/src/Http/Request.php',
     'architecture-v1/avereo-app-connect/backend/public/index.php',

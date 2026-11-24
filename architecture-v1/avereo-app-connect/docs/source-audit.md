@@ -5,10 +5,14 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-19
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 24 novembre — récupération des nonces expirés
+
+Le registre des développements n’est plus condamné à se remplir définitivement : `NonceStore` récupère les fichiers réguliers de nom et contenu valides expirés depuis plus de cinq secondes, sous verrou commun. Une entrée active, malformée ou un lien symbolique est conservé. Création exclusive, permissions privées et limite 4096 maintenues. Les tests couvrent saturation, rejeu et concurrence ; diagnostic hébergé encore nécessaire. [Contrat](../api/developments-authorization.md).
 
 ## 19 novembre — Rapprochement documentaire PR98
 

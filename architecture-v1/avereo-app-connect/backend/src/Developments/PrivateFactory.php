@@ -26,12 +26,8 @@ final class PrivateFactory
         $directory = realpath($c['nonce_directory']);
         if ($directory === false || !is_dir($directory) || $directory === $public || str_starts_with($directory, $public . DIRECTORY_SEPARATOR)
             || DIRECTORY_SEPARATOR !== '\\' && (fileperms($directory) & 0077) !== 0) throw new \RuntimeException('Private nonce directory required.');
-        $claim = static function(string $nonce, int $expires) use ($directory): bool {
-            if (count(glob($directory . '/*.used') ?: []) >= 4096) return false;
-            $h = @fopen($directory . '/' . hash('sha256', $nonce) . '.used', 'x');
-            if ($h === false) return false;
-            fwrite($h, (string)$expires); fclose($h); @chmod($directory . '/' . hash('sha256', $nonce) . '.used',0600); return true;
-        };
+        $nonces = new NonceStore($directory);
+        $claim = $nonces->claim(...);
         $account = static function(string $id, int $issued) use ($repository): array {
             $p = $repository->findUserProfile((int)$id);
             $active = $repository->findIdentityStatusByDrupalSubject($p['drupalSubject']) === 'active'
