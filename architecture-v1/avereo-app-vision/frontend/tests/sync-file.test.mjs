@@ -111,3 +111,33 @@ test("deux appareils : renommage et changement de hauteur gardent chacun baseRev
   assert.equal(fileB[0].data.hauteurMm, 2700);
   assert.equal(initial.niveaux[0].pieces[0].nom, "Salon");
 });
+
+// ---- relecture adversariale du Lot 2B : création de résultat incertain, refus et corrections en vol
+import { marquerEnvoyees, retirerVersions } from "../src/sync/file-envoi.js";
+
+test("une création déjà envoyée (réponse peut-être perdue) n'est plus annulée par une suppression : les deux partent", () => {
+  const creation = { objectId: "p1", kind: "piece", parentId: "n1", data: { nom: "Salon" }, deleted: false };
+  const suppression = { objectId: "p1", kind: "piece", parentId: "n1", data: null, deleted: true };
+  let file = empiler([], [creation], () => 0);
+  file = marquerEnvoyees(file, file);
+  assert.equal(file[0].envoye, true);
+  file = empiler(file, [suppression], () => 0);
+  assert.equal(file.length, 1);
+  assert.equal(file[0].deleted, true);
+  assert.equal(file[0].baseRev, 0);
+  assert.equal(file[0].version, 2);
+  assert.equal(file[0].envoye, true, "le drapeau « envoyé » survit au regroupement");
+  // Jamais envoyée : annulation comme avant.
+  assert.deepEqual(empiler(empiler([], [creation], () => 0), [suppression], () => 0), []);
+});
+
+test("marquerEnvoyees ne marque que la version envoyée ; retirerVersions ne retire que la version refusée", () => {
+  const a = { objectId: "a", kind: "piece", parentId: "n", data: { nom: "A" }, deleted: false, baseRev: 1, version: 1 };
+  const b = { objectId: "b", kind: "piece", parentId: "n", data: { nom: "B" }, deleted: false, baseRev: 1, version: 3 };
+  const marquee = marquerEnvoyees([a, b], [{ ...a }]);
+  assert.equal(marquee[0].envoye, true);
+  assert.equal(marquee[1].envoye, undefined);
+  const corrigee = { ...a, version: 2, data: { nom: "A corrigé" } };
+  assert.deepEqual(retirerVersions([corrigee, b], [a]), [corrigee, b], "la version corrigée en vol reste");
+  assert.deepEqual(retirerVersions([a, b], [a]), [b]);
+});

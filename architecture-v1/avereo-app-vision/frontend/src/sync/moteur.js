@@ -1,11 +1,14 @@
 // Moteur de synchronisation (R03, R04, R05, R06) : enregistrement local immédiat, file d'envoi, envoi et réception.
 // Contrat : docs/synchronisation.md. Le moteur ne connaît ni React ni le DOM : le stockage, l'API et l'horloge sont injectés,
 // ce qui permet de le tester sans navigateur. Les déclencheurs (minuterie de 30 s, retour du réseau, retour d'onglet) sont dans useSynchro.js.
+//
+// Plusieurs onglets peuvent partager la même base locale : le moteur ne garde AUCUN état de projet en mémoire. Chaque opération relit
+// l'état enregistré sous un verrou (Web Locks entre onglets quand le navigateur les offre, sinon une file dans l'onglet), puis réécrit.
 import { creerBatiment, creerNiveau } from "../domain/modele.js";
 import { ErreurApi, estCoupure } from "../services/api.js";
 import { assemblerBatiment } from "./assembler.js";
 import { diffBatiment } from "./diff.js";
-import { acquitter, empiler, prendreLot, retirer } from "./file-envoi.js";
+import { acquitter, empiler, marquerEnvoyees, prendreLot, retirerVersions } from "./file-envoi.js";
 import { appliquerReception } from "./fusion.js";
 import { annoterProjets, appliquerOperations, ecartsDescriptifs, empilerOperation, genererIdProjet, retirerOperation } from "./operations-projets.js";
 
@@ -49,60 +52,70 @@ function indicesRefuses(champs) {
 }
 
 /**
- * `delaiOuvertureMs` : attente maximale de la première réception à l'ouverture d'un projet vide (0 : ne pas attendre ; Infinity : attendre sans limite, pour les tests).
  * @param {{
  *   stockage: import("./stockage-dexie.js").Stockage,
  *   api: ReturnType<import("../services/api.js").creerClient>,
  *   deviceId: string,
  *   maintenant?: () => string,
- *   delaiOuvertureMs?: number
+ *   delaiOuvertureMs?: number,
+ *   nomCanal?: string,
+ *   verrouExterne?: (cle: string, fn: () => Promise<any>) => Promise<any>
  * }} options
+ * `delaiOuvertureMs` : attente maximale de la première réception à l'ouverture d'un projet vide (0 : ne pas attendre ;
+ * Infinity : attendre sans limite, pour les tests). `nomCanal` : nom commun aux onglets d'un même compte (verrous et messages).
  */
-export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Date().toISOString(), delaiOuvertureMs = 3000 }) {
+export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Date().toISOString(), delaiOuvertureMs = 3000, nomCanal = "", verrouExterne }) {
   const ecouteurs = new Set();
-  /** @type {Map<string, {objets: Map<string, any>, file: any[], seq: number, refusees: any[], archive: boolean, introuvable: boolean}>} */
-  const projets = new Map();
   const verrous = new Map();
+  const drapeaux = new Map(); // état de session de l'onglet (projet archivé, introuvable, taille de lot) : jamais persisté
   const ouverts = new Set();
-  const etat = { reseau: /** @type {"ok"|"hors-ligne"|"reconnexion"|"erreur"} */ ("ok"), derniereSynchro: /** @type {string|null} */ (null) };
+  const etat = { reseau: /** @type {"ok"|"hors-ligne"|"reconnexion"|"autre-compte"|"erreur"} */ ("ok"), derniereSynchro: /** @type {string|null} */ (null) };
   let operationsRefusees = [];
   let toutEnCours = null;
   let toutARejouer = false;
+  const canal = nomCanal && typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(`vision:${nomCanal}`) : null;
+  // Verrou entre onglets : Web Locks quand le navigateur les offre (ou un verrou fourni, pour les tests).
+  const verrousWeb = nomCanal ? globalThis.navigator?.locks : undefined;
+  const entreOnglets = verrouExterne ?? (verrousWeb ? (cle, fn) => verrousWeb.request(`vision:${nomCanal}:${cle}`, () => fn()) : null);
 
-  const notifier = (evenement = { type: "etat" }) => ecouteurs.forEach((ecouteur) => ecouteur(evenement));
+  const prevenir = (evenement) => ecouteurs.forEach((ecouteur) => ecouteur(evenement));
+  if (canal) canal.onmessage = (message) => prevenir(message.data); // un autre onglet a écrit : on relit
+  const notifier = (evenement = { type: "etat" }) => {
+    prevenir(evenement);
+    canal?.postMessage(evenement.type === "local" ? { type: "etat" } : evenement);
+  };
   const definirReseau = (reseau) => {
     if (etat.reseau !== reseau) {
       etat.reseau = reseau;
       notifier();
     }
   };
+  const drapeauxProjet = (projetId) => {
+    if (!drapeaux.has(projetId)) drapeaux.set(projetId, { archive: false, introuvable: false, lotMax: LOT_MAX });
+    return drapeaux.get(projetId);
+  };
 
-  /** Exécute `fn` après les opérations déjà en cours sur la même clé (les écritures d'un projet ne se chevauchent jamais). */
+  /** Exécute `fn` après les opérations déjà en cours sur la même clé, dans cet onglet et (si possible) entre onglets. */
   function verrouiller(cle, fn) {
     const precedent = verrous.get(cle) ?? Promise.resolve();
-    const suite = precedent.then(fn, fn);
+    const executer = () => (entreOnglets ? entreOnglets(cle, fn) : fn());
+    const suite = precedent.then(executer, executer);
     verrous.set(cle, suite.catch(() => {}));
     return suite;
   }
 
+  /** État enregistré d'un projet, relu à chaque appel (à utiliser sous verrou). */
   async function chargerProjet(projetId) {
-    if (!projets.has(projetId)) {
-      const { objets, file, seq } = await stockage.chargerProjet(projetId);
-      const refusees = (await stockage.lireMeta(`refusees:${projetId}`)) ?? [];
-      projets.set(projetId, { objets: new Map(objets.map((o) => [o.id, o])), file, seq, refusees, archive: false, introuvable: false });
-    }
-    return projets.get(projetId);
-  }
-
-  function assemblerProjet(p) {
-    const { batiment, avertissements, orphelins } = assemblerBatiment([...p.objets.values()], ID_BATIMENT);
-    return { batiment, avertissements, orphelins };
+    const { objets, file, seq } = await stockage.chargerProjet(projetId);
+    const refusees = (await stockage.lireMeta(`refusees:${projetId}`)) ?? [];
+    return { objets: new Map(objets.map((o) => [o.id, o])), file, seq, refusees };
   }
 
   /** Relevé enregistré localement. `persistant` est faux pour un projet qui n'a encore aucun contenu (bâtiment par défaut). */
-  async function lireBatiment(projetId) {
+  function lireBatiment(projetId) {
     return verrouiller(projetId, async () => {
-      const { batiment, avertissements } = assemblerProjet(await chargerProjet(projetId));
+      const p = await chargerProjet(projetId);
+      const { batiment, avertissements } = assemblerBatiment([...p.objets.values()], ID_BATIMENT);
       return batiment ? { batiment, persistant: true, avertissements } : { batiment: batimentParDefaut(), persistant: false, avertissements: [] };
     });
   }
@@ -138,14 +151,17 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
         p.objets.set(objet.id, objet);
         touches.push(objet);
       }
-      p.file = empiler(p.file, changements, (id) => p.objets.get(id)?.rev ?? 0);
-      await stockage.sauverProjet(projetId, { objets: touches, file: p.file });
+      const file = empiler(p.file, changements, (id) => p.objets.get(id)?.rev ?? 0);
+      await stockage.sauverProjet(projetId, { objets: touches, file });
       notifier({ type: "local" });
       return changements.length;
     });
   }
 
-  /** Gère l'échec d'un envoi. Retourne « reessayer » si la file a été allégée, sinon « arret ». */
+  /**
+   * Gère l'échec d'un envoi. Retourne « reessayer » (la file a été allégée ou le lot réduit), « recevoir-seul » (projet archivé :
+   * on peut encore lire) ou « arret ».
+   */
   async function traiterErreur(projetId, lot, erreur) {
     if (!(erreur instanceof ErreurApi)) {
       definirReseau("erreur");
@@ -159,31 +175,51 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       definirReseau("reconnexion");
       return "arret";
     }
-    return verrouiller(projetId, async () => {
-      const p = await chargerProjet(projetId);
-      if (erreur.statut === 409 && erreur.code === "project_archived") {
-        p.archive = true;
-        notifier();
+    if (erreur.statut === 409 && erreur.code === "identity_changed") {
+      definirReseau("autre-compte");
+      return "arret";
+    }
+    const d = drapeauxProjet(projetId);
+    if (erreur.statut === 409 && erreur.code === "project_archived") {
+      d.archive = true;
+      notifier();
+      return "recevoir-seul";
+    }
+    if (erreur.statut === 404) {
+      d.introuvable = true; // le projet n'est pas encore (ou plus) connu du serveur : on réessaiera après l'envoi des projets
+      notifier();
+      return "arret";
+    }
+    if ([413, 422].includes(erreur.statut) && lot.length > 0) {
+      const champs = Object.keys(erreur.champs ?? {});
+      if (champs.some((cle) => !cle.startsWith("changes."))) {
+        definirReseau("erreur"); // erreur d'enveloppe (appareil, curseur) : ce n'est la faute d'aucune modification
         return "arret";
       }
-      if (erreur.statut === 404) {
-        p.introuvable = true; // le projet n'est pas encore (ou plus) connu du serveur : on réessaiera après l'envoi des projets
-        notifier();
-        return "arret";
-      }
-      if ([413, 422].includes(erreur.statut) && lot.length > 0) {
-        const cites = indicesRefuses(erreur.champs).filter((i) => i < lot.length);
-        const refuses = cites.length > 0 ? cites.map((i) => lot[i]) : lot; // sans indice : tout le lot, plutôt que de bloquer la file
-        p.file = retirer(p.file, refuses.map((e) => e.objectId));
-        p.refusees = [...p.refusees, ...refuses.map((e) => ({ objectId: e.objectId, kind: e.kind, message: erreur.message, le: maintenant() }))];
-        await stockage.sauverProjet(projetId, { file: p.file });
-        await stockage.ecrireMeta(`refusees:${projetId}`, p.refusees);
-        notifier();
+      const cites = indicesRefuses(erreur.champs).filter((i) => i < lot.length);
+      if (cites.length === 0 && lot.length > 1) {
+        // Le serveur ne désigne pas le fautif (plafond de projet, corps trop gros) : on réduit le lot de moitié jusqu'à l'isoler,
+        // pour que les modifications valides partent quand même.
+        d.lotMax = Math.ceil(lot.length / 2);
         return "reessayer";
       }
-      definirReseau("erreur");
-      return "arret";
-    });
+      const refuses = cites.length > 0 ? cites.map((i) => lot[i]) : lot;
+      await verrouiller(projetId, async () => {
+        const p = await chargerProjet(projetId);
+        // Seule la version envoyée est retirée : une correction faite pendant l'envoi reste dans la file.
+        const file = retirerVersions(p.file, refuses);
+        const refusees = [
+          ...p.refusees,
+          ...refuses.map((e) => ({ objectId: e.objectId, kind: e.kind, message: erreur.message, le: maintenant(), deleted: e.deleted, data: e.data })),
+        ];
+        await stockage.sauverProjet(projetId, { file });
+        await stockage.ecrireMeta(`refusees:${projetId}`, refusees);
+      });
+      notifier();
+      return "reessayer";
+    }
+    definirReseau("erreur");
+    return "arret";
   }
 
   async function rafraichirJournal(projetId) {
@@ -200,16 +236,34 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
   async function synchroniserProjet(projetId) {
     let conflit = false;
     let autresAppareils = false;
+    let lectureSeule = false;
     for (let tour = 0; tour < TOURS_MAX; tour += 1) {
+      const d = drapeauxProjet(projetId);
       const prepare = await verrouiller(projetId, async () => {
         const p = await chargerProjet(projetId);
-        return { lot: prendreLot(p.file, LOT_MAX), since: p.seq };
+        let lot = prendreLot(p.file, d.lotMax);
+        if (lot.length > 0) {
+          // Avant l'appel : ces entrées sont peut-être reçues par le serveur sans que la réponse nous parvienne.
+          const file = marquerEnvoyees(p.file, lot);
+          await stockage.sauverProjet(projetId, { file });
+          lot = prendreLot(file, d.lotMax);
+        }
+        return { lot, since: p.seq };
       });
       let reponse;
       try {
-        reponse = await api.synchroniser(projetId, { deviceId, since: prepare.since, changes: prepare.lot.map(versFil) });
+        reponse =
+          prepare.lot.length === 0 || lectureSeule
+            ? { applied: [], ...(await api.recevoir(projetId, prepare.since)) }
+            : await api.synchroniser(projetId, { deviceId, since: prepare.since, changes: prepare.lot.map(versFil) });
       } catch (erreur) {
-        if ((await traiterErreur(projetId, prepare.lot, erreur)) === "reessayer") continue;
+        const decision = await traiterErreur(projetId, prepare.lot, erreur);
+        if (decision === "reessayer") continue;
+        if (decision === "recevoir-seul") {
+          // Projet archivé : les modifications locales attendent la réactivation, mais on reçoit quand même celles des autres appareils.
+          lectureSeule = true;
+          continue;
+        }
         return false;
       }
       const suite = await verrouiller(projetId, async () => {
@@ -223,9 +277,9 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
             touches.set(maj.id, maj);
           }
         }
-        p.file = acquitter(p.file, prepare.lot, reponse.applied);
+        const file = acquitter(p.file, prepare.lot, reponse.applied);
         const avant = p.objets;
-        const { objets } = appliquerReception(avant, p.file, reponse.changes);
+        const { objets } = appliquerReception(avant, file, reponse.changes);
         let contenuModifie = false;
         for (const recu of reponse.changes) {
           const ancien = avant.get(recu.object_id);
@@ -235,16 +289,17 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
             if (!memeContenu(ancien, nouveau)) contenuModifie = true;
           }
         }
-        p.objets = objets;
-        p.seq = reponse.seq;
-        p.archive = false;
-        p.introuvable = false;
-        await stockage.sauverProjet(projetId, { objets: [...touches.values()], file: p.file, seq: p.seq });
+        await stockage.sauverProjet(projetId, { objets: [...touches.values()], file, seq: reponse.seq });
+        if (!lectureSeule) {
+          d.archive = false;
+          d.lotMax = LOT_MAX;
+        }
+        d.introuvable = false;
         return {
           contenuModifie,
           conflit: reponse.applied.some((a) => a.status === "conflict"),
           autresAppareils: reponse.changes.some((c) => c.device_id !== deviceId),
-          encore: reponse.has_more || (p.file.length > 0 && prepare.lot.length > 0),
+          encore: reponse.has_more || (!lectureSeule && file.length > 0 && prepare.lot.length > 0),
         };
       });
       conflit ||= suite.conflit;
@@ -255,7 +310,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       if (!suite.encore) break;
     }
     if (conflit || autresAppareils) await rafraichirJournal(projetId).catch(() => {});
-    return true;
+    return !lectureSeule;
   }
 
   // ---------------------------------------------------------------------------------------------- projets (liste et file)
@@ -333,6 +388,10 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
           definirReseau("reconnexion");
           return false;
         }
+        if (erreur.statut === 409 && erreur.code === "identity_changed") {
+          definirReseau("autre-compte");
+          return false;
+        }
         if ([403, 404, 409, 413, 422].includes(erreur.statut)) {
           // Refus définitif : l'opération sort de la file mais reste visible dans les refus, sans bloquer les suivantes.
           await verrouiller("projets", async () => {
@@ -368,6 +427,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
     } catch (erreur) {
       if (erreur instanceof ErreurApi && estCoupure(erreur)) definirReseau("hors-ligne");
       else if (erreur instanceof ErreurApi && erreur.statut === 401) definirReseau("reconnexion");
+      else if (erreur instanceof ErreurApi && erreur.statut === 409 && erreur.code === "identity_changed") definirReseau("autre-compte");
       return false;
     }
     await verrouiller("projets", async () => {
@@ -398,6 +458,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
             await rafraichirListe();
             const ids = new Set([...ouverts, ...(await stockage.listerProjetsEnAttente())]);
             for (const id of ids) {
+              if (etat.reseau === "autre-compte") break;
               if (!(await synchroniserProjet(id))) break;
             }
           }
@@ -411,10 +472,10 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
 
   /** Nombre de modifications non envoyées (projet donné, ou tous les projets connus plus les opérations sur les projets). */
   async function compterEnAttente(projetId) {
-    if (projetId) return (await chargerProjet(projetId)).file.length;
+    if (projetId) return (await stockage.chargerProjet(projetId)).file.length;
     const operations = await stockage.lireOperations();
     let total = operations.length;
-    for (const id of new Set([...projets.keys(), ...(await stockage.listerProjetsEnAttente())])) total += (await chargerProjet(id)).file.length;
+    for (const id of new Set([...ouverts, ...(await stockage.listerProjetsEnAttente())])) total += (await stockage.chargerProjet(id)).file.length;
     return total;
   }
 
@@ -423,6 +484,10 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
     abonner(ecouteur) {
       ecouteurs.add(ecouteur);
       return () => ecouteurs.delete(ecouteur);
+    },
+    fermer() {
+      ecouteurs.clear();
+      canal?.close();
     },
     deviceId,
     lireBatiment,
@@ -439,8 +504,9 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
     compterEnAttente,
     lireJournal: (projetId) => stockage.lireJournal(projetId),
     async etatProjet(projetId) {
-      const p = await chargerProjet(projetId);
-      return { enAttente: p.file.length, refusees: [...p.refusees], archive: p.archive, introuvable: p.introuvable };
+      const [{ file }, refusees] = [await stockage.chargerProjet(projetId), (await stockage.lireMeta(`refusees:${projetId}`)) ?? []];
+      const d = drapeauxProjet(projetId);
+      return { enAttente: file.length, refusees, archive: d.archive, introuvable: d.introuvable };
     },
     operationsRefusees: () => [...operationsRefusees],
   };

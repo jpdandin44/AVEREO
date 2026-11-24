@@ -28,8 +28,12 @@ export function useSynchro(moteur) {
         await rafraichir();
         return;
       }
-      await moteur.synchroniserTout();
-      await rafraichir();
+      try {
+        await moteur.synchroniserTout();
+        await rafraichir();
+      } catch {
+        // Moteur fermé pendant le cycle (changement de compte, démontage) : le cycle suivant du nouveau moteur reprend.
+      }
     };
     lancerRef.current = lancer;
 

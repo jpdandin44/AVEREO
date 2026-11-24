@@ -12,7 +12,9 @@ import {
 } from "../src/domain/modele.js";
 import { ErreurApi } from "../src/services/api.js";
 import { batimentParDefaut, creerMoteur } from "../src/sync/moteur.js";
+import { creerStockageDexie } from "../src/sync/stockage-dexie.js";
 import { creerStockageMemoire } from "../src/sync/stockage-memoire.js";
+import { IDBKeyRange, indexedDB } from "fake-indexeddb";
 import { creerFauxServeur } from "./aides/faux-serveur.mjs";
 
 const PROJET = "a".repeat(32);
@@ -313,4 +315,178 @@ test("synchroniserTout : projets d'abord, puis les projets ouverts ; un seul cyc
   assert.equal(serveur.projets.size, 1);
   assert.equal(serveur.projets.get(cree.id).objets.size, 2);
   assert.equal(await moteur.compterEnAttente(), 0);
+});
+
+// ------------------------------------------------------------------------------------------ relecture adversariale
+
+/** Verrou commun à plusieurs moteurs : ce que font les Web Locks entre les onglets d'un même navigateur. */
+function verrouCommun() {
+  const files = new Map();
+  return (cle, fn) => {
+    const precedent = files.get(cle) ?? Promise.resolve();
+    const suite = precedent.then(fn, fn);
+    files.set(cle, suite.catch(() => {}));
+    return suite;
+  };
+}
+
+const sansPiece = () => batimentParDefaut();
+const renommerSalon = (batiment, nom) => remplacerNiveau(batiment, remplacerPiece(batiment.niveaux[0], renommerPiece(batiment.niveaux[0].pieces[0], nom)));
+
+test("autre compte : si la session devient celle d'un autre compte, rien n'est envoyé ni écrit dans la base du premier", async () => {
+  const serveur = creerFauxServeur({ compte: "12" });
+  serveur.etat.identiteAttendue = "avereo_connect:12";
+  serveur.etat.horsLigne = true;
+  const { moteur } = appareil(serveur, "telephone-01");
+  const cree = await moteur.creerProjet({ name: "Privé du compte 12" });
+  await moteur.enregistrer(cree.id, null, ref1());
+  serveur.etat.horsLigne = false;
+  serveur.etat.compteConnecte = "99"; // un autre compte se connecte dans un autre onglet
+  await moteur.synchroniserTout();
+  assert.equal(moteur.etat().reseau, "autre-compte");
+  assert.equal(serveur.projets.size, 0, "le projet du compte 12 n'est pas créé sous le compte 99");
+  assert.equal(await moteur.compterEnAttente(), 1 + 3, "création du projet + 3 objets, tous conservés");
+  assert.deepEqual((await moteur.listerProjets()).map((p) => p.name), ["Privé du compte 12"], "la liste du compte 99 n'entre pas dans la base du compte 12");
+  serveur.etat.compteConnecte = "12"; // retour du bon compte
+  await moteur.synchroniserTout();
+  assert.equal(moteur.etat().reseau, "ok");
+  assert.equal(serveur.projets.size, 1);
+});
+
+test("création reçue mais réponse perdue, puis suppression : la suppression part aussi, pas de pièce ressuscitée", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const { moteur } = appareil(serveur, "telephone-01");
+  await moteur.enregistrer(PROJET, null, ref1());
+  serveur.etat.perdreReponse = 1;
+  assert.equal(await moteur.synchroniserProjet(PROJET), false, "la réponse est perdue");
+  assert.ok(serveur.projets.get(PROJET).objets.has("piece-salon"), "le serveur a reçu la création");
+  await moteur.enregistrer(PROJET, ref1(), sansPiece()); // l'utilisateur supprime la pièce
+  assert.equal(await moteur.synchroniserProjet(PROJET), true);
+  assert.equal(serveur.projets.get(PROJET).objets.get("piece-salon").deleted, true, "la suppression a été envoyée");
+  assert.equal((await moteur.lireBatiment(PROJET)).batiment.niveaux[0].pieces.length, 0, "rien n'est ressuscité");
+  assert.equal(await moteur.compterEnAttente(PROJET), 0);
+});
+
+test("création supprimée AVANT tout envoi : les deux s'annulent, rien ne part pour cette pièce", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const { moteur } = appareil(serveur, "telephone-01");
+  const initial = sansPiece();
+  await moteur.enregistrer(PROJET, null, initial);
+  await moteur.enregistrer(PROJET, initial, ref1());
+  await moteur.enregistrer(PROJET, ref1(), initial);
+  await moteur.synchroniserProjet(PROJET);
+  assert.equal(serveur.projets.get(PROJET).objets.has("piece-salon"), false);
+});
+
+test("422 : une correction faite pendant l'envoi n'est pas retirée avec la version refusée", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  serveur.etat.refuser = (c) => (c.kind === "piece" && c.data.nom.length > 10 ? "Nom trop long." : null);
+  const { moteur } = appareil(serveur, "telephone-01");
+  const invalide = renommerSalon(ref1(), "Un nom beaucoup trop long");
+  await moteur.enregistrer(PROJET, null, invalide);
+  const corrige = renommerSalon(ref1(), "Salon");
+  serveur.etat.pendantEnvoi = async () => {
+    await moteur.enregistrer(PROJET, invalide, corrige); // l'utilisateur corrige pendant que la requête est en vol
+  };
+  assert.equal(await moteur.synchroniserProjet(PROJET), true);
+  assert.equal(serveur.projets.get(PROJET).objets.get("piece-salon").data.nom, "Salon", "la version corrigée est arrivée sur le serveur");
+  assert.equal(await moteur.compterEnAttente(PROJET), 0);
+  const refusees = (await moteur.etatProjet(PROJET)).refusees;
+  assert.equal(refusees.length, 1);
+  assert.equal(refusees[0].data.nom, "Un nom beaucoup trop long", "le contenu refusé est conservé");
+});
+
+test("plafond du projet (413 sans indice) : les modifications valides du même lot partent, seule la création en trop est refusée", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const { moteur } = appareil(serveur, "telephone-01");
+  await moteur.enregistrer(PROJET, null, ref1());
+  await moteur.synchroniserProjet(PROJET);
+  serveur.etat.plafondObjets = 3; // bâtiment, niveau, pièce : le projet est plein
+  const renomme = renommerSalon(ref1(), "Séjour");
+  const base = renomme.niveaux[0];
+  const plein = remplacerNiveau(renomme, ajouterPiece(base, creerPieceRectangulaire({ id: "piece-en-trop", nom: "En trop", longueurMm: 2000, largeurMm: 2000 })));
+  await moteur.enregistrer(PROJET, ref1(), plein);
+  assert.equal(await moteur.compterEnAttente(PROJET), 2);
+  await moteur.synchroniserProjet(PROJET);
+  assert.equal(serveur.projets.get(PROJET).objets.get("piece-salon").data.nom, "Séjour", "le renommage valide n'est pas perdu");
+  assert.deepEqual((await moteur.etatProjet(PROJET)).refusees.map((r) => r.objectId), ["piece-en-trop"]);
+  assert.equal(await moteur.compterEnAttente(PROJET), 0);
+});
+
+test("erreur d'enveloppe (champ hors des changements) : rien n'est refusé, l'envoi est signalé en erreur", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const { moteur } = appareil(serveur, "telephone-01");
+  await moteur.enregistrer(PROJET, null, ref1());
+  const original = serveur.api.synchroniser;
+  serveur.api.synchroniser = async () => {
+    throw new ErreurApi(422, "validation_failed", "Données invalides.", { device_id: "Identifiant d'appareil invalide." });
+  };
+  assert.equal(await moteur.synchroniserProjet(PROJET), false);
+  assert.equal(moteur.etat().reseau, "erreur");
+  assert.equal(await moteur.compterEnAttente(PROJET), 3);
+  assert.deepEqual((await moteur.etatProjet(PROJET)).refusees, []);
+  serveur.api.synchroniser = original;
+});
+
+test("projet archivé : la réception reste possible (appareil sans cache, modifications d'un autre appareil) et les modifications locales attendent", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const a = appareil(serveur, "telephone-01").moteur;
+  await a.enregistrer(PROJET, null, ref2());
+  await a.synchroniserProjet(PROJET);
+  serveur.etat.archives.add(PROJET);
+
+  const b = appareil(serveur, "ordinateur-02").moteur; // appareil sans cache, projet archivé
+  const ouvert = await b.ouvrirProjet(PROJET);
+  assert.equal(ouvert.persistant, true, "le relevé archivé est bien reçu");
+  assert.deepEqual(ouvert.batiment, ref2());
+
+  await a.enregistrer(PROJET, ref2(), renommerSalon(ref2(), "Modifié après archivage"));
+  assert.equal(await a.synchroniserProjet(PROJET), false);
+  assert.equal((await a.etatProjet(PROJET)).archive, true);
+  assert.equal(await a.compterEnAttente(PROJET), 1, "la modification attend la réactivation");
+  serveur.etat.archives.delete(PROJET);
+  assert.equal(await a.synchroniserProjet(PROJET), true);
+  assert.equal(serveur.projets.get(PROJET).objets.get("piece-salon").data.nom, "Modifié après archivage");
+});
+
+test("deux onglets sur la même base : aucune modification de la file n'est perdue (verrou entre onglets)", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const stockage = creerStockageMemoire();
+  const verrou = verrouCommun();
+  const creer = (id) => creerMoteur({ stockage, api: serveur.api, deviceId: "telephone-01", delaiOuvertureMs: 0, verrouExterne: verrou });
+  const ongletA = creer("A");
+  const ongletB = creer("B");
+  const base = batimentParDefaut();
+  await ongletA.enregistrer(PROJET, null, base);
+  const avecA = remplacerNiveau(base, ajouterPiece(base.niveaux[0], creerPieceRectangulaire({ id: "piece-A", nom: "A", longueurMm: 3000, largeurMm: 3000 })));
+  const avecB = remplacerNiveau(base, ajouterPiece(base.niveaux[0], creerPieceRectangulaire({ id: "piece-B", nom: "B", longueurMm: 2000, largeurMm: 2000 })));
+  await Promise.all([ongletA.enregistrer(PROJET, base, avecA), ongletB.enregistrer(PROJET, base, avecB)]); // chacun part de l'état précédent
+  assert.equal(await ongletA.compterEnAttente(PROJET), 4, "bâtiment, niveau, pièce A, pièce B");
+  await ongletA.synchroniserProjet(PROJET);
+  assert.deepEqual([...serveur.projets.get(PROJET).objets.keys()].sort(), ["batiment-1", "niveau-1", "piece-A", "piece-B"]);
+});
+
+test("deux connexions Dexie à la même base : la file contient les modifications des deux onglets", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const nom = `onglets-${Math.random()}`;
+  const verrou = verrouCommun();
+  const a = creerMoteur({ stockage: creerStockageDexie({ nom, indexedDB, IDBKeyRange }), api: serveur.api, deviceId: "telephone-01", delaiOuvertureMs: 0, verrouExterne: verrou });
+  const b = creerMoteur({ stockage: creerStockageDexie({ nom, indexedDB, IDBKeyRange }), api: serveur.api, deviceId: "telephone-01", delaiOuvertureMs: 0, verrouExterne: verrou });
+  const base = batimentParDefaut();
+  await a.enregistrer(PROJET, null, base);
+  const avecA = remplacerNiveau(base, ajouterPiece(base.niveaux[0], creerPieceRectangulaire({ id: "piece-A", nom: "A", longueurMm: 3000, largeurMm: 3000 })));
+  const avecAB = remplacerNiveau(avecA, ajouterPiece(avecA.niveaux[0], creerPieceRectangulaire({ id: "piece-B", nom: "B", longueurMm: 2000, largeurMm: 2000 })));
+  await a.enregistrer(PROJET, base, avecA);
+  await b.enregistrer(PROJET, avecA, avecAB); // l'autre onglet ajoute sa pièce depuis son propre accès à la base
+  assert.equal(await a.compterEnAttente(PROJET), 4);
+  await a.synchroniserProjet(PROJET);
+  assert.ok(serveur.projets.get(PROJET).objets.has("piece-A") && serveur.projets.get(PROJET).objets.has("piece-B"));
 });

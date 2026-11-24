@@ -19,8 +19,10 @@ export function empiler(file, changements, revConnue) {
       resultat.push({ ...changement, baseRev: revConnue(changement.objectId), version: 1 });
     } else {
       const precedente = resultat[index];
-      if (precedente.baseRev === 0 && changement.deleted) resultat.splice(index, 1);
-      else resultat[index] = { ...changement, baseRev: precedente.baseRev, version: precedente.version + 1 };
+      // Création puis suppression : elles s'annulent seulement si la création n'est JAMAIS partie. Une entrée déjà envoyée
+      // (réponse perdue ou en vol) a peut-être été reçue : la suppression doit alors partir aussi.
+      if (precedente.baseRev === 0 && !precedente.envoye && changement.deleted) resultat.splice(index, 1);
+      else resultat[index] = { ...changement, baseRev: precedente.baseRev, version: precedente.version + 1, ...(precedente.envoye ? { envoye: true } : {}) };
     }
   }
   return resultat;
@@ -46,6 +48,26 @@ export function acquitter(file, envoyes, appliques) {
     if (entree.version === versionEnvoyee) return [];
     return [entree.version > versionEnvoyee ? { ...entree, baseRev: revisions.get(entree.objectId) } : entree];
   });
+}
+
+/**
+ * Marque comme « envoyées » les entrées d'un lot, AVANT l'appel réseau : si la réponse se perd, on sait que le serveur a
+ * peut-être reçu la création.
+ * @param {import("./objets.js").EntreeFile[]} file @param {import("./objets.js").EntreeFile[]} lot @returns {import("./objets.js").EntreeFile[]}
+ */
+export function marquerEnvoyees(file, lot) {
+  const versions = new Map(lot.map((entree) => [entree.objectId, entree.version]));
+  return file.map((entree) => (versions.get(entree.objectId) === entree.version ? { ...entree, envoye: true } : entree));
+}
+
+/**
+ * Retire de la file les entrées refusées, mais seulement dans la version qui a été envoyée : si l'utilisateur a corrigé l'objet
+ * pendant l'envoi, sa version corrigée reste dans la file.
+ * @param {import("./objets.js").EntreeFile[]} file @param {import("./objets.js").EntreeFile[]} refusees @returns {import("./objets.js").EntreeFile[]}
+ */
+export function retirerVersions(file, refusees) {
+  const versions = new Map(refusees.map((entree) => [entree.objectId, entree.version]));
+  return file.filter((entree) => versions.get(entree.objectId) !== entree.version);
 }
 
 /** @param {import("./objets.js").EntreeFile[]} file @param {string[]} objectIds @returns {import("./objets.js").EntreeFile[]} */

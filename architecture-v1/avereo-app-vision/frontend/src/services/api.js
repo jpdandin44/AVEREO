@@ -28,8 +28,8 @@ export class ErreurApi extends Error {
 /**
  * @param {{fetchImpl?: typeof fetch, base?: string, jeton?: string, utilisateur?: string}} [options]
  */
-export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base = "/api/", jeton = "", utilisateur = "" } = {}) {
-  async function appeler(methode, fichier, { requete = {}, corps } = {}) {
+export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base = "/api/", jeton = "", utilisateur = "", identiteAttendue = "" } = {}) {
+  async function appeler(methode, fichier, { requete = {}, corps, sansIdentiteAttendue = false } = {}) {
     const parametres = new URLSearchParams();
     for (const [cle, valeur] of Object.entries(requete)) {
       if (valeur !== undefined && valeur !== null && valeur !== "") parametres.set(cle, String(valeur));
@@ -40,6 +40,8 @@ export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base
       entetes.Authorization = `Bearer ${jeton}`;
       if (utilisateur) entetes["X-Vision-Local-User"] = utilisateur;
     }
+    // Compte auquel appartiennent les données locales : le serveur refuse (409) si la session est celle d'un autre compte.
+    if (identiteAttendue && !sansIdentiteAttendue) entetes["X-Vision-Expected-Identity"] = identiteAttendue;
     const options = { method: methode, headers: entetes, credentials: "same-origin" };
     if (corps !== undefined) {
       entetes["Content-Type"] = "application/json";
@@ -75,9 +77,11 @@ export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base
 
   return {
     /** Identité, rôle et droits de la session. */
-    identite: () => appeler("GET", "auth.php"),
+    identite: () => appeler("GET", "auth.php", { sansIdentiteAttendue: true }),
     /** Efface le cookie de passerelle (mode CONNECT). */
-    deconnecter: () => appeler("POST", "logout.php", { corps: {} }),
+    deconnecter: () => appeler("POST", "logout.php", { corps: {}, sansIdentiteAttendue: true }),
+    /** Même client, lié à un compte : le serveur refuse tout appel fait avec la session d'un autre compte. */
+    pour: (identite) => creerClient({ fetchImpl, base, jeton, utilisateur, identiteAttendue: `${identite.provider}:${identite.id}` }),
     /** @param {{statut?: "active"|"archived"|"all", q?: string, limite?: number, decalage?: number}} [filtres] */
     listerProjets: async ({ statut = "active", q = "", limite = 50, decalage = 0 } = {}) =>
       (await appeler("GET", "projects.php", { requete: { status: statut, q, limit: limite, offset: decalage } })).projects,

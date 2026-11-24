@@ -55,23 +55,18 @@ if ($method === 'POST') {
     }
     // Création hors ligne : l'identifiant vient du navigateur. Rejeu par le même propriétaire (réponse perdue) : 200 avec
     // le projet existant, sans doublon (le client compare les champs et renvoie une modification si besoin). Autre propriétaire : 409.
-    if (isset($clean['id'])) {
-        $existing = vision_project_find($pdo, $clean['id']);
-        if ($existing !== null) {
-            if ($existing['owner_provider'] !== $identity['provider'] || $existing['owner_id'] !== $identity['id']) {
-                vision_error(409, 'id_conflict', 'Cet identifiant est déjà utilisé.');
-            }
-            vision_json_response(200, ['ok' => true, 'project' => vision_project_public($existing)]);
-        }
-    }
+    // On insère d'abord : une collision d'identifiant (SQLSTATE 23000) est relue, même pour deux créations simultanées.
     try {
         $project = vision_project_create($pdo, $identity, $clean);
     } catch (PDOException $exception) {
-        // Deux créations simultanées du même identifiant : la seconde est un doublon (code SQLSTATE 23000).
-        if ($exception->getCode() === '23000' && isset($clean['id'])) {
+        if ($exception->getCode() !== '23000' || !isset($clean['id'])) {
+            throw $exception;
+        }
+        $existing = vision_project_find($pdo, $clean['id']);
+        if ($existing === null || $existing['owner_provider'] !== $identity['provider'] || $existing['owner_id'] !== $identity['id']) {
             vision_error(409, 'id_conflict', 'Cet identifiant est déjà utilisé.');
         }
-        throw $exception;
+        vision_json_response(200, ['ok' => true, 'project' => vision_project_public($existing)]);
     }
     vision_json_response(201, ['ok' => true, 'project' => vision_project_public($project)]);
 }

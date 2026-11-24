@@ -2,7 +2,7 @@ import Icone from "./Icone.jsx";
 
 /**
  * Libellé et pictogramme de l'état d'enregistrement (R03, R12 : jamais la couleur seule).
- * @param {{reseau: "ok"|"hors-ligne"|"reconnexion"|"erreur", enAttente: number, durable?: boolean}} etat
+ * @param {{reseau: "ok"|"hors-ligne"|"reconnexion"|"autre-compte"|"erreur", enAttente: number, durable?: boolean}} etat
  * @returns {{icone: "valide"|"attente"|"horsligne"|"alerte", libelle: string, aide: string, alerte: boolean}}
  */
 export function decrireEnregistrement({ reseau, enAttente, durable = true }) {
@@ -15,6 +15,14 @@ export function decrireEnregistrement({ reseau, enAttente, durable = true }) {
       icone: "alerte",
       libelle: "Reconnexion nécessaire",
       aide: `Relancez AVEREO Vision depuis AVEREO CONNECT. ${enAttente > 0 ? `${enAttente} modification${pluriel} en attente restent sur cet appareil.` : "Rien n'est perdu."}`,
+      alerte: true,
+    };
+  }
+  if (reseau === "autre-compte") {
+    return {
+      icone: "alerte",
+      libelle: "Autre compte connecté : rechargez la page",
+      aide: `Un autre compte est connecté dans ce navigateur. ${enAttente > 0 ? `${enAttente} modification${pluriel} en attente restent sur cet appareil pour ce compte.` : "Rien n'est perdu."}`,
       alerte: true,
     };
   }

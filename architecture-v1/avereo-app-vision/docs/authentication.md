@@ -31,6 +31,7 @@ Fichier PHP renvoyant un tableau, lu depuis `AVEREO_CONFIG_FILE`, sinon `~/.aver
 ## Données locales sur l'appareil (Lot 2B)
 - Le relevé est enregistré sur l'appareil (IndexedDB, base `avereo-vision:<fournisseur>:<identifiant>`), **une base par compte** : un autre compte sur le même téléphone ou le même navigateur n'y accède pas par l'application. Ces données **ne sont pas chiffrées** : la protection est le verrouillage de l'appareil (les relevés montrent des logements de particuliers) ; **À VÉRIFIER** avec le responsable si un chiffrement ou un effacement automatique est attendu.
 - Sans réseau, l'application rouvre avec la dernière identité connue de l'appareil (`localStorage`, aucun secret). Elle ne donne aucun accès au serveur : chaque envoi est reverifié par le cookie de passerelle CONNECT ; un cookie expiré affiche « Reconnexion nécessaire » et ne supprime rien.
+- Chaque requête du client indique le compte de sa base locale (en-tête `X-Vision-Expected-Identity`) : si la session est celle d'un autre compte, le serveur répond `409 identity_changed` avant toute lecture ou écriture (voir `docs/synchronisation.md`).
 - « Se déconnecter » efface le cookie et oublie l'identité mémorisée mais **garde** les données locales (modifications non envoyées comprises) ; un avertissement s'affiche s'il en reste.
 
 ## Limites connues (relecture de sécurité du Lot 2A)

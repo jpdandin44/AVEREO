@@ -12,13 +12,21 @@ export function creerFauxServeur({ compte = "12" } = {}) {
     perdreReponse: 0, // nombre de prochaines réponses perdues APRÈS application côté serveur
     refuser: null, // (changement, indice) => message|null : refus 422 de cet élément
     archives: new Set(),
+    compteConnecte: compte, // compte de la session courante (peut changer pendant le test)
+    identiteAttendue: "", // en-tête « identité attendue » du client, ex. « avereo_connect:12 »
+    plafondObjets: Infinity, // au-delà : 413 project_too_large sans indice
+    messageRefus: "Valeur refusée.",
     appels: [],
     avantReponse: null, // crochet asynchrone appelé entre l'application et la réponse (simule la durée d'un envoi)
+    pendantEnvoi: null, // crochet asynchrone appelé dès l'arrivée de la requête, avant tout contrôle (simule une requête en vol)
   };
 
   function garde() {
     if (etat.horsLigne) throw new ErreurApi(0, "reseau", "Le serveur est injoignable.");
     if (!etat.session) throw new ErreurApi(401, "unauthorized", "Connexion requise.");
+    if (etat.identiteAttendue && etat.identiteAttendue !== `avereo_connect:${etat.compteConnecte}`) {
+      throw new ErreurApi(409, "identity_changed", "Un autre compte est connecté.");
+    }
   }
   async function reponse(valeur) {
     if (etat.avantReponse) await etat.avantReponse();
@@ -77,13 +85,20 @@ export function creerFauxServeur({ compte = "12" } = {}) {
       garde();
       etat.appels.push(["synchroniser", projetId, changes.length, since]);
       const p = projet(projetId);
-      if (changes.length > 0 && etat.archives.has(projetId)) throw new ErreurApi(409, "project_archived", "Projet archivé.");
+      if (etat.pendantEnvoi) {
+        const crochet = etat.pendantEnvoi;
+        etat.pendantEnvoi = null;
+        await crochet();
+      }
+      if (etat.archives.has(projetId)) throw new ErreurApi(409, "project_archived", "Projet archivé."); // comme le PHP : même pour un envoi vide
       const champs = {};
       changes.forEach((c, i) => {
         const message = etat.refuser?.(c, i);
         if (message) champs[`changes.${i}.data.nom`] = message;
       });
       if (Object.keys(champs).length > 0) throw new ErreurApi(422, "validation_failed", "Données invalides.", champs);
+      const nouveaux = changes.filter((c) => !p.objets.has(c.object_id) && !c.deleted).length;
+      if (p.objets.size + nouveaux > etat.plafondObjets && nouveaux > 0) throw new ErreurApi(413, "project_too_large", "Le projet contient trop d'objets.");
       const applied = [];
       for (const c of changes) {
         const existant = p.objets.get(c.object_id);

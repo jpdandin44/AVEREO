@@ -410,3 +410,20 @@ vision_test('contrat : l\'envoi réel du client (REF-2, fichier partagé avec le
     vision_assert_same(900, $fenetre['data']['alleMm']);
     vision_assert_same(1200, $fenetre['data']['largeurMm']);
 });
+
+vision_test('R08 : l\'identité attendue par le client doit être celle de la session (409 identity_changed), sinon rien n\'est lu ni écrit', function () {
+    $projet = vision_t_projet();
+    $bonne = ['X-Vision-Expected-Identity' => 'local:' . $projet['user']];
+    $mauvaise = ['X-Vision-Expected-Identity' => 'local:' . vision_api_user()];
+    vision_assert_same(200, vision_api('GET', '/api/sync.php?project=' . $projet['id'] . '&since=0', $projet['user'], null, $bonne)['status']);
+    $lecture = vision_api('GET', '/api/sync.php?project=' . $projet['id'] . '&since=0', $projet['user'], null, $mauvaise);
+    vision_assert_same(409, $lecture['status']);
+    vision_assert_same('identity_changed', $lecture['json']['error']);
+    $envoi = vision_api('POST', '/api/sync.php?project=' . $projet['id'], $projet['user'], ['device_id' => 'telephone-0001', 'since' => 0, 'changes' => vision_t_releve()], $mauvaise);
+    vision_assert_same(409, $envoi['status']);
+    vision_assert_same([], vision_api('GET', '/api/sync.php?project=' . $projet['id'] . '&since=0', $projet['user'])['json']['changes'], 'rien n\'a été écrit');
+    $creation = vision_api('POST', '/api/projects.php', $projet['user'], ['name' => 'Ne doit pas exister'], $mauvaise);
+    vision_assert_same(409, $creation['status']);
+    vision_assert_same(1, count(vision_api('GET', '/api/projects.php', $projet['user'])['json']['projects']), 'aucun projet créé pour un autre compte');
+    vision_assert_same(401, vision_http('GET', '/api/projects.php', ['X-Vision-Expected-Identity' => 'local:1'])['status'], 'sans session : toujours 401');
+});
