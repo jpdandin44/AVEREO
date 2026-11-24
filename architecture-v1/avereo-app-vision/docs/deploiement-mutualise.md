@@ -12,7 +12,7 @@ Périmètre : **préproduction uniquement** (`vision-preprod.avereo.fr`, nom pro
 | Accès cPanel du compte O2Switch | création du sous-domaine, de la base MySQL, du gestionnaire de fichiers |
 | Accès SSH ou terminal cPanel | pour `php database/migrate.php` et `bin/manage-catalog.php` de CONNECT. **À VÉRIFIER** : accès SSH activé sur le compte. Sans SSH, voir l'étape 3 (variante phpMyAdmin) ; le catalogue CONNECT, lui, exige PHP en ligne de commande |
 | CONNECT préproduction à jour | la version de CONNECT servie en préproduction doit **contenir la PR #196** (commit `c59dc59` ou postérieur). Sinon les clés `APP_LAUNCH_VISION_*` sont ignorées et Vision reste invisible. **À VÉRIFIER** : version actuellement déployée en préproduction et mode de déploiement (le workflow de CONNECT documenté vise la production) |
-| Un compte CONNECT de recette | approuvé, avec une habilitation sur `vision` (étape 5) ; et un **second** compte pour le test d'isolation |
+| Deux comptes CONNECT de recette | approuvés, avec accès à `vision` (étape 5.3), pour le test d'isolation entre utilisateurs ; idéalement un troisième sans accès |
 | Identifiant numérique CONNECT du fondateur | pour `admin_user_ids`. **À VÉRIFIER** : où le lire (administration CONNECT / table des comptes) |
 | Poste de travail | Node 20.19+ ou 22.12+, PHP 8.4 pour contrôler les fichiers (`php -l`) |
 
@@ -152,7 +152,7 @@ Ces opérations touchent des comptes et des droits réels. À faire sur **CONNEC
      --actor-subject=SUBJECT_DRUPAL_ADMIN
    ```
    Relancer avec `--confirm` seulement après lecture de la prévisualisation. Les valeurs `--scope`, `--display-order` et `--description` sont des **propositions** : à ajuster. **À VÉRIFIER** : le `--actor-subject` (identité Drupal de l'administrateur) et le slug de l'organisation (`avereo` dans la documentation de CONNECT).
-3. **Habilitation des comptes de recette** : seuls les comptes qui doivent voir Vision. La procédure d'attribution par compte est dans `avereo-app-connect/docs/administration-comptes.md` (**À VÉRIFIER** : méthode exacte pour deux comptes de test).
+3. **Qui verra la carte** : l'habilitation de l'étape 2 est attribuée à **l'organisation** (`--organization-slug`) ; d'après `avereo-app-connect/docs/administration-comptes.md`, un compte hérite des habilitations actives de son organisation. **Tous les comptes actifs de l'organisation `avereo` verront donc la carte « AVEREO Vision » dès la confirmation.** Si tu veux la réserver à des comptes de recette, il faut d'abord un moyen de restreindre l'accès par compte (délégations d'accès, `APPLICATION_ACCESS_DELEGATIONS_ENABLED`, `docs/acces-temporaires-applications.md` de CONNECT) : **À VÉRIFIER** avant de confirmer l'étape 2, ou accepter que la carte soit visible de tous les comptes de l'organisation (Vision refuse ensuite toute écriture sans cookie valide et n'expose que les projets de chacun).
 
 ## 6. Contrôles de passage
 Lancer depuis le poste (remplacer l'hôte si besoin). Aucun ne demande d'identifiant.
@@ -184,7 +184,7 @@ curl.exe -sI https://vision-preprod.avereo.fr/ | findstr /i "nosniff referrer x-
 6. **Isolation** : avec le **compte B** (conseiller, autre fenêtre privée), A n'est pas visible ; B ne voit pas le projet de A, et l'adresse API du projet de A répond `404`. Le fondateur voit tout.
 7. **Déconnexion** : « Se déconnecter » efface le cookie ; recharger → écran « non connecté » ; la session CONNECT n'est **pas** fermée (limite connue).
 8. **Connexion forcée par ticket** (limite documentée dans `docs/authentication.md`) : noter si CONNECT lie l'état à un navigateur ; sinon, la limite reste ouverte. Résultat à consigner, pas à corriger ici.
-9. Sans habilitation sur `vision` (compte C) : pas de carte, et l'adresse `…/api/v1/apps/vision/launch` de CONNECT répond `403`.
+9. Compte sans habilitation sur `vision` (si l'étape 5.3 a permis d'en avoir un) : pas de carte, et l'adresse `…/api/v1/apps/vision/launch` de CONNECT répond `403`. Sinon, ce contrôle reste non réalisé et la trace le dit.
 
 ## 7. Trace de la recette (à compléter, sans secret)
 | Date | Version déployée (commit, empreinte `vision-dist.zip`) | Cible (hôte, `DOCROOT`) | Contrôles 6 : résultats | Écarts | Auteur |
