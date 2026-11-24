@@ -1,0 +1,30 @@
+/*
+ * Jetons de la charte graphique AVEREO V2.0 (docs/charte/Charte_graphique_AVEREO_V2.0.pdf).
+ * Seul fichier où les couleurs sont déclarées : aucun code couleur en dur ailleurs (test tests/charte.test.mjs).
+ */
+:root {
+  /* Couleurs */
+  --brand-primary: #002b45; /* navigation, titres, boutons principaux */
+  --brand-accent: #ff6600; /* accent, progression, état actif, CTA secondaire */
+  --surface: #ffffff;
+  --surface-muted: #eef3f6; /* brume, information */
+  --text-primary: #263238;
+  --text-muted: #64748b;
+  --surface-corporate: #345469; /* grands aplats */
+  --gris-mineral: #d9d9d9; /* zones neutres */
+
+  /* Dérivé des jetons (pas de nouvelle valeur) : fond pâle des encadrés d'alerte et de décision */
+  --alerte-fond: color-mix(in srgb, var(--brand-accent) 12%, var(--surface));
+
+  /* Formes */
+  --radius: 8px;
+  --ombre-carte: 0 1px 3px rgb(0 0 0 / 12%); /* très légère, réservée aux cartes interactives */
+  --filet-orange: 2px; /* épaisseur du filet de séparation ou de progression */
+
+  /* Polices : deux familles au plus par écran */
+  --font-ui: "Inter", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, monospace;
+
+  /* Tailles tactiles */
+  --cible-min: 48px;
+}
