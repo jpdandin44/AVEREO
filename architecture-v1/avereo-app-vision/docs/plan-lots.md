@@ -15,7 +15,7 @@ Version : Lot 0, 23/11/2026. Tenu par Claude Code (sous-agent scribe-cockpit). L
 | Lot | Titre | Statut | Taille | Exigences couvertes | Portes (à franchir avant ou pendant) |
 |---|---|---|---|---|---|
 | 0 | Cadrage technique, sans code | fait (PR [#188](https://github.com/jpdandin44/AVEREO/pull/188) mergée le 23/11/2026, commit 54d3fba) | M | cadre toutes les exigences | ADR 0001 et décisions D1, D2, D4, D5, D6 acceptés le 23/11/2026 ; PR mergée ; inscription au cockpit appliquée le 23/11/2026 (source sur le worktree avereo-vision-lot0) |
-| 1 | Fondations, plan 2D manuel, métrés, charte | fait côté code et tests, PR [#190](https://github.com/jpdandin44/AVEREO/pull/190) ouverte le 24/11/2026, en attente de validation | L | R10, R11, R12, R23 à R35 (R27, R29, R32 en cours : essais smartphone et vraie pièce de référence) | pièce de référence et cotes laser fournies par le responsable (R29) ; décision sur caniuse-lite (CC-BY-4.0) |
+| 1 | Fondations, plan 2D manuel, métrés, charte | fait (PR [#190](https://github.com/jpdandin44/AVEREO/pull/190) mergée par le responsable le 24/11/2026, commit 6ca2822) ; R27, R29 et R32 restent en cours | L | R10, R11, R12, R23 à R35 (R27, R29, R32 en cours : essais smartphone et vraie pièce de référence) | pièce de référence et cotes laser fournies par le responsable (R29) ; caniuse-lite (CC-BY-4.0) accepté le 24/11/2026 |
 | 2 | Projets, comptes, hors ligne, synchronisation, PWA | à faire | L | R01 à R06, R08, R09 | choix de la méthode d'authentification (À VÉRIFIER) |
 | 3 | Capture terrain : cotes laser, photos, commentaires, vidéo jointe | à faire | L | R13 à R17, R36 à R38 | essais sur 1 Android et 1 iPhone fournis par le responsable |
 | 4 | Exports CSV, PDF, DXF | à faire | M | R42, R43, R47, R48 | contrôle des licences de Gotenberg (Chromium, LibreOffice) ; décision D6 prise (règle serveur), audit de l'image Gotenberg à faire ; accord avant tout conteneur sur le serveur OVH |
@@ -53,7 +53,7 @@ Ordre voulu : la reconstruction 3D (lots 7 et 8) vient **après** les exports PD
 | T1-06 Plan 2D Konva : murs, sommets, ouvertures, cotes, aimantation, annuler/rétablir (R32 à R34) | fait | — | Claude | Sonnet | medium | — |
 | T1-07 Saisie rapide des cotes (moins de 6 champs) et panneau de métrés en temps réel (R23, R27) | fait | — | Claude | Sonnet | medium | — |
 | T1-08 État de précision par mode (R30) et banc d'essai d'écart ≤ 20 mm avec cas limites 19/20/21 mm (R29) | fait | Banc d'essai livré avec un jeu provisoire : R29 reste en cours | Codex | défaut Codex | medium | task-mwudokoy-cwlkzv |
-| T1-09 Contrôle des licences, `docs/licences.md` | fait | Seul point hors liste : caniuse-lite (CC-BY-4.0, transitive de développement), décision du responsable | sous-agent verif-licences (Haiku, lancé comme sous-agent général) | Haiku | medium | — |
+| T1-09 Contrôle des licences, `docs/licences.md` | fait | Seul point hors liste : caniuse-lite (CC-BY-4.0, transitive de développement), accepté par le responsable le 24/11/2026 | sous-agent verif-licences (Haiku, lancé comme sous-agent général) | Haiku | medium | — |
 | T1-10 Tests et build, rapport des échecs | fait | — | Claude (tests lancés directement : 114 réussis, build réussi) | — | — | — |
 | T1-11 Relecture `/codex:review` de la PR, suivi et plan de lots à jour, relecture du diff | fait (6 remarques de /codex:review traitées) | — | Codex ; Claude | défaut Codex | — | — |
 
