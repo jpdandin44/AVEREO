@@ -77,5 +77,11 @@
     "Révocation, reprise multi-lots et publication couverts localement par tests simulés ; qualification hébergée encore requise pour ce candidat.",
     "Contrôle tactile réel et audit accessibilité complet non réalisés.",
     "Aucune livraison ni validation humaine créée."
-  ]
+  ],
+  "candidate": {
+    "sourceSha": "9b4ccc9814f14a3a9f8881d6184f29b6d58a1b76",
+    "artifactSha256": "623e3aaa249d65d78e8364e0a66400e4acdeeb95637a2aafa8a15ffd583a36c9",
+    "files": 22,
+    "archiveReadback": "passed"
+  }
 }

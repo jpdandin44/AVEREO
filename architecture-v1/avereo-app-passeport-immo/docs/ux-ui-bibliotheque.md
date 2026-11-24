@@ -54,3 +54,7 @@ Point d’entrée : [application locale](http://127.0.0.1:5186/). Cliquer Se con
 ## Limites et suite
 
 Le modèle CIL complet et les mutations en masse restent des lots séparés. La recherche porte sur les titres/noms, sans extraction d’archive ni indexation du contenu. L’import en lots ne fournit pas une mesure réseau en octets ni une reprise après fermeture du navigateur. Pas de migration, modification d’API, nouveau droit, invitation ni opération sur l’hébergement. La [parité UX](source-audit-ux-ui.md) complète les preuves approuvées sans les modifier.
+
+## Candidat vérifié
+
+Source applicative `9b4ccc9814f14a3a9f8881d6184f29b6d58a1b76` ; paquet local de 22 fichiers, SHA-256 `623e3aaa249d65d78e8364e0a66400e4acdeeb95637a2aafa8a15ffd583a36c9`. Les éventuels commits de suivi documentaire suivants ne modifient pas ce contenu applicatif. 85 tests frontend et 42 tests Python réussis, parité intégrale, preuves historiques et vues cockpit conservées ; build et relecture de l’archive réussis. Dix documents et 242 liens locaux vérifiés. Captures locales bureau et mobile dans `.local/`, décrites par le reçu. La CI et la recette humaine restent des preuves distinctes.
