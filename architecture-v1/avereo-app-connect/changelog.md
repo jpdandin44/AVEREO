@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-24 — Lancement d'AVEREO Vision
+
+Reconnaissance des clés `APP_LAUNCH_VISION_URL` et `APP_LAUNCH_VISION_SECRET`, y compris dans le chargeur de configuration privée, pour que le sas commun puisse lancer AVEREO Vision (relevé de l'existant). Un test vérifie l'autorisation explicite et le contrat du ticket (signature HMAC avec le secret de l'application, application « vision », identité CONNECT numérique, courte durée, nonce). Aucune migration, aucun catalogue modifié, aucune habilitation ni installation hébergée exécutée par ce lot.
+
 ## 2026-11-24 — Registre anti-rejeu des développements
 
 Correctif local : récupération prudente des jetons expirés sous verrou avant admission d’une nouvelle empreinte. Les contrôles d’habilitation restent inchangés. [Contrat](api/developments-authorization.md). Installation non attestée.

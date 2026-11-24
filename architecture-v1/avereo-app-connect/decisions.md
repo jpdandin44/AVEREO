@@ -5,10 +5,17 @@ title: Décisions techniques CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-17
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 24 novembre — Lancement d'AVEREO Vision
+
+Contexte : l'application AVEREO Vision (`architecture-v1/avereo-app-vision`) s'authentifie par ticket CONNECT, comme Rapport.
+Décision : ajouter ses clés de lancement à la configuration existante et réutiliser le sas commun, sans changer les autorisations du portail.
+Raison : conserver le mécanisme HMAC et les contrôles métier des autres applications.
+Conséquences : l'entrée du catalogue (table `applications`, commande `bin/manage-catalog.php`), la configuration privée hébergée (URL d'entrée, secret distinct par environnement), le compte de recette et l'habilitation restent à faire avec l'accord du responsable. Les accords humains restent dans les suivis canoniques.
 
 ## 17 novembre — Catalogue commun administré et métier déclaré distincts
 

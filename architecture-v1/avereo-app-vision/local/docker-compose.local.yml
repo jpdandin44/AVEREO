@@ -1,0 +1,43 @@
+# Pile locale AVEREO Vision : MySQL 8.4 + API PHP (Apache). Développement seulement.
+# Lancement : powershell -ExecutionPolicy Bypass -File .\local\vision-local.ps1 up
+name: avereo-vision-local
+
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: vision
+      MYSQL_USER: vision
+      MYSQL_PASSWORD: ${VISION_DB_PASSWORD:?exécuter vision-local.ps1 up}
+      MYSQL_ROOT_PASSWORD: ${VISION_DB_ROOT_PASSWORD:?exécuter vision-local.ps1 up}
+    ports:
+      - "127.0.0.1:3311:3306"
+    volumes:
+      - vision-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # La configuration (secrets) vit hors du dossier publié.
+      AVEREO_CONFIG_FILE: /opt/vision/local/config.php
+    command: ["php", "-S", "0.0.0.0:80", "-t", "/opt/vision/frontend/public", "/opt/vision/local/router.php"]
+    ports:
+      - "127.0.0.1:8110:80"
+    volumes:
+      # Application entière en lecture seule : seul frontend/public est servi par Apache.
+      - ..:/opt/vision:ro
+      - vision-nonces:/var/lib/avereo/vision/nonces
+
+volumes:
+  vision-db:
+  vision-nonces:

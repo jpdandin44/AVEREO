@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
 
+## 24 novembre — Raccordement d'AVEREO Vision
+
+Les clés URL/SECRET de `vision` sont ajoutées à `Config.php` et au chargeur privé de `public/index.php` ; `.env.example` les documente. Le catalogue natif et les autorisations restent inchangés : aucune ligne `applications` n'est créée par ce lot et aucun accès n'est accordé. Le contrat du ticket est vérifié par un test de `backend/tests/run.php` ; l'application côté Vision le décrit dans `architecture-v1/avereo-app-vision/docs/authentication.md`. Essai de bout en bout, catalogue, secret hébergé et habilitation : à faire séparément, avec accord.
+
 ## 24 novembre — récupération des nonces expirés
 
 Le registre des développements n’est plus condamné à se remplir définitivement : `NonceStore` récupère les fichiers réguliers de nom et contenu valides expirés depuis plus de cinq secondes, sous verrou commun. Une entrée active, malformée ou un lien symbolique est conservé. Création exclusive, permissions privées et limite 4096 maintenues. Les tests couvrent saturation, rejeu et concurrence ; diagnostic hébergé encore nécessaire. [Contrat](../api/developments-authorization.md).

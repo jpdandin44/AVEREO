@@ -16,7 +16,8 @@ Version : Lot 0, 23/11/2026. Tenu par Claude Code (sous-agent scribe-cockpit). L
 |---|---|---|---|---|---|
 | 0 | Cadrage technique, sans code | fait (PR [#188](https://github.com/jpdandin44/AVEREO/pull/188) mergée le 23/11/2026, commit 54d3fba) | M | cadre toutes les exigences | ADR 0001 et décisions D1, D2, D4, D5, D6 acceptés le 23/11/2026 ; PR mergée ; inscription au cockpit appliquée le 23/11/2026 (source sur le worktree avereo-vision-lot0) |
 | 1 | Fondations, plan 2D manuel, métrés, charte | fait (PR [#190](https://github.com/jpdandin44/AVEREO/pull/190) mergée par le responsable le 24/11/2026, commit 6ca2822) ; R27, R29 et R32 restent en cours | L | R10, R11, R12, R23 à R35 (R27, R29, R32 en cours : essais smartphone et vraie pièce de référence) | pièce de référence et cotes laser fournies par le responsable (R29) ; caniuse-lite (CC-BY-4.0) accepté le 24/11/2026 |
-| 2 | Projets, comptes, hors ligne, synchronisation, PWA | à faire | L | R01 à R06, R08, R09 | choix de la méthode d'authentification (À VÉRIFIER) |
+| 2A | API PHP, base MySQL, authentification, projets | fait côté code et tests, PR ouverte le 24/11/2026 | M | R01 (partiel), R02, R08 (partiel) | essai avec un vrai ticket CONNECT : application « vision » à enregistrer dans CONNECT (PR séparée, accord requis) |
+| 2B | Stockage local, enregistrement automatique, synchronisation, PWA | à faire | L | R03 à R06, R09, fin de R01 | schéma du contenu des projets (nouvelles migrations) ; essais hors ligne sur 1 Android et 1 iPhone |
 | 3 | Capture terrain : cotes laser, photos, commentaires, vidéo jointe | à faire | L | R13 à R17, R36 à R38 | essais sur 1 Android et 1 iPhone fournis par le responsable |
 | 4 | Exports CSV, PDF, DXF | à faire | M | R42, R43, R47, R48 | contrôle des licences de Gotenberg (Chromium, LibreOffice) ; décision D6 prise (règle serveur), audit de l'image Gotenberg à faire ; accord avant tout conteneur sur le serveur OVH |
 | 5 | Maquette 3D, vue 3D, exports glTF et OBJ, partage par lien | à faire | L | R07, R39, R40, R45, R46 | — |
@@ -57,17 +58,33 @@ Ordre voulu : la reconstruction 3D (lots 7 et 8) vient **après** les exports PD
 | T1-10 Tests et build, rapport des échecs | fait | — | Claude (tests lancés directement : 114 réussis, build réussi) | — | — | — |
 | T1-11 Relecture `/codex:review` de la PR, suivi et plan de lots à jour, relecture du diff | fait (6 remarques de /codex:review traitées) | — | Codex ; Claude | défaut Codex | — | — |
 
-### Lot 2 — Projets, comptes, hors ligne, synchronisation, PWA
+### Lot 2A — API PHP, base MySQL, authentification, projets
+Décisions du 24/11/2026 : authentification CONNECT (ticket + cookie) avec jeton local pour le développement ; lot 2 coupé en 2A et 2B.
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
 |---|---|---|---|---|---|---|
-| T2-01 Choix et mise en place de l'authentification (R08), droits centralisés (R02) | à faire | — | Claude | Opus (plan) puis Sonnet | high puis medium | — |
-| T2-02 Schéma MySQL du §4 de l'architecture ; migrations écrites, non exécutées | à faire | — | Codex (schéma fixé par Claude dans le brief) | défaut Codex | medium | — |
-| T2-03 API PHP projets et synchro (push/pull, journal des conflits) (R01, R05, R06) | à faire | — | Claude | Sonnet | medium | — |
-| T2-04 Stockage local Dexie, file d'envoi, enregistrement automatique (R03, R04) | à faire | — | Claude | Sonnet | medium | — |
-| T2-05 PWA : manifeste, service worker, installation (R09) | à faire | — | Claude | Sonnet | medium | — |
-| T2-06 Tests de synchronisation et de conflits sur jeux de données | à faire | — | Codex | défaut Codex | medium | — |
-| T2-07 Essais hors ligne Android et iPhone, quota iOS | à faire | Essai physique par le responsable | responsable | — | — | — |
-| T2-08 Licences, tests, relecture Codex, suivi | à faire | — | verif-licences / testeur / Codex / scribe | Haiku / Haiku / défaut / Haiku | medium / low / — / low | — |
+| T2A-01 Worktree, branche `vision/lot-2a-api-projets`, structure | fait | — | Claude | Sonnet | medium | — |
+| T2A-02 Environnement local Docker (PHP + MySQL), script `vision-local.ps1` | fait | Serveur PHP intégré (image `php:8.4-cli` déjà présente) au lieu d'Apache pour ne rien télécharger | Claude | Sonnet | medium | — |
+| T2A-03 Migration 001 et exécuteur de migrations | fait | — | Claude | Sonnet | medium | — |
+| T2A-04 `lib/droits.php` et tests (R02) | fait | — | Codex | défaut Codex | medium | task-mwusozxu-2z07z4 |
+| T2A-05 `lib/connect_gate.php` : ticket, nonce, cookie signé | fait | Tests PHP lancés par Claude Code (le bac à sable de Codex n'a pas PHP) | Codex | défaut Codex | high | task-mwuswvv3-qxflli |
+| T2A-06 `bootstrap.php`, `auth.php`, `projects.php`, `health.php`, `connect/entry.php` | fait | — | Claude | Sonnet | medium | — |
+| T2A-07 Tests PHP sans dépendance : unitaires, intégration HTTP, parcours CONNECT de bout en bout (102 tests) | fait | — | Claude | Sonnet | medium | — |
+| T2A-08 Écran Projets, client d'API, inventaire des domaines (R01, R08) | fait | — | Claude | Sonnet | medium | — |
+| T2A-09 Relecture de sécurité de l'authentification et de la propriété | fait | Remarques traitées (voir la PR) | sous-agent (Opus, lancé comme sous-agent général) | Opus | high | — |
+| T2A-10 Documents, licences, suivi, plan de lots | fait | — | Claude | Sonnet | medium | — |
+| T2A-11 Tests, build, `/codex:review --base origin/main`, relecture du diff, PR | fait | — | Claude ; Codex | Sonnet ; défaut | medium ; — | — |
+
+### Lot 2B — Stockage local, enregistrement automatique, synchronisation, PWA
+Plan détaillé proposé au lancement du lot (message « Lot 2B selon docs/plan-lots.md… »). Tâches prévues :
+| Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
+|---|---|---|---|---|---|---|
+| T2B-01 Schéma du contenu des projets (bâtiments, niveaux, pièces, murs, ouvertures, `rev`, `seq`, `sync_log`) : nouvelles migrations écrites, non exécutées en production | à faire | — | Codex (schéma fixé par Claude dans le brief) | défaut Codex | medium | — |
+| T2B-02 API de synchronisation (push, pull par `seq`, conflits, instantané atomique) (R05, R06) | à faire | — | Claude | Sonnet | medium | — |
+| T2B-03 Stockage local Dexie, file d'envoi, enregistrement automatique (R03, R04) | à faire | — | Claude | Sonnet | medium | — |
+| T2B-04 PWA : manifeste, service worker, installation (R09) | à faire | — | Claude | Sonnet | medium | — |
+| T2B-05 Tests de synchronisation et de conflits sur jeux de données | à faire | — | Codex | défaut Codex | medium | — |
+| T2B-06 Essais hors ligne Android et iPhone, quota iOS | à faire | Essai physique par le responsable | responsable | — | — | — |
+| T2B-07 Licences (Dexie, vite-plugin-pwa), tests, relecture Codex, suivi | à faire | — | verif-licences / testeur / Codex / scribe | Haiku / Haiku / défaut / Haiku | medium / low / — / low | — |
 
 ### Lot 3 — Capture terrain : cotes laser, photos, commentaires, vidéo jointe
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
