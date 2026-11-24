@@ -34,7 +34,7 @@ describe('Envoi de documents volumineux', () => {
     expect(batches.every(batch => batch.length <= 100 && batch.reduce((sum, f) => sum + f.size, 0) <= MAX_BATCH_SIZE)).toBe(true);
     expect(peak).toBe(1);
     expect(states[0].processedFiles).toBe(0);
-    expect(states.at(-1).completedBatches).toBe(batches.length - 1);
+    expect(states.at(-1)).toMatchObject({ phase: 'confirmed', completedBatches: batches.length, processedFiles: 205 });
     expect(result).toMatchObject({ added: 205, processedFiles: 205, completedBatches: batches.length });
   });
   it.each([file('trop-grand.zip', MAX_FILE_SIZE + 1), file('refuse.exe', 100), file('vide.pdf', 0)])('refuse un fichier invalide avant tout envoi : $name', async invalid => {

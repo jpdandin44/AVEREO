@@ -1,0 +1,211 @@
+{
+  "protocol": "developpement-github-cockpit",
+  "version": "git",
+  "iterationId": "passeport-immo-ux-ui",
+  "project": "avereo-app-passeport-immo",
+  "owner": "jpdandin",
+  "kind": "application_iteration",
+  "stage": "local",
+  "status": "local_verified_awaiting_review",
+  "objective": "Développer la bibliothèque documentaire AVEREO et la navigation du bien, préserver les contenus, droits et parcours existants.",
+  "candidate": {
+    "sourceSha": null,
+    "artifactSha256": null,
+    "mockupSha256": "4b008e3215e9b63fa02739c0b9a9adee64b500bfab578bcbdd6f06b09533304e",
+    "mockupPath": "C:\\Users\\examg\\.codex\\visualizations\\2026\\10\\03\\01a102c7-978e-78b1-8fb1-5845aa45e2ea\\passeport-immo-ux-ui.html",
+    "type": "application_runtime",
+    "baseSha": "5f59740",
+    "artifactPath": ".local/candidate.zip",
+    "manifestPath": ".local/candidate.manifest.json"
+  },
+  "targets": {
+    "preproduction": {
+      "id": null,
+      "ready": false,
+      "isolated": false,
+      "empty": false,
+      "evidence": null,
+      "observedAt": null
+    },
+    "production": {
+      "id": null,
+      "ready": false,
+      "evidence": null,
+      "observedAt": null
+    }
+  },
+  "github": {
+    "repository": "jpdandin44/AVEREO",
+    "prUrl": null,
+    "acceptedSourceSha": null,
+    "acceptedArtifactSha256": null,
+    "humanAcceptanceVerified": false,
+    "evidence": null,
+    "observedAt": null
+  },
+  "approvals": [],
+  "backups": [],
+  "rollback": {
+    "status": "not_tested",
+    "target": null,
+    "artifactSha256": null,
+    "evidence": null,
+    "observedAt": null
+  },
+  "delivery": {
+    "status": "not_delivered",
+    "sourceSha": null,
+    "artifactSha256": null,
+    "target": null,
+    "evidence": null,
+    "observedAt": null
+  },
+  "blockers": [],
+  "nextAction": "Revoir le candidat local et la PR ; compléter la recette UX01–UX06. Merge et livraison en préproduction restent distincts.",
+  "nextIteration": [],
+  "budget": {
+    "limit": null,
+    "unit": null,
+    "observedUsage": null,
+    "observedAt": null
+  },
+  "phaseModelRef": "../../../outillage/protocole-developpement/skills/developpement-github-cockpit/assets/phase-model.json",
+  "documentation": "docs/ux-ui-bibliotheque.md",
+  "phases": [
+    {
+      "id": 0,
+      "title": "Cadrage",
+      "status": "scoped"
+    },
+    {
+      "id": 1,
+      "title": "Développement local",
+      "status": "awaiting_review"
+    },
+    {
+      "id": 2,
+      "title": "Préproduction",
+      "status": "not_started"
+    },
+    {
+      "id": 3,
+      "title": "Mise en production",
+      "status": "not_started"
+    }
+  ],
+  "scope": {
+    "proposalOnly": false,
+    "applicationCodeChanged": true,
+    "liveHostingChecked": false,
+    "privateCustomerDataUsed": false,
+    "reviewDate": "2026-11-24",
+    "runtimeInspected": {
+      "path": "C:/Users/examg/Documents local/passeport-immo-ux-ui",
+      "baseSha": "5f59740"
+    },
+    "historicalInvitationOperationResumed": false,
+    "sharedAccountMenuReused": true,
+    "backendChanged": false,
+    "migrationRequired": false
+  },
+  "recommendation": {
+    "variant": "Bibliothèque",
+    "alternative": "Fiche du bien",
+    "priorityOrder": [
+      "navigation-du-bien",
+      "documents-et-apercu",
+      "import-et-enregistrement",
+      "partage-et-confidentialite"
+    ],
+    "functionalFollowUps": [
+      "operations-multiples",
+      "lot-cil"
+    ]
+  },
+  "remainingVerification": [
+    "Recette humaine du candidat local et checklist PR.",
+    "Qualification authentifiée en préproduction après accord pour ce candidat.",
+    "Contrôle tactile réel et audit accessibilité complet non réalisés."
+  ],
+  "branch": "feat/passeport-immo-bibliotheque",
+  "proposalChecks": [
+    {
+      "kind": "prototype_syntax",
+      "status": "passed",
+      "evidence": "docs/proposition-ux-ui.md#contrôles-de-cette-proposition-et-documentation"
+    },
+    {
+      "kind": "palette_contrast_on_white",
+      "status": "passed",
+      "scope": "Quatre couples seulement ; pas un audit de conformité global.",
+      "evidence": "docs/proposition-ux-ui.md#accessibilité-et-critères-de-recette-proposés"
+    },
+    {
+      "kind": "desktop_mockup",
+      "status": "passed",
+      "scope": "Deux dispositions, filtre par catégorie, aperçu, conservation du dossier replié.",
+      "evidence": "docs/proposition-ux-ui.md#contrôles-de-cette-proposition-et-documentation"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "scope": "Métadonnées, liens locaux, rattachement au cockpit et conservation des preuves approuvées.",
+      "evidence": "docs/proposition-ux-ui.md#contrôles-de-cette-proposition-et-documentation"
+    }
+  ],
+  "checks": [
+    {
+      "kind": "frontend",
+      "status": "passed",
+      "observedAt": "2026-11-24T08:15:02.126650+00:00",
+      "evidence": "api/ux-ui-local-observation.json#checks/frontend"
+    },
+    {
+      "kind": "python",
+      "status": "passed",
+      "observedAt": "2026-11-24T08:15:02.126710+00:00",
+      "evidence": "api/ux-ui-local-observation.json#checks/python"
+    },
+    {
+      "kind": "parity",
+      "status": "passed",
+      "observedAt": "2026-11-24T08:15:02.126715+00:00",
+      "evidence": "api/ux-ui-local-observation.json#checks/parity"
+    },
+    {
+      "kind": "cockpit",
+      "status": "passed",
+      "observedAt": "2026-11-24T08:15:02.126718+00:00",
+      "evidence": "api/ux-ui-local-observation.json#checks/cockpit"
+    },
+    {
+      "kind": "build",
+      "status": "passed",
+      "observedAt": "2026-11-24T08:15:02.126722+00:00",
+      "evidence": "api/ux-ui-local-observation.json#checks/build"
+    },
+    {
+      "kind": "documentation",
+      "status": "passed",
+      "observedAt": "2026-11-24T08:15:02.126724+00:00",
+      "evidence": "api/ux-ui-local-observation.json#checks/documentation"
+    },
+    {
+      "kind": "browser_local",
+      "status": "passed",
+      "scope": "Bibliothèque, import, téléchargement, continuité des saisies, corbeille ; bureau et petit écran.",
+      "evidence": "api/ux-ui-local-observation.json#browser"
+    },
+    {
+      "kind": "ci",
+      "status": "pending",
+      "evidence": null
+    }
+  ],
+  "reviewEnvironment": {
+    "phase": 1,
+    "environment": "local",
+    "url": "http://127.0.0.1:5186/",
+    "scope": "Dossier fictif Bibliothèque ; données réelles et hébergement non utilisés."
+  }
+}
