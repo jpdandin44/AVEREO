@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
+## 24 novembre — Bibliothèque disponible en préproduction
+
+PR191 fusionnée puis interface installée en préproduction privée. Quatre écritures, 212 assertions HTTPS, deux biens et lecteur PDF contrôlés ; quatre tables et trente fichiers privés exacts après navigateur. [Livraison et recette](docs/preproduction-ux-ui.md) · [Suivi](data/suivi-ux-ui.json). Recette humaine hébergée en attente ; aucune livraison en production.
+
+
 ## 24 novembre — Bibliothèque en développement local
 
 Nouvelle navigation du bien, bibliothèque avec aperçu et import guidé, palette AVEREO. [Guide et recette locale](docs/ux-ui-bibliotheque.md) · [Suivi du lot](data/suivi-ux-ui.json). Les parcours serveur existants et les données sont conservés ; aucune livraison de ce candidat.

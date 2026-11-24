@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [passeport-immo, ux-ui, bibliotheque]
 ---
 
+## État courant — préproduction du 24 novembre
+
+PR191 fusionnée et interface installée ; le [guide de préproduction](preproduction-ux-ui.md) et son reçu font référence pour la livraison et la recette humaine hébergée. Les sections suivantes conservent la qualification locale et l’archive CI de référence.
+
+
 # Bibliothèque documentaire
 
 Le lot est développé dans `C:/Users/examg/Documents local/passeport-immo-ux-ui`, branche `feat/passeport-immo-bibliotheque`, depuis `5f59740` de main. [Suivi canonique](../data/suivi-ux-ui.json) · [Observation des contrôles](../api/ux-ui-local-observation.json) · [Cadrage initial](proposition-ux-ui.md). L’état hébergé n’est pas requalifié par cette itération.
