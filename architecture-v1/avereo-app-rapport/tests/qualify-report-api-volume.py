@@ -49,7 +49,7 @@ def enter():
 
 
 enter()
-report = {'titre': 'Seuil fictif exact', 'observations': [], 'emptyObject': {}, 'emptyList': [], 'padding': ''}
+report = {'titre': 'Seuil fictif exact', 'categorie': 'Visite Globale', 'observations': [], 'emptyObject': {}, 'emptyList': [], 'padding': ''}
 base = json.dumps(report, ensure_ascii=False, separators=(',', ':')).encode()
 report['padding'] = 'x' * (100_000_000 - len(base))
 payload = json.dumps(report, ensure_ascii=False, separators=(',', ':')).encode()
