@@ -31,6 +31,7 @@
     {"id": "lot0-architecture-20261123", "phaseId": 0, "title": "Lot 0 — Architecture", "kind": "reference_document", "status": "reviewable", "evidence": "docs/architecture.md", "observedAt": "2026-11-23"},
     {"id": "lot0-plan-lots-20261123", "phaseId": 0, "title": "Lot 0 — Plan des lots", "kind": "reference_document", "status": "reviewable", "evidence": "docs/plan-lots.md", "observedAt": "2026-11-23"},
     {"id": "ovh-serveur-20261124", "phaseId": 0, "title": "Caractéristiques du serveur OVH relevées en lecture seule le 24/11/2026 (VPS-1, insuffisant pour la reconstruction)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/serveur-ovh.md", "observedAt": "2026-11-24"},
+    {"id": "lot2a-pr-195-20261124", "phaseId": 1, "title": "PR Lot 2A ouverte vers main, en attente de relecture humaine (état observé sur GitHub, aucun merge)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/195", "observedAt": "2026-11-24"},
     {"id": "lot2a-authentification-20261124", "phaseId": 1, "title": "Lot 2A : authentification et droits (CONNECT + jeton local, parcours testé avec des tickets forgés)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/authentication.md", "observedAt": "2026-11-24"},
     {"id": "lot2a-developpement-local-20261124", "phaseId": 1, "title": "Lot 2A : développement local (pile Docker PHP et MySQL, tests)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/local-development.md", "observedAt": "2026-11-24"},
     {"id": "lot1-pr-190-20261124", "phaseId": 1, "title": "PR Lot 1 mergée dans main par le responsable le 24/11/2026 à 08:36 UTC, commit 6ca2822 (état observé sur GitHub)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/190", "observedAt": "2026-11-24"},
@@ -71,7 +72,7 @@
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
   "nextAction": "Relire la PR du Lot 2A, cocher la checklist si elle te convient ; autoriser (ou non) la PR séparée qui enregistre l'application « vision » dans CONNECT ; fournir la pièce de référence (R29) ; puis lancer le Lot 2B (message « Lot 2B selon docs/plan-lots.md… »).",
-  "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/190"},
+  "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/195"},
   "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; repointé le 24/11/2026 vers le worktree C:/Users/examg/Documents local/avereo-vision-lot1 (branche de suivi vision/lot-1-suivi-caniuse), à repointer vers le clone principal une fois à jour.",
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},
   "documentation": "docs/plan-lots.md"
