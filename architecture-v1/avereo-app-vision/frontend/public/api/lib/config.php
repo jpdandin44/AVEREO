@@ -39,15 +39,17 @@ function vision_home_from_path(string $path): string
 
 /**
  * Chemins possibles du fichier de configuration, du plus probable au moins probable, tous hors du dossier publié.
- * Un site dont la racine web contient « preprod » cherche d'abord « vision-preprod », puis « vision » : une préproduction
- * ne lit donc jamais par erreur la configuration de production, et inversement.
+ * Un site dont la racine web ou le dossier du code (`$apiDirectory`, seul indice en ligne de commande, où il n'y a pas de racine
+ * web) contient « preprod » cherche « vision-preprod » et jamais « vision » : une préproduction ne lit donc jamais par erreur
+ * la configuration de production, y compris pour `database/migrate.php`.
  * @param array<string, mixed> $server contenu de $_SERVER (injecté pour les tests)
  * @return string[]
  */
 function vision_config_candidates(array $server, string $home, string $apiDirectory): array
 {
     $documentRoot = strtolower(str_replace('\\', '/', (string) ($server['CONTEXT_DOCUMENT_ROOT'] ?? $server['DOCUMENT_ROOT'] ?? '')));
-    $names = str_contains($documentRoot, 'preprod') ? ['vision-preprod'] : ['vision'];
+    $codeDirectory = strtolower(str_replace('\\', '/', $apiDirectory));
+    $names = str_contains($documentRoot, 'preprod') || str_contains($codeDirectory, 'preprod') ? ['vision-preprod'] : ['vision'];
     $roots = [];
     foreach ([$home, (string) ($server['HOME'] ?? '')] as $path) {
         $roots[] = rtrim($path, '/\\');

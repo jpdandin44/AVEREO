@@ -37,8 +37,21 @@ vision_test('config : chemin du fichier de configuration sur un hébergement mut
     vision_assert_same(['/home/compte/.avereo/vision-preprod/config.php'], vision_config_candidates($server, '', $api), 'préproduction');
     $production = ['DOCUMENT_ROOT' => '/home/compte/vision.avereo.fr'];
     vision_assert_same(['/home/compte/.avereo/vision/config.php'], vision_config_candidates($production, '', '/home/compte/vision.avereo.fr/api/lib'), 'production');
-    vision_assert_same(['/home/autre/.avereo/vision/config.php', '/home/compte/.avereo/vision/config.php'], vision_config_candidates($production, '/home/autre/', $api . '/..'), 'HOME prioritaire');
+    vision_assert_same(['/home/autre/.avereo/vision/config.php', '/home/compte/.avereo/vision/config.php'], vision_config_candidates($production, '/home/autre/', '/home/compte/vision.avereo.fr/api/lib/..'), 'HOME prioritaire');
     vision_assert_same([], vision_config_candidates([], '', '/srv/app/api/lib'), 'aucun dossier personnel déductible');
+});
+
+vision_test('config : en ligne de commande (sans racine web), le dossier du code désigne la préproduction', function () {
+    vision_assert_same(
+        ['/home/compte/.avereo/vision-preprod/config.php'],
+        vision_config_candidates([], '', '/home/compte/vision-preprod.avereo.fr/api/lib'),
+        'migrations lancées depuis la préproduction'
+    );
+    vision_assert_same(
+        ['/home/compte/.avereo/vision-preprod/config.php'],
+        vision_config_candidates([], '', '/home/compte/.avereo/vision-preprod/outils/frontend/public/api/lib'),
+        'dossier d\'outils de préproduction'
+    );
 });
 
 vision_test('config : une préproduction ne lit jamais la configuration de production', function () {

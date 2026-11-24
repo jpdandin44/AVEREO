@@ -112,9 +112,12 @@ Contrôles à lancer sur `dist/` :
 ```powershell
 Get-ChildItem dist -Recurse -Force -File | ForEach-Object { $_.FullName.Substring((Resolve-Path dist).Path.Length) }
 Get-ChildItem dist -Recurse -Filter *.php | ForEach-Object { php -l $_.FullName }
-Select-String -Path dist\assets\*.js -Pattern 'VITE_LOCAL_API_TOKEN|Bearer ' -SimpleMatch
+# Le jeton local de développement ne doit apparaître dans aucun fichier du build (chaque commande : aucun résultat attendu).
+Select-String -Path dist\assets\*.js -Pattern 'VITE_LOCAL_API_TOKEN' -SimpleMatch
+$jeton = (Select-String -Path .env.development.local -Pattern '^VITE_LOCAL_API_TOKEN=(.+)$').Matches[0].Groups[1].Value
+Select-String -Path dist\assets\*.js -Pattern $jeton -SimpleMatch
 ```
-Attendu : aucun fichier `.env`, `config.php`, `local/` ni `tests/` ; `php -l` sans erreur ; la dernière commande ne trouve **aucun** jeton local. Noter l'empreinte de l'archive pour la trace :
+Attendu : aucun fichier `.env`, `config.php`, `local/` ni `tests/` ; `php -l` sans erreur ; les deux recherches de jeton ne trouvent **rien** (le texte « Bearer » seul n'est pas une fuite : il est présent dans le client d'API). Si `.env.development.local` n'existe pas sur le poste, la deuxième recherche est sans objet. Noter l'empreinte de l'archive pour la trace :
 ```powershell
 Compress-Archive -Path (Get-ChildItem dist -Force).FullName -DestinationPath vision-dist.zip -Force
 Get-FileHash vision-dist.zip -Algorithm SHA256
