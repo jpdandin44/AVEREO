@@ -1,6 +1,6 @@
 // État du relevé en cours : bâtiment, historique annuler/rétablir, sélection, aperçu pendant un glissement.
 // Le plan, la saisie et le panneau de métrés lisent et écrivent le même modèle (R27 : tout se met à jour en direct).
-import { useCallback, useEffect, useMemo, useReducer, useRef } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import {
   annuler,
   creerHistorique,
@@ -114,6 +114,9 @@ export function useReleve(projetId, moteur) {
   const batiment = etat.historique.present;
   const persiste = useRef(null); // état de référence du dernier enregistrement (null : rien d'enregistré pour ce projet)
   const affiche = useRef(null); // dernier état déjà traité par l'enregistrement automatique
+  const ecrit = useRef(null); // dernier état dont l'écriture locale a RÉUSSI
+  const [echecs, setEchecs] = useState(0); // écritures locales en échec (espace insuffisant, base fermée…) en attente de reprise
+  const [tentative, setTentative] = useState(0);
 
   // Lecture du relevé enregistré sur l'appareil (et première réception si l'appareil n'a rien).
   useEffect(() => {
@@ -122,6 +125,7 @@ export function useReleve(projetId, moteur) {
       if (annule) return;
       const sur = securiser(lu);
       persiste.current = persistant ? sur : null;
+      ecrit.current = persiste.current;
       affiche.current = sur;
       envoyer({ type: "charger", batiment: sur });
     });
@@ -136,8 +140,26 @@ export function useReleve(projetId, moteur) {
     const avant = persiste.current;
     persiste.current = batiment;
     affiche.current = batiment;
-    moteur.enregistrer(projetId, avant, batiment);
-  }, [batiment, etat.charge, moteur, projetId]);
+    moteur.enregistrer(projetId, avant, batiment).then(
+      () => {
+        ecrit.current = batiment;
+        setEchecs(0);
+      },
+      () => {
+        // Écriture locale impossible : on revient au dernier état réellement écrit pour que la reprise recalcule tout le diff.
+        persiste.current = ecrit.current;
+        affiche.current = null;
+        setEchecs((n) => n + 1);
+      },
+    );
+  }, [batiment, etat.charge, moteur, projetId, tentative]);
+
+  // Reprise automatique de l'enregistrement local après un échec.
+  useEffect(() => {
+    if (echecs === 0) return undefined;
+    const minuterie = setTimeout(() => setTentative((n) => n + 1), 3000);
+    return () => clearTimeout(minuterie);
+  }, [echecs]);
 
   // Relevé modifié sur un autre appareil (R05) : on relit l'état local, qui contient aussi nos modifications en attente.
   useEffect(
@@ -155,6 +177,7 @@ export function useReleve(projetId, moteur) {
           if (!persistant) return;
           const sur = securiser(lu);
           persiste.current = sur;
+          ecrit.current = sur;
           affiche.current = sur;
           envoyer({ type: "importer", batiment: sur });
         };
@@ -230,6 +253,7 @@ export function useReleve(projetId, moteur) {
 
   return {
     charge: etat.charge,
+    echecEnregistrement: echecs > 0,
     batiment,
     niveau: niveauAffiche,
     piece,

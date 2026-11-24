@@ -9,20 +9,22 @@ export function fileVide() {
  * @param {import("./objets.js").EntreeFile[]} file
  * @param {import("./objets.js").Changement[]} changements
  * @param {(objectId: string) => number} revConnue
+ * @param {() => number} [prochaineVersion] numéro de version d'une nouvelle entrée ; en production, un numéro qui ne se
+ *   répète jamais (même après l'acquittement d'une entrée), pour qu'une réponse tardive ne retire pas une modification plus récente.
  * @returns {import("./objets.js").EntreeFile[]}
  */
-export function empiler(file, changements, revConnue) {
+export function empiler(file, changements, revConnue, prochaineVersion = () => 1) {
   const resultat = file.slice();
   for (const changement of changements) {
     const index = resultat.findIndex((entree) => entree.objectId === changement.objectId);
     if (index === -1) {
-      resultat.push({ ...changement, baseRev: revConnue(changement.objectId), version: 1 });
+      resultat.push({ ...changement, baseRev: revConnue(changement.objectId), version: prochaineVersion() });
     } else {
       const precedente = resultat[index];
       // Création puis suppression : elles s'annulent seulement si la création n'est JAMAIS partie. Une entrée déjà envoyée
       // (réponse perdue ou en vol) a peut-être été reçue : la suppression doit alors partir aussi.
       if (precedente.baseRev === 0 && !precedente.envoye && changement.deleted) resultat.splice(index, 1);
-      else resultat[index] = { ...changement, baseRev: precedente.baseRev, version: precedente.version + 1, ...(precedente.envoye ? { envoye: true } : {}) };
+      else resultat[index] = { ...changement, baseRev: precedente.baseRev, version: Math.max(prochaineVersion(), precedente.version + 1), ...(precedente.envoye ? { envoye: true } : {}) };
     }
   }
   return resultat;

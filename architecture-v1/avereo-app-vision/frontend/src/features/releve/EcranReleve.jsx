@@ -58,6 +58,11 @@ export default function EcranReleve({ projet, moteur }) {
     <>
       <main className="contenu">
         <div style={{ gridColumn: "1 / -1", display: "flex", flexDirection: "column", gap: 16 }}>
+          {releve.echecEnregistrement ? (
+            <Encadre type="alerte" titre="Enregistrement sur cet appareil impossible">
+              Le relevé n'a pas pu être enregistré (espace de stockage insuffisant ?). Nouvelle tentative en cours : libérez de l'espace sur l'appareil et ne fermez pas la page.
+            </Encadre>
+          ) : null}
           <StatutSynchro projetId={projet.id} moteur={moteur} />
         </div>
         <div className="colonne">

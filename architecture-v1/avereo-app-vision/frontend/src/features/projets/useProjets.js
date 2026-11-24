@@ -42,6 +42,7 @@ export function useProjets(client) {
   const [limite, setLimite] = useState(PAGE);
   const pret = useMoteur(client, session.etat === "ok" ? session.identite : null);
   const moteur = pret?.moteur ?? null;
+  const [reseau, setReseau] = useState("ok");
 
   const verifierSession = useCallback(async () => {
     setSession({ etat: "chargement" });
@@ -75,7 +76,11 @@ export function useProjets(client) {
       return undefined;
     }
     charger();
-    return moteur.abonner(() => charger());
+    setReseau(moteur.etat().reseau);
+    return moteur.abonner(() => {
+      charger();
+      setReseau(moteur.etat().reseau);
+    });
   }, [moteur, charger]);
 
   const filtres_ = useMemo(() => filtrerProjets(lignes, filtres), [lignes, filtres]);
@@ -100,7 +105,19 @@ export function useProjets(client) {
     stockageDurable: pret?.durable ?? true,
     projets: visibles,
     chargement: session.etat === "ok" && moteur === null,
-    erreur: null,
+    // Liste vide ET serveur injoignable ou en erreur : on le dit, au lieu d'afficher « Aucun projet ».
+    erreur:
+      lignes.length === 0 && ["hors-ligne", "erreur", "autre-compte", "reconnexion"].includes(reseau)
+        ? {
+            type: reseau === "erreur" ? "erreur" : "reseau",
+            message:
+              reseau === "erreur"
+                ? "Le serveur ne répond pas correctement. Vos projets n'ont pas pu être chargés."
+                : reseau === "autre-compte"
+                  ? "Un autre compte est connecté : rechargez la page."
+                  : "Aucun projet n'est enregistré sur cet appareil et le serveur est injoignable : connectez-vous au réseau pour charger vos projets.",
+          }
+        : null,
     filtres,
     // changer de recherche ou de filtre repart de la première page
     changerFiltres: (suite) => {

@@ -18,6 +18,12 @@ const LOT_MAX = 100;
 const TOURS_MAX = 20;
 const PROJETS_EN_CACHE = 200;
 
+/** Numéro de version d'entrée de file : croissant et non réutilisable (horloge + aléa), y compris entre onglets. */
+function versionUnique() {
+  const alea = globalThis.crypto?.getRandomValues ? globalThis.crypto.getRandomValues(new Uint16Array(1))[0] % 1000 : Math.floor(Math.random() * 1000);
+  return Date.now() * 1000 + alea;
+}
+
 /** Bâtiment d'un projet neuf. Identifiants fixes : deux appareils qui ouvrent le même projet vide créent les mêmes objets. */
 export function batimentParDefaut() {
   return creerBatiment({ id: ID_BATIMENT, nom: "Logement", niveaux: [creerNiveau({ id: ID_NIVEAU, nom: "Rez-de-chaussée" })] });
@@ -82,7 +88,8 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
   if (canal) canal.onmessage = (message) => prevenir(message.data); // un autre onglet a écrit : on relit
   const notifier = (evenement = { type: "etat" }) => {
     prevenir(evenement);
-    canal?.postMessage(evenement.type === "local" ? { type: "etat" } : evenement);
+    // Un enregistrement local d'un projet est annoncé aux autres onglets comme « contenu modifié » : ils relisent le relevé.
+    canal?.postMessage(evenement.type === "local" ? (evenement.projetId ? { type: "projet", projetId: evenement.projetId } : { type: "etat" }) : evenement);
   };
   const definirReseau = (reseau) => {
     if (etat.reseau !== reseau) {
@@ -91,7 +98,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
     }
   };
   const drapeauxProjet = (projetId) => {
-    if (!drapeaux.has(projetId)) drapeaux.set(projetId, { archive: false, introuvable: false, lotMax: LOT_MAX });
+    if (!drapeaux.has(projetId)) drapeaux.set(projetId, { archive: false, introuvable: false, lotMax: LOT_MAX, journalARelire: false });
     return drapeaux.get(projetId);
   };
 
@@ -151,9 +158,9 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
         p.objets.set(objet.id, objet);
         touches.push(objet);
       }
-      const file = empiler(p.file, changements, (id) => p.objets.get(id)?.rev ?? 0);
+      const file = empiler(p.file, changements, (id) => p.objets.get(id)?.rev ?? 0, versionUnique);
       await stockage.sauverProjet(projetId, { objets: touches, file });
-      notifier({ type: "local" });
+      notifier({ type: "local", projetId });
       return changements.length;
     });
   }
@@ -309,7 +316,12 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       notifier(suite.contenuModifie ? { type: "projet", projetId } : { type: "etat" });
       if (!suite.encore) break;
     }
-    if (conflit || autresAppareils) await rafraichirJournal(projetId).catch(() => {});
+    const d = drapeauxProjet(projetId);
+    if (conflit || autresAppareils) d.journalARelire = true;
+    if (d.journalARelire) {
+      // Le journal est relu jusqu'à y parvenir : une erreur réseau ne doit pas faire oublier un écrasement.
+      d.journalARelire = !(await rafraichirJournal(projetId).then(() => true, () => false));
+    }
     return !lectureSeule;
   }
 
@@ -428,6 +440,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       if (erreur instanceof ErreurApi && estCoupure(erreur)) definirReseau("hors-ligne");
       else if (erreur instanceof ErreurApi && erreur.statut === 401) definirReseau("reconnexion");
       else if (erreur instanceof ErreurApi && erreur.statut === 409 && erreur.code === "identity_changed") definirReseau("autre-compte");
+      else definirReseau("erreur"); // erreur du serveur (500, 503…) : l'écran doit le dire, pas afficher « aucun projet »
       return false;
     }
     await verrouiller("projets", async () => {
@@ -458,8 +471,9 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
             await rafraichirListe();
             const ids = new Set([...ouverts, ...(await stockage.listerProjetsEnAttente())]);
             for (const id of ids) {
-              if (etat.reseau === "autre-compte") break;
-              if (!(await synchroniserProjet(id))) break;
+              // Un projet archivé ou introuvable n'empêche pas les suivants ; une coupure, une session perdue ou une erreur serveur, si.
+              await synchroniserProjet(id);
+              if (etat.reseau !== "ok") break;
             }
           }
         } while (toutARejouer);

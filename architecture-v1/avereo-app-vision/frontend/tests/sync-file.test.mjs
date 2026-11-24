@@ -141,3 +141,19 @@ test("marquerEnvoyees ne marque que la version envoyée ; retirerVersions ne ret
   assert.deepEqual(retirerVersions([corrigee, b], [a]), [corrigee, b], "la version corrigée en vol reste");
   assert.deepEqual(retirerVersions([a, b], [a]), [b]);
 });
+
+test("réponse tardive d'un autre onglet : une version déjà acquittée ne retire pas la modification suivante (versions non réutilisables)", () => {
+  let compteur = 100;
+  const prochaine = () => (compteur += 1);
+  const v1 = { objectId: "p1", kind: "piece", parentId: "n1", data: { nom: "V1" }, deleted: false };
+  const v2 = { ...v1, data: { nom: "V2" } };
+  let file = empiler([], [v1], () => 1, prochaine);
+  const envoyee = file[0];
+  file = acquitter(file, [envoyee], [{ object_id: "p1", rev: 2 }]); // première réponse : la file est vide
+  assert.deepEqual(file, []);
+  file = empiler(file, [v2], () => 2, prochaine); // l'utilisateur modifie à nouveau : nouvelle entrée, nouvelle version
+  assert.notEqual(file[0].version, envoyee.version, "la version d'une nouvelle entrée ne reprend jamais un ancien numéro");
+  file = acquitter(file, [envoyee], [{ object_id: "p1", rev: 2 }]); // seconde réponse, tardive, pour la même V1
+  assert.equal(file.length, 1, "la modification V2 n'est pas retirée");
+  assert.equal(file[0].data.nom, "V2");
+});

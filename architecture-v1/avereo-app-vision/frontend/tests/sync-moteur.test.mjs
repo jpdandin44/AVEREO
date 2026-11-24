@@ -490,3 +490,72 @@ test("deux connexions Dexie à la même base : la file contient les modification
   await a.synchroniserProjet(PROJET);
   assert.ok(serveur.projets.get(PROJET).objets.has("piece-A") && serveur.projets.get(PROJET).objets.has("piece-B"));
 });
+
+test("un projet archivé qui garde des modifications en attente n'empêche pas la synchronisation des projets suivants", async () => {
+  const serveur = creerFauxServeur();
+  const archive = "1".repeat(32);
+  const actif = "2".repeat(32);
+  await serveur.api.creerProjet({ id: archive, name: "Archivé" });
+  await serveur.api.creerProjet({ id: actif, name: "Actif" });
+  const { moteur } = appareil(serveur, "telephone-01");
+  await moteur.ouvrirProjet(archive);
+  await moteur.ouvrirProjet(actif);
+  await moteur.enregistrer(archive, null, ref1());
+  await moteur.enregistrer(actif, null, ref1());
+  serveur.etat.archives.add(archive);
+  await moteur.synchroniserTout();
+  assert.equal(await moteur.compterEnAttente(archive), 3, "l'archivé attend sa réactivation");
+  assert.equal(await moteur.compterEnAttente(actif), 0, "le projet actif est synchronisé malgré l'archivé");
+  assert.equal(serveur.projets.get(actif).objets.size, 3);
+});
+
+test("journal : une erreur réseau pendant sa lecture n'est pas oubliée, il est relu au cycle suivant", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const a = appareil(serveur, "telephone-01").moteur;
+  const b = appareil(serveur, "ordinateur-02").moteur;
+  await a.enregistrer(PROJET, null, ref1());
+  await a.synchroniserProjet(PROJET);
+  const chezB = (await b.ouvrirProjet(PROJET)).batiment;
+  await a.enregistrer(PROJET, ref1(), renommerSalon(ref1(), "Salon (A)"));
+  await b.enregistrer(PROJET, chezB, renommerSalon(chezB, "Salon (B)"));
+  await a.synchroniserProjet(PROJET);
+  await b.synchroniserProjet(PROJET); // B écrase A
+  const journalReel = serveur.api.journal;
+  serveur.api.journal = async () => {
+    throw new ErreurApi(0, "reseau", "Le serveur est injoignable.");
+  };
+  await a.synchroniserProjet(PROJET); // A reçoit la valeur de B, mais ne peut pas lire le journal
+  assert.equal((await a.lireJournal(PROJET)).length, 0);
+  serveur.api.journal = journalReel;
+  await a.synchroniserProjet(PROJET); // aucun nouveau changement distant : le journal est quand même relu
+  assert.equal((await a.lireJournal(PROJET)).length, 1);
+});
+
+test("liste des projets : une erreur serveur est signalée (état « erreur »), pas silencieuse", async () => {
+  const serveur = creerFauxServeur();
+  serveur.api.listerProjets = async () => {
+    throw new ErreurApi(503, "database_unavailable", "La base de données est indisponible.");
+  };
+  const { moteur } = appareil(serveur, "telephone-01");
+  assert.equal(await moteur.rafraichirListe(), false);
+  assert.equal(moteur.etat().reseau, "erreur");
+});
+
+test("deux onglets : l'enregistrement d'un relevé dans l'un prévient l'autre que le contenu a changé", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const stockage = creerStockageMemoire();
+  const verrou = verrouCommun();
+  const nomCanal = `onglets-${Math.random()}`;
+  const creer = () => creerMoteur({ stockage, api: serveur.api, deviceId: "telephone-01", delaiOuvertureMs: 0, verrouExterne: verrou, nomCanal });
+  const a = creer();
+  const b = creer();
+  const recus = [];
+  b.abonner((e) => recus.push(e));
+  await a.enregistrer(PROJET, null, ref1());
+  await new Promise((resolu) => setTimeout(resolu, 50)); // un message BroadcastChannel arrive de façon asynchrone
+  assert.ok(recus.some((e) => e.type === "projet" && e.projetId === PROJET), "l'autre onglet doit relire le relevé");
+  a.fermer();
+  b.fermer();
+});
