@@ -4,11 +4,12 @@ import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 import {transformWithEsbuild} from '../frontend/node_modules/vite/dist/node/index.js';
 import {developmentFreshness,publicationReloadNotice} from '../frontend/src/developments/development-freshness.mjs';
+import {projectPortfolio,projectIncludesIteration} from '../frontend/src/developments/project-portfolio.mjs';
 test('le premier chargement du portefeuille ne s’annule pas entre les effets React',async()=>{
   const source=(await readFile(new URL('../frontend/src/developments/DevelopmentWorkspace.jsx',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'').replace('export default function DevelopmentWorkspace','function DevelopmentWorkspace');
   const built=await transformWithEsbuild(source,'DevelopmentWorkspace.jsx',{loader:'jsx',jsxFactory:'h',jsxFragment:'Fragment'});
   const incoming={iterations:[],portfolio:[],csrf:'fixture',identity:{mode:'local_fictitious'}},effects=[],states=[];
-  const context={developmentFreshness,publicationReloadNotice,useState:initial=>[initial,value=>states.push(value)],useRef:value=>({current:value}),useEffect:callback=>effects.push(callback),h:()=>null,Fragment:()=>null,DevelopmentPortfolio:()=>null,fetch:async()=>({ok:true,json:async()=>incoming}),setInterval:()=>1,clearInterval:()=>{},window:{addEventListener(){},removeEventListener(){}},document:{visibilityState:'visible',addEventListener(){},removeEventListener(){}},URL,location:{},console};
+  const context={developmentFreshness,publicationReloadNotice,projectPortfolio,projectIncludesIteration,useState:initial=>[initial,value=>states.push(value)],useRef:value=>({current:value}),useEffect:callback=>effects.push(callback),h:()=>null,Fragment:()=>null,DevelopmentPortfolio:()=>null,fetch:async()=>({ok:true,json:async()=>incoming}),setInterval:()=>1,clearInterval:()=>{},window:{addEventListener(){},removeEventListener(){}},document:{visibilityState:'visible',addEventListener(){},removeEventListener(){}},URL,location:{},console};
   vm.runInNewContext(built.code+'\nDevelopmentWorkspace();',context);
   for(const effect of effects)effect();
   await new Promise(resolve=>setImmediate(resolve));
@@ -23,7 +24,7 @@ test('un refus sur une pièce efface immédiatement les données privées déjà
   const proof={id:'fixture',availability:'available',title:'Pièce fictive'},nodes=[],writes=[];
   const detail={title:'Fixture',readAt:new Date().toISOString(),candidate:{},versions:{github:{}},blockers:[],unassignedCriteria:[],history:[],declaredApprovals:[],sourceModifiedAt:new Date().toISOString(),sourceHash:'a'.repeat(64),revision:'b'.repeat(64),phases:[0,1,2,3].map(id=>({id,label:'Phase '+id,status:'in_progress',criteria:[],proofs:id===1?[proof]:[]}))};
   const values=[{iterations:[],portfolio:[],identity:{mode:'local_fictitious'}},'fixture',detail,1,false,'','','',false,'','',false,null];let index=0;
-  const context={developmentFreshness,publicationReloadNotice,useState:initial=>{const i=index++;return[values[i]??initial,value=>writes.push({index:i,value})]},useRef:value=>({current:value}),useEffect:()=>{},h:(type,props,...children)=>{nodes.push({type,props,children});return null},Fragment:()=>null,DevelopmentPortfolio:()=>null,fetch:async()=>({ok:false,status:403,json:async()=>({error:'Accès refusé.'})}),URL,location:{},console};
+  const context={developmentFreshness,publicationReloadNotice,projectPortfolio,projectIncludesIteration,useState:initial=>{const i=index++;return[values[i]??initial,value=>writes.push({index:i,value})]},useRef:value=>({current:value}),useEffect:()=>{},h:(type,props,...children)=>{nodes.push({type,props,children});return null},Fragment:()=>null,DevelopmentPortfolio:()=>null,fetch:async()=>({ok:false,status:403,json:async()=>({error:'Accès refusé.'})}),URL,location:{},console};
   vm.runInNewContext(built.code+'\nDevelopmentWorkspace();',context);
   const button=nodes.find(n=>n.type==='button'&&n.children.includes('Ouvrir'));assert(button);
   await button.props.onClick();
@@ -35,7 +36,7 @@ async function hostedWorkspaceFixture(){
   const built=await transformWithEsbuild(source,'DevelopmentWorkspace.jsx',{loader:'jsx',jsxFactory:'h',jsxFragment:'Fragment'});
   const states=[],nodes=[];let index=0,status=401,requests=0;
   const incoming={iterations:[],portfolio:[],identity:{mode:'project_signed_session_global_role'}};
-  const context={developmentFreshness,publicationReloadNotice,useState:initial=>{const i=index++;if(!(i in states))states[i]=initial;return[states[i],v=>{states[i]=v;}];},useRef:value=>({current:value}),useEffect:()=>{},
+  const context={developmentFreshness,publicationReloadNotice,projectPortfolio,projectIncludesIteration,useState:initial=>{const i=index++;if(!(i in states))states[i]=initial;return[states[i],v=>{states[i]=v;}];},useRef:value=>({current:value}),useEffect:()=>{},
     h:(type,props,...children)=>{const node={type,props,children};nodes.push(node);return node;},Fragment:'fragment',DevelopmentPortfolio:()=>null,
     fetch:async()=>{requests++;return{ok:status===200,status,json:async()=>status===200?incoming:{error:'Espace privé indisponible.'}};},URL,location:{},console};
   vm.createContext(context);vm.runInContext(built.code,context);
@@ -60,4 +61,18 @@ test('Vue d’ensemble recharge une vue vide et distingue refus de rôle et sess
   assert(!f.nodes.some(n=>n.type==='a'&&n.children.includes('Revenir à Projet pour se reconnecter')));
   f.setStatus(200);await f.nodes.find(n=>n.type==='button'&&n.children.includes('Vue d’ensemble')).props.onClick();f.render();
   assert.equal(f.states[0],f.incoming);assert.equal(f.states[4],true);
+});
+
+test('le regroupement conserve l’ouverture du suivi RGA et une seule option Rapport',async()=>{
+  const f=await hostedWorkspaceFixture(),phase=[0,1,2,3].map(id=>({label:'Phase '+id}));
+  const shared={id:'shared',applicationIds:['rapport','rga'],currentPhase:1,title:'Lot commun',phases:phase};
+  const rga={id:'rga-work',applicationIds:['rga'],currentPhase:2,title:'Suivi RGA',phases:phase};
+  const apps=[{id:'rapport',name:'Rapport',iterations:[shared]},{id:'rga',name:'RGA',iterations:[rga,shared]}];
+  f.incoming.portfolio=apps;f.incoming.iterations=[shared,rga];f.states[0]=f.incoming;f.render();
+  const overview=f.nodes.find(node=>node.props?.historicalApplications);assert.equal(overview.props.applications.length,12);
+  overview.props.onOpen(apps[1]);f.render();
+  assert.equal(f.states[5],'rapport');assert.equal(f.states[1],'rga-work');
+  assert.equal(f.nodes.filter(node=>node.type==='option'&&node.props.value==='rapport').length,1);
+  assert.equal(f.nodes.filter(node=>node.type==='option'&&node.props.value==='rga').length,0);
+  assert(f.nodes.some(node=>node.type==='button'&&JSON.stringify(node.children).includes('Suivi RGA')));
 });

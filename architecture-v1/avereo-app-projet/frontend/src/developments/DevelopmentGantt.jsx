@@ -1,6 +1,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {projectDevelopmentProgress,timelineBounds,observationFreshness} from './development-progress.mjs';
 import {loadDevelopmentTimeline,developmentTimelineRevision} from './development-timeline-loader.mjs';
+import {projectIncludesIteration} from './project-portfolio.mjs';
 
 const format=v=>v?new Date(v).toLocaleDateString('fr-FR'):'Non daté';
 const statusLabel={evidenced:'Étayé techniquement',partial:'Partiellement étayé',blocked:'Échec technique',not_evidenced:'À réaliser / à documenter'};
@@ -18,10 +19,10 @@ export default function DevelopmentGantt({state,request,onAccessFailure,onOpen})
     }).catch(failure=>{if(cancelled)return;cache.current.clear();setViews([]);setError(failure.message);if([401,403].includes(failure.status))callbacks.current.onAccessFailure(failure);}).finally(()=>{if(!cancelled)setLoading(false);});
     return()=>{cancelled=true;};
   },[timelineRevision]);
-  const items=views.filter(v=>(!filter||v.applicationIds?.includes(filter))&&(!search||(v.title+' '+v.application).toLocaleLowerCase('fr').includes(search.toLocaleLowerCase('fr')))).map(view=>({view,progress:projectDevelopmentProgress(view)}));
+  const items=views.filter(v=>state.portfolio?.some(app=>(!filter||app.id===filter)&&projectIncludesIteration(app,v))&&(!search||(v.title+' '+v.application).toLocaleLowerCase('fr').includes(search.toLocaleLowerCase('fr')))).map(view=>({view,progress:projectDevelopmentProgress(view)}));
   const bounds=timelineBounds(items.map(i=>i.progress)),today=new Date().toISOString(),freshness=observationFreshness(state.githubSnapshot?.observedAt);
   const ticks=Array.from({length:6},(_,i)=>new Date(bounds.start+(bounds.end-bounds.start)*i/5).toISOString());
-  const open=view=>{const app=state.portfolio?.find(a=>view.applicationIds?.includes(a.id));if(app)onOpen(app,view.id);};
+  const open=view=>{const app=state.portfolio?.find(a=>projectIncludesIteration(a,view));if(app)onOpen(app,view.id);};
   return <section className="development-gantt" aria-label="Gantt des développements">
     <div className="gantt-intro"><div><span className="development-eyebrow">AVANCEMENT CALCULÉ · LECTURE SEULE</span><h2>Réalisé, preuves et reste à faire</h2><p>Quatre phases par itération. Le calcul ne remplace ni tes validations ni les autorisations de livraison.</p></div><span className={'gantt-freshness '+freshness}>GitHub : {freshness==='current'?'observation récente':freshness==='stale'?'observation ancienne':freshness==='invalid'?'horloge à vérifier':'date inconnue'}</span></div>
     <p className="development-notice">Lecture automatique de la vue toutes les 25 secondes lorsque l’onglet est visible. {state.snapshot?'Les nouvelles publications privées sont reprises automatiquement. Le cartouche Fraîcheur de l’alimentation indique l’état réel du service GitHub et la réception distincte des suivis.':'Les suivis locaux sont relus ; une nouvelle observation GitHub nécessite le collecteur configuré.'} Dernière observation GitHub : {format(state.githubSnapshot?.observedAt)}. Aucun pourcentage estimé.</p>

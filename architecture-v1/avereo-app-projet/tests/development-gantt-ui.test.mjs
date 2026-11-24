@@ -5,12 +5,13 @@ import vm from 'node:vm';
 import {transformWithEsbuild} from '../frontend/node_modules/vite/dist/node/index.js';
 import {PHASE_LABELS,projectDevelopmentProgress,timelineBounds,observationFreshness} from '../frontend/src/developments/development-progress.mjs';
 import {developmentTimelineRevision} from '../frontend/src/developments/development-timeline-loader.mjs';
+import {projectIncludesIteration} from '../frontend/src/developments/project-portfolio.mjs';
 const item=(id,app)=>({id,title:'Lot '+id,application:app,applicationIds:[app],currentPhase:1,candidate:{},phases:PHASE_LABELS.map((label,id)=>({id,label,status:'not_started',criteria:[],proofs:[]})),unassignedCriteria:[]});
 async function fixture(){
  const source=(await readFile(new URL('../frontend/src/developments/DevelopmentGantt.jsx',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'').replace('export default function DevelopmentGantt','function DevelopmentGantt');
  const built=await transformWithEsbuild(source,'DevelopmentGantt.jsx',{loader:'jsx',jsxFactory:'h',jsxFragment:'Fragment'}),nodes=[],states=[],opened=[];let index=0;
  const state={iterations:[],portfolio:[{id:'rapport',name:'Rapport',iterations:[]},{id:'projet',name:'Projet',iterations:[]}],githubSnapshot:{observedAt:'2026-11-01'}};
- const context={state,projectDevelopmentProgress,timelineBounds,observationFreshness,developmentTimelineRevision,useState:initial=>{const i=index++;if(!(i in states))states[i]=initial;return[states[i],v=>{states[i]=v;}];},useRef:initial=>({current:initial}),useEffect:()=>{},h:(type,props,...children)=>{const n={type,props,children};nodes.push(n);return n;},Fragment:'fragment',onOpen:(app,id)=>opened.push([app.id,id])};
+ const context={state,projectIncludesIteration,projectDevelopmentProgress,timelineBounds,observationFreshness,developmentTimelineRevision,useState:initial=>{const i=index++;if(!(i in states))states[i]=initial;return[states[i],v=>{states[i]=v;}];},useRef:initial=>({current:initial}),useEffect:()=>{},h:(type,props,...children)=>{const n={type,props,children};nodes.push(n);return n;},Fragment:'fragment',onOpen:(app,id)=>opened.push([app.id,id])};
  vm.createContext(context);vm.runInContext(built.code,context);const render=()=>{index=0;nodes.length=0;vm.runInContext('DevelopmentGantt({state,onOpen,request:()=>{},onAccessFailure:()=>{}});',context);};
  states[0]=[item('photos','rapport'),item('gantt','projet')];states[1]=false;render();return{nodes,states,opened,render};
 }

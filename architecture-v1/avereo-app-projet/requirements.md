@@ -5,12 +5,23 @@ title: Exigences du planning local Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-22
+updated: 2026-11-23
 owner: jpdandin
 tags:
   - projet
   - exigences
 ---
+
+## 23 novembre — un projet par fiche, nouveaux produits après préproduction
+
+Conserver les douze fiches initiales acceptées et le visuel existant. Regrouper
+RGA sous Rapport et les prototypes AVEREO V1 dans l’historique sans supprimer
+leurs identifiants, phases, critères, pièces ou décisions. Une nouvelle
+application, un site ou un prototype reconnu rejoint les cartes après un premier
+passage documenté en préproduction ; CI, phase ou simple déclaration insuffisantes.
+Conserver tout l’inventaire GitHub et distinguer la sélection initiale de preuves
+de livraison. Recette humaine différée. [Règles vérifiables](docs/cockpit-projets.md).
+
 
 
 ## 22 novembre — Stabilité des rattachements découverts

@@ -5,10 +5,21 @@ title: Cockpit des versions et développements de toutes les applications
 status: active
 version: git
 created: 2026-11-07
-updated: 2026-11-19
+updated: 2026-11-23
 owner: jpdandin
 tags: [cockpit, portefeuille, versions, lecture-seule, local]
 ---
+
+## 23 novembre — douze projets initiaux, historique et futurs ajouts
+
+Les cartes conservent leur visuel et les suivis d’origine, avec une fiche par
+projet : RGA sous Rapport et prototypes AVEREO V1 regroupés dans le filtre
+« Historique des prototypes ». L’index GitHub complet reste consultable. La liste
+peut croître après le premier passage documenté d’un nouveau produit en
+préproduction ; une CI ou une phase ne constituent pas ce reçu. Les badges
+restent ceux des déclarations réelles, dont Vision encore en cadrage.
+[Règles, conservation et tests](cockpit-projets.md).
+
 
 ## 19 novembre — Vue d’ensemble simplifiée
 

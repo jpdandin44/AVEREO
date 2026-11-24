@@ -5,12 +5,23 @@ title: Feuille de route de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-22
+updated: 2026-11-23
 owner: jpdandin
 tags:
   - projet
   - roadmap
 ---
+
+## 23 novembre — fiches de projets en préparation locale
+
+**Cadrage** : douze fiches et règle des futurs ajouts acceptées, visuel conservé.
+**Développement local** : regroupement, historique, admission après préproduction
+et contrôles locaux réalisés ; préparation de PR et du candidat exact.
+**Préproduction** : nouvelle évolution non installée ; contrôles propres au
+candidat à exécuter si installation autorisée, recette humaine différée.
+**Mise en production** : non engagée et non autorisée pour ce lot.
+[Guide et qualification](docs/cockpit-projets.md).
+
 
 
 ## 22 novembre — Répétition de la collecte à corriger avant installation

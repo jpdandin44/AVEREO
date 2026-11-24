@@ -5,12 +5,23 @@ title: Changelog de Projet
 status: active
 version: git
 created: 2026-09-19
-updated: 2026-11-22
+updated: 2026-11-23
 owner: jpdandin
 tags:
   - projet
   - changelog
 ---
+
+## 2026-11-23 — Fiches de projets et première préproduction
+
+Vue principale limitée aux douze projets initiaux acceptés, avec RGA sous
+Rapport et filtre des prototypes historiques. Même style et mêmes badges.
+Nouveaux produits admis après un premier reçu de préproduction qualifié ;
+sous-composants et suivis communs regroupés sans double comptage. Recherche,
+Gantt et ouverture du suivi RGA conservent leurs identifiants. Inventaire complet,
+consultation seule et contrôles de session conservés.
+[Contrat, tests et limites](docs/cockpit-projets.md). Aucun déploiement de ce lot.
+
 
 
 ## 2026-11-22 — Correction de la répétition de l’inventaire GitHub
