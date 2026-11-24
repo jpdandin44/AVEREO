@@ -49,7 +49,7 @@ export default function EcranReleve({ projet }) {
         {projet ? (
           <div style={{ gridColumn: "1 / -1" }}>
             <Encadre titre={`Projet : ${projet.name}`}>
-              Le plan et les métrés de ce relevé ne sont pas encore enregistrés sur le serveur : ils seront conservés automatiquement au prochain lot. Ne fermez pas la page avant d'avoir noté vos mesures.
+              Le plan et les métrés de ce relevé ne sont pas encore enregistrés sur le serveur : ils seront conservés automatiquement au prochain lot. Vous pouvez revenir à la liste des projets sans rien perdre, mais ne fermez ni n'actualisez la page avant d'avoir noté vos mesures.
             </Encadre>
           </div>
         ) : null}

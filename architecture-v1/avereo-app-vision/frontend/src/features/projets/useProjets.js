@@ -1,6 +1,9 @@
 // État de la session et des projets (R01, R08) : identité, liste, création, modification, archivage.
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ErreurApi } from "../../services/api.js";
+
+const PAGE = 50;
+const LIMITE_MAX = 200;
 
 /** Convertit une erreur d'API en état de session ou en message lisible. */
 export function decrireErreur(erreur) {
@@ -21,6 +24,9 @@ export function useProjets(client) {
   const [chargement, setChargement] = useState(false);
   const [erreur, setErreur] = useState(null);
   const [filtres, setFiltres] = useState({ statut: "active", q: "" });
+  const [limite, setLimite] = useState(PAGE);
+  // Numéro de la dernière requête de liste : seule la plus récente a le droit de mettre l'écran à jour.
+  const derniereRequete = useRef(0);
 
   const verifierSession = useCallback(async () => {
     setSession({ etat: "chargement" });
@@ -34,18 +40,22 @@ export function useProjets(client) {
   }, [client]);
 
   const charger = useCallback(async () => {
+    const numero = ++derniereRequete.current;
     setChargement(true);
     try {
-      setProjets(await client.listerProjets({ statut: filtres.statut, q: filtres.q }));
+      const liste = await client.listerProjets({ statut: filtres.statut, q: filtres.q, limite });
+      if (numero !== derniereRequete.current) return; // une requête plus récente a pris le relais
+      setProjets(liste);
       setErreur(null);
     } catch (e) {
+      if (numero !== derniereRequete.current) return;
       const d = decrireErreur(e);
       if (d.type === "non-connecte") setSession({ etat: "non-connecte", message: d.message });
       setErreur(d);
     } finally {
-      setChargement(false);
+      if (numero === derniereRequete.current) setChargement(false);
     }
-  }, [client, filtres.statut, filtres.q]);
+  }, [client, filtres.statut, filtres.q, limite]);
 
   useEffect(() => {
     verifierSession();
@@ -77,7 +87,16 @@ export function useProjets(client) {
     chargement,
     erreur,
     filtres,
-    changerFiltres: (suite) => setFiltres((actuels) => ({ ...actuels, ...suite })),
+    // changer de recherche ou de filtre repart de la première page
+    changerFiltres: (suite) => {
+      setLimite(PAGE);
+      setFiltres((actuels) => ({ ...actuels, ...suite }));
+    },
+    limite,
+    // plus de projets : la liste est redemandée avec une limite plus grande (l'API plafonne à 200)
+    afficherPlus: () => setLimite((actuelle) => Math.min(LIMITE_MAX, actuelle + PAGE)),
+    pageComplete: projets.length >= limite,
+    limiteMax: LIMITE_MAX,
     recharger: charger,
     reessayer: verifierSession,
     deconnecter: async () => {

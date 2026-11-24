@@ -122,6 +122,8 @@ vision_test('api : validation des entrées (422) et identifiants (404)', functio
     $id = vision_api('POST', '/api/projects.php', $user, ['name' => 'Valide'])['json']['project']['id'];
     vision_assert_same(422, vision_api('PATCH', '/api/projects.php?id=' . $id, $user, [])['status'], 'rien à modifier');
     vision_assert_same(422, vision_api('PATCH', '/api/projects.php?id=' . $id, $user, ['status' => 'deleted'])['status']);
+    vision_assert_same(422, vision_api('PATCH', '/api/projects.php?id=' . $id, $user, ['name' => '   '])['status'], 'nom vide refusé en modification');
+    vision_assert_same('Valide', vision_api('GET', '/api/projects.php?id=' . $id, $user)['json']['project']['name'], 'le nom n\'a pas changé');
 });
 
 vision_test('api : corps trop gros (413), mauvais type (415), JSON invalide (400), méthode non gérée (405)', function () {

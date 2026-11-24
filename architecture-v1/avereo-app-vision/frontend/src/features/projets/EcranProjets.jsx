@@ -44,10 +44,20 @@ export default function EcranProjets({ projets, onOuvrir }) {
   const liste = projets.projets;
   const [edition, setEdition] = useState(null);
   const [recherche, setRecherche] = useState(projets.filtres.q);
+  const [echecAction, setEchecAction] = useState(null);
+
+  async function changerStatut(projet) {
+    const restaurer = projet.status === "archived";
+    setEchecAction(null);
+    const resultat = await projets.modifier(projet.id, { status: restaurer ? "active" : "archived" });
+    if (!resultat.ok) {
+      setEchecAction({ projet: projet.name, action: restaurer ? "restaurer" : "archiver", message: resultat.erreur?.message ?? "Action impossible." });
+    }
+  }
 
   if (session.etat !== "ok") {
     return (
-      <main className="contenu" style={{ gridTemplateColumns: "minmax(0, 720px)" }}>
+      <main className="contenu contenu--session">
         <div className="colonne">
           <EtatSession session={session} onReessayer={projets.reessayer} />
         </div>
@@ -56,13 +66,12 @@ export default function EcranProjets({ projets, onOuvrir }) {
   }
 
   return (
-    <main className="contenu" style={{ gridTemplateColumns: "minmax(0, 1fr) minmax(280px, 380px)" }}>
+    <main className="contenu contenu--projets">
       <div className="colonne">
         <section className="carte" aria-labelledby="titre-projets">
           <h2 id="titre-projets">Projets</h2>
           <form
-            className="grille-champs"
-            style={{ gridTemplateColumns: "minmax(0, 2fr) minmax(0, 1fr)", alignItems: "end" }}
+            className="grille-recherche"
             onSubmit={(e) => {
               e.preventDefault();
               projets.changerFiltres({ q: recherche });
@@ -93,6 +102,12 @@ export default function EcranProjets({ projets, onOuvrir }) {
               <button type="button" className="bouton bouton--secondaire" onClick={projets.recharger}>
                 Réessayer
               </button>
+            </Encadre>
+          ) : null}
+
+          {echecAction ? (
+            <Encadre type="alerte" titre={`Impossible de ${echecAction.action} « ${echecAction.projet} »`}>
+              {echecAction.message} Réessayez avec le bouton de la carte du projet.
             </Encadre>
           ) : null}
 
@@ -140,7 +155,7 @@ export default function EcranProjets({ projets, onOuvrir }) {
                       <button
                         type="button"
                         className="bouton bouton--secondaire"
-                        onClick={() => projets.modifier(projet.id, { status: projet.status === "archived" ? "active" : "archived" })}
+                        onClick={() => changerStatut(projet)}
                       >
                         <Icone nom={projet.status === "archived" ? "retablir" : "supprimer"} />
                         {projet.status === "archived" ? "Restaurer" : "Archiver"}
@@ -151,6 +166,20 @@ export default function EcranProjets({ projets, onOuvrir }) {
               </li>
             ))}
           </ul>
+
+          {projets.pageComplete && liste.length > 0 ? (
+            projets.limite < projets.limiteMax ? (
+              <div className="barre-boutons" style={{ marginTop: 12 }}>
+                <button type="button" className="bouton bouton--secondaire" onClick={projets.afficherPlus}>
+                  Afficher plus de projets
+                </button>
+              </div>
+            ) : (
+              <p className="champ__aide" style={{ marginTop: 12 }}>
+                Les {projets.limiteMax} projets les plus récents sont affichés : affinez la recherche pour trouver les autres.
+              </p>
+            )
+          ) : null}
         </section>
       </div>
 

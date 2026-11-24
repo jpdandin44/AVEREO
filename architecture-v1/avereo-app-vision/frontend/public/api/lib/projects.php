@@ -41,7 +41,7 @@ function vision_project_validate(array $body, bool $create): array
             $errors[(string) $key] = 'Champ inconnu ou non modifiable.';
         }
     }
-    $text = static function (string $field, int $max, bool $required) use ($body, &$clean, &$errors): void {
+    $text = static function (string $field, int $max, bool $required, bool $nonEmpty = false) use ($body, &$clean, &$errors): void {
         if (!array_key_exists($field, $body)) {
             if ($required) {
                 $errors[$field] = 'Champ obligatoire.';
@@ -59,7 +59,7 @@ function vision_project_validate(array $body, bool $create): array
             return;
         }
         $value = trim($value);
-        if ($required && $value === '') {
+        if (($required || $nonEmpty) && $value === '') {
             $errors[$field] = 'Ne peut pas être vide.';
             return;
         }
@@ -69,7 +69,7 @@ function vision_project_validate(array $body, bool $create): array
         }
         $clean[$field] = $value;
     };
-    $text('name', VISION_NAME_MAX, $create);
+    $text('name', VISION_NAME_MAX, $create, true); // facultatif en modification, mais jamais vide s'il est fourni
     $text('address', VISION_ADDRESS_MAX, false);
     $text('client_label', VISION_CLIENT_MAX, false);
     if (array_key_exists('status', $body) && !($create && isset($errors['status']))) {

@@ -5,7 +5,7 @@
   "version": "git",
   "iterationId": "vision-v1",
   "title": "AVEREO Vision V1 — relevé, métré et modélisation 2D/3D (équivalent Visuary)",
-  "status": "lot1_merged_awaiting_next_lot",
+  "status": "lot2a_awaiting_human_review",
   "stage": "cadrage",
   "updatedAt": "2026-11-24",
   "objective": "Construire lot par lot une PWA AVEREO de relevé de l'existant (vidéo, métrés ±2 cm, plan 2D, maquette 3D, exports PDF/DXF/IFC/glTF/OBJ/CSV) sur des moteurs open source sous licence MIT, BSD ou Apache 2.0.",
@@ -14,7 +14,7 @@
     "status": "produced_in_lot0_awaiting_validation",
     "meaning": "Lots fonctionnels distincts des quatre phases ; le détail des lots et des tâches (statut, pourquoi, Claude Code ou Codex, modèle, effort, job Codex) est tenu uniquement dans la source Markdown."
   },
-  "activeLot": {"id": "LOT-1", "title": "Fondations, plan 2D manuel, métrés, charte", "branch": "vision/lot-1-fondations-plan2d-metres", "scope": "code_local_development", "status": "fait (PR #190 mergée) ; R27, R29 et R32 restent en cours dans docs/exigences.md"},
+  "activeLot": {"id": "LOT-2A", "title": "API PHP, base MySQL, authentification, projets", "branch": "vision/lot-2a-api-projets", "scope": "code_local_development", "status": "en cours (PR à relire)"},
   "candidate": {"sourceSha": null, "artifactSha256": null},
   "phases": [
     {"id": 0, "label": "Cadrage", "status": "technically_verified_awaiting_human_review", "criteria": []},
@@ -31,6 +31,8 @@
     {"id": "lot0-architecture-20261123", "phaseId": 0, "title": "Lot 0 — Architecture", "kind": "reference_document", "status": "reviewable", "evidence": "docs/architecture.md", "observedAt": "2026-11-23"},
     {"id": "lot0-plan-lots-20261123", "phaseId": 0, "title": "Lot 0 — Plan des lots", "kind": "reference_document", "status": "reviewable", "evidence": "docs/plan-lots.md", "observedAt": "2026-11-23"},
     {"id": "ovh-serveur-20261124", "phaseId": 0, "title": "Caractéristiques du serveur OVH relevées en lecture seule le 24/11/2026 (VPS-1, insuffisant pour la reconstruction)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/serveur-ovh.md", "observedAt": "2026-11-24"},
+    {"id": "lot2a-authentification-20261124", "phaseId": 1, "title": "Lot 2A : authentification et droits (CONNECT + jeton local, parcours testé avec des tickets forgés)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/authentication.md", "observedAt": "2026-11-24"},
+    {"id": "lot2a-developpement-local-20261124", "phaseId": 1, "title": "Lot 2A : développement local (pile Docker PHP et MySQL, tests)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/local-development.md", "observedAt": "2026-11-24"},
     {"id": "lot1-pr-190-20261124", "phaseId": 1, "title": "PR Lot 1 mergée dans main par le responsable le 24/11/2026 à 08:36 UTC, commit 6ca2822 (état observé sur GitHub)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/190", "observedAt": "2026-11-24"},
     {"id": "lot0-pr-188-20261123", "phaseId": 0, "title": "PR Lot 0 mergée dans main par le responsable le 23/11/2026 à 21:29 UTC, commit 54d3fba (état observé sur GitHub)", "kind": "github_pull_request", "status": "reviewable", "evidence": "https://github.com/jpdandin44/AVEREO/pull/188", "observedAt": "2026-11-23"},
     {"id": "lot0-licences-20261123", "phaseId": 0, "title": "Lot 0 — Licences des dépendances", "kind": "reference_document", "status": "reviewable", "evidence": "docs/licences.md", "observedAt": "2026-11-23"}
@@ -41,6 +43,8 @@
     {"id": "D3", "title": "Mise à l'échelle des relevés vidéo", "status": "decided", "decidedOn": "2026-11-23", "choice": "2 cotes laser pour l'échelle + 1 cote de contrôle (écart > 2 cm = hors tolérance), mire ArUco en secours"},
     {"id": "D4", "title": "Licences permissives hors liste : BSL-1.0 (Clipper2), FPDF, EDL-1.0 (JSTS)", "status": "decided", "decidedOn": "2026-11-23", "choice": "Refus de Clipper2 (BSL-1.0), FPDF et EDL-1.0 (JSTS) : inutiles, flatten-js et Gotenberg couvrent les besoins"},
     {"id": "D5", "title": "Outil de validation IFC pendant les tests : IfcOpenShell (LGPL-3.0), hors application livrée", "status": "decided", "decidedOn": "2026-11-23", "choice": "IfcOpenShell (LGPL-3.0) accepté comme outil de test seulement : ni dans les dépendances de l'application, ni dans les conteneurs, ni en production"},
+    {"id": "D8", "title": "Authentification d'AVEREO Vision : ticket CONNECT échangé contre un cookie de passerelle, jeton local réservé au développement", "status": "decided", "decidedOn": "2026-11-24", "choice": "CONNECT + jeton local ; enregistrement de l'application « vision » dans CONNECT = PR séparée sur avereo-app-connect, avec accord du responsable"},
+    {"id": "D9", "title": "Découpage du Lot 2 en 2A (API, base, authentification, projets) et 2B (stockage local, synchronisation, PWA)", "status": "decided", "decidedOn": "2026-11-24", "choice": "Deux PR : 2A puis 2B"},
     {"id": "D7", "title": "Licence CC-BY-4.0 de caniuse-lite (dépendance transitive de développement : données de compatibilité des navigateurs, non livrées dans l'application)", "status": "decided", "decidedOn": "2026-11-24", "choice": "Acceptée, exception limitée à cette dépendance de développement (données, pas du code)"},
     {"id": "D6", "title": "Dépendances système hors liste des moteurs retenus : Boost (BSL-1.0) et Eigen (MPL-2.0) pour COLMAP, FFmpeg, Pango (WeasyPrint), LibreOffice et Chromium (Gotenberg)", "status": "decided", "decidedOn": "2026-11-23", "choice": "Règle étroite acceptée : un programme exécuté côté serveur, non modifié, non redistribué et inscrit dans docs/licences.md peut être sous BSL-1.0, MPL-2.0 ou LGPL ; AGPL, GPL, non commercial et propriétaire restent exclus. Boost, Eigen, FFmpeg (build sans composants GPL, à vérifier au lot 7) et l'image Gotenberg non modifiée (audit au lot 4, image sans LibreOffice à étudier) acceptés sous cette règle ; Pango (repli WeasyPrint) non décidé"}
   ],
@@ -61,11 +65,12 @@
     "À VÉRIFIER : saisie directe depuis un télémètre Bluetooth (Web Bluetooth sur Safari iOS).",
     "À VÉRIFIER : essais tactiles et de réactivité du plan 2D et des métrés sur 1 Android et 1 iPhone (R27, R32).",
     "À VÉRIFIER : le SVG du logo fourni a des lettres blanches (version pour fond sombre) ; l'écran affiche le PNG fourni.",
-    "À VÉRIFIER : méthode d'authentification (reprendre celle de l'app Rapport ?), décision au lot 2.",
+    "À VÉRIFIER : essai avec un vrai ticket CONNECT après l'enregistrement de l'application « vision » dans CONNECT (secret distinct par environnement).",
+    "À VÉRIFIER : connexion forcée par ticket (login CSRF) : dépend de CONNECT ; comptes MySQL séparés application et migrations ; prise en compte de api/lib/.htaccess sur le serveur réel.",
     "À VÉRIFIER : dépôt actuel d'OpenSfM et son chemin CPU, licences de Boost, Eigen, FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR (alertes de licence signalées par la relecture Codex, non revérifiées sur les sources amont).",
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
-  "nextAction": "Fournir la pièce de référence et ses cotes laser (R29) et faire les essais tactiles (R27, R32) ; repointer le registre du cockpit vers un clone à jour ; lancer le Lot 2 (message « Lot 2 selon docs/plan-lots.md… »).",
+  "nextAction": "Relire la PR du Lot 2A, cocher la checklist si elle te convient ; autoriser (ou non) la PR séparée qui enregistre l'application « vision » dans CONNECT ; fournir la pièce de référence (R29) ; puis lancer le Lot 2B (message « Lot 2B selon docs/plan-lots.md… »).",
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/190"},
   "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; repointé le 24/11/2026 vers le worktree C:/Users/examg/Documents local/avereo-vision-lot1 (branche de suivi vision/lot-1-suivi-caniuse), à repointer vers le clone principal une fois à jour.",
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},

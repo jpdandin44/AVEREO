@@ -25,6 +25,14 @@ vision_test('projets : nom obligatoire à la création, non vide, 160 caractère
     vision_assert_same(['name' => 'Au plus 160 caractères.'], vision_project_validate(['name' => str_repeat('é', 161)], true)['errors']);
 });
 
+vision_test('projets : en modification, un nom fourni ne peut pas être vide (les autres champs le peuvent)', function () {
+    vision_assert_same(['name' => 'Ne peut pas être vide.'], vision_project_validate(['name' => '   '], false)['errors']);
+    vision_assert_same(['name' => 'Ne peut pas être vide.'], vision_project_validate(['name' => ''], false)['errors']);
+    vision_assert_same([], vision_project_validate(['address' => ''], false)['errors'], 'une adresse peut être effacée');
+    vision_assert_same([], vision_project_validate(['client_label' => '   '], false)['errors']);
+    vision_assert_same(['name' => 'Nouveau'], vision_project_validate(['name' => ' Nouveau '], false)['clean']);
+});
+
 vision_test('projets : types stricts (pas de nombre, de tableau, de null)', function () {
     foreach ([12, 1.5, true, null, ['a'], ['x' => 1]] as $value) {
         $r = vision_project_validate(['name' => $value], true);

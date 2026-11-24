@@ -11,9 +11,18 @@ const NOMS_ROLE = { fondateur: "fondateur", conseiller: "conseiller" };
 export default function App() {
   const client = useMemo(() => creerClientApplication(), []);
   const projets = useProjets(client);
+  // Projets dont le relevé a été ouvert pendant cette session de la page, et projet affiché.
+  // Les relevés restent montés (masqués) quand on revient à la liste : tant que le contenu n'est pas enregistré
+  // sur le serveur (Lot 2B), naviguer entre les projets ne doit jamais effacer un relevé en cours.
+  const [ouverts, setOuverts] = useState([]);
   const [projetOuvert, setProjetOuvert] = useState(null);
   const { session } = projets;
   const deconnexionPossible = session.etat === "ok" && session.modeAuth === "connect";
+
+  function ouvrir(projet) {
+    setOuverts((liste) => (liste.some((p) => p.id === projet.id) ? liste : [...liste, projet]));
+    setProjetOuvert(projet);
+  }
 
   return (
     <div className="app">
@@ -31,6 +40,7 @@ export default function App() {
             className="bouton bouton--secondaire"
             onClick={() => {
               setProjetOuvert(null);
+              setOuverts([]);
               projets.deconnecter();
             }}
           >
@@ -43,7 +53,12 @@ export default function App() {
             : "AVEREO Vision — plan 2D et métrés"}
         </span>
       </header>
-      {projetOuvert ? <EcranReleve projet={projetOuvert} /> : <EcranProjets projets={projets} onOuvrir={setProjetOuvert} />}
+      {projetOuvert ? null : <EcranProjets projets={projets} onOuvrir={ouvrir} />}
+      {ouverts.map((projet) => (
+        <div key={projet.id} hidden={projetOuvert?.id !== projet.id} style={{ display: projetOuvert?.id === projet.id ? "contents" : "none" }}>
+          <EcranReleve projet={projet} />
+        </div>
+      ))}
     </div>
   );
 }
