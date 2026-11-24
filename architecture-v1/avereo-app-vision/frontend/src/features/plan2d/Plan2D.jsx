@@ -6,9 +6,10 @@ import { Circle, Layer, Line, Stage, Text } from "react-konva";
 import Encadre from "../../components/Encadre.jsx";
 import Icone from "../../components/Icone.jsx";
 import { aireMm2, estAutoSecant, projeterSurSegment } from "../../domain/geometrie.js";
-import { deplacerSommet, insererSommet, modifierOuverture, supprimerSommet } from "../../domain/modele.js";
+import { deplacerSommet, insererSommet, supprimerSommet } from "../../domain/modele.js";
 import { formaterLongueurMm, formaterSurface } from "../../domain/unites.js";
 import { aimanter } from "./aimantation.js";
+import { centreOuverture, deplacerOuverture } from "./glisserOuverture.js";
 import { lireJetons } from "./jetons.js";
 
 const RAYON_SOMMET = 9;
@@ -221,23 +222,21 @@ export default function Plan2D({
   }
 
   // ----- glissement d'une ouverture le long de son mur -----
+  // Mêmes refus que la saisie au clavier : hors du mur ou sur une autre ouverture, le rond garde sa dernière position valide.
   function glisserOuverture(ouverture, e) {
-    const a = piece.sommets[ouverture.murIndex];
-    const b = piece.sommets[(ouverture.murIndex + 1) % piece.sommets.length];
-    const longueur = Math.hypot(b.x - a.x, b.y - a.y);
     const brut = { x: e.target.x() / echelle, y: e.target.y() / echelle };
-    const { t } = projeterSurSegment(brut, a, b);
-    const position = Math.min(
-      Math.max(0, Math.round((t * longueur - ouverture.largeurMm / 2) / 10) * 10),
-      Math.max(0, longueur - ouverture.largeurMm),
-    );
-    const suivante = modifierOuverture(piece, ouverture.id, { positionMm: position });
-    dernierApercu.current = suivante;
-    onApercu(suivante);
-    const ux = (b.x - a.x) / longueur;
-    const uy = (b.y - a.y) / longueur;
-    const milieu = position + ouverture.largeurMm / 2;
-    e.target.position({ x: (a.x + ux * milieu) * echelle, y: (a.y + uy * milieu) * echelle });
+    const resultat = deplacerOuverture(piece, ouverture, brut);
+    if (resultat.piece) {
+      dernierApercu.current = resultat.piece;
+      onApercu(resultat.piece);
+      setMessage(null);
+    } else {
+      setMessage(resultat.message);
+    }
+    const derniere = resultat.piece ?? dernierApercu.current ?? piece;
+    const retenue = derniere.ouvertures.find((o) => o.id === ouverture.id) ?? ouverture;
+    const centre = centreOuverture(derniere, retenue);
+    e.target.position({ x: centre.x * echelle, y: centre.y * echelle });
   }
 
   const px = (p) => [p.x * echelle, p.y * echelle];
@@ -366,6 +365,36 @@ export default function Plan2D({
                         />
                       );
                     })}
+                    {p.ouvertures.map((o) => {
+                      const a = p.sommets[o.murIndex];
+                      const b = p.sommets[(o.murIndex + 1) % p.sommets.length];
+                      if (!a || !b) return null;
+                      const longueur = Math.hypot(b.x - a.x, b.y - a.y);
+                      if (longueur === 0) return null;
+                      const ux = (b.x - a.x) / longueur;
+                      const uy = (b.y - a.y) / longueur;
+                      const debut = { x: a.x + ux * o.positionMm, y: a.y + uy * o.positionMm };
+                      const fin = { x: a.x + ux * (o.positionMm + o.largeurMm), y: a.y + uy * (o.positionMm + o.largeurMm) };
+                      return (
+                        <Fragment key={`ouv-${o.id}`}>
+                          <Line
+                            points={[...px(debut), ...px(fin)]}
+                            stroke={o.type === "porte" ? jetons.corporate : jetons.surface}
+                            strokeWidth={9}
+                            lineCap="butt"
+                            listening={false}
+                          />
+                          <Line
+                            points={[...px(debut), ...px(fin)]}
+                            stroke={o.type === "porte" ? jetons.surface : jetons.primary}
+                            strokeWidth={o.type === "porte" ? 3 : 1}
+                            dash={o.type === "porte" ? [6, 4] : undefined}
+                            lineCap="butt"
+                            listening={false}
+                          />
+                        </Fragment>
+                      );
+                    })}
                   </Fragment>
                 );
               })}
@@ -391,28 +420,9 @@ export default function Plan2D({
                   if (!a || !b) return null;
                   const longueur = Math.hypot(b.x - a.x, b.y - a.y);
                   if (longueur === 0) return null;
-                  const ux = (b.x - a.x) / longueur;
-                  const uy = (b.y - a.y) / longueur;
-                  const debut = { x: a.x + ux * o.positionMm, y: a.y + uy * o.positionMm };
-                  const fin = { x: a.x + ux * (o.positionMm + o.largeurMm), y: a.y + uy * (o.positionMm + o.largeurMm) };
-                  const milieu = { x: (debut.x + fin.x) / 2, y: (debut.y + fin.y) / 2 };
+                  const milieu = centreOuverture(piece, o);
                   return (
                     <Fragment key={o.id}>
-                      <Line
-                        points={[...px(debut), ...px(fin)]}
-                        stroke={o.type === "porte" ? jetons.corporate : jetons.surface}
-                        strokeWidth={9}
-                        lineCap="butt"
-                        listening={false}
-                      />
-                      <Line
-                        points={[...px(debut), ...px(fin)]}
-                        stroke={o.type === "porte" ? jetons.surface : jetons.primary}
-                        strokeWidth={o.type === "porte" ? 3 : 1}
-                        dash={o.type === "porte" ? [6, 4] : undefined}
-                        lineCap="butt"
-                        listening={false}
-                      />
                       <Circle
                         x={milieu.x * echelle}
                         y={milieu.y * echelle}

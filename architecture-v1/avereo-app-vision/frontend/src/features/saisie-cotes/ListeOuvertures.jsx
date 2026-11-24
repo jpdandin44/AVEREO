@@ -3,6 +3,8 @@ import { useState } from "react";
 import Encadre from "../../components/Encadre.jsx";
 import Icone from "../../components/Icone.jsx";
 import { ajouterOuverture, creerOuverture, modifierOuverture, supprimerOuverture, trouverPositionLibre, validerOuverture } from "../../domain/modele.js";
+import { analyserLongueur, texteDepuisMm } from "../../domain/unites.js";
+import Champ from "./Champ.jsx";
 import ChampLongueur from "./ChampLongueur.jsx";
 
 const NOMS_TYPE = { porte: "Porte", fenetre: "Fenêtre" };
@@ -11,14 +13,34 @@ const NOMS_TYPE = { porte: "Porte", fenetre: "Fenêtre" };
 export default function ListeOuvertures({ piece, onChange }) {
   const [type, setType] = useState("porte");
   const [mur, setMur] = useState(1);
+  // Dimensions de la future ouverture : modifiables avant l'ajout (un mur court n'accueille pas la porte par défaut de 0,90 m).
+  const [largeur, setLargeur] = useState(texteDepuisMm(creerOuverture({ type: "porte", murIndex: 0, positionMm: 0 }).largeurMm));
+  const [hauteur, setHauteur] = useState(texteDepuisMm(creerOuverture({ type: "porte", murIndex: 0, positionMm: 0 }).hauteurMm));
+  const [erreurs, setErreurs] = useState({});
   const [refus, setRefus] = useState(null);
+  // Le mur affiché est toujours un mur qui existe : si la pièce change ou perd des murs, on revient au dernier mur.
+  const murChoisi = Math.min(Math.max(mur, 1), piece.sommets.length);
+
+  function changerType(nouveauType) {
+    setType(nouveauType);
+    const defauts = creerOuverture({ type: nouveauType, murIndex: 0, positionMm: 0 });
+    setLargeur(texteDepuisMm(defauts.largeurMm));
+    setHauteur(texteDepuisMm(defauts.hauteurMm));
+    setErreurs({});
+  }
 
   function ajouter() {
-    const murIndex = Math.min(Math.max(mur, 1), piece.sommets.length) - 1;
-    const modele = creerOuverture({ type, murIndex, positionMm: 500 });
+    const l = analyserLongueur(largeur, "m");
+    const h = analyserLongueur(hauteur, "m");
+    setErreurs({ largeur: l.ok ? undefined : l.message, hauteur: h.ok ? undefined : h.message });
+    if (!l.ok || !h.ok) return;
+    const modele = creerOuverture({ type, murIndex: murChoisi - 1, positionMm: 500, largeurMm: l.mm, hauteurMm: h.mm });
     const position = trouverPositionLibre(piece, modele);
     if (position === null) {
-      setRefus("Pas de place sur ce mur pour cette ouverture : choisissez un autre mur ou réduisez les ouvertures existantes.");
+      setRefus(
+        validerOuverture(piece, { ...modele, positionMm: 0 }) ??
+          "Pas de place sur ce mur pour cette ouverture : réduisez sa largeur, choisissez un autre mur ou déplacez les ouvertures existantes.",
+      );
       return;
     }
     setRefus(null);
@@ -33,23 +55,25 @@ export default function ListeOuvertures({ piece, onChange }) {
       <div className="grille-champs" style={{ alignItems: "end" }}>
         <div className="champ">
           <label className="champ__libelle" htmlFor="type-ouverture">Type</label>
-          <select id="type-ouverture" className="champ__saisie" value={type} onChange={(e) => setType(e.target.value)}>
+          <select id="type-ouverture" className="champ__saisie" value={type} onChange={(e) => changerType(e.target.value)}>
             <option value="porte">Porte</option>
             <option value="fenetre">Fenêtre</option>
           </select>
         </div>
         <div className="champ">
           <label className="champ__libelle" htmlFor="mur-ouverture">Sur le mur</label>
-          <select id="mur-ouverture" className="champ__saisie" value={mur} onChange={(e) => setMur(Number(e.target.value))}>
+          <select id="mur-ouverture" className="champ__saisie" value={murChoisi} onChange={(e) => setMur(Number(e.target.value))}>
             {piece.sommets.map((_, i) => (
               <option key={i} value={i + 1}>Mur {i + 1}</option>
             ))}
           </select>
         </div>
-        <button type="button" className="bouton bouton--secondaire" onClick={ajouter} style={{ marginBottom: 12 }}>
-          <Icone nom="plus" /> Ajouter
-        </button>
+        <Champ libelle="Largeur (m)" valeur={largeur} onChange={setLargeur} erreur={erreurs.largeur} />
+        <Champ libelle="Hauteur (m)" valeur={hauteur} onChange={setHauteur} erreur={erreurs.hauteur} />
       </div>
+      <button type="button" className="bouton bouton--secondaire" onClick={ajouter} style={{ marginBottom: 12 }}>
+        <Icone nom="plus" /> Ajouter l'ouverture
+      </button>
       {refus ? (
         <div style={{ marginBottom: 12 }}>
           <Encadre type="alerte" titre="Ouverture non ajoutée">

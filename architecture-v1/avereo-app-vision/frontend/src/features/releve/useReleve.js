@@ -23,7 +23,7 @@ import {
 } from "../../domain/modele.js";
 import { calculerMetres, calculerMetresNiveau } from "../../domain/metres.js";
 
-const ECART_ENTRE_PIECES_MM = 1000;
+const ECART_ENTRE_PIECES_MM = 1500;
 
 function etatInitial() {
   const niveau = creerNiveau({ id: "niveau-1", nom: "Rez-de-chaussée" });

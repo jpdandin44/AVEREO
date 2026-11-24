@@ -258,7 +258,17 @@ export function validerOuverture(piece, ouverture) {
  */
 export function trouverPositionLibre(piece, ouverture) {
   const longueur = Math.round(longueurMur(piece, ouverture.murIndex));
-  const candidats = [500, ...Array.from({ length: Math.floor(longueur / 100) + 1 }, (_, k) => k * 100)];
+  // Candidats : 500 mm, tous les 100 mm, et les bornes des ouvertures du mur (un intervalle libre peut commencer
+  // juste après une ouverture, ou finir juste avant, à une position qui n'est pas un multiple de 100 mm).
+  const bornes = piece.ouvertures
+    .filter((autre) => autre.murIndex === ouverture.murIndex && Number.isFinite(autre.positionMm) && Number.isFinite(autre.largeurMm))
+    .flatMap((autre) => [autre.positionMm + autre.largeurMm, autre.positionMm - ouverture.largeurMm]);
+  const candidats = [
+    500,
+    ...Array.from({ length: Math.floor(longueur / 100) + 1 }, (_, k) => k * 100),
+    ...bornes,
+    longueur - ouverture.largeurMm,
+  ];
   for (const positionMm of candidats) {
     if (validerOuverture(piece, { ...ouverture, positionMm }) === null) return positionMm;
   }
