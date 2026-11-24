@@ -1,3 +1,4 @@
+import { DEFAULT_CATEGORY, LEGACY_DEFAULT_CATEGORY } from './reportClassification.js';
 // A mission profile is an explicit report choice, independent of CONNECT roles.
 // Missing or unknown values retain the historical projection behaviour.
 // The observation advice label is shared by all profiles, as requested in lot 0.
@@ -19,6 +20,7 @@ export function withMissionDefault(report, profile) {
 }
 
 export function usesMissionContext(report) {
+  if (report?.mission_technique && [DEFAULT_CATEGORY, LEGACY_DEFAULT_CATEGORY].includes(report?.categorie)) return false;
   return isHabitologueProfile(report) || (recognizedMissionProfile(report?.profil_metier) && report?.categorie === 'Visite Globale');
 }
 

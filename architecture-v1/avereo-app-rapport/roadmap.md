@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-22
+updated: 2026-11-24
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,18 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## 24 novembre — Revue locale PR197 corrigée
+
+Retour utilisateur pris en compte : choix des deux parcours, spécialités techniques et Terrain indépendant du profil dans le global. Nouvelle qualification locale et nouvelle version dans PR197 ; la revue du candidat précédent ne vaut pas acceptation de cette correction. [Preuves](docs/rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain). Préproduction et Mise en production V2 non engagées.
+
+## 24 novembre — Parcours technique développé localement
+
+Cadrage validé par « OK, lance la mise en place ». Première tranche développée et en qualification : trois écrans, mission courte, constats sélectionnables et ordonnés, détails techniques, sauvegardes et Word communs. [Contrat, revue et preuves](docs/rapport-technique.md). Prochaine action : revue humaine locale de la PR. Préproduction et Mise en production non engagées pour V2 ; réserves volumineuses V1.2 conservées.
+
+## 24 novembre — Cadrage de Rapport Technique pour V2
+
+Préparation autorisée en parallèle des réserves V1.2 : [proposition de parcours minimaliste](docs/rapport-technique.md), aperçu fictif et audience confirmée. Prochaine action V2 : revue des trois écrans, des champs minimaux et d’un exemple de mission technique. Développement local, Préproduction et Mise en production non engagés pour V2. La recette volumineuse V1.2 conserve son état et ses preuves.
 
 ## 22 novembre — R12-18 livré, recette hébergée volumineuse suivante
 

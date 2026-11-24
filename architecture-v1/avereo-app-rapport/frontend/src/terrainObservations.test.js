@@ -20,6 +20,17 @@ const report = () => ({ profil_metier: 'habitologue', categorie: 'Visite Globale
   ], plans: [plan()], habitologie_protocoles: {}, livrable: { audience: 'expert', observations: ['t-a', 'e', 'f'] },
   contexte_exterieur: { id: 'ancien-contexte', constat: 'Notes antérieures conservées', includeInClient: false } });
 
+test('every global dossier includes Terrain independently from profession and prior observations', () => {
+  for (const categorie of ['Visite Globale', 'Rapport Habitologue']) {
+    for (const profil_metier of [undefined, '', 'habitologue', 'architecte', 'maitre_oeuvre', 'unknown']) {
+      const r = { categorie, profil_metier, habitologie_protocoles: {}, observations: [] };
+      const before = structuredClone(r);
+      assert.deepEqual(visitProtocolStages(r).map(stage => stage.key), ['terrain', 'eau', 'air', 'terre', 'feu']);
+      assert.deepEqual(r, before);
+    }
+  }
+});
+
 test('terrain T numbers never consume building numbers, including unassigned findings', () => {
   const r = report(), before = structuredClone(r);
   assert.deepEqual(orderedObservations(r).map(o => [o.id, observationNumber(r, o)]), [['t-a', 'T1'], ['t-b', 'T2'], ['e', 1], ['f', 2], ['old', 3]]);

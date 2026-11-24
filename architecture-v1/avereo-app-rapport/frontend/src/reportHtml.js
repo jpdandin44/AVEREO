@@ -1,4 +1,21 @@
 import { isHabitologieReport } from './reportClassification.js';
+import { isTechnicalReport, technicalMission } from './technicalReport.js';
+
+export function technicalMissionHtml(report) {
+  if (!isTechnicalReport(report)) return '';
+  const mission = technicalMission(report);
+  return Object.entries({ objet: 'Objet de la mission', perimetre: 'Périmètre de la visite', limites: 'Limites de la mission' })
+    .filter(([key]) => mission[key].trim())
+    .map(([key, label]) => `<h3>${label}</h3><p>${textToHtml(mission[key])}</p>`).join('');
+}
+
+export function technicalDetailsHtml(report, observation) {
+  if (!isTechnicalReport(report)) return '';
+  return Object.entries({ mesures_techniques: 'Mesures, unités et conditions', references_techniques: 'Références et liens',
+    verifications_techniques: 'Vérifications nécessaires', limites_techniques: 'Limites du constat' })
+    .filter(([key]) => typeof observation[key] === 'string' && observation[key].trim())
+    .map(([key, label]) => `<h4>${label}</h4><p>${textToLinkedHtml(observation[key])}</p>`).join('');
+}
 import { visitProtocolStages, protocolStageNumber, LISTENING_TOPICS, isHabitologieControlSelected, isHabitologieStageEnabled, findHabitologieControl, findHabitologieStage } from './habitologieProtocol.js';
 import { LISTENING_SECTIONS } from './clientListening.js';
 import { rgaRisk, isRgaRisk } from './georisquesRiskSummary.js';
@@ -287,6 +304,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '', afterR
           <h4>Constat</h4>
           <p>${textToHtml(obs.observations)}</p>
           ${explanationsHtml(obs)}
+          ${technicalDetailsHtml(report, obs)}
           <h4>${escapeHtml(observationAdviceLabel(report))}</h4>
           <p>${textToHtml(obs.actions)}</p>
           ${photos}
@@ -370,6 +388,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '', afterR
     }</td></tr>
   </table>
 
+  ${technicalMissionHtml(report)}
   ${buildRiskSummaryHtml(report.risques)}
   ${buildRgaCartographyHtml(report)}
 
