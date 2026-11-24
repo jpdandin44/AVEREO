@@ -4129,7 +4129,8 @@
       "scope": "PR191 fusionnée ; bibliothèque installée en préproduction privée, 212 assertions HTTPS et données conservées. Recette humaine hébergée en attente ; aucune production.",
       "prUrl": "https://github.com/jpdandin44/AVEREO/pull/191",
       "hostedDocumentation": "preproduction-ux-ui.md",
-      "hostedEvidence": "../api/preproduction-ux-ui-observation.json"
+      "hostedEvidence": "../api/preproduction-ux-ui-observation.json",
+      "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/194"
     }
   ],
   "currentStateObservation": "../api/preproduction-partage-observation.json",

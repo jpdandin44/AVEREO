@@ -43,6 +43,8 @@ La capture de l’application réelle reste dans `.local/hosted-ui/bibliotheque-
 
 ### Recette du responsable après livraison
 
+[PR194 — revue de la préproduction](https://github.com/jpdandin44/AVEREO/pull/194). Ses quatre cases humaines restent décochées ; la validation locale de PR191 ne les remplace pas.
+
 1. Ouvrir Passeport Immo depuis CONNECT et vérifier les quatre rubriques du bien : Vue d’ensemble, Documents, Rapports privés, Travaux et devis.
 2. Dans chacun des deux biens, retrouver les documents et les catégories. Sélectionner un PDF pour l’aperçu, le consulter en grand, puis télécharger un fichier et une archive entière.
 3. Tester recherche, filtre, dossiers repliés et Actions ; changer de rubrique puis revenir pour vérifier leur conservation. Retrouver les réglages de catégories et l’ordre existants.

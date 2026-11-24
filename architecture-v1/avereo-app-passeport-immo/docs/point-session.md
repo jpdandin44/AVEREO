@@ -12,7 +12,7 @@ tags: [passeport-immo, local, cockpit]
 
 ## Reprise courante — bibliothèque en préproduction
 
-PR191 fusionnée et policy stricte réussie. Paquet CI installé et techniquement vérifié sur la cible privée : quatre écritures d’interface, 212 assertions HTTPS, deux biens et aperçu PDF contrôlés. Sauvegarde de quatre tables et trente fichiers, restauration temporaire et retour arrière sur copie réussis ; données identiques après navigateur. Prochaine action : recette humaine de préproduction UX01–UX06. [Livraison et recette](preproduction-ux-ui.md) · [Suivi canonique](../data/suivi-ux-ui.json). Branche opératoire `chore/passeport-immo-bibliotheque-preproduction`, copie `C:/Users/examg/Documents local/passeport-immo-ux-ui`. Aucune production ni opération d’invitation dans ce périmètre.
+PR191 fusionnée et policy stricte réussie. Paquet CI installé et techniquement vérifié sur la cible privée : quatre écritures d’interface, 212 assertions HTTPS, deux biens et aperçu PDF contrôlés. Sauvegarde de quatre tables et trente fichiers, restauration temporaire et retour arrière sur copie réussis ; données identiques après navigateur. Prochaine action : recette humaine de préproduction UX01–UX06 et revue [PR194](https://github.com/jpdandin44/AVEREO/pull/194). [Livraison et recette](preproduction-ux-ui.md) · [Suivi canonique](../data/suivi-ux-ui.json). Branche opératoire `chore/passeport-immo-bibliotheque-preproduction`, copie `C:/Users/examg/Documents local/passeport-immo-ux-ui`. Aucune production ni opération d’invitation dans ce périmètre.
 
 
 ## Historique local — 24 novembre 2026, Bibliothèque

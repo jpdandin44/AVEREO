@@ -57,7 +57,8 @@
     "mergeSha": "2f5a15f65195f8a9934fdb57deffba246669c509",
     "preMergeObservationEvidence": "api/ux-ui-local-observation.json#pullRequest",
     "state": "merged",
-    "mergedAt": "2026-11-24T08:39:57Z"
+    "mergedAt": "2026-11-24T08:39:57Z",
+    "operatorPrUrl": "https://github.com/jpdandin44/AVEREO/pull/194"
   },
   "approvals": [
     {
@@ -99,7 +100,7 @@
     "observedAt": "2026-11-24T08:53:18+00:00"
   },
   "blockers": [],
-  "nextAction": "Revoir le candidat installé depuis CONNECT et les critères UX01–UX06 ; consigner la recette humaine hébergée. La production conserve un accord distinct.",
+  "nextAction": "Effectuer la recette humaine hébergée UX01–UX06 et revoir PR194 ; la production conserve son accord distinct.",
   "nextIteration": [],
   "budget": {
     "limit": null,
