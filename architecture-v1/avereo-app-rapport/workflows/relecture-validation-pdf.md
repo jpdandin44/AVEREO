@@ -18,6 +18,8 @@ Développement local autorisé le 25 novembre par « OK, peux-tu lancer le déve
 
 Branche `feat/rapport-relecture-validation-pdf`, fondée sur `09a4e768e9b2f11e2cdcecac65099139893c64b2` de PR199 encore en revue au démarrage. La branche de PR199 et ses paquets préparés sont conservés. Le suivi canonique est `rapportV2Technique20261124.reviewWorkflowDevelopment20261125` dans le [suivi privé](<C:/Users/examg/OneDrive/Documents/AVEREO_2/preprod-acces-local/outillage/acces-preproduction/suivi-chantier.json>).
 
+Pendant le développement, PR199 est observée fusionnée en `73ba5e07d9ed702871765ac61fe8f3536204d240` et sa branche distante supprimée. Le complément est ensuite aligné sans conflit sur `main` `95400893696938705b004f93e281b6bab80b14b0`, qui inclut PR199. Cet alignement ne change aucun fichier Rapport/Passeport du candidat local qualifié ; la nouvelle PR cible donc directement `main`. Les anciennes réserves et paquets ne sont pas requalifiés par cette observation.
+
 ## Répartition et sources
 
 - **Rapport** : rédaction, corrections, contenu et sélection expert/client, Word et préparation d'une demande privée. Mission → Constats → Rapport et les cinq étapes d'Analyse globale sont conservées.

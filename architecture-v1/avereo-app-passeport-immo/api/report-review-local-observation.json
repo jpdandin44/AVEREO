@@ -26,5 +26,10 @@
   "reviewEntries": {
     "rapport": "http://127.0.0.1:5260/fixture/",
     "passeport": "http://127.0.0.1:5261/fixture/"
+  },
+  "mainAlignment": {
+    "baseSha": "95400893696938705b004f93e281b6bab80b14b0",
+    "parentPr199MergedSha": "73ba5e07d9ed702871765ac61fe8f3536204d240",
+    "rapportPasseportRuntimeUnchanged": true
   }
 }
