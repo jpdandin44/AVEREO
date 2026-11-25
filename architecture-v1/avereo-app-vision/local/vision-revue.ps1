@@ -266,7 +266,12 @@ switch ($Action) {
         Show-RevueSource $settings
     }
     'down' { Invoke-RevueCompose $settings @('down') }
-    'donnees' { Invoke-RevueCompose $settings @('exec', '-T', 'api', 'php', '/opt/revue/donnees-demo.php') }
+    'donnees' {
+        # Sans -Confirmer : complète seulement ce qui manque. Avec -Confirmer : rétablit les relevés de démonstration d'origine.
+        $arguments = @('exec', '-T', 'api', 'php', '/opt/revue/donnees-demo.php')
+        if ($Confirmer) { $arguments += '--retablir' }
+        Invoke-RevueCompose $settings $arguments
+    }
     'logs' { Invoke-RevueCompose $settings @('logs', '--tail', '100') }
     'reset' {
         # Vérifier les chemins absolus et refuser les jonctions avant toute suppression récursive.

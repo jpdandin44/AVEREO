@@ -26,7 +26,7 @@ powershell -ExecutionPolicy Bypass -File .\local\vision-revue.ps1 down -Nom vali
 - `up` construit l'application de la source (`npm run build`), démarre l'environnement, applique les migrations et charge les données de démonstration (sans doublon si on recommence). Docker Desktop doit être lancé. Les environnements ne redémarrent pas seuls après un redémarrage de Windows : relancer `up`.
 - `actualiser -Nom recette` met le worktree de recette sur le dernier `main` (après un merge), puis `up -Nom recette` reconstruit.
 - Pour la validation, seul `up` demande `-Source` : les autres commandes (`donnees`, `down`, `logs`, `reset`) reprennent la source du dernier `up`.
-- `donnees -Nom …` recharge les données de démonstration ; `reset -Nom … -Confirmer` efface la base de l'environnement ; `logs -Nom …` affiche les journaux.
+- `donnees -Nom …` complète les données de démonstration qui manquent (un relevé déjà modifié pendant la recette est conservé, y compris par `up`) ; `donnees -Nom … -Confirmer` remet les relevés de démonstration dans leur état d'origine ; `reset -Nom … -Confirmer` efface la base de l'environnement ; `logs -Nom …` affiche les journaux.
 - `down` n'arrête que l'environnement nommé.
 
 ## Données de démonstration

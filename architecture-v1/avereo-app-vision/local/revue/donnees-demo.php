@@ -22,6 +22,9 @@ try {
         require_once $lib . 'sync.php';
     }
     $pdo = vision_pdo($config);
+    // --retablir : remet les relevés de démonstration dans leur état d'origine (écrase les modifications faites pendant la recette).
+    // Sans lui, un relevé n'est chargé que si le projet n'a encore aucun contenu : relancer « up » ne défait jamais une recette.
+    $retablir = in_array('--retablir', $argv ?? [], true);
     $demos = [
         ['id' => 'de000000000000000000000000000a01', 'owner' => '900001', 'name' => 'Maison Martin (démo)',
             'address' => '12 rue des Lilas, Nantes', 'client_label' => 'M. et Mme Martin (fictifs)', 'releve' => 'ref2.json'],
@@ -59,7 +62,13 @@ try {
         if (($demo['archive'] ?? false) && $projet['status'] === 'active') {
             $projet = vision_project_update($pdo, $projet['public_id'], $identite, ['status' => 'archived']);
         }
-        if (isset($demo['releve']) && function_exists('vision_sync_exchange')) {
+        $dejaRempli = false;
+        if (isset($demo['releve']) && function_exists('vision_sync_exchange') && !$retablir) {
+            $compte = $pdo->prepare('SELECT COUNT(*) FROM vision_objects WHERE project_id = ?');
+            $compte->execute([(int) $projet['id']]);
+            $dejaRempli = (int) $compte->fetchColumn() > 0;
+        }
+        if (isset($demo['releve']) && function_exists('vision_sync_exchange') && !$dejaRempli) {
             $contenu = file_get_contents(__DIR__ . '/donnees/' . $demo['releve']);
             if ($contenu === false) {
                 throw new RuntimeException('Relevé de démonstration introuvable.');
@@ -79,7 +88,7 @@ try {
     }
     echo "Projets : $crees créés, $presents déjà présents." . PHP_EOL;
     echo function_exists('vision_sync_exchange')
-        ? "Relevés : $releves envoyés (un rejeu identique est unchanged)." . PHP_EOL
+        ? ($retablir ? "Relevés : $releves rétablis dans leur état d'origine." : "Relevés : $releves chargés (les relevés déjà remplis sont conservés ; --retablir pour revenir à l'origine).") . PHP_EOL
         : 'Relevés : absents de cette version (synchronisation indisponible).' . PHP_EOL;
     exit(0);
 } catch (Throwable $exception) {
