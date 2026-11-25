@@ -86,5 +86,11 @@ function vision_require_identity(array $config): array
     if ($identity === null) {
         vision_error(401, 'unauthenticated', 'Authentification requise.');
     }
+    // Le client peut indiquer le compte auquel appartiennent ses données locales : si la session est devenue celle d'un autre
+    // compte (autre onglet, reconnexion), rien n'est lu ni écrit, pour ne jamais mélanger les données de deux comptes.
+    $expected = $_SERVER['HTTP_X_VISION_EXPECTED_IDENTITY'] ?? null;
+    if (is_string($expected) && $expected !== $identity['provider'] . ':' . $identity['id']) {
+        vision_error(409, 'identity_changed', 'Un autre compte est connecté : rechargez la page.');
+    }
     return $identity;
 }

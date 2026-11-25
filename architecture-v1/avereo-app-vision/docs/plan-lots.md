@@ -16,8 +16,9 @@ Version : Lot 0, 23/11/2026. Tenu par Claude Code (sous-agent scribe-cockpit). L
 |---|---|---|---|---|---|
 | 0 | Cadrage technique, sans code | fait (PR [#188](https://github.com/jpdandin44/AVEREO/pull/188) mergée le 23/11/2026, commit 54d3fba) | M | cadre toutes les exigences | ADR 0001 et décisions D1, D2, D4, D5, D6 acceptés le 23/11/2026 ; PR mergée ; inscription au cockpit appliquée le 23/11/2026 (source sur le worktree avereo-vision-lot0) |
 | 1 | Fondations, plan 2D manuel, métrés, charte | fait (PR [#190](https://github.com/jpdandin44/AVEREO/pull/190) mergée par le responsable le 24/11/2026, commit 6ca2822) ; R27, R29 et R32 restent en cours | L | R10, R11, R12, R23 à R35 (R27, R29, R32 en cours : essais smartphone et vraie pièce de référence) | pièce de référence et cotes laser fournies par le responsable (R29) ; caniuse-lite (CC-BY-4.0) accepté le 24/11/2026 |
-| 2A | API PHP, base MySQL, authentification, projets | fait côté code et tests, PR ouverte le 24/11/2026 | M | R01 (partiel), R02, R08 (partiel) | essai avec un vrai ticket CONNECT : application « vision » à enregistrer dans CONNECT (PR séparée, accord requis) |
-| 2B | Stockage local, enregistrement automatique, synchronisation, PWA | à faire | L | R03 à R06, R09, fin de R01 | schéma du contenu des projets (nouvelles migrations) ; essais hors ligne sur 1 Android et 1 iPhone |
+| 2A | API PHP, base MySQL, authentification, projets | fait, mergé le 24/11/2026 (#195) | M | R01 (partiel), R02, R08 (partiel) | essai avec un vrai ticket CONNECT : enregistrement dans le code de CONNECT mergé (#196) ; activation hébergée selon `docs/deploiement-mutualise.md` (accord requis) |
+| 2B | Stockage local, enregistrement automatique, synchronisation (création de projet hors ligne comprise) | fait côté code et tests, PR ouverte le 24/11/2026 | L | R01 (fin), R03, R05, R06, R04 (partie logique) | accord du 24/11/2026 : `id` de projet choisi par le navigateur (modification compatible de l'API du 2A) ; relecture de sécurité faite |
+| 2C | PWA installable, service worker, rechargement hors ligne, essais Android et iPhone | à faire | M | R09, fin de R04 | icône d'application provisoire (À VÉRIFIER : fichier logo carré) ; essais physiques sur 1 Android et 1 iPhone ; vite-plugin-pwa et Workbox à installer (licences MIT, déjà au tableau) |
 | 3 | Capture terrain : cotes laser, photos, commentaires, vidéo jointe | à faire | L | R13 à R17, R36 à R38 | essais sur 1 Android et 1 iPhone fournis par le responsable |
 | 4 | Exports CSV, PDF, DXF | à faire | M | R42, R43, R47, R48 | contrôle des licences de Gotenberg (Chromium, LibreOffice) ; décision D6 prise (règle serveur), audit de l'image Gotenberg à faire ; accord avant tout conteneur sur le serveur OVH |
 | 5 | Maquette 3D, vue 3D, exports glTF et OBJ, partage par lien | à faire | L | R07, R39, R40, R45, R46 | — |
@@ -74,17 +75,24 @@ Décisions du 24/11/2026 : authentification CONNECT (ticket + cookie) avec jeton
 | T2A-10 Documents, licences, suivi, plan de lots | fait | — | Claude | Sonnet | medium | — |
 | T2A-11 Tests, build, `/codex:review --base origin/main`, relecture du diff, PR | fait | — | Claude ; Codex | Sonnet ; défaut | medium ; — | — |
 
-### Lot 2B — Stockage local, enregistrement automatique, synchronisation, PWA
-Plan détaillé proposé au lancement du lot (message « Lot 2B selon docs/plan-lots.md… »). Tâches prévues :
+### Lot 2B — Stockage local, enregistrement automatique, synchronisation
+Décisions du 24/11/2026 : Lot 2 coupé en 2A, **2B** et **2C** (PWA) ; création de projet possible hors ligne ; icône PWA provisoire. Plan : `docs/synchronisation.md` (protocole). Dexie 4.4.7 est installé ; vite-plugin-pwa et Workbox viennent au 2C.
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
 |---|---|---|---|---|---|---|
-| T2B-01 Schéma du contenu des projets (bâtiments, niveaux, pièces, murs, ouvertures, `rev`, `seq`, `sync_log`) : nouvelles migrations écrites, non exécutées en production | à faire | — | Codex (schéma fixé par Claude dans le brief) | défaut Codex | medium | — |
-| T2B-02 API de synchronisation (push, pull par `seq`, conflits, instantané atomique) (R05, R06) | à faire | — | Claude | Sonnet | medium | — |
-| T2B-03 Stockage local Dexie, file d'envoi, enregistrement automatique (R03, R04) | à faire | — | Claude | Sonnet | medium | — |
-| T2B-04 PWA : manifeste, service worker, installation (R09) | à faire | — | Claude | Sonnet | medium | — |
-| T2B-05 Tests de synchronisation et de conflits sur jeux de données | à faire | — | Codex | défaut Codex | medium | — |
-| T2B-06 Essais hors ligne Android et iPhone, quota iOS | à faire | Essai physique par le responsable | responsable | — | — | — |
-| T2B-07 Licences (Dexie, vite-plugin-pwa), tests, relecture Codex, suivi | à faire | — | verif-licences / testeur / Codex / scribe | Haiku / Haiku / défaut / Haiku | medium / low / — / low | — |
+| T2B-01 Migration 002 (`vision_objects`, `vision_project_counters`, `vision_sync_log`) et protocole `docs/synchronisation.md` | fait | Écart au plan : Claude et non Codex, Codex n'a ni PHP ni MySQL pour tester une migration | Claude | Sonnet | medium | — |
+| T2B-02 API `sync.php` / `lib/sync.php` (envoi, réception par `seq`, conflits, journal), `id` de projet choisi par le navigateur | fait | Aucune nouvelle action de droits : lecture = `read`, envoi = `update` sur le projet | Claude | Sonnet | medium | — |
+| T2B-03 Tests PHP de l'API (deux appareils, conflit, rejeu, 404 d'autrui, archivé 409, validation, injection, pagination, plafond) | fait | Fichier d'envoi REF-2 partagé avec les tests JS | Claude | Sonnet | medium | — |
+| T2B-04 Modules purs `diff`, `assembler`, `file-envoi`, `fusion`, `journal` | fait | Écrits par Codex d'après le brief T-05 (modules et tests ensemble) | Codex | défaut Codex | medium | task-mwv5xwc7-djzy1n, task-mwv63pyk-48ldvr |
+| T2B-05 Tests de ces modules sur REF-1 à REF-3 et scénarios de conflit (brief `T-05-sync-client.md`) | fait | Brief corrigé en cours de tâche (REF-1 = 3 objets) | Codex | défaut Codex | medium | task-mwv63pyk-48ldvr |
+| T2B-06 Stockage Dexie et mémoire, moteur, enregistrement automatique, projets « local d'abord » | fait | Écriture locale immédiate (pas de délai) pour tenir R03 au rechargement ; seul l'envoi est différé de 1,5 s | Claude | Sonnet | medium | — |
+| T2B-07 Interface : indicateur d'enregistrement, journal, liste de projets, bandeaux | fait | — | Claude | Sonnet | medium | — |
+| T2B-08 Relecture de sécurité de l'API de synchronisation et du moteur | fait | Relecture adversariale Codex (`/codex:adversarial-review`) | Codex | défaut Codex | high | voir PR |
+| T2B-09 Licences : Dexie, fake-indexeddb | fait | Apache 2.0 et Apache 2.0, aucune dépendance transitive | Claude | Sonnet | low | — |
+| T2B-10 Tests, build, `/codex:review --base origin/main`, documents, suivi, PR | fait | — | Claude / Codex | Sonnet / défaut | medium | voir PR |
+| T2B-11 Essai physique hors ligne Android et iPhone, quota iOS | reporté | Sans service worker, une page rechargée hors ligne ne s'ouvre pas : l'essai a un sens au Lot 2C | responsable | — | — | — |
+
+### Lot 2C — PWA, service worker, rechargement hors ligne
+Plan détaillé proposé au lancement du lot (message « Lot 2C selon docs/plan-lots.md… »). Tâches prévues : manifeste et icônes (provisoires, À VÉRIFIER : fichier logo carré), vite-plugin-pwa et service worker (précache de l'application, `/api` et `/connect` jamais mis en cache), mise à jour de version, audit Lighthouse « installable » (R09), essais sur 1 Android et 1 iPhone (R04 : quota et éviction iOS).
 
 ### Lot 3 — Capture terrain : cotes laser, photos, commentaires, vidéo jointe
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |

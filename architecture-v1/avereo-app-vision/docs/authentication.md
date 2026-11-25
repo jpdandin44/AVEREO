@@ -26,7 +26,13 @@ Le mode `token` est **refusé** hors de l'environnement `local` : la configurati
 - Une identité « local » n'est fondateur que dans l'environnement `local`.
 
 ## Configuration (hors du dossier publié)
-Fichier PHP renvoyant un tableau, lu depuis `AVEREO_CONFIG_FILE`, sinon `$HOME/.avereo/vision/config.php` (modèle : `local/config.example.php`). Clés : `environment`, `auth_mode`, `db`, `api_token`, `admin_user_ids`, `connect_launch_secret` (≥ 32 caractères, partagé avec CONNECT), `connect_launch_nonce_directory`, `connect_gate_cookie`, `connect_gate_session_seconds`, `max_body_bytes`. Par défaut : production et mode `connect`. Les secrets ne sont jamais écrits dans les logs, les réponses ni le code livré au navigateur.
+Fichier PHP renvoyant un tableau, lu depuis `AVEREO_CONFIG_FILE`, sinon `~/.avereo/vision/config.php` (`~/.avereo/vision-preprod/config.php` si la racine web contient « preprod » ; le dossier personnel vient de `$HOME`, ou est déduit de la racine web `/home/COMPTE/…` sur l'hébergement mutualisé, où `$HOME` peut manquer). Modèle : `local/config.example.php`. Clés : `environment`, `auth_mode`, `db`, `api_token`, `admin_user_ids`, `connect_launch_secret` (≥ 32 caractères, partagé avec CONNECT), `connect_launch_nonce_directory`, `connect_gate_cookie`, `connect_gate_session_seconds`, `max_body_bytes`. Par défaut : production et mode `connect`. Les secrets ne sont jamais écrits dans les logs, les réponses ni le code livré au navigateur.
+
+## Données locales sur l'appareil (Lot 2B)
+- Le relevé est enregistré sur l'appareil (IndexedDB, base `avereo-vision:<fournisseur>:<identifiant>`), **une base par compte** : un autre compte sur le même téléphone ou le même navigateur n'y accède pas par l'application. Ces données **ne sont pas chiffrées** : la protection est le verrouillage de l'appareil (les relevés montrent des logements de particuliers) ; **À VÉRIFIER** avec le responsable si un chiffrement ou un effacement automatique est attendu.
+- Sans réseau, l'application rouvre avec la dernière identité connue de l'appareil (`localStorage`, aucun secret). Elle ne donne aucun accès au serveur : chaque envoi est reverifié par le cookie de passerelle CONNECT ; un cookie expiré affiche « Reconnexion nécessaire » et ne supprime rien.
+- Chaque requête du client indique le compte de sa base locale (en-tête `X-Vision-Expected-Identity`) : si la session est celle d'un autre compte, le serveur répond `409 identity_changed` avant toute lecture ou écriture (voir `docs/synchronisation.md`).
+- « Se déconnecter » efface le cookie et oublie l'identité mémorisée mais **garde** les données locales (modifications non envoyées comprises) ; un avertissement s'affiche s'il en reste.
 
 ## Limites connues (relecture de sécurité du Lot 2A)
 - **Connexion forcée par ticket (login CSRF)** : quelqu'un qui possède un ticket valide peut envoyer le lien `entry.php?ticket=…` à un collègue, qui se retrouve connecté sous le compte de l'émetteur. Le contrôle dépend de CONNECT (état lié au navigateur avant le lancement) : **À VÉRIFIER avec CONNECT**. En attendant, l'identité connectée est toujours affichée dans l'en-tête de l'application.
@@ -37,6 +43,7 @@ Fichier PHP renvoyant un tableau, lu depuis `AVEREO_CONFIG_FILE`, sinon `$HOME/.
 - **Hébergement** : la prise en compte de `api/lib/.htaccess` (`AllowOverride`) est à vérifier sur le serveur réel.
 
 ## Ce qui reste à faire pour brancher CONNECT en vrai
+État du 24/11/2026 : l'enregistrement dans le code de CONNECT est mergé (PR #196) ; un ticket émis par le vrai émetteur de CONNECT a été accepté par la passerelle de Vision en essai local, et son rejeu refusé. Reste l'activation hébergée : procédure dans `docs/deploiement-mutualise.md`.
 1. Enregistrer l'application « vision » dans CONNECT (code d'application, secret de lancement, URL d'entrée `…/connect/entry.php`) : modification de `architecture-v1/avereo-app-connect/`, **PR séparée avec l'accord du responsable**.
 2. Déposer le même secret dans la configuration d'AVEREO Vision (`connect_launch_secret`) et créer le dossier des nonces (droits d'écriture pour le serveur web).
 3. Utiliser **un secret différent pour chaque environnement** (préproduction, production).

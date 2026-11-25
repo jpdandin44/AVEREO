@@ -30,13 +30,22 @@ function vision_utf8_truncate(string $value, int $max): string
 /**
  * Valide le corps d'une création ou d'une modification de projet.
  * @param bool $create création : « name » est obligatoire ; modification : au moins un champ
- * @return array{clean: array<string, string>, errors: array<string, string>}
+ * @return array{clean: array<string, string>, errors: array<string, string>}  (« id » optionnel à la création)
  */
 function vision_project_validate(array $body, bool $create): array
 {
     $clean = [];
     $errors = [];
     foreach (array_keys($body) as $key) {
+        // « id » : identifiant choisi par le navigateur, à la création seulement (création hors ligne, Lot 2B).
+        if ($key === 'id' && $create) {
+            if (vision_project_id_is_valid($body['id'])) {
+                $clean['id'] = $body['id'];
+            } else {
+                $errors['id'] = '32 caractères hexadécimaux minuscules attendus.';
+            }
+            continue;
+        }
         if (!in_array($key, VISION_PROJECT_FIELDS, true) || ($create && $key === 'status')) {
             $errors[(string) $key] = 'Champ inconnu ou non modifiable.';
         }
@@ -151,10 +160,10 @@ function vision_project_find(PDO $pdo, string $publicId): ?array
     return $row === false ? null : $row;
 }
 
-/** Crée un projet au nom de l'identité. */
+/** Crée un projet au nom de l'identité. L'identifiant vient de $clean['id'] (création hors ligne) ou est tiré au hasard. */
 function vision_project_create(PDO $pdo, array $identity, array $clean, ?string $email = null): array
 {
-    $publicId = bin2hex(random_bytes(16));
+    $publicId = $clean['id'] ?? bin2hex(random_bytes(16));
     $statement = $pdo->prepare(
         'INSERT INTO vision_projects (public_id, name, address, client_label, owner_provider, owner_id, owner_email, created_by_id, updated_by_id) '
         . 'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'

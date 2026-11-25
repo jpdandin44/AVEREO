@@ -143,7 +143,15 @@ export default function EcranProjets({ projets, onOuvrir }) {
                         {projet.client_label ? <div className="champ__aide">Client : {projet.client_label}</div> : null}
                         <div className="champ__aide">Modifié le {formaterDate(projet.updated_at)}</div>
                       </div>
-                      <span className="pastille">{projet.status === "archived" ? "Archivé" : "Actif"}</span>
+                      <span style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "flex-end" }}>
+                        <span className="pastille">{projet.status === "archived" ? "Archivé" : "Actif"}</span>
+                        {projet.etat && projet.etat !== "synchronise" ? (
+                          <span className="pastille pastille--attente">
+                            <Icone nom="attente" className="indicateur__icone" />
+                            {projet.etat === "a-creer" ? "En attente d'envoi (création)" : "En attente d'envoi"}
+                          </span>
+                        ) : null}
+                      </span>
                     </div>
                     <div className="barre-boutons" style={{ marginTop: 12 }}>
                       <button type="button" className="bouton" onClick={() => onOuvrir(projet)}>

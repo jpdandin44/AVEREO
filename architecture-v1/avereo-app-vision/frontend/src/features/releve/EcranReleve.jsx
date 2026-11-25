@@ -12,6 +12,7 @@ import ListeOuvertures from "../saisie-cotes/ListeOuvertures.jsx";
 import PanneauMetres from "../metres-panneau/PanneauMetres.jsx";
 import PanneauPrecision from "../metres-panneau/PanneauPrecision.jsx";
 import Plan2D from "../plan2d/Plan2D.jsx";
+import StatutSynchro from "./StatutSynchro.jsx";
 import { useReleve } from "./useReleve.js";
 
 function NomPiece({ piece, onChange }) {
@@ -38,21 +39,32 @@ function NomPiece({ piece, onChange }) {
   );
 }
 
-/** @param {{projet?: {id: string, name: string}}} props */
-export default function EcranReleve({ projet }) {
-  const releve = useReleve();
+/** @param {{projet: {id: string, name: string}, moteur: ReturnType<import("../../sync/moteur.js").creerMoteur>}} props */
+export default function EcranReleve({ projet, moteur }) {
+  const releve = useReleve(projet.id, moteur);
   const { niveau, piece } = releve;
+
+  if (!releve.charge) {
+    return (
+      <main className="contenu contenu--session">
+        <div className="colonne">
+          <Encadre titre="Ouverture du relevé">Lecture du relevé enregistré sur cet appareil…</Encadre>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
       <main className="contenu">
-        {projet ? (
-          <div style={{ gridColumn: "1 / -1" }}>
-            <Encadre titre={`Projet : ${projet.name}`}>
-              Le plan et les métrés de ce relevé ne sont pas encore enregistrés sur le serveur : ils seront conservés automatiquement au prochain lot. Vous pouvez revenir à la liste des projets sans rien perdre, mais ne fermez ni n'actualisez la page avant d'avoir noté vos mesures.
+        <div style={{ gridColumn: "1 / -1", display: "flex", flexDirection: "column", gap: 16 }}>
+          {releve.echecEnregistrement ? (
+            <Encadre type="alerte" titre="Enregistrement sur cet appareil impossible">
+              Le relevé n'a pas pu être enregistré (espace de stockage insuffisant ?). Nouvelle tentative en cours : libérez de l'espace sur l'appareil et ne fermez pas la page.
             </Encadre>
-          </div>
-        ) : null}
+          ) : null}
+          <StatutSynchro projetId={projet.id} moteur={moteur} />
+        </div>
         <div className="colonne">
           <section className="carte" aria-labelledby="titre-pieces">
             <h2 id="titre-pieces">Niveaux et pièces</h2>
