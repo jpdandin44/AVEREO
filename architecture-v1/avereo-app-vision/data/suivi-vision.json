@@ -5,7 +5,7 @@
   "version": "git",
   "iterationId": "vision-v1",
   "title": "AVEREO Vision V1 — relevé, métré et modélisation 2D/3D (équivalent Visuary)",
-  "status": "lot2b_awaiting_human_review",
+  "status": "lot2b_merged_recette_locale_ready",
   "stage": "cadrage",
   "updatedAt": "2026-11-24",
   "objective": "Construire lot par lot une PWA AVEREO de relevé de l'existant (vidéo, métrés ±2 cm, plan 2D, maquette 3D, exports PDF/DXF/IFC/glTF/OBJ/CSV) sur des moteurs open source sous licence MIT, BSD ou Apache 2.0.",
@@ -14,7 +14,7 @@
     "status": "produced_in_lot0_awaiting_validation",
     "meaning": "Lots fonctionnels distincts des quatre phases ; le détail des lots et des tâches (statut, pourquoi, Claude Code ou Codex, modèle, effort, job Codex) est tenu uniquement dans la source Markdown."
   },
-  "activeLot": {"id": "LOT-2B", "title": "Stockage local, enregistrement automatique, synchronisation", "branch": "vision/lot-2b-synchronisation", "scope": "code_local_development", "status": "en cours (PR à relire)"},
+  "activeLot": {"id": "RECETTE-LOCALE", "title": "Recette locale (candidat de PR) et validation en préproduction", "branch": "vision/revue-locale", "scope": "local_review_tooling", "status": "en cours (PR à relire)"},
   "candidate": {"sourceSha": null, "artifactSha256": null},
   "phases": [
     {"id": 0, "label": "Cadrage", "status": "technically_verified_awaiting_human_review", "criteria": []},
@@ -25,6 +25,7 @@
   "currentPhase": 0,
   "checks": [],
   "proofs": [
+    {"id": "revue-locale-20261125", "phaseId": 1, "title": "Recette locale (candidat de PR, http://127.0.0.1:5250/revue/, comptes fictifs par la vraie passerelle CONNECT) ; validation = préproduction (https://vision-preprod.avereo.fr/, non installée)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/revue-locale.md", "observedAt": "2026-11-25"},
     {"id": "etude-outils-20261120", "phaseId": 0, "title": "Étude des outils open source du 20/11/2026", "kind": "reference_document", "status": "reviewable", "evidence": "docs/etude-outils-resume.md", "observedAt": "2026-11-20"},
     {"id": "lot0-exigences-20261123", "phaseId": 0, "title": "Lot 0 — Exigences R01 à R48", "kind": "reference_document", "status": "reviewable", "evidence": "docs/exigences.md", "observedAt": "2026-11-23"},
     {"id": "lot0-adr-moteurs-20261123", "phaseId": 0, "title": "Lot 0 — ADR 0001 — choix des moteurs", "kind": "reference_document", "status": "reviewable", "evidence": "docs/adr/0001-moteurs.md", "observedAt": "2026-11-23"},
@@ -77,7 +78,7 @@
     "À VÉRIFIER : dépôt actuel d'OpenSfM et son chemin CPU, licences de Boost, Eigen, FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR (alertes de licence signalées par la relecture Codex, non revérifiées sur les sources amont).",
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
-  "nextAction": "Relire la PR du Lot 2B et cocher la checklist ; faire la recette hébergée de Vision en préproduction selon docs/deploiement-mutualise.md (accord à chaque étape) ; fournir la pièce de référence (R29) ; puis lancer le Lot 2C (PWA).",
+  "nextAction": "Faire la recette du Lot 2B (mergé, #200) sur la recette locale http://127.0.0.1:5250/revue/ (scénario de docs/revue-locale.md) ; relire et merger la PR de la recette locale ; installer la validation en préproduction selon docs/deploiement-mutualise.md (accord à chaque étape) ; fournir la pièce de référence (R29) ; puis lancer le Lot 2C (PWA).",
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/195"},
   "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; repointé le 24/11/2026 vers le worktree C:/Users/examg/Documents local/avereo-vision-lot1 (branche de suivi vision/lot-1-suivi-caniuse), à repointer vers le clone principal une fois à jour.",
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},

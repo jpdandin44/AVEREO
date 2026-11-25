@@ -17,7 +17,7 @@ Version : Lot 0, 23/11/2026. Tenu par Claude Code (sous-agent scribe-cockpit). L
 | 0 | Cadrage technique, sans code | fait (PR [#188](https://github.com/jpdandin44/AVEREO/pull/188) mergée le 23/11/2026, commit 54d3fba) | M | cadre toutes les exigences | ADR 0001 et décisions D1, D2, D4, D5, D6 acceptés le 23/11/2026 ; PR mergée ; inscription au cockpit appliquée le 23/11/2026 (source sur le worktree avereo-vision-lot0) |
 | 1 | Fondations, plan 2D manuel, métrés, charte | fait (PR [#190](https://github.com/jpdandin44/AVEREO/pull/190) mergée par le responsable le 24/11/2026, commit 6ca2822) ; R27, R29 et R32 restent en cours | L | R10, R11, R12, R23 à R35 (R27, R29, R32 en cours : essais smartphone et vraie pièce de référence) | pièce de référence et cotes laser fournies par le responsable (R29) ; caniuse-lite (CC-BY-4.0) accepté le 24/11/2026 |
 | 2A | API PHP, base MySQL, authentification, projets | fait, mergé le 24/11/2026 (#195) | M | R01 (partiel), R02, R08 (partiel) | essai avec un vrai ticket CONNECT : enregistrement dans le code de CONNECT mergé (#196) ; activation hébergée selon `docs/deploiement-mutualise.md` (accord requis) |
-| 2B | Stockage local, enregistrement automatique, synchronisation (création de projet hors ligne comprise) | fait côté code et tests, PR ouverte le 24/11/2026 | L | R01 (fin), R03, R05, R06, R04 (partie logique) | accord du 24/11/2026 : `id` de projet choisi par le navigateur (modification compatible de l'API du 2A) ; relecture de sécurité faite |
+| 2B | Stockage local, enregistrement automatique, synchronisation (création de projet hors ligne comprise) | fait, mergé le 25/11/2026 (#200) | L | R01 (fin), R03, R05, R06, R04 (partie logique) | accord du 24/11/2026 : `id` de projet choisi par le navigateur (modification compatible de l'API du 2A) ; relecture de sécurité faite |
 | 2C | PWA installable, service worker, rechargement hors ligne, essais Android et iPhone | à faire | M | R09, fin de R04 | icône d'application provisoire (À VÉRIFIER : fichier logo carré) ; essais physiques sur 1 Android et 1 iPhone ; vite-plugin-pwa et Workbox à installer (licences MIT, déjà au tableau) |
 | 3 | Capture terrain : cotes laser, photos, commentaires, vidéo jointe | à faire | L | R13 à R17, R36 à R38 | essais sur 1 Android et 1 iPhone fournis par le responsable |
 | 4 | Exports CSV, PDF, DXF | à faire | M | R42, R43, R47, R48 | contrôle des licences de Gotenberg (Chromium, LibreOffice) ; décision D6 prise (règle serveur), audit de l'image Gotenberg à faire ; accord avant tout conteneur sur le serveur OVH |
@@ -93,6 +93,17 @@ Décisions du 24/11/2026 : Lot 2 coupé en 2A, **2B** et **2C** (PWA) ; créatio
 
 ### Lot 2C — PWA, service worker, rechargement hors ligne
 Plan détaillé proposé au lancement du lot (message « Lot 2C selon docs/plan-lots.md… »). Tâches prévues : manifeste et icônes (provisoires, À VÉRIFIER : fichier logo carré), vite-plugin-pwa et service worker (précache de l'application, `/api` et `/connect` jamais mis en cache), mise à jour de version, audit Lighthouse « installable » (R09), essais sur 1 Android et 1 iPhone (R04 : quota et éviction iOS).
+
+### Outillage — recette locale et validation en préproduction (25/11/2026)
+Décision du responsable : **recette = locale** (candidat de la PR, http://127.0.0.1:5250/revue/, comptes fictifs par la vraie passerelle CONNECT) ; **validation = préproduction** (`https://vision-preprod.avereo.fr/`, pas encore installée : `docs/deploiement-mutualise.md`). Guide : `docs/revue-locale.md`. Branche `vision/revue-locale`.
+| Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
+|---|---|---|---|---|---|---|
+| T-RL-01 Brief Codex T-06 (contrat : fichiers, ports, comptes, ticket, sécurité) | fait | — | Claude | Sonnet | medium | — |
+| T-RL-02 Script `vision-revue.ps1`, Compose, routeur, page des comptes fictifs, données de démonstration, tests du lanceur | fait | — | Codex | défaut Codex | medium | task-mwvsn0re-xu5a46 |
+| T-RL-03 Vérification réelle (parcours A/B/F, relevé REF-2, rejeu des données) | fait | — | Claude | Sonnet | medium | — |
+| T-RL-04 Correction du responsable : un seul environnement local (la recette, candidat de la PR) ; la validation est la préproduction | fait | Le deuxième environnement local (5251) est supprimé ; la source de la recette est mémorisée | Claude | Sonnet | low | — |
+| T-RL-05 Documents, suivi, relecture Codex, PR, adresse de recette dans la PR #200 | fait | — | Claude / Codex | Sonnet / défaut | medium | voir PR |
+| T-RL-06 Installation de la validation en préproduction | à faire | Procédure prête ; accord du responsable à chaque étape ; livraison préalable de CONNECT #196 | responsable / Claude | — | — | — |
 
 ### Lot 3 — Capture terrain : cotes laser, photos, commentaires, vidéo jointe
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
