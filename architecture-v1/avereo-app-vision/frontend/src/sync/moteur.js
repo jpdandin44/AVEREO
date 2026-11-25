@@ -469,11 +469,12 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       if (faits >= PRECHARGEMENTS_PAR_CYCLE || etat.reseau !== "ok") break;
       const operations = await stockage.lireOperations();
       if (operations.some((o) => o.type === "creer" && o.id === projet.id)) continue; // pas encore connu du serveur
-      // Suivi indépendant du curseur : un projet vide reçu est « fait » ; une réception interrompue (page suivante non reçue)
-      // n'est pas marquée et reprend au cycle suivant.
-      if (await stockage.lireMeta(`precharge:${projet.id}`)) continue;
+      // Suivi indépendant du curseur : le marqueur garde la date de modification du projet reçue ; il faut recevoir de nouveau
+      // quand elle change (relevé complété au bureau). Une réception interrompue n'est pas marquée et reprend au cycle suivant.
+      const version = projet.updated_at ?? "";
+      if ((await stockage.lireMeta(`precharge:${projet.id}`)) === version) continue;
       faits += 1;
-      if (await synchroniserProjet(projet.id)) await stockage.ecrireMeta(`precharge:${projet.id}`, true);
+      if (await synchroniserProjet(projet.id)) await stockage.ecrireMeta(`precharge:${projet.id}`, version);
     }
   }
 

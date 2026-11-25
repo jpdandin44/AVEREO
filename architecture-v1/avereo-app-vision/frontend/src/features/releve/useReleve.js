@@ -22,7 +22,7 @@ import {
   translaterPiece,
 } from "../../domain/modele.js";
 import { calculerMetres, calculerMetresNiveau } from "../../domain/metres.js";
-import { signalerEcriture } from "../../sync/etat-ecriture.js";
+import { ecritureCommencee, ecritureTerminee, oublierEcritures } from "../../sync/etat-ecriture.js";
 import { ID_NIVEAU } from "../../sync/moteur.js";
 
 const ECART_ENTRE_PIECES_MM = 1500;
@@ -141,12 +141,15 @@ export function useReleve(projetId, moteur) {
     const avant = persiste.current;
     persiste.current = batiment;
     affiche.current = batiment;
+    ecritureCommencee(projetId);
     moteur.enregistrer(projetId, avant, batiment).then(
       () => {
+        ecritureTerminee(projetId, true);
         ecrit.current = batiment;
         setEchecs(0);
       },
       () => {
+        ecritureTerminee(projetId, false);
         // Écriture locale impossible : on revient au dernier état réellement écrit pour que la reprise recalcule tout le diff.
         persiste.current = ecrit.current;
         affiche.current = null;
@@ -157,13 +160,12 @@ export function useReleve(projetId, moteur) {
 
   // Reprise automatique de l'enregistrement local après un échec.
   useEffect(() => {
-    signalerEcriture(projetId, echecs > 0);
     if (echecs === 0) return undefined;
     const minuterie = setTimeout(() => setTentative((n) => n + 1), 3000);
     return () => clearTimeout(minuterie);
   }, [echecs, projetId]);
 
-  useEffect(() => () => signalerEcriture(projetId, false), [projetId]);
+  useEffect(() => () => oublierEcritures(projetId), [projetId]);
 
   // Relevé modifié sur un autre appareil (R05) : on relit l'état local, qui contient aussi nos modifications en attente.
   useEffect(

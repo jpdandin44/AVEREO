@@ -590,7 +590,7 @@ test("R04 : le préchargement avance même derrière 20 projets vides, et marque
   await telephone.moteur.synchroniserTout();
   await telephone.moteur.synchroniserTout();
   assert.equal((await telephone.moteur.lireBatiment(PROJET)).persistant, true, "le projet rempli finit par être préchargé");
-  assert.equal(await telephone.stockage.lireMeta(`precharge:${"0".repeat(32)}`), true, "un projet vide reçu est marqué fait");
+  assert.ok(await telephone.stockage.lireMeta(`precharge:${"0".repeat(32)}`), "un projet vide reçu est marqué fait");
 });
 
 test("R04 : une réception interrompue au milieu (pagination) n'est pas marquée et reprend au cycle suivant", async () => {
@@ -614,10 +614,26 @@ test("R04 : une réception interrompue au milieu (pagination) n'est pas marquée
     return recevoir(...args);
   };
   await telephone.moteur.synchroniserTout();
-  assert.notEqual(await telephone.stockage.lireMeta(`precharge:${PROJET}`), true, "réception incomplète : pas marquée");
+  assert.equal(await telephone.stockage.lireMeta(`precharge:${PROJET}`), undefined, "réception incomplète : pas marquée");
   serveur.api.recevoir = recevoir;
   await telephone.moteur.synchroniserTout();
-  assert.equal(await telephone.stockage.lireMeta(`precharge:${PROJET}`), true);
+  assert.ok(await telephone.stockage.lireMeta(`precharge:${PROJET}`));
   const lu = await telephone.moteur.lireBatiment(PROJET);
   assert.equal(lu.batiment.niveaux[0].pieces.length, 550, "toutes les pièces sont arrivées");
+});
+
+test("R04 : un projet préchargé vide puis complété au bureau est de nouveau reçu (date de modification du projet)", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const telephone = appareil(serveur, "telephone-01");
+  await telephone.moteur.synchroniserTout(); // précharge le projet encore vide
+  assert.equal((await telephone.moteur.lireBatiment(PROJET)).persistant, false);
+  const bureau = appareil(serveur, "ordinateur-02").moteur;
+  await bureau.enregistrer(PROJET, null, ref2());
+  await bureau.synchroniserProjet(PROJET);
+  await telephone.moteur.synchroniserTout(); // la liste rapporte la nouvelle date : on reçoit de nouveau
+  serveur.etat.horsLigne = true;
+  const ouvert = await telephone.moteur.ouvrirProjet(PROJET);
+  assert.equal(ouvert.persistant, true);
+  assert.deepEqual(ouvert.batiment, ref2());
 });
