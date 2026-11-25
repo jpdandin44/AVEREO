@@ -427,3 +427,18 @@ vision_test('R08 : l\'identité attendue par le client doit être celle de la se
     vision_assert_same(1, count(vision_api('GET', '/api/projects.php', $projet['user'])['json']['projects']), 'aucun projet créé pour un autre compte');
     vision_assert_same(401, vision_http('GET', '/api/projects.php', ['X-Vision-Expected-Identity' => 'local:1'])['status'], 'sans session : toujours 401');
 });
+
+vision_test('sync : la date de modification du projet suit son contenu (préchargement des appareils), pas les rejeux', function () {
+    $projet = vision_t_projet();
+    $date = static fn (): string => vision_api('GET', '/api/projects.php?id=' . $projet['id'], $projet['user'])['json']['project']['updated_at'];
+    $avant = $date();
+    usleep(20000);
+    vision_t_sync($projet, 'telephone-0001', 0, vision_t_releve());
+    $apres = $date();
+    vision_assert_true($apres > $avant, "envoi appliqué : $avant puis $apres");
+    usleep(20000);
+    vision_t_sync($projet, 'telephone-0001', 4, vision_t_releve()); // rejeu : rien ne change
+    vision_assert_same($apres, $date(), 'un rejeu sans changement ne modifie pas la date');
+    vision_api('GET', '/api/sync.php?project=' . $projet['id'] . '&since=0', $projet['user']);
+    vision_assert_same($apres, $date(), 'une réception ne modifie pas la date');
+});

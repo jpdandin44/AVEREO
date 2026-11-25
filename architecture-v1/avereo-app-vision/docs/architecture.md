@@ -106,6 +106,7 @@ Identifiants : UUID générés côté client (utile hors ligne). Longueurs en **
 - **Médias** : envoyés à part, en morceaux reprenables ; le modèle référence le média par son identifiant ; tant que le média n'est pas arrivé, l'objet affiche une vignette locale.
 - **Limites à vérifier** : quota de stockage et éviction du stockage sur iOS Safari et PWA installée (R04) ; une vidéo de 200 Mo peut dépasser les quotas : prévoir l'envoi immédiat dès que le réseau revient et un avertissement avant de filmer si l'espace manque.
 - **Pas de synchro temps réel** (WebSocket) en V1 : interrogation à l'ouverture, au retour du réseau et toutes les 30 s environ (valeur proposée).
+- **Réalisé au Lot 2C** : service worker (vite-plugin-pwa, `generateSW`) qui précache l'application seulement ; `/api`, `/connect` et `/revue` ne passent jamais par lui ; nouvelle version proposée par un bandeau ; manifeste et icônes (provisoires) ; demande de stockage durable. Configuration : `frontend/pwa.config.js`.
 - **Réalisé au Lot 2B** : protocole, objets synchronisés (`batiment`, `niveau`, `piece`, `ouverture`), conflits et journal détaillés dans `docs/synchronisation.md`. Tables serveur : `vision_objects`, `vision_project_counters`, `vision_sync_log` (migration 002). Photos, vidéos, cotes laser et annotations : Lot 3.
 
 ## 7. Jetons de la charte

@@ -14,3 +14,11 @@ DirectoryIndex index.html
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "DENY"
 </IfModule>
+
+# Application installable (Lot 2C) : type du manifeste, et service worker relu à chaque visite pour détecter les nouvelles versions.
+AddType application/manifest+json .webmanifest
+<IfModule mod_headers.c>
+  <FilesMatch "^(sw\.js|registerSW\.js|manifest\.webmanifest)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

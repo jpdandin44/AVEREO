@@ -559,3 +559,81 @@ test("deux onglets : l'enregistrement d'un relevé dans l'un prévient l'autre q
   a.fermer();
   b.fermer();
 });
+
+test("R04 : le contenu des projets actifs jamais ouverts sur l'appareil est préchargé quand le réseau est là", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const bureau = appareil(serveur, "ordinateur-02").moteur; // le relevé est fait au bureau
+  await bureau.enregistrer(PROJET, null, ref2());
+  await bureau.synchroniserProjet(PROJET);
+  await serveur.api.creerProjet({ id: "e".repeat(32), name: "Archivé" });
+  serveur.projets.get("e".repeat(32)).projet.status = "archived";
+
+  const telephone = appareil(serveur, "telephone-01").moteur; // le téléphone n'a jamais ouvert ce projet
+  await telephone.synchroniserTout();
+  serveur.etat.horsLigne = true; // chez le client, sans réseau
+  const ouvert = await telephone.ouvrirProjet(PROJET);
+  assert.equal(ouvert.persistant, true, "le relevé est disponible hors ligne sans avoir été ouvert");
+  assert.deepEqual(ouvert.batiment, ref2());
+  assert.ok(!serveur.etat.appels.some(([nom, id]) => nom === "synchroniser" && id === "e".repeat(32)), "un projet archivé n'est pas préchargé");
+});
+
+test("R04 : le préchargement avance même derrière 20 projets vides, et marque un projet seulement quand sa réception est complète", async () => {
+  const serveur = creerFauxServeur();
+  for (let i = 0; i < 21; i += 1) await serveur.api.creerProjet({ id: i.toString(16).padStart(32, "0"), name: `Vide ${i}` });
+  await projetPret(serveur); // PROJET (aaaa…) : le seul avec un relevé, trié après les vides
+  const bureau = appareil(serveur, "ordinateur-02").moteur;
+  await bureau.enregistrer(PROJET, null, ref2());
+  await bureau.synchroniserProjet(PROJET);
+
+  const telephone = appareil(serveur, "telephone-01");
+  await telephone.moteur.synchroniserTout();
+  await telephone.moteur.synchroniserTout();
+  assert.equal((await telephone.moteur.lireBatiment(PROJET)).persistant, true, "le projet rempli finit par être préchargé");
+  assert.ok(await telephone.stockage.lireMeta(`precharge:${"0".repeat(32)}`), "un projet vide reçu est marqué fait");
+});
+
+test("R04 : une réception interrompue au milieu (pagination) n'est pas marquée et reprend au cycle suivant", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const bureau = appareil(serveur, "ordinateur-02").moteur;
+  let batiment = batimentParDefaut();
+  for (let i = 0; i < 550; i += 1) {
+    batiment = remplacerNiveau(batiment, ajouterPiece(batiment.niveaux[0], creerPieceRectangulaire({ id: `piece-${String(i).padStart(4, "0")}`, nom: `P${i}`, longueurMm: 3000, largeurMm: 3000 })));
+  }
+  await bureau.enregistrer(PROJET, null, batiment);
+  await bureau.synchroniserProjet(PROJET);
+  assert.equal(serveur.projets.get(PROJET).objets.size, 552);
+
+  const telephone = appareil(serveur, "telephone-01");
+  const recevoir = serveur.api.recevoir;
+  let appels = 0;
+  serveur.api.recevoir = async (...args) => {
+    appels += 1;
+    if (appels === 2) throw new ErreurApi(0, "reseau", "Coupure pendant la deuxième page.");
+    return recevoir(...args);
+  };
+  await telephone.moteur.synchroniserTout();
+  assert.equal(await telephone.stockage.lireMeta(`precharge:${PROJET}`), undefined, "réception incomplète : pas marquée");
+  serveur.api.recevoir = recevoir;
+  await telephone.moteur.synchroniserTout();
+  assert.ok(await telephone.stockage.lireMeta(`precharge:${PROJET}`));
+  const lu = await telephone.moteur.lireBatiment(PROJET);
+  assert.equal(lu.batiment.niveaux[0].pieces.length, 550, "toutes les pièces sont arrivées");
+});
+
+test("R04 : un projet préchargé vide puis complété au bureau est de nouveau reçu (date de modification du projet)", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const telephone = appareil(serveur, "telephone-01");
+  await telephone.moteur.synchroniserTout(); // précharge le projet encore vide
+  assert.equal((await telephone.moteur.lireBatiment(PROJET)).persistant, false);
+  const bureau = appareil(serveur, "ordinateur-02").moteur;
+  await bureau.enregistrer(PROJET, null, ref2());
+  await bureau.synchroniserProjet(PROJET);
+  await telephone.moteur.synchroniserTout(); // la liste rapporte la nouvelle date : on reçoit de nouveau
+  serveur.etat.horsLigne = true;
+  const ouvert = await telephone.moteur.ouvrirProjet(PROJET);
+  assert.equal(ouvert.persistant, true);
+  assert.deepEqual(ouvert.batiment, ref2());
+});
