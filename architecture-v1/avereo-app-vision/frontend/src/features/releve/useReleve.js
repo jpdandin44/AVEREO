@@ -1,6 +1,6 @@
 // État du relevé en cours : bâtiment, historique annuler/rétablir, sélection, aperçu pendant un glissement.
 // Le plan, la saisie et le panneau de métrés lisent et écrivent le même modèle (R27 : tout se met à jour en direct).
-import { useCallback, useMemo, useReducer } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import {
   annuler,
   creerHistorique,
@@ -22,6 +22,7 @@ import {
   translaterPiece,
 } from "../../domain/modele.js";
 import { calculerMetres, calculerMetresNiveau } from "../../domain/metres.js";
+import { ID_NIVEAU } from "../../sync/moteur.js";
 
 const ECART_ENTRE_PIECES_MM = 1500;
 
@@ -33,7 +34,13 @@ function etatInitial() {
     niveauId: niveau.id,
     pieceId: null,
     numeroPiece: 1,
+    charge: false, // le relevé enregistré sur l'appareil a-t-il été lu ?
   };
+}
+
+/** Un relevé a toujours au moins un niveau (celui par défaut, de même identifiant sur tous les appareils). */
+function securiser(batiment) {
+  return batiment.niveaux.length > 0 ? batiment : { ...batiment, niveaux: [creerNiveau({ id: ID_NIVEAU, nom: "Rez-de-chaussée" })] };
 }
 
 function niveauCourant(batiment, niveauId) {
@@ -43,6 +50,15 @@ function niveauCourant(batiment, niveauId) {
 function reducteur(etat, action) {
   const batiment = etat.historique.present;
   switch (action.type) {
+    case "charger":
+    case "importer": {
+      // Relevé lu sur l'appareil, ou reçu d'un autre appareil : il remplace l'état affiché (l'historique repart de là).
+      const nouveau = action.batiment;
+      const niveau = nouveau.niveaux.find((n) => n.id === etat.niveauId) ?? nouveau.niveaux[0];
+      const piece = niveau.pieces.find((p) => p.id === etat.pieceId) ?? null;
+      const total = nouveau.niveaux.reduce((somme, n) => somme + n.pieces.length, 0);
+      return { ...etat, historique: creerHistorique(nouveau), apercu: null, niveauId: niveau.id, pieceId: piece?.id ?? null, numeroPiece: Math.max(etat.numeroPiece, total + 1), charge: true };
+    }
     case "valider-batiment":
       return { ...etat, historique: valider(etat.historique, action.batiment), apercu: null };
     case "apercu":
@@ -89,9 +105,87 @@ function placerSansChevauchement(niveau, piece) {
   return translaterPiece(piece, dx, 0);
 }
 
-export function useReleve() {
+/**
+ * @param {string} projetId
+ * @param {ReturnType<import("../../sync/moteur.js").creerMoteur>} moteur
+ */
+export function useReleve(projetId, moteur) {
   const [etat, envoyer] = useReducer(reducteur, undefined, etatInitial);
   const batiment = etat.historique.present;
+  const persiste = useRef(null); // état de référence du dernier enregistrement (null : rien d'enregistré pour ce projet)
+  const affiche = useRef(null); // dernier état déjà traité par l'enregistrement automatique
+  const ecrit = useRef(null); // dernier état dont l'écriture locale a RÉUSSI
+  const [echecs, setEchecs] = useState(0); // écritures locales en échec (espace insuffisant, base fermée…) en attente de reprise
+  const [tentative, setTentative] = useState(0);
+
+  // Lecture du relevé enregistré sur l'appareil (et première réception si l'appareil n'a rien).
+  useEffect(() => {
+    let annule = false;
+    moteur.ouvrirProjet(projetId).then(({ batiment: lu, persistant }) => {
+      if (annule) return;
+      const sur = securiser(lu);
+      persiste.current = persistant ? sur : null;
+      ecrit.current = persiste.current;
+      affiche.current = sur;
+      envoyer({ type: "charger", batiment: sur });
+    });
+    return () => {
+      annule = true;
+    };
+  }, [moteur, projetId]);
+
+  // Enregistrement automatique (R03) : chaque état validé est écrit sur l'appareil immédiatement, sans bouton.
+  useEffect(() => {
+    if (!etat.charge || batiment === affiche.current) return;
+    const avant = persiste.current;
+    persiste.current = batiment;
+    affiche.current = batiment;
+    moteur.enregistrer(projetId, avant, batiment).then(
+      () => {
+        ecrit.current = batiment;
+        setEchecs(0);
+      },
+      () => {
+        // Écriture locale impossible : on revient au dernier état réellement écrit pour que la reprise recalcule tout le diff.
+        persiste.current = ecrit.current;
+        affiche.current = null;
+        setEchecs((n) => n + 1);
+      },
+    );
+  }, [batiment, etat.charge, moteur, projetId, tentative]);
+
+  // Reprise automatique de l'enregistrement local après un échec.
+  useEffect(() => {
+    if (echecs === 0) return undefined;
+    const minuterie = setTimeout(() => setTentative((n) => n + 1), 3000);
+    return () => clearTimeout(minuterie);
+  }, [echecs]);
+
+  // Relevé modifié sur un autre appareil (R05) : on relit l'état local, qui contient aussi nos modifications en attente.
+  useEffect(
+    () =>
+      moteur.abonner((evenement) => {
+        if (evenement.type !== "projet" || evenement.projetId !== projetId) return;
+        const importer = async (essai) => {
+          const avantLecture = affiche.current;
+          const { batiment: lu, persistant } = await moteur.lireBatiment(projetId);
+          if (affiche.current !== avantLecture) {
+            // L'utilisateur a modifié le relevé pendant la lecture : on relit, pour ne jamais écraser sa saisie.
+            if (essai < 3) await importer(essai + 1);
+            return;
+          }
+          if (!persistant) return;
+          const sur = securiser(lu);
+          persiste.current = sur;
+          ecrit.current = sur;
+          affiche.current = sur;
+          envoyer({ type: "importer", batiment: sur });
+        };
+        importer(0);
+      }),
+    [moteur, projetId],
+  );
+
   const niveau = niveauCourant(batiment, etat.niveauId);
   const pieceEnregistree = niveau.pieces.find((p) => p.id === etat.pieceId) ?? null;
   const piece = etat.apercu && etat.apercu.id === etat.pieceId ? etat.apercu : pieceEnregistree;
@@ -158,6 +252,8 @@ export function useReleve() {
   }, [batiment]);
 
   return {
+    charge: etat.charge,
+    echecEnregistrement: echecs > 0,
     batiment,
     niveau: niveauAffiche,
     piece,

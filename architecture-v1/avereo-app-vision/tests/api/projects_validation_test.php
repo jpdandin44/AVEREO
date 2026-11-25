@@ -49,7 +49,11 @@ vision_test('projets : caractères de contrôle et UTF-8 invalide refusés', fun
 
 vision_test('projets : champs inconnus refusés ; « status » interdit à la création', function () {
     vision_assert_same(['owner_id' => 'Champ inconnu ou non modifiable.'], vision_project_validate(['name' => 'A', 'owner_id' => '5'], true)['errors']);
-    vision_assert_same(['id' => 'Champ inconnu ou non modifiable.'], vision_project_validate(['name' => 'A', 'id' => 'x'], true)['errors']);
+    vision_assert_same(['public_id' => 'Champ inconnu ou non modifiable.'], vision_project_validate(['name' => 'A', 'public_id' => 'x'], true)['errors']);
+    // « id » (identifiant choisi par le navigateur) n'est admis qu'à la création, et seulement s'il a la bonne forme.
+    vision_assert_same(['id' => '32 caractères hexadécimaux minuscules attendus.'], vision_project_validate(['name' => 'A', 'id' => 'x'], true)['errors']);
+    vision_assert_same([], vision_project_validate(['name' => 'A', 'id' => str_repeat('a', 32)], true)['errors']);
+    vision_assert_same(['id' => 'Champ inconnu ou non modifiable.'], vision_project_validate(['id' => str_repeat('a', 32)], false)['errors']);
     vision_assert_same(['status' => 'Champ inconnu ou non modifiable.'], vision_project_validate(['name' => 'A', 'status' => 'archived'], true)['errors']);
 });
 

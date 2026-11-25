@@ -39,6 +39,7 @@ Sans dépendance (aucun Composer) : `tests/api/run.php [filtre]`.
 - Dans le conteneur (tout, y compris la base et HTTP) : `vision-local.ps1 test`, ou, pour un seul fichier : `docker compose -f local/docker-compose.local.yml --env-file local/.env exec -T api php /opt/vision/tests/api/run.php droits` (dans Git Bash, préfixer par `MSYS_NO_PATHCONV=1`).
 - Sur le poste, sans base (droits, passerelle, configuration, validation, authentification, sécurité) : `php tests/api/run.php connect_gate`. Les tests qui ont besoin de la base ou du serveur sont ignorés avec un message ; `--strict` (utilisé par `vision-local.ps1 test`) fait échouer l'exécution si un test a été ignoré, pour qu'un test non exécuté ne passe pas pour réussi.
 - Les tests de migrations utilisent des tables d'essai `zz_mig_*` et les nettoient.
+- Lot 2B : la migration `002_create_vision_sync.sql` crée `vision_objects`, `vision_project_counters` et `vision_sync_log` ; `vision-local.ps1 up` ou `migrate` l'applique. Les tests de synchronisation (`tests/api/sync_test.php`) créent des projets neufs à chaque exécution (dont un projet de 5 000 objets pour tester le plafond).
 
 ## Dépannage
 - « Connexion requise » en développement : la pile n'est pas démarrée, ou `frontend/.env.development.local` manque (relancer `up`).
