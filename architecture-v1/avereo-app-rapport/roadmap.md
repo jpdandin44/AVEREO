@@ -14,7 +14,12 @@ tags:
   - fonctionnalites
 ---
 
-## Relecture/PDF — lot local distinct de PR199
+## Correction Word de PR202
+
+Le responsable confirme la relecture et la validation sur Word. Le candidat de PR202 est corrigé et doit être requalifié sur ce circuit ; les premières preuves PDF restent historiques. Conversion automatique et recette native professionnelle restent à qualifier. Aucun merge ou déploiement déduit. [Source fonctionnelle et critères](workflows/relecture-validation-pdf.md).
+
+
+## Premier candidat — Relecture/PDF — lot local distinct de PR199
 
 Développement local autorisé le 25 novembre, auto-validation du rédacteur confirmée. Qualification du circuit natif, récupération complète et confidentialité en cours ; revue locale et PR à préparer. Préproduction et Mise en production non engagées pour ce complément. Le moteur de conversion automatique, la rétention et le remplacement d’une version publiée restent à cadrer ; les réserves V1.2 et la livraison préparée de PR199 sont conservées. [Contrat et procédure](workflows/relecture-validation-pdf.md).
 

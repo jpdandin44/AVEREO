@@ -36,16 +36,13 @@ export async function createPublication(report, clientWord, { validated, readOri
   return createPackage(report, clientWord, { readOriginal, id, now });
 }
 
-export async function createReview(report, clientWord, expertWord, clientPdf, expertPdf, options = {}) {
+export async function createReview(report, clientWord, expertWord, options = {}) {
   if (!/^[a-f0-9]{32}$/.test(report.reviewSeriesId || '')) throw new Error('Préparez les Word de cette version avant la demande de revue.');
-  for (const pdf of [clientPdf, expertPdf]) {
-    if (!(pdf instanceof Blob) || await pdf.slice(0, 5).text() !== '%PDF-') throw new Error('Joignez les deux PDF issus des Word préparés pour cette version.');
-  }
   if (!(expertWord instanceof Blob) || !expertWord.size) throw new Error('Le Word expert est absent.');
-  return createPackage(report, clientWord, { ...options, review: true, expertWord, clientPdf, expertPdf });
+  return createPackage(report, clientWord, { ...options, review: true, expertWord });
 }
 
-async function createPackage(report, clientWord, { readOriginal = readPhotoOriginal, id = crypto.randomUUID().replaceAll('-', ''), now = new Date().toISOString(), review = false, expertWord, clientPdf, expertPdf } = {}) {
+async function createPackage(report, clientWord, { readOriginal = readPhotoOriginal, id = crypto.randomUUID().replaceAll('-', ''), now = new Date().toISOString(), review = false, expertWord } = {}) {
   const reportBlob = publicationReportBlob(report);
   if (!(clientWord instanceof Blob) || !clientWord.size) throw new Error('La restitution client est absente.');
   const files = new Map([
@@ -54,8 +51,6 @@ async function createPackage(report, clientWord, { readOriginal = readPhotoOrigi
   ]);
   if (review) {
     files.set('rapport-expert.docx', expertWord);
-    files.set('rapport-client.pdf', clientPdf);
-    files.set('rapport-expert.pdf', expertPdf);
   }
   const originals = [];
   for (const [observationIndex, observation] of report.observations.entries()) {
@@ -77,7 +72,7 @@ async function createPackage(report, clientWord, { readOriginal = readPhotoOrigi
     entries.push({ path, bytes: blob.size, sha256: await blobSha256(blob) });
     zip.file(path, await blob.arrayBuffer(), { createFolders: false });
   }
-  const manifest = { schema: review ? REVIEW_SCHEMA : SCHEMA, version: 1, id, createdAt: now, title: String(report.titre || 'Rapport finalisé').slice(0, 200), reference: String(report.reference_dossier || '').slice(0, 200), validatedByProfessional: !review, entries, originals };
+  const manifest = { schema: review ? REVIEW_SCHEMA : SCHEMA, version: review ? 2 : 1, id, createdAt: now, title: String(report.titre || 'Rapport finalisé').slice(0, 200), reference: String(report.reference_dossier || '').slice(0, 200), validatedByProfessional: !review, entries, originals };
   if (review) manifest.seriesId = report.reviewSeriesId;
   zip.file('manifest.json', JSON.stringify(manifest));
   const bytes = await zip.generateAsync({ type: 'uint8array', compression: 'STORE' });
@@ -119,7 +114,7 @@ export async function readPublication(file) {
   let manifest;
   try { manifest = JSON.parse(await zip.file('manifest.json').async('string')); } catch { fail(); }
   const review = manifest?.schema === REVIEW_SCHEMA;
-  if ((!review && manifest?.schema !== SCHEMA) || manifest.version !== 1 || !/^[a-f0-9]{32}$/.test(manifest.id || '') || manifest.validatedByProfessional !== !review
+  if ((!review && manifest?.schema !== SCHEMA) || !(review ? [1, 2] : [1]).includes(manifest.version) || !/^[a-f0-9]{32}$/.test(manifest.id || '') || manifest.validatedByProfessional !== !review
     || !Array.isArray(manifest.entries) || manifest.entries.length !== names.size - 1 || !Array.isArray(manifest.originals)) fail();
   const content = new Map();
   for (const entry of manifest.entries) {
@@ -129,7 +124,7 @@ export async function readPublication(file) {
     content.set(entry.path, blob);
   }
   if (!content.has('dossier-rapport.json') || !content.has('rapport-client.docx')) fail();
-  if (review ? (!/^[a-f0-9]{32}$/.test(manifest.seriesId || '') || ['rapport-expert.docx', 'rapport-client.pdf', 'rapport-expert.pdf'].some(p => !content.has(p)))
+  if (review ? (!/^[a-f0-9]{32}$/.test(manifest.seriesId || '') || !content.has('rapport-expert.docx') || (manifest.version === 1 ? ['rapport-client.pdf', 'rapport-expert.pdf'].some(p => !content.has(p)) : ['rapport-client.pdf', 'rapport-expert.pdf'].some(p => content.has(p))))
     : ['rapport-expert.docx', 'rapport-client.pdf', 'rapport-expert.pdf'].some(p => content.has(p))) fail();
   // This parsed object is private to the reader: avoid cloning a large JSON a second time.
   const report = readReportFile(await content.get('dossier-rapport.json').text());

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
 const require = createRequire(process.env.PASSEPORT_REVIEW_BROWSER_PACKAGE);
 const { chromium } = require('playwright');
 const seed = JSON.parse(await readFile(process.argv[2], 'utf8'));
@@ -51,29 +52,39 @@ async function confirm(page, title) {
 try {
   const owner = await context(seed.ownerCookie), reviewer = await context(seed.reviewerCookie);
   await submit(owner, seed.initial); checks.push('Nomination privée confirmée depuis le bien');
-  await reviewer.reload(); const pending = card(reviewer, 'À relire'); await pending.waitFor();
-  assert.equal(await pending.getByRole('button', { name: 'Valider cette version', exact: true }).isDisabled(), true);
+  await reviewer.reload(); const pending = card(reviewer, 'Word à relire'); await pending.waitFor();
+  assert.equal(await pending.getByRole('button', { name: 'Valider les Word', exact: true }).isDisabled(), true);
   await pending.getByRole('button', { name: 'Demander des corrections', exact: true }).click();
   const corrections = reviewer.getByRole('dialog', { name: 'Demander des corrections ?', exact: true });
   await corrections.getByRole('textbox').fill('Constat o1, page 1 : préciser la mesure.');
   await confirm(reviewer, 'Demander des corrections ?'); checks.push('Refus motivé depuis le compte relecteur');
   const latest = await submit(owner, seed.corrected);
-  await reviewer.reload(); const current = card(reviewer, 'À relire'); await current.waitFor();
+  await reviewer.reload(); const current = card(reviewer, 'Word à relire'); await current.waitFor();
   for (const kind of ['expert', 'client']) {
-    await current.getByRole('button', { name: `Relire le PDF ${kind}`, exact: true }).click();
-    const dialog = reviewer.getByRole('dialog', { name: `PDF ${kind} — ${seed.reference}`, exact: true });
-    await dialog.getByText('Page 1 sur 1', { exact: true }).waitFor();
-    await dialog.locator('canvas').waitFor({ state: 'visible' });
-    await reviewer.screenshot({ path: resolve(output, `pdf-${kind}-desktop.png`), fullPage: false });
-    await dialog.getByRole('button', { name: 'Fermer', exact: true }).click();
+    const pendingDownload=reviewer.waitForEvent('download');
+    await current.getByRole('button', { name: `Télécharger le Word ${kind} pour relecture`, exact: true }).click();
+    const download=await pendingDownload; const path=resolve(output,`word-${kind}.docx`);await download.saveAs(path);
+    const bytes=await readFile(path);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'),latest.files[`rapport-${kind}.docx`].sha256);
   }
-  checks.push('Deux PDF réels affichés dans le lecteur local');
-  await current.getByRole('button', { name: 'Valider cette version', exact: true }).click(); await confirm(reviewer, 'Valider cette version ?');
-  checks.push('Validation explicite après ouverture des deux PDF');
-  const region = await property(owner); const approved = card(owner, 'Validé'); await approved.waitFor();
-  await approved.getByRole('button', { name: 'Publier le PDF client validé', exact: true }).click();
-  const publication = owner.getByRole('dialog', { name: 'Publier le PDF client validé ?', exact: true });
-  await publication.getByText(/Compte fictif 44/).waitFor(); await confirm(owner, 'Publier le PDF client validé ?');
+  checks.push('Deux Word privés téléchargés avec empreintes exactes, sans PDF préalable');
+  await current.getByRole('button', { name: 'Valider les Word', exact: true }).click(); await confirm(reviewer, 'Valider les documents Word ?');
+  checks.push('Validation explicite sur les documents Word');
+  await property(owner); const approved = card(owner, 'Word validés'); await approved.waitFor();
+  assert.equal(await approved.getByRole('button',{name:'Publier le PDF client',exact:true}).count(),0);
+  await approved.getByRole('button',{name:'Préparer le PDF après validation Word',exact:true}).click();
+  const preparation=owner.getByRole('dialog',{name:'Préparer le PDF après validation Word ?',exact:true});
+  await preparation.getByLabel('PDF client issu du Word validé',{exact:true}).setInputFiles(seed.finalPdf);
+  await confirm(owner,'Préparer le PDF après validation Word ?');
+  const ready=card(owner,'PDF prêt à publier');await ready.waitFor();checks.push('PDF préparé seulement après validation des Word et confirmation de mise en page');
+  await ready.getByRole('button',{name:'Contrôler le PDF final',exact:true}).click();
+  const reader=owner.getByRole('dialog',{name:`Contrôle du PDF final — ${seed.reference}`,exact:true});
+  await reader.getByText('Page 1 sur 1',{exact:true}).waitFor();await reader.locator('canvas').waitFor({state:'visible'});
+  await owner.screenshot({path:resolve(output,'pdf-final-desktop.png'),fullPage:false});
+  await reader.getByRole('button',{name:'Fermer',exact:true}).click();checks.push('Rendu du PDF final contrôlé après validation Word');
+  await ready.getByRole('button', { name: 'Publier le PDF client', exact: true }).click();
+  const publication = owner.getByRole('dialog', { name: 'Publier le PDF client ?', exact: true });
+  await publication.getByText(/Compte fictif 44/).waitFor(); await confirm(owner, 'Publier le PDF client ?');
   await card(owner, 'Publié').waitFor(); checks.push('Publication propriétaire séparée avec rappel du destinataire client');
   await owner.setViewportSize({ width: 390, height: 844 });
   assert.equal(await owner.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
@@ -82,7 +93,7 @@ try {
   assert.equal(published.status, 'published'); assert.ok(published.documentId);
   const fresh = await context(seed.ownerCookie); await card(fresh, 'Publié').waitFor(); checks.push('Version publiée retrouvée dans une nouvelle session navigateur');
   assert.deepEqual(errors, []);
-  await writeFile(resolve(output, 'browser-receipt.json'), JSON.stringify({ checks, pageErrors: errors, origin: seed.origin, data: 'fictitious', hostedSsoQualified: false }, null, 2));
+  await writeFile(resolve(output, 'browser-receipt.json'), JSON.stringify({ checks, pageErrors: errors, origin: seed.origin, data: 'fictitious', hostedSsoQualified: false, wordReadingInMicrosoftWordQualified: false }, null, 2));
   console.log(JSON.stringify({ browserChecks: checks.length, pageErrors: errors.length }));
 } catch (error) {
   for (const [i, context] of browser.contexts().entries()) for (const page of context.pages()) {

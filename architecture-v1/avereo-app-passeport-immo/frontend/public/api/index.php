@@ -66,7 +66,14 @@ try {
         }
         throw new PasseportError(405,'Méthode de revue non autorisée.');
     }
-    if (preg_match('#^/api/report-reviews/([a-f0-9]{32})(?:/file/(source|client|expert))?$#D',$path,$m)) {
+    if (preg_match('#^/api/report-reviews/([a-f0-9]{32})/pdf$#D',$path,$m)) {
+        if ($method!=='POST') throw new PasseportError(405,'Méthode PDF non autorisée.');
+        $file=$_FILES['pdf']??null;$revision=$_POST['revision']??'';
+        if (!is_array($file) || ($file['error']??-1)!==UPLOAD_ERR_OK || !is_string($file['tmp_name']??null)) throw new PasseportError(422,'PDF absent ou limite serveur dépassée.');
+        if (!is_string($revision) || !preg_match('/^(0|[1-9][0-9]{0,8})$/D',$revision)) throw new PasseportError(422,'Révision de revue invalide.');
+        passeport_json((new PasseportReviews($store,$config))->attachPdf($m[1],$file['tmp_name'],['revision'=>(int)$revision,'confirmLayout'=>($_POST['confirmLayout']??'')==='true','fromWordSha256'=>$_POST['fromWordSha256']??'']),201);
+    }
+    if (preg_match('#^/api/report-reviews/([a-f0-9]{32})(?:/file/(source|client|expert|word-client|word-expert|final))?$#D',$path,$m)) {
         $reviews=new PasseportReviews($store,$config);
         if ($method==='PATCH' && !isset($m[2])) passeport_json($reviews->change($m[1],$body));
         if ($method==='GET' && isset($m[2])) {

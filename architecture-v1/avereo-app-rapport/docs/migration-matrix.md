@@ -13,6 +13,11 @@ tags:
   - fonctionnalites
 ---
 
+## 25 novembre — Relecture sur Word confirmée
+
+La décision porte désormais sur les Word privés. Le PDF client est préparé après approbation et contrôle du rendu ; les anciennes décisions PDF et les fichiers sont conservés sans conversion implicite en approbation Word. Pas de nouveau rôle ni migration SQL dans cette correction ; la sauvegarde inclut chaque mise en page PDF privée. [Contrat de référence](../workflows/relecture-validation-pdf.md).
+
+
 ## 25 novembre — Relecture et PDF, évolution locale
 
 Écart explicite au parcours de finalisation historique : demande privée avec les deux PDF, nomination par version, refus/validation et publication client séparée. Les anciennes sources et partages sont conservés. Nouvelle colonne nullable Passeport, archives de revue incluses dans la sauvegarde et transfert historique refusé avant export partiel. [Contrat, droits, migration et limites](../workflows/relecture-validation-pdf.md). Aucun déploiement.

@@ -313,6 +313,11 @@ final class PasseportStorage
         if (!preg_match('/^[a-f0-9]{32}$/D',$id)) throw new PasseportError(404,'Revue introuvable.');
         return $this->directory.'/review-'.hash('sha256',$owner."\0".$bien."\0".$id).'.blob';
     }
+    public function reviewFinalPath(string $owner,string $bien,string $review,string $pdf): string
+    {
+        if (!preg_match('/^[a-f0-9]{32}$/D',$pdf)) throw new PasseportError(404,'PDF final introuvable.');
+        return $this->reviewPath($owner,$bien,$review).'-'.$pdf.'.pdf';
+    }
     public function filePath(array $document): string
     {
         $path=$this->directory.'/'.$document['id'].'.blob';

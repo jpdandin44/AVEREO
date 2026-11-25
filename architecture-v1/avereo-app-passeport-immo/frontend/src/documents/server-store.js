@@ -81,6 +81,11 @@ export function createServerStorage({ fetcher = (...args) => fetch(...args), not
       return request(`${bienPath(id)}/report-reviews`, { method: 'POST', body });
     },
     async changeReview(id, body) { await flush(); return request(`/report-reviews/${encodeURIComponent(id)}`, { method: 'PATCH', body: JSON.stringify(body) }); },
+    async prepareReviewPdf(id, pdf, revision, fromWordSha256) {
+      await flush(); const body = new FormData();body.append('pdf', pdf, pdf.name);
+      body.append('revision', String(revision));body.append('fromWordSha256', fromWordSha256);body.append('confirmLayout', 'true');
+      return request(`/report-reviews/${encodeURIComponent(id)}/pdf`, { method: 'POST', body });
+    },
     async reviewFile(id, kind) { return request(`/report-reviews/${encodeURIComponent(id)}/file/${encodeURIComponent(kind)}`, { blob: true }); },
     async sharedDocuments(share) { return request(`/shared/${encodeURIComponent(share)}`); },
     async sharedFile(share, document) { return request(`/shared/${encodeURIComponent(share)}/documents/${encodeURIComponent(document)}/file`, { blob:true }); },

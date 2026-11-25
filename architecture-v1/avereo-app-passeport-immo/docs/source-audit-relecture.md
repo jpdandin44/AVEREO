@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [passeport-immo, relecture, parite]
 ---
 
+## 25 novembre — Relecture sur Word confirmée
+
+La décision porte désormais sur les Word privés. Le PDF client est préparé après approbation et contrôle du rendu ; les anciennes décisions PDF et les fichiers sont conservés sans conversion implicite en approbation Word. Pas de nouveau rôle ni migration SQL dans cette correction ; la sauvegarde inclut chaque mise en page PDF privée. [Contrat de référence](../../avereo-app-rapport/workflows/relecture-validation-pdf.md).
+
+
 # Écart n — revue privée des rapports
 
 Le lot demandé le 25 novembre ajoute au conteneur App.jsx l'import de ReportReviews et son affichage sous les documents partagés. Le composant est également raccordé à la rubrique des rapports privés du bien. Le calcul des travaux, la persistance du bien et le devis PDF ne sont pas modifiés.

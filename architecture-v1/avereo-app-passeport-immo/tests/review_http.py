@@ -24,7 +24,7 @@ def run(request, check, owner, second, reviewer, csrf, reviewer_csrf, sql, backu
         for offset in offsets[1:]:content+=f'{offset:010d} 00000 n \n'.encode()
         return content+b'trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n'+str(xref).encode()+b'\n%%EOF\n'
 
-    def package(series, identity=None, note='Initial', corrupt=False, reference='REVUE-FICTIVE'):
+    def package(series, identity=None, note='Initial', corrupt=False, reference='REVUE-FICTIVE', legacy=False):
         identity = identity or secrets.token_hex(16)
         report = {'titre': 'Mission revue', 'reference_dossier': reference, 'reviewSeriesId': series,
                   'observations': [{'id': 'o1', 'observations': note, 'photos': []}], 'ecoute': {'notes': 'SOURCE PRIVEE'}, 'plans': []}
@@ -33,15 +33,16 @@ def run(request, check, owner, second, reviewer, csrf, reviewer_csrf, sql, backu
             word = io.BytesIO()
             with zipfile.ZipFile(word, 'w') as archive:
                 archive.writestr('[Content_Types].xml', '<Types/>')
-                archive.writestr('word/document.xml', '<document>Word ' + kind + '</document>')
+                archive.writestr('word/document.xml', '<document>Word ' + kind + ' ' + note + '</document>')
             files['rapport-' + kind + '.docx'] = word.getvalue()
-            files['rapport-' + kind + '.pdf'] = pdf(kind + ' ' + note)
-        manifest = {'schema': 'avereo-rapport-review', 'version': 1, 'id': identity, 'seriesId': series,
+            if legacy:
+                files['rapport-' + kind + '.pdf'] = pdf(kind + ' ' + note)
+        manifest = {'schema': 'avereo-rapport-review', 'version': 1 if legacy else 2, 'id': identity, 'seriesId': series,
                     'title': 'Mission revue fictive', 'reference': reference, 'createdAt': '2026-11-25T10:00:00Z',
                     'validatedByProfessional': False, 'originals': [],
                     'entries': [{'path': name, 'bytes': len(content), 'sha256': hashlib.sha256(content).hexdigest()} for name, content in files.items()]}
         if corrupt:
-            files['rapport-client.pdf'] += b'changed'
+            files['rapport-client.docx'] += b'changed'
         out = io.BytesIO()
         with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_STORED) as archive:
             archive.writestr('manifest.json', json.dumps(manifest))
@@ -69,7 +70,7 @@ def run(request, check, owner, second, reviewer, csrf, reviewer_csrf, sql, backu
 
     def change(item, action, cookie=owner, token=csrf, **extra):
         body = {'revision': item['revision'], 'action': action, 'confirm': True,
-                'pdfSha256': {kind: item['files']['rapport-' + kind + '.pdf']['sha256'] for kind in ['client', 'expert']}}
+                'wordSha256': {kind: item['files']['rapport-' + kind + '.docx']['sha256'] for kind in ['client', 'expert']}}
         body.update(extra)
         return request('/api/report-reviews/' + item['id'], cookie, 'PATCH', body, token)
 
@@ -89,11 +90,11 @@ def run(request, check, owner, second, reviewer, csrf, reviewer_csrf, sql, backu
     check(data(request(base + '/documents', owner))['documents'] == [], 'private submission adds no active client document')
     path = '/api/report-reviews/' + item['id']
     check(request(path + '/file/source', second)[2] == content, 'new independent owner session gets exact private source')
-    check(request(path + '/file/client', reviewer)[0] == 404, 'unassigned expert cannot read private PDF')
+    check(request(path + '/file/word-client', reviewer)[0] == 404, 'unassigned expert cannot read private PDF')
     check(change(item, 'publish', shareRevision=1)[0] == 403, 'unapproved PDF cannot be published')
     check(change(item, 'corrections', comment='')[0] == 422, 'refusal requires a reason')
-    wrong = {'client': 'f' * 64, 'expert': item['files']['rapport-expert.pdf']['sha256']}
-    check(change(item, 'approve', pdfSha256=wrong)[0] == 409, 'approval rejects a different PDF fingerprint')
+    wrong = {'client': 'f' * 64, 'expert': item['files']['rapport-expert.docx']['sha256']}
+    check(change(item, 'approve', wordSha256=wrong)[0] == 409, 'approval rejects a different Word fingerprint')
     corrected = change(item, 'corrections', comment='Constat o1, page 1 : préciser la mesure.')
     check(corrected[0] == 200, 'self nominated expert can request corrections explicitly')
     old = data(corrected)['review']
@@ -104,20 +105,46 @@ def run(request, check, owner, second, reviewer, csrf, reviewer_csrf, sql, backu
     check(change(old, 'approve')[0] == 409, 'decision on superseded version refused')
     check(submit(package(series, identity=latest['id'], note='Other')[0], recipient='fixture-43', expected='avereo_connect:43')[0] == 409, 'version identity cannot overwrite bytes')
     latest_path = '/api/report-reviews/' + latest['id']
-    check(request(latest_path + '/file/expert', reviewer)[2] == newer_files['rapport-expert.pdf'], 'nominated second expert reads exact expert PDF')
+    check(request(latest_path + '/file/word-expert', reviewer)[2] == newer_files['rapport-expert.docx'], 'nominated second expert reads exact expert Word')
     check(request(latest_path + '/file/source', reviewer)[0] == 404, 'nominated reviewer never receives complete private source')
     check(request(base + '/documents', reviewer)[0] == 404, 'nomination grants no property ownership')
     check(change(latest, 'approve')[0] == 403, 'owner cannot substitute for the nominated second expert')
     accounts['avereo_connect:43']['eligible'] = False
     directory()
-    check(request(latest_path + '/file/client', reviewer)[0] != 200, 'CONNECT revocation closes review access in an existing session')
+    check(request(latest_path + '/file/word-client', reviewer)[0] != 200, 'CONNECT revocation closes review access in an existing session')
     accounts['avereo_connect:43']['eligible'] = True
     directory(age=190)
-    check(request(latest_path + '/file/client', reviewer)[0] == 503, 'stale CONNECT directory closes private review access')
+    check(request(latest_path + '/file/word-client', reviewer)[0] == 503, 'stale CONNECT directory closes private review access')
     directory()
-    approved_response = change(latest, 'approve', reviewer, reviewer_csrf, comment='Contenu et deux PDF relus.')
-    check(approved_response[0] == 200, 'nominated second expert approves exact PDFs')
+    final_content = pdf('Client final from approved Word')
+    def attach(item, content=final_content, cookie=owner, token=csrf, from_word=None, confirm='true'):
+        boundary=secrets.token_hex(16);body=b''
+        for key,value in [('revision',str(item['revision'])),('fromWordSha256',from_word or item['decision']['wordSha256']['client']),('confirmLayout',confirm)]:
+            body+=f'--{boundary}\r\nContent-Disposition: form-data; name="{key}"\r\n\r\n{value}\r\n'.encode()
+        body+=f'--{boundary}\r\nContent-Disposition: form-data; name="pdf"; filename="final.pdf"\r\nContent-Type: application/pdf\r\n\r\n'.encode()+content+f'\r\n--{boundary}--\r\n'.encode()
+        return request('/api/report-reviews/'+item['id']+'/pdf',cookie,'POST',body,token,content_type='multipart/form-data; boundary='+boundary)
+    check(attach(latest,from_word='f'*64)[0]==403,'PDF cannot be attached before Word approval')
+    approved_response = change(latest, 'approve', reviewer, reviewer_csrf, comment='Contenu des deux Word relu.')
+    check(approved_response[0] == 200, 'nominated second expert approves exact Word files')
     approved = data(approved_response)['review']
+    check(change(approved, 'publish', shareRevision=1)[0] == 403, 'Word approval alone does not publish or prepare a PDF')
+    check(attach(approved,cookie=reviewer,token=reviewer_csrf)[0]==403,'reviewer approval grants no right to prepare final PDF')
+    check(attach(approved,from_word='f'*64)[0]==409,'final PDF must reference the exact approved client Word')
+    check(attach(approved,confirm='false')[0]==422,'layout and content control confirmation required')
+    check(attach(approved,content=b'not-a-pdf')[0]==422,'invalid PDF refused without changing Word approval')
+    ready_response=attach(approved)
+    check(ready_response[0]==201,'owner prepares PDF only after Word validation')
+    ready=data(ready_response)['review']
+    check(data(attach(ready))['alreadyPrepared'],'exact PDF retry is idempotent')
+    final_content=pdf('Client final from approved Word - adjusted pagination')
+    ready_response=attach(ready,content=final_content)
+    check(ready_response[0]==201,'layout-only replacement creates another private immutable PDF')
+    ready=data(ready_response)['review']
+    check(len(ready['finalPdfs'])==2 and ready['decision']==approved['decision'],'PDF layout versions preserve Word decision and earlier PDF')
+    check(request(latest_path+'/file/final',owner)[2]==final_content,'owner previews the current final PDF privately')
+    check(request(latest_path+'/file/final',reviewer)[0]==404,'Word reviewer receives no private final PDF preparation right')
+    check(data(request(base+'/documents',owner))['documents']==[],'final PDF preparation still exposes no client document')
+    approved=ready
     check(change(approved, 'publish', reviewer, reviewer_csrf, shareRevision=1)[0] == 403, 'approval grants no publication or owner rights')
     check(change(approved, 'publish', shareRevision=0)[0] == 409, 'publication requires fresh recipient scope')
     sql("CREATE TRIGGER fixture_fail_review BEFORE UPDATE ON pi_biens FOR EACH ROW SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT='Fixture review failure'")
@@ -131,31 +158,39 @@ def run(request, check, owner, second, reviewer, csrf, reviewer_csrf, sql, backu
     published = data(published_response)['review']
     docs = data(request(base + '/documents', second))['documents']
     check(len(docs) == 1 and docs[0]['id'] == published['documentId'] and docs[0]['mime'] == 'application/pdf', 'only final client PDF becomes an active document')
-    check(request(base + '/documents/' + published['documentId'] + '/file', second)[2] == newer_files['rapport-client.pdf'], 'published PDF bytes equal the expert approved bytes')
-    check(len(data(request(shared_path, client))['documents']) == 1 and request(shared_path + '/documents/' + published['documentId'] + '/file', client)[2] == newer_files['rapport-client.pdf'], 'client share receives only the exact approved client PDF after publication')
-    check(request(latest_path + '/file/expert', client)[0] == 404 and request(latest_path + '/file/source', client)[0] == 404, 'client publication exposes neither expert PDF nor complete source')
+    check(request(base + '/documents/' + published['documentId'] + '/file', second)[2] == final_content, 'published PDF bytes equal the expert approved bytes')
+    check(len(data(request(shared_path, client))['documents']) == 1 and request(shared_path + '/documents/' + published['documentId'] + '/file', client)[2] == final_content, 'client share receives only the exact approved client PDF after publication')
+    check(request(latest_path + '/file/word-expert', client)[0] == 404 and request(latest_path + '/file/source', client)[0] == 404, 'client publication exposes neither expert PDF nor complete source')
     check(change(approved, 'publish', shareRevision=1)[0] == 409, 'stale repeated publication cannot create another document')
     frozen_source = request(latest_path + '/file/source', owner)[2]
     check(frozen_source == newer, 'published review retains exact source and expert files privately')
     self_content, _, _ = package(secrets.token_hex(16), note='Auto-validation explicite')
     self_item = data(submit(self_content))['review']
     self_decision = change(self_item, 'approve', comment='Mes deux PDF relus.')
-    check(self_decision[0] == 200 and data(self_decision)['review']['decision']['by'] == 'avereo_connect:42', 'author explicitly nominated as reviewer can approve their own exact PDFs')
+    check(self_decision[0] == 200 and data(self_decision)['review']['decision']['by'] == 'avereo_connect:42', 'author explicitly nominated as reviewer can approve their own exact Word files')
     check(len(data(request(base + '/documents', owner))['documents']) == 1, 'self approval remains private until separate publication')
     proof = backup()
     check(proof['temporaryRowRestore'] == 'passed' and proof['fileReadback'] == 'passed', 'backup and temporary restore cover private reviews and final PDF')
     cancel_content, _, _ = package(secrets.token_hex(16), note='Retrait')
     pending = data(submit(cancel_content, recipient='fixture-43', expected='avereo_connect:43'))['review']
     check(change(pending, 'cancel')[0] == 200, 'owner can withdraw a pending nomination')
-    check(request('/api/report-reviews/' + pending['id'] + '/file/client', reviewer)[0] == 404, 'withdrawn nomination no longer grants PDF access')
+    check(request('/api/report-reviews/' + pending['id'] + '/file/word-client', reviewer)[0] == 404, 'withdrawn nomination no longer grants PDF access')
     check(change(pending, 'approve', reviewer, reviewer_csrf)[0] == 409, 'withdrawal invalidates a stale decision')
+    legacy_content,_,_=package(secrets.token_hex(16),legacy=True,note='Ancienne décision PDF')
+    legacy_item=data(submit(legacy_content))['review']
+    index=len(data(request(base+'/report-reviews',owner))['reviews'])-1
+    sql("UPDATE pi_biens SET report_reviews=JSON_SET(report_reviews,'$.items["+str(index)+"].status','approved','$.items["+str(index)+"].decision',JSON_OBJECT('action','approve','at','2026-11-25T10:00:00Z','by','avereo_connect:42','basis','pdf','pdfSha256',JSON_OBJECT('client','old'))) WHERE owner_id='avereo_connect:42' AND bien_id='review-fixture'")
+    legacy_state=next(x for x in data(request(base+'/report-reviews',owner))['reviews'] if x['id']==legacy_item['id'])
+    check(not legacy_state['wordApproved'] and legacy_state['decision']['basis']=='pdf','historical PDF approval is retained without becoming Word approval')
+    check(change(legacy_state,'publish',shareRevision=1)[0]==403,'historical PDF approval cannot bypass Word validation')
+    check(attach(legacy_state,from_word='f'*64)[0]==403,'historical PDF approval cannot enable post-Word PDF preparation')
     if os.environ.get('PASSEPORT_REVIEW_BROWSER_PACKAGE'):
         with tempfile.TemporaryDirectory(prefix='passeport-browser-review-') as temp:
             root=Path(temp);reference='REVUE-NAV-'+secrets.token_hex(4);series=secrets.token_hex(16)
             initial,_,_=package(series,reference=reference,note='Version navigateur initiale')
             corrected,_,_=package(series,reference=reference,note='Version navigateur corrigee')
-            (root/'initial.review.avereo.zip').write_bytes(initial);(root/'corrected.review.avereo.zip').write_bytes(corrected)
-            (root/'seed.json').write_text(json.dumps({'origin':browser_origin,'ownerCookie':owner,'reviewerCookie':reviewer,'clientCookie':client,'reference':reference,'initial':str(root/'initial.review.avereo.zip'),'corrected':str(root/'corrected.review.avereo.zip')}),encoding='utf-8')
+            (root/'initial.review.avereo.zip').write_bytes(initial);(root/'corrected.review.avereo.zip').write_bytes(corrected);(root/'final.pdf').write_bytes(pdf('Client final browser after Word approval'))
+            (root/'seed.json').write_text(json.dumps({'origin':browser_origin,'ownerCookie':owner,'reviewerCookie':reviewer,'clientCookie':client,'reference':reference,'initial':str(root/'initial.review.avereo.zip'),'corrected':str(root/'corrected.review.avereo.zip'),'finalPdf':str(root/'final.pdf')}),encoding='utf-8')
             config_file=Path(config_path);original_config=config_file.read_bytes()
             configured=original_config.replace(b"'storage_origin'=>'https://passeport-immo.test'",("'storage_origin'=>'"+browser_origin+"'").encode())
             assert configured!=original_config

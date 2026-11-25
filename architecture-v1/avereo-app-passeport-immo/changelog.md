@@ -10,6 +10,11 @@ owner: jpdandin
 tags: [passeport-immo, local]
 ---
 
+## 2026-11-25 — Circuit Word puis PDF final
+
+Suppression de l’exigence de PDF à la demande de revue ; téléchargement privé et décision sur les Word. Ajout du dépôt PDF après validation Word, du contrôle de rendu et des versions PDF privées conservées. Publication client séparée et sauvegarde de toutes les mises en page. Les états du premier candidat ci-dessous restent historiques. [Source fonctionnelle et critères](../avereo-app-rapport/workflows/relecture-validation-pdf.md).
+
+
 ## Relecture experte et publication PDF — candidat local
 
 Ajout de la préparation des demandes dans Rapport, de leur import privé dans Passeport, de la relecture des deux PDF, du refus motivé, de la validation et du retrait de demande. Publication séparée du PDF client validé, historique et sources privées conservés ; migration additive et sauvegarde adaptées. Paquets historiques préservés. Aucun merge ou déploiement de ce complément. [Contrat et procédure](../avereo-app-rapport/workflows/relecture-validation-pdf.md).

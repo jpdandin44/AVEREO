@@ -2372,11 +2372,11 @@ function ReportWizard({
     return { snapshot, sourceSha256, expertWord, clientWord };
   };
 
-  const handlePackageReview = async (prepared, clientPdf, expertPdf) => {
+  const handlePackageReview = async (prepared) => {
     if (onlineSyncEnabled) await authorizeReportExport(accessToken, authUser);
     const { createReview, publicationReportBlob } = await import('./reportPublication.js');
-    if (await blobSha256(publicationReportBlob(currentReport.current)) !== prepared.sourceSha256) throw new Error('Le dossier a changé. Préparez à nouveau les Word et leurs PDF avant de soumettre cette version.');
-    const { blob } = await createReview(prepared.snapshot, prepared.clientWord, prepared.expertWord, clientPdf, expertPdf);
+    if (await blobSha256(publicationReportBlob(currentReport.current)) !== prepared.sourceSha256) throw new Error('Le dossier a changé. Préparez à nouveau les Word avant de soumettre cette version.');
+    const { blob } = await createReview(prepared.snapshot, prepared.clientWord, prepared.expertWord);
     return saveAs(blob, `${toFileName(prepared.snapshot.reference_dossier || prepared.snapshot.titre)}.review.avereo.zip`);
   };
 

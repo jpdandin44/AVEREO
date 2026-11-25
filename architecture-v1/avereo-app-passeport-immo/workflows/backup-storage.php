@@ -47,6 +47,14 @@ function passeport_backup(array $config, string $destination): array
                 chmod($target,0600);
                 if (filesize($target)!==$record['size'] || hash_file('sha256',$target)!==$record['sha256']) throw new RuntimeException('Revue privée différente.');
                 $snapshot['files'][]=['name'=>$name,'size'=>$record['size'],'sha256'=>$record['sha256']];
+                foreach ($record['finalPdfs']??[] as $pdf) {
+                    if (!preg_match('/^[a-f0-9]{32}$/D',$pdf['id'])) throw new RuntimeException('Version PDF non conforme.');
+                    $pdfName=$name.'-'.$pdf['id'].'.pdf';$source=$config['storage_directory'].'/'.$pdfName;$target=$destination.'/documents/'.$pdfName;
+                    if (is_link($source) || !is_file($source) || !copy($source,$target)) throw new RuntimeException('Sauvegarde PDF privée échouée.');
+                    chmod($target,0600);
+                    if (filesize($target)!==$pdf['size'] || hash_file('sha256',$target)!==$pdf['sha256']) throw new RuntimeException('PDF privé différent.');
+                    $snapshot['files'][]=['name'=>$pdfName,'size'=>$pdf['size'],'sha256'=>$pdf['sha256']];
+                }
             }
         }
         $pdo->commit();
