@@ -248,9 +248,15 @@ switch ($Action) {
         Assert-RevuePort $settings
         Push-Location -LiteralPath $frontend
         try {
-            if (-not (Test-Path -LiteralPath 'node_modules')) {
+            # Réinstaller les dépendances quand le fichier de verrouillage a changé (nouvelle dépendance après un merge),
+            # pas seulement quand node_modules manque : l'empreinte du dernier « npm ci » est gardée dans node_modules.
+            $empreinte = (Get-FileHash -Algorithm SHA256 -LiteralPath 'package-lock.json').Hash
+            $tampon = Join-Path 'node_modules' '.vision-revue-lock'
+            $dejaInstalle = (Test-Path -LiteralPath $tampon) -and ((Get-Content -LiteralPath $tampon -Raw).Trim() -eq $empreinte)
+            if (-not $dejaInstalle) {
                 & npm.cmd ci
                 if ($LASTEXITCODE -ne 0) { throw 'npm ci a échoué ; environnement non démarré.' }
+                [IO.File]::WriteAllText((Join-Path (Get-Location) $tampon), $empreinte, $Utf8)
             }
             & npm.cmd run build
             if ($LASTEXITCODE -ne 0) { throw 'Le build a échoué ; environnement non démarré.' }

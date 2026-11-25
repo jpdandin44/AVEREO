@@ -23,7 +23,7 @@ powershell -ExecutionPolicy Bypass -File .\local\vision-revue.ps1 up -Source "C:
 powershell -ExecutionPolicy Bypass -File .\local\vision-revue.ps1 etat
 powershell -ExecutionPolicy Bypass -File .\local\vision-revue.ps1 down
 ```
-- `up -Source <worktree de la PR>` construit l'application de cette source (`npm run build`), démarre la recette, applique les migrations et charge les données de démonstration. La source est **mémorisée** : ensuite, `up`, `donnees`, `logs`, `etat`, `down` s'utilisent sans `-Source`. Pour passer à la PR suivante, refaire `up -Source <son worktree>`.
+- `up -Source <worktree de la PR>` construit l'application de cette source (`npm ci` si le fichier de verrouillage a changé, puis `npm run build`), démarre la recette, applique les migrations et charge les données de démonstration. La source est **mémorisée** : ensuite, `up`, `donnees`, `logs`, `etat`, `down` s'utilisent sans `-Source`. Pour passer à la PR suivante, refaire `up -Source <son worktree>`.
 - Pour revoir l'état intégré (`main`) : `actualiser` met le worktree `…\Documents local\avereo-vision-recette` sur le dernier `main`, puis `up -Source "C:\Users\examg\Documents local\avereo-vision-recette"`.
 - `donnees` complète les données de démonstration qui manquent (un relevé modifié pendant la recette est conservé, y compris par `up`) ; `donnees -Confirmer` remet les relevés de démonstration dans leur état d'origine ; `reset -Confirmer` efface la base de la recette ; `logs` affiche les journaux.
 - Docker Desktop doit être lancé (son moteur peut mettre quelques minutes à démarrer). La recette ne redémarre pas seule après un redémarrage de Windows : relancer `up`.
