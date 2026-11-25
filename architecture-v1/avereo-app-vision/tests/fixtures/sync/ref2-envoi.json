@@ -1,0 +1,87 @@
+{
+  "device_id": "telephone-0001",
+  "since": 0,
+  "changes": [
+    {
+      "object_id": "batiment-1",
+      "kind": "batiment",
+      "parent_id": null,
+      "base_rev": 0,
+      "deleted": false,
+      "data": {
+        "nom": "Logement"
+      }
+    },
+    {
+      "object_id": "niveau-1",
+      "kind": "niveau",
+      "parent_id": "batiment-1",
+      "base_rev": 0,
+      "deleted": false,
+      "data": {
+        "nom": "Rez-de-chaussée",
+        "ordre": 0
+      }
+    },
+    {
+      "object_id": "piece-salon",
+      "kind": "piece",
+      "parent_id": "niveau-1",
+      "base_rev": 0,
+      "deleted": false,
+      "data": {
+        "nom": "Salon",
+        "hauteurMm": 2500,
+        "ordre": 0,
+        "sommets": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 4000,
+            "y": 0
+          },
+          {
+            "x": 4000,
+            "y": 3000
+          },
+          {
+            "x": 0,
+            "y": 3000
+          }
+        ]
+      }
+    },
+    {
+      "object_id": "ouv-1-porte",
+      "kind": "ouverture",
+      "parent_id": "piece-salon",
+      "base_rev": 0,
+      "deleted": false,
+      "data": {
+        "type": "porte",
+        "murIndex": 0,
+        "positionMm": 500,
+        "largeurMm": 900,
+        "hauteurMm": 2040,
+        "alleMm": 0
+      }
+    },
+    {
+      "object_id": "ouv-2-fenetre",
+      "kind": "ouverture",
+      "parent_id": "piece-salon",
+      "base_rev": 0,
+      "deleted": false,
+      "data": {
+        "type": "fenetre",
+        "murIndex": 1,
+        "positionMm": 600,
+        "largeurMm": 1200,
+        "hauteurMm": 1000,
+        "alleMm": 900
+      }
+    }
+  ]
+}

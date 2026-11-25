@@ -14,6 +14,10 @@ tags:
   - fonctionnalites
 ---
 
+## 24 novembre — Droit CONNECT après fusion de PR197
+
+Le droit de création par compte remplace l’habilitation privée initiale. Recette couplée locale de l’attribution, création, retrait et maintien des anciens dossiers ; nouvelle revue humaine nécessaire pour ce candidat. [Périmètre et preuves](docs/rapport-technique.md#droit-administré-depuis-connect--24-novembre). Préproduction et Mise en production V2 non engagées ; réserves V1.2 conservées.
+
 ## 24 novembre — Revue locale PR197 corrigée
 
 Retour utilisateur pris en compte : choix des deux parcours, spécialités techniques et Terrain indépendant du profil dans le global. Nouvelle qualification locale et nouvelle version dans PR197 ; la revue du candidat précédent ne vaut pas acceptation de cette correction. [Preuves](docs/rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain). Préproduction et Mise en production V2 non engagées.

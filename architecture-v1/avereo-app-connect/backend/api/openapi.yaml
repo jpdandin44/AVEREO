@@ -969,6 +969,37 @@ paths:
         "403": {description: Autorité ou origine ou CSRF ou compte protégé}
         "409": {description: Révision périmée}
         "422": {description: Type absent ou inactif ou entrée invalide}
+  /admin/organizations/{organizationId}/users/{userId}/technical-report-creation:
+    put:
+      tags: [Administration]
+      operationId: setAccountTechnicalReportCreation
+      summary: Autoriser ou retirer la création de nouveaux Rapports Techniques pour ce compte
+      description: >-
+        Réservé au propriétaire global avec rôle Drupal actuel. Droit indépendant des trois profils métier,
+        attaché au compte et projeté sous le verrou de politique existant. L'accès à Rapport et le droit
+        Créer restent requis. Le retrait ne bloque pas les dossiers techniques déjà enregistrés :
+        consultation, modification et export gardent leurs contrôles ordinaires. Aucune attribution implicite.
+      parameters:
+        - {$ref: "#/components/parameters/OrganizationId"}
+        - {$ref: "#/components/parameters/UserId"}
+        - {$ref: "#/components/parameters/CsrfToken"}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [revision, technicalReport]
+              properties:
+                revision: {type: integer, minimum: 0}
+                technicalReport: {type: boolean}
+      responses:
+        "200": {description: Droit enregistré, audité et projeté pour ce compte}
+        "403": {description: Autorité, origine, CSRF ou compte cible refusé}
+        "409": {description: Révision du catalogue périmée}
+        "422": {description: Booléen ou champs invalides}
+        "503": {description: Gestion des droits non configurée}
 components:
   securitySchemes:
     sessionCookie:
@@ -1492,6 +1523,10 @@ components:
         assignments:
           type: object
           additionalProperties: {type: string}
+        technicalReportCreation:
+          type: object
+          description: Droit de créer de nouveaux Rapports Techniques par identifiant CONNECT ; absent vaut false
+          additionalProperties: {type: boolean}
         applications:
           type: array
           items: {type: object, description: Code et nom des applications actives}

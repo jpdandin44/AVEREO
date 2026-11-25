@@ -5,10 +5,14 @@ title: Contrats CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-06
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## Création de Rapports Techniques — 24 novembre
+
+Le [contrat machine](../backend/api/openapi.yaml) décrit PUT technical-report-creation et la carte facultative par compte de la réponse du catalogue. Le droit porte sur la création seulement ; les contrôles ordinaires des anciens dossiers restent inchangés. [Comportement, stockage et révocation](../docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre).
 
 # Contrats CONNECT
 

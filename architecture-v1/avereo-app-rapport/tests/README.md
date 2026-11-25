@@ -10,6 +10,14 @@ owner: jpdandin
 tags: [connect, rga, tests]
 ---
 
+## Droit de création technique géré par CONNECT — 24 novembre
+
+Depuis `avereo-app-connect/backend/`, `php -d extension_dir=CHEMIN_PHP_EXT -d extension=pdo_sqlite tests/profile-administration.php` vérifie le catalogue et la projection ; `python -X utf8 tests/profiles-http.py --serve --port 5245 --receipt CHEMIN_RECU_JSON` conserve le serveur natif CONNECT avec comptes SQLite fictifs. Pour raccorder Rapport à ce catalogue, lancer depuis Rapport `python -X utf8 tests/report-files-http.py --serve --connect-profile-db CHEMIN_SQLITE_DU_RECU_CONNECT --profile-admin-url http://127.0.0.1:5245 --port 5246 --receipt CHEMIN_RECU_RAPPORT`. Ce second service garde les identités et permissions fictives de sa propre recette. Il exige les prérequis PHP/Docker ci-dessous.
+
+Le test `avereo-app-connect/backend/tests/technical-access.browser.mjs` utilise `CONNECT_RECIPE_ORIGIN=http://127.0.0.1:5245`, `RAPPORT_RECIPE_ORIGIN=http://127.0.0.1:5246` et le compte fictif 2 par défaut. Il teste l’interface native d’administration, puis le vrai lecteur Rapport : création, sauvegarde, retrait, refus d’une copie indépendante et accès/modification/export du dossier existant. `AVEREO_PLAYWRIGHT_PACKAGE` peut pointer le package.json Playwright installé ; `CONNECT_RECIPE_OUTPUT` reçoit le reçu et la capture. Les autres définitions/affectations de profils sont comparées avant/après. Ne pas exécuter sur un compte réel.
+
+La revue déjà démarrée conserve l’ancien service Rapport `http://127.0.0.1:5240/fixture/` et ses dossiers, raccordés au même catalogue CONNECT : A est explicitement autorisé, B ne l’est pas. Cette préparation locale n’attribue aucun droit hébergé. [Règle et limites](../../avereo-app-connect/docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre).
+
 ## Rapport Technique — 24 novembre
 
 Depuis `frontend/`, `npm test` inclut les tests de création, compatibilité et confidentialité techniques ; `npm run build` prépare la compilation. Depuis la racine de l’application, `python tests/report-files-http.py --technical --serve --port 5240 --receipt CHEMIN_RECU_JSON` rejoue les contrôles PHP/MariaDB puis conserve la revue sur `http://127.0.0.1:5240/fixture/`. PHP avec PDO MySQL, Docker actif et l’image existante `mariadb:11.4` sont requis. Les comptes A/B et la base sont fictifs ; aucun accès hébergé n’est utilisé. Fermer le service supprime la base temporaire.

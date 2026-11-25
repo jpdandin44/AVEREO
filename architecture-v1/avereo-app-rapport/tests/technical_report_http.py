@@ -3,7 +3,7 @@ import copy
 import json
 
 
-def qualify_technical_reports(*, req, enter, save, mysql, database, fixture, check, config, write_config):
+def qualify_technical_reports(*, req, enter, save, mysql, database, fixture, check, config, write_config, policy_path):
     snapshot = mysql('SELECT public_id,owner_provider,owner_id,HEX(payload_json) FROM rapport_reports ORDER BY public_id;', database)
     technical = copy.deepcopy(fixture)
     technical.update(categorie='Expertise & Visite technique', profil_metier='', sous_categorie='',
@@ -11,6 +11,11 @@ def qualify_technical_reports(*, req, enter, save, mysql, database, fixture, che
     technical['observations'][0].update(mesures_techniques='12 mm fictifs', references_techniques='https://example.org/',
                                         verifications_techniques='Contrôle fictif', limites_techniques='Visuel')
     created_ids = []
+    old_policy=config.get('connect_trial_access_file');original_policy=policy_path.read_bytes()
+    config['connect_trial_access_file']=str(policy_path);write_config()
+    def permission(account, enabled):
+        policy=json.loads(policy_path.read_text());policy['accounts'][str(account)]['report_technical_create']=enabled
+        policy_path.write_text(json.dumps(policy),encoding='utf-8')
     try:
         ordinary, admin = enter(101), enter(1)
         check('Technical capability absent without grant', json.loads(req('/api/auth.php?action=me', ordinary)[2])['user']['reportCapabilities']['technicalReport'] is False)
@@ -21,7 +26,7 @@ def qualify_technical_reports(*, req, enter, save, mysql, database, fixture, che
         check('Missing category cannot bypass technical creation guard',save(ordinary,unclassified)[0]==403)
         unclassified['categorie']='unknown'
         check('Unknown category cannot bypass technical creation guard',save(ordinary,unclassified)[0]==403)
-        config['technical_report_connect_user_ids'] = ['101']; write_config()
+        permission(101,True)
         check('Explicit CONNECT identity receives technical capability', json.loads(req('/api/auth.php?action=me', ordinary)[2])['user']['reportCapabilities']['technicalReport'] is True)
         other = enter(102)
         check('Grant never spreads to another CONNECT account', save(other, technical)[0] == 403)
@@ -32,7 +37,7 @@ def qualify_technical_reports(*, req, enter, save, mysql, database, fixture, che
         opened = req('/api/reports.php?id='+report_id,fresh)
         check('Fresh server session retains all technical fields and media', json.loads(opened[2])['report']['payload'] == technical)
         check('Technical dossier remains private from other account', req('/api/reports.php?id='+report_id,other)[0] == 404)
-        config['technical_report_connect_user_ids'] = []; write_config()
+        permission(101,False)
         check('Grant revocation stops new technical copies', save(fresh, technical)[0] == 403)
         check('Existing technical dossier still follows historical update rights', save(fresh, technical, report_id)[0] == 200)
         global_report = copy.deepcopy(fixture); global_report['categorie']='Visite Globale'
@@ -43,10 +48,13 @@ def qualify_technical_reports(*, req, enter, save, mysql, database, fixture, che
         check('Malformed technical fields rejected without mutation',save(fresh,invalid,report_id)[0]==400)
         invalid=copy.deepcopy(technical);invalid['observations'][0]['mesures_techniques']=None
         check('Explicit null technical text rejected',save(fresh,invalid,report_id)[0]==400)
-        check('Administrator keeps technical creation capability',json.loads(req('/api/auth.php?action=me',admin)[2])['user']['reportCapabilities']['technicalReport'] is True)
+        check('Administrator has no implicit technical capability',json.loads(req('/api/auth.php?action=me',admin)[2])['user']['reportCapabilities']['technicalReport'] is False)
         return {'status':'passed','newSessionPayloadExact':True,'serverAuthorizationTested':True}
     finally:
-        config.pop('technical_report_connect_user_ids',None);write_config()
         for report_id in created_ids:
             req('/api/reports.php?id='+report_id,enter(1),'DELETE')
+        policy_path.write_bytes(original_policy)
+        if old_policy is None:config.pop('connect_trial_access_file',None)
+        else:config['connect_trial_access_file']=old_policy
+        write_config()
         check('Existing source rows and owners exact after technical recipe',snapshot==mysql('SELECT public_id,owner_provider,owner_id,HEX(payload_json) FROM rapport_reports ORDER BY public_id;',database))

@@ -25,6 +25,24 @@ const CHEMINS = {
     </>
   ),
   plus: <path d="M12 5v14M5 12h14" />,
+  valide: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m8 12.5 3 3 5-6" />
+    </>
+  ),
+  attente: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
+  horsligne: (
+    <>
+      <path d="M7 18h10a4 4 0 0 0 .6-7.95A5.5 5.5 0 0 0 7 8.5 4.8 4.8 0 0 0 7 18Z" />
+      <path d="m4 4 16 16" />
+    </>
+  ),
   supprimer: (
     <>
       <path d="M4 7h16M10 7V4h4v3M6 7l1 13h10l1-13" />
