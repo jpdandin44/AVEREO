@@ -4,6 +4,15 @@ const app = new URL('../', import.meta.url);
 const original = readFileSync(new URL('../avereo-app-connect/frontend/src/App.jsx', app), 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
 const calculation = readFileSync(new URL('frontend/src/lib/chiffrage.js', app), 'utf8').replace(/\r\n/g, '\n');
 let restored = readFileSync(new URL('frontend/src/App.jsx', app), 'utf8').replace(/\r\n/g, '\n');
+// Écart n : inverser uniquement les deux raccordements explicites de revue privée.
+// Le conteneur UX puis toute la source historique restent comparés intégralement.
+for (const addition of [
+  "import ReportReviews from './documents/ReportReviews.jsx';\n",
+  "            <ReportReviews />\n",
+]) {
+  assert.equal(restored.split(addition).length - 1, 1, 'Chaque raccordement de revue n est explicite et unique');
+  restored = restored.replace(addition, '');
+}
 // Écart m : seules les substitutions UX déclarées sont inversées. Le contrôle
 // historique intégral ci-dessous continue de protéger calculs et écritures.
 const ux = JSON.parse(readFileSync(new URL('tests/ux-ui-parity.json', app), 'utf8'));

@@ -15,7 +15,9 @@
     "rapportBrowserPreparation": 4,
     "localPassportEntryAccounts": 3,
     "pageErrors": 0,
-    "bothBuilds": "passed"
+    "bothBuilds": "passed",
+    "parity": "passed",
+    "cockpitHistoricalHashes": "passed"
   },
   "selfValidation": "confirmed_by_user_2026-11-25",
   "pdfConversion": "manual_word_to_pdf",

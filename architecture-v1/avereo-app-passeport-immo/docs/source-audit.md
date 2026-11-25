@@ -5,15 +5,10 @@ title: Audit source Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-25
+updated: 2026-10-03
 owner: jpdandin
 tags: [passeport-immo, audit, local]
 ---
-
-## 25 novembre — Relecture et PDF, évolution locale
-
-Écart explicite au parcours de finalisation historique : demande privée avec les deux PDF, nomination par version, refus/validation et publication client séparée. Les anciennes sources et partages sont conservés. Nouvelle colonne nullable Passeport, archives de revue incluses dans la sauvegarde et transfert historique refusé avant export partiel. [Contrat, droits, migration et limites](../../avereo-app-rapport/workflows/relecture-validation-pdf.md). Aucun déploiement.
-
 
 # Audit source Passeport Immo
 

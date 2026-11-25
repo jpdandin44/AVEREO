@@ -103,6 +103,8 @@ Qualification du 25 novembre : 263 tests Node Rapport, 88 tests d'interface Pass
 
 [Reçu structuré de qualification](../../avereo-app-passeport-immo/api/report-review-local-observation.json).
 
+La [nouvelle annexe de parité Passeport](../../avereo-app-passeport-immo/docs/source-audit-relecture.md) déclare les deux raccordements de revue sans affaiblir la comparaison historique. L'audit Passeport historique gelé est conservé à l'identique ; la nouvelle annexe porte l'évolution du 25 novembre.
+
 Pour la revue locale, après les compilations : `python tests/report-files-http.py --technical --serve --port 5260` depuis l'application Rapport, et `python tests/check-storage-http.py --serve --port 5261` depuis Passeport. Entrées : `http://127.0.0.1:5260/fixture/` et `http://127.0.0.1:5261/fixture/`. Les deux processus doivent rester vivants ; ils utilisent des copies et bases temporaires fictives, sans lecture de configuration hébergée. Leur arrêt efface la base temporaire Passeport. Dans Passeport : déposant/expert A (42), second expert B (43), client fictif (44) ; des fenêtres privées séparées évitent de remplacer la session de l'autre rôle. Le répertoire fictif est rafraîchi pendant la revue.
 
 Le test navigateur automatique facultatif utilise un Playwright déjà disponible, indiqué par `PASSEPORT_REVIEW_BROWSER_PACKAGE`, et écrit les rendus/reçu dans `PASSEPORT_REVIEW_OUTPUT`. Il n'ajoute pas de dépendance aux applications et ne nécessite aucun compte réel.
