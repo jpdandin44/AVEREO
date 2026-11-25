@@ -13,6 +13,10 @@ tags:
   - securite
 ---
 
+## 24 novembre — Autorité native CONNECT pour la création technique
+
+Le lecteur de politique existant expose le nouveau booléen strict ; la capacité ne dépend plus des identifiants configurés ou du rôle administrateur. Les refus, actions, propriétaires et contenus existants restent préservés. [Contrat, tests couplés et portée](../../avereo-app-connect/docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre). Ce complément autorisé inclut le portail natif CONNECT, sans changement du frontend historique ni d’Identité Drupal.
+
 ## 24 novembre — Terrain global et choix des types, correction de PR197
 
 Le test de non-régression reproduit l’absence de Terrain avec profil vide ; la catégorie globale pilote maintenant sa présence, sans modifier les données. Nouveau choix de famille explicite, spécialité technique sans privilège nouveau, annulation et deux réouvertures serveur qualifiées. [Cause, périmètre et preuves](rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain). Aucun changement d’authentification, API ou quota pour ce complément.

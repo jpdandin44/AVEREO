@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, documentation]
 ---
 
+## 24 novembre — Droit de créer un Rapport Technique
+
+Le propriétaire global peut cocher « Créer un Rapport Technique » sur la fiche de chaque compte dans Gérer les comptes. Le droit ne modifie ni les profils professionnels ni les dossiers techniques déjà enregistrés. [Contrat, contrôles et revue locale](docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre). Complément local à PR197, sans attribution réelle ni livraison hébergée.
+
 ## 24 novembre — registre anti-rejeu des développements
 
 Un correctif local récupère les seules empreintes expirées sous verrou, tout en conservant la limite 4096 et la création exclusive. Le rôle global, l’identité exacte et les contrôles frais sont inchangés. [Contrat et qualification](api/developments-authorization.md). Aucun déploiement de ce correctif attesté.

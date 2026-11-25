@@ -13,6 +13,10 @@ tags:
   - fonctionnalites
 ---
 
+## 24 novembre — Nouvelle source de droit, sans migration de dossier
+
+Le droit par compte de CONNECT remplace la liste technique privée du premier candidat. Ancien catalogue sans carte de droits accepté et lu sans réécriture ; aucun dossier, profil, propriétaire ou champ métier migré. Les nouvelles créations exigent une attribution explicite après livraison coordonnée. [Contrat de compatibilité](../../avereo-app-connect/docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre).
+
 ## 24 novembre — Choix explicites sans conversion des dossiers
 
 Les spécialités réutilisent les valeurs sous_categorie existantes ; les libellés accentués sont d’affichage. Le titre reste dans titre. Le Terrain global dépend du type global, y compris ancien, sans imposer un profil et sans créer/supprimer de constat. Aucun changement SQL ou quota. [Compatibilité et recette](rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain).

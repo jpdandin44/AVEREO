@@ -5,13 +5,41 @@ title: Catalogue de profils et droits depuis la gestion des comptes
 status: active
 version: git
 created: 2026-11-17
-updated: 2026-11-18
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, profils, comptes, droits, rapport, cadrage]
 ---
 
 
 # Catalogue commun de profils et droits
+
+## Droit de création Rapport Technique — complément du 24 novembre
+
+Avant la fusion de PR197, le responsable propose un profil Expert technique ou un droit spécifique dans Gérer les comptes. Choix retenu : **un droit par compte**, sans ajouter de quatrième profil professionnel. La réponse explicite confirme la **création seulement** : les dossiers techniques déjà enregistrés restent consultables, modifiables et exportables selon leurs droits actuels. Analyse globale, Architecte et Maître d’œuvre gardent le parcours global ; le nom de métier ne donne aucune habilitation.
+
+### Gestion native
+
+Dans **Gérer les comptes**, ouvrir la fiche de la personne puis **Création d’un Rapport Technique**. Cocher **Créer un Rapport Technique**, enregistrer le droit et confirmer. Décocher et confirmer retire uniquement les nouvelles créations techniques, copies indépendantes et conversions globale → technique. Le compte, ses périodes, applications, rôles, profil et dossiers restent conservés.
+
+Seul le propriétaire administrateur global, dont le rôle Drupal est relu, peut effectuer ce changement. Le droit suit l’identité CONNECT du compte dans ses organisations déjà autorisées. L’accès à Rapport et l’action Créer restent nécessaires : cette case ne remplace ni les habilitations d’application, ni les actions du profil. Le propriétaire global peut cocher ce seul droit sur sa propre fiche, sans modifier son affectation de profil protégée.
+
+### Source et contrat
+
+Le catalogue JSON privé existant porte la carte facultative `technicalReportCreation` par identifiant CONNECT. Absence = false, valeurs booléennes strictes ; les anciens catalogues restent lisibles sans réécriture à la lecture. Les trois modèles de profil et leurs affectations sont inchangés. Publication sous le verrou déjà utilisé par la politique d’accès, contrôle de révision, auteur/date et états avant/après dans l’audit.
+
+`PUT /api/v1/admin/organizations/{organizationId}/users/{userId}/technical-report-creation` reçoit `revision` et `technicalReport` (booléen strict), avec CSRF et origine contrôlés. La politique privée projetée porte `report_technical_create`. [Contrat machine](../backend/api/openapi.yaml).
+
+Rapport lit ce booléen pour sa capacité de création technique. L’administrateur Rapport et l’ancienne liste privée `technical_report_connect_user_ids` ne donnent plus d’autorisation implicite. Aucune affectation réelle n’est faite par le développement ; lors de la future livraison coordonnée CONNECT/Rapport, les droits devront être cochés explicitement par l’administrateur. Pas de migration SQL ni de nouveau rôle Drupal.
+
+### Qualification et revue locale
+
+Contrôles natifs du catalogue (51), HTTP CONNECT (34), unités backend CONNECT (45), API/SQL Rapport (60), et parcours navigateur couplé : case, annulation, enregistrement, nouvelle lecture, création dans Rapport, retrait puis refus d’une copie nouvelle ; ancien dossier toujours ouvrable, modifiable et exportable. Définitions et affectations des profils, données et propriétaires conservés. Identités et services fictifs locaux ; le SSO hébergé n’est pas qualifié par cette recette.
+
+[Gestion des comptes fictifs](http://127.0.0.1:5245/) : A et B figurent comme comptes de recette PR197 ; le droit est préparé pour A, pas pour B. [Rapport fictif](http://127.0.0.1:5240/fixture/) utilise les mêmes identifiants. [Reçu couplé](<C:/Users/examg/.codex/visualizations/2026/11/12/01a1d107-7531-7e80-96c7-acdb55274ecb/managed-technical/browser.json>). Les anciens tests isolés de profils gardent leurs reçus historiques.
+
+La PR197 a été fusionnée le 24 novembre pendant ce développement, en `430049b8d00cad6ae25de842dd2f98ad42615e69`. Ce complément est donc isolé sur `feat/connect-droit-rapport-technique`, sans modifier ses validations humaines.
+
+**Cadrage** confirmé ; **Développement local** vérifié et à valider sur ce complément de PR197 ; **Préproduction** et **Mise en production** non engagées pour ce complément. La revue de la version précédente ne valide pas ce nouveau droit. Suivi canonique : `rapportV2Technique20261124`, dans le suivi privé existant.
 
 ## Livraison coordonnée du 18 novembre
 

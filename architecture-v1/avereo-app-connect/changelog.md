@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-24 — Création de Rapports Techniques administrable par compte
+
+Ajout du droit natif avec confirmation et audit dans Gérer les comptes ; lecture/projection compatibles avec les catalogues existants. Le retrait empêche seulement les nouveaux dossiers techniques et laisse les dossiers existants à leurs droits ordinaires. [Qualification locale](docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre). Aucun compte réel ni cible hébergée modifié.
+
 ## 2026-11-24 — Lancement d'AVEREO Vision
 
 Reconnaissance des clés `APP_LAUNCH_VISION_URL` et `APP_LAUNCH_VISION_SECRET`, y compris dans le chargeur de configuration privée, pour que le sas commun puisse lancer AVEREO Vision (relevé de l'existant). Un test vérifie l'autorisation explicite et le contrat du ticket (signature HMAC avec le secret de l'application, application « vision », identité CONNECT numérique, courte durée, nonce). Aucune migration, aucun catalogue modifié, aucune habilitation ni installation hébergée exécutée par ce lot.

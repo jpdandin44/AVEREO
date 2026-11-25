@@ -13,6 +13,10 @@ tags:
   - connect
 ---
 
+## 24 novembre — Droit de création piloté depuis CONNECT
+
+Le choix Technique est autorisé par la case « Créer un Rapport Technique » de la fiche du compte, sans profil métier supplémentaire. Aucune habilitation implicite par rôle administrateur ou liste locale. Le retrait laisse les anciens dossiers à leurs droits habituels. [Parcours et source du droit](docs/rapport-technique.md#droit-administré-depuis-connect--24-novembre).
+
 ## 24 novembre — Choix des parcours et Terrain corrigés
 
 [Complément à PR197](docs/rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain) : Nouveau rapport propose explicitement Analyse globale et Rapport Technique ; spécialité et titre sont modifiables dans Mission. Toute Analyse globale conserve Terrain, indépendamment du profil. Revue locale sur le même service fictif, sans conversion des dossiers existants.

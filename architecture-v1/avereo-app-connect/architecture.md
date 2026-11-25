@@ -5,10 +5,14 @@ title: Architecture CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-17
+updated: 2026-11-24
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 24 novembre — Droit de création technique par compte
+
+Le catalogue privé existant porte une carte facultative de booléens par compte ; publication sous le verrou de politique et audit existants. Rapport consomme la projection pour les nouvelles créations seulement. Aucun rôle Drupal, table SQL ou profil métier supplémentaire. [Source de la règle et frontière de sécurité](docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre).
 
 ## 17 novembre — Catalogue commun et projection des droits
 
