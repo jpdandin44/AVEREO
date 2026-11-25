@@ -22,6 +22,7 @@ import {
   translaterPiece,
 } from "../../domain/modele.js";
 import { calculerMetres, calculerMetresNiveau } from "../../domain/metres.js";
+import { signalerEcriture } from "../../sync/etat-ecriture.js";
 import { ID_NIVEAU } from "../../sync/moteur.js";
 
 const ECART_ENTRE_PIECES_MM = 1500;
@@ -156,10 +157,13 @@ export function useReleve(projetId, moteur) {
 
   // Reprise automatique de l'enregistrement local après un échec.
   useEffect(() => {
+    signalerEcriture(projetId, echecs > 0);
     if (echecs === 0) return undefined;
     const minuterie = setTimeout(() => setTentative((n) => n + 1), 3000);
     return () => clearTimeout(minuterie);
-  }, [echecs]);
+  }, [echecs, projetId]);
+
+  useEffect(() => () => signalerEcriture(projetId, false), [projetId]);
 
   // Relevé modifié sur un autre appareil (R05) : on relit l'état local, qui contient aussi nos modifications en attente.
   useEffect(

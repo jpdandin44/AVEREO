@@ -469,9 +469,11 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       if (faits >= PRECHARGEMENTS_PAR_CYCLE || etat.reseau !== "ok") break;
       const operations = await stockage.lireOperations();
       if (operations.some((o) => o.type === "creer" && o.id === projet.id)) continue; // pas encore connu du serveur
-      if ((await stockage.chargerProjet(projet.id)).seq > 0) continue; // déjà reçu au moins une fois
-      await synchroniserProjet(projet.id);
+      // Suivi indépendant du curseur : un projet vide reçu est « fait » ; une réception interrompue (page suivante non reçue)
+      // n'est pas marquée et reprend au cycle suivant.
+      if (await stockage.lireMeta(`precharge:${projet.id}`)) continue;
       faits += 1;
+      if (await synchroniserProjet(projet.id)) await stockage.ecrireMeta(`precharge:${projet.id}`, true);
     }
   }
 

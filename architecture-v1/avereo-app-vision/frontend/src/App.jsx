@@ -66,7 +66,7 @@ export default function App() {
             : "AVEREO Vision — plan 2D et métrés"}
         </span>
       </header>
-      <BandeauApplication enAttente={synchro.enAttente} />
+      <BandeauApplication enAttente={synchro.enAttente} durable={projets.stockageDurable} />
       {projetOuvert ? null : <EcranProjets projets={projets} onOuvrir={ouvrir} />}
       {ouverts.map((projet) => (
         <div key={projet.id} hidden={projetOuvert?.id !== projet.id} style={{ display: projetOuvert?.id === projet.id ? "contents" : "none" }}>
