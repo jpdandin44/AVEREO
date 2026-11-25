@@ -1,5 +1,6 @@
 // Application AVEREO Vision : en-tête commun, session, écran Projets puis écran du relevé.
 import { useMemo, useState } from "react";
+import BandeauApplication from "./components/BandeauApplication.jsx";
 import Icone from "./components/Icone.jsx";
 import IndicateurEnregistrement from "./components/IndicateurEnregistrement.jsx";
 import EcranProjets from "./features/projets/EcranProjets.jsx";
@@ -65,6 +66,7 @@ export default function App() {
             : "AVEREO Vision — plan 2D et métrés"}
         </span>
       </header>
+      <BandeauApplication />
       {projetOuvert ? null : <EcranProjets projets={projets} onOuvrir={ouvrir} />}
       {ouverts.map((projet) => (
         <div key={projet.id} hidden={projetOuvert?.id !== projet.id} style={{ display: projetOuvert?.id === projet.id ? "contents" : "none" }}>
