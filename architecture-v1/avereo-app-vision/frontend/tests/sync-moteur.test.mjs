@@ -559,3 +559,21 @@ test("deux onglets : l'enregistrement d'un relevé dans l'un prévient l'autre q
   a.fermer();
   b.fermer();
 });
+
+test("R04 : le contenu des projets actifs jamais ouverts sur l'appareil est préchargé quand le réseau est là", async () => {
+  const serveur = creerFauxServeur();
+  await projetPret(serveur);
+  const bureau = appareil(serveur, "ordinateur-02").moteur; // le relevé est fait au bureau
+  await bureau.enregistrer(PROJET, null, ref2());
+  await bureau.synchroniserProjet(PROJET);
+  await serveur.api.creerProjet({ id: "e".repeat(32), name: "Archivé" });
+  serveur.projets.get("e".repeat(32)).projet.status = "archived";
+
+  const telephone = appareil(serveur, "telephone-01").moteur; // le téléphone n'a jamais ouvert ce projet
+  await telephone.synchroniserTout();
+  serveur.etat.horsLigne = true; // chez le client, sans réseau
+  const ouvert = await telephone.ouvrirProjet(PROJET);
+  assert.equal(ouvert.persistant, true, "le relevé est disponible hors ligne sans avoir été ouvert");
+  assert.deepEqual(ouvert.batiment, ref2());
+  assert.ok(!serveur.etat.appels.some(([nom, id]) => nom === "synchroniser" && id === "e".repeat(32)), "un projet archivé n'est pas préchargé");
+});

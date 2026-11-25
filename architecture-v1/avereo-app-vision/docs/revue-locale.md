@@ -41,6 +41,8 @@ powershell -ExecutionPolicy Bypass -File .\local\vision-revue.ps1 down
 4. **R05** : deux « appareils » = deux navigateurs différents (ou une fenêtre de navigation privée) avec le même compte : une modification faite dans l'un apparaît dans l'autre en moins de 30 s.
 5. **R06** : couper le serveur, modifier le **même** élément dans les deux navigateurs, relancer : la modification reçue en dernier est gardée, l'autre figure dans « Journal des modifications remplacées » de l'écran du relevé.
 6. **R04 complet (Lot 2C)** : ouvrir l'application une fois (le service worker s'installe), arrêter le serveur (`docker stop vision-revue-recette-api-1`), **recharger la page** : l'application s'ouvre quand même, avec le relevé enregistré sur l'appareil ; modifier, relancer le serveur : « Enregistré » en moins de 30 s.
+   Le relevé doit avoir été reçu une fois sur l'appareil avec le réseau : l'application précharge le contenu des projets actifs dès qu'elle est en ligne (20 projets par cycle de 30 s), pour qu'un relevé préparé au bureau s'ouvre ensuite chez le client sans réseau.
+   **Navigateur** : faire ces essais dans **Chrome ou Edge** ; le navigateur intégré à Claude refuse les service workers (« An unknown error occurred when fetching the script »).
 7. **R09** : dans Chrome ou Edge, icône « Installer l'application » dans la barre d'adresse : AVEREO Vision s'ouvre dans sa propre fenêtre. Après une nouvelle version (`up` sur une source plus récente), le bandeau « Nouvelle version disponible — Recharger » apparaît.
 8. **Création hors ligne** : serveur coupé, créer un projet : il apparaît « En attente d'envoi (création) » ; au retour, il est envoyé sans doublon.
 

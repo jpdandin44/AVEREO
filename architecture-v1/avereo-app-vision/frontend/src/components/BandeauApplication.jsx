@@ -5,7 +5,8 @@ import { useRegisterSW } from "virtual:pwa-register/react";
 import { decrireStockage, verifierStockage } from "../sync/stockage-durable.js";
 import Encadre from "./Encadre.jsx";
 
-export default function BandeauApplication() {
+/** @param {{enAttente?: number}} props  modifications non envoyées : l'alerte « stockage non garanti » n'apparaît que s'il y en a. */
+export default function BandeauApplication({ enAttente = 0 }) {
   const {
     needRefresh: [nouvelleVersion],
     updateServiceWorker,
@@ -18,18 +19,23 @@ export default function BandeauApplication() {
       });
     },
   });
-  const [stockage, setStockage] = useState(null);
+  const [etatStockage, setEtatStockage] = useState(null);
 
   useEffect(() => {
     let vivant = true;
     verifierStockage().then((etat) => {
-      if (vivant) setStockage(decrireStockage(etat));
+      if (vivant) setEtatStockage(etat);
     });
     return () => {
       vivant = false;
     };
   }, []);
 
+  // « Non garanti » est courant dans un navigateur de bureau : on ne le signale que lorsqu'il y a quelque chose à perdre.
+  const stockage =
+    etatStockage && (etatStockage.alerte === "presque-plein" || (etatStockage.alerte === "non-garanti" && enAttente > 0))
+      ? decrireStockage(etatStockage)
+      : null;
   if (!nouvelleVersion && !stockage) return null;
   return (
     <div className="liste-encadres" style={{ padding: "12px 24px 0" }}>
