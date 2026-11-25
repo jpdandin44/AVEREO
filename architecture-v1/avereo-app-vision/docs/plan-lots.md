@@ -86,6 +86,16 @@ Plan détaillé proposé au lancement du lot (message « Lot 2B selon docs/plan-
 | T2B-06 Essais hors ligne Android et iPhone, quota iOS | à faire | Essai physique par le responsable | responsable | — | — | — |
 | T2B-07 Licences (Dexie, vite-plugin-pwa), tests, relecture Codex, suivi | à faire | — | verif-licences / testeur / Codex / scribe | Haiku / Haiku / défaut / Haiku | medium / low / — / low | — |
 
+### Outillage — environnements locaux de recette et de validation (25/11/2026)
+Décision du responsable : **recette = `main`** (http://127.0.0.1:5250/revue/), **validation = candidat de la PR** (http://127.0.0.1:5251/revue/), entrée par une page de comptes fictifs qui passe par la vraie passerelle CONNECT. Guide : `docs/revue-locale.md`. Branche `vision/revue-locale`.
+| Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
+|---|---|---|---|---|---|---|
+| T-RL-01 Brief Codex T-06 (contrat : fichiers, ports, comptes, ticket, sécurité) | fait | — | Claude | Sonnet | medium | — |
+| T-RL-02 Script `vision-revue.ps1`, Compose, routeur, page des comptes fictifs, données de démonstration, tests du lanceur | fait | — | Codex | défaut Codex | medium | task-mwvsn0re-xu5a46 |
+| T-RL-03 Vérification réelle : recette (`main` 898c2a6) et validation (PR #200, 31c5e6b) côte à côte, parcours A/B/F, relevé REF-2, sessions séparées | fait | Ajout : la validation mémorise sa source (seul `up` demande `-Source`) | Claude | Sonnet | medium | — |
+| T-RL-04 Documents, suivi, relecture Codex, PR | fait | — | Claude / Codex | Sonnet / défaut | medium | voir PR |
+| T-RL-05 Adresse de validation dans la PR #200 | fait | — | Claude | Sonnet | low | — |
+
 ### Lot 3 — Capture terrain : cotes laser, photos, commentaires, vidéo jointe
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
 |---|---|---|---|---|---|---|
