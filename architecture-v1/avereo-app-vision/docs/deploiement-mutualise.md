@@ -1,25 +1,26 @@
 # Mise en ligne d'AVEREO Vision en préproduction (hébergement mutualisé O2Switch / cPanel)
 
-Procédure du 24/11/2026, établie d'après `avereo-app-rapport/docs/deployment.md`, `rollback.md`, `preproduction-connect-cutover.md` et `avereo-app-connect/docs/{catalogue-services,application-gateway}.md`. **Elle décrit des opérations sur l'hébergement et sur la base de CONNECT : aucune n'est exécutée par Claude Code. Chaque étape marquée [responsable] est faite par toi, avec ton accord à chaque fois.** Aucun workflow GitHub de déploiement n'existe pour Vision : cette première mise en ligne est **manuelle** (voir « Automatiser plus tard »).
+Procédure du 24/11/2026, établie d'après `avereo-app-rapport/docs/deployment.md`, `rollback.md`, `preproduction-connect-cutover.md` et `avereo-app-connect/docs/{catalogue-services,application-gateway}.md`. **Elle décrit des opérations sur l'hébergement et sur la base de CONNECT. Chaque étape marquée [responsable] est faite par toi, ou par Claude Code dans ta session cPanel avec ton accord explicite pour cette étape ; jamais de mot de passe saisi par Claude Code.** Aucun workflow GitHub de déploiement n'existe pour Vision : cette première mise en ligne est **manuelle** (voir « Automatiser plus tard »).
 
 Périmètre : **préproduction uniquement** (`vision-preprod.avereo.fr`, nom confirmé par le responsable le 24/11/2026). La production suit la même procédure avec les noms `vision` / `vision.avereo.fr`, après qualification de la préproduction et décision séparée.
 
-À ce stade Vision n'enregistre côté serveur que les **projets** (nom, adresse, client). Le contenu des relevés reste dans le navigateur et disparaît au rechargement (Lot 2B). **Ne saisir aucune donnée réelle de logement** pendant la recette.
+Depuis les Lots 2B et 2C, Vision enregistre côté serveur les **projets** (nom, adresse, client) et le **contenu des relevés** (bâtiments, niveaux, pièces, ouvertures : synchronisation) ; l'application s'installe et se rouvre sans réseau. **Ne saisir aucune donnée réelle de logement** pendant la recette.
 
 ## 0. Ce qu'il faut avoir avant de commencer
 | Besoin | Détail |
 |---|---|
 | Accès cPanel du compte O2Switch | création du sous-domaine, de la base MySQL, du gestionnaire de fichiers |
-| Accès SSH ou terminal cPanel | pour `php database/migrate.php` et `bin/manage-catalog.php` de CONNECT. **À VÉRIFIER** : accès SSH activé sur le compte. Sans SSH, voir l'étape 3 (variante phpMyAdmin) ; le catalogue CONNECT, lui, exige PHP en ligne de commande |
+| Accès SSH ou terminal cPanel | pour `php database/migrate.php` et `bin/manage-catalog.php` de CONNECT. Constaté le 25/11/2026 : cPanel propose « Terminal », « Accès SSH » et « Autorisation SSH » (O2Switch autorise les connexions SSH par adresse IP ; **À VÉRIFIER** à la première connexion). Sans SSH, voir l'étape 3 (variante phpMyAdmin) ; le catalogue CONNECT, lui, exige PHP en ligne de commande |
 | CONNECT préproduction à jour | **Non fait à ce jour.** La PR #196 est mergée dans `main` mais n'a été installée sur aucun serveur : aucune livraison n'a été exécutée. Sans elle, les clés `APP_LAUNCH_VISION_*` sont ignorées et Vision reste invisible. Livraison à faire à l'étape 5.0, avec un accord propre |
 | Deux comptes CONNECT de recette | approuvés, avec accès à `vision` (étape 5.3), pour le test d'isolation entre utilisateurs ; idéalement un troisième sans accès |
 | Identifiant numérique CONNECT du fondateur | pour `admin_user_ids`. **À VÉRIFIER** : où le lire (administration CONNECT / table des comptes) |
-| Poste de travail | Node 20.19+ ou 22.12+, PHP 8.4 pour contrôler les fichiers (`php -l`) |
+| Poste de travail | Node 20.19+ ou 22.12+ ; pour contrôler les fichiers (`php -l`) et lancer les tests dans la version de l'hébergement : `vision-local.ps1 up -Php 8.3` puis `vision-local.ps1 test -Php 8.3` |
 
 ## 1. Hébergement : sous-domaine, HTTPS, PHP [responsable]
-1. cPanel → Domaines : créer le sous-domaine `vision-preprod.avereo.fr`. Noter sa **racine web** (document root) : appelée `DOCROOT` plus bas. Pour Rapport, O2Switch place les sous-domaines sous `/home/COMPTE/<nom-de-domaine>` ; **À VÉRIFIER** pour celui-ci. Le nom du document root doit contenir `preprod` : c'est ce qui fait choisir à Vision sa configuration de préproduction (voir étape 2).
-2. Activer le certificat HTTPS (AutoSSL) et vérifier que `https://vision-preprod.avereo.fr/` répond (page d'accueil du serveur ou 403).
-3. cPanel → MultiPHP Manager : choisir **PHP 8.4** pour ce sous-domaine (version développée et testée). **À VÉRIFIER** : version disponible. Le code a besoin de PHP ≥ 8.1 (`never`, `readonly`) ; sous 8.4 il est testé, au-dessous il ne l'est pas. Extensions nécessaires : `pdo_mysql` (le reste est dans le noyau PHP ; `mbstring` n'est pas requis).
+**Fait le 25/11/2026** (dans la session cPanel du responsable, avec son accord) : points 1, 2 (en attente du certificat) et 3 ; constats ci-dessous.
+1. cPanel → Domaines : créer le sous-domaine `vision-preprod.avereo.fr`, **sans** partager la racine de `public_html`. Racine web obtenue : `/home/daje3540/vision-preprod.avereo.fr` (appelée `DOCROOT` plus bas). Elle contient `preprod` : c'est ce qui fait choisir à Vision sa configuration de préproduction (voir étape 2). Le DNS répond déjà (même adresse que `rapport-preprod.avereo.fr`).
+2. HTTPS : O2Switch n'affiche pas de bouton « Exécuter AutoSSL » ; le domaine reçoit d'abord un certificat **auto-signé**, que l'AutoSSL périodique remplace. Vérifier dans cPanel → SSL/TLS Status que `vision-preprod.avereo.fr` est « AutoSSL Domain Validated », puis que `https://vision-preprod.avereo.fr/` répond sans alerte de certificat. **Ne pas poursuivre l'étape 4 tant que ce n'est pas le cas.**
+3. PHP : **pas de MultiPHP Manager** chez O2Switch. L'outil « Sélectionner une version de PHP » (CloudLinux) a un onglet par domaine, mais l'isolation des sites y est **désactivée par l'hébergeur** : `vision-preprod.avereo.fr` utilise la version du compte, **PHP 8.3** (8.3 constaté pour les 27 domaines). Ne **pas** changer la version du compte : elle s'applique à tous les sites, production comprise. Vision demande PHP ≥ 8.1 (`never`, `readonly`) et est **qualifié en 8.3** : 140 tests de l'API en mode strict et contrôle de syntaxe des 37 fichiers PHP réussis sous PHP 8.3.33 (`vision-local.ps1 -Php 8.3`), en plus de 8.4. Extension nécessaire : `pdo_mysql` (le reste est dans le noyau PHP ; `mbstring` n'est pas requis) ; **À VÉRIFIER** dans les extensions du compte (Rapport et Passeport, sur le même compte, utilisent déjà PDO MySQL).
 4. Ne rien mettre d'autre dans `DOCROOT` (Rapport et les autres applications ont chacune leur propre dossier).
 
 ## 2. Base MySQL et configuration privée [responsable]
@@ -76,6 +77,7 @@ Variante A (SSH disponible, recommandée). `migrate.php` lit la **même configur
    ```text
    outils/database/migrate.php
    outils/database/migrations/001_create_vision_projects.sql
+   outils/database/migrations/002_create_vision_sync.sql
    outils/frontend/public/api/lib/config.php
    ```
 2. Copier `config.php` en `config-migration.php` dans le même dossier privé (permissions 600), y remplacer `user` et `password` par ceux du compte de migrations.
@@ -90,9 +92,9 @@ unset AVEREO_CONFIG_FILE
 ```
 4. **Supprimer `config-migration.php`** et le dossier d'outils une fois les migrations appliquées. Exporter la base (phpMyAdmin → Exporter) **avant** toute migration suivante.
 
-Variante B (sans SSH) : dans phpMyAdmin, onglet SQL sur `COMPTE_visionpp`, coller le contenu de `database/migrations/001_create_vision_projects.sql` (idempotent : `CREATE TABLE IF NOT EXISTS`). Limite : la table `schema_migrations` n'est pas renseignée ; le premier passage de l'exécuteur appliquera donc la migration 001 une deuxième fois, sans effet (idempotent), puis l'enregistrera.
+Variante B (sans SSH) : dans phpMyAdmin, onglet SQL sur `COMPTE_visionpp`, coller le contenu de `database/migrations/001_create_vision_projects.sql`, puis celui de `002_create_vision_sync.sql`, **dans cet ordre** (002 référence `vision_projects` ; idempotents : `CREATE TABLE IF NOT EXISTS`). Limite : la table `schema_migrations` n'est pas renseignée ; le premier passage de l'exécuteur appliquera donc ces migrations une deuxième fois, sans effet (idempotentes), puis les enregistrera.
 
-Contrôle : la table `vision_projects` existe, vide.
+Contrôle : les tables `vision_projects`, `vision_project_counters`, `vision_objects` et `vision_sync_log` existent, vides. Le compte de l'application n'a besoin que de SELECT, INSERT, UPDATE (aucune suppression physique : la synchronisation fait des suppressions logiques).
 
 ## 4. Construire et déposer l'application [responsable, avec une préparation par Claude possible]
 ### 4.1 Construire (poste de travail, depuis un clone à jour de `main`)
@@ -205,13 +207,14 @@ curl.exe -sI https://vision-preprod.avereo.fr/ | findstr /i "nosniff referrer x-
 5. **Secret compromis ou douteux** : générer un nouveau secret, le poser **dans les deux configurations** (CONNECT et Vision) ; les cookies déjà émis restent valides jusqu'à leur expiration (30 minutes) tant que l'ancienne clé dérivée n'a pas changé : le changement de secret les invalide.
 
 ## 9. Limites et points « À VÉRIFIER » de cette procédure
-- Le nom du sous-domaine, la racine web, la version de PHP, les extensions, la présence de SSH, le chemin de la configuration privée de CONNECT et le mode de déploiement de CONNECT préproduction n'ont pas été vérifiés sur le serveur.
+- Vérifiés sur le serveur le 25/11/2026 : nom du sous-domaine, racine web, DNS, version de PHP (8.3, imposée par l'hébergeur), présence de SSH et du Terminal. Restent à vérifier : certificat AutoSSL émis, extension `pdo_mysql`, connexion SSH effective, chemin de la configuration privée de CONNECT et mode de déploiement de CONNECT préproduction.
+- **PHP 8.3 sur l'hébergement, 8.4 en développement** : toute PR qui touche l'API passe aussi `vision-local.ps1 test -Php 8.3` tant que l'hébergement reste en 8.3.
 - **`.htaccess` et `AllowOverride`** : `api/lib/.htaccess` et `api/.htaccess` protègent le code (`Require all denied`). Si O2Switch ignorait ces fichiers, les bibliothèques seraient servies : les contrôles 6 le détectent.
 - **Ressources du serveur** : pour les projets seuls, la charge est négligeable. Les reconstructions 3D (Lot 7) ne tournent **pas** ici : elles relèvent du serveur OVH, qui n'est pas encore choisi (`docs/serveur-ovh.md`).
 - **Données** : seules des données fictives pendant la recette ; la base de préproduction n'est pas sauvegardée automatiquement par cette procédure.
 - **Comptes MySQL séparés** : prévus ici (application et migrations) ; cela lève l'une des réserves du Lot 2A, à confirmer par la recette.
 - **Compression, cache et en-têtes** : non réglés ; le fichier `.htaccess` ne fixe que l'HTTPS et trois en-têtes simples. Pas de `Strict-Transport-Security` : à décider avec la production.
-- **Pas de PWA** : l'installation sur l'écran d'accueil et le mode hors ligne viennent au Lot 2B ; la recette ne les vérifie pas.
+- **PWA (Lot 2C)** : l'installation sur l'écran d'accueil et la réouverture sans réseau exigent HTTPS ; leurs essais sur Android et iPhone (R04, R09) se font sur cette préproduction, une fois le certificat émis.
 
 ## Automatiser plus tard
 Un workflow `deploy-vision-o2switch.yml` calqué sur `deploy-rapport-o2switch.yml` (déclenchement manuel depuis `main`, build, validation de l'archive, sauvegarde FTPS de l'existant, déploiement FTPS, vérifications) modifie `.github/` et utilise des secrets GitHub : **PR séparée, avec ton accord**. Les contrôles de l'étape 6 (adaptés) en seraient la dernière étape.
