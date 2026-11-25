@@ -24,6 +24,8 @@ Depuis les Lots 2B et 2C, Vision enregistre côté serveur les **projets** (nom,
 4. Ne rien mettre d'autre dans `DOCROOT` (Rapport et les autres applications ont chacune leur propre dossier).
 
 ## 2. Base MySQL et configuration privée [responsable]
+**Fait le 25/11/2026** (accord du responsable ; mots de passe générés et saisis par lui seul) : base `daje3540_visionpp` ; comptes `daje3540_vispp` (SELECT, INSERT, UPDATE) et `daje3540_vismig` (CREATE, ALTER, INDEX, DROP, SELECT, INSERT, UPDATE, REFERENCES), sur cette base seulement ; dossier `/home/daje3540/.avereo/vision-preprod/` (700) avec `nonces/` (700) et `config.php` (600, syntaxe contrôlée sous PHP 8.3.37). Le fichier est écrit **sans aucun secret** : le mot de passe de `vispp` et le secret de lancement y sont des emplacements `A_REMPLACER`, à remplacer par le responsable (gestionnaire de fichiers cPanel, fichiers cachés affichés, ou `nano` dans le Terminal). Tant qu'ils restent, Vision refuse de démarrer (secret de moins de 32 caractères, connexion MySQL refusée). `admin_user_ids` est vide en attendant l'identifiant CONNECT du fondateur (**À VÉRIFIER**). Constaté aussi : PHP en ligne de commande 8.3.37 avec `pdo_mysql`.
+
 ### 2.1 Base et comptes (cPanel → Bases de données MySQL)
 cPanel préfixe tous les noms par le nom du compte : `COMPTE_`.
 1. Créer la base `COMPTE_visionpp` (suffixe court : limite de longueur des noms cPanel, **À VÉRIFIER**).
@@ -207,7 +209,7 @@ curl.exe -sI https://vision-preprod.avereo.fr/ | findstr /i "nosniff referrer x-
 5. **Secret compromis ou douteux** : générer un nouveau secret, le poser **dans les deux configurations** (CONNECT et Vision) ; les cookies déjà émis restent valides jusqu'à leur expiration (30 minutes) tant que l'ancienne clé dérivée n'a pas changé : le changement de secret les invalide.
 
 ## 9. Limites et points « À VÉRIFIER » de cette procédure
-- Vérifiés sur le serveur le 25/11/2026 : nom du sous-domaine, racine web, DNS, version de PHP (8.3, imposée par l'hébergeur), présence de SSH et du Terminal. Restent à vérifier : certificat AutoSSL émis, extension `pdo_mysql`, connexion SSH effective, chemin de la configuration privée de CONNECT et mode de déploiement de CONNECT préproduction.
+- Vérifiés sur le serveur le 25/11/2026 : nom du sous-domaine, racine web, DNS, version de PHP (8.3, imposée par l'hébergeur), présence de SSH et du Terminal. Constaté ensuite : `pdo_mysql` présent (PHP 8.3.37 en ligne de commande), Terminal cPanel fonctionnel. Restent à vérifier : certificat AutoSSL émis, connexion SSH depuis le poste, chemin de la configuration privée de CONNECT et mode de déploiement de CONNECT préproduction.
 - **PHP 8.3 sur l'hébergement, 8.4 en développement** : toute PR qui touche l'API passe aussi `vision-local.ps1 test -Php 8.3` tant que l'hébergement reste en 8.3.
 - **`.htaccess` et `AllowOverride`** : `api/lib/.htaccess` et `api/.htaccess` protègent le code (`Require all denied`). Si O2Switch ignorait ces fichiers, les bibliothèques seraient servies : les contrôles 6 le détectent.
 - **Ressources du serveur** : pour les projets seuls, la charge est négligeable. Les reconstructions 3D (Lot 7) ne tournent **pas** ici : elles relèvent du serveur OVH, qui n'est pas encore choisi (`docs/serveur-ovh.md`).
