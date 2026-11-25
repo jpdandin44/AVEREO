@@ -10,6 +10,10 @@ owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
 
+## 2026-11-24 — Un droit de création, sans quatrième profil métier
+
+Le responsable propose un profil Expert technique ou un droit spécifique, puis confirme la création seulement avec conservation des anciens dossiers. Choix : droit explicite par compte dans le catalogue privé existant, administré depuis CONNECT. Raisons : ne pas confondre profession et autorisation, conserver les trois parcours professionnels globaux, éviter une liste manuelle côté Rapport. Conséquences : pas d’accès technique implicite pour un administrateur, ni d’attribution automatique ; livraison CONNECT/Rapport coordonnée à qualifier. [Contrat](docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre).
+
 ## 24 novembre — Lancement d'AVEREO Vision
 
 Contexte : l'application AVEREO Vision (`architecture-v1/avereo-app-vision`) s'authentifie par ticket CONNECT, comme Rapport.

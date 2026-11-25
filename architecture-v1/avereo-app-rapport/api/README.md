@@ -13,6 +13,10 @@ tags:
   - php
 ---
 
+## Droit de création technique projeté — 24 novembre
+
+La capacité user.reportCapabilities.technicalReport de auth/me consomme désormais report_technical_create dans la politique privée CONNECT. Champ absent = false, booléen strict ; aucune liste d’identifiants ni rôle administrateur ne le remplace. Les dossiers déjà enregistrés gardent leurs contrôles usuels, les nouvelles copies/conversions exigent la capacité. [Contrat et parcours administrateur](../../avereo-app-connect/docs/profils-et-droits.md#droit-de-création-rapport-technique--complément-du-24-novembre). Les références antérieures à la liste privée sont historiques.
+
 ## Rapport Technique — capacité et champs du 24 novembre
 
 GET auth.php?action=me ajoute user.reportCapabilities.technicalReport, booléen calculé depuis les droits administrateur et technical_report_connect_user_ids privés. POST reports.php contrôle les créations techniques, copies et conversions ; catégorie absente ou inconnue suit la normalisation historique et ne contourne pas ce contrôle. Échec : HTTP 403, technical_report_refused, sans mutation. mission_technique (objet : objet/perimetre/limites) et observations[].mesures_techniques/references_techniques/verifications_techniques/limites_techniques sont facultatifs, chaînes de 50 000 octets maximum chacune. Type incorrect : HTTP 400. Aucun nouveau point d’entrée, tableau SQL ou octet de volume autorisé. [Compatibilité et règles d’accès](../docs/rapport-technique.md#contrat-de-la-première-tranche-locale).

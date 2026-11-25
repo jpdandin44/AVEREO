@@ -91,8 +91,30 @@ export async function mountProfileAdministration({ panel, usersList, organizatio
   profileEditor(null);
 
   for (const card of usersList.querySelectorAll('[data-account-id]')) {
+    card.querySelector('[data-technical-access]')?.remove();
     card.querySelector('[data-profile-assignment]')?.remove();
     const id = Number(card.dataset.accountId);
+    if (['owner','admin','member','viewer'].includes(card.dataset.accountRole)) {
+      const access = element('details', '', card); access.dataset.technicalAccess = ''; access.style.gridColumn = '1 / -1';
+      const enabled = data.technicalReportCreation?.[id] === true;
+      element('summary', `Création d’un Rapport Technique : ${enabled ? 'autorisée' : 'non autorisée'}`, access);
+      const allowed = checkbox(access, 'Créer un Rapport Technique', enabled);
+      element('p', 'Ce droit autorise seulement les nouveaux dossiers techniques. L’accès à Rapport et le droit Créer restent nécessaires. Les anciens dossiers restent consultables, modifiables et exportables selon leurs droits actuels.', access);
+      const button = element('button', 'Enregistrer le droit Rapport Technique', access); button.type = 'button';
+      const feedback = element('p', '', access); feedback.setAttribute('role', 'status');
+      button.onclick = async () => {
+        if (button.disabled || !await confirm(`${allowed.checked ? 'Autoriser' : 'Retirer'} le droit Rapport Technique pour ce compte ? Les dossiers restent conservés.`)) return;
+        if (!beginSave()) return;
+        button.disabled = true;
+        try {
+          await mutation(`/api/v1/admin/organizations/${organizationId}/users/${id}/technical-report-creation`, 'PUT', {
+            revision: data.revision, technicalReport: allowed.checked,
+          });
+          await refresh('Droit Rapport Technique enregistré. Les autres droits du compte sont conservés.');
+        } catch (error) { feedback.textContent = error.userMessage || 'Enregistrement impossible. Rechargez la gestion des comptes.'; }
+        finally { button.disabled = false; endSave(); }
+      };
+    }
     const current = data.assignments[id] || '';
     const profile = data.profiles.find(p => p.id === current);
     const details = element('details', '', card); details.dataset.profileAssignment = ''; details.style.gridColumn = '1 / -1';
@@ -132,7 +154,8 @@ export async function mountProfileAdministration({ panel, usersList, organizatio
   const history = element('details', '', outer); element('summary', 'Dernières modifications', history);
   const list = element('ul', '', history);
   for (const entry of data.audit.slice(-10).reverse()) {
-    const verb = entry.event === 'profile.assign' ? `affectation du compte ${entry.accountId}` : entry.event === 'profile.create' ? 'création de profil' : 'modification de profil';
+    const verb = entry.event === 'account.technical_report' ? `${entry.after ? 'autorisation' : 'retrait'} du droit Rapport Technique du compte ${entry.accountId}`
+      : entry.event === 'profile.assign' ? `affectation du compte ${entry.accountId}` : entry.event === 'profile.create' ? 'création de profil' : 'modification de profil';
     element('li', `${new Date(entry.at).toLocaleString('fr-FR')} — ${verb} — compte administrateur ${entry.actorId}`, list);
   }
   if (!data.audit.length) element('p', 'Aucune modification enregistrée.', history);

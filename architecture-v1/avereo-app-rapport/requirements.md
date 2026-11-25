@@ -13,6 +13,10 @@ tags:
   - habitologie
 ---
 
+## 24 novembre — Droit technique limité à la création
+
+Demande confirmée : droit administrable depuis CONNECT, sans quatrième profil professionnel ; anciens dossiers toujours consultables, modifiables et exportables selon leurs droits actuels. L’administrateur n’est pas implicitement habilité à créer ; une nouvelle copie exige l’autorisation. [Règle et preuve](docs/rapport-technique.md#droit-administré-depuis-connect--24-novembre).
+
 ## 24 novembre — Deux choix distincts et Terrain complet
 
 La création doit présenter les deux familles et expliquer un éventuel refus d’accès. La spécialité technique est choisie dans Mission et conservée dans les deux Word et le JSON. Un global sans profil doit conserver le bloc Terrain, son fil horizontal et les Tn ; aucun défaut CONNECT ne conditionne sa présence. [Critères et correction](docs/rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain).

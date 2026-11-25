@@ -12,6 +12,10 @@ tags:
   - architecture
 ---
 
+## 24 novembre — Capacité technique issue de CONNECT
+
+La capacité technique de auth/me provient du booléen projeté par CONNECT. Les actions et la propriété restent contrôlées séparément ; les nouvelles créations/copies/conversions techniques exigent le droit explicite. Aucune table ni modification de la chaîne de médias. [Contrat](docs/rapport-technique.md#droit-administré-depuis-connect--24-novembre).
+
 ## 24 novembre — Deux présentations sur le même dossier
 
 [Contrat du parcours technique](docs/rapport-technique.md#contrat-de-la-première-tranche-locale). La catégorie du dossier pilote les trois écrans techniques ou les cinq écrans globaux ; le profil de mission reste indépendant. Le nouveau composant de mission réutilise les champs client/bien et ajoute un objet JSON facultatif. Photos/plans/brouillons/API/Word restent partagés. auth/me expose une capacité calculée côté serveur ; reports POST contrôle création et conversion technique. Pas de table ni migration SQL supplémentaire.

@@ -12,6 +12,10 @@ tags:
   - changelog
 ---
 
+## 2026-11-24 — Droit technique raccordé à la gestion CONNECT
+
+Remplacement du droit implicite administrateur/liste privée par une projection explicite de création depuis CONNECT. Retrait et nouvelle copie refusée, ancien dossier toujours ouvert/modifié/exporté contrôlés sur les services natifs locaux. [Preuve et limites](docs/rapport-technique.md#droit-administré-depuis-connect--24-novembre). Aucun déploiement.
+
 ## 2026-11-24 — Clarification des types et rétablissement de Terrain
 
 La création propose les deux parcours dans une fenêtre explicite, sans perdre le brouillon en cas d’annulation. Ajout du type technique et du titre dans Mission, type repris dans les Word. Correction du Terrain masqué en global sans profil : présence et Tn vérifiés après réouverture serveur. [Retour utilisateur et contrôles](docs/rapport-technique.md#correction-après-retour-utilisateur--choix-des-types-et-terrain).

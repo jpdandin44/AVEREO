@@ -113,6 +113,26 @@ with tempfile.TemporaryDirectory(prefix='profils-connect-admin-') as scratch:
         check('native global role removal is fresh on next request', request('/api/v1/admin/profiles')[0] == 403)
         role.write_text(json.dumps({'active': True, 'global': True}))
         check('global role restoration is observed freshly', request('/api/v1/admin/profiles')[0] == 200)
+        right_path='/api/v1/admin/organizations/7/users/2/technical-report-creation'
+        revision=request('/api/v1/admin/profiles')[1]['data']['revision']
+        right={'revision':revision,'technicalReport':True}
+        check('technical grant requires CSRF',request(right_path,'PUT',right,csrf=False)[0]==403)
+        check('technical grant rejects foreign origin',request(right_path,'PUT',right,foreign=True)[0]==403)
+        check('ordinary account cannot grant technical access',request(right_path,'PUT',right,actor=2)[0]==403)
+        check('technical permission rejects strings',request(right_path,'PUT',dict(right,technicalReport='true'))[0]==422)
+        check('technical permission rejects unrelated role fields',request(right_path,'PUT',dict(right,role='owner'))[0]==422)
+        role.write_text(json.dumps({'active':True,'global':False}))
+        check('fresh global role required for technical grant',request(right_path,'PUT',right)[0]==403)
+        role.write_text(json.dumps({'active':True,'global':True}))
+        prior=json.loads(Path(str(db)+'.policy.json').read_text())['accounts']['2']
+        check('global owner enables technical permission through native endpoint',request(right_path,'PUT',right)[0]==200)
+        projected=json.loads(Path(str(db)+'.policy.json').read_text())['accounts']['2']
+        check('technical permission published for exact account',projected['report_technical_create'] is True)
+        check('grant preserves applications and ordinary actions',projected['applications']==prior['applications'] and projected['report_actions']==prior['report_actions'])
+        check('stale technical update rejected',request(right_path,'PUT',dict(right,technicalReport=False))[0]==409)
+        check('technical permission persisted in catalogue',request('/api/v1/admin/profiles')[1]['data']['technicalReportCreation']['2'] is True)
+        check('global owner revokes technical permission',request(right_path,'PUT',{'revision':revision+1,'technicalReport':False})[0]==200)
+        check('technical revocation projected immediately',json.loads(Path(str(db)+'.policy.json').read_text())['accounts']['2']['report_technical_create'] is False)
         report = {'status': 'passed', 'assertions': len(checks), 'checks': checks,
                   'fictitious': True, 'realIdentityOrHostedSSOTested': False,
                   'entry': origin, 'db': str(db), 'policy': str(db) + '.policy.json', 'profileId': profile, 'process': process.pid}

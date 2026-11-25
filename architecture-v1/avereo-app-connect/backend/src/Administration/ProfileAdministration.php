@@ -17,6 +17,7 @@ final class ProfileAdministration
         $data=$this->catalog->read();
         $data['actorId']=$actor;
         $data['profiles']=array_values($data['profiles']);
+        $data['technicalReportCreation']=(object)$data['technicalReportCreation'];
         $data['audit']=array_slice($data['audit'],-50);
         $data['applications']=$this->pdo->query("SELECT code,name FROM applications WHERE status='active' ORDER BY name,code")->fetchAll(\PDO::FETCH_ASSOC);
         return $data;
@@ -60,6 +61,26 @@ final class ProfileAdministration
         });
     }
 
+    public function setTechnicalCreation(int $actor,int $organization,int $target,array $input,string $request):array
+    {
+        ($this->assertGlobalAdministrator)($actor);
+        if (array_diff(array_keys($input),['revision','technicalReport'])!==[] || !is_bool($input['technicalReport']??null)) {
+            throw new ApiException(422,'TECHNICAL_ACCESS_INVALID','Choisissez explicitement autorisé ou non autorisé.');
+        }
+        return $this->mutate($actor,$input['revision']??null,$request,function(array &$data)use($organization,$target,$input):array {
+            $s=$this->pdo->prepare("SELECT m.role,u.status,u.archived_from_status FROM users u JOIN memberships m ON m.user_id=u.id JOIN organizations o ON o.id=m.organization_id WHERE u.id=? AND m.organization_id=? AND m.status='active' AND o.status='active'");
+            $s->execute([$target,$organization]);$user=$s->fetch(\PDO::FETCH_ASSOC);
+            if (!$user || !in_array($user['role'],['owner','member','viewer','admin'],true)
+                || $user['archived_from_status']!==null || !in_array($user['status'],['active','pending'],true)) {
+                throw new ApiException(403,'TECHNICAL_ACCESS_ACCOUNT_REFUSED','Ce compte ne peut pas recevoir ce droit.');
+            }
+            $before=$data['technicalReportCreation'][(string)$target]??false;
+            $data['technicalReportCreation'][(string)$target]=$input['technicalReport'];
+            return ['event'=>'account.technical_report','accountId'=>$target,'organizationId'=>$organization,
+                'before'=>$before,'after'=>$input['technicalReport'],'affected'=>[$target]];
+        });
+    }
+
     private function mutate(int $actor,mixed $revision,string $request,\Closure $operation):array
     {
         if (!is_int($revision) || $revision<0) throw new ApiException(422,'PROFILE_REVISION_REQUIRED','Rechargez le catalogue avant de modifier un profil.');
@@ -79,7 +100,9 @@ final class ProfileAdministration
             ($this->assertGlobalAdministrator)($actor);
             $this->catalog->save($data);
             foreach ($ids as $id) $this->publish($id);
-            return ['revision'=>$data['revision'],'profileId'=>$event['profileId']??$event['after'],'affectedAccounts'=>count($ids)];
+            return ['revision'=>$data['revision'],'affectedAccounts'=>count($ids)]
+                + ($event['event']==='account.technical_report' ? ['technicalReport'=>$event['after']]
+                    : ['profileId'=>$event['profileId']??$event['after']]);
         });
     }
 

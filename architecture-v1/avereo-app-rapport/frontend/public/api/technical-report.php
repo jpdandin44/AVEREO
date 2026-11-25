@@ -11,14 +11,11 @@ function api_is_technical_report(array $report): bool
     return !in_array($category, ['Visite Globale', 'Assistance avant-projet', 'Diagnostic specifique', 'Reception de travaux'], true);
 }
 
-/** Explicit CONNECT identities only; a declared profession or organization name grants nothing. */
+/** Only the explicit right projected by CONNECT grants this capability. */
 function api_can_create_technical_report(array $config, array $identity): bool
 {
-    if (api_identity_can_manage_all($identity, $config)) return true;
     if (($identity['provider'] ?? '') !== 'avereo_connect') return false;
-    $ids = $config['technical_report_connect_user_ids'] ?? [];
-    if (!is_array($ids) || !array_is_list($ids)) return false;
-    return in_array((string)($identity['id'] ?? ''), array_map('strval', $ids), true);
+    return api_profile_access($config,$identity)['technicalReport']===true;
 }
 
 function api_validate_technical_fields(array $report): void

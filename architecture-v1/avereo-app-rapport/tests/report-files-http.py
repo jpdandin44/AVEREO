@@ -79,6 +79,10 @@ config = {
     'connect_admin_user_ids': ['1'],
 }
 config_path = scratch / 'config.php'
+technical_policy_path = scratch / 'technical-policy.json'
+technical_policy_path.write_text(json.dumps({'version':1,'accounts':{str(id):{
+    'status':'active','not_before':0,'not_after':9223372036854775807,'applications':['rapport'],
+    'report_technical_create':False} for id in [1,101,102]}}),encoding='utf-8')
 
 
 def write_config():
@@ -251,7 +255,7 @@ try:
     if args.technical:
         from technical_report_http import qualify_technical_reports
         technical_recipe = qualify_technical_reports(req=req, enter=enter, save=save, mysql=mysql, database=db_name,
-            fixture=fixture, check=check, config=config, write_config=write_config)
+            fixture=fixture, check=check, config=config, write_config=write_config, policy_path=technical_policy_path)
     receipt = {'status': 'passed', 'count': len(checks), 'checks': checks, 'hostingChanged': False,
                'scope': 'Actual PHP, real SQL migration in disposable local MariaDB, existing application gate with fictitious signed identities; not hosted CONNECT/OAuth',
                'sourceRowsAndOwnerPreserved': True, 'copyOwnerSeparate': True}
@@ -267,7 +271,9 @@ try:
     print(json.dumps(receipt, ensure_ascii=False, indent=2), flush=True)
     if args.serve:
         if args.technical:
-            config['technical_report_connect_user_ids'] = ['101']; write_config()
+            policy=json.loads(technical_policy_path.read_text());policy['accounts']['101']['report_technical_create']=True
+            technical_policy_path.write_text(json.dumps(policy),encoding='utf-8')
+            config['connect_trial_access_file']=str(technical_policy_path);write_config()
         # Test-only portal, outside product/public sources. Generates fictitious launch tickets
         # for this temporary database only; no new real account or access is created.
         router = scratch / 'router.php'
