@@ -1,10 +1,11 @@
-﻿# Revue locale AVEREO Vision : outillage et worktree servi sont séparés.
-# Exemple : .\local\vision-revue.ps1 -Action up -Nom validation -Source 'C:\chemin avec espaces\candidat'
+﻿# Recette locale AVEREO Vision (phase 1, développement local) : outillage et worktree servi sont séparés.
+# La validation, elle, se fait en préproduction hébergée (docs/deploiement-mutualise.md), pas ici.
+# Exemple : .\local\vision-revue.ps1 -Action up -Source 'C:\chemin avec espaces\worktree de la PR'
 param(
     [Parameter(Position = 0)]
     [ValidateSet('up', 'down', 'reset', 'donnees', 'actualiser', 'etat', 'logs')]
     [string]$Action = 'up',
-    [ValidateSet('recette', 'validation')]
+    [ValidateSet('recette')]
     [string]$Nom = 'recette',
     [string]$Source,
     [ValidateRange(1, 65535)]
@@ -187,22 +188,20 @@ function Wait-RevueHealth([hashtable]$Settings) {
 }
 
 if ($Action -eq 'reset' -and -not $Confirmer) { throw 'reset efface la base locale : ajouter -Confirmer.' }
-if ($Action -eq 'actualiser' -and $Nom -ne 'recette') { throw 'actualiser est réservé à la recette.' }
-if ($Nom -eq 'validation' -and [string]::IsNullOrWhiteSpace($Source) -and $Action -ne 'up') {
-    # Hors « up », la validation reprend la source mémorisée lors du dernier « up » (fichier .env de l'environnement).
-    $memorise = (Read-RevueEnv (Join-Path $Environnements 'validation\.env'))['VISION_REVUE_SOURCE']
+if ([string]::IsNullOrWhiteSpace($Source) -and $Action -ne 'actualiser') {
+    # Sans -Source : la recette reprend la source du dernier « up » (le worktree de la PR en cours) ;
+    # à défaut, le worktree qui suit main (avereo-vision-recette).
+    $memorise = (Read-RevueEnv (Join-Path $Environnements 'recette\.env'))['VISION_REVUE_SOURCE']
     if ($memorise) { $Source = ($memorise.Replace('/', '\') -replace '\\architecture-v1\\avereo-app-vision$', '') }
-}
-if ($Action -ne 'etat' -and $Nom -eq 'validation' -and [string]::IsNullOrWhiteSpace($Source)) {
-    throw '-Source est obligatoire pour la validation (racine du worktree candidat).'
 }
 $RepoRoot = [IO.Path]::GetFullPath((Invoke-RevueGit $LocalDir @('rev-parse', '--show-toplevel')).Trim())
 $RepoCommon = (Invoke-RevueGit $RepoRoot @('rev-parse', '--git-common-dir')).Trim()
 if (-not [IO.Path]::IsPathRooted($RepoCommon)) { $RepoCommon = Join-Path $RepoRoot $RepoCommon }
 $RepoCommon = [IO.Path]::GetFullPath($RepoCommon)
-if ([string]::IsNullOrWhiteSpace($Source)) { $Source = Join-Path (Split-Path $RepoRoot -Parent) 'avereo-vision-recette' }
+$SourcePrincipale = Join-Path (Split-Path $RepoRoot -Parent) 'avereo-vision-recette'
+if ([string]::IsNullOrWhiteSpace($Source) -or $Action -eq 'actualiser') { $Source = $SourcePrincipale }
 $Source = [IO.Path]::GetFullPath($Source).TrimEnd('\', '/')
-if (-not $PSBoundParameters.ContainsKey('Port')) { $Port = if ($Nom -eq 'recette') { 5250 } else { 5251 } }
+if (-not $PSBoundParameters.ContainsKey('Port')) { $Port = 5250 }
 $settings = New-RevueSettings $Nom $Source $Port
 
 if ($Action -eq 'actualiser') {
@@ -214,7 +213,7 @@ Get-Command docker -ErrorAction Stop | Out-Null
 if ($LASTEXITCODE -ne 0) { throw 'Docker est indisponible. Démarrer Docker Desktop puis réessayer.' }
 
 if ($Action -eq 'etat') {
-    foreach ($name in @('recette', 'validation')) {
+    foreach ($name in @('recette')) {
         Write-Host "Environnement : $name"
         $envFile = Join-Path (Join-Path $Environnements $name) '.env'
         $values = Read-RevueEnv $envFile
@@ -237,7 +236,7 @@ if ($Action -eq 'etat') {
 
 switch ($Action) {
     'up' {
-        if ($Nom -eq 'recette' -and -not (Test-Path -LiteralPath $Source)) { Update-RevueRecette $Source }
+        if ($Source -eq $SourcePrincipale -and -not (Test-Path -LiteralPath $Source)) { Update-RevueRecette $Source }
         Assert-RevueWorktree $Source
         $frontend = Join-Path $settings.SourceApp 'frontend'
         if (-not (Test-Path -LiteralPath (Join-Path $frontend 'package.json'))) {
@@ -261,7 +260,7 @@ switch ($Action) {
         Invoke-RevueCompose $settings @('exec', '-T', 'api', 'php', '/opt/vision/database/migrate.php')
         Invoke-RevueCompose $settings @('exec', '-T', 'api', 'php', '/opt/revue/donnees-demo.php')
         Wait-RevueHealth $settings
-        Write-Host "Revue : http://127.0.0.1:$Port/revue/"
+        Write-Host "Recette locale : http://127.0.0.1:$Port/revue/"
         Write-Host 'Comptes fictifs : Conseiller A (900001), Conseiller B (900002), Fondateur F (900009).'
         Show-RevueSource $settings
     }

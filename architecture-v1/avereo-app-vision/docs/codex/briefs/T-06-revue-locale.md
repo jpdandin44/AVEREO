@@ -2,6 +2,8 @@
 
 Lot : outillage de revue — Branche : vision/revue-locale — Rédigé par Claude Code le 25/11/2026
 
+> **Note du 25/11/2026** : le responsable a ensuite précisé que **la recette est locale** (un seul environnement, port 5250, candidat de la PR en cours) et que **la validation se fait en préproduction** (`docs/deploiement-mutualise.md`). L'environnement local « validation » (port 5251) décrit ci-dessous a été retiré ; voir `docs/revue-locale.md`.
+
 ## Contexte
 Lis `architecture-v1/avereo-app-vision/AGENTS.md`, puis uniquement les fichiers listés ci-dessous.
 Le responsable veut **voir l'avancement des fonctions** dans un navigateur, comme pour les autres applications du dépôt (chaque PR donne un « service de revue » local `http://127.0.0.1:52xx/` avec des comptes fictifs). Pour AVEREO Vision, deux environnements locaux, chacun avec sa base et ses données de démonstration :
