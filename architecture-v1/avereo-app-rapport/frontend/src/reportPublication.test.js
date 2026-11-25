@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import JSZip from 'jszip';
-import { createPublication, readPublication } from './reportPublication.js';
+import { createPublication, createReview, readPublication } from './reportPublication.js';
 import { blobSha256 } from './photoOriginals.js';
 import { buildReportHtml, documentStatus } from './reportDelivery.js';
 
@@ -9,6 +9,24 @@ const id = 'a'.repeat(32), originalId = 'b'.repeat(32);
 const bytes = new Blob(['original-photo'], { type: 'image/png' });
 const report = () => ({ titre: 'Fictif', reference_dossier: 'RECETTE', onlineReportId: id, observations: [{ id: 'o1', observations: 'Constat', photos: [{ id: 'p1', src: 'data:image/png;base64,Y29waWU=', reportPhotoChoice: 'prepared', reportVersion: { preserved: true } }] }], ecoute: { notes: 'Notes privées à conserver' }, plans: [{ id: 'plan1', title: 'Plan fictif', kind: 'niveau', source: 'Recette', width: 1, height: 1, src: 'data:image/png;base64,cGxhbg==' }], signature: 'signature-fictive' });
 const word = new Blob(['client-word']);
+
+test('review freezes both PDF variants and a complete re-openable source without claiming approval', async () => {
+  const source = { ...report(), reviewSeriesId: 'd'.repeat(32) }, before = structuredClone(source);
+  const client = new Blob(['%PDF-1.7\nCLIENT']), expert = new Blob(['%PDF-1.7\nEXPERT PRIVATE']);
+  const { blob, manifest } = await createReview(source, word, word, client, expert, { id });
+  assert.equal(manifest.schema, 'avereo-rapport-review'); assert.equal(manifest.validatedByProfessional, false);
+  assert.equal(manifest.seriesId, source.reviewSeriesId);
+  const zip = await JSZip.loadAsync(await blob.arrayBuffer());
+  assert.equal(await zip.file('rapport-client.pdf').async('string'), await client.text());
+  assert.equal(await zip.file('rapport-expert.pdf').async('string'), await expert.text());
+  const restored = await readPublication(blob), expected = structuredClone(source); delete expected.onlineReportId;
+  assert.deepEqual(restored, expected); assert.deepEqual(source, before);
+  await assert.rejects(createReview(source, word, word, new Blob(['fake']), expert), /deux PDF/);
+  await assert.rejects(createReview(report(), word, word, client, expert), /Préparez/);
+  const wrong = JSON.parse(await zip.file('manifest.json').async('string')); wrong.seriesId = 'e'.repeat(32);
+  zip.file('manifest.json', JSON.stringify(wrong));
+  await assert.rejects(readPublication(new Blob([await zip.generateAsync({ type: 'uint8array', compression: 'STORE' })])), /incomplète/);
+});
 
 test('publication requires explicit professional confirmation and leaves source unchanged', async () => {
   const source = report(), before = structuredClone(source);

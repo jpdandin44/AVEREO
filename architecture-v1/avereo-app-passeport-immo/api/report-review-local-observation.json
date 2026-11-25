@@ -1,0 +1,30 @@
+{
+  "kind": "local-qualification",
+  "observedOn": "2026-11-25",
+  "branch": "feat/rapport-relecture-validation-pdf",
+  "baseSha": "09a4e768e9b2f11e2cdcecac65099139893c64b2",
+  "data": "fictitious",
+  "checks": {
+    "rapportNode": 263,
+    "passeportUi": 88,
+    "rapportNativeApiSql": 60,
+    "passeportNativeHttpSqlWithBrowser": 223,
+    "transferChecks": 41,
+    "toolingTests": 44,
+    "passeportBrowser": 7,
+    "rapportBrowserPreparation": 4,
+    "localPassportEntryAccounts": 3,
+    "pageErrors": 0,
+    "bothBuilds": "passed"
+  },
+  "selfValidation": "confirmed_by_user_2026-11-25",
+  "pdfConversion": "manual_word_to_pdf",
+  "pdfSemanticAndNativePaginationQualification": false,
+  "hostedSsoQualified": false,
+  "hostedWrites": false,
+  "humanPrApproval": false,
+  "reviewEntries": {
+    "rapport": "http://127.0.0.1:5260/fixture/",
+    "passeport": "http://127.0.0.1:5261/fixture/"
+  }
+}

@@ -8,7 +8,7 @@ final class PasseportPublications
 
     private static function invalid(): never { throw new PasseportError(422, 'Copie Rapport incomplète, altérée ou non prise en charge.'); }
 
-    public static function inspect(string $path): array
+    public static function inspect(string $path, bool $review = false): array
     {
         if (!class_exists(ZipArchive::class)) throw new PasseportError(503, 'Import Rapport indisponible sur ce serveur.');
         $limits=avereo_volume_limits();
@@ -21,7 +21,8 @@ final class PasseportPublications
             for ($i=0; $i<$zip->numFiles; $i++) {
                 $s=$zip->statIndex($i); if (!$s) self::invalid();
                 $name=$s['name']; $total+=$s['size'];
-                if (isset($files[$name]) || !preg_match('#^(manifest\.json|dossier-rapport\.json|rapport-client\.docx|originaux/[a-f0-9]{32}\.(jpg|png|webp))$#D',$name)
+                $pattern=$review ? '#^(manifest\.json|dossier-rapport\.json|rapport-(client|expert)\.(docx|pdf)|originaux/[a-f0-9]{32}\.(jpg|png|webp))$#D' : '#^(manifest\.json|dossier-rapport\.json|rapport-client\.docx|originaux/[a-f0-9]{32}\.(jpg|png|webp))$#D';
+                if (isset($files[$name]) || !preg_match($pattern,$name)
                     || $s['comp_method']!==ZipArchive::CM_STORE || $s['size']!==$s['comp_size'] || ($s['encryption_method'] ?? 0)!==0
                     || $s['size']<1 || $total>$limits['publicationBytes'] || ($name==='manifest.json' && $s['size']>65536)
                     || ($name==='dossier-rapport.json' && $s['size']>$limits['reportJsonBytes'])) self::invalid();
@@ -33,8 +34,8 @@ final class PasseportPublications
             }
             try { $manifest=json_decode($zip->getFromName('manifest.json'),true,64,JSON_THROW_ON_ERROR); }
             catch (Throwable) { self::invalid(); }
-            if (($manifest['schema']??null)!=='avereo-rapport-publication' || ($manifest['version']??null)!==1
-                || !preg_match('/^[a-f0-9]{32}$/D',$manifest['id']??'') || ($manifest['validatedByProfessional']??null)!==true
+            if (($manifest['schema']??null)!==($review?'avereo-rapport-review':'avereo-rapport-publication') || ($manifest['version']??null)!==1
+                || !preg_match('/^[a-f0-9]{32}$/D',$manifest['id']??'') || ($manifest['validatedByProfessional']??null)!==!$review
                 || !is_array($manifest['entries']??null) || !array_is_list($manifest['entries']) || count($manifest['entries'])!==count($files)-1
                 || !is_array($manifest['originals']??null) || !array_is_list($manifest['originals'])) self::invalid();
             $title=PasseportStorage::text($manifest['title']??null,800);
@@ -48,10 +49,19 @@ final class PasseportPublications
                 $seen[$name]=true;
             }
             if (!isset($seen['dossier-rapport.json'],$seen['rapport-client.docx'])) self::invalid();
+            if ($review) {
+                if (!preg_match('/^[a-f0-9]{32}$/D',(string)($manifest['seriesId']??'')) || !isset($seen['rapport-expert.docx'],$seen['rapport-client.pdf'],$seen['rapport-expert.pdf'])) self::invalid();
+                foreach (['client','expert'] as $audience) {
+                    $stream=$zip->getStream('rapport-'.$audience.'.pdf');
+                    if (!$stream) self::invalid();
+                    try { if (fread($stream,5)!=='%PDF-') self::invalid(); } finally { fclose($stream); }
+                }
+            }
             if (!avereo_volume_has_memory($files['dossier-rapport.json']['bytes'] * 3 + 16 * 1024 * 1024)) throw new PasseportError(503,'Le serveur ne dispose pas de la mémoire nécessaire pour ce dossier. Le paquet complet est conservé sur votre poste.');
             try { $report=json_decode($zip->getFromName('dossier-rapport.json'),true,512,JSON_THROW_ON_ERROR); }
             catch (Throwable) { self::invalid(); }
             if (!is_array($report) || !is_array($report['observations']??null) || !array_is_list($report['observations'])) self::invalid();
+            if ($review && ($report['reviewSeriesId']??null)!==$manifest['seriesId']) self::invalid();
             $mapped=[]; $referenced=[]; $reopenedBytes=$files['dossier-rapport.json']['bytes'];
             $jsonFlags=JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_LINE_TERMINATORS;
             if (array_key_exists('onlineReportId',$report)) $reopenedBytes-=strlen(json_encode(['onlineReportId'=>$report['onlineReportId']],$jsonFlags|JSON_THROW_ON_ERROR))-1;
@@ -73,7 +83,7 @@ final class PasseportPublications
                 foreach ($observation['photos']??[] as $pi=>$photo) if (isset($photo['original']) && !isset($mapped[$oi.':'.$pi])) self::invalid();
             }
             foreach ($files as $name=>$entry) if (str_starts_with($name,'originaux/') && !isset($referenced[$name])) self::invalid();
-            return ['id'=>$manifest['id'],'title'=>$title,'reference'=>$reference,'preparedAt'=>$manifest['createdAt'],'files'=>$files];
+            return ['id'=>$manifest['id'],'title'=>$title,'reference'=>$reference,'preparedAt'=>$manifest['createdAt'],'files'=>$files] + ($review?['seriesId'=>$manifest['seriesId']]:[]);
         } finally { $zip->close(); }
     }
 

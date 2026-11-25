@@ -71,8 +71,8 @@ function pi_transfer_export(array $config, array $plan, string $destination): ar
         if (!pi_transfer_query($db,'SELECT owner_id FROM pi_workspaces WHERE owner_id=? FOR UPDATE',[$owner])->fetch()) throw new RuntimeException('Source workspace absent.');
         $bien=pi_transfer_query($db,'SELECT * FROM pi_biens WHERE owner_id=? AND bien_id=? AND deleted_at IS NULL FOR UPDATE',[$owner,$bienId])->fetch();
         if (!$bien || !$bien['client_id']) throw new RuntimeException('Selected property and client required.');
-        if (!empty($bien['report_publications'])) throw new RuntimeException('Private Rapport publications require a qualified complete transfer; no partial export.');
-        unset($bien['report_publications']);
+        if (!empty($bien['report_publications']) || !empty($bien['report_reviews'])) throw new RuntimeException('Private Rapport publications require a qualified complete transfer; no partial export.');
+        unset($bien['report_publications'],$bien['report_reviews']);
         $client=pi_transfer_query($db,'SELECT * FROM pi_clients WHERE id=? AND owner_id=?',[$bien['client_id'],$owner])->fetch();
         if (!$client) throw new RuntimeException('Source client owner mismatch.');
         $documents=pi_transfer_query($db,'SELECT * FROM pi_documents WHERE owner_id=? AND bien_id=? ORDER BY id',[$owner,$bienId])->fetchAll();
@@ -184,6 +184,7 @@ function pi_transfer_import(array $config, array $plan, string $directory, strin
             // A newly added, unused sharing field is not transferred content.
             if (array_key_exists('document_shares',$existing) && $existing['document_shares']===null) unset($existing['document_shares']);
             if (array_key_exists('report_publications',$existing) && $existing['report_publications']===null) unset($existing['report_publications']);
+            if (array_key_exists('report_reviews',$existing) && $existing['report_reviews']===null) unset($existing['report_reviews']);
             if (!pi_transfer_same($existing,$bien) || !$existingClient || !pi_transfer_same($existingClient,$client)
                 || count($existingDocuments)!==count($documents)) throw new RuntimeException('Existing target differs; no overwrite.');
             foreach ($existingDocuments as $document) {

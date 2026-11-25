@@ -5,6 +5,7 @@ require dirname(__DIR__) . '/connect/session.php';
 require __DIR__ . '/storage.php';
 require __DIR__ . '/sharing.php';
 require __DIR__ . '/publications.php';
+require __DIR__ . '/reviews.php';
 header('Cache-Control: private, no-store');
 header('X-Content-Type-Options: nosniff');
 header('Content-Type: application/json; charset=utf-8');
@@ -47,6 +48,37 @@ try {
     if ($path==='/api/share-recipient' && $method==='POST') {
         $store->bien((string)($body['bienId']??''));
         passeport_json((new PasseportSharing($store,$config))->resolve((string)($body['recipient']??'')));
+    }
+    if ($path==='/api/review-recipient' && $method==='POST') {
+        $store->bien((string)($body['bienId']??''));
+        passeport_json((new PasseportReviews($store,$config))->resolve((string)($body['recipient']??'')));
+    }
+    if ($path==='/api/report-reviews' && $method==='GET') passeport_json((new PasseportReviews($store,$config))->listing());
+    if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/report-reviews$#D',$path,$m)) {
+        $reviews=new PasseportReviews($store,$config);
+        if ($method==='GET') passeport_json($reviews->listing($m[1]));
+        if ($method==='POST') {
+            $file=$_FILES['review']??null;
+            if (!is_array($file) || ($file['error']??-1)!==UPLOAD_ERR_OK || !is_string($file['tmp_name']??null)) throw new PasseportError(422,'Fichier de revue absent ou limite serveur dépassée.');
+            $revision=$_POST['revision']??'';
+            if (!is_string($revision) || !preg_match('/^(0|[1-9][0-9]{0,8})$/D',$revision)) throw new PasseportError(422,'Révision de revue invalide.');
+            passeport_json($reviews->submit($m[1],$file['tmp_name'],['revision'=>(int)$revision,'confirm'=>($_POST['confirm']??'')==='true','recipient'=>$_POST['recipient']??'','expectedRecipient'=>$_POST['expectedRecipient']??'']),201);
+        }
+        throw new PasseportError(405,'Méthode de revue non autorisée.');
+    }
+    if (preg_match('#^/api/report-reviews/([a-f0-9]{32})(?:/file/(source|client|expert))?$#D',$path,$m)) {
+        $reviews=new PasseportReviews($store,$config);
+        if ($method==='PATCH' && !isset($m[2])) passeport_json($reviews->change($m[1],$body));
+        if ($method==='GET' && isset($m[2])) {
+            $file=$reviews->file($m[1],$m[2]);
+            header('Content-Type: '.$file['mime']); header('Content-Length: '.$file['size']);
+            header('X-Avereo-Review-Sha256: '.$file['sha256']);
+            header('Content-Disposition: attachment; filename="'.$file['name'].'"');
+            header("Content-Security-Policy: sandbox; default-src 'none'");
+            try { readfile($file['path']); } finally { if ($file['temporary']) @unlink($file['path']); }
+            exit;
+        }
+        throw new PasseportError(405,'Méthode de revue non autorisée.');
     }
     if (preg_match('#^/api/biens/([A-Za-z0-9_-]{1,64})/report-publications(?:/([a-f0-9]{32})/source)?$#D',$path,$m)) {
         $publications=new PasseportPublications($store);

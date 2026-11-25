@@ -12,11 +12,17 @@ import tempfile
 import time
 import uuid
 import zipfile
+import argparse
+import os
 from http.cookies import SimpleCookie
 from pathlib import Path
 
 APP=Path(__file__).resolve().parents[1]
 IMAGE='avereo-passeport-connect-test:local'
+parser=argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--serve',action='store_true',help='Keep only fictitious local review accounts and native storage alive for human review')
+parser.add_argument('--port',type=int,default=5261)
+args=parser.parse_args()
 
 def command(*args):
     return subprocess.check_output(args,text=True,stderr=subprocess.STDOUT).strip()
@@ -46,7 +52,7 @@ def run():
             command('docker','run','-d','--rm','--name',database,'--network',network,
                 '-e','MARIADB_RANDOM_ROOT_PASSWORD=1','-e','MARIADB_DATABASE=passeport',
                 '-e','MARIADB_USER=passeport','-e',f'MARIADB_PASSWORD={password}','mariadb:11.4'); created.append(database)
-            command('docker','run','-d','--rm','--name',web,'--network',network,'-p','127.0.0.1::80',
+            command('docker','run','-d','--rm','--name',web,'--network',network,'-p',f'127.0.0.1:{args.port if args.serve else ""}:80',
                 '--mount',f'type=bind,source={root}/public,target=/var/www/html,readonly',
                 '--mount',f'type=bind,source={root}/config.php,target=/fixture/config.php,readonly',
                 '--mount',f'type=bind,source={directory_path},target=/fixture/share-directory.json,readonly',
@@ -55,12 +61,13 @@ def run():
                 '--mount',f'type=bind,source={APP}/workflows/migrate-document-organisation.php,target=/fixture/migrate-document-organisation.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/migrate-document-sharing.php,target=/fixture/migrate-document-sharing.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/migrate-report-publications.php,target=/fixture/migrate-report-publications.php,readonly',
+                '--mount',f'type=bind,source={APP}/workflows/migrate-report-reviews.php,target=/fixture/migrate-report-reviews.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/scheduled-backup.php,target=/fixture/scheduled-backup.php,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/backup-cron.php,target=/fixture/backup-cron.php,readonly',
                 '--mount',f'type=bind,source={APP}/tests/scheduled-backup.php,target=/fixture/scheduled-backup-test.php,readonly',
                 '-e','AVEREO_CONFIG_FILE=/fixture/config.php',IMAGE); created.append(web)
             port=int(command('docker','port',web,'80/tcp').rsplit(':',1)[1])
-            bootstrap="mkdir('/private-documents',0700); chmod('/private-documents',0700); chown('/private-documents','www-data'); $c=require '/fixture/config.php'; for($i=0;$i<60;$i++){try{$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);break;}catch(Throwable){usleep(500000);}} $p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); $p->exec(preg_replace('/^ *(trashed_at|document_settings|document_shares|report_publications) [^\\n]*\\n/m','',file_get_contents('/fixture/storage.sql'))); $p->exec(\"INSERT INTO pi_workspaces(owner_id,settings) VALUES ('migration-fixture','{}')\");"
+            bootstrap="mkdir('/private-documents',0700); chmod('/private-documents',0700); chown('/private-documents','www-data'); $c=require '/fixture/config.php'; for($i=0;$i<60;$i++){try{$p=new PDO($c['storage_dsn'],$c['storage_user'],$c['storage_password']);break;}catch(Throwable){usleep(500000);}} $p->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION); $p->exec(preg_replace('/^ *(trashed_at|document_settings|document_shares|report_publications|report_reviews) [^\\n]*\\n/m','',file_get_contents('/fixture/storage.sql'))); $p->exec(\"INSERT INTO pi_workspaces(owner_id,settings) VALUES ('migration-fixture','{}')\");"
             command('docker','exec',web,'php','-r',bootstrap)
             dry=json.loads(command('docker','exec',web,'php','/fixture/migrate-document-organisation.php','/fixture/config.php','passeport'))
             check(dry['status']=='dry_run' and set(dry['requiredColumns'])=={'trashed_at','document_settings'},'organisation migration defaults to dry run on historical schema')
@@ -76,6 +83,12 @@ def run():
             check(publication_migration['addedColumns']==['report_publications'] and publication_migration['existingRowsPreserved'],'publication migration preserves historical rows')
             publication_repeat=json.loads(command('docker','exec',web,'php','/fixture/migrate-report-publications.php','/fixture/config.php','passeport','--apply'))
             check(publication_repeat['addedColumns']==[],'publication migration is idempotent')
+            review_dry=json.loads(command('docker','exec',web,'php','/fixture/migrate-report-reviews.php','/fixture/config.php','passeport'))
+            check(review_dry['requiredColumns']==['report_reviews'],'review migration previews the additive nullable column')
+            review_migrated=json.loads(command('docker','exec',web,'php','/fixture/migrate-report-reviews.php','/fixture/config.php','passeport','--apply'))
+            check(review_migrated['existingRowsPreserved'] and review_migrated['addedColumns']==['report_reviews'],'review migration preserves all existing rows')
+            review_repeat=json.loads(command('docker','exec',web,'php','/fixture/migrate-report-reviews.php','/fixture/config.php','passeport','--apply'))
+            check(review_repeat['addedColumns']==[],'review migration is idempotent')
             def request(path,cookie=None,method='GET',body=None,csrf=None,origin='https://passeport-immo.test',content_type='application/json'):
                 headers={}
                 if cookie: headers['Cookie']=cookie
@@ -293,9 +306,40 @@ def run():
                 return json.loads(command('docker','exec',web,'php','/fixture/backup-storage.php','/fixture/config.php','/tmp/private-backup-publications-'+str(publication_backup_count)))
             check_publications(request,check,cookie,second,foreign,csrf,foreign_csrf,sql,
                 publication_backup)
-            command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
-            check(request(path+'/file',cookie)[0]==503,'altered blob not returned')
+            from review_http import run as check_reviews
+            check_reviews(request,check,cookie,second,foreign,csrf,foreign_csrf,sql,publication_backup,accounts,directory,launch(44),f'http://127.0.0.1:{port}',root/'config.php')
+            if not args.serve:
+                command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
+                check(request(path+'/file',cookie)[0]==503,'altered blob not returned')
             print(json.dumps({'assertions':len(checks),'checks':checks,'scheduledBackup':scheduled,'database':'MariaDB 11.4','isolated':True},ensure_ascii=False))
+            if args.serve:
+                origin=f'http://127.0.0.1:{port}'
+                config_file=root/'config.php'
+                configured=config_file.read_text(encoding='utf-8').replace("'storage_origin'=>'https://passeport-immo.test'","'storage_origin'=>'"+origin+"'").replace("'connect_portal_url'=>'https://connect-preprod.avereo.fr/'","'connect_portal_url'=>'"+origin+"/fixture/'")
+                config_file.write_text(configured,encoding='utf-8')
+                htaccess=root/'public/.htaccess';text=htaccess.read_text(encoding='utf-8');htaccess.write_text(text.replace('RewriteEngine On','RewriteEngine On\n  RewriteRule ^fixture/?$ fixture.php [END]'),encoding='utf-8')
+                (root/'public/fixture.php').write_text('''<?php
+declare(strict_types=1);
+$c=require '/fixture/config.php';if(($c['environment']??'')!=='local'){http_response_code(404);exit;}
+$accounts=[42=>'Déposant / expert A',43=>'Second expert B',44=>'Client fictif'];
+$id=(int)($_GET['account']??0);
+if(isset($accounts[$id])){
+  $encode=static fn($s)=>rtrim(strtr(base64_encode($s),'+/','-_'),'=');$now=time();
+  $p=['v'=>1,'app'=>'passeport-immo','iat'=>$now,'exp'=>$now+90,'nonce'=>$encode(random_bytes(24)),'remembered'=>false,'identity'=>['provider'=>'avereo_connect','id'=>(string)$id]];
+  $payload=$encode(json_encode($p,JSON_THROW_ON_ERROR));$ticket=$payload.'.'.$encode(hash_hmac('sha256',$payload,$c['connect_launch_secret'],true));
+  header('Location: /connect/entry.php?ticket='.rawurlencode($ticket),true,303);exit;
+}
+header('Content-Type: text/html; charset=utf-8');header('Cache-Control: no-store');
+echo '<!doctype html><html lang="fr"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Relecture locale AVEREO</title><body style="font-family:system-ui;max-width:720px;margin:40px auto;padding:20px"><h1>Relecture locale — comptes fictifs</h1><p>Cette copie de travail est isolée des comptes et données hébergés. Choisissez un compte ; utilisez une fenêtre privée distincte pour le second expert.</p>';
+foreach($accounts as $account=>$label)echo '<p><a href="?account='.$account.'">'.$label.'</a></p>';
+echo '</body></html>';
+''',encoding='utf-8')
+                entry={'reviewEntry':origin+'/fixture/','data':'fictitious','isolated':True,'accounts':[42,43,44]}
+                if os.environ.get('PASSEPORT_REVIEW_ENTRY'):
+                    Path(os.environ['PASSEPORT_REVIEW_ENTRY']).write_text(json.dumps(entry),encoding='utf-8')
+                print(json.dumps(entry),flush=True)
+                while True:
+                    directory();time.sleep(30)
         finally:
             for container in reversed(created): subprocess.run(['docker','stop',container],check=True,stdout=subprocess.DEVNULL)
             subprocess.run(['docker','network','rm',network],check=False,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)

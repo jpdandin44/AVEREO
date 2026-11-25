@@ -140,7 +140,7 @@ try:
     deadline = time.monotonic() + 45
     while True:
         ready = subprocess.run(['docker', 'exec', '-e', 'MYSQL_PWD=' + password, container,
-                                'mariadb', '-uroot', '-e', 'SELECT 1'], capture_output=True)
+                                'mariadb', '--protocol=tcp', '-h127.0.0.1', '-uroot', db_name, '-e', 'SELECT 1'], capture_output=True)
         if ready.returncode == 0:
             break
         assert time.monotonic() < deadline, 'Fictitious database startup timed out'

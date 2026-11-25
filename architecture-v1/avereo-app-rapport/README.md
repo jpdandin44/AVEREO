@@ -5,13 +5,18 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-24
+updated: 2026-11-25
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## Relecture experte et PDF client — développement local
+
+Le circuit privé de relecture est développé en local : préparation depuis Rapport, nomination CONNECT dans Passeport, corrections ou validation explicite puis publication séparée du PDF client exact. L’expert rédacteur peut se désigner lui-même ; second expert facultatif. Conversion Word → PDF manuelle dans cette tranche ; aucune livraison hébergée. [Contrat et procédure](workflows/relecture-validation-pdf.md).
+
 
 ## 24 novembre — Droit de création piloté depuis CONNECT
 

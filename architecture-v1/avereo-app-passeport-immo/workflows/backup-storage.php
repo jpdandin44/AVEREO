@@ -38,6 +38,16 @@ function passeport_backup(array $config, string $destination): array
                 if (filesize($target)!==$record['size'] || hash_file('sha256',$target)!==$record['sha256']) throw new RuntimeException('Publication privée différente.');
                 $snapshot['files'][]=['name'=>$name,'size'=>$record['size'],'sha256'=>$record['sha256']];
             }
+            $reviews=empty($bien['report_reviews'])?[]:json_decode($bien['report_reviews'],true,64,JSON_THROW_ON_ERROR)['items'];
+            foreach ($reviews as $record) {
+                if (!preg_match('/^[a-f0-9]{32}$/D',$record['id'])) throw new RuntimeException('Revue non conforme.');
+                $name='review-'.hash('sha256',$bien['owner_id']."\0".$bien['bien_id']."\0".$record['id']).'.blob';
+                $source=$config['storage_directory'].'/'.$name; $target=$destination.'/documents/'.$name;
+                if (is_link($source) || !is_file($source) || !copy($source,$target)) throw new RuntimeException('Sauvegarde de revue privée échouée.');
+                chmod($target,0600);
+                if (filesize($target)!==$record['size'] || hash_file('sha256',$target)!==$record['sha256']) throw new RuntimeException('Revue privée différente.');
+                $snapshot['files'][]=['name'=>$name,'size'=>$record['size'],'sha256'=>$record['sha256']];
+            }
         }
         $pdo->commit();
     } catch (Throwable $error) { if ($pdo->inTransaction()) $pdo->rollBack(); throw $error; }

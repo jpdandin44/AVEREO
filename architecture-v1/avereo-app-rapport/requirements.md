@@ -5,13 +5,18 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-24
+updated: 2026-11-25
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## Relecture, décision et publication
+
+Désignation explicite du relecteur, auto-validation permise, refus motivé, nouvelle soumission sans perte, décision périmée refusée et publication propriétaire séparée. Les destinataires documentaires ne reçoivent ni source complète, ni PDF expert, ni remarques. Le PDF publié doit être identique au PDF client approuvé ; aucune conversion silencieuse après validation. Les parcours existants et droits de création technique restent conservés. [Contrat et procédure](workflows/relecture-validation-pdf.md).
+
 
 ## 24 novembre — Droit technique limité à la création
 

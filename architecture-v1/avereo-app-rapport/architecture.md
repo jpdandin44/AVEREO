@@ -5,12 +5,17 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-24
+updated: 2026-11-25
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## Revue privée par version
+
+Rapport prépare un paquet de revue complet avec les deux PDF ; Passeport conserve les demandes dans la colonne nullable pi_biens.report_reviews et les paquets hors documents partageables. La nomination nominative réutilise le répertoire CONNECT ; seule la publication confirmée copie le PDF client approuvé dans pi_documents. Les sauvegardes incluent les archives privées. Pas de nouveau rôle global CONNECT. [Contrat et procédure](workflows/relecture-validation-pdf.md).
+
 
 ## 24 novembre — Capacité technique issue de CONNECT
 

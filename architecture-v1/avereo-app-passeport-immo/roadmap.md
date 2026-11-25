@@ -5,10 +5,15 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-24
+updated: 2026-11-25
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## Relecture/PDF — lot local distinct de PR199
+
+Développement local autorisé le 25 novembre, auto-validation du rédacteur confirmée. Qualification du circuit natif, récupération complète et confidentialité en cours ; revue locale et PR à préparer. Préproduction et Mise en production non engagées pour ce complément. Le moteur de conversion automatique, la rétention et le remplacement d’une version publiée restent à cadrer ; les réserves V1.2 et la livraison préparée de PR199 sont conservées. [Contrat et procédure](../avereo-app-rapport/workflows/relecture-validation-pdf.md).
+
 
 ## 24 novembre — Revue de la bibliothèque hébergée
 

@@ -5,12 +5,17 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-24
+updated: 2026-11-25
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## Relecture experte et publication PDF — candidat local
+
+Ajout de la préparation des demandes dans Rapport, de leur import privé dans Passeport, de la relecture des deux PDF, du refus motivé, de la validation et du retrait de demande. Publication séparée du PDF client validé, historique et sources privées conservés ; migration additive et sauvegarde adaptées. Paquets historiques préservés. Aucun merge ou déploiement de ce complément. [Contrat et procédure](workflows/relecture-validation-pdf.md).
+
 
 ## 2026-11-24 — Droit technique raccordé à la gestion CONNECT
 

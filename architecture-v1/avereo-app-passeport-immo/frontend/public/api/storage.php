@@ -118,7 +118,7 @@ final class PasseportStorage
                 $client = ['id'=>self::id(), 'name'=>self::text($body['name'] ?? null,200), 'created_at'=>self::now()];
                 $this->query('INSERT INTO pi_clients(id,owner_id,name,created_at) VALUES (?,?,?,?)',[$client['id'],$this->owner,$client['name'],$client['created_at']]);
             }
-            if ($bien['client_id'] !== $client['id'] && (!empty($bien['report_publications']) || $this->query('SELECT id FROM pi_documents WHERE owner_id=? AND bien_id=? LIMIT 1',[$this->owner,$id])->fetch())) {
+            if ($bien['client_id'] !== $client['id'] && (!empty($bien['report_publications']) || !empty($bien['report_reviews']) || $this->query('SELECT id FROM pi_documents WHERE owner_id=? AND bien_id=? LIMIT 1',[$this->owner,$id])->fetch())) {
                 throw new PasseportError(409, 'Un bien contenant des documents conserve son client.');
             }
             $this->query('UPDATE pi_biens SET client_id=? WHERE owner_id=? AND bien_id=?',[$client['id'],$this->owner,$id]);
@@ -149,14 +149,14 @@ final class PasseportStorage
             };
             if (!$valid) throw new PasseportError(422,'Le fichier ne correspond pas au format d’archive annoncé.');
         }
-        if ($ext === 'zip' && class_exists(ZipArchive::class)) {
+        if (in_array(substr($header,0,4),["PK\x03\x04","PK\x05\x06","PK\x07\x08"],true) && class_exists(ZipArchive::class)) {
             $archive = new ZipArchive();
             if ($archive->open($path, ZipArchive::RDONLY) === true) {
                 try {
                     $entry = $archive->statName('manifest.json');
                     if ($entry && $entry['size'] <= 65536) {
                         $manifest = json_decode($archive->getFromName('manifest.json'),true);
-                        if (($manifest['schema'] ?? null) === 'avereo-rapport-publication') {
+                        if (in_array($manifest['schema'] ?? null, ['avereo-rapport-publication','avereo-rapport-review'],true)) {
                             throw new PasseportError(422,'Utilisez « Importer un dossier Rapport finalisé » pour conserver la copie complète en privé.');
                         }
                     }
@@ -307,6 +307,11 @@ final class PasseportStorage
     {
         if (!preg_match('/^[a-f0-9]{32}$/D',$id)) throw new PasseportError(404,'Copie privée introuvable.');
         return $this->directory.'/publication-'.hash('sha256',$this->owner."\0".$bien."\0".$id).'.blob';
+    }
+    public function reviewPath(string $owner, string $bien, string $id): string
+    {
+        if (!preg_match('/^[a-f0-9]{32}$/D',$id)) throw new PasseportError(404,'Revue introuvable.');
+        return $this->directory.'/review-'.hash('sha256',$owner."\0".$bien."\0".$id).'.blob';
     }
     public function filePath(array $document): string
     {

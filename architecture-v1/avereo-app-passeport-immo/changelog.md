@@ -5,10 +5,15 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-24
+updated: 2026-11-25
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## Relecture experte et publication PDF — candidat local
+
+Ajout de la préparation des demandes dans Rapport, de leur import privé dans Passeport, de la relecture des deux PDF, du refus motivé, de la validation et du retrait de demande. Publication séparée du PDF client validé, historique et sources privées conservés ; migration additive et sauvegarde adaptées. Paquets historiques préservés. Aucun merge ou déploiement de ce complément. [Contrat et procédure](../avereo-app-rapport/workflows/relecture-validation-pdf.md).
+
 
 ## 24 novembre — Bibliothèque livrée en préproduction
 

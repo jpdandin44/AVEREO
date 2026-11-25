@@ -3,6 +3,7 @@ import { protocolOptions, escapeHtml } from './reportHtml.js';
 import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import PublicationPanel from './PublicationPanel.jsx';
+import ReviewPanel from './ReviewPanel.jsx';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
 import InterventionsPanel from './InterventionsPanel.jsx';
 import ScreenDisclosure, { ScreenPresentation, DisclosureControls, useScreenPresentation, excerpt, revealScreenField } from './ScreenDisclosure.jsx';
@@ -17,7 +18,7 @@ import VisitGuide from './VisitGuide.jsx';
 import { environmentContextError, environmentContext } from './environmentContext.js';
 import { PhotoOriginalControls } from './PhotoOriginals.jsx';
 import { applyPhotoReportVersion, reportPhotoSource } from './photoReportVersion.js';
-import { attachOriginal, photoOriginalCapabilities } from './photoOriginals.js';
+import { attachOriginal, photoOriginalCapabilities, blobSha256 } from './photoOriginals.js';
 import { observationPlanNames, observationPlanViews, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
@@ -1948,7 +1949,7 @@ function ShareTestCopy({ report }) {
   </section>;
 }
 
-function ValidationStep({ report, setReport, validation, onPreview, onExport, onPreparePublication, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep, readOnly = false, canExport = true, setDeliveryOptions }) {
+function ValidationStep({ report, setReport, validation, onPreview, onExport, onPreparePublication, onPrepareReview, onPackageReview, onDownloadReview, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep, readOnly = false, canExport = true, setDeliveryOptions }) {
   const technical = isTechnicalReport(report);
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
   const presentation = useScreenPresentation();
@@ -2044,7 +2045,8 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
         <button className="button secondary" type="button" onClick={onPreview}><Eye size={18} />Apercu</button>
         <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0 || !canExport}><Download size={18} />Générer Word (.docx)</button>
       </div>
-      <PublicationPanel disabled={validation.errors.length > 0 || !canExport || onlineSaving} onPrepare={onPreparePublication} />
+      <ReviewPanel disabled={validation.errors.length > 0 || !canExport || onlineSaving || readOnly} onPrepare={onPrepareReview} onPackage={onPackageReview} onDownload={onDownloadReview} />
+      {!report.reviewSeriesId && <PublicationPanel disabled={validation.errors.length > 0 || !canExport || onlineSaving} onPrepare={onPreparePublication} />}
       <p>Le JSON complet contient les textes, explications, conseils, photos, plans et la signature présents dans ce dossier. Transmettez-le uniquement aux personnes autorisées.</p>
       <ScreenDisclosure name="export-exchange" title="Importer un dossier ou préparer une copie de test" className="export-secondary-actions"
         summary="Chargement du JSON complet · structure de test sans textes ni photos">
@@ -2342,6 +2344,7 @@ function ReportWizard({
   };
 
   const handlePreparePublication = async () => {
+    if (report.reviewSeriesId) throw new Error('Ce dossier suit le circuit de relecture. Publiez le PDF validé depuis Passeport Immo.');
     if (onlineSyncEnabled) await authorizeReportExport(accessToken, authUser);
     const snapshot = structuredClone(report);
     const id = crypto.randomUUID().replaceAll('-', ''), createdAt = new Date().toISOString();
@@ -2351,6 +2354,30 @@ function ReportWizard({
     const word = await createWordBlob(buildReportHtml(client), client);
     const { blob } = await createPublication(snapshot, word, { validated: true, id, now: createdAt });
     return saveAs(blob, `${toFileName(snapshot.reference_dossier || snapshot.titre)}-${id.slice(0, 8)}.avereo.zip`);
+  };
+
+  const handlePrepareReview = async () => {
+    if (onlineSyncEnabled) await authorizeReportExport(accessToken, authUser);
+    const snapshot = structuredClone(report);
+    snapshot.reviewSeriesId ||= crypto.randomUUID().replaceAll('-', '');
+    setReport(current => ({ ...current, reviewSeriesId: snapshot.reviewSeriesId }));
+    const [{ createWordBlob }, { publicationReportBlob }] = await Promise.all([
+      import('./reportDocx.js'), import('./reportPublication.js'),
+    ]);
+    const sourceSha256 = await blobSha256(publicationReportBlob(snapshot));
+    const expert = { ...snapshot, livrable: { ...snapshot.livrable, audience: 'expert' } };
+    const client = { ...snapshot, livrable: { ...snapshot.livrable, audience: 'client' } };
+    const expertWord = await createWordBlob(buildReportHtml(expert), expert);
+    const clientWord = await createWordBlob(buildReportHtml(client), client);
+    return { snapshot, sourceSha256, expertWord, clientWord };
+  };
+
+  const handlePackageReview = async (prepared, clientPdf, expertPdf) => {
+    if (onlineSyncEnabled) await authorizeReportExport(accessToken, authUser);
+    const { createReview, publicationReportBlob } = await import('./reportPublication.js');
+    if (await blobSha256(publicationReportBlob(currentReport.current)) !== prepared.sourceSha256) throw new Error('Le dossier a changé. Préparez à nouveau les Word et leurs PDF avant de soumettre cette version.');
+    const { blob } = await createReview(prepared.snapshot, prepared.clientWord, prepared.expertWord, clientPdf, expertPdf);
+    return saveAs(blob, `${toFileName(prepared.snapshot.reference_dossier || prepared.snapshot.titre)}.review.avereo.zip`);
   };
 
   const handleExportJson = () => {
@@ -2413,6 +2440,9 @@ function ReportWizard({
                 onPreview={() => setPreviewOpen(true)}
                 onExport={handleExport}
                 onPreparePublication={handlePreparePublication}
+                onPrepareReview={handlePrepareReview}
+                onPackageReview={handlePackageReview}
+                onDownloadReview={(blob, suffix) => saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}-${suffix}`)}
                 onExportJson={handleExportJson}
                 onLoadFile={loadFile}
                 onlineSaving={onlineSaving}

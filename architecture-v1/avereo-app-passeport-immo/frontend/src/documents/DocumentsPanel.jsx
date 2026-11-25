@@ -1,4 +1,5 @@
 import ReportPublications from './ReportPublications.jsx';
+import ReportReviews from './ReportReviews.jsx';
 import React, { useEffect, useRef, useState } from 'react';
 import { CATEGORIES, DOCUMENT_ACCEPT, documentRepository, isCompressedArchive, MAX_FILE_SIZE, MAX_BATCH_SIZE } from './document-store.js';
 import { volumeLabel } from '../../../../avereo-platform/shared/report-volumes.js';
@@ -202,7 +203,7 @@ export default function DocumentsPanel({ bien, repository = documentRepository, 
       {categoryEditor && <CategorySettings settings={settings} busy={busy} onClose={() => setCategoryEditor(false)} onSave={async value => { if (await saveSettings(value)) setCategoryEditor(false); }} />}
     </>}
     </div>
-    {!readOnly && <section hidden={section !== 'rapports'} aria-label="Rapports privés du bien"><header className="documents-heading"><div><p className="doc-eyebrow">RAPPORTS DU BIEN</p><h2>Versions finalisées de Rapport</h2><p>Les copies complètes restent privées. Seule la restitution client rejoint les documents partageables.</p></div></header>{!repository.server ? <p>La publication des versions finalisées de Rapport est disponible avec le stockage serveur, depuis CONNECT.</p> : !data.client ? <p>Associez d’abord le client dans Documents pour publier un rapport sur ce bien.</p> : <ReportPublications key={bienId} bienId={bienId} repository={repository} onSaved={reload} />}</section>}
+    {!readOnly && <section hidden={section !== 'rapports'} aria-label="Rapports privés du bien"><header className="documents-heading"><div><p className="doc-eyebrow">RAPPORTS DU BIEN</p><h2>Relecture et rapports finalisés</h2><p>Les demandes et copies complètes restent privées. Seule la restitution client publiée rejoint les documents partageables.</p></div></header>{!repository.server ? <p>La publication des versions finalisées de Rapport est disponible avec le stockage serveur, depuis CONNECT.</p> : !data.client ? <p>Associez d’abord le client dans Documents pour publier un rapport sur ce bien.</p> : <><ReportReviews key={`review-${bienId}`} bienId={bienId} repository={repository} online={repository.server} onSaved={reload} /><ReportPublications key={bienId} bienId={bienId} repository={repository} onSaved={reload} /></>}</section>}
     {selected && <DocumentReader document={selected} bienId={bienId} repository={repository} onClose={() => setSelected(null)} />}
   </section>;
 }

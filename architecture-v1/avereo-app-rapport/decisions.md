@@ -5,13 +5,18 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-24
+updated: 2026-11-25
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## Décision du 25 novembre — nomination par version et PDF figé
+
+Contexte : demander une revue depuis Passeport sans exposer les brouillons aux partages du bien. Décision explicite du responsable : « L’expert rédacteur peut valider ; second expert facultatif ». Choix d’implémentation : nomination limitée à une version, conservation privée, décision tracée et publication du PDF client exact sous confirmation propriétaire. Raisons : réutiliser l’identité CONNECT et protéger le dossier expert. Conséquences : colonne nullable et sauvegarde privée à aligner lors d’une future livraison ; conversion Word → PDF contrôlée dans cette tranche, aucun déploiement implicite. [Contrat et procédure](workflows/relecture-validation-pdf.md).
+
 
 ## 2026-11-24 — Remplacer la liste privée par un droit administré de création
 
