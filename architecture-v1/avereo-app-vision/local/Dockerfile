@@ -1,6 +1,8 @@
-# Image locale de développement : PHP 8.4 (serveur intégré) avec pdo_mysql. Jamais utilisée en production.
+# Image locale de développement : PHP (serveur intégré) avec pdo_mysql. Jamais utilisée en production.
 # Le dossier de l'application est monté en lecture seule sur /opt/vision ; seul frontend/public est servi.
-FROM php:8.4-cli
+# PHP 8.4 par défaut ; 8.3 est la version de l'hébergement O2Switch (préproduction) : vision-local.ps1 -Php 8.3.
+ARG PHP_VERSION=8.4
+FROM php:${PHP_VERSION}-cli
 
 RUN docker-php-ext-install pdo_mysql \
     && mkdir -p /var/lib/avereo/vision/nonces

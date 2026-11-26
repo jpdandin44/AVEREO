@@ -1,13 +1,17 @@
 ﻿# Pile locale AVEREO Vision (Docker Desktop requis). Développement seulement.
 #   powershell -ExecutionPolicy Bypass -File .\local\vision-local.ps1 <action>
 # Actions : up | down | health | migrate | test | logs | ps | reset
+# -Php 8.3 : reconstruit l'API avec PHP 8.3, version de l'hébergement O2Switch (préproduction) ; 8.4 par défaut.
 param(
     [Parameter(Position = 0)]
     [ValidateSet('up', 'down', 'health', 'migrate', 'test', 'logs', 'ps', 'reset')]
-    [string]$Action = 'up'
+    [string]$Action = 'up',
+    [ValidateSet('8.3', '8.4')]
+    [string]$Php = '8.4'
 )
 
 $ErrorActionPreference = 'Stop'
+$env:VISION_PHP_VERSION = $Php
 $LocalDir = $PSScriptRoot
 $Compose = Join-Path $LocalDir 'docker-compose.local.yml'
 $EnvFile = Join-Path $LocalDir '.env'
