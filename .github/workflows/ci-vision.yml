@@ -1,0 +1,43 @@
+name: CI Vision
+
+# Vérification sans secret de chaque PR qui touche Vision : tests Node et API (PHP 8.3, version de
+# l'hébergement, avec MySQL 8.4 jetable), build et validation du paquet. Le déploiement est dans
+# deploy-vision-o2switch.yml, déclenché seulement à la demande.
+on:
+  pull_request:
+    paths:
+      - architecture-v1/avereo-app-vision/**
+      - .github/workflows/ci-vision.yml
+      - .github/workflows/deploy-vision-o2switch.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-vision-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  verification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: vision
+          MYSQL_ROOT_PASSWORD: vision-ci-only
+        ports: ['3306:3306']
+        options: --health-cmd="mysqladmin ping -h 127.0.0.1 --silent" --health-interval=5s --health-timeout=5s --health-retries=30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql
+          coverage: none
+      - name: Tests, build et validation sans secret
+        run: bash architecture-v1/avereo-app-vision/deploiement/verifier-candidat.sh
