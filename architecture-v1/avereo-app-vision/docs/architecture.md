@@ -1,6 +1,18 @@
+---
+project: avereo-app-vision
+document_type: architecture
+title: Architecture de Vision
+status: active
+version: git
+created: 2026-11-26
+updated: 2026-11-26
+owner: jpdandin
+tags: [vision, deploiement]
+---
+
 # Architecture — AVEREO Vision
 
-Version : Lot 0 (cadrage), 23/11/2026. Proposition à valider avec l'ADR 0001 ; aucun code n'est écrit à ce stade.
+Le schéma du Lot 0 est une cible de cadrage, pas un inventaire des fonctionnalités implémentées. Les lots et preuves sont suivis dans `data/suivi-vision.json`.
 Reprend les conventions de l'application Rapport (`architecture-v1/avereo-app-rapport/AGENTS.md`) : frontend React + Vite, API PHP copiée dans `dist/api` au build, configuration et secrets hors du dossier public, base MySQL dédiée avec migrations versionnées, jamais de secret exposé au navigateur.
 
 ## 1. Vue d'ensemble
@@ -134,3 +146,6 @@ Identifiants : UUID générés côté client (utile hors ligne). Longueurs en **
 | Épaisseur des murs | valeur par défaut au Lot 1, à confirmer |
 | Réutilisation de code de house-planner (MIT) | Au cas par cas, avec mention du copyright dans `docs/licences.md` |
 | Décisions D1, D2, D4, D5 de l'ADR 0001 | Responsable |
+
+## Livraison automatisée (T-08)
+Le workflow GitHub Actions de Vision et les scripts `deploiement/` préparent la livraison PHP/MySQL sur O2Switch ; les traitements 3D restent séparés. Configuration privée hors racine web, SSH pour les migrations avec compte distinct, FTPS pour la sauvegarde et le paquet. PR : tests et build sans secret. Dispatch : préproduction ou production après contrôle de cible et qualification du même SHA. Procédure et limites : [déploiement mutualisé](deploiement-mutualise.md#déploiement-automatisé). Aucune cible hébergée n'a été qualifiée par T-08.

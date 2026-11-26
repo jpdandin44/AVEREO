@@ -1,3 +1,15 @@
+---
+project: avereo-app-vision
+document_type: requirements
+title: Exigences de Vision
+status: active
+version: git
+created: 2026-11-26
+updated: 2026-11-26
+owner: jpdandin
+tags: [vision, deploiement]
+---
+
 # Exigences — AVEREO Vision
 
 Version : Lot 0 (cadrage), 23/11/2026. Matrice tenue par Claude Code ; statuts mis à jour à chaque lot.
@@ -115,3 +127,6 @@ Arrondi d'affichage : surfaces et volumes à 2 décimales, longueurs au centimè
 - Ressources du service de reconstruction face au serveur OVH (R19, R20).
 - Format du CSV : séparateur, décimale, BOM (R47).
 - Valeurs « (proposée) » : délai de synchronisation, cibles tactiles, poids des photos, images par seconde, durée de vie des liens de partage.
+
+## Exigences de livraison T-08
+Contrat : [brief T-08](codex/briefs/T-08-deploiement-automatise.md). Implémentation : workflow racine `deploy-vision-o2switch.yml`, scripts `deploiement/`, tests `deploiement/*.test.mjs` et `tests/api/deploiement_test.php`. Préparation locale seulement ; qualification PHP 8.3/MySQL 8.4 et hébergement encore À VÉRIFIER. Résultats : [preuves locales](deploiement-automatise-verification.md).
