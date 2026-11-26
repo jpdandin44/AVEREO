@@ -5,7 +5,7 @@ title: Feuille de route Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags:
   - rapport
@@ -13,6 +13,17 @@ tags:
   - dette-technique
   - fonctionnalites
 ---
+
+## 26 novembre — Lot contexte observations et export
+
+| Phase | État de ce lot |
+| --- | --- |
+| Cadrage | Demande et règle Projet précisées ; contrat établi. |
+| Développement local | Candidat implémenté et contrôlé ; revue humaine locale à effectuer. |
+| Préproduction | Non engagée ; candidat à autoriser et recette authentifiée à préparer après revue. |
+| Mise en production | Non engagée ; décision distincte. |
+
+[Contrat et preuves locales](docs/contexte-observations-export.md). Les réserves de volume, photothèque, Projet, parcours métier complet et pagination Microsoft Word restent distinctes. Le cockpit porte l’état courant de PR202 ; les étapes datées ci-dessous sont historiques.
 
 ## Correction Word de PR202
 

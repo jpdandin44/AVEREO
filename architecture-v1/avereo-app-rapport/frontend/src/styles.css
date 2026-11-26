@@ -1785,6 +1785,19 @@ img {
 .observation-card.is-dragged { opacity: .6; }
 .observation-order-status { color: #173b77; }
 
+.observation-phases .phase-building { border-left: 5px solid #dc4545; background: #fffafa; padding: 18px; }
+.phase-building > .disclosure-header .disclosure-title { font-size: 20px; }
+.phase-building > .screen-disclosure-body > .observation-phase { margin-top: 18px; }
+.export-passport-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; margin: 22px 0; align-items: start; }
+.passport-action-card { margin: 0; padding: 18px; border: 1px solid #b8cdeb; border-left: 5px solid #2354d5; border-radius: 12px; background: #f6f9ff; min-width: 0; }
+.passport-action-card summary { display: flex; align-items: start; gap: 12px; cursor: pointer; list-style: none; }
+.passport-action-card summary::-webkit-details-marker { display: none; }
+.passport-action-card summary::before { content: '›'; font-size: 24px; line-height: 1; }
+.passport-action-card[open] > summary::before { transform: rotate(90deg); }
+.passport-action-card summary strong, .passport-action-card summary small { display: block; }
+.passport-action-card summary small { margin-top: 6px; color: #506573; font-weight: 400; line-height: 1.5; }
+.passport-action-card button { white-space: normal; text-align: left; }
+
 .photo-report-editor { width: min(1120px, 96vw); max-height: 94dvh; overflow: auto; padding: 22px; border: 0; border-radius: 14px; color: #172033; }
 .photo-report-editor::backdrop { background: #102138b8; }
 .photo-report-editor .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }

@@ -1,0 +1,7 @@
+.site-conditions fieldset { min-width: 0; margin: 16px 0; padding: 18px; border: 1px solid #d7e1ee; border-radius: 12px; }
+.site-conditions legend { font-weight: 700; padding: 0 8px; }
+.site-conditions input, .site-conditions select { width: 100%; min-width: 0; }
+.site-differences { padding: 16px; border-radius: 10px; background: #eef5ff; }
+.site-differences p { margin: 6px 0 0; }
+.form-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 760px) { .site-conditions .form-grid { grid-template-columns: 1fr; } }

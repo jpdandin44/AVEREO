@@ -5,12 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-26 — Candidat contexte observations et export
+
+Mesures intérieures/extérieures et écarts Mixte, bâti replié, suggestions Terrain/bâti extérieur, entrées Passeport plus visibles et retrait du volet de copie de test d’Export. Interventions accessibles aux profils Architecte/Maître d’œuvre ; transfert soumis à Projet. Les références d’interventions exclues du client sont aussi filtrées dans les variantes et leurs alertes. [Contrat, contrôles et réserves](docs/contexte-observations-export.md). Candidat local, sans livraison.
 
 ## 2026-11-25 — Circuit Word puis PDF final
 

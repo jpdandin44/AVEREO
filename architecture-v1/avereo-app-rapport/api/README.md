@@ -5,13 +5,17 @@ title: API de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-24
+updated: 2026-11-26
 owner: jpdandin
 tags:
   - rapport
   - api
   - php
 ---
+
+## Accès au transfert Projet — 26 novembre
+
+`GET auth.php?action=me` ajoute `user.reportCapabilities.projectTransfer`. `POST auth.php?action=authorize-project-transfer` contrôle session, origine et action export ordinaires puis relit l’accès Projet ; succès : `ok`, `provider`, `accountId`, refus : HTTP 403 `project_transfer_refused`. Aucun contenu de dossier n’est envoyé à cette route. [Contrat précis](interventions-projet.md#autorisation-du-téléchargement) et [compatibilité des nouvelles mesures](../docs/contexte-observations-export.md).
 
 ## Droit de création technique projeté — 24 novembre
 

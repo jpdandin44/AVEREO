@@ -1,4 +1,4 @@
-import { DEFAULT_CATEGORY, LEGACY_DEFAULT_CATEGORY } from './reportClassification.js';
+import { DEFAULT_CATEGORY, LEGACY_DEFAULT_CATEGORY, isHabitologieReport } from './reportClassification.js';
 // A mission profile is an explicit report choice, independent of CONNECT roles.
 // Missing or unknown values retain the historical projection behaviour.
 // The observation advice label is shared by all profiles, as requested in lot 0.
@@ -57,6 +57,10 @@ export function isHabitologueProfile(report) {
 
 export function allowsDecisionProjections(report) {
   return !isHabitologueProfile(report);
+}
+
+export function allowsInterventionActions(report) {
+  return isHabitologieReport(report) && ['architecte', 'maitre_oeuvre'].includes(report?.profil_metier);
 }
 
 export function observationAdviceLabel() {

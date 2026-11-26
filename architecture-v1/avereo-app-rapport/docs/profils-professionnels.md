@@ -5,10 +5,14 @@ title: Profils de mission et défaut professionnel CONNECT
 status: active
 version: git
 created: 2026-11-16
-updated: 2026-11-18
+updated: 2026-11-26
 owner: jpdandin
 tags: [rapport, connect, profils, architecte, maitre-oeuvre]
 ---
+
+## 26 novembre — Règle courante du nouveau candidat local
+
+Le [contrat AM26](contexte-observations-export.md) remplace l’attribution précédente des interventions au profil Habitologue : elles sont masquées pour Analyse globale et proposées aux profils Architecte/Maître d’œuvre en visite globale, en conservant toutes les données. Sans accès Projet, saisie et aperçu restent disponibles ; le téléchargement officiel vers Projet exige le droit courant côté serveur. Les paragraphes datés ci-dessous conservent l’historique des premières tranches. Aucun déploiement de ce candidat.
 
 # Profils de mission et défaut professionnel CONNECT
 

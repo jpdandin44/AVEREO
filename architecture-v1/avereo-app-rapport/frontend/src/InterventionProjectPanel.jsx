@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { saveAs } from './saveAs.js';
 import ScreenDisclosure from './ScreenDisclosure.jsx';
 import { normalizeDecision } from './decisionSupport.js';
@@ -7,7 +7,8 @@ import './interventionProject.css';
 
 const dateLabel = date => new Intl.DateTimeFormat('fr-FR').format(date);
 
-export default function InterventionProjectPanel({ report, setReport }) {
+export default function InterventionProjectPanel({ report, setReport, canTransfer = false, onAuthorize }) {
+  const [transferring, setTransferring] = useState(false), [transferMessage, setTransferMessage] = useState('');
   const d = normalizeDecision(report.decision), settings = projectSettings(report), selected = projectSelection(report);
   const periods = settings.mode === 'periodes';
   const malformed = interventionPlanningError(report, true);
@@ -17,9 +18,15 @@ export default function InterventionProjectPanel({ report, setReport }) {
     planning_projet: { ...projectSettings(previous), [key]: value } } }));
   const updateAction = (index, key, value) => setReport(previous => ({ ...previous, decision: { ...previous.decision,
     actions: previous.decision.actions.map((action, i) => i === index ? { ...action, planning_projet: { ...action.planning_projet, [key]: value } } : action) } }));
-  const download = () => {
-    const current = buildInterventionProject(report);
-    saveAs(new Blob([current.json], { type: 'application/json;charset=utf-8' }), 'avereo-projet-interventions.json');
+  const download = async () => {
+    setTransferMessage('');setTransferring(true);
+    try {
+      if (!canTransfer || !onAuthorize) throw new Error('Le transfert nécessite un accès à Projet dans votre compte CONNECT.');
+      const current = buildInterventionProject(report);
+      if (await saveAs(new Blob([current.json], { type: 'application/json;charset=utf-8' }), 'avereo-projet-interventions.json', { authorize: onAuthorize })) setTransferMessage('Fichier Projet téléchargé. Les interventions restent conservées dans Rapport.');
+      else setTransferMessage('Le transfert vers Projet n’a pas été autorisé. Les interventions restent conservées.');
+    } catch (error) { setTransferMessage(error.message); }
+    finally { setTransferring(false); }
   };
   return <ScreenDisclosure name="interventions-project" title="Planning informatif et Projet"
     summary={`${selected.length} intervention(s) sélectionnée(s) pour Projet · ${result ? 'Aperçu disponible' : 'Estimations à compléter'}`}>
@@ -61,7 +68,9 @@ export default function InterventionProjectPanel({ report, setReport }) {
         <p className="muted">Barres en jours ouvrés. Dates calculées sous ces hypothèses, à discuter ; aucun engagement ni avancement n’est déduit.</p>
       </div>}
       <p>Le fichier contient les interventions cochées, leurs modalités et préalables, les références des constats/attentes et les estimations affichées. Il est destiné à votre espace professionnel ; la sélection client du rapport reste indépendante. Photos, plans, signature, coordonnées des habitants et notes d’écoute restent dans Rapport.</p>
-      <button type="button" className="button secondary" disabled={!result} data-readonly-view onClick={download}>Télécharger pour Projet</button>
+      {!canTransfer && <p className="notice">Le transfert vers Projet nécessite une habilitation de votre compte CONNECT. Les interventions et leur aperçu restent disponibles dans Rapport.</p>}
+      <button type="button" className="button secondary" disabled={!result || !canTransfer || transferring} data-readonly-view onClick={download}>{transferring ? 'Vérification de l’accès à Projet…' : 'Télécharger pour Projet'}</button>
+      {transferMessage && <p role="status">{transferMessage}</p>}
       <p>Dans Projet : <strong>Mes projets → Importer un projet</strong>, puis choisissez ce fichier pour créer un projet indépendant. Cette opération ne remplace pas votre projet existant. Les modifications ultérieures dans Projet et Rapport restent indépendantes.</p>
     </>}
   </ScreenDisclosure>;

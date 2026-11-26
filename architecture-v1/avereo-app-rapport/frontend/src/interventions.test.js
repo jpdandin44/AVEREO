@@ -5,7 +5,7 @@ import { normalizeDecision } from './decisionSupport.js';
 import { buildReportHtml } from './reportDelivery.js';
 
 function dossier() {
-  return { categorie: 'Visite Globale', profil_metier: 'habitologue', titre: 'Recette fictive', reference_dossier: 'TEST-INTERVENTIONS',
+  return { categorie: 'Visite Globale', profil_metier: 'architecte', titre: 'Recette fictive', reference_dossier: 'TEST-INTERVENTIONS',
     meteo: {}, cadastre: {}, urbanisme: {}, risques: {}, terrain: {}, localisation: {}, ressources_batiment: {}, protocoles: {},
     recommandations: 'RECOMMANDATION TEMOIN', reserves: 'RESERVES TEMOIN',
     observations: [{ id: 't1', phase_habitologie: 'terrain', titre: 'Accès au jardin', observations: 'Observation retenue', photos: [] },
@@ -25,12 +25,12 @@ test('interventions keep the historical list, unknown fields and option identifi
   assert.deepEqual(interventionWarnings(loaded), []); assert.equal(JSON.stringify(loaded), before);
 });
 
-test('expert interventions follow recommendations without restoring Habitologue projections', () => {
+test('expert interventions follow recommendations while preserving the Architecte projections', () => {
   const report = dossier(), html = buildReportHtml(report);
   assert.ok(html.indexOf('RECOMMANDATION TEMOIN') < html.indexOf('<h2>Interventions proposées'));
   assert.ok(html.indexOf('<h2>Interventions proposées') < html.indexOf('RESERVES TEMOIN'));
   assert.match(html, /T1 · Accès au jardin/); assert.match(html, /PREALABLE INTERNE/);
-  assert.doesNotMatch(html, /Projection 1|Deux options de projet|Comparaison des conséquences/);
+  assert.match(html, /Deux variantes du projet/);
 });
 
 test('client needs an explicit choice and retains only fully selected unambiguous findings', () => {
@@ -59,12 +59,28 @@ test('missing or duplicate references never select an arbitrary finding for the 
 });
 
 test('legacy profiles, non-global reports and unsupported decision schemas keep their existing behaviour', () => {
-  for (const profile of [undefined, 'architecte', 'maitre_oeuvre', 'inconnu']) {
+  for (const profile of [undefined, '', 'habitologue', 'inconnu']) {
     const report = dossier(); report.profil_metier = profile;
     assert.equal(allowsInterventions(report), false); assert.equal(buildInterventionsHtml(report), '');
   }
   const report = dossier(); report.categorie = 'Expertise & Visite technique'; assert.equal(buildInterventionsHtml(report), '');
   report.categorie = 'Visite Globale'; report.decision.schema_version = 2; assert.equal(buildInterventionsHtml(report), '');
+});
+
+test('Analyse globale hides interventions without losing them; Architecte and Maître d’œuvre retrieve the same data', () => {
+  const report = dossier(), original = JSON.stringify(report.decision);
+  report.profil_metier = 'habitologue';
+  for (const audience of ['expert', 'client']) {
+    report.livrable.audience = audience;
+    assert.doesNotMatch(buildReportHtml(report), /<h2>Interventions proposées/);
+  }
+  assert.equal(JSON.stringify(report.decision), original);
+  for (const profile of ['architecte', 'maitre_oeuvre']) {
+    const loaded = JSON.parse(JSON.stringify({ ...report, profil_metier: profile }));
+    assert.equal(allowsInterventions(loaded), true);
+    assert.match(buildInterventionsHtml(loaded), /Visite avec un professionnel/);
+    assert.equal(JSON.stringify(loaded.decision), original);
+  }
 });
 
 test('all intervention text is escaped and no calendar is fabricated from a qualitative horizon', () => {

@@ -4,6 +4,9 @@ import { buildReportHtml, optionsWithCurrent } from './reportDelivery.js';
 import ReportDeliveryOptions from './ReportDeliveryOptions.jsx';
 import PublicationPanel from './PublicationPanel.jsx';
 import ReviewPanel from './ReviewPanel.jsx';
+import SiteConditions from './SiteConditions.jsx';
+import { withSiteConditions } from './siteConditions.js';
+import { observationContextOptions } from './observationContext.js';
 import DecisionSupportPanel from './DecisionSupportPanel.jsx';
 import InterventionsPanel from './InterventionsPanel.jsx';
 import ScreenDisclosure, { ScreenPresentation, DisclosureControls, useScreenPresentation, excerpt, revealScreenField } from './ScreenDisclosure.jsx';
@@ -22,7 +25,7 @@ import { attachOriginal, photoOriginalCapabilities, blobSha256 } from './photoOr
 import { observationPlanNames, observationPlanViews, planPayloadError } from './observationPlans.js';
 import VoiceField, { MicButton } from './VoiceField.jsx';
 import { appendDictation } from './dictationText.js';
-import { saveAs, setDownloadAuthorization, checkDownloadAuthorization } from './saveAs.js';
+import { saveAs, setDownloadAuthorization } from './saveAs.js';
 import { canReportAction, sameAccount, administeredMissionDefault } from './profileAccess.js';
 import ReadOnlyFields, { useReadOnlyMode } from './ReadOnlyFields.jsx';
 import TechnicalMissionStep from './TechnicalMissionStep.jsx';
@@ -36,6 +39,7 @@ import {
   getAuthConfig,
   getCurrentUser,
   authorizeReportExport,
+  authorizeProjectTransfer,
   saveOnlineReport,
   startOAuthLogin,
 } from './services/reportApi.js';
@@ -67,7 +71,7 @@ import {
 import OnlineReports from './OnlineReports.jsx';
 import ReportImport from './ReportImport.jsx';
 import { requireReportContent, reportExportBlob } from './reportFiles.js';
-import { createTestReportCopy, observationGravities } from './testReportCopy.js';
+import { observationGravities } from './testReportCopy.js';
 import RgaMap from './RgaMap.jsx';
 import { readRgaTransfer, RGA_TRANSFER_KEY } from './rgaContext.js';
 import { latestDraft } from './draftRecovery.js';
@@ -125,34 +129,6 @@ import {
 const DRAFT_KEY = 'avereo-rapport-draft-v2';
 const LEGACY_DRAFT_KEY = 'draftReport';
 const ONLINE_SYNC_ENABLED = import.meta.env.VITE_ENABLE_ONLINE_SYNC === 'true';
-
-const piecesOptions = [
-  'Salon',
-  'Cuisine',
-  'Chambre',
-  'Salle de bain',
-  'WC',
-  'Bureau',
-  'Garage',
-  'Combles',
-  'Facade',
-  'Toiture',
-  'Exterieur',
-  'Autre',
-];
-
-const surfacesOptions = [
-  'Murs',
-  'Sols',
-  'Plafond',
-  'Menuiseries',
-  'Toiture',
-  'Facade',
-  'Structure',
-  'Equipement',
-  'Autre',
-];
-
 
 const emptyObservation = () => ({
   id: createId(),
@@ -272,7 +248,7 @@ function deepMergeReport(base, incoming) {
   merged.observations = observations.length > 0 ? observations.map(normalizeObservation) : [emptyObservation()];
   merged.terrain = normalizeStoredTerrain(merged.terrain, merged.cadastre.lon, merged.cadastre.lat);
   merged.urbanisme.context = normalizeStoredUrbanism(merged.urbanisme.context, merged.cadastre.lon, merged.cadastre.lat);
-  return normalizeReportClassification(merged);
+  return withSiteConditions(normalizeReportClassification(merged));
 }
 
 function normalizeStoredDraft(incoming) {
@@ -1195,58 +1171,7 @@ function SiteStep({ report, setReport, onCorrectAddress }) {
         </div>
       </div>
 
-      <div className="segmented" aria-label="Environnement analyse">
-        {['Interieur', 'Exterieur', 'Mixte'].map((item) => (
-          <button
-            key={item}
-            type="button"
-            className={report.environnement === item ? 'selected' : ''}
-            onClick={() => setReport((prev) => ({ ...prev, environnement: item }))}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
-
-      <div className="form-grid five">
-        <Field label="Ciel">
-          <select value={report.meteo.ciel} onChange={(event) => updateNested('meteo', 'ciel', event.target.value)}>
-            <option value="">Non renseigne</option>
-            <option>Clair</option>
-            <option>Nuageux</option>
-            <option>Pluvieux</option>
-            <option>Orageux</option>
-          </select>
-        </Field>
-        <Field label="Temperature">
-          <input
-            type="number"
-            value={report.meteo.temperatureC}
-            onChange={(event) => updateNested('meteo', 'temperatureC', event.target.value)}
-            placeholder="18"
-          />
-        </Field>
-        <Field label="Humidite">
-          <input
-            type="number"
-            value={report.meteo.humiditePct}
-            onChange={(event) => updateNested('meteo', 'humiditePct', event.target.value)}
-            placeholder="55"
-          />
-        </Field>
-        <Field label="Pluie">
-          <select value={report.meteo.pluie} onChange={(event) => updateNested('meteo', 'pluie', event.target.value)}>
-            <option value="">Non renseigne</option>
-            <option>Aucune</option>
-            <option>Fine</option>
-            <option>Moderee</option>
-            <option>Forte</option>
-          </select>
-        </Field>
-        <Field label="Vent">
-          <input value={report.meteo.vent} onChange={(event) => updateNested('meteo', 'vent', event.target.value)} />
-        </Field>
-      </div>
+      <SiteConditions report={report} setReport={setReport} />
 
       <div className="cadastre-box">
         <div>
@@ -1478,11 +1403,13 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
   };
   const showObservation = id => {
     if (technical && !selectTechnicalObservation(id)) return;
+    openBuildingFor(report.observations.find(obs => obs.id === id));
     presentation.setOpen(`observation-${id}`, true);
     requestAnimationFrame(() => document.getElementById(`observation-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
   const localize = (id, planId = '') => {
     if (technical && !selectTechnicalObservation(id)) return;
+    openBuildingFor(report.observations.find(obs => obs.id === id));
     presentation.setOpen('observation-plans', true);
     presentation.setOpen(`observation-${id}`, true);
     setPlanObservationId(id);
@@ -1494,6 +1421,11 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
     });
   };
   const habitologie = isHabitologieReport(report);
+  const openBuildingFor = observation => {
+    if (!technical && habitologie && HABITOLOGIE_PROTOCOL_STAGES.some(stage => stage.key === observation?.phase_habitologie)) {
+      presentation.setOpen('observations-bati', true);
+    }
+  };
   const photoAllowed = !habitologie || Boolean(report.ecoute?.consentement_photos);
   const dictationAllowed = !habitologie || Boolean(report.ecoute?.consentement_dictee);
   const consentReason = "Enregistrer d'abord l'accord du client dans l'etape Dossier.";
@@ -1503,6 +1435,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
     const observation = { ...emptyObservation(), phase_habitologie: phaseKey };
     if (technical && !selectTechnicalObservation(observation.id)) return;
     setReport(prev => ({ ...prev, observations: [...prev.observations, observation] }));
+    openBuildingFor(observation);
     presentation.setOpen(`observation-${observation.id}`, true);
   };
 
@@ -1571,6 +1504,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
     const position = siblings.indexOf(obs);
     const selectedStage = findHabitologieStage(obs.phase_habitologie);
     const controls = selectedStage?.controls || [];
+    const contextOptions = observationContextOptions(report, obs);
 
     return (
       <article className={`observation-card progressive-observation${draggedId === obs.id ? ' is-dragged' : ''}${dropId === obs.id ? ' is-drop-target' : ''}`} key={obs.id} id={`observation-${obs.id}`}>
@@ -1626,7 +1560,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
               <select
                 value={obs.phase_habitologie}
                 onChange={(event) =>
-                  updateObservation(obs.id, { phase_habitologie: event.target.value, controle_habitologie: '' })
+                  { openBuildingFor({ ...obs, phase_habitologie: event.target.value }); updateObservation(obs.id, { phase_habitologie: event.target.value, controle_habitologie: '' }); }
                 }
               >
                 <option value="">A classer</option>
@@ -1659,20 +1593,12 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
             <input value={obs.titre} onChange={(event) => updateObservation(obs.id, { titre: event.target.value })} />
           </Field>
           <Field label="Piece / zone">
-            {technical ? <input value={obs.piece} onChange={event => updateObservation(obs.id, { piece: event.target.value })} /> : <select value={obs.piece} onChange={(event) => updateObservation(obs.id, { piece: event.target.value })}>
-              <option value="">Selectionner</option>
-              {optionsWithCurrent(piecesOptions, obs.piece).map((option) => (
-                <option key={option}>{option}</option>
-              ))}
-            </select>}
+            <input list={`zones-${obs.id}`} value={obs.piece} placeholder="Choisir ou préciser une zone" onChange={event => updateObservation(obs.id, { piece: event.target.value })} />
+            <datalist id={`zones-${obs.id}`}>{optionsWithCurrent(contextOptions.zones, obs.piece).map(option => <option key={option} value={option} />)}</datalist>
           </Field>
           {!technical && <Field label="Element">
-            <select value={obs.surface} onChange={(event) => updateObservation(obs.id, { surface: event.target.value })}>
-              <option value="">Selectionner</option>
-              {optionsWithCurrent(surfacesOptions, obs.surface).map((option) => (
-                <option key={option}>{option}</option>
-              ))}
-            </select>
+            <input list={`elements-${obs.id}`} value={obs.surface} placeholder="Choisir ou préciser un élément" onChange={event => updateObservation(obs.id, { surface: event.target.value })} />
+            <datalist id={`elements-${obs.id}`}>{optionsWithCurrent(contextOptions.elements, obs.surface).map(option => <option key={option} value={option} />)}</datalist>
           </Field>}
           {!technical && <Field label="Gravite">
             <select value={obs.gravite} onChange={(event) => updateObservation(obs.id, { gravite: event.target.value })}>
@@ -1838,13 +1764,13 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
       <ScreenDisclosure name="observation-plans" title="Plans et vues du dossier" busy={photoTransfers > 0}
         summary={`${(report.plans || []).length} vue(s) · ${report.observations.reduce((count, obs) => count + (obs.reperes || []).length, 0)} repère(s)`}>
         <ObservationPlans report={report} setReport={setReport} selectedId={planObservationId}
-          onSelect={id => { if (technical && !selectTechnicalObservation(id)) return; setPlanObservationId(id); presentation.setOpen(`observation-${id}`, true); }}
+          onSelect={id => { if (technical && !selectTechnicalObservation(id)) return; setPlanObservationId(id); openBuildingFor(report.observations.find(obs => obs.id === id)); presentation.setOpen(`observation-${id}`, true); }}
           onShowObservation={showObservation} focusRequest={planFocus} onPhotoTransfer={onPhotoTransfer} />
       </ScreenDisclosure>
 
       <div className="observation-order-toolbar">
         <p>{habitologie ? 'Terrain : T1, T2… Bâti : Eau, Air, Terre, Feu, puis les constats à classer ; leurs numéros restent indépendants du terrain. ' : ''}Changez le numéro ou glissez une fiche pour choisir sa place{habitologie ? ' dans sa phase' : ''}.</p>
-        {!technical && <DisclosureControls label="Affichage des observations" ids={report.observations.map(obs => `observation-${obs.id}`)} />}
+        {!technical && <DisclosureControls label="Affichage des observations" ids={[...(habitologie ? ['observations-bati'] : []), ...report.observations.map(obs => `observation-${obs.id}`)]} />}
       </div>
       {orderMessage && <p role="status" className="observation-order-status">{orderMessage}</p>}
 
@@ -1877,9 +1803,10 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
       </> : habitologie ? (
         <div className="observation-phases">
           {visitProtocolStages(report).filter(stage => stage.key === 'terrain').map(renderObservationPhase)}
-          <div className="observations-bati"><h2>Le bâti</h2>
+          <ScreenDisclosure name="observations-bati" title="Le bâti" className="observations-bati observation-phase phase-building"
+            summary="Eau · Air · Terre · Feu" busy={Boolean(cameraFor) || photoTransfers > 0}>
             {HABITOLOGIE_PROTOCOL_STAGES.map(renderObservationPhase)}
-          </div>
+          </ScreenDisclosure>
 
           {report.observations.some((obs) => !findHabitologieStage(obs.phase_habitologie)) && (
             <section className="observation-phase unassigned">
@@ -1911,45 +1838,7 @@ function ObservationStep({ report, setReport, onlineSyncEnabled, authenticated, 
   );
 }
 
-function ShareTestCopy({ report }) {
-  const [open, setOpen] = useState(false);
-  const [status, setStatus] = useState('');
-  const [sharing, setSharing] = useState(false);
-  async function share(downloadOnly) {
-    setStatus('');
-    setSharing(true);
-    try {
-      if (!await checkDownloadAuthorization()) { setStatus('Partage non autorisé par votre profil.'); return; }
-      const copy = createTestReportCopy(report);
-      const file = new File([JSON.stringify(copy, null, 2)], 'rapport-structure-test-sans-contenu.json', {type: 'application/json'});
-      if (!downloadOnly && navigator.share && navigator.canShare?.({files: [file]})) {
-        await navigator.share({files: [file]});
-        setStatus('Copie remise au service de partage choisi.');
-      } else {
-        if (await saveAs(file, file.name)) setStatus('Téléchargement lancé. Cette structure contient des constats fictifs, sans les textes et photos du dossier.');
-      }
-    } catch (error) {
-      setStatus(error.name === 'AbortError' ? 'Partage annulé.' : 'Partage indisponible. Vous pouvez télécharger la copie.');
-    } finally {
-      setSharing(false);
-    }
-  }
-  return <section aria-label="Copie pour les tests">
-    <button className="button secondary" type="button" aria-expanded={open} onClick={() => {setOpen(!open); setStatus('');}}>
-      Créer une structure de test sans textes ni photos
-    </button>
-    {open && <div>
-      <p>Cette structure ne contient pas le dossier complet : les textes sont remplacés par des constats fictifs ; coordonnées, photos, plans et signature sont retirés. Pour transmettre le contenu du dossier, utilisez « Télécharger le dossier complet (JSON) » au-dessus.</p>
-      <div className="export-actions">
-        {typeof navigator.share === 'function' && <button className="button secondary" disabled={sharing} type="button" onClick={() => share(false)}>Choisir un destinataire</button>}
-        <button className="button secondary" disabled={sharing} type="button" onClick={() => share(true)}>Télécharger la structure seule</button>
-      </div>
-      <p role="status">{status}</p>
-    </div>}
-  </section>;
-}
-
-function ValidationStep({ report, setReport, validation, onPreview, onExport, onPreparePublication, onPrepareReview, onPackageReview, onDownloadReview, onExportJson, onLoadFile, onlineSaving, onSaveDraft, onEditStep, readOnly = false, canExport = true, setDeliveryOptions }) {
+function ValidationStep({ report, setReport, validation, onPreview, onExport, onPreparePublication, onPrepareReview, onPackageReview, onDownloadReview, onExportJson, onlineSaving, onSaveDraft, onEditStep, readOnly = false, canExport = true, canTransferToProject = false, onAuthorizeProject, setDeliveryOptions }) {
   const technical = isTechnicalReport(report);
   const dictationAllowed = !isHabitologieReport(report) || Boolean(report.ecoute?.consentement_dictee);
   const presentation = useScreenPresentation();
@@ -2019,7 +1908,7 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
 
       </ScreenDisclosure>
 
-      {!technical && <InterventionsPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} />}
+      {!technical && <InterventionsPanel report={report} setReport={setReport} dictationAllowed={dictationAllowed} canTransferToProject={canTransferToProject} onAuthorizeProject={onAuthorizeProject} />}
 
       <ScreenDisclosure name="export-final" title="Contrôle final et signature"
         summary={`${report.nom_signataire || 'Signataire à renseigner'} · ${report.signature ? 'Signature présente' : 'Signature à recueillir'}`}>
@@ -2041,18 +1930,16 @@ function ValidationStep({ report, setReport, validation, onPreview, onExport, on
       </ScreenDisclosure>
 
       <div className="export-actions">
-        <button className="button ghost" type="button" onClick={onExportJson} disabled={!canExport}><FileJson size={18} />Télécharger le dossier complet (JSON)</button>
+        <button className="button ghost" type="button" onClick={onExportJson} disabled={!canExport}><FileJson size={18} />Télécharger le dossier complet</button>
         <button className="button secondary" type="button" onClick={onPreview}><Eye size={18} />Apercu</button>
         <button className="button primary" type="button" onClick={onExport} disabled={validation.errors.length > 0 || !canExport}><Download size={18} />Générer Word (.docx)</button>
       </div>
+      <div className="export-passport-actions" aria-label="Relecture et conservation dans Passeport Immo">
       <ReviewPanel disabled={validation.errors.length > 0 || !canExport || onlineSaving || readOnly} onPrepare={onPrepareReview} onPackage={onPackageReview} onDownload={onDownloadReview} />
       {!report.reviewSeriesId && <PublicationPanel disabled={validation.errors.length > 0 || !canExport || onlineSaving} onPrepare={onPreparePublication} />}
-      <p>Le JSON complet contient les textes, explications, conseils, photos, plans et la signature présents dans ce dossier. Transmettez-le uniquement aux personnes autorisées.</p>
-      <ScreenDisclosure name="export-exchange" title="Importer un dossier ou préparer une copie de test" className="export-secondary-actions"
-        summary="Chargement du JSON complet · structure de test sans textes ni photos">
-        <ReportImport draft={report} onBackup={onExportJson} onLoad={onLoadFile} disabled={onlineSaving} />
-        <ShareTestCopy report={report} />
-      </ScreenDisclosure>
+      </div>
+      <p>Le dossier complet contient les textes, explications, conseils, photos, plans et la signature présents dans ce dossier. Transmettez-le uniquement aux personnes autorisées.</p>
+
     </section>
   );
 }
@@ -2435,6 +2322,8 @@ function ReportWizard({
                 setReport={setEditableReport}
                 readOnly={!editable}
                 canExport={canReportAction(authUser, 'export')}
+                canTransferToProject={authUser?.reportCapabilities?.projectTransfer === true && canReportAction(authUser, 'export')}
+                onAuthorizeProject={() => authorizeProjectTransfer(accessToken, authUser)}
                 setDeliveryOptions={setDeliveryOptions}
                 validation={validation}
                 onPreview={() => setPreviewOpen(true)}
@@ -2444,7 +2333,6 @@ function ReportWizard({
                 onPackageReview={handlePackageReview}
                 onDownloadReview={(blob, suffix) => saveAs(blob, `${toFileName(report.reference_dossier || report.titre)}-${suffix}`)}
                 onExportJson={handleExportJson}
-                onLoadFile={loadFile}
                 onlineSaving={onlineSaving}
                 onSaveDraft={handleSave}
                 onEditStep={editStep}

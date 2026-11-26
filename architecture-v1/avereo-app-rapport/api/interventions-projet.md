@@ -5,7 +5,7 @@ title: Contrat du fichier Interventions vers Projet
 status: active
 version: git
 created: 2026-11-16
-updated: 2026-11-16
+updated: 2026-11-26
 owner: jpdandin
 tags: [rapport, projet, contrat, confidentialite]
 ---
@@ -14,9 +14,9 @@ tags: [rapport, projet, contrat, confidentialite]
 
 ## Portée
 
-Projection volontaire, locale au navigateur, de decision.actions pour
-Habitologue en Visite Globale. Aucun POST interapplications, nouveau point
-d’entrée, jeton ou transfert de propriété. Le fichier est importé par le
+Projection volontaire, locale au navigateur, de decision.actions pour les profils
+Architecte et Maître d’œuvre en Visite Globale. Aucun POST de contenu
+interapplications, nouveau jeton ou transfert de propriété. Le fichier est importé par le
 propriétaire autorisé dans **Mes projets → Importer un projet** ; le contrôle
 Projet existant reste l’autorité. Ne pas utiliser Importer un planning dans le
 Gantt courant, qui remplace son contenu.
@@ -25,8 +25,9 @@ Le moteur canonique est
 [planning-core.js](../../avereo-app-projet/frontend/public/planning-core.js) :
 validation, normalisation, encode/decode et calendrier. Rapport l’importe dans
 son paquet ; aucune copie manuelle ou modification du moteur, de Projet ou de
-ses autorisations. Hors ligne, l’aperçu et le téléchargement fonctionnent ; la
-création d’un projet privé utilise la connexion Projet habituelle.
+ses autorisations. Hors ligne, la saisie et l’aperçu fonctionnent. Le téléchargement exige
+l’habilitation Projet courante ; la création d’un projet privé utilise ensuite
+la connexion Projet habituelle.
 
 ## Paramètres sauvegardés dans Rapport
 
@@ -98,3 +99,11 @@ du projet créé sont indépendantes. La création directe via CONNECT, un lien
 automatique vers une ligne serveur et un planning dans le rapport Word/PDF
 constitueraient des compléments à cadrer séparément.
 
+
+## Autorisation du téléchargement
+
+Depuis le candidat du 26 novembre, `auth/me` expose `projectTransfer` en plus de la capacité de création technique. Le lecteur `project-access.php` exige une identité `avereo_connect`, une projection privée version 1 lisible de 65 536 octets au plus et une règle du compte active dans sa période (`not_before <= maintenant < not_after`) contenant explicitement `projet` dans `applications`. Projection absente, invalide, compte non projeté ou autre fournisseur : capacité fausse. Ni métier ni rôle administrateur n’accorde le transfert. Aucun fichier de droit n’est écrit par Rapport.
+
+Le navigateur n’utilise la capacité affichée que pour proposer le bouton. `saveAs` attend l’autorisation ordinaire d’export puis la réponse fraîche de `POST auth.php?action=authorize-project-transfer` avant de créer l’URL du fichier. La réponse doit désigner le même fournisseur et identifiant de compte ; un retrait ou changement d’identité refuse le téléchargement, sans effacer les interventions. La route réutilise session, verrou de politique et action export existants. Elle ne reçoit aucun rapport ou fichier et ne crée aucun Projet.
+
+Ce contrôle porte sur les téléchargements officiels de l’application. Comme pour les exports navigateur existants, il ne peut empêcher un utilisateur qui dispose déjà de ses données d’en fabriquer un fichier hors de ce parcours.

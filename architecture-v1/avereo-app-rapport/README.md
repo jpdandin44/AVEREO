@@ -5,13 +5,19 @@ title: Rapport AVEREO Pro
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags:
   - rapport
   - application
   - connect
 ---
+
+## 26 novembre — Améliorations en revue locale
+
+Le candidat ajoute les mesures intérieures/extérieures distinctes, les écarts en Mixte, le bâti repliable, les suggestions de zones/éléments et les entrées Passeport plus visibles. Les interventions sont proposées aux profils Architecte/Maître d’œuvre ; seul leur transfert vers Projet demande l’accès CONNECT correspondant. [Contrat, compatibilité, contrôles et revue](docs/contexte-observations-export.md).
+
+Revue locale sur [le service séparé](http://127.0.0.1:5262/) en mode sans compte, avec un dossier fictif. Les tests du droit Projet côté serveur sont des preuves distinctes ; la recette authentifiée hébergée reste à faire. Aucun déploiement de ce nouveau lot. La livraison PR202 du 26 novembre est suivie dans le cockpit ; les sections datées ci-dessous gardent les états des candidats précédents.
 
 ## Relecture et validation sur Word — correction confirmée
 

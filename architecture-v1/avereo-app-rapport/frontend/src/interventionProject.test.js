@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { buildInterventionProject, interventionPlanningError, projectSettings } from './interventionProject.js';
 import { normalizeDecision } from './decisionSupport.js';
 
-const fixture = () => ({ categorie: 'Visite Globale', profil_metier: 'habitologue', reference_dossier: 'FICTIF-TRANSFERT',
+const fixture = () => ({ categorie: 'Visite Globale', profil_metier: 'architecte', reference_dossier: 'FICTIF-TRANSFERT',
   observations: [{ id: 'o1', titre: 'Accès au jardin', phase_habitologie: 'terrain' }],
   proprietaire: 'IDENTITE A NE PAS EXPORTER', adresse_logement: 'ADRESSE A NE PAS EXPORTER', signature: 'SIGNATURE PRIVEE',
   decision: { schema_version: 1, notes_attentes: 'NOTE INTERNE PRIVEE', attentes: [{ id: 'a1', libelle: 'Accéder au jardin' }],
@@ -98,7 +98,7 @@ test('unknown fields and old reports remain intact, unsupported profiles and fut
   assert.equal(JSON.stringify(report),before);assert.throws(()=>buildInterventionProject(report),/Sélectionnez/);
   const normalized=normalizeDecision(fixture().decision);assert.equal(normalized.actions[0].unknown,'conservé');assert.equal(normalized.actions[0].planning_projet.charge,'1,5');
   const future=fixture();future.decision.schema_version=2;assert.throws(()=>buildInterventionProject(future),/non pris en charge/);
-  const other=fixture();other.profil_metier='parcours_actuel';assert.throws(()=>buildInterventionProject(other),/Habitologue/);
+  const other=fixture();other.profil_metier='parcours_actuel';assert.throws(()=>buildInterventionProject(other),/Architecte/);
 });
 
 test('long descriptions are refused explicitly rather than silently truncated', () => {

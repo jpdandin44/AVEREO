@@ -7,6 +7,7 @@ import { buildDecisionHtml } from './decisionSupport.js';
 import { usesMissionContext, observationAdviceLabel, isHabitologueProfile, missionProfileLabel } from './reportProfiles.js';
 import { reportPhotoSource } from './photoReportVersion.js';
 import { buildInterventionsHtml } from './interventions.js';
+import { siteConditionRows } from './siteConditions.js';
 
 export function documentStatus(report) {
   return report.publication?.validatedByProfessional === true && /^[a-f0-9]{32}$/.test(report.publication.id || '')
@@ -107,7 +108,9 @@ export function buildReportHtml(report) {
   } else {
     // Sort globally first, then filter: selected findings keep their global number (gaps allowed).
     const selected = orderedObservations(report).filter(o => options.observations.includes(o.id));
-    content = cover(report, true) + technicalMissionHtml(report) + buildEnvironmentContextHtml(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
+    const conditions = siteConditionRows(report);
+    const visitConditions = conditions.length ? `<section class="client-site-conditions"><h2>Conditions de visite</h2><table>${conditions.map(([label, value]) => `<tr><th scope="row">${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`).join('')}</table></section>` : '';
+    content = cover(report, true) + technicalMissionHtml(report) + visitConditions + buildEnvironmentContextHtml(report, true) + `<section class="client-page"><h2>01 · Ce qu’il faut retenir</h2>
       <p>${textToHtml(options.synthese || 'Synthèse client à rédiger par le professionnel.')}</p>
       ${selected.map(o => `<article class="client-observation keep-together"><h3>Observation ${observationNumber(report, o)} · ${escapeHtml(o.titre || o.piece)}</h3>${usesMissionContext(report) || hasTechnicalMission(report) ? '<h4>Constat</h4>' : ''}<p>${textToHtml(o.observations)}</p>
         ${explanationsHtml(o)}

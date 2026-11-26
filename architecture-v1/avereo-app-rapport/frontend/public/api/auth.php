@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 require __DIR__ . '/bootstrap.php';
 require_once __DIR__ . '/technical-report.php';
+require_once __DIR__ . '/project-access.php';
 
 api_no_options_response();
 
@@ -29,15 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && $action === 'me') {
             'roles' => $identity['roles'],
             'canManageAll' => api_identity_can_manage_all($identity, $config),
             'profileAccess' => api_profile_access($config,$identity),
-            'reportCapabilities' => ['technicalReport' => api_can_create_technical_report($config, $identity)],
+            'reportCapabilities' => ['technicalReport' => api_can_create_technical_report($config, $identity),
+                'projectTransfer' => api_can_transfer_to_project($config, $identity)],
         ],
     ]);
 }
 
-if ($_SERVER['REQUEST_METHOD']==='POST' && $action==='authorize-export') {
+if ($_SERVER['REQUEST_METHOD']==='POST' && in_array($action,['authorize-export','authorize-project-transfer'],true)) {
     $identity=api_require_auth($config);
     if (isset($_SERVER['HTTP_ORIGIN']) && !hash_equals(api_current_origin(),(string)$_SERVER['HTTP_ORIGIN'])) api_json(403,['ok'=>false,'error'=>'origin_refused']);
     api_require_profile_action($config,$identity,'export');
+    if($action==='authorize-project-transfer'&&!api_can_transfer_to_project($config,$identity)){
+        api_json(403,['ok'=>false,'error'=>'project_transfer_refused','message'=>'Votre compte CONNECT ne permet pas le transfert vers Projet. Les interventions restent conservées dans Rapport.']);
+    }
     api_json(200,['ok'=>true,'provider'=>$identity['provider'],'accountId'=>$identity['id']]);
 }
 

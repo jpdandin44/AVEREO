@@ -13,7 +13,7 @@ function References({ label, collection, selected, onChange }) {
   </label>) : <p className="muted">Ajoutez d’abord un élément à relier.</p>}</fieldset>;
 }
 
-export default function InterventionsPanel({ report, setReport, dictationAllowed = false }) {
+export default function InterventionsPanel({ report, setReport, dictationAllowed = false, canTransferToProject = false, onAuthorizeProject }) {
   const presentation = useScreenPresentation();
   if (!allowsInterventions(report)) return null;
   const d = normalizeDecision(report.decision);
@@ -49,6 +49,6 @@ export default function InterventionsPanel({ report, setReport, dictationAllowed
     </article>)}
     <button type="button" className="button secondary" disabled={d.actions.length >= 100} onClick={() => { const action = { id: crypto.randomUUID(), intitule: '', categorie: '', incontournable: false, observation_ids: [], attente_ids: [], priorite: '', horizon: '', realisation: '', prealables: '', explication: '', inclure_client: false }; update(prev => ({ ...prev, actions: [...prev.actions, action] })); presentation.setOpen(`intervention-${action.id}`, true); }}>Ajouter une intervention</button>
     {warnings.length > 0 && <div className="issue-list warning"><strong>Interventions à relire</strong><ul>{warnings.map(warning => <li key={warning}>{warning}</li>)}</ul></div>}
-    <InterventionProjectPanel report={report} setReport={setReport} />
+    <InterventionProjectPanel report={report} setReport={setReport} canTransfer={canTransferToProject} onAuthorize={onAuthorizeProject} />
   </fieldset>;
 }

@@ -5,13 +5,17 @@ title: Exigences de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags:
   - rapport
   - exigences
   - habitologie
 ---
+
+## 26 novembre — Contexte observations et export
+
+Les exigences AM26-01 à AM26-09 et la précision du responsable sur Projet sont tenues dans le [contrat du lot](docs/contexte-observations-export.md). Il remplace, pour ce candidat, l’attribution des interventions au seul profil Habitologue décrite dans les étapes historiques ci-dessous. Les données antérieures restent conservées ; l’accès Projet ne conditionne pas leur saisie sur les profils admissibles.
 
 ## Exigence confirmée — valider les Word avant le PDF
 
