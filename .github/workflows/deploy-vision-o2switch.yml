@@ -1,0 +1,216 @@
+name: Deploy Vision to O2Switch
+run-name: Vision - ${{ inputs.cible || 'verification PR' }} - ${{ github.ref_name }} - ${{ github.actor }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      cible:
+        description: Cible de livraison
+        required: true
+        type: choice
+        options: [preproduction, production]
+      confirmation:
+        description: Saisir DEPLOYER VISION EN PRODUCTION pour la production
+        type: string
+        default: ''
+      migrations:
+        description: Appliquer les migrations
+        type: boolean
+        default: true
+  pull_request:
+    paths:
+      - architecture-v1/avereo-app-vision/**
+      - .github/workflows/deploy-vision-o2switch.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: vision-${{ inputs.cible || format('pr-{0}', github.event.pull_request.number) }}
+  cancel-in-progress: false
+
+jobs:
+  verification:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: vision
+          MYSQL_ROOT_PASSWORD: vision-ci-only
+        ports: ['3306:3306']
+        options: --health-cmd="mysqladmin ping -h 127.0.0.1 --silent" --health-interval=5s --health-timeout=5s --health-retries=30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql
+          coverage: none
+      - name: Tests, build et validation sans secret
+        run: bash architecture-v1/avereo-app-vision/deploiement/verifier-candidat.sh
+
+  deploy:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      deployments: read
+    environment:
+      name: ${{ inputs.cible == 'production' && 'vision' || 'vision-preprod' }}
+      url: ${{ inputs.cible == 'production' && 'https://vision.avereo.fr' || 'https://vision-preprod.avereo.fr' }}
+    env:
+      DOMAIN: ${{ inputs.cible == 'production' && 'vision.avereo.fr' || 'vision-preprod.avereo.fr' }}
+      PRIVATE_DIR: ${{ inputs.cible == 'production' && '.avereo/vision' || '.avereo/vision-preprod' }}
+      O2SWITCH_HOST: ${{ secrets.O2SWITCH_HOST }}
+      O2SWITCH_USER: ${{ secrets.O2SWITCH_USER }}
+      O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT || '8888' }}
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_DATABASE: vision
+          MYSQL_ROOT_PASSWORD: vision-ci-only
+        ports: ['3306:3306']
+        options: --health-cmd="mysqladmin ping -h 127.0.0.1 --silent" --health-interval=5s --health-timeout=5s --health-retries=30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Contrôles des entrées
+        env:
+          CIBLE: ${{ inputs.cible }}
+          CONFIRMATION: ${{ inputs.confirmation }}
+        run: |
+          set -euo pipefail
+          case "$CIBLE" in
+            preproduction) [[ "$GITHUB_REF" == refs/heads/* ]] ;;
+            production)
+              test "$GITHUB_REF" = refs/heads/main
+              test "$CONFIRMATION" = 'DEPLOYER VISION EN PRODUCTION'
+              ;;
+            *) echo 'Cible invalide.' >&2; exit 1 ;;
+          esac
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+      - name: Vérifier la qualification du même SHA
+        if: inputs.cible == 'production'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node architecture-v1/avereo-app-vision/deploiement/verifier-promotion.mjs
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: pdo_mysql
+          coverage: none
+      - name: Tests, build et validation du paquet
+        id: candidat
+        run: bash architecture-v1/avereo-app-vision/deploiement/verifier-candidat.sh
+      - name: Résoudre la racine isolée
+        id: target
+        env:
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+        run: |
+          set -euo pipefail
+          # La 2FA de cPanel refuse l'API par mot de passe : jeton d'API obligatoire (procédure, étape 0).
+          if [ -z "${CPANEL_API_TOKEN:-}" ]; then echo 'Secret CPANEL_API_TOKEN absent : créer un jeton d API cPanel (docs/deploiement-mutualise.md).' >&2; exit 1; fi
+          target="$(python3 .github/scripts/cpanel-domain-docroot.py "$DOMAIN")"
+          [[ -n "$target" && "$target" == *"$DOMAIN"* && "/$target/" != *'/../'* ]]
+          echo "server_dir=${target%/}/" >> "$GITHUB_OUTPUT"
+      - name: Identifier le runner
+        id: runner-ip
+        run: echo "ipv4=$(curl -fsS --max-time 20 https://api.ipify.org)" >> "$GITHUB_OUTPUT"
+      - name: Autoriser temporairement SSH
+        env:
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
+        run: |
+          set -euo pipefail
+          echo 'WHITELIST_ATTEMPTED=1' >> "$GITHUB_ENV"
+          bash .github/scripts/cpanel-ssh-whitelist.sh add
+          bash .github/scripts/cpanel-ssh-whitelist.sh list
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
+      - name: Vérifier la configuration privée par SSH
+        env:
+          CIBLE: ${{ inputs.cible }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          ssh-keyscan -T 20 -p "$O2SWITCH_PORT" "$O2SWITCH_HOST" >> ~/.ssh/known_hosts
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=30 -p "$O2SWITCH_PORT" "$O2SWITCH_USER@$O2SWITCH_HOST" \
+            "php /dev/stdin \"\$HOME/$PRIVATE_DIR\" '$CIBLE'" < architecture-v1/avereo-app-vision/deploiement/verifier-prive.php
+      - name: Appliquer les migrations avec un compte séparé
+        if: inputs.migrations
+        env:
+          VISION_DB_MIGRATION_USER: ${{ secrets.VISION_DB_MIGRATION_USER }}
+          VISION_DB_MIGRATION_PASSWORD: ${{ secrets.VISION_DB_MIGRATION_PASSWORD }}
+        run: bash architecture-v1/avereo-app-vision/deploiement/transmettre-migrations.sh
+      - name: Sauvegarder la racine actuelle
+        env:
+          FTP_ALLOW_MISSING: 'true'
+          FTP_BACKUP_DIR: ${{ runner.temp }}/vision-backup
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.target.outputs.server_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/ftps-backup-dir.py
+          # SHA du candidat livré par ce run (pas de la version sauvegardée) ; aussi présent si la racine était vide.
+          printf '%s\n' "$GITHUB_SHA" > "$RUNNER_TEMP/vision-backup/candidat-livre-sha.txt"
+      - name: Conserver le retour arrière
+        uses: actions/upload-artifact@v4
+        with:
+          name: vision-${{ inputs.cible }}-before-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/vision-backup
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Publier par FTPS
+        env:
+          FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-vision/frontend/dist
+          FTP_REQUIRED_FILE: index.html
+          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
+          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
+          FTP_PROTOCOL: ftps
+          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
+          FTP_SERVER_DIR: ${{ steps.target.outputs.server_dir }}
+          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+        run: python3 .github/scripts/ftps-deploy-dir.py
+      - name: Vérifier les réponses publiques HTTPS
+        run: node architecture-v1/avereo-app-vision/deploiement/verifier-public.mjs "$DOMAIN"
+      - name: Résumé de livraison
+        env:
+          CIBLE: ${{ inputs.cible }}
+          DIGEST: ${{ steps.candidat.outputs.sha256 }}
+          MIGRATIONS: ${{ inputs.migrations }}
+        run: |
+          {
+            echo "Cible : $CIBLE"
+            echo "SHA : $GITHUB_SHA"
+            echo "SHA-256 du paquet : $DIGEST"
+            echo "Migrations demandées : $MIGRATIONS"
+            if [ -f "$RUNNER_TEMP/vision-migrations.log" ]; then cat "$RUNNER_TEMP/vision-migrations.log"; fi
+            echo "Retour arrière : vision-$CIBLE-before-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Retirer l'autorisation SSH du runner
+        if: always() && env.WHITELIST_ATTEMPTED == '1'
+        env:
+          CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
+          RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
+        run: bash .github/scripts/cpanel-ssh-whitelist.sh remove

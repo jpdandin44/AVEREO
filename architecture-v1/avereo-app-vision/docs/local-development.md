@@ -23,6 +23,7 @@ powershell -ExecutionPolicy Bypass -File .\local\vision-local.ps1 up
 | `health` | appelle `http://127.0.0.1:8110/api/health.php` |
 | `migrate` | applique les migrations en attente (`database/migrate.php`) |
 | `test` | lance tous les tests PHP dans le conteneur |
+| `-Php 8.3` | avec `up` : reconstruit l'API en **PHP 8.3**, version de l'hébergement O2Switch (préproduction) ; sans l'option, retour à 8.4 au prochain `up`. Toute PR qui touche l'API passe aussi les tests en 8.3 (`docs/deploiement-mutualise.md`, étape 1) |
 | `logs`, `ps` | journaux et état |
 | `down` | arrête la pile (la base est conservée) |
 | `reset` | arrête la pile **et efface la base de développement** |

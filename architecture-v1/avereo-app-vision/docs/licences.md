@@ -25,8 +25,8 @@ Version observée = dernier tag stable relevé le 20/11/2026 ; la version fixée
 | JetBrains Mono (`@fontsource/jetbrains-mono`) | 5.3.0 | SIL OFL 1.1 | cotes et données techniques, auto-hébergée | 1 | **installée** |
 | Dexie | 4.4.7 | Apache 2.0 | stockage hors ligne (IndexedDB) | 2 | **installée** (aucune dépendance transitive) |
 | fake-indexeddb | 6.2.8 | Apache 2.0 | simulation d'IndexedDB pour tester le stockage Dexie sous Node | 2 | **installée, dépendance de développement seulement** (jamais dans le build) |
-| vite-plugin-pwa | 2.0.0 | MIT | manifeste et service worker | 2 | prévue |
-| Workbox | 7.4.1 | MIT | service worker (via vite-plugin-pwa) | 2 | prévue |
+| vite-plugin-pwa | 2.0.0 | MIT | manifeste et service worker | 2C | **installée** (dépendance de développement : construction seulement) |
+| Workbox (`workbox-window` 7.4.1 et modules générés) | 7.4.1 | MIT | service worker : seuls les modules MIT de précache et de routage sont livrés dans `sw.js` | 2C | **installée** |
 | tus-js-client | 4.3.1 | MIT | envoi reprenable des vidéos | 3 | prévue (repli : envoi par morceaux maison) |
 | tus-php | 2.4.0 | MIT | serveur d'envoi reprenable | 3 | prévue (à valider : maintenance faible) |
 | @tarikjabiri/dxf | 2.10.1 | MIT | export DXF | 4 | prévue |
@@ -57,8 +57,11 @@ Version observée = dernier tag stable relevé le 20/11/2026 ; la version fixée
 |---|---|---|---|
 | caniuse-lite 1.0.30001827 | **CC-BY-4.0** (données de compatibilité des navigateurs, licence non logicielle) | dépendance transitive de développement des outils de build ; non livrée dans l'application | **Accepté par le responsable le 24/11/2026** (exception limitée : données, dépendance de développement, non livrée dans l'application ; hors de la liste MIT, BSD, Apache 2.0 de `AGENTS.md`) |
 
+## Lot 2C : outils de construction de l'application installable (décision D13 du 25/11/2026)
+`vite-plugin-pwa` et `workbox-build` apportent 22 dépendances de construction sous des licences permissives hors de la liste MIT, BSD, Apache 2.0 de `AGENTS.md` : **ISC** (13 : at-least-node, foreground-child, get-own-enumerable-property-symbols, idb, isexe, minimatch 5, signal-exit, which, etc.) et **BlueOak-1.0.0** (9 : glob, graceful-fs, jackspeak, lru-cache 11, minimatch 10, minipass, path-scurry, package-json-from-dist, @isaacs/cliui). `type-fest` est sous double licence MIT ou CC0 (MIT retenue). **Accepté par le responsable le 25/11/2026** : exception limitée aux outils exécutés pendant la construction, **rien de ces paquets n'est livré** dans l'application (le `sw.js` livré ne contient que les modules Workbox MIT de précache et de routage ; `idb` n'est pas utilisé). `@vite-pwa/assets-generator` n'est **pas** installé (il tire `sharp`/libvips, LGPL) : les icônes provisoires sont produites par `frontend/scripts/icones-provisoires.mjs`, sans dépendance.
+
 ## Lot 2A : aucune nouvelle dépendance de code
-Ni npm ni Composer : l'API PHP, les tests PHP, l'exécuteur de migrations et la passerelle CONNECT sont écrits dans le dépôt, sans bibliothèque tierce. Environnement de développement local (non livré, non redistribué) : image Docker `php:8.4-cli` (PHP License 3.01) avec l'extension `pdo_mysql` compilée depuis les sources de l'image, et image `mysql:8.4` (MySQL, GPL-2.0 avec exception pour les logiciels libres) utilisée uniquement comme service local ; la pile MySQL est imposée par `AGENTS.md`. Rien n'est ajouté à l'application livrée.
+Ni npm ni Composer : l'API PHP, les tests PHP, l'exécuteur de migrations et la passerelle CONNECT sont écrits dans le dépôt, sans bibliothèque tierce. Environnement de développement local (non livré, non redistribué) : images Docker `php:8.4-cli` et `php:8.3-cli` (PHP License 3.01 ; la 8.3 est la version de l'hébergement, pour les tests) avec l'extension `pdo_mysql` compilée depuis les sources de l'image, et image `mysql:8.4` (MySQL, GPL-2.0 avec exception pour les logiciels libres) utilisée uniquement comme service local ; la pile MySQL est imposée par `AGENTS.md`. Rien n'est ajouté à l'application livrée.
 
 ## Dépendances système à instruire (décision D6)
 Signalées par la relecture adversariale Codex du Lot 0 ; non revérifiées sur les sources amont à ce stade. **Décision D6 du responsable (23/11/2026)** : un programme exécuté côté serveur, non modifié, non redistribué et inscrit ici peut être sous BSL-1.0, MPL-2.0 ou LGPL ; AGPL, GPL, non commercial et propriétaire restent exclus. Ces lectures de licence ne sont pas un avis juridique.

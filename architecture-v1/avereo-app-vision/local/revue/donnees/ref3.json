@@ -1,0 +1,8 @@
+{
+  "changes": [
+    {"object_id":"batiment-1","kind":"batiment","parent_id":null,"base_rev":0,"deleted":false,"data":{"nom":"Logement"}},
+    {"object_id":"niveau-1","kind":"niveau","parent_id":"batiment-1","base_rev":0,"deleted":false,"data":{"nom":"Rez-de-chaussée","ordre":0}},
+    {"object_id":"piece-sejour-l","kind":"piece","parent_id":"niveau-1","base_rev":0,"deleted":false,"data":{"nom":"Séjour en L","hauteurMm":2500,"ordre":0,"sommets":[{"x":0,"y":0},{"x":4000,"y":0},{"x":4000,"y":2000},{"x":2000,"y":2000},{"x":2000,"y":4000},{"x":0,"y":4000}]}},
+    {"object_id":"ouv-1-porte","kind":"ouverture","parent_id":"piece-sejour-l","base_rev":0,"deleted":false,"data":{"type":"porte","murIndex":0,"positionMm":1000,"largeurMm":900,"hauteurMm":2040,"alleMm":0}}
+  ]
+}

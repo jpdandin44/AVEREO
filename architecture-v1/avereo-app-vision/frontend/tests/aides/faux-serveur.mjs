@@ -6,6 +6,7 @@ const meme = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
 export function creerFauxServeur({ compte = "12" } = {}) {
   const projets = new Map(); // id -> {projet, objets: Map, seq, journal: []}
+  let horloge = 0; // dates de modification successives des projets
   const etat = {
     horsLigne: false, // les appels échouent comme une coupure réseau
     session: true, // faux : 401
@@ -129,6 +130,10 @@ export function creerFauxServeur({ compte = "12" } = {}) {
         Object.assign(existant, { parentId: c.parent_id, deleted: c.deleted, rev: existant.rev + 1, seq: p.seq, device_id: deviceId, updated_by: compte });
         if (!c.deleted) existant.data = structuredClone(c.data);
         applied.push({ object_id: c.object_id, rev: existant.rev, seq: p.seq, status: conflit ? "conflict" : "applied" });
+      }
+      if (applied.some((a) => a.status !== "unchanged")) {
+        horloge += 1;
+        p.projet.updated_at = `2026-11-25T10:00:${String(horloge).padStart(2, "0")}.000Z`;
       }
       return reponse({ ok: true, applied, ...recevoir(p, since) });
     },

@@ -17,6 +17,7 @@ export const ID_NIVEAU = "niveau-1";
 const LOT_MAX = 100;
 const TOURS_MAX = 20;
 const PROJETS_EN_CACHE = 200;
+const PRECHARGEMENTS_PAR_CYCLE = 20;
 
 /** Numéro de version d'entrée de file : croissant et non réutilisable (horloge + aléa), y compris entre onglets. */
 function versionUnique() {
@@ -457,6 +458,26 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
     return true;
   }
 
+  /**
+   * Préchargement (R04) : le contenu des projets actifs jamais reçus sur cet appareil est téléchargé quand le réseau est là,
+   * pour qu'un relevé préparé au bureau s'ouvre ensuite chez le client, même sans réseau. Quelques projets par cycle.
+   */
+  async function prechargerProjets(dejaFaits) {
+    const actifs = (await stockage.listerProjets()).filter((p) => p.status === "active" && !dejaFaits.has(p.id));
+    let faits = 0;
+    for (const projet of actifs) {
+      if (faits >= PRECHARGEMENTS_PAR_CYCLE || etat.reseau !== "ok") break;
+      const operations = await stockage.lireOperations();
+      if (operations.some((o) => o.type === "creer" && o.id === projet.id)) continue; // pas encore connu du serveur
+      // Suivi indépendant du curseur : le marqueur garde la date de modification du projet reçue ; il faut recevoir de nouveau
+      // quand elle change (relevé complété au bureau). Une réception interrompue n'est pas marquée et reprend au cycle suivant.
+      const version = projet.updated_at ?? "";
+      if ((await stockage.lireMeta(`precharge:${projet.id}`)) === version) continue;
+      faits += 1;
+      if (await synchroniserProjet(projet.id)) await stockage.ecrireMeta(`precharge:${projet.id}`, version);
+    }
+  }
+
   /** Cycle complet : projets en attente, puis les projets ouverts ou ayant des modifications locales non envoyées. */
   function synchroniserTout() {
     if (toutEnCours) {
@@ -475,6 +496,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
               await synchroniserProjet(id);
               if (etat.reseau !== "ok") break;
             }
+            if (etat.reseau === "ok") await prechargerProjets(ids);
           }
         } while (toutARejouer);
       } finally {

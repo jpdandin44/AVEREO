@@ -5,7 +5,7 @@
   "version": "git",
   "iterationId": "vision-v1",
   "title": "AVEREO Vision V1 — relevé, métré et modélisation 2D/3D (équivalent Visuary)",
-  "status": "lot2b_awaiting_human_review",
+  "status": "lot2c_awaiting_human_review",
   "stage": "cadrage",
   "updatedAt": "2026-11-24",
   "objective": "Construire lot par lot une PWA AVEREO de relevé de l'existant (vidéo, métrés ±2 cm, plan 2D, maquette 3D, exports PDF/DXF/IFC/glTF/OBJ/CSV) sur des moteurs open source sous licence MIT, BSD ou Apache 2.0.",
@@ -14,7 +14,7 @@
     "status": "produced_in_lot0_awaiting_validation",
     "meaning": "Lots fonctionnels distincts des quatre phases ; le détail des lots et des tâches (statut, pourquoi, Claude Code ou Codex, modèle, effort, job Codex) est tenu uniquement dans la source Markdown."
   },
-  "activeLot": {"id": "LOT-2B", "title": "Stockage local, enregistrement automatique, synchronisation", "branch": "vision/lot-2b-synchronisation", "scope": "code_local_development", "status": "en cours (PR à relire)"},
+  "activeLot": {"id": "LOT-2C", "title": "PWA installable et rechargement hors ligne", "branch": "vision/lot-2c-pwa", "scope": "code_local_development", "status": "en cours (PR à relire)"},
   "candidate": {"sourceSha": null, "artifactSha256": null},
   "phases": [
     {"id": 0, "label": "Cadrage", "status": "technically_verified_awaiting_human_review", "criteria": []},
@@ -25,6 +25,8 @@
   "currentPhase": 0,
   "checks": [],
   "proofs": [
+    {"id": "t08-deploiement-automatise-20261126", "phaseId": 1, "title": "T-08 : préparation locale du workflow, aucune exécution distante", "kind": "reference_document", "status": "partially_verified", "evidence": "docs/deploiement-automatise-verification.md", "observedAt": "2026-11-26"},
+    {"id": "revue-locale-20261125", "phaseId": 1, "title": "Recette locale (candidat de PR, http://127.0.0.1:5250/revue/, comptes fictifs par la vraie passerelle CONNECT) ; validation = préproduction (https://vision-preprod.avereo.fr/, non installée)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/revue-locale.md", "observedAt": "2026-11-25"},
     {"id": "etude-outils-20261120", "phaseId": 0, "title": "Étude des outils open source du 20/11/2026", "kind": "reference_document", "status": "reviewable", "evidence": "docs/etude-outils-resume.md", "observedAt": "2026-11-20"},
     {"id": "lot0-exigences-20261123", "phaseId": 0, "title": "Lot 0 — Exigences R01 à R48", "kind": "reference_document", "status": "reviewable", "evidence": "docs/exigences.md", "observedAt": "2026-11-23"},
     {"id": "lot0-adr-moteurs-20261123", "phaseId": 0, "title": "Lot 0 — ADR 0001 — choix des moteurs", "kind": "reference_document", "status": "reviewable", "evidence": "docs/adr/0001-moteurs.md", "observedAt": "2026-11-23"},
@@ -47,6 +49,7 @@
     {"id": "D3", "title": "Mise à l'échelle des relevés vidéo", "status": "decided", "decidedOn": "2026-11-23", "choice": "2 cotes laser pour l'échelle + 1 cote de contrôle (écart > 2 cm = hors tolérance), mire ArUco en secours"},
     {"id": "D4", "title": "Licences permissives hors liste : BSL-1.0 (Clipper2), FPDF, EDL-1.0 (JSTS)", "status": "decided", "decidedOn": "2026-11-23", "choice": "Refus de Clipper2 (BSL-1.0), FPDF et EDL-1.0 (JSTS) : inutiles, flatten-js et Gotenberg couvrent les besoins"},
     {"id": "D5", "title": "Outil de validation IFC pendant les tests : IfcOpenShell (LGPL-3.0), hors application livrée", "status": "decided", "decidedOn": "2026-11-23", "choice": "IfcOpenShell (LGPL-3.0) accepté comme outil de test seulement : ni dans les dépendances de l'application, ni dans les conteneurs, ni en production"},
+    {"id": "D13", "title": "Licences ISC et BlueOak-1.0.0 des outils de construction de l'application installable (vite-plugin-pwa, workbox-build)", "status": "decided", "decidedOn": "2026-11-25", "choice": "Accepter : exception limitée aux outils de construction, rien de livré dans l'application"},
     {"id": "D10", "title": "Découpage du reste du Lot 2 : 2B (stockage local, synchronisation, création de projet hors ligne) puis 2C (PWA, service worker, essais Android et iPhone)", "status": "decided", "decidedOn": "2026-11-24", "choice": "Deux PR : 2B puis 2C"},
     {"id": "D11", "title": "Création de projet possible hors ligne : identifiant choisi par le navigateur, accepté par POST /api/projects.php (modification compatible de l'API du Lot 2A, aucun schéma livré modifié)", "status": "decided", "decidedOn": "2026-11-24", "choice": "Création hors ligne aussi"},
     {"id": "D12", "title": "Icône d'application PWA provisoire (aplat bleu nuit, lettre V), signalée À VÉRIFIER : fichier logo carré ; remplaçable par un fichier fourni (Lot 2C)", "status": "decided", "decidedOn": "2026-11-24", "choice": "Icône provisoire"},
@@ -77,9 +80,10 @@
     "À VÉRIFIER : dépôt actuel d'OpenSfM et son chemin CPU, licences de Boost, Eigen, FFmpeg, Draco et Meshopt, exactitude des liens officiels de l'ADR (alertes de licence signalées par la relecture Codex, non revérifiées sur les sources amont).",
     "À VÉRIFIER : format du CSV (séparateur, décimale, BOM) et valeurs proposées (délai de synchro, cibles tactiles, poids des photos)."
   ],
-  "nextAction": "Relire la PR du Lot 2B et cocher la checklist ; faire la recette hébergée de Vision en préproduction selon docs/deploiement-mutualise.md (accord à chaque étape) ; fournir la pièce de référence (R29) ; puis lancer le Lot 2C (PWA).",
+  "nextAction": "Relire la PR du Lot 2C (recette locale http://127.0.0.1:5250/revue/ : rechargement hors ligne, installation) ; installer la validation en préproduction (docs/deploiement-mutualise.md, accord à chaque étape), puis y faire les essais Android et iPhone (R04, R09) ; fournir la pièce de référence (R29) ; puis Lot 3.",
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/195"},
   "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; repointé le 24/11/2026 vers le worktree C:/Users/examg/Documents local/avereo-vision-lot1 (branche de suivi vision/lot-1-suivi-caniuse), à repointer vers le clone principal une fois à jour.",
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},
+  "automationT08": {"branch": "vision/deploiement-auto", "phase": "Développement local", "status": "qualification_incomplete", "nextAction": "Vérification stricte PHP 8.3/MySQL 8.4 sur GitHub après publication autorisée ; qualification hébergée séparée.", "approvals": []},
   "documentation": "docs/plan-lots.md"
 }

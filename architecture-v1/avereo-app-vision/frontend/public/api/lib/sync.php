@@ -339,6 +339,10 @@ function vision_sync_exchange(PDO $pdo, array $project, array $identity, string 
                 $applied[] = ['object_id' => $change['object_id'], 'rev' => $rev, 'seq' => $seq, 'status' => $conflict ? 'conflict' : 'applied'];
             }
             $pdo->prepare('UPDATE vision_project_counters SET last_seq = ? WHERE project_id = ?')->execute([$seq, $projectId]);
+            // Le contenu a changé : la date de modification du projet aussi (liste triée par activité, préchargement des appareils).
+            if (array_filter($applied, static fn (array $a): bool => $a['status'] !== 'unchanged') !== []) {
+                $pdo->prepare('UPDATE vision_projects SET updated_at = CURRENT_TIMESTAMP(3) WHERE id = ?')->execute([$projectId]);
+            }
             $snapshot = $seq;
         }
         $pull = vision_sync_pull($pdo, $projectId, $since, $snapshot);

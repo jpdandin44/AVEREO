@@ -1,3 +1,15 @@
+---
+project: avereo-app-vision
+document_type: agent-instructions
+title: Règles de développement de Vision
+status: active
+version: git
+created: 2026-11-26
+updated: 2026-11-26
+owner: jpdandin
+tags: [vision, deploiement]
+---
+
 # AGENTS.md — AVEREO Vision : relevé, métré et modélisation 2D/3D AVEREO
 
 ## Ce qu'est cette application
@@ -30,11 +42,13 @@ Le document complet est dans docs/charte/Charte_graphique_AVEREO_V2.0.pdf. Les r
 - Chaque dépendance ajoutée est inscrite dans docs/licences.md : nom, version, licence, usage.
 
 ## Stack et hébergement
+- Déploiement automatisé (après autorisation, `docs/deploiement-mutualise.md`) : `gh workflow run deploy-vision-o2switch.yml --ref <branche> -f cible=preproduction` ; `gh workflow run deploy-vision-o2switch.yml --ref main -f cible=production -f confirmation="DEPLOYER VISION EN PRODUCTION"`.
 - Front-end : React + Vite. API et stockage : PHP + MySQL. C'est la stack de l'application Rapport du même dépôt (architecture-v1/avereo-app-rapport/) : lis son AGENTS.md et reprends ses conventions de structure et de configuration.
 - Les traitements lourds (reconstruction 3D à partir d'une vidéo) tournent dans un service de traitement séparé, en conteneur dédié sur le serveur OVH d'AVEREO. Tu ne connais pas les caractéristiques de ce serveur : indique les ressources nécessaires (CPU, GPU, mémoire, disque) et marque « À VÉRIFIER » leur adéquation. Ce service n'est mis en place qu'après ma validation de l'ADR.
 - Moteurs open source retenus : voir docs/adr/. Tout changement de moteur passe par un nouvel ADR que je valide.
 - Commandes (définies au lot 1), à lancer dans `frontend/` : installation `npm ci` ; tests `npm test` (lanceur natif de Node, `node --test`, aucun outil de test à installer) ; build `npm run build` ; lancement local `npm run dev` (Vite, http://localhost:5173 par défaut). Un seul test : `npm test -- tests/metres.test.mjs`. Prérequis : Node 20.19 ou plus, ou 22.12 ou plus.
-- API et base (lot 2A), depuis `architecture-v1/avereo-app-vision/` (Docker Desktop requis) : `powershell -ExecutionPolicy Bypass -File .\local\vision-local.ps1 up` (puis `test`, `health`, `migrate`, `down`, `reset`) ; tests PHP sans base sur le poste : `php tests/api/run.php <filtre>`. Détails dans `docs/local-development.md` ; authentification dans `docs/authentication.md`.
+- Recette et validation (25/11/2026) : **recette = locale**, `local/vision-revue.ps1 up -Source <worktree de la PR>` (candidat de la PR, http://127.0.0.1:5250/revue/, comptes fictifs Conseiller A, Conseiller B, Fondateur F, vraie passerelle CONNECT) ; **validation = préproduction** (`https://vision-preprod.avereo.fr/`, procédure `docs/deploiement-mutualise.md`, accord à chaque étape). Dans les PR, la case « environnement de validation » renvoie à la recette locale en phase 1 et à la préproduction en phase 2. Voir `docs/revue-locale.md`.
+- API et base (lot 2A), depuis `architecture-v1/avereo-app-vision/` (Docker Desktop requis) : `powershell -ExecutionPolicy Bypass -File .\local\vision-local.ps1 up` (puis `test`, `health`, `migrate`, `down`, `reset`) ; PHP 8.3 de l'hébergement : `vision-local.ps1 up -Php 8.3` puis `test`, à passer pour toute PR qui touche l'API ; tests PHP sans base sur le poste : `php tests/api/run.php <filtre>`. Détails dans `docs/local-development.md` ; authentification dans `docs/authentication.md`.
 - Langage et versions (lot 1) : JavaScript (modules ES) avec types JSDoc, comme l'application Rapport ; React 19, Vite 7, Konva et react-konva pour le plan 2D. La logique pure (métrés, géométrie, modèle) est dans `frontend/src/domain/`, sans React ni DOM, et testée dans `frontend/tests/`.
 - La CI du dépôt (`.github/workflows/ci.yml`) ne contient pas encore AVEREO Vision : à ajouter par une PR séparée, avec l'accord du responsable.
 

@@ -1,0 +1,39 @@
+# Outillage et source séparés ; le script impose un projet Compose par environnement.
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: vision
+      MYSQL_USER: vision
+      MYSQL_PASSWORD: ${VISION_DB_PASSWORD:?exécuter vision-revue.ps1 up}
+      MYSQL_ROOT_PASSWORD: ${VISION_DB_ROOT_PASSWORD:?exécuter vision-revue.ps1 up}
+    volumes:
+      - revue-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      AVEREO_CONFIG_FILE: /opt/revue/environnements/${VISION_REVUE_NOM}/config.php
+      VISION_REVUE_NOM: ${VISION_REVUE_NOM}
+      PHP_CLI_SERVER_WORKERS: "4"
+    command: ["php", "-S", "0.0.0.0:80", "-t", "/opt/vision/frontend/dist", "/opt/revue/router.php"]
+    ports:
+      - "127.0.0.1:${VISION_REVUE_PORT}:80"
+    volumes:
+      - "${VISION_REVUE_SOURCE}:/opt/vision:ro"
+      - "./revue:/opt/revue:ro"
+      - revue-nonces:/var/lib/avereo/vision/nonces
+
+volumes:
+  revue-db:
+  revue-nonces:

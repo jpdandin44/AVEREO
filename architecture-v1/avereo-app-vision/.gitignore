@@ -4,3 +4,4 @@ local/config.php
 frontend/.env*.local
 frontend/dist/
 frontend/node_modules/
+local/revue/environnements/

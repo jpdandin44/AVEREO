@@ -24,6 +24,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        # 8.4 par défaut ; 8.3 = version de l'hébergement (vision-local.ps1 -Php 8.3).
+        PHP_VERSION: ${VISION_PHP_VERSION:-8.4}
     depends_on:
       db:
         condition: service_healthy
