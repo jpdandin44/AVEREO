@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
+import Camera from "./Camera.jsx";
 import Dialogue from "./Dialogue.jsx";
+import { modeAppareilCourant } from "./appareil.js";
 import Encadre from "../../components/Encadre.jsx";
 import Icone from "../../components/Icone.jsx";
 import { cibleCommentaire, enregistrerCommentaire, commentaireHorsMur } from "./logique.js";
@@ -8,6 +10,9 @@ import { positionCommentaire } from "../../domain/terrain.js";
 export default function CarteTerrain({ niveau, piece, photos, selection, onSelection, validerNiveau, onSupprimer }) {
   const camera = useRef(null), fichiers = useRef(null);
   const [texte, setTexte] = useState(""), [attache, setAttache] = useState("point"), [edition, setEdition] = useState(null), [erreur, setErreur] = useState(null);
+  // PC et tablettes Windows : caméra intégrée ; téléphones : appareil photo natif (voir appareil.js).
+  const [cameraOuverte, setCameraOuverte] = useState(false);
+  const prendrePhoto = () => (modeAppareilCourant() === "integre" ? setCameraOuverte(true) : camera.current.click());
   const photo = (niveau.photos ?? []).find(p => selection?.type === "photo" && p.id === selection.id);
   const commentaire = (niveau.commentaires ?? []).find(c => selection?.type === "commentaire" && c.id === selection.id);
   function enregistrer(e) {
@@ -24,7 +29,8 @@ export default function CarteTerrain({ niveau, piece, photos, selection, onSelec
     <h2 id="titre-terrain">Photos et commentaires</h2>
     <input ref={camera} hidden type="file" accept="image/*" capture="environment" onChange={e => { photos.ajouter(e.target.files[0]); e.target.value = ""; }} />
     <input ref={fichiers} hidden type="file" accept="image/*" onChange={e => { photos.ajouter(e.target.files[0]); e.target.value = ""; }} />
-    <button type="button" className="bouton" disabled={photos.occupe} onClick={() => camera.current.click()}>Prendre une photo</button>
+    <button type="button" className="bouton" disabled={photos.occupe} onClick={prendrePhoto}>Prendre une photo</button>
+    {cameraOuverte && <Camera onPhoto={f => photos.ajouter(f)} onFermer={() => setCameraOuverte(false)} />}
     <button type="button" className="bouton bouton--secondaire" disabled={photos.occupe} onClick={() => fichiers.current.click()}>Choisir une photo</button>
     {photos.occupe && <p role="status">Compression et enregistrement de la photo…</p>}
     {photos.erreur && <Encadre type="alerte" titre="Photo">{photos.erreur}</Encadre>}

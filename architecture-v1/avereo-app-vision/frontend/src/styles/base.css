@@ -424,3 +424,13 @@ h2 {
   .grille-champs { grid-template-columns: minmax(0, 1fr); }
   .terrain .bouton { width: 100%; }
 }
+
+/* Prise de vue intégrée (PC et tablettes Windows) : aperçu de la caméra. */
+.terrain-camera {
+  display: block;
+  width: 100%;
+  max-height: 60vh;
+  background: var(--brand-primary);
+  border-radius: var(--radius);
+  object-fit: contain;
+}

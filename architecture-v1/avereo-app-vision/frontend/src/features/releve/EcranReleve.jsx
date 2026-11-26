@@ -189,6 +189,7 @@ export default function EcranReleve({ projet, moteur }) {
             onValider={releve.validerPiece}
             onSupprimerSommet={index => demanderSuppression({ type: "sommet", pieceId: piece.id, sommetIndex: index })}
             onInsererSommet={(murIndex, t) => inserer(piece.id, murIndex, t)}
+            onSupprimerPiece={() => piece && demanderSuppression({ type: "piece", pieceId: piece.id })}
             onSelectionTerrain={setSelection}
             onDeplacerRepere={(type, id, position) => releve.validerNiveau(n => deplacerRepere(n, type, id, position))}
             onCreerDepuisSommets={(sommets) => releve.creerPieceDepuisSommets(sommets, HAUTEUR_PAR_DEFAUT_MM)}

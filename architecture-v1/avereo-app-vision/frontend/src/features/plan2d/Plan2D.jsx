@@ -6,9 +6,10 @@ import { Circle, Group, Rect, Layer, Line, Stage, Text } from "react-konva";
 import Encadre from "../../components/Encadre.jsx";
 import Icone from "../../components/Icone.jsx";
 import { aireMm2, estAutoSecant, projeterSurSegment } from "../../domain/geometrie.js";
-import { deplacerSommet } from "../../domain/modele.js";
+import { definirLongueurMur, deplacerSommet } from "../../domain/modele.js";
 import { positionCommentaire } from "../../domain/terrain.js";
-import { formaterLongueurMm, formaterSurface } from "../../domain/unites.js";
+import { analyserLongueur, formaterLongueurMm, formaterSurface, texteDepuisMm } from "../../domain/unites.js";
+import Dialogue from "../terrain/Dialogue.jsx";
 import { aimanter } from "./aimantation.js";
 import { centreOuverture, deplacerOuverture } from "./glisserOuverture.js";
 import { lireJetons } from "./jetons.js";
@@ -70,6 +71,7 @@ export default function Plan2D({
   onInsererSommet,
   onSelectionTerrain,
   onDeplacerRepere,
+  onSupprimerPiece,
 }) {
   const conteneur = useRef(null);
   const scene = useRef(null);
@@ -81,6 +83,8 @@ export default function Plan2D({
   const [curseur, setCurseur] = useState(null);
   const [message, setMessage] = useState(null);
   const [jetons, setJetons] = useState(null);
+  // Cote d'un mur modifiée directement sur le plan (toucher la cote) : {murIndex, texte, erreur}.
+  const [editionCote, setEditionCote] = useState(null);
 
   const piecesRef = useRef(niveau.pieces);
   piecesRef.current = niveau.pieces;
@@ -232,6 +236,30 @@ export default function Plan2D({
     e.target.position({ x: centre.x * echelle, y: centre.y * echelle });
   }
 
+  function ouvrirCote(murIndex) {
+    if (!piece || mode !== "selection") return;
+    const a = piece.sommets[murIndex];
+    const b = piece.sommets[(murIndex + 1) % piece.sommets.length];
+    setEditionCote({ murIndex, texte: texteDepuisMm(Math.round(Math.hypot(b.x - a.x, b.y - a.y))), erreur: null });
+  }
+
+  function validerCote(e) {
+    e.preventDefault();
+    if (!piece || !editionCote) return;
+    const lecture = analyserLongueur(editionCote.texte, "m");
+    if (!lecture.ok) {
+      setEditionCote({ ...editionCote, erreur: lecture.message });
+      return;
+    }
+    const resultat = definirLongueurMur(piece, editionCote.murIndex, lecture.mm);
+    if (!resultat.ok) {
+      setEditionCote({ ...editionCote, erreur: resultat.message });
+      return;
+    }
+    onValider(resultat.piece);
+    setEditionCote(null);
+  }
+
   const px = (p) => [p.x * echelle, p.y * echelle];
   const flat = (sommets) => sommets.flatMap(px);
 
@@ -273,6 +301,11 @@ export default function Plan2D({
         <button type="button" className="bouton bouton--secondaire" onClick={recentrer}>
           <Icone nom="recentrer" /> Recentrer
         </button>
+        {piece && mode === "selection" && onSupprimerPiece ? (
+          <button type="button" className="bouton bouton--secondaire" onClick={onSupprimerPiece}>
+            <Icone nom="supprimer" /> Supprimer la pièce
+          </button>
+        ) : null}
       </div>
 
       <div className="plan__zone" ref={conteneur}>
@@ -343,19 +376,37 @@ export default function Plan2D({
                       const ny = (-dx / longueur) * signe;
                       const mx = ((a.x + b.x) / 2) * echelle + nx * 18;
                       const my = ((a.y + b.y) / 2) * echelle + ny * 18;
+                      const modifiable = active && mode === "selection";
                       return (
-                        <Text
-                          key={`c${p.id}-${i}`}
-                          text={formaterLongueurMm(longueur)}
-                          x={mx - 40}
-                          y={my - 7}
-                          width={80}
-                          align="center"
-                          fontSize={12}
-                          fontFamily={jetons.fontMono}
-                          fill={active ? jetons.text : jetons.textMuted}
-                          listening={false}
-                        />
+                        <Group key={`c${p.id}-${i}`}>
+                          {modifiable ? (
+                            // Zone de toucher de 80 × 48 px autour de la cote : la toucher ouvre la saisie de la longueur.
+                            <Rect
+                              x={mx - 40}
+                              y={my - 24}
+                              width={80}
+                              height={48}
+                              fill="transparent"
+                              onClick={() => ouvrirCote(i)}
+                              onTap={() => ouvrirCote(i)}
+                              onMouseEnter={(e) => { e.target.getStage().container().style.cursor = "pointer"; }}
+                              onMouseLeave={(e) => { e.target.getStage().container().style.cursor = "default"; }}
+                            />
+                          ) : null}
+                          <Text
+                            text={formaterLongueurMm(longueur)}
+                            x={mx - 40}
+                            y={my - 7}
+                            width={80}
+                            align="center"
+                            fontSize={modifiable ? 13 : 12}
+                            fontFamily={jetons.fontMono}
+                            fontStyle={modifiable ? "bold" : "normal"}
+                            textDecoration={modifiable ? "underline" : ""}
+                            fill={active ? jetons.text : jetons.textMuted}
+                            listening={false}
+                          />
+                        </Group>
                       );
                     })}
                     {p.ouvertures.map((o) => {
@@ -524,10 +575,33 @@ export default function Plan2D({
           </Encadre>
         ) : (
           <Encadre titre="Modifier le plan">
-            Glissez un sommet pour déplacer un mur ; double-cliquez (ou double-touchez) un mur pour ajouter un sommet, un sommet pour le retirer ; glissez le rond P ou F pour déplacer une ouverture. Les cotes se saisissent aussi au clavier dans la liste des murs.
+            Touchez une cote soulignée pour saisir la longueur du mur ; glissez un sommet pour déplacer un mur ; double-cliquez (ou double-touchez) un mur pour ajouter un sommet, un sommet pour le retirer ; glissez le rond P ou F pour déplacer une ouverture.
           </Encadre>
         )}
       </div>
+
+      {editionCote && piece ? (
+        <Dialogue titre={`Longueur du mur ${editionCote.murIndex + 1}`} sansFermer onFermer={() => setEditionCote(null)}>
+          <form onSubmit={validerCote} className="terrain">
+            <label className="champ">
+              Longueur mesurée (m)
+              <input
+                className="champ__saisie mono"
+                inputMode="decimal"
+                autoFocus
+                value={editionCote.texte}
+                onChange={(e) => setEditionCote({ ...editionCote, texte: e.target.value, erreur: null })}
+                aria-invalid={editionCote.erreur ? "true" : undefined}
+              />
+            </label>
+            {editionCote.erreur ? (
+              <Encadre type="alerte" titre="Longueur refusée">{editionCote.erreur}</Encadre>
+            ) : null}
+            <button type="submit" className="bouton">Valider</button>
+            <button type="button" className="bouton bouton--secondaire" onClick={() => setEditionCote(null)}>Annuler</button>
+          </form>
+        </Dialogue>
+      ) : null}
     </section>
   );
 }
