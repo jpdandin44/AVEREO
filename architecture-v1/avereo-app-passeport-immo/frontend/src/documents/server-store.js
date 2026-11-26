@@ -2,7 +2,7 @@ export const SERVER_STORAGE = typeof document !== 'undefined'
   && document.querySelector('meta[name="passeport-storage"]')?.content === 'server';
 
 export function createServerStorage({ fetcher = (...args) => fetch(...args), notify = () => {} } = {}) {
-  let csrf = null, revision = null, latest = null, pending = null, failure = null;
+  let csrf = null, revision = null, latest = null, pending = null, failure = null, importFileLimit;
   async function request(path, options = {}) {
     const headers = { ...options.headers };
     if (options.body && !(options.body instanceof FormData)) headers['Content-Type'] = 'application/json';
@@ -18,6 +18,7 @@ export function createServerStorage({ fetcher = (...args) => fetch(...args), not
   }
   async function load() {
     const session = await request('/session'); csrf = session.csrf;
+    importFileLimit = session.documentUploadLimits?.filesPerBatch;
     const workspace = await request('/workspace'); revision = workspace.revision;
     return { ...workspace, user: session.user };
   }
@@ -47,6 +48,7 @@ export function createServerStorage({ fetcher = (...args) => fetch(...args), not
   const bienPath = id => `/biens/${encodeURIComponent(String(id))}`;
   const repository = {
     server: true,
+    get importFileLimit() { return importFileLimit; },
     async load(id) { await flush(); return request(`${bienPath(id)}/documents`); },
     async linkClient(id, client) { await flush(); return request(`${bienPath(id)}/client`, { method: 'POST', body: JSON.stringify(client) }); },
     async addFiles(id, files, category) {

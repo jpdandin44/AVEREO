@@ -5,10 +5,14 @@ title: État des intégrations
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-13
+updated: 2026-11-26
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## Contrat de session — limite des fichiers par requête
+
+Le candidat du 26 novembre ajoute à la réponse authentifiée `GET /api/session` le champ `documentUploadLimits.filesPerBatch` : entier positif issu de `max_file_uploads` du PHP web, borné à 100, repli serveur à 20 si sa lecture est invalide. Le front utilise ce champ et se replie à 20 si le serveur ancien ne l’envoie pas. Les requêtes multipart, `expectedCount`, catégories, CSRF et propriété sont inchangés. Aucun secret/configuration privée autre que cette capacité numérique exposé. [Qualification](../docs/source-audit-import-lots.md).
 
 # État des intégrations
 

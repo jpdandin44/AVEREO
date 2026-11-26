@@ -5,10 +5,14 @@ title: Architecture Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 26 novembre — taille des lots négociée à la session
+
+`GET /api/session`, déjà authentifié, ajoute `documentUploadLimits.filesPerBatch` calculé depuis la limite du PHP web, bornée à 100. Le dépôt serveur la transmet au planificateur et à l’aide d’import ; si le champ manque ou est invalide, le front conserve un repli à 20. L’enveloppe de taille, les originaux, l’atomicité par requête et la reprise restent inchangés. Aucune migration ou modification d’authentification. [Audit et flux exact](docs/source-audit-import-lots.md). La [liaison directe](docs/liaison-directe-rapport.md) est une proposition, hors architecture exécutée de ce candidat.
 
 ## Décision Word et PDF final séparés
 

@@ -1,0 +1,67 @@
+{
+  "observedAt": "2026-11-26T21:10:45.187679+00:00",
+  "environment": "local",
+  "fictitiousOnly": true,
+  "baseSha": "fa7ce62d3e115879692212725d7cd5f5683e7529",
+  "codeFileSha256": {
+    "frontend/public/api/index.php": "3f83590c8fc4025b83dbfde1c3e622f54ebfc401372b6b5e09618a58818d9d4f",
+    "frontend/src/documents/import-files.js": "3316a0265d771207d4a5664c57d4e2fe37f96f935107a5f9292b6a3fd481610d",
+    "frontend/src/documents/server-store.js": "f6f6475593c245089d3d6072b00f1176fdea7bf4b41161b11cd92cae6cfa9062",
+    "frontend/src/documents/DocumentsPanel.jsx": "c0c9b8a032d7846d983c0534ec09e3767d12cc1ad62c3e3d655516b07078224f",
+    "frontend/tests/import-files.test.js": "96bdc6c6807089aaeab31d3ec642587e799e2467f15dcd09e46e2c13a9453f70",
+    "frontend/tests/server-store.test.js": "9df16cb36ad5659aa8346110d56a754b0fcbc253e68f09c0e2d0427885706067",
+    "tests/check-storage-http.py": "2012dcad46ad910ba322a8018c0d80caeffbd96bd3d36bb101c458cd26698451"
+  },
+  "regressionBeforeCorrection": {
+    "failed": 2,
+    "cases": [
+      "27 file request not split20+7",
+      "server limit7 ignored"
+    ]
+  },
+  "frontend": {
+    "passed": 93,
+    "files": 13
+  },
+  "nativeHttp": {
+    "passed": 276,
+    "phpFileLimit": 20,
+    "distinctFiles": 27,
+    "downloadedDistinctFilesExact": 27,
+    "wordReviewAndPdfGuardsPassed": true
+  },
+  "browser": {
+    "observedAt": "2026-11-26T21:01:19.797599+00:00",
+    "environment": "local",
+    "entry": "http://127.0.0.1:32768/fixture/",
+    "data": "fictitious",
+    "phpFileLimitDisplayed": 20,
+    "selectedDistinctImages": 27,
+    "batchesObserved": 2,
+    "added": 27,
+    "existingApiFixtureDocuments": 27,
+    "totalDocumentsAfter": 54,
+    "reimport": {
+      "added": 0,
+      "duplicates": 27
+    },
+    "afterReloadDocuments": 54,
+    "downloadedImage": {
+      "file": "recette-ui27-27.png",
+      "sha256": "12824b0116a55a914d56ca59ca44bbe76e8f664a0d725ccbaa17f18e36833d04",
+      "exact": true
+    },
+    "nativeUiNotHosted": true
+  },
+  "build": {
+    "passed": true,
+    "warning": "Preexisting chunks over500kB",
+    "artifactSha256": "5c69e93c793a79f0aa0edd4c08ad625b71247133c1909cd2ae1a3b900109743b"
+  },
+  "phpSyntax": "passed",
+  "historicalBusinessParity": "passed",
+  "hostedCandidateInstalled": false,
+  "directLinkImplemented": false,
+  "realDataOrRightsChanged": false,
+  "codeHashEncoding": "UTF-8 with LF line endings"
+}
