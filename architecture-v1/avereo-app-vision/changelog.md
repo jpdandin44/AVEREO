@@ -12,6 +12,10 @@ tags: [vision, deploiement]
 
 # Évolutions de Vision
 
+## 2026-11-26 — Retours d'essai du lot 3A (Surface Pro)
+
+« Supprimer la pièce » dans la barre du plan ; cotes modifiables en touchant la cote soulignée ; prise de vue intégrée (caméra du navigateur) sur PC et tablettes Windows ; **numéros des murs** (pastilles 1, 2, 3… à l'intérieur de la pièce sélectionnée, mêmes numéros que « Mur 1 », « Mur 2 »… des listes) ; bouton **« Dicter »** sur les champs libres (nom du projet, adresse, client, nom de pièce, commentaire) : il place le curseur dans le champ et indique le geste de la **dictée du système** de l'appareil (micro du clavier sur Android et iPhone, Windows + H sur Surface). Décision du responsable : aucune reconnaissance vocale du navigateur, donc aucun son envoyé hors de l'appareil par Vision.
+
 ## 2026-11-26 — T-10, données terrain du lot 3A
 
 Modèle et calculs des cotes laser, photos et commentaires ciblés, suppressions/détachements et renumérotation ; nouveaux objets synchronisés et validation serveur ; API privée des images, migration 003 et extension additive 004 des deux ENUM explicitement autorisée. Dexie v2 conserve les données v1 et ajoute les blobs ; service médias sans écran, compression et empreinte, reprise après acquittement et erreurs de session. Contrat, configuration et procédure de déploiement complétés. Aucun déploiement exécuté. [Résultats et réserves](docs/terrain-donnees-verification.md), notamment PHP/MySQL non exécutés dans cette session.

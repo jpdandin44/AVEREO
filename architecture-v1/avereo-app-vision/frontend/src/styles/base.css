@@ -229,6 +229,20 @@ h2 {
   font-size: 0.85rem;
 }
 
+/* Bouton « Dicter » sous un champ libre (dictée du système de l'appareil). */
+.dictee {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+
+.dictee__bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .grille-champs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -406,6 +406,24 @@ export default function Plan2D({
                             fill={active ? jetons.text : jetons.textMuted}
                             listening={false}
                           />
+                          {active ? (
+                            // Numéro du mur (Mur 1, Mur 2…) côté intérieur de la pièce sélectionnée, comme dans les listes ;
+                            // à 40 px du mur pour ne pas passer sous un repère de photo ou de commentaire posé au milieu du mur (48 px).
+                            <Group x={((a.x + b.x) / 2) * echelle - nx * 40} y={((a.y + b.y) / 2) * echelle - ny * 40} listening={false}>
+                              <Circle radius={11} fill={jetons.primary} />
+                              <Text
+                                text={`${i + 1}`}
+                                x={-11}
+                                y={-6}
+                                width={22}
+                                align="center"
+                                fontSize={12}
+                                fontFamily={jetons.fontUi}
+                                fontStyle="bold"
+                                fill={jetons.surface}
+                              />
+                            </Group>
+                          ) : null}
                         </Group>
                       );
                     })}
@@ -575,7 +593,7 @@ export default function Plan2D({
           </Encadre>
         ) : (
           <Encadre titre="Modifier le plan">
-            Touchez une cote soulignée pour saisir la longueur du mur ; glissez un sommet pour déplacer un mur ; double-cliquez (ou double-touchez) un mur pour ajouter un sommet, un sommet pour le retirer ; glissez le rond P ou F pour déplacer une ouverture.
+            Les pastilles 1, 2, 3… numérotent les murs de la pièce sélectionnée (mêmes numéros que « Mur 1 », « Mur 2 »… dans les listes). Touchez une cote soulignée pour saisir la longueur du mur ; glissez un sommet pour déplacer un mur ; double-cliquez (ou double-touchez) un mur pour ajouter un sommet, un sommet pour le retirer ; glissez le rond P ou F pour déplacer une ouverture.
           </Encadre>
         )}
       </div>

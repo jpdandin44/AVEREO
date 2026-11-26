@@ -29,7 +29,7 @@ export default function FormulairePiece({ onCreer }) {
 
   return (
     <form onSubmit={creer} noValidate aria-label="Nouvelle pièce rectangulaire">
-      <Champ libelle="Nom de la pièce" valeur={nom} onChange={setNom} inputMode="text" aide="Facultatif" />
+      <Champ libelle="Nom de la pièce" valeur={nom} onChange={setNom} inputMode="text" dictee aide="Facultatif" />
       <div className="grille-champs">
         <Champ libelle="Longueur (m)" valeur={longueur} onChange={setLongueur} erreur={erreurs.longueur} />
         <Champ libelle="Largeur (m)" valeur={largeur} onChange={setLargeur} erreur={erreurs.largeur} />

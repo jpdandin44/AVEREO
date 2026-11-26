@@ -1,4 +1,5 @@
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
+import BoutonDictee from "../../components/BoutonDictee.jsx";
 import Camera from "./Camera.jsx";
 import Dialogue from "./Dialogue.jsx";
 import { modeAppareilCourant } from "./appareil.js";
@@ -8,7 +9,7 @@ import { cibleCommentaire, enregistrerCommentaire, commentaireHorsMur } from "./
 import { positionCommentaire } from "../../domain/terrain.js";
 
 export default function CarteTerrain({ niveau, piece, photos, selection, onSelection, validerNiveau, onSupprimer }) {
-  const camera = useRef(null), fichiers = useRef(null);
+  const camera = useRef(null), fichiers = useRef(null), idCommentaire = useId();
   const [texte, setTexte] = useState(""), [attache, setAttache] = useState("point"), [edition, setEdition] = useState(null), [erreur, setErreur] = useState(null);
   // PC et tablettes Windows : caméra intégrée ; téléphones : appareil photo natif (voir appareil.js).
   const [cameraOuverte, setCameraOuverte] = useState(false);
@@ -46,7 +47,7 @@ export default function CarteTerrain({ niveau, piece, photos, selection, onSelec
     })}</ul>
     <h3>{edition ? "Modifier le commentaire" : "Ajouter un commentaire"}</h3>
     <form onSubmit={enregistrer} className="terrain">
-      <label className="champ">Commentaire<textarea className="champ__saisie" rows={4} maxLength={500} value={texte} onChange={e => setTexte(e.target.value)} /></label>
+      <div className="champ"><label className="champ__libelle" htmlFor={idCommentaire}>Commentaire</label><textarea id={idCommentaire} className="champ__saisie" rows={4} maxLength={500} value={texte} onChange={e => setTexte(e.target.value)} /><BoutonDictee cibleId={idCommentaire} /></div>
       <span className="mono" aria-live="polite">{[...texte].length} / 500 caractères</span>
       {!edition && <label className="champ">Attacher à<select className="champ__saisie" value={attache} onChange={e => setAttache(e.target.value)}>
         <option value="point">Un point du plan</option>

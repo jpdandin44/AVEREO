@@ -41,6 +41,7 @@ function NomPiece({ piece, onChange }) {
       onBlur={appliquer}
       onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), appliquer())}
       inputMode="text"
+      dictee
     />
   );
 }
