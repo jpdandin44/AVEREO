@@ -27,7 +27,7 @@ test("R09 : chaque icône déclarée existe dans public/, ainsi que l'icône iOS
 });
 
 test("R04/R08 : le service worker ne sert ni ne met en cache l'API, la passerelle CONNECT ni la page de recette", () => {
-  for (const chemin of ["/api/sync.php", "/api/projects.php", "/connect/entry.php", "/revue", "/revue/"]) assert.ok(exclu(chemin), chemin);
+  for (const chemin of ["/api/sync.php", "/api/projects.php", "/connect/entry.php", "/connect/logout.php", "/revue", "/revue/"]) assert.ok(exclu(chemin), chemin);
   for (const chemin of ["/", "/index.html", "/projets", "/revuex"]) assert.ok(!exclu(chemin), chemin);
   assert.deepEqual(OPTIONS_PWA.workbox.runtimeCaching, [], "aucune réponse de l'API n'est mise en cache à l'exécution");
   assert.equal(OPTIONS_PWA.workbox.navigateFallback, "index.html", "l'application s'ouvre hors ligne");
@@ -39,4 +39,10 @@ test("R09 : une nouvelle version est proposée, jamais imposée en plein relevé
   assert.equal(OPTIONS_PWA.registerType, "prompt");
   assert.equal(OPTIONS_PWA.strategies, "generateSW");
   assert.equal(OPTIONS_PWA.devOptions.enabled, false, "pas de service worker pendant le développement");
+});
+
+// Le build est contrôlé séparément : ces deux assets entrent dans le glob JS/PNG.
+test('R49 : menu et logo présents dans les sources publiques et couverts par le précache', () => {
+  assert.ok(OPTIONS_PWA.workbox.globPatterns.includes('**/*.{js,css,html,png,svg,woff,woff2}'));
+  for (const asset of ['account-menu.js', 'assets/avereo-logo.png']) assert.ok(fs.existsSync(new URL('../public/' + asset, import.meta.url)));
 });

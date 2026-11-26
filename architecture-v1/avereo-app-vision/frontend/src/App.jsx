@@ -1,5 +1,7 @@
 // Application AVEREO Vision : en-tête commun, session, écran Projets puis écran du relevé.
 import { useMemo, useState } from "react";
+import Encadre from "./components/Encadre.jsx";
+import Reconnexion from "./components/Reconnexion.jsx";
 import BandeauApplication from "./components/BandeauApplication.jsx";
 import Icone from "./components/Icone.jsx";
 import IndicateurEnregistrement from "./components/IndicateurEnregistrement.jsx";
@@ -21,7 +23,6 @@ export default function App() {
   const [ouverts, setOuverts] = useState([]);
   const [projetOuvert, setProjetOuvert] = useState(null);
   const { session } = projets;
-  const deconnexionPossible = session.etat === "ok" && session.modeAuth === "connect";
 
   function ouvrir(projet) {
     setOuverts((liste) => (liste.some((p) => p.id === projet.id) ? liste : [...liste, projet]));
@@ -38,26 +39,18 @@ export default function App() {
             <Icone nom="annuler" /> Tous les projets
           </button>
         ) : null}
-        {deconnexionPossible ? (
-          <button
-            type="button"
-            className="bouton bouton--secondaire"
-            onClick={() => {
-              if (
-                synchro.enAttente > 0 &&
-                !window.confirm(
-                  `${synchro.enAttente} modification(s) n'ont pas encore été envoyées. Elles restent enregistrées sur cet appareil et partiront à votre prochaine connexion avec ce compte. Se déconnecter quand même ?`,
-                )
-              ) {
-                return;
-              }
-              setProjetOuvert(null);
-              setOuverts([]);
-              projets.deconnecter();
-            }}
-          >
-            Se déconnecter
-          </button>
+        {session.connectPortal ? (
+          // Pas de prop « portal » (propriété en lecture seule du composant) : l'adresse est dans <meta name="avereo-connect-portal">.
+          <avereo-account-menu no-missions="" logout-path="/connect/logout.php">
+            <button slot="items" type="button" onClick={() => setProjetOuvert(null)}>Mes projets</button>
+            <a slot="logout" href="/connect/logout.php" onClick={(event) => {
+              if ((synchro.enAttente > 0 || !projets.stockageDurable) && !window.confirm(
+                projets.stockageDurable
+                  ? `${synchro.enAttente} modification(s) restent sur cet appareil et partiront après reconnexion avec ce compte. Se déconnecter ?`
+                  : "Le stockage durable est indisponible. Quitter cette page risque de perdre les modifications. Se déconnecter ?"
+              )) event.preventDefault();
+            }}>Se déconnecter</a>
+          </avereo-account-menu>
         ) : null}
         {projets.moteur ? <IndicateurEnregistrement synchro={synchro} durable={projets.stockageDurable} /> : null}
         <span className="entete__type">
@@ -66,6 +59,11 @@ export default function App() {
             : "AVEREO Vision — plan 2D et métrés"}
         </span>
       </header>
+      {synchro.reseau === "reconnexion" ? (
+        <div role="status"><Encadre type="alerte" titre="Connexion requise">
+          <Reconnexion portal={session.connectPortal} durable={projets.stockageDurable} />
+        </Encadre></div>
+      ) : null}
       <BandeauApplication enAttente={synchro.enAttente} durable={projets.stockageDurable} />
       {projetOuvert ? null : <EcranProjets projets={projets} onOuvrir={ouvrir} />}
       {ouverts.map((projet) => (

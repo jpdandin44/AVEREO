@@ -12,6 +12,7 @@ $role = vision_role_for_identity($identity, $config);
 
 vision_json_response(200, [
     'ok' => true,
+    'connect_portal' => vision_connect_portal($config),
     'identity' => ['provider' => $identity['provider'], 'id' => $identity['id']],
     'role' => $role,
     'droits' => vision_droits()[$role] ?? [],

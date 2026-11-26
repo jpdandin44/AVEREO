@@ -1,4 +1,5 @@
 // Écran « Projets » : liste, recherche, création, modification, archivage, ouverture du relevé (R01).
+import Reconnexion from "../../components/Reconnexion.jsx";
 import { useState } from "react";
 import Encadre from "../../components/Encadre.jsx";
 import Icone from "../../components/Icone.jsx";
@@ -17,9 +18,11 @@ function EtatSession({ session, onReessayer }) {
   if (session.etat === "non-connecte") {
     return (
       <Encadre type="alerte" titre="Connexion requise">
-        {import.meta.env.DEV
-          ? "Aucune session valide. En développement : lancez la pile locale (local/vision-local.ps1 up), puis rechargez la page."
-          : "Aucune session valide. Ouvrez AVEREO Vision depuis AVEREO CONNECT."}
+        {session.connectPortal ? <Reconnexion portal={session.connectPortal} /> : (
+          import.meta.env.DEV
+            ? "Aucune session valide. En développement : lancez la pile locale (local/vision-local.ps1 up), puis rechargez la page."
+            : "Aucune session valide. Ouvrez AVEREO Vision depuis AVEREO CONNECT."
+        )}
       </Encadre>
     );
   }

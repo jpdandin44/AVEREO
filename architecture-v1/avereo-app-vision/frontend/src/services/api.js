@@ -15,13 +15,15 @@ export class ErreurApi extends Error {
    * @param {string} code
    * @param {string} message
    * @param {Record<string, string>} [champs]
+   * @param {string} [connectPortal]
    */
-  constructor(statut, code, message, champs = {}) {
+  constructor(statut, code, message, champs = {}, connectPortal = '') {
     super(message);
     this.name = "ErreurApi";
     this.statut = statut;
     this.code = code;
     this.champs = champs;
+    this.connectPortal = connectPortal;
   }
 }
 
@@ -70,6 +72,7 @@ export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base
         donnees?.error ?? "erreur",
         donnees?.message ?? "Une erreur est survenue.",
         donnees?.fields ?? {},
+        donnees?.connect_portal ?? '',
       );
     }
     return donnees;

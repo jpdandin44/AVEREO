@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__ . '/../../deploiement/configuration-migration.php';
+require_once __DIR__ . '/../../frontend/public/api/lib/portal.php';
 
 vision_test('déploiement : configuration de migration CLI, entrée standard, conservation, silence et permissions', function (): void {
     $dir = sys_get_temp_dir() . '/vision-migration-' . bin2hex(random_bytes(8));
@@ -28,5 +29,20 @@ vision_test('déploiement : configuration de migration CLI, entrée standard, co
     } finally {
         foreach (glob($dir . '/*') as $path) unlink($path);
         rmdir($dir);
+    }
+});
+
+require_once __DIR__ . '/../../deploiement/verifier-prive.php';
+vision_test('déploiement : portail requis dans la configuration privée des deux cibles', function (): void {
+    foreach (['preproduction', 'production'] as $env) {
+        vision_assert_throws(fn () => vision_verify_private_portal(['environment' => $env]));
+        vision_assert_throws(fn () => vision_verify_private_portal(['environment' => $env, 'connect_portal_url' => 'http://evil.test']));
+        vision_verify_private_portal(['environment' => $env, 'connect_portal_url' => 'https://connect-preprod.avereo.fr']);
+    }
+});
+
+vision_test('déploiement : validation autonome identique à celle du portail publié', function (): void {
+    foreach (['https://connect-preprod.avereo.fr', 'https://avereo.fr/path/', 'https://user@avereo.fr', 'https://avereo.fr?x', 'https://avereo.fr#', 'http://avereo.fr', 'https://avereo.fr.evil.test', "https://avereo.fr/\r\nX:x", 'https://avereo.fr/\\x', ''] as $url) {
+        vision_assert_same(vision_portal_url_is_allowed(['environment' => 'production'], $url), vision_private_portal_is_allowed($url), $url);
     }
 });

@@ -47,6 +47,8 @@ function vision_connect_start_server(string $environment = 'local'): array
     $config = [
         'environment' => $environment,
         'auth_mode' => 'connect',
+        // En local, seule une adresse de boucle locale est admise (recette) ; ailleurs, un domaine AVEREO en https.
+        'connect_portal_url' => $environment === 'local' ? 'http://127.0.0.1:5250/revue' : 'https://connect-preprod.avereo.fr',
         'db' => $local['db'],
         'connect_launch_secret' => $secret,
         'connect_launch_nonce_directory' => $dir . '/nonces',

@@ -8,7 +8,8 @@ import { boucleLocaleSeulement } from "./vite-plugins/boucle-locale.js";
 const API_LOCALE = "http://127.0.0.1:8110";
 
 export default defineConfig({
-  base: "./",
+  // Vision est publiée à la racine ; conserver /account-menu.js dans le livrable.
+  base: "/",
   // Application installable et service worker (R09, fin de R04) : voir pwa.config.js.
   plugins: [react(), boucleLocaleSeulement(), VitePWA(OPTIONS_PWA)],
   server: {

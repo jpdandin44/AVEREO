@@ -1,5 +1,5 @@
-// R08 : les relevés montrent des logements de particuliers ; aucun appel vers un service externe.
-// L'inventaire des adresses du code du frontend ne doit contenir que des adresses locales (développement).
+// R08 : les relevés restent sur les serveurs AVEREO. Le menu appelle le portail CONNECT AVEREO.
+// Inventaire autorisé : AVEREO en HTTPS et adresses locales de développement.
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync, statSync } from "node:fs";
@@ -18,7 +18,7 @@ function fichiers(dossier, extensions) {
   return resultat;
 }
 
-const AUTORISEES = [/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/];
+const AUTORISEES = [/^https:\/\/(?:[a-z0-9-]+\.)*avereo\.fr(?:\/|$)/, /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/];
 
 test("R08 : aucune adresse externe dans le code source, la page d'accueil ni le dossier public", () => {
   const fichiersATester = [

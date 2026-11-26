@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ErreurApi, estCoupure } from "../../services/api.js";
 import { lireIdentiteConnue, memoriserIdentite, oublierIdentite } from "../../sync/identite-locale.js";
 import { validerChampsProjet } from "../../sync/operations-projets.js";
+import { definirPortailConnect } from "../../services/portail-connect.js";
 import { useMoteur } from "../../sync/useMoteur.js";
 
 const PAGE = 50;
@@ -48,16 +49,18 @@ export function useProjets(client) {
     setSession({ etat: "chargement" });
     try {
       const identite = await client.identite();
-      memoriserIdentite({ ...identite.identity, role: identite.role, modeAuth: identite.auth_mode });
-      setSession({ etat: "ok", identite: identite.identity, role: identite.role, droits: identite.droits, modeAuth: identite.auth_mode });
+      memoriserIdentite({ ...identite.identity, role: identite.role, modeAuth: identite.auth_mode, connectPortal: identite.connect_portal });
+      definirPortailConnect(identite.connect_portal);
+      setSession({ etat: "ok", identite: identite.identity, role: identite.role, droits: identite.droits, modeAuth: identite.auth_mode, connectPortal: identite.connect_portal });
     } catch (e) {
       const d = decrireErreur(e);
       const connue = d.type === "reseau" ? lireIdentiteConnue() : null;
       if (connue) {
         // Sans réseau : on rouvre l'application avec la dernière identité connue de cet appareil (le serveur la reverifiera à l'envoi).
-        setSession({ etat: "ok", horsLigne: true, identite: { provider: connue.provider, id: connue.id }, role: connue.role ?? "conseiller", droits: [], modeAuth: connue.modeAuth });
+        definirPortailConnect(connue.connectPortal);
+        setSession({ etat: "ok", horsLigne: true, identite: { provider: connue.provider, id: connue.id }, role: connue.role ?? "conseiller", droits: [], modeAuth: connue.modeAuth, connectPortal: connue.connectPortal });
       } else {
-        setSession({ etat: d.type === "non-connecte" ? "non-connecte" : d.type === "reseau" ? "reseau" : "erreur", message: d.message });
+        setSession({ etat: d.type === "non-connecte" ? "non-connecte" : d.type === "reseau" ? "reseau" : "erreur", message: d.message, connectPortal: e.connectPortal });
       }
     }
   }, [client]);

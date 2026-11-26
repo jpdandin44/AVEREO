@@ -81,6 +81,9 @@ header('Content-Type: text/html; charset=utf-8');
     <h1>AVEREO Vision — environnement de revue locale</h1>
     <p class="avertissement">Données fictives, environnement local : n'y saisissez aucune donnée réelle</p>
     <p>Environnement : <strong><?= $escape($nom) ?></strong></p>
+    <?php if (($_GET['app'] ?? '') === 'vision'): ?>
+        <p>Reconnexion à Vision : choisissez le même compte pour envoyer ses modifications en attente.</p>
+    <?php endif; ?>
     <h2>Choisir un compte fictif</h2>
     <?php foreach ($comptes as $cle => $compte): ?>
         <form method="post" action="/revue/">

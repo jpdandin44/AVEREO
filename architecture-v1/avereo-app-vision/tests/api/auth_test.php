@@ -61,6 +61,7 @@ vision_test('auth : le mode « token » ne s\'active jamais quand la configurati
     $config = vision_config([
         'environment' => 'production',
         'auth_mode' => 'connect',
+        'connect_portal_url' => 'https://connect-preprod.avereo.fr',
         'connect_launch_secret' => str_repeat('s', 40),
         'connect_launch_nonce_directory' => sys_get_temp_dir(),
         'api_token' => VISION_TEST_TOKEN,

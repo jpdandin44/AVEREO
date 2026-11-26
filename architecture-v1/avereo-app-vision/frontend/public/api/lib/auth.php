@@ -84,7 +84,7 @@ function vision_require_identity(array $config): array
 {
     $identity = vision_authenticate($config, $_SERVER, $_COOKIE);
     if ($identity === null) {
-        vision_error(401, 'unauthenticated', 'Authentification requise.');
+        vision_error(401, 'unauthenticated', 'Authentification requise.', ['connect_portal' => vision_connect_portal($config)]);
     }
     // Le client peut indiquer le compte auquel appartiennent ses données locales : si la session est devenue celle d'un autre
     // compte (autre onglet, reconnexion), rien n'est lu ni écrit, pour ne jamais mélanger les données de deux comptes.
