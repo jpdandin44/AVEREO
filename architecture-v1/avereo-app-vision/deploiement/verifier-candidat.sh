@@ -2,9 +2,12 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 export AVEREO_CONFIG_FILE="$(mktemp)"
+# Dossier privé des photos (Lot 3A) : jetable, en 700 comme sur l'hébergement.
+export VISION_MEDIA_DIR="$(mktemp -d)"
+chmod 700 "$VISION_MEDIA_DIR"
 server_pid=''
-trap 'if [ -n "$server_pid" ]; then sudo kill "$server_pid" || true; fi; rm -f "$AVEREO_CONFIG_FILE"' EXIT
-php -r '$c = ["environment"=>"local", "auth_mode"=>"token", "api_token"=>bin2hex(random_bytes(32)), "admin_user_ids"=>["1"], "db"=>["host"=>"127.0.0.1", "port"=>3306, "name"=>"vision", "user"=>"root", "password"=>"vision-ci-only"]]; file_put_contents(getenv("AVEREO_CONFIG_FILE"), "<?php return " . var_export($c, true) . ";");'
+trap 'if [ -n "$server_pid" ]; then sudo kill "$server_pid" || true; fi; rm -f "$AVEREO_CONFIG_FILE"; sudo rm -rf "$VISION_MEDIA_DIR"' EXIT
+php -r '$c = ["environment"=>"local", "auth_mode"=>"token", "api_token"=>bin2hex(random_bytes(32)), "admin_user_ids"=>["1"], "media_directory"=>getenv("VISION_MEDIA_DIR"), "db"=>["host"=>"127.0.0.1", "port"=>3306, "name"=>"vision", "user"=>"root", "password"=>"vision-ci-only"]]; file_put_contents(getenv("AVEREO_CONFIG_FILE"), "<?php return " . var_export($c, true) . ";");'
 php database/migrate.php
 sudo --preserve-env=AVEREO_CONFIG_FILE "$(command -v php)" -S 127.0.0.1:80 -t frontend/public local/router.php > "${RUNNER_TEMP:-/tmp}/vision-http.log" 2>&1 &
 server_pid=$!
