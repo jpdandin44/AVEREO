@@ -115,10 +115,12 @@ jobs:
         id: target
         env:
           CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
         run: |
           set -euo pipefail
+          # La 2FA de cPanel refuse l'API par mot de passe : jeton d'API obligatoire (procédure, étape 0).
+          if [ -z "${CPANEL_API_TOKEN:-}" ]; then echo 'Secret CPANEL_API_TOKEN absent : créer un jeton d API cPanel (docs/deploiement-mutualise.md).' >&2; exit 1; fi
           target="$(python3 .github/scripts/cpanel-domain-docroot.py "$DOMAIN")"
           [[ -n "$target" && "$target" == *"$DOMAIN"* && "/$target/" != *'/../'* ]]
           echo "server_dir=${target%/}/" >> "$GITHUB_OUTPUT"
@@ -128,7 +130,7 @@ jobs:
       - name: Autoriser temporairement SSH
         env:
           CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
           RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
         run: |
@@ -208,7 +210,7 @@ jobs:
         if: always() && env.WHITELIST_ATTEMPTED == '1'
         env:
           CPANEL_USERNAME: ${{ secrets.CPANEL_USERNAME }}
-          CPANEL_PASSWORD: ${{ secrets.CPANEL_PASSWORD }}
+          CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
           RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
         run: bash .github/scripts/cpanel-ssh-whitelist.sh remove
