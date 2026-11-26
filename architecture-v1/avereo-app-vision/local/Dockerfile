@@ -5,6 +5,7 @@ ARG PHP_VERSION=8.4
 FROM php:${PHP_VERSION}-cli
 
 RUN docker-php-ext-install pdo_mysql \
-    && mkdir -p /var/lib/avereo/vision/nonces
+    && mkdir -p /var/lib/avereo/vision/nonces /var/lib/avereo/vision/medias \
+    && chmod 700 /var/lib/avereo/vision/medias
 
 WORKDIR /opt/vision

@@ -60,6 +60,7 @@ vision_test('auth : identité de test non numérique refusée (pas d\'injection 
 vision_test('auth : le mode « token » ne s\'active jamais quand la configuration demande « connect »', function () {
     $config = vision_config([
         'environment' => 'production',
+        'media_directory' => sys_get_temp_dir(),
         'auth_mode' => 'connect',
         'connect_portal_url' => 'https://connect-preprod.avereo.fr',
         'connect_launch_secret' => str_repeat('s', 40),

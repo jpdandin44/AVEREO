@@ -1,13 +1,15 @@
 // Représentation des objets synchronisés : uniquement les champs du contrat.
 
 /**
- * @typedef {"batiment"|"niveau"|"piece"|"ouverture"} Kind
+ * @typedef {"batiment"|"niveau"|"piece"|"ouverture"|"photo"|"commentaire"} Kind
  * @typedef {{nom: string}} DonneesBatiment
  * @typedef {{nom: string, ordre: number}} DonneesNiveau
- * @typedef {{nom: string, hauteurMm: number, ordre: number, sommets: {x: number, y: number}[]}} DonneesPiece
+ * @typedef {{nom: string, hauteurMm: number, ordre: number, sommets: {x: number, y: number}[], cotesLaser?:import('../domain/modele.js').CotesLaser}} DonneesPiece
  * @typedef {{type: "porte"|"fenetre", murIndex: number, positionMm: number,
  *   largeurMm: number, hauteurMm: number, alleMm: number}} DonneesOuverture
- * @typedef {DonneesBatiment|DonneesNiveau|DonneesPiece|DonneesOuverture} Donnees
+ * @typedef {Omit<import('../domain/modele.js').Photo,'id'>} DonneesPhoto
+ * @typedef {Omit<import('../domain/modele.js').Commentaire,'id'>} DonneesCommentaire
+ * @typedef {DonneesBatiment|DonneesNiveau|DonneesPiece|DonneesOuverture|DonneesPhoto|DonneesCommentaire} Donnees
  * @typedef {{id: string, kind: Kind, parentId: string|null, data: Donnees}} ObjetAplati
  * @typedef {{id: string, kind: Kind, parentId: string|null, data: Donnees|null, rev: number, deleted: boolean}} ObjetLocal
  * @typedef {{objectId: string, kind: Kind, parentId: string|null, data: Donnees|null, deleted: boolean}} Changement
@@ -25,10 +27,17 @@ export function aplatirBatiment(batiment) {
   const objets = [{ id: batiment.id, kind: "batiment", parentId: null, data: { nom: batiment.nom } }];
   batiment.niveaux.forEach((niveau, ordre) => {
     objets.push({ id: niveau.id, kind: "niveau", parentId: batiment.id, data: { nom: niveau.nom, ordre } });
+    for (const kind of ["photo", "commentaire"]) {
+      for (const item of niveau[kind === "photo" ? "photos" : "commentaires"] ?? []) {
+        const { id, ...data } = item;
+        objets.push({ id, kind, parentId: niveau.id, data: structuredClone(data) });
+      }
+    }
     niveau.pieces.forEach((piece, ordrePiece) => {
       objets.push({
         id: piece.id, kind: "piece", parentId: niveau.id,
         data: {
+          ...(piece.cotesLaser ? { cotesLaser: structuredClone(piece.cotesLaser) } : {}),
           nom: piece.nom, hauteurMm: piece.hauteurMm, ordre: ordrePiece,
           sommets: piece.sommets.map(({ x, y }) => ({ x, y })),
         },

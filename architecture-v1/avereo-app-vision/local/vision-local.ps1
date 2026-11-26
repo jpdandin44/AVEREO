@@ -40,6 +40,12 @@ function Initialize-LocalSecrets {
         [System.IO.File]::WriteAllText($ConfigFile, $config, (New-Object System.Text.UTF8Encoding($false)))
         Write-Host 'local/config.php créé (secrets aléatoires, ignoré par git).'
     }
+    # Ajouter la clé non secrète aux configurations locales déjà générées, sans renouveler leurs secrets.
+    $existingConfig = Get-Content -LiteralPath $ConfigFile -Raw -Encoding UTF8
+    if ($existingConfig -notmatch "'media_directory'\s*=>") {
+        $existingConfig = $existingConfig.Replace('return [', "return [`n    'media_directory' => '/var/lib/avereo/vision/medias',")
+        [IO.File]::WriteAllText($ConfigFile, $existingConfig, (New-Object System.Text.UTF8Encoding($false)))
+    }
     $FrontendEnv = Join-Path (Split-Path $LocalDir -Parent) 'frontend\.env.development.local'
     if (-not (Test-Path $FrontendEnv)) {
         $token = ([regex]::Match((Get-Content $ConfigFile -Raw), "'api_token' => '([^']+)'")).Groups[1].Value
@@ -57,6 +63,7 @@ switch ($Action) {
     'up' {
         Initialize-LocalSecrets
         Invoke-Compose up -d --build
+        Invoke-Compose exec -T api sh -c 'mkdir -p /var/lib/avereo/vision/medias && chmod 700 /var/lib/avereo/vision/medias'
         Invoke-Compose exec -T api php /opt/vision/database/migrate.php
         Write-Host 'API : http://127.0.0.1:8110/api/health.php   MySQL : 127.0.0.1:3311'
     }

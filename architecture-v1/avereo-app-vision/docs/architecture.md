@@ -26,10 +26,12 @@ flowchart LR
     EDIT["Plan 2D, métrés, vue 3D"]
     EXP["Exports navigateur<br/>DXF, IFC, glTF, OBJ"]
   end
-  subgraph OVH["Serveur OVH d'AVEREO"]
+  subgraph O2["O2Switch AVEREO — application et stockage privé"]
     API["API PHP<br/>auth, projets, synchro, envois, CSV, PDF"]
     DB[("MySQL")]
-    FS[("Fichiers<br/>photos, vidéos, résultats")]
+    FS[("Fichiers privés<br/>photos, puis vidéos au lot 3B")]
+  end
+  subgraph OVH["Serveur OVH — traitements futurs soumis à accord"]
     GOT["Gotenberg<br/>HTML vers PDF"]
     SVC["Service de traitement Python<br/>reconstruction 3D vidéo<br/>(après validation ADR)"]
   end
@@ -46,6 +48,9 @@ flowchart LR
 ```
 
 ## 2. Modules
+
+Lot 3A / T-10 : photos et commentaires sont des objets enfants du niveau ; les cotes laser voyagent dans la pièce. Les octets photo vivent dans `media_directory` hors racine web, accessibles par `api/medias.php` après contrôle des droits. Dexie v2 ajoute les blobs et intentions d'envoi ; les écrans sont ajoutés par T-11 (qualification mobile restante). Le [contrat terrain](synchronisation.md#8-contrat-terrain-t-10) précise les fonctions, limites et états ; la [décision](adr/0002-medias-prives.md) justifie les migrations additives 003 et 004. Le schéma ci-dessus conserve les composants futurs, sans prétendre qu'ils sont installés.
+
 | Module | Où | Rôle | Dépend de |
 |---|---|---|---|
 | `domain` | `frontend/src/domain/` | **Logique pure** : modèle du bâtiment, métrés, unités, mise à l'échelle, précision. Aucun import React, DOM ni réseau. Seul endroit où se calculent les métrés. | rien |
@@ -153,3 +158,9 @@ Le workflow GitHub Actions de Vision et les scripts `deploiement/` préparent la
 ## Compte et reconnexion (T-09)
 
 Le frontend servi à la racine réutilise le menu commun AVEREO, copié via le manifeste des applications. L’API expose le seul portail public configuré via auth 200/401. Le signal de synchronisation `reconnexion` alimente un bandeau sans démonter la saisie. La route GET `/connect/logout.php` expire le cookie Vision avant retour à CONNECT, sans effacement local. La durée de session reste fixe à 1800 secondes. Voir [choix, tests et limites du lot](compte-reconnexion-verification.md).
+
+## Interface terrain (T-11)
+
+`EcranReleve` fait passer toutes les écritures du niveau par `useReleve.validerNiveau` : même historique, rendu immédiat et enregistrement automatique R03. `features/terrain/logique.js` prépare la compression, l’empreinte et le blob durable avant l’ajout de l’objet photo. `usePhotos` lit les fichiers locaux, sinon l’API authentifiée, et révoque les URL temporaires. Aucun appel aux écritures de `creerMedias` depuis l’écran.
+
+Les repères Konva ont une cible de 48 px indépendante du zoom ; les glissements valident seulement à la fin. Les modifications topologiques passent par `supprimerCible` / `insererSommetTerrain`, avec suppression ou détachement explicite des commentaires. Une photo restaurée dans l’historique après intention de suppression du fichier affiche — Photo supprimée — : annuler ne recrée pas le fichier serveur.

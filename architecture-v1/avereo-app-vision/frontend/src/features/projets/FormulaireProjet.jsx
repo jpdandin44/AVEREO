@@ -41,9 +41,9 @@ export default function FormulaireProjet({ initial, libelleValider, onValider, o
 
   return (
     <form onSubmit={envoyer} noValidate aria-label={initial ? "Modifier le projet" : "Nouveau projet"}>
-      <Champ libelle="Nom du projet" valeur={nom} onChange={setNom} inputMode="text" erreur={champs.name} aide="Par exemple : Maison Dupont" />
-      <Champ libelle="Adresse du logement" valeur={adresse} onChange={setAdresse} inputMode="text" erreur={champs.address} aide="Facultatif" />
-      <Champ libelle="Client" valeur={client} onChange={setClient} inputMode="text" erreur={champs.client_label} aide="Facultatif, texte libre" />
+      <Champ libelle="Nom du projet" valeur={nom} onChange={setNom} inputMode="text" dictee erreur={champs.name} aide="Par exemple : Maison Dupont" />
+      <Champ libelle="Adresse du logement" valeur={adresse} onChange={setAdresse} inputMode="text" dictee erreur={champs.address} aide="Facultatif" />
+      <Champ libelle="Client" valeur={client} onChange={setClient} inputMode="text" dictee erreur={champs.client_label} aide="Facultatif, texte libre" />
       {message ? (
         <div style={{ marginBottom: 12 }}>
           <Encadre type="alerte" titre="Enregistrement impossible">

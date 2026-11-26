@@ -33,7 +33,7 @@ function vision_http(string $method, string $path, array $headers = [], ?string 
         }
     }
     $json = json_decode($raw, true);
-    return ['status' => $status, 'headers' => $parsed, 'json' => is_array($json) ? $json : null];
+    return ['status' => $status, 'headers' => $parsed, 'json' => is_array($json) ? $json : null, 'raw' => $raw];
 }
 
 /** Appel authentifié avec le jeton local et l'identité de test choisie. */

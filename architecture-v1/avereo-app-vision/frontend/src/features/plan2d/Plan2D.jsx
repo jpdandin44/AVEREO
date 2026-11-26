@@ -2,12 +2,14 @@
 // poser et glisser les ouvertures, cotes affichées, aimantation. Toutes les coordonnées du modèle sont en mm ;
 // le canvas travaille en pixels (px = mm × échelle).
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Circle, Layer, Line, Stage, Text } from "react-konva";
+import { Circle, Group, Rect, Layer, Line, Stage, Text } from "react-konva";
 import Encadre from "../../components/Encadre.jsx";
 import Icone from "../../components/Icone.jsx";
 import { aireMm2, estAutoSecant, projeterSurSegment } from "../../domain/geometrie.js";
-import { deplacerSommet, insererSommet, supprimerSommet } from "../../domain/modele.js";
-import { formaterLongueurMm, formaterSurface } from "../../domain/unites.js";
+import { definirLongueurMur, deplacerSommet } from "../../domain/modele.js";
+import { positionCommentaire } from "../../domain/terrain.js";
+import { analyserLongueur, formaterLongueurMm, formaterSurface, texteDepuisMm } from "../../domain/unites.js";
+import Dialogue from "../terrain/Dialogue.jsx";
 import { aimanter } from "./aimantation.js";
 import { centreOuverture, deplacerOuverture } from "./glisserOuverture.js";
 import { lireJetons } from "./jetons.js";
@@ -65,6 +67,11 @@ export default function Plan2D({
   onApercu,
   onValider,
   onCreerDepuisSommets,
+  onSupprimerSommet,
+  onInsererSommet,
+  onSelectionTerrain,
+  onDeplacerRepere,
+  onSupprimerPiece,
 }) {
   const conteneur = useRef(null);
   const scene = useRef(null);
@@ -76,6 +83,8 @@ export default function Plan2D({
   const [curseur, setCurseur] = useState(null);
   const [message, setMessage] = useState(null);
   const [jetons, setJetons] = useState(null);
+  // Cote d'un mur modifiée directement sur le plan (toucher la cote) : {murIndex, texte, erreur}.
+  const [editionCote, setEditionCote] = useState(null);
 
   const piecesRef = useRef(niveau.pieces);
   piecesRef.current = niveau.pieces;
@@ -198,13 +207,7 @@ export default function Plan2D({
   }
 
   function retirerSommet(index) {
-    const r = supprimerSommet(piece, index);
-    if (r.ok) {
-      onValider(r.piece);
-      setMessage(null);
-    } else {
-      setMessage(r.message);
-    }
+    onSupprimerSommet(index);
   }
 
   function ajouterSommet(murIndex) {
@@ -212,13 +215,7 @@ export default function Plan2D({
     const a = piece.sommets[murIndex];
     const b = piece.sommets[(murIndex + 1) % piece.sommets.length];
     const t = brut ? projeterSurSegment(brut, a, b).t : 0.5;
-    const r = insererSommet(piece, murIndex, Math.min(0.95, Math.max(0.05, t)));
-    if (r.ok) {
-      onValider(r.piece);
-      setMessage(null);
-    } else {
-      setMessage(r.message);
-    }
+    onInsererSommet(murIndex, Math.min(0.95, Math.max(0.05, t)));
   }
 
   // ----- glissement d'une ouverture le long de son mur -----
@@ -237,6 +234,30 @@ export default function Plan2D({
     const retenue = derniere.ouvertures.find((o) => o.id === ouverture.id) ?? ouverture;
     const centre = centreOuverture(derniere, retenue);
     e.target.position({ x: centre.x * echelle, y: centre.y * echelle });
+  }
+
+  function ouvrirCote(murIndex) {
+    if (!piece || mode !== "selection") return;
+    const a = piece.sommets[murIndex];
+    const b = piece.sommets[(murIndex + 1) % piece.sommets.length];
+    setEditionCote({ murIndex, texte: texteDepuisMm(Math.round(Math.hypot(b.x - a.x, b.y - a.y))), erreur: null });
+  }
+
+  function validerCote(e) {
+    e.preventDefault();
+    if (!piece || !editionCote) return;
+    const lecture = analyserLongueur(editionCote.texte, "m");
+    if (!lecture.ok) {
+      setEditionCote({ ...editionCote, erreur: lecture.message });
+      return;
+    }
+    const resultat = definirLongueurMur(piece, editionCote.murIndex, lecture.mm);
+    if (!resultat.ok) {
+      setEditionCote({ ...editionCote, erreur: resultat.message });
+      return;
+    }
+    onValider(resultat.piece);
+    setEditionCote(null);
   }
 
   const px = (p) => [p.x * echelle, p.y * echelle];
@@ -280,6 +301,11 @@ export default function Plan2D({
         <button type="button" className="bouton bouton--secondaire" onClick={recentrer}>
           <Icone nom="recentrer" /> Recentrer
         </button>
+        {piece && mode === "selection" && onSupprimerPiece ? (
+          <button type="button" className="bouton bouton--secondaire" onClick={onSupprimerPiece}>
+            <Icone nom="supprimer" /> Supprimer la pièce
+          </button>
+        ) : null}
       </div>
 
       <div className="plan__zone" ref={conteneur}>
@@ -350,19 +376,55 @@ export default function Plan2D({
                       const ny = (-dx / longueur) * signe;
                       const mx = ((a.x + b.x) / 2) * echelle + nx * 18;
                       const my = ((a.y + b.y) / 2) * echelle + ny * 18;
+                      const modifiable = active && mode === "selection";
                       return (
-                        <Text
-                          key={`c${p.id}-${i}`}
-                          text={formaterLongueurMm(longueur)}
-                          x={mx - 40}
-                          y={my - 7}
-                          width={80}
-                          align="center"
-                          fontSize={12}
-                          fontFamily={jetons.fontMono}
-                          fill={active ? jetons.text : jetons.textMuted}
-                          listening={false}
-                        />
+                        <Group key={`c${p.id}-${i}`}>
+                          {modifiable ? (
+                            // Zone de toucher de 80 × 48 px autour de la cote : la toucher ouvre la saisie de la longueur.
+                            <Rect
+                              x={mx - 40}
+                              y={my - 24}
+                              width={80}
+                              height={48}
+                              fill="transparent"
+                              onClick={() => ouvrirCote(i)}
+                              onTap={() => ouvrirCote(i)}
+                              onMouseEnter={(e) => { e.target.getStage().container().style.cursor = "pointer"; }}
+                              onMouseLeave={(e) => { e.target.getStage().container().style.cursor = "default"; }}
+                            />
+                          ) : null}
+                          <Text
+                            text={formaterLongueurMm(longueur)}
+                            x={mx - 40}
+                            y={my - 7}
+                            width={80}
+                            align="center"
+                            fontSize={modifiable ? 13 : 12}
+                            fontFamily={jetons.fontMono}
+                            fontStyle={modifiable ? "bold" : "normal"}
+                            textDecoration={modifiable ? "underline" : ""}
+                            fill={active ? jetons.text : jetons.textMuted}
+                            listening={false}
+                          />
+                          {active ? (
+                            // Numéro du mur (Mur 1, Mur 2…) côté intérieur de la pièce sélectionnée, comme dans les listes ;
+                            // à 40 px du mur pour ne pas passer sous un repère de photo ou de commentaire posé au milieu du mur (48 px).
+                            <Group x={((a.x + b.x) / 2) * echelle - nx * 40} y={((a.y + b.y) / 2) * echelle - ny * 40} listening={false}>
+                              <Circle radius={11} fill={jetons.primary} />
+                              <Text
+                                text={`${i + 1}`}
+                                x={-11}
+                                y={-6}
+                                width={22}
+                                align="center"
+                                fontSize={12}
+                                fontFamily={jetons.fontUi}
+                                fontStyle="bold"
+                                fill={jetons.surface}
+                              />
+                            </Group>
+                          ) : null}
+                        </Group>
                       );
                     })}
                     {p.ouvertures.map((o) => {
@@ -476,6 +538,23 @@ export default function Plan2D({
               </>
             )}
 
+            {jetons && mode === "selection" && [
+              ...(niveau.photos ?? []).map(p => ({ type: "photo", id: p.id, position: p, mobile: true })),
+              ...(niveau.commentaires ?? []).map(c => ({ type: "commentaire", id: c.id, position: positionCommentaire(niveau, c), mobile: c.cible.type === "point" })),
+            ].filter(r => r.position).map(r => <Group key={`${r.type}-${r.id}`} x={r.position.xMm * echelle} y={r.position.yMm * echelle}
+              draggable={r.mobile}
+              onClick={e => { e.cancelBubble = true; onSelectionTerrain({ type: r.type, id: r.id }); }}
+              onTap={e => { e.cancelBubble = true; onSelectionTerrain({ type: r.type, id: r.id }); }}
+              onDragStart={e => { e.cancelBubble = true; }}
+              onDragEnd={e => { e.cancelBubble = true; onDeplacerRepere(r.type, r.id, { xMm: e.target.x() / echelle, yMm: e.target.y() / echelle }); }}>
+              <Rect x={-24} y={-24} width={48} height={48} cornerRadius={8} fill={jetons.surface} stroke={jetons.primary} strokeWidth={2} />
+              {r.type === "photo" ? <>
+                <Rect x={-15} y={-10} width={30} height={22} cornerRadius={3} stroke={jetons.primary} strokeWidth={2} listening={false} />
+                <Circle radius={6} stroke={jetons.primary} strokeWidth={2} listening={false} />
+                <Line points={[-8, -10, -5, -15, 5, -15, 8, -10]} stroke={jetons.primary} strokeWidth={2} listening={false} />
+              </> : <Line points={[-14, -12, 14, -12, 14, 8, 0, 8, -9, 16, -9, 8, -14, 8]} closed stroke={jetons.primary} strokeWidth={2} listening={false} />}
+            </Group>)}
+
             {jetons && mode === "tracer" && (
               <>
                 <Line
@@ -514,10 +593,33 @@ export default function Plan2D({
           </Encadre>
         ) : (
           <Encadre titre="Modifier le plan">
-            Glissez un sommet pour déplacer un mur ; double-cliquez (ou double-touchez) un mur pour ajouter un sommet, un sommet pour le retirer ; glissez le rond P ou F pour déplacer une ouverture. Les cotes se saisissent aussi au clavier dans la liste des murs.
+            Les pastilles 1, 2, 3… numérotent les murs de la pièce sélectionnée (mêmes numéros que « Mur 1 », « Mur 2 »… dans les listes). Touchez une cote soulignée pour saisir la longueur du mur ; glissez un sommet pour déplacer un mur ; double-cliquez (ou double-touchez) un mur pour ajouter un sommet, un sommet pour le retirer ; glissez le rond P ou F pour déplacer une ouverture.
           </Encadre>
         )}
       </div>
+
+      {editionCote && piece ? (
+        <Dialogue titre={`Longueur du mur ${editionCote.murIndex + 1}`} sansFermer onFermer={() => setEditionCote(null)}>
+          <form onSubmit={validerCote} className="terrain">
+            <label className="champ">
+              Longueur mesurée (m)
+              <input
+                className="champ__saisie mono"
+                inputMode="decimal"
+                autoFocus
+                value={editionCote.texte}
+                onChange={(e) => setEditionCote({ ...editionCote, texte: e.target.value, erreur: null })}
+                aria-invalid={editionCote.erreur ? "true" : undefined}
+              />
+            </label>
+            {editionCote.erreur ? (
+              <Encadre type="alerte" titre="Longueur refusée">{editionCote.erreur}</Encadre>
+            ) : null}
+            <button type="submit" className="bouton">Valider</button>
+            <button type="button" className="bouton bouton--secondaire" onClick={() => setEditionCote(null)}>Annuler</button>
+          </form>
+        </Dialogue>
+      ) : null}
     </section>
   );
 }

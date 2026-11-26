@@ -20,6 +20,19 @@ function vision_verify_private_portal(array $config): void
     }
 }
 
+function vision_verify_private_media(array $config, string $webRoot = ''): void
+{
+    $path = $config['media_directory'] ?? '';
+    $resolved = is_string($path) && $path !== '' ? realpath($path) : false;
+    $root = $webRoot !== '' ? realpath($webRoot) : false;
+    if (!$resolved || !is_string($path) || $path[0] !== '/' || !is_dir($resolved)
+        || (fileperms($resolved) & 0777) !== 0700 || !is_writable($resolved)
+        || ($root && str_starts_with($resolved . '/', $root . '/'))
+        || !str_starts_with($resolved . '/', realpath(dirname($path)) . '/')) {
+        throw new RuntimeException('Dossier média privé absent ou invalide.');
+    }
+}
+
 if (($_SERVER['SCRIPT_FILENAME'] ?? '') !== '/dev/stdin' && realpath($_SERVER['SCRIPT_FILENAME'] ?? '') !== __FILE__) return;
 try {
     $directory = $argv[1];
@@ -29,6 +42,8 @@ try {
     $config = require $path;
     ob_end_clean();
     vision_verify_private_portal(is_array($config) ? $config : []);
+    vision_verify_private_media(is_array($config) ? $config : [], $argv[3] ?? '');
+    if (!str_starts_with(realpath($config['media_directory']) . '/', realpath($directory) . '/')) throw new RuntimeException();
     if (!is_array($config) || ($config['environment'] ?? '') !== $argv[2]) throw new RuntimeException();
 } catch (Throwable) {
     while (ob_get_level()) ob_end_clean();

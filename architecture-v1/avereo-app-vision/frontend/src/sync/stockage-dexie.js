@@ -8,6 +8,10 @@ import Dexie from "dexie";
  * @typedef {{objectId: string, kind: string, parentId: string|null, data: object|null, deleted: boolean, baseRev: number, version: number}} EntreeFile
  * @typedef {{id: string, name: string, address: string, client_label: string, status: string, created_at?: string, updated_at?: string, owner?: object}} ProjetLocal
  * @typedef {{
+ *   sauverMedia(media: object): Promise<any>,
+ *   lireMedia(projectId: string, id: string): Promise<any>,
+ *   listerMedias(projectId: string): Promise<any[]>,
+ *   retirerMedia(projectId: string, id: string): Promise<any>,
  *   lireMeta(cle: string): Promise<any>,
  *   ecrireMeta(cle: string, valeur: any): Promise<void>,
  *   listerProjets(): Promise<ProjetLocal[]>,
@@ -45,7 +49,12 @@ export function creerStockageDexie({ nom, indexedDB, IDBKeyRange }) {
     journal: "[projectId+id], projectId",
   });
 
+  base.version(2).stores({ medias: "[projectId+id], projectId, etat" });
   return {
+    sauverMedia: (media) => base.table("medias").put(media),
+    lireMedia: (projectId, id) => base.table("medias").get([projectId, id]),
+    listerMedias: (projectId) => base.table("medias").where("projectId").equals(projectId).toArray(),
+    retirerMedia: (projectId, id) => base.table("medias").delete([projectId, id]),
     async lireMeta(cle) {
       return (await base.table("meta").get(cle))?.valeur;
     },

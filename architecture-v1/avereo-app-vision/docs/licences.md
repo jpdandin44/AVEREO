@@ -1,4 +1,18 @@
+---
+project: avereo-app-vision
+document_type: licenses
+title: Licences des dépendances
+status: active
+version: git
+created: 2026-11-23
+updated: 2026-11-26
+owner: jpdandin
+tags: [vision, licences]
+---
+
 # Licences des dépendances — AVEREO Vision
+
+T-10 (26/11/2026) : aucune dépendance ajoutée ; compression par canvas, empreinte par Web Crypto, serveur PHP sans bibliothèque supplémentaire. Les fichiers npm et leur verrouillage restent inchangés.
 
 Initialisé au Lot 0 (23/11/2026). **Aucune dépendance n'est installée à ce stade** : le Lot 0 ne produit aucun code applicatif. Les lignes ci-dessous sont les dépendances **prévues** par l'ADR 0001 ; elles passent à « installée » au lot qui les ajoute, avec la version réellement fixée.
 

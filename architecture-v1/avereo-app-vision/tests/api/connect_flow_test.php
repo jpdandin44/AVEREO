@@ -44,7 +44,10 @@ function vision_connect_start_server(string $environment = 'local'): array
     $secret = bin2hex(random_bytes(24));
     $dir = sys_get_temp_dir() . '/vision-connect-' . bin2hex(random_bytes(4));
     mkdir($dir . '/nonces', 0700, true);
+    mkdir($dir . '/medias', 0700, true);
     $config = [
+        // Obligatoire hors local depuis le Lot 3A (photos privées).
+        'media_directory' => $dir . '/medias',
         'environment' => $environment,
         'auth_mode' => 'connect',
         // En local, seule une adresse de boucle locale est admise (recette) ; ailleurs, un domaine AVEREO en https.
@@ -82,8 +85,11 @@ function vision_connect_stop_server(array $server): void
         unlink($file);
     }
     @rmdir($dir . '/nonces');
+    @rmdir($dir . '/medias');
     foreach (glob($dir . '/*') ?: [] as $file) {
-        unlink($file);
+        if (is_file($file)) {
+            unlink($file);
+        }
     }
     @rmdir($dir);
 }

@@ -116,6 +116,7 @@ return [
     'connect_portal_url' => 'http://127.0.0.1:__REVUE_PORT__/revue',
     'connect_launch_secret' => '__LAUNCH_SECRET__',
     'connect_launch_nonce_directory' => '/var/lib/avereo/vision/nonces',
+    'media_directory' => '/var/lib/avereo/vision/medias',
     'connect_gate_cookie' => '__GATE_COOKIE__',
     'connect_gate_session_seconds' => 1800,
 ];
@@ -123,6 +124,11 @@ return [
         $config = $config.Replace('__REVUE_PORT__', [string]$Settings.Port).Replace('__DB_PASSWORD__', $values.VISION_DB_PASSWORD).Replace('__LAUNCH_SECRET__', $secret).Replace('__GATE_COOKIE__', $cookie)
         [IO.File]::WriteAllText($Settings.ConfigFile, $config, $Utf8)
         Write-Host "Configuration locale créée pour $($Settings.Nom) (secrets ignorés par Git)."
+    }
+    $existingConfig = Get-Content -LiteralPath $Settings.ConfigFile -Raw -Encoding UTF8
+    if ($existingConfig -notmatch "'media_directory'\s*=>") {
+        $existingConfig = $existingConfig.Replace('return [', "return [`n    'media_directory' => '/var/lib/avereo/vision/medias',")
+        [IO.File]::WriteAllText($Settings.ConfigFile, $existingConfig, $Utf8)
     }
 }
 
@@ -264,6 +270,7 @@ switch ($Action) {
         } finally { Pop-Location }
         Initialize-Revue $settings
         Invoke-RevueCompose $settings @('up', '-d', '--build')
+        Invoke-RevueCompose $settings @('exec', '-T', 'api', 'sh', '-c', 'mkdir -p /var/lib/avereo/vision/medias && chmod 700 /var/lib/avereo/vision/medias')
         Invoke-RevueCompose $settings @('exec', '-T', 'api', 'php', '/opt/vision/database/migrate.php')
         Invoke-RevueCompose $settings @('exec', '-T', 'api', 'php', '/opt/revue/donnees-demo.php')
         Wait-RevueHealth $settings

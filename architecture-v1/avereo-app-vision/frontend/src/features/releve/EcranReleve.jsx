@@ -14,6 +14,12 @@ import PanneauPrecision from "../metres-panneau/PanneauPrecision.jsx";
 import Plan2D from "../plan2d/Plan2D.jsx";
 import StatutSynchro from "./StatutSynchro.jsx";
 import { useReleve } from "./useReleve.js";
+import CotesLaser from "../terrain/CotesLaser.jsx";
+import CarteTerrain from "../terrain/CarteTerrain.jsx";
+import Dialogue from "../terrain/Dialogue.jsx";
+import { usePhotos } from "../terrain/usePhotos.js";
+import { marquerPhotoSupprimee, deplacerRepere } from "../terrain/logique.js";
+import { commentairesConcernes, supprimerCible, insererSommetTerrain } from "../../domain/terrain.js";
 
 function NomPiece({ piece, onChange }) {
   const [texte, setTexte] = useState(piece.nom);
@@ -35,6 +41,7 @@ function NomPiece({ piece, onChange }) {
       onBlur={appliquer}
       onKeyDown={(e) => e.key === "Enter" && (e.preventDefault(), appliquer())}
       inputMode="text"
+      dictee
     />
   );
 }
@@ -43,6 +50,34 @@ function NomPiece({ piece, onChange }) {
 export default function EcranReleve({ projet, moteur }) {
   const releve = useReleve(projet.id, moteur);
   const { niveau, piece } = releve;
+  const [selection, setSelection] = useState(null), [suppression, setSuppression] = useState(null);
+  const [erreurTerrain, setErreurTerrain] = useState(null), [suppressionEnCours, setSuppressionEnCours] = useState(false);
+  const photos = usePhotos({ moteur, projetId: projet.id, niveau, piece, validerNiveau: releve.validerNiveau });
+  async function supprimer(cible, choix) {
+    setSuppressionEnCours(true);
+    try {
+      const resultat = supprimerCible(niveau, cible, choix);
+      if (!resultat.ok) throw new Error(resultat.message);
+      if (cible.type === "photo") {
+        await marquerPhotoSupprimee(moteur, projet.id, cible.photoId);
+        photos.noterSuppression(cible.photoId);
+      }
+      if (cible.type === "photo") {
+        releve.validerNiveau(n => supprimerCible(n, cible, choix).niveau, niveau.id);
+      } else releve.validerNiveau(resultat.niveau);
+      setSuppression(null); setSelection(null); setErreurTerrain(null);
+    } catch (e) { setErreurTerrain(`Suppression impossible : ${e.message}`); }
+    finally { setSuppressionEnCours(false); }
+  }
+  function demanderSuppression(cible) {
+    if (commentairesConcernes(niveau, cible).length) setSuppression(cible);
+    else supprimer(cible, "supprimer");
+  }
+  function inserer(pieceId, murIndex, t) {
+    const r = insererSommetTerrain(niveau, pieceId, murIndex, t);
+    if (r.ok) { releve.validerNiveau(r.niveau); setErreurTerrain(null); }
+    else setErreurTerrain(r.message);
+  }
 
   if (!releve.charge) {
     return (
@@ -64,6 +99,7 @@ export default function EcranReleve({ projet, moteur }) {
             </Encadre>
           ) : null}
           <StatutSynchro projetId={projet.id} moteur={moteur} />
+          {erreurTerrain && <Encadre type="alerte" titre="Action terrain">{erreurTerrain}</Encadre>}
         </div>
         <div className="colonne">
           <section className="carte" aria-labelledby="titre-pieces">
@@ -119,7 +155,8 @@ export default function EcranReleve({ projet, moteur }) {
           {piece ? (
             <section className="carte" aria-labelledby="titre-piece">
               <h2 id="titre-piece">Pièce sélectionnée</h2>
-              <NomPiece piece={piece} onChange={releve.validerPiece} />
+              <NomPiece key={piece.id} piece={piece} onChange={releve.validerPiece} />
+              <CotesLaser piece={piece} onChange={releve.validerPiece} />
               <ChampLongueur
                 libelle="Hauteur sous plafond (m)"
                 valeurMm={piece.hauteurMm}
@@ -130,12 +167,13 @@ export default function EcranReleve({ projet, moteur }) {
               <h3 style={{ margin: "16px 0 8px" }}>Ouvertures</h3>
               <ListeOuvertures piece={piece} onChange={releve.validerPiece} />
               <div className="barre-boutons" style={{ marginTop: 16 }}>
-                <button type="button" className="bouton bouton--secondaire" onClick={releve.supprimerPieceCourante}>
+                <button type="button" className="bouton bouton--secondaire" onClick={() => demanderSuppression({ type: "piece", pieceId: piece.id })}>
                   <Icone nom="supprimer" /> Supprimer la pièce
                 </button>
               </div>
             </section>
           ) : null}
+          <CarteTerrain key={niveau.id} niveau={niveau} piece={piece} photos={photos} selection={selection} onSelection={setSelection} validerNiveau={releve.validerNiveau} onSupprimer={demanderSuppression} />
         </div>
 
         <div className="colonne">
@@ -150,6 +188,11 @@ export default function EcranReleve({ projet, moteur }) {
             onChoisir={releve.choisirPiece}
             onApercu={releve.previsualiserPiece}
             onValider={releve.validerPiece}
+            onSupprimerSommet={index => demanderSuppression({ type: "sommet", pieceId: piece.id, sommetIndex: index })}
+            onInsererSommet={(murIndex, t) => inserer(piece.id, murIndex, t)}
+            onSupprimerPiece={() => piece && demanderSuppression({ type: "piece", pieceId: piece.id })}
+            onSelectionTerrain={setSelection}
+            onDeplacerRepere={(type, id, position) => releve.validerNiveau(n => deplacerRepere(n, type, id, position))}
             onCreerDepuisSommets={(sommets) => releve.creerPieceDepuisSommets(sommets, HAUTEUR_PAR_DEFAUT_MM)}
           />
         </div>
@@ -164,6 +207,15 @@ export default function EcranReleve({ projet, moteur }) {
           <PanneauPrecision />
         </div>
       </main>
+      {suppression && <Dialogue titre="Commentaires attachés" sansFermer onFermer={() => !suppressionEnCours && setSuppression(null)}>
+        <p>Choisissez le devenir des commentaires avant la suppression.</p>
+        <button type="button" className="bouton" disabled={suppressionEnCours} onClick={() => supprimer(suppression, "supprimer")}>{(() => {
+          const n = commentairesConcernes(niveau, suppression).length;
+          return n === 1 ? "Supprimer aussi le commentaire" : `Supprimer aussi les ${n} commentaires`;
+        })()}</button>
+        <button type="button" className="bouton bouton--secondaire" disabled={suppressionEnCours} onClick={() => supprimer(suppression, "detacher")}>Les garder sur le plan</button>
+        <button type="button" className="bouton bouton--secondaire" disabled={suppressionEnCours} onClick={() => setSuppression(null)}>Annuler</button>
+      </Dialogue>}
     </>
   );
 }

@@ -6,7 +6,9 @@ declare(strict_types=1);
 // Un objet = bâtiment, niveau, pièce ou ouverture. Règle de conflit (R06) : la dernière modification reçue gagne, par objet,
 // et l'état écrasé d'un autre appareil est inscrit au journal.
 
-const VISION_SYNC_KINDS = ['batiment', 'niveau', 'piece', 'ouverture'];
+require_once __DIR__ . '/terrain.php';
+
+const VISION_SYNC_KINDS = ['batiment', 'niveau', 'piece', 'ouverture', 'photo', 'commentaire'];
 const VISION_SYNC_MAX_CHANGES = 100;
 const VISION_SYNC_MAX_BODY_BYTES = 262144;
 const VISION_SYNC_MAX_DATA_BYTES = 8192;
@@ -42,6 +44,13 @@ function vision_sync_validate_data(string $kind, mixed $data, string $path, arra
         $errors[$path] = 'Objet JSON attendu.';
         return null;
     }
+    if (in_array($kind, ['photo', 'commentaire'], true)) {
+        if (!vision_terrain_valid($kind, $data) || strlen(json_encode($data)) > VISION_SYNC_MAX_DATA_BYTES) {
+            $errors[$path] = 'Objet terrain invalide ou trop volumineux.';
+            return null;
+        }
+        return $data;
+    }
     $spec = [
         'batiment' => ['nom'],
         'niveau' => ['nom', 'ordre'],
@@ -50,7 +59,7 @@ function vision_sync_validate_data(string $kind, mixed $data, string $path, arra
     ][$kind];
     $before = count($errors);
     foreach (array_keys($data) as $key) {
-        if (!in_array($key, $spec, true)) {
+        if (!in_array($key, $spec, true) && !($kind === 'piece' && $key === 'cotesLaser')) {
             $errors["$path.$key"] = 'Champ inconnu.';
         }
     }
@@ -78,6 +87,9 @@ function vision_sync_validate_data(string $kind, mixed $data, string $path, arra
         $check('ordre', vision_sync_int($data['ordre'], 0, 9999), 'Entier de 0 à 9999 attendu.');
     }
     if ($kind === 'piece') {
+        if (array_key_exists('cotesLaser', $data)) {
+            $check('cotesLaser', vision_terrain_valid('cotesLaser', $data['cotesLaser']), 'Cotes laser invalides.');
+        }
         $check('hauteurMm', vision_sync_int($data['hauteurMm'], 1, 100000), 'Entier de 1 à 100000 attendu.');
         $sommets = $data['sommets'];
         $okSommets = is_array($sommets) && array_is_list($sommets) && count($sommets) >= 3 && count($sommets) <= 64;
@@ -92,6 +104,13 @@ function vision_sync_validate_data(string $kind, mixed $data, string $path, arra
             }
         }
         $check('sommets', $okSommets, '3 à 64 sommets {x, y} en millimètres entiers attendus.');
+        if ($okSommets && isset($data['cotesLaser']) && vision_terrain_valid('cotesLaser', $data['cotesLaser'])) {
+            foreach ($data['cotesLaser'] as $cote) {
+                foreach (['murIndex', 'deSommet', 'aSommet'] as $index) {
+                    if (isset($cote[$index])) $check('cotesLaser', $cote[$index] < count($sommets), 'Repère laser absent du contour.');
+                }
+            }
+        }
     }
     if ($kind === 'ouverture') {
         $check('type', in_array($data['type'], ['porte', 'fenetre'], true), 'Valeur attendue : « porte » ou « fenetre ».');
@@ -154,6 +173,7 @@ function vision_sync_validate_request(array $body): array
                 $errors["$path.object_id"] = 'Identifiant d\'objet invalide.';
             }
             $kind = $change['kind'] ?? null;
+            if ($kind === 'photo' && !vision_media_uuid($change['object_id'] ?? null)) $errors["$path.object_id"] = 'UUID de photo attendu.';
             if (!in_array($kind, VISION_SYNC_KINDS, true)) {
                 $errors["$path.kind"] = 'Type d\'objet inconnu.';
             }

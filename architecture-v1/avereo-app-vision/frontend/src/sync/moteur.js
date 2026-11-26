@@ -148,7 +148,9 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
    * en une seule transaction locale. `avant` vaut `null` tant que le projet n'a rien d'enregistré. Retourne le nombre de changements.
    */
   function enregistrer(projetId, avant, apres) {
-    return verrouiller(projetId, async () => {
+    return verrouiller(projetId, () => enregistrerInterne(projetId, avant, apres));
+  }
+  async function enregistrerInterne(projetId, avant, apres) {
       const p = await chargerProjet(projetId);
       const changements = diffBatiment(avant, apres);
       if (changements.length === 0) return 0;
@@ -163,7 +165,6 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       await stockage.sauverProjet(projetId, { objets: touches, file });
       notifier({ type: "local", projetId });
       return changements.length;
-    });
   }
 
   /**
@@ -323,7 +324,40 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       // Le journal est relu jusqu'à y parvenir : une erreur réseau ne doit pas faire oublier un écrasement.
       d.journalARelire = !(await rafraichirJournal(projetId).then(() => true, () => false));
     }
+    if (!lectureSeule) await synchroniserMedias(projetId);
     return !lectureSeule;
+  }
+
+  function synchroniserMedias(projetId) {
+    return verrouiller(`medias:${projetId}`, () => envoyerMedias(projetId));
+  }
+  async function envoyerMedias(projetId) {
+    if (!stockage.listerMedias) return;
+    for (const media of await stockage.listerMedias(projetId)) {
+      if (media.etat !== "a-envoyer" || media.erreur) continue;
+      const p = await chargerProjet(projetId);
+      const objet = p.objets.get(media.id);
+      if (p.file.some(e => e.objectId === media.id)) continue;
+      if (!media.supprimer && (!objet || objet.deleted || objet.rev < 1)) continue;
+      try {
+        if (media.supprimer) await api.supprimerMedia(projetId, media.id);
+        else await api.envoyerMedia(projetId, media);
+        // Relire : une suppression locale peut avoir été demandée pendant le PUT.
+        const actuel = await stockage.lireMedia(projetId, media.id);
+        if (actuel?.supprimer && !media.supprimer) continue;
+        if (media.supprimer) await stockage.retirerMedia(projetId, media.id);
+        else await stockage.sauverMedia({ ...actuel, etat: "envoye" });
+      } catch (e) {
+        if (e.statut === 401) { definirReseau("reconnexion"); return; }
+        if (e.statut === 409 && e.code === "identity_changed") { definirReseau("autre-compte"); return; }
+        if (media.supprimer && e.statut === 404) { await stockage.retirerMedia(projetId, media.id); continue; }
+        if (e.statut >= 400 && e.statut < 500) {
+          const actuel = await stockage.lireMedia(projetId, media.id);
+          await stockage.sauverMedia({ ...actuel, erreur: { statut: e.statut, message: e.message } });
+          notifier({ type: "media-refuse", projetId, id: media.id });
+        } else { definirReseau(estCoupure(e) ? "hors-ligne" : "erreur"); return; }
+      }
+    }
   }
 
   // ---------------------------------------------------------------------------------------------- projets (liste et file)
@@ -490,7 +524,7 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
           toutARejouer = false;
           if (await synchroniserProjets()) {
             await rafraichirListe();
-            const ids = new Set([...ouverts, ...(await stockage.listerProjetsEnAttente())]);
+            const ids = new Set([...ouverts, ...(await stockage.listerProjetsEnAttente()), ...((await stockage.lireMeta("projets-medias")) ?? [])]);
             for (const id of ids) {
               // Un projet archivé ou introuvable n'empêche pas les suivants ; une coupure, une session perdue ou une erreur serveur, si.
               await synchroniserProjet(id);
@@ -508,10 +542,10 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
 
   /** Nombre de modifications non envoyées (projet donné, ou tous les projets connus plus les opérations sur les projets). */
   async function compterEnAttente(projetId) {
-    if (projetId) return (await stockage.chargerProjet(projetId)).file.length;
+    if (projetId) return (await stockage.chargerProjet(projetId)).file.length + ((await stockage.listerMedias?.(projetId)) ?? []).filter(m => m.etat === "a-envoyer").length;
     const operations = await stockage.lireOperations();
     let total = operations.length;
-    for (const id of new Set([...ouverts, ...(await stockage.listerProjetsEnAttente())])) total += (await stockage.chargerProjet(id)).file.length;
+    for (const id of new Set([...ouverts, ...(await stockage.listerProjetsEnAttente()), ...((await stockage.lireMeta("projets-medias")) ?? [])])) total += await compterEnAttente(id);
     return total;
   }
 
@@ -526,6 +560,26 @@ export function creerMoteur({ stockage, api, deviceId, maintenant = () => new Da
       canal?.close();
     },
     deviceId,
+    async sauverMedia(media) {
+      await stockage.sauverMedia(media);
+      await verrouiller("projets-medias", async () => stockage.ecrireMeta("projets-medias", [...new Set([...(await stockage.lireMeta("projets-medias") ?? []), media.projectId])]));
+      notifier({ type: "local", projetId: media.projectId });
+    },
+    lireMedia: (projectId, id) => stockage.lireMedia(projectId, id),
+    listerMedias: (projectId) => stockage.listerMedias(projectId),
+    async reessayerMedia(projectId, id) {
+      const media = await stockage.lireMedia(projectId, id);
+      if (media) await stockage.sauverMedia({ ...media, erreur: null });
+      notifier({ type: "local", projetId: projectId });
+    },
+    telechargerMedia: (projectId, id) => api.telechargerMedia(projectId, id),
+    modifierBatiment(projetId, modifier) {
+      return verrouiller(projetId, async () => {
+        const p = await chargerProjet(projetId);
+        const avant = assemblerBatiment([...p.objets.values()], ID_BATIMENT).batiment;
+        return enregistrerInterne(projetId, avant, modifier(avant ?? batimentParDefaut()));
+      });
+    },
     lireBatiment,
     ouvrirProjet,
     fermerProjet: (projetId) => ouverts.delete(projetId),
