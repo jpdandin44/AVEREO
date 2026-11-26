@@ -5,6 +5,7 @@ import { create } from 'zustand';
 import { calculateDevis, calculateDevisForPdf } from './lib/chiffrage.js';
 import DocumentsPanel from './documents/DocumentsPanel.jsx';
 import { SharingDialog, SharedDocuments } from './documents/Sharing.jsx';
+import ReportReviews from './documents/ReportReviews.jsx';
 import './documents/documents.css';
 import './passeport.css';
 import { SERVER_STORAGE, persistLocal, attachServerStorage, hydrateServer } from './documents/server-store.js';
@@ -1053,6 +1054,7 @@ const Dashboard = () => {
                 </div>
             </header>
             <SharedDocuments />
+            <ReportReviews />
             <div className="space-y-4">
                 {(applicationPreferences.sort === 'address' ? [...biens].sort((a,b) => a.address.localeCompare(b.address, 'fr')) : biens).map((bien) => (
                     <div key={bien.id} className="block rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-200 hover:shadow-md">

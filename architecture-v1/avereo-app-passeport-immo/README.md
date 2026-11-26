@@ -5,10 +5,20 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-24
+updated: 2026-11-25
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## Relecture et validation sur Word — correction confirmée
+
+La relecture et la décision de l’expert portent sur les documents Word privés. Après leur approbation seulement, le propriétaire convertit le Word client en PDF, contrôle le rendu et confirme sa publication. La conversion reste manuelle ; l’auto-validation et le second expert facultatif sont conservés. [Source fonctionnelle et critères](../avereo-app-rapport/workflows/relecture-validation-pdf.md).
+
+
+## Premier candidat — Relecture experte et PDF client — développement local
+
+Le circuit privé de relecture est développé en local : préparation depuis Rapport, nomination CONNECT dans Passeport, corrections ou validation explicite puis publication séparée du PDF client exact. L’expert rédacteur peut se désigner lui-même ; second expert facultatif. Conversion Word → PDF manuelle dans cette tranche ; aucune livraison hébergée. [Contrat et procédure](../avereo-app-rapport/workflows/relecture-validation-pdf.md).
+
 
 ## 24 novembre — Bibliothèque disponible en préproduction
 

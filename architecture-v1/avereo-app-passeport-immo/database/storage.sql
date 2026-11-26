@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS pi_biens (
  document_settings LONGTEXT NULL,
  document_shares LONGTEXT NULL,
  report_publications LONGTEXT NULL,
+ report_reviews LONGTEXT NULL,
  PRIMARY KEY(owner_id, bien_id),
  FOREIGN KEY(client_id) REFERENCES pi_clients(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

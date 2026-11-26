@@ -2,7 +2,7 @@
 from pathlib import PurePosixPath
 
 GATE_FILES = {'.htaccess', 'index.php', 'connect/entry.php', 'connect/logout.php', 'connect/gate.php'}
-STORAGE_FILES = {'connect/session.php', 'api/index.php', 'api/storage.php', 'api/sharing.php', 'api/publications.php', '.user.ini'}
+STORAGE_FILES = {'connect/session.php', 'api/index.php', 'api/storage.php', 'api/sharing.php', 'api/publications.php', 'api/reviews.php', '.user.ini'}
 VOLUME_FILES = {'api/report-volumes.json', 'api/report-volumes.php'}
 
 

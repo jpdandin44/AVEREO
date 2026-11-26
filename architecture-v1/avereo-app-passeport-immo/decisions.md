@@ -5,10 +5,20 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-24
+updated: 2026-11-25
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 2026-11-25 — Valider le document Word
+
+Contexte : le premier candidat associait la revue aux PDF. Décision explicite du responsable : « la relecture et la validation doivent être sur le document word et non pas sur le pdf ». Conséquence : approbation des empreintes DOCX ; conversion et contrôle du PDF client après approbation. Les anciens accords PDF sont conservés sans réinterprétation, et les corrections métier restent dans le dossier Rapport. [Source fonctionnelle et critères](../avereo-app-rapport/workflows/relecture-validation-pdf.md).
+
+
+## Premier candidat — Décision du 25 novembre — nomination par version et PDF figé
+
+Contexte : demander une revue depuis Passeport sans exposer les brouillons aux partages du bien. Décision explicite du responsable : « L’expert rédacteur peut valider ; second expert facultatif ». Choix d’implémentation : nomination limitée à une version, conservation privée, décision tracée et publication du PDF client exact sous confirmation propriétaire. Raisons : réutiliser l’identité CONNECT et protéger le dossier expert. Conséquences : colonne nullable et sauvegarde privée à aligner lors d’une future livraison ; conversion Word → PDF contrôlée dans cette tranche, aucun déploiement implicite. [Contrat et procédure](../avereo-app-rapport/workflows/relecture-validation-pdf.md).
+
 
 ## 24 novembre — Navigation et confidentialité
 

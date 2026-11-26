@@ -1,0 +1,85 @@
+{
+  "kind": "local-qualification",
+  "observedOn": "2026-11-25",
+  "branch": "feat/rapport-relecture-validation-pdf",
+  "baseSha": "09a4e768e9b2f11e2cdcecac65099139893c64b2",
+  "data": "fictitious",
+  "checks": {
+    "rapportNode": 264,
+    "passeportUi": 90,
+    "rapportNativeApiSql": 60,
+    "passeportNativeHttpSqlWithBrowser": 239,
+    "transferChecks": 41,
+    "toolingTests": 44,
+    "passeportBrowser": 9,
+    "rapportBrowserPreparation": 4,
+    "localPassportEntryAccounts": 3,
+    "pageErrors": 0,
+    "bothBuilds": "passed",
+    "parity": "passed",
+    "cockpitHistoricalHashes": "passed"
+  },
+  "selfValidation": "confirmed_by_user_2026-11-25",
+  "pdfConversion": "manual_word_to_pdf",
+  "pdfSemanticAndNativePaginationQualification": false,
+  "hostedSsoQualified": false,
+  "hostedWrites": false,
+  "humanPrApproval": false,
+  "reviewEntries": {
+    "rapport": "http://127.0.0.1:5260/fixture/",
+    "passeport": "http://127.0.0.1:5261/fixture/"
+  },
+  "mainAlignment": {
+    "baseSha": "95400893696938705b004f93e281b6bab80b14b0",
+    "parentPr199MergedSha": "73ba5e07d9ed702871765ac61fe8f3536204d240",
+    "rapportPasseportRuntimeUnchanged": true
+  },
+  "qualificationHistory": [
+    {
+      "basis": "pdf",
+      "status": "historical_superseded_by_word_requirement",
+      "evidence": {
+        "kind": "local-qualification",
+        "observedOn": "2026-11-25",
+        "branch": "feat/rapport-relecture-validation-pdf",
+        "baseSha": "09a4e768e9b2f11e2cdcecac65099139893c64b2",
+        "data": "fictitious",
+        "checks": {
+          "rapportNode": 264,
+          "passeportUi": 90,
+          "rapportNativeApiSql": 60,
+          "passeportNativeHttpSqlWithBrowser": 239,
+          "transferChecks": 41,
+          "toolingTests": 44,
+          "passeportBrowser": 9,
+          "rapportBrowserPreparation": 4,
+          "localPassportEntryAccounts": 3,
+          "pageErrors": 0,
+          "bothBuilds": "passed",
+          "parity": "passed",
+          "cockpitHistoricalHashes": "passed"
+        },
+        "selfValidation": "confirmed_by_user_2026-11-25",
+        "pdfConversion": "manual_word_to_pdf",
+        "pdfSemanticAndNativePaginationQualification": false,
+        "hostedSsoQualified": false,
+        "hostedWrites": false,
+        "humanPrApproval": false,
+        "reviewEntries": {
+          "rapport": "http://127.0.0.1:5260/fixture/",
+          "passeport": "http://127.0.0.1:5261/fixture/"
+        },
+        "mainAlignment": {
+          "baseSha": "95400893696938705b004f93e281b6bab80b14b0",
+          "parentPr199MergedSha": "73ba5e07d9ed702871765ac61fe8f3536204d240",
+          "rapportPasseportRuntimeUnchanged": true
+        }
+      }
+    }
+  ],
+  "reviewBasis": "word",
+  "reviewPackageVersion": 2,
+  "wordDecisionSource": "Confirmation explicite du responsable le 25 novembre : relecture et validation sur le document Word, pas le PDF.",
+  "pdfPreparation": "after_word_approval_with_content_and_layout_confirmation",
+  "nativeWordReadingQualified": false
+}

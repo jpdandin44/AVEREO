@@ -6,6 +6,7 @@ import json
 def qualify_technical_reports(*, req, enter, save, mysql, database, fixture, check, config, write_config, policy_path):
     snapshot = mysql('SELECT public_id,owner_provider,owner_id,HEX(payload_json) FROM rapport_reports ORDER BY public_id;', database)
     technical = copy.deepcopy(fixture)
+    technical['reviewSeriesId'] = 'd' * 32
     technical.update(categorie='Expertise & Visite technique', profil_metier='', sous_categorie='',
                      mission_technique={'objet':'Mission fictive technique','perimetre':'Façade','limites':'Sans sondage'})
     technical['observations'][0].update(mesures_techniques='12 mm fictifs', references_techniques='https://example.org/',

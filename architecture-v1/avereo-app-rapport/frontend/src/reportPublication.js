@@ -5,7 +5,8 @@ import { REPORT_JSON_LIMIT, PUBLICATION_LIMIT, REPORT_LIMIT_LABEL, PUBLICATION_L
 
 export { PUBLICATION_LIMIT };
 const SCHEMA = 'avereo-rapport-publication';
-const PATH = /^(?:dossier-rapport\.json|rapport-client\.docx|originaux\/[a-f0-9]{32}\.(?:jpg|png|webp))$/;
+const REVIEW_SCHEMA = 'avereo-rapport-review';
+const PATH = /^(?:dossier-rapport\.json|rapport-(?:client|expert)\.(?:docx|pdf)|originaux\/[a-f0-9]{32}\.(?:jpg|png|webp))$/;
 const fail = () => { throw new Error('Copie Rapport incomplète ou altérée. Le brouillon actuel est conservé.'); };
 
 // Calculate the reconstructed copy before downloading originals or generating a ZIP.
@@ -32,12 +33,25 @@ export function publicationReportBlob(report) {
 
 export async function createPublication(report, clientWord, { validated, readOriginal = readPhotoOriginal, id = crypto.randomUUID().replaceAll('-', ''), now = new Date().toISOString() } = {}) {
   if (validated !== true) throw new Error('Confirmez la relecture professionnelle avant de préparer la publication.');
+  return createPackage(report, clientWord, { readOriginal, id, now });
+}
+
+export async function createReview(report, clientWord, expertWord, options = {}) {
+  if (!/^[a-f0-9]{32}$/.test(report.reviewSeriesId || '')) throw new Error('Préparez les Word de cette version avant la demande de revue.');
+  if (!(expertWord instanceof Blob) || !expertWord.size) throw new Error('Le Word expert est absent.');
+  return createPackage(report, clientWord, { ...options, review: true, expertWord });
+}
+
+async function createPackage(report, clientWord, { readOriginal = readPhotoOriginal, id = crypto.randomUUID().replaceAll('-', ''), now = new Date().toISOString(), review = false, expertWord } = {}) {
   const reportBlob = publicationReportBlob(report);
   if (!(clientWord instanceof Blob) || !clientWord.size) throw new Error('La restitution client est absente.');
   const files = new Map([
     ['dossier-rapport.json', reportBlob],
     ['rapport-client.docx', clientWord],
   ]);
+  if (review) {
+    files.set('rapport-expert.docx', expertWord);
+  }
   const originals = [];
   for (const [observationIndex, observation] of report.observations.entries()) {
     for (const [photoIndex, photo] of (observation.photos || []).entries()) {
@@ -58,7 +72,8 @@ export async function createPublication(report, clientWord, { validated, readOri
     entries.push({ path, bytes: blob.size, sha256: await blobSha256(blob) });
     zip.file(path, await blob.arrayBuffer(), { createFolders: false });
   }
-  const manifest = { schema: SCHEMA, version: 1, id, createdAt: now, title: String(report.titre || 'Rapport finalisé').slice(0, 200), reference: String(report.reference_dossier || '').slice(0, 200), validatedByProfessional: true, entries, originals };
+  const manifest = { schema: review ? REVIEW_SCHEMA : SCHEMA, version: review ? 2 : 1, id, createdAt: now, title: String(report.titre || 'Rapport finalisé').slice(0, 200), reference: String(report.reference_dossier || '').slice(0, 200), validatedByProfessional: !review, entries, originals };
+  if (review) manifest.seriesId = report.reviewSeriesId;
   zip.file('manifest.json', JSON.stringify(manifest));
   const bytes = await zip.generateAsync({ type: 'uint8array', compression: 'STORE' });
   if (bytes.length > PUBLICATION_LIMIT) throw new Error(`Cette publication dépasse ${PUBLICATION_LIMIT_LABEL}.`);
@@ -98,7 +113,8 @@ export async function readPublication(file) {
   if (Object.keys(zip.files).length !== names.size) fail();
   let manifest;
   try { manifest = JSON.parse(await zip.file('manifest.json').async('string')); } catch { fail(); }
-  if (manifest?.schema !== SCHEMA || manifest.version !== 1 || !/^[a-f0-9]{32}$/.test(manifest.id || '') || manifest.validatedByProfessional !== true
+  const review = manifest?.schema === REVIEW_SCHEMA;
+  if ((!review && manifest?.schema !== SCHEMA) || !(review ? [1, 2] : [1]).includes(manifest.version) || !/^[a-f0-9]{32}$/.test(manifest.id || '') || manifest.validatedByProfessional !== !review
     || !Array.isArray(manifest.entries) || manifest.entries.length !== names.size - 1 || !Array.isArray(manifest.originals)) fail();
   const content = new Map();
   for (const entry of manifest.entries) {
@@ -108,8 +124,11 @@ export async function readPublication(file) {
     content.set(entry.path, blob);
   }
   if (!content.has('dossier-rapport.json') || !content.has('rapport-client.docx')) fail();
+  if (review ? (!/^[a-f0-9]{32}$/.test(manifest.seriesId || '') || !content.has('rapport-expert.docx') || (manifest.version === 1 ? ['rapport-client.pdf', 'rapport-expert.pdf'].some(p => !content.has(p)) : ['rapport-client.pdf', 'rapport-expert.pdf'].some(p => content.has(p))))
+    : ['rapport-expert.docx', 'rapport-client.pdf', 'rapport-expert.pdf'].some(p => content.has(p))) fail();
   // This parsed object is private to the reader: avoid cloning a large JSON a second time.
   const report = readReportFile(await content.get('dossier-rapport.json').text());
+  if (review && report.reviewSeriesId !== manifest.seriesId) fail();
   requireEditableNumbers(report);
   delete report.onlineReportId;
   const mapped = new Set(), referenced = new Set();
