@@ -3,6 +3,13 @@ import { createServerStorage } from '../src/documents/server-store.js';
 
 const response = (body, status = 200) => ({ ok: status < 400, status, json: async () => body });
 describe('Stockage serveur', () => {
+  it('transmet au planificateur la limite effective reçue avec la session', async () => {
+    const store = createServerStorage({ fetcher: async path => response(path === '/api/session'
+      ? { csrf: 'token', user: {}, documentUploadLimits: { filesPerBatch: 7 } }
+      : { biens: [], tarifs: {}, revision: 1 }) });
+    await store.load();
+    expect(store.repository.importFileLimit).toBe(7);
+  });
   it('renvoie les nombres confirmés de fichiers ajoutés et de doublons', async () => {
     const store = createServerStorage({ fetcher: async () => response({ added: [{ id: 'a' }, { id: 'b' }], duplicates: ['copie.zip'] }) });
     expect(await store.repository.addFiles('bien', [new File(['archive'], 'dossier.zip')], 'autres')).toEqual({ added: 2, duplicates: 1 });

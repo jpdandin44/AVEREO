@@ -5,10 +5,16 @@ title: AVEREO – Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 26 novembre — correction locale des lots et liaison directe préparée
+
+Le nouveau candidat d’import utilise la limite effective renvoyée par le PHP web et un repli prudent à 20 fichiers par requête. Une sélection de 27 fichiers est envoyée automatiquement en plusieurs lots ; fichiers entiers, reprise et dédoublonnage conservés. [Écart, matrice et qualification locale](docs/source-audit-import-lots.md). Ce candidat n’est pas installé en préproduction.
+
+La [liaison directe Rapport → Passeport](docs/liaison-directe-rapport.md) est préparée comme proposition distincte, sans implémentation. Le circuit de validation Word puis PDF et publication séparée reste inchangé. Les observations de candidats précédents ci-dessous restent datées.
 
 ## Relecture et validation sur Word — correction confirmée
 

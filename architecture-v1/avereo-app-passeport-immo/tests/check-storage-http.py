@@ -42,6 +42,7 @@ def run():
         def directory(age=0):
             directory_path.write_text(json.dumps({'version':1,'environment':'local','generatedAt':int(time.time())-age,'accounts':accounts}))
         directory()
+        (root/'upload-limits.ini').write_text('max_file_uploads=20\n',encoding='utf-8')
         (root/'config.php').write_text("<?php return "+"["+
             f"'environment'=>'local','connect_portal_url'=>'https://connect-preprod.avereo.fr/','connect_launch_secret'=>'{secret}',"+
             "'connect_launch_nonce_directory'=>'/tmp/nonces','connect_gate_cookie'=>'PI_TEST','connect_gate_session_seconds'=>1800,"+
@@ -55,6 +56,7 @@ def run():
             command('docker','run','-d','--rm','--name',web,'--network',network,'-p',f'127.0.0.1:{args.port if args.serve else ""}:80',
                 '--mount',f'type=bind,source={root}/public,target=/var/www/html,readonly',
                 '--mount',f'type=bind,source={root}/config.php,target=/fixture/config.php,readonly',
+                '--mount',f'type=bind,source={root}/upload-limits.ini,target=/usr/local/etc/php/conf.d/zz-fixture-upload.ini,readonly',
                 '--mount',f'type=bind,source={directory_path},target=/fixture/share-directory.json,readonly',
                 '--mount',f'type=bind,source={APP}/database/storage.sql,target=/fixture/storage.sql,readonly',
                 '--mount',f'type=bind,source={APP}/workflows/backup-storage.php,target=/fixture/backup-storage.php,readonly',
@@ -117,6 +119,7 @@ def run():
             check(launch(1,False)[0]==403,'identityless ticket denied')
             cookie=launch(42); second=launch(42); foreign=launch(43)
             csrf=data(request('/api/session',cookie))['csrf']; csrf2=data(request('/api/session',second))['csrf']; foreign_csrf=data(request('/api/session',foreign))['csrf']
+            check(data(request('/api/session',cookie))['documentUploadLimits']['filesPerBatch']==20,'web session advertises effective PHP file count20')
             check(b'<meta name="passeport-storage" content="server">' in request('/',cookie)[2],'hosted server mode injected')
             check(data(request('/api/workspace',cookie))['biens']==[],'new account blank workspace')
             workspace={'revision':0,'biens':[{'id':123,'address':'Bien fictif','dossier':{'pieces':[],'attachments':[]}}],'tarifs':{}}
@@ -308,6 +311,28 @@ def run():
                 publication_backup)
             from review_http import run as check_reviews
             check_reviews(request,check,cookie,second,foreign,csrf,foreign_csrf,sql,publication_backup,accounts,directory,launch(44),f'http://127.0.0.1:{port}',root/'config.php')
+            bulk_bien='recette-27-fichiers'
+            bulk_workspace=data(request('/api/workspace',cookie))
+            bulk_workspace['biens'].append({'id':bulk_bien,'address':'RECETTE FICTIVE — 27 fichiers distincts','dossier':{'pieces':[],'attachments':[]}})
+            check(request('/api/workspace',cookie,'PUT',bulk_workspace,csrf)[0]==200,'bulk fixture property saved independently')
+            check(request(f'/api/biens/{bulk_bien}/client',cookie,'POST',{'name':'Client fictif 27 fichiers'},csrf)[0]==200,'bulk fixture client linked')
+            bulk_files=[(f'lot-27-{i+1:02}.pdf',content+f'\n% distinct fixture {i}\n'.encode()) for i in range(27)]
+            check(len({hashlib.sha256(value).hexdigest() for _,value in bulk_files})==27,'bulk fixture has27distinct content hashes')
+            check(upload(bulk_files,bien=bulk_bien)[0]==422,'unbatched27files rejected by PHP20count before document commit')
+            check(data(request(f'/api/biens/{bulk_bien}/documents',second))['documents']==[],'rejected27file request commits no partial documents')
+            for batch in [bulk_files[:20],bulk_files[20:]]:
+                result=upload(batch,bien=bulk_bien)
+                check(result[0]==201 and len(data(result)['added'])==len(batch),'effective count batch accepted entirely')
+            bulk_documents=data(request(f'/api/biens/{bulk_bien}/documents',second))['documents']
+            check(len(bulk_documents)==27,'independent session sees all27distinct documents')
+            expected_hashes={name:hashlib.sha256(value).hexdigest() for name,value in bulk_files}
+            for record in bulk_documents:
+                downloaded=request(f"/api/biens/{bulk_bien}/documents/{record['id']}/file",second)
+                check(downloaded[0]==200 and hashlib.sha256(downloaded[2]).hexdigest()==expected_hashes[record['name']],'bulk document download exact in second session')
+            for batch in [bulk_files[:20],bulk_files[20:]]:
+                result=upload(batch,bien=bulk_bien)
+                check(result[0]==201 and data(result)['added']==[] and len(data(result)['duplicates'])==len(batch),'repeated bulk batch deduplicated without loss')
+            check(request(f'/api/biens/{bulk_bien}/documents',foreign)[0]==404,'foreign account denied bulk property')
             if not args.serve:
                 command('docker','exec',web,'php','-r',f"file_put_contents('/private-documents/{doc['id']}.blob','corrupted');")
                 check(request(path+'/file',cookie)[0]==503,'altered blob not returned')

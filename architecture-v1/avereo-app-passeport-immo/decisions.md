@@ -5,10 +5,14 @@ title: Décisions Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 2026-11-26 — dimensionner les requêtes depuis le PHP web
+
+Contexte : un lot de 27 fichiers est refusé en préproduction alors que 20 puis 7 réussissent ; le paramètre demandé dans `.user.ini` ne prouve pas sa valeur effective. Choix technique du correctif local : exposer la limite via la session authentifiée, borner le planificateur et son affichage, avec repli à 20 pour les anciens serveurs. Raisons : adapter les requêtes sans modifier globalement le compte PHP ni transformer les fichiers. Conséquences : même API multipart et mêmes contrôles ; candidat à relire puis à qualifier sur l’hébergement. [Audit et limites](docs/source-audit-import-lots.md). Cette décision technique n’est pas une validation humaine de phase ou de livraison.
 
 ## 2026-11-25 — Valider le document Word
 

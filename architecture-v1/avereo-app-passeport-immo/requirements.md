@@ -5,10 +5,14 @@ title: Exigences Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## Import de lots — correction locale du 26 novembre
+
+Une sélection de 27 fichiers doit être répartie selon la limite effective du PHP web, sans intervention de l’utilisateur pour la découpe. Repli à 20 par requête si la limite n’est pas fournie ; l’aide affiche la même borne. Conserver les fichiers entiers, tailles utiles, ordre, catégories, propriétaires et contrôle d’effectif serveur. Une erreur arrête la suite, conserve les confirmations acquises et permet une reprise sans doublon. [Critères et preuves](docs/source-audit-import-lots.md). Aucun assouplissement de la validation Word avant PDF. [Besoin de liaison directe préparé](docs/liaison-directe-rapport.md), non implémenté.
 
 ## Exigence confirmée — valider les Word avant le PDF
 

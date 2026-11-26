@@ -5,10 +5,21 @@ title: Roadmap Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags: [avereo, documentation, local]
 ---
+
+## 26 novembre — D02 local et préparation de la liaison directe
+
+| Phase | État du nouveau correctif |
+| --- | --- |
+| Cadrage | REC-04 reproduit ; périmètre des lots et préservation établis. Liaison directe préparée séparément. |
+| Développement local | Correctif, 93 tests frontend, 276 assertions HTTP, parité, build et import navigateur de 27 images distinctes réussis ; revue humaine à effectuer. |
+| Préproduction | Nouvelle installation non engagée ; revue et accord du candidat, sauvegarde/restauration puis recette réelle nécessaires. |
+| Mise en production | Non engagée. |
+
+[Correction et recette locale](docs/source-audit-import-lots.md) · [Proposition de liaison directe](docs/liaison-directe-rapport.md). Suivi canonique V2 : `importBatchCorrection20261126` et besoin unique `hostedAcceptance20261126.directPassportLinkRequirement`. Les réserves V1.2/R12-18 et les droits restent conservés.
 
 ## Correction Word de PR202
 
