@@ -25,6 +25,7 @@
   "currentPhase": 0,
   "checks": [],
   "proofs": [
+    {"id": "validation-preprod-20261126", "phaseId": 2, "title": "Préproduction en service : déploiement automatisé de main (b1e08b3), lancement depuis CONNECT préproduction, isolation entre deux comptes et essai Android hors ligne (navigateur) constatés par le responsable", "kind": "reference_document", "status": "partially_verified", "evidence": "docs/deploiement-mutualise.md", "observedAt": "2026-11-26"},
     {"id": "t08-deploiement-automatise-20261126", "phaseId": 1, "title": "T-08 : préparation locale du workflow, aucune exécution distante", "kind": "reference_document", "status": "partially_verified", "evidence": "docs/deploiement-automatise-verification.md", "observedAt": "2026-11-26"},
     {"id": "revue-locale-20261125", "phaseId": 1, "title": "Recette locale (candidat de PR, http://127.0.0.1:5250/revue/, comptes fictifs par la vraie passerelle CONNECT) ; validation = préproduction (https://vision-preprod.avereo.fr/, non installée)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/revue-locale.md", "observedAt": "2026-11-25"},
     {"id": "etude-outils-20261120", "phaseId": 0, "title": "Étude des outils open source du 20/11/2026", "kind": "reference_document", "status": "reviewable", "evidence": "docs/etude-outils-resume.md", "observedAt": "2026-11-20"},
