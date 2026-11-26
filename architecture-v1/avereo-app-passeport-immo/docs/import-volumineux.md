@@ -5,10 +5,14 @@ title: Import de rapports et archives volumineux
 status: active
 version: git
 created: 2026-11-12
-updated: 2026-11-12
+updated: 2026-11-26
 owner: jpdandin
 tags: [documents, import, volumes, recette]
 ---
+
+## 26 novembre — borne effective des lots, candidat local
+
+L’envoi natif de 27 fichiers refusé en préproduction est corrigé localement : le serveur annonce sa limite réelle par session, le front découpe selon cette valeur avec repli à 20 et affiche la même limite. Pas de plafond global sur la sélection : seuls les lots sont bornés, en nombre et en octets. [Annexe de parité, preuves et conditions de recette](source-audit-import-lots.md). Les preuves PR145/146 ci-dessous conservent leur portée historique ; aucun nouveau déploiement réalisé.
 
 # Import de rapports et archives volumineux
 
@@ -39,7 +43,7 @@ nettoyage privés. Aucun tel protocole n’est ajouté à ce candidat.
 
 Le sélecteur conserve les fichiers d’origine. Le rapport de 173 Mo et les quatorze
 archives de 203 Mo tiennent dans un lot, sans extraction ou découpe. Les sélections
-dépassant 500 Mo ou cent fichiers sont réparties automatiquement en requêtes successives.
+dépassant 500 Mo ou la limite de fichiers du serveur sont réparties automatiquement en requêtes successives.
 
 Noms, extensions et tailles sont contrôlés avant le premier lot. Les signatures
 continuent d’être vérifiées par le dépôt local ou le serveur. L’atomicité reste

@@ -30,7 +30,9 @@ try {
     $path=(string)parse_url($_SERVER['REQUEST_URI'] ?? '',PHP_URL_PATH);
     if ($path==='/api/session' && $method==='GET') {
         $profile=$config['storage_profiles'][$owner] ?? ['name'=>'Compte CONNECT','role'=>'user','plan'=>'pro'];
-        passeport_json(['user'=>$profile,'csrf'=>passeport_csrf($config,$session),'expiresAt'=>$session['exp'],'storage'=>'server']);
+        $fileLimit=filter_var(ini_get('max_file_uploads'),FILTER_VALIDATE_INT,['options'=>['min_range'=>1]]);
+        passeport_json(['user'=>$profile,'csrf'=>passeport_csrf($config,$session),'expiresAt'=>$session['exp'],'storage'=>'server',
+            'documentUploadLimits'=>['filesPerBatch'=>min(100,$fileLimit===false?20:$fileLimit)]]);
     }
     $store=new PasseportStorage($config,$owner);
     $body=[];

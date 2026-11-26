@@ -5,10 +5,14 @@ title: Changelog Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 2026-11-26 — correction locale de l’import des 27 fichiers
+
+Lots dimensionnés d’après la limite du PHP web, repli à 20 et affichage cohérent. Reprise à partir des lots confirmés et dédoublonnage conservés ; pas de transformation des fichiers ni de changement des validations Word/PDF. Qualification locale réussie ; aucune installation de ce candidat. [Audit](docs/source-audit-import-lots.md). [Liaison directe préparée](docs/liaison-directe-rapport.md), sans code de transfert ajouté.
 
 ## 2026-11-25 — Circuit Word puis PDF final
 

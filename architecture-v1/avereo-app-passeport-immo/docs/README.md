@@ -5,10 +5,14 @@ title: Documentation Passeport Immo
 status: active
 version: git
 created: 2026-10-03
-updated: 2026-11-13
+updated: 2026-11-26
 owner: jpdandin
 tags: [passeport-immo, local]
 ---
+
+## 26 novembre — imports en lots et liaison directe
+
+[Correctif local, matrice de parité et recette des 27 fichiers](source-audit-import-lots.md) · [Préparation de la liaison directe Rapport vers Passeport](liaison-directe-rapport.md). Le premier est un candidat local à relire ; la seconde reste une proposition. Les reçus et audits approuvés ci-dessous sont conservés.
 
 # Documentation Passeport Immo
 
