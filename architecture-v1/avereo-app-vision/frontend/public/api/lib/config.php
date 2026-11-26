@@ -10,6 +10,8 @@ final class VisionConfigException extends RuntimeException
 {
 }
 
+require_once __DIR__ . '/portal.php';
+
 const VISION_ENVIRONMENTS = ['local', 'preproduction', 'production'];
 const VISION_AUTH_MODES = ['token', 'connect'];
 
@@ -22,6 +24,7 @@ function vision_default_config(): array
         'db' => ['host' => '127.0.0.1', 'port' => 3306, 'name' => 'vision', 'user' => '', 'password' => ''],
         'api_token' => '',
         'admin_user_ids' => [],
+        'connect_portal_url' => '',
         'connect_launch_secret' => '',
         'connect_launch_nonce_directory' => '',
         'connect_gate_cookie' => 'AVEREO_VISION_GATE',
@@ -119,6 +122,11 @@ function vision_config_validate(array $config): void
             throw new VisionConfigException('Le dossier des nonces CONNECT est obligatoire.');
         }
     }
+    $portal = $config['connect_portal_url'] ?? '';
+    if (!is_string($portal) || ($portal !== '' && !vision_portal_url_is_allowed($config, $portal))
+        || ($config['auth_mode'] === 'connect' && $config['environment'] !== 'local' && $portal === '')) {
+        throw new VisionConfigException('Adresse du portail CONNECT absente ou invalide.');
+    }
     foreach ((array) ($config['admin_user_ids'] ?? []) as $id) {
         if (!is_string($id)) {
             throw new VisionConfigException('admin_user_ids doit contenir des chaînes.');
@@ -150,7 +158,8 @@ function vision_config(?array $override = null): array
         }
         $fromFile = $loaded;
     }
-    $cache = array_replace_recursive(vision_default_config(), $fromFile);
-    vision_config_validate($cache);
+    $config = array_replace_recursive(vision_default_config(), $fromFile);
+    vision_config_validate($config);
+    $cache = $config;
     return $cache;
 }

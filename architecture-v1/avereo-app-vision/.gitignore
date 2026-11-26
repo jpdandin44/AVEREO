@@ -5,3 +5,7 @@ frontend/.env*.local
 frontend/dist/
 frontend/node_modules/
 local/revue/environnements/
+
+# T-09 : copies communes à versionner pour Vision (exception aux exclusions racine).
+!frontend/public/account-menu.js
+!frontend/public/assets/avereo-logo.png

@@ -26,6 +26,7 @@ return [
     'admin_user_ids' => [],
 
     // Mode « connect » : secret partagé avec CONNECT (au moins 32 caractères) et dossier des nonces à usage unique.
+    'connect_portal_url' => 'http://127.0.0.1:5250/revue',
     'connect_launch_secret' => '__VISION_LAUNCH_SECRET__',
     'connect_launch_nonce_directory' => '/var/lib/avereo/vision/nonces',
     'connect_gate_cookie' => 'AVEREO_VISION_GATE',

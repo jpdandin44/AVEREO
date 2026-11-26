@@ -130,3 +130,11 @@ Arrondi d'affichage : surfaces et volumes à 2 décimales, longueurs au centimè
 
 ## Exigences de livraison T-08
 Contrat : [brief T-08](codex/briefs/T-08-deploiement-automatise.md). Implémentation : workflow racine `deploy-vision-o2switch.yml`, scripts `deploiement/`, tests `deploiement/*.test.mjs` et `tests/api/deploiement_test.php`. Préparation locale seulement ; qualification PHP 8.3/MySQL 8.4 et hébergement encore À VÉRIFIER. Résultats : [preuves locales](deploiement-automatise-verification.md).
+
+## R49 — Menu commun et reconnexion (Lot 2D)
+
+Exigence liée à R02/R08 : bouton « Se reconnecter » vers le portail configuré avec `?app=vision`, menu commun avec Mes projets, Mon compte, Mes applications et déconnexion. Aucun effacement local ; durée fixe de session conservée à 30 minutes.
+
+Terminé quand : le portail est validé et exposé seul dans auth 200/401, un 401 pendant le relevé affiche le bandeau sans interrompre la saisie, la reconnexion avec le même compte reprend la file, les copies du menu/logo et le précache sont vérifiés. Tests : `config_test.php`, `compte_test.php`, `deploiement_test.php`, `reconnexion.test.mjs`, `sync-moteur.test.mjs`, `pwa.test.mjs`. Implémentation locale ; qualification mobile et hébergée restante.
+
+À VÉRIFIER : Android installé et iPhone installé (cookies séparés de Safari), sortie vers CONNECT puis retour Vision. Le mode mémoire ne garantit pas les données après navigation : avertissement explicite avant reconnexion.

@@ -2,6 +2,20 @@
   "source": "architecture-v1/avereo-platform/shared/account-menu.js",
   "applications": [
     {
+      "id": "vision",
+      "publicDirectories": [
+        "architecture-v1/avereo-app-vision/frontend/public"
+      ],
+      "surface": "Bandeau supérieur et compte en bas à gauche",
+      "capabilities": [
+        "projects",
+        "account",
+        "applications",
+        "logout"
+      ],
+      "workspaceScope": "Projets de relevé synchronisés ; relevés en cours dans ce navigateur"
+    },
+    {
       "id": "connect",
       "publicDirectories": [
         "architecture-v1/avereo-app-connect/backend/public",

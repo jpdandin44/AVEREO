@@ -25,6 +25,8 @@ npm run build
 cd ..
 find frontend/dist -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 token="$(php -r '$c=require getenv("AVEREO_CONFIG_FILE"); echo $c["api_token"];')"
+# Menu commun « Mon compte » : copies exactes dans le livrable (contrôle partagé du dépôt).
+node ../../.github/scripts/check-account-menu.mjs vision
 digest="$(VITE_LOCAL_API_TOKEN="$token" node deploiement/valider-paquet.mjs frontend/dist)"
 echo "SHA-256 du paquet : $digest"
 if [ -n "${GITHUB_OUTPUT:-}" ]; then echo "sha256=$digest" >> "$GITHUB_OUTPUT"; fi

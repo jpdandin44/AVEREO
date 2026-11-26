@@ -283,3 +283,9 @@ curl.exe -sI https://vision-preprod.avereo.fr/ | findstr /i "nosniff referrer x-
 
 ## État de l'automatisation
 Le code T-08 est préparé ; voir [Déploiement automatisé](#déploiement-automatisé) et [preuves locales](deploiement-automatise-verification.md). Aucune livraison ni modification GitHub ou serveur n'a été effectuée par ce lot.
+
+## Prérequis T-09 avant le prochain déploiement
+
+Ajouter dans la configuration privée `connect_portal_url` : `https://connect-preprod.avereo.fr` en préproduction. En production, renseigner le portail CONNECT de production confirmé. Clé obligatoire en mode CONNECT hors local, HTTPS sur `avereo.fr` ou un sous-domaine, sans identifiants, requête ni fragment. Le contrôle `deploiement/verifier-prive.php` refuse son absence ou son invalidité sur les deux cibles. Aucun secret ni réglage hébergé modifié par T-09.
+
+`auth.php` (200 et 401 via `vision_require_identity`) expose uniquement cette adresse sous `connect_portal`, sans slash final. Ce choix réutilise la vérification de session déjà nécessaire et évite un point d’accès supplémentaire. GET `/connect/logout.php` expire le cookie Vision puis redirige comme Rapport vers CONNECT `/?logout=1` ; aucune donnée locale supprimée.

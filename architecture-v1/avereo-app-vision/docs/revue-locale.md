@@ -1,3 +1,15 @@
+---
+project: avereo-app-vision
+document_type: procedure
+title: Recette locale de Vision
+status: active
+version: git
+created: 2026-11-26
+updated: 2026-11-26
+owner: jpdandin
+tags: [vision, compte, reconnexion]
+---
+
 # Recette locale et validation en préproduction — AVEREO Vision
 
 Mis en place le 25/11/2026 (décision du responsable, précisée le même jour). Objectif : **voir l'avancement des fonctions dans un navigateur**, sans lire le code.
@@ -56,3 +68,15 @@ powershell -ExecutionPolicy Bypass -File .\local\vision-revue.ps1 down
 - Cible : `https://vision-preprod.avereo.fr/` (sous-domaine confirmé le 24/11/2026), hébergement mutualisé O2Switch comme Rapport, ouverte depuis le catalogue de **CONNECT préproduction** avec un compte de recette habilité (accès réservé compte par compte).
 - **État au 25/11/2026 : pas encore installée.** Procédure : `docs/deploiement-mutualise.md` (sous-domaine, base à deux comptes, configuration privée, migrations 001 et 002, dépôt de `dist/`, livraison préalable du code CONNECT de la PR #196 en préproduction, catalogue et habilitations). Chaque étape sur l'hébergement et sur CONNECT demande l'accord explicite du responsable.
 - Le passage en validation suit le protocole : contrôles locaux et recette réussis sur le candidat, cible isolée prête, accord de préproduction ; la version installée (commit, empreinte de l'archive) est reliée dans la PR.
+
+## Recette T-09 — compte et expiration
+
+1. Pour une nouvelle pile, `vision-revue.ps1` configure le portail à `http://127.0.0.1:<port>/revue`. Pour une pile existante, ajouter cette clé dans sa configuration locale, sans reset de ses données ni rotation de secret.
+2. Entrer comme A. Vérifier le menu commun : Mes projets ramène à la liste sans démonter le relevé ; Mon compte/Mes applications renvoient vers le portail local (la page de revue joue le rôle de CONNECT et affiche les comptes, sans simuler ses API).
+3. Enregistrer un relevé, retirer seulement le cookie de passerelle via les outils du navigateur, poursuivre la saisie et lancer la synchronisation : bandeau non bloquant « Connexion requise », bouton Se reconnecter. La file locale reste présente.
+4. Se reconnecter : `/revue?app=vision` présente les comptes ; choisir A émet un nouveau ticket, revient par entry.php et reprend les envois. Répéter en choisissant B : aucune donnée de A envoyée sous B (`identity_changed` et bases cloisonnées).
+5. Recharger sans cookie : écran Connexion requise avec le même bouton. Sans portail connu, le message de lancement depuis CONNECT reste affiché.
+6. Se déconnecter via le menu : expiration du seul cookie Vision, retour `/revue/?logout=1`, données locales conservées. En local cette page affiche les comptes ; elle ne ferme aucune session CONNECT réelle.
+7. Couper le réseau après chargement : le menu et son logo sont précachés ; les routes `/connect/` restent réseau uniquement.
+
+À VÉRIFIER sur Android et iPhone installés : navigation hors périmètre, retour dans Vision et continuité du compte. Recette interactive non attestée par les tests unitaires.

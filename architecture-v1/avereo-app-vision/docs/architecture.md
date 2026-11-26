@@ -149,3 +149,7 @@ Identifiants : UUID générés côté client (utile hors ligne). Longueurs en **
 
 ## Livraison automatisée (T-08)
 Le workflow GitHub Actions de Vision et les scripts `deploiement/` préparent la livraison PHP/MySQL sur O2Switch ; les traitements 3D restent séparés. Configuration privée hors racine web, SSH pour les migrations avec compte distinct, SSH (rsync) pour la sauvegarde et le paquet, `.well-known/` et `cgi-bin/` protégés. PR : tests et build sans secret (`ci-vision.yml`). Dispatch : préproduction ou production après contrôle de cible et qualification du même SHA. Procédure et limites : [déploiement mutualisé](deploiement-mutualise.md#déploiement-automatisé). Aucune cible hébergée n'a été qualifiée par T-08.
+
+## Compte et reconnexion (T-09)
+
+Le frontend servi à la racine réutilise le menu commun AVEREO, copié via le manifeste des applications. L’API expose le seul portail public configuré via auth 200/401. Le signal de synchronisation `reconnexion` alimente un bandeau sans démonter la saisie. La route GET `/connect/logout.php` expire le cookie Vision avant retour à CONNECT, sans effacement local. La durée de session reste fixe à 1800 secondes. Voir [choix, tests et limites du lot](compte-reconnexion-verification.md).

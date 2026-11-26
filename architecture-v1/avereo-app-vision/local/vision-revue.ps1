@@ -113,13 +113,14 @@ return [
     'auth_mode' => 'connect',
     'db' => ['host' => 'db', 'port' => 3306, 'name' => 'vision', 'user' => 'vision', 'password' => '__DB_PASSWORD__'],
     'admin_user_ids' => ['900009'],
+    'connect_portal_url' => 'http://127.0.0.1:__REVUE_PORT__/revue',
     'connect_launch_secret' => '__LAUNCH_SECRET__',
     'connect_launch_nonce_directory' => '/var/lib/avereo/vision/nonces',
     'connect_gate_cookie' => '__GATE_COOKIE__',
     'connect_gate_session_seconds' => 1800,
 ];
 '@
-        $config = $config.Replace('__DB_PASSWORD__', $values.VISION_DB_PASSWORD).Replace('__LAUNCH_SECRET__', $secret).Replace('__GATE_COOKIE__', $cookie)
+        $config = $config.Replace('__REVUE_PORT__', [string]$Settings.Port).Replace('__DB_PASSWORD__', $values.VISION_DB_PASSWORD).Replace('__LAUNCH_SECRET__', $secret).Replace('__GATE_COOKIE__', $cookie)
         [IO.File]::WriteAllText($Settings.ConfigFile, $config, $Utf8)
         Write-Host "Configuration locale créée pour $($Settings.Nom) (secrets ignorés par Git)."
     }

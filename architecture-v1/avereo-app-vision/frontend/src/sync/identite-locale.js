@@ -12,10 +12,10 @@ export function lireIdentiteConnue(stockage = globalThis.localStorage) {
   }
 }
 
-/** @param {{provider: string, id: string, role?: string, modeAuth?: string}} identite */
+/** @param {{provider: string, id: string, role?: string, modeAuth?: string, connectPortal?: string}} identite */
 export function memoriserIdentite(identite, stockage = globalThis.localStorage) {
   try {
-    stockage?.setItem(CLE, JSON.stringify({ provider: identite.provider, id: identite.id, role: identite.role, modeAuth: identite.modeAuth }));
+    stockage?.setItem(CLE, JSON.stringify({ provider: identite.provider, id: identite.id, role: identite.role, modeAuth: identite.modeAuth, connectPortal: identite.connectPortal }));
   } catch {
     /* navigation privée : on s'en passe */
   }
