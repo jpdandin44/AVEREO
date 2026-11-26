@@ -70,7 +70,8 @@ jobs:
       PRIVATE_DIR: ${{ inputs.cible == 'production' && '.avereo/vision' || '.avereo/vision-preprod' }}
       O2SWITCH_HOST: ${{ secrets.O2SWITCH_HOST }}
       O2SWITCH_USER: ${{ secrets.O2SWITCH_USER }}
-      O2SWITCH_PORT: ${{ secrets.O2SWITCH_PORT || '8888' }}
+      # O2Switch reçoit le SSH sur le port 22 (constat du 26/11/2026) ; le secret partagé O2SWITCH_PORT vaut 8888.
+      O2SWITCH_PORT: '22'
     services:
       mysql:
         image: mysql:8.4
@@ -136,8 +137,7 @@ jobs:
         run: |
           set -euo pipefail
           echo 'WHITELIST_ATTEMPTED=1' >> "$GITHUB_ENV"
-          bash .github/scripts/cpanel-ssh-whitelist.sh add
-          bash .github/scripts/cpanel-ssh-whitelist.sh list
+          bash architecture-v1/avereo-app-vision/deploiement/autoriser-ssh.sh add
       - uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.O2SWITCH_SSH_KEY }}
@@ -147,7 +147,13 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p ~/.ssh
-          ssh-keyscan -T 20 -p "$O2SWITCH_PORT" "$O2SWITCH_HOST" >> ~/.ssh/known_hosts
+          # L'autorisation peut mettre un moment à s'appliquer au pare-feu : jusqu'à 3 minutes d'essais.
+          for essai in $(seq 1 12); do
+            if ssh-keyscan -T 15 -p "$O2SWITCH_PORT" "$O2SWITCH_HOST" > "$RUNNER_TEMP/cle-hote" 2>/dev/null && [ -s "$RUNNER_TEMP/cle-hote" ]; then break; fi
+            echo "Port SSH pas encore joignable (essai $essai/12)."; sleep 15
+          done
+          [ -s "$RUNNER_TEMP/cle-hote" ] || { echo 'Port SSH injoignable depuis le runner.' >&2; exit 1; }
+          cat "$RUNNER_TEMP/cle-hote" >> ~/.ssh/known_hosts
           ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=30 -p "$O2SWITCH_PORT" "$O2SWITCH_USER@$O2SWITCH_HOST" \
             "php /dev/stdin \"\$HOME/$PRIVATE_DIR\" '$CIBLE'" < architecture-v1/avereo-app-vision/deploiement/verifier-prive.php
       - name: Appliquer les migrations avec un compte séparé
@@ -213,4 +219,4 @@ jobs:
           CPANEL_API_TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
           CPANEL_SERVER: ${{ secrets.CPANEL_SERVER }}
           RUNNER_IPV4: ${{ steps.runner-ip.outputs.ipv4 }}
-        run: bash .github/scripts/cpanel-ssh-whitelist.sh remove
+        run: bash architecture-v1/avereo-app-vision/deploiement/autoriser-ssh.sh remove
