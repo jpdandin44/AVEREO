@@ -25,6 +25,7 @@
   "currentPhase": 0,
   "checks": [],
   "proofs": [
+    {"id": "t08-deploiement-automatise-20261126", "phaseId": 1, "title": "T-08 : préparation locale du workflow, aucune exécution distante", "kind": "reference_document", "status": "partially_verified", "evidence": "docs/deploiement-automatise-verification.md", "observedAt": "2026-11-26"},
     {"id": "revue-locale-20261125", "phaseId": 1, "title": "Recette locale (candidat de PR, http://127.0.0.1:5250/revue/, comptes fictifs par la vraie passerelle CONNECT) ; validation = préproduction (https://vision-preprod.avereo.fr/, non installée)", "kind": "reference_document", "status": "reviewable", "evidence": "docs/revue-locale.md", "observedAt": "2026-11-25"},
     {"id": "etude-outils-20261120", "phaseId": 0, "title": "Étude des outils open source du 20/11/2026", "kind": "reference_document", "status": "reviewable", "evidence": "docs/etude-outils-resume.md", "observedAt": "2026-11-20"},
     {"id": "lot0-exigences-20261123", "phaseId": 0, "title": "Lot 0 — Exigences R01 à R48", "kind": "reference_document", "status": "reviewable", "evidence": "docs/exigences.md", "observedAt": "2026-11-23"},
@@ -83,5 +84,6 @@
   "github": {"prUrl": "https://github.com/jpdandin44/AVEREO/pull/195"},
   "registryIntegration": "registered_on_worktree", "registryNote": "Inscrit le 23/11/2026 dans cockpit-portefeuille-sources.json (entrée vision-v1) ; repointé le 24/11/2026 vers le worktree C:/Users/examg/Documents local/avereo-vision-lot1 (branche de suivi vision/lot-1-suivi-caniuse), à repointer vers le clone principal une fois à jour.",
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},
+  "automationT08": {"branch": "vision/deploiement-auto", "phase": "Développement local", "status": "qualification_incomplete", "nextAction": "Vérification stricte PHP 8.3/MySQL 8.4 sur GitHub après publication autorisée ; qualification hébergée séparée.", "approvals": []},
   "documentation": "docs/plan-lots.md"
 }

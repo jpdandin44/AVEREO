@@ -1,6 +1,18 @@
+---
+project: avereo-app-vision
+document_type: procedure
+title: Déploiement mutualisé de Vision
+status: active
+version: git
+created: 2026-11-26
+updated: 2026-11-26
+owner: jpdandin
+tags: [vision, deploiement]
+---
+
 # Mise en ligne d'AVEREO Vision en préproduction (hébergement mutualisé O2Switch / cPanel)
 
-Procédure du 24/11/2026, établie d'après `avereo-app-rapport/docs/deployment.md`, `rollback.md`, `preproduction-connect-cutover.md` et `avereo-app-connect/docs/{catalogue-services,application-gateway}.md`. **Elle décrit des opérations sur l'hébergement et sur la base de CONNECT. Chaque étape marquée [responsable] est faite par toi, ou par Claude Code dans ta session cPanel avec ton accord explicite pour cette étape ; jamais de mot de passe saisi par Claude Code.** Aucun workflow GitHub de déploiement n'existe pour Vision : cette première mise en ligne est **manuelle** (voir « Automatiser plus tard »).
+Procédure du 24/11/2026, établie d'après `avereo-app-rapport/docs/deployment.md`, `rollback.md`, `preproduction-connect-cutover.md` et `avereo-app-connect/docs/{catalogue-services,application-gateway}.md`. **Elle décrit des opérations sur l'hébergement et sur la base de CONNECT. Chaque étape marquée [responsable] est faite par toi, ou par Claude Code dans ta session cPanel avec ton accord explicite pour cette étape ; jamais de mot de passe saisi par Claude Code.** Le workflow `deploy-vision-o2switch.yml` est préparé par T-08 ; sa qualification GitHub et hébergée reste à réaliser. La procédure manuelle est conservée comme secours.
 
 Périmètre : **préproduction uniquement** (`vision-preprod.avereo.fr`, nom confirmé par le responsable le 24/11/2026). La production suit la même procédure avec les noms `vision` / `vision.avereo.fr`, après qualification de la préproduction et décision séparée.
 
@@ -74,6 +86,38 @@ Règles :
 - Le mot de passe MySQL des migrations n'est **pas** dans ce fichier (voir l'étape 3).
 
 ## 3. Base de données : migrations [responsable]
+### Déploiement automatisé
+
+Le workflow couvre les étapes 3, 4 et 6 : tests PHP 8.3/MySQL 8.4 et Node 20.19, build, validation du paquet, migrations privées SSH, sauvegarde, publication FTPS et contrôles publics HTTPS. L'étape 5 CONNECT reste séparée.
+
+Préparation unique par le responsable :
+
+- Créer les environnements GitHub `vision-preprod` et `vision`, vérifier leurs protections et branches autorisées. Leur existence n'a pas été contrôlée par T-08.
+- Saisir `VISION_DB_MIGRATION_USER` et `VISION_DB_MIGRATION_PASSWORD` dans chaque environnement (compte propre à la base cible). Commandes : `gh secret set VISION_DB_MIGRATION_USER --env vision-preprod` et `gh secret set VISION_DB_MIGRATION_PASSWORD --env vision-preprod`, avec saisie protégée ; refaire avec `--env vision`. Les secrets communs restent ceux du brief T-08, sans valeur dans le dépôt.
+- Compléter la configuration privée de l'étape 2 : environnement exact, permissions 600, `nonces/`, paramètres application et CONNECT. Obtenir un certificat HTTPS valide.
+- Créer manuellement la production : domaine `vision.avereo.fr`, racine dédiée, base `daje3540_vision`, comptes application et migrations, `.avereo/vision/config.php` et `nonces/`. Le workflow ne crée pas ces ressources.
+
+Commandes futures, depuis la racine du dépôt, après autorisation pour la cible et le candidat :
+
+```bash
+gh workflow run deploy-vision-o2switch.yml --ref <branche> -f cible=preproduction
+gh run list --workflow deploy-vision-o2switch.yml
+gh run watch <identifiant-run> --exit-status
+# Après qualification de ce même SHA en préproduction :
+gh workflow run deploy-vision-o2switch.yml --ref main -f cible=production -f confirmation="DEPLOYER VISION EN PRODUCTION"
+```
+
+`migrations` est vrai par défaut ; `-f migrations=false` les omet explicitement. La production exige `refs/heads/main`, la confirmation exacte et un déploiement réussi de l'environnement `vision-preprod` sur ce même SHA, vérifié par l'API GitHub. Un merge qui change le SHA impose de qualifier le commit résultant en préproduction. Le workflow doit exister sur la branche par défaut pour permettre `workflow_dispatch`. Aucun dispatch n'a été exécuté par T-08.
+
+Les PR exécutent seulement tests et build, sans environnement ni secret. Le runner Ubuntu utilise une base jetable MySQL 8.4, une configuration locale temporaire et un jeton aléatoire. Le mot de passe MySQL fixe de CI n'est utilisé que dans ce service jetable. Le serveur PHP est lancé via sudo en boucle locale au port 80 attendu par les tests. Les scripts sont sous `deploiement/`. Le jeton est recherché dans tous les fichiers du paquet. L'empreinte déterministe SHA-256 représente les noms triés, tailles et octets des fichiers, pas une archive ZIP.
+
+Retour arrière : télécharger l'artefact `vision-<cible>-before-<run_id>-<run_attempt>` (30 jours), examiner puis restaurer son contenu dans la racine dédiée avec l'accord applicable. Retirer `candidat-livre-sha.txt`, métadonnée du run : elle donne le SHA du candidat livré par ce run, pas celui de la version sauvegardée, et ne doit pas être publiée. Une racine initialement vide ne produit que cette métadonnée. Un commit antérieur peut être redéployé depuis une branche en préproduction ; en production, préparer un revert sur `main`, qualifier son nouveau SHA en préproduction, puis relancer le workflow. Le retour arrière applicatif conserve la configuration privée et les données ; il n'annule pas les migrations. Exporter la base avant toute migration ultérieure.
+
+Limites : FTPS supprime les fichiers distants absents du paquet, n'est pas atomique et ne garantit pas `index.html` en dernier. La racine reste exclusivement consacrée à Vision. `verify-public-spa.sh` n'est pas appelé car son repli TLS non vérifié est incompatible avec ce brief. Les contrôles Vision échouent sur certificat invalide. SSH utilise `StrictHostKeyChecking=yes` et `ssh-keyscan` ; l'empreinte de la clé collectée n'est pas vérifiée par un canal indépendant. Les outils et la configuration temporaire de migration sont supprimés par trap distant, avec nettoyage côté runner également ; une panne SSH complète peut empêcher ce dernier : contrôler les dossiers privés `outils-<run_id>-<run_attempt>` après incident.
+
+**À VÉRIFIER** : PHP 8.3/MySQL 8.4 strict sur GitHub, délais SSH depuis le runner, API cPanel et retrait de liste blanche, AutoSSL, secrets et protections, production initialisée, restauration réelle, CONNECT et essais PWA mobiles. Voir [preuves locales T-08](deploiement-automatise-verification.md).
+
+### Procédure manuelle de secours
 Variante A (SSH disponible, recommandée). `migrate.php` lit la **même configuration que l'application** ; or le compte de l'application n'a pas le droit de créer des tables. On lui donne donc, le temps de la migration, un fichier de configuration temporaire qui porte le **compte de migrations** :
 1. Créer `/home/COMPTE/.avereo/vision-preprod/outils/` (hors racine web) avec **exactement** cette arborescence, le script chargeant `../frontend/public/api/lib/config.php` :
    ```text
@@ -99,6 +143,9 @@ Variante B (sans SSH) : dans phpMyAdmin, onglet SQL sur `COMPTE_visionpp`, colle
 Contrôle : les tables `vision_projects`, `vision_project_counters`, `vision_objects` et `vision_sync_log` existent, vides. Le compte de l'application n'a besoin que de SELECT, INSERT, UPDATE (aucune suppression physique : la synchronisation fait des suppressions logiques).
 
 ## 4. Construire et déposer l'application [responsable, avec une préparation par Claude possible]
+### Déploiement automatisé
+Utiliser le workflow et les commandes de la [section automatisée](#déploiement-automatisé). Les étapes suivantes restent le secours manuel.
+
 ### 4.1 Construire (poste de travail, depuis un clone à jour de `main`)
 ```powershell
 cd architecture-v1\avereo-app-vision\frontend
@@ -106,11 +153,12 @@ npm ci
 npm test
 npm run build
 ```
-Contrôler le résultat (`dist/`), qui doit contenir **exactement** :
+Contrôler le résultat (`dist/`), qui doit notamment contenir :
 - `index.html`, `assets/` (JS, CSS, polices), `branding/` ;
 - `.htaccess` (racine), `api/.htaccess`, `api/lib/.htaccess` (fichiers cachés : les afficher) ;
 - `api/{auth,bootstrap,health,logout,projects}.php`, `api/lib/{auth,config,connect_gate,db,droits,http,projects}.php` ;
 - `connect/entry.php`.
+- `sw.js`, `manifest.webmanifest`, `icons/` et les fichiers Workbox générés ; `api/sync.php` et `api/lib/sync.php` depuis le Lot 2B.
 
 Contrôles à lancer sur `dist/` :
 ```powershell
@@ -121,7 +169,7 @@ Select-String -Path dist\assets\*.js -Pattern 'VITE_LOCAL_API_TOKEN' -SimpleMatc
 $jeton = (Select-String -Path .env.development.local -Pattern '^VITE_LOCAL_API_TOKEN=(.+)$').Matches[0].Groups[1].Value
 Select-String -Path dist\assets\*.js -Pattern $jeton -SimpleMatch
 ```
-Attendu : aucun fichier `.env`, `config.php`, `local/` ni `tests/` ; `php -l` sans erreur ; les deux recherches de jeton ne trouvent **rien** (le texte « Bearer » seul n'est pas une fuite : il est présent dans le client d'API). Si `.env.development.local` n'existe pas sur le poste, la deuxième recherche est sans objet. Noter l'empreinte de l'archive pour la trace :
+Attendu : aucun fichier `.env`, aucun `config.php` hors `api/lib/config.php` (chargeur de configuration, sans secret), aucun dossier `local/`, `revue/` ni `tests/` ; `php -l` sans erreur ; les deux recherches de jeton ne trouvent **rien** (le texte « Bearer » seul n'est pas une fuite : il est présent dans le client d'API). Si `.env.development.local` n'existe pas sur le poste, la deuxième recherche est sans objet. Noter l'empreinte de l'archive pour la trace :
 ```powershell
 Compress-Archive -Path (Get-ChildItem dist -Force).FullName -DestinationPath vision-dist.zip -Force
 Get-FileHash vision-dist.zip -Algorithm SHA256
@@ -163,6 +211,9 @@ Ces opérations touchent des comptes et des droits réels. À faire sur **CONNEC
 3. **Qui verra la carte (décision du 24/11/2026 : restreindre compte par compte).** L'habilitation de l'étape 5.2 est attribuée à l'**organisation** ; CONNECT distingue ensuite deux types de comptes (colonne `users.application_access_mode`, `user_application_access`) : (a) les comptes en mode **`explicit`** (ceux créés par l'invitation de l'administration) ne voient que les applications cochées pour eux : il suffit de **cocher « AVEREO Vision » sur les seuls comptes de recette** ; (b) les comptes en mode **`inherit`** (comptes historiques) héritent de toutes les habilitations de l'organisation et **verront donc la carte dès l'étape 5.2**. Avant de confirmer l'étape 5.2 : dans l'administration des comptes de CONNECT, lister les comptes en mode `inherit` (**À VÉRIFIER** : l'écran qui l'affiche) et décider pour chacun : l'accepter, ou le passer en mode explicite avec ses applications actuelles cochées. En cas de doute, ne confirmer l'étape 5.2 qu'avec le statut `--status=draft` (carte invisible pour tous) et passer à `active` seulement quand la liste est maîtrisée.
 
 ## 6. Contrôles de passage
+### Déploiement automatisé
+Le workflow appelle `deploiement/verifier-public.mjs` : HTTPS vérifié, page Vite, PWA et cache, santé JSON, refus anonymes et protection des bibliothèques, en-têtes et redirection HTTP. Ces contrôles techniques ne remplacent pas les parcours humains ci-dessous.
+
 Lancer depuis le poste (remplacer l'hôte si besoin). Aucun ne demande d'identifiant.
 ```powershell
 curl.exe -s -o NUL -w "%{http_code} %{redirect_url}\n" http://vision-preprod.avereo.fr/
@@ -218,5 +269,5 @@ curl.exe -sI https://vision-preprod.avereo.fr/ | findstr /i "nosniff referrer x-
 - **Compression, cache et en-têtes** : non réglés ; le fichier `.htaccess` ne fixe que l'HTTPS et trois en-têtes simples. Pas de `Strict-Transport-Security` : à décider avec la production.
 - **PWA (Lot 2C)** : l'installation sur l'écran d'accueil et la réouverture sans réseau exigent HTTPS ; leurs essais sur Android et iPhone (R04, R09) se font sur cette préproduction, une fois le certificat émis.
 
-## Automatiser plus tard
-Un workflow `deploy-vision-o2switch.yml` calqué sur `deploy-rapport-o2switch.yml` (déclenchement manuel depuis `main`, build, validation de l'archive, sauvegarde FTPS de l'existant, déploiement FTPS, vérifications) modifie `.github/` et utilise des secrets GitHub : **PR séparée, avec ton accord**. Les contrôles de l'étape 6 (adaptés) en seraient la dernière étape.
+## État de l'automatisation
+Le code T-08 est préparé ; voir [Déploiement automatisé](#déploiement-automatisé) et [preuves locales](deploiement-automatise-verification.md). Aucune livraison ni modification GitHub ou serveur n'a été effectuée par ce lot.

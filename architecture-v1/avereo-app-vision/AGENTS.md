@@ -1,3 +1,15 @@
+---
+project: avereo-app-vision
+document_type: agent-instructions
+title: Règles de développement de Vision
+status: active
+version: git
+created: 2026-11-26
+updated: 2026-11-26
+owner: jpdandin
+tags: [vision, deploiement]
+---
+
 # AGENTS.md — AVEREO Vision : relevé, métré et modélisation 2D/3D AVEREO
 
 ## Ce qu'est cette application
@@ -30,6 +42,7 @@ Le document complet est dans docs/charte/Charte_graphique_AVEREO_V2.0.pdf. Les r
 - Chaque dépendance ajoutée est inscrite dans docs/licences.md : nom, version, licence, usage.
 
 ## Stack et hébergement
+- Déploiement automatisé (après autorisation, `docs/deploiement-mutualise.md`) : `gh workflow run deploy-vision-o2switch.yml --ref <branche> -f cible=preproduction` ; `gh workflow run deploy-vision-o2switch.yml --ref main -f cible=production -f confirmation="DEPLOYER VISION EN PRODUCTION"`.
 - Front-end : React + Vite. API et stockage : PHP + MySQL. C'est la stack de l'application Rapport du même dépôt (architecture-v1/avereo-app-rapport/) : lis son AGENTS.md et reprends ses conventions de structure et de configuration.
 - Les traitements lourds (reconstruction 3D à partir d'une vidéo) tournent dans un service de traitement séparé, en conteneur dédié sur le serveur OVH d'AVEREO. Tu ne connais pas les caractéristiques de ce serveur : indique les ressources nécessaires (CPU, GPU, mémoire, disque) et marque « À VÉRIFIER » leur adéquation. Ce service n'est mis en place qu'après ma validation de l'ADR.
 - Moteurs open source retenus : voir docs/adr/. Tout changement de moteur passe par un nouvel ADR que je valide.
