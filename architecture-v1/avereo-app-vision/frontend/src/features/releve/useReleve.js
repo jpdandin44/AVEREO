@@ -18,7 +18,6 @@ import {
   creerPieceRectangulaire,
   remplacerNiveau,
   remplacerPiece,
-  supprimerPiece,
   translaterPiece,
 } from "../../domain/modele.js";
 import { calculerMetres, calculerMetresNiveau } from "../../domain/metres.js";
@@ -48,9 +47,17 @@ function niveauCourant(batiment, niveauId) {
   return batiment.niveaux.find((n) => n.id === niveauId) ?? batiment.niveaux[0];
 }
 
-function reducteur(etat, action) {
+export function reducteur(etat, action) {
   const batiment = etat.historique.present;
   switch (action.type) {
+    case "valider-niveau": {
+      const avant = batiment.niveaux.find(n => n.id === action.niveauId);
+      if (!avant) return etat;
+      const nouveau = typeof action.niveau === "function" ? action.niveau(avant) : action.niveau;
+      return { ...etat, historique: valider(etat.historique, remplacerNiveau(batiment, nouveau)), apercu: null,
+        pieceId: action.niveauId === etat.niveauId && etat.pieceId && !nouveau.pieces.some(p => p.id === etat.pieceId)
+          ? nouveau.pieces[0]?.id ?? null : etat.pieceId };
+    }
     case "charger":
     case "importer": {
       // Relevé lu sur l'appareil, ou reçu d'un autre appareil : il remplace l'état affiché (l'historique repart de là).
@@ -244,12 +251,9 @@ export function useReleve(projetId, moteur) {
     [batiment, niveau, etat.numeroPiece],
   );
 
-  const supprimerPieceCourante = useCallback(() => {
-    if (!pieceEnregistree) return;
-    const reste = supprimerPiece(niveau, pieceEnregistree.id);
-    envoyer({ type: "valider-batiment", batiment: remplacerNiveau(batiment, reste) });
-    envoyer({ type: "choisir-piece", pieceId: reste.pieces[0]?.id ?? null });
-  }, [batiment, niveau, pieceEnregistree]);
+  const validerNiveau = useCallback((nouveauNiveau, niveauId = niveau.id) => {
+    envoyer({ type: "valider-niveau", niveau: nouveauNiveau, niveauId });
+  }, [niveau.id]);
 
   const creerNouveauNiveau = useCallback(() => {
     const numero = batiment.niveaux.length + 1;
@@ -274,7 +278,7 @@ export function useReleve(projetId, moteur) {
     creerNouveauNiveau,
     creerPieceRect,
     creerPieceDepuisSommets,
-    supprimerPieceCourante,
+    validerNiveau,
     validerPiece,
     previsualiserPiece,
     abandonnerApercu: () => envoyer({ type: "abandonner-apercu" }),

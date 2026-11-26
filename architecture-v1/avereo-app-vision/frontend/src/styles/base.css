@@ -398,3 +398,29 @@ h2 {
   gap: 4px;
   background: var(--alerte-fond);
 }
+
+/* Terrain : largeur réductible à 375 px, cibles des repères Konva de 48 px. */
+.terrain, .terrain-element {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.terrain .champ__saisie { width: 100%; min-width: var(--cible-min); }
+.terrain .bouton { white-space: normal; overflow-wrap: anywhere; }
+.terrain-cote { min-width: 0; margin: 0; border: 1px solid var(--gris-mineral); border-radius: var(--radius); padding: 12px; }
+.terrain-cote .bouton { margin-top: 8px; width: 100%; }
+.terrain-element { padding: 8px 0; border-bottom: 1px solid var(--gris-mineral); }
+.terrain-photo { flex-direction: column; padding: 8px; }
+.terrain-miniature { display: block; max-width: 100%; width: 100%; height: 120px; object-fit: contain; }
+.terrain-dialogue { width: min(720px, calc(100% - 24px)); max-height: calc(100dvh - 24px); overflow: auto; padding: 16px; border: 2px solid var(--brand-primary); border-radius: var(--radius); background: var(--surface); color: var(--text-primary); overflow-wrap: anywhere; }
+.terrain-dialogue .terrain-miniature { height: auto; max-height: 65dvh; }
+.terrain-dialogue .bouton { display: flex; width: 100%; margin-top: 12px; }
+.terrain-dialogue h2 { margin-bottom: 12px; }
+.champ { min-width: 0; }
+.champ__saisie { width: 100%; min-width: var(--cible-min); }
+@media (max-width: 640px) {
+  .grille-champs { grid-template-columns: minmax(0, 1fr); }
+  .terrain .bouton { width: 100%; }
+}

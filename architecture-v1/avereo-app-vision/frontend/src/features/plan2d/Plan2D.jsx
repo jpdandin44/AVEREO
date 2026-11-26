@@ -2,11 +2,12 @@
 // poser et glisser les ouvertures, cotes affichées, aimantation. Toutes les coordonnées du modèle sont en mm ;
 // le canvas travaille en pixels (px = mm × échelle).
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Circle, Layer, Line, Stage, Text } from "react-konva";
+import { Circle, Group, Rect, Layer, Line, Stage, Text } from "react-konva";
 import Encadre from "../../components/Encadre.jsx";
 import Icone from "../../components/Icone.jsx";
 import { aireMm2, estAutoSecant, projeterSurSegment } from "../../domain/geometrie.js";
-import { deplacerSommet, insererSommet, supprimerSommet } from "../../domain/modele.js";
+import { deplacerSommet } from "../../domain/modele.js";
+import { positionCommentaire } from "../../domain/terrain.js";
 import { formaterLongueurMm, formaterSurface } from "../../domain/unites.js";
 import { aimanter } from "./aimantation.js";
 import { centreOuverture, deplacerOuverture } from "./glisserOuverture.js";
@@ -65,6 +66,10 @@ export default function Plan2D({
   onApercu,
   onValider,
   onCreerDepuisSommets,
+  onSupprimerSommet,
+  onInsererSommet,
+  onSelectionTerrain,
+  onDeplacerRepere,
 }) {
   const conteneur = useRef(null);
   const scene = useRef(null);
@@ -198,13 +203,7 @@ export default function Plan2D({
   }
 
   function retirerSommet(index) {
-    const r = supprimerSommet(piece, index);
-    if (r.ok) {
-      onValider(r.piece);
-      setMessage(null);
-    } else {
-      setMessage(r.message);
-    }
+    onSupprimerSommet(index);
   }
 
   function ajouterSommet(murIndex) {
@@ -212,13 +211,7 @@ export default function Plan2D({
     const a = piece.sommets[murIndex];
     const b = piece.sommets[(murIndex + 1) % piece.sommets.length];
     const t = brut ? projeterSurSegment(brut, a, b).t : 0.5;
-    const r = insererSommet(piece, murIndex, Math.min(0.95, Math.max(0.05, t)));
-    if (r.ok) {
-      onValider(r.piece);
-      setMessage(null);
-    } else {
-      setMessage(r.message);
-    }
+    onInsererSommet(murIndex, Math.min(0.95, Math.max(0.05, t)));
   }
 
   // ----- glissement d'une ouverture le long de son mur -----
@@ -475,6 +468,23 @@ export default function Plan2D({
                 ))}
               </>
             )}
+
+            {jetons && mode === "selection" && [
+              ...(niveau.photos ?? []).map(p => ({ type: "photo", id: p.id, position: p, mobile: true })),
+              ...(niveau.commentaires ?? []).map(c => ({ type: "commentaire", id: c.id, position: positionCommentaire(niveau, c), mobile: c.cible.type === "point" })),
+            ].filter(r => r.position).map(r => <Group key={`${r.type}-${r.id}`} x={r.position.xMm * echelle} y={r.position.yMm * echelle}
+              draggable={r.mobile}
+              onClick={e => { e.cancelBubble = true; onSelectionTerrain({ type: r.type, id: r.id }); }}
+              onTap={e => { e.cancelBubble = true; onSelectionTerrain({ type: r.type, id: r.id }); }}
+              onDragStart={e => { e.cancelBubble = true; }}
+              onDragEnd={e => { e.cancelBubble = true; onDeplacerRepere(r.type, r.id, { xMm: e.target.x() / echelle, yMm: e.target.y() / echelle }); }}>
+              <Rect x={-24} y={-24} width={48} height={48} cornerRadius={8} fill={jetons.surface} stroke={jetons.primary} strokeWidth={2} />
+              {r.type === "photo" ? <>
+                <Rect x={-15} y={-10} width={30} height={22} cornerRadius={3} stroke={jetons.primary} strokeWidth={2} listening={false} />
+                <Circle radius={6} stroke={jetons.primary} strokeWidth={2} listening={false} />
+                <Line points={[-8, -10, -5, -15, 5, -15, 8, -10]} stroke={jetons.primary} strokeWidth={2} listening={false} />
+              </> : <Line points={[-14, -12, 14, -12, 14, 8, 0, 8, -9, 16, -9, 8, -14, 8]} closed stroke={jetons.primary} strokeWidth={2} listening={false} />}
+            </Group>)}
 
             {jetons && mode === "tracer" && (
               <>

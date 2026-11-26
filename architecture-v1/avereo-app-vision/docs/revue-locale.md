@@ -80,3 +80,18 @@ powershell -ExecutionPolicy Bypass -File .\local\vision-revue.ps1 down
 7. Couper le réseau après chargement : le menu et son logo sont précachés ; les routes `/connect/` restent réseau uniquement.
 
 À VÉRIFIER sur Android et iPhone installés : navigation hors périmètre, retour dans Vision et continuité du compte. Recette interactive non attestée par les tests unitaires.
+
+## Recette T-11 — interface terrain
+
+Scénario à exécuter sur le candidat `vision/lot-3a-terrain`, données fictives, puis sur 1 Android et 1 iPhone avec l’autorisation de la phase concernée. Non exécuté dans cette session ; l’accès automatisé au navigateur est indisponible.
+
+1. À 375 px : vérifier absence de défilement horizontal, cibles nouvelles ≥ 48 × 48 px et création rectangulaire en quatre champs.
+2. Créer une pièce 4 × 3 m, hauteur 2,50 m. Dans Cotes laser : mur 1 = 4,020 m (OK), mur 2 = 3,021 m (hors tolérance avec texte et icône). Contrôle hauteur 2,50 m, puis diagonale sommets 1 et 3 = 5,00 m. Effacer puis ressaisir une cote, annuler/rétablir.
+3. Prendre puis choisir une photo : miniature, date, pièce et état d’envoi. Sans pièce sélectionnée, placement au centre du niveau. Déplacer le repère sur le plan ; ouvrir et fermer la photo (Échap, focus restauré).
+4. Ajouter un commentaire à la pièce, au milieu d’un mur, à une photo (bouton Commenter cette photo) et à un point. Vérifier compteur, refus du texte blanc et plafond 500 caractères. Toucher la bulle, modifier, supprimer ; déplacer le point.
+5. Déplacer le mur : le commentaire suit sa position. Insérer un sommet par double-toucher : position conservée. Supprimer un sommet par double-toucher, une pièce ou une photo : essayer les trois choix « Supprimer aussi les N commentaires », « Les garder sur le plan » et « Annuler ». Vérifier les deux murs voisins, les autres indices et le refus d’un contour invalide.
+6. Après suppression photo, annuler : l’objet revient avec « Photo supprimée », sans échec de téléchargement visible comme erreur inattendue. Rétablir. Vérifier aussi les commentaires attachés à cette photo.
+7. Couper le réseau après ouverture : choisir une photo, ajouter un commentaire, modifier une cote ; vérifier l’affichage immédiat et les modifications après rechargement. Revenir en ligne : état « envoyée », objets et fichier consultables depuis un autre navigateur authentifié. Sans fichier local, une photo distante peut rester indisponible hors ligne.
+8. Simuler une image illisible et un stockage saturé : erreur claire, aucun objet photo ajouté si le fichier n’a pas été stocké. Une erreur d’envoi reste libellée, avec pictogramme.
+
+Le scénario n’autorise aucun déploiement ni connexion au serveur. Les tests PHP seront relancés par Claude Code.

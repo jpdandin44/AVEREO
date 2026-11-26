@@ -25,3 +25,7 @@ Les [preuves et limites](docs/deploiement-automatise-verification.md) distinguen
 ## 2026-11-26 — T-09, compte et reconnexion
 
 Portail CONNECT validé et public dans auth 200/401 ; bouton et bandeau de reconnexion, menu commun sans missions/préférences, déconnexion GET vers CONNECT. Copie exacte du composant et du logo. Configuration et recette locales adaptées, contrôle privé renforcé, tests ajoutés. Session inchangée (1800 s), aucune donnée locale supprimée. Voir R49 et la recette locale pour les réserves mobiles.
+
+## 2026-11-26 — T-11, interface terrain locale
+
+Cotes laser liées aux murs/sommets, capture et choix de photos, miniatures et dialogues, repères plan déplaçables, commentaires ciblés, suppression/détachement communs et insertion préservant les commentaires. Écritures par useReleve, fichier photo durable avant objet, états des médias et erreurs visibles. Tests Node de logique écran ; aucune dépendance, modification serveur ou déploiement. [Preuves et réserves](docs/terrain-interface-verification.md). Socle documentaire indexé par README sans duplication des sources existantes.

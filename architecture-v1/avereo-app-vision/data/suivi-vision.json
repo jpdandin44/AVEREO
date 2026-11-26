@@ -118,5 +118,15 @@
     "nextAction": "Claude Code : qualifier PHP 8.3/MySQL en mode strict, relire puis réaliser les écrans 3A et essais mobiles ; aucun déploiement autorisé par T-10.",
     "approvals": []
   },
+  "terrainT11": {
+    "branch": "vision/lot-3a-terrain",
+    "phase": "Développement local",
+    "status": "qualification_incomplete",
+    "workingTree": true,
+    "evidence": "docs/terrain-interface-verification.md",
+    "requirements": ["R13", "R17", "R36", "R37", "R38"],
+    "nextAction": "Relire le diff local, recette 375 px et essais Android/iPhone ; Claude Code relance PHP. Aucun accès serveur ni déploiement par T-11.",
+    "approvals": []
+  },
   "documentation": "docs/plan-lots.md"
 }

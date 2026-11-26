@@ -211,3 +211,7 @@ Découpage décidé le 26/11/2026 : **3A** (R13, R17, R36, R37, R38), puis **3B*
 ## Remarques de découpage (relecture Codex du Lot 0)
 - Les lots 1, 2 et 5 regroupent plusieurs capacités. Le contenu du lot 1 (plan 2D manuel, métrés, charte) est imposé par le message du Lot 0 ; ses tâches sont ordonnées pour que chacune soit démontrable seule. Au début de chaque lot, Claude Code propose, avec l'accord du responsable, de le couper en deux PR si un blocage (matériel, authentification) menace de bloquer des fonctions déjà vérifiables. Coupes envisagées : lot 2 en 2A (API, authentification, projets) et 2B (hors ligne, synchronisation, PWA) ; lot 5 en 5A (maquette 3D, glTF, OBJ) et 5B (partage par lien).
 - Cette coupe se décide au lancement du lot, pas maintenant : elle ne change ni les exigences couvertes ni les dépendances ci-dessus.
+
+## Reprise locale T-11 (26/11/2026)
+
+Le brief T-11 autorise explicitement l’interface 3A confiée à Codex, exception ciblée à la règle historique de délégation des écrans ci-dessus. Cotes laser, photos et commentaires implémentés localement ; lot 3B vidéo inchangé. [Rapport et réserves](terrain-interface-verification.md), suivi canonique `terrainT11` dans `data/suivi-vision.json`. La prochaine action est la relecture et la recette locale puis les essais Android/iPhone ; aucune nouvelle validation humaine acquise.
