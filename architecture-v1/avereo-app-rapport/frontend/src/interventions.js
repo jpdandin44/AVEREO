@@ -1,11 +1,11 @@
-import { isHabitologieReport } from './reportClassification.js';
-import { isHabitologueProfile } from './reportProfiles.js';
+import { allowsInterventionActions } from './reportProfiles.js';
+import { selectClientInterventions } from './interventionSelection.js';
 import { normalizeDecision, referenceLabel, ACTION_CATEGORIES } from './decisionSupport.js';
 import { observationNumber } from './observationOrder.js';
 import { escapeHtml, textToHtml } from './reportHtml.js';
 
 export function allowsInterventions(report) {
-  return isHabitologieReport(report) && isHabitologueProfile(report);
+  return allowsInterventionActions(report);
 }
 
 export function interventionWarnings(report) {
@@ -29,10 +29,7 @@ export function interventionWarnings(report) {
 export function clientInterventions(report) {
   if (!allowsInterventions(report)) return [];
   const d = normalizeDecision(report.decision);
-  const selected = Array.isArray(report.livrable?.observations) ? report.livrable.observations.slice(0, 3) : [];
-  const observations = report.observations || [];
-  return d.actions.filter(a => a.inclure_client === true && a.id && d.actions.filter(row => row.id === a.id).length === 1
-    && a.observation_ids.length > 0 && a.observation_ids.every(id => selected.includes(id) && observations.filter(o => o.id === id).length === 1));
+  return selectClientInterventions(report, d.actions);
 }
 
 export function buildInterventionsHtml(report, client = false) {

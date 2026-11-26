@@ -5,13 +5,17 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 26 novembre — Extension sans migration SQL
+
+`conditions_site` conserve les mesures nouvelles et l’attribution des anciennes paires météo ; en ancien contexte Mixte, la paire reste historique non localisée. L’ancien objet `meteo`, les champs inconnus, médias et identifiants sont conservés. Repli et suggestions restent de la présentation. Les interventions masquées pour Analyse globale restent dans le JSON et réapparaissent sur un profil admissible. Aucun changement de propriétaire, quota ou schéma SQL. [Contrat, correspondances et preuves](contexte-observations-export.md).
 
 ## 25 novembre — Relecture sur Word confirmée
 

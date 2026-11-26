@@ -1,3 +1,4 @@
+import { siteConditionRows } from './siteConditions.js';
 import { isHabitologieReport } from './reportClassification.js';
 import { isTechnicalReport, technicalMission } from './technicalReport.js';
 
@@ -248,16 +249,6 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '', afterR
   const sectionNumbers = habitologie
     ? { ecoute: 2, protocoles: 3, observations: 4, analyse: 5, signature: 6 }
     : { protocoles: 2, observations: 3, analyse: 4, signature: 5 };
-  const meteoLine = [
-    report.meteo?.ciel && `Ciel : ${report.meteo.ciel}`,
-    report.meteo?.temperatureC && `Temperature : ${report.meteo.temperatureC} C`,
-    report.meteo?.humiditePct && `Humidite : ${report.meteo.humiditePct} %`,
-    report.meteo?.pluie && `Pluie : ${report.meteo.pluie}`,
-    report.meteo?.vent && `Vent : ${report.meteo.vent}`,
-  ]
-    .filter(Boolean)
-    .join(' - ');
-
   const cadastreLine = report.cadastre?.section
     ? `Commune ${report.cadastre.nom_commune || report.cadastre.commune || ''} - Section ${
         report.cadastre.section
@@ -377,7 +368,7 @@ export function buildExpertDocumentHtml(report, beforeSignatureHtml = '', afterR
     <tr><td>Email</td><td>${escapeHtml(report.email)}</td></tr>
     <tr><td>Adresse</td><td>${escapeHtml(report.adresse_logement)}</td></tr>
     <tr><td>Environnement analyse</td><td>${escapeHtml(report.environnement)}</td></tr>
-    <tr><td>Conditions meteo</td><td>${escapeHtml(meteoLine)}</td></tr>
+    ${siteConditionRows(report).map(([label, value]) => `<tr><td>${escapeHtml(label)}</td><td>${escapeHtml(value)}</td></tr>`).join('')}
     <tr><td>References cadastrales</td><td>${escapeHtml(cadastreLine)}</td></tr>
     <tr><td>Lieu confirmé avec le client</td><td>${locationConfirmed(report) ? `Oui — ${escapeHtml(formatDate(report.localisation.confirmation.date))}` : 'À confirmer'}</td></tr>
     ${validLocation(report.cadastre.lon, report.cadastre.lat) ? `<tr><td>Point de visite (latitude, longitude)</td><td>${Number(report.cadastre.lat).toFixed(7)}, ${Number(report.cadastre.lon).toFixed(7)}${report.localisation?.point_manuel ? ' — Ajuste manuellement ; notes du contexte et ressources a reverifier.' : ''}</td></tr>` : ''}

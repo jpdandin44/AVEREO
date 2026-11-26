@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 export default function PublicationPanel({ disabled, onPrepare }) {
   const [confirmed, setConfirmed] = useState(false), [busy, setBusy] = useState(false), [message, setMessage] = useState('');
-  return <details className="field-card"><summary>Conserver et partager dans Passeport Immo</summary>
+  return <details className="field-card passport-action-card"><summary><span><strong>Conserver et partager dans Passeport Immo</strong><small>Conserver la copie privée et préparer la restitution destinée au client.</small></span></summary>
     <p>Préparez une version datée : restitution client Word et copie complète privée, avec les originaux photo conservés en ligne. Le dossier source reste conservé.</p>
     <p>Pour la relire avant confirmation, choisissez « Synthèse client » dans les options du livrable et ouvrez l’aperçu. La publication utilise cette restitution client.</p>
     <p>Importez ensuite ce fichier dans le dossier documentaire du bien choisi dans Passeport Immo. Seule la restitution client rejoint ses documents partageables. La copie complète se télécharge en privé pour être réouverte dans Rapport.</p>

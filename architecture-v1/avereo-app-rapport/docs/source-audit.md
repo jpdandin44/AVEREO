@@ -5,13 +5,17 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 26 novembre — Nouveau candidat local AM26
+
+Écarts au comportement historique : mesures de visite séparées avec reprise non destructive, bâti repliable, suggestions libres selon le contexte, présentation Export et interventions déplacées vers les profils Architecte/Maître d’œuvre. Le contrôle Projet est additionnel aux actions ordinaires et ne donne aucun droit ; projection privée existante relue à chaque transfert officiel. Une intervention exclue du client ne réapparaît plus par les références d’une variante ou une alerte. [Contrat et qualification](contexte-observations-export.md). Pas de changement Passeport/CONNECT, SQL, compte réel ou hébergement ; les limites du contrôle navigateur et de la pagination Word restent explicites.
 
 ## 25 novembre — Relecture sur Word confirmée
 

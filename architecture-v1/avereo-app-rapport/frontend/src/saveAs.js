@@ -9,8 +9,9 @@ export async function checkDownloadAuthorization() {
   return authorizeDownload ? Boolean(await authorizeDownload()) : true;
 }
 
-export async function saveAs(blob, fileName) {
+export async function saveAs(blob, fileName, { authorize = null } = {}) {
   if (!await checkDownloadAuthorization()) return false;
+  if (authorize && await authorize() !== true) return false;
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;

@@ -5,13 +5,17 @@ title: Decisions structurantes de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags:
   - rapport
   - decisions
   - architecture
 ---
+
+## 2026-11-26 — Conserver les interventions sans donner implicitement Projet
+
+Contexte : le document de demande retire les interventions d’Analyse globale et interroge les profils sans Projet. Décision explicite du responsable : conserver les interventions ; réserver l’envoi vers Projet aux comptes habilités. Conséquence : la présentation dépend du profil de mission, le transfert dépend du droit CONNECT relu côté serveur ; aucun droit nouveau n’est attribué. Les actions historiques restent dans le dossier. [Contrat et portée](docs/contexte-observations-export.md).
 
 ## 2026-11-25 — Valider le document Word
 

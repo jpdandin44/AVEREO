@@ -7,7 +7,7 @@ export default function ReviewPanel({ disabled, onPrepare, onPackage, onDownload
     setBusy(true); setMessage('');
     try { await action(); } catch (error) { setMessage(error.message); } finally { setBusy(false); }
   }
-  return <details className="field-card"><summary>Demander une relecture experte dans Passeport Immo</summary>
+  return <details className="field-card passport-action-card"><summary><span><strong>Demander une relecture experte dans Passeport Immo</strong><small>Préparer les deux Word et les soumettre à la validation de l’expert.</small></span></summary>
     <p>Préparez les documents Word privés. L’expert les relira dans Word, puis pourra les valider ou demander des corrections. Le PDF client sera préparé après cette validation.</p>
     <button type="button" className="button secondary" disabled={disabled || busy} onClick={() => run(async () => {
       setPrepared(null);

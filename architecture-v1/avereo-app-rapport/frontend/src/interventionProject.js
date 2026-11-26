@@ -58,7 +58,7 @@ export function projectSelection(report) {
 }
 
 export function buildInterventionProject(report) {
-  if (!allowsInterventions(report)) throw new Error('Ce planning est disponible pour les interventions Habitologue en Visite Globale.');
+  if (!allowsInterventions(report)) throw new Error('Ce planning est disponible pour les interventions Architecte et Maître d’œuvre en Analyse globale.');
   if (report.decision?.schema_version != null && report.decision.schema_version !== 1) throw new Error('Format des interventions non pris en charge.');
   const malformed = interventionPlanningError(report);
   if (malformed) throw new Error(malformed);

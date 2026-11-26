@@ -111,6 +111,12 @@ export async function authorizeReportExport(token, user) {
   return true;
 }
 
+export async function authorizeProjectTransfer(token, user) {
+  const payload = await request('auth.php?action=authorize-project-transfer', { method: 'POST', token, body: {} });
+  if (payload.provider !== user?.provider || String(payload.accountId) !== String(user?.id)) throw new Error('Le compte a changé. Rechargez Rapport avant le transfert vers Projet.');
+  return true;
+}
+
 export async function saveOnlineReport(report, token, id = '', { signal } = {}) {
   const serializedBody = JSON.stringify({id, report});
   const envelopeBytes = new Blob([JSON.stringify({id, report:null})]).size - 4;

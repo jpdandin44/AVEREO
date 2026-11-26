@@ -15,7 +15,7 @@ export default function ReportTypeChooser({ canChooseTechnical, onChoose, onClos
     <p>Ce choix concerne le nouveau dossier. Votre brouillon reste conservé tant que vous n’avez pas confirmé sa création.</p>
     <div className="choice-grid">
       <button className="choice-card" type="button" onClick={() => onChoose(HABITOLOGIE_CATEGORY)}>
-        <strong>Analyse globale</strong><span>Parcours complet : écoute client, Terrain, Eau, Air, Terre, Feu, attentes et interventions.</span>
+        <strong>Analyse globale</strong><span>Parcours complet : écoute client, Terrain, Eau, Air, Terre, Feu et attentes. Interventions selon le profil de mission.</span>
       </button>
       <button className="choice-card" type="button" disabled={!canChooseTechnical} onClick={() => onChoose(DEFAULT_CATEGORY)}>
         <strong>Rapport Technique</strong><span>Parcours expert en trois étapes : Mission, Constats, Rapport. Choix de la spécialité dans Mission.</span>

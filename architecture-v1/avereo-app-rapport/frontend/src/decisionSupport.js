@@ -1,6 +1,7 @@
 import { escapeHtml, textToHtml } from './reportHtml.js';
 import { isHabitologieReport } from './reportClassification.js';
-import { allowsDecisionProjections, decisionProjectionLabels, recognizedMissionProfile } from './reportProfiles.js';
+import { allowsDecisionProjections, decisionProjectionLabels, recognizedMissionProfile, allowsInterventionActions } from './reportProfiles.js';
+import { selectClientInterventions } from './interventionSelection.js';
 
 export const DECISION_CRITERIA = [
   ['energie', 'Énergie : type et quantité'], ['materiaux', 'Matériaux et compatibilité'],
@@ -108,6 +109,11 @@ export function buildDecisionHtml(report, client = false) {
   if (!isHabitologieReport(report) || !hasDecisionData(report, projections, !client)) return '';
   if (report.decision?.schema_version != null && report.decision.schema_version !== 1) return '<section><h2>Aide à la décision</h2><p>Format non pris en charge ; conserver le JSON d’origine et vérifier la version de l’application.</p></section>';
   const d = normalizeDecision(report.decision), obs = report.observations || [];
+  if (client && allowsInterventionActions(report)) {
+    d.actions = selectClientInterventions(report, d.actions);
+    const selectedIds = new Set(d.actions.map(action => action.id));
+    for (const key of ['option_a', 'option_b']) d[key].action_ids = d[key].action_ids.filter(id => selectedIds.has(id));
+  }
   const names = (collection, selected, field) => selected.map(id => referenceLabel(collection, id, field)).join('\n') || 'À relier';
   let content = `<section class="decision-report client-page"><h2>Aide à la décision</h2><p class="status">${projections ? 'Options proposées' : 'Éléments proposés'} à discuter et à relire avec les habitants. Aucun choix ni validation n’est déduit de ce tableau.</p>`;
   content += `<h3>Attentes retenues</h3>${table(client ? ['Attente', 'Priorité'] : ['Attente', 'Priorité', 'Source'],
@@ -140,7 +146,7 @@ export function buildDecisionHtml(report, client = false) {
     const proposed = ['a', 'b'].includes(d.arbitrage.option_proposee) ? d[`option_${d.arbitrage.option_proposee}`].nom : 'Aucune option retenue';
     content += `<section${client ? '' : ' class="client-page"'}><h3>${escapeHtml(labels.arbitration)}</h3><p>${cell(proposed)}</p><p>${cell(d.arbitrage.motif)}</p><p>Prochaine étape : ${cell(d.arbitrage.prochaine_etape)}</p>`;
   }
-  const warnings = decisionWarnings(report);
+  const warnings = decisionWarnings(client && allowsInterventionActions(report) ? { ...report, decision: d } : report);
   content += '<div class="decision-conclusion keep-together">';
   if (warnings.length) content += `<h3>Points restant à compléter</h3><ul>${warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul>`;
   const limits = projections

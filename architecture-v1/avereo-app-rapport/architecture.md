@@ -5,12 +5,18 @@ title: Architecture de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-25
+updated: 2026-11-26
 owner: jpdandin
 tags:
   - rapport
   - architecture
 ---
+
+## 26 novembre — Conditions de visite et transfert Projet
+
+`conditions_site` est une extension facultative du JSON existant ; le module `siteConditions` fixe l’attribution des anciennes mesures avant un changement de contexte et produit les mêmes lignes pour les deux restitutions. Les suggestions et l’état replié ne modifient pas les constats.
+
+`auth/me` expose la capacité Projet calculée depuis la projection privée CONNECT. Le téléchargement officiel vérifie les actions ordinaires puis l’accès Projet courant avant de créer le fichier. Pas de nouveau stockage, migration SQL ou modification CONNECT. [Données, contrat d’autorisation et limites](docs/contexte-observations-export.md).
 
 ## Décision Word et PDF final séparés
 
