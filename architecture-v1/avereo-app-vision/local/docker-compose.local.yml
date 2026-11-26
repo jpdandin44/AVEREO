@@ -40,7 +40,9 @@ services:
       # Application entière en lecture seule : seul frontend/public est servi par Apache.
       - ..:/opt/vision:ro
       - vision-nonces:/var/lib/avereo/vision/nonces
+      - vision-medias:/var/lib/avereo/vision/medias
 
 volumes:
   vision-db:
   vision-nonces:
+  vision-medias:

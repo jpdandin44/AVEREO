@@ -31,7 +31,7 @@ export class ErreurApi extends Error {
  * @param {{fetchImpl?: typeof fetch, base?: string, jeton?: string, utilisateur?: string}} [options]
  */
 export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base = "/api/", jeton = "", utilisateur = "", identiteAttendue = "" } = {}) {
-  async function appeler(methode, fichier, { requete = {}, corps, sansIdentiteAttendue = false } = {}) {
+  async function appeler(methode, fichier, { requete = {}, corps, brut, mime, sha256, binaire = false, sansIdentiteAttendue = false } = {}) {
     const parametres = new URLSearchParams();
     for (const [cle, valeur] of Object.entries(requete)) {
       if (valeur !== undefined && valeur !== null && valeur !== "") parametres.set(cle, String(valeur));
@@ -49,12 +49,18 @@ export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base
       entetes["Content-Type"] = "application/json";
       options.body = JSON.stringify(corps);
     }
+    if (brut !== undefined) {
+      entetes["Content-Type"] = mime;
+      entetes["X-Vision-Sha256"] = sha256;
+      options.body = brut;
+    }
     let reponse;
     try {
       reponse = await fetchImpl(`${base}${fichier}${texte ? `?${texte}` : ""}`, options);
     } catch {
       throw new ErreurApi(0, "reseau", "Le serveur est injoignable. Vérifiez votre connexion.");
     }
+    if (binaire && reponse.ok) return reponse.blob();
     let donnees = null;
     try {
       donnees = await reponse.json();
@@ -79,6 +85,9 @@ export function creerClient({ fetchImpl = (...a) => globalThis.fetch(...a), base
   }
 
   return {
+    envoyerMedia: (project, media) => appeler("PUT", "medias.php", { requete: { project, id: media.id }, brut: media.blob, mime: media.mime, sha256: media.sha256 }),
+    supprimerMedia: (project, id) => appeler("DELETE", "medias.php", { requete: { project, id } }),
+    telechargerMedia: (project, id) => appeler("GET", "medias.php", { requete: { project, id }, binaire: true }),
     /** Identité, rôle et droits de la session. */
     identite: () => appeler("GET", "auth.php", { sansIdentiteAttendue: true }),
     /** Efface le cookie de passerelle (mode CONNECT). */

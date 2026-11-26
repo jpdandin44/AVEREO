@@ -12,6 +12,12 @@ tags: [vision, deploiement]
 
 # Mise en ligne d'AVEREO Vision en préproduction (hébergement mutualisé O2Switch / cPanel)
 
+## Prérequis du prochain déploiement après T-10
+
+Avant toute livraison autorisée du lot 3A, créer `/home/daje3540/.avereo/vision-preprod/medias` en **700**, accessible en écriture par PHP, puis ajouter `'media_directory' => '/home/daje3540/.avereo/vision-preprod/medias'` à la configuration privée. Cette clé est obligatoire en préproduction et production ; le dossier doit exister et rester hors racine web. Le précontrôle de déploiement impose aussi son emplacement sous le dossier privé de configuration. Aucun de ces réglages n'a été effectué pendant T-10.
+
+Appliquer, avec le compte de migration, **003_create_vision_media** puis **004_extend_vision_sync_kinds**, avant de livrer le code qui en dépend. La 003 crée la table des médias ; la 004 ajoute uniquement `photo` et `commentaire` à la fin des deux ENUM autorisés par le responsable le 26/11/2026. Le paquet de migrations transmet déjà tout `database/migrations/`. Qualifier d'abord `php tests/api/run.php --strict` sous PHP 8.3/MySQL et les doubles passages des migrations ; voir [preuves et réserves T-10](terrain-donnees-verification.md). Le stockage du conteneur local est `/var/lib/avereo/vision/medias` sur volume dédié ; ne pas copier ce chemin vers O2Switch.
+
 Procédure du 24/11/2026, établie d'après `avereo-app-rapport/docs/deployment.md`, `rollback.md`, `preproduction-connect-cutover.md` et `avereo-app-connect/docs/{catalogue-services,application-gateway}.md`. **Elle décrit des opérations sur l'hébergement et sur la base de CONNECT. Chaque étape marquée [responsable] est faite par toi, ou par Claude Code dans ta session cPanel avec ton accord explicite pour cette étape ; jamais de mot de passe saisi par Claude Code.** Le workflow `deploy-vision-o2switch.yml` est préparé par T-08 ; sa qualification GitHub et hébergée reste à réaliser. La procédure manuelle est conservée comme secours.
 
 Périmètre : **préproduction uniquement** (`vision-preprod.avereo.fr`, nom confirmé par le responsable le 24/11/2026). La production suit la même procédure avec les noms `vision` / `vision.avereo.fr`, après qualification de la préproduction et décision séparée.
@@ -59,6 +65,7 @@ Contenu du fichier (à compléter ; permissions **600**) :
 <?php
 return [
     'environment' => 'preproduction',
+    'media_directory' => '/home/COMPTE/.avereo/vision-preprod/medias',
     'auth_mode' => 'connect',
     'db' => [
         'host' => 'localhost',

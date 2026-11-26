@@ -71,7 +71,7 @@ vision_test('config : valeurs par défaut sûres (production, ticket CONNECT) : 
 });
 
 vision_test('config : mode connect exige un secret de 32 caractères et un dossier de nonces', function () {
-    $base = ['environment' => 'production', 'auth_mode' => 'connect', 'connect_portal_url' => 'https://connect-preprod.avereo.fr'];
+    $base = ['environment' => 'production', 'media_directory' => sys_get_temp_dir(), 'auth_mode' => 'connect', 'connect_portal_url' => 'https://connect-preprod.avereo.fr'];
     vision_assert_throws(fn () => vision_config($base + ['connect_launch_secret' => str_repeat('s', 31), 'connect_launch_nonce_directory' => '/tmp/n']), VisionConfigException::class, '32');
     vision_assert_throws(fn () => vision_config($base + ['connect_launch_secret' => str_repeat('s', 32), 'connect_launch_nonce_directory' => '']), VisionConfigException::class, 'nonces');
     $config = vision_config($base + ['connect_launch_secret' => str_repeat('s', 32), 'connect_launch_nonce_directory' => '/tmp/n']);
@@ -95,7 +95,7 @@ vision_test('config : les messages d\'erreur ne contiennent jamais un secret', f
 });
 
 vision_test('config : portail obligatoire hors local et URL normalisée', function () {
-    $base = ['environment' => 'preproduction', 'auth_mode' => 'connect', 'connect_launch_secret' => str_repeat('s', 40), 'connect_launch_nonce_directory' => '/tmp/n'];
+    $base = ['environment' => 'preproduction', 'media_directory' => sys_get_temp_dir(), 'auth_mode' => 'connect', 'connect_launch_secret' => str_repeat('s', 40), 'connect_launch_nonce_directory' => '/tmp/n'];
     vision_assert_throws(fn () => vision_config($base), VisionConfigException::class, 'portail');
     $config = vision_config($base + ['connect_portal_url' => 'https://connect-preprod.avereo.fr/']);
     vision_assert_same('https://connect-preprod.avereo.fr', vision_connect_portal($config));

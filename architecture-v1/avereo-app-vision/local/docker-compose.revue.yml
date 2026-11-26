@@ -33,7 +33,9 @@ services:
       - "${VISION_REVUE_SOURCE}:/opt/vision:ro"
       - "./revue:/opt/revue:ro"
       - revue-nonces:/var/lib/avereo/vision/nonces
+      - revue-medias:/var/lib/avereo/vision/medias
 
 volumes:
   revue-db:
   revue-nonces:
+  revue-medias:

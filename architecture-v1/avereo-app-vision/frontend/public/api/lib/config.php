@@ -30,6 +30,7 @@ function vision_default_config(): array
         'connect_gate_cookie' => 'AVEREO_VISION_GATE',
         'connect_gate_session_seconds' => 1800,
         'max_body_bytes' => 65536,
+        'media_directory' => '',
     ];
 }
 
@@ -99,6 +100,17 @@ function vision_config_path(): ?string
  *  - mode « token » hors environnement « local » (le jeton statique est un outil de développement) ;
  *  - mode « connect » sans secret d'au moins 32 caractères ni dossier de nonces.
  */
+function vision_media_directory_safe(mixed $path, string $webRoot): bool
+{
+    if (!is_string($path) || $path === '' || str_contains($path, "\0")) return false;
+    if ($path[0] !== '/' && !(PHP_OS_FAMILY === 'Windows' && preg_match('/^[A-Za-z]:[\\\\\/]/', $path) === 1)) return false;
+    $directory = realpath($path);
+    $root = realpath($webRoot);
+    if ($directory === false) return false;
+    $root = $root === false ? rtrim($webRoot, '/') : $root;
+    return $directory !== $root && !str_starts_with($directory . '/', $root . '/');
+}
+
 function vision_config_validate(array $config): void
 {
     if (!in_array($config['environment'] ?? null, VISION_ENVIRONMENTS, true)) {
@@ -126,6 +138,10 @@ function vision_config_validate(array $config): void
     if (!is_string($portal) || ($portal !== '' && !vision_portal_url_is_allowed($config, $portal))
         || ($config['auth_mode'] === 'connect' && $config['environment'] !== 'local' && $portal === '')) {
         throw new VisionConfigException('Adresse du portail CONNECT absente ou invalide.');
+    }
+    $media = $config['media_directory'] ?? '';
+    if (($config['environment'] !== 'local' || $media !== '') && !vision_media_directory_safe($media, (string) ($_SERVER['DOCUMENT_ROOT'] ?? dirname(__DIR__)))) {
+        throw new VisionConfigException('media_directory doit être un chemin absolu hors racine web.');
     }
     foreach ((array) ($config['admin_user_ids'] ?? []) as $id) {
         if (!is_string($id)) {

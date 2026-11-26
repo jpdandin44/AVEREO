@@ -1,10 +1,22 @@
-# Protocole de synchronisation — AVEREO Vision (Lot 2B)
+---
+project: avereo-app-vision
+document_type: protocol
+title: Synchronisation et médias terrain
+status: active
+version: git
+created: 2026-11-24
+updated: 2026-11-26
+owner: jpdandin
+tags: [vision, synchronisation, terrain]
+---
+
+# Protocole de synchronisation — AVEREO Vision
 
 Statut : écrit au Lot 2B (24/11/2026), contrat commun du serveur (`frontend/public/api/sync.php`, `lib/sync.php`) et du client (`frontend/src/sync/`). Toute évolution passe par ce fichier d'abord. Exigences : R01 (fin), R03, R04 (partie logique), R05, R06.
 
 ## 1. Principes
 - **Local d'abord** : toute modification s'écrit dans le stockage local (Dexie) puis part au serveur dès que possible. Aucun bouton « Enregistrer » (R03).
-- **Un objet = une unité de synchronisation** (R06) : `batiment`, `niveau`, `piece`, `ouverture`. Les murs sont déduits du contour de la pièce (pas d'objet). Photos, vidéos, cotes laser, annotations viennent au Lot 3.
+- **Un objet = une unité de synchronisation** (R06) : `batiment`, `niveau`, `piece`, `ouverture`, `photo`, `commentaire`. Les murs sont déduits du contour de la pièce (pas d'objet). Les cotes laser sont dans la pièce ; les octets photo sont séparés (§8). La vidéo reste au Lot 3B.
 - **Dernière modification reçue gagne, par objet.** « Dernière » = ordre de réception par le serveur (`seq`), jamais l'horloge de l'appareil. L'état écrasé est inscrit au **journal** ; aucun objet n'est perdu en silence.
 - **Suppressions logiques** (`deleted`) : elles se propagent ; seul le serveur purge.
 - **Pas de temps réel** : envoi/réception à l'ouverture d'un projet, après chaque enregistrement local, au retour du réseau, au retour de l'onglet au premier plan, et **toutes les 30 s** (valeur proposée, à confirmer).
@@ -105,3 +117,63 @@ Visible par quiconque peut lire le projet (propriétaire, fondateur).
 - Authentification et droits comme `docs/authentication.md` : lecture (`read`) pour recevoir et pour le journal, écriture (`update`) pour envoyer ; projet d'autrui → **404** ; archivé → lecture seule.
 - Toutes les entrées sont validées par type (§2) ; requêtes préparées ; aucune donnée d'un projet dans les journaux d'erreur ; le contenu de `data` n'est jamais interprété par le serveur au-delà de la validation.
 - Le journal et les objets sont cloisonnés par projet : l'identifiant du projet est vérifié avant toute lecture.
+
+## 8. Contrat terrain T-10
+
+Le lot 3A ajoute `photo` et `commentaire`, enfants du niveau, sans champ obligatoire nouveau dans les anciens relevés. `cotesLaser` est un champ optionnel des données de la pièce. La validation refuse les clés inconnues, nombres non entiers et objets de plus de `VISION_SYNC_MAX_DATA_BYTES` (8192 octets). La migration 004 doit précéder l'utilisation de ces types côté serveur.
+
+Exemples de `data` (l'identifiant photo est un UUID minuscule généré par le navigateur) :
+
+```json
+{"xMm":100,"yMm":200,"pieceId":"salon","legende":"Mur nord","prisLe":"2026-11-26T12:00:00.000Z","largeurPx":1920,"hauteurPx":1080,"tailleOctets":125000,"sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","mime":"image/jpeg"}
+```
+
+```json
+{"texte":"Fissure à examiner","cible":{"type":"mur","pieceId":"salon","murIndex":0,"positionMm":1000}}
+```
+
+La cible d'un commentaire peut aussi être `{type:"point",xMm,yMm}`, `{type:"piece",pieceId}` ou `{type:"photo",photoId}`. Texte : 1 à 500 caractères Unicode, non blanc. Coordonnées : millimètres entiers dans ±100 000 000 ; indice de mur : 0 à 63 ; position sur mur : 0 à 100 000 000. Une cible absente donne `null` dans `positionCommentaire` et doit être signalée par le futur écran.
+
+`cotesLaser` : `{longueur?:{murIndex,valeurMm},largeur?:{murIndex,valeurMm},controle?:{type:"hauteur",valeurMm}|{type:"diagonale",deSommet,aSommet,valeurMm}}`. Valeurs : 1 à 100 000 mm ; indices entiers présents dans le contour. L'écart absolu est comparé à `TOLERANCE_MM` (20). Une différence de 20 mm reste `ok`, au-delà `hors-tolerance`, avec texte et icône.
+
+### Fonctions pour les écrans
+
+Dans `frontend/src/domain/terrain.js` :
+
+- `evaluerCotesLaser(piece)` → tableau `{nom,modeleMm,valeurMm,ecartMm,etat,icone,libelle}` ; lève si valeur ou repère invalide.
+- `validerCommentaire(commentaire)` → validité du texte ; la cible est validée côté serveur.
+- `positionCommentaire(niveau,commentaire)` → `{xMm,yMm}|null`. Une cible pièce utilise la moyenne des sommets ; une cible mur garde sa distance depuis le début du mur, même si elle dépasse un mur raccourci (à signaler par l'écran).
+- `commentairesConcernes(niveau,cible)` → liste sans mutation. Cible de suppression : `{type:"piece",pieceId}`, `{type:"photo",photoId}` ou `{type:"sommet",pieceId,sommetIndex}`.
+- `supprimerCible(niveau,cible,"supprimer"|"detacher")` → `{ok:true,niveau,concernes}` ou refus géométrique `{ok:false,message}`. Détacher convertit en point à la position précédant la suppression. Supprimer un sommet concerne les deux murs voisins ; les autres indices suivent les ouvertures. Une cible sans dernière position est refusée pour le détachement.
+- `insererSommetTerrain(niveau,pieceId,murIndex,t=0.5)` → résultat avec niveau ; les commentaires suivent le découpage comme les ouvertures. Utiliser ces fonctions sur le niveau pour les modifications topologiques. Les fonctions du modèle renumérotent les cotes non touchées ; les cotes liées aux murs transformés ou aux sommets supprimés sont retirées et doivent être ressaisies.
+
+Dans `frontend/src/sync/medias.js`, `creerMedias(moteur,projetId,niveauId)` est le service équivalent à `useMedias`, sans écran ni dépendance à React :
+
+- `await ajouterPhoto(fichier,{xMm,yMm,pieceId?})` → `Photo` ; compression JPEG, empreinte, blob local, puis objet synchronisable.
+- `await urlPhoto(photoId)` → URL blob locale si disponible ; sinon téléchargement par le client API lié à l'identité, puis URL blob. Les URL sont temporaires, à garder hors du modèle.
+- `await supprimerPhoto(photoId,choix="detacher")` → suppression de l'objet et détachement/suppression des commentaires ; intention persistante de suppression du fichier serveur, y compris après une réponse PUT perdue.
+- `fermer()` libère les URL blob ; l'appeler au démontage ou au changement de projet/compte.
+
+Le moteur expose `modifierBatiment(projetId,fonctionPure)` pour modifier le relevé sous verrou, `listerMedias(projetId)` pour consulter les états et erreurs, et `reessayerMedia(projetId,id)` pour une reprise explicite après correction d'un refus 4xx. Le service reçoit le moteur du compte ouvert par `useMoteur` ; ne jamais le partager entre identités.
+
+### Envoi et stockage des fichiers
+
+Dexie v2 ajoute `medias` (clé `[projectId+id]`, index `projectId`, `etat`), en conservant les tables v1 : `{id,projectId,etat:"a-envoyer"|"envoye",blob,mime,sha256,taille,creeLe}`. Les marqueurs additionnels `supprimer` et `erreur` conservent les suppressions et refus sans boucle. Le stockage mémoire a le même contrat ; il ne survit pas au rechargement.
+
+Le moteur attend l'acquittement de l'objet photo avant PUT. Les cycles existants (retour réseau, ouverture, minuterie) reprennent les médias, même si leur file d'objets est vide. Le compteur inclut les fichiers en attente. Les erreurs réseau/5xx sont reprises ; un 4xx définitif reste consultable et n'est pas renvoyé automatiquement. Un 401 produit le signal `reconnexion` du Lot 2D ; `identity_changed` suspend les envois. DELETE attend aussi que la suppression de l'objet soit acquittée ; 404 équivaut à une suppression déjà faite.
+
+`compresserImage(fichier,{maxOctets:2000000,maxCote:2560})` → `{blob,largeurPx,hauteurPx}` : canvas JPEG, fond blanc, qualités de 0.9 à 0.3. Si aucun palier ne respecte le plafond, refus explicite ; aucune photo hors plafond n'est enregistrée. `dimensionsImage` et `QUALITES_JPEG` sont les décisions pures testées ; `empreinteSha256(blob)` utilise Web Crypto. La compression supprime les métadonnées de l'original en redessinant les pixels.
+
+Le quota reste celui du navigateur : consulter `verifierStockage` de `stockage-durable.js` et afficher `decrireStockage` au prochain écran terrain. À partir de 80 % du quota utilisé, l'alerte est `presque-plein`. Une écriture locale échouée est une erreur visible, jamais un succès simulé. À VÉRIFIER : quota/éviction iOS et photo d'un autre appareil accessible hors ligne (non garanti en 3A). Les blobs pris sur cet appareil restent consultables localement.
+
+### API privée des médias
+
+`/api/medias.php?project=<32 hex>&id=<UUID>` : mêmes session, droits propriétaire/fondateur et en-tête `X-Vision-Expected-Identity` que la synchronisation.
+
+| Méthode | Entrée et résultat |
+|---|---|
+| PUT | Corps brut ≤ 2 500 000 octets, `Content-Type: image/jpeg|image/png|image/webp`, `X-Vision-Sha256`. Signature binaire et type lus depuis l'image, empreinte recalculée. Nouveau : 201 ; même identifiant/empreinte : 200 sans réécriture ; autre contenu ou identifiant supprimé : 409. |
+| GET | Octets après contrôle des droits ; type enregistré, `nosniff`, `Cache-Control: private, max-age=86400`, `Content-Disposition: inline`. Absent/supprimé : 404. |
+| DELETE | Suppression logique dans `vision_media`, 200 ; fichier conservé pour purge ultérieure hors périmètre. |
+
+Sans session : 401 ; projet inaccessible : 404 ; modification d'un projet archivé : 409 ; lecture d'un projet archivé conservée. Les chemins ne proviennent que des identifiants validés : `media_directory/<project>/<uuid>`, fichier temporaire puis renommage atomique, dossier projet 700 et fichier 600. Le précontrôle impose un dossier privé 700 accessible en écriture. Les médias n'ont aucune URL publique. `/api/` reste exclu du précache et du service worker ; seule l'API authentifiée peut lire les fichiers.

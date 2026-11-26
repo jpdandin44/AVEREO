@@ -26,10 +26,12 @@ flowchart LR
     EDIT["Plan 2D, métrés, vue 3D"]
     EXP["Exports navigateur<br/>DXF, IFC, glTF, OBJ"]
   end
-  subgraph OVH["Serveur OVH d'AVEREO"]
+  subgraph O2["O2Switch AVEREO — application et stockage privé"]
     API["API PHP<br/>auth, projets, synchro, envois, CSV, PDF"]
     DB[("MySQL")]
-    FS[("Fichiers<br/>photos, vidéos, résultats")]
+    FS[("Fichiers privés<br/>photos, puis vidéos au lot 3B")]
+  end
+  subgraph OVH["Serveur OVH — traitements futurs soumis à accord"]
     GOT["Gotenberg<br/>HTML vers PDF"]
     SVC["Service de traitement Python<br/>reconstruction 3D vidéo<br/>(après validation ADR)"]
   end
@@ -46,6 +48,9 @@ flowchart LR
 ```
 
 ## 2. Modules
+
+Lot 3A / T-10 : photos et commentaires sont des objets enfants du niveau ; les cotes laser voyagent dans la pièce. Les octets photo vivent dans `media_directory` hors racine web, accessibles par `api/medias.php` après contrôle des droits. Dexie v2 ajoute les blobs et intentions d'envoi ; les écrans restent à réaliser. Le [contrat terrain](synchronisation.md#8-contrat-terrain-t-10) précise les fonctions, limites et états ; la [décision](adr/0002-medias-prives.md) justifie les migrations additives 003 et 004. Le schéma ci-dessus conserve les composants futurs, sans prétendre qu'ils sont installés.
+
 | Module | Où | Rôle | Dépend de |
 |---|---|---|---|
 | `domain` | `frontend/src/domain/` | **Logique pure** : modèle du bâtiment, métrés, unités, mise à l'échelle, précision. Aucun import React, DOM ni réseau. Seul endroit où se calculent les métrés. | rien |

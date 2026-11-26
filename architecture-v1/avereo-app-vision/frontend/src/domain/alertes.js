@@ -60,6 +60,11 @@ const GENERIQUE = {
   libelle: "Une anomalie a été détectée dans la pièce.",
 };
 
+export function decrireCoteLaser(etat) {
+  return etat === "ok" ? { icone: "info", libelle: "Cote laser dans la tolérance de ±20 mm." }
+    : { icone: "alerte", libelle: "Cote laser hors tolérance : écart supérieur à 20 mm." };
+}
+
 /**
  * @param {{code: string, message?: string, murIndex?: number, ouvertureId?: string}} erreur
  * @returns {{code: string, icone: NomIcone, titre: string, libelle: string, murIndex?: number, ouvertureId?: string}}

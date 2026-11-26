@@ -1,3 +1,15 @@
+---
+project: avereo-app-vision
+document_type: roadmap
+title: Plan des lots de Vision
+status: active
+version: git
+created: 2026-11-23
+updated: 2026-11-26
+owner: jpdandin
+tags: [vision, terrain]
+---
+
 # Plan des lots — AVEREO Vision
 
 Version : Lot 0, 23/11/2026. Tenu par Claude Code (sous-agent scribe-cockpit). Le suivi canonique est `data/suivi-vision.json` ; ce fichier tient le détail des lots et des tâches.
@@ -116,6 +128,9 @@ Décision du responsable : **recette = locale** (candidat de la PR, http://127.0
 | T-RL-06 Installation de la validation en préproduction | à faire | Procédure prête ; accord du responsable à chaque étape ; livraison préalable de CONNECT #196 | responsable / Claude | — | — | — |
 
 ### Lot 3 — Capture terrain : cotes laser, photos, commentaires, vidéo jointe
+
+Découpage décidé le 26/11/2026 : **3A** (R13, R17, R36, R37, R38), puis **3B** (vidéo, tus, R14 à R16). Les identifiants T3 ci-dessous sont conservés. T-10 prépare les données, l'API et le moteur de 3A sur `vision/lot-3a-terrain` ; l'interface T3-01 à T3-03 reste à Claude Code. Suivi canonique : `data/suivi-vision.json`, entrée `terrainT10` ; [preuves](terrain-donnees-verification.md). T3-04 à T3-06 relèvent de 3B, sans réalisation dans T-10.
+
 | Tâche | Statut | Pourquoi | Qui | Modèle | Effort | Job Codex |
 |---|---|---|---|---|---|---|
 | T3-01 Écrans de capture mobile (cibles ≥ 48 px, peu de saisie) (R13) | à faire | — | Claude | Sonnet | medium | — |

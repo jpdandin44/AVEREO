@@ -12,8 +12,12 @@ import { formaterLongueurMm } from "./unites.js";
  *   id: string, type: TypeOuverture, murIndex: number,
  *   positionMm: number, largeurMm: number, hauteurMm: number, alleMm: number
  * }} Ouverture  // positionMm : du début du mur au bord de l'ouverture ; alleMm : hauteur du bas de l'ouverture
- * @typedef {{id: string, nom: string, hauteurMm: number, sommets: Point[], ouvertures: Ouverture[]}} Piece
- * @typedef {{id: string, nom: string, pieces: Piece[]}} Niveau
+ * @typedef {{longueur?: {murIndex:number,valeurMm:number}, largeur?: {murIndex:number,valeurMm:number}, controle?: {type:'hauteur',valeurMm:number}|{type:'diagonale',deSommet:number,aSommet:number,valeurMm:number}}} CotesLaser
+ * @typedef {{id:string,xMm:number,yMm:number,pieceId?:string,legende?:string,prisLe:string,largeurPx:number,hauteurPx:number,tailleOctets:number,sha256:string,mime:string}} Photo
+ * @typedef {{type:'point',xMm:number,yMm:number}|{type:'mur',pieceId:string,murIndex:number,positionMm:number}|{type:'piece',pieceId:string}|{type:'photo',photoId:string}} CibleCommentaire
+ * @typedef {{id:string,texte:string,cible:CibleCommentaire}} Commentaire
+ * @typedef {{id: string, nom: string, hauteurMm: number, sommets: Point[], ouvertures: Ouverture[], cotesLaser?:CotesLaser}} Piece
+ * @typedef {{id: string, nom: string, pieces: Piece[], photos?:Photo[], commentaires?:Commentaire[]}} Niveau
  * @typedef {{id: string, nom: string, niveaux: Niveau[]}} Batiment
  * @typedef {{ok: true, piece: Piece} | {ok: false, message: string}} ResultatPiece
  */
@@ -42,8 +46,8 @@ export function creerId(prefixe = "id") {
  * @param {{id?: string, nom?: string, hauteurMm?: number, sommets: Point[], ouvertures?: Ouverture[]}} donnees
  * @returns {Piece}
  */
-export function creerPiece({ id = creerId("piece"), nom = "Pièce", hauteurMm = HAUTEUR_PAR_DEFAUT_MM, sommets, ouvertures = [] }) {
-  return { id, nom, hauteurMm, sommets: sommets.map(({ x, y }) => ({ x, y })), ouvertures: ouvertures.map((o) => ({ ...o })) };
+export function creerPiece({ id = creerId("piece"), nom = "Pièce", hauteurMm = HAUTEUR_PAR_DEFAUT_MM, sommets, ouvertures = [], cotesLaser }) {
+  return { id, nom, hauteurMm, ...(cotesLaser ? { cotesLaser: structuredClone(cotesLaser) } : {}), sommets: sommets.map(({ x, y }) => ({ x, y })), ouvertures: ouvertures.map((o) => ({ ...o })) };
 }
 
 /**
@@ -84,8 +88,8 @@ export function creerOuverture({ id = creerId("ouv"), type, murIndex, positionMm
 }
 
 /** @param {{id?: string, nom?: string, pieces?: Piece[]}} [donnees] @returns {Niveau} */
-export function creerNiveau({ id = creerId("niveau"), nom = "Niveau", pieces = [] } = {}) {
-  return { id, nom, pieces };
+export function creerNiveau({ id = creerId("niveau"), nom = "Niveau", pieces = [], photos = [], commentaires = [] } = {}) {
+  return { id, nom, pieces, ...(photos.length ? { photos } : {}), ...(commentaires.length ? { commentaires } : {}) };
 }
 
 /** @param {{id?: string, nom?: string, niveaux?: Niveau[]}} [donnees] @returns {Batiment} */
@@ -205,7 +209,7 @@ export function insererSommet(piece, i, t = 0.5) {
     }
   }
   const sommets = [...piece.sommets.slice(0, i + 1), nouveau, ...piece.sommets.slice(i + 1)];
-  return { ok: true, piece: { ...piece, sommets, ouvertures } };
+  return { ok: true, piece: { ...piece, sommets, ouvertures, ...adapterCotesLaser(piece, i, true) } };
 }
 
 /**
@@ -223,7 +227,25 @@ export function supprimerSommet(piece, i) {
   const sommets = piece.sommets.filter((_, index) => index !== i);
   if (estAutoSecant(sommets)) return { ok: false, message: "Retirer ce sommet ferait se croiser les murs." };
   const ouvertures = piece.ouvertures.map((o) => (o.murIndex > i ? { ...o, murIndex: o.murIndex - 1 } : o));
-  return { ok: true, piece: { ...piece, sommets, ouvertures } };
+  return { ok: true, piece: { ...piece, sommets, ouvertures, ...adapterCotesLaser(piece, i, false) } };
+}
+
+// Une cote du mur transformé doit être ressaisie ; les autres gardent leur référence.
+function adapterCotesLaser(piece, i, insertion) {
+  if (!piece.cotesLaser) return {};
+  const cotesLaser = {};
+  for (const [nom, cote] of Object.entries(piece.cotesLaser)) {
+    if (nom !== "controle") {
+      const touches = insertion ? [i] : [i, (i - 1 + piece.sommets.length) % piece.sommets.length];
+      if (touches.includes(cote.murIndex)) continue;
+      cotesLaser[nom] = { ...cote, murIndex: cote.murIndex > i ? cote.murIndex + (insertion ? 1 : -1) : cote.murIndex };
+    } else if (cote.type === "diagonale") {
+      if (!insertion && [cote.deSommet, cote.aSommet].includes(i)) continue;
+      const decaler = index => index > i ? index + (insertion ? 1 : -1) : index;
+      cotesLaser[nom] = { ...cote, deSommet: decaler(cote.deSommet), aSommet: decaler(cote.aSommet) };
+    } else cotesLaser[nom] = { ...cote };
+  }
+  return { cotesLaser };
 }
 
 /**

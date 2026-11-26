@@ -10,6 +10,7 @@ const copie = (valeur) => (valeur === undefined ? undefined : structuredClone(va
  */
 export function creerStockageMemoire() {
   const meta = new Map();
+  const medias = new Map();
   const projets = new Map();
   let operations = [];
   /** @type {Map<string, {objets: Map<string, any>, file: any[], seq: number}>} */
@@ -23,6 +24,10 @@ export function creerStockageMemoire() {
   };
 
   return {
+    async sauverMedia(media) { medias.set(`${media.projectId}:${media.id}`, copie(media)); },
+    async lireMedia(projectId, id) { return copie(medias.get(`${projectId}:${id}`)); },
+    async listerMedias(projectId) { return [...medias.values()].filter(m => m.projectId === projectId).map(copie); },
+    async retirerMedia(projectId, id) { medias.delete(`${projectId}:${id}`); },
     async lireMeta(cle) {
       return copie(meta.get(cle));
     },

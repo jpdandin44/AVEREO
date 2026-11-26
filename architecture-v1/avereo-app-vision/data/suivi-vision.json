@@ -7,7 +7,7 @@
   "title": "AVEREO Vision V1 — relevé, métré et modélisation 2D/3D (équivalent Visuary)",
   "status": "lot2c_awaiting_human_review",
   "stage": "cadrage",
-  "updatedAt": "2026-11-24",
+  "updatedAt": "2026-11-26",
   "objective": "Construire lot par lot une PWA AVEREO de relevé de l'existant (vidéo, métrés ±2 cm, plan 2D, maquette 3D, exports PDF/DXF/IFC/glTF/OBJ/CSV) sur des moteurs open source sous licence MIT, BSD ou Apache 2.0.",
   "lotPlan": {
     "source": "docs/plan-lots.md",
@@ -87,5 +87,36 @@
   "sessionClosure": {"date": "2026-11-23", "done": "Lot 0 livré : exigences R01 à R48, ADR 0001, architecture, plan de lots, licences ; décisions D1 à D6 prises ; PR #188 mergée ; inscription au registre du cockpit appliquée.", "inProgress": "Rien en cours.", "nextAction": "Lot 1 (fondations, plan 2D manuel, métrés, charte).", "toDecide": "Rien d'ouvert ; à fournir : caractéristiques du serveur OVH et pièce de référence."},
   "automationT08": {"branch": "vision/deploiement-auto", "phase": "Développement local", "status": "qualification_incomplete", "nextAction": "Vérification stricte PHP 8.3/MySQL 8.4 sur GitHub après publication autorisée ; qualification hébergée séparée.", "approvals": []},
   "accountT09": {"branch": "vision/lot-2d-compte", "phase": "Développement local", "status": "qualification_incomplete", "evidence": "docs/compte-reconnexion-verification.md", "requirement": "R49", "nextAction": "Relecture locale, qualification stricte PHP 8.3/MySQL par Claude Code puis recette mobile ; configurer le portail avant tout déploiement autorisé.", "approvals": []},
+  "terrainT10": {
+    "branch": "vision/lot-3a-terrain",
+    "phase": "Développement local",
+    "status": "qualification_incomplete",
+    "baseSha": "232887b4cd89653ff99bf18ea4eaa84762771a20",
+    "workingTree": true,
+    "evidence": "docs/terrain-donnees-verification.md",
+    "contract": "docs/synchronisation.md#8-contrat-terrain-t-10",
+    "requirements": [
+      "R17",
+      "R36",
+      "R37",
+      "R38"
+    ],
+    "checks": {
+      "frontend": "284 passed",
+      "deployment": "25 passed",
+      "build": "passed with --configLoader runner; default loader denied by Windows",
+      "bashSyntax": "passed (Git Bash)",
+      "php": "not run: no executable; Docker access denied",
+      "commit": "blocked: index.lock permission denied; changes in working tree",
+      "mysql": "not run"
+    },
+    "schemaAuthorization": {
+      "date": "2026-11-26",
+      "quote": "Oui, étendre",
+      "scope": "Append photo and commentaire only to vision_objects.kind and vision_sync_log.kind, migration 004; no other column or data change"
+    },
+    "nextAction": "Claude Code : qualifier PHP 8.3/MySQL en mode strict, relire puis réaliser les écrans 3A et essais mobiles ; aucun déploiement autorisé par T-10.",
+    "approvals": []
+  },
   "documentation": "docs/plan-lots.md"
 }

@@ -6,6 +6,7 @@
 return [
     // 'local' | 'preproduction' | 'production'
     'environment' => 'local',
+    'media_directory' => '/var/lib/avereo/vision/medias',
 
     // 'token' (développement local uniquement, refusé ailleurs) | 'connect' (ticket CONNECT + cookie de passerelle)
     'auth_mode' => 'token',

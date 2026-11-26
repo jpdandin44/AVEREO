@@ -12,6 +12,10 @@ tags: [vision, deploiement]
 
 # Évolutions de Vision
 
+## 2026-11-26 — T-10, données terrain du lot 3A
+
+Modèle et calculs des cotes laser, photos et commentaires ciblés, suppressions/détachements et renumérotation ; nouveaux objets synchronisés et validation serveur ; API privée des images, migration 003 et extension additive 004 des deux ENUM explicitement autorisée. Dexie v2 conserve les données v1 et ajoute les blobs ; service médias sans écran, compression et empreinte, reprise après acquittement et erreurs de session. Contrat, configuration et procédure de déploiement complétés. Aucun déploiement exécuté. [Résultats et réserves](docs/terrain-donnees-verification.md), notamment PHP/MySQL non exécutés dans cette session.
+
 ## 2026-11-26 — T-08, préparation locale
 
 Ajout du workflow de déploiement manuel préproduction/production, avec vérification sans secret pour les PR. Scripts de validation du paquet et de son empreinte, contrôle de promotion du même SHA, transmission privée des migrations, vérifications HTTPS et tests associés. Procédure manuelle conservée comme secours. Aucun déploiement exécuté.
