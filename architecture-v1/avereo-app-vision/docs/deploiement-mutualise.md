@@ -98,7 +98,9 @@ Préparation unique par le responsable :
 - Compléter la configuration privée de l'étape 2 : environnement exact, permissions 600, `nonces/`, paramètres application et CONNECT. Obtenir un certificat HTTPS valide.
 - Créer manuellement la production : domaine `vision.avereo.fr`, racine dédiée, base `daje3540_vision`, comptes application et migrations, `.avereo/vision/config.php` et `nonces/`. Le workflow ne crée pas ces ressources.
 
-Commandes futures, depuis la racine du dépôt, après autorisation pour la cible et le candidat :
+**Premier déploiement réussi le 26/11/2026** en préproduction ([exécution 45790331606](https://github.com/jpdandin44/AVEREO/actions/runs/45790331606), branche `vision/deploiement-racine`, paquet SHA-256 `e8b83808…a9f2`) : migrations 001 et 002 appliquées par le compte `vismig`, sauvegarde et publication par rsync, `.well-known/` et `cgi-bin/` conservés, contrôles publics réussis (page, service worker et manifeste 200, santé de l'API avec base, 401 anonyme, 403 sur `api/lib/`). Il a fallu, dans l'ordre : un jeton d'API cPanel (2FA), l'autorisation SSH en entrée sur le port 22, la publication par SSH (certificat FTP non validable) et la racine relative au dossier personnel. Avant toute production, redéployer `main` en préproduction : la production exige ce même SHA.
+
+Commandes, depuis la racine du dépôt :
 
 ```bash
 gh workflow run deploy-vision-o2switch.yml --ref <branche> -f cible=preproduction

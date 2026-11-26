@@ -169,8 +169,9 @@ jobs:
           set -euo pipefail
           # Par SSH (clé d'hôte vérifiée) : le serveur FTP d'O2Switch présente une chaîne de certificats
           # que les clients stricts ne valident pas (constat du 26/11/2026).
-          racine="/${SERVER_DIR#/}"
-          [[ "$racine" == /home/*/"$DOMAIN"/ ]] || { echo "Racine inattendue." >&2; exit 1; }
+          # cpanel-domain-docroot.py renvoie la racine relative au dossier personnel (ex. vision-preprod.avereo.fr).
+          racine="${SERVER_DIR#/}"; racine="${racine%/}/"
+          [[ "$racine" == "$DOMAIN/" ]] || { echo "Racine inattendue (attendu : $DOMAIN/ dans le dossier personnel)." >&2; exit 1; }
           echo "RACINE=$racine" >> "$GITHUB_ENV"
           mkdir -p "$RUNNER_TEMP/vision-backup/racine"
           rsync -rlt -e "ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -p $O2SWITCH_PORT" \
