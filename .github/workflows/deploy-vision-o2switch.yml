@@ -1,5 +1,6 @@
 name: Deploy Vision to O2Switch
-run-name: Vision - ${{ inputs.cible || 'verification PR' }} - ${{ github.ref_name }} - ${{ github.actor }}
+# Déclenché seulement à la demande (gh workflow run). La vérification des PR est dans ci-vision.yml.
+run-name: Vision - ${{ inputs.cible }} - ${{ github.ref_name }} - ${{ github.actor }}
 
 on:
   workflow_dispatch:
@@ -17,46 +18,16 @@ on:
         description: Appliquer les migrations
         type: boolean
         default: true
-  pull_request:
-    paths:
-      - architecture-v1/avereo-app-vision/**
-      - .github/workflows/deploy-vision-o2switch.yml
 
 permissions:
   contents: read
 
 concurrency:
-  group: vision-${{ inputs.cible || format('pr-{0}', github.event.pull_request.number) }}
+  group: vision-${{ inputs.cible }}
   cancel-in-progress: false
 
 jobs:
-  verification:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    services:
-      mysql:
-        image: mysql:8.4
-        env:
-          MYSQL_DATABASE: vision
-          MYSQL_ROOT_PASSWORD: vision-ci-only
-        ports: ['3306:3306']
-        options: --health-cmd="mysqladmin ping -h 127.0.0.1 --silent" --health-interval=5s --health-timeout=5s --health-retries=30
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20.19.0
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          extensions: pdo_mysql
-          coverage: none
-      - name: Tests, build et validation sans secret
-        run: bash architecture-v1/avereo-app-vision/deploiement/verifier-candidat.sh
-
   deploy:
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
