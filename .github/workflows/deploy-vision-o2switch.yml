@@ -164,18 +164,18 @@ jobs:
         run: bash architecture-v1/avereo-app-vision/deploiement/transmettre-migrations.sh
       - name: Sauvegarder la racine actuelle
         env:
-          FTP_ALLOW_MISSING: 'true'
-          FTP_BACKUP_DIR: ${{ runner.temp }}/vision-backup
-          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
-          FTP_PROTOCOL: ftps
-          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
-          FTP_SERVER_DIR: ${{ steps.target.outputs.server_dir }}
-          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
+          SERVER_DIR: ${{ steps.target.outputs.server_dir }}
         run: |
           set -euo pipefail
-          python3 .github/scripts/ftps-backup-dir.py
-          # SHA du candidat livré par ce run (pas de la version sauvegardée) ; aussi présent si la racine était vide.
+          # Par SSH (clé d'hôte vérifiée) : le serveur FTP d'O2Switch présente une chaîne de certificats
+          # que les clients stricts ne valident pas (constat du 26/11/2026).
+          racine="/${SERVER_DIR#/}"
+          [[ "$racine" == /home/*/"$DOMAIN"/ ]] || { echo "Racine inattendue." >&2; exit 1; }
+          echo "RACINE=$racine" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/vision-backup/racine"
+          rsync -rlt -e "ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -p $O2SWITCH_PORT" \
+            "$O2SWITCH_USER@$O2SWITCH_HOST:$racine" "$RUNNER_TEMP/vision-backup/racine/"
+          # SHA du candidat livré par ce run (pas de la version sauvegardée).
           printf '%s\n' "$GITHUB_SHA" > "$RUNNER_TEMP/vision-backup/candidat-livre-sha.txt"
       - name: Conserver le retour arrière
         uses: actions/upload-artifact@v4
@@ -185,17 +185,16 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
-      - name: Publier par FTPS
-        env:
-          FTP_LOCAL_DIR: ${{ github.workspace }}/architecture-v1/avereo-app-vision/frontend/dist
-          FTP_REQUIRED_FILE: index.html
-          FTP_PASSWORD: ${{ secrets.O2SWITCH_FTP_PASSWORD || secrets.CPANEL_PASSWORD }}
-          FTP_PORT: ${{ vars.O2SWITCH_FTP_PORT || '21' }}
-          FTP_PROTOCOL: ftps
-          FTP_SERVER: ${{ secrets.O2SWITCH_FTP_SERVER || secrets.CPANEL_SERVER }}
-          FTP_SERVER_DIR: ${{ steps.target.outputs.server_dir }}
-          FTP_USERNAME: ${{ secrets.O2SWITCH_FTP_USER || secrets.CPANEL_USERNAME }}
-        run: python3 .github/scripts/ftps-deploy-dir.py
+      - name: Publier par SSH (rsync)
+        run: |
+          set -euo pipefail
+          test -s architecture-v1/avereo-app-vision/frontend/dist/index.html
+          # --delete retire les anciens fichiers de Vision, mais jamais .well-known/ (renouvellement
+          # Let's Encrypt) ni cgi-bin/ (créé par cPanel) : les exclusions les protègent.
+          rsync -rlt --delete --chmod=D755,F644 \
+            --exclude=/.well-known/ --exclude=/cgi-bin/ \
+            -e "ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -p $O2SWITCH_PORT" \
+            architecture-v1/avereo-app-vision/frontend/dist/ "$O2SWITCH_USER@$O2SWITCH_HOST:$RACINE"
       - name: Vérifier les réponses publiques HTTPS
         run: node architecture-v1/avereo-app-vision/deploiement/verifier-public.mjs "$DOMAIN"
       - name: Résumé de livraison
