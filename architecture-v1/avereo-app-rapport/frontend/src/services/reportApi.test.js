@@ -2,6 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { loadOnlineReport, saveOnlineReport, downloadOnlineReport } from './reportApi.js';
 
+test('sans réseau, une erreur lisible marquée « network » ; une annulation reste une annulation', async t => {
+  t.mock.method(globalThis, 'fetch', async () => { throw new TypeError('Failed to fetch'); });
+  await assert.rejects(loadOnlineReport('a'.repeat(32), ''), error => error.code === 'network' && /Réseau indisponible/.test(error.message));
+  t.mock.method(globalThis, 'fetch', async () => { throw new DOMException('Arrêt', 'AbortError'); });
+  await assert.rejects(loadOnlineReport('a'.repeat(32), ''), error => error.name === 'AbortError');
+});
 test('la réouverture refuse une réponse contenant seulement les métadonnées', async t => {
   t.mock.method(globalThis, 'fetch', async () => new Response(JSON.stringify({ ok: true, report: { id: 'a'.repeat(32), payload: { updatedAt: '2026-11-13' } } })));
   await assert.rejects(loadOnlineReport('a'.repeat(32), ''), /dossier complet/);

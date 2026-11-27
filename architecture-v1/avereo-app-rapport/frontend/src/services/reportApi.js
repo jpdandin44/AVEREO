@@ -9,13 +9,22 @@ async function request(path, { token = '', body, serializedBody, method = 'GET',
   if (body !== undefined || serializedBody !== undefined) headers['Content-Type'] = 'application/json';
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const response = await fetch(`${API_BASE_URL}/${path}`, {
-    method,
-    headers,
-    body: serializedBody ?? (body === undefined ? undefined : JSON.stringify(body)),
-    credentials: 'same-origin',
-    signal,
-  });
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}/${path}`, {
+      method,
+      headers,
+      body: serializedBody ?? (body === undefined ? undefined : JSON.stringify(body)),
+      credentials: 'same-origin',
+      signal,
+    });
+  } catch (cause) {
+    if (cause?.name === 'AbortError') throw cause;
+    // Réseau absent (application installée sur le terrain) : message lisible, reconnu par sessionHorsLigne.js.
+    const error = new Error('Réseau indisponible. Le brouillon reste sur ce téléphone ; réessayez au retour du réseau.');
+    error.code = 'network';
+    throw error;
+  }
   const payload = await response.json().catch(() => null);
   if (!response.ok || !payload?.ok) {
     const error = new Error(payload?.message || `Erreur API (${response.status}).`);

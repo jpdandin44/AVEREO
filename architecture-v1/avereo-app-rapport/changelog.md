@@ -5,12 +5,16 @@ title: Evolutions significatives de Rapport AVEREO
 status: active
 version: git
 created: 2026-09-10
-updated: 2026-11-26
+updated: 2026-11-27
 owner: jpdandin
 tags:
   - rapport
   - changelog
 ---
+
+## 2026-11-27 — Rapport installable sur Android, hors ligne et reconnexion
+
+Manifeste, icônes provisoires et service worker produit au build sans dépendance. Sans réseau, Rapport se rouvre sur le brouillon du téléphone avec la dernière identité confirmée (bandeau « Hors ligne ») ; au retour du réseau, une session refusée affiche « Se reconnecter » vers CONNECT. API, sas, authentification et RGA jamais mis en cache ; aucune migration. [Détails et vérifications](docs/application-installable.md).
 
 ## 2026-11-26 — Candidat contexte observations et export
 

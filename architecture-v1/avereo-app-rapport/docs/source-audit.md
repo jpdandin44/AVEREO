@@ -5,13 +5,17 @@ title: Audit de la source Rapport
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-26
+updated: 2026-11-27
 owner: jpdandin
 tags:
   - rapport
   - audit
   - securite
 ---
+
+## 27 novembre — Application installable et hors ligne (Android)
+
+Écart volontaire : la source exigeait le réseau au démarrage. Rapport garde désormais dans le téléphone la dernière identité confirmée par le serveur (30 jours, effacée à la déconnexion) pour rouvrir le brouillon local sans réseau. Aucune réponse d'API, du sas ou de l'authentification n'est mise en cache ; le serveur reste seul juge des droits à chaque envoi. [Détails](application-installable.md).
 
 ## 26 novembre — Nouveau candidat local AM26
 
