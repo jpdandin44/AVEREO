@@ -5,10 +5,14 @@ title: Évolutions CONNECT
 status: active
 version: git
 created: 2026-10-14
-updated: 2026-11-24
+updated: 2026-11-27
 owner: jpdandin
 tags: [connect, documentation, preproduction]
 ---
+
+## 2026-11-27 — CONNECT installable sur Android
+
+Manifeste, icônes provisoires et service worker minimal : le portail s'ajoute à l'écran d'accueil Android et affiche une page « Hors ligne » sans réseau. Aucune page du portail ni réponse d'API mise en cache, aucune dépendance, aucune migration. [Détails et vérifications](docs/application-installable.md).
 
 ## 2026-11-24 — Création de Rapports Techniques administrable par compte
 

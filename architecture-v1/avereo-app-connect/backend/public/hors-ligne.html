@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#002B45">
+  <title>Hors ligne — AVEREO CONNECT</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, Arial, system-ui, sans-serif; background: #EEF3F6; color: #263238; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+    main { width: min(100%, 520px); background: #FFFFFF; border-radius: 8px; padding: 24px; border-top: 3px solid #FF6600; }
+    h1 { margin: 0 0 12px; color: #002B45; font-size: 1.5rem; }
+    p { line-height: 1.55; margin: 0 0 12px; }
+    .etat { display: flex; align-items: center; gap: 8px; font-weight: 700; color: #002B45; }
+    .etat svg { width: 24px; height: 24px; fill: none; stroke: #002B45; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    button { min-height: 48px; min-width: 48px; border: 0; border-radius: 8px; padding: 0 20px; font: inherit; font-weight: 700; background: #002B45; color: #FFFFFF; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>AVEREO CONNECT</h1>
+    <p class="etat">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M7 18h10a4 4 0 0 0 .6-7.95A5.5 5.5 0 0 0 7 8.5 4.8 4.8 0 0 0 7 18Z"/><path d="m4 4 16 16"/></svg>
+      Hors ligne
+    </p>
+    <p>CONNECT a besoin du réseau pour vous identifier et ouvrir vos applications.</p>
+    <p>Les relevés Vision et le brouillon Rapport restent enregistrés sur ce téléphone. Ils seront envoyés après votre reconnexion.</p>
+    <button type="button" id="reessayer">Réessayer</button>
+  </main>
+  <script>
+    document.getElementById('reessayer').addEventListener('click', () => window.location.assign('/'));
+    window.addEventListener('online', () => window.location.assign('/'));
+  </script>
+</body>
+</html>

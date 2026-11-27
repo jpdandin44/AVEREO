@@ -1143,6 +1143,42 @@ $tests['logout csrf'] = static function () use ($application, $authenticated, $l
     assertSameValue(true, $logoutCalled, 'logout callback');
 };
 
+$tests['portal is installable on Android without caching session data'] = static function (): void {
+    $public = dirname(__DIR__) . '/public';
+    $manifest = json_decode((string) file_get_contents($public . '/manifest.webmanifest'), true, 16, JSON_THROW_ON_ERROR);
+    assertSameValue('AVEREO CONNECT', $manifest['name'] ?? null, 'manifest name');
+    assertSameValue('standalone', $manifest['display'] ?? null, 'manifest display');
+    assertSameValue('/', $manifest['start_url'] ?? null, 'manifest start_url');
+    assertSameValue('/', $manifest['scope'] ?? null, 'manifest scope');
+    $sizes = [];
+    foreach ($manifest['icons'] ?? [] as $icon) {
+        $path = $public . $icon['src'];
+        $png = (string) file_get_contents($path);
+        assertSameValue("\x89PNG\r\n\x1a\n", substr($png, 0, 8), 'PNG signature ' . $icon['src']);
+        $size = unpack('Nwidth/Nheight', substr($png, 16, 8));
+        assertSameValue($icon['sizes'], $size['width'] . 'x' . $size['height'], 'icon size ' . $icon['src']);
+        $sizes[] = $icon['sizes'] . ' ' . ($icon['purpose'] ?? 'any');
+    }
+    foreach (['192x192 any', '512x512 any', '512x512 maskable'] as $expected) {
+        assertSameValue(true, in_array($expected, $sizes, true), 'icon ' . $expected);
+    }
+
+    $worker = (string) file_get_contents($public . '/sw.js');
+    assertSameValue(true, str_contains($worker, 'requete.mode !== "navigate"'), 'service worker only handles navigations');
+    assertSameValue(true, str_contains($worker, 'url.pathname !== "/" && url.pathname !== "/index.html"'), 'service worker only handles the home page');
+    assertSameValue(false, str_contains($worker, 'cache.put'), 'service worker never stores network responses');
+    assertSameValue(false, str_contains($worker, '/api/'), 'service worker never names the API');
+
+    $portal = (string) file_get_contents($public . '/index.html');
+    assertSameValue(true, str_contains($portal, '<link rel="manifest" href="/manifest.webmanifest">'), 'portal links the manifest');
+    assertSameValue(true, str_contains($portal, "navigator.serviceWorker.register('/sw.js')"), 'portal registers the service worker');
+    $offline = (string) file_get_contents($public . '/hors-ligne.html');
+    assertSameValue(true, str_contains($offline, 'Hors ligne'), 'offline page has a text label');
+    assertSameValue(false, stripos($offline, 'Drupal') !== false, 'identity engine name absent from the offline page');
+    $htaccess = (string) file_get_contents($public . '/.htaccess');
+    assertSameValue(true, str_contains($htaccess, 'AddType application/manifest+json .webmanifest'), 'manifest content type');
+};
+
 $tests['portal logout is branded and uses the signed bridge'] = static function (): void {
     $portal = file_get_contents(dirname(__DIR__) . '/public/index.html');
     if ($portal === false) {

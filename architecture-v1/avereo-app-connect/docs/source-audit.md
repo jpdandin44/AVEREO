@@ -5,10 +5,14 @@ title: Audit source CONNECT
 status: active
 version: git
 created: 2026-07-08
-updated: 2026-11-24
+updated: 2026-11-27
 owner: jpdandin
 tags: [connect, audit, preproduction]
 ---
+
+## 27 novembre — Portail installable sur Android
+
+Écart volontaire avec la source : le portail PHP devient installable (manifeste, service worker limité à une page « Hors ligne »). Le frontend historique n'est pas modifié ; aucune page ni réponse d'API n'est mise en cache. [Détails](application-installable.md).
 
 ## 24 novembre — Droit de création technique, complément PR197
 

@@ -199,6 +199,8 @@
     @media(max-width:640px) {#account-create-form,#account-create-period {grid-template-columns:minmax(0,1fr)}}
   </style>
     <script defer src="/account-menu.js"></script>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="theme-color" content="#002B45">
 </head>
 <body>
   <avereo-account-menu id="connect-account-menu" portal="/" preferences-app="connect" preferences-label="CONNECT" preferences-fields="[{&quot;key&quot;: &quot;sort&quot;, &quot;label&quot;: &quot;Ordre des applications&quot;, &quot;type&quot;: &quot;select&quot;, &quot;default&quot;: &quot;catalogue&quot;, &quot;options&quot;: [{&quot;value&quot;: &quot;catalogue&quot;, &quot;label&quot;: &quot;Ordre du catalogue&quot;}, {&quot;value&quot;: &quot;name&quot;, &quot;label&quot;: &quot;Nom, de A à Z&quot;}]}, {&quot;key&quot;: &quot;unavailable&quot;, &quot;label&quot;: &quot;Afficher aussi les applications non accessibles&quot;, &quot;type&quot;: &quot;checkbox&quot;, &quot;default&quot;: true}]" signed-out>
@@ -1434,6 +1436,12 @@
     });
 
     refresh();
+  </script>
+  <script>
+    // Application installable (Android) : page « hors ligne » quand le réseau manque. Voir docs/application-installable.md.
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js').catch(() => {}); });
+    }
   </script>
 </body>
 </html>
