@@ -5,13 +5,17 @@ title: Matrice de migration fonctionnelle
 status: active
 version: git
 created: 2026-07-13
-updated: 2026-11-26
+updated: 2026-11-27
 owner: jpdandin
 tags:
   - rapport
   - migration
   - fonctionnalites
 ---
+
+## 27 novembre — Installable et hors ligne, sans migration SQL
+
+Ajout : installation sur Android, réouverture sans réseau sur le brouillon local, bandeaux « Hors ligne » / « Session expirée » et bouton « Se reconnecter ». Brouillon, import/export, photos, dictée et génération de rapport conservés ; aucune table ni API modifiée. [Contrat et recette](application-installable.md).
 
 ## 26 novembre — Extension sans migration SQL
 

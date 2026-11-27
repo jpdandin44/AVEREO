@@ -1324,6 +1324,22 @@ img {
   background: #fffbeb;
 }
 
+/* Application installée : bandeau « Hors ligne » / « Session expirée » (texte + icône). */
+.session-banner {
+  flex-wrap: wrap;
+  max-width: 960px;
+  margin: 12px auto;
+  font-weight: 700;
+}
+
+.session-banner span {
+  flex: 1 1 240px;
+}
+
+.session-banner .button {
+  min-height: 48px;
+}
+
 .online-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;

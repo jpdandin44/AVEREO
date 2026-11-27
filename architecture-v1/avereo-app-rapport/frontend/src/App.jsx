@@ -123,8 +123,10 @@ import {
   ShieldCheck,
   Trash2,
   Upload,
+  WifiOff,
   X,
 } from 'lucide-react';
+import { etatSession, lienReconnexion, lireIdentite, memoriserIdentite, oublierIdentite } from './sessionHorsLigne.js';
 
 const DRAFT_KEY = 'avereo-rapport-draft-v2';
 const LEGACY_DRAFT_KEY = 'draftReport';
@@ -516,9 +518,35 @@ function ReportAccountMenu({ onHome, onLogout, onLocalCopy }) {
     <avereo-account-menu preferences-app="rapport" preferences-label="Rapport" preferences-fields={JSON.stringify(rapportPreferences)}>
       <button slot="items" type="button" onClick={onHome || (() => document.querySelector('main')?.scrollIntoView())}>Mes projets</button>
       {onLocalCopy && <button slot="local-copy" data-avereo-save="local" data-avereo-proxy="" onClick={onLocalCopy}>Exporter le rapport JSON</button>}
-      {ONLINE_SYNC_ENABLED ? <a slot="logout" href="/connect/logout.php" onClick={onLogout}>Se déconnecter</a> : <span slot="logout" hidden></span>}
+      {ONLINE_SYNC_ENABLED ? <a slot="logout" href="/connect/logout.php" onClick={(event) => { oublierIdentite(localStorage); onLogout?.(event); }}>Se déconnecter</a> : <span slot="logout" hidden></span>}
     </avereo-account-menu>
   );
+}
+
+function portailConnect() {
+  return document.querySelector('meta[name="avereo-connect-portal"]')?.content || '';
+}
+
+// Application installée : état de la session affiché en texte et icône, jamais par la seule couleur.
+function BandeauSession({ etat }) {
+  if (etat === 'horsLigne') {
+    return (
+      <p role="status" className="notice warning session-banner">
+        <WifiOff size={18} aria-hidden="true" />
+        <span>Hors ligne. Le brouillon reste enregistré sur ce téléphone ; la sauvegarde en ligne, les photos originales et les exports reprendront au retour du réseau.</span>
+      </p>
+    );
+  }
+  if (etat === 'expiree') {
+    return (
+      <p role="alert" className="notice warning session-banner">
+        <AlertTriangle size={18} aria-hidden="true" />
+        <span>Session expirée. Votre brouillon est conservé sur ce téléphone.</span>
+        <a className="button primary" href={lienReconnexion(portailConnect())}>Se reconnecter</a>
+      </p>
+    );
+  }
+  return null;
 }
 
 function ButtonCard({ active, title, description, onClick }) {
@@ -2361,7 +2389,7 @@ function ReportWizard({
       <footer className="action-bar">
         <ReportAccountMenu onLocalCopy={handleExportJson} onHome={returnToHome} onLogout={async (event) => {
           event.preventDefault();
-          try { await saveDraft(report); window.location.assign('/connect/logout.php'); }
+          try { await saveDraft(report); oublierIdentite(localStorage); window.location.assign('/connect/logout.php'); }
           catch { notify('Brouillon non enregistré. Exportez une copie JSON avant de vous déconnecter.'); }
         }} />
         <nav aria-label="Navigation entre les étapes">
@@ -2403,10 +2431,15 @@ function AccessGate({ authConfig, authError, onOAuthLogin }) {
           )}
           <div className="auth-actions">
             {connectMode ? (
-              <a className="button primary" href="/connect/logout.php">
-                <ShieldCheck size={18} />
-                Revenir a AVEREO CONNECT
-              </a>
+              <>
+                <a className="button primary" href={lienReconnexion(portailConnect())}>
+                  <ShieldCheck size={18} />
+                  Se reconnecter
+                </a>
+                <a className="button ghost" href="/connect/logout.php" onClick={() => oublierIdentite(localStorage)}>
+                  Revenir a AVEREO CONNECT
+                </a>
+              </>
             ) : (
               <>
                 <button className="button primary" type="button" onClick={onOAuthLogin} disabled={!oauthReady}>
@@ -2462,6 +2495,8 @@ export default function App() {
   const [accessToken, setAccessToken] = useState('');
   const [authUser, setAuthUser] = useState(null);
   const [authError, setAuthError] = useState('');
+  // 'ok' | 'horsLigne' | 'expiree' : application installée utilisée sans réseau, puis reconnexion (sessionHorsLigne.js).
+  const [sessionEtat, setSessionEtat] = useState('ok');
 
   useEffect(() => {
     if (!ONLINE_SYNC_ENABLED) return;
@@ -2479,16 +2514,27 @@ export default function App() {
         const next = await getCurrentUser(accessToken);
         if (!alive) return;
         setAuthUser(current => sameAccount(current, next) ? next : current);
-      } catch {
-        if (alive) setAuthUser(current => current ? { ...current,
+        setSessionEtat('ok');
+        if (authConfig?.mode === 'connect_gateway' && sameAccount(authUser, next)) memoriserIdentite(localStorage, { config: authConfig, user: next });
+      } catch (error) {
+        if (!alive) return;
+        const etat = etatSession(error);
+        if (etat !== 'ok') setSessionEtat(etat);
+        setAuthUser(current => current ? { ...current,
           reportCapabilities: { technicalReport: false },
           ...(current.profileAccess?.managed ? { profileAccess: { ...current.profileAccess, actions: [] } } : {}),
         } : current);
       }
     };
+    const horsLigne = () => setSessionEtat('horsLigne');
     const interval = window.setInterval(refresh, 30000);
     window.addEventListener('focus', refresh);
-    return () => { alive = false; window.clearInterval(interval); window.removeEventListener('focus', refresh); };
+    window.addEventListener('online', refresh);
+    window.addEventListener('offline', horsLigne);
+    return () => {
+      alive = false; window.clearInterval(interval);
+      window.removeEventListener('focus', refresh); window.removeEventListener('online', refresh); window.removeEventListener('offline', horsLigne);
+    };
   }, [accessToken, authUser?.id, authUser?.provider]);
 
 
@@ -2520,6 +2566,8 @@ export default function App() {
           if (!active) return;
           setAuthUser(user);
           setAuthError('');
+          setSessionEtat('ok');
+          memoriserIdentite(localStorage, { config, user });
           return;
         }
 
@@ -2531,7 +2579,16 @@ export default function App() {
         setAuthUser(user);
         setAuthError('');
       } catch (error) {
-        if (active) setAuthError(error.message || "L'API Rapport est indisponible.");
+        if (!active) return;
+        // Sans réseau, l'application installée rouvre le brouillon local avec la dernière identité confirmée.
+        const memorisee = etatSession(error) === 'horsLigne' ? lireIdentite(localStorage) : null;
+        if (memorisee) {
+          setAuthConfig(memorisee.config);
+          setAuthUser(memorisee.user);
+          setSessionEtat('horsLigne');
+          return;
+        }
+        setAuthError(error.message || "L'API Rapport est indisponible.");
       }
     };
     initializeAuth();
@@ -2640,6 +2697,7 @@ export default function App() {
 
   return (
     <>
+      {ONLINE_SYNC_ENABLED && <BandeauSession etat={sessionEtat} />}
       {appState === 'home' && rgaImport && <section className="risk-summary" style={{ maxWidth: '960px', margin: '24px auto' }}>
         <h2>Recherche RGA prête à reprendre</h2>
         <p>{rgaImport.adresse_logement}</p>
