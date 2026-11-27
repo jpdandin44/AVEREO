@@ -1,0 +1,17 @@
+{
+  "id": "/",
+  "name": "AVEREO CONNECT",
+  "short_name": "CONNECT",
+  "description": "Portail d'accès aux applications AVEREO.",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#002B45",
+  "icons": [
+    { "src": "/icons/connect-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/connect-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/connect-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
